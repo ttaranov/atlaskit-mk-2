@@ -17,14 +17,21 @@ import {
   DragZoneText,
   SelectionBlocker,
   PaddedBreak,
+  ImageBg,
 } from './styled';
 import { uploadPlaceholder, errorIcon } from './images';
-import { constrainPos, constrainScale } from '../constraint-util';
+import {
+  constrainPos,
+  constrainScale,
+  constrainEdges,
+} from '../constraint-util';
 import { dataURItoFile, fileSizeMb } from '../util';
 import { ERROR, MAX_SIZE_MB, ACCEPT } from '../avatar-picker-dialog';
 import { Ellipsify } from '@atlaskit/media-ui';
 
 export const CONTAINER_SIZE = akGridSizeUnitless * 32;
+export const CONTAINER_INNER_SIZE = akGridSizeUnitless * 25;
+export const CONTAINER_PADDING = (CONTAINER_SIZE - CONTAINER_INNER_SIZE) / 2;
 
 // Large images (a side > CONTAINER_SIZE) will have a scale between 0 - 1.0
 // Small images (a side < CONTAINER_SIZE) will have scales greater than 1.0
@@ -72,11 +79,11 @@ export interface State {
 
 const defaultState = {
   imageWidth: undefined,
-  imagePos: { x: 0, y: 0 },
+  imagePos: { x: CONTAINER_PADDING, y: CONTAINER_PADDING },
   minScale: 1,
   scale: 1,
   isDragging: false,
-  imageDragStartPos: { x: 0, y: 0 },
+  imageDragStartPos: { x: CONTAINER_PADDING, y: CONTAINER_PADDING },
   fileImageSource: undefined,
   isDroppingFile: false,
 };
@@ -94,7 +101,7 @@ export class ImageNavigator extends Component<Props, State> {
     document.removeEventListener('mouseup', this.onMouseUp);
   }
 
-  onMouseMove = e => {
+  onMouseMove = (e: MouseEvent) => {
     if (this.state.isDragging) {
       const { imageDragStartPos, scale } = this.state;
       const imageWidth = this.state.imageWidth as number;
@@ -107,7 +114,6 @@ export class ImageNavigator extends Component<Props, State> {
         imageWidth,
         imageHeight,
         scale,
-        CONTAINER_SIZE,
       );
       this.setState({
         cursorInitPos,
@@ -118,16 +124,25 @@ export class ImageNavigator extends Component<Props, State> {
 
   onMouseUp = () => {
     const { imagePos, scale } = this.state;
-    this.props.onPositionChanged(
-      Math.abs(Math.round(imagePos.x / scale)),
-      Math.abs(Math.round(imagePos.y / scale)),
+    const exportedPos = this.exportedImagePos(
+      Math.round(imagePos.x / scale),
+      Math.round(imagePos.y / scale),
     );
+    this.props.onPositionChanged(exportedPos.x, exportedPos.y);
     this.setState({
       cursorInitPos: undefined,
       isDragging: false,
       imageDragStartPos: imagePos,
     });
   };
+
+  exportedImagePos(x: number, y: number): Position {
+    const { scale } = this.state;
+    return {
+      x: Math.round(Math.abs((x * scale - CONTAINER_PADDING) * (1.0 / scale))),
+      y: Math.round(Math.abs((y * scale - CONTAINER_PADDING) * (1.0 / scale))),
+    };
+  }
 
   onDragStarted = () => {
     this.setState({
@@ -139,55 +154,58 @@ export class ImageNavigator extends Component<Props, State> {
    * When scale change we want to zoom in/out relative to the center of the frame.
    * @param scale New scale in 0-100 format.
    */
-  onScaleChange = scale => {
+  onScaleChange = (scale: number) => {
     const {
       imageWidth: imgWidth,
       imageHeight: imgHeight,
+      minScale: mScale,
       scale: currentScale,
+      imagePos,
     } = this.state;
     const imageWidth = imgWidth as number;
     const imageHeight = imgHeight as number;
+    const minScale = mScale as number;
     const newScale = constrainScale(
       scale / 100,
-      currentScale,
+      minScale,
       imageWidth,
       imageHeight,
-      CONTAINER_SIZE,
     );
     const oldScale = currentScale;
     const scaleRelation = newScale / oldScale;
     const oldCenterPixel: Position = {
-      x: CONTAINER_SIZE / 2 - this.state.imagePos.x,
-      y: CONTAINER_SIZE / 2 - this.state.imagePos.y,
+      x: CONTAINER_SIZE / 2 - imagePos.x,
+      y: CONTAINER_SIZE / 2 - imagePos.y,
     };
     const newCenterPixel: Position = {
       x: scaleRelation * oldCenterPixel.x,
       y: scaleRelation * oldCenterPixel.y,
     };
-    const imagePos = constrainPos(
+    const newPos = constrainEdges(
       CONTAINER_SIZE / 2 - newCenterPixel.x,
       CONTAINER_SIZE / 2 - newCenterPixel.y,
       imageWidth,
       imageHeight,
-      currentScale,
-      CONTAINER_SIZE,
+      newScale,
     );
     const haveRenderedImage = !!this.state.imageWidth;
     if (haveRenderedImage) {
-      // adjust cropping properties by scale value
-      const x = Math.abs(Math.round(imagePos.x / newScale));
-      const y = Math.abs(Math.round(imagePos.y / newScale));
+      // adjust cropped properties by scale value
       const minSize = Math.min(imageWidth, imageHeight);
       const size =
         minSize < CONTAINER_SIZE
           ? minSize
-          : Math.round(CONTAINER_SIZE / newScale);
-      this.props.onPositionChanged(x, y);
+          : Math.round(CONTAINER_INNER_SIZE / newScale);
+      const { x: exportedPosX, y: exportedPosY } = this.exportedImagePos(
+        newPos.x / newScale,
+        newPos.y / newScale,
+      );
+      this.props.onPositionChanged(exportedPosX, exportedPosY);
       this.props.onSizeChanged(size);
     }
     this.setState({
       scale: newScale,
-      imagePos,
+      imagePos: newPos,
     });
   };
 
@@ -197,16 +215,17 @@ export class ImageNavigator extends Component<Props, State> {
    * @param width the width of the image
    * @param height the height of the image
    */
-  onImageSize = (width, height) => {
+  onImageSize = (width: number, height: number) => {
     const { imageFile, imagePos } = this.state;
     const scale = this.calculateMinScale(width, height);
     // imageFile will not exist if imageSource passed through props.
     // therefore we have to create a File, as one needs to be raised by dialog parent component when Save clicked.
     const file = imageFile || (this.dataURI && dataURItoFile(this.dataURI));
+    const minSize = Math.min(width, height);
     if (file) {
       this.props.onImageLoaded(file, {
         ...imagePos,
-        size: CONTAINER_SIZE / scale,
+        size: minSize,
       });
     }
     this.setState({
@@ -218,20 +237,24 @@ export class ImageNavigator extends Component<Props, State> {
   };
 
   calculateMinScale(width: number, height: number): number {
-    return Math.max(CONTAINER_SIZE / width, CONTAINER_SIZE / height);
+    return Math.max(
+      CONTAINER_INNER_SIZE / width,
+      CONTAINER_INNER_SIZE / height,
+    );
   }
 
-  validateFile(imageFile: File): string | undefined {
+  validateFile(imageFile: File): string | null {
     if (ACCEPT.indexOf(imageFile.type) === -1) {
       return ERROR.FORMAT;
     } else if (fileSizeMb(imageFile) > MAX_SIZE_MB) {
       return ERROR.SIZE;
     }
+    return null;
   }
 
   readFile(imageFile: File) {
     const reader = new FileReader();
-    reader.onload = (e: ProgressEvent) => {
+    reader.onload = (e: Event) => {
       const fileImageSource = (e.target as FileReader).result;
       const { onImageUploaded } = this.props;
 
@@ -245,45 +268,49 @@ export class ImageNavigator extends Component<Props, State> {
   }
 
   // Trick to have a nice <input /> appearance
-  onUploadButtonClick = e => {
-    const input = e.target.querySelector('#image-input');
+  onUploadButtonClick = (e: React.SyntheticEvent<HTMLInputElement>) => {
+    const input = e.currentTarget.querySelector(
+      '#image-input',
+    ) as HTMLInputElement;
 
     if (input) {
       input.click();
     }
   };
 
-  onFileChange = e => {
+  onFileChange = (e: React.SyntheticEvent<HTMLInputElement>) => {
     e.stopPropagation();
-    const file = e.target.files[0];
-    const validationError = this.validateFile(file);
+    if (e.currentTarget.files && e.currentTarget.files.length) {
+      const file = e.currentTarget.files[0];
+      const validationError = this.validateFile(file);
 
-    if (validationError) {
-      this.props.onImageError(validationError);
-    } else {
-      this.readFile(file);
+      if (validationError) {
+        this.props.onImageError(validationError);
+      } else {
+        this.readFile(file);
+      }
     }
   };
 
-  updateDroppingState(e: Event, state: boolean) {
+  updateDroppingState(e: React.DragEvent<{}>, state: boolean) {
     e.stopPropagation();
     e.preventDefault();
     this.setState({ isDroppingFile: state });
   }
 
-  onDragEnter = e => {
+  onDragEnter = (e: React.DragEvent<{}>) => {
     this.updateDroppingState(e, true);
   };
 
-  onDragOver = e => {
+  onDragOver = (e: React.DragEvent<{}>) => {
     this.updateDroppingState(e, true);
   };
 
-  onDragLeave = e => {
+  onDragLeave = (e: React.DragEvent<{}>) => {
     this.updateDroppingState(e, false);
   };
 
-  onDrop = e => {
+  onDrop = (e: React.DragEvent<{}>) => {
     e.stopPropagation();
     e.preventDefault();
     const dt = e.dataTransfer;
@@ -340,10 +367,7 @@ export class ImageNavigator extends Component<Props, State> {
         {isLoading ? null : (
           <div>
             <PaddedBreak>{separatorText}</PaddedBreak>
-            <Button
-              onClick={this.onUploadButtonClick as any}
-              isDisabled={isLoading}
-            >
+            <Button onClick={this.onUploadButtonClick} isDisabled={isLoading}>
               Upload a photo
               <FileInput
                 type="file"
@@ -372,6 +396,7 @@ export class ImageNavigator extends Component<Props, State> {
 
     return (
       <div>
+        <ImageBg />
         <ImageCropper
           scale={scale}
           imageSource={dataURI}

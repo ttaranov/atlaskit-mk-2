@@ -3,13 +3,27 @@
 import Calendar from '@atlaskit/calendar';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import Select, { mergeStyles } from '@atlaskit/select';
-import { borderRadius, colors, layers } from '@atlaskit/theme';
+import { borderRadius, colors, layers, elevation } from '@atlaskit/theme';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import { format, isValid, parse } from 'date-fns';
 import pick from 'lodash.pick';
 import React, { Component, type Node, type ElementRef } from 'react';
 import styled from 'styled-components';
 
-import { ClearIndicator, DropdownIndicator } from '../internal';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
+
+import {
+  ClearIndicator,
+  DropdownIndicator,
+  defaultDateFormat,
+} from '../internal';
 import FixedLayer from '../internal/FixedLayer';
 import type { Event } from '../types';
 
@@ -45,9 +59,13 @@ type Props = {
   onChange: string => void,
   /** Called when the field is focused. */
   onFocus: (e: SyntheticFocusEvent<>) => void,
+  /* A function for parsing input characters and transforming them into a Date object. By default uses [date-fn's parse method](https://date-fns.org/v1.29.0/docs/parse) */
+  parseInputValue: (date: string, dateFormat: string) => Date,
   /** Props to apply to the select. This can be used to set options such as placeholder text.
    *  See [here](/packages/core/select) for documentation on select props. */
   selectProps: Object,
+  /* This prop affects the height of the select control. Compact is gridSize() * 4, default is gridSize * 5  */
+  spacing?: 'compact' | 'default',
   /** The ISO time that should be used as the input value. */
   value?: string,
   /** Indicates current value is invalid & changes border color */
@@ -56,28 +74,17 @@ type Props = {
   hideIcon?: boolean,
   /** Format the date with a string that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format). */
   dateFormat: string,
+  /** Placeholder text displayed in input */
+  placeholder?: string,
 };
 
 type State = {
   isOpen: boolean,
   value: string,
+  /** Value to be shown in the calendar as selected.  */
+  selectedValue: string,
   view: string,
 };
-
-// TODO see if there's a different way to control the display value.
-//
-// react-select retains the value the user typed in until the field is
-// blurred. Since we're controlling the open state and value, we need a
-// way explicitly ensure the value is respected. By blurring and then
-// immedately refocusing, we ensure the value is formatted and the input
-// retains focus.
-function ensureValueIsDisplayed() {
-  const { activeElement } = document;
-  if (activeElement) {
-    activeElement.blur();
-    activeElement.focus();
-  }
-}
 
 function isoToObj(iso: string) {
   const parsed = parse(iso);
@@ -98,17 +105,39 @@ const arrowKeys = {
 };
 
 const StyledMenu = styled.div`
-  background-color: ${colors.N0};
-  border: 1px solid ${colors.N40};
+  background-color: ${colors.N20};
+  border: 0 0 1px solid ${colors.N60A};
   border-radius: ${borderRadius()}px;
-  box-shadow: 1px 5px 10px rgba(0, 0, 0, 0.1);
-  margin: 7px 0;
+  ${elevation.e200} margin: 8px 0 0 0;
   overflow: hidden;
   text-align: center;
   z-index: ${layers.dialog};
 `;
 
-export default class DatePicker extends Component<Props, State> {
+const Menu = ({ innerProps: menuInnerProps, selectProps }: Object) => (
+  <StyledMenu>
+    <Calendar
+      {...isoToObj(selectProps.calendarValue)}
+      {...isoToObj(selectProps.calendarView)}
+      disabled={selectProps.calendarDisabled}
+      onChange={selectProps.onCalendarChange}
+      onSelect={selectProps.onCalendarSelect}
+      // $FlowFixMe - Calendar is not a react component
+      ref={selectProps.calendarRef}
+      selected={[selectProps.selectedCalendarValue]}
+      innerProps={menuInnerProps}
+    />
+  </StyledMenu>
+);
+
+const FixedLayeredMenu = ({ selectProps, ...props }: Object) => (
+  <FixedLayer
+    containerRef={selectProps.calendarContainerRef}
+    content={<Menu {...props} selectProps={selectProps} />}
+  />
+);
+
+class DatePicker extends Component<Props, State> {
   // $FlowFixMe - Calendar isn't being correctly detected as a react component
   calendar: ElementRef<Calendar>;
   containerRef: ?HTMLElement;
@@ -117,27 +146,31 @@ export default class DatePicker extends Component<Props, State> {
   static defaultProps = {
     appearance: 'default',
     autoFocus: false,
+    dateFormat: defaultDateFormat,
+    defaultIsOpen: false,
+    defaultValue: '',
     disabled: [],
+    hideIcon: false,
     icon: CalendarIcon,
-    name: '',
+    id: '',
+    innerProps: {},
     isDisabled: false,
+    isInvalid: false,
+    name: '',
     onBlur: () => {},
     onChange: () => {},
     onFocus: () => {},
-    innerProps: {},
+    parseInputValue: parse,
+    placeholder: 'e.g. 2018/01/01',
     selectProps: {},
-    id: '',
-    defaultIsOpen: false,
-    defaultValue: '',
-    isInvalid: false,
-    hideIcon: false,
-    dateFormat: 'YYYY/MM/DD',
+    spacing: 'default',
   };
 
   state = {
     isOpen: this.props.defaultIsOpen,
     value: this.props.defaultValue,
-    view: '',
+    view: this.props.value || this.props.defaultValue,
+    selectedValue: this.props.value || this.props.defaultValue,
   };
 
   // All state needs to be accessed via this function so that the state is mapped from props
@@ -149,17 +182,24 @@ export default class DatePicker extends Component<Props, State> {
     };
   };
 
+  /**
+   * Checks if a date is one of the disabled
+   */
+  isDateDisabled = (date: String) => {
+    return this.props.disabled.indexOf(date) > -1;
+  };
+
   onCalendarChange = ({ iso }: { iso: string }) => {
     this.setState({ view: iso });
   };
 
   onCalendarSelect = ({ iso: value }: { iso: string }) => {
+    this.setState({ isOpen: false, selectedValue: value });
     this.triggerChange(value);
-    this.setState({ isOpen: false });
   };
 
   onInputClick = () => {
-    this.setState({ isOpen: true });
+    if (!this.getState().isOpen) this.setState({ isOpen: true });
   };
 
   onSelectBlur = (e: SyntheticFocusEvent<>) => {
@@ -174,10 +214,15 @@ export default class DatePicker extends Component<Props, State> {
 
   onSelectInput = (e: Event) => {
     let value = e.target.value;
+    const { dateFormat, parseInputValue } = this.props;
     if (value) {
-      const parsed = parse(value);
+      const parsed = parseInputValue(value, dateFormat);
+      // Only try to set the date if we have month & day
       if (isValid(parsed)) {
-        value = format(parsed, 'YYYY-MM-DD');
+        // We format the parsed date to YYYY-MM-DD here because
+        // this is the format expected by the @atlaskit/calendar component
+        const calendarFormat = 'YYYY-MM-DD';
+        value = format(parsed, calendarFormat);
         this.triggerChange(value);
       }
     }
@@ -187,7 +232,7 @@ export default class DatePicker extends Component<Props, State> {
   onSelectKeyDown = (e: Event) => {
     const { key } = e;
     const dir = arrowKeys[key];
-    const { isOpen, view } = this.getState();
+    const { view } = this.getState();
 
     if (dir) {
       // Calendar will not exist if it's not open and this also doubles as a
@@ -202,25 +247,28 @@ export default class DatePicker extends Component<Props, State> {
         this.setState({ isOpen: true });
       }
     } else if (key === 'Escape') {
-      if (isOpen) {
-        this.setState({ isOpen: false });
-      } else {
-        this.triggerChange('');
-      }
-    } else if (key === 'Enter' || key === 'Tab') {
-      this.triggerChange(view);
       this.setState({ isOpen: false });
+    } else if (key === 'Backspace') {
+      this.setState({ selectedValue: '' });
+      this.triggerChange('');
+
+      // Dates may be disabled
+    } else if (
+      !this.isDateDisabled(view) &&
+      (key === 'Enter' || key === 'Tab')
+    ) {
+      this.triggerChange(view);
+      this.setState({ isOpen: false, selectedValue: view });
     }
   };
 
-  refCalendar = (ref: ElementRef<Calendar>) => {
+  refCalendar = (ref: ElementRef<typeof Calendar>) => {
     this.calendar = ref;
   };
 
   triggerChange = (value: string) => {
     this.props.onChange(value);
     this.setState({ value, view: value });
-    ensureValueIsDisplayed();
   };
 
   getContainerRef = (ref: ?HTMLElement) => {
@@ -252,40 +300,33 @@ export default class DatePicker extends Component<Props, State> {
       isDisabled,
       name,
       selectProps,
+      spacing,
       dateFormat,
+      placeholder,
     } = this.props;
-    const { isOpen, value, view } = this.getState();
+    const { value, view, isOpen } = this.getState();
     const validationState = this.props.isInvalid ? 'error' : 'default';
     const icon =
       this.props.appearance === 'subtle' || this.props.hideIcon
         ? null
         : this.props.icon;
-    const Menu = ({ innerProps: menuInnerProps }) => (
-      <StyledMenu>
-        <Calendar
-          {...isoToObj(value)}
-          {...isoToObj(view)}
-          disabled={disabled}
-          onChange={this.onCalendarChange}
-          onSelect={this.onCalendarSelect}
-          // $FlowFixMe
-          ref={this.refCalendar}
-          selected={[value]}
-          innerProps={menuInnerProps}
-        />
-      </StyledMenu>
-    );
 
-    const FixedLayeredMenu = props => (
-      <FixedLayer
-        containerRef={this.containerRef}
-        content={<Menu {...props} />}
-      />
-    );
+    const calendarProps = {
+      calendarContainerRef: this.containerRef,
+      calendarRef: this.refCalendar,
+      calendarDisabled: disabled,
+      calendarValue: value,
+      calendarView: view,
+      dropdownIndicatorIcon: icon,
+      onCalendarChange: this.onCalendarChange,
+      onCalendarSelect: this.onCalendarSelect,
+      selectedCalendarValue: this.state.selectedValue,
+    };
+
     const { styles: selectStyles = {} } = selectProps;
     const controlStyles =
       this.props.appearance === 'subtle' ? this.getSubtleControlStyles() : {};
-
+    const disabledStyle = isDisabled ? { pointerEvents: 'none' } : {};
     return (
       <div
         {...innerProps}
@@ -298,24 +339,27 @@ export default class DatePicker extends Component<Props, State> {
         <input name={name} type="hidden" value={value} />
         {/* $FlowFixMe - complaining about required args that aren't required. */}
         <Select
+          menuIsOpen={isOpen && !isDisabled}
+          openMenuOnFocus
+          closeMenuOnSelect
           autoFocus={autoFocus}
           instanceId={id}
           isDisabled={isDisabled}
-          menuIsOpen={isOpen && !isDisabled}
           onBlur={this.onSelectBlur}
           onFocus={this.onSelectFocus}
           components={{
             ClearIndicator,
-            DropdownIndicator: () => <DropdownIndicator icon={icon} />,
+            DropdownIndicator,
             Menu: FixedLayeredMenu,
           }}
           styles={mergeStyles(selectStyles, {
             control: base => ({
               ...base,
               ...controlStyles,
+              ...disabledStyle,
             }),
           })}
-          placeholder="e.g. 2018/12/31"
+          placeholder={placeholder}
           value={
             value && {
               label: format(parse(value), dateFormat),
@@ -323,9 +367,33 @@ export default class DatePicker extends Component<Props, State> {
             }
           }
           {...selectProps}
+          {...calendarProps}
+          spacing={spacing}
           validationState={validationState}
         />
       </div>
     );
   }
 }
+
+export { DatePicker as DatePickerWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'datePicker',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onChange: createAndFireEventOnAtlaskit({
+      action: 'selectedDate',
+      actionSubject: 'datePicker',
+
+      attributes: {
+        componentName: 'datePicker',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(DatePicker),
+);

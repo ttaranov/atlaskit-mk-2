@@ -1,5 +1,6 @@
 export { default as basePlugin } from './base';
 export { default as blockTypePlugin } from './block-type';
+export { pluginKey as blockPluginStateKey, BlockTypeState } from './block-type';
 export {
   default as clearMarksOnChangeToEmptyDocumentPlugin,
 } from './clear-marks-on-change-to-empty-document';
@@ -41,3 +42,6 @@ export { default as typeAheadPlugin } from './type-ahead';
 export { default as unsupportedContentPlugin } from './unsupported-content';
 export { default as widthPlugin } from './width';
 export { default as gapCursorPlugin } from './gap-cursor';
+export { default as inlineActionPlugin } from './inline-action';
+export { default as cardPlugin } from './card';
+export { default as floatingToolbarPlugin } from './floating-toolbar';

@@ -20,18 +20,33 @@ export default class ObjectResult extends PureComponent<Props> {
     isCompact: false,
     isSelected: false,
     onClick: () => {},
-    onMouseEnter: () => {},
-    onMouseLeave: () => {},
     type: OBJECT_RESULT_TYPE,
   };
 
-  getAvatar = () => (
-    <Avatar
-      src={this.props.avatarUrl}
-      appearance="square"
-      status={this.props.isPrivate ? 'locked' : null}
-    />
-  );
+  getAvatar = () => {
+    if (this.props.avatar) {
+      return this.props.avatar;
+    }
+
+    return (
+      <Avatar
+        src={this.props.avatarUrl}
+        appearance="square"
+        size="small"
+        status={this.props.isPrivate ? 'locked' : null}
+      />
+    );
+  };
+
+  getSubtext() {
+    const { objectKey, containerName } = this.props;
+
+    if (objectKey) {
+      return `${objectKey} · ${containerName}`;
+    }
+
+    return containerName;
+  }
 
   render() {
     const { containerName, objectKey, name, ...resultBaseProps } = this.props;
@@ -39,7 +54,7 @@ export default class ObjectResult extends PureComponent<Props> {
       <ResultBase
         {...resultBaseProps}
         icon={this.getAvatar()}
-        subText={`${objectKey ? `${objectKey} ` : ''}in ${containerName}`}
+        subText={this.getSubtext()}
         text={name}
       />
     );

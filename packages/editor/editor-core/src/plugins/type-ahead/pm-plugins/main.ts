@@ -26,6 +26,7 @@ export const ACTIONS = {
   SELECT_PREV: 'SELECT_PREV',
   SELECT_NEXT: 'SELECT_NEXT',
   SELECT_CURRENT: 'SELECT_CURRENT',
+  SET_CURRENT_INDEX: 'SET_CURRENT_INDEX',
   ITEMS_LIST_UPDATED: 'ITEMS_LIST_UPDATED',
 };
 
@@ -51,9 +52,18 @@ export function createPlugin(dispatch: Dispatch, typeAhead): Plugin {
       },
 
       apply(tr, pluginState, oldState, state) {
-        const action = (tr.getMeta(pluginKey) || {}).action;
+        const meta = tr.getMeta(pluginKey) || {};
+        const { action, params } = meta;
 
         switch (action) {
+          case ACTIONS.SET_CURRENT_INDEX:
+            return setCurrentItemIndex({
+              dispatch,
+              pluginState,
+              tr,
+              params,
+            });
+
           case ACTIONS.SELECT_PREV:
             return selectPrevActionHandler({ dispatch, pluginState, tr });
 
@@ -90,6 +100,12 @@ export function createPlugin(dispatch: Dispatch, typeAhead): Plugin {
           const { doc, selection } = state;
           const { from, to } = selection;
           const { typeAheadQuery } = state.schema.marks;
+
+          // Disable type ahead query when the first character is a space.
+          if (pluginState.active && pluginState.query.indexOf(' ') === 0) {
+            dismissCommand()(state, dispatch);
+            return;
+          }
 
           // Disable type ahead query when removing trigger.
           if (pluginState.active && !pluginState.query) {
@@ -130,6 +146,9 @@ export type ActionHandlerParams = {
   dispatch: Dispatch;
   pluginState: PluginState;
   tr: Transaction;
+  params?: {
+    currentIndex?: number;
+  };
 };
 
 export function createItemsLoader(
@@ -187,8 +206,8 @@ export function defaultActionHandler({
     '',
   );
   const query = (nodeBefore.textContent || '')
-    .replace(trigger, '')
-    .replace(/^([^\x00-\xFF]|[\s\n])+/g, '');
+    .replace(/^([^\x00-\xFF]|[\s\n])+/g, '')
+    .replace(trigger, '');
 
   const typeAheadHandler = typeAhead.find(t => t.trigger === trigger)!;
   let typeAheadItems: Array<TypeAheadItem> | Promise<Array<TypeAheadItem>> = [];
@@ -218,6 +237,27 @@ export function defaultActionHandler({
     items: typeAheadItems as Array<TypeAheadItem>,
     itemsLoader: itemsLoader,
     currentIndex: pluginState.currentIndex,
+  };
+
+  dispatch(pluginKey, newPluginState);
+  return newPluginState;
+}
+
+export function setCurrentItemIndex({
+  dispatch,
+  pluginState,
+  params,
+}: ActionHandlerParams) {
+  if (!params) {
+    return pluginState;
+  }
+
+  const newPluginState = {
+    ...pluginState,
+    currentIndex:
+      params.currentIndex || params.currentIndex === 0
+        ? params.currentIndex
+        : pluginState.currentIndex,
   };
 
   dispatch(pluginKey, newPluginState);
@@ -255,10 +295,13 @@ export function itemsListUpdatedActionHandler({
   pluginState,
   tr,
 }: ActionHandlerParams): PluginState {
+  const items = tr.getMeta(pluginKey).items;
   const newPluginState = {
     ...pluginState,
+    items,
     itemsLoader: null,
-    items: tr.getMeta(pluginKey).items,
+    currentIndex:
+      pluginState.currentIndex > items.length ? 0 : pluginState.currentIndex,
   };
   dispatch(pluginKey, newPluginState);
   return newPluginState;

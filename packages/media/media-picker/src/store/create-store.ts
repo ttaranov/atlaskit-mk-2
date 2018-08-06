@@ -33,8 +33,9 @@ import { PopupUploadEventEmitter } from '../components/popup';
 export default (
   eventEmitter: PopupUploadEventEmitter,
   context: Context,
+  useNewUploadService?: boolean,
 ): Store<State> => {
-  const { userAuthProvider, serviceHost, authProvider } = context.config;
+  const { userAuthProvider, authProvider } = context.config;
   if (!userAuthProvider) {
     throw new Error('userAuthProvider must be provided in the context');
   }
@@ -48,12 +49,12 @@ export default (
     reducers,
     {
       ...defaultState,
-      apiUrl: serviceHost,
       redirectUrl,
       tenantAuthProvider: authProvider,
       userAuthProvider,
       context,
-    },
+      useNewUploadService,
+    } as Partial<State>,
     composeWithDevTools(
       applyMiddleware(
         startAppMiddleware(eventEmitter) as Middleware,

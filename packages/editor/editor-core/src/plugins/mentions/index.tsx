@@ -1,4 +1,5 @@
 import * as React from 'react';
+import MentionIcon from '@atlaskit/icon/glyph/editor/mention';
 import { mention, mentionQuery, WithProviders } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { createPlugin, mentionPluginKey } from './pm-plugins/main';
@@ -9,21 +10,25 @@ import MentionPicker from './ui/MentionPicker';
 
 const mentionsPlugin: EditorPlugin = {
   nodes() {
-    return [{ name: 'mention', node: mention, rank: 1200 }];
+    return [{ name: 'mention', node: mention }];
   },
 
   marks() {
-    return [{ name: 'mentionQuery', mark: mentionQuery, rank: 1200 }];
+    return [{ name: 'mentionQuery', mark: mentionQuery }];
   },
 
   pmPlugins() {
     return [
       {
-        rank: 300,
-        plugin: ({ providerFactory }) => createPlugin(providerFactory),
+        name: 'mention',
+        plugin: ({ providerFactory, portalProviderAPI }) =>
+          createPlugin(portalProviderAPI, providerFactory),
       },
-      { rank: 310, plugin: ({ schema }) => inputRulePlugin(schema) },
-      { rank: 320, plugin: ({ schema }) => keymap(schema) },
+      {
+        name: 'mentionInputRule',
+        plugin: ({ schema }) => inputRulePlugin(schema),
+      },
+      { name: 'mentionKeymap', plugin: ({ schema }) => keymap(schema) },
     ];
   },
 
@@ -71,6 +76,21 @@ const mentionsPlugin: EditorPlugin = {
         isReducedSpacing={true}
       />
     );
+  },
+
+  pluginsOptions: {
+    quickInsert: [
+      {
+        title: 'Mention',
+        priority: 400,
+        icon: () => <MentionIcon label="Mention" />,
+        action(insert, state) {
+          const mark = state.schema.mark('mentionQuery');
+          const mentionText = state.schema.text('@', [mark]);
+          return insert(mentionText);
+        },
+      },
+    ],
   },
 };
 

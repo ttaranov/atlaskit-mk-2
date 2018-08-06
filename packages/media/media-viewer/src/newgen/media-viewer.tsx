@@ -1,66 +1,66 @@
 import * as React from 'react';
 import { Context } from '@atlaskit/media-core';
-import { Identifier } from './domain';
+import { Identifier, ItemSource, MediaViewerFeatureFlags } from './domain';
 import { List } from './list';
 import { Collection } from './collection';
 import { Content } from './content';
-import { Blanket, ErrorMessage } from './styled';
+import { Blanket } from './styled';
+import { Shortcut } from './shortcut';
+import { ThemeProvider } from 'styled-components';
+import { theme } from './theme';
 
-export type Props = {
+export type Props = Readonly<{
   onClose?: () => void;
   selectedItem?: Identifier;
-  collectionName?: string;
-  items?: Identifier[];
+  featureFlags?: MediaViewerFeatureFlags;
   context: Context;
-};
+  itemSource: ItemSource;
+}>;
 
 export class MediaViewer extends React.Component<Props, {}> {
   render() {
     const { onClose } = this.props;
     return (
-      <Blanket>
-        <Content onClick={this.onClickContentClose} onClose={onClose}>
-          {this.renderContent()}
-        </Content>
-      </Blanket>
+      <ThemeProvider theme={theme}>
+        <Blanket>
+          {onClose && <Shortcut keyCode={27} handler={onClose} />}
+          <Content onClose={onClose}>{this.renderContent()}</Content>
+        </Blanket>
+      </ThemeProvider>
     );
   }
 
   private renderContent() {
     const {
-      items,
-      collectionName,
       selectedItem,
       context,
       onClose,
+      itemSource,
+      featureFlags,
     } = this.props;
-    if (collectionName) {
+    if (itemSource.kind === 'COLLECTION') {
       return (
         <Collection
-          selectedItem={selectedItem}
-          collectionName={collectionName}
+          pageSize={itemSource.pageSize}
+          defaultSelectedItem={selectedItem}
+          collectionName={itemSource.collectionName}
           context={context}
           onClose={onClose}
+          featureFlags={featureFlags}
         />
       );
-    } else if (items) {
+    } else if (itemSource.kind === 'ARRAY') {
       return (
         <List
-          selectedItem={selectedItem || items[0]}
-          items={items}
+          defaultSelectedItem={selectedItem || itemSource.items[0]}
+          items={itemSource.items}
           context={context}
           onClose={onClose}
+          featureFlags={featureFlags}
         />
       );
     } else {
-      return <ErrorMessage>No media found</ErrorMessage>;
+      return null as never;
     }
   }
-
-  private onClickContentClose = e => {
-    const { onClose } = this.props;
-    if (e.target === e.currentTarget && onClose) {
-      onClose();
-    }
-  };
 }

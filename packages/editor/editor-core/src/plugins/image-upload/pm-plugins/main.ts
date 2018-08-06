@@ -1,4 +1,4 @@
-import { Schema } from 'prosemirror-model';
+import { Schema, Node } from 'prosemirror-model';
 import {
   EditorState,
   NodeSelection,
@@ -6,6 +6,7 @@ import {
   PluginKey,
 } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
+import { safeInsert } from 'prosemirror-utils';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { analyticsService } from '../../../analytics';
 import { isPastedFile } from '../../../utils/clipboard';
@@ -31,6 +32,19 @@ function isDroppedFile(e: DragEvent): boolean {
   );
 }
 
+export const createMediaNode = (url: string, schema: Schema): Node | null => {
+  const { media, mediaSingle } = schema.nodes;
+  if (!media || !mediaSingle) {
+    return null;
+  }
+
+  const mediaNode = media.create({
+    type: 'external',
+    url,
+  });
+  return mediaSingle.create({}, mediaNode);
+};
+
 export class ImageUploadState {
   active = false;
   enabled = false;
@@ -48,7 +62,7 @@ export class ImageUploadState {
     this.changeHandlers = [];
     this.state = state;
     this.config = { ...DEFAULT_OPTIONS, ...options };
-    this.hidden = !state.schema.nodes.image;
+    this.hidden = !state.schema.nodes.media || !state.schema.nodes.mediaSingle;
     this.enabled = this.canInsertImage();
     if (options && options.providerFactory) {
       options.providerFactory.subscribe(
@@ -82,8 +96,11 @@ export class ImageUploadState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  // TODO: Fix types (ED-2987)
-  update(state: EditorState, docView: any, dirty = false): void {
+  update(
+    state: EditorState,
+    domAtPos: EditorView['domAtPos'],
+    dirty = false,
+  ): void {
     this.state = state;
     const newActive = this.isImageSelected();
     if (newActive !== this.active) {
@@ -98,7 +115,7 @@ export class ImageUploadState {
     }
 
     const newElement = newActive
-      ? this.getActiveImageElement(docView)
+      ? this.getActiveImageElement(domAtPos)
       : undefined;
     if (newElement !== this.element) {
       this.element = newElement;
@@ -125,37 +142,22 @@ export class ImageUploadState {
   addImage(view: EditorView): Function {
     return (options: { src?: string; alt?: string; title?: string }): void => {
       const { state } = this;
-      const { image } = state.schema.nodes;
-      if (this.enabled && image) {
-        view.dispatch(
-          state.tr.insert(state.selection.$to.pos, image.create(options)),
-        );
+      if (this.enabled && options.src) {
+        const mediaNode = createMediaNode(options.src, state.schema);
+        if (mediaNode) {
+          view.dispatch(
+            safeInsert(mediaNode, state.selection.$to.pos)(
+              state.tr,
+            ).scrollIntoView(),
+          );
+        }
       }
     };
   }
 
-  updateImage(view: EditorView): Function {
-    return (options: { src?: string; alt?: string; title?: string }): void => {
-      if (this.isImageSelected()) {
-        this.removeImage(view);
-        this.addImage(view)(options);
-      }
-    };
-  }
-
-  removeImage(view: EditorView): void {
-    const { state } = this;
-    const { $from, $to } = state.selection;
-
-    if (this.isImageSelected()) {
-      view.dispatch(state.tr.delete($from.pos, $to.pos));
-    }
-  }
-
-  // TODO: Fix types (ED-2987)
-  private getActiveImageElement(docView: any): HTMLElement {
+  private getActiveImageElement(domAtPos: EditorView['domAtPos']): HTMLElement {
     const { $from } = this.state.selection;
-    const { node, offset } = docView.domFromPos($from.pos);
+    const { node, offset } = domAtPos($from.pos);
 
     if (node.childNodes.length === 0) {
       return node.parentElement!;
@@ -166,13 +168,13 @@ export class ImageUploadState {
 
   private canInsertImage(): boolean {
     const { state } = this;
-    const { image } = state.schema.nodes;
+    const { mediaSingle } = state.schema.nodes;
     const { $to } = state.selection;
 
-    if (image) {
+    if (mediaSingle) {
       for (let d = $to.depth; d >= 0; d--) {
         let index = $to.index(d);
-        if ($to.node(d).canReplaceWith(index, index, image)) {
+        if ($to.node(d).canReplaceWith(index, index, mediaSingle)) {
           return true;
         }
       }
@@ -184,7 +186,7 @@ export class ImageUploadState {
     const { selection } = this.state;
     return (
       selection instanceof NodeSelection &&
-      selection.node.type === this.state.schema.nodes.image
+      selection.node.type === this.state.schema.nodes.media
     );
   }
 }
@@ -205,16 +207,13 @@ export const createPlugin = (
       },
     },
     key: stateKey,
-    view: (view: EditorView & { docView?: any }) => {
+    view: view => {
       const pluginState: ImageUploadState = stateKey.getState(view.state);
-      pluginState.update(view.state, view.docView, true);
+      pluginState.update(view.state, view.domAtPos.bind(view), true);
 
       return {
-        update: (
-          view: EditorView & { docView?: any },
-          prevState: EditorState,
-        ) => {
-          pluginState.update(view.state, view.docView);
+        update: (view, prevState) => {
+          pluginState.update(view.state, view.domAtPos.bind(view));
         },
         destroy() {
           if (options && options.providerFactory) {

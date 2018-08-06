@@ -2,7 +2,8 @@ import * as React from 'react';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import AkButton from '@atlaskit/button';
 import AkTooltip from '@atlaskit/tooltip';
-import { DeleteColumnButtonWrap, InsertColumnButtonInner } from './styles';
+import { DeleteColumnButtonWrap } from './styles';
+import { InsertButtonDefault as InsertButton } from '../styles';
 
 export interface ButtonProps {
   style?: object;
@@ -36,7 +37,7 @@ class DeleteColumnButton extends React.Component<ButtonProps> {
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}
       >
-        <InsertColumnButtonInner>
+        <InsertButton>
           <AkTooltip content="Remove column" position="top">
             <AkButton
               onClick={onClick}
@@ -45,7 +46,7 @@ class DeleteColumnButton extends React.Component<ButtonProps> {
               spacing="none"
             />
           </AkTooltip>
-        </InsertColumnButtonInner>
+        </InsertButton>
       </DeleteColumnButtonWrap>
     );
   }

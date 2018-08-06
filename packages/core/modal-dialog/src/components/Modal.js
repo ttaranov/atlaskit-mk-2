@@ -1,7 +1,17 @@
 // @flow
 import React, { Component } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import { FocusLock, withRenderTarget } from '@atlaskit/layer-manager';
 import Blanket from '@atlaskit/blanket';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 
 import type {
   AppearanceType,
@@ -35,10 +45,8 @@ const Positioner = ({ scrollBehavior, ...props }) => {
 function getScrollDistance() {
   return (
     window.pageYOffset ||
-    // $FlowFixMe
-    document.documentElement.scrollTop ||
-    // $FlowFixMe
-    document.body.scrollTop ||
+    (document.documentElement && document.documentElement.scrollTop) ||
+    (document.body && document.body.scrollTop) ||
     0
   );
 }
@@ -64,13 +72,9 @@ type Props = {
   */
   appearance?: AppearanceType,
   /**
-    Boolean OR Function indicating which element to focus when the component mounts.
-    By default the modal itself will be focused.
-    FALSE assumes that autofocus is set on an element within the modal.
-    TRUE will automatically find the first "tabbable" element within the modal.
-    Providing a function should return the element you want to focus.
+    Boolean indicating whether to focus on the first tabbable element inside the focus lock.
   */
-  autoFocus: boolean | (() => ElementType) | void,
+  autoFocus: boolean | (() => HTMLElement | null),
   components: { Body: ComponentType },
   /**
     Content of the modal
@@ -161,7 +165,7 @@ type State = {
 class Modal extends Component<Props, State> {
   props: Props; // eslint-disable-line react/sort-comp
   static defaultProps = {
-    autoFocus: undefined,
+    autoFocus: true,
     scrollBehavior: 'inside',
     shouldCloseOnEscapePress: true,
     shouldCloseOnOverlayClick: true,
@@ -192,7 +196,7 @@ class Modal extends Component<Props, State> {
 
   handleOverlayClick = e => {
     if (this.props.shouldCloseOnOverlayClick) {
-      // $FlowFixMe TEMPORARY
+      // $FlowFixMe - Event is incompatible with Synthetic event
       this.props.onClose(e);
     }
   };
@@ -225,7 +229,7 @@ class Modal extends Component<Props, State> {
       footer,
       header,
       height,
-      // $FlowFixMe
+      // $FlowFixMe - in is not in props
       in: transitionIn, // eslint-disable-line react/prop-types
       isChromeless,
       isHeadingMultiline,
@@ -263,20 +267,20 @@ class Modal extends Component<Props, State> {
         onExit={this.handleExit}
         scrollDistance={scrollDistance}
       >
-        <Blanket isTinted onBlanketClicked={this.handleOverlayClick} />
-        <Positioner
-          {...transitionProps}
-          customTransition={customTransition}
-          onClick={this.handleOverlayClick}
-          onEntered={this.handleEntered}
-          onExited={onCloseComplete}
-          scrollBehavior={scrollBehavior}
-          widthName={widthName}
-          widthValue={widthValue}
+        <FocusLock
+          enabled={stackIndex === 0 && !isExiting}
+          autoFocus={autoFocus}
         >
-          <FocusLock
-            enabled={stackIndex === 0 && !isExiting}
-            autoFocus={autoFocus}
+          <Blanket isTinted onBlanketClicked={this.handleOverlayClick} />
+          <Positioner
+            {...transitionProps}
+            customTransition={customTransition}
+            onClick={this.handleOverlayClick}
+            onEntered={this.handleEntered}
+            onExited={onCloseComplete}
+            scrollBehavior={scrollBehavior}
+            widthName={widthName}
+            widthValue={widthValue}
           >
             <Dialog
               heightValue={height}
@@ -303,18 +307,38 @@ class Modal extends Component<Props, State> {
                 {children}
               </Content>
             </Dialog>
-          </FocusLock>
-        </Positioner>
+          </Positioner>
+        </FocusLock>
       </FillScreen>
     );
   }
 }
 
-export default withRenderTarget(
+export const ModalDialogWithoutAnalytics = withRenderTarget(
   {
     target: 'modal',
     withTransitionGroup: true,
   },
-  // $FlowFixMe TEMPORARY
   Modal,
+);
+
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'modalDialog',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onClose: createAndFireEventOnAtlaskit({
+      action: 'closed',
+      actionSubject: 'modalDialog',
+
+      attributes: {
+        componentName: 'modalDialog',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(ModalDialogWithoutAnalytics),
 );

@@ -1,5 +1,5 @@
 import { LocalUploadComponent } from '../localUpload';
-import { ContextFactory } from '@atlaskit/media-core';
+import { Auth, ContextFactory } from '@atlaskit/media-core';
 
 describe('MediaLocalUpload', () => {
   const imagePreviewSrc = 'some-image-src';
@@ -12,23 +12,16 @@ describe('MediaLocalUpload', () => {
     publicId: 'some-public-id',
   };
   const setup = () => {
-    const analyticsContext = {
-      trackEvent: jest.fn(),
-    };
     const context = ContextFactory.create({
-      serviceHost: 'some-api-url',
-      authProvider: jest.fn(),
+      authProvider: () =>
+        Promise.resolve<Auth>({ clientId: '', baseUrl: '', token: '' }),
     });
     const config = {
       uploadParams: {
         collection: '',
       },
     };
-    const localUpload = new LocalUploadComponent(
-      analyticsContext,
-      context,
-      config,
-    );
+    const localUpload = new LocalUploadComponent(context, config);
     const uploadService = localUpload['uploadService'];
     const emitUploadServiceEvent = uploadService['emit'];
     const emitter = localUpload['emitter'];
@@ -85,7 +78,7 @@ describe('MediaLocalUpload', () => {
 
     emitUploadServiceEvent('file-converted', {
       file: imageFile,
-      metadata: { id: 'some-id' },
+      public: { id: 'some-id' },
     });
 
     expect(emitter.emit).toHaveBeenCalledTimes(1);

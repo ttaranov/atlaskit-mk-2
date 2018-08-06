@@ -14,12 +14,17 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import imageUpload from '../../../../src/plugins/image-upload';
 import codeBlockPlugin from '../../../../src/plugins/code-block';
+import mediaPlugin from '../../../../src/plugins/media';
 
 describe('ToolbarImage', () => {
   const editor = (doc: any, analyticsHandler = () => {}) =>
     createEditor<ImageUploadState>({
       doc,
-      editorPlugins: [imageUpload, codeBlockPlugin],
+      editorPlugins: [
+        imageUpload,
+        codeBlockPlugin(),
+        mediaPlugin({ allowMediaSingle: true }),
+      ],
       editorProps: { analyticsHandler },
       pluginKey: stateKey,
     });
@@ -36,14 +41,14 @@ describe('ToolbarImage', () => {
     });
   });
 
-  describe('when plugin is not enabled', () => {
-    it('sets disabled to true', () => {
+  describe('when selection is inside code block', () => {
+    it('sets disabled to false', () => {
       const { editorView, pluginState } = editor(doc(code_block()('text')));
       const toolbarImage = mount(
         <ToolbarImage pluginState={pluginState} editorView={editorView} />,
       );
 
-      expect(toolbarImage.state('disabled')).toBe(true);
+      expect(toolbarImage.state('disabled')).toBe(false);
       toolbarImage.unmount();
     });
   });

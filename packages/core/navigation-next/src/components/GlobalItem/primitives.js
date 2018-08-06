@@ -4,7 +4,7 @@ import React, { PureComponent, type ComponentType } from 'react';
 import { css } from 'emotion';
 import Tooltip from '@atlaskit/tooltip';
 
-import { light, styleReducerNoOp, withTheme } from '../../theme';
+import { styleReducerNoOp, withGlobalTheme } from '../../theme';
 import type {
   GlobalItemPrimitiveProps,
   GlobalItemRenderComponentProps,
@@ -97,7 +97,7 @@ class GlobalNavigationItemPrimitive extends PureComponent<*> {
     );
 
     return tooltip ? (
-      <Tooltip content={tooltip} position="right">
+      <Tooltip content={tooltip} position="right" hideTooltipOnClick>
         {item}
       </Tooltip>
     ) : (
@@ -106,4 +106,4 @@ class GlobalNavigationItemPrimitive extends PureComponent<*> {
   }
 }
 
-export default withTheme({ mode: light })(GlobalNavigationItemPrimitive);
+export default withGlobalTheme(GlobalNavigationItemPrimitive);

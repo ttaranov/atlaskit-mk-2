@@ -1,18 +1,33 @@
 // @flow
 import React from 'react';
 import { md, Example, Props } from '@atlaskit/docs';
+import SectionMessage from '@atlaskit/section-message';
 
 export default md`
   ### Usage
 
+  ${(
+    <SectionMessage appearance="warning">
+      <p>
+        <strong>
+          The previous export of `AvatarGroup` has been moved to its own package
+          `@atlaskit/avatar-group`.
+        </strong>
+      </p>
+      <p>
+        Please update your dependencies to use the @atlaskit/avatar-group
+        package.
+      </p>
+    </SectionMessage>
+  )}
+
   This package exports an number of different Avatar related components:
 
   - Avatar (Default Export)
-  - [AvatarItem](/mk-2/packages/core/avatar/docs/avatar-item)
-  - [AvatarGroup](/mk-2/packages/core/avatar/docs/avatar-group)
-  - [Presence](/mk-2/packages/core/avatar/docs/presence)
-  - [Status](/mk-2/packages/core/avatar/docs/status)
-  - [Skeleton](/mk-2/packages/core/avatar/docs/skeleton)
+  - [AvatarItem](/packages/core/avatar/docs/avatar-item)
+  - [Presence](/packages/core/avatar/docs/presence)
+  - [Status](/packages/core/avatar/docs/status)
+  - [Skeleton](/packages/core/avatar/docs/skeleton)
 
   ## Avatar - Default Export
 

@@ -16,13 +16,8 @@ import {
   tdEmpty,
   tdCursor,
 } from '@atlaskit/editor-test-helpers';
-import codeBlockPlugin from '../../../src/plugins/code-block';
 import { analyticsService } from '../../../src/analytics';
 import { setNodeSelection } from '../../../src/utils';
-import mentionsPlugin from '../../../src/plugins/mentions';
-import listPlugin from '../../../src/plugins/lists';
-import tablesPlugin from '../../../src/plugins/table';
-import rulePlugin from '../../../src/plugins/rule';
 
 describe('codeBlock - keymaps', () => {
   let trackEvent;
@@ -31,14 +26,12 @@ describe('codeBlock - keymaps', () => {
       doc,
       editorProps: {
         analyticsHandler: trackEvent,
+        allowCodeBlocks: true,
+        mentionProvider: new Promise(() => {}),
+        allowLists: true,
+        allowTables: true,
+        allowRule: true,
       },
-      editorPlugins: [
-        codeBlockPlugin,
-        mentionsPlugin,
-        listPlugin,
-        tablesPlugin,
-        rulePlugin,
-      ],
     });
 
   beforeEach(() => {
@@ -488,6 +481,22 @@ describe('codeBlock - keymaps', () => {
           });
         });
       });
+    });
+  });
+
+  describe('when hits backspace', () => {
+    it('should convert empty heading to paragraph', () => {
+      const { editorView } = editor(doc(h1('{<>}')));
+      sendKeyToPm(editorView, 'Backspace');
+      expect(editorView.state.doc).toEqualDocument(doc(p('')));
+      editorView.destroy();
+    });
+
+    it('should not convert heading with text to paragraph', () => {
+      const { editorView } = editor(doc(h1('{<>}Content')));
+      sendKeyToPm(editorView, 'Backspace');
+      expect(editorView.state.doc).toEqualDocument(doc(h1('{<>}Content')));
+      editorView.destroy();
     });
   });
 });

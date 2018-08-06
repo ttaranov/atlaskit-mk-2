@@ -9,21 +9,22 @@ export default function Example() {
     <div>
       <AtlaskitThemeProvider mode="dark">
         <p>
-          Default: <Badge value={1} />
+          Default: <Badge>{1}</Badge>
         </p>
         <p>
-          appearance: important <Badge value={2} appearance="important" />
+          appearance: important <Badge appearance="important">{2}</Badge>
         </p>
         <p>
           appearance: {`{ backgroundColor: 'green' }`}{' '}
-          <Badge value={3} appearance={{ backgroundColor: 'green' }} />
+          <Badge appearance={{ backgroundColor: 'green' }}>{3}</Badge>
         </p>
         <p>
           appearance: {`{ backgroundColor: 'green', textColor: 'light green' }`}{' '}
           <Badge
-            value={3}
             appearance={{ backgroundColor: 'green', textColor: 'light green' }}
-          />
+          >
+            {4}
+          </Badge>
         </p>
       </AtlaskitThemeProvider>
     </div>

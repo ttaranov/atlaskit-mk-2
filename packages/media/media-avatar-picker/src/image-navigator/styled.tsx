@@ -1,6 +1,8 @@
 /* tslint:disable:variable-name */
 
 import styled, { keyframes } from 'styled-components';
+import { akBorderRadius } from '@atlaskit/util-shared-styles';
+import { checkeredBg } from './images';
 
 import {
   HTMLAttributes,
@@ -16,6 +18,16 @@ const spin = keyframes`
   to { transform: rotate(360deg); }
 `;
 
+export const ImageBg: ComponentClass<HTMLAttributes<{}>> = styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 256px;
+  height: 256px;
+  background: url('${checkeredBg}');
+  border-radius: ${akBorderRadius};
+`;
+
 export const Container: ComponentClass<HTMLAttributes<{}>> = styled.div`
   width: ${akGridSizeUnitless * 32}px;
   box-sizing: border-box;
@@ -24,6 +36,7 @@ export const Container: ComponentClass<HTMLAttributes<{}>> = styled.div`
   *::after {
     box-sizing: border-box;
   }
+  position: relative;
 `;
 
 export const SliderContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
@@ -37,6 +50,7 @@ export const SliderContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
     box-sizing: content-box;
     padding: 0;
   }
+  background-color: #fff;
 `;
 
 export const FileInput: ComponentClass<InputHTMLAttributes<{}>> = styled.input`

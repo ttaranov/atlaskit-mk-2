@@ -1,32 +1,67 @@
+import { QuickInsertItem } from './types';
+
 export function distance(str1, str2) {
-  const lowerStr2 = str2.toLowerCase();
+  const lowerStr2 = str2.toLowerCase().replace(/\s/g, '');
   return str1
+    .replace(/\s/g, '')
     .toLowerCase()
     .split('')
-    .reduce((dist, char, index) => {
-      const indexInStr2 = lowerStr2.indexOf(char);
-      if (indexInStr2 === -1) {
-        return Infinity;
-      }
+    .reduce(
+      (acc, char, index) => {
+        if (acc.dist === Infinity) {
+          return acc;
+        }
 
-      if (index === indexInStr2) {
-        return dist;
-      }
+        const indexInStr2 = lowerStr2.indexOf(char, acc.offset);
 
-      return dist + Math.abs(index - indexInStr2);
-    }, 0);
+        if (indexInStr2 === -1) {
+          return { dist: Infinity, offset: 0 };
+        }
+
+        return {
+          offset: indexInStr2 + 1,
+          dist:
+            acc.dist +
+            (index !== indexInStr2 ? Math.abs(index - indexInStr2) : 0),
+        };
+      },
+      { dist: 0, offset: 0 },
+    ).dist;
 }
 
-export function find(query, items, extractSearchString = item => item) {
-  const itemsWithDistances = items.map(item => {
-    return {
-      item,
-      dist: distance(query, extractSearchString(item)),
-    };
-  });
+export function find(query, items) {
+  const getItemSearchStrings = (item: QuickInsertItem) =>
+    item.keywords ? [item.title].concat(item.keywords) : [item.title];
 
-  return itemsWithDistances
+  const itemsWithDistances = items
+    .sort((a, b) => {
+      const aPriority = a.priority || Number.POSITIVE_INFINITY;
+      const bPriority = b.priority || Number.POSITIVE_INFINITY;
+      const priorityDiff = bPriority - aPriority;
+      return priorityDiff
+        ? priorityDiff
+        : a.title > b.title
+          ? -1
+          : a.title < b.title
+            ? 1
+            : 0;
+    })
+    .map(item => {
+      const dist = getItemSearchStrings(item).reduce((acc, keyword) => {
+        const interimDist = distance(query, keyword);
+        return interimDist < acc ? interimDist : acc;
+      }, Infinity);
+
+      return { item, dist };
+    });
+
+  const res = itemsWithDistances
     .filter(item => item.dist !== Infinity)
-    .sort((a, b) => (a.dist > b.dist ? 1 : a.dist < b.dist ? -1 : 0))
-    .map(item => item.item);
+    .sort((a, b) => {
+      const aPriority = a.item.priority || Number.POSITIVE_INFINITY;
+      const bPriority = b.item.priority || Number.POSITIVE_INFINITY;
+      return a.dist > b.dist ? 1 : a.dist < b.dist ? -1 : aPriority - bPriority;
+    });
+
+  return res.map(item => item.item);
 }

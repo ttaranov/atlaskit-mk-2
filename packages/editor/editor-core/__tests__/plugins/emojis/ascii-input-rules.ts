@@ -22,7 +22,7 @@ describe('ascii emojis - input rules', () => {
   const editor = (doc: any) => {
     const editor = createEditor({
       doc,
-      editorPlugins: [emojiPlugin, codeBlockPlugin],
+      editorPlugins: [emojiPlugin, codeBlockPlugin()],
       providerFactory,
     });
 
@@ -43,6 +43,11 @@ describe('ascii emojis - input rules', () => {
     id: '1f605',
     shortName: ':sweat_smile:',
     text: '😅',
+  });
+  const starEmoji = emoji({
+    id: 'atlassian-yellow_star',
+    shortName: ':yellow_star:',
+    text: ':yellow_star:',
   });
 
   const assert = (
@@ -216,6 +221,12 @@ describe('ascii emojis - input rules', () => {
         expect(state.doc.content.child(0)).toEqualDocument(
           p('(', sweatSmileEmoji()),
         );
+      });
+    });
+
+    it('should replace emoticon starting with an opening round bracket', () => {
+      return assert('(*)', p('({<>}'), state => {
+        expect(state.doc.content.child(0)).toEqualDocument(p('(', starEmoji()));
       });
     });
   });

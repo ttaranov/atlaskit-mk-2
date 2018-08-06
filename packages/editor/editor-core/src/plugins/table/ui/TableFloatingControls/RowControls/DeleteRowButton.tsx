@@ -2,7 +2,8 @@ import * as React from 'react';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import AkButton from '@atlaskit/button';
 import AkTooltip from '@atlaskit/tooltip';
-import { DeleteRowButtonWrap, InsertRowButtonInner } from './styles';
+import { DeleteRowButtonWrap } from './styles';
+import { InsertButtonDefault as InsertButton } from '../styles';
 
 export interface ButtonProps {
   style?: object;
@@ -36,8 +37,8 @@ class DeleteRowButton extends React.Component<ButtonProps> {
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}
       >
-        <InsertRowButtonInner>
-          <AkTooltip content="Remove row">
+        <InsertButton>
+          <AkTooltip position="right" content="Remove row">
             <AkButton
               onClick={onClick}
               iconBefore={<CrossIcon label="Remove row" />}
@@ -45,7 +46,7 @@ class DeleteRowButton extends React.Component<ButtonProps> {
               spacing="none"
             />
           </AkTooltip>
-        </InsertRowButtonInner>
+        </InsertButton>
       </DeleteRowButtonWrap>
     );
   }

@@ -73,7 +73,7 @@ module.exports = async function boltFsLoader() {
 
   // Separate option for exclude is necessary since webpack treats ! as a sign of a loader
   // which blocks us from using it inside import statement
-  const patterns = []
+  let patterns = []
     .concat(opts.include)
     .concat((opts.exclude || []).map(p => `!${p}`));
   const files /*: Array<string> */ = await globby(patterns, {
@@ -84,7 +84,7 @@ module.exports = async function boltFsLoader() {
     file /*: string */,
   ) => {
     const pathSegments = file.split(path.sep);
-    return buildFs(root, pathSegments);
+    return buildFs(root, pathSegments, projectRoot);
   }, dir('root', projectRoot));
 
   addWebpackDependencies(result, this.addContextDependency.bind(this));

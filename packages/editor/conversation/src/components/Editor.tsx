@@ -10,6 +10,10 @@ import {
   EditorProps,
   WithEditorActions,
   CollapsedEditor,
+  ToolbarFeedback,
+  ToolbarHelp,
+  name as packageName,
+  version as packageVersion,
 } from '@atlaskit/editor-core';
 
 import { User } from '../model';
@@ -19,6 +23,8 @@ export interface Props {
   isExpanded?: boolean;
   onCancel?: () => void;
   onSave?: (value: any) => void;
+  onClose?: () => void;
+  onOpen?: () => void;
   isEditing?: boolean;
 
   // Provider
@@ -29,6 +35,7 @@ export interface Props {
   renderEditor?: (Editor: typeof AkEditor, props: EditorProps) => JSX.Element;
   placeholder?: string;
   disableScrollTo?: boolean;
+  allowFeedbackAndHelpButtons?: boolean;
 }
 
 export interface State {
@@ -86,6 +93,30 @@ export default class Editor extends React.Component<Props, State> {
     };
   }
 
+  UNSAFE_componentWillUpdate(nextProps: Props, nextState: State) {
+    if (nextState.isExpanded && !this.state.isExpanded && this.props.onOpen) {
+      this.props.onOpen();
+    } else if (
+      !nextState.isExpanded &&
+      this.state.isExpanded &&
+      this.props.onClose
+    ) {
+      this.props.onClose();
+    }
+  }
+
+  componentDidMount() {
+    if (this.state.isExpanded && this.props.onOpen) {
+      this.props.onOpen();
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.props.onClose) {
+      this.props.onClose();
+    }
+  }
+
   private onFocus = () =>
     this.setState(prevState => ({ isExpanded: !prevState.isExpanded }));
 
@@ -135,6 +166,7 @@ export default class Editor extends React.Component<Props, State> {
       renderEditor,
       defaultValue,
       placeholder,
+      allowFeedbackAndHelpButtons,
     } = this.props;
     let providers = {};
 
@@ -153,6 +185,17 @@ export default class Editor extends React.Component<Props, State> {
       onSave: () => this.onSave(actions),
       onCancel: this.onCancel,
       defaultValue,
+      allowHelpDialog: allowFeedbackAndHelpButtons,
+      primaryToolbarComponents: allowFeedbackAndHelpButtons
+        ? [
+            <ToolbarFeedback
+              key="feedback"
+              packageName={packageName}
+              packageVersion={packageVersion}
+            />,
+            <ToolbarHelp key="help" />,
+          ]
+        : undefined,
       ...providers,
     };
 

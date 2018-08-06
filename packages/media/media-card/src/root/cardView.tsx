@@ -12,7 +12,7 @@ import {
   withAnalyticsEvents,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
-import { WithAnalyticsEventProps } from '../analytics-next';
+import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
 
 import {
   SharedCardProps,
@@ -55,7 +55,6 @@ export interface CardViewOwnProps extends SharedCardProps {
 }
 
 export interface CardViewState {
-  hasBeenShown: boolean;
   elementWidth?: number;
 }
 
@@ -72,33 +71,13 @@ export class CardViewBase extends React.Component<
   CardViewBaseProps,
   CardViewState
 > {
-  private componentHasMountedAtTime: number;
-
-  constructor(props) {
+  constructor(props: CardViewBaseProps) {
     super(props);
-    this.componentHasMountedAtTime = 0;
-    this.state = {
-      hasBeenShown: false,
-    };
+    this.state = {};
   }
 
   componentDidMount() {
-    this.componentHasMountedAtTime = Date.now();
     this.saveElementWidth();
-    this.fireShowedAnalyticsEvent(this.props);
-  }
-
-  private fireShowedAnalyticsEvent({ status }: CardViewBaseProps) {
-    if (
-      !this.state.hasBeenShown &&
-      (status === 'error' || status === 'complete')
-    ) {
-      const loadTime = Date.now() - this.componentHasMountedAtTime;
-      this.props
-        .createAnalyticsEvent({ action: 'shown', loadTime })
-        .fire('media');
-      this.setState({ hasBeenShown: true });
-    }
   }
 
   componentWillReceiveProps(nextProps: CardViewBaseProps) {
@@ -112,8 +91,6 @@ export class CardViewBase extends React.Component<
     if (nextSelectable && cs !== ns) {
       this.fireOnSelectChangeToConsumer(ns);
     }
-
-    this.fireShowedAnalyticsEvent(nextProps);
   }
 
   private fireOnSelectChangeToConsumer = (newSelectedState: boolean): void => {

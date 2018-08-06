@@ -10,6 +10,7 @@ const SpinnerExample = () => (
     <Spinner size="large" />
     <Spinner size="medium" />
     <Spinner size="small" />
+    <Spinner size="xsmall" />
     <span
       style={{
         padding: '7px',

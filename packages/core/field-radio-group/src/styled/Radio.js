@@ -24,7 +24,7 @@ type LabelProps = {
 export const Label = styled.label`
   display: 'block';
   color: ${(props: LabelProps): string =>
-    // $FlowFixMe TEMPORARY
+    // $FlowFixMe - theme is not found in props
     props.isDisabled ? disabledColor(props) : colors.text(props)};
   ${({ isDisabled }: LabelProps) =>
     isDisabled
@@ -35,41 +35,90 @@ export const Label = styled.label`
 `;
 
 type IconWrapperProps = {
+  isActive: boolean,
   isSelected: boolean,
   isDisabled: boolean,
   isFocused: boolean,
+  isInvalid: boolean,
 };
 
-const borderColor = themed({ light: colors.N50A, dark: colors.DN80 });
+const borderColor = themed({ light: colors.N40, dark: colors.DN80 });
 const focusBorder = css`
   stroke: ${themed({ light: colors.B100, dark: colors.B75 })};
   stroke-width: 2px;
 `;
 const invalidBorder = css`
-  stroke: ${themed({ light: colors.R100, dark: colors.R100 })};
+  stroke: ${themed({ light: colors.R300, dark: colors.R300 })};
+  stroke-width: 2px;
+`;
+const activeBorder = css`
+  stroke: currentColor;
+  stroke-width: 2px;
+`;
+const selectedBorder = css`
+  stroke: currentColor;
   stroke-width: 2px;
 `;
 const border = css`
   stroke: ${({ isHovered, ...rest }) =>
     isHovered
-      ? themed({ light: colors.N50A, dark: colors.DN200 })(rest)
+      ? themed({ light: colors.N40, dark: colors.DN200 })(rest)
       : borderColor(rest)};
-  stroke-width: 1px;
+  stroke-width: 2px;
 `;
 
 const getBorderColor = (props: IconWrapperProps) => {
   if (props.isDisabled) return '';
-  if (props.isInvalid && !props.isSelected) return invalidBorder;
-  if ((props.isSelected && !props.isFocused) || props.isActive) return '';
   if (props.isFocused) return focusBorder;
+  if (props.isActive) return activeBorder;
+  if (props.isInvalid) return invalidBorder;
+  if (props.isSelected) return selectedBorder;
   return border;
+};
+
+const getDotColor = props => {
+  const { isSelected, isDisabled, isActive, ...rest } = props;
+
+  let color = themed({ light: colors.N10, dark: colors.DN10 });
+
+  if (isDisabled && isSelected) {
+    color = themed({ light: colors.N70, dark: colors.DN90 });
+  } else if (isActive && isSelected && !isDisabled) {
+    color = themed({ light: colors.B400, dark: colors.DN10 });
+  } else if (!isSelected) {
+    color = themed({ light: 'transparent', dark: 'transparent' });
+  }
+  return color(rest);
+};
+
+const getCircleColor = props => {
+  const { isSelected, isDisabled, isActive, isHovered, ...rest } = props;
+
+  // set the default
+  let color = themed({ light: colors.N10, dark: colors.DN10 });
+
+  if (isDisabled) {
+    color = themed({ light: colors.N20, dark: colors.DN10 });
+  } else if (isActive) {
+    color = themed({ light: colors.B50, dark: colors.B200 });
+  } else if (isHovered && isSelected) {
+    color = themed({ light: colors.B300, dark: colors.B75 });
+  } else if (isHovered) {
+    color = themed({ light: colors.N30, dark: colors.DN30 });
+  } else if (isSelected) {
+    color = themed({ light: colors.B400, dark: colors.B400 });
+  }
+  return color(rest);
 };
 
 export const IconWrapper = styled.span`
   line-height: 0;
   flex-shrink: 0;
+  color: ${getCircleColor};
+  fill: ${getDotColor};
+  transition: all 0.2s ease-in-out;
 
-  /* This is adding a property to the inner svg, to add a border to the checkbox */
+  /* This is adding a property to the inner svg, to add a border to the radio */
   & circle:first-of-type {
     transition: stroke 0.2s ease-in-out;
     ${getBorderColor};

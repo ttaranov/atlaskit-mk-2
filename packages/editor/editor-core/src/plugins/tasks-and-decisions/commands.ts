@@ -1,12 +1,13 @@
 import { uuid } from '@atlaskit/editor-common';
-import { Schema } from 'prosemirror-model';
-import { EditorState, Selection, Transaction } from 'prosemirror-state';
+import { ResolvedPos, Schema } from 'prosemirror-model';
+import { EditorState, Transaction, TextSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import {
   safeInsert,
   hasParentNodeOfType,
   replaceParentNodeOfType,
 } from 'prosemirror-utils';
+import { findParentNodeOfType } from 'prosemirror-utils';
 import { GapCursorSelection } from '../gap-cursor';
 
 const getListTypes = (
@@ -29,39 +30,34 @@ const getListTypes = (
 
 export type TaskDecisionListType = 'taskList' | 'decisionList';
 
-const isSelectionInAList = (
-  listType: TaskDecisionListType,
-  selection: Selection,
-) => {
-  const fromNode = selection.$from.node(selection.$from.depth - 2);
-  const endNode = selection.$to.node(selection.$to.depth - 2);
-
-  return (
-    fromNode &&
-    fromNode.type.name === listType &&
-    endNode &&
-    endNode.type.name !== listType
-  );
-};
-
 export const changeToTaskDecision = (
   view: EditorView,
   listType: TaskDecisionListType,
 ): boolean => {
   const { state } = view;
-  const { selection, schema } = state;
+  const { schema } = state;
   const { list, item } = getListTypes(listType, schema);
   const { tr } = state;
+  const { $to } = state.selection;
 
-  if (!isSelectionInAList(listType, selection)) {
+  if (!findParentNodeOfType(list)(state.selection)) {
     // Not a list - convert to one.
     const created = createListAtSelection(tr, list, item, schema, state);
     view.dispatch(tr);
     return created;
+  } else if ($to.node().textContent.length > 0) {
+    const pos = $to.end($to.depth);
+    tr.split(pos, 1, [{ type: item, attrs: { localId: uuid.generate() } }]);
+    tr.setSelection(new TextSelection(tr.doc.resolve(pos + $to.depth)));
+    view.dispatch(tr);
+    return true;
   }
 
   return false;
 };
+
+const changeInDepth = (before: ResolvedPos, after: ResolvedPos) =>
+  after.depth - before.depth;
 
 export const createListAtSelection = (
   tr: Transaction,
@@ -113,6 +109,13 @@ export const createListAtSelection = (
         ),
       ]),
     )(tr);
+
+    // Adjust depth for new selection, if it has changed (e.g. paragraph to list (ol > li))
+    const depthAdjustment = changeInDepth($to, newTr.selection.$to);
+
+    tr = tr.setSelection(
+      new TextSelection(tr.doc.resolve($to.pos + depthAdjustment)),
+    );
 
     // replacing successful
     if (newTr !== tr) {

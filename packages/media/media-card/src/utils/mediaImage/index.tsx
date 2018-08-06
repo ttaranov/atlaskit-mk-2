@@ -3,7 +3,7 @@
  */
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Component } from 'react';
+import { Component, CSSProperties } from 'react';
 
 import { ImageViewWrapper, transparentFallbackBackground } from './styled';
 
@@ -32,6 +32,7 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
     transparentFallback: false,
     width: '100%',
     height: '100%',
+    className: '',
   };
 
   constructor(props) {
@@ -98,7 +99,7 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
     const transparentBg = transparentFallback
       ? `, ${transparentFallbackBackground}`
       : '';
-    const style = {
+    const style: CSSProperties = {
       backgroundSize,
       backgroundImage: `url(${dataURI})${transparentBg}`,
     };
@@ -132,6 +133,8 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
 
     return this.implicitNoCrop
       ? `${width} ${height}, auto`
-      : this.isSmallerThanWrapper ? `${imgWidth}px ${imgHeight}px, auto` : null;
+      : this.isSmallerThanWrapper
+        ? `${imgWidth}px ${imgHeight}px, auto`
+        : undefined;
   }
 }

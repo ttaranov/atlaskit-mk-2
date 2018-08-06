@@ -18,9 +18,7 @@ export default () => (
       <CommentTime>30 August, 2016</CommentTime>
     </div>
     <div>
-      <CommentEdited onClick={e => console.log(e.target.textContent)}>
-        Comment Edited
-      </CommentEdited>
+      <CommentEdited>Edited</CommentEdited>
     </div>
     <div>
       <CommentAction onClick={e => console.log(e.target.textContent)}>

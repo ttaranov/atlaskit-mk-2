@@ -1,14 +1,19 @@
 // @flow
 
 import React, { Component } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
 import CheckboxIndeterminateIcon from '@atlaskit/icon/glyph/checkbox-indeterminate';
-import { colors, themed } from '@atlaskit/theme';
-import { withTheme, ThemeProvider } from 'styled-components';
+import { ThemeProvider } from 'styled-components';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
 import { HiddenCheckbox, IconWrapper, Label, Wrapper } from './styled/Checkbox';
-
-const backgroundColor = themed({ light: colors.N40A, dark: colors.DN10 });
-const transparent = themed({ light: 'transparent', dark: 'transparent' });
 
 type Props = {|
   /** Sets whether the checkbox is checked or unchecked. */
@@ -31,7 +36,7 @@ type Props = {|
   be called with an object containing the react synthetic event as well as the
   state the checkbox will naturally be set to. The stateless version does not
   automatically update whether the checkbox is checked. */
-  onChange: (event: Event & { currentTarget: HTMLInputElement }) => mixed,
+  onChange: (event: SyntheticEvent<HTMLInputElement>) => mixed,
   /** The value to be used in the checkbox input. This is the value that will
    be returned on form submission. */
   value: number | string,
@@ -43,6 +48,8 @@ type State = {|
   isHovered: boolean,
   mouseIsDown: boolean,
 |};
+
+const emptyTheme = {};
 
 class CheckboxStateless extends Component<Props, State> {
   props: Props; // eslint-disable-line react/sort-comp
@@ -106,60 +113,24 @@ class CheckboxStateless extends Component<Props, State> {
     }
   };
 
-  // The secondary color represents the tick
-  getSecondaryColor = (): string => {
-    const { isChecked, isDisabled, ...rest } = this.props;
-    const { isActive } = this.state;
-
-    let color = themed({ light: colors.N0, dark: colors.DN10 });
-
-    if (isDisabled && isChecked) {
-      color = themed({ light: colors.N70, dark: colors.DN90 });
-    } else if (isActive && isChecked && !isDisabled) {
-      color = themed({ light: colors.B400, dark: colors.DN10 });
-    } else if (!isChecked) {
-      color = transparent;
-    }
-    // $FlowFixMe TEMPORARY
-    return color(rest);
-  };
-  // The secondary color represents the box color
-  getPrimaryColor = (): string => {
-    const { isChecked, isDisabled, ...rest } = this.props;
-    const { isHovered, isActive } = this.state;
-    let color = backgroundColor;
-    if (isDisabled) {
-      color = themed({ light: colors.N20A, dark: colors.DN10 });
-    } else if (isActive) {
-      color = themed({ light: colors.B75, dark: colors.B200 });
-    } else if (isHovered && isChecked) {
-      color = themed({ light: colors.B300, dark: colors.B75 });
-    } else if (isHovered) {
-      color = themed({ light: colors.N50A, dark: colors.DN30 });
-    } else if (isChecked) {
-      color = colors.blue;
-    }
-    // $FlowFixMe TEMPORARY
-    return color(rest);
-  };
-
   renderCheckboxIcon() {
     const { isIndeterminate } = this.props;
 
-    const primaryColor = this.getPrimaryColor();
-    const secondaryColor = this.getSecondaryColor();
-
     return isIndeterminate ? (
       <CheckboxIndeterminateIcon
-        primaryColor={primaryColor}
-        secondaryColor={secondaryColor}
-        label="checkboxIndeterminateIcon"
+        primaryColor="inherit"
+        secondaryColor="inherit"
+        isHovered={this.state.isHovered}
+        isActive={this.state.isActive}
+        label=""
       />
     ) : (
       <CheckboxIcon
-        primaryColor={primaryColor}
-        secondaryColor={secondaryColor}
-        label="checkboxIcon"
+        primaryColor="inherit"
+        secondaryColor="inherit"
+        isHovered={this.state.isHovered}
+        isActive={this.state.isActive}
+        label=""
       />
     );
   }
@@ -178,55 +149,65 @@ class CheckboxStateless extends Component<Props, State> {
     const { isFocused, isActive, isHovered } = this.state;
 
     return (
-      <Label
-        isDisabled={isDisabled}
-        isFullWidth={isFullWidth}
-        onMouseDown={this.onMouseDown}
-        onMouseEnter={this.onMouseEnter}
-        onMouseLeave={this.onMouseLeave}
-        onMouseUp={this.onMouseUp}
-      >
-        <HiddenCheckbox
-          disabled={isDisabled}
-          checked={isChecked}
-          onChange={onChange}
-          onBlur={this.onBlur}
-          onFocus={this.onFocus}
-          onKeyUp={this.onKeyUp}
-          onKeyDown={this.onKeyDown}
-          type="checkbox"
-          value={value}
-          name={name}
-          innerRef={r => (this.checkbox = r)} // eslint-disable-line
-        />
-        <Wrapper>
-          <IconWrapper
-            isChecked={isChecked}
-            isDisabled={isDisabled}
-            isFocused={isFocused}
-            isActive={isActive}
-            isHovered={isHovered}
-            isInvalid={isInvalid}
-          >
-            {this.renderCheckboxIcon()}
-          </IconWrapper>
-          <span>{label}</span>
-        </Wrapper>
-      </Label>
+      <ThemeProvider theme={emptyTheme}>
+        <Label
+          isDisabled={isDisabled}
+          isFullWidth={isFullWidth}
+          onMouseDown={this.onMouseDown}
+          onMouseEnter={this.onMouseEnter}
+          onMouseLeave={this.onMouseLeave}
+          onMouseUp={this.onMouseUp}
+        >
+          <HiddenCheckbox
+            disabled={isDisabled}
+            checked={isChecked}
+            onChange={onChange}
+            onBlur={this.onBlur}
+            onFocus={this.onFocus}
+            onKeyUp={this.onKeyUp}
+            onKeyDown={this.onKeyDown}
+            type="checkbox"
+            value={value}
+            name={name}
+            innerRef={r => (this.checkbox = r)} // eslint-disable-line
+          />
+          <Wrapper>
+            <IconWrapper
+              isChecked={isChecked}
+              isDisabled={isDisabled}
+              isFocused={isFocused}
+              isActive={isActive}
+              isHovered={isHovered}
+              isInvalid={isInvalid}
+            >
+              {this.renderCheckboxIcon()}
+            </IconWrapper>
+            <span>{label}</span>
+          </Wrapper>
+        </Label>
+      </ThemeProvider>
     );
   }
 }
-// TODO: Review if the error is an issue with Flow of 'Too many type arguments. Expected at most 2...'
-// possible reported related issue https://github.com/apollographql/react-apollo/issues/1220
-// $FlowFixMe
-const CheckboxWithTheme = withTheme(CheckboxStateless);
 
-const emptyTheme = {};
+export { CheckboxStateless as CheckboxStatelessWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
-export default function(props: any) {
-  return (
-    <ThemeProvider theme={emptyTheme}>
-      <CheckboxWithTheme {...props} />
-    </ThemeProvider>
-  );
-}
+export default withAnalyticsContext({
+  componentName: 'checkbox',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onChange: createAndFireEventOnAtlaskit({
+      action: 'changed',
+      actionSubject: 'checkbox',
+
+      attributes: {
+        componentName: 'checkbox',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(CheckboxStateless),
+);

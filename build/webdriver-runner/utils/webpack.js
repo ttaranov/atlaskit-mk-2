@@ -1,9 +1,8 @@
 //@flow
 'use strict';
-
-/* 
+/*
 * util module to build webpack-dev-server for running integration test.
-* const CHANGED_PACKAGES accepts environment variable which is used to 
+* const CHANGED_PACKAGES accepts environment variable which is used to
 * identify changed packages and return changed packages containing webdriverTests to be built.
 */
 
@@ -47,7 +46,7 @@ let config;
 const pattern = process.argv[2] || '';
 
 function packageIsInPatternOrChanged(workspace) {
-  if (!workspace.files.webdriver.length) return false;
+  if (!workspace.files.matchedTests.length) return false;
   if (pattern === '' && !CHANGED_PACKAGES) return true;
 
   /**
@@ -67,22 +66,28 @@ function packageIsInPatternOrChanged(workspace) {
     : pattern.includes(workspace.dir);
 }
 
-async function getPackagesWithWebdriverTests() /*: Promise<Array<string>> */ {
+async function getPackagesWithTests() /*: Promise<Array<string>> */ {
+  let testPattern = process.env.VISUAL_REGRESSION
+    ? 'visual-regression'
+    : 'integration';
   const project /*: any */ = await boltQuery({
     cwd: path.join(__dirname, '..'),
-    workspaceFiles: { webdriver: '__tests__/integration/*.+(js|ts|tsx)' },
+    workspaceFiles: {
+      matchedTests: `{src/**/__tests__,__tests__}/${testPattern}/*.+(js|ts|tsx)`,
+    },
   });
   return project.workspaces
     .filter(packageIsInPatternOrChanged)
     .map(workspace => workspace.pkg.name.split('/')[1]);
 }
+
 //
 // Creating webpack instance
 //
 async function startDevServer() {
-  const workspacesGlob = await getPackagesWithWebdriverTests();
-  const env = 'production';
-  const includePatterns = workspacesGlob ? false : true; // if glob exists we just want to show what matches it
+  const workspacesGlob = await getPackagesWithTests();
+  const mode = 'production';
+  const websiteEnv = 'production';
   const projectRoot = (await bolt.getProject({ cwd: process.cwd() })).dir;
   const workspaces = await bolt.getWorkspaces();
   const filteredWorkspaces = workspacesGlob
@@ -101,13 +106,10 @@ async function startDevServer() {
   }
 
   config = createConfig({
-    entry: './src/index.js',
-    host: HOST,
-    port: PORT,
     globs,
-    includePatterns,
-    env,
-    cwd: path.join(__dirname, '../../..', 'website'),
+    websiteEnv,
+    mode,
+    websiteDir: path.join(__dirname, '../../..', 'website'),
   });
 
   const compiler = webpack(config);
@@ -130,6 +132,10 @@ async function startDevServer() {
     //change stats to verbose to get detailed information
     stats: 'minimal',
     clientLogLevel: 'none',
+
+    // disable hot reload for tests - they don't need it for running
+    hot: false,
+    inline: false,
   });
 
   return new Promise((resolve, reject) => {

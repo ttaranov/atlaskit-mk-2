@@ -4,16 +4,16 @@ import { Component } from 'react';
 import {
   mediaPickerAuthProvider,
   defaultMediaPickerCollectionName,
-  defaultServiceHost,
 } from '@atlaskit/media-test-helpers';
 import Button from '@atlaskit/button';
 import { MediaPicker, Browser, BrowserConfig } from '../src';
 import {
-  DropzonePreviewsWrapper,
+  PreviewsWrapper,
   PopupHeader,
   PopupContainer,
+  PreviewsTitle,
 } from '../example-helpers/styled';
-import { renderPreviewImage } from '../example-helpers';
+import { UploadPreview } from '../example-helpers/upload-preview';
 import { ContextFactory } from '@atlaskit/media-core';
 
 export interface BrowserWrapperState {
@@ -36,8 +36,7 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
 
   createBrowse = () => {
     const context = ContextFactory.create({
-      serviceHost: defaultServiceHost,
-      authProvider: mediaPickerAuthProvider(this),
+      authProvider: mediaPickerAuthProvider(),
     });
 
     const browseConfig: BrowserConfig = {
@@ -60,11 +59,19 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
     fileBrowser.browse();
   };
 
-  renderPreviews() {
+  private renderPreviews = () => {
     const { previewsData } = this.state;
 
-    return previewsData.map(renderPreviewImage);
-  }
+    return previewsData.map((previewsData, index) => (
+      <UploadPreview
+        key={`${index}`}
+        fileId={previewsData.fileId}
+        isProcessed={previewsData.isProcessed}
+        preview={previewsData.preview}
+        uploadingProgress={previewsData.uploadingProgress}
+      />
+    ));
+  };
 
   render() {
     const buttons = this.browserComponents.map((browser, key) => {
@@ -78,10 +85,10 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
     return (
       <PopupContainer>
         <PopupHeader>{buttons}</PopupHeader>
-        <DropzonePreviewsWrapper>
-          <h1>Upload previews</h1>
+        <PreviewsWrapper>
+          <PreviewsTitle>Upload previews</PreviewsTitle>
           {this.renderPreviews()}
-        </DropzonePreviewsWrapper>
+        </PreviewsWrapper>
       </PopupContainer>
     );
   }

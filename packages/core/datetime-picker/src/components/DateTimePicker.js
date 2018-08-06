@@ -3,13 +3,28 @@
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import { mergeStyles } from '@atlaskit/select';
 import { borderRadius, colors } from '@atlaskit/theme';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import pick from 'lodash.pick';
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
+
 import DatePicker from './DatePicker';
 import TimePicker from './TimePicker';
-import { parseDateIntoStateValues } from '../internal';
+import {
+  parseDateIntoStateValues,
+  defaultTimes,
+  defaultDateFormat,
+  defaultTimeFormat,
+} from '../internal';
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
@@ -43,10 +58,18 @@ type Props = {
   hideIcon?: boolean,
   /** Format the date with a string that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format). */
   dateFormat?: string,
+  datePickerProps: {},
+  timePickerProps: {},
   /** [Select props](/packages/core/select) to pass onto the DatePicker component. This can be used to set options such as placeholder text. */
   datePickerSelectProps: {},
   /** [Select props](/packages/core/select) to pass onto the TimePicker component. This can be used to set options such as placeholder text. */
   timePickerSelectProps: {},
+  /** The times to show in the times dropdown. */
+  times?: Array<string>,
+  /** Time format that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format)*/
+  timeFormat?: string,
+  /* This prop affects the height of the select control. Compact is gridSize() * 4, default is gridSize * 5  */
+  spacing?: 'compact' | 'default',
 };
 
 type State = {
@@ -121,7 +144,7 @@ function formatDateTimeZoneIntoIso(
   return `${date}T${time}${zone}`;
 }
 
-export default class DateTimePicker extends Component<Props, State> {
+class DateTimePicker extends Component<Props, State> {
   static defaultProps = {
     appearance: 'default',
     autoFocus: false,
@@ -136,8 +159,14 @@ export default class DateTimePicker extends Component<Props, State> {
     timeIsEditable: false,
     isInvalid: false,
     hideIcon: false,
+    datePickerProps: {},
+    timePickerProps: {},
     datePickerSelectProps: {},
     timePickerSelectProps: {},
+    times: defaultTimes,
+    timeFormat: defaultTimeFormat,
+    dateFormat: defaultDateFormat,
+    spacing: 'default',
   };
 
   state = {
@@ -196,7 +225,8 @@ export default class DateTimePicker extends Component<Props, State> {
     zoneValue: string,
   }) {
     this.setState({ dateValue, timeValue, zoneValue });
-    if (dateValue && timeValue) {
+
+    if (dateValue || timeValue) {
       const value = formatDateTimeZoneIntoIso(dateValue, timeValue, zoneValue);
       this.setState({ value });
       this.props.onChange(value);
@@ -212,8 +242,12 @@ export default class DateTimePicker extends Component<Props, State> {
       name,
       timeIsEditable,
       dateFormat,
+      datePickerProps,
       datePickerSelectProps,
+      timePickerProps,
       timePickerSelectProps,
+      times,
+      timeFormat,
     } = this.props;
     const { isFocused, value, dateValue, timeValue } = this.getState();
     const icon =
@@ -226,6 +260,7 @@ export default class DateTimePicker extends Component<Props, State> {
       onFocus: this.onFocus,
       isInvalid: this.props.isInvalid,
       appearance: this.props.appearance,
+      spacing: this.props.spacing,
     };
 
     const { styles: datePickerStyles = {} } = (datePickerSelectProps: any);
@@ -260,6 +295,7 @@ export default class DateTimePicker extends Component<Props, State> {
             onChange={this.onDateChange}
             selectProps={mergedDatePickerSelectProps}
             value={dateValue}
+            {...datePickerProps}
           />
         </FlexItem>
         <FlexItem>
@@ -268,11 +304,36 @@ export default class DateTimePicker extends Component<Props, State> {
             icon={icon}
             onChange={this.onTimeChange}
             selectProps={mergedTimePickerSelectProps}
-            defaultValue={timeValue}
+            value={timeValue}
             timeIsEditable={timeIsEditable}
+            times={times}
+            timeFormat={timeFormat}
+            {...timePickerProps}
           />
         </FlexItem>
       </Flex>
     );
   }
 }
+
+export { DateTimePicker as DateTimePickerWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'dateTimePicker',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onChange: createAndFireEventOnAtlaskit({
+      action: 'changed',
+      actionSubject: 'dateTimePicker',
+
+      attributes: {
+        componentName: 'dateTimePicker',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(DateTimePicker),
+);

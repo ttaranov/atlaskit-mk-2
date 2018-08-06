@@ -3,10 +3,6 @@ import React from 'react';
 import TableTree, { Headers, Header, Rows, Row, Cell } from '../src';
 import staticData from './data-cleancode-toc.json';
 
-function getItemsData(parent = staticData) {
-  return parent.children;
-}
-
 export default () => (
   <TableTree>
     <Headers>
@@ -15,9 +11,13 @@ export default () => (
       <Header width={100}>Page</Header>
     </Headers>
     <Rows
-      items={getItemsData}
+      items={staticData.children}
       render={({ title, numbering, page, children }) => (
-        <Row itemId={numbering} hasChildren={children.length > 0}>
+        <Row
+          itemId={numbering}
+          items={children}
+          hasChildren={children.length > 0}
+        >
           <Cell singleLine>{title}</Cell>
           <Cell singleLine>{numbering}</Cell>
           <Cell singleLine>{page}</Cell>

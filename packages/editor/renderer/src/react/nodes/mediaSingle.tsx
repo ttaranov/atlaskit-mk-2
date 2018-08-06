@@ -1,9 +1,11 @@
+import * as React from 'react';
+import { Component, ReactElement } from 'react';
+import styled from 'styled-components';
 import {
   MediaSingle as UIMediaSingle,
   MediaSingleLayout,
 } from '@atlaskit/editor-common';
-import * as React from 'react';
-import { Component, ReactElement } from 'react';
+import { BreakoutConsumer } from '../';
 
 export interface Props {
   children: ReactElement<any>;
@@ -18,13 +20,23 @@ export interface State {
 const DEFAULT_WIDTH = 250;
 const DEFAULT_HEIGHT = 200;
 
+const ExtendedUIMediaSingle = styled(UIMediaSingle)`
+  ${({ layout }) =>
+    layout === 'full-width' || layout === 'wide'
+      ? `
+  margin-left: 50%;
+  transform: translateX(-50%);
+  `
+      : ``} transition: all 0.1s linear;
+`;
+
 export default class MediaSingle extends Component<
   { layout: MediaSingleLayout } & React.Props<any>,
   State
 > {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {}; // Need to initialize with empty state.
   }
 
   private onExternalImageLoaded = ({ width, height }) => {
@@ -36,6 +48,7 @@ export default class MediaSingle extends Component<
 
   render() {
     const { props } = this;
+
     const child = React.Children.only(
       React.Children.toArray(props.children)[0],
     );
@@ -64,9 +77,18 @@ export default class MediaSingle extends Component<
     }
 
     return (
-      <UIMediaSingle layout={props.layout} width={width} height={height}>
-        {media}
-      </UIMediaSingle>
+      <BreakoutConsumer>
+        {containerWidth => (
+          <ExtendedUIMediaSingle
+            layout={props.layout}
+            width={width}
+            height={height}
+            containerWidth={containerWidth}
+          >
+            {media}
+          </ExtendedUIMediaSingle>
+        )}
+      </BreakoutConsumer>
     );
   }
 }

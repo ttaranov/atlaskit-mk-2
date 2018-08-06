@@ -1,4 +1,3 @@
-export { Client, ClientOptions } from './Client';
 export { Provider, ProviderProps } from './Provider';
+export { Client, ClientOptions, ObjectState, ObjectStatus } from './Client';
 export { Card, CardProps } from './Card';
-export { CardView, CardViewProps } from './CardView';

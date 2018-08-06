@@ -51,6 +51,7 @@ class AnimationDemo extends Component<{}, State> {
   };
 
   toggleAnimation = (e: Event) => {
+    // $FlowFixMe - checked is missing in e.target
     if (e.target.checked) {
       this.startAnimating();
     } else {

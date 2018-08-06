@@ -1,11 +1,9 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
 import { DecisionItem } from '@atlaskit/task-decision';
-import { ContentNodeView } from '../../../nodeviews';
-
-type getPosHandler = () => number;
+import { ReactNodeView } from '../../../nodeviews';
+import { PortalProviderAPI } from '../../../ui/PortalProvider';
 
 export interface Props {
   children?: React.ReactNode;
@@ -13,55 +11,47 @@ export interface Props {
   node: PMNode;
 }
 
-class Decision extends ContentNodeView implements NodeView {
-  private domRef: HTMLElement | undefined;
-  private isContentEmpty: boolean = false;
-  private node: PMNode;
-
-  constructor(node: PMNode, view: EditorView, getPos: getPosHandler) {
-    super(node, view);
-    this.isContentEmpty = node.content.childCount === 0;
-    this.node = node;
-    this.renderReactComponent();
+class Decision extends ReactNodeView {
+  private isContentEmpty() {
+    return this.node.content.childCount === 0;
   }
 
-  private renderReactComponent() {
-    this.domRef = document.createElement('li');
-    this.domRef.style['list-style-type'] = 'none';
+  createDomRef() {
+    const domRef = document.createElement('li');
+    domRef.style['list-style-type'] = 'none';
+    return domRef;
+  }
 
-    // tslint:disable-next-line:variable-name
-    ReactDOM.render(
+  getContentDOM() {
+    return { dom: document.createElement('div') };
+  }
+
+  render(props, forwardRef) {
+    return (
       <DecisionItem
-        contentRef={this.handleRef}
-        showPlaceholder={this.isContentEmpty}
-      />,
-      this.domRef,
+        contentRef={forwardRef}
+        showPlaceholder={this.isContentEmpty()}
+      />
     );
   }
 
-  get dom() {
-    return this.domRef;
-  }
-
-  update(node: PMNode) {
+  update(node: PMNode, decorations) {
     /**
      * Returning false here when the previous content was empty – fixes an error where the editor fails to set selection
      * inside the contentDOM after a transaction. See ED-2374.
      */
-    return !this.isContentEmpty || node.type !== this.node.type;
-  }
-
-  destroy() {
-    ReactDOM.unmountComponentAtNode(this.domRef!);
-    this.domRef = undefined;
-    super.destroy();
+    return super.update(
+      node,
+      decorations,
+      (currentNode, newNode) => !this.isContentEmpty(),
+    );
   }
 }
 
-export const decisionItemNodeView = (
+export const decisionItemNodeView = (portalProviderAPI: PortalProviderAPI) => (
   node: any,
   view: any,
   getPos: () => number,
 ): NodeView => {
-  return new Decision(node, view, getPos);
+  return new Decision(node, view, getPos, portalProviderAPI).init();
 };

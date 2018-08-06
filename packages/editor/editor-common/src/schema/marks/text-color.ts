@@ -16,7 +16,7 @@ import {
 import { COLOR } from '../groups';
 import { rgbToHex } from '../../utils';
 
-export interface Attributes {
+export interface TextColorAttributes {
   /**
    * @pattern "^#[0-9a-f]{6}$"
    */
@@ -26,13 +26,13 @@ export interface Attributes {
 /**
  * @name textColor_mark
  */
-export interface Definition {
+export interface TextColorDefinition {
   type: 'textColor';
-  attrs: Attributes;
+  attrs: TextColorAttributes;
 }
 
 export interface TextColorMark extends Mark {
-  attrs: Attributes;
+  attrs: TextColorAttributes;
 }
 
 /** New borders for colors in the color picker */

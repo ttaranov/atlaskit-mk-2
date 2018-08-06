@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/toggle",
-  "version": "3.0.1",
+  "version": "5.0.5",
   "description": "A component to view and switch between enabled or disabled states",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -12,22 +12,28 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Alex R"
+    "Raja B",
+    "Ben C",
+    "Ajay M"
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/icon": "^11.1.1",
-    "@atlaskit/theme": "^3.1.1",
-    "styled-components": "1.4.6 - 3",
+    "@atlaskit/analytics-next": "^3.0.4",
+    "@atlaskit/icon": "^13.2.4",
+    "@atlaskit/theme": "^5.1.3",
     "uuid": "^3.1.0"
   },
   "peerDependencies": {
-    "react": "^16.3.0"
+    "react": "^16.4.0",
+    "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/button": "^7.2.1",
-    "@atlaskit/docs": "^3.0.3",
-    "enzyme": "^3.3.0"
+    "@atlaskit/build-utils": "^1.11.0",
+    "@atlaskit/button": "^9.0.5",
+    "@atlaskit/docs": "^5.0.2",
+    "@atlaskit/visual-regression": "^0.0.1",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "react-dom": "^16.4.2"
   },
   "keywords": [
     "atlaskit",

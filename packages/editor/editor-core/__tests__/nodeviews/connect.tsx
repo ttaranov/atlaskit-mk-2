@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { mount } from 'enzyme';
 
 import { EventDispatcher } from '../../src/event-dispatcher';
-import connect from '../../src/nodeviews/connect';
+import connect from '../../src/nodeviews/legacy-nodeview-factory/connect';
 
 describe('connect', () => {
   class DummyComponent extends Component {

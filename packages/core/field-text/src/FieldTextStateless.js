@@ -1,14 +1,26 @@
 // @flow
 
 import React, { Component } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import Base, { Label } from '@atlaskit/field-base';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
 import Input from './styled/Input';
 import type { FieldTextProps } from './types';
 
-export default class FieldTextStateless extends Component<
-  FieldTextProps,
-  void,
-> {
+type Props = {|
+  // $FlowFixMe - inexact `FieldTextProps` is incompatible with exact `Props`
+  ...FieldTextProps,
+  innerRef?: (node: ?HTMLInputElement) => void,
+|};
+
+class FieldTextStateless extends Component<Props, void> {
   static defaultProps = {
     compact: false,
     disabled: false,
@@ -19,6 +31,7 @@ export default class FieldTextStateless extends Component<
     required: false,
     type: 'text',
     isValidationHidden: false,
+    innerRef: () => {},
   };
 
   input: ?HTMLInputElement;
@@ -29,8 +42,10 @@ export default class FieldTextStateless extends Component<
     }
   }
 
-  handleInputRef = (input: HTMLInputElement) => {
+  setInputRef = (input: ?HTMLInputElement) => {
     this.input = input;
+    // $FlowFixMe - Cannot call `this.props.innerRef` because undefined [1] is not a function
+    this.props.innerRef(input);
   };
 
   render() {
@@ -59,7 +74,7 @@ export default class FieldTextStateless extends Component<
             disabled={this.props.disabled}
             form={this.props.form}
             id={this.props.id}
-            innerRef={this.handleInputRef}
+            innerRef={this.setInputRef}
             maxLength={this.props.maxLength}
             min={this.props.min}
             max={this.props.max}
@@ -83,3 +98,36 @@ export default class FieldTextStateless extends Component<
     );
   }
 }
+
+export { FieldTextStateless as FieldTextStatelessWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'fieldText',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onBlur: createAndFireEventOnAtlaskit({
+      action: 'blurred',
+      actionSubject: 'textField',
+
+      attributes: {
+        componentName: 'fieldText',
+        packageName,
+        packageVersion,
+      },
+    }),
+
+    onFocus: createAndFireEventOnAtlaskit({
+      action: 'focused',
+      actionSubject: 'textField',
+
+      attributes: {
+        componentName: 'fieldText',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(FieldTextStateless),
+);

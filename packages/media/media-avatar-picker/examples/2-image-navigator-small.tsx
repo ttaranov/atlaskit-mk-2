@@ -3,10 +3,10 @@ import * as React from 'react';
 import { smallImage } from '@atlaskit/media-test-helpers';
 import { ImageNavigator } from '../src/image-navigator';
 
-let onLoadParams;
-let imageElement;
+let onLoadParams: any;
+let imageElement: any;
 
-const onLoad = params => {
+const onLoad = (params: any) => {
   onLoadParams = params;
 };
 
@@ -16,7 +16,7 @@ const exportImage = () => {
   imageElement.src = imageData;
 };
 
-function handleImgRef(img) {
+function handleImgRef(img: any) {
   imageElement = img;
 }
 

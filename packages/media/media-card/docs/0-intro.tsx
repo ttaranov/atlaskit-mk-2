@@ -5,9 +5,9 @@ export default md`
 
   Exports 3 components:
 
-  1. Card
-  2. CardView
-  3. CardList
+  1.  Card
+  2.  CardView
+  3.  CardList
 
   ## Installation
 
@@ -17,9 +17,8 @@ export default md`
 
   ### Note:
 
-  Don't forget to add these polyfills to your product if you want to target older browsers:
-
-  * Array.prototype.find() ([polyfill](https://www.npmjs.com/package/array.prototype.find), [browser support](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/find))
+  Don't forget to add polyfills for fetch, ES6 & ES7 to your product build if you want to target older browsers.
+  We recommend the use of [babel-preset-env](https://babeljs.io/docs/plugins/preset-env/) & [babel-polyfill](https://babeljs.io/docs/usage/polyfill/)
 
   ## Using the component
 
@@ -30,8 +29,6 @@ export default md`
   import { ContextFactory } from '@atlaskit/media-core';
 
   const context = ContextFactory.create({
-    clientId,
-    serviceHost,
     tokenProvider,
   });
 

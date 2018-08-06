@@ -58,11 +58,7 @@ const LogWrapper = styled.div`
       margin-bottom: 0;
     }
   }
-  p {
-    display: none;
-  }
 `;
-// $FlowFixMe TEMPORARY
 const Button = styled(Btn)`
   position: absolute;
   right: 0;

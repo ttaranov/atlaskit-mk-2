@@ -10,6 +10,7 @@ coverage/
 junit.xml
 test-reports/
 browserstack.err
+**/__image_snapshots__/
 
 # created by build-stats tool
 .data/
@@ -35,3 +36,4 @@ website/dist.zip
 
 # A file we use for pushing secrets to micros, just in case
 secrets.json
+.vs/slnx.sqlite

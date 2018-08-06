@@ -1,8 +1,8 @@
 # Atlaskit
 
-[![node](https://img.shields.io/badge/node-6.10%2B-brightgreen.svg)]()
-[![npm](https://img.shields.io/badge/npm-3.8%2B-brightgreen.svg)]()
-[![yarn](https://img.shields.io/badge/yarn-0.18.1-brightgreen.svg)]()
+[![node v8.4.0+](https://img.shields.io/badge/node-v8.4.0%2B-brightgreen.svg)](https://nodejs.org/en/) 
+[![bolt v0.20.6+](https://img.shields.io/badge/bolt-v0.20.6%2B-brightgreen.svg)](http://boltpkg.com/)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](https://bitbucket.org/atlassian/atlaskit-mk-2/issues?status=new&status=open)
 
 Atlaskit is the technical implementation of the [Atlassian Design Guidelines][adg]. It is a collection of reusable components that can be downloaded independently into your projects. Each component is also independently versioned and published to npm.
 
@@ -21,7 +21,7 @@ may diverge in appearance:
 import '@atlaskit/css-reset';
 ```
 
-In general, you should avoid directly styling base elements (ex. p, h1, h2â€¦) and uses classes instead.
+In general, you should avoid directly styling base elements (ex. p, h1, h2…) and uses classes instead.
 
 #### Example for React projects
 
@@ -144,7 +144,7 @@ The base level of the repository is licensed under [Apache 2.0][license]. There 
 
 If you fork this repository you can continue to use those Atlassian Design Guidelines licensed components only under the given license restrictions. If you want to redistribute this repository, you will need to replace these Atlassian Design Guidelines licensed components with your own implementation.
 
-Copyright (c) 2016 Atlassian and others.
+Copyright (c) 2018 Atlassian and others.
 
 [adg]: http://atlassian.design/ "Atlassian Design Guidelines"
 [adg_license]: https://atlassian.design/guidelines/handy/license

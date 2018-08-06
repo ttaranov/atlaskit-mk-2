@@ -1,22 +1,146 @@
-import * as faker from 'faker';
 import { GraphqlResponse, SearchResult } from '../src/api/PeopleSearchClient';
-import { RecentItemsResponse, RecentItem } from '../src/api/RecentSearchClient';
+import { RecentItemsResponse } from '../src/api/RecentSearchClient';
+import { QuickNavResponse, QuickNavResult } from '../src/api/ConfluenceClient';
 import {
   CrossProductSearchResponse,
   Scope,
-  SearchItem,
   ConfluenceItem,
   JiraItem,
 } from '../src/api/CrossProductSearchClient';
 import { RecentPage, RecentSpace } from '../src/api/ConfluenceClient';
-import { ResultContentType } from '../src/model/Result';
+
+import * as uuid from 'uuid/v4';
 
 const DUMMY_BASE_URL = 'http://localhost';
 
 function pickRandom(array: Array<any>) {
-  const index = faker.random.number(array.length - 1);
+  const index = Math.floor(Math.random() * array.length);
   return array[index];
 }
+
+function generateRandomElements<T>(generator: () => T, n: number = 50) {
+  const results: T[] = [];
+  for (let i = 0; i < n; i++) {
+    results.push(generator());
+  }
+  return results;
+}
+
+const mockCatchPhrases = [
+  'Focused bandwidth-monitored open system',
+  'Synergistic multi-tasking architecture',
+  'Robust national conglomeration',
+  'Mandatory heuristic groupware',
+  'Triple-buffered multi-tasking methodology',
+  'Reduced dedicated initiative',
+  'Triple-buffered analyzing superstructure',
+  'Optimized intangible initiative',
+];
+
+const mockCompanyNames = [
+  'Gusikowski, Schimmel and Rau',
+  'Gaylord, Kreiger and Hand',
+  'Harber - Rowe',
+  'Senger Group',
+  'McGlynn, McLaughlin and Connelly',
+  'Kovacek Inc',
+  'Muller - Ortiz',
+  'Heaney, Heller and Corwin',
+];
+const mockAbbreviations = [
+  'CSS',
+  'RSS',
+  'GB',
+  'CSS',
+  'ADP',
+  'FTP',
+  'GB',
+  'EXE',
+];
+const mockAvatarUrls = [
+  'https://s3.amazonaws.com/uifaces/faces/twitter/magugzbrand2d/128.jpg',
+  'https://s3.amazonaws.com/uifaces/faces/twitter/jonathansimmons/128.jpg',
+  'https://s3.amazonaws.com/uifaces/faces/twitter/megdraws/128.jpg',
+  'https://s3.amazonaws.com/uifaces/faces/twitter/vickyshits/128.jpg',
+  'https://s3.amazonaws.com/uifaces/faces/twitter/ainsleywagon/128.jpg',
+  'https://s3.amazonaws.com/uifaces/faces/twitter/xamorep/128.jpg',
+  'https://s3.amazonaws.com/uifaces/faces/twitter/shoaib253/128.jpg',
+  'https://s3.amazonaws.com/uifaces/faces/twitter/jefffis/128.jpg',
+];
+const mockUrls = [
+  'https://jacquelyn.name',
+  'https://sheridan.net',
+  'http://carmelo.info',
+  'https://zoe.biz',
+  'https://kris.net',
+  'http://kolby.net',
+  'http://aracely.com',
+  'http://justyn.org',
+];
+const mockNames = [
+  'Priya Brantley',
+  'Tomas MacGinnis',
+  'Osiris Meszaros',
+  'Newell Corkery',
+  'Sif Leitzke',
+  'Garfield Schulist',
+  'Julianne Osinski',
+];
+
+const mockJobTitles = [
+  'Legacy Interactions Orchestrator',
+  'Chief Directives Officer',
+  'Future Directives Designer',
+  'Lead Communications Manager',
+  'Customer Paradigm Consultant',
+  'Human Branding Designer',
+  'Internal Markets Strategist',
+  'National Group Officer',
+];
+
+const mockJobTypes = [
+  'Supervisor',
+  'Coordinator',
+  'Agent',
+  'Administrator',
+  'Producer',
+  'Director',
+  'Specialist',
+];
+const mockLastNames = [
+  'Brantley',
+  'MacGinnis',
+  'Meszaros',
+  'Corkery',
+  'Leitzke',
+  'Schulist',
+  'Osinski',
+];
+
+const getMockCompanyName = () => pickRandom(mockCompanyNames);
+const getMockCatchPhrase = () => pickRandom(mockCatchPhrases);
+const getMockAbbreviation = () => pickRandom(mockAbbreviations);
+const getMockAvatarUrl = () => pickRandom(mockAvatarUrls);
+const getMockUrl = () => pickRandom(mockUrls);
+const getMockName = () => pickRandom(mockNames);
+const getMockJobTitle = () => pickRandom(mockJobTitles);
+const getMockJobType = () => pickRandom(mockJobTypes);
+const getMockLastName = () => pickRandom(mockLastNames);
+
+const getDateWithOffset = offset => {
+  let time = new Date();
+  time.setTime(time.getTime() + offset);
+  return time;
+};
+
+const getPastDate = () => {
+  let offset = 0 - Math.round(Math.random() * 365 * 24 * 3600 * 1000);
+  return getDateWithOffset(offset);
+};
+const getFutureDate = () => {
+  let offset = 100000 + Math.round(Math.random() * 10000);
+  return getDateWithOffset(offset);
+};
 
 function randomJiraIconUrl() {
   const urls = [
@@ -43,16 +167,11 @@ function randomProvider() {
 
 function randomIssueKey() {
   const keys = ['ETH', 'XRP', 'ADA', 'TRON', 'DOGE'];
-  return pickRandom(keys) + '-' + faker.random.number(1000);
+  return pickRandom(keys) + '-' + Math.floor(Math.random() * 1000);
 }
 
-function randomIconCssClass() {
-  const classes = [
-    'aui-iconfont-page-default',
-    'aui-iconfont-homepage',
-    'aui-iconfont-page-blogpost',
-  ];
-  return pickRandom(classes);
+function randomSpaceIconUrl() {
+  return `https://placeimg.com/64/64/arch?bustCache=${Math.random()}`;
 }
 
 export function recentData(n = 50): RecentItemsResponse {
@@ -63,18 +182,18 @@ export function recentData(n = 50): RecentItemsResponse {
 
     const name =
       provider === 'jira'
-        ? `${randomIssueKey()} ${faker.company.catchPhrase()}`
-        : faker.company.catchPhrase();
+        ? `${randomIssueKey()} ${getMockCatchPhrase()}`
+        : getMockCatchPhrase();
 
     const iconUrl =
       provider === 'jira' ? randomJiraIconUrl() : randomConfluenceIconUrl();
 
     items.push({
-      objectId: faker.random.uuid(),
+      objectId: uuid(),
       name: name,
       iconUrl: iconUrl,
-      container: faker.company.companyName(),
-      url: faker.internet.url(),
+      container: getMockCompanyName(),
+      url: getMockUrl(),
       provider: provider,
     });
   }
@@ -93,55 +212,55 @@ export function makeCrossProductSearchData(
   const jiraData: JiraItem[] = [];
 
   for (let i = 0; i < n; i++) {
-    const url = faker.internet.url();
+    const url = getMockUrl();
     confData.push({
-      title: faker.company.catchPhrase(),
+      title: getMockCatchPhrase(),
       container: {
-        title: faker.company.companyName(),
+        title: getMockCompanyName(),
         displayUrl: url,
       },
-      iconCssClass: randomIconCssClass(),
       url: url,
       baseUrl: DUMMY_BASE_URL,
+      content: {
+        type: pickRandom(['page', 'blogpost']),
+      },
     });
   }
 
   for (let i = 0; i < n; i++) {
-    const url = faker.internet.url();
-    const isAttachment = faker.random.boolean() && faker.random.boolean();
+    const url = getMockUrl();
 
     const newAttachment: ConfluenceItem = {
-      title: faker.company.catchPhrase(),
+      title: getMockCatchPhrase(),
       container: {
-        title: faker.company.companyName(),
+        title: getMockCompanyName(),
         displayUrl: url,
       },
-      iconCssClass: isAttachment ? 'icon-file-pdf' : randomIconCssClass(),
       url: url,
       baseUrl: DUMMY_BASE_URL,
+      content: {
+        type: pickRandom(['page', 'blogpost', 'attachment']),
+      },
     };
-
-    if (isAttachment) {
-      newAttachment.content = {
-        id: faker.random.alphaNumeric(3),
-        type: 'attachment' as ResultContentType,
-      };
-    }
 
     confDataWithAttachments.push(newAttachment);
   }
 
   for (let i = 0; i < n; i++) {
-    const title = faker.company.companyName();
+    const title = getMockCompanyName();
     confSpaceData.push({
       title: title,
-      baseUrl: DUMMY_BASE_URL,
-      url: faker.internet.url(),
+      baseUrl: '',
+      url: getMockUrl(),
       content: null,
-      iconCssClass: null,
       container: {
         title: title,
-        displayUrl: faker.internet.url(),
+        displayUrl: getMockUrl(),
+      },
+      space: {
+        icon: {
+          path: randomSpaceIconUrl(),
+        },
       },
     });
   }
@@ -150,9 +269,9 @@ export function makeCrossProductSearchData(
     jiraData.push({
       key: randomIssueKey(),
       fields: {
-        summary: faker.company.catchPhrase(),
+        summary: getMockCatchPhrase(),
         project: {
-          name: faker.company.companyName(),
+          name: getMockCompanyName(),
         },
         issuetype: {
           iconUrl: randomJiraIconUrl(),
@@ -210,9 +329,12 @@ export function makePeopleSearchData(
 
   for (let i = 0; i < n; i++) {
     items.push({
-      id: faker.random.uuid(),
-      fullName: faker.name.findName(),
-      avatarUrl: faker.image.avatar(),
+      id: uuid(),
+      fullName: getMockName(),
+      avatarUrl: getMockAvatarUrl(),
+      department: getMockJobType(),
+      title: getMockJobTitle(),
+      nickname: getMockLastName(),
     });
   }
 
@@ -225,42 +347,98 @@ export function makePeopleSearchData(
     return {
       data: {
         AccountCentricUserSearch: filteredItems,
+        Collaborators: filteredItems,
       },
     };
   };
 }
 
+function generateRandomQuickNavItem(className: string) {
+  return {
+    className: className,
+    name: getMockCatchPhrase(),
+    href: getMockUrl(),
+    spaceName: getMockCompanyName(),
+    id: uuid(),
+  };
+}
+
+export function makeQuickNavSearchData(n: number = 50) {
+  // create some attachments
+  const attachments: QuickNavResult[] = generateRandomElements(() =>
+    generateRandomQuickNavItem(
+      'content-type-attachment-' + pickRandom(['image', 'pdf']),
+    ),
+  );
+
+  // create some pages
+  const pages: QuickNavResult[] = generateRandomElements(() =>
+    generateRandomQuickNavItem('content-type-page'),
+  );
+
+  // create some blogposts
+  const blogs: QuickNavResult[] = generateRandomElements(() =>
+    generateRandomQuickNavItem('content-type-blogpost'),
+  );
+
+  // create some people, which never get shown
+  const people: QuickNavResult[] = generateRandomElements(() =>
+    generateRandomQuickNavItem('content-type-userinfo'),
+  );
+
+  return (term: string) => {
+    term = term.toLowerCase();
+
+    const filteredPages = pages.filter(
+      result => result.name.toLowerCase().indexOf(term) > -1,
+    );
+
+    const filteredBlogposts = blogs.filter(
+      result => result.name.toLowerCase().indexOf(term) > -1,
+    );
+
+    const filteredAttachments = attachments.filter(
+      result => result.name.toLowerCase().indexOf(term) > -1,
+    );
+
+    const filteredPeople = people.filter(
+      result => result.name.toLowerCase().indexOf(term) > -1,
+    );
+
+    return {
+      contentNameMatches: [
+        filteredPages,
+        filteredAttachments,
+        filteredBlogposts,
+        filteredPeople,
+      ],
+    };
+  };
+}
+
 export function makeConfluenceRecentPagesData(n: number = 300) {
-  const items: RecentPage[] = [];
-
-  for (let i = 0; i < n; i++) {
-    items.push({
+  return generateRandomElements(() => {
+    return {
       available: true,
-      contentType: ResultContentType.Page,
-      id: faker.random.uuid(),
-      lastSeen: faker.date.past(1).getTime(),
-      space: faker.company.companyName(),
-      spaceKey: faker.hacker.abbreviation(),
-      title: faker.company.catchPhrase(),
+      contentType: 'page',
+      id: uuid(),
+      lastSeen: getPastDate().getTime(),
+      space: getMockCompanyName(),
+      spaceKey: getMockAbbreviation(),
+      title: getMockCatchPhrase(),
       type: 'page',
-      url: faker.internet.url(),
-    });
-  }
-
-  return items;
+      url: getMockUrl(),
+    };
+  }, n);
 }
 
 export function makeConfluenceRecentSpacesData(n: number = 15) {
-  const spaces: RecentSpace[] = [];
-
-  for (let i = 0; i < n; i++) {
-    spaces.push({
-      id: faker.random.uuid(),
-      key: faker.hacker.abbreviation(),
-      icon: faker.image.avatar(),
-      name: faker.company.companyName(),
-    });
-  }
-
-  return spaces;
+  return generateRandomElements(() => {
+    return {
+      id: uuid(),
+      key: getMockAbbreviation(),
+      icon: randomSpaceIconUrl(),
+      name: getMockCompanyName(),
+    };
+  }, n);
 }

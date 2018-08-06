@@ -5,6 +5,7 @@ import React from 'react';
 import icons from '!!raw-loader!../src/icons-sprite.svg';
 // eslint-disable-next-line
 import stuff from '!!style-loader!css-loader!../src/bundle.css';
+import Warning from './utils/warning';
 
 import iconIds from '../src/internal/iconIds';
 
@@ -14,6 +15,7 @@ const Spritemap = () => <div dangerouslySetInnerHTML={{ __html: icons }} />;
 export default () => (
   <div>
     <Spritemap />
+    <Warning />
     <style>
       {`
             .icon-example {

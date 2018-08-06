@@ -1,32 +1,59 @@
-import {
-  EditorState,
-  Transaction,
-  NodeSelection,
-  TextSelection,
-} from 'prosemirror-state';
+import { EditorState, Transaction, NodeSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import { Slice, Fragment, Node as PmNode } from 'prosemirror-model';
+import { findParentNodeOfType } from 'prosemirror-utils';
+import { Slice, Schema } from 'prosemirror-model';
 import {
   hasParentNodeOfType,
   removeSelectedNode,
   removeParentNodeOfType,
   selectParentNodeOfType,
+  findSelectedNodeOfType,
 } from 'prosemirror-utils';
 import { pluginKey } from './plugin';
 import { MacroProvider, insertMacroFromMacroBrowser } from '../macro';
 import { getExtensionNode } from './utils';
+import { mapFragment } from '../../utils/slice';
 
-export const setExtensionElement = (element: HTMLElement | null) => (
+export const updateExtensionLayout = layout => (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
-): boolean => {
-  let tr = state.tr.setMeta(pluginKey, { element });
-  if (!element) {
-    tr = tr.setSelection(
-      TextSelection.create(state.doc, state.selection.$from.pos),
-    );
+) => {
+  const { selection, schema, tr } = state;
+  const { bodiedExtension, extension, inlineExtension } = schema.nodes;
+  const parentExtNode = findParentNodeOfType([bodiedExtension])(selection);
+
+  let extPosition;
+  let extNode;
+
+  const selectedNode = findSelectedNodeOfType([
+    bodiedExtension,
+    inlineExtension,
+    extension,
+  ])(selection);
+
+  if (!parentExtNode && !selectedNode) {
+    return;
   }
+
+  if (selectedNode) {
+    extPosition = selectedNode.pos;
+    extNode = selectedNode.node;
+  } else {
+    extPosition = parentExtNode!.pos;
+    extNode = parentExtNode!.node;
+  }
+
+  const pluginState = pluginKey.getState(state);
+
+  tr
+    .setNodeMarkup(extPosition, undefined, {
+      ...extNode!.attrs,
+      layout,
+    })
+    .setMeta(pluginKey, { ...pluginState, layout });
+
   dispatch(tr);
+
   return true;
 };
 
@@ -35,13 +62,16 @@ export const editExtension = (macroProvider: MacroProvider | null) => (
 ): boolean => {
   const { state, dispatch } = view;
   // insert macro if there's macroProvider available
+  const pluginState = pluginKey.getState(state);
   if (macroProvider) {
     const node = getExtensionNode(state);
     if (node) {
       const { bodiedExtension } = state.schema.nodes;
-      let tr = state.tr.setMeta(pluginKey, { element: null });
-      dispatch(selectParentNodeOfType(bodiedExtension)(tr));
-      insertMacroFromMacroBrowser(macroProvider, node)(view);
+      let tr = state.tr.setMeta(pluginKey, { ...pluginState, element: null });
+      if (hasParentNodeOfType(bodiedExtension)(tr.selection)) {
+        dispatch(selectParentNodeOfType(bodiedExtension)(tr));
+      }
+      insertMacroFromMacroBrowser(macroProvider, node.node)(view);
       return true;
     }
   }
@@ -54,7 +84,8 @@ export const removeExtension = (
   dispatch: (tr: Transaction) => void,
 ): boolean => {
   const { schema, selection } = state;
-  let tr = state.tr.setMeta(pluginKey, { element: null });
+  const pluginState = pluginKey.getState(state);
+  let tr = state.tr.setMeta(pluginKey, { ...pluginState, element: null });
 
   if (selection instanceof NodeSelection) {
     tr = removeSelectedNode(tr);
@@ -66,40 +97,39 @@ export const removeExtension = (
   return true;
 };
 
-export const removeBodiedExtensionWrapper = (
-  state: EditorState,
+/**
+ * Lift content out of "open" top-level bodiedExtensions.
+ * Will not work if bodiedExtensions are nested, or when bodiedExtensions are not in the top level
+ */
+export const transformSliceToRemoveOpenBodiedExtension = (
   slice: Slice,
+  schema: Schema,
 ) => {
-  const { schema: { nodes: { bodiedExtension } } } = state;
-  const { content: { firstChild: wrapper } } = slice;
+  const { bodiedExtension } = schema.nodes;
 
-  if (wrapper!.type !== bodiedExtension || slice.content.childCount > 1) {
-    return slice;
-  }
+  const fragment = mapFragment(slice.content, (node, parent, index) => {
+    if (node.type === bodiedExtension && !parent) {
+      const currentNodeIsAtStartAndIsOpen = slice.openStart && index === 0;
+      const currentNodeIsAtEndAndIsOpen =
+        slice.openEnd && index + 1 === slice.content.childCount;
 
-  return new Slice(
-    Fragment.from(wrapper!.content),
-    Math.max(0, slice.openStart - 1),
-    Math.max(0, slice.openEnd - 1),
-  );
-};
-
-export const removeBodiedExtensionsIfSelectionIsInBodiedExtension = (
-  slice: Slice,
-  state: EditorState,
-) => {
-  const { selection, schema: { nodes: { bodiedExtension } } } = state;
-
-  if (hasParentNodeOfType(bodiedExtension)(selection)) {
-    const nodes: PmNode[] = [];
-    slice.content.forEach(child => {
-      if (child.type !== bodiedExtension) {
-        nodes.push(child);
+      if (currentNodeIsAtStartAndIsOpen || currentNodeIsAtEndAndIsOpen) {
+        return node.content;
       }
-    });
+    }
+    return node;
+  });
 
-    return new Slice(Fragment.from(nodes), slice.openStart, slice.openEnd);
-  }
-
-  return slice;
+  // If the first/last child has changed - then we know we've removed a bodied extension & to decrement the open depth
+  return new Slice(
+    fragment,
+    fragment.firstChild &&
+    fragment.firstChild!.type !== slice.content.firstChild!.type
+      ? slice.openStart - 1
+      : slice.openStart,
+    fragment.lastChild &&
+    fragment.lastChild!.type !== slice.content.lastChild!.type
+      ? slice.openEnd - 1
+      : slice.openEnd,
+  );
 };

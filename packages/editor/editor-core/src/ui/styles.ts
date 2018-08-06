@@ -1,8 +1,8 @@
-import styled from 'styled-components';
+import { HTMLAttributes, ComponentClass } from 'react';
 // @ts-ignore: unused variable
 // prettier-ignore
-import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
-import { akColorN30 } from '@atlaskit/util-shared-styles';
+import styled, { css, Styles, StyledComponentClass } from 'styled-components';
+import { akColorN30, akGridSize } from '@atlaskit/util-shared-styles';
 
 export const ButtonGroup: ComponentClass<
   HTMLAttributes<{}> & { width?: 'small' | 'large' }
@@ -37,9 +37,8 @@ export const Wrapper: ComponentClass<
   > div > div {
     display: flex;
   }
-  /* see ED-4591 */
-  margin-left: 4px;
-  min-width: ${({ isSmall }: { isSmall: false }) =>
+  margin-left: ${({ isSmall }: { isSmall?: boolean }) => (isSmall ? 4 : 0)}px;
+  min-width: ${({ isSmall }: { isSmall?: boolean }) =>
     isSmall ? '40px' : 'auto'};
 `;
 
@@ -61,4 +60,36 @@ export const ButtonContent: ComponentClass<HTMLAttributes<{}>> = styled.span`
   height: 24px;
   align-items: center;
   padding: ${(props: any) => (props.width ? 0 : '0 8px')};
+`;
+
+// Taken from the style of inline dialog components
+export const dropShadow = css`
+  box-shadow: 0 0 1px rgba(9, 30, 66, 0.31),
+    0 4px 8px -2px rgba(9, 30, 66, 0.25);
+`;
+
+export const scrollbarStyles = `
+  -ms-overflow-style: -ms-autohiding-scrollbar;
+
+  &::-webkit-scrollbar {
+    height: ${akGridSize};
+    width: ${akGridSize};
+  }
+
+  &::-webkit-scrollbar-corner {
+    display: none;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0);
+  }
+
+  &:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: ${akGridSize};
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+  }
 `;

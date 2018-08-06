@@ -11,6 +11,7 @@ import {
   storyMediaProviderFactory,
   storyContextIdentifierProviderFactory,
   macroProvider,
+  cardProvider,
 } from '@atlaskit/editor-test-helpers';
 import { mention, emoji, taskDecision } from '@atlaskit/util-data-test';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
@@ -18,15 +19,8 @@ import { EmojiProvider } from '@atlaskit/emoji';
 
 import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
 import { extensionHandlers } from '../example-helpers/extension-handlers';
+import quickInsertProviderFactory from '../example-helpers/quick-insert-provider';
 import { DevTools } from '../example-helpers/DevTools';
-
-import {
-  akEditorCodeBackground,
-  akEditorCodeBlockPadding,
-  akEditorCodeFontFamily,
-} from '../src/styles';
-
-import { akBorderRadius } from '@atlaskit/util-shared-styles';
 
 export const TitleInput: any = styled.input`
   border: none;
@@ -61,15 +55,6 @@ export const Content: any = styled.div`
   height: 100%;
   background: #fff;
   box-sizing: border-box;
-
-  & .ProseMirror {
-    & pre {
-      font-family: ${akEditorCodeFontFamily};
-      background: ${akEditorCodeBackground};
-      padding: ${akEditorCodeBlockPadding};
-      border-radius: ${akBorderRadius};
-    }
-  }
 `;
 Content.displayName = 'Content';
 
@@ -101,7 +86,9 @@ const SaveAndCancelButtons = props => (
   </ButtonGroup>
 );
 
-export type Props = {};
+export type Props = {
+  defaultValue?: Object;
+};
 export type State = { disabled: boolean };
 
 const providers = {
@@ -116,9 +103,12 @@ const providers = {
   activityProvider: Promise.resolve(new MockActivityResource()),
   macroProvider: Promise.resolve(macroProvider),
 };
+
 const mediaProvider = storyMediaProviderFactory({
   includeUserAuthProvider: true,
 });
+
+const quickInsertProvider = quickInsertProviderFactory();
 
 export class ExampleEditor extends React.Component<Props, State> {
   state: State = { disabled: true };
@@ -137,11 +127,13 @@ export class ExampleEditor extends React.Component<Props, State> {
       <Wrapper>
         <Content>
           <Editor
+            defaultValue={this.props.defaultValue}
             appearance="full-page"
             analyticsHandler={analyticsHandler}
-            UNSAFE_allowQuickInsert={true}
+            quickInsert={{ provider: Promise.resolve(quickInsertProvider) }}
+            delegateAnalyticsEvent={(...args) => console.log(args)}
             allowTasksAndDecisions={true}
-            allowCodeBlocks={true}
+            allowCodeBlocks={{ enableKeybindingsForIDE: true }}
             allowLists={true}
             allowTextColor={true}
             allowTables={{
@@ -157,12 +149,17 @@ export class ExampleEditor extends React.Component<Props, State> {
             allowJiraIssue={true}
             allowUnsupportedContent={true}
             allowPanel={true}
-            allowExtension={true}
+            allowExtension={{
+              allowBreakout: true,
+            }}
             allowRule={true}
             allowDate={true}
             UNSAFE_allowLayouts={true}
             allowGapCursor={true}
             allowTemplatePlaceholders={{ allowInserting: true }}
+            UNSAFE_cards={{
+              provider: Promise.resolve(cardProvider),
+            }}
             {...providers}
             media={{ provider: mediaProvider, allowMediaSingle: true }}
             placeholder="Write something..."
@@ -203,12 +200,12 @@ export class ExampleEditor extends React.Component<Props, State> {
   };
 }
 
-export default function Example() {
+export default function Example(defaultValue) {
   return (
     <EditorContext>
       <div style={{ height: '100%' }}>
         <DevTools />
-        <ExampleEditor />
+        <ExampleEditor defaultValue={defaultValue} />
       </div>
     </EditorContext>
   );

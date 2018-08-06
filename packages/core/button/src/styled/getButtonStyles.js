@@ -59,16 +59,14 @@ export const getPropertyAppearance = (
 };
 
 export default function getButtonStyles(props: Object) {
-  // $FlowFixMe TEMPORARY
+  // $FlowFixMe - should be fixed when theme work is done
   const baseSize = fontSize(props);
   const buttonHeight = `${math.divide(math.multiply(gridSize, 4), baseSize)(
-    // $FlowFixMe TEMPORARY
     props,
   )}em`;
   const compactButtonHeight = `${math.divide(
     math.multiply(gridSize, 3),
     baseSize,
-    // $FlowFixMe TEMPORARY
   )(props)}em`;
 
   /**
@@ -78,7 +76,7 @@ export default function getButtonStyles(props: Object) {
   let height = buttonHeight;
   let lineHeight = buttonHeight;
   let outline = 'none';
-  // $FlowFixMe TEMPORARY
+  // $FlowFixMe - should be fixed when theme work is done
   let padding = `0 ${gridSize(props)}px`;
   let transitionDuration = '0.1s, 0.15s';
   let transition =
@@ -136,6 +134,9 @@ export default function getButtonStyles(props: Object) {
     cursor = 'not-allowed';
   }
 
+  // Loading
+  const isLoadingStyles = p => (p.isLoading ? 'pointer-events: none;' : null);
+
   // Fit to parent width
   if (props.fit) {
     width = '100%';
@@ -172,5 +173,6 @@ export default function getButtonStyles(props: Object) {
       margin: 0;
       padding: 0;
     }
+    ${isLoadingStyles};
   `;
 }

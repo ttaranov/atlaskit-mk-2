@@ -10,28 +10,11 @@ import { NodeType, MarkType, Node } from 'prosemirror-model';
 import { JSONTransformer } from '@atlaskit/editor-json-transformer';
 
 /**
- * Folowing nodes produce null atribute values which fail JSON validation.
- * 'table', 'mention', 'codeBlock', 'extension', 'inlineExtension',
- * 'bodiedExtension', 'mediaSingle', 'mediaGroup', 'applicationCard'.
- */
-const removeNulls = json => {
-  for (let key in json) {
-    if (json[key] === null) {
-      delete json[key];
-    } else if (typeof json[key] === 'object') {
-      removeNulls(json[key]);
-    }
-  }
-  return json;
-};
-
-/**
  * Check if JSON is valid according to JSON schema.
  */
 const ajv = new Ajv();
 const validate = ajv.compile(v1schema);
 const isValidJSONSchema = json => {
-  removeNulls(json);
   json.version = 1;
   validate(json);
   return validate.errors === null;
@@ -40,6 +23,8 @@ const isValidJSONSchema = json => {
 const unsupportedNodes = [
   'confluenceUnsupportedBlock',
   'confluenceUnsupportedInline',
+  'unsupportedBlock',
+  'unsupportedInline',
   'confluenceJiraIssue',
   'unknownBlock',
 
@@ -48,6 +33,7 @@ const unsupportedNodes = [
   'placeholder',
   'layoutSection',
   'layoutColumn',
+  'inlineCard',
 ];
 
 const unsupportedMarks = [

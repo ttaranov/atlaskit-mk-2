@@ -3,11 +3,11 @@
 import React, { PureComponent, type ComponentType } from 'react';
 import { css } from 'emotion';
 
-import { light, styleReducerNoOp, withTheme } from '../../theme';
-import type { ItemPrimitiveProps, ItemRenderComponentProps } from './types';
+import { styleReducerNoOp, withContentTheme } from '../../theme';
+import type { ItemProps, ItemRenderComponentProps } from './types';
 
 const getItemBase = (
-  itemProps: ItemPrimitiveProps,
+  itemProps: ItemProps,
 ): ComponentType<ItemRenderComponentProps> => {
   const { component: CustomComponent, href, onClick, target } = itemProps;
 
@@ -33,7 +33,7 @@ const getItemBase = (
   return props => <span {...props} />;
 };
 
-class NavigationItemPrimitive extends PureComponent<ItemPrimitiveProps> {
+class ItemPrimitive extends PureComponent<ItemProps> {
   static defaultProps = {
     isActive: false,
     isHover: false,
@@ -45,7 +45,7 @@ class NavigationItemPrimitive extends PureComponent<ItemPrimitiveProps> {
 
   ItemBase: ComponentType<ItemRenderComponentProps> = getItemBase(this.props);
 
-  componentWillReceiveProps(nextProps: ItemPrimitiveProps) {
+  componentWillReceiveProps(nextProps: ItemProps) {
     if (
       nextProps.component !== this.props.component ||
       nextProps.href !== this.props.href ||
@@ -97,6 +97,4 @@ class NavigationItemPrimitive extends PureComponent<ItemPrimitiveProps> {
   }
 }
 
-export default withTheme({ mode: light, context: 'container' })(
-  NavigationItemPrimitive,
-);
+export default withContentTheme(ItemPrimitive);

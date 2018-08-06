@@ -1,6 +1,7 @@
 import { Selection, EditorState } from 'prosemirror-state';
 import { Fragment, Node } from 'prosemirror-model';
 import { safeInsert } from 'prosemirror-utils';
+import { analyticsService } from '../../../analytics';
 import { Command } from '../../../types';
 import { isChromeWithSelectionBug } from '../../../utils';
 import { pluginKey, ACTIONS } from '../pm-plugins/main';
@@ -64,19 +65,40 @@ export const selectItem = (
   item: TypeAheadItem,
 ): Command => (state, dispatch) => {
   return withTypeAheadQueryMarkPosition(state, (start, end) => {
-    const replaceWith = (node: Node) => {
+    const insert = (maybeNode?: Node | Object | string) => {
       let tr = state.tr;
 
       tr = tr
         .setMeta(pluginKey, { action: ACTIONS.SELECT_CURRENT })
         .replaceWith(start, end, Fragment.empty);
 
-      /**
-       *
-       * Replacing a type ahead query mark with a block node.
-       *
-       */
-      if (node.isBlock) {
+      if (!maybeNode) {
+        return tr;
+      }
+
+      let node;
+      try {
+        node =
+          maybeNode instanceof Node
+            ? maybeNode
+            : typeof maybeNode === 'string'
+              ? state.schema.text(maybeNode)
+              : Node.fromJSON(state.schema, maybeNode);
+      } catch (e) {
+        // tslint:disable-next-line:no-console
+        console.error(e);
+        return tr;
+      }
+
+      if (node.isText) {
+        tr = tr.replaceWith(start, start, node);
+
+        /**
+         *
+         * Replacing a type ahead query mark with a block node.
+         *
+         */
+      } else if (node.isBlock) {
         tr = safeInsert(node)(tr);
 
         /**
@@ -86,6 +108,7 @@ export const selectItem = (
          */
       } else if (node.isInline) {
         const fragment = Fragment.fromArray([node, state.schema.text(' ')]);
+
         tr = tr.replaceWith(start, start, fragment);
 
         // This problem affects Chrome v58-62. See: https://github.com/ProseMirror/prosemirror/issues/710
@@ -99,14 +122,20 @@ export const selectItem = (
         );
       }
 
-      dispatch(tr);
-      return true;
+      return tr;
     };
 
-    if (handler.selectItem(state, item, replaceWith) === false) {
+    analyticsService.trackEvent('atlassian.editor.typeahead.select', {
+      item: item.title,
+    });
+
+    const tr = handler.selectItem(state, item, insert);
+
+    if (tr === false) {
       return insertFallbackCommand(start, end)(state, dispatch);
     }
 
+    dispatch(tr);
     return true;
   });
 };

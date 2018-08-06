@@ -3,6 +3,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Loadable from 'react-loadable';
+import { Helmet } from 'react-helmet';
 
 import CloseIcon from '@atlaskit/icon/glyph/cross';
 
@@ -26,9 +27,6 @@ const ModalBody = styled.div`
   padding-bottom: ${math.multiply(gridSize, 2)}px;
 `;
 
-// This seems to be an issue with styledComponent flow type compatibility
-// intersection type incompatible with expected param type of React.Component.
-// $FlowFixMe:
 const ModalHeader = styled(OgModalHeader)`
   margin-left: 20px;
   margin-right: 20px;
@@ -42,9 +40,6 @@ const FieldWrapper = styled.div`
 `;
 const LogWrapper = styled.div`
   margin-top: 2em;
-  p {
-    display: none;
-  }
 `;
 
 // ==============================
@@ -188,6 +183,11 @@ export default class ExamplesModal extends Component<Props, State> {
         onClose={this.close}
         width={640}
       >
+        <Helmet>
+          <title>
+            Changelog - {fs.titleize(pkgId)} - {BASE_TITLE}
+          </title>
+        </Helmet>
         <ModalBody>
           {isInvalid ? (
             <NoMatch>Invalid range &mdash; please try again.</NoMatch>

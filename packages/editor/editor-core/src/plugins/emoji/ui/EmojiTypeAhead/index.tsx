@@ -8,6 +8,7 @@ import {
   EmojiDescription,
   OptionalEmojiDescription,
   EmojiProvider,
+  EmojiId,
 } from '@atlaskit/emoji';
 import { analyticsService } from '../../../../analytics';
 import {
@@ -118,6 +119,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
         target={anchorElement}
         fitHeight={350}
         fitWidth={350}
+        zIndex={500}
         boundariesElement={popupsBoundariesElement}
         scrollableElement={popupsScrollableElement}
         mountTo={popupsMountPoint}
@@ -137,7 +139,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
   private calculateElapsedTime = () => Date.now() - this.openTime;
 
   private handleSelectedEmoji = (
-    emojiId: any,
+    emojiId: EmojiId,
     emoji: OptionalEmojiDescription,
   ) => {
     const _emoji = emoji as EmojiDescription;

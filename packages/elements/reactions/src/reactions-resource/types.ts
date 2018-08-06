@@ -10,17 +10,17 @@ export enum ReactionStatus {
 }
 
 export interface ReactionsReadyState {
-  status: ReactionStatus.ready;
-  reactions: ReactionSummary[];
+  readonly status: ReactionStatus.ready;
+  readonly reactions: ReactionSummary[];
 }
 
 export type ReactionsLoading = {
-  status: ReactionStatus.loading;
+  readonly status: ReactionStatus.loading;
 };
 
 export type ReactionsError = {
-  status: ReactionStatus.error;
-  message: string;
+  readonly status: ReactionStatus.error;
+  readonly message: string;
 };
 
 export interface ReactionSummary {
@@ -30,6 +30,7 @@ export interface ReactionSummary {
   count: number;
   reacted: boolean;
   users?: User[];
+  optimisticallyUpdated?: boolean;
 }
 
 export interface User {
@@ -67,11 +68,24 @@ export type SubscriptionHandler = (state: ReactionsState) => void;
 export interface ReactionsProvider {
   getReactions(keys: ObjectReactionKey[]): Promise<Reactions>;
   getDetailedReaction(reaction: ReactionSummary): Promise<ReactionSummary>;
-  toggleReaction(containerAri: string, ari: string, emojiId: string);
+  toggleReaction(
+    containerAri: string,
+    ari: string,
+    emojiId: string,
+    /**
+     * Epoch time of when the object being reacted on was created
+     */
+    objectCreationTimestamp?: number,
+  ): Promise<ReactionsState>;
+
   addReaction(
     containerAri: string,
     ari: string,
     emojiId: string,
+    /**
+     * Epoch time of when the object being reacted on was created
+     */
+    objectCreationTimestamp?: number,
   ): Promise<ReactionsState>;
   deleteReaction(
     containerAri: string,

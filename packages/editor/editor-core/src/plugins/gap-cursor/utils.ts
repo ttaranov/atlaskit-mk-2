@@ -1,12 +1,20 @@
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { findPositionOfNodeBefore, findDomRefAtPos } from 'prosemirror-utils';
+import {
+  tableMarginTop,
+  tableMarginBottom,
+  // akEditorTableNumberColumnWidth,
+  // akEditorTableToolbarSize,
+} from '@atlaskit/editor-common';
 
 import { GapCursorSelection, Side } from './selection';
 
 // we don't show gap cursor for those nodes
 const INGORED_NODES = [
   'paragraph',
+  'bulletList',
+  'orderedList',
   'listItem',
   'taskItem',
   'decisionItem',
@@ -52,7 +60,10 @@ const isMediaSingle = (node?: HTMLElement | null): boolean => {
 
 // incapsulated this hack into a separate util function
 export const fixCursorAlignment = (view: EditorView) => {
-  const { state: { selection, schema }, domAtPos } = view;
+  const {
+    state: { selection, schema },
+    domAtPos,
+  } = view;
   const { side, $from } = selection as GapCursorSelection;
 
   // gap cursor is positioned relative to that node
@@ -88,6 +99,7 @@ export const fixCursorAlignment = (view: EditorView) => {
   let width = 0;
   let marginTop = 0;
   let breakoutWidth = 0;
+  let paddingLeft = 0;
 
   // gets width and height of the prevNode DOM element, or its nodeView wrapper DOM element
   do {
@@ -96,8 +108,11 @@ export const fixCursorAlignment = (view: EditorView) => {
     );
     const isInTableCell = /td|th/i.test(targetNodeRef.parentNode!.nodeName);
 
-    height = parseInt(css['height']!, 10);
-    width = parseInt(css['width']!, 10);
+    height = parseInt(css.height!, 10);
+    width = parseInt(css.width!, 10);
+
+    // padding is cumulative
+    paddingLeft += parseInt(css.paddingLeft!, 10);
 
     if (previousSibling || isMediaWithWrapping || isInTableCell) {
       const curNodeMarginTop = getDomNodeVerticalMargin(targetNodeRef, 'top');
@@ -124,8 +139,9 @@ export const fixCursorAlignment = (view: EditorView) => {
 
   // table nodeView margin fix
   if (targetNode.type === schema.nodes.table) {
-    height -= 48;
-    marginTop = 28;
+    height -= tableMarginTop + tableMarginBottom;
+    marginTop = tableMarginTop;
+    gapCursorRef.style.paddingLeft = `${paddingLeft}px`;
   }
 
   // breakout mode
@@ -144,4 +160,37 @@ export const fixCursorAlignment = (view: EditorView) => {
   gapCursorRef.style.height = `${height}px`;
   gapCursorRef.style.marginTop = `${marginTop}px`;
   gapCursorRef.style.width = `${breakoutWidth || width}px`;
+};
+
+export const isIgnoredClick = (elem: HTMLElement) => {
+  if (elem.nodeName === 'BUTTON') {
+    return true;
+  }
+
+  // check if target node has a parent table node
+  let tableWrap;
+  let node = elem;
+  while (node) {
+    if (
+      node.className &&
+      (node.getAttribute('class') || '').indexOf('table-container') > -1
+    ) {
+      tableWrap = node;
+      break;
+    }
+    node = node.parentNode as HTMLElement;
+  }
+
+  if (tableWrap) {
+    const rowControls = tableWrap.querySelector('.table-row-controls-wrapper');
+    const columnControls = tableWrap.querySelector(
+      '.table-column-controls-wrapper',
+    );
+    return (
+      (rowControls && rowControls.contains(elem)) ||
+      (columnControls && columnControls.contains(elem))
+    );
+  }
+
+  return false;
 };

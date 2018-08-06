@@ -23,11 +23,13 @@ const renderNode = (
     state.write(' ');
   }
   node.content.forEach((child: PMNode, i: number) => {
-    if (child.isTextblock) {
+    if (child.isTextblock || child.type.name === 'mediaSingle') {
       if (i > 0) {
         state.write(' ');
       }
+      (state as any).context.insideTable = true;
       state.renderInline(child);
+      (state as any).context.insideTable = false;
     } else {
       renderNode(state, child, i);
     }

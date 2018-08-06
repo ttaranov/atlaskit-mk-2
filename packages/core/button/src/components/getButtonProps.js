@@ -6,6 +6,7 @@ const getAppearanceProps = (props, state) => {
     appearance,
     className,
     isDisabled,
+    isLoading,
     isSelected,
     spacing,
     shouldFitContainer,
@@ -20,6 +21,7 @@ const getAppearanceProps = (props, state) => {
     isActive,
     isFocus,
     isHover,
+    isLoading,
     isSelected,
     spacing,
     fit: shouldFitContainer,
@@ -36,7 +38,14 @@ const getInteractionProps = component => {
     onMouseUp,
   } = component;
 
-  const { onClick, tabIndex } = component.props;
+  const { tabIndex } = component.props;
+
+  // Block onClick/Keyboard submit while isLoading
+  const onClick = component.props.isLoading
+    ? (e: SyntheticEvent<>) => {
+        e.preventDefault();
+      }
+    : component.props.onClick;
 
   return {
     onBlur,

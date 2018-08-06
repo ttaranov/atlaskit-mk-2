@@ -15,6 +15,7 @@ import {
 } from '@atlaskit/editor-test-helpers';
 
 import { mediaMock } from '@atlaskit/media-test-helpers';
+import { AnalyticsListener } from '@atlaskit/analytics-next';
 
 const rejectedPromise = Promise.reject(
   new Error('Simulated provider rejection'),
@@ -111,14 +112,20 @@ export interface State {
   mediaMockEnabled: boolean;
 }
 
-export default class ToolsDrawer extends React.Component<any, State> {
-  constructor(props) {
+export interface Props {
+  imageUploadProvider?: ProviderState;
+}
+
+export type ProviderState = 'resolved' | 'pending' | 'rejected' | 'undefined';
+
+export default class ToolsDrawer extends React.Component<Props & any, State> {
+  constructor(props: Props) {
     super(props);
 
     this.state = {
       reloadEditor: false,
       editorEnabled: true,
-      imageUploadProvider: 'undefined',
+      imageUploadProvider: props.imageUploadProvider || 'undefined',
       mentionProvider: 'resolved',
       mediaProvider: 'resolved',
       emojiProvider: 'resolved',
@@ -126,7 +133,7 @@ export default class ToolsDrawer extends React.Component<any, State> {
       contextIdentifierProvider: 'resolved',
       activityProvider: 'resolved',
       jsonDocument: '{}',
-      mediaMockEnabled: true,
+      mediaMockEnabled: false,
     };
 
     if (this.state.mediaMockEnabled) {
@@ -175,89 +182,101 @@ export default class ToolsDrawer extends React.Component<any, State> {
       mediaMockEnabled,
     } = this.state;
     return (
-      <Content>
-        <div style={{ padding: '5px 0' }}>
-          ️️️⚠️ Atlassians, for Media integration to work in non-mocked state,
-          make sure you're logged into{' '}
-          <a href="https://id.stg.internal.atlassian.com" target="_blank">
-            staging Identity server.
-          </a>
-        </div>
-        {reloadEditor
-          ? ''
-          : this.props.renderEditor({
-              disabled: !editorEnabled,
-              imageUploadProvider:
-                providers.imageUploadProvider[imageUploadProvider],
-              mediaProvider: providers.mediaProvider[mediaProvider],
-              mentionProvider: providers.mentionProvider[mentionProvider],
-              emojiProvider: providers.emojiProvider[emojiProvider],
-              taskDecisionProvider:
-                providers.taskDecisionProvider[taskDecisionProvider],
-              contextIdentifierProvider:
-                providers.contextIdentifierProvider[contextIdentifierProvider],
-              activityProvider: providers.activityProvider[activityProvider],
-              onChange: this.onChange,
-            })}
-        <div className="toolsDrawer">
-          {Object.keys(providers).map(providerKey => (
-            <div key={providerKey}>
-              <ButtonGroup>
-                <label>{providerKey}: </label>
-                {Object.keys(providers[providerKey]).map(providerStateName => (
-                  <Button
-                    key={`${providerKey}-${providerStateName}`}
-                    onClick={this.switchProvider.bind(
-                      this,
-                      providerKey,
-                      providerStateName,
+      <AnalyticsListener channel="atlaskit" onEvent={e => console.log(e)}>
+        <AnalyticsListener channel="media" onEvent={e => console.log(e)}>
+          <Content>
+            <div style={{ padding: '5px 0' }}>
+              ️️️⚠️ Atlassians, for Media integration to work in non-mocked
+              state, make sure you're logged into{' '}
+              <a href="https://id.stg.internal.atlassian.com" target="_blank">
+                staging Identity server.
+              </a>
+            </div>
+            {reloadEditor
+              ? ''
+              : this.props.renderEditor({
+                  disabled: !editorEnabled,
+                  imageUploadProvider:
+                    providers.imageUploadProvider[imageUploadProvider],
+                  mediaProvider: providers.mediaProvider[mediaProvider],
+                  mentionProvider: providers.mentionProvider[mentionProvider],
+                  emojiProvider: providers.emojiProvider[emojiProvider],
+                  taskDecisionProvider:
+                    providers.taskDecisionProvider[taskDecisionProvider],
+                  contextIdentifierProvider:
+                    providers.contextIdentifierProvider[
+                      contextIdentifierProvider
+                    ],
+                  activityProvider:
+                    providers.activityProvider[activityProvider],
+                  onChange: this.onChange,
+                })}
+            <div className="toolsDrawer">
+              {Object.keys(providers).map(providerKey => (
+                <div key={providerKey}>
+                  <ButtonGroup>
+                    <label>{providerKey}: </label>
+                    {Object.keys(providers[providerKey]).map(
+                      providerStateName => (
+                        <Button
+                          key={`${providerKey}-${providerStateName}`}
+                          onClick={this.switchProvider.bind(
+                            this,
+                            providerKey,
+                            providerStateName,
+                          )}
+                          appearance={
+                            providerStateName === this.state[providerKey]
+                              ? 'primary'
+                              : 'default'
+                          }
+                          theme="dark"
+                          spacing="compact"
+                        >
+                          {providerStateName}
+                        </Button>
+                      ),
                     )}
-                    appearance={
-                      providerStateName === this.state[providerKey]
-                        ? 'primary'
-                        : 'default'
-                    }
+                  </ButtonGroup>
+                </div>
+              ))}
+              <div>
+                <ButtonGroup>
+                  <Button
+                    onClick={this.toggleDisabled}
                     theme="dark"
                     spacing="compact"
                   >
-                    {providerStateName}
+                    {this.state.editorEnabled
+                      ? 'Disable editor'
+                      : 'Enable editor'}
                   </Button>
-                ))}
-              </ButtonGroup>
+                  <Button
+                    onClick={this.reloadEditor}
+                    theme="dark"
+                    spacing="compact"
+                  >
+                    Reload Editor
+                  </Button>
+                  <Tooltip content="Hot reload is not supported. Enable or disable before opening media-picker">
+                    <Button
+                      onClick={this.toggleMediaMock}
+                      appearance={mediaMockEnabled ? 'primary' : 'default'}
+                      theme="dark"
+                      spacing="compact"
+                    >
+                      {mediaMockEnabled ? 'Disable' : 'Enable'} Media-Picker
+                      Mock
+                    </Button>
+                  </Tooltip>
+                </ButtonGroup>
+              </div>
             </div>
-          ))}
-          <div>
-            <ButtonGroup>
-              <Button
-                onClick={this.toggleDisabled}
-                theme="dark"
-                spacing="compact"
-              >
-                {this.state.editorEnabled ? 'Disable editor' : 'Enable editor'}
-              </Button>
-              <Button
-                onClick={this.reloadEditor}
-                theme="dark"
-                spacing="compact"
-              >
-                Reload Editor
-              </Button>
-              <Tooltip content="Hot reload is not supported. Enable or disable before opening media-picker">
-                <Button
-                  onClick={this.toggleMediaMock}
-                  appearance={mediaMockEnabled ? 'primary' : 'default'}
-                  theme="dark"
-                  spacing="compact"
-                >
-                  {mediaMockEnabled ? 'Disable' : 'Enable'} Media-Picker Mock
-                </Button>
-              </Tooltip>
-            </ButtonGroup>
-          </div>
-        </div>
-        <legend>JSON output:</legend>
-        <pre>{jsonDocument}</pre>
-      </Content>
+            <legend>JSON output:</legend>
+            <pre>{jsonDocument}</pre>
+          </Content>
+        </AnalyticsListener>
+      </AnalyticsListener>
     );
   }
 }

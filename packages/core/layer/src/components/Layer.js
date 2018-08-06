@@ -1,5 +1,7 @@
 // @flow
 import React, { Component, type Node, type ElementRef } from 'react';
+import styled from 'styled-components';
+import rafSchedule from 'raf-schd';
 
 import Popper from '../../popper/index-min';
 import ScrollBlock from './internal/ScrollBlock';
@@ -38,6 +40,10 @@ export type Props = {
   zIndex?: number,
   /** Lock scrolling behind the layer */
   lockScroll?: boolean,
+  /** Force the layer to always be positioned fixed to the viewport. Note that the layer will become detached from the target element when scrolling so scroll lock or close on scroll handling may be necessary. */
+  isAlwaysFixed?: boolean,
+  /** Callback that is used to know when the Layer positions it's content. This will only be called once soon after mounting when the Layer's transformed/flipped position is first calculated. */
+  onPositioned?: Function,
 };
 
 type State = {
@@ -56,7 +62,28 @@ type State = {
   cssPosition: CSSPositionType,
   originalHeight: ?number,
   maxHeight: ?number,
+  fixedOffset: ?number,
 };
+
+// We create a dummy target when making the menu fixed so that we can force popper.js to use fixed positioning
+// without affecting child layout of the actual target since children of fixed position elements can't use percentage
+// heights/widths.
+const FixedTarget = styled.div`
+  ${({ fixedOffset, targetRef }) => {
+    if (fixedOffset && targetRef) {
+      const actualTarget = targetRef.firstChild;
+      const rect = actualTarget.getBoundingClientRect();
+      return `
+        position: fixed;
+        top: ${fixedOffset}px;
+        height: ${rect.height}px;
+        width: ${rect.width}px;
+        z-index: -1;
+      `;
+    }
+    return 'display: none;';
+  }};
+`;
 
 export default class Layer extends Component<Props, State> {
   popper: {
@@ -65,6 +92,7 @@ export default class Layer extends Component<Props, State> {
 
   targetRef: ?ElementRef<any>;
   contentRef: ?ElementRef<any>;
+  fixedRef: ?ElementRef<any>;
 
   // TODO: get the value of zIndex from theme, not using it now as it is not
   // working with extract-react-types
@@ -78,6 +106,8 @@ export default class Layer extends Component<Props, State> {
     position: 'right middle',
     zIndex: 400,
     lockScroll: false,
+    isAlwaysFixed: false,
+    onPositioned: () => {},
   };
 
   constructor(props: Props) {
@@ -101,32 +131,43 @@ export default class Layer extends Component<Props, State> {
       cssPosition: 'absolute',
       originalHeight: null,
       maxHeight: null,
+      fixedOffset: null,
     };
-    this.extractStyles = this.extractStyles.bind(this);
+
+    this.extractStyles = rafSchedule(this.extractStyles.bind(this));
   }
 
   componentDidMount() {
     this.applyPopper(this.props);
+    this.calculateFixedOffset(this.props);
   }
 
   componentWillReceiveProps(nextProps: Props) {
     this.applyPopper(nextProps);
+    this.calculateFixedOffset(nextProps);
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
-    if (
-      prevState.flipped !== this.state.flipped &&
-      this.props.onFlippedChange
-    ) {
-      this.props.onFlippedChange({
-        flipped: this.state.flipped,
-        actualPosition: this.state.actualPosition,
-        originalPosition: this.state.originalPosition,
-      });
+    const { onFlippedChange, onPositioned } = this.props;
+    const {
+      flipped,
+      actualPosition,
+      originalPosition,
+      hasExtractedStyles,
+    } = this.state;
+
+    if (prevState.flipped !== flipped && onFlippedChange) {
+      onFlippedChange({ flipped, actualPosition, originalPosition });
+    }
+
+    // This flag is set the first time the position is calculated from Popper and applied to the content
+    if (!prevState.hasExtractedStyles && hasExtractedStyles && onPositioned) {
+      onPositioned();
     }
   }
 
   componentWillUnmount() {
+    this.extractStyles.cancel();
     if (this.popper) {
       this.popper.destroy();
     }
@@ -162,6 +203,21 @@ export default class Layer extends Component<Props, State> {
       ? // allow some spacing either side of viewport height
         viewportHeight - 12
       : null;
+  }
+
+  /* Popper may return either a fixed or absolute position which would be applied to the
+   * content style. In order to overcome clipping issues for overflow containing blocks when
+   * the position is absolute, we create a fixed position wrapper.
+   */
+  calculateFixedOffset(props: Props) {
+    const { isAlwaysFixed } = props;
+
+    if (isAlwaysFixed && this.targetRef) {
+      const actualTarget = this.targetRef.firstChild;
+      this.setState({ fixedOffset: actualTarget.getBoundingClientRect().top });
+    } else if (!isAlwaysFixed && this.state.fixedOffset !== null) {
+      this.setState({ fixedOffset: null });
+    }
   }
 
   /* Clamp fixed position to the window for fixed position poppers that flow off the top of the
@@ -215,7 +271,7 @@ export default class Layer extends Component<Props, State> {
   };
 
   applyPopper(props: Props) {
-    if (!this.targetRef || !this.contentRef) {
+    if (!this.fixedRef || !this.targetRef || !this.contentRef) {
       return;
     }
 
@@ -232,7 +288,9 @@ export default class Layer extends Component<Props, State> {
 
     // we wrap our target in a div so that we can safely get a reference to it, but we pass the
     // actual target to popper
-    const actualTarget = this.targetRef.firstChild;
+    const actualTarget = props.isAlwaysFixed
+      ? this.fixedRef
+      : this.targetRef.firstChild;
     const popperOpts: Object = {
       placement: positionPropToPopperPosition(props.position),
       onCreate: this.extractStyles,
@@ -278,6 +336,7 @@ export default class Layer extends Component<Props, State> {
       transform,
       hasExtractedStyles,
       maxHeight,
+      fixedOffset,
     } = this.state;
     const opacity = hasExtractedStyles ? {} : { opacity: 0 };
 
@@ -290,6 +349,14 @@ export default class Layer extends Component<Props, State> {
         >
           {this.props.children}
         </div>
+        <FixedTarget targetRef={this.targetRef} fixedOffset={fixedOffset}>
+          <div
+            style={{ height: '100%', width: '100%' }}
+            ref={ref => {
+              this.fixedRef = ref;
+            }}
+          />
+        </FixedTarget>
         {lockScroll && <ScrollBlock />}
         <ContentContainer maxHeight={maxHeight}>
           <div

@@ -9,7 +9,7 @@ editors.forEach(editor => {
     `Toolbar: should be able to select normal text, bold, italics, underline style for ${
       editor.name
     } editor`,
-    { skip: ['ie', 'safari'] },
+    { skip: ['ie', 'safari', 'edge'] },
     async client => {
       const browser = await new Page(client);
       const bold = '[aria-label="Bold"]';

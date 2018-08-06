@@ -1,13 +1,11 @@
 import * as React from 'react';
-import * as ReactDOM from 'react-dom';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { AnalyticsDelegate, AnalyticsDelegateProps } from '@atlaskit/analytics';
-import { ContentNodeView } from '../../../nodeviews';
+import { ReactNodeView } from '../../../nodeviews';
 import TaskItem from '../ui/Task';
-
-type getPosHandler = () => number;
+import { PortalProviderAPI } from '../../../ui/PortalProvider';
 
 export interface Props {
   children?: React.ReactNode;
@@ -15,30 +13,9 @@ export interface Props {
   node: PMNode;
 }
 
-class Task extends ContentNodeView implements NodeView {
-  private domRef: HTMLElement | undefined;
-  private node: PMNode;
-  private view: EditorView;
-  private getPos: getPosHandler;
-  private isContentEmpty: boolean = false;
-  private analyticsDelegateContext: AnalyticsDelegateProps;
-  private providerFactory: ProviderFactory;
-
-  constructor(
-    node: PMNode,
-    view: EditorView,
-    getPos: getPosHandler,
-    analyticsDelegateContext: AnalyticsDelegateProps,
-    providerFactory: ProviderFactory,
-  ) {
-    super(node, view);
-    this.node = node;
-    this.view = view;
-    this.getPos = getPos;
-    this.isContentEmpty = node.content.childCount === 0;
-    this.analyticsDelegateContext = analyticsDelegateContext;
-    this.providerFactory = providerFactory;
-    this.renderReactComponent();
+class Task extends ReactNodeView {
+  private isContentEmpty() {
+    return this.node.content.childCount === 0;
   }
 
   private handleOnChange = (taskId: string, isChecked: boolean) => {
@@ -53,64 +30,63 @@ class Task extends ContentNodeView implements NodeView {
     this.view.dispatch(tr);
   };
 
-  private renderReactComponent() {
-    this.domRef = document.createElement('li');
-    this.domRef.style['list-style-type'] = 'none';
+  createDomRef() {
+    const domRef = document.createElement('li');
+    domRef.style['list-style-type'] = 'none';
+    return domRef;
+  }
 
-    const node = this.node;
-    const { localId, state } = node.attrs;
+  getContentDOM() {
+    return { dom: document.createElement('div') };
+  }
+
+  render(props, forwardRef) {
+    const { localId, state } = this.node.attrs;
 
     const taskItem = (
       <TaskItem
         taskId={localId}
-        contentRef={this.handleRef}
+        contentRef={forwardRef}
         isDone={state === 'DONE'}
         onChange={this.handleOnChange}
-        showPlaceholder={this.isContentEmpty}
-        providers={this.providerFactory}
+        showPlaceholder={this.isContentEmpty()}
+        providers={props.providerFactory}
       />
     );
-    ReactDOM.render(
-      <AnalyticsDelegate {...this.analyticsDelegateContext}>
+
+    return (
+      <AnalyticsDelegate {...props.analyticsDelegateContext}>
         {taskItem}
-      </AnalyticsDelegate>,
-      this.domRef,
+      </AnalyticsDelegate>
     );
   }
 
-  get dom() {
-    return this.domRef;
-  }
-
-  update(node: PMNode) {
+  update(node: PMNode, decorations) {
     /**
-     * Return false here because allowing node updates breaks 'checking the box'
-     * when using collab editing.
+     * Returning false here when the previous content was empty fixes an error where the editor fails to set selection
+     * inside the contentDOM after a transaction. See ED-2374.
      *
-     * This is likely because the taskDecisionProvider is updating itself &
-     * Prosemirror is interfering.
+     * Returning false also when the task state has changed to force the checkbox to update. See ED-5107
      */
-    return false;
-  }
-
-  destroy() {
-    ReactDOM.unmountComponentAtNode(this.domRef!);
-    this.domRef = undefined;
-    super.destroy();
+    return super.update(
+      node,
+      decorations,
+      (currentNode, newNode) =>
+        !this.isContentEmpty() &&
+        !!(currentNode.attrs.state === newNode.attrs.state),
+    );
   }
 }
 
 export function taskItemNodeViewFactory(
+  portalProviderAPI: PortalProviderAPI,
   analyticsDelegateContext: AnalyticsDelegateProps,
   providerFactory: ProviderFactory,
 ) {
   return (node: any, view: any, getPos: () => number): NodeView => {
-    return new Task(
-      node,
-      view,
-      getPos,
+    return new Task(node, view, getPos, portalProviderAPI, {
       analyticsDelegateContext,
       providerFactory,
-    );
+    }).init();
   };
 }

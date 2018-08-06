@@ -1,9 +1,10 @@
-import { EditorState } from 'prosemirror-state';
+import { EditorState, Transaction } from 'prosemirror-state';
 import { Node } from 'prosemirror-model';
 
 export type TypeAheadItem = {
   title: string;
   icon?: () => React.ReactElement<any>;
+  [key: string]: any;
 };
 
 export type TypeAheadHandler = {
@@ -15,8 +16,8 @@ export type TypeAheadHandler = {
   selectItem: (
     state: EditorState,
     item: TypeAheadItem,
-    replaceWith: (node: Node) => boolean,
-  ) => boolean;
+    insert: (node: Node | Object | string) => Transaction,
+  ) => Transaction | false;
 };
 
 export type TypeAheadItemsLoader = null | {

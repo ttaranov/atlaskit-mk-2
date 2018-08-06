@@ -1,79 +1,23 @@
-import * as React from 'react';
-import { ComponentClass } from 'react';
-import {
-  PersonResult,
-  ContainerResult,
-  ResultBase,
-} from '@atlaskit/quick-search';
-import JiraIcon from '@atlaskit/icon/glyph/jira';
-import { Result, ResultType } from '../model/Result';
-import ObjectResult from './ObjectResult';
+export const ADVANCED_CONFLUENCE_SEARCH_RESULT_ID = 'search_confluence';
+export const ADVANCED_JIRA_SEARCH_RESULT_ID = 'search_jira';
+export const ADVANCED_PEOPLE_SEARCH_RESULT_ID = 'search_people';
 
-function getResultComponent(resultType: ResultType): ComponentClass {
-  switch (resultType) {
-    case ResultType.Object: {
-      return ObjectResult;
-    }
-    case ResultType.Person: {
-      return PersonResult;
-    }
-    case ResultType.Container: {
-      return ContainerResult;
-    }
-    default: {
-      // Make the TS compiler verify that all enums have been matched
-      const _nonExhaustiveMatch: never = resultType;
-      throw new Error(
-        `Non-exhaustive match for result type: ${_nonExhaustiveMatch}`,
-      );
-    }
-  }
+export const isAdvancedSearchResult = (resultId: string) =>
+  [
+    ADVANCED_CONFLUENCE_SEARCH_RESULT_ID,
+    ADVANCED_JIRA_SEARCH_RESULT_ID,
+    ADVANCED_PEOPLE_SEARCH_RESULT_ID,
+  ].some(advancedResultId => advancedResultId === resultId);
+
+export function getConfluenceAdvancedSearchLink(query?: string) {
+  const queryString = query ? `?queryString=${encodeURIComponent(query)}` : '';
+  return `/wiki/dosearchsite.action${queryString}`;
 }
 
-export function renderResults(results: Result[]) {
-  return results.map(result => {
-    const Result = getResultComponent(result.type);
-    return <Result key={result.resultId} {...result} />;
-  });
+export function redirectToConfluenceAdvancedSearch(query = '') {
+  // XPSRCH-891: this breaks SPA navigation. Consumer needs to pass in a redirect/navigate function.
+  window.location.assign(getConfluenceAdvancedSearchLink(query));
 }
-
-export interface AdvancedSearchItemProps {
-  query: string;
-  icon: JSX.Element;
-  text: string;
-}
-
-export const searchConfluenceItem = (props: AdvancedSearchItemProps) => (
-  <ResultBase
-    href={`/wiki/dosearchsite.action?queryString=${encodeURIComponent(
-      props.query,
-    )}`}
-    icon={props.icon}
-    key="search_confluence"
-    resultId="search_confluence"
-    text={props.text}
-  />
-);
-
-export const searchJiraItem = (query: string) => (
-  <ResultBase
-    href={`/issues/?jql=${encodeURIComponent(`text ~ "${query}"`)}`}
-    icon={<JiraIcon size="large" label="Search Jira" />}
-    key="search_jira"
-    resultId="search_jira"
-    text="Search for more Jira issues"
-  />
-);
-
-export const searchPeopleItem = (props: AdvancedSearchItemProps) => (
-  <ResultBase
-    href={`/home/people?q=${encodeURIComponent(props.query)}`}
-    icon={props.icon}
-    key="search_people"
-    resultId="search_people"
-    text={props.text}
-  />
-);
 
 export function take<T>(array: Array<T>, n: number) {
   return array.slice(0, n);
@@ -81,4 +25,26 @@ export function take<T>(array: Array<T>, n: number) {
 
 export function isEmpty<T>(array: Array<T>) {
   return array.length === 0;
+}
+
+/**
+ *
+ * Gracefully handle promise catch and returning default value
+ * @param promise promise to handle its catch block
+ * @param defaultValue value returned by the promise in case of error
+ * @param errorHandler function to be called in case of promise rejection
+ */
+export function handlePromiseError<T>(
+  promise: Promise<T>,
+  defaultValue?: T,
+  errorHandler?: ((reason: any) => T | void),
+): Promise<T | undefined> {
+  return promise.catch(error => {
+    try {
+      if (errorHandler) {
+        errorHandler(error);
+      }
+    } catch {}
+    return defaultValue;
+  });
 }

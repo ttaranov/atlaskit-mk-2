@@ -1,11 +1,13 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import { EditorView, DirectEditorProps } from 'prosemirror-view';
 import { EventDispatcher, createDispatch } from '../event-dispatcher';
 import { processRawValue } from '../utils';
 import createPluginList from './create-plugins-list';
 import { EditorState, Transaction, Selection } from 'prosemirror-state';
-import { EditorProps, EditorConfig, EditorPlugin } from '../types';
 import { ProviderFactory, Transformer } from '@atlaskit/editor-common';
+import { EditorProps, EditorConfig, EditorPlugin } from '../types';
+import { PortalProviderAPI } from '../ui/PortalProvider';
 import {
   processPluginsList,
   createSchema,
@@ -17,6 +19,7 @@ import {
 export interface EditorViewProps {
   editorProps: EditorProps;
   providerFactory: ProviderFactory;
+  portalProviderAPI: PortalProviderAPI;
   render?: (
     props: {
       editor: JSX.Element;
@@ -52,6 +55,10 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
   contentTransformer?: Transformer<string>;
   config: EditorConfig;
   editorState: EditorState;
+
+  static contextTypes = {
+    getAtlaskitAnalyticsEventHandlers: PropTypes.func,
+  };
 
   constructor(props: EditorViewProps & T) {
     super(props);
@@ -131,15 +138,18 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
     this.eventDispatcher = new EventDispatcher();
     const dispatch = createDispatch(this.eventDispatcher);
     const errorReporter = createErrorReporter(errorReporterHandler);
-    const plugins = createPMPlugins(
-      this.config,
+
+    const plugins = createPMPlugins({
       schema,
-      options.props.editorProps,
       dispatch,
-      this.eventDispatcher,
-      options.props.providerFactory,
       errorReporter,
-    );
+      editorConfig: this.config,
+      props: options.props.editorProps,
+      eventDispatcher: this.eventDispatcher,
+      providerFactory: options.props.providerFactory,
+      portalProviderAPI: this.props.portalProviderAPI,
+      reactContext: () => this.context,
+    });
 
     this.contentTransformer = contentTransformerProvider
       ? contentTransformerProvider(schema)
@@ -152,8 +162,14 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
           ? this.contentTransformer.parse(defaultValue)
           : processRawValue(schema, defaultValue);
     }
-
-    const selection = doc ? Selection.atEnd(doc) : undefined;
+    let selection: Selection | undefined;
+    if (doc) {
+      // ED-4759: Don't set selection at end for full-page editor - should be at start
+      selection =
+        options.props.editorProps.appearance === 'full-page'
+          ? Selection.atStart(doc)
+          : Selection.atEnd(doc);
+    }
     // Workaround for ED-3507: When media node is the last element, scrollIntoView throws an error
     const patchedSelection = selection
       ? Selection.findFrom(selection.$head, -1, true) || undefined
@@ -176,10 +192,15 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
         state: this.editorState,
         dispatchTransaction: (transaction: Transaction) => {
           transaction.setMeta('isLocal', true);
-          const editorState = this.view!.state.apply(transaction);
-          this.view!.updateState(editorState);
+
+          if (!this.view) {
+            return;
+          }
+
+          const editorState = this.view.state.apply(transaction);
+          this.view.updateState(editorState);
           if (this.props.editorProps.onChange && transaction.docChanged) {
-            this.props.editorProps.onChange(this.view!);
+            this.props.editorProps.onChange(this.view);
           }
           this.editorState = editorState;
         },

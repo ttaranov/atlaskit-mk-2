@@ -2,18 +2,9 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { MouseEvent, PureComponent } from 'react';
 import * as classNames from 'classnames';
-import * as uuid from 'uuid/v1';
 import { List as VirtualList } from 'react-virtualized/dist/commonjs/List';
 
-import {
-  atlassianCategory,
-  customCategory,
-  defaultCategories,
-  frequentCategory,
-  MAX_ORDINAL,
-  customTitle,
-  userCustomTitle,
-} from '../../constants';
+import { customCategory, userCustomTitle } from '../../constants';
 import {
   EmojiDescription,
   EmojiId,
@@ -34,8 +25,16 @@ import {
 import * as Items from './EmojiPickerVirtualItems';
 import * as styles from './styles';
 import { EmojiContext } from '../common/internal-types';
+import {
+  CategoryDescriptionMap,
+  CategoryGroupKey,
+  CategoryId,
+} from './categories';
+import CategoryTracker from './CategoryTracker';
 
 const categoryClassname = 'emoji-category';
+
+type CategoryKeyToGroup = { [key in CategoryGroupKey]: EmojiGroup };
 
 export interface OnSearch {
   (query: string): void;
@@ -58,91 +57,22 @@ export interface Props {
 
 export interface State {}
 
+/**
+ * Emoji grouped by a category title ie. Frequent, Your Uploads, All Uploads
+ */
 interface EmojiGroup {
   emojis: EmojiDescription[];
   title: string;
-  category: string;
+  category: CategoryGroupKey;
+  order: number;
 }
 
-/**
- * Tracks which category is visible based on
- * scrollTop, and virtual rows.
- */
-class CategoryTracker {
-  private categoryToRow: Map<string, number>;
-  private rowToCategory: Map<number, string>;
-
-  constructor() {
-    this.reset();
-  }
-
-  reset() {
-    this.categoryToRow = new Map();
-    this.rowToCategory = new Map();
-  }
-
-  add(category: string, row: number) {
-    if (!this.categoryToRow.has(category)) {
-      this.categoryToRow.set(category, row);
-      this.rowToCategory.set(row, category);
-    }
-  }
-
-  getRow(category: string): number | undefined {
-    return this.categoryToRow.get(category);
-  }
-
-  findNearestCategoryAbove(
-    startIndex: number,
-    list: VirtualList,
-  ): string | undefined {
-    const rows = Array.from(this.rowToCategory.keys()).sort((a, b) => a - b);
-    if (rows.length === 0) {
-      return;
-    }
-
-    // Return first category if list not yet rendered
-    // or the top row is above the first category
-    if (!list || rows[0] > startIndex) {
-      return this.rowToCategory.get(rows[0]);
-    }
-
-    let bounds = [0, rows.length - 1];
-    let index = Math.floor(rows.length / 2);
-
-    while (rows[index] !== startIndex && bounds[0] < bounds[1]) {
-      if (rows[index] > startIndex) {
-        bounds[1] = Math.max(index - 1, 0);
-      } else {
-        bounds[0] = index + 1;
-      }
-      index = Math.floor((bounds[0] + bounds[1]) / 2);
-    }
-
-    const headerRow =
-      rows[rows[index] > startIndex ? Math.max(index - 1, 0) : index];
-
-    return this.rowToCategory.get(headerRow);
-  }
-}
-
-const titleOrder = [
-  frequentCategory,
-  ...defaultCategories,
-  atlassianCategory,
-  userCustomTitle,
-  customTitle,
-];
-
-const titleComparator = (eg1: EmojiGroup, eg2: EmojiGroup): number => {
-  let title1 = titleOrder.indexOf(eg1.title);
-  let title2 = titleOrder.indexOf(eg2.title);
-
-  title1 = title1 === -1 ? MAX_ORDINAL : title1;
-  title2 = title2 === -1 ? MAX_ORDINAL : title2;
-
-  return title1 - title2;
+type Orderable = {
+  order?: number;
 };
+
+const byOrder = (orderableA: Orderable, orderableB: Orderable) =>
+  (orderableA.order || 0) - (orderableB.order || 0);
 
 export default class EmojiPickerVirtualList extends PureComponent<
   Props,
@@ -164,9 +94,8 @@ export default class EmojiPickerVirtualList extends PureComponent<
     onSearch: () => {},
   };
 
-  private idSuffix = uuid();
   private allEmojiGroups: EmojiGroup[];
-  private activeCategory: string | undefined | null;
+  private activeCategoryId: CategoryId | undefined | null;
   private virtualItems: VirtualItem<any>[] = [];
   private categoryTracker: CategoryTracker = new CategoryTracker();
 
@@ -175,7 +104,7 @@ export default class EmojiPickerVirtualList extends PureComponent<
   constructor(props) {
     super(props);
 
-    this.buildGroups(props.emojis, props.currentUser);
+    this.buildEmojiGroupedByCategory(props.emojis, props.currentUser);
     this.buildVirtualItems(props, this.state);
   }
 
@@ -197,7 +126,10 @@ export default class EmojiPickerVirtualList extends PureComponent<
     ) {
       if (!nextProps.query) {
         // Only refresh if no query
-        this.buildGroups(nextProps.emojis, nextProps.currentUser);
+        this.buildEmojiGroupedByCategory(
+          nextProps.emojis,
+          nextProps.currentUser,
+        );
       }
       this.buildVirtualItems(nextProps, nextState);
     }
@@ -222,7 +154,7 @@ export default class EmojiPickerVirtualList extends PureComponent<
   /**
    * Scrolls to a category in the list view
    */
-  reveal(category: string) {
+  reveal(category: CategoryId) {
     const row = this.categoryTracker.getRow(category);
     const list = this.refs.list as VirtualList;
     list.scrollToRow(row);
@@ -233,15 +165,15 @@ export default class EmojiPickerVirtualList extends PureComponent<
     list.scrollToRow(this.virtualItems.length);
   }
 
-  private categoryId = category => `category_${category}_${this.idSuffix}`;
-
-  private buildCategory = (group: EmojiGroup): VirtualItem<any>[] => {
+  private buildVirtualItemFromGroup = (
+    group: EmojiGroup,
+  ): VirtualItem<any>[] => {
     const { onEmojiSelected, onEmojiDelete } = this.props;
     const items: VirtualItem<any>[] = [];
 
     items.push(
       new CategoryHeadingItem({
-        id: this.categoryId(group.category),
+        id: group.category,
         title: group.title,
         className: categoryClassname,
       }),
@@ -285,13 +217,15 @@ export default class EmojiPickerVirtualList extends PureComponent<
       items.push(new LoadingItem());
     } else {
       if (query) {
+        const search = CategoryDescriptionMap.SEARCH;
         // Only a single "result" category
         items = [
           ...items,
-          ...this.buildCategory({
-            category: 'Search',
-            title: 'Search results',
+          ...this.buildVirtualItemFromGroup({
+            category: 'SEARCH',
+            title: search.name,
             emojis,
+            order: search.order,
           }),
         ];
       } else {
@@ -301,9 +235,12 @@ export default class EmojiPickerVirtualList extends PureComponent<
         this.allEmojiGroups.forEach(group => {
           // Optimisation - avoid re-rendering unaffected groups for the current selectedShortcut
           // by not passing it to irrelevant groups
-          this.categoryTracker.add(group.category, items.length);
+          this.categoryTracker.add(
+            group.emojis[0].category as CategoryId,
+            items.length,
+          );
 
-          items = [...items, ...this.buildCategory(group)];
+          items = [...items, ...this.buildVirtualItemFromGroup(group)];
         });
       }
     }
@@ -326,59 +263,62 @@ export default class EmojiPickerVirtualList extends PureComponent<
     }
   };
 
-  private buildGroups = (
+  private addToCategoryMap = (
+    categoryToGroupMap: CategoryKeyToGroup,
+    emoji: EmojiDescription,
+    category: CategoryGroupKey,
+  ): CategoryKeyToGroup => {
+    if (!categoryToGroupMap[category]) {
+      const categoryDefinition = CategoryDescriptionMap[category];
+      categoryToGroupMap[category] = {
+        emojis: [],
+        title: categoryDefinition.name,
+        category,
+        order: categoryDefinition.order,
+      };
+    }
+    categoryToGroupMap[category].emojis.push(emoji);
+    return categoryToGroupMap;
+  };
+
+  private groupByCategory = (currentUser?: User) => (
+    categoryToGroupMap: CategoryKeyToGroup,
+    emoji: EmojiDescription,
+  ): CategoryKeyToGroup => {
+    this.addToCategoryMap(
+      categoryToGroupMap,
+      emoji,
+      emoji.category as CategoryId,
+    );
+    // separate user emojis
+    if (
+      emoji.category === customCategory &&
+      currentUser &&
+      emoji.creatorUserId === currentUser.id
+    ) {
+      this.addToCategoryMap(categoryToGroupMap, emoji, 'USER_CUSTOM');
+    }
+    return categoryToGroupMap;
+  };
+
+  private buildEmojiGroupedByCategory = (
     emojis: EmojiDescription[],
     currentUser?: User,
   ): void => {
-    const existingCategories = new Map();
+    const categoryToGroupMap = emojis.reduce(
+      this.groupByCategory(currentUser),
+      {},
+    );
 
-    let currentGroup;
-    let currentCategory: string | undefined;
-
-    let userCustomGroup: EmojiGroup = {
-      emojis: [],
-      title: userCustomTitle,
-      category: customCategory,
-    };
-
-    const list: EmojiGroup[] = [];
-
-    for (let i = 0; i < emojis.length; i++) {
-      let emoji = emojis[i];
-
-      if (currentCategory !== emoji.category) {
-        currentCategory = emoji.category;
-        if (existingCategories.has(currentCategory)) {
-          currentGroup = existingCategories.get(currentCategory);
-        } else {
-          currentGroup = {
-            emojis: [],
-            title:
-              currentCategory === customCategory
-                ? customTitle
-                : currentCategory,
-            category: currentCategory,
-          };
-          existingCategories.set(currentCategory, currentGroup);
-          list.push(currentGroup);
+    this.allEmojiGroups = Object.keys(categoryToGroupMap)
+      .map(key => categoryToGroupMap[key])
+      .map(group => {
+        if (group.category !== 'FREQUENT') {
+          group.emojis.sort(byOrder);
         }
-      }
-      currentGroup.emojis.push(emoji);
-
-      // separate user emojis
-      if (
-        currentCategory === customCategory &&
-        emoji &&
-        currentUser &&
-        emoji.creatorUserId === currentUser.id
-      ) {
-        userCustomGroup.emojis.push(emoji);
-      }
-    }
-    if (userCustomGroup.emojis.length > 0) {
-      list.push(userCustomGroup);
-    }
-    this.allEmojiGroups = list.sort(titleComparator);
+        return group;
+      })
+      .sort(byOrder);
   };
 
   private repaintList = () => {
@@ -392,7 +332,11 @@ export default class EmojiPickerVirtualList extends PureComponent<
     }
   };
 
-  private checkCategoryChange = indexes => {
+  /**
+   * Checks if list is showing a new CategoryId
+   * to inform selector to change active category
+   */
+  private checkCategoryIdChange = indexes => {
     const { startIndex } = indexes;
 
     // FS-1844 Fix a rendering problem when scrolling to the top
@@ -408,8 +352,8 @@ export default class EmojiPickerVirtualList extends PureComponent<
         list,
       );
 
-      if (currentCategory && this.activeCategory !== currentCategory) {
-        this.activeCategory = currentCategory;
+      if (currentCategory && this.activeCategoryId !== currentCategory) {
+        this.activeCategoryId = currentCategory;
         if (this.props.onCategoryActivated) {
           this.props.onCategoryActivated(currentCategory);
         }
@@ -442,7 +386,7 @@ export default class EmojiPickerVirtualList extends PureComponent<
           scrollToAlignment="start"
           width={sizes.listWidth}
           className={styles.virtualList}
-          onRowsRendered={this.checkCategoryChange}
+          onRowsRendered={this.checkCategoryIdChange}
         />
       </div>
     );

@@ -30,7 +30,7 @@ export default class StatefulAvatarPickerDialog extends React.Component<
   Partial<AvatarPickerDialogProps>,
   State
 > {
-  timeoutId: number;
+  timeoutId: number = 0;
 
   state = {
     isOpen: true,
@@ -50,7 +50,7 @@ export default class StatefulAvatarPickerDialog extends React.Component<
     this.setState({ isOpen: false });
   };
 
-  save = dataURI => {
+  save = (dataURI: any) => {
     this.setState(
       {
         isLoading: true,

@@ -6,6 +6,7 @@ export interface MentionBridge {
 export interface TextFormattingBridge {
   updateTextFormat(markStates: string);
   updateText(content: string);
+  updateBlockState(currentBlockType: string);
 }
 
 export interface MediaBridge {
@@ -17,8 +18,13 @@ export interface PromiseBridge {
   submitPromise(name: string, uuid: string, args: string);
 }
 
+export interface ListBridge {
+  updateListState(listState: string);
+}
+
 export default interface NativeBridge
   extends MentionBridge,
     TextFormattingBridge,
     MediaBridge,
-    PromiseBridge {};
+    PromiseBridge,
+    ListBridge {}

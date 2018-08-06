@@ -23,5 +23,16 @@ describe(name, () => {
       expect(availableNodes).toHaveLength(3);
       expect(availableNodes).toContain('mediaSingle');
     });
+
+    it('should not have mediaGroup node when allowMediaGroup is false', () => {
+      const availableNodes = getNodeNames(
+        mediaPlugin({
+          allowMediaGroup: false,
+          allowMediaSingle: true,
+        }),
+      );
+      expect(availableNodes).toHaveLength(2);
+      expect(availableNodes).not.toContain('mediaGroup');
+    });
   });
 });

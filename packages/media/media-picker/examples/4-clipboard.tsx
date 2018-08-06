@@ -4,7 +4,6 @@ import { Component } from 'react';
 import {
   userAuthProvider,
   defaultMediaPickerAuthProvider,
-  userAuthProviderBaseURL,
 } from '@atlaskit/media-test-helpers';
 import Button from '@atlaskit/button';
 import Toggle from '@atlaskit/toggle';
@@ -21,7 +20,6 @@ import { ContextFactory } from '@atlaskit/media-core';
 
 export interface ClipboardWrapperState {
   isConnectedToUsersCollection: boolean;
-  previewsData: any[];
   isActive: boolean;
   isFetchingLastItems: boolean;
   lastItems: any[];
@@ -34,7 +32,6 @@ class ClipboardWrapper extends Component<{}, ClipboardWrapperState> {
 
   state: ClipboardWrapperState = {
     isConnectedToUsersCollection: true,
-    previewsData: [],
     isActive: true,
     isFetchingLastItems: true,
     lastItems: [],
@@ -46,11 +43,9 @@ class ClipboardWrapper extends Component<{}, ClipboardWrapperState> {
     this.setState({ isFetchingLastItems: true });
 
     userAuthProvider()
-      .then(({ clientId, token }) => {
+      .then(({ clientId, token, baseUrl }) => {
         const queryParams = `client=${clientId}&token=${token}&limit=5&details=full&sortDirection=desc`;
-        return fetch(
-          `${userAuthProviderBaseURL}/collection/recents/items?${queryParams}`,
-        );
+        return fetch(`${baseUrl}/collection/recents/items?${queryParams}`);
       })
       .then(r => r.json())
       .then(data => {
@@ -86,7 +81,6 @@ class ClipboardWrapper extends Component<{}, ClipboardWrapperState> {
   createClipboard() {
     const { isConnectedToUsersCollection, isActive } = this.state;
     const context = ContextFactory.create({
-      serviceHost: userAuthProviderBaseURL,
       authProvider: defaultMediaPickerAuthProvider,
       userAuthProvider: isConnectedToUsersCollection
         ? userAuthProvider
@@ -133,9 +127,15 @@ class ClipboardWrapper extends Component<{}, ClipboardWrapperState> {
     }
 
     return lastItems.map((item, key) => {
+      const { id, details } = item;
+
+      // details are not always present in the response
+      const name = details ? details.name : '<no-details>';
+      const mediaType = details ? details.mediaType : '<no-details>';
+
       return (
         <div key={key}>
-          {item.id} | {item.details.name} | {item.details.mediaType}
+          {id} | {name} | {mediaType}
         </div>
       );
     });

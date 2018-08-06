@@ -23,21 +23,23 @@ export const insertMacroFromMacroBrowser = (
     macroNode,
   );
   if (newMacro) {
-    const node = resolveMacro(newMacro, view.state);
-    const { schema: { nodes: { bodiedExtension } } } = view.state;
+    const currentLayout = (macroNode && macroNode.attrs.layout) || 'default';
+    const node = resolveMacro(newMacro, view.state, { layout: currentLayout });
+    const {
+      schema: {
+        nodes: { bodiedExtension },
+      },
+    } = view.state;
     let { tr } = view.state;
-    if (node) {
+    if (node && tr.selection instanceof NodeSelection) {
+      // preventing nested bodiedExtensions
       if (
-        // trying to replace selected node
-        tr.selection instanceof NodeSelection &&
-        // with bodiedExtension
         node.type === bodiedExtension &&
-        // selected node is not nested in bodiedExtension
-        !hasParentNodeOfType(bodiedExtension)(tr.selection)
+        hasParentNodeOfType(bodiedExtension)(tr.selection)
       ) {
-        tr = replaceSelectedNode(node)(tr);
-      } else {
         tr = safeInsert(node)(tr);
+      } else {
+        tr = replaceSelectedNode(node)(tr);
       }
       view.dispatch(tr.scrollIntoView());
       return true;
@@ -50,6 +52,7 @@ export const insertMacroFromMacroBrowser = (
 export const resolveMacro = (
   macro?: MacroAttributes,
   state?: EditorState,
+  optionalAttrs?: object,
 ): PmNode | null => {
   if (!macro || !state) {
     return null;
@@ -60,10 +63,10 @@ export const resolveMacro = (
   let node;
 
   if (type === 'extension') {
-    node = schema.nodes.extension.create(attrs);
+    node = schema.nodes.extension.create({ ...attrs, ...optionalAttrs });
   } else if (type === 'bodiedExtension') {
     node = schema.nodes.bodiedExtension.create(
-      attrs,
+      { ...attrs, ...optionalAttrs },
       schema.nodeFromJSON(macro).content,
     );
   } else if (type === 'inlineExtension') {

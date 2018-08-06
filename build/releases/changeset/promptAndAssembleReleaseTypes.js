@@ -89,21 +89,15 @@ async function promptBumptype({
 
   if (isSubsequent)
     logger.log(
-      `Due to other changes you have selected, you need to change the type of release for ${
-        dependentName
-      }`,
+      `Due to other changes you have selected, you need to change the type of release for ${dependentName}`,
     );
   if (mustUpdateList)
     logger.log(
-      `Bumping [${mustUpdateList}] will cause an update to ${
-        dependentName
-      }'s dependencies.`,
+      `Bumping [${mustUpdateList}] will cause an update to ${dependentName}'s dependencies.`,
     );
   if (mayUpdateList)
     logger.log(
-      `Bumping [${mayUpdateList}] can cause an update to ${
-        dependentName
-      }'s dependencies.`,
+      `Bumping [${mayUpdateList}] can cause an update to ${dependentName}'s dependencies.`,
     );
   return await cli.askList(
     `What kind of change is this for ${dependentName}?`,

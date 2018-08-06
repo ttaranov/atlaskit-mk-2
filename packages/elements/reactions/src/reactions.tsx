@@ -19,25 +19,20 @@ export interface OnEmoji {
 
 const reactionStyle = style({
   display: 'inline-block',
-  margin: '4px 4px 0 4px',
-});
-
-const reactionsGroupStyle = style({
-  marginTop: '-4px', // Cancel 4px marginTop when not wrapped on reactionStyle
+  // top margin of 2px to allow spacing between rows when wrapped (paired with top margin in reactionsStyle)
+  margin: '2px 4px 0 4px',
 });
 
 const reactionsStyle = style({
   display: 'flex',
+  flexWrap: 'wrap',
   position: 'relative',
   background: 'white',
   alignItems: 'center',
   borderRadius: '15px',
-  $nest: {
-    '&> div': {
-      display: 'flex',
-      flexWrap: 'wrap',
-    },
-  },
+  // To allow to row spacing of 2px on wrap, and 0px on first row
+  marginTop: '-2px',
+  $nest: { '& > :first-child': { marginLeft: 0 } },
 });
 
 export interface Props {
@@ -169,6 +164,7 @@ export default class Reactions extends Component<Props, State> {
     return (
       <Tooltip content={this.getTooltip()}>
         <ReactionPicker
+          className={reactionStyle}
           emojiProvider={emojiProvider}
           onSelection={this.handleReactionPickerSelection}
           miniMode={true}
@@ -187,7 +183,7 @@ export default class Reactions extends Component<Props, State> {
         key={emojiId}
         ref={this.handleReactionRef(emojiId)}
         className={reactionStyle}
-        reaction={{ ...reaction }}
+        reaction={reaction}
         emojiProvider={this.props.emojiProvider}
         onClick={this.onEmojiClick}
         onMouseOver={this.onReactionHover}
@@ -196,20 +192,13 @@ export default class Reactions extends Component<Props, State> {
     );
   };
 
-  private renderReactions = () => {
-    const { reactions } = this.state;
-    return (
-      <div className={reactionsGroupStyle}>
-        {reactions.map(this.renderReaction)}
-      </div>
-    );
-  };
+  private renderReactions = () => this.state.reactions.map(this.renderReaction);
 
   render() {
     return (
       <div className={reactionsStyle}>
-        {this.renderPicker()}
         {this.renderReactions()}
+        {this.renderPicker()}
       </div>
     );
   }

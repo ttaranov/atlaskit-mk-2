@@ -1,6 +1,15 @@
 // @flow
 import React, { Component, type Node } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import Base, { Label } from '@atlaskit/field-base';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
 import TextArea from './styled/TextArea';
 
 type Props = {
@@ -22,8 +31,12 @@ type Props = {
   placeholder?: string,
   /** The value of the input. */
   value?: string | number,
+  /** Handler to be called when the input is blurred */
+  onBlur?: (event: SyntheticInputEvent<HTMLTextAreaElement>) => mixed,
   /** Handler to be called when the input changes. */
   onChange?: (event: SyntheticInputEvent<HTMLTextAreaElement>) => mixed,
+  /** Handler to be called when the input is focused */
+  onFocus?: (event: SyntheticInputEvent<HTMLTextAreaElement>) => mixed,
   /** Id value to be passed to the html input. */
   id?: string,
   /** Sets whether to show or hide the label. */
@@ -43,8 +56,8 @@ type Props = {
   maxLength?: number,
   /** The minimum number of rows of text to display */
   minimumRows?: number,
-  /** Disables the resizing of the text area. */
-  enableResize?: boolean,
+  /** Enables the resizing of the textarea (in both directions, or restricted to one axis) */
+  enableResize?: boolean | 'horizontal' | 'vertical',
   /** Type of field */
   type?: string, //eslint-disable-line react/no-unused-prop-types
   /** Hide the validation message and style. This is used by <Field> to disable Validation display handling by FieldBase
@@ -52,9 +65,7 @@ type Props = {
   isValidationHidden?: boolean,
 };
 
-// We are using any as FieldTextArea passes props via spread
-// TODO: if there is no impact props should be passed explicitly from FieldTextArea
-export default class FieldTextAreaStateless extends Component<Props, void> {
+class FieldTextAreaStateless extends Component<Props, void> {
   input: any; // eslint-disable-line react/sort-comp
 
   static defaultProps = {
@@ -88,7 +99,9 @@ export default class FieldTextAreaStateless extends Component<Props, void> {
       maxLength,
       minimumRows,
       name,
+      onBlur,
       onChange,
+      onFocus,
       placeholder,
       enableResize,
       required,
@@ -99,7 +112,7 @@ export default class FieldTextAreaStateless extends Component<Props, void> {
 
     return (
       <div>
-        {/* // $FlowFixMe TEMPORARY */}
+        {/* // $FlowFixMe - Label signature interpreted incorrectly */}
         <Label
           htmlFor={id}
           isDisabled={disabled}
@@ -125,8 +138,10 @@ export default class FieldTextAreaStateless extends Component<Props, void> {
             value={value}
             required={required}
             minimumRows={minimumRows}
-            enableResize={enableResize || disabled}
+            enableResize={enableResize}
+            onBlur={onBlur}
             onChange={onChange}
+            onFocus={onFocus}
             id={id}
             autoFocus={autoFocus}
             spellCheck={isSpellCheckEnabled}
@@ -140,3 +155,36 @@ export default class FieldTextAreaStateless extends Component<Props, void> {
     );
   }
 }
+
+export { FieldTextAreaStateless as FieldTextAreaStatelessWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'fieldTextArea',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onBlur: createAndFireEventOnAtlaskit({
+      action: 'blurred',
+      actionSubject: 'textArea',
+
+      attributes: {
+        componentName: 'fieldTextArea',
+        packageName,
+        packageVersion,
+      },
+    }),
+
+    onFocus: createAndFireEventOnAtlaskit({
+      action: 'focused',
+      actionSubject: 'textArea',
+
+      attributes: {
+        componentName: 'fieldTextArea',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(FieldTextAreaStateless),
+);

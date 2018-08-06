@@ -56,6 +56,9 @@ import {
   placeholder,
   layoutSection,
   layoutColumn,
+  inlineCard,
+  unsupportedBlock,
+  unsupportedInline,
 } from './nodes';
 
 function addItems(
@@ -157,7 +160,10 @@ const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'extension', spec: extension },
   { name: 'inlineExtension', spec: inlineExtension },
   { name: 'bodiedExtension', spec: bodiedExtension },
+  { name: 'inlineCard', spec: inlineCard },
   { name: 'unknownBlock', spec: unknownBlock },
+  { name: 'unsupportedBlock', spec: unsupportedBlock },
+  { name: 'unsupportedInline', spec: unsupportedInline },
 ];
 
 const marksInOrder: SchemaBuiltInItem[] = [

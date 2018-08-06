@@ -1,27 +1,33 @@
 import * as React from 'react';
 import { Context } from '@atlaskit/media-core';
 import { ItemViewer } from './item-viewer';
-import { Identifier } from './domain';
-import { HeaderWrapper, ListWrapper } from './styled';
-import { getSelectedIndex } from './util';
-import { ErrorMessage } from './styled';
+import { Identifier, MediaViewerFeatureFlags } from './domain';
+import { HeaderWrapper, hideControlsClassName, ListWrapper } from './styled';
+import { getSelectedIndex } from './utils';
+import { ErrorMessage, createError } from './error';
 import Navigation from './navigation';
 import Header from './header';
 
-export type Props = {
+export type Props = Readonly<{
   onClose?: () => void;
   onNavigationChange?: (selectedItem: Identifier) => void;
-  selectedItem: Identifier;
+  showControls?: () => void;
+  featureFlags?: MediaViewerFeatureFlags;
+  defaultSelectedItem: Identifier;
   items: Identifier[];
   context: Context;
-};
+}>;
 
 export type State = {
   selectedItem: Identifier;
+  previewCount: number;
 };
 
 export class List extends React.Component<Props, State> {
-  state: State = { selectedItem: this.props.selectedItem };
+  state: State = {
+    selectedItem: this.props.defaultSelectedItem,
+    previewCount: 0,
+  };
 
   render() {
     const { items } = this.props;
@@ -29,26 +35,28 @@ export class List extends React.Component<Props, State> {
   }
 
   renderContent(items: Identifier[]) {
-    const { context, onClose } = this.props;
+    const { context, onClose, featureFlags, showControls } = this.props;
     const { selectedItem } = this.state;
     if (getSelectedIndex(items, selectedItem) < 0) {
-      return (
-        <ErrorMessage>
-          The selected item with id '{selectedItem.id}' was not found on the
-          list
-        </ErrorMessage>
-      );
+      return <ErrorMessage error={createError('idNotFound')} />;
     } else {
       return (
         <ListWrapper>
-          <HeaderWrapper>
+          <HeaderWrapper className={hideControlsClassName}>
             <Header
               context={context}
               identifier={selectedItem}
               onClose={onClose}
             />
           </HeaderWrapper>
-          <ItemViewer context={context} identifier={selectedItem} />
+          <ItemViewer
+            featureFlags={featureFlags}
+            context={context}
+            identifier={selectedItem}
+            showControls={showControls}
+            onClose={onClose}
+            previewCount={this.state.previewCount}
+          />
           <Navigation
             items={items}
             selectedItem={selectedItem}
@@ -60,10 +68,14 @@ export class List extends React.Component<Props, State> {
   }
 
   onNavigationChange = (selectedItem: Identifier) => {
-    const { onNavigationChange } = this.props;
+    const { onNavigationChange, showControls } = this.props;
     if (onNavigationChange) {
       onNavigationChange(selectedItem);
     }
-    this.setState({ selectedItem });
+    if (showControls) {
+      showControls();
+    }
+
+    this.setState({ selectedItem, previewCount: this.state.previewCount + 1 });
   };
 }

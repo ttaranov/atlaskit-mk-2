@@ -10,11 +10,21 @@ import {
   ReactionStatus,
 } from './types';
 
+export type UpdaterFunction<T> = (state: Readonly<T>) => T;
+export type Updater<T> = T | UpdaterFunction<T>;
+
+const getNewValue = <T>(updater: Updater<T>) => (previousValue: T): T => {
+  if (updater instanceof Function) {
+    return updater(previousValue);
+  }
+  return updater;
+};
+
 export default abstract class AbstractReactionsResource
   implements ReactionsProvider {
   protected excludeArisFromAutoPoll: string[] = [];
   protected cachedReactions: {
-    [key: string]: ReactionsState;
+    readonly [key: string]: ReactionsState;
   } = {};
   protected subscribers: { [ari: string]: Listener[] } = {};
   protected lastActionForAri: { [ari: string]: number } = {};
@@ -68,12 +78,24 @@ export default abstract class AbstractReactionsResource
     emojiId: string,
   ): ReactionSummary | undefined {
     const reactionState = this.cachedReactions[key];
-    if (reactionState && reactionState.status === ReactionStatus.ready) {
-      return reactionState.reactions.find(reaction =>
+    const index = this.findReactionIndex(reactionState, emojiId);
+    return index !== -1 &&
+      reactionState &&
+      reactionState.status === ReactionStatus.ready
+      ? reactionState.reactions[index]
+      : undefined;
+  }
+
+  protected findReactionIndex(
+    reactionsState: ReactionsState,
+    emojiId: string,
+  ): number {
+    if (reactionsState && reactionsState.status === ReactionStatus.ready) {
+      return reactionsState.reactions.findIndex(reaction =>
         equalEmojiId(reaction.emojiId, emojiId),
       );
     }
-    return undefined;
+    return -1;
   }
 
   private hasReacted(key: string, emojiId: string) {
@@ -81,34 +103,36 @@ export default abstract class AbstractReactionsResource
     return reaction && reaction.reacted;
   }
 
-  toggleReaction(containerAri: string, ari: string, emojiId: string) {
+  toggleReaction(
+    containerAri: string,
+    ari: string,
+    emojiId: string,
+    objectCreationTimestamp?: number,
+  ): Promise<ReactionsState> {
     const key = `${containerAri}|${ari}`;
 
     if (this.hasReacted(key, emojiId)) {
-      this.deleteReaction(containerAri, ari, emojiId)
-        .then(state => {
-          this.notifyUpdated(containerAri, ari, state);
-        })
-        .catch(() => {
-          this.optimisticAddReaction(containerAri, ari, emojiId);
-          this.notifyUpdated(containerAri, ari, this.cachedReactions[key]);
-        });
+      return this.deleteReaction(containerAri, ari, emojiId).catch(e => {
+        this.optimisticAddReaction(containerAri, ari, emojiId);
+        throw e;
+      });
     } else {
-      this.addReaction(containerAri, ari, emojiId)
-        .then(state => {
-          this.notifyUpdated(containerAri, ari, state);
-        })
-        .catch(() => {
-          this.optimisticDeleteReaction(containerAri, ari, emojiId);
-          this.notifyUpdated(containerAri, ari, this.cachedReactions[key]);
-        });
+      return this.addReaction(
+        containerAri,
+        ari,
+        emojiId,
+        objectCreationTimestamp,
+      ).catch(e => {
+        this.optimisticDeleteReaction(containerAri, ari, emojiId);
+        throw e;
+      });
     }
   }
 
   notifyUpdated(
     containerAri: string,
     ari: string,
-    state: ReactionsState,
+    state: Readonly<ReactionsState>,
   ): void {
     const key = this.objectReactionKey(containerAri, ari);
     if (!this.subscribers[key]) {
@@ -154,14 +178,14 @@ export default abstract class AbstractReactionsResource
       this.getReactions(this.batchedKeys)
         .then(reactions => {
           Object.keys(reactions).forEach(key => {
-            let objectReactions = reactions[key];
+            const objectReactions = reactions[key];
             const containerAri = subscriptionKey.containerAri;
             const ari = key;
             this.dequeueAri({
               ari: ari,
               containerAri: containerAri,
             });
-            this.notifyUpdated(containerAri, ari, {
+            this.updateReactionState(containerAri, ari, {
               status: ReactionStatus.ready,
               reactions: objectReactions,
             });
@@ -234,32 +258,12 @@ export default abstract class AbstractReactionsResource
     ari: string,
     emojiId: string,
   ): void {
-    const key = this.objectReactionKey(containerAri, ari);
-    this.excludeAriFromAutoPoll(ari);
-
-    if (!this.cachedReactions[key]) {
-      this.cachedReactions[key] = {
-        status: ReactionStatus.ready,
-        reactions: [],
-      };
-    }
-
-    const reactionState = this.cachedReactions[key];
-    const reaction = this.findReaction(key, emojiId);
-    if (reaction) {
-      reaction.reacted = true;
-      reaction.count++;
-    } else if (reactionState.status === ReactionStatus.ready) {
-      reactionState.reactions.push({
-        ari: ari,
-        containerAri: containerAri,
-        emojiId: emojiId,
-        count: 1,
-        reacted: true,
-      });
-    }
-
-    this.notifyUpdated(containerAri, ari, this.cachedReactions[key]);
+    this.updateEmojiState(containerAri, ari, emojiId, reaction => ({
+      ...reaction,
+      count: reaction.count + 1,
+      reacted: true,
+      optimisticallyUpdated: true,
+    }));
   }
 
   protected optimisticDeleteReaction(
@@ -267,32 +271,90 @@ export default abstract class AbstractReactionsResource
     ari: string,
     emojiId: string,
   ): void {
-    const key = this.objectReactionKey(containerAri, ari);
-    this.excludeAriFromAutoPoll(ari);
+    this.updateEmojiState(containerAri, ari, emojiId, reaction => ({
+      ...reaction,
+      count: reaction.count - 1,
+      reacted: false,
+      optimisticallyUpdated: true,
+    }));
+  }
 
-    const reaction = this.findReaction(key, emojiId);
-
-    if (reaction) {
-      reaction.reacted = false;
-      reaction.count--;
-
-      if (reaction.count < 1) {
-        const reactionState = this.cachedReactions[key];
-        if (reactionState.status === ReactionStatus.ready) {
-          reactionState.reactions = reactionState.reactions.filter(
-            r => r !== reaction,
-          );
+  protected updateEmojiState(
+    containerAri: string,
+    ari: string,
+    emojiId: string,
+    updater: Updater<ReactionSummary>,
+  ): ReactionsState {
+    return this.updateReactionState(containerAri, ari, reactionsState => {
+      if (reactionsState.status === ReactionStatus.ready) {
+        let found = false;
+        let changed = false;
+        const reactions = reactionsState.reactions.map(reaction => {
+          if (reaction.emojiId === emojiId) {
+            found = true;
+            const newReaction = getNewValue(updater)(reaction);
+            if (reaction !== newReaction) {
+              changed = true;
+            }
+            return newReaction;
+          }
+          return reaction;
+        });
+        if (!found) {
+          const reaction = {
+            containerAri,
+            ari,
+            emojiId,
+            count: 0,
+            reacted: false,
+            optimisticallyUpdated: false,
+          };
+          const newReaction = getNewValue(updater)(reaction);
+          if (newReaction !== reaction) {
+            reactions.push(newReaction);
+            changed = true;
+          }
+        }
+        if (changed) {
+          return {
+            ...reactionsState,
+            reactions: reactions.filter(value => value.count > 0),
+          };
         }
       }
+      return reactionsState;
+    });
+  }
 
+  protected updateReactionState(
+    containerAri: string,
+    ari: string,
+    updater: Updater<ReactionsState>,
+  ): ReactionsState {
+    this.excludeAriFromAutoPoll(ari);
+    const key = this.objectReactionKey(containerAri, ari);
+
+    const previousState: ReactionsState = this.cachedReactions[key] || {
+      status: ReactionStatus.ready,
+      reactions: [],
+    };
+
+    this.cachedReactions = {
+      ...this.cachedReactions,
+      [key]: getNewValue(updater)(previousState),
+    };
+
+    if (previousState !== this.cachedReactions[key]) {
       this.notifyUpdated(containerAri, ari, this.cachedReactions[key]);
     }
+    return this.cachedReactions[key];
   }
 
   abstract addReaction(
     containerAri: string,
     ari: string,
     emojiId: string,
+    objectCreationTimestamp?: number,
   ): Promise<ReactionsState>;
 
   abstract deleteReaction(

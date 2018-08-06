@@ -1,10 +1,75 @@
 # @atlaskit/code
 
+## 7.0.3
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/theme@5.1.3
+
+## 7.0.2
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/docs@5.0.2
+
+## 7.0.1
+- [patch] Add a SSR test for every package, add react-dom and build-utils in devDependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+- [none] Updated dependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+  - @atlaskit/theme@5.1.1
+
+## 7.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+
+## 6.0.1
+- [patch] Add default theme prop to prevent Code throwing errors when no theme provider is given [07334bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/07334bc)
+- [none] Updated dependencies [07334bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/07334bc)
+
+## 6.0.0
+- [major] Significantly reduce the bundle-size of @atlaskit/code by only supporting a subset of languages. Also introduces support for theming the content via @atlaskit/theme. AK-4536 [eee2d45](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eee2d45)
+- [none] Updated dependencies [eee2d45](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eee2d45)
+  - @atlaskit/docs@4.2.1
+
+## 5.0.4
+- [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+- [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
+  - @atlaskit/theme@4.0.4
+
+## 5.0.3
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/theme@4.0.3
+  - @atlaskit/docs@4.1.1
+
+## 5.0.2
+- [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/theme@4.0.2
+
+## 5.0.1
+- [patch] Update readme's [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
+- [patch] Updated dependencies [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
+  - @atlaskit/theme@4.0.1
+  - @atlaskit/docs@4.0.1
+
+## 5.0.0
+- [major] makes styled-components a peer dependency and upgrades version range from 1.4.6 - 3 to ^3.2.6 [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/theme@4.0.0
+  - @atlaskit/docs@4.0.0
+
+## 4.0.4
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/theme@3.2.2
+  - @atlaskit/docs@3.0.4
+
 ## 4.0.3
 - [patch] Align font sizes for inline code, mentions and dates [d2ef1af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d2ef1af)
 - [none] Updated dependencies [d2ef1af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d2ef1af)
-
-## 4.0.2
 
 ## 4.0.1
 - [patch] Get rid of outdent dependency [6a2c1d9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6a2c1d9)
@@ -48,12 +113,3 @@
 ## 2.2.0
 - [minor] Add React 16 support. [12ea6e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12ea6e4)
 
-## 2.1.11
-
-## 2.1.10
-
-## 2.1.9
-
-## 2.1.8
-
-## 2.1.7

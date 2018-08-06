@@ -1,15 +1,19 @@
 // @flow
 
-import type { Node } from 'react';
-
 import type { GlobalItemProps } from '../GlobalItem/types';
 import type { GlobalTheme } from '../../theme/types';
 
 type ItemDataShape = GlobalItemProps & { key?: string };
 
-export type GlobalNavProps = {
-  children: Node,
-  primaryActions: Array<ItemDataShape>,
-  secondaryActions: Array<ItemDataShape>,
+export type ConnectedGlobalNavigationProps = {
+  /** An array of objects to render as GlobalItems at the top of the GlobalNavigation
+   * bar. */
+  primaryItems: ItemDataShape[],
+  /** An array of objects to render as GlobalItems at the bottom of the
+   * GlobalNavigation bar. */
+  secondaryItems: ItemDataShape[],
+};
+
+export type GlobalNavigationProps = GlobalNavigationProps & {
   theme: GlobalTheme,
 };

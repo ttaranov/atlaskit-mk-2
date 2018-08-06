@@ -1,59 +1,20 @@
 import * as React from 'react';
-import { ResultItemGroup } from '@atlaskit/quick-search';
-import SearchIcon from '@atlaskit/icon/glyph/search';
 import { Result } from '../../model/Result';
-import SearchError from '../SearchError';
-import NoResults from '../NoResults';
-import {
-  renderResults,
-  searchConfluenceItem,
-  searchPeopleItem,
-  take,
-  isEmpty,
-} from '../SearchResultsUtil';
+import NoResultsState from './NoResultsState';
+import SearchResultsState from './SearchResultsState';
+import PreQueryState from './PreQueryState';
+import { isEmpty } from '../SearchResultsUtil';
+import SearchResults from '../SearchResults';
+import { PostQueryAnalyticsComponent } from './ScreenAnalyticsHelper';
 
-const renderObjectsGroup = (title: string, results: Result[], query: string) =>
-  results.length > 0 ? (
-    <ResultItemGroup title={title} key="objects">
-      {renderResults(results)}
-    </ResultItemGroup>
-  ) : null;
+export const MAX_PAGES_BLOGS_ATTACHMENTS = 8;
+export const MAX_SPACES = 3;
+export const MAX_PEOPLE = 3;
 
-const renderSpacesGroup = (title: string, results: Result[], query: string) =>
-  results.length > 0 ? (
-    <ResultItemGroup title={title} key="spaces">
-      {renderResults(results)}
-    </ResultItemGroup>
-  ) : null;
-
-const renderPeopleGroup = (title: string, results: Result[], query: string) => (
-  <ResultItemGroup title={title} key="people">
-    {renderResults(results)}
-    {renderSearchPeopleItem(query)}
-  </ResultItemGroup>
-);
-
-export const renderSearchConfluenceItem = (query: string) =>
-  searchConfluenceItem({
-    query: query,
-    icon: <SearchIcon size="medium" label="Advanced search" />,
-    text: 'Advanced search for more filter options',
-  });
-
-const renderSearchPeopleItem = (query: string) =>
-  searchPeopleItem({
-    query: query,
-    icon: <SearchIcon size="medium" label="Search People" />,
-    text: 'People directory',
-  });
-
-const renderNoResults = (query: string) => (
-  <>
-    <NoResults />
-    {renderSearchConfluenceItem(query)}
-    {renderSearchPeopleItem(query)}
-  </>
-);
+export interface ScreenCounter {
+  getCount(): number;
+  increment();
+}
 
 export interface Props {
   query: string;
@@ -62,54 +23,76 @@ export interface Props {
   retrySearch();
   recentlyViewedPages: Result[];
   recentlyViewedSpaces: Result[];
+  recentlyInteractedPeople: Result[];
   objectResults: Result[];
   spaceResults: Result[];
   peopleResults: Result[];
+  keepPreQueryState: boolean;
+  searchSessionId: string;
+  preQueryScreenCounter?: ScreenCounter;
+  postQueryScreenCounter?: ScreenCounter;
 }
 
-export default function searchResults(props: Props) {
-  const {
-    query,
-    isError,
-    isLoading,
-    retrySearch,
-    recentlyViewedPages,
-    recentlyViewedSpaces,
-    objectResults,
-    spaceResults,
-    peopleResults,
-  } = props;
-
-  if (isLoading) {
-    return null; // better than showing empty error, but worth some more thought.
-  }
-
-  if (isError) {
-    return <SearchError onRetryClick={retrySearch} />;
-  }
-
-  if (query.length === 0) {
-    return [
-      renderObjectsGroup(
-        'Recent pages and blogs',
-        take(recentlyViewedPages, 5),
-        query,
-      ),
-      renderSpacesGroup('Recent spaces', take(recentlyViewedSpaces, 5), query),
-    ];
-  }
-
-  if ([objectResults, spaceResults, peopleResults].every(isEmpty)) {
-    return renderNoResults(query);
-  }
-
-  return [
-    renderObjectsGroup(
-      'Pages, blogs and attachments',
-      take(objectResults, 5),
+export default class ConfluenceSearchResults extends React.Component<Props> {
+  render() {
+    const {
       query,
-    ),
-    renderSpacesGroup('Spaces', take(spaceResults, 5), query),
-    renderPeopleGroup('People', take(peopleResults, 3), query),
-  ];
+      isError,
+      objectResults,
+      spaceResults,
+      peopleResults,
+      isLoading,
+      recentlyViewedPages,
+      recentlyViewedSpaces,
+      recentlyInteractedPeople,
+      retrySearch,
+      keepPreQueryState,
+      searchSessionId,
+      preQueryScreenCounter,
+      postQueryScreenCounter,
+    } = this.props;
+
+    return (
+      <SearchResults
+        retrySearch={retrySearch}
+        query={query}
+        isLoading={isLoading}
+        isError={isError}
+        keepPreQueryState={keepPreQueryState}
+        renderPreQueryStateComponent={() => (
+          <PreQueryState
+            query={query}
+            recentlyViewedPages={recentlyViewedPages}
+            recentlyViewedSpaces={recentlyViewedSpaces}
+            recentlyInteractedPeople={recentlyInteractedPeople}
+            searchSessionId={searchSessionId}
+            screenCounter={preQueryScreenCounter}
+          />
+        )}
+        shouldRenderNoResultsState={() =>
+          [objectResults, spaceResults, peopleResults].every(isEmpty)
+        }
+        renderNoResultsStateComponent={() => (
+          <>
+            <NoResultsState query={query} />
+            <PostQueryAnalyticsComponent
+              screenCounter={postQueryScreenCounter}
+              searchSessionId={searchSessionId}
+              key="post-query-analytics"
+            />
+          </>
+        )}
+        renderSearchResultsStateComponent={() => (
+          <SearchResultsState
+            query={query}
+            objectResults={objectResults}
+            spaceResults={spaceResults}
+            peopleResults={peopleResults}
+            searchSessionId={searchSessionId}
+            screenCounter={postQueryScreenCounter}
+          />
+        )}
+      />
+    );
+  }
 }

@@ -8,7 +8,7 @@ import Headers from './Headers';
 import Header from './Header';
 import Cell from './Cell';
 
-import { type ItemsProvider, type CSSWidth } from './../types';
+import type { LoadableItems, CSSWidth } from './../types';
 
 type Props = {
   /** An array of React component constructors. Each component will be used to render a cell in a tree row.  */
@@ -20,10 +20,11 @@ type Props = {
   /** The headers of the respective columns of the table. */
   headers?: Array<string>,
 
+  /** React node to rendered within table tree, most common use case is to pass the `Row` component exported from table-tree */
   children?: Node,
 
-  /** The function that will be used to provide data for rows at a particular level in the hierarchy */
-  items?: ItemsProvider,
+  /** An Array of table items */
+  items?: LoadableItems,
 };
 
 type State = {
@@ -70,12 +71,7 @@ export default class TableTree extends Component<Props, State> {
   }
 
   render() {
-    const {
-      items: getRowChildrenData,
-      headers,
-      columns,
-      columnWidths = [],
-    } = this.props;
+    const { items, headers, columns, columnWidths = [] } = this.props;
     const heads = headers && (
       <Headers>
         {headers.map((header, index) => (
@@ -87,12 +83,12 @@ export default class TableTree extends Component<Props, State> {
       </Headers>
     );
     let rows = null;
-    if (columns && getRowChildrenData) {
+    if (columns && items) {
       rows = (
         <Rows
-          items={getRowChildrenData}
-          render={data => (
-            <Row itemId={data.id} hasChildren={data.hasChildren}>
+          items={items}
+          render={({ id, children, hasChildren, content }) => (
+            <Row itemId={id} items={children} hasChildren={hasChildren}>
               {columns.map((CellContent, index) => (
                 <Cell
                   // eslint-disable-next-line react/no-array-index-key
@@ -100,7 +96,7 @@ export default class TableTree extends Component<Props, State> {
                   columnIndex={index}
                   width={columnWidths[index]}
                 >
-                  <CellContent {...data.content} />
+                  <CellContent {...content} />
                 </Cell>
               ))}
             </Row>

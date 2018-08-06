@@ -38,6 +38,9 @@ const nodes = [
   'decisionItem',
   'layoutSection',
   'layoutColumn',
+  'inlineCard',
+  'unsupportedBlock',
+  'unsupportedInline',
 ];
 
 const marks = [

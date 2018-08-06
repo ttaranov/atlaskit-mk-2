@@ -1,4 +1,5 @@
 import * as React from 'react';
+import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import { emoji, emojiQuery, WithProviders } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { createPlugin, emojiPluginKey } from './pm-plugins/main';
@@ -10,23 +11,27 @@ import EmojiTypeAhead from './ui/EmojiTypeAhead';
 
 const emojiPlugin: EditorPlugin = {
   nodes() {
-    return [{ name: 'emoji', node: emoji, rank: 1600 }];
+    return [{ name: 'emoji', node: emoji }];
   },
 
   marks() {
-    return [{ name: 'emojiQuery', mark: emojiQuery, rank: 1600 }];
+    return [{ name: 'emojiQuery', mark: emojiQuery }];
   },
 
   pmPlugins() {
     return [
       {
-        rank: 400,
-        plugin: ({ providerFactory }) => createPlugin(providerFactory),
+        name: 'emoji',
+        plugin: ({ providerFactory, portalProviderAPI }) =>
+          createPlugin(portalProviderAPI, providerFactory),
       },
-      { rank: 410, plugin: ({ schema }) => inputRulePlugin(schema) },
-      { rank: 420, plugin: ({ schema }) => keymap(schema) },
       {
-        rank: 430,
+        name: 'emojiInputRule',
+        plugin: ({ schema }) => inputRulePlugin(schema),
+      },
+      { name: 'emojiKeymap', plugin: ({ schema }) => keymap(schema) },
+      {
+        name: 'emojiAsciiInputRule',
         plugin: ({ schema, providerFactory }) =>
           asciiInputRulePlugin(schema, providerFactory),
       },
@@ -95,6 +100,21 @@ const emojiPlugin: EditorPlugin = {
         renderNode={renderNode}
       />
     );
+  },
+
+  pluginsOptions: {
+    quickInsert: [
+      {
+        title: 'Emoji',
+        priority: 500,
+        icon: () => <EmojiIcon label="Emoji" />,
+        action(insert, state) {
+          const mark = state.schema.mark('emojiQuery');
+          const emojiText = state.schema.text(':', [mark]);
+          return insert(emojiText);
+        },
+      },
+    ],
   },
 };
 

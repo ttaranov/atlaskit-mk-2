@@ -3,14 +3,10 @@ import { EditorView, Decoration, DecorationSet } from 'prosemirror-view';
 import { ResolvedPos } from 'prosemirror-model';
 import { findPositionOfNodeBefore } from 'prosemirror-utils';
 import { GapCursorSelection, JSON_ID, Side } from '../selection';
-import { fixCursorAlignment } from '../utils';
+import { fixCursorAlignment, isIgnoredClick } from '../utils';
 import { setGapCursorAtPos } from '../actions';
 
 export const pluginKey = new PluginKey('gapCursorPlugin');
-
-export const isButton = (elem: HTMLElement | null) => {
-  return elem && elem.nodeName === 'BUTTON';
-};
 
 const plugin = new Plugin({
   key: pluginKey,
@@ -42,12 +38,12 @@ const plugin = new Plugin({
         if (side === Side.RIGHT && $from.nodeBefore) {
           const nodeBeforeStart = findPositionOfNodeBefore(selection);
           if (typeof nodeBeforeStart === 'number') {
-            position = nodeBeforeStart - 1;
+            position = nodeBeforeStart;
           }
         }
 
         return DecorationSet.create(doc, [
-          Decoration.widget(position, node, { key: `${JSON_ID}` }),
+          Decoration.widget(position, node, { key: `${JSON_ID}`, side: -1 }),
         ]);
       }
 
@@ -79,7 +75,7 @@ const plugin = new Plugin({
       if (
         posAtCoords &&
         posAtCoords.inside !== position &&
-        !isButton(event.currentTarget as HTMLElement)
+        !isIgnoredClick(event.target as HTMLElement)
       ) {
         // max available space between parent and child from the left side in px
         // this ensures the correct side of the gap cursor in case of clicking in between two block nodes

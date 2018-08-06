@@ -1,19 +1,20 @@
+import { Fragment, Node, Slice } from 'prosemirror-model';
+import { EditorState, Plugin, PluginKey, Transaction } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
 import {
   MentionProvider,
   MentionDescription,
   isSpecialMention,
 } from '@atlaskit/mention';
-import { Fragment, Node, Slice } from 'prosemirror-model';
-import { EditorState, Plugin, PluginKey, Transaction } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import {
   isMarkTypeAllowedInCurrentSelection,
   isChromeWithSelectionBug,
 } from '../../../utils';
-import { ProviderFactory } from '@atlaskit/editor-common';
 import { analyticsService } from '../../../analytics';
 import mentionNodeView from '../nodeviews/mention';
-import { nodeViewFactory } from '../../../nodeviews';
+import { ReactNodeView } from '../../../nodeviews';
+import { PortalProviderAPI } from '../../../ui/PortalProvider';
 
 export const mentionPluginKey: PluginKey = new PluginKey('mentionPlugin');
 
@@ -30,12 +31,14 @@ interface QueryMark {
 function findMentionQueryMarks(
   state: EditorState,
   active: boolean = true,
+  start: number = 0,
+  end?: number,
 ): QueryMark[] {
   const { doc, schema } = state;
   const { mentionQuery } = schema.marks;
 
   const marks: QueryMark[] = [];
-  doc.nodesBetween(0, doc.nodeSize - 2, (node, pos) => {
+  doc.nodesBetween(start, end || doc.nodeSize - 2, (node, pos) => {
     let mark = mentionQuery.isInSet(node.marks);
     if (mark) {
       const query = node.textContent.substr(1).trim();
@@ -147,6 +150,10 @@ export class MentionsState {
       this.dirty = true;
       return;
     }
+
+    if (this.dirty) {
+      this.notifySubscribers();
+    }
   }
 
   update(state: EditorState) {
@@ -163,9 +170,16 @@ export class MentionsState {
       this.dismiss();
     }
 
-    const newAnchorElement = this.view.dom.querySelector(
-      '[data-mention-query]',
-    ) as HTMLElement;
+    const mark = findMentionQueryMarks(this.state, true, from - 1, to).pop();
+    if (!mark && this.queryActive) {
+      this.dismiss();
+    }
+
+    const domRef = mark ? this.view.domAtPos(mark.start) : undefined;
+    const newAnchorElement = domRef
+      ? ((domRef.node as HTMLElement).childNodes[domRef.offset] as HTMLElement)
+      : undefined;
+
     if (newAnchorElement !== this.anchorElement) {
       this.dirty = true;
       this.anchorElement = newAnchorElement;
@@ -229,11 +243,21 @@ export class MentionsState {
 
   private findActiveMentionQueryMark() {
     const activeMentionQueryMarks = findMentionQueryMarks(this.state, true);
-    if (activeMentionQueryMarks.length !== 1) {
-      return { start: -1, end: -1, query: '' };
-    }
+    let from = this.state.selection.from;
+    let closestMark = { start: -1, end: -1, query: '' };
+    let closestDistance = Infinity;
+    activeMentionQueryMarks.forEach(mark => {
+      const distance = Math.min(
+        Math.abs(from - mark!.start),
+        Math.abs(from - mark!.end),
+      );
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestMark = mark;
+      }
+    });
 
-    return activeMentionQueryMarks[0];
+    return closestMark;
   }
 
   insertMention(mentionData?: MentionDescription, queryMark?: { start; end }) {
@@ -479,7 +503,10 @@ export class MentionsState {
   }
 }
 
-export function createPlugin(providerFactory: ProviderFactory) {
+export function createPlugin(
+  portalProviderAPI: PortalProviderAPI,
+  providerFactory: ProviderFactory,
+) {
   return new Plugin({
     state: {
       init(config, state) {
@@ -493,7 +520,11 @@ export function createPlugin(providerFactory: ProviderFactory) {
     },
     props: {
       nodeViews: {
-        mention: nodeViewFactory(providerFactory, { mention: mentionNodeView }),
+        mention: ReactNodeView.fromComponent(
+          mentionNodeView,
+          portalProviderAPI,
+          { providerFactory },
+        ),
       },
       handleDOMEvents: {
         focus(view: EditorView, event) {

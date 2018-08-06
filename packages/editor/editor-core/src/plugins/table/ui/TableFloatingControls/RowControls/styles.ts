@@ -3,25 +3,21 @@ import styled from 'styled-components';
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, ButtonHTMLAttributes, ComponentClass } from 'react';
 import {
-  akEditorTableBorderRadius,
-  akEditorTableBorder,
-  akEditorTableBorderSelected,
-  akEditorTableToolbarSize,
-} from '../../../../../styles';
-import {
   HeaderButtonDefault,
   InsertMarkerDefault,
   InsertButtonDefault,
   LineMarkerDefault,
 } from '../styles';
-import { akEditorTableBorderDelete } from '../../../../../styles';
+import {
+  tableInsertColumnButtonSize,
+  tableDeleteColumnButtonSize,
+  tableBorderRadiusSize,
+  tableBorderColor,
+  tableToolbarSize,
+} from '../../styles';
 
 export const RowContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
-  position: absolute;
-  top: 1px;
-  left: -${akEditorTableToolbarSize - 1}px;
-  width: ${akEditorTableToolbarSize}px;
-  box-sizing: border-box;
+  width: ${tableToolbarSize}px;
   display: none;
 
   .ProseMirror .with-controls & {
@@ -32,8 +28,8 @@ export const RowContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
 export const RowInner: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   flex-direction: column;
-  & > div:last-child > button {
-    border-bottom-left-radius: ${akEditorTableBorderRadius};
+  & > div.table-row.last > button {
+    border-bottom-left-radius: ${tableBorderRadiusSize}px;
   }
 `;
 
@@ -42,7 +38,7 @@ export const RowControlsButtonWrap: ComponentClass<
 > = styled.div`
   position: relative;
   margin-top: -1px;
-  &:hover,
+
   &.active {
     z-index: 1;
   }
@@ -51,21 +47,14 @@ export const RowControlsButtonWrap: ComponentClass<
 export const HeaderButton: ComponentClass<ButtonHTMLAttributes<{}>> = styled(
   HeaderButtonDefault,
 )`
-  border-right: none;
-  border-bottom: 1px solid ${akEditorTableBorder};
+  border-bottom: 1px solid ${tableBorderColor};
+  border-right: 1px solid ${tableBorderColor};
   border-radius: 0;
   height: 100%;
-  width: ${akEditorTableToolbarSize - 1}px;
+  width: ${tableToolbarSize + 1}px;
 
-  &:hover,
-  .active > &,
-  .tableHovered & {
-    border-right: 1px solid ${akEditorTableBorderSelected};
-    width: ${akEditorTableToolbarSize}px;
-  }
-
-  .danger > & {
-    border-right: 1px solid ${akEditorTableBorderDelete};
+  .table-container[data-number-column='true'] & {
+    border-right-width: 0;
   }
 `;
 
@@ -73,10 +62,10 @@ export const InsertRowButtonWrap: ComponentClass<
   HTMLAttributes<{}>
 > = styled.div`
   position: absolute;
-  bottom: -10px;
-  left: -20px;
-  height: 20px;
-  width: 20px;
+  bottom: -${tableInsertColumnButtonSize / 2}px;
+  left: -${tableInsertColumnButtonSize}px;
+  height: ${tableInsertColumnButtonSize}px;
+  width: ${tableInsertColumnButtonSize}px;
   z-index: 2;
   cursor: pointer;
   &:hover > div {
@@ -84,18 +73,14 @@ export const InsertRowButtonWrap: ComponentClass<
   }
 `;
 
-export const DeleteRowButtonSize = 16;
-
 export const DeleteRowButtonWrap: ComponentClass<
   HTMLAttributes<{}>
 > = styled.div`
   position: absolute;
-  /* top is set on style prop from component */
-  bottom: -10px;
-  left: -26px;
-  height: ${DeleteRowButtonSize}px;
-  width: ${DeleteRowButtonSize}px;
-  z-index: 2;
+  bottom: -${tableInsertColumnButtonSize / 2}px;
+  left: -${tableDeleteColumnButtonSize + 6}px;
+  height: ${tableDeleteColumnButtonSize}px;
+  width: ${tableDeleteColumnButtonSize}px;
   cursor: pointer;
   & > div {
     display: flex;
@@ -103,8 +88,8 @@ export const DeleteRowButtonWrap: ComponentClass<
 
   & > div,
   & > div button {
-    width: ${DeleteRowButtonSize}px;
-    height: ${DeleteRowButtonSize}px;
+    width: ${tableDeleteColumnButtonSize}px;
+    height: ${tableDeleteColumnButtonSize}px;
   }
 `;
 
@@ -126,5 +111,5 @@ export const RowLineMarker: ComponentClass<HTMLAttributes<{}>> = styled(
 )`
   height: 2px;
   top: 8px;
-  left: 20px;
+  left: ${tableInsertColumnButtonSize}px;
 `;

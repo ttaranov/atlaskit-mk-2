@@ -10,6 +10,7 @@ import BulletList from './bulletList';
 import CodeBlock from './codeBlock';
 import DecisionItem, { Props as DecisionItemProps } from './decisionItem';
 import DecisionList from './decisionList';
+import Date from './date';
 import Doc from './doc';
 import Emoji from './emoji';
 import Extension, { Props as ExtensionProps } from './extension';
@@ -19,6 +20,8 @@ import Image from './image';
 import InlineExtension, {
   Props as InlineExtensionProps,
 } from './inlineExtension';
+import LayoutSection from './layoutSection';
+import LayoutColumn from './layoutColumn';
 import ListItem from './listItem';
 import Media from './media';
 import MediaGroup from './mediaGroup';
@@ -44,6 +47,7 @@ export const nodeToReact = {
   blockquote: Blockquote,
   bulletList: BulletList,
   codeBlock: CodeBlock,
+  date: Date,
   decisionItem: DecisionItem,
   decisionList: DecisionList,
   doc: Doc,
@@ -54,6 +58,8 @@ export const nodeToReact = {
   heading: Heading,
   image: Image,
   inlineExtension: InlineExtension,
+  layoutSection: LayoutSection,
+  layoutColumn: LayoutColumn,
   listItem: ListItem,
   media: Media,
   mediaGroup: MediaGroup,
@@ -93,7 +99,7 @@ export interface NodeSimple {
 }
 
 /*
- *  Wraps adjecent textnodes in a textWrapper
+ *  Wraps adjacent textnodes in a textWrapper
  *
  *  Input:
  *  [
@@ -223,6 +229,7 @@ export {
   BodiedExtensionProps,
   BulletList,
   CodeBlock,
+  Date,
   DecisionItem,
   DecisionItemProps,
   DecisionList,
@@ -236,6 +243,8 @@ export {
   Image,
   InlineExtension,
   InlineExtensionProps,
+  LayoutSection,
+  LayoutColumn,
   Media,
   MediaGroup,
   MediaSingle,

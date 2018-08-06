@@ -1,7 +1,8 @@
 import * as React from 'react';
 import styled, { keyframes } from 'styled-components';
 import { EditorView } from 'prosemirror-view';
-import Avatar, { AvatarGroup } from '@atlaskit/avatar';
+import Avatar from '@atlaskit/avatar';
+import AvatarGroup from '@atlaskit/avatar-group';
 import { akGridSizeUnitless, akColorN20 } from '@atlaskit/util-shared-styles';
 import InviteTeamIcon from '@atlaskit/icon/glyph/editor/add';
 

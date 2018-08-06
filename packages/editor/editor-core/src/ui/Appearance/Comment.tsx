@@ -1,8 +1,7 @@
 import * as React from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import {
-  akColorR100,
   akColorN40,
   akBorderRadius,
   akGridSize,
@@ -14,24 +13,9 @@ import ContentStyles from '../ContentStyles';
 import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import { pluginKey as maxContentSizePluginKey } from '../../plugins/max-content-size';
 import { stateKey as mediaPluginKey } from '../../plugins/media/pm-plugins/main';
-
-const pulseBackground = keyframes`
-  50% {
-    background-color: ${akColorR100};
-  }
-`;
-
-const pulseBackgroundReverse = keyframes`
-  0% {
-    background-color: ${akColorR100};
-  }
-  50% {
-    background-color: auto;
-  }
-  100% {
-    background-color: ${akColorR100};
-  }
-`;
+import { ClickAreaBlock } from '../Addon';
+import { tableCommentEditorStyles } from '../../plugins/table/ui/styles';
+import WithFlash from '../WithFlash';
 
 export interface CommentEditorProps {
   isMaxContentSizeReached?: boolean;
@@ -58,15 +42,6 @@ const CommentEditor: any = styled.div`
 
   max-width: inherit;
   word-wrap: break-word;
-
-  animation: ${(props: any) =>
-    props.isMaxContentSizeReached
-      ? `.25s ease-in-out ${pulseBackground}`
-      : 'none'};
-
-  &.-flash {
-    animation: 0.25s ease-in-out ${pulseBackgroundReverse};
-  }
 `;
 CommentEditor.displayName = 'CommentEditor';
 
@@ -112,16 +87,12 @@ const ContentArea = styled(ContentStyles)`
   /** Hack for Bitbucket to ensure entire editorView gets drop event; see ED-3294 **/
   /** Hack for tables controlls. Otherwise marging collapse and controlls are misplaced. **/
   .ProseMirror {
-    padding: 12px 20px;
+    margin: 12px 20px 20px;
   }
 
-  padding-left: ${TableControlsPadding}px;
-  padding-right: ${TableControlsPadding}px;
+  padding: ${TableControlsPadding}px;
 
-  .ProseMirror .table-container table {
-    margin-left: 0;
-    margin-right: 0;
-  }
+  ${tableCommentEditorStyles};
 `;
 ContentArea.displayName = 'ContentArea';
 
@@ -143,7 +114,6 @@ export default class Editor extends React.Component<
 > {
   static displayName = 'CommentEditorAppearance';
 
-  private flashToggle = false;
   private appearance: EditorAppearance = 'comment';
 
   private handleSave = () => {
@@ -180,15 +150,10 @@ export default class Editor extends React.Component<
     } = this.props;
     const maxContentSizeReached =
       maxContentSize && maxContentSize.maxContentSizeReached;
-    this.flashToggle = maxContentSizeReached && !this.flashToggle;
 
     return (
-      <div>
-        <CommentEditor
-          className={this.flashToggle ? '-flash' : ''}
-          isMaxContentSizeReached={maxContentSizeReached}
-          maxHeight={maxHeight}
-        >
+      <WithFlash animate={maxContentSizeReached}>
+        <CommentEditor maxHeight={maxHeight}>
           <MainToolbar>
             <Toolbar
               editorView={editorView!}
@@ -206,22 +171,24 @@ export default class Editor extends React.Component<
               {customPrimaryToolbarComponents}
             </MainToolbarCustomComponentsSlot>
           </MainToolbar>
-          <ContentArea>
-            {customContentComponents}
-            <PluginSlot
-              editorView={editorView}
-              editorActions={editorActions}
-              eventDispatcher={eventDispatcher}
-              providerFactory={providerFactory}
-              appearance={this.appearance}
-              items={contentComponents}
-              popupsMountPoint={popupsMountPoint}
-              popupsBoundariesElement={popupsBoundariesElement}
-              popupsScrollableElement={popupsScrollableElement}
-              disabled={!!disabled}
-            />
-            {editorDOMElement}
-          </ContentArea>
+          <ClickAreaBlock editorView={editorView}>
+            <ContentArea className="ak-editor-content-area">
+              {customContentComponents}
+              <PluginSlot
+                editorView={editorView}
+                editorActions={editorActions}
+                eventDispatcher={eventDispatcher}
+                providerFactory={providerFactory}
+                appearance={this.appearance}
+                items={contentComponents}
+                popupsMountPoint={popupsMountPoint}
+                popupsBoundariesElement={popupsBoundariesElement}
+                popupsScrollableElement={popupsScrollableElement}
+                disabled={!!disabled}
+              />
+              {editorDOMElement}
+            </ContentArea>
+          </ClickAreaBlock>
         </CommentEditor>
         <SecondaryToolbar>
           <ButtonGroup>
@@ -249,7 +216,7 @@ export default class Editor extends React.Component<
           <span style={{ flexGrow: 1 }} />
           {customSecondaryToolbarComponents}
         </SecondaryToolbar>
-      </div>
+      </WithFlash>
     );
   };
 

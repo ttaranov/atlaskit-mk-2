@@ -1,22 +1,31 @@
 import * as React from 'react';
+import EditorDateIcon from '@atlaskit/icon/glyph/editor/date';
 import { date } from '@atlaskit/editor-common';
+import { findDomRefAtPos } from 'prosemirror-utils';
+import { NodeSelection } from 'prosemirror-state';
+
 import { EditorPlugin } from '../../types';
 import WithPluginState from '../../ui/WithPluginState';
-import { insertDate, selectElement } from './actions';
-import createPlugin, { DateState, pluginKey } from './plugin';
+import { insertDate, setDatePickerAt } from './actions';
+import createDatePlugin, { DateState, pluginKey } from './plugin';
 import DatePicker from './ui/DatePicker';
+
+export type DateType = {
+  year: number;
+  month: number;
+  day?: number;
+};
 
 const datePlugin: EditorPlugin = {
   nodes() {
-    return [{ rank: 2400, name: 'date', node: date }];
+    return [{ name: 'date', node: date }];
   },
 
   pmPlugins() {
     return [
       {
-        rank: 2410,
-        plugin: ({ schema, props, dispatch, providerFactory }) =>
-          createPlugin(dispatch, providerFactory),
+        name: 'date',
+        plugin: createDatePlugin,
       },
     ];
   },
@@ -28,21 +37,49 @@ const datePlugin: EditorPlugin = {
         plugins={{
           dateState: pluginKey,
         }}
-        render={({ dateState = {} as DateState }) =>
-          dateState.element ? (
+        render={({ dateState = {} as DateState }) => {
+          if (dateState.showDatePickerAt === null) {
+            return null;
+          }
+
+          const element = findDomRefAtPos(
+            dateState.showDatePickerAt,
+            editorView.domAtPos.bind(editorView),
+          ) as HTMLElement;
+
+          return (
             <DatePicker
-              element={dateState.element}
-              onSelect={({ iso }) =>
-                insertDate(iso)(editorView.state, dispatch)
-              }
-              onClickOutside={() =>
-                selectElement(null)(editorView.state, dispatch)
+              element={element}
+              onSelect={date => insertDate(date)(editorView.state, dispatch)}
+              closeDatePicker={() =>
+                setDatePickerAt(null)(editorView.state, dispatch)
               }
             />
-          ) : null
-        }
+          );
+        }}
       />
     );
+  },
+
+  pluginsOptions: {
+    quickInsert: [
+      {
+        title: 'Date',
+        priority: 800,
+        keywords: ['time', '/'],
+        icon: () => <EditorDateIcon label="Date" />,
+        action(insert, state) {
+          const dateNode = state.schema.nodes.date.createChecked({
+            timestamp: Date.now(),
+          });
+
+          const tr = insert(dateNode);
+          const showDatePickerAt = tr.selection.from - 2;
+          tr.setSelection(NodeSelection.create(tr.doc, showDatePickerAt));
+          return tr.setMeta(pluginKey, { showDatePickerAt });
+        },
+      },
+    ],
   },
 };
 

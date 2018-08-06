@@ -40,6 +40,8 @@ export interface SharedProps {
   onCancelComment?: (conversationId: string, commentId: string) => void;
   onCancel?: () => void;
   onHighlightComment?: (commentId: string) => void;
+  onEditorOpen?: () => void;
+  onEditorClose?: () => void;
 
   // Provider
   dataProviders?: ProviderFactory;
@@ -56,6 +58,7 @@ export interface SharedProps {
   isHighlighted?: boolean;
   placeholder?: string;
   disableScrollTo?: boolean;
+  allowFeedbackAndHelpButtons?: boolean;
 }
 
 export interface Props extends SharedProps {
@@ -84,6 +87,13 @@ const commentChanged = (oldComment: CommentType, newComment: CommentType) => {
   }
 
   return false;
+};
+
+const userChanged = (
+  oldUser: User = { id: '' },
+  newUser: User = { id: '' },
+) => {
+  return oldUser.id !== newUser.id;
 };
 
 const Reactions: React.ComponentClass<React.HTMLAttributes<{}>> = styled.div`
@@ -115,6 +125,10 @@ export default class Comment extends React.Component<Props, State> {
     }
 
     if (commentChanged(this.props.comment, nextProps.comment)) {
+      return true;
+    }
+
+    if (userChanged(this.props.user, nextProps.user)) {
       return true;
     }
 
@@ -247,6 +261,9 @@ export default class Comment extends React.Component<Props, State> {
       user,
       renderEditor,
       disableScrollTo,
+      allowFeedbackAndHelpButtons,
+      onEditorClose,
+      onEditorOpen,
     } = this.props;
     const { isEditing } = this.state;
 
@@ -262,10 +279,13 @@ export default class Comment extends React.Component<Props, State> {
           isEditing={isEditing}
           onSave={this.onSaveEdit}
           onCancel={this.onCancelEdit}
+          onClose={onEditorClose}
+          onOpen={onEditorOpen}
           dataProviders={dataProviders}
           user={user}
           renderEditor={renderEditor}
           disableScrollTo={disableScrollTo}
+          allowFeedbackAndHelpButtons={allowFeedbackAndHelpButtons}
         />
       );
     }
@@ -295,6 +315,8 @@ export default class Comment extends React.Component<Props, State> {
       renderEditor,
       containerId,
       disableScrollTo,
+      onEditorClose,
+      onEditorOpen,
     } = this.props;
 
     if (!comments || comments.length === 0) {
@@ -310,6 +332,8 @@ export default class Comment extends React.Component<Props, State> {
         onAddComment={onAddComment}
         onUpdateComment={onUpdateComment}
         onDeleteComment={onDeleteComment}
+        onEditorClose={onEditorClose}
+        onEditorOpen={onEditorOpen}
         onRevertComment={onRevertComment}
         onHighlightComment={onHighlightComment}
         onRetry={onRetry}
@@ -330,7 +354,15 @@ export default class Comment extends React.Component<Props, State> {
       return null;
     }
 
-    const { dataProviders, user, renderEditor, disableScrollTo } = this.props;
+    const {
+      dataProviders,
+      user,
+      renderEditor,
+      disableScrollTo,
+      allowFeedbackAndHelpButtons,
+      onEditorClose,
+      onEditorOpen,
+    } = this.props;
 
     return (
       <Editor
@@ -338,9 +370,12 @@ export default class Comment extends React.Component<Props, State> {
         onCancel={this.onCancelReply}
         onSave={this.onSaveReply}
         dataProviders={dataProviders}
+        onOpen={onEditorOpen}
+        onClose={onEditorClose}
         user={user}
         renderEditor={renderEditor}
         disableScrollTo={disableScrollTo}
+        allowFeedbackAndHelpButtons={allowFeedbackAndHelpButtons}
       />
     );
   }

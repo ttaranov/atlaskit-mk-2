@@ -10,12 +10,12 @@ import {
   a as link,
   p,
   h1,
+  emoji,
   code_block,
   hardBreak,
+  mentionQuery,
 } from '@atlaskit/editor-test-helpers';
 
-import codeBlockPlugin from '../../../src/plugins/code-block';
-import mentionsPlugin from '../../../src/plugins/mentions';
 import {
   strongRegex1,
   strongRegex2,
@@ -25,6 +25,7 @@ import {
   codeRegex,
 } from '../../../src/plugins/text-formatting/pm-plugins/input-rule';
 import { EditorView } from 'prosemirror-view';
+import { ProviderFactory } from '@atlaskit/editor-common';
 
 const autoFormatPatterns = [
   {
@@ -50,11 +51,16 @@ describe('text-formatting input rules', () => {
   const editor = (doc: any, disableCode = false) =>
     createEditor({
       doc,
-      editorPlugins: [codeBlockPlugin, mentionsPlugin],
       editorProps: {
         analyticsHandler: trackEvent,
+        allowCodeBlocks: true,
         textFormatting: { disableCode },
+        emojiProvider: new Promise(() => {}),
+        mentionProvider: new Promise(() => {}),
       },
+      providerFactory: ProviderFactory.create({
+        emojiProvider: new Promise(() => {}),
+      }),
     });
 
   beforeEach(() => {
@@ -180,6 +186,37 @@ describe('text-formatting input rules', () => {
 
       expect(trackEvent).toHaveBeenCalledWith(
         `atlassian.editor.format.quote.autoformatting`,
+      );
+    });
+
+    describe('should not break other inline marks', () => {
+      const { editorView } = editor(doc(p(strong('it{<>} test'))));
+      typeText(editorView, "'s");
+      expect(editorView.state.doc).toEqualDocument(doc(p(strong('it’s test'))));
+    });
+
+    describe('should not break other inline marks', () => {
+      const { editorView } = editor(doc(p(strong(em('it{<>}')))));
+      typeText(editorView, "'s");
+      expect(editorView.state.doc).toEqualDocument(doc(p(strong(em('it’s')))));
+    });
+
+    describe('should not work in mention query', () => {
+      trackEvent = jest.fn();
+      const { editorView } = editor(doc(p(mentionQuery()('@o{<>}'))));
+      typeText(editorView, 'it');
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p(mentionQuery()('@oit{<>}'))),
+      );
+
+      typeText(editorView, "'s");
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p(mentionQuery()("@oit's{<>}"))),
+      );
+
+      typeText(editorView, "'");
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p(mentionQuery()("@oit's'{<>}"))),
       );
     });
 
@@ -327,6 +364,18 @@ describe('text-formatting input rules', () => {
 
       expect(editorView.state.doc).toEqualDocument(
         doc(p('hey! ', code('hello, @helga there'), '?')),
+      );
+    });
+
+    it('should convert emoji to plain text', () => {
+      const emojiNode = emoji({ shortName: ':smile:', text: '🙂' })();
+      const { editorView, sel } = editor(
+        doc(p('hey! `', emojiNode, ' there{<>}')),
+      );
+      insertText(editorView, '`', sel);
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p('hey! ', code('🙂 there'))),
       );
     });
 
@@ -552,6 +601,30 @@ describe('text-formatting input rules', () => {
       autoFormatPatterns.forEach(pattern => {
         notautoformats(`abc${pattern.string}`);
       });
+    });
+
+    describe('single space character', () => {
+      notautoformats('__ __');
+      notautoformats('** **');
+      notautoformats('_ _');
+      notautoformats('* *');
+      notautoformats('~~ ~~');
+    });
+
+    describe('single character same as autoformatting character', () => {
+      notautoformats('_____');
+      notautoformats('*****');
+      notautoformats('___');
+      notautoformats('***');
+      notautoformats('~~~~~');
+    });
+
+    describe('multiple characters same as autoformatting character', () => {
+      notautoformats('_______');
+      notautoformats('*******');
+      notautoformats('_____');
+      notautoformats('*****');
+      notautoformats('~~~~~~~');
     });
 
     describe('space after formatting character', () => {

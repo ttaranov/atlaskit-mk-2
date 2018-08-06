@@ -1,7 +1,20 @@
+import * as uuid from 'uuid';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/defer';
 import 'rxjs/add/operator/startWith';
-import { ContextConfig, MediaApiConfig } from '@atlaskit/media-store';
+import 'rxjs/add/operator/concat';
+import 'rxjs/add/operator/publishReplay';
+
+import {
+  MediaStore,
+  uploadFile,
+  UploadableFile,
+  ContextConfig,
+  MediaApiConfig,
+  UploadController,
+  MediaStoreGetFileImageParams,
+} from '@atlaskit/media-store';
 
 import {
   MediaItemProvider,
@@ -19,6 +32,14 @@ import { MediaLinkService } from '../services/linkService';
 import { LRUCache } from 'lru-fast';
 import { DEFAULT_COLLECTION_PAGE_SIZE } from '../services/collectionService';
 import { FileItem } from '../item';
+import {
+  GetFileOptions,
+  FileState,
+  mapMediaFileToFileState,
+} from '../fileState';
+import { Observer } from 'rxjs/Observer';
+import FileStreamCache from './fileStreamCache';
+import { getMediaTypeFromUploadableFile } from '../utils/getMediaTypeFromUploadableFile';
 
 const DEFAULT_CACHE_SIZE = 200;
 
@@ -55,6 +76,14 @@ export interface Context {
 
   refreshCollection(collectionName: string, pageSize: number): void;
 
+  getFile(id: string, options?: GetFileOptions): Observable<FileState>;
+  uploadFile(
+    file: UploadableFile,
+    controller?: UploadController,
+  ): Observable<FileState>;
+
+  getImage(id: string, params?: MediaStoreGetFileImageParams): Promise<Blob>;
+
   readonly config: ContextConfig;
 }
 
@@ -64,18 +93,73 @@ export class ContextFactory {
   }
 }
 
+const pollingInterval = 1000;
+
 class ContextImpl implements Context {
   private readonly collectionPool = RemoteMediaCollectionProviderFactory.createPool();
   private readonly itemPool = MediaItemProvider.createPool();
   private readonly urlPreviewPool = MediaUrlPreviewProvider.createPool();
   private readonly fileItemCache: LRUCache<string, FileItem>;
   private readonly localPreviewCache: LRUCache<string, string>;
+  private readonly fileStreamsCache: FileStreamCache;
+  private readonly mediaStore: MediaStore;
 
   constructor(readonly config: ContextConfig) {
     this.fileItemCache = new LRUCache(config.cacheSize || DEFAULT_CACHE_SIZE);
-
     this.localPreviewCache = new LRUCache(10);
+    this.fileStreamsCache = new FileStreamCache();
+    this.mediaStore = new MediaStore({
+      authProvider: config.authProvider,
+    });
   }
+
+  getFile(id: string, options?: GetFileOptions): Observable<FileState> {
+    const key = FileStreamCache.createKey(id, options);
+
+    return this.fileStreamsCache.getOrInsert(key, () => {
+      const collection = options && options.collectionName;
+      const fileStream$ = this.createDownloadFileStream(
+        id,
+        collection,
+      ).publishReplay(1);
+
+      fileStream$.connect();
+
+      return fileStream$;
+    });
+  }
+
+  private createDownloadFileStream = (
+    id: string,
+    collection?: string,
+  ): Observable<FileState> => {
+    return Observable.create(async (observer: Observer<FileState>) => {
+      let timeoutId: number;
+
+      const fetchFile = async () => {
+        try {
+          const response = await this.mediaStore.getFile(id, { collection });
+          const fileState = mapMediaFileToFileState(response);
+
+          observer.next(fileState);
+
+          if (fileState.status === 'processing') {
+            timeoutId = window.setTimeout(fetchFile, pollingInterval);
+          } else {
+            observer.complete();
+          }
+        } catch (e) {
+          observer.error(e);
+        }
+      };
+
+      fetchFile();
+
+      return () => {
+        window.clearTimeout(timeoutId);
+      };
+    });
+  };
 
   getMediaItemProvider(
     id: string,
@@ -130,11 +214,7 @@ class ContextImpl implements Context {
   }
 
   getDataUriService(collectionName?: string): DataUriService {
-    return new MediaDataUriService(
-      this.config.authProvider,
-      this.config.serviceHost,
-      collectionName,
-    );
+    return new MediaDataUriService(this.config.authProvider, collectionName);
   }
 
   setLocalPreview(id: string, preview: string) {
@@ -150,11 +230,7 @@ class ContextImpl implements Context {
   }
 
   getBlobService(collectionName?: string): BlobService {
-    return new MediaBlobService(
-      this.config.authProvider,
-      this.config.serviceHost,
-      collectionName,
-    );
+    return new MediaBlobService(this.config.authProvider, collectionName);
   }
 
   getUrlPreviewProvider(url: string): MediaUrlPreviewProvider {
@@ -174,13 +250,100 @@ class ContextImpl implements Context {
     return linkService.addLinkItem(url, collectionName, metadata);
   }
 
+  uploadFile(
+    file: UploadableFile,
+    controller?: UploadController,
+  ): Observable<FileState> {
+    let fileId: string;
+    // TODO [MSW-796]: get file size for base64
+    const size = file.content instanceof Blob ? file.content.size : 0;
+    const mediaType = getMediaTypeFromUploadableFile(file);
+    const collectionName = file.collection;
+    const name = file.name || ''; // name property is not available in base64 image
+    // TODO [MSW-678]: remove when id upfront is exposed
+    const tempFileId = uuid.v4();
+    const tempKey = FileStreamCache.createKey(tempFileId, { collectionName });
+    let mimeType = '';
+    const fileStream = new Observable<FileState>(observer => {
+      if (file.content instanceof Blob) {
+        mimeType = file.content.type;
+        observer.next({
+          name,
+          size,
+          mediaType,
+          mimeType,
+          id: tempFileId,
+          progress: 0,
+          status: 'uploading',
+          preview: {
+            blob: file.content,
+          },
+        });
+      }
+
+      const { deferredFileId, cancel } = uploadFile(file, this.apiConfig, {
+        onProgress: progress => {
+          observer.next({
+            progress,
+            name,
+            size,
+            mediaType,
+            mimeType,
+            id: tempFileId,
+            status: 'uploading',
+          });
+        },
+      });
+
+      if (controller) {
+        controller.setAbort(cancel);
+      }
+
+      deferredFileId
+        .then(id => {
+          fileId = id;
+          const key = FileStreamCache.createKey(id, { collectionName });
+
+          // we create a new entry in the cache with the same stream to make the temp/public id mapping to work
+          this.fileStreamsCache.set(key, fileStream);
+          observer.next({
+            id,
+            name,
+            size,
+            mediaType,
+            mimeType,
+            status: 'processing',
+          });
+          observer.complete();
+        })
+        .catch(error => {
+          // we can't use .catch(observer.error) due that will change the Subscriber context
+          observer.error(error);
+        });
+    })
+      .concat(
+        Observable.defer(() =>
+          this.createDownloadFileStream(fileId, collectionName),
+        ),
+      )
+      .publishReplay(1)
+      .refCount();
+
+    this.fileStreamsCache.set(tempKey, fileStream);
+
+    return fileStream;
+  }
+
   refreshCollection(collectionName: string, pageSize: number): void {
     this.getMediaCollectionProvider(collectionName, pageSize).refresh();
   }
 
+  getImage(id: string, params?: MediaStoreGetFileImageParams): Promise<Blob> {
+    return this.mediaStore.getImage(id, params);
+  }
+
   private get apiConfig(): MediaApiConfig {
     return {
-      serviceHost: this.config.serviceHost,
       authProvider: this.config.authProvider,
     };
   }

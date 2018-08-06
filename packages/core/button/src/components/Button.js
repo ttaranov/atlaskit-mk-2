@@ -4,9 +4,12 @@ import styled from 'styled-components';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
-
-import { name, version } from '../../package.json';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 import withDeprecationWarnings from './withDeprecationWarnings';
 import getButtonProps from './getButtonProps';
 import CustomComponentProxy from './CustomComponentProxy';
@@ -40,9 +43,6 @@ const createStyledComponent = () => {
   // Override pseudo-state specificity.
   // This is necessary because we don't know what DOM element the custom component will render.
   const component = styled(
-    //CustomComponentProxy is absolutely valid here, so this seems a
-    // problem with styled-components flow definitions
-    // $FlowFixMe
     CustomComponentProxy,
   )`&,a&,&:hover,&:active,&:focus{${getButtonStyles}}`;
   component.displayName = 'StyledCustomComponent';
@@ -55,18 +55,21 @@ type State = {
   isHover: boolean,
 };
 
+export const defaultProps = {
+  appearance: 'default',
+  isDisabled: false,
+  isSelected: false,
+  isLoading: false,
+  spacing: 'default',
+  type: 'button',
+  shouldFitContainer: false,
+  autoFocus: false,
+};
+
 class Button extends Component<ButtonProps, State> {
   button: HTMLElement;
 
-  static defaultProps = {
-    appearance: 'default',
-    isDisabled: false,
-    isSelected: false,
-    isLoading: false,
-    spacing: 'default',
-    type: 'button',
-    shouldFitContainer: false,
-  };
+  static defaultProps = defaultProps;
 
   state = {
     isActive: false,
@@ -88,7 +91,11 @@ class Button extends Component<ButtonProps, State> {
 
   customComponent = null;
 
-  onMouseEnter = () => this.setState({ isHover: true });
+  isInteractive = () => !this.props.isDisabled && !this.props.isLoading;
+
+  onMouseEnter = () => {
+    this.setState({ isHover: true });
+  };
 
   onMouseLeave = () => this.setState({ isHover: false, isActive: false });
 
@@ -115,7 +122,7 @@ class Button extends Component<ButtonProps, State> {
 
   /* Swallow click events when the button is disabled to prevent inner child clicks bubbling up */
   onInnerClick = (e: Event) => {
-    if (this.props.isDisabled) {
+    if (!this.isInteractive()) {
       e.stopPropagation();
     }
     return true;
@@ -154,7 +161,7 @@ class Button extends Component<ButtonProps, State> {
       isSelected,
       isDisabled,
     } = this.props;
-
+    // $FlowFixMe - Cannot call `getButtonProps` with `this` bound to `component` because `Button` [1] is incompatible with `Button` [2].
     const buttonProps = getButtonProps(this);
     const StyledComponent = this.getStyledComponent();
 
@@ -162,7 +169,6 @@ class Button extends Component<ButtonProps, State> {
       (iconBefore && !iconAfter && !children) ||
       (iconAfter && !iconBefore && !children)
     );
-
     return (
       <StyledComponent innerRef={this.getInnerRef} {...buttonProps}>
         <ButtonWrapper onClick={this.onInnerClick} fit={!!shouldFitContainer}>
@@ -210,19 +216,24 @@ class Button extends Component<ButtonProps, State> {
 export type ButtonType = Button;
 export const ButtonBase = Button;
 
+export const ButtonWithoutAnalytics = withDeprecationWarnings(Button);
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
 export default withAnalyticsContext({
-  component: 'button',
-  package: name,
-  version,
+  componentName: 'button',
+  packageName,
+  packageVersion,
 })(
   withAnalyticsEvents({
-    onClick: createAnalyticsEvent => {
-      const consumerEvent = createAnalyticsEvent({
-        action: 'click',
-      });
-      consumerEvent.clone().fire('atlaskit');
+    onClick: createAndFireEventOnAtlaskit({
+      action: 'clicked',
+      actionSubject: 'button',
 
-      return consumerEvent;
-    },
-  })(withDeprecationWarnings(Button)),
+      attributes: {
+        componentName: 'button',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(ButtonWithoutAnalytics),
 );

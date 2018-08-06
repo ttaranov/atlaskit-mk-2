@@ -2,14 +2,14 @@
 import React, { PureComponent, type Node } from 'react';
 import { Anchor, Span } from '../styled/Item';
 
-export const supportsVoiceOver = /Mac OS X/.test(navigator.userAgent);
+export const supportsVoiceOver = () => /Mac OS X/.test(navigator.userAgent);
 
-export const ariaRoles = {
-  checkbox: supportsVoiceOver ? 'checkbox' : 'menuitemcheckbox',
+export const getAriaRoles = () => ({
+  checkbox: supportsVoiceOver() ? 'checkbox' : 'menuitemcheckbox',
   link: 'menuitem',
   option: 'option',
-  radio: supportsVoiceOver ? 'radio' : 'menuitemradio',
-};
+  radio: supportsVoiceOver() ? 'radio' : 'menuitemradio',
+});
 export const baseTypes = {
   default: 'link',
   values: ['link', 'radio', 'checkbox', 'option'],
@@ -73,6 +73,7 @@ export default class Element extends PureComponent<Props, void> {
       'aria-hidden': !!isHidden,
       'aria-selected': !!isSelected,
     };
+    const ariaRoles = getAriaRoles();
     const commonProps = {
       'data-role': 'droplistItem',
       onClick: props.handleClick,

@@ -46,7 +46,7 @@ function elementCropDirection(el: HTMLElement) {
     direction = 'top';
   }
   if (
-    // $FlowFixMe
+    // $FlowFixMe - cannot call null on a number for document.documentElement
     rect.bottom >= (window.innerHeight || document.documentElement.clientHeight)
   ) {
     direction = 'bottom';
@@ -62,6 +62,19 @@ function getScrollY(node = window) {
   const scrollContainer = getScrollParent(node);
 
   return scrollContainer ? scrollContainer.scrollTop : window.pageYOffset;
+}
+
+function cloneAndOverrideStyles(node: HTMLElement): HTMLElement {
+  const shouldCloneChildren = true;
+  const clonedNode = node.cloneNode(shouldCloneChildren);
+
+  clonedNode.style.margin = '0';
+  clonedNode.style.position = 'static';
+  // The target may have other transforms applied. Avoid unintended side effects
+  // by zeroing out "translate" rather than applying a value of "none".
+  clonedNode.style.transform = 'translate(0, 0) translate3d(0, 0, 0)';
+
+  return clonedNode;
 }
 
 export default function withScrollMeasurements(
@@ -146,9 +159,11 @@ export default function withScrollMeasurements(
         scrollParent.scrollTop += offsetY;
       }
 
-      // get adjusted measurements after scrolling
+      // override styles that effect the position of our target node
+      const clonedNode = cloneAndOverrideStyles(node);
+
       this.setState({
-        clone: node.outerHTML,
+        clone: clonedNode.outerHTML,
         rect: { height, left, top, width },
         scrollY: getScrollY(),
       });

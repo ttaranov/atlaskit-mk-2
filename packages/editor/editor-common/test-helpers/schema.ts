@@ -48,6 +48,9 @@ export default createSchema({
     'date',
     'unknownBlock',
     'placeholder',
+    'inlineCard',
+    'unsupportedBlock',
+    'unsupportedInline',
   ],
   marks: [
     'em',

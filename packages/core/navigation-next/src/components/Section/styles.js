@@ -1,17 +1,19 @@
 // @flow
 
 import { keyframes } from 'emotion';
-import { gridSize } from '@atlaskit/theme';
+import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import {
   transitionDuration,
   transitionTimingFunction,
 } from '../../common/constants';
 
+const gridSize = gridSizeFn();
+
 const baseStyles = {
   boxSizing: 'border-box',
-  paddingLeft: `${gridSize() * 2}px`,
-  paddingRight: `${gridSize() * 2}px`,
+  paddingLeft: `${gridSize * 2}px`,
+  paddingRight: `${gridSize * 2}px`,
 };
 
 const enterAnimationDown = keyframes`
@@ -50,9 +52,9 @@ export const getSectionWrapperStyles = ({
       return {
         ...baseStyles,
         animationName,
-        transitionDuration,
+        animationDuration: transitionDuration,
         animationFillMode: 'forwards',
-        transitionTimingFunction,
+        animationTimingFunction: transitionTimingFunction,
       };
     }
 
@@ -62,9 +64,9 @@ export const getSectionWrapperStyles = ({
       return {
         ...baseStyles,
         animationName,
-        transitionDuration,
+        animationDuration: transitionDuration,
         animationFillMode: 'forwards',
-        transitionTimingFunction,
+        animationTimingFunction: transitionTimingFunction,
         position: 'absolute',
         width: '100%',
       };

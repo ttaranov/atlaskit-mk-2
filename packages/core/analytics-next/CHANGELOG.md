@@ -1,7 +1,90 @@
 # @atlaskit/analytics-next
 
-## 2.1.0
+## 3.0.4
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/field-text@7.0.4
+  - @atlaskit/button@9.0.5
 
+## 3.0.3
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/button@9.0.4
+  - @atlaskit/field-text@7.0.3
+  - @atlaskit/docs@5.0.2
+
+## 3.0.2
+- [patch] Add a SSR test for every package, add react-dom and build-utils in devDependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+- [none] Updated dependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+  - @atlaskit/field-text@7.0.2
+  - @atlaskit/button@9.0.3
+
+## 3.0.1
+- [patch] Move analytics tests and replace elements to core [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+- [none] Updated dependencies [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+  - @atlaskit/field-text@7.0.1
+  - @atlaskit/button@9.0.2
+  - @atlaskit/docs@5.0.1
+
+## 3.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/field-text@7.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/docs@5.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/field-text@7.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/docs@5.0.0
+
+## 2.1.9
+- [patch] removes requirement of children to be a single React node [53cba6b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/53cba6b)
+- [none] Updated dependencies [53cba6b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/53cba6b)
+
+## 2.1.8
+- [patch] Update changelogs to remove duplicate [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+- [none] Updated dependencies [cc58e17](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc58e17)
+  - @atlaskit/button@8.1.1
+  - @atlaskit/docs@4.1.1
+
+## 2.1.7
+- [none] Updated dependencies [9d20f54](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d20f54)
+  - @atlaskit/docs@4.1.0
+  - @atlaskit/field-text@6.0.2
+  - @atlaskit/button@8.1.0
+
+## 2.1.6
+- [patch] Unpublish fake TS declaration file [ec9f11f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec9f11f)
+- [none] Updated dependencies [ec9f11f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ec9f11f)
+
+## 2.1.5
+- [patch] Update readme's [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
+- [patch] Updated dependencies [223cd67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/223cd67)
+  - @atlaskit/field-text@6.0.1
+  - @atlaskit/button@8.0.1
+  - @atlaskit/docs@4.0.1
+
+## 2.1.4
+- [patch] Updated dependencies [1e80619](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e80619)
+  - @atlaskit/field-text@6.0.0
+  - @atlaskit/button@8.0.0
+  - @atlaskit/docs@4.0.0
+
+## 2.1.3
+- [patch] Removed ambient typescript type declaration file from analytics-next - this may be a breaking change for typescript consumers [290d804](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/290d804)
+- [none] Updated dependencies [290d804](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/290d804)
+
+## 2.1.2
+- [patch] Fix prop callbacks specified in the create event map to not change reference values each render and instead only update when the original prop callback changes [586a80c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/586a80c)
+- [none] Updated dependencies [586a80c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/586a80c)
+
+## 2.1.1
+- [patch] Updated dependencies [d662caa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d662caa)
+  - @atlaskit/field-text@5.0.3
+  - @atlaskit/button@7.2.5
+  - @atlaskit/docs@3.0.4
+
+## 2.1.0
 - [minor] Export cleanProps function that can be used to strip analytics props provided by our HOCs, useful when spreading props to a child element [973d6ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/973d6ea)
 
 ## 2.0.0
@@ -15,7 +98,6 @@
 - [patch] Uses element config flow type with button deprecation warnings hoc [a9aa90a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a9aa90a)
 
 ## 1.1.8
-
 - [patch] Add "sideEffects: false" to AKM2 packages to allow consumer's to tree-shake [c3b018a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3b018a)
 
 ## 1.1.7

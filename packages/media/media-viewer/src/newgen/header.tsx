@@ -1,18 +1,26 @@
 import * as React from 'react';
-import { Outcome, Identifier } from './domain';
 import { Context, FileItem, MediaType } from '@atlaskit/media-core';
+import Button from '@atlaskit/button';
+import DownloadIcon from '@atlaskit/icon/glyph/download';
 import { Subscription } from 'rxjs';
 import * as deepEqual from 'deep-equal';
+import { toHumanReadableMediaSize } from '@atlaskit/media-ui';
+import { Outcome, Identifier } from './domain';
 import {
   Header as HeaderWrapper,
   LeftHeader,
+  RightHeader,
   MetadataWrapper,
   MetadataSubText,
+  MedatadataTextWrapper,
   MetadataIconWrapper,
   MetadataFileName,
+  hideControlsClassName,
 } from './styled';
-import { toHumanReadableMediaSize } from '@atlaskit/media-ui';
 import { MediaTypeIcon } from './media-type-icon';
+import { FeedbackButton } from './feedback-button';
+import { downloadItem } from './domain/download';
+import { MediaViewerError, createError } from './error';
 
 export type Props = {
   readonly identifier: Identifier;
@@ -21,7 +29,7 @@ export type Props = {
 };
 
 export type State = {
-  item: Outcome<FileItem, Error>;
+  item: Outcome<FileItem, MediaViewerError>;
 };
 
 const initialState: State = {
@@ -31,9 +39,9 @@ const initialState: State = {
 export default class Header extends React.Component<Props, State> {
   state: State = initialState;
 
-  private subscription: Subscription;
+  private subscription?: Subscription;
 
-  componentWillUpdate(nextProps) {
+  componentWillUpdate(nextProps: Props) {
     if (this.needsReset(this.props, nextProps)) {
       this.release();
       this.init(nextProps);
@@ -70,7 +78,7 @@ export default class Header extends React.Component<Props, State> {
             this.setState({
               item: {
                 status: 'FAILED',
-                err: new Error('links are not supported'),
+                err: createError('linksNotSupported'),
               },
             });
           }
@@ -79,7 +87,7 @@ export default class Header extends React.Component<Props, State> {
           this.setState({
             item: {
               status: 'FAILED',
-              err,
+              err: createError('metadataFailed', undefined, err),
             },
           });
         },
@@ -87,10 +95,39 @@ export default class Header extends React.Component<Props, State> {
     });
   }
 
+  private renderDownload = () => {
+    const { item } = this.state;
+    const { identifier, context } = this.props;
+    const icon = <DownloadIcon label="Download" />;
+    if (item.status !== 'SUCCESSFUL') {
+      return (
+        <Button
+          label="Download"
+          appearance="toolbar"
+          isDisabled={true}
+          iconBefore={icon}
+        />
+      );
+    } else {
+      return (
+        <Button
+          label="Download"
+          appearance="toolbar"
+          onClick={downloadItem(item.data, context, identifier.collectionName)}
+          iconBefore={icon}
+        />
+      );
+    }
+  };
+
   render() {
     return (
-      <HeaderWrapper>
+      <HeaderWrapper className={hideControlsClassName}>
         <LeftHeader>{this.renderMetadata()}</LeftHeader>
+        <RightHeader>
+          <FeedbackButton />
+          {this.renderDownload()}
+        </RightHeader>
       </HeaderWrapper>
     );
   }
@@ -113,13 +150,13 @@ export default class Header extends React.Component<Props, State> {
         <MetadataIconWrapper>
           {this.getMediaIcon(item.details.mediaType)}
         </MetadataIconWrapper>
-        <div>
+        <MedatadataTextWrapper>
           <MetadataFileName>{item.details.name || 'unknown'}</MetadataFileName>
           <MetadataSubText>
             {this.renderFileTypeText(item.details.mediaType)}
             {this.renderSize(item)}
           </MetadataSubText>
-        </div>
+        </MedatadataTextWrapper>
       </MetadataWrapper>
     );
   }
@@ -139,15 +176,10 @@ export default class Header extends React.Component<Props, State> {
   };
 
   private renderFileTypeText = (mediaType?: MediaType): string => {
-    switch (mediaType) {
-      case 'image':
-        return 'image';
-      case 'video':
-        return 'video';
-      case 'doc':
-        return 'document';
-      default:
-        return 'unknown';
+    if (mediaType === 'doc') {
+      return 'document';
+    } else {
+      return mediaType || 'unknown';
     }
   };
 

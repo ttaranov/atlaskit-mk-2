@@ -1,10 +1,13 @@
 // @flow
 import React from 'react';
-import { render } from 'react-dom';
-// $FlowFixMe Required module not found
+import { render, unmountComponentAtNode } from 'react-dom';
 import '@atlaskit/css-reset';
-
 import ExamplesLoader from './pages/Examples/loader';
 
-// $FlowFixMe
-render(<ExamplesLoader />, document.getElementById('examples'));
+const componentNode = document.getElementById('examples');
+if (typeof window !== 'undefined') {
+  window.unmountApp = function unmountApp() {
+    return unmountComponentAtNode(componentNode);
+  };
+}
+render(<ExamplesLoader />, componentNode);

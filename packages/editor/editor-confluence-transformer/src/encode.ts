@@ -3,7 +3,7 @@ import {
   getEmojiAcName,
   hexToRgb,
   MediaSingleAttributes,
-  timestampToIso,
+  timestampToIsoFormat,
   tableBackgroundColorPalette,
   calcTableColumnWidths,
 } from '@atlaskit/editor-common';
@@ -174,7 +174,9 @@ export default function encode(node: PMNode, schema: Schema) {
       const rowElement = doc.createElement('tr');
 
       rowNode.content.forEach((colNode, _, j) => {
-        const { attrs: { background, rowspan, colspan } } = colNode;
+        const {
+          attrs: { background, rowspan, colspan },
+        } = colNode;
 
         const cellElement =
           colNode.type === schema.nodes.tableCell
@@ -272,7 +274,13 @@ export default function encode(node: PMNode, schema: Schema) {
           case 'mentionQuery':
             break;
           case 'link':
-            elem = elem.appendChild(encodeLink(node));
+            const mark = getNodeMarkOfType(node, schema.marks.link);
+            if (mark && mark.attrs.__confluenceMetadata !== null) {
+              // need to use fab:adf to maintain confluenceMetadata
+              return encodeAsADF(node);
+            } else {
+              elem = elem.appendChild(encodeLink(node));
+            }
             break;
           case 'confluenceInlineComment':
             // Because this function encodes marks into dom nodes inwards, multiple inline comment
@@ -508,7 +516,7 @@ export default function encode(node: PMNode, schema: Schema) {
     const elem = doc.createElement('time');
     const { timestamp } = node.attrs;
     if (timestamp) {
-      elem.setAttribute('datetime', timestampToIso(timestamp));
+      elem.setAttribute('datetime', timestampToIsoFormat(timestamp));
     }
     return elem;
   }
@@ -522,7 +530,7 @@ export default function encode(node: PMNode, schema: Schema) {
 
   function encodeAsADF(node: PMNode): Element {
     const nsNode = doc.createElementNS(FAB_XMLNS, 'fab:adf');
-    nsNode.appendChild(doc.createCDATASection(JSON.stringify(node)));
+    nsNode.appendChild(doc.createCDATASection(JSON.stringify(node.toJSON())));
     return nsNode;
   }
 }

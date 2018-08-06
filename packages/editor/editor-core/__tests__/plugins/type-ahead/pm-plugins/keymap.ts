@@ -6,31 +6,7 @@ import {
   sendKeyToPm,
 } from '@atlaskit/editor-test-helpers';
 import { pluginKey } from '../../../../src/plugins/type-ahead/pm-plugins/main';
-
-const createTypeAheadPlugin = ({
-  getItems,
-  selectItem,
-}: {
-  getItems?: Function;
-  selectItem?: Function;
-} = {}) => {
-  return {
-    pluginsOptions: {
-      typeAhead: {
-        trigger: '/',
-        getItems:
-          getItems !== undefined
-            ? getItems
-            : () => [{ title: '1' }, { title: '2' }, { title: '3' }],
-        selectItem:
-          selectItem !== undefined
-            ? selectItem
-            : (state, item, replaceWith) =>
-                replaceWith(state.schema.text(`${item.title} selected`)),
-      },
-    },
-  };
-};
+import { createTypeAheadPlugin } from './_create-type-ahead-plugin';
 
 describe('typeAhead keymaps', () => {
   it('enter should select current item', () => {
@@ -40,7 +16,7 @@ describe('typeAhead keymaps', () => {
       editorPlugins: [plugin],
     });
     sendKeyToPm(editorView, 'Enter');
-    expect(editorView.state.doc).toEqualDocument(doc(p('1 selected ')));
+    expect(editorView.state.doc).toEqualDocument(doc(p('1 selected')));
   });
 
   it('tab should select current item', () => {
@@ -50,7 +26,7 @@ describe('typeAhead keymaps', () => {
       editorPlugins: [plugin],
     });
     sendKeyToPm(editorView, 'Tab');
-    expect(editorView.state.doc).toEqualDocument(doc(p('1 selected ')));
+    expect(editorView.state.doc).toEqualDocument(doc(p('1 selected')));
   });
 
   it('up arrow should move selection to a previous item', () => {
@@ -92,7 +68,7 @@ describe('typeAhead keymaps', () => {
       editorPlugins: [plugin],
     });
     sendKeyToPm(editorView, 'Space');
-    expect(editorView.state.doc).toEqualDocument(doc(p('1 selected ')));
+    expect(editorView.state.doc).toEqualDocument(doc(p('1 selected')));
   });
 
   it('space should dismiss type ahead query if not items is available', () => {

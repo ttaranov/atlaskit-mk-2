@@ -1,10 +1,10 @@
 // @flow
 
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 
 import type { InteractionState, InteractionStateProps } from './types';
 
-export default class InteractionStateManager extends PureComponent<
+export default class InteractionStateManager extends Component<
   InteractionStateProps,
   InteractionState,
 > {
@@ -20,7 +20,11 @@ export default class InteractionStateManager extends PureComponent<
 
   onMouseUp = () => this.setState({ isActive: false });
 
-  onMouseEnter = () => this.setState({ isHover: true });
+  onMouseOver = () => {
+    if (!this.state.isHover) {
+      this.setState({ isHover: true });
+    }
+  };
 
   onMouseLeave = () => this.setState({ isActive: false, isHover: false });
 
@@ -28,7 +32,7 @@ export default class InteractionStateManager extends PureComponent<
     return (
       <div
         onMouseDown={this.onMouseDown}
-        onMouseEnter={this.onMouseEnter}
+        onMouseOver={this.onMouseOver}
         onMouseLeave={this.onMouseLeave}
         onMouseUp={this.onMouseUp}
         role="presentation"

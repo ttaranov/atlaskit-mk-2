@@ -16,12 +16,14 @@ export const IconWrapper = styled.span`
   ${getSize} color: ${p => p.primaryColor || 'currentColor'};
   display: inline-block;
   fill: ${p => p.secondaryColor || colors.background};
+  flex-shrink: 0;
   line-height: 1;
 
   > svg {
     ${getSize} max-height: 100%;
     max-width: 100%;
     overflow: hidden;
+    pointer-events: none;
     vertical-align: bottom;
   }
   /* Stop-color doesn't properly apply in chrome when the inherited/current color changes.

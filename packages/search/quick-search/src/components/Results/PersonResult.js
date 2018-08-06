@@ -19,8 +19,6 @@ export default class PersonResult extends PureComponent<Props> {
     isSelected: false,
     mentionPrefix: '@',
     onClick: () => {},
-    onMouseEnter: () => {},
-    onMouseLeave: () => {},
     presenceState: null, // No presence indicator by default
     type: PERSON_RESULT_TYPE,
   };
@@ -30,9 +28,19 @@ export default class PersonResult extends PureComponent<Props> {
       ? `${this.props.mentionPrefix}${this.props.mentionName}`
       : null;
 
-  getAvatar = () => (
-    <Avatar presence={this.props.presenceState} src={this.props.avatarUrl} />
-  );
+  getAvatar = () => {
+    if (this.props.avatar) {
+      return this.props.avatar;
+    }
+
+    return (
+      <Avatar
+        presence={this.props.presenceState}
+        size="small"
+        src={this.props.avatarUrl}
+      />
+    );
+  };
 
   render() {
     const { name, presenceMessage, ...resultBaseProps } = this.props;

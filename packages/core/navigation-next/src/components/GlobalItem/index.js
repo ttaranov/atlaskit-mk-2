@@ -9,6 +9,7 @@ import type { GlobalItemProps } from './types';
 
 export default class GlobalItem extends PureComponent<GlobalItemProps> {
   static defaultProps = {
+    label: '',
     size: 'large',
     styles: styleReducerNoOp,
   };
@@ -18,3 +19,5 @@ export default class GlobalItem extends PureComponent<GlobalItemProps> {
     return <InteractionStateManager>{this.renderItem}</InteractionStateManager>;
   }
 }
+
+export type { GlobalItemProps } from './types';

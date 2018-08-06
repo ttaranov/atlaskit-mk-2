@@ -1,24 +1,27 @@
 import { Plugin, PluginKey, EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { columnResizingPluginKey } from 'prosemirror-tables';
-import { stateKey as tablePluginKey } from '../pm-plugins/main';
+import { getPluginState } from '../pm-plugins/main';
+import { updateShadows } from '../nodeviews/TableComponent';
+import { getLineMarkerWidth } from '../ui/TableFloatingControls/utils';
 
 export const pluginKey = new PluginKey('tableColumnResizingCustomPlugin');
 
 const updateControls = (state: EditorState) => {
-  const { tableElement } = tablePluginKey.getState(state);
-  if (!tableElement) {
+  const { tableRef } = getPluginState(state);
+  if (!tableRef) {
     return;
   }
-
-  const cols = tableElement.querySelector('tr')!.children;
-  const columnControls: any = tableElement.parentElement.querySelectorAll(
-    '.table-column',
-  );
-  const rows = tableElement.querySelectorAll('tr');
-  const rowControls: any = tableElement.parentElement.parentElement.querySelectorAll(
-    '.table-row',
-  );
+  const tr = tableRef.querySelector('tr');
+  if (!tr) {
+    return;
+  }
+  const cols = tr.children;
+  const wrapper = tableRef.parentElement;
+  const columnControls: any = wrapper.querySelectorAll('.table-column');
+  const rows = tableRef.querySelectorAll('tr');
+  const rowControls: any = wrapper.parentElement.querySelectorAll('.table-row');
+  const numberedRows = wrapper.parentElement.querySelectorAll('.numbered-row');
 
   // update column controls width on resize
   for (let i = 0, count = columnControls.length; i < count; i++) {
@@ -27,29 +30,29 @@ const updateControls = (state: EditorState) => {
   // update rows controls height on resize
   for (let i = 0, count = rowControls.length; i < count; i++) {
     rowControls[i].style.height = `${rows[i].offsetHeight + 1}px`;
+
+    if (numberedRows.length) {
+      numberedRows[i].style.height = `${rows[i].offsetHeight + 1}px`;
+    }
   }
 
-  const rightShadow = tableElement.parentElement.parentElement.querySelector(
-    '.table-shadow.-right',
+  const rowMarkers: any = wrapper.parentElement.querySelectorAll(
+    '.ProseMirror-table-insert-row-marker',
   );
-  if (rightShadow) {
-    const { offsetWidth, scrollLeft } = tableElement.parentElement;
-    const diff = tableElement.offsetWidth - offsetWidth;
-    const scrollDiff = scrollLeft - diff > 0 ? scrollLeft - diff : 0;
-    const width = diff > 0 ? Math.min(diff, 10) : 0;
-    const container = tableElement.parentElement.parentElement;
 
-    const paddingLeft = getComputedStyle(container).paddingLeft;
-    const paddingLeftPx = paddingLeft
-      ? Number(paddingLeft.substr(0, paddingLeft.length - 2))
-      : 0;
-
-    rightShadow.style.width = `${width}px`;
-    rightShadow.style.left = `${offsetWidth -
-      width -
-      scrollDiff +
-      paddingLeftPx}px`;
+  // update row insert marker (blue horizontal line)
+  for (let i = 0, count = rowMarkers.length; i < count; i++) {
+    const width = getLineMarkerWidth(tableRef, wrapper.scrollLeft);
+    rowMarkers[i].style.width = `${width}px`;
   }
+
+  updateShadows(
+    wrapper,
+    tableRef,
+    wrapper.parentElement.querySelector('.table-shadow.-left'),
+    wrapper.parentElement.querySelector('.table-shadow.-right'),
+    !!tableRef,
+  );
 };
 
 const plugin = new Plugin({

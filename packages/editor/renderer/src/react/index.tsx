@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { ComponentClass } from 'react';
+// @ts-ignore: unused variable
+// prettier-ignore
+import { ComponentClass, Consumer, Provider } from 'react';
 
 import { Fragment, Mark, Node, Schema } from 'prosemirror-model';
 
@@ -71,6 +73,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     props: any = {},
     target: any = Doc,
     key: string = 'root-0',
+    parentInfo?: { parentIsIncompleteTask: boolean },
   ): JSX.Element | null {
     const emojiBlock = isEmojiDoc(fragment, props);
     const content = ReactSerializer.getChildNodes(fragment).map(
@@ -83,8 +86,18 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
           props = this.getEmojiBlockProps(node as Node);
         } else if (node.type.name === 'table') {
           props = this.getTableProps(node as Node);
+        } else if (node.type.name === 'date') {
+          props = this.getDateProps(node as Node, parentInfo);
         } else {
           props = this.getProps(node as Node);
+        }
+
+        let pInfo = parentInfo;
+        if (
+          node.type.name === 'taskItem' &&
+          (node as Node).attrs.state !== 'DONE'
+        ) {
+          pInfo = { parentIsIncompleteTask: true };
         }
 
         return this.serializeFragment(
@@ -92,6 +105,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
           props,
           toReact(node as Node),
           `${node.type.name}-${index}`,
+          pInfo,
         );
       },
     );
@@ -160,6 +174,16 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     return {
       ...this.getProps(node),
       columnWidths: calcTableColumnWidths(node),
+    };
+  }
+
+  private getDateProps(
+    node: Node,
+    parentInfo: { parentIsIncompleteTask: boolean } | undefined,
+  ) {
+    return {
+      timestamp: node.attrs && node.attrs.timestamp,
+      parentIsIncompleteTask: parentInfo && parentInfo.parentIsIncompleteTask,
     };
   }
 
@@ -252,3 +276,6 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     return new ReactSerializer({ providers, eventHandlers, extensionHandlers });
   }
 }
+
+const { Provider, Consumer } = React.createContext(0);
+export { Provider as BreakoutProvider, Consumer as BreakoutConsumer };

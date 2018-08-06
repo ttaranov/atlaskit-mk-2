@@ -1,17 +1,17 @@
 import * as sinon from 'sinon';
 import { EventEmitter2 } from 'eventemitter2';
-import { defaultServiceHost } from '@atlaskit/media-test-helpers';
+import { defaultBaseUrl } from '@atlaskit/media-test-helpers';
+import { ContextFactory } from '@atlaskit/media-core';
 import { MediaPicker } from '../../../index';
 import { Dropzone } from '../../dropzone';
-import * as uploadService from '../../../service/uploadService';
-import { ContextFactory } from '@atlaskit/media-core';
+import * as uploadService from '../../../service/newUploadServiceImpl';
 
 const context = ContextFactory.create({
-  serviceHost: defaultServiceHost,
   authProvider: () =>
     Promise.resolve({
       clientId: '603c5433-35c4-4346-9a18-2acd3e8df980',
       token: 'some-token',
+      baseUrl: defaultBaseUrl,
     }),
 });
 
@@ -27,6 +27,7 @@ describe('Dropzone', () => {
       collection: '',
     },
     container,
+    useNewUploadService: true,
   };
   // Helper functions
   const createDragOverOrDropEvent = (
@@ -56,10 +57,6 @@ describe('Dropzone', () => {
     return createDragOverOrDropEvent('dragover', type);
   };
 
-  const createDropEvent = (type?: string) => {
-    return createDragOverOrDropEvent('drop', type);
-  };
-
   const createDragLeaveEvent = () => {
     const event = document.createEvent('Event') as any;
     event.initEvent('dragleave', true, true);
@@ -68,76 +65,74 @@ describe('Dropzone', () => {
     return event;
   };
 
-  describe('MediaPicker', () => {
-    it('returns the Dropzone object when "dropzone" is specified', () => {
-      const pickerObj = MediaPicker('dropzone', context, config);
-      expect(pickerObj).toBeInstanceOf(Dropzone);
-    });
-  });
-
   describe('activate', () => {
-    it('injects drop zone into supplied container', () => {
+    it('injects drop zone into supplied container', async () => {
       const dropzone = MediaPicker('dropzone', context, config);
 
-      return dropzone.activate().then(() => {
-        expect(
-          container.querySelectorAll('.mediaPickerDropzone').length,
-        ).toEqual(1);
-      });
+      await dropzone.activate();
+      expect(container.querySelectorAll('.mediaPickerDropzone').length).toEqual(
+        1,
+      );
     });
 
-    it('injects drop zone into document.body if no container is supplied to constructor', () => {
+    it('injects drop zone into document.body if no container is supplied to constructor', async () => {
       const dropzone = MediaPicker('dropzone', context);
+      await dropzone.activate();
+      expect(
+        document.body.querySelectorAll('.mediaPickerDropzone').length,
+      ).toEqual(1);
+    });
 
-      return dropzone.activate().then(() => {
-        expect(
-          document.body.querySelectorAll('.mediaPickerDropzone').length,
-        ).toEqual(1);
-      });
+    it('add "drop" event to container', async () => {
+      let addEventListenerSpy: jest.SpyInstance<any>;
+      addEventListenerSpy = jest.spyOn(container, 'addEventListener');
+      const dropzone = MediaPicker('dropzone', context, config);
+      await dropzone.activate();
+      const events = addEventListenerSpy.mock.calls.map(args => args[0]);
+      expect(events).toContain('dragover');
+      expect(events).toContain('dragleave');
+      expect(events).toContain('drop');
     });
 
     describe('displays dropzone UI', () => {
-      it('should append "active" class to .mediaPickerDropzone on "dragover"', () => {
+      it('should append "active" class to .mediaPickerDropzone on "dragover"', async () => {
         const dragOver = createDragOverEvent();
         const dropzone = MediaPicker('dropzone', context, config);
 
-        dropzone.activate().then(() => {
-          expect(
-            container.querySelector('.mediaPickerDropzone')!.classList.contains(
-              'active',
-            ),
-          ).toEqual(false);
+        await dropzone.activate();
+        expect(
+          container
+            .querySelector('.mediaPickerDropzone')!
+            .classList.contains('active'),
+        ).toEqual(false);
 
-          container.dispatchEvent(dragOver);
-          expect(
-            container.querySelector('.mediaPickerDropzone')!.classList.contains(
-              'active',
-            ),
-          ).toEqual(true);
-        });
+        container.dispatchEvent(dragOver);
+        expect(
+          container
+            .querySelector('.mediaPickerDropzone')!
+            .classList.contains('active'),
+        ).toEqual(true);
       });
 
-      it('should remove "active" class to .mediaPickerDropzone on "dragover"', () => {
+      it('should remove "active" class to .mediaPickerDropzone on "dragover"', async () => {
         const dragOver = createDragOverEvent();
         const dragLeave = createDragLeaveEvent();
-
         const dropzone = MediaPicker('dropzone', context, config);
 
-        dropzone.activate().then(() => {
-          container.dispatchEvent(dragOver);
-          expect(
-            container.querySelector('.mediaPickerDropzone')!.classList.contains(
-              'active',
-            ),
-          ).toEqual(true);
+        await dropzone.activate();
+        container.dispatchEvent(dragOver);
+        expect(
+          container
+            .querySelector('.mediaPickerDropzone')!
+            .classList.contains('active'),
+        ).toEqual(true);
 
-          container.dispatchEvent(dragLeave);
-          expect(
-            container.querySelector('.mediaPickerDropzone')!.classList.contains(
-              'active',
-            ),
-          ).toEqual(false);
-        });
+        container.dispatchEvent(dragLeave);
+        expect(
+          container
+            .querySelector('.mediaPickerDropzone')!
+            .classList.contains('active'),
+        ).toEqual(false);
       });
     });
   });
@@ -154,14 +149,13 @@ describe('Dropzone', () => {
       });
     });
 
-    it('removes "dragover", "dragleave" and "drop" events from container', () => {
-      return dropzone.activate().then(() => {
-        dropzone.deactivate();
-        const events = removeEventListenerSpy.mock.calls.map(args => args[0]);
-        expect(events).toContain('dragover');
-        expect(events).toContain('dragleave');
-        expect(events).toContain('drop');
-      });
+    it('removes "dragover", "dragleave" and "drop" events from container', async () => {
+      await dropzone.activate();
+      dropzone.deactivate();
+      const events = removeEventListenerSpy.mock.calls.map(args => args[0]);
+      expect(events).toContain('dragover');
+      expect(events).toContain('dragleave');
+      expect(events).toContain('drop');
     });
   });
 
@@ -172,7 +166,7 @@ describe('Dropzone', () => {
 
     const stubUploadService = (fakeUploadService: FakeUploadService) => {
       uploadServiceStub = sinon
-        .stub(uploadService, 'UploadService')
+        .stub(uploadService, 'NewUploadServiceImpl')
         .returns(fakeUploadService);
     };
 
@@ -194,91 +188,69 @@ describe('Dropzone', () => {
       }
     });
 
-    it('should emit drag-enter for drag over with type "Files" and contain files length', done => {
+    it('should emit drag-enter for drag over with type "Files" and contain files length', async done => {
       const dropzone = MediaPicker('dropzone', context, {
         ...config,
         headless: true,
       });
 
-      dropzone.activate().then(() => {
-        dropzone.on('drag-enter', e => {
-          expect(e.length).toEqual(1);
-          done();
-        });
-
-        container.dispatchEvent(createDragOverEvent());
+      await dropzone.activate();
+      dropzone.on('drag-enter', e => {
+        expect(e.length).toEqual(1);
+        done();
       });
+
+      container.dispatchEvent(createDragOverEvent());
     });
 
-    it('should not emit drag-enter for drag over with type "Not Files"', done => {
+    it('should not emit drag-enter for drag over with type "Not Files"', async done => {
       const dropzone = MediaPicker('dropzone', context, {
         ...config,
         headless: true,
       });
 
-      dropzone.activate().then(() => {
-        dropzone.on('drag-enter', () => {
-          done(new Error('drag-enter should not be emitted'));
-        });
-
-        container.dispatchEvent(createDragOverEvent('Not Files'));
-        done();
+      await dropzone.activate();
+      dropzone.on('drag-enter', () => {
+        done(new Error('drag-enter should not be emitted'));
       });
+
+      container.dispatchEvent(createDragOverEvent('Not Files'));
+      done();
     });
 
-    it('should emit drag-leave for dragleave event', done => {
-      dropzone.activate().then(() => {
-        dropzone.on('drag-leave', () => {
-          done();
-        });
-        container.dispatchEvent(createDragOverEvent());
-        container.dispatchEvent(createDragLeaveEvent());
-      });
+    it('should emit drag-leave for dragleave event', async done => {
+      await dropzone.activate();
+
+      dropzone.on('drag-leave', done);
+      container.dispatchEvent(createDragOverEvent());
+      container.dispatchEvent(createDragLeaveEvent());
     });
 
-    it('should not emit drag-leave for dragleave event if there was no dragover', done => {
-      dropzone.activate().then(() => {
-        dropzone.on('drag-leave', () => {
-          done(new Error('drag-leave should not be emitted'));
-        });
+    it('should not emit drag-leave for dragleave event if there was no dragover', async () => {
+      await dropzone.activate();
 
-        container.dispatchEvent(createDragLeaveEvent());
-        done();
+      dropzone.on('drag-leave', () => {
+        throw new Error('drag-leave should not be emitted');
       });
+
+      container.dispatchEvent(createDragLeaveEvent());
     });
+  });
 
-    it('should fire "drop" event when upload-service fires "file-dropped" event and datatransfer.types array contains the string "Files"', done => {
-      const dropzone = MediaPicker('dropzone', context, {
-        ...config,
-        headless: true,
-      });
+  it('should upload files when files are dropped', async () => {
+    const dropzone = MediaPicker('dropzone', context, config);
+    await dropzone.activate();
 
-      dropzone.on('drop', () => {
-        done();
-      });
+    const spy = jest.spyOn(dropzone['uploadService'], 'addFiles');
+    const event = new Event('drop') as any;
+    const files = [new File([], '')];
+    event.dataTransfer = {
+      types: [],
+      files,
+    };
+    dropzone['onFileDropped'](event);
 
-      dropzone.activate().then(() => {
-        someFakeUploadService.emit('file-dropped', createDropEvent());
-      });
-    });
-
-    it('should not fire "drop" event when upload-service fires "file-dropped" event and datatransfer.types array does not contain the string "Files"', done => {
-      const dropzone = MediaPicker('dropzone', context, {
-        ...config,
-        headless: true,
-      });
-
-      dropzone.on('drop', () => {
-        done(new Error('drop should not be emitted'));
-      });
-
-      dropzone.activate().then(() => {
-        someFakeUploadService.emit(
-          'file-dropped',
-          createDropEvent('Not Files'),
-        );
-        done();
-      });
-    });
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(spy).toBeCalledWith(files);
   });
 });

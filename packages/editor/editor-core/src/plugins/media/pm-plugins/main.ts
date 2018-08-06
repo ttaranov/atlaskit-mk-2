@@ -13,11 +13,7 @@ import {
 } from 'prosemirror-state';
 import { Context } from '@atlaskit/media-core';
 import { UploadParams } from '@atlaskit/media-picker';
-import {
-  copyPrivateMediaAttributes,
-  MediaType,
-  MediaSingleLayout,
-} from '@atlaskit/editor-common';
+import { MediaType, MediaSingleLayout } from '@atlaskit/editor-common';
 
 import analyticsService from '../../../analytics/service';
 import { ErrorReporter, isImage } from '../../../utils';
@@ -73,7 +69,7 @@ export class MediaPluginState {
   private mediaNodes: MediaNodeWithPosHandler[] = [];
   private pendingTask = Promise.resolve<MediaState | null>(null);
   private options: MediaPluginOptions;
-  private view: EditorView & { docView?: any };
+  private view: EditorView;
   private pluginStateChangeSubscribers: PluginStateChangeSubscriber[] = [];
   private useDefaultStateManager = true;
   private destroyed = false;
@@ -91,11 +87,15 @@ export class MediaPluginState {
   public editorAppearance: EditorAppearance;
   private removeOnCloseListener: () => void = () => {};
 
+  private reactContext: () => {};
+
   constructor(
     state: EditorState,
     options: MediaPluginOptions,
+    reactContext: () => {},
     editorAppearance?: EditorAppearance,
   ) {
+    this.reactContext = reactContext;
     this.options = options;
     this.editorAppearance = editorAppearance;
     this.waitForMediaUpload =
@@ -105,8 +105,8 @@ export class MediaPluginState {
 
     const { nodes } = state.schema;
     assert(
-      nodes.media && nodes.mediaGroup,
-      'Editor: unable to init media plugin - media or mediaGroup node absent in schema',
+      nodes.media && (nodes.mediaGroup || nodes.mediaSingle),
+      'Editor: unable to init media plugin - media or mediaGroup/mediaSingle node absent in schema',
     );
 
     this.stateManager = new DefaultMediaStateManager();
@@ -207,6 +207,7 @@ export class MediaPluginState {
           resolvedMediaProvider.uploadParams,
           uploadContext,
           Picker,
+          this.reactContext,
         );
       } else {
         this.destroyPickers();
@@ -218,10 +219,12 @@ export class MediaPluginState {
     this.notifyPluginStateSubscribers();
   };
 
+  getMediaOptions = () => this.options;
+
   updateElement(): void {
     let newElement;
     if (this.selectedMediaNode() && this.isMediaSingle()) {
-      newElement = this.getDomElement(this.view.docView);
+      newElement = this.getDomElement(this.view.domAtPos.bind(this.view));
     }
 
     if (this.element !== newElement) {
@@ -261,14 +264,14 @@ export class MediaPluginState {
     return selection.$from.parent.type === schema.nodes.mediaSingle;
   }
 
-  private getDomElement(docView: any): HTMLElement | undefined {
+  private getDomElement(domAtPos: EditorView['domAtPos']) {
     const { from } = this.view.state.selection;
     if (this.selectedMediaNode()) {
-      const { node, offset } = docView.domFromPos(from);
+      const { node } = domAtPos(from);
       if (!node.childNodes.length) {
-        return node.parentNode;
+        return node.parentNode as HTMLElement | undefined;
       }
-      return node.childNodes[offset].querySelector('.wrapper');
+      return (node as HTMLElement).querySelector('.wrapper');
     }
   }
 
@@ -384,7 +387,11 @@ export class MediaPluginState {
 
   // TODO [MSW-454]: remove this logic from Editor
   onPopupPickerClose = () => {
-    if (this.dropzonePicker) {
+    if (
+      this.dropzonePicker &&
+      this.popupPicker &&
+      this.popupPicker.type === 'popup'
+    ) {
       this.dropzonePicker.activate();
     }
   };
@@ -393,7 +400,7 @@ export class MediaPluginState {
     if (!this.popupPicker) {
       return;
     }
-    if (this.dropzonePicker) {
+    if (this.dropzonePicker && this.popupPicker.type === 'popup') {
       this.dropzonePicker.deactivate();
     }
     this.popupPicker.show();
@@ -489,7 +496,11 @@ export class MediaPluginState {
       return false;
     }
 
-    const { selection: { from }, schema, tr } = this.view.state;
+    const {
+      selection: { from },
+      schema,
+      tr,
+    } = this.view.state;
 
     this.view.dispatch(
       tr.setNodeMarkup(from - 1, schema.nodes.mediaSingle, {
@@ -574,6 +585,7 @@ export class MediaPluginState {
     uploadParams: UploadParams,
     context: Context,
     Picker: typeof PickerFacade,
+    reactContext: () => {},
   ) {
     if (this.destroyed) {
       return;
@@ -586,8 +598,13 @@ export class MediaPluginState {
         stateManager,
         errorReporter,
       };
+      const { featureFlags } = this.mediaProvider;
       const defaultPickerConfig = {
+        useNewUploadService: !!(
+          featureFlags && featureFlags.useNewUploadService
+        ),
         uploadParams,
+        proxyReactContext: reactContext(),
       };
 
       if (this.options.customMediaPicker) {
@@ -705,13 +722,15 @@ export class MediaPluginState {
           // This allows Cards to use local preview while they fetch the remote one
           viewContext.setLocalPreview(state.publicId, state.thumbnail.src);
         }
+        if (state.publicId) {
+          this.replaceTemporaryNode(state);
+        }
         break;
 
       case 'ready':
         if (state.publicId && this.nodeHasNoPublicId(state)) {
           this.replaceTemporaryNode(state);
         }
-
         if (state.preview) {
           this.stateManager.off(state.id, this.handleMediaState);
         }
@@ -729,7 +748,11 @@ export class MediaPluginState {
     if (!mediaNodeWithPos) {
       return;
     }
-    const { node: { attrs: { id: mediaNodeId } } } = mediaNodeWithPos;
+    const {
+      node: {
+        attrs: { id: mediaNodeId },
+      },
+    } = mediaNodeWithPos;
     return mediaNodeId.match(/^temporary:/);
   };
 
@@ -750,7 +773,7 @@ export class MediaPluginState {
     if (!view) {
       return;
     }
-    const { id, thumbnail, fileName, fileSize, publicId } = state;
+    const { id, thumbnail, fileName, fileSize, publicId, fileMimeType } = state;
     const mediaNodeWithPos = this.findMediaNode(id);
     if (!mediaNodeWithPos) {
       return;
@@ -767,10 +790,8 @@ export class MediaPluginState {
       height,
       __fileName: fileName,
       __fileSize: fileSize,
+      __fileMimeType: fileMimeType,
     });
-
-    // Copy all optional attributes from old node
-    copyPrivateMediaAttributes(mediaNode.attrs, newNode.attrs);
 
     // replace the old node with a new one
     const nodePos = getPos();
@@ -809,7 +830,10 @@ export class MediaPluginState {
       selection instanceof NodeSelection &&
       selection.node.type === schema.nodes.media
     ) {
-      return !hasParentNodeOfType(schema.nodes.bodiedExtension)(selection);
+      return (
+        !hasParentNodeOfType(schema.nodes.bodiedExtension)(selection) &&
+        !hasParentNodeOfType(schema.nodes.layoutSection)(selection)
+      );
     }
     return false;
   }
@@ -860,6 +884,7 @@ export const getMediaPluginState = (state: EditorState) =>
 export const createPlugin = (
   schema: Schema,
   options: MediaPluginOptions,
+  reactContext: () => {},
   dispatch?: Dispatch,
   editorAppearance?: EditorAppearance,
 ) => {
@@ -868,7 +893,12 @@ export const createPlugin = (
   return new Plugin({
     state: {
       init(config, state) {
-        return new MediaPluginState(state, options, editorAppearance);
+        return new MediaPluginState(
+          state,
+          options,
+          reactContext,
+          editorAppearance,
+        );
       },
       apply(tr, pluginState: MediaPluginState, oldState, newState) {
         pluginState.detectLinkRangesInSteps(tr, oldState);
@@ -924,7 +954,10 @@ export const createPlugin = (
           return;
         }
 
-        const { schema, selection: { $anchor } } = state;
+        const {
+          schema,
+          selection: { $anchor },
+        } = state;
         // When a media is already selected
         if (state.selection instanceof NodeSelection) {
           return;

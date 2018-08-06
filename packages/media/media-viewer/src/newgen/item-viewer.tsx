@@ -1,31 +1,36 @@
 import * as React from 'react';
 import { Context, FileItem } from '@atlaskit/media-core';
-import { ErrorMessage } from './styled';
-import { Outcome, Identifier } from './domain';
+import { Outcome, Identifier, MediaViewerFeatureFlags } from './domain';
 import { ImageViewer } from './viewers/image';
 import { VideoViewer } from './viewers/video';
 import { AudioViewer } from './viewers/audio';
-import { PDFViewer } from './viewers/pdf';
+import { DocViewer } from './viewers/doc';
 import { Spinner } from './loading';
 import { Subscription } from 'rxjs';
 import * as deepEqual from 'deep-equal';
+import { ErrorMessage, createError, MediaViewerError } from './error';
+import { renderDownloadButton } from './domain/download';
 
-export type Props = {
-  readonly identifier: Identifier;
-  readonly context: Context;
-};
+export type Props = Readonly<{
+  identifier: Identifier;
+  context: Context;
+  featureFlags?: MediaViewerFeatureFlags;
+  showControls?: () => void;
+  onClose?: () => void;
+  previewCount: number;
+}>;
 
 export type State = {
-  item: Outcome<FileItem, Error>;
+  item: Outcome<FileItem, MediaViewerError>;
 };
 
 const initialState: State = { item: { status: 'PENDING' } };
 export class ItemViewer extends React.Component<Props, State> {
   state: State = initialState;
 
-  private subscription: Subscription;
+  private subscription?: Subscription;
 
-  componentWillUpdate(nextProps) {
+  componentWillUpdate(nextProps: Props) {
     if (this.needsReset(this.props, nextProps)) {
       this.release();
       this.init(nextProps);
@@ -41,28 +46,69 @@ export class ItemViewer extends React.Component<Props, State> {
   }
 
   render() {
-    const { context } = this.props;
+    const {
+      context,
+      identifier,
+      featureFlags,
+      showControls,
+      onClose,
+      previewCount,
+    } = this.props;
     const { item } = this.state;
     switch (item.status) {
       case 'PENDING':
         return <Spinner />;
       case 'SUCCESSFUL':
         const itemUnwrapped = item.data;
+        const viewerProps = {
+          context,
+          item: itemUnwrapped,
+          collectionName: identifier.collectionName,
+          onClose,
+          previewCount,
+        };
         switch (itemUnwrapped.details.mediaType) {
           case 'image':
-            return <ImageViewer context={context} item={itemUnwrapped} />;
+            return <ImageViewer {...viewerProps} />;
           case 'audio':
-            return <AudioViewer context={context} item={itemUnwrapped} />;
+            return <AudioViewer {...viewerProps} />;
           case 'video':
-            return <VideoViewer context={context} item={itemUnwrapped} />;
+            return (
+              <VideoViewer
+                showControls={showControls}
+                featureFlags={featureFlags}
+                {...viewerProps}
+              />
+            );
           case 'doc':
-            return <PDFViewer context={context} item={itemUnwrapped} />;
+            return <DocViewer {...viewerProps} />;
           default:
-            return <ErrorMessage>This file is unsupported</ErrorMessage>;
+            return (
+              <ErrorMessage error={createError('unsupported')}>
+                <p>Try downloading the file to view it.</p>
+                {this.renderDownloadButton(itemUnwrapped)}
+              </ErrorMessage>
+            );
         }
       case 'FAILED':
-        return <ErrorMessage>{item.err.message}</ErrorMessage>;
+        const error = item.err;
+        const fileItem = item.err.fileItem;
+        if (fileItem) {
+          return (
+            <ErrorMessage error={error}>
+              <p>Try downloading the file to view it.</p>
+              {this.renderDownloadButton(fileItem)}
+            </ErrorMessage>
+          );
+        } else {
+          return <ErrorMessage error={error} />;
+        }
     }
+  }
+
+  private renderDownloadButton(fileItem: FileItem) {
+    const { context, identifier } = this.props;
+    return renderDownloadButton(fileItem, context, identifier.collectionName);
   }
 
   private init(props: Props) {
@@ -80,7 +126,7 @@ export class ItemViewer extends React.Component<Props, State> {
           this.setState({
             item: {
               status: 'FAILED',
-              err: new Error('links are not supported at the moment'),
+              err: createError('linksNotSupported'),
             },
           });
         } else {
@@ -89,7 +135,7 @@ export class ItemViewer extends React.Component<Props, State> {
             this.setState({
               item: {
                 status: 'FAILED',
-                err: new Error('processing failed'),
+                err: createError('previewFailed', mediaItem),
               },
             });
           } else if (processingStatus === 'succeeded') {
@@ -106,7 +152,7 @@ export class ItemViewer extends React.Component<Props, State> {
         this.setState({
           item: {
             status: 'FAILED',
-            err,
+            err: createError('metadataFailed', undefined, err),
           },
         });
       },

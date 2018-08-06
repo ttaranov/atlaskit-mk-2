@@ -452,6 +452,20 @@ describe('Renderer - Validator', () => {
         expect(getValidNode(applicationCard).type).to.equal('text');
       });
 
+      it('should return "text" if attrs.context.icon is missing', () => {
+        const applicationCard = {
+          type: 'applicationCard',
+          attrs: {
+            text: 'applicationCard',
+            title: { text: 'applicationCard' },
+            context: {
+              text: 'test',
+            },
+          },
+        };
+        expect(getValidNode(applicationCard).type).to.equal('applicationCard');
+      });
+
       it('should return "text" if attrs.context.icon.label is missing', () => {
         const applicationCard = {
           type: 'applicationCard',
@@ -491,6 +505,38 @@ describe('Renderer - Validator', () => {
         };
 
         expect(getValidNode(applicationCard).type).to.equal('applicationCard');
+      });
+    });
+
+    describe('codeBlock', () => {
+      it('should return codeBlock with only type text', () => {
+        const invalidCodeBlockADF = {
+          type: 'codeBlock',
+          attrs: {
+            language: 'javascript',
+          },
+          content: [
+            {
+              type: 'text',
+              text: 'var foo = {};\nvar bar = [];',
+              marks: [
+                {
+                  type: 'link',
+                  attrs: {
+                    href: 'http://google.com',
+                    title: 'Google',
+                  },
+                },
+              ],
+            },
+          ],
+        };
+        const validNode = getValidNode(invalidCodeBlockADF);
+        expect(validNode.content![0].type).to.equal('text');
+        expect(validNode.content![0].text).to.equal(
+          'var foo = {};\nvar bar = [];',
+        );
+        expect(validNode.content![0].marks).to.not.exist;
       });
     });
 
@@ -552,6 +598,25 @@ describe('Renderer - Validator', () => {
       it('should reject emoji without shortName', () => {
         const emojiId = { id: '123', fallback: 'cheese' };
         const { type } = getValidNode({ type: 'emoji', attrs: emojiId });
+        expect(type).to.equal('text');
+      });
+    });
+
+    describe('date', () => {
+      it('should pass through attrs as timestamp', () => {
+        const timestamp = {
+          timestamp: 1528886473152,
+        };
+        const { type, attrs } = getValidNode({
+          type: 'date',
+          attrs: timestamp,
+        });
+        expect(type).to.equal('date');
+        expect(attrs).to.deep.equal(timestamp);
+      });
+
+      it('should reject date without timestamp', () => {
+        const { type } = getValidNode({ type: 'date' });
         expect(type).to.equal('text');
       });
     });
@@ -1607,7 +1672,7 @@ describe('Renderer - Validator', () => {
 
   describe('getValidMark', () => {
     describe('unknown', () => {
-      it('should return null if type is unkown', () => {
+      it('should return null if type is unknown', () => {
         expect(getValidMark({ type: 'banana' })).to.equal(null);
       });
     });
@@ -1664,6 +1729,20 @@ describe('Renderer - Validator', () => {
           type: 'link',
           attrs: {
             href: 'https://www.atlassian.com',
+          },
+        });
+      });
+
+      it('should allow relative links', () => {
+        expect(
+          getValidMark({
+            type: 'link',
+            attrs: { href: '/this/is/a/relative/link' },
+          }),
+        ).to.deep.equal({
+          type: 'link',
+          attrs: {
+            href: '/this/is/a/relative/link',
           },
         });
       });
@@ -1939,6 +2018,99 @@ describe('Renderer - Validator', () => {
       };
       const newDoc = getValidDocument(original);
       expect(newDoc).to.deep.equal(expectedValidDoc);
+    });
+  });
+
+  describe('Stage0', () => {
+    it('should remove stage0 marks if flag is not explicitly set to "stage0"', () => {
+      const original: ADDoc = {
+        type: 'doc',
+        version: 1,
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'text',
+                text: 'Hello World',
+                marks: [
+                  {
+                    type: 'confluenceInlineComment',
+                    attrs: {
+                      reference: 'ref',
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      };
+
+      expect(getValidDocument(original)).to.deep.equal({
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'text',
+                text: 'Hello World',
+                marks: [],
+              },
+            ],
+          },
+        ],
+      });
+    });
+
+    it('should keep stage0 marks if flag is explicitly set to "stage0"', () => {
+      const original: ADDoc = {
+        type: 'doc',
+        version: 1,
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'text',
+                text: 'Hello World',
+                marks: [
+                  {
+                    type: 'confluenceInlineComment',
+                    attrs: {
+                      reference: 'ref',
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      };
+
+      expect(getValidDocument(original, schema, 'stage0')).to.deep.equal({
+        type: 'doc',
+        content: [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'text',
+                text: 'Hello World',
+                marks: [
+                  {
+                    type: 'confluenceInlineComment',
+                    attrs: {
+                      reference: 'ref',
+                    },
+                  },
+                ],
+              },
+            ],
+          },
+        ],
+      });
     });
   });
 });

@@ -1034,6 +1034,11 @@ System.out.println("There are " + count + " values >= 5");`,
             title: 'Google!',
           },
         },
+        {
+          type: 'text',
+          text:
+            'Do not use this image node; it may be removed at any time without notice.',
+        },
       ],
     },
     {
@@ -1465,7 +1470,12 @@ System.out.println("There are " + count + " values >= 5");`,
               content: [
                 {
                   type: 'paragraph',
-                  content: [],
+                  content: [
+                    {
+                      type: 'text',
+                      text: 'header',
+                    },
+                  ],
                 },
               ],
             },
@@ -1477,7 +1487,12 @@ System.out.println("There are " + count + " values >= 5");`,
               content: [
                 {
                   type: 'paragraph',
-                  content: [],
+                  content: [
+                    {
+                      type: 'text',
+                      text: 'header',
+                    },
+                  ],
                 },
               ],
             },
@@ -1496,7 +1511,12 @@ System.out.println("There are " + count + " values >= 5");`,
               content: [
                 {
                   type: 'paragraph',
-                  content: [],
+                  content: [
+                    {
+                      type: 'text',
+                      text: 'cell',
+                    },
+                  ],
                 },
               ],
             },
@@ -1505,7 +1525,12 @@ System.out.println("There are " + count + " values >= 5");`,
               content: [
                 {
                   type: 'paragraph',
-                  content: [],
+                  content: [
+                    {
+                      type: 'text',
+                      text: 'cell',
+                    },
+                  ],
                 },
               ],
             },
@@ -1514,7 +1539,12 @@ System.out.println("There are " + count + " values >= 5");`,
               content: [
                 {
                   type: 'paragraph',
-                  content: [],
+                  content: [
+                    {
+                      type: 'text',
+                      text: 'cell',
+                    },
+                  ],
                 },
               ],
             },
@@ -1528,7 +1558,12 @@ System.out.println("There are " + count + " values >= 5");`,
               content: [
                 {
                   type: 'paragraph',
-                  content: [],
+                  content: [
+                    {
+                      type: 'text',
+                      text: 'cell',
+                    },
+                  ],
                 },
               ],
             },
@@ -1537,7 +1572,12 @@ System.out.println("There are " + count + " values >= 5");`,
               content: [
                 {
                   type: 'paragraph',
-                  content: [],
+                  content: [
+                    {
+                      type: 'text',
+                      text: 'cell',
+                    },
+                  ],
                 },
               ],
             },
@@ -1546,7 +1586,12 @@ System.out.println("There are " + count + " values >= 5");`,
               content: [
                 {
                   type: 'paragraph',
-                  content: [],
+                  content: [
+                    {
+                      type: 'text',
+                      text: 'cell',
+                    },
+                  ],
                 },
               ],
             },

@@ -130,8 +130,32 @@ export const audioFileId = {
   collectionName,
 };
 
+export const audioNoCoverFileId = {
+  id: '7a5698bb-919c-4200-8699-6041e7913b11', // mp3 audio
+  mediaItemType: fileType,
+  collectionName,
+};
+
 export const videoFileId = {
   id: '1b01a476-83b4-4f44-8192-f83b2d00913a', // mp4 video
+  mediaItemType: fileType,
+  collectionName,
+};
+
+export const videoHorizontalFileId = {
+  id: '2afaf845-4385-431f-9a15-3e21520cf896', // .mov video
+  mediaItemType: fileType,
+  collectionName,
+};
+
+export const videoLargeFileId = {
+  id: '3291050e-6b66-4296-94c6-12088ef6fbad',
+  mediaItemType: fileType,
+  collectionName,
+};
+
+export const videoProcessingFailedId = {
+  id: 'e558199f-f982-4d23-93eb-313be5998d1b',
   mediaItemType: fileType,
   collectionName,
 };
@@ -177,6 +201,12 @@ export const passwordProtectedPdfFileId = {
   collectionName,
 };
 
+export const archiveFileId = {
+  id: '1abbae6b-f507-4b4f-b181-21016bf3b7cc',
+  mediaItemType: fileType,
+  collectionName,
+};
+
 export const unknownFileId = {
   id: 'e0652e68-c596-4800-8a91-1920e6b8a585',
   mediaItemType: fileType,
@@ -189,6 +219,17 @@ export const errorFileId = {
   collectionName,
 };
 
+export const gifFileId = {
+  id: '26adc5af-3af4-42a8-9c24-62b6ce0f9369',
+  mediaItemType: fileType,
+  collectionName,
+};
+
+export const noMetadataFileId = {
+  id: '1adaf6f9-37f6-4171-ab6b-455ec3115381',
+  mediaItemType: fileType,
+  collectionName,
+};
 // === DETAILS ===
 
 export const genericUrlPreview: UrlPreview = {

@@ -4,8 +4,15 @@ import { Identifier } from './domain';
 import ArrowLeftCircleIcon from '@atlaskit/icon/glyph/chevron-left-circle';
 import ArrowRightCircleIcon from '@atlaskit/icon/glyph/chevron-right-circle';
 import { colors } from '@atlaskit/theme';
-import { ArrowsWrapper, RightWrapper, LeftWrapper, Arrow } from './styled';
-import { getSelectedIndex } from './util';
+import {
+  ArrowsWrapper,
+  RightWrapper,
+  LeftWrapper,
+  Arrow,
+  hideControlsClassName,
+} from './styled';
+import { getSelectedIndex } from './utils';
+import { Shortcut } from './shortcut';
 
 export type NavigationDirection = 'prev' | 'next';
 
@@ -47,13 +54,17 @@ export default class Navigation extends Component<NavigationProps, any> {
     const isLeftVisible = selectedIndex > 0;
     const isRightVisible = selectedIndex < items.length - 1;
 
+    const prev = this.navigate('prev');
+    const next = this.navigate('next');
+
     return (
       <ArrowsWrapper>
         <LeftWrapper>
           {isLeftVisible ? (
-            <Arrow>
+            <Arrow className={hideControlsClassName}>
+              <Shortcut keyCode={37} handler={prev} />
               <ArrowLeftCircleIcon
-                onClick={this.navigate('prev')}
+                onClick={prev}
                 primaryColor={colors.N800}
                 size="xlarge"
                 label="Previous"
@@ -64,9 +75,10 @@ export default class Navigation extends Component<NavigationProps, any> {
 
         <RightWrapper>
           {isRightVisible ? (
-            <Arrow>
+            <Arrow className={hideControlsClassName}>
+              <Shortcut keyCode={39} handler={next} />
               <ArrowRightCircleIcon
-                onClick={this.navigate('next')}
+                onClick={next}
                 primaryColor={colors.N800}
                 size="xlarge"
                 label="Next"

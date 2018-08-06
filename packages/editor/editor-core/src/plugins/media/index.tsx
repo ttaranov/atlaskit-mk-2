@@ -1,8 +1,9 @@
 import * as React from 'react';
+import EditorImageIcon from '@atlaskit/icon/glyph/editor/image';
 import { media, mediaGroup, mediaSingle } from '@atlaskit/editor-common';
 
 import { EditorPlugin } from '../../types';
-import { nodeViewFactory } from '../../nodeviews';
+import { legacyNodeViewFactory } from '../../nodeviews';
 import WithPluginState from '../../ui/WithPluginState';
 import { pluginKey as widthPluginKey } from '../width';
 
@@ -34,6 +35,7 @@ export {
 export interface MediaOptions {
   provider?: Promise<MediaProvider>;
   allowMediaSingle?: boolean | MediaSingleOptions;
+  allowMediaGroup?: boolean;
   customDropzoneContainer?: HTMLElement;
   customMediaPicker?: CustomMediaPicker;
 }
@@ -45,19 +47,29 @@ export interface MediaSingleOptions {
 const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
   nodes() {
     return [
-      { name: 'mediaGroup', node: mediaGroup, rank: 1700 },
-      { name: 'mediaSingle', node: mediaSingle, rank: 1750 },
-      { name: 'media', node: media, rank: 1800 },
-    ].filter(
-      node =>
-        node.name !== 'mediaSingle' || (options && options.allowMediaSingle),
-    );
+      { name: 'mediaGroup', node: mediaGroup },
+      { name: 'mediaSingle', node: mediaSingle },
+      { name: 'media', node: media },
+    ].filter(node => {
+      const { allowMediaGroup = true, allowMediaSingle = false } =
+        options || {};
+
+      if (node.name === 'mediaGroup') {
+        return allowMediaGroup;
+      }
+
+      if (node.name === 'mediaSingle') {
+        return allowMediaSingle;
+      }
+
+      return true;
+    });
   },
 
   pmPlugins() {
     return [
       {
-        rank: 1200,
+        name: 'media',
         plugin: ({
           schema,
           props,
@@ -65,36 +77,46 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
           eventDispatcher,
           providerFactory,
           errorReporter,
+          portalProviderAPI,
+          reactContext,
         }) =>
           createPlugin(
             schema,
             {
               providerFactory,
               nodeViews: {
-                mediaGroup: nodeViewFactory(providerFactory, {
-                  mediaGroup: ReactMediaGroupNode,
-                  media: ReactMediaNode,
-                }),
-                mediaSingle: nodeViewFactory(providerFactory, {
-                  mediaSingle: ({ view, node, ...props }) => (
-                    <WithPluginState
-                      editorView={view}
-                      eventDispatcher={eventDispatcher}
-                      plugins={{
-                        width: widthPluginKey,
-                      }}
-                      render={({ width }) => (
-                        <ReactMediaSingleNode
-                          view={view}
-                          node={node}
-                          width={width}
-                          {...props}
-                        />
-                      )}
-                    />
-                  ),
-                  media: ReactMediaNode,
-                }),
+                mediaGroup: legacyNodeViewFactory(
+                  portalProviderAPI,
+                  providerFactory,
+                  {
+                    mediaGroup: ReactMediaGroupNode,
+                    media: ReactMediaNode,
+                  },
+                ),
+                mediaSingle: legacyNodeViewFactory(
+                  portalProviderAPI,
+                  providerFactory,
+                  {
+                    mediaSingle: ({ view, node, ...props }) => (
+                      <WithPluginState
+                        editorView={view}
+                        eventDispatcher={eventDispatcher}
+                        plugins={{
+                          width: widthPluginKey,
+                        }}
+                        render={({ width }) => (
+                          <ReactMediaSingleNode
+                            view={view}
+                            node={node}
+                            width={width}
+                            {...props}
+                          />
+                        )}
+                      />
+                    ),
+                    media: ReactMediaNode,
+                  },
+                ),
               },
               errorReporter,
               uploadErrorHandler: props.uploadErrorHandler,
@@ -103,15 +125,16 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
                 options && options.customDropzoneContainer,
               customMediaPicker: options && options.customMediaPicker,
             },
+            reactContext,
             dispatch,
             props.appearance,
           ),
       },
-      { rank: 1220, plugin: ({ schema }) => keymapPlugin(schema) },
+      { name: 'mediaKeymap', plugin: ({ schema }) => keymapPlugin(schema) },
     ].concat(
       options && options.allowMediaSingle
         ? {
-            rank: 1250,
+            name: 'mediaSingleKeymap',
             plugin: ({ schema }) => keymapMediaSinglePlugin(schema),
           }
         : [],
@@ -124,7 +147,10 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
     }
 
     const { allowMediaSingle } = options;
-    const { disableLayout } = allowMediaSingle as MediaSingleOptions;
+    let disableLayout: boolean | undefined;
+    if (typeof allowMediaSingle === 'object') {
+      disableLayout = allowMediaSingle.disableLayout;
+    }
 
     if (
       (typeof allowMediaSingle === 'boolean' && allowMediaSingle === false) ||
@@ -147,6 +173,22 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
         isReducedSpacing={true}
       />
     );
+  },
+
+  pluginsOptions: {
+    quickInsert: [
+      {
+        title: 'Files and images',
+        priority: 200,
+        keywords: ['media'],
+        icon: () => <EditorImageIcon label="Files and images" />,
+        action(insert, state) {
+          const pluginState = pluginKey.getState(state);
+          pluginState.showMediaPicker();
+          return insert();
+        },
+      },
+    ],
   },
 });
 

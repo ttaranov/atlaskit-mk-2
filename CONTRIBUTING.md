@@ -93,9 +93,29 @@ bolt install
 This will take a minute or two the first time, but every subsequent run should
 only take about a second.
 
+#### In case you use IntelliJ IDEA or WebStorm
+
+After running `bolt install` you will most likely experiencing issues with IDE indexing taking forever. VS Code does not have this problem. If you do not want to change the IDE you use, do the following: 
+
+1. Close IntelliJ
+1. run in terminal 
+    ```
+    {find . -type d -name 'node_modules' | grep 'node_modules$' | grep -v 'node_modules/' | while read line ; do echo "<excludeFolder url=\"file://\$MODULE_DIR$/$line\" />"; done;} | pbcopy
+    ``` 
+    This will find paths to each node_modules/ folder in the project, create <excludeFolder> tags for each of them and copy resulting text to clipboard 
+1. Open `.idea/atlaskit.iml` in your favorite text editor. 
+1. Pres Ctrl + V to paste text from clipboard after existing `<excludeFolder>` tags. Or paste inside `<content>` if you do not have `<excludeFolder>` tags. Save the file.
+1. Open IntelliJ. You should be fine
+
+Unfortunately, you will have to repeat this process if you pulled repository and new packages were introduced.
+
+The root of this problem is in cyclical symbolic links between packages in node_modules, which exist because atlaskit-mk-2 is a mono repository. 
+IntelliJ and WebStorm don't handle it properly. There are tickets raised in YouTrack to handle this situation.
+
+
 ## Exploring the Project
 
-See the [directory structure docs](docs/guides/00-directory-structure.md) for
+See the [directory structure docs](http://atlaskit.atlassian.com/docs/guides/directory-structure) for
 more information.
 
 ## Writing new code
@@ -118,7 +138,7 @@ bolt upgrade <dep>[@<version>] [--dev/peer/etc]
 bolt remove <dep>[@<version>] [--dev/peer/etc]
 ```
 
-> Note: The bolt updgrade command is not implemented yet. To bump an external
+> Note: The `bolt upgrade` command is not implemented yet. To bump an external
 > dep, you need to bump it in the root
 >
 > ```
@@ -205,10 +225,10 @@ instead of a relative path.
 
 ```js
 import React from 'react';
-import { AvatarGroup } from '@atlaskit/avatar';
+import { Presence } from '@atlaskit/avatar';
 
 export default function Example() {
-  return <AvatarGroup appearance="grid" data={...}/>;
+  return <Presence presence="online" />;
 }
 ```
 

@@ -2,9 +2,11 @@
 import React from 'react';
 // eslint-disable-next-line
 import stuff from '!!style-loader!css-loader!../src/bundle.css';
+import Warning from './utils/warning';
 
 export default () => (
   <div>
+    <Warning />
     <div title="Buttons">
       <h1>Buttons</h1>
       <h2>default appearance</h2>

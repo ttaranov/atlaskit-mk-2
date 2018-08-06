@@ -4,7 +4,6 @@ import { Component } from 'react';
 import {
   userAuthProvider,
   defaultMediaPickerAuthProvider,
-  userAuthProviderBaseURL,
 } from '@atlaskit/media-test-helpers';
 import Button from '@atlaskit/button';
 import Toggle from '@atlaskit/toggle';
@@ -15,28 +14,25 @@ import {
   PopupHeader,
   PopupContainer,
   DropzoneContentWrapper,
-  DropzonePreviewsWrapper,
   DropzoneItemsInfo,
 } from '../example-helpers/styled';
-import { renderPreviewImage } from '../example-helpers';
+import { UploadPreviews } from '../example-helpers/upload-previews';
 import { ContextFactory } from '@atlaskit/media-core';
 
 export interface DropzoneWrapperState {
   isConnectedToUsersCollection: boolean;
-  previewsData: any[];
   isActive: boolean;
   isFetchingLastItems: boolean;
   lastItems: any[];
   inflightUploads: string[];
+  dropzone?: Dropzone;
 }
 
 class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
-  dropzone: Dropzone;
   dropzoneContainer: HTMLDivElement;
 
   state: DropzoneWrapperState = {
     isConnectedToUsersCollection: true,
-    previewsData: [],
     isActive: true,
     isFetchingLastItems: true,
     lastItems: [],
@@ -48,11 +44,9 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
     this.setState({ isFetchingLastItems: true });
 
     userAuthProvider()
-      .then(({ clientId, token }) => {
+      .then(({ clientId, token, baseUrl }) => {
         const queryParams = `client=${clientId}&token=${token}&limit=5&details=full&sortDirection=desc`;
-        return fetch(
-          `${userAuthProviderBaseURL}/collection/recents/items?${queryParams}`,
-        );
+        return fetch(`${baseUrl}/collection/recents/items?${queryParams}`);
       })
       .then(r => r.json())
       .then(data => {
@@ -67,67 +61,27 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
   createDropzone() {
     const { isConnectedToUsersCollection } = this.state;
     const context = ContextFactory.create({
-      serviceHost: userAuthProviderBaseURL,
       authProvider: defaultMediaPickerAuthProvider,
       userAuthProvider: isConnectedToUsersCollection
         ? userAuthProvider
         : undefined,
     });
+    if (this.state.dropzone) {
+      this.state.dropzone.deactivate();
+    }
     const dropzone = MediaPicker('dropzone', context, {
       container: this.dropzoneContainer,
       uploadParams: {
         collection: '',
       },
-    });
-
-    this.dropzone = dropzone;
-
-    dropzone.on('uploads-start', data => {
-      console.log('uploads-start');
-      const newInflightUploads = data.files.map(file => file.id);
-
-      this.setState({
-        inflightUploads: [...this.state.inflightUploads, ...newInflightUploads],
-      });
-    });
-
-    dropzone.on('upload-preview-update', data => {
-      this.setState({ previewsData: [...this.state.previewsData, data] });
-    });
-
-    dropzone.on('upload-status-update', data => {
-      console.log('upload progress update');
-      console.log(data);
-    });
-
-    dropzone.on('upload-processing', data => {
-      console.log('file processing');
-      const processingFileId = data.file.id;
-      const inflightUploads = this.state.inflightUploads.filter(
-        fileId => fileId !== processingFileId,
-      );
-
-      this.setState({ inflightUploads });
-    });
-
-    dropzone.on('upload-end', data => {
-      console.log('upload finished');
-      console.log(data);
-    });
-
-    dropzone.on('drag-enter', data => {
-      console.log('drag-enter', data.length, data);
-    });
-
-    dropzone.on('drag-leave', () => {
-      console.log('drag-leave');
-    });
-
-    dropzone.on('drop', () => {
-      console.log('drop');
+      useNewUploadService: true,
     });
 
     dropzone.activate();
+
+    this.setState({
+      dropzone,
+    });
   }
 
   saveDropzoneContainer = (element: HTMLDivElement) => {
@@ -137,34 +91,28 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
     this.fetchLastItems();
   };
 
-  renderPreviews = () => {
-    const { previewsData } = this.state;
-
-    return previewsData.map(renderPreviewImage);
-  };
-
   onConnectionChange = () => {
     const isConnectedToUsersCollection = !this.state
       .isConnectedToUsersCollection;
     this.setState({ isConnectedToUsersCollection }, () => {
-      this.dropzone.deactivate();
       this.createDropzone();
     });
   };
 
   onActiveChange = () => {
-    const { dropzone } = this;
-    const isActive = !this.state.isActive;
-    this.setState({ isActive }, () => {
-      isActive ? dropzone.activate() : dropzone.deactivate();
+    const { dropzone, isActive } = this.state;
+    this.setState({ isActive: !isActive }, () => {
+      if (dropzone) {
+        if (isActive) {
+          dropzone.activate();
+        } else {
+          dropzone.deactivate();
+        }
+      }
     });
   };
 
   onCancel = () => {
-    const { inflightUploads } = this.state;
-
-    inflightUploads.forEach(uploadId => this.dropzone.cancel(uploadId));
-
     this.setState({ inflightUploads: [] });
   };
 
@@ -176,9 +124,15 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
     }
 
     return lastItems.map((item, key) => {
+      const { id, details } = item;
+
+      // details are not always present in the response
+      const name = details ? details.name : '<no-details>';
+      const mediaType = details ? details.mediaType : '<no-details>';
+
       return (
         <div key={key}>
-          {item.id} | {item.details.name} | {item.details.mediaType}
+          {id} | {name} |{mediaType}
         </div>
       );
     });
@@ -193,6 +147,7 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
       isConnectedToUsersCollection,
       isActive,
       inflightUploads,
+      dropzone,
     } = this.state;
     const isCancelButtonDisabled = inflightUploads.length === 0;
 
@@ -223,13 +178,10 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
             innerRef={this.saveDropzoneContainer}
           />
           <DropzoneItemsInfo>
+            {dropzone ? <UploadPreviews picker={dropzone} /> : null}
             <h1>User collection items</h1>
             {this.renderLastItems()}
           </DropzoneItemsInfo>
-          <DropzonePreviewsWrapper>
-            <h1>Upload previews</h1>
-            {this.renderPreviews()}
-          </DropzonePreviewsWrapper>
         </DropzoneContentWrapper>
       </PopupContainer>
     );

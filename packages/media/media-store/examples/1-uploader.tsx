@@ -1,5 +1,4 @@
 import {
-  defaultServiceHost,
   defaultMediaPickerAuthProvider,
   tallImage,
 } from '@atlaskit/media-test-helpers';
@@ -12,7 +11,7 @@ import {
   Wrapper,
   FileInput,
 } from '../example-helpers/styled';
-import { uploadFile, MediaStore } from '../src/';
+import { uploadFile, MediaStore } from '../src';
 
 type UploaderExampleProps = {};
 export interface UploaderExampleState {
@@ -24,7 +23,6 @@ export interface UploaderExampleState {
 }
 
 const store = new MediaStore({
-  serviceHost: defaultServiceHost,
   authProvider: defaultMediaPickerAuthProvider,
 });
 
@@ -103,14 +101,13 @@ class UploaderExample extends Component<
     uploadFile(
       { content: tallImage },
       {
-        serviceHost: defaultServiceHost,
         authProvider: defaultMediaPickerAuthProvider,
       },
       {
         onProgress: this.onProgress,
       },
     )
-      .then(this.fetchFile)
+      .deferredFileId.then(this.fetchFile)
       .catch(this.onError);
   };
 
@@ -119,7 +116,9 @@ class UploaderExample extends Component<
   };
 
   private readonly onChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { currentTarget: { files } } = e;
+    const {
+      currentTarget: { files },
+    } = e;
     if (!files) {
       return;
     }
@@ -128,14 +127,13 @@ class UploaderExample extends Component<
     uploadFile(
       { content: file, name: file.name, mimeType: file.type },
       {
-        serviceHost: defaultServiceHost,
         authProvider: defaultMediaPickerAuthProvider,
       },
       {
         onProgress: this.onProgress,
       },
     )
-      .then(this.fetchFile)
+      .deferredFileId.then(this.fetchFile)
       .catch(this.onError);
   };
 }

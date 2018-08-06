@@ -12,13 +12,12 @@ function redBadge(label /*: string */) {
 
 function devServerBanner(
   {
-    entry,
     workspaces,
     workspacesGlob,
     isAll,
     port,
     host,
-  } /*: { entry: string, workspaces: Array<{ name: string, dir: string }>, workspacesGlob: string, isAll: boolean, port: number, host: string } */,
+  } /*: { workspaces: Array<{ name: string, dir: string }>, workspacesGlob: string, isAll: boolean, port: number, host: string } */,
 ) {
   const msg /*: Array<any> */ = [''];
   const wsNamePadLength = workspaces.reduce(
@@ -48,6 +47,9 @@ function devServerBanner(
           )}`,
       ),
     );
+    // We'll push this message on again in case there were lots of lines printed above, we still want
+    // to see this
+    msg.push(chalk.bold(`> Open ${chalk.yellow(serverUrl)}`), '');
   }
 
   msg.push('');

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/tag-group",
-  "version": "4.0.0",
+  "version": "6.0.4",
   "description": "A React component used for grouping and controlling @atlskit/tag components",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -12,25 +12,29 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Luke B"
+    "Raja B",
+    "Ben C",
+    "Ajay M"
   ],
   "atlaskit": {
     "name": "Tag group",
-    "team": "elements"
+    "team": "core"
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "babel-runtime": "^6.26.0",
-    "styled-components": "1.4.6 - 3"
+    "babel-runtime": "^6.26.0"
   },
   "peerDependencies": {
-    "@atlaskit/tag": "^4.0.0",
-    "react": "^16.3.0"
+    "@atlaskit/tag": "^6.0.4",
+    "react": "^16.4.0",
+    "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/avatar": "^10.0.0",
-    "@atlaskit/docs": "^3.0.0",
-    "@atlaskit/tag": "^4.0.0",
-    "enzyme": "^3.3.0"
+    "@atlaskit/avatar": "^14.0.6",
+    "@atlaskit/build-utils": "^1.11.0",
+    "@atlaskit/docs": "^5.0.2",
+    "@atlaskit/tag": "^6.0.4",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "react-dom": "^16.4.2"
   }
 }

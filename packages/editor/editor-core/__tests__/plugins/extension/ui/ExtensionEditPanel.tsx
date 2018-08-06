@@ -45,6 +45,20 @@ describe('@atlaskit/editor-core ui/ExtensionEditPanel', () => {
     node.unmount();
   });
 
+  it('should show layout options when breakout is allowed', async () => {
+    const element = document.createElement('div');
+    const node = shallow(
+      <ExtensionEditPanel
+        element={element}
+        onEdit={noop}
+        onRemove={noop}
+        showLayoutOptions={true}
+        onLayoutChange={noop}
+      />,
+    );
+    expect(node.find(ToolbarButton).length).toEqual(5);
+  });
+
   it('should trigger onRemoveMacro when Trash icon is clicked', () => {
     const element = document.createElement('div');
     const onRemove = jest.fn();

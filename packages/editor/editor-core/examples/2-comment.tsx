@@ -112,6 +112,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     placeholder="What do you want to say?"
                     analyticsHandler={analyticsHandler}
                     shouldFocus={true}
+                    quickInsert={true}
                     allowTasksAndDecisions={true}
                     allowCodeBlocks={true}
                     allowTextColor={true}
@@ -119,6 +120,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     allowRule={true}
                     allowTables={true}
                     allowHelpDialog={true}
+                    allowGapCursor={true}
                     disabled={disabled}
                     activityProvider={activityProvider}
                     mentionProvider={mentionProvider}

@@ -5,12 +5,28 @@ import Select, {
   components,
   mergeStyles,
 } from '@atlaskit/select';
-import { format, isValid, parse } from 'date-fns';
+import { format, isValid } from 'date-fns';
 import pick from 'lodash.pick';
 import React, { Component, type Node } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import { colors } from '@atlaskit/theme';
 
-import { ClearIndicator, defaultTimes, DropdownIndicator } from '../internal';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
+
+import {
+  ClearIndicator,
+  defaultTimes,
+  DropdownIndicator,
+  parseTime,
+  defaultTimeFormat,
+} from '../internal';
 import FixedLayer from '../internal/FixedLayer';
 
 type Option = {
@@ -48,8 +64,11 @@ type Props = {
   onChange: string => void,
   /** Called when the field is focused. */
   onFocus: () => void,
+  parseInputValue: (time: string, timeFormat: string) => Date | typeof NaN,
   /** Props to apply to the select. */
   selectProps: Object,
+  /* This prop affects the height of the select control. Compact is gridSize() * 4, default is gridSize * 5  */
+  spacing: 'compact' | 'default',
   /** The times to show in the dropdown. */
   times: Array<string>,
   /** Allow users to edit the input and add a time */
@@ -60,6 +79,10 @@ type Props = {
   isInvalid?: boolean,
   /** Hides icon for dropdown indicator. */
   hideIcon?: boolean,
+  /** Time format that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format)*/
+  timeFormat: string,
+  /** Placeholder text displayed in input */
+  placeholder?: string,
 };
 
 type State = {
@@ -67,15 +90,13 @@ type State = {
   value: string,
   isFocused: boolean,
 };
-
-function dateFromTime(time: string): Date {
-  const [h, m] = time.match(/(\d\d):(\d\d)/) || [];
-  return h && m ? parse(`0000-00-00T${h}:${m}`) : new Date('invalid date');
-}
-
-function formatTime(time: string): string {
-  const date = dateFromTime(time);
-  return isValid(date) ? format(date, 'h:mma') : time;
+/** Returns a formatted DT string if valid or empty string if not valid */
+function formatTime(time: string, timeFormat: string): string {
+  const date = parseTime(time);
+  if (date instanceof Date) {
+    return isValid(date) ? format(date, timeFormat) : time;
+  }
+  return '';
 }
 
 const menuStyles = {
@@ -85,26 +106,39 @@ const menuStyles = {
   overflowY: 'auto',
 };
 
-export default class TimePicker extends Component<Props, State> {
+const FixedLayerMenu = ({ selectProps, ...props }: Object) => {
+  return (
+    <FixedLayer
+      containerRef={selectProps.fixedLayerRef}
+      content={<components.Menu {...props} scrollMenuIntoView={false} />}
+    />
+  );
+};
+
+class TimePicker extends Component<Props, State> {
   containerRef: ?HTMLElement;
 
   static defaultProps = {
     appearance: 'default',
     autoFocus: false,
+    defaultIsOpen: false,
+    defaultValue: '',
+    hideIcon: false,
+    id: '',
+    innerProps: {},
     isDisabled: false,
+    isInvalid: false,
     name: '',
     onBlur: () => {},
     onChange: () => {},
     onFocus: () => {},
-    times: defaultTimes,
+    placeholder: 'e.g. 8:00am',
+    parseInputValue: (time: string, timeFormat: string) => parseTime(time), // eslint-disable-line no-unused-vars
     selectProps: {},
-    innerProps: {},
-    id: '',
-    defaultIsOpen: false,
-    defaultValue: '',
+    spacing: 'default',
+    times: defaultTimes,
     timeIsEditable: false,
-    isInvalid: false,
-    hideIcon: false,
+    timeFormat: defaultTimeFormat,
   };
 
   state = {
@@ -125,7 +159,8 @@ export default class TimePicker extends Component<Props, State> {
   getOptions(): Array<Option> {
     return this.props.times.map((time: string): Option => {
       return {
-        label: formatTime(time),
+        /* $FlowFixMe - Flow complaining timeFormat is undefined but it has a default... */
+        label: formatTime(time, this.props.timeFormat),
         value: time,
       };
     });
@@ -139,7 +174,9 @@ export default class TimePicker extends Component<Props, State> {
 
   /** Only allow custom times if timeIsEditable prop is true  */
   onCreateOption = (inputValue: any): void => {
-    const value = inputValue || '';
+    const { parseInputValue, timeFormat } = this.props;
+    const value =
+      format(parseInputValue(inputValue, timeFormat), 'HH:mm') || '';
     if (this.props.timeIsEditable) {
       this.setState({ value });
       this.props.onChange(value);
@@ -195,6 +232,9 @@ export default class TimePicker extends Component<Props, State> {
       isDisabled,
       name,
       selectProps,
+      timeFormat,
+      placeholder,
+      spacing,
     } = this.props;
     const { value, isOpen } = this.getState();
     const validationState = this.props.isInvalid ? 'error' : 'default';
@@ -202,14 +242,6 @@ export default class TimePicker extends Component<Props, State> {
       this.props.appearance === 'subtle' || this.props.hideIcon
         ? null
         : this.props.icon;
-    const FixedLayerMenu = props => {
-      return (
-        <FixedLayer
-          containerRef={this.containerRef}
-          content={<components.Menu {...props} scrollMenuIntoView={false} />}
-        />
-      );
-    };
 
     const { styles: selectStyles = {}, ...otherSelectProps } = selectProps;
     const controlStyles =
@@ -228,12 +260,13 @@ export default class TimePicker extends Component<Props, State> {
           autoFocus={autoFocus}
           components={{
             ClearIndicator,
-            DropdownIndicator: () => <DropdownIndicator icon={icon} />,
+            DropdownIndicator,
             Menu: FixedLayerMenu,
           }}
           instanceId={id}
           isDisabled={isDisabled}
           menuIsOpen={isOpen && !isDisabled}
+          openMenuOnFocus
           menuPlacement="auto"
           onBlur={this.onBlur}
           onCreateOption={this.onCreateOption}
@@ -242,7 +275,7 @@ export default class TimePicker extends Component<Props, State> {
           onFocus={this.onFocus}
           onMenuOpen={this.onMenuOpen}
           onMenuClose={this.onMenuClose}
-          placeholder="e.g. 9:00am"
+          placeholder={placeholder}
           styles={mergeStyles(selectStyles, {
             control: base => ({
               ...base,
@@ -262,14 +295,40 @@ export default class TimePicker extends Component<Props, State> {
           })}
           value={
             value && {
-              label: formatTime(value),
+              /* $FlowFixMe - complaining about required args that aren't required. */
+              label: formatTime(value, timeFormat),
               value,
             }
           }
-          {...otherSelectProps}
+          spacing={spacing}
+          dropdownIndicatorIcon={icon}
+          fixedLayerRef={this.containerRef}
           validationState={validationState}
+          {...otherSelectProps}
         />
       </div>
     );
   }
 }
+
+export { TimePicker as TimePickerWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'timePicker',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onChange: createAndFireEventOnAtlaskit({
+      action: 'selectedTime',
+      actionSubject: 'timePicker',
+
+      attributes: {
+        componentName: 'timePicker',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(TimePicker),
+);

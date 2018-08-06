@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/page-header",
-  "version": "4.0.1",
+  "version": "6.0.3",
   "description": "A React component that represents Header of an application page",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -12,28 +12,31 @@
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
-    "Joss M",
-    "Jed W"
+    "Trey S",
+    "Alex R",
+    "Peter G"
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/util-shared-styles": "^2.10.3",
-    "styled-components": "1.4.6 - 3"
+    "@atlaskit/util-shared-styles": "^2.10.3"
   },
   "peerDependencies": {
-    "react": "^16.3.0",
-    "react-dom": "^16.3.0"
+    "react": "^16.4.0",
+    "react-dom": "^16.4.2",
+    "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/breadcrumbs": "^4.0.0",
-    "@atlaskit/button": "^7.0.0",
-    "@atlaskit/docs": "^3.0.0",
-    "@atlaskit/field-text": "^5.0.0",
-    "@atlaskit/inline-edit": "^5.0.0",
-    "@atlaskit/input": "^2.0.0",
-    "@atlaskit/page": "^6.0.0",
-    "@atlaskit/single-select": "^4.0.0",
-    "enzyme": "^3.3.0",
+    "@atlaskit/breadcrumbs": "^6.0.5",
+    "@atlaskit/build-utils": "^1.11.0",
+    "@atlaskit/button": "^9.0.5",
+    "@atlaskit/docs": "^5.0.2",
+    "@atlaskit/field-text": "^7.0.4",
+    "@atlaskit/inline-edit": "^7.0.4",
+    "@atlaskit/input": "^4.0.3",
+    "@atlaskit/page": "^8.0.3",
+    "@atlaskit/single-select": "^6.0.3",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "react-dom": "^16.4.2",
     "react-test-renderer": "^16.3.0"
   },
   "keywords": [

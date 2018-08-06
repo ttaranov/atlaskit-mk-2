@@ -2,15 +2,17 @@
 
 // @flow
 
+const minimatch = require('minimatch');
+
 const bolt = require('bolt');
 const webpack = require('webpack');
 const createConfig = require('../config');
 const { print, buildBanner } = require('../banner');
+const utils = require('../config/utils');
 
-async function runDevServer() {
-  const [entry] = process.argv.slice(2);
-  const env = 'production';
-  const includePatterns = true;
+async function runBuild() {
+  const mode = 'production';
+  const websiteEnv = process.env.WEBSITE_ENV || 'local';
   const noMinimize = !!process.argv.find(arg =>
     arg.startsWith('--no-minimize'),
   );
@@ -18,14 +20,9 @@ async function runDevServer() {
 
   print(buildBanner());
 
-  //
-  // Creating webpack instance
-  //
-
   const config = createConfig({
-    entry,
-    env,
-    includePatterns,
+    mode,
+    websiteEnv,
     noMinimize,
     report,
   });
@@ -43,7 +40,7 @@ async function runDevServer() {
         reject(1); // eslint-disable-line
       }
 
-      const statsString = stats.toString({ colors: true });
+      const statsString = stats.toString('minimal');
       if (statsString) console.log(statsString + '\n');
       if (stats.hasErrors()) reject(2);
 
@@ -52,4 +49,7 @@ async function runDevServer() {
   });
 }
 
-runDevServer().catch(err => process.exit(err));
+runBuild().catch(err => {
+  console.error(err.message);
+  process.exit(err.code);
+});
