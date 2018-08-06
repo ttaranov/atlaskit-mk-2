@@ -75,13 +75,13 @@ export class MediaGridView extends Component<
     const { draggingIndex } = this.state;
     const { items, onItemsChange } = this.props;
 
-    const index = this.state.dropIndex!;
-    console.log('onDrop', { index, draggingIndex });
-    const oldItem = items[index];
-    const newItem = items[draggingIndex];
-
-    items[index] = newItem;
-    items[draggingIndex] = oldItem;
+    let dropIndex = this.state.dropIndex!;
+    console.log('onDrop', { dropIndex, draggingIndex });
+    const draggingItem = items.splice(draggingIndex, 1)[0];
+    if (dropIndex > draggingIndex) {
+      dropIndex -= 1;
+    }
+    items.splice(dropIndex, 0, draggingItem);
 
     this.setState({ dropIndex: undefined, isDragging: false });
 
