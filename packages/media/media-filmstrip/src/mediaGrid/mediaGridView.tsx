@@ -84,22 +84,24 @@ export class MediaGridView extends Component<
     }
 
     return (
-      <ImgWrapper key={index} style={styles}>
+      <React.Fragment key={index}>
         {placeholder}
-        <LeftPlaceholder
-          isDragging={isDragging}
-          onDragOver={this.onDragOver}
-          onDrop={this.onDropImage(index)}
-        />
-        <img
-          draggable={true}
-          src={item.dataURI}
-          style={styles}
-          alt="image"
-          onDragStart={this.onDragStart(index)}
-        />
-        {/* <RightPlaceholder isDragging={isDragging} onDrop={this.onDrop(index + 1)} /> */}
-      </ImgWrapper>
+        <ImgWrapper style={styles}>
+          <LeftPlaceholder
+            isDragging={isDragging}
+            onDragOver={this.onDragOver}
+            onDrop={this.onDropImage(index)}
+          />
+          <img
+            draggable={true}
+            src={item.dataURI}
+            style={styles}
+            alt="image"
+            onDragStart={this.onDragStart(index)}
+          />
+          {/* <RightPlaceholder isDragging={isDragging} onDrop={this.onDrop(index + 1)} /> */}
+        </ImgWrapper>
+      </React.Fragment>
     );
   };
 
