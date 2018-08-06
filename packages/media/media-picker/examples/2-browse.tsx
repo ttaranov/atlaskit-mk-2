@@ -5,7 +5,6 @@ import {
   mediaPickerAuthProvider,
   defaultCollectionName,
   defaultMediaPickerCollectionName,
-  defaultServiceHost,
 } from '@atlaskit/media-test-helpers';
 import Button from '@atlaskit/button';
 import Toggle from '@atlaskit/toggle';
@@ -38,7 +37,6 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
 
   createBrowse(useNewUploadService: boolean = this.state.useNewUploadService) {
     const context = ContextFactory.create({
-      serviceHost: defaultServiceHost,
       authProvider: mediaPickerAuthProvider(),
     });
     const uploadParams: UploadParams = {

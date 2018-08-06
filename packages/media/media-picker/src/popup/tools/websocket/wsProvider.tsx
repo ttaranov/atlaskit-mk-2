@@ -6,22 +6,18 @@ import { WsConnectionHolder } from './wsConnectionHolder';
 export class WsProvider {
   private connectionHolders: { [tag: string]: WsConnectionHolder } = {};
 
-  getWsConnectionHolder(apiUrl: string, auth: Auth): WsConnectionHolder {
+  getWsConnectionHolder(auth: Auth): WsConnectionHolder {
     const tag = WsProvider.mapAuthToTag(auth);
     const stored = this.connectionHolders[tag];
     if (stored) {
       return stored;
     }
 
-    return this.createAndRemember(apiUrl, auth, tag);
+    return this.createAndRemember(auth, tag);
   }
 
-  private createAndRemember(
-    apiUrl: string,
-    auth: Auth,
-    tag: string,
-  ): WsConnectionHolder {
-    const holder = new WsConnectionHolder(apiUrl, auth);
+  private createAndRemember(auth: Auth, tag: string): WsConnectionHolder {
+    const holder = new WsConnectionHolder(auth);
     this.connectionHolders[tag] = holder;
 
     return holder;

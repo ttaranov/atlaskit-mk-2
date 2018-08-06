@@ -1,5 +1,16 @@
 # @atlaskit/smart-card
 
+## 7.0.2
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/select@5.0.7
+  - @atlaskit/page@8.0.2
+  - @atlaskit/media-ui@5.0.2
+  - @atlaskit/field-range@5.0.2
+  - @atlaskit/field-text@7.0.3
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/inline-message@6.0.2
+  - @atlaskit/form@3.1.4
+
 ## 7.0.1
 - [patch] Fix CORS request in Smart Card [b0e2ce3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b0e2ce3)
 

@@ -45,6 +45,7 @@ export interface ConfluenceItem {
   baseUrl: string;
   url: string;
   content?: {
+    id: string;
     type: ConfluenceItemContentType;
   };
   container: {
@@ -52,10 +53,12 @@ export interface ConfluenceItem {
     displayUrl: string;
   };
   space?: {
+    key: string; // currently used as instance-unique ID
     icon: {
       path: string;
     };
   };
+  iconCssClass: string; // icon-file-* for attachments, otherwise not needed
 }
 
 export type SearchItem = ConfluenceItem | JiraItem;
@@ -186,7 +189,7 @@ function mapConfluenceItemToResultObject(
   searchSessionId: string,
 ): ConfluenceObjectResult {
   return {
-    resultId: `search-${item.url}`,
+    resultId: item.content!.id, // content always available for pages/blogs/attachments
     name: removeHighlightTags(item.title),
     href: `${item.baseUrl}${item.url}?search_id=${searchSessionId}`,
     containerName: item.container.title,
@@ -194,6 +197,7 @@ function mapConfluenceItemToResultObject(
     contentType: `confluence-${item.content!.type}` as ContentType,
     resultType: ResultType.ConfluenceObjectResult,
     containerId: 'UNAVAILABLE', // TODO
+    iconClass: item.iconCssClass,
   };
 }
 
@@ -219,7 +223,7 @@ function mapConfluenceItemToResultSpace(
   href.addQuery('search_id', searchSessionId);
 
   return {
-    resultId: `search-${spaceItem.container.displayUrl}`,
+    resultId: `space-${spaceItem.space!.key}`, // space is always defined for space results
     avatarUrl: `${spaceItem.baseUrl}${spaceItem.space!.icon.path}`,
     name: spaceItem.container.title,
     href: href.toString(),

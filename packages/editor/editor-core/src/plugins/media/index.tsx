@@ -78,6 +78,7 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
           providerFactory,
           errorReporter,
           portalProviderAPI,
+          reactContext,
         }) =>
           createPlugin(
             schema,
@@ -124,6 +125,7 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
                 options && options.customDropzoneContainer,
               customMediaPicker: options && options.customMediaPicker,
             },
+            reactContext,
             dispatch,
             props.appearance,
           ),

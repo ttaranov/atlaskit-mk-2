@@ -9,7 +9,7 @@ import {
 } from '../../api/CrossProductSearchClient';
 import { Result } from '../../model/Result';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
-import renderSearchResults from './HomeSearchResults';
+import HomeSearchResults from './HomeSearchResults';
 import settlePromises from '../../util/settle-promises';
 import { LinkComponent } from '../GlobalQuickSearchWrapper';
 
@@ -26,6 +26,7 @@ export interface State {
   searchSessionId: string;
   isLoading: boolean;
   isError: boolean;
+  keepPreQueryState: boolean;
   recentlyViewedItems: Result[];
   recentResults: Result[];
   jiraResults: Result[];
@@ -43,6 +44,7 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
     this.state = {
       isLoading: false,
       isError: false,
+      keepPreQueryState: true,
       latestSearchQuery: '',
       searchSessionId: uuid(), // unique id for search attribution
       recentlyViewedItems: [],
@@ -61,7 +63,9 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
     if (query.length === 0) {
       // reset search results so that internal state between query and results stays consistent
       this.setState({
+        isLoading: false,
         isError: false,
+        keepPreQueryState: true,
         recentResults: [],
         jiraResults: [],
         confluenceResults: [],
@@ -173,6 +177,7 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
       } finally {
         this.setState({
           isLoading: false,
+          keepPreQueryState: false,
         });
       }
     })();
@@ -194,6 +199,7 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
       latestSearchQuery,
       isLoading,
       isError,
+      keepPreQueryState,
       recentlyViewedItems,
       recentResults,
       jiraResults,
@@ -210,16 +216,18 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
         linkComponent={linkComponent}
         searchSessionId={searchSessionId}
       >
-        {renderSearchResults({
-          query: latestSearchQuery,
-          isError,
-          retrySearch: this.retrySearch,
-          recentlyViewedItems,
-          recentResults,
-          jiraResults,
-          confluenceResults,
-          peopleResults,
-        })}
+        <HomeSearchResults
+          query={latestSearchQuery}
+          isLoading={isLoading}
+          isError={isError}
+          keepPreQueryState={keepPreQueryState}
+          retrySearch={this.retrySearch}
+          recentlyViewedItems={recentlyViewedItems}
+          recentResults={recentResults}
+          jiraResults={jiraResults}
+          confluenceResults={confluenceResults}
+          peopleResults={peopleResults}
+        />
       </GlobalQuickSearch>
     );
   }

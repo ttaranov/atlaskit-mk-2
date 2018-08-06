@@ -5,6 +5,7 @@ import { FileCardImageView } from '../../src/files';
 import { CardOverlay } from '../../src/files/cardImageView/cardOverlay';
 import { FileIcon } from '../../src/utils';
 import { UploadingView } from '../../src/utils/uploadingView';
+import { Wrapper } from '../../src/files/cardImageView/styled';
 
 describe('FileCardView', () => {
   it('should render card with non-persisting overlay when supplied mediaType is "image" and dataUri string is supplied', function() {
@@ -186,5 +187,13 @@ describe('FileCardView', () => {
     );
 
     expect(card.props().selected).toEqual(true);
+  });
+
+  it('should render correct background based on mediaType"', function() {
+    const wrapperAsImage = shallow(<Wrapper mediaType="image" />);
+    const wrapperNotImage = shallow(<Wrapper />);
+
+    expect(wrapperAsImage).toMatchSnapshot();
+    expect(wrapperNotImage).toMatchSnapshot();
   });
 });

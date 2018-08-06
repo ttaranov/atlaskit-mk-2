@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import CodeSandboxer from 'react-codesandboxer';
+import { replaceSrc } from '@atlaskit/docs';
 
 const getExampleUrl = (groupId, packageId, exampleId) =>
   `https://bitbucket.org/atlassian/atlaskit-mk-2/raw/HEAD/packages/${groupId}/${packageId}/examples/${exampleId}`;
@@ -79,6 +80,9 @@ export default class CodeSandbox extends Component<{}, {}> {
     return (
       <CodeSandboxer
         examplePath={getExamplePath(groupId, packageId, example.id)}
+        example={example
+          .contents()
+          .then(content => replaceSrc(content.default, pkgJSON.name))}
         pkgJSON={pkgJSON}
         name={`${pkgJSON.name}-${name}`}
         afterDeployError={afterDeployError}

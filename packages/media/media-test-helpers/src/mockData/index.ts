@@ -1,5 +1,6 @@
 import { MockURL } from 'xhr-mock/lib/MockURL';
 import { MockHeaders } from 'xhr-mock/lib/types';
+import { ClientBasedAuth } from '../../../media-store/src';
 
 export * from './matchers';
 export * from './utils';
@@ -20,10 +21,7 @@ export interface ResponseData {
 }
 
 export class MockContextItem {
-  auth: {
-    clientId: string;
-    token: string;
-  };
+  auth: ClientBasedAuth;
   collection: Array<MediaCollectionFile>;
   collectionName: string;
 }
@@ -32,6 +30,7 @@ export class MockContext {
     auth: {
       clientId: '',
       token: '',
+      baseUrl: '',
     },
     collection: [],
     collectionName: 'recents',
@@ -40,6 +39,7 @@ export class MockContext {
     auth: {
       clientId: '',
       token: '',
+      baseUrl: '',
     },
     collection: [],
     collectionName: 'MediaServicesSample',

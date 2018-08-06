@@ -73,6 +73,10 @@ const Button = ({ ...props }) => (
       transition: 'transform 300ms cubic-bezier(0.2, 0, 0, 1)',
       transitionDelay: 0,
 
+      ':focus': {
+        boxShadow: 'none',
+      },
+
       [`.${innerStyles}:hover &`]: {
         transform: 'translateX(0)',
         transitionDelay: '120ms',
@@ -84,7 +88,7 @@ const Button = ({ ...props }) => (
         transition: 'color 100ms linear, fill 100ms linear',
       },
 
-      ':hover svg': {
+      ':hover svg, :focus svg': {
         color: colors.B200,
         fill: colors.N0,
       },

@@ -55,19 +55,29 @@ export default class ToolbarBlockType extends React.PureComponent<
       popupsBoundariesElement,
       popupsScrollableElement,
       isSmall,
+      isReducedSpacing,
       pluginState: {
         currentBlockType,
         blockTypesDisabled,
         availableBlockTypes,
       },
     } = this.props;
+
+    const isHeadingDisabled = !availableBlockTypes.some(
+      blockType => blockType.nodeName === 'heading',
+    );
+
+    if (isHeadingDisabled) {
+      return null;
+    }
+
     const blockTypeTitles = availableBlockTypes
       .filter(blockType => blockType.name === currentBlockType.name)
       .map(blockType => blockType.title);
 
     const toolbarButtonFactory = (disabled: boolean) => (
       <ToolbarButton
-        spacing="none"
+        spacing={isReducedSpacing ? 'none' : 'default'}
         selected={active}
         disabled={disabled}
         onClick={this.handleTriggerClick}
