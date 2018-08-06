@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { RowWrapper, imageMargin } from './styled';
+import { RowWrapper, imageMargin, Placeholder } from './styled';
 
 export interface GridItem {
   dataURI: string;
@@ -14,17 +14,29 @@ export interface MediaGridViewProps {
   items: GridItem[];
   width?: number;
   itemsPerRow?: number;
+  placeholderPosition?: number;
+}
+
+export interface MediaGridViewState {
+  // dropIndex?: number;
 }
 
 const defaultWidth = 744;
 
-export class MediaGridView extends Component<MediaGridViewProps> {
+export class MediaGridView extends Component<
+  MediaGridViewProps,
+  MediaGridViewState
+> {
+  constructor(props: MediaGridViewProps) {
+    super(props);
+  }
+
   static defaultProps: Partial<MediaGridViewProps> = {
     itemsPerRow: 3,
     width: defaultWidth,
   };
 
-  renderImage = (item: GridItem, gridHeight: number, key: number) => {
+  renderImage = (item: GridItem, gridHeight: number, index: number) => {
     const { width, height } = item.dimensions;
     const aspectRatio = width / height;
     const styles = {
@@ -36,7 +48,17 @@ export class MediaGridView extends Component<MediaGridViewProps> {
     // h1 * scale1 = h2 * scale2 = h3 * scale3 = gridHeight
     // gridHeight = (gridWidth -  2*margin) / (aspect1 +  aspect2 +  aspect3)
 
-    return <img key={key} src={item.dataURI} style={styles} alt="image" />;
+    let placeholder;
+    if (this.props.placeholderPosition === index) {
+      placeholder = <Placeholder style={{ height: gridHeight }} />;
+    }
+
+    return (
+      <React.Fragment key={index}>
+        {placeholder}
+        <img src={item.dataURI} style={styles} alt="image" />
+      </React.Fragment>
+    );
   };
 
   render() {
@@ -53,9 +75,9 @@ export class MediaGridView extends Component<MediaGridViewProps> {
         const gridHeight = (width - marginSum) / aspectRatioSum;
 
         return (
-          <RowWrapper key={index}>
-            {images.map((item, index) =>
-              this.renderImage(item, gridHeight, index),
+          <RowWrapper key={'row' + index}>
+            {images.map((item, columnIndex) =>
+              this.renderImage(item, gridHeight, index + columnIndex),
             )}
           </RowWrapper>
         );
@@ -63,8 +85,6 @@ export class MediaGridView extends Component<MediaGridViewProps> {
         return;
       }
     });
-    const styles = { width };
-
-    return <div style={styles}>{rows}</div>;
+    return <div>{rows}</div>;
   }
 }

@@ -49,11 +49,13 @@ const gridItems: GridItem[] = [
 
 interface ExampleState {
   width: number;
+  placeholderPosition: number;
   items: GridItem[];
 }
 
 class Example extends Component<{}, ExampleState> {
   state: ExampleState = {
+    placeholderPosition: 1,
     width: 744,
     items: gridItems,
   };
@@ -63,6 +65,13 @@ class Example extends Component<{}, ExampleState> {
     const width = Number.parseInt(target.value);
 
     this.setState({ width });
+  };
+
+  onPlacehoderPositionChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { target } = event;
+    const placeholderPosition = Number.parseInt(target.value);
+
+    this.setState({ placeholderPosition });
   };
 
   addImage = () => {
@@ -76,7 +85,7 @@ class Example extends Component<{}, ExampleState> {
   };
 
   render() {
-    const { width, items } = this.state;
+    const { width, items, placeholderPosition } = this.state;
     return (
       <div>
         <FieldRangeWrapper>
@@ -88,7 +97,20 @@ class Example extends Component<{}, ExampleState> {
           />
           <button onClick={this.addImage}>Add image</button>
         </FieldRangeWrapper>
-        <MediaGridView items={items} width={width} />
+        <FieldRangeWrapper>
+          <input
+            type="range"
+            value={placeholderPosition}
+            min={0}
+            max={items.length}
+            onChange={this.onPlacehoderPositionChange}
+          />
+        </FieldRangeWrapper>
+        <MediaGridView
+          items={items}
+          width={width}
+          placeholderPosition={placeholderPosition}
+        />
       </div>
     );
   }
