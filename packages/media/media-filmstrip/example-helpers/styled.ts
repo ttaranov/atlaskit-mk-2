@@ -51,8 +51,10 @@ export const FilmstripWrapper = styled.div`
 `;
 export const FieldRangeWrapper = styled.div`
   width: 500px;
+  display: flex;
+  margin-bottom: 10px;
 
   input {
-    width: 100%;
+    flex: 1;
   }
 `;

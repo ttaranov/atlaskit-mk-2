@@ -44,16 +44,18 @@ const gridItems: GridItem[] = [
   image1,
   image1,
   image1,
-  image1,
+  image2,
 ];
 
 interface ExampleState {
   width: number;
+  items: GridItem[];
 }
 
 class Example extends Component<{}, ExampleState> {
   state: ExampleState = {
     width: 744,
+    items: gridItems,
   };
 
   onWidthChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -63,8 +65,18 @@ class Example extends Component<{}, ExampleState> {
     this.setState({ width });
   };
 
+  addImage = () => {
+    const { items } = this.state;
+    const index = Math.floor(Math.random() * gridItems.length);
+    const newItem = gridItems[index];
+
+    this.setState({
+      items: [newItem, ...items],
+    });
+  };
+
   render() {
-    const { width } = this.state;
+    const { width, items } = this.state;
     return (
       <div>
         <FieldRangeWrapper>
@@ -74,8 +86,9 @@ class Example extends Component<{}, ExampleState> {
             max={window.innerWidth}
             onChange={this.onWidthChange}
           />
+          <button onClick={this.addImage}>Add image</button>
         </FieldRangeWrapper>
-        <MediaGridView items={gridItems} width={width} />
+        <MediaGridView items={items} width={width} />
       </div>
     );
   }
