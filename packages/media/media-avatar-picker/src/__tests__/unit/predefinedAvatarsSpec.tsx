@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import {
   PredefinedAvatarView,
   PredefinedAvatarViewProps,
-} from '../src/predefined-avatar-view';
+} from '../../../src/predefined-avatar-view';
 
 describe('PredefinedAvatarView', () => {
   const setup = (props?: Partial<PredefinedAvatarViewProps>) => {

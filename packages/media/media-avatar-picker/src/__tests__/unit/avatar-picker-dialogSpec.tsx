@@ -2,18 +2,18 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import ModalDialog from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
-import { Avatar } from '../src/avatar-list';
-import { ImageNavigator, CONTAINER_SIZE } from '../src/image-navigator';
-import { PredefinedAvatarList } from '../src/predefined-avatar-list';
+import { Avatar } from '../../../src/avatar-list';
+import { ImageNavigator, CONTAINER_SIZE } from '../../../src/image-navigator';
+import { PredefinedAvatarList } from '../../../src/predefined-avatar-list';
 import {
   AvatarPickerDialog,
   AvatarPickerDialogProps,
-} from '../src/avatar-picker-dialog';
-import { DEFAULT_VISIBLE_PREDEFINED_AVATARS } from '../src/avatar-picker-dialog/layout-const';
-import { dataURItoFile, fileToDataURI } from '../src/util';
+} from '../../../src/avatar-picker-dialog';
+import { DEFAULT_VISIBLE_PREDEFINED_AVATARS } from '../../../src/avatar-picker-dialog/layout-const';
+import { dataURItoFile, fileToDataURI } from '../../../src/util';
 import { smallImage } from '@atlaskit/media-test-helpers';
-import { PredefinedAvatarView } from '../src/predefined-avatar-view';
-import { Mode } from '../src';
+import { PredefinedAvatarView } from '../../../src/predefined-avatar-view';
+import { Mode } from '../../../src';
 
 describe('Avatar Picker Dialog', () => {
   const renderWithProps = (props: Partial<AvatarPickerDialogProps>) => {

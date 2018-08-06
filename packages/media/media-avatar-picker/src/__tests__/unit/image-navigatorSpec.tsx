@@ -1,5 +1,5 @@
 declare var global: any; // we need define an interface for the Node global object when overwriting global objects, in this case FileReader
-import * as util from '../src/util';
+import * as util from '../../../src/util';
 const fileSizeMbSpy = jest.spyOn(util, 'fileSizeMb');
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
@@ -11,19 +11,19 @@ import {
   containerRect,
   ImageNavigator,
   Props as ImageNavigatorProps,
-} from '../src/image-navigator';
-import { ERROR, MAX_SIZE_MB } from '../src/avatar-picker-dialog';
+} from '../../../src/image-navigator';
+import { ERROR, MAX_SIZE_MB } from '../../../src/avatar-picker-dialog';
 import {
   ImageUploader,
   DragZone,
   DragZoneImage,
   DragZoneText,
   PaddedBreak,
-} from '../src/image-navigator/styled';
-import { ImageCropper } from '../src/image-cropper';
+} from '../../../src/image-navigator/styled';
+import { ImageCropper } from '../../../src/image-cropper';
 import Slider from '@atlaskit/field-range';
 import { createMouseEvent, smallImage } from '@atlaskit/media-test-helpers';
-import { errorIcon } from '../src/image-navigator/images';
+import { errorIcon } from '../../../src/image-navigator/images';
 
 describe('Image navigator', () => {
   let component: any;

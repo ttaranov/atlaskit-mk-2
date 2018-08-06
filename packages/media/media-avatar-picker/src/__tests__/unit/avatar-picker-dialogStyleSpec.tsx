@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import { DragZone } from '../src/image-navigator/styled';
+import { DragZone } from '../../../src/image-navigator/styled';
 
 describe('Avatar Picker Styles', () => {
   describe('image-navigator', () => {
