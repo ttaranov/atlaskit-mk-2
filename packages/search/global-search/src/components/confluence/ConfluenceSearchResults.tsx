@@ -5,15 +5,12 @@ import SearchResultsState from './SearchResultsState';
 import PreQueryState from './PreQueryState';
 import { isEmpty } from '../SearchResultsUtil';
 import SearchResults from '../SearchResults';
+import { PostQueryAnalyticsComponent } from './ScreenAnalyticsHelper';
+import { ScreenCounter } from '../../util/ScreenCounter';
 
 export const MAX_PAGES_BLOGS_ATTACHMENTS = 8;
 export const MAX_SPACES = 3;
 export const MAX_PEOPLE = 3;
-
-export interface ScreenCounter {
-  getCount(): number;
-  increment();
-}
 
 export interface Props {
   query: string;
@@ -71,7 +68,16 @@ export default class ConfluenceSearchResults extends React.Component<Props> {
         shouldRenderNoResultsState={() =>
           [objectResults, spaceResults, peopleResults].every(isEmpty)
         }
-        renderNoResultsStateComponent={() => <NoResultsState query={query} />}
+        renderNoResultsStateComponent={() => (
+          <>
+            <NoResultsState query={query} />
+            <PostQueryAnalyticsComponent
+              screenCounter={postQueryScreenCounter}
+              searchSessionId={searchSessionId}
+              key="post-query-analytics"
+            />
+          </>
+        )}
         renderSearchResultsStateComponent={() => (
           <SearchResultsState
             query={query}

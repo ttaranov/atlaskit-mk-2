@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 17.0.2
+- [patch] MSW-885 : add dragging to image viewer [989801b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/989801b)
+
 ## 17.0.1
 - [patch] MSW-880: resize fitted images when window resizes [4d1f5b6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4d1f5b6)
 
