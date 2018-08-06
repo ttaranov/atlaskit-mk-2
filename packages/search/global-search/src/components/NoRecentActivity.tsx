@@ -28,7 +28,7 @@ const TextWrapper = styled.div`
 `;
 
 const Title = styled.h4`
-  ${akTypographyMixins.h600};
+  ${akTypographyMixins.h600 as any};
   margin-bottom: ${gridSize() * 2}px;
   margin-top: 0;
 `;
