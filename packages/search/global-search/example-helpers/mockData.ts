@@ -275,6 +275,7 @@ export function makeCrossProductSearchData(
         displayUrl: getMockUrl(),
       },
       space: {
+        key: getMockAbbreviation(),
         icon: {
           path: randomSpaceIconUrl(),
         },
@@ -314,7 +315,7 @@ export function makeCrossProductSearchData(
     );
 
     const filteredConfResultsWithAttachments = confDataWithAttachments.filter(
-      result => result.container.title.toLowerCase().indexOf(term) > -1,
+      result => result.title.toLowerCase().indexOf(term) > -1,
     );
 
     return {
