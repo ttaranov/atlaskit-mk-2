@@ -75,6 +75,10 @@ class Example extends Component<{}, ExampleState> {
     });
   };
 
+  onItemsChange = items => {
+    this.setState({ items });
+  };
+
   render() {
     const { width, items } = this.state;
     return (
@@ -88,7 +92,11 @@ class Example extends Component<{}, ExampleState> {
           />
           <button onClick={this.addImage}>Add image</button>
         </FieldRangeWrapper>
-        <MediaGridView items={items} width={width} />
+        <MediaGridView
+          items={items}
+          onItemsChange={this.onItemsChange}
+          width={width}
+        />
       </div>
     );
   }

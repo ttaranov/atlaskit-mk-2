@@ -1,6 +1,13 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { RowWrapper, imageMargin } from './styled';
+import {
+  Wrapper,
+  RowWrapper,
+  imageMargin,
+  ImgWrapper,
+  LeftPlaceholder,
+  RightPlaceholder,
+} from './styled';
 
 export interface GridItem {
   dataURI: string;
@@ -12,19 +19,48 @@ export interface GridItem {
 
 export interface MediaGridViewProps {
   items: GridItem[];
+  onItemsChange: (items: GridItem[]) => void;
   width?: number;
   itemsPerRow?: number;
 }
 
+export interface MediaGridViewState {
+  isDragging: boolean;
+  draggingIndex: number;
+}
+
 const defaultWidth = 744;
 
-export class MediaGridView extends Component<MediaGridViewProps> {
+export class MediaGridView extends Component<
+  MediaGridViewProps,
+  MediaGridViewState
+> {
+  state: MediaGridViewState = {
+    isDragging: false,
+    draggingIndex: 0,
+  };
   static defaultProps: Partial<MediaGridViewProps> = {
     itemsPerRow: 3,
     width: defaultWidth,
   };
 
-  renderImage = (item: GridItem, gridHeight: number, key: number) => {
+  onDropImage = (index: number) => event => {
+    event.preventDefault();
+    const { draggingIndex } = this.state;
+    const { items, onItemsChange } = this.props;
+
+    console.log('onDrop', { index, draggingIndex });
+    const oldItem = items[index];
+    const newItem = items[draggingIndex];
+
+    items[index] = newItem;
+    items[draggingIndex] = oldItem;
+
+    onItemsChange(items);
+  };
+
+  renderImage = (item: GridItem, gridHeight: number, index: number) => {
+    const { isDragging } = this.state;
     const { width, height } = item.dimensions;
     const aspectRatio = width / height;
     const styles = {
@@ -36,7 +72,50 @@ export class MediaGridView extends Component<MediaGridViewProps> {
     // h1 * scale1 = h2 * scale2 = h3 * scale3 = gridHeight
     // gridHeight = (gridWidth -  2*margin) / (aspect1 +  aspect2 +  aspect3)
 
-    return <img key={key} src={item.dataURI} style={styles} alt="image" />;
+    return (
+      <ImgWrapper key={index} style={styles}>
+        <LeftPlaceholder
+          isDragging={isDragging}
+          onDragOver={this.onDragOver}
+          onDrop={this.onDropImage(index)}
+        />
+        <img
+          draggable={true}
+          src={item.dataURI}
+          style={styles}
+          alt="image"
+          onDragStart={this.onDragStart(index)}
+        />
+        {/* <RightPlaceholder isDragging={isDragging} onDrop={this.onDrop(index + 1)} /> */}
+      </ImgWrapper>
+    );
+  };
+
+  onDragStart = (draggingIndex: number) => () => {
+    console.log('onDragStart');
+    this.setState({
+      isDragging: true,
+      draggingIndex,
+    });
+  };
+
+  onMouseDown = () => {
+    this.setState({
+      isDragging: true,
+    });
+  };
+
+  onDrop = event => {
+    event.preventDefault();
+    console.log('onDrop');
+  };
+
+  onDragEnter = () => {
+    console.log('onDragEnter');
+  };
+
+  onDragOver = event => {
+    event.preventDefault();
   };
 
   render() {
@@ -54,8 +133,8 @@ export class MediaGridView extends Component<MediaGridViewProps> {
 
         return (
           <RowWrapper key={index}>
-            {images.map((item, index) =>
-              this.renderImage(item, gridHeight, index),
+            {images.map((item, columnIndex) =>
+              this.renderImage(item, gridHeight, index + columnIndex),
             )}
           </RowWrapper>
         );
@@ -65,6 +144,14 @@ export class MediaGridView extends Component<MediaGridViewProps> {
     });
     const styles = { width };
 
-    return <div style={styles}>{rows}</div>;
+    return (
+      <Wrapper
+        // onMouseDown={this.onMouseDown}
+        style={styles}
+      >
+        {/* <RightPlaceholder isDragging={true} onDragOver={this.onDragOver} onDragEnter={this.onDragEnter} onDrop={this.onDrop} /> */}
+        {rows}
+      </Wrapper>
+    );
   }
 }
