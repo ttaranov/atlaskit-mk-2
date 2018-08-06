@@ -84,6 +84,10 @@ class Example extends Component<{}, ExampleState> {
     });
   };
 
+  onItemsChange = items => {
+    this.setState({ items });
+  };
+
   render() {
     const { width, items, placeholderPosition } = this.state;
     return (
@@ -108,6 +112,7 @@ class Example extends Component<{}, ExampleState> {
         </FieldRangeWrapper>
         <MediaGridView
           items={items}
+          onItemsChange={this.onItemsChange}
           width={width}
           placeholderPosition={placeholderPosition}
         />
