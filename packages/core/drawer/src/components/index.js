@@ -11,7 +11,7 @@ import type { DrawerProps } from './types';
 
 const OnlyChild = ({ children }) => Children.toArray(children)[0] || null;
 
-class Drawer extends Component<DrawerProps> {
+export default class Drawer extends Component<DrawerProps> {
   body = document.querySelector('body');
 
   componentDidMount() {
@@ -60,5 +60,3 @@ class Drawer extends Component<DrawerProps> {
     );
   }
 }
-
-export default (props: *) => <Drawer {...props} />;
