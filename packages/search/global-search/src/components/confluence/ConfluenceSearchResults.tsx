@@ -1,10 +1,11 @@
 import * as React from 'react';
 import { Result } from '../../model/Result';
+import SearchError from '../SearchError';
 import NoResultsState from './NoResultsState';
 import SearchResultsState from './SearchResultsState';
 import PreQueryState from './PreQueryState';
 import { isEmpty } from '../SearchResultsUtil';
-import SearchResults from '../SearchResults';
+import { PostQueryAnalyticsComponent } from './ScreenAnalyticsHelper';
 
 export const MAX_PAGES_BLOGS_ATTACHMENTS = 8;
 export const MAX_SPACES = 3;
@@ -51,14 +52,30 @@ export default class ConfluenceSearchResults extends React.Component<Props> {
       postQueryScreenCounter,
     } = this.props;
 
-    return (
-      <SearchResults
-        retrySearch={retrySearch}
-        query={query}
-        isLoading={isLoading}
-        isError={isError}
-        keepPreQueryState={keepPreQueryState}
-        renderPreQueryStateComponent={() => (
+    if (isError) {
+      return <SearchError onRetryClick={retrySearch} />;
+    }
+
+    if (query.length === 0) {
+      if (isLoading) {
+        return null;
+      }
+
+      return (
+        <PreQueryState
+          query={query}
+          recentlyViewedPages={recentlyViewedPages}
+          recentlyViewedSpaces={recentlyViewedSpaces}
+          recentlyInteractedPeople={recentlyInteractedPeople}
+          searchSessionId={searchSessionId}
+          screenCounter={preQueryScreenCounter}
+        />
+      );
+    }
+
+    if ([objectResults, spaceResults, peopleResults].every(isEmpty)) {
+      if (isLoading && keepPreQueryState) {
+        return (
           <PreQueryState
             query={query}
             recentlyViewedPages={recentlyViewedPages}
@@ -67,21 +84,27 @@ export default class ConfluenceSearchResults extends React.Component<Props> {
             searchSessionId={searchSessionId}
             screenCounter={preQueryScreenCounter}
           />
-        )}
-        shouldRenderNoResultsState={() =>
-          [objectResults, spaceResults, peopleResults].every(isEmpty)
-        }
-        renderNoResultsStateComponent={() => <NoResultsState query={query} />}
-        renderSearchResultsStateComponent={() => (
-          <SearchResultsState
-            query={query}
-            objectResults={objectResults}
-            spaceResults={spaceResults}
-            peopleResults={peopleResults}
-            searchSessionId={searchSessionId}
-            screenCounter={postQueryScreenCounter}
-          />
-        )}
+        );
+      }
+
+      return [
+        <NoResultsState query={query} />,
+        <PostQueryAnalyticsComponent
+          key="post-query-analytics"
+          screenCounters={postQueryScreenCounter}
+          searchSessionId={searchSessionId}
+        />,
+      ];
+    }
+
+    return (
+      <SearchResultsState
+        query={query}
+        objectResults={objectResults}
+        spaceResults={spaceResults}
+        peopleResults={peopleResults}
+        searchSessionId={searchSessionId}
+        screenCounter={postQueryScreenCounter}
       />
     );
   }
