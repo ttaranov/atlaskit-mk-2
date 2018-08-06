@@ -14,7 +14,7 @@ const Wrapper = styled.div`
   text-decoration: none solid rgb(23, 43, 77);
   top: 0;
   width: 100%;
-  zindex: 1;
+  z-index: 1;
   column-rule-color: rgb(23, 43, 77);
   perspective-origin: 495.5px 22px;
   transform-origin: 495.5px 22px;
