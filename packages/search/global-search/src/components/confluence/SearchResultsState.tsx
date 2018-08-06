@@ -4,8 +4,7 @@ import { Result } from '../../model/Result';
 import { ScreenCounter } from './ConfluenceSearchResults';
 import { take } from '../SearchResultsUtil';
 import ResultsGroup from '../ResultGroup';
-import AnalyticsEventFiredOnMount from '../analytics/AnalyticsEventFiredOnMount';
-import { buildScreenEvent, Screen } from '../../util/analytics-util';
+import { PostQueryAnalyticsComponent } from './ScreenAnalyticsHelper';
 import AdvancedSearchGroup from './AdvancedSearchGroup';
 
 const MAX_PAGES_BLOGS_ATTACHMENTS = 8;
@@ -78,19 +77,11 @@ export default class SearchResultsState extends React.Component<Props> {
       spacesGroup,
       peopleGroup,
       <AdvancedSearchGroup key="advanced" query={query} />,
-      screenCounter ? (
-        <AnalyticsEventFiredOnMount
-          key="postQueryScreenEvent"
-          onEventFired={() => screenCounter.increment()}
-          payloadProvider={() =>
-            buildScreenEvent(
-              Screen.POST_QUERY,
-              screenCounter.getCount(),
-              searchSessionId,
-            )
-          }
-        />
-      ) : null,
+      <PostQueryAnalyticsComponent
+        key="post-query-analytics"
+        screenCounter={screenCounter}
+        searchSessionId={searchSessionId}
+      />,
     ];
   }
 }
