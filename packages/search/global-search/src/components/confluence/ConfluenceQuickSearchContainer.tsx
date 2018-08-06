@@ -14,8 +14,8 @@ import ConfluenceSearchResults, {
   MAX_PAGES_BLOGS_ATTACHMENTS,
   MAX_SPACES,
   MAX_PEOPLE,
-  ScreenCounter,
 } from './ConfluenceSearchResults';
+import { SearchScreenCounter, ScreenCounter } from '../../util/ScreenCounter';
 import { LinkComponent } from '../GlobalQuickSearchWrapper';
 import {
   redirectToConfluenceAdvancedSearch,
@@ -43,21 +43,6 @@ export interface Props {
   linkComponent?: LinkComponent;
   createAnalyticsEvent?: CreateAnalyticsEventFn;
   isSendSearchTermsEnabled?: boolean;
-}
-
-class SearchScreenCounter implements ScreenCounter {
-  count = 1;
-  constructor() {
-    this.count = 1;
-  }
-
-  getCount() {
-    return this.count;
-  }
-
-  increment() {
-    this.count++;
-  }
 }
 
 export interface State {

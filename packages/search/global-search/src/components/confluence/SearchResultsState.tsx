@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Result } from '../../model/Result';
-import { ScreenCounter } from './ConfluenceSearchResults';
+import { ScreenCounter } from '../../util/ScreenCounter';
 import { take } from '../SearchResultsUtil';
 import ResultsGroup from '../ResultGroup';
 import { PostQueryAnalyticsComponent } from './ScreenAnalyticsHelper';
