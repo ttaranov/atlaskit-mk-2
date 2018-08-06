@@ -2,6 +2,7 @@
 
 import React, { Component, type ComponentType } from 'react';
 import { Transition } from 'react-transition-group';
+import { layers } from '@atlaskit/theme';
 
 import { transitionDurationMs, transitionTimingFunction } from '../constants';
 
@@ -69,24 +70,12 @@ export const Fade = ({ onExited, ...props }: TransitionProps) => (
     defaultStyles={{
       transition: `opacity ${transitionDurationMs}ms ${transitionTimingFunction}`,
       opacity: 0,
+      position: 'fixed',
+      zIndex: layers.blanket(),
     }}
     transitionStyles={{
       entering: { opacity: 0 },
       entered: { opacity: 1 },
-    }}
-    {...props}
-  />
-);
-
-export const Visible = ({ onExited, ...props }: TransitionProps) => (
-  <TransitionHandler
-    defaultStyles={{
-      transition: `visibility ${transitionDurationMs}ms ${transitionTimingFunction}`,
-      visibility: 0,
-    }}
-    transitionStyles={{
-      entering: { visibility: 0 },
-      entered: { visibility: 1 },
     }}
     {...props}
   />

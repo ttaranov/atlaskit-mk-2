@@ -6,7 +6,7 @@ import { TransitionGroup } from 'react-transition-group';
 import Blanket from '@atlaskit/blanket';
 
 import DrawerPrimitive from './primitives';
-import { Visible } from './transitions';
+import { Fade } from './transitions';
 import type { DrawerProps } from './types';
 
 const OnlyChild = ({ children }) => Children.toArray(children)[0] || null;
@@ -50,9 +50,9 @@ class Drawer extends Component<DrawerProps> {
       <TransitionGroup component={OnlyChild}>
         <Fragment>
           {/* $FlowFixMe the `in` prop is internal */}
-          <Visible in={isOpen}>
+          <Fade in={isOpen}>
             <Blanket isTinted onBlanketClicked={this.handleClose} />
-          </Visible>
+          </Fade>
           <DrawerPrimitive in={isOpen} {...props} />
         </Fragment>
       </TransitionGroup>,
