@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { CSSProperties } from 'react';
 import { BaselineExtend, ImageWrapper, Img } from '../../styled';
 import { ZoomLevel } from '../../domain/zoomLevel';
 import { closeOnDirectClick } from '../../utils/closeOnDirectClick';
@@ -34,11 +35,15 @@ export type Props = {
 export type State = {
   zoomLevel: ZoomLevel;
   camera: Outcome<Camera, never>;
+  isDragging: boolean;
+  cursorPos: Vector2;
 };
 
 const initialState: State = {
   zoomLevel: new ZoomLevel(1),
   camera: { status: 'PENDING' },
+  isDragging: false,
+  cursorPos: new Vector2(0, 0),
 };
 
 export class InteractiveImg extends React.Component<Props, State> {
@@ -49,18 +54,25 @@ export class InteractiveImg extends React.Component<Props, State> {
   componentDidMount() {
     this.state = initialState;
     window.addEventListener('resize', this.onResize);
+    document.addEventListener('mousemove', this.panImage);
+    document.addEventListener('mouseup', this.stopDragging);
   }
 
   componentWillUnmount() {
     window.removeEventListener('resize', this.onResize);
+    document.removeEventListener('mousemove', this.panImage);
+    document.removeEventListener('mouseup', this.stopDragging);
   }
 
   render() {
     const { src, onClose } = this.props;
-    const { zoomLevel, camera } = this.state;
+    const { zoomLevel, camera, isDragging } = this.state;
 
+    const canDrag =
+      camera.status === 'SUCCESSFUL' &&
+      zoomLevel.value > camera.data.scaleToFit;
     // We use style attr instead of SC prop for perf reasons
-    const imgStyle =
+    const imgStyle: CSSProperties =
       camera.status === 'SUCCESSFUL'
         ? camera.data.scaledImg(zoomLevel.value)
         : {};
@@ -70,7 +82,14 @@ export class InteractiveImg extends React.Component<Props, State> {
         onClick={closeOnDirectClick(onClose)}
         innerRef={this.saveWrapperRef}
       >
-        <Img src={src} style={imgStyle} onLoad={this.onImgLoad} />
+        <Img
+          canDrag={canDrag}
+          isDragging={isDragging}
+          src={src}
+          style={imgStyle}
+          onLoad={this.onImgLoad}
+          onMouseDown={this.startDragging}
+        />
         {/*
           The BaselineExtend element is required to align the Img element in the
           vertical center of the page. It ensures that the parent container is
@@ -137,6 +156,29 @@ export class InteractiveImg extends React.Component<Props, State> {
         wrapper.scrollLeft = x;
         wrapper.scrollTop = y;
       });
+    }
+  };
+
+  private startDragging = (ev: React.MouseEvent<{}>) => {
+    ev.preventDefault();
+    this.setState({
+      isDragging: true,
+      cursorPos: new Vector2(ev.screenX, ev.screenY),
+    });
+  };
+
+  private stopDragging = (ev: MouseEvent) => {
+    ev.preventDefault();
+    this.setState({ isDragging: false });
+  };
+
+  private panImage = (ev: MouseEvent) => {
+    if (this.state.isDragging && this.wrapper) {
+      const cursorPos = new Vector2(ev.screenX, ev.screenY);
+      const delta = this.state.cursorPos.sub(cursorPos);
+      this.setState({ cursorPos });
+      this.wrapper.scrollLeft += delta.x;
+      this.wrapper.scrollTop += delta.y;
     }
   };
 }
