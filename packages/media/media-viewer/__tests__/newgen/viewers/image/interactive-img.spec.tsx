@@ -15,6 +15,7 @@ import {
   Rectangle,
   Vector2,
 } from '../../../../src/newgen/domain/camera';
+import { Outcome } from '../../../../src/newgen/domain';
 
 function createFixture() {
   const onClose = jest.fn();
@@ -25,10 +26,7 @@ function createFixture() {
   const zoomLevel = new ZoomLevel(1);
 
   el.setState({
-    camera: {
-      status: 'SUCCESSFUL',
-      data: camera,
-    },
+    camera: Outcome.successful(camera),
     zoomLevel,
   });
   return { el, onClose, camera, zoomLevel };

@@ -41,7 +41,7 @@ export type State = {
 
 const initialState: State = {
   zoomLevel: new ZoomLevel(1),
-  camera: { status: 'PENDING' },
+  camera: Outcome.pending(),
   isDragging: false,
   cursorPos: new Vector2(0, 0),
 };
@@ -68,14 +68,17 @@ export class InteractiveImg extends React.Component<Props, State> {
     const { src, onClose } = this.props;
     const { zoomLevel, camera, isDragging } = this.state;
 
-    const canDrag =
-      camera.status === 'SUCCESSFUL' &&
-      zoomLevel.value > camera.data.scaleToFit;
+    const canDrag = camera.match({
+      successful: camera => zoomLevel.value > camera.scaleToFit,
+      pending: () => false,
+      failed: () => false,
+    });
     // We use style attr instead of SC prop for perf reasons
-    const imgStyle: CSSProperties =
-      camera.status === 'SUCCESSFUL'
-        ? camera.data.scaledImg(zoomLevel.value)
-        : {};
+    const imgStyle: CSSProperties = camera.match({
+      successful: camera => camera.scaledImg(zoomLevel.value),
+      pending: () => ({}),
+      failed: () => ({}),
+    });
 
     return (
       <ImageWrapper
@@ -108,18 +111,17 @@ export class InteractiveImg extends React.Component<Props, State> {
       const originalImg = naturalSizeRectangle(ev.currentTarget);
       const camera = new Camera(viewport, originalImg);
       this.setState({
-        camera: {
-          status: 'SUCCESSFUL',
-          data: camera,
-        },
+        camera: Outcome.successful(camera),
         zoomLevel: new ZoomLevel(camera.scaleDownToFit),
       });
     }
   };
 
   private onResize = () => {
-    if (this.wrapper && this.state.camera.status === 'SUCCESSFUL') {
-      const oldCamera = this.state.camera.data;
+    this.state.camera.whenSuccessful(oldCamera => {
+      if (!this.wrapper) {
+        return;
+      }
       const oldZoomLevel = this.state.zoomLevel;
 
       const newViewport = clientRectangle(this.wrapper);
@@ -131,24 +133,23 @@ export class InteractiveImg extends React.Component<Props, State> {
       );
 
       this.setState({
-        camera: {
-          status: 'SUCCESSFUL',
-          data: newCamera,
-        },
+        camera: Outcome.successful(newCamera),
         zoomLevel: newZoomLevel,
       });
-    }
+    });
   };
 
   private onZoomChange = (nextZoomLevel: ZoomLevel) => {
-    const { camera } = this.state;
-    const { wrapper } = this;
-    if (wrapper && camera.status === 'SUCCESSFUL') {
+    this.state.camera.whenSuccessful(camera => {
+      const { wrapper } = this;
+      if (!wrapper) {
+        return;
+      }
       const { scrollLeft, scrollTop } = wrapper;
       const prevOffset = new Vector2(scrollLeft, scrollTop);
       const prevZoomLevel = this.state.zoomLevel;
       this.setState({ zoomLevel: nextZoomLevel }, () => {
-        const { x, y } = camera.data.scaledOffset(
+        const { x, y } = camera.scaledOffset(
           prevOffset,
           prevZoomLevel.value,
           nextZoomLevel.value,
@@ -156,7 +157,7 @@ export class InteractiveImg extends React.Component<Props, State> {
         wrapper.scrollLeft = x;
         wrapper.scrollTop = y;
       });
-    }
+    });
   };
 
   private startDragging = (ev: React.MouseEvent<{}>) => {
