@@ -15,7 +15,7 @@ const IMAGE_HEIGHT = 400;
 const SCALE = 1;
 
 describe('Constraint Spec', () => {
-  describe('Position2 Constraint', () => {
+  describe('Position Constraint', () => {
     describe('Unconstrained', () => {
       it('should return same coords when at origin position', () => {
         const constrainedPos = constrainPos(
