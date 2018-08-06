@@ -49,3 +49,10 @@ export const FilmstripWrapper = styled.div`
   width: 800px;
   margin-bottom: 20px;
 `;
+export const FieldRangeWrapper = styled.div`
+  width: 500px;
+
+  input {
+    width: 100%;
+  }
+`;

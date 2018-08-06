@@ -36,7 +36,7 @@
     "@atlaskit/checkbox": "^4.0.2",
     "@atlaskit/docs": "^5.0.2",
     "@atlaskit/field-radio-group": "^4.0.3",
-    "@atlaskit/field-range": "^5.0.2",
+    "@atlaskit/field-range": "^5.0.3",
     "@atlaskit/media-core": "^23.0.0",
     "@atlaskit/media-test-helpers": "^16.0.0"
   }
