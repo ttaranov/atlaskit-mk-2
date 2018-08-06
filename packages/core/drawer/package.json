@@ -28,6 +28,7 @@
   "devDependencies": {
     "@atlaskit/button": "^9.0.5",
     "@atlaskit/section-message": "^1.0.4",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-lorem-component": "^0.12.2"
   }
 }
