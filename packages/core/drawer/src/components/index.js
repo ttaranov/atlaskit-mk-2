@@ -22,7 +22,7 @@ export default class Drawer extends Component<DrawerProps> {
     window.removeEventListener('keydown', this.handleKeyDown);
   }
 
-  handleClose = event => {
+  handleClose = (event: SyntheticKeyboardEvent<*> | SyntheticMouseEvent<*>) => {
     const { onClose } = this.props;
 
     if (onClose) {

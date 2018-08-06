@@ -59,7 +59,7 @@ type ProductNavigationPrimitiveBaseProps = {
 
 const ProductNavigationPrimitiveBase = ({
   children,
-  theme = { mode: light },
+  theme = { mode: light, context: 'product' },
 }: ProductNavigationPrimitiveBaseProps) => (
   <div css={theme.mode.contentNav().product}>
     <ScrollProvider>{children}</ScrollProvider>
