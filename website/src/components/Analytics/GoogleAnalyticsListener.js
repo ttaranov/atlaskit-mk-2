@@ -26,7 +26,7 @@ const getApdex = () => {
   let apdex = 0;
   if (timing < 1000) apdex = 100;
   else if (timing < 4000) apdex = 50;
-
+  // TODO: we could do ReactGA.initialize(props.gaId); here
   ReactGA.event({
     category: 'Performance',
     action: 'apdex',
@@ -48,7 +48,10 @@ class GoogleAnalyticsListener extends Component {
 
   /* eslint-disable no-console */
   componentDidMount() {
-    window.addEventListener('load', getApdex);
+    // TODO: DOMContentLoaded - From Alex R. we may not need to add a window.addEventListener
+    // window.addEventListener('DOMContentLoaded', getApdex, {once: true}) instead of  window.addEventListener('load', getApdex) and call the function;
+    // window.addEventListener('load', getApdex);
+    getApdex();
 
     mounted++;
     if (mounted > 1) {
