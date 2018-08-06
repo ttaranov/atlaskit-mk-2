@@ -25,7 +25,226 @@ export const evilburnsEmojiId = toEmojiId(emojiTestData.evilburnsEmoji);
 
 export const lorem = emojiStoryData.lorem;
 
+export const documentbla = {
+  type: 'doc',
+  version: 1,
+  content: [
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'Hello, ',
+          marks: [
+            {
+              type: 'link',
+              attrs: {
+                href: 'https://www.atlassian.com',
+              },
+            },
+          ],
+        },
+        {
+          type: 'text',
+          text: 'World!',
+          marks: [
+            {
+              type: 'strong',
+            },
+            {
+              type: 'link',
+              attrs: {
+                href: 'https://www.atlassian.com',
+              },
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
 export const document = {
+  type: 'doc',
+  version: 1,
+  content: [
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'Hello, ',
+          marks: [
+            {
+              type: 'link',
+              attrs: {
+                href: 'https://www.atlassian.com',
+              },
+            },
+          ],
+        },
+        {
+          type: 'text',
+          text: 'World!',
+          marks: [
+            {
+              type: 'strong',
+            },
+            {
+              type: 'link',
+              attrs: {
+                href: 'https://www.atlassian.com',
+              },
+            },
+          ],
+        },
+        {
+          type: 'text',
+          text: ' Look I can do ',
+        },
+        {
+          type: 'text',
+          text: 'italic ',
+          marks: [
+            {
+              type: 'em',
+            },
+          ],
+        },
+        {
+          type: 'text',
+          text: ', strong ',
+          marks: [
+            {
+              type: 'em',
+            },
+            {
+              type: 'strong',
+            },
+          ],
+        },
+        {
+          type: 'text',
+          text: 'and underlined text!',
+          marks: [
+            {
+              type: 'em',
+            },
+            {
+              type: 'strong',
+            },
+            {
+              type: 'underline',
+            },
+          ],
+        },
+        {
+          type: 'text',
+          text: 'and underlined text!',
+          marks: [
+            {
+              type: 'em',
+            },
+            {
+              type: 'strong',
+            },
+            {
+              type: 'underline',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'Hello, ',
+          marks: [
+            {
+              type: 'link',
+              attrs: {
+                href: 'https://www.atlassian.com',
+              },
+            },
+          ],
+        },
+        {
+          type: 'text',
+          text: 'World!',
+          marks: [
+            {
+              type: 'strong',
+            },
+            {
+              type: 'link',
+              attrs: {
+                href: 'https://www.atlassian.com',
+              },
+            },
+          ],
+        },
+        {
+          type: 'text',
+          text: ' Look I can do ',
+        },
+        {
+          type: 'text',
+          text: 'italic ',
+          marks: [
+            {
+              type: 'em',
+            },
+          ],
+        },
+        {
+          type: 'text',
+          text: ', strong ',
+          marks: [
+            {
+              type: 'em',
+            },
+            {
+              type: 'strong',
+            },
+          ],
+        },
+        {
+          type: 'text',
+          text: 'and underlined text!',
+          marks: [
+            {
+              type: 'em',
+            },
+            {
+              type: 'strong',
+            },
+            {
+              type: 'underline',
+            },
+          ],
+        },
+        {
+          type: 'text',
+          text: 'and underlined text!',
+          marks: [
+            {
+              type: 'em',
+            },
+            {
+              type: 'strong',
+            },
+            {
+              type: 'underline',
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+export const old123document = {
   type: 'doc',
   version: 1,
   content: [

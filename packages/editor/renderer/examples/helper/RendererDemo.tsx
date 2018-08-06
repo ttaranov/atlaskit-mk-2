@@ -168,6 +168,7 @@ export interface DemoRendererProps {
   withExtension?: boolean;
   serializer: 'react' | 'text' | 'email';
   document?: object;
+  inlineComments?: object;
 }
 
 export interface DemoRendererState {
@@ -277,7 +278,17 @@ export default class RendererDemo extends PureComponent<
 
       if (this.props.withProviders) {
         props.eventHandlers = eventHandlers;
+
         props.dataProviders = providerFactory;
+
+        (props.dataProviders as any).providers.set(
+          'inlineCommentProvider',
+          Promise.resolve({
+            getInlineComments: () => fakeInlineComments,
+          }),
+        );
+
+        console.log(providerFactory);
       }
 
       if (this.props.withExtension) {

@@ -66,6 +66,187 @@ class InlineCommentsSpike implements InlineCommentsOutsideADFProvider {
   }
 }
 
+const document = {
+  type: 'doc',
+  version: 1,
+  content: [
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'Hello, ',
+          marks: [
+            {
+              type: 'link',
+              attrs: {
+                href: 'https://www.atlassian.com',
+              },
+            },
+          ],
+        },
+        {
+          type: 'text',
+          text: 'World!',
+          marks: [
+            {
+              type: 'strong',
+            },
+            {
+              type: 'link',
+              attrs: {
+                href: 'https://www.atlassian.com',
+              },
+            },
+          ],
+        },
+        {
+          type: 'text',
+          text: ' Look I can do ',
+        },
+        {
+          type: 'text',
+          text: 'italic ',
+          marks: [
+            {
+              type: 'em',
+            },
+          ],
+        },
+        {
+          type: 'text',
+          text: ', strong ',
+          marks: [
+            {
+              type: 'em',
+            },
+            {
+              type: 'strong',
+            },
+          ],
+        },
+        {
+          type: 'text',
+          text: 'and underlined text!',
+          marks: [
+            {
+              type: 'em',
+            },
+            {
+              type: 'strong',
+            },
+            {
+              type: 'underline',
+            },
+          ],
+        },
+        {
+          type: 'text',
+          text: 'and underlined text!',
+          marks: [
+            {
+              type: 'em',
+            },
+            {
+              type: 'strong',
+            },
+            {
+              type: 'underline',
+            },
+          ],
+        },
+      ],
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'Hello, ',
+          marks: [
+            {
+              type: 'link',
+              attrs: {
+                href: 'https://www.atlassian.com',
+              },
+            },
+          ],
+        },
+        {
+          type: 'text',
+          text: 'World!',
+          marks: [
+            {
+              type: 'strong',
+            },
+            {
+              type: 'link',
+              attrs: {
+                href: 'https://www.atlassian.com',
+              },
+            },
+          ],
+        },
+        {
+          type: 'text',
+          text: ' Look I can do ',
+        },
+        {
+          type: 'text',
+          text: 'italic ',
+          marks: [
+            {
+              type: 'em',
+            },
+          ],
+        },
+        {
+          type: 'text',
+          text: ', strong ',
+          marks: [
+            {
+              type: 'em',
+            },
+            {
+              type: 'strong',
+            },
+          ],
+        },
+        {
+          type: 'text',
+          text: 'and underlined text!',
+          marks: [
+            {
+              type: 'em',
+            },
+            {
+              type: 'strong',
+            },
+            {
+              type: 'underline',
+            },
+          ],
+        },
+        {
+          type: 'text',
+          text: 'and underlined text!',
+          marks: [
+            {
+              type: 'em',
+            },
+            {
+              type: 'strong',
+            },
+            {
+              type: 'underline',
+            },
+          ],
+        },
+      ],
+    },
+  ],
+};
+
 // tslint:disable-next-line:no-console
 const analyticsHandler = (actionName, props) => console.log(actionName, props);
 // tslint:disable-next-line:no-console
@@ -139,7 +320,7 @@ export class ExampleEditor extends React.Component<Props, State> {
             inlineComments={{
               provider: Promise.resolve(new InlineCommentsSpike()),
             }}
-            defaultValue={this.props.defaultValue}
+            defaultValue={document}
             appearance="full-page"
             analyticsHandler={analyticsHandler}
             quickInsert={{ provider: Promise.resolve(quickInsertProvider) }}

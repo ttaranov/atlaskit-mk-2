@@ -18,6 +18,7 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
+    "@atlaskit/adf-utils": "^2.0.1",
     "@atlaskit/code": "^7.0.2",
     "@atlaskit/editor-common": "^14.0.0",
     "@atlaskit/editor-json-transformer": "^4.0.4",

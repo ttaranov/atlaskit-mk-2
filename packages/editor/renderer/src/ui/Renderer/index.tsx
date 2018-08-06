@@ -82,9 +82,18 @@ export default class Renderer extends PureComponent<Props, {}> {
       useNewApplicationCard,
     });
   }
+  // IF this was prod code we should probably memoize
+  updateDocument(document) {}
 
   render() {
-    const { document, onComplete, schema, appearance, adfStage } = this.props;
+    const {
+      document,
+      onComplete,
+      schema,
+      appearance,
+      adfStage,
+      dataProviders,
+    } = this.props;
 
     try {
       const { result, stat } = renderDocument(
@@ -92,6 +101,7 @@ export default class Renderer extends PureComponent<Props, {}> {
         this.serializer,
         schema || defaultSchema,
         adfStage,
+        dataProviders,
       );
 
       if (onComplete) {

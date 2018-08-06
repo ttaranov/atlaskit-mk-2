@@ -56,7 +56,9 @@ export interface ExtensionConfig {
 }
 
 export interface InlineCommentLocator {
-  inlineCommentId: string; // This could be conversatioNId
+  from: number;
+  to: number;
+  conversationId: string; // This could be conversatioNId
   resolved: boolean;
 }
 
