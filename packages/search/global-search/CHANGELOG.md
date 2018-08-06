@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 5.4.3
+- [patch] fix pre and post query screen events [5976aef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5976aef)
+
 ## 5.4.2
 - [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
 - [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
