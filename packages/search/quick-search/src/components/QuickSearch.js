@@ -321,7 +321,10 @@ export class QuickSearch extends Component<Props, State> {
         }
         this.props.onSearchSubmit(event);
       } else {
-        event.preventDefault(); // Don't fire submit event from input
+        // if it's escape, don't prevent default.
+        if (event.key !== 'Escape') {
+          event.preventDefault(); // Don't fire submit event from input
+        }
         const result = getResultById(
           this.flatResults,
           this.state.selectedResultId,
