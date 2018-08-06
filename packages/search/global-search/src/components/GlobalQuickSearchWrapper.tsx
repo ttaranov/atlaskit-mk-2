@@ -64,7 +64,7 @@ export interface Props {
   /**
    * Indicates whether or not the aggregator should be used for object searches.
    */
-  useAggregatorForObjects?: boolean;
+  useAggregatorForConfluenceObjects?: boolean;
 }
 
 /**
@@ -132,7 +132,7 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
     const {
       linkComponent,
       isSendSearchTermsEnabled,
-      useAggregatorForObjects,
+      useAggregatorForConfluenceObjects,
     } = this.props;
 
     return (
@@ -141,7 +141,7 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
           {...searchClients}
           linkComponent={linkComponent}
           isSendSearchTermsEnabled={isSendSearchTermsEnabled}
-          useAggregatorForObjects={useAggregatorForObjects}
+          useAggregatorForConfluenceObjects={useAggregatorForConfluenceObjects}
         />
       </MessagesIntlProvider>
     );

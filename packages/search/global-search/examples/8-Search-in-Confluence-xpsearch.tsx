@@ -30,7 +30,7 @@ export default class extends React.Component {
           <LocaleIntlProvider>
             <AnalyticsListener onEvent={logEvent} channel="fabric-elements">
               <GlobalQuickSearch
-                useAggregatorForObjects={true}
+                useAggregatorForConfluenceObjects={true}
                 cloudId="cloudId"
                 context="confluence"
               />

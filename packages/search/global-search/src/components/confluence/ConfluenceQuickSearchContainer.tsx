@@ -43,7 +43,7 @@ export interface Props {
   linkComponent?: LinkComponent;
   createAnalyticsEvent?: CreateAnalyticsEventFn;
   isSendSearchTermsEnabled?: boolean;
-  useAggregatorForObjects: boolean;
+  useAggregatorForConfluenceObjects: boolean;
 }
 
 class SearchScreenCounter implements ScreenCounter {
@@ -153,7 +153,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   async searchCrossProductConfluence(
     query: string,
   ): Promise<Map<Scope, Result[]>> {
-    const scopes = this.props.useAggregatorForObjects
+    const scopes = this.props.useAggregatorForConfluenceObjects
       ? [Scope.ConfluencePageBlogAttachment, Scope.ConfluenceSpace]
       : [Scope.ConfluenceSpace];
 
@@ -233,16 +233,19 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   }
 
   doSearch = async (query: string) => {
+    const useAggregator = this.props.useAggregatorForConfluenceObjects;
     const startTime: number = performanceNow();
 
     this.setState({
       isLoading: true,
     });
-    const quickNavPromise = this.searchQuickNav(query).catch(error => {
-      this.handleSearchErrorAnalytics(error, 'confluence.quicknav');
-      // rethrow to fail the promise
-      throw error;
-    });
+    const quickNavPromise = useAggregator
+      ? Promise.resolve([])
+      : this.searchQuickNav(query).catch(error => {
+          this.handleSearchErrorAnalytics(error, 'confluence.quicknav');
+          // rethrow to fail the promise
+          throw error;
+        });
     const confXpSearchPromise = handlePromiseError(
       this.searchCrossProductConfluence(query),
       new Map<Scope, Result[]>(),
@@ -283,7 +286,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       if (this.state.latestSearchQuery === query) {
         this.setState(
           {
-            objectResults: this.props.useAggregatorForObjects
+            objectResults: useAggregator
               ? xpsearchResultsMap.get(Scope.ConfluencePageBlogAttachment)
               : objectResults,
             spaceResults: xpsearchResultsMap.get(Scope.ConfluenceSpace) || [],
@@ -300,6 +303,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
                 confSearchElapsedMs,
                 peopleElapsedMs,
                 quickNavElapsedMs,
+                usingAggregator: useAggregator,
               },
               buildShownEventDetails(
                 take(this.state.objectResults, MAX_PAGES_BLOGS_ATTACHMENTS),
