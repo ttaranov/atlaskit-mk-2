@@ -5,7 +5,7 @@
     <desc>Created with Sketch.</desc>
     <defs></defs>
     <g id="Global" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="icons/image-border" fill="#42526E">
+        <g id="icons/image-border" fill="currentColor">
             <path d="M3,17 L3,20.41 C3,20.736 3.262,21 3.59,21 L7,21 L7,19 L5,19 L5,17 L3,17 Z" id="Clip-2"></path>
             <path d="M19,17 L19,19 L17,19 L17,21 L20.41,21 C20.738,21 21,20.736 21,20.41 L21,17 L19,17 Z" id="Mask"></path>
             <path d="M3.59,3 C3.264,3 3,3.262 3,3.59 L3,7 L5,7 L5,5 L7,5 L7,3 L3.59,3 Z" id="Clip-8"></path>

@@ -5,7 +5,7 @@
     <desc>Created with Sketch.</desc>
     <defs></defs>
     <g id="Global" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="icons/canvas" fill="#42526E">
+        <g id="icons/canvas" fill="currentColor">
             <path d="M10.2499706,19 L9.23,21.4616 C9.019,21.9716 8.438,22.2156 7.924,22.0016 C7.413,21.7906 7.169,21.2096 7.383,20.6966 L8.08563232,19 L10.2499706,19 Z" id="Combined-Shape"></path>
             <path d="M15.6759797,19 L16.378,20.6966 C16.59,21.2056 16.351,21.7896 15.837,22.0016 C15.327,22.2136 14.744,21.9746 14.531,21.4616 L13.5119171,19 L15.6759797,19 Z" id="Combined-Shape"></path>
             <path d="M11,2.99895656 C11,2.44724809 11.4438648,2 12,2 C12.5522847,2 13,2.44266033 13,2.99895656 L13,5 L11,5 L11,2.99895656 Z" id="Rectangle-28" fill-rule="nonzero"></path>

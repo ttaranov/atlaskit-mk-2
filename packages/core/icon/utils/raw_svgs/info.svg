@@ -6,9 +6,9 @@
     <defs></defs>
     <g id="Global" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="icons/info">
-            <path d="M2,12 C2,17.5233333 6.47666667,22 12,22 C17.5233333,22 22,17.5233333 22,12 C22,6.47666667 17.5233333,2 12,2 C6.47666667,2 2,6.47666667 2,12 Z" id="Combined-Shape" fill="#42526E"></path>
-            <rect id="Rectangle" fill="#79F2C0" x="11" y="10" width="2" height="7" rx="1"></rect>
-            <circle id="Oval" fill="#79F2C0" cx="12" cy="8" r="1"></circle>
+            <path d="M2,12 C2,17.5233333 6.47666667,22 12,22 C17.5233333,22 22,17.5233333 22,12 C22,6.47666667 17.5233333,2 12,2 C6.47666667,2 2,6.47666667 2,12 Z" id="Combined-Shape" fill="currentColor"></path>
+            <rect id="Rectangle" fill="currentColor" x="11" y="10" width="2" height="7" rx="1"></rect>
+            <circle id="Oval" fill="currentColor" cx="12" cy="8" r="1"></circle>
         </g>
     </g>
 </svg>

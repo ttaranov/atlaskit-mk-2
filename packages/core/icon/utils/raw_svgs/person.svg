@@ -5,7 +5,7 @@
     <desc>Created with Sketch.</desc>
     <defs></defs>
     <g id="Global" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="icons/person" fill="#42526E">
+        <g id="icons/person" fill="currentColor">
             <path d="M6,14.0001103 C6,12.8954799 6.90195036,12 8.0085302,12 L15.9914698,12 C17.1007504,12 18,12.8938878 18,14.006104 L18,18.4460997 C18,21.8513001 6,21.8513001 6,18.4460997 C6,21.8513001 6,14.0001103 6,14.0001103 Z" id="Rectangle-7"></path>
             <circle id="Oval-2" cx="12" cy="7" r="4"></circle>
         </g>

@@ -17,6 +17,6 @@ var _index2 = _interopRequireDefault(_index);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var VidConnectionCircleIcon = function VidConnectionCircleIcon(props) {
-  return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><g fill-rule="evenodd"><circle fill="currentColor" cx="12" cy="12" r="10"/><rect fill="inherit" x="14" y="8" width="2" height="8" rx="1"/><rect fill="inherit" x="11" y="10" width="2" height="6" rx="1"/><rect fill="inherit" x="8" y="13" width="2" height="3" rx="1"/></g></svg>' }, props));
+  return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><g fill="currentColor" fill-rule="evenodd"><circle cx="12" cy="12" r="10"/><rect x="14" y="8" width="2" height="8" rx="1"/><rect x="11" y="10" width="2" height="6" rx="1"/><rect x="8" y="13" width="2" height="3" rx="1"/></g></svg>' }, props));
 };
 exports.default = VidConnectionCircleIcon;

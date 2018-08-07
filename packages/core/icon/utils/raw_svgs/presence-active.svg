@@ -5,7 +5,7 @@
     <desc>Created with Sketch.</desc>
     <defs></defs>
     <g id="Global" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="icons/presence-active" fill="#42526E">
+        <g id="icons/presence-active" fill="currentColor">
             <circle id="main-fill" cx="12" cy="12" r="6"></circle>
         </g>
     </g>

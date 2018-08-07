@@ -5,7 +5,7 @@
     <desc>Created with Sketch.</desc>
     <defs></defs>
     <g id="Global" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="icons/vid-share-screen" fill="#42526E">
+        <g id="icons/vid-share-screen" fill="currentColor">
             <path d="M13,4 L4.99508929,4 C3.8926228,4 3,4.8992496 3,6.0085302 L3,13.9914698 C3,15.0980496 3.8932319,16 4.99508929,16 L19.0049107,16 C20.1073772,16 21,15.1007504 21,13.9914698 L21,7.5 L21,11 L19,11 L19,14 L5,14 L5,6 L13,6 L13,4 Z" id="Combined-Shape" fill-rule="nonzero"></path>
             <rect id="Rectangle-11-Copy" x="10" y="17" width="4" height="3"></rect>
             <path d="M9,20 C9,19.4477153 9.45097518,19 9.99077797,19 L14.009222,19 C14.5564136,19 15,19.4438648 15,20 L15,21 L9,21 L9,20 Z" id="Rectangle-11-Copy-2"></path>

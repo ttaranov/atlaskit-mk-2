@@ -6,8 +6,8 @@
     <defs></defs>
     <g id="Global" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
         <g id="icons/radio">
-            <circle id="Oval-3" fill="#42526E" cx="12" cy="12" r="6"></circle>
-            <circle id="Oval-2" fill="#79F2C0" cx="12" cy="12" r="2"></circle>
+            <circle id="Oval-3" fill="currentColor" cx="12" cy="12" r="6"></circle>
+            <circle id="Oval-2" fill="currentColor" cx="12" cy="12" r="2"></circle>
         </g>
     </g>
 </svg>
