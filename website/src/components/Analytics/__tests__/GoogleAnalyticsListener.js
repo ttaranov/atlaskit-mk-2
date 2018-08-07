@@ -41,6 +41,7 @@ cases(
         action: 'apdex',
         value: 100,
         nonInteraction: true,
+        label: 'seconds:0.5',
       },
     },
     {
@@ -56,6 +57,7 @@ cases(
         action: 'apdex',
         value: 50,
         nonInteraction: true,
+        label: 'seconds:1.1',
       },
     },
     {
@@ -71,6 +73,7 @@ cases(
         action: 'apdex',
         value: 0,
         nonInteraction: true,
+        label: 'seconds:4.5',
       },
     },
   ],
