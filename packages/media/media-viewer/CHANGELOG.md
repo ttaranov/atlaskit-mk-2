@@ -1,5 +1,10 @@
 # @atlaskit/media-viewer
 
+## 17.0.4
+- [patch] Use Camera class in avatar picker [335ab1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/335ab1e)
+- [patch] Updated dependencies [335ab1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/335ab1e)
+  - @atlaskit/media-ui@5.1.0
+
 ## 17.0.3
 - [patch] Chore: improve the Outcome data type [1feeedb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1feeedb)
 
