@@ -71,9 +71,7 @@ export class MediaGrid extends Component<MediaGridProps, MediaGridState> {
     });
   }
 
-  // TODO: update state keeping dataURI's
   onItemsChange = (items: GridItem[]) => {
-    // this.setState({items })
     const { populatedItems } = this.state;
     const newPopulatedItems: PopulatedItem[] = items.map(gridItem => {
       const populatedItem = populatedItems.find(
@@ -97,10 +95,12 @@ export class MediaGrid extends Component<MediaGridProps, MediaGridState> {
 
   render() {
     const { populatedItems } = this.state;
-    // TODO: remove id's
     return (
       <MediaGridView
-        items={populatedItems}
+        items={populatedItems.map(populatedItem => ({
+          ...populatedItem,
+          id: undefined,
+        }))}
         onItemsChange={this.onItemsChange}
       />
     );

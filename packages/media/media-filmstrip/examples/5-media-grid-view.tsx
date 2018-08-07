@@ -7,12 +7,14 @@ import { gridItems } from '../example-helpers/media-grid-items';
 interface ExampleState {
   width: number;
   items: GridItem[];
+  isInteractive: boolean;
 }
 
 class Example extends Component<{}, ExampleState> {
   state: ExampleState = {
     width: 744,
     items: gridItems,
+    isInteractive: true,
   };
 
   onWidthChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -36,8 +38,15 @@ class Example extends Component<{}, ExampleState> {
     this.setState({ items });
   };
 
+  toggleInteractivity = () => {
+    this.setState({
+      isInteractive: !this.state.isInteractive,
+    });
+  };
+
   render() {
-    const { width, items } = this.state;
+    const { width, items, isInteractive } = this.state;
+
     return (
       <GridContainer style={{ width: width + 20 }}>
         <FieldRangeWrapper>
@@ -48,11 +57,15 @@ class Example extends Component<{}, ExampleState> {
             onChange={this.onWidthChange}
           />
           <button onClick={this.addImage}>Add image</button>
+          <button onClick={this.toggleInteractivity}>
+            Toggle isInteractive
+          </button>
         </FieldRangeWrapper>
         <MediaGridView
           items={items}
           onItemsChange={this.onItemsChange}
           width={width}
+          isInteractive={isInteractive}
         />
       </GridContainer>
     );

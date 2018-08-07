@@ -1,12 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
-import {
-  Wrapper,
-  RowWrapper,
-  imageMargin,
-  ImgWrapper,
-  ImagePlaceholder,
-} from './styled';
+import { Wrapper, RowWrapper, imageMargin, ImgWrapper } from './styled';
 
 export interface GridItem {
   dataURI?: string;
@@ -20,7 +14,7 @@ export interface GridItem {
 export interface MediaGridViewProps {
   items: GridItem[];
   onItemsChange: (items: GridItem[]) => void;
-  isInteractive?: boolean; // TODO: implement
+  isInteractive?: boolean;
   width?: number;
   itemsPerRow?: number;
 }
@@ -124,40 +118,41 @@ export class MediaGridView extends Component<
     this.resetDragging();
   };
 
-  onLoad = (dataURI: string) => (
-    event: React.SyntheticEvent<HTMLImageElement>,
-  ) => {
+  onLoad = (dataURI: string) => () => {
     const { items, onItemsChange } = this.props;
-    const newItems = items
-      // .filter(item => item.dataURI === dataURI)
-      .map(item => ({ ...item, isLoaded: item.dataURI === dataURI }));
-    // const newItems: GridItem[] = [...items, ...changedItems];
-
+    const newItems = items.map(item => ({
+      ...item,
+      isLoaded: item.dataURI === dataURI || item.isLoaded,
+    }));
     onItemsChange(newItems);
   };
 
   renderImage = (item: GridItem, gridHeight: number, index: number) => {
-    const { dimensions, dataURI } = item;
+    const { isInteractive } = this.props;
+    const { dimensions, dataURI, isLoaded } = item;
     const { width, height } = dimensions;
     const aspectRatio = width / height;
     const styles = {
       width: gridHeight * aspectRatio,
       height: gridHeight,
     };
-
     const img = dataURI ? (
       <img
-        draggable={true}
+        draggable={isInteractive}
         src={dataURI}
         onLoad={this.onLoad(dataURI)}
         style={styles} // TODO: check if we need this or just use 100%
         alt="image"
         onDragEnd={this.onDragEnd}
-        onDragStart={this.onDragStart.bind(this, index)}
-        onDragOver={this.onDragOver.bind(this, index)}
+        onDragStart={
+          isInteractive ? this.onDragStart.bind(this, index) : undefined
+        }
+        onDragOver={
+          isInteractive ? this.onDragOver.bind(this, index) : undefined
+        }
       />
     ) : (
-      <ImagePlaceholder />
+      undefined
     );
 
     let isRightPlaceholder = this.state.lastInRow || false;
@@ -169,11 +164,11 @@ export class MediaGridView extends Component<
     }
     const hasPlaceholder =
       index === this.state.dropIndex! - (isRightPlaceholder ? 1 : 0);
-
     return (
       <React.Fragment key={index}>
         <ImgWrapper
           style={styles}
+          isLoaded={isLoaded}
           hasPlaceholder={hasPlaceholder}
           isRightPlaceholder={isRightPlaceholder}
         >
@@ -191,6 +186,31 @@ export class MediaGridView extends Component<
     const { items, itemsPerRow, width } = this.props;
     const rows: any[] = [];
     for (let index = 0; index < items.length; index += itemsPerRow!) {
+      /*
+      # How the image scaling magic works
+      hx, wx, aspectx: height, width and aspect ratio of image x (aspect = w/h)
+      (hx, wx, aspectx = 0 when < x images on row (numImages))
+
+      All images in row must fit image grid width:
+      w1 * scale1 + w2 * scale2 + w3 * scale3 + (numImages-1) * margin = gridWidth
+
+      therefore:
+      (h1 * aspect1) * scale1 + (h2 * aspect2) * scale2 + (h3 * aspect3) * scale3 
+          = gridWidth - (numImages-1) * margin
+
+      All images in row must be same height
+      h1 * scale1 = h2 * scale2 = h3 * scale3 = gridHeight
+
+      -> (h1 * scale1) * aspect1  + (h2 * scale2) * aspect2 + (h3 * scale3) * aspect3
+          = gridWidth - (numImages-1) * margin
+
+      -> gridHeight * aspect1 + gridHeight * aspect2 + gridHeight * aspect3
+          = gridWidth - (numImages-1) * margin
+
+      -> gridHeight * (aspect1 + aspect2 + aspect3) = gridWidth - (numImages-1) * margin
+
+      -> gridHeight = (gridWidth - (numImages-1) * margin) / (aspect1 + aspect2 + aspect3)
+      */
       const itemsInRow = items.slice(index, index + itemsPerRow!);
       const aspectRatioSum = itemsInRow
         .map(i => i.dimensions.width / i.dimensions.height)
