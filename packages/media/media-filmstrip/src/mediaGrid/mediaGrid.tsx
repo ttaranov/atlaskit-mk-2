@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { Context } from '@atlaskit/media-core';
-import { MediaGridView } from './mediaGridView';
+import { MediaGridView, GridItem } from './mediaGridView';
 
 export interface PublicGridItem {
   id: string;
@@ -72,7 +72,28 @@ export class MediaGrid extends Component<MediaGridProps, MediaGridState> {
   }
 
   // TODO: update state keeping dataURI's
-  onItemsChange = items => {};
+  onItemsChange = (items: GridItem[]) => {
+    // this.setState({items })
+    const { populatedItems } = this.state;
+    const newPopulatedItems: PopulatedItem[] = items.map(gridItem => {
+      const populatedItem = populatedItems.find(
+        populatedItem => populatedItem.dataURI === gridItem.dataURI,
+      );
+      const id = populatedItem ? populatedItem.id : '';
+      if (!id) {
+        console.error('no id for', gridItem);
+      }
+
+      return {
+        ...gridItem,
+        id,
+      };
+    });
+
+    this.setState({
+      populatedItems: newPopulatedItems,
+    });
+  };
 
   render() {
     const { populatedItems } = this.state;
