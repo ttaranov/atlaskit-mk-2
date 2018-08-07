@@ -6,8 +6,6 @@ import {
   imageMargin,
   ImgWrapper,
   Placeholder,
-  LeftPlaceholder,
-  RightPlaceholder,
 } from './styled';
 
 export interface GridItem {
@@ -51,7 +49,6 @@ export class MediaGridView extends Component<
   };
 
   onDragStart = (draggingIndex: number) => {
-    console.log('onDragStart', draggingIndex);
     this.setState({
       isDragging: true,
       draggingIndex,
@@ -59,7 +56,6 @@ export class MediaGridView extends Component<
   };
 
   onDragOver = (index, event: React.DragEvent<HTMLDivElement>) => {
-    // var dragX = e.originalEvent.pageX, dragY = e.originalEvent.pageY;
     const { left, width } = event.currentTarget.getBoundingClientRect();
     const x = event.pageX - left;
     let dropIndex = index;
@@ -76,7 +72,6 @@ export class MediaGridView extends Component<
     const { items, onItemsChange } = this.props;
 
     let dropIndex = this.state.dropIndex!;
-    console.log('onDrop', { dropIndex, draggingIndex });
     const draggingItem = items.splice(draggingIndex, 1)[0];
     if (dropIndex > draggingIndex) {
       dropIndex -= 1;
@@ -89,7 +84,6 @@ export class MediaGridView extends Component<
   };
 
   renderImage = (item: GridItem, gridHeight: number, index: number) => {
-    // const { isDragging } = this.state;
     const { width, height } = item.dimensions;
     const aspectRatio = width / height;
     const styles = {
@@ -123,6 +117,10 @@ export class MediaGridView extends Component<
     );
   };
 
+  preventDefault(event) {
+    event.preventDefault();
+  }
+
   render() {
     const { items, width = defaultWidth } = this.props;
     const rows = items.map((item, index) => {
@@ -148,13 +146,7 @@ export class MediaGridView extends Component<
       }
     });
     return (
-      <Wrapper
-        onDrop={this.onDropImage}
-        onDragOver={event => {
-          // do not delete. I am important
-          event.preventDefault();
-        }}
-      >
+      <Wrapper onDrop={this.onDropImage} onDragOver={this.preventDefault}>
         {rows}
       </Wrapper>
     );
