@@ -1,5 +1,13 @@
 # @atlaskit/docs
 
+## 5.0.4
+- [patch] Export a modified replaceImport function [18f2701](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/18f2701)
+- [none] Updated dependencies [18f2701](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/18f2701)
+
+## 5.0.3
+- [patch] Update pretty-proptypes [c7e484c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c7e484c)
+- [none] Updated dependencies [c7e484c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c7e484c)
+
 ## 5.0.2
 - [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
   - @atlaskit/icon@13.2.2

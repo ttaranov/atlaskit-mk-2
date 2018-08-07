@@ -1,5 +1,28 @@
 # @atlaskit/form
 
+## 3.1.5
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/tooltip@12.0.5
+  - @atlaskit/select@5.0.8
+  - @atlaskit/modal-dialog@6.0.6
+  - @atlaskit/multi-select@11.0.4
+  - @atlaskit/inline-edit@7.0.4
+  - @atlaskit/field-text-area@4.0.4
+  - @atlaskit/field-text@7.0.4
+  - @atlaskit/toggle@5.0.5
+  - @atlaskit/checkbox@4.0.3
+  - @atlaskit/calendar@7.0.4
+  - @atlaskit/button@9.0.5
+  - @atlaskit/theme@5.1.3
+  - @atlaskit/field-range@5.0.3
+  - @atlaskit/section-message@1.0.4
+  - @atlaskit/field-radio-group@4.0.4
+  - @atlaskit/datetime-picker@6.1.1
+  - @atlaskit/icon@13.2.4
+  - @atlaskit/droplist@7.0.5
+  - @atlaskit/dropdown-menu@6.1.5
+
 ## 3.1.4
 - [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
   - @atlaskit/select@5.0.7

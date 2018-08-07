@@ -220,10 +220,24 @@ export const BaselineExtend = styled.div`
   vertical-align: middle;
 `;
 
-export const Img: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
+export type ImgProps = {
+  canDrag: boolean;
+  isDragging: boolean;
+};
+
+export const Img: ComponentClass<ImgHTMLAttributes<{}> & ImgProps> = styled.img`
   display: inline-block;
   vertical-align: middle;
   position: relative;
+  cursor: ${({ canDrag, isDragging }: ImgProps) => {
+    if (canDrag && isDragging) {
+      return 'grabbing';
+    } else if (canDrag) {
+      return 'grab';
+    } else {
+      return 'auto';
+    }
+  }};
 `;
 
 export const MedatadataTextWrapper = styled.div`

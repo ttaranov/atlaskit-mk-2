@@ -45,7 +45,7 @@ const config = {
   },
   globals: {
     'ts-jest': {
-      tsConfigFile: './tsconfig.fabric.json',
+      tsConfigFile: './tsconfig.jest.json',
       skipBabel: true,
     },
     __BASEURL__: 'http://localhost:9000',

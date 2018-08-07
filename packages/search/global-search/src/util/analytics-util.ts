@@ -23,6 +23,7 @@ export interface SearchPerformanceTiming {
   confSearchElapsedMs: number;
   peopleElapsedMs: number;
   quickNavElapsedMs: number;
+  usingAggregator: boolean;
 }
 
 export interface ShownResultContextSection {

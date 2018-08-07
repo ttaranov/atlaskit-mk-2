@@ -54,10 +54,18 @@ export class Camera {
     public readonly originalImg: Rectangle,
   ) {}
 
+  resizedViewport(newViewport: Rectangle): Camera {
+    return new Camera(newViewport, this.originalImg);
+  }
+
+  get scaleToFit(): number {
+    return this.originalImg.scaleToFit(this.viewport);
+  }
+
   // If the image is smaller than or equal to the viewport, it won't be scaled.
   // If the image is larger than the viewport, it will be scaled down to fit.
   get scaleDownToFit(): number {
-    return Math.min(1, this.originalImg.scaleToFit(this.viewport));
+    return Math.min(1, this.scaleToFit);
   }
 
   get fittedImg(): Rectangle {
