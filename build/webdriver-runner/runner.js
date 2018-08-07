@@ -80,6 +80,7 @@ function BrowserTestCase(...args /*:Array<any> */) {
         clientRunners.push(async (fn, ...args) => {
           let skipBrowser;
           const browserName = client.driver.desiredCapabilities.browserName;
+          // TODO: get the test file name
           client.driver.desiredCapabilities.name = `Test Suite With: (${testcase}) - ${browserName}`;
 
           if (skipForBrowser) {
