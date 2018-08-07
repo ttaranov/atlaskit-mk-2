@@ -538,7 +538,15 @@ export class MediaPluginState {
         }
 
         const { node } = nodeWithPos;
-        if (node.attrs.__key === id) {
+        console.log(
+          '\tlooking for node with id',
+          id,
+          'have id',
+          node.attrs.id,
+          '__key',
+          node.attrs.__key,
+        );
+        if (node.attrs.id === id) {
           return nodeWithPos;
         }
 
@@ -698,6 +706,10 @@ export class MediaPluginState {
     );
   }
 
+  // upload from cloud picker:
+  //  preview -> processing -> ready
+  // upload from drag-drop:
+  //  uploading -> preview -> uploading -> processing -> ready
   private handleMediaState = async (state: MediaState) => {
     console.log('new media state', state.status, state);
     switch (state.status) {
@@ -723,9 +735,9 @@ export class MediaPluginState {
           // This allows Cards to use local preview while they fetch the remote one
           viewContext.setLocalPreview(state.publicId, state.thumbnail.src);
         }
-        // if (state.publicId) {
-        //   this.replaceTemporaryNode(state);
-        // }
+        if (state.publicId) {
+          this.replaceTemporaryNode(state);
+        }
         break;
 
       case 'ready':
@@ -772,11 +784,13 @@ export class MediaPluginState {
   private replaceTemporaryNode = (state: MediaState) => {
     const { view } = this;
     if (!view) {
+      console.error('no view');
       return;
     }
     const { id, thumbnail, fileName, fileSize, publicId, fileMimeType } = state;
     const mediaNodeWithPos = this.findMediaNode(id);
     if (!mediaNodeWithPos) {
+      console.warn('could not find media node with id', id);
       return;
     }
     const { width, height } = (thumbnail && thumbnail.dimensions) || {
@@ -784,7 +798,7 @@ export class MediaPluginState {
       height: undefined,
     };
     const { getPos, node: mediaNode } = mediaNodeWithPos;
-    const newNode = view.state.schema.nodes.media!.create({
+    const attrs = {
       ...mediaNode.attrs,
       id: publicId || id,
       width,
@@ -792,7 +806,9 @@ export class MediaPluginState {
       __fileName: fileName,
       __fileSize: fileSize,
       __fileMimeType: fileMimeType,
-    });
+    };
+
+    console.log('setting attributes on', mediaNode, 'to', attrs);
 
     // replace the old node with a new one
     const nodePos = getPos();
@@ -800,11 +816,7 @@ export class MediaPluginState {
       return;
     }
 
-    const tr = view.state.tr.replaceWith(
-      nodePos,
-      nodePos + mediaNode.nodeSize,
-      newNode,
-    );
+    const tr = view.state.tr.setNodeMarkup(nodePos, undefined, attrs);
     view.dispatch(tr.setMeta('addToHistory', false));
   };
 

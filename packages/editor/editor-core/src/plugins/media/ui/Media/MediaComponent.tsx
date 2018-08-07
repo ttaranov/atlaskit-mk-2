@@ -51,7 +51,6 @@ export interface Props extends Partial<MediaBaseAttributes> {
   appearance?: Appearance;
   stateManagerFallback?: MediaStateManager;
   selected?: boolean;
-  tempId?: string;
   url?: string;
   imageStatus?: ImageStatus;
   disableOverlay?: boolean;
@@ -290,10 +289,10 @@ export class MediaComponentInternal extends Component<Props, State> {
     }
 
     // Make sure that we always display progress bar when the file is uploading (prevents flicker)
-    let { progress } = this.state;
-    if (!progress && status === 'uploading') {
-      progress = 0.0;
-    }
+    // let { progress } = this.state;
+    // if (!progress && status === 'uploading') {
+    //   progress = 0.0;
+    // }
 
     const isImageFile = isImage(fileMimeType);
 
@@ -310,17 +309,17 @@ export class MediaComponentInternal extends Component<Props, State> {
       otherProps.actions = [createDeleteAction(onDelete)];
     }
 
-    console.log('render temp', progress);
+    // console.log('render temp', progress);
 
     return (
       <CardView
         // CardViewProps
-        status={mapMediaStatusIntoCardStatus(this.state, progress)}
+        status={mapMediaStatusIntoCardStatus(this.state, this.state.progress)}
         mediaItemType="file"
         metadata={fileDetails}
         // FileCardProps
         dataURI={dataURI}
-        progress={progress}
+        progress={this.state.progress}
         // SharedCardProps
         dimensions={cardDimensions}
         appearance={appearance}
@@ -374,9 +373,9 @@ export class MediaComponentInternal extends Component<Props, State> {
      * `cancelled` gets triggered when we do the node swap, so we can ignore it here.
      * Because on real `canceled` event it will get removed anyways.
      */
-    if (this.destroyed || mediaState.status === 'cancelled') {
-      return;
-    }
+    // if (this.destroyed || mediaState.status === 'cancelled') {
+    //   return;
+    // }
 
     this.setState({ ...mediaState });
   };

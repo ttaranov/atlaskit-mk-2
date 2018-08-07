@@ -77,6 +77,7 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
 
     const deleteEventHandler = isMediaSingle ? undefined : this.handleRemove;
     if (
+      !!!width &&
       progress < 1 &&
       this.pluginState.editorAppearance !== 'message' &&
       isMediaSingle &&
@@ -98,7 +99,6 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
         editorView={view}
         __key={__key!}
         id={id!}
-        tempId={id!}
         type={type!}
         collection={collection!}
         providers={providerFactory}

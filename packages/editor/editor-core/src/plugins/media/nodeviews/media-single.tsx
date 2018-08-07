@@ -164,7 +164,11 @@ export class MediaSingleNode extends Component<
 
 export class MediaSingleView extends ReactNodeView {
   update(node, decorations) {
-    return super.update(node, decorations);
+    return super.update(node, decorations, (currentNode, newNode) => {
+      return (
+        currentNode.firstChild!.attrs.__key === newNode.firstChild!.attrs.__key
+      );
+    });
   }
 
   render(props, forwardRef) {
