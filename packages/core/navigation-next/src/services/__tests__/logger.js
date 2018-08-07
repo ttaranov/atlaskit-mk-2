@@ -23,10 +23,6 @@ describe('NavigationNext Services: Logger', () => {
     Reflect.deleteProperty(global.console, 'groupEnd');
   });
 
-  it('should throws an error if constructor does not receive any option', () => {
-    expect(() => new Logger()).toThrow();
-  });
-
   it('should use the default params if constructor receive option as an empty object', () => {
     const logger = new Logger({});
     expect(logger.debugEnabled).toBe(false);
@@ -101,7 +97,7 @@ describe('NavigationNext Services: Logger', () => {
       const logger = new Logger({
         debug: false,
       });
-      expect(logger.debugConditional([])).toBe(undefined);
+      expect(logger.debugConditional(false, [])).toBe(undefined);
       expect(global.console.log).not.toHaveBeenCalled();
     });
 
