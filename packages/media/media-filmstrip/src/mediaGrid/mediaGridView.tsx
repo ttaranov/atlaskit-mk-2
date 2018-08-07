@@ -1,12 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
-import {
-  Wrapper,
-  RowWrapper,
-  imageMargin,
-  ImgWrapper,
-  ImagePlaceholder,
-} from './styled';
+import { Wrapper, RowWrapper, imageMargin, ImgWrapper } from './styled';
 
 export interface GridItem {
   dataURI?: string;
@@ -20,7 +14,7 @@ export interface GridItem {
 export interface MediaGridViewProps {
   items: GridItem[];
   onItemsChange: (items: GridItem[]) => void;
-  isInteractive?: boolean; // TODO: implement
+  isInteractive?: boolean;
   width?: number;
   itemsPerRow?: number;
 }
@@ -124,9 +118,7 @@ export class MediaGridView extends Component<
     this.resetDragging();
   };
 
-  onLoad = (dataURI: string) => (
-    event: React.SyntheticEvent<HTMLImageElement>,
-  ) => {
+  onLoad = (dataURI: string) => () => {
     const { items, onItemsChange } = this.props;
     const newItems = items.map(item => ({
       ...item,
@@ -136,6 +128,7 @@ export class MediaGridView extends Component<
   };
 
   renderImage = (item: GridItem, gridHeight: number, index: number) => {
+    const { isInteractive } = this.props;
     const { dimensions, dataURI, isLoaded } = item;
     const { width, height } = dimensions;
     const aspectRatio = width / height;
@@ -143,21 +136,23 @@ export class MediaGridView extends Component<
       width: gridHeight * aspectRatio,
       height: gridHeight,
     };
-
-    const img = dataURI ? ( //dataURI
+    const img = dataURI ? (
       <img
-        draggable={true}
+        draggable={isInteractive}
         src={dataURI}
         onLoad={this.onLoad(dataURI)}
         style={styles} // TODO: check if we need this or just use 100%
         alt="image"
         onDragEnd={this.onDragEnd}
-        onDragStart={this.onDragStart.bind(this, index)}
-        onDragOver={this.onDragOver.bind(this, index)}
+        onDragStart={
+          isInteractive ? this.onDragStart.bind(this, index) : undefined
+        }
+        onDragOver={
+          isInteractive ? this.onDragOver.bind(this, index) : undefined
+        }
       />
     ) : (
       undefined
-      // <ImagePlaceholder />
     );
 
     let isRightPlaceholder = this.state.lastInRow || false;

@@ -71,9 +71,7 @@ export class MediaGrid extends Component<MediaGridProps, MediaGridState> {
     });
   }
 
-  // TODO: update state keeping dataURI's
   onItemsChange = (items: GridItem[]) => {
-    // this.setState({items })
     const { populatedItems } = this.state;
     const newPopulatedItems: PopulatedItem[] = items.map(gridItem => {
       const populatedItem = populatedItems.find(
