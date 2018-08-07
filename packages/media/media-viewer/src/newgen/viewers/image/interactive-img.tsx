@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { CSSProperties } from 'react';
+import { Rectangle, Camera, Vector2 } from '@atlaskit/media-ui';
 import { BaselineExtend, ImageWrapper, Img } from '../../styled';
 import { ZoomLevel } from '../../domain/zoomLevel';
 import { closeOnDirectClick } from '../../utils/closeOnDirectClick';
 import { ZoomControls } from '../../zoomControls';
 import { Outcome } from '../../domain';
-import { Rectangle, Camera, Vector2 } from '../../domain/camera';
 
 export function zoomLevelAfterResize(
   newCamera: Camera,

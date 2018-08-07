@@ -21,7 +21,7 @@
     "bunyan": "^1.8.12",
     "chalk": "^2.1.0",
     "execa": "^0.10.0",
-    "landkid": "^0.2.7",
+    "landkid": "^0.2.9",
     "node-yaml": "^3.1.1",
     "p-wait-for": "^1.0.0"
   }
