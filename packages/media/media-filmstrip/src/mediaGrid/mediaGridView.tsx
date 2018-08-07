@@ -1,12 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
-import {
-  Wrapper,
-  RowWrapper,
-  imageMargin,
-  ImgWrapper,
-  Placeholder,
-} from './styled';
+import { Wrapper, RowWrapper, imageMargin, ImgWrapper } from './styled';
 
 export interface GridItem {
   dataURI: string;
@@ -62,7 +56,9 @@ export class MediaGridView extends Component<
     if (x > width / 2) {
       dropIndex += 1;
     }
-    this.setState({ dropIndex });
+    if (this.state.dropIndex !== dropIndex) {
+      this.setState({ dropIndex });
+    }
     event.preventDefault();
   };
 
@@ -95,15 +91,12 @@ export class MediaGridView extends Component<
     // h1 * scale1 = h2 * scale2 = h3 * scale3 = gridHeight
     // gridHeight = (gridWidth -  2*margin) / (aspect1 +  aspect2 +  aspect3)
 
-    let placeholder;
-    if (this.state.dropIndex === index) {
-      placeholder = <Placeholder style={{ height: gridHeight }} />;
-    }
-
     return (
       <React.Fragment key={index}>
-        {placeholder}
-        <ImgWrapper style={styles}>
+        <ImgWrapper
+          style={styles}
+          hasPlaceholder={this.state.dropIndex === index}
+        >
           <img
             draggable={true}
             src={item.dataURI}

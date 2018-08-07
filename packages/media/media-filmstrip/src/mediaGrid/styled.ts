@@ -1,22 +1,6 @@
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 
 export const imageMargin = 10;
-
-const fadeIn = keyframes`
-  0% {
-    width: 0;
-  }
-  100% {
-    width: 14px;
-  }
-`;
-
-export const Placeholder = styled.div`
-  display: inline-block;
-  box-sizing: border-box;
-  border-left: 4px solid #4c9aff;
-  animation: ${fadeIn} 0.2s forwards;
-`;
 
 export const RowWrapper = styled.div`
   position: relative;
@@ -28,7 +12,21 @@ export const RowWrapper = styled.div`
   }
 `;
 
+interface ImgWrapperProps {
+  hasPlaceholder: boolean;
+}
 export const ImgWrapper = styled.div`
+  transition: margin-left 0.2s, padding-left 0.2s;
+  ${(props: ImgWrapperProps) =>
+    props.hasPlaceholder
+      ? `
+    padding-left: 14px;
+    border-left: 4px solid #4c9aff;
+  `
+      : `
+    padding-left: 0;
+    border-left: 0;
+  `};
   display: inline-block;
   margin-right: ${imageMargin}px;
   position: relative;
