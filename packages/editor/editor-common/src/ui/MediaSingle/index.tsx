@@ -11,6 +11,7 @@ export interface Props {
   containerWidth?: number;
   isLoading?: boolean;
   className?: string;
+  hasCaption: boolean;
 }
 
 export default function MediaSingle({
@@ -21,6 +22,7 @@ export default function MediaSingle({
   containerWidth = width,
   isLoading = false,
   className,
+  hasCaption,
 }: Props) {
   return (
     <Wrapper
@@ -32,6 +34,7 @@ export default function MediaSingle({
         'is-loading': isLoading,
         'media-wrapped': layout === 'wrap-left' || layout === 'wrap-right',
       })}
+      hasCaption={hasCaption}
     >
       {React.Children.only(children)}
     </Wrapper>

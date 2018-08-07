@@ -19,6 +19,7 @@ import MediaSingleEdit from './ui/MediaSingleEdit';
 import { mediaSingleNodeView } from './nodeviews/media-single';
 import { mediaGroupNodeView } from './nodeviews/media-group';
 import { CustomMediaPicker } from './types';
+import { node } from '../../../../../media/media-picker/node_modules/@types/prop-types';
 
 export {
   MediaState,
@@ -90,6 +91,15 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
                   eventDispatcher,
                   providerFactory,
                 ),
+
+                // media rendering handled by the above nodeviews
+                media: (node, view, getPos) => {
+                  const dom = document.createElement('span');
+                  dom.style.display = 'none';
+                  return {
+                    dom,
+                  };
+                },
               },
               errorReporter,
               uploadErrorHandler: props.uploadErrorHandler,

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { Node as PMNode } from 'prosemirror-model';
+import { Node as PMNode, DOMSerializer } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
 import { MediaSingle, ProviderFactory } from '@atlaskit/editor-common';
 import { stateKey, MediaPluginState } from '../pm-plugins/main';
@@ -13,6 +13,7 @@ import MediaNode from './media';
 import { getPosHandler } from '../../../nodeviews/ReactNodeView';
 import wrapComponentWithClickArea from '../ui/wrapper-click-area';
 import { stateKey as nodeViewStateKey } from '../../base/pm-plugins/react-nodeview';
+import { Caption } from '@atlaskit/editor-common/src/ui/MediaSingle/styled';
 
 const DEFAULT_WIDTH = 250;
 const DEFAULT_HEIGHT = 200;
@@ -23,6 +24,7 @@ export interface MediaSingleNodeProps {
   width: number;
   providerFactory: ProviderFactory;
   getPos: getPosHandler;
+  forwardRef: any;
 }
 
 export interface MediaSingleNodeState {
@@ -127,6 +129,7 @@ export class MediaSingleNode extends Component<
       view,
       view: { state },
       providerFactory,
+      forwardRef,
     } = this.props;
     const selectionPluginState = nodeViewStateKey.getState(state);
 
@@ -137,21 +140,29 @@ export class MediaSingleNode extends Component<
         height={height}
         isLoading={!width}
         containerWidth={containerWidth}
+        hasCaption={node.childCount > 1}
       >
-        <WrappedMediaNode
-          pluginState={selectionPluginState}
-          view={view}
-          node={childNode}
-          getPos={this.getChildPos}
-          providerFactory={providerFactory}
-          cardDimensions={{
-            width: '100%',
-            height: '100%',
-          }}
-          isMediaSingle={true}
-          progress={progress}
-          onExternalImageLoaded={this.onExternalImageLoaded}
-        />
+        <div>
+          <WrappedMediaNode
+            pluginState={selectionPluginState}
+            view={view}
+            node={childNode}
+            getPos={this.getChildPos}
+            providerFactory={providerFactory}
+            cardDimensions={{
+              width: '100%',
+              height: '100%',
+            }}
+            isMediaSingle={true}
+            progress={progress}
+            onExternalImageLoaded={this.onExternalImageLoaded}
+          />
+          <Caption
+            innerRef={ref => {
+              forwardRef(ref);
+            }}
+          />
+        </div>
       </MediaSingle>
     );
   }
@@ -171,6 +182,10 @@ export class MediaSingleView extends ReactNodeView {
     });
   }
 
+  getContentDOM() {
+    return DOMSerializer.renderSpec(document, ['div', 0]);
+  }
+
   render(props, forwardRef) {
     return (
       <WithPluginState
@@ -181,17 +196,24 @@ export class MediaSingleView extends ReactNodeView {
         }}
         render={({ width }) => {
           return (
-            <MediaSingleNode
-              view={this.view}
-              node={this.node}
-              width={width}
-              providerFactory={props.providerFactory}
-              getPos={this.getPos}
-            />
+            <div>
+              <MediaSingleNode
+                view={this.view}
+                node={this.node}
+                width={width}
+                providerFactory={props.providerFactory}
+                getPos={this.getPos}
+                forwardRef={forwardRef}
+              />
+            </div>
           );
         }}
       />
     );
+  }
+
+  ignoreMutation(record: MutationRecord) {
+    return true;
   }
 }
 

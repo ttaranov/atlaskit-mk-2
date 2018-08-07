@@ -96,17 +96,19 @@ const MediaSingleDimensionHelper = ({
   }
 `;
 
-export const Caption: React.ComponentClass<HTMLAttributes<{}>> = styled.input`
-  color: ${akColorN200};
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 20px;
+export const Caption: React.ComponentClass<HTMLAttributes<{}>> = styled.div`
+  .ProseMirror & > div p {
+    color: ${akColorN200};
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 20px;
 
-  margin-top: 8px;
-  margin-bottom: 8px;
-  display: inline-block;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    display: inline-block;
 
-  text-align: center;
+    text-align: center;
+  }
 `;
 
 const Wrapper: React.ComponentClass<
