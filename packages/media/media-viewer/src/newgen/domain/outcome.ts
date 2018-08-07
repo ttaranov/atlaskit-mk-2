@@ -1,15 +1,21 @@
+export type PendingState = {
+  status: 'PENDING';
+};
+
+export type SuccessfulState<Data> = {
+  status: 'SUCCESSFUL';
+  data: Data;
+};
+
+export type FailedState<Err> = {
+  status: 'FAILED';
+  err: Err;
+};
+
 export type State<Data, Err> =
-  | {
-      status: 'PENDING';
-    }
-  | {
-      status: 'SUCCESSFUL';
-      data: Data;
-    }
-  | {
-      status: 'FAILED';
-      err: Err;
-    };
+  | PendingState
+  | SuccessfulState<Data>
+  | FailedState<Err>;
 
 export class Outcome<Data, Err = Error> {
   private constructor(private readonly state: State<Data, Err>) {}
