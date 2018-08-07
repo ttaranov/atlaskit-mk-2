@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component, ChangeEvent } from 'react';
 import { MediaGridView, GridItem } from '../src/mediaGrid/mediaGridView';
-import { FieldRangeWrapper } from '../example-helpers/styled';
+import { FieldRangeWrapper, GridContainer } from '../example-helpers/styled';
 
 const image1 = {
   dataURI:
@@ -115,7 +115,7 @@ class Example extends Component<{}, ExampleState> {
   render() {
     const { width, items } = this.state;
     return (
-      <div>
+      <GridContainer style={{ width: width + 20 }}>
         <FieldRangeWrapper>
           <input
             type="range"
@@ -130,7 +130,7 @@ class Example extends Component<{}, ExampleState> {
           onItemsChange={this.onItemsChange}
           width={width}
         />
-      </div>
+      </GridContainer>
     );
   }
 }

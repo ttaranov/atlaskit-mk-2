@@ -51,10 +51,15 @@ export const FilmstripWrapper = styled.div`
 `;
 export const FieldRangeWrapper = styled.div`
   width: 500px;
+  margin: 0 auto;
   display: flex;
   margin-bottom: 10px;
 
   input {
     flex: 1;
   }
+`;
+
+export const GridContainer = styled.div`
+  margin: 0 auto;
 `;

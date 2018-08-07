@@ -42,14 +42,34 @@ export class MediaGridView extends Component<
     width: defaultWidth,
   };
 
-  onDragStart = (draggingIndex: number) => {
+  componentDidMount() {
+    document.addEventListener('dragover', this.preventDefault);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('dragover', this.preventDefault);
+  }
+
+  onDragStart = (
+    draggingIndex: number,
+    event: React.DragEvent<HTMLImageElement>,
+  ) => {
+    event.dataTransfer.effectAllowed = 'move';
     this.setState({
       isDragging: true,
       draggingIndex,
     });
   };
 
-  onDragOver = (index, event: React.DragEvent<HTMLDivElement>) => {
+  resetDragging = () => {
+    console.log('reset dragging');
+    this.setState({
+      dropIndex: undefined,
+      isDragging: false,
+    });
+  };
+
+  onDragOver = (index, event: React.DragEvent<HTMLImageElement>) => {
     const { left, width } = event.currentTarget.getBoundingClientRect();
     const x = event.pageX - left;
     let dropIndex = index;
@@ -62,8 +82,8 @@ export class MediaGridView extends Component<
     event.preventDefault();
   };
 
-  onDropImage = event => {
-    event.preventDefault();
+  moveImage = () => {
+    console.log('move image');
     const { draggingIndex } = this.state;
     const { items, onItemsChange } = this.props;
 
@@ -73,10 +93,14 @@ export class MediaGridView extends Component<
       dropIndex -= 1;
     }
     items.splice(dropIndex, 0, draggingItem);
-
-    this.setState({ dropIndex: undefined, isDragging: false });
-
     onItemsChange(items);
+  };
+
+  onDragEnd = (event: React.DragEvent<HTMLImageElement>) => {
+    if (event.dataTransfer.dropEffect === 'move') {
+      this.moveImage();
+    }
+    this.resetDragging();
   };
 
   renderImage = (item: GridItem, gridHeight: number, index: number) => {
@@ -102,6 +126,7 @@ export class MediaGridView extends Component<
             src={item.dataURI}
             style={styles}
             alt="image"
+            onDragEnd={this.onDragEnd}
             onDragStart={this.onDragStart.bind(this, index)}
             onDragOver={this.onDragOver.bind(this, index)}
           />
@@ -138,10 +163,6 @@ export class MediaGridView extends Component<
         return;
       }
     });
-    return (
-      <Wrapper onDrop={this.onDropImage} onDragOver={this.preventDefault}>
-        {rows}
-      </Wrapper>
-    );
+    return <Wrapper>{rows}</Wrapper>;
   }
 }
