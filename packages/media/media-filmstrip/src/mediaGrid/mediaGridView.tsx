@@ -73,7 +73,7 @@ export class MediaGridView extends Component<
   };
 
   onDragOver = (index, event: React.DragEvent<HTMLImageElement>) => {
-    const { itemsPerRow } = this.props;
+    const { itemsPerRow, items } = this.props;
     const { left, width } = event.currentTarget.getBoundingClientRect();
     const x = event.pageX - left;
     let dropIndex = index;
@@ -82,7 +82,9 @@ export class MediaGridView extends Component<
       dropIndex += 1;
     }
     const overLastImageInTheRow = dropIndex % itemsPerRow! === 0;
-    const lastInRow = onTheRightSideOfAnImage && overLastImageInTheRow;
+    const isAbsoluteLastItem = index === items.length - 1;
+    const lastInRow =
+      (onTheRightSideOfAnImage && overLastImageInTheRow) || isAbsoluteLastItem;
     if (
       this.state.dropIndex !== dropIndex ||
       this.state.lastInRow !== lastInRow
@@ -167,28 +169,23 @@ export class MediaGridView extends Component<
 
   render() {
     const { items, itemsPerRow, width } = this.props;
-    const rows = items.map((item, index) => {
-      if (index % itemsPerRow! === 0) {
-        const images = [item, items[index + 1], items[index + 2]].filter(
-          i => i,
-        );
-        const aspectRatioSum = images
-          .map(i => i.dimensions.width / i.dimensions.height)
-          .reduce((prev, curr) => prev + curr, 0);
-        const marginSum = (images.length - 1) * imageMargin;
-        const gridHeight = (width! - marginSum) / aspectRatioSum;
+    const rows: any[] = [];
+    for (let index = 0; index < items.length; index += itemsPerRow!) {
+      const itemsInRow = items.slice(index, index + itemsPerRow!);
+      const aspectRatioSum = itemsInRow
+        .map(i => i.dimensions.width / i.dimensions.height)
+        .reduce((prev, curr) => prev + curr, 0);
+      const marginSum = (itemsInRow.length - 1) * imageMargin;
+      const gridHeight = (width! - marginSum) / aspectRatioSum;
 
-        return (
-          <RowWrapper key={'row' + index}>
-            {images.map((item, columnIndex) =>
-              this.renderImage(item, gridHeight, index + columnIndex),
-            )}
-          </RowWrapper>
-        );
-      } else {
-        return;
-      }
-    });
+      rows.push(
+        <RowWrapper key={'row' + index}>
+          {itemsInRow.map((item, columnIndex) =>
+            this.renderImage(item, gridHeight, index + columnIndex),
+          )}
+        </RowWrapper>,
+      );
+    }
     return <Wrapper>{rows}</Wrapper>;
   }
 }
