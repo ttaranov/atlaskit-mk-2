@@ -51,7 +51,6 @@ export interface Props extends Partial<MediaBaseAttributes> {
   appearance?: Appearance;
   stateManagerFallback?: MediaStateManager;
   selected?: boolean;
-  tempId?: string;
   url?: string;
   imageStatus?: ImageStatus;
   disableOverlay?: boolean;
@@ -123,11 +122,8 @@ export class MediaComponentInternal extends Component<Props, State> {
     }
   }
 
-  componentWillUnmount() {
-    this.destroyed = true;
-
-    const { id } = this.props;
-    const { mediaProvider } = this.state;
+  private unregisterFromEvents(props, state) {
+    const { mediaProvider, id } = state;
 
     if (mediaProvider) {
       const { stateManager } = mediaProvider;
@@ -140,6 +136,11 @@ export class MediaComponentInternal extends Component<Props, State> {
     if (stateManagerFallback && id) {
       stateManagerFallback.off(id, this.handleMediaStateChange);
     }
+  }
+
+  componentWillUnmount() {
+    this.destroyed = true;
+    this.unregisterFromEvents(this.props, this.state);
   }
 
   render() {
@@ -307,15 +308,17 @@ export class MediaComponentInternal extends Component<Props, State> {
       otherProps.actions = [createDeleteAction(onDelete)];
     }
 
+    // console.log('render temp', progress);
+
     return (
       <CardView
         // CardViewProps
-        status={mapMediaStatusIntoCardStatus(this.state, progress)}
+        status={mapMediaStatusIntoCardStatus(this.state, this.state.progress)}
         mediaItemType="file"
         metadata={fileDetails}
         // FileCardProps
         dataURI={dataURI}
-        progress={progress}
+        progress={this.state.progress}
         // SharedCardProps
         dimensions={cardDimensions}
         appearance={appearance}
@@ -369,15 +372,15 @@ export class MediaComponentInternal extends Component<Props, State> {
      * `cancelled` gets triggered when we do the node swap, so we can ignore it here.
      * Because on real `canceled` event it will get removed anyways.
      */
-    if (this.destroyed || mediaState.status === 'cancelled') {
-      return;
-    }
+    // if (this.destroyed || mediaState.status === 'cancelled') {
+    //   return;
+    // }
 
     this.setState({ ...mediaState });
   };
 
   private handleMediaProvider = async (mediaProvider: MediaProvider) => {
-    const { id, tempId } = this.props;
+    const { __key } = this.props;
 
     if (this.destroyed) {
       return;
@@ -391,11 +394,11 @@ export class MediaComponentInternal extends Component<Props, State> {
 
     this.setState({ mediaProvider });
 
-    if (stateManager && id) {
-      const mediaState = stateManager.getState(tempId || id);
+    if (stateManager && __key) {
+      const mediaState = stateManager.getState(__key);
 
-      stateManager.on(id, this.handleMediaStateChange);
-      this.setState({ id, ...mediaState });
+      stateManager.on(__key, this.handleMediaStateChange);
+      this.setState({ id: __key, ...mediaState });
     }
 
     await this.setContext('viewContext', mediaProvider);
