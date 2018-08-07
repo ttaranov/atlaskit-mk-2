@@ -163,7 +163,7 @@ describe('NavigationNext Services: Logger', () => {
       expect(global.console.log).not.toHaveBeenCalled();
     });
 
-    it('should increase the log counter', () => {
+    it('should decrease the log counter', () => {
       const logger = new Logger({
         debug: true,
         prefix: 'prefix',
