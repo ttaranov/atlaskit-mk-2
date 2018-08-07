@@ -37,7 +37,7 @@ const wideImage = {
     height: 54,
   },
 };
-const items: PublicGridItem[] = [
+const defaultItems: PublicGridItem[] = [
   image,
   largeImage,
   image,
@@ -49,10 +49,31 @@ const items: PublicGridItem[] = [
 ];
 const context = createStorybookContext();
 
-class Example extends Component<{}, {}> {
+interface ExampleState {
+  items: PublicGridItem[];
+}
+
+class Example extends Component<{}, ExampleState> {
+  state: ExampleState = {
+    items: defaultItems,
+  };
+
+  addFile = () => {
+    const { items } = this.state;
+    const index = Math.floor(Math.random() * items.length);
+    const newItem = items[index];
+
+    this.setState({
+      items: [newItem, ...items],
+    });
+  };
+
   render() {
+    const { items } = this.state;
+
     return (
       <div>
+        <button onClick={this.addFile}>Add file</button>
         <MediaGrid items={items} context={context} />
       </div>
     );

@@ -60,8 +60,27 @@ export class MediaGrid extends Component<MediaGridProps, MediaGridState> {
     });
   };
 
-  // TODO: handle new props
-  componentWillReceiveProps() {}
+  componentWillReceiveProps(newProps: MediaGridProps) {
+    const { populatedItems: currentPopulatedItems } = this.state;
+    const { items } = newProps;
+    const newPopulatedItems: PopulatedItem[] = items.map(newItem => {
+      const item = currentPopulatedItems.find(
+        item =>
+          item.id === newItem.id &&
+          item.collectionName === newItem.collectionName,
+      );
+
+      if (item) {
+        return item;
+      }
+
+      return newItem;
+    });
+
+    this.setState({
+      populatedItems: newPopulatedItems,
+    });
+  }
 
   componentDidMount() {
     const { items } = this.props;
