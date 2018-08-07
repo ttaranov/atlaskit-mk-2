@@ -4,11 +4,9 @@ import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 let mounted = 0;
-let sentApdex = 0;
 
 const getApdex = () => {
   if (
-    sentApdex ||
     !window ||
     !window.performance ||
     !window.performance.timing ||
@@ -17,7 +15,6 @@ const getApdex = () => {
   ) {
     return null;
   }
-  sentApdex++;
 
   let timing =
     window.performance.timing.domContentLoadedEventEnd -
@@ -26,12 +23,13 @@ const getApdex = () => {
   let apdex = 0;
   if (timing < 1000) apdex = 100;
   else if (timing < 4000) apdex = 50;
-  // TODO: we could do ReactGA.initialize(props.gaId); here
+
   ReactGA.event({
     category: 'Performance',
     action: 'apdex',
     value: apdex,
     nonInteraction: true,
+    label: `seconds:${(timing / 1000).toFixed(1)}`,
   });
 };
 
@@ -46,12 +44,8 @@ class GoogleAnalyticsListener extends Component {
     ReactGA.initialize(props.gaId);
   }
 
-  /* eslint-disable no-console */
   componentDidMount() {
-    // TODO: DOMContentLoaded - From Alex R. we may not need to add a window.addEventListener
-    // window.addEventListener('DOMContentLoaded', getApdex, {once: true}) instead of  window.addEventListener('load', getApdex) and call the function;
-    // window.addEventListener('load', getApdex);
-    getApdex();
+    window.addEventListener('load', getApdex, { once: true });
 
     mounted++;
     if (mounted > 1) {
