@@ -9,7 +9,7 @@ describe('Drawer Transitions', () => {
     let wrapper;
 
     beforeEach(() => {
-      wrapper = mount(<Slide test="some-test-data" />);
+      wrapper = mount(<Slide in test="some-test-data" />);
     });
 
     it('should use the default styles to start the animation', () => {
@@ -40,7 +40,7 @@ describe('Drawer Transitions', () => {
     let wrapper;
 
     beforeEach(() => {
-      wrapper = mount(<Fade test="some-test-data" />);
+      wrapper = mount(<Fade in test="some-test-data" />);
     });
 
     it('should use the default styles to start the animation', () => {

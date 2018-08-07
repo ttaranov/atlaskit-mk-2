@@ -17,7 +17,7 @@ describe('Drawer Transitions', () => {
 
   it('should add a keydown listener', () => {
     mount(
-      <Drawer width="wide">
+      <Drawer isOpen width="wide">
         <code>Drawer contents</code>
       </Drawer>,
     );
@@ -31,7 +31,7 @@ describe('Drawer Transitions', () => {
 
   it('should remove a keydown listener if the component is unmounted', () => {
     mount(
-      <Drawer width="wide">
+      <Drawer isOpen width="wide">
         <code>Drawer contents</code>
       </Drawer>,
     ).unmount();
@@ -44,7 +44,7 @@ describe('Drawer Transitions', () => {
     const event = { key: 'Escape' };
 
     mount(
-      <Drawer onClose={onClose} width="wide">
+      <Drawer isOpen onClose={onClose} width="wide">
         <code>Drawer contents</code>
       </Drawer>,
     );
@@ -62,7 +62,7 @@ describe('Drawer Transitions', () => {
     const event = { key: 'Escape' };
 
     mount(
-      <Drawer onKeyDown={onKeyDown} width="wide">
+      <Drawer isOpen onKeyDown={onKeyDown} width="wide">
         <code>Drawer contents</code>
       </Drawer>,
     );
