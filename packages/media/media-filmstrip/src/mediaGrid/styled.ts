@@ -1,12 +1,21 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 export const imageMargin = 10;
+
+const fadeIn = keyframes`
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 14px;
+  }
+`;
 
 export const Placeholder = styled.div`
   display: inline-block;
   box-sizing: border-box;
-  width: 10px;
-  border-left: 2px solid #49e849;
+  border-left: 4px solid #4c9aff;
+  animation: ${fadeIn} 0.2s forwards;
 `;
 
 export const RowWrapper = styled.div`
