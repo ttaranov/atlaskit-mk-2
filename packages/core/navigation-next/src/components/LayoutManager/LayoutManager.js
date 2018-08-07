@@ -2,6 +2,7 @@
 
 import React, { Component, Fragment, type ElementRef } from 'react';
 import { ThemeProvider } from 'emotion-theming';
+import { AnalyticsContext } from '@atlaskit/analytics-next';
 
 import { Shadow } from '../../common/primitives';
 import { light } from '../../theme';
@@ -116,48 +117,50 @@ export default class LayoutManager extends Component<LayoutManagerProps> {
     } = navigationUIController.state;
 
     return (
-      <ResizeTransition
-        from={[0]}
-        in={!isCollapsed}
-        properties={['width']}
-        to={[productNavWidth]}
-        userIsDragging={isResizing}
-        // only apply listeners to the NAV resize transition
-        productNavWidth={productNavWidth}
-        onExpandStart={onExpandStart}
-        onExpandEnd={onExpandEnd}
-        onCollapseStart={onCollapseStart}
-        onCollapseEnd={onCollapseEnd}
-      >
-        {({ transitionStyle, transitionState }) => {
-          const shouldRenderGlobalNavShadow =
-            isCollapsed && !isPeeking && !isTransitioning(transitionState);
+      <AnalyticsContext data={{ attributes: { isExpanded: !isCollapsed } }}>
+        <ResizeTransition
+          from={[0]}
+          in={!isCollapsed}
+          properties={['width']}
+          to={[productNavWidth]}
+          userIsDragging={isResizing}
+          // only apply listeners to the NAV resize transition
+          productNavWidth={productNavWidth}
+          onExpandStart={onExpandStart}
+          onExpandEnd={onExpandEnd}
+          onCollapseStart={onCollapseStart}
+          onCollapseEnd={onCollapseEnd}
+        >
+          {({ transitionStyle, transitionState }) => {
+            const shouldRenderGlobalNavShadow =
+              isCollapsed && !isPeeking && !isTransitioning(transitionState);
 
-          return (
-            <NavigationContainer>
-              <ResizeControl
-                navigation={navigationUIController}
-                mutationRefs={[
-                  { ref: this.pageRef, property: 'padding-left' },
-                  { ref: this.productNavRef, property: 'width' },
-                ]}
-              >
-                {({ isDragging, width }) => (
-                  <ContainerNavigationMask>
-                    {this.renderGlobalNavigation(shouldRenderGlobalNavShadow)}
-                    {this.renderContentNavigation({
-                      isDragging,
-                      transitionState,
-                      transitionStyle,
-                      width,
-                    })}
-                  </ContainerNavigationMask>
-                )}
-              </ResizeControl>
-            </NavigationContainer>
-          );
-        }}
-      </ResizeTransition>
+            return (
+              <NavigationContainer>
+                <ResizeControl
+                  navigation={navigationUIController}
+                  mutationRefs={[
+                    { ref: this.pageRef, property: 'padding-left' },
+                    { ref: this.productNavRef, property: 'width' },
+                  ]}
+                >
+                  {({ isDragging, width }) => (
+                    <ContainerNavigationMask>
+                      {this.renderGlobalNavigation(shouldRenderGlobalNavShadow)}
+                      {this.renderContentNavigation({
+                        isDragging,
+                        transitionState,
+                        transitionStyle,
+                        width,
+                      })}
+                    </ContainerNavigationMask>
+                  )}
+                </ResizeControl>
+              </NavigationContainer>
+            );
+          }}
+        </ResizeTransition>
+      </AnalyticsContext>
     );
   };
 

@@ -28,6 +28,8 @@ type GlobalItemIconProps = {
 };
 
 export type GlobalItemProps = {
+  /* The actionSubjectId of the item to be used in analytics */
+  actionSubjectId?: string,
   /** A component to render over the GlobalItem in the the badge position. */
   badge?: ComponentType<GlobalItemPresentationProps>,
   /** A custom component to render instead of the default wrapper component.
@@ -42,6 +44,10 @@ export type GlobalItemProps = {
    * is an assumption that this will typically be an Atlaskit Icon component, so
    * it will be passed `label`, `secondaryColor`, and `size` props. */
   icon: ?ComponentType<GlobalItemIconProps>,
+  /** The zero-based index for the position of the item within the global sidebar section.
+   *  Used for analytics purposes.
+   */
+  index?: number,
   /** A label to pass to the `icon` component. */
   label?: string,
   /** A handler which will be called when the GlobalItem is clicked. */
