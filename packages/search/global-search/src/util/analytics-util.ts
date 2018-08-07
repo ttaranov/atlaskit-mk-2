@@ -1,5 +1,6 @@
 import { Result, ConfluenceObjectResult, ResultType } from '../model/Result';
 import { GasPayload } from '@atlaskit/analytics-gas-types';
+import { ReferralContextIdentifiers } from '../components/GlobalQuickSearchWrapper';
 
 export declare type ScreenEventSafeGasPayload = GasPayload & { name: string };
 
@@ -10,6 +11,8 @@ export const DEFAULT_GAS_ATTRIBUTES = {
   packageVersion: '0.0.0',
   componentName: 'GlobalQuickSearch',
 };
+
+export const GLOBAL_SEARCH_SCREEN_NAME = 'globalSearchDrawer';
 
 export interface ShownAnalyticsAttributes {
   resultCount: number;
@@ -116,10 +119,11 @@ export function buildScreenEvent(
   screen: Screen,
   timesViewed: number,
   searchSessionId: string,
+  referralContextIdentifiers: ReferralContextIdentifiers,
 ): ScreenEventSafeGasPayload {
   return {
     action: 'viewed',
-    actionSubject: screen,
+    actionSubject: GLOBAL_SEARCH_SCREEN_NAME,
     eventType: 'screen',
     source: DEFAULT_GAS_SOURCE,
     name: DEFAULT_GAS_SOURCE,
@@ -127,6 +131,7 @@ export function buildScreenEvent(
       subscreen: screen,
       timesViewed: timesViewed,
       searchSessionId: searchSessionId,
+      ...referralContextIdentifiers,
       ...DEFAULT_GAS_ATTRIBUTES,
     },
   };

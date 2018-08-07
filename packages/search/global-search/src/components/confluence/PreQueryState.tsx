@@ -5,6 +5,7 @@ import { isEmpty, getConfluenceAdvancedSearchLink } from '../SearchResultsUtil';
 import NoRecentActivity from '../NoRecentActivity';
 import RecentActivities from './RecentActivities';
 import { PreQueryAnalyticsComponent } from './ScreenAnalyticsHelper';
+import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
 
 export interface Props {
   query: string;
@@ -13,10 +14,12 @@ export interface Props {
   recentlyInteractedPeople: Result[];
   searchSessionId: string;
   screenCounter?: ScreenCounter;
+  referralContextIdentifiers?: ReferralContextIdentifiers;
 }
 
 export default class PreQueryState extends React.Component<Props> {
   render() {
+    debugger;
     const {
       recentlyInteractedPeople,
       recentlyViewedPages,
@@ -24,6 +27,7 @@ export default class PreQueryState extends React.Component<Props> {
       query,
       searchSessionId,
       screenCounter,
+      referralContextIdentifiers,
     } = this.props;
 
     if (
@@ -38,6 +42,7 @@ export default class PreQueryState extends React.Component<Props> {
           key="pre-query-analytics"
           screenCounter={screenCounter}
           searchSessionId={searchSessionId}
+          referralContextIdentifiers={referralContextIdentifiers}
         />,
         <NoRecentActivity
           key="no-recent-activity"
@@ -54,6 +59,7 @@ export default class PreQueryState extends React.Component<Props> {
         recentlyInteractedPeople={recentlyInteractedPeople}
         searchSessionId={searchSessionId}
         screenCounter={screenCounter}
+        referralContextIdentifiers={referralContextIdentifiers}
       />
     );
   }

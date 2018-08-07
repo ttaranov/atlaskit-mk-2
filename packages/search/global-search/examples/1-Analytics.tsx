@@ -96,6 +96,10 @@ export default class extends React.Component<any, any> {
                       <GlobalQuickSearch
                         cloudId="cloudId"
                         context="confluence"
+                        referralContextIdentifiers={{
+                          currentContentId: '123',
+                          searchReferrerId: 'abc',
+                        }}
                       />
                     </LocaleIntlProvider>
                   }

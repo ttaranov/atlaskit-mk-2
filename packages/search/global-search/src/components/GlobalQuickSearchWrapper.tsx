@@ -18,6 +18,11 @@ export type LinkComponent = React.ComponentType<{
   target?: string;
 }>;
 
+export type ReferralContextIdentifiers = {
+  searchReferrerId: string;
+  currentContentId: string;
+};
+
 export interface Props {
   /**
    * The cloudId of the site the component is embedded in.
@@ -55,6 +60,11 @@ export interface Props {
    * respected.
    */
   linkComponent?: LinkComponent;
+
+  /**
+   * An object containing referral IDs, i.e. the searchReferrerId and currentContentId.
+   */
+  referralContextIdentifiers?: ReferralContextIdentifiers;
 
   /**
    * Indicates if search terms should be send in analytic events when a search is performed.
@@ -133,6 +143,7 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
       linkComponent,
       isSendSearchTermsEnabled,
       useAggregatorForConfluenceObjects,
+      referralContextIdentifiers,
     } = this.props;
 
     return (
@@ -142,6 +153,7 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
           linkComponent={linkComponent}
           isSendSearchTermsEnabled={isSendSearchTermsEnabled}
           useAggregatorForConfluenceObjects={useAggregatorForConfluenceObjects}
+          referralContextIdentifiers={referralContextIdentifiers}
         />
       </MessagesIntlProvider>
     );

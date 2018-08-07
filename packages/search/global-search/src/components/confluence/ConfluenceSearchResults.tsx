@@ -7,6 +7,7 @@ import { isEmpty } from '../SearchResultsUtil';
 import SearchResults from '../SearchResults';
 import { PostQueryAnalyticsComponent } from './ScreenAnalyticsHelper';
 import { ScreenCounter } from '../../util/ScreenCounter';
+import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
 
 export const MAX_PAGES_BLOGS_ATTACHMENTS = 8;
 export const MAX_SPACES = 3;
@@ -27,6 +28,7 @@ export interface Props {
   searchSessionId: string;
   preQueryScreenCounter?: ScreenCounter;
   postQueryScreenCounter?: ScreenCounter;
+  referralContextIdentifiers?: ReferralContextIdentifiers;
 }
 
 export default class ConfluenceSearchResults extends React.Component<Props> {
@@ -46,6 +48,7 @@ export default class ConfluenceSearchResults extends React.Component<Props> {
       searchSessionId,
       preQueryScreenCounter,
       postQueryScreenCounter,
+      referralContextIdentifiers,
     } = this.props;
 
     return (
@@ -63,6 +66,7 @@ export default class ConfluenceSearchResults extends React.Component<Props> {
             recentlyInteractedPeople={recentlyInteractedPeople}
             searchSessionId={searchSessionId}
             screenCounter={preQueryScreenCounter}
+            referralContextIdentifiers={referralContextIdentifiers}
           />
         )}
         shouldRenderNoResultsState={() =>
@@ -74,6 +78,7 @@ export default class ConfluenceSearchResults extends React.Component<Props> {
             <PostQueryAnalyticsComponent
               screenCounter={postQueryScreenCounter}
               searchSessionId={searchSessionId}
+              referralContextIdentifiers={referralContextIdentifiers}
               key="post-query-analytics"
             />
           </>
@@ -86,6 +91,7 @@ export default class ConfluenceSearchResults extends React.Component<Props> {
             peopleResults={peopleResults}
             searchSessionId={searchSessionId}
             screenCounter={postQueryScreenCounter}
+            referralContextIdentifiers={referralContextIdentifiers}
           />
         )}
       />
