@@ -1,9 +1,16 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { Wrapper, RowWrapper, imageMargin, ImgWrapper } from './styled';
+import {
+  Wrapper,
+  RowWrapper,
+  imageMargin,
+  ImgWrapper,
+  ImagePlaceholder,
+} from './styled';
 
 export interface GridItem {
   dataURI?: string;
+  isLoaded?: boolean;
   dimensions: {
     width: number;
     height: number;
@@ -117,6 +124,18 @@ export class MediaGridView extends Component<
     this.resetDragging();
   };
 
+  onLoad = (dataURI: string) => (
+    event: React.SyntheticEvent<HTMLImageElement>,
+  ) => {
+    const { items, onItemsChange } = this.props;
+    const newItems = items
+      // .filter(item => item.dataURI === dataURI)
+      .map(item => ({ ...item, isLoaded: item.dataURI === dataURI }));
+    // const newItems: GridItem[] = [...items, ...changedItems];
+
+    onItemsChange(newItems);
+  };
+
   renderImage = (item: GridItem, gridHeight: number, index: number) => {
     const { dimensions, dataURI } = item;
     const { width, height } = dimensions;
@@ -130,6 +149,7 @@ export class MediaGridView extends Component<
       <img
         draggable={true}
         src={dataURI}
+        onLoad={this.onLoad(dataURI)}
         style={styles} // TODO: check if we need this or just use 100%
         alt="image"
         onDragEnd={this.onDragEnd}
@@ -137,7 +157,7 @@ export class MediaGridView extends Component<
         onDragOver={this.onDragOver.bind(this, index)}
       />
     ) : (
-      undefined
+      <ImagePlaceholder />
     );
 
     let isRightPlaceholder = this.state.lastInRow || false;

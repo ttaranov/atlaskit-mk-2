@@ -37,7 +37,6 @@ export const ImgWrapper = styled.div`
   display: inline-block;
   margin-right: ${imageMargin}px;
   position: relative;
-  background-color: #ecf0f8;
 
   &:last-child {
     margin-right: 0;
@@ -45,3 +44,8 @@ export const ImgWrapper = styled.div`
 `;
 
 export const Wrapper = styled.div``;
+export const ImagePlaceholder = styled.div`
+  background-color: #ecf0f8;
+  width: 100%;
+  height: 100%;
+`;
