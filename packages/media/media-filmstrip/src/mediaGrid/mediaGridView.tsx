@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { Wrapper, RowWrapper, imageMargin, ImgWrapper } from './styled';
 
 export interface GridItem {
-  dataURI: string;
+  dataURI?: string;
   dimensions: {
     width: number;
     height: number;
@@ -13,6 +13,7 @@ export interface GridItem {
 export interface MediaGridViewProps {
   items: GridItem[];
   onItemsChange: (items: GridItem[]) => void;
+  isInteractive?: boolean; // TODO: implement
   width?: number;
   itemsPerRow?: number;
 }
@@ -40,6 +41,7 @@ export class MediaGridView extends Component<
   static defaultProps: Partial<MediaGridViewProps> = {
     itemsPerRow: 3,
     width: defaultWidth,
+    isInteractive: true,
   };
 
   componentDidMount() {
@@ -85,13 +87,16 @@ export class MediaGridView extends Component<
   moveImage = () => {
     console.log('move image');
     const { draggingIndex } = this.state;
-    const { items, onItemsChange } = this.props;
+    const { onItemsChange } = this.props;
 
     let dropIndex = this.state.dropIndex!;
+
+    const items = [...this.props.items];
     const draggingItem = items.splice(draggingIndex, 1)[0];
     if (dropIndex > draggingIndex) {
       dropIndex -= 1;
     }
+
     items.splice(dropIndex, 0, draggingItem);
     onItemsChange(items);
   };
@@ -104,16 +109,26 @@ export class MediaGridView extends Component<
   };
 
   renderImage = (item: GridItem, gridHeight: number, index: number) => {
-    const { width, height } = item.dimensions;
+    const { dimensions, dataURI } = item;
+    const { width, height } = dimensions;
     const aspectRatio = width / height;
     const styles = {
       width: gridHeight * aspectRatio,
       height: gridHeight,
     };
-    // (h1 * aspect1) * scale1 + (h2 * aspect2) * scale2 + (h3 * aspect3) * scale3 = gridWidth -  2*margin
-
-    // h1 * scale1 = h2 * scale2 = h3 * scale3 = gridHeight
-    // gridHeight = (gridWidth -  2*margin) / (aspect1 +  aspect2 +  aspect3)
+    const img = dataURI ? (
+      <img
+        draggable={true}
+        src={dataURI}
+        style={styles} // TODO: check if we need this or just use 100%
+        alt="image"
+        onDragEnd={this.onDragEnd}
+        onDragStart={this.onDragStart.bind(this, index)}
+        onDragOver={this.onDragOver.bind(this, index)}
+      />
+    ) : (
+      undefined
+    );
 
     return (
       <React.Fragment key={index}>
@@ -121,15 +136,7 @@ export class MediaGridView extends Component<
           style={styles}
           hasPlaceholder={this.state.dropIndex === index}
         >
-          <img
-            draggable={true}
-            src={item.dataURI}
-            style={styles}
-            alt="image"
-            onDragEnd={this.onDragEnd}
-            onDragStart={this.onDragStart.bind(this, index)}
-            onDragOver={this.onDragOver.bind(this, index)}
-          />
+          {img}
         </ImgWrapper>
       </React.Fragment>
     );

@@ -30,6 +30,7 @@ export const ImgWrapper = styled.div`
   display: inline-block;
   margin-right: ${imageMargin}px;
   position: relative;
+  background-color: #ecf0f8;
 
   &:last-child {
     margin-right: 0;
