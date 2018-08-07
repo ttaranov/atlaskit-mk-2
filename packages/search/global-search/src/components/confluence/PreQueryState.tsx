@@ -19,7 +19,6 @@ export interface Props {
 
 export default class PreQueryState extends React.Component<Props> {
   render() {
-    debugger;
     const {
       recentlyInteractedPeople,
       recentlyViewedPages,
