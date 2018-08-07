@@ -22,7 +22,12 @@ export default class GlobalNavigation extends Component<GlobalNavigationProps> {
     const wrapperStyles = theme.mode.globalNav();
 
     return (
-      <AnalyticsContext data={{ attributes: { navigationLayer: 'global' } }}>
+      <AnalyticsContext
+        data={{
+          attributes: { navigationLayer: 'global' },
+          componentName: 'globalNav',
+        }}
+      >
         <div css={wrapperStyles}>
           {/* TODO: Find a way to conditionally add this to context. We don't want it on non-nav events fired, e.g. tooltip? */}
           <PrimaryItemsList>
@@ -63,8 +68,13 @@ export default class GlobalNavigation extends Component<GlobalNavigationProps> {
               data={{ attributes: { navigationIconGrouping: 'secondary' } }}
             >
               <Fragment>
-                {secondaryItems.map(props => (
-                  <GlobalItem {...props} key={props.label} size="small" />
+                {secondaryItems.map((props, index) => (
+                  <GlobalItem
+                    {...props}
+                    key={props.label}
+                    size="small"
+                    index={index}
+                  />
                 ))}
               </Fragment>
             </AnalyticsContext>

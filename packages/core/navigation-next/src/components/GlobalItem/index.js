@@ -1,12 +1,11 @@
 // @flow
 
 import React, { PureComponent } from 'react';
-import { withAnalyticsEvents } from '@atlaskit/analytics-next';
-
 import {
-  name as packageName,
-  version as packageVersion,
-} from '../../../package.json';
+  withAnalyticsEvents,
+  withAnalyticsContext,
+} from '@atlaskit/analytics-next';
+
 import InteractionStateManager from '../InteractionStateManager';
 import { styleReducerNoOp } from '../../theme';
 import GlobalItemPrimitive from './primitives';
@@ -25,25 +24,27 @@ class GlobalItem extends PureComponent<GlobalItemProps> {
   }
 }
 
-export default withAnalyticsEvents({
-  onClick: (createAnalyticsEvent, props) => {
-    const event = createAnalyticsEvent({
-      action: 'clicked',
-      actionSubject: 'navigationItem',
-      actionSubjectId: props.actionSubjectId,
-      attributes: {
-        componentName: 'globalNavigation',
-        imageSource: props.icon && props.icon.name,
-        navigationItemIndex: props.index,
-        packageName,
-        packageVersion,
-      },
-    });
+export default withAnalyticsContext({
+  componentName: 'globalItem',
+})(
+  withAnalyticsEvents({
+    onClick: (createAnalyticsEvent, props) => {
+      const event = createAnalyticsEvent({
+        action: 'clicked',
+        actionSubject: 'navigationItem',
+        actionSubjectId: props.actionSubjectId,
+        attributes: {
+          componentName: 'globalItem',
+          imageSource: props.icon && props.icon.name,
+          navigationItemIndex: props.index,
+        },
+      });
 
-    event.clone().fire('atlaskit');
+      event.clone().fire('atlaskit');
 
-    return event;
-  },
-})(GlobalItem);
+      return event;
+    },
+  })(GlobalItem),
+);
 
 export type { GlobalItemProps } from './types';

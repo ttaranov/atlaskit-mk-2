@@ -1,9 +1,13 @@
 // @flow
 
 import React, { Component, Fragment } from 'react';
+import { AnalyticsContext } from '@atlaskit/analytics-next';
 import { GlobalNav } from '@atlaskit/navigation-next';
 import Drawer from '@atlaskit/drawer';
-
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../../package.json';
 import generateDefaultConfig from '../../config/default-config';
 import generateProductConfig from '../../config/product-config';
 
@@ -197,31 +201,39 @@ export default class GlobalNavigation
     const { primaryItems, secondaryItems } = this.constructNavItems();
 
     return (
-      <Fragment>
-        <GlobalNav
-          primaryItems={primaryItems}
-          secondaryItems={secondaryItems}
-        />
-        {this.drawers.map(drawer => {
-          const capitalisedDrawerName = this.getCapitalisedDrawerName(drawer);
-          const DrawerContents = this.props[`${drawer}DrawerContents`];
+      <AnalyticsContext
+        data={{
+          packageName,
+          packageVersion,
+          componentName: 'globalNavigation',
+        }}
+      >
+        <Fragment>
+          <GlobalNav
+            primaryItems={primaryItems}
+            secondaryItems={secondaryItems}
+          />
+          {this.drawers.map(drawer => {
+            const capitalisedDrawerName = this.getCapitalisedDrawerName(drawer);
+            const DrawerContents = this.props[`${drawer}DrawerContents`];
 
-          if (!DrawerContents) {
-            return null;
-          }
+            if (!DrawerContents) {
+              return null;
+            }
 
-          return (
-            <Drawer
-              key={drawer}
-              isOpen={this.state[`is${capitalisedDrawerName}Open`]}
-              onClose={this.closeDrawer(drawer)}
-              width="wide"
-            >
-              <DrawerContents />
-            </Drawer>
-          );
-        })}
-      </Fragment>
+            return (
+              <Drawer
+                key={drawer}
+                isOpen={this.state[`is${capitalisedDrawerName}Open`]}
+                onClose={this.closeDrawer(drawer)}
+                width="wide"
+              >
+                <DrawerContents />
+              </Drawer>
+            );
+          })}
+        </Fragment>
+      </AnalyticsContext>
     );
   }
 }

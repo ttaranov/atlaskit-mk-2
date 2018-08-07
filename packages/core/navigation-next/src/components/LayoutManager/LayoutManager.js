@@ -4,6 +4,10 @@ import React, { Component, Fragment, type ElementRef } from 'react';
 import { ThemeProvider } from 'emotion-theming';
 import { AnalyticsContext } from '@atlaskit/analytics-next';
 
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../../package.json';
 import { Shadow } from '../../common/primitives';
 import { light } from '../../theme';
 import ContentNavigation from '../ContentNavigation';
@@ -117,7 +121,13 @@ export default class LayoutManager extends Component<LayoutManagerProps> {
     } = navigationUIController.state;
 
     return (
-      <AnalyticsContext data={{ attributes: { isExpanded: !isCollapsed } }}>
+      <AnalyticsContext
+        data={{
+          attributes: { isExpanded: !isCollapsed, componentName: 'navigation' },
+          packageName,
+          packageVersion,
+        }}
+      >
         <ResizeTransition
           from={[0]}
           in={!isCollapsed}
