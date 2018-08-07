@@ -169,7 +169,6 @@ export class MediaGridView extends Component<
     }
     const hasPlaceholder =
       index === this.state.dropIndex! - (isRightPlaceholder ? 1 : 0);
-    console.log({ isLoaded });
     return (
       <React.Fragment key={index}>
         <ImgWrapper

@@ -97,10 +97,12 @@ export class MediaGrid extends Component<MediaGridProps, MediaGridState> {
 
   render() {
     const { populatedItems } = this.state;
-    // TODO: remove id's
     return (
       <MediaGridView
-        items={populatedItems}
+        items={populatedItems.map(populatedItem => ({
+          ...populatedItem,
+          id: undefined,
+        }))}
         onItemsChange={this.onItemsChange}
       />
     );
