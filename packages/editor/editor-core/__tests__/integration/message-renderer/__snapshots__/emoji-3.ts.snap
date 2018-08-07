@@ -1,63 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Emoji: ":<space>" does not show the picker all 1`] = `
-Object {
-  "content": Array [
-    Object {
-      "attrs": Object {
-        "language": null,
-        "uniqueId": null,
-      },
-      "content": Array [
-        Object {
-          "text": ":smile:",
-          "type": "text",
-        },
-      ],
-      "type": "codeBlock",
-    },
-  ],
-  "type": "doc",
-}
-`;
-
-exports[`Emoji: should render emoji inside action 1`] = `
-Object {
-  "content": Array [
-    Object {
-      "attrs": Object {
-        "localId": "abc-123",
-      },
-      "content": Array [
-        Object {
-          "attrs": Object {
-            "localId": "abc-123",
-            "state": "TODO",
-          },
-          "content": Array [
-            Object {
-              "attrs": Object {
-                "id": "1f604",
-                "shortName": ":smile:",
-                "text": "😄",
-              },
-              "type": "emoji",
-            },
-            Object {
-              "text": " ",
-              "type": "text",
-            },
-          ],
-          "type": "taskItem",
-        },
-      ],
-      "type": "taskList",
-    },
-  ],
-  "type": "doc",
-}
-`;
-
 exports[`Emoji: should render emoji inside action all 1`] = `
 Object {
   "content": Array [
@@ -95,7 +37,7 @@ Object {
 }
 `;
 
-exports[`Emoji: should render emoji inside codeblock 1`] = `
+exports[`Emoji: should render emoji inside codeblock all 1`] = `
 Object {
   "content": Array [
     Object {
@@ -116,56 +58,6 @@ Object {
 }
 `;
 
-exports[`Emoji: should render emoji inside codeblock all 1`] = `
-Object {
-  "content": Array [
-    Object {
-      "content": Array [
-        Object {
-          "attrs": Object {
-            "id": "1f609",
-            "shortName": ":wink:",
-            "text": "😉",
-          },
-          "type": "emoji",
-        },
-        Object {
-          "text": " ",
-          "type": "text",
-        },
-      ],
-      "type": "paragraph",
-    },
-  ],
-  "type": "doc",
-}
-`;
-
-exports[`Emoji: should select emoji on return 1`] = `
-Object {
-  "content": Array [
-    Object {
-      "content": Array [
-        Object {
-          "attrs": Object {
-            "id": "1f609",
-            "shortName": ":wink:",
-            "text": "😉",
-          },
-          "type": "emoji",
-        },
-        Object {
-          "text": " ",
-          "type": "text",
-        },
-      ],
-      "type": "paragraph",
-    },
-  ],
-  "type": "doc",
-}
-`;
-
 exports[`Emoji: should select emoji on return all 1`] = `
 Object {
   "content": Array [
@@ -176,31 +68,6 @@ Object {
             "id": "1f609",
             "shortName": ":wink:",
             "text": "😉",
-          },
-          "type": "emoji",
-        },
-        Object {
-          "text": " ",
-          "type": "text",
-        },
-      ],
-      "type": "paragraph",
-    },
-  ],
-  "type": "doc",
-}
-`;
-
-exports[`Emoji: user can navigate typeahead using keyboard 1`] = `
-Object {
-  "content": Array [
-    Object {
-      "content": Array [
-        Object {
-          "attrs": Object {
-            "id": "1f604",
-            "shortName": ":smile:",
-            "text": "😄",
           },
           "type": "emoji",
         },
