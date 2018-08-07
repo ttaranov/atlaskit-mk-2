@@ -9,6 +9,7 @@ import {
   akEditorWideLayoutWidth,
   akEditorBreakoutPadding,
 } from '../../styles';
+import { akColorN200 } from '../../../node_modules/@atlaskit/util-shared-styles';
 
 function float(layout: MediaSingleLayout): string {
   switch (layout) {
@@ -41,14 +42,26 @@ function calcWidth(
   }
 }
 
-function calcMargin(layout: MediaSingleLayout): string {
+const wrapMediaMargin = 16;
+const mediaSingleMargin = 24;
+const captionMargin = 12;
+
+function calcMargin(layout: MediaSingleLayout, showCaption: boolean): string {
   switch (layout) {
     case 'wrap-right':
-      return '12px auto 12px 24px';
+      return `${
+        showCaption ? wrapMediaMargin - captionMargin : captionMargin
+      }px auto ${wrapMediaMargin + (showCaption ? captionMargin : 0)}px 24px`;
+
     case 'wrap-left':
-      return '12px 24px 12px auto';
+      return `${
+        showCaption ? wrapMediaMargin - captionMargin : captionMargin
+      }px 24px ${wrapMediaMargin + (showCaption ? captionMargin : 0)}px auto`;
+
     default:
-      return '24px auto';
+      return `${
+        showCaption ? mediaSingleMargin - captionMargin : 24
+      }px auto ${mediaSingleMargin + (showCaption ? captionMargin : 0)}px auto`;
   }
 }
 export interface WrapperProps {
@@ -56,6 +69,7 @@ export interface WrapperProps {
   width: number;
   height: number;
   containerWidth: number;
+  hasCaption: boolean;
 }
 
 /**
@@ -67,18 +81,32 @@ const MediaSingleDimensionHelper = ({
   height,
   layout,
   containerWidth,
+  hasCaption,
 }: WrapperProps) => css`
   width: ${calcWidth(layout, width, containerWidth)};
   max-width: ${containerWidth < akEditorFullPageMaxWidth
     ? '100%'
     : `${containerWidth}px`};
   float: ${float(layout)};
-  margin: ${calcMargin(layout)};
+  margin: ${calcMargin(layout, hasCaption)};
   &::after {
     content: '';
     display: block;
     padding-bottom: ${height / width * 100}%;
   }
+`;
+
+export const Caption: React.ComponentClass<HTMLAttributes<{}>> = styled.input`
+  color: ${akColorN200};
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 20px;
+
+  margin-top: 8px;
+  margin-bottom: 8px;
+  display: inline-block;
+
+  text-align: center;
 `;
 
 const Wrapper: React.ComponentClass<
@@ -89,6 +117,11 @@ const Wrapper: React.ComponentClass<
   & > div {
     position: absolute;
     height: 100%;
+    width: 100%;
+
+    & > div:first-of-type {
+      height: 100%;
+    }
   }
 `;
 Wrapper.displayName = 'WrapperMediaSingle';

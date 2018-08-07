@@ -123,6 +123,27 @@
       ],
       "additionalProperties": false
     },
+    "caption_node": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "caption"
+          ]
+        },
+        "content": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/inline_node"
+          }
+        }
+      },
+      "required": [
+        "type",
+        "content"
+      ],
+      "additionalProperties": false
+    },
     "mediaSingle_node": {
       "type": "object",
       "properties": {
@@ -134,10 +155,17 @@
         "content": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/media_node"
+            "anyOf": [
+              {
+                "$ref": "#/definitions/media_node"
+              },
+              {
+                "$ref": "#/definitions/caption_node"
+              }
+            ]
           },
           "minItems": 1,
-          "maxItems": 1
+          "maxItems": 2
         },
         "attrs": {
           "type": "object",
@@ -719,7 +747,14 @@
         "content": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/media_node"
+            "anyOf": [
+              {
+                "$ref": "#/definitions/media_node"
+              },
+              {
+                "$ref": "#/definitions/caption_node"
+              }
+            ]
           },
           "minItems": 1
         }

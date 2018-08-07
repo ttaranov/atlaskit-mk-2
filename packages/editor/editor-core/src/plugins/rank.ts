@@ -75,6 +75,7 @@ export default {
     'width',
     'maxContentSize',
     'multilineContent',
+    'figure',
   ],
   nodes: [
     'doc',
@@ -115,6 +116,7 @@ export default {
     'layoutSection',
     'layoutColumn',
     'inlineCard',
+    'caption',
   ],
   marks: [
     'link',

@@ -28,22 +28,22 @@ export default function keymapPlugin(schema: Schema): Plugin {
     ),
     list,
   );
-  keymaps.bindKeymapWithCommand(
-    keymaps.moveUp.common!,
-    trackAndInvoke(
-      'atlassian.editor.moveup.keyboard',
-      commands.createNewParagraphAbove,
-    ),
-    list,
-  );
-  keymaps.bindKeymapWithCommand(
-    keymaps.moveDown.common!,
-    trackAndInvoke(
-      'atlassian.editor.movedown.keyboard',
-      commands.createNewParagraphBelow,
-    ),
-    list,
-  );
+  // keymaps.bindKeymapWithCommand(
+  //   keymaps.moveUp.common!,
+  //   trackAndInvoke(
+  //     'atlassian.editor.moveup.keyboard',
+  //     commands.createNewParagraphAbove,
+  //   ),
+  //   list,
+  // );
+  // keymaps.bindKeymapWithCommand(
+  //   keymaps.moveDown.common!,
+  //   trackAndInvoke(
+  //     'atlassian.editor.movedown.keyboard',
+  //     commands.createNewParagraphBelow,
+  //   ),
+  //   list,
+  // );
   keymaps.bindKeymapWithCommand(
     keymaps.findKeyMapForBrowser(keymaps.redo)!,
     trackAndInvoke('atlassian.editor.redo.keyboard', redo),

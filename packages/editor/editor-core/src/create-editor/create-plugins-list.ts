@@ -41,6 +41,7 @@ import {
   inlineActionPlugin,
   cardPlugin,
   floatingToolbarPlugin,
+  figurePlugin,
 } from '../plugins';
 
 /**
@@ -199,6 +200,9 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
   plugins.push(submitEditorPlugin);
   plugins.push(fakeTextCursorPlugin);
   plugins.push(floatingToolbarPlugin);
+
+  // TODO: prop for this?
+  plugins.push(figurePlugin);
 
   if (props.appearance === 'message') {
     plugins.push(isMultilineContentPlugin);

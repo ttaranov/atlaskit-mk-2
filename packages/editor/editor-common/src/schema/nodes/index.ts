@@ -99,5 +99,6 @@ export {
   CardAttributes,
   InlineCardDefinition,
 } from './inline-card';
+export { caption, CaptionDefinition } from './figure';
 export { unsupportedBlock } from './unsupported-block';
 export { unsupportedInline } from './unsupported-inline';

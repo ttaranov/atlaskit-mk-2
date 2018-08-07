@@ -1,5 +1,6 @@
 import { NodeSpec, Node } from 'prosemirror-model';
 import { MediaDefinition as Media } from './media';
+import { CaptionDefinition as Caption } from './figure';
 
 export type Layout =
   | 'wrap-right'
@@ -15,9 +16,9 @@ export interface MediaSingleDefinition {
   type: 'mediaSingle';
   /**
    * @minItems 1
-   * @maxItems 1
+   * @maxItems 2
    */
-  content: Array<Media>;
+  content: Array<Media | Caption>;
   attrs?: MediaSingleAttributes;
 }
 export interface MediaSingleAttributes {
@@ -31,7 +32,7 @@ export const defaultAttrs = {
 export const mediaSingle: NodeSpec = {
   inline: false,
   group: 'block',
-  content: 'media',
+  content: 'media paragraph?',
   attrs: defaultAttrs,
   parseDOM: [
     {

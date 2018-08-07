@@ -1,5 +1,6 @@
 import { NodeSpec } from 'prosemirror-model';
 import { MediaDefinition as Media } from './media';
+import { CaptionDefinition as Caption } from './figure';
 
 /**
  * @name mediaGroup_node
@@ -9,13 +10,13 @@ export interface MediaGroupDefinition {
   /**
    * @minItems 1
    */
-  content: Array<Media>;
+  content: Array<Media | Caption>;
 }
 
 export const mediaGroup: NodeSpec = {
   inline: false,
   group: 'block',
-  content: 'media+',
+  content: 'media+ paragraph?',
   attrs: {},
   parseDOM: [
     {
