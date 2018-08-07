@@ -33,8 +33,26 @@ function BrowserTestCase(...args /*:Array<any> */) {
   const skipForBrowser = args.length > 0 ? args.shift() : null;
 
   describe(testcase, () => {
-    beforeAll(async function() {
-      for (let client of clients) {
+    const clientRunners = [];
+
+    for (const client of clients) {
+      let s;
+      let e;
+      const clientLauncher = {
+        get start() {
+          if (!s) {
+            s = launchClient();
+          }
+          return s;
+        },
+        get end() {
+          if (!e) {
+            e = endClient();
+          }
+          return e;
+        },
+      };
+      const launchClient = async () => {
         if (client) {
           const browserName /*: string */ =
             client.driver.desiredCapabilities.browserName;
@@ -44,73 +62,89 @@ function BrowserTestCase(...args /*:Array<any> */) {
               client.isReady = false;
               await client.driver.end();
             }
-            continue;
+            return;
           }
-          if (client.isReady) continue;
+          if (client.isReady) return;
           client.isReady = true;
           await client.driver.init();
         }
-      }
-    });
+      };
+      const endClient = async () => {
+        if (client) {
+          client.isReady = false;
+          await client.driver.end();
+        }
+      };
 
-    for (let client of clients) {
       if (client) {
-        testRun(testcase, tester, client.driver, skipForBrowser);
+        clientRunners.push(async (fn, ...args) => {
+          let skipBrowser;
+          const browserName = client.driver.desiredCapabilities.browserName;
+          client.driver.desiredCapabilities.name = `Test Suite With: (${testcase}) - ${browserName}`;
+
+          if (skipForBrowser) {
+            skipForBrowser.skip.forEach(browser => {
+              if (browser.match(browserName)) {
+                skipBrowser = true;
+              }
+            });
+          }
+
+          if (skipBrowser) {
+            return;
+          }
+
+          await clientLauncher.start;
+          try {
+            await fn(client.driver, ...args);
+          } catch (err) {
+            const err2 = new Error(`Browser: ${browserName} -- ${err.message}`);
+            err2.stack = err.stack;
+            throw err2;
+          }
+        });
       }
     }
+
+    testRun(testcase, async (...args) => {
+      await Promise.all(clientRunners.map(f => f(tester, ...args)));
+    });
   });
 }
 
 afterAll(async function() {
-  for (let client of clients) {
-    if (client) {
-      client.isReady = false;
+  await Promise.all(
+    clients.map(async client => {
+      if (!client) return;
       await client.driver.end();
-    }
-  }
+    }),
+  );
 });
 
 /*::
-type Tester<Object> = (opts: Object, done?: () => void) => ?Promise<mixed>;
+type Tester<Object> = (opts?: Object, done?: () => void) => ?Promise<mixed>;
 */
-
 function testRun(
   testCase /*: {name:string, skip?:boolean ,only?:boolean}*/,
   tester /*: Tester<Object>*/,
-  client /*: Object*/,
-  skipBrowser /*: ?{skip:Array<string>}*/,
 ) {
   let testFn;
-  let skipForBrowser;
-  const browserName = client.desiredCapabilities.browserName;
-  client.desiredCapabilities.name = testCase;
-
-  if (skipBrowser) {
-    skipBrowser.skip.forEach(browser => {
-      if (browser.match(browserName)) {
-        skipForBrowser = true;
-      }
-    });
-  }
 
   if (testCase.only) {
     testFn = test.only;
   } else if (testCase.skip) {
     testFn = test.skip;
-  } else if (skipForBrowser) {
-    testFn = test.skip;
-    client.end();
   } else {
     testFn = test;
   }
 
   let callback;
-  if (client && tester && tester.length > 1) {
-    callback = done => tester(client, done);
+  if (tester && tester.length > 1) {
+    callback = done => tester(done);
   } else {
-    callback = () => tester(client);
+    callback = () => tester();
   }
-  testFn(browserName, callback);
+  testFn('all browsers', callback);
 }
 
 function setLocalClients() {

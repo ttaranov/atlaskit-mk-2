@@ -44,7 +44,7 @@ import {
 } from '../plugins';
 
 /**
- * Returns list of plugins that are absolutely necessary for editor to work
+ * Returns list of plugins that are absolutely necessary for editor to work.
  */
 export function getDefaultPluginsList(props: EditorProps = {}): EditorPlugin[] {
   return [
