@@ -18,16 +18,18 @@ export interface MediaGridViewProps {
 }
 
 export interface MediaGridViewState {
-  // dropIndex?: number;
-}
-
-export interface MediaGridViewState {
   isDragging: boolean;
+  // Index of dragged element
   draggingIndex: number;
+  // Index where element should end up after drop
   dropIndex?: number;
+  // Special flag we need to keep track of. It shows if mouse cursor with dragged item is currently
+  // over last item in the row.
+  lastInRow?: boolean;
 }
 
-const defaultWidth = 744;
+const DEFAULT_WIDTH = 744;
+const ITEMS_PER_ROW = 3;
 
 export class MediaGridView extends Component<
   MediaGridViewProps,
@@ -38,8 +40,8 @@ export class MediaGridView extends Component<
     draggingIndex: 0,
   };
   static defaultProps: Partial<MediaGridViewProps> = {
-    itemsPerRow: 3,
-    width: defaultWidth,
+    itemsPerRow: ITEMS_PER_ROW,
+    width: DEFAULT_WIDTH,
   };
 
   componentDidMount() {
@@ -62,7 +64,6 @@ export class MediaGridView extends Component<
   };
 
   resetDragging = () => {
-    console.log('reset dragging');
     this.setState({
       dropIndex: undefined,
       isDragging: false,
@@ -70,20 +71,23 @@ export class MediaGridView extends Component<
   };
 
   onDragOver = (index, event: React.DragEvent<HTMLImageElement>) => {
+    const { itemsPerRow } = this.props;
     const { left, width } = event.currentTarget.getBoundingClientRect();
     const x = event.pageX - left;
     let dropIndex = index;
-    if (x > width / 2) {
+    const onTheRightSideOfAnImage = x > width / 2;
+    if (onTheRightSideOfAnImage) {
       dropIndex += 1;
     }
     if (this.state.dropIndex !== dropIndex) {
-      this.setState({ dropIndex });
+      const overLastImageInTheRow = dropIndex % itemsPerRow! === 0;
+      const lastInRow = onTheRightSideOfAnImage && overLastImageInTheRow;
+      this.setState({ dropIndex, lastInRow });
     }
     event.preventDefault();
   };
 
   moveImage = () => {
-    console.log('move image');
     const { draggingIndex } = this.state;
     const { items, onItemsChange } = this.props;
 
@@ -115,11 +119,22 @@ export class MediaGridView extends Component<
     // h1 * scale1 = h2 * scale2 = h3 * scale3 = gridHeight
     // gridHeight = (gridWidth -  2*margin) / (aspect1 +  aspect2 +  aspect3)
 
+    let isRightPlaceholder = this.state.lastInRow || false;
+    if (this.state.draggingIndex > this.state.dropIndex!) {
+      // If image is dragged from "right" to "left" it will end up going as a first image of a
+      // next row. So we override placeholder on the right logic and show left placeholder on the
+      // next row where image will lang.
+      isRightPlaceholder = false;
+    }
+    const hasPlaceholder =
+      index === this.state.dropIndex! - (isRightPlaceholder ? 1 : 0);
+
     return (
       <React.Fragment key={index}>
         <ImgWrapper
           style={styles}
-          hasPlaceholder={this.state.dropIndex === index}
+          hasPlaceholder={hasPlaceholder}
+          isRightPlaceholder={isRightPlaceholder}
         >
           <img
             draggable={true}
@@ -140,9 +155,9 @@ export class MediaGridView extends Component<
   }
 
   render() {
-    const { items, width = defaultWidth } = this.props;
+    const { items, itemsPerRow, width } = this.props;
     const rows = items.map((item, index) => {
-      if (index % 3 === 0) {
+      if (index % itemsPerRow! === 0) {
         const images = [item, items[index + 1], items[index + 2]].filter(
           i => i,
         );
@@ -150,7 +165,7 @@ export class MediaGridView extends Component<
           .map(i => i.dimensions.width / i.dimensions.height)
           .reduce((prev, curr) => prev + curr, 0);
         const marginSum = (images.length - 1) * imageMargin;
-        const gridHeight = (width - marginSum) / aspectRatioSum;
+        const gridHeight = (width! - marginSum) / aspectRatioSum;
 
         return (
           <RowWrapper key={'row' + index}>

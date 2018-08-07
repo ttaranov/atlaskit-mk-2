@@ -14,12 +14,19 @@ export const RowWrapper = styled.div`
 
 interface ImgWrapperProps {
   hasPlaceholder: boolean;
+  isRightPlaceholder: boolean;
 }
 export const ImgWrapper = styled.div`
-  transition: margin-left 0.2s, padding-left 0.2s;
+  transition: margin-left 0.2s, padding-left 0.2s, margin-right 0.2s,
+    padding-right 0.2s;
   ${(props: ImgWrapperProps) =>
     props.hasPlaceholder
-      ? `
+      ? props.isRightPlaceholder
+        ? `
+    padding-right: 14px;
+    border-right: 4px solid #4c9aff;
+  `
+        : `
     padding-left: 14px;
     border-left: 4px solid #4c9aff;
   `
