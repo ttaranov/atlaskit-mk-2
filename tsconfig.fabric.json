@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "resolveJsonModule": true,
     "allowJs": false,
     "alwaysStrict": true,
     "declaration": true,
@@ -29,8 +30,6 @@
   },
   "files": [
     "./typings/atlaskit.d.ts",
-    "./typings/package.json.d.ts",
-    "./typings/json.d.ts",
     "./typings/node.d.ts",
     "./typings/webpack.d.ts",
     "./typings/rusha.d.ts",
