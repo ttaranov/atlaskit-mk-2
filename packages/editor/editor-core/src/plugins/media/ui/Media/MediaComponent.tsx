@@ -123,19 +123,18 @@ export class MediaComponentInternal extends Component<Props, State> {
   }
 
   private unregisterFromEvents(props, state) {
-    const { __key } = props;
-    const { mediaProvider } = state;
+    const { mediaProvider, id } = state;
 
     if (mediaProvider) {
       const { stateManager } = mediaProvider;
-      if (stateManager && __key) {
-        stateManager.off(__key, this.handleMediaStateChange);
+      if (stateManager && id) {
+        stateManager.off(id, this.handleMediaStateChange);
       }
     }
 
     const { stateManagerFallback } = this.props;
-    if (stateManagerFallback && __key) {
-      stateManagerFallback.off(__key, this.handleMediaStateChange);
+    if (stateManagerFallback && id) {
+      stateManagerFallback.off(id, this.handleMediaStateChange);
     }
   }
 
@@ -289,10 +288,10 @@ export class MediaComponentInternal extends Component<Props, State> {
     }
 
     // Make sure that we always display progress bar when the file is uploading (prevents flicker)
-    // let { progress } = this.state;
-    // if (!progress && status === 'uploading') {
-    //   progress = 0.0;
-    // }
+    let { progress } = this.state;
+    if (!progress && status === 'uploading') {
+      progress = 0.0;
+    }
 
     const isImageFile = isImage(fileMimeType);
 

@@ -488,7 +488,9 @@ export class MediaPluginState {
    * when React component's underlying node property is replaced with a new node
    */
   handleMediaNodeUnmount = (oldNode: PMNode) => {
-    this.mediaNodes = this.mediaNodes.filter(({ node }) => oldNode !== node);
+    this.mediaNodes = this.mediaNodes.filter(
+      ({ node }) => oldNode.attrs.__key !== node.attrs.__key,
+    );
   };
 
   align = (layout: MediaSingleLayout): boolean => {
@@ -546,7 +548,7 @@ export class MediaPluginState {
           '__key',
           node.attrs.__key,
         );
-        if (node.attrs.id === id) {
+        if (node.attrs.__key === id) {
           return nodeWithPos;
         }
 
@@ -723,7 +725,7 @@ export class MediaPluginState {
         break;
 
       case 'preview':
-        this.replaceTemporaryNode(state);
+        this.updateNodeAttrs(state);
         if (state.ready) {
           this.stateManager.off(state.id, this.handleMediaState);
         }
@@ -736,13 +738,13 @@ export class MediaPluginState {
           viewContext.setLocalPreview(state.publicId, state.thumbnail.src);
         }
         if (state.publicId) {
-          this.replaceTemporaryNode(state);
+          this.updateNodeAttrs(state);
         }
         break;
 
       case 'ready':
         if (state.publicId && this.nodeHasNoPublicId(state)) {
-          this.replaceTemporaryNode(state);
+          this.updateNodeAttrs(state);
         }
         if (state.preview) {
           this.stateManager.off(state.id, this.handleMediaState);
@@ -781,7 +783,7 @@ export class MediaPluginState {
     }
   };
 
-  private replaceTemporaryNode = (state: MediaState) => {
+  private updateNodeAttrs = (state: MediaState) => {
     const { view } = this;
     if (!view) {
       console.error('no view');
