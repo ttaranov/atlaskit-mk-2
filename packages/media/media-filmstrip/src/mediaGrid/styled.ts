@@ -15,6 +15,7 @@ export const RowWrapper = styled.div`
 interface ImgWrapperProps {
   hasPlaceholder: boolean;
   isRightPlaceholder: boolean;
+  isLoaded?: boolean;
 }
 export const ImgWrapper = styled.div`
   transition: margin-left 0.2s, padding-left 0.2s, margin-right 0.2s,
@@ -41,6 +42,9 @@ export const ImgWrapper = styled.div`
   &:last-child {
     margin-right: 0;
   }
+
+  ${(props: ImgWrapperProps) =>
+    !props.isLoaded ? 'background-color: #ecf0f8;' : ''};
 `;
 
 export const Wrapper = styled.div``;

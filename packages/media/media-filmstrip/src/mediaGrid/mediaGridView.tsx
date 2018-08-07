@@ -126,16 +126,15 @@ export class MediaGridView extends Component<
     event: React.SyntheticEvent<HTMLImageElement>,
   ) => {
     const { items, onItemsChange } = this.props;
-    const newItems = items
-      // .filter(item => item.dataURI === dataURI)
-      .map(item => ({ ...item, isLoaded: item.dataURI === dataURI }));
-    // const newItems: GridItem[] = [...items, ...changedItems];
-
+    const newItems = items.map(item => ({
+      ...item,
+      isLoaded: item.dataURI === dataURI || item.isLoaded,
+    }));
     onItemsChange(newItems);
   };
 
   renderImage = (item: GridItem, gridHeight: number, index: number) => {
-    const { dimensions, dataURI } = item;
+    const { dimensions, dataURI, isLoaded } = item;
     const { width, height } = dimensions;
     const aspectRatio = width / height;
     const styles = {
@@ -143,7 +142,7 @@ export class MediaGridView extends Component<
       height: gridHeight,
     };
 
-    const img = dataURI ? (
+    const img = dataURI ? ( //dataURI
       <img
         draggable={true}
         src={dataURI}
@@ -155,7 +154,8 @@ export class MediaGridView extends Component<
         onDragOver={this.onDragOver.bind(this, index)}
       />
     ) : (
-      <ImagePlaceholder />
+      undefined
+      // <ImagePlaceholder />
     );
 
     let isRightPlaceholder = this.state.lastInRow || false;
@@ -167,11 +167,12 @@ export class MediaGridView extends Component<
     }
     const hasPlaceholder =
       index === this.state.dropIndex! - (isRightPlaceholder ? 1 : 0);
-
+    console.log({ isLoaded });
     return (
       <React.Fragment key={index}>
         <ImgWrapper
           style={styles}
+          isLoaded={isLoaded}
           hasPlaceholder={hasPlaceholder}
           isRightPlaceholder={isRightPlaceholder}
         >
