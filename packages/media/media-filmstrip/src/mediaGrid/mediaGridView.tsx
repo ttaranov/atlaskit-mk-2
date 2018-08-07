@@ -81,9 +81,12 @@ export class MediaGridView extends Component<
     if (onTheRightSideOfAnImage) {
       dropIndex += 1;
     }
-    if (this.state.dropIndex !== dropIndex) {
-      const overLastImageInTheRow = dropIndex % itemsPerRow! === 0;
-      const lastInRow = onTheRightSideOfAnImage && overLastImageInTheRow;
+    const overLastImageInTheRow = dropIndex % itemsPerRow! === 0;
+    const lastInRow = onTheRightSideOfAnImage && overLastImageInTheRow;
+    if (
+      this.state.dropIndex !== dropIndex ||
+      this.state.lastInRow !== lastInRow
+    ) {
       this.setState({ dropIndex, lastInRow });
     }
     event.preventDefault();
