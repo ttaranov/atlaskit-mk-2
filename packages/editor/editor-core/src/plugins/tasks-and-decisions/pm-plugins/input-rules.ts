@@ -80,7 +80,8 @@ const createListRule = (
             list.create({ localId: uuid.generate() }, [
               item.create(
                 { localId: uuid.generate() },
-                tr.doc.nodeAt($from.pos + 1)!.content,
+                // TODO: [ts30] handle void and null properly
+                (tr.doc.nodeAt($from.pos + 1) as Node).content,
               ),
             ]),
           )

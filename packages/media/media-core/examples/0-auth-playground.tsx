@@ -89,10 +89,8 @@ class AuthPlayground extends Component<Props, State> {
       items: [],
       isClicked: false,
     };
-  }
 
-  componentWillMount() {
-    this.context = createContext(this.props.authProvider);
+    this.context = createContext(props.authProvider);
   }
 
   componentDidMount() {

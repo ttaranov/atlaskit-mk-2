@@ -39,7 +39,7 @@ export class MediaCollectionViewer extends Component<
   MediaCollectionViewerProps,
   MediaCollectionViewerState
 > {
-  private subscription: Subscription;
+  private subscription?: Subscription;
 
   static readonly defaultPageSize = 10;
 
@@ -118,7 +118,9 @@ export class MediaCollectionViewer extends Component<
 
   componentWillUnmount(): void {
     const { mediaViewer } = this.state;
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
     mediaViewer.off('fv.close', this.onClose);
     mediaViewer.off('fv.changeFile', this.loadNextPageIfRequired);
   }
@@ -129,7 +131,9 @@ export class MediaCollectionViewer extends Component<
 
   private onClose = () => {
     const { onClose } = this.props;
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
     if (onClose) {
       onClose();
     }

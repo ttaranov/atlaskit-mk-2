@@ -8,7 +8,7 @@
       "es6"
     ],
     "target": "es5",
-    "module": "es5"
+    "module": "commonjs"
   },
   "include": [
     "../../src/**/*.ts",

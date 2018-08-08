@@ -24,7 +24,8 @@ export interface TimeRangeState {
 export class TimeRange extends Component<TimeRangeProps, TimeRangeState> {
   wrapperElement?: HTMLElement;
   thumbElement?: HTMLElement;
-  wrapperElementWidth: number;
+
+  wrapperElementWidth: number = 0;
 
   state: TimeRangeState = {
     isDragging: false,

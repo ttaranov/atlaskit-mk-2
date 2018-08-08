@@ -4,6 +4,7 @@ import { EditorPlugin } from '../../types';
 import WithPluginState from '../../ui/WithPluginState';
 import { TypeAheadHandler } from './types';
 import {
+  createInitialPluginState,
   createPlugin,
   pluginKey as typeAheadPluginKey,
   PluginState as TypeAheadPluginState,
@@ -48,12 +49,7 @@ const typeAheadPlugin: EditorPlugin = {
           typeAhead: typeAheadPluginKey,
         }}
         render={({
-          typeAhead = {
-            active: false,
-            items: [],
-            currentIndex: 0,
-            itemsLoader: null,
-          },
+          typeAhead = createInitialPluginState(),
         }: {
           typeAhead: TypeAheadPluginState;
         }) => {

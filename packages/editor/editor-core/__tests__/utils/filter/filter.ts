@@ -94,7 +94,7 @@ describe('@atlaskit/editor-core/utils/filter', () => {
         defaultSchema,
         false,
       );
-      expect(content.toJSON()!.content).toEqual([
+      expect((content.toJSON() as any).content).toEqual([
         {
           type: 'text',
           text: 'some text',
@@ -110,7 +110,7 @@ describe('@atlaskit/editor-core/utils/filter', () => {
         defaultSchema,
         false,
       );
-      expect(content.toJSON()!.content).toEqual([
+      expect((content.toJSON() as any).content).toEqual([
         {
           type: 'text',
           text: 'some ',
@@ -136,7 +136,7 @@ describe('@atlaskit/editor-core/utils/filter', () => {
         defaultSchema,
         true,
       );
-      expect(content.toJSON()!.content).toEqual([
+      expect((content.toJSON() as any).content).toEqual([
         {
           type: 'text',
           text: 'some text',
@@ -160,7 +160,7 @@ describe('@atlaskit/editor-core/utils/filter', () => {
         defaultSchema,
         false,
       );
-      expect(content.toJSON()!.content).toEqual([
+      expect((content.toJSON() as any).content).toEqual([
         {
           type: 'text',
           text: 'some text',

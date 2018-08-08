@@ -23,13 +23,15 @@ export interface EventEmitter<M extends EventPayloadMap<P>, P = any> {
     event: E,
     handler: EventPayloadListener<M, E>,
   ): void;
-  removeAllListeners<E extends keyof M>(event: E): void;
+  removeAllListeners<E extends keyof M>(event?: E): void;
   emit<E extends keyof M>(event: E, payload: M[E]): boolean;
 }
 
 export class GenericEventEmitter<M extends EventPayloadMap<P>, P = any>
   implements EventEmitter<M> {
-  private readonly emitter = new EventEmitter2({ wildcard: true });
+  private readonly emitter = new EventEmitter2({
+    wildcard: true,
+  }) as EventEmitter<M, P>;
 
   once<E extends keyof M>(
     event: E,
@@ -64,7 +66,7 @@ export class GenericEventEmitter<M extends EventPayloadMap<P>, P = any>
     this.emitter.removeListener(event, handler);
   }
 
-  removeAllListeners<E extends keyof M>(event?: E | E[]): void {
+  removeAllListeners<E extends keyof M>(event?: E): void {
     // We want to explicitly call removeAllListeners without any argument if event is undefined, otherwise will EventEmitter fail
     if (event === undefined) {
       this.emitter.removeAllListeners();
