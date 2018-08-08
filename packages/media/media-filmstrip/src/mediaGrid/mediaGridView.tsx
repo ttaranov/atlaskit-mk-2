@@ -1,6 +1,13 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { Wrapper, RowWrapper, imageMargin, ImgWrapper } from './styled';
+import CrossIcon from '@atlaskit/icon/glyph/cross';
+import {
+  Wrapper,
+  RowWrapper,
+  imageMargin,
+  ImgWrapper,
+  RemoveIconWrapper,
+} from './styled';
 
 export interface GridItem {
   dataURI?: string;
@@ -127,6 +134,25 @@ export class MediaGridView extends Component<
     onItemsChange(newItems);
   };
 
+  onRemoveIconClick = (index: number) => () => this.deleteImage(index);
+
+  renderRemoveIcon = (index: number) => {
+    const { isInteractive } = this.props;
+    if (!isInteractive) {
+      return;
+    }
+
+    // TODO: Should we wrapp icon into a ak button?
+    return (
+      <RemoveIconWrapper
+        className="remove-img-wrapper"
+        onClick={this.onRemoveIconClick(index)}
+      >
+        <CrossIcon label="remove" />
+      </RemoveIconWrapper>
+    );
+  };
+
   renderImage = (item: GridItem, gridHeight: number, index: number) => {
     const { isInteractive } = this.props;
     const { dimensions, dataURI, isLoaded } = item;
@@ -137,20 +163,23 @@ export class MediaGridView extends Component<
       height: gridHeight,
     };
     const img = dataURI ? (
-      <img
-        draggable={isInteractive}
-        src={dataURI}
-        onLoad={this.onLoad(dataURI)}
-        style={styles} // TODO: check if we need this or just use 100%
-        alt="image"
-        onDragEnd={this.onDragEnd}
-        onDragStart={
-          isInteractive ? this.onDragStart.bind(this, index) : undefined
-        }
-        onDragOver={
-          isInteractive ? this.onDragOver.bind(this, index) : undefined
-        }
-      />
+      <React.Fragment>
+        <img
+          draggable={isInteractive}
+          src={dataURI}
+          onLoad={this.onLoad(dataURI)}
+          style={styles} // TODO: check if we need this or just use 100%
+          alt="image"
+          onDragEnd={this.onDragEnd}
+          onDragStart={
+            isInteractive ? this.onDragStart.bind(this, index) : undefined
+          }
+          onDragOver={
+            isInteractive ? this.onDragOver.bind(this, index) : undefined
+          }
+        />
+        {this.renderRemoveIcon(index)}
+      </React.Fragment>
     ) : (
       undefined
     );
@@ -182,7 +211,14 @@ export class MediaGridView extends Component<
     event.preventDefault();
   }
 
-  deleteImage = (index: number) => {};
+  deleteImage = (index: number) => {
+    const { onItemsChange } = this.props;
+    const items = [...this.props.items];
+
+    items.splice(index, 1);
+
+    onItemsChange(items);
+  };
 
   render() {
     const { items, itemsPerRow, width } = this.props;
