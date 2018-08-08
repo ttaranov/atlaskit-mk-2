@@ -1,7 +1,12 @@
 import * as React from 'react';
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import FabricAnalyticsListeners from '../../FabricAnalyticsListeners';
-import FabricElementsListener from '../../FabricElementsListener';
+import FabricElementsListener, {
+  ELEMENTS_CHANNEL,
+} from '../../FabricElementsListener';
+import AtlaskitListener, {
+  ATLASKIT_CHANNEL,
+} from '../../atlaskit/AtlaskitListener';
 import {
   DummyComponentWithAnalytics,
   DummyComponent,
@@ -62,6 +67,111 @@ describe('<FabricAnalyticsListeners />', () => {
 
       global.console.error = originalConsoleError;
     });
+
+    it('should render all listeners', () => {
+      const component = shallow(
+        <FabricAnalyticsListeners client={clientPromise}>
+          <div>Child</div>
+        </FabricAnalyticsListeners>,
+      );
+
+      expect(component).toMatchSnapshot();
+    });
+
+    it('should render a FabricElementsListener', () => {
+      const component = shallow(
+        <FabricAnalyticsListeners client={clientPromise}>
+          <div>Child</div>
+        </FabricAnalyticsListeners>,
+      );
+
+      const ElementsListener = component.find(FabricElementsListener);
+
+      expect(ElementsListener).toHaveLength(1);
+    });
+
+    it('should render an AtlaskitListener', () => {
+      const component = shallow(
+        <FabricAnalyticsListeners client={clientPromise}>
+          <div>Child</div>
+        </FabricAnalyticsListeners>,
+      );
+
+      const atlaskitListener = component.find(AtlaskitListener);
+
+      expect(atlaskitListener).toHaveLength(1);
+    });
+
+    it('should exclude the AtlaskitListener if excludedChannels includes atlaskit', () => {
+      const component = shallow(
+        <FabricAnalyticsListeners
+          client={clientPromise}
+          excludedChannels={[ATLASKIT_CHANNEL]}
+        >
+          <div>Child</div>
+        </FabricAnalyticsListeners>,
+      );
+
+      const atlaskitListener = component.find(AtlaskitListener);
+
+      expect(atlaskitListener).toHaveLength(0);
+
+      const elementsListener = component.find(FabricElementsListener);
+      expect(elementsListener).toHaveLength(1);
+    });
+
+    it('should exclude the ElementsListener if excludedChannels includes elements', () => {
+      const component = shallow(
+        <FabricAnalyticsListeners
+          client={clientPromise}
+          excludedChannels={[ELEMENTS_CHANNEL]}
+        >
+          <div>Child</div>
+        </FabricAnalyticsListeners>,
+      );
+
+      const elementsListener = component.find(FabricElementsListener);
+
+      expect(elementsListener).toHaveLength(0);
+
+      const atlaskitListener = component.find(AtlaskitListener);
+      expect(atlaskitListener).toHaveLength(1);
+    });
+
+    it('should exclude both atlaskit and elements listeners if excludedChannels includes both their channels', () => {
+      const component = shallow(
+        <FabricAnalyticsListeners
+          client={clientPromise}
+          excludedChannels={[ELEMENTS_CHANNEL, ATLASKIT_CHANNEL]}
+        >
+          <div>Child</div>
+        </FabricAnalyticsListeners>,
+      );
+
+      const elementsListener = component.find(FabricElementsListener);
+
+      expect(elementsListener).toHaveLength(0);
+
+      const atlaskitListener = component.find(AtlaskitListener);
+      expect(atlaskitListener).toHaveLength(0);
+
+      expect(component.find('div').text()).toBe('Child');
+    });
+
+    it('should not exclude any listeners if excludeChannels is empty', () => {
+      const component = shallow(
+        <FabricAnalyticsListeners client={clientPromise} excludedChannels={[]}>
+          <div>Child</div>
+        </FabricAnalyticsListeners>,
+      );
+
+      const elementsListener = component.find(FabricElementsListener);
+
+      expect(elementsListener).toHaveLength(1);
+
+      const atlaskitListener = component.find(AtlaskitListener);
+      expect(atlaskitListener).toHaveLength(1);
+    });
   });
 
   describe('<FabricElementsListener />', () => {
@@ -87,7 +197,7 @@ describe('<FabricAnalyticsListeners />', () => {
     });
   });
 
-  describe('<FabricAtlaskitListener />', () => {
+  describe('<AtlaskitListener />', () => {
     it('should listen and fire a UI event with analyticsWebClient', () => {
       const compOnClick = jest.fn();
       const component = mount(

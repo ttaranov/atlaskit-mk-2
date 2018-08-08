@@ -1,0 +1,25 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`<FabricAnalyticsListeners /> FabricAnalyticsListener should render all listeners 1`] = `
+<AtlaskitListener
+  client={Promise {}}
+  logger={
+    Logger {
+      "logLevel": 4,
+    }
+  }
+>
+  <FabricElementsListener
+    client={Promise {}}
+    logger={
+      Logger {
+        "logLevel": 4,
+      }
+    }
+  >
+    <div>
+      Child
+    </div>
+  </FabricElementsListener>
+</AtlaskitListener>
+`;

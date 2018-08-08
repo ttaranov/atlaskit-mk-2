@@ -6,7 +6,7 @@ import { ListenerProps, ListenerFunction } from '../types';
 
 import processEvent from './process-event';
 
-const ATLASKIT_CHANNEL = 'atlaskit';
+export const ATLASKIT_CHANNEL = 'atlaskit';
 
 export default class AtlaskitListener extends React.Component<ListenerProps> {
   listenerHandler: ListenerFunction = event => {
