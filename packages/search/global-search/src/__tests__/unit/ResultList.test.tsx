@@ -22,6 +22,10 @@ import {
   makeJiraObjectResult,
 } from './_test-util';
 
+const DUMMY_ANALYTICS_DATA = {
+  resultCount: 123,
+};
+
 function render(partialProps: Partial<Props>) {
   const props: Props = {
     results: [],
@@ -39,7 +43,10 @@ it('should pass the correct properties to ObjectResult for Jira results', () => 
     }),
   ];
 
-  const wrapper = render({ results: jiraResults });
+  const wrapper = render({
+    results: jiraResults,
+    analyticsData: DUMMY_ANALYTICS_DATA,
+  });
 
   expect(wrapper.find(ObjectResultComponent).props()).toMatchObject({
     href: 'href',
@@ -49,6 +56,7 @@ it('should pass the correct properties to ObjectResult for Jira results', () => 
     avatarUrl: 'avatarUrl',
     name: 'name',
     containerName: 'containerName',
+    analyticsData: expect.objectContaining(DUMMY_ANALYTICS_DATA),
   });
 });
 
@@ -60,7 +68,10 @@ it('should pass the correct properties to PersonResult for people results', () =
     }),
   ];
 
-  const wrapper = render({ results: peopleResults });
+  const wrapper = render({
+    results: peopleResults,
+    analyticsData: DUMMY_ANALYTICS_DATA,
+  });
 
   expect(wrapper.find(PersonResultComponent).props()).toMatchObject({
     href: 'href',
@@ -70,6 +81,7 @@ it('should pass the correct properties to PersonResult for people results', () =
     name: 'name',
     mentionName: 'mentionName',
     presenceMessage: 'presenceMessage',
+    analyticsData: expect.objectContaining(DUMMY_ANALYTICS_DATA),
   });
 });
 
@@ -81,7 +93,10 @@ it('should pass the correct properties to ObjectResult for Confluence results', 
     }),
   ];
 
-  const wrapper = render({ results: confluenceResults });
+  const wrapper = render({
+    results: confluenceResults,
+    analyticsData: DUMMY_ANALYTICS_DATA,
+  });
 
   expect(wrapper.find(ObjectResultComponent).props()).toMatchObject({
     href: 'href',
@@ -90,6 +105,7 @@ it('should pass the correct properties to ObjectResult for Confluence results', 
     name: 'name',
     containerName: 'containerName',
     contentType: ContentType.ConfluencePage,
+    analyticsData: expect.objectContaining(DUMMY_ANALYTICS_DATA),
   });
 
   const avatar: { type: string } = wrapper
@@ -106,7 +122,10 @@ it('should pass the correct properties to ContainerResult for Confluence spaces'
     }),
   ];
 
-  const wrapper = render({ results: confluenceSpaceResults });
+  const wrapper = render({
+    results: confluenceSpaceResults,
+    analyticsData: DUMMY_ANALYTICS_DATA,
+  });
 
   expect(wrapper.find(ContainerResultComponent).props()).toMatchObject({
     href: 'href',
@@ -114,5 +133,6 @@ it('should pass the correct properties to ContainerResult for Confluence spaces'
     type: 'result-confluence',
     avatarUrl: 'avatarUrl',
     name: 'name',
+    analyticsData: expect.objectContaining(DUMMY_ANALYTICS_DATA),
   });
 });
