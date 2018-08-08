@@ -106,6 +106,12 @@ describe('BitbucketTransformer: serializer', () => {
     );
   });
 
+  it('should not escape lone pipe characters', () => {
+    expect(
+      markdownSerializer.serialize(doc(p(` | | `))(defaultSchema)),
+    ).toEqual(` | | `);
+  });
+
   describe('mentions', () => {
     it('should serialize mentions', () => {
       const node = doc(p(mention({ text: 'Oscar Wallhult', id: 'oscar' })()))(
@@ -152,7 +158,7 @@ describe('BitbucketTransformer: serializer', () => {
         p(mention({ text: 'Oscar Wallhult', id: 'oscar' })(), em(' text')),
       )(defaultSchema);
       const test = markdownSerializer.serialize(node);
-      expect(test).toEqual('@oscar *text*');
+      expect(test).toEqual('@oscar _text_');
     });
   });
 
@@ -761,12 +767,12 @@ describe('BitbucketTransformer: serializer', () => {
     it('should serialize em', () => {
       expect(
         markdownSerializer.serialize(doc(p(em('foo')))(defaultSchema)),
-      ).toEqual('*foo*');
+      ).toEqual('_foo_');
       expect(
         markdownSerializer.serialize(
           doc(p('foo ', em('bar'), ' baz'))(defaultSchema),
         ),
-      ).toEqual('foo *bar* baz');
+      ).toEqual('foo _bar_ baz');
     });
 
     it('should serialize strong', () => {
@@ -912,12 +918,22 @@ describe('BitbucketTransformer: serializer', () => {
         ).toEqual('\\_smart\\_emphasis\\_');
       });
 
+      it('should handle strong/em/strikethrough being next to each other', () => {
+        expect(
+          markdownSerializer.serialize(
+            doc(p(strike('hello, '), em(' how are'), strong(' you')))(
+              defaultSchema,
+            ),
+          ),
+        ).toEqual('~~hello,~~  _how are_ **you**');
+      });
+
       it('combinations should be properly serialized', () => {
         expect(
           markdownSerializer.serialize(
             doc(p(em('hi'), '**there*'))(defaultSchema),
           ),
-        ).toEqual('*hi*\\*\\*there\\*');
+        ).toEqual('_hi_\\*\\*there\\*');
 
         expect(
           markdownSerializer.serialize(
@@ -935,7 +951,7 @@ describe('BitbucketTransformer: serializer', () => {
           markdownSerializer.serialize(
             doc(p(em(strike('foo bar'), ' baz')))(defaultSchema),
           ),
-        ).toEqual('*~~foo bar~~ baz*');
+        ).toEqual('_~~foo bar~~ baz_');
 
         expect(
           markdownSerializer.serialize(

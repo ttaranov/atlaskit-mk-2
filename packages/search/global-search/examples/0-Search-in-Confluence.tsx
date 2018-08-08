@@ -7,7 +7,7 @@ import LocaleIntlProvider from '../example-helpers/LocaleIntlProvider';
 
 const logEvent = event => {
   const { eventType, action, actionSubject, actionSubjectId } = event.payload;
-  console.log(
+  console.debug(
     `${eventType} | ${action} ${actionSubject} ${actionSubjectId}`,
     event.payload.attributes,
     event.payload,

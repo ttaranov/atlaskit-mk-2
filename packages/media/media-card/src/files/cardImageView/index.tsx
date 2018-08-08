@@ -44,12 +44,13 @@ export class FileCardImageView extends Component<FileCardImageViewProps, {}> {
   }
 
   render() {
-    const { disableOverlay, selectable, selected } = this.props;
+    const { disableOverlay, selectable, selected, mediaType } = this.props;
     return (
       <Wrapper
         disableOverlay={disableOverlay}
         selectable={selectable}
         selected={selected}
+        mediaType={mediaType}
       >
         {this.getCardContents()}
       </Wrapper>

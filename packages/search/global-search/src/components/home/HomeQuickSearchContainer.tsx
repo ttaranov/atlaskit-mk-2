@@ -9,7 +9,7 @@ import {
 } from '../../api/CrossProductSearchClient';
 import { Result } from '../../model/Result';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
-import renderSearchResults from './HomeSearchResults';
+import HomeSearchResults from './HomeSearchResults';
 import settlePromises from '../../util/settle-promises';
 import { LinkComponent } from '../GlobalQuickSearchWrapper';
 
@@ -22,7 +22,7 @@ export interface Props {
 }
 
 export interface State {
-  query: string;
+  latestSearchQuery: string;
   searchSessionId: string;
   isLoading: boolean;
   isError: boolean;
@@ -43,7 +43,7 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
     this.state = {
       isLoading: false,
       isError: false,
-      query: '',
+      latestSearchQuery: '',
       searchSessionId: uuid(), // unique id for search attribution
       recentlyViewedItems: [],
       recentResults: [],
@@ -55,7 +55,7 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
 
   handleSearch = (query: string) => {
     this.setState({
-      query: query,
+      latestSearchQuery: query,
     });
 
     if (query.length === 0) {
@@ -74,7 +74,7 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
   async searchRecent(query: string): Promise<Result[]> {
     const results = await this.props.recentSearchClient.search(query);
 
-    if (this.state.query === query) {
+    if (this.state.latestSearchQuery === query) {
       this.setState({
         recentResults: results,
       });
@@ -90,7 +90,7 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
       [Scope.ConfluencePageBlog, Scope.JiraIssue],
     );
 
-    if (this.state.query === query) {
+    if (this.state.latestSearchQuery === query) {
       this.setState({
         jiraResults: results.get(Scope.JiraIssue) || [],
         confluenceResults: results.get(Scope.ConfluencePageBlog) || [],
@@ -103,7 +103,7 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
   async searchPeople(query: string): Promise<Result[]> {
     const results = await this.props.peopleSearchClient.search(query);
 
-    if (this.state.query === query) {
+    if (this.state.latestSearchQuery === query) {
       this.setState({
         peopleResults: results,
       });
@@ -185,13 +185,13 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
   };
 
   retrySearch = () => {
-    this.handleSearch(this.state.query);
+    this.handleSearch(this.state.latestSearchQuery);
   };
 
   render() {
     const { linkComponent } = this.props;
     const {
-      query,
+      latestSearchQuery,
       isLoading,
       isError,
       recentlyViewedItems,
@@ -207,20 +207,19 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
         onMount={this.handleGetRecentItems}
         onSearch={this.handleSearch}
         isLoading={isLoading}
-        query={query}
         linkComponent={linkComponent}
         searchSessionId={searchSessionId}
       >
-        {renderSearchResults({
-          query,
-          isError,
-          retrySearch: this.retrySearch,
-          recentlyViewedItems,
-          recentResults,
-          jiraResults,
-          confluenceResults,
-          peopleResults,
-        })}
+        <HomeSearchResults
+          query={latestSearchQuery}
+          isError={isError}
+          retrySearch={this.retrySearch}
+          recentlyViewedItems={recentlyViewedItems}
+          recentResults={recentResults}
+          jiraResults={jiraResults}
+          confluenceResults={confluenceResults}
+          peopleResults={peopleResults}
+        />
       </GlobalQuickSearch>
     );
   }

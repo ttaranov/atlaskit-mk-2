@@ -1,17 +1,17 @@
 import * as sinon from 'sinon';
 import { EventEmitter2 } from 'eventemitter2';
-import { defaultServiceHost } from '@atlaskit/media-test-helpers';
+import { defaultBaseUrl } from '@atlaskit/media-test-helpers';
+import { ContextFactory } from '@atlaskit/media-core';
 import { MediaPicker } from '../../../index';
 import { Dropzone } from '../../dropzone';
 import * as uploadService from '../../../service/newUploadServiceImpl';
-import { ContextFactory } from '@atlaskit/media-core';
 
 const context = ContextFactory.create({
-  serviceHost: defaultServiceHost,
   authProvider: () =>
     Promise.resolve({
       clientId: '603c5433-35c4-4346-9a18-2acd3e8df980',
       token: 'some-token',
+      baseUrl: defaultBaseUrl,
     }),
 });
 
@@ -77,11 +77,21 @@ describe('Dropzone', () => {
 
     it('injects drop zone into document.body if no container is supplied to constructor', async () => {
       const dropzone = MediaPicker('dropzone', context);
-
       await dropzone.activate();
       expect(
         document.body.querySelectorAll('.mediaPickerDropzone').length,
       ).toEqual(1);
+    });
+
+    it('add "drop" event to container', async () => {
+      let addEventListenerSpy: jest.SpyInstance<any>;
+      addEventListenerSpy = jest.spyOn(container, 'addEventListener');
+      const dropzone = MediaPicker('dropzone', context, config);
+      await dropzone.activate();
+      const events = addEventListenerSpy.mock.calls.map(args => args[0]);
+      expect(events).toContain('dragover');
+      expect(events).toContain('dragleave');
+      expect(events).toContain('drop');
     });
 
     describe('displays dropzone UI', () => {
@@ -91,16 +101,16 @@ describe('Dropzone', () => {
 
         await dropzone.activate();
         expect(
-          container.querySelector('.mediaPickerDropzone')!.classList.contains(
-            'active',
-          ),
+          container
+            .querySelector('.mediaPickerDropzone')!
+            .classList.contains('active'),
         ).toEqual(false);
 
         container.dispatchEvent(dragOver);
         expect(
-          container.querySelector('.mediaPickerDropzone')!.classList.contains(
-            'active',
-          ),
+          container
+            .querySelector('.mediaPickerDropzone')!
+            .classList.contains('active'),
         ).toEqual(true);
       });
 
@@ -112,16 +122,16 @@ describe('Dropzone', () => {
         await dropzone.activate();
         container.dispatchEvent(dragOver);
         expect(
-          container.querySelector('.mediaPickerDropzone')!.classList.contains(
-            'active',
-          ),
+          container
+            .querySelector('.mediaPickerDropzone')!
+            .classList.contains('active'),
         ).toEqual(true);
 
         container.dispatchEvent(dragLeave);
         expect(
-          container.querySelector('.mediaPickerDropzone')!.classList.contains(
-            'active',
-          ),
+          container
+            .querySelector('.mediaPickerDropzone')!
+            .classList.contains('active'),
         ).toEqual(false);
       });
     });

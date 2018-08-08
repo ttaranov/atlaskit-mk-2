@@ -51,8 +51,8 @@ export const ProgressTrackerStageBar = styled.div`
   background-color: ${colors.B300};
   height: ${progressBarHeight}px;
   width: calc(
-    ${props => props.percentageComplete}% + ${props => props.percentageComplete}/100*${props =>
-        halfGridSize + spacing[props.theme.spacing]}px
+    ${props => props.percentageComplete}% + ${props => props.percentageComplete} /
+      100 * ${props => halfGridSize + spacing[props.theme.spacing]}px
   ); /* account for spacing and radius of marker */
   border-top-right-radius: ${gridSize}px;
   border-bottom-right-radius: ${gridSize}px;
@@ -60,16 +60,16 @@ export const ProgressTrackerStageBar = styled.div`
   &.fade-appear {
     width: calc(
       ${props => props.oldPercentageComplete}% +
-        ${props => props.oldPercentageComplete}/100*${props =>
-          halfGridSize + spacing[props.theme.spacing]}px
+        ${props => props.oldPercentageComplete} / 100 *
+        ${props => halfGridSize + spacing[props.theme.spacing]}px
     ); /* account for spacing and radius of marker */
   }
 
   &.fade-appear.fade-appear-active {
     width: calc(
       ${props => props.percentageComplete}% +
-        ${props => props.percentageComplete}/100*${props =>
-          halfGridSize + spacing[props.theme.spacing]}px
+        ${props => props.percentageComplete} / 100 *
+        ${props => halfGridSize + spacing[props.theme.spacing]}px
     ); /* account for spacing and radius of marker */
     transition: width ${props => props.transitionSpeed}ms
       ${props => props.transitionEasing};
@@ -79,16 +79,16 @@ export const ProgressTrackerStageBar = styled.div`
   &.fade-enter {
     width: calc(
       ${props => props.oldPercentageComplete}% +
-        ${props => props.oldPercentageComplete}/100*${props =>
-          halfGridSize + spacing[props.theme.spacing]}px
+        ${props => props.oldPercentageComplete} / 100 *
+        ${props => halfGridSize + spacing[props.theme.spacing]}px
     ); /* account for spacing and radius of marker */
   }
 
   &.fade-enter.fade-enter-active {
     width: calc(
       ${props => props.percentageComplete}% +
-        ${props => props.percentageComplete}/100*${props =>
-          halfGridSize + spacing[props.theme.spacing]}px
+        ${props => props.percentageComplete} / 100 *
+        ${props => halfGridSize + spacing[props.theme.spacing]}px
     ); /* account for spacing and radius of marker */
     transition: width ${props => props.transitionSpeed}ms
       ${props => props.transitionEasing};

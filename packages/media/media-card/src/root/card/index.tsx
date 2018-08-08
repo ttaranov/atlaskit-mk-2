@@ -3,41 +3,26 @@ import { Component } from 'react';
 import * as deepEqual from 'deep-equal';
 import {
   Context,
-  MediaItemType,
-  MediaItemProvider,
-  UrlPreviewProvider,
-  DataUriService,
   ImageResizeMode,
+  MediaItemDetails,
+  FileDetails,
 } from '@atlaskit/media-core';
-
-import { SharedCardProps, CardEventProps, CardAnalyticsContext } from '../..';
-import { MediaCard } from '../mediaCard';
+import { AnalyticsContext } from '@atlaskit/analytics-next';
+import { Subscription } from 'rxjs';
+import {
+  SharedCardProps,
+  CardEventProps,
+  CardAnalyticsContext,
+  CardStatus,
+} from '../..';
+import { Identifier, isPreviewableType } from '../domain';
 import { CardView } from '../cardView';
 import { LazyContent } from '../../utils/lazyContent';
 import { getBaseAnalyticsContext } from '../../utils/analyticsUtils';
-import { AnalyticsContext } from '@atlaskit/analytics-next';
-
-export type Identifier = UrlPreviewIdentifier | LinkIdentifier | FileIdentifier;
-export type Provider = MediaItemProvider | UrlPreviewProvider;
-
-export interface FileIdentifier {
-  readonly mediaItemType: 'file';
-  readonly id: string;
-  readonly occurrenceKey?: string;
-  readonly collectionName?: string; // files can exist outside of a collection
-}
-
-export interface LinkIdentifier {
-  readonly mediaItemType: 'link';
-  readonly id: string;
-  readonly occurrenceKey?: string;
-  readonly collectionName: string; // links always exist within a collection
-}
-
-export interface UrlPreviewIdentifier {
-  readonly mediaItemType: 'link';
-  readonly url: string;
-}
+import { getDataURIDimension } from '../../utils/getDataURIDimension';
+import { getDataURIFromFileState } from '../../utils/getDataURIFromFileState';
+import { getLinkMetadata, extendMetadata } from '../../utils/metadata';
+import { isUrlPreviewIdentifier } from '../../utils/identifier';
 
 export interface CardProps extends SharedCardProps, CardEventProps {
   readonly context: Context;
@@ -49,7 +34,17 @@ export interface CardProps extends SharedCardProps, CardEventProps {
   readonly disableOverlay?: boolean;
 }
 
-export class Card extends Component<CardProps, {}> {
+export interface CardState {
+  status: CardStatus;
+  isCardVisible: boolean;
+  metadata?: MediaItemDetails;
+  dataURI?: string;
+  progress?: number;
+  readonly error?: Error;
+}
+
+export class Card extends Component<CardProps, CardState> {
+  subscription?: Subscription;
   static defaultProps: Partial<CardProps> = {
     appearance: 'auto',
     resizeMode: 'crop',
@@ -57,18 +52,18 @@ export class Card extends Component<CardProps, {}> {
     disableOverlay: false,
   };
 
-  private provider: Provider;
-  private dataURIService?: DataUriService;
+  state: CardState = {
+    status: 'loading',
+    isCardVisible: !this.props.isLazy,
+  };
 
-  constructor(props) {
-    super(props);
-    const { context, identifier } = props;
+  componentDidMount() {
+    const { identifier, context } = this.props;
 
-    this.updateProvider(context, identifier);
-    this.updateDataUriService(context, identifier);
+    this.subscribe(identifier, context);
   }
 
-  componentWillReceiveProps(nextProps) {
+  componentWillReceiveProps(nextProps: CardProps) {
     const {
       context: currentContext,
       identifier: currentIdentifier,
@@ -79,62 +74,147 @@ export class Card extends Component<CardProps, {}> {
       currentContext !== nextContext ||
       !deepEqual(currentIdentifier, nextIdenfifier)
     ) {
-      this.updateProvider(nextContext, nextIdenfifier);
-      this.updateDataUriService(nextContext, nextIdenfifier);
+      this.subscribe(nextIdenfifier, nextContext);
     }
   }
 
-  private isUrlPreviewIdentifier(
-    identifier: Identifier,
-  ): identifier is UrlPreviewIdentifier {
-    const preview = identifier as UrlPreviewIdentifier;
-    return preview && preview.url !== undefined;
+  componentWillUnmount() {
+    this.unsubscribe();
+    this.releaseDataURI();
   }
 
-  private updateProvider(context: Context, identifier: Identifier): void {
-    if (this.isUrlPreviewIdentifier(identifier)) {
-      this.provider = context.getUrlPreviewProvider(identifier.url);
-    } else {
-      const { id, mediaItemType, collectionName } = identifier;
-      this.provider = context.getMediaItemProvider(
-        id,
-        mediaItemType,
-        collectionName,
-      );
+  releaseDataURI = () => {
+    const { dataURI } = this.state;
+    if (dataURI) {
+      URL.revokeObjectURL(dataURI);
     }
-  }
+  };
 
-  private updateDataUriService(context: Context, identifier: Identifier): void {
-    if (!this.isUrlPreviewIdentifier(identifier)) {
-      this.dataURIService = context.getDataUriService(
-        identifier.collectionName,
-      );
-    } else {
-      this.dataURIService = undefined;
+  private onLoadingChangeCallback = () => {
+    const { onLoadingChange } = this.props;
+    if (onLoadingChange) {
+      const { status, error, metadata } = this.state;
+      const state = {
+        type: status,
+        payload: error || metadata,
+      };
+      onLoadingChange(state);
     }
+  };
+
+  async subscribe(identifier: Identifier, context: Context) {
+    const { isCardVisible } = this.state;
+    if (!isCardVisible) {
+      return;
+    }
+
+    if (identifier.mediaItemType !== 'file') {
+      try {
+        const metadata = await getLinkMetadata(identifier, context);
+        this.notifyStateChange({
+          status: 'complete',
+          metadata,
+        });
+      } catch (error) {
+        this.notifyStateChange({
+          error,
+          status: 'error',
+        });
+      }
+
+      return;
+    }
+
+    const { id, collectionName } = identifier;
+
+    this.unsubscribe();
+    this.subscription = context.getFile(id, { collectionName }).subscribe({
+      next: async state => {
+        const {
+          dataURI: currentDataURI,
+          metadata: currentMetadata,
+        } = this.state;
+        const metadata = extendMetadata(state, currentMetadata as FileDetails);
+
+        if (!currentDataURI) {
+          const dataURI = await getDataURIFromFileState(state);
+          this.notifyStateChange({ dataURI });
+        }
+
+        switch (state.status) {
+          case 'uploading':
+            const { progress } = state;
+            this.notifyStateChange({
+              status: 'uploading',
+              progress,
+              metadata,
+            });
+            break;
+          case 'processing':
+            this.notifyStateChange({
+              progress: 1,
+              status: 'complete',
+              metadata,
+            });
+            break;
+          case 'processed':
+            if (metadata.mediaType && isPreviewableType(metadata.mediaType)) {
+              const { appearance, dimensions, resizeMode } = this.props;
+              const options = {
+                appearance,
+                dimensions,
+                component: this,
+              };
+              const width = getDataURIDimension('width', options);
+              const height = getDataURIDimension('height', options);
+              try {
+                const allowAnimated = appearance !== 'small';
+                const blob = await context.getImage(state.id, {
+                  collection: collectionName,
+                  mode: resizeMode,
+                  height,
+                  width,
+                  allowAnimated,
+                });
+                const dataURI = URL.createObjectURL(blob);
+                this.releaseDataURI();
+                this.setState({ dataURI });
+              } catch (e) {
+                // We don't want to set status=error if the preview fails, we still want to display the metadata
+              }
+            }
+            this.notifyStateChange({ status: 'complete', metadata });
+            break;
+          case 'error':
+            this.notifyStateChange({ status: 'error' });
+        }
+      },
+      error: error => {
+        this.notifyStateChange({ error, status: 'error' });
+      },
+    });
   }
 
-  get placeholder(): JSX.Element {
-    const { appearance, dimensions } = this.props;
+  notifyStateChange = (state: Partial<CardState>) => {
+    this.setState(state as any, this.onLoadingChangeCallback);
+  };
 
-    return (
-      <CardView
-        status="loading"
-        appearance={appearance}
-        dimensions={dimensions}
-        mediaItemType={this.mediaItemType}
-      />
-    );
-  }
+  unsubscribe = () => {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  };
 
-  private get preview() {
-    const { context, identifier } = this.props;
+  // This method is called when card fails and user press 'Retry'
+  private onRetry = () => {
+    const { identifier, context } = this.props;
 
-    return context.getLocalPreview(identifier['id']);
-  }
+    this.subscribe(identifier, context);
+  };
+
   get analyticsContext(): CardAnalyticsContext {
     const { identifier } = this.props;
-    const id = this.isUrlPreviewIdentifier(identifier)
+    const id = isUrlPreviewIdentifier(identifier)
       ? identifier.url
       : identifier.id;
     return getBaseAnalyticsContext('Card', id);
@@ -152,23 +232,18 @@ export class Card extends Component<CardProps, {}> {
       onClick,
       onMouseEnter,
       onSelectChange,
-      onLoadingChange,
       disableOverlay,
+      identifier,
     } = this.props;
-    const {
-      mediaItemType,
-      provider,
-      dataURIService,
-      placeholder,
-      preview,
-      analyticsContext,
-    } = this;
+    const { status, progress, metadata, dataURI } = this.state;
+    const { analyticsContext, onRetry } = this;
     const card = (
       <AnalyticsContext data={analyticsContext}>
-        <MediaCard
-          provider={provider}
-          mediaItemType={mediaItemType}
-          dataURIService={dataURIService}
+        <CardView
+          status={status}
+          metadata={metadata}
+          dataURI={dataURI}
+          mediaItemType={identifier.mediaItemType}
           appearance={appearance}
           resizeMode={resizeMode}
           dimensions={dimensions}
@@ -178,23 +253,26 @@ export class Card extends Component<CardProps, {}> {
           onClick={onClick}
           onMouseEnter={onMouseEnter}
           onSelectChange={onSelectChange}
-          onLoadingChange={onLoadingChange}
-          preview={preview}
           disableOverlay={disableOverlay}
+          progress={progress}
+          onRetry={onRetry}
         />
       </AnalyticsContext>
     );
 
     return isLazy ? (
-      <LazyContent placeholder={placeholder}>{card}</LazyContent>
+      <LazyContent placeholder={card} onRender={this.onCardInViewport}>
+        {card}
+      </LazyContent>
     ) : (
       card
     );
   }
 
-  private get mediaItemType(): MediaItemType {
-    const { mediaItemType } = this.props.identifier;
-
-    return mediaItemType;
-  }
+  onCardInViewport = () => {
+    this.setState({ isCardVisible: true }, () => {
+      const { identifier, context } = this.props;
+      this.subscribe(identifier, context);
+    });
+  };
 }

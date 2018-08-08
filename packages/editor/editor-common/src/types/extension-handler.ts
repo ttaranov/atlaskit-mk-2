@@ -5,12 +5,12 @@ export interface ExtensionParams<T> {
   extensionType: string;
   type?: 'extension' | 'inlineExtension' | 'bodiedExtension';
   parameters?: T;
-  content?: any; // This would be the original Atlassian Document Format
+  content?: Object; // This would be the original Atlassian Document Format
 }
 
 export type ExtensionHandler<T> = (
   ext: ExtensionParams<T>,
-  doc: any,
+  doc: Object,
 ) => JSX.Element | ADNode[] | null;
 
 export interface ExtensionHandlers {

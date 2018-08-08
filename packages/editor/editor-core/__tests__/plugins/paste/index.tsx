@@ -4,6 +4,7 @@ import {
   em,
   doc,
   p,
+  code,
   mediaGroup,
   media,
   mediaSingle,
@@ -21,6 +22,7 @@ import {
   td,
   tdCursor,
   hardBreak,
+  a,
 } from '@atlaskit/editor-test-helpers';
 import mediaPlugin from '../../../src/plugins/media';
 import codeBlockPlugin from '../../../src/plugins/code-block';
@@ -246,6 +248,24 @@ describe('paste plugins', () => {
       );
     });
 
+    it('should create code-mark for single lines of code copied', () => {
+      const { editorView } = editor(doc(p('{<>}')));
+      dispatchPasteEvent(editorView, {
+        plain: 'code line 1',
+        html: '<pre>code line 1</pre>',
+      });
+      expect(editorView.state.doc).toEqualDocument(doc(p(code('code line 1'))));
+    });
+
+    it('should remove single preceding backtick', () => {
+      const { editorView } = editor(doc(p('`{<>}')));
+      dispatchPasteEvent(editorView, {
+        plain: 'code line 1',
+        html: '<pre>code line 1</pre>',
+      });
+      expect(editorView.state.doc).toEqualDocument(doc(p(code('code line 1'))));
+    });
+
     it('should join adjacent code-blocks', () => {
       const { editorView } = editor(doc(p('{<>}')));
       dispatchPasteEvent(editorView, {
@@ -361,6 +381,21 @@ describe('paste plugins', () => {
           doc(
             decisionList({ localId: 'local-decision' })(
               decisionItem({ localId: 'local-decision' })('plain text'),
+            ),
+          ),
+        );
+      });
+
+      it('linkifies text pasted into a decision', () => {
+        const { editorView, sel } = editor(doc(p('{<>}')));
+        insertText(editorView, '<> ', sel);
+        dispatchPasteEvent(editorView, { plain: 'google.com' });
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            decisionList({ localId: 'local-decision' })(
+              decisionItem({ localId: 'local-decision' })(
+                a({ href: 'http://google.com' })('google.com'),
+              ),
             ),
           ),
         );

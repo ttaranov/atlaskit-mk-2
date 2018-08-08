@@ -19,10 +19,6 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.json$/,
-        loader: 'json-loader',
-      },
-      {
         test: /\.js$/,
         exclude: /node_modules/,
         loader: require.resolve('babel-loader'),

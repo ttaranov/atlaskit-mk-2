@@ -17,7 +17,7 @@ export interface ExampleState {
   imageId: string;
   collectionName: string;
   clientId: string;
-  serviceHost: string;
+  baseUrl: string;
 }
 
 export default class Example extends Component<ExampleProps, ExampleState> {
@@ -29,7 +29,7 @@ export default class Example extends Component<ExampleProps, ExampleState> {
       imageId: genericFileId.id,
       collectionName: defaultCollectionName,
       clientId: defaultParams.clientId,
-      serviceHost: defaultParams.serviceHost,
+      baseUrl: defaultParams.baseUrl,
     };
   }
 
@@ -74,24 +74,18 @@ export default class Example extends Component<ExampleProps, ExampleState> {
     });
   };
 
-  onServiceHostChange = e => {
+  onBaseUrlChange = e => {
     this.setState({
-      serviceHost: e.target.value,
+      baseUrl: e.target.value,
     });
   };
 
   render() {
-    const {
-      token,
-      imageId,
-      collectionName,
-      clientId,
-      serviceHost,
-    } = this.state;
+    const { token, imageId, collectionName, clientId, baseUrl } = this.state;
     const apiConfig = {
       token,
       clientId,
-      serviceHost,
+      baseUrl,
     };
 
     return (
@@ -134,8 +128,8 @@ export default class Example extends Component<ExampleProps, ExampleState> {
           <FieldText
             label="Service host"
             placeholder="Service host..."
-            value={serviceHost}
-            onChange={this.onServiceHostChange}
+            value={baseUrl}
+            onChange={this.onBaseUrlChange}
           />
         </div>
         <div

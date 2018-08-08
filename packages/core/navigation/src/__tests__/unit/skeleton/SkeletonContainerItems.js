@@ -11,3 +11,9 @@ test('renders a skeleton representation of a container item', () => {
 test('collapses its children container items', () => {
   expect(shallow(<SkeletonContainerItems isCollapsed />)).toMatchSnapshot();
 });
+
+test('passes down custom styles', () => {
+  expect(
+    shallow(<SkeletonContainerItems itemTextWidth="100%" />),
+  ).toMatchSnapshot();
+});

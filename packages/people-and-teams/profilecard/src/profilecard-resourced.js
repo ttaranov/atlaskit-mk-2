@@ -124,7 +124,6 @@ export default class ProfilecardResourced extends PureComponent<Props, State> {
       analytics: this.props.analytics,
       ...this.state.data,
     };
-    // $FlowFixMe - Cannot create `AkProfilecardStatic` element because null or undefined [1] is incompatible with `ProfileCardErrorType` [2] in property `errorType`
     return <AkProfilecardStatic {...newProps} actions={this.filterActions()} />;
   }
 }

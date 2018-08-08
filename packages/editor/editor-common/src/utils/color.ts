@@ -99,7 +99,7 @@ export function rgbToHex(value: string): string | null {
 }
 
 export function isRgb(color: string): boolean {
-  return /rgb\(/.test(color);
+  return /rgba?\(/.test(color);
 }
 
 export function isHex(color: string): boolean {

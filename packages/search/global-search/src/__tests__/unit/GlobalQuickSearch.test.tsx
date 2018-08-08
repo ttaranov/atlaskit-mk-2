@@ -12,7 +12,6 @@ const DEFAULT_PROPS = {
   onMount: noop,
   isLoading: false,
   searchSessionId: 'abc',
-  query: '',
   children: [],
 };
 
@@ -82,7 +81,6 @@ describe('GlobalQuickSearch', () => {
 
     const deepRender = (): Function =>
       render({ searchSessionId })
-        .dive()
         .dive()
         .prop('firePrivateAnalyticsEvent');
 

@@ -8,8 +8,6 @@ import {
   AnalyticsContext,
 } from '@atlaskit/analytics-next';
 
-import { withAnalytics } from '@atlaskit/analytics';
-
 import {
   fireSelectedSearchResult,
   fireHighlightedSearchResult,
@@ -23,7 +21,10 @@ import {
 } from '../util/analytics-event-helper';
 
 import { CreateAnalyticsEventFn } from './analytics/types';
-import { isAdvancedSearchResult } from './SearchResultsUtil';
+import {
+  isAdvancedSearchResult,
+  ADVANCED_CONFLUENCE_SEARCH_RESULT_ID,
+} from './SearchResultsUtil';
 
 const ATLASKIT_QUICKSEARCH_NS = 'atlaskit.navigation.quick-search';
 const QS_ANALYTICS_EV_KB_CTRLS_USED = `${ATLASKIT_QUICKSEARCH_NS}.keyboard-controls-used`;
@@ -36,19 +37,30 @@ export interface Props {
 
   isLoading: boolean;
   placeholder?: string;
-  query: string;
   searchSessionId: string;
   children: React.ReactNode;
   linkComponent?: LinkComponent;
   createAnalyticsEvent?: CreateAnalyticsEventFn;
+  isSendSearchTermsEnabled?: boolean;
+}
+
+export interface State {
+  query: string;
 }
 
 /**
  * Presentational component that renders the search input and search results.
  */
-export class GlobalQuickSearch extends React.Component<Props> {
+export class GlobalQuickSearch extends React.Component<Props, State> {
+  public static defaultProps: Partial<Props> = {
+    isSendSearchTermsEnabled: false,
+  };
   queryVersion: number = 0;
   resultSelected: boolean = false;
+
+  state = {
+    query: '',
+  };
 
   componentDidMount() {
     this.props.onMount();
@@ -56,39 +68,54 @@ export class GlobalQuickSearch extends React.Component<Props> {
 
   handleSearchInput = ({ target }) => {
     const query = target.value;
+    this.setState({
+      query,
+    });
     this.debouncedSearch(query);
   };
 
   debouncedSearch = debounce(this.doSearch, 350);
 
   doSearch(query: string) {
-    const { onSearch, searchSessionId, createAnalyticsEvent } = this.props;
+    const {
+      onSearch,
+      searchSessionId,
+      createAnalyticsEvent,
+      isSendSearchTermsEnabled,
+    } = this.props;
     onSearch(query);
     fireTextEnteredEvent(
       query,
       searchSessionId,
       this.queryVersion,
+      isSendSearchTermsEnabled,
       createAnalyticsEvent,
     );
     this.queryVersion++;
   }
 
-  fireSearchResultSelectedEvent = (eventData: SearchResultEvent) => {
-    const { createAnalyticsEvent, searchSessionId, query } = this.props;
+  fireSearchResultSelectedEvent = (eventData: SelectedSearchResultEvent) => {
+    const { createAnalyticsEvent, searchSessionId } = this.props;
     this.resultSelected = true;
-    if (isAdvancedSearchResult(eventData.resultId)) {
+    const resultId =
+      eventData.resultCount && eventData.method === 'shortcut'
+        ? ADVANCED_CONFLUENCE_SEARCH_RESULT_ID
+        : eventData.resultId;
+    if (isAdvancedSearchResult(resultId)) {
       fireSelectedAdvancedSearch(
         {
           ...eventData,
-          query,
+          resultId,
+          query: this.state.query,
           queryVersion: this.queryVersion,
+          isLoading: this.props.isLoading,
         } as AdvancedSearchSelectedEvent,
         searchSessionId,
         createAnalyticsEvent,
       );
     } else {
       fireSelectedSearchResult(
-        eventData as SelectedSearchResultEvent,
+        eventData,
         searchSessionId,
         createAnalyticsEvent,
       );
@@ -101,7 +128,9 @@ export class GlobalQuickSearch extends React.Component<Props> {
   ) => {
     const { createAnalyticsEvent, searchSessionId } = this.props;
     if (eventName === QS_ANALYTICS_EV_SUBMIT) {
-      this.fireSearchResultSelectedEvent(eventData);
+      this.fireSearchResultSelectedEvent(
+        eventData as SelectedSearchResultEvent,
+      );
     } else if (eventName === QS_ANALYTICS_EV_KB_CTRLS_USED) {
       const data = eventData as KeyboardControlEvent;
       if (data.key === 'ArrowDown' || data.key === 'ArrowUp') {
@@ -124,7 +153,6 @@ export class GlobalQuickSearch extends React.Component<Props> {
 
   render() {
     const {
-      query,
       isLoading,
       placeholder,
       linkComponent,
@@ -132,26 +160,19 @@ export class GlobalQuickSearch extends React.Component<Props> {
       onSearchSubmit,
     } = this.props;
 
-    const QuickSearchWithAnalytics = withAnalytics(
-      QuickSearch,
-      {
-        firePrivateAnalyticsEvent: this.fireSearchResultEvents,
-      },
-      {},
-    );
-
     return (
       <AnalyticsContext data={{ searchSessionId: this.props.searchSessionId }}>
-        <QuickSearchWithAnalytics
+        <QuickSearch
+          firePrivateAnalyticsEvent={this.fireSearchResultEvents}
           isLoading={isLoading}
           onSearchInput={this.handleSearchInput}
           placeholder={placeholder}
-          value={query}
+          value={this.state.query}
           linkComponent={linkComponent}
           onSearchSubmit={onSearchSubmit}
         >
           {children}
-        </QuickSearchWithAnalytics>
+        </QuickSearch>
       </AnalyticsContext>
     );
   }

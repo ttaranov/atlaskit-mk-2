@@ -2,6 +2,7 @@ import {
   textblockTypeInputRule,
   wrappingInputRule,
   inputRules,
+  // @ts-ignore
   InputRule,
 } from 'prosemirror-inputrules';
 import { Schema, NodeType } from 'prosemirror-model';
@@ -11,6 +12,7 @@ import {
   createInputRule,
   defaultInputRuleHandler,
   leafNodeReplacementCharacter,
+  InputRuleWithHandler,
 } from '../../../utils/input-rules';
 import {
   isConvertableToCodeBlock,
@@ -23,11 +25,11 @@ export function headingRule(nodeType: NodeType, maxLevel: number) {
     new RegExp('^(#{1,' + maxLevel + '})\\s$'),
     nodeType,
     match => ({ level: match[1].length }),
-  );
+  ) as InputRuleWithHandler;
 }
 
 export function blockQuoteRule(nodeType: NodeType) {
-  return wrappingInputRule(/^\s*>\s$/, nodeType);
+  return wrappingInputRule(/^\s*>\s$/, nodeType) as InputRuleWithHandler;
 }
 
 export function codeBlockRule(nodeType: NodeType) {
@@ -35,7 +37,7 @@ export function codeBlockRule(nodeType: NodeType) {
 }
 
 export function inputRulePlugin(schema: Schema): Plugin | undefined {
-  const rules: Array<InputRule> = [];
+  const rules: Array<InputRuleWithHandler> = [];
 
   if (schema.nodes.heading) {
     // '# ' for h1, '## ' for h2 and etc
@@ -43,8 +45,8 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
       headingRule(schema.nodes.heading, 6),
       true,
     );
-    const currentHandler = (rule as any).handler; // TODO: Fix types (ED-2987)
-    (rule as any).handler = (state, match, start, end) => {
+    const currentHandler = rule.handler;
+    rule.handler = (state, match, start, end) => {
       analyticsService.trackEvent(
         `atlassian.editor.format.heading${match[1].length}.autoformatting`,
       );
@@ -76,10 +78,10 @@ export function inputRulePlugin(schema: Schema): Plugin | undefined {
       blockQuoteRule(schema.nodes.blockquote),
       true,
     );
-    (rule as any).handler = trackAndInvoke(
+    rule.handler = trackAndInvoke(
       'atlassian.editor.format.blockquote.autoformatting',
-      (rule as any).handler,
-    ); // TODO: Fix types (ED-2987)
+      rule.handler,
+    );
     rules.push(rule);
     rules.push(
       createInputRule(

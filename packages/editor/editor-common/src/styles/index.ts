@@ -7,3 +7,5 @@ export {
   tableMarginSides,
   calcTableWidth,
 } from './table';
+
+export { columnLayoutSharedStyle } from './column-layout';

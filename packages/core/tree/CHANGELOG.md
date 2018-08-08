@@ -1,5 +1,42 @@
 # @atlaskit/tree
 
+## 2.0.3
+- [patch] Bumping react-beautiful-dnd to 8.0.7 to fix timing issue with onDragStart [812a39c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/812a39c)
+
+## 2.0.2
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/navigation@33.1.2
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/section-message@1.0.3
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/spinner@9.0.4
+  - @atlaskit/docs@5.0.2
+
+## 2.0.1
+- [patch] Add a SSR test for every package, add react-dom and build-utils in devDependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+- [none] Updated dependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+  - @atlaskit/theme@5.1.1
+  - @atlaskit/spinner@9.0.3
+  - @atlaskit/section-message@1.0.2
+  - @atlaskit/navigation@33.1.1
+  - @atlaskit/icon@13.2.1
+
+## 2.0.0
+- [major] Disabling drag&drop by default. [63de261](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/63de261)
+
+## 1.1.0
+- [minor] Introducing Drag&Drop functionality to atlaskit/tree [98fe2b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/98fe2b5)
+
+
+- [none] Updated dependencies [87cd977](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87cd977)
+  - @atlaskit/navigation@33.0.5
+- [none] Updated dependencies [22efc08](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/22efc08)
+  - @atlaskit/navigation@33.0.5
+
+## 1.0.1
+- [patch] Update docs, change dev deps [25d6e48](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d6e48)
+- [none] Updated dependencies [25d6e48](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d6e48)
+
 ## 1.0.0
 
 - [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)

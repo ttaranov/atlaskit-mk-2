@@ -5,9 +5,10 @@ import { injectGlobal } from 'styled-components';
 import { ZoomControls } from '../../zoomControls';
 import { PDFWrapper } from '../../styled';
 import { closeOnDirectClick } from '../../utils/closeOnDirectClick';
-import { Outcome, ZoomLevel } from '../../domain';
+import { Outcome } from '../../domain';
 import { Spinner } from '../../loading';
 import { ErrorMessage, createError, MediaViewerError } from '../../error';
+import { ZoomLevel } from '../../domain/zoomLevel';
 
 export const pdfViewerClassName = 'pdfViewer';
 
@@ -94,7 +95,7 @@ export type State = {
 };
 
 const initialState: State = {
-  zoomLevel: new ZoomLevel(),
+  zoomLevel: new ZoomLevel(1),
   doc: { status: 'PENDING' },
 };
 
@@ -114,6 +115,7 @@ export class PDFRenderer extends React.Component<Props, State> {
       this.setState({ doc: { status: 'SUCCESSFUL', data: doc } }, () => {
         this.pdfViewer = new PDFJSViewer.PDFViewer({ container: this.el });
         this.pdfViewer.setDocument(doc);
+        this.pdfViewer.firstPagePromise.then(this.scaleToFit);
       });
     } catch (err) {
       this.setState({
@@ -132,6 +134,16 @@ export class PDFRenderer extends React.Component<Props, State> {
   private handleZoom = (zoomLevel: ZoomLevel) => {
     this.pdfViewer.currentScale = zoomLevel.value;
     this.setState({ zoomLevel });
+  };
+
+  private scaleToFit = () => {
+    const { pdfViewer } = this;
+    if (pdfViewer) {
+      pdfViewer.currentScaleValue = 'page-width';
+      this.setState({
+        zoomLevel: new ZoomLevel(pdfViewer.currentScale),
+      });
+    }
   };
 
   render() {

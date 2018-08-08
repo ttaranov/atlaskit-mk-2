@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent, Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import interpolate, { clamp } from 'interpolate-range';
 import { Transition } from 'react-transition-group';
 
@@ -26,7 +26,7 @@ function interpolateBlanketOpacity({ floor, ceil, val }) {
   return lerp(val);
 }
 
-export default class ContentNavigation extends PureComponent<
+export default class ContentNavigation extends Component<
   ContentNavigationProps,
 > {
   render() {

@@ -1,38 +1,25 @@
-import * as React from 'react';
-import styled from 'styled-components';
 import { EditorState, Transaction } from 'prosemirror-state';
-import { splitCell, mergeCells } from 'prosemirror-tables';
 import { hasParentNodeOfType } from 'prosemirror-utils';
-import {
-  tableBackgroundColorPalette,
-  tableBackgroundBorderColors,
-  TableLayout,
-} from '@atlaskit/editor-common';
+import { TableLayout } from '@atlaskit/editor-common';
 import CenterIcon from '@atlaskit/icon/glyph/editor/media-center';
 import WideIcon from '@atlaskit/icon/glyph/editor/media-wide';
 import FullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import TableDisplayOptionsIcon from '@atlaskit/icon/glyph/editor/table-display-options';
-import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
-import BackgroundColorIcon from '@atlaskit/icon/glyph/editor/background-color';
 
 import { Command } from '../../types';
-import ColorPalette from '../../ui/ColorPalette';
 import {
   analyticsService as analytics,
   AnalyticsProperties,
 } from '../../analytics';
-import {
-  FloatingToolbarHandler,
-  RenderOptionsProps,
-} from '../floating-toolbar/types';
-import { pluginKey, TablePluginState } from './pm-plugins/main';
+import { FloatingToolbarHandler } from '../floating-toolbar/types';
+import { TablePluginState } from './types';
+import { pluginKey } from './pm-plugins/main';
 import {
   hoverTable,
   deleteTable,
-  setCellAttr,
   setTableLayout,
-  resetHoverSelection,
+  clearHoverSelection,
   toggleHeaderRow,
   toggleHeaderColumn,
   toggleNumberColumn,
@@ -45,23 +32,6 @@ import {
 
 const getTableLayout = (tableState: TablePluginState) =>
   tableState.tableNode!.attrs.layout;
-
-const ColorPaletteContainer = styled.div`
-  width: 144px;
-`;
-
-const colorPaletteOptions = ({ hide, dispatchCommand }: RenderOptionsProps) => (
-  <ColorPaletteContainer>
-    <ColorPalette
-      palette={tableBackgroundColorPalette}
-      borderColors={tableBackgroundBorderColors}
-      onClick={color => {
-        hide();
-        dispatchCommand(setCellAttr('background', color));
-      }}
-    />
-  </ColorPaletteContainer>
-);
 
 const withAnalytics = (
   command: Command,
@@ -99,15 +69,9 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
     const isLayoutSupported = supportsTableLayout(state);
     return {
       title: 'Table floating controls',
-      target: tableState.tableRef,
+      getDomRef: () => tableState.tableRef!,
+      nodeType: state.schema.nodes.table,
       items: [
-        {
-          type: 'dropdown',
-          title: 'Cell background color',
-          icon: BackgroundColorIcon,
-          options: colorPaletteOptions,
-          hidden: !pluginConfig.allowBackgroundColor,
-        },
         {
           type: 'dropdown',
           title: 'Table display options',
@@ -142,32 +106,6 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
                 'atlassian.editor.format.table.toggleNumberColumn.button',
               ),
               hidden: !pluginConfig.allowNumberColumn,
-            },
-          ],
-        },
-        {
-          type: 'dropdown',
-          title: 'More',
-          icon: EditorMoreIcon,
-          hideExpandIcon: true,
-          hidden: !pluginConfig.allowMergeCells,
-          options: [
-            {
-              title: 'Merge cells',
-              onClick: withAnalytics(
-                mergeCells,
-                'atlassian.editor.format.table.merge.button',
-              ),
-              // Move the logic inside plugin
-              disabled: !mergeCells(state),
-            },
-            {
-              title: 'Split cell',
-              onClick: withAnalytics(
-                splitCell,
-                'atlassian.editor.format.table.split.button',
-              ),
-              disabled: !splitCell(state),
             },
           ],
         },
@@ -214,7 +152,7 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
           icon: RemoveIcon,
           onClick: deleteTable,
           onMouseEnter: hoverTable(true),
-          onMouseLeave: resetHoverSelection,
+          onMouseLeave: clearHoverSelection,
           title: 'Remove table',
         },
       ],

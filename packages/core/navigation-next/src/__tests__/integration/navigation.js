@@ -7,42 +7,67 @@ import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import * as assert from 'assert';
 
 /* Url to test the example */
-const urlNewNavigation = getExampleUrl('core', 'navigation-next', 'navigation');
+const exampleURL = getExampleUrl('core', 'navigation-next', 'navigation');
 
-/* Css selectors used for the test */
-const content = '#examples > div > div > div';
-const iconJira = '[aria-label="Jira"]';
-const iconSearch = `${content} > div > div> div > div > div div:nth-child(2) > span`;
-const iconCreate = `${content} > div > div> div > div > div div:nth-child(3) > span`;
-const help = '[aria-label="Help"]';
-const avatar = `${iconCreate} > div > div > button`;
-const header = `${content} > div > div > div > div > div > div > div:nth-child(1)`;
-const groupHeading = `${content} > div > div > div > div > div > div > div:nth-child(2)`;
+/* Css selectors used for the tests */
+const getByKey = key => `[data-webdriver-test-key="${key}"]`;
 
-const cssSelectorsNav = [iconJira, iconSearch, iconCreate, help, avatar];
+function makeLogs(instance) {
+  if (!instance.log('browser').value) return;
+
+  instance.log('browser').value.forEach(val => {
+    assert.notEqual(
+      val.level,
+      'SEVERE',
+      `Console errors :${val.message} when view the form`,
+    );
+  });
+}
 
 BrowserTestCase(
-  'The navigation example should render without errors',
+  '🌏 Global navigation should render without errors',
   async client => {
-    const navTest = await new Page(client);
-    await navTest.goto(urlNewNavigation);
-    await navTest.waitForSelector(content);
+    const page = await new Page(client);
+    await page.goto(exampleURL);
+    const globalNav = await getByKey('global-navigation');
 
-    cssSelectorsNav.forEach(async cssSelector => {
-      const selectorIsVisible = await navTest.isVisible(cssSelector);
-      expect(selectorIsVisible).toBe(true);
-    });
-    // Not sure why but those two selectors are found twice in the DOM
-    expect(await navTest.isVisible(header)).toEqual([true, true]);
-    expect(await navTest.isVisible(groupHeading)).toEqual([true, true]);
-    if (navTest.log('browser').value) {
-      navTest.log('browser').value.forEach(val => {
-        assert.notEqual(
-          val.level,
-          'SEVERE',
-          `Console errors :${val.message} when view the form`,
-        );
-      });
-    }
+    expect(await page.isVisible(`${globalNav} [aria-label="Jira"]`)).toBe(true);
+    expect(await page.isVisible(`${globalNav} [aria-label="Search"]`)).toBe(
+      true,
+    );
+    expect(await page.isVisible(`${globalNav} [aria-label="Add"]`)).toBe(true);
+    expect(await page.isVisible(`${globalNav} [aria-label="Help"]`)).toBe(true);
+
+    makeLogs(page);
+  },
+);
+BrowserTestCase(
+  '📦 Product navigation should render without errors',
+  async client => {
+    const page = await new Page(client);
+    await page.goto(exampleURL);
+
+    expect(await page.isVisible(getByKey('product-header'))).toBe(true);
+    expect(await page.isVisible(getByKey('product-item-dashboards'))).toBe(
+      true,
+    );
+    expect(await page.isVisible(getByKey('product-item-projects'))).toBe(true);
+    expect(await page.isVisible(getByKey('product-item-issues'))).toBe(true);
+
+    makeLogs(page);
+  },
+);
+BrowserTestCase(
+  '🎁 Container navigation should render without errors',
+  async client => {
+    const page = await new Page(client);
+    await page.goto(exampleURL);
+
+    expect(await page.isVisible(getByKey('container-header'))).toBe(true);
+    expect(await page.isVisible(getByKey('container-item-backlog'))).toBe(true);
+    expect(await page.isVisible(getByKey('container-item-sprints'))).toBe(true);
+    expect(await page.isVisible(getByKey('container-item-reports'))).toBe(true);
+
+    makeLogs(page);
   },
 );

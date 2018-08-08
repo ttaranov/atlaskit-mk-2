@@ -11,9 +11,9 @@ export interface Props {
   tableActive?: boolean;
   isTableHovered?: boolean;
   hoverRows: (rows: number[], danger?: boolean) => void;
-  dangerRows: number[];
+  dangerRows?: number[];
   hoveredRows: number[];
-  resetHoverSelection: () => void;
+  clearHoverSelection: () => void;
   selectRow: (row: number) => void;
   hasHeaderRow?: boolean;
   isTableInDanger?: boolean;
@@ -29,8 +29,9 @@ export default class NumberColumn extends Component<Props, any> {
       isTableInDanger,
       tableActive,
       hoverRows,
-      resetHoverSelection,
+      clearHoverSelection,
       selectRow,
+      dangerRows,
     } = this.props;
 
     const tbody = tableRef.querySelector('tbody');
@@ -53,12 +54,10 @@ export default class NumberColumn extends Component<Props, any> {
             isRowSelected(i)(state.selection) ||
             this.props.hoveredRows.indexOf(i) !== -1
           }
-          isRowDanger={
-            this.props.dangerRows.indexOf(i) !== -1 || isTableInDanger
-          }
+          isRowDanger={(dangerRows || []).indexOf(i) !== -1 || isTableInDanger}
           selectRow={selectRow}
           hoverRows={hoverRows}
-          resetHoverSelection={resetHoverSelection}
+          clearHoverSelection={clearHoverSelection}
         >
           {hasHeaderRow ? (i > 0 ? i : null) : i + 1}
         </NumberedRow>,

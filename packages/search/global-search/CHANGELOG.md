@@ -1,5 +1,69 @@
 # @atlaskit/global-search
 
+## 5.4.1
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/navigation@33.1.2
+  - @atlaskit/quick-search@4.2.4
+  - @atlaskit/page@8.0.2
+  - @atlaskit/flag@9.0.3
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/button@9.0.4
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/field-text-area@4.0.3
+  - @atlaskit/analytics-next@3.0.3
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/util-service-support@3.0.1
+  - @atlaskit/analytics-gas-types@3.1.2
+  - @atlaskit/analytics@4.0.3
+  - @atlaskit/avatar@14.0.5
+  - @atlaskit/modal-dialog@6.0.5
+
+## 5.4.0
+- [minor] Internal refactoring of result components. [28ac980](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/28ac980)
+
+## 5.3.7
+- [patch] add missing attributes to analytics [2a0346a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2a0346a)
+- [patch] Updated dependencies [2a0346a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2a0346a)
+  - @atlaskit/quick-search@4.2.3
+
+## 5.3.6
+- [patch] fix keyboard navigation [2dbff95](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2dbff95)
+- [patch] Updated dependencies [2dbff95](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2dbff95)
+  - @atlaskit/quick-search@4.2.2
+
+## 5.3.5
+- [patch] Fix disappearing query problem when typing slowly [fc654d7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc654d7)
+
+## 5.3.4
+- [patch] Fix flashing no results screen when typing. [d02e61a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02e61a)
+
+## 5.3.3
+- [patch] Updated dependencies [9fbaafd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9fbaafd)
+  - @atlaskit/quick-search@4.2.1
+
+## 5.3.2
+- [patch] minor refactor for passing screen counters [b5fc99c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5fc99c)
+
+## 5.3.1
+- [patch] fix keyboard navigation  [5382e88](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5382e88)
+
+## 5.3.0
+- [minor] Add i18n support for all supported languages. [68982c0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/68982c0)
+
+## 5.2.0
+- [minor] Rewrite internal keyboard handling implementation. [0ebfc9a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0ebfc9a)
+- [minor] Updated dependencies [0ebfc9a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0ebfc9a)
+  - @atlaskit/quick-search@4.2.0
+
+## 5.1.1
+- [patch] fix infinite loop bug [e2e53e0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e2e53e0)
+
+## 5.1.0
+- [minor] Allow sending of search queries in analytics events [e5f14e9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e5f14e9)
+- [minor] Global search component now accepts a boolean to send search terms in analytics events [3b871bb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3b871bb)
+- [minor] Updated dependencies [e5f14e9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e5f14e9)
+  - @atlaskit/analytics-gas-types@3.1.0
+
 ## 5.0.4
 - [patch] Passes the keyboard event from quick search to the submit event handler to ensure global search redirects with the complete search query. [2d6668f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d6668f)
 - [none] Updated dependencies [2d6668f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d6668f)

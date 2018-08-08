@@ -1,5 +1,17 @@
 # @atlaskit/theme
 
+## 5.1.2
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/button@9.0.4
+  - @atlaskit/lozenge@6.1.3
+  - @atlaskit/docs@5.0.2
+
+## 5.1.1
+- [patch] Add a SSR test for every package, add react-dom and build-utils in devDependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+- [none] Updated dependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+  - @atlaskit/button@9.0.3
+  - @atlaskit/lozenge@6.1.2
+
 ## 5.1.0
 - [minor] Add new components (Consumer, Provider, Reset and Theme) and deprecate old APIs. New components are marked as experimenta so they may change. Deprecated components can still be used until experimental APIs are finalised. [cd799a5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cd799a5)
 - [none] Updated dependencies [cd799a5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cd799a5)

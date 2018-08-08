@@ -69,8 +69,13 @@ export interface AppDispatchProps {
   readonly onUploadError: (payload: UploadErrorEventPayload) => void;
 }
 
+export interface AppProxyReactContext {
+  getAtlaskitAnalyticsEventHandlers: () => any[];
+}
+
 export interface AppOwnProps {
   store: Store<State>;
+  proxyReactContext?: AppProxyReactContext;
 }
 
 export type AppProps = AppStateProps & AppOwnProps & AppDispatchProps;
@@ -115,7 +120,6 @@ export class App extends Component<AppProps, AppState> {
 
     // We can't just use the given context since the Cards in the recents view needs a different authProvider
     this.mpContext = ContextFactory.create({
-      serviceHost: context.config.serviceHost,
       authProvider: userAuthProvider,
     });
 
@@ -180,7 +184,13 @@ export class App extends Component<AppProps, AppState> {
   }
 
   render() {
-    const { selectedServiceName, isVisible, onClose, store } = this.props;
+    const {
+      selectedServiceName,
+      isVisible,
+      onClose,
+      store,
+      proxyReactContext,
+    } = this.props;
     const { isDropzoneActive } = this.state;
 
     if (!isVisible) {
@@ -190,7 +200,7 @@ export class App extends Component<AppProps, AppState> {
     return (
       <Provider store={store}>
         <ModalDialog onClose={onClose} width="x-large" isChromeless={true}>
-          <PassContext store={store}>
+          <PassContext store={store} proxyReactContext={proxyReactContext}>
             <MediaPickerPopupWrapper>
               <SidebarWrapper>
                 <Sidebar />

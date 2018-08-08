@@ -13,11 +13,10 @@ import {
 } from '@atlaskit/editor-test-helpers';
 
 import {
-  TablePluginState,
   pluginKey,
   getPluginState,
 } from '../../../../src/plugins/table/pm-plugins/main';
-
+import { TablePluginState } from '../../../../src/plugins/table/types';
 import { hoverTable } from '../../../../src/plugins/table/actions';
 import TableFloatingControls from '../../../../src/plugins/table/ui/TableFloatingControls';
 import CornerControls from '../../../../src/plugins/table/ui/TableFloatingControls/CornerControls';

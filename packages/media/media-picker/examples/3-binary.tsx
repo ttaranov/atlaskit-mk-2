@@ -4,7 +4,6 @@ import { Component } from 'react';
 import {
   defaultMediaPickerAuthProvider,
   defaultMediaPickerCollectionName,
-  userAuthProviderBaseURL,
 } from '@atlaskit/media-test-helpers';
 import { MediaPicker, BinaryUploader, BinaryConfig } from '../src';
 import { ContextFactory } from '@atlaskit/media-core';
@@ -19,7 +18,6 @@ class BinaryWrapper extends Component<{}> {
 
   createBinary() {
     const context = ContextFactory.create({
-      serviceHost: userAuthProviderBaseURL,
       authProvider: defaultMediaPickerAuthProvider,
     });
     const config: BinaryConfig = {

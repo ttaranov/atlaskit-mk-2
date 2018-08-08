@@ -1,5 +1,45 @@
 # @atlaskit/global-navigation
 
+## 4.0.3
+- [patch] Updated dependencies [6438477](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6438477)
+  - @atlaskit/drawer@1.0.2
+  - @atlaskit/navigation-next@3.1.3
+
+## 4.0.2
+- [patch] Pass through href for product logo [d40f193](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d40f193)
+- [patch] Updated dependencies [d40f193](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d40f193)
+
+## 4.0.1
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/navigation-next@3.1.1
+  - @atlaskit/onboarding@5.1.3
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/section-message@1.0.3
+  - @atlaskit/drawer@1.0.1
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/badge@9.0.3
+  - @atlaskit/blanket@7.0.3
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/dropdown-menu@6.1.4
+  - @atlaskit/avatar@14.0.5
+  - @atlaskit/modal-dialog@6.0.5
+
+## 4.0.0
+- [major] Support controlled and uncontrolled drawers in Global Navigation. Update icons for starred drawer and help menu. Remove people drawer from Global navigation. [d0733a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d0733a7)
+- [none] Updated dependencies [d0733a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d0733a7)
+  - @atlaskit/navigation-next@3.0.3
+
+## 3.0.2
+- [patch] Update docs, change dev deps [25d6e48](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d6e48)
+- [none] Updated dependencies [25d6e48](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d6e48)
+  - @atlaskit/navigation-next@3.0.2
+  - @atlaskit/avatar@14.0.3
+
+## 3.0.1
+- [patch] Significant overhaul of API. Publish docs. [532892d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/532892d)
+- [patch] Updated dependencies [532892d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/532892d)
+  - @atlaskit/navigation-next@3.0.0
+
 ## 3.0.0
 
 - [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)

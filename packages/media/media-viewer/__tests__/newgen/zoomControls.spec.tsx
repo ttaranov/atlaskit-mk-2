@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import Button from '@atlaskit/button';
 import { ZoomControls, ZoomControlsProps } from '../../src/newgen/zoomControls';
 import { ZoomLevelIndicator } from '../../src/newgen/styled';
-import { ZoomLevel } from '../../src/newgen/domain';
+import { ZoomLevel } from '../../src/newgen/domain/zoomLevel';
 
 describe('Zooming', () => {
   describe('<ZoomControls />', () => {
@@ -11,7 +11,7 @@ describe('Zooming', () => {
       const onChange = jest.fn();
       const component = shallow(
         <ZoomControls
-          zoomLevel={new ZoomLevel()}
+          zoomLevel={new ZoomLevel(1)}
           onChange={onChange}
           {...props}
         />,
@@ -25,7 +25,7 @@ describe('Zooming', () => {
 
     it('should increase and decrease zoom', () => {
       const { component, onChange } = setup();
-      const zoomLevel = new ZoomLevel();
+      const zoomLevel = new ZoomLevel(1);
 
       component
         .find(Button)
@@ -41,7 +41,7 @@ describe('Zooming', () => {
 
     it('should not allow zooming above upper limit', () => {
       const { component, onChange } = setup({
-        zoomLevel: new ZoomLevel(ZoomLevel.MAX),
+        zoomLevel: new ZoomLevel(1).fullyZoomIn(),
       });
       component
         .find(Button)
@@ -52,7 +52,7 @@ describe('Zooming', () => {
 
     it('should not allow zooming below lower limit', () => {
       const { component, onChange } = setup({
-        zoomLevel: new ZoomLevel(ZoomLevel.MIN),
+        zoomLevel: new ZoomLevel(1).fullyZoomOut(),
       });
       component
         .find(Button)

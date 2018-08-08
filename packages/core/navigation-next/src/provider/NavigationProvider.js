@@ -2,14 +2,14 @@
 
 import React, { Component } from 'react';
 import { Provider } from 'unstated';
-import { UIState, ViewState } from '../';
+import { UIController, ViewController } from '..';
 import { CONTENT_NAV_WIDTH } from '../common/constants';
-import type { UIStateShape } from '../ui-state/types';
+import type { UIControllerShape } from '../ui-controller/types';
 import type { NavigationProviderProps } from './types';
 
 const LS_KEY = 'ATLASKIT_NAVIGATION_UI_STATE';
 
-function defaultGetCache(): UIStateShape {
+function defaultGetCache(): UIControllerShape {
   const stored = localStorage.getItem(LS_KEY);
   return stored
     ? JSON.parse(stored)
@@ -22,7 +22,7 @@ function defaultGetCache(): UIStateShape {
       };
 }
 
-function defaultSetCache(state: UIStateShape) {
+function defaultSetCache(state: UIControllerShape) {
   localStorage.setItem(LS_KEY, JSON.stringify(state));
 }
 
@@ -37,29 +37,37 @@ export default class NavigationProvider extends Component<
     initialPeekViewId: null,
     isDebugEnabled: false,
   };
-  uiState: UIState;
-  viewState: ViewState;
+  uiState: UIController;
+  viewController: ViewController;
 
   constructor(props: NavigationProviderProps) {
     super(props);
 
-    const { cache, initialPeekViewId, initialUIState, isDebugEnabled } = props;
-    this.uiState = new UIState(initialUIState, cache);
-    this.viewState = new ViewState({ isDebugEnabled, initialPeekViewId });
+    const {
+      cache,
+      initialPeekViewId,
+      initialUIController,
+      isDebugEnabled,
+    } = props;
+    this.uiState = new UIController(initialUIController, cache);
+    this.viewController = new ViewController({
+      isDebugEnabled,
+      initialPeekViewId,
+    });
   }
 
   componentDidUpdate(prevProps: NavigationProviderProps) {
-    const { viewState } = this;
+    const { viewController } = this;
     const { isDebugEnabled } = this.props;
     if (isDebugEnabled !== prevProps.isDebugEnabled) {
-      viewState.setIsDebugEnabled(!!isDebugEnabled);
+      viewController.setIsDebugEnabled(!!isDebugEnabled);
     }
   }
 
   render() {
     const { children } = this.props;
-    const { uiState, viewState } = this;
+    const { uiState, viewController } = this;
 
-    return <Provider inject={[uiState, viewState]}>{children}</Provider>;
+    return <Provider inject={[uiState, viewController]}>{children}</Provider>;
   }
 }

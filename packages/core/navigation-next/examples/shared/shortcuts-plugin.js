@@ -3,11 +3,14 @@
 import { Component } from 'react';
 import AddIcon from '@atlaskit/icon/glyph/add';
 import ShortcutIcon from '@atlaskit/icon/glyph/shortcut';
-import { viewReducerUtils, withNavigationViews } from '../../src';
+import { viewReducerUtils, withNavigationViewController } from '../../src';
 
 const { appendChildren, findId } = viewReducerUtils;
 
-class Shortcuts extends Component<{ navigationViews: any }, { items: any[] }> {
+class Shortcuts extends Component<
+  { navigationViewController: any },
+  { items: any[] },
+> {
   state = {
     items: [],
   };
@@ -34,8 +37,8 @@ class Shortcuts extends Component<{ navigationViews: any }, { items: any[] }> {
   }
 
   registerReducer() {
-    const { navigationViews } = this.props;
-    navigationViews.addReducer(
+    const { navigationViewController } = this.props;
+    navigationViewController.addReducer(
       'container/project/index',
       this.reducer,
       'shortcuts',
@@ -43,8 +46,11 @@ class Shortcuts extends Component<{ navigationViews: any }, { items: any[] }> {
   }
 
   unregisterReducer() {
-    const { navigationViews } = this.props;
-    navigationViews.removeReducer('container/project/index', this.reducer);
+    const { navigationViewController } = this.props;
+    navigationViewController.removeReducer(
+      'container/project/index',
+      this.reducer,
+    );
   }
 
   onAddItemClick = () => {
@@ -75,4 +81,4 @@ class Shortcuts extends Component<{ navigationViews: any }, { items: any[] }> {
   }
 }
 
-export default withNavigationViews(Shortcuts);
+export default withNavigationViewController(Shortcuts);

@@ -93,7 +93,9 @@ export class RemoteMediaCollectionProvider implements MediaCollectionProvider {
         .then(res => {
           let reachedFirstOldItem = false;
           for (let newItem of res.items) {
-            const { details: { id, occurrenceKey } } = newItem;
+            const {
+              details: { id, occurrenceKey },
+            } = newItem;
             const reachedFirstItemAlreadyInCollection =
               id === oldFirstItemId &&
               occurrenceKey === oldFirstItemOccurrenceKey;

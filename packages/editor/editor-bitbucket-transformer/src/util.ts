@@ -14,13 +14,20 @@ export function stringRepeat(text: string, length: number): string {
  * formatting by Bitbucket server (via python-markdown).
  * @see MarkdownSerializerState.esc()
  */
-export function escapeMarkdown(str: string, startOfLine?: boolean): string {
+export function escapeMarkdown(
+  str: string,
+  startOfLine?: boolean,
+  insideTable?: boolean,
+): string {
   let strToEscape = str || '';
-  strToEscape = strToEscape.replace(/[`*\\+_|()\[\]{}]/g, '\\$&');
+  strToEscape = strToEscape.replace(/[`*\\+_()\[\]{}]/g, '\\$&');
   if (startOfLine) {
     strToEscape = strToEscape
       .replace(/^[#-&(-*]/, '\\$&') // Don't escape ' character
       .replace(/^(\d+)\./, '$1\\.');
+  }
+  if (insideTable) {
+    strToEscape = strToEscape.replace(/[|]/g, '\\$&');
   }
   return strToEscape;
 }

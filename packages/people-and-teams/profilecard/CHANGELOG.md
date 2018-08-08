@@ -1,5 +1,39 @@
 # @atlaskit/profilecard
 
+## 4.0.3
+- [patch] Bumping dependency on util-data-test [597e0bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/597e0bd)
+
+
+
+
+- [none] Updated dependencies [597e0bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/597e0bd)
+  - @atlaskit/util-data-test@10.0.3
+- [none] Updated dependencies [61df453](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/61df453)
+  - @atlaskit/util-data-test@10.0.3
+- [none] Updated dependencies [812a39c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/812a39c)
+  - @atlaskit/dynamic-table@10.0.6
+  - @atlaskit/util-data-test@10.0.3
+- [none] Updated dependencies [c8eb097](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8eb097)
+  - @atlaskit/util-data-test@10.0.3
+- [none] Updated dependencies [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+  - @atlaskit/util-data-test@10.0.3
+
+## 4.0.2
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/util-data-test@10.0.2
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/dynamic-table@10.0.5
+  - @atlaskit/button@9.0.4
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/spinner@9.0.4
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/layer@5.0.3
+  - @atlaskit/avatar@14.0.5
+
+## 4.0.1
+- [patch] Remove $FlowFixMe, move styled-components to peerDependencies and move tests under src and a unit folder [36b595c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36b595c)
+- [none] Updated dependencies [36b595c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36b595c)
+
 ## 4.0.0
 
 - [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)

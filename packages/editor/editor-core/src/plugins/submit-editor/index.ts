@@ -38,7 +38,12 @@ export function createPlugin(
 
 const submitEditorPlugin: EditorPlugin = {
   pmPlugins() {
-    return [{ rank: 0, plugin: ({ props }) => createPlugin(props.onSave) }];
+    return [
+      {
+        name: 'submitEditor',
+        plugin: ({ props }) => createPlugin(props.onSave),
+      },
+    ];
   },
 };
 
