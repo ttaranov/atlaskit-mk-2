@@ -273,10 +273,16 @@ export class MediaGridView extends Component<
 
   deleteImage = (index: number) => {
     const { onItemsChange } = this.props;
+    const { selected } = this.state;
     const items = [...this.props.items];
 
-    items.splice(index, 1);
+    if (selected !== -1) {
+      if (index < selected) {
+        this.setState({ selected: selected - 1 });
+      }
+    }
 
+    items.splice(index, 1);
     onItemsChange(items);
   };
 
