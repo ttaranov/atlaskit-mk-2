@@ -182,6 +182,8 @@ export class MediaGridView extends Component<
     event.preventDefault();
   }
 
+  deleteImage = (index: number) => {};
+
   render() {
     const { items, itemsPerRow, width } = this.props;
     const rows: JSX.Element[] = [];
