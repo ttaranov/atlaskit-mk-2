@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import ReactGA from 'react-ga';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+const analytics = require('./AtlassianAnalytics');
+var pjson = require('../../../package.json');
 
 let mounted = 0;
 
@@ -31,6 +33,15 @@ const getApdex = () => {
     nonInteraction: true,
     label: `seconds:${(timing / 1000).toFixed(1)}`,
   });
+
+  const request = analytics.request({ version: pjson.version });
+  const attributes = {
+    apdex: apdex,
+    loadTimeInMs: timing,
+    path: window.location.pathname,
+  };
+  request.add(`atlaskit.website.performance`, attributes);
+  request.send();
 };
 
 class GoogleAnalyticsListener extends Component {
