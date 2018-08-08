@@ -165,15 +165,14 @@ const marksArePresent = (state: EditorState) => {
   const activeMarkTypes = FORMATTING_MARK_TYPES.filter(mark => {
     if (!!state.schema.marks[mark]) {
       const { $from, empty } = state.selection;
+      const { marks } = state.schema;
       if (empty) {
-        return !!state.schema.marks[mark].isInSet(
-          state.storedMarks || $from.marks(),
-        );
+        return !!marks[mark].isInSet(state.storedMarks || $from.marks());
       }
-      if (mark === state.schema.marks.code.name) {
-        return markActive(state, state.schema.marks.code.create());
+      if (marks.code && mark === marks.code.name) {
+        return markActive(state, marks.code.create());
       }
-      return anyMarkActive(state, state.schema.marks[mark]);
+      return anyMarkActive(state, marks[mark]);
     }
     return false;
   });
