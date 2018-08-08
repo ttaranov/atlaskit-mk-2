@@ -40,7 +40,7 @@ export default class IconLabel extends PureComponent<Props> {
 
     const IconElement = this.props.icon && icons[this.props.icon];
     const displayIcon = IconElement ? (
-      <IconElement label={`icon ${this.props.icon}`} />
+      <IconElement label={`icon ${this.props.icon}`} size="small" />
     ) : null;
 
     return (
