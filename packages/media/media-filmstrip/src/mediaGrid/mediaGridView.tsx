@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
-import { colors } from '@atlaskit/theme';
+import Button from '@atlaskit/button';
 import {
   Wrapper,
   RowWrapper,
@@ -48,6 +48,8 @@ export class MediaGridView extends Component<
   MediaGridViewProps,
   MediaGridViewState
 > {
+  wrapperElement?: HTMLElement;
+
   state: MediaGridViewState = {
     selected: -1,
     isDragging: false,
@@ -62,11 +64,13 @@ export class MediaGridView extends Component<
   componentDidMount() {
     document.addEventListener('dragover', this.preventDefault);
     document.addEventListener('keydown', this.onKeyDown);
+    document.addEventListener('click', this.onDocumentClick);
   }
 
   componentWillUnmount() {
     document.removeEventListener('dragover', this.preventDefault);
     document.removeEventListener('keydown', this.onKeyDown);
+    document.removeEventListener('click', this.onDocumentClick);
   }
 
   onKeyDown = (event: KeyboardEvent) => {
@@ -175,7 +179,7 @@ export class MediaGridView extends Component<
         className="remove-img-wrapper"
         onClick={this.onRemoveIconClick(index)}
       >
-        <CrossIcon label="remove" />
+        <Button appearance="subtle" iconBefore={<CrossIcon label="remove" />} />
       </RemoveIconWrapper>
     );
   };
@@ -241,6 +245,22 @@ export class MediaGridView extends Component<
     event.preventDefault();
   }
 
+  // we want to remove the selected image if the Grid loses the focus
+  onDocumentClick = event => {
+    const { wrapperElement } = this;
+    const { selected } = this.state;
+
+    if (
+      wrapperElement &&
+      !wrapperElement.contains(event.target) &&
+      selected !== -1
+    ) {
+      this.setState({
+        selected: -1,
+      });
+    }
+  };
+
   deleteImage = (index: number) => {
     const { onItemsChange } = this.props;
     const items = [...this.props.items];
@@ -248,6 +268,12 @@ export class MediaGridView extends Component<
     items.splice(index, 1);
 
     onItemsChange(items);
+  };
+
+  saveWrapperRef = (ref?: HTMLElement) => {
+    if (ref) {
+      this.wrapperElement = ref;
+    }
   };
 
   render() {
@@ -294,6 +320,6 @@ export class MediaGridView extends Component<
         </RowWrapper>,
       );
     }
-    return <Wrapper>{rows}</Wrapper>;
+    return <Wrapper innerRef={this.saveWrapperRef}>{rows}</Wrapper>;
   }
 }
