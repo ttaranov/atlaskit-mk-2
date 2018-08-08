@@ -86,7 +86,7 @@ describe('NavigationNext UI Controller: UIController', () => {
     });
   });
 
-  it('should manually styop the resize event', () => {
+  it('should manually stop the resize event', () => {
     const uiController = new UIController(initialState, cacheController);
     const resizeData = {
       productNavWidth: 200,
