@@ -26,4 +26,5 @@ export type ListenerFunction = (event: EventNextType) => void;
 export enum FabricChannel {
   atlaskit = 'atlaskit',
   elements = 'elements',
+  navigation = 'navigation',
 }

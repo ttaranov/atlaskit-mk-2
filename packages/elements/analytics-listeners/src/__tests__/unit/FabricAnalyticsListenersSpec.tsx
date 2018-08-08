@@ -8,10 +8,12 @@ import {
   DummyComponent,
   IncorrectEventType,
   DummyAtlaskitComponentWithAnalytics,
+  DummyNavigationComponentWithAnalytics,
 } from '../../../examples/helpers';
 import { AnalyticsWebClient } from '../../types';
 import { LOG_LEVEL } from '../../helpers/logger';
 import { FabricChannel } from '../..';
+import NavigationListener from '../../navigation/NavigationListener';
 
 declare const global: any;
 
@@ -82,9 +84,14 @@ describe('<FabricAnalyticsListeners />', () => {
         </FabricAnalyticsListeners>,
       );
 
-      const ElementsListener = component.find(FabricElementsListener);
+      const elementsListener = component.find(FabricElementsListener);
 
-      expect(ElementsListener).toHaveLength(1);
+      expect(elementsListener).toHaveLength(1);
+      expect(elementsListener.props()).toEqual(
+        expect.objectContaining({
+          client: clientPromise,
+        }),
+      );
     });
 
     it('should render an AtlaskitListener', () => {
@@ -97,6 +104,28 @@ describe('<FabricAnalyticsListeners />', () => {
       const atlaskitListener = component.find(AtlaskitListener);
 
       expect(atlaskitListener).toHaveLength(1);
+      expect(atlaskitListener.props()).toEqual(
+        expect.objectContaining({
+          client: clientPromise,
+        }),
+      );
+    });
+
+    it('should render a NavigationListener', () => {
+      const component = shallow(
+        <FabricAnalyticsListeners client={clientPromise}>
+          <div>Child</div>
+        </FabricAnalyticsListeners>,
+      );
+
+      const navigationListener = component.find(NavigationListener);
+
+      expect(navigationListener).toHaveLength(1);
+      expect(navigationListener.props()).toEqual(
+        expect.objectContaining({
+          client: clientPromise,
+        }),
+      );
     });
 
     it('should exclude the AtlaskitListener if excludedChannels includes atlaskit', () => {
@@ -133,6 +162,27 @@ describe('<FabricAnalyticsListeners />', () => {
 
       const atlaskitListener = component.find(AtlaskitListener);
       expect(atlaskitListener).toHaveLength(1);
+    });
+
+    it('should exclude the NavigationListener if excludedChannels includes navigation', () => {
+      const component = shallow(
+        <FabricAnalyticsListeners
+          client={clientPromise}
+          excludedChannels={[FabricChannel.navigation]}
+        >
+          <div>Child</div>
+        </FabricAnalyticsListeners>,
+      );
+
+      const navigationListener = component.find(NavigationListener);
+
+      expect(navigationListener).toHaveLength(0);
+
+      const atlaskitListener = component.find(AtlaskitListener);
+      expect(atlaskitListener).toHaveLength(1);
+
+      const elementsListener = component.find(FabricElementsListener);
+      expect(elementsListener).toHaveLength(1);
     });
 
     it('should exclude both atlaskit and elements listeners if excludedChannels includes both their channels', () => {
@@ -203,7 +253,30 @@ describe('<FabricAnalyticsListeners />', () => {
         </FabricAnalyticsListeners>,
       );
 
-      const analyticsListener = component.find(FabricElementsListener);
+      const analyticsListener = component.find(AtlaskitListener);
+      expect(analyticsListener.props()).toHaveProperty('client', clientPromise);
+
+      const dummyComponent = analyticsListener.find(DummyComponent);
+      expect(dummyComponent).toHaveLength(1);
+
+      dummyComponent.simulate('click');
+
+      return clientPromise.then(client =>
+        expect(client.sendUIEvent).toBeCalled(),
+      );
+    });
+  });
+
+  describe('<NavigationListener />', () => {
+    it('should listen and fire a UI event with analyticsWebClient', () => {
+      const compOnClick = jest.fn();
+      const component = mount(
+        <FabricAnalyticsListeners client={clientPromise}>
+          <DummyNavigationComponentWithAnalytics onClick={compOnClick} />
+        </FabricAnalyticsListeners>,
+      );
+
+      const analyticsListener = component.find(NavigationListener);
       expect(analyticsListener.props()).toHaveProperty('client', clientPromise);
 
       const dummyComponent = analyticsListener.find(DummyComponent);

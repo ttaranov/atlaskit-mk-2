@@ -6,7 +6,8 @@ import {
   DummyComponentWithAnalytics,
   DummyAtlaskitComponentWithAnalytics,
   DummyComponentWithAttributesWithAnalytics,
-} from '../examples/helpers';
+  DummyNavigationComponentWithAnalytics,
+} from './helpers';
 
 const myOnClickHandler = () => {
   console.log('Button clicked ! Yay!');
@@ -46,6 +47,8 @@ export default function Example() {
         </AnalyticsContext>
 
         <DummyAtlaskitComponentWithAnalytics onClick={myOnClickHandler} />
+
+        <DummyNavigationComponentWithAnalytics onClick={myOnClickHandler} />
       </div>
     </FabricAnalyticsListeners>
   );
