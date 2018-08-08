@@ -62,6 +62,40 @@ describe('MediaGridView', () => {
     ).toHaveLength(3);
   });
 
+  it('should have 4 items per row', () => {
+    const component = shallow(
+      <MediaGridView
+        itemsPerRow={4}
+        items={gridItems.slice(0, 9)}
+        onItemsChange={onItemsChange}
+      />,
+    );
+    expect(
+      component
+        .find(RowWrapper)
+        .at(0)
+        .find('img'),
+    ).toHaveLength(4);
+  });
+
+  it('should have remaining items on last row', () => {
+    const component = shallow(
+      <MediaGridView
+        itemsPerRow={5}
+        items={gridItems.slice(0, 9)}
+        onItemsChange={onItemsChange}
+      />,
+    );
+    // First row 5
+    // Second row 4
+    expect(
+      component
+        .find(RowWrapper)
+        .at(1)
+        .find('img'),
+    ).toHaveLength(4);
+  });
+
   it('should choose appropriate height 1', () => {
     /*
     Original images sizes: {800x1600}, {1200x1600}.
