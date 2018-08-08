@@ -3,9 +3,37 @@
   "compilerOptions": {
     "declaration": true,
     "outDir": "../../dist/es5",
-    "lib": ["dom", "es6"],
+    "lib": [
+      "dom",
+      "es6"
+    ],
     "target": "es5",
-    "module": "commonjs"
+    "module": "commonjs",
+    "rootDir": "../../src",
+    "composite": true
   },
-  "include": ["../../src/**/*.ts", "../../src/**/*.tsx"]
+  "include": [
+    "../../src/**/*.ts",
+    "../../src/**/*.tsx"
+  ],
+  "references": [
+    {
+      "path": "../../../editor-common/build/es5/tsconfig.json"
+    },
+    {
+      "path": "../../../editor-json-transformer/build/es5/tsconfig.json"
+    },
+    {
+      "path": "../../../../media/media-card/build/es5/tsconfig.json"
+    },
+    {
+      "path": "../../../../media/media-filmstrip/build/es5/tsconfig.json"
+    },
+    {
+      "path": "../../../../elements/mention/build/es5/tsconfig.json"
+    },
+    {
+      "path": "../../../../elements/task-decision/build/es5/tsconfig.json"
+    }
+  ]
 }

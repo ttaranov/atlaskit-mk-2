@@ -7,5 +7,22 @@
     "target": "es5",
     "module": "commonjs"
   },
-  "include": ["../../src/**/*.ts", "../../src/**/*.tsx"]
+  "include": [
+    "../../src/**/*.ts",
+    "../../src/**/*.tsx"
+  ],
+  "references": [
+    {
+      "path": "../../../editor-common/build/es5/tsconfig.json"
+    },
+    {
+      "path": "../../../editor-core/build/es5/tsconfig.json"
+    },
+    {
+      "path": "../../../../elements/reactions/build/es5/tsconfig.json"
+    },
+    {
+      "path": "../../../renderer/build/es5/tsconfig.json"
+    }
+  ]
 }

@@ -3,8 +3,21 @@
   "compilerOptions": {
     "declaration": true,
     "outDir": "../../dist/es5",
-    "lib": ["dom", "es6"],
-    "target": "es5"
+    "lib": [
+      "dom",
+      "es6"
+    ],
+    "target": "es5",
+    "rootDir": "../../src",
+    "composite": true
   },
-  "include": ["../../src/**/*.ts", "../../src/**/*.tsx"]
+  "include": [
+    "../../src/**/*.ts",
+    "../../src/**/*.tsx"
+  ],
+  "references": [
+    {
+      "path": "../../../media-ui/build/es5/tsconfig.json"
+    }
+  ]
 }

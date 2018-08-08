@@ -10,5 +10,10 @@
   "include": [
     "../../src/**/*.ts",
     "../../src/**/*.tsx"
+  ],
+  "references": [
+    {
+      "path": "../../../../elements/util-service-support/build/es5/tsconfig.json"
+    }
   ]
 }

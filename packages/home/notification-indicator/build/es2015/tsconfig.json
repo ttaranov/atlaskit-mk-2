@@ -9,5 +9,10 @@
   "include": [
     "../../src/**/*.ts",
     "../../src/**/*.tsx"
+  ],
+  "references": [
+    {
+      "path": "../../../notification-log-client/build/es5/tsconfig.json"
+    }
   ]
 }

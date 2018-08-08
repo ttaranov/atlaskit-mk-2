@@ -4,13 +4,27 @@
     "declaration": true,
     "outDir": "../../dist/es5",
     "rootDir": "../../src",
-    "lib": ["dom", "es6"],
+    "lib": [
+      "dom",
+      "es6"
+    ],
     "target": "es5",
-    "module": "commonjs"
+    "module": "commonjs",
+    "composite": true
   },
   "include": [
     "../../src/**/*.ts",
     "../../src/**/*.tsx"
   ],
-  "exclude": ["../../src/**/__tests__/*"],
+  "exclude": [
+    "../../src/**/__tests__/*"
+  ],
+  "references": [
+    {
+      "path": "../../../analytics-gas-types/build/es5/tsconfig.json"
+    },
+    {
+      "path": "../../../util-service-support/build/es5/tsconfig.json"
+    }
+  ]
 }

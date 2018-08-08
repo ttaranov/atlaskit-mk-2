@@ -10,5 +10,19 @@
   "include": [
     "../../src/**/*.ts",
     "../../src/**/*.tsx"
+  ],
+  "references": [
+    {
+      "path": "../../../emoji/build/es5/tsconfig.json"
+    },
+    {
+      "path": "../../../mention/build/es5/tsconfig.json"
+    },
+    {
+      "path": "../../../task-decision/build/es5/tsconfig.json"
+    },
+    {
+      "path": "../../../util-service-support/build/es5/tsconfig.json"
+    }
   ]
 }

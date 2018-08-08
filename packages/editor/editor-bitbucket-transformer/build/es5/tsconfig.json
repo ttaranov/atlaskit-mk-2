@@ -13,5 +13,10 @@
   "include": [
     "../../src/**/*.ts",
     "../../src/**/*.tsx"
+  ],
+  "references": [
+    {
+      "path": "../../../editor-common/build/es5/tsconfig.json"
+    }
   ]
 }
