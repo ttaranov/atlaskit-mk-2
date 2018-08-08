@@ -127,17 +127,28 @@ export class MediaGridView extends Component<
   };
 
   moveImage = () => {
-    const { draggingIndex } = this.state;
+    const { draggingIndex, selected } = this.state;
     const { onItemsChange } = this.props;
+    const items = [...this.props.items];
 
     let dropIndex = this.state.dropIndex!;
 
-    const items = [...this.props.items];
     const draggingItem = items.splice(draggingIndex, 1)[0];
     if (dropIndex > draggingIndex) {
       dropIndex -= 1;
     }
 
+    // If we are dragging across the selected image, we need to increment
+    // or decrement the selected image index
+    let newSelected = selected;
+    if (selected !== -1) {
+      if (draggingIndex < selected && dropIndex > selected) {
+        newSelected -= 1;
+      } else if (dropIndex < selected && draggingIndex > selected) {
+        newSelected += 1;
+      }
+    }
+    this.setState({ selected: newSelected });
     items.splice(dropIndex, 0, draggingItem);
     onItemsChange(items);
   };
@@ -151,7 +162,6 @@ export class MediaGridView extends Component<
 
   onClick = (index: number) => () => {
     this.setState({
-      ...this.state,
       selected: index,
     });
   };
