@@ -182,6 +182,12 @@ const variations: Array<VariationCategory> = [
         subText: 'Sub text',
       },
       {
+        after: EditIcon,
+        before: BoardIcon,
+        isSelected: true,
+        text: 'Selected',
+      },
+      {
         after: BadgeOrCloseOnHover,
         before: ConfiguredAvatar,
         isSelected: true,
