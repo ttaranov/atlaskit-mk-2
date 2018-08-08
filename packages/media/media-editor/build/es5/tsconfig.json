@@ -15,5 +15,10 @@
   "include": [
     "../../src/**/*.ts",
     "../../src/**/*.tsx"
+  ],
+  "references": [
+    {
+      "path": "../../../media-core/build/es5/tsconfig.json"
+    }
   ]
 }

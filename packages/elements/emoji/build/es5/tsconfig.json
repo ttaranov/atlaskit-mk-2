@@ -22,6 +22,9 @@
   "references": [
     {
       "path": "../../../util-service-support/build/es5/tsconfig.json"
+    },
+    {
+      "path": "../../../../media/media-core/build/es5/tsconfig.json"
     }
   ]
 }

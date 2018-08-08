@@ -42,6 +42,9 @@
       "path": "../../../../elements/mention/build/es5/tsconfig.json"
     },
     {
+      "path": "../../../../media/media-core/build/es5/tsconfig.json"
+    },
+    {
       "path": "../../../../elements/task-decision/build/es5/tsconfig.json"
     }
   ]

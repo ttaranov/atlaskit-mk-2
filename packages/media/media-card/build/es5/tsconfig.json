@@ -22,6 +22,9 @@
     },
     {
       "path": "../../../smart-card/build/es5/tsconfig.json"
+    },
+    {
+      "path": "../../../media-core/build/es5/tsconfig.json"
     }
   ]
 }
