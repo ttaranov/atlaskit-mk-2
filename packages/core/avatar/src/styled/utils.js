@@ -1,5 +1,4 @@
 // @flow
-import { css } from 'styled-components';
 import { colors, themed } from '@atlaskit/theme';
 import {
   AVATAR_RADIUS,

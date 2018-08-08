@@ -1,6 +1,5 @@
 // @flow
 import React from 'react';
-import styled, { css } from 'styled-components';
 import { css as emotionCSS } from 'emotion';
 import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 import type { AvatarClickType } from '../types';
@@ -120,7 +119,6 @@ export function getStyles({
 }
 
 const truncateTextCSS = props => {
-  console.log(props);
   return (
     props.truncate && {
       overflowX: 'hidden;',
@@ -148,12 +146,6 @@ export const Content = props => (
   />
 );
 
-export const scContent = styled.div`
-  ${truncateTextFlexParentCSS} flex: 1 1 100%;
-  line-height: 1.4;
-  padding-left: ${gridSize}px;
-`;
-
 export const PrimaryText = props => (
   <div
     className={emotionCSS({
@@ -163,9 +155,6 @@ export const PrimaryText = props => (
     {...props}
   />
 );
-export const scPrimaryText = styled.div`
-  ${truncateTextCSS} color: ${colors.text};
-`;
 
 export const SecondaryText = props => (
   <div
@@ -177,8 +166,3 @@ export const SecondaryText = props => (
     {...props}
   />
 );
-export const scSecondaryText = styled.div`
-  ${truncateTextCSS}
-  color: ${colors.subtleText};
-  font-size: 0.85em;
-`;
