@@ -2,16 +2,23 @@ import * as React from 'react';
 import AnalyticsEventFiredOnMount from '../analytics/AnalyticsEventFiredOnMount';
 import { buildScreenEvent, Screen } from '../../util/analytics-util';
 
-const getAnalyticsComponent = (screenCounter, searchSessionId, analyticsKey) =>
+const getAnalyticsComponent = (
+  subscreen: Screen,
+  screenCounter,
+  searchSessionId,
+  analyticsKey,
+  referralContextIdentifiers,
+) =>
   screenCounter ? (
     <AnalyticsEventFiredOnMount
       key={analyticsKey}
       onEventFired={() => screenCounter.increment()}
       payloadProvider={() =>
         buildScreenEvent(
-          Screen.POST_QUERY,
+          subscreen,
           screenCounter.getCount(),
           searchSessionId,
+          referralContextIdentifiers,
         )
       }
     />
@@ -20,11 +27,25 @@ const getAnalyticsComponent = (screenCounter, searchSessionId, analyticsKey) =>
 export const PreQueryAnalyticsComponent = ({
   screenCounter,
   searchSessionId,
+  referralContextIdentifiers,
 }) =>
-  getAnalyticsComponent(screenCounter, searchSessionId, 'preQueryScreenEvent');
+  getAnalyticsComponent(
+    Screen.PRE_QUERY,
+    screenCounter,
+    searchSessionId,
+    'preQueryScreenEvent',
+    referralContextIdentifiers,
+  );
 
 export const PostQueryAnalyticsComponent = ({
   screenCounter,
   searchSessionId,
+  referralContextIdentifiers,
 }) =>
-  getAnalyticsComponent(screenCounter, searchSessionId, 'postQueryScreenEvent');
+  getAnalyticsComponent(
+    Screen.POST_QUERY,
+    screenCounter,
+    searchSessionId,
+    'postQueryScreenEvent',
+    referralContextIdentifiers,
+  );

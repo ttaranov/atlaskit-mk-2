@@ -6,6 +6,7 @@ import { take } from '../SearchResultsUtil';
 import ResultsGroup from '../ResultGroup';
 import { PostQueryAnalyticsComponent } from './ScreenAnalyticsHelper';
 import AdvancedSearchGroup from './AdvancedSearchGroup';
+import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
 
 const MAX_PAGES_BLOGS_ATTACHMENTS = 8;
 const MAX_SPACES = 3;
@@ -18,6 +19,7 @@ export interface Props {
   peopleResults: Result[];
   searchSessionId: string;
   screenCounter?: ScreenCounter;
+  referralContextIdentifiers?: ReferralContextIdentifiers;
 }
 
 export default class SearchResultsState extends React.Component<Props> {
@@ -29,6 +31,7 @@ export default class SearchResultsState extends React.Component<Props> {
       peopleResults,
       searchSessionId,
       screenCounter,
+      referralContextIdentifiers,
     } = this.props;
 
     let sectionIndex = 0;
@@ -81,6 +84,7 @@ export default class SearchResultsState extends React.Component<Props> {
         key="post-query-analytics"
         screenCounter={screenCounter}
         searchSessionId={searchSessionId}
+        referralContextIdentifiers={referralContextIdentifiers}
       />,
     ];
   }
