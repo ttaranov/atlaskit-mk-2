@@ -1,5 +1,5 @@
 // @flow
-import UIController from '../UIController';
+import UIController from '../../UIController';
 
 const initialState = {
   isPeekHinting: true,
