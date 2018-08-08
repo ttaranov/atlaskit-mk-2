@@ -1,7 +1,6 @@
 import Logger from './helpers/logger';
 import { ELEMENTS_CHANNEL } from './FabricElementsListener';
 import { ATLASKIT_CHANNEL } from './atlaskit/AtlaskitListener';
-import { FABRIC_CHANNELS } from './index';
 
 export type AnalyticsWebClient = {
   sendUIEvent: (event: any) => void;

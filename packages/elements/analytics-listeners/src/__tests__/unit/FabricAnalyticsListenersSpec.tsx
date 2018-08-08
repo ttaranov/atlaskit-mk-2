@@ -1,12 +1,9 @@
 import * as React from 'react';
 import { mount, shallow } from 'enzyme';
 import FabricAnalyticsListeners from '../../FabricAnalyticsListeners';
-import FabricElementsListener, {
-  ELEMENTS_CHANNEL,
-} from '../../FabricElementsListener';
-import AtlaskitListener, {
-  ATLASKIT_CHANNEL,
-} from '../../atlaskit/AtlaskitListener';
+import { FABRIC_CHANNELS } from '../../index';
+import FabricElementsListener from '../../FabricElementsListener';
+import AtlaskitListener from '../../atlaskit/AtlaskitListener';
 import {
   DummyComponentWithAnalytics,
   DummyComponent,
@@ -106,7 +103,7 @@ describe('<FabricAnalyticsListeners />', () => {
       const component = shallow(
         <FabricAnalyticsListeners
           client={clientPromise}
-          excludedChannels={[ATLASKIT_CHANNEL]}
+          excludedChannels={[FABRIC_CHANNELS.atlaskit]}
         >
           <div>Child</div>
         </FabricAnalyticsListeners>,
@@ -124,7 +121,7 @@ describe('<FabricAnalyticsListeners />', () => {
       const component = shallow(
         <FabricAnalyticsListeners
           client={clientPromise}
-          excludedChannels={[ELEMENTS_CHANNEL]}
+          excludedChannels={[FABRIC_CHANNELS.elements]}
         >
           <div>Child</div>
         </FabricAnalyticsListeners>,
@@ -142,7 +139,10 @@ describe('<FabricAnalyticsListeners />', () => {
       const component = shallow(
         <FabricAnalyticsListeners
           client={clientPromise}
-          excludedChannels={[ELEMENTS_CHANNEL, ATLASKIT_CHANNEL]}
+          excludedChannels={[
+            FABRIC_CHANNELS.elements,
+            FABRIC_CHANNELS.atlaskit,
+          ]}
         >
           <div>Child</div>
         </FabricAnalyticsListeners>,
