@@ -12,6 +12,13 @@ import EmojiTypeAheadComponent, {
 import Popup from '../common/Popup';
 import debug from '../../util/logger';
 
+const emojiTypeAheadModuleLoader = () =>
+  import(/* webpackChunkName:"@atlaskit-internal_emojiTypeAheadComponent" */ './EmojiTypeAheadComponent');
+
+const emojiTypeAheadComponentLoader: () => Promise<
+  typeof EmojiTypeAheadComponent
+> = () => emojiTypeAheadModuleLoader().then(module => module.default);
+
 export interface Props extends EmojiTypeAheadBaseProps, LoadingProps {
   /** CSS selector, or target HTML element */
   target?: string | HTMLElement;
@@ -25,6 +32,8 @@ export default class EmojiTypeahead extends LoadingEmojiComponent<
   Props,
   LoadingState
 > {
+  static LazyEmojiTypeAheadComponent: typeof EmojiTypeAheadComponent;
+
   constructor(props) {
     super(props, {});
   }
@@ -54,6 +63,17 @@ export default class EmojiTypeahead extends LoadingEmojiComponent<
     return 0;
   };
 
+  async lazyLoadEmojiTypeAheadComponent() {
+    if (!EmojiTypeahead.LazyEmojiTypeAheadComponent) {
+      EmojiTypeahead.LazyEmojiTypeAheadComponent = await emojiTypeAheadComponentLoader();
+      this.forceUpdate();
+    }
+  }
+
+  componentDidMount() {
+    this.lazyLoadEmojiTypeAheadComponent();
+  }
+
   renderLoaded(loadedEmojiProvider: EmojiProvider) {
     const {
       emojiProvider,
@@ -65,8 +85,14 @@ export default class EmojiTypeahead extends LoadingEmojiComponent<
       ...otherProps
     } = this.props;
 
+    const { LazyEmojiTypeAheadComponent } = EmojiTypeahead;
+    if (!LazyEmojiTypeAheadComponent) {
+      // spinner??
+      return null;
+    }
+
     const typeAhead = (
-      <EmojiTypeAheadComponent
+      <LazyEmojiTypeAheadComponent
         {...otherProps}
         emojiProvider={loadedEmojiProvider}
         ref="typeAhead"

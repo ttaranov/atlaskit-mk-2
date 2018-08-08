@@ -11,6 +11,12 @@ import { OnEmojiEvent } from '../../types';
 import { EmojiProvider } from '../../api/EmojiResource';
 import { FireAnalyticsEvent, withAnalytics } from '@atlaskit/analytics';
 
+const emojiPickerModuleLoader = () =>
+  import(/* webpackChunkName:"@atlaskit-internal_emojiPickerComponent" */ './EmojiPickerComponent');
+
+const emojiPickerLoader: () => Promise<typeof EmojiPickerComponent> = () =>
+  emojiPickerModuleLoader().then(module => module.default);
+
 export interface Props extends LoadingProps {
   onSelection?: OnEmojiEvent;
   onPickerRef?: PickerRefHandler;
@@ -22,8 +28,21 @@ export class EmojiPickerInternal extends LoadingEmojiComponent<
   Props,
   LoadingState
 > {
+  static LazyEmojiPickerComponent: typeof EmojiPickerComponent;
+
   constructor(props) {
     super(props, {});
+  }
+
+  async lazyLoadEmojiPickerComponent() {
+    if (!EmojiPickerInternal.LazyEmojiPickerComponent) {
+      EmojiPickerInternal.LazyEmojiPickerComponent = await emojiPickerLoader();
+    }
+    this.forceUpdate();
+  }
+
+  componentDidMount() {
+    this.lazyLoadEmojiPickerComponent();
   }
 
   renderLoading(): JSX.Element | null {
@@ -42,9 +61,13 @@ export class EmojiPickerInternal extends LoadingEmojiComponent<
 
   renderLoaded(loadedEmojiProvider: EmojiProvider) {
     const { emojiProvider, ...otherProps } = this.props;
-
+    const { LazyEmojiPickerComponent } = EmojiPickerInternal;
+    if (!LazyEmojiPickerComponent) {
+      // spinner??
+      return null;
+    }
     return (
-      <EmojiPickerComponent
+      <LazyEmojiPickerComponent
         emojiProvider={loadedEmojiProvider}
         {...otherProps}
       />
