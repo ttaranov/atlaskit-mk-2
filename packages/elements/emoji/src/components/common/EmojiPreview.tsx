@@ -5,8 +5,8 @@ import * as classNames from 'classnames';
 import AddIcon from '@atlaskit/icon/glyph/add';
 import AkButton from '@atlaskit/button';
 import * as styles from './styles';
-import EmojiButton from '../../components/common/EmojiButton';
-import CachingEmoji from '../../components/common/CachingEmoji';
+import EmojiButton from './EmojiButton';
+import CachingEmoji from './CachingEmoji';
 import ToneSelector from './ToneSelector';
 import {
   EmojiDescription,

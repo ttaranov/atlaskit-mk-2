@@ -62,7 +62,7 @@ export default function createEditorForTests<T = any>({
           <>
             <TestReactEditorView
               editorProps={editorProps}
-              portalProviderAPI={portalProvider}
+              portalProviderAPI={portalProvider as any}
               providerFactory={
                 providerFactory ? providerFactory : new ProviderFactory()
               }

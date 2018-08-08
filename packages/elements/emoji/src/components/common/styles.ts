@@ -1,7 +1,7 @@
 import { borderRadius, colors } from '@atlaskit/theme';
 import { defaultEmojiHeight } from '../../constants';
 import { akEmojiSelectedBackgroundColor } from '../../shared-styles';
-import { style } from 'typestyle';
+import { style } from 'typestyle/lib';
 
 export const selected = 'emoji-common-selected';
 export const selectOnHover = 'emoji-common-select-on-hover';
