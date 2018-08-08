@@ -3,10 +3,8 @@ import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { GasPayload } from '@atlaskit/analytics-gas-types';
 import Button from '@atlaskit/button';
 
-import {
-  ELEMENTS_CHANNEL,
-  ELEMENTS_TAG,
-} from '../../src/FabricElementsListener';
+import { FabricChannel } from '../../src/index';
+import { ELEMENTS_TAG } from '../../src/FabricElementsListener';
 
 export type Props = {
   text?: string;
@@ -36,7 +34,7 @@ export const DummyComponentWithAnalytics = withAnalyticsEvents({
       eventType: 'ui',
       source: 'unknown',
     };
-    createEvent(event).fire(ELEMENTS_CHANNEL);
+    createEvent(event).fire(FabricChannel.elements);
   },
 })(DummyElementsComponent);
 
@@ -54,7 +52,7 @@ export const DummyComponentWithAttributesWithAnalytics = withAnalyticsEvents({
         fooBar: 'yay',
       },
     };
-    createEvent(event).fire(ELEMENTS_CHANNEL);
+    createEvent(event).fire(FabricChannel.elements);
   },
 })(DummyElementsComponent);
 
@@ -79,7 +77,7 @@ export const TaggedDummyComponentWithAnalytics = withAnalyticsEvents({
       source: 'unknown',
       tags: [ELEMENTS_TAG, 'foo'],
     };
-    createEvent(event).fire(ELEMENTS_CHANNEL);
+    createEvent(event).fire(FabricChannel.elements);
   },
 })(DummyComponent);
 
