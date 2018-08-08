@@ -15,15 +15,41 @@ export interface PublicGridItem {
 export interface MediaGridProps {
   context: Context;
   items: PublicGridItem[];
+  isInteractive?: boolean;
+  width?: number;
+  itemsPerRow?: number;
 }
 
 export type PopulatedItem = PublicGridItem & {
   dataURI?: string;
+  isLoaded?: boolean;
 };
 
 export interface MediaGridState {
   populatedItems: PopulatedItem[];
 }
+
+export const updatePopulatedItems = (
+  populatedItems: PopulatedItem[],
+  gridItems: GridItem[],
+): PopulatedItem[] => {
+  const newPopulatedItems: PopulatedItem[] = gridItems.map(gridItem => {
+    const populatedItem = populatedItems.find(
+      populatedItem => populatedItem.dataURI === gridItem.dataURI,
+    );
+    const id = populatedItem ? populatedItem.id : '';
+    if (!id) {
+      console.error('no id for', gridItem);
+    }
+
+    return {
+      ...gridItem,
+      id,
+    };
+  });
+
+  return newPopulatedItems;
+};
 
 export class MediaGrid extends Component<MediaGridProps, MediaGridState> {
   state: MediaGridState = {
@@ -92,35 +118,33 @@ export class MediaGrid extends Component<MediaGridProps, MediaGridState> {
 
   onItemsChange = (items: GridItem[]) => {
     const { populatedItems } = this.state;
-    const newPopulatedItems: PopulatedItem[] = items.map(gridItem => {
-      const populatedItem = populatedItems.find(
-        populatedItem => populatedItem.dataURI === gridItem.dataURI,
-      );
-      const id = populatedItem ? populatedItem.id : '';
-      if (!id) {
-        console.error('no id for', gridItem);
-      }
-
-      return {
-        ...gridItem,
-        id,
-      };
-    });
+    const newPopulatedItems = updatePopulatedItems(populatedItems, items);
 
     this.setState({
       populatedItems: newPopulatedItems,
     });
   };
 
-  render() {
+  getGridItems = (): GridItem[] => {
     const { populatedItems } = this.state;
+
+    return populatedItems.map(({ dimensions, dataURI, isLoaded }) => ({
+      dimensions,
+      dataURI,
+      isLoaded,
+    }));
+  };
+
+  render() {
+    const { isInteractive, width, itemsPerRow } = this.props;
+
     return (
       <MediaGridView
-        items={populatedItems.map(populatedItem => ({
-          ...populatedItem,
-          id: undefined,
-        }))}
+        items={this.getGridItems()}
         onItemsChange={this.onItemsChange}
+        isInteractive={isInteractive}
+        width={width}
+        itemsPerRow={itemsPerRow}
       />
     );
   }

@@ -38,6 +38,7 @@ export const fakeContext = (
   const refreshCollection = jest.fn();
   const getBlobService = jest.fn();
   const uploadFile = jest.fn();
+  const getImageUrl = jest.fn();
   const getImage = {} as any;
   const defaultContext: Context = {
     getImage,
@@ -54,6 +55,7 @@ export const fakeContext = (
     refreshCollection,
     uploadFile,
     config,
+    getImageUrl,
   };
 
   const wrappedStubbedContext: any = {};
