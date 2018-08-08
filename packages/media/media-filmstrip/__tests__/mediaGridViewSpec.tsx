@@ -217,4 +217,68 @@ describe('MediaGridView', () => {
       height: 400,
     });
   });
+
+  it('should update items when images are loaded', () => {
+    const items: GridItem[] = [
+      {
+        dataURI: 'some-url-1',
+        dimensions: {
+          width: 10,
+          height: 10,
+        },
+      },
+      {
+        dataURI: 'some-url-2',
+        dimensions: {
+          width: 10,
+          height: 10,
+        },
+      },
+    ];
+    const component = shallow(
+      <MediaGridView items={items} onItemsChange={onItemsChange} />,
+    );
+    component
+      .find('img')
+      .at(0)
+      .props().onLoad!({} as any);
+    expect(onItemsChange).toHaveBeenCalledWith([
+      {
+        dataURI: 'some-url-1',
+        isLoaded: true,
+        dimensions: {
+          width: 10,
+          height: 10,
+        },
+      },
+      {
+        dataURI: 'some-url-2',
+        dimensions: {
+          width: 10,
+          height: 10,
+        },
+      },
+    ]);
+    component
+      .find('img')
+      .at(1)
+      .props().onLoad!({} as any);
+    expect(onItemsChange).toHaveBeenCalledWith([
+      {
+        dataURI: 'some-url-1',
+        dimensions: {
+          width: 10,
+          height: 10,
+        },
+      },
+      {
+        dataURI: 'some-url-2',
+        isLoaded: true,
+        dimensions: {
+          width: 10,
+          height: 10,
+        },
+      },
+    ]);
+  });
 });
