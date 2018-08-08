@@ -5,6 +5,14 @@ import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
 const fullPageEditor = getExampleUrl('editor', 'editor-core', 'full-page');
 const editorSelector = '.ProseMirror';
 
+declare const process: {
+  env: {
+    TEST_CASE: string;
+  };
+};
+
+declare const __filename: string;
+
 process.env.TEST_CASE = __filename
   .split('/')
   .reverse()[0]
