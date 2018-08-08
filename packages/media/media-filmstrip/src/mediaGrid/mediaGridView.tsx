@@ -132,16 +132,11 @@ export class MediaGridView extends Component<
     const { dimensions, dataURI, isLoaded } = item;
     const { width, height } = dimensions;
     const aspectRatio = width / height;
-    const styles = {
-      width: gridHeight * aspectRatio,
-      height: gridHeight,
-    };
     const img = dataURI ? (
       <img
         draggable={isInteractive}
         src={dataURI}
         onLoad={this.onLoad(dataURI)}
-        style={styles} // TODO: check if we need this or just use 100%
         alt="image"
         onDragEnd={this.onDragEnd}
         onDragStart={
@@ -164,10 +159,16 @@ export class MediaGridView extends Component<
     }
     const hasPlaceholder =
       index === this.state.dropIndex! - (isRightPlaceholder ? 1 : 0);
+
+    const wrapperStyles = {
+      width: gridHeight * aspectRatio,
+      height: gridHeight,
+    };
+
     return (
       <React.Fragment key={index}>
         <ImgWrapper
-          style={styles}
+          style={wrapperStyles}
           isLoaded={isLoaded}
           hasPlaceholder={hasPlaceholder}
           isRightPlaceholder={isRightPlaceholder}

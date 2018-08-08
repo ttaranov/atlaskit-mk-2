@@ -46,6 +46,7 @@ export const ImgWrapper = styled.div`
   }
 
   img {
+    width: 100%;
     outline: 5px solid transparent;
     transition: outline 0.6s cubic-bezier(0.19, 1, 0.22, 1);
     &:hover {
