@@ -41,6 +41,13 @@ export const ImgWrapper = styled.div`
   display: inline-block;
   margin-right: ${imageMargin}px;
   position: relative;
+
+  &:hover {
+    .remove-img-wrapper {
+      opacity: 1;
+    }
+  }
+
   &:last-child {
     margin-right: 0;
   }
@@ -63,4 +70,19 @@ export const ImagePlaceholder = styled.div`
   background-color: #ecf0f8;
   width: 100%;
   height: 100%;
+`;
+
+export const RemoveIconWrapper = styled.div`
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  opacity: 0;
+  color: white;
+  border: 1px solid transparent;
+  cursor: pointer;
+  border-radius: 3px;
+
+  &:hover {
+    border-color: #ccc;
+  }
 `;
