@@ -24,12 +24,14 @@ function makeLogs(instance) {
   });
 }
 
+const globalNav = getByKey('global-navigation');
+
 BrowserTestCase(
   '🌏 Global navigation should render without errors',
   async client => {
-    const page = await new Page(client);
+    const page = new Page(client);
     await page.goto(exampleURL);
-    const globalNav = await getByKey('global-navigation');
+    await page.waitForSelector(globalNav);
 
     expect(await page.isVisible(`${globalNav} [aria-label="Jira"]`)).toBe(true);
     expect(await page.isVisible(`${globalNav} [aria-label="Search"]`)).toBe(
@@ -44,8 +46,9 @@ BrowserTestCase(
 BrowserTestCase(
   '📦 Product navigation should render without errors',
   async client => {
-    const page = await new Page(client);
+    const page = new Page(client);
     await page.goto(exampleURL);
+    await page.waitForSelector(globalNav);
 
     expect(await page.isVisible(getByKey('product-header'))).toBe(true);
     expect(await page.isVisible(getByKey('product-item-dashboards'))).toBe(
@@ -60,8 +63,9 @@ BrowserTestCase(
 BrowserTestCase(
   '🎁 Container navigation should render without errors',
   async client => {
-    const page = await new Page(client);
+    const page = new Page(client);
     await page.goto(exampleURL);
+    await page.waitForSelector(globalNav);
 
     expect(await page.isVisible(getByKey('container-header'))).toBe(true);
     expect(await page.isVisible(getByKey('container-item-backlog'))).toBe(true);
