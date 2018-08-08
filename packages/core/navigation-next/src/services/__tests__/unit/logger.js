@@ -1,5 +1,5 @@
 // @flow
-import Logger from '../logger';
+import Logger from '../../logger';
 
 describe('NavigationNext Services: Logger', () => {
   const groupCollapsed = jest.fn();
