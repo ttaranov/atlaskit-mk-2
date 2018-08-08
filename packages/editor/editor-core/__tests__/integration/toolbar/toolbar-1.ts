@@ -11,7 +11,7 @@ editors.forEach(editor => {
     } editor`,
     { skip: ['ie', 'safari', 'edge'] },
     async client => {
-      const browser = await new Page(client);
+      const browser = new Page(client);
       const bold = '[aria-label="Bold"]';
       const italic = '[aria-label="Italic"]';
       const changeFormatting = '[aria-label="Change formatting"]';

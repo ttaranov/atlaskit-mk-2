@@ -8,11 +8,6 @@ import {
   picker,
 } from './_mention-helpers';
 
-process.env.TEST_CASE = __filename
-  .split('/')
-  .reverse()[0]
-  .split('.')[0];
-
 /*
  * Safari does not understand webdriver keyboard actions so a
  * number of tests have been skipped until move to snapshots.
@@ -26,7 +21,7 @@ BrowserTestCase(
   async client => {
     const mentionButton = '[aria-label="Add mention"]';
     const mentionId = '[data-mention-id="0"]';
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.waitForSelector(mentionButton);
@@ -43,7 +38,7 @@ BrowserTestCase(
   'Mention: should not insert on space if multiple exact nickname match',
   { skip: ['ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '@');
@@ -62,7 +57,7 @@ BrowserTestCase(
   'Mention: inserted if space on single match',
   { skip: ['ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '@');
@@ -79,7 +74,7 @@ BrowserTestCase(
   // TODO: Fix unknown character on BS
   { skip: ['safari', 'ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '`this is inline code ');
@@ -95,7 +90,7 @@ BrowserTestCase(
   // TODO: Fix unknown character on BS
   { skip: ['safari', 'ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '```');
@@ -111,7 +106,7 @@ BrowserTestCase(
   'Mention: users with same first name should not be selected if space',
   { skip: ['ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '@');

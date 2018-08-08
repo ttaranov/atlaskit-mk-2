@@ -9,11 +9,6 @@ import {
   lozenge,
 } from './_mention-helpers';
 
-process.env.TEST_CASE = __filename
-  .split('/')
-  .reverse()[0]
-  .split('.')[0];
-
 /*
  * Safari does not understand webdriver keyboard actions so a
  * number of tests have been skipped until move to snapshots.
@@ -26,7 +21,7 @@ BrowserTestCase(
   'Mention: user should see picker if they type "@"',
   { skip: ['ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '@');
@@ -40,7 +35,7 @@ BrowserTestCase(
   'Mention: text@ should not invoke picker',
   { skip: ['ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, 'test@');
@@ -52,7 +47,7 @@ BrowserTestCase(
   'Mention: user should be able remove mention on backspace',
   { skip: ['safari', 'ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await insertMention(browser, 'Carolyn');
@@ -69,7 +64,7 @@ BrowserTestCase(
   'Mention: @ <space> should not invoke picker',
   { skip: ['ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '@ Carolyn');
@@ -81,7 +76,7 @@ BrowserTestCase(
   'Mention: insert on space if unique exact nickname match, with multiple results',
   { skip: ['ie', 'edge'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '@');
@@ -99,7 +94,7 @@ BrowserTestCase(
   'Mention: user should see space after node',
   { skip: ['safari', 'ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.waitForSelector(editable);
     await browser.goto(messageEditor);
     await insertMention(browser, 'Summer');
@@ -113,7 +108,7 @@ BrowserTestCase(
   'Mention: escape closes picker',
   { skip: ['safari', 'ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '@');

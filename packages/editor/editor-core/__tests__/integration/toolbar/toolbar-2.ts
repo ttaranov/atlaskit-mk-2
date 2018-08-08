@@ -5,18 +5,13 @@ import { editors, editable } from '../_helpers';
 const changeFormatting = '[aria-label="Change formatting"]';
 const input = 'helloworld';
 
-process.env.TEST_CASE = __filename
-  .split('/')
-  .reverse()[0]
-  .split('.')[0];
-
 // https://product-fabric.atlassian.net/browse/ED-4531
 editors.forEach(editor => {
   BrowserTestCase(
     `Toolbar: should be able to select heading1 for ${editor.name} editor`,
     { skip: ['ie', 'safari'] },
     async client => {
-      const browser = await new Page(client);
+      const browser = new Page(client);
       await browser.goto(editor.path);
       await browser.waitForSelector(editor.placeholder);
       await browser.click(editor.placeholder);

@@ -22,7 +22,7 @@ BrowserTestCase(
     const dropdownMenu = '[aria-label="Open or close insert block dropdown"]';
     const bodiedExtensionItem = '.bodied-macro';
     const extensionOptions = '[aria-label="Extension options"]';
-    const browser = await new Page(client);
+    const browser = new Page(client);
 
     await browser.goto(fullPageEditor);
     await browser.waitForSelector(editorSelector);

@@ -19,7 +19,7 @@ BrowserTestCase(
     const dateMenu = 'span=Date';
     const calendar = '[aria-label="calendar"]';
 
-    const browser = await new Page(client);
+    const browser = new Page(client);
 
     await browser.goto(fullPageEditor);
     await browser.waitForSelector(editorSelector);
@@ -43,7 +43,7 @@ BrowserTestCase(
     const calendar = '[aria-label="calendar"]';
     const dateView = `span.dateView-content-wrap`;
 
-    const browser = await new Page(client);
+    const browser = new Page(client);
 
     await browser.goto(fullPageEditor);
     await browser.waitForSelector(editorSelector);
@@ -67,7 +67,7 @@ BrowserTestCase(
     const calendar = '[aria-label="calendar"]';
     const dateView = `span.dateView-content-wrap`;
 
-    const browser = await new Page(client);
+    const browser = new Page(client);
 
     await browser.goto(fullPageEditor);
     await browser.waitForSelector(editorSelector);

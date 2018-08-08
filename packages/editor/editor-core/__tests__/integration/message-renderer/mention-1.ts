@@ -9,11 +9,6 @@ import {
   picker,
 } from './_mention-helpers';
 
-process.env.TEST_CASE = __filename
-  .split('/')
-  .reverse()[0]
-  .split('.')[0];
-
 /*
  * Safari does not understand webdriver keyboard actions so a
  * number of tests have been skipped until move to snapshots.
@@ -25,7 +20,7 @@ BrowserTestCase(
   'Mention: user can see mention inside blockquote',
   { skip: ['safari', 'ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '> ');
@@ -41,7 +36,7 @@ BrowserTestCase(
   'Mention: user can see mention inside bulletList',
   { skip: ['safari', 'ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '* ');
@@ -58,7 +53,7 @@ BrowserTestCase(
   'Mention: user can see mention inside orderedList',
   { skip: ['safari', 'ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '1. ');
@@ -75,7 +70,7 @@ BrowserTestCase(
   'Mention: user can see mention inside decision',
   { skip: ['ie', 'safari'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '<> ');
@@ -90,7 +85,7 @@ BrowserTestCase(
   'Mention: user can see mention inside action',
   { skip: ['ie', 'safari'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '[] ');
@@ -105,7 +100,7 @@ BrowserTestCase(
   'Mention: user can navigate picker using keyboard',
   { skip: ['ie', 'safari'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '@');

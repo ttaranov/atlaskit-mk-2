@@ -25,7 +25,7 @@ BrowserTestCase(
   'When DatePicker is focused & backspace pressed, the input should be cleared',
   { skip: ['firefox', 'ie', 'edge'] },
   async client => {
-    const dateTimePickerTest = await new Page(client);
+    const dateTimePickerTest = new Page(client);
     await dateTimePickerTest.goto(urlDateTimePicker);
     await dateTimePickerTest.click(datepickerDefault);
     await dateTimePickerTest.waitForSelector(datepickerMenu);
@@ -49,7 +49,7 @@ BrowserTestCase(
   'When choosing another day in a Datetime picker focused, the date should be updated to the new value',
   { skip: ['firefox'] },
   async client => {
-    const dateTimePickerTest = await new Page(client);
+    const dateTimePickerTest = new Page(client);
     await dateTimePickerTest.goto(urlDateTimePicker);
     await dateTimePickerTest.click(datepickerDefault);
     await dateTimePickerTest.waitForSelector(datepickerMenu);
@@ -76,7 +76,7 @@ BrowserTestCase(
   'When entering a new time in Timepicker Editable, the time should be updated to the new value',
   { skip: ['firefox', 'ie', 'safari', 'edge'] }, // Enter key has an issue in those browser
   async client => {
-    const timePicker = await new Page(client);
+    const timePicker = new Page(client);
     await timePicker.goto(urlDateTimePicker);
     await timePicker.click(timepickerDefault);
     await timePicker.waitForSelector(timePickerMenu);
