@@ -2,7 +2,7 @@
 import { ClassAttributes, HTMLAttributes } from 'react';
 // @ts-ignore
 import styled, { StyledComponentClass } from 'styled-components';
-
+import { colors } from '@atlaskit/theme';
 export const imageMargin = 10;
 
 export const RowWrapper = styled.div`
@@ -41,9 +41,16 @@ export const ImgWrapper = styled.div`
   display: inline-block;
   margin-right: ${imageMargin}px;
   position: relative;
-
   &:last-child {
     margin-right: 0;
+  }
+
+  img {
+    outline: 5px solid transparent;
+    transition: outline 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+    &:hover {
+      outline: 5px solid ${colors.B200};
+    }
   }
 
   ${(props: ImgWrapperProps) =>
