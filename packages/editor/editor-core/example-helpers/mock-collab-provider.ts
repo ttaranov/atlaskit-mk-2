@@ -84,9 +84,10 @@ export class MockCollabEditProvider implements CollabEditProvider {
   protected getState = () => {};
   protected createStep = (json: object) => {};
   protected sid;
-  protected eventBus: EventEmitter;
+  // TODO: Node events conflicts with third party lib 'events' https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e303b7621ee6d2d9a360abbe46539387d44885e9
+  protected eventBus: any; //EventEmitter
 
-  constructor(eventBus: EventEmitter, sid?: string) {
+  constructor(eventBus: any, sid?: string) {
     // If there's no sid then it's single user, being used for test
     if (sid) {
       this.sid = sid;
