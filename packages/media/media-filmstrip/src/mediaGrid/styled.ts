@@ -37,24 +37,33 @@ export interface ImgWrapperProps {
   isRightPlaceholder: boolean;
   isLoaded?: boolean;
 }
+
+const paddingProperties = (hasPlaceholder, isRightPlaceholder) => {
+  if (!hasPlaceholder) {
+    return `
+    padding-left: 0;
+    border-left: 0;
+    `;
+  }
+
+  if (isRightPlaceholder) {
+    return `
+    padding-right: 14px;
+    border-right: 4px solid #4c9aff;
+    `;
+  } else {
+    return `
+    padding-left: 14px;
+    border-left: 4px solid #4c9aff;
+    `;
+  }
+};
+
 export const ImgWrapper = styled.div`
   transition: margin-left 0.2s, padding-left 0.2s, margin-right 0.2s,
     padding-right 0.2s;
   ${(props: ImgWrapperProps) =>
-    props.hasPlaceholder
-      ? props.isRightPlaceholder
-        ? `
-    padding-right: 14px;
-    border-right: 4px solid #4c9aff;
-  `
-        : `
-    padding-left: 14px;
-    border-left: 4px solid #4c9aff;
-  `
-      : `
-    padding-left: 0;
-    border-left: 0;
-  `};
+    paddingProperties(props.hasPlaceholder, props.isRightPlaceholder)};
   display: inline-block;
   margin-right: ${imageMargin}px;
   position: relative;
