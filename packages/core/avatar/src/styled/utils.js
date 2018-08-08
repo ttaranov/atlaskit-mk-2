@@ -46,13 +46,12 @@ export function getAvatarDimensions(
     ? BORDER_WIDTH[props.size] * 2
     : 0;
   const size: number = AVATAR_SIZES[props.size] + borderWidth;
-
   return config.sizeOnly
     ? size
-    : `
-    height: ${size}px;
-    width: ${size}px;
-  `;
+    : {
+        height: `${size}px;`,
+        width: `${size}px;`,
+      };
 }
 
 // expose here for use with multiple element types
@@ -116,53 +115,51 @@ export function getInnerStyles(
     overlayOpacity = 1;
   }
 
-  // Stack
+  // Stack,
   if (props.stackIndex) {
     position = 'relative';
   }
+  return {
+    ...getAvatarDimensions(props),
+    alignItems: 'stretch;',
+    backgroundColor,
+    border: 0,
+    borderRadius: getBorderRadius(props, { includeBorderWidth: true }),
+    padding: borderWidth,
+    boxSizing,
+    cursor,
+    display: 'flex;',
+    flexDirection: 'column;',
+    justifyContent: 'center;',
+    outline,
+    overflow: 'hidden;',
+    pointerEvents,
+    position,
+    transform,
+    transition: `background-color ${transitionDuration} ease-out;`,
 
-  return css`
-    ${getAvatarDimensions};
-    align-items: stretch;
-    background-color: ${backgroundColor};
-    border: 0;
-    border-radius: ${p => getBorderRadius(p, { includeBorderWidth: true })};
-    padding: ${borderWidth};
-    box-sizing: ${boxSizing};
-    cursor: ${cursor};
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    outline: ${outline};
-    overflow: hidden;
-    pointer-events: ${pointerEvents};
-    position: ${position};
-    transform: ${transform};
-    transition: background-color ${transitionDuration} ease-out;
+    'a &, button &': {
+      cursor: 'pointer;',
+    },
 
-    a &,
-    button & {
-      cursor: pointer;
-    }
+    '&::after': {
+      backgroundColor: overlayShade,
+      borderRadius: getBorderRadius(props),
+      bottom: borderWidth,
+      content: ' ',
+      left: borderWidth,
+      opacity: overlayOpacity,
+      pointerEvents: 'none;',
+      position: 'absolute',
+      right: borderWidth,
+      top: borderWidth,
+      transition: `opacity ${TRANSITION_DURATION};`,
+    },
 
-    &::after {
-      background-color: ${overlayShade};
-      border-radius: ${getBorderRadius};
-      bottom: ${borderWidth};
-      content: ' ';
-      left: ${borderWidth};
-      opacity: ${overlayOpacity};
-      pointer-events: none;
-      position: absolute;
-      right: ${borderWidth};
-      top: ${borderWidth};
-      transition: opacity ${TRANSITION_DURATION};
-    }
-
-    &::-moz-focus-inner {
-      border: 0;
-      margin: 0;
-      padding: 0;
-    }
-  `;
+    '&::-moz-focus-inner': {
+      border: 0,
+      margin: 0,
+      padding: 0,
+    },
+  };
 }

@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import type { Node } from 'react';
+import { withTheme } from 'styled-components';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
@@ -193,5 +194,5 @@ export default withAnalyticsContext({
         packageVersion,
       },
     }),
-  })(AvatarWithoutAnalytics),
+  })(withTheme(AvatarWithoutAnalytics)),
 );

@@ -5,7 +5,7 @@ import React, {
   type Element,
   type ComponentType,
 } from 'react';
-
+import { withTheme } from 'styled-components';
 import { propsOmittedFromClickData } from './constants';
 import { omit } from '../utils';
 import {
@@ -17,6 +17,8 @@ import {
 import { getProps, getStyledAvatarItem } from '../helpers';
 import { withPseudoState } from '../hoc';
 import type { AvatarClickType } from '../types';
+
+console.log(withTheme);
 
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
@@ -83,6 +85,7 @@ class AvatarItem extends Component<Props> {
       enableTextTruncate,
       primaryText,
       secondaryText,
+      theme,
     } = this.props;
 
     // maintain the illusion of a mask around presence/status
@@ -101,9 +104,11 @@ class AvatarItem extends Component<Props> {
         onClick={this.guardedClick}
       >
         {cloneElement(avatar, { borderColor })}
-        <Content truncate={enableTextTruncate}>
-          <PrimaryText truncate={enableTextTruncate}>{primaryText}</PrimaryText>
-          <SecondaryText truncate={enableTextTruncate}>
+        <Content theme={theme} truncate={enableTextTruncate}>
+          <PrimaryText theme={theme} truncate={enableTextTruncate}>
+            {primaryText}
+          </PrimaryText>
+          <SecondaryText theme={theme} truncate={enableTextTruncate}>
             {secondaryText}
           </SecondaryText>
         </Content>
@@ -112,4 +117,14 @@ class AvatarItem extends Component<Props> {
   }
 }
 
-export default withPseudoState(AvatarItem);
+type WrappedAvatarItemProps = {
+  theme: Object,
+};
+
+const WrappedAvatarItem: React.ComponentType<
+  WrappedAvatarItemProps,
+> = withTheme(withPseudoState(AvatarItem));
+WrappedAvatarItem.defaultProps = {
+  theme: {},
+};
+export default WrappedAvatarItem;

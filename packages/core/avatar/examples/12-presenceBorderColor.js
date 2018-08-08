@@ -1,18 +1,28 @@
 // @flow
 import React from 'react';
-import styled from 'styled-components';
+import { css } from 'emotion';
 import { gridSize } from '@atlaskit/theme';
 import { Presence } from '../src';
 
-const Container = styled.div`
-  display: flex;
-`;
+const Container = props => (
+  <div
+    className={css({
+      display: 'flex',
+    })}
+    {...props}
+  />
+);
 
-const PresenceWrapper = styled.div`
-  height: 30px;
-  width: 30px;
-  margin-right: ${gridSize}px;
-`;
+const PresenceWrapper = props => (
+  <div
+    className={css({
+      height: '30px;',
+      width: '30px;',
+      marginRight: `${gridSize}px;`,
+    })}
+    {...props}
+  />
+);
 
 export default () => (
   <div>

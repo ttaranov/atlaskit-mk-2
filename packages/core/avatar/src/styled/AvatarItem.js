@@ -1,5 +1,7 @@
 // @flow
+import React from 'react';
 import styled, { css } from 'styled-components';
+import { css as emotionCSS } from 'emotion';
 import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 import type { AvatarClickType } from '../types';
 
@@ -32,19 +34,20 @@ export function getBackgroundColor({
   isHover,
   isSelected,
   onClick,
+  ...props
 }: getBackgroundColorType) {
   const isInteractive = href || onClick;
 
-  let themedBackgroundColor = backgroundColor || colors.background;
+  let themedBackgroundColor = backgroundColor || colors.background(props);
 
   // Interaction: Hover
   if (isInteractive && (isHover || isSelected)) {
-    themedBackgroundColor = hoverBackgroundColor;
+    themedBackgroundColor = hoverBackgroundColor(props);
   }
 
   // Interaction: Active
   if (isInteractive && isActive) {
-    themedBackgroundColor = activeBackgroundColor;
+    themedBackgroundColor = activeBackgroundColor(props);
   }
 
   return themedBackgroundColor;
@@ -64,6 +67,7 @@ export function getStyles({
   isDisabled,
   isFocus,
   onClick,
+  ...props
 }: getStylesType) {
   const isInteractive = href || onClick;
 
@@ -76,7 +80,7 @@ export function getStyles({
   // Interaction: Focus
   if (isInteractive && isFocus && !isActive) {
     outline = 'none';
-    borderColor = focusBorderColor;
+    borderColor = focusBorderColor(props);
   }
 
   // Disabled
@@ -90,53 +94,91 @@ export function getStyles({
   if (isInteractive) {
     cursor = 'pointer';
   }
-  return css`
-    align-items: center;
-    background-color: ${getBackgroundColor};
-    border-radius: ${borderRadius}px;
-    border: 2px solid ${borderColor};
-    box-sizing: content-box;
-    color: inherit;
-    cursor: ${cursor};
-    display: flex;
-    font-size: inherit;
-    font-style: normal;
-    font-weight: normal;
-    line-height: 1;
-    opacity: ${opacity};
-    outline: ${outline};
-    margin: 0;
-    padding: ${math.divide(gridSize, 2)}px;
-    pointer-events: ${pointerEvents};
-    text-align: left;
-    text-decoration: none;
-    width: 100%;
-  `;
+  return {
+    alignItems: 'center;',
+    backgroundColor: `${getBackgroundColor(props)};`,
+    borderRadius: `${borderRadius(props)}px;`,
+    border: `2px solid ${borderColor};`,
+    boxSizing: 'content-box;',
+    color: 'inherit;',
+    cursor: `${cursor};`,
+    display: 'flex;',
+    fontSize: 'inherit;',
+    fontStyle: 'normal;',
+    fontWeight: 'normal;',
+    lineHeight: '1;',
+    opacity: `${opacity};`,
+    outline: `${outline};`,
+    borderImage: 'initial',
+    margin: 0,
+    padding: ` ${math.divide(gridSize, 2)(props)}px;`,
+    pointerEvents: `${pointerEvents};`,
+    textAlign: `left;`,
+    textDecoration: `none;`,
+    width: '100%',
+  };
 }
 
-const truncateText = p =>
-  p.truncate &&
-  css`
-    overflow-x: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  `;
-const truncateTextFlexParent = p =>
-  p.truncate &&
-  css`
-    max-width: 100%;
-    min-width: 0;
-  `;
+const truncateTextCSS = props => {
+  console.log(props);
+  return (
+    props.truncate && {
+      overflowX: 'hidden;',
+      textOverflow: 'ellipsis;',
+      whiteSpace: 'nowrap;',
+    }
+  );
+};
 
-export const Content = styled.div`
-  ${truncateTextFlexParent} flex: 1 1 100%;
+const truncateTextFlexParentCSS = props =>
+  props.truncate && {
+    maxWidth: '100%;',
+    minWidth: '0;',
+  };
+
+export const Content = props => (
+  <div
+    className={emotionCSS({
+      ...truncateTextFlexParentCSS(props),
+      flex: '1 1 100%;',
+      lineHeight: '1.4;',
+      paddingLeft: `${gridSize()}px;`,
+    })}
+    {...props}
+  />
+);
+
+export const scContent = styled.div`
+  ${truncateTextFlexParentCSS} flex: 1 1 100%;
   line-height: 1.4;
   padding-left: ${gridSize}px;
 `;
-export const PrimaryText = styled.div`
-  ${truncateText} color: ${colors.text};
+
+export const PrimaryText = props => (
+  <div
+    className={emotionCSS({
+      ...truncateTextCSS(props),
+      color: `${colors.text(props)};`,
+    })}
+    {...props}
+  />
+);
+export const scPrimaryText = styled.div`
+  ${truncateTextCSS} color: ${colors.text};
 `;
-export const SecondaryText = styled.div`
-  ${truncateText} color: ${colors.subtleText};
+
+export const SecondaryText = props => (
+  <div
+    className={emotionCSS({
+      ...truncateTextCSS(props),
+      color: `${colors.subtleText(props)};`,
+      fontSize: '0.85em;',
+    })}
+    {...props}
+  />
+);
+export const scSecondaryText = styled.div`
+  ${truncateTextCSS}
+  color: ${colors.subtleText};
   font-size: 0.85em;
 `;
