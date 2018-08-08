@@ -87,7 +87,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   }
 
   state = {
-    isLoading: false,
+    isLoading: true,
     isError: false,
     latestSearchQuery: '',
     searchSessionId: uuid(), // unique id for search attribution
