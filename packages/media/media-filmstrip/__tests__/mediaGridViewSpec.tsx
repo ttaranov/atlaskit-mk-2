@@ -2,7 +2,7 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import { gridItems } from '../example-helpers/media-grid-items';
 import { GridItem, MediaGridView } from '../src/mediaGrid/mediaGridView';
-import { RowWrapper } from '../src/mediaGrid/styled';
+import { RowWrapper, Img, ImgWrapper } from '../src/mediaGrid/styled';
 
 describe('MediaGridView', () => {
   let onItemsChange: jest.Mock<any>;
@@ -15,16 +15,16 @@ describe('MediaGridView', () => {
     const component = shallow(
       <MediaGridView items={gridItems} onItemsChange={onItemsChange} />,
     );
-    expect(component.find('img')).toHaveLength(numberOfItems);
+    expect(component.find(Img)).toHaveLength(numberOfItems);
     expect(
       component
-        .find('img')
+        .find(Img)
         .at(0)
         .props().src,
     ).toEqual(gridItems[0].dataURI);
     expect(
       component
-        .find('img')
+        .find(Img)
         .at(gridItems.length - 1)
         .props().src,
     ).toEqual(gridItems[gridItems.length - 1].dataURI);
@@ -43,7 +43,7 @@ describe('MediaGridView', () => {
       component
         .find(RowWrapper)
         .at(0)
-        .find('img'),
+        .find(Img),
     ).toHaveLength(3);
   });
 
@@ -58,7 +58,7 @@ describe('MediaGridView', () => {
       component
         .find(RowWrapper)
         .at(0)
-        .find('img'),
+        .find(Img),
     ).toHaveLength(3);
   });
 
@@ -103,9 +103,12 @@ describe('MediaGridView', () => {
         onItemsChange={onItemsChange}
       />,
     );
+
+    // console.log(JSON.stringify(component.find(ImgWrapper).at(0).props(), null, 2))
+
     expect(
       component
-        .find('img')
+        .find(ImgWrapper)
         .at(0)
         .props().style,
     ).toEqual({
@@ -114,7 +117,7 @@ describe('MediaGridView', () => {
     });
     expect(
       component
-        .find('img')
+        .find(ImgWrapper)
         .at(1)
         .props().style,
     ).toEqual({
@@ -166,7 +169,7 @@ describe('MediaGridView', () => {
     );
     expect(
       component
-        .find('img')
+        .find(ImgWrapper)
         .at(0)
         .props().style,
     ).toEqual({
@@ -175,7 +178,7 @@ describe('MediaGridView', () => {
     });
     expect(
       component
-        .find('img')
+        .find(ImgWrapper)
         .at(1)
         .props().style,
     ).toEqual({
