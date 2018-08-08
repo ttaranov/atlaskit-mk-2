@@ -16,7 +16,7 @@ export interface MediaGroupDefinition {
 export const mediaGroup: NodeSpec = {
   inline: false,
   group: 'block',
-  content: 'media+ paragraph?',
+  content: 'media+ caption?',
   attrs: {},
   parseDOM: [
     {

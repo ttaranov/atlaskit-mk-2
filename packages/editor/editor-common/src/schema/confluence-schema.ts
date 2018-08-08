@@ -11,6 +11,7 @@ const nodes = [
   'orderedList',
   'bulletList',
   'heading',
+  'caption',
   'mediaGroup',
   'mediaSingle',
   'media',

@@ -11,8 +11,10 @@ export interface CaptionDefinition {
 
 export const caption: NodeSpec = {
   inline: false,
-  group: 'caption',
+  group: 'block',
   content: 'inline*',
+  isolating: false,
+
   parseDOM: [
     {
       tag: 'figcaption',

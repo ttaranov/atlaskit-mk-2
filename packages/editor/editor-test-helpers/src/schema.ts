@@ -27,6 +27,7 @@ export default createSchema({
     'mention',
     'emoji',
     'image',
+    'caption',
     'media',
     'mediaGroup',
     'confluenceUnsupportedBlock',

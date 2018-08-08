@@ -223,8 +223,13 @@ export class MediaPluginState {
 
   updateElement(): void {
     let newElement;
-    if (this.selectedMediaNode() && this.isMediaSingle()) {
+    console.log('is media single?', this.selectionInMediaSingle());
+    const { selection, schema } = this.view.state;
+
+    if (this.selectedMediaNode() && this.selectionInMediaSingle()) {
+      console.warn('selection type', selection.$from.parent.type);
       newElement = this.getDomElement(this.view.domAtPos.bind(this.view));
+      console.log('looking or new elem', newElement);
     }
 
     if (this.element !== newElement) {
@@ -259,19 +264,37 @@ export class MediaPluginState {
     this.notifyPluginStateSubscribers();
   }
 
-  private isMediaSingle(): boolean {
+  private selectionInMediaSingle(): boolean {
     const { selection, schema } = this.view.state;
-    return selection.$from.parent.type === schema.nodes.mediaSingle;
+    let depth = selection.$from.depth;
+    while (depth > 0) {
+      if (selection.$from.node(depth).type === schema.nodes.mediaSingle) {
+        return true;
+      }
+
+      depth--;
+    }
+
+    return false;
   }
 
   private getDomElement(domAtPos: EditorView['domAtPos']) {
-    const { from } = this.view.state.selection;
+    let { from, $from } = this.view.state.selection;
     if (this.selectedMediaNode()) {
-      const { node } = domAtPos(from);
-      if (!node.childNodes.length) {
-        return node.parentNode as HTMLElement | undefined;
+      // FIXME: move to caption
+      if ($from.parent.type.name === 'caption') {
+        console.log('using back');
+        from = $from.before($from.depth - 2);
       }
-      return (node as HTMLElement).querySelector('.wrapper');
+
+      const { node } = domAtPos(from);
+
+      console.log('based on dom node', node);
+      // if (!node.childNodes.length) {
+      //   return node.parentNode as HTMLElement | undefined;
+      // }
+      // return (node as HTMLElement).querySelector('.wrapper');
+      return node as HTMLElement;
     }
   }
 
@@ -540,14 +563,14 @@ export class MediaPluginState {
         }
 
         const { node } = nodeWithPos;
-        console.log(
-          '\tlooking for node with id',
-          id,
-          'have id',
-          node.attrs.id,
-          '__key',
-          node.attrs.__key,
-        );
+        // console.log(
+        //   '\tlooking for node with id',
+        //   id,
+        //   'have id',
+        //   node.attrs.id,
+        //   '__key',
+        //   node.attrs.__key,
+        // );
         if (node.attrs.__key === id) {
           return nodeWithPos;
         }
@@ -825,6 +848,7 @@ export class MediaPluginState {
   removeSelectedMediaNode = (): boolean => {
     const { view } = this;
     if (this.selectedMediaNode()) {
+      console.warn('backspace: removeSelectedMediaNode');
       const { from, node } = view.state.selection as NodeSelection;
       removeMediaNode(view, node, () => from);
       return true;
@@ -834,6 +858,7 @@ export class MediaPluginState {
 
   selectedMediaNode(): Node | undefined {
     const { selection, schema } = this.view.state;
+
     if (
       selection instanceof NodeSelection &&
       selection.node.type === schema.nodes.media

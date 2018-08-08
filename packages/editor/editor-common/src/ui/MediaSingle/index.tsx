@@ -4,7 +4,7 @@ import Wrapper from './styled';
 import * as classnames from 'classnames';
 
 export interface Props {
-  children: React.ReactChild;
+  children: React.ReactChild[];
   layout: MediaSingleLayout;
   width: number;
   height: number;
@@ -36,7 +36,7 @@ export default function MediaSingle({
       })}
       hasCaption={hasCaption}
     >
-      {React.Children.only(children)}
+      {children}
     </Wrapper>
   );
 }

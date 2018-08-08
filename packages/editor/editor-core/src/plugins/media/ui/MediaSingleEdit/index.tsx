@@ -111,6 +111,8 @@ export default class MediaSingleEdit extends React.Component<Props, State> {
       allowBreakout,
       allowLayout,
     } = this.state;
+    // console.log('target is', target);
+
     if (
       target &&
       !closestElement(target, 'li') &&
@@ -161,6 +163,8 @@ export default class MediaSingleEdit extends React.Component<Props, State> {
   }
 
   private handlePluginStateChange = (pluginState: MediaPluginState) => {
+    // console.log('handle plugin state change!', pluginState);
+
     const { element: target, layout } = pluginState;
     const node = pluginState.selectedMediaNode();
     const allowBreakout = !!(

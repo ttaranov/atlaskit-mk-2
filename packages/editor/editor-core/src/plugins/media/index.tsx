@@ -1,6 +1,11 @@
 import * as React from 'react';
 import EditorImageIcon from '@atlaskit/icon/glyph/editor/image';
-import { media, mediaGroup, mediaSingle } from '@atlaskit/editor-common';
+import {
+  media,
+  mediaGroup,
+  mediaSingle,
+  caption,
+} from '@atlaskit/editor-common';
 
 import { EditorPlugin } from '../../types';
 
@@ -19,7 +24,6 @@ import MediaSingleEdit from './ui/MediaSingleEdit';
 import { mediaSingleNodeView } from './nodeviews/media-single';
 import { mediaGroupNodeView } from './nodeviews/media-group';
 import { CustomMediaPicker } from './types';
-import { node } from '../../../../../media/media-picker/node_modules/@types/prop-types';
 
 export {
   MediaState,
@@ -44,6 +48,7 @@ export interface MediaSingleOptions {
 const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
   nodes() {
     return [
+      { name: 'caption', node: caption },
       { name: 'mediaGroup', node: mediaGroup },
       { name: 'mediaSingle', node: mediaSingle },
       { name: 'media', node: media },
@@ -98,6 +103,7 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
                   dom.style.display = 'none';
                   return {
                     dom,
+                    contentDOM: dom,
                   };
                 },
               },

@@ -44,24 +44,30 @@ function calcWidth(
 
 const wrapMediaMargin = 16;
 const mediaSingleMargin = 24;
-const captionMargin = 12;
+const captionMargin = 28; /* 20px lineheight + 8px margin */
 
 function calcMargin(layout: MediaSingleLayout, showCaption: boolean): string {
   switch (layout) {
     case 'wrap-right':
       return `${
-        showCaption ? wrapMediaMargin - captionMargin : captionMargin
-      }px auto ${wrapMediaMargin + (showCaption ? captionMargin : 0)}px 24px`;
+        showCaption ? wrapMediaMargin - captionMargin / 2 : wrapMediaMargin
+      }px auto ${
+        showCaption ? wrapMediaMargin - captionMargin / 2 : wrapMediaMargin
+      }px 24px`;
 
     case 'wrap-left':
       return `${
-        showCaption ? wrapMediaMargin - captionMargin : captionMargin
-      }px 24px ${wrapMediaMargin + (showCaption ? captionMargin : 0)}px auto`;
+        showCaption ? wrapMediaMargin - captionMargin / 2 : wrapMediaMargin
+      }px 24px ${
+        showCaption ? wrapMediaMargin - captionMargin / 2 : wrapMediaMargin
+      }px auto`;
 
     default:
       return `${
-        showCaption ? mediaSingleMargin - captionMargin : 24
-      }px auto ${mediaSingleMargin + (showCaption ? captionMargin : 0)}px auto`;
+        showCaption ? mediaSingleMargin - captionMargin / 2 : mediaSingleMargin
+      }px auto ${
+        showCaption ? mediaSingleMargin - captionMargin / 2 : mediaSingleMargin
+      }px auto`;
   }
 }
 export interface WrapperProps {
@@ -88,41 +94,52 @@ const MediaSingleDimensionHelper = ({
     ? '100%'
     : `${containerWidth}px`};
   float: ${float(layout)};
-  margin: ${calcMargin(layout, hasCaption)};
-  &::after {
-    content: '';
-    display: block;
-    padding-bottom: ${height / width * 100}%;
-  }
 `;
 
 export const Caption: React.ComponentClass<HTMLAttributes<{}>> = styled.div`
-  .ProseMirror & > div p {
+  & figcaption {
     color: ${akColorN200};
     font-size: 12px;
     font-weight: 400;
     line-height: 20px;
 
     margin-top: 8px;
-    margin-bottom: 8px;
-    display: inline-block;
-
-    text-align: center;
+    /*margin-bottom: 8px;*/
+    display: block;
   }
+
+  text-align: center;
+  width: 100%;
 `;
 
 const Wrapper: React.ComponentClass<
   HTMLAttributes<{}> & WrapperProps
 > = styled.div`
+  margin: ${p => calcMargin(p.layout, p.hasCaption)};
+
   ${MediaSingleDimensionHelper};
   position: relative;
+
   & > div {
-    position: absolute;
-    height: 100%;
-    width: 100%;
+    position: relative;
+  }
+
+  & > div:first-of-type {
+    /* only apply to image */
+    &::after {
+      content: '';
+      display: block;
+      padding-bottom: ${p => p.height / p.width * 100}%;
+    }
 
     & > div:first-of-type {
+      position: absolute;
       height: 100%;
+      width: 100%;
+
+      & > div {
+        height: 100%;
+      }
     }
   }
 `;

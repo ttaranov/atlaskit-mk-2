@@ -49,6 +49,7 @@ const maybeRemoveMediaSingleNode = (schema: Schema) => {
       return false;
     }
 
+    console.log('backspace: maybeRemoveMediaSingleNode');
     const tr = state.tr.replace(index - 2, maybeAnyBlock.nodeSize);
     dispatch(tr);
 

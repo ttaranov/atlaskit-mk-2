@@ -32,7 +32,8 @@ export const defaultAttrs = {
 export const mediaSingle: NodeSpec = {
   inline: false,
   group: 'block',
-  content: 'media paragraph?',
+  defining: true,
+  content: '(media caption) | media',
   attrs: defaultAttrs,
   parseDOM: [
     {

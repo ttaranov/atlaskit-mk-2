@@ -17,6 +17,7 @@ export const defaultSchema: Schema = createSchema({
     'rule',
     'image',
     'mention',
+    'caption',
     'media',
     'mediaGroup',
     'mediaSingle',

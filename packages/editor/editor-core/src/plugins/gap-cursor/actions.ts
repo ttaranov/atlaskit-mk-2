@@ -90,6 +90,8 @@ export const deleteNode = (direction: Direction): Command => (
   dispatch: (tr: Transaction) => void,
 ): boolean => {
   if (state.selection instanceof GapCursorSelection) {
+    console.log('backspace: gapcursor deleteNode');
+
     const { $from } = state.selection;
     let { tr } = state;
     if (direction === Direction.BACKWARD) {

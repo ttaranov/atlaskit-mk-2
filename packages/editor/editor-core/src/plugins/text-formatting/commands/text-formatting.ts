@@ -139,7 +139,7 @@ export const removeIgnoredNodes = (view: EditorView): Command => {
   return (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {
     const { empty, $cursor } = state.selection as TextSelection;
     if (empty && $cursor && $cursor.nodeBefore) {
-      removeIgnoredNodesLeft(view);
+      return removeIgnoredNodesLeft(view);
     }
     return false;
   };

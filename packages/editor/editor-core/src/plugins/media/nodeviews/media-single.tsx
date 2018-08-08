@@ -142,27 +142,25 @@ export class MediaSingleNode extends Component<
         containerWidth={containerWidth}
         hasCaption={node.childCount > 1}
       >
-        <div>
-          <WrappedMediaNode
-            pluginState={selectionPluginState}
-            view={view}
-            node={childNode}
-            getPos={this.getChildPos}
-            providerFactory={providerFactory}
-            cardDimensions={{
-              width: '100%',
-              height: '100%',
-            }}
-            isMediaSingle={true}
-            progress={progress}
-            onExternalImageLoaded={this.onExternalImageLoaded}
-          />
-          <Caption
-            innerRef={ref => {
-              forwardRef(ref);
-            }}
-          />
-        </div>
+        <WrappedMediaNode
+          pluginState={selectionPluginState}
+          view={view}
+          node={childNode}
+          getPos={this.getChildPos}
+          providerFactory={providerFactory}
+          cardDimensions={{
+            width: '100%',
+            height: '100%',
+          }}
+          isMediaSingle={true}
+          progress={progress}
+          onExternalImageLoaded={this.onExternalImageLoaded}
+        />
+        <Caption
+          innerRef={ref => {
+            forwardRef(ref);
+          }}
+        />
       </MediaSingle>
     );
   }
@@ -183,7 +181,30 @@ export class MediaSingleView extends ReactNodeView {
   }
 
   getContentDOM() {
-    return DOMSerializer.renderSpec(document, ['div', 0]);
+    // const contentDOM = DOMSerializer.renderSpec(document, ['div', 0]);
+    // console.log('using contentDOM', contentDOM);
+
+    // const dom = document.createElement('div');
+    // dom.setAttribute('data-pm-debug', 'dom');
+
+    // const contentDOM = document.createElement('div');
+    // dom.setAttribute('data-pm-debug', 'contentDOM');
+
+    // dom.appendChild(contentDOM);
+
+    // return {
+    //   dom,
+    //   contentDOM
+    // };
+
+    if (this.node.type.spec.toDOM) {
+      return DOMSerializer.renderSpec(
+        document,
+        this.node.type.spec.toDOM(this.node),
+      );
+    } else {
+      return undefined;
+    }
   }
 
   render(props, forwardRef) {

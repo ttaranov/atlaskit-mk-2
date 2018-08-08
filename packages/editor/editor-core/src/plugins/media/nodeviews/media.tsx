@@ -42,7 +42,6 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
   }
 
   componentWillUnmount() {
-    console.log('unmounting', this);
     const { node } = this.props;
     this.pluginState.handleMediaNodeUnmount(node);
   }
@@ -52,7 +51,6 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
       this.props.getPos !== newProps.getPos ||
       this.props.node.attrs.__key !== newProps.node.attrs.__key
     ) {
-      console.log('remounting');
       this.pluginState.handleMediaNodeUnmount(this.props.node);
       this.handleNewNode(newProps);
     }
@@ -98,24 +96,33 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
       );
     }
 
-    console.log('render media item, id', id, '__key', __key, 'url', url);
+    const nodeAttrs = node.type.spec.toDOM ? node.type.spec.toDOM(node)[1] : {};
+    const attrs = Object.keys(nodeAttrs).reduce((attrs, name) => {
+      if (name !== 'style') {
+        attrs[name] = nodeAttrs[name];
+      }
+
+      return attrs;
+    }, {});
 
     return (
-      <UIMedia
-        key={`media-node-${__key}`}
-        editorView={view}
-        __key={__key!}
-        id={id!}
-        type={type!}
-        collection={collection!}
-        providers={providerFactory}
-        cardDimensions={cardDimensions}
-        onDelete={deleteEventHandler}
-        selected={selected}
-        url={url}
-        onExternalImageLoaded={onExternalImageLoaded}
-        disableOverlay={isMediaSingle}
-      />
+      <div {...attrs}>
+        <UIMedia
+          key={`media-node-${__key}`}
+          editorView={view}
+          __key={__key!}
+          id={id!}
+          type={type!}
+          collection={collection!}
+          providers={providerFactory}
+          cardDimensions={cardDimensions}
+          onDelete={deleteEventHandler}
+          selected={selected}
+          url={url}
+          onExternalImageLoaded={onExternalImageLoaded}
+          disableOverlay={isMediaSingle}
+        />
+      </div>
     );
   }
 

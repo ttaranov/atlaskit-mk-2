@@ -65,8 +65,6 @@ export default class ReactNodeView implements NodeView {
     // difference between them and it kills the nodeView
     this.domRef.className = `${this.node.type.name}View-content-wrap`;
 
-    debugger;
-
     this.renderReactComponent(
       this.render(this.reactComponentProps, this.handleRef),
     );
@@ -83,9 +81,11 @@ export default class ReactNodeView implements NodeView {
   }
 
   createDomRef(): HTMLElement {
-    return this.node.isInline
+    const domRef = this.node.isInline
       ? document.createElement('span')
       : document.createElement('div');
+    domRef.setAttribute('data-pm-debug', 'domRef');
+    return domRef;
   }
 
   getContentDOM():
@@ -126,7 +126,6 @@ export default class ReactNodeView implements NodeView {
       this.node.type === node.type && validUpdate(this.node, node);
 
     if (!isValidUpdate) {
-      console.warn('invalid update');
       return false;
     }
 
@@ -158,7 +157,6 @@ export default class ReactNodeView implements NodeView {
   }
 
   destroy() {
-    console.log('!! destroying nodeview');
     if (!this.domRef) {
       return;
     }

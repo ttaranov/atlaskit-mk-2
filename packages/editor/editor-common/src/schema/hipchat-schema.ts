@@ -31,6 +31,7 @@ export const hipchatSchema: Schema = createSchema({
     'taskItem',
 
     // media
+    'caption',
     'mediaGroup',
     'media',
 

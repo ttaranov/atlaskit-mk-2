@@ -29,7 +29,28 @@ function removeMediaNode(
   dispatch: (tr: Transaction) => void,
 ): boolean {
   const mediaPluginState = stateKey.getState(state) as MediaPluginState;
-  return mediaPluginState.removeSelectedMediaNode();
+  if (mediaPluginState.removeSelectedMediaNode()) {
+    return true;
+  }
+
+  console.log('selection', state.selection);
+
+  const { caption } = state.schema.nodes;
+
+  if (state.selection.$from.parent.type === caption) {
+    console.log('before', state.selection.$from.nodeBefore);
+    if (state.selection.$from.nodeBefore === null) {
+      const deleteFrom = state.selection.$from.before();
+      const deleteTo = state.selection.$to.after();
+
+      console.warn('doing the delete from', deleteFrom, 'to', deleteTo);
+
+      dispatch(state.tr.delete(deleteFrom, deleteTo));
+      return true;
+    }
+  }
+
+  return false;
 }
 
 function ignoreLinksInSteps(

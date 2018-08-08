@@ -12,8 +12,11 @@ export const nodeLen = (node: Node): number => {
     : node.childNodes.length;
 };
 
-export const isIgnorable = (dom: any): boolean =>
-  dom.pmViewDesc && dom.pmViewDesc.size === 0;
+export const isIgnorable = (dom: any): boolean => {
+  const res = dom.pmViewDesc && dom.pmViewDesc.size === 0;
+  console.log('considering', dom, 'returning', res);
+  return res;
+};
 
 export const isBlockNode = (dom: any): boolean => {
   const desc = dom.pmViewDesc;
@@ -52,7 +55,7 @@ export const removeIgnoredNodesLeft = (view: EditorView) => {
   let removeOffset;
 
   if (!node) {
-    return;
+    return false;
   }
   for (;;) {
     if (offset > 0) {
@@ -102,7 +105,10 @@ export const removeIgnoredNodesLeft = (view: EditorView) => {
   }
   if (removeNode) {
     removeNode.parentNode.removeChild(removeNode);
+    return true;
   }
+
+  return false;
 };
 
 export const hasCode = (state: EditorState, pos: number): boolean => {
