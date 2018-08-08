@@ -1,8 +1,21 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import { gridItems } from '../example-helpers/media-grid-items';
-import { GridItem, MediaGridView } from '../src/mediaGrid/mediaGridView';
-import { RowWrapper } from '../src/mediaGrid/styled';
+import {
+  EMPTY_GRID_ITEM,
+  GridItem,
+  MediaGridView,
+} from '../src/mediaGrid/mediaGridView';
+import { ImgWrapper, RowWrapper } from '../src/mediaGrid/styled';
+
+const generateGridItems = (length: number) =>
+  new Array(length).fill(null).map((el, index) => ({
+    dataURI: `some-url-${index + 1}`,
+    dimensions: {
+      width: 1000,
+      height: 1000,
+    },
+  }));
 
 describe('MediaGridView', () => {
   let onItemsChange: jest.Mock<any>;
@@ -11,29 +24,30 @@ describe('MediaGridView', () => {
   });
 
   it('should render all the items', () => {
-    const numberOfItems = gridItems.length;
+    const items: GridItem[] = generateGridItems(5);
     const component = shallow(
-      <MediaGridView items={gridItems} onItemsChange={onItemsChange} />,
+      <MediaGridView items={items} onItemsChange={onItemsChange} />,
     );
-    expect(component.find('img')).toHaveLength(numberOfItems);
+    expect(component.find('img')).toHaveLength(5);
     expect(
       component
         .find('img')
         .at(0)
         .props().src,
-    ).toEqual(gridItems[0].dataURI);
+    ).toEqual('some-url-1');
     expect(
       component
         .find('img')
-        .at(gridItems.length - 1)
+        .at(4)
         .props().src,
-    ).toEqual(gridItems[gridItems.length - 1].dataURI);
+    ).toEqual('some-url-5');
   });
 
   it('should have 3 rows with 3 items in a row', () => {
+    const items: GridItem[] = generateGridItems(9);
     const component = shallow(
       <MediaGridView
-        items={gridItems.slice(0, 9)}
+        items={items}
         onItemsChange={onItemsChange}
         itemsPerRow={3}
       />,
@@ -45,14 +59,18 @@ describe('MediaGridView', () => {
         .at(0)
         .find('img'),
     ).toHaveLength(3);
+    expect(
+      component
+        .find(RowWrapper)
+        .at(1)
+        .find('img'),
+    ).toHaveLength(3);
   });
 
   it('should have 3 items per row by default', () => {
+    const items: GridItem[] = generateGridItems(9);
     const component = shallow(
-      <MediaGridView
-        items={gridItems.slice(0, 9)}
-        onItemsChange={onItemsChange}
-      />,
+      <MediaGridView items={items} onItemsChange={onItemsChange} />,
     );
     expect(
       component
@@ -63,10 +81,11 @@ describe('MediaGridView', () => {
   });
 
   it('should have 4 items per row', () => {
+    const items: GridItem[] = generateGridItems(9);
     const component = shallow(
       <MediaGridView
         itemsPerRow={4}
-        items={gridItems.slice(0, 9)}
+        items={items}
         onItemsChange={onItemsChange}
       />,
     );
@@ -76,6 +95,12 @@ describe('MediaGridView', () => {
         .at(0)
         .find('img'),
     ).toHaveLength(4);
+    expect(
+      component
+        .find(RowWrapper)
+        .at(2)
+        .find('img'),
+    ).toHaveLength(1);
   });
 
   it('should have remaining items on last row', () => {
@@ -280,5 +305,184 @@ describe('MediaGridView', () => {
         },
       },
     ]);
+  });
+
+  it('should have 2 in a row when empty media-item is present', () => {
+    const items: GridItem[] = [
+      EMPTY_GRID_ITEM,
+      {
+        dataURI: 'some-url-1',
+        dimensions: {
+          width: 1000,
+          height: 1000,
+        },
+      },
+      EMPTY_GRID_ITEM,
+      {
+        dataURI: 'some-url-2',
+        dimensions: {
+          width: 500,
+          height: 250,
+        },
+      },
+    ];
+    const component = shallow(
+      <MediaGridView
+        items={items}
+        width={100}
+        itemsPerRow={3}
+        onItemsChange={onItemsChange}
+      />,
+    );
+    expect(component.find(RowWrapper)).toHaveLength(2);
+    const firstRowImageWrapper = component
+      .find(RowWrapper)
+      .at(0)
+      .find(ImgWrapper);
+    const secondRowImageWrapper = component
+      .find(RowWrapper)
+      .at(1)
+      .find(ImgWrapper);
+    expect(firstRowImageWrapper).toHaveLength(1);
+    expect(secondRowImageWrapper).toHaveLength(1);
+  });
+
+  describe('delete', () => {
+    it('should replace deleted item with empty grid item when there is non-empty item in this row', () => {
+      const items: GridItem[] = [
+        {
+          dataURI: 'some-url-1',
+          dimensions: {
+            width: 1000,
+            height: 1000,
+          },
+        },
+        {
+          dataURI: 'some-url-2',
+          dimensions: {
+            width: 1000,
+            height: 1000,
+          },
+        },
+        {
+          dataURI: 'some-url-3',
+          dimensions: {
+            width: 1000,
+            height: 1000,
+          },
+        },
+        {
+          dataURI: 'some-url-4',
+          dimensions: {
+            width: 1000,
+            height: 1000,
+          },
+        },
+        {
+          dataURI: 'some-url-5',
+          dimensions: {
+            width: 1000,
+            height: 1000,
+          },
+        },
+      ];
+      const component = shallow(
+        <MediaGridView
+          items={items}
+          width={100}
+          itemsPerRow={3}
+          onItemsChange={onItemsChange}
+        />,
+      );
+      (component.instance() as MediaGridView).deleteImage(3);
+      expect(onItemsChange).toHaveBeenCalledWith([
+        {
+          dataURI: 'some-url-1',
+          dimensions: {
+            width: 1000,
+            height: 1000,
+          },
+        },
+        {
+          dataURI: 'some-url-2',
+          dimensions: {
+            width: 1000,
+            height: 1000,
+          },
+        },
+        {
+          dataURI: 'some-url-3',
+          dimensions: {
+            width: 1000,
+            height: 1000,
+          },
+        },
+        EMPTY_GRID_ITEM,
+        {
+          dataURI: 'some-url-5',
+          dimensions: {
+            width: 1000,
+            height: 1000,
+          },
+        },
+      ]);
+    });
+
+    it('should delete all items in a row when last non-empty item in that row is deleted', () => {
+      const items: GridItem[] = [
+        // First Row
+        {
+          dataURI: 'some-url-1',
+          dimensions: {
+            width: 1000,
+            height: 1000,
+          },
+        },
+        {
+          dataURI: 'some-url-2',
+          dimensions: {
+            width: 1000,
+            height: 1000,
+          },
+        },
+        EMPTY_GRID_ITEM,
+        // Second Row
+        EMPTY_GRID_ITEM,
+        {
+          dataURI: 'some-url-5',
+          dimensions: {
+            width: 1000,
+            height: 1000,
+          },
+        },
+      ];
+      const component = shallow(
+        <MediaGridView
+          items={items}
+          width={100}
+          itemsPerRow={3}
+          onItemsChange={onItemsChange}
+        />,
+      );
+      (component.instance() as MediaGridView).deleteImage(4);
+      expect(onItemsChange).toHaveBeenCalledWith([
+        // First Row
+        {
+          dataURI: 'some-url-1',
+          dimensions: {
+            width: 1000,
+            height: 1000,
+          },
+        },
+        {
+          dataURI: 'some-url-2',
+          dimensions: {
+            width: 1000,
+            height: 1000,
+          },
+        },
+        EMPTY_GRID_ITEM,
+      ]);
+    });
   });
 });

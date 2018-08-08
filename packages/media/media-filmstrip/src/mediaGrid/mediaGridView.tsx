@@ -40,6 +40,13 @@ export interface MediaGridViewState {
 const DEFAULT_WIDTH = 744;
 const ITEMS_PER_ROW = 3;
 
+export const EMPTY_GRID_ITEM: GridItem = {
+  dimensions: {
+    height: 0,
+    width: 0,
+  },
+};
+
 export class MediaGridView extends Component<
   MediaGridViewProps,
   MediaGridViewState
@@ -212,11 +219,24 @@ export class MediaGridView extends Component<
     event.preventDefault();
   }
 
-  deleteImage = (index: number) => {
-    const { onItemsChange } = this.props;
-    const items = [...this.props.items];
+  private nonEmptyItemsOnRow(rowIndex: number) {
+    const { items, itemsPerRow } = this.props;
+    const rowStartIndex = rowIndex * itemsPerRow!;
+    return items
+      .slice(rowStartIndex, rowStartIndex + itemsPerRow!)
+      .filter(item => !!item.dataURI);
+  }
 
-    items.splice(index, 1);
+  deleteImage = (index: number) => {
+    const { onItemsChange, itemsPerRow } = this.props;
+    const items = [...this.props.items];
+    const rowIndex = Math.floor(index / itemsPerRow!);
+    const itemsOnThisRow = this.nonEmptyItemsOnRow(rowIndex);
+    if (itemsOnThisRow.length > 1) {
+      items[index] = EMPTY_GRID_ITEM;
+    } else {
+      items.splice(rowIndex * itemsPerRow!, itemsPerRow!);
+    }
 
     onItemsChange(items);
   };
@@ -224,7 +244,8 @@ export class MediaGridView extends Component<
   render() {
     const { items, itemsPerRow, width } = this.props;
     const rows: JSX.Element[] = [];
-    for (let index = 0; index < items.length; index += itemsPerRow!) {
+    const numberOfRows = Math.ceil(items.length / itemsPerRow!);
+    for (let rowIndex = 0; rowIndex < numberOfRows; rowIndex += 1) {
       /*
       # How the image scaling magic works
       hx, wx, aspectx: height, width and aspect ratio of image x (aspect = w/h)
@@ -234,7 +255,7 @@ export class MediaGridView extends Component<
       w1 * scale1 + w2 * scale2 + w3 * scale3 + (numImages-1) * margin = gridWidth
 
       therefore:
-      (h1 * aspect1) * scale1 + (h2 * aspect2) * scale2 + (h3 * aspect3) * scale3 
+      (h1 * aspect1) * scale1 + (h2 * aspect2) * scale2 + (h3 * aspect3) * scale3
           = gridWidth - (numImages-1) * margin
 
       All images in row must be same height
@@ -250,7 +271,8 @@ export class MediaGridView extends Component<
 
       -> gridHeight = (gridWidth - (numImages-1) * margin) / (aspect1 + aspect2 + aspect3)
       */
-      const itemsInRow = items.slice(index, index + itemsPerRow!);
+
+      const itemsInRow = this.nonEmptyItemsOnRow(rowIndex);
       const aspectRatioSum = itemsInRow
         .map(i => i.dimensions.width / i.dimensions.height)
         .reduce((prev, curr) => prev + curr, 0);
@@ -258,10 +280,11 @@ export class MediaGridView extends Component<
       const gridHeight = (width! - marginSum) / aspectRatioSum;
 
       rows.push(
-        <RowWrapper key={'row' + index}>
-          {itemsInRow.map((item, columnIndex) =>
-            this.renderImage(item, gridHeight, index + columnIndex),
-          )}
+        <RowWrapper key={'row' + rowIndex}>
+          {itemsInRow.map((item, columnIndex) => {
+            const index = rowIndex * itemsPerRow! + columnIndex;
+            return this.renderImage(item, gridHeight, index);
+          })}
         </RowWrapper>,
       );
     }
