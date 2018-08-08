@@ -85,12 +85,9 @@ export const RemoveIconWrapper = styled.div`
   bottom: 10px;
   right: 10px;
   opacity: 0;
-  color: white;
-  border: 1px solid transparent;
-  cursor: pointer;
-  border-radius: 3px;
+  transition: opacity 0.3s;
 
-  &:hover {
-    border-color: #ccc;
+  button {
+    color: white !important;
   }
 `;
