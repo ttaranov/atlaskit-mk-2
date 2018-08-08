@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { AnalyticsContext } from '@atlaskit/analytics-next';
-import FabricAnalyticsListeners, { FABRIC_CHANNELS } from '../src';
+import FabricAnalyticsListeners, { FabricChannel } from '../src';
 import {
   DummyComponentWithAnalytics,
   DummyAtlaskitComponentWithAnalytics,
@@ -31,7 +31,7 @@ export default function Example() {
   return (
     <FabricAnalyticsListeners
       client={Promise.resolve(analyticsWebClientMock)}
-      excludedChannels={[FABRIC_CHANNELS.atlaskit]}
+      excludedChannels={[FabricChannel.atlaskit]}
     >
       <div>
         <DummyComponentWithAnalytics

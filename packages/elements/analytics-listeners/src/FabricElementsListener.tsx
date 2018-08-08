@@ -3,10 +3,9 @@ import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { ELEMENTS_CONTEXT } from '@atlaskit/analytics-namespaced-context';
 import { GasPayload } from '@atlaskit/analytics-gas-types';
 import { sendEvent } from './analytics-web-client-wrapper';
-import { ListenerProps } from './types';
+import { ListenerProps, FabricChannel } from './types';
 import * as merge from 'lodash.merge';
 
-export const ELEMENTS_CHANNEL = 'fabric-elements';
 export const ELEMENTS_TAG = 'fabricElements';
 
 export type ListenerFunction = (
@@ -55,7 +54,7 @@ export default class FabricElementsListener extends React.Component<
     return (
       <AnalyticsListener
         onEvent={this.listenerHandler}
-        channel={ELEMENTS_CHANNEL}
+        channel={FabricChannel.elements}
       >
         {this.props.children}
       </AnalyticsListener>

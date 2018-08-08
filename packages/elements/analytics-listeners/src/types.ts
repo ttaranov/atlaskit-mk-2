@@ -1,6 +1,4 @@
 import Logger from './helpers/logger';
-import { ELEMENTS_CHANNEL } from './FabricElementsListener';
-import { ATLASKIT_CHANNEL } from './atlaskit/AtlaskitListener';
 
 export type AnalyticsWebClient = {
   sendUIEvent: (event: any) => void;
@@ -25,4 +23,7 @@ export type EventNextType = {
 
 export type ListenerFunction = (event: EventNextType) => void;
 
-export type FabricChannels = typeof ATLASKIT_CHANNEL | typeof ELEMENTS_CHANNEL;
+export enum FabricChannel {
+  atlaskit = 'atlaskit',
+  elements = 'elements',
+}
