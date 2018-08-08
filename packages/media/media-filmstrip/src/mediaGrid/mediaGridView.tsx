@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { Component } from 'react';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
+import { colors } from '@atlaskit/theme';
 import {
   Wrapper,
   RowWrapper,
   imageMargin,
   ImgWrapper,
+  Img,
   RemoveIconWrapper,
 } from './styled';
 
@@ -35,6 +37,8 @@ export interface MediaGridViewState {
   // Special flag we need to keep track of. It shows if mouse cursor with dragged item is currently
   // over last item in the row.
   lastInRow?: boolean;
+  // Selected image (eg. to be deleted with Delete key)
+  selected: number;
 }
 
 const DEFAULT_WIDTH = 744;
@@ -45,6 +49,7 @@ export class MediaGridView extends Component<
   MediaGridViewState
 > {
   state: MediaGridViewState = {
+    selected: undefined,
     isDragging: false,
     draggingIndex: 0,
   };
@@ -125,6 +130,13 @@ export class MediaGridView extends Component<
     this.resetDragging();
   };
 
+  onClick = (index: number) => () => {
+    this.setState({
+      ...this.state,
+      selected: index,
+    });
+  };
+
   onLoad = (dataURI: string) => () => {
     const { items, onItemsChange } = this.props;
     const newItems = items.map(item => ({
@@ -160,7 +172,9 @@ export class MediaGridView extends Component<
     const aspectRatio = width / height;
     const img = dataURI ? (
       <React.Fragment>
-        <img
+        <Img
+          isSelected={this.state.selected === index}
+          onClick={this.onClick(index)}
           draggable={isInteractive}
           src={dataURI}
           onLoad={this.onLoad(dataURI)}

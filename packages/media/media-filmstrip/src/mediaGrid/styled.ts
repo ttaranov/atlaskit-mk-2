@@ -1,5 +1,5 @@
 // @ts-ignore
-import { ClassAttributes, HTMLAttributes } from 'react';
+import { ClassAttributes, HTMLAttributes, ImgHTMLAttributes } from 'react';
 // @ts-ignore
 import styled, { StyledComponentClass } from 'styled-components';
 import { colors } from '@atlaskit/theme';
@@ -12,6 +12,22 @@ export const RowWrapper = styled.div`
 
   &:last-child {
     margin-bottom: 0;
+  }
+`;
+
+export interface ImgProps {
+  isSelected: boolean;
+}
+
+export const Img = styled.img`
+  width: 100%;
+  outline-style: solid;
+  outline-width: 5px;
+  outline-color: ${({ isSelected }: ImgProps) =>
+    isSelected ? 'red' : 'transparent'};
+  transition: outline 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+  &:hover {
+    outline-color: ${colors.B200};
   }
 `;
 
@@ -50,15 +66,6 @@ export const ImgWrapper = styled.div`
 
   &:last-child {
     margin-right: 0;
-  }
-
-  img {
-    width: 100%;
-    outline: 5px solid transparent;
-    transition: outline 0.6s cubic-bezier(0.19, 1, 0.22, 1);
-    &:hover {
-      outline: 5px solid ${colors.B200};
-    }
   }
 
   ${(props: ImgWrapperProps) =>
