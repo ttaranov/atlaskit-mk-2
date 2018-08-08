@@ -1,4 +1,7 @@
-import styled from 'styled-components';
+// @ts-ignore
+import { ClassAttributes, HTMLAttributes } from 'react';
+// @ts-ignore
+import styled, { StyledComponentClass } from 'styled-components';
 
 export const imageMargin = 10;
 
@@ -12,7 +15,7 @@ export const RowWrapper = styled.div`
   }
 `;
 
-interface ImgWrapperProps {
+export interface ImgWrapperProps {
   hasPlaceholder: boolean;
   isRightPlaceholder: boolean;
   isLoaded?: boolean;
