@@ -37,15 +37,11 @@ import {
 } from '../src';
 
 function makeTestItem(key) {
-  return process.env &&
-    process.env.NODE_ENV &&
-    process.env.NODE_ENV === 'production'
-    ? null
-    : ({ children, className }: *) => (
-        <div data-webdriver-test-key={key} className={className}>
-          {children}
-        </div>
-      );
+  return ({ children, className }: *) => (
+    <div data-webdriver-test-key={key} className={className}>
+      {children}
+    </div>
+  );
 }
 
 /**
@@ -206,11 +202,7 @@ const containerNavSections = [
 // ==============================
 
 function makeTestComponent(key, element) {
-  return process.env &&
-    process.env.NODE_ENV &&
-    process.env.NODE_ENV === 'production'
-    ? () => element
-    : () => <div data-webdriver-test-key={key}>{element}</div>;
+  return () => <div data-webdriver-test-key={key}>{element}</div>;
 }
 
 const GlobalNavigation = makeTestComponent(
