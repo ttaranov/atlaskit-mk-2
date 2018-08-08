@@ -1,5 +1,8 @@
-import styled from 'styled-components';
-
+// @ts-ignore
+import { ClassAttributes, HTMLAttributes } from 'react';
+// @ts-ignore
+import styled, { StyledComponentClass } from 'styled-components';
+import { colors } from '@atlaskit/theme';
 export const imageMargin = 10;
 
 export const RowWrapper = styled.div`
@@ -12,7 +15,7 @@ export const RowWrapper = styled.div`
   }
 `;
 
-interface ImgWrapperProps {
+export interface ImgWrapperProps {
   hasPlaceholder: boolean;
   isRightPlaceholder: boolean;
   isLoaded?: boolean;
@@ -39,8 +42,23 @@ export const ImgWrapper = styled.div`
   margin-right: ${imageMargin}px;
   position: relative;
 
+  &:hover {
+    .remove-img-wrapper {
+      opacity: 1;
+    }
+  }
+
   &:last-child {
     margin-right: 0;
+  }
+
+  img {
+    width: 100%;
+    outline: 5px solid transparent;
+    transition: outline 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+    &:hover {
+      outline: 5px solid ${colors.B200};
+    }
   }
 
   ${(props: ImgWrapperProps) =>
@@ -52,4 +70,19 @@ export const ImagePlaceholder = styled.div`
   background-color: #ecf0f8;
   width: 100%;
   height: 100%;
+`;
+
+export const RemoveIconWrapper = styled.div`
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  opacity: 0;
+  color: white;
+  border: 1px solid transparent;
+  cursor: pointer;
+  border-radius: 3px;
+
+  &:hover {
+    border-color: #ccc;
+  }
 `;
