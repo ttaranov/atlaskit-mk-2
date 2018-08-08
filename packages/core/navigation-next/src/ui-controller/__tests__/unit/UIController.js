@@ -14,6 +14,11 @@ const cacheController = {
 };
 
 describe('NavigationNext UI Controller: UIController', () => {
+  afterEach(() => {
+    cacheController.get.mockRestore();
+    cacheController.set.mockRestore();
+  });
+
   it('should add the default state if a cache controller was not passed', () => {
     const uiController = new UIController(initialState, false);
     expect(uiController.state).toEqual({
