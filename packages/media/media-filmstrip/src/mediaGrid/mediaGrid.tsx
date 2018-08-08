@@ -38,9 +38,6 @@ export const updatePopulatedItems = (
       populatedItem => populatedItem.dataURI === gridItem.dataURI,
     );
     const id = populatedItem ? populatedItem.id : '';
-    if (!id) {
-      console.error('no id for', gridItem);
-    }
 
     return {
       ...gridItem,
