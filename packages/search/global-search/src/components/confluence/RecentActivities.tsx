@@ -36,14 +36,26 @@ export default class RecentActivities extends React.Component<Props> {
 
     let sectionIndex = 0;
 
+    const recentPagesToShow = take(recentlyViewedPages, MAX_RECENT_PAGES);
+    const recentSpacesToShow = take(recentlyViewedSpaces, MAX_SPACES);
+    const recentPeopleToShow = take(recentlyInteractedPeople, MAX_PEOPLE);
+
+    const analyticsData = {
+      resultCount:
+        recentPagesToShow.length +
+        recentSpacesToShow.length +
+        recentPeopleToShow.length,
+    };
+
     const objectsGroup = (
       <ResultGroup
         key="objects"
         title={
           <FormattedMessage id="global-search.confluence.recent-pages-heading" />
         }
-        results={take(recentlyViewedPages, MAX_RECENT_PAGES)}
+        results={recentPagesToShow}
         sectionIndex={sectionIndex}
+        analyticsData={analyticsData}
       />
     );
 
@@ -57,8 +69,9 @@ export default class RecentActivities extends React.Component<Props> {
         title={
           <FormattedMessage id="global-search.confluence.recent-spaces-heading" />
         }
-        results={take(recentlyViewedSpaces, MAX_SPACES)}
+        results={recentSpacesToShow}
         sectionIndex={sectionIndex}
+        analyticsData={analyticsData}
       />
     );
 
@@ -72,8 +85,9 @@ export default class RecentActivities extends React.Component<Props> {
         title={
           <FormattedMessage id="global-search.people.recent-people-heading" />
         }
-        results={take(recentlyInteractedPeople, MAX_PEOPLE)}
+        results={recentPeopleToShow}
         sectionIndex={sectionIndex}
+        analyticsData={analyticsData}
       />
     );
 

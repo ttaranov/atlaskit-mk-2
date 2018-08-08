@@ -36,14 +36,29 @@ export default class SearchResultsState extends React.Component<Props> {
 
     let sectionIndex = 0;
 
+    const objectResultsToShow = take(
+      objectResults,
+      MAX_PAGES_BLOGS_ATTACHMENTS,
+    );
+    const spaceResultsToShow = take(spaceResults, MAX_SPACES);
+    const peopleResultsToShow = take(peopleResults, MAX_PEOPLE);
+
+    const analyticsData = {
+      resultCount:
+        objectResultsToShow.length +
+        spaceResultsToShow.length +
+        peopleResultsToShow.length,
+    };
+
     const objectsGroup = (
       <ResultsGroup
         key="objects"
         title={
           <FormattedMessage id="global-search.confluence.confluence-objects-heading" />
         }
-        results={take(objectResults, MAX_PAGES_BLOGS_ATTACHMENTS)}
+        results={objectResultsToShow}
         sectionIndex={sectionIndex}
+        analyticsData={analyticsData}
       />
     );
 
@@ -57,8 +72,9 @@ export default class SearchResultsState extends React.Component<Props> {
         title={
           <FormattedMessage id="global-search.confluence.spaces-heading" />
         }
-        results={take(spaceResults, MAX_SPACES)}
+        results={spaceResultsToShow}
         sectionIndex={sectionIndex}
+        analyticsData={analyticsData}
       />
     );
 
@@ -70,8 +86,9 @@ export default class SearchResultsState extends React.Component<Props> {
       <ResultsGroup
         key="people"
         title={<FormattedMessage id="global-search.people.people-heading" />}
-        results={take(peopleResults, MAX_PEOPLE)}
+        results={peopleResultsToShow}
         sectionIndex={sectionIndex}
+        analyticsData={analyticsData}
       />
     );
 
