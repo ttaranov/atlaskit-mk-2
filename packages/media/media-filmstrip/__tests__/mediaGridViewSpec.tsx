@@ -6,7 +6,7 @@ import {
   GridItem,
   MediaGridView,
 } from '../src/mediaGrid/mediaGridView';
-import { ImgWrapper, RowWrapper } from '../src/mediaGrid/styled';
+import { ImgWrapper, RowWrapper, Img } from '../src/mediaGrid/styled';
 
 const generateGridItems = (length: number) =>
   new Array(length).fill(null).map((el, index) => ({
@@ -28,16 +28,16 @@ describe('MediaGridView', () => {
     const component = shallow(
       <MediaGridView items={items} onItemsChange={onItemsChange} />,
     );
-    expect(component.find('img')).toHaveLength(5);
+    expect(component.find(Img)).toHaveLength(5);
     expect(
       component
-        .find('img')
+        .find(Img)
         .at(0)
         .props().src,
     ).toEqual('some-url-1');
     expect(
       component
-        .find('img')
+        .find(Img)
         .at(4)
         .props().src,
     ).toEqual('some-url-5');
@@ -57,13 +57,13 @@ describe('MediaGridView', () => {
       component
         .find(RowWrapper)
         .at(0)
-        .find('img'),
+        .find(Img),
     ).toHaveLength(3);
     expect(
       component
         .find(RowWrapper)
         .at(1)
-        .find('img'),
+        .find(Img),
     ).toHaveLength(3);
   });
 
@@ -76,7 +76,7 @@ describe('MediaGridView', () => {
       component
         .find(RowWrapper)
         .at(0)
-        .find('img'),
+        .find(Img),
     ).toHaveLength(3);
   });
 
@@ -93,13 +93,13 @@ describe('MediaGridView', () => {
       component
         .find(RowWrapper)
         .at(0)
-        .find('img'),
+        .find(Img),
     ).toHaveLength(4);
     expect(
       component
         .find(RowWrapper)
         .at(2)
-        .find('img'),
+        .find(Img),
     ).toHaveLength(1);
   });
 
@@ -117,7 +117,7 @@ describe('MediaGridView', () => {
       component
         .find(RowWrapper)
         .at(1)
-        .find('img'),
+        .find(Img),
     ).toHaveLength(4);
   });
 
@@ -162,9 +162,12 @@ describe('MediaGridView', () => {
         onItemsChange={onItemsChange}
       />,
     );
+
+    // console.log(JSON.stringify(component.find(ImgWrapper).at(0).props(), null, 2))
+
     expect(
       component
-        .find('img')
+        .find(ImgWrapper)
         .at(0)
         .props().style,
     ).toEqual({
@@ -173,7 +176,7 @@ describe('MediaGridView', () => {
     });
     expect(
       component
-        .find('img')
+        .find(ImgWrapper)
         .at(1)
         .props().style,
     ).toEqual({
@@ -225,7 +228,7 @@ describe('MediaGridView', () => {
     );
     expect(
       component
-        .find('img')
+        .find(ImgWrapper)
         .at(0)
         .props().style,
     ).toEqual({
@@ -234,7 +237,7 @@ describe('MediaGridView', () => {
     });
     expect(
       component
-        .find('img')
+        .find(ImgWrapper)
         .at(1)
         .props().style,
     ).toEqual({
@@ -264,7 +267,7 @@ describe('MediaGridView', () => {
       <MediaGridView items={items} onItemsChange={onItemsChange} />,
     );
     component
-      .find('img')
+      .find(Img)
       .at(0)
       .props().onLoad!({} as any);
     expect(onItemsChange).toHaveBeenCalledWith([
@@ -285,7 +288,7 @@ describe('MediaGridView', () => {
       },
     ]);
     component
-      .find('img')
+      .find(Img)
       .at(1)
       .props().onLoad!({} as any);
     expect(onItemsChange).toHaveBeenCalledWith([

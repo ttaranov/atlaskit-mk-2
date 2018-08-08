@@ -1,11 +1,13 @@
 import * as React from 'react';
 import { Component } from 'react';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
+import Button from '@atlaskit/button';
 import {
   Wrapper,
   RowWrapper,
   imageMargin,
   ImgWrapper,
+  Img,
   RemoveIconWrapper,
 } from './styled';
 
@@ -35,6 +37,8 @@ export interface MediaGridViewState {
   // Special flag we need to keep track of. It shows if mouse cursor with dragged item is currently
   // over last item in the row.
   lastInRow?: boolean;
+  // Selected image (eg. to be deleted with Delete key)
+  selected: number;
 }
 
 const DEFAULT_WIDTH = 744;
@@ -51,7 +55,10 @@ export class MediaGridView extends Component<
   MediaGridViewProps,
   MediaGridViewState
 > {
+  wrapperElement?: HTMLElement;
+
   state: MediaGridViewState = {
+    selected: -1,
     isDragging: false,
     draggingIndex: 0,
   };
@@ -63,11 +70,28 @@ export class MediaGridView extends Component<
 
   componentDidMount() {
     document.addEventListener('dragover', this.preventDefault);
+    document.addEventListener('keydown', this.onKeyDown);
+    document.addEventListener('click', this.onDocumentClick);
   }
 
   componentWillUnmount() {
     document.removeEventListener('dragover', this.preventDefault);
+    document.removeEventListener('keydown', this.onKeyDown);
+    document.removeEventListener('click', this.onDocumentClick);
   }
+
+  onKeyDown = (event: KeyboardEvent) => {
+    const { keyCode } = event;
+    const { isInteractive } = this.props;
+    const { selected } = this.state;
+
+    if (isInteractive && keyCode === 8 && selected !== -1) {
+      this.deleteImage(selected);
+      this.setState({
+        selected: Math.max(selected - 1, -1),
+      });
+    }
+  };
 
   onDragStart = (
     draggingIndex: number,
@@ -110,17 +134,28 @@ export class MediaGridView extends Component<
   };
 
   moveImage = () => {
-    const { draggingIndex } = this.state;
+    const { draggingIndex, selected } = this.state;
     const { onItemsChange } = this.props;
+    const items = [...this.props.items];
 
     let dropIndex = this.state.dropIndex!;
 
-    const items = [...this.props.items];
     const draggingItem = items.splice(draggingIndex, 1)[0];
     if (dropIndex > draggingIndex) {
       dropIndex -= 1;
     }
 
+    // If we are dragging across the selected image, we need to increment
+    // or decrement the selected image index
+    if (selected !== -1) {
+      let newSelected = selected;
+      if (draggingIndex < selected && dropIndex > selected) {
+        newSelected -= 1;
+      } else if (dropIndex < selected && draggingIndex > selected) {
+        newSelected += 1;
+      }
+      this.setState({ selected: newSelected });
+    }
     items.splice(dropIndex, 0, draggingItem);
     onItemsChange(items);
   };
@@ -130,6 +165,12 @@ export class MediaGridView extends Component<
       this.moveImage();
     }
     this.resetDragging();
+  };
+
+  onClick = (index: number) => () => {
+    this.setState({
+      selected: index,
+    });
   };
 
   onLoad = (dataURI: string) => () => {
@@ -155,7 +196,7 @@ export class MediaGridView extends Component<
         className="remove-img-wrapper"
         onClick={this.onRemoveIconClick(index)}
       >
-        <CrossIcon label="remove" />
+        <Button appearance="subtle" iconBefore={<CrossIcon label="remove" />} />
       </RemoveIconWrapper>
     );
   };
@@ -167,7 +208,9 @@ export class MediaGridView extends Component<
     const aspectRatio = width / height;
     const img = dataURI ? (
       <React.Fragment>
-        <img
+        <Img
+          isSelected={this.state.selected === index}
+          onClick={this.onClick(index)}
           draggable={isInteractive}
           src={dataURI}
           onLoad={this.onLoad(dataURI)}
@@ -227,8 +270,32 @@ export class MediaGridView extends Component<
       .filter(item => !!item.dataURI);
   }
 
+  // we want to remove the selected image if the Grid loses the focus
+  onDocumentClick = event => {
+    const { wrapperElement } = this;
+    const { selected } = this.state;
+
+    if (
+      wrapperElement &&
+      !wrapperElement.contains(event.target) &&
+      selected !== -1
+    ) {
+      this.setState({
+        selected: -1,
+      });
+    }
+  };
+
   deleteImage = (index: number) => {
     const { onItemsChange, itemsPerRow } = this.props;
+    const { selected } = this.state;
+
+    if (selected !== -1) {
+      if (index < selected) {
+        this.setState({ selected: selected - 1 });
+      }
+    }
+
     const items = [...this.props.items];
     const rowIndex = Math.floor(index / itemsPerRow!);
     const itemsOnThisRow = this.nonEmptyItemsOnRow(rowIndex);
@@ -239,6 +306,12 @@ export class MediaGridView extends Component<
     }
 
     onItemsChange(items);
+  };
+
+  saveWrapperRef = (ref?: HTMLElement) => {
+    if (ref) {
+      this.wrapperElement = ref;
+    }
   };
 
   render() {
@@ -288,6 +361,6 @@ export class MediaGridView extends Component<
         </RowWrapper>,
       );
     }
-    return <Wrapper>{rows}</Wrapper>;
+    return <Wrapper innerRef={this.saveWrapperRef}>{rows}</Wrapper>;
   }
 }

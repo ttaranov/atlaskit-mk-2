@@ -1,5 +1,5 @@
 // @ts-ignore
-import { ClassAttributes, HTMLAttributes } from 'react';
+import { ClassAttributes, HTMLAttributes, ImgHTMLAttributes } from 'react';
 // @ts-ignore
 import styled, { StyledComponentClass } from 'styled-components';
 import { colors } from '@atlaskit/theme';
@@ -15,29 +15,55 @@ export const RowWrapper = styled.div`
   }
 `;
 
+export interface ImgProps {
+  isSelected: boolean;
+}
+
+export const Img = styled.img`
+  width: 100%;
+  outline-style: solid;
+  outline-width: 5px;
+  outline-color: ${({ isSelected }: ImgProps) =>
+    isSelected ? `${colors.B500} !important` : 'transparent'};
+  transition: outline 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+
+  &:hover {
+    outline-color: ${colors.B300};
+  }
+`;
+
 export interface ImgWrapperProps {
   hasPlaceholder: boolean;
   isRightPlaceholder: boolean;
   isLoaded?: boolean;
 }
+
+const paddingProperties = (hasPlaceholder, isRightPlaceholder) => {
+  if (!hasPlaceholder) {
+    return `
+    padding-left: 0;
+    border-left: 0;
+    `;
+  }
+
+  if (isRightPlaceholder) {
+    return `
+    padding-right: 14px;
+    border-right: 4px solid #4c9aff;
+    `;
+  } else {
+    return `
+    padding-left: 14px;
+    border-left: 4px solid #4c9aff;
+    `;
+  }
+};
+
 export const ImgWrapper = styled.div`
   transition: margin-left 0.2s, padding-left 0.2s, margin-right 0.2s,
     padding-right 0.2s;
   ${(props: ImgWrapperProps) =>
-    props.hasPlaceholder
-      ? props.isRightPlaceholder
-        ? `
-    padding-right: 14px;
-    border-right: 4px solid #4c9aff;
-  `
-        : `
-    padding-left: 14px;
-    border-left: 4px solid #4c9aff;
-  `
-      : `
-    padding-left: 0;
-    border-left: 0;
-  `};
+    paddingProperties(props.hasPlaceholder, props.isRightPlaceholder)};
   display: inline-block;
   margin-right: ${imageMargin}px;
   position: relative;
@@ -50,15 +76,6 @@ export const ImgWrapper = styled.div`
 
   &:last-child {
     margin-right: 0;
-  }
-
-  img {
-    width: 100%;
-    outline: 5px solid transparent;
-    transition: outline 0.6s cubic-bezier(0.19, 1, 0.22, 1);
-    &:hover {
-      outline: 5px solid ${colors.B200};
-    }
   }
 
   ${(props: ImgWrapperProps) =>
@@ -77,12 +94,9 @@ export const RemoveIconWrapper = styled.div`
   bottom: 10px;
   right: 10px;
   opacity: 0;
-  color: white;
-  border: 1px solid transparent;
-  cursor: pointer;
-  border-radius: 3px;
+  transition: opacity 0.3s;
 
-  &:hover {
-    border-color: #ccc;
+  button {
+    color: white !important;
   }
 `;
