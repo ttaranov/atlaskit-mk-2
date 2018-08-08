@@ -184,7 +184,7 @@ export class MediaGridView extends Component<
 
   render() {
     const { items, itemsPerRow, width } = this.props;
-    const rows: any[] = [];
+    const rows: JSX.Element[] = [];
     for (let index = 0; index < items.length; index += itemsPerRow!) {
       /*
       # How the image scaling magic works
