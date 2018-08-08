@@ -24,10 +24,11 @@ export const Img = styled.img`
   outline-style: solid;
   outline-width: 5px;
   outline-color: ${({ isSelected }: ImgProps) =>
-    isSelected ? 'red' : 'transparent'};
+    isSelected ? `${colors.B200} !important` : 'transparent'};
   transition: outline 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+
   &:hover {
-    outline-color: ${colors.B200};
+    outline-color: ${colors.B100};
   }
 `;
 
