@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 5.5.0
+- [minor] Refactor and analytics fixes, adds support for aggregator [459c7fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/459c7fe)
+
 ## 5.4.3
 - [patch] fix pre and post query screen events [5976aef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5976aef)
 
