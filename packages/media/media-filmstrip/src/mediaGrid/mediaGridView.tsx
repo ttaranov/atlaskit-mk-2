@@ -140,15 +140,15 @@ export class MediaGridView extends Component<
 
     // If we are dragging across the selected image, we need to increment
     // or decrement the selected image index
-    let newSelected = selected;
     if (selected !== -1) {
+      let newSelected = selected;
       if (draggingIndex < selected && dropIndex > selected) {
         newSelected -= 1;
       } else if (dropIndex < selected && draggingIndex > selected) {
         newSelected += 1;
       }
+      this.setState({ selected: newSelected });
     }
-    this.setState({ selected: newSelected });
     items.splice(dropIndex, 0, draggingItem);
     onItemsChange(items);
   };
