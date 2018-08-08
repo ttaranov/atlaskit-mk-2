@@ -1,14 +1,14 @@
 /* eslint-disable no-console */
 // @flow
 
-const chalk = require('chalk');
+const { green } = require('chalk');
 const bolt = require('bolt');
 
 const cli = require('../../utils/cli');
 const logger = require('../../utils/logger');
 const createReleaseNotesFile = require('./createReleaseNotesFile');
-const promptAndAssembleReleaseTypes = require('./promptAndAssembleReleaseTypes');
 const inquirer = require('inquirer');
+const semver = require('semver');
 
 /* Changeset object format (TODO: User flow!!!)
   {
@@ -33,7 +33,6 @@ type dependentType = {
   name: string,
   type?: string,
   dependencies: Array<string>,
-  finalised?: boolean
 }
 type changesetDependentType = {
   name: string,
@@ -71,77 +70,146 @@ async function getAllDependents(packagesToRelease, opts = {}) {
   return allDependents;
 }
 
+async function getPackagesToRelease(changedPackages, allPackages) {
+  function askInitialReleaseQuestion(defaultInquirerList) {
+    return cli.askCheckboxPlus(
+      // TODO: Make this wording better
+      // TODO: take objects and be fancy with matching
+      'Which packages would you like to include?',
+      defaultInquirerList,
+    );
+  }
+
+  let unchangedPackagesNames = allPackages
+    .map(({ name }) => name)
+    .filter(name => !changedPackages.includes(name));
+
+  const defaultInquirerList = [
+    new inquirer.Separator('changed packages'),
+    ...changedPackages,
+    new inquirer.Separator('unchanged packages'),
+    ...unchangedPackagesNames,
+    new inquirer.Separator(),
+  ];
+
+  let packagesToRelease = await askInitialReleaseQuestion(defaultInquirerList);
+
+  if (packagesToRelease.length === 0) {
+    do {
+      logger.error('You must select at least one package to release');
+      logger.error('(You most likely hit enter instead of space!)');
+
+      packagesToRelease = await askInitialReleaseQuestion(defaultInquirerList);
+    } while (packagesToRelease.length === 0);
+  }
+  return packagesToRelease;
+}
+
+function getDependencyVersionRange(dependentPkgJSON, dependencyName) {
+  const DEPENDENCY_TYPES = [
+    'dependencies',
+    'devDependencies',
+    'peerDependencies',
+    'bundledDependencies',
+    'optionalDependencies',
+  ];
+  for (let type of DEPENDENCY_TYPES) {
+    let deps = dependentPkgJSON[type];
+    if (!deps) continue;
+    if (deps[dependencyName]) {
+      return deps[dependencyName];
+    }
+  }
+  return null;
+}
+
 async function createChangeset(
   changedPackages /*: Array<string> */,
   opts /*: { cwd?: string }  */ = {},
 ) {
   const cwd = opts.cwd || process.cwd();
   const allPackages = await bolt.getWorkspaces({ cwd });
+  const dependencyGraph = await bolt.getDependentsGraph({ cwd });
+
   const changeset /*: changesetType */ = {
     summary: '',
     releases: [],
     dependents: [],
   };
 
-  let unchangedPackages = [];
-
-  for (let pkg of allPackages) {
-    if (!changedPackages.includes(pkg.name)) unchangedPackages.push(pkg.name);
-  }
-
-  const inquirerList = [
-    new inquirer.Separator('changed packages'),
-    ...changedPackages,
-    new inquirer.Separator('unchanged packages'),
-    ...unchangedPackages,
-    new inquirer.Separator(),
-  ];
-
-  let packagesToRelease = await cli.askCheckbox(
-    'Which packages would you like to include?',
-    inquirerList,
+  let packagesToRelease = await getPackagesToRelease(
+    changedPackages,
+    allPackages,
   );
 
-  if (packagesToRelease.length === 0) {
-    do {
-      console.error(
-        chalk.red('You must select at least one package to release'),
-      );
-      console.error(chalk.red('(You most likely hit enter instead of space!)'));
-
-      packagesToRelease = await cli.askCheckbox(
-        'Which packages would you like to include?',
-        inquirerList,
-      );
-    } while (packagesToRelease.length === 0);
-  }
-  /** Get released packages and bumptypes */
-
   for (const pkg of packagesToRelease) {
-    const bumpType = await cli.askList(
-      `What kind of change is this for ${chalk.green(pkg)}?`,
+    const type = await cli.askList(
+      `What kind of change is this for ${green(pkg)}?`,
       ['patch', 'minor', 'major'],
     );
-    changeset.releases.push({ name: pkg, type: bumpType });
+    changeset.releases.push({ name: pkg, type });
   }
-
-  /** Get summary for changeset */
 
   logger.log(
     'Please enter a summary for this change (this will be in the changelogs)',
   );
-  const summary = await cli.askQuestion('Summary');
 
-  /** Get dependents and bumptypes */
+  changeset.summary = await cli.askQuestion('Summary');
 
-  const dependents /*: Array<dependentType> */ = await getAllDependents(
-    packagesToRelease,
-    { cwd },
-  );
+  const toSearch = [...changeset.releases];
 
-  // This modifies the above dependents array to add a 'type' property to all
-  // items.
-  await promptAndAssembleReleaseTypes(dependents, changeset, cwd);
+  while (toSearch.length > 0) {
+    // search...
+    const nextRelease = toSearch.shift();
+    const nextReleasePkg = allPackages.find(
+      pkg => pkg.name === nextRelease.name,
+    );
+    const nextReleaseVersion = semver.inc(
+      nextReleasePkg.config.version,
+      nextRelease.type,
+    );
+
+    const dependents = dependencyGraph.get(nextRelease.name);
+    dependents.forEach(dependent => {
+      if (changeset.dependents.some(dep => dep.name === dependent)) return;
+      if (changeset.releases.some(dep => dep.name === dependent)) return;
+
+      const dependentPkg = allPackages.find(pkg => pkg.name === dependent);
+
+      const dependencyRange = getDependencyVersionRange(
+        dependentPkg.config,
+        nextRelease.name,
+      );
+
+      if (!dependencyRange)
+        throw new Error(
+          `We have entered an impossible state where ${
+            nextRelease.name
+          } is depended upon by ${dependent}, but at no version.`,
+        );
+
+      if (!semver.satisfies(nextReleaseVersion, dependencyRange)) {
+        if (changeset.dependents.includes(dep => dep.name === dependent))
+          return;
+
+        toSearch.push({
+          name: dependent,
+          type: 'patch',
+        });
+        const dependencies = packagesToRelease.filter(
+          dep => !!getDependencyVersionRange(dependentPkg.config, dep),
+        );
+
+        changeset.dependents.push({
+          name: dependent,
+          type: 'patch',
+          dependencies,
+        });
+      }
+    });
+  }
+
+  return changeset;
 
   // (TODO: Get releaseNotes if there is a major change)
 
@@ -156,13 +224,6 @@ async function createChangeset(
   //   await cli.askEditor(newReleasePath);
   //   changeset.releaseNotes = newReleasePath;
   // }
-
-  changeset.summary = summary;
-  // as the changeset is printed to console, the unneeded verified property needs
-  // to be removed
-  changeset.dependents = dependents.map(({ finalised, ...rest }) => rest);
-
-  return changeset;
 }
 
 module.exports = createChangeset;

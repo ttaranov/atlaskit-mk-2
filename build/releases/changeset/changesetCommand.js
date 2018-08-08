@@ -14,7 +14,6 @@ async function run() {
   const changesetCommitStr = createChangesetCommit(newChangeset);
 
   console.log(chalk.green('Creating new Changeset commit...\n'));
-  console.log(changesetCommitStr);
   const confirmCommit = await cli.askConfirm('Commit this Changeset?');
 
   if (confirmCommit) {
