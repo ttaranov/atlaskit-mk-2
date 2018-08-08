@@ -33,6 +33,11 @@ const cssSelectorsForm = [
   cancelBtn,
 ];
 
+process.env.TEST_CASE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 BrowserTestCase(
   'Create repository form should render without errors',
   { skip: ['safari'] }, // Safari has an issue with css / wd / puppeeter at the moment - to be investigated

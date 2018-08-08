@@ -9,6 +9,11 @@ import {
   clipboardInput,
 } from '../_helpers';
 
+process.env.TEST_CASE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 editors.forEach(editor => {
   BrowserTestCase(
     `Link: link markdown with pasting link text ${editor.name} editor`,

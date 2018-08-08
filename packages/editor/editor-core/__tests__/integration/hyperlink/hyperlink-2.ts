@@ -10,6 +10,11 @@ import {
 const clipboardInput = '#input';
 const copyAsHTMLButton = '#copy-as-html';
 
+process.env.TEST_CASE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 // broken on firefox - https://product-fabric.atlassian.net/browse/ED-4337
 editors.forEach(editor => {
   BrowserTestCase(

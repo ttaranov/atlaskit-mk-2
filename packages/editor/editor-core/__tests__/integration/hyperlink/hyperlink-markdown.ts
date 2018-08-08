@@ -2,6 +2,11 @@ import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import { getDocFromElement, editors, editable } from '../_helpers';
 
+process.env.TEST_CASE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 editors.forEach(editor => {
   BrowserTestCase(
     `Link:entering link markdown ${editor.name} editor`,

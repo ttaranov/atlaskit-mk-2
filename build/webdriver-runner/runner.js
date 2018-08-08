@@ -31,7 +31,7 @@ function BrowserTestCase(...args /*:Array<any> */) {
   const testcase = args.shift();
   const tester = args.pop();
   const skipForBrowser = args.length > 0 ? args.shift() : null;
-
+  const testCase = process.env.TEST_CASE ? process.env.TEST_CASE : testcase;
   describe(testcase, () => {
     const clientRunners = [];
 
@@ -81,7 +81,8 @@ function BrowserTestCase(...args /*:Array<any> */) {
           let skipBrowser;
           const browserName = client.driver.desiredCapabilities.browserName;
           // TODO: get the test file name
-          client.driver.desiredCapabilities.name = `Test Suite With: (${testcase}) - ${browserName}`;
+          client.driver.desiredCapabilities.name =
+            'Test Suite For: ' + testCase.toUpperCase() + `- ${browserName}`;
 
           if (skipForBrowser) {
             skipForBrowser.skip.forEach(browser => {
@@ -181,7 +182,7 @@ function setBrowserStackClients() {
     chrome: {
       os: 'Windows',
       os_version: '10',
-      browserName: 'Chrome',
+      browserName: 'chrome',
       browser_version: '67.0',
       resolution: '1440x900',
     },

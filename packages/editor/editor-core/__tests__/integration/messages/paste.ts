@@ -9,6 +9,11 @@ import {
   copyAsHTMLButton,
 } from '../_helpers';
 
+process.env.TEST_CASE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 const messageEditor = getExampleUrl('editor', 'editor-core', 'message');
 const editorSelector = '.ProseMirror';
 

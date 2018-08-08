@@ -6,6 +6,11 @@ import { getDocFromElement } from '../_helpers';
 const messageEditor = getExampleUrl('editor', 'editor-core', 'message');
 const editorSelector = '.ProseMirror';
 
+process.env.TEST_CASE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 BrowserTestCase(
   'user should be able to create link using markdown',
   { skip: ['edge', 'ie'] },

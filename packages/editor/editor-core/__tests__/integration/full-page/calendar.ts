@@ -5,6 +5,11 @@ import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
 const fullPageEditor = getExampleUrl('editor', 'editor-core', 'full-page');
 const editorSelector = '.ProseMirror';
 
+process.env.TEST_CASE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 // https://product-fabric.atlassian.net/browse/ED-4531
 BrowserTestCase(
   'user should be able to open calendar',

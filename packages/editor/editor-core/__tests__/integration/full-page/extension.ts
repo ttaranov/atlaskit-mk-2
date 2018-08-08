@@ -10,6 +10,11 @@ for (let i = 0; i < 40; i++) {
   enterArr.push('Enter');
 }
 
+process.env.TEST_CASE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 BrowserTestCase(
   'Extensions floating toolbar should be visible even after extension scrolls',
   { skip: ['edge', 'ie', 'safari'] },

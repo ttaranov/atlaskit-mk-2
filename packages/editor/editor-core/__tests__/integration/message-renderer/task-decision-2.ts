@@ -13,6 +13,12 @@ import {
   loadActionButton,
 } from './_task-decision-helpers';
 import { insertMentionUsingClick } from './_mention-helpers';
+
+process.env.TEST_CASE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 /* 
  * Safari adds special characters that end up in the snapshot
 */

@@ -9,6 +9,11 @@ import {
   typeahead,
 } from './_emoji-helpers';
 
+process.env.TEST_CASE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 BrowserTestCase(
   'Emoji: should be able to see emoji if typed the name in full',
   { skip: ['ie'] },

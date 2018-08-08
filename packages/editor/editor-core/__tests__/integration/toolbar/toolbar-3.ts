@@ -6,6 +6,11 @@ const more = '[aria-label="Open or close advance text formatting dropdown"]';
 const underline = 'span=Underline';
 const clear = 'span=Clear Formatting';
 
+process.env.TEST_CASE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 // https://product-fabric.atlassian.net/browse/ED-4531
 editors.forEach(editor => {
   BrowserTestCase(

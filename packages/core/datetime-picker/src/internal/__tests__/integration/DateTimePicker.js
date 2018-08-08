@@ -16,6 +16,11 @@ const timePickerMenu = '.timepicker-select__menu-list';
 const timeValue = `${timepickerDefault} > div > div > div`;
 const timeOption = '[role="option"]';
 
+process.env.TEST_CASE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 BrowserTestCase(
   'When DatePicker is focused & backspace pressed, the input should be cleared',
   { skip: ['firefox', 'ie', 'edge'] },

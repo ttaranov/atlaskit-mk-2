@@ -3,6 +3,11 @@ import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 
 import { gotoPopupSimplePage } from '../../pages/popup-simple-page';
 
+process.env.TEST_CASE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 BrowserTestCase(
   'MediaPicker: local upload',
   { skip: ['edge', 'ie', 'safari', 'firefox'] },

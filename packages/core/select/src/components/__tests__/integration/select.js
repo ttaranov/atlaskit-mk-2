@@ -15,6 +15,11 @@ const urlArray = [
   'async-select-with-callback',
 ];
 
+process.env.TEST_CASE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 urlArray.forEach(url => {
   BrowserTestCase(
     `${url.toUpperCase()} should display its menu once clicked on it and no errors`,

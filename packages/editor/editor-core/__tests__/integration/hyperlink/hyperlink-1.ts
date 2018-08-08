@@ -6,6 +6,11 @@ const linkText1 = 'http://hello.com ';
 const linkText2 = 'FAB-983';
 const linkToolbar = '[placeholder="Paste link or search recently viewed"]';
 
+process.env.TEST_CASE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 // https://product-fabric.atlassian.net/browse/ED-4162 - Firefox
 // Floating toolbar is not showin up on IE and edge
 editors.forEach(editor => {

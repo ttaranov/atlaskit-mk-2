@@ -5,6 +5,11 @@ import { editors, editable } from '../_helpers';
 const changeFormatting = '[aria-label="Change formatting"]';
 const input = 'helloworld';
 
+process.env.TEST_CASE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 // https://product-fabric.atlassian.net/browse/ED-4531
 editors.forEach(editor => {
   BrowserTestCase(

@@ -12,6 +12,11 @@ const urlOnBoarding = getExampleUrl(
 const OnBoardingDefault = '#examples p:nth-child(3) > button';
 const OnBoardingMenuTitle = 'span h4';
 
+process.env.TEST_CASE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 BrowserTestCase(
   'AK-4279 - Clicking on show should display the onboarding and no errors',
   { skip: ['safari', 'edge'] }, // Safari and Edge have issues at the moment

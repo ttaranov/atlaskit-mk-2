@@ -8,6 +8,11 @@ const FocusLockButton = '#examples p:nth-child(1) > button';
 const LastButton = '#examples p:nth-child(2) > button:nth-child(3)';
 const FirstButton = '#examples p:nth-child(2) > button:nth-child(1)';
 
+process.env.TEST_CASE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 BrowserTestCase(
   'AK-4416 - focus should loop to first element when inside a focus boundary',
   { skip: ['safari'] }, // browserstack has an issue with safari

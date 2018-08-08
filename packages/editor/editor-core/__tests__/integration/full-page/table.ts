@@ -11,6 +11,11 @@ for (let i = 0; i < 80; i++) {
   arrowUpArr.push('Up arrow');
 }
 
+process.env.TEST_CASE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 BrowserTestCase(
   'Table floating toolbar should be visible even after table scrolls',
   { skip: ['edge', 'ie', 'safari'] },
