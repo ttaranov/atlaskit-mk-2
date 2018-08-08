@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 5.5.1
+- [patch] Fixes duplicate screen event firing on mount [517283a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/517283a)
+
 ## 5.5.0
 - [minor] Refactor and analytics fixes, adds support for aggregator [459c7fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/459c7fe)
 
