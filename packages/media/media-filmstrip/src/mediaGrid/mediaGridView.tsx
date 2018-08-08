@@ -49,7 +49,7 @@ export class MediaGridView extends Component<
   MediaGridViewState
 > {
   state: MediaGridViewState = {
-    selected: undefined,
+    selected: -1,
     isDragging: false,
     draggingIndex: 0,
   };
@@ -61,11 +61,26 @@ export class MediaGridView extends Component<
 
   componentDidMount() {
     document.addEventListener('dragover', this.preventDefault);
+    document.addEventListener('keydown', this.onKeyDown);
   }
 
   componentWillUnmount() {
     document.removeEventListener('dragover', this.preventDefault);
+    document.removeEventListener('keydown', this.onKeyDown);
   }
+
+  onKeyDown = (event: KeyboardEvent) => {
+    const { keyCode } = event;
+    const { isInteractive } = this.props;
+    const { selected } = this.state;
+
+    if (isInteractive && keyCode === 8 && selected !== -1) {
+      this.deleteImage(selected);
+      this.setState({
+        selected: Math.max(selected - 1, -1),
+      });
+    }
+  };
 
   onDragStart = (
     draggingIndex: number,
