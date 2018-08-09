@@ -66,6 +66,7 @@ class Example extends Component<{}, ExampleState> {
           onItemsChange={this.onItemsChange}
           width={width}
           isInteractive={isInteractive}
+          showDebug={true}
         />
       </GridContainer>
     );

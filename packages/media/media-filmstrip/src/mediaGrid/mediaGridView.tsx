@@ -9,6 +9,9 @@ import {
   ImgWrapper,
   Img,
   RemoveIconWrapper,
+  Debugger,
+  DebuggerRow,
+  DebuggerItem,
 } from './styled';
 
 export interface GridItem {
@@ -26,6 +29,7 @@ export interface MediaGridViewProps {
   isInteractive?: boolean;
   width?: number;
   itemsPerRow?: number;
+  showDebug?: boolean;
 }
 
 export interface MediaGridViewState {
@@ -262,14 +266,6 @@ export class MediaGridView extends Component<
     event.preventDefault();
   }
 
-  private nonEmptyItemsOnRow(rowIndex: number, items: GridItem[]) {
-    const { itemsPerRow } = this.props;
-    const rowStartIndex = rowIndex * itemsPerRow!;
-    return items
-      .slice(rowStartIndex, rowStartIndex + itemsPerRow!)
-      .filter(item => !!item.dataURI);
-  }
-
   // we want to remove the selected image if the Grid loses the focus
   onDocumentClick = event => {
     const { wrapperElement } = this;
@@ -301,38 +297,60 @@ export class MediaGridView extends Component<
     this.normalizeAndReportChange(items);
   };
 
+  private nonEmptyItemsOnRow(rowIndex: number, items: GridItem[]) {
+    const { itemsPerRow = ITEMS_PER_ROW } = this.props;
+    const rowStartIndex = rowIndex * itemsPerRow;
+    return items
+      .slice(rowStartIndex, rowStartIndex + itemsPerRow!)
+      .filter(item => !this.isEmptyItem(item));
+  }
+
+  private getItemsInRows(items: GridItem[]) {
+    const { itemsPerRow = ITEMS_PER_ROW } = this.props;
+    const itemsInRows: GridItem[][] = [];
+    const numberOfRows = Math.ceil(items.length / itemsPerRow);
+    for (let rowIndex = 0; rowIndex < numberOfRows; rowIndex += 1) {
+      itemsInRows.push(
+        items.slice(
+          rowIndex * itemsPerRow,
+          rowIndex * itemsPerRow + itemsPerRow,
+        ),
+      );
+    }
+
+    return itemsInRows;
+  }
+
   normalizeAndReportChange(items: GridItem[]) {
     const { onItemsChange } = this.props;
 
-    const { itemsPerRow } = this.props;
-    const numberOfRows = Math.ceil(items.length / itemsPerRow!);
+    const { itemsPerRow = ITEMS_PER_ROW } = this.props;
 
-    for (let rowIndex = 0; rowIndex < numberOfRows; rowIndex += 1) {
-      const itemsOnThisRow = this.nonEmptyItemsOnRow(rowIndex, items);
-      if (itemsOnThisRow.length === 0) {
-        // Remove empty line
-        items.splice(rowIndex * itemsPerRow!, itemsPerRow!);
-        // We just removed whole line. If we want to scan previously next line we need to substract
-        rowIndex -= 1;
-      } else if (itemsOnThisRow.length < itemsPerRow!) {
-        // Push all non-empty items to the left.
-        let remainingEmptyItems = new Array(
-          itemsPerRow! - itemsOnThisRow.length,
-        ).fill(EMPTY_GRID_ITEM);
-        if (rowIndex === numberOfRows - 1) {
-          // Unless it's last line, in which case no remaining empty items in the end of a row
-          remainingEmptyItems = [];
+    const itemsInRows = this.getItemsInRows(items);
+    const itemsInNonEmptyRows = itemsInRows.filter(
+      items => items.filter(this.isNotEmptyItem).length > 0,
+    );
+
+    const resultItems = itemsInNonEmptyRows
+      .map((items, rowIndex) => {
+        const nonEmptyItems = items.filter(this.isNotEmptyItem);
+        const isLastRow = rowIndex === itemsInNonEmptyRows.length - 1;
+        const mightNeedReshuffle = nonEmptyItems.length < itemsPerRow;
+        if (isLastRow || !mightNeedReshuffle) {
+          return nonEmptyItems;
+        } else if (mightNeedReshuffle) {
+          let remainingEmptyItems = new Array(
+            itemsPerRow - nonEmptyItems.length,
+          ).fill(EMPTY_GRID_ITEM);
+          return [...nonEmptyItems, ...remainingEmptyItems];
         }
-        items.splice(
-          rowIndex * itemsPerRow!,
-          itemsPerRow!,
-          ...itemsOnThisRow,
-          ...remainingEmptyItems,
-        );
-      }
-    }
+      })
+      .reduce<GridItem[]>((accumulator, rowWithItems: GridItem[]) => {
+        accumulator.push(...rowWithItems);
+        return accumulator;
+      }, []);
 
-    onItemsChange(items);
+    onItemsChange(resultItems);
   }
 
   saveWrapperRef = (ref?: HTMLElement) => {
@@ -341,23 +359,38 @@ export class MediaGridView extends Component<
     }
   };
 
-  // debugItems() {
-  //   const { items, itemsPerRow } = this.props;
-  //   const rows: JSX.Element[] = [];
-  //   const numberOfRows = Math.ceil(items.length / itemsPerRow!);
-  //   for (let rowIndex = 0; rowIndex < numberOfRows; rowIndex += 1) {
-  //     const rowItems = items.splice(rowIndex * itemsPerRow!, itemsPerRow!);
-  //     rows.push(<div key={'row' + rowIndex}>
-  //       {rowItems.map((item, colIndex) => {
-  //         const i = rowIndex * itemsPerRow! + colIndex;
-  //         const num = i < 10 ? `0${i}` : `${i}`;
-  //         const debugOutput = !!item.dataURI ? `[${num}]` : `<${num}>`;
-  //         return <span key={i}>{debugOutput}</span>;
-  //       })}
-  //     </div>);
-  //   }
-  //   return rows;
-  // }
+  private isEmptyItem = (item: GridItem) => {
+    return item.dimensions.width === 0 && item.dimensions.height === 0;
+  };
+
+  private isNotEmptyItem = (item: GridItem) => {
+    return !this.isEmptyItem(item);
+  };
+
+  debugItems() {
+    const { items, itemsPerRow } = this.props;
+    const rows: JSX.Element[] = [];
+    const numberOfRows = Math.ceil(items.length / itemsPerRow!);
+    for (let rowIndex = 0; rowIndex < numberOfRows; rowIndex += 1) {
+      const rowItems = items.slice(
+        rowIndex * itemsPerRow!,
+        rowIndex * itemsPerRow! + itemsPerRow!,
+      );
+      rows.push(
+        <DebuggerRow key={'row' + rowIndex}>
+          {rowItems.map((item, colIndex) => {
+            const i = rowIndex * itemsPerRow! + colIndex;
+            return (
+              <DebuggerItem key={i} isEmpty={this.isEmptyItem(item)}>
+                i
+              </DebuggerItem>
+            );
+          })}
+        </DebuggerRow>,
+      );
+    }
+    return rows;
+  }
 
   render() {
     const { items, itemsPerRow, width } = this.props;
@@ -406,11 +439,11 @@ export class MediaGridView extends Component<
         </RowWrapper>,
       );
     }
-    return <Wrapper innerRef={this.saveWrapperRef}>{rows}</Wrapper>;
-    // <React.Fragment>
-    //   {/*<Debugger>{this.debugItems()}</Debugger>*/}
-    //
-    // </React.Fragment>
-    // );
+    return (
+      <React.Fragment>
+        {this.props.showDebug ? <Debugger>{this.debugItems()}</Debugger> : null}
+        <Wrapper innerRef={this.saveWrapperRef}>{rows}</Wrapper>
+      </React.Fragment>
+    );
   }
 }
