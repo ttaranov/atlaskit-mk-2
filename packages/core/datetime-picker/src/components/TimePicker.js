@@ -110,7 +110,7 @@ const FixedLayerMenu = ({ selectProps, ...props }: Object) => {
   return (
     <FixedLayer
       containerRef={selectProps.fixedLayerRef}
-      content={<components.Menu {...props} scrollMenuIntoView={false} />}
+      content={<components.Menu {...props} menuShouldScrollIntoView={false} />}
     />
   );
 };
@@ -266,8 +266,8 @@ class TimePicker extends Component<Props, State> {
           instanceId={id}
           isDisabled={isDisabled}
           menuIsOpen={isOpen && !isDisabled}
-          openMenuOnFocus
           menuPlacement="auto"
+          openMenuOnFocus
           onBlur={this.onBlur}
           onCreateOption={this.onCreateOption}
           onChange={this.onChange}
