@@ -8,14 +8,16 @@ import {
 } from '../src/mediaGrid/mediaGridView';
 import { ImgWrapper, RowWrapper, Img } from '../src/mediaGrid/styled';
 
+const gridItem = (index: number) => ({
+  dataURI: `url-index-${index}`,
+  dimensions: {
+    width: 1000,
+    height: 1000,
+  },
+});
+
 const generateGridItems = (length: number) =>
-  new Array(length).fill(null).map((el, index) => ({
-    dataURI: `some-url-${index + 1}`,
-    dimensions: {
-      width: 1000,
-      height: 1000,
-    },
-  }));
+  new Array(length).fill(null).map((el, index) => gridItem(index));
 
 describe('MediaGridView', () => {
   let onItemsChange: jest.Mock<any>;
@@ -34,13 +36,13 @@ describe('MediaGridView', () => {
         .find(Img)
         .at(0)
         .props().src,
-    ).toEqual('some-url-1');
+    ).toEqual('url-index-0');
     expect(
       component
         .find(Img)
         .at(4)
         .props().src,
-    ).toEqual('some-url-5');
+    ).toEqual('url-index-4');
   });
 
   it('should have 3 rows with 3 items in a row', () => {
@@ -141,14 +143,14 @@ describe('MediaGridView', () => {
      */
     const items: GridItem[] = [
       {
-        dataURI: 'some-url-1',
+        dataURI: 'url-index-0',
         dimensions: {
           width: 800,
           height: 1600,
         },
       },
       {
-        dataURI: 'some-url-2',
+        dataURI: 'url-index-1',
         dimensions: {
           width: 1200,
           height: 1600,
@@ -205,14 +207,14 @@ describe('MediaGridView', () => {
      */
     const items: GridItem[] = [
       {
-        dataURI: 'some-url-1',
+        dataURI: 'url-index-0',
         dimensions: {
           width: 400,
           height: 800,
         },
       },
       {
-        dataURI: 'some-url-2',
+        dataURI: 'url-index-1',
         dimensions: {
           width: 3000,
           height: 1200,
@@ -249,14 +251,14 @@ describe('MediaGridView', () => {
   it('should update items when images are loaded', () => {
     const items: GridItem[] = [
       {
-        dataURI: 'some-url-1',
+        dataURI: 'url-index-0',
         dimensions: {
           width: 10,
           height: 10,
         },
       },
       {
-        dataURI: 'some-url-2',
+        dataURI: 'url-index-1',
         dimensions: {
           width: 10,
           height: 10,
@@ -272,7 +274,7 @@ describe('MediaGridView', () => {
       .props().onLoad!({} as any);
     expect(onItemsChange).toHaveBeenCalledWith([
       {
-        dataURI: 'some-url-1',
+        dataURI: 'url-index-0',
         isLoaded: true,
         dimensions: {
           width: 10,
@@ -280,7 +282,7 @@ describe('MediaGridView', () => {
         },
       },
       {
-        dataURI: 'some-url-2',
+        dataURI: 'url-index-1',
         isLoaded: undefined,
         dimensions: {
           width: 10,
@@ -294,7 +296,7 @@ describe('MediaGridView', () => {
       .props().onLoad!({} as any);
     expect(onItemsChange).toHaveBeenCalledWith([
       {
-        dataURI: 'some-url-1',
+        dataURI: 'url-index-0',
         isLoaded: undefined,
         dimensions: {
           width: 10,
@@ -302,7 +304,7 @@ describe('MediaGridView', () => {
         },
       },
       {
-        dataURI: 'some-url-2',
+        dataURI: 'url-index-1',
         isLoaded: true,
         dimensions: {
           width: 10,
@@ -316,7 +318,7 @@ describe('MediaGridView', () => {
     const items: GridItem[] = [
       // First row
       {
-        dataURI: 'some-url-1',
+        dataURI: 'url-index-0',
         dimensions: {
           width: 1000,
           height: 1000,
@@ -326,7 +328,7 @@ describe('MediaGridView', () => {
       EMPTY_GRID_ITEM,
       // Second row
       {
-        dataURI: 'some-url-2',
+        dataURI: 'url-index-1',
         dimensions: {
           width: 500,
           height: 250,
@@ -369,21 +371,21 @@ describe('MediaGridView', () => {
       expect(onItemsChange).toHaveBeenCalledWith([
         // First row
         {
-          dataURI: 'some-url-1',
+          dataURI: 'url-index-0',
           dimensions: {
             width: 1000,
             height: 1000,
           },
         },
         {
-          dataURI: 'some-url-2',
+          dataURI: 'url-index-1',
           dimensions: {
             width: 1000,
             height: 1000,
           },
         },
         {
-          dataURI: 'some-url-3',
+          dataURI: 'url-index-2',
           dimensions: {
             width: 1000,
             height: 1000,
@@ -391,7 +393,7 @@ describe('MediaGridView', () => {
         },
         // Second row
         {
-          dataURI: 'some-url-5',
+          dataURI: 'url-index-4',
           dimensions: {
             width: 1000,
             height: 1000,
@@ -404,14 +406,14 @@ describe('MediaGridView', () => {
       const items: GridItem[] = [
         // First Row
         {
-          dataURI: 'some-url-1',
+          dataURI: 'url-index-0',
           dimensions: {
             width: 1000,
             height: 1000,
           },
         },
         {
-          dataURI: 'some-url-2',
+          dataURI: 'url-index-1',
           dimensions: {
             width: 1000,
             height: 1000,
@@ -420,7 +422,7 @@ describe('MediaGridView', () => {
         EMPTY_GRID_ITEM,
         // Second Row
         {
-          dataURI: 'some-url-5',
+          dataURI: 'url-index-4',
           dimensions: {
             width: 1000,
             height: 1000,
@@ -439,19 +441,159 @@ describe('MediaGridView', () => {
       expect(onItemsChange).toHaveBeenCalledWith([
         // First Row
         {
-          dataURI: 'some-url-1',
+          dataURI: 'url-index-0',
           dimensions: {
             width: 1000,
             height: 1000,
           },
         },
         {
-          dataURI: 'some-url-2',
+          dataURI: 'url-index-1',
           dimensions: {
             width: 1000,
             height: 1000,
           },
         },
+      ]);
+    });
+  });
+
+  describe('move', () => {
+    it('should move item from back to front and shift everything after insertion index', () => {
+      const items: GridItem[] = generateGridItems(6);
+      const component = shallow(
+        <MediaGridView
+          itemsPerRow={3}
+          items={items}
+          onItemsChange={onItemsChange}
+        />,
+      );
+      const instance = component.instance() as MediaGridView;
+      instance.state = {
+        ...instance.state,
+        dropIndex: 0,
+        isDragging: true,
+        draggingIndex: 3,
+      };
+      instance.moveImage();
+      expect(onItemsChange).toHaveBeenCalledWith([
+        gridItem(3),
+        gridItem(0),
+        gridItem(1),
+        gridItem(2),
+        gridItem(4),
+        gridItem(5),
+      ]);
+    });
+
+    it('should move item from front to back and shift everything after insertion index', () => {
+      const items: GridItem[] = generateGridItems(6);
+      const component = shallow(
+        <MediaGridView
+          itemsPerRow={3}
+          items={items}
+          onItemsChange={onItemsChange}
+        />,
+      );
+      const instance = component.instance() as MediaGridView;
+      instance.state = {
+        ...instance.state,
+        dropIndex: 4,
+        isDragging: true,
+        draggingIndex: 0,
+      };
+      instance.moveImage();
+      expect(onItemsChange).toHaveBeenCalledWith([
+        // Row 1
+        gridItem(1),
+        gridItem(2),
+        EMPTY_GRID_ITEM,
+        // Row 2
+        gridItem(3),
+        gridItem(0),
+        gridItem(4),
+        // Row 3
+        gridItem(5),
+      ]);
+    });
+
+    it('should move item from row of 2 to row of 2', () => {
+      const items: GridItem[] = [
+        // Row 1
+        gridItem(0),
+        gridItem(1),
+        EMPTY_GRID_ITEM,
+        // Row 2
+        gridItem(3),
+        gridItem(4),
+        EMPTY_GRID_ITEM,
+        // Row 3
+        gridItem(6),
+      ];
+      const component = shallow(
+        <MediaGridView
+          itemsPerRow={3}
+          items={items}
+          onItemsChange={onItemsChange}
+        />,
+      );
+      const instance = component.instance() as MediaGridView;
+      instance.state = {
+        ...instance.state,
+        dropIndex: 1,
+        isDragging: true,
+        draggingIndex: 3,
+      };
+      instance.moveImage();
+      expect(onItemsChange).toHaveBeenCalledWith([
+        // Row 1
+        gridItem(0),
+        gridItem(3),
+        gridItem(1),
+        // Row 2
+        gridItem(4),
+        EMPTY_GRID_ITEM,
+        EMPTY_GRID_ITEM,
+        // Row 3
+        gridItem(6),
+      ]);
+    });
+
+    it('should swap two items on the same row', () => {
+      const items: GridItem[] = [
+        // Row 1
+        gridItem(0),
+        gridItem(1),
+        gridItem(2),
+        // Row 2
+        gridItem(3),
+        gridItem(4),
+        gridItem(5),
+      ];
+      const component = shallow(
+        <MediaGridView
+          itemsPerRow={3}
+          items={items}
+          onItemsChange={onItemsChange}
+        />,
+      );
+      const instance = component.instance() as MediaGridView;
+      instance.state = {
+        ...instance.state,
+        dropIndex: 2,
+        isDragging: true,
+        draggingIndex: 0,
+      };
+      instance.moveImage();
+      expect(onItemsChange).toHaveBeenCalledWith([
+        // Row 1
+        gridItem(1),
+        gridItem(0),
+        gridItem(2),
+        // Row 2
+        gridItem(3),
+        gridItem(4),
+        gridItem(5),
       ]);
     });
   });

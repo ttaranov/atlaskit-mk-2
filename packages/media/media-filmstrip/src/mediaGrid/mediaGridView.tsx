@@ -137,14 +137,45 @@ export class MediaGridView extends Component<
 
   moveImage = () => {
     const { draggingIndex, selected } = this.state;
+    const { itemsPerRow = DEFAULT_ITEMS_PER_ROW } = this.props;
     const items = [...this.props.items];
 
     let dropIndex = this.state.dropIndex!;
 
+    // Step 1. Take item out
     const draggingItem = items.splice(draggingIndex, 1)[0];
-    if (dropIndex > draggingIndex) {
+    const leftToRight = dropIndex > draggingIndex;
+    const draggingItemRow = Math.floor(draggingIndex / itemsPerRow);
+    const dropRow = Math.floor(
+      (leftToRight ? dropIndex - 1 : dropIndex) / itemsPerRow,
+    );
+    console.log({ draggingItemRow, dropRow, leftToRight });
+    if (draggingItemRow === dropRow && leftToRight) {
       dropIndex -= 1;
+    } else {
+      // Step 1.5. Replace taken item with empty
+      items.splice(draggingIndex, 0, EMPTY_GRID_ITEM);
     }
+
+    // Step 2. Put in a proper place
+    items.splice(dropIndex, 0, draggingItem);
+
+    // Step 3. Find next empty item and delete it.
+    let emptyItemToDeleteIndex = -1;
+    items.forEach((item, index) => {
+      if (
+        emptyItemToDeleteIndex < 0 &&
+        this.isEmptyItem(item) &&
+        index > dropIndex
+      ) {
+        emptyItemToDeleteIndex = index;
+      }
+    });
+    if (emptyItemToDeleteIndex >= 0) {
+      items.splice(emptyItemToDeleteIndex, 1);
+    }
+
+    this.normalizeAndReportChange(items);
 
     // If we are dragging across the selected image, we need to increment
     // or decrement the selected image index
@@ -157,8 +188,6 @@ export class MediaGridView extends Component<
       }
       this.setState({ selected: newSelected });
     }
-    items.splice(dropIndex, 0, draggingItem);
-    this.normalizeAndReportChange(items);
   };
 
   onDragEnd = (event: React.DragEvent<HTMLImageElement>) => {

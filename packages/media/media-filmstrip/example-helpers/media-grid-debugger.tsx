@@ -89,6 +89,12 @@ export class MediaGridDebugger extends Component<
   }
 
   render() {
-    return <Debugger>{this.debugItems()}</Debugger>;
+    return (
+      <Debugger>
+        {this.debugItems()}
+        <div>Drop Index: {this.state.mediaGridViewState.dropIndex}</div>
+        <div>Drag Index: {this.state.mediaGridViewState.draggingIndex}</div>
+      </Debugger>
+    );
   }
 }
