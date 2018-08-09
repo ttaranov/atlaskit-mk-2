@@ -190,13 +190,15 @@ export class MediaGridView extends Component<
       return;
     }
 
-    // TODO: Should we wrapp icon into a ak button?
     return (
       <RemoveIconWrapper
         className="remove-img-wrapper"
         onClick={this.onRemoveIconClick(index)}
       >
-        <Button appearance="subtle" iconBefore={<CrossIcon label="remove" />} />
+        <Button
+          appearance="subtle"
+          iconBefore={<CrossIcon label="remove" size="small" />}
+        />
       </RemoveIconWrapper>
     );
   };
