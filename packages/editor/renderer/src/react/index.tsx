@@ -28,9 +28,7 @@ import {
   calcTableColumnWidths,
 } from '@atlaskit/editor-common';
 import { bigEmojiHeight } from '../utils';
-import { PublicGridItem, MediaGrid } from '@atlaskit/media-filmstrip';
-import { Context } from '@atlaskit/media-core';
-import { MediaProvider } from '../ui/MediaCard';
+import { MediaGridNode } from './nodes/mediaGrid';
 
 export interface RendererContext {
   objectAri?: string;
@@ -82,40 +80,9 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     const emojiBlock = isEmojiDoc(fragment, props);
     const content = ReactSerializer.getChildNodes(fragment).map(
       (node, index) => {
-        if (isMediaGrid(node as Node)) {
-          // TODO: extract into separate method
-          const items: PublicGridItem[] = node.content.content.map(file => {
-            const { id, collection, width, height } = file.attrs;
-
-            return {
-              id,
-              collectionName: collection,
-              dimensions: {
-                width,
-                height,
-              },
-            };
-          });
-
-          const context = new Promise<Context>(async (resolve, reject) => {
-            if (!this.providers) {
-              return reject('missing provider');
-            }
-
-            this.providers.subscribe(
-              'mediaProvider',
-              async (name: string, provider?: Promise<MediaProvider>) => {
-                const mediaProvider = await provider;
-                const context =
-                  mediaProvider && (await mediaProvider.viewContext);
-
-                resolve(context);
-              },
-            );
-          });
-
+        if (isMediaGrid(node as Node) && this.providers) {
           return (
-            <MediaGrid items={items} context={context} isInteractive={false} />
+            <MediaGridNode node={node as Node} providers={this.providers} />
           );
         }
         if (isTextWrapper(node.type.name)) {
