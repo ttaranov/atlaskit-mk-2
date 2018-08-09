@@ -102,7 +102,7 @@ export const RemoveIconWrapper = styled.div`
 `;
 
 export const Debugger = styled.div`
-  position: absolute;
+  position: fixed;
   top: 10px;
   left: 10px;
   width: 200px;
@@ -119,6 +119,11 @@ export const DebuggerItem = styled.div`
   width: 30px;
   height: 30px;
   margin: 0 4px 4px 0;
+  color: white;
+  border-radius: 3px;
+  padding-top: 5px;
+  text-align: center;
+  box-sizing: border-box;
   background-color: ${(props: DebuggerItemProps) =>
-    props.isEmpty ? 'red' : 'green'};
+    props.isEmpty ? '#FF5630' : '#36B37E'};
 `;

@@ -384,7 +384,7 @@ export class MediaGridView extends Component<
             const i = rowIndex * itemsPerRow + colIndex;
             return (
               <DebuggerItem key={i} isEmpty={this.isEmptyItem(item)}>
-                i
+                {i}
               </DebuggerItem>
             );
           })}

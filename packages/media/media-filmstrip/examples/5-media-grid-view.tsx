@@ -8,6 +8,7 @@ interface ExampleState {
   width: number;
   items: GridItem[];
   isInteractive: boolean;
+  showDebugView: boolean;
 }
 
 class Example extends Component<{}, ExampleState> {
@@ -15,6 +16,7 @@ class Example extends Component<{}, ExampleState> {
     width: 744,
     items: gridItems,
     isInteractive: true,
+    showDebugView: true,
   };
 
   onWidthChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -44,8 +46,14 @@ class Example extends Component<{}, ExampleState> {
     });
   };
 
+  toggleDebugView = () => {
+    this.setState({
+      showDebugView: !this.state.showDebugView,
+    });
+  };
+
   render() {
-    const { width, items, isInteractive } = this.state;
+    const { width, items, isInteractive, showDebugView } = this.state;
 
     return (
       <GridContainer style={{ width: width + 20 }}>
@@ -60,13 +68,14 @@ class Example extends Component<{}, ExampleState> {
           <button onClick={this.toggleInteractivity}>
             Toggle isInteractive
           </button>
+          <button onClick={this.toggleDebugView}>Toggle Debug View</button>
         </FieldRangeWrapper>
         <MediaGridView
           items={items}
           onItemsChange={this.onItemsChange}
           width={width}
           isInteractive={isInteractive}
-          showDebug={true}
+          showDebug={showDebugView}
         />
       </GridContainer>
     );
