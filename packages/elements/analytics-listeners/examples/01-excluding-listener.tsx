@@ -6,7 +6,7 @@ import {
   DummyComponentWithAnalytics,
   DummyAtlaskitComponentWithAnalytics,
   DummyComponentWithAttributesWithAnalytics,
-} from '../examples/helpers';
+} from './helpers';
 
 const myOnClickHandler = () => {
   console.log('Button clicked ! Yay!');
@@ -34,6 +34,7 @@ export default function Example() {
       excludedChannels={[FabricChannel.atlaskit]}
     >
       <div>
+        <p>Excluding analytics listener</p>
         <DummyComponentWithAnalytics
           text="Fabric Elements event - component without attributes"
           onClick={myOnClickHandler}

@@ -3,7 +3,7 @@ import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { GasPayload } from '@atlaskit/analytics-gas-types';
 import Button from '@atlaskit/button';
 
-import { FabricChannel } from '../../src/index';
+import { FabricChannel } from '../../src';
 import { ELEMENTS_TAG } from '../../src/FabricElementsListener';
 
 export type Props = {
@@ -24,6 +24,10 @@ const DummyElementsComponent: React.StatelessComponent<Props> = props => (
 
 const DummyAtlaskitComponent: React.StatelessComponent<Props> = props => (
   <DummyComponent text="Atlaskit (core) event" {...props} />
+);
+
+const DummyNavigationComponent: React.StatelessComponent<Props> = props => (
+  <DummyComponent text="Navigation event" {...props} />
 );
 
 export const DummyComponentWithAnalytics = withAnalyticsEvents({
@@ -67,6 +71,18 @@ export const DummyAtlaskitComponentWithAnalytics = withAnalyticsEvents({
     createEvent(event).fire('atlaskit');
   },
 })(DummyAtlaskitComponent);
+
+export const DummyNavigationComponentWithAnalytics = withAnalyticsEvents({
+  onClick: (createEvent, props) => {
+    const event: GasPayload = {
+      action: 'someAction',
+      actionSubject: 'someComponent',
+      eventType: 'ui',
+      source: 'unknown',
+    };
+    createEvent(event).fire('navigation');
+  },
+})(DummyNavigationComponent);
 
 export const TaggedDummyComponentWithAnalytics = withAnalyticsEvents({
   onClick: (createEvent, props) => {

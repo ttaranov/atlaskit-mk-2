@@ -4,6 +4,7 @@ import { AnalyticsWebClient, FabricChannel } from './types';
 import FabricElementsListener from './FabricElementsListener';
 import AtlaskitListener from './atlaskit/AtlaskitListener';
 import Logger from './helpers/logger';
+import NavigationListener from './navigation/NavigationListener';
 
 export type Props = {
   /** Children! */
@@ -17,6 +18,7 @@ export type Props = {
 const listenerMap = {
   [FabricChannel.elements]: FabricElementsListener,
   [FabricChannel.atlaskit]: AtlaskitListener,
+  [FabricChannel.navigation]: NavigationListener,
 };
 
 class FabricAnalyticsListeners extends React.Component<Props> {
