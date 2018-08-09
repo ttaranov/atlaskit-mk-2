@@ -10,10 +10,15 @@ import {
   Plugin,
   PluginKey,
   Transaction,
+  TextSelection,
 } from 'prosemirror-state';
 import { Context } from '@atlaskit/media-core';
 import { UploadParams } from '@atlaskit/media-picker';
-import { MediaType, MediaSingleLayout } from '@atlaskit/editor-common';
+import {
+  MediaType,
+  MediaSingleLayout,
+  mediaSingle,
+} from '@atlaskit/editor-common';
 
 import analyticsService from '../../../analytics/service';
 import { ErrorReporter, isImage } from '../../../utils';
@@ -39,7 +44,7 @@ import {
 import DefaultMediaStateManager from '../default-state-manager';
 import { insertMediaSingleNode } from '../utils/media-single';
 
-import { hasParentNodeOfType } from 'prosemirror-utils';
+import { hasParentNodeOfType, findParentNodeOfType } from 'prosemirror-utils';
 import { getPosHandler } from '../../../nodeviews/ReactNodeView';
 export { DefaultMediaStateManager };
 export { MediaState, MediaProvider, MediaStateStatus, MediaStateManager };
@@ -264,7 +269,7 @@ export class MediaPluginState {
     this.notifyPluginStateSubscribers();
   }
 
-  private selectionInMediaSingle(): boolean {
+  selectionInMediaSingle(): boolean {
     const { selection, schema } = this.view.state;
     let depth = selection.$from.depth;
     while (depth > 0) {
@@ -514,6 +519,65 @@ export class MediaPluginState {
     this.mediaNodes = this.mediaNodes.filter(
       ({ node }) => oldNode.attrs.__key !== node.attrs.__key,
     );
+  };
+
+  getEmptyCaptionDecorations = (): Decoration[] => {
+    if (!this.view) {
+      return [];
+    }
+
+    const { caption, mediaSingle, mediaGroup } = this.view.state.schema.nodes;
+    const { selection } = this.view.state;
+
+    const parent = selection.$from.parent;
+    let captionNode;
+    let captionPos;
+
+    if (parent.type === mediaSingle || parent.type === mediaGroup) {
+      console.warn('had parent was mediaSingle');
+      console.warn(
+        'parent is',
+        parent,
+        'around selection is',
+        selection.$from.nodeBefore,
+        selection.$from.nodeAfter,
+      );
+      captionNode = parent.lastChild;
+      captionPos = selection.$from.after() - 3;
+    } else if (parent.type === caption) {
+      captionNode = parent;
+      captionPos = selection.$from.before();
+    } else if (
+      selection.$from.nodeBefore &&
+      selection.$from.nodeBefore.type === mediaSingle
+    ) {
+      console.warn('had media single bit', selection.$from.nodeBefore);
+      captionNode = selection.$from.nodeBefore.lastChild;
+
+      // TODO: assumes we already have a caption
+      captionPos = selection.$from.after() - 3;
+      console.log('selection from', selection.from);
+    } else {
+      console.warn(
+        'unknown, parent is',
+        parent,
+        'around selection is',
+        selection.$from.nodeBefore,
+        selection.$from.nodeAfter,
+      );
+    }
+
+    console.log('caption node is', captionNode, 'pos', captionPos);
+
+    if (captionNode && captionNode.textContent.length === 0) {
+      const elem = document.createElement('span');
+      elem.innerText = 'Type a caption...';
+
+      // + 1 to place the decoration inside the caption
+      return [Decoration.widget(captionPos + 1, elem)];
+    }
+
+    return [];
   };
 
   align = (layout: MediaSingleLayout): boolean => {
@@ -991,11 +1055,73 @@ export const createPlugin = (
         },
       };
     },
+    appendTransaction: (transactions, oldState, newState) => {
+      const mediaSingleFromSelection = selection => {
+        const r = findParentNodeOfType(schema.nodes.mediaSingle)(selection);
+        if (r) {
+          return { pos: r.start, node: r.node };
+        } else {
+          return { pos: -1, node: undefined };
+        }
+      };
+
+      const { caption } = newState.schema.nodes;
+
+      if (oldState.selection !== newState.selection) {
+        // newState.selection.$head.bef
+        const selectedMediaSingle = mediaSingleFromSelection(
+          newState.selection,
+        );
+
+        // insert a caption if one doesn't already exist
+        if (selectedMediaSingle.node) {
+          const { node, pos } = selectedMediaSingle;
+
+          if (node.lastChild && node.lastChild.type !== caption) {
+            const captionPos = pos + node.lastChild.nodeSize;
+            return newState.tr.insert(
+              captionPos,
+              caption.create(),
+            ) /*.setSelection(TextSelection.create(newState.doc, captionPos))*/;
+          }
+        } else {
+          const previouslySelectedMediaSingle = mediaSingleFromSelection(
+            oldState.selection,
+          );
+
+          if (previouslySelectedMediaSingle.node) {
+            const { pos } = previouslySelectedMediaSingle;
+            const node = newState.doc.resolve(pos).node();
+
+            if (!node) {
+              return;
+            }
+
+            if (
+              node.lastChild &&
+              node.lastChild.type === caption &&
+              node.firstChild
+            ) {
+              const captionPos = pos + node.firstChild.nodeSize;
+              if (node.lastChild.nodeSize === 2) {
+                return newState.tr.delete(captionPos, captionPos + 2);
+              }
+            }
+          }
+        }
+      }
+    },
     props: {
       decorations: state => {
         const pluginState = getMediaPluginState(state);
+        // const emptyDecos = pluginState.getEmptyCaptionDecorations();
+        // console.log('empty decos', emptyDecos);
+        const emptyDecos = [];
+
         if (!pluginState.showDropzone) {
-          return;
+          return emptyDecos.length
+            ? DecorationSet.create(state.doc, emptyDecos)
+            : undefined;
         }
 
         const {
@@ -1004,7 +1130,9 @@ export const createPlugin = (
         } = state;
         // When a media is already selected
         if (state.selection instanceof NodeSelection) {
-          return;
+          return emptyDecos.length
+            ? DecorationSet.create(state.doc, emptyDecos)
+            : undefined;
         }
 
         let pos: number | null | void = $anchor.pos;
@@ -1016,13 +1144,18 @@ export const createPlugin = (
         }
 
         if (pos === null || pos === undefined) {
-          return;
+          return emptyDecos.length
+            ? DecorationSet.create(state.doc, emptyDecos)
+            : undefined;
         }
 
         const dropPlaceholders: Decoration[] = [
           Decoration.widget(pos, dropPlaceholder, { key: 'drop-placeholder' }),
         ];
-        return DecorationSet.create(state.doc, dropPlaceholders);
+        return DecorationSet.create(
+          state.doc,
+          dropPlaceholders.concat(emptyDecos),
+        );
       },
       nodeViews: options.nodeViews,
       handleTextInput(

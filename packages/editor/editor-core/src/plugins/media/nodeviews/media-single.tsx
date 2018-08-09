@@ -181,22 +181,6 @@ export class MediaSingleView extends ReactNodeView {
   }
 
   getContentDOM() {
-    // const contentDOM = DOMSerializer.renderSpec(document, ['div', 0]);
-    // console.log('using contentDOM', contentDOM);
-
-    // const dom = document.createElement('div');
-    // dom.setAttribute('data-pm-debug', 'dom');
-
-    // const contentDOM = document.createElement('div');
-    // dom.setAttribute('data-pm-debug', 'contentDOM');
-
-    // dom.appendChild(contentDOM);
-
-    // return {
-    //   dom,
-    //   contentDOM
-    // };
-
     if (this.node.type.spec.toDOM) {
       return DOMSerializer.renderSpec(
         document,

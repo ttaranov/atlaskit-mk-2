@@ -13,7 +13,7 @@ export const caption: NodeSpec = {
   inline: false,
   group: 'block',
   content: 'inline*',
-  isolating: false,
+  isolating: true,
 
   parseDOM: [
     {

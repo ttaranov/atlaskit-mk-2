@@ -106,6 +106,11 @@ export const Caption: React.ComponentClass<HTMLAttributes<{}>> = styled.div`
     margin-top: 8px;
     /*margin-bottom: 8px;*/
     display: block;
+
+    &.empty {
+      content: 'Type a caption...';
+      text-style: italic;
+    }
   }
 
   text-align: center;
