@@ -1,0 +1,56 @@
+import debug, { enableLogger } from '../src/util/logger';
+import { OnEmojiEvent, OnToneSelected, EmojiUpload } from '../src/common/types';
+import { OnUploadEmoji } from '../src/picker/EmojiUploadPicker';
+import { emoji, UsageClearEmojiResource } from '../../util-data-test/dist/es5';
+import { EmojiRepository } from '../../emoji/dist/es5';
+
+const storyData = emoji.storyData;
+
+enableLogger(true);
+
+export const onSelection: OnEmojiEvent = (emojiId, emoji, event?) =>
+  debug('emoji selected', emojiId, emoji);
+
+export const onToneSelected: OnToneSelected = (variation: number) =>
+  debug('tone selected', variation);
+
+export const onUploadEmoji: OnUploadEmoji = (upload: EmojiUpload) =>
+  debug('uploaded emoji', upload);
+
+export const onUploadCancelled = () => debug('upload cancelled');
+
+// FIXME FAB-1732 - extract or replace with third-party implementation
+export const toJavascriptString = (obj: any): string => {
+  if (typeof obj === 'object') {
+    if (Array.isArray(obj)) {
+      let arrString = '[\n';
+      for (let i = 0; i < obj.length; i++) {
+        arrString += `  ${toJavascriptString(obj[i])},\n`;
+      }
+      arrString += ']';
+      return arrString;
+    }
+    let objString = '{\n';
+    Object.keys(obj).forEach(key => {
+      objString += `  ${key}: ${toJavascriptString(obj[key])},\n`;
+    });
+    objString += '}';
+    return objString;
+  } else if (typeof obj === 'string') {
+    return `'${obj}'`;
+  }
+  return obj.toString();
+};
+
+export const {
+  lorem,
+  getEmojiResourceWithStandardAndAtlassianEmojis,
+  loggedUser,
+  getEmojis,
+  getEmojiResource,
+} = storyData;
+
+export const getUsageClearEmojiResource: () => UsageClearEmojiResource =
+  storyData.getUsageClearEmojiResource;
+export const getEmojiRepository: () => EmojiRepository =
+  storyData.getEmojiRepository;
