@@ -113,7 +113,7 @@ export class MediaGridView extends Component<
   };
 
   onDragOver = (index, event: React.DragEvent<HTMLImageElement>) => {
-    const { itemsPerRow, items } = this.props;
+    const { itemsPerRow = ITEMS_PER_ROW, items } = this.props;
     const { left, width } = event.currentTarget.getBoundingClientRect();
     const x = event.pageX - left;
     let dropIndex = index;
@@ -121,7 +121,7 @@ export class MediaGridView extends Component<
     if (onTheRightSideOfAnImage) {
       dropIndex += 1;
     }
-    const overLastImageInTheRow = dropIndex % itemsPerRow! === 0;
+    const overLastImageInTheRow = dropIndex % itemsPerRow === 0;
     const isAbsoluteLastItem = index === items.length - 1;
     const lastInRow =
       (onTheRightSideOfAnImage && overLastImageInTheRow) || isAbsoluteLastItem;
@@ -265,10 +265,10 @@ export class MediaGridView extends Component<
   }
 
   private nonEmptyItemsOnRow(rowIndex: number, items: GridItem[]) {
-    const { itemsPerRow } = this.props;
-    const rowStartIndex = rowIndex * itemsPerRow!;
+    const { itemsPerRow = ITEMS_PER_ROW } = this.props;
+    const rowStartIndex = rowIndex * itemsPerRow;
     return items
-      .slice(rowStartIndex, rowStartIndex + itemsPerRow!)
+      .slice(rowStartIndex, rowStartIndex + itemsPerRow)
       .filter(item => !!item.dataURI);
   }
 
@@ -304,30 +304,28 @@ export class MediaGridView extends Component<
   };
 
   normalizeAndReportChange(items: GridItem[]) {
-    const { onItemsChange } = this.props;
-
-    const { itemsPerRow } = this.props;
-    const numberOfRows = Math.ceil(items.length / itemsPerRow!);
+    const { onItemsChange, itemsPerRow = ITEMS_PER_ROW } = this.props;
+    const numberOfRows = Math.ceil(items.length / itemsPerRow);
 
     for (let rowIndex = 0; rowIndex < numberOfRows; rowIndex += 1) {
       const itemsOnThisRow = this.nonEmptyItemsOnRow(rowIndex, items);
       if (itemsOnThisRow.length === 0) {
         // Remove empty line
-        items.splice(rowIndex * itemsPerRow!, itemsPerRow!);
+        items.splice(rowIndex * itemsPerRow, itemsPerRow);
         // We just removed whole line. If we want to scan previously next line we need to substract
         rowIndex -= 1;
-      } else if (itemsOnThisRow.length < itemsPerRow!) {
+      } else if (itemsOnThisRow.length < itemsPerRow) {
         // Push all non-empty items to the left.
         let remainingEmptyItems = new Array(
-          itemsPerRow! - itemsOnThisRow.length,
+          itemsPerRow - itemsOnThisRow.length,
         ).fill(EMPTY_GRID_ITEM);
         if (rowIndex === numberOfRows - 1) {
           // Unless it's last line, in which case no remaining empty items in the end of a row
           remainingEmptyItems = [];
         }
         items.splice(
-          rowIndex * itemsPerRow!,
-          itemsPerRow!,
+          rowIndex * itemsPerRow,
+          itemsPerRow,
           ...itemsOnThisRow,
           ...remainingEmptyItems,
         );
@@ -395,9 +393,13 @@ export class MediaGridView extends Component<
   }
 
   render() {
-    const { items, itemsPerRow, width = DEFAULT_WIDTH } = this.props;
+    const {
+      items,
+      itemsPerRow = ITEMS_PER_ROW,
+      width = DEFAULT_WIDTH,
+    } = this.props;
     const rows: JSX.Element[] = [];
-    const numberOfRows = Math.ceil(items.length / itemsPerRow!);
+    const numberOfRows = Math.ceil(items.length / itemsPerRow);
     for (let rowIndex = 0; rowIndex < numberOfRows; rowIndex += 1) {
       const itemsInRow = this.nonEmptyItemsOnRow(rowIndex, items);
       const gridHeight = this.calculateRowHeight(
@@ -409,7 +411,7 @@ export class MediaGridView extends Component<
       rows.push(
         <RowWrapper key={'row' + rowIndex}>
           {itemsInRow.map((item, columnIndex) => {
-            const index = rowIndex * itemsPerRow! + columnIndex;
+            const index = rowIndex * itemsPerRow + columnIndex;
             return this.renderImage(item, gridHeight, index);
           })}
         </RowWrapper>,
