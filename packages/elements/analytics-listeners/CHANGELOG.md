@@ -1,5 +1,9 @@
 # @atlaskit/analytics-listeners
 
+## 3.1.0
+- [minor] Add navigation listener that listens to events fired from within the new @atlaskit/navigation-next and @atlaskit/global-navigation packages. [fb67997](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fb67997)
+- [minor] Add excludedChannels prop to exclude listeners on certain channels from being rendered. This is primarily intended to prevent the events fired on the atlaskit channel from being captured so that duplicate events are not sent for atlaskit/core components. [d43b8a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d43b8a2)
+
 ## 3.0.3
 - [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
   - @atlaskit/button@9.0.4
