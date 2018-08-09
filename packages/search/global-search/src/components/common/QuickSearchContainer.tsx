@@ -9,10 +9,25 @@ export interface Props {
   linkComponent?: LinkComponent;
   getSearchResultComponent: Function;
 
-  fireShownPreQueryEvent: Function;
-  fireShownPostQueryEvent: Function;
-  getRecentItems: Function;
-  getSearchResult: Function;
+  getRecentItems(sessionId: string): Promise<object>;
+  getSearchResult(
+    query: string,
+    sessionId: string,
+    startTime: number,
+  ): Promise<Object>;
+  fireShownPreQueryEvent(
+    searchSessionId: string,
+    recentItems: object,
+    requestStartTime?: number,
+  ): void;
+  fireShownPostQueryEvent(
+    startTime: number,
+    elapsedMs: number,
+    searchResult: object,
+    searchSessionId: string,
+    latestSearchQuery: string,
+  ): void;
+
   handleSearchSubmit?: Function;
   isSendSearchTermsEnabled?: boolean;
   intl: InjectedIntl;

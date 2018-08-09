@@ -143,9 +143,12 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         : 0;
 
       const eventAttributes: ShownAnalyticsAttributes = buildShownEventDetails(
-        take(recentItems.recentlyViewedPages, MAX_PAGES_BLOGS_ATTACHMENTS),
-        take(recentItems.recentlyViewedSpaces, MAX_SPACES),
-        take(recentItems.recentlyInteractedPeople, MAX_PEOPLE),
+        take(
+          recentItems.recentlyViewedPages || [],
+          MAX_PAGES_BLOGS_ATTACHMENTS,
+        ),
+        take(recentItems.recentlyViewedSpaces || [], MAX_SPACES),
+        take(recentItems.recentlyInteractedPeople || [], MAX_PEOPLE),
       );
 
       firePreQueryShownEvent(
@@ -171,9 +174,9 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     };
 
     const resultsDetails: ShownAnalyticsAttributes = buildShownEventDetails(
-      take(searchResult.objectResults, MAX_PAGES_BLOGS_ATTACHMENTS),
-      take(searchResult.spaceResults, MAX_SPACES),
-      take(searchResult.peopleResults, MAX_PEOPLE),
+      take(searchResult.objectResults || [], MAX_PAGES_BLOGS_ATTACHMENTS),
+      take(searchResult.spaceResults || [], MAX_SPACES),
+      take(searchResult.peopleResults || [], MAX_PEOPLE),
     );
 
     const { createAnalyticsEvent } = this.props;
@@ -188,7 +191,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     }
   };
 
-  getSearchResults = (query, sessionId, startTime) => {
+  getSearchResult = (query, sessionId, startTime) => {
     const useAggregator = this.props.useAggregatorForConfluenceObjects;
 
     const quickNavPromise = useAggregator
@@ -328,7 +331,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         fireShownPreQueryEvent={this.fireShownPreQueryEvent}
         fireShownPostQueryEvent={this.fireShownPostQueryEvent}
         getRecentItems={this.getRecentItems}
-        getSearchResult={this.getSearchResults}
+        getSearchResult={this.getSearchResult}
         handleSearchSubmit={this.handleSearchSubmit}
         isSendSearchTermsEnabled={isSendSearchTermsEnabled}
       />
