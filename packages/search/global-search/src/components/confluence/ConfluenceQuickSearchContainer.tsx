@@ -1,9 +1,6 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import {
-  withAnalytics,
-  FireAnalyticsEvent,
-} from '../../../../../core/analytics/src';
+import { withAnalytics, FireAnalyticsEvent } from '@atlaskit/analytics';
 import { ConfluenceClient } from '../../api/ConfluenceClient';
 import {
   CrossProductSearchClient,
@@ -39,7 +36,7 @@ import {
 import { CreateAnalyticsEventFn } from '../analytics/types';
 import performanceNow from '../../util/performance-now';
 import { QuickSearchContainer } from '../common/QuickSearchContainer';
-import SearchResults from '../SearchResults';
+
 export interface Props {
   crossProductSearchClient: CrossProductSearchClient;
   peopleSearchClient: PeopleSearchClient;
@@ -53,7 +50,7 @@ export interface Props {
 }
 
 /**
- * Container/Stateful Component that handles the data fetching and state handling when the user interacts with Search.
+ * Container Component that handles the data fetching when the user interacts with Search.
  */
 export class ConfluenceQuickSearchContainer extends React.Component<
   Props & InjectedIntlProps
@@ -190,14 +187,6 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       );
     }
   };
-
-  shouldComponentUpdate(nextProps, nextState) {
-    return (
-      Object.keys({ ...nextProps, ...this.props })
-        .map(key => this.props[key] !== nextProps[key])
-        .reduce((acc, value) => acc || value, false) || this.state !== nextState
-    );
-  }
 
   getSearchResults = (query, sessionId, startTime) => {
     const useAggregator = this.props.useAggregatorForConfluenceObjects;

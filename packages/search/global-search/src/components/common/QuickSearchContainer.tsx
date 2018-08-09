@@ -119,7 +119,6 @@ export class QuickSearchContainer extends React.Component<Props, State> {
   };
 
   handleMount = async () => {
-    debugger;
     const startTime = performanceNow();
 
     this.setState({
