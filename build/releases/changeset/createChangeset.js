@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 // @flow
 
-const { green } = require('chalk');
+const { green, yellow, red } = require('chalk');
 const bolt = require('bolt');
 
 const cli = require('../../utils/cli');
@@ -9,6 +9,7 @@ const logger = require('../../utils/logger');
 const createReleaseNotesFile = require('./createReleaseNotesFile');
 const inquirer = require('inquirer');
 const semver = require('semver');
+const outdent = require('outdent');
 
 /* Changeset object format (TODO: User flow!!!)
   {
@@ -47,6 +48,39 @@ type changesetType = {
 }
 */
 
+async function getPackageBumpRange(pkgJSON) {
+  let { name, version, maintainers } = pkgJSON;
+  // Get the version range for a package someone has chosen to release
+  let type = await cli.askList(
+    `What kind of change is this for ${green(
+      name,
+    )}? (current version is ${version})`,
+    ['patch', 'minor', 'major'],
+  );
+
+  // for packages that are under v1, we want to make sure major releases are intended,
+  // as some repo-wide sweeping changes have mistakenly release first majors
+  // of packages.
+  if (type === 'major' && semver.lt(version, '1.0.0')) {
+    let maintainersString = '';
+
+    if (maintainers && Array.isArray(maintainers) && maintainers.length > 0) {
+      maintainersString = ` (${maintainers.join(', ')})`;
+    }
+    // prettier-ignore
+    const message = yellow(outdent`
+      WARNING: Releasing a major version for ${green(name)} will be its ${red('first major release')}.
+      If you are unsure if this is correct, contact the package's maintainers${maintainersString} ${red('before committing this changeset')}.
+
+      If you still want to release this package, select the appropriate version below:
+    `)
+    // prettier-ignore-end
+    type = await cli.askList(message, ['patch', 'minor', 'major']);
+  }
+
+  return type;
+}
+
 async function createChangeset(
   changedPackages /*: Array<string> */,
   opts /*: { cwd?: string }  */ = {},
@@ -67,10 +101,9 @@ async function createChangeset(
   );
 
   for (const pkg of packagesToRelease) {
-    const type = await cli.askList(
-      `What kind of change is this for ${green(pkg)}?`,
-      ['patch', 'minor', 'major'],
-    );
+    const pkgJSON = allPackages.find(({ name }) => name === pkg).config;
+
+    const type = await getPackageBumpRange(pkgJSON);
 
     changeset.releases.push({ name: pkg, type });
   }
