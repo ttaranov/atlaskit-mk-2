@@ -1,43 +1,30 @@
+import { Rectangle, Vector2 } from '@atlaskit/media-ui';
 import {
   CONTAINER_SIZE,
   CONTAINER_INNER_SIZE,
   CONTAINER_PADDING,
 } from './image-navigator';
 
-export interface ImagePosition {
-  x: number;
-  y: number;
-}
-
 export function constrainPos(
-  x: number,
-  y: number,
-  width: number,
-  height: number,
-  scale: number,
-): ImagePosition {
-  const scaledSize = {
-    width: width * scale,
-    height: height * scale,
-  };
-
-  return {
-    x: Math.min(
-      Math.max(CONTAINER_SIZE - CONTAINER_PADDING - scaledSize.width, x),
+  { x, y }: Vector2,
+  { width, height }: Rectangle,
+): Vector2 {
+  return new Vector2(
+    Math.min(
+      Math.max(CONTAINER_SIZE - CONTAINER_PADDING - width, x),
       CONTAINER_PADDING,
     ),
-    y: Math.min(
-      Math.max(CONTAINER_SIZE - CONTAINER_PADDING - scaledSize.height, y),
+    Math.min(
+      Math.max(CONTAINER_SIZE - CONTAINER_PADDING - height, y),
       CONTAINER_PADDING,
     ),
-  };
+  );
 }
 
 export function constrainScale(
   newScale: number,
   minScale: number,
-  width: number,
-  height: number,
+  { width, height }: Rectangle,
 ): number {
   const scaledSize = {
     width: width * newScale,
@@ -55,14 +42,9 @@ export function constrainScale(
 }
 
 export function constrainEdges(
-  x: number,
-  y: number,
-  imageWidth: number,
-  imageHeight: number,
-  scale: number,
-): ImagePosition {
-  const width = imageWidth * scale;
-  const height = imageHeight * scale;
+  { x, y }: Vector2,
+  { width, height }: Rectangle,
+): Vector2 {
   const newPos = {
     x,
     y,
@@ -83,5 +65,5 @@ export function constrainEdges(
   if (deltaNearY > 0) {
     newPos.y = CONTAINER_PADDING;
   }
-  return newPos;
+  return new Vector2(newPos.x, newPos.y);
 }

@@ -101,7 +101,6 @@ describe('Image cropper', () => {
 
       dragOverlay.simulate('mousedown');
       expect(onDragStartedSpy).toHaveBeenCalledTimes(1);
-      expect(onDragStartedSpy.mock.calls[0]).toHaveLength(0);
     });
   });
 

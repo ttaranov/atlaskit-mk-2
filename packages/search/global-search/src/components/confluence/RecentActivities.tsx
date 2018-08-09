@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Result } from '../../model/Result';
-import { ScreenCounter } from './ConfluenceSearchResults';
+import { ScreenCounter } from '../../util/ScreenCounter';
 import { FormattedMessage } from 'react-intl';
 import { take } from '../SearchResultsUtil';
 import ResultGroup from '../ResultGroup';

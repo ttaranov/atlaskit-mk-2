@@ -93,6 +93,13 @@ bolt install
 This will take a minute or two the first time, but every subsequent run should
 only take about a second.
 
+#### Linux / Mac / Windows
+
+The main `bolt` / `bolt install` commands work on all platforms. However, custom commands may not work in a Windows environment (i.e. `bolt start`). For now, if you're running Windows, you'll have to do the following:
+
+1. Run `bolt` / `bolt install` from `cmd.exe`. It doesn't work in WSL.
+2. Run any custom commands from WSL. We haven't made our custom scripts cross-platform yet.
+
 #### In case you use IntelliJ IDEA or WebStorm
 
 After running `bolt install` you will most likely experiencing issues with IDE indexing taking forever. VS Code does not have this problem. If you do not want to change the IDE you use, do the following: 
