@@ -40,7 +40,7 @@
     "@atlaskit/build-utils": "^1.11.0",
     "@atlaskit/button": "^9.0.5",
     "@atlaskit/docs": "^5.0.2",
-    "@atlaskit/dropdown-menu": "^6.1.5",
+    "@atlaskit/dropdown-menu": "~6.1.5",
     "@atlaskit/toggle": "^5.0.5",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.2"

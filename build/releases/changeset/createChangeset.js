@@ -1,14 +1,14 @@
 /* eslint-disable no-console */
 // @flow
 
-const chalk = require('chalk');
+const { green } = require('chalk');
 const bolt = require('bolt');
 
 const cli = require('../../utils/cli');
 const logger = require('../../utils/logger');
 const createReleaseNotesFile = require('./createReleaseNotesFile');
-const promptAndAssembleReleaseTypes = require('./promptAndAssembleReleaseTypes');
 const inquirer = require('inquirer');
+const semver = require('semver');
 
 /* Changeset object format (TODO: User flow!!!)
   {
@@ -33,7 +33,6 @@ type dependentType = {
   name: string,
   type?: string,
   dependencies: Array<string>,
-  finalised?: boolean
 }
 type changesetDependentType = {
   name: string,
@@ -47,6 +46,109 @@ type changesetType = {
   releaseNotes?: any,
 }
 */
+
+async function createChangeset(
+  changedPackages /*: Array<string> */,
+  opts /*: { cwd?: string }  */ = {},
+) {
+  const cwd = opts.cwd || process.cwd();
+  const allPackages = await bolt.getWorkspaces({ cwd });
+  const dependencyGraph = await bolt.getDependentsGraph({ cwd });
+
+  const changeset /*: changesetType */ = {
+    summary: '',
+    releases: [],
+    dependents: [],
+  };
+
+  let packagesToRelease = await getPackagesToRelease(
+    changedPackages,
+    allPackages,
+  );
+
+  for (const pkg of packagesToRelease) {
+    const type = await cli.askList(
+      `What kind of change is this for ${green(pkg)}?`,
+      ['patch', 'minor', 'major'],
+    );
+    changeset.releases.push({ name: pkg, type });
+  }
+
+  logger.log(
+    'Please enter a summary for this change (this will be in the changelogs)',
+  );
+
+  changeset.summary = await cli.askQuestion('Summary');
+
+  const toSearch = [...changeset.releases];
+
+  while (toSearch.length > 0) {
+    // search...
+    const nextRelease = toSearch.shift();
+    const nextReleasePkg = allPackages.find(
+      pkg => pkg.name === nextRelease.name,
+    );
+    const nextReleaseVersion = semver.inc(
+      nextReleasePkg.config.version,
+      nextRelease.type,
+    );
+
+    const dependents = dependencyGraph.get(nextRelease.name);
+    dependents.forEach(dependent => {
+      if (changeset.dependents.some(dep => dep.name === dependent)) return;
+      if (changeset.releases.some(dep => dep.name === dependent)) return;
+
+      const dependentPkg = allPackages.find(pkg => pkg.name === dependent);
+
+      const dependencyRange = getDependencyVersionRange(
+        dependentPkg.config,
+        nextRelease.name,
+      );
+
+      if (!dependencyRange)
+        throw new Error(
+          `We have entered an impossible state where ${
+            nextRelease.name
+          } is depended upon by ${dependent}, but at no version.`,
+        );
+
+      if (!semver.satisfies(nextReleaseVersion, dependencyRange)) {
+        if (changeset.dependents.includes(dep => dep.name === dependent))
+          return;
+
+        toSearch.push({
+          name: dependent,
+          type: 'patch',
+        });
+        const dependencies = packagesToRelease.filter(
+          dep => !!getDependencyVersionRange(dependentPkg.config, dep),
+        );
+
+        changeset.dependents.push({
+          name: dependent,
+          type: 'patch',
+          dependencies,
+        });
+      }
+    });
+  }
+
+  // (TODO: Get releaseNotes if there is a major change)
+
+  // NOTE: This path is not fully implemented yet. It should be revisited when
+  // release notes are on the website
+  // if (Object.values(changeset.releases).some(r => r.type === 'major')) {
+  //   logger.log('You are making a breaking change, you\'ll need to create new release file to document this');
+  //   logger.log('(you can set you $EDITOR variable to control which editor will be used)');
+  //
+  //   await cli.askConfirm('Create new release?'); // This is really just to let the user read the message above
+  //   const newReleasePath = createReleaseNotesFile('new-release.md', summary); // hard-coding here, but we should prompt for it
+  //   await cli.askEditor(newReleasePath);
+  //   changeset.releaseNotes = newReleasePath;
+  // }
+
+  return changeset;
+}
 
 async function getAllDependents(packagesToRelease, opts = {}) {
   const cwd = opts.cwd || process.cwd();
@@ -71,98 +173,57 @@ async function getAllDependents(packagesToRelease, opts = {}) {
   return allDependents;
 }
 
-async function createChangeset(
-  changedPackages /*: Array<string> */,
-  opts /*: { cwd?: string }  */ = {},
-) {
-  const cwd = opts.cwd || process.cwd();
-  const allPackages = await bolt.getWorkspaces({ cwd });
-  const changeset /*: changesetType */ = {
-    summary: '',
-    releases: [],
-    dependents: [],
-  };
-
-  let unchangedPackages = [];
-
-  for (let pkg of allPackages) {
-    if (!changedPackages.includes(pkg.name)) unchangedPackages.push(pkg.name);
+async function getPackagesToRelease(changedPackages, allPackages) {
+  function askInitialReleaseQuestion(defaultInquirerList) {
+    return cli.askCheckboxPlus(
+      // TODO: Make this wording better
+      // TODO: take objects and be fancy with matching
+      'Which packages would you like to include?',
+      defaultInquirerList,
+    );
   }
 
-  const inquirerList = [
+  let unchangedPackagesNames = allPackages
+    .map(({ name }) => name)
+    .filter(name => !changedPackages.includes(name));
+
+  const defaultInquirerList = [
     new inquirer.Separator('changed packages'),
     ...changedPackages,
     new inquirer.Separator('unchanged packages'),
-    ...unchangedPackages,
+    ...unchangedPackagesNames,
     new inquirer.Separator(),
   ];
 
-  let packagesToRelease = await cli.askCheckbox(
-    'Which packages would you like to include?',
-    inquirerList,
-  );
+  let packagesToRelease = await askInitialReleaseQuestion(defaultInquirerList);
 
   if (packagesToRelease.length === 0) {
     do {
-      console.error(
-        chalk.red('You must select at least one package to release'),
-      );
-      console.error(chalk.red('(You most likely hit enter instead of space!)'));
+      logger.error('You must select at least one package to release');
+      logger.error('(You most likely hit enter instead of space!)');
 
-      packagesToRelease = await cli.askCheckbox(
-        'Which packages would you like to include?',
-        inquirerList,
-      );
+      packagesToRelease = await askInitialReleaseQuestion(defaultInquirerList);
     } while (packagesToRelease.length === 0);
   }
-  /** Get released packages and bumptypes */
+  return packagesToRelease;
+}
 
-  for (const pkg of packagesToRelease) {
-    const bumpType = await cli.askList(
-      `What kind of change is this for ${chalk.green(pkg)}?`,
-      ['patch', 'minor', 'major'],
-    );
-    changeset.releases.push({ name: pkg, type: bumpType });
+function getDependencyVersionRange(dependentPkgJSON, dependencyName) {
+  const DEPENDENCY_TYPES = [
+    'dependencies',
+    'devDependencies',
+    'peerDependencies',
+    'bundledDependencies',
+    'optionalDependencies',
+  ];
+  for (let type of DEPENDENCY_TYPES) {
+    let deps = dependentPkgJSON[type];
+    if (!deps) continue;
+    if (deps[dependencyName]) {
+      return deps[dependencyName];
+    }
   }
-
-  /** Get summary for changeset */
-
-  logger.log(
-    'Please enter a summary for this change (this will be in the changelogs)',
-  );
-  const summary = await cli.askQuestion('Summary');
-
-  /** Get dependents and bumptypes */
-
-  const dependents /*: Array<dependentType> */ = await getAllDependents(
-    packagesToRelease,
-    { cwd },
-  );
-
-  // This modifies the above dependents array to add a 'type' property to all
-  // items.
-  await promptAndAssembleReleaseTypes(dependents, changeset, cwd);
-
-  // (TODO: Get releaseNotes if there is a major change)
-
-  // NOTE: This path is not fully implemented yet. It should be revisited when
-  // release notes are on the website
-  // if (Object.values(changeset.releases).some(r => r.type === 'major')) {
-  //   logger.log('You are making a breaking change, you\'ll need to create new release file to document this');
-  //   logger.log('(you can set you $EDITOR variable to control which editor will be used)');
-  //
-  //   await cli.askConfirm('Create new release?'); // This is really just to let the user read the message above
-  //   const newReleasePath = createReleaseNotesFile('new-release.md', summary); // hard-coding here, but we should prompt for it
-  //   await cli.askEditor(newReleasePath);
-  //   changeset.releaseNotes = newReleasePath;
-  // }
-
-  changeset.summary = summary;
-  // as the changeset is printed to console, the unneeded verified property needs
-  // to be removed
-  changeset.dependents = dependents.map(({ finalised, ...rest }) => rest);
-
-  return changeset;
+  return null;
 }
 
 module.exports = createChangeset;
