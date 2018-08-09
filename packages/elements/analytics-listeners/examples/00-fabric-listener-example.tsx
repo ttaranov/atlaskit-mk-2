@@ -48,7 +48,27 @@ export default function Example() {
 
         <DummyAtlaskitComponentWithAnalytics onClick={myOnClickHandler} />
 
-        <DummyNavigationComponentWithAnalytics onClick={myOnClickHandler} />
+        <AnalyticsContext
+          data={{
+            component: 'page',
+            packageName: '@atlaskit/page',
+            packageVersion: '2.0.1',
+            attributes: { pageName: 'myPage' },
+            source: 'homePage',
+          }}
+        >
+          <AnalyticsContext
+            data={{
+              component: 'myComponent',
+              packageName: '@atlaskit/my-component',
+              packageVersion: '1.0.0',
+              attributes: { customAttr: true },
+              source: 'componentPage',
+            }}
+          >
+            <DummyNavigationComponentWithAnalytics onClick={myOnClickHandler} />
+          </AnalyticsContext>
+        </AnalyticsContext>
       </div>
     </FabricAnalyticsListeners>
   );
