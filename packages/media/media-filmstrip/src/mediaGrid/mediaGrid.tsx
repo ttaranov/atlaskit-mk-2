@@ -13,7 +13,7 @@ export interface PublicGridItem {
 }
 
 export interface MediaGridProps {
-  context: Context;
+  context: Context | Promise<Context>;
   items: PublicGridItem[];
   isInteractive?: boolean;
   width?: number;
@@ -56,7 +56,7 @@ export class MediaGrid extends Component<MediaGridProps, MediaGridState> {
   setItemDataURI = async (item: PublicGridItem) => {
     const { context } = this.props;
     const { collectionName, dimensions } = item;
-    const dataURI = await context.getImageUrl(item.id, {
+    const dataURI = await (await context).getImageUrl(item.id, {
       collection: collectionName,
       ...dimensions,
     });

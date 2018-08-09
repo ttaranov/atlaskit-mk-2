@@ -171,6 +171,19 @@ export const isTextWrapper = (type: string): type is 'textWrapper' => {
   return type === 'textWrapper';
 };
 
+export const isMediaGrid = (node: Node): boolean => {
+  if (node.type.name === 'mediaGroup' && node.content.childCount > 1) {
+    const allImageFiles = node.content.content.every(file => {
+      const { width, height } = file.attrs;
+      return width && height;
+    });
+
+    return allImageFiles;
+  }
+
+  return false;
+};
+
 const whitespaceRegex = /^\s*$/;
 
 /**
