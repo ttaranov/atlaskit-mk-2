@@ -1,5 +1,16 @@
 # @atlaskit/navigation-next
 
+## 3.2.4
+
+
+- [patch] Add variable name displayNames for anonymous function SFC components to improve debugging experience [2e148df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e148df)
+- [none] Updated dependencies [50d469f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/50d469f)
+  - @atlaskit/global-navigation@4.0.6
+- [none] Updated dependencies [1602872](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1602872)
+  - @atlaskit/global-navigation@4.0.6
+- [none] Updated dependencies [2e148df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e148df)
+  - @atlaskit/global-navigation@4.0.6
+
 ## 3.2.3
 - [patch]  Update icon color for selected navigation item [d0ab79d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d0ab79d)
 - [patch] Updated dependencies [d0ab79d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d0ab79d)
