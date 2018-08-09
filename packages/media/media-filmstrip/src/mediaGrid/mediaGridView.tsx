@@ -9,13 +9,9 @@ import {
   ImgWrapper,
   Img,
   RemoveIconWrapper,
-  Debugger,
-  DebuggerRow,
-  DebuggerItem,
 } from './styled';
 
 export interface GridItem {
-  debugId?: number; // TODO Remove all debug things
   dataURI?: string;
   isLoaded?: boolean;
   dimensions: {
@@ -30,7 +26,6 @@ export interface MediaGridViewProps {
   isInteractive?: boolean;
   width?: number;
   itemsPerRow?: number;
-  showDebug?: boolean;
 }
 
 export interface MediaGridViewState {
@@ -46,8 +41,8 @@ export interface MediaGridViewState {
   selected: number;
 }
 
-const DEFAULT_WIDTH = 744;
-const ITEMS_PER_ROW = 3;
+export const DEFAULT_WIDTH = 744;
+export const DEFAULT_ITEMS_PER_ROW = 3;
 
 export const EMPTY_GRID_ITEM: GridItem = {
   dimensions: {
@@ -69,7 +64,7 @@ export class MediaGridView extends Component<
   };
 
   static defaultProps: Partial<MediaGridViewProps> = {
-    itemsPerRow: ITEMS_PER_ROW,
+    itemsPerRow: DEFAULT_ITEMS_PER_ROW,
     width: DEFAULT_WIDTH,
     isInteractive: true,
   };
@@ -118,7 +113,7 @@ export class MediaGridView extends Component<
   };
 
   onDragOver = (index, event: React.DragEvent<HTMLImageElement>) => {
-    const { itemsPerRow = ITEMS_PER_ROW, items } = this.props;
+    const { itemsPerRow = DEFAULT_ITEMS_PER_ROW, items } = this.props;
     const { left, width } = event.currentTarget.getBoundingClientRect();
     const x = event.pageX - left;
     let dropIndex = index;
@@ -270,7 +265,7 @@ export class MediaGridView extends Component<
   }
 
   private nonEmptyItemsOnRow(rowIndex: number, items: GridItem[]) {
-    const { itemsPerRow = ITEMS_PER_ROW } = this.props;
+    const { itemsPerRow = DEFAULT_ITEMS_PER_ROW } = this.props;
     const rowStartIndex = rowIndex * itemsPerRow;
     return items
       .slice(rowStartIndex, rowStartIndex + itemsPerRow)
@@ -309,7 +304,7 @@ export class MediaGridView extends Component<
   };
 
   private getItemsInRows(items: GridItem[]) {
-    const { itemsPerRow = ITEMS_PER_ROW } = this.props;
+    const { itemsPerRow = DEFAULT_ITEMS_PER_ROW } = this.props;
     const itemsInRows: GridItem[][] = [];
     const numberOfRows = Math.ceil(items.length / itemsPerRow);
     for (let rowIndex = 0; rowIndex < numberOfRows; rowIndex += 1) {
@@ -327,7 +322,7 @@ export class MediaGridView extends Component<
   normalizeAndReportChange(items: GridItem[]) {
     const { onItemsChange } = this.props;
 
-    const { itemsPerRow = ITEMS_PER_ROW } = this.props;
+    const { itemsPerRow = DEFAULT_ITEMS_PER_ROW } = this.props;
 
     const itemsInRows = this.getItemsInRows(items);
     const itemsInNonEmptyRows = itemsInRows.filter(
@@ -370,32 +365,6 @@ export class MediaGridView extends Component<
     return !this.isEmptyItem(item);
   };
 
-  debugItems() {
-    const { items, itemsPerRow = ITEMS_PER_ROW } = this.props;
-    const rows: JSX.Element[] = [];
-    const numberOfRows = Math.ceil(items.length / itemsPerRow);
-    for (let rowIndex = 0; rowIndex < numberOfRows; rowIndex += 1) {
-      const rowItems = items.slice(
-        rowIndex * itemsPerRow,
-        rowIndex * itemsPerRow + itemsPerRow,
-      );
-      rows.push(
-        <DebuggerRow key={'row' + rowIndex}>
-          {rowItems.map((item, colIndex) => {
-            const i = rowIndex * itemsPerRow + colIndex;
-            const isEmpty = this.isEmptyItem(item);
-            return (
-              <DebuggerItem key={i} isEmpty={isEmpty}>
-                {!isEmpty ? item.debugId : null}
-              </DebuggerItem>
-            );
-          })}
-        </DebuggerRow>,
-      );
-    }
-    return rows;
-  }
-
   /**
    * # How the image scaling magic works
    * hx, wx, aspectx: height, width and aspect ratio of image x (aspect = w/h)
@@ -432,7 +401,7 @@ export class MediaGridView extends Component<
   render() {
     const {
       items,
-      itemsPerRow = ITEMS_PER_ROW,
+      itemsPerRow = DEFAULT_ITEMS_PER_ROW,
       width = DEFAULT_WIDTH,
     } = this.props;
     const rows: JSX.Element[] = [];
@@ -456,7 +425,6 @@ export class MediaGridView extends Component<
     }
     return (
       <React.Fragment>
-        {this.props.showDebug ? <Debugger>{this.debugItems()}</Debugger> : null}
         <Wrapper innerRef={this.saveWrapperRef}>{rows}</Wrapper>
       </React.Fragment>
     );

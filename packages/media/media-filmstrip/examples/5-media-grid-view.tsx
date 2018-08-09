@@ -3,6 +3,10 @@ import { Component, ChangeEvent } from 'react';
 import { MediaGridView, GridItem } from '../src/mediaGrid/mediaGridView';
 import { FieldRangeWrapper, GridContainer } from '../example-helpers/styled';
 import { gridItems } from '../example-helpers/media-grid-items';
+import {
+  MediaGridDebugger,
+  MediaGridItemWithDebugId,
+} from '../example-helpers/media-grid-debugger';
 
 interface ExampleState {
   width: number;
@@ -70,12 +74,14 @@ class Example extends Component<{}, ExampleState> {
           </button>
           <button onClick={this.toggleDebugView}>Toggle Debug View</button>
         </FieldRangeWrapper>
+        {showDebugView ? (
+          <MediaGridDebugger items={items as MediaGridItemWithDebugId[]} />
+        ) : null}
         <MediaGridView
           items={items}
           onItemsChange={this.onItemsChange}
           width={width}
           isInteractive={isInteractive}
-          showDebug={showDebugView}
         />
       </GridContainer>
     );
