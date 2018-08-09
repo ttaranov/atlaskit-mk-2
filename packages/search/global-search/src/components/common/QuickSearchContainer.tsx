@@ -86,7 +86,7 @@ export class QuickSearchContainer extends React.Component<Props, State> {
             this.props.fireShownPostQueryEvent(
               startTime,
               elapsedMs,
-              this.state.searchResult,
+              this.state.searchResult || {},
               this.state.searchSessionId,
               this.state.latestSearchQuery,
             );
@@ -121,7 +121,7 @@ export class QuickSearchContainer extends React.Component<Props, State> {
         () =>
           this.props.fireShownPreQueryEvent(
             this.state.searchSessionId,
-            this.state.recentItems,
+            this.state.recentItems || {},
           ),
       );
     } else {
@@ -152,7 +152,7 @@ export class QuickSearchContainer extends React.Component<Props, State> {
         () =>
           this.props.fireShownPreQueryEvent(
             this.state.searchSessionId,
-            this.state.recentItems,
+            this.state.recentItems || {},
             startTime,
           ),
       );

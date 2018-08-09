@@ -16,6 +16,8 @@ import {
   makePersonResult,
   makeConfluenceContainerResult,
 } from '../_test-util';
+import ConfluenceSearchResults from '../../../components/confluence/ConfluenceSearchResults';
+import { SearchScreenCounter } from '../../../util/ScreenCounter';
 import * as AnalyticsHelper from '../../../util/analytics-event-helper';
 
 const sessionId = 'sessionId';
@@ -111,6 +113,58 @@ describe('ConfluenceQuickSearchContainer', () => {
         confSearchElapsedMs: expect.any(Number),
         peopleElapsedMs: expect.any(Number),
       },
+    });
+  });
+
+  it('should return confluence search result component', () => {
+    const wrapper = render({
+      peopleSearchClient: {
+        search() {
+          return Promise.resolve([makePersonResult()]);
+        },
+        getRecentPeople() {
+          return Promise.resolve([]);
+        },
+      },
+    });
+
+    const quickSearchContainer = wrapper.find(QuickSearchContainer);
+    const spaceResults = [makeConfluenceContainerResult()];
+    const recentlyInteractedPeople = [makePersonResult()];
+    const searchResultsComponent = quickSearchContainer
+      .props()
+      .getSearchResultComponent({
+        retrySearch: jest.fn(),
+        latestSearchQuery: 'query',
+        isError: false,
+        searchResult: {
+          objectResults: [],
+          spaceResults,
+        },
+        isLoading: false,
+        recentItems: {
+          recentlyViewedPages: [],
+          recentlyViewedSpaces: [],
+          recentlyInteractedPeople,
+        },
+        keepPreQueryState: false,
+        searchSessionId: sessionId,
+      });
+    expect(searchResultsComponent.type).toBe(ConfluenceSearchResults);
+    expect(searchResultsComponent.props).toMatchObject({
+      query: 'query',
+      isError: false,
+      objectResults: [],
+      spaceResults,
+      peopleResults: [],
+      isLoading: false,
+      recentlyViewedPages: [],
+      recentlyViewedSpaces: [],
+      recentlyInteractedPeople,
+      keepPreQueryState: false,
+      searchSessionId: 'sessionId',
+      preQueryScreenCounter: expect.any(SearchScreenCounter),
+      postQueryScreenCounter: expect.any(SearchScreenCounter),
     });
   });
 
