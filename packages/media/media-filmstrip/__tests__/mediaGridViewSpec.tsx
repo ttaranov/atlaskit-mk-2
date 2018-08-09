@@ -380,11 +380,11 @@ describe('MediaGridView', () => {
       );
 
       expect(onItemsChange).toHaveBeenCalledWith([
-        { dataURI: 'some-url-2', dimensions: { height: 1000, width: 1000 } },
-        { dataURI: 'some-url-3', dimensions: { height: 1000, width: 1000 } },
+        { dataURI: 'url-index-1', dimensions: { height: 1000, width: 1000 } },
+        { dataURI: 'url-index-2', dimensions: { height: 1000, width: 1000 } },
         { dimensions: { height: 0, width: 0 } },
-        { dataURI: 'some-url-4', dimensions: { height: 1000, width: 1000 } },
-        { dataURI: 'some-url-5', dimensions: { height: 1000, width: 1000 } },
+        { dataURI: 'url-index-3', dimensions: { height: 1000, width: 1000 } },
+        { dataURI: 'url-index-4', dimensions: { height: 1000, width: 1000 } },
       ]);
     });
 
@@ -429,17 +429,17 @@ describe('MediaGridView', () => {
       expect(onChange).toHaveBeenCalledTimes(2);
       expect(onChange.mock.calls[0]).toEqual([
         [
-          { dataURI: 'some-url-1', dimensions: { height: 1000, width: 1000 } },
-          { dataURI: 'some-url-2', dimensions: { height: 1000, width: 1000 } },
-          { dataURI: 'some-url-3', dimensions: { height: 1000, width: 1000 } },
-          { dataURI: 'some-url-4', dimensions: { height: 1000, width: 1000 } },
+          { dataURI: 'url-index-0', dimensions: { height: 1000, width: 1000 } },
+          { dataURI: 'url-index-1', dimensions: { height: 1000, width: 1000 } },
+          { dataURI: 'url-index-2', dimensions: { height: 1000, width: 1000 } },
+          { dataURI: 'url-index-3', dimensions: { height: 1000, width: 1000 } },
         ],
       ]);
       expect(onChange.mock.calls[1]).toEqual([
         [
-          { dataURI: 'some-url-1', dimensions: { height: 1000, width: 1000 } },
-          { dataURI: 'some-url-2', dimensions: { height: 1000, width: 1000 } },
-          { dataURI: 'some-url-3', dimensions: { height: 1000, width: 1000 } },
+          { dataURI: 'url-index-0', dimensions: { height: 1000, width: 1000 } },
+          { dataURI: 'url-index-1', dimensions: { height: 1000, width: 1000 } },
+          { dataURI: 'url-index-2', dimensions: { height: 1000, width: 1000 } },
         ],
       ]);
     });
