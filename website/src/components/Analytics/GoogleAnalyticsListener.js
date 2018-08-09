@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import ReactGA from 'react-ga';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-const analytics = require('./AtlassianAnalytics');
-var pjson = require('../../../package.json');
+const AtlassianAnalytics = require('./AtlassianAnalytics');
+const pkgJson = require('../../../package.json');
 
 let mounted = 0;
 
-const getApdex = () => {
+const getApdex = location => {
   if (
     !window ||
     !window.performance ||
@@ -34,11 +34,14 @@ const getApdex = () => {
     label: `seconds:${(timing / 1000).toFixed(1)}`,
   });
 
-  const request = analytics.request({ version: pjson.version });
+  const request = AtlassianAnalytics.request({
+    version: pkgJson.version,
+    location: location,
+  });
   const attributes = {
     apdex: apdex,
     loadTimeInMs: timing,
-    path: window.location.pathname,
+    path: location.pathname,
   };
   request.add(`atlaskit.website.performance`, attributes);
   request.send();
@@ -56,7 +59,13 @@ class GoogleAnalyticsListener extends Component {
   }
 
   componentDidMount() {
-    window.addEventListener('load', getApdex, { once: true });
+    window.addEventListener(
+      'load',
+      () => {
+        getApdex(this.props.location);
+      },
+      { once: true },
+    );
 
     mounted++;
     if (mounted > 1) {
