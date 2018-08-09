@@ -19,7 +19,7 @@ class AtlassianAnalyticsClient {
     return this.payload;
   }
 
-  send() {
+  async send() {
     return fetch('https://analytics.atlassian.com/analytics/events', {
       method: 'POST',
       headers: {
