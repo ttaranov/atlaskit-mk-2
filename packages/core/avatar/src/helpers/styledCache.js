@@ -1,61 +1,117 @@
 // @flow
 import React, { type Node, type ComponentType, type ElementRef } from 'react';
-import styled from 'styled-components';
 import { css } from 'emotion';
 import CustomComponentProxy from '../components/CustomComponentProxy';
 
+type StyledComponentType = {
+  children: Node,
+  innerRef: ElementRef<*>,
+  backgroundColor: string,
+  borderColor: string,
+  groupAppearance: string,
+  isActive: boolean,
+  isDisabled: boolean,
+  isFocus: boolean,
+  isHover: boolean,
+  isInteractive: boolean,
+  isSelected: boolean,
+  stackIndex: boolean,
+};
+
 // This is necessary because we don't know what DOM element the custom component will render.
 export default (styles: Function) => {
-  const StyledCustomComponent = styled(
-    CustomComponentProxy,
-  )`&,&:hover,&:active,&:focus{${styles}}`;
+  const StyledCustomComponent = props => (
+    <CustomComponentProxy
+      className={css({
+        '&,&:hover,&:active,&:focus': styles(props),
+      })}
+      {...props}
+    />
+  );
   const StyledButton = ({
     children,
     innerRef,
+    backgroundColor,
+    borderColor,
+    groupAppearance,
+    isActive,
+    isDisabled,
+    isFocus,
+    isHover,
+    isInteractive,
+    isSelected,
+    stackIndex,
     ...props
-  }: {
-    children: Node,
-    innerRef: ElementRef<*>,
-  }) => (
-    <button
+  }: StyledComponentType) => {
+    return (
+      <button
+        ref={innerRef}
+        className={css(
+          styles({
+            backgroundColor,
+            borderColor,
+            groupAppearance,
+            isActive,
+            isDisabled,
+            isFocus,
+            isHover,
+            isInteractive,
+            isSelected,
+            stackIndex,
+            ...props,
+          }),
+        )}
+        {...props}
+      >
+        {children}
+      </button>
+    );
+  };
+  const StyledLink = ({
+    children,
+    innerRef,
+    backgroundColor,
+    borderColor,
+    groupAppearance,
+    isActive,
+    isDisabled,
+    isFocus,
+    isHover,
+    isInteractive,
+    isSelected,
+    stackIndex,
+    ...props
+  }: StyledComponentType) => (
+    <a
       ref={innerRef}
       className={css({
-        ...styles(props),
-      })}
-      {...props}
-    >
-      {children}
-    </button>
-  );
-  const StyledLink = ({ children, ...props }: { children: Node }) => (
-    <a
-      className={css({
-        'a&': {
-          ...styles(props),
-        },
+        'a&': styles(props),
       })}
       {...props}
     >
       {children}
     </a>
   );
-  const scStyledLink = styled.a`
-    a& {
-      ${styles};
-    }
-  `;
-  const StyledSpan = ({ children, ...props }: { children: Node }) => (
-    <span
-      className={css({
-        ...styles(props),
-      })}
-    >
+
+  const StyledSpan = ({
+    children,
+    innerRef,
+    backgroundColor,
+    borderColor,
+    groupAppearance,
+    isActive,
+    isDisabled,
+    isFocus,
+    isHover,
+    isInteractive,
+    isSelected,
+    stackIndex,
+    ...props
+  }: StyledComponentType) => (
+    <span ref={innerRef} className={css(styles(props))} {...props}>
       {children}
     </span>
   );
-  const scStyledSpan = styled.span`
-    ${styles};
-  `;
 
   return function getStyled({
     component,

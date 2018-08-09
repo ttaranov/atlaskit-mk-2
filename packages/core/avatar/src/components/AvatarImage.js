@@ -1,19 +1,23 @@
 // @flow
 import React, { PureComponent } from 'react';
-import styled from 'styled-components';
+import { css } from 'emotion';
 import { colors, themed } from '@atlaskit/theme';
 import { Slot, Svg } from '../styled/AvatarImage';
 import type { AppearanceType, SizeType } from '../types';
 
-const ShapeGroup = styled.g`
-  & circle,
-  & rect {
-    fill: ${themed({ light: colors.N50, dark: colors.DN100 })};
-  }
-  & g {
-    fill: ${colors.background};
-  }
-`;
+const ShapeGroup = props => (
+  <g
+    className={css({
+      '& circle, & rect': {
+        fill: themed({ light: colors.N50, dark: colors.DN100 })(props),
+      },
+      '& g': {
+        fill: colors.background(props),
+      },
+    })}
+    {...props}
+  />
+);
 
 export function DefaultImage({
   appearance,

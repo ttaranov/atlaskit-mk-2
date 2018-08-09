@@ -1,6 +1,5 @@
 // @flow
-import React from 'react';
-import type { Node } from 'react';
+import React, { type Node } from 'react';
 import { css } from 'emotion';
 import { colors, math, gridSize } from '@atlaskit/theme';
 
@@ -27,19 +26,19 @@ const ChildrenWrapper = props => (
   />
 );
 
-export const Note = (props: { size: string }) => (
-  <p
+export const Note = ({ size, ...props }: { size?: string }) => (
+  <section
     className={css({
       color: colors.N100,
-      fontSize: props.size === 'large' ? '1.15em' : '0.9rem',
-      marginTop: `${math.divide(gridSize, 2)()}px;`,
-      marginBottom: `${math.multiply(gridSize, 2)()}px;`,
+      fontSize: size === 'large' ? '1.15em' : '0.9rem',
+      marginTop: `${math.divide(gridSize, 2)(props)}px;`,
+      marginBottom: `${math.multiply(gridSize, 2)(props)}px;`,
     })}
     {...props}
   />
 );
 
-export const Code = props => (
+export const Code = (props: { children: Node }) => (
   <code
     className={css({
       backgroundColor: colors.R50,
@@ -57,19 +56,19 @@ const GapCSS = {
   marginRight: `${gridSize()}px;`,
 };
 
-export const Gap = props => <span className={css(GapCSS)} {...props} />;
+export const Gap = () => <span className={css(GapCSS)} />;
 
-const ShrinkWrapCSS = {
+const ShrinkWrapCSS = (props: { theme?: {} }) => ({
   ...GapCSS,
-  height: `${math.multiply(gridSize, 3)()}px;`,
-  width: `${math.multiply(gridSize, 3)()}px;`,
-};
+  height: `${math.multiply(gridSize, 3)(props)}px;`,
+  width: `${math.multiply(gridSize, 3)(props)}px;`,
+});
 
-export const ShrinkWrap = props => (
-  <span className={css(ShrinkWrapCSS)} {...props} />
+export const ShrinkWrap = (props: { theme?: {}, children: Node }) => (
+  <span className={css(ShrinkWrapCSS(props))} {...props} />
 );
 
-export const Heading = props => (
+export const Heading = (props: { children: Node }) => (
   <div
     className={css({
       color: colors.subtleHeading,

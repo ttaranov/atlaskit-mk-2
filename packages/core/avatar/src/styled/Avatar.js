@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import type { Node } from 'react';
-import styled from 'styled-components';
+import { css } from 'emotion';
 import {
   BORDER_WIDTH,
   ICON_OFFSET,
@@ -48,9 +48,9 @@ export default ({ children, size, stackIndex }: OuterArgs) => {
 };
 
 // INNER WRAPPER
-export const Inner = styled.div`
-  ${getInnerStyles};
-`;
+export const Inner = props => (
+  <div className={css(getInnerStyles(props))} {...props} />
+);
 
 // PRESENCE WRAPPER
 type LayoutArgs = {

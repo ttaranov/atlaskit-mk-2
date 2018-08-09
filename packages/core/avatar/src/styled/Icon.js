@@ -10,20 +10,19 @@ type OuterProps = {
   size: string,
 };
 
-export const Outer = (props: OuterProps) => {
-  console.log('OUTER', props.bgColor, BORDER_WIDTH[props.size]);
+export const Outer = ({ bgColor, size, ...props }: OuterProps) => {
   return (
     <span
       className={css({
         alignContent: 'center;',
         alignItems: 'center;',
-        backgroundColor: props.bgColor || colors.background,
+        backgroundColor: bgColor || colors.background(props),
         borderRadius: '50%',
         boxSizing: 'border-box;',
         display: 'flex;',
         height: '100%;',
         overflow: 'hidden;',
-        padding: `${BORDER_WIDTH[props.size] || BORDER_WIDTH.medium}px;`,
+        padding: `${BORDER_WIDTH[size] || BORDER_WIDTH.medium}px;`,
         width: '100%;',
       })}
       {...props}

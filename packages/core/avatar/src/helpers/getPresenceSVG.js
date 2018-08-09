@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
-import styled from 'styled-components';
 import { colors, themed } from '@atlaskit/theme';
+import { css } from 'emotion';
 import type { PresenceType } from '../types';
 
 const Svg = props => (
@@ -15,24 +15,59 @@ const Svg = props => (
   />
 );
 
-const BusyCircle = styled.circle`
-  fill: ${themed({ light: colors.R300, dark: colors.R200 })};
-`;
-const BusyPath = styled.path`
-  fill: ${colors.background};
-`;
-const FocusPath = styled.path`
-  fill: ${colors.purple};
-`;
-const OfflineOuter = styled.path`
-  fill: ${themed({ light: colors.N200, dark: colors.DN100 })};
-`;
-const OfflineInner = styled.path`
-  fill: ${themed({ light: colors.N40, dark: colors.DN500 })};
-`;
-const OnlineCircle = styled.circle`
-  fill: ${themed({ light: colors.G300, dark: colors.G200 })};
-`;
+const BusyCircle = props => (
+  <circle
+    className={css({
+      fill: themed({ light: colors.R300, dark: colors.R200 })(props),
+    })}
+    {...props}
+  />
+);
+
+const BusyPath = props => (
+  <path
+    className={css({
+      fill: colors.background(props),
+    })}
+    {...props}
+  />
+);
+
+const FocusPath = props => (
+  <path
+    className={css({
+      fill: colors.purple(props),
+    })}
+    {...props}
+  />
+);
+
+const OfflineOuter = props => (
+  <path
+    className={css({
+      fill: themed({ light: colors.N200, dark: colors.DN100 })(props),
+    })}
+    {...props}
+  />
+);
+
+const OfflineInner = props => (
+  <path
+    className={css({
+      fill: themed({ light: colors.N40, dark: colors.DN500 })(props),
+    })}
+    {...props}
+  />
+);
+
+const OnlineCircle = props => (
+  <circle
+    className={css({
+      fill: themed({ light: colors.G300, dark: colors.G200 })(props),
+    })}
+    {...props}
+  />
+);
 
 export default function getPresenceSvg(presence: PresenceType) {
   switch (presence) {

@@ -129,11 +129,13 @@ class Avatar extends Component<AvatarPropTypes> {
       size,
       src,
       stackIndex,
+      theme,
       onClick,
     } = this.props;
 
     // distill props from context, props, and state
     const enhancedProps: AvatarPropTypes = (getProps(this): any);
+    console.log(this.props);
 
     // provide element type based on props
     // TODO: why not enhanced props?
@@ -142,11 +144,13 @@ class Avatar extends Component<AvatarPropTypes> {
     const AvatarNode = (
       <Outer size={size} stackIndex={stackIndex}>
         <Inner
+          theme={theme}
           innerRef={this.setRef}
           {...enhancedProps}
           onClick={onClick != null ? this.guardedClick : undefined}
         >
           <AvatarImage
+            theme={theme}
             alt={name}
             appearance={appearance}
             size={size}
@@ -178,6 +182,11 @@ export const AvatarWithoutAnalytics = mapProps({
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
+const AvatarWithTheme = withTheme(AvatarWithoutAnalytics);
+AvatarWithTheme.defaultProps = {
+  theme: {},
+};
+
 export default withAnalyticsContext({
   componentName: 'avatar',
   packageName,
@@ -194,5 +203,5 @@ export default withAnalyticsContext({
         packageVersion,
       },
     }),
-  })(withTheme(AvatarWithoutAnalytics)),
+  })(AvatarWithTheme),
 );

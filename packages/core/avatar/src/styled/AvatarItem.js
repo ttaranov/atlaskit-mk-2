@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { css as emotionCSS } from 'emotion';
+import { css } from 'emotion';
 import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
 import type { AvatarClickType } from '../types';
 
@@ -118,9 +118,9 @@ export function getStyles({
   };
 }
 
-const truncateTextCSS = props => {
+const truncateTextCSS = ({ truncate }) => {
   return (
-    props.truncate && {
+    truncate && {
       overflowX: 'hidden;',
       textOverflow: 'ellipsis;',
       whiteSpace: 'nowrap;',
@@ -128,16 +128,16 @@ const truncateTextCSS = props => {
   );
 };
 
-const truncateTextFlexParentCSS = props =>
-  props.truncate && {
+const truncateTextFlexParentCSS = ({ truncate }) =>
+  truncate && {
     maxWidth: '100%;',
     minWidth: '0;',
   };
 
-export const Content = props => (
+export const Content = ({ truncate, ...props }: { truncate?: boolean }) => (
   <div
-    className={emotionCSS({
-      ...truncateTextFlexParentCSS(props),
+    className={css({
+      ...truncateTextFlexParentCSS({ truncate }),
       flex: '1 1 100%;',
       lineHeight: '1.4;',
       paddingLeft: `${gridSize()}px;`,
@@ -146,20 +146,25 @@ export const Content = props => (
   />
 );
 
-export const PrimaryText = props => (
+export const PrimaryText = ({ truncate, ...props }: { truncate?: boolean }) => (
   <div
-    className={emotionCSS({
-      ...truncateTextCSS(props),
+    className={css({
+      ...truncateTextCSS({ truncate }),
       color: `${colors.text(props)};`,
     })}
     {...props}
   />
 );
 
-export const SecondaryText = props => (
+export const SecondaryText = ({
+  truncate,
+  ...props
+}: {
+  truncate?: boolean,
+}) => (
   <div
-    className={emotionCSS({
-      ...truncateTextCSS(props),
+    className={css({
+      ...truncateTextCSS({ truncate }),
       color: `${colors.subtleText(props)};`,
       fontSize: '0.85em;',
     })}

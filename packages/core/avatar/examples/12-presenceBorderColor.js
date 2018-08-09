@@ -18,7 +18,7 @@ const PresenceWrapper = props => (
     className={css({
       height: '30px;',
       width: '30px;',
-      marginRight: `${gridSize}px;`,
+      marginRight: `${gridSize()}px;`,
     })}
     {...props}
   />

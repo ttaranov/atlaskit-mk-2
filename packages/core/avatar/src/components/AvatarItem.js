@@ -18,8 +18,6 @@ import { getProps, getStyledAvatarItem } from '../helpers';
 import { withPseudoState } from '../hoc';
 import type { AvatarClickType } from '../types';
 
-console.log(withTheme);
-
 /* eslint-disable react/no-unused-prop-types */
 type Props = {
   avatar: Element<*>,
