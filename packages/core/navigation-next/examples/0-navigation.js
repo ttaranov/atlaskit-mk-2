@@ -171,6 +171,7 @@ const containerNavSections = [
       {
         before: BacklogIcon,
         component: makeTestItem('container-item-backlog'),
+        isSelected: true,
         key: 'backlog',
         text: 'Backlog',
         type: Item,
