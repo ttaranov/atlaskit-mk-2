@@ -5,7 +5,8 @@
     "outDir": "../../dist/es2015",
     "rootDir": "../../src",
     "target": "es5",
-    "module": "esnext"
+    "module": "esnext",
+    "composite": true
   },
   "include": [
     "../../src/**/*.ts",

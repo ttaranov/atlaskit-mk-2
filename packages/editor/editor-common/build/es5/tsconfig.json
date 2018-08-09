@@ -24,10 +24,10 @@
       "path": "../../../../media/media-card/build/es5/tsconfig.json"
     },
     {
-      "path": "../../../../media/media-core/build/es5/tsconfig.json"
+      "path": "../../../../elements/mention/build/es5/tsconfig.json"
     },
     {
-      "path": "../../../../elements/mention/build/es5/tsconfig.json"
+      "path": "../../../../media/media-core/build/es5/tsconfig.json"
     }
   ]
 }

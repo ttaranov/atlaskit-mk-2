@@ -4,7 +4,9 @@
     "declaration": true,
     "outDir": "../../dist/es2015",
     "target": "es5",
-    "module": "esnext"
+    "module": "esnext",
+    "rootDir": "../../src",
+    "composite": true
   },
   "include": [
     "../../src/**/*.ts",
@@ -42,10 +44,10 @@
       "path": "../../../../elements/mention/build/es5/tsconfig.json"
     },
     {
-      "path": "../../../../media/media-core/build/es5/tsconfig.json"
+      "path": "../../../../elements/task-decision/build/es5/tsconfig.json"
     },
     {
-      "path": "../../../../elements/task-decision/build/es5/tsconfig.json"
+      "path": "../../../../media/media-core/build/es5/tsconfig.json"
     }
   ]
 }
