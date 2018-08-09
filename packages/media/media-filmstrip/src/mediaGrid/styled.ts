@@ -49,12 +49,12 @@ const paddingProperties = (hasPlaceholder, isRightPlaceholder) => {
   if (isRightPlaceholder) {
     return `
     padding-right: 14px;
-    border-right: 4px solid #4c9aff;
+    border-right: 4px solid ${colors.B100};
     `;
   } else {
     return `
     padding-left: 14px;
-    border-left: 4px solid #4c9aff;
+    border-left: 4px solid ${colors.B100};
     `;
   }
 };
@@ -79,12 +79,12 @@ export const ImgWrapper = styled.div`
   }
 
   ${(props: ImgWrapperProps) =>
-    !props.isLoaded ? 'background-color: #ecf0f8;' : ''};
+    !props.isLoaded ? `background-color: ${colors.N30};` : ''};
 `;
 
 export const Wrapper = styled.div``;
 export const ImagePlaceholder = styled.div`
-  background-color: #ecf0f8;
+  background-color: ${colors.N30};
   width: 100%;
   height: 100%;
 `;

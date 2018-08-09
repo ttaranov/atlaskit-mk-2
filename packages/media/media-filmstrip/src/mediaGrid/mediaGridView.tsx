@@ -117,7 +117,7 @@ export class MediaGridView extends Component<
   };
 
   onDragOver = (index, event: React.DragEvent<HTMLImageElement>) => {
-    const { itemsPerRow, items } = this.props;
+    const { itemsPerRow = ITEMS_PER_ROW, items } = this.props;
     const { left, width } = event.currentTarget.getBoundingClientRect();
     const x = event.pageX - left;
     let dropIndex = index;
@@ -125,7 +125,7 @@ export class MediaGridView extends Component<
     if (onTheRightSideOfAnImage) {
       dropIndex += 1;
     }
-    const overLastImageInTheRow = dropIndex % itemsPerRow! === 0;
+    const overLastImageInTheRow = dropIndex % itemsPerRow === 0;
     const isAbsoluteLastItem = index === items.length - 1;
     const lastInRow =
       (onTheRightSideOfAnImage && overLastImageInTheRow) || isAbsoluteLastItem;
@@ -194,13 +194,15 @@ export class MediaGridView extends Component<
       return;
     }
 
-    // TODO: Should we wrapp icon into a ak button?
     return (
       <RemoveIconWrapper
         className="remove-img-wrapper"
         onClick={this.onRemoveIconClick(index)}
       >
-        <Button appearance="subtle" iconBefore={<CrossIcon label="remove" />} />
+        <Button
+          appearance="subtle"
+          iconBefore={<CrossIcon label="remove" size="small" />}
+        />
       </RemoveIconWrapper>
     );
   };
@@ -264,6 +266,14 @@ export class MediaGridView extends Component<
 
   preventDefault(event) {
     event.preventDefault();
+  }
+
+  private nonEmptyItemsOnRow(rowIndex: number, items: GridItem[]) {
+    const { itemsPerRow = ITEMS_PER_ROW } = this.props;
+    const rowStartIndex = rowIndex * itemsPerRow;
+    return items
+      .slice(rowStartIndex, rowStartIndex + itemsPerRow)
+      .filter(item => !!item.dataURI);
   }
 
   // we want to remove the selected image if the Grid loses the focus
@@ -392,48 +402,59 @@ export class MediaGridView extends Component<
     return rows;
   }
 
+  /**
+  # How the image scaling magic works
+  hx, wx, aspectx: height, width and aspect ratio of image x (aspect = w/h)
+  (hx, wx, aspectx = 0 when < x images on row (numImages))
+
+  All images in row must fit image grid width:
+  w1 * scale1 + w2 * scale2 + w3 * scale3 + (numImages-1) * margin = gridWidth
+
+  therefore:
+  (h1 * aspect1) * scale1 + (h2 * aspect2) * scale2 + (h3 * aspect3) * scale3
+      = gridWidth - (numImages-1) * margin
+
+  All images in row must be same height
+  h1 * scale1 = h2 * scale2 = h3 * scale3 = gridHeight
+
+  -> (h1 * scale1) * aspect1  + (h2 * scale2) * aspect2 + (h3 * scale3) * aspect3
+      = gridWidth - (numImages-1) * margin
+
+  -> gridHeight * aspect1 + gridHeight * aspect2 + gridHeight * aspect3
+      = gridWidth - (numImages-1) * margin
+
+  -> gridHeight * (aspect1 + aspect2 + aspect3) = gridWidth - (numImages-1) * margin
+
+  -> gridHeight = (gridWidth - (numImages-1) * margin) / (aspect1 + aspect2 + aspect3)
+  **/
+  calculateRowHeight(rowItems: GridItem[], margin: number, rowWidth: number) {
+    const aspectRatioSum = rowItems
+      .map(i => i.dimensions.width / i.dimensions.height)
+      .reduce((prev, curr) => prev + curr, 0);
+    const marginSum = (rowItems.length - 1) * imageMargin;
+    return (rowWidth! - marginSum) / aspectRatioSum;
+  }
+
   render() {
-    const { items, itemsPerRow, width } = this.props;
+    const {
+      items,
+      itemsPerRow = ITEMS_PER_ROW,
+      width = DEFAULT_WIDTH,
+    } = this.props;
     const rows: JSX.Element[] = [];
-    const numberOfRows = Math.ceil(items.length / itemsPerRow!);
+    const numberOfRows = Math.ceil(items.length / itemsPerRow);
     for (let rowIndex = 0; rowIndex < numberOfRows; rowIndex += 1) {
-      /*
-      # How the image scaling magic works
-      hx, wx, aspectx: height, width and aspect ratio of image x (aspect = w/h)
-      (hx, wx, aspectx = 0 when < x images on row (numImages))
-
-      All images in row must fit image grid width:
-      w1 * scale1 + w2 * scale2 + w3 * scale3 + (numImages-1) * margin = gridWidth
-
-      therefore:
-      (h1 * aspect1) * scale1 + (h2 * aspect2) * scale2 + (h3 * aspect3) * scale3
-          = gridWidth - (numImages-1) * margin
-
-      All images in row must be same height
-      h1 * scale1 = h2 * scale2 = h3 * scale3 = gridHeight
-
-      -> (h1 * scale1) * aspect1  + (h2 * scale2) * aspect2 + (h3 * scale3) * aspect3
-          = gridWidth - (numImages-1) * margin
-
-      -> gridHeight * aspect1 + gridHeight * aspect2 + gridHeight * aspect3
-          = gridWidth - (numImages-1) * margin
-
-      -> gridHeight * (aspect1 + aspect2 + aspect3) = gridWidth - (numImages-1) * margin
-
-      -> gridHeight = (gridWidth - (numImages-1) * margin) / (aspect1 + aspect2 + aspect3)
-      */
-
       const itemsInRow = this.nonEmptyItemsOnRow(rowIndex, items);
-      const aspectRatioSum = itemsInRow
-        .map(i => i.dimensions.width / i.dimensions.height)
-        .reduce((prev, curr) => prev + curr, 0);
-      const marginSum = (itemsInRow.length - 1) * imageMargin;
-      const gridHeight = (width! - marginSum) / aspectRatioSum;
+      const gridHeight = this.calculateRowHeight(
+        itemsInRow,
+        imageMargin,
+        width,
+      );
 
       rows.push(
         <RowWrapper key={'row' + rowIndex}>
           {itemsInRow.map((item, columnIndex) => {
-            const index = rowIndex * itemsPerRow! + columnIndex;
+            const index = rowIndex * itemsPerRow + columnIndex;
             return this.renderImage(item, gridHeight, index);
           })}
         </RowWrapper>,
