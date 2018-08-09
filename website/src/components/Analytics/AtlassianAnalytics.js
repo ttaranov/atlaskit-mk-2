@@ -1,16 +1,12 @@
 class AtlassianAnalyticsClient {
-  static request(options) {
-    return new AtlassianAnalyticsClient(options);
-  }
-
   constructor(options) {
     this.payload = [];
     this.version = options.version;
-    this.location = options.location;
   }
 
-  add(eventName, properties = {}) {
+  addEvent(eventName, properties = {}) {
     if (
+      // Make sure our JSON object is flat
       Object.values(properties).some(key => typeof properties[key] === 'object')
     ) {
       console.warn('Analytic properties are expected to be a flat JSON object');
@@ -30,7 +26,7 @@ class AtlassianAnalyticsClient {
         events: this.payload.map(event => ({
           name: event.name,
           properties: event.properties,
-          server: location.host === 'atlaskit.atlassian.com' ? 'prod' : 'dev', // Make this prod later
+          server: WEBSITE_ENV, //Set by webpack
           product: 'atlaskit',
           subproduct: 'website',
           version: this.version,
@@ -42,4 +38,8 @@ class AtlassianAnalyticsClient {
   }
 }
 
-module.exports = AtlassianAnalyticsClient;
+function getAtlassianAnalyticsClient(options) {
+  return new AtlassianAnalyticsClient(options);
+}
+
+module.exports = getAtlassianAnalyticsClient;

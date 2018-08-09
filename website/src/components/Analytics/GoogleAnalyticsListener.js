@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ReactGA from 'react-ga';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-const AtlassianAnalytics = require('./AtlassianAnalytics');
+const getAtlassianAnalyticsClient = require('./AtlassianAnalytics');
 const pkgJson = require('../../../package.json');
 
 let mounted = 0;
@@ -34,16 +34,15 @@ const getApdex = location => {
     label: `seconds:${(timing / 1000).toFixed(1)}`,
   });
 
-  const request = AtlassianAnalytics.request({
-    version: pkgJson.version,
-    location: location,
+  const request = getAtlassianAnalyticsClient({
+    version: '-',
   });
   const attributes = {
     apdex: apdex,
     loadTimeInMs: timing,
     path: location.pathname,
   };
-  request.add(`atlaskit.website.performance`, attributes);
+  request.addEvent(`atlaskit.website.performance`, attributes);
   request.send();
 };
 
