@@ -1,9 +1,16 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { Debugger, DebuggerItem, DebuggerRow } from './styled';
+import {
+  Debugger,
+  DebuggerItem,
+  DebuggerPlaceHolder,
+  DebuggerRow,
+} from './styled';
 import {
   DEFAULT_ITEMS_PER_ROW,
   GridItem,
+  MediaGridView,
+  MediaGridViewState,
 } from '../src/mediaGrid/mediaGridView';
 
 export type MediaGridItemWithDebugId = GridItem & {
@@ -13,9 +20,34 @@ export type MediaGridItemWithDebugId = GridItem & {
 export interface MediaGridDebuggerProps {
   items: MediaGridItemWithDebugId[];
   itemsPerRow?: number;
+  mediaGridView: MediaGridView;
 }
 
-export class MediaGridDebugger extends Component<MediaGridDebuggerProps> {
+export interface MediaGridDebuggerState {
+  mediaGridViewState: MediaGridViewState;
+}
+
+export class MediaGridDebugger extends Component<
+  MediaGridDebuggerProps,
+  MediaGridDebuggerState
+> {
+  state: MediaGridDebuggerState = {
+    mediaGridViewState: {
+      isDragging: false,
+      draggingIndex: -1,
+      selected: -1,
+    },
+  };
+
+  componentDidUpdate() {
+    const { mediaGridView } = this.props;
+    if (mediaGridView && !mediaGridView.componentDidUpdate) {
+      mediaGridView.componentDidUpdate = () => {
+        this.setState({ mediaGridViewState: mediaGridView.state });
+      };
+    }
+  }
+
   private isEmptyItem = (item: GridItem) => {
     return item.dimensions.width === 0 && item.dimensions.height === 0;
   };
@@ -34,10 +66,20 @@ export class MediaGridDebugger extends Component<MediaGridDebuggerProps> {
           {rowItems.map((item, colIndex) => {
             const i = rowIndex * itemsPerRow + colIndex;
             const isEmpty = this.isEmptyItem(item);
+            const leftPlaceholder =
+              i === this.state.mediaGridViewState.dropIndex ? (
+                <DebuggerPlaceHolder />
+              ) : null;
             return (
-              <DebuggerItem key={i} isEmpty={isEmpty}>
-                {!isEmpty ? (item as any).debugId : null}
-              </DebuggerItem>
+              <React.Fragment key={i}>
+                {leftPlaceholder}
+                <DebuggerItem
+                  isEmpty={isEmpty}
+                  isDragged={i === this.state.mediaGridViewState.draggingIndex}
+                >
+                  {!isEmpty ? (item as any).debugId : null}
+                </DebuggerItem>
+              </React.Fragment>
             );
           })}
         </DebuggerRow>,
@@ -47,6 +89,12 @@ export class MediaGridDebugger extends Component<MediaGridDebuggerProps> {
   }
 
   render() {
-    return <Debugger>{this.debugItems()}</Debugger>;
+    return (
+      <Debugger>
+        {this.debugItems()}
+        <div>Drop Index: {this.state.mediaGridViewState.dropIndex}</div>
+        <div>Drag Index: {this.state.mediaGridViewState.draggingIndex}</div>
+      </Debugger>
+    );
   }
 }
