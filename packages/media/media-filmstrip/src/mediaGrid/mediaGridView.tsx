@@ -43,6 +43,7 @@ export interface MediaGridViewState {
 
 export const DEFAULT_WIDTH = 744;
 export const DEFAULT_ITEMS_PER_ROW = 3;
+export const DEFAULT_IS_INTERACTIVE = true;
 
 export const EMPTY_GRID_ITEM: GridItem = {
   dimensions: {
@@ -66,7 +67,7 @@ export class MediaGridView extends Component<
   static defaultProps: Partial<MediaGridViewProps> = {
     itemsPerRow: DEFAULT_ITEMS_PER_ROW,
     width: DEFAULT_WIDTH,
-    isInteractive: true,
+    isInteractive: DEFAULT_IS_INTERACTIVE,
   };
 
   componentDidMount() {
@@ -228,7 +229,7 @@ export class MediaGridView extends Component<
   onRemoveIconClick = (index: number) => () => this.deleteImage(index);
 
   renderRemoveIcon = (index: number) => {
-    const { isInteractive } = this.props;
+    const { isInteractive = DEFAULT_IS_INTERACTIVE } = this.props;
     if (!isInteractive) {
       return;
     }
@@ -247,7 +248,7 @@ export class MediaGridView extends Component<
   };
 
   renderImage = (item: GridItem, gridHeight: number, index: number) => {
-    const { isInteractive } = this.props;
+    const { isInteractive = DEFAULT_IS_INTERACTIVE } = this.props;
     const { dimensions, dataURI, isLoaded } = item;
     const { width, height } = dimensions;
     const aspectRatio = width / height;
@@ -267,6 +268,7 @@ export class MediaGridView extends Component<
           onDragOver={
             isInteractive ? this.onDragOver.bind(this, index) : undefined
           }
+          outlinesEnabled={isInteractive}
         />
         {this.renderRemoveIcon(index)}
       </React.Fragment>
