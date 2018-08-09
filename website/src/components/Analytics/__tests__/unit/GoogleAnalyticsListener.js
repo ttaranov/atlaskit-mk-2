@@ -1,7 +1,7 @@
 'use strict';
 import React from 'react';
 import { mount } from 'enzyme';
-import GoogleAnalyticsListener from '../GoogleAnalyticsListener.js';
+import GoogleAnalyticsListener from '../../GoogleAnalyticsListener';
 import ReactGA from 'react-ga';
 import { MemoryRouter } from 'react-router-dom';
 import cases from 'jest-in-case';
