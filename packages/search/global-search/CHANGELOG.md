@@ -1,5 +1,14 @@
 # @atlaskit/global-search
 
+## 5.5.1
+- [patch] Fixes duplicate screen event firing on mount [517283a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/517283a)
+
+## 5.5.0
+- [minor] Refactor and analytics fixes, adds support for aggregator [459c7fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/459c7fe)
+
+## 5.4.3
+- [patch] fix pre and post query screen events [5976aef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5976aef)
+
 ## 5.4.2
 - [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
 - [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)

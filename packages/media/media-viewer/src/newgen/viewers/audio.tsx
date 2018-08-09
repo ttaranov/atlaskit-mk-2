@@ -44,27 +44,23 @@ const getCoverUrl = (
   );
 
 export class AudioViewer extends React.Component<Props, State> {
-  state: State = { src: { status: 'PENDING' } };
+  state: State = { src: Outcome.pending() };
 
   componentDidMount() {
     this.init();
   }
 
   render() {
-    const { src } = this.state;
-    switch (src.status) {
-      case 'PENDING':
-        return <Spinner />;
-      case 'SUCCESSFUL':
-        return this.renderPlayer(src.data);
-      case 'FAILED':
-        return (
-          <ErrorMessage error={src.err}>
-            <p>Try downloading the file to view it.</p>
-            {this.renderDownloadButton()}
-          </ErrorMessage>
-        );
-    }
+    return this.state.src.match({
+      pending: () => <Spinner />,
+      successful: src => this.renderPlayer(src),
+      failed: err => (
+        <ErrorMessage error={err}>
+          <p>Try downloading the file to view it.</p>
+          {this.renderDownloadButton()}
+        </ErrorMessage>
+      ),
+    });
   }
 
   private renderCover = () => {
@@ -131,17 +127,13 @@ export class AudioViewer extends React.Component<Props, State> {
       }
       this.setCoverUrl();
       this.setState({
-        src: {
-          status: 'SUCCESSFUL',
-          data: await constructAuthTokenUrl(audioUrl, context, collectionName),
-        },
+        src: Outcome.successful(
+          await constructAuthTokenUrl(audioUrl, context, collectionName),
+        ),
       });
     } catch (err) {
       this.setState({
-        src: {
-          status: 'FAILED',
-          err: createError('previewFailed', item, err),
-        },
+        src: Outcome.failed(createError('previewFailed', item, err)),
       });
     }
   }

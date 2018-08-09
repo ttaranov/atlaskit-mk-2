@@ -62,6 +62,15 @@ export default class ToolbarBlockType extends React.PureComponent<
         availableBlockTypes,
       },
     } = this.props;
+
+    const isHeadingDisabled = !availableBlockTypes.some(
+      blockType => blockType.nodeName === 'heading',
+    );
+
+    if (isHeadingDisabled) {
+      return null;
+    }
+
     const blockTypeTitles = availableBlockTypes
       .filter(blockType => blockType.name === currentBlockType.name)
       .map(blockType => blockType.title);

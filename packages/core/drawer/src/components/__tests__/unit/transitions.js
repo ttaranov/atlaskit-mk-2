@@ -1,0 +1,70 @@
+// @flow
+import React from 'react';
+import { mount } from 'enzyme';
+
+import { Fade, Slide } from '../../transitions';
+
+describe('Drawer Transitions', () => {
+  describe('Slide', () => {
+    let wrapper;
+
+    beforeEach(() => {
+      wrapper = mount(<Slide in test="some-test-data" />);
+    });
+
+    it('should use the default styles to start the animation', () => {
+      const { defaultStyles } = wrapper.find('TransitionHandler').props();
+
+      expect(defaultStyles).toMatchObject({
+        transition: 'transform 220ms cubic-bezier(0.2, 0, 0, 1)',
+        transform: 'translate3d(-100%,0,0)',
+      });
+    });
+
+    it('should add the other element props', () => {
+      const { ...otherProps } = wrapper.find('TransitionHandler').props();
+      expect(otherProps).toMatchObject({ test: 'some-test-data' });
+    });
+
+    it('should use the transition styles', () => {
+      const { transitionStyles } = wrapper.find('TransitionHandler').props();
+
+      expect(transitionStyles).toMatchObject({
+        entered: { transform: 'translate3d(0,0,0)' },
+        exited: { transform: 'translate3d(-100%,0,0)' },
+      });
+    });
+  });
+
+  describe('Fade', () => {
+    let wrapper;
+
+    beforeEach(() => {
+      wrapper = mount(<Fade in test="some-test-data" />);
+    });
+
+    it('should use the default styles to start the animation', () => {
+      const { defaultStyles } = wrapper.find('TransitionHandler').props();
+
+      expect(defaultStyles).toMatchObject({
+        opacity: 0,
+        position: 'fixed',
+        zIndex: 500,
+      });
+    });
+
+    it('should add the other element props', () => {
+      const { ...otherProps } = wrapper.find('TransitionHandler').props();
+      expect(otherProps).toMatchObject({ test: 'some-test-data' });
+    });
+
+    it('should use the transition styles', () => {
+      const { transitionStyles } = wrapper.find('TransitionHandler').props();
+
+      expect(transitionStyles).toMatchObject({
+        entering: { opacity: 0 },
+        entered: { opacity: 1 },
+      });
+    });
+  });
+});

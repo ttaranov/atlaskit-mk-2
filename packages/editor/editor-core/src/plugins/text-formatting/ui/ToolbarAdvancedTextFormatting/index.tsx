@@ -137,7 +137,12 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
   }
 
   private createItems = () => {
-    const { textFormattingState, clearFormattingState } = this.props;
+    const {
+      textFormattingState,
+      clearFormattingState,
+      editorView,
+    } = this.props;
+    const { code, underline, subsup, strike } = editorView.state.schema.marks;
     let items: any[] = [];
 
     if (textFormattingState) {
@@ -148,7 +153,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
         subscriptHidden,
         superscriptHidden,
       } = textFormattingState;
-      if (!underlineHidden) {
+      if (!underlineHidden && underline) {
         this.addRecordToItems(
           items,
           'Underline',
@@ -156,7 +161,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
           tooltip(toggleUnderline, true),
         );
       }
-      if (!strikeHidden) {
+      if (!strikeHidden && strike) {
         this.addRecordToItems(
           items,
           'Strikethrough',
@@ -164,13 +169,13 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
           tooltip(toggleStrikethrough, true),
         );
       }
-      if (!codeHidden) {
+      if (!codeHidden && code) {
         this.addRecordToItems(items, 'Code', 'code', tooltip(toggleCode, true));
       }
-      if (!subscriptHidden) {
+      if (!subscriptHidden && subsup) {
         this.addRecordToItems(items, 'Subscript', 'subscript');
       }
-      if (!superscriptHidden) {
+      if (!superscriptHidden && subsup) {
         this.addRecordToItems(items, 'Superscript', 'superscript');
       }
     }

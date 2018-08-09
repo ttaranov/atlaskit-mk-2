@@ -1,5 +1,8 @@
 # @atlaskit/media-ui
 
+## 5.1.0
+- [minor] Use Camera class in avatar picker [335ab1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/335ab1e)
+
 ## 5.0.4
 
 - [patch] Make avatar group a caret dependency [aa24a6c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aa24a6c)
