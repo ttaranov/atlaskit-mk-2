@@ -71,6 +71,7 @@ async function createChangeset(
       `What kind of change is this for ${green(pkg)}?`,
       ['patch', 'minor', 'major'],
     );
+
     changeset.releases.push({ name: pkg, type });
   }
 
@@ -83,7 +84,7 @@ async function createChangeset(
   const toSearch = [...changeset.releases];
 
   while (toSearch.length > 0) {
-    // search...
+    // nextRelease is our dependency, think of it as "avatar"
     const nextRelease = toSearch.shift();
     const nextReleasePkg = allPackages.find(
       pkg => pkg.name === nextRelease.name,
@@ -92,46 +93,67 @@ async function createChangeset(
       nextReleasePkg.config.version,
       nextRelease.type,
     );
-
+    // dependents will be a list of packages that depend on nextRelease ie. ['avatar-group', 'comment']
     const dependents = dependencyGraph.get(nextRelease.name);
     dependents.forEach(dependent => {
-      if (changeset.dependents.some(dep => dep.name === dependent)) return;
-      if (changeset.releases.some(dep => dep.name === dependent)) return;
-
+      // For each dependent we are going to see whether it needs to be bumped because it's dependency
+      // is leaving the version range.
       const dependentPkg = allPackages.find(pkg => pkg.name === dependent);
-
-      const dependencyRange = getDependencyVersionRange(
+      const { depTypes, versionRange } = getDependencyVersionRange(
         dependentPkg.config,
         nextRelease.name,
       );
 
-      if (!dependencyRange)
-        throw new Error(
-          `We have entered an impossible state where ${
-            nextRelease.name
-          } is depended upon by ${dependent}, but at no version.`,
-        );
+      // Firstly we check if it is a peerDependency because if it is, we can't do any early exits
+      // and our dependent bump type needs to be major.
+      if (depTypes.includes('peerDependencies')) {
+        // check if we have seen this dependent before (we will need to update rather than insert)
+        let existing = changeset.dependents.find(dep => dep.name === dependent);
+        if (existing) {
+          // we can safely always override this as it's either going to be 'patch' or 'major' already
+          existing.type = 'major';
+        } else {
+          changeset.dependents.push({
+            name: dependent,
+            type: 'major',
+            dependencies: [],
+          });
+        }
+        toSearch.push({ name: dependent, type: 'major' });
+        // Exit early here, we don't want to execute the rest of the code
+        return;
+      }
+      // we can exit early if we have seen this dependent before or we know we are going to look
+      // at it later because that means it's already definitely being released
+      if (changeset.dependents.some(dep => dep.name === dependent)) return;
+      if (changeset.releases.some(dep => dep.name === dependent)) return;
 
-      if (!semver.satisfies(nextReleaseVersion, dependencyRange)) {
-        if (changeset.dependents.includes(dep => dep.name === dependent))
-          return;
-
-        toSearch.push({
-          name: dependent,
-          type: 'patch',
-        });
-        const dependencies = packagesToRelease.filter(
-          dep => !!getDependencyVersionRange(dependentPkg.config, dep),
-        );
-
+      // Otherwise we check if the next version is going to leave our range
+      if (!semver.satisfies(nextReleaseVersion, versionRange)) {
+        // if so we add it to toSearch to see it's dependents and to the changeset
+        toSearch.push({ name: dependent, type: 'patch' });
         changeset.dependents.push({
           name: dependent,
           type: 'patch',
-          dependencies,
+          // we will fill this in at the end
+          dependencies: [],
         });
       }
     });
   }
+
+  // Now we need to fill in the dependencies arrays for each of the dependents. We couldn't accurately
+  // do it until now because we didn't have the entire list of packages being released yet
+  changeset.dependents.forEach(dependent => {
+    const dependentPkg = allPackages.find(pkg => pkg.name === dependent.name);
+    const dependencies = [...changeset.dependents, ...changeset.releases]
+      .map(pkg => pkg.name)
+      .filter(
+        dep =>
+          !!getDependencyVersionRange(dependentPkg.config, dep).versionRange,
+      );
+    dependent.dependencies = dependencies;
+  });
 
   // (TODO: Get releaseNotes if there is a major change)
 
@@ -148,29 +170,6 @@ async function createChangeset(
   // }
 
   return changeset;
-}
-
-async function getAllDependents(packagesToRelease, opts = {}) {
-  const cwd = opts.cwd || process.cwd();
-  const allDependents = [];
-  const dependentsGraph = await bolt.getDependentsGraph({ cwd });
-
-  const dependenciesToCheck = [...packagesToRelease];
-  while (dependenciesToCheck.length > 0) {
-    const nextDependency = dependenciesToCheck.pop();
-    const dependents = dependentsGraph.get(nextDependency);
-
-    dependents.forEach(dependent => {
-      const foundBefore = allDependents.find(d => d.name === dependent);
-      if (!foundBefore) {
-        allDependents.push({ name: dependent, dependencies: [nextDependency] });
-        dependenciesToCheck.push(dependent);
-      } else if (!foundBefore.dependencies.includes(nextDependency)) {
-        foundBefore.dependencies.push(nextDependency);
-      }
-    });
-  }
-  return allDependents;
 }
 
 async function getPackagesToRelease(changedPackages, allPackages) {
@@ -208,6 +207,11 @@ async function getPackagesToRelease(changedPackages, allPackages) {
   return packagesToRelease;
 }
 
+/*
+  Returns an object in the shape { depTypes: [], versionRange: '' } with a list of different depTypes
+  matched ('dependencies', 'peerDependencies', etc) and the versionRange itself ('^1.0.0')
+*/
+
 function getDependencyVersionRange(dependentPkgJSON, dependencyName) {
   const DEPENDENCY_TYPES = [
     'dependencies',
@@ -216,14 +220,20 @@ function getDependencyVersionRange(dependentPkgJSON, dependencyName) {
     'bundledDependencies',
     'optionalDependencies',
   ];
+  const dependencyVersionRange = {
+    depTypes: [],
+    versionRange: '',
+  };
   for (let type of DEPENDENCY_TYPES) {
     let deps = dependentPkgJSON[type];
     if (!deps) continue;
     if (deps[dependencyName]) {
-      return deps[dependencyName];
+      dependencyVersionRange.depTypes.push(type);
+      // We'll just override this each time, *hypothetically* it *should* be the same...
+      dependencyVersionRange.versionRange = deps[dependencyName];
     }
   }
-  return null;
+  return dependencyVersionRange;
 }
 
 module.exports = createChangeset;

@@ -67,6 +67,12 @@ function printChangeset(changeset) {
   const majorReleases = getReleasesOfType('major');
   const minorReleases = getReleasesOfType('minor');
   const patchReleases = getReleasesOfType('patch');
+  const patchDependents = changeset.dependents
+    .filter(dep => dep.type === 'patch')
+    .map(dep => dep.name);
+  const majorDependents = changeset.dependents
+    .filter(dep => dep.type === 'major')
+    .map(dep => red(dep.name));
 
   if (majorReleases.length > 0) {
     console.log(`${green('[Major]')}\n  ${majorReleases.join(', ')}`);
@@ -77,12 +83,17 @@ function printChangeset(changeset) {
   if (patchReleases.length > 0) {
     console.log(`${green('[Patch]')}\n  ${patchReleases.join(', ')}`);
   }
-  if (changeset.dependents.length > 0) {
-    const dependents = changeset.dependents.map(dep => dep.name);
+  if (patchDependents.length > 0) {
     console.log(
-      `${green('[Dependents (patch)]')}\n  ${dependents.join('\n  ')}`,
+      `${green('[Dependents (patch)]')}\n  ${patchDependents.join('\n  ')}`,
     );
-
+  }
+  if (majorDependents.length > 0) {
+    console.log(
+      `${green('[Dependents (major)]')}\n  ${majorDependents.join('\n  ')}`,
+    );
+  }
+  if (changeset.dependents.length > 0) {
     const message = outdent`
       ${red('========= NOTE ========')}
       All dependents that are bumped will be ${red('patch bumped')}.
