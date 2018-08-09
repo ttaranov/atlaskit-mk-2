@@ -11,7 +11,7 @@ import {
 } from '../../../examples/helpers';
 import { AnalyticsWebClient } from '../../types';
 import { LOG_LEVEL } from '../../helpers/logger';
-import { FabricChannel } from '../..';
+import { FabricChannel } from '../../index';
 
 declare const global: any;
 
