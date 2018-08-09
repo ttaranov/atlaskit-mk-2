@@ -38,7 +38,7 @@ export type ThemeProps = {
     backgroundColor?: string,
     textColor?: string,
   },
-  mode: string,
+  mode: 'light' | 'dark',
 };
 
 export function theme({
