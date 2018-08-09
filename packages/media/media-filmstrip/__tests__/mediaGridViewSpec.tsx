@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import { gridItems } from '../example-helpers/media-grid-items';
 import {
   EMPTY_GRID_ITEM,
@@ -354,6 +354,95 @@ describe('MediaGridView', () => {
       .find(ImgWrapper);
     expect(firstRowImageWrapper).toHaveLength(1);
     expect(secondRowImageWrapper).toHaveLength(1);
+  });
+
+  describe('select', () => {
+    it('first image should be deleted by Backspace keypress when selected', () => {
+      const items: GridItem[] = generateGridItems(5);
+      const component = shallow(
+        <MediaGridView
+          items={items}
+          width={100}
+          itemsPerRow={3}
+          onItemsChange={onItemsChange}
+        />,
+      );
+
+      // Select image
+      component
+        .find(Img)
+        .first()
+        .simulate('click');
+
+      // Delete selected image
+      (component.instance() as MediaGridView).onKeyDown(
+        new KeyboardEvent('keydown', { key: 'Backspace' }),
+      );
+
+      expect(onItemsChange).toHaveBeenCalledWith([
+        { dataURI: 'some-url-2', dimensions: { height: 1000, width: 1000 } },
+        { dataURI: 'some-url-3', dimensions: { height: 1000, width: 1000 } },
+        { dimensions: { height: 0, width: 0 } },
+        { dataURI: 'some-url-4', dimensions: { height: 1000, width: 1000 } },
+        { dataURI: 'some-url-5', dimensions: { height: 1000, width: 1000 } },
+      ]);
+    });
+
+    it('should select second last image after last image selected and deleted', () => {
+      const items: GridItem[] = generateGridItems(5);
+      const onChange = jest.fn().mockImplementation(items => items);
+      class Wrapper extends React.Component {
+        state = {
+          items,
+        };
+        onItemsChange = items => {
+          // console.log('onItemsChange', items)
+          this.setState({ items });
+          onChange(items);
+        };
+        render() {
+          const { items } = this.state;
+          return (
+            <MediaGridView
+              items={items}
+              width={100}
+              itemsPerRow={3}
+              onItemsChange={this.onItemsChange}
+            />
+          );
+        }
+      }
+      const component = mount(<Wrapper />);
+
+      component
+        .find(Img)
+        .last()
+        .simulate('click');
+
+      // Hit delete key twice
+      document.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Backspace' }),
+      );
+      document.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'Backspace' }),
+      );
+      expect(onChange).toHaveBeenCalledTimes(2);
+      expect(onChange.mock.calls[0]).toEqual([
+        [
+          { dataURI: 'some-url-1', dimensions: { height: 1000, width: 1000 } },
+          { dataURI: 'some-url-2', dimensions: { height: 1000, width: 1000 } },
+          { dataURI: 'some-url-3', dimensions: { height: 1000, width: 1000 } },
+          { dataURI: 'some-url-4', dimensions: { height: 1000, width: 1000 } },
+        ],
+      ]);
+      expect(onChange.mock.calls[1]).toEqual([
+        [
+          { dataURI: 'some-url-1', dimensions: { height: 1000, width: 1000 } },
+          { dataURI: 'some-url-2', dimensions: { height: 1000, width: 1000 } },
+          { dataURI: 'some-url-3', dimensions: { height: 1000, width: 1000 } },
+        ],
+      ]);
+    });
   });
 
   describe('delete', () => {
