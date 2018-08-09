@@ -1,5 +1,9 @@
 # @atlaskit/navigation-next
 
+## 3.2.2
+- [patch] Reintroduce navigation z-index [44ac36b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/44ac36b)
+- [none] Updated dependencies [44ac36b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/44ac36b)
+
 ## 3.2.1
 - [patch] Updated dependencies [626244b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/626244b)
   - @atlaskit/global-navigation@4.0.5
