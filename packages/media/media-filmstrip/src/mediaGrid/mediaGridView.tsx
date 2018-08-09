@@ -307,14 +307,6 @@ export class MediaGridView extends Component<
     this.normalizeAndReportChange(items);
   };
 
-  private nonEmptyItemsOnRow(rowIndex: number, items: GridItem[]) {
-    const { itemsPerRow = ITEMS_PER_ROW } = this.props;
-    const rowStartIndex = rowIndex * itemsPerRow;
-    return items
-      .slice(rowStartIndex, rowStartIndex + itemsPerRow!)
-      .filter(item => !this.isEmptyItem(item));
-  }
-
   private getItemsInRows(items: GridItem[]) {
     const { itemsPerRow = ITEMS_PER_ROW } = this.props;
     const itemsInRows: GridItem[][] = [];
@@ -378,18 +370,18 @@ export class MediaGridView extends Component<
   };
 
   debugItems() {
-    const { items, itemsPerRow } = this.props;
+    const { items, itemsPerRow = ITEMS_PER_ROW } = this.props;
     const rows: JSX.Element[] = [];
-    const numberOfRows = Math.ceil(items.length / itemsPerRow!);
+    const numberOfRows = Math.ceil(items.length / itemsPerRow);
     for (let rowIndex = 0; rowIndex < numberOfRows; rowIndex += 1) {
       const rowItems = items.slice(
-        rowIndex * itemsPerRow!,
-        rowIndex * itemsPerRow! + itemsPerRow!,
+        rowIndex * itemsPerRow,
+        rowIndex * itemsPerRow + itemsPerRow,
       );
       rows.push(
         <DebuggerRow key={'row' + rowIndex}>
           {rowItems.map((item, colIndex) => {
-            const i = rowIndex * itemsPerRow! + colIndex;
+            const i = rowIndex * itemsPerRow + colIndex;
             return (
               <DebuggerItem key={i} isEmpty={this.isEmptyItem(item)}>
                 i
@@ -403,36 +395,36 @@ export class MediaGridView extends Component<
   }
 
   /**
-  # How the image scaling magic works
-  hx, wx, aspectx: height, width and aspect ratio of image x (aspect = w/h)
-  (hx, wx, aspectx = 0 when < x images on row (numImages))
-
-  All images in row must fit image grid width:
-  w1 * scale1 + w2 * scale2 + w3 * scale3 + (numImages-1) * margin = gridWidth
-
-  therefore:
-  (h1 * aspect1) * scale1 + (h2 * aspect2) * scale2 + (h3 * aspect3) * scale3
-      = gridWidth - (numImages-1) * margin
-
-  All images in row must be same height
-  h1 * scale1 = h2 * scale2 = h3 * scale3 = gridHeight
-
-  -> (h1 * scale1) * aspect1  + (h2 * scale2) * aspect2 + (h3 * scale3) * aspect3
-      = gridWidth - (numImages-1) * margin
-
-  -> gridHeight * aspect1 + gridHeight * aspect2 + gridHeight * aspect3
-      = gridWidth - (numImages-1) * margin
-
-  -> gridHeight * (aspect1 + aspect2 + aspect3) = gridWidth - (numImages-1) * margin
-
-  -> gridHeight = (gridWidth - (numImages-1) * margin) / (aspect1 + aspect2 + aspect3)
-  **/
+   * # How the image scaling magic works
+   * hx, wx, aspectx: height, width and aspect ratio of image x (aspect = w/h)
+   * (hx, wx, aspectx = 0 when < x images on row (numImages))
+   *
+   * All images in row must fit image grid width:
+   * w1 * scale1 + w2 * scale2 + w3 * scale3 + (numImages-1) * margin = gridWidth
+   *
+   * therefore:
+   * (h1 * aspect1) * scale1 + (h2 * aspect2) * scale2 + (h3 * aspect3) * scale3
+   * = gridWidth - (numImages-1) * margin
+   *
+   * All images in row must be same height
+   * h1 * scale1 = h2 * scale2 = h3 * scale3 = gridHeight
+   *
+   * -> (h1 * scale1) * aspect1  + (h2 * scale2) * aspect2 + (h3 * scale3) * aspect3
+   * = gridWidth - (numImages-1) * margin
+   *
+   * -> gridHeight * aspect1 + gridHeight * aspect2 + gridHeight * aspect3
+   * = gridWidth - (numImages-1) * margin
+   *
+   * -> gridHeight * (aspect1 + aspect2 + aspect3) = gridWidth - (numImages-1) * margin
+   *
+   * -> gridHeight = (gridWidth - (numImages-1) * margin) / (aspect1 + aspect2 + aspect3)
+   */
   calculateRowHeight(rowItems: GridItem[], margin: number, rowWidth: number) {
     const aspectRatioSum = rowItems
       .map(i => i.dimensions.width / i.dimensions.height)
       .reduce((prev, curr) => prev + curr, 0);
     const marginSum = (rowItems.length - 1) * imageMargin;
-    return (rowWidth! - marginSum) / aspectRatioSum;
+    return (rowWidth - marginSum) / aspectRatioSum;
   }
 
   render() {
