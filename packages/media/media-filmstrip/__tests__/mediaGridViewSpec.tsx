@@ -657,7 +657,9 @@ describe('MediaGridView', () => {
         // Row 2
         gridItem(3),
         gridItem(4),
-        gridItem(5),
+        EMPTY_GRID_ITEM,
+        // Row 3
+        gridItem(6),
       ];
       const component = shallow(
         <MediaGridView
@@ -682,7 +684,9 @@ describe('MediaGridView', () => {
         // Row 2
         gridItem(3),
         gridItem(4),
-        gridItem(5),
+        EMPTY_GRID_ITEM,
+        // Row 3
+        gridItem(6),
       ]);
     });
   });

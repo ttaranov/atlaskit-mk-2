@@ -114,7 +114,7 @@ export class MediaGridView extends Component<
   };
 
   onDragOver = (index, event: React.DragEvent<HTMLImageElement>) => {
-    const { itemsPerRow = DEFAULT_ITEMS_PER_ROW, items } = this.props;
+    const { items, itemsPerRow = DEFAULT_ITEMS_PER_ROW } = this.props;
     const { left, width } = event.currentTarget.getBoundingClientRect();
     const x = event.pageX - left;
     let dropIndex = index;
@@ -122,10 +122,16 @@ export class MediaGridView extends Component<
     if (onTheRightSideOfAnImage) {
       dropIndex += 1;
     }
-    const overLastImageInTheRow = dropIndex % itemsPerRow === 0;
+    const dropRowIndex = this.dropRowIndex();
+    const itemsOnDropRow = this.nonEmptyItemsOnRow(dropRowIndex, items).length;
+    const indexOnDropRow = dropIndex - dropRowIndex * itemsPerRow;
+    const overLastImageInTheRow = indexOnDropRow % itemsOnDropRow === 0;
+
     const isAbsoluteLastItem = index === items.length - 1;
     const lastInRow =
-      (onTheRightSideOfAnImage && overLastImageInTheRow) || isAbsoluteLastItem;
+      (onTheRightSideOfAnImage && overLastImageInTheRow) ||
+      (isAbsoluteLastItem && onTheRightSideOfAnImage);
+    // console.log({indexOnDropRow, lastInRow, isAbsoluteLastItem, onTheRightSideOfAnImage});
     if (
       this.state.dropIndex !== dropIndex ||
       this.state.lastInRow !== lastInRow
@@ -134,6 +140,13 @@ export class MediaGridView extends Component<
     }
     event.preventDefault();
   };
+
+  dropRowIndex() {
+    const { draggingIndex, dropIndex = -1 } = this.state;
+    const { itemsPerRow = DEFAULT_ITEMS_PER_ROW } = this.props;
+    const leftToRight = dropIndex! > draggingIndex;
+    return Math.floor((leftToRight ? dropIndex - 1 : dropIndex) / itemsPerRow);
+  }
 
   moveImage = () => {
     const { draggingIndex, selected } = this.state;
@@ -144,13 +157,11 @@ export class MediaGridView extends Component<
 
     // Step 1. Take item out
     const draggingItem = items.splice(draggingIndex, 1)[0];
-    const leftToRight = dropIndex > draggingIndex;
     const draggingItemRow = Math.floor(draggingIndex / itemsPerRow);
-    const dropRow = Math.floor(
-      (leftToRight ? dropIndex - 1 : dropIndex) / itemsPerRow,
-    );
-    console.log({ draggingItemRow, dropRow, leftToRight });
-    if (draggingItemRow === dropRow && leftToRight) {
+    const leftToRight = dropIndex > draggingIndex;
+    const dropRow = this.dropRowIndex();
+    const rowInplaceSwap = draggingItemRow === dropRow && leftToRight;
+    if (rowInplaceSwap) {
       dropIndex -= 1;
     } else {
       // Step 1.5. Replace taken item with empty
@@ -161,18 +172,20 @@ export class MediaGridView extends Component<
     items.splice(dropIndex, 0, draggingItem);
 
     // Step 3. Find next empty item and delete it.
-    let emptyItemToDeleteIndex = -1;
-    items.forEach((item, index) => {
-      if (
-        emptyItemToDeleteIndex < 0 &&
-        this.isEmptyItem(item) &&
-        index > dropIndex
-      ) {
-        emptyItemToDeleteIndex = index;
+    if (!rowInplaceSwap) {
+      let emptyItemToDeleteIndex = -1;
+      items.forEach((item, index) => {
+        if (
+          emptyItemToDeleteIndex < 0 &&
+          this.isEmptyItem(item) &&
+          index > dropIndex
+        ) {
+          emptyItemToDeleteIndex = index;
+        }
+      });
+      if (emptyItemToDeleteIndex >= 0) {
+        items.splice(emptyItemToDeleteIndex, 1);
       }
-    });
-    if (emptyItemToDeleteIndex >= 0) {
-      items.splice(emptyItemToDeleteIndex, 1);
     }
 
     this.normalizeAndReportChange(items);
@@ -262,12 +275,13 @@ export class MediaGridView extends Component<
     );
 
     let isRightPlaceholder = this.state.lastInRow || false;
-    if (this.state.draggingIndex > this.state.dropIndex!) {
-      // If image is dragged from "right" to "left" it will end up going as a first image of a
-      // next row. So we override placeholder on the right logic and show left placeholder on the
-      // next row where image will lang.
-      isRightPlaceholder = false;
-    }
+
+    // if (this.state.draggingIndex > this.state.dropIndex!) {
+    //   // If image is dragged from "right" to "left" it will end up going as a first image of a
+    //   // next row. So we override placeholder on the right logic and show left placeholder on the
+    //   // next row where image will lang.
+    //   isRightPlaceholder = false;
+    // }
     const hasPlaceholder =
       index === this.state.dropIndex! - (isRightPlaceholder ? 1 : 0);
 
