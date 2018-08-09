@@ -17,19 +17,24 @@ export const RowWrapper = styled.div`
 
 export interface ImgProps {
   isSelected: boolean;
+  outlinesEnabled: boolean;
 }
 
 export const Img = styled.img`
   width: 100%;
-  outline-style: solid;
-  outline-width: 5px;
-  outline-color: ${({ isSelected }: ImgProps) =>
-    isSelected ? `${colors.B500} !important` : 'transparent'};
-  transition: outline 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+  ${({ outlinesEnabled, isSelected }: ImgProps) =>
+    outlinesEnabled
+      ? ` 
+    outline-style: solid;
+    outline-width: 5px;
+    outline-color: ${isSelected ? `${colors.B500} !important` : 'transparent'};
+    transition: outline 0.6s cubic-bezier(0.19, 1, 0.22, 1);
 
-  &:hover {
-    outline-color: ${colors.B300};
-  }
+    &:hover {
+      outline-color: ${colors.B300};
+    }
+    `
+      : ``};
 `;
 
 export interface ImgWrapperProps {
