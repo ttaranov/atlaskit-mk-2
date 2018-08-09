@@ -1068,7 +1068,6 @@ export const createPlugin = (
       const { caption } = newState.schema.nodes;
 
       if (oldState.selection !== newState.selection) {
-        // newState.selection.$head.bef
         const selectedMediaSingle = mediaSingleFromSelection(
           newState.selection,
         );
@@ -1114,9 +1113,9 @@ export const createPlugin = (
     props: {
       decorations: state => {
         const pluginState = getMediaPluginState(state);
-        // const emptyDecos = pluginState.getEmptyCaptionDecorations();
-        // console.log('empty decos', emptyDecos);
-        const emptyDecos = [];
+        const emptyDecos = pluginState.getEmptyCaptionDecorations();
+        console.log('empty decos', emptyDecos);
+        // const emptyDecos = [];
 
         if (!pluginState.showDropzone) {
           return emptyDecos.length
