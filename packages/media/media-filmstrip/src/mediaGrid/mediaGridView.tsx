@@ -15,6 +15,7 @@ import {
 } from './styled';
 
 export interface GridItem {
+  debugId?: number; // TODO Remove all debug things
   dataURI?: string;
   isLoaded?: boolean;
   dimensions: {
@@ -382,9 +383,10 @@ export class MediaGridView extends Component<
         <DebuggerRow key={'row' + rowIndex}>
           {rowItems.map((item, colIndex) => {
             const i = rowIndex * itemsPerRow + colIndex;
+            const isEmpty = this.isEmptyItem(item);
             return (
-              <DebuggerItem key={i} isEmpty={this.isEmptyItem(item)}>
-                {i}
+              <DebuggerItem key={i} isEmpty={isEmpty}>
+                {!isEmpty ? item.debugId : null}
               </DebuggerItem>
             );
           })}

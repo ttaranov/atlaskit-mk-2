@@ -75,4 +75,4 @@ export const gridItems: GridItem[] = [
   image1,
   image5,
   image2,
-];
+].map((item, i) => ({ ...item, debugId: i }));
