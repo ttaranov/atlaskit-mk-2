@@ -81,4 +81,11 @@ export const listsStyles = css`
       list-style-type: lower-roman;
     }
   }
+
+  .ProseMirror ul > li[data-emojibullet*='{'] {
+    list-style-type: none;
+  }
+  .ProseMirror ol > li[data-emojibullet*='{'] span {
+    display: none;
+  }
 `;

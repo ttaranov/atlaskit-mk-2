@@ -1,7 +1,10 @@
 import { EditorState, Transaction, Plugin, PluginKey } from 'prosemirror-state';
 import { findParentNodeOfType } from 'prosemirror-utils';
+import { ProviderFactory } from '@atlaskit/editor-common';
 import { isWrappingPossible } from '../utils';
 import { Dispatch } from '../../../event-dispatcher';
+import { listItemNodeView } from '../nodeviews/listItem';
+import { PortalProviderAPI } from '../../../ui/PortalProvider';
 
 export const pluginKey = new PluginKey('listsPlugin');
 
@@ -12,7 +15,11 @@ export interface ListsPluginState {
   orderedListDisabled: boolean;
 }
 
-export const createPlugin = (dispatch: Dispatch) =>
+export const createPlugin = (
+  dispatch: Dispatch,
+  portalProviderAPI: PortalProviderAPI,
+  providerFactory: ProviderFactory,
+) =>
   new Plugin({
     state: {
       init: () => ({
@@ -70,4 +77,10 @@ export const createPlugin = (dispatch: Dispatch) =>
     },
 
     key: pluginKey,
+
+    props: {
+      nodeViews: {
+        listItem: listItemNodeView(portalProviderAPI, providerFactory),
+      },
+    },
   });

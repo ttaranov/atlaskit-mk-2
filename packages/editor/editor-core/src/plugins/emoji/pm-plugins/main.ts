@@ -1,5 +1,6 @@
 import { EditorState, Plugin, PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
+import { hasParentNodeOfType, setParentNodeMarkup } from 'prosemirror-utils';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import {
   EmojiId,
@@ -179,23 +180,54 @@ export class EmojiState {
 
   insertEmoji = (emojiId?: EmojiId) => {
     const { state, view } = this;
-    const { emoji } = state.schema.nodes;
+    const { dispatch } = view;
+    const { listItem, bulletList, orderedList, emoji } = state.schema.nodes;
+    const { selection } = state;
 
     if (emoji && emojiId) {
-      const { start, end } = this.findEmojiQueryMark();
-      const node = emoji.create({
+      const emojiAttributes = {
         ...emojiId,
         text: emojiId.fallback || emojiId.shortName,
-      });
+      };
+
+      const { start, end } = this.findEmojiQueryMark();
+      const node = emoji.create(emojiAttributes);
       const textNode = state.schema.text(' ');
 
-      // This problem affects Chrome v58-62. See: https://github.com/ProseMirror/prosemirror/issues/710
-      if (isChromeWithSelectionBug) {
-        document.getSelection().empty();
+      let bulletEmoji = false;
+      const { $from } = selection;
+      for (let i = $from.depth; i > 0; i--) {
+        const node = $from.node(i);
+        if (node.type === orderedList) {
+          break;
+        }
+        if (node.type === bulletList) {
+          bulletEmoji = true;
+        }
       }
 
-      view.dispatch(state.tr.replaceWith(start, end, [node, textNode]));
-      view.focus();
+      // emoji bullet
+      if (bulletEmoji && start === selection.$from.start()) {
+        dispatch(
+          setParentNodeMarkup(listItem, null, { emojiBullet: null })(
+            state.tr,
+          ).delete(start, end),
+        );
+        // some weird PM bug, need to dispatch that separately
+        dispatch(
+          setParentNodeMarkup(listItem, null, { emojiBullet: emojiAttributes })(
+            view.state.tr,
+          ),
+        );
+      } else {
+        // This problem affects Chrome v58-62. See: https://github.com/ProseMirror/prosemirror/issues/710
+        if (isChromeWithSelectionBug) {
+          document.getSelection().empty();
+        }
+        dispatch(state.tr.replaceWith(start, end, [node, textNode]));
+        view.focus();
+      }
+
       this.queryActive = false;
       this.query = undefined;
     } else {

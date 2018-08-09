@@ -19,7 +19,11 @@ const listPlugin: EditorPlugin = {
 
   pmPlugins() {
     return [
-      { name: 'lists', plugin: ({ dispatch }) => createPlugin(dispatch) },
+      {
+        name: 'lists',
+        plugin: ({ dispatch, portalProviderAPI, providerFactory }) =>
+          createPlugin(dispatch, portalProviderAPI, providerFactory),
+      },
       {
         name: 'listsInputRule',
         plugin: ({ schema }) => inputRulePlugin(schema),
