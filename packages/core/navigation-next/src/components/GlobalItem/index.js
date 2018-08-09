@@ -6,6 +6,7 @@ import {
   withAnalyticsContext,
 } from '@atlaskit/analytics-next';
 
+import { navigationChannel } from '../../common/constants';
 import InteractionStateManager from '../InteractionStateManager';
 import { styleReducerNoOp } from '../../theme';
 import GlobalItemPrimitive from './primitives';
@@ -40,9 +41,9 @@ export default withAnalyticsContext({
         },
       });
 
-      event.clone().fire('atlaskit');
+      event.fire(navigationChannel);
 
-      return event;
+      return null;
     },
   })(GlobalItem),
 );
