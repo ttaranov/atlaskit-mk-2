@@ -355,7 +355,7 @@ describe('MediaGridView', () => {
   });
 
   describe('select', () => {
-    it('0th image should be deleted by delete keypress when image 0 selected', () => {
+    it('first image should be deleted by Backspace keypress when selected', () => {
       const items: GridItem[] = generateGridItems(5);
       const component = shallow(
         <MediaGridView
@@ -366,24 +366,24 @@ describe('MediaGridView', () => {
         />,
       );
 
+      // Select image
       component
         .find(Img)
         .first()
         .simulate('click');
 
-      // .find(RemoveIconWrapper)
-      // .find()
+      // Delete selected image
+      (component.instance() as MediaGridView).onKeyDown(
+        new KeyboardEvent('keydown', { key: 'Backspace' }),
+      );
 
-      component.simulate('keyDown', { keyCode: 'Backspace' });
-
-      // const expectedOutputItems = generateGridItems(5).slice(1);
-      // expect(onItemsChange).toHaveBeenCalledWith(expectedOutputItems);
-
-      // (component.instance() as MediaGridView).selectImage(0)();
-      // mediaGridViewInstance.onKeyDown(new KeyboardEvent("Backspace"));
-
-      const expectedOutputItems = generateGridItems(5).slice(1);
-      expect(onItemsChange).toHaveBeenCalledWith(expectedOutputItems);
+      expect(onItemsChange).toHaveBeenCalledWith([
+        { dataURI: 'some-url-2', dimensions: { height: 1000, width: 1000 } },
+        { dataURI: 'some-url-3', dimensions: { height: 1000, width: 1000 } },
+        { dimensions: { height: 0, width: 0 } },
+        { dataURI: 'some-url-4', dimensions: { height: 1000, width: 1000 } },
+        { dataURI: 'some-url-5', dimensions: { height: 1000, width: 1000 } },
+      ]);
     });
   });
 

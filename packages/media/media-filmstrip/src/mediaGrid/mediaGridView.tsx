@@ -82,11 +82,11 @@ export class MediaGridView extends Component<
   }
 
   onKeyDown = (event: KeyboardEvent) => {
-    const { keyCode } = event;
+    const { key } = event;
     const { isInteractive } = this.props;
     const { selected } = this.state;
 
-    if (isInteractive && keyCode === 8 && selected !== -1) {
+    if (isInteractive && key === 'Backspace' && selected !== -1) {
       this.deleteImage(selected);
       this.setState({
         selected: Math.max(selected - 1, -1),
