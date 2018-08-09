@@ -1,5 +1,29 @@
 # @atlaskit/global-navigation
 
+## 4.0.5
+- [patch] Updated dependencies [626244b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/626244b)
+  - @atlaskit/drawer@1.0.4
+  - @atlaskit/navigation-next@3.2.1
+
+## 4.0.4
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/modal-dialog@6.0.6
+  - @atlaskit/onboarding@5.1.4
+  - @atlaskit/theme@5.1.3
+  - @atlaskit/badge@9.0.4
+  - @atlaskit/section-message@1.0.4
+  - @atlaskit/drawer@1.0.3
+  - @atlaskit/blanket@7.0.4
+  - @atlaskit/icon@13.2.4
+  - @atlaskit/dropdown-menu@6.1.5
+  - @atlaskit/avatar@14.0.6
+
+## 4.0.3
+- [patch] Updated dependencies [6438477](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6438477)
+  - @atlaskit/drawer@1.0.2
+  - @atlaskit/navigation-next@3.1.3
+
 ## 4.0.2
 - [patch] Pass through href for product logo [d40f193](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d40f193)
 - [patch] Updated dependencies [d40f193](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d40f193)

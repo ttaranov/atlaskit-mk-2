@@ -5,12 +5,12 @@ import {
 
 describe('MediaFileAttributes', () => {
   describe('fromFileItem', () => {
-    const serviceHost = 'https://filestore.io';
+    const baseUrl = 'https://filestore.io';
 
     it('should return binary url given no artifacts', () => {
       const attributes = MediaFileAttributesFactory.fromFileItem(
         Mocks.basicFile,
-        serviceHost,
+        baseUrl,
       );
       expect(attributes.id).toBe('basic-file-some-occurrenceKey');
       expect(attributes.src).toBe(
@@ -28,7 +28,7 @@ describe('MediaFileAttributes', () => {
     it('should return binary url given gif file', () => {
       const attributes = MediaFileAttributesFactory.fromFileItem(
         Mocks.gifFile,
-        serviceHost,
+        baseUrl,
       );
       expect(attributes.id).toBe('gif-file-some-occurrenceKey');
       expect(attributes.src).toBe(
@@ -44,7 +44,7 @@ describe('MediaFileAttributes', () => {
     it('should return image url given jpg file', () => {
       const attributes = MediaFileAttributesFactory.fromFileItem(
         Mocks.jpgFile,
-        serviceHost,
+        baseUrl,
       );
       expect(attributes.id).toBe('jpg-file-some-occurrenceKey');
       expect(attributes.src).toBe(
@@ -60,7 +60,7 @@ describe('MediaFileAttributes', () => {
     it('should return type video/mp4 given SD video', () => {
       const attributes = MediaFileAttributesFactory.fromFileItem(
         Mocks.sdVideoFile,
-        serviceHost,
+        baseUrl,
       );
       expect(attributes.id).toBe('sd-file-some-occurrenceKey');
       expect(attributes.src).toBe(
@@ -80,7 +80,7 @@ describe('MediaFileAttributes', () => {
     it('should return HD url and HD poster given HD artifacts exists', () => {
       const attributes = MediaFileAttributesFactory.fromFileItem(
         Mocks.hdVideoFile,
-        serviceHost,
+        baseUrl,
       );
       expect(attributes.id).toBe('hd-file-some-occurrenceKey');
       expect(attributes.src).toBe(
@@ -102,7 +102,7 @@ describe('MediaFileAttributes', () => {
     it('should handle artifacts with existent URL params', () => {
       const attributes = MediaFileAttributesFactory.fromFileItem(
         Mocks.fileWithParamsInArtifactUrl,
-        serviceHost,
+        baseUrl,
       );
       expect(attributes.id).toBe('hd-file-some-occurrenceKey');
       expect(attributes.src).toBe(
@@ -124,7 +124,7 @@ describe('MediaFileAttributes', () => {
     it('should return download url from binary', () => {
       const attributes = MediaFileAttributesFactory.fromFileItem(
         Mocks.basicFile,
-        serviceHost,
+        baseUrl,
       );
       expect(attributes.srcDownload).toBe(
         'https://filestore.io/file/basic-file/binary?dl=1',
@@ -134,7 +134,7 @@ describe('MediaFileAttributes', () => {
     it('should handle files with no occurrenceKey', () => {
       const attributes = MediaFileAttributesFactory.fromFileItem(
         Mocks.basicFileWithoutOcurrenceKey,
-        serviceHost,
+        baseUrl,
       );
       expect(attributes.id).toBe('basic-file-no-occurrenceKey');
     });
@@ -142,7 +142,7 @@ describe('MediaFileAttributes', () => {
     it('should mark unprocessed files as unsupported so they can be processed propertly by MediaViewer classic', () => {
       const attributes = MediaFileAttributesFactory.fromFileItem(
         Mocks.unprocessedFile,
-        serviceHost,
+        baseUrl,
       );
       expect(attributes.type).toBe('non-supported');
     });

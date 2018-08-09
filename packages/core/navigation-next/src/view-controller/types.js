@@ -20,7 +20,7 @@ type ViewItemArgs = {
   route?: string,
   target?: string,
   text?: string,
-  type: string,
+  type: ComponentType<*> | string,
   url?: string,
 };
 
@@ -29,7 +29,7 @@ type ViewGroupArgs = {
   items: ViewData,
   nestedGroupKey?: string,
   parentId?: string,
-  type: string,
+  type: ComponentType<*> | string,
 };
 
 export type ViewData = Array<ViewItemArgs | ViewGroupArgs>;

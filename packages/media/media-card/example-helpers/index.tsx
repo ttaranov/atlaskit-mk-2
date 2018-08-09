@@ -133,7 +133,6 @@ export const annotateAction = {
 // TODO: Add deleteAction back to story. see: https://jira.atlassian.com/browse/FIL-4004
 export const cardsActions = [/*deleteAction, */ anotherAction, annotateAction];
 export const wrongContext: Context = createStorybookContext({
-  serviceHost: 'http://example.com',
   authType: 'client',
 });
 export const wrongCollection = 'adfasdf';

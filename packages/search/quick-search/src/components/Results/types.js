@@ -57,7 +57,7 @@ export type ResultType = CommonResultProps & {
   /** Main text to be displayed as the item. */
   text: Element<any> | string,
   /** The context provided by QuickSearch. */
-  context: Context,
+  context?: Context,
   /** key/value pairs of attributes to be send in analytics events. */
   analyticsData?: AnalyticsData,
 };

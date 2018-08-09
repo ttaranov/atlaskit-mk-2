@@ -29,7 +29,7 @@ export interface ImageCropperProp {
   top: number;
   left: number;
   imageWidth?: number;
-  onDragStarted?: () => void;
+  onDragStarted?: (x: number, y: number) => void;
   onImageSize: (width: number, height: number) => void;
   onLoad?: OnLoadHandler;
   onRemoveImage: () => void;
@@ -63,7 +63,11 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
     }
   }
 
-  onDragStarted = () => this.props.onDragStarted && this.props.onDragStarted();
+  onDragStarted = (e: React.MouseEvent<{}>) => {
+    if (this.props.onDragStarted) {
+      this.props.onDragStarted(e.screenX, e.screenY);
+    }
+  };
 
   onImageLoaded = (e: React.SyntheticEvent<HTMLImageElement>) => {
     const image = e.target as HTMLImageElement;

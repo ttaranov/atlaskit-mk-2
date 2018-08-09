@@ -1,5 +1,15 @@
 # @atlaskit/page-header
 
+## 6.0.3
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/page@8.0.3
+  - @atlaskit/input@4.0.3
+  - @atlaskit/inline-edit@7.0.4
+  - @atlaskit/field-text@7.0.4
+  - @atlaskit/button@9.0.5
+  - @atlaskit/breadcrumbs@6.0.5
+
 ## 6.0.2
 - [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
   - @atlaskit/page@8.0.2

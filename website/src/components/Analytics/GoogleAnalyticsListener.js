@@ -1,9 +1,37 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import ReactGA from 'react-ga';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 let mounted = 0;
+
+const getApdex = () => {
+  if (
+    !window ||
+    !window.performance ||
+    !window.performance.timing ||
+    !window.performance.timing.domContentLoadedEventEnd ||
+    !window.performance.timing.navigationStart
+  ) {
+    return null;
+  }
+
+  let timing =
+    window.performance.timing.domContentLoadedEventEnd -
+    window.performance.timing.navigationStart;
+
+  let apdex = 0;
+  if (timing < 1000) apdex = 100;
+  else if (timing < 4000) apdex = 50;
+
+  ReactGA.event({
+    category: 'Performance',
+    action: 'apdex',
+    value: apdex,
+    nonInteraction: true,
+    label: `seconds:${(timing / 1000).toFixed(1)}`,
+  });
+};
 
 class GoogleAnalyticsListener extends Component {
   static propTypes = {
@@ -16,8 +44,9 @@ class GoogleAnalyticsListener extends Component {
     ReactGA.initialize(props.gaId);
   }
 
-  /* eslint-disable no-console */
   componentDidMount() {
+    window.addEventListener('load', getApdex, { once: true });
+
     mounted++;
     if (mounted > 1) {
       console.warn(

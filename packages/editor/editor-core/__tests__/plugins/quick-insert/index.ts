@@ -79,4 +79,27 @@ describe('Quick Insert', () => {
       doc(panel({ panelType: 'info' })(p())),
     );
   });
+
+  const disabledEditor = (doc: any, providerFactory?: any) =>
+    createEditor({
+      doc,
+      pluginKey: quickInsertPluginKey,
+      providerFactory,
+      editorProps: {
+        quickInsert: false,
+        allowPanel: true,
+        allowCodeBlocks: true,
+      },
+    });
+
+  it("shouldn't start quick insert with quickInsert:false", async () => {
+    const { editorView, sel } = disabledEditor(doc(p('{<>}')));
+    insertText(editorView, '/Panel', sel);
+    await sleep(50);
+    const activePlugin = typeAheadPluginKey.get(editorView.state);
+    expect(activePlugin).not.toBe(undefined);
+
+    const pluginState = typeAheadPluginKey.getState(editorView.state);
+    expect(pluginState.items.length).toBe(0);
+  });
 });

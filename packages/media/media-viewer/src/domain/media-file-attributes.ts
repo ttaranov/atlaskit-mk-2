@@ -18,7 +18,7 @@ export class MediaFileAttributesFactory {
   static create(
     id = '',
     details: FileDetails,
-    serviceHost: string,
+    baseUrl: string,
   ): MediaFileAttributes {
     const getArtifactUrl = (name: string) => {
       return (
@@ -59,16 +59,16 @@ export class MediaFileAttributesFactory {
 
     return {
       id,
-      src: `${serviceHost}${resource}${paramsSeparator}${stringify(
+      src: `${baseUrl}${resource}${paramsSeparator}${stringify(
         additionalParams,
       )}`,
-      srcDownload: `${serviceHost}${binary}?dl=1`,
+      srcDownload: `${baseUrl}${binary}?dl=1`,
       type,
       title: details.name,
-      src_hd: video1280 && `${serviceHost}${video1280}`,
+      src_hd: video1280 && `${baseUrl}${video1280}`,
       poster: poster1280
-        ? `${serviceHost}${poster1280}`
-        : poster640 && `${serviceHost}${poster640}`,
+        ? `${baseUrl}${poster1280}`
+        : poster640 && `${baseUrl}${poster640}`,
     };
   }
 
@@ -79,40 +79,40 @@ export class MediaFileAttributesFactory {
 
   static fromFileItem(
     item: FileItemWithOccurrenceKey,
-    serviceHost: string,
+    baseUrl: string,
   ): MediaFileAttributes {
     const id = MediaFileAttributesFactory.getUniqueMediaViewerId({
       id: item.details.id,
       occurrenceKey: item.occurrenceKey,
       type: 'file',
     });
-    return MediaFileAttributesFactory.create(id, item.details, serviceHost);
+    return MediaFileAttributesFactory.create(id, item.details, baseUrl);
   }
 
   static fromMediaCollectionFileItem(
     item: MediaCollectionFileItem,
-    serviceHost: string,
+    baseUrl: string,
   ): MediaFileAttributes {
     const id = MediaFileAttributesFactory.getUniqueMediaViewerId({
       id: item.details.id,
       occurrenceKey: item.details.occurrenceKey,
       type: 'file',
     });
-    return MediaFileAttributesFactory.create(id, item.details, serviceHost);
+    return MediaFileAttributesFactory.create(id, item.details, baseUrl);
   }
 
   static fromFileItemList(
     items: Array<FileItemWithOccurrenceKey>,
-    serviceHost: string,
+    baseUrl: string,
   ): Array<MediaFileAttributes> {
     return items.map(item =>
-      MediaFileAttributesFactory.fromFileItem(item, serviceHost),
+      MediaFileAttributesFactory.fromFileItem(item, baseUrl),
     );
   }
 
   static fromMediaCollection(
     collection: MediaCollection,
-    serviceHost: string,
+    baseUrl: string,
   ): Array<MediaFileAttributes> {
     const collectionFileItemFilter = (item: MediaCollectionItem) =>
       item.type === 'file';
@@ -121,7 +121,7 @@ export class MediaFileAttributesFactory {
       .map((item: MediaCollectionItem) =>
         MediaFileAttributesFactory.fromMediaCollectionFileItem(
           item as MediaCollectionFileItem,
-          serviceHost,
+          baseUrl,
         ),
       );
   }

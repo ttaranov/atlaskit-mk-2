@@ -109,7 +109,6 @@ class ContextImpl implements Context {
     this.localPreviewCache = new LRUCache(10);
     this.fileStreamsCache = new FileStreamCache();
     this.mediaStore = new MediaStore({
-      serviceHost: config.serviceHost,
       authProvider: config.authProvider,
     });
   }
@@ -215,11 +214,7 @@ class ContextImpl implements Context {
   }
 
   getDataUriService(collectionName?: string): DataUriService {
-    return new MediaDataUriService(
-      this.config.authProvider,
-      this.config.serviceHost,
-      collectionName,
-    );
+    return new MediaDataUriService(this.config.authProvider, collectionName);
   }
 
   setLocalPreview(id: string, preview: string) {
@@ -235,11 +230,7 @@ class ContextImpl implements Context {
   }
 
   getBlobService(collectionName?: string): BlobService {
-    return new MediaBlobService(
-      this.config.authProvider,
-      this.config.serviceHost,
-      collectionName,
-    );
+    return new MediaBlobService(this.config.authProvider, collectionName);
   }
 
   getUrlPreviewProvider(url: string): MediaUrlPreviewProvider {
@@ -353,7 +344,6 @@ class ContextImpl implements Context {
 
   private get apiConfig(): MediaApiConfig {
     return {
-      serviceHost: this.config.serviceHost,
       authProvider: this.config.authProvider,
     };
   }

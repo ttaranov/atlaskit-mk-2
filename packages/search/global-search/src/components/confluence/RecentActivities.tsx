@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { Result } from '../../model/Result';
-import { ScreenCounter } from './ConfluenceSearchResults';
+import { ScreenCounter } from '../../util/ScreenCounter';
 import { FormattedMessage } from 'react-intl';
 import { take } from '../SearchResultsUtil';
 import ResultGroup from '../ResultGroup';
-import AnalyticsEventFiredOnMount from '../analytics/AnalyticsEventFiredOnMount';
-import { buildScreenEvent, Screen } from '../../util/analytics-util';
+import { PreQueryAnalyticsComponent } from './ScreenAnalyticsHelper';
 import AdvancedSearchGroup from './AdvancedSearchGroup';
+import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
 
 const MAX_RECENT_PAGES = 8;
 const MAX_SPACES = 3;
@@ -19,6 +19,7 @@ export interface Props {
   recentlyInteractedPeople: Result[];
   searchSessionId: string;
   screenCounter?: ScreenCounter;
+  referralContextIdentifiers?: ReferralContextIdentifiers;
 }
 
 export default class RecentActivities extends React.Component<Props> {
@@ -30,9 +31,21 @@ export default class RecentActivities extends React.Component<Props> {
       recentlyInteractedPeople,
       searchSessionId,
       screenCounter,
+      referralContextIdentifiers,
     } = this.props;
 
     let sectionIndex = 0;
+
+    const recentPagesToShow = take(recentlyViewedPages, MAX_RECENT_PAGES);
+    const recentSpacesToShow = take(recentlyViewedSpaces, MAX_SPACES);
+    const recentPeopleToShow = take(recentlyInteractedPeople, MAX_PEOPLE);
+
+    const analyticsData = {
+      resultCount:
+        recentPagesToShow.length +
+        recentSpacesToShow.length +
+        recentPeopleToShow.length,
+    };
 
     const objectsGroup = (
       <ResultGroup
@@ -40,8 +53,9 @@ export default class RecentActivities extends React.Component<Props> {
         title={
           <FormattedMessage id="global-search.confluence.recent-pages-heading" />
         }
-        results={take(recentlyViewedPages, MAX_RECENT_PAGES)}
+        results={recentPagesToShow}
         sectionIndex={sectionIndex}
+        analyticsData={analyticsData}
       />
     );
 
@@ -55,8 +69,9 @@ export default class RecentActivities extends React.Component<Props> {
         title={
           <FormattedMessage id="global-search.confluence.recent-spaces-heading" />
         }
-        results={take(recentlyViewedSpaces, MAX_SPACES)}
+        results={recentSpacesToShow}
         sectionIndex={sectionIndex}
+        analyticsData={analyticsData}
       />
     );
 
@@ -70,8 +85,9 @@ export default class RecentActivities extends React.Component<Props> {
         title={
           <FormattedMessage id="global-search.people.recent-people-heading" />
         }
-        results={take(recentlyInteractedPeople, MAX_PEOPLE)}
+        results={recentPeopleToShow}
         sectionIndex={sectionIndex}
+        analyticsData={analyticsData}
       />
     );
 
@@ -80,19 +96,12 @@ export default class RecentActivities extends React.Component<Props> {
       spacesGroup,
       peopleGroup,
       <AdvancedSearchGroup key="advanced" query={query} />,
-      screenCounter ? (
-        <AnalyticsEventFiredOnMount
-          key="preQueryScreenEvent"
-          onEventFired={() => screenCounter.increment()}
-          payloadProvider={() =>
-            buildScreenEvent(
-              Screen.PRE_QUERY,
-              screenCounter.getCount(),
-              searchSessionId,
-            )
-          }
-        />
-      ) : null,
+      <PreQueryAnalyticsComponent
+        key="pre-query-analytics"
+        screenCounter={screenCounter}
+        searchSessionId={searchSessionId}
+        referralContextIdentifiers={referralContextIdentifiers}
+      />,
     ];
   }
 }
