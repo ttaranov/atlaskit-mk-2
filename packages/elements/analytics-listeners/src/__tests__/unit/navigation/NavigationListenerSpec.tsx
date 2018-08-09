@@ -167,7 +167,6 @@ describe('NavigationListener', () => {
           tags: ['navigation'],
         },
       },
-
       {
         name: 'withNoContextActionSubject',
         eventPayload: {
@@ -191,33 +190,6 @@ describe('NavigationListener', () => {
             packageVersion: undefined,
           },
           source: 'globalNavigation',
-          tags: ['navigation'],
-        },
-      },
-      {
-        name: 'withActionSubjectOverride',
-        eventPayload: {
-          action: 'someAction',
-          actionSubject: 'someComponent',
-          actionSubjectId: 'someComponentId',
-          eventType: UI_EVENT_TYPE,
-        },
-        context: [
-          { actionSubjectOverride: 'someMoreDescriptiveComponent' },
-          { actionSubjectOverride: 'someDescriptiveComponent' },
-        ],
-        clientPayload: {
-          action: 'someAction',
-          actionSubject: 'someMoreDescriptiveComponent',
-          actionSubjectId: 'someComponentId',
-          attributes: {
-            sourceHierarchy: undefined,
-            packageHierarchy: undefined,
-            componentHierarchy: undefined,
-            packageName: undefined,
-            packageVersion: undefined,
-          },
-          source: 'unknown',
           tags: ['navigation'],
         },
       },

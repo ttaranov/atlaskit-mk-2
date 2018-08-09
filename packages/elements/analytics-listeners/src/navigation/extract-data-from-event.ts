@@ -14,7 +14,14 @@ const extractFromEventContext = (propertyNames: string[], event) =>
     .filter(Boolean);
 
 export const getActionSubject = event => {
-  return event.payload.actionSubject;
+  const closestContext =
+    event.context.length > 0 ? event.context[event.context.length - 1] : {};
+
+  return (
+    event.payload.actionSubject ||
+    event.payload.component ||
+    closestContext.component
+  );
 };
 
 export const getSources = event => extractFromEventContext(['source'], event);
