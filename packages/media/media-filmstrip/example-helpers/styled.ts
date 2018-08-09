@@ -77,16 +77,25 @@ export const DebuggerRow = styled.div`
 `;
 interface DebuggerItemProps {
   isEmpty: boolean;
+  isDragged: boolean;
 }
 export const DebuggerItem = styled.div`
   width: 30px;
   height: 30px;
-  margin: 0 4px 4px 0;
+  margin: 0 6px 6px 0;
   color: white;
   border-radius: 3px;
   padding-top: 5px;
   text-align: center;
   box-sizing: border-box;
   background-color: ${(props: DebuggerItemProps) =>
-    props.isEmpty ? '#FF5630' : '#36B37E'};
+    props.isEmpty ? '#FF5630' : props.isDragged ? '#FFAB00' : '#36B37E'};
+`;
+
+export const DebuggerPlaceHolder = styled.div`
+  height: 30px;
+  border-left: 2px solid #6554c0;
+  margin-left: -4px;
+  padding-right: 2px;
+  box-sizing: border-box;
 `;

@@ -13,6 +13,7 @@ interface ExampleState {
   items: GridItem[];
   isInteractive: boolean;
   showDebugView: boolean;
+  instance?: any;
 }
 
 class Example extends Component<{}, ExampleState> {
@@ -33,10 +34,18 @@ class Example extends Component<{}, ExampleState> {
   addImage = () => {
     const { items } = this.state;
     const index = Math.floor(Math.random() * gridItems.length);
+    const maxDebugId = items.reduce(
+      (maxNum, item) =>
+        Math.max((item as MediaGridItemWithDebugId).debugId || 0, maxNum),
+      -1,
+    );
     const newItem = gridItems[index];
 
     this.setState({
-      items: [newItem, ...items],
+      items: [
+        { ...newItem, debugId: maxDebugId + 1 } as MediaGridItemWithDebugId,
+        ...items,
+      ],
     });
   };
 
@@ -75,9 +84,13 @@ class Example extends Component<{}, ExampleState> {
           <button onClick={this.toggleDebugView}>Toggle Debug View</button>
         </FieldRangeWrapper>
         {showDebugView ? (
-          <MediaGridDebugger items={items as MediaGridItemWithDebugId[]} />
+          <MediaGridDebugger
+            items={items as MediaGridItemWithDebugId[]}
+            mediaGridView={this.state.instance}
+          />
         ) : null}
         <MediaGridView
+          ref={instance => !this.state.instance && this.setState({ instance })}
           items={items}
           onItemsChange={this.onItemsChange}
           width={width}

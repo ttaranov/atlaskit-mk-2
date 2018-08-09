@@ -60,7 +60,7 @@ export class MediaGridView extends Component<
   state: MediaGridViewState = {
     selected: -1,
     isDragging: false,
-    draggingIndex: 0,
+    draggingIndex: -1,
   };
 
   static defaultProps: Partial<MediaGridViewProps> = {
@@ -108,6 +108,7 @@ export class MediaGridView extends Component<
   resetDragging = () => {
     this.setState({
       dropIndex: undefined,
+      draggingIndex: -1,
       isDragging: false,
     });
   };
