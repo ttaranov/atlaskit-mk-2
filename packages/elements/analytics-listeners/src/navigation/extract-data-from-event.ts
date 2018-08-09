@@ -3,29 +3,27 @@
  */
 import * as merge from 'lodash.merge';
 
-const extractFromEventContext = (propertyName: string, event) =>
+const extractFromEventContext = (propertyNames: string[], event) =>
   event.context
-    .map((contextItem: any) => contextItem[propertyName])
+    .reduce((acc: any[], contextItem: any) => {
+      propertyNames.forEach(propertyName => {
+        acc.push(contextItem[propertyName]);
+      });
+      return acc;
+    }, [])
     .filter(Boolean);
 
 export const getActionSubject = event => {
-  const overrides = extractFromEventContext('actionSubjectOverride', event);
-
-  const closestContext =
-    event.context.length > 0 ? event.context[event.context.length - 1] : {};
-
-  const actionSubject = event.payload.actionSubject || closestContext.component;
-
-  return overrides.length > 0 ? overrides[0] : actionSubject;
+  return event.payload.actionSubject;
 };
 
-export const getSources = event => extractFromEventContext('source', event);
+export const getSources = event => extractFromEventContext(['source'], event);
 
 export const getComponents = event =>
-  extractFromEventContext('component', event);
+  extractFromEventContext(['component', 'componentName'], event);
 
 export const getExtraAttributes = event =>
-  extractFromEventContext('attributes', event).reduce(
+  extractFromEventContext(['attributes'], event).reduce(
     (result, extraAttributes) => merge(result, extraAttributes),
     {},
   );
@@ -39,4 +37,4 @@ export const getPackageInfo = event =>
     .filter(p => p.packageName);
 
 export const getPackageVersion = event =>
-  extractFromEventContext('packageVersion', event);
+  extractFromEventContext(['packageVersion'], event);
