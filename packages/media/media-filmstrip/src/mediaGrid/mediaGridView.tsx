@@ -62,6 +62,7 @@ export class MediaGridView extends Component<
     isDragging: false,
     draggingIndex: 0,
   };
+
   static defaultProps: Partial<MediaGridViewProps> = {
     itemsPerRow: ITEMS_PER_ROW,
     width: DEFAULT_WIDTH,
@@ -135,7 +136,6 @@ export class MediaGridView extends Component<
 
   moveImage = () => {
     const { draggingIndex, selected } = this.state;
-    const { onItemsChange } = this.props;
     const items = [...this.props.items];
 
     let dropIndex = this.state.dropIndex!;
@@ -157,7 +157,7 @@ export class MediaGridView extends Component<
       this.setState({ selected: newSelected });
     }
     items.splice(dropIndex, 0, draggingItem);
-    onItemsChange(items);
+    this.normalizeAndReportChange(items);
   };
 
   onDragEnd = (event: React.DragEvent<HTMLImageElement>) => {
@@ -174,12 +174,12 @@ export class MediaGridView extends Component<
   };
 
   onLoad = (dataURI: string) => () => {
-    const { items, onItemsChange } = this.props;
+    const { items } = this.props;
     const newItems = items.map(item => ({
       ...item,
       isLoaded: item.dataURI === dataURI || item.isLoaded,
     }));
-    onItemsChange(newItems);
+    this.normalizeAndReportChange(newItems);
   };
 
   onRemoveIconClick = (index: number) => () => this.deleteImage(index);
@@ -262,8 +262,8 @@ export class MediaGridView extends Component<
     event.preventDefault();
   }
 
-  private nonEmptyItemsOnRow(rowIndex: number) {
-    const { items, itemsPerRow } = this.props;
+  private nonEmptyItemsOnRow(rowIndex: number, items: GridItem[]) {
+    const { itemsPerRow } = this.props;
     const rowStartIndex = rowIndex * itemsPerRow!;
     return items
       .slice(rowStartIndex, rowStartIndex + itemsPerRow!)
@@ -287,7 +287,6 @@ export class MediaGridView extends Component<
   };
 
   deleteImage = (index: number) => {
-    const { onItemsChange, itemsPerRow } = this.props;
     const { selected } = this.state;
 
     if (selected !== -1) {
@@ -297,22 +296,68 @@ export class MediaGridView extends Component<
     }
 
     const items = [...this.props.items];
-    const rowIndex = Math.floor(index / itemsPerRow!);
-    const itemsOnThisRow = this.nonEmptyItemsOnRow(rowIndex);
-    if (itemsOnThisRow.length > 1) {
-      items[index] = EMPTY_GRID_ITEM;
-    } else {
-      items.splice(rowIndex * itemsPerRow!, itemsPerRow!);
+    items[index] = EMPTY_GRID_ITEM;
+
+    this.normalizeAndReportChange(items);
+  };
+
+  normalizeAndReportChange(items: GridItem[]) {
+    const { onItemsChange } = this.props;
+
+    const { itemsPerRow } = this.props;
+    const numberOfRows = Math.ceil(items.length / itemsPerRow!);
+
+    for (let rowIndex = 0; rowIndex < numberOfRows; rowIndex += 1) {
+      const itemsOnThisRow = this.nonEmptyItemsOnRow(rowIndex, items);
+      if (itemsOnThisRow.length === 0) {
+        // Remove empty line
+        items.splice(rowIndex * itemsPerRow!, itemsPerRow!);
+        // We just removed whole line. If we want to scan previously next line we need to substract
+        rowIndex -= 1;
+      } else if (itemsOnThisRow.length < itemsPerRow!) {
+        // Push all non-empty items to the left.
+        let remainingEmptyItems = new Array(
+          itemsPerRow! - itemsOnThisRow.length,
+        ).fill(EMPTY_GRID_ITEM);
+        if (rowIndex === numberOfRows - 1) {
+          // Unless it's last line, in which case no remaining empty items in the end of a row
+          remainingEmptyItems = [];
+        }
+        items.splice(
+          rowIndex * itemsPerRow!,
+          itemsPerRow!,
+          ...itemsOnThisRow,
+          ...remainingEmptyItems,
+        );
+      }
     }
 
     onItemsChange(items);
-  };
+  }
 
   saveWrapperRef = (ref?: HTMLElement) => {
     if (ref) {
       this.wrapperElement = ref;
     }
   };
+
+  // debugItems() {
+  //   const { items, itemsPerRow } = this.props;
+  //   const rows: JSX.Element[] = [];
+  //   const numberOfRows = Math.ceil(items.length / itemsPerRow!);
+  //   for (let rowIndex = 0; rowIndex < numberOfRows; rowIndex += 1) {
+  //     const rowItems = items.splice(rowIndex * itemsPerRow!, itemsPerRow!);
+  //     rows.push(<div key={'row' + rowIndex}>
+  //       {rowItems.map((item, colIndex) => {
+  //         const i = rowIndex * itemsPerRow! + colIndex;
+  //         const num = i < 10 ? `0${i}` : `${i}`;
+  //         const debugOutput = !!item.dataURI ? `[${num}]` : `<${num}>`;
+  //         return <span key={i}>{debugOutput}</span>;
+  //       })}
+  //     </div>);
+  //   }
+  //   return rows;
+  // }
 
   render() {
     const { items, itemsPerRow, width } = this.props;
@@ -345,7 +390,7 @@ export class MediaGridView extends Component<
       -> gridHeight = (gridWidth - (numImages-1) * margin) / (aspect1 + aspect2 + aspect3)
       */
 
-      const itemsInRow = this.nonEmptyItemsOnRow(rowIndex);
+      const itemsInRow = this.nonEmptyItemsOnRow(rowIndex, items);
       const aspectRatioSum = itemsInRow
         .map(i => i.dimensions.width / i.dimensions.height)
         .reduce((prev, curr) => prev + curr, 0);
@@ -362,5 +407,10 @@ export class MediaGridView extends Component<
       );
     }
     return <Wrapper innerRef={this.saveWrapperRef}>{rows}</Wrapper>;
+    // <React.Fragment>
+    //   {/*<Debugger>{this.debugItems()}</Debugger>*/}
+    //
+    // </React.Fragment>
+    // );
   }
 }

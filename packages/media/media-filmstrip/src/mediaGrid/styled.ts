@@ -100,3 +100,11 @@ export const RemoveIconWrapper = styled.div`
     color: white !important;
   }
 `;
+
+export const Debugger = styled.div`
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 200px;
+  height: 400px;
+`;

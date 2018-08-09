@@ -281,6 +281,7 @@ describe('MediaGridView', () => {
       },
       {
         dataURI: 'some-url-2',
+        isLoaded: undefined,
         dimensions: {
           width: 10,
           height: 10,
@@ -294,6 +295,7 @@ describe('MediaGridView', () => {
     expect(onItemsChange).toHaveBeenCalledWith([
       {
         dataURI: 'some-url-1',
+        isLoaded: undefined,
         dimensions: {
           width: 10,
           height: 10,
@@ -310,9 +312,9 @@ describe('MediaGridView', () => {
     ]);
   });
 
-  it('should have 2 in a row when empty media-item is present', () => {
+  it('should have 2 rows with 1 item in each row when empty media-item is present', () => {
     const items: GridItem[] = [
-      EMPTY_GRID_ITEM,
+      // First row
       {
         dataURI: 'some-url-1',
         dimensions: {
@@ -321,6 +323,8 @@ describe('MediaGridView', () => {
         },
       },
       EMPTY_GRID_ITEM,
+      EMPTY_GRID_ITEM,
+      // Second row
       {
         dataURI: 'some-url-2',
         dimensions: {
@@ -352,43 +356,7 @@ describe('MediaGridView', () => {
 
   describe('delete', () => {
     it('should replace deleted item with empty grid item when there is non-empty item in this row', () => {
-      const items: GridItem[] = [
-        {
-          dataURI: 'some-url-1',
-          dimensions: {
-            width: 1000,
-            height: 1000,
-          },
-        },
-        {
-          dataURI: 'some-url-2',
-          dimensions: {
-            width: 1000,
-            height: 1000,
-          },
-        },
-        {
-          dataURI: 'some-url-3',
-          dimensions: {
-            width: 1000,
-            height: 1000,
-          },
-        },
-        {
-          dataURI: 'some-url-4',
-          dimensions: {
-            width: 1000,
-            height: 1000,
-          },
-        },
-        {
-          dataURI: 'some-url-5',
-          dimensions: {
-            width: 1000,
-            height: 1000,
-          },
-        },
-      ];
+      const items: GridItem[] = generateGridItems(5);
       const component = shallow(
         <MediaGridView
           items={items}
@@ -399,6 +367,7 @@ describe('MediaGridView', () => {
       );
       (component.instance() as MediaGridView).deleteImage(3);
       expect(onItemsChange).toHaveBeenCalledWith([
+        // First row
         {
           dataURI: 'some-url-1',
           dimensions: {
@@ -420,7 +389,7 @@ describe('MediaGridView', () => {
             height: 1000,
           },
         },
-        EMPTY_GRID_ITEM,
+        // Second row
         {
           dataURI: 'some-url-5',
           dimensions: {
@@ -450,7 +419,6 @@ describe('MediaGridView', () => {
         },
         EMPTY_GRID_ITEM,
         // Second Row
-        EMPTY_GRID_ITEM,
         {
           dataURI: 'some-url-5',
           dimensions: {
@@ -467,7 +435,7 @@ describe('MediaGridView', () => {
           onItemsChange={onItemsChange}
         />,
       );
-      (component.instance() as MediaGridView).deleteImage(4);
+      (component.instance() as MediaGridView).deleteImage(3);
       expect(onItemsChange).toHaveBeenCalledWith([
         // First Row
         {
@@ -484,7 +452,6 @@ describe('MediaGridView', () => {
             height: 1000,
           },
         },
-        EMPTY_GRID_ITEM,
       ]);
     });
   });
