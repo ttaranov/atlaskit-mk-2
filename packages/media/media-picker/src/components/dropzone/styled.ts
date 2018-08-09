@@ -17,7 +17,6 @@ export const wrapperStyles = `
     height: 200px;
     position: absolute;
     bottom: 0;
-    margin: auto;
     transform-origin: bottom;
     left: 150px;
   }
