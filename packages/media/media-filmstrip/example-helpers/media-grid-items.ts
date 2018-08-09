@@ -1,4 +1,4 @@
-import { GridItem } from '../src/mediaGrid/mediaGridView';
+import { MediaGridItemWithDebugId } from './media-grid-debugger';
 
 const image1 = {
   dataURI:
@@ -60,7 +60,7 @@ const image7 = {
   },
 };
 
-export const gridItems: GridItem[] = [
+export const gridItems: MediaGridItemWithDebugId[] = [
   image6,
   image1,
   image2,
@@ -75,4 +75,4 @@ export const gridItems: GridItem[] = [
   image1,
   image5,
   image2,
-];
+].map((item, i) => ({ ...item, debugId: i }));

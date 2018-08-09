@@ -63,3 +63,30 @@ export const FieldRangeWrapper = styled.div`
 export const GridContainer = styled.div`
   margin: 0 auto;
 `;
+
+export const Debugger = styled.div`
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  width: 200px;
+  height: 400px;
+`;
+
+export const DebuggerRow = styled.div`
+  display: flex;
+`;
+interface DebuggerItemProps {
+  isEmpty: boolean;
+}
+export const DebuggerItem = styled.div`
+  width: 30px;
+  height: 30px;
+  margin: 0 4px 4px 0;
+  color: white;
+  border-radius: 3px;
+  padding-top: 5px;
+  text-align: center;
+  box-sizing: border-box;
+  background-color: ${(props: DebuggerItemProps) =>
+    props.isEmpty ? '#FF5630' : '#36B37E'};
+`;

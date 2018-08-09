@@ -41,8 +41,8 @@ export interface MediaGridViewState {
   selected: number;
 }
 
-const DEFAULT_WIDTH = 744;
-const ITEMS_PER_ROW = 3;
+export const DEFAULT_WIDTH = 744;
+export const DEFAULT_ITEMS_PER_ROW = 3;
 
 export const EMPTY_GRID_ITEM: GridItem = {
   dimensions: {
@@ -64,7 +64,7 @@ export class MediaGridView extends Component<
   };
 
   static defaultProps: Partial<MediaGridViewProps> = {
-    itemsPerRow: ITEMS_PER_ROW,
+    itemsPerRow: DEFAULT_ITEMS_PER_ROW,
     width: DEFAULT_WIDTH,
     isInteractive: true,
   };
@@ -113,7 +113,7 @@ export class MediaGridView extends Component<
   };
 
   onDragOver = (index, event: React.DragEvent<HTMLImageElement>) => {
-    const { itemsPerRow = ITEMS_PER_ROW, items } = this.props;
+    const { itemsPerRow = DEFAULT_ITEMS_PER_ROW, items } = this.props;
     const { left, width } = event.currentTarget.getBoundingClientRect();
     const x = event.pageX - left;
     let dropIndex = index;
@@ -265,7 +265,7 @@ export class MediaGridView extends Component<
   }
 
   private nonEmptyItemsOnRow(rowIndex: number, items: GridItem[]) {
-    const { itemsPerRow = ITEMS_PER_ROW } = this.props;
+    const { itemsPerRow = DEFAULT_ITEMS_PER_ROW } = this.props;
     const rowStartIndex = rowIndex * itemsPerRow;
     return items
       .slice(rowStartIndex, rowStartIndex + itemsPerRow)
@@ -303,36 +303,52 @@ export class MediaGridView extends Component<
     this.normalizeAndReportChange(items);
   };
 
-  normalizeAndReportChange(items: GridItem[]) {
-    const { onItemsChange, itemsPerRow = ITEMS_PER_ROW } = this.props;
+  private getItemsInRows(items: GridItem[]) {
+    const { itemsPerRow = DEFAULT_ITEMS_PER_ROW } = this.props;
+    const itemsInRows: GridItem[][] = [];
     const numberOfRows = Math.ceil(items.length / itemsPerRow);
-
     for (let rowIndex = 0; rowIndex < numberOfRows; rowIndex += 1) {
-      const itemsOnThisRow = this.nonEmptyItemsOnRow(rowIndex, items);
-      if (itemsOnThisRow.length === 0) {
-        // Remove empty line
-        items.splice(rowIndex * itemsPerRow, itemsPerRow);
-        // We just removed whole line. If we want to scan previously next line we need to substract
-        rowIndex -= 1;
-      } else if (itemsOnThisRow.length < itemsPerRow) {
-        // Push all non-empty items to the left.
-        let remainingEmptyItems = new Array(
-          itemsPerRow - itemsOnThisRow.length,
-        ).fill(EMPTY_GRID_ITEM);
-        if (rowIndex === numberOfRows - 1) {
-          // Unless it's last line, in which case no remaining empty items in the end of a row
-          remainingEmptyItems = [];
-        }
-        items.splice(
+      itemsInRows.push(
+        items.slice(
           rowIndex * itemsPerRow,
-          itemsPerRow,
-          ...itemsOnThisRow,
-          ...remainingEmptyItems,
-        );
-      }
+          rowIndex * itemsPerRow + itemsPerRow,
+        ),
+      );
     }
 
-    onItemsChange(items);
+    return itemsInRows;
+  }
+
+  normalizeAndReportChange(items: GridItem[]) {
+    const { onItemsChange } = this.props;
+
+    const { itemsPerRow = DEFAULT_ITEMS_PER_ROW } = this.props;
+
+    const itemsInRows = this.getItemsInRows(items);
+    const itemsInNonEmptyRows = itemsInRows.filter(
+      items => items.filter(this.isNotEmptyItem).length > 0,
+    );
+
+    const resultItems = itemsInNonEmptyRows
+      .map((items, rowIndex) => {
+        const nonEmptyItems = items.filter(this.isNotEmptyItem);
+        const isLastRow = rowIndex === itemsInNonEmptyRows.length - 1;
+        const mightNeedReshuffle = nonEmptyItems.length < itemsPerRow;
+        if (isLastRow || !mightNeedReshuffle) {
+          return nonEmptyItems;
+        } else if (mightNeedReshuffle) {
+          let remainingEmptyItems = new Array(
+            itemsPerRow - nonEmptyItems.length,
+          ).fill(EMPTY_GRID_ITEM);
+          return [...nonEmptyItems, ...remainingEmptyItems];
+        }
+      })
+      .reduce<GridItem[]>((accumulator, rowWithItems: GridItem[]) => {
+        accumulator.push(...rowWithItems);
+        return accumulator;
+      }, []);
+
+    onItemsChange(resultItems);
   }
 
   saveWrapperRef = (ref?: HTMLElement) => {
@@ -341,61 +357,51 @@ export class MediaGridView extends Component<
     }
   };
 
-  // debugItems() {
-  //   const { items, itemsPerRow } = this.props;
-  //   const rows: JSX.Element[] = [];
-  //   const numberOfRows = Math.ceil(items.length / itemsPerRow!);
-  //   for (let rowIndex = 0; rowIndex < numberOfRows; rowIndex += 1) {
-  //     const rowItems = items.splice(rowIndex * itemsPerRow!, itemsPerRow!);
-  //     rows.push(<div key={'row' + rowIndex}>
-  //       {rowItems.map((item, colIndex) => {
-  //         const i = rowIndex * itemsPerRow! + colIndex;
-  //         const num = i < 10 ? `0${i}` : `${i}`;
-  //         const debugOutput = !!item.dataURI ? `[${num}]` : `<${num}>`;
-  //         return <span key={i}>{debugOutput}</span>;
-  //       })}
-  //     </div>);
-  //   }
-  //   return rows;
-  // }
+  private isEmptyItem = (item: GridItem) => {
+    return item.dimensions.width === 0 && item.dimensions.height === 0;
+  };
+
+  private isNotEmptyItem = (item: GridItem) => {
+    return !this.isEmptyItem(item);
+  };
 
   /**
-  # How the image scaling magic works
-  hx, wx, aspectx: height, width and aspect ratio of image x (aspect = w/h)
-  (hx, wx, aspectx = 0 when < x images on row (numImages))
-
-  All images in row must fit image grid width:
-  w1 * scale1 + w2 * scale2 + w3 * scale3 + (numImages-1) * margin = gridWidth
-
-  therefore:
-  (h1 * aspect1) * scale1 + (h2 * aspect2) * scale2 + (h3 * aspect3) * scale3
-      = gridWidth - (numImages-1) * margin
-
-  All images in row must be same height
-  h1 * scale1 = h2 * scale2 = h3 * scale3 = gridHeight
-
-  -> (h1 * scale1) * aspect1  + (h2 * scale2) * aspect2 + (h3 * scale3) * aspect3
-      = gridWidth - (numImages-1) * margin
-
-  -> gridHeight * aspect1 + gridHeight * aspect2 + gridHeight * aspect3
-      = gridWidth - (numImages-1) * margin
-
-  -> gridHeight * (aspect1 + aspect2 + aspect3) = gridWidth - (numImages-1) * margin
-
-  -> gridHeight = (gridWidth - (numImages-1) * margin) / (aspect1 + aspect2 + aspect3)
-  **/
+   * # How the image scaling magic works
+   * hx, wx, aspectx: height, width and aspect ratio of image x (aspect = w/h)
+   * (hx, wx, aspectx = 0 when < x images on row (numImages))
+   *
+   * All images in row must fit image grid width:
+   * w1 * scale1 + w2 * scale2 + w3 * scale3 + (numImages-1) * margin = gridWidth
+   *
+   * therefore:
+   * (h1 * aspect1) * scale1 + (h2 * aspect2) * scale2 + (h3 * aspect3) * scale3
+   * = gridWidth - (numImages-1) * margin
+   *
+   * All images in row must be same height
+   * h1 * scale1 = h2 * scale2 = h3 * scale3 = gridHeight
+   *
+   * -> (h1 * scale1) * aspect1  + (h2 * scale2) * aspect2 + (h3 * scale3) * aspect3
+   * = gridWidth - (numImages-1) * margin
+   *
+   * -> gridHeight * aspect1 + gridHeight * aspect2 + gridHeight * aspect3
+   * = gridWidth - (numImages-1) * margin
+   *
+   * -> gridHeight * (aspect1 + aspect2 + aspect3) = gridWidth - (numImages-1) * margin
+   *
+   * -> gridHeight = (gridWidth - (numImages-1) * margin) / (aspect1 + aspect2 + aspect3)
+   */
   calculateRowHeight(rowItems: GridItem[], margin: number, rowWidth: number) {
     const aspectRatioSum = rowItems
       .map(i => i.dimensions.width / i.dimensions.height)
       .reduce((prev, curr) => prev + curr, 0);
     const marginSum = (rowItems.length - 1) * imageMargin;
-    return (rowWidth! - marginSum) / aspectRatioSum;
+    return (rowWidth - marginSum) / aspectRatioSum;
   }
 
   render() {
     const {
       items,
-      itemsPerRow = ITEMS_PER_ROW,
+      itemsPerRow = DEFAULT_ITEMS_PER_ROW,
       width = DEFAULT_WIDTH,
     } = this.props;
     const rows: JSX.Element[] = [];
@@ -417,11 +423,10 @@ export class MediaGridView extends Component<
         </RowWrapper>,
       );
     }
-    return <Wrapper innerRef={this.saveWrapperRef}>{rows}</Wrapper>;
-    // <React.Fragment>
-    //   {/*<Debugger>{this.debugItems()}</Debugger>*/}
-    //
-    // </React.Fragment>
-    // );
+    return (
+      <React.Fragment>
+        <Wrapper innerRef={this.saveWrapperRef}>{rows}</Wrapper>
+      </React.Fragment>
+    );
   }
 }
