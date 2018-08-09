@@ -313,7 +313,7 @@ export class MediaGridView extends Component<
     const rowStartIndex = rowIndex * itemsPerRow;
     return items
       .slice(rowStartIndex, rowStartIndex + itemsPerRow)
-      .filter(item => !!item.dataURI);
+      .filter(this.isNotEmptyItem);
   }
 
   // we want to remove the selected image if the Grid loses the focus
