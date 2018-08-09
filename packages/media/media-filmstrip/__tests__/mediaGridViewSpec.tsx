@@ -354,6 +354,39 @@ describe('MediaGridView', () => {
     expect(secondRowImageWrapper).toHaveLength(1);
   });
 
+  describe('select', () => {
+    it('0th image should be deleted by delete keypress when image 0 selected', () => {
+      const items: GridItem[] = generateGridItems(5);
+      const component = shallow(
+        <MediaGridView
+          items={items}
+          width={100}
+          itemsPerRow={3}
+          onItemsChange={onItemsChange}
+        />,
+      );
+
+      component
+        .find(Img)
+        .first()
+        .simulate('click');
+
+      // .find(RemoveIconWrapper)
+      // .find()
+
+      component.simulate('keyDown', { keyCode: 'Backspace' });
+
+      // const expectedOutputItems = generateGridItems(5).slice(1);
+      // expect(onItemsChange).toHaveBeenCalledWith(expectedOutputItems);
+
+      // (component.instance() as MediaGridView).selectImage(0)();
+      // mediaGridViewInstance.onKeyDown(new KeyboardEvent("Backspace"));
+
+      const expectedOutputItems = generateGridItems(5).slice(1);
+      expect(onItemsChange).toHaveBeenCalledWith(expectedOutputItems);
+    });
+  });
+
   describe('delete', () => {
     it('should replace deleted item with empty grid item when there is non-empty item in this row', () => {
       const items: GridItem[] = generateGridItems(5);

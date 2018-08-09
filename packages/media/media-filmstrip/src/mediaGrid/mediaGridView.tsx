@@ -167,7 +167,7 @@ export class MediaGridView extends Component<
     this.resetDragging();
   };
 
-  onClick = (index: number) => () => {
+  selectImage = (index: number) => () => {
     this.setState({
       selected: index,
     });
@@ -212,7 +212,7 @@ export class MediaGridView extends Component<
       <React.Fragment>
         <Img
           isSelected={this.state.selected === index}
-          onClick={this.onClick(index)}
+          onClick={this.selectImage(index)}
           draggable={isInteractive}
           src={dataURI}
           onLoad={this.onLoad(dataURI)}
