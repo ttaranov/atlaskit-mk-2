@@ -1,16 +1,16 @@
-import EmojiActivityIcon from '../../../../core/icon/glyph/emoji/activity';
-import EmojiCustomIcon from '../../../../core/icon/glyph/emoji/custom';
-import EmojiFlagsIcon from '../../../../core/icon/glyph/emoji/flags';
-import EmojiFoodIcon from '../../../../core/icon/glyph/emoji/food';
-import EmojiFrequentIcon from '../../../../core/icon/glyph/emoji/frequent';
-import EmojiNatureIcon from '../../../../core/icon/glyph/emoji/nature';
-import EmojiObjectsIcon from '../../../../core/icon/glyph/emoji/objects';
-import EmojiPeopleIcon from '../../../../core/icon/glyph/emoji/people';
-import EmojiSymbolsIcon from '../../../../core/icon/glyph/emoji/symbols';
-import EmojiTravelIcon from '../../../../core/icon/glyph/emoji/travel';
-import EmojiProductivityIcon from '../../../../core/icon/glyph/emoji/productivity';
+import EmojiActivityIcon from '@atlaskit/icon/glyph/emoji/activity';
+import EmojiCustomIcon from '@atlaskit/icon/glyph/emoji/custom';
+import EmojiFlagsIcon from '@atlaskit/icon/glyph/emoji/flags';
+import EmojiFoodIcon from '@atlaskit/icon/glyph/emoji/food';
+import EmojiFrequentIcon from '@atlaskit/icon/glyph/emoji/frequent';
+import EmojiNatureIcon from '@atlaskit/icon/glyph/emoji/nature';
+import EmojiObjectsIcon from '@atlaskit/icon/glyph/emoji/objects';
+import EmojiPeopleIcon from '@atlaskit/icon/glyph/emoji/people';
+import EmojiSymbolsIcon from '@atlaskit/icon/glyph/emoji/symbols';
+import EmojiTravelIcon from '@atlaskit/icon/glyph/emoji/travel';
+import EmojiProductivityIcon from '@atlaskit/icon/glyph/emoji/productivity';
 
-import { CategoryDescription } from '../../../emoji/dist/es5';
+import { CategoryDescription } from '@atlaskit/emoji';
 import {
   customCategory,
   userCustomTitle,

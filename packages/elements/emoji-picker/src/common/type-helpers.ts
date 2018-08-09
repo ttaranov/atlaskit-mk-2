@@ -2,7 +2,7 @@ import {
   EmojiDescription,
   EmojiDescriptionWithVariations,
   EmojiId,
-} from '../../../emoji/dist/es5';
+} from '@atlaskit/emoji';
 
 export const isPromise = (p): p is Promise<any> =>
   !!(p && (<Promise<any>>p).then);

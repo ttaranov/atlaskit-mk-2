@@ -3,7 +3,7 @@ import { ChangeEvent, ChangeEventHandler, PureComponent } from 'react';
 
 import AkFieldBase from '@atlaskit/field-base';
 
-import { EmojiUpload } from '../../../emoji/dist/es5';
+import { EmojiUpload } from '@atlaskit/emoji';
 import * as ImageUtil from '../util/image';
 import debug from '../util/logger';
 import * as styles from './styles';

@@ -2,7 +2,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { UploadStatus } from '../common/internal-types';
 import { customCategory } from '../common/constants';
-import { Emoji, EmojiDescription } from '../../../emoji/dist/es5';
+import { Emoji, EmojiDescription } from '@atlaskit/emoji';
 import AkButton from '@atlaskit/button';
 import * as styles from './styles';
 import RetryableButton from './RetryableButton';

@@ -21,7 +21,9 @@ import {
   SearchOptions,
   ToneSelection,
   SearchSort,
-} from '../../../emoji/dist/es5';
+  EmojiProvider,
+  UploadingEmojiProvider,
+} from '@atlaskit/emoji-provider';
 import {
   containsEmojiId,
   isPromise,
@@ -33,8 +35,7 @@ import { createRecordSelectionDefault } from '../common/RecordSelectionDefault';
 import CategorySelector from './CategorySelector';
 import EmojiPickerList from './EmojiPickerList';
 import EmojiPickerFooter from './EmojiPickerFooter';
-import { EmojiProvider, UploadingEmojiProvider } from '../../../emoji/dist/es5';
-import { FireAnalyticsEvent } from '../../../../core/analytics/src';
+import { FireAnalyticsEvent } from '@atlaskit/analytics';
 import { CategoryId } from './categories';
 import { OnEmojiProviderChange } from '../common/types';
 

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import ErrorIcon from '../../../../core/icon/glyph/error';
+import ErrorIcon from '@atlaskit/icon/glyph/error';
 
 export interface Props {
   message: string;

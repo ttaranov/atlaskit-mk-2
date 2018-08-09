@@ -1,8 +1,8 @@
 import debug, { enableLogger } from '../src/util/logger';
 import { OnEmojiEvent, OnToneSelected, EmojiUpload } from '../src/common/types';
 import { OnUploadEmoji } from '../src/picker/EmojiUploadPicker';
-import { emoji, UsageClearEmojiResource } from '../../util-data-test/dist/es5';
-import { EmojiRepository } from '../../emoji/dist/es5';
+import { emoji, UsageClearEmojiResource } from '@atlaskit/util-data-test';
+import { EmojiRepository } from '@atlaskit/emoji-provider';
 
 const storyData = emoji.storyData;
 

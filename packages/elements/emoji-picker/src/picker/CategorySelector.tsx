@@ -3,7 +3,7 @@ import { PureComponent } from 'react';
 import * as classNames from 'classnames';
 
 import * as styles from './styles';
-import { CategoryDescription, OnCategory } from '../../../emoji/dist/es5';
+import { CategoryDescription, OnCategory } from '@atlaskit/emoji-provider';
 import { defaultCategories } from '../common/constants';
 
 import { CategoryDescriptionMap, CategoryId } from './categories';

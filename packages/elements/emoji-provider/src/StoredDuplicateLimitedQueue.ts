@@ -1,5 +1,5 @@
 import DuplicateLimitedQueue, { QueueOptions } from './DuplicateLimitedQueue';
-import debug from '../util/logger';
+import debug from './util/logger';
 
 /**
  * The options used to configure a newly constructed queue.

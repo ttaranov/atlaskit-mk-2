@@ -8,7 +8,8 @@ import {
   lorem,
 } from '../example-helpers';
 import { onSelection } from '../example-helpers';
-import EmojiPicker, { EmojiProvider } from '../../emoji/dist/es5';
+import EmojiPicker from '../src/picker/EmojiPicker';
+import { EmojiProvider } from '@atlaskit/emoji-provider';
 
 export interface EmojiState {
   siteEmojiEnabled: boolean;

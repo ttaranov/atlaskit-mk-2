@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import AkFieldBase from '@atlaskit/field-base';
-import SearchIcon from '../../../../core/icon/glyph/search';
+import SearchIcon from '@atlaskit/icon/glyph/search';
 
 import * as styles from './styles';
 import { Styles } from '../common/types';

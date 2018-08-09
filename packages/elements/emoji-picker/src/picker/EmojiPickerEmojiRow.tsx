@@ -2,11 +2,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 
 import * as styles from './styles';
-import {
-  CachingEmoji,
-  EmojiDescription,
-  OnEmojiEvent,
-} from '../../../emoji/dist/es5';
+import { CachingEmoji, EmojiDescription, OnEmojiEvent } from '@atlaskit/emoji';
 export interface Props {
   emojis: EmojiDescription[];
   title: string;

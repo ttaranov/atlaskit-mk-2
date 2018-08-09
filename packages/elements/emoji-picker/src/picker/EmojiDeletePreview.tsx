@@ -4,7 +4,7 @@ import EmojiErrorMessage from './EmojiErrorMessage';
 import AkButton from '@atlaskit/button';
 
 import * as styles from './styles';
-import { CachingEmoji, EmojiDescription } from '../../../emoji/dist/es5';
+import { CachingEmoji, EmojiDescription } from '@atlaskit/emoji';
 import RetryableButton from './RetryableButton';
 
 export interface OnDeleteEmoji {

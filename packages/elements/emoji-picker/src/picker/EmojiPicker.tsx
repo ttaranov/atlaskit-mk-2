@@ -7,11 +7,9 @@ import LoadingEmojiComponent, {
 } from '../common/LoadingEmojiComponent';
 import EmojiPickerComponent, { PickerRefHandler } from './EmojiPickerComponent';
 import { LoadingItem } from './EmojiPickerVirtualItems';
-import { EmojiProvider, OnEmojiEvent } from '../../../emoji/dist/es5';
-import {
-  FireAnalyticsEvent,
-  withAnalytics,
-} from '../../../../core/analytics/src';
+import { OnEmojiEvent } from '@atlaskit/emoji-provider';
+import { EmojiProvider } from '@atlaskit/emoji';
+import { FireAnalyticsEvent, withAnalytics } from '@atlaskit/analytics';
 
 const emojiPickerModuleLoader = () =>
   import(/* webpackChunkName:"@atlaskit-internal_emojiPickerComponent" */ './EmojiPickerComponent');

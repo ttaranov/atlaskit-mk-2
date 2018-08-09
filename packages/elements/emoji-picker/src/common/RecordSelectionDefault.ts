@@ -3,7 +3,7 @@ import {
   EmojiId,
   OnEmojiEvent,
   OptionalEmojiDescription,
-} from '../../../emoji/dist/es5';
+} from '@atlaskit/emoji';
 
 /**
  * A function that will wrap any configured Emoji 'onSelection' function to ensure recordSelection is always

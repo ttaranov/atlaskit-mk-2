@@ -12,7 +12,7 @@ import {
   OnEmojiEvent,
   ToneSelection,
   User,
-} from '../../../emoji/dist/es5';
+} from '@atlaskit/emoji';
 import { sizes } from './EmojiPickerSizes';
 import {
   CategoryHeadingItem,

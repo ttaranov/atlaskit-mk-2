@@ -1,5 +1,5 @@
-import { EmojiProvider } from '@atlaskit/emoji';
-import { EmojiDescription, OptionalEmojiDescription } from '../common/types';
+import { EmojiProvider } from '../api/EmojiResource';
+import { EmojiDescription, OptionalEmojiDescription } from '../types';
 
 const toneEmojiShortName = ':raised_hand:';
 

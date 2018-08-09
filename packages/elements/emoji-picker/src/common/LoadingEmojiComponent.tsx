@@ -1,6 +1,6 @@
 import { PureComponent } from 'react';
 
-import { EmojiProvider } from '../../../emoji/dist/es5';
+import { EmojiProvider } from '@atlaskit/emoji';
 
 export interface Props {
   emojiProvider: Promise<EmojiProvider>;
