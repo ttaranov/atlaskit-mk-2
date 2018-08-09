@@ -359,43 +359,50 @@ export class MediaGridView extends Component<
   //   return rows;
   // }
 
+  /**
+  # How the image scaling magic works
+  hx, wx, aspectx: height, width and aspect ratio of image x (aspect = w/h)
+  (hx, wx, aspectx = 0 when < x images on row (numImages))
+
+  All images in row must fit image grid width:
+  w1 * scale1 + w2 * scale2 + w3 * scale3 + (numImages-1) * margin = gridWidth
+
+  therefore:
+  (h1 * aspect1) * scale1 + (h2 * aspect2) * scale2 + (h3 * aspect3) * scale3
+      = gridWidth - (numImages-1) * margin
+
+  All images in row must be same height
+  h1 * scale1 = h2 * scale2 = h3 * scale3 = gridHeight
+
+  -> (h1 * scale1) * aspect1  + (h2 * scale2) * aspect2 + (h3 * scale3) * aspect3
+      = gridWidth - (numImages-1) * margin
+
+  -> gridHeight * aspect1 + gridHeight * aspect2 + gridHeight * aspect3
+      = gridWidth - (numImages-1) * margin
+
+  -> gridHeight * (aspect1 + aspect2 + aspect3) = gridWidth - (numImages-1) * margin
+
+  -> gridHeight = (gridWidth - (numImages-1) * margin) / (aspect1 + aspect2 + aspect3)
+  **/
+  calculateRowHeight(rowItems: GridItem[], margin: number, rowWidth: number) {
+    const aspectRatioSum = rowItems
+      .map(i => i.dimensions.width / i.dimensions.height)
+      .reduce((prev, curr) => prev + curr, 0);
+    const marginSum = (rowItems.length - 1) * imageMargin;
+    return (rowWidth! - marginSum) / aspectRatioSum;
+  }
+
   render() {
-    const { items, itemsPerRow, width } = this.props;
+    const { items, itemsPerRow, width = DEFAULT_WIDTH } = this.props;
     const rows: JSX.Element[] = [];
     const numberOfRows = Math.ceil(items.length / itemsPerRow!);
     for (let rowIndex = 0; rowIndex < numberOfRows; rowIndex += 1) {
-      /*
-      # How the image scaling magic works
-      hx, wx, aspectx: height, width and aspect ratio of image x (aspect = w/h)
-      (hx, wx, aspectx = 0 when < x images on row (numImages))
-
-      All images in row must fit image grid width:
-      w1 * scale1 + w2 * scale2 + w3 * scale3 + (numImages-1) * margin = gridWidth
-
-      therefore:
-      (h1 * aspect1) * scale1 + (h2 * aspect2) * scale2 + (h3 * aspect3) * scale3
-          = gridWidth - (numImages-1) * margin
-
-      All images in row must be same height
-      h1 * scale1 = h2 * scale2 = h3 * scale3 = gridHeight
-
-      -> (h1 * scale1) * aspect1  + (h2 * scale2) * aspect2 + (h3 * scale3) * aspect3
-          = gridWidth - (numImages-1) * margin
-
-      -> gridHeight * aspect1 + gridHeight * aspect2 + gridHeight * aspect3
-          = gridWidth - (numImages-1) * margin
-
-      -> gridHeight * (aspect1 + aspect2 + aspect3) = gridWidth - (numImages-1) * margin
-
-      -> gridHeight = (gridWidth - (numImages-1) * margin) / (aspect1 + aspect2 + aspect3)
-      */
-
       const itemsInRow = this.nonEmptyItemsOnRow(rowIndex, items);
-      const aspectRatioSum = itemsInRow
-        .map(i => i.dimensions.width / i.dimensions.height)
-        .reduce((prev, curr) => prev + curr, 0);
-      const marginSum = (itemsInRow.length - 1) * imageMargin;
-      const gridHeight = (width! - marginSum) / aspectRatioSum;
+      const gridHeight = this.calculateRowHeight(
+        itemsInRow,
+        imageMargin,
+        width,
+      );
 
       rows.push(
         <RowWrapper key={'row' + rowIndex}>
