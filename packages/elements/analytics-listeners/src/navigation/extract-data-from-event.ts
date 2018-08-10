@@ -2,12 +2,15 @@
  * Largely taken from analytics-web-react
  */
 import * as merge from 'lodash.merge';
+import { NAVIGATION_CONTEXT } from '@atlaskit/analytics-namespaced-context';
 
 const extractFromEventContext = (propertyNames: string[], event) =>
   event.context
     .reduce((acc: any[], contextItem: any) => {
       propertyNames.forEach(propertyName => {
-        acc.push(contextItem[propertyName]);
+        const navContext = contextItem[NAVIGATION_CONTEXT];
+        const navContextProp = navContext ? navContext[propertyName] : null;
+        acc.push(navContextProp || contextItem[propertyName]);
       });
       return acc;
     }, [])

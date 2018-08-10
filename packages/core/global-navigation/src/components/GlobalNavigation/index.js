@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component, Fragment } from 'react';
-import { AnalyticsContext } from '@atlaskit/analytics-next';
+import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 import { GlobalNav } from '@atlaskit/navigation-next';
 import Drawer from '@atlaskit/drawer';
 import {
@@ -201,7 +201,7 @@ export default class GlobalNavigation
     const { primaryItems, secondaryItems } = this.constructNavItems();
 
     return (
-      <AnalyticsContext
+      <NavigationAnalyticsContext
         data={{
           packageName,
           packageVersion,
@@ -233,7 +233,7 @@ export default class GlobalNavigation
             );
           })}
         </Fragment>
-      </AnalyticsContext>
+      </NavigationAnalyticsContext>
     );
   }
 }

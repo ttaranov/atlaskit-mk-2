@@ -36,7 +36,7 @@ export default withAnalyticsContext({
         actionSubjectId: props.actionSubjectId,
         attributes: {
           componentName: 'globalItem',
-          imageSource: props.icon && props.icon.name,
+          iconSource: props.icon && props.icon.name,
           navigationItemIndex: props.index,
         },
       });

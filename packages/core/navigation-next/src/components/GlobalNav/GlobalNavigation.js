@@ -6,7 +6,7 @@
  */
 
 import React, { Component, Fragment } from 'react';
-import { AnalyticsContext } from '@atlaskit/analytics-next';
+import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 import GlobalItem from '../GlobalItem';
 
 import {
@@ -22,7 +22,7 @@ export default class GlobalNavigation extends Component<GlobalNavigationProps> {
     const wrapperStyles = theme.mode.globalNav();
 
     return (
-      <AnalyticsContext
+      <NavigationAnalyticsContext
         data={{
           attributes: { navigationLayer: 'global' },
           componentName: 'globalNav',
@@ -31,7 +31,7 @@ export default class GlobalNavigation extends Component<GlobalNavigationProps> {
         <div css={wrapperStyles}>
           {/* TODO: Find a way to conditionally add this to context. We don't want it on non-nav events fired, e.g. tooltip? */}
           <PrimaryItemsList>
-            <AnalyticsContext
+            <NavigationAnalyticsContext
               data={{ attributes: { navigationIconGrouping: 'primary' } }}
             >
               <Fragment>
@@ -60,11 +60,11 @@ export default class GlobalNavigation extends Component<GlobalNavigationProps> {
                   );
                 })}
               </Fragment>
-            </AnalyticsContext>
+            </NavigationAnalyticsContext>
           </PrimaryItemsList>
 
           <SecondaryItemsList>
-            <AnalyticsContext
+            <NavigationAnalyticsContext
               data={{ attributes: { navigationIconGrouping: 'secondary' } }}
             >
               <Fragment>
@@ -77,10 +77,10 @@ export default class GlobalNavigation extends Component<GlobalNavigationProps> {
                   />
                 ))}
               </Fragment>
-            </AnalyticsContext>
+            </NavigationAnalyticsContext>
           </SecondaryItemsList>
         </div>
-      </AnalyticsContext>
+      </NavigationAnalyticsContext>
     );
   }
 }

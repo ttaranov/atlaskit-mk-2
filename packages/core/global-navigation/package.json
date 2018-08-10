@@ -11,7 +11,7 @@
     "dist"
   ],
   "dependencies": {
-    "@atlaskit/analytics-next": "^3.0.4",
+    "@atlaskit/analytics-namespaced-context": "^2.0.3",
     "@atlaskit/avatar": "^14.0.6",
     "@atlaskit/badge": "^9.0.4",
     "@atlaskit/blanket": "^7.0.4",
