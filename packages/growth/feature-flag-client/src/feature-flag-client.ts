@@ -74,7 +74,7 @@ export default class FrontendFeatureFlagClient {
     if (this.flags === null) {
       // @ts-ignore
       if (process.env.NODE_ENV !== 'production') {
-        // eslint-disable-next-line
+        // @ts-ignore
         console.warn(
           'FrontendFeatureFlagClient is being accessed prior to having flags initialised',
         );
