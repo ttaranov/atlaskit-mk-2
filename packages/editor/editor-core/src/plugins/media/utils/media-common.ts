@@ -182,7 +182,12 @@ export const removeMediaNode = (
     return;
   }
 
-  tr.deleteRange(currentMediaNodePos, currentMediaNodePos + node.nodeSize);
+  const containerNode = state.doc.resolve(currentMediaNodePos).node();
+
+  tr.deleteRange(
+    currentMediaNodePos,
+    currentMediaNodePos + containerNode.nodeSize,
+  );
 
   if (isTemporary(id)) {
     tr.setMeta('addToHistory', false);

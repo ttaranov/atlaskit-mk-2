@@ -901,8 +901,8 @@ export class MediaPluginState {
   removeSelectedMediaNode = (): boolean => {
     const { view } = this;
     if (this.selectedMediaNode()) {
-      console.warn('backspace: removeSelectedMediaNode');
       const { from, node } = view.state.selection as NodeSelection;
+      console.log('from is', from);
       removeMediaNode(view, node, () => from);
       return true;
     }
