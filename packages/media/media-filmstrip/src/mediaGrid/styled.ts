@@ -54,12 +54,12 @@ const paddingProperties = (hasPlaceholder, isRightPlaceholder) => {
 
   if (isRightPlaceholder) {
     return `
-    padding-right: 14px;
+    padding-right: 11px;
     border-right: 4px solid ${colors.B100};
     `;
   } else {
     return `
-    padding-left: 14px;
+    padding-left: 11px;
     border-left: 4px solid ${colors.B100};
     `;
   }
