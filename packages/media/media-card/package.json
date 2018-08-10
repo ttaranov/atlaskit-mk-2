@@ -68,6 +68,7 @@
     "@atlaskit/media-core": "^23.0.0",
     "@atlaskit/media-test-helpers": "^16.0.0",
     "@atlaskit/toggle": "^5.0.5",
+    "babel-plugin-emotion": "^9.1.0",
     "deepcopy": "0.6.3",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react": "^16.4.0",
