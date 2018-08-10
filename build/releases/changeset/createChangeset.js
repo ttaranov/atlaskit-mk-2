@@ -139,7 +139,10 @@ async function createChangeset(
 
       // Firstly we check if it is a peerDependency because if it is, we can't do any early exits
       // and our dependent bump type needs to be major.
-      if (depTypes.includes('peerDependencies')) {
+      if (
+        depTypes.includes('peerDependencies') &&
+        nextRelease.type !== 'patch'
+      ) {
         // check if we have seen this dependent before (we will need to update rather than insert)
         let existing = changeset.dependents.find(dep => dep.name === dependent);
         if (existing) {
