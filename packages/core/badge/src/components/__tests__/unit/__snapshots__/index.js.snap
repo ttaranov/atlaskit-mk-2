@@ -18,15 +18,10 @@ exports[`snapshot 1`] = `
   appearance="default"
   max={99}
   onValueUpdated={[Function]}
+  theme={[Function]}
 >
-  <Component
-    props="default"
-    theme={
-      Object {
-        "backgroundColor": [Function],
-        "textColor": [Function],
-      }
-    }
+  <Theme
+    values={[Function]}
   >
     <Ak.Badge.Container
       backgroundColor="#DFE1E6"
@@ -42,6 +37,6 @@ exports[`snapshot 1`] = `
         </Ak.Badge.Format>
       </span>
     </Ak.Badge.Container>
-  </Component>
+  </Theme>
 </Ak.Badge>
 `;
