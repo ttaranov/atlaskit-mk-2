@@ -21,7 +21,7 @@ const defaultProps = {
       searchSessionId: string,
       recentItems: object,
       requestStartTime?: number,
-    ) => { },
+    ) => {},
   ),
   fireShownPostQueryEvent: jest.fn(
     (
@@ -30,7 +30,7 @@ const defaultProps = {
       searchResults: object,
       searchSessionId: string,
       latestSearchQuery: string,
-    ) => { },
+    ) => {},
   ),
   intl,
 };
@@ -56,12 +56,12 @@ const assertLastCall = (spy, obj) => {
 };
 
 describe('QuickSearchContainer', () => {
-
-  const assertPreQueryAnalytics = (recentItems) => {
+  const assertPreQueryAnalytics = recentItems => {
     expect(defaultProps.fireShownPreQueryEvent).toBeCalled();
-    const lastCall = defaultProps.fireShownPreQueryEvent.mock.calls[
-      defaultProps.fireShownPreQueryEvent.mock.calls.length - 1
-    ];
+    const lastCall =
+      defaultProps.fireShownPreQueryEvent.mock.calls[
+        defaultProps.fireShownPreQueryEvent.mock.calls.length - 1
+      ];
     expect(lastCall).toMatchObject([
       expect.any(String),
       recentItems,
@@ -71,9 +71,10 @@ describe('QuickSearchContainer', () => {
 
   const assertPostQueryAnalytics = (query, searchResults) => {
     expect(defaultProps.fireShownPostQueryEvent).toBeCalled();
-    const lastCall = defaultProps.fireShownPostQueryEvent.mock.calls[
-      defaultProps.fireShownPostQueryEvent.mock.calls.length - 1
-    ];
+    const lastCall =
+      defaultProps.fireShownPostQueryEvent.mock.calls[
+        defaultProps.fireShownPostQueryEvent.mock.calls.length - 1
+      ];
     expect(lastCall).toMatchObject([
       expect.any(Number), // start time
       expect.any(Number), // elapsed time
@@ -81,7 +82,7 @@ describe('QuickSearchContainer', () => {
       expect.any(String), // session id
       query,
     ]);
-  }
+  };
 
   beforeEach(() => {
     // reset mocks of default props
@@ -139,7 +140,7 @@ describe('QuickSearchContainer', () => {
       });
       await waitForRender(wrapper, 10);
       return wrapper;
-    }
+    };
 
     const search = async (wrapper, query, resultPromise) => {
       getSearchResults.mockReturnValueOnce(resultPromise);
@@ -153,7 +154,7 @@ describe('QuickSearchContainer', () => {
       expect(getSearchResults).toHaveBeenCalledTimes(1);
       expect(getSearchResults.mock.calls[0][0]).toBe(query);
       return wrapper;
-    }
+    };
 
     beforeEach(() => {
       getSearchResults = jest.fn();
@@ -181,7 +182,11 @@ describe('QuickSearchContainer', () => {
     it('should hanldle error', async () => {
       const query = 'queryWithError';
       const wrapper = await renderAndWait();
-      await search(wrapper, query, Promise.reject(new Error('something wrong')));
+      await search(
+        wrapper,
+        query,
+        Promise.reject(new Error('something wrong')),
+      );
       assertLastCall(defaultProps.getSearchResultsComponent, {
         isLoading: false,
         isError: true,
@@ -192,7 +197,11 @@ describe('QuickSearchContainer', () => {
     it('should clear error after new query', async () => {
       const query = 'queryWithError2';
       const wrapper = await renderAndWait();
-      await search(wrapper, query, Promise.reject(new Error('something wrong')));
+      await search(
+        wrapper,
+        query,
+        Promise.reject(new Error('something wrong')),
+      );
       assertLastCall(defaultProps.getSearchResultsComponent, {
         isLoading: false,
         isError: true,
@@ -217,3 +226,4 @@ describe('QuickSearchContainer', () => {
       assertPostQueryAnalytics(newQuery, searchResults);
     });
   });
+});
