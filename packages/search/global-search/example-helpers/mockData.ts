@@ -322,18 +322,22 @@ export function makeCrossProductSearchData(
       scopes: [
         {
           id: Scope.ConfluencePageBlog,
+          experimentId: 'experiment-1',
           results: filteredConfResults,
         },
         {
           id: Scope.ConfluencePageBlogAttachment,
+          experimentId: 'experiment-1',
           results: filteredConfResultsWithAttachments,
         },
         {
           id: Scope.JiraIssue,
+          experimentId: 'experiment-1',
           results: filteredJiraResults,
         },
         {
           id: Scope.ConfluenceSpace,
+          experimentId: 'experiment-1',
           results: filteredSpaceResults,
         },
       ],

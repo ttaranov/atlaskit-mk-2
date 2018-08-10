@@ -30,6 +30,7 @@ export default class ResultList extends React.Component<Props> {
         sectionIndex,
         indexWithinSection: index,
         containerId: result.containerId,
+        experimentId: result.experimentId,
         ...this.props.analyticsData,
       };
 
