@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { FabricChannel } from '@atlaskit/analytics-listeners';
 import { createDummyComponentWithAnalytics } from '../examples/helpers';
-import { FabricElementsAnalyticsContext } from '../src';
+import { NavigationAnalyticsContext } from '../src';
 
 const myOnClickHandler = () => {};
 
@@ -12,19 +12,19 @@ const listenerHandler = (event, context) => {
 };
 
 const ElementsComponentWithAnalytics = createDummyComponentWithAnalytics(
-  FabricChannel.elements,
+  FabricChannel.navigation,
 );
 
 export default function Example() {
   return (
     <AnalyticsListener
       onEvent={listenerHandler}
-      channel={FabricChannel.elements}
+      channel={FabricChannel.navigation}
     >
       <div>
-        <FabricElementsAnalyticsContext data={{ greeting: 'hello' }}>
+        <NavigationAnalyticsContext data={{ greeting: 'hello' }}>
           <ElementsComponentWithAnalytics onClick={myOnClickHandler} />
-        </FabricElementsAnalyticsContext>
+        </NavigationAnalyticsContext>
       </div>
     </AnalyticsListener>
   );

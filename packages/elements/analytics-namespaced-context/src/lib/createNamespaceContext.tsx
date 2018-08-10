@@ -2,8 +2,6 @@ import * as React from 'react';
 import { ReactNode } from 'react';
 import { AnalyticsContext } from '@atlaskit/analytics-next';
 
-export const ELEMENTS_CONTEXT = 'fabricElementsCtx';
-
 export type Props = {
   children?: ReactNode;
   data: {};
@@ -22,6 +20,4 @@ const createNamespaceContext = (namespace: string) => {
   };
 };
 
-export const FabricElementsAnalyticsContext = createNamespaceContext(
-  ELEMENTS_CONTEXT,
-);
+export default createNamespaceContext;
