@@ -150,8 +150,10 @@ describe('ConfluenceQuickSearchContainer', () => {
         keepPreQueryState: false,
         searchSessionId: sessionId,
       });
-    expect(searchResultsComponent.type).toBe(ConfluenceSearchResults);
-    expect(searchResultsComponent.props).toMatchObject({
+    const { type = '', props = {} } =
+      (searchResultsComponent as React.ReactElement<Props>) || {};
+    expect(type).toBe(ConfluenceSearchResults);
+    expect(props).toMatchObject({
       query: 'query',
       isError: false,
       objectResults: [],

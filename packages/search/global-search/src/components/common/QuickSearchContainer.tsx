@@ -4,35 +4,41 @@ import { InjectedIntl } from 'react-intl';
 import { LinkComponent } from '../GlobalQuickSearchWrapper';
 import GlobalQuickSearch from '../GlobalQuickSearch';
 import performanceNow from '../../util/performance-now';
+import { Result } from '../../model/Result';
 
 export interface SearchResultProps extends State {
   retrySearch: Function;
 }
 
+type ResultsObject =
+  | {
+      [key: string]: Result[];
+    }
+  | {};
+
 export interface Props {
   linkComponent?: LinkComponent;
   getSearchResultsComponent(state: SearchResultProps): React.ReactNode;
-
-  getRecentItems(sessionId: string): Promise<object>;
+  getRecentItems(sessionId: string): Promise<ResultsObject>;
   getSearchResults(
     query: string,
     sessionId: string,
     startTime: number,
-  ): Promise<Object>;
+  ): Promise<ResultsObject>;
   fireShownPreQueryEvent(
     searchSessionId: string,
-    recentItems: object,
+    recentItems: ResultsObject,
     requestStartTime?: number,
   ): void;
   fireShownPostQueryEvent(
     startTime: number,
     elapsedMs: number,
-    searchResults: object,
+    searchResults: ResultsObject,
     searchSessionId: string,
     latestSearchQuery: string,
   ): void;
 
-  handleSearchSubmit?: Function;
+  handleSearchSubmit?({ target: string }): void;
   isSendSearchTermsEnabled?: boolean;
   intl: InjectedIntl;
 }
