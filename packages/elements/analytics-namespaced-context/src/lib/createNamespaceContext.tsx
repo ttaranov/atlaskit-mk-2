@@ -7,8 +7,11 @@ export type Props = {
   data: {};
 };
 
-const createNamespaceContext = (namespace: string) => {
-  return (props: Props) => {
+const createNamespaceContext = (
+  namespace: string,
+  displayName = 'NamespacedContext',
+) => {
+  const Component: React.StatelessComponent<Props> = (props: Props) => {
     const newData = {
       [namespace]: props.data,
     };
@@ -18,6 +21,8 @@ const createNamespaceContext = (namespace: string) => {
       </AnalyticsContext>
     );
   };
+  Component.displayName = displayName;
+  return Component;
 };
 
 export default createNamespaceContext;
