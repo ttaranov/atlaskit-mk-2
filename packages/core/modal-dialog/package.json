@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/modal-dialog",
-  "version": "6.0.6",
+  "version": "6.0.7",
   "description": "A React component that displays content in a layer blocking the interaction with the page.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -42,7 +42,7 @@
     "@atlaskit/field-text": "^7.0.4",
     "@atlaskit/inline-dialog": "^8.0.4",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
-    "react-beautiful-dnd": "^8.0.7",
+    "react-beautiful-dnd": "^9.0.0",
     "react-dom": "^16.4.2",
     "react-lorem-component": "^0.12.2"
   },

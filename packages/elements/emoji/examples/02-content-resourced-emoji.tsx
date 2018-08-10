@@ -26,7 +26,7 @@ const SampleEmojis = (props: SampleEmojiProps) => (
       fitToHeight={props.fitToHeight}
     />
     <ResourcedEmoji
-      emojiId={{ shortName: ':awthanks:', id: 'atlassian-awthanks' }}
+      emojiId={{ shortName: ':blue_star:', id: 'atlassian-blue_star' }}
       emojiProvider={
         props.emojiProvider || (getEmojiResource() as Promise<EmojiProvider>)
       }
@@ -34,7 +34,7 @@ const SampleEmojis = (props: SampleEmojiProps) => (
       fitToHeight={props.fitToHeight}
     />
     <ResourcedEmoji
-      emojiId={{ shortName: ':shrug:', id: 'atlassian-shrug' }}
+      emojiId={{ shortName: ':yellow_star:', id: 'atlassian-yellow_star' }}
       emojiProvider={
         props.emojiProvider || (getEmojiResource() as Promise<EmojiProvider>)
       }
@@ -42,7 +42,7 @@ const SampleEmojis = (props: SampleEmojiProps) => (
       fitToHeight={props.fitToHeight}
     />
     <ResourcedEmoji
-      emojiId={{ shortName: ':disappear:', id: 'atlassian-disappear' }}
+      emojiId={{ shortName: ':sweat_smile:', id: '1f605' }}
       emojiProvider={
         props.emojiProvider || (getEmojiResource() as Promise<EmojiProvider>)
       }
@@ -50,7 +50,7 @@ const SampleEmojis = (props: SampleEmojiProps) => (
       fitToHeight={props.fitToHeight}
     />
     <ResourcedEmoji
-      emojiId={{ shortName: ':badpokerface:', id: 'atlassian-badpokerface' }}
+      emojiId={{ shortName: ':hamster:', id: '1f439' }}
       emojiProvider={
         props.emojiProvider || (getEmojiResource() as Promise<EmojiProvider>)
       }
@@ -58,7 +58,7 @@ const SampleEmojis = (props: SampleEmojiProps) => (
       fitToHeight={props.fitToHeight}
     />
     <ResourcedEmoji
-      emojiId={{ shortName: ':freddie:', id: 'atlassian-freddie' }}
+      emojiId={{ shortName: ':wtf:', id: 'wtf' }}
       emojiProvider={
         props.emojiProvider || (getEmojiResource() as Promise<EmojiProvider>)
       }

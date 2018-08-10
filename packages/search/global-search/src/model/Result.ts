@@ -19,6 +19,8 @@ export interface Result {
   resultType: ResultType;
   // optional container id
   containerId?: string;
+  // optional id for the experiment that generated this result
+  experimentId?: string;
 }
 /**
  * Map of String keys and Array of results value, but can be empty as well
