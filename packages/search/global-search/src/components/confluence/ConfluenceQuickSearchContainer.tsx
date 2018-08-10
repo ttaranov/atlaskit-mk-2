@@ -237,7 +237,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         peopleElapsedMs,
       ]) => ({
         objectResults: useAggregator
-          ? xpsearchResultsMap.get(Scope.ConfluencePageBlogAttachment)
+          ? xpsearchResultsMap.get(Scope.ConfluencePageBlogAttachment) || []
           : objectResults,
         spaceResults: xpsearchResultsMap.get(Scope.ConfluenceSpace) || [],
         peopleResults,

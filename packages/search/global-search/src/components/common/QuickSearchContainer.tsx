@@ -5,9 +5,13 @@ import { LinkComponent } from '../GlobalQuickSearchWrapper';
 import GlobalQuickSearch from '../GlobalQuickSearch';
 import performanceNow from '../../util/performance-now';
 
+export interface SearchResultProps extends State {
+  retrySearch: Function;
+}
+
 export interface Props {
   linkComponent?: LinkComponent;
-  getSearchResultComponent: Function;
+  getSearchResultComponent(state: SearchResultProps): React.ReactNode;
 
   getRecentItems(sessionId: string): Promise<object>;
   getSearchResult(
@@ -136,9 +140,11 @@ export class QuickSearchContainer extends React.Component<Props, State> {
   handleMount = async () => {
     const startTime = performanceNow();
 
-    this.setState({
-      isLoading: true,
-    });
+    if (!this.state.isLoading) {
+      this.setState({
+        isLoading: true,
+      });
+    }
 
     const sessionId = this.state.searchSessionId;
 
@@ -164,6 +170,24 @@ export class QuickSearchContainer extends React.Component<Props, State> {
       }
     }
   };
+
+  shouldComponentUpdate(nextProps, nextState) {
+    const result = this.state !== nextState || this.props !== nextProps;
+    console.log(
+      'should component update',
+      result,
+      this.state === nextState,
+      Object.keys({ ...nextState, ...this.state })
+        .map(key => ({
+          key,
+          updated: this.state[key] !== nextState[key],
+          value: this.state[key],
+          nextValue: nextState[key],
+        }))
+        .filter(({ updated }) => !!updated),
+    );
+    return result;
+  }
 
   render() {
     const {

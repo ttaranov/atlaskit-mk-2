@@ -17,7 +17,7 @@ const intlProvider = new IntlProvider(
   { locale: 'en', messages: getMessagesForLocale('en') },
   {},
 );
-const { intl } = intlProvider.getChildContext();
+export const { intl } = intlProvider.getChildContext();
 
 /**
  * When using React-Intl `injectIntl` on components, props.intl is required.
