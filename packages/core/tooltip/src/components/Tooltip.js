@@ -9,6 +9,7 @@ import React, {
   type ComponentType,
 } from 'react';
 import NodeResolver from 'react-node-resolver';
+import flushable from 'flushable';
 
 import Portal from '@atlaskit/portal';
 import {
@@ -26,7 +27,6 @@ import type { CoordinatesType, PositionType, PositionTypeBase } from '../types';
 import { Tooltip as StyledTooltip } from '../styled';
 import Animation from './Animation';
 import Position from './Position';
-import flushable from './utils/flushable';
 
 import { hoveredPayload, unhoveredPayload } from './utils/analytics-payloads';
 
