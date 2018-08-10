@@ -35,7 +35,7 @@ function removeMediaNode(
 
   const { caption } = state.schema.nodes;
 
-  if (state.selection.$from.parent.type === caption) {
+  /*if (state.selection.$from.parent.type === caption) {
     console.log('before', state.selection.$from.nodeBefore);
     if (state.selection.$from.nodeBefore === null) {
       const deleteFrom = state.selection.$from.before();
@@ -46,7 +46,7 @@ function removeMediaNode(
       dispatch(state.tr.delete(deleteFrom, deleteTo));
       return true;
     }
-  }
+  }*/
 
   return false;
 }

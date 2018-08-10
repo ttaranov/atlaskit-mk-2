@@ -114,13 +114,27 @@ export const Caption: React.ComponentClass<HTMLAttributes<{}>> = styled.div`
 
     .placeholder {
       color: blue;
-      /*display: inline;*/
+      display: inline;
       text-style: italic;
     }
 
     .placeholder::before {
       content: 'Type a caption...';
     }
+
+    br {
+      display: none;
+    }
+  }
+
+  .placeholder::after {
+    content: 'Type a caption...';
+    margin-left: 96px;
+    color: green;
+  }
+
+  & figcaption.placeholder {
+    margin-right: 96px;
   }
 
   .ProseMirror-hideselection {

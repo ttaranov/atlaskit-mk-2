@@ -553,12 +553,17 @@ export class MediaPluginState {
 
     if (captionNode && captionNode.textContent.length === 0) {
       const elem = document.createElement('div');
-      elem.className = 'placeholder';
+      // elem.className = 'placeholder-push';
       // elem.innerText = 'Type a caption...';
-      // elem.contentEditable = 'true';
+      // elem.contentEditable = 'false';
 
       // + 1 to place the decoration inside the caption
-      return [Decoration.widget(captionPos + 1, elem)];
+
+      return [
+        Decoration.node(captionPos, captionPos + captionNode.nodeSize, {
+          class: 'placeholder',
+        }) /*, Decoration.widget(captionPos + 1, elem)*/,
+      ];
     }
 
     return [];
