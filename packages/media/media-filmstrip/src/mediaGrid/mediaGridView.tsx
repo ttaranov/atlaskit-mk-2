@@ -143,10 +143,9 @@ export class MediaGridView extends Component<
   };
 
   dropRowIndex() {
-    const { draggingIndex, dropIndex = -1 } = this.state;
+    const { dropIndex = -1 } = this.state;
     const { itemsPerRow = DEFAULT_ITEMS_PER_ROW } = this.props;
-    const leftToRight = dropIndex! > draggingIndex;
-    return Math.floor((leftToRight ? dropIndex - 1 : dropIndex) / itemsPerRow);
+    return Math.floor(dropIndex / itemsPerRow);
   }
 
   moveImage = () => {
@@ -165,7 +164,7 @@ export class MediaGridView extends Component<
     if (rowInplaceSwap) {
       dropIndex -= 1;
     } else {
-      // Step 1.5. Replace taken item with empty
+      // Step 1.5. Replace taken item with empty item
       items.splice(draggingIndex, 0, EMPTY_GRID_ITEM);
     }
 
