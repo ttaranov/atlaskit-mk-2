@@ -12,6 +12,8 @@
   "author": "Atlassian Pty Ltd",
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
+    "css-box-model": "^1.0.0",
+    "memoize-one": "^3.0.1",
     "react-beautiful-dnd": "^8.0.7"
   },
   "peerDependencies": {

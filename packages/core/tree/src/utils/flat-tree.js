@@ -40,6 +40,7 @@ export const getDestinationPath = (
   flattenedTree: FlattenedTree,
   sourceIndex: number,
   destinationIndex: number,
+  level: ?number,
 ): Path => {
   // Moving down
   const down: boolean = destinationIndex > sourceIndex;
@@ -91,6 +92,7 @@ export const getDestinationPath = (
     const lowerLevel: number = lowerPath ? lowerPath.length : 1;
     const upperLevel: number = upperPath ? upperPath.length : 1;
     const sourceLevel: number = sourcePath.length;
+    console.log(`Calculating destination based on level ${level}`);
     // Disambiguation of the level.
     const finalLevel = sourceLevel <= lowerLevel ? lowerLevel : upperLevel;
 
