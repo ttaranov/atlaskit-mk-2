@@ -63,7 +63,7 @@ test('onDragStart - onRankStart is called with proper arguments', () => {
   const wrapper = shallow(<RankableBody {...props} isRanking />);
 
   const dndContext = wrapper.find(DragDropContext);
-  dndContext.simulate('dragStart', {
+  dndContext.simulate('beforeDragStart', {
     draggableId: key,
     source: { index },
   });
