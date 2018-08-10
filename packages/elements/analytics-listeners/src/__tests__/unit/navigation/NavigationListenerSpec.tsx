@@ -350,6 +350,36 @@ describe('NavigationListener', () => {
           tags: ['navigation'],
         },
       },
+      {
+        name: 'with navigation context',
+        eventPayload: {
+          action: 'someAction',
+          actionSubject: 'someComponent',
+          actionSubjectId: 'someComponentId',
+        },
+        context: [
+          { navigationCtx: { component: 'uberComponent' } },
+          { navigationCtx: { attributes: { isExpanded: true } } },
+          { navigationCtx: { attributes: { navigationLayer: 'global' } } },
+          { component: 'navigationNext', source: 'navigation' },
+        ],
+        clientPayload: {
+          action: 'someAction',
+          actionSubject: 'someComponent',
+          actionSubjectId: 'someComponentId',
+          attributes: {
+            sourceHierarchy: 'navigation',
+            packageHierarchy: undefined,
+            componentHierarchy: 'uberComponent.navigationNext',
+            packageName: undefined,
+            packageVersion: undefined,
+            isExpanded: true,
+            navigationLayer: 'global',
+          },
+          source: 'navigation',
+          tags: ['navigation'],
+        },
+      },
     ],
   );
 });
