@@ -5,6 +5,7 @@ import styled, { StyledComponentClass } from 'styled-components';
 import { colors } from '@atlaskit/theme';
 export const imageMargin = 10;
 const borderWidth = 5;
+const hoverAnimationLengthSeconds = 0.4;
 export const RowWrapper = styled.div`
   position: relative;
   line-height: 0;
@@ -29,7 +30,7 @@ export const Img = styled.img`
     outline-width: ${borderWidth}px;
     outline-offset: -${borderWidth}px;
     outline-color: ${isSelected ? `${colors.B500} !important` : 'transparent'};
-    // transition: outline 0.5s cubic-bezier(0.165, 0.84, 0.44, 1); //cubic-bezier(0.19, 1, 0.22, 1);
+    transition: outline ${hoverAnimationLengthSeconds}s cubic-bezier(0.165, 0.84, 0.44, 1);
 
     &:hover {
       outline-color: ${colors.B300};
@@ -54,12 +55,12 @@ const paddingProperties = (hasPlaceholder, isRightPlaceholder) => {
 
   if (isRightPlaceholder) {
     return `
-    padding-right: 14px;
+    padding-right: 11px;
     border-right: 4px solid ${colors.B100};
     `;
   } else {
     return `
-    padding-left: 14px;
+    padding-left: 11px;
     border-left: 4px solid ${colors.B100};
     `;
   }
@@ -100,7 +101,7 @@ export const RemoveIconWrapper = styled.div`
   bottom: 10px;
   right: 10px;
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: opacity ${hoverAnimationLengthSeconds}s;
 
   button {
     color: white !important;
