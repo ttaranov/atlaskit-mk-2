@@ -106,11 +106,7 @@ const arrowKeys = {
 
 const StyledMenu = styled.div`
   background-color: ${colors.N20};
-  border: 0 0 1px solid ${colors.N60A};
   border-radius: ${borderRadius()}px;
-  margin: 8px 0;
-  overflow: hidden;
-  text-align: center;
   z-index: ${layers.dialog};
   ${elevation.e200};
 `;
