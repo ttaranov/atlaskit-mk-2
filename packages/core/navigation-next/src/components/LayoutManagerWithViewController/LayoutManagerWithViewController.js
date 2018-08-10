@@ -38,6 +38,11 @@ const skeleton = (
 class LayoutManagerWithViewControllerBase extends Component<
   LayoutManagerWithViewControllerProps,
 > {
+  constructor(props: LayoutManagerWithViewControllerProps) {
+    super(props);
+    this.renderContainerNavigation.displayName = 'ContainerNavigationRenderer';
+    this.renderProductNavigation.displayName = 'ProductNavigationRenderer';
+  }
   renderContainerNavigation = () => {
     const {
       navigationViewController: {

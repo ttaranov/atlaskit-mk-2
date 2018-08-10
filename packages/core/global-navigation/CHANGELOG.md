@@ -1,5 +1,21 @@
 # @atlaskit/global-navigation
 
+## 4.0.7
+- [patch] Remove unused dependancy on navigation-next [2d3b1ee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d3b1ee)
+- [patch] Updated dependencies [2d3b1ee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d3b1ee)
+
+## 4.0.6
+
+- [patch] Add variable name displayNames for anonymous function SFC components to improve debugging experience [1602872](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1602872)
+
+- [none] Updated dependencies [50d469f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/50d469f)
+  - @atlaskit/drawer@1.0.5
+  - @atlaskit/navigation-next@3.2.4
+- [none] Updated dependencies [1602872](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1602872)
+  - @atlaskit/navigation-next@3.2.4
+- [none] Updated dependencies [2e148df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e148df)
+  - @atlaskit/navigation-next@3.2.4
+
 ## 4.0.5
 - [patch] Updated dependencies [626244b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/626244b)
   - @atlaskit/drawer@1.0.4
