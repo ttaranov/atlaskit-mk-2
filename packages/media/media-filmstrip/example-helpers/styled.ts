@@ -63,3 +63,39 @@ export const FieldRangeWrapper = styled.div`
 export const GridContainer = styled.div`
   margin: 0 auto;
 `;
+
+export const Debugger = styled.div`
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  width: 200px;
+  height: 400px;
+`;
+
+export const DebuggerRow = styled.div`
+  display: flex;
+`;
+interface DebuggerItemProps {
+  isEmpty: boolean;
+  isDragged: boolean;
+}
+export const DebuggerItem = styled.div`
+  width: 30px;
+  height: 30px;
+  margin: 0 6px 6px 0;
+  color: white;
+  border-radius: 3px;
+  padding-top: 5px;
+  text-align: center;
+  box-sizing: border-box;
+  background-color: ${(props: DebuggerItemProps) =>
+    props.isEmpty ? '#FF5630' : props.isDragged ? '#FFAB00' : '#36B37E'};
+`;
+
+export const DebuggerPlaceHolder = styled.div`
+  height: 30px;
+  border-left: 2px solid #6554c0;
+  margin-left: -4px;
+  padding-right: 2px;
+  box-sizing: border-box;
+`;

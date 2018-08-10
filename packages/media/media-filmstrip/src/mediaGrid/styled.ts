@@ -4,7 +4,7 @@ import { ClassAttributes, HTMLAttributes, ImgHTMLAttributes } from 'react';
 import styled, { StyledComponentClass } from 'styled-components';
 import { colors } from '@atlaskit/theme';
 export const imageMargin = 10;
-
+const borderWidth = 5;
 export const RowWrapper = styled.div`
   position: relative;
   line-height: 0;
@@ -17,19 +17,25 @@ export const RowWrapper = styled.div`
 
 export interface ImgProps {
   isSelected: boolean;
+  outlinesEnabled: boolean;
 }
 
 export const Img = styled.img`
   width: 100%;
-  outline-style: solid;
-  outline-width: 5px;
-  outline-color: ${({ isSelected }: ImgProps) =>
-    isSelected ? `${colors.B500} !important` : 'transparent'};
-  transition: outline 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+  ${({ outlinesEnabled, isSelected }: ImgProps) =>
+    outlinesEnabled
+      ? ` 
+    outline-style: solid;
+    outline-width: ${borderWidth}px;
+    outline-offset: -${borderWidth}px;
+    outline-color: ${isSelected ? `${colors.B500} !important` : 'transparent'};
+    // transition: outline 0.5s cubic-bezier(0.165, 0.84, 0.44, 1); //cubic-bezier(0.19, 1, 0.22, 1);
 
-  &:hover {
-    outline-color: ${colors.B300};
-  }
+    &:hover {
+      outline-color: ${colors.B300};
+    }
+    `
+      : ``};
 `;
 
 export interface ImgWrapperProps {
@@ -99,31 +105,4 @@ export const RemoveIconWrapper = styled.div`
   button {
     color: white !important;
   }
-`;
-
-export const Debugger = styled.div`
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  width: 200px;
-  height: 400px;
-`;
-
-export const DebuggerRow = styled.div`
-  display: flex;
-`;
-interface DebuggerItemProps {
-  isEmpty: boolean;
-}
-export const DebuggerItem = styled.div`
-  width: 30px;
-  height: 30px;
-  margin: 0 4px 4px 0;
-  color: white;
-  border-radius: 3px;
-  padding-top: 5px;
-  text-align: center;
-  box-sizing: border-box;
-  background-color: ${(props: DebuggerItemProps) =>
-    props.isEmpty ? '#FF5630' : '#36B37E'};
 `;

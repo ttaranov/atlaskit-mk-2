@@ -9,9 +9,6 @@ import {
   ImgWrapper,
   Img,
   RemoveIconWrapper,
-  Debugger,
-  DebuggerRow,
-  DebuggerItem,
 } from './styled';
 
 export interface GridItem {
@@ -29,7 +26,6 @@ export interface MediaGridViewProps {
   isInteractive?: boolean;
   width?: number;
   itemsPerRow?: number;
-  showDebug?: boolean;
 }
 
 export interface MediaGridViewState {
@@ -45,8 +41,9 @@ export interface MediaGridViewState {
   selected: number;
 }
 
-const DEFAULT_WIDTH = 744;
-const ITEMS_PER_ROW = 3;
+export const DEFAULT_WIDTH = 744;
+export const DEFAULT_ITEMS_PER_ROW = 3;
+export const DEFAULT_IS_INTERACTIVE = true;
 
 export const EMPTY_GRID_ITEM: GridItem = {
   dimensions: {
@@ -64,13 +61,13 @@ export class MediaGridView extends Component<
   state: MediaGridViewState = {
     selected: -1,
     isDragging: false,
-    draggingIndex: 0,
+    draggingIndex: -1,
   };
 
   static defaultProps: Partial<MediaGridViewProps> = {
-    itemsPerRow: ITEMS_PER_ROW,
+    itemsPerRow: DEFAULT_ITEMS_PER_ROW,
     width: DEFAULT_WIDTH,
-    isInteractive: true,
+    isInteractive: DEFAULT_IS_INTERACTIVE,
   };
 
   componentDidMount() {
@@ -86,11 +83,11 @@ export class MediaGridView extends Component<
   }
 
   onKeyDown = (event: KeyboardEvent) => {
-    const { keyCode } = event;
+    const { key } = event;
     const { isInteractive } = this.props;
     const { selected } = this.state;
 
-    if (isInteractive && keyCode === 8 && selected !== -1) {
+    if (isInteractive && key === 'Backspace' && selected !== -1) {
       this.deleteImage(selected);
       this.setState({
         selected: Math.max(selected - 1, -1),
@@ -112,12 +109,13 @@ export class MediaGridView extends Component<
   resetDragging = () => {
     this.setState({
       dropIndex: undefined,
+      draggingIndex: -1,
       isDragging: false,
     });
   };
 
   onDragOver = (index, event: React.DragEvent<HTMLImageElement>) => {
-    const { itemsPerRow = ITEMS_PER_ROW, items } = this.props;
+    const { items, itemsPerRow = DEFAULT_ITEMS_PER_ROW } = this.props;
     const { left, width } = event.currentTarget.getBoundingClientRect();
     const x = event.pageX - left;
     let dropIndex = index;
@@ -125,10 +123,16 @@ export class MediaGridView extends Component<
     if (onTheRightSideOfAnImage) {
       dropIndex += 1;
     }
-    const overLastImageInTheRow = dropIndex % itemsPerRow === 0;
+    const dropRowIndex = this.dropRowIndex();
+    const itemsOnDropRow = this.nonEmptyItemsOnRow(dropRowIndex, items).length;
+    const indexOnDropRow = dropIndex - dropRowIndex * itemsPerRow;
+    const overLastImageInTheRow = indexOnDropRow % itemsOnDropRow === 0;
+
     const isAbsoluteLastItem = index === items.length - 1;
     const lastInRow =
-      (onTheRightSideOfAnImage && overLastImageInTheRow) || isAbsoluteLastItem;
+      (onTheRightSideOfAnImage && overLastImageInTheRow) ||
+      (isAbsoluteLastItem && onTheRightSideOfAnImage);
+    // console.log({indexOnDropRow, lastInRow, isAbsoluteLastItem, onTheRightSideOfAnImage});
     if (
       this.state.dropIndex !== dropIndex ||
       this.state.lastInRow !== lastInRow
@@ -138,16 +142,53 @@ export class MediaGridView extends Component<
     event.preventDefault();
   };
 
+  dropRowIndex() {
+    const { dropIndex = -1 } = this.state;
+    const { itemsPerRow = DEFAULT_ITEMS_PER_ROW } = this.props;
+    return Math.floor(dropIndex / itemsPerRow);
+  }
+
   moveImage = () => {
     const { draggingIndex, selected } = this.state;
+    const { itemsPerRow = DEFAULT_ITEMS_PER_ROW } = this.props;
     const items = [...this.props.items];
 
     let dropIndex = this.state.dropIndex!;
 
+    // Step 1. Take item out
     const draggingItem = items.splice(draggingIndex, 1)[0];
-    if (dropIndex > draggingIndex) {
+    const draggingItemRow = Math.floor(draggingIndex / itemsPerRow);
+    const leftToRight = dropIndex > draggingIndex;
+    const dropRow = this.dropRowIndex();
+    const rowInplaceSwap = draggingItemRow === dropRow && leftToRight;
+    if (rowInplaceSwap) {
       dropIndex -= 1;
+    } else {
+      // Step 1.5. Replace taken item with empty item
+      items.splice(draggingIndex, 0, EMPTY_GRID_ITEM);
     }
+
+    // Step 2. Put in a proper place
+    items.splice(dropIndex, 0, draggingItem);
+
+    // Step 3. Find next empty item and delete it.
+    if (!rowInplaceSwap) {
+      let emptyItemToDeleteIndex = -1;
+      items.forEach((item, index) => {
+        if (
+          emptyItemToDeleteIndex < 0 &&
+          this.isEmptyItem(item) &&
+          index > dropIndex
+        ) {
+          emptyItemToDeleteIndex = index;
+        }
+      });
+      if (emptyItemToDeleteIndex >= 0) {
+        items.splice(emptyItemToDeleteIndex, 1);
+      }
+    }
+
+    this.normalizeAndReportChange(items);
 
     // If we are dragging across the selected image, we need to increment
     // or decrement the selected image index
@@ -160,8 +201,6 @@ export class MediaGridView extends Component<
       }
       this.setState({ selected: newSelected });
     }
-    items.splice(dropIndex, 0, draggingItem);
-    this.normalizeAndReportChange(items);
   };
 
   onDragEnd = (event: React.DragEvent<HTMLImageElement>) => {
@@ -171,7 +210,7 @@ export class MediaGridView extends Component<
     this.resetDragging();
   };
 
-  onClick = (index: number) => () => {
+  selectImage = (index: number) => () => {
     this.setState({
       selected: index,
     });
@@ -189,7 +228,7 @@ export class MediaGridView extends Component<
   onRemoveIconClick = (index: number) => () => this.deleteImage(index);
 
   renderRemoveIcon = (index: number) => {
-    const { isInteractive } = this.props;
+    const { isInteractive = DEFAULT_IS_INTERACTIVE } = this.props;
     if (!isInteractive) {
       return;
     }
@@ -208,7 +247,7 @@ export class MediaGridView extends Component<
   };
 
   renderImage = (item: GridItem, gridHeight: number, index: number) => {
-    const { isInteractive } = this.props;
+    const { isInteractive = DEFAULT_IS_INTERACTIVE } = this.props;
     const { dimensions, dataURI, isLoaded } = item;
     const { width, height } = dimensions;
     const aspectRatio = width / height;
@@ -216,7 +255,7 @@ export class MediaGridView extends Component<
       <React.Fragment>
         <Img
           isSelected={this.state.selected === index}
-          onClick={this.onClick(index)}
+          onClick={this.selectImage(index)}
           draggable={isInteractive}
           src={dataURI}
           onLoad={this.onLoad(dataURI)}
@@ -228,6 +267,7 @@ export class MediaGridView extends Component<
           onDragOver={
             isInteractive ? this.onDragOver.bind(this, index) : undefined
           }
+          outlinesEnabled={isInteractive}
         />
         {this.renderRemoveIcon(index)}
       </React.Fragment>
@@ -236,12 +276,13 @@ export class MediaGridView extends Component<
     );
 
     let isRightPlaceholder = this.state.lastInRow || false;
-    if (this.state.draggingIndex > this.state.dropIndex!) {
-      // If image is dragged from "right" to "left" it will end up going as a first image of a
-      // next row. So we override placeholder on the right logic and show left placeholder on the
-      // next row where image will lang.
-      isRightPlaceholder = false;
-    }
+
+    // if (this.state.draggingIndex > this.state.dropIndex!) {
+    //   // If image is dragged from "right" to "left" it will end up going as a first image of a
+    //   // next row. So we override placeholder on the right logic and show left placeholder on the
+    //   // next row where image will lang.
+    //   isRightPlaceholder = false;
+    // }
     const hasPlaceholder =
       index === this.state.dropIndex! - (isRightPlaceholder ? 1 : 0);
 
@@ -269,11 +310,11 @@ export class MediaGridView extends Component<
   }
 
   private nonEmptyItemsOnRow(rowIndex: number, items: GridItem[]) {
-    const { itemsPerRow = ITEMS_PER_ROW } = this.props;
+    const { itemsPerRow = DEFAULT_ITEMS_PER_ROW } = this.props;
     const rowStartIndex = rowIndex * itemsPerRow;
     return items
       .slice(rowStartIndex, rowStartIndex + itemsPerRow)
-      .filter(item => !!item.dataURI);
+      .filter(this.isNotEmptyItem);
   }
 
   // we want to remove the selected image if the Grid loses the focus
@@ -308,7 +349,7 @@ export class MediaGridView extends Component<
   };
 
   private getItemsInRows(items: GridItem[]) {
-    const { itemsPerRow = ITEMS_PER_ROW } = this.props;
+    const { itemsPerRow = DEFAULT_ITEMS_PER_ROW } = this.props;
     const itemsInRows: GridItem[][] = [];
     const numberOfRows = Math.ceil(items.length / itemsPerRow);
     for (let rowIndex = 0; rowIndex < numberOfRows; rowIndex += 1) {
@@ -326,7 +367,7 @@ export class MediaGridView extends Component<
   normalizeAndReportChange(items: GridItem[]) {
     const { onItemsChange } = this.props;
 
-    const { itemsPerRow = ITEMS_PER_ROW } = this.props;
+    const { itemsPerRow = DEFAULT_ITEMS_PER_ROW } = this.props;
 
     const itemsInRows = this.getItemsInRows(items);
     const itemsInNonEmptyRows = itemsInRows.filter(
@@ -369,31 +410,6 @@ export class MediaGridView extends Component<
     return !this.isEmptyItem(item);
   };
 
-  debugItems() {
-    const { items, itemsPerRow = ITEMS_PER_ROW } = this.props;
-    const rows: JSX.Element[] = [];
-    const numberOfRows = Math.ceil(items.length / itemsPerRow);
-    for (let rowIndex = 0; rowIndex < numberOfRows; rowIndex += 1) {
-      const rowItems = items.slice(
-        rowIndex * itemsPerRow,
-        rowIndex * itemsPerRow + itemsPerRow,
-      );
-      rows.push(
-        <DebuggerRow key={'row' + rowIndex}>
-          {rowItems.map((item, colIndex) => {
-            const i = rowIndex * itemsPerRow + colIndex;
-            return (
-              <DebuggerItem key={i} isEmpty={this.isEmptyItem(item)}>
-                {i}
-              </DebuggerItem>
-            );
-          })}
-        </DebuggerRow>,
-      );
-    }
-    return rows;
-  }
-
   /**
    * # How the image scaling magic works
    * hx, wx, aspectx: height, width and aspect ratio of image x (aspect = w/h)
@@ -430,7 +446,7 @@ export class MediaGridView extends Component<
   render() {
     const {
       items,
-      itemsPerRow = ITEMS_PER_ROW,
+      itemsPerRow = DEFAULT_ITEMS_PER_ROW,
       width = DEFAULT_WIDTH,
     } = this.props;
     const rows: JSX.Element[] = [];
@@ -454,7 +470,6 @@ export class MediaGridView extends Component<
     }
     return (
       <React.Fragment>
-        {this.props.showDebug ? <Debugger>{this.debugItems()}</Debugger> : null}
         <Wrapper innerRef={this.saveWrapperRef}>{rows}</Wrapper>
       </React.Fragment>
     );
