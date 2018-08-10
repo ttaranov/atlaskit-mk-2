@@ -9,7 +9,11 @@ import {
   akEditorWideLayoutWidth,
   akEditorBreakoutPadding,
 } from '../../styles';
-import { akColorN200 } from '../../../node_modules/@atlaskit/util-shared-styles';
+import {
+  akColorN200,
+  akColorN100,
+  akColorN200A,
+} from '../../../node_modules/@atlaskit/util-shared-styles';
 
 function float(layout: MediaSingleLayout): string {
   switch (layout) {
@@ -97,40 +101,30 @@ const MediaSingleDimensionHelper = ({
 `;
 
 export const Caption: React.ComponentClass<HTMLAttributes<{}>> = styled.div`
-  & {
-    color: red;
-  }
-
   & figcaption {
-    color: orange;
-    /*color: ${akColorN200};*/
+    color: ${akColorN200};
     font-size: 12px;
     font-weight: 400;
     line-height: 20px;
 
     margin-top: 8px;
-    /*margin-bottom: 8px;*/
     display: block;
-
-    .placeholder {
-      color: blue;
-      display: inline;
-      text-style: italic;
-    }
-
-    .placeholder::before {
-      content: 'Type a caption...';
-    }
 
     br {
       display: none;
+    }
+
+    span[data-mention-id] > span {
+      font-size: 12px;
     }
   }
 
   .placeholder::after {
     content: 'Type a caption...';
     margin-left: 96px;
-    color: green;
+
+    font-style: italic;
+    color: ${akColorN200A};
   }
 
   & figcaption.placeholder {
@@ -141,7 +135,6 @@ export const Caption: React.ComponentClass<HTMLAttributes<{}>> = styled.div`
     & div {
       .div {
         caret-color: transparent;
-        color: green;
       }
     }
   }
