@@ -76,7 +76,7 @@ export const media: NodeSpec = {
   inline: false,
   // defining: true,
   selectable: true,
-  atom: true,
+  // atom: true,
   attrs: defaultAttrs as any,
   parseDOM: [
     {
@@ -117,6 +117,7 @@ export const media: NodeSpec = {
   ],
   toDOM(node: PMNode) {
     const attrs = {
+      // 'contentEditable': 'false',
       'data-id': node.attrs.id,
       'data-node-type': 'media',
       'data-type': node.attrs.type,

@@ -32,7 +32,7 @@ export const defaultAttrs = {
 export const mediaSingle: NodeSpec = {
   inline: false,
   group: 'block',
-  // defining: true,
+  defining: true,
   content: 'media caption?',
   attrs: defaultAttrs,
   parseDOM: [
@@ -48,6 +48,7 @@ export const mediaSingle: NodeSpec = {
     const attrs = {
       'data-node-type': 'mediaSingle',
       'data-layout': layout,
+      // 'contentEditable': 'false'
     };
     return ['div', attrs, 0];
   },

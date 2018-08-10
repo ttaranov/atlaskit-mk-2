@@ -187,6 +187,7 @@ const setSelectionAfterMediaInsertion = (
     // if nothing after the media group, fallback to select the newest uploaded media item
     setNodeSelection(view, mediaPos);
   } else {
+    console.log('doing shitty text selection');
     setTextSelection(view, endOfMediaGroup + 1);
   }
 };

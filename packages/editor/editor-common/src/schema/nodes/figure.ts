@@ -21,6 +21,12 @@ export const caption: NodeSpec = {
     },
   ],
   toDOM(node: Node) {
-    return ['figcaption', 0];
+    return [
+      'figcaption',
+      {
+        // 'contentEditable': 'true'
+      },
+      0,
+    ];
   },
 };

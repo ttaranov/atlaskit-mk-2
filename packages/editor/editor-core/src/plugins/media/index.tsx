@@ -98,9 +98,26 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
                 ),
 
                 // media rendering handled by the above nodeviews
+                // also, having an empty element next to the
+                // media that gets rendered above it hides the cursor
+                // selection webkit does
                 media: (node, view, getPos) => {
-                  const dom = document.createElement('span');
-                  dom.style.display = 'none';
+                  const dom = document.createElement('div');
+
+                  // don't make display: none otherwise Chrome
+                  // will ignore it for cursor events
+
+                  // hide the outline from ProseMirror so it appears
+                  // invisible
+                  dom.style.outline = 'none';
+
+                  // dom.style.position = 'relative';
+                  // dom.style.top = '-10000px';
+                  // dom.style.left = '-10000px';
+
+                  // don't actually edit it
+                  dom.contentEditable = 'false';
+                  dom.style.cursor = 'transparent';
                   return {
                     dom,
                     contentDOM: dom,

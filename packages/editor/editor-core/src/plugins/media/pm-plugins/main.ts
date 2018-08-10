@@ -534,14 +534,6 @@ export class MediaPluginState {
     let captionPos;
 
     if (parent.type === mediaSingle || parent.type === mediaGroup) {
-      console.warn('had parent was mediaSingle');
-      console.warn(
-        'parent is',
-        parent,
-        'around selection is',
-        selection.$from.nodeBefore,
-        selection.$from.nodeAfter,
-      );
       captionNode = parent.lastChild;
       captionPos = selection.$from.after() - 3;
     } else if (parent.type === caption) {
@@ -551,27 +543,19 @@ export class MediaPluginState {
       selection.$from.nodeBefore &&
       selection.$from.nodeBefore.type === mediaSingle
     ) {
-      console.warn('had media single bit', selection.$from.nodeBefore);
       captionNode = selection.$from.nodeBefore.lastChild;
 
       // TODO: assumes we already have a caption
       captionPos = selection.$from.after() - 3;
-      console.log('selection from', selection.from);
     } else {
-      console.warn(
-        'unknown, parent is',
-        parent,
-        'around selection is',
-        selection.$from.nodeBefore,
-        selection.$from.nodeAfter,
-      );
+      return [];
     }
 
-    console.log('caption node is', captionNode, 'pos', captionPos);
-
     if (captionNode && captionNode.textContent.length === 0) {
-      const elem = document.createElement('span');
-      elem.innerText = 'Type a caption...';
+      const elem = document.createElement('div');
+      elem.className = 'placeholder';
+      // elem.innerText = 'Type a caption...';
+      // elem.contentEditable = 'true';
 
       // + 1 to place the decoration inside the caption
       return [Decoration.widget(captionPos + 1, elem)];
@@ -1076,12 +1060,17 @@ export const createPlugin = (
         if (selectedMediaSingle.node) {
           const { node, pos } = selectedMediaSingle;
 
-          if (node.lastChild && node.lastChild.type !== caption) {
-            const captionPos = pos + node.lastChild.nodeSize;
-            return newState.tr.insert(
-              captionPos,
-              caption.create(),
-            ) /*.setSelection(TextSelection.create(newState.doc, captionPos))*/;
+          if (
+            node.lastChild &&
+            node.lastChild.type !== caption &&
+            node.firstChild
+          ) {
+            const captionPos = pos + node.firstChild.nodeSize;
+            const tr = newState.tr.insert(captionPos, caption.create());
+
+            console.log('inserting caption at', pos);
+            // return tr.setSelection(NodeSelection.near(tr.doc.resolve(pos)));
+            return tr;
           }
         } else {
           const previouslySelectedMediaSingle = mediaSingleFromSelection(
@@ -1103,6 +1092,7 @@ export const createPlugin = (
             ) {
               const captionPos = pos + node.firstChild.nodeSize;
               if (node.lastChild.nodeSize === 2) {
+                console.log('removing caption at', captionPos);
                 return newState.tr.delete(captionPos, captionPos + 2);
               }
             }
@@ -1114,8 +1104,6 @@ export const createPlugin = (
       decorations: state => {
         const pluginState = getMediaPluginState(state);
         const emptyDecos = pluginState.getEmptyCaptionDecorations();
-        console.log('empty decos', emptyDecos);
-        // const emptyDecos = [];
 
         if (!pluginState.showDropzone) {
           return emptyDecos.length

@@ -97,8 +97,13 @@ const MediaSingleDimensionHelper = ({
 `;
 
 export const Caption: React.ComponentClass<HTMLAttributes<{}>> = styled.div`
+  & {
+    color: red;
+  }
+
   & figcaption {
-    color: ${akColorN200};
+    color: orange;
+    /*color: ${akColorN200};*/
     font-size: 12px;
     font-weight: 400;
     line-height: 20px;
@@ -107,9 +112,23 @@ export const Caption: React.ComponentClass<HTMLAttributes<{}>> = styled.div`
     /*margin-bottom: 8px;*/
     display: block;
 
-    &.empty {
-      content: 'Type a caption...';
+    .placeholder {
+      color: blue;
+      /*display: inline;*/
       text-style: italic;
+    }
+
+    .placeholder::before {
+      content: 'Type a caption...';
+    }
+  }
+
+  .ProseMirror-hideselection {
+    & div {
+      .div {
+        caret-color: transparent;
+        color: green;
+      }
     }
   }
 
