@@ -391,6 +391,7 @@ describe('MediaGridView', () => {
     it('should select second last image after last image selected and deleted', () => {
       const items: GridItem[] = generateGridItems(5);
       const onChange = jest.fn().mockImplementation(items => items);
+
       class Wrapper extends React.Component {
         state = {
           items,
@@ -400,6 +401,7 @@ describe('MediaGridView', () => {
           this.setState({ items });
           onChange(items);
         };
+
         render() {
           const { items } = this.state;
           return (
@@ -412,6 +414,7 @@ describe('MediaGridView', () => {
           );
         }
       }
+
       const component = mount(<Wrapper />);
 
       component
@@ -548,8 +551,26 @@ describe('MediaGridView', () => {
   });
 
   describe('move', () => {
-    it('should move item from back to front and shift everything after insertion index', () => {
-      const items: GridItem[] = generateGridItems(6);
+    type IndexOrNull = number | null;
+    const indeciesToMediaItems = (indecies: IndexOrNull[]) =>
+      indecies.map(
+        (indexOrNull: IndexOrNull) =>
+          indexOrNull === null ? EMPTY_GRID_ITEM : gridItem(indexOrNull),
+      );
+
+    const mediaItemToIndex = (gridItem: GridItem) =>
+      !!gridItem.dataURI ? +gridItem.dataURI.match(/.*-(\d+)/)![1] : null;
+
+    const mediaItemsToIndecies = (gridItems: GridItem[]) =>
+      gridItems.map(mediaItemToIndex);
+
+    const assertMove = (
+      fromIndex: number,
+      toIndex: number,
+      inIndecies: IndexOrNull[],
+      outIndecies: IndexOrNull[],
+    ) => {
+      const items: GridItem[] = indeciesToMediaItems(inIndecies);
       const component = shallow(
         <MediaGridView
           itemsPerRow={3}
@@ -560,134 +581,53 @@ describe('MediaGridView', () => {
       const instance = component.instance() as MediaGridView;
       instance.state = {
         ...instance.state,
-        dropIndex: 0,
+        dropIndex: toIndex,
         isDragging: true,
-        draggingIndex: 3,
+        draggingIndex: fromIndex,
       };
       instance.moveImage();
-      expect(onItemsChange).toHaveBeenCalledWith([
-        gridItem(3),
-        gridItem(0),
-        gridItem(1),
-        gridItem(2),
-        gridItem(4),
-        gridItem(5),
-      ]);
+      expect(mediaItemsToIndecies(onItemsChange.mock.calls[0][0])).toEqual(
+        outIndecies,
+      );
+    };
+
+    it('should move item from back to front and shift everything after insertion index', () => {
+      assertMove(3, /* → */ 0, [0, 1, 2, 3, 4, 5], [3, 0, 1, 2, 4, 5]);
     });
 
     it('should move item from front to back and shift everything after insertion index', () => {
-      const items: GridItem[] = generateGridItems(6);
-      const component = shallow(
-        <MediaGridView
-          itemsPerRow={3}
-          items={items}
-          onItemsChange={onItemsChange}
-        />,
-      );
-      const instance = component.instance() as MediaGridView;
-      instance.state = {
-        ...instance.state,
-        dropIndex: 4,
-        isDragging: true,
-        draggingIndex: 0,
-      };
-      instance.moveImage();
-      expect(onItemsChange).toHaveBeenCalledWith([
-        // Row 1
-        gridItem(1),
-        gridItem(2),
-        EMPTY_GRID_ITEM,
-        // Row 2
-        gridItem(3),
-        gridItem(0),
-        gridItem(4),
-        // Row 3
-        gridItem(5),
-      ]);
+      assertMove(0, /* → */ 4, [0, 1, 2, 3, 4, 5], [1, 2, null, 3, 0, 4, 5]);
     });
 
     it('should move item from row of 2 to row of 2', () => {
-      const items: GridItem[] = [
-        // Row 1
-        gridItem(0),
-        gridItem(1),
-        EMPTY_GRID_ITEM,
-        // Row 2
-        gridItem(3),
-        gridItem(4),
-        EMPTY_GRID_ITEM,
-        // Row 3
-        gridItem(6),
-      ];
-      const component = shallow(
-        <MediaGridView
-          itemsPerRow={3}
-          items={items}
-          onItemsChange={onItemsChange}
-        />,
+      assertMove(
+        3,
+        /* → */ 1,
+        [0, 1, null, 3, 4, null, 6],
+        [0, 3, 1, 4, null, null, 6],
       );
-      const instance = component.instance() as MediaGridView;
-      instance.state = {
-        ...instance.state,
-        dropIndex: 1,
-        isDragging: true,
-        draggingIndex: 3,
-      };
-      instance.moveImage();
-      expect(onItemsChange).toHaveBeenCalledWith([
-        // Row 1
-        gridItem(0),
-        gridItem(3),
-        gridItem(1),
-        // Row 2
-        gridItem(4),
-        EMPTY_GRID_ITEM,
-        EMPTY_GRID_ITEM,
-        // Row 3
-        gridItem(6),
-      ]);
     });
 
     it('should swap two items on the same row', () => {
-      const items: GridItem[] = [
-        // Row 1
-        gridItem(0),
-        gridItem(1),
-        gridItem(2),
-        // Row 2
-        gridItem(3),
-        gridItem(4),
-        EMPTY_GRID_ITEM,
-        // Row 3
-        gridItem(6),
-      ];
-      const component = shallow(
-        <MediaGridView
-          itemsPerRow={3}
-          items={items}
-          onItemsChange={onItemsChange}
-        />,
+      assertMove(
+        0,
+        /* → */ 2,
+        [0, 1, 2, 3, 4, null, 6],
+        [1, 0, 2, 3, 4, null, 6],
       );
-      const instance = component.instance() as MediaGridView;
-      instance.state = {
-        ...instance.state,
-        dropIndex: 2,
-        isDragging: true,
-        draggingIndex: 0,
-      };
-      instance.moveImage();
-      expect(onItemsChange).toHaveBeenCalledWith([
-        // Row 1
-        gridItem(1),
-        gridItem(0),
-        gridItem(2),
-        // Row 2
-        gridItem(3),
-        gridItem(4),
-        EMPTY_GRID_ITEM,
-        // Row 3
-        gridItem(6),
-      ]);
+    });
+
+    it('should push out empty spot', () => {
+      assertMove(6, /* → */ 3, [0, 1, 2, 3, 4, null, 6], [0, 1, 2, 6, 3, 4]);
+    });
+
+    it('should not leave empty line when last item is moved', () => {
+      assertMove(
+        3,
+        /* → */ 6,
+        [0, 1, 2, 3, null, null, 6, 7],
+        [0, 1, 2, 3, 6, 7],
+      );
     });
   });
 });
