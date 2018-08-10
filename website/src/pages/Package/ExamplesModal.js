@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
 import { Link, Redirect } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
-import { akElevationMixins } from '@atlaskit/util-shared-styles';
 
 import CodeIcon from '@atlaskit/icon/glyph/code';
 import CloseIcon from '@atlaskit/icon/glyph/cross';
@@ -19,7 +18,7 @@ import Modal, {
   ModalHeader as OgModalHeader,
   ModalTitle,
 } from '@atlaskit/modal-dialog';
-import { colors } from '@atlaskit/theme';
+import { colors, elevation, gridSize } from '@atlaskit/theme';
 
 import * as fs from '../../utils/fs';
 import packageResolver, { getLoaderUrl } from '../../utils/packageResolver';
@@ -59,12 +58,14 @@ const ContentBody = styled.div`
   padding-bottom: 17px;
 `;
 const ModalContent = styled.div`
-  ${akElevationMixins.e200} flex: 1 1 auto;
+  flex: 1 1 auto;
   min-height: 240px;
+  padding: ${gridSize() * 2}px;
+  ${elevation.e200};
 `;
 const ModalHeader = styled(OgModalHeader)`
-  margin-left: 20px;
-  margin-right: 20px;
+  margin-left: ${gridSize() * 2.5}px;
+  margin-right: ${gridSize() * 2.5}px;
   padding-left: 0;
   padding-right: 0;
 `;
@@ -83,7 +84,7 @@ const keylineMask = css`
 `;
 const Nav = styled.nav`
   ${keylineMask} flex-shrink: 0;
-  padding-right: 16px;
+  padding-right: ${gridSize() * 2}px;
   position: relative;
   width: 240px;
 `;
