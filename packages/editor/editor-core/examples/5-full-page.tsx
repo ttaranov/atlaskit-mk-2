@@ -161,7 +161,7 @@ export class ExampleEditor extends React.Component<Props, State> {
               provider: Promise.resolve(cardProvider),
             }}
             {...providers}
-            media={{ provider: mediaProvider, allowMediaSingle: true }}
+            media={{ provider: mediaProvider, allowMediaSingle: false }}
             placeholder="Write something..."
             shouldFocus={false}
             disabled={this.state.disabled}
