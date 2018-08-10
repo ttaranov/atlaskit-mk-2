@@ -4,8 +4,8 @@ import { css, Styles, StyledComponentClass } from 'styled-components';
 
 export const mediaStyles = css`
   .ProseMirror {
-    & [layout='full-width'] > div,
-    & [layout='wide'] > div {
+    & [layout='full-width'] > div > div,
+    & [layout='wide'] > div > div {
       margin-left: 50%;
       transform: translateX(-50%);
     }
