@@ -35,22 +35,40 @@ export default class SingleSelectDialog extends Component<{}, State> {
 
     const content = (
       <div style={{ width: '300px' }}>
-        <h1>Using Select</h1>
-        <Select options={options} />
-        <DatePicker />
+        <p>
+          <Select options={options} />
+        </p>
+        <p>
+          <DatePicker />
+        </p>
       </div>
     );
 
     return (
-      <InlineDialog
-        content={content}
-        isOpen={this.state.isDialogOpen}
-        onClose={this.dialogClosed}
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          height: '100%',
+          justifyContent: 'center',
+          flexDirection: 'column',
+        }}
       >
-        <Button onClick={this.openDialog} isDisabled={this.state.isDialogOpen}>
-          Open Dialog
-        </Button>
-      </InlineDialog>
+        <div>
+          <InlineDialog
+            content={content}
+            isOpen={this.state.isDialogOpen}
+            onClose={this.dialogClosed}
+          >
+            <Button
+              onClick={this.openDialog}
+              isDisabled={this.state.isDialogOpen}
+            >
+              Open Dialog
+            </Button>
+          </InlineDialog>
+        </div>
+      </div>
     );
   }
 }
