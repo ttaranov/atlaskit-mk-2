@@ -21,7 +21,7 @@ const defaultProps = {
       searchSessionId: string,
       recentItems: object,
       requestStartTime?: number,
-    ) => {},
+    ) => { },
   ),
   fireShownPostQueryEvent: jest.fn(
     (
@@ -30,7 +30,7 @@ const defaultProps = {
       searchResults: object,
       searchSessionId: string,
       latestSearchQuery: string,
-    ) => {},
+    ) => { },
   ),
   intl,
 };
@@ -54,7 +54,44 @@ const assertLastCall = (spy, obj) => {
     spy.mock.calls[spy.mock.calls.length - 1];
   expect(getSearchResultComponentLastCall[0]).toMatchObject(obj);
 };
+
 describe('QuickSearchContainer', () => {
+
+  const assertPreQueryAnalytics = (recentItems) => {
+    expect(defaultProps.fireShownPreQueryEvent).toBeCalled();
+    const lastCall = defaultProps.fireShownPreQueryEvent.mock.calls[
+      defaultProps.fireShownPreQueryEvent.mock.calls.length - 1
+    ];
+    expect(lastCall).toMatchObject([
+      expect.any(String),
+      recentItems,
+      expect.any(Number),
+    ]);
+  };
+
+  const assertPostQueryAnalytics = (query, searchResults) => {
+    expect(defaultProps.fireShownPostQueryEvent).toBeCalled();
+    const lastCall = defaultProps.fireShownPostQueryEvent.mock.calls[
+      defaultProps.fireShownPostQueryEvent.mock.calls.length - 1
+    ];
+    expect(lastCall).toMatchObject([
+      expect.any(Number), // start time
+      expect.any(Number), // elapsed time
+      searchResults,
+      expect.any(String), // session id
+      query,
+    ]);
+  }
+
+  beforeEach(() => {
+    // reset mocks of default props
+    defaultProps.fireShownPostQueryEvent.mockReset();
+    defaultProps.fireShownPreQueryEvent.mockReset();
+    defaultProps.getRecentItems.mockReset();
+    defaultProps.getSearchResults.mockReset();
+    defaultProps.getSearchResultsComponent.mockReset();
+  });
+
   it('should render GlobalQuickSearch', () => {
     const wrapper = mountQuickSearchContainer();
     const globalQuickSearch = wrapper.find(GlobalQuickSearch);
@@ -71,10 +108,8 @@ describe('QuickSearchContainer', () => {
       ],
     };
     const getRecentItems = jest.fn(() => Promise.resolve(recentItems));
-    const getSearchResultsComponent = jest.fn(() => {});
     const wrapper = mountQuickSearchContainer({
       getRecentItems,
-      getSearchResultsComponent,
     });
 
     let globalQuickSearch = wrapper.find(GlobalQuickSearch);
@@ -85,42 +120,100 @@ describe('QuickSearchContainer', () => {
     globalQuickSearch = wrapper.find(GlobalQuickSearch);
     expect(globalQuickSearch.props().isLoading).toBe(false);
     expect(getRecentItems).toHaveBeenCalled();
-    assertLastCall(getSearchResultsComponent, {
+    assertLastCall(defaultProps.getSearchResultsComponent, {
       recentItems,
       isLoading: false,
       isError: false,
     });
+
+    assertPreQueryAnalytics(recentItems);
   });
 
-  it('should handle search', async () => {
-    const searchResults = {
-      spaces: [
-        {
-          key: 'space-1',
-        },
-      ],
-    };
-    const query = 'query';
-    const getSearchResults = jest.fn(() => Promise.resolve(searchResults));
-    const getSearchResultsComponent = jest.fn(() => {});
-    const wrapper = mountQuickSearchContainer({
-      getSearchResults,
-      getSearchResultsComponent,
+  describe('Search', () => {
+    let getSearchResults;
+
+    const renderAndWait = async (getRecentItems?) => {
+      const wrapper = mountQuickSearchContainer({
+        getSearchResults,
+        ...(getRecentItems ? { getRecentItems } : {}),
+      });
+      await waitForRender(wrapper, 10);
+      return wrapper;
+    }
+
+    const search = async (wrapper, query, resultPromise) => {
+      getSearchResults.mockReturnValueOnce(resultPromise);
+      let globalQuickSearch = wrapper.find(GlobalQuickSearch);
+      await globalQuickSearch.props().onSearch(query);
+      await waitForRender(wrapper, 10);
+
+      globalQuickSearch = wrapper.find(GlobalQuickSearch);
+      expect(globalQuickSearch.props().isLoading).toBe(false);
+
+      expect(getSearchResults).toHaveBeenCalledTimes(1);
+      expect(getSearchResults.mock.calls[0][0]).toBe(query);
+      return wrapper;
+    }
+
+    beforeEach(() => {
+      getSearchResults = jest.fn();
     });
-    await waitForRender(wrapper, 10);
 
-    let globalQuickSearch = wrapper.find(GlobalQuickSearch);
-    await globalQuickSearch.props().onSearch(query);
-    await waitForRender(wrapper, 10);
+    it('should handle search', async () => {
+      const searchResults = {
+        spaces: [
+          {
+            key: 'space-1',
+          },
+        ],
+      };
+      const query = 'query';
+      const wrapper = await renderAndWait();
+      await search(wrapper, query, Promise.resolve(searchResults));
+      assertLastCall(defaultProps.getSearchResultsComponent, {
+        searchResults,
+        isLoading: false,
+        isError: false,
+      });
+      assertPostQueryAnalytics(query, searchResults);
+    });
 
-    globalQuickSearch = wrapper.find(GlobalQuickSearch);
-    expect(globalQuickSearch.props().isLoading).toBe(false);
+    it('should hanldle error', async () => {
+      const query = 'queryWithError';
+      const wrapper = await renderAndWait();
+      await search(wrapper, query, Promise.reject(new Error('something wrong')));
+      assertLastCall(defaultProps.getSearchResultsComponent, {
+        isLoading: false,
+        isError: true,
+        latestSearchQuery: query,
+      });
+    });
 
-    expect(getSearchResults).toHaveBeenCalledTimes(1);
-    assertLastCall(getSearchResultsComponent, {
-      searchResults,
-      isLoading: false,
-      isError: false,
+    it('should clear error after new query', async () => {
+      const query = 'queryWithError2';
+      const wrapper = await renderAndWait();
+      await search(wrapper, query, Promise.reject(new Error('something wrong')));
+      assertLastCall(defaultProps.getSearchResultsComponent, {
+        isLoading: false,
+        isError: true,
+        latestSearchQuery: query,
+      });
+
+      const newQuery = 'newQuery';
+      const searchResults = {
+        spaces: [
+          {
+            key: 'space-2',
+          },
+        ],
+      };
+      getSearchResults.mockReset();
+      await search(wrapper, newQuery, Promise.resolve(searchResults));
+      assertLastCall(defaultProps.getSearchResultsComponent, {
+        isLoading: false,
+        isError: false,
+        latestSearchQuery: newQuery,
+      });
+      assertPostQueryAnalytics(newQuery, searchResults);
     });
   });
-});

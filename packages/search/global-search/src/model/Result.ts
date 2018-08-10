@@ -20,6 +20,14 @@ export interface Result {
   // optional container id
   containerId?: string;
 }
+/**
+ * Map of String keys and Array of results value, but can be empty as well
+ */
+export type GenericResultObject =
+  | {
+      [key: string]: Result[];
+    }
+  | {};
 
 export interface ConfluenceObjectResult extends Result {
   containerName: string;
