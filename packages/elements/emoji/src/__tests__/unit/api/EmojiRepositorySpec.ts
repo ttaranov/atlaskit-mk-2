@@ -25,6 +25,32 @@ function checkOrder(expected, actual) {
   });
 }
 
+const chineseEmoji: EmojiDescription = {
+  id: '4f921',
+  name: '我是法国人',
+  shortName: ':法国人:',
+  type: 'STANDARD',
+  category: 'PEOPLE',
+  order: 10103,
+  representation: {
+    sprite: {
+      url:
+        'https://pf-emoji-service--cdn.domain.dev.atlassian.io/standard/6ba7377a-fbd4-4efe-8dbc-f025cfb40c2b/32x32/people.png',
+      row: 23,
+      column: 25,
+      height: 782,
+      width: 850,
+    },
+    x: 646,
+    y: 714,
+    height: 32,
+    width: 32,
+    xIndex: 19,
+    yIndex: 21,
+  },
+  searchable: true,
+};
+
 const cowboy: EmojiDescription = {
   id: '1f920',
   name: 'face with cowboy hat',
@@ -476,6 +502,31 @@ describe('EmojiRepository', () => {
     it('does not partially match on shortname', () => {
       const repository = new EmojiRepository([...allEmojis, standardTest]);
       expect(repository.findAllMatchingShortName(':test:')).to.deep.equal([]);
+    });
+  });
+
+  describe('#chinese emoji', () => {
+    it('should match chinese emoji by shortname character', () => {
+      const repository = new EmojiRepository([
+        ...allEmojis,
+        standardTest,
+        chineseEmoji,
+      ]);
+      expect(repository.findByShortName(':法国人:')).to.deep.equal(
+        chineseEmoji,
+      );
+    });
+
+    it('should match chinese emoji by partial search character', () => {
+      const repository = new EmojiRepository([
+        ...allEmojis,
+        standardTest,
+        chineseEmoji,
+      ]);
+
+      const results = repository.search(':法');
+      expect(results.emojis.length).to.equal(1);
+      expect(results.emojis).to.deep.equal([chineseEmoji]);
     });
   });
 
