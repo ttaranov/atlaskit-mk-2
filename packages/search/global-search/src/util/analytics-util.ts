@@ -18,6 +18,7 @@ export interface ShownAnalyticsAttributes {
   resultCount: number;
   resultSectionCount: number;
   resultContext: ShownResultContextSection[];
+  experimentId?: string;
 }
 
 export interface SearchPerformanceTiming {
@@ -103,7 +104,14 @@ export function buildShownEventDetails(
     0,
   );
 
+  // Grab experiment ID from the first result. For now we only run single experiments.
+  const experimentId =
+    sectionsWithContent[0] && sectionsWithContent[0][0]
+      ? sectionsWithContent[0][0].experimentId
+      : undefined;
+
   return {
+    experimentId: experimentId,
     resultCount: totalResultCount,
     resultSectionCount: sectionsWithContent.length,
     resultContext: sectionsWithContent.map(mapResultsToShownSection),
