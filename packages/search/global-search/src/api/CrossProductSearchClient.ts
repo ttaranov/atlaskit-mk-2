@@ -67,6 +67,7 @@ export interface ScopeResult {
   id: Scope;
   error?: string;
   results: SearchItem[];
+  experimentId?: string;
 }
 
 export interface CrossProductSearchClient {
@@ -138,7 +139,12 @@ export default class CrossProductSearchClientImpl
         resultsMap.set(
           scopeResult.id,
           scopeResult.results.map(result =>
-            mapItemToResult(scopeResult.id as Scope, result, searchSessionId),
+            mapItemToResult(
+              scopeResult.id as Scope,
+              result,
+              searchSessionId,
+              scopeResult.experimentId,
+            ),
           ),
         );
         return resultsMap;
@@ -158,6 +164,7 @@ function mapItemToResult(
   scope: Scope,
   item: SearchItem,
   searchSessionId: string,
+  experimentId?: string,
 ): Result {
   switch (scope) {
     case Scope.ConfluencePageBlog:
@@ -165,12 +172,14 @@ function mapItemToResult(
       return mapConfluenceItemToResultObject(
         item as ConfluenceItem,
         searchSessionId,
+        experimentId,
       );
     }
     case Scope.ConfluenceSpace: {
       return mapConfluenceItemToResultSpace(
         item as ConfluenceItem,
         searchSessionId,
+        experimentId,
       );
     }
     case Scope.JiraIssue: {
@@ -187,6 +196,7 @@ function mapItemToResult(
 function mapConfluenceItemToResultObject(
   item: ConfluenceItem,
   searchSessionId: string,
+  experimentId?: string,
 ): ConfluenceObjectResult {
   return {
     resultId: item.content!.id, // content always available for pages/blogs/attachments
@@ -198,6 +208,7 @@ function mapConfluenceItemToResultObject(
     resultType: ResultType.ConfluenceObjectResult,
     containerId: 'UNAVAILABLE', // TODO
     iconClass: item.iconCssClass,
+    experimentId: experimentId,
   };
 }
 
@@ -217,9 +228,12 @@ function mapJiraItemToResult(item: JiraItem): JiraObjectResult {
 function mapConfluenceItemToResultSpace(
   spaceItem: ConfluenceItem,
   searchSessionId: string,
+  experimentId?: string,
 ): ContainerResult {
   // add searchSessionId
-  const href = new URI(`${spaceItem.baseUrl}${spaceItem.container.displayUrl}`);
+  const href = new URI(
+    `${spaceItem.baseUrl || ''}${spaceItem.container.displayUrl}`,
+  );
   href.addQuery('search_id', searchSessionId);
 
   return {
@@ -229,5 +243,6 @@ function mapConfluenceItemToResultSpace(
     href: href.toString(),
     analyticsType: AnalyticsType.ResultConfluence,
     resultType: ResultType.GenericContainerResult,
+    experimentId: experimentId,
   };
 }

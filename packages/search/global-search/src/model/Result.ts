@@ -19,6 +19,8 @@ export interface Result {
   resultType: ResultType;
   // optional container id
   containerId?: string;
+  // optional id for the experiment that generated this result
+  experimentId?: string;
 }
 
 export interface ConfluenceObjectResult extends Result {
