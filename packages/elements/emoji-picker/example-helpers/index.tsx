@@ -2,7 +2,7 @@ import debug, { enableLogger } from '../src/util/logger';
 import { OnEmojiEvent, OnToneSelected, EmojiUpload } from '../src/common/types';
 import { OnUploadEmoji } from '../src/picker/EmojiUploadPicker';
 import { emoji, UsageClearEmojiResource } from '@atlaskit/util-data-test';
-import { EmojiRepository } from '@atlaskit/emoji-provider';
+import { EmojiRepository } from '@atlaskit/emoji';
 
 const storyData = emoji.storyData;
 

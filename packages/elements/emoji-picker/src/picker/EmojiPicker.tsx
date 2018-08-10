@@ -7,8 +7,7 @@ import LoadingEmojiComponent, {
 } from '../common/LoadingEmojiComponent';
 import EmojiPickerComponent, { PickerRefHandler } from './EmojiPickerComponent';
 import { LoadingItem } from './EmojiPickerVirtualItems';
-import { OnEmojiEvent } from '@atlaskit/emoji-provider';
-import { EmojiProvider } from '@atlaskit/emoji';
+import { EmojiProvider, OnEmojiEvent } from '@atlaskit/emoji';
 import { FireAnalyticsEvent, withAnalytics } from '@atlaskit/analytics';
 
 const emojiPickerModuleLoader = () =>

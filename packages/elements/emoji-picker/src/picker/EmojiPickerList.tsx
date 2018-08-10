@@ -12,6 +12,7 @@ import {
   OnEmojiEvent,
   ToneSelection,
   User,
+  CategoryId,
 } from '@atlaskit/emoji';
 import { sizes } from './EmojiPickerSizes';
 import {
@@ -25,11 +26,7 @@ import {
 import * as Items from './EmojiPickerVirtualItems';
 import * as styles from './styles';
 // import { EmojiContext } from '../common/internal-types';
-import {
-  CategoryDescriptionMap,
-  CategoryGroupKey,
-  CategoryId,
-} from './categories';
+import { CategoryDescriptionMap, CategoryGroupKey } from './categories';
 import CategoryTracker from './CategoryTracker';
 
 const categoryClassname = 'emoji-category';

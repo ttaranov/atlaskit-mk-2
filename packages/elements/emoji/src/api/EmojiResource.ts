@@ -18,13 +18,13 @@ import {
   ToneSelection,
   User,
   OptionalUser,
+  CategoryId,
 } from '../types';
 import { isMediaEmoji, isPromise, toEmojiId } from '../type-helpers';
 import debug from '../util/logger';
 import EmojiLoader from './EmojiLoader';
 import EmojiRepository from './EmojiRepository';
 import SiteEmojiResource from './media/SiteEmojiResource';
-import { CategoryId } from '../components/picker/categories';
 
 export interface EmojiResourceConfig {
   /**

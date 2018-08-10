@@ -5,7 +5,7 @@ import {
   EmojiResourceConfig,
   EmojiProvider,
   EmojiResource,
-} from '@atlaskit/emoji-provider';
+} from '@atlaskit/emoji';
 
 export function getEmojiConfig() {
   let emojiConfig;

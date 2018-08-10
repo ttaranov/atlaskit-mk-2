@@ -7,7 +7,7 @@ import {
   EmojiId,
   EmojiDescription,
   OptionalEmojiDescription,
-} from '@atlaskit/emoji-provider';
+} from '@atlaskit/emoji';
 import { UsageClearEmojiResource } from '@atlaskit/util-data-test';
 import { localStoragePrefix } from '../src/common/constants';
 

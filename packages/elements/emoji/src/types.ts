@@ -1,7 +1,17 @@
 import { SyntheticEvent } from 'react';
-import { CategoryId } from './components/picker/categories';
 
-export type CategoryId = CategoryId;
+export type CategoryId =
+  | 'FREQUENT'
+  | 'PEOPLE'
+  | 'NATURE'
+  | 'FOODS'
+  | 'ACTIVITY'
+  | 'PLACES'
+  | 'OBJECTS'
+  | 'SYMBOLS'
+  | 'FLAGS'
+  | 'ATLASSIAN'
+  | 'CUSTOM';
 
 export type RelativePosition = 'above' | 'below' | 'auto';
 

@@ -1,8 +1,9 @@
 import { AbstractResource } from '@atlaskit/util-service-support';
 import Emoji from './components/common/Emoji';
+import CachingEmoji from './components/common/CachingEmoji';
+import EmojiPreview from './components/common/EmojiPreview';
 import EmojiPlaceholder from './components/common/EmojiPlaceholder';
 import ResourcedEmoji from './components/common/ResourcedEmoji';
-import EmojiPicker from './components/picker/EmojiPicker';
 import EmojiTypeAhead from './components/typeahead/EmojiTypeAhead';
 import EmojiResource, {
   EmojiProvider,
@@ -14,7 +15,6 @@ import EmojiLoader from './api/EmojiLoader';
 import { denormaliseEmojiServiceResponse } from './api/EmojiUtils';
 import { toEmojiId, toOptionalEmojiId } from './type-helpers';
 import {
-  customCategory,
   defaultEmojiHeight,
   emojiPickerWidth,
   emojiPickerHeight,
@@ -26,7 +26,6 @@ export {
   Emoji,
   EmojiPlaceholder,
   EmojiLoader,
-  EmojiPicker,
   EmojiResource,
   EmojiRepository,
   EmojiTypeAhead,
@@ -42,10 +41,11 @@ export {
   emojiPickerWidth,
   emojiPickerHeight,
   defaultEmojiHeight,
-  customCategory,
   EmojiResourceConfig,
+  EmojiPreview,
+  CachingEmoji,
 };
 
 export * from './types';
 
-export default EmojiPicker;
+export default EmojiResource;

@@ -9,7 +9,7 @@ import {
 } from '../example-helpers';
 import { onSelection } from '../example-helpers';
 import EmojiPicker from '../src/picker/EmojiPicker';
-import { EmojiProvider } from '@atlaskit/emoji-provider';
+import { EmojiProvider } from '@atlaskit/emoji';
 
 export interface EmojiState {
   siteEmojiEnabled: boolean;

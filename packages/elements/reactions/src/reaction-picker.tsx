@@ -1,4 +1,5 @@
-import { EmojiPicker, EmojiProvider } from '@atlaskit/emoji';
+import { EmojiProvider } from '@atlaskit/emoji';
+import EmojiPicker from '@atlaskit/emoji-picker';
 import Layer from '@atlaskit/layer';
 import { borderRadius, colors } from '@atlaskit/theme';
 import * as cx from 'classnames';
@@ -125,10 +126,11 @@ export default class ReactionPicker extends PureComponent<Props, State> {
 
   private renderEmojiPicker() {
     const { emojiProvider } = this.props;
+    const provider = emojiProvider as Promise<EmojiProvider>;
 
     return (
       <EmojiPicker
-        emojiProvider={emojiProvider}
+        emojiProvider={provider}
         onSelection={this.onEmojiSelected}
       />
     );

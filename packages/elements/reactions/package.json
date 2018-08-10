@@ -16,6 +16,7 @@
   "dependencies": {
     "@atlaskit/button": "^9.0.5",
     "@atlaskit/emoji": "^39.0.1",
+    "@atlaskit/emoji-picker": "^0.0.0",
     "@atlaskit/icon": "^13.2.4",
     "@atlaskit/layer": "^5.0.4",
     "@atlaskit/theme": "^5.1.3",

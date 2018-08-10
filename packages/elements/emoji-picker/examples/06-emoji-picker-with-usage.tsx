@@ -3,7 +3,8 @@ import Layer from '@atlaskit/layer';
 
 import { getUsageClearEmojiResource } from '../example-helpers';
 import { UsageShowAndClearComponent } from '../example-helpers/demo-emoji-usage-components';
-import EmojiPicker, { EmojiProvider } from '@atlaskit/emoji';
+import { EmojiProvider } from '@atlaskit/emoji';
+import EmojiPicker from '../src/picker/EmojiPicker';
 
 class UsageShowingEmojiPickerTextInput extends UsageShowAndClearComponent {
   constructor(props) {

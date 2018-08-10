@@ -12,6 +12,7 @@ import {
   OptionalEmojiDescription,
   SearchSort,
   SearchOptions,
+  CategoryId,
 } from '../types';
 import {
   isEmojiDescriptionWithVariations,
@@ -22,7 +23,6 @@ import {
   createUsageOnlyEmojiComparator,
 } from './internal/Comparators';
 import { UsageFrequencyTracker } from './internal/UsageFrequencyTracker';
-import { CategoryId } from '../components/picker/categories';
 
 XRegExpUnicodeBase(XRegExp);
 XRegExpUnicodeScripts(XRegExp);

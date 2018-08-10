@@ -1,8 +1,18 @@
 import { SyntheticEvent } from 'react';
-import { CategoryId } from '../picker/categories';
 import { OnProviderChange } from '@atlaskit/util-service-support';
 
-export type CategoryId = CategoryId;
+export type CategoryId =
+  | 'FREQUENT'
+  | 'PEOPLE'
+  | 'NATURE'
+  | 'FOODS'
+  | 'ACTIVITY'
+  | 'PLACES'
+  | 'OBJECTS'
+  | 'SYMBOLS'
+  | 'FLAGS'
+  | 'ATLASSIAN'
+  | 'CUSTOM';
 
 export type RelativePosition = 'above' | 'below' | 'auto';
 

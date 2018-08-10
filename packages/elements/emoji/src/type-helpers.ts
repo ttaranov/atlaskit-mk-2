@@ -9,9 +9,9 @@ import {
   SpriteRepresentation,
   SpriteServiceRepresentation,
   EmojiRepresentation,
+  CategoryId,
 } from './types';
 import { customCategory, dataURLPrefix } from './constants';
-import { CategoryId } from './components/picker/categories';
 
 export const isSpriteServiceRepresentation = (
   rep,

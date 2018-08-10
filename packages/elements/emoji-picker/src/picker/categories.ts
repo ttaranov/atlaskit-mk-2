@@ -16,19 +16,7 @@ import {
   userCustomTitle,
   customTitle,
 } from '../common/constants';
-
-export type CategoryId =
-  | 'FREQUENT'
-  | 'PEOPLE'
-  | 'NATURE'
-  | 'FOODS'
-  | 'ACTIVITY'
-  | 'PLACES'
-  | 'OBJECTS'
-  | 'SYMBOLS'
-  | 'FLAGS'
-  | 'ATLASSIAN'
-  | 'CUSTOM';
+import { CategoryId } from '../common/types';
 
 export type CategoryGroupKey = CategoryId | 'USER_CUSTOM' | 'SEARCH';
 

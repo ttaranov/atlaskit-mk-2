@@ -23,7 +23,7 @@ import {
   SearchSort,
   EmojiProvider,
   UploadingEmojiProvider,
-} from '@atlaskit/emoji-provider';
+} from '@atlaskit/emoji';
 import {
   containsEmojiId,
   isPromise,
@@ -36,8 +36,7 @@ import CategorySelector from './CategorySelector';
 import EmojiPickerList from './EmojiPickerList';
 import EmojiPickerFooter from './EmojiPickerFooter';
 import { FireAnalyticsEvent } from '@atlaskit/analytics';
-import { CategoryId } from './categories';
-import { OnEmojiProviderChange } from '../common/types';
+import { OnEmojiProviderChange, CategoryId } from '../common/types';
 
 const FREQUENTLY_USED_MAX = 16;
 
