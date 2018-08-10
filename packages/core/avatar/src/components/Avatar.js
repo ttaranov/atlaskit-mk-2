@@ -135,7 +135,6 @@ class Avatar extends Component<AvatarPropTypes> {
 
     // distill props from context, props, and state
     const enhancedProps: AvatarPropTypes = (getProps(this): any);
-    console.log(this.props);
 
     // provide element type based on props
     // TODO: why not enhanced props?

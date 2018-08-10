@@ -4,7 +4,6 @@
     "transform-class-properties",
     "transform-object-rest-spread",
     "syntax-dynamic-import",
-    "emotion",
     [
       "babel-plugin-styled-components",
       {
