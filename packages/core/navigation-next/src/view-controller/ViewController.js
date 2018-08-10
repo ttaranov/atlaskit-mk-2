@@ -199,8 +199,6 @@ export default class ViewController extends Container<ViewControllerState>
   updateActiveView = (maybeViewId?: ViewID) => {
     const { activeView } = this.state;
 
-    // TODO: Check why we are accepting string and object with id and having null as default value
-    // and change the code to accept just one type
     if (!activeView) {
       return;
     }
@@ -210,8 +208,6 @@ export default class ViewController extends Container<ViewControllerState>
       return;
     }
 
-    // If a view ID hasn't been provided reset the active container and product
-    // views.
     if (!maybeViewId) {
       this.setView(activeView.id);
     }
