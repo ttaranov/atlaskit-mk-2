@@ -228,7 +228,6 @@ export class MediaPluginState {
 
   updateElement(): void {
     let newElement;
-    console.log('is media single?', this.selectionInMediaSingle());
     const { selection, schema } = this.view.state;
 
     if (this.selectedMediaNode() && this.selectionInMediaSingle()) {
@@ -551,18 +550,11 @@ export class MediaPluginState {
       return [];
     }
 
-    if (captionNode && captionNode.textContent.length === 0) {
-      const elem = document.createElement('div');
-      // elem.className = 'placeholder-push';
-      // elem.innerText = 'Type a caption...';
-      // elem.contentEditable = 'false';
-
-      // + 1 to place the decoration inside the caption
-
+    if (captionNode && captionNode.nodeSize === 2) {
       return [
         Decoration.node(captionPos, captionPos + captionNode.nodeSize, {
           class: 'placeholder',
-        }) /*, Decoration.widget(captionPos + 1, elem)*/,
+        }),
       ];
     }
 
