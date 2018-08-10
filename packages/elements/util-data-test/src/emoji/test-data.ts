@@ -135,8 +135,8 @@ export const siteEmojiWtf = {
   shortName: ':wtf:',
   creatorUserId: 'Thor',
   representation: {
-    height: 72,
-    width: 92,
+    height: 120,
+    width: 100,
     imagePath:
       'https://pf-emoji-service--cdn.useast.atlassian.io/atlassian/wtf@4x.png',
   },
