@@ -17,4 +17,4 @@ export {
 } from './withTheme';
 
 // Types
-export { GlobalTheme } from './types';
+export { GlobalTheme, ProductTheme } from './types';

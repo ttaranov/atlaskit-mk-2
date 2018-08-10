@@ -16,7 +16,10 @@ import ConfluenceSearchResults, {
   MAX_PEOPLE,
 } from './ConfluenceSearchResults';
 import { SearchScreenCounter, ScreenCounter } from '../../util/ScreenCounter';
-import { LinkComponent } from '../GlobalQuickSearchWrapper';
+import {
+  LinkComponent,
+  ReferralContextIdentifiers,
+} from '../GlobalQuickSearchWrapper';
 import {
   redirectToConfluenceAdvancedSearch,
   handlePromiseError,
@@ -42,6 +45,7 @@ export interface Props {
   firePrivateAnalyticsEvent?: FireAnalyticsEvent;
   linkComponent?: LinkComponent;
   createAnalyticsEvent?: CreateAnalyticsEventFn;
+  referralContextIdentifiers?: ReferralContextIdentifiers;
   isSendSearchTermsEnabled?: boolean;
   useAggregatorForConfluenceObjects: boolean;
 }
@@ -83,7 +87,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   }
 
   state = {
-    isLoading: false,
+    isLoading: true,
     isError: false,
     latestSearchQuery: '',
     searchSessionId: uuid(), // unique id for search attribution
@@ -370,7 +374,11 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   }
 
   render() {
-    const { linkComponent, isSendSearchTermsEnabled } = this.props;
+    const {
+      linkComponent,
+      isSendSearchTermsEnabled,
+      referralContextIdentifiers,
+    } = this.props;
     const {
       latestSearchQuery,
       isLoading,
@@ -411,6 +419,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
           recentlyInteractedPeople={recentlyInteractedPeople}
           keepPreQueryState={keepPreQueryState}
           searchSessionId={searchSessionId}
+          referralContextIdentifiers={referralContextIdentifiers}
           {...this.screenCounters}
         />
       </GlobalQuickSearch>

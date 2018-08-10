@@ -7,6 +7,7 @@ export interface Props {
   title: JSX.Element | string;
   results: Result[];
   sectionIndex: number;
+  analyticsData?: {};
 }
 
 export default class ResultGroup extends React.Component<Props> {
@@ -19,7 +20,11 @@ export default class ResultGroup extends React.Component<Props> {
 
     return (
       <ResultItemGroup title={title}>
-        <ResultList results={results} sectionIndex={sectionIndex} />
+        <ResultList
+          analyticsData={this.props.analyticsData}
+          results={results}
+          sectionIndex={sectionIndex}
+        />
       </ResultItemGroup>
     );
   }

@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 77.0.5
+- [patch] Fixing editor blowing up when code mark is disabled [968da74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/968da74)
+- [none] Updated dependencies [968da74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/968da74)
+
 ## 77.0.4
 - [patch] FS-2815 - Only close emoji picker when disabled (in case pending open state changes) [4f5d786](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4f5d786)
 - [patch] Ensure emoji picker doesn't reopen after toolbar reenabled, if previously open. [5d2c0c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5d2c0c6)

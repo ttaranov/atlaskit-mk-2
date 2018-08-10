@@ -25,29 +25,35 @@ const isNotEmpty = obj => {
 const generateDropDown = (
   Trigger: ComponentType<{}>,
   DropdownItems: ComponentType<{}>,
-) => ({ className }: { className: string }) => (
-  <Dropdown
-    trigger={
-      <span className={className}>
-        <Trigger />
-      </span>
-    }
-    position="right bottom"
-    boundariesElement="window"
-  >
-    <DropdownItems />
-  </Dropdown>
-);
+) => {
+  const GeneratedDropdown = ({ className }: { className: string }) => (
+    <Dropdown
+      trigger={
+        <span className={className}>
+          <Trigger />
+        </span>
+      }
+      position="right bottom"
+      boundariesElement="window"
+    >
+      <DropdownItems />
+    </Dropdown>
+  );
+  return GeneratedDropdown;
+};
 
-const generateAvatar = profileIconUrl => () => (
-  <Avatar
-    borderColor="transparent"
-    src={profileIconUrl}
-    isActive={false}
-    isHover={false}
-    size="small"
-  />
-);
+const generateAvatar = profileIconUrl => {
+  const GeneratedAvatar = () => (
+    <Avatar
+      borderColor="transparent"
+      src={profileIconUrl}
+      isActive={false}
+      isHover={false}
+      size="small"
+    />
+  );
+  return GeneratedAvatar;
+};
 type OtherConfig = {
   href?: string,
   badge?: ?StatelessFunctionalComponent<*>,
@@ -92,11 +98,10 @@ function helpConfigFactory(items, tooltip, otherConfig = {}) {
 
   if (!items) return null;
 
+  const HelpIcon = () => <QuestionIcon secondaryColor={'inherit'} />;
+
   return {
-    component: generateDropDown(
-      () => <QuestionIcon secondaryColor={'inherit'} />,
-      items,
-    ),
+    component: generateDropDown(HelpIcon, items),
     ...(tooltip ? { tooltip, label: tooltip } : null),
     ...otherConfig,
   };
