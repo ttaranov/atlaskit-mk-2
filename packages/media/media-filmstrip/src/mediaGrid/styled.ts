@@ -4,7 +4,7 @@ import { ClassAttributes, HTMLAttributes, ImgHTMLAttributes } from 'react';
 import styled, { StyledComponentClass } from 'styled-components';
 import { colors } from '@atlaskit/theme';
 export const imageMargin = 10;
-
+const borderWidth = 5;
 export const RowWrapper = styled.div`
   position: relative;
   line-height: 0;
@@ -26,9 +26,10 @@ export const Img = styled.img`
     outlinesEnabled
       ? ` 
     outline-style: solid;
-    outline-width: 5px;
+    outline-width: ${borderWidth}px;
+    outline-offset: -${borderWidth}px;
     outline-color: ${isSelected ? `${colors.B500} !important` : 'transparent'};
-    transition: outline 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+    // transition: outline 0.5s cubic-bezier(0.165, 0.84, 0.44, 1); //cubic-bezier(0.19, 1, 0.22, 1);
 
     &:hover {
       outline-color: ${colors.B300};
