@@ -47,7 +47,6 @@ export default function generateDefaultConfig(): DefaultConfigShape {
       label: 'App Switcher',
       section: 'secondary',
       rank: 3,
-      tooltip: 'App Switcher',
     },
     help: {
       label: 'Help',
