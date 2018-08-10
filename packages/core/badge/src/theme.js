@@ -1,7 +1,6 @@
 // @flow
 
-import React, { type Node } from 'react';
-import { colors, Theme } from '@atlaskit/theme';
+import { colors } from '@atlaskit/theme';
 
 export const backgroundColors = {
   added: { light: colors.G50, dark: colors.G50 },
@@ -44,7 +43,7 @@ export type ThemeProps = {
 export function theme({
   badge = () => ({}),
   mode = 'light',
-  ...theme
+  ...props
 }: ThemeProps): ThemeProps {
   return {
     badge: ({ appearance }) => ({
@@ -63,6 +62,6 @@ export function theme({
       ...badge({ appearance }),
     }),
     mode,
-    ...theme,
+    ...props,
   };
 }

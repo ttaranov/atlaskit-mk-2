@@ -4,7 +4,18 @@ import React, { Component, type Node } from 'react';
 import styled, { css } from 'styled-components';
 import * as colors from '../colors';
 import { Consumer } from './Context';
-import type { ThemeReset } from '../types';
+
+type ThemeReset = {
+  backgroundColor: string,
+  textColor: string,
+  linkColor?: string,
+  linkColorHover?: string,
+  linkColorActive?: string,
+  linkColorOutline?: string,
+  headingColor?: string,
+  subtleHeadingColor?: string,
+  subtleTextColor?: string,
+};
 
 const orTextColor = (preferred: string) => (p: ThemeReset) =>
   p[preferred] || p.textColor;

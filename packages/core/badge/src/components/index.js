@@ -1,10 +1,10 @@
 // @flow
 
 import React, { Component } from 'react';
+import { Theme } from '@atlaskit/theme';
 import { Container } from './Container';
 import { Format } from './Format';
 import { theme, type ThemeAppearance, type ThemeProps } from '../theme';
-import { Theme } from '@atlaskit/theme';
 
 type Props = {
   /** Affects the visual style of the badge. */
@@ -62,12 +62,12 @@ export default class Badge extends Component<Props> {
   }
 
   render() {
-    const { appearance, children, max, theme, value } = this.props;
+    const { props } = this;
     return (
-      <Theme values={theme}>
+      <Theme values={props.theme}>
         {t => (
-          <Container {...t.badge({ appearance })}>
-            <Format max={max}>{value || children}</Format>
+          <Container {...t.badge({ appearance: props.appearance })}>
+            <Format max={props.max}>{props.value || props.children}</Format>
           </Container>
         )}
       </Theme>

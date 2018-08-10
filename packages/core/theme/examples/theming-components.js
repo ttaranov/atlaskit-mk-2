@@ -1,11 +1,6 @@
 // @flow
 
-import React, {
-  Component,
-  Fragment,
-  type ComponentType,
-  type Node,
-} from 'react';
+import React, { Component, Fragment, type Node } from 'react';
 import { Theme } from '../src';
 
 type MyTheme = {
@@ -14,53 +9,6 @@ type MyTheme = {
     textColor: string,
   },
 };
-
-// const DefaultButtonTheme = ({ children }: { children: * }) => (
-//   <Theme
-//     defaults={{ button: v => ({}) }}
-//     values={(theme: MyTheme) => ({
-//       button: state => ({
-//         backgroundColor: state.hover ? '#ddd' : '#eee',
-//         textColor: '#333',
-//         ...theme.button(state),
-//       }),
-//       ...theme,
-//     })}
-//   >
-//     {children}
-//   </Theme>
-// );
-
-// const AppTheme = ({ children }: { children: * }) => (
-//   <Theme
-//     values={(theme: MyTheme) => ({
-//       ...theme,
-//       button: state => ({
-//         ...theme.button(state),
-//         backgroundColor: state.hover ? 'rebeccapurple' : 'palevioletred',
-//         textColor: state.hover ? '#fff' : 'papayawhip',
-//       }),
-//     })}
-//   >
-//     {children}
-//   </Theme>
-// );
-
-// const CustomButtonTheme = ({ children }: { children: * }) => (
-//   <DefaultButtonTheme>
-//     <Theme
-//       values={(theme: MyTheme) => ({
-//         ...theme,
-//         button: state => ({
-//           ...theme.button(state),
-//           backgroundColor: state.hover ? 'palevioletred' : 'rebeccapurple',
-//         }),
-//       })}
-//     >
-//       {children}
-//     </Theme>
-//   </DefaultButtonTheme>
-// );
 
 const defaultButtonTheme = (theme: MyTheme) => ({
   button: state => ({
@@ -107,11 +55,12 @@ class Button extends Component<Props, State> {
   onMouseEnter = () => this.setState({ hover: true });
   onMouseLeave = () => this.setState({ hover: false });
   render() {
-    const { props, state } = this;
     return (
-      <Theme values={props.theme}>
+      <Theme values={this.props.theme}>
         {theme => {
-          const { backgroundColor, textColor: color } = theme.button(state);
+          const { backgroundColor, textColor: color } = theme.button(
+            this.state,
+          );
           return (
             <button
               onMouseEnter={this.onMouseEnter}
@@ -128,7 +77,7 @@ class Button extends Component<Props, State> {
               }}
               type="button"
             >
-              {props.children}
+              {this.props.children}
             </button>
           );
         }}

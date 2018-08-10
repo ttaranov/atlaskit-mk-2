@@ -3,13 +3,6 @@
 import React from 'react';
 import { Theme } from '../src';
 
-type ColorThemeValues = {
-  backgroundColor?: string,
-  color?: string,
-};
-
-type CustomThemeValues = ColorThemeValues & { padding?: number };
-
 const themeDefault = theme => ({
   backgroundColor: 'rebeccapurple',
   color: '#eee',
