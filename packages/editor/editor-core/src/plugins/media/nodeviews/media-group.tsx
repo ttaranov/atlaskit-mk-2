@@ -95,6 +95,7 @@ export default class MediaGroupNode extends Component<
     if (gridItems.length < 2) {
       return false;
     }
+
     return gridItems.every(item => {
       return Boolean(item.dataURI && item.dimensions);
     });
@@ -164,18 +165,20 @@ export default class MediaGroupNode extends Component<
 
   onItemsChange = (gridItems: GridItem[]) => {
     const { gridItems: mediaGridItems } = this.state;
-    const newMediaGridItems: MediaGridItem[] = gridItems.map(item => {
-      const mediaGridItem = mediaGridItems.find(
-        mediaGridItem =>
-          mediaGridItem ? mediaGridItem.dataURI === item.dataURI : false,
-      );
-      const id = mediaGridItem ? mediaGridItem.id : '';
+    const newMediaGridItems: MediaGridItem[] = gridItems
+      .map(item => {
+        const mediaGridItem = mediaGridItems.find(
+          mediaGridItem =>
+            mediaGridItem ? mediaGridItem.dataURI === item.dataURI : false,
+        );
+        const id = mediaGridItem ? mediaGridItem.id : '';
 
-      return {
-        ...item,
-        id,
-      };
-    });
+        return {
+          ...item,
+          id,
+        };
+      })
+      .filter(item => item.id);
 
     this.setState({
       gridItems: newMediaGridItems,
