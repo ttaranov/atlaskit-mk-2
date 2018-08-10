@@ -41,7 +41,7 @@ describe('ConfluenceQuickSearchContainer', () => {
 
     const props = quickSearchContainer.props();
     expect(props.intl).toHaveProperty('locale', 'en');
-    expect(props).toHaveProperty('getSearchResultComponent');
+    expect(props).toHaveProperty('getSearchResultsComponent');
   });
 
   it('should return recent viewed items', async () => {
@@ -91,7 +91,7 @@ describe('ConfluenceQuickSearchContainer', () => {
     const quickSearchContainer = wrapper.find(QuickSearchContainer);
     const searchResults = await quickSearchContainer
       .props()
-      .getSearchResult('query', sessionId, 100);
+      .getSearchResults('query', sessionId, 100);
 
     expect(searchResults).toMatchObject({
       objectResults: [],
@@ -133,11 +133,11 @@ describe('ConfluenceQuickSearchContainer', () => {
     const recentlyInteractedPeople = [makePersonResult()];
     const searchResultsComponent = quickSearchContainer
       .props()
-      .getSearchResultComponent({
+      .getSearchResultsComponent({
         retrySearch: jest.fn(),
         latestSearchQuery: 'query',
         isError: false,
-        searchResult: {
+        searchResults: {
           objectResults: [],
           spaceResults,
         },
@@ -228,7 +228,7 @@ describe('ConfluenceQuickSearchContainer', () => {
     it('should fire post query analytics', () => {
       const startTime = 120;
       const elapsedMs = 201;
-      const searchResult = {
+      const searchResults = {
         objectResults: [],
         spaceResults: [makeConfluenceContainerResult()],
         peopleResults: [],
@@ -240,7 +240,7 @@ describe('ConfluenceQuickSearchContainer', () => {
         .fireShownPostQueryEvent(
           startTime,
           elapsedMs,
-          searchResult,
+          searchResults,
           sessionId,
           query,
         );

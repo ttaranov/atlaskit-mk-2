@@ -163,20 +163,20 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   fireShownPostQueryEvent = (
     startTime,
     elapsedMs,
-    searchResult,
+    searchResults,
     searchSessionId,
     latestSearchQuery: string,
   ) => {
     const searchPerformanceTiming: SearchPerformanceTiming = {
       startTime,
       elapsedMs,
-      ...searchResult.searchTimings,
+      ...searchResults.searchTimings,
     };
 
     const resultsDetails: ShownAnalyticsAttributes = buildShownEventDetails(
-      take(searchResult.objectResults || [], MAX_PAGES_BLOGS_ATTACHMENTS),
-      take(searchResult.spaceResults || [], MAX_SPACES),
-      take(searchResult.peopleResults || [], MAX_PEOPLE),
+      take(searchResults.objectResults || [], MAX_PAGES_BLOGS_ATTACHMENTS),
+      take(searchResults.spaceResults || [], MAX_SPACES),
+      take(searchResults.peopleResults || [], MAX_PEOPLE),
     );
 
     const { createAnalyticsEvent } = this.props;
@@ -191,7 +191,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     }
   };
 
-  getSearchResult = (query, sessionId, startTime) => {
+  getSearchResults = (query, sessionId, startTime) => {
     const useAggregator = this.props.useAggregatorForConfluenceObjects;
 
     const quickNavPromise = useAggregator
@@ -281,18 +281,18 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     );
   };
 
-  getSearchResultComponent = ({
+  getSearchResultsComponent = ({
     retrySearch,
     latestSearchQuery,
     isError,
-    searchResult,
+    searchResults,
     isLoading,
     recentItems,
     keepPreQueryState,
     searchSessionId,
   }) => {
     const { objectResults = [], spaceResults = [], peopleResults = [] } =
-      searchResult || {};
+      searchResults || {};
 
     const {
       recentlyViewedPages = [],
@@ -327,11 +327,11 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       <QuickSearchContainer
         intl={this.props.intl}
         linkComponent={linkComponent}
-        getSearchResultComponent={this.getSearchResultComponent}
+        getSearchResultsComponent={this.getSearchResultsComponent}
         fireShownPreQueryEvent={this.fireShownPreQueryEvent}
         fireShownPostQueryEvent={this.fireShownPostQueryEvent}
         getRecentItems={this.getRecentItems}
-        getSearchResult={this.getSearchResult}
+        getSearchResults={this.getSearchResults}
         handleSearchSubmit={this.handleSearchSubmit}
         isSendSearchTermsEnabled={isSendSearchTermsEnabled}
       />

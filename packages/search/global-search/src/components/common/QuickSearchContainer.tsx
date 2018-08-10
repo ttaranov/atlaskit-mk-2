@@ -11,10 +11,10 @@ export interface SearchResultProps extends State {
 
 export interface Props {
   linkComponent?: LinkComponent;
-  getSearchResultComponent(state: SearchResultProps): React.ReactNode;
+  getSearchResultsComponent(state: SearchResultProps): React.ReactNode;
 
   getRecentItems(sessionId: string): Promise<object>;
-  getSearchResult(
+  getSearchResults(
     query: string,
     sessionId: string,
     startTime: number,
@@ -27,7 +27,7 @@ export interface Props {
   fireShownPostQueryEvent(
     startTime: number,
     elapsedMs: number,
-    searchResult: object,
+    searchResults: object,
     searchSessionId: string,
     latestSearchQuery: string,
   ): void;
@@ -43,7 +43,7 @@ export interface State {
   isLoading: boolean;
   isError: boolean;
   keepPreQueryState: boolean;
-  searchResult: object | null;
+  searchResults: object | null;
   recentItems: object | null;
 }
 
@@ -59,7 +59,7 @@ export class QuickSearchContainer extends React.Component<Props, State> {
       latestSearchQuery: '',
       searchSessionId: uuid(), // unique id for search attribution
       recentItems: null,
-      searchResult: null,
+      searchResults: null,
       keepPreQueryState: true,
     };
   }
@@ -71,7 +71,7 @@ export class QuickSearchContainer extends React.Component<Props, State> {
     });
 
     try {
-      const searchResult = await this.props.getSearchResult(
+      const searchResults = await this.props.getSearchResults(
         query,
         this.state.searchSessionId,
         startTime,
@@ -81,7 +81,7 @@ export class QuickSearchContainer extends React.Component<Props, State> {
       if (this.state.latestSearchQuery === query) {
         this.setState(
           {
-            searchResult,
+            searchResults,
             isError: false,
             isLoading: false,
             keepPreQueryState: false,
@@ -90,7 +90,7 @@ export class QuickSearchContainer extends React.Component<Props, State> {
             this.props.fireShownPostQueryEvent(
               startTime,
               elapsedMs,
-              this.state.searchResult || {},
+              this.state.searchResults || {},
               this.state.searchSessionId,
               this.state.latestSearchQuery,
             );
@@ -171,36 +171,18 @@ export class QuickSearchContainer extends React.Component<Props, State> {
     }
   };
 
-  shouldComponentUpdate(nextProps, nextState) {
-    const result = this.state !== nextState || this.props !== nextProps;
-    console.log(
-      'should component update',
-      result,
-      this.state === nextState,
-      Object.keys({ ...nextState, ...this.state })
-        .map(key => ({
-          key,
-          updated: this.state[key] !== nextState[key],
-          value: this.state[key],
-          nextValue: nextState[key],
-        }))
-        .filter(({ updated }) => !!updated),
-    );
-    return result;
-  }
-
   render() {
     const {
       linkComponent,
       isSendSearchTermsEnabled,
-      getSearchResultComponent,
+      getSearchResultsComponent,
     } = this.props;
     const {
       isLoading,
       searchSessionId,
       latestSearchQuery,
       isError,
-      searchResult,
+      searchResults,
       recentItems,
       keepPreQueryState,
     } = this.state;
@@ -218,11 +200,11 @@ export class QuickSearchContainer extends React.Component<Props, State> {
         searchSessionId={searchSessionId}
         isSendSearchTermsEnabled={isSendSearchTermsEnabled}
       >
-        {getSearchResultComponent({
+        {getSearchResultsComponent({
           retrySearch: this.retrySearch,
           latestSearchQuery,
           isError,
-          searchResult,
+          searchResults,
           isLoading,
           recentItems,
           keepPreQueryState,

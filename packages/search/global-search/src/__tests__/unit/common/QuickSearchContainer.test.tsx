@@ -10,9 +10,9 @@ import { GlobalQuickSearch } from '../../../components/GlobalQuickSearch';
 import { delay } from '../_test-util';
 
 const defaultProps = {
-  getSearchResultComponent: jest.fn((props: SearchResultProps) => null),
+  getSearchResultsComponent: jest.fn((props: SearchResultProps) => null),
   getRecentItems: jest.fn((sessionId: string) => Promise.resolve({})),
-  getSearchResult: jest.fn(
+  getSearchResults: jest.fn(
     (query: string, sessionId: string, startTime: number) =>
       Promise.resolve({}),
   ),
@@ -27,7 +27,7 @@ const defaultProps = {
     (
       startTime: number,
       elapsedMs: number,
-      searchResult: object,
+      searchResults: object,
       searchSessionId: string,
       latestSearchQuery: string,
     ) => {},
@@ -71,10 +71,10 @@ describe('QuickSearchContainer', () => {
       ],
     };
     const getRecentItems = jest.fn(() => Promise.resolve(recentItems));
-    const getSearchResultComponent = jest.fn(() => {});
+    const getSearchResultsComponent = jest.fn(() => {});
     const wrapper = mountQuickSearchContainer({
       getRecentItems,
-      getSearchResultComponent,
+      getSearchResultsComponent,
     });
 
     let globalQuickSearch = wrapper.find(GlobalQuickSearch);
@@ -85,15 +85,15 @@ describe('QuickSearchContainer', () => {
     globalQuickSearch = wrapper.find(GlobalQuickSearch);
     expect(globalQuickSearch.props().isLoading).toBe(false);
     expect(getRecentItems).toHaveBeenCalled();
-    assertLastCall(getSearchResultComponent, {
+    assertLastCall(getSearchResultsComponent, {
       recentItems,
       isLoading: false,
       isError: false,
     });
   });
 
-  it.only('should handle search', async () => {
-    const searchResult = {
+  it('should handle search', async () => {
+    const searchResults = {
       spaces: [
         {
           key: 'space-1',
@@ -101,11 +101,11 @@ describe('QuickSearchContainer', () => {
       ],
     };
     const query = 'query';
-    const getSearchResult = jest.fn(() => Promise.resolve(searchResult));
-    const getSearchResultComponent = jest.fn(() => {});
+    const getSearchResults = jest.fn(() => Promise.resolve(searchResults));
+    const getSearchResultsComponent = jest.fn(() => {});
     const wrapper = mountQuickSearchContainer({
-      getSearchResult,
-      getSearchResultComponent,
+      getSearchResults,
+      getSearchResultsComponent,
     });
     await waitForRender(wrapper, 10);
 
@@ -116,9 +116,9 @@ describe('QuickSearchContainer', () => {
     globalQuickSearch = wrapper.find(GlobalQuickSearch);
     expect(globalQuickSearch.props().isLoading).toBe(false);
 
-    expect(getSearchResult).toHaveBeenCalledTimes(1);
-    assertLastCall(getSearchResultComponent, {
-      searchResult,
+    expect(getSearchResults).toHaveBeenCalledTimes(1);
+    assertLastCall(getSearchResultsComponent, {
+      searchResults,
       isLoading: false,
       isError: false,
     });
