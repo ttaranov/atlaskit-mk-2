@@ -60,9 +60,9 @@ export class MediaGridView extends Component<
 
   state: MediaGridViewState = {
     selected: -1,
-    isDragging: true,
-    draggingIndex: 0,
-    dropIndex: 1,
+    isDragging: false,
+    draggingIndex: -1,
+    dropIndex: -1,
   };
 
   static defaultProps: Partial<MediaGridViewProps> = {
