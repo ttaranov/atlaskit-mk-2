@@ -1,6 +1,9 @@
-import {
+export {
   ELEMENTS_CONTEXT,
   FabricElementsAnalyticsContext,
-} from './AnalyticsContextWithNamespace';
+} from './FabricElementsAnalyticsContext';
 
-export { FabricElementsAnalyticsContext, ELEMENTS_CONTEXT };
+export {
+  NAVIGATION_CONTEXT,
+  NavigationAnalyticsContext,
+} from './NavigationAnalyticsContext';
