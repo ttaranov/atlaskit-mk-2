@@ -124,7 +124,7 @@ export default md`
 
   #### Pre-defined themes
 
-  To create a predefined theme, all you have to do is create a component that uses a \`Theme\` internally.
+  To create a predefined theme, all you have to do is write a function that returns your theme object. The function is provided the parent theme and it is up to you to mix in the parent theme values into the new theme you're returning.
 
   ${(
     <Example
@@ -134,9 +134,7 @@ export default md`
     />
   )}
 
-  You'll definitely need to pass on \`children\` but it's up to you whether or not you want to pass along other \`props\`. We recommend you do because themes become more composable and are able to be mixed and matched. They're just components, after all.
-
-  The example below shows the above example, but split out into two separate themes that pass on \`props\` as described above.
+  The example below shows the above example, but split out into two separate themes that are composed together.
 
   ${(
     <Example
@@ -148,7 +146,7 @@ export default md`
 
   #### Theming components
 
-  When provided with a function as \`children\` (i.e. render prop), the \`Theme\` component passes in the current theming context. You may then render the descendant tree based on the theme.
+  To theme a specific component, you simply define a function as a value on your theme, and then you call that function in the component that requires the values from it.
 
   ${(
     <Example
@@ -160,9 +158,9 @@ export default md`
 
   #### Default themes
 
-  Default themes are mostly the same as normal themes, except for that they mixin the ancestor component theme *after* the default theme declarations in the component theming function. This can be seen in the above example in the \`DefaultButtonTheme\`.
+  Default themes are mostly the same as normal themes, except for that they mixin the ancestor component theme *after* the default theme declarations in the component theming function. This can be seen in the above example in the \`defaultButtonTheme\`.
 
-  We recommend using \`defaultProps\` and a prop such as \`theme\` to apply the default theme for your components. This allows a consumer to pass a custom theme to the component using \`theme\` and you don't have to change your usage. You can also see this in the example above where it calls out to \`<props.theme />\`.
+  We recommend using \`defaultProps\` and a prop such as \`theme\` to apply the default theme for your components. This allows a consumer to pass a custom theme to the component using \`theme\` and you don't have to change your usage.
 
   ## For both authors and consumers
 
