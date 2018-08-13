@@ -174,7 +174,9 @@ export default class Tree extends Component<Props, State> {
     if (itemElement) {
       const currentLeft: number = getBox(itemElement).borderBox.left;
       const relativeLeft: number = Math.max(currentLeft - containerLeft, 0);
-      return Math.floor((relativeLeft + offsetPerLevel / 2) / offsetPerLevel);
+      return (
+        Math.floor((relativeLeft + offsetPerLevel / 2) / offsetPerLevel) + 1
+      );
     }
     return undefined;
   };
