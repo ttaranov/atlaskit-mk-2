@@ -3,12 +3,12 @@
 import React, { Component, type Node } from 'react';
 import { Consumer, Provider } from '../components/Context';
 
-type Props<A> = {
-  children: (A => Node) | Node,
-  values: (*) => A,
+type Props = {
+  children: ((*) => Node) | Node,
+  values: (*) => *,
 };
 
-export default class Theme<A: {}> extends Component<Props<A>> {
+export default class Theme<A: {}> extends Component<Props> {
   static defaultProps = {
     values: (v: *): A => v,
   };
