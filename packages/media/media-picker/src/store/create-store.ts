@@ -44,7 +44,6 @@ export default (
   const fetcher = new MediaApiFetcher();
   const wsProvider = new WsProvider();
   const cloudService = new CloudService(userAuthProvider);
-  console.log({ config });
   return createStore(
     reducers,
     {
