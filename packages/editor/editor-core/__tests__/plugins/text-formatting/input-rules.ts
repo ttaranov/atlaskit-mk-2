@@ -166,6 +166,8 @@ describe('text-formatting input rules', () => {
     notautoformats("'t hate");
     notautoformats("let'. it");
     notautoformats("let' it 'be");
+    notautoformats("' test'");
+    notautoformats("'test '");
 
     autoformats('"hello" "world"', p('“hello” “world”'), 'quote');
     autoformats('let " it\'d close"', p('let “ it’d close”'), 'quote');
