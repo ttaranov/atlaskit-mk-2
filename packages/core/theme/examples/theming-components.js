@@ -14,7 +14,7 @@ const defaultButtonTheme = (theme: MyTheme) => ({
   button: state => ({
     backgroundColor: state.hover ? '#ddd' : '#eee',
     textColor: '#333',
-    ...theme.button(state),
+    ...(theme.button ? theme.button(state) : null),
   }),
   ...theme,
 });
@@ -22,7 +22,7 @@ const defaultButtonTheme = (theme: MyTheme) => ({
 const appTheme = (theme: MyTheme) => ({
   ...theme,
   button: state => ({
-    ...theme.button(state),
+    ...(theme.button ? theme.button(state) : null),
     backgroundColor: state.hover ? 'rebeccapurple' : 'palevioletred',
     textColor: state.hover ? '#fff' : 'papayawhip',
   }),
@@ -31,7 +31,7 @@ const appTheme = (theme: MyTheme) => ({
 const customButtonTheme = (theme: MyTheme) => ({
   ...theme,
   button: state => ({
-    ...theme.button(state),
+    ...(theme.button ? theme.button(state) : null),
     backgroundColor: state.hover ? 'palevioletred' : 'rebeccapurple',
   }),
 });
