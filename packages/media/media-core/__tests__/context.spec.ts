@@ -5,7 +5,7 @@ jest.mock('uuid', () => ({
 }));
 
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
+import { of } from 'rxjs/observable/of';
 import {
   AuthProvider,
   MediaItem,
@@ -136,7 +136,7 @@ describe('Context', () => {
         .spyOn(MediaItemProvider, 'fromPool')
         .mockImplementation(() => ({
           observable() {
-            return Observable.of(secondExpectedMediaItem);
+            return of(secondExpectedMediaItem);
           },
         }));
 
@@ -179,7 +179,7 @@ describe('Context', () => {
         .spyOn(MediaItemProvider, 'fromPool')
         .mockImplementation(() => ({
           observable() {
-            return Observable.of(firstExpectedMediaItem);
+            return of(firstExpectedMediaItem);
           },
         }));
 

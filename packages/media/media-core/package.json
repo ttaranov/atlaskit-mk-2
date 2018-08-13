@@ -8,7 +8,6 @@
   "jsnext:main": "dist/es2015/index.js",
   "module": "dist/es2015/index.js",
   "atlaskit:src": "src/index.ts",
-  "sideEffects": true,
   "files": [
     "dist"
   ],
