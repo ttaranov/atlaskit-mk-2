@@ -1,6 +1,6 @@
 import * as sinon from 'sinon';
 
-import { MediaUrlPreviewService } from '../src/services/urlPreviewService';
+import { MediaUrlPreviewService } from '../../services/urlPreviewService';
 import { Auth, AuthProvider } from '@atlaskit/media-store';
 
 const baseUrl = 'some-host';

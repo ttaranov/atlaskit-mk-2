@@ -1,4 +1,4 @@
-import { MediaBlobService } from '../../src/services/blobService';
+import { MediaBlobService } from '../../blobService';
 import { AuthProvider } from '@atlaskit/media-store';
 
 const clientId = 'some-client-id';

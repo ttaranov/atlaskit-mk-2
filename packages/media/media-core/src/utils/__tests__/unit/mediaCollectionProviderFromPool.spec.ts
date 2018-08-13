@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs/Observable';
-import { Pool } from '../../src/providers/util/pool';
-import { MediaCollectionProvider } from '../../src/providers/mediaCollectionProvider';
-import { mediaCollectionProviderFromPool } from '../../src/providers/util/mediaCollectionProviderFromPool';
+import { Pool } from '../../../providers/util/pool';
+import { MediaCollectionProvider } from '../../../providers/mediaCollectionProvider';
+import { mediaCollectionProviderFromPool } from '../../../providers/util/mediaCollectionProviderFromPool';
 
 const noop = () => {
   /* do nothing */
