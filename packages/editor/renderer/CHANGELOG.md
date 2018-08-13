@@ -1,5 +1,9 @@
 # @atlaskit/renderer
 
+## 20.0.1
+- [patch] Fixes the examples in renderer [696acde](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/696acde)
+- [none] Updated dependencies [696acde](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/696acde)
+
 ## 20.0.0
 
 

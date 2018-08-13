@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 5.5.3
+- [patch] refactor QuickSearchContainer and extract generic component [25bd0e2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25bd0e2)
+
 ## 5.5.2
 - [patch] Adds experiment attribution [742b49d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/742b49d)
 
