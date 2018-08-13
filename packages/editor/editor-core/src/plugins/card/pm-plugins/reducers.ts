@@ -8,11 +8,7 @@ import {
 
 const queue = (state: CardPluginState, action: Queue) => {
   const { url, pos } = action;
-  const { requests, provider } = state;
-
-  if (!provider) {
-    return state;
-  }
+  const { requests } = state;
 
   const request = requests[url] || { positions: [] };
   const positions = [...request.positions, pos];
