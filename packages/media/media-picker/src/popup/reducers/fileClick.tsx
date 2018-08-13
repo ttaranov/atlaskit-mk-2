@@ -10,7 +10,6 @@ export default function fileClick(state: State, action: Action): State {
       selectedItems,
       config: { singleSelect = false },
     } = state;
-    console.log(singleSelect);
     const itemFound = selectedItems.some(item => item.id === file.id);
 
     if (itemFound) {
