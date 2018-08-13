@@ -95,7 +95,7 @@ export class NewUploadServiceImpl implements UploadService {
       };
       const controller = this.createUploadController();
       const subscrition = this.context
-        .uploadFile(uploadableFile, controller)
+        .uploadFile(uploadableFile, controller, 'user')
         .subscribe({
           next: state => {
             if (state.status === 'uploading') {
@@ -206,6 +206,8 @@ export class NewUploadServiceImpl implements UploadService {
       file: publicMediaFile,
     });
 
+    // TODO: what provider should we use here?
+    // TODO: can we use the new method?
     const subscription = this.context
       .getMediaItemProvider(fileId, 'file', collectionName)
       .observable()

@@ -88,7 +88,7 @@ export class App extends Component<AppProps, AppState> {
   private readonly mpBrowser: MpBrowser;
   private readonly mpDropzone: MpDropzone;
   private readonly mpBinary: MpBinary;
-  private readonly mpContext: Context;
+  private readonly cardsContext: Context;
 
   constructor(props: AppProps) {
     super(props);
@@ -118,12 +118,12 @@ export class App extends Component<AppProps, AppState> {
       },
     };
 
-    // We can't just use the given context since the Cards in the recents view needs a different authProvider
-    this.mpContext = ContextFactory.create({
+    // We need to create a new context since Cards in recents view need user auth
+    this.cardsContext = ContextFactory.create({
       authProvider: userAuthProvider,
     });
 
-    this.mpBrowser = MediaPicker('browser', this.mpContext, {
+    this.mpBrowser = MediaPicker('browser', context, {
       ...defaultConfig,
       multiple: true,
       useNewUploadService: this.props.useNewUploadService,
@@ -135,7 +135,7 @@ export class App extends Component<AppProps, AppState> {
     this.mpBrowser.on('upload-end', onUploadEnd);
     this.mpBrowser.on('upload-error', onUploadError);
 
-    this.mpDropzone = MediaPicker('dropzone', this.mpContext, {
+    this.mpDropzone = MediaPicker('dropzone', context, {
       ...defaultConfig,
       headless: true,
       useNewUploadService: this.props.useNewUploadService,
@@ -149,7 +149,7 @@ export class App extends Component<AppProps, AppState> {
     this.mpDropzone.on('upload-end', onUploadEnd);
     this.mpDropzone.on('upload-error', onUploadError);
 
-    this.mpBinary = MediaPicker('binary', this.mpContext, {
+    this.mpBinary = MediaPicker('binary', context, {
       ...defaultConfig,
       useNewUploadService: this.props.useNewUploadService,
     });
@@ -223,7 +223,7 @@ export class App extends Component<AppProps, AppState> {
       return (
         <UploadView
           mpBrowser={this.mpBrowser}
-          context={this.mpContext}
+          context={this.cardsContext}
           recentsCollection={RECENTS_COLLECTION}
         />
       );

@@ -82,6 +82,7 @@ export interface Context {
   uploadFile(
     file: UploadableFile,
     controller?: UploadController,
+    authType?: AuthType,
   ): Observable<FileState>;
 
   getImage(id: string, params?: MediaStoreGetFileImageParams): Promise<Blob>;
@@ -283,6 +284,7 @@ class ContextImpl implements Context {
           },
         });
       }
+
       const authProvider = authProviderFromType(this.config, authType);
       const { deferredFileId, cancel } = uploadFile(
         file,
