@@ -1,12 +1,9 @@
-jest.mock('../../../src/utils/hashing/simpleHasher');
-jest.mock('../../../src/utils/hashing/workerHasher');
+jest.mock('../../simpleHasher');
+jest.mock('../../workerHasher');
 
-import { SimpleHasher } from '../../../src/utils/hashing/simpleHasher';
-import { WorkerHasher } from '../../../src/utils/hashing/workerHasher';
-import {
-  createHasher,
-  destroyHasher,
-} from '../../../src/utils/hashing/hasherCreator';
+import { SimpleHasher } from '../../simpleHasher';
+import { WorkerHasher } from '../../workerHasher';
+import { createHasher, destroyHasher } from '../../hasherCreator';
 
 describe('createHasher', () => {
   const SimpleHasherStub: jest.Mock<SimpleHasher> = SimpleHasher as any;

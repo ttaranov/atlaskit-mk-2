@@ -1,7 +1,7 @@
 import {
   AuthQueryParameters,
   mapAuthToQueryParameters,
-} from '../../src/models/auth-query-parameters';
+} from '../../../models/auth-query-parameters';
 
 describe('AuthQueryParameters', () => {
   describe('mapAuthToQueryParameters', () => {

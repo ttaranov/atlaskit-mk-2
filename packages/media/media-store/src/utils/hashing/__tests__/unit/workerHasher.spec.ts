@@ -3,7 +3,7 @@ jest.mock('rusha');
 import * as uuid from 'uuid';
 import * as Rusha from 'rusha';
 
-import { WorkerHasher } from '../../../src/utils/hashing/workerHasher';
+import { WorkerHasher } from '../../workerHasher';
 
 interface FakeWorker {
   addEventListener: jest.Mock<any>;

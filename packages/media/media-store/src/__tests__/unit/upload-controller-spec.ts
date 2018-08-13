@@ -1,4 +1,4 @@
-import { UploadController } from '../src';
+import { UploadController } from '../..';
 
 describe('UploadController', () => {
   it('should call cancel function when is setted', () => {

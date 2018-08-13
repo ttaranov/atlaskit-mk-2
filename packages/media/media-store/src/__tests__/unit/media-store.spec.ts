@@ -2,15 +2,15 @@ import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
 import { stringify } from 'query-string';
 
-import { Auth, AuthProvider, MediaStore } from '../src';
+import { Auth, AuthProvider, MediaStore } from '../..';
 import {
   MediaUpload,
   MediaChunksProbe,
   MediaFile,
   MediaCollection,
   MediaCollectionItems,
-} from '../src/models/media';
-import { MediaStoreGetFileParams, EmptyFile } from '../src/media-store';
+} from '../../models/media';
+import { MediaStoreGetFileParams, EmptyFile } from '../../media-store';
 
 describe('MediaStore', () => {
   const baseUrl = 'http://some-host';
