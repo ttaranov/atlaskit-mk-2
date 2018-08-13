@@ -90,7 +90,7 @@ export class App extends Component<AppProps, AppState> {
   private readonly mpBrowser: MpBrowser;
   private readonly mpDropzone: MpDropzone;
   private readonly mpBinary: MpBinary;
-  private readonly mpContext: Context;
+  private readonly cardContext: Context;
 
   constructor(props: AppProps) {
     super(props);
@@ -115,26 +115,22 @@ export class App extends Component<AppProps, AppState> {
       isDropzoneActive: false,
     };
 
-    const defaultConfig = {
-      uploadParams: {
-        collection: RECENTS_COLLECTION,
-      },
+    const uploadParams: UploadParams = {
+      collection: RECENTS_COLLECTION,
+      copyFileToRecents: false,
     };
 
-    // We can't just use the given context since the Cards in the recents view needs a different authProvider
-    // TODO: probably rename into cardContext
-    this.mpContext = ContextFactory.create({
+    // We need to create a new context since Cards in recents view need user auth
+    this.cardContext = ContextFactory.create({
       authProvider: userAuthProvider,
-      userAuthProvider,
+      // userAuthProvider, // TODO: we probably don't need to pass userAuthProvider here
     });
-    // We need access to both auth + userAuth providers in local components
-    const localComponentContext = context;
 
-    this.mpBrowser = MediaPicker('browser', localComponentContext, {
-      ...defaultConfig,
-      multiple: true,
+    this.mpBrowser = MediaPicker('browser', context, {
+      uploadParams,
       useNewUploadService,
       tenantUploadParams,
+      multiple: true,
     });
     this.mpBrowser.on('uploads-start', onUploadsStart);
     this.mpBrowser.on('upload-preview-update', onUploadPreviewUpdate);
@@ -143,11 +139,11 @@ export class App extends Component<AppProps, AppState> {
     this.mpBrowser.on('upload-end', onUploadEnd);
     this.mpBrowser.on('upload-error', onUploadError);
 
-    this.mpDropzone = MediaPicker('dropzone', localComponentContext, {
-      ...defaultConfig,
-      headless: true,
+    this.mpDropzone = MediaPicker('dropzone', context, {
+      uploadParams,
       useNewUploadService,
       tenantUploadParams,
+      headless: true,
     });
     this.mpDropzone.on('drag-enter', () => this.setDropzoneActive(true));
     this.mpDropzone.on('drag-leave', () => this.setDropzoneActive(false));
@@ -158,8 +154,8 @@ export class App extends Component<AppProps, AppState> {
     this.mpDropzone.on('upload-end', onUploadEnd);
     this.mpDropzone.on('upload-error', onUploadError);
 
-    this.mpBinary = MediaPicker('binary', localComponentContext, {
-      ...defaultConfig,
+    this.mpBinary = MediaPicker('binary', context, {
+      uploadParams,
       useNewUploadService,
       tenantUploadParams,
     });
@@ -233,7 +229,7 @@ export class App extends Component<AppProps, AppState> {
       return (
         <UploadView
           mpBrowser={this.mpBrowser}
-          context={this.mpContext}
+          context={this.cardContext}
           recentsCollection={RECENTS_COLLECTION}
         />
       );

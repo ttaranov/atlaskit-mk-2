@@ -37,6 +37,8 @@ export interface CancellableFileUpload {
 
 export class NewUploadServiceImpl implements UploadService {
   private readonly userMediaStore?: MediaStore;
+  private readonly userContext?: Context;
+  private readonly mediaStore: MediaStore;
 
   private uploadParams: UploadParams;
   private tenantUploadParams: UploadParams;
@@ -51,14 +53,26 @@ export class NewUploadServiceImpl implements UploadService {
   ) {
     this.emitter = new EventEmitter2();
     this.cancellableFilesUploads = {};
+    const { authProvider, userAuthProvider } = context.config;
+    // We need a non user auth store, since we want to create the empty file in the public collection
+    this.mediaStore = new MediaStore({
+      authProvider,
+    });
 
-    if (context.config.userAuthProvider) {
+    if (userAuthProvider) {
       this.userMediaStore = new MediaStore({
-        authProvider: context.config.userAuthProvider,
+        authProvider: userAuthProvider,
+      });
+
+      // We need to use the userAuth to upload this file (recents)
+      this.userContext = ContextFactory.create({
+        userAuthProvider,
+        authProvider: userAuthProvider,
       });
     }
 
     this.tenantUploadParams = tenantUploadParams;
+
     this.setUploadParams(uploadParams);
   }
 
@@ -87,16 +101,10 @@ export class NewUploadServiceImpl implements UploadService {
         name: file.name,
         mimeType: file.type,
       };
+      const { userContext } = this;
       const controller = this.createUploadController();
-      const { serviceHost, userAuthProvider } = this.context.config;
-      if (userAuthProvider) {
-        // TODO: don't create another context here, find a way to specify which provider we want to use instead
-        // We need to use the userAuth to upload this file (recents)
-        const userContext = ContextFactory.create({
-          serviceHost,
-          userAuthProvider,
-          authProvider: userAuthProvider,
-        });
+
+      if (userContext) {
         const subscrition = userContext
           .uploadFile(uploadableFile, controller)
           .subscribe({
@@ -123,19 +131,12 @@ export class NewUploadServiceImpl implements UploadService {
         if (!this.userMediaStore) {
           return;
         }
-        const { serviceHost, authProvider } = this.context.config;
-        // TODO: don't create store here
-        // We need a non user auth store, since we want to create the empty file in the public collection
-        const mediaStore = new MediaStore({
-          serviceHost,
-          authProvider,
-        });
+
         const occurrenceKey = uuid.v4();
-        const collection = this.tenantUploadParams.collection;
-        // TODO: we need to use the tenant.uploadParams.collection
+        const { collection } = this.tenantUploadParams;
         const options = { collection, occurrenceKey };
         // We want to create an empty file in the public collection
-        const response = await mediaStore.createFile(options);
+        const response = await this.mediaStore.createFile(options);
         const id = response.data.id;
 
         resolve(id);
@@ -245,9 +246,9 @@ export class NewUploadServiceImpl implements UploadService {
   ) => {
     const { mediaFile } = cancellableFileUpload;
     // TODO: do we need to do anything with the collectionName here?
-    // const collectionName = this.uploadParams.collection;
-    // TODO: This was never working before, and probably we don't want to do this at this point. Ask @sasha
-    // this.copyFileToUsersCollection(fileId, collectionName).catch(console.log); // We intentionally swallow these errors
+    const { collection } = this.uploadParams;
+
+    this.copyFileToUsersCollection(fileId, collection).catch(console.log); // We intentionally swallow these errors
 
     const publicMediaFile: PublicMediaFile = {
       ...mediaFile,
@@ -313,12 +314,19 @@ export class NewUploadServiceImpl implements UploadService {
     });
   };
 
+  get shouldCopyFileToRecents(): boolean {
+    const { copyFileToRecents } = this.uploadParams;
+
+    return Boolean(copyFileToRecents);
+  }
+
   private copyFileToUsersCollection(
     sourceFileId: string,
     sourceCollection?: string,
   ): Promise<void> {
-    const userMediaStore = this.userMediaStore;
-    if (!userMediaStore) {
+    const { shouldCopyFileToRecents, userMediaStore } = this;
+
+    if (!shouldCopyFileToRecents || !userMediaStore) {
       return Promise.resolve();
     }
     return this.context.config

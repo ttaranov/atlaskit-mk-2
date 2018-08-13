@@ -73,7 +73,6 @@ function copyFile({
     collection: tenant.uploadParams.collection,
     replaceFileId,
   };
-  console.log({ destination });
 
   return fetcher
     .copyFile(sourceFile, destination)

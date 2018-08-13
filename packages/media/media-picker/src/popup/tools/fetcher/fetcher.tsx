@@ -98,7 +98,6 @@ export interface Fetcher {
   copyFile(
     sourceFile: SourceFile,
     destination: CopyFileDestination,
-    collection?: string,
   ): Promise<FileDetails>;
   fetchTrendingGifs(offset?: number): Promise<GiphyData>;
   fetchGifsRelevantToSearch(query: string, offset?: number): Promise<GiphyData>;
@@ -255,7 +254,6 @@ export class MediaApiFetcher implements Fetcher {
   }
 
   async copyFile(
-    apiUrl: string,
     sourceFile: SourceFile,
     { auth, collection, replaceFileId }: CopyFileDestination,
   ): Promise<FileDetails> {
