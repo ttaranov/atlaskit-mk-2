@@ -60,6 +60,13 @@ type Props = {
   dateFormat?: string,
   datePickerProps: {},
   timePickerProps: {},
+  /** Function to parse passed in dateTimePicker value into the requisite sub values date, time and zone. **/
+  parseValue: (
+    dateTimeValue: string,
+    date: string,
+    time: string,
+    timezone: string,
+  ) => { dateValue: string, timeValue: string, zoneValue: string },
   /** [Select props](/packages/core/select) to pass onto the DatePicker component. This can be used to set options such as placeholder text. */
   datePickerSelectProps: {},
   /** [Select props](/packages/core/select) to pass onto the TimePicker component. This can be used to set options such as placeholder text. */
@@ -161,6 +168,7 @@ class DateTimePicker extends Component<Props, State> {
     hideIcon: false,
     datePickerProps: {},
     timePickerProps: {},
+    parseValue: parseDateIntoStateValues,
     datePickerSelectProps: {},
     timePickerSelectProps: {},
     times: defaultTimes,
@@ -188,7 +196,7 @@ class DateTimePicker extends Component<Props, State> {
 
     return {
       ...mappedState,
-      ...parseDateIntoStateValues(
+      ...this.props.parseValue(
         mappedState.value,
         mappedState.dateValue,
         mappedState.timeValue,
