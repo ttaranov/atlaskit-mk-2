@@ -54,7 +54,7 @@ import { showPlaceholderFloatingToolbar } from '../../../placeholder-text/action
 import { createHorizontalRule } from '../../../rule/pm-plugins/input-rule';
 import { TriggerWrapper } from './styles';
 import { insertLayoutColumns } from '../../../layout/actions';
-import { changeToTaskDecision } from '../../../tasks-and-decisions/commands';
+import { insertTaskDecision } from '../../../tasks-and-decisions/commands';
 import { Command } from '../../../../commands';
 import { showLinkToolbar } from '../../../hyperlink/commands';
 
@@ -598,7 +598,7 @@ class ToolbarInsertBlock extends React.PureComponent<
     if (!editorView) {
       return false;
     }
-    changeToTaskDecision(editorView, 'decisionList');
+    insertTaskDecision(editorView, 'decisionList');
     return true;
   };
 

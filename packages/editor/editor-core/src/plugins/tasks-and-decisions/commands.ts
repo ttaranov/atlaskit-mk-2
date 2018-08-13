@@ -30,7 +30,7 @@ const getListTypes = (
 
 export type TaskDecisionListType = 'taskList' | 'decisionList';
 
-export const changeToTaskDecision = (
+export const insertTaskDecision = (
   view: EditorView,
   listType: TaskDecisionListType,
 ): boolean => {
