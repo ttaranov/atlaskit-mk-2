@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
-import { Client } from '../../src/Client';
-import { Provider } from '../../src/Provider/index';
-import Context from '../../src/Context';
+import { Client } from '../../../Client';
+import { Provider } from '../..';
+import Context from '../../../Context';
 
 describe('Provider', () => {
   it('should inject the default client instance', () => {
