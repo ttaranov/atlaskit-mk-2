@@ -8,9 +8,9 @@ type Props = {
   values: (*) => *,
 };
 
-export default class Theme<A: {}> extends Component<Props> {
+export default class Theme extends Component<Props> {
   static defaultProps = {
-    values: (v: *): A => v,
+    values: (v: *): * => v,
   };
   render() {
     const { children, values } = this.props;
