@@ -5,7 +5,7 @@ export default function<T>(
   method: string,
   url: string,
   data?: any,
-): Observable<T | undefined> {
+): Observable<T> {
   return new Observable(observer => {
     const AC = new AbortController();
     const requestConfig = {

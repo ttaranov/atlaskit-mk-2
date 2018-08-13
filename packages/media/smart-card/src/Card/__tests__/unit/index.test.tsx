@@ -1,6 +1,6 @@
 jest.mock('react-lazily-render', () => {
   return {
-    default: ({ content }) => content,
+    default: (data: any) => data.content,
   };
 });
 
@@ -11,6 +11,7 @@ import { mount } from 'enzyme';
 import { Client, ObjectState, ObjectStatus } from '../../../Client';
 import { BlockCard, InlineCard } from '@atlaskit/media-ui';
 import { Card } from '../..';
+import { Observer } from 'rxjs/Observer';
 
 function isNotResolved(state: ObjectState) {
   return state.status !== 'resolved';
@@ -22,7 +23,7 @@ function createClient(
 ): Client {
   const client = new Client();
   jest.spyOn(client, 'get').mockReturnValue(
-    Observable.create(observer => {
+    Observable.create((observer: Observer<any>) => {
       observer.next({
         status: 'resolving',
       });
@@ -206,7 +207,9 @@ describe('Card', () => {
   });
 
   it('should render the resolved view when data is provided', async () => {
-    const wrapper = mount(<Card data={{ name: 'foobar' }} />);
+    const wrapper = mount(
+      <Card data={{ name: 'foobar' }} url="http://example.com" />,
+    );
     wrapper.update();
     expect(wrapper.find(BlockCard.ResolvedView)).toHaveLength(1);
     expect(wrapper.find(BlockCard.ResolvedView).props()).toEqual(
@@ -244,7 +247,11 @@ describe('Card', () => {
 
   it('should render the inline view with props when the appearance is inline', async () => {
     const wrapper = mount(
-      <Card appearance="inline" data={{ name: 'foobar' }} />,
+      <Card
+        appearance="inline"
+        data={{ name: 'foobar' }}
+        url="http://example.com"
+      />,
     );
     wrapper.update();
     expect(wrapper.find(InlineCard.ResolvedView)).toHaveLength(1);
@@ -257,7 +264,11 @@ describe('Card', () => {
 
   it('should render the block view with props when the appearance is block', async () => {
     const wrapper = mount(
-      <Card appearance="block" data={{ name: 'foobar' }} />,
+      <Card
+        appearance="block"
+        data={{ name: 'foobar' }}
+        url="http://example.com"
+      />,
     );
     wrapper.update();
     expect(wrapper.find(BlockCard.ResolvedView)).toHaveLength(1);

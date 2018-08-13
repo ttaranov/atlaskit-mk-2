@@ -28,11 +28,11 @@ class Example extends React.Component<ExampleProps, ExampleState> {
     url: defaultURL,
   };
 
-  handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  handleUrlChange = (event: React.ChangeEvent<any>) => {
     this.setState({ url: event.target.value });
   };
 
-  handleAppearanceChange = option => {
+  handleAppearanceChange = (option: any) => {
     this.setState({
       appearance: option,
     });

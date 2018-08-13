@@ -7,12 +7,12 @@ import { CardContent, CardAppearance } from './CardContent';
 
 export { CardAppearance };
 
-export interface CardProps {
+export type CardProps = {
   appearance?: CardAppearance;
-  url?: string;
+  url: string;
   data?: any;
   client?: Client;
-}
+};
 
 export class Card extends React.PureComponent<CardProps> {
   render() {

@@ -41,16 +41,13 @@ function convertAuthToService(auth: {
   };
 }
 
-export class Options {
+export type Options = {
   serviceUrl: string;
   objectUrl: string;
   $commands: Subject<Command>;
-}
+};
 
-export function createObjectResolverServiceObservable(
-  url: string,
-  options: Options,
-) {
+export function createObjectResolverServiceObservable(options: Options) {
   const { serviceUrl, objectUrl, $commands } = options;
 
   let provider: string | undefined;

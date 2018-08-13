@@ -8,7 +8,7 @@ const RESOLVE_URL =
   'https://api-private.stg.atlassian.com/object-resolver/resolve';
 const OBJECT_URL = 'http://example.com/foobar';
 
-const auth = [];
+const auth: any = [];
 
 const definitionId = 'abc-123';
 
