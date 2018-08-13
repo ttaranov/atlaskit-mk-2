@@ -50,7 +50,7 @@ export class Footer extends Component<FooterProps> {
         onClick={onClick}
         isDisabled={!canInsert}
       >
-        {`Insert  ${itemCount} ${itemCount === 1 ? 'file' : 'files'}`}
+        {itemCount > 1 ? `Insert  ${itemCount} files` : 'Insert a file'}
       </InsertButton>
     );
   }
