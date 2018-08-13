@@ -6,13 +6,22 @@ import { State } from '../domain';
 export default function fileClick(state: State, action: Action): State {
   if (isFileClickAction(action)) {
     const { file } = action;
-    const { selectedItems } = state;
+    const {
+      selectedItems,
+      config: { singleSelect = false },
+    } = state;
+    console.log(singleSelect);
     const itemFound = selectedItems.some(item => item.id === file.id);
 
     if (itemFound) {
       return {
         ...state,
         selectedItems: selectedItems.filter(item => item.id !== file.id),
+      };
+    } else if (singleSelect) {
+      return {
+        ...state,
+        selectedItems: [file],
       };
     } else {
       return {

@@ -37,6 +37,7 @@ import {
 } from '../src/domain/uploadEvent';
 import { PopupUploadEventPayloadMap } from '../src/components/popup';
 import { AuthEnvironment } from '../example-helpers/types';
+import { b } from '../../../editor/adf-utils/src/builders';
 
 const context = createStorybookContext();
 
@@ -58,6 +59,7 @@ export interface PopupWrapperState {
   publicFiles: { [key: string]: PublicFile };
   isUploadingFilesVisible: boolean;
   useNewUploadService: boolean;
+  singleSelect: boolean;
   useProxyContext: boolean;
   popup?: Popup;
 }
@@ -73,6 +75,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     isUploadingFilesVisible: true,
     useNewUploadService: true,
     useProxyContext: true,
+    singleSelect: false,
   };
 
   static contextTypes = {
@@ -92,6 +95,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
 
   private createPopup(
     useNewUploadService: boolean = this.state.useNewUploadService,
+    singleSelect: boolean = this.state.singleSelect,
   ) {
     const { popup } = this.state;
     if (popup) {
@@ -110,6 +114,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
         collection: defaultMediaPickerCollectionName,
       },
       useNewUploadService,
+      singleSelect,
       proxyReactContext: this.state.useProxyContext ? this.context : undefined,
     });
 
@@ -124,6 +129,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     this.setState({
       popup: newPopup,
       useNewUploadService,
+      singleSelect,
     });
   }
 
@@ -332,7 +338,11 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
   };
 
   onuseNewUploadServiceChange = () => {
-    this.createPopup(!this.state.useNewUploadService);
+    this.createPopup(!this.state.useNewUploadService, this.state.singleSelect);
+  };
+
+  onSingleSelectChange = () => {
+    this.createPopup(this.state.useNewUploadService, !this.state.singleSelect);
   };
 
   renderUploadingFiles = () => {
@@ -407,6 +417,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
       inflightUploads,
       isUploadingFilesVisible,
       useNewUploadService,
+      singleSelect,
       popup,
     } = this.state;
     const hasTorndown = !popup;
@@ -454,12 +465,17 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
             <DropdownItem onClick={this.onAuthTypeChange}>client</DropdownItem>
             <DropdownItem onClick={this.onAuthTypeChange}>asap</DropdownItem>
           </DropdownMenu>
-          Use new upload service
+          Use new upload service:
           <Toggle
             isDefaultChecked={useNewUploadService}
             onChange={this.onuseNewUploadServiceChange}
           />
-          Proxy context from Popup creator
+          Only select single item:
+          <Toggle
+            isDefaultChecked={singleSelect}
+            onChange={this.onSingleSelectChange}
+          />
+          Proxy context from Popup creator:
           <Toggle isDefaultChecked onChange={this.toggleProxyContext} />
           Closed times: {closedTimes}
         </PopupHeader>

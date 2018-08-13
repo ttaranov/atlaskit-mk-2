@@ -20,6 +20,7 @@ export {
 } from './local-upload';
 
 import { ImageCardModel } from '../tools/fetcher/fetcher';
+import { PopupConfig } from '../..';
 
 export interface State {
   readonly redirectUrl: string;
@@ -39,7 +40,8 @@ export interface State {
   readonly giphy: GiphyState;
 
   readonly onCancelUpload: CancelUploadHandler;
-  readonly useNewUploadService?: boolean;
+  // readonly useNewUploadService?: boolean;
+  readonly config: Partial<PopupConfig>;
 }
 
 export type CancelUploadHandler = (uploadId: string) => void;
