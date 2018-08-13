@@ -40,7 +40,6 @@ export interface State {
   readonly giphy: GiphyState;
 
   readonly onCancelUpload: CancelUploadHandler;
-  // readonly useNewUploadService?: boolean;
   readonly config: Partial<PopupConfig>;
 }
 
