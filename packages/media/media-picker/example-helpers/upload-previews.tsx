@@ -1,7 +1,10 @@
 import * as React from 'react';
 import { UploadPreview } from './upload-preview';
 import { LocalUploadComponent } from '../src/components/localUpload';
-import { UploadPreviewUpdateEventPayload } from '../src';
+import {
+  UploadPreviewUpdateEventPayload,
+  UploadsStartEventPayload,
+} from '../src';
 import { PreviewsTitle, PreviewsWrapper } from './styled';
 import { PreviewData } from './types';
 
@@ -62,12 +65,19 @@ export class UploadPreviews extends React.Component<
     this.props.picker.removeAllListeners();
   }
 
+  onUploadsStart = async (event: UploadsStartEventPayload) => {
+    const { files } = event;
+    const file = files[0];
+    // TODO: render cards passing upfrontId
+    const id = await file.upfrontId;
+
+    console.log('onUploadsStart', id);
+  };
+
   private setupMediaPickerEventListeners() {
     const picker = this.props.picker;
 
-    picker.on('uploads-start', data => {
-      console.log('uploads-start:', data);
-    });
+    picker.on('uploads-start', this.onUploadsStart);
 
     picker.on(
       'upload-preview-update',

@@ -6,6 +6,7 @@ import {
   FileDetails,
   getMediaTypeFromMimeType,
   ContextFactory,
+  FileState,
 } from '@atlaskit/media-core';
 import {
   MediaStore,
@@ -28,6 +29,7 @@ import {
   UploadServiceEventListener,
   UploadServiceEventPayloadTypes,
 } from './uploadServiceFactory';
+import { Observable } from 'rxjs/Observable';
 
 export interface CancellableFileUpload {
   mediaFile: MediaFile;
@@ -87,6 +89,34 @@ export class NewUploadServiceImpl implements UploadService {
     return new UploadController();
   }
 
+  getUpfrontId = (observable?: Observable<FileState>): Promise<string> => {
+    return new Promise<string>(async resolve => {
+      const { shouldCopyFileToRecents } = this;
+
+      if (shouldCopyFileToRecents && observable) {
+        const subscrition = observable.subscribe({
+          next: state => {
+            resolve(state.id);
+            subscrition.unsubscribe();
+          },
+        });
+      } else {
+        if (!this.userMediaStore) {
+          return;
+        }
+
+        const occurrenceKey = uuid.v4();
+        const { collection } = this.tenantUploadParams;
+        const options = { collection, occurrenceKey };
+        // We want to create an empty file in the public collection
+        const response = await this.mediaStore.createFile(options);
+        const id = response.data.id;
+
+        resolve(id);
+      }
+    });
+  };
+
   addFiles(files: File[]): void {
     if (files.length === 0) {
       return;
@@ -108,44 +138,31 @@ export class NewUploadServiceImpl implements UploadService {
       } = this;
       const controller = this.createUploadController();
       const context = shouldCopyFileToRecents ? tenantContext : userContext;
+      let observable: Observable<FileState> | undefined;
 
       if (context) {
-        const subscrition = context
-          .uploadFile(uploadableFile, controller)
-          .subscribe({
-            next: state => {
-              if (state.status === 'uploading') {
-                this.onFileProgress(cancellableFileUpload, state.progress);
-              }
+        observable = context.uploadFile(uploadableFile, controller);
 
-              if (state.status === 'processing') {
-                subscrition.unsubscribe();
+        const subscrition = observable.subscribe({
+          next: state => {
+            if (state.status === 'uploading') {
+              this.onFileProgress(cancellableFileUpload, state.progress);
+            }
 
-                this.onFileSuccess(cancellableFileUpload, state.id);
-              }
-            },
-            error: error => {
-              this.onFileError(mediaFile, 'upload_fail', error);
-            },
-          });
+            if (state.status === 'processing') {
+              subscrition.unsubscribe();
+
+              this.onFileSuccess(cancellableFileUpload, state.id);
+            }
+          },
+          error: error => {
+            this.onFileError(mediaFile, 'upload_fail', error);
+          },
+        });
       }
 
       // TODO: Make this when pressing "insert"
-      // TODO: move into own method
-      const upfrontId = new Promise<string>(async resolve => {
-        if (!this.userMediaStore) {
-          return;
-        }
-
-        const occurrenceKey = uuid.v4();
-        const { collection } = this.tenantUploadParams;
-        const options = { collection, occurrenceKey };
-        // We want to create an empty file in the public collection
-        const response = await this.mediaStore.createFile(options);
-        const id = response.data.id;
-
-        resolve(id);
-      });
+      const upfrontId = this.getUpfrontId(observable);
       const mediaFile = {
         id,
         upfrontId,
