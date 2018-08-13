@@ -10,6 +10,7 @@ import {
 import { Command } from '../../../types';
 import { processRawValue } from '../../../utils';
 import { EditorView } from 'prosemirror-view';
+import { Slice } from 'prosemirror-model';
 
 export const resolve = (url: string, cardData: any): Command => (
   editorState,
@@ -95,6 +96,33 @@ export const queueCard = (
       pos,
     } as Queue),
   );
+
+  return true;
+};
+
+// TODO: only linkify if it's the only node in the slice!
+export const queueCardFromSlice = (
+  slice: Slice,
+  startPos: number,
+): ((view: EditorView) => boolean) => view => {
+  const { state } = view;
+  const { schema } = state;
+
+  // if the selection contained the entire document, offset into the first paragraph
+  const offset = startPos === 0 ? 1 : 0;
+
+  // dispatch links after we replace selection, otherwise we'll remap early
+  const { link } = schema.marks;
+  slice.content.descendants((node, pos) => {
+    const linkMark = node.marks.find(mark => mark.type === link);
+
+    if (linkMark) {
+      const docPos = startPos + pos - slice.openStart + offset;
+      console.log('pos', docPos);
+      queueCard(linkMark.attrs.href, docPos, 'inline')(view);
+      return false;
+    }
+  });
 
   return true;
 };

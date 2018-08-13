@@ -22,6 +22,7 @@ export type CardPluginState = {
   provider: CardProvider | null;
 };
 
+// actions
 export type SetProvider = {
   type: 'SET_PROVIDER';
   provider: CardProvider;

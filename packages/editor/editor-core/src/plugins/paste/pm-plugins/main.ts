@@ -37,7 +37,7 @@ import {
   transformSliceToJoinAdjacentCodeBlocks,
   transformSingleLineCodeBlockToCodeMark,
 } from '../../code-block/utils';
-import { queueCard } from '../../card/pm-plugins/actions';
+import { queueCardFromSlice } from '../../card/pm-plugins/actions';
 
 export const stateKey = new PluginKey('pastePlugin');
 
@@ -122,27 +122,18 @@ export function createPlugin(
 
           if (doc && doc.content) {
             const tr = closeHistory(state.tr);
-            tr.replaceSelection(
-              new Slice(doc.content, slice.openStart, slice.openEnd),
+            const replacementSlice = new Slice(
+              doc.content,
+              slice.openStart,
+              slice.openEnd,
             );
+
+            // replace the selection
+            tr.replaceSelection(replacementSlice);
             dispatch(tr.scrollIntoView());
 
-            // if the selection contained the entire document, offset into the first paragraph
-            const offset = state.tr.selection.from === 0 ? 1 : 0;
-
-            // dispatch links after we replace selection, otherwise we'll remap early
-            doc.descendants((node, pos) => {
-              const linkMark = node.marks.find(
-                mark => mark.type.name === 'link',
-              );
-
-              if (linkMark) {
-                const docPos =
-                  state.tr.selection.from + pos - slice.openStart + offset;
-                queueCard(linkMark.attrs.href, docPos, 'inline')(view);
-                return false;
-              }
-            });
+            // queue cards if we found them, after the replacement
+            queueCardFromSlice(replacementSlice, state.selection.from)(view);
 
             return true;
           }
@@ -189,22 +180,26 @@ export function createPlugin(
 
           // get prosemirror-tables to handle pasting tables if it can
           // otherwise, just the replace the selection with the content
-          if (!handlePasteTable(view, null, slice)) {
-            closeHistory(tr);
-            tr.replaceSelection(slice);
-            tr.setStoredMarks([]);
-            if (
-              tr.selection.empty &&
-              tr.selection.$from.parent.type === codeBlock
-            ) {
-              tr.setSelection(TextSelection.near(
-                tr.selection.$from,
-                1,
-              ) as Selection);
-            }
-            dispatch(tr);
+          if (handlePasteTable(view, null, slice)) {
+            return true;
           }
 
+          closeHistory(tr);
+          tr.replaceSelection(slice);
+          tr.setStoredMarks([]);
+          if (
+            tr.selection.empty &&
+            tr.selection.$from.parent.type === codeBlock
+          ) {
+            tr.setSelection(TextSelection.near(
+              tr.selection.$from,
+              1,
+            ) as Selection);
+          }
+          dispatch(tr);
+
+          // queue link cards
+          queueCardFromSlice(slice, state.selection.from)(view);
           return true;
         }
 
