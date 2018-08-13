@@ -51,4 +51,5 @@ export type Props = {|
   renderItem: RenderItemParams => React.Node,
   provided: TreeDraggableProvided,
   snapshot: DraggableStateSnapshot,
+  itemRef: (itemId: ItemId, ?HTMLElement) => void,
 |};

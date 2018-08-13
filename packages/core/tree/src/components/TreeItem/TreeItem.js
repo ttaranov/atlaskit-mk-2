@@ -53,11 +53,18 @@ export default class TreeItem extends Component<Props> {
       renderItem,
       provided,
       snapshot,
+      itemRef,
     } = this.props;
+
+    const innerRef = (el: ?HTMLElement) => {
+      itemRef(item.id, el);
+      provided.innerRef(el);
+    };
 
     const finalProvided: TreeDraggableProvided = {
       ...provided,
       dragHandleProps: this.patchDragHandleProps(provided.dragHandleProps),
+      innerRef,
     };
 
     return renderItem({

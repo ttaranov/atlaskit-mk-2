@@ -13,15 +13,14 @@ import {
 } from 'react-beautiful-dnd';
 import { getBox } from 'css-box-model';
 import memoizeOne from 'memoize-one';
+import {
+  calculateFinalDropPositions,
+  calculatePendingDropAnimatingOffset,
+} from './Tree-utils';
 import type { Props, State, DragState } from './Tree-types';
 import { noop } from '../../utils/handy';
-import { flattenTree, getTreePosition } from '../../utils/tree';
-import {
-  getDestinationPath,
-  getSourcePath,
-  getFlatItemPath,
-} from '../../utils/flat-tree';
-import type { FlattenedItem, Path, TreePosition, ItemId } from '../../types';
+import { flattenTree } from '../../utils/tree';
+import type { FlattenedItem, ItemId } from '../../types';
 import TreeItem from '../TreeItem';
 import {
   type TreeDraggableProvided,
@@ -76,15 +75,18 @@ export default class Tree extends Component<Props, State> {
   };
 
   onDragEnd = (result: DropResult) => {
-    const { onDragEnd } = this.props;
+    const { onDragEnd, tree } = this.props;
+    const { flattenedTree } = this.state;
     const finalDragState: DragState = {
       ...this.dragState,
+      source: result.source,
       destination: result.destination,
     };
-    const {
-      sourcePosition,
-      destinationPosition,
-    } = this.calculateFinalDropPositions(finalDragState);
+    const { sourcePosition, destinationPosition } = calculateFinalDropPositions(
+      tree,
+      flattenedTree,
+      finalDragState,
+    );
     onDragEnd(sourcePosition, destinationPosition);
     this.dragState = null;
   };
@@ -102,60 +104,8 @@ export default class Tree extends Component<Props, State> {
     }
   };
 
-  /*
-    Translates a drag&drop movement from a purely index based flat list style to tree-friendly `TreePosition` data structure 
-    to make it available in the onDragEnd callback.  
-   */
-  calculateFinalDropPositions = (
-    dragState: DragState,
-  ): { sourcePosition: TreePosition, destinationPosition: ?TreePosition } => {
-    const { tree } = this.props;
-    const { flattenedTree } = this.state;
-    const { source, destination, horizontalLevel } = dragState;
-    const sourcePath: Path = getSourcePath(flattenedTree, source.index);
-    const sourcePosition: TreePosition = getTreePosition(tree, sourcePath);
-
-    if (!destination) {
-      return { sourcePosition, destinationPosition: null };
-    }
-
-    const destinationPath: Path = getDestinationPath(
-      flattenedTree,
-      source.index,
-      destination.index,
-      horizontalLevel,
-    );
-    const destinationPosition: ?TreePosition = getTreePosition(
-      tree,
-      destinationPath,
-    );
-    return { sourcePosition, destinationPosition };
-  };
-
   calculatePendingDropAnimatingOffset = memoizeOne(
-    (dragState: DragState): number => {
-      const { offsetPerLevel } = this.props;
-      const { flattenedTree } = this.state;
-      const { source, destination, horizontalLevel } = dragState;
-
-      if (!destination) {
-        return 0;
-      }
-
-      const destinationPath: Path = getDestinationPath(
-        flattenedTree,
-        source.index,
-        destination.index,
-        horizontalLevel,
-      );
-      const displacedPath: Path = getFlatItemPath(
-        flattenedTree,
-        destination.index,
-      );
-      const offsetDifference: number =
-        destinationPath.length - displacedPath.length;
-      return offsetDifference * offsetPerLevel;
-    },
+    calculatePendingDropAnimatingOffset,
   );
 
   isDraggable = (item: FlattenedItem): boolean =>
@@ -184,18 +134,9 @@ export default class Tree extends Component<Props, State> {
   patchDraggableProvided = (
     provided: DraggableProvided,
     snapshot: DraggableStateSnapshot,
-    item: FlattenedItem,
   ): TreeDraggableProvided => {
-    const innerRef = (el: ?HTMLElement) => {
-      this.itemsElement[item.item.id] = el;
-      provided.innerRef(el);
-    };
-
-    // $ExpectError
-    let finalProvided: TreeDraggableProvided = {
-      ...provided,
-      innerRef,
-    };
+    const { offsetPerLevel } = this.props;
+    const { flattenedTree } = this.state;
 
     if (
       // Patching is needed
@@ -205,11 +146,14 @@ export default class Tree extends Component<Props, State> {
       !provided.draggableProps.style.left ||
       !this.dragState
     ) {
-      return finalProvided;
+      // $ExpectError
+      return provided;
     }
 
     const dropAnimationOffset: number = this.calculatePendingDropAnimatingOffset(
+      flattenedTree,
       this.dragState,
+      offsetPerLevel,
     );
     // During drop we apply some additional offset to the dropped item
     // in order to precisely land it at the right location
@@ -217,16 +161,17 @@ export default class Tree extends Component<Props, State> {
     const finalStyle: TreeDraggingStyle = {
       ...provided.draggableProps.style,
       // overwrite left position
-      // $ExpectError // This drive me crazy. Flow complains: property left is missing in null or undefined
+      // $ExpectError // This drives me crazy. Flow complains: property left is missing in null or undefined
       left: provided.draggableProps.style.left + dropAnimationOffset,
       // animate so it doesn't jump immediately
       transition: 'left 0.277s ease-out',
     };
 
-    finalProvided = {
-      ...finalProvided,
+    // $ExpectError
+    const finalProvided: TreeDraggableProvided = {
+      ...provided,
       draggableProps: {
-        ...finalProvided.draggableProps,
+        ...provided.draggableProps,
         style: finalStyle,
       },
     };
@@ -241,6 +186,10 @@ export default class Tree extends Component<Props, State> {
         provided.innerRef(el);
       },
     };
+  };
+
+  setItemRef = (itemId: ItemId, el: ?HTMLElement) => {
+    this.itemsElement[itemId] = el;
   };
 
   renderItems = (): Array<Node> => {
@@ -258,7 +207,6 @@ export default class Tree extends Component<Props, State> {
           const finalProvided: TreeDraggableProvided = this.patchDraggableProvided(
             provided,
             snapshot,
-            flatItem,
           );
           return (
             <TreeItem
@@ -271,6 +219,7 @@ export default class Tree extends Component<Props, State> {
               renderItem={renderItem}
               provided={finalProvided}
               snapshot={snapshot}
+              itemRef={this.setItemRef}
             />
           );
         }}
