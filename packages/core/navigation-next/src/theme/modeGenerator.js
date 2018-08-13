@@ -116,5 +116,13 @@ export default ({ background, text }: Args): Mode => {
       const productStyles = { ...product, backgroundColor: colors.N80A };
       return { container: productStyles, product: productStyles };
     },
+    skeletonItem: () => {
+      const { product } = light.skeletonItem();
+      const productStyles = {
+        ...product,
+        backgroundColor: chromatism.brightness(20, background).hex,
+      };
+      return { container: productStyles, product: productStyles };
+    },
   };
 };

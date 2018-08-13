@@ -17,6 +17,7 @@ import { getAvatarForConfluenceObjectResult } from '../util/confluence-avatar-ut
 export interface Props {
   results: Result[];
   sectionIndex: number;
+  analyticsData?: {};
 }
 
 export default class ResultList extends React.Component<Props> {
@@ -29,6 +30,8 @@ export default class ResultList extends React.Component<Props> {
         sectionIndex,
         indexWithinSection: index,
         containerId: result.containerId,
+        experimentId: result.experimentId,
+        ...this.props.analyticsData,
       };
 
       switch (resultType) {

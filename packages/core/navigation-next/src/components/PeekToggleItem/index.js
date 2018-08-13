@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import MenuIcon from '@atlaskit/icon/glyph/menu';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 
-import { GlobalItemPrimitive } from '../..';
+import { GlobalItemPrimitive } from '../../';
 import InteractionStateManager from '../InteractionStateManager';
 import { UIController, UIControllerSubscriber } from '../../ui-controller';
 import {

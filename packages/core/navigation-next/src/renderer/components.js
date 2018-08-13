@@ -12,18 +12,16 @@ import IssuesIcon from '@atlaskit/icon/glyph/issues';
 import ShipIcon from '@atlaskit/icon/glyph/ship';
 import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
-import {
-  ContainerHeader,
-  Item as BaseItem,
-  ItemPrimitive,
-  Section as SectionComponent,
-  Separator,
-  Group as GroupComponent,
-  GroupHeading as GroupHeadingComponent,
-  Switcher,
-  withNavigationUI,
-  withNavigationViewController,
-} from '..';
+import ContainerHeader from '../components/ContainerHeader';
+import BaseItem from '../components/Item';
+import ItemPrimitive from '../components/Item/primitives';
+import SectionComponent from '../components/Section';
+import Separator from '../components/Separator';
+import GroupComponent from '../components/Group';
+import GroupHeadingComponent from '../components/GroupHeading';
+import Switcher from '../components/Switcher';
+import { withNavigationUI } from '../ui-controller';
+import { withNavigationViewController } from '../view-controller';
 import type {
   GoToItemProps,
   GroupProps,
@@ -172,8 +170,8 @@ const Section = ({
 }: SectionProps) =>
   items.length ? (
     <SectionComponent id={id} key={nestedGroupKey} parentId={parentId}>
-      {({ css }) => (
-        <div css={{ ...css }}>
+      {({ className }) => (
+        <div className={className}>
           <ItemsRenderer items={items} customComponents={customComponents} />
         </div>
       )}
@@ -211,18 +209,9 @@ export const ItemsRenderer = ({
         ? props.nestedGroupKey
         : props.id;
 
-    if (groupComponents[type]) {
-      const G = groupComponents[type];
-      return <G key={key} {...props} customComponents={customComponents} />;
-    }
-
-    if (itemComponents[type]) {
-      const I = itemComponents[type];
-      return <I key={key} {...props} />;
-    }
-
-    if (customComponents[type]) {
-      const C = customComponents[type];
+    // If they've provided a component as the type
+    if (typeof type === 'function') {
+      const C = type;
       return (
         <C
           key={key}
@@ -233,6 +222,38 @@ export const ItemsRenderer = ({
           customComponents={customComponents}
         />
       );
+    }
+
+    if (typeof type === 'string') {
+      // If they've provided a type which matches one of our in-built group
+      // components
+      if (groupComponents[type]) {
+        const G = groupComponents[type];
+        return <G key={key} {...props} customComponents={customComponents} />;
+      }
+
+      // If they've provided a type which matches one of our in-built item
+      // components.
+      if (itemComponents[type]) {
+        const I = itemComponents[type];
+        return <I key={key} {...props} />;
+      }
+
+      // If they've provided a type which matches one of their defined custom
+      // components.
+      if (customComponents[type]) {
+        const C = customComponents[type];
+        return (
+          <C
+            key={key}
+            {...props}
+            // We pass our in-built components through to custom components so
+            // they can wrap/render them if they want to.
+            components={components}
+            customComponents={customComponents}
+          />
+        );
+      }
     }
 
     return <Debug key={key} type={type} {...props} />;

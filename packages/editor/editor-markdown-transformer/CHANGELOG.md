@@ -1,5 +1,32 @@
 # @atlaskit/editor-markdown-transformer
 
+## 2.0.5
+
+
+
+
+
+- [none] Updated dependencies [597e0bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/597e0bd)
+  - @atlaskit/editor-core@77.0.0
+  - @atlaskit/editor-test-helpers@6.0.0
+  - @atlaskit/editor-common@14.0.0
+- [none] Updated dependencies [61df453](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/61df453)
+  - @atlaskit/editor-common@14.0.0
+  - @atlaskit/editor-test-helpers@6.0.0
+  - @atlaskit/editor-core@77.0.0
+- [none] Updated dependencies [812a39c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/812a39c)
+  - @atlaskit/editor-core@77.0.0
+  - @atlaskit/editor-test-helpers@6.0.0
+  - @atlaskit/editor-common@14.0.0
+- [none] Updated dependencies [c8eb097](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8eb097)
+  - @atlaskit/editor-common@14.0.0
+  - @atlaskit/editor-test-helpers@6.0.0
+  - @atlaskit/editor-core@77.0.0
+- [patch] Updated dependencies [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+  - @atlaskit/editor-common@14.0.0
+  - @atlaskit/editor-test-helpers@6.0.0
+  - @atlaskit/editor-core@77.0.0
+
 ## 2.0.4
 - [patch] Fixes issue an issue with empty lists inside tables [378fe99](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/378fe99)
 - [none] Updated dependencies [378fe99](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/378fe99)

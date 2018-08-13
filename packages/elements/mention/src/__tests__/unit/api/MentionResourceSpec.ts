@@ -231,7 +231,7 @@ describe('MentionResource', () => {
       resource.filter('');
     });
 
-    it('should add weight based on response order', done => {
+    it.skip('should add weight based on response order', done => {
       const resource = new MentionResource(apiConfig);
       resource.subscribe(
         'test1',

@@ -1,5 +1,33 @@
 # @atlaskit/global-search
 
+## 5.5.2
+- [patch] Adds experiment attribution [742b49d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/742b49d)
+
+## 5.5.1
+- [patch] Fixes duplicate screen event firing on mount [517283a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/517283a)
+
+## 5.5.0
+- [minor] Refactor and analytics fixes, adds support for aggregator [459c7fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/459c7fe)
+
+## 5.4.3
+- [patch] fix pre and post query screen events [5976aef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5976aef)
+
+## 5.4.2
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/quick-search@4.2.6
+  - @atlaskit/navigation@33.1.3
+  - @atlaskit/page@8.0.3
+  - @atlaskit/modal-dialog@6.0.6
+  - @atlaskit/field-text-area@4.0.4
+  - @atlaskit/analytics-next@3.0.4
+  - @atlaskit/flag@9.0.4
+  - @atlaskit/button@9.0.5
+  - @atlaskit/theme@5.1.3
+  - @atlaskit/analytics@4.0.4
+  - @atlaskit/icon@13.2.4
+  - @atlaskit/avatar@14.0.6
+
 ## 5.4.1
 - [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
   - @atlaskit/navigation@33.1.2

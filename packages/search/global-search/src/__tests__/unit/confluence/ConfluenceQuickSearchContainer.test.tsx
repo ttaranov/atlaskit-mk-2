@@ -54,6 +54,7 @@ function render(partialProps?: Partial<Props>) {
     confluenceClient: noResultsConfluenceClient,
     crossProductSearchClient: noResultsCrossProductSearchClient,
     peopleSearchClient: noResultsPeopleSearchClient,
+    useAggregatorForConfluenceObjects: false,
     ...partialProps,
   };
 
@@ -65,9 +66,20 @@ describe('ConfluenceQuickSearchContainer', () => {
   it('should start searching when a character has been typed', async () => {
     const wrapper = render();
 
+    // loading should start on mount while recent results are fetched
+    expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBe(true);
+
+    const onMount: Function = wrapper.find(GlobalQuickSearch).prop('onMount');
+    onMount();
+
+    // check that loading is false after recent results return
+    await waitForRender(wrapper);
     expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBe(false);
 
+    // simulate a search
     searchFor('x', wrapper);
+
+    // then check that loading starts...
     expect(wrapper.find(GlobalQuickSearch).prop('isLoading')).toBe(true);
   });
 

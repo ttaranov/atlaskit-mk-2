@@ -20,8 +20,9 @@ export default new Plugin({
         $click.textOffset === 0;
 
       const clickWasNearACodeMark =
-        ($click.nodeBefore && code.isInSet($click.nodeBefore.marks)) ||
-        ($click.nodeAfter && code.isInSet($click.nodeAfter.marks));
+        code &&
+        (($click.nodeBefore && code.isInSet($click.nodeBefore.marks)) ||
+          ($click.nodeAfter && code.isInSet($click.nodeAfter.marks)));
 
       // Find the starting position of the clicked dom-element
       const clickedDOMElementPosition =

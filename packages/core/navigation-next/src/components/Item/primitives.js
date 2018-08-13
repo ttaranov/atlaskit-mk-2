@@ -11,26 +11,26 @@ const getItemBase = (
 ): ComponentType<ItemRenderComponentProps> => {
   const { component: CustomComponent, href, onClick, target } = itemProps;
 
+  let ItemBase;
+
   if (CustomComponent) {
     // The custom component gets passed all of the item's props
-    return props => <CustomComponent {...itemProps} {...props} />;
-  }
-
-  if (href) {
+    ItemBase = props => <CustomComponent {...itemProps} {...props} />;
+  } else if (href) {
     // We have to specifically destructure children here or else eslint
     // complains about the <a> not having content
-    return ({ children, ...props }: ItemRenderComponentProps) => (
+    ItemBase = ({ children, ...props }: ItemRenderComponentProps) => (
       <a href={href} onClick={onClick} target={target} {...props}>
         {children}
       </a>
     );
+  } else if (onClick) {
+    ItemBase = props => <button {...props} onClick={onClick} />;
+  } else {
+    ItemBase = props => <span {...props} />;
   }
 
-  if (onClick) {
-    return props => <button {...props} onClick={onClick} />;
-  }
-
-  return props => <span {...props} />;
+  return ItemBase;
 };
 
 class ItemPrimitive extends PureComponent<ItemProps> {
@@ -70,7 +70,6 @@ class ItemPrimitive extends PureComponent<ItemProps> {
       text,
       theme,
     } = this.props;
-    // console.log({ isHover, isActive });
 
     const { mode, context } = theme;
     const presentationProps = { isActive, isHover, isSelected, spacing };

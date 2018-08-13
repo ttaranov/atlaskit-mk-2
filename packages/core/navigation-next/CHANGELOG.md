@@ -1,5 +1,32 @@
 # @atlaskit/navigation-next
 
+## 3.2.4
+
+
+- [patch] Add variable name displayNames for anonymous function SFC components to improve debugging experience [2e148df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e148df)
+- [none] Updated dependencies [50d469f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/50d469f)
+  - @atlaskit/global-navigation@4.0.6
+- [none] Updated dependencies [1602872](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1602872)
+  - @atlaskit/global-navigation@4.0.6
+- [none] Updated dependencies [2e148df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e148df)
+  - @atlaskit/global-navigation@4.0.6
+
+## 3.2.3
+- [patch]  Update icon color for selected navigation item [d0ab79d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d0ab79d)
+- [patch] Updated dependencies [d0ab79d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d0ab79d)
+
+## 3.2.2
+- [patch] Reintroduce navigation z-index [44ac36b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/44ac36b)
+- [none] Updated dependencies [44ac36b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/44ac36b)
+
+## 3.2.1
+- [patch] Updated dependencies [626244b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/626244b)
+  - @atlaskit/global-navigation@4.0.5
+
+## 3.2.0
+- [minor] export wrapped LayoutManager component which is connected to the views API and handles the content navigation automatically. export skeleton components for the Item and ContainerHeader. Renderer now accepts components as a 'type'. [f48e761](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f48e761)
+- [none] Updated dependencies [f48e761](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f48e761)
+
 ## 3.1.3
 - [patch] Updated dependencies [6438477](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6438477)
   - @atlaskit/global-navigation@4.0.3

@@ -1,5 +1,26 @@
 # @atlaskit/adf-utils
 
+## 2.0.5
+- [patch] Fix es5 exports of some of the newer modules [3f0cd7d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f0cd7d)
+- [none] Updated dependencies [3f0cd7d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f0cd7d)
+
+## 2.0.4
+
+
+
+
+
+- [none] Updated dependencies [597e0bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/597e0bd)
+  - @atlaskit/editor-common@14.0.0
+- [none] Updated dependencies [61df453](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/61df453)
+  - @atlaskit/editor-common@14.0.0
+- [none] Updated dependencies [812a39c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/812a39c)
+  - @atlaskit/editor-common@14.0.0
+- [none] Updated dependencies [c8eb097](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8eb097)
+  - @atlaskit/editor-common@14.0.0
+- [patch] Updated dependencies [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+  - @atlaskit/editor-common@14.0.0
+
 ## 2.0.3
 - [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
   - @atlaskit/editor-common@13.2.7

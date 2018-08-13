@@ -250,6 +250,7 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
 
   ${tableSharedStyle} & .table-container {
     transition: all 0.1s linear;
+    overflow-x: auto;
     table {
       margin-left: 0;
       margin-right: 0;

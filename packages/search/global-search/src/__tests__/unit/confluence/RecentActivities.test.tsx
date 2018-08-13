@@ -68,6 +68,27 @@ it('should render people', () => {
   expect(findGroup(wrapper, 'people').prop('results')).toHaveLength(1);
 });
 
+it('should pass in the correct resultCount into the analytics data', () => {
+  const wrapper = render({
+    recentlyViewedPages: [
+      makeConfluenceObjectResult(),
+      makeConfluenceObjectResult(),
+    ],
+    recentlyViewedSpaces: [makeConfluenceContainerResult()],
+    recentlyInteractedPeople: [makePersonResult()],
+  });
+
+  expect(findGroup(wrapper, 'objects').prop('analyticsData')).toEqual({
+    resultCount: 4,
+  });
+  expect(findGroup(wrapper, 'spaces').prop('analyticsData')).toEqual({
+    resultCount: 4,
+  });
+  expect(findGroup(wrapper, 'people').prop('analyticsData')).toEqual({
+    resultCount: 4,
+  });
+});
+
 it('should fire pre query screen event', () => {
   const preQueryScreenCounter = {
     name: 'preQueryScreenCounter',
