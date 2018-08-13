@@ -4,6 +4,7 @@
     "transform-class-properties",
     "transform-object-rest-spread",
     "syntax-dynamic-import",
+    "transform-async-to-generator",
     [
       "babel-plugin-styled-components",
       {
@@ -18,7 +19,8 @@
       "plugins": [
         "transform-class-properties",
         "transform-object-rest-spread",
-        "transform-runtime"
+        "transform-runtime",
+        "transform-async-to-generator"
       ],
       "ignore": ["__mocks__", "__tests__", "__fixtures__", "node_modules"]
     },
@@ -27,13 +29,14 @@
       "plugins": [
         "transform-class-properties",
         "transform-object-rest-spread",
-        "transform-runtime"
+        "transform-runtime",
+        "transform-async-to-generator"
       ],
       "ignore": ["__mocks__", "__tests__", "__fixtures__", "node_modules"]
     },
     "test": {
       "presets": ["env", "react", "flow"],
-      "plugins": ["transform-class-properties", "transform-object-rest-spread"]
+      "plugins": ["transform-class-properties", "transform-object-rest-spread", "transform-async-to-generator"]
     }
   }
 }

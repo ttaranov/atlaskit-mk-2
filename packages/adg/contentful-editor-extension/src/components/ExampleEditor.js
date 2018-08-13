@@ -9,6 +9,8 @@ import Loadable from 'react-loadable';
 import * as fs from '../utils/fs';
 import packageResolver from '../utils/packageResolver';
 
+import { providers } from './stuffIDontUnderstand';
+
 const quickInsertProvider = quickInsertProviderFactory();
 
 export default class Example extends React.PureComponent {
@@ -33,10 +35,6 @@ export default class Example extends React.PureComponent {
               allowGapCursor={true}
               allowTables={true}
               allowExtension
-              media={{
-                provider: () => Promise.resolve(),
-                allowMediaSingle: true,
-              }}
               onChange={editorView =>
                 this.handleChangeInTheEditor(
                   editorView,
@@ -45,6 +43,7 @@ export default class Example extends React.PureComponent {
               }
               quickInsert={{ provider: Promise.resolve(quickInsertProvider) }}
               media={{
+                provider: providers.mediaProvider.resolved,
                 allowMediaSingle: true,
               }}
               extensionHandlers={{
