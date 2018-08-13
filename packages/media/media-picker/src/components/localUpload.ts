@@ -18,7 +18,7 @@ import { defaultUploadParams } from '../domain/uploadParams';
 
 export interface LocalUploadConfig {
   uploadParams: UploadParams;
-  tenantUploadParams: UploadParams; // TODO: Maybe make this optional?
+  tenantUploadParams?: UploadParams;
   useNewUploadService?: boolean;
 }
 
@@ -31,8 +31,12 @@ export class LocalUploadComponent<
 
   constructor(context: Context, config: LocalUploadConfig) {
     super();
-    const { tenantUploadParams, useNewUploadService } = config;
+    const { useNewUploadService } = config;
     const uploadParams = { ...defaultUploadParams, ...config.uploadParams };
+    const tenantUploadParams = {
+      ...defaultUploadParams,
+      ...config.tenantUploadParams,
+    };
 
     this.context = context;
     this.uploadService = UploadServiceFactory.create(
