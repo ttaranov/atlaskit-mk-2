@@ -32,7 +32,10 @@ export type DefaultConfigShape = {
   search: DefaultItemShape,
   create: DefaultItemShape,
   notification: DefaultItemShape,
-  appSwitcher: DefaultItemShape,
+  appSwitcher: {
+    section: 'primary' | 'secondary',
+    rank: number,
+  },
   help: DefaultItemShape,
   profile: DefaultItemShape,
 };

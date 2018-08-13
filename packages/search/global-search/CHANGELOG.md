@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 5.5.2
+- [patch] Adds experiment attribution [742b49d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/742b49d)
+
 ## 5.5.1
 - [patch] Fixes duplicate screen event firing on mount [517283a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/517283a)
 
