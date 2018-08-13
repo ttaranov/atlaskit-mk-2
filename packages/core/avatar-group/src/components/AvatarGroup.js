@@ -9,7 +9,9 @@ import Avatar, {
   type SizeType,
 } from '@atlaskit/avatar';
 import { Grid, Stack } from '../styled/AvatarGroup';
-import MoreIndicator from './MoreIndicator';
+import MoreIndicator, {
+  type Props as MoreIndicatorProps,
+} from './MoreIndicator';
 import itemTheme from '../theme/itemTheme';
 import AvatarGroupItem from './AvatarGroupItem';
 
@@ -42,6 +44,8 @@ type Props = {
   /** Take control of the click event on the more indicator. This will cancel
    the default dropdown behaviour. */
   onMoreClick?: () => mixed,
+  /** Provide additional props to the MoreButton or override default props */
+  moreButtonProps?: $Shape<HTMLElement & MoreIndicatorProps>,
 
   boundariesElement?: 'viewport' | 'window' | 'scrollParent',
 };
@@ -51,6 +55,7 @@ export default class AvatarGroup extends Component<Props> {
     appearance: 'stack',
     avatar: Avatar,
     maxCount: 0,
+    moreButtonProps: {},
     size: 'medium',
   };
 
@@ -60,6 +65,7 @@ export default class AvatarGroup extends Component<Props> {
       data,
       borderColor,
       onMoreClick,
+      moreButtonProps,
       onAvatarClick,
       size,
       boundariesElement,
@@ -76,6 +82,7 @@ export default class AvatarGroup extends Component<Props> {
         isInteractive
         isStack={appearance === 'stack'}
         size={size}
+        {...moreButtonProps}
         {...props}
       />
     );

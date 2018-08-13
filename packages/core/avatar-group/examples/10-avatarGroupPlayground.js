@@ -212,6 +212,30 @@ export default class AvatarGroupExample extends Component<*, State> {
           ) : null}
         </div>
 
+        <h5>Removed from tab order</h5>
+        <div style={{ maxWidth: 380 }}>
+          <Note>
+            Prevent tabbing to elements in the avatar group by passing{' '}
+            <Code>tabIndex</Code> via the <Code>moreButtonProps</Code> and{' '}
+            <Code>data</Code> props.
+          </Note>
+          <AvatarGroup
+            appearance="stack"
+            maxCount={5}
+            data={stackSourceURLs.map(i => ({
+              key: i,
+              name: `Stack Avatar ${i + 1}`,
+              src: avatarUrl,
+              size: avatarSize,
+              appearance: 'circle',
+              enableTooltip: true,
+              tabIndex: -1,
+            }))}
+            size={avatarSize}
+            moreButtonProps={{ tabIndex: -1 }}
+          />
+        </div>
+
         <h5>Constrained by the scroll parent</h5>
         <div>
           <p>Expand and scroll up to reposition the avatar group menu</p>
