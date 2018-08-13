@@ -8,12 +8,14 @@ import React, {
   type Node,
 } from 'react';
 import { ThemeProvider } from 'styled-components';
+import { TransitionGroup } from 'react-transition-group';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
-import { FocusLock, withRenderTarget } from '@atlaskit/layer-manager';
+import { FocusLock } from '@atlaskit/layer-manager';
+import Portal from '@atlaskit/portal';
 import Layer from '@atlaskit/layer';
 import { layers } from '@atlaskit/theme';
 
@@ -204,24 +206,26 @@ class Spotlight extends Component<Props> {
     );
 
     return (
-      <Fill in={transitionIn} scrollDistance={scrollY}>
-        <Layer
-          boundariesElement="scrollParent"
-          content={dialog}
-          offset="0 8"
-          position={dialogPlacement}
-          zIndex={layers.spotlight()}
-        >
-          {this.renderTargetClone()}
-        </Layer>
-      </Fill>
+      <Portal zIndex={layers.spotlight()}>
+        <TransitionGroup>
+          <Fill in={transitionIn} scrollDistance={scrollY}>
+            <Layer
+              boundariesElement="scrollParent"
+              content={dialog}
+              offset="0 8"
+              position={dialogPlacement}
+              zIndex={layers.spotlight()}
+            >
+              {this.renderTargetClone()}
+            </Layer>
+          </Fill>
+        </TransitionGroup>
+      </Portal>
     );
   }
 }
 
-const portalConfig = { target: 'spotlight', withTransitionGroup: true };
-const portal = comp => withRenderTarget(portalConfig, comp);
-const enhance = compose(withSpotlightState, withScrollMeasurements, portal);
+const enhance = compose(withSpotlightState, withScrollMeasurements);
 
 export const SpotlightWithoutAnalytics = enhance(Spotlight);
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
