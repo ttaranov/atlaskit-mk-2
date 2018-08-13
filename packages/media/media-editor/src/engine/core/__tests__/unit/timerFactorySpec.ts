@@ -1,7 +1,4 @@
-import {
-  TimerHandle,
-  TimerFactory,
-} from '../../../src/engine/core/timerFactory';
+import { TimerHandle, TimerFactory } from '../../timerFactory';
 
 type TimerCallback = () => {};
 

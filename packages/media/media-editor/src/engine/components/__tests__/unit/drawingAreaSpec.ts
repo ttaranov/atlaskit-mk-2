@@ -1,8 +1,8 @@
-import { ColorWithAlpha } from '../../../src/common';
+import { ColorWithAlpha } from '../../../../common';
 import {
   DefaultDrawingArea,
   OutputSize,
-} from '../../../src/engine/components/drawingArea';
+} from '../../../../engine/components/drawingArea';
 
 describe('MediaEditor DrawingArea', () => {
   const backColor: ColorWithAlpha = {
