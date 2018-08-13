@@ -37,7 +37,6 @@ import {
 } from '../src/domain/uploadEvent';
 import { PopupUploadEventPayloadMap } from '../src/components/popup';
 import { AuthEnvironment } from '../example-helpers/types';
-import { b } from '../../../editor/adf-utils/src/builders';
 
 const context = createStorybookContext();
 
