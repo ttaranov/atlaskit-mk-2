@@ -101,11 +101,16 @@ export class NewUploadServiceImpl implements UploadService {
         name: file.name,
         mimeType: file.type,
       };
-      const { userContext } = this;
+      const {
+        userContext,
+        context: tenantContext,
+        shouldCopyFileToRecents,
+      } = this;
       const controller = this.createUploadController();
+      const context = shouldCopyFileToRecents ? tenantContext : userContext;
 
-      if (userContext) {
-        const subscrition = userContext
+      if (context) {
+        const subscrition = context
           .uploadFile(uploadableFile, controller)
           .subscribe({
             next: state => {
