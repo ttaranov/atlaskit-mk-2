@@ -41,14 +41,14 @@ const JiraWordmark = () => (
 );
 
 export const globalNavPrimaryItems = [
-  { key: 'jira', icon: JiraIcon, label: 'Jira' },
-  { key: 'peek-toggle', component: PeekToggleItem, icon: null },
-  { key: 'search', icon: SearchIcon },
-  { key: 'create', icon: AddIcon },
+  { id: 'jira', icon: JiraIcon, label: 'Jira' },
+  { id: 'peek-toggle', component: PeekToggleItem, icon: null },
+  { id: 'search', icon: SearchIcon },
+  { id: 'create', icon: AddIcon },
 ];
 
 export const globalNavSecondaryItems = [
-  { icon: QuestionCircleIcon, label: 'Help', size: 'small' },
+  { id: 'help', icon: QuestionCircleIcon, label: 'Help', size: 'small' },
   {
     icon: () => (
       <Avatar
@@ -60,6 +60,7 @@ export const globalNavSecondaryItems = [
     ),
     label: 'Profile',
     size: 'small',
+    id: 'profile',
   },
 ];
 

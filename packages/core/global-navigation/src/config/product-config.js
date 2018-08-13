@@ -192,28 +192,18 @@ export default function generateProductConfig(
     product: configFactory(onProductClick, productTooltip, {
       icon: productIcon,
       href: productHref,
-      actionSubjectId: 'productLogo',
     }),
     create: configFactory(
       onCreateClick || (createDrawerContents && openDrawer('create')),
       createTooltip,
-      {
-        actionSubjectId: 'create',
-      },
     ),
     search: configFactory(
       onSearchClick || (searchDrawerContents && openDrawer('search')),
       searchTooltip,
-      {
-        actionSubjectId: 'quickSearch',
-      },
     ),
     starred: configFactory(
       onStarredClick || (starredDrawerContents && openDrawer('starred')),
       starredTooltip,
-      {
-        actionSubjectId: 'starDrawer',
-      },
     ),
     notification: configFactory(
       onNotificationClick ||
@@ -221,20 +211,14 @@ export default function generateProductConfig(
       notificationTooltip,
       {
         ...notificationBadge,
-        actionSubjectId: 'notifications',
       },
     ),
-    help: helpConfigFactory(helpItems, helpTooltip, {
-      actionSubjectId: 'help',
-    }),
+    help: helpConfigFactory(helpItems, helpTooltip),
     profile: profileConfigFactory(
       profileItems,
       profileTooltip,
       loginHref,
       profileIconUrl,
-      {
-        actionSubjectId: 'profile',
-      },
     ),
     appSwitcher: appSwitcherComponent
       ? { component: appSwitcherComponent }

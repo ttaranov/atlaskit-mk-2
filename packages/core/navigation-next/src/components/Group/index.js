@@ -16,7 +16,13 @@ export default class Group extends Component<GroupProps> {
 
     return React.Children.count(children) ? (
       <NavigationAnalyticsContext
-        data={{ attributes: { viewGroup: heading }, componentName: 'Group' }}
+        data={{
+          attributes: {
+            viewGroup:
+              typeof heading === 'string' ? heading : JSON.stringify(heading),
+          },
+          componentName: 'Group',
+        }}
       >
         {heading && <GroupHeading>{heading}</GroupHeading>}
         {children}

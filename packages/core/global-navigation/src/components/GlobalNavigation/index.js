@@ -16,7 +16,7 @@ import type { GlobalNavigationProps, DrawerName } from './types';
 
 // TODO: Figure out a way to appease flow without this function.
 const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
-  actionSubjectId,
+  id,
   icon,
   label,
   onClick,
@@ -26,7 +26,7 @@ const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
   href,
   size,
 }) => ({
-  actionSubjectId,
+  id,
   icon,
   label,
   onClick,

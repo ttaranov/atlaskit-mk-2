@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React, { type Node } from 'react';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
 import BacklogIcon from '@atlaskit/icon/glyph/backlog';
@@ -12,6 +12,7 @@ import IssuesIcon from '@atlaskit/icon/glyph/issues';
 import ShipIcon from '@atlaskit/icon/glyph/ship';
 import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
+import { navigationItemClicked } from '../common/analytics';
 import ContainerHeader from '../components/ContainerHeader';
 import BaseItem from '../components/Item';
 import ItemPrimitive from '../components/Item/primitives';
@@ -43,6 +44,15 @@ const iconMap = {
 };
 
 const gridSize = gridSizeFn();
+
+const AnalyticsWrapper = ({
+  children,
+  onClick,
+}: {
+  children: Node,
+  onClick: () => void,
+  // eslint-disable-next-line jsx-a11y/no-static-element-interactions
+}) => <div onClick={onClick}>{children}</div>;
 
 /**
  * ITEMS
@@ -104,7 +114,7 @@ const backItemPrimitiveStyles = styles => ({
   itemBase: { ...styles.itemBase, cursor: 'default' },
 });
 
-const BackItem = ({ goTo, href, subText, text = 'Back' }: *) => (
+const BackItem = ({ goTo, href, subText, id, text = 'Back' }: *) => (
   <div css={{ display: 'flex', marginBottom: '8px' }}>
     <div css={{ flexShrink: 0 }}>
       <GoToItem
@@ -112,6 +122,7 @@ const BackItem = ({ goTo, href, subText, text = 'Back' }: *) => (
         goTo={goTo}
         href={href}
         text={<ArrowLeftIcon size="small" />}
+        id={id}
       />
     </div>
     <div css={{ flexGrow: 1 }}>
@@ -212,15 +223,27 @@ export const ItemsRenderer = ({
     // If they've provided a component as the type
     if (typeof type === 'function') {
       const C = type;
+      const Wrapper = navigationItemClicked(
+        AnalyticsWrapper,
+        'inlineCustomComponent',
+        {
+          ...props,
+          // Define onClick so that the click is recorded by analytics.
+          // Override the existing version in props if it exists, so it does not
+          // get executed multiple times.
+          onClick: () => {},
+        },
+      );
       return (
-        <C
-          key={key}
-          {...props}
-          // We pass our in-built components through to custom components so
-          // they can wrap/render them if they want to.
-          components={components}
-          customComponents={customComponents}
-        />
+        <Wrapper key={key}>
+          <C
+            {...props}
+            // We pass our in-built components through to custom components so
+            // they can wrap/render them if they want to.
+            components={components}
+            customComponents={customComponents}
+          />
+        </Wrapper>
       );
     }
 
@@ -242,16 +265,28 @@ export const ItemsRenderer = ({
       // If they've provided a type which matches one of their defined custom
       // components.
       if (customComponents[type]) {
+        const Wrapper = navigationItemClicked(
+          AnalyticsWrapper,
+          `${type}customComponent`,
+          {
+            ...props,
+            // Define onClick so that the click is recorded by analytics.
+            // Override the existing version in props if it exists, so it does not
+            // get executed multiple times.
+            onClick: () => {},
+          },
+        );
         const C = customComponents[type];
         return (
-          <C
-            key={key}
-            {...props}
-            // We pass our in-built components through to custom components so
-            // they can wrap/render them if they want to.
-            components={components}
-            customComponents={customComponents}
-          />
+          <Wrapper key={key}>
+            <C
+              {...props}
+              // We pass our in-built components through to custom components so
+              // they can wrap/render them if they want to.
+              components={components}
+              customComponents={customComponents}
+            />
+          </Wrapper>
         );
       }
     }
