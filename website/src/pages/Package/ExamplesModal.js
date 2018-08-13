@@ -84,7 +84,7 @@ const keylineMask = css`
 `;
 const Nav = styled.nav`
   ${keylineMask} flex-shrink: 0;
-  padding-right: ${gridSize() * 2}px;
+  margin-right: ${gridSize() * 2}px;
   position: relative;
   width: 240px;
 `;
