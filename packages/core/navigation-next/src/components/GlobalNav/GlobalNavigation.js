@@ -29,7 +29,6 @@ export default class GlobalNavigation extends Component<GlobalNavigationProps> {
         }}
       >
         <div css={wrapperStyles}>
-          {/* TODO: Find a way to conditionally add this to context. We don't want it on non-nav events fired, e.g. tooltip? */}
           <PrimaryItemsList>
             <NavigationAnalyticsContext
               data={{ attributes: { navigationIconGrouping: 'primary' } }}

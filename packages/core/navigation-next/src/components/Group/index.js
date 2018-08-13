@@ -15,7 +15,9 @@ export default class Group extends Component<GroupProps> {
     const { children, hasSeparator, heading } = this.props;
 
     return React.Children.count(children) ? (
-      <NavigationAnalyticsContext data={{ attributes: { viewGroup: heading } }}>
+      <NavigationAnalyticsContext
+        data={{ attributes: { viewGroup: heading }, componentName: 'Group' }}
+      >
         {heading && <GroupHeading>{heading}</GroupHeading>}
         {children}
         {hasSeparator && <Separator />}
