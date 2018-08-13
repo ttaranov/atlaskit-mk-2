@@ -4,7 +4,7 @@ import { Component } from 'react';
 export type MediaApiConfig = {
   clientId: string;
   token: string;
-  serviceHost: string;
+  baseUrl: string;
 };
 
 export interface MediaImageProps {
@@ -21,16 +21,16 @@ export interface MediaImageState {}
 export class MediaImage extends Component<MediaImageProps, MediaImageState> {
   private get imgSrc(): string {
     const { id, mediaApiConfig, collectionName } = this.props;
-    const { clientId, token, serviceHost } = mediaApiConfig;
+    const { clientId, token, baseUrl } = mediaApiConfig;
     const endpoint = `file/${id}/image`;
 
-    return `${serviceHost}/${endpoint}?collection=${collectionName}&client=${clientId}&token=${token}`;
+    return `${baseUrl}/${endpoint}?collection=${collectionName}&client=${clientId}&token=${token}`;
   }
 
   private get hasAuth(): boolean {
-    const { clientId, token, serviceHost } = this.props.mediaApiConfig;
+    const { clientId, token, baseUrl } = this.props.mediaApiConfig;
 
-    return !!clientId && !!token && !!serviceHost;
+    return !!clientId && !!token && !!baseUrl;
   }
 
   private get style() {

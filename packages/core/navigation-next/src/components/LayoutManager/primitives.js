@@ -1,6 +1,7 @@
 // @flow
 
 import React, { type ElementRef } from 'react';
+import { layers } from '@atlaskit/theme';
 
 export const LayoutContainer = (props: {}) => (
   <div
@@ -22,6 +23,7 @@ export const NavigationContainer = (props: {}) => (
       left: 0,
       position: 'fixed',
       top: 0,
+      zIndex: layers.navigation(),
     }}
     {...props}
   />

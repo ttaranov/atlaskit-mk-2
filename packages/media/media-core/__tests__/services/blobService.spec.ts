@@ -4,7 +4,7 @@ import { AuthProvider } from '@atlaskit/media-store';
 const clientId = 'some-client-id';
 const collectionName = 'some-collection-name';
 const token = 'some-token';
-const serviceHost = 'some-service-host';
+const baseUrl = 'some-service-host';
 
 function createFetchSomeBlobSpy() {
   return jest.fn(() => ({
@@ -16,14 +16,11 @@ function createFetchSomeBlobSpy() {
 describe('MediaBlobService', () => {
   const authProvider: AuthProvider = () =>
     Promise.resolve({
-      token: token,
-      clientId: clientId,
+      token,
+      clientId,
+      baseUrl,
     });
-  const service = new MediaBlobService(
-    authProvider,
-    serviceHost,
-    collectionName,
-  );
+  const service = new MediaBlobService(authProvider, collectionName);
 
   describe('fetchImageBlob()', () => {
     it('should allow animation by default', () => {

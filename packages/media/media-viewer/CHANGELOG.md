@@ -1,5 +1,26 @@
 # @atlaskit/media-viewer
 
+## 17.0.4
+- [patch] Use Camera class in avatar picker [335ab1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/335ab1e)
+- [patch] Updated dependencies [335ab1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/335ab1e)
+  - @atlaskit/media-ui@5.1.0
+
+## 17.0.3
+- [patch] Chore: improve the Outcome data type [1feeedb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1feeedb)
+
+## 17.0.2
+- [patch] MSW-885 : add dragging to image viewer [989801b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/989801b)
+
+## 17.0.1
+- [patch] MSW-880: resize fitted images when window resizes [4d1f5b6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4d1f5b6)
+
+## 17.0.0
+- [major] Bumping to latest version of of media-core [5811ed4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5811ed4)
+- [minor] Synchronous property "serviceHost" as part of many Interfaces in media components (like MediaApiConfig) is removed and replaced with asynchronous "baseUrl" as part of Auth object. [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+- [minor] Updated dependencies [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+  - @atlaskit/media-test-helpers@16.0.0
+  - @atlaskit/media-core@23.0.0
+
 ## 16.1.4
 - [patch] Fixes MSW-767 and MSW-895 [8102852](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8102852)
 

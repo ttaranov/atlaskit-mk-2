@@ -1,7 +1,6 @@
 import { State } from './domain';
 
 const state: State = {
-  apiUrl: '',
   redirectUrl: '',
   userAuthProvider: () => Promise.reject('User AuthProvider not provided.'),
   uploads: {},
@@ -14,6 +13,7 @@ const state: State = {
     auth: {
       clientId: '',
       token: '',
+      baseUrl: '',
     },
     uploadParams: {},
   },

@@ -22,7 +22,6 @@ export {
 import { ImageCardModel } from '../tools/fetcher/fetcher';
 
 export interface State {
-  readonly apiUrl: string;
   readonly redirectUrl: string;
   readonly view: View;
   readonly accounts: ServiceAccountWithType[];

@@ -1,11 +1,11 @@
 import { useFakeXMLHttpRequest } from 'sinon';
 import { LRUCache } from 'lru-fast';
+import { Auth, AuthProvider } from '@atlaskit/media-store';
 
 import { MediaFileService } from '../src/services/fileService';
 import { FileDetails, FileItem } from '../src/item';
-import { AuthProvider } from '@atlaskit/media-store';
 
-const serviceHost = 'some-host';
+const baseUrl = 'some-host';
 const token = 'some-token';
 
 const fileId = 'some-file-id';
@@ -59,9 +59,10 @@ describe('MediaFileService', () => {
 
   const resetAuthProvider = () => {
     authProvider = jest.fn(() =>
-      Promise.resolve({
-        token: token,
-        clientId: clientId,
+      Promise.resolve<Auth>({
+        token,
+        clientId,
+        baseUrl,
       }),
     );
   };
@@ -70,7 +71,7 @@ describe('MediaFileService', () => {
     setupFakeXhr();
     const cache = new LRUCache<string, FileItem>(0);
     resetAuthProvider();
-    fileService = new MediaFileService({ serviceHost, authProvider }, cache);
+    fileService = new MediaFileService({ authProvider }, cache);
   });
 
   afterEach(function() {
@@ -145,7 +146,7 @@ describe('MediaFileService', () => {
       fileDetails?: FileDetails,
     ) => {
       resetAuthProvider();
-      fileService = new MediaFileService({ serviceHost, authProvider }, cache);
+      fileService = new MediaFileService({ authProvider }, cache);
       respondFakeXhr(fileDetails);
       return fileService.getFileItem(id, collection).then(() => {
         expect(authProvider).toHaveBeenCalledTimes(1);
@@ -157,7 +158,7 @@ describe('MediaFileService', () => {
       cache: LRUCache<string, FileItem>,
     ) => {
       resetAuthProvider();
-      fileService = new MediaFileService({ serviceHost, authProvider }, cache);
+      fileService = new MediaFileService({ authProvider }, cache);
       return fileService.getFileItem(id, collection).then(() => {
         expect(authProvider).not.toHaveBeenCalled();
       });

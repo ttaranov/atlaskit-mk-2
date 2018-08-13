@@ -73,7 +73,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     props: any = {},
     target: any = Doc,
     key: string = 'root-0',
-    parentInfo?: {parentIsIncompleteTask: boolean},
+    parentInfo?: { parentIsIncompleteTask: boolean },
   ): JSX.Element | null {
     const emojiBlock = isEmojiDoc(fragment, props);
     const content = ReactSerializer.getChildNodes(fragment).map(
@@ -93,7 +93,10 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
         }
 
         let pInfo = parentInfo;
-        if (node.type.name === 'taskItem' && (node as Node).attrs.state !== 'DONE') {
+        if (
+          node.type.name === 'taskItem' &&
+          (node as Node).attrs.state !== 'DONE'
+        ) {
           pInfo = { parentIsIncompleteTask: true };
         }
 
@@ -174,7 +177,10 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     };
   }
 
-  private getDateProps(node: Node, parentInfo: {parentIsIncompleteTask: boolean} | undefined) {
+  private getDateProps(
+    node: Node,
+    parentInfo: { parentIsIncompleteTask: boolean } | undefined,
+  ) {
     return {
       timestamp: node.attrs && node.attrs.timestamp,
       parentIsIncompleteTask: parentInfo && parentInfo.parentIsIncompleteTask,

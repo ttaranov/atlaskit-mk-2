@@ -9,6 +9,7 @@ import {
   ContextConfig,
   UploadableFile,
   Context,
+  Auth,
 } from '@atlaskit/media-core';
 import { fakeContext } from '@atlaskit/media-test-helpers';
 import { Observable } from 'rxjs/Observable';
@@ -18,18 +19,17 @@ import * as getPreviewFromVideo from '../../util/getPreviewFromVideo';
 import { UploadServiceFactory } from '../uploadServiceFactory';
 
 describe('UploadService', () => {
-  const apiUrl = 'some-api-url';
+  const baseUrl = 'some-api-url';
   const clientId = 'some-client-id';
   const token = 'some-token';
   const collection = 'some-collection';
 
   const clientBasedAuthProvider = jest.fn(() =>
-    Promise.resolve({ clientId, token }),
+    Promise.resolve<Auth>({ clientId, token, baseUrl }),
   );
 
   const getContext = (options = {}) =>
     ContextFactory.create({
-      serviceHost: apiUrl,
       authProvider: clientBasedAuthProvider,
       ...options,
     });
@@ -53,10 +53,6 @@ describe('UploadService', () => {
 
     return { uploadService, filesAddedPromise };
   };
-
-  beforeEach(() => {
-    clientBasedAuthProvider.mockClear();
-  });
 
   describe('setUploadParams', () => {
     const setup = () => ({
@@ -690,7 +686,6 @@ describe('UploadService', () => {
       const collectionNameStub = 'some-collection-name';
 
       const clientBasedConfig: ContextConfig = {
-        serviceHost: apiUrl,
         authProvider: clientBasedAuthProvider,
       };
 
@@ -738,7 +733,7 @@ describe('UploadService', () => {
         sourceFileId,
         sourceFileCollection,
       ).then(() => {
-        expect(authProvider).not.toHaveBeenCalled();
+        expect(authProvider).toHaveBeenCalledTimes(1);
         expect(copyFileWithTokenSpy).not.toHaveBeenCalled();
       });
     });
@@ -746,8 +741,12 @@ describe('UploadService', () => {
     it('calls the authProvider with the sourceCollection', () => {
       const usersClientId = 'some-users-collection-client-id';
       const usersToken = 'some-users-collection-client-id';
-      const userAuthProvider = () =>
-        Promise.resolve({ clientId: usersClientId, token: usersToken });
+      const userAuthProvider: AuthProvider = () =>
+        Promise.resolve({
+          clientId: usersClientId,
+          token: usersToken,
+          baseUrl,
+        });
 
       const copyFileWithTokenSpy = () => Promise.resolve('some-upload-id');
 
@@ -774,8 +773,12 @@ describe('UploadService', () => {
     it('resolves with api#copyFileToCollection response when userAuthProvider was passed into UploadService', () => {
       const usersClientId = 'some-users-collection-client-id';
       const usersToken = 'some-users-collection-client-id';
-      const userAuthProvider = () =>
-        Promise.resolve({ clientId: usersClientId, token: usersToken });
+      const userAuthProvider: AuthProvider = () =>
+        Promise.resolve({
+          clientId: usersClientId,
+          token: usersToken,
+          baseUrl,
+        });
 
       const copyFileWithTokenSpy = jest
         .fn()

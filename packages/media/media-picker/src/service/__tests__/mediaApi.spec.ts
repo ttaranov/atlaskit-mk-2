@@ -1,10 +1,12 @@
 // TODO this test goes away as part of MSW-691
 import * as sinon from 'sinon';
 
+import { AuthProvider } from '@atlaskit/media-core';
 import { MediaApi } from '../mediaApi';
 import { MediaClient } from '../mediaClient';
 import * as promises from '../../util/promises';
 import { Task } from '../../util/promises';
+import { SourceFile } from '../../popup/domain';
 
 // Function for tests to retry without waiting
 function retry<T>(
@@ -36,10 +38,11 @@ function retry<T>(
 }
 
 describe('Api', () => {
-  const apiUrl = 'some-api-url';
+  const baseUrl = 'some-api-url';
   const clientId = 'some-client-id';
   const token = 'some-token';
-  const authProvider = () => Promise.resolve({ clientId, token });
+  const authProvider: AuthProvider = () =>
+    Promise.resolve({ clientId, token, baseUrl });
 
   describe('createUpload', () => {
     const uploadId = 'some-upload-id';
@@ -50,7 +53,7 @@ describe('Api', () => {
     let api: MediaApi;
 
     beforeEach(() => {
-      mediaClient = new MediaClient(apiUrl, authProvider);
+      mediaClient = new MediaClient(authProvider);
       callStub = sinon.stub(mediaClient, 'call');
       api = new MediaApi();
 
@@ -120,7 +123,7 @@ describe('Api', () => {
     let api: MediaApi;
 
     beforeEach(() => {
-      mediaClient = new MediaClient(apiUrl, authProvider);
+      mediaClient = new MediaClient(authProvider);
       callStub = sinon.stub(mediaClient, 'call');
       api = new MediaApi();
     });
@@ -165,7 +168,7 @@ describe('Api', () => {
     let api: MediaApi;
 
     beforeEach(() => {
-      mediaClient = new MediaClient(apiUrl, authProvider);
+      mediaClient = new MediaClient(authProvider);
       callStub = sinon.stub(mediaClient, 'call');
       api = new MediaApi();
     });
@@ -247,7 +250,7 @@ describe('Api', () => {
     let api: MediaApi;
 
     beforeEach(() => {
-      mediaClient = new MediaClient(apiUrl, authProvider);
+      mediaClient = new MediaClient(authProvider);
       callStub = sinon.stub(mediaClient, 'call');
       api = new MediaApi();
 
@@ -404,11 +407,12 @@ describe('Api', () => {
       const mediaClient = {
         call: jest.fn().mockReturnValue(Promise.resolve()),
       } as any;
-      const sourceFile = {
+      const sourceFile: SourceFile = {
         id: 'some-source-file-id',
         owner: {
           id: 'some-owner-client-id',
           token: 'some-owner-client-token',
+          baseUrl,
         },
       };
       const collection = 'some-target-collection-name';
@@ -433,11 +437,12 @@ describe('Api', () => {
       const mediaClient = {
         call: jest.fn().mockReturnValue(Promise.reject(errorStub)),
       } as any;
-      const sourceFile = {
+      const sourceFile: SourceFile = {
         id: 'some-source-file-id',
         owner: {
           id: 'some-owner-client-id',
           token: 'some-owner-client-token',
+          baseUrl,
         },
       };
       const collection = 'some-target-collection-name';

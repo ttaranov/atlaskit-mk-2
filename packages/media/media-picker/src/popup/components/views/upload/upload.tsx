@@ -64,7 +64,6 @@ export interface UploadViewStateProps {
   readonly recents: Recents;
   readonly uploads: LocalUploads;
   readonly selectedItems: SelectedItem[];
-  readonly apiUrl: string;
 }
 
 export interface UploadViewDispatchProps {
@@ -350,7 +349,6 @@ const mapStateToProps = (state: State): UploadViewStateProps => ({
   recents: state.recents,
   uploads: state.uploads,
   selectedItems: state.selectedItems,
-  apiUrl: state.apiUrl,
 });
 
 const mapDispatchToProps = (

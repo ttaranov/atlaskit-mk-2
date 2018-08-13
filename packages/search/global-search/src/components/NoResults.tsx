@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 import { gridSize, math } from '@atlaskit/theme';
 import NoResultsImage from '../assets/NoResultsImage';
@@ -10,17 +9,19 @@ const NoResultsWrapper = styled.div`
   margin-bottom: ${math.multiply(gridSize, 4)}px;
 `;
 
-export default class NoResults extends React.Component {
+export interface Props {
+  title: JSX.Element | string;
+  body: JSX.Element | string;
+}
+
+export default class NoResults extends React.Component<Props> {
   render() {
+    const { title, body } = this.props;
     return (
       <NoResultsWrapper>
         <NoResultsImage />
-        <h3>
-          <FormattedMessage id="global-search.no-results-title" />
-        </h3>
-        <p>
-          <FormattedMessage id="global-search.no-results-body" />
-        </p>
+        <h3>{title}</h3>
+        <p>{body}</p>
       </NoResultsWrapper>
     );
   }

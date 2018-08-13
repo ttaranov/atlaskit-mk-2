@@ -72,6 +72,18 @@ describe('MentionPicker', () => {
       expect(fireAnalyticsReturn).toHaveBeenCalledWith(
         'rendered',
         expect.any(Number),
+        [
+          '1810620',
+          '1293711',
+          '2866665',
+          '89149',
+          '1122770',
+          '1384515',
+          '372531',
+          '357702',
+          '2011825',
+          '84107',
+        ],
         query,
       );
     });

@@ -73,15 +73,8 @@ describe('getPreviewMiddleware', () => {
 
   it('should get preview from fetcher', () => {
     const { fetcher, store, action } = setup();
-    const { apiUrl } = store.getState();
-
-    return getPreview(fetcher, store, action).then(action => {
-      expect(fetcher.getPreview).toBeCalledWith(
-        apiUrl,
-        auth,
-        file.id,
-        collection,
-      );
+    return getPreview(fetcher, store, action).then(() => {
+      expect(fetcher.getPreview).toBeCalledWith(auth, file.id, collection);
     });
   });
 });

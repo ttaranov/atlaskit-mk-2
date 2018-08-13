@@ -7,7 +7,11 @@ import {
   getMediaTypeFromMimeType,
   ContextFactory,
 } from '@atlaskit/media-core';
-import { MediaStore, UploadController } from '@atlaskit/media-store';
+import {
+  MediaStore,
+  MediaStoreCopyFileWithTokenBody,
+  UploadController,
+} from '@atlaskit/media-store';
 import { EventEmitter2 } from 'eventemitter2';
 import { defaultUploadParams } from '../domain/uploadParams';
 import { MediaFile, PublicMediaFile } from '../domain/file';
@@ -50,7 +54,6 @@ export class NewUploadServiceImpl implements UploadService {
 
     if (context.config.userAuthProvider) {
       this.userMediaStore = new MediaStore({
-        serviceHost: context.config.serviceHost,
         authProvider: context.config.userAuthProvider,
       });
     }
@@ -321,7 +324,7 @@ export class NewUploadServiceImpl implements UploadService {
     return this.context.config
       .authProvider({ collectionName: sourceCollection })
       .then(auth => {
-        const body = {
+        const body: MediaStoreCopyFileWithTokenBody = {
           sourceFile: {
             id: sourceFileId,
             collection: sourceCollection,

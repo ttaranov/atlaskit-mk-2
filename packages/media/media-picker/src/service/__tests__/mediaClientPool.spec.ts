@@ -1,10 +1,11 @@
 jest.mock('../mediaClient');
 
+import { AuthProvider } from '@atlaskit/media-core';
 import { MediaClientPool } from '../mediaClientPool';
 import { MediaClient } from '../mediaClient';
 
 describe('MediaClientPool', () => {
-  const apiUrl = 'some-api-url';
+  const baseUrl = 'some-base-url';
   const clientId = 'some-client-id';
   const token = 'some-token';
   const firstCollection = 'first-collection';
@@ -15,8 +16,9 @@ describe('MediaClientPool', () => {
   });
 
   const setup = () => {
-    const authProvider = () => Promise.resolve({ clientId, token });
-    const mediaClientPool = new MediaClientPool(apiUrl, authProvider);
+    const authProvider: AuthProvider = () =>
+      Promise.resolve({ clientId, token, baseUrl });
+    const mediaClientPool = new MediaClientPool(authProvider);
     return { authProvider, mediaClientPool };
   };
 
@@ -100,7 +102,7 @@ describe('MediaClientPool', () => {
     mediaClientPool.getMediaClient(firstCollection);
 
     expect(MediaClient).toHaveBeenCalledTimes(1);
-    expect(MediaClient).toBeCalledWith(apiUrl, authProvider, firstCollection);
+    expect(MediaClient).toBeCalledWith(authProvider, firstCollection);
   });
 
   it('should pass undefined as collection name to the media client constructor if the collection was not provided', () => {
@@ -109,6 +111,6 @@ describe('MediaClientPool', () => {
     mediaClientPool.getMediaClient();
 
     expect(MediaClient).toHaveBeenCalledTimes(1);
-    expect(MediaClient).toBeCalledWith(apiUrl, authProvider, undefined);
+    expect(MediaClient).toBeCalledWith(authProvider, undefined);
   });
 });

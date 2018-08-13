@@ -61,7 +61,7 @@ describe('<StatelessUploadView />', () => {
   ) => {
     const context = fakeContext();
 
-    const { selectedItems, uploads, apiUrl } = {
+    const { selectedItems, uploads } = {
       ...mockState,
       ...mockStateOverride,
     } as State;
@@ -76,7 +76,6 @@ describe('<StatelessUploadView />', () => {
         mpBrowser={{} as any}
         context={context}
         recentsCollection="some-collection-name"
-        apiUrl={apiUrl}
         isLoading={isLoading}
         recents={recents}
         uploads={uploads}
@@ -256,6 +255,7 @@ describe('<UploadView />', () => {
             auth: {
               clientId: 'some-tenant-client-id',
               token: 'some-tenant-client-token',
+              baseUrl: 'some-base-url',
             },
             uploadParams: {},
           },
@@ -271,7 +271,6 @@ describe('<UploadView />', () => {
     expect(props.recents).toEqual(state.recents);
     expect(props.uploads).toEqual(state.uploads);
     expect(props.selectedItems).toEqual(state.selectedItems);
-    expect(props.apiUrl).toEqual(state.apiUrl);
   });
 
   it('should dispatch fileClick action when onFileClick called', () => {

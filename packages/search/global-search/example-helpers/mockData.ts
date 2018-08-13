@@ -213,6 +213,11 @@ export function makeCrossProductSearchData(
 
   for (let i = 0; i < n; i++) {
     const url = getMockUrl();
+    const type = pickRandom(['page', 'blogpost']);
+    const icon =
+      type === 'page'
+        ? 'aui-iconfont-page-default'
+        : 'aui-iconfont-blogpost-default';
     confData.push({
       title: getMockCatchPhrase(),
       container: {
@@ -222,16 +227,26 @@ export function makeCrossProductSearchData(
       url: url,
       baseUrl: DUMMY_BASE_URL,
       content: {
-        type: pickRandom(['page', 'blogpost']),
+        id: uuid(),
+        type: type,
       },
+      iconCssClass: icon,
     });
   }
 
   for (let i = 0; i < n; i++) {
     const url = getMockUrl();
+    const type = pickRandom(['page', 'blogpost', 'attachment']);
+
+    const title =
+      type === 'attachment'
+        ? `${getMockCatchPhrase()}.mp3`
+        : getMockCatchPhrase();
+    const icon =
+      type === 'attachment' ? 'icon-file-audio' : 'aui-iconfont-page-default';
 
     const newAttachment: ConfluenceItem = {
-      title: getMockCatchPhrase(),
+      title: title,
       container: {
         title: getMockCompanyName(),
         displayUrl: url,
@@ -239,8 +254,10 @@ export function makeCrossProductSearchData(
       url: url,
       baseUrl: DUMMY_BASE_URL,
       content: {
-        type: pickRandom(['page', 'blogpost', 'attachment']),
+        id: uuid(),
+        type: type,
       },
+      iconCssClass: icon,
     };
 
     confDataWithAttachments.push(newAttachment);
@@ -258,10 +275,12 @@ export function makeCrossProductSearchData(
         displayUrl: getMockUrl(),
       },
       space: {
+        key: getMockAbbreviation(),
         icon: {
           path: randomSpaceIconUrl(),
         },
       },
+      iconCssClass: 'aui-iconfont-space-default',
     });
   }
 
@@ -296,25 +315,29 @@ export function makeCrossProductSearchData(
     );
 
     const filteredConfResultsWithAttachments = confDataWithAttachments.filter(
-      result => result.container.title.toLowerCase().indexOf(term) > -1,
+      result => result.title.toLowerCase().indexOf(term) > -1,
     );
 
     return {
       scopes: [
         {
           id: Scope.ConfluencePageBlog,
+          experimentId: 'experiment-1',
           results: filteredConfResults,
         },
         {
           id: Scope.ConfluencePageBlogAttachment,
+          experimentId: 'experiment-1',
           results: filteredConfResultsWithAttachments,
         },
         {
           id: Scope.JiraIssue,
+          experimentId: 'experiment-1',
           results: filteredJiraResults,
         },
         {
           id: Scope.ConfluenceSpace,
+          experimentId: 'experiment-1',
           results: filteredSpaceResults,
         },
       ],

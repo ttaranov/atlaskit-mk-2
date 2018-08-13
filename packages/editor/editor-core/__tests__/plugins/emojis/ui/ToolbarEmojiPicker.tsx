@@ -14,7 +14,10 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import ToolbarEmojiPicker from '../../../../src/plugins/emoji/ui/ToolbarEmojiPicker';
 import ToolbarButton from '../../../../src/ui/ToolbarButton';
-import { emojiPluginKey as pluginKey } from '../../../../src/plugins/emoji/pm-plugins/main';
+import {
+  emojiPluginKey as pluginKey,
+  EmojiState,
+} from '../../../../src/plugins/emoji/pm-plugins/main';
 import emojiPlugin from '../../../../src/plugins/emoji';
 import codeBlockPlugin from '../../../../src/plugins/code-block';
 import mentionsPlugin from '../../../../src/plugins/mentions';
@@ -159,6 +162,26 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
     );
     toolbarEmojiPicker.find(EmojiIcon).simulate('click');
     toolbarEmojiPicker.find(EmojiIcon).simulate('click');
+    expect(toolbarEmojiPicker.state('isOpen')).toEqual(false);
+    toolbarEmojiPicker.unmount();
+  });
+
+  it('should have state variable isOpen set to false when toolbar emoji button is opened, but then disabled', () => {
+    const { editorView } = editor(doc(p('')));
+    const toolbarEmojiPicker = mount(
+      <ToolbarEmojiPicker
+        pluginKey={pluginKey}
+        emojiProvider={emojiProvider}
+        editorView={editorView}
+        numFollowingButtons={0}
+      />,
+    );
+    toolbarEmojiPicker.find(EmojiIcon).simulate('click');
+    expect(toolbarEmojiPicker.state('isOpen')).toEqual(true);
+    const instance = toolbarEmojiPicker.instance() as any;
+    const pluginState = pluginKey.getState(editorView.state) as EmojiState;
+    pluginState.isEnabled = jest.fn().mockReturnValue(false);
+    instance.handlePluginStateChange(pluginState);
     expect(toolbarEmojiPicker.state('isOpen')).toEqual(false);
     toolbarEmojiPicker.unmount();
   });

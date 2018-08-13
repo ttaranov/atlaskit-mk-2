@@ -1,5 +1,6 @@
 import * as uuid from 'uuid';
 import * as Postis from 'postis';
+import { AuthProvider } from '@atlaskit/media-core';
 
 import { CloudService } from '../cloud-service';
 
@@ -16,12 +17,12 @@ interface FakePostis {
 }
 
 describe('CloudAuthService', () => {
-  const userAuthProvider = () =>
+  const userAuthProvider: AuthProvider = () =>
     Promise.resolve({
       clientId: 'some-client-id',
       token: 'some-token',
+      baseUrl: 'https://some-api-url',
     });
-  const apiUrl = 'https://some-api-url';
   const redirectUrl = 'https://some-redirect-url';
   const serviceName = 'dropbox';
   const scope = 'some-scope';
@@ -66,7 +67,7 @@ describe('CloudAuthService', () => {
     const cloudAuthService = new CloudService(userAuthProvider);
 
     await expect(
-      cloudAuthService.startAuth(apiUrl, redirectUrl, serviceName),
+      cloudAuthService.startAuth(redirectUrl, serviceName),
     ).resolves.toBeUndefined();
 
     expect(uuid.v4).toHaveBeenCalledTimes(1);
@@ -84,7 +85,7 @@ describe('CloudAuthService', () => {
     const cloudAuthService = new CloudService(userAuthProvider);
 
     await expect(
-      cloudAuthService.startAuth(apiUrl, redirectUrl, serviceName),
+      cloudAuthService.startAuth(redirectUrl, serviceName),
     ).resolves.toBeUndefined();
 
     expect(Postis).toHaveBeenCalledTimes(1);
@@ -96,7 +97,7 @@ describe('CloudAuthService', () => {
     const { channel } = Postis as FakePostis;
 
     await expect(
-      cloudAuthService.startAuth(apiUrl, redirectUrl, serviceName),
+      cloudAuthService.startAuth(redirectUrl, serviceName),
     ).resolves.toBeUndefined();
     expect(channel.listen).toHaveBeenCalledWith(
       'auth-callback-received',
@@ -116,7 +117,7 @@ describe('CloudAuthService', () => {
     const cloudAuthService = new CloudService(userAuthProvider);
 
     await expect(
-      cloudAuthService.startAuth(apiUrl, redirectUrl, serviceName),
+      cloudAuthService.startAuth(redirectUrl, serviceName),
     ).rejects.toBeInstanceOf(Error);
 
     expect(window.open).toBeCalledWith(expect.anything(), '_blank');

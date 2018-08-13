@@ -15,6 +15,7 @@ import { CustomVideo } from '../../../../src/newgen/viewers/video/customVideo';
 
 const token = 'some-token';
 const clientId = 'some-client-id';
+const baseUrl = 'some-base-url';
 
 const videoItem: FileItem = {
   type: 'file',
@@ -66,12 +67,12 @@ describe('Video viewer', () => {
   });
 
   it('assigns a src for videos when successful', async () => {
-    const authPromise = Promise.resolve({ token, clientId });
+    const authPromise = Promise.resolve({ token, clientId, baseUrl });
     const { el } = createFixture(authPromise);
     await (el as any).instance()['init']();
     el.update();
     expect(el.find(Video).prop('src')).toEqual(
-      'some-service-host/video?client=some-client-id&token=some-token',
+      'some-base-url/video?client=some-client-id&token=some-token',
     );
   });
 
@@ -103,7 +104,7 @@ describe('Video viewer', () => {
   });
 
   it('shows error message when there are not video artifacts in the media item', async () => {
-    const authPromise = Promise.resolve({ token, clientId });
+    const authPromise = Promise.resolve({ token, clientId, baseUrl });
     const { el } = createFixture(
       authPromise,
       {
@@ -124,7 +125,7 @@ describe('Video viewer', () => {
 
   it('MSW-720: passes collectionName to constructAuthTokenUrl', async () => {
     const collectionName = 'some-collection';
-    const authPromise = Promise.resolve({ token, clientId });
+    const authPromise = Promise.resolve({ token, clientId, baseUrl });
     const { el } = createFixture(authPromise, { collectionName });
     await (el as any).instance()['init']();
     el.update();
@@ -132,7 +133,7 @@ describe('Video viewer', () => {
   });
 
   it('should render a custom video player if the feature flag is active', async () => {
-    const authPromise = Promise.resolve({ token, clientId });
+    const authPromise = Promise.resolve({ token, clientId, baseUrl });
     const { el } = createFixture(authPromise, {
       featureFlags: { customVideoPlayer: true },
     });
@@ -142,12 +143,12 @@ describe('Video viewer', () => {
 
     expect(el.find(CustomVideo)).toHaveLength(1);
     expect(el.find(CustomVideo).prop('src')).toEqual(
-      'some-service-host/video?client=some-client-id&token=some-token',
+      'some-base-url/video?client=some-client-id&token=some-token',
     );
   });
 
   it('should toggle hd when button is clicked', async () => {
-    const authPromise = Promise.resolve({ token, clientId });
+    const authPromise = Promise.resolve({ token, clientId, baseUrl });
     const { el } = createFixture(authPromise, {
       featureFlags: { customVideoPlayer: true },
     });
@@ -167,7 +168,7 @@ describe('Video viewer', () => {
       previewCount: number,
       isCustomVideoPlayer: boolean,
     ) {
-      const authPromise = Promise.resolve({ token, clientId });
+      const authPromise = Promise.resolve({ token, clientId, baseUrl });
       const context = createContext({ authPromise });
       const el = mount(
         <VideoViewer

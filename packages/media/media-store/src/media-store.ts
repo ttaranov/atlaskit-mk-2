@@ -170,7 +170,7 @@ export class MediaStore {
   ): Promise<string> => {
     const auth = await this.config.authProvider();
 
-    return createUrl(`${this.config.serviceHost}/file/${id}/image`, {
+    return createUrl(`${auth.baseUrl}/file/${id}/image`, {
       params: extendImageParams(params),
       auth,
     });
@@ -223,12 +223,12 @@ export class MediaStore {
       method: 'GET',
     },
   ): Promise<Response> {
-    const { serviceHost, authProvider } = this.config;
+    const { authProvider } = this.config;
     const { method, authContext, params, headers, body } = options;
 
     const auth = await authProvider(authContext);
 
-    return request(`${serviceHost}${path}`, {
+    return request(`${auth.baseUrl}${path}`, {
       method,
       auth,
       params,

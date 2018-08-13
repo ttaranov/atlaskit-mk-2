@@ -7,6 +7,7 @@ import * as keymaps from '../../keymaps';
 import { analyticsService } from '../../analytics';
 import WithPluginState from '../../ui/WithPluginState';
 import HelpDialog from './ui';
+import { pluginKey as quickInsertPluginKey } from '../quick-insert';
 
 export const pluginKey = new PluginKey('helpDialogPlugin');
 
@@ -63,12 +64,14 @@ const helpDialog: EditorPlugin = {
       <WithPluginState
         plugins={{
           helpDialog: pluginKey,
+          quickInsert: quickInsertPluginKey,
         }}
-        render={({ helpDialog = {} as any }) => (
+        render={({ helpDialog = {} as any, quickInsert }) => (
           <HelpDialog
             appearance={appearance}
             editorView={editorView}
             isVisible={helpDialog.isVisible}
+            quickInsertEnabled={!!quickInsert}
             imageEnabled={helpDialog.imageEnabled}
           />
         )}

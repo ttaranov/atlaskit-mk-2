@@ -150,10 +150,15 @@ function getToken(context?: any) {
 }
 
 function getUploadContext(): Promise<any> {
+  // TODO Make sure getToken returns baseUrl and revert that back to just getToken
+  const authProviderWithBaseUrl = (context?: any) =>
+    getToken(context).then(auth => {
+      auth.baseUrl = toNativeBridge.getServiceHost();
+      return auth;
+    });
   return Promise.resolve(
     ContextFactory.create({
-      serviceHost: toNativeBridge.getServiceHost(),
-      authProvider: getToken,
+      authProvider: authProviderWithBaseUrl,
     }),
   );
 }

@@ -32,12 +32,10 @@ export class MediaBlobService implements BlobService {
 
   constructor(
     private readonly authProvider: AuthProvider,
-    private readonly serviceHost: string,
     private readonly collectionName?: string,
   ) {
     this.request = createRequest({
       config: {
-        serviceHost: this.serviceHost,
         authProvider: this.authProvider,
       },
       collectionName: this.collectionName,

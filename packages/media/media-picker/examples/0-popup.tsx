@@ -11,7 +11,6 @@ import {
   mediaPickerAuthProvider,
   defaultCollectionName,
   defaultMediaPickerCollectionName,
-  userAuthProviderBaseURL,
   createStorybookContext,
 } from '@atlaskit/media-test-helpers';
 import { Card } from '@atlaskit/media-card';
@@ -101,7 +100,6 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     }
 
     const context = ContextFactory.create({
-      serviceHost: userAuthProviderBaseURL,
       authProvider: mediaPickerAuthProvider(this.state.authEnvironment),
       userAuthProvider,
     });

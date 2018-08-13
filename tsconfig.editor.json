@@ -14,6 +14,7 @@
     "sourceMap": true,
     "strictNullChecks": true,
     "target": "es5",
+    "module": "esnext",
     "lib": [
       "dom",
       "es5",

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/adf-utils",
-  "version": "2.0.3",
+  "version": "2.0.5",
   "description": "Set of utilities to traverse, modify and create ADF documents.",
   "license": "Apache-2.0",
   "atlaskit:src": "src/index.ts",
@@ -21,7 +21,7 @@
     "Stanislav S"
   ],
   "dependencies": {
-    "@atlaskit/editor-common": "^13.2.7"
+    "@atlaskit/editor-common": "^14.0.0"
   },
   "devDependencies": {
     "@atlaskit/docs": "^5.0.2"

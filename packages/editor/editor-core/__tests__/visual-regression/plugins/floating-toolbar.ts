@@ -23,7 +23,7 @@ describe('Snapshot Test: Floating toolbar', () => {
     await page.goto(url);
     await page.waitForSelector('#examples');
     await page.waitFor(0);
-    const testToolbar = '[aria-label="Test Toolbar"]';
+    const testToolbar = '[aria-label="Floating Toolbar"]';
     await page.waitForSelector(testToolbar);
   });
 

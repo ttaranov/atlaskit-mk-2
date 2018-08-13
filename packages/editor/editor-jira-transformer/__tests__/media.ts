@@ -88,7 +88,7 @@ describe('JIRATransformer', () => {
       {},
       {
         viewContext: {
-          serviceHost: 'HOST',
+          baseUrl: 'HOST',
           clientId: 'CLIENT_ID',
           token: 'TOKEN',
           collection: '',
@@ -208,7 +208,7 @@ describe('JIRATransformer', () => {
       {},
       {
         uploadContext: {
-          serviceHost: 'HOST',
+          baseUrl: 'HOST',
           clientId: 'CLIENT_ID',
           token: 'TOKEN',
           collection: 'MediaServicesSample',

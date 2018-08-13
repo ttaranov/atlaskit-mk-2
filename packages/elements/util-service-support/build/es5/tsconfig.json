@@ -4,12 +4,18 @@
     "declaration": true,
     "outDir": "../../dist/es5",
     "rootDir": "../../src",
-    "lib": ["dom", "es6"],
-    "target": "es5"
+    "lib": [
+      "dom",
+      "es6"
+    ],
+    "target": "es5",
+    "module": "es5"
   },
   "include": [
     "../../src/**/*.ts",
     "../../src/**/*.tsx"
   ],
-  "exclude": ["../../src/**/__tests__/*"],
+  "exclude": [
+    "../../src/**/__tests__/*"
+  ]
 }

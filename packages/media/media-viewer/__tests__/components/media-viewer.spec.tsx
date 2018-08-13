@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
-import { MediaItemType } from '@atlaskit/media-core';
+import { Auth, ContextConfig, MediaItemType } from '@atlaskit/media-core';
 import { MediaViewer } from '../../src/components/media-viewer';
 import { MediaViewer as MediaViewerNextGen } from '../../src/newgen/media-viewer';
 import { List } from '../../src/newgen/list';
@@ -12,10 +12,11 @@ declare var global: any;
 describe('<MediaViewer />', () => {
   const token = 'some-token';
   const clientId = 'some-client-id';
-  const serviceHost = 'some-service-host';
-  const authProvider = jest.fn(() => Promise.resolve({ token, clientId }));
-  const contextConfig = {
-    serviceHost,
+  const baseUrl = 'some-service-host';
+  const authProvider = jest.fn(() =>
+    Promise.resolve<Auth>({ token, clientId, baseUrl }),
+  );
+  const contextConfig: ContextConfig = {
     authProvider,
   };
   const occurrenceKey = 'some-occurence-key';

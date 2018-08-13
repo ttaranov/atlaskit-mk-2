@@ -41,8 +41,6 @@ describe('typeAhead input rules', () => {
     });
 
     insertText(editorView, '/', sel);
-    expect(editorView.state.doc).toEqualDocument(
-      doc(p('(/')),
-    );
+    expect(editorView.state.doc).toEqualDocument(doc(p('(/')));
   });
 });

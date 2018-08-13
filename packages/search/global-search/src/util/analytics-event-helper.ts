@@ -149,6 +149,7 @@ const transformSearchResultEventData = (eventData: SearchResultEvent) => ({
   indexWithinSection: eventData.indexWithinSection,
   containerId: sanitizeContainerId(eventData.containerId),
   resultCount: eventData.resultCount,
+  experimentId: eventData.experimentId,
 });
 
 const hash = (str: string): string =>
@@ -165,6 +166,7 @@ export interface SearchResultEvent {
   indexWithinSection: string;
   containerId?: string;
   resultCount?: string;
+  experimentId?: string;
 }
 
 export interface KeyboardControlEvent extends SearchResultEvent {

@@ -83,12 +83,12 @@ export async function importFiles(
   wsProvider: WsProvider,
 ): Promise<void> {
   const {
-    apiUrl,
     uploads,
     tenant,
     selectedItems,
     userAuthProvider,
   } = store.getState();
+
   store.dispatch(hidePopup());
 
   const auth = await userAuthProvider();
@@ -119,7 +119,7 @@ export async function importFiles(
     } else if (serviceName === 'recent_files') {
       importFilesFromRecentFiles(selectedUploadFile, tenant, store);
     } else if (isRemoteService(serviceName)) {
-      const wsConnectionHolder = wsProvider.getWsConnectionHolder(apiUrl, auth);
+      const wsConnectionHolder = wsProvider.getWsConnectionHolder(auth);
       importFilesFromRemoteService(
         selectedUploadFile,
         tenant,

@@ -54,7 +54,7 @@ describe('@atlaskit/editor-common date utils', () => {
   //         timestampToString(date.valueOf(), 'DD MMM YYYY'),
   //       );
   //     }
-  //   }
+  //   };
   //   it('should correctly format date for task', () => {
   //     const date = new Date();
   //     const currentDate = date.getUTCDate();

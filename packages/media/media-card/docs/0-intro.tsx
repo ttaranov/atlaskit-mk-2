@@ -29,8 +29,6 @@ export default md`
   import { ContextFactory } from '@atlaskit/media-core';
 
   const context = ContextFactory.create({
-    clientId,
-    serviceHost,
     tokenProvider,
   });
 

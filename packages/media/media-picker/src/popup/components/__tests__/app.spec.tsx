@@ -6,17 +6,21 @@ import UploadView from '../views/upload/upload';
 import Browser from '../views/browser/browser';
 import { getComponentClassWithStore, mockStore } from '../../mocks';
 import { fileUploadsStart } from '../../actions/fileUploadsStart';
-import { ContextFactory } from '@atlaskit/media-core';
+import { AuthProvider, ContextFactory } from '@atlaskit/media-core';
 
 describe('App', () => {
-  const apiUrl = 'some-api-url';
+  const baseUrl = 'some-api-url';
   const clientId = 'some-client-id';
   const token = 'some-token';
-  const userAuthProvider = () => Promise.resolve({ clientId, token });
+  const userAuthProvider: AuthProvider = () =>
+    Promise.resolve({
+      clientId,
+      token,
+      baseUrl,
+    });
 
   const setup = () => {
     const context = ContextFactory.create({
-      serviceHost: apiUrl,
       authProvider: userAuthProvider,
       userAuthProvider,
     });

@@ -1,15 +1,24 @@
 import * as React from 'react';
 
-import { AnalyticsWebClient } from './types';
+import { AnalyticsWebClient, FabricChannel } from './types';
 import FabricElementsListener from './FabricElementsListener';
 import AtlaskitListener from './atlaskit/AtlaskitListener';
 import Logger from './helpers/logger';
+import NavigationListener from './navigation/NavigationListener';
 
 export type Props = {
   /** Children! */
   children?: React.ReactNode;
   client: Promise<AnalyticsWebClient>;
   logLevel?: number;
+  /** A list of individual listeners to exclude, identified by channel */
+  excludedChannels?: FabricChannel[];
+};
+
+const listenerMap = {
+  [FabricChannel.elements]: FabricElementsListener,
+  [FabricChannel.atlaskit]: AtlaskitListener,
+  [FabricChannel.navigation]: NavigationListener,
 };
 
 class FabricAnalyticsListeners extends React.Component<Props> {
@@ -26,17 +35,27 @@ class FabricAnalyticsListeners extends React.Component<Props> {
   }
 
   render() {
-    const { client, children, logLevel } = this.props;
+    const { client, children, logLevel, excludedChannels } = this.props;
     if (typeof logLevel === 'number') {
       this.logger.setLogLevel(logLevel);
     }
-    return (
-      <AtlaskitListener client={client} logger={this.logger}>
-        <FabricElementsListener client={client} logger={this.logger}>
-          {children}
-        </FabricElementsListener>
-      </AtlaskitListener>
-    );
+
+    const listeners = Object.keys(listenerMap)
+      .filter(
+        (channel: FabricChannel) =>
+          !excludedChannels || excludedChannels.indexOf(channel) < 0,
+      )
+      .map(channel => listenerMap[channel])
+      .reduce(
+        (prev, Listener) => (
+          <Listener client={client} logger={this.logger}>
+            {prev}
+          </Listener>
+        ),
+        children,
+      );
+
+    return listeners;
   }
 }
 

@@ -40,7 +40,9 @@ export default class ExampleDisplay extends Component<Props> {
       loader: () => props.example.contents(),
       loading: Loading,
       render(loaded) {
-        return <CodeBlock grammar="jsx" content={loaded} name={props.name} />;
+        return (
+          <CodeBlock grammar="jsx" content={loaded.default} name={props.name} />
+        );
       },
     });
     this.Example = () => (

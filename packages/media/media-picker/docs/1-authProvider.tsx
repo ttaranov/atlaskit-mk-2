@@ -1,6 +1,8 @@
 import { md } from '@atlaskit/docs';
 
 export default md`
+
+``
   # Auth Provider
 
   **AuthProvider** type can be described as:
@@ -76,4 +78,4 @@ export default md`
     return fetch(https://get-auth?collection=context.collectionName);
   }
   ~~~
-`;
+```;

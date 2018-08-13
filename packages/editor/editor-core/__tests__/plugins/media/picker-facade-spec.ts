@@ -38,7 +38,6 @@ describe('Media PickerFacade', () => {
   };
 
   const context = ContextFactory.create({
-    serviceHost: 'http://test',
     authProvider: StoryBookAuthProvider.create(false),
     userAuthProvider,
   });

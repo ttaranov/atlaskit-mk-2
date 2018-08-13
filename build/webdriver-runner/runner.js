@@ -114,28 +114,31 @@ function testRun(
 }
 
 function setLocalClients() {
+  const isHeadless = process.env.HEADLESS !== 'false';
   const launchers = {
     chrome: {
       browserName: 'chrome',
-      // Disable headless here to run on real browsers
-      chromeOptions: {
-        args: ['--headless', '--disable-gpu'],
-      },
+      chromeOptions: isHeadless
+        ? { args: ['--headless', '--disable-gpu'] }
+        : { args: [] },
     },
     firefox: {
       browserName: 'firefox',
-      'moz:firefoxOptions': {
-        args: ['-headless'],
-      },
+      'moz:firefoxOptions': isHeadless ? { args: ['-headless'] } : { args: [] },
     },
   };
 
-  return Object.keys(launchers).map(key => {
-    const option = {
-      desiredCapabilities: launchers[key],
-    };
-    return { driver: webdriverio.remote(option) };
-  });
+  // Keep only chrome for watch mode
+  if (process.env.WATCH === 'true') {
+    delete launchers.firefox;
+  }
+
+  const browserOption = [];
+  for (const key of Object.keys(launchers)) {
+    const option = { desiredCapabilities: launchers[key] };
+    browserOption.push({ driver: webdriverio.remote(option) });
+  }
+  return browserOption;
 }
 
 function setBrowserStackClients() {

@@ -15,7 +15,12 @@ import { isSpecialMentionText } from '../types';
 
 export const fireAnalyticsMentionTypeaheadEvent = (
   props: WithAnalyticsEventProps,
-) => (action: string, duration: number, query?: string): void => {
+) => (
+  action: string,
+  duration: number,
+  userIds: string[] = [],
+  query?: string,
+): void => {
   if (props.createAnalyticsEvent) {
     const eventPayload: GasPayload = {
       action,
@@ -25,6 +30,7 @@ export const fireAnalyticsMentionTypeaheadEvent = (
         packageVersion,
         componentName: 'mention',
         duration: Math.round(duration),
+        userIds,
         query,
       },
       eventType: 'operational',

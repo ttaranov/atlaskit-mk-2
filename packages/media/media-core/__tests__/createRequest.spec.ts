@@ -1,12 +1,12 @@
 import * as sinon from 'sinon';
 
 import createRequest from '../src/services/util/createRequest';
-import { AuthProvider } from '@atlaskit/media-store';
+import { Auth, AuthProvider } from '@atlaskit/media-store';
 import * as UtilsModule from '../src/utils';
 
 describe('createRequest()', () => {
   const token = 'ABC';
-  const serviceHost = 'http://example.com';
+  const baseUrl = 'http://example.com';
   const clientId = '1234';
   let authProvider: AuthProvider;
   let mockServer: sinon.SinonFakeServer;
@@ -16,9 +16,10 @@ describe('createRequest()', () => {
     mockServer.autoRespond = true;
 
     authProvider = jest.fn(() =>
-      Promise.resolve({
-        token: token,
-        clientId: clientId,
+      Promise.resolve<Auth>({
+        token,
+        clientId,
+        baseUrl,
       }),
     );
   });
@@ -29,7 +30,7 @@ describe('createRequest()', () => {
 
   it('should allow to cancel a request', cb => {
     const request = createRequest({
-      config: { serviceHost, authProvider },
+      config: { authProvider },
     });
 
     mockServer.respondWith('GET', 'http://example.com/', '{}');
@@ -45,9 +46,10 @@ describe('createRequest()', () => {
 
     beforeEach(() => {
       authProvider = jest.fn(() =>
-        Promise.resolve({
-          token: token,
-          clientId: clientId,
+        Promise.resolve<Auth>({
+          token,
+          clientId,
+          baseUrl,
         }),
       );
     });
@@ -55,7 +57,6 @@ describe('createRequest()', () => {
     it('should send the client ID and auth token in header fields by default', () => {
       const request = createRequest({
         config: {
-          serviceHost,
           authProvider,
         },
       });
@@ -77,7 +78,6 @@ describe('createRequest()', () => {
     it('should send auth arguments using queryParams when preventPreflight is true', () => {
       const request = createRequest({
         config: {
-          serviceHost,
           authProvider,
         },
         preventPreflight: true,
@@ -105,13 +105,14 @@ describe('createRequest()', () => {
     const asapIssuer = 'some-issuer';
 
     beforeEach(() => {
-      authProvider = jest.fn(() => Promise.resolve({ token, asapIssuer }));
+      authProvider = jest.fn(() =>
+        Promise.resolve<Auth>({ token, asapIssuer, baseUrl }),
+      );
     });
 
     it('should send the asap issuer and auth token in header fields by default', () => {
       const request = createRequest({
         config: {
-          serviceHost,
           authProvider,
         },
       });
@@ -132,7 +133,6 @@ describe('createRequest()', () => {
     it('should send auth arguments using queryParams when preventPreflight is true', () => {
       const request = createRequest({
         config: {
-          serviceHost,
           authProvider,
         },
         preventPreflight: true,
@@ -174,7 +174,6 @@ describe('createRequest()', () => {
       it('should add webp headers', () => {
         const request = createRequest({
           config: {
-            serviceHost,
             authProvider,
           },
           preventPreflight: true,
@@ -205,7 +204,6 @@ describe('createRequest()', () => {
       it('should not add webp headers', () => {
         const request = createRequest({
           config: {
-            serviceHost,
             authProvider,
           },
           preventPreflight: false,

@@ -50,6 +50,7 @@ describe('fileUploadsAdd() reducer', () => {
       index: 0,
       tenant: {
         auth: {
+          baseUrl: 'some-api-url',
           clientId: 'some-tenant-client-id',
           token: 'some-tenant-client-token',
         },

@@ -1,14 +1,21 @@
-import { isClientBasedAuth, isAsapBasedAuth } from '../../src/models/auth';
+import {
+  isClientBasedAuth,
+  isAsapBasedAuth,
+  ClientBasedAuth,
+  AsapBasedAuth,
+} from '../../src';
 
 describe('Auth', () => {
-  const clientBasedAuth = {
+  const clientBasedAuth: ClientBasedAuth = {
     clientId: 'some-client-id',
     token: 'some-token',
+    baseUrl: 'some-base-url',
   };
 
-  const asapBasedAuth = {
+  const asapBasedAuth: AsapBasedAuth = {
     asapIssuer: 'some-asap-issuer',
     token: 'some-token',
+    baseUrl: 'some-base-url',
   };
 
   describe('isClientBasedAuth', () => {
