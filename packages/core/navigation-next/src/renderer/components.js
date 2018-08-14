@@ -51,8 +51,11 @@ const AnalyticsWrapper = ({
 }: {
   children: Node,
   onClick: () => void,
-  // eslint-disable-next-line jsx-a11y/no-static-element-interactions
-}) => <div onClick={onClick}>{children}</div>;
+}) => (
+  <div role="presentation" onClick={onClick}>
+    {children}
+  </div>
+);
 
 /**
  * ITEMS
@@ -114,7 +117,7 @@ const backItemPrimitiveStyles = styles => ({
   itemBase: { ...styles.itemBase, cursor: 'default' },
 });
 
-const BackItem = ({ goTo, href, subText, id, text = 'Back' }: *) => (
+const BackItem = ({ goTo, href, subText, id, index, text = 'Back' }: *) => (
   <div css={{ display: 'flex', marginBottom: '8px' }}>
     <div css={{ flexShrink: 0 }}>
       <GoToItem
@@ -123,6 +126,7 @@ const BackItem = ({ goTo, href, subText, id, text = 'Back' }: *) => (
         href={href}
         text={<ArrowLeftIcon size="small" />}
         id={id}
+        index={index}
       />
     </div>
     <div css={{ flexGrow: 1 }}>
@@ -164,9 +168,10 @@ const Group = ({
   hasSeparator,
   heading,
   items,
+  id,
 }: GroupProps) =>
   items.length ? (
-    <GroupComponent heading={heading} hasSeparator={hasSeparator}>
+    <GroupComponent heading={heading} hasSeparator={hasSeparator} id={id}>
       <ItemsRenderer items={items} customComponents={customComponents} />
     </GroupComponent>
   ) : null;
@@ -214,7 +219,7 @@ export const ItemsRenderer = ({
   customComponents = {},
   items,
 }: ItemsRendererProps) =>
-  items.map(({ type, ...props }) => {
+  items.map(({ type, ...props }, index) => {
     const key =
       typeof props.nestedGroupKey === 'string'
         ? props.nestedGroupKey
@@ -225,9 +230,10 @@ export const ItemsRenderer = ({
       const C = type;
       const Wrapper = navigationItemClicked(
         AnalyticsWrapper,
-        'inlineCustomComponent',
+        C.displayName || 'inlineCustomComponent',
         {
           ...props,
+          index,
           // Define onClick so that the click is recorded by analytics.
           // Override the existing version in props if it exists, so it does not
           // get executed multiple times.
@@ -259,23 +265,20 @@ export const ItemsRenderer = ({
       // components.
       if (itemComponents[type]) {
         const I = itemComponents[type];
-        return <I key={key} {...props} />;
+        return <I key={key} {...props} index={index} />;
       }
 
       // If they've provided a type which matches one of their defined custom
       // components.
       if (customComponents[type]) {
-        const Wrapper = navigationItemClicked(
-          AnalyticsWrapper,
-          `${type}customComponent`,
-          {
-            ...props,
-            // Define onClick so that the click is recorded by analytics.
-            // Override the existing version in props if it exists, so it does not
-            // get executed multiple times.
-            onClick: () => {},
-          },
-        );
+        const Wrapper = navigationItemClicked(AnalyticsWrapper, type, {
+          ...props,
+          index,
+          // Define onClick so that the click is recorded by analytics.
+          // Override the existing version in props if it exists, so it does not
+          // get executed multiple times.
+          onClick: () => {},
+        });
         const C = customComponents[type];
         return (
           <Wrapper key={key}>

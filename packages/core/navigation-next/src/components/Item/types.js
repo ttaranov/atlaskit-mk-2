@@ -41,6 +41,10 @@ export type ConnectedItemProps = {
   href?: string,
   /** A unique identifier for the item. Used for analytics. */
   id?: string,
+  /** The zero-based index for the position of the item within it's group.
+   *  Used for analytics purposes.
+   */
+  index?: number,
   /** Whether this Item should display as being selected. */
   isSelected: boolean,
   /** A handler which will be called when the Item is clicked. */

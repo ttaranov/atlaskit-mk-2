@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
 import { GroupHeading, Separator } from '../../';
@@ -12,21 +12,22 @@ export default class Group extends Component<GroupProps> {
   };
 
   render() {
-    const { children, hasSeparator, heading } = this.props;
+    const { children, hasSeparator, heading, id } = this.props;
 
     return React.Children.count(children) ? (
       <NavigationAnalyticsContext
         data={{
           attributes: {
-            viewGroup:
-              typeof heading === 'string' ? heading : JSON.stringify(heading),
+            viewGroup: id,
           },
           componentName: 'Group',
         }}
       >
-        {heading && <GroupHeading>{heading}</GroupHeading>}
-        {children}
-        {hasSeparator && <Separator />}
+        <Fragment>
+          {heading && <GroupHeading>{heading}</GroupHeading>}
+          {children}
+          {hasSeparator && <Separator />}
+        </Fragment>
       </NavigationAnalyticsContext>
     ) : null;
   }

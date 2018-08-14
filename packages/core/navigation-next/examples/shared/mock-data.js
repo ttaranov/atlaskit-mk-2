@@ -115,12 +115,18 @@ const rootIssues = [
     id: 'root/issues:menu',
     items: [
       {
-        type: LinkItem,
-        id: 'search-issues',
-        text: 'Search issues',
-        to: '/issues/search',
+        type: 'Group',
+        hasSeparator: true,
+        id: 'search-issues-group',
+        items: [
+          {
+            type: LinkItem,
+            id: 'search-issues',
+            text: 'Search issues',
+            to: '/issues/search',
+          },
+        ],
       },
-      { type: 'Separator', id: 'separator-1' },
       { type: 'Item', id: 'my-open-issues', text: 'My open issues' },
       { type: 'Item', id: 'reported-by-me', text: 'Reported by me' },
       { type: 'Item', id: 'all-issues', text: 'All issues' },

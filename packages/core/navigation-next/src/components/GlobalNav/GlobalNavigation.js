@@ -70,7 +70,7 @@ export default class GlobalNavigation extends Component<GlobalNavigationProps> {
                 {secondaryItems.map((props, index) => (
                   <GlobalItem
                     {...props}
-                    key={props.label}
+                    key={props.id || props.label}
                     size="small"
                     index={index}
                   />

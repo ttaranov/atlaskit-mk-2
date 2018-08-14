@@ -7,6 +7,9 @@ import {
 
 import { navigationChannel } from '../common/constants';
 
+const getDisplayName = component =>
+  component ? component.displayName || component.name : undefined;
+
 export const navigationItemClicked = (
   Component,
   componentName,
@@ -27,7 +30,8 @@ export const navigationItemClicked = (
           actionSubjectId: props.id,
           attributes: {
             componentName,
-            iconSource: props.icon && props.icon.name,
+            iconSource:
+              getDisplayName(props.icon) || getDisplayName(props.before),
             navigationItemIndex: props.index,
           },
         });
