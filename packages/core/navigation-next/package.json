@@ -28,7 +28,6 @@
     "deep-object-diff": "^1.1.0",
     "emotion": "^9.1.1",
     "emotion-theming": "^9.0.0",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "interpolate-range": "^2.1.0",
     "prop-types": "^15.5.10",
     "raf-schd": "^2.1.0",
@@ -50,6 +49,7 @@
     "@atlaskit/section-message": "^1.0.3",
     "@atlaskit/toggle": "^5.0.4",
     "@atlaskit/webdriver-runner": "^0.0.3",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2"
   }
