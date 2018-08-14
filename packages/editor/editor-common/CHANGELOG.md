@@ -1,5 +1,9 @@
 # @atlaskit/editor-common
 
+## 14.0.3
+- [patch] Fixed bodied-extension to not split when pressing enter in middle empty paragraph [4c0ecd7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4c0ecd7)
+- [none] Updated dependencies [4c0ecd7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4c0ecd7)
+
 ## 14.0.2
 - [patch] Updated dependencies [79f780a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/79f780a)
 
