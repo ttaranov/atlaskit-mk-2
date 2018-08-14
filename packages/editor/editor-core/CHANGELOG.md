@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 77.0.9
+- [patch] Fix bug in CodeBlocks where indenting with a selection at the start of the document would change your cursor-selection, to a range-selection for the purpose of indenting [4cd8ae6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4cd8ae6)
+- [none] Updated dependencies [4cd8ae6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4cd8ae6)
+
 ## 77.0.8
 - [patch] If datepicker is open, close on enter. ED-5210 [1b16711](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b16711)
 - [none] Updated dependencies [1b16711](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b16711)
