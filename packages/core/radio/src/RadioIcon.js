@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import RadioGlyph from '@atlaskit/icon/glyph/radio';
-import { IconWrapper } from './styled/radio';
+import { IconWrapper } from './styled/Radio';
 
 type Props = {
   isSelected?: boolean,
