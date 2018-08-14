@@ -147,6 +147,7 @@ describe('@atlaskit/tree - Tree', () => {
       expect(instance.dragState).toEqual({
         draggedItemId: dragStart.draggableId,
         source: dragStart.source,
+        destination: dragStart.source,
       });
     });
   });
@@ -176,10 +177,6 @@ describe('@atlaskit/tree - Tree', () => {
         <Tree tree={treeWithTwoBranches} renderItem={mockRender} />,
       ).instance();
       instance.onDragStart(dragStart);
-      expect(instance.dragState).toEqual({
-        draggedItemId: dragStart.draggableId,
-        source: dragStart.source,
-      });
       instance.onDragUpdate(dragUpdate);
       expect(instance.dragState).toEqual({
         draggedItemId: dragUpdate.draggableId,

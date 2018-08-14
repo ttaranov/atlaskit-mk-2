@@ -64,6 +64,7 @@ export default class Tree extends Component<Props, State> {
     this.dragState = {
       draggedItemId: result.draggableId,
       source: result.source,
+      destination: result.source,
     };
   };
 
@@ -71,7 +72,10 @@ export default class Tree extends Component<Props, State> {
     if (!this.dragState) {
       return;
     }
-    this.dragState.destination = update.destination;
+    this.dragState = {
+      ...this.dragState,
+      destination: update.destination,
+    };
   };
 
   onDragEnd = (result: DropResult) => {
