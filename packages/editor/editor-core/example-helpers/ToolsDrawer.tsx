@@ -38,7 +38,12 @@ const providers = {
     undefined: undefined,
   },
   emojiProvider: {
-    resolved: emoji.storyData.getEmojiResource({ uploadSupported: true }),
+    resolved: emoji.storyData.getEmojiResource({
+      uploadSupported: true,
+      currentUser: {
+        id: emoji.storyData.loggedUser,
+      },
+    }),
     external: Promise.resolve(
       new EmojiResource({
         providers: [
