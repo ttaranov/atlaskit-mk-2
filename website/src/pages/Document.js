@@ -31,7 +31,9 @@ export default function Document({
   const Content = Loadable({
     loader: () => found && found.exports(),
     loading: Loading,
-    render({ default: { content, data } = {} } = {}) {
+    render(md = {}) {
+      const { default: docDetails } = md;
+      const { content, data } = docDetails || {};
       if (content) {
         return <Markdown {...data}>{content}</Markdown>;
       }
