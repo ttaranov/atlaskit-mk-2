@@ -83,9 +83,9 @@ describe('AvatarGroup', () => {
     it('should pass moreButtonProps to the MoreIndicator', () => {
       const moreButtonProps = {
         tabIndex: -1,
-        id: 'test-id',
+        size: 'medium',
       };
-      const wrapper = shallow(
+      const wrapper = mount(
         <AvatarGroup
           appearance="stack"
           data={generateData(4)}
@@ -93,8 +93,8 @@ describe('AvatarGroup', () => {
           moreButtonProps={moreButtonProps}
         />,
       );
-      expect(wrapper.find(MoreIndicator).props()).toContainEqual(
-        moreButtonProps,
+      expect(wrapper.find(MoreIndicator).props()).toEqual(
+        expect.objectContaining(moreButtonProps),
       );
     });
   });
