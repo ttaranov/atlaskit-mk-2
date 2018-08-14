@@ -2,32 +2,33 @@
  * Largely taken from analytics-web-react
  */
 import * as merge from 'lodash.merge';
+import { NAVIGATION_CONTEXT } from '@atlaskit/analytics-namespaced-context';
 
-const extractFromEventContext = (propertyNames: string[], event) =>
+const extractFromEventContext = (
+  propertyNames: string[],
+  event,
+  namespacedContextOnly = true,
+) =>
   event.context
     .reduce((acc: any[], contextItem: any) => {
       propertyNames.forEach(propertyName => {
-        acc.push(contextItem[propertyName]);
+        const navContext = contextItem[NAVIGATION_CONTEXT];
+        const navContextProp = navContext ? navContext[propertyName] : null;
+        acc.push(
+          namespacedContextOnly
+            ? navContextProp
+            : navContextProp || contextItem[propertyName],
+        );
       });
       return acc;
     }, [])
     .filter(Boolean);
 
-export const getActionSubject = event => {
-  const closestContext =
-    event.context.length > 0 ? event.context[event.context.length - 1] : {};
-
-  return (
-    event.payload.actionSubject ||
-    event.payload.component ||
-    closestContext.component
-  );
-};
-
-export const getSources = event => extractFromEventContext(['source'], event);
+export const getSources = event =>
+  extractFromEventContext(['source'], event, false);
 
 export const getComponents = event =>
-  extractFromEventContext(['component', 'componentName'], event);
+  extractFromEventContext(['component', 'componentName'], event, false);
 
 export const getExtraAttributes = event =>
   extractFromEventContext(['attributes'], event).reduce(
@@ -37,10 +38,14 @@ export const getExtraAttributes = event =>
 
 export const getPackageInfo = event =>
   event.context
-    .map(contextItem => ({
-      packageName: contextItem.packageName,
-      packageVersion: contextItem.packageVersion,
-    }))
+    .map(contextItem => {
+      const navContext = contextItem[NAVIGATION_CONTEXT];
+      const item = navContext ? navContext : contextItem;
+      return {
+        packageName: item.packageName,
+        packageVersion: item.packageVersion,
+      };
+    })
     .filter(p => p.packageName);
 
 export const getPackageVersion = event =>

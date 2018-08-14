@@ -13,6 +13,7 @@ import {
   Browser as MpBrowser,
   Dropzone as MpDropzone,
   UploadParams,
+  PopupConfig,
 } from '../..';
 
 /* Components */
@@ -51,8 +52,8 @@ import { MediaPickerPopupWrapper, SidebarWrapper, ViewWrapper } from './styled';
 export interface AppStateProps {
   readonly selectedServiceName: ServiceName;
   readonly isVisible: boolean;
-  readonly useNewUploadService?: boolean;
   readonly context: Context;
+  readonly config?: Partial<PopupConfig>;
 }
 
 export interface AppDispatchProps {
@@ -104,8 +105,9 @@ export class App extends Component<AppProps, AppState> {
       onUploadError,
       context,
       tenantUploadParams,
-      useNewUploadService,
+      config = {},
     } = props;
+    const useNewUploadService = config.useNewUploadService || false;
     const { userAuthProvider } = context.config;
 
     if (!userAuthProvider) {
@@ -130,7 +132,7 @@ export class App extends Component<AppProps, AppState> {
       uploadParams,
       useNewUploadService,
       tenantUploadParams,
-      multiple: true,
+      multiple: true
     });
     this.mpBrowser.on('uploads-start', onUploadsStart);
     this.mpBrowser.on('upload-preview-update', onUploadPreviewUpdate);
@@ -157,7 +159,7 @@ export class App extends Component<AppProps, AppState> {
     this.mpBinary = MediaPicker('binary', context, {
       uploadParams,
       useNewUploadService,
-      tenantUploadParams,
+      tenantUploadParams
     });
     this.mpBinary.on('uploads-start', onUploadsStart);
     this.mpBinary.on('upload-preview-update', onUploadPreviewUpdate);
@@ -247,14 +249,10 @@ export class App extends Component<AppProps, AppState> {
   };
 }
 
-const mapStateToProps = ({
-  view,
-  context,
-  useNewUploadService,
-}: State): AppStateProps => ({
+const mapStateToProps = ({ view, context, config }: State): AppStateProps => ({
   selectedServiceName: view.service.name,
   isVisible: view.isVisible,
-  useNewUploadService,
+  config,
   context,
 });
 

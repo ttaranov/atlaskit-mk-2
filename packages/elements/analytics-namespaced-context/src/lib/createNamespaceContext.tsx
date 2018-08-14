@@ -1,16 +1,17 @@
 import * as React from 'react';
-import { ReactNode } from 'react';
+import { StatelessComponent, ReactNode } from 'react';
 import { AnalyticsContext } from '@atlaskit/analytics-next';
-
-export const ELEMENTS_CONTEXT = 'fabricElementsCtx';
 
 export type Props = {
   children?: ReactNode;
   data: {};
 };
 
-const createNamespaceContext = (namespace: string) => {
-  return (props: Props) => {
+const createNamespaceContext = (
+  namespace: string,
+  displayName = 'NamespacedContext',
+): StatelessComponent<Props> => {
+  const Component: StatelessComponent<Props> = (props: Props) => {
     const newData = {
       [namespace]: props.data,
     };
@@ -20,8 +21,8 @@ const createNamespaceContext = (namespace: string) => {
       </AnalyticsContext>
     );
   };
+  Component.displayName = displayName;
+  return Component;
 };
 
-export const FabricElementsAnalyticsContext = createNamespaceContext(
-  ELEMENTS_CONTEXT,
-);
+export default createNamespaceContext;

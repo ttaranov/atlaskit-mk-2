@@ -1,4 +1,5 @@
 import fileClick from '../fileClick';
+import { PopupConfig } from '../../..';
 
 describe('fileClick()', () => {
   const stateBase = {
@@ -8,6 +9,7 @@ describe('fileClick()', () => {
 
   const state = {
     ...stateBase,
+    config: {},
     selectedItems: [
       { id: 'selected-item-1' },
       { id: 'selected-item-2' },
@@ -49,5 +51,22 @@ describe('fileClick()', () => {
       { id: 'selected-item-1' },
       { id: 'selected-item-3' },
     ]);
+  });
+
+  it('should remove previously selected file when singleSelect is set to true', () => {
+    const oldState: any = {
+      ...state,
+      config: {
+        singleSelect: true,
+      } as Partial<PopupConfig>,
+    };
+    const oldStateCopy = { ...oldState };
+
+    const clickedFile: any = { id: 'clicked-file' };
+    const fileClickAction: any = { type: 'FILE_CLICK', file: clickedFile };
+
+    const newState = fileClick(oldState, fileClickAction);
+    expect(oldState).toEqual(oldStateCopy);
+    expect(newState.selectedItems).toEqual([clickedFile]);
   });
 });
