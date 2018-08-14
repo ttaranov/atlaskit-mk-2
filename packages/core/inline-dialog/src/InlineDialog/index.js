@@ -38,6 +38,8 @@ type Props = {
 
 class InlineDialog extends Component<Props, {}> {
   static defaultProps = {
+    children: null,
+    content: null,
     isOpen: false,
     onContentBlur: () => {},
     onContentClick: () => {},
@@ -57,18 +59,19 @@ class InlineDialog extends Component<Props, {}> {
     }
   }
 
-  handleClickOutside = (event: Event) => {
+  handleClickOutside = (event: any) => {
     if (event.defaultPrevented) return;
 
     const container: ?HTMLElement = this.containerRef;
     const trigger: ?HTMLElement = this.triggerRef;
+    const target: Node = event.target;
 
     // exit if we click outside but on the trigger — it can handle the clicks itself
-    if (trigger && !trigger.contains(event.target)) {
+    if (trigger && !trigger.contains(target)) {
       return;
     }
 
-    if (container && !container.contains(event.target)) {
+    if (container && !container.contains(target)) {
       this.props.onClose({ isOpen: false, event });
     }
   };
@@ -123,6 +126,7 @@ class InlineDialog extends Component<Props, {}> {
   }
 }
 
+export { InlineDialog as InlineDialogWithoutAnalytics };
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
 export default withAnalyticsContext({
