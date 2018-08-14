@@ -23,4 +23,4 @@ class GlobalItem extends PureComponent<GlobalItemProps> {
 
 export default navigationItemClicked(GlobalItem, 'globalItem');
 
-export type { GlobalItemProps } from './types';
+export type { GlobalItemProps };
