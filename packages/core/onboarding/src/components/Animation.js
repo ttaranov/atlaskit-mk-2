@@ -1,38 +1,30 @@
 // @flow
-import React, { type ComponentType } from 'react';
+import React, { type Node } from 'react';
 import { Transition } from 'react-transition-group';
 import { layers } from '@atlaskit/theme';
 
-const duration = 500;
+const duration = 100;
 type Props = {
-  component: ComponentType<*>,
   in: boolean,
+  children: Object => Node,
 };
 
-export const Fade = ({ component: Tag, in: hasEntered, ...props }: Props) => (
-  <Transition
-    in={hasEntered}
-    mountOnEnter
-    unmountOnExit
-    appear
-    timeout={duration}
-  >
+export const Fade = ({ in: hasEntered, children }: Props) => (
+  <Transition in={hasEntered} timeout={duration} unmountOnExit appear>
     {status => {
-      if (status === 'exited') return null;
-
       const base = {
-        transition: 'opacity 200ms',
+        transition: `opacity ${duration}ms`,
+        opacity: 0,
         zIndex: layers.spotlight(),
       };
       const anim = {
-        entering: { opacity: 0 },
         entered: { opacity: 1 },
         exiting: { opacity: 0 },
       };
 
       const style = { ...base, ...anim[status] };
 
-      return <Tag style={style} {...props} />;
+      return children(style);
     }}
   </Transition>
 );

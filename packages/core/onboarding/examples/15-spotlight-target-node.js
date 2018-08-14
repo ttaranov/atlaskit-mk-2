@@ -95,7 +95,7 @@ export default class SpotlightNodeExample extends Component<Object, State> {
                 text: 'Done',
               },
             ]}
-            dialogPlacement="right center"
+            dialogPlacement="right middle"
             heading="Waits for node availability"
             targetNode={this.drawer}
           >
