@@ -124,72 +124,24 @@ describe('NavigationListener', () => {
           eventType: UI_EVENT_TYPE,
         },
         context: [
-          { source: 'navigationNext' },
-          { source: 'globalNavigation' },
-          { source: 'searchDrawer' },
+          { source: 'issuesPage' },
+          { navigationCtx: { source: 'navigationNext' } },
+          { navigationCtx: { source: 'globalNavigation' } },
+          { navigationCtx: { source: 'searchDrawer' } },
         ],
         clientPayload: {
           action: 'someAction',
           actionSubject: 'someComponent',
           actionSubjectId: 'someComponentId',
           attributes: {
-            sourceHierarchy: 'navigationNext.globalNavigation.searchDrawer',
+            sourceHierarchy:
+              'issuesPage.navigationNext.globalNavigation.searchDrawer',
             packageHierarchy: undefined,
             componentHierarchy: undefined,
             packageName: undefined,
             packageVersion: undefined,
           },
           source: 'searchDrawer',
-          tags: ['navigation'],
-        },
-      },
-      {
-        name: 'withContextActionSubject',
-        eventPayload: {
-          action: 'someAction',
-          eventType: UI_EVENT_TYPE,
-        },
-        context: [
-          { component: 'navigation', source: 'navigation' },
-          { component: 'button' },
-        ],
-        clientPayload: {
-          action: 'someAction',
-          actionSubject: 'button',
-          attributes: {
-            sourceHierarchy: 'navigation',
-            packageHierarchy: undefined,
-            componentHierarchy: 'navigation.button',
-            packageName: undefined,
-            packageVersion: undefined,
-          },
-          source: 'navigation',
-          tags: ['navigation'],
-        },
-      },
-      {
-        name: 'withNoContextActionSubject',
-        eventPayload: {
-          action: 'someAction',
-          eventType: UI_EVENT_TYPE,
-        },
-        context: [
-          // Component isn't the closest context array so it may not refer to the
-          // actionSubject
-          { component: 'navigation' },
-          { source: 'globalNavigation' },
-        ],
-        clientPayload: {
-          action: 'someAction',
-          actionSubject: undefined,
-          attributes: {
-            sourceHierarchy: 'globalNavigation',
-            packageHierarchy: undefined,
-            componentHierarchy: 'navigation',
-            packageName: undefined,
-            packageVersion: undefined,
-          },
-          source: 'globalNavigation',
           tags: ['navigation'],
         },
       },
@@ -202,7 +154,12 @@ describe('NavigationListener', () => {
           eventType: UI_EVENT_TYPE,
         },
         context: [
-          { packageName: '@atlaskit/navigation-next', packageVersion: '0.0.7' },
+          {
+            navigationCtx: {
+              packageName: '@atlaskit/navigation-next',
+              packageVersion: '0.0.7',
+            },
+          },
           {
             source: 'globalNavigation',
             packageName: '@atlaskit/global-navigation',
@@ -235,7 +192,7 @@ describe('NavigationListener', () => {
         },
         context: [
           { component: 'navigationNext', source: 'navigation' },
-          { component: 'globalNavigation' },
+          { navigationCtx: { component: 'globalNavigation' } },
           { component: 'globalItem' },
         ],
         clientPayload: {
@@ -271,12 +228,20 @@ describe('NavigationListener', () => {
         context: [
           { component: 'navigationNext', source: 'navigation' },
           {
-            component: 'globalNavigation',
-            attributes: { f: 'l', c: { m: 'n' } },
+            navigationCtx: {
+              component: 'globalNavigation',
+              attributes: { f: 'l', c: { m: 'n' } },
+            },
           },
           {
-            component: 'globalItem',
-            attributes: { f: 'g', c: { h: 'i', z: 'x' } },
+            navigationCtx: {
+              component: 'globalItem',
+              attributes: { f: 'g', c: { h: 'i', z: 'x' } },
+            },
+          },
+          {
+            component: 'insideGlobalItem',
+            attributes: { f: 'z', c: { y: 'w', v: 'u' } },
           },
         ],
         clientPayload: {
@@ -286,7 +251,8 @@ describe('NavigationListener', () => {
           attributes: {
             sourceHierarchy: 'navigation',
             packageHierarchy: undefined,
-            componentHierarchy: 'navigationNext.globalNavigation.globalItem',
+            componentHierarchy:
+              'navigationNext.globalNavigation.globalItem.insideGlobalItem',
             packageName: undefined,
             packageVersion: undefined,
             a: 'b',
