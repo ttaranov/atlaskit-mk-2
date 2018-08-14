@@ -1,5 +1,17 @@
 # @atlaskit/navigation-next
 
+## 3.3.0
+
+
+- [minor] Instrument analytics for global and product nav item clicks. These will automatically be captured when using the FabricAnalyticsListeners component to listen for them. Note that some event data attributes rely on the ViewRenderer and LayoutManagerWithViewController being used instead of manual component composition. [51e9bee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51e9bee)
+- [patch] Updated dependencies [f7432a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f7432a2)
+  - @atlaskit/analytics-next@3.0.5
+  - @atlaskit/global-navigation@4.1.0
+- [none] Updated dependencies [b77a884](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b77a884)
+  - @atlaskit/global-navigation@4.1.0
+- [none] Updated dependencies [51e9bee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51e9bee)
+  - @atlaskit/global-navigation@4.1.0
+
 ## 3.2.4
 
 
