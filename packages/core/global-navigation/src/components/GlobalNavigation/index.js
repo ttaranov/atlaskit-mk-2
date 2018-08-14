@@ -1,9 +1,13 @@
 // @flow
 
 import React, { Component, Fragment } from 'react';
+import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 import { GlobalNav } from '@atlaskit/navigation-next';
 import Drawer from '@atlaskit/drawer';
-
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../../package.json';
 import generateDefaultConfig from '../../config/default-config';
 import generateProductConfig from '../../config/product-config';
 
@@ -12,6 +16,7 @@ import type { GlobalNavigationProps, DrawerName } from './types';
 
 // TODO: Figure out a way to appease flow without this function.
 const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
+  id,
   icon,
   label,
   onClick,
@@ -21,6 +26,7 @@ const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
   href,
   size,
 }) => ({
+  id,
   icon,
   label,
   onClick,
@@ -195,31 +201,39 @@ export default class GlobalNavigation
     const { primaryItems, secondaryItems } = this.constructNavItems();
 
     return (
-      <Fragment>
-        <GlobalNav
-          primaryItems={primaryItems}
-          secondaryItems={secondaryItems}
-        />
-        {this.drawers.map(drawer => {
-          const capitalisedDrawerName = this.getCapitalisedDrawerName(drawer);
-          const DrawerContents = this.props[`${drawer}DrawerContents`];
+      <NavigationAnalyticsContext
+        data={{
+          packageName,
+          packageVersion,
+          componentName: 'globalNavigation',
+        }}
+      >
+        <Fragment>
+          <GlobalNav
+            primaryItems={primaryItems}
+            secondaryItems={secondaryItems}
+          />
+          {this.drawers.map(drawer => {
+            const capitalisedDrawerName = this.getCapitalisedDrawerName(drawer);
+            const DrawerContents = this.props[`${drawer}DrawerContents`];
 
-          if (!DrawerContents) {
-            return null;
-          }
+            if (!DrawerContents) {
+              return null;
+            }
 
-          return (
-            <Drawer
-              key={drawer}
-              isOpen={this.state[`is${capitalisedDrawerName}Open`]}
-              onClose={this.closeDrawer(drawer)}
-              width="wide"
-            >
-              <DrawerContents />
-            </Drawer>
-          );
-        })}
-      </Fragment>
+            return (
+              <Drawer
+                key={drawer}
+                isOpen={this.state[`is${capitalisedDrawerName}Open`]}
+                onClose={this.closeDrawer(drawer)}
+                width="wide"
+              >
+                <DrawerContents />
+              </Drawer>
+            );
+          })}
+        </Fragment>
+      </NavigationAnalyticsContext>
     );
   }
 }

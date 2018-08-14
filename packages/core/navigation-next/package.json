@@ -17,6 +17,8 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
+    "@atlaskit/analytics-namespaced-context": "^2.0.3",
+    "@atlaskit/analytics-next": "^3.0.4",
     "@atlaskit/avatar": "^14.0.5",
     "@atlaskit/icon": "^13.2.2",
     "@atlaskit/select": "^5.0.7",
@@ -36,6 +38,7 @@
     "react": "^16.4.0"
   },
   "devDependencies": {
+    "@atlaskit/analytics-listeners": "^3.1.1",
     "@atlaskit/badge": "^9.0.3",
     "@atlaskit/docs": "^5.0.2",
     "@atlaskit/dropdown-menu": "^6.1.4",

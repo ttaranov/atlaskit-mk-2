@@ -11,6 +11,7 @@
     "dist"
   ],
   "dependencies": {
+    "@atlaskit/analytics-namespaced-context": "^2.0.3",
     "@atlaskit/avatar": "^14.0.6",
     "@atlaskit/badge": "^9.0.4",
     "@atlaskit/blanket": "^7.0.4",
@@ -31,6 +32,7 @@
     "react": "^16.4.0"
   },
   "devDependencies": {
+    "@atlaskit/analytics-listeners": "^3.0.3",
     "@atlaskit/modal-dialog": "^6.0.6",
     "@atlaskit/onboarding": "^5.1.4",
     "@atlaskit/section-message": "^1.0.4",
