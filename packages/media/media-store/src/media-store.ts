@@ -204,7 +204,6 @@ export class MediaStore {
     body: MediaStoreCopyFileWithTokenBody,
     params: MediaStoreCopyFileWithTokenParams,
   ): Promise<void> {
-    console.log('copy/withToken');
     return this.request('/file/copy/withToken', {
       method: 'POST',
       authContext: { collectionName: params.collection }, // Contains collection name to write to
@@ -320,6 +319,7 @@ export type MediaStoreCopyFileWithTokenBody = {
 
 export type MediaStoreCopyFileWithTokenParams = {
   readonly collection?: string;
+  readonly replaceFileId?: string;
 };
 
 export type AppendChunksToUploadRequestBody = {

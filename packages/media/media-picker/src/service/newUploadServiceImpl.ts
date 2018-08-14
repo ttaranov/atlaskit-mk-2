@@ -12,6 +12,7 @@ import {
   MediaStore,
   MediaStoreCopyFileWithTokenBody,
   UploadController,
+  MediaStoreCopyFileWithTokenParams,
 } from '@atlaskit/media-store';
 import { EventEmitter2 } from 'eventemitter2';
 import { defaultUploadParams } from '../domain/uploadParams';
@@ -141,6 +142,7 @@ export class NewUploadServiceImpl implements UploadService {
       let observable: Observable<FileState> | undefined;
 
       if (context) {
+        console.log(context);
         observable = context.uploadFile(uploadableFile, controller);
 
         const subscrition = observable.subscribe({
@@ -342,6 +344,8 @@ export class NewUploadServiceImpl implements UploadService {
     return Boolean(copyFileToRecents);
   }
 
+  // This method copies the file from the "tenant collection" to the "user collection" (recents).
+  // that means we need "tenant auth" as input and "user auth" as output
   private copyFileToUsersCollection(
     sourceFileId: string,
     sourceCollection?: string,
@@ -363,7 +367,7 @@ export class NewUploadServiceImpl implements UploadService {
             },
           },
         };
-        const params = {
+        const params: MediaStoreCopyFileWithTokenParams = {
           collection: 'recents',
         };
 

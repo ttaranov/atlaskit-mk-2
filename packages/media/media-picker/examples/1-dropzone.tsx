@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import {
   userAuthProvider,
-  defaultMediaPickerAuthProvider,
+  createUploadContext,
 } from '@atlaskit/media-test-helpers';
 import Button from '@atlaskit/button';
 import Toggle from '@atlaskit/toggle';
@@ -17,7 +17,6 @@ import {
   DropzoneItemsInfo,
 } from '../example-helpers/styled';
 import { UploadPreviews } from '../example-helpers/upload-previews';
-import { ContextFactory } from '@atlaskit/media-core';
 
 export interface DropzoneWrapperState {
   isConnectedToUsersCollection: boolean;
@@ -27,7 +26,7 @@ export interface DropzoneWrapperState {
   inflightUploads: string[];
   dropzone?: Dropzone;
 }
-
+const context = createUploadContext();
 class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
   dropzoneContainer: HTMLDivElement;
 
@@ -59,13 +58,6 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
   }
 
   createDropzone() {
-    const { isConnectedToUsersCollection } = this.state;
-    const context = ContextFactory.create({
-      authProvider: defaultMediaPickerAuthProvider,
-      userAuthProvider: isConnectedToUsersCollection
-        ? userAuthProvider
-        : undefined,
-    });
     if (this.state.dropzone) {
       this.state.dropzone.deactivate();
     }
