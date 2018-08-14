@@ -10,6 +10,8 @@ type Size = 'large' | 'small';
 export type GlobalItemPresentationProps = {
   /** Whether the Item is currently in the 'active' interaction state. */
   isActive: boolean,
+  /** Whether the Item is currently in the 'select' interaction state. */
+  isSelected: boolean,
   /** Whether the Item is currently in the 'hover' interaction state. */
   isHover: boolean,
   /** The size of the GlobalItem. */
