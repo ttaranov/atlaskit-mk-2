@@ -1,5 +1,8 @@
 # @atlaskit/smart-card
 
+## 7.0.4
+- [patch] ED-5222: bump react-lazily-render package [5844820](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5844820)
+
 ## 7.0.3
 - [patch] Fix es5 exports of some of the newer modules [3f0cd7d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f0cd7d)
 
