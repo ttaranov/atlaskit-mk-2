@@ -1,6 +1,6 @@
 // @flow
-import React, { Component, type Element } from 'react';
-import type { AvatarPropTypes, AvatarClickType } from '../types';
+import React, { Component } from 'react';
+import type { AvatarPropTypes } from '../types';
 
 /**
  * innerRef is passed by Avatar component
