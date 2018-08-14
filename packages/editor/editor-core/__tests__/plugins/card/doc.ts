@@ -105,7 +105,7 @@ describe('card', () => {
 
     describe('provider', () => {
       const href = 'http://www.atlassian.com/';
-      const initialDocument = doc(
+      const initialDoc = doc(
         p('hello have a link ', a({ href })('{<>}' + href)),
       );
 
@@ -113,7 +113,7 @@ describe('card', () => {
       let provider: CardProvider;
 
       beforeEach(() => {
-        const { editorView } = editor(initialDocument);
+        const { editorView } = editor(initialDoc);
         view = editorView;
       });
 
@@ -174,12 +174,72 @@ describe('card', () => {
           provider: provider,
         });
 
-        expect(view.state.doc).toEqualDocument(initialDocument);
+        expect(view.state.doc).toEqualDocument(initialDoc);
       });
     });
 
-    it('does not replace if link text changes', () => {});
+    it('does not replace if link text changes', async () => {
+      const href = 'http://www.atlassian.com/';
+      const { editorView } = editor(
+        doc(p('hello have a link ', a({ href })('{<>}' + href))),
+      );
 
-    it('does not replace if position is some other content', () => {});
+      setProvider(new MockProvider())(editorView.state, editorView.dispatch);
+
+      // queue it
+      const promise = queueCard(
+        href,
+        editorView.state.selection.from,
+        'inline',
+      )(editorView);
+
+      // now, change the link text (+1 so we change inside the text node with the mark, otherwise
+      // we prefer to change on the other side of the boundary)
+      insertText(editorView, 'change', editorView.state.selection.from + 1);
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          p(
+            'hello have a link ',
+            a({ href })(href[0] + 'change{<>}' + href.slice(1)),
+          ),
+        ),
+      );
+
+      // resolve the provider
+      await promise;
+
+      // link should not have been replaced, but text will have changed
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          p(
+            'hello have a link ',
+            a({ href })(href[0] + 'change{<>}' + href.slice(1)),
+          ),
+        ),
+      );
+    });
+
+    it('does not replace if position is some other content', async () => {
+      const href = 'http://www.atlassian.com/';
+      const initialDoc = doc(p('hello have a link '), p('{<>}' + href));
+
+      const { editorView } = editor(initialDoc);
+
+      setProvider(new MockProvider())(editorView.state, editorView.dispatch);
+
+      // queue a non-link node
+      const promise = queueCard(
+        href,
+        editorView.state.selection.from,
+        'inline',
+      )(editorView);
+
+      // resolve the provider
+      await promise;
+
+      // link should not have been replaced, but text will have changed
+      expect(editorView.state.doc).toEqualDocument(initialDoc);
+    });
   });
 });
