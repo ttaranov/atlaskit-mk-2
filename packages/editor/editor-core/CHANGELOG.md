@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 77.0.8
+- [patch] If datepicker is open, close on enter. ED-5210 [1b16711](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b16711)
+- [none] Updated dependencies [1b16711](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b16711)
+
 ## 77.0.7
 - [patch] Updated dependencies [79f780a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/79f780a)
   - @atlaskit/media-picker@12.1.1
