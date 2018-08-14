@@ -1,5 +1,10 @@
 # @atlaskit/navigation-next
 
+## 3.3.2
+- [patch] Fixing dynamic styles on global nagivation [0b2daf0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0b2daf0)
+- [patch] Updated dependencies [0b2daf0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0b2daf0)
+  - @atlaskit/global-navigation@4.1.1
+
 ## 3.3.1
 - [patch] Prevent page wrapper from growing beyond available space [ee25869](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ee25869)
 - [patch] Updated dependencies [ee25869](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ee25869)
