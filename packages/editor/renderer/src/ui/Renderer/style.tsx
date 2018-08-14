@@ -290,7 +290,8 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     }
   }
 
-  & .Extension {
+  & .Extension-wide,
+  & .Extension-full-width {
     margin-left: 50%;
     transform: translateX(-50%);
   }
