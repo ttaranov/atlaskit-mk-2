@@ -66,6 +66,7 @@ export type NavItem = {
   tooltip?: string,
   href?: string,
   size?: Size,
+  id?: string,
 };
 
 // The shape of the item data required by GlobalNav

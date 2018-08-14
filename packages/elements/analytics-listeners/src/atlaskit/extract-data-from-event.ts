@@ -22,7 +22,7 @@ export const getActionSubject = event => {
 export const getSources = event => extractFromEventContext('source', event);
 
 export const getComponents = event =>
-  extractFromEventContext('componentName', event);
+  extractFromEventContext('component', event);
 
 export const getExtraAttributes = event =>
   extractFromEventContext('attributes', event).reduce(

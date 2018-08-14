@@ -1,5 +1,7 @@
 // @flow
 
+import type { ComponentType } from 'react';
+
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
@@ -11,9 +13,9 @@ const getDisplayName = component =>
   component ? component.displayName || component.name : undefined;
 
 export const navigationItemClicked = (
-  Component,
-  componentName,
-  staticProps,
+  Component: ComponentType<any>,
+  componentName: string,
+  staticProps: any,
 ) => {
   return withAnalyticsContext({
     componentName,

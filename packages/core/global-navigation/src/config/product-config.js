@@ -209,9 +209,7 @@ export default function generateProductConfig(
       onNotificationClick ||
         (notificationDrawerContents && openDrawer('notification')),
       notificationTooltip,
-      {
-        ...notificationBadge,
-      },
+      notificationBadge,
     ),
     help: helpConfigFactory(helpItems, helpTooltip),
     profile: profileConfigFactory(
