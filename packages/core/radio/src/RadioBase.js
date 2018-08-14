@@ -8,12 +8,13 @@ type State = {
   isHovered: boolean,
   isFocused: boolean,
   isActive: boolean,
-  mouseIsDown: boolean,
+  isMouseDown: boolean,
 };
 
 export default class Radio extends Component<RadioBasePropTypes, State> {
   static defaultProps = {
     isDisabled: false,
+    isInvalid: false,
     isSelected: false,
   };
 
@@ -21,7 +22,7 @@ export default class Radio extends Component<RadioBasePropTypes, State> {
     isHovered: false,
     isFocused: false,
     isActive: false,
-    mouseIsDown: false,
+    isMouseDown: false,
   };
 
   onBlur = () =>
@@ -29,20 +30,21 @@ export default class Radio extends Component<RadioBasePropTypes, State> {
       // onBlur is called after onMouseDown if the checkbox was focused, however
       // in this case on blur is called immediately after, and we need to check
       // whether the mouse is down.
-      isActive: this.state.mouseIsDown && this.state.isActive,
+      isActive: this.state.isMouseDown && this.state.isActive,
       isFocused: false,
     });
   onFocus = () => this.setState({ isFocused: true });
   onMouseLeave = () => this.setState({ isActive: false, isHovered: false });
   onMouseEnter = () => this.setState({ isHovered: true });
-  onMouseUp = () => this.setState({ isActive: false, mouseIsDown: false });
-  onMouseDown = () => this.setState({ isActive: true, mouseIsDown: true });
+  onMouseUp = () => this.setState({ isActive: false, isMouseDown: false });
+  onMouseDown = () => this.setState({ isActive: true, isMouseDown: true });
 
   render() {
     const {
       children,
       isDisabled,
       isRequired,
+      isInvalid,
       isSelected,
       name,
       onChange,
@@ -71,14 +73,12 @@ export default class Radio extends Component<RadioBasePropTypes, State> {
         />
         <Wrapper>
           <RadioIcon
-            isSelected={isSelected}
+            isActive={isActive}
+            isChecked={isSelected}
             isDisabled={isDisabled}
             isFocused={isFocused}
             isHovered={isHovered}
-            isActive={isActive}
-            primaryColor="inherit"
-            secondaryColor="inherit"
-            label=""
+            isInvalid={isInvalid}
           />
           <span>{children}</span>
         </Wrapper>

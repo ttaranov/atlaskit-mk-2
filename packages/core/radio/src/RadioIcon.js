@@ -1,42 +1,39 @@
 // @flow
 import React from 'react';
-import RadioGlyph from '@atlaskit/icon/glyph/radio';
+import Icon from '@atlaskit/icon/glyph/radio';
 import { IconWrapper } from './styled/Radio';
 
 type Props = {
-  isSelected?: boolean,
+  isActive?: boolean,
+  isChecked?: boolean,
   isDisabled?: boolean,
   isFocused?: boolean,
-  isActive?: boolean,
   isHovered?: boolean,
-  label: string,
-  primaryColor: string,
-  secondaryColor: string,
+  isInvalid?: boolean,
 };
 
 export default ({
-  isSelected,
+  isActive,
+  isChecked,
   isDisabled,
   isFocused,
-  isActive,
   isHovered,
-  primaryColor,
-  secondaryColor,
-  label,
+  isInvalid,
 }: Props) => (
   <IconWrapper
-    isSelected={isSelected}
+    isActive={isActive}
+    isChecked={isChecked}
     isDisabled={isDisabled}
     isFocused={isFocused}
-    isActive={isActive}
     isHovered={isHovered}
+    isInvalid={isInvalid}
   >
-    <RadioGlyph
-      primaryColor={primaryColor}
-      secondaryColor={secondaryColor}
-      isHovered={isHovered}
+    <Icon
       isActive={isActive}
-      label={label}
+      isHovered={isHovered}
+      label=""
+      primaryColor="inherit"
+      secondaryColor="inherit"
     />
   </IconWrapper>
 );
