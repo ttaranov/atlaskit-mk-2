@@ -4,11 +4,11 @@ import RadioGlyph from '@atlaskit/icon/glyph/radio';
 import { IconWrapper } from './styled/radio';
 
 type Props = {
-  isSelected: boolean,
-  isDisabled: boolean,
-  isFocused: boolean,
-  isActive: boolean,
-  isHovered: boolean,
+  isSelected?: boolean,
+  isDisabled?: boolean,
+  isFocused?: boolean,
+  isActive?: boolean,
+  isHovered?: boolean,
   label: string,
   primaryColor: string,
   secondaryColor: string,
