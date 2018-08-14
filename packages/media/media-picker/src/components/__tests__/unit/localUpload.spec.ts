@@ -1,3 +1,4 @@
+declare var global: any;
 import { LocalUploadComponent } from '../../localUpload';
 import { Auth, ContextFactory } from '@atlaskit/media-core';
 
@@ -35,6 +36,18 @@ describe('MediaLocalUpload', () => {
     };
   };
 
+  const mockDevicePixelRatioValue = 123;
+  let cachedDevicePixelRatio;
+
+  beforeEach(() => {
+    cachedDevicePixelRatio = window.devicePixelRatio;
+    global.devicePixelRatio = mockDevicePixelRatioValue;
+  });
+
+  afterEach(() => {
+    global.devicePixelRatio = cachedDevicePixelRatio;
+  });
+
   it('should emit uploads-start event given upload service emits files-added event', () => {
     const { emitter, emitUploadServiceEvent } = setup();
 
@@ -58,6 +71,7 @@ describe('MediaLocalUpload', () => {
           height: 200,
         },
         src: imagePreviewSrc,
+        scaleFactor: mockDevicePixelRatioValue,
       },
     });
 
@@ -69,6 +83,7 @@ describe('MediaLocalUpload', () => {
           width: 100,
           height: 200,
         },
+        scaleFactor: mockDevicePixelRatioValue,
       },
     });
   });

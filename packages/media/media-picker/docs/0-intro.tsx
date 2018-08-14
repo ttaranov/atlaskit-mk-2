@@ -125,7 +125,7 @@ export default md`
 
   Emitted when uploads have started
 
-  #### upload-preview-update _{file: MediaFile, preview: Preview}_
+  #### upload-preview-update _{file: MediaFile, preview: Preview, scaleFactor: scaleFactor}_
 
   Emitted when MediaPicker has a preview. Will not be raised if a preview could not be generated,
   therefore preview will always have a value.

@@ -73,11 +73,13 @@ describe('Fetcher', () => {
 
   describe('getImagePreview()', () => {
     it('should return a valid image preview', () => {
+      const mockDevicePixelRatioValue = 123;
       (getPreviewFromBlob as jest.Mock<void>).mockReturnValue({
         dimensions: {
           width: 100,
           height: 100,
         },
+        scaleFactor: mockDevicePixelRatioValue,
       });
       fetcher['query'] = querySpy;
       fetcher.pollFile = jest.fn().mockReturnValue(Promise.resolve(imageFile));
@@ -91,6 +93,7 @@ describe('Fetcher', () => {
           width: 100,
           height: 100,
         });
+        expect(preview.scaleFactor).toBe(mockDevicePixelRatioValue);
       });
     });
   });

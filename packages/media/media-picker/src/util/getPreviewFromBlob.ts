@@ -6,6 +6,7 @@ import { ImagePreview } from '../index';
 export const getPreviewFromBlob = (
   file: Blob,
   mediaType: MediaType,
+  scaleFactor: number = window.devicePixelRatio,
 ): Promise<Preview> =>
   new Promise((resolve, reject) => {
     fileToBase64(file)
@@ -18,7 +19,7 @@ export const getPreviewFromBlob = (
             const { src } = img;
             const dimensions = { width: img.width, height: img.height };
 
-            resolve({ src, dimensions } as ImagePreview);
+            resolve({ src, dimensions, scaleFactor } as ImagePreview);
           };
 
           img.onerror = reject;

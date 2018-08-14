@@ -84,6 +84,7 @@ describe('sendUploadEvent middleware', () => {
       width: 1980,
       height: 1080,
       src: 'some-preview-src',
+      scaleFactor: 1,
     };
 
     sendUploadEventMiddleware(eventEmitter)(store)(next)(
