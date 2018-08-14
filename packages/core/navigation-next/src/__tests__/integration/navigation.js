@@ -12,7 +12,7 @@ const exampleURL = getExampleUrl('core', 'navigation-next', 'navigation');
 /* Css selectors used for the tests */
 const getByKey = key => `[data-webdriver-test-key="${key}"]`;
 
-function makeLogs(instance) {
+function checkConsoleErrors(instance) {
   if (!instance.log('browser').value) return;
 
   instance.log('browser').value.forEach(val => {
@@ -38,7 +38,7 @@ BrowserTestCase(
     expect(await page.isVisible(`${globalNav} [aria-label="Add"]`)).toBe(true);
     expect(await page.isVisible(`${globalNav} [aria-label="Help"]`)).toBe(true);
 
-    makeLogs(page);
+    checkConsoleErrors(page);
   },
 );
 BrowserTestCase(
@@ -54,7 +54,7 @@ BrowserTestCase(
     expect(await page.isVisible(getByKey('product-item-projects'))).toBe(true);
     expect(await page.isVisible(getByKey('product-item-issues'))).toBe(true);
 
-    makeLogs(page);
+    checkConsoleErrors(page);
   },
 );
 BrowserTestCase(
@@ -68,6 +68,6 @@ BrowserTestCase(
     expect(await page.isVisible(getByKey('container-item-sprints'))).toBe(true);
     expect(await page.isVisible(getByKey('container-item-reports'))).toBe(true);
 
-    makeLogs(page);
+    checkConsoleErrors(page);
   },
 );
