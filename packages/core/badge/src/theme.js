@@ -33,15 +33,15 @@ export type ThemeAppearance =
   | {};
 
 export type ThemeProps = {
-  badge: ({ appearance: ThemeAppearance }) => {
+  badge?: ({ appearance: ThemeAppearance }) => {
     backgroundColor?: string,
     textColor?: string,
   },
-  mode: 'light' | 'dark',
+  mode?: 'light' | 'dark',
 };
 
 export function theme(props: ThemeProps): ThemeProps {
-  const { badge = () => ({}), mode = 'light', ...rest } = props;
+  const { badge = s => ({}), mode = 'light', ...rest } = props;
   return {
     badge: ({ appearance }) => ({
       ...(typeof appearance === 'object'

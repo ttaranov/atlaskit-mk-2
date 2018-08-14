@@ -4,7 +4,7 @@ import React, { Component, Fragment, type Node } from 'react';
 import { Theme } from '../src';
 
 type MyTheme = {
-  button: ({ hover: boolean }) => {
+  button?: ({ hover: boolean }) => {
     backgroundColor: string,
     textColor: string,
   },
