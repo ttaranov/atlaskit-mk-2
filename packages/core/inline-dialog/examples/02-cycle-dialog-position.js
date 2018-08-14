@@ -5,7 +5,7 @@ import InlineDialog from '../src';
 import { Placements } from './utils';
 
 type State = {
-  dialogPlacement: Placements,
+  placementIndex: number,
 };
 
 const styles = {

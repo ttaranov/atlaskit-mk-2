@@ -1,7 +1,7 @@
 // @flow
-import type { Placements as PopperPlacements } from '@atlaskit/popper';
+import type { Placement as PopperPlacement } from '@atlaskit/popper';
 
-export const Placements: Array<PopperPlacements> = [
+export const Placements: Array<PopperPlacement> = [
   'auto-end',
   'auto',
   'auto-start',
