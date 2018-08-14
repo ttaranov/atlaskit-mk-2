@@ -1,4 +1,9 @@
-import { EditorState, TextSelection, PluginSpec } from 'prosemirror-state';
+import {
+  EditorState,
+  TextSelection,
+  PluginSpec,
+  AllSelection,
+} from 'prosemirror-state';
 import { Decoration, DecorationSet } from 'prosemirror-view';
 import {
   layoutSection,
@@ -9,6 +14,7 @@ import {
   RefsNode,
   hr,
   createEditor,
+  sendKeyToPm,
 } from '@atlaskit/editor-test-helpers';
 import {
   default as layoutPlugin,
@@ -126,6 +132,40 @@ describe('layout', () => {
         const decorations = (layoutPlugin.spec as PluginSpec).props!
           .decorations!(editorView.state) as DecorationSet;
         expect(decorations).toBeUndefined();
+      });
+    });
+
+    describe('#keymaps', () => {
+      describe('Mod-A', () => {
+        it('should select all content in layoutColumn', () => {
+          const {
+            editorView,
+            refs: { from, to },
+          } = editor(
+            doc(
+              layoutSection({ layoutType: 'two_equal' })(
+                layoutColumn('{from}', p('start{<>}stop'), '{to}'),
+                layoutColumn(p('')),
+              ),
+            ),
+          );
+          sendKeyToPm(editorView, 'Mod-a');
+          expect(editorView.state.selection).toEqual(
+            TextSelection.create(editorView.state.doc, from, to),
+          );
+        });
+        it('should select whole document when layoutColumn already selected', () => {
+          const { editorView } = editor(
+            doc(
+              layoutSection({ layoutType: 'two_equal' })(
+                layoutColumn('{<}', p('startstop'), '{>}'),
+                layoutColumn(p('')),
+              ),
+            ),
+          );
+          sendKeyToPm(editorView, 'Mod-a');
+          expect(editorView.state.selection).toBeInstanceOf(AllSelection);
+        });
       });
     });
   });

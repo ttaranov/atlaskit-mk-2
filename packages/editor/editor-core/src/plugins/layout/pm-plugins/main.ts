@@ -1,6 +1,13 @@
 import { Slice, Node } from 'prosemirror-model';
-import { PluginKey, Plugin, EditorState, Transaction } from 'prosemirror-state';
+import {
+  PluginKey,
+  Plugin,
+  EditorState,
+  Transaction,
+  TextSelection,
+} from 'prosemirror-state';
 import { DecorationSet, Decoration } from 'prosemirror-view';
+import { keydownHandler } from 'prosemirror-keymap';
 import { findParentNodeOfType } from 'prosemirror-utils';
 import { isEmptyDocument } from '../../../utils';
 
@@ -56,6 +63,19 @@ export type LayoutState = {
   pos: number | null;
 };
 
+const isWholeSelectionInsideLayoutColumn = (state: EditorState): boolean => {
+  // Since findParentNodeOfType doesn't check if selection.to shares the parent, we do this check ourselves
+  const fromParent = findParentNodeOfType(state.schema.nodes.layoutColumn)(
+    state.selection,
+  );
+  if (fromParent) {
+    const isToPosInsideSameLayoutColumn =
+      state.selection.from < fromParent.pos + fromParent.node.nodeSize;
+    return isToPosInsideSameLayoutColumn;
+  }
+  return false;
+};
+
 // TODO: Look at memoize-one-ing this fn
 const getNodeDecoration = (pos: number, node: Node) => [
   Decoration.node(pos, pos + node.nodeSize, { class: 'selected' }),
@@ -98,6 +118,32 @@ export default new Plugin({
       }
       return undefined;
     },
+    handleKeyDown: keydownHandler({
+      'Mod-a': (state: EditorState, dispatch) => {
+        if (isWholeSelectionInsideLayoutColumn(state)) {
+          const { from, to } = state.selection;
+          const layoutColumn = findParentNodeOfType(
+            state.schema.nodes.layoutColumn,
+          )(state.selection)!;
+          const layoutColumnEnd =
+            layoutColumn.pos + layoutColumn.node.nodeSize - 1;
+          const isFullColumnLayoutSelection =
+            layoutColumn.start === from && layoutColumnEnd === to;
+          if (!isFullColumnLayoutSelection) {
+            dispatch(
+              state.tr.setSelection(
+                TextSelection.create(
+                  state.doc,
+                  layoutColumn.start,
+                  layoutColumnEnd,
+                ),
+              ),
+            );
+            return true;
+          }
+        }
+      },
+    }),
   },
   appendTransaction(_, oldState, newState) {
     if (!oldState.doc.eq(newState.doc)) {
