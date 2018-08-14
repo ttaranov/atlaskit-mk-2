@@ -1,5 +1,9 @@
 # @atlaskit/navigation-next
 
+## 3.3.1
+- [patch] Prevent page wrapper from growing beyond available space [ee25869](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ee25869)
+- [patch] Updated dependencies [ee25869](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ee25869)
+
 ## 3.3.0
 
 
