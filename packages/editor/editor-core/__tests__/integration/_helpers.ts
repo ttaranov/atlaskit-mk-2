@@ -7,18 +7,19 @@ import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
 export const getDocFromElement = el => el.pmViewDesc.node.toJSON();
 export const editable = '.ProseMirror';
 
-export const editors = [
-  {
-    name: 'comment',
-    path: getExampleUrl('editor', 'editor-core', 'comment'),
-    placeholder: '[placeholder="What do you want to say?"]',
-  },
-  {
-    name: 'fullpage',
-    path: getExampleUrl('editor', 'editor-core', 'full-page'),
-    placeholder: '.ProseMirror',
-  },
-];
+export const comment = {
+  name: 'comment',
+  path: getExampleUrl('editor', 'editor-core', 'comment'),
+  placeholder: '[placeholder="What do you want to say?"]',
+};
+
+export const fullpage = {
+  name: 'fullpage',
+  path: getExampleUrl('editor', 'editor-core', 'full-page'),
+  placeholder: '.ProseMirror',
+};
+
+export const editors = [comment, fullpage];
 
 export const clipboardHelper = getExampleUrl(
   'editor',
