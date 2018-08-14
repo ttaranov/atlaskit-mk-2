@@ -36,7 +36,7 @@ export const Label = styled.label`
 
 type IconWrapperProps = {
   isActive: boolean,
-  isSelected: boolean,
+  isChecked: boolean,
   isDisabled: boolean,
   isFocused: boolean,
   isInvalid: boolean,
@@ -72,27 +72,34 @@ const getBorderColor = (props: IconWrapperProps) => {
   if (props.isFocused) return focusBorder;
   if (props.isActive) return activeBorder;
   if (props.isInvalid) return invalidBorder;
-  if (props.isSelected) return selectedBorder;
+  if (props.isChecked) return selectedBorder;
   return border;
 };
 
 const getDotColor = props => {
-  const { isSelected, isDisabled, isActive, ...rest } = props;
+  const { isChecked, isDisabled, isActive, ...rest } = props;
 
   let color = themed({ light: colors.N10, dark: colors.DN10 });
 
-  if (isDisabled && isSelected) {
+  if (isDisabled && isChecked) {
     color = themed({ light: colors.N70, dark: colors.DN90 });
-  } else if (isActive && isSelected && !isDisabled) {
+  } else if (isActive && isChecked && !isDisabled) {
     color = themed({ light: colors.B400, dark: colors.DN10 });
-  } else if (!isSelected) {
+  } else if (!isChecked) {
     color = themed({ light: 'transparent', dark: 'transparent' });
   }
   return color(rest);
 };
 
 const getCircleColor = props => {
-  const { isSelected, isDisabled, isActive, isHovered, ...rest } = props;
+  const {
+    isChecked,
+    isDisabled,
+    isActive,
+    isHovered,
+    isInvalid,
+    ...rest
+  } = props;
 
   // set the default
   let color = themed({ light: colors.N10, dark: colors.DN10 });
@@ -101,12 +108,15 @@ const getCircleColor = props => {
     color = themed({ light: colors.N20, dark: colors.DN10 });
   } else if (isActive) {
     color = themed({ light: colors.B50, dark: colors.B200 });
-  } else if (isHovered && isSelected) {
+  } else if (isHovered && isChecked) {
     color = themed({ light: colors.B300, dark: colors.B75 });
   } else if (isHovered) {
     color = themed({ light: colors.N30, dark: colors.DN30 });
-  } else if (isSelected) {
-    color = themed({ light: colors.B400, dark: colors.B400 });
+  } else if (isChecked) {
+    color = themed({
+      light: colors.B400,
+      dark: isInvalid ? colors.DN10 : colors.B400,
+    });
   }
   return color(rest);
 };
