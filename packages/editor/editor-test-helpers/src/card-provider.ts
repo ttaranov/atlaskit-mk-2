@@ -1,26 +1,33 @@
 import { CardProvider } from '@atlaskit/editor-core';
 
-export class CardProviderMock implements CardProvider {
+const inlineCard = {
+  type: 'inlineCard',
+  attrs: {
+    data: {
+      '@context': 'https://www.w3.org/ns/activitystreams',
+      '@type': 'Document',
+      name: 'Welcome to Atlassian!',
+      url: 'http://www.atlassian.com',
+    },
+  },
+};
+
+export class DelayedCardMockProvider implements CardProvider {
   public config = {};
 
   resolve(url: string): Promise<any> {
     return new Promise(resolve => {
-      console.log('~~ setTimeout');
       setTimeout(() => {
-        resolve({
-          type: 'inlineCard',
-          attrs: {
-            data: {
-              '@context': 'https://www.w3.org/ns/activitystreams',
-              '@type': 'Document',
-              name: 'Welcome to Atlassian!',
-              url: 'http://www.atlassian.com',
-            },
-          },
-        });
+        resolve(inlineCard);
       }, 1000);
     });
   }
 }
 
-export const cardProvider = new CardProviderMock();
+export class CardMockProvider implements CardProvider {
+  resolve(url: string): Promise<any> {
+    return new Promise(resolve => resolve(inlineCard));
+  }
+}
+
+export const cardProvider = new DelayedCardMockProvider();

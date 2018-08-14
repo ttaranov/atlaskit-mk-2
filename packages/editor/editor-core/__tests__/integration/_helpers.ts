@@ -25,6 +25,8 @@ export const message = {
   placeholder: '.ProseMirror',
 };
 
+export const editors = [comment, fullpage];
+
 export const clipboardHelper = getExampleUrl(
   'editor',
   'editor-core',

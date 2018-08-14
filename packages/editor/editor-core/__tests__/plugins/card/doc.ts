@@ -4,7 +4,6 @@ import { CardProvider } from '../../../src/plugins/card/types';
 import {
   setProvider,
   queueCard,
-  queueCardFromSlice,
 } from '../../../src/plugins/card/pm-plugins/actions';
 
 import {
@@ -13,12 +12,11 @@ import {
   p,
   a,
   insertText,
+  CardMockProvider,
 } from '@atlaskit/editor-test-helpers';
 import { EditorView } from 'prosemirror-view';
-import { Slice, Fragment } from 'prosemirror-model';
 
-import { MockProvider } from './util';
-import { setTextSelection } from '../../../../editor-test-helpers/node_modules/@atlaskit/editor-core/src';
+import { setTextSelection } from '../../../src/utils';
 
 describe('card', () => {
   const editor = (doc: any) => {
@@ -50,7 +48,7 @@ describe('card', () => {
 
         const { state, dispatch } = editorView;
 
-        const provider = new MockProvider();
+        const provider = new CardMockProvider();
         setProvider(provider)(state, dispatch);
 
         const initialPos = state.selection.from;
@@ -184,7 +182,10 @@ describe('card', () => {
         doc(p('hello have a link ', a({ href })('{<>}' + href))),
       );
 
-      setProvider(new MockProvider())(editorView.state, editorView.dispatch);
+      setProvider(new CardMockProvider())(
+        editorView.state,
+        editorView.dispatch,
+      );
 
       // queue it
       const promise = queueCard(
@@ -226,7 +227,10 @@ describe('card', () => {
 
       const { editorView } = editor(initialDoc);
 
-      setProvider(new MockProvider())(editorView.state, editorView.dispatch);
+      setProvider(new CardMockProvider())(
+        editorView.state,
+        editorView.dispatch,
+      );
 
       // queue a non-link node
       const promise = queueCard(

@@ -4,11 +4,16 @@ import { CardProvider } from '../../../src/plugins/card/types';
 import {
   setProvider,
   queueCard,
-  queueCardFromSlice,
+  queueCardFromTr,
 } from '../../../src/plugins/card/pm-plugins/actions';
-import { MockProvider } from './util';
 
-import { doc, createEditor, p, a } from '@atlaskit/editor-test-helpers';
+import {
+  doc,
+  createEditor,
+  p,
+  a,
+  CardMockProvider,
+} from '@atlaskit/editor-test-helpers';
 import { EditorView } from 'prosemirror-view';
 import { Slice, Fragment } from 'prosemirror-model';
 
@@ -27,7 +32,7 @@ describe('card', () => {
         const { editorView } = editor(doc(p()));
         const { state, dispatch } = editorView;
 
-        const provider = new MockProvider();
+        const provider = new CardMockProvider();
         setProvider(provider)(state, dispatch);
 
         expect(pluginKey.getState(editorView.state)).toEqual({
@@ -61,7 +66,7 @@ describe('card', () => {
 
           const { state, dispatch } = view;
 
-          provider = new MockProvider();
+          provider = new CardMockProvider();
           setProvider(provider)(state, dispatch);
         });
 
@@ -81,10 +86,16 @@ describe('card', () => {
         it('queues the link in a slice as the only node', () => {
           const href = 'http://www.atlassian.com/';
           const linkDoc = p(a({ href })(href));
-          queueCardFromSlice(
+
+          const from = 0;
+          const to = editorView.state.doc.nodeSize - 2;
+          const tr = editorView.state.tr.replaceRange(
+            from,
+            to,
             new Slice(Fragment.from(linkDoc(editorView.state.schema)), 1, 1),
-            0,
-          )(editorView);
+          );
+
+          queueCardFromTr(tr)(editorView);
 
           expect(pluginKey.getState(editorView.state)).toEqual({
             requests: {
