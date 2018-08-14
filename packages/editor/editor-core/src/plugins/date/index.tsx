@@ -8,6 +8,7 @@ import { EditorPlugin } from '../../types';
 import WithPluginState from '../../ui/WithPluginState';
 import { insertDate, setDatePickerAt } from './actions';
 import createDatePlugin, { DateState, pluginKey } from './plugin';
+import keymap from './keymap';
 import DatePicker from './ui/DatePicker';
 
 export type DateType = {
@@ -27,6 +28,7 @@ const datePlugin: EditorPlugin = {
         name: 'date',
         plugin: createDatePlugin,
       },
+      { name: 'dateKeymap', plugin: ({ schema }) => keymap(schema) },
     ];
   },
 
