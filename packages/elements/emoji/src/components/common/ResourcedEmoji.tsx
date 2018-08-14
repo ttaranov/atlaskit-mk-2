@@ -1,37 +1,45 @@
 import * as React from 'react';
-import * as PropTypes from 'prop-types';
-import { PureComponent } from 'react';
+import { ComponentClass } from 'react';
 
 import { defaultEmojiHeight } from '../../constants';
-import { EmojiContext } from './internal-types';
-import CachingEmoji from './CachingEmoji';
 import EmojiPlaceholder from './EmojiPlaceholder';
-import LoadingEmojiCompoent, {
+import LoadingEmojiComponent, {
   Props as LoadingProps,
   State as LoadingState,
 } from './LoadingEmojiComponent';
-import { EmojiId, OptionalEmojiDescription } from '../../types';
-import { isPromise } from '../../type-helpers';
 import EmojiProvider from '../../api/EmojiResource';
-
-export interface BaseResourcedEmojiProps {
-  emojiId: EmojiId;
-  showTooltip?: boolean;
-  fitToHeight?: number;
-}
+import {
+  Props as ComponentProps,
+  BaseResourcedEmojiProps,
+} from './ResourcedEmojiComponent';
 
 export interface Props extends BaseResourcedEmojiProps, LoadingProps {}
 
-interface ComponentProps extends BaseResourcedEmojiProps {
-  emojiProvider: EmojiProvider;
-}
+const resourcedEmojiModuleLoader = () =>
+  import(/* webpackChunkName:"@atlaskit-internal_resourcedEmojiComponent" */ './ResourcedEmojiComponent');
 
-export interface State extends LoadingState {
-  emoji: OptionalEmojiDescription;
-  loaded: boolean;
-}
+const resourcedEmojiComponentLoader: () => Promise<
+  ComponentClass<ComponentProps>
+> = () => resourcedEmojiModuleLoader().then(module => module.default);
 
-export default class ResourcedEmoji extends LoadingEmojiCompoent<Props, State> {
+export default class ResourcedEmoji extends LoadingEmojiComponent<
+  Props,
+  LoadingState
+> {
+  static AsyncLoadedComponent: ComponentClass<ComponentProps>;
+  state = {
+    asyncLoadedComponent: ResourcedEmoji.AsyncLoadedComponent,
+  };
+
+  asyncLoadComponent() {
+    resourcedEmojiComponentLoader().then(component => {
+      ResourcedEmoji.AsyncLoadedComponent = component;
+      this.setState({
+        asyncLoadedComponent: component,
+      });
+    });
+  }
+
   renderLoading() {
     const { fitToHeight, emojiId, showTooltip } = this.props;
     return (
@@ -43,127 +51,16 @@ export default class ResourcedEmoji extends LoadingEmojiCompoent<Props, State> {
     );
   }
 
-  renderLoaded(loadedEmojiProvider: EmojiProvider) {
+  renderLoaded(
+    loadedEmojiProvider: EmojiProvider,
+    AsyncLoadedComponent: ComponentClass<ComponentProps>,
+  ) {
     const { emojiProvider, ...otherProps } = this.props;
     return (
-      <ResourcedEmojiComponent
+      <AsyncLoadedComponent
         {...otherProps}
         emojiProvider={loadedEmojiProvider}
       />
-    );
-  }
-}
-
-class ResourcedEmojiComponent extends PureComponent<ComponentProps, State> {
-  static childContextTypes = {
-    emoji: PropTypes.object,
-  };
-
-  private ready = false;
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      emoji: undefined,
-      loaded: false,
-    };
-  }
-
-  getChildContext(): EmojiContext {
-    return {
-      emoji: {
-        emojiProvider: this.props.emojiProvider,
-      },
-    };
-  }
-
-  private refreshEmoji(emojiProvider: EmojiProvider, emojiId: EmojiId) {
-    const foundEmoji = emojiProvider.findByEmojiId(emojiId);
-    if (isPromise(foundEmoji)) {
-      this.setState({
-        loaded: false,
-      });
-      foundEmoji.then(emoji => {
-        if (this.ready) {
-          // don't update state if component was unmounted
-          this.setState({
-            emoji,
-            loaded: true,
-          });
-        }
-      });
-    } else {
-      // loaded
-      this.setState({
-        emoji: foundEmoji,
-        loaded: true,
-      });
-    }
-  }
-
-  componentWillMount() {
-    this.ready = true;
-    if (!this.state.emoji) {
-      // using componentWillMount instead of componentDidMount to avoid needless
-      // rerendering.
-      this.refreshEmoji(this.props.emojiProvider, this.props.emojiId);
-    }
-  }
-
-  componentWillUnmount() {
-    this.ready = false;
-  }
-
-  componentWillReceiveProps(nextProps: ComponentProps) {
-    if (
-      nextProps.emojiProvider !== this.props.emojiProvider ||
-      nextProps.emojiId !== this.props.emojiId
-    ) {
-      this.refreshEmoji(nextProps.emojiProvider, nextProps.emojiId);
-    }
-  }
-
-  render() {
-    const {
-      emojiId,
-      fitToHeight = defaultEmojiHeight,
-      showTooltip,
-    } = this.props;
-    const { emoji, loaded } = this.state;
-    const { shortName, fallback } = emojiId;
-    if (emoji) {
-      return this.emojiWrapper(
-        <CachingEmoji
-          emoji={emoji}
-          showTooltip={showTooltip}
-          fitToHeight={fitToHeight}
-        />,
-      );
-    } else if (loaded) {
-      // loaded but not found - render fallback
-      return this.emojiWrapper(<span>{fallback || shortName}</span>);
-    }
-
-    return this.emojiWrapper(
-      <EmojiPlaceholder
-        shortName={shortName}
-        showTooltip={showTooltip}
-        size={fitToHeight || defaultEmojiHeight}
-      />,
-    );
-  }
-
-  private emojiWrapper(element: JSX.Element) {
-    const { shortName, id, fallback } = this.props.emojiId;
-    return (
-      <span
-        data-emoji-id={id}
-        data-emoji-short-name={shortName}
-        data-emoji-text={fallback || shortName}
-      >
-        {element}
-      </span>
     );
   }
 }

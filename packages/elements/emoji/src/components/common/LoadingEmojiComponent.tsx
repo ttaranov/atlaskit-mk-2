@@ -1,4 +1,4 @@
-import { PureComponent } from 'react';
+import { Component, ComponentClass } from 'react';
 
 import { EmojiProvider } from '../../api/EmojiResource';
 
@@ -8,6 +8,7 @@ export interface Props {
 
 export interface State {
   loadedEmojiProvider?: EmojiProvider;
+  asyncLoadedComponent?: ComponentClass<any>;
 }
 
 /**
@@ -19,7 +20,7 @@ export interface State {
 export default abstract class LoadingEmojiComponent<
   P extends Props,
   S extends State
-> extends PureComponent<P, S> {
+> extends Component<P, S> {
   private isUnmounted: boolean;
 
   constructor(props: P, state: S) {
@@ -33,8 +34,21 @@ export default abstract class LoadingEmojiComponent<
     this.loadEmojiProvider(this.props.emojiProvider);
   }
 
+  componentDidMount() {
+    // check for the module has not yet been loaded
+    // state.asyncLoadedComponent should be initialised
+    // with static field to prevent unnecessary rerender
+    if (!this.state.asyncLoadedComponent) {
+      this.asyncLoadComponent();
+    }
+  }
+
   componentWillReceiveProps(nextProps: Readonly<P>) {
     this.loadEmojiProvider(nextProps.emojiProvider);
+  }
+
+  componentWillUnmount() {
+    this.isUnmounted = true;
   }
 
   private loadEmojiProvider(futureEmojiProvider: Promise<EmojiProvider>) {
@@ -55,21 +69,31 @@ export default abstract class LoadingEmojiComponent<
       });
   }
 
-  componentWillUnmount() {
-    this.isUnmounted = true;
-  }
+  private loaded = <
+    S extends State,
+    T extends S & {
+      asyncLoadedComponent: ComponentClass<any>;
+      loadedEmojiProvider: EmojiProvider;
+    }
+  >(
+    state: S,
+  ): state is T => !!state.asyncLoadedComponent && !!state.loadedEmojiProvider;
+
+  abstract asyncLoadComponent(): void;
 
   renderLoading(): JSX.Element | null {
     return null;
   }
 
-  abstract renderLoaded(loadedEmojiProvider: EmojiProvider): JSX.Element | null;
+  abstract renderLoaded(
+    loadedEmojiProvider: EmojiProvider,
+    asyncLoadedComponent: ComponentClass<any>,
+  ): JSX.Element | null;
 
   render() {
-    const { loadedEmojiProvider } = this.state;
-
-    if (loadedEmojiProvider) {
-      return this.renderLoaded(loadedEmojiProvider as EmojiProvider);
+    if (this.loaded(this.state)) {
+      const { loadedEmojiProvider, asyncLoadedComponent } = this.state;
+      return this.renderLoaded(loadedEmojiProvider, asyncLoadedComponent);
     }
 
     return this.renderLoading();
