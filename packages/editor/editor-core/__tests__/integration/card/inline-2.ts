@@ -9,11 +9,24 @@ import {
   clipboardInput,
 } from '../_helpers';
 
+// behaviour is OS specific:
+// windows moves to next paragraph up
+// osx moves to top of document
+const moveUp = (page, selector) => {
+  let keys;
+  if (page.browser.desiredCapabilities.os === 'Windows') {
+    keys = ['Control', 'ArrowUp'];
+  } else {
+    keys = ['Command', 'ArrowUp'];
+  }
+  return page.browser.addValue(selector, keys);
+};
+
 [fullpage].forEach(editor => {
   BrowserTestCase(
     `pasting an link then typing still converts to inline card`,
     {
-      skip: ['chrome'],
+      skip: ['Chrome', 'chrome', 'ie', 'safari'],
     },
     async client => {
       let browser = await new Page(client);
@@ -38,7 +51,7 @@ import {
 
       // type some text around it
       await browser.type(editable, ' more typing');
-      await browser.startOfLine(editable);
+      await moveUp(browser, editable);
       await browser.type(editable, 'more typing ');
 
       // selectors on the nodeview do not work correctly in chrome
