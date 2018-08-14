@@ -36,6 +36,19 @@ describe('Avatar', () => {
     });
   });
 
+  describe('with component prop', () => {
+    it('should not throw error when a custom component is used', () => {
+      function CustomComponent({ children }) {
+        return <span>{children}</span>;
+      }
+      const wrapper = mount(<Avatar src={src} component={CustomComponent} />);
+
+      expect(() => {
+        mount(<Avatar src={src} component={CustomComponent} />);
+      }).not.toThrow();
+    });
+  });
+
   describe('name property', () => {
     it('should set an aria-label for the default image', () => {
       const name = 'John Smith';
