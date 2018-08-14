@@ -1,8 +1,8 @@
 // @flow
 import React, { Component } from 'react';
-import RadioIcon from '@atlaskit/icon/glyph/radio';
-import { HiddenInput, IconWrapper, Label, Wrapper } from './styled/Radio';
+import RadioIcon from './RadioIcon';
 import type { RadioBasePropTypes } from './types';
+import { Wrapper, HiddenInput, Label } from './styled/Radio';
 
 type State = {
   isHovered: boolean,
@@ -70,21 +70,16 @@ export default class Radio extends Component<RadioBasePropTypes, State> {
           value={value}
         />
         <Wrapper>
-          <IconWrapper
+          <RadioIcon
             isSelected={isSelected}
             isDisabled={isDisabled}
             isFocused={isFocused}
-            isActive={isActive}
             isHovered={isHovered}
-          >
-            <RadioIcon
-              primaryColor="inherit"
-              secondaryColor="inherit"
-              isHovered={this.state.isHovered}
-              isActive={this.state.isActive}
-              label=""
-            />
-          </IconWrapper>
+            isActive={isActive}
+            primaryColor="inherit"
+            secondaryColor="inherit"
+            label=""
+          />
           <span>{children}</span>
         </Wrapper>
       </Label>
