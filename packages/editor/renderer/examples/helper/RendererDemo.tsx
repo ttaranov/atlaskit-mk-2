@@ -13,6 +13,7 @@ import {
   ExtensionHandlers,
   defaultSchema,
 } from '@atlaskit/editor-common';
+import Button from '@atlaskit/button';
 import {
   storyMediaProviderFactory,
   storyContextIdentifierProviderFactory,
@@ -170,11 +171,14 @@ export interface DemoRendererProps {
   serializer: 'react' | 'text' | 'email';
   document?: object;
   appearance?: RendererAppearance;
+  maxHeight?: number;
+  truncationEnabled?: boolean;
 }
 
 export interface DemoRendererState {
   input: string;
   portal?: HTMLElement;
+  truncated: boolean;
 }
 
 export default class RendererDemo extends PureComponent<
@@ -196,6 +200,7 @@ export default class RendererDemo extends PureComponent<
 
     this.state = {
       input: JSON.stringify(doc, null, 2),
+      truncated: true,
     };
   }
 
@@ -267,6 +272,12 @@ export default class RendererDemo extends PureComponent<
     }
   }
 
+  private toggleTruncated(e) {
+    this.setState(prevState => ({
+      truncated: !prevState.truncated,
+    }));
+  }
+
   private renderRenderer() {
     if (this.props.serializer !== 'react') {
       return null;
@@ -291,6 +302,25 @@ export default class RendererDemo extends PureComponent<
       }
 
       props.appearance = this.props.appearance;
+      props.maxHeight = this.props.maxHeight;
+      props.truncated = this.props.truncationEnabled && this.state.truncated;
+
+      const expandButton = (
+        <div>
+          <Button
+            appearance={'link'}
+            spacing={'none'}
+            onClick={e => this.toggleTruncated(e)}
+          >
+            {this.state.truncated ? 'Expand text' : 'Collapse text'}
+          </Button>
+          &nbsp;&middot;&nbsp;
+          <Button appearance={'link'} spacing={'none'}>
+            Do something else
+          </Button>
+        </div>
+      );
+
       return (
         <div>
           <div style={{ color: '#ccc', marginBottom: '8px' }}>
@@ -299,6 +329,7 @@ export default class RendererDemo extends PureComponent<
           <div id="RendererOutput">
             <Renderer {...props} useNewApplicationCard={true} />
           </div>
+          {this.props.truncationEnabled ? expandButton : null}
           <div style={{ color: '#ccc', marginTop: '8px' }}>
             &lt;/Renderer&gt;
           </div>

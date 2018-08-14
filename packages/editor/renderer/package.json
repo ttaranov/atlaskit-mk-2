@@ -39,8 +39,10 @@
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
+    "@atlaskit/button": "^9.0.11",
     "@atlaskit/docs": "^5.0.7",
     "@atlaskit/editor-test-helpers": "^6.1.2",
+    "@atlaskit/field-range": "^5.0.7",
     "@atlaskit/media-core": "^24.0.2",
     "@atlaskit/media-test-helpers": "^18.2.0",
     "@atlaskit/profilecard": "^4.0.8",
