@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/tree",
-  "version": "2.0.3",
+  "version": "2.0.5",
   "description": "A React Component for displaying expandable and sortable tree hierarchies",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -12,7 +12,7 @@
   "author": "Atlassian Pty Ltd",
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "react-beautiful-dnd": "^8.0.7"
+    "react-beautiful-dnd": "^9.0.0"
   },
   "peerDependencies": {
     "react": "^16.4.0"
@@ -20,14 +20,14 @@
   "devDependencies": {
     "@atlaskit/build-utils": "^1.11.0",
     "@atlaskit/docs": "^5.0.2",
-    "@atlaskit/icon": "^13.2.2",
-    "@atlaskit/navigation": "^33.1.2",
-    "@atlaskit/section-message": "^1.0.3",
-    "@atlaskit/spinner": "^9.0.4",
-    "@atlaskit/theme": "^5.1.2",
+    "@atlaskit/icon": "^13.2.4",
+    "@atlaskit/navigation": "^33.1.4",
+    "@atlaskit/section-message": "^1.0.4",
+    "@atlaskit/spinner": "^9.0.5",
+    "@atlaskit/theme": "^5.1.3",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "enzyme-adapter-react-16": "https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.7.tgz",
-    "react-dom": "^16.4.0",
+    "react-dom": "^16.4.2",
     "styled-components": "^3.2.6"
   },
   "keywords": [

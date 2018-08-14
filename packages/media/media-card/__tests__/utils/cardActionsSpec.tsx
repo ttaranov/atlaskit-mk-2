@@ -66,6 +66,7 @@ describe('CardActions', () => {
     expect(card.find(PreventClickThrough)).toHaveLength(0);
   });
 
+  /* Disabled because Dropdown now defers rendering children until layer is positioned. Integration test will replace these https://ecosystem.atlassian.net/browse/AK-5183
   it('should render only dropdown menu given one action with no icon', () => {
     const { iconButtons, dropdownMenu, dropdownItems } = setup([openAction]);
 
@@ -87,7 +88,7 @@ describe('CardActions', () => {
     expect(dropdownMenu).toHaveLength(1);
     expect(dropdownItems).toHaveLength(2);
   });
-
+  */
   it('should render only icon button given one action with an icon', () => {
     const triggerColor = 'some-trigger-color';
     const { iconButtons, dropdownMenu, dropdownItems } = setup(
@@ -114,6 +115,7 @@ describe('CardActions', () => {
     expect(dropdownItems).toHaveLength(0);
   });
 
+  /* Disabled because Dropdown now defers rendering children until layer is positioned. Integration test will replace these https://ecosystem.atlassian.net/browse/AK-5183
   it('should render one icon button and a dropdown menu given more than two actions', () => {
     const { iconButtons, dropdownMenu, dropdownItems } = setup(menuActions);
 
@@ -121,6 +123,7 @@ describe('CardActions', () => {
     expect(dropdownMenu).toHaveLength(1);
     expect(dropdownItems).toHaveLength(3);
   });
+  */
 
   it('should call onToggle callback when dropdown menu trigger is clicked', () => {
     const onToggle = jest.fn();
@@ -144,7 +147,7 @@ describe('CardActions', () => {
 
     expect(annotateAction.handler).toHaveBeenCalled();
   });
-
+  /* Disabled because Dropdown now defers rendering children until layer is positioned. Integration test will replace these https://ecosystem.atlassian.net/browse/AK-5183
   it('should call action handler when item is pressed', () => {
     const triggerColor = 'some-color-string';
     const { dropdownItems } = setup([openAction], triggerColor);
@@ -153,6 +156,7 @@ describe('CardActions', () => {
 
     expect(openAction.handler).toHaveBeenCalled();
   });
+  */
 
   it('should pass supplied trigger color to dropdown menu trigger when there are multiple actions', () => {
     const triggerColor = 'some-color-string';

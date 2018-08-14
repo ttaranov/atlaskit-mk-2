@@ -7,6 +7,7 @@ import ScaleSmallIcon from '@atlaskit/icon/glyph/media-services/scale-small';
 import { ImageCropper, OnLoadHandler } from '../image-cropper';
 import Slider from '@atlaskit/field-range';
 import Spinner from '@atlaskit/spinner';
+import { Ellipsify, Camera, Rectangle, Vector2 } from '@atlaskit/media-ui';
 import {
   Container,
   SliderContainer,
@@ -27,7 +28,6 @@ import {
 } from '../constraint-util';
 import { dataURItoFile, fileSizeMb } from '../util';
 import { ERROR, MAX_SIZE_MB, ACCEPT } from '../avatar-picker-dialog';
-import { Ellipsify } from '@atlaskit/media-ui';
 
 export const CONTAINER_SIZE = akGridSizeUnitless * 32;
 export const CONTAINER_INNER_SIZE = akGridSizeUnitless * 25;
@@ -38,6 +38,12 @@ export const CONTAINER_PADDING = (CONTAINER_SIZE - CONTAINER_INNER_SIZE) / 2;
 // Therefore the context of the slider range min-max depends on the size of the image.
 // This constant is used for the max value for smaller images, as the (scale * 100) will be greater than 100.
 export const MAX_SMALL_IMAGE_SCALE = 2500;
+
+export const containerRect = new Rectangle(CONTAINER_SIZE, CONTAINER_SIZE);
+export const containerPadding = new Vector2(
+  CONTAINER_PADDING,
+  CONTAINER_PADDING,
+);
 
 export interface CropProperties {
   x: number;
@@ -58,32 +64,25 @@ export interface Props {
   isLoading?: boolean;
 }
 
-export interface Position {
-  x: number;
-  y: number;
-}
-
 export interface State {
-  imageWidth?: number;
-  imageHeight?: number;
-  imagePos: Position;
-  imageDragStartPos: Position;
-  cursorInitPos?: Position;
+  camera: Camera;
+  imagePos: Vector2;
+  cursorPos: Vector2;
   scale: number;
   isDragging: boolean;
-  minScale?: number;
+  minScale: number;
   fileImageSource?: string;
   imageFile?: File;
   isDroppingFile: boolean;
 }
 
 const defaultState = {
-  imageWidth: undefined,
-  imagePos: { x: CONTAINER_PADDING, y: CONTAINER_PADDING },
+  camera: new Camera(containerRect, new Rectangle(0, 0)),
+  imagePos: containerPadding,
+  cursorPos: new Vector2(0, 0),
   minScale: 1,
   scale: 1,
   isDragging: false,
-  imageDragStartPos: { x: CONTAINER_PADDING, y: CONTAINER_PADDING },
   fileImageSource: undefined,
   isDroppingFile: false,
 };
@@ -101,112 +100,68 @@ export class ImageNavigator extends Component<Props, State> {
     document.removeEventListener('mouseup', this.onMouseUp);
   }
 
+  onDragStarted = (x: number, y: number) => {
+    this.setState({
+      isDragging: true,
+      cursorPos: new Vector2(x, y),
+    });
+  };
+
   onMouseMove = (e: MouseEvent) => {
     if (this.state.isDragging) {
-      const { imageDragStartPos, scale } = this.state;
-      const imageWidth = this.state.imageWidth as number;
-      const imageHeight = this.state.imageHeight as number;
-      const { screenX: x, screenY: y } = e;
-      const cursorInitPos = this.state.cursorInitPos || { x, y };
-      const constrainedPos = constrainPos(
-        imageDragStartPos.x + (x - cursorInitPos.x),
-        imageDragStartPos.y + (y - cursorInitPos.y),
-        imageWidth,
-        imageHeight,
-        scale,
+      const { scale, camera, imagePos, cursorPos } = this.state;
+      const newCursorPos = new Vector2(e.screenX, e.screenY);
+      const cursorDelta = newCursorPos.sub(cursorPos);
+      const newImagePos = constrainPos(
+        imagePos.add(cursorDelta),
+        camera.scaledImg(scale),
       );
       this.setState({
-        cursorInitPos,
-        imagePos: constrainedPos,
+        cursorPos: newCursorPos,
+        imagePos: newImagePos,
       });
     }
   };
 
   onMouseUp = () => {
     const { imagePos, scale } = this.state;
-    const exportedPos = this.exportedImagePos(
-      Math.round(imagePos.x / scale),
-      Math.round(imagePos.y / scale),
-    );
-    this.props.onPositionChanged(exportedPos.x, exportedPos.y);
     this.setState({
-      cursorInitPos: undefined,
       isDragging: false,
-      imageDragStartPos: imagePos,
     });
-  };
-
-  exportedImagePos(x: number, y: number): Position {
-    const { scale } = this.state;
-    return {
-      x: Math.round(Math.abs((x * scale - CONTAINER_PADDING) * (1.0 / scale))),
-      y: Math.round(Math.abs((y * scale - CONTAINER_PADDING) * (1.0 / scale))),
-    };
-  }
-
-  onDragStarted = () => {
-    this.setState({
-      isDragging: true,
-    });
+    this.exportImagePos(imagePos.scaled(scale).map(Math.round));
   };
 
   /**
-   * When scale change we want to zoom in/out relative to the center of the frame.
-   * @param scale New scale in 0-100 format.
+   * When newScale change we want to zoom in/out relative to the center of the frame.
+   * @param newScale New scale in 0-100 format.
    */
-  onScaleChange = (scale: number) => {
-    const {
-      imageWidth: imgWidth,
-      imageHeight: imgHeight,
-      minScale: mScale,
-      scale: currentScale,
-      imagePos,
-    } = this.state;
-    const imageWidth = imgWidth as number;
-    const imageHeight = imgHeight as number;
-    const minScale = mScale as number;
-    const newScale = constrainScale(
-      scale / 100,
+  onScaleChange = (newScale: number) => {
+    const { camera, minScale, scale, imagePos } = this.state;
+
+    const constrainedScale = constrainScale(
+      newScale / 100,
       minScale,
-      imageWidth,
-      imageHeight,
+      camera.originalImg,
     );
-    const oldScale = currentScale;
-    const scaleRelation = newScale / oldScale;
-    const oldCenterPixel: Position = {
-      x: CONTAINER_SIZE / 2 - imagePos.x,
-      y: CONTAINER_SIZE / 2 - imagePos.y,
-    };
-    const newCenterPixel: Position = {
-      x: scaleRelation * oldCenterPixel.x,
-      y: scaleRelation * oldCenterPixel.y,
-    };
-    const newPos = constrainEdges(
-      CONTAINER_SIZE / 2 - newCenterPixel.x,
-      CONTAINER_SIZE / 2 - newCenterPixel.y,
-      imageWidth,
-      imageHeight,
-      newScale,
+
+    const newPos = camera
+      .scaledOffset(imagePos.scaled(-1), scale, constrainedScale)
+      .scaled(-1);
+    const constrainedPos = constrainEdges(
+      newPos,
+      camera.scaledImg(constrainedScale),
     );
-    const haveRenderedImage = !!this.state.imageWidth;
-    if (haveRenderedImage) {
-      // adjust cropped properties by scale value
-      const minSize = Math.min(imageWidth, imageHeight);
-      const size =
-        minSize < CONTAINER_SIZE
-          ? minSize
-          : Math.round(CONTAINER_INNER_SIZE / newScale);
-      const { x: exportedPosX, y: exportedPosY } = this.exportedImagePos(
-        newPos.x / newScale,
-        newPos.y / newScale,
-      );
-      this.props.onPositionChanged(exportedPosX, exportedPosY);
-      this.props.onSizeChanged(size);
-    }
+
     this.setState({
-      scale: newScale,
-      imagePos: newPos,
+      scale: constrainedScale,
+      imagePos: constrainedPos,
     });
+
+    const haveRenderedImage = !!camera.originalImg.width;
+    if (haveRenderedImage) {
+      this.exportImagePos(constrainedPos.scaled(1 / constrainedScale));
+      this.exportSize(constrainedScale);
+    }
   };
 
   /**
@@ -229,8 +184,7 @@ export class ImageNavigator extends Component<Props, State> {
       });
     }
     this.setState({
-      imageWidth: width,
-      imageHeight: height,
+      camera: new Camera(containerRect, new Rectangle(width, height)),
       minScale: scale,
       scale,
     });
@@ -241,6 +195,28 @@ export class ImageNavigator extends Component<Props, State> {
       CONTAINER_INNER_SIZE / width,
       CONTAINER_INNER_SIZE / height,
     );
+  }
+
+  exportSize(newScale: number): void {
+    const { width, height } = this.state.camera.originalImg;
+    // adjust cropped properties by scale value
+    const minSize = Math.min(width, height);
+    const size =
+      minSize < CONTAINER_SIZE
+        ? minSize
+        : Math.round(CONTAINER_INNER_SIZE / newScale);
+    this.props.onSizeChanged(size);
+  }
+
+  exportImagePos(pos: Vector2): void {
+    const { scale } = this.state;
+    const exported = pos
+      .scaled(scale)
+      .sub(containerPadding)
+      .scaled(1.0 / scale)
+      .map(Math.abs)
+      .map(Math.round);
+    this.props.onPositionChanged(exported.x, exported.y);
   }
 
   validateFile(imageFile: File): string | null {
@@ -388,11 +364,9 @@ export class ImageNavigator extends Component<Props, State> {
   };
 
   renderImageCropper(dataURI: string) {
-    const { imageWidth, imagePos, scale, isDragging } = this.state;
+    const { camera, imagePos, scale, isDragging, minScale } = this.state;
     const { onLoad, onImageError } = this.props;
     const { onDragStarted, onImageSize, onRemoveImage } = this;
-
-    const minScale = this.state.minScale as number;
 
     return (
       <div>
@@ -400,7 +374,7 @@ export class ImageNavigator extends Component<Props, State> {
         <ImageCropper
           scale={scale}
           imageSource={dataURI}
-          imageWidth={imageWidth}
+          imageWidth={camera.originalImg.width}
           containerSize={CONTAINER_SIZE}
           isCircularMask={false}
           top={imagePos.y}

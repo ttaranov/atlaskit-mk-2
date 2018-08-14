@@ -40,7 +40,7 @@ export class Popper extends Component<Props, State> {
       flip: {
         enabled: true,
         behavior: flipBehavior,
-        boundariesElement: 'window',
+        boundariesElement: 'viewport',
       },
       hide: {
         enabled: true,

@@ -1,5 +1,6 @@
 export {
   default as GlobalQuickSearch,
+  Props,
 } from './components/GlobalQuickSearchWrapper';
 
 export { Config } from './api/configureSearchClients';

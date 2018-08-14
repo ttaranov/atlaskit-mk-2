@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/analytics-next",
-  "version": "3.0.3",
+  "version": "3.0.4",
   "description": "The 🆕 Atlaskit component analytics framework",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -29,12 +29,12 @@
   },
   "devDependencies": {
     "@atlaskit/build-utils": "^1.11.0",
-    "@atlaskit/button": "^9.0.4",
+    "@atlaskit/button": "^9.0.5",
     "@atlaskit/docs": "^5.0.2",
-    "@atlaskit/field-text": "^7.0.3",
+    "@atlaskit/field-text": "^7.0.4",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "lodash.isequal": "^4.5.0",
-    "react-dom": "^16.4.0",
+    "react-dom": "^16.4.2",
     "redux": "^3.7.2"
   }
 }

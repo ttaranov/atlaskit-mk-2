@@ -1,5 +1,52 @@
 # @atlaskit/editor-core
 
+## 77.0.5
+- [patch] Fixing editor blowing up when code mark is disabled [968da74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/968da74)
+- [none] Updated dependencies [968da74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/968da74)
+
+## 77.0.4
+- [patch] FS-2815 - Only close emoji picker when disabled (in case pending open state changes) [4f5d786](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4f5d786)
+- [patch] Ensure emoji picker doesn't reopen after toolbar reenabled, if previously open. [5d2c0c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5d2c0c6)
+- [none] Updated dependencies [4f5d786](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4f5d786)
+- [none] Updated dependencies [5d2c0c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5d2c0c6)
+
+## 77.0.3
+- [patch] Remove items from toolbar if the prop is disabled [7c46965](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7c46965)
+- [none] Updated dependencies [7c46965](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7c46965)
+
+## 77.0.2
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [patch] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/media-card@32.0.1
+  - @atlaskit/media-picker@12.0.1
+  - @atlaskit/task-decision@8.1.4
+  - @atlaskit/util-data-test@10.0.4
+  - @atlaskit/mention@15.0.5
+  - @atlaskit/emoji@39.0.1
+  - @atlaskit/editor-common@14.0.1
+  - @atlaskit/date@0.1.1
+  - @atlaskit/analytics-next-types@3.0.1
+  - @atlaskit/tooltip@12.0.5
+  - @atlaskit/select@5.0.8
+  - @atlaskit/logo@9.0.3
+  - @atlaskit/modal-dialog@6.0.6
+  - @atlaskit/analytics-next@3.0.4
+  - @atlaskit/calendar@7.0.4
+  - @atlaskit/button@9.0.5
+  - @atlaskit/theme@5.1.3
+  - @atlaskit/lozenge@6.1.4
+  - @atlaskit/code@7.0.3
+  - @atlaskit/spinner@9.0.5
+  - @atlaskit/size-detector@5.0.4
+  - @atlaskit/layer@5.0.4
+  - @atlaskit/analytics@4.0.4
+  - @atlaskit/layer-manager@5.0.5
+  - @atlaskit/item@8.0.4
+  - @atlaskit/icon@13.2.4
+  - @atlaskit/droplist@7.0.5
+  - @atlaskit/avatar-group@2.0.7
+  - @atlaskit/avatar@14.0.6
+
 ## 77.0.1
 - [patch] Stop editor from blowing up inside dispatchTransaction if editorView is undefined [49b0733](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49b0733)
 - [none] Updated dependencies [49b0733](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49b0733)

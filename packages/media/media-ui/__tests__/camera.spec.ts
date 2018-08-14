@@ -1,4 +1,4 @@
-import { Rectangle, Camera, Vector2 } from '../../../src/newgen/domain/camera';
+import { Rectangle, Camera, Vector2 } from '../src/camera';
 import * as jsc from 'jsverify';
 
 const ACCEPTABLE_FLOATING_ERROR = 0.001;

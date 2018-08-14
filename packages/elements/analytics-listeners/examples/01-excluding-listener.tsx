@@ -1,12 +1,12 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { AnalyticsContext } from '@atlaskit/analytics-next';
-import FabricAnalyticsListeners from '../src/FabricAnalyticsListeners';
+import FabricAnalyticsListeners, { FabricChannel } from '../src';
 import {
   DummyComponentWithAnalytics,
   DummyAtlaskitComponentWithAnalytics,
   DummyComponentWithAttributesWithAnalytics,
-} from '../examples/helpers';
+} from './helpers';
 
 const myOnClickHandler = () => {
   console.log('Button clicked ! Yay!');
@@ -29,8 +29,12 @@ const analyticsWebClientMock = {
 
 export default function Example() {
   return (
-    <FabricAnalyticsListeners client={Promise.resolve(analyticsWebClientMock)}>
+    <FabricAnalyticsListeners
+      client={Promise.resolve(analyticsWebClientMock)}
+      excludedChannels={[FabricChannel.atlaskit]}
+    >
       <div>
+        <p>Excluding analytics listener</p>
         <DummyComponentWithAnalytics
           text="Fabric Elements event - component without attributes"
           onClick={myOnClickHandler}

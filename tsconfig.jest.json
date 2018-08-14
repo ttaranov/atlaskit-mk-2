@@ -1,0 +1,6 @@
+{
+  "extends": "./tsconfig.fabric.json",
+  "compilerOptions": {
+    "module": "commonjs"
+  }
+}

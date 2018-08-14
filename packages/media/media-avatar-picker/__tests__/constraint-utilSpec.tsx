@@ -1,3 +1,4 @@
+import { Rectangle, Vector2 } from '@atlaskit/media-ui';
 import {
   constrainPos,
   constrainScale,
@@ -18,11 +19,8 @@ describe('Constraint Spec', () => {
     describe('Unconstrained', () => {
       it('should return same coords when at origin position', () => {
         const constrainedPos = constrainPos(
-          0,
-          0,
-          IMAGE_WIDTH,
-          IMAGE_HEIGHT,
-          SCALE,
+          new Vector2(0, 0),
+          new Rectangle(IMAGE_WIDTH, IMAGE_HEIGHT),
         );
         expect(constrainedPos.x).toBe(0);
         expect(constrainedPos.y).toBe(0);
@@ -30,11 +28,8 @@ describe('Constraint Spec', () => {
 
       it('should return same coords when at middle position', () => {
         const constrainedPos = constrainPos(
-          -75,
-          -75,
-          IMAGE_WIDTH,
-          IMAGE_HEIGHT,
-          SCALE,
+          new Vector2(-75, -75),
+          new Rectangle(IMAGE_WIDTH, IMAGE_HEIGHT),
         );
         expect(constrainedPos.x).toBe(-75);
         expect(constrainedPos.y).toBe(-75);
@@ -42,11 +37,8 @@ describe('Constraint Spec', () => {
 
       it('should return same coords when at corner position', () => {
         const constrainedPos = constrainPos(
-          -100,
-          -100,
-          IMAGE_WIDTH,
-          IMAGE_HEIGHT,
-          SCALE,
+          new Vector2(-100, -100),
+          new Rectangle(IMAGE_WIDTH, IMAGE_HEIGHT),
         );
         expect(constrainedPos.x).toBe(-100);
         expect(constrainedPos.y).toBe(-100);
@@ -56,11 +48,8 @@ describe('Constraint Spec', () => {
     describe('Constrained', () => {
       it('should return constrained coords when greater than origin position', () => {
         const constrainedPos = constrainPos(
-          10,
-          10,
-          IMAGE_WIDTH,
-          IMAGE_HEIGHT,
-          SCALE,
+          new Vector2(10, 10),
+          new Rectangle(IMAGE_WIDTH, IMAGE_HEIGHT),
         );
         expect(constrainedPos.x).toBe(10);
         expect(constrainedPos.y).toBe(10);
@@ -68,11 +57,8 @@ describe('Constraint Spec', () => {
 
       it('should return constrained coords when greater than corner position', () => {
         const constrainedPos = constrainPos(
-          -105,
-          -105,
-          IMAGE_WIDTH,
-          IMAGE_HEIGHT,
-          SCALE,
+          new Vector2(-105, -105),
+          new Rectangle(IMAGE_WIDTH, IMAGE_HEIGHT),
         );
         expect(constrainedPos.x).toBe(-105);
         expect(constrainedPos.y).toBe(-105);
@@ -80,11 +66,8 @@ describe('Constraint Spec', () => {
 
       it('should constrain inner edges to inner crop area at full scale', () => {
         const constrainedPos = constrainEdges(
-          CONTAINER_SIZE,
-          CONTAINER_SIZE,
-          IMAGE_WIDTH,
-          IMAGE_HEIGHT,
-          SCALE,
+          new Vector2(CONTAINER_SIZE, CONTAINER_SIZE),
+          new Rectangle(IMAGE_WIDTH, IMAGE_HEIGHT),
         );
         expect(constrainedPos.x).toBe(CONTAINER_PADDING);
         expect(constrainedPos.y).toBe(CONTAINER_PADDING);
@@ -92,11 +75,8 @@ describe('Constraint Spec', () => {
 
       it('should constrain inner edges to inner crop area at half scale', () => {
         const constrainedPos = constrainEdges(
-          CONTAINER_SIZE,
-          CONTAINER_SIZE,
-          IMAGE_WIDTH,
-          IMAGE_HEIGHT,
-          SCALE * 0.5,
+          new Vector2(CONTAINER_SIZE, CONTAINER_SIZE),
+          new Rectangle(IMAGE_WIDTH, IMAGE_HEIGHT).scaled(0.5),
         );
         expect(constrainedPos.x).toBe(CONTAINER_PADDING);
         expect(constrainedPos.y).toBe(CONTAINER_PADDING);
@@ -104,11 +84,8 @@ describe('Constraint Spec', () => {
 
       it('should constrain outer edges to inner crop area at full scale', () => {
         const constrainedPos = constrainEdges(
-          IMAGE_WIDTH * -0.5,
-          IMAGE_WIDTH * -0.5,
-          IMAGE_WIDTH,
-          IMAGE_HEIGHT,
-          SCALE,
+          new Vector2(IMAGE_WIDTH * -0.5, IMAGE_WIDTH * -0.5),
+          new Rectangle(IMAGE_WIDTH, IMAGE_HEIGHT),
         );
         expect(constrainedPos.x).toBe(
           (CONTAINER_INNER_SIZE - CONTAINER_PADDING) * -1,
@@ -120,11 +97,8 @@ describe('Constraint Spec', () => {
 
       it('should constrain outer edges to inner crop area at half scale', () => {
         const constrainedPos = constrainEdges(
-          IMAGE_WIDTH * -0.5,
-          IMAGE_WIDTH * -0.5,
-          IMAGE_WIDTH,
-          IMAGE_HEIGHT,
-          SCALE * 0.5,
+          new Vector2(IMAGE_WIDTH * -0.5, IMAGE_WIDTH * -0.5),
+          new Rectangle(IMAGE_WIDTH, IMAGE_HEIGHT).scaled(0.5),
         );
         expect(constrainedPos.x).toBe(CONTAINER_PADDING);
         expect(constrainedPos.y).toBe(CONTAINER_PADDING);
@@ -139,8 +113,7 @@ describe('Scale Constraint', () => {
       const constrainedScale = constrainScale(
         1,
         SCALE,
-        IMAGE_WIDTH,
-        IMAGE_HEIGHT,
+        new Rectangle(IMAGE_WIDTH, IMAGE_HEIGHT),
       );
       expect(constrainedScale).toBe(1);
     });
@@ -149,8 +122,7 @@ describe('Scale Constraint', () => {
       const constrainedScale = constrainScale(
         0.5,
         SCALE,
-        IMAGE_WIDTH,
-        IMAGE_HEIGHT,
+        new Rectangle(IMAGE_WIDTH, IMAGE_HEIGHT),
       );
       expect(constrainedScale).toBe(0.5);
     });
@@ -161,8 +133,7 @@ describe('Scale Constraint', () => {
       const constrainedScale = constrainScale(
         0.4,
         0.5,
-        IMAGE_WIDTH,
-        IMAGE_HEIGHT,
+        new Rectangle(IMAGE_WIDTH, IMAGE_HEIGHT),
       );
       expect(constrainedScale).toBe(0.5);
     });

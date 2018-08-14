@@ -82,9 +82,9 @@ describe('<Header />', () => {
     const context = createContext({ subject });
     const el = mount(<Header context={context} identifier={identifier} />);
     subject.next(imageItem);
-    expect(el.state()).toMatchObject({ item: { status: 'SUCCESSFUL' } });
+    expect(el.state().item.status).toEqual('SUCCESSFUL');
     el.setProps({ identifier: identifier2 });
-    expect(el.state()).toMatchObject({ item: { status: 'PENDING' } });
+    expect(el.state().item.status).toEqual('PENDING');
   });
 
   describe('Metadata', () => {
