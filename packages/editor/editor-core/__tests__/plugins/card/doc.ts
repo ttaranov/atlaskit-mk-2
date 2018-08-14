@@ -238,7 +238,7 @@ describe('card', () => {
       // resolve the provider
       await promise;
 
-      // link should not have been replaced, but text will have changed
+      // nothing should change
       expect(editorView.state.doc).toEqualDocument(initialDoc);
     });
   });
