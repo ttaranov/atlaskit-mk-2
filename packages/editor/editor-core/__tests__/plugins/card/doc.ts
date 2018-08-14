@@ -12,11 +12,11 @@ import {
   p,
   a,
   insertText,
+  CardMockProvider,
 } from '@atlaskit/editor-test-helpers';
 import { EditorView } from 'prosemirror-view';
 
-import { MockProvider } from './util';
-import { setTextSelection } from '@atlaskit/editor-core';
+import { setTextSelection } from '../../../src/utils';
 
 describe('card', () => {
   const editor = (doc: any) => {
@@ -48,7 +48,7 @@ describe('card', () => {
 
         const { state, dispatch } = editorView;
 
-        const provider = new MockProvider();
+        const provider = new CardMockProvider();
         setProvider(provider)(state, dispatch);
 
         const initialPos = state.selection.from;
@@ -182,7 +182,10 @@ describe('card', () => {
         doc(p('hello have a link ', a({ href })('{<>}' + href))),
       );
 
-      setProvider(new MockProvider())(editorView.state, editorView.dispatch);
+      setProvider(new CardMockProvider())(
+        editorView.state,
+        editorView.dispatch,
+      );
 
       // queue it
       const promise = queueCard(
@@ -224,7 +227,10 @@ describe('card', () => {
 
       const { editorView } = editor(initialDoc);
 
-      setProvider(new MockProvider())(editorView.state, editorView.dispatch);
+      setProvider(new CardMockProvider())(
+        editorView.state,
+        editorView.dispatch,
+      );
 
       // queue a non-link node
       const promise = queueCard(

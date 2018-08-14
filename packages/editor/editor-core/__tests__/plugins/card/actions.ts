@@ -6,9 +6,14 @@ import {
   queueCard,
   queueCardFromSlice,
 } from '../../../src/plugins/card/pm-plugins/actions';
-import { MockProvider } from './util';
 
-import { doc, createEditor, p, a } from '@atlaskit/editor-test-helpers';
+import {
+  doc,
+  createEditor,
+  p,
+  a,
+  CardMockProvider,
+} from '@atlaskit/editor-test-helpers';
 import { EditorView } from 'prosemirror-view';
 import { Slice, Fragment } from 'prosemirror-model';
 
@@ -27,7 +32,7 @@ describe('card', () => {
         const { editorView } = editor(doc(p()));
         const { state, dispatch } = editorView;
 
-        const provider = new MockProvider();
+        const provider = new CardMockProvider();
         setProvider(provider)(state, dispatch);
 
         expect(pluginKey.getState(editorView.state)).toEqual({
@@ -61,7 +66,7 @@ describe('card', () => {
 
           const { state, dispatch } = view;
 
-          provider = new MockProvider();
+          provider = new CardMockProvider();
           setProvider(provider)(state, dispatch);
         });
 
