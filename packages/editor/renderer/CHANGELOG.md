@@ -1,5 +1,9 @@
 # @atlaskit/renderer
 
+## 20.0.3
+- [patch] ED-5218, extensions with default width should not be centre aligned. [d6bd53e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d6bd53e)
+- [none] Updated dependencies [d6bd53e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d6bd53e)
+
 ## 20.0.2
 - [patch] ED-5180: fix table columns collapse [2e0e5a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e0e5a1)
 - [none] Updated dependencies [2e0e5a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e0e5a1)
