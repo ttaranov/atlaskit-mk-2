@@ -79,7 +79,11 @@ export const queueCard = (
   appearance: CardAppearance,
 ): ((view: EditorView) => Promise<any>) => view => {
   const state = pluginKey.getState(view.state) as CardPluginState | undefined;
-  if (!state || !state.provider) {
+  if (!state) {
+    return Promise.reject('plugin not enabled');
+  }
+
+  if (!state.provider) {
     return Promise.reject('no provider');
   }
 
@@ -113,7 +117,7 @@ export const queueCard = (
 export const queueCardFromSlice = (
   slice: Slice,
   startPos: number,
-): ((view: EditorView) => boolean) => view => {
+): ((view: EditorView) => Promise<any>[]) => view => {
   const { state } = view;
   const { schema } = state;
 
@@ -122,17 +126,18 @@ export const queueCardFromSlice = (
 
   // dispatch links after we replace selection, otherwise we'll remap early
   const { link } = schema.marks;
+  const promises: Promise<any>[] = [];
   slice.content.descendants((node, pos) => {
     const linkMark = node.marks.find(mark => mark.type === link);
 
     if (linkMark) {
       const docPos = startPos + pos - slice.openStart + offset;
-      queueCard(linkMark.attrs.href, docPos, 'inline')(view);
+      promises.push(queueCard(linkMark.attrs.href, docPos, 'inline')(view));
       return false;
     }
   });
 
-  return true;
+  return promises;
 };
 
 export const setProvider = (cardProvider: CardProvider | null): Command => (

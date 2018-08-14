@@ -132,8 +132,10 @@ export function createPlugin(
             tr.replaceSelection(replacementSlice);
             dispatch(tr.scrollIntoView());
 
-            // queue cards if we found them, after the replacement
-            queueCardFromSlice(replacementSlice, state.selection.from)(view);
+            // queue cards, ignoring any errors
+            Promise.all(
+              queueCardFromSlice(replacementSlice, state.selection.from)(view),
+            ).catch(rejected => {});
 
             return true;
           }
@@ -198,8 +200,10 @@ export function createPlugin(
           }
           dispatch(tr);
 
-          // queue link cards
-          queueCardFromSlice(slice, state.selection.from)(view);
+          // queue link cards, ignoring any errors
+          Promise.all(
+            queueCardFromSlice(slice, state.selection.from)(view),
+          ).catch(rejected => {});
           return true;
         }
 
