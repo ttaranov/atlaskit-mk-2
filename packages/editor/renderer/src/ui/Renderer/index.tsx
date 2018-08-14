@@ -39,6 +39,7 @@ export interface Props {
   useNewApplicationCard?: boolean;
   appearance?: RendererAppearance;
   adfStage?: ADFStage;
+  disableLargeEmojis?: boolean;
 }
 
 export default class Renderer extends PureComponent<Props, {}> {
@@ -67,6 +68,7 @@ export default class Renderer extends PureComponent<Props, {}> {
       extensionHandlers,
       schema,
       useNewApplicationCard,
+      disableLargeEmojis,
     } = props;
 
     this.serializer = new ReactSerializer({
@@ -80,6 +82,7 @@ export default class Renderer extends PureComponent<Props, {}> {
         ...rendererContext,
       } as RendererContext,
       useNewApplicationCard,
+      disableLargeEmojis,
     });
   }
 

@@ -12,7 +12,6 @@ export interface EmojiProps extends EmojiAttributes {
 export default class EmojiItem extends PureComponent<EmojiProps, {}> {
   render() {
     const { id, providers, shortName, text, fitToHeight } = this.props;
-    debugger;
     return (
       /// Here
       <Emoji

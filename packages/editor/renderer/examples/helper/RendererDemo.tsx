@@ -168,6 +168,7 @@ export interface DemoRendererProps {
   withExtension?: boolean;
   serializer: 'react' | 'text' | 'email';
   document?: object;
+  disableLargeEmojis?: boolean;
 }
 
 export interface DemoRendererState {
@@ -287,6 +288,9 @@ export default class RendererDemo extends PureComponent<
       if (this.props.withPortal) {
         props.portal = this.state.portal;
       }
+
+      props.disableLargeEmojis = this.props.disableLargeEmojis;
+
       return (
         <div>
           <div style={{ color: '#ccc', marginBottom: '8px' }}>
