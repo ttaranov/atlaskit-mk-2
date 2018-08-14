@@ -23,7 +23,7 @@ import {
 } from '../../../../src/plugins/layout/pm-plugins/main';
 
 const editor = doc =>
-  createEditor({ doc, editorProps: { UNSAFE_allowLayouts: true } });
+  createEditor({ doc, editorProps: { allowLayouts: true } });
 const toState = (node: RefsNode) =>
   EditorState.create({
     doc: node,

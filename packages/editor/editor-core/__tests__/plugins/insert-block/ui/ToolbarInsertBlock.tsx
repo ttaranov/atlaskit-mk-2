@@ -41,7 +41,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       editorProps: {
         analyticsHandler: trackEvent,
         allowCodeBlocks: true,
-        UNSAFE_allowLayouts: true,
+        allowLayouts: true,
         allowLists: true,
         allowPanel: true,
         allowTasksAndDecisions: true,
