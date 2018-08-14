@@ -24,6 +24,8 @@ export type RadioBasePropTypes = {
   children?: Node,
   /** Field disabled */
   isDisabled?: boolean,
+  /** Field invalid */
+  isInvalid: boolean,
   /** Marks this as a required field */
   isRequired?: boolean,
   /** Set the field as selected */
