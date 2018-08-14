@@ -1,13 +1,14 @@
+/**
+ * The purpose of this example is to demo the integration between MediaPicker + id upfront + <Card />
+ */
+
 import * as React from 'react';
 import { Component } from 'react';
-import { ContextFactory } from '@atlaskit/media-core';
 import Button from '@atlaskit/button';
 import {
   userAuthProvider,
-  mediaPickerAuthProvider,
   defaultMediaPickerCollectionName,
-  userAuthProviderBaseURL,
-  createStorybookContext,
+  createUploadContext,
 } from '@atlaskit/media-test-helpers';
 import { Card } from '@atlaskit/media-card';
 import { MediaPicker } from '../src';
@@ -22,16 +23,9 @@ import {
   UploadsStartEventPayload,
 } from '../src/domain/uploadEvent';
 
-const mediaPickerContext = ContextFactory.create({
-  serviceHost: userAuthProviderBaseURL,
-  authProvider: mediaPickerAuthProvider(),
-  userAuthProvider,
-});
-const cardContext = createStorybookContext();
-// const cardContext = mediaPickerContext;
-
+const context = createUploadContext();
 const useNewUploadService = true;
-const popup = MediaPicker('popup', mediaPickerContext, {
+const popup = MediaPicker('popup', context, {
   container: document.body,
   uploadParams: {
     collection: defaultMediaPickerCollectionName,
@@ -66,11 +60,10 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
   }
 
   onUploadsStart = (data: UploadsStartEventPayload) => {
-    // TODO: append files
     const { files } = this.state;
     const { files: newFiles } = data;
     const ids = newFiles.map(file => file.upfrontId);
-    // console.log('onUploadsStart', { ids });
+
     this.setState({
       uploadingFiles: ids,
       files: [...ids, ...files],
@@ -87,8 +80,6 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
 
       this.setState({ uploadingFiles });
     }
-
-    // console.log('onUploadEnd', { data, index });
   };
 
   onShow = () => {
@@ -100,18 +91,18 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
 
   renderCards = () => {
     const { files } = this.state;
-    const cards = files.map((id, key) => {
-      // console.log('renderCards', id);
+    const cards = files.map((upfrontId, key) => {
+      upfrontId.then(id => {
+        console.log('render <Card />', id);
+      });
       return (
         <CardItemWrapper key={key}>
           <Card
-            context={cardContext}
+            context={context}
             isLazy={false}
             identifier={{
-              id,
+              id: upfrontId,
               mediaItemType: 'file',
-              // collectionName: 'mediapicker-test',
-              // collectionName: 'recents',
             }}
           />
         </CardItemWrapper>
@@ -125,7 +116,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     const { uploadingFiles } = this.state;
     const length = uploadingFiles.length;
     const isUploadFinished = !length;
-    // console.log({ isUploadFinished });
+
     return (
       <PopupContainer>
         <PopupHeader>
