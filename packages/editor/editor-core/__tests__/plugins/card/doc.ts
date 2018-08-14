@@ -4,7 +4,6 @@ import { CardProvider } from '../../../src/plugins/card/types';
 import {
   setProvider,
   queueCard,
-  queueCardFromSlice,
 } from '../../../src/plugins/card/pm-plugins/actions';
 
 import {
@@ -15,10 +14,9 @@ import {
   insertText,
 } from '@atlaskit/editor-test-helpers';
 import { EditorView } from 'prosemirror-view';
-import { Slice, Fragment } from 'prosemirror-model';
 
 import { MockProvider } from './util';
-import { setTextSelection } from '../../../../editor-test-helpers/node_modules/@atlaskit/editor-core/src';
+import { setTextSelection } from '@atlaskit/editor-core';
 
 describe('card', () => {
   const editor = (doc: any) => {
