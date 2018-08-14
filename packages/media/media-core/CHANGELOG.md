@@ -1,5 +1,11 @@
 # @atlaskit/media-core
 
+## 23.0.1
+- [patch] Removing mutational rxjs imports and replace with explicit operators [353f9db](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/353f9db)
+- [patch] Removing mutational rxjs imports and replace with explicit operators [56c2df9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/56c2df9)
+- [none] Updated dependencies [353f9db](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/353f9db)
+- [none] Updated dependencies [56c2df9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/56c2df9)
+
 ## 23.0.0
 - [major] Synchronous property "serviceHost" as part of many Interfaces in media components (like MediaApiConfig) is removed and replaced with asynchronous "baseUrl" as part of Auth object. [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
 - [major] Updated dependencies [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)

@@ -1,5 +1,13 @@
 # @atlaskit/analytics-listeners
 
+## 3.2.0
+- [minor] Update navigation listener to process NavigationAnalyticsContext [808b55b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/808b55b)
+
+- [none] Updated dependencies [808b55b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/808b55b)
+  - @atlaskit/analytics-namespaced-context@2.1.0
+- [patch] Updated dependencies [89225ce](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/89225ce)
+  - @atlaskit/analytics-namespaced-context@2.1.0
+
 ## 3.1.1
 - [patch] Fix es5 exports of some of the newer modules [3f0cd7d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f0cd7d)
 - [none] Updated dependencies [3f0cd7d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f0cd7d)

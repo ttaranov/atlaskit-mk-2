@@ -15,6 +15,7 @@ import {
   atlassianEmojis,
 } from '../../_test-data';
 import { EmojiDescription } from '../../../../types';
+import { deleteEmojiLabel } from '../../../../constants';
 import {
   CachingEmoji,
   CachingEmojiProps,
@@ -277,6 +278,21 @@ describe('<EmojiPickerList />', () => {
       // Expect first :foo: under "All uploads"
       expect(emoji.props().emoji.id).to.equal('foo');
       expect(emoji.find(CrossCircleIcon)).to.have.length(0);
+    });
+
+    it('should have label "delete-emoji" on delete button', () => {
+      const wrapper = mount(
+        <EmojiPickerList emojis={customEmojis} currentUser={{ id: 'hulk' }} />,
+      );
+      const deleteButton = wrapper
+        .find(CachingEmoji)
+        .at(0)
+        .find(CrossCircleIcon)
+        .at(0);
+      // needs label of "delete-emoji" to prevent selection on click
+      expect(
+        deleteButton.find(`[aria-label="${deleteEmojiLabel}"]`),
+      ).to.have.length.greaterThan(1);
     });
 
     it('should call onEmojiDelete if delete button is clicked', () => {

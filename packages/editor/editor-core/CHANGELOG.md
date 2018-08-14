@@ -1,5 +1,23 @@
 # @atlaskit/editor-core
 
+## 77.0.9
+- [patch] Fix bug in CodeBlocks where indenting with a selection at the start of the document would change your cursor-selection, to a range-selection for the purpose of indenting [4cd8ae6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4cd8ae6)
+- [none] Updated dependencies [4cd8ae6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4cd8ae6)
+
+## 77.0.8
+- [patch] If datepicker is open, close on enter. ED-5210 [1b16711](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b16711)
+- [none] Updated dependencies [1b16711](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1b16711)
+
+## 77.0.7
+- [patch] Updated dependencies [79f780a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/79f780a)
+  - @atlaskit/media-picker@12.1.1
+  - @atlaskit/editor-common@14.0.2
+
+## 77.0.6
+- [patch] FS-2819 use aria-label as selector rather than closest [84a7235](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84a7235)
+- [none] Updated dependencies [84a7235](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84a7235)
+  - @atlaskit/emoji@39.0.3
+
 ## 77.0.5
 - [patch] Fixing editor blowing up when code mark is disabled [968da74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/968da74)
 - [none] Updated dependencies [968da74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/968da74)

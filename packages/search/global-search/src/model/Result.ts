@@ -22,6 +22,14 @@ export interface Result {
   // optional id for the experiment that generated this result
   experimentId?: string;
 }
+/**
+ * Map of String keys and Array of results value, but can be empty as well
+ */
+export type GenericResultObject =
+  | {
+      [key: string]: Result[];
+    }
+  | {};
 
 export interface ConfluenceObjectResult extends Result {
   containerName: string;

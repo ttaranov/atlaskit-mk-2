@@ -1,10 +1,13 @@
 import * as uuid from 'uuid';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/defer';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/concat';
-import 'rxjs/add/operator/publishReplay';
+import { Observer } from 'rxjs/Observer';
+import { of } from 'rxjs/observable/of';
+import { Subscriber } from 'rxjs/Subscriber';
+import { defer } from 'rxjs/observable/defer';
+import { concat } from 'rxjs/operators/concat';
+import { refCount } from 'rxjs/operators/refCount';
+import { startWith } from 'rxjs/operators/startWith';
+import { publishReplay } from 'rxjs/operators/publishReplay';
 
 import {
   MediaStore,
@@ -37,7 +40,6 @@ import {
   FileState,
   mapMediaFileToFileState,
 } from '../fileState';
-import { Observer } from 'rxjs/Observer';
 import FileStreamCache from './fileStreamCache';
 import { getMediaTypeFromUploadableFile } from '../utils/getMediaTypeFromUploadableFile';
 
@@ -118,10 +120,9 @@ class ContextImpl implements Context {
 
     return this.fileStreamsCache.getOrInsert(key, () => {
       const collection = options && options.collectionName;
-      const fileStream$ = this.createDownloadFileStream(
-        id,
-        collection,
-      ).publishReplay(1);
+      const fileStream$ = publishReplay<FileState>(1)(
+        this.createDownloadFileStream(id, collection),
+      );
 
       fileStream$.connect();
 
@@ -176,7 +177,7 @@ class ContextImpl implements Context {
     if (mediaItem && (isMediaItemLink || isMediaItemFileAndNotPending)) {
       return {
         observable() {
-          return Observable.of(mediaItem);
+          return of(mediaItem);
         },
       };
     }
@@ -193,7 +194,7 @@ class ContextImpl implements Context {
     if (mediaItem) {
       return {
         observable() {
-          return provider.observable().startWith(mediaItem);
+          return provider.observable().pipe(startWith(mediaItem));
         },
       };
     }
@@ -264,7 +265,8 @@ class ContextImpl implements Context {
     const tempFileId = uuid.v4();
     const tempKey = FileStreamCache.createKey(tempFileId, { collectionName });
     let mimeType = '';
-    const fileStream = new Observable<FileState>(observer => {
+
+    const fileStreamSubscribe = (observer: Subscriber<FileState>) => {
       if (file.content instanceof Blob) {
         mimeType = file.content.type;
         observer.next({
@@ -320,14 +322,15 @@ class ContextImpl implements Context {
           // we can't use .catch(observer.error) due that will change the Subscriber context
           observer.error(error);
         });
-    })
-      .concat(
-        Observable.defer(() =>
-          this.createDownloadFileStream(fileId, collectionName),
-        ),
-      )
-      .publishReplay(1)
-      .refCount();
+    };
+
+    const fileStream = new Observable<FileState>(fileStreamSubscribe).pipe(
+      concat(
+        defer(() => this.createDownloadFileStream(fileId, collectionName)),
+      ),
+      publishReplay(1),
+      refCount(),
+    );
 
     this.fileStreamsCache.set(tempKey, fileStream);
 
