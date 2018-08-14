@@ -3,7 +3,7 @@ import getMediaNodeView from '../nodes/media';
 import { Token } from './';
 
 // [!image.jpg!|https://www.atlassian.com]
-const ATTACHMENT_REGEXP = /^\!([\w. -]+)\|?[\w=,. ]*\!/;
+const ATTACHMENT_REGEXP = /^\!([\(\)\w. -]+)\|?[\w=,. ]*\!/;
 
 export function attachment(input: string, schema: Schema): Token {
   const match = input.match(ATTACHMENT_REGEXP);
