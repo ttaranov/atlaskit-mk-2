@@ -32,62 +32,72 @@ export const resolve = (url: string, cardData: any): Command => (
   const schema = editorState.schema;
   const cardAdf = processRawValue(schema, cardData);
 
+  let tr = editorState.tr;
+
   if (cardAdf) {
     // replace all the outstanding links with their cards
-    let tr = editorState.tr;
-
-    request.positions.forEach(unmappedPos => {
+    tr = request.positions.reduce((tr, unmappedPos) => {
       // remap across the replacement
       const pos = tr.mapping.map(unmappedPos);
       const node = tr.doc.nodeAt(pos);
       if (!node) {
-        return;
+        return tr;
       }
 
       if (!node.type.isText) {
-        return;
+        return tr;
       }
 
       // not a link anymore
       const linkMark = node.marks.find(mark => mark.type.name === 'link');
       if (!linkMark) {
-        return;
+        return tr;
       }
 
       const textSlice = node.text;
       if (linkMark.attrs.href !== url || textSlice !== url) {
-        return;
+        return tr;
       }
 
-      tr = tr.replaceWith(pos, pos + url.length, cardAdf);
-    });
-
-    // mark as resolved
-    tr = tr.setMeta(pluginKey, {
-      type: 'RESOLVE',
-      url,
-    } as Resolve);
-
-    dispatch(tr);
-    return true;
+      return tr.replaceWith(pos, pos + url.length, cardAdf);
+    }, tr);
   }
 
-  return false;
+  // mark as resolved
+  tr = tr.setMeta(pluginKey, {
+    type: 'RESOLVE',
+    url,
+  } as Resolve);
+
+  dispatch(tr);
+  return true;
 };
 
 export const queueCard = (
   url: string,
   pos: number,
   appearance: CardAppearance,
-): ((view: EditorView) => void) => view => {
+): ((view: EditorView) => Promise<any>) => view => {
   const state = pluginKey.getState(view.state) as CardPluginState | undefined;
   if (!state || !state.provider) {
-    return false;
+    return Promise.reject('no provider');
   }
 
-  state.provider.resolve(url, appearance).then(resolvedCard => {
-    resolve(url, resolvedCard)(view.state, view.dispatch);
-  });
+  const promise = state.provider.resolve(url, appearance).then(
+    resolvedCard => {
+      resolve(url, resolvedCard)(view.state, view.dispatch);
+      return resolvedCard;
+    },
+    rejected => {
+      view.dispatch(
+        view.state.tr.setMeta(pluginKey, {
+          type: 'RESOLVE',
+          url,
+        } as Resolve),
+      );
+      throw rejected;
+    },
+  );
 
   view.dispatch(
     view.state.tr.setMeta(pluginKey, {
@@ -97,10 +107,9 @@ export const queueCard = (
     } as Queue),
   );
 
-  return true;
+  return promise;
 };
 
-// TODO: only linkify if it's the only node in the slice!
 export const queueCardFromSlice = (
   slice: Slice,
   startPos: number,
@@ -118,7 +127,6 @@ export const queueCardFromSlice = (
 
     if (linkMark) {
       const docPos = startPos + pos - slice.openStart + offset;
-      console.log('pos', docPos);
       queueCard(linkMark.attrs.href, docPos, 'inline')(view);
       return false;
     }

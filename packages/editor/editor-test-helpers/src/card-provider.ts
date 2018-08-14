@@ -5,6 +5,7 @@ export class CardProviderMock implements CardProvider {
 
   resolve(url: string): Promise<any> {
     return new Promise(resolve => {
+      console.log('~~ setTimeout');
       setTimeout(() => {
         resolve({
           type: 'inlineCard',
