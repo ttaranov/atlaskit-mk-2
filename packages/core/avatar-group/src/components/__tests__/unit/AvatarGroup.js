@@ -79,5 +79,23 @@ describe('AvatarGroup', () => {
       expect(moreIndicator.length).toBe(1);
       expect(moreIndicator.prop('count')).toBe(2);
     });
+
+    it('should pass moreButtonProps to the MoreIndicator', () => {
+      const moreButtonProps = {
+        tabIndex: -1,
+        id: 'test-id',
+      };
+      const wrapper = shallow(
+        <AvatarGroup
+          appearance="stack"
+          data={generateData(4)}
+          maxCount={maxCount}
+          moreButtonProps={moreButtonProps}
+        />,
+      );
+      expect(wrapper.find(MoreIndicator).props()).toContainEqual(
+        moreButtonProps,
+      );
+    });
   });
 });
