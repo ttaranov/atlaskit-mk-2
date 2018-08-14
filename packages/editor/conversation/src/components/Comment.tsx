@@ -8,7 +8,7 @@ import AkComment, {
 } from '@atlaskit/comment';
 
 import { WithProviders } from '@atlaskit/editor-common';
-import { ResourcedReactions } from '@atlaskit/reactions';
+import { ConnectedReactionsView } from '@atlaskit/reactions';
 import { ReactRenderer } from '@atlaskit/renderer';
 import styled from 'styled-components';
 import Editor from './Editor';
@@ -479,22 +479,20 @@ export default class Comment extends React.Component<Props, State> {
       containerId &&
       commentAri &&
       dataProviders &&
-      dataProviders.hasProvider('reactionsProvider') &&
       dataProviders.hasProvider('emojiProvider')
     ) {
       actions = [
         ...actions,
         <WithProviders
           key="reactions"
-          providers={['emojiProvider', 'reactionsProvider']}
+          providers={['emojiProvider']}
           providerFactory={dataProviders}
-          renderNode={({ emojiProvider, reactionsProvider }) => (
+          renderNode={({ emojiProvider }) => (
             <Reactions>
-              <ResourcedReactions
+              <ConnectedReactionsView
                 containerAri={containerId}
                 ari={commentAri}
                 emojiProvider={emojiProvider}
-                reactionsProvider={reactionsProvider}
               />
             </Reactions>
           )}

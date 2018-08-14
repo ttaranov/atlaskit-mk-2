@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ReactionProvider, MockReactionsAdapter } from '@atlaskit/reactions';
 import {
   MockProvider as ConversationResource,
   getDataProviderFactory,
@@ -11,6 +12,12 @@ const provider = new ConversationResource({
   user: MOCK_USERS[0],
 });
 
+const reactionAdapter = new MockReactionsAdapter();
+
 export default function Example() {
-  return <Demo provider={provider} dataProviders={getDataProviderFactory()} />;
+  return (
+    <ReactionProvider adapter={reactionAdapter}>
+      <Demo provider={provider} dataProviders={getDataProviderFactory()} />
+    </ReactionProvider>
+  );
 }

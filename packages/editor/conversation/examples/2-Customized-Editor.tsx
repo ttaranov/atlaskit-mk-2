@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { ReactionProvider, MockReactionsAdapter } from '@atlaskit/reactions';
 import {
   MockProvider as ConversationResource,
   getDataProviderFactory,
@@ -10,6 +11,8 @@ const provider = new ConversationResource({
   url: 'http://mockservice/',
   user: MOCK_USERS[3],
 });
+
+const reactionAdapter = new MockReactionsAdapter();
 
 export default class ExistingConversation extends React.Component<
   {},
@@ -34,15 +37,17 @@ export default class ExistingConversation extends React.Component<
     }
 
     return (
-      <Conversation
-        id={conversationId}
-        containerId="ari:cloud:platform::conversation/demo"
-        provider={provider}
-        dataProviders={getDataProviderFactory()}
-        renderEditor={(Editor, props) => (
-          <Editor {...props} appearance="message" saveOnEnter={true} />
-        )}
-      />
+      <ReactionProvider adapter={reactionAdapter}>
+        <Conversation
+          id={conversationId}
+          containerId="ari:cloud:platform::conversation/demo"
+          provider={provider}
+          dataProviders={getDataProviderFactory()}
+          renderEditor={(Editor, props) => (
+            <Editor {...props} appearance="message" saveOnEnter={true} />
+          )}
+        />
+      </ReactionProvider>
     );
   }
 }
