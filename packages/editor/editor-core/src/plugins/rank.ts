@@ -64,6 +64,7 @@ export default {
     'extension',
     'layout',
     'date',
+    'dateKeymap',
     'floatingToolbar',
     'clearMarksOnChange',
     'saveOnEnter',

@@ -21,4 +21,5 @@ export default abstract class SchemaNodeWithValidators<
   }
 
   abstract toJSON(): Object;
+  abstract toSpec(): Object;
 }

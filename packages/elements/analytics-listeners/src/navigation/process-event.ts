@@ -19,7 +19,6 @@ import {
 
 import {
   getSources,
-  getActionSubject,
   getExtraAttributes,
   getPackageInfo,
   getComponents,
@@ -74,6 +73,7 @@ export default (event: EventNextType, logger: Logger): GasPayload | null => {
   const {
     eventType = UI_EVENT_TYPE,
     action,
+    actionSubject,
     actionSubjectId,
     attributes: payloadAttributes,
   } = event.payload;
@@ -94,7 +94,7 @@ export default (event: EventNextType, logger: Logger): GasPayload | null => {
       return {
         eventType,
         source,
-        actionSubject: getActionSubject(event),
+        actionSubject,
         action,
         actionSubjectId,
         attributes,

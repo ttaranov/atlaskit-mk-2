@@ -1,5 +1,9 @@
 # @atlaskit/editor-json-transformer
 
+## 4.0.5
+- [patch] ED-5180: fix table columns collapse [2e0e5a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e0e5a1)
+- [none] Updated dependencies [2e0e5a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e0e5a1)
+
 ## 4.0.4
 
 

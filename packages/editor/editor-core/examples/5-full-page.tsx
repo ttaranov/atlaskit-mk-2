@@ -94,6 +94,9 @@ export type State = { disabled: boolean };
 const providers = {
   emojiProvider: emoji.storyData.getEmojiResource({
     uploadSupported: true,
+    currentUser: {
+      id: emoji.storyData.loggedUser,
+    },
   }) as Promise<EmojiProvider>,
   mentionProvider: Promise.resolve(mention.storyData.resourceProvider),
   taskDecisionProvider: Promise.resolve(

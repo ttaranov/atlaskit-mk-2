@@ -1,5 +1,17 @@
 # @atlaskit/editor-common
 
+## 14.0.4
+- [patch] ED-4421 ADF Validator [fd7e953](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fd7e953)
+- [none] Updated dependencies [fd7e953](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fd7e953)
+  - @atlaskit/json-schema-generator@1.1.0
+
+## 14.0.3
+- [patch] Fixed bodied-extension to not split when pressing enter in middle empty paragraph [4c0ecd7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4c0ecd7)
+- [none] Updated dependencies [4c0ecd7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4c0ecd7)
+
+## 14.0.2
+- [patch] Updated dependencies [79f780a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/79f780a)
+
 ## 14.0.1
 - [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
 - [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)

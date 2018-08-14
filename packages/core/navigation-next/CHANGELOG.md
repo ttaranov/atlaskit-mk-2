@@ -1,5 +1,26 @@
 # @atlaskit/navigation-next
 
+## 3.3.2
+- [patch] Fixing dynamic styles on global nagivation [0b2daf0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0b2daf0)
+- [patch] Updated dependencies [0b2daf0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0b2daf0)
+  - @atlaskit/global-navigation@4.1.1
+
+## 3.3.1
+- [patch] Prevent page wrapper from growing beyond available space [ee25869](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ee25869)
+- [patch] Updated dependencies [ee25869](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ee25869)
+
+## 3.3.0
+
+
+- [minor] Instrument analytics for global and product nav item clicks. These will automatically be captured when using the FabricAnalyticsListeners component to listen for them. Note that some event data attributes rely on the ViewRenderer and LayoutManagerWithViewController being used instead of manual component composition. [51e9bee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51e9bee)
+- [patch] Updated dependencies [f7432a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f7432a2)
+  - @atlaskit/analytics-next@3.0.5
+  - @atlaskit/global-navigation@4.1.0
+- [none] Updated dependencies [b77a884](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b77a884)
+  - @atlaskit/global-navigation@4.1.0
+- [none] Updated dependencies [51e9bee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51e9bee)
+  - @atlaskit/global-navigation@4.1.0
+
 ## 3.2.4
 
 

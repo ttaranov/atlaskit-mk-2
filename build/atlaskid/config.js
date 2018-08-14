@@ -32,17 +32,15 @@ const editorTeam = [
   'imsysoev',
   'jyotiatl',
   'atlasmarco',
-  'ed919',
+  'eshvedai',
   'scottsidwell',
   'rifat_nabi',
   'ckrishnakumar',
-  'ttjandra',
   'owallhult',
   'dsorin',
   'jmack2',
   'supertong',
   'jcoppinger',
-  'pcurren',
   'agnes',
   'vsutrave',
   'ahixon_atlassian',
@@ -88,6 +86,8 @@ const kitkatTeam = [
   'vpetrychuk',
   'bgryta',
 ];
+const growthTeam = ['llemos'];
+const navigationTeam = ['wmendesneto'];
 const usersAllowedToApprove = [].concat(
   atlaskitTeam,
   editorTeam,
@@ -96,6 +96,8 @@ const usersAllowedToApprove = [].concat(
   mediaTeam,
   searchAndSmartsTeam,
   kitkatTeam,
+  growthTeam,
+  navigationTeam,
 );
 
 module.exports = {

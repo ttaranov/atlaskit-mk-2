@@ -120,3 +120,18 @@ export function isAnyType(type: ts.Type): type is ts.Type {
 export function syntaxKindToName(kind: ts.SyntaxKind) {
   return ts.SyntaxKind[kind];
 }
+
+export function getPmName(name: string) {
+  return (
+    name
+      .replace(/_node|_mark$/, '')
+      // @see https://product-fabric.atlassian.net/wiki/spaces/E/pages/722076396/ADF+Change+22+Consistent+naming
+      .replace('table_row', 'tableRow')
+      .replace('table_header', 'tableHeader')
+      .replace('table_cell', 'tableCell')
+  );
+}
+
+export function isObject(value: any) {
+  return value !== null && typeof value === 'object';
+}

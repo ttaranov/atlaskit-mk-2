@@ -1,5 +1,8 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 2.0.5
+- [patch] wikimarkup parser should parse media item with ( and ) correctly [76adf36](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/76adf36)
+
 ## 2.0.4
 
 

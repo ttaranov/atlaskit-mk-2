@@ -1,5 +1,9 @@
 # @atlaskit/emoji
 
+## 39.0.3
+- [patch] FS-2819 use aria-label as selector rather than closest [84a7235](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84a7235)
+- [none] Updated dependencies [84a7235](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84a7235)
+
 ## 39.0.2
 - [patch] Update emoji examples to use valid emoji in test data [62ebfd7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/62ebfd7)
 - [none] Updated dependencies [62ebfd7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/62ebfd7)

@@ -1,5 +1,20 @@
 # @atlaskit/global-navigation
 
+## 4.1.1
+- [patch] Updated dependencies [0b2daf0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0b2daf0)
+  - @atlaskit/navigation-next@3.3.2
+
+## 4.1.0
+
+- [minor] Instrument analytics for global nav item clicks. These events will be captured if using the FabricAnalyticsListeners component. [b77a884](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b77a884)
+
+- [none] Updated dependencies [f7432a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f7432a2)
+  - @atlaskit/navigation-next@3.3.0
+- [none] Updated dependencies [b77a884](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b77a884)
+  - @atlaskit/navigation-next@3.3.0
+- [patch] Updated dependencies [51e9bee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51e9bee)
+  - @atlaskit/navigation-next@3.3.0
+
 ## 4.0.7
 - [patch] Remove unused dependancy on navigation-next [2d3b1ee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d3b1ee)
 - [patch] Updated dependencies [2d3b1ee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d3b1ee)

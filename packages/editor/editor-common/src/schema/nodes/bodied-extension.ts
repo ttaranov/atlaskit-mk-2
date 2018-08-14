@@ -29,6 +29,7 @@ export const bodiedExtension: NodeSpec = {
     '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | mediaSingle | applicationCard | decisionList | taskList | table | extension)+',
   defining: true,
   selectable: true,
+  isolating: true,
   attrs: {
     extensionType: { default: '' },
     extensionKey: { default: '' },

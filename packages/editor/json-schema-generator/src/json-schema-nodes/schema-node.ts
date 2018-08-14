@@ -12,4 +12,5 @@ export default abstract class SchemaNode {
   constructor(protected type: NodeType = null) {}
 
   abstract toJSON(): object;
+  abstract toSpec(): object | string;
 }

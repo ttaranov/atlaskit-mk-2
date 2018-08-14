@@ -1,35 +1,40 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
-import {
-  DummyComponentWithAnalytics,
-  ELEMENTS_CHANNEL,
-} from '../../examples/helpers';
+import { FabricChannel } from '@atlaskit/analytics-listeners';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
-import { FabricElementsAnalyticsContext } from '../AnalyticsContextWithNamespace';
-import { GasPayload } from '@atlaskit/analytics-gas-types';
+import { createDummyComponentWithAnalytics } from '../../examples/helpers';
+import { NavigationAnalyticsContext } from '../NavigationAnalyticsContext';
+import { GasPayload } from '../../../analytics-gas-types';
 
 export type ListenerFunction = (
   event: { payload: GasPayload; context: Array<{}> },
   channel: string,
 ) => void;
 
-describe('<FabricElementsAnalyticsContext />', () => {
-  it('should fire event with Fabric Elements contextual data', () => {
+const NavigationComponentWithAnalytics = createDummyComponentWithAnalytics(
+  FabricChannel.navigation,
+);
+
+describe('<NavigationAnalyticsContext />', () => {
+  it('should fire event with Navigation contextual data', () => {
     const compOnClick = jest.fn();
     const listenerHandler = jest.fn();
 
     const component = mount(
-      <AnalyticsListener onEvent={listenerHandler} channel={ELEMENTS_CHANNEL}>
-        <FabricElementsAnalyticsContext data={{ greeting: 'hello' }}>
-          <DummyComponentWithAnalytics onClick={compOnClick} />
-        </FabricElementsAnalyticsContext>
+      <AnalyticsListener
+        onEvent={listenerHandler}
+        channel={FabricChannel.navigation}
+      >
+        <NavigationAnalyticsContext data={{ greeting: 'hello' }}>
+          <NavigationComponentWithAnalytics onClick={compOnClick} />
+        </NavigationAnalyticsContext>
       </AnalyticsListener>,
     );
 
     const analyticsListener = component.find(AnalyticsListener);
     expect(analyticsListener.props()).toHaveProperty(
       'channel',
-      ELEMENTS_CHANNEL,
+      FabricChannel.navigation,
     );
 
     const dummy = analyticsListener.find('#dummy');
@@ -37,7 +42,7 @@ describe('<FabricElementsAnalyticsContext />', () => {
 
     expect(listenerHandler).toBeCalledWith(
       expect.objectContaining({
-        context: [{ fabricElementsCtx: { greeting: 'hello' } }],
+        context: [{ navigationCtx: { greeting: 'hello' } }],
         payload: {
           action: 'someAction',
           actionSubject: 'someComponent',
@@ -51,7 +56,7 @@ describe('<FabricElementsAnalyticsContext />', () => {
           source: 'unknown',
         },
       }),
-      ELEMENTS_CHANNEL,
+      FabricChannel.navigation,
     );
   });
 });
