@@ -1,14 +1,5 @@
 // @flow
 
-/*
-  NOTE
-  ----------------------------------------------------------------------------
-  This is the source file for the webdriver test. If you make changes here,
-  please update the tests to reflect those changes:
-
-  `packages/core/navigation-next/src/__tests__/integration/navigation.js`
-*/
-
 import React from 'react';
 import Avatar from '@atlaskit/avatar';
 import AddIcon from '@atlaskit/icon/glyph/add';
