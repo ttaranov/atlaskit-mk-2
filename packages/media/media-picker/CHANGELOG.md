@@ -1,5 +1,8 @@
 # @atlaskit/media-picker
 
+## 12.1.1
+- [patch] Fix MediaPicker Dropzone UI on IE11 [79f780a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/79f780a)
+
 ## 12.1.0
 - [minor] New option "singleSelect" allows to limit number of selected files to just 1. [4ac210e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4ac210e)
 
