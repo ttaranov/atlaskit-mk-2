@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 77.0.10
+- [patch] When removing a media group with a code block below it, prevent the editor from crashing when it references an invalid pos. ED-5207 [4b11a78](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b11a78)
+- [none] Updated dependencies [4b11a78](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b11a78)
+
 ## 77.0.9
 - [patch] Fix bug in CodeBlocks where indenting with a selection at the start of the document would change your cursor-selection, to a range-selection for the purpose of indenting [4cd8ae6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4cd8ae6)
 - [none] Updated dependencies [4cd8ae6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4cd8ae6)
