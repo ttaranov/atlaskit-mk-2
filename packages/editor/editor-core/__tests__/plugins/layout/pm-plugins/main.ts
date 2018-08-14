@@ -167,6 +167,41 @@ describe('layout', () => {
           expect(editorView.state.selection).toBeInstanceOf(AllSelection);
         });
       });
+      describe('Tab', () => {
+        it('should move to the next column', () => {
+          const {
+            editorView,
+            refs: { secondColumnPos },
+          } = editor(
+            doc(
+              layoutSection({ layoutType: 'two_equal' })(
+                layoutColumn(p('content{<>}')),
+                layoutColumn(p('{secondColumnPos}content')),
+              ),
+            ),
+          );
+          sendKeyToPm(editorView, 'Tab');
+          expect(editorView.state.selection).toEqual(
+            TextSelection.create(editorView.state.doc, secondColumnPos),
+          );
+        });
+
+        it('should not do anything when in the last column', () => {
+          const { editorView, sel } = editor(
+            doc(
+              layoutSection({ layoutType: 'two_equal' })(
+                layoutColumn(p('')),
+                layoutColumn(p('content{<>}')),
+              ),
+              p(''),
+            ),
+          );
+          sendKeyToPm(editorView, 'Tab');
+          expect(editorView.state.selection).toEqual(
+            TextSelection.create(editorView.state.doc, sel),
+          );
+        });
+      });
     });
   });
   describe('#enforceLayoutColumnConstraints', () => {

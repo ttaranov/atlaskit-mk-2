@@ -10,6 +10,8 @@ import { DecorationSet, Decoration } from 'prosemirror-view';
 import { keydownHandler } from 'prosemirror-keymap';
 import { findParentNodeOfType } from 'prosemirror-utils';
 import { isEmptyDocument } from '../../../utils';
+import { filter } from '../../../utils/commands';
+import { Command } from '../../../commands';
 
 export function enforceLayoutColumnConstraints(
   state: EditorState,
@@ -74,6 +76,24 @@ const isWholeSelectionInsideLayoutColumn = (state: EditorState): boolean => {
     return isToPosInsideSameLayoutColumn;
   }
   return false;
+};
+
+const moveCursorToNextColumn: Command = (state, dispatch) => {
+  const { selection } = state;
+  const {
+    schema: {
+      nodes: { layoutColumn, layoutSection },
+    },
+  } = state;
+  const section = findParentNodeOfType(layoutSection)(selection)!;
+  const column = findParentNodeOfType(layoutColumn)(selection)!;
+
+  if (column.node !== section.node.lastChild) {
+    const $nextColumn = state.doc.resolve(column.pos + column.node.nodeSize);
+    const shiftedSelection = TextSelection.findFrom($nextColumn, 1);
+    dispatch(state.tr.setSelection(shiftedSelection as TextSelection));
+  }
+  return true;
 };
 
 // TODO: Look at memoize-one-ing this fn
@@ -143,6 +163,7 @@ export default new Plugin({
           }
         }
       },
+      Tab: filter(isWholeSelectionInsideLayoutColumn, moveCursorToNextColumn),
     }),
   },
   appendTransaction(_, oldState, newState) {
