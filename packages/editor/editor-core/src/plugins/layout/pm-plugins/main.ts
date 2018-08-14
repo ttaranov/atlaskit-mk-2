@@ -1,5 +1,6 @@
 import { Slice, Node } from 'prosemirror-model';
 import { PluginKey, Plugin, EditorState, Transaction } from 'prosemirror-state';
+import { DecorationSet, Decoration } from 'prosemirror-view';
 import { findParentNodeOfType } from 'prosemirror-utils';
 import { isEmptyDocument } from '../../../utils';
 
@@ -55,6 +56,11 @@ export type LayoutState = {
   pos: number | null;
 };
 
+// TODO: Look at memoize-one-ing this fn
+const getNodeDecoration = (pos: number, node: Node) => [
+  Decoration.node(pos, pos + node.nodeSize, { class: 'selected' }),
+];
+
 export const pluginKey = new PluginKey('layout');
 export default new Plugin({
   key: pluginKey,
@@ -77,6 +83,20 @@ export default new Plugin({
           : { pos: null };
       }
       return pluginState;
+    },
+  },
+  props: {
+    decorations(state) {
+      const layoutState = pluginKey.getState(state) as LayoutState;
+      if (layoutState.pos !== null) {
+        return DecorationSet.create(
+          state.doc,
+          getNodeDecoration(layoutState.pos, state.doc.nodeAt(
+            layoutState.pos,
+          ) as Node),
+        );
+      }
+      return undefined;
     },
   },
   appendTransaction(_, oldState, newState) {

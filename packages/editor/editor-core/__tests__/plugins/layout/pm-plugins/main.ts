@@ -1,4 +1,5 @@
 import { EditorState, TextSelection, PluginSpec } from 'prosemirror-state';
+import { Decoration, DecorationSet } from 'prosemirror-view';
 import {
   layoutSection,
   layoutColumn,
@@ -97,6 +98,34 @@ describe('layout', () => {
         expect(pluginKey.getState(editorView.state)).toEqual({
           pos: null,
         });
+      });
+    });
+
+    describe('#decorations', () => {
+      it('should render a Node decoration when cursor inside layout', () => {
+        const { editorView } = editor(
+          doc(
+            layoutSection({ layoutType: 'two_equal' })(
+              layoutColumn(p('{<>}')),
+              layoutColumn(p('')),
+            ),
+          ),
+        );
+
+        const decorations = (layoutPlugin.spec as PluginSpec).props!
+          .decorations!(editorView.state) as DecorationSet;
+        expect(decorations.find()).toHaveLength(1);
+        expect(decorations.find()).toEqual([
+          Decoration.node(0, 10, { class: 'selected' }),
+        ]);
+      });
+
+      it('should render no decorations when cursor is outside layout', () => {
+        const { editorView } = editor(doc(p('{<>}')));
+
+        const decorations = (layoutPlugin.spec as PluginSpec).props!
+          .decorations!(editorView.state) as DecorationSet;
+        expect(decorations).toBeUndefined();
       });
     });
   });
