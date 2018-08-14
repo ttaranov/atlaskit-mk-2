@@ -83,6 +83,8 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
         }
         let props;
         if (emojiBlock) {
+          console.log('This is an emoji block!');
+          console.log({ emojiBlock, props });
           props = this.getEmojiBlockProps(node as Node);
         } else if (node.type.name === 'table') {
           props = this.getTableProps(node as Node);

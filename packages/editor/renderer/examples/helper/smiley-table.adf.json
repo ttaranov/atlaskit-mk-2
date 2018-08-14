@@ -1,0 +1,23 @@
+{
+  "content": [
+    {
+      "content": [
+        {
+          "attrs": {
+            "id": "1f642",
+            "shortName": ":slight_smile:",
+            "text": "🙂"
+          },
+          "type": "emoji"
+        },
+        {
+          "text": " ",
+          "type": "text"
+        }
+      ],
+      "type": "paragraph"
+    }
+  ],
+  "type": "doc",
+  "version": 1
+}

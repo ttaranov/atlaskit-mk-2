@@ -242,8 +242,8 @@ export default class RendererDemo extends PureComponent<
           />
         </fieldset>
         {this.renderRenderer()}
-        {this.renderText()}
-        {this.renderEmail()}
+        {/* {this.renderText()}
+        {this.renderEmail()} } */}
       </div>
     );
   }
@@ -287,7 +287,6 @@ export default class RendererDemo extends PureComponent<
       if (this.props.withPortal) {
         props.portal = this.state.portal;
       }
-
       return (
         <div>
           <div style={{ color: '#ccc', marginBottom: '8px' }}>
