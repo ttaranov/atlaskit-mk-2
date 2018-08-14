@@ -72,6 +72,15 @@ describe('IDE UX plugin', () => {
   describe('Indentation', () => {
     describe('Mod-] pressed', () => {
       describe('when cursor on line', () => {
+        it('should not expand selection to include added indent', () => {
+          const { editorView } = editor(
+            doc(code_block()('top\n{<>}start\nbottom')),
+          );
+          sendKeyToPm(editorView, 'Mod-]');
+          expect(editorView.state.selection.empty).toBe(true);
+          expect(editorView.state.selection.from).toBe(7);
+        });
+
         describe('and line starts with spaces', () => {
           it('should indent by 2 spaces', () => {
             const { editorView } = editor(
@@ -117,6 +126,16 @@ describe('IDE UX plugin', () => {
       });
 
       describe('when selection is across multiple lines', () => {
+        it('should expand selection to include added indent', () => {
+          const { editorView } = editor(
+            doc(code_block()('\n{<}top\nstart\nbott{>}om\n')),
+          );
+          sendKeyToPm(editorView, 'Mod-]');
+          expect(editorView.state.selection.empty).toBe(false);
+          expect(editorView.state.selection.from).toBe(2);
+          expect(editorView.state.selection.to).toBe(22);
+        });
+
         describe('and line starts with spaces', () => {
           it('should indent only selected lines by two spaces', () => {
             const { editorView } = editor(
