@@ -5,6 +5,7 @@
     "./src/**/*.ts",
     "./src/**/*.tsx",
     "./examples/*.ts",
-    "./examples/*.tsx"
+    "./examples/*.tsx",
+    "./typings/*.ts",
   ]
 }
