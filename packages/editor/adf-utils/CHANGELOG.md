@@ -1,5 +1,15 @@
 # @atlaskit/adf-utils
 
+## 2.1.0
+- [minor] ED-4421 ADF Validator [fd7e953](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fd7e953)
+- [none] Updated dependencies [fd7e953](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fd7e953)
+  - @atlaskit/json-schema-generator@1.1.0
+  - @atlaskit/editor-common@14.0.4
+
+## 2.0.5
+- [patch] Fix es5 exports of some of the newer modules [3f0cd7d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f0cd7d)
+- [none] Updated dependencies [3f0cd7d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f0cd7d)
+
 ## 2.0.4
 
 

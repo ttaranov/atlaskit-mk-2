@@ -2,7 +2,7 @@ import * as sinon from 'sinon';
 import { EventEmitter2 } from 'eventemitter2';
 import { defaultBaseUrl } from '@atlaskit/media-test-helpers';
 import { ContextFactory } from '@atlaskit/media-core';
-import { MediaPicker } from '../../../index';
+import { DropzoneConfig, MediaPicker } from '../../../index';
 import { Dropzone } from '../../dropzone';
 import * as uploadService from '../../../service/newUploadServiceImpl';
 
@@ -22,7 +22,7 @@ interface FakeUploadService extends EventEmitter2 {
 
 describe('Dropzone', () => {
   const container = document.createElement('DIV');
-  const config = {
+  const config: DropzoneConfig = {
     uploadParams: {
       collection: '',
     },

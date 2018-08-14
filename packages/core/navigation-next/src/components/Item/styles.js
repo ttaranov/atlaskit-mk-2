@@ -136,6 +136,7 @@ const light = ({
     beforeWrapper: {
       ...baseStyles.beforeWrapper,
       ...layoutStyles[spacing].beforeWrapper,
+      color: isSelected ? colors.B400 : colors.N500,
     },
     contentWrapper: baseStyles.contentWrapper,
     textWrapper: {
@@ -184,6 +185,12 @@ const light = ({
   },
 });
 
+const darkContainerTextColor = ({ isActive, isSelected }) => {
+  if (isActive) return colors.B100;
+  if (isSelected) return colors.DN900;
+  return colors.DN400;
+};
+
 // Dark theme
 const dark = ({
   isActive,
@@ -205,15 +212,12 @@ const dark = ({
     beforeWrapper: {
       ...baseStyles.beforeWrapper,
       ...layoutStyles[spacing].beforeWrapper,
+      color: darkContainerTextColor({ isActive, isSelected }),
     },
     contentWrapper: baseStyles.contentWrapper,
     textWrapper: {
       ...baseStyles.textWrapper,
-      color: (() => {
-        if (isActive) return colors.B100;
-        if (isSelected) return colors.DN900;
-        return colors.DN400;
-      })(),
+      color: darkContainerTextColor({ isActive, isSelected }),
     },
     subTextWrapper: {
       ...baseStyles.subTextWrapper,

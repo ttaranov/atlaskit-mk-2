@@ -1,5 +1,8 @@
 # @atlaskit/analytics-gas-types
 
+## 3.1.3
+- [patch] Fix es5 exports of some of the newer modules [3f0cd7d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f0cd7d)
+
 ## 3.1.2
 - [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
   - @atlaskit/docs@5.0.2

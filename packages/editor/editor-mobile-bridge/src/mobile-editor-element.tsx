@@ -106,7 +106,7 @@ function sendToNative(state) {
 function subscribeForTextFormatChanges(view: EditorView, eventDispatcher: any) {
   let textFormattingPluginState = textFormattingStateKey.getState(view.state);
   bridge.textFormattingPluginState = textFormattingPluginState;
-  eventDispatcher.on(textFormattingStateKey, state => {
+  eventDispatcher.on((textFormattingStateKey as any).key, state => {
     toNativeBridge.updateTextFormat(JSON.stringify(valueOfMarkState(state)));
   });
 }
@@ -181,13 +181,22 @@ export default function mobileEditor() {
       media={{
         customMediaPicker: new MobilePicker(),
         provider: Promise.resolve(createMediaProvider()),
+        allowMediaSingle: true,
       }}
-      allowPanel={true}
-      allowCodeBlocks={true}
       allowLists={true}
       onChange={() => {
         toNativeBridge.updateText(bridge.getContent());
       }}
+      allowPanel={true}
+      allowCodeBlocks={true}
+      allowTables={{
+        allowControls: false,
+      }}
+      allowExtension={true}
+      allowTextColor={true}
+      allowDate={true}
+      allowRule={true}
+      allowTasksAndDecisions={true}
     />
   );
 }

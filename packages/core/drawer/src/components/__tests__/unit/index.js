@@ -81,7 +81,7 @@ describe('Drawer Transitions', () => {
     const event = { key: 'another-key' };
 
     mount(
-      <Drawer onClose={onClose} width="wide">
+      <Drawer isOpen onClose={onClose} width="wide">
         <code>Drawer contents</code>
       </Drawer>,
     );

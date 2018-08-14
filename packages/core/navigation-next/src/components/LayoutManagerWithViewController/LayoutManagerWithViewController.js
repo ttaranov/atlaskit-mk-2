@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
+import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import ViewRenderer from '../../renderer';
@@ -38,6 +39,11 @@ const skeleton = (
 class LayoutManagerWithViewControllerBase extends Component<
   LayoutManagerWithViewControllerProps,
 > {
+  constructor(props: LayoutManagerWithViewControllerProps) {
+    super(props);
+    this.renderContainerNavigation.displayName = 'ContainerNavigationRenderer';
+    this.renderProductNavigation.displayName = 'ProductNavigationRenderer';
+  }
   renderContainerNavigation = () => {
     const {
       navigationViewController: {
@@ -91,17 +97,21 @@ class LayoutManagerWithViewControllerBase extends Component<
     } = this.props;
 
     return (
-      <LayoutManager
-        globalNavigation={globalNavigation}
-        containerNavigation={
-          activeView && activeView.type === 'container'
-            ? this.renderContainerNavigation
-            : null
-        }
-        productNavigation={this.renderProductNavigation}
+      <NavigationAnalyticsContext
+        data={{ attributes: { view: activeView && activeView.id } }}
       >
-        {children}
-      </LayoutManager>
+        <LayoutManager
+          globalNavigation={globalNavigation}
+          containerNavigation={
+            activeView && activeView.type === 'container'
+              ? this.renderContainerNavigation
+              : null
+          }
+          productNavigation={this.renderProductNavigation}
+        >
+          {children}
+        </LayoutManager>
+      </NavigationAnalyticsContext>
     );
   }
 }

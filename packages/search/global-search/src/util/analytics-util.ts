@@ -1,5 +1,6 @@
 import { Result, ConfluenceObjectResult, ResultType } from '../model/Result';
 import { GasPayload } from '@atlaskit/analytics-gas-types';
+import { ReferralContextIdentifiers } from '../components/GlobalQuickSearchWrapper';
 
 export declare type ScreenEventSafeGasPayload = GasPayload & { name: string };
 
@@ -11,10 +12,13 @@ export const DEFAULT_GAS_ATTRIBUTES = {
   componentName: 'GlobalQuickSearch',
 };
 
+export const GLOBAL_SEARCH_SCREEN_NAME = 'globalSearchDrawer';
+
 export interface ShownAnalyticsAttributes {
   resultCount: number;
   resultSectionCount: number;
   resultContext: ShownResultContextSection[];
+  experimentId?: string;
 }
 
 export interface SearchPerformanceTiming {
@@ -100,7 +104,14 @@ export function buildShownEventDetails(
     0,
   );
 
+  // Grab experiment ID from the first result. For now we only run single experiments.
+  const experimentId =
+    sectionsWithContent[0] && sectionsWithContent[0][0]
+      ? sectionsWithContent[0][0].experimentId
+      : undefined;
+
   return {
+    experimentId: experimentId,
     resultCount: totalResultCount,
     resultSectionCount: sectionsWithContent.length,
     resultContext: sectionsWithContent.map(mapResultsToShownSection),
@@ -116,10 +127,11 @@ export function buildScreenEvent(
   screen: Screen,
   timesViewed: number,
   searchSessionId: string,
+  referralContextIdentifiers: ReferralContextIdentifiers,
 ): ScreenEventSafeGasPayload {
   return {
     action: 'viewed',
-    actionSubject: screen,
+    actionSubject: GLOBAL_SEARCH_SCREEN_NAME,
     eventType: 'screen',
     source: DEFAULT_GAS_SOURCE,
     name: DEFAULT_GAS_SOURCE,
@@ -127,6 +139,7 @@ export function buildScreenEvent(
       subscreen: screen,
       timesViewed: timesViewed,
       searchSessionId: searchSessionId,
+      ...referralContextIdentifiers,
       ...DEFAULT_GAS_ATTRIBUTES,
     },
   };

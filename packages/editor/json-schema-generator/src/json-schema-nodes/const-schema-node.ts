@@ -8,4 +8,8 @@ export default class ConstSchemaNode extends SchemaNode {
   toJSON(): object {
     return { const: this.value };
   }
+
+  toSpec() {
+    return {};
+  }
 }

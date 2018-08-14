@@ -13,4 +13,8 @@ export default class OfSchemaNode extends SchemaNode {
   toJSON(): object {
     return { [this.ofType]: this.values.map(item => item.toJSON()) };
   }
+
+  toSpec() {
+    return this.values.map(item => item.toSpec());
+  }
 }

@@ -1,5 +1,8 @@
 # @atlaskit/drawer
 
+## 1.0.5
+- [patch] Add variable name displayNames for anonymous function SFC components to improve debugging experience [50d469f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/50d469f)
+
 ## 1.0.4
 - [patch] Fix: fade issue with z-index elements [626244b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/626244b)
 
