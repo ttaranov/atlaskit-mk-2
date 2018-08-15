@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { type Node } from 'react';
 import { shallow, mount, render } from 'enzyme';
 import Tooltip from '@atlaskit/tooltip';
 import AvatarWithAnalytics, {
@@ -33,6 +33,18 @@ describe('Avatar', () => {
           expect(result).toBe(AVATAR_SIZES[size]);
         });
       });
+    });
+  });
+
+  describe('with component prop', () => {
+    it('should not throw error when a custom component is used', () => {
+      function CustomComponent({ children }: { children: Node }) {
+        return <span>{children}</span>;
+      }
+
+      expect(() => {
+        mount(<Avatar src={src} component={CustomComponent} />);
+      }).not.toThrow();
     });
   });
 
