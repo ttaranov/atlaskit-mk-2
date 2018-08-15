@@ -1,8 +1,8 @@
 // @flow
 import React, { Component } from 'react';
-import RadioIcon from './RadioIcon';
+import RadioInput from './RadioInput';
+import { Label, Wrapper } from './styled/Radio';
 import type { RadioBasePropTypes } from './types';
-import { Wrapper, HiddenInput, Label } from './styled/Radio';
 
 type State = {
   isHovered: boolean,
@@ -49,6 +49,7 @@ export default class Radio extends Component<RadioBasePropTypes, State> {
       name,
       onChange,
       value,
+      ...props
     } = this.props;
     const { isFocused, isHovered, isActive } = this.state;
 
@@ -60,25 +61,21 @@ export default class Radio extends Component<RadioBasePropTypes, State> {
         onMouseLeave={this.onMouseLeave}
         onMouseUp={this.onMouseUp}
       >
-        <HiddenInput
-          checked={isSelected}
-          disabled={isDisabled}
-          name={name}
-          onChange={onChange}
-          onBlur={this.onBlur}
-          onFocus={this.onFocus}
-          required={isRequired}
-          type="radio"
-          value={value}
-        />
         <Wrapper>
-          <RadioIcon
-            isActive={isActive}
+          <RadioInput
             isChecked={isSelected}
             isDisabled={isDisabled}
             isFocused={isFocused}
             isHovered={isHovered}
             isInvalid={isInvalid}
+            isRequired={isRequired}
+            isActive={isActive}
+            onChange={onChange}
+            onBlur={this.onBlur}
+            onFocus={this.onFocus}
+            name={name}
+            value={value}
+            {...props}
           />
           <span>{children}</span>
         </Wrapper>

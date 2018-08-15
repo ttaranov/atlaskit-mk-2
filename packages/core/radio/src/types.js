@@ -28,6 +28,8 @@ export type RadioBasePropTypes = {
   isInvalid: boolean,
   /** Marks this as a required field */
   isRequired?: boolean,
+  /** Field is invalid */
+  isInvalid: boolean,
   /** Set the field as selected */
   isSelected?: boolean,
   /** Field name */
