@@ -1,4 +1,4 @@
-import { dataURItoFile, fileToDataURI } from '../src/util';
+import { dataURItoFile, fileToDataURI } from '../../../src/util';
 import { tallImage } from '@atlaskit/media-test-helpers';
 
 describe('dataURItoFile, fileToDataURI Util', () => {

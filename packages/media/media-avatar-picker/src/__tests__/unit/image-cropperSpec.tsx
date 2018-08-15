@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
-import { ImageCropper, ImageCropperProp } from '../src/image-cropper';
-import { ERROR } from '../src/avatar-picker-dialog';
+import { ImageCropper, ImageCropperProp } from '../../../src/image-cropper';
+import { ERROR } from '../../../src/avatar-picker-dialog';
 import {
   Container,
   DragOverlay,
   RemoveImageButton,
   Image,
-} from '../src/image-cropper/styled';
+} from '../../../src/image-cropper/styled';
 import { smallImage } from '@atlaskit/media-test-helpers';
 
 const imageWidth = 600;
