@@ -1,6 +1,10 @@
 import { utils } from '@atlaskit/util-service-support';
 
 import JiraClientImpl from '../../../api/JiraClient';
+import {
+  JiraRecentResponse,
+  TransformedResponse,
+} from '../../../../example-helpers/jiraRecentResponseData';
 
 const url = 'https://www.example.jira.dev.com/';
 const cloudId = 'cloudId';
@@ -59,4 +63,14 @@ describe('JiraClient', () => {
       }
     });
   });
+
+  [[[], []], [JiraRecentResponse, TransformedResponse]].forEach(
+    ([jiraResponse, transformedResponse]) => {
+      it('should transform valid response without error', async () => {
+        requestSpy.mockReturnValue(Promise.resolve(jiraResponse));
+        const result = await jiraClient.getRecentItems('session');
+        expect(result).toEqual(transformedResponse);
+      });
+    },
+  );
 });
