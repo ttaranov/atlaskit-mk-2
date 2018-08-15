@@ -40,6 +40,7 @@ export class Card extends React.PureComponent<CardProps> {
     return (
       <LazyRender
         offset={100}
+        component={appearance === 'inline' ? 'span' : 'div'}
         placeholder={
           <CardContent
             appearance={appearance}
