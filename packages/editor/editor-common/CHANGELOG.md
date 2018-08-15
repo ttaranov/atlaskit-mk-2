@@ -1,5 +1,9 @@
 # @atlaskit/editor-common
 
+## 14.0.7
+- [patch] Updated dependencies [16971e9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/16971e9)
+  - @atlaskit/editor-test-helpers@6.0.1
+
 ## 14.0.6
 - [patch] ED-5190: fixed mediaSingle styles in renderer [4f09dea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4f09dea)
 - [none] Updated dependencies [4f09dea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4f09dea)
