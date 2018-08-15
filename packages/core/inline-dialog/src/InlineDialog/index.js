@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component, type Node as NodeType } from 'react';
+import React, { Component } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
@@ -8,33 +8,12 @@ import {
 } from '@atlaskit/analytics-next';
 import NodeResolver from 'react-node-resolver';
 import { Manager, Reference, Popper } from '@atlaskit/popper';
-import type { Placement } from '@atlaskit/popper';
+import type { Props } from '../types';
 import {
   name as packageName,
   version as packageVersion,
 } from '../../package.json';
 import { Container } from './styled';
-
-type Props = {
-  /** The elements that the InlineDialog will be positioned relative to. */
-  children: NodeType,
-  /** The elements to be displayed within the InlineDialog. */
-  content: NodeType,
-  /** Sets whether to show or hide the dialog. */
-  isOpen: boolean,
-  /** Function called when you lose focus on the object. */
-  onContentBlur: () => void,
-  /** Function called when you click on the open dialog. */
-  onContentClick: () => void,
-  /** Function called when you focus on the open dialog. */
-  onContentFocus: () => void,
-  /** Function called when the dialog is open and a click occurs anywhere outside
-  the dialog. Calls with an object { isOpen: false } and the type of event that
-  triggered the close. */
-  onClose: Function,
-  /** Where the dialog should appear, relative to the contents of the children. */
-  placement: Placement,
-};
 
 class InlineDialog extends Component<Props, {}> {
   static defaultProps = {
@@ -64,7 +43,7 @@ class InlineDialog extends Component<Props, {}> {
 
     const container: ?HTMLElement = this.containerRef;
     const trigger: ?HTMLElement = this.triggerRef;
-    const target: Node = event.target;
+    const target: HTMLElement = event.target;
 
     // exit if we click outside but on the trigger — it can handle the clicks itself
     if (trigger && !trigger.contains(target)) {
