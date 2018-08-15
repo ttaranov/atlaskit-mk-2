@@ -1,5 +1,8 @@
 # @atlaskit/smart-card
 
+## 7.0.5
+- [patch] ED-4824: added renderer support for smart cards [7cf0a78](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7cf0a78)
+
 ## 7.0.4
 - [patch] ED-5222: bump react-lazily-render package [5844820](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5844820)
 

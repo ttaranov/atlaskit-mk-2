@@ -1,5 +1,9 @@
 # @atlaskit/editor-common
 
+## 14.0.5
+- [patch] ED-4824: added renderer support for smart cards [7cf0a78](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7cf0a78)
+- [none] Updated dependencies [7cf0a78](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7cf0a78)
+
 ## 14.0.4
 - [patch] ED-4421 ADF Validator [fd7e953](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fd7e953)
 - [none] Updated dependencies [fd7e953](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fd7e953)

@@ -1,5 +1,11 @@
 # @atlaskit/renderer
 
+## 20.0.4
+- [patch] ED-4824: added renderer support for smart cards [7cf0a78](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7cf0a78)
+- [none] Updated dependencies [7cf0a78](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7cf0a78)
+  - @atlaskit/smart-card@7.0.5
+  - @atlaskit/editor-common@14.0.5
+
 ## 20.0.3
 - [patch] ED-5218, extensions with default width should not be centre aligned. [d6bd53e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d6bd53e)
 - [none] Updated dependencies [d6bd53e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d6bd53e)
