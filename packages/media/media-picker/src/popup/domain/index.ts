@@ -41,6 +41,9 @@ export interface State {
 
   readonly onCancelUpload: CancelUploadHandler;
   readonly config: Partial<PopupConfig>;
+  readonly deferredIdUpfronts: {
+    [id: string]: { resolver: Function; rejecter: Function };
+  };
 }
 
 export type CancelUploadHandler = (uploadId: string) => void;

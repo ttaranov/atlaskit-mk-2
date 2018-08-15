@@ -10,13 +10,14 @@ import {
   defaultMediaPickerCollectionName,
   createUploadContext,
 } from '@atlaskit/media-test-helpers';
-import { Card } from '@atlaskit/media-card';
+import { Card, CardList } from '@atlaskit/media-card';
 import { MediaPicker } from '../src';
 import {
   PopupContainer,
   PopupHeader,
   CardsWrapper,
   CardItemWrapper,
+  CardListWrapper,
 } from '../example-helpers/styled';
 import {
   UploadEndEventPayload,
@@ -62,6 +63,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
   onUploadsStart = (data: UploadsStartEventPayload) => {
     const { files } = this.state;
     const { files: newFiles } = data;
+    // console.log({newFiles})
     const ids = newFiles.map(file => file.upfrontId);
 
     this.setState({
@@ -92,9 +94,10 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
   renderCards = () => {
     const { files } = this.state;
     const cards = files.map((upfrontId, key) => {
-      upfrontId.then(id => {
-        console.log('render <Card />', id);
-      });
+      // upfrontId.then(id => {
+      //   console.log('render <Card />', id);
+      // });
+      console.log('upfrontId', upfrontId);
       return (
         <CardItemWrapper key={key}>
           <Card
@@ -112,6 +115,21 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     return <CardsWrapper>{cards}</CardsWrapper>;
   };
 
+  renderCardList = () => {
+    return (
+      <CardListWrapper>
+        <h1>{`<CardList ${defaultMediaPickerCollectionName} />`}</h1>
+        <CardList
+          context={context}
+          collectionName={defaultMediaPickerCollectionName}
+          cardAppearance="small"
+          height={260}
+          useInfiniteScroll
+        />
+      </CardListWrapper>
+    );
+  };
+
   render() {
     const { uploadingFiles } = this.state;
     const length = uploadingFiles.length;
@@ -127,6 +145,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
           <div>Uploading files: {length}</div>
         </PopupHeader>
         {this.renderCards()}
+        {this.renderCardList()}
       </PopupContainer>
     );
   }

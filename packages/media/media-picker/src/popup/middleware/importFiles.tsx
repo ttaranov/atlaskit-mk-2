@@ -82,12 +82,7 @@ export async function importFiles(
   store: Store<State>,
   wsProvider: WsProvider,
 ): Promise<void> {
-  const {
-    uploads,
-    tenant,
-    selectedItems,
-    userAuthProvider,
-  } = store.getState();
+  const { uploads, tenant, selectedItems, userAuthProvider } = store.getState();
 
   store.dispatch(hidePopup());
 

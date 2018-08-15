@@ -117,7 +117,7 @@ class ContextImpl implements Context {
 
   getFile(id: string, options?: GetFileOptions): Observable<FileState> {
     const key = FileStreamCache.createKey(id, options);
-
+    // console.log('getFile', key)
     return this.fileStreamsCache.getOrInsert(key, () => {
       const collection = options && options.collectionName;
       const fileStream$ = publishReplay<FileState>(1)(
@@ -262,8 +262,6 @@ class ContextImpl implements Context {
     const mediaType = getMediaTypeFromUploadableFile(file);
     const collectionName = file.collection;
     const name = file.name || ''; // name property is not available in base64 image
-    // const fileStream = new Observable<FileState>(observer => {
-
     const fileStreamSubscribe = (observer: Subscriber<FileState>) => {
       if (file.content instanceof Blob) {
         mimeType = file.content.type;

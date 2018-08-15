@@ -268,7 +268,6 @@ export class NewUploadServiceImpl implements UploadService {
     fileId: string,
   ) => {
     const { mediaFile } = cancellableFileUpload;
-    // TODO: do we need to do anything with the collectionName here?
     const { collection } = this.uploadParams;
 
     this.copyFileToUsersCollection(fileId, collection).catch(console.log); // We intentionally swallow these errors

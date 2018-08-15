@@ -6,6 +6,7 @@ export interface LocalUploadFileMetadata {
   readonly mimeType: string;
   readonly name: string;
   readonly size: number;
+  readonly upfrontId: Promise<string>;
 }
 
 export interface LocalUploadFile {
