@@ -18,16 +18,16 @@ export interface Props {
     query: string,
     sessionId: string,
     startTime: number,
-  ): Promise<GenericResultObject>;
+  ): Promise<GenericResultObject | {}>;
   fireShownPreQueryEvent(
     searchSessionId: string,
-    recentItems: GenericResultObject,
+    recentItems: GenericResultObject | {},
     requestStartTime?: number,
   ): void;
   fireShownPostQueryEvent(
     startTime: number,
     elapsedMs: number,
-    searchResults: GenericResultObject,
+    searchResults: GenericResultObject | {},
     searchSessionId: string,
     latestSearchQuery: string,
   ): void;

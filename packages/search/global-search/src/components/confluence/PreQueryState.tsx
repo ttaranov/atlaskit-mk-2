@@ -1,18 +1,19 @@
 import * as React from 'react';
-import { Result } from '../../model/Result';
+import {
+  GenericResultObject,
+  ConfluenceRecentlyViewedItemsMap,
+} from '../../model/Result';
 import { ScreenCounter } from '../../util/ScreenCounter';
 import { isEmpty, getConfluenceAdvancedSearchLink } from '../SearchResultsUtil';
 import NoRecentActivity from '../NoRecentActivity';
-import RecentActivities from './RecentActivities';
-import { PreQueryAnalyticsComponent } from './ScreenAnalyticsHelper';
+import ConfluenceRecentActivities from './RecentActivities';
+import { PreQueryAnalyticsComponent } from '../common/ScreenAnalyticsHelper';
 import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
 import { FormattedHTMLMessage } from 'react-intl';
 
 export interface Props {
   query: string;
-  recentlyViewedPages: Result[];
-  recentlyViewedSpaces: Result[];
-  recentlyInteractedPeople: Result[];
+  recentlyViewedObjects: GenericResultObject;
   searchSessionId: string;
   screenCounter?: ScreenCounter;
   referralContextIdentifiers?: ReferralContextIdentifiers;
@@ -34,9 +35,7 @@ class ConfluenceNoRecentActivity extends React.Component {
 export default class PreQueryState extends React.Component<Props> {
   render() {
     const {
-      recentlyInteractedPeople,
-      recentlyViewedPages,
-      recentlyViewedSpaces,
+      recentlyViewedObjects,
       query,
       searchSessionId,
       screenCounter,
@@ -44,11 +43,9 @@ export default class PreQueryState extends React.Component<Props> {
     } = this.props;
 
     if (
-      [
-        recentlyInteractedPeople,
-        recentlyViewedPages,
-        recentlyViewedSpaces,
-      ].every(isEmpty)
+      Object.keys(recentlyViewedObjects)
+        .map(key => recentlyViewedObjects[key])
+        .every(isEmpty)
     ) {
       return [
         <PreQueryAnalyticsComponent
@@ -62,11 +59,11 @@ export default class PreQueryState extends React.Component<Props> {
     }
 
     return (
-      <RecentActivities
+      <ConfluenceRecentActivities
         query={query}
-        recentlyViewedPages={recentlyViewedPages}
-        recentlyViewedSpaces={recentlyViewedSpaces}
-        recentlyInteractedPeople={recentlyInteractedPeople}
+        recentlyViewedObjects={
+          recentlyViewedObjects as ConfluenceRecentlyViewedItemsMap
+        }
         searchSessionId={searchSessionId}
         screenCounter={screenCounter}
         referralContextIdentifiers={referralContextIdentifiers}

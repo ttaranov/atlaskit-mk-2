@@ -5,7 +5,7 @@ import SearchResultsState from './SearchResultsState';
 import PreQueryState from './PreQueryState';
 import { isEmpty } from '../SearchResultsUtil';
 import SearchResults from '../SearchResults';
-import { PostQueryAnalyticsComponent } from './ScreenAnalyticsHelper';
+import { PostQueryAnalyticsComponent } from '../common/ScreenAnalyticsHelper';
 import { ScreenCounter } from '../../util/ScreenCounter';
 import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
 
