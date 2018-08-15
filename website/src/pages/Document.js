@@ -32,8 +32,8 @@ export default function Document({
     loader: () => found && found.exports(),
     loading: Loading,
     render(md = {}) {
-      const { default: docDetails } = md;
-      const { content, data } = docDetails || {};
+      const docDetails: ?{ content?: string, data?: Object } = md.default || {};
+      const { content, data = {} } = docDetails;
       if (content) {
         return <Markdown {...data}>{content}</Markdown>;
       }

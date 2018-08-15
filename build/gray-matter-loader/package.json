@@ -1,7 +1,0 @@
-{
-    "name": "gray-matter-loader",
-    "version": "0.0.0",
-    "dependencies": {
-        "gray-matter": "^4.0.1"
-    }
-}
