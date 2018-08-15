@@ -1,4 +1,4 @@
-import { DefaultShapeDeleter } from '../../../src/engine/components/shapeDeleter';
+import { DefaultShapeDeleter } from '../../shapeDeleter';
 
 describe('MediaEditor DefaultShapeDeleter', () => {
   let textArea: HTMLTextAreaElement;

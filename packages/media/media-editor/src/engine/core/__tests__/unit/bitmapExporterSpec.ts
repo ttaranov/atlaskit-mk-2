@@ -1,5 +1,5 @@
-import * as Core from '../../../src/engine/core/binaries/mediaEditor';
-import { BitmapExporter } from '../../../src/engine/core/bitmapExporter';
+import * as Core from '../../binaries/mediaEditor';
+import { BitmapExporter } from '../../bitmapExporter';
 
 type Module = Core.NativeModule;
 

@@ -1,4 +1,4 @@
-import { ResourceManager } from '../../src/engine/resourceManager';
+import { ResourceManager } from '../../resourceManager';
 
 class SomeResource {
   loaded: boolean;

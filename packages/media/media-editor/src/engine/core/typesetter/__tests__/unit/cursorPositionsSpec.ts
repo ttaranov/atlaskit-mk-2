@@ -7,7 +7,7 @@ import {
   createSpansForGroups,
   calculateTotalLength,
   putInternalPositions,
-} from '../../../../src/engine/core/typesetter/cursorPositions';
+} from '../../cursorPositions';
 
 describe('MediaEditor cursor positions', () => {
   const getBoundingClientRectMethod = 'getBoundingClientRect';
