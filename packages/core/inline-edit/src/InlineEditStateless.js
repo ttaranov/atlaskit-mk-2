@@ -28,8 +28,6 @@ const DRAG_THRESHOLD = 5;
 
 type State = {
   fieldBaseWrapperIsHover?: boolean,
-  resetFieldBase?: boolean,
-  shouldResetFieldBase?: boolean,
   wasFocusReceivedSinceLastBlur?: boolean,
   startX: number,
   startY: number,
@@ -55,18 +53,10 @@ class InlineEdit extends Component<StatelessProps, State> {
 
   state = {
     fieldBaseWrapperIsHover: false,
-    resetFieldBase: false,
-    shouldResetFieldBase: false,
     wasFocusReceivedSinceLastBlur: false,
     startX: 0,
     startY: 0,
   };
-
-  componentWillReceiveProps(nextProps: StatelessProps) {
-    this.setState({
-      shouldResetFieldBase: this.props.isEditing && !nextProps.isEditing,
-    });
-  }
 
   onMouseDown = (client: { clientX: number, clientY: number }) =>
     this.setState({ startX: client.clientX, startY: client.clientY });
@@ -165,7 +155,6 @@ class InlineEdit extends Component<StatelessProps, State> {
         appearance={isEditing ? 'standard' : 'subtle'}
         isDisabled={this.shouldRenderSpinner()}
         isLoading={this.shouldRenderSpinner()}
-        shouldReset={this.state.shouldResetFieldBase}
         invalidMessage={invalidMessage}
         onDialogClick={this.onDialogClick}
       >
