@@ -4,6 +4,7 @@ import {
   StoryBookAuthProvider,
   userAuthProvider,
   mediaPickerAuthProvider,
+  defaultMediaPickerAuthProvider,
 } from '@atlaskit/media-test-helpers';
 import { MediaProvider, MediaStateManager } from '@atlaskit/editor-core';
 
@@ -14,6 +15,7 @@ export interface MediaProviderFactoryConfig {
   includeUploadContext?: boolean;
   includeLinkCreateContext?: boolean;
   includeUserAuthProvider?: boolean;
+  useMediaPickerAuthProvider?: boolean;
 }
 
 /**
@@ -29,10 +31,13 @@ export function storyMediaProviderFactory(
     includeUploadContext,
     includeLinkCreateContext,
     includeUserAuthProvider,
+    useMediaPickerAuthProvider = true,
   } = mediaProviderFactoryConfig;
   const collection = collectionName || defaultCollectionName;
   const context = ContextFactory.create({
-    authProvider: mediaPickerAuthProvider(),
+    authProvider: useMediaPickerAuthProvider
+      ? mediaPickerAuthProvider()
+      : defaultMediaPickerAuthProvider,
     userAuthProvider:
       includeUserAuthProvider === false ? undefined : userAuthProvider,
   });
