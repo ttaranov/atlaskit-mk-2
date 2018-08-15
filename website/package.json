@@ -59,7 +59,6 @@
     "@atlaskit/tag-group": "^6.0.3",
     "@atlaskit/theme": "^5.1.2",
     "@atlaskit/tooltip": "^12.0.4",
-    "@atlaskit/util-shared-styles": "^2.10.3",
     "@atlaskit/webpack-config": "^2.0.1",
     "@lbatchelor/netlify": "^1.2.0-patched.7",
     "@lbatchelor/netlify-cli": "^1.2.2-patched.7",
