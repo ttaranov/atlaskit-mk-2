@@ -179,24 +179,6 @@ describe('@atlaskit/inline-edit', () => {
     });
   });
 
-  describe('shouldResetFieldBase', () => {
-    describe('when switching from isEditing=true to isEditing=false', () =>
-      it('should set shouldReset property on FieldBase', () => {
-        const wrapper = shallow(
-          <InlineEditStateless {...defaultProps} isEditing />,
-        );
-        wrapper.setProps({ isEditing: false });
-        expect(wrapper.find(FieldBase).prop('shouldReset')).toBe(true);
-      }));
-
-    describe('when switching from isEditing=false to isEditing=true', () =>
-      it('should not set shouldReset property on FieldBase', () => {
-        const wrapper = shallow(<InlineEditStateless {...defaultProps} />);
-        wrapper.setProps({ isEditing: true });
-        expect(wrapper.find(FieldBase).prop('shouldReset')).toBe(false);
-      }));
-  });
-
   describe('isWaiting', () => {
     describe('when isEditing is false', () =>
       it('FieldBase should not have isLoading prop', () => {

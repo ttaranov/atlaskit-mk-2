@@ -1,5 +1,19 @@
 # @atlaskit/editor-core
 
+## 77.0.12
+- [patch] Updated dependencies [f9c0cdb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9c0cdb)
+  - @atlaskit/code@8.0.0
+  - @atlaskit/renderer@20.0.6
+  - @atlaskit/logo@9.0.4
+  - @atlaskit/avatar-group@2.0.8
+  - @atlaskit/docs@5.0.5
+
+## 77.0.11
+- [patch] ED-5190: fixed mediaSingle styles in renderer [4f09dea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4f09dea)
+- [none] Updated dependencies [4f09dea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4f09dea)
+  - @atlaskit/renderer@20.0.5
+  - @atlaskit/editor-common@14.0.6
+
 ## 77.0.10
 - [patch] When removing a media group with a code block below it, prevent the editor from crashing when it references an invalid pos. ED-5207 [4b11a78](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b11a78)
 - [none] Updated dependencies [4b11a78](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b11a78)

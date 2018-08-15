@@ -50,6 +50,9 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^5.0.3",
-    "jsverify": "^0.8.3"
+    "@types/enzyme": "^3.1.6",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "jsverify": "^0.8.3",
+    "react": "^16.4.0"
   }
 }

@@ -1,6 +1,6 @@
 // @flow
 /* eslint import/no-dynamic-require: 0, global-require: 0 */
-import { registerLanguage } from 'react-syntax-highlighter/light';
+import { registerLanguage } from 'react-syntax-highlighter/prism-light';
 import memoizeOne from 'memoize-one';
 
 /*
@@ -9,32 +9,32 @@ import memoizeOne from 'memoize-one';
  * languages on github by number of PR, as of May 2018
  * https://madnight.github.io/githut/#/pull_requests/2018/1
  */
-import clojure from 'react-syntax-highlighter/languages/hljs/clojure';
-import coffeescript from 'react-syntax-highlighter/languages/hljs/coffeescript';
-import cpp from 'react-syntax-highlighter/languages/hljs/cpp';
-import csharp from 'react-syntax-highlighter/languages/hljs/cs';
-import css from 'react-syntax-highlighter/languages/hljs/css';
-import d from 'react-syntax-highlighter/languages/hljs/d';
-import go from 'react-syntax-highlighter/languages/hljs/go';
-import groovy from 'react-syntax-highlighter/languages/hljs/groovy';
-import java from 'react-syntax-highlighter/languages/hljs/java';
-import javascript from 'react-syntax-highlighter/languages/hljs/javascript';
-import kotlin from 'react-syntax-highlighter/languages/hljs/kotlin';
-import lua from 'react-syntax-highlighter/languages/hljs/lua';
-import objectivec from 'react-syntax-highlighter/languages/hljs/objectivec';
-import php from 'react-syntax-highlighter/languages/hljs/php';
-import python from 'react-syntax-highlighter/languages/hljs/python';
-import ruby from 'react-syntax-highlighter/languages/hljs/ruby';
-import rust from 'react-syntax-highlighter/languages/hljs/rust';
-import scala from 'react-syntax-highlighter/languages/hljs/scala';
-import shell from 'react-syntax-highlighter/languages/hljs/shell';
-import sql from 'react-syntax-highlighter/languages/hljs/sql';
-import swift from 'react-syntax-highlighter/languages/hljs/swift';
-import typescript from 'react-syntax-highlighter/languages/hljs/typescript';
+import coffeescript from 'react-syntax-highlighter/languages/prism/coffeescript';
+import cpp from 'react-syntax-highlighter/languages/prism/cpp';
+import clike from 'react-syntax-highlighter/languages/prism/clike';
+import csharp from 'react-syntax-highlighter/languages/prism/csharp';
+import css from 'react-syntax-highlighter/languages/prism/css';
+import d from 'react-syntax-highlighter/languages/prism/d';
+import go from 'react-syntax-highlighter/languages/prism/go';
+import groovy from 'react-syntax-highlighter/languages/prism/groovy';
+import java from 'react-syntax-highlighter/languages/prism/java';
+import javascript from 'react-syntax-highlighter/languages/prism/javascript';
+import kotlin from 'react-syntax-highlighter/languages/prism/kotlin';
+import lua from 'react-syntax-highlighter/languages/prism/lua';
+import objectivec from 'react-syntax-highlighter/languages/prism/objectivec';
+import php from 'react-syntax-highlighter/languages/prism/php';
+import python from 'react-syntax-highlighter/languages/prism/python';
+import ruby from 'react-syntax-highlighter/languages/prism/ruby';
+import rust from 'react-syntax-highlighter/languages/prism/rust';
+import scala from 'react-syntax-highlighter/languages/prism/scala';
+import shell from 'react-syntax-highlighter/languages/prism/bash';
+import sql from 'react-syntax-highlighter/languages/prism/sql';
+import swift from 'react-syntax-highlighter/languages/prism/swift';
+import typescript from 'react-syntax-highlighter/languages/prism/typescript';
 
-registerLanguage('clojure', clojure);
 registerLanguage('coffeescript', coffeescript);
 registerLanguage('cpp', cpp);
+registerLanguage('clike', clike);
 registerLanguage('cs', csharp);
 registerLanguage('css', css);
 registerLanguage('d', d);
@@ -69,7 +69,6 @@ export type ADFSupportedLanguages =
   | 'autoit'
   | 'c' // → cpp
   | 'c++' // → cpp
-  | 'clojure'
   | 'coffeescript'
   | 'csharp' // → cs
   | 'css'
@@ -165,7 +164,7 @@ export const SUPPORTED_LANGUAGES = Object.freeze([
   },
   {
     name: 'C++',
-    alias: ['c++', 'cpp'],
+    alias: ['c++', 'cpp', 'clike'],
     value: 'cpp',
   },
   {
@@ -294,11 +293,6 @@ export const SUPPORTED_LANGUAGES = Object.freeze([
     name: 'CoffeeScript',
     alias: ['coffeescript', 'coffee-script', 'coffee'],
     value: 'coffeescript',
-  },
-  {
-    name: 'Clojure',
-    alias: ['clojure', 'clj'],
-    value: 'clojure',
   },
   {
     name: 'Haskell',
