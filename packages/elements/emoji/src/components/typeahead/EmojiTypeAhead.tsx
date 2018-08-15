@@ -34,6 +34,8 @@ export default class EmojiTypeahead extends LoadingEmojiComponent<
   Props,
   LoadingState
 > {
+  // state initialised with static component to prevent
+  // rerender when the module has already been loaded
   static AsyncLoadedComponent?: ComponentClass<ComponentProps>;
   state = {
     asyncLoadedComponent: EmojiTypeahead.AsyncLoadedComponent,
@@ -79,7 +81,7 @@ export default class EmojiTypeahead extends LoadingEmojiComponent<
 
   renderLoaded(
     loadedEmojiProvider: EmojiProvider,
-    AsyncTypeAheadComponent: ComponentClass<ComponentProps>,
+    EmojiTypeAheadComponent: ComponentClass<ComponentProps>,
   ) {
     const {
       emojiProvider,
@@ -92,7 +94,7 @@ export default class EmojiTypeahead extends LoadingEmojiComponent<
     } = this.props;
 
     const typeAhead = (
-      <AsyncTypeAheadComponent
+      <EmojiTypeAheadComponent
         {...otherProps}
         emojiProvider={loadedEmojiProvider}
         ref="typeAhead"

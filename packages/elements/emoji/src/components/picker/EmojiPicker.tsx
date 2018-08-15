@@ -32,6 +32,8 @@ export class EmojiPickerInternal extends LoadingEmojiComponent<
   Props,
   LoadingState
 > {
+  // state initialised with static component to prevent
+  // rerender when the module has already been loaded
   static AsyncLoadedComponent?: ComponentClass<ComponentProps>;
   state = {
     asyncLoadedComponent: EmojiPickerInternal.AsyncLoadedComponent,
@@ -66,11 +68,11 @@ export class EmojiPickerInternal extends LoadingEmojiComponent<
 
   renderLoaded(
     loadedEmojiProvider: EmojiProvider,
-    AsyncEmojiPickerComponent: ComponentClass<ComponentProps>,
+    EmojiPickerComponent: ComponentClass<ComponentProps>,
   ) {
     const { emojiProvider, ...otherProps } = this.props;
     return (
-      <AsyncEmojiPickerComponent
+      <EmojiPickerComponent
         emojiProvider={loadedEmojiProvider}
         {...otherProps}
       />
