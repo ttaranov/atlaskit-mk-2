@@ -1,5 +1,27 @@
 # @atlaskit/portal
 
+## 0.0.6
+
+
+
+
+- [patch] Updated dependencies [1d9e75a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1d9e75a)
+  - @atlaskit/inline-dialog@9.0.0
+  - @atlaskit/tooltip@12.0.8
+  - @atlaskit/modal-dialog@6.0.8
+- [none] Updated dependencies [a3109d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a3109d3)
+  - @atlaskit/inline-dialog@9.0.0
+  - @atlaskit/tooltip@12.0.8
+  - @atlaskit/modal-dialog@6.0.8
+- [none] Updated dependencies [87d45d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87d45d3)
+  - @atlaskit/inline-dialog@9.0.0
+  - @atlaskit/tooltip@12.0.8
+  - @atlaskit/modal-dialog@6.0.8
+- [none] Updated dependencies [a08b0c2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a08b0c2)
+  - @atlaskit/inline-dialog@9.0.0
+  - @atlaskit/tooltip@12.0.8
+  - @atlaskit/modal-dialog@6.0.8
+
 ## 0.0.5
 - [patch] Adds missing dependency on babel-runtime [e41e465](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e41e465)
 - [none] Updated dependencies [e41e465](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e41e465)
