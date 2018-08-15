@@ -1,11 +1,11 @@
-import { AuthProvider, MediaApiConfig } from '../src/models/auth';
+import { AuthProvider, MediaApiConfig } from '../../models/auth';
 
 jest.mock('chunkinator');
-jest.mock('../src/media-store');
+jest.mock('../../media-store');
 
 import chunkinator, { Options } from 'chunkinator';
-import { uploadFile } from '../src';
-import { MediaStore } from '../src/media-store';
+import { uploadFile } from '../..';
+import { MediaStore } from '../../media-store';
 
 describe('Uploader', () => {
   const setup = () => {

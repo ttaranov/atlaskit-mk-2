@@ -3,7 +3,7 @@ import {
   isAsapBasedAuth,
   ClientBasedAuth,
   AsapBasedAuth,
-} from '../../src';
+} from '../../..';
 
 describe('Auth', () => {
   const clientBasedAuth: ClientBasedAuth = {

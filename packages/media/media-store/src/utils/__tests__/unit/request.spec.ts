@@ -1,7 +1,7 @@
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
 
-import { request } from '../../src/utils/request';
+import { request } from '../../request';
 
 const throwExpectedToFail = () => {
   throw new Error(`Expected to fail, but resolved instead`);

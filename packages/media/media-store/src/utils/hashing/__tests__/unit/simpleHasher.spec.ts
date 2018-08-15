@@ -1,4 +1,4 @@
-import { SimpleHasher } from '../../../src/utils/hashing/simpleHasher';
+import { SimpleHasher } from '../../simpleHasher';
 
 describe('SimpleHasher', () => {
   const blob = new Blob(['1234567890']);
