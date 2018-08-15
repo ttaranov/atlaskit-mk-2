@@ -288,7 +288,7 @@ atlastart flag,tooltip
  ```
  - webdriver tests
  ```sh
-  yarn run test:webriver
+  yarn run test:webdriver
  ```
 
 Please refer to [testing in atlaskit][testing] for more information about testing.
