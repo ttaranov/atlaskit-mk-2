@@ -46,6 +46,8 @@ type Props = {
   defaultIsOpen: boolean,
   /** Default for `value`. */
   defaultValue: string,
+  /** Function for formatting the displayed time value in the input. By default parses with an internal time parser, and formats using the [date-fns format function]((https://date-fns.org/v1.29.0/docs/format)) */
+  formatDisplayLabel: (time: string, timeFormat: string) => string,
   /** The icon to show in the field. */
   icon?: Node,
   /** The id of the field. Currently, react-select transforms this to have a "react-select-" prefix, and an "--input" suffix when applied to the input. For example, the id "my-input" would be transformed to "react-select-my-input--input". Keep this in mind when needing to refer to the ID. This will be fixed in an upcoming release. */
@@ -124,6 +126,7 @@ class TimePicker extends Component<Props, State> {
     defaultIsOpen: false,
     defaultValue: '',
     hideIcon: false,
+    formatDisplayLabel: formatTime,
     id: '',
     innerProps: {},
     isDisabled: false,
@@ -227,6 +230,7 @@ class TimePicker extends Component<Props, State> {
   render() {
     const {
       autoFocus,
+      formatDisplayLabel,
       id,
       innerProps,
       isDisabled,
@@ -296,7 +300,7 @@ class TimePicker extends Component<Props, State> {
           value={
             value && {
               /* $FlowFixMe - complaining about required args that aren't required. */
-              label: formatTime(value, timeFormat),
+              label: formatDisplayLabel(value, timeFormat),
               value,
             }
           }
