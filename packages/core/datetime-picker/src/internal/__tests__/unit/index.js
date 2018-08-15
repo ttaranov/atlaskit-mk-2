@@ -164,6 +164,39 @@ test('DateTimePicker, default parseValue, does not parse the date time value int
   );
 });
 
+test('DatePicker, custom formatDisplayLabel', () => {
+  const dateValue = new Date('08/06/2018').toUTCString();
+  const formatDisplayLabel = (date, dateFormat) => {
+    moment.locale('fr');
+    return moment(date).format(dateFormat);
+  };
+  const expectedResult = 'août/06';
+  const datePickerWrapper = mount(
+    <DatePicker
+      formatDisplayLabel={formatDisplayLabel}
+      dateFormat={'MMMM/DD'}
+      value={dateValue}
+    />,
+  );
+  const label = datePickerWrapper.text();
+  expect(label).toEqual(expectedResult);
+});
+
+test('TimePicker, custom formatDisplayLabel', () => {
+  const timeValue = '12:00';
+  const expectedResult = 'midday';
+  const formatDisplayLabel = time => {
+    if (time === '12:00') return 'midday';
+    return time;
+  };
+  const timePickerWrapper = mount(
+    <TimePicker formatDisplayLabel={formatDisplayLabel} value={timeValue} />,
+  );
+  const label = timePickerWrapper.text();
+
+  expect(label).toEqual(expectedResult);
+});
+
 test('DateTimePicker, custom parseValue', () => {
   const customParseValue = (dateTimeValue, dateValue, timeValue, zoneValue) => {
     const parsedValue = moment(dateTimeValue).parseZone();

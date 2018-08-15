@@ -6,12 +6,12 @@ import * as assert from 'assert';
 
 const urlDateTimePicker = getExampleUrl('core', 'datetime-picker', 'basic');
 /* Css used for the test */
-const datepickerDefault = '#examples > div > div > div > div:nth-child(3)';
+const datepickerDefault = 'label[for="react-select-datepicker-1--input"] + div';
 const datepickerMenu = '[aria-label="calendar"]';
 const date =
   '[aria-label="calendar"] > table > tbody > tr:nth-child(5) > td:nth-child(6)';
 const dateValue = `${datepickerDefault} > div > div > div`;
-const timepickerDefault = '#examples > div > div > div > div:nth-child(16)';
+const timepickerDefault = 'label[for="react-select-timepicker-4--input"] + div';
 const timePickerMenu = '.timepicker-select__menu-list';
 const timeValue = `${timepickerDefault} > div > div > div`;
 const timeOption = '[role="option"]';

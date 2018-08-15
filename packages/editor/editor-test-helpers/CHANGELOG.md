@@ -1,5 +1,10 @@
 # @atlaskit/editor-test-helpers
 
+## 6.0.1
+- [patch] add useMediaPickerAuthProvider option to storyMediaProviderFactory [16971e9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/16971e9)
+- [none] Updated dependencies [16971e9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/16971e9)
+  - @atlaskit/editor-common@14.0.7
+
 ## 6.0.0
 
 

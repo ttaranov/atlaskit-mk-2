@@ -1,5 +1,31 @@
 # @atlaskit/datetime-picker
 
+## 6.3.1
+
+
+- [patch] Removed some broken styles from the datetime-picker menu [87d45d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87d45d3)
+
+- [none] Updated dependencies [1d9e75a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1d9e75a)
+  - @atlaskit/popper@0.2.0
+  - @atlaskit/modal-dialog@6.0.8
+  - @atlaskit/field-base@11.0.4
+- [none] Updated dependencies [a3109d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a3109d3)
+  - @atlaskit/field-base@11.0.4
+  - @atlaskit/popper@0.2.0
+  - @atlaskit/modal-dialog@6.0.8
+- [none] Updated dependencies [87d45d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87d45d3)
+  - @atlaskit/popper@0.2.0
+  - @atlaskit/modal-dialog@6.0.8
+  - @atlaskit/field-base@11.0.4
+- [patch] Updated dependencies [a08b0c2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a08b0c2)
+  - @atlaskit/popper@0.2.0
+  - @atlaskit/modal-dialog@6.0.8
+  - @atlaskit/field-base@11.0.4
+
+## 6.3.0
+- [minor] added formatDisplayLabel prop to timePicker and datePicker to enable configuration of the label string rendered in the input [bce02a8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bce02a8)
+- [none] Updated dependencies [bce02a8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bce02a8)
+
 ## 6.2.0
 - [minor] Added parseDateValue prop to datetimepicker which accepts a function that takes an iso datestring, a date value, a time value and a zone value and returns an object containing a formatted dateValue, timeValue and zoneValue. The defaultProp uses date-fn's parse and format functions under the hood.  [6249709](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6249709)
 - [none] Updated dependencies [6249709](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6249709)

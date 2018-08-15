@@ -1,5 +1,23 @@
 # @atlaskit/inline-dialog
 
+## 9.0.0
+- [major] Inline-dialog now uses @atlaskit/popper, and as such some props are no longer required. The "position" prop now matches the "placements" from react-popper to avoid confusion. [1d9e75a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1d9e75a)
+
+
+
+- [none] Updated dependencies [1d9e75a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1d9e75a)
+  - @atlaskit/datetime-picker@6.3.1
+  - @atlaskit/popper@0.2.0
+- [none] Updated dependencies [a3109d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a3109d3)
+  - @atlaskit/popper@0.2.0
+  - @atlaskit/datetime-picker@6.3.1
+- [none] Updated dependencies [87d45d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87d45d3)
+  - @atlaskit/datetime-picker@6.3.1
+  - @atlaskit/popper@0.2.0
+- [patch] Updated dependencies [a08b0c2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a08b0c2)
+  - @atlaskit/popper@0.2.0
+  - @atlaskit/datetime-picker@6.3.1
+
 ## 8.0.4
 - [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
 - [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
