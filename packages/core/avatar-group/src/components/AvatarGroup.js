@@ -9,9 +9,7 @@ import Avatar, {
   type SizeType,
 } from '@atlaskit/avatar';
 import { Grid, Stack } from '../styled/AvatarGroup';
-import MoreIndicator, {
-  type Props as MoreIndicatorProps,
-} from './MoreIndicator';
+import MoreIndicator from './MoreIndicator';
 import itemTheme from '../theme/itemTheme';
 import AvatarGroupItem from './AvatarGroupItem';
 
