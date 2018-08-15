@@ -153,7 +153,8 @@ class DatePicker extends Component<Props, State> {
     defaultIsOpen: false,
     defaultValue: '',
     disabled: [],
-    formatDisplayLabel: (value, dateFormat) => format(parse(value), dateFormat),
+    formatDisplayLabel: (value: string, dateFormat: string): string =>
+      format(parse(value), dateFormat),
     hideIcon: false,
     icon: CalendarIcon,
     id: '',

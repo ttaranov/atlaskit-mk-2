@@ -165,7 +165,7 @@ test('DateTimePicker, default parseValue, does not parse the date time value int
 });
 
 test('DatePicker, custom formatDisplayLabel', () => {
-  const dateValue = new Date('08/06/2018');
+  const dateValue = new Date('08/06/2018').toUTCString();
   const formatDisplayLabel = (date, dateFormat) => {
     moment.locale('fr');
     return moment(date).format(dateFormat);
