@@ -216,7 +216,7 @@ export default class AvatarGroupExample extends Component<*, State> {
         <div style={{ maxWidth: 380 }}>
           <Note>
             Prevent tabbing to elements in the avatar group by passing{' '}
-            <Code>tabIndex</Code> via the <Code>moreButtonProps</Code> and{' '}
+            <Code>tabIndex</Code> via the <Code>showMoreButtonProps</Code> and{' '}
             <Code>data</Code> props.
           </Note>
           <AvatarGroup
@@ -232,7 +232,7 @@ export default class AvatarGroupExample extends Component<*, State> {
               tabIndex: -1,
             }))}
             size={avatarSize}
-            moreButtonProps={{ tabIndex: -1 }}
+            showMoreButtonProps={{ tabIndex: -1 }}
           />
         </div>
 

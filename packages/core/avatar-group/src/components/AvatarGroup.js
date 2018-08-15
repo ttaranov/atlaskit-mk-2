@@ -45,7 +45,7 @@ type Props = {
    the default dropdown behaviour. */
   onMoreClick?: () => mixed,
   /** Provide additional props to the MoreButton or override default props */
-  moreButtonProps?: $Shape<HTMLElement & MoreIndicatorProps>,
+  showMoreButtonProps?: $Shape<HTMLElement>,
 
   boundariesElement?: 'viewport' | 'window' | 'scrollParent',
 };
@@ -55,7 +55,7 @@ export default class AvatarGroup extends Component<Props> {
     appearance: 'stack',
     avatar: Avatar,
     maxCount: 0,
-    moreButtonProps: {},
+    showMoreButtonProps: {},
     size: 'medium',
   };
 
@@ -65,7 +65,7 @@ export default class AvatarGroup extends Component<Props> {
       data,
       borderColor,
       onMoreClick,
-      moreButtonProps,
+      showMoreButtonProps,
       onAvatarClick,
       size,
       boundariesElement,
@@ -77,12 +77,12 @@ export default class AvatarGroup extends Component<Props> {
     // prepare the button -- we'll use it twice
     const MoreButton = props => (
       <MoreIndicator
+        {...showMoreButtonProps}
         borderColor={borderColor}
         count={total - max}
         isInteractive
         isStack={appearance === 'stack'}
         size={size}
-        {...moreButtonProps}
         {...props}
       />
     );
