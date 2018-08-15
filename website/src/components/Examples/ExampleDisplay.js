@@ -24,14 +24,20 @@ export default class ExampleDisplay extends Component<Props> {
   }
   componentWillReceiveProps(nextProps) {
     if (this.props.src !== nextProps.src) {
-      if (this.iframeRef) {
+      if (
+        this.iframeRef &&
+        typeof this.iframeRef.contentWindow.unmountApp === 'function'
+      ) {
         this.iframeRef.contentWindow.unmountApp();
       }
       this.buildExampleComponents(nextProps);
     }
   }
   componentWillUnmount() {
-    if (this.iframeRef) {
+    if (
+      this.iframeRef &&
+      typeof this.iframeRef.contentWindow.unmountApp === 'function'
+    ) {
       this.iframeRef.contentWindow.unmountApp();
     }
   }
