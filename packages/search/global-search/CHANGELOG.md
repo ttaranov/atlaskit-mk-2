@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 5.5.4
+- [patch] Use UserSearch instead of AccountCentricUserSearch for People searches. [5731f20](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5731f20)
+
 ## 5.5.3
 - [patch] refactor QuickSearchContainer and extract generic component [25bd0e2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25bd0e2)
 

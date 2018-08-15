@@ -1,5 +1,9 @@
 # @atlaskit/dropdown-menu
 
+## 6.1.7
+- [patch] Updated dependencies [8242529](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8242529)
+  - @atlaskit/droplist@7.0.6
+
 ## 6.1.6
 - [patch] Fix scroll to top of container issue when menu is opened via keydown [0a09918](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0a09918)
 - [patch] Updated dependencies [0a09918](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0a09918)

@@ -1,10 +1,11 @@
 // @ts-ignore: unused variable
 // prettier-ignore
 import { css, Styles, StyledComponentClass } from 'styled-components';
+import { mediaSingleSharedStyle } from '@atlaskit/editor-common';
 
 export const mediaStyles = css`
   .ProseMirror {
-    & [layout='full-width'] > div,
+    ${mediaSingleSharedStyle} & [layout='full-width'] > div,
     & [layout='wide'] > div {
       margin-left: 50%;
       transform: translateX(-50%);
@@ -12,15 +13,6 @@ export const mediaStyles = css`
 
     .media-single.is-loading {
       min-height: 20px;
-    }
-
-    li .media-single {
-      margin: 0;
-    }
-
-    table .media-single {
-      margin: 0;
-      width: inherit;
     }
 
     & [layout='wrap-left'] + [layout='wrap-right'],

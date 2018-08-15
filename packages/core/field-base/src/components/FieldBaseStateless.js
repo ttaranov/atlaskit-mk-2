@@ -75,8 +75,7 @@ export default class FieldBaseStateless extends Component<
           onContentBlur={onDialogBlur}
           onContentClick={onDialogClick}
           onContentFocus={onDialogFocus}
-          position="right middle"
-          shouldFlip={['top']}
+          placement="right"
         >
           <ChildWrapper compact={isCompact}>
             <Content

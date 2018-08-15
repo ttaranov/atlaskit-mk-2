@@ -36,6 +36,9 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^5.0.2",
-    "@atlaskit/media-test-helpers": "^16.0.0"
+    "@atlaskit/media-test-helpers": "^16.0.0",
+    "@types/enzyme": "^3.1.6",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "react": "^16.4.0"
   }
 }

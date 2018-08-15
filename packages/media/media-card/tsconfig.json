@@ -3,10 +3,6 @@
   "include": [
     "./src/**/*.ts",
     "./src/**/*.tsx",
-    "./__tests__/**/*.ts",
-    "./__tests__/**/*.tsx",
-    "./tests/**/*.ts",
-    "./tests/**/*.tsx",
     "./examples/*.ts",
     "./examples/*.tsx",
     "./example-helpers/*.ts",

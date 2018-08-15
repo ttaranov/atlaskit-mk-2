@@ -13,12 +13,17 @@ export { Manager, Reference } from 'react-popper';
 type State = {};
 
 type Props = {
+  /** Returns the element to be positioned */
   children: PopperChildrenProps => Node,
+  /** How far to offset the Popper from the Reference. Changes automatically based on the placement */
+  offset: number | string,
+  /** Which side of the Reference to show on. */
   placement: Placement,
 };
 
 const getFlipBehavior = (side: string) =>
   ({
+    auto: [],
     top: ['top', 'bottom', 'top'],
     right: ['right', 'left', 'right'],
     bottom: ['bottom', 'top', 'bottom'],
@@ -28,6 +33,7 @@ const getFlipBehavior = (side: string) =>
 export class Popper extends Component<Props, State> {
   static defaultProps: Props = {
     children: () => {},
+    offset: '0 8px',
     placement: 'bottom-start',
   };
 
@@ -48,7 +54,7 @@ export class Popper extends Component<Props, State> {
       },
       offset: {
         enabled: true,
-        offset: 0,
+        offset: this.props.offset,
       },
       preventOverflow: {
         enabled: true,
