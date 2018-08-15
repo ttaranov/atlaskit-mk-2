@@ -24,13 +24,16 @@ import ArrowRightCircleIcon from '../glyph/arrow-right-circle';
 import ArrowRightIcon from '../glyph/arrow-right';
 import ArrowUpCircleIcon from '../glyph/arrow-up-circle';
 import ArrowUpIcon from '../glyph/arrow-up';
+import AtlassianLargeIcon from '../glyph/atlassian-large';
 import AtlassianIcon from '../glyph/atlassian';
 import AttachmentIcon from '../glyph/attachment';
 import AudioCircleIcon from '../glyph/audio-circle';
 import AudioIcon from '../glyph/audio';
 import BacklogIcon from '../glyph/backlog';
+import BambooLargeIcon from '../glyph/bamboo-large';
 import BillingFilledIcon from '../glyph/billing-filled';
 import BillingIcon from '../glyph/billing';
+import BitbucketLargeIcon from '../glyph/bitbucket-large';
 import BitbucketIcon from '../glyph/bitbucket';
 import BitbucketBranchesIcon from '../glyph/bitbucket/branches';
 import BitbucketBuildsIcon from '../glyph/bitbucket/builds';
@@ -71,12 +74,14 @@ import ChevronUpIcon from '../glyph/chevron-up';
 import CodeIcon from '../glyph/code';
 import CommentIcon from '../glyph/comment';
 import ComponentIcon from '../glyph/component';
+import ConfluenceLargeIcon from '../glyph/confluence-large';
 import ConfluenceIcon from '../glyph/confluence';
 import CopyIcon from '../glyph/copy';
 import CreditcardFilledIcon from '../glyph/creditcard-filled';
 import CreditcardIcon from '../glyph/creditcard';
 import CrossCircleIcon from '../glyph/cross-circle';
 import CrossIcon from '../glyph/cross';
+import CrowdLargeIcon from '../glyph/crowd-large';
 import DashboardIcon from '../glyph/dashboard';
 import DecisionIcon from '../glyph/decision';
 import DepartmentIcon from '../glyph/department';
@@ -219,6 +224,7 @@ import FileTypes24File24VideoIcon from '../glyph/file-types/24/file-24-video';
 import FileTypes24File24WordDocumentIcon from '../glyph/file-types/24/file-24-word-document';
 import FileIcon from '../glyph/file';
 import FilterIcon from '../glyph/filter';
+import FisheyeLargeIcon from '../glyph/fisheye-large';
 import FlagFilledIcon from '../glyph/flag-filled';
 import FolderFilledIcon from '../glyph/folder-filled';
 import FolderIcon from '../glyph/folder';
@@ -229,6 +235,7 @@ import GraphBarIcon from '../glyph/graph-bar';
 import GraphLineIcon from '../glyph/graph-line';
 import GsuiteIcon from '../glyph/gsuite';
 import HighlightsIcon from '../glyph/highlights';
+import HipchatLargeIcon from '../glyph/hipchat-large';
 import HipchatIcon from '../glyph/hipchat';
 import HipchatAudioOnlyIcon from '../glyph/hipchat/audio-only';
 import HipchatChevronDoubleDownIcon from '../glyph/hipchat/chevron-double-down';
@@ -250,8 +257,12 @@ import InviteTeamIcon from '../glyph/invite-team';
 import IssueRaiseIcon from '../glyph/issue-raise';
 import IssueIcon from '../glyph/issue';
 import IssuesIcon from '../glyph/issues';
+import JiraCoreLargeIcon from '../glyph/jira-core-large';
 import JiraCoreIcon from '../glyph/jira-core';
+import JiraLargeIcon from '../glyph/jira-large';
+import JiraServiceDeskLargeIcon from '../glyph/jira-service-desk-large';
 import JiraServiceDeskIcon from '../glyph/jira-service-desk';
+import JiraSoftwareLargeIcon from '../glyph/jira-software-large';
 import JiraSoftwareIcon from '../glyph/jira-software';
 import JiraIcon from '../glyph/jira';
 import JiraBlockerIcon from '../glyph/jira/blocker';
@@ -390,10 +401,13 @@ import ShipIcon from '../glyph/ship';
 import ShortcutIcon from '../glyph/shortcut';
 import SignInIcon from '../glyph/sign-in';
 import SignOutIcon from '../glyph/sign-out';
+import SourcetreeLargeIcon from '../glyph/sourcetree-large';
 import StarFilledIcon from '../glyph/star-filled';
 import StarLargeIcon from '../glyph/star-large';
 import StarIcon from '../glyph/star';
+import StatuspageLargeIcon from '../glyph/statuspage-large';
 import StatuspageIcon from '../glyph/statuspage';
+import StrideLargeIcon from '../glyph/stride-large';
 import StrideIcon from '../glyph/stride';
 import SubtaskIcon from '../glyph/subtask';
 import SuitcaseIcon from '../glyph/suitcase';
@@ -527,6 +541,12 @@ export default {
     componentName: 'ArrowUpIcon',
     package: '@atlaskit/icon/glyph/arrow-up',
   },
+  'atlassian-large': {
+    keywords: ['atlassian-large', 'atlassianlarge'],
+    component: AtlassianLargeIcon,
+    componentName: 'AtlassianLargeIcon',
+    package: '@atlaskit/icon/glyph/atlassian-large',
+  },
   atlassian: {
     keywords: ['atlassian', 'charlie'],
     component: AtlassianIcon,
@@ -557,6 +577,12 @@ export default {
     componentName: 'BacklogIcon',
     package: '@atlaskit/icon/glyph/backlog',
   },
+  'bamboo-large': {
+    keywords: ['bamboo-large', 'bamboolarge'],
+    component: BambooLargeIcon,
+    componentName: 'BambooLargeIcon',
+    package: '@atlaskit/icon/glyph/bamboo-large',
+  },
   'billing-filled': {
     keywords: ['billing-filled', 'billingfilled'],
     component: BillingFilledIcon,
@@ -568,6 +594,12 @@ export default {
     component: BillingIcon,
     componentName: 'BillingIcon',
     package: '@atlaskit/icon/glyph/billing',
+  },
+  'bitbucket-large': {
+    keywords: ['bitbucket-large', 'bitbucketlarge'],
+    component: BitbucketLargeIcon,
+    componentName: 'BitbucketLargeIcon',
+    package: '@atlaskit/icon/glyph/bitbucket-large',
   },
   bitbucket: {
     keywords: ['bitbucket'],
@@ -809,6 +841,12 @@ export default {
     componentName: 'ComponentIcon',
     package: '@atlaskit/icon/glyph/component',
   },
+  'confluence-large': {
+    keywords: ['confluence-large', 'confluencelarge'],
+    component: ConfluenceLargeIcon,
+    componentName: 'ConfluenceLargeIcon',
+    package: '@atlaskit/icon/glyph/confluence-large',
+  },
   confluence: {
     keywords: ['confluence'],
     component: ConfluenceIcon,
@@ -844,6 +882,12 @@ export default {
     component: CrossIcon,
     componentName: 'CrossIcon',
     package: '@atlaskit/icon/glyph/cross',
+  },
+  'crowd-large': {
+    keywords: ['crowd-large', 'crowdlarge'],
+    component: CrowdLargeIcon,
+    componentName: 'CrowdLargeIcon',
+    package: '@atlaskit/icon/glyph/crowd-large',
   },
   dashboard: {
     keywords: ['dashboard', 'window', 'grid'],
@@ -1697,6 +1741,12 @@ export default {
     componentName: 'FilterIcon',
     package: '@atlaskit/icon/glyph/filter',
   },
+  'fisheye-large': {
+    keywords: ['fisheye-large', 'fisheyelarge'],
+    component: FisheyeLargeIcon,
+    componentName: 'FisheyeLargeIcon',
+    package: '@atlaskit/icon/glyph/fisheye-large',
+  },
   'flag-filled': {
     keywords: ['flag-filled', 'flagfilled'],
     component: FlagFilledIcon,
@@ -1756,6 +1806,12 @@ export default {
     component: HighlightsIcon,
     componentName: 'HighlightsIcon',
     package: '@atlaskit/icon/glyph/highlights',
+  },
+  'hipchat-large': {
+    keywords: ['hipchat-large', 'hipchatlarge'],
+    component: HipchatLargeIcon,
+    componentName: 'HipchatLargeIcon',
+    package: '@atlaskit/icon/glyph/hipchat-large',
   },
   hipchat: {
     keywords: ['hipchat'],
@@ -1883,17 +1939,41 @@ export default {
     componentName: 'IssuesIcon',
     package: '@atlaskit/icon/glyph/issues',
   },
+  'jira-core-large': {
+    keywords: ['jira-core-large', 'jiracorelarge'],
+    component: JiraCoreLargeIcon,
+    componentName: 'JiraCoreLargeIcon',
+    package: '@atlaskit/icon/glyph/jira-core-large',
+  },
   'jira-core': {
     keywords: ['jira-core', 'jiracore'],
     component: JiraCoreIcon,
     componentName: 'JiraCoreIcon',
     package: '@atlaskit/icon/glyph/jira-core',
   },
+  'jira-large': {
+    keywords: ['jira-large', 'jiralarge'],
+    component: JiraLargeIcon,
+    componentName: 'JiraLargeIcon',
+    package: '@atlaskit/icon/glyph/jira-large',
+  },
+  'jira-service-desk-large': {
+    keywords: ['jira-service-desk-large', 'jiraservicedesklarge'],
+    component: JiraServiceDeskLargeIcon,
+    componentName: 'JiraServiceDeskLargeIcon',
+    package: '@atlaskit/icon/glyph/jira-service-desk-large',
+  },
   'jira-service-desk': {
     keywords: ['jira-service-desk', 'jiraservicedesk'],
     component: JiraServiceDeskIcon,
     componentName: 'JiraServiceDeskIcon',
     package: '@atlaskit/icon/glyph/jira-service-desk',
+  },
+  'jira-software-large': {
+    keywords: ['jira-software-large', 'jirasoftwarelarge'],
+    component: JiraSoftwareLargeIcon,
+    componentName: 'JiraSoftwareLargeIcon',
+    package: '@atlaskit/icon/glyph/jira-software-large',
   },
   'jira-software': {
     keywords: ['jira-software', 'jirasoftware'],
@@ -2723,6 +2803,12 @@ export default {
     componentName: 'SignOutIcon',
     package: '@atlaskit/icon/glyph/sign-out',
   },
+  'sourcetree-large': {
+    keywords: ['sourcetree-large', 'sourcetreelarge'],
+    component: SourcetreeLargeIcon,
+    componentName: 'SourcetreeLargeIcon',
+    package: '@atlaskit/icon/glyph/sourcetree-large',
+  },
   'star-filled': {
     keywords: ['star-filled', 'starfilled'],
     component: StarFilledIcon,
@@ -2741,11 +2827,23 @@ export default {
     componentName: 'StarIcon',
     package: '@atlaskit/icon/glyph/star',
   },
+  'statuspage-large': {
+    keywords: ['statuspage-large', 'statuspagelarge'],
+    component: StatuspageLargeIcon,
+    componentName: 'StatuspageLargeIcon',
+    package: '@atlaskit/icon/glyph/statuspage-large',
+  },
   statuspage: {
     keywords: ['statuspage'],
     component: StatuspageIcon,
     componentName: 'StatuspageIcon',
     package: '@atlaskit/icon/glyph/statuspage',
+  },
+  'stride-large': {
+    keywords: ['stride-large', 'stridelarge'],
+    component: StrideLargeIcon,
+    componentName: 'StrideLargeIcon',
+    package: '@atlaskit/icon/glyph/stride-large',
   },
   stride: {
     keywords: ['stride'],
