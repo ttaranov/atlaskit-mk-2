@@ -42,7 +42,7 @@ export function createInputRulePlugin(schema: Schema): Plugin | undefined {
 
   const urlWithASpaceRule = createLinkInputRule(
     new LinkMatcher() as RegExp,
-    match => (match[3] ? match[1] : `http://${match[1]}`),
+    match => (match[3] ? match[1] : `https?://${match[1]}`),
   );
 
   // [something](link) should convert to a hyperlink
