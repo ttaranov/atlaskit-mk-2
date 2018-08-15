@@ -438,16 +438,5 @@ describe('Frontend feature flag client', () => {
         event,
       );
     });
-
-    test('should not trigger an event if not all params are passed through', () => {
-      const frontendFeatureFlagClient = setupFrontendFeatureFlagClient(
-        sampleFlagsJson,
-      );
-
-      frontendFeatureFlagClient.triggerEvent(null, null, null);
-      expect(frontendFeatureFlagClient.triggerAnalytics).toHaveBeenCalledTimes(
-        0,
-      );
-    });
   });
 });
