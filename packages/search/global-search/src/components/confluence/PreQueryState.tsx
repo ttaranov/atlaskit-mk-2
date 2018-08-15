@@ -43,6 +43,7 @@ export default class PreQueryState extends React.Component<Props> {
     } = this.props;
 
     if (
+      recentlyViewedObjects &&
       Object.keys(recentlyViewedObjects)
         .map(key => recentlyViewedObjects[key])
         .every(isEmpty)

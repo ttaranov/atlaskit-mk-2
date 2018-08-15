@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { GenericResultObject, Result } from '../../model/Result';
+import { Result } from '../../model/Result';
 import { ScreenCounter } from '../../util/ScreenCounter';
 import { FormattedMessage } from 'react-intl';
 import ResultGroup from '../ResultGroup';
@@ -10,7 +10,6 @@ import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
 export interface Props {
   query: string;
   resultsGroup: ResultsGroup[];
-  recentlyViewedObjects: GenericResultObject;
   searchSessionId: string;
   screenCounter?: ScreenCounter;
   referralContextIdentifiers?: ReferralContextIdentifiers;
@@ -43,7 +42,6 @@ export default class RecentActivities extends React.Component<Props> {
   render() {
     const {
       query,
-      recentlyViewedObjects,
       searchSessionId,
       screenCounter,
       resultsGroup,
@@ -51,9 +49,7 @@ export default class RecentActivities extends React.Component<Props> {
     } = this.props;
 
     return [
-      ...mapRecentlyViewedObjectsToSections(
-        resultsGroup(recentlyViewedObjects),
-      ),
+      ...mapRecentlyViewedObjectsToSections(resultsGroup),
       <AdvancedSearchGroup key="advanced" query={query} />,
       <PreQueryAnalyticsComponent
         key="pre-query-analytics"

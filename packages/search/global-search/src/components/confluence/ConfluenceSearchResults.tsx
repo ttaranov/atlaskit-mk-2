@@ -61,9 +61,11 @@ export default class ConfluenceSearchResults extends React.Component<Props> {
         renderPreQueryStateComponent={() => (
           <PreQueryState
             query={query}
-            recentlyViewedPages={recentlyViewedPages}
-            recentlyViewedSpaces={recentlyViewedSpaces}
-            recentlyInteractedPeople={recentlyInteractedPeople}
+            recentlyViewedObjects={{
+              recentlyViewedPages,
+              recentlyViewedSpaces,
+              recentlyInteractedPeople,
+            }}
             searchSessionId={searchSessionId}
             screenCounter={preQueryScreenCounter}
             referralContextIdentifiers={referralContextIdentifiers}

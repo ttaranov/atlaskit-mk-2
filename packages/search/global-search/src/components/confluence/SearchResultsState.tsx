@@ -4,7 +4,7 @@ import { Result } from '../../model/Result';
 import { ScreenCounter } from '../../util/ScreenCounter';
 import { take } from '../SearchResultsUtil';
 import ResultsGroup from '../ResultGroup';
-import { PostQueryAnalyticsComponent } from './ScreenAnalyticsHelper';
+import { PostQueryAnalyticsComponent } from './../common/ScreenAnalyticsHelper';
 import AdvancedSearchGroup from './AdvancedSearchGroup';
 import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
 
