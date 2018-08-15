@@ -1,5 +1,10 @@
 # @atlaskit/tooltip
 
+## 12.0.7
+- [patch] Adds missing dependency on babel-runtime [e41e465](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e41e465)
+- [patch] Updated dependencies [e41e465](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e41e465)
+  - @atlaskit/portal@0.0.5
+
 ## 12.0.6
 - [patch] replaces internal utility with flushable library [beb9fce](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/beb9fce)
 - [none] Updated dependencies [beb9fce](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/beb9fce)
