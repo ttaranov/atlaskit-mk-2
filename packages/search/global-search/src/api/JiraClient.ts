@@ -71,6 +71,7 @@ type JiraRecentItem = {
 
 export default class JiraClientImpl implements JiraClient {
   private serviceConfig: ServiceConfig;
+  // tslint:disable-next-line
   private cloudId: string;
 
   constructor(url: string, cloudId: string) {
