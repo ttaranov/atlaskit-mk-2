@@ -50,15 +50,22 @@ export class JiraQuickSearchContainer extends React.Component<
   getRecentItems = (sessionId: string) => {
     const { jiraClient } = this.props;
     return jiraClient.getRecentItems(sessionId).then(items =>
-      items.reduce((acc, item: JiraObjectResult) => {
-        if (item.contentType) {
-          const section = contentTypeToSection[item.contentType];
-          acc[section] = ([] as JiraObjectResult[])
-            .concat(acc[section] || [])
-            .concat(item);
-        }
-        return acc;
-      }, {}),
+      items.reduce(
+        (
+          acc: { [key: string]: JiraObjectResult[] },
+          item: JiraObjectResult,
+        ) => {
+          if (item.contentType) {
+            const section = contentTypeToSection[item.contentType];
+            acc[section] = ([] as JiraObjectResult[]).concat(
+              acc[section] || [],
+              item,
+            );
+          }
+          return acc;
+        },
+        {},
+      ),
     );
   };
 
