@@ -18,10 +18,25 @@ export type RecentItemsCounts = {
   projects?: number;
 };
 
+export const defaultRecentItemCounts: RecentItemsCounts = {
+  issues: 8,
+  boards: 2,
+  projects: 2,
+  filters: 2,
+};
+
+/**
+ * Jira client to reterive recent items from jira
+ */
 export interface JiraClient {
+  /**
+   * @param searchSessionId string unique for every session id
+   * @param recentItemCounts optional number of items to return for every recent
+   * @returns a promise which resolves to recent items throws
+   */
   getRecentItems(
-    counts: RecentItemsCounts,
     searchSessionId: string,
+    recentItemCounts?: RecentItemsCounts,
   ): Promise<JiraObjectResult[]>;
 }
 
@@ -53,6 +68,7 @@ type JiraRecentItem = {
   avatarUrl: string;
   url: string;
 };
+
 export default class JiraClientImpl implements JiraClient {
   private serviceConfig: ServiceConfig;
   private cloudId: string;
@@ -62,29 +78,27 @@ export default class JiraClientImpl implements JiraClient {
     this.cloudId = cloudId;
   }
 
+  /**
+   *
+   * @param searchSessionId unique id for each session
+   * @param recentItemCounts number of items to return for every recent item type defaults to {@link #defaultRecentItemCounts}
+   * @returns a promise resolved to recent items array throws if any error occurs in reqeust or if parsing or transforming response fails
+   */
   public async getRecentItems(
-    counts: RecentItemsCounts,
     searchSessionId: string,
+    recentItemCounts: RecentItemsCounts = defaultRecentItemCounts,
   ): Promise<JiraObjectResult[]> {
     const options: RequestServiceOptions = {
       path: RECENT_ITEMS_PATH,
       queryParams: {
-        ...counts,
+        ...recentItemCounts,
         search_id: searchSessionId,
-      },
-      requestInit: {
-        mode: 'cors',
-        credentials: 'omit',
       },
     };
     const recentItems = await utils.requestService<JiraRecentItemGroup[]>(
-      {
-        ...this.serviceConfig,
-        securityProvider: () => ({ omitCredentials: true }),
-      },
+      this.serviceConfig,
       options,
     );
-    console.log(recentItems);
     return recentItems
       .map(group => this.recentItemGroupToItems(group))
       .reduce((acc, item) => [...acc, ...item], []);
@@ -106,30 +120,20 @@ export default class JiraClientImpl implements JiraClient {
       analyticsType: AnalyticsType.RecentJira,
       avatarUrl: `${item.avatarUrl}`,
       contentType: GroupToContentType[jiraGroup],
-      ...this.getSpecificAttributes(item, jiraGroup),
+      ...this.getTypeSpecificAttributes(item, jiraGroup),
     };
   }
 
-  private getSpecificAttributes(
+  private getTypeSpecificAttributes(
     item: JiraRecentItem,
     jiraGroup: JiraGroup,
   ): {
     objectKey?: string;
     containerName?: string;
   } {
-    switch (jiraGroup) {
-      case JiraGroup.Boards:
-      case JiraGroup.Projects:
-      case JiraGroup.Issues:
-        return {
-          containerName: item.metadata,
-        };
-      case JiraGroup.Filters:
-        return {
-          objectKey: 'Filter',
-          containerName: item.metadata,
-        };
-    }
-    return {};
+    return {
+      ...(jiraGroup === JiraGroup.Filters ? { objectKey: 'Filters' } : null),
+      containerName: item.metadata,
+    };
   }
 }
