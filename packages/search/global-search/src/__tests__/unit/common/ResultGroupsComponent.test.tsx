@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { shallow, ShallowWrapper } from 'enzyme';
+import { shallow } from 'enzyme';
 import ResultGroupsComponent, {
   Props,
   ResultGroupType,
@@ -10,7 +10,6 @@ import {
   makePersonResult,
 } from '../_test-util';
 import { mountWithIntl } from '../helpers/_intl-enzyme-test-helper';
-import { Props as ResultGroupProps } from '../../../components/ResultGroup';
 import ResultGroup from '../../../components/ResultGroup';
 
 function render(partialProps: Partial<Props>) {
@@ -35,13 +34,6 @@ function renderMount(partialProps: Partial<Props>) {
   };
 
   return mountWithIntl(<ResultGroupsComponent {...props} />);
-}
-
-function findGroup(
-  wrapper: ShallowWrapper,
-  key: string,
-): ShallowWrapper<ResultGroupProps> {
-  return wrapper.findWhere(n => n.key() === key);
 }
 
 it('should render passed objects', () => {
