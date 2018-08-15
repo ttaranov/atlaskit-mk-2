@@ -43,7 +43,7 @@ export interface JiraObjectResult extends Result {
   objectKey?: string;
   containerName?: string;
   resultType: ResultType.JiraObjectResult;
-  contentType: ContentType;
+  contentType?: ContentType;
 }
 
 export interface ContainerResult extends Result {
