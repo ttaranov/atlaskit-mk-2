@@ -8,7 +8,7 @@ Autenticate with \`outbound-auth-flow\` service in a popup.
 ## Installation
 
 ${code`
-yarn @atlassian/outbound-auth-flow-client
+yarn add @atlassian/outbound-auth-flow-client
 `}
 
 ## Usage
