@@ -3,6 +3,7 @@ import { mount, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
 import type { DropResult, DragUpdate, DragStart } from 'react-beautiful-dnd';
+import { getBox } from 'css-box-model';
 import Tree from '../../Tree';
 import { treeWithThreeLeaves } from '../../../../../mockdata/treeWithThreeLeaves';
 import { treeWithTwoBranches } from '../../../../../mockdata/treeWithTwoBranches';
@@ -30,6 +31,8 @@ const dropResult: DropResult = {
   ...dragUpdate,
   reason: 'DROP',
 };
+
+jest.mock('css-box-model');
 
 describe('@atlaskit/tree - Tree', () => {
   const mockRender = jest.fn(({ provided }) => (
@@ -182,6 +185,31 @@ describe('@atlaskit/tree - Tree', () => {
         draggedItemId: dragUpdate.draggableId,
         source: dragUpdate.source,
         destination: dragUpdate.destination,
+      });
+    });
+  });
+
+  describe('#onPointerMove', () => {
+    it('calculates horizontal level based on the horizontal position', () => {
+      // $ExpectError: mockReturnValue is missing in function
+      getBox.mockReturnValue({
+        contentBox: {
+          left: 120,
+        },
+        borderBox: {
+          left: 120,
+        },
+      });
+      const instance = mount(
+        <Tree tree={treeWithTwoBranches} renderItem={mockRender} />,
+      ).instance();
+      instance.onDragStart(dragStart);
+      instance.onPointerMove();
+      expect(instance.dragState).toEqual({
+        draggedItemId: dragStart.draggableId,
+        source: dragStart.source,
+        destination: dragStart.source,
+        horizontalLevel: 1,
       });
     });
   });

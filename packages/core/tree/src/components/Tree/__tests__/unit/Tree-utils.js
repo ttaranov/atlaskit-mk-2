@@ -78,5 +78,19 @@ describe('@atlaskit/tree - Tree-utils', () => {
         calculatePendingDropAnimatingOffset(flatComplextTree, dragState, 35),
       ).toBe(-35);
     });
+
+    it('return 0 if destination is not defined', () => {
+      const dragState: DragState = {
+        draggedItemId: '1-2-3',
+        source: {
+          droppableId: 'whatever',
+          index: 6,
+        },
+        horizontalLevel: 1,
+      };
+      expect(
+        calculatePendingDropAnimatingOffset(flatComplextTree, dragState, 0),
+      ).toBe(0);
+    });
   });
 });
