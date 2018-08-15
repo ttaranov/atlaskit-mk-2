@@ -1,4 +1,4 @@
-import { FileProvider } from '../src/providers/fileProvider';
+import { FileProvider } from '../../providers/fileProvider';
 
 const fileId = 'some-file-id';
 const collection = 'some-collection';

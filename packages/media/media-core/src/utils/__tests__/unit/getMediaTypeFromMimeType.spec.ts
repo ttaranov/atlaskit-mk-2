@@ -1,4 +1,4 @@
-import { getMediaTypeFromMimeType } from '../../src';
+import { getMediaTypeFromMimeType } from '../../getMediaTypeFromMimeType';
 
 describe('getMediaTypeFromMimeType()', () => {
   it('should return media type for known mime types', () => {

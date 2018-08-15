@@ -2,7 +2,7 @@ import { useFakeXMLHttpRequest, SinonFakeXMLHttpRequest } from 'sinon';
 import {
   MediaCollectionService,
   DEFAULT_COLLECTION_PAGE_SIZE,
-} from '../src/services/collectionService';
+} from '../../services/collectionService';
 import { MediaApiConfig } from '@atlaskit/media-store';
 
 const clientId = 'some-client-id';

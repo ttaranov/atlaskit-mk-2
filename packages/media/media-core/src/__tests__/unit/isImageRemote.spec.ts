@@ -1,4 +1,4 @@
-import { isImageRemote } from '../src';
+import { isImageRemote } from '../..';
 
 describe('isImageRemote', () => {
   it('should return false for local resource (true in IE)', () => {

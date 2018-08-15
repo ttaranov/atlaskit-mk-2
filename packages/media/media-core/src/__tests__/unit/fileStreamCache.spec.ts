@@ -1,4 +1,4 @@
-import FileStreamCache from '../src/context/fileStreamCache';
+import FileStreamCache from '../../context/fileStreamCache';
 import { Observable } from 'rxjs/Observable';
 
 describe('FileStreamCache', () => {

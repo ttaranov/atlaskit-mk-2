@@ -4,13 +4,13 @@ import { skip } from 'rxjs/operators/skip';
 import { take } from 'rxjs/operators/take';
 import { filter } from 'rxjs/operators/filter';
 
-import { CollectionServiceStub } from '../../test-helpers/collection-service-stub';
-import { RemoteMediaCollectionProviderFactory } from '../../src/providers/remoteMediaCollectionProviderFactory';
+import { CollectionServiceStub } from '../../../../test-helpers/collection-service-stub';
+import { RemoteMediaCollectionProviderFactory } from '../../remoteMediaCollectionProviderFactory';
 import { Subscription } from 'rxjs/Subscription';
-import { isError } from '../../src/error';
-import { MediaCollection } from '../../src/collection';
-import { RemoteMediaCollectionProvider } from '../../src/providers/remoteMediaCollectionProvider';
-import { CollectionNotFoundError } from '../../src/index';
+import { isError } from '../../../error';
+import { MediaCollection } from '../../../collection';
+import { RemoteMediaCollectionProvider } from '../../remoteMediaCollectionProvider';
+import { CollectionNotFoundError } from '../../..';
 
 const defaultCollectionName = 'MediaServicesSample';
 

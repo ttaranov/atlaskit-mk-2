@@ -1,4 +1,4 @@
-import { getMediaTypeFromUploadableFile } from '../../src/utils/getMediaTypeFromUploadableFile';
+import { getMediaTypeFromUploadableFile } from '../../getMediaTypeFromUploadableFile';
 
 describe('getMediaTypeFromUploadableFile()', () => {
   const setup = (type: string = 'image/png') => {

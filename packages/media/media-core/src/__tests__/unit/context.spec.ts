@@ -13,8 +13,8 @@ import {
   UploadableFile,
   UploadController,
   UploadingFileState,
-} from '../src';
-import { ContextFactory } from '../src/context/context';
+} from '../..';
+import { ContextFactory } from '../../context/context';
 
 import { uploadFile, MediaApiConfig } from '@atlaskit/media-store';
 

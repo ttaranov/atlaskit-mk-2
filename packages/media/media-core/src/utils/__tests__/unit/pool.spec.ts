@@ -1,4 +1,4 @@
-import { Pool } from '../../src/providers/util/pool';
+import { Pool } from '../../../providers/util/pool';
 
 describe('Pool', () => {
   it('invokes the create function when creating the first item', () => {

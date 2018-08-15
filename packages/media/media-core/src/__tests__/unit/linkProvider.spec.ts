@@ -1,5 +1,5 @@
-import { LinkItem } from '../src/item';
-import { LinkProvider } from '../src/providers/linkProvider';
+import { LinkItem } from '../../item';
+import { LinkProvider } from '../../providers/linkProvider';
 
 const linkId = 'some-link-id';
 const collection = 'some-collection';

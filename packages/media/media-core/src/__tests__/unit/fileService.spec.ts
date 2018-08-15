@@ -2,8 +2,8 @@ import { useFakeXMLHttpRequest } from 'sinon';
 import { LRUCache } from 'lru-fast';
 import { Auth, AuthProvider } from '@atlaskit/media-store';
 
-import { MediaFileService } from '../src/services/fileService';
-import { FileDetails, FileItem } from '../src/item';
+import { MediaFileService } from '../../services/fileService';
+import { FileDetails, FileItem } from '../../item';
 
 const baseUrl = 'some-host';
 const token = 'some-token';

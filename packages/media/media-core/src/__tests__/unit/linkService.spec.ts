@@ -1,7 +1,7 @@
 import { useFakeXMLHttpRequest } from 'sinon';
 
-import { MediaLinkService } from '../src/services/linkService';
-import { UrlPreview } from '../src/item';
+import { MediaLinkService } from '../../services/linkService';
+import { UrlPreview } from '../../item';
 import { Auth, AuthProvider } from '@atlaskit/media-store';
 
 const baseUrl = 'some-host';

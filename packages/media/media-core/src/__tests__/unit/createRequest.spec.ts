@@ -1,8 +1,8 @@
 import * as sinon from 'sinon';
 
-import createRequest from '../src/services/util/createRequest';
+import createRequest from '../../services/util/createRequest';
 import { Auth, AuthProvider } from '@atlaskit/media-store';
-import * as UtilsModule from '../src/utils';
+import * as UtilsModule from '../../utils';
 
 describe('createRequest()', () => {
   const token = 'ABC';
