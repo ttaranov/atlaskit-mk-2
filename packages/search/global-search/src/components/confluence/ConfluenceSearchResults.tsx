@@ -1,17 +1,19 @@
 import * as React from 'react';
 import { Result } from '../../model/Result';
-import NoResultsState from './NoResultsState';
-import SearchResultsState from './SearchResultsState';
-import PreQueryState from './PreQueryState';
-import { isEmpty } from '../SearchResultsUtil';
-import SearchResults from '../SearchResults';
-import { PostQueryAnalyticsComponent } from '../common/ScreenAnalyticsHelper';
 import { ScreenCounter } from '../../util/ScreenCounter';
 import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
+import { take } from '../SearchResultsUtil';
+import NoResultsState from './NoResultsState';
+import GenericSearchResults from '../common/GenericSearchResults';
+import { ResultsGroup } from '../common/RecentActivities';
+import { getConfluenceAdvancedSearchLink } from '../SearchResultsUtil';
+import { FormattedHTMLMessage } from 'react-intl';
 
 export const MAX_PAGES_BLOGS_ATTACHMENTS = 8;
 export const MAX_SPACES = 3;
 export const MAX_PEOPLE = 3;
+
+const MAX_RECENT_PAGES = 8;
 
 export interface Props {
   query: string;
@@ -31,71 +33,106 @@ export interface Props {
   referralContextIdentifiers?: ReferralContextIdentifiers;
 }
 
+const getRecentsResultGroups = (recentlyViewedObjects): ResultsGroup[] => {
+  const {
+    recentlyInteractedPeople,
+    recentlyViewedPages,
+    recentlyViewedSpaces,
+  } = recentlyViewedObjects;
+  const recentPagesToShow: Result[] = take(
+    recentlyViewedPages,
+    MAX_RECENT_PAGES,
+  );
+  const recentSpacesToShow: Result[] = take(recentlyViewedSpaces, MAX_SPACES);
+  const recentPeopleToShow: Result[] = take(
+    recentlyInteractedPeople,
+    MAX_PEOPLE,
+  );
+
+  return [
+    {
+      items: recentPagesToShow,
+      key: 'objects',
+      titleI18nId: 'global-search.confluence.recent-pages-heading',
+    },
+    {
+      items: recentSpacesToShow,
+      key: 'spaces',
+      titleI18nId: 'global-search.confluence.recent-spaces-heading',
+    },
+    {
+      items: recentPeopleToShow,
+      titleI18nId: 'global-search.confluence.recent-spaces-heading',
+      key: 'people',
+    },
+  ];
+};
+
+const getSearchResultsGroup = (searchResultsObjects): ResultsGroup[] => {
+  const { objectResults, spaceResults, peopleResults } = searchResultsObjects;
+
+  const objectResultsToShow: Result[] = take(
+    objectResults,
+    MAX_PAGES_BLOGS_ATTACHMENTS,
+  );
+  const spaceResultsToShow: Result[] = take(spaceResults, MAX_SPACES);
+  const peopleResultsToShow: Result[] = take(peopleResults, MAX_PEOPLE);
+
+  return [
+    {
+      items: objectResultsToShow,
+      key: 'objects',
+      titleI18nId: 'global-search.confluence.confluence-objects-heading',
+    },
+    {
+      items: spaceResultsToShow,
+      key: 'spaces',
+      titleI18nId: 'global-search.confluence.spaces-heading',
+    },
+    {
+      items: peopleResultsToShow,
+      titleI18nId: 'global-search.people.people-heading',
+      key: 'people',
+    },
+  ];
+};
+
 export default class ConfluenceSearchResults extends React.Component<Props> {
   render() {
     const {
-      query,
-      isError,
+      recentlyInteractedPeople,
+      recentlyViewedPages,
+      recentlyViewedSpaces,
       objectResults,
       spaceResults,
       peopleResults,
-      isLoading,
-      recentlyViewedPages,
-      recentlyViewedSpaces,
-      recentlyInteractedPeople,
-      retrySearch,
-      keepPreQueryState,
-      searchSessionId,
-      preQueryScreenCounter,
-      postQueryScreenCounter,
-      referralContextIdentifiers,
+      query,
     } = this.props;
 
     return (
-      <SearchResults
-        retrySearch={retrySearch}
-        query={query}
-        isLoading={isLoading}
-        isError={isError}
-        keepPreQueryState={keepPreQueryState}
-        renderPreQueryStateComponent={() => (
-          <PreQueryState
-            query={query}
-            recentlyViewedObjects={{
-              recentlyViewedPages,
-              recentlyViewedSpaces,
-              recentlyInteractedPeople,
-            }}
-            searchSessionId={searchSessionId}
-            screenCounter={preQueryScreenCounter}
-            referralContextIdentifiers={referralContextIdentifiers}
+      <GenericSearchResults
+        {...this.props}
+        renderAdvancedSearchLink={() => (
+          <FormattedHTMLMessage
+            id="global-search.no-recent-activity-body"
+            values={{ url: getConfluenceAdvancedSearchLink() }}
           />
         )}
-        shouldRenderNoResultsState={() =>
-          [objectResults, spaceResults, peopleResults].every(isEmpty)
+        getRecentlyViewedGroups={() =>
+          getRecentsResultGroups({
+            recentlyInteractedPeople,
+            recentlyViewedPages,
+            recentlyViewedSpaces,
+          })
         }
-        renderNoResultsStateComponent={() => (
-          <>
-            <NoResultsState query={query} />
-            <PostQueryAnalyticsComponent
-              screenCounter={postQueryScreenCounter}
-              searchSessionId={searchSessionId}
-              referralContextIdentifiers={referralContextIdentifiers}
-              key="post-query-analytics"
-            />
-          </>
-        )}
-        renderSearchResultsStateComponent={() => (
-          <SearchResultsState
-            query={query}
-            objectResults={objectResults}
-            spaceResults={spaceResults}
-            peopleResults={peopleResults}
-            searchSessionId={searchSessionId}
-            screenCounter={postQueryScreenCounter}
-            referralContextIdentifiers={referralContextIdentifiers}
-          />
-        )}
+        getSearchResultsGroups={() =>
+          getSearchResultsGroup({
+            objectResults,
+            spaceResults,
+            peopleResults,
+          })
+        }
+        renderNoResult={() => <NoResultsState query={query} />}
       />
     );
   }

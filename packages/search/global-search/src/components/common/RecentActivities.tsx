@@ -3,13 +3,21 @@ import { Result } from '../../model/Result';
 import { ScreenCounter } from '../../util/ScreenCounter';
 import { FormattedMessage } from 'react-intl';
 import ResultGroup from '../ResultGroup';
-import { PreQueryAnalyticsComponent } from './ScreenAnalyticsHelper';
-import AdvancedSearchGroup from '../confluence/AdvancedSearchGroup';
+import {
+  PreQueryAnalyticsComponent,
+  PostQueryAnalyticsComponent,
+} from './ScreenAnalyticsHelper';
 import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
 
+export enum ResultGroupType {
+  PreQuery = 'PreQuery',
+  PostQuery = 'PostQuery',
+}
+
 export interface Props {
-  query: string;
   resultsGroup: ResultsGroup[];
+  type: ResultGroupType;
+  renderAdvancedSearch: () => JSX.Element;
   searchSessionId: string;
   screenCounter?: ScreenCounter;
   referralContextIdentifiers?: ReferralContextIdentifiers;
@@ -21,7 +29,7 @@ export type ResultsGroup = {
   titleI18nId: string;
 };
 
-const mapRecentlyViewedObjectsToSections = (resultsToShow: ResultsGroup[]) => {
+const mapGroupsToSections = (resultsToShow: ResultsGroup[]): JSX.Element[] => {
   const analyticsData = {
     resultCount: resultsToShow
       .map(({ items }) => items.length)
@@ -38,25 +46,43 @@ const mapRecentlyViewedObjectsToSections = (resultsToShow: ResultsGroup[]) => {
     />
   ));
 };
-export default class RecentActivities extends React.Component<Props> {
-  render() {
+export default class ResultGroupsComponent extends React.Component<Props> {
+  getAnalyticsComponent() {
     const {
-      query,
       searchSessionId,
       screenCounter,
-      resultsGroup,
       referralContextIdentifiers,
+      type,
     } = this.props;
+    switch (type) {
+      case ResultGroupType.PostQuery:
+        return (
+          <PreQueryAnalyticsComponent
+            key="pre-query-analytics"
+            screenCounter={screenCounter}
+            searchSessionId={searchSessionId}
+            referralContextIdentifiers={referralContextIdentifiers}
+          />
+        );
+      case ResultGroupType.PreQuery:
+        return (
+          <PostQueryAnalyticsComponent
+            key="post-query-analytics"
+            screenCounter={screenCounter}
+            searchSessionId={searchSessionId}
+            referralContextIdentifiers={referralContextIdentifiers}
+          />
+        );
+    }
+  }
+
+  render() {
+    const { renderAdvancedSearch, resultsGroup } = this.props;
 
     return [
-      ...mapRecentlyViewedObjectsToSections(resultsGroup),
-      <AdvancedSearchGroup key="advanced" query={query} />,
-      <PreQueryAnalyticsComponent
-        key="pre-query-analytics"
-        screenCounter={screenCounter}
-        searchSessionId={searchSessionId}
-        referralContextIdentifiers={referralContextIdentifiers}
-      />,
+      ...mapGroupsToSections(resultsGroup),
+      renderAdvancedSearch(),
+      this.getAnalyticsComponent(),
     ];
   }
 }
