@@ -66,6 +66,7 @@
     "start:statuspage": "                    yarn run website:start **/packages/statuspage/**",
     "start:stride": "                        yarn run website:start **/packages/stride/**",
     "start:trello": "                        yarn run website:start **/packages/trello/**",
+    "start:teamwork-ecosystem": "            yarn run website:start **/packages/teamwork-ecosystem/**",
     "changeset": "                           node ./runChangeset",
     "release": "                             projector ./projector release",
     "build:editor-common:json-schema": "     cd packages/editor/editor-common && yarn run build:json-schema && echo 'Done.'",
