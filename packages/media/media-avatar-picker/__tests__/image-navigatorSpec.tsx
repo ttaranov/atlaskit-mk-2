@@ -1,16 +1,20 @@
+jest.mock('blueimp-load-image');
+
 declare var global: any; // we need define an interface for the Node global object when overwriting global objects, in this case FileReader
 import * as util from '../src/util';
 const fileSizeMbSpy = jest.spyOn(util, 'fileSizeMb');
 import * as React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow, mount, ReactWrapper } from 'enzyme';
 import Spinner from '@atlaskit/spinner';
 import Button from '@atlaskit/button';
 import { Ellipsify, Camera, Rectangle } from '@atlaskit/media-ui';
+import loadImageMock from 'blueimp-load-image';
 import {
   CONTAINER_INNER_SIZE,
   containerRect,
   ImageNavigator,
   Props as ImageNavigatorProps,
+  State as ImageNavigatorState,
 } from '../src/image-navigator';
 import { ERROR, MAX_SIZE_MB } from '../src/avatar-picker-dialog';
 import {
@@ -26,7 +30,7 @@ import { createMouseEvent, smallImage } from '@atlaskit/media-test-helpers';
 import { errorIcon } from '../src/image-navigator/images';
 
 describe('Image navigator', () => {
-  let component: any;
+  let component: ReactWrapper<ImageNavigatorProps, ImageNavigatorState>;
   let onImageLoaded: () => void;
   let onPositionChanged: () => void;
   let onSizeChanged: () => void;
@@ -297,11 +301,14 @@ describe('Image navigator', () => {
       });
 
       let FileReaderSpy: any;
+      let parseMetaData: jest.Mock<any>;
 
       beforeEach(() => {
         FileReaderSpy = jest
           .spyOn(global, 'FileReader')
           .mockImplementation(() => new MockFileReader());
+        parseMetaData = jest.fn();
+        (loadImageMock as any).parseMetaData = parseMetaData;
       });
 
       afterEach(() => {
@@ -338,12 +345,37 @@ describe('Image navigator', () => {
         expect(onImageError).toHaveBeenCalledWith(ERROR.SIZE);
         expect(onImageUploaded).not.toHaveBeenCalled();
       });
+
+      it('should be extracted orientation from the image', () => {
+        fileSizeMbSpy.mockReturnValue(MAX_SIZE_MB - 1);
+        const { onDrop } = component.find(DragZone).props();
+        onDrop(mockDropEvent(droppedImage));
+
+        expect(parseMetaData).toHaveBeenCalledWith(
+          droppedImage,
+          expect.any(Function),
+        );
+        const callback = parseMetaData.mock.calls[0][1];
+        callback({
+          exif: {
+            get: (property: string) => {
+              expect(property).toEqual('Orientation');
+              return 6;
+            },
+          },
+        });
+        component.update();
+        expect(component.state().exifOrientation).toEqual(6);
+      });
     });
   });
 
   describe('when an image is removed', () => {
     it('should clear state', () => {
-      component = shallow(
+      const shallowComponent = shallow<
+        ImageNavigatorProps,
+        ImageNavigatorState
+      >(
         <ImageNavigator
           imageSource={smallImage}
           onImageLoaded={onImageLoaded}
@@ -354,12 +386,12 @@ describe('Image navigator', () => {
           onImageUploaded={onImageUploaded}
         />,
       );
-      const { onRemoveImage: onRemoveImageProp } = component
+      const { onRemoveImage: onRemoveImageProp } = shallowComponent
         .find(ImageCropper)
         .props();
       onRemoveImageProp();
-      expect(component.state().fileImageSource).toBeUndefined();
-      expect(component.state().imageFile).toBeUndefined();
+      expect(shallowComponent.state().fileImageSource).toBeUndefined();
+      expect(shallowComponent.state().imageFile).toBeUndefined();
     });
   });
 

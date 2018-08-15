@@ -4,6 +4,7 @@ import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
 import Button from '@atlaskit/button';
 import ScaleLargeIcon from '@atlaskit/icon/glyph/media-services/scale-large';
 import ScaleSmallIcon from '@atlaskit/icon/glyph/media-services/scale-small';
+import loadImage from 'blueimp-load-image';
 import { ImageCropper, OnLoadHandler } from '../image-cropper';
 import Slider from '@atlaskit/field-range';
 import Spinner from '@atlaskit/spinner';
@@ -74,6 +75,7 @@ export interface State {
   fileImageSource?: string;
   imageFile?: File;
   isDroppingFile: boolean;
+  exifOrientation?: number;
 }
 
 const defaultState = {
@@ -229,6 +231,15 @@ export class ImageNavigator extends Component<Props, State> {
   }
 
   readFile(imageFile: File) {
+    loadImage.parseMetaData(imageFile, (data: any) => {
+      if (!data.exif) {
+        // Exif data doesn't exists, which means we can assume defaults
+        return;
+      }
+      const exifOrientation = data.exif.get('Orientation');
+      this.setState({ exifOrientation });
+    });
+
     const reader = new FileReader();
     reader.onload = (e: Event) => {
       const fileImageSource = (e.target as FileReader).result;
@@ -364,7 +375,14 @@ export class ImageNavigator extends Component<Props, State> {
   };
 
   renderImageCropper(dataURI: string) {
-    const { camera, imagePos, scale, isDragging, minScale } = this.state;
+    const {
+      camera,
+      imagePos,
+      scale,
+      isDragging,
+      minScale,
+      exifOrientation,
+    } = this.state;
     const { onLoad, onImageError } = this.props;
     const { onDragStarted, onImageSize, onRemoveImage } = this;
 
@@ -373,6 +391,7 @@ export class ImageNavigator extends Component<Props, State> {
         <ImageBg />
         <ImageCropper
           scale={scale}
+          exifOrientation={exifOrientation}
           imageSource={dataURI}
           imageWidth={camera.originalImg.width}
           containerSize={CONTAINER_SIZE}

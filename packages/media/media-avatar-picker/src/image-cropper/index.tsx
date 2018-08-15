@@ -15,6 +15,17 @@ import {
 import { ERROR } from '../avatar-picker-dialog';
 import { CONTAINER_INNER_SIZE } from '../image-navigator';
 
+const ORIENT_TRANSFORMS: { [key: number]: string } = {
+  1: '',
+  2: 'rotateY(180deg)',
+  3: 'rotate(180deg)',
+  4: 'rotate(180deg) rotateY(180deg)',
+  5: 'rotate(270deg) rotateY(180deg)',
+  6: 'rotate(90deg)',
+  7: 'rotate(90deg) rotateY(180deg)',
+  8: 'rotate(270deg)',
+};
+
 export interface LoadParameters {
   export: () => string;
 }
@@ -23,6 +34,7 @@ export type OnLoadHandler = (params: LoadParameters) => void;
 
 export interface ImageCropperProp {
   imageSource: string;
+  exifOrientation?: number;
   scale?: number; // Value from 0 to 1
   containerSize?: number;
   isCircularMask?: boolean;
@@ -37,11 +49,13 @@ export interface ImageCropperProp {
 }
 
 const defaultScale = 1;
+const defaultExifOrientation = 1;
 
 export class ImageCropper extends Component<ImageCropperProp, {}> {
   private imageElement?: HTMLImageElement;
 
   static defaultProps = {
+    exifOrientation: defaultExifOrientation,
     containerSize: CONTAINER_INNER_SIZE,
     isCircleMask: false,
     scale: defaultScale,
@@ -87,6 +101,7 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
       left,
       imageSource,
       onRemoveImage,
+      exifOrientation = defaultExifOrientation,
     } = this.props;
     const containerStyle = {
       width: `${containerSize}px`,
@@ -98,6 +113,7 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
       display: width === 'auto' ? 'none' : 'block',
       top: `${top}px`,
       left: `${left}px`,
+      transform: ORIENT_TRANSFORMS[exifOrientation],
     };
     let crossOrigin: '' | 'anonymous' | 'use-credentials' | undefined;
     try {
