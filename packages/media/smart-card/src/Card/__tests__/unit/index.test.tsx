@@ -8,9 +8,9 @@ import * as React from 'react';
 import { Observable } from 'rxjs/Observable';
 import { takeWhile } from 'rxjs/operators';
 import { mount } from 'enzyme';
-import { Client, ObjectState, ObjectStatus } from '../../src/Client';
+import { Client, ObjectState, ObjectStatus } from '../../../Client';
 import { BlockCard, InlineCard } from '@atlaskit/media-ui';
-import { Card } from '../../src/Card';
+import { Card } from '../..';
 
 function isNotResolved(state: ObjectState) {
   return state.status !== 'resolved';

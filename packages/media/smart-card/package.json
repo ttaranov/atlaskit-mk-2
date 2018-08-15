@@ -29,6 +29,7 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^5.0.2",
+    "@types/enzyme": "^3.1.6",
     "@atlaskit/field-range": "^5.0.2",
     "@atlaskit/field-text": "^7.0.3",
     "@atlaskit/form": "^3.1.4",
@@ -36,6 +37,8 @@
     "@atlaskit/page": "^8.0.2",
     "@atlaskit/select": "^5.0.7",
     "brace": "^0.11.1",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "react": "^16.4.0",
     "react-ace": "^6.1.0",
     "xhr-mock": "^2.4.0"
   }

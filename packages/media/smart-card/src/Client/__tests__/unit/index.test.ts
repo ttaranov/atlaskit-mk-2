@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs';
 import mock, { once } from 'xhr-mock';
-import { Client, ClientOptions } from '../../src/Client';
+import { Client, ClientOptions } from '../..';
 
 const RESOLVE_URL =
   'https://api-private.stg.atlassian.com/object-resolver/resolve';
