@@ -1,5 +1,8 @@
 # @atlaskit/website
 
+## 4.0.1
+- [patch] Add Object.values polyfill [b340c56](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b340c56)
+
 ## 4.0.0
 
 
