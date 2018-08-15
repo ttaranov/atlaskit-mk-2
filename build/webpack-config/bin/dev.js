@@ -106,6 +106,8 @@ async function runDevServer() {
       timings: true,
       chunks: false,
       chunkModules: false,
+      // https://github.com/TypeStrong/ts-loader/issues/751
+      warningsFilter: /export .* was not found in/,
     },
   });
 
