@@ -19,7 +19,7 @@ const containerSize = 400;
 const scale = 0.8;
 
 describe('Image cropper', () => {
-  const createComponent = (props = {}) => {
+  const createComponent = (props: Partial<ImageCropperProp> = {}) => {
     const onDragStartedSpy = jest.fn();
     const onImageSizeSpy = jest.fn();
     const onLoadSpy = jest.fn();
@@ -58,6 +58,17 @@ describe('Image cropper', () => {
       dragOverlay,
     };
   };
+
+  describe('with exif orientation', () => {
+    it('should specify transformation', () => {
+      const { img } = createComponent({ exifOrientation: 6 });
+      expect(img.props().style).toEqual(
+        expect.objectContaining({
+          transform: 'rotate(90deg)',
+        }),
+      );
+    });
+  });
 
   describe('with image width', () => {
     describe('image tag', () => {

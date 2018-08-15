@@ -15,6 +15,18 @@ import {
 import { ERROR } from '../avatar-picker-dialog';
 import { CONTAINER_INNER_SIZE } from '../image-navigator';
 
+/*
+  For convenience, here is what the letter F would look like if it were tagged correctly
+  and displayed by a program that ignores the orientation tag (thus showing the stored image):
+
+  1       2       3       4       5           6           7           8
+
+  888888  888888      88  88      8888888888  88                  88  8888888888
+  88          88      88  88      88  88      88  88          88  88      88  88
+  8888      8888    8888  8888    88          8888888888  8888888888          88
+  88          88      88  88
+  88          88  888888  888888
+*/
 const ORIENT_TRANSFORMS: { [key: number]: string } = {
   1: '',
   2: 'rotateY(180deg)',
