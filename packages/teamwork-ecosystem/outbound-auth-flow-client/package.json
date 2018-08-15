@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/outbound-auth-flow-client",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Front-end library for starting outbound auth flows",
   "config": {
     "access": "public"
