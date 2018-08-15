@@ -121,6 +121,36 @@ describe('NavigationNext View Controller', () => {
       expect(view.getItems).toHaveBeenCalled();
     });
 
+    it('should add view as incoming when setView is called if view id with `getItems` is NOT a promise', () => {
+      const viewController = new ViewController({
+        initialPeekViewId: 'view-id',
+        isDebugEnabled: true,
+      });
+
+      viewController.addView({ ...view, getITems: () => {} });
+      viewController.setView('view-id');
+
+      expect(viewController.state.incomingView).toMatchObject({
+        id: view.id,
+        type: view.type,
+      });
+    });
+
+    it('should add view as active when setView is called if view id with `getItems` promise and solved', async () => {
+      const viewController = new ViewController({
+        initialPeekViewId: 'view-id',
+        isDebugEnabled: true,
+      });
+
+      await viewController.addView(view);
+      await viewController.setView('view-id');
+
+      expect(viewController.state.activeView).toMatchObject({
+        id: view.id,
+        type: view.type,
+      });
+    });
+
     it('should be able to add and remove views', () => {
       const viewController = new ViewController({
         initialPeekViewId: 'view-id',
@@ -165,6 +195,28 @@ describe('NavigationNext View Controller', () => {
 
       expect(viewController.views).toEqual({});
     });
+  });
+
+  it('should add incoming view as active view if the added and incoming view matches', () => {
+    const viewController = new ViewController({
+      initialPeekViewId: 'view-id',
+      isDebugEnabled: true,
+    });
+
+    viewController.addView(view);
+    viewController.setView('view-id');
+
+    viewController.state.activeView = { ...activeView, data: [] };
+    viewController.state.incomingView = incomingView;
+    viewController.addView(view);
+
+    expect(viewController.state.activeView).toMatchObject({
+      id: view.id,
+      type: view.type,
+    });
+    expect(viewController.state.activePeekView).toBe(null);
+    expect(viewController.state.incomingView).toEqual(incomingView);
+    expect(viewController.state.incomingPeekView).toEqual(incomingView);
   });
 
   it('should reset the view if a view ID has been provided and it matches the active view', () => {
