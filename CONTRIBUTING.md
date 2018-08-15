@@ -52,8 +52,8 @@ end to end. If you have any questions/problems, feel free to contact James Kyle
 or Luke Batchelor.
 
 A more in-depth view of how we want to work with other teams and open source
-contributions can be found at
-[atlaskit.atlassian.com/docs/guides/contributing](atlaskit.atlassian.com/docs/guides/contributing).
+contributions can be found on the
+[website](https://atlaskit.atlassian.com/docs/guides/contributing).
 
 That all being said, let's dive into it:
 
@@ -122,7 +122,7 @@ IntelliJ and WebStorm don't handle it properly. There are tickets raised in YouT
 
 ## Exploring the Project
 
-See the [directory structure docs](http://atlaskit.atlassian.com/docs/guides/directory-structure) for
+See the [directory structure docs](https://atlaskit.atlassian.com/docs/guides/directory-structure) for
 more information.
 
 ## Writing new code
