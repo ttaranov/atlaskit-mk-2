@@ -68,7 +68,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
 
     this.setState({
       uploadingFiles: ids,
-      files: [...ids, ...files],
+      files: [...files, ...ids],
     });
   };
 
@@ -94,10 +94,6 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
   renderCards = () => {
     const { files } = this.state;
     const cards = files.map((upfrontId, key) => {
-      // upfrontId.then(id => {
-      //   console.log('render <Card />', id);
-      // });
-      console.log('upfrontId', upfrontId);
       return (
         <CardItemWrapper key={key}>
           <Card
