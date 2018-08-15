@@ -79,9 +79,10 @@ export default class PeopleSearchClientImpl implements PeopleSearchClient {
         $first: Int!,
         $offset: Int,
         $excludeInactive: Boolean,
-        $excludeBots: Boolean
+        $excludeBots: Boolean,
+        $product: String,
       ) {
-        AccountCentricUserSearch (displayName: $displayName, cloudId: $cloudId, first: $first, offset: $offset,
+        UserSearch (product: $product, displayName: $displayName, cloudId: $cloudId, first: $first, offset: $offset,
         filter: { excludeInactive: $excludeInactive, excludeBots: $excludeBots }) {
           id,
           fullName,
@@ -93,6 +94,7 @@ export default class PeopleSearchClientImpl implements PeopleSearchClient {
       }`,
       variables: {
         cloudId: this.cloudId,
+        product: 'confluence',
         displayName: query,
         first: this.RESULT_LIMIT,
         offset: 1,
