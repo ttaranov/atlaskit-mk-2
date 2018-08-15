@@ -5,7 +5,7 @@ import NoRecentActivity from '../NoRecentActivity';
 import ResultGroupsComponent, {
   ResultsGroup,
   ResultGroupType,
-} from './RecentActivities';
+} from './ResultGroupsComponent';
 import { PreQueryAnalyticsComponent } from './ScreenAnalyticsHelper';
 import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
 import AdvancedSearchGroup from '../confluence/AdvancedSearchGroup';

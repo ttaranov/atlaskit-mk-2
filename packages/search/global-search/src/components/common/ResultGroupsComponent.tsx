@@ -36,15 +36,17 @@ const mapGroupsToSections = (resultsToShow: ResultsGroup[]): JSX.Element[] => {
       .reduce((total, count) => total + count, 0),
   };
 
-  return resultsToShow.map((result, index) => (
-    <ResultGroup
-      key={result.key}
-      title={<FormattedMessage id={result.titleI18nId} />}
-      results={result.items}
-      sectionIndex={index}
-      analyticsData={analyticsData}
-    />
-  ));
+  return resultsToShow
+    .filter(({ items }) => items && items.length)
+    .map((result, index) => (
+      <ResultGroup
+        key={result.key}
+        title={<FormattedMessage id={result.titleI18nId} />}
+        results={result.items}
+        sectionIndex={index}
+        analyticsData={analyticsData}
+      />
+    ));
 };
 export default class ResultGroupsComponent extends React.Component<Props> {
   getAnalyticsComponent() {

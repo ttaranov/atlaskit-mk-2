@@ -8,7 +8,7 @@ import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
 import ResultGroupsComponent, {
   ResultsGroup,
   ResultGroupType,
-} from './RecentActivities';
+} from './ResultGroupsComponent';
 import AdvancedSearchGroup from '../confluence/AdvancedSearchGroup';
 
 export const MAX_PAGES_BLOGS_ATTACHMENTS = 8;

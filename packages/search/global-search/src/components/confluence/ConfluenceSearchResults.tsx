@@ -5,7 +5,7 @@ import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
 import { take } from '../SearchResultsUtil';
 import NoResultsState from './NoResultsState';
 import GenericSearchResults from '../common/GenericSearchResults';
-import { ResultsGroup } from '../common/RecentActivities';
+import { ResultsGroup } from '../common/ResultGroupsComponent';
 import { getConfluenceAdvancedSearchLink } from '../SearchResultsUtil';
 import { FormattedHTMLMessage } from 'react-intl';
 
