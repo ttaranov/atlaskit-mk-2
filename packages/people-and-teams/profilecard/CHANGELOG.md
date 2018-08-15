@@ -1,5 +1,9 @@
 # @atlaskit/profilecard
 
+## 4.0.6
+- [patch] Updated dependencies [8242529](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8242529)
+  - @atlaskit/layer@5.0.5
+
 ## 4.0.5
 - [patch] use size prop small when using icon component [27e074e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27e074e)
 - [none] Updated dependencies [27e074e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/27e074e)
