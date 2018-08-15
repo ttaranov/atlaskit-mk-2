@@ -1,5 +1,13 @@
 # @atlaskit/editor-core
 
+## 77.0.12
+- [patch] Updated dependencies [f9c0cdb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9c0cdb)
+  - @atlaskit/code@8.0.0
+  - @atlaskit/renderer@20.0.6
+  - @atlaskit/logo@9.0.4
+  - @atlaskit/avatar-group@2.0.8
+  - @atlaskit/docs@5.0.5
+
 ## 77.0.11
 - [patch] ED-5190: fixed mediaSingle styles in renderer [4f09dea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4f09dea)
 - [none] Updated dependencies [4f09dea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4f09dea)

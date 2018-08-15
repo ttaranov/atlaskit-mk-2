@@ -1,5 +1,10 @@
 # @atlaskit/renderer
 
+## 20.0.6
+- [patch] Updated dependencies [f9c0cdb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9c0cdb)
+  - @atlaskit/code@8.0.0
+  - @atlaskit/docs@5.0.5
+
 ## 20.0.5
 - [patch] ED-5190: fixed mediaSingle styles in renderer [4f09dea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4f09dea)
 - [none] Updated dependencies [4f09dea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4f09dea)

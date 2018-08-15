@@ -1,5 +1,11 @@
 # @atlaskit/website
 
+## 4.0.2
+- [patch] Updated dependencies [f9c0cdb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9c0cdb)
+  - @atlaskit/code@8.0.0
+  - @atlaskit/logo@9.0.4
+  - @atlaskit/docs@5.0.5
+
 ## 4.0.1
 - [patch] Add Object.values polyfill [b340c56](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b340c56)
 
