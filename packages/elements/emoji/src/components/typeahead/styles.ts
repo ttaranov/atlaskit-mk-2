@@ -1,4 +1,4 @@
-import { style } from 'typestyle/lib';
+import { style } from 'typestyle';
 
 import {
   emojiPreviewSelectedColor,
