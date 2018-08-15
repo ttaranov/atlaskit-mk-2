@@ -12,7 +12,7 @@ export interface Props {
   linkComponent?: LinkComponent;
   jiraClient: JiraClient;
 }
-import { ContentType } from '../../model/Result';
+import { ContentType, JiraObjectResult } from '../../model/Result';
 
 const contentTypeToSection = {
   [ContentType.JiraIssue]: 'ISSUES',
@@ -33,11 +33,11 @@ export class JiraQuickSearchContainer extends React.Component<
   getSearchResultsComponent = ({ recentItems }) => {
     return (
       recentItems &&
-      Object.entries(recentItems).map(([key, items], sectionIndex) => (
+      Object.keys(recentItems).map((key, sectionIndex) => (
         <ResultGroup
           key={key}
           title={key}
-          results={items}
+          results={recentItems[key]}
           sectionIndex={sectionIndex}
           analyticsData={{}}
         />
@@ -50,9 +50,13 @@ export class JiraQuickSearchContainer extends React.Component<
   getRecentItems = (sessionId: string) => {
     const { jiraClient } = this.props;
     return jiraClient.getRecentItems(sessionId).then(items =>
-      items.reduce((acc, item) => {
-        const section = contentTypeToSection[item.contentType];
-        acc[section] = [].concat(acc[section] || []).concat(item);
+      items.reduce((acc, item: JiraObjectResult) => {
+        if (item.contentType) {
+          const section = contentTypeToSection[item.contentType];
+          acc[section] = ([] as JiraObjectResult[])
+            .concat(acc[section] || [])
+            .concat(item);
+        }
         return acc;
       }, {}),
     );
