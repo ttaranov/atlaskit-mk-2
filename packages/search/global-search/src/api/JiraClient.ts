@@ -18,7 +18,7 @@ export type RecentItemsCounts = {
   projects?: number;
 };
 
-export const defaultRecentItemCounts: RecentItemsCounts = {
+export const DEFAULT_RECENT_ITEMS_COUNT: RecentItemsCounts = {
   issues: 8,
   boards: 2,
   projects: 2,
@@ -40,22 +40,22 @@ export interface JiraClient {
   ): Promise<JiraObjectResult[]>;
 }
 
-enum JiraGroup {
+enum JiraResponseGroup {
   Issues = 'quick-search-issues',
   Projects = 'quick-search-projects',
   Boards = 'quick-search-boards',
   Filters = 'quick-search-filters',
 }
 
-const GroupToContentType = {
-  [JiraGroup.Issues]: ContentType.JiraIssue,
-  [JiraGroup.Boards]: ContentType.JiraBoard,
-  [JiraGroup.Filters]: ContentType.JiraFilter,
-  [JiraGroup.Projects]: ContentType.JiraProject,
+const JiraResponseGroupToContentType = {
+  [JiraResponseGroup.Issues]: ContentType.JiraIssue,
+  [JiraResponseGroup.Boards]: ContentType.JiraBoard,
+  [JiraResponseGroup.Filters]: ContentType.JiraFilter,
+  [JiraResponseGroup.Projects]: ContentType.JiraProject,
 };
 
 type JiraRecentItemGroup = {
-  id: JiraGroup;
+  id: JiraResponseGroup;
   name: string;
   items: JiraRecentItem[];
 };
@@ -71,12 +71,16 @@ type JiraRecentItem = {
 
 export default class JiraClientImpl implements JiraClient {
   private serviceConfig: ServiceConfig;
-  // tslint:disable-next-line
   private cloudId: string;
 
   constructor(url: string, cloudId: string) {
     this.serviceConfig = { url: url };
     this.cloudId = cloudId;
+  }
+
+  // Unused, just to mute ts lint
+  public getCloudId() {
+    return this.cloudId;
   }
 
   /**
@@ -87,7 +91,7 @@ export default class JiraClientImpl implements JiraClient {
    */
   public async getRecentItems(
     searchSessionId: string,
-    recentItemCounts: RecentItemsCounts = defaultRecentItemCounts,
+    recentItemCounts: RecentItemsCounts = DEFAULT_RECENT_ITEMS_COUNT,
   ): Promise<JiraObjectResult[]> {
     const options: RequestServiceOptions = {
       path: RECENT_ITEMS_PATH,
@@ -111,7 +115,7 @@ export default class JiraClientImpl implements JiraClient {
   }
   private recentItemToResultItem(
     item: JiraRecentItem,
-    jiraGroup: JiraGroup,
+    jiraGroup: JiraResponseGroup,
   ): JiraObjectResult {
     return {
       resultType: ResultType.JiraObjectResult,
@@ -120,20 +124,22 @@ export default class JiraClientImpl implements JiraClient {
       href: item.url,
       analyticsType: AnalyticsType.RecentJira,
       avatarUrl: `${item.avatarUrl}`,
-      contentType: GroupToContentType[jiraGroup],
+      contentType: JiraResponseGroupToContentType[jiraGroup],
       ...this.getTypeSpecificAttributes(item, jiraGroup),
     };
   }
 
   private getTypeSpecificAttributes(
     item: JiraRecentItem,
-    jiraGroup: JiraGroup,
+    jiraGroup: JiraResponseGroup,
   ): {
     objectKey?: string;
     containerName?: string;
   } {
     return {
-      ...(jiraGroup === JiraGroup.Filters ? { objectKey: 'Filters' } : null),
+      ...(jiraGroup === JiraResponseGroup.Filters
+        ? { objectKey: 'Filters' }
+        : null),
       containerName: item.metadata,
     };
   }
