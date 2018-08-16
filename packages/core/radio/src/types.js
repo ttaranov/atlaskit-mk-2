@@ -35,7 +35,7 @@ export type RadioBasePropTypes = {
   /** Field name */
   name?: string,
   /** onChange event handler */
-  onChange: any => mixed,
+  onChange: (SyntheticEvent<*>) => void,
   /** Field value */
   value?: string,
 };

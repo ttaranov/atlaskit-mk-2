@@ -1,21 +1,21 @@
 // @flow
-import React, { Fragment } from 'react';
+import React from 'react';
 import RadioIcon from './RadioIcon';
 import { HiddenInput } from './styled/Radio';
 
 type RadioInputProps = {
-  isActive: boolean,
-  isChecked: boolean,
-  isDisabled: boolean,
-  isFocused: boolean,
-  isHovered: boolean,
-  isInvalid: boolean,
-  isRequired: boolean,
-  onChange: event => void,
-  onBlur: event => void,
-  onFocus: event => void,
-  name: string,
-  value: string,
+  isActive?: boolean,
+  isChecked?: boolean,
+  isDisabled?: boolean,
+  isFocused?: boolean,
+  isHovered?: boolean,
+  isInvalid?: boolean,
+  isRequired?: boolean,
+  onChange: (SyntheticEvent<*>) => void,
+  onBlur: (SyntheticEvent<*>) => void,
+  onFocus: (SyntheticEvent<*>) => void,
+  name?: string,
+  value?: string,
 };
 
 const RadioInput = ({
@@ -33,7 +33,13 @@ const RadioInput = ({
   value,
 }: RadioInputProps) => {
   return (
-    <Fragment>
+    <span
+      style={{
+        flexShrink: 0,
+        display: 'inline-block',
+        position: 'relative',
+      }}
+    >
       <HiddenInput
         checked={isChecked}
         disabled={isDisabled}
@@ -53,7 +59,7 @@ const RadioInput = ({
         isHovered={isHovered}
         isInvalid={isInvalid}
       />
-    </Fragment>
+    </span>
   );
 };
 
