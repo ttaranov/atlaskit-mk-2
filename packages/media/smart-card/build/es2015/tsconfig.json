@@ -6,7 +6,11 @@
     "target": "es5",
     "module": "es2015"
   },
-  "include": ["../../src/**/*.ts", "../../src/**/*.tsx"],
+  "include": [
+    "../../src/**/*.ts",
+    "../../src/**/*.tsx",
+    "../../typings/**/*.d.ts"
+  ],
   "exclude": [
     "../../src/__tests__/unit/*.*",
     "../../src/**/__tests__/unit/*.*"
