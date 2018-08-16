@@ -12679,10 +12679,6 @@ restore-cursor@^2.0.0:
     onetime "^2.0.0"
     signal-exit "^3.0.2"
 
-resumablejs@1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/resumablejs/-/resumablejs-1.0.2.tgz#0456ff05e52455e410d8c0102b836cdfce5943bd"
-
 resumer@~0.0.0:
   version "0.0.0"
   resolved "https://registry.yarnpkg.com/resumer/-/resumer-0.0.0.tgz#f1e8f461e4064ba39e82af3cdc2a8c893d076759"
