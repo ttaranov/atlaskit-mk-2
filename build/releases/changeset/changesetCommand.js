@@ -3,17 +3,21 @@ const { green, red } = require('chalk');
 const boxen = require('boxen');
 const outdent = require('outdent');
 // TODO: Make these pull from the actual packages once we have a firm repo structure
-const cli = require('../../utils/cli');
-const git = require('../../utils/git');
-const { getChangedPackagesSinceMaster } = require('../../utils/packages');
+const cli = require('@atlaskit/build-utils/cli');
+const git = require('@atlaskit/build-utils/git');
+const logger = require('@atlaskit/build-utils/logger');
+const {
+  getChangedPackagesSinceMaster,
+} = require('@atlaskit/build-utils/packages');
 const createChangeset = require('./createChangeset');
 const createChangesetCommit = require('./createChangesetCommit');
 
-async function run() {
+async function run(opts) {
   printIntroBannerMessage();
   const changedPackages = await getChangedPackagesSinceMaster();
   const changePackagesName = changedPackages.map(pkg => pkg.name);
-  const newChangeset = await createChangeset(changePackagesName);
+  const newChangeset = await createChangeset(changePackagesName, opts);
+
   const changesetCommitStr = createChangesetCommit(newChangeset);
 
   printChangeset(newChangeset);
@@ -22,7 +26,7 @@ async function run() {
 
   if (confirmCommit) {
     await git.commit(changesetCommitStr);
-    console.log(green('Changeset committed!'));
+    logger.log(green('Changeset committed!'));
   }
 }
 
@@ -47,7 +51,7 @@ function printIntroBannerMessage() {
     borderStyle: 'double',
     align: 'center',
   });
-  console.log(prettyMessage);
+  logger.log(prettyMessage);
 }
 // prettier-ignore-end
 
@@ -63,7 +67,7 @@ function printChangeset(changeset) {
       .map(release => release.name);
   }
 
-  console.log('=== Releasing the following packages ===');
+  logger.log('=== Releasing the following packages ===');
   const majorReleases = getReleasesOfType('major');
   const minorReleases = getReleasesOfType('minor');
   const patchReleases = getReleasesOfType('patch');
@@ -75,21 +79,21 @@ function printChangeset(changeset) {
     .map(dep => red(dep.name));
 
   if (majorReleases.length > 0) {
-    console.log(`${green('[Major]')}\n  ${majorReleases.join(', ')}`);
+    logger.log(`${green('[Major]')}\n  ${majorReleases.join(', ')}`);
   }
   if (minorReleases.length > 0) {
-    console.log(`${green('[Minor]')}\n  ${minorReleases.join(', ')}`);
+    logger.log(`${green('[Minor]')}\n  ${minorReleases.join(', ')}`);
   }
   if (patchReleases.length > 0) {
-    console.log(`${green('[Patch]')}\n  ${patchReleases.join(', ')}`);
+    logger.log(`${green('[Patch]')}\n  ${patchReleases.join(', ')}`);
   }
   if (patchDependents.length > 0) {
-    console.log(
+    logger.log(
       `${green('[Dependents (patch)]')}\n  ${patchDependents.join('\n  ')}`,
     );
   }
   if (majorDependents.length > 0) {
-    console.log(
+    logger.log(
       `${green('[Dependents (major)]')}\n  ${majorDependents.join('\n  ')}`,
     );
   }
@@ -107,7 +111,7 @@ function printChangeset(changeset) {
       borderStyle: 'double',
       align: 'center',
     });
-    console.log(prettyMessage);
+    logger.log(prettyMessage);
   }
 }
 

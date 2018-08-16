@@ -188,6 +188,7 @@ async function createChangeset(
         dep =>
           !!getDependencyVersionRange(dependentPkg.config, dep).versionRange,
       );
+
     dependent.dependencies = dependencies;
   });
 
