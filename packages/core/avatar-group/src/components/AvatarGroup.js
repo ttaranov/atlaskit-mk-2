@@ -42,7 +42,9 @@ type Props = {
   /** Take control of the click event on the more indicator. This will cancel
    the default dropdown behaviour. */
   onMoreClick?: () => mixed,
-  /** Provide additional props to the MoreButton or override default props */
+  /** Provide additional props to the MoreButton. Example use cases: altering
+   tab order by providing tabIndex; adding onClick behaviour without losing the
+   default dropdown */
   showMoreButtonProps?: $Shape<HTMLElement>,
 
   boundariesElement?: 'viewport' | 'window' | 'scrollParent',
