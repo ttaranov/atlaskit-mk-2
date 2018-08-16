@@ -10,7 +10,7 @@ export { CardAppearance };
 export type FromUrlProps = {
   appearance: CardAppearance;
   url: string;
-  client?: Client;
+  client: Client;
 };
 
 export type WithDataProps = {
@@ -76,10 +76,5 @@ export const renderTheData = ({ appearance, data }: WithDataProps) => (
   />
 );
 
-export class Card extends React.PureComponent<CardProps> {
-  render() {
-    return isFromUrl(this.props)
-      ? renderFromURL(this.props)
-      : renderTheData(this.props);
-  }
-}
+export const Card = (props: CardProps) =>
+  isFromUrl(props) ? renderFromURL(props) : renderTheData(props);

@@ -1,7 +1,5 @@
-import 'whatwg-fetch';
 import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
-// import { Observable } from 'rxjs';
-// import mock, { once } from 'xhr-mock';
+import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
 import { Client, ClientOptions } from '../..';
 const RESOLVE_URL =

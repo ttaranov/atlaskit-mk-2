@@ -240,11 +240,7 @@ describe('Card', () => {
 
   it('should render the resolved view when data is provided', async () => {
     const wrapper = mount(
-      <Card
-        appearance="block"
-        data={{ name: 'foobar' }}
-        url="http://example.com"
-      />,
+      <Card appearance="block" data={{ name: 'foobar' }} />,
     );
     wrapper.update();
     expect(wrapper.find(BlockCard.ResolvedView)).toHaveLength(1);
@@ -283,11 +279,7 @@ describe('Card', () => {
 
   it('should render the inline view with props when the appearance is inline', async () => {
     const wrapper = mount(
-      <Card
-        appearance="inline"
-        data={{ name: 'foobar' }}
-        url="http://example.com"
-      />,
+      <Card appearance="inline" data={{ name: 'foobar' }} />,
     );
     wrapper.update();
     expect(wrapper.find(InlineCard.ResolvedView)).toHaveLength(1);
@@ -300,11 +292,7 @@ describe('Card', () => {
 
   it('should render the block view with props when the appearance is block', async () => {
     const wrapper = mount(
-      <Card
-        appearance="block"
-        data={{ name: 'foobar' }}
-        url="http://example.com"
-      />,
+      <Card appearance="block" data={{ name: 'foobar' }} />,
     );
     wrapper.update();
     expect(wrapper.find(BlockCard.ResolvedView)).toHaveLength(1);
