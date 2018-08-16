@@ -1,5 +1,9 @@
 # @atlaskit/inline-dialog
 
+## 9.0.1
+- [patch] Added z-index back and fixed onClose [d9a0c62](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d9a0c62)
+- [none] Updated dependencies [d9a0c62](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d9a0c62)
+
 ## 9.0.0
 - [major] Inline-dialog now uses @atlaskit/popper, and as such some props are no longer required. The "position" prop now matches the "placements" from react-popper to avoid confusion. [1d9e75a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1d9e75a)
 
