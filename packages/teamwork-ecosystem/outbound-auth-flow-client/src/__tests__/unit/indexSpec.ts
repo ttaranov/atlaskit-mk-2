@@ -1,4 +1,4 @@
-import { auth } from '..';
+import { auth } from '../..';
 
 // jsdom Window requires options
 declare var Window: {
