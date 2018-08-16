@@ -6,7 +6,6 @@
     "./docs/*.ts",
     "./docs/*.tsx",
     "./examples/*.ts",
-    "./examples/*.tsx",
-    "./typings/**/*.d.ts"
+    "./examples/*.tsx"
   ]
 }
