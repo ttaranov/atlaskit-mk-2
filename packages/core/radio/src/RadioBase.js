@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import RadioInput from './RadioInput';
-import { Label, Wrapper } from './styled/Radio';
+import { Label } from './styled/Radio';
 import type { RadioBasePropTypes } from './types';
 
 type State = {
@@ -55,30 +55,28 @@ export default class Radio extends Component<RadioBasePropTypes, State> {
 
     return (
       <Label
+        {...props}
         isDisabled={isDisabled}
         onMouseDown={this.onMouseDown}
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}
         onMouseUp={this.onMouseUp}
       >
-        <Wrapper>
-          <RadioInput
-            isChecked={isSelected}
-            isDisabled={isDisabled}
-            isFocused={isFocused}
-            isHovered={isHovered}
-            isInvalid={isInvalid}
-            isRequired={isRequired}
-            isActive={isActive}
-            onChange={onChange}
-            onBlur={this.onBlur}
-            onFocus={this.onFocus}
-            name={name}
-            value={value}
-            {...props}
-          />
-          <span>{children}</span>
-        </Wrapper>
+        <RadioInput
+          isChecked={isSelected}
+          isDisabled={isDisabled}
+          isFocused={isFocused}
+          isHovered={isHovered}
+          isInvalid={isInvalid}
+          isRequired={isRequired}
+          isActive={isActive}
+          onChange={onChange}
+          onBlur={this.onBlur}
+          onFocus={this.onFocus}
+          name={name}
+          value={value}
+        />
+        <span>{children}</span>
       </Label>
     );
   }

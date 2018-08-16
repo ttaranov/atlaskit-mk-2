@@ -3,14 +3,11 @@ import styled, { css } from 'styled-components';
 import { colors, themed } from '@atlaskit/theme';
 
 export const HiddenInput = styled.input`
-  border: 0;
-  clip: rect(1px, 1px, 1px, 1px);
-  height: 1;
-  overflow: hidden;
-  padding: 0;
   position: absolute;
-  white-space: nowrap;
-  width: 1;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   opacity: 0;
 `;
 
@@ -22,7 +19,7 @@ type LabelProps = {
 };
 
 export const Label = styled.label`
-  display: 'block';
+  display: flex;
   color: ${(props: LabelProps): string =>
     // $FlowFixMe - theme is not found in props
     props.isDisabled ? disabledColor(props) : colors.text(props)};
@@ -133,9 +130,4 @@ export const IconWrapper = styled.span`
     transition: stroke 0.2s ease-in-out;
     ${getBorderColor};
   }
-`;
-
-export const Wrapper = styled.div`
-  display: flex;
-  align-items: center;
 `;

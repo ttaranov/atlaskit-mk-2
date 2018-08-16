@@ -2,11 +2,22 @@
 import React, { Component } from 'react';
 import { RadioInput } from '../src';
 
-export default class RadioInputExample extends Component {
+type State = {
+  isActive: boolean,
+  isChecked: boolean,
+  isFocused: boolean,
+  isMouseDown: boolean,
+  selectedValue: string,
+};
+export default class RadioInputExample extends Component<*, State> {
   state = {
     selectedValue: '',
+    isActive: false,
     isChecked: false,
+    isMouseDown: false,
+    isFocused: false,
   };
+
   onBlur = () => {
     this.setState({
       isActive: this.state.isMouseDown && this.state.isActive,
@@ -19,13 +30,13 @@ export default class RadioInputExample extends Component {
       isFocused: true,
     });
   };
-  onChange = event => {
-    console.log('onChange()', event.target.value);
+  onChange = (event: SyntheticEvent<*>) => {
+    console.log('onChange()', event.currentTarget.value);
     this.setState({
-      selectedValue: event.target.value,
+      selectedValue: event.currentTarget.value,
     });
   };
-  onClick = event => {
+  onClick = (event: SyntheticEvent<*>) => {
     console.log('onClick', event);
     this.setState({
       isChecked: true,
@@ -42,7 +53,7 @@ export default class RadioInputExample extends Component {
         onBlur={this.onBlur}
         onFocus={this.onFocus}
         onChange={this.onChange}
-        name='radio-1'
+        name="radio-1"
         value={'radio-1'}
       />
     );
