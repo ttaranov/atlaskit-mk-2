@@ -40,9 +40,10 @@ export interface ConfluenceObjectResult extends Result {
 }
 
 export interface JiraObjectResult extends Result {
-  objectKey: string;
-  containerName: string;
+  objectKey?: string;
+  containerName?: string;
   resultType: ResultType.JiraObjectResult;
+  contentType?: ContentType;
 }
 
 export interface ContainerResult extends Result {
@@ -64,6 +65,10 @@ export enum ContentType {
   ConfluencePage = 'confluence-page',
   ConfluenceBlogpost = 'confluence-blogpost',
   ConfluenceAttachment = 'confluence-attachment',
+  JiraIssue = 'jira-issue',
+  JiraBoard = 'jira-board',
+  JiraFilter = 'jira-filter',
+  JiraProject = 'jira-project',
   Person = 'person',
 }
 
