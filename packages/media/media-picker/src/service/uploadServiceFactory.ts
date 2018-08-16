@@ -9,7 +9,6 @@ import {
   UploadParams,
 } from '..';
 import { NewUploadServiceImpl } from './newUploadServiceImpl';
-import { OldUploadServiceImpl } from './uploadService';
 
 export type UploadServiceEventPayloadTypes = {
   readonly 'files-added': UploadsStartEventPayload;
