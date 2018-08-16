@@ -4,9 +4,36 @@ import * as sinon from 'sinon';
 import { ReactSerializer } from '../../../src';
 import { defaultSchema as schema } from '@atlaskit/editor-common';
 import { Action } from '../../../src/react/marks';
+import { bigEmojiHeight } from '../../../src/utils';
+import { RendererAppearance } from '../../../src/ui/Renderer';
+
+const emojiDoc = {
+  content: [
+    {
+      content: [
+        {
+          attrs: {
+            id: '1f642',
+            shortName: ':slight_smile:',
+            text: '🙂',
+          },
+          type: 'emoji',
+        },
+        {
+          text: ' ',
+          type: 'text',
+        },
+      ],
+      type: 'paragraph',
+    },
+  ],
+  type: 'doc',
+  version: 1,
+};
 
 const doc = {
   type: 'doc',
+  version: 1,
   content: [
     {
       type: 'paragraph',
@@ -62,6 +89,7 @@ const doc = {
 };
 
 const docFromSchema = schema.nodeFromJSON(doc);
+const emojiDocFromSchema = schema.nodeFromJSON(emojiDoc);
 
 describe('Renderer - ReactSerializer', () => {
   describe('serializeFragment', () => {
@@ -89,6 +117,75 @@ describe('Renderer - ReactSerializer', () => {
       expect(strong.text()).to.equal('World!');
       reactDoc.unmount();
     });
+
+    describe('renderer appearance', () => {
+      const appearances: RendererAppearance[] = [
+        'message',
+        'inline-comment',
+        'comment',
+        'full-page',
+        'mobile',
+      ];
+
+      const emojiDoubleHeightAppearances = ['message'];
+
+      appearances.forEach(appearance => {
+        describe(`${appearance} appearance`, () => {
+          const doubleHeight: boolean =
+            emojiDoubleHeightAppearances.indexOf(appearance) != -1;
+
+          it(`emoji ${
+            doubleHeight ? 'should' : 'should not'
+          } render as double height`, () => {
+            const reactSerializer = ReactSerializer.fromSchema(schema, {
+              appearance,
+            });
+            const reactDoc = mount(reactSerializer.serializeFragment(
+              emojiDocFromSchema.content,
+            ) as any);
+
+            const emoji = reactDoc.find('EmojiItem');
+            expect(emoji.length).to.equal(1);
+
+            if (doubleHeight) {
+              expect(emoji.prop('fitToHeight')).to.equal(bigEmojiHeight);
+            } else {
+              expect(emoji.prop('fitToHeight')).to.not.equal(bigEmojiHeight);
+            }
+          });
+        });
+      });
+    });
+
+    // it('should render emojis as double height when appearance is "message"', () => {
+    //   const reactSerializer = ReactSerializer.fromSchema(schema, {appearance: 'message'});
+    //   const reactDoc = mount(reactSerializer.serializeFragment(
+    //     emojiDocFromSchema.content,
+    //   ) as any);
+
+    //   const emoji = reactDoc.find('EmojiItem');
+    //   expect(emoji.length).to.equal(1);
+    //   expect(emoji.prop('fitToHeight')).to.equal(bigEmojiHeight);
+    // });
+
+    // describe('should render emojis as single height when appearance is anything BUT "message"', () => {
+
+    //   appearances.forEach(appearance => {
+
+    //     it(`${appearance} should render as single height`, () => {
+    //       const reactSerializer = ReactSerializer.fromSchema(schema, {appearance});
+    //       const reactDoc = mount(reactSerializer.serializeFragment(
+    //         emojiDocFromSchema.content,
+    //       ) as any);
+
+    //       const emoji = reactDoc.find('EmojiItem');
+    //       expect(emoji.length).to.equal(1);
+    //       expect(emoji.prop('fitToHeight')).to.not.equal(bigEmojiHeight)
+
+    //     });
+
+    //   })
+    // });
   });
 
   describe('buildMarkStructure', () => {

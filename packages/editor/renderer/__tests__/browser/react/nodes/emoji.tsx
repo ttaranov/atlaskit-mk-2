@@ -10,7 +10,7 @@ describe('Emoji', () => {
     const component = mount(
       <RendererEmoji shortName="shortname" id="id" text="fallback" />,
     );
-
+    console.log(component);
     expect(component.find(Emoji)).to.have.length(1);
     component.unmount();
   });

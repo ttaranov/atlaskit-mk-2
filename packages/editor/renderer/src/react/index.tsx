@@ -87,11 +87,11 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
         }
         let props;
 
-        console.log('appearance in serialiseFrag is', this.appearance);
+        // console.log('appearance in serialiseFrag is', this.appearance);
 
         if (emojiBlock && this.appearance == 'message') {
-          console.log('This is an emoji block!');
-          console.log({ emojiBlock, props });
+          // console.log('This is an emoji block!');
+          // console.log({ emojiBlock, props });
           props = this.getEmojiBlockProps(node as Node);
         } else if (node.type.name === 'table') {
           props = this.getTableProps(node as Node);
@@ -279,10 +279,20 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
 
   static fromSchema(
     schema: Schema,
-    { providers, eventHandlers, extensionHandlers }: ConstructorParams,
+    {
+      providers,
+      eventHandlers,
+      extensionHandlers,
+      appearance,
+    }: ConstructorParams,
   ): ReactSerializer {
     // TODO: Do we actually need the schema here?
-    return new ReactSerializer({ providers, eventHandlers, extensionHandlers });
+    return new ReactSerializer({
+      providers,
+      eventHandlers,
+      extensionHandlers,
+      appearance,
+    });
   }
 }
 
