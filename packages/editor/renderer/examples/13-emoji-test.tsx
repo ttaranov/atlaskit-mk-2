@@ -5,7 +5,7 @@ export default function Example() {
   return (
     <RendererDemo
       withProviders={true}
-      disableLargeEmojis={true}
+      appearance="full-page"
       serializer="react"
     />
   );

@@ -2,7 +2,7 @@ import * as React from 'react';
 // @ts-ignore: unused variable
 // prettier-ignore
 import { ComponentClass, Consumer, Provider } from 'react';
-
+import { RendererAppearance } from '../ui/Renderer';
 import { Fragment, Mark, Node, Schema } from 'prosemirror-model';
 
 import { Serializer } from '../';
@@ -42,7 +42,7 @@ export interface ConstructorParams {
   portal?: HTMLElement;
   objectContext?: RendererContext;
   useNewApplicationCard?: boolean;
-  disableLargeEmojis?: boolean;
+  appearance?: RendererAppearance;
 }
 
 export default class ReactSerializer implements Serializer<JSX.Element> {
@@ -52,7 +52,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
   private portal?: HTMLElement;
   private rendererContext?: RendererContext;
   private useNewApplicationCard?: boolean;
-  private disableLargeEmojis?: boolean;
+  private appearance?: RendererAppearance;
 
   constructor({
     providers,
@@ -61,7 +61,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     portal,
     objectContext,
     useNewApplicationCard,
-    disableLargeEmojis,
+    appearance,
   }: ConstructorParams) {
     this.providers = providers;
     this.eventHandlers = eventHandlers;
@@ -69,7 +69,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     this.portal = portal;
     this.rendererContext = objectContext;
     this.useNewApplicationCard = useNewApplicationCard;
-    this.disableLargeEmojis = disableLargeEmojis;
+    this.appearance = appearance;
   }
 
   serializeFragment(
@@ -87,11 +87,9 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
         }
         let props;
 
-        console.log(
-          'disable large emojis in serializeFrag is ',
-          this.disableLargeEmojis,
-        );
-        if (emojiBlock && !this.disableLargeEmojis) {
+        console.log('appearance in serialiseFrag is', this.appearance);
+
+        if (emojiBlock && this.appearance == 'message') {
           console.log('This is an emoji block!');
           console.log({ emojiBlock, props });
           props = this.getEmojiBlockProps(node as Node);
