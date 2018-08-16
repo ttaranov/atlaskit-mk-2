@@ -60,7 +60,7 @@ class Example extends React.Component<ExampleProps, ExampleState> {
                 <code>appearance="block"</code>
               </h6>
               <br />
-              <Card appearance="block" data={json} url="http://example.com" />
+              <Card appearance="block" data={json} />
               <br />
               <h6>
                 <code>appearance="inline"</code>
@@ -69,14 +69,10 @@ class Example extends React.Component<ExampleProps, ExampleState> {
               Bowsprit scallywag weigh anchor Davy Jones' Locker warp ballast
               scurvy nipper brigantine Jolly Roger wench sloop Shiver me timbers
               rope's end chandler. Admiral of the Black cackle fruit deck{' '}
-              <Card
-                appearance="inline"
-                data={json}
-                url="http://example.com"
-              />{' '}
-              wench bounty rope's end bilge water scourge of the seven seas
-              hardtack come about execution dock Nelsons folly handsomely
-              rigging splice the main brace.
+              <Card appearance="inline" data={json} /> wench bounty rope's end
+              bilge water scourge of the seven seas hardtack come about
+              execution dock Nelsons folly handsomely rigging splice the main
+              brace.
               <br />
               <h6>
                 <code>JSON-LD</code>

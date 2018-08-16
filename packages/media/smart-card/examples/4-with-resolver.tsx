@@ -3,13 +3,13 @@ import Page, { Grid, GridColumn } from '@atlaskit/page';
 import { Provider, Card, Client } from '../src';
 import '../mocks';
 
-const clientWithProvider = new Client({
+const clientWithResolver = new Client({
   TEMPORARY_resolver: (url: string) =>
     Promise.resolve(
       url === 'public-happy'
         ? {
             url,
-            name: 'From provider',
+            name: 'From resolver',
           }
         : undefined,
     ),
@@ -22,11 +22,11 @@ export default () => (
         <GridColumn>
           <p>
             <small>
-              This card <em>DOES NOT</em> use a provider.
+              This card <em>DOES NOT</em> use an additional resolver.
             </small>
           </p>
           <br />
-          {/* <Card url="public-happy"/> */}
+          <Card url="public-happy" appearance="block" />
           <br />
           <Card url="private-happy" appearance="block" />
         </GridColumn>
@@ -34,16 +34,16 @@ export default () => (
     </Provider>
     <br />
     <br />
-    <Provider client={clientWithProvider}>
+    <Provider client={clientWithResolver}>
       <Grid>
         <GridColumn>
           <p>
             <small>
-              This card <em>DOES</em> use a provider.
+              This card <em>DOES</em> use an additional resolver.
             </small>
           </p>
           <br />
-          {/* <Card url="public-happy"/> */}
+          <Card url="public-happy" appearance="block" />
           <br />
           <Card url="private-happy" appearance="block" />
         </GridColumn>

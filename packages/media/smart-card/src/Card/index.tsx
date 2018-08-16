@@ -7,14 +7,26 @@ import { CardContent, CardAppearance } from './CardContent';
 
 export { CardAppearance };
 
-export type CardProps = {
+export type CardWithData = {
   appearance: CardAppearance;
-  url?: string;
-  client?: Client;
   data?: any;
 };
 
-export const renderFromURL = ({ appearance, url, client }: CardProps) => {
+export type CardWithUrl = {
+  appearance: CardAppearance;
+  url?: string;
+  client?: Client;
+};
+
+export type CardProps = CardWithData | CardWithUrl;
+
+export const Card = (props: CardProps) =>
+  isCardWithData(props) ? renderTheData(props) : renderFromURL(props);
+
+const isCardWithData = (props: CardProps): props is CardWithData =>
+  !!(props as CardWithData).data;
+
+const renderFromURL = ({ url, client, appearance }: CardWithUrl) => {
   if (!url) {
     throw new Error(
       '@atlaskit/smart-card: Please, profile either data or url props',
@@ -55,7 +67,7 @@ export const renderFromURL = ({ appearance, url, client }: CardProps) => {
   );
 };
 
-export const renderTheData = ({ appearance, data }: CardProps) => (
+const renderTheData = ({ appearance, data }: CardWithData) => (
   <CardContent
     appearance={appearance}
     state={{
@@ -68,6 +80,3 @@ export const renderTheData = ({ appearance, data }: CardProps) => (
     }}
   />
 );
-
-export const Card = (props: CardProps) =>
-  props.url ? renderFromURL(props) : renderTheData(props);
