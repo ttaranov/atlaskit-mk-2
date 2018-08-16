@@ -28,7 +28,7 @@ export default () => (
           <br />
           {/* <Card url="public-happy"/> */}
           <br />
-          <Card url="private-happy" />
+          <Card url="private-happy" appearance="block" />
         </GridColumn>
       </Grid>
     </Provider>
@@ -45,7 +45,7 @@ export default () => (
           <br />
           {/* <Card url="public-happy"/> */}
           <br />
-          <Card url="private-happy" />
+          <Card url="private-happy" appearance="block" />
         </GridColumn>
       </Grid>
     </Provider>
