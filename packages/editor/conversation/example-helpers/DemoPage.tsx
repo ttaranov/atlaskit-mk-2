@@ -160,7 +160,6 @@ const analyticsHandler = (action, channel) => {
     `analytics actionSubjectId: ${action.payload.actionSubjectId}`,
     action,
   );
-  console.log(action.payload.attributes.commentLevel);
 };
 
 export class Demo extends React.Component<
