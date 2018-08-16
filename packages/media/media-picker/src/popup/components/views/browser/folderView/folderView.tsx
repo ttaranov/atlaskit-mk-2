@@ -11,6 +11,7 @@ import Spinner from '@atlaskit/spinner';
 
 /* Actions */
 import { fileClick } from '../../../../actions/fileClick';
+import { setUpfrontIdDeferred } from '../../../../actions/setUpfrontIdDeferred';
 
 import {
   isServiceFile,
@@ -87,6 +88,11 @@ export interface FolderViewDispatchProps {
     accountId: string,
     path: Path,
     nextCursor: string,
+  ) => void;
+  readonly setUpfrontIdDeferred: (
+    id: string,
+    resolver: Function,
+    rejecter: Function,
   ) => void;
 }
 
@@ -252,7 +258,16 @@ export class FolderViewer extends Component<FolderViewerProps, {}> {
         path.push({ id: item.id, name: item.name });
         onFolderClick(service.name, service.accountId, path);
       } else {
-        onFileClick(service.name, service.accountId, item);
+        const { setUpfrontIdDeferred } = this.props;
+        const upfrontId = new Promise<string>((resolve, reject) => {
+          setUpfrontIdDeferred(item.id, resolve, reject);
+        });
+
+        const file: ServiceFile = {
+          ...item,
+          upfrontId,
+        };
+        onFileClick(service.name, service.accountId, file);
       }
     };
   }
@@ -278,5 +293,7 @@ export default connect<FolderViewerStateProps, FolderViewDispatchProps, {}>(
       dispatch(
         fetchNextCloudFilesPage(serviceName, accountId, path, nextCursor),
       ),
+    setUpfrontIdDeferred: (id, resolver, rejecter) =>
+      dispatch(setUpfrontIdDeferred(id, resolver, rejecter)),
   }),
 )(FolderViewer);
