@@ -24,11 +24,6 @@ export interface SearchResultProps extends State {
   retrySearch: Function;
 }
 
-export interface ResultsSectionGetter {
-  getRecentResultsSection(recentItems: GenericResultObject): Result[][];
-  getSearchResultsSection(searchResults: GenericResultObject): Result[][];
-}
-
 export interface Props {
   linkComponent?: LinkComponent;
   getSearchResultsComponent(state: SearchResultProps): React.ReactNode;
@@ -39,7 +34,6 @@ export interface Props {
     startTime: number,
   ): Promise<ResultsWithTiming>;
 
-  resultsSectionGetter?: ResultsSectionGetter;
   getDisplayedResults?(results: GenericResultObject): Result[][];
   createAnalyticsEvent?: CreateAnalyticsEventFn;
   handleSearchSubmit?({ target: string }): void;
@@ -53,8 +47,8 @@ export interface State {
   isLoading: boolean;
   isError: boolean;
   keepPreQueryState: boolean;
-  searchResults: object | null;
-  recentItems: object | null;
+  searchResults: GenericResultObject | null;
+  recentItems: GenericResultObject | null;
 }
 
 /**
@@ -128,14 +122,14 @@ export class QuickSearchContainer extends React.Component<Props, State> {
     recentItems,
     requestStartTime?: number,
   ) => {
-    const { createAnalyticsEvent, resultsSectionGetter } = this.props;
-    if (createAnalyticsEvent && resultsSectionGetter) {
+    const { createAnalyticsEvent, getDisplayedResults } = this.props;
+    if (createAnalyticsEvent && getDisplayedResults) {
       const elapsedMs: number = requestStartTime
         ? performanceNow() - requestStartTime
         : 0;
 
       const eventAttributes: ShownAnalyticsAttributes = buildShownEventDetails(
-        ...resultsSectionGetter.getRecentResultsSection(recentItems),
+        ...getDisplayedResults(recentItems),
       );
 
       firePreQueryShownEvent(
@@ -155,16 +149,17 @@ export class QuickSearchContainer extends React.Component<Props, State> {
     searchSessionId,
     latestSearchQuery: string,
   ) => {
+    // TODO modify SearchPerformanceTiming to be more generic instead of confluence specific
     const searchPerformanceTiming: SearchPerformanceTiming = {
       startTime,
       elapsedMs,
       ...timings,
     };
 
-    const { createAnalyticsEvent, resultsSectionGetter } = this.props;
-    if (createAnalyticsEvent && resultsSectionGetter) {
+    const { createAnalyticsEvent, getDisplayedResults } = this.props;
+    if (createAnalyticsEvent && getDisplayedResults) {
       const resultsDetails: ShownAnalyticsAttributes = buildShownEventDetails(
-        ...resultsSectionGetter.getSearchResultsSection(searchResults),
+        ...getDisplayedResults(searchResults),
       );
 
       firePostQueryShownEvent(

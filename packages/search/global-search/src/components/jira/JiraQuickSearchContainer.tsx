@@ -12,11 +12,7 @@ export interface Props {
   linkComponent?: LinkComponent;
   jiraClient: JiraClient;
 }
-import {
-  ContentType,
-  JiraObjectResult,
-  JiraRecentlyViewedItemsMap,
-} from '../../model/Result';
+import { ContentType, JiraObjectResult } from '../../model/Result';
 
 const contentTypeToSection = {
   [ContentType.JiraIssue]: 'issues',
