@@ -15,17 +15,12 @@ const getDisplayName = component =>
 export const navigationItemClicked = (
   Component: ComponentType<any>,
   componentName: string,
-  staticProps: any,
-) => {
+): ComponentType<any> => {
   return withAnalyticsContext({
     componentName,
   })(
     withAnalyticsEvents({
-      onClick: (createAnalyticsEvent, componentProps) => {
-        // If we aren't wrapping an actual Item component and instead wrapping a div
-        // wrapper, we will want to use static props if they exist.
-        // Otherwise, use component props.
-        const props = staticProps || componentProps;
+      onClick: (createAnalyticsEvent, props) => {
         const event = createAnalyticsEvent({
           action: 'clicked',
           actionSubject: 'navigationItem',
