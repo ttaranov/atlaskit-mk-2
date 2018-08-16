@@ -2,7 +2,7 @@
 /* eslint-disable react/no-multi-comp */
 import React, { Component, Fragment } from 'react';
 
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import AtlassianIcon from '@atlaskit/logo';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import CreateIcon from '@atlaskit/icon/glyph/add';
 import ArrowLeft from '@atlaskit/icon/glyph/arrow-left';

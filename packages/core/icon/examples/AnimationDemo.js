@@ -2,7 +2,6 @@
 
 import sample from 'lodash.sample';
 import React, { Component } from 'react';
-import AtlassianIcon from '../glyph/atlassian';
 import ArrowUpIcon from '../glyph/arrow-up';
 import ArrowDownIcon from '../glyph/arrow-down';
 import ArrowLeftIcon from '../glyph/arrow-left';
@@ -17,13 +16,7 @@ class AnimationDemo extends Component<{}, State> {
   timer: ?IntervalID;
 
   state = {
-    components: [
-      ArrowDownIcon,
-      ArrowLeftIcon,
-      ArrowRightIcon,
-      ArrowUpIcon,
-      AtlassianIcon,
-    ],
+    components: [ArrowDownIcon, ArrowLeftIcon, ArrowRightIcon, ArrowUpIcon],
   };
 
   componentDidMount() {

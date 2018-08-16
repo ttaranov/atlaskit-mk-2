@@ -3,7 +3,7 @@ import React, { Component, Fragment } from 'react';
 import Navigation, { AkNavigationItem } from '@atlaskit/navigation';
 import Banner from '@atlaskit/banner';
 import Button from '@atlaskit/button';
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import AtlassianIcon from '@atlaskit/logo';
 import Page, { Grid } from '../src';
 
 type State = {

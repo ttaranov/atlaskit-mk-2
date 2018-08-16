@@ -24,14 +24,12 @@ import ArrowRightCircleIcon from '../glyph/arrow-right-circle';
 import ArrowRightIcon from '../glyph/arrow-right';
 import ArrowUpCircleIcon from '../glyph/arrow-up-circle';
 import ArrowUpIcon from '../glyph/arrow-up';
-import AtlassianIcon from '../glyph/atlassian';
 import AttachmentIcon from '../glyph/attachment';
 import AudioCircleIcon from '../glyph/audio-circle';
 import AudioIcon from '../glyph/audio';
 import BacklogIcon from '../glyph/backlog';
 import BillingFilledIcon from '../glyph/billing-filled';
 import BillingIcon from '../glyph/billing';
-import BitbucketIcon from '../glyph/bitbucket';
 import BitbucketBranchesIcon from '../glyph/bitbucket/branches';
 import BitbucketBuildsIcon from '../glyph/bitbucket/builds';
 import BitbucketCloneIcon from '../glyph/bitbucket/clone';
@@ -71,7 +69,6 @@ import ChevronUpIcon from '../glyph/chevron-up';
 import CodeIcon from '../glyph/code';
 import CommentIcon from '../glyph/comment';
 import ComponentIcon from '../glyph/component';
-import ConfluenceIcon from '../glyph/confluence';
 import CopyIcon from '../glyph/copy';
 import CreditcardFilledIcon from '../glyph/creditcard-filled';
 import CreditcardIcon from '../glyph/creditcard';
@@ -159,7 +156,6 @@ import EmailIcon from '../glyph/email';
 import EmojiAddIcon from '../glyph/emoji-add';
 import EmojiIcon from '../glyph/emoji';
 import EmojiActivityIcon from '../glyph/emoji/activity';
-import EmojiAtlassianIcon from '../glyph/emoji/atlassian';
 import EmojiCustomIcon from '../glyph/emoji/custom';
 import EmojiEmojiIcon from '../glyph/emoji/emoji';
 import EmojiFlagsIcon from '../glyph/emoji/flags';
@@ -229,7 +225,6 @@ import GraphBarIcon from '../glyph/graph-bar';
 import GraphLineIcon from '../glyph/graph-line';
 import GsuiteIcon from '../glyph/gsuite';
 import HighlightsIcon from '../glyph/highlights';
-import HipchatIcon from '../glyph/hipchat';
 import HipchatAudioOnlyIcon from '../glyph/hipchat/audio-only';
 import HipchatChevronDoubleDownIcon from '../glyph/hipchat/chevron-double-down';
 import HipchatChevronDoubleUpIcon from '../glyph/hipchat/chevron-double-up';
@@ -250,10 +245,6 @@ import InviteTeamIcon from '../glyph/invite-team';
 import IssueRaiseIcon from '../glyph/issue-raise';
 import IssueIcon from '../glyph/issue';
 import IssuesIcon from '../glyph/issues';
-import JiraCoreIcon from '../glyph/jira-core';
-import JiraServiceDeskIcon from '../glyph/jira-service-desk';
-import JiraSoftwareIcon from '../glyph/jira-software';
-import JiraIcon from '../glyph/jira';
 import JiraBlockerIcon from '../glyph/jira/blocker';
 import JiraCaptureIcon from '../glyph/jira/capture';
 import JiraCriticalIcon from '../glyph/jira/critical';
@@ -393,8 +384,6 @@ import SignOutIcon from '../glyph/sign-out';
 import StarFilledIcon from '../glyph/star-filled';
 import StarLargeIcon from '../glyph/star-large';
 import StarIcon from '../glyph/star';
-import StatuspageIcon from '../glyph/statuspage';
-import StrideIcon from '../glyph/stride';
 import SubtaskIcon from '../glyph/subtask';
 import SuitcaseIcon from '../glyph/suitcase';
 import SwitcherIcon from '../glyph/switcher';
@@ -527,12 +516,6 @@ export default {
     componentName: 'ArrowUpIcon',
     package: '@atlaskit/icon/glyph/arrow-up',
   },
-  atlassian: {
-    keywords: ['atlassian', 'charlie'],
-    component: AtlassianIcon,
-    componentName: 'AtlassianIcon',
-    package: '@atlaskit/icon/glyph/atlassian',
-  },
   attachment: {
     keywords: ['attachment', 'paperclip'],
     component: AttachmentIcon,
@@ -568,12 +551,6 @@ export default {
     component: BillingIcon,
     componentName: 'BillingIcon',
     package: '@atlaskit/icon/glyph/billing',
-  },
-  bitbucket: {
-    keywords: ['bitbucket'],
-    component: BitbucketIcon,
-    componentName: 'BitbucketIcon',
-    package: '@atlaskit/icon/glyph/bitbucket',
   },
   'bitbucket/branches': {
     keywords: ['bitbucket/branches', 'bitbucketbranches'],
@@ -808,12 +785,6 @@ export default {
     component: ComponentIcon,
     componentName: 'ComponentIcon',
     package: '@atlaskit/icon/glyph/component',
-  },
-  confluence: {
-    keywords: ['confluence'],
-    component: ConfluenceIcon,
-    componentName: 'ConfluenceIcon',
-    package: '@atlaskit/icon/glyph/confluence',
   },
   copy: {
     keywords: ['copy', 'duplicate'],
@@ -1337,12 +1308,6 @@ export default {
     componentName: 'EmojiActivityIcon',
     package: '@atlaskit/icon/glyph/emoji/activity',
   },
-  'emoji/atlassian': {
-    keywords: ['emoji/atlassian', 'emojiatlassian'],
-    component: EmojiAtlassianIcon,
-    componentName: 'EmojiAtlassianIcon',
-    package: '@atlaskit/icon/glyph/emoji/atlassian',
-  },
   'emoji/custom': {
     keywords: ['emoji/custom', 'emojicustom', 'plus', 'add', 'create', 'new'],
     component: EmojiCustomIcon,
@@ -1757,12 +1722,6 @@ export default {
     componentName: 'HighlightsIcon',
     package: '@atlaskit/icon/glyph/highlights',
   },
-  hipchat: {
-    keywords: ['hipchat'],
-    component: HipchatIcon,
-    componentName: 'HipchatIcon',
-    package: '@atlaskit/icon/glyph/hipchat',
-  },
   'hipchat/audio-only': {
     keywords: ['hipchat/audio-only', 'hipchataudioonly', 'audio'],
     component: HipchatAudioOnlyIcon,
@@ -1882,30 +1841,6 @@ export default {
     component: IssuesIcon,
     componentName: 'IssuesIcon',
     package: '@atlaskit/icon/glyph/issues',
-  },
-  'jira-core': {
-    keywords: ['jira-core', 'jiracore'],
-    component: JiraCoreIcon,
-    componentName: 'JiraCoreIcon',
-    package: '@atlaskit/icon/glyph/jira-core',
-  },
-  'jira-service-desk': {
-    keywords: ['jira-service-desk', 'jiraservicedesk'],
-    component: JiraServiceDeskIcon,
-    componentName: 'JiraServiceDeskIcon',
-    package: '@atlaskit/icon/glyph/jira-service-desk',
-  },
-  'jira-software': {
-    keywords: ['jira-software', 'jirasoftware'],
-    component: JiraSoftwareIcon,
-    componentName: 'JiraSoftwareIcon',
-    package: '@atlaskit/icon/glyph/jira-software',
-  },
-  jira: {
-    keywords: ['jira'],
-    component: JiraIcon,
-    componentName: 'JiraIcon',
-    package: '@atlaskit/icon/glyph/jira',
   },
   'jira/blocker': {
     keywords: ['jira/blocker', 'jirablocker', 'priority', 'issue'],
@@ -2740,18 +2675,6 @@ export default {
     component: StarIcon,
     componentName: 'StarIcon',
     package: '@atlaskit/icon/glyph/star',
-  },
-  statuspage: {
-    keywords: ['statuspage'],
-    component: StatuspageIcon,
-    componentName: 'StatuspageIcon',
-    package: '@atlaskit/icon/glyph/statuspage',
-  },
-  stride: {
-    keywords: ['stride'],
-    component: StrideIcon,
-    componentName: 'StrideIcon',
-    package: '@atlaskit/icon/glyph/stride',
   },
   subtask: {
     keywords: ['subtask', 'issue', 'task'],

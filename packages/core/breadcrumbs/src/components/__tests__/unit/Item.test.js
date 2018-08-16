@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 import ReactDOM from 'react-dom';
 import Button from '@atlaskit/button';
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import AtlassianIcon from '@atlaskit/logo';
 
 import BreadcrumbsItemWithAnalytics, {
   BreadcrumbsItemWithoutAnalytics as BreadcrumbsItem,

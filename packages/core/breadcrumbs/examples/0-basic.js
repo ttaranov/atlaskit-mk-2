@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import AtlassianIcon from '@atlaskit/logo';
 import { BreadcrumbsStateless, BreadcrumbsItem } from '../src';
 
 export default class BreadcrumbsExpand extends Component<

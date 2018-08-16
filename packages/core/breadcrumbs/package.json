@@ -33,6 +33,7 @@
     "@atlaskit/build-utils": "^1.11.0",
     "@atlaskit/docs": "^5.0.2",
     "@atlaskit/icon": "^13.2.4",
+    "@atlaskit/logo": "^9.0.4",
     "@atlaskit/select": "^5.0.8",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "jest-in-case": "^1.0.2",

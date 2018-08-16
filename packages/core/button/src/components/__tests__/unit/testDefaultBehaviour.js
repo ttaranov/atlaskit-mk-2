@@ -2,7 +2,7 @@
 import { mount } from 'enzyme';
 import React from 'react';
 import Spinner from '@atlaskit/spinner';
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import AtlassianIcon from '@atlaskit/logo';
 
 import Button, { ButtonBase } from '../../Button';
 import IconWrapper from '../../../styled/IconWrapper';

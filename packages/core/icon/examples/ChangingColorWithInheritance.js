@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 import { colors } from '@atlaskit/theme';
 import styled from 'styled-components';
 import Button from '@atlaskit/button';
-import AtlassianIcon from '../glyph/atlassian';
 import ArrowUpIcon from '../glyph/arrow-up';
 import ArrowDownIcon from '../glyph/arrow-down';
 import ArrowLeftIcon from '../glyph/arrow-left';
@@ -48,7 +47,6 @@ export default class ChangingColorWithInheritance extends Component<
         <Paragraph isColorFlipped={this.state.isColorFlipped}>
           Icons inherit color from their parent by default.
         </Paragraph>
-        <AtlassianIcon />
         <ArrowUpIcon />
         <ArrowDownIcon />
         <ArrowLeftIcon />

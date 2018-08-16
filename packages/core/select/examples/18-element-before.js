@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import AtlassianIcon from '@atlaskit/logo';
 import Select from '../src';
 
 const formatOptionLabel = (option, { context }) => {

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import GlobalNavigation from '@atlaskit/global-navigation';
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import AtlassianIcon from '@atlaskit/logo';
 import { AtlassianWordmark } from '@atlaskit/logo';
 import {
   GroupHeading,

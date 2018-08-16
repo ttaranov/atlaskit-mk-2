@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { gridSize, colors, math } from '@atlaskit/theme';
 import debounce from 'lodash.debounce';
 
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import { AtlassianIcon } from '@atlaskit/logo';
 import PackagesIcon from '@atlaskit/icon/glyph/component';
 import BlogIcon from '@atlaskit/icon/glyph/objects/24/object-24-blog';
 import MediaDocIcon from '@atlaskit/icon/glyph/media-services/document';
@@ -201,12 +201,7 @@ const cards = [
     image: multiTool,
     icon: () => (
       <CardIcon color={colors.B400}>
-        <AtlassianIcon
-          label="Atlassian Design Guidelines"
-          primaryColor={colors.N0}
-          secondaryColor={colors.B400}
-          size="small"
-        />
+        <AtlassianIcon label="Atlassian Design Guidelines" size="small" />
       </CardIcon>
     ),
     text: 'Need some more design guidance? Have a look at the ADG.',

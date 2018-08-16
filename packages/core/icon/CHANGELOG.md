@@ -323,7 +323,7 @@
 
 ## 7.0.0 (2017-06-08)
 * fix; refactored icon module and build process ([a68abba](https://bitbucket.org/atlassian/atlaskit/commits/a68abba))
-* breaking; Module no longer exports named exports. Import a specific icon like so: import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+* breaking; Module no longer exports named exports. Import a specific icon like so: import AtlassianIcon from '@atlaskit/logo';
 * ISSUES CLOSED: AK-2388
 
 ## 6.6.0 (2017-05-31)
