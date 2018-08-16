@@ -38,6 +38,12 @@ class InlineDialog extends Component<Props, {}> {
     }
   }
 
+  componentDidMount() {
+    if (this.props.isOpen) {
+      window.addEventListener('click', this.handleClickOutside);
+    }
+  }
+
   handleClickOutside = (event: any) => {
     const { isOpen, onClose } = this.props;
 
@@ -66,6 +72,7 @@ class InlineDialog extends Component<Props, {}> {
       onContentFocus,
       onContentClick,
     } = this.props;
+
     const popper = isOpen ? (
       <Popper placement={placement}>
         {({ ref, style, outOfBoundaries }) => (

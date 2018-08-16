@@ -15,7 +15,7 @@ const content = (
 
 export default class InlineDialogExample extends Component<{}, State> {
   state = {
-    dialogOpen: false,
+    dialogOpen: true,
   };
 
   toggleDialog = () => this.setState({ dialogOpen: !this.state.dialogOpen });
