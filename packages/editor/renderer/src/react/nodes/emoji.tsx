@@ -13,7 +13,6 @@ export default class EmojiItem extends PureComponent<EmojiProps, {}> {
   render() {
     const { id, providers, shortName, text, fitToHeight } = this.props;
     return (
-      /// Here
       <Emoji
         allowTextFallback={true}
         id={id}

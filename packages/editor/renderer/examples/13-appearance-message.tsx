@@ -5,7 +5,7 @@ export default function Example() {
   return (
     <RendererDemo
       withProviders={true}
-      appearance="full-page"
+      appearance="message"
       serializer="react"
     />
   );
