@@ -117,7 +117,7 @@ class ContextImpl implements Context {
 
   getFile(id: string, options?: GetFileOptions): Observable<FileState> {
     const key = FileStreamCache.createKey(id, options);
-    // console.log('getFile', key)
+
     return this.fileStreamsCache.getOrInsert(key, () => {
       const collection = options && options.collectionName;
       const fileStream$ = publishReplay<FileState>(1)(

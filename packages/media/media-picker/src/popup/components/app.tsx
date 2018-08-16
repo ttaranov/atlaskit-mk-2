@@ -125,14 +125,13 @@ export class App extends Component<AppProps, AppState> {
     // We need to create a new context since Cards in recents view need user auth
     this.cardContext = ContextFactory.create({
       authProvider: userAuthProvider,
-      // userAuthProvider, // TODO: we probably don't need to pass userAuthProvider here
     });
 
     this.mpBrowser = MediaPicker('browser', context, {
       uploadParams,
       useNewUploadService,
       tenantUploadParams,
-      multiple: true
+      multiple: true,
     });
     this.mpBrowser.on('uploads-start', onUploadsStart);
     this.mpBrowser.on('upload-preview-update', onUploadPreviewUpdate);
@@ -159,7 +158,7 @@ export class App extends Component<AppProps, AppState> {
     this.mpBinary = MediaPicker('binary', context, {
       uploadParams,
       useNewUploadService,
-      tenantUploadParams
+      tenantUploadParams,
     });
     this.mpBinary.on('uploads-start', onUploadsStart);
     this.mpBinary.on('upload-preview-update', onUploadPreviewUpdate);

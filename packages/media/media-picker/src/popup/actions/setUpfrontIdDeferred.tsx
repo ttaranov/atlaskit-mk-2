@@ -12,7 +12,6 @@ export function setUpfrontIdDeferred(
   resolver: Function,
   rejecter: Function,
 ): SetUpfrontIdDeferred {
-  console.log('setUpfrontIdDeferred', { id, resolver, rejecter });
   return {
     type: SET_UPFRONT_ID_DEFERRED,
     id,

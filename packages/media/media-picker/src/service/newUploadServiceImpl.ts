@@ -90,7 +90,10 @@ export class NewUploadServiceImpl implements UploadService {
     return new UploadController();
   }
 
-  getUpfrontId = (observable?: Observable<FileState>): Promise<string> => {
+  getUpfrontId = (
+    observable?: Observable<FileState>,
+    occurrenceKey?: string,
+  ): Promise<string> => {
     return new Promise<string>(async resolve => {
       const { shouldCopyFileToRecents } = this;
 
@@ -106,10 +109,9 @@ export class NewUploadServiceImpl implements UploadService {
           return;
         }
 
-        const occurrenceKey = uuid.v4();
         const { collection } = this.tenantUploadParams;
         const options = { collection, occurrenceKey };
-        // We want to create an empty file in the public collection
+        // We want to create an empty file in the tenant collection
         const response = await this.mediaStore.createFile(options);
         const id = response.data.id;
 
@@ -163,14 +165,16 @@ export class NewUploadServiceImpl implements UploadService {
       }
 
       // TODO: Make this when pressing "insert"
-      const upfrontId = this.getUpfrontId(observable);
-      const mediaFile = {
+      const occurrenceKey = uuid.v4();
+      const upfrontId = this.getUpfrontId(observable, occurrenceKey);
+      const mediaFile: MediaFile = {
         id,
         upfrontId,
         name: file.name,
         size: file.size,
         creationDate,
         type: file.type,
+        occurrenceKey,
       };
       const cancellableFileUpload: CancellableFileUpload = {
         mediaFile,

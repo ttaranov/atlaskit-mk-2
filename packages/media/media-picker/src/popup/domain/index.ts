@@ -145,6 +145,7 @@ export interface ServiceFile {
   readonly name: string;
   readonly size: number;
   readonly date: number;
+  readonly occurrenceKey?: string;
 }
 
 export interface SelectedItem extends ServiceFile {

@@ -19,10 +19,6 @@ export class UploadPreview extends React.Component<PreviewData> {
       mediaItemType: 'file',
     };
 
-    upfrontId.then(id => {
-      console.log('render <Card />:', id);
-    });
-
     return (
       <PreviewImageWrapper>
         <Card identifier={identifier} context={context} />

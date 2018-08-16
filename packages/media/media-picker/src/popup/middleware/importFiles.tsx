@@ -52,6 +52,7 @@ const mapSelectedItemToSelectedUploadFile = ({
   serviceName,
   accountId,
   upfrontId,
+  occurrenceKey,
 }: SelectedItem): SelectedUploadFile => ({
   file: {
     id,
@@ -60,6 +61,7 @@ const mapSelectedItemToSelectedUploadFile = ({
     creationDate: date || Date.now(),
     type: mimeType,
     upfrontId,
+    occurrenceKey,
   },
   serviceName,
   accountId,
@@ -104,6 +106,8 @@ export async function importFiles(
     if (serviceName === 'upload') {
       const localUpload: LocalUpload = uploads[selectedItemId];
       const replaceFileId = file.upfrontId;
+      const occurrenceKey = file.occurrenceKey;
+
       importFilesFromLocalUpload(
         selectedItemId,
         tenant,
@@ -111,6 +115,7 @@ export async function importFiles(
         store,
         localUpload,
         replaceFileId,
+        occurrenceKey,
       );
     } else if (serviceName === 'recent_files') {
       importFilesFromRecentFiles(selectedUploadFile, tenant, store);
@@ -134,6 +139,7 @@ export const importFilesFromLocalUpload = (
   store: Store<State>,
   localUpload: LocalUpload,
   replaceFileId?: Promise<string>,
+  occurrenceKey?: string,
 ): void => {
   localUpload.events.forEach(originalEvent => {
     const event = { ...originalEvent };
@@ -146,7 +152,14 @@ export const importFilesFromLocalUpload = (
       };
 
       store.dispatch(
-        finalizeUpload(file, uploadId, source, tenant, replaceFileId),
+        finalizeUpload(
+          file,
+          uploadId,
+          source,
+          tenant,
+          replaceFileId,
+          occurrenceKey,
+        ),
       );
     } else if (event.name !== 'upload-end') {
       store.dispatch(sendUploadEvent({ event, uploadId }));

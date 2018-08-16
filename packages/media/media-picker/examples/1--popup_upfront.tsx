@@ -63,7 +63,6 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
   onUploadsStart = (data: UploadsStartEventPayload) => {
     const { files } = this.state;
     const { files: newFiles } = data;
-    // console.log({newFiles})
     const ids = newFiles.map(file => file.upfrontId);
 
     this.setState({

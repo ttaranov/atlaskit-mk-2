@@ -209,7 +209,6 @@ export class StatelessUploadView extends Component<
       const selected = selectedUploadIds.indexOf(id) > -1;
       const status = progress !== null ? 'uploading' : 'complete';
       const onClick = () => {
-        // console.log('onClick', fileMetadata.id)
         onFileClick(fileMetadata, 'upload');
       };
 
@@ -371,7 +370,10 @@ const mapStateToProps = (state: State): UploadViewStateProps => ({
 const mapDispatchToProps = (
   dispatch: Dispatch<any>,
 ): UploadViewDispatchProps => ({
-  onFileClick: ({ id, mimeType, name, size, upfrontId }, serviceName) =>
+  onFileClick: (
+    { id, mimeType, name, size, upfrontId, occurrenceKey },
+    serviceName,
+  ) =>
     dispatch(
       fileClick(
         {
@@ -381,6 +383,7 @@ const mapDispatchToProps = (
           name,
           size,
           upfrontId,
+          occurrenceKey,
         },
         serviceName,
       ),

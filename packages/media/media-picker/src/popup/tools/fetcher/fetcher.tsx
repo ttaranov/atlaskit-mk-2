@@ -33,6 +33,7 @@ export interface CopyFileDestination {
   readonly auth: Auth;
   readonly collection?: string;
   readonly replaceFileId?: Promise<string>;
+  readonly occurrenceKey?: string;
 }
 
 export interface GiphyImage {
@@ -255,13 +256,18 @@ export class MediaApiFetcher implements Fetcher {
 
   async copyFile(
     sourceFile: SourceFile,
-    { auth, collection, replaceFileId }: CopyFileDestination,
+    { auth, collection, replaceFileId, occurrenceKey }: CopyFileDestination,
   ): Promise<FileDetails> {
     let params = collection ? `?collection=${collection}` : '';
 
     if (replaceFileId) {
       const replaceFileIdParam = `replaceFileId=${await replaceFileId}`;
       params += params ? `&${replaceFileIdParam}` : `?${replaceFileId}`;
+    }
+
+    if (occurrenceKey) {
+      const occurrenceKeyParam = `occurrenceKey=${occurrenceKey}`;
+      params += params ? `&${occurrenceKeyParam}` : `?${occurrenceKeyParam}`;
     }
 
     return this.query<{ data: FileDetails }>(
