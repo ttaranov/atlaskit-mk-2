@@ -1,5 +1,8 @@
 # @atlaskit/avatar-group
 
+## 2.1.0
+- [minor] Added prop moreButtonProps to allow modification of the group's MoreButton [6efa808](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6efa808)
+
 ## 2.0.8
 - [patch] Updated dependencies [f9c0cdb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9c0cdb)
   - @atlaskit/code@8.0.0
