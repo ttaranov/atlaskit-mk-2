@@ -3,15 +3,15 @@ export const ANALYTICS_CHANNEL = 'fabric-editor';
 export type createAnalyticsEvent = (event: object) => AnalyticsEvent;
 
 export enum actionSubjectIds {
-  commentCreateStart = 'commentCreateStart',
-  commentEditStart = 'commentEditStart',
-  commentRequestCancel = 'commentRequestCancel',
-  commentRequestRetry = 'commentRequestRetry',
-  commentDelete = 'commentDelete',
-  commentCreateSave = 'commentCreateSave',
-  commentCreateCancel = 'commentCreateCancel',
-  commentEditSave = 'commentEditSave',
-  commentEditCancel = 'commentEditCancel',
+  createCommentButton = 'createCommentButton',
+  createCommentInput = 'createCommentInput',
+  editButton = 'editButton',
+  cancelFailedRequestButton = 'cancelFailedRequestButton',
+  retryFailedRequestButton = 'retryFailedRequestButton',
+  deleteButton = 'deleteButton',
+  saveButton = 'saveButton',
+  cancelButton = 'cancelButton',
+  replyButton = 'replyButton',
 }
 
 export interface AnalyticsEvent {

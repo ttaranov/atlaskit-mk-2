@@ -7,9 +7,7 @@ import AkComment, {
   CommentTime,
 } from '@atlaskit/comment';
 
-import { Editor as AkEditor, EditorProps } from '@atlaskit/editor-core';
-
-import { WithProviders, ProviderFactory } from '@atlaskit/editor-common';
+import { WithProviders } from '@atlaskit/editor-common';
 import { ResourcedReactions } from '@atlaskit/reactions';
 import { ReactRenderer } from '@atlaskit/renderer';
 import styled from 'styled-components';
@@ -22,59 +20,14 @@ import {
   actionSubjectIds,
   AnalyticsEvent,
 } from '../internal/analytics';
+import { SharedProps } from './types';
 
-/**
- * Props which are passed down from the parent Conversation/Comment
- */
-export interface SharedProps {
-  user?: User;
-  comments?: CommentType[];
-
-  // Dispatch
-  onAddComment?: (
-    conversationId: string,
-    parentId: string,
-    value: any,
-    localId?: string,
-  ) => void;
-  onUpdateComment?: (
-    conversationId: string,
-    commentId: string,
-    value: any,
-  ) => void;
-  onDeleteComment?: (conversationId: string, commentId: string) => void;
-  onRevertComment?: (conversationId: string, commentId: string) => void;
-  onCancelComment?: (conversationId: string, commentId: string) => void;
-  onCancel?: () => void;
-  onHighlightComment?: (commentId: string) => void;
-  onEditorOpen?: () => void;
-  onEditorClose?: () => void;
-
-  // Provider
-  dataProviders?: ProviderFactory;
-
-  // Event Hooks
-  onUserClick?: (user: User) => void;
-  onRetry?: (localId?: string) => void;
-
-  // Editor
-  renderEditor?: (Editor: typeof AkEditor, props: EditorProps) => JSX.Element;
-
-  containerId?: string;
-
-  isHighlighted?: boolean;
-  placeholder?: string;
-  disableScrollTo?: boolean;
-  allowFeedbackAndHelpButtons?: boolean;
-  sendAnalyticsEvent: (action: string, commentLevel?: number) => void;
-}
-
-export interface Props extends SharedProps {
+interface Props extends SharedProps {
   conversationId: string;
   comment: CommentType;
 }
 
-export interface State {
+interface State {
   isEditing?: boolean;
   isReplying?: boolean;
   lastDispatch?: {
@@ -180,7 +133,7 @@ export default class Comment extends React.Component<Props, State> {
 
     fireEvent(
       analyticsEvent,
-      actionSubjectIds.commentCreateStart,
+      actionSubjectIds.replyButton,
       containerId,
       (parentComment.commentLevel || 0) + 1,
     );
@@ -198,7 +151,7 @@ export default class Comment extends React.Component<Props, State> {
     } = this.props;
 
     sendAnalyticsEvent(
-      'commentCreateSave',
+      actionSubjectIds.saveButton,
       (parentComment.commentLevel || 0) + 1,
     );
 
@@ -218,7 +171,7 @@ export default class Comment extends React.Component<Props, State> {
     const { comment: parentComment } = this.props;
 
     this.props.sendAnalyticsEvent(
-      'commentCreateCancel',
+      actionSubjectIds.cancelButton,
       (parentComment.commentLevel || 0) + 1,
     );
     this.setState({
@@ -235,7 +188,7 @@ export default class Comment extends React.Component<Props, State> {
 
     fireEvent(
       analyticsEvent,
-      actionSubjectIds.commentDelete,
+      actionSubjectIds.deleteButton,
       containerId,
       commentLevel,
     );
@@ -251,7 +204,7 @@ export default class Comment extends React.Component<Props, State> {
 
     fireEvent(
       analyticsEvent,
-      actionSubjectIds.commentEditStart,
+      actionSubjectIds.editButton,
       containerId,
       commentLevel,
     );
@@ -264,7 +217,7 @@ export default class Comment extends React.Component<Props, State> {
   private onSaveEdit = async (value: any) => {
     const { conversationId, comment, sendAnalyticsEvent } = this.props;
 
-    sendAnalyticsEvent(actionSubjectIds.commentEditSave, comment.commentLevel);
+    sendAnalyticsEvent(actionSubjectIds.saveButton, comment.commentLevel);
 
     this.dispatch('onUpdateComment', conversationId, comment.commentId, value);
 
@@ -275,7 +228,7 @@ export default class Comment extends React.Component<Props, State> {
 
   private onCancelEdit = () => {
     this.props.sendAnalyticsEvent(
-      actionSubjectIds.commentEditCancel,
+      actionSubjectIds.cancelButton,
       this.props.comment.commentLevel,
     );
 
@@ -299,7 +252,7 @@ export default class Comment extends React.Component<Props, State> {
 
     fireEvent(
       analyticsEvent,
-      actionSubjectIds.commentEditCancel,
+      actionSubjectIds.cancelFailedRequestButton,
       containerId,
       commentLevel,
     );
@@ -321,7 +274,7 @@ export default class Comment extends React.Component<Props, State> {
 
     fireEvent(
       analyticsEvent,
-      actionSubjectIds.commentRequestRetry,
+      actionSubjectIds.retryFailedRequestButton,
       containerId,
       commentLevel,
     );

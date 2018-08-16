@@ -3,7 +3,7 @@ import CommentContainer from '../containers/Comment';
 import Comment from '../components/Comment';
 import Editor from './Editor';
 import { Conversation as ConversationType } from '../model';
-import { SharedProps } from './Comment';
+import { SharedProps } from './types';
 import {
   createAnalyticsEvent,
   actionSubjectIds,
@@ -145,7 +145,7 @@ export default class Conversation extends React.PureComponent<Props, State> {
   }
 
   private onCancel = () => {
-    this.sendEditorAnalyticsEvent(actionSubjectIds.commentCreateCancel);
+    this.sendEditorAnalyticsEvent(actionSubjectIds.cancelButton);
 
     if (this.props.onCancel) {
       this.props.onCancel();
@@ -153,9 +153,10 @@ export default class Conversation extends React.PureComponent<Props, State> {
   };
 
   private onOpen = () => {
-    this.sendEditorAnalyticsEvent(actionSubjectIds.commentCreateStart);
+    this.sendEditorAnalyticsEvent(actionSubjectIds.createCommentInput);
     this.onEditorOpen();
   };
+
   private renderConversationsEditor() {
     const {
       isExpanded,
@@ -192,10 +193,15 @@ export default class Conversation extends React.PureComponent<Props, State> {
   }
 
   private onRetry = (document: any) => (commentLocalId?: string) => {
-    this.onSave(document, commentLocalId);
+    this.sendEditorAnalyticsEvent(actionSubjectIds.retryFailedRequestButton);
+    this.onSave(document, commentLocalId, true);
   };
 
-  private onSave = async (value: any, commentLocalId?: string) => {
+  private onSave = async (
+    value: any,
+    commentLocalId?: string,
+    retry?: boolean,
+  ) => {
     const {
       containerId,
       id,
@@ -206,7 +212,9 @@ export default class Conversation extends React.PureComponent<Props, State> {
       conversation,
     } = this.props;
 
-    this.sendEditorAnalyticsEvent(actionSubjectIds.commentCreateSave);
+    if (!retry) {
+      this.sendEditorAnalyticsEvent(actionSubjectIds.saveButton);
+    }
 
     if (!id && !commentLocalId && onCreateConversation) {
       onCreateConversation(localId!, containerId, value, meta);
