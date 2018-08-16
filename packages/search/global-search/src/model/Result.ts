@@ -29,16 +29,24 @@ export interface GenericResultObject {
   [key: string]: Result[];
 }
 
-export interface ConfluenceRecentlyViewedItemsMap extends GenericResultObject {
-  recentlyInteractedPeople: Result[];
-  recentlyViewedPages: Result[];
-  recentlyViewedSpaces: Result[];
+export type ResultsWithTiming = {
+  results: GenericResultObject;
+  timings?: {
+    [key: string]: number | string;
+  };
+};
+
+export interface ConfluenceResultItemsMap extends GenericResultObject {
+  people: Result[];
+  objects: Result[];
+  spaces: Result[];
 }
 
 export interface JiraRecentlyViewedItemsMap extends GenericResultObject {
-  recentlyViewedIssues: Result[];
-  recentlyViewdBoards: Result[];
-  recentlyViewedProjects: Result[];
+  issues: Result[];
+  boards: Result[];
+  projects: Result[];
+  filters: Result[];
 }
 
 export interface ConfluenceObjectResult extends Result {

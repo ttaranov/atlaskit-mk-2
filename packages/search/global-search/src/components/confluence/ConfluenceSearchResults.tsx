@@ -1,5 +1,9 @@
 import * as React from 'react';
-import { Result, ResultsGroup } from '../../model/Result';
+import {
+  Result,
+  ResultsGroup,
+  ConfluenceResultItemsMap,
+} from '../../model/Result';
 import { ScreenCounter } from '../../util/ScreenCounter';
 import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
 import { take } from '../SearchResultsUtil';
@@ -20,12 +24,8 @@ export interface Props {
   isError: boolean;
   isLoading: boolean;
   retrySearch();
-  recentlyViewedPages: Result[];
-  recentlyViewedSpaces: Result[];
-  recentlyInteractedPeople: Result[];
-  objectResults: Result[];
-  spaceResults: Result[];
-  peopleResults: Result[];
+  recentItems: ConfluenceResultItemsMap;
+  searchResults: ConfluenceResultItemsMap;
   keepPreQueryState: boolean;
   searchSessionId: string;
   preQueryScreenCounter?: ScreenCounter;
@@ -34,20 +34,10 @@ export interface Props {
 }
 
 const getRecentsResultGroups = (recentlyViewedObjects): ResultsGroup[] => {
-  const {
-    recentlyInteractedPeople,
-    recentlyViewedPages,
-    recentlyViewedSpaces,
-  } = recentlyViewedObjects;
-  const recentPagesToShow: Result[] = take(
-    recentlyViewedPages,
-    MAX_RECENT_PAGES,
-  );
-  const recentSpacesToShow: Result[] = take(recentlyViewedSpaces, MAX_SPACES);
-  const recentPeopleToShow: Result[] = take(
-    recentlyInteractedPeople,
-    MAX_PEOPLE,
-  );
+  const { people, objects, spaces } = recentlyViewedObjects;
+  const recentPagesToShow: Result[] = take(objects, MAX_RECENT_PAGES);
+  const recentSpacesToShow: Result[] = take(spaces, MAX_SPACES);
+  const recentPeopleToShow: Result[] = take(people, MAX_PEOPLE);
 
   return [
     {
@@ -62,21 +52,21 @@ const getRecentsResultGroups = (recentlyViewedObjects): ResultsGroup[] => {
     },
     {
       items: recentPeopleToShow,
-      titleI18nId: 'global-search.confluence.recent-spaces-heading',
+      titleI18nId: 'global-search.people.recent-people-heading',
       key: 'people',
     },
   ];
 };
 
 const getSearchResultsGroup = (searchResultsObjects): ResultsGroup[] => {
-  const { objectResults, spaceResults, peopleResults } = searchResultsObjects;
+  const { objects, spaces, people } = searchResultsObjects;
 
   const objectResultsToShow: Result[] = take(
-    objectResults,
+    objects,
     MAX_PAGES_BLOGS_ATTACHMENTS,
   );
-  const spaceResultsToShow: Result[] = take(spaceResults, MAX_SPACES);
-  const peopleResultsToShow: Result[] = take(peopleResults, MAX_PEOPLE);
+  const spaceResultsToShow: Result[] = take(spaces, MAX_SPACES);
+  const peopleResultsToShow: Result[] = take(people, MAX_PEOPLE);
 
   return [
     {
@@ -99,15 +89,7 @@ const getSearchResultsGroup = (searchResultsObjects): ResultsGroup[] => {
 
 export default class ConfluenceSearchResults extends React.Component<Props> {
   render() {
-    const {
-      recentlyInteractedPeople,
-      recentlyViewedPages,
-      recentlyViewedSpaces,
-      objectResults,
-      spaceResults,
-      peopleResults,
-      query,
-    } = this.props;
+    const { recentItems, searchResults, query } = this.props;
 
     return (
       <GenericSearchResults
@@ -121,20 +103,8 @@ export default class ConfluenceSearchResults extends React.Component<Props> {
         renderAdvancedSearchGroup={() => (
           <AdvancedSearchGroup key="advanced" query={query} />
         )}
-        getRecentlyViewedGroups={() =>
-          getRecentsResultGroups({
-            recentlyInteractedPeople,
-            recentlyViewedPages,
-            recentlyViewedSpaces,
-          })
-        }
-        getSearchResultsGroups={() =>
-          getSearchResultsGroup({
-            objectResults,
-            spaceResults,
-            peopleResults,
-          })
-        }
+        getRecentlyViewedGroups={() => getRecentsResultGroups(recentItems)}
+        getSearchResultsGroups={() => getSearchResultsGroup(searchResults)}
         renderNoResult={() => <NoResultsState query={query} />}
       />
     );

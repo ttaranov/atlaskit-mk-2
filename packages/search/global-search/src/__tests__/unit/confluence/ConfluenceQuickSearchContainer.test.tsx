@@ -40,7 +40,6 @@ describe('ConfluenceQuickSearchContainer', () => {
     const quickSearchContainer = wrapper.find(QuickSearchContainer);
 
     const props = quickSearchContainer.props();
-    expect(props.intl).toHaveProperty('locale', 'en');
     expect(props).toHaveProperty('getSearchResultsComponent');
   });
 
@@ -108,7 +107,7 @@ describe('ConfluenceQuickSearchContainer', () => {
         },
       ],
       // assert search performance timings
-      searchTimings: {
+      timings: {
         quickNavElapsedMs: expect.any(Number),
         confSearchElapsedMs: expect.any(Number),
         peopleElapsedMs: expect.any(Number),

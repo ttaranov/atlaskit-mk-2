@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { intl } from '../helpers/_intl-enzyme-test-helper';
 import { mount, ReactWrapper } from 'enzyme';
 import {
   QuickSearchContainer,
@@ -32,7 +31,6 @@ const defaultProps = {
       latestSearchQuery: string,
     ) => {},
   ),
-  intl,
 };
 
 const mountQuickSearchContainer = (partialProps?: Partial<Props>) => {
