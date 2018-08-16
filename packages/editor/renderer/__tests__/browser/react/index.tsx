@@ -118,7 +118,7 @@ describe('Renderer - ReactSerializer', () => {
       reactDoc.unmount();
     });
 
-    describe('renderer appearance', () => {
+    describe('appearance', () => {
       const appearances: RendererAppearance[] = [
         'message',
         'inline-comment',
@@ -131,6 +131,7 @@ describe('Renderer - ReactSerializer', () => {
 
       appearances.forEach(appearance => {
         describe(`${appearance} appearance`, () => {
+          // Should the emoji render as double height in this appearance
           const doubleHeight: boolean =
             emojiDoubleHeightIn.indexOf(appearance) != -1;
 
@@ -146,7 +147,6 @@ describe('Renderer - ReactSerializer', () => {
 
             const emoji = reactDoc.find('EmojiItem');
             expect(emoji.length).to.equal(1);
-
             if (doubleHeight) {
               expect(emoji.prop('fitToHeight')).to.equal(bigEmojiHeight);
             } else {
