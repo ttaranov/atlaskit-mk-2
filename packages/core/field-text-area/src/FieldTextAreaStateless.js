@@ -1,5 +1,6 @@
 // @flow
 import React, { Component, type Node } from 'react';
+import styled from 'styled-components';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
@@ -11,6 +12,10 @@ import {
   version as packageVersion,
 } from '../package.json';
 import TextArea from './styled/TextArea';
+
+const Wrapper = styled.div`
+  flex: 1 1 100%;
+`;
 
 type Props = {
   /** Set whether the fields should expand to fill available horizontal space. */
@@ -111,8 +116,7 @@ class FieldTextAreaStateless extends Component<Props, void> {
     } = this.props;
 
     return (
-      <div>
-        {/* // $FlowFixMe - Label signature interpreted incorrectly */}
+      <Wrapper>
         <Label
           htmlFor={id}
           isDisabled={disabled}
@@ -151,7 +155,7 @@ class FieldTextAreaStateless extends Component<Props, void> {
             }}
           />
         </Base>
-      </div>
+      </Wrapper>
     );
   }
 }
