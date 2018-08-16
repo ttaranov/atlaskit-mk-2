@@ -1,10 +1,10 @@
 import { name } from '../../../package.json';
 import { toDOM, fromHTML } from '../../../test-helpers';
-import { createSchema, inlineCard } from '../../../src';
+import { createSchema, blockCard } from '../../../src';
 
-describe(`${name}/schema inlineCard node`, () => {
+describe(`${name}/schema blockCard node`, () => {
   const schema = createSchema({
-    nodes: ['doc', 'paragraph', 'inlineCard', 'text'],
+    nodes: ['doc', 'paragraph', 'blockCard', 'text'],
   });
 
   const url = 'https://product-fabric.atlassian.net/browse/ED-1';
@@ -21,18 +21,18 @@ describe(`${name}/schema inlineCard node`, () => {
       'Today is a big day for Atlassian – we have entered into an agreement to buy Trello. (boom)',
   };
 
-  describe('inlineCard with "url" attribute', () => {
+  describe('blockCard with "url" attribute', () => {
     describe('parse html', () => {
-      it('converts to inlineCard PM node', () => {
-        const doc = fromHTML(`<span data-card-url="${url}" />`, schema);
-        const node = doc.firstChild!.firstChild!;
-        expect(node.type.spec).toEqual(inlineCard);
+      it('converts to blockCard PM node', () => {
+        const doc = fromHTML(`<div data-block-card-url="${url}" />`, schema);
+        const node = doc.firstChild!;
+        expect(node.type.spec).toEqual(blockCard);
       });
 
       it('gets attributes from html', () => {
-        const doc = fromHTML(`<span data-card-url="${url}" />`, schema);
+        const doc = fromHTML(`<div data-block-card-url="${url}" />`, schema);
 
-        const node = doc.firstChild!.firstChild!;
+        const node = doc.firstChild!;
         expect(node.attrs.url).toEqual(url);
         expect(node.attrs.data).toEqual({});
       });
@@ -40,60 +40,63 @@ describe(`${name}/schema inlineCard node`, () => {
 
     describe('encode html', () => {
       it('converts html data attributes to node attributes', () => {
-        const dom = toDOM(schema.nodes.inlineCard.create({ url }), schema)
+        const dom = toDOM(schema.nodes.blockCard.create({ url }), schema)
           .firstChild as HTMLElement;
 
-        expect(dom.getAttribute('data-card-url')).toEqual(url);
+        expect(dom.getAttribute('data-block-card-url')).toEqual(url);
+        expect(dom.getAttribute('data-block-card-data')).toEqual('null');
       });
 
       it('encodes and decodes to the same node', () => {
-        const node = schema.nodes.inlineCard.create({ url });
+        const node = schema.nodes.blockCard.create({ url });
         const dom = toDOM(node, schema).firstChild as HTMLElement;
-        const parsedNode = fromHTML(dom.outerHTML, schema).firstChild!
-          .firstChild!;
+        const parsedNode = fromHTML(dom.outerHTML, schema).firstChild!;
         expect(parsedNode).toEqual(node);
       });
     });
   });
 
-  describe('inlineCard with "data" attribute', () => {
+  describe('blockCard with "data" attribute', () => {
     describe('parse html', () => {
-      it('converts to inlineCard PM node', () => {
+      it('converts to blockCard PM node', () => {
         const doc = fromHTML(
-          `<span data-card-url="" data-card-data='${JSON.stringify(data)}' />`,
+          `<div data-block-card-url="" data-block-card-data='${JSON.stringify(
+            data,
+          )}' />`,
           schema,
         );
-        const node = doc.firstChild!.firstChild!;
-        expect(node.type.spec).toEqual(inlineCard);
+        const node = doc.firstChild!;
+        expect(node.type.spec).toEqual(blockCard);
       });
 
       it('gets attributes from html', () => {
         const doc = fromHTML(
-          `<span data-card-url="" data-card-data='${JSON.stringify(data)}' />`,
+          `<div data-block-card-url="" data-block-card-data='${JSON.stringify(
+            data,
+          )}' />`,
           schema,
         );
 
-        const node = doc.firstChild!.firstChild!;
+        const node = doc.firstChild!;
         expect(node.attrs.data).toEqual(data);
       });
     });
 
     describe('encode html', () => {
       it('converts html data attributes to node attributes', () => {
-        const dom = toDOM(schema.nodes.inlineCard.create({ data }), schema)
+        const dom = toDOM(schema.nodes.blockCard.create({ data }), schema)
           .firstChild as HTMLElement;
 
-        expect(dom.getAttribute('data-card-url')).toEqual('');
-        expect(dom.getAttribute('data-card-data')).toEqual(
+        expect(dom.getAttribute('data-block-card-url')).toEqual('');
+        expect(dom.getAttribute('data-block-card-data')).toEqual(
           JSON.stringify(data),
         );
       });
 
       it('encodes and decodes to the same node', () => {
-        const node = schema.nodes.inlineCard.create({ url });
+        const node = schema.nodes.blockCard.create({ data });
         const dom = toDOM(node, schema).firstChild as HTMLElement;
-        const parsedNode = fromHTML(dom.outerHTML, schema).firstChild!
-          .firstChild!;
+        const parsedNode = fromHTML(dom.outerHTML, schema).firstChild!;
         expect(parsedNode).toEqual(node);
       });
     });

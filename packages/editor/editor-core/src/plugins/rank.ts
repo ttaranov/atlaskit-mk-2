@@ -116,6 +116,7 @@ export default {
     'layoutSection',
     'layoutColumn',
     'inlineCard',
+    'blockCard',
   ],
   marks: [
     'link',

@@ -57,6 +57,7 @@ import {
   layoutSection,
   layoutColumn,
   inlineCard,
+  blockCard,
   unsupportedBlock,
   unsupportedInline,
 } from './nodes';
@@ -161,6 +162,7 @@ const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'inlineExtension', spec: inlineExtension },
   { name: 'bodiedExtension', spec: bodiedExtension },
   { name: 'inlineCard', spec: inlineCard },
+  { name: 'blockCard', spec: blockCard },
   { name: 'unknownBlock', spec: unknownBlock },
   { name: 'unsupportedBlock', spec: unsupportedBlock },
   { name: 'unsupportedInline', spec: unsupportedInline },
