@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/inline-dialog",
-  "version": "9.0.0",
+  "version": "9.0.1",
   "description": "An inline dialog React component for secondary content and controls that are displayed on user request",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
