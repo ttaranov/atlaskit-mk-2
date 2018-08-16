@@ -55,6 +55,14 @@ describe('@atlaskit/tree - Tree', () => {
     mockRender.mockClear();
   });
 
+  describe('#closeParentIfNeeded', () => {
+    it("collapses parent if it's draggen", () => {
+      expect(treeWithTwoBranches.items['1-1'].isExpanded).toBe(true);
+      const newTree = Tree.closeParentIfNeeded(treeWithTwoBranches, '1-1');
+      expect(newTree.items['1-1'].isExpanded).toBe(false);
+    });
+  });
+
   describe('#render', () => {
     it('renders a flat list using renderItem', () => {
       mount(<Tree tree={treeWithThreeLeaves} renderItem={mockRender} />);
@@ -154,11 +162,11 @@ describe('@atlaskit/tree - Tree', () => {
       ).instance();
       instance.onDragStart(dragStart);
       expect(instance.dragState).toEqual({
-        draggedItemId: dragStart.draggableId,
         source: dragStart.source,
         destination: dragStart.source,
         mode: dragStart.mode,
       });
+      expect(instance.state.draggedItemId).toBe(dragStart.draggableId);
     });
     it('calls onDragStart if it is defined', () => {
       const mockOnStartCb = jest.fn();
@@ -227,11 +235,11 @@ describe('@atlaskit/tree - Tree', () => {
       instance.onDragStart(dragStart);
       instance.onDragUpdate(dragUpdate);
       expect(instance.dragState).toEqual({
-        draggedItemId: dragUpdate.draggableId,
         source: dragUpdate.source,
         destination: dragUpdate.destination,
         mode: dragUpdate.mode,
       });
+      expect(instance.state.draggedItemId).toBe(dragUpdate.draggableId);
     });
   });
 
@@ -252,7 +260,6 @@ describe('@atlaskit/tree - Tree', () => {
       instance.onDragStart(dragStart);
       instance.onPointerMove();
       expect(instance.dragState).toEqual({
-        draggedItemId: dragStart.draggableId,
         source: dragStart.source,
         destination: dragStart.source,
         mode: dragStart.mode,
