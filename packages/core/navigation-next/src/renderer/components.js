@@ -215,12 +215,12 @@ export const ItemsRenderer = ({
 
     // If they've provided a component as the type
     if (typeof type === 'function') {
-      const C = navigationItemClicked(
+      const Component = navigationItemClicked(
         type,
         type.displayName || 'inlineCustomComponent',
       );
       return (
-        <C
+        <Component
           key={key}
           {...props}
           index={index}
@@ -250,9 +250,9 @@ export const ItemsRenderer = ({
       // If they've provided a type which matches one of their defined custom
       // components.
       if (customComponents[type]) {
-        const C = navigationItemClicked(customComponents[type], type);
+        const Component = navigationItemClicked(customComponents[type], type);
         return (
-          <C
+          <Component
             key={key}
             {...props}
             index={index}

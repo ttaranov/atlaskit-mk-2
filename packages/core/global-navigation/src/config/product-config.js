@@ -23,7 +23,7 @@ const isNotEmpty = obj => {
 };
 
 const generateDropDown = (
-  Trigger: ComponentType<{}>,
+  Trigger: ComponentType<{ className: string, onClick: () => void }>,
   DropdownItems: ComponentType<{}>,
 ) => {
   const GeneratedDropdown = ({
@@ -35,11 +35,7 @@ const generateDropDown = (
   }) => {
     return (
       <Dropdown
-        trigger={
-          <span className={className} onClick={onClick} role="presentation">
-            <Trigger />
-          </span>
-        }
+        trigger={<Trigger className={className} onClick={onClick} />}
         position="right bottom"
         boundariesElement="window"
       >
@@ -51,14 +47,23 @@ const generateDropDown = (
 };
 
 const generateAvatar = profileIconUrl => {
-  const GeneratedAvatar = () => (
-    <Avatar
-      borderColor="transparent"
-      src={profileIconUrl}
-      isActive={false}
-      isHover={false}
-      size="small"
-    />
+  const GeneratedAvatar = ({
+    className,
+    onClick,
+  }: {
+    className: string,
+    onClick: () => void,
+  }) => (
+    <span className={className}>
+      <Avatar
+        borderColor="transparent"
+        src={profileIconUrl}
+        isActive={false}
+        isHover={false}
+        size="small"
+        onClick={onClick}
+      />
+    </span>
   );
   return GeneratedAvatar;
 };
@@ -106,7 +111,17 @@ function helpConfigFactory(items, tooltip, otherConfig = {}) {
 
   if (!items) return null;
 
-  const HelpIcon = () => <QuestionIcon secondaryColor={'inherit'} />;
+  const HelpIcon = ({
+    className,
+    onClick,
+  }: {
+    className: string,
+    onClick: () => void,
+  }) => (
+    <button className={className} onClick={onClick}>
+      <QuestionIcon secondaryColor={'inherit'} />
+    </button>
+  );
 
   return {
     component: generateDropDown(HelpIcon, items),

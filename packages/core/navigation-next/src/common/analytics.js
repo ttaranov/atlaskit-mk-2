@@ -15,7 +15,7 @@ const getDisplayName = component =>
 export const navigationItemClicked = (
   Component: ComponentType<any>,
   componentName: string,
-) => {
+): ComponentType<any> => {
   return withAnalyticsContext({
     componentName,
   })(
