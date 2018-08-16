@@ -29,7 +29,7 @@ type Props = {
   /** Sets styling to indicate that the input is invalid. */
   isInvalid?: boolean,
   /** Label to be displayed above the input. */
-  label?: string,
+  label: string,
   /** Name value to be passed to the html input. */
   name?: string,
   /** Text to display in the input if the input is empty. */
@@ -79,6 +79,7 @@ class FieldTextAreaStateless extends Component<Props, void> {
     isReadOnly: false,
     required: false,
     isInvalid: false,
+    label: '',
     type: 'text',
     isSpellCheckEnabled: true,
     minimumRows: 1,
