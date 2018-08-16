@@ -59,7 +59,6 @@ it('should render passed objects', () => {
     resultsGroup,
   });
 
-  // expect(findGroup(wrapper, key).prop('results')).toHaveLength(1);
   const groups = wrapper.find(ResultGroup);
   expect(groups.length).toBe(3);
   groups.forEach((group, index) => {
