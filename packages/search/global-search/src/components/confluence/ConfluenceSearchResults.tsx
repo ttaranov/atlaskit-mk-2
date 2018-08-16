@@ -8,6 +8,7 @@ import GenericSearchResults from '../common/GenericSearchResults';
 import { ResultsGroup } from '../common/ResultGroupsComponent';
 import { getConfluenceAdvancedSearchLink } from '../SearchResultsUtil';
 import { FormattedHTMLMessage } from 'react-intl';
+import AdvancedSearchGroup from '../confluence/AdvancedSearchGroup';
 
 export const MAX_PAGES_BLOGS_ATTACHMENTS = 8;
 export const MAX_SPACES = 3;
@@ -117,6 +118,9 @@ export default class ConfluenceSearchResults extends React.Component<Props> {
             id="global-search.no-recent-activity-body"
             values={{ url: getConfluenceAdvancedSearchLink() }}
           />
+        )}
+        renderAdvancedSearchGroup={() => (
+          <AdvancedSearchGroup key="advanced" query={query} />
         )}
         getRecentlyViewedGroups={() =>
           getRecentsResultGroups({

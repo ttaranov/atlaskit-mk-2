@@ -10,7 +10,8 @@ function render(partialProps: Partial<Props>) {
     query: '',
     resultsGroup: [],
     searchSessionId: '0',
-    advancedSearchLink: <div />,
+    renderAdvancedSearchLink: () => <div id="search link" />,
+    renderAdvancedSearchGroup: () => <div id="search-group" />,
     ...partialProps,
   };
 

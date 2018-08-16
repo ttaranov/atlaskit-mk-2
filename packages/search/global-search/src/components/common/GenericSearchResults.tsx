@@ -9,11 +9,6 @@ import ResultGroupsComponent, {
   ResultsGroup,
   ResultGroupType,
 } from './ResultGroupsComponent';
-import AdvancedSearchGroup from '../confluence/AdvancedSearchGroup';
-
-export const MAX_PAGES_BLOGS_ATTACHMENTS = 8;
-export const MAX_SPACES = 3;
-export const MAX_PEOPLE = 3;
 
 export interface Props {
   query: string;
@@ -24,6 +19,7 @@ export interface Props {
   retrySearch();
   getRecentlyViewedGroups: () => ResultsGroup[];
   getSearchResultsGroups: () => ResultsGroup[];
+  renderAdvancedSearchGroup: () => JSX.Element;
   keepPreQueryState: boolean;
   searchSessionId: string;
   preQueryScreenCounter?: ScreenCounter;
@@ -47,6 +43,7 @@ export default class GenericSearchResults extends React.Component<Props> {
       getSearchResultsGroups,
       renderNoResult,
       renderAdvancedSearchLink,
+      renderAdvancedSearchGroup,
     } = this.props;
 
     return (
@@ -59,11 +56,12 @@ export default class GenericSearchResults extends React.Component<Props> {
         renderPreQueryStateComponent={() => (
           <PreQueryState
             resultsGroup={getRecentlyViewedGroups()}
-            advancedSearchLink={renderAdvancedSearchLink()}
+            renderAdvancedSearchLink={renderAdvancedSearchLink}
             query={query}
             searchSessionId={searchSessionId}
             screenCounter={preQueryScreenCounter}
             referralContextIdentifiers={referralContextIdentifiers}
+            renderAdvancedSearchGroup={renderAdvancedSearchGroup}
           />
         )}
         shouldRenderNoResultsState={() =>
@@ -85,9 +83,7 @@ export default class GenericSearchResults extends React.Component<Props> {
         renderSearchResultsStateComponent={() => (
           <ResultGroupsComponent
             type={ResultGroupType.PostQuery}
-            renderAdvancedSearch={() => (
-              <AdvancedSearchGroup key="advanced" query={query} />
-            )}
+            renderAdvancedSearch={renderAdvancedSearchGroup}
             resultsGroup={getSearchResultsGroups()}
             searchSessionId={searchSessionId}
             screenCounter={postQueryScreenCounter}

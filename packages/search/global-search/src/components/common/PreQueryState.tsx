@@ -8,7 +8,6 @@ import ResultGroupsComponent, {
 } from './ResultGroupsComponent';
 import { PreQueryAnalyticsComponent } from './ScreenAnalyticsHelper';
 import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
-import AdvancedSearchGroup from '../confluence/AdvancedSearchGroup';
 
 export interface Props {
   query: string;
@@ -16,18 +15,19 @@ export interface Props {
   searchSessionId: string;
   screenCounter?: ScreenCounter;
   referralContextIdentifiers?: ReferralContextIdentifiers;
-  advancedSearchLink: JSX.Element;
+  renderAdvancedSearchLink: () => JSX.Element;
+  renderAdvancedSearchGroup: () => JSX.Element;
 }
 
 export default class PreQueryState extends React.Component<Props> {
   render() {
     const {
       resultsGroup,
-      query,
       searchSessionId,
       screenCounter,
-      advancedSearchLink,
+      renderAdvancedSearchLink,
       referralContextIdentifiers,
+      renderAdvancedSearchGroup,
     } = this.props;
 
     if ((resultsGroup || []).map(({ items }) => items).every(isEmpty)) {
@@ -39,7 +39,7 @@ export default class PreQueryState extends React.Component<Props> {
           referralContextIdentifiers={referralContextIdentifiers}
         />,
         <NoRecentActivity key="no-recent-activity">
-          {advancedSearchLink}
+          {renderAdvancedSearchLink()}
         </NoRecentActivity>,
       ];
     }
@@ -47,9 +47,7 @@ export default class PreQueryState extends React.Component<Props> {
     return (
       <ResultGroupsComponent
         type={ResultGroupType.PreQuery}
-        renderAdvancedSearch={() => (
-          <AdvancedSearchGroup key="advanced" query={query} />
-        )}
+        renderAdvancedSearch={renderAdvancedSearchGroup}
         resultsGroup={resultsGroup}
         searchSessionId={searchSessionId}
         screenCounter={screenCounter}
