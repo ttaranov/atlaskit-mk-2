@@ -26,19 +26,27 @@ const generateDropDown = (
   Trigger: ComponentType<{}>,
   DropdownItems: ComponentType<{}>,
 ) => {
-  const GeneratedDropdown = ({ className }: { className: string }) => (
-    <Dropdown
-      trigger={
-        <span className={className}>
-          <Trigger />
-        </span>
-      }
-      position="right bottom"
-      boundariesElement="window"
-    >
-      <DropdownItems />
-    </Dropdown>
-  );
+  const GeneratedDropdown = ({
+    className,
+    onClick,
+  }: {
+    className: string,
+    onClick: () => void,
+  }) => {
+    return (
+      <Dropdown
+        trigger={
+          <span className={className} onClick={onClick} role="presentation">
+            <Trigger />
+          </span>
+        }
+        position="right bottom"
+        boundariesElement="window"
+      >
+        <DropdownItems />
+      </Dropdown>
+    );
+  };
   return GeneratedDropdown;
 };
 
