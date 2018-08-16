@@ -23,7 +23,13 @@ export default class InlineDialogExample extends Component<{}, State> {
   render() {
     return (
       <div style={{ minHeight: '120px' }}>
-        <InlineDialog content={content} isOpen={this.state.dialogOpen}>
+        <InlineDialog
+          onClose={() => {
+            this.setState({ dialogOpen: false });
+          }}
+          content={content}
+          isOpen={this.state.dialogOpen}
+        >
           <Button
             isSelected={this.state.dialogOpen}
             onClick={this.toggleDialog}

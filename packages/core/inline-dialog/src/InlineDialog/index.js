@@ -39,6 +39,8 @@ class InlineDialog extends Component<Props, {}> {
   }
 
   handleClickOutside = (event: any) => {
+    const { isOpen, onClose } = this.props;
+
     if (event.defaultPrevented) return;
 
     const container: ?HTMLElement = this.containerRef;
@@ -46,12 +48,11 @@ class InlineDialog extends Component<Props, {}> {
     const target: HTMLElement = event.target;
 
     // exit if we click outside but on the trigger — it can handle the clicks itself
-    if (trigger && !trigger.contains(target)) {
-      return;
-    }
+    if (trigger && trigger.contains(target)) return;
 
-    if (container && !container.contains(target)) {
-      this.props.onClose({ isOpen: false, event });
+    // call onClose if the click originated from outside the dialog
+    if (isOpen && container && !container.contains(target)) {
+      onClose({ isOpen: false, event });
     }
   };
 

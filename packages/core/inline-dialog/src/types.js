@@ -33,7 +33,7 @@ export type Props = {
   onContentFocus: () => void,
   /** Function called when the dialog is open and a click occurs anywhere outside
    the dialog. */
-  onClose: ({ isOpen: boolean, event: any }) => void,
+  onClose: ({ isOpen: false, event: any }) => void,
   /** Where the dialog should appear, relative to the contents of the children. */
   placement: Placement,
 };
