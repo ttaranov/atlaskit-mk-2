@@ -1,14 +1,13 @@
 import * as React from 'react';
-import { Result } from '../../model/Result';
+import { Result, ResultsGroup } from '../../model/Result';
 import { ScreenCounter } from '../../util/ScreenCounter';
 import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
 import { take } from '../SearchResultsUtil';
 import NoResultsState from './NoResultsState';
 import GenericSearchResults from '../common/GenericSearchResults';
-import { ResultsGroup } from '../common/ResultGroupsComponent';
 import { getConfluenceAdvancedSearchLink } from '../SearchResultsUtil';
 import { FormattedHTMLMessage } from 'react-intl';
-import AdvancedSearchGroup from '../confluence/AdvancedSearchGroup';
+import AdvancedSearchGroup from './AdvancedSearchGroup';
 
 export const MAX_PAGES_BLOGS_ATTACHMENTS = 8;
 export const MAX_SPACES = 3;

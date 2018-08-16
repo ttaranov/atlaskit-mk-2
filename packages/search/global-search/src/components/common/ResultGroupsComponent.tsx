@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Result } from '../../model/Result';
 import { ScreenCounter } from '../../util/ScreenCounter';
 import { FormattedMessage } from 'react-intl';
 import ResultGroup from '../ResultGroup';
@@ -8,6 +7,7 @@ import {
   PostQueryAnalyticsComponent,
 } from './ScreenAnalyticsHelper';
 import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
+import { ResultsGroup } from '../../model/Result';
 
 export enum ResultGroupType {
   PreQuery = 'PreQuery',
@@ -22,12 +22,6 @@ export interface Props {
   screenCounter?: ScreenCounter;
   referralContextIdentifiers?: ReferralContextIdentifiers;
 }
-
-export type ResultsGroup = {
-  items: Result[];
-  key: string;
-  titleI18nId: string;
-};
 
 const mapGroupsToSections = (resultsToShow: ResultsGroup[]): JSX.Element[] => {
   const analyticsData = {

@@ -6,9 +6,9 @@ import { PostQueryAnalyticsComponent } from './ScreenAnalyticsHelper';
 import { ScreenCounter } from '../../util/ScreenCounter';
 import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
 import ResultGroupsComponent, {
-  ResultsGroup,
   ResultGroupType,
 } from './ResultGroupsComponent';
+import { ResultsGroup } from '../../model/Result';
 
 export interface Props {
   query: string;

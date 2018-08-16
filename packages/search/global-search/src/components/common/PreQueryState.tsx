@@ -3,9 +3,9 @@ import { ScreenCounter } from '../../util/ScreenCounter';
 import { isEmpty } from '../SearchResultsUtil';
 import NoRecentActivity from '../NoRecentActivity';
 import ResultGroupsComponent, {
-  ResultsGroup,
   ResultGroupType,
 } from './ResultGroupsComponent';
+import { ResultsGroup } from '../../model/Result';
 import { PreQueryAnalyticsComponent } from './ScreenAnalyticsHelper';
 import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
 

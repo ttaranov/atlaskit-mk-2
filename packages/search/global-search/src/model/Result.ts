@@ -49,6 +49,12 @@ export interface ConfluenceObjectResult extends Result {
   iconClass?: string;
 }
 
+export type ResultsGroup = {
+  items: Result[];
+  key: string;
+  titleI18nId: string;
+};
+
 export interface JiraObjectResult extends Result {
   objectKey?: string;
   containerName?: string;
