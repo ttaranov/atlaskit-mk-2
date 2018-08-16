@@ -73,14 +73,14 @@ export default class Conversation extends React.PureComponent<Props, State> {
     Only use this method when instrumenting something that isn't instrumented itself (like Editor)
     Once editor is instrumented use the analyticsEvent passed in by editor instead.
 
-    CommentLevel is always 0 when using the save handlers in this file. 
+    nestedDepth is always 0 when using the save handlers in this file. 
     Because a new comment created on the conversation itself is always going to be the top comment.
 
     @deprecated
   */
   sendEditorAnalyticsEvent = (
     actionSubjectId: actionSubjectIds,
-    commentLevel: number = 0,
+    nestedDepth: number = 0,
   ) => {
     const { createAnalyticsEvent, containerId } = this.props;
 
@@ -89,7 +89,7 @@ export default class Conversation extends React.PureComponent<Props, State> {
       action: 'clicked',
     });
 
-    fireEvent(analyticsEvent, actionSubjectId, containerId, commentLevel);
+    fireEvent(analyticsEvent, actionSubjectId, containerId, nestedDepth);
   };
 
   private renderComments() {

@@ -135,7 +135,7 @@ export default class Comment extends React.Component<Props, State> {
       analyticsEvent,
       actionSubjectIds.replyButton,
       containerId,
-      (parentComment.commentLevel || 0) + 1,
+      (parentComment.nestedDepth || 0) + 1,
     );
 
     this.setState({
@@ -152,7 +152,7 @@ export default class Comment extends React.Component<Props, State> {
 
     sendAnalyticsEvent(
       actionSubjectIds.saveButton,
-      (parentComment.commentLevel || 0) + 1,
+      (parentComment.nestedDepth || 0) + 1,
     );
 
     this.dispatch(
@@ -172,7 +172,7 @@ export default class Comment extends React.Component<Props, State> {
 
     this.props.sendAnalyticsEvent(
       actionSubjectIds.cancelButton,
-      (parentComment.commentLevel || 0) + 1,
+      (parentComment.nestedDepth || 0) + 1,
     );
     this.setState({
       isReplying: false,
@@ -181,7 +181,7 @@ export default class Comment extends React.Component<Props, State> {
 
   private onDelete = (value: any, analyticsEvent: AnalyticsEvent) => {
     const {
-      comment: { commentLevel, commentId },
+      comment: { nestedDepth, commentId },
       containerId,
       conversationId,
     } = this.props;
@@ -190,7 +190,7 @@ export default class Comment extends React.Component<Props, State> {
       analyticsEvent,
       actionSubjectIds.deleteButton,
       containerId,
-      commentLevel,
+      nestedDepth,
     );
 
     this.dispatch('onDeleteComment', conversationId, commentId);
@@ -198,7 +198,7 @@ export default class Comment extends React.Component<Props, State> {
 
   private onEdit = (value: any, analyticsEvent: AnalyticsEvent) => {
     const {
-      comment: { commentLevel },
+      comment: { nestedDepth },
       containerId,
     } = this.props;
 
@@ -206,7 +206,7 @@ export default class Comment extends React.Component<Props, State> {
       analyticsEvent,
       actionSubjectIds.editButton,
       containerId,
-      commentLevel,
+      nestedDepth,
     );
 
     this.setState({
@@ -217,7 +217,7 @@ export default class Comment extends React.Component<Props, State> {
   private onSaveEdit = async (value: any) => {
     const { conversationId, comment, sendAnalyticsEvent } = this.props;
 
-    sendAnalyticsEvent(actionSubjectIds.saveButton, comment.commentLevel);
+    sendAnalyticsEvent(actionSubjectIds.saveButton, comment.nestedDepth);
 
     this.dispatch('onUpdateComment', conversationId, comment.commentId, value);
 
@@ -229,7 +229,7 @@ export default class Comment extends React.Component<Props, State> {
   private onCancelEdit = () => {
     this.props.sendAnalyticsEvent(
       actionSubjectIds.cancelButton,
-      this.props.comment.commentLevel,
+      this.props.comment.nestedDepth,
     );
 
     this.setState({
@@ -242,7 +242,7 @@ export default class Comment extends React.Component<Props, State> {
       comment,
       onCancel,
       containerId,
-      comment: { commentLevel },
+      comment: { nestedDepth },
     } = this.props;
 
     // Invoke optional onCancel hook
@@ -254,7 +254,7 @@ export default class Comment extends React.Component<Props, State> {
       analyticsEvent,
       actionSubjectIds.cancelFailedRequestButton,
       containerId,
-      commentLevel,
+      nestedDepth,
     );
 
     this.dispatch('onRevertComment', comment.conversationId, comment.commentId);
@@ -265,7 +265,7 @@ export default class Comment extends React.Component<Props, State> {
     const {
       containerId,
       onRetry,
-      comment: { commentLevel, localId, isPlaceholder },
+      comment: { nestedDepth, localId, isPlaceholder },
     } = this.props;
 
     if (onRetry && isPlaceholder) {
@@ -276,7 +276,7 @@ export default class Comment extends React.Component<Props, State> {
       analyticsEvent,
       actionSubjectIds.retryFailedRequestButton,
       containerId,
-      commentLevel,
+      nestedDepth,
     );
 
     if (!lastDispatch) {

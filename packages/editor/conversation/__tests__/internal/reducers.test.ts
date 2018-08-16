@@ -68,8 +68,8 @@ describe('Reducers', () => {
         payload: [mockConversation],
       });
 
-      mockConversation.comments[0].commentLevel = 0;
-      mockConversation.comments[1].commentLevel = 0;
+      mockConversation.comments[0].nestedDepth = 0;
+      mockConversation.comments[1].nestedDepth = 0;
 
       expect(store.getState()).toEqual({
         conversations: [mockConversation],
@@ -170,7 +170,7 @@ describe('Reducers', () => {
                 ...mockComment2,
                 state: 'SAVING',
                 isPlaceholder: true,
-                commentLevel: 0,
+                nestedDepth: 0,
               },
             ],
           },
@@ -178,7 +178,7 @@ describe('Reducers', () => {
       });
     });
 
-    it('When replying it should assign the right commentLevel', () => {
+    it('When replying it should assign the right nestedDepth', () => {
       dispatch({
         type: ADD_COMMENT_REQUEST,
         payload: mockReplyComment,
@@ -196,7 +196,7 @@ describe('Reducers', () => {
                 ...mockReplyComment,
                 state: 'SAVING',
                 isPlaceholder: true,
-                commentLevel: 1,
+                nestedDepth: 1,
               },
             ],
           },
@@ -210,7 +210,7 @@ describe('Reducers', () => {
         payload: {
           ...mockComment2,
           localId: undefined, // Will update existing if defined
-          commentLevel: 0,
+          nestedDepth: 0,
         },
       });
 
@@ -228,7 +228,7 @@ describe('Reducers', () => {
                 oldDocument: undefined,
                 isPlaceholder: false,
                 localId: undefined,
-                commentLevel: 0,
+                nestedDepth: 0,
               },
             ],
           },
@@ -260,7 +260,7 @@ describe('Reducers', () => {
                 state: 'ERROR',
                 oldDocument: mockComment2.document,
                 isPlaceholder: true,
-                commentLevel: 0,
+                nestedDepth: 0,
               },
             ],
           },

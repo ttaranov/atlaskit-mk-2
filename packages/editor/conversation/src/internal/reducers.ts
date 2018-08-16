@@ -21,7 +21,7 @@ import { Action, State } from './store';
 import { User, Conversation, Comment } from '../model';
 import { createReducer } from './create-reducer';
 
-export const getCommentLevel = (
+export const getNestedDepth = (
   conversation: Conversation,
   parentId?: string,
   level: number = 0,
@@ -43,11 +43,11 @@ export const getCommentLevel = (
     return level;
   }
 
-  if (typeof parent.commentLevel === 'number') {
-    return parent.commentLevel + 1;
+  if (typeof parent.nestedDepth === 'number') {
+    return parent.nestedDepth + 1;
   }
 
-  return getCommentLevel(conversation, parent.parentId, level + 1);
+  return getNestedDepth(conversation, parent.parentId, level + 1);
 };
 
 const updateComment = (
@@ -129,7 +129,7 @@ const addOrUpdateCommentInConversation = (
         };
       }
 
-      newComment.commentLevel = getCommentLevel(
+      newComment.nestedDepth = getNestedDepth(
         conversation,
         newComment.parentId,
       );
@@ -220,7 +220,7 @@ export const reducers = createReducer(initialState, {
 
         conversation.comments = conversation.comments.map(comment => ({
           ...comment,
-          commentLevel: getCommentLevel(conversation, comment.parentId),
+          nestedDepth: getNestedDepth(conversation, comment.parentId),
         }));
 
         return conversation;

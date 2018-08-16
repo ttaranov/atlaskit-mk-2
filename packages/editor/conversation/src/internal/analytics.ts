@@ -24,14 +24,14 @@ export function fireEvent(
   analyticsEvent: AnalyticsEvent,
   actionSubjectId: actionSubjectIds,
   containerId: string = '',
-  commentLevel?: number,
+  nestedDepth?: number,
 ) {
   analyticsEvent.update({
     actionSubjectId: actionSubjectId,
     containerId: containerId,
     attributes: {
       ...analyticsEvent.attributes,
-      commentLevel,
+      nestedDepth,
     },
   });
   analyticsEvent.fire(ANALYTICS_CHANNEL);
