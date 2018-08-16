@@ -19,6 +19,7 @@ import { RemoteUploadActivity } from '../tools/websocket/upload/remoteUploadActi
 import { MediaFile, copyMediaFileForUpload } from '../../domain/file';
 import { PopupUploadEventEmitter } from '../../components/popup';
 import { sendUploadEvent } from '../actions/sendUploadEvent';
+import { setUpfrontIdDeferred } from '../actions/setUpfrontIdDeferred';
 
 export interface RemoteFileItem extends SelectedItem {
   accountId: string;
@@ -115,6 +116,7 @@ export async function importFiles(
       importFilesFromRecentFiles(selectedUploadFile, tenant, store);
     } else if (isRemoteService(serviceName)) {
       const wsConnectionHolder = wsProvider.getWsConnectionHolder(auth);
+
       importFilesFromRemoteService(
         selectedUploadFile,
         tenant,
@@ -176,6 +178,15 @@ export const importFilesFromRemoteService = (
   wsConnectionHolder: WsConnectionHolder,
 ): void => {
   const { uploadId, serviceName, accountId, file } = selectedUploadFile;
+  const { deferredIdUpfronts } = store.getState();
+  const deferred = deferredIdUpfronts[file.id];
+
+  if (deferred) {
+    const { rejecter, resolver } = deferred;
+    // We asociate the temporary file.id with the uploadId
+    store.dispatch(setUpfrontIdDeferred(uploadId, resolver, rejecter));
+  }
+
   const uploadActivity = new RemoteUploadActivity(
     uploadId,
     (event, payload) => {

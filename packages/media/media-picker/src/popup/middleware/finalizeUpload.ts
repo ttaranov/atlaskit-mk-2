@@ -80,7 +80,6 @@ function copyFile({
       const publicId = destinationFile.id;
       const { deferredIdUpfronts } = store.getState();
       const deferred = deferredIdUpfronts[sourceFile.id];
-
       if (deferred) {
         const { resolver } = deferred;
 
