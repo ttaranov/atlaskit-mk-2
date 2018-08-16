@@ -31,6 +31,8 @@ class InlineDialog extends Component<Props, {}> {
   triggerRef: ?HTMLElement = null;
 
   componentDidUpdate(prevProps: Props) {
+    if (typeof window === 'undefined') return;
+
     if (!prevProps.isOpen && this.props.isOpen) {
       window.addEventListener('click', this.handleClickOutside);
     } else if (prevProps.isOpen && !this.props.isOpen) {
@@ -39,9 +41,17 @@ class InlineDialog extends Component<Props, {}> {
   }
 
   componentDidMount() {
+    if (typeof window === 'undefined') return;
+
     if (this.props.isOpen) {
       window.addEventListener('click', this.handleClickOutside);
     }
+  }
+
+  componentWillUnMount() {
+    if (typeof window === 'undefined') return;
+
+    window.removeEventListener('click', this.handleClickOutside);
   }
 
   handleClickOutside = (event: any) => {
