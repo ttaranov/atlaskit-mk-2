@@ -8,7 +8,7 @@ const editorSelector = '.ProseMirror';
 // https://product-fabric.atlassian.net/browse/ED-4531
 BrowserTestCase(
   'user should be able to open calendar',
-  { skip: ['edge', 'ie', 'safari'] },
+  { skip: ['edge', 'ie'] },
   async client => {
     const insertMenu = '[aria-label="Open or close insert block dropdown"]';
     const dateMenu = 'span=Date';
@@ -31,7 +31,7 @@ BrowserTestCase(
 // https://product-fabric.atlassian.net/browse/ED-5033
 BrowserTestCase(
   'clicking date when calendar is open should close it',
-  { skip: ['edge', 'ie', 'safari'] },
+  { skip: ['edge', 'ie'] },
   async client => {
     const insertMenu = '[aria-label="Open or close insert block dropdown"]';
     const dateMenu = 'span=Date';
@@ -55,7 +55,7 @@ BrowserTestCase(
 
 BrowserTestCase(
   'clicking on another date should open its date picker',
-  { skip: ['edge', 'ie', 'safari'] },
+  { skip: ['edge', 'ie'] },
   async client => {
     const insertMenu = '[aria-label="Open or close insert block dropdown"]';
     const dateMenu = 'span=Date';

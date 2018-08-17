@@ -3,7 +3,7 @@
 
 /*
 * Setup webdriver clients depending on environment on which the test is run against.
-* BrowserTestCase is customized wrapper over jest-test-runner handling test setup, execution and 
+* BrowserTestCase is customized wrapper over jest-test-runner handling test setup, execution and
 * teardown for webdriver tests .
 */
 
@@ -197,6 +197,8 @@ function setBrowserStackClients() {
         'browserstack.local': true,
         'browserstack.debug': true,
         'browserstack.idleTimeout': 300,
+        'browserstack.networkLogs': true,
+        'browserstack.console': 'errors',
         'browserstack.localIdentifier': commit,
       },
       host: 'hub.browserstack.com',
