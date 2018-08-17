@@ -16,6 +16,7 @@ import {
 
 import { mediaMock } from '@atlaskit/media-test-helpers';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
+import { isMock } from './utils';
 
 const rejectedPromise = Promise.reject(
   new Error('Simulated provider rejection'),
@@ -26,13 +27,15 @@ const testCloudId = 'f7ebe2c0-0309-4687-b913-41d422f2110b';
 const providers = {
   mentionProvider: {
     resolved: Promise.resolve(mention.storyData.resourceProvider),
-    external: Promise.resolve(
-      new MentionResource({
-        url: `https://api-private.stg.atlassian.com/mentions/${testCloudId}`,
-        containerId: 'b0d035bd-9b98-4386-863b-07286c34dc14',
-        productId: 'chat',
-      }),
-    ),
+    external: !isMock
+      ? Promise.resolve(
+          new MentionResource({
+            url: `https://api-private.stg.atlassian.com/mentions/${testCloudId}`,
+            containerId: 'b0d035bd-9b98-4386-863b-07286c34dc14',
+            productId: 'chat',
+          }),
+        )
+      : undefined,
     pending: pendingPromise,
     rejected: rejectedPromise,
     undefined: undefined,
@@ -44,19 +47,21 @@ const providers = {
         id: emoji.storyData.loggedUser,
       },
     }),
-    external: Promise.resolve(
-      new EmojiResource({
-        providers: [
-          {
-            url: 'https://api-private.stg.atlassian.com/emoji/standard',
-          },
-          {
-            url: `https://api-private.stg.atlassian.com/emoji/${testCloudId}/site`,
-          },
-        ],
-        allowUpload: true,
-      }),
-    ),
+    external: !isMock
+      ? Promise.resolve(
+          new EmojiResource({
+            providers: [
+              {
+                url: 'https://api-private.stg.atlassian.com/emoji/standard',
+              },
+              {
+                url: `https://api-private.stg.atlassian.com/emoji/${testCloudId}/site`,
+              },
+            ],
+            allowUpload: true,
+          }),
+        )
+      : undefined,
     pending: pendingPromise,
     rejected: rejectedPromise,
     undefined: undefined,

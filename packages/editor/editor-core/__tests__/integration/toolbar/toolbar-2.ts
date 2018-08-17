@@ -9,7 +9,7 @@ const input = 'helloworld';
 [comment, fullpage].forEach(editor => {
   BrowserTestCase(
     `Toolbar: should be able to select heading1 for ${editor.name} editor`,
-    { skip: ['ie', 'safari'] },
+    { skip: ['ie'] },
     async client => {
       const browser = await new Page(client);
       await browser.goto(editor.path);

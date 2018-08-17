@@ -16,6 +16,7 @@ import { name, version } from '../package.json';
 import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
 import { extensionHandlers } from '../example-helpers/extension-handlers';
 import { DevTools } from '../example-helpers/DevTools';
+import { isMock } from '../example-helpers/utils';
 
 const SAVE_ACTION = () => console.log('Save');
 const CANCEL_ACTION = () => console.log('Cancel');
@@ -57,13 +58,15 @@ export type State = {
 
 export default class EditorWithFeedback extends React.Component<Props, State> {
   state = {
-    hasJquery: false,
+    hasJquery: isMock ? true : false,
     isExpanded: false,
   };
 
   componentDidMount() {
-    delete window.jQuery;
-    this.loadJquery();
+    if (!isMock) {
+      delete window.jQuery;
+      this.loadJquery();
+    }
   }
 
   onFocus = () =>

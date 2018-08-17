@@ -11,7 +11,7 @@ const getExampleUrl = (
   packageName: string,
   exampleName: string = '',
 ) =>
-  `${baseUrl}/examples.html?groupId=${group}&packageId=${packageName}&exampleId=${exampleName}`;
+  `${baseUrl}/examples.html?groupId=${group}&packageId=${packageName}&exampleId=${exampleName}&headless=true`;
 
 module.exports = {
   baseUrl,

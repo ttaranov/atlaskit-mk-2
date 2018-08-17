@@ -11,6 +11,7 @@ import ToolsDrawer from '../example-helpers/ToolsDrawer';
 import CollapsedEditor from '../src/ui/CollapsedEditor';
 import ToolbarFeedback from '../src/ui/ToolbarFeedback';
 import { name, version } from '../package.json';
+import { isMock } from '../example-helpers/utils';
 
 const SAVE_ACTION = () => console.log('Save');
 const CANCEL_ACTION = () => console.log('Cancel');
@@ -52,13 +53,15 @@ export type State = {
 
 export default class EditorWithFeedback extends React.Component<Props, State> {
   state = {
-    hasJquery: false,
+    hasJquery: isMock ? true : false,
     isExpanded: true,
   };
 
   componentDidMount() {
-    delete window.jQuery;
-    this.loadJquery();
+    if (!isMock) {
+      delete window.jQuery;
+      this.loadJquery();
+    }
   }
 
   onFocus = () =>
