@@ -54,4 +54,5 @@ export const navigationUILoaded = (
     action: 'initialised',
     actionSubject: 'navigationUI',
     actionSubjectId: layer,
+    eventType: 'operational',
   }).fire(navigationChannel);
