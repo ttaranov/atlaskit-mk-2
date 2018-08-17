@@ -10,13 +10,25 @@ import {
   mapRecentResultsToUIGroups,
   mapSearchResultsToUIGroups,
 } from '../../../components/confluence/ConfluenceSearchResultsMapper';
+import { ConfluenceResultsMap } from '../../../model/Result';
+
+type TestParam = {
+  desc: string;
+  objectsCount: number | undefined;
+  spacesCount: number | undefined;
+  peopleCount: number | undefined;
+};
 
 [
   { desc: 'mapRecentResultsToUIGroups', mapper: mapRecentResultsToUIGroups },
   { desc: 'mapSearchResultsToUIGroups', mapper: mapSearchResultsToUIGroups },
 ].forEach(({ desc, mapper }) => {
   describe(`${desc} order and count`, () => {
-    const generateResult = ({ peopleCount, objectsCount, spacesCount }) => ({
+    const generateResult = ({
+      peopleCount,
+      objectsCount,
+      spacesCount,
+    }): ConfluenceResultsMap => ({
       people: peopleCount && [...Array(peopleCount)].map(makePersonResult),
       objects:
         objectsCount &&
@@ -29,6 +41,9 @@ import {
     [
       {
         desc: 'it should return 3 groups event with empty result',
+        objectsCount: undefined,
+        spacesCount: undefined,
+        peopleCount: undefined,
       },
       {
         desc: 'it should return ui groups each with correct items',
@@ -45,9 +60,10 @@ import {
       {
         desc: 'it should return 3 groups even with missing results',
         peopleCount: 1,
+        objectsCount: undefined,
         spacesCount: 0,
       },
-    ].forEach(({ desc, objectsCount, peopleCount, spacesCount }) => {
+    ].forEach(({ desc, objectsCount, peopleCount, spacesCount }: TestParam) => {
       it(`${desc}`, () => {
         const recentResultsMap = generateResult({
           objectsCount,
