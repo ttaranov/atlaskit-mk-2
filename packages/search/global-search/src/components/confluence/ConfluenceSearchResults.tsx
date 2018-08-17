@@ -3,7 +3,7 @@ import { ConfluenceResultsMap } from '../../model/Result';
 import { ScreenCounter } from '../../util/ScreenCounter';
 import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
 import NoResultsState from './NoResultsState';
-import GenericSearchResults from '../common/GenericSearchResults';
+import SearchResults from '../common/SearchResults';
 import { getConfluenceAdvancedSearchLink } from '../SearchResultsUtil';
 import { FormattedHTMLMessage } from 'react-intl';
 import AdvancedSearchGroup from './AdvancedSearchGroup';
@@ -31,7 +31,7 @@ export default class ConfluenceSearchResults extends React.Component<Props> {
     const { recentItems, searchResults, query } = this.props;
 
     return (
-      <GenericSearchResults
+      <SearchResults
         {...this.props}
         renderAdvancedSearchLink={() => (
           <FormattedHTMLMessage
