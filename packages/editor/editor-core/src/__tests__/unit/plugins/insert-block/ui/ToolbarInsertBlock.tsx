@@ -11,8 +11,7 @@ import {
   decisionItem,
   mountWithIntlContext,
 } from '@atlaskit/editor-test-helpers';
-import { ProviderFactory } from '@atlaskit/editor-common';
-import { uuid, messages } from '@atlaskit/editor-common';
+import { ProviderFactory, uuid, messages } from '@atlaskit/editor-common';
 
 import { pluginKey as blockTypePluginKey } from '../../../../../plugins/block-type/pm-plugins/main';
 import DropdownMenu from '../../../../../ui/DropdownMenu';

@@ -6,6 +6,8 @@ import Item, { itemThemeNamespace } from '@atlaskit/item';
 import EditorDoneIcon from '@atlaskit/icon/glyph/editor/done';
 
 import { DropdownOptionT } from './Dropdown';
+import { intlShape } from 'react-intl';
+import { messages } from '@atlaskit/editor-common';
 
 export const menuItemDimensions = {
   width: 175,
@@ -50,25 +52,37 @@ export interface Props {
 }
 
 export default class Dropdown extends Component<Props> {
+  static contextTypes = {
+    intl: intlShape,
+  };
+
   render() {
     const { hide, dispatchCommand, items } = this.props;
+    const { formatMessage } = this.context.intl;
     return (
       <ThemeProvider theme={{ [itemThemeNamespace]: editorItemTheme }}>
         <MenuContainer>
-          {items.filter(item => !item.hidden).map((item, idx) => (
-            <Item
-              key={idx}
-              isCompact={true}
-              elemBefore={this.renderSelected(item)}
-              onClick={() => {
-                hide();
-                dispatchCommand(item.onClick);
-              }}
-              isDisabled={item.disabled}
-            >
-              {item.title}
-            </Item>
-          ))}
+          {items.filter(item => !item.hidden).map((item, idx) => {
+            let title = item.title;
+            if (item.intlTitle) {
+              title = formatMessage(messages[item.intlTitle]);
+            }
+
+            return (
+              <Item
+                key={idx}
+                isCompact={true}
+                elemBefore={this.renderSelected(item)}
+                onClick={() => {
+                  hide();
+                  dispatchCommand(item.onClick);
+                }}
+                isDisabled={item.disabled}
+              >
+                {title}
+              </Item>
+            );
+          })}
         </MenuContainer>
       </ThemeProvider>
     );

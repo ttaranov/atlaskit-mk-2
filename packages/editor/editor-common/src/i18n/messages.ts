@@ -104,6 +104,22 @@ export default defineMessages({
     id: 'fabric.editor.orange',
     defaultMessage: 'Orange',
   },
+  blue: {
+    id: 'fabric.editor.blue',
+    defaultMessage: 'Blue',
+  },
+  grey: {
+    id: 'fabric.editor.grey',
+    defaultMessage: 'Grey',
+  },
+  yellow: {
+    id: 'fabric.editor.yellow',
+    defaultMessage: 'Yellow',
+  },
+  white: {
+    id: 'fabric.editor.White',
+    defaultMessage: 'White',
+  },
   // Lists
   lists: {
     id: 'fabric.editor.lists',
@@ -185,5 +201,200 @@ export default defineMessages({
   more: {
     id: 'fabric.editor.more',
     defaultMessage: 'View more',
+  },
+  // Panel floating toolbar
+  info: {
+    id: 'fabric.editor.info',
+    defaultMessage: 'Info',
+  },
+  note: {
+    id: 'fabric.editor.note',
+    defaultMessage: 'Note',
+  },
+  success: {
+    id: 'fabric.editor.success',
+    defaultMessage: 'Success',
+  },
+  warning: {
+    id: 'fabric.editor.warning',
+    defaultMessage: 'Warning',
+  },
+  error: {
+    id: 'fabric.editor.error',
+    defaultMessage: 'Error',
+  },
+  remove_panel: {
+    id: 'fabric.editor.remove_panel',
+    defaultMessage: 'Remove',
+  },
+  // Media single floating toolbar
+  media_wrap_left: {
+    id: 'fabric.editor.media_wrap_left',
+    defaultMessage: 'Wrap left',
+  },
+  media_wrap_center: {
+    id: 'fabric.editor.media_wrap_center',
+    defaultMessage: 'Center',
+  },
+  media_wrap_right: {
+    id: 'fabric.editor.media_wrap_right',
+    defaultMessage: 'Wrap right',
+  },
+  media_wide: {
+    id: 'fabric.editor.media_wide',
+    defaultMessage: 'Wide',
+  },
+  media_full_width: {
+    id: 'fabric.editor.media_full_width',
+    defaultMessage: 'Full width',
+  },
+  media_remove_media: {
+    id: 'fabric.editor.media_remove_media',
+    defaultMessage: 'Remove',
+  },
+  // Code block
+  select_language: {
+    id: 'fabric.editor.select_language',
+    defaultMessage: 'Select language',
+  },
+  remove_code_block: {
+    id: 'fabric.editor.remove_code_block',
+    defaultMessage: 'Remove',
+  },
+  // Extensions
+  ext_full_width: {
+    id: 'fabric.editor.ext_full_width',
+    defaultMessage: 'Full Width',
+  },
+  ext_wide: {
+    id: 'fabric.editor.ext_wide',
+    defaultMessage: 'Wide',
+  },
+  ext_center: {
+    id: 'fabric.editor.ext_center',
+    defaultMessage: 'Center',
+  },
+  ext_pencil: {
+    id: 'fabric.editor.ext_pencil',
+    defaultMessage: 'Edit',
+  },
+  ext_remove: {
+    id: 'fabric.editor.ext_remove',
+    defaultMessage: 'Wide',
+  },
+  // Table
+  table_contextual_menu: {
+    id: 'fabric.editor.table_contextual_menu',
+    defaultMessage: 'Cell options',
+  },
+  table_insert_column: {
+    id: 'fabric.editor.table_insert_column',
+    defaultMessage: 'Insert column',
+  },
+  table_insert_row: {
+    id: 'fabric.editor.table_insert_row',
+    defaultMessage: 'Insert row',
+  },
+  table_merge: {
+    id: 'fabric.editor.table_merge',
+    defaultMessage: 'Merge cells',
+  },
+  table_split_cell: {
+    id: 'fabric.editor.table_split_cell',
+    defaultMessage: 'Split cell',
+  },
+  table_clear_cell: {
+    id: 'fabric.editor.table_clear_cell',
+    defaultMessage: 'Clear cell',
+  },
+  table_remove_column: {
+    id: 'fabric.editor.table_remove_column',
+    defaultMessage: 'Remove column',
+  },
+  table_remove_columns: {
+    id: 'fabric.editor.table_remove_columns',
+    defaultMessage: 'Remove columns',
+  },
+  table_remove_row: {
+    id: 'fabric.editor.table_remove_row',
+    defaultMessage: 'Remove row',
+  },
+  table_remove_rows: {
+    id: 'fabric.editor.table_remove_rows',
+    defaultMessage: 'Remove rows',
+  },
+  table_cell_background: {
+    id: 'fabric.editor.table_cell_background',
+    defaultMessage: 'Cell background',
+  },
+  table_remove: {
+    id: 'fabric.editor.table_remove',
+    defaultMessage: 'Remove',
+  },
+  table_full_width: {
+    id: 'fabric.editor.table_full_width',
+    defaultMessage: 'Full width',
+  },
+  table_wide: {
+    id: 'fabric.editor.table_wide',
+    defaultMessage: 'Wide',
+  },
+  table_center: {
+    id: 'fabric.editor.table_center',
+    defaultMessage: 'Center',
+  },
+  table_number_column: {
+    id: 'fabric.editor.table_number_column',
+    defaultMessage: 'Number column',
+  },
+  table_header_column: {
+    id: 'fabric.editor.table_header_column',
+    defaultMessage: 'Header column',
+  },
+  table_header_row: {
+    id: 'fabric.editor.table_header_row',
+    defaultMessage: 'Header row',
+  },
+  table_options: {
+    id: 'fabric.editor.table_options',
+    defaultMessage: 'Table options',
+  },
+  table_add_column: {
+    id: 'fabric.editor.table_add_column',
+    defaultMessage: 'Add column',
+  },
+  // Columns
+  remove_columns: {
+    id: 'fabric.editor.remove_columns',
+    defaultMessage: 'Remove',
+  },
+  two_columns: {
+    id: 'fabric.editor.two_columns',
+    defaultMessage: 'Two columns',
+  },
+  three_columns: {
+    id: 'fabric.editor.three_columns',
+    defaultMessage: 'Three columns',
+  },
+  // hyperlinks
+  link_search_placeholder: {
+    id: 'fabric.editor.link_search_placeholder',
+    defaultMessage: 'Paste link or search recently viewed',
+  },
+  link_placeholder: {
+    id: 'fabric.editor.link_placeholder',
+    defaultMessage: 'Paste link',
+  },
+  link_text_placeholder: {
+    id: 'fabric.editor.link_text_placeholder',
+    defaultMessage: 'Text to display',
+  },
+  link_open: {
+    id: 'fabric.editor.link_open',
+    defaultMessage: 'Open link',
+  },
+  link_unlink: {
+    id: 'fabric.editor.link_unlink',
+    defaultMessage: 'Unlink',
   },
 });

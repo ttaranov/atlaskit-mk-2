@@ -427,8 +427,6 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         key: 'columns',
         intlTitle: 'columns',
         value: { name: 'layout' },
-        tooltipDescription: 'Insert columns',
-        tooltipPosition: 'right',
         elemBefore: <LayoutTwoEqualIcon label="Insert columns" />,
       });
     }

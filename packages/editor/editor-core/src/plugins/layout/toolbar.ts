@@ -13,20 +13,24 @@ import {
 import { setActiveLayoutType, deleteActiveLayoutNode } from './actions';
 
 const LAYOUT_TYPES = [
-  { type: 'two_equal', text: 'Two columns', icon: LayoutTwoEqualIcon },
-  { type: 'three_equal', text: 'Three columns', icon: LayoutThreeEqualIcon },
+  { type: 'two_equal', intlTitle: 'two_columns', icon: LayoutTwoEqualIcon },
+  {
+    type: 'three_equal',
+    intlTitle: 'three_columns',
+    icon: LayoutThreeEqualIcon,
+  },
   // { type: two_left_sidebar, text: 'Two columns with left sidebar' }
   // { type: two_right_sidebar, text: 'Two columns with right sidebar' }
   // { type: three_with_siderbars, text: 'Three columns with sidebars' }
 ];
 
 const buildLayoutButton = (
-  item: { type: string; text: string; icon: Icon },
+  item: { type: string; intlTitle: string; icon: Icon },
   active: Node,
 ): FloatingToolbarItem<Command> => ({
   type: 'button',
   icon: item.icon,
-  title: item.text,
+  intlTitle: item.intlTitle,
   onClick: setActiveLayoutType(item.type),
   selected: active.attrs.layoutType === item.type,
 });
@@ -49,7 +53,7 @@ export const buildToolbar = (
           type: 'button',
           appearance: 'danger',
           icon: RemoveIcon,
-          title: 'Remove columns',
+          intlTitle: 'remove_columns',
           onClick: deleteActiveLayoutNode,
         },
       ],

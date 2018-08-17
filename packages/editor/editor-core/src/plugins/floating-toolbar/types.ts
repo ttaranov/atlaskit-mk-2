@@ -12,7 +12,8 @@ export type RenderOptionsProps = RenderOptionsPropsT<Command>;
 export type FloatingToolbarItem<T> =
   | {
       type: 'button';
-      title: string;
+      title?: string;
+      intlTitle?: string;
       onClick: T;
       onMouseEnter?: T;
       onMouseLeave?: T;
@@ -24,7 +25,8 @@ export type FloatingToolbarItem<T> =
     }
   | {
       type: 'dropdown';
-      title: string;
+      title?: string;
+      intlTitle?: string;
       icon: Icon;
       options: DropdownOptions<T>;
       hidden?: boolean;
@@ -33,7 +35,8 @@ export type FloatingToolbarItem<T> =
   | { type: 'separator'; hidden?: boolean };
 
 export interface FloatingToolbarConfig {
-  title: string;
+  title?: string;
+  intlTitle?: string;
   getDomRef: (view: EditorView) => HTMLElement | undefined;
   nodeType: NodeType;
   items: Array<FloatingToolbarItem<Command>>;

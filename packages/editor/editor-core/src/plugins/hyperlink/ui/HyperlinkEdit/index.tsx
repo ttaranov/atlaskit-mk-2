@@ -89,7 +89,7 @@ export default class HyperlinkEdit extends React.Component<Props, State> {
             href={alwaysOpenLinkAt || this.state.text}
             onClick={onOpenLink}
             target="_blank"
-            title="Open link"
+            intlTitle="link_open"
             iconBefore={<OpenIcon label="Open link" />}
           />
         )}
@@ -97,7 +97,7 @@ export default class HyperlinkEdit extends React.Component<Props, State> {
           <ToolbarButton
             spacing="compact"
             onClick={onUnlink}
-            title="Unlink"
+            intlTitle="link_unlink"
             iconBefore={<UnlinkIcon label="Unlink" />}
           />
         )}

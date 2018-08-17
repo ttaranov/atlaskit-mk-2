@@ -1,4 +1,3 @@
-import { mount } from 'enzyme';
 import * as React from 'react';
 import { selectTable, getCellsInColumn } from 'prosemirror-utils';
 import { Node } from 'prosemirror-model';
@@ -13,6 +12,7 @@ import {
   tdCursor,
   td,
   thEmpty,
+  mountWithIntlContext,
 } from '@atlaskit/editor-test-helpers';
 
 import { pluginKey } from '../../../../../plugins/table/pm-plugins/main';
@@ -59,7 +59,7 @@ describe('ColumnControls', () => {
           nodes.push(tdEmpty);
         }
         const { editorView } = editor(doc(p('text'), table()(tr(...nodes))));
-        const floatingControls = mount(
+        const floatingControls = mountWithIntlContext(
           <ColumnControls
             tableRef={document.querySelector('table')!}
             isTableHovered={false}
@@ -89,7 +89,7 @@ describe('ColumnControls', () => {
           ),
         );
 
-        const floatingControls = mount(
+        const floatingControls = mountWithIntlContext(
           <ColumnControls
             tableRef={document.querySelector('table')!}
             isTableHovered={false}
@@ -141,7 +141,7 @@ describe('ColumnControls', () => {
           ),
         );
 
-        const floatingControls = mount(
+        const floatingControls = mountWithIntlContext(
           <ColumnControls
             tableRef={document.querySelector('table')!}
             isTableHovered={false}
@@ -177,7 +177,7 @@ describe('ColumnControls', () => {
         ),
       );
 
-      const floatingControls = mount(
+      const floatingControls = mountWithIntlContext(
         <ColumnControls
           tableRef={document.querySelector('table')!}
           isTableHovered={false}
@@ -201,7 +201,7 @@ describe('ColumnControls', () => {
       ),
     );
 
-    const floatingControls = mount(
+    const floatingControls = mountWithIntlContext(
       <ColumnControls
         tableRef={document.querySelector('table')!}
         isTableHovered={false}
@@ -231,7 +231,7 @@ describe('ColumnControls', () => {
       ),
     );
 
-    const floatingControls = mount(
+    const floatingControls = mountWithIntlContext(
       <ColumnControls
         tableRef={document.querySelector('table')!}
         isTableHovered={false}
@@ -261,7 +261,7 @@ describe('ColumnControls', () => {
         ),
       );
 
-      const floatingControls = mount(
+      const floatingControls = mountWithIntlContext(
         <ColumnControls
           tableRef={document.querySelector('table')!}
           isTableHovered={false}
@@ -292,7 +292,7 @@ describe('ColumnControls', () => {
         ),
       );
 
-      const floatingControls = mount(
+      const floatingControls = mountWithIntlContext(
         <ColumnControls
           tableRef={document.querySelector('table')!}
           isTableHovered={false}
@@ -323,7 +323,7 @@ describe('ColumnControls', () => {
         ),
       );
 
-      const floatingControls = mount(
+      const floatingControls = mountWithIntlContext(
         <ColumnControls
           tableRef={document.querySelector('table')!}
           isTableHovered={false}

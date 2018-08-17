@@ -14,6 +14,8 @@ import { ActivityProvider } from '@atlaskit/activity';
 import RecentSearch from './RecentSearch';
 import { normalizeUrl } from '../utils';
 import { InsertStatus, HyperlinkState } from '../pm-plugins/main';
+import { intlShape } from 'react-intl';
+import { messages } from '@atlaskit/editor-common';
 
 export class AddDisplayTextToolbar extends React.PureComponent<{
   pos: number;
@@ -22,7 +24,13 @@ export class AddDisplayTextToolbar extends React.PureComponent<{
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
 }> {
+  static contextTypes = {
+    intl: intlShape,
+  };
+
   render() {
+    const { formatMessage } = this.context.intl;
+    let title = formatMessage(messages.link_text_placeholder);
     const {
       pos,
       node,
@@ -47,7 +55,7 @@ export class AddDisplayTextToolbar extends React.PureComponent<{
         popupsMountPoint={popupsMountPoint}
         popupsBoundariesElement={popupsBoundariesElement}
         alwaysOpenLinkAt={existingLink}
-        placeholder="Text to display"
+        placeholder={title}
         onSubmit={updateLinkText}
         onBlur={updateLinkTextOrHideToolbar}
         onUnlink={unlink}
@@ -64,7 +72,13 @@ export class EditLinkHrefToolbar extends React.PureComponent<{
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
 }> {
+  static contextTypes = {
+    intl: intlShape,
+  };
+
   render() {
+    const { formatMessage } = this.context.intl;
+    let title = formatMessage(messages.link_placeholder);
     const {
       pos,
       node,
@@ -89,7 +103,7 @@ export class EditLinkHrefToolbar extends React.PureComponent<{
         popupsMountPoint={popupsMountPoint}
         popupsBoundariesElement={popupsBoundariesElement}
         defaultValue={existingLink}
-        placeholder="Paste link"
+        placeholder={title}
         onSubmit={updateLinkHref}
         onBlur={updateLinkHrefOrHideToolbar}
         onUnlink={unlink}
@@ -106,7 +120,14 @@ export class InsertLinkToolbar extends React.PureComponent<{
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
 }> {
+  static contextTypes = {
+    intl: intlShape,
+  };
+
   render() {
+    const { formatMessage } = this.context.intl;
+    let title = formatMessage(messages.link_placeholder);
+
     const {
       from,
       to,
@@ -124,7 +145,7 @@ export class InsertLinkToolbar extends React.PureComponent<{
         popupsMountPoint={popupsMountPoint}
         popupsBoundariesElement={popupsBoundariesElement}
         autoFocus={true}
-        placeholder="Paste link"
+        placeholder={title}
         onSubmit={addLink}
         onBlur={hideToolbar}
       />
@@ -140,6 +161,10 @@ export class ActivityPoweredInsertLinkToolbar extends React.PureComponent<{
   popupsBoundariesElement?: HTMLElement;
   activityProvider: Promise<ActivityProvider>;
 }> {
+  static contextTypes = {
+    intl: intlShape,
+  };
+
   render() {
     const {
       from,
@@ -149,6 +174,10 @@ export class ActivityPoweredInsertLinkToolbar extends React.PureComponent<{
       popupsBoundariesElement,
       activityProvider,
     } = this.props;
+
+    const { formatMessage } = this.context.intl;
+    let title = formatMessage(messages.link_search_placeholder);
+
     const hideToolbar = () =>
       hideLinkToolbar()(view.state, view.dispatch) && view.focus();
     const addLink = (href: string, text?: string) =>
@@ -161,7 +190,7 @@ export class ActivityPoweredInsertLinkToolbar extends React.PureComponent<{
         popupsBoundariesElement={popupsBoundariesElement}
         autoFocus={true}
         activityProvider={activityProvider}
-        placeholder="Paste link or search recently viewed"
+        placeholder={title}
         onSubmit={addLink}
         onBlur={hideToolbar}
       />

@@ -74,14 +74,14 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
       items: [
         {
           type: 'dropdown',
-          title: 'Table display options',
+          intlTitle: 'table_options',
           icon: TableDisplayOptionsIcon,
           hidden: !(
             pluginConfig.allowHeaderRow && pluginConfig.allowHeaderColumn
           ),
           options: [
             {
-              title: 'Header row',
+              intlTitle: 'table_header_row',
               onClick: withAnalytics(
                 toggleHeaderRow,
                 'atlassian.editor.format.table.toggleHeaderRow.button',
@@ -90,7 +90,7 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
               hidden: !pluginConfig.allowHeaderRow,
             },
             {
-              title: 'Header column',
+              intlTitle: 'table_header_column',
               onClick: withAnalytics(
                 toggleHeaderColumn,
                 'atlassian.editor.format.table.toggleHeaderColumn.button',
@@ -99,7 +99,7 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
               hidden: !pluginConfig.allowHeaderColumn,
             },
             {
-              title: 'Number column',
+              intlTitle: 'table_number_column',
               selected: checkIfNumberColumnEnabled(state),
               onClick: withAnalytics(
                 toggleNumberColumn,
@@ -123,7 +123,7 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
           icon: CenterIcon,
           onClick: setTableLayout('default'),
           selected: currentLayout === 'default',
-          title: 'Center',
+          intlTitle: 'table_center',
           hidden: !isLayoutSupported('default'),
         },
         {
@@ -131,7 +131,7 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
           icon: WideIcon,
           onClick: setTableLayout('wide'),
           selected: currentLayout === 'wide',
-          title: 'Wide',
+          intlTitle: 'table_wide',
           hidden: !isLayoutSupported('wide'),
         },
         {
@@ -139,7 +139,7 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
           icon: FullWidthIcon,
           onClick: setTableLayout('full-width'),
           selected: currentLayout === 'full-width',
-          title: 'Full width',
+          intlTitle: 'table_full_width',
           hidden: !isLayoutSupported('full-width'),
         },
         {
@@ -153,7 +153,7 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
           onClick: deleteTable,
           onMouseEnter: hoverTable(true),
           onMouseLeave: clearHoverSelection,
-          title: 'Remove table',
+          intlTitle: 'table_remove',
         },
       ],
     };

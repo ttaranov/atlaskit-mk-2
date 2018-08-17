@@ -74,7 +74,7 @@ export default class ContextualMenu extends Component<Props, State> {
           <div className="ProseMirror-table-contextual-menu-trigger">
             <ToolbarButton
               selected={isOpen}
-              title="Toggle contextual menu"
+              intlTitle="table_contextual_menu"
               onClick={this.toggleOpen}
               iconBefore={<ExpandIcon label="expand-dropdown-menu" />}
             />
@@ -101,7 +101,8 @@ export default class ContextualMenu extends Component<Props, State> {
           ? state.doc.nodeAt(targetCellPosition)
           : null;
       items.push({
-        content: <div className="hello">{'Cell background'}</div>,
+        key: 'table_background',
+        intlTitle: 'table_cell_background',
         value: { name: 'background' },
         elemAfter: (
           <div>
@@ -126,43 +127,50 @@ export default class ContextualMenu extends Component<Props, State> {
     }
 
     items.push({
-      content: 'Insert column',
+      key: 'table_insert_column',
+      intlTitle: 'table_insert_column',
       value: { name: 'insert_column' },
     });
 
     items.push({
-      content: 'Insert row',
+      key: 'table_insert_row',
+      intlTitle: 'table_insert_row',
       value: { name: 'insert_row' },
     });
 
     const { right, left, top, bottom } = selectionRect;
     items.push({
-      content: `Delete column${right - left > 1 ? 's' : ''}`,
+      key: 'remove_column',
+      intlTitle:
+        right - left > 1 ? 'table_remove_column' : 'table_remove_columns',
       value: { name: 'delete_column' },
     });
 
     items.push({
-      content: `Delete row${bottom - top > 1 ? 's' : ''}`,
+      key: 'remove_row',
+      intlTitle: bottom - top > 1 ? 'table_remove_row' : 'table_remove_rows',
       value: { name: 'delete_row' },
     });
 
     if (allowMergeCells) {
       items.push({
-        content: 'Merge cells',
+        key: 'table_merge',
+        intlTitle: 'table_merge',
         value: { name: 'merge' },
         isDisabled: !mergeCells(state),
       });
       items.push({
-        content: 'Split cell',
+        key: 'table_split_cell',
+        intlTitle: 'table_split_cell',
         value: { name: 'split' },
         isDisabled: !splitCell(state),
       });
     }
 
     items.push({
-      content: 'Clear cell',
+      intlTitle: 'table_clear_cell',
+      shortcut: '⌫',
       value: { name: 'clear' },
-      elemAfter: '⌫',
     });
 
     return items.length ? [{ items }] : null;

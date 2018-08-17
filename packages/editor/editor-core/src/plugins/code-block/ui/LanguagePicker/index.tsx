@@ -5,11 +5,13 @@ import {
   createLanguageList,
   DEFAULT_LANGUAGES,
   getLanguageIdentifier,
+  messages,
 } from '@atlaskit/editor-common';
 
 import { analyticsService } from '../../../../analytics';
 import Separator from '../../../../ui/Separator';
 import { TrashToolbarButton, FloatingToolbar } from './styles';
+import { intlShape } from 'react-intl';
 
 const LANGUAGE_LIST_ITEMS = createLanguageList(DEFAULT_LANGUAGES).map(lang => ({
   label: lang.name,
@@ -37,6 +39,10 @@ export class LanguagePicker extends React.Component<Props> {
     } = props.activeCodeBlockDOM;
     this.prevActiveCodeBlockWidth = { height, width };
   }
+
+  static contextTypes = {
+    intl: intlShape,
+  };
 
   shouldComponentUpdate(nextProps: Props) {
     if (nextProps.activeLanguage !== this.props.activeLanguage) {
@@ -87,6 +93,8 @@ export class LanguagePicker extends React.Component<Props> {
       activeLanguage,
     } = this.props;
 
+    const { formatMessage } = this.context.intl;
+
     const defaultLanguage =
       LANGUAGE_LIST_ITEMS.find(lang => lang.value === activeLanguage) || null;
 
@@ -103,13 +111,13 @@ export class LanguagePicker extends React.Component<Props> {
             options={LANGUAGE_LIST_ITEMS}
             value={defaultLanguage}
             onChange={this.handleLanguageSelected}
-            placeholder="Select language"
+            placeholder={formatMessage(messages.select_language)}
           />
         </div>
         <Separator />
         <TrashToolbarButton
           onClick={this.handleCodeBlockDelete}
-          title="Remove code block"
+          intlTitle="remove_code_block"
           iconBefore={<RemoveIcon label="Remove code block" />}
         />
       </FloatingToolbar>

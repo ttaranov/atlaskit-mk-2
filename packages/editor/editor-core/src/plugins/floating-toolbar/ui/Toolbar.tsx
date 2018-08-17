@@ -10,6 +10,8 @@ import { compareArrays } from '../utils';
 import Button from './Button';
 import Dropdown from './Dropdown';
 import Separator from './Separator';
+import { FormattedMessage } from 'react-intl';
+import { messages } from '@atlaskit/editor-common';
 
 const akGridSize = gridSize();
 
@@ -49,14 +51,22 @@ export default class Toolbar extends Component<Props> {
       <ToolbarContainer aria-label="Floating Toolbar">
         <ButtonGroup>
           {items.filter(item => !item.hidden).map((item, idx) => {
+            let title;
+            if (item.type === 'button' || item.type === 'dropdown') {
+              if (item.title) {
+                title = item.title;
+              } else if (item.intlTitle) {
+                title = <FormattedMessage {...messages[item.intlTitle]} />;
+              }
+            }
             switch (item.type) {
               case 'button':
                 const ButtonIcon = item.icon;
                 return (
                   <Button
                     key={idx}
-                    title={item.title}
-                    icon={<ButtonIcon label={item.title} />}
+                    title={title}
+                    icon={<ButtonIcon label={title} />}
                     appearance={item.appearance}
                     onClick={() => dispatchCommand(item.onClick)}
                     onMouseEnter={() => dispatchCommand(item.onMouseEnter)}
@@ -71,8 +81,8 @@ export default class Toolbar extends Component<Props> {
                 return (
                   <Dropdown
                     key={idx}
-                    title={item.title}
-                    icon={<DropdownIcon label={item.title} />}
+                    title={title}
+                    icon={<DropdownIcon label={title} />}
                     dispatchCommand={dispatchCommand}
                     options={item.options}
                     hideExpandIcon={item.hideExpandIcon}

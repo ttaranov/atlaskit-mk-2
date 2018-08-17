@@ -1,15 +1,17 @@
-import { mount } from 'enzyme';
 import * as React from 'react';
 import DeleteColumnButton from '../../../../../plugins/table/ui/TableFloatingControls/ColumnControls/DeleteColumnButton';
 import DeleteRowButton from '../../../../../plugins/table/ui/TableFloatingControls/RowControls/DeleteRowButton';
 import AkButton from '@atlaskit/button';
+import { mountWithIntlContext } from '@atlaskit/editor-test-helpers';
 
 [DeleteColumnButton, DeleteRowButton].forEach(DeleteButton => {
   describe(DeleteButton.name, () => {
     describe('callbacks', () => {
       it('fires the onMouseEnter callback', () => {
         const onMouseEnter = jest.fn();
-        const r = mount(<DeleteButton onMouseEnter={onMouseEnter} />);
+        const r = mountWithIntlContext(
+          <DeleteButton onMouseEnter={onMouseEnter} />,
+        );
         r.simulate('mouseenter');
 
         expect(onMouseEnter).toBeCalled();
@@ -17,7 +19,9 @@ import AkButton from '@atlaskit/button';
 
       it('fires the onMouseLeave callback', () => {
         const onMouseLeave = jest.fn();
-        const r = mount(<DeleteButton onMouseLeave={onMouseLeave} />);
+        const r = mountWithIntlContext(
+          <DeleteButton onMouseLeave={onMouseLeave} />,
+        );
         r.simulate('mouseleave');
 
         expect(onMouseLeave).toBeCalled();
@@ -26,7 +30,7 @@ import AkButton from '@atlaskit/button';
 
     describe('appearance', () => {
       it('changes the button appearance to danger on hover', () => {
-        const r = mount(<DeleteButton />);
+        const r = mountWithIntlContext(<DeleteButton />);
         expect(
           r
             .find(AkButton)

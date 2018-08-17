@@ -8,6 +8,7 @@ import {
   fullpage,
 } from '../_helpers';
 import { sleep } from '@atlaskit/editor-test-helpers';
+import { messages } from '@atlaskit/editor-common';
 
 BrowserTestCase(
   'Can change media single to full-width layout on fullpage',
@@ -36,7 +37,9 @@ BrowserTestCase(
     await browser.click('.media-single div div div');
 
     // change layouts
-    const layoutButton = `[aria-label="Change layout to Full width"]`;
+    const layoutButton = `[aria-label="${
+      messages.media_full_width.defaultMessage
+    }"]`;
     await browser.waitForSelector(layoutButton);
     await browser.click(layoutButton);
 

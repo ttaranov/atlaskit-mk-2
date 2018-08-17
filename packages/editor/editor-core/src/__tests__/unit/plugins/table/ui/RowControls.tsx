@@ -1,4 +1,3 @@
-import { mount } from 'enzyme';
 import * as React from 'react';
 import { selectTable, getCellsInRow, selectRow } from 'prosemirror-utils';
 import { Node } from 'prosemirror-model';
@@ -13,6 +12,7 @@ import {
   tdCursor,
   td,
   thEmpty,
+  mountWithIntlContext,
 } from '@atlaskit/editor-test-helpers';
 import AkButton from '@atlaskit/button';
 import { pluginKey } from '../../../../../plugins/table/pm-plugins/main';
@@ -66,7 +66,7 @@ describe('RowControls', () => {
           rows.push(tr(tdEmpty));
         }
         const { editorView } = editor(doc(p('text'), table()(...rows)));
-        const floatingControls = mount(
+        const floatingControls = mountWithIntlContext(
           <TableFloatingControls
             tableRef={document.querySelector('table')!}
             editorView={editorView}
@@ -92,7 +92,7 @@ describe('RowControls', () => {
           ),
         );
 
-        const floatingControls = mount(
+        const floatingControls = mountWithIntlContext(
           <TableFloatingControls
             tableRef={document.querySelector('table')!}
             editorView={editorView}
@@ -143,7 +143,7 @@ describe('RowControls', () => {
           ),
         );
 
-        const floatingControls = mount(
+        const floatingControls = mountWithIntlContext(
           <RowControls
             tableRef={document.querySelector('table')!}
             editorView={editorView}
@@ -195,7 +195,7 @@ describe('RowControls', () => {
         ),
       );
 
-      const floatingControls = mount(
+      const floatingControls = mountWithIntlContext(
         <TableFloatingControls
           tableRef={document.querySelector('table')!}
           editorView={editorView}
@@ -218,7 +218,7 @@ describe('RowControls', () => {
       ),
     );
 
-    const floatingControls = mount(
+    const floatingControls = mountWithIntlContext(
       <RowControls
         tableRef={document.querySelector('table')!}
         editorView={editorView}
@@ -265,7 +265,7 @@ describe('RowControls', () => {
 
     const deleteSelectedRowsMock = jest.fn();
 
-    const floatingControls = mount(
+    const floatingControls = mountWithIntlContext(
       <RowControls
         tableRef={document.querySelector('table')!}
         editorView={editorView}
@@ -316,7 +316,7 @@ describe('RowControls', () => {
       ),
     );
 
-    const floatingControls = mount(
+    const floatingControls = mountWithIntlContext(
       <RowControls
         tableRef={document.querySelector('table')!}
         editorView={editorView}
@@ -362,7 +362,7 @@ describe('RowControls', () => {
         ),
       );
 
-      const floatingControls = mount(
+      const floatingControls = mountWithIntlContext(
         <RowControls
           tableRef={document.querySelector('table')!}
           editorView={editorView}
@@ -409,7 +409,7 @@ describe('RowControls', () => {
         ),
       );
 
-      const floatingControls = mount(
+      const floatingControls = mountWithIntlContext(
         <RowControls
           tableRef={document.querySelector('table')!}
           editorView={editorView}
@@ -456,7 +456,7 @@ describe('RowControls', () => {
         ),
       );
 
-      const floatingControls = mount(
+      const floatingControls = mountWithIntlContext(
         <RowControls
           tableRef={document.querySelector('table')!}
           editorView={editorView}

@@ -49,21 +49,21 @@ const breakoutOptions = (
           icon: CenterIcon,
           onClick: updateExtensionLayout('default'),
           selected: layout === 'default',
-          title: 'Default',
+          intlTitle: 'ext_center',
         },
         {
           type: 'button',
           icon: WideIcon,
           onClick: updateExtensionLayout('wide'),
           selected: layout === 'wide',
-          title: 'Wide',
+          intlTitle: 'ext_wide',
         },
         {
           type: 'button',
           icon: FullWidthIcon,
           onClick: updateExtensionLayout('full-width'),
           selected: layout === 'full-width',
-          title: 'Full Width',
+          intlTitle: 'ext_full_width',
         },
       ]
     : [];
@@ -82,7 +82,7 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
           type: 'button',
           icon: EditIcon,
           onClick: editExtension(macroState && macroState.macroProvider),
-          title: 'Edit',
+          intlTitle: 'ext_pencil',
         },
         ...breakoutOptions(state, extensionState),
         {
@@ -93,7 +93,7 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
           icon: RemoveIcon,
           appearance: 'danger',
           onClick: removeExtension(),
-          title: 'Error',
+          intlTitle: 'ext_remove',
         },
       ],
     };

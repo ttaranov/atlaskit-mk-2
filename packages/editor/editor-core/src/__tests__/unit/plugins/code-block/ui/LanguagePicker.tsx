@@ -1,4 +1,4 @@
-import { mount, ReactWrapper } from 'enzyme';
+import { ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import Select from '@atlaskit/select';
 import Button from '@atlaskit/button';
@@ -7,6 +7,7 @@ import LanguagePickerWithOutsideListeners, {
   LanguagePicker,
 } from '../../../../../plugins/code-block/ui/LanguagePicker';
 import { analyticsService } from '../../../../../analytics';
+import { mountWithIntlContext } from '@atlaskit/editor-test-helpers';
 
 describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
   let languagePicker: ReactWrapper<any, any>;
@@ -18,7 +19,7 @@ describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
     setLanguageStub = jest.fn();
     deleteCodeBlockStub = jest.fn();
     dom = document.createElement('div');
-    languagePicker = mount(
+    languagePicker = mountWithIntlContext(
       <LanguagePicker
         activeCodeBlockDOM={dom}
         deleteCodeBlock={deleteCodeBlockStub}
@@ -134,7 +135,7 @@ describe('@atlaskit/editor-core/ui/LanguagePickerWithOutsideListeners', () => {
       .find(Select)
       .getDOMNode() as HTMLElement;
   beforeEach(() => {
-    wrapper = mount(
+    wrapper = mountWithIntlContext(
       <LanguagePickerWithOutsideListeners
         activeCodeBlockDOM={document.body}
         deleteCodeBlock={jest.fn()}

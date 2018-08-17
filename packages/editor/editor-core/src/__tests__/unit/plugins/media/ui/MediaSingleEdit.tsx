@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { mount } from 'enzyme';
 import {
   doc,
   mediaSingle,
@@ -10,6 +9,7 @@ import {
   layoutColumn,
   layoutSection,
   p,
+  mountWithIntlContext,
 } from '@atlaskit/editor-test-helpers';
 import { stateKey as pluginKey } from '../../../../../plugins/media/pm-plugins/main';
 import ToolbarButton from '../../../../../ui/ToolbarButton';
@@ -49,7 +49,7 @@ describe('@atlaskit/editor-core/ui/MediaSingleEdit', () => {
     editorView.focus();
     const pluginState = pluginKey.getState(editorView.state);
 
-    const mediaSingleEdit = mount(
+    const mediaSingleEdit = mountWithIntlContext(
       <MediaSingleEdit pluginState={pluginState} />,
     );
     expect(editorView.state.selection.$from.node().type.name).toEqual(
@@ -87,7 +87,7 @@ describe('@atlaskit/editor-core/ui/MediaSingleEdit', () => {
     editorView.focus();
     const pluginState = pluginKey.getState(editorView.state);
 
-    const mediaSingleEdit = mount(
+    const mediaSingleEdit = mountWithIntlContext(
       <MediaSingleEdit pluginState={pluginState} />,
     );
     expect(editorView.state.selection.$from.node().type.name).toEqual(
@@ -125,7 +125,7 @@ describe('@atlaskit/editor-core/ui/MediaSingleEdit', () => {
     editorView.focus();
     const pluginState = pluginKey.getState(editorView.state);
 
-    const mediaSingleEdit = mount(
+    const mediaSingleEdit = mountWithIntlContext(
       <MediaSingleEdit pluginState={pluginState} />,
     );
     expect(editorView.state.selection.$from.node().type.name).toEqual(

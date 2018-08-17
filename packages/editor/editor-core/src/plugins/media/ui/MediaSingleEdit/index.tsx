@@ -38,23 +38,23 @@ export interface State {
 const icons = {
   'wrap-left': {
     icon: WrapLeftIcon,
-    label: 'Align left',
+    label: 'media_wrap_left',
   },
   center: {
     icon: CenterIcon,
-    label: 'Align center',
+    label: 'media_wrap_center',
   },
   'wrap-right': {
     icon: WrapRightIcon,
-    label: 'Align right',
+    label: 'media_wrap_right',
   },
   wide: {
     icon: WideIcon,
-    label: 'Wide',
+    label: 'media_wide',
   },
   'full-width': {
     icon: FullWidthIcon,
-    label: 'Full width',
+    label: 'media_full_width',
   },
 };
 
@@ -132,7 +132,7 @@ export default class MediaSingleEdit extends React.Component<Props, State> {
                 disabled={!allowLayout}
                 selected={layout === selectedLayout}
                 onClick={this.handleChangeLayout.bind(this, layout)}
-                title={label}
+                intlTitle={label}
                 iconBefore={<Icon label={`Change layout to ${label}`} />}
               />
             );
@@ -141,7 +141,7 @@ export default class MediaSingleEdit extends React.Component<Props, State> {
           <ToolbarButtonDestructive
             spacing="compact"
             onClick={this.handleRemove}
-            title="Remove image"
+            intlTitle="media_remove_media"
             iconBefore={<RemoveIcon label="Remove image" />}
           />
         </FloatingToolbar>

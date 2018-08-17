@@ -1,3 +1,5 @@
+import { tooltip, findKeymapByDescription } from '../../keymaps';
+
 // The names of the blocks don't map precisely to schema nodes, because
 // of concepts like "paragraph" <-> "Normal text" and "Unknown".
 //
@@ -55,6 +57,7 @@ export const BLOCK_QUOTE: BlockType = {
   name: 'blockquote',
   title: 'Block quote',
   nodeName: 'blockquote',
+  shortcut: tooltip(findKeymapByDescription('Block quote'), true),
 };
 export const CODE_BLOCK: BlockType = {
   name: 'codeblock',

@@ -18,6 +18,7 @@ import {
   PortalProviderAPI,
   PortalRenderer,
 } from '../../editor-core/src/ui/PortalProvider';
+import { IntlProvider } from 'react-intl';
 
 class TestReactEditorView extends ReactEditorView<{
   plugins?: EditorPlugin[];
@@ -55,26 +56,28 @@ export default function createEditorForTests<T = any>({
   const place = document.body.appendChild(document.createElement('div'));
   let portalProviderAPI;
   const wrapper = mount(
-    <PortalProvider
-      render={(portalProvider: any) => {
-        portalProviderAPI = portalProvider;
-        return (
-          <>
-            <TestReactEditorView
-              editorProps={editorProps}
-              portalProviderAPI={portalProvider}
-              providerFactory={
-                providerFactory ? providerFactory : new ProviderFactory()
-              }
-              onEditorCreated={() => {}}
-              onEditorDestroyed={() => {}}
-              plugins={plugins}
-            />
-            <PortalRenderer portalProviderAPI={portalProviderAPI} />
-          </>
-        );
-      }}
-    />,
+    <IntlProvider locale="en">
+      <PortalProvider
+        render={(portalProvider: any) => {
+          portalProviderAPI = portalProvider;
+          return (
+            <>
+              <TestReactEditorView
+                editorProps={editorProps}
+                portalProviderAPI={portalProvider}
+                providerFactory={
+                  providerFactory ? providerFactory : new ProviderFactory()
+                }
+                onEditorCreated={() => {}}
+                onEditorDestroyed={() => {}}
+                plugins={plugins}
+              />
+              <PortalRenderer portalProviderAPI={portalProviderAPI} />
+            </>
+          );
+        }}
+      />
+    </IntlProvider>,
     { attachTo: place },
   );
   const editor = wrapper.find(TestReactEditorView);

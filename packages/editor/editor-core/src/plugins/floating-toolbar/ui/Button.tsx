@@ -34,7 +34,7 @@ const Button = styled(UiButton)`
 export type ButtonAppearance = 'subtle' | 'danger';
 
 export interface Props {
-  title: string;
+  title: ReactElement<any> | string;
   icon: ReactElement<any>;
   onClick: (event: Event) => void;
   onMouseEnter?: <T>(event: MouseEvent<T>) => void;

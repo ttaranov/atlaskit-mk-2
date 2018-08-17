@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import HyperlinkEdit from '../../../../../plugins/hyperlink/ui/HyperlinkEdit';
+import { mountWithIntlContext } from '@atlaskit/editor-test-helpers';
 
 describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
   it('should render a PanelTextInput', () => {
@@ -26,7 +27,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
   });
 
   it('should override open-link href when alwaysOpenLink at is given', () => {
-    const wrapper = mount(
+    const wrapper = mountWithIntlContext(
       <HyperlinkEdit
         target={document.body}
         placeholder="Test"
