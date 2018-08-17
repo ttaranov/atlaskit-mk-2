@@ -11,7 +11,7 @@ import {
 import {
   ShownAnalyticsAttributes,
   buildShownEventDetails,
-  SearchPerformanceTiming,
+  PerformanceTiming,
 } from '../../util/analytics-util';
 import {
   firePreQueryShownEvent,
@@ -149,8 +149,7 @@ export class QuickSearchContainer extends React.Component<Props, State> {
     searchSessionId,
     latestSearchQuery: string,
   ) => {
-    // TODO modify SearchPerformanceTiming to be more generic instead of confluence specific
-    const searchPerformanceTiming: SearchPerformanceTiming = {
+    const performanceTiming: PerformanceTiming = {
       startTime,
       elapsedMs,
       ...timings,
@@ -164,7 +163,7 @@ export class QuickSearchContainer extends React.Component<Props, State> {
 
       firePostQueryShownEvent(
         resultsDetails,
-        searchPerformanceTiming,
+        performanceTiming,
         searchSessionId,
         latestSearchQuery,
         createAnalyticsEvent,
