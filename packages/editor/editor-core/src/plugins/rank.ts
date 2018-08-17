@@ -46,6 +46,7 @@ export default {
     'tableColResizing',
     'blockTypeKeyMap',
     'tableEditing',
+    'pmCollab',
     'collab',
     'ruleInputRule',
     'ruleKeymap',
