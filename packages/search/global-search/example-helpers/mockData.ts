@@ -369,6 +369,7 @@ export function makePeopleSearchData(
 
     return {
       data: {
+        UserSearch: filteredItems,
         AccountCentricUserSearch: filteredItems,
         Collaborators: filteredItems,
       },
