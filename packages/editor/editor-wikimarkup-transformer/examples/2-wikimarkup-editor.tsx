@@ -8,6 +8,7 @@ import {
 import { mention } from '@atlaskit/util-data-test';
 
 import { WikiMarkupTransformer } from '../src';
+import { IntlProvider } from 'react-intl';
 
 const Container = styled.div`
   display: grid;
@@ -64,32 +65,34 @@ class TransformerPanels extends React.PureComponent<Props, State> {
           onInput={this.handleUpdateToSource}
         />
         <div id="editor">
-          <Editor
-            appearance="comment"
-            allowTasksAndDecisions={true}
-            allowCodeBlocks={true}
-            allowTextColor={true}
-            allowLists={true}
-            allowRule={true}
-            allowTables={{
-              allowColumnResizing: true,
-              allowMergeCells: true,
-              allowNumberColumn: true,
-              allowBackgroundColor: true,
-              allowHeaderRow: true,
-              allowHeaderColumn: true,
-              permittedLayouts: 'all',
-              stickToolbarToBottom: true,
-            }}
-            contentTransformerProvider={schema =>
-              new WikiMarkupTransformer(schema)
-            }
-            allowDate={true}
-            mentionProvider={Promise.resolve(
-              mention.storyData.resourceProvider,
-            )}
-            onChange={this.handleChangeInTheEditor}
-          />
+          <IntlProvider locale="en">
+            <Editor
+              appearance="comment"
+              allowTasksAndDecisions={true}
+              allowCodeBlocks={true}
+              allowTextColor={true}
+              allowLists={true}
+              allowRule={true}
+              allowTables={{
+                allowColumnResizing: true,
+                allowMergeCells: true,
+                allowNumberColumn: true,
+                allowBackgroundColor: true,
+                allowHeaderRow: true,
+                allowHeaderColumn: true,
+                permittedLayouts: 'all',
+                stickToolbarToBottom: true,
+              }}
+              contentTransformerProvider={schema =>
+                new WikiMarkupTransformer(schema)
+              }
+              allowDate={true}
+              mentionProvider={Promise.resolve(
+                mention.storyData.resourceProvider,
+              )}
+              onChange={this.handleChangeInTheEditor}
+            />
+          </IntlProvider>
         </div>
         <div
           id="output"

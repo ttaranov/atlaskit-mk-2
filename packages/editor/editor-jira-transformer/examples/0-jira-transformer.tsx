@@ -8,6 +8,7 @@ import {
 } from '@atlaskit/editor-core';
 import { mention, emoji } from '@atlaskit/util-data-test';
 import { JIRATransformer } from '../src';
+import { IntlProvider } from 'react-intl';
 
 const Container = styled.div`
   display: grid;
@@ -68,20 +69,22 @@ class TransformerPanels extends React.PureComponent<Props, State> {
           onInput={this.handleUpdateToSource}
         />
         <div id="editor">
-          <Editor
-            appearance="comment"
-            allowTasksAndDecisions={true}
-            allowCodeBlocks={true}
-            allowLists={true}
-            allowRule={true}
-            allowTables={true}
-            emojiProvider={emojiProvider}
-            mentionProvider={mentionProvider}
-            contentTransformerProvider={schema =>
-              new JIRATransformer(schema, { mention: mentionEncoder })
-            }
-            onChange={this.handleChangeInTheEditor}
-          />
+          <IntlProvider locale="en">
+            <Editor
+              appearance="comment"
+              allowTasksAndDecisions={true}
+              allowCodeBlocks={true}
+              allowLists={true}
+              allowRule={true}
+              allowTables={true}
+              emojiProvider={emojiProvider}
+              mentionProvider={mentionProvider}
+              contentTransformerProvider={schema =>
+                new JIRATransformer(schema, { mention: mentionEncoder })
+              }
+              onChange={this.handleChangeInTheEditor}
+            />
+          </IntlProvider>
         </div>
         <div
           id="output"

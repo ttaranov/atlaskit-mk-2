@@ -4,6 +4,7 @@ import * as React from 'react';
 
 import { Editor, EditorContext, CollapsedEditor } from '@atlaskit/editor-core';
 import ToolsDrawer from '../example-helpers/ToolsDrawer';
+import { IntlProvider } from 'react-intl';
 
 const SAVE_ACTION = () => console.log('Save');
 const CANCEL_ACTION = () => console.log('Cancel');
@@ -48,27 +49,29 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
               disabled,
             }) => (
               <div style={{ padding: '20px' }}>
-                <CollapsedEditor
-                  placeholder="What do you want to say?"
-                  isExpanded={this.state.isExpanded}
-                  onFocus={this.onFocus}
-                  onExpand={EXPAND_ACTION}
-                >
-                  <Editor
-                    appearance="comment"
+                <IntlProvider locale="en">
+                  <CollapsedEditor
                     placeholder="What do you want to say?"
-                    analyticsHandler={analyticsHandler}
-                    shouldFocus={true}
-                    allowCodeBlocks={true}
-                    allowLists={true}
-                    allowRule={true}
-                    disabled={disabled}
-                    mentionProvider={mentionProvider}
-                    onChange={onChange}
-                    onSave={SAVE_ACTION}
-                    onCancel={CANCEL_ACTION}
-                  />
-                </CollapsedEditor>
+                    isExpanded={this.state.isExpanded}
+                    onFocus={this.onFocus}
+                    onExpand={EXPAND_ACTION}
+                  >
+                    <Editor
+                      appearance="comment"
+                      placeholder="What do you want to say?"
+                      analyticsHandler={analyticsHandler}
+                      shouldFocus={true}
+                      allowCodeBlocks={true}
+                      allowLists={true}
+                      allowRule={true}
+                      disabled={disabled}
+                      mentionProvider={mentionProvider}
+                      onChange={onChange}
+                      onSave={SAVE_ACTION}
+                      onCancel={CANCEL_ACTION}
+                    />
+                  </CollapsedEditor>
+                </IntlProvider>
               </div>
             )}
           />

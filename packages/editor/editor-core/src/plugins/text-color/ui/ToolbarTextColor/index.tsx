@@ -56,7 +56,8 @@ export default class ToolbarTextColor extends React.Component<Props, State> {
               spacing={isReducedSpacing ? 'none' : 'default'}
               disabled={pluginState.disabled}
               selected={isOpen}
-              title="Text color"
+              intlTitle="text_color"
+              titlePosition="bottom"
               onClick={this.toggleOpen}
               iconBefore={
                 <TriggerWrapper>

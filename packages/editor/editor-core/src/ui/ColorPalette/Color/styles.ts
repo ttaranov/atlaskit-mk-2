@@ -2,19 +2,16 @@ import styled from 'styled-components';
 // @ts-ignore: unused variable
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, ButtonHTMLAttributes, ComponentClass } from 'react';
-import {
-  akColorN900,
-  akColorN50,
-  akColorN0,
-} from '@atlaskit/util-shared-styles';
+import { akColorN50 } from '@atlaskit/util-shared-styles';
+import ToolbarButton from '../../ToolbarButton';
 
-export const Button: ComponentClass<ButtonHTMLAttributes<{}>> = styled.button`
+export const Button: any = styled(ToolbarButton)`
   height: 26px;
   width: 26px;
-  background: ${akColorN900};
   padding: 0;
   border-radius: 4px;
-  border: 1px solid ${akColorN0};
+  background-color: ${(props: any) => props.style.backgroundColor};
+  border: ${(props: any) => props.style.border};
   cursor: pointer;
   display: block;
 `;

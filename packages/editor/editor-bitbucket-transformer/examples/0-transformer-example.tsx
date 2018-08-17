@@ -9,6 +9,7 @@ import {
 import { BitbucketTransformer } from '../src';
 import exampleBitbucketHTML from '../example-helpers/exampleHTML';
 import imageUploadHandler from '../../editor-core/example-helpers/imageUpload';
+import { IntlProvider } from 'react-intl';
 
 const Container = styled.div`
   display: grid;
@@ -67,19 +68,21 @@ class TransformerPanels extends React.PureComponent<Props, State> {
           {exampleBitbucketHTML}
         </div>
         <div id="editor">
-          <Editor
-            appearance="comment"
-            allowTasksAndDecisions={true}
-            allowCodeBlocks={true}
-            allowLists={true}
-            allowRule={true}
-            allowTables={{ isHeaderRowRequired: true }}
-            legacyImageUploadProvider={Promise.resolve(imageUploadHandler)}
-            contentTransformerProvider={schema =>
-              new BitbucketTransformer(schema)
-            }
-            onChange={this.handleChangeInTheEditor}
-          />
+          <IntlProvider locale="en">
+            <Editor
+              appearance="comment"
+              allowTasksAndDecisions={true}
+              allowCodeBlocks={true}
+              allowLists={true}
+              allowRule={true}
+              allowTables={{ isHeaderRowRequired: true }}
+              legacyImageUploadProvider={Promise.resolve(imageUploadHandler)}
+              contentTransformerProvider={schema =>
+                new BitbucketTransformer(schema)
+              }
+              onChange={this.handleChangeInTheEditor}
+            />
+          </IntlProvider>
         </div>
         <div
           id="output"

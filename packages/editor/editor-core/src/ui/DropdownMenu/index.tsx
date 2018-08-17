@@ -6,6 +6,7 @@ import Item, { ItemGroup } from '@atlaskit/item';
 import Tooltip from '@atlaskit/tooltip';
 import { Popup, akEditorFloatingPanelZIndex } from '@atlaskit/editor-common';
 import withOuterListeners from '../with-outer-listeners';
+import MenuItem from './menuItem';
 
 export interface Props {
   mountTo?: HTMLElement;
@@ -22,7 +23,9 @@ export interface Props {
   zIndex?: number;
   items: Array<{
     items: Array<{
-      content: string | ReactElement<any>;
+      intlTitle?: string;
+      shortcut?: string;
+      content?: string | ReactElement<any>;
       elemBefore?: React.ReactNode;
       elemAfter?: React.ReactNode;
       tooltipDescription?: string;
@@ -52,6 +55,7 @@ const ItemWrapper: any = styled.div`
 
 const ItemContentWrapper: any = styled.span`
   ${(props: any) => (props.hasElemBefore ? 'margin-left: 8px;' : '')};
+  display: block;
 `;
 
 /**
@@ -86,14 +90,18 @@ export default class DropdownMenuWrapper extends PureComponent<Props, State> {
   private renderItem(item) {
     const { onItemActivated, onMouseEnter, onMouseLeave } = this.props;
 
+    let content = item.content;
+    if (item.intlTitle) {
+      content = <MenuItem intlId={item.intlTitle} shortcut={item.shortcut} />;
+    }
+
     // onClick and value.name are the action indicators in the handlers
     // If neither are present, don't wrap in an Item.
     if (!item.onClick && !item.value && !item.value.name) {
-      return <span key={item.content}>{item.content}</span>;
+      return <span key={item.key || content}>{content}</span>;
     }
-
     const dropListItem = (
-      <ItemWrapper key={item.key || item.content} isSelected={item.isActive}>
+      <ItemWrapper key={item.key || content} isSelected={item.isActive}>
         <Item
           elemBefore={item.elemBefore}
           elemAfter={item.elemAfter}
@@ -104,7 +112,7 @@ export default class DropdownMenuWrapper extends PureComponent<Props, State> {
           className={item.className}
         >
           <ItemContentWrapper hasElemBefore={!!item.elemBefore}>
-            {item.content}
+            {content}
           </ItemContentWrapper>
         </Item>
       </ItemWrapper>
@@ -113,7 +121,7 @@ export default class DropdownMenuWrapper extends PureComponent<Props, State> {
     if (item.tooltipDescription) {
       return (
         <Tooltip
-          key={item.content}
+          key={item.key || content}
           content={item.tooltipDescription}
           position={item.tooltipPosition}
         >

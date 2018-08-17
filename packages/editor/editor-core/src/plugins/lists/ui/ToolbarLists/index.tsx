@@ -62,32 +62,32 @@ export default class ToolbarLists extends PureComponent<Props, State> {
     } = this.props;
     let items = [
       {
-        content: 'Bullet List',
+        key: 'bullet_list',
+        intlTitle: 'bullet_list',
+        shortcut: tooltip(toggleBulletListKeymap, true),
         value: { name: 'bullet_list' },
         isDisabled: bulletListDisabled,
         isActive: Boolean(bulletListActive),
-        tooltipDescription: 'Numbered list',
-        tooltipPosition: 'right',
         elemBefore: <BulletListIcon label="Numbered list" />,
       },
       {
-        content: 'Ordered List',
+        key: 'ordered_list',
+        intlTitle: 'ordered_list',
+        shortcut: tooltip(toggleOrderedListKeymap, true),
         value: { name: 'ordered_list' },
         isDisabled: orderedListDisabled,
         isActive: Boolean(orderedListActive),
-        tooltipDescription: 'Ordered list',
-        tooltipPosition: 'right',
         elemBefore: <NumberListIcon label="Ordered list" />,
       },
     ];
     if (this.props.allowTasks) {
       items.push({
-        content: 'Create action',
+        key: 'action_item',
+        intlTitle: 'action_item',
+        shortcut: '[]',
         value: { name: 'action' },
         isDisabled: false,
         isActive: false,
-        tooltipDescription: 'Create action',
-        tooltipPosition: 'right',
         elemBefore: <TaskIcon label="Create action" />,
       });
     }
@@ -119,7 +119,9 @@ export default class ToolbarLists extends PureComponent<Props, State> {
             onClick={this.handleBulletListClick}
             selected={bulletListActive}
             disabled={bulletListDisabled || disabled}
-            title={tooltip(toggleBulletListKeymap)}
+            intlTitle="bullet_list"
+            titlePosition="bottom"
+            shortcut={tooltip(toggleBulletListKeymap, true)}
             iconBefore={<BulletListIcon label="Unordered list" />}
           />
           <ToolbarButton
@@ -127,7 +129,9 @@ export default class ToolbarLists extends PureComponent<Props, State> {
             onClick={this.handleOrderedListClick}
             selected={orderedListActive}
             disabled={orderedListDisabled || disabled}
-            title={tooltip(toggleOrderedListKeymap)}
+            intlTitle="ordered_list"
+            titlePosition="bottom"
+            shortcut={tooltip(toggleOrderedListKeymap, true)}
             iconBefore={<NumberListIcon label="Ordered list" />}
           />
           {allowTasks && (
@@ -135,7 +139,9 @@ export default class ToolbarLists extends PureComponent<Props, State> {
               spacing={isReducedSpacing ? 'none' : 'default'}
               onClick={this.handleCreateAction}
               disabled={disabled}
-              title="Create action []"
+              intlTitle="action_item"
+              titlePosition="bottom"
+              shortcut="[]"
               iconBefore={<TaskIcon label="Create action" />}
             />
           )}
@@ -159,13 +165,15 @@ export default class ToolbarLists extends PureComponent<Props, State> {
             scrollableElement={popupsScrollableElement}
             isOpen={isDropdownOpen}
             fitHeight={188}
-            fitWidth={175}
+            fitWidth={204}
           >
             <ToolbarButton
               spacing={isReducedSpacing ? 'none' : 'default'}
               selected={bulletListActive || orderedListActive}
               disabled={disabled}
               onClick={this.handleTriggerClick}
+              intlTitle="lists"
+              titlePosition="bottom"
               iconBefore={
                 <Wrapper>
                   <BulletListIcon label="Add list" />

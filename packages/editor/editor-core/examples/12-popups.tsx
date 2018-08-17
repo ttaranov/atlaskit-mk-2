@@ -8,6 +8,7 @@ import { Editor } from '../src';
 import { Content } from '../example-helpers/styles';
 import imageUploadHandler from '../example-helpers/imageUpload';
 import { akColorN40 } from '@atlaskit/util-shared-styles';
+import { IntlProvider } from 'react-intl';
 
 const Boundary = styled.div`
   border: 2px solid ${akColorN40};
@@ -230,124 +231,126 @@ const emojiProvider = emoji.storyData.getEmojiResource() as any;
 export default function Example() {
   return (
     <div>
-      <Content>
-        <h2>Intentionally Broken Example</h2>
-        <p style={{ marginBottom: 14 }}>
-          Boundries: document.body | Container: 300px, overflow: hidden.
-        </p>
-        <div style={{ width: 300, overflow: 'hidden' }}>
-          <Editor
-            appearance="comment"
-            analyticsHandler={analyticsHandler}
-            allowCodeBlocks
-            onCancel={CANCEL_ACTION}
-            onSave={SAVE_ACTION}
-            mentionProvider={mentionProvider}
-            emojiProvider={emojiProvider}
-            quickInsert={true}
-          />
-        </div>
-      </Content>
+      <IntlProvider locale="en">
+        <Content>
+          <h2>Intentionally Broken Example</h2>
+          <p style={{ marginBottom: 14 }}>
+            Boundries: document.body | Container: 300px, overflow: hidden.
+          </p>
+          <div style={{ width: 300, overflow: 'hidden' }}>
+            <Editor
+              appearance="comment"
+              analyticsHandler={analyticsHandler}
+              allowCodeBlocks
+              onCancel={CANCEL_ACTION}
+              onSave={SAVE_ACTION}
+              mentionProvider={mentionProvider}
+              emojiProvider={emojiProvider}
+              quickInsert={true}
+            />
+          </div>
+        </Content>
 
-      <hr />
+        <hr />
 
-      <Content>
-        <h2>Basic</h2>
-        <p style={{ marginBottom: 14 }}>
-          Boundries: document.body | Container: 300px, no overflow.
-        </p>
-        <div style={{ width: 300 }}>
-          <Editor
-            appearance="comment"
-            analyticsHandler={analyticsHandler}
-            allowCodeBlocks
-            onCancel={CANCEL_ACTION}
-            onSave={SAVE_ACTION}
-            mentionProvider={mentionProvider}
-            emojiProvider={emojiProvider}
-            quickInsert={true}
-          />
-        </div>
-      </Content>
+        <Content>
+          <h2>Basic</h2>
+          <p style={{ marginBottom: 14 }}>
+            Boundries: document.body | Container: 300px, no overflow.
+          </p>
+          <div style={{ width: 300 }}>
+            <Editor
+              appearance="comment"
+              analyticsHandler={analyticsHandler}
+              allowCodeBlocks
+              onCancel={CANCEL_ACTION}
+              onSave={SAVE_ACTION}
+              mentionProvider={mentionProvider}
+              emojiProvider={emojiProvider}
+              quickInsert={true}
+            />
+          </div>
+        </Content>
 
-      <Content>
-        <h2>Basic with Custom Boundry</h2>
-        <p style={{ marginBottom: 14 }}>
-          Boundries: custom | Container: 500px, no overflow.
-        </p>
-        <div style={{ width: 500 }}>
-          <CustomBoundryExample
-            appearance="comment"
-            imageUploadHandler={imageUploadHandler}
-            analyticsHandler={analyticsHandler}
-            onCancel={CANCEL_ACTION}
-            onSave={SAVE_ACTION}
-            mentionProvider={mentionProvider}
-            emojiProvider={emojiProvider}
-          />
-        </div>
-      </Content>
+        <Content>
+          <h2>Basic with Custom Boundry</h2>
+          <p style={{ marginBottom: 14 }}>
+            Boundries: custom | Container: 500px, no overflow.
+          </p>
+          <div style={{ width: 500 }}>
+            <CustomBoundryExample
+              appearance="comment"
+              imageUploadHandler={imageUploadHandler}
+              analyticsHandler={analyticsHandler}
+              onCancel={CANCEL_ACTION}
+              onSave={SAVE_ACTION}
+              mentionProvider={mentionProvider}
+              emojiProvider={emojiProvider}
+            />
+          </div>
+        </Content>
 
-      <hr />
+        <hr />
 
-      <Content>
-        <h2>Basic Portal</h2>
-        <p style={{ marginBottom: 14 }}>
-          Boundries: document.body | Container: 300px, overflow: hidden.
-        </p>
-        <div style={{ width: 300 }}>
-          <PortalExample
-            imageUploadHandler={imageUploadHandler}
-            analyticsHandler={analyticsHandler}
-            onCancel={CANCEL_ACTION}
-            onSave={SAVE_ACTION}
-            mentionProvider={mentionProvider}
-            emojiProvider={emojiProvider}
-            devTools={true}
-          />
-        </div>
-      </Content>
+        <Content>
+          <h2>Basic Portal</h2>
+          <p style={{ marginBottom: 14 }}>
+            Boundries: document.body | Container: 300px, overflow: hidden.
+          </p>
+          <div style={{ width: 300 }}>
+            <PortalExample
+              imageUploadHandler={imageUploadHandler}
+              analyticsHandler={analyticsHandler}
+              onCancel={CANCEL_ACTION}
+              onSave={SAVE_ACTION}
+              mentionProvider={mentionProvider}
+              emojiProvider={emojiProvider}
+              devTools={true}
+            />
+          </div>
+        </Content>
 
-      <Content>
-        <h2>Portal with Custom Boundry</h2>
-        <p style={{ marginBottom: 14 }}>
-          Boundries: custom | Container: 500px, overflow: hidden.
-        </p>
-        <div style={{ width: 500 }}>
-          <PortalWithCustomBoundaryExample
-            imageUploadHandler={imageUploadHandler}
-            analyticsHandler={analyticsHandler}
-            onCancel={CANCEL_ACTION}
-            onSave={SAVE_ACTION}
-            mentionProvider={mentionProvider}
-            emojiProvider={emojiProvider}
-          />
-        </div>
-      </Content>
+        <Content>
+          <h2>Portal with Custom Boundry</h2>
+          <p style={{ marginBottom: 14 }}>
+            Boundries: custom | Container: 500px, overflow: hidden.
+          </p>
+          <div style={{ width: 500 }}>
+            <PortalWithCustomBoundaryExample
+              imageUploadHandler={imageUploadHandler}
+              analyticsHandler={analyticsHandler}
+              onCancel={CANCEL_ACTION}
+              onSave={SAVE_ACTION}
+              mentionProvider={mentionProvider}
+              emojiProvider={emojiProvider}
+            />
+          </div>
+        </Content>
 
-      <Content>
-        <h2>Portal in Scroll Container</h2>
-        <p style={{ marginBottom: 14 }}>
-          Boundries: custom | Container: 700px, overflow: hidden.
-        </p>
-        <div style={{ maxWidth: 700 }}>
-          <PortalInScrollContainerExample
-            imageUploadHandler={imageUploadHandler}
-            analyticsHandler={analyticsHandler}
-            onCancel={CANCEL_ACTION}
-            onSave={SAVE_ACTION}
-            mentionProvider={mentionProvider}
-            emojiProvider={emojiProvider}
-          />
-        </div>
-      </Content>
+        <Content>
+          <h2>Portal in Scroll Container</h2>
+          <p style={{ marginBottom: 14 }}>
+            Boundries: custom | Container: 700px, overflow: hidden.
+          </p>
+          <div style={{ maxWidth: 700 }}>
+            <PortalInScrollContainerExample
+              imageUploadHandler={imageUploadHandler}
+              analyticsHandler={analyticsHandler}
+              onCancel={CANCEL_ACTION}
+              onSave={SAVE_ACTION}
+              mentionProvider={mentionProvider}
+              emojiProvider={emojiProvider}
+            />
+          </div>
+        </Content>
 
-      <hr />
+        <hr />
 
-      <Content>
-        <h2>Portal with custom scroll container</h2>
-        <JiraSidebarEditor />
-      </Content>
+        <Content>
+          <h2>Portal with custom scroll container</h2>
+          <JiraSidebarEditor />
+        </Content>
+      </IntlProvider>
     </div>
   );
 }

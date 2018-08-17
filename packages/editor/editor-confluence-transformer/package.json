@@ -33,6 +33,7 @@
     "@atlaskit/spinner": "^9.0.4",
     "@atlaskit/util-data-test": "^10.0.8",
     "@types/prosemirror-model": "^1.0.0",
-    "chai-as-promised": "^6.0.0"
+    "chai-as-promised": "^6.0.0",
+    "react-intl": "^2.4.0"
   }
 }

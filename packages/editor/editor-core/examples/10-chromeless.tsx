@@ -6,6 +6,7 @@ import Editor from '../src/editor';
 import EditorContext from '../src/ui/EditorContext';
 import WithEditorActions from '../src/ui/WithEditorActions';
 import ToolsDrawer from '../example-helpers/ToolsDrawer';
+import { IntlProvider } from 'react-intl';
 
 const SAVE_ACTION = () => console.log('Save');
 const analyticsHandler = (actionName, props) => console.log(actionName, props);
@@ -60,23 +61,25 @@ export default function Example() {
             contextIdentifierProvider,
             onChange,
           }) => (
-            <Editor
-              appearance="chromeless"
-              analyticsHandler={analyticsHandler}
-              disabled={disabled}
-              shouldFocus={true}
-              allowTasksAndDecisions={true}
-              allowCodeBlocks={true}
-              saveOnEnter={true}
-              mentionProvider={mentionProvider}
-              emojiProvider={emojiProvider}
-              taskDecisionProvider={taskDecisionProvider}
-              contextIdentifierProvider={contextIdentifierProvider}
-              mediaProvider={mediaProvider}
-              onChange={onChange}
-              onSave={SAVE_ACTION}
-              quickInsert={true}
-            />
+            <IntlProvider locale="en">
+              <Editor
+                appearance="chromeless"
+                analyticsHandler={analyticsHandler}
+                disabled={disabled}
+                shouldFocus={true}
+                allowTasksAndDecisions={true}
+                allowCodeBlocks={true}
+                saveOnEnter={true}
+                mentionProvider={mentionProvider}
+                emojiProvider={emojiProvider}
+                taskDecisionProvider={taskDecisionProvider}
+                contextIdentifierProvider={contextIdentifierProvider}
+                mediaProvider={mediaProvider}
+                onChange={onChange}
+                onSave={SAVE_ACTION}
+                quickInsert={true}
+              />
+            </IntlProvider>
           )}
         />
       </div>

@@ -30,6 +30,7 @@ import {
   DATE,
 } from '../example-helpers/cxhtml-test-data';
 import { ConfluenceTransformer } from '../src';
+import { IntlProvider } from 'react-intl';
 
 // tslint:disable-next-line:variable-name
 export const TitleInput = styled.input`
@@ -158,57 +159,59 @@ class Example extends Component<ExampleProps, ExampleState> {
         </fieldset>
         <Content>
           <EditorContext>
-            <WithEditorActions
-              // tslint:disable-next-line:jsx-no-lambda
-              render={actions => (
-                <Editor
-                  appearance="full-page"
-                  analyticsHandler={analyticsHandler}
-                  allowTasksAndDecisions={true}
-                  allowCodeBlocks={true}
-                  allowLists={true}
-                  allowTextColor={true}
-                  allowTables={{
-                    allowColumnResizing: true,
-                    allowMergeCells: true,
-                    allowBackgroundColor: true,
-                    allowNumberColumn: true,
-                  }}
-                  allowJiraIssue={true}
-                  allowUnsupportedContent={true}
-                  allowPanel={true}
-                  allowExtension={true}
-                  allowConfluenceInlineComment={true}
-                  allowDate={true}
-                  {...providers}
-                  media={{ provider: mediaProvider, allowMediaSingle: true }}
-                  // tslint:disable-next-line:jsx-no-lambda
-                  contentTransformerProvider={schema =>
-                    new ConfluenceTransformer(schema)
-                  }
-                  placeholder="Write something..."
-                  shouldFocus={false}
-                  onChange={editorView => this.props.onChange(actions)}
-                  defaultValue={this.state.input}
-                  key={this.state.input}
-                  contentComponents={
-                    <TitleInput
-                      placeholder="Give this page a title..."
-                      // tslint:disable-next-line:jsx-no-lambda
-                      innerRef={ref => ref && ref.focus()}
-                    />
-                  }
-                  primaryToolbarComponents={
-                    <WithEditorActions
-                      // tslint:disable-next-line:jsx-no-lambda
-                      render={actions => (
-                        <SaveAndCancelButtons editorActions={actions} />
-                      )}
-                    />
-                  }
-                />
-              )}
-            />
+            <IntlProvider locale="en">
+              <WithEditorActions
+                // tslint:disable-next-line:jsx-no-lambda
+                render={actions => (
+                  <Editor
+                    appearance="full-page"
+                    analyticsHandler={analyticsHandler}
+                    allowTasksAndDecisions={true}
+                    allowCodeBlocks={true}
+                    allowLists={true}
+                    allowTextColor={true}
+                    allowTables={{
+                      allowColumnResizing: true,
+                      allowMergeCells: true,
+                      allowBackgroundColor: true,
+                      allowNumberColumn: true,
+                    }}
+                    allowJiraIssue={true}
+                    allowUnsupportedContent={true}
+                    allowPanel={true}
+                    allowExtension={true}
+                    allowConfluenceInlineComment={true}
+                    allowDate={true}
+                    {...providers}
+                    media={{ provider: mediaProvider, allowMediaSingle: true }}
+                    // tslint:disable-next-line:jsx-no-lambda
+                    contentTransformerProvider={schema =>
+                      new ConfluenceTransformer(schema)
+                    }
+                    placeholder="Write something..."
+                    shouldFocus={false}
+                    onChange={editorView => this.props.onChange(actions)}
+                    defaultValue={this.state.input}
+                    key={this.state.input}
+                    contentComponents={
+                      <TitleInput
+                        placeholder="Give this page a title..."
+                        // tslint:disable-next-line:jsx-no-lambda
+                        innerRef={ref => ref && ref.focus()}
+                      />
+                    }
+                    primaryToolbarComponents={
+                      <WithEditorActions
+                        // tslint:disable-next-line:jsx-no-lambda
+                        render={actions => (
+                          <SaveAndCancelButtons editorActions={actions} />
+                        )}
+                      />
+                    }
+                  />
+                )}
+              />
+            </IntlProvider>
           </EditorContext>
         </Content>
       </div>

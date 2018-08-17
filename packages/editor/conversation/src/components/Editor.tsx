@@ -17,6 +17,7 @@ import {
 } from '@atlaskit/editor-core';
 
 import { User } from '../model';
+import { IntlProvider } from 'react-intl';
 
 export interface Props {
   defaultValue?: any;
@@ -237,7 +238,11 @@ export default class Editor extends React.Component<Props, State> {
         <Container>
           {this.renderAvatar()}
           <EditorSection>
-            <WithEditorActions render={actions => this.renderEditor(actions)} />
+            <IntlProvider locale="en">
+              <WithEditorActions
+                render={actions => this.renderEditor(actions)}
+              />
+            </IntlProvider>
           </EditorSection>
         </Container>
       </EditorContext>

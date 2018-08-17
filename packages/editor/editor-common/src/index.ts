@@ -8,3 +8,5 @@ export { default as ProviderFactory, WithProviders } from './providerFactory';
 
 export * from './styles';
 export * from './ui';
+
+export * from './i18n';

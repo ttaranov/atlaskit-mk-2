@@ -12,6 +12,7 @@ import {
 } from '../src/styles';
 
 import { akBorderRadius } from '@atlaskit/util-shared-styles';
+import { IntlProvider } from 'react-intl';
 
 export const Wrapper: any = styled.div`
   height: 500px;
@@ -55,7 +56,9 @@ export default function Example() {
   return (
     <Wrapper>
       <Content>
-        <Editor appearance="full-page" />
+        <IntlProvider locale="en">
+          <Editor appearance="full-page" />
+        </IntlProvider>
       </Content>
     </Wrapper>
   );

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import * as React from 'react';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import { akColorN90 } from '@atlaskit/util-shared-styles';
+import { IntlProvider } from 'react-intl';
 
 import Editor from './../src/editor';
 import EditorContext from './../src/ui/EditorContext';
@@ -79,63 +80,67 @@ export class ExampleEditor extends React.Component<Props> {
               onChange,
               disabled,
             }) => (
-              <Editor
-                defaultValue={this.props.defaultValue}
-                appearance="full-page"
-                analyticsHandler={analyticsHandler}
-                quickInsert={{ provider: Promise.resolve(quickInsertProvider) }}
-                delegateAnalyticsEvent={(...args) => console.log(args)}
-                allowTasksAndDecisions={true}
-                allowCodeBlocks={{ enableKeybindingsForIDE: true }}
-                allowLists={true}
-                allowTextColor={true}
-                allowTables={{
-                  allowColumnResizing: true,
-                  allowMergeCells: true,
-                  allowNumberColumn: true,
-                  allowBackgroundColor: true,
-                  allowHeaderRow: true,
-                  allowHeaderColumn: true,
-                  permittedLayouts: 'all',
-                  stickToolbarToBottom: true,
-                }}
-                allowJiraIssue={true}
-                allowUnsupportedContent={true}
-                allowPanel={true}
-                allowExtension={{
-                  allowBreakout: true,
-                }}
-                allowRule={true}
-                allowDate={true}
-                allowLayouts={true}
-                allowGapCursor={true}
-                allowTemplatePlaceholders={{ allowInserting: true }}
-                UNSAFE_cards={{
-                  provider: Promise.resolve(cardProvider),
-                }}
-                activityProvider={activityProvider}
-                mentionProvider={mentionProvider}
-                emojiProvider={emojiProvider}
-                taskDecisionProvider={taskDecisionProvider}
-                contextIdentifierProvider={contextIdentifierProvider}
-                macroProvider={Promise.resolve(macroProvider)}
-                media={{ provider: mediaProvider, allowMediaSingle: true }}
-                placeholder="Write something..."
-                shouldFocus={false}
-                onChange={onChange}
-                disabled={disabled}
-                primaryToolbarComponents={
-                  <WithEditorActions
-                    // tslint:disable-next-line:jsx-no-lambda
-                    render={actions => (
-                      <SaveAndCancelButtons editorActions={actions} />
-                    )}
-                  />
-                }
-                onSave={SAVE_ACTION}
-                insertMenuItems={customInsertMenuItems}
-                extensionHandlers={extensionHandlers}
-              />
+              <IntlProvider locale="en">
+                <Editor
+                  defaultValue={this.props.defaultValue}
+                  appearance="full-page"
+                  analyticsHandler={analyticsHandler}
+                  quickInsert={{
+                    provider: Promise.resolve(quickInsertProvider),
+                  }}
+                  delegateAnalyticsEvent={(...args) => console.log(args)}
+                  allowTasksAndDecisions={true}
+                  allowCodeBlocks={{ enableKeybindingsForIDE: true }}
+                  allowLists={true}
+                  allowTextColor={true}
+                  allowTables={{
+                    allowColumnResizing: true,
+                    allowMergeCells: true,
+                    allowNumberColumn: true,
+                    allowBackgroundColor: true,
+                    allowHeaderRow: true,
+                    allowHeaderColumn: true,
+                    permittedLayouts: 'all',
+                    stickToolbarToBottom: true,
+                  }}
+                  allowJiraIssue={true}
+                  allowUnsupportedContent={true}
+                  allowPanel={true}
+                  allowExtension={{
+                    allowBreakout: true,
+                  }}
+                  allowRule={true}
+                  allowDate={true}
+                  allowLayouts={true}
+                  allowGapCursor={true}
+                  allowTemplatePlaceholders={{ allowInserting: true }}
+                  UNSAFE_cards={{
+                    provider: Promise.resolve(cardProvider),
+                  }}
+                  activityProvider={activityProvider}
+                  mentionProvider={mentionProvider}
+                  emojiProvider={emojiProvider}
+                  taskDecisionProvider={taskDecisionProvider}
+                  contextIdentifierProvider={contextIdentifierProvider}
+                  macroProvider={Promise.resolve(macroProvider)}
+                  media={{ provider: mediaProvider, allowMediaSingle: true }}
+                  placeholder="Write something..."
+                  shouldFocus={false}
+                  onChange={onChange}
+                  disabled={disabled}
+                  primaryToolbarComponents={
+                    <WithEditorActions
+                      // tslint:disable-next-line:jsx-no-lambda
+                      render={actions => (
+                        <SaveAndCancelButtons editorActions={actions} />
+                      )}
+                    />
+                  }
+                  onSave={SAVE_ACTION}
+                  insertMenuItems={customInsertMenuItems}
+                  extensionHandlers={extensionHandlers}
+                />
+              </IntlProvider>
             )}
           />
         </Content>

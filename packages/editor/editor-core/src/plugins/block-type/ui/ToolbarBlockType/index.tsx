@@ -2,6 +2,7 @@ import * as React from 'react';
 import { ReactElement, createElement } from 'react';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import TextStyleIcon from '@atlaskit/icon/glyph/editor/text-style';
+import { FormattedMessage } from 'react-intl';
 import { analyticsService as analytics } from '../../../../analytics';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import DropdownMenu from '../../../../ui/DropdownMenu';
@@ -14,6 +15,7 @@ import {
 } from '../../../../ui/styles';
 import { BlockTypeState } from '../../pm-plugins/main';
 import { BlockType } from '../../types';
+import { messages } from '@atlaskit/editor-common';
 
 export interface Props {
   isDisabled?: boolean;
@@ -71,9 +73,10 @@ export default class ToolbarBlockType extends React.PureComponent<
       return null;
     }
 
-    const blockTypeTitles = availableBlockTypes
+    const blockTypeNames = availableBlockTypes
       .filter(blockType => blockType.name === currentBlockType.name)
-      .map(blockType => blockType.title);
+      .map(blockType => blockType.name);
+    const selectedBlockTypeName = blockTypeNames[0] || 'normal';
 
     const toolbarButtonFactory = (disabled: boolean) => (
       <ToolbarButton
@@ -81,6 +84,8 @@ export default class ToolbarBlockType extends React.PureComponent<
         selected={active}
         disabled={disabled}
         onClick={this.handleTriggerClick}
+        intlTitle="text_styles"
+        titlePosition="bottom"
         iconAfter={
           <Wrapper isSmall={isSmall}>
             {isSmall && <TextStyleIcon label="Change formatting" />}
@@ -91,7 +96,9 @@ export default class ToolbarBlockType extends React.PureComponent<
         }
       >
         {!isSmall && (
-          <ButtonContent>{blockTypeTitles[0] || 'Normal text'}</ButtonContent>
+          <ButtonContent>
+            <FormattedMessage {...messages[selectedBlockTypeName]} />
+          </ButtonContent>
         )}
       </ToolbarButton>
     );
@@ -135,7 +142,11 @@ export default class ToolbarBlockType extends React.PureComponent<
     const items = availableBlockTypes.reduce(
       (acc, blockType, blockTypeNo) => {
         acc.push({
-          content: createElement(blockType.tagName || 'p', {}, blockType.title),
+          content: createElement(
+            blockType.tagName || 'p',
+            {},
+            <FormattedMessage {...messages[blockType.name]} />,
+          ),
           value: blockType,
           key: `${blockType}-${blockTypeNo}`,
           // ED-2853, hiding tooltips as shortcuts are not working atm.

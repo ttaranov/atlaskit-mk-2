@@ -2,6 +2,7 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Editor } from '@atlaskit/editor-core';
 import { JSONTransformer } from '../src';
+import { IntlProvider } from 'react-intl';
 
 const Container = styled.div`
   display: grid;
@@ -42,15 +43,17 @@ export default class Example extends React.PureComponent<
   render() {
     return (
       <Container>
-        <Editor
-          appearance="comment"
-          allowTasksAndDecisions={true}
-          allowCodeBlocks={true}
-          allowLists={true}
-          allowRule={true}
-          allowTables={true}
-          onChange={this.handleChangeInTheEditor}
-        />
+        <IntlProvider locale="en">
+          <Editor
+            appearance="comment"
+            allowTasksAndDecisions={true}
+            allowCodeBlocks={true}
+            allowLists={true}
+            allowRule={true}
+            allowTables={true}
+            onChange={this.handleChangeInTheEditor}
+          />
+        </IntlProvider>
         <div
           id="output"
           data-placeholder="This is an empty document (or something has gone really wrong)"

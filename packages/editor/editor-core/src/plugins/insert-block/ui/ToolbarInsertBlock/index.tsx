@@ -30,12 +30,7 @@ import {
   analyticsService as analytics,
   analyticsDecorator,
 } from '../../../../analytics';
-import {
-  toggleTable,
-  tooltip,
-  findKeymapByDescription,
-  addLink,
-} from '../../../../keymaps';
+import { tooltip, addLink } from '../../../../keymaps';
 import { InsertMenuCustomItem } from '../../../../types';
 import DropdownMenu from '../../../../ui/DropdownMenu';
 import ToolbarButton from '../../../../ui/ToolbarButton';
@@ -233,35 +228,42 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       return null;
     }
 
-    const toolbarButtonFactory = (disabled: boolean, items) => (
-      <ToolbarButton
-        ref={el => this.handleDropDownButtonRef(el, items)}
-        selected={isOpen}
-        disabled={disabled}
-        onClick={this.handleTriggerClick}
-        spacing={isReducedSpacing ? 'none' : 'default'}
-        iconBefore={
-          <TriggerWrapper>
-            <AddIcon label="Open or close insert block dropdown" />
-            <ExpandIconWrapper>
-              <ExpandIcon label="Open or close insert block dropdown" />
-            </ExpandIconWrapper>
-          </TriggerWrapper>
-        }
-      />
-    );
+    const toolbarButtonFactory = (disabled: boolean, items) => {
+      return (
+        <ToolbarButton
+          ref={el => this.handleDropDownButtonRef(el, items)}
+          selected={isOpen}
+          disabled={disabled}
+          onClick={this.handleTriggerClick}
+          spacing={isReducedSpacing ? 'none' : 'default'}
+          intlTitle="insert_menu"
+          shortcut="/"
+          titlePosition="bottom"
+          iconBefore={
+            <TriggerWrapper>
+              <AddIcon label="Open or close insert block dropdown" />
+              <ExpandIconWrapper>
+                <ExpandIcon label="Open or close insert block dropdown" />
+              </ExpandIconWrapper>
+            </TriggerWrapper>
+          }
+        />
+      );
+    };
 
     return (
       <ButtonGroup width={isReducedSpacing ? 'small' : 'large'}>
         {buttons.map(btn => (
           <ToolbarButton
             ref={btn.handleRef || noop}
-            key={btn.content}
+            key={btn.key}
             spacing={isReducedSpacing ? 'none' : 'default'}
             disabled={isDisabled || btn.isDisabled}
             iconBefore={btn.elemBefore}
             selected={btn.isActive}
-            title={btn.content}
+            intlTitle={btn.intlTitle}
+            shortcut={btn.shortcut}
+            titlePosition="bottom"
             onClick={() => this.onItemActivated({ item: btn })}
           />
         ))}
@@ -278,7 +280,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
                 scrollableElement={popupsScrollableElement}
                 isOpen={isOpen}
                 fitHeight={188}
-                fitWidth={175}
+                fitWidth={220}
               >
                 {toolbarButtonFactory(false, dropdownItems)}
               </DropdownMenu>
@@ -316,60 +318,55 @@ export default class ToolbarInsertBlock extends React.PureComponent<
 
     if (linkSupported) {
       items.push({
-        content: 'Add link',
+        key: 'link',
+        intlTitle: 'link',
+        shortcut: tooltip(addLink, true),
         value: { name: 'link' },
         isDisabled: linkDisabled,
-        tooltipDescription: tooltip(addLink),
-        tooltipPosition: 'right',
         elemBefore: <LinkIcon label="Add link" />,
       });
     }
     if (mediaSupported && mediaUploadsEnabled) {
       items.push({
-        content: 'Files and images',
+        key: 'file_images',
+        intlTitle: 'file_images',
         value: { name: 'media' },
-        tooltipDescription: 'Files and Images',
-        tooltipPosition: 'right',
         elemBefore: <EditorImageIcon label="Insert files and images" />,
       });
     }
     if (imageUploadSupported) {
       items.push({
-        content: 'Insert image',
+        key: 'image',
+        intlTitle: 'image',
         value: { name: 'image upload' },
         isDisabled: !imageUploadEnabled,
-        tooltipDescription: 'Insert image',
-        tooltipPosition: 'right',
         elemBefore: <EditorImageIcon label="Insert image" />,
       });
     }
     if (mentionsSupported) {
       items.push({
-        content: 'Mention',
+        key: 'mention',
+        intlTitle: 'mention',
         value: { name: 'mention' },
         isDisabled: !mentionsEnabled,
-        tooltipDescription: 'Mention a person (@)',
-        tooltipPosition: 'right',
         elemBefore: <MentionIcon label="Add mention" />,
       });
     }
     if (emojiProvider) {
       items.push({
-        content: 'Emoji',
+        key: 'emoji',
+        intlTitle: 'emoji',
         value: { name: 'emoji' },
         isDisabled: emojiDisabled,
-        tooltipDescription: 'Insert emoji (:)',
-        tooltipPosition: 'right',
         elemBefore: <EmojiIcon label="Insert emoji" />,
         handleRef: this.handleButtonRef,
       });
     }
     if (tableSupported) {
       items.push({
-        content: 'Table',
+        key: 'table',
+        intlTitle: 'table',
         value: { name: 'table' },
-        tooltipDescription: tooltip(toggleTable),
-        tooltipPosition: 'right',
         elemBefore: <TableIcon label="Insert table" />,
       });
     }
@@ -377,20 +374,20 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       availableWrapperBlockTypes.forEach(blockType => {
         const BlockTypeIcon = blockTypeIcons[blockType.name];
         items.push({
-          content: blockType.title,
+          key: `insertblock-${blockType.name}`,
+          intlTitle: blockType.name,
+          shortcut: blockType.shortcut,
           value: blockType,
-          tooltipDescription: tooltip(findKeymapByDescription(blockType.title)),
-          tooltipPosition: 'right',
           elemBefore: <BlockTypeIcon label={`Insert ${blockType} block`} />,
         });
       });
     }
     if (decisionSupported) {
       items.push({
-        content: 'Decision',
+        key: 'decision',
+        intlTitle: 'decision',
+        shortcut: '<>',
         value: { name: 'decision' },
-        tooltipDescription: 'Insert decision',
-        tooltipPosition: 'right',
         elemBefore: <DecisionIcon label="Insert decision" />,
       });
     }
@@ -399,37 +396,36 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       this.props.editorView.state.schema.nodes.rule
     ) {
       items.push({
-        content: 'Horizontal Rule',
+        key: 'rule',
+        intlTitle: 'rule',
+        shortcut: '---',
         value: { name: 'horizontalrule' },
-        tooltipDescription: 'Insert horizontal rule',
-        tooltipPosition: 'right',
         elemBefore: <HorizontalRuleIcon label="Insert horizontal rule" />,
       });
     }
 
     if (dateEnabled) {
       items.push({
-        content: 'Date',
+        key: 'date',
+        intlTitle: 'date',
         value: { name: 'date' },
-        tooltipDescription: 'Insert date',
-        tooltipPosition: 'right',
         elemBefore: <DateIcon label="Insert date" />,
       });
     }
 
     if (placeholderTextEnabled) {
       items.push({
-        content: 'Placeholder Text',
+        key: 'placeholder',
+        intlTitle: 'placeholder',
         value: { name: 'placeholder text' },
-        tooltipDescription: 'Add placeholder text',
-        tooltipPosition: 'right',
         elemBefore: <PlaceholderTextIcon label="Add placeholder text" />,
       });
     }
 
     if (layoutSectionEnabled) {
       items.push({
-        content: 'Columns',
+        key: 'columns',
+        intlTitle: 'columns',
         value: { name: 'layout' },
         tooltipDescription: 'Insert columns',
         tooltipPosition: 'right',
@@ -444,10 +440,9 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       // Should be safe to delete soon. If in doubt ask Leandro Lemos (llemos)
     } else if (typeof macroProvider !== 'undefined' && macroProvider) {
       items.push({
-        content: 'View more',
+        key: 'more',
+        intlTitle: 'more',
         value: { name: 'macro' },
-        tooltipDescription: 'View more',
-        tooltipPosition: 'right',
         elemBefore: <EditorMoreIcon label="View more" />,
       });
     }

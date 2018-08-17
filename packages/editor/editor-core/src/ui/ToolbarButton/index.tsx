@@ -2,6 +2,8 @@ import Tooltip from '@atlaskit/tooltip';
 import * as React from 'react';
 import { PureComponent, ReactElement } from 'react';
 import { AkButton } from './styles';
+import { intlShape } from 'react-intl';
+import { messages } from '@atlaskit/editor-common';
 
 export interface Props {
   className?: string;
@@ -15,8 +17,11 @@ export interface Props {
   spacing?: 'default' | 'compact' | 'none';
   target?: string;
   theme?: 'dark';
+  intlTitle?: string;
+  shortcut?: string;
   title?: string;
   titlePosition?: string;
+  ariaLabel?: any;
 }
 
 export default class ToolbarButton extends PureComponent<Props, {}> {
@@ -24,11 +29,27 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
     className: '',
   };
 
+  static contextTypes = {
+    intl: intlShape,
+  };
+
   render() {
+    let title = this.props.title;
+    let ariaLabel = this.props.ariaLabel;
+    if (this.props.intlTitle && messages[this.props.intlTitle]) {
+      const { formatMessage } = this.context.intl;
+      let i18nLabel = formatMessage(messages[this.props.intlTitle]);
+      if (this.props.shortcut) {
+        i18nLabel = `${i18nLabel} ${this.props.shortcut}`;
+      }
+      title = i18nLabel;
+      ariaLabel = i18nLabel;
+    }
     const button = (
       <AkButton
         appearance="subtle"
         ariaHaspopup={true}
+        ariaLabel={ariaLabel}
         className={this.props.className}
         href={this.props.href}
         iconAfter={this.props.iconAfter}
@@ -46,9 +67,9 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
     );
 
     const position = this.props.titlePosition || 'top';
-    const tooltipContent = !this.props.hideTooltip ? this.props.title : null;
+    const tooltipContent = !this.props.hideTooltip ? title : null;
 
-    return this.props.title ? (
+    return title ? (
       <Tooltip
         content={tooltipContent}
         hideTooltipOnClick={true}

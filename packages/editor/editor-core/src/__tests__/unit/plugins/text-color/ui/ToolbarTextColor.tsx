@@ -1,10 +1,10 @@
-import { mount } from 'enzyme';
 import * as React from 'react';
 import {
   doc,
   code_block,
   p,
   createEditor,
+  mountWithIntlContext,
 } from '@atlaskit/editor-test-helpers';
 import {
   TextColorPluginState,
@@ -29,11 +29,13 @@ describe('ToolbarTextColor', () => {
     it('sets disabled to false', () => {
       const { editorView } = editor(doc(p('text')));
       const pluginState = pluginKey.getState(editorView.state);
-      const toolbarTextColor = mount(
+      const toolbarTextColor = mountWithIntlContext(
         <ToolbarTextColor pluginState={pluginState} changeColor={() => {}} />,
       );
 
-      expect(toolbarTextColor.prop('pluginState').disabled).toBe(false);
+      expect(
+        (toolbarTextColor.prop('pluginState') as TextColorPluginState).disabled,
+      ).toBe(false);
       toolbarTextColor.unmount();
     });
   });
@@ -42,11 +44,13 @@ describe('ToolbarTextColor', () => {
     it('sets disabled to true', () => {
       const { editorView } = editor(doc(code_block()('text')));
       const pluginState = pluginKey.getState(editorView.state);
-      const toolbarTextColor = mount(
+      const toolbarTextColor = mountWithIntlContext(
         <ToolbarTextColor pluginState={pluginState} changeColor={() => {}} />,
       );
 
-      expect(toolbarTextColor.prop('pluginState').disabled).toBe(true);
+      expect(
+        (toolbarTextColor.prop('pluginState') as TextColorPluginState).disabled,
+      ).toBe(true);
       toolbarTextColor.unmount();
     });
   });
@@ -54,7 +58,7 @@ describe('ToolbarTextColor', () => {
   it('should make isOpen true when toolbar textColor button is clicked', () => {
     const { editorView } = editor(doc(p('text')));
     const pluginState = pluginKey.getState(editorView.state);
-    const toolbarTextColor = mount(
+    const toolbarTextColor = mountWithIntlContext(
       <ToolbarTextColor changeColor={() => {}} pluginState={pluginState} />,
     );
 
@@ -67,7 +71,7 @@ describe('ToolbarTextColor', () => {
   it('should make isOpen false when a color is clicked', () => {
     const { editorView } = editor(doc(p('text')));
     const pluginState = pluginKey.getState(editorView.state);
-    const toolbarTextColor = mount(
+    const toolbarTextColor = mountWithIntlContext(
       <ToolbarTextColor changeColor={() => {}} pluginState={pluginState} />,
     );
 
@@ -84,7 +88,7 @@ describe('ToolbarTextColor', () => {
   it('should render disabled ToolbarButton if disabled property is true', () => {
     const { editorView } = editor(doc(p('text')));
     const pluginState = pluginKey.getState(editorView.state);
-    const toolbarTextColor = mount(
+    const toolbarTextColor = mountWithIntlContext(
       <ToolbarTextColor
         changeColor={() => {}}
         pluginState={{ ...pluginState, disabled: true }}
@@ -98,7 +102,7 @@ describe('ToolbarTextColor', () => {
   it('should have Color components as much as size of color palette', () => {
     const { editorView } = editor(doc(p('text')));
     const pluginState = pluginKey.getState(editorView.state);
-    const toolbarTextColor = mount(
+    const toolbarTextColor = mountWithIntlContext(
       <ToolbarTextColor changeColor={() => {}} pluginState={pluginState} />,
     );
     toolbarTextColor.find('button').simulate('click');
@@ -113,7 +117,7 @@ describe('ToolbarTextColor', () => {
       let trackEvent = jest.fn();
       const { editorView } = editor(doc(p('text')), trackEvent);
       const pluginState = pluginKey.getState(editorView.state);
-      const toolbarOption = mount(
+      const toolbarOption = mountWithIntlContext(
         <ToolbarTextColor changeColor={() => true} pluginState={pluginState} />,
       );
       toolbarOption.find('button').simulate('click');

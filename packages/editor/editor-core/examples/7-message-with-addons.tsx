@@ -9,6 +9,7 @@ import DocumentIcon from '@atlaskit/icon/glyph/document';
 import QuestionIcon from '@atlaskit/icon/glyph/editor/help';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import styled from 'styled-components';
+import { IntlProvider } from 'react-intl';
 
 // tslint:disable-next-line:no-console
 const SAVE_ACTION = () => console.log('Save');
@@ -96,24 +97,26 @@ export default function Example() {
           mediaProvider,
           onChange,
         }) => (
-          <Editor
-            appearance="message"
-            analyticsHandler={analyticsHandler}
-            allowTasksAndDecisions={true}
-            allowCodeBlocks={true}
-            allowHelpDialog={true}
-            disabled={disabled}
-            saveOnEnter={true}
-            mentionProvider={mentionProvider}
-            emojiProvider={emojiProvider}
-            taskDecisionProvider={taskDecisionProvider}
-            contextIdentifierProvider={contextIdentifierProvider}
-            mediaProvider={mediaProvider}
-            onChange={onChange}
-            onSave={SAVE_ACTION}
-            addonToolbarComponents={addons}
-            quickInsert={true}
-          />
+          <IntlProvider locale="en">
+            <Editor
+              appearance="message"
+              analyticsHandler={analyticsHandler}
+              allowTasksAndDecisions={true}
+              allowCodeBlocks={true}
+              allowHelpDialog={true}
+              disabled={disabled}
+              saveOnEnter={true}
+              mentionProvider={mentionProvider}
+              emojiProvider={emojiProvider}
+              taskDecisionProvider={taskDecisionProvider}
+              contextIdentifierProvider={contextIdentifierProvider}
+              mediaProvider={mediaProvider}
+              onChange={onChange}
+              onSave={SAVE_ACTION}
+              addonToolbarComponents={addons}
+              quickInsert={true}
+            />
+          </IntlProvider>
         )}
       />
     </EditorContext>

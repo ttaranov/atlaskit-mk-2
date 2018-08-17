@@ -6,6 +6,7 @@ export { default as dispatchPasteEvent } from './dispatch-paste-event';
 export { default as createEditor } from './create-editor';
 export { default as fixtures } from './fixtures';
 export { default as patchEditorViewForJSDOM } from './jsdom-fixtures';
+export { default as mountWithIntlContext } from './mount-with-intl-context';
 export * from './transactions';
 export {
   doc,

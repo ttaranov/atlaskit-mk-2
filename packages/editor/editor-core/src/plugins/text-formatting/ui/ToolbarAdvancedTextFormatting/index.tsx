@@ -73,6 +73,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
       subscriptDisabled,
       superscriptDisabled,
     } = textFormattingState;
+
     const { formattingIsPresent } = clearFormattingState;
     const items = this.createItems();
     const toolbarButtonFactory = (disabled: boolean) => (
@@ -88,6 +89,8 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
         }
         disabled={disabled}
         onClick={this.handleTriggerClick}
+        intlTitle="more_formatting"
+        titlePosition="bottom"
         iconBefore={
           <TriggerWrapper>
             <MoreIcon label="Open or close advance text formatting dropdown" />
@@ -156,7 +159,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
       if (!underlineHidden && underline) {
         this.addRecordToItems(
           items,
-          'Underline',
+          'underline',
           'underline',
           tooltip(toggleUnderline, true),
         );
@@ -164,25 +167,25 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
       if (!strikeHidden && strike) {
         this.addRecordToItems(
           items,
-          'Strikethrough',
+          'strike',
           'strike',
           tooltip(toggleStrikethrough, true),
         );
       }
       if (!codeHidden && code) {
-        this.addRecordToItems(items, 'Code', 'code', tooltip(toggleCode, true));
+        this.addRecordToItems(items, 'code', 'code', tooltip(toggleCode, true));
       }
       if (!subscriptHidden && subsup) {
-        this.addRecordToItems(items, 'Subscript', 'subscript');
+        this.addRecordToItems(items, 'subscript', 'subscript');
       }
       if (!superscriptHidden && subsup) {
-        this.addRecordToItems(items, 'Superscript', 'superscript');
+        this.addRecordToItems(items, 'superscript', 'superscript');
       }
     }
     if (clearFormattingState) {
       this.addRecordToItems(
         items,
-        'Clear Formatting',
+        'clear_formatting',
         'clearFormatting',
         tooltip(clearFormattingKeymap, true),
       );
@@ -194,14 +197,14 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
     ];
   };
 
-  private addRecordToItems = (items, content, value, tooltipDescription?) => {
+  private addRecordToItems = (items, key, value, tooltipDescription?) => {
     items.push({
-      content,
+      key: `text-formatting-${key}`,
+      intlTitle: key,
+      shortcut: tooltipDescription,
       value,
       isActive: this.state[`${value}Active`],
       isDisabled: this.state[`${value}Disabled`],
-      tooltipDescription,
-      tooltipPosition: 'right',
     });
   };
 

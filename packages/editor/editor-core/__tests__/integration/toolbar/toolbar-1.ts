@@ -1,6 +1,7 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import { getDocFromElement, comment, fullpage, editable } from '../_helpers';
+import { messages } from '@atlaskit/editor-common';
 
 const input = 'helloworld ';
 // https://product-fabric.atlassian.net/browse/ED-4531
@@ -12,13 +13,14 @@ const input = 'helloworld ';
     { skip: ['ie', 'safari', 'edge'] },
     async client => {
       const browser = await new Page(client);
-      const bold = '[aria-label="Bold"]';
-      const italic = '[aria-label="Italic"]';
-      const changeFormatting = '[aria-label="Change formatting"]';
-      const normalText = 'span=Normal text';
-      const more =
-        '[aria-label="Open or close advance text formatting dropdown"]';
-      const underline = 'span=Underline';
+      const bold = `[aria-label="${messages.bold.defaultMessage}"]`;
+      const italic = `[aria-label="${messages.italic.defaultMessage}"]`;
+      const changeFormatting = `[aria-label="${
+        messages.text_styles.defaultMessage
+      }"]`;
+      const normalText = `span=${messages.normal.defaultMessage}`;
+      const more = `[aria-label="${messages.more_formatting.defaultMessage}"]`;
+      const underline = `span=${messages.underline.defaultMessage}`;
 
       await browser.goto(editor.path);
       await browser.waitForSelector(editor.placeholder);

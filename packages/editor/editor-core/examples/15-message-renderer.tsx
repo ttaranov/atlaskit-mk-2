@@ -6,6 +6,7 @@ import getPropsPreset from '../src/create-editor/get-props-preset';
 import EditorContext from '../src/ui/EditorContext';
 import WithEditorActions from '../src/ui/WithEditorActions';
 import Button, { ButtonGroup } from '@atlaskit/button';
+import { IntlProvider } from 'react-intl';
 
 const exampleAction = {
   version: 1,
@@ -92,16 +93,18 @@ export default class MessageRenderer extends React.PureComponent<any, any> {
               onChange,
             }) => {
               return (
-                <Editor
-                  {...getPropsPreset('message')}
-                  emojiProvider={emojiProvider}
-                  mentionProvider={mentionProvider}
-                  taskDecisionProvider={taskDecisionProvider}
-                  contextIdentifierProvider={contextIdentifierProvider}
-                  maxHeight={305}
-                  onChange={onChange}
-                  quickInsert={true}
-                />
+                <IntlProvider locale="en">
+                  <Editor
+                    {...getPropsPreset('message')}
+                    emojiProvider={emojiProvider}
+                    mentionProvider={mentionProvider}
+                    taskDecisionProvider={taskDecisionProvider}
+                    contextIdentifierProvider={contextIdentifierProvider}
+                    maxHeight={305}
+                    onChange={onChange}
+                    quickInsert={true}
+                  />
+                </IntlProvider>
               );
             }}
           />

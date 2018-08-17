@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Editor } from '../src';
 import { storyMediaProviderFactory } from '@atlaskit/editor-test-helpers';
+import { IntlProvider } from 'react-intl';
 
 type State = {
   dropzoneRef?: HTMLElement;
@@ -18,14 +19,16 @@ class DemoEditor extends React.PureComponent<any, State> {
   render() {
     const { dropzoneRef } = this.state;
     const editor = !dropzoneRef ? null : (
-      <Editor
-        appearance="comment"
-        quickInsert={true}
-        media={{
-          provider: mediaProvider,
-          customDropzoneContainer: dropzoneRef,
-        }}
-      />
+      <IntlProvider locale="en">
+        <Editor
+          appearance="comment"
+          quickInsert={true}
+          media={{
+            provider: mediaProvider,
+            customDropzoneContainer: dropzoneRef,
+          }}
+        />
+      </IntlProvider>
     );
 
     return (

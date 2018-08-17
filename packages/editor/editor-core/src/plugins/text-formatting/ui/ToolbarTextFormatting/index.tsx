@@ -28,7 +28,6 @@ export default class ToolbarTextFormatting extends PureComponent<Props> {
       emActive,
       emDisabled,
     } = textFormattingState;
-
     return (
       <ButtonGroup width={isReducedSpacing ? 'small' : 'large'}>
         {strongHidden ? null : (
@@ -37,7 +36,9 @@ export default class ToolbarTextFormatting extends PureComponent<Props> {
             onClick={this.handleBoldClick}
             selected={strongActive}
             disabled={disabled || strongDisabled}
-            title={tooltip(toggleBold)}
+            intlTitle="bold"
+            titlePosition="bottom"
+            shortcut={tooltip(toggleBold, true)}
             iconBefore={<BoldIcon label="Bold" />}
           />
         )}
@@ -48,7 +49,9 @@ export default class ToolbarTextFormatting extends PureComponent<Props> {
             onClick={this.handleItalicClick}
             selected={emActive}
             disabled={disabled || emDisabled}
-            title={tooltip(toggleItalic)}
+            intlTitle="italic"
+            titlePosition="bottom"
+            shortcut={tooltip(toggleItalic, true)}
             iconBefore={<ItalicIcon label="Italic" />}
           />
         )}

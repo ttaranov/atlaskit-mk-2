@@ -16,6 +16,10 @@ export default class Color extends PureComponent<Props, any> {
   render() {
     const { tabIndex, value, label, isSelected, borderColor } = this.props;
     const borderStyle = `1px solid ${borderColor}`;
+    const intlTitle = label
+      .toLowerCase()
+      .replace(' ', '_')
+      .replace('-', '_');
     return (
       <ButtonWrapper>
         <Button
@@ -23,7 +27,8 @@ export default class Color extends PureComponent<Props, any> {
           onMouseDown={this.onMouseDown}
           tabIndex={tabIndex}
           className={`${isSelected ? 'selected' : ''}`}
-          title={label}
+          intlTitle={intlTitle}
+          titlePosition="bottom"
           style={{
             backgroundColor: value || 'transparent',
             border: borderStyle,

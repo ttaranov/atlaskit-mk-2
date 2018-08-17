@@ -11,6 +11,7 @@ import ToolsDrawer from '../example-helpers/ToolsDrawer';
 import CollapsedEditor from '../src/ui/CollapsedEditor';
 import ToolbarFeedback from '../src/ui/ToolbarFeedback';
 import { name, version } from '../package.json';
+import { IntlProvider } from 'react-intl';
 
 const SAVE_ACTION = () => console.log('Save');
 const CANCEL_ACTION = () => console.log('Cancel');
@@ -97,44 +98,46 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
               disabled,
             }) => (
               <div style={{ padding: '20px' }}>
-                <CollapsedEditor
-                  placeholder="What do you want to say?"
-                  isExpanded={this.state.isExpanded}
-                  onFocus={this.onFocus}
-                  onExpand={EXPAND_ACTION}
-                >
-                  <Editor
-                    appearance="comment"
-                    analyticsHandler={analyticsHandler}
-                    allowCodeBlocks={true}
-                    allowLists={true}
-                    allowTables={{
-                      isHeaderRowRequired: true,
-                    }}
-                    textFormatting={{
-                      disableSuperscriptAndSubscript: true,
-                      disableUnderline: true,
-                    }}
-                    allowHelpDialog={true}
-                    disabled={disabled}
-                    mentionProvider={mentionProvider}
-                    emojiProvider={emojiProvider}
-                    legacyImageUploadProvider={imageUploadProvider}
-                    shouldFocus={true}
-                    onChange={onChange}
-                    onSave={SAVE_ACTION}
-                    onCancel={CANCEL_ACTION}
-                    quickInsert={true}
-                    primaryToolbarComponents={[
-                      <ToolbarFeedback
-                        packageVersion={version}
-                        packageName={name}
-                        key="toolbar-feedback"
-                      />,
-                      <ToolbarHelp key="toolbar-help" />,
-                    ]}
-                  />
-                </CollapsedEditor>
+                <IntlProvider locale="en">
+                  <CollapsedEditor
+                    placeholder="What do you want to say?"
+                    isExpanded={this.state.isExpanded}
+                    onFocus={this.onFocus}
+                    onExpand={EXPAND_ACTION}
+                  >
+                    <Editor
+                      appearance="comment"
+                      analyticsHandler={analyticsHandler}
+                      allowCodeBlocks={true}
+                      allowLists={true}
+                      allowTables={{
+                        isHeaderRowRequired: true,
+                      }}
+                      textFormatting={{
+                        disableSuperscriptAndSubscript: true,
+                        disableUnderline: true,
+                      }}
+                      allowHelpDialog={true}
+                      disabled={disabled}
+                      mentionProvider={mentionProvider}
+                      emojiProvider={emojiProvider}
+                      legacyImageUploadProvider={imageUploadProvider}
+                      shouldFocus={true}
+                      onChange={onChange}
+                      onSave={SAVE_ACTION}
+                      onCancel={CANCEL_ACTION}
+                      quickInsert={true}
+                      primaryToolbarComponents={[
+                        <ToolbarFeedback
+                          packageVersion={version}
+                          packageName={name}
+                          key="toolbar-feedback"
+                        />,
+                        <ToolbarHelp key="toolbar-help" />,
+                      ]}
+                    />
+                  </CollapsedEditor>
+                </IntlProvider>
               </div>
             )}
           />

@@ -7,6 +7,7 @@ import EditorContext from '../src/ui/EditorContext';
 import WithEditorActions from '../src/ui/WithEditorActions';
 import getPropsPreset from '../src/create-editor/get-props-preset';
 import ToolsDrawer from '../example-helpers/ToolsDrawer';
+import { IntlProvider } from 'react-intl';
 
 const SAVE_ACTION = () => console.log('Save');
 const analyticsHandler = (actionName, props) => console.log(actionName, props);
@@ -91,20 +92,22 @@ export default function Example() {
             contextIdentifierProvider,
             onChange,
           }) => (
-            <Editor
-              {...getPropsPreset('message')}
-              analyticsHandler={analyticsHandler}
-              disabled={disabled}
-              maxHeight={305}
-              mentionProvider={mentionProvider}
-              emojiProvider={emojiProvider}
-              mediaProvider={mediaProvider}
-              taskDecisionProvider={taskDecisionProvider}
-              contextIdentifierProvider={contextIdentifierProvider}
-              onChange={onChange}
-              onSave={SAVE_ACTION}
-              quickInsert={true}
-            />
+            <IntlProvider locale="en">
+              <Editor
+                {...getPropsPreset('message')}
+                analyticsHandler={analyticsHandler}
+                disabled={disabled}
+                maxHeight={305}
+                mentionProvider={mentionProvider}
+                emojiProvider={emojiProvider}
+                mediaProvider={mediaProvider}
+                taskDecisionProvider={taskDecisionProvider}
+                contextIdentifierProvider={contextIdentifierProvider}
+                onChange={onChange}
+                onSave={SAVE_ACTION}
+                quickInsert={true}
+              />
+            </IntlProvider>
           )}
         />
       </div>

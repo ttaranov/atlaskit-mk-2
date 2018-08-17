@@ -4,6 +4,7 @@ import * as React from 'react';
 
 import Button, { ButtonGroup } from '@atlaskit/button';
 import LockCircleIcon from '@atlaskit/icon/glyph/lock-circle';
+import { IntlProvider } from 'react-intl';
 import Editor from './../src/editor';
 import EditorContext from './../src/ui/EditorContext';
 import WithEditorActions from './../src/ui/WithEditorActions';
@@ -101,59 +102,61 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
               disabled,
             }) => (
               <div style={{ padding: '20px' }}>
-                <CollapsedEditor
-                  placeholder="What do you want to say?"
-                  isExpanded={this.state.isExpanded}
-                  onFocus={this.onFocus}
-                  onExpand={EXPAND_ACTION}
-                >
-                  <Editor
-                    appearance="comment"
+                <IntlProvider locale="en">
+                  <CollapsedEditor
                     placeholder="What do you want to say?"
-                    analyticsHandler={analyticsHandler}
-                    shouldFocus={true}
-                    quickInsert={true}
-                    allowTasksAndDecisions={true}
-                    allowCodeBlocks={true}
-                    allowTextColor={true}
-                    allowLists={true}
-                    allowRule={true}
-                    allowTables={true}
-                    allowHelpDialog={true}
-                    allowGapCursor={true}
-                    disabled={disabled}
-                    activityProvider={activityProvider}
-                    mentionProvider={mentionProvider}
-                    emojiProvider={emojiProvider}
-                    mediaProvider={mediaProvider}
-                    taskDecisionProvider={taskDecisionProvider}
-                    contextIdentifierProvider={contextIdentifierProvider}
-                    onChange={onChange}
-                    onSave={SAVE_ACTION}
-                    onCancel={CANCEL_ACTION}
-                    primaryToolbarComponents={
-                      <>
-                        <ToolbarFeedback
-                          product={'bitbucket'}
-                          packageVersion={version}
-                          packageName={name}
-                          key="toolbar-feedback"
-                        />
-                        <ToolbarHelp key="toolbar-help" />
-                      </>
-                    }
-                    allowExtension={true}
-                    insertMenuItems={customInsertMenuItems}
-                    extensionHandlers={extensionHandlers}
-                    secondaryToolbarComponents={[
-                      <LockCircleIcon
-                        key="permission"
-                        size="large"
-                        label="Permissions"
-                      />,
-                    ]}
-                  />
-                </CollapsedEditor>
+                    isExpanded={this.state.isExpanded}
+                    onFocus={this.onFocus}
+                    onExpand={EXPAND_ACTION}
+                  >
+                    <Editor
+                      appearance="comment"
+                      placeholder="What do you want to say?"
+                      analyticsHandler={analyticsHandler}
+                      shouldFocus={true}
+                      quickInsert={true}
+                      allowTasksAndDecisions={true}
+                      allowCodeBlocks={true}
+                      allowTextColor={true}
+                      allowLists={true}
+                      allowRule={true}
+                      allowTables={true}
+                      allowHelpDialog={true}
+                      allowGapCursor={true}
+                      disabled={disabled}
+                      activityProvider={activityProvider}
+                      mentionProvider={mentionProvider}
+                      emojiProvider={emojiProvider}
+                      mediaProvider={mediaProvider}
+                      taskDecisionProvider={taskDecisionProvider}
+                      contextIdentifierProvider={contextIdentifierProvider}
+                      onChange={onChange}
+                      onSave={SAVE_ACTION}
+                      onCancel={CANCEL_ACTION}
+                      primaryToolbarComponents={
+                        <>
+                          <ToolbarFeedback
+                            product={'bitbucket'}
+                            packageVersion={version}
+                            packageName={name}
+                            key="toolbar-feedback"
+                          />
+                          <ToolbarHelp key="toolbar-help" />
+                        </>
+                      }
+                      allowExtension={true}
+                      insertMenuItems={customInsertMenuItems}
+                      extensionHandlers={extensionHandlers}
+                      secondaryToolbarComponents={[
+                        <LockCircleIcon
+                          key="permission"
+                          size="large"
+                          label="Permissions"
+                        />,
+                      ]}
+                    />
+                  </CollapsedEditor>
+                </IntlProvider>
               </div>
             )}
           />

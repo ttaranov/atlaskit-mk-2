@@ -60,6 +60,7 @@ export const CODE_BLOCK: BlockType = {
   name: 'codeblock',
   title: 'Code block',
   nodeName: 'codeBlock',
+  shortcut: '```',
 };
 export const PANEL: BlockType = {
   name: 'panel',
@@ -119,4 +120,5 @@ export interface BlockType {
   nodeName: string;
   tagName?: string;
   level?: number;
+  shortcut?: string;
 }

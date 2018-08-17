@@ -11,6 +11,7 @@ import {
 } from '../src';
 import WithPluginState from '../src/ui/WithPluginState';
 import ToolsDrawer from '../example-helpers/ToolsDrawer';
+import { IntlProvider } from 'react-intl';
 
 const SAVE_ACTION = () => console.log('Save');
 const analyticsHandler = (actionName, props) => console.log(actionName, props);
@@ -60,16 +61,18 @@ export default function Example() {
             mediaProvider,
             onChange,
           }) => (
-            <Editor
-              {...getPropsPreset('message')}
-              analyticsHandler={analyticsHandler}
-              disabled={disabled}
-              mediaProvider={mediaProvider}
-              mentionProvider={mentionProvider}
-              onChange={onChange}
-              onSave={SAVE_ACTION}
-              quickInsert={true}
-            />
+            <IntlProvider locale="en">
+              <Editor
+                {...getPropsPreset('message')}
+                analyticsHandler={analyticsHandler}
+                disabled={disabled}
+                mediaProvider={mediaProvider}
+                mentionProvider={mentionProvider}
+                onChange={onChange}
+                onSave={SAVE_ACTION}
+                quickInsert={true}
+              />
+            </IntlProvider>
           )}
         />
       </div>

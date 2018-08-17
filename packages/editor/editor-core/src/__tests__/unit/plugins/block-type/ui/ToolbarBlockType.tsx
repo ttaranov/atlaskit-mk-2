@@ -1,4 +1,3 @@
-import { mount } from 'enzyme';
 import * as React from 'react';
 import { pluginKey } from '../../../../../plugins/block-type/pm-plugins/main';
 import ToolbarBlockType from '../../../../../plugins/block-type/ui/ToolbarBlockType';
@@ -13,6 +12,7 @@ import {
   code_block,
   blockquote,
   panel,
+  mountWithIntlContext,
 } from '@atlaskit/editor-test-helpers';
 import {
   NORMAL_TEXT,
@@ -28,6 +28,7 @@ import panelPlugin from '../../../../../plugins/panel';
 import listPlugin from '../../../../../plugins/lists';
 import codeBlockPlugin from '../../../../../plugins/code-block';
 import { setBlockType } from '../../../../../plugins/block-type/commands';
+import { messages } from '@atlaskit/editor-common';
 
 describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
   const editor = (doc: any) =>
@@ -40,7 +41,7 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
   it('should render disabled ToolbarButton if isDisabled property is true', () => {
     const { editorView, pluginState } = editor(doc(p('text')));
     const { state, dispatch } = editorView;
-    const toolbarOption = mount(
+    const toolbarOption = mountWithIntlContext(
       <ToolbarBlockType
         pluginState={pluginState}
         setBlockType={name => setBlockType(name)(state, dispatch)}
@@ -54,7 +55,7 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
   it('should render disabled ToolbarButton if current selection is blockquote', () => {
     const { editorView, pluginState } = editor(doc(blockquote(p('te{<>}xt'))));
     const { state, dispatch } = editorView;
-    const toolbarOption = mount(
+    const toolbarOption = mountWithIntlContext(
       <ToolbarBlockType
         pluginState={pluginState}
         setBlockType={name => setBlockType(name)(state, dispatch)}
@@ -69,7 +70,7 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
     const { editorView, pluginState } = editor(doc(panel()(p('te{<>}xt'))));
     const { state, dispatch } = editorView;
 
-    const toolbarOption = mount(
+    const toolbarOption = mountWithIntlContext(
       <ToolbarBlockType
         pluginState={pluginState}
         setBlockType={name => setBlockType(name)(state, dispatch)}
@@ -84,7 +85,7 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
       doc(code_block({ language: 'js' })('te{<>}xt')),
     );
     const { state, dispatch } = editorView;
-    const toolbarOption = mount(
+    const toolbarOption = mountWithIntlContext(
       <ToolbarBlockType
         pluginState={pluginState}
         setBlockType={name => setBlockType(name)(state, dispatch)}
@@ -98,7 +99,7 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
   it('should have spacing of toolbar button set to none if property isReducedSpacing=true', () => {
     const { editorView, pluginState } = editor(doc(p('text')));
     const { state, dispatch } = editorView;
-    const toolbarOption = mount(
+    const toolbarOption = mountWithIntlContext(
       <ToolbarBlockType
         pluginState={pluginState}
         setBlockType={name => setBlockType(name)(state, dispatch)}
@@ -112,7 +113,7 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
   it('should render icon in dropdown-menu if property isSmall=true', () => {
     const { editorView, pluginState } = editor(doc(p('text')));
     const { state, dispatch } = editorView;
-    const toolbarOption = mount(
+    const toolbarOption = mountWithIntlContext(
       <ToolbarBlockType
         pluginState={pluginState}
         setBlockType={name => setBlockType(name)(state, dispatch)}
@@ -128,7 +129,7 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
   it('should render current block type in dropdown-menu if property isSmall=false', () => {
     const { editorView, pluginState } = editor(doc(p('text')));
     const { state, dispatch } = editorView;
-    const toolbarOption = mount(
+    const toolbarOption = mountWithIntlContext(
       <ToolbarBlockType
         pluginState={pluginState}
         setBlockType={name => setBlockType(name)(state, dispatch)}
@@ -139,7 +140,7 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
         .find(ToolbarButton)
         .first()
         .text()
-        .indexOf('Normal text') >= 0,
+        .indexOf(messages.normal.defaultMessage) >= 0,
     ).toBe(true);
     toolbarOption.unmount();
   });
@@ -149,13 +150,13 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
     beforeEach(() => {
       const { editorView, pluginState } = editor(doc(p('text')));
       const { state, dispatch } = editorView;
-      toolbarOption = mount(
+      toolbarOption = mountWithIntlContext(
         <ToolbarBlockType
           pluginState={pluginState}
           setBlockType={name => setBlockType(name)(state, dispatch)}
         />,
       );
-      toolbarOption.find(ToolbarButton).simulate('click');
+      toolbarOption.find('button').simulate('click');
     });
 
     afterEach(() => {
@@ -177,7 +178,8 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
             .find(Item)
             .findWhere(
               n =>
-                n.type() === blockType.tagName && n.text() === blockType.title,
+                n.type() === blockType.tagName &&
+                n.text() === messages[blockType.name].defaultMessage,
             ).length,
         ).toEqual(1);
       });
@@ -190,13 +192,13 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
     beforeEach(() => {
       const { editorView, pluginState } = editor(doc(p('text')));
       const { state, dispatch } = editorView;
-      toolbarOption = mount(
+      toolbarOption = mountWithIntlContext(
         <ToolbarBlockType
           pluginState={pluginState}
           setBlockType={name => setBlockType(name)(state, dispatch)}
         />,
       );
-      toolbarOption.find(ToolbarButton).simulate('click');
+      toolbarOption.find('button').simulate('click');
       trackEvent = jest.fn();
       analyticsService.trackEvent = trackEvent;
     });
@@ -219,7 +221,9 @@ describe('@atlaskit/editor-core/ui/ToolbarBlockType', () => {
       } is clicked`, () => {
         toolbarOption
           .find(Item)
-          .filterWhere(n => n.text() === blockType.title)
+          .filterWhere(
+            n => n.text() === messages[blockType.name].defaultMessage,
+          )
           .simulate('click');
         expect(trackEvent).toHaveBeenCalledWith(
           `atlassian.editor.format.${blockType.name}.button`,

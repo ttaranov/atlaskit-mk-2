@@ -1,5 +1,6 @@
 import * as React from 'react';
 import CollapsedEditor from './../src/labs/CollapsedEditor';
+import { IntlProvider } from 'react-intl';
 
 export interface State {
   isExpanded: boolean;
@@ -18,12 +19,14 @@ export default class Example extends React.Component<{}, State> {
         isExpanded={this.state.isExpanded}
         onClickToExpand={this.toggleExpanded}
         renderEditor={Editor => (
-          <Editor
-            appearance="comment"
-            quickInsert={true}
-            onSave={() => alert('Saved!')}
-            onCancel={this.toggleExpanded}
-          />
+          <IntlProvider locale="en">
+            <Editor
+              appearance="comment"
+              quickInsert={true}
+              onSave={() => alert('Saved!')}
+              onCancel={this.toggleExpanded}
+            />
+          </IntlProvider>
         )}
       />
     );

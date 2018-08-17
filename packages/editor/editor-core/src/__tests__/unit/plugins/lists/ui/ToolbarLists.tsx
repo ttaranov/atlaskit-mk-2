@@ -1,7 +1,11 @@
-import { mount } from 'enzyme';
 import * as React from 'react';
 import AkButton from '@atlaskit/button';
-import { doc, p, createEditor } from '@atlaskit/editor-test-helpers';
+import {
+  doc,
+  p,
+  createEditor,
+  mountWithIntlContext,
+} from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../../../../analytics';
 import listPlugin from '../../../../../plugins/lists';
 import tasksAndDecisionsPlugin from '../../../../../plugins/tasks-and-decisions';
@@ -12,6 +16,7 @@ import {
 import ToolbarButton from '../../../../../ui/ToolbarButton';
 import DropdownMenu from '../../../../../ui/DropdownMenu';
 import ToolbarLists from '../../../../../plugins/lists/ui/ToolbarLists';
+import { messages } from '@atlaskit/editor-common';
 
 describe('ToolbarLists', () => {
   const editor = (doc: any) =>
@@ -23,7 +28,7 @@ describe('ToolbarLists', () => {
 
   it('should render disabled ToolbarButtons if disabled property is true', () => {
     const { editorView } = editor(doc(p('text')));
-    const toolbarLists = mount(
+    const toolbarLists = mountWithIntlContext(
       <ToolbarLists disabled={true} editorView={editorView} />,
     );
 
@@ -35,7 +40,7 @@ describe('ToolbarLists', () => {
 
   it('should have a dropdown if option isSmall = true', () => {
     const { editorView } = editor(doc(p('text')));
-    const toolbarOption = mount(
+    const toolbarOption = mountWithIntlContext(
       <ToolbarLists editorView={editorView} isSmall={true} />,
     );
     expect(toolbarOption.find(DropdownMenu).length).toEqual(1);
@@ -47,7 +52,7 @@ describe('ToolbarLists', () => {
     let toolbarOption;
     beforeEach(() => {
       const { editorView } = editor(doc(p('text{<>}')));
-      toolbarOption = mount(
+      toolbarOption = mountWithIntlContext(
         <ToolbarLists editorView={editorView} allowTasks={true} />,
       );
       trackEvent = jest.fn();
@@ -81,7 +86,9 @@ describe('ToolbarLists', () => {
     it('should trigger analyticsService.trackEvent when task list button is clicked', () => {
       toolbarOption
         .find(AkButton)
-        .filterWhere(node => node.html().indexOf('Create action') > 0)
+        .filterWhere(
+          node => node.html().indexOf(messages.action_item.defaultMessage) > 0,
+        )
         .simulate('click');
       expect(trackEvent).toHaveBeenCalledWith(
         'atlassian.fabric.action.trigger.button',

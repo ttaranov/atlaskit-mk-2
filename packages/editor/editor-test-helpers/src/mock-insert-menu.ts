@@ -4,8 +4,6 @@ export const customInsertMenuItems = [
   {
     content: 'Inline macro (EH)',
     value: { name: 'inline-eh' },
-    tooltipDescription: 'Inline macro (Using extension handlers)',
-    tooltipPosition: 'right',
     elemBefore: '-',
     onClick: function(editorActions) {
       editorActions.replaceSelection({
@@ -32,8 +30,6 @@ export const customInsertMenuItems = [
   {
     content: 'Block macro (EH)',
     value: { name: 'block-eh' },
-    tooltipDescription: 'Block macro (Using extension handlers)',
-    tooltipPosition: 'right',
     elemBefore: '-',
     className: 'block-macro',
     onClick: function(editorActions) {
@@ -61,8 +57,6 @@ export const customInsertMenuItems = [
   {
     content: 'Bodied macro (EH)',
     value: { name: 'bodied-eh' },
-    tooltipDescription: 'Bodied macro (Using extension handlers)',
-    tooltipPosition: 'right',
     elemBefore: '-',
     className: 'bodied-macro',
     onClick: function(editorActions) {
@@ -96,8 +90,6 @@ export const customInsertMenuItems = [
   {
     content: 'Bodied macro (NON-EH)',
     value: { name: 'bodied-non-eh' },
-    tooltipDescription: 'Bodied macro',
-    tooltipPosition: 'right',
     elemBefore: '-',
     onClick: function(editorActions) {
       editorActions.replaceSelection({
@@ -130,8 +122,6 @@ export const customInsertMenuItems = [
   {
     content: 'Loren ipsun',
     value: { name: 'loren-ipsun' },
-    tooltipDescription: 'Insert loren ipsun text',
-    tooltipPosition: 'right',
     elemBefore: '-',
     onClick: function(editorActions) {
       editorActions.appendText(
@@ -142,8 +132,6 @@ export const customInsertMenuItems = [
   {
     content: 'Info macro',
     value: { name: 'info' },
-    tooltipDescription: 'Insert info macro',
-    tooltipPosition: 'right',
     elemBefore: '-',
     onClick: function(editorActions) {
       editorActions.replaceSelection({
@@ -170,8 +158,6 @@ export const customInsertMenuItems = [
   {
     content: 'Open macro browser',
     value: { name: 'macro-browser' },
-    tooltipDescription: 'Open macro browser',
-    tooltipPosition: 'right',
     elemBefore: '-',
     onClick: function(editorActions) {
       // tslint:disable-next-line:no-console

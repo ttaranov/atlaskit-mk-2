@@ -3,6 +3,7 @@ import { Editor } from '../src/index';
 import EditorContext from '../src/ui/EditorContext';
 import WithEditorActions from '../src/ui/WithEditorActions';
 import { MentionDescription, MentionProvider } from '@atlaskit/mention';
+import { IntlProvider } from 'react-intl';
 
 class MentionProviderImpl implements MentionProvider {
   filter(query?: string): void {}
@@ -28,12 +29,14 @@ export function mobileEditor() {
     <EditorContext>
       <div>
         <WithEditorActions render={actions => <div />} />
-        <Editor
-          appearance="mobile"
-          mentionProvider={Promise.resolve(new MentionProviderImpl())}
-          onChange={editorView => this.setState({})}
-          quickInsert={true}
-        />
+        <IntlProvider locale="en">
+          <Editor
+            appearance="mobile"
+            mentionProvider={Promise.resolve(new MentionProviderImpl())}
+            onChange={editorView => this.setState({})}
+            quickInsert={true}
+          />
+        </IntlProvider>
       </div>
     </EditorContext>
   );

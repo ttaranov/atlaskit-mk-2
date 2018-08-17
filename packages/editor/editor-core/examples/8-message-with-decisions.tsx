@@ -10,6 +10,7 @@ import { taskDecisionDocFilter } from '../src/utils/filter/';
 import { toJSON, JSONDocNode, JSONNode } from '../src/utils/';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { ReactRenderer } from '@atlaskit/renderer';
+import { IntlProvider } from 'react-intl';
 
 const SAVE_ACTION = () => console.log('Save');
 const analyticsHandler = (actionName, props) => console.log(actionName, props);
@@ -96,20 +97,22 @@ class DecisionBuilderToolsDrawer extends Component<Props, State> {
             });
 
             return (
-              <Editor
-                {...getPropsPreset(appearance)}
-                analyticsHandler={analyticsHandler}
-                disabled={disabled}
-                maxHeight={305}
-                mentionProvider={mentionProvider}
-                emojiProvider={emojiProvider}
-                mediaProvider={mediaProvider}
-                taskDecisionProvider={taskDecisionProvider}
-                contextIdentifierProvider={contextIdentifierProvider}
-                onChange={this.onChange(onChange)}
-                onSave={SAVE_ACTION}
-                quickInsert={true}
-              />
+              <IntlProvider locale="en">
+                <Editor
+                  {...getPropsPreset(appearance)}
+                  analyticsHandler={analyticsHandler}
+                  disabled={disabled}
+                  maxHeight={305}
+                  mentionProvider={mentionProvider}
+                  emojiProvider={emojiProvider}
+                  mediaProvider={mediaProvider}
+                  taskDecisionProvider={taskDecisionProvider}
+                  contextIdentifierProvider={contextIdentifierProvider}
+                  onChange={this.onChange(onChange)}
+                  onSave={SAVE_ACTION}
+                  quickInsert={true}
+                />
+              </IntlProvider>
             );
           }}
         />

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Editor from './../src/editor';
+import { IntlProvider } from 'react-intl';
 
 export default function Example() {
   return (
@@ -8,7 +9,9 @@ export default function Example() {
         The most basic editor possible. Editor you get by rendering{' '}
         {'<Editor/>'} component with no props.
       </p>
-      <Editor appearance="message" />
+      <IntlProvider locale="en">
+        <Editor appearance="message" />
+      </IntlProvider>
     </div>
   );
 }

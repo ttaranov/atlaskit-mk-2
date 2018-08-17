@@ -7,6 +7,7 @@ import {
 } from '@atlaskit/editor-core';
 import { MarkdownTransformer } from '../src';
 import exampleMarkdown from '../example-helpers/exampleMarkdown';
+import { IntlProvider } from 'react-intl';
 
 const Container = styled.div`
   display: grid;
@@ -58,18 +59,22 @@ class Example extends React.PureComponent<Props, State> {
         >
           {exampleMarkdown}
         </div>
-        <Editor
-          appearance="comment"
-          allowTasksAndDecisions={true}
-          allowCodeBlocks={true}
-          allowLists={true}
-          allowRule={true}
-          allowTables={true}
-          media={{
-            allowMediaSingle: true,
-          }}
-          contentTransformerProvider={schema => new MarkdownTransformer(schema)}
-        />
+        <IntlProvider locale="en">
+          <Editor
+            appearance="comment"
+            allowTasksAndDecisions={true}
+            allowCodeBlocks={true}
+            allowLists={true}
+            allowRule={true}
+            allowTables={true}
+            media={{
+              allowMediaSingle: true,
+            }}
+            contentTransformerProvider={schema =>
+              new MarkdownTransformer(schema)
+            }
+          />
+        </IntlProvider>
       </Container>
     );
   }

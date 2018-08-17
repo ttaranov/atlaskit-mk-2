@@ -18,6 +18,7 @@ import { EmojiProvider } from '@atlaskit/emoji';
 import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
 import { extensionHandlers } from '../example-helpers/extension-handlers';
 import { CollabProvider } from '../src/plugins/collab-edit';
+import { IntlProvider } from 'react-intl';
 
 export const getRandomUser = () => {
   return Math.floor(Math.random() * 10000).toString();
@@ -170,77 +171,79 @@ export default class Example extends React.Component<Props, State> {
         <DropzoneEditorWrapper>
           {parentContainer => (
             <EditorContext>
-              <Editor
-                appearance="full-page"
-                analyticsHandler={analyticsHandler}
-                allowTasksAndDecisions={true}
-                allowCodeBlocks={true}
-                allowLayouts={true}
-                allowLists={true}
-                allowTextColor={true}
-                allowTables={{
-                  allowColumnResizing: true,
-                  allowMergeCells: true,
-                  allowNumberColumn: true,
-                  allowBackgroundColor: true,
-                  allowHeaderRow: true,
-                  allowHeaderColumn: true,
-                  permittedLayouts: 'all',
-                  stickToolbarToBottom: true,
-                }}
-                allowTemplatePlaceholders={{ allowInserting: true }}
-                media={{
-                  provider: mediaProvider,
-                  allowMediaSingle: true,
-                  customDropzoneContainer: parentContainer,
-                }}
-                emojiProvider={
-                  emoji.storyData.getEmojiResource() as Promise<EmojiProvider>
-                }
-                mentionProvider={Promise.resolve(
-                  mention.storyData.resourceProvider,
-                )}
-                taskDecisionProvider={Promise.resolve(
-                  taskDecision.getMockTaskDecisionResource(),
-                )}
-                contextIdentifierProvider={storyContextIdentifierProviderFactory()}
-                collabEdit={{
-                  useNativePlugin: true,
-                  provider: Promise.resolve(
-                    new CollabProvider(
-                      {
-                        url: 'http://localhost:8080',
-                        securityProvider: () => ({
-                          headers: {
-                            Authorization: asapToken,
-                            'user-ari': userId,
-                          },
-                          omitCredentials: true,
-                        }),
-                        docId: documentId!,
-                        userId,
-                      },
-                      pubSubClient,
+              <IntlProvider locale="en">
+                <Editor
+                  appearance="full-page"
+                  analyticsHandler={analyticsHandler}
+                  allowTasksAndDecisions={true}
+                  allowCodeBlocks={true}
+                  allowLayouts={true}
+                  allowLists={true}
+                  allowTextColor={true}
+                  allowTables={{
+                    allowColumnResizing: true,
+                    allowMergeCells: true,
+                    allowNumberColumn: true,
+                    allowBackgroundColor: true,
+                    allowHeaderRow: true,
+                    allowHeaderColumn: true,
+                    permittedLayouts: 'all',
+                    stickToolbarToBottom: true,
+                  }}
+                  allowTemplatePlaceholders={{ allowInserting: true }}
+                  media={{
+                    provider: mediaProvider,
+                    allowMediaSingle: true,
+                    customDropzoneContainer: parentContainer,
+                  }}
+                  emojiProvider={
+                    emoji.storyData.getEmojiResource() as Promise<EmojiProvider>
+                  }
+                  mentionProvider={Promise.resolve(
+                    mention.storyData.resourceProvider,
+                  )}
+                  taskDecisionProvider={Promise.resolve(
+                    taskDecision.getMockTaskDecisionResource(),
+                  )}
+                  contextIdentifierProvider={storyContextIdentifierProviderFactory()}
+                  collabEdit={{
+                    useNativePlugin: true,
+                    provider: Promise.resolve(
+                      new CollabProvider(
+                        {
+                          url: 'http://localhost:8080',
+                          securityProvider: () => ({
+                            headers: {
+                              Authorization: asapToken,
+                              'user-ari': userId,
+                            },
+                            omitCredentials: true,
+                          }),
+                          docId: documentId!,
+                          userId,
+                        },
+                        pubSubClient,
+                      ),
                     ),
-                  ),
-                  inviteToEditHandler: this.inviteToEditHandler,
-                  isInviteToEditButtonSelected: this.state
-                    .isInviteToEditButtonSelected,
-                  userId,
-                }}
-                placeholder="Write something..."
-                shouldFocus={false}
-                primaryToolbarComponents={
-                  <WithEditorActions
-                    render={actions => (
-                      <SaveAndCancelButtons editorActions={actions} />
-                    )}
-                  />
-                }
-                allowExtension={true}
-                insertMenuItems={customInsertMenuItems}
-                extensionHandlers={extensionHandlers}
-              />
+                    inviteToEditHandler: this.inviteToEditHandler,
+                    isInviteToEditButtonSelected: this.state
+                      .isInviteToEditButtonSelected,
+                    userId,
+                  }}
+                  placeholder="Write something..."
+                  shouldFocus={false}
+                  primaryToolbarComponents={
+                    <WithEditorActions
+                      render={actions => (
+                        <SaveAndCancelButtons editorActions={actions} />
+                      )}
+                    />
+                  }
+                  allowExtension={true}
+                  insertMenuItems={customInsertMenuItems}
+                  extensionHandlers={extensionHandlers}
+                />
+              </IntlProvider>
             </EditorContext>
           )}
         </DropzoneEditorWrapper>
