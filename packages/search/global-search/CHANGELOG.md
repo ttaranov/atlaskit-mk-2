@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 5.5.7
+- [patch] Fixes import in relative import in global search. [0147e49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0147e49)
+
 ## 5.5.6
 - [patch] Update response handlers for People search [f2992c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f2992c6)
 
