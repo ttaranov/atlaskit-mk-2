@@ -1,0 +1,899 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Product Icons Snapshot AtlassianIcon 1`] = `
+.c0 {
+  color: inherit;
+  display: inline-block;
+  fill: currentColor;
+  height: 32px;
+  position: relative;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c0 > svg {
+  fill: inherit;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.c0 > canvas {
+  display: block;
+  height: 100%;
+  visibility: hidden;
+}
+
+.c0 stop {
+  stop-color: currentColor;
+}
+
+<AtlassianIcon
+  iconColor="inherit"
+  iconGradientStart="inherit"
+  iconGradientStop="inherit"
+  size="medium"
+  textColor="currentColor"
+>
+  <styled.span
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "<canvas height=\\"32\\" width=\\"32\\" aria-hidden=\\"true\\"></canvas>
+        <svg viewBox=\\"0 0 32 32\\" xmlns=\\"http://www.w3.org/2000/svg\\" focusable=\\"false\\" aria-hidden=\\"true\\">
+          <defs>
+            <linearGradient x1=\\"50%\\" x2=\\"50%\\" y1=\\"-17.724%\\" y2=\\"85.598%\\" id=\\"32218e48-7e07-4586-953a-b62cf76302f9\\">
+              <stop stop-color=\\"inherit\\" stop-opacity=\\"0.4\\" offset=\\"0%\\"></stop>
+              <stop stop-color=\\"inherit\\" offset=\\"100%\\"></stop>
+            </linearGradient>
+          </defs>
+          <g stroke=\\"none\\" stroke-width=\\"1\\" fill-rule=\\"nonzero\\">
+            <path d=\\"M15.3919738,2.47536112 C12.1140721,7.66880375 12.3303344,13.4206726 14.4894164,17.7389677 L18.4247607,25.6099185 C18.5435803,25.8472956 18.7860721,25.9971972 19.0515148,25.9971972 L27.2130885,25.9971972 C27.5999738,25.9971972 27.9136787,25.6836234 27.9136787,25.296607 C27.9136787,25.1878857 27.8883672,25.080607 27.8397115,24.9832956 C27.8397115,24.9832956 16.8599082,3.0204103 16.5835803,2.47090211 C16.3367607,1.97896768 15.7093508,1.97227916 15.3919738,2.47536112\\" fill=\\"currentColor\\"></path>
+            <path d=\\"M9.93632602,13.3906651 L4.07411881,25.1153419 C4.02453136,25.214648 4.00065592,25.3199886 4,25.4238861 L4,25.4332001 C4.00183657,25.6884836 4.14338381,25.9335348 4.38738555,26.0555357 C4.48472387,26.1042049 4.59216334,26.1295233 4.70091465,26.1295233 L12.8650027,26.1295233 C13.132224,26.1358202 13.3779311,25.9840406 13.4917986,25.7420066 C15.2522842,22.1023141 14.1857605,16.5683286 11.0938912,13.2648599 C10.9303051,13.0902544 10.7250026,13 10.5271775,13 C10.2924898,13 10.0681657,13.1269858 9.93632602,13.3906651\\" fill=\\"url(#32218e48-7e07-4586-953a-b62cf76302f9)\\"></path>
+          </g>
+        </svg>",
+      }
+    }
+    iconColor="inherit"
+    iconGradientStart="inherit"
+    iconGradientStop="inherit"
+    size="medium"
+    textColor="currentColor"
+  >
+    <span
+      className="c0"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<canvas height=\\"32\\" width=\\"32\\" aria-hidden=\\"true\\"></canvas>
+          <svg viewBox=\\"0 0 32 32\\" xmlns=\\"http://www.w3.org/2000/svg\\" focusable=\\"false\\" aria-hidden=\\"true\\">
+            <defs>
+              <linearGradient x1=\\"50%\\" x2=\\"50%\\" y1=\\"-17.724%\\" y2=\\"85.598%\\" id=\\"32218e48-7e07-4586-953a-b62cf76302f9\\">
+                <stop stop-color=\\"inherit\\" stop-opacity=\\"0.4\\" offset=\\"0%\\"></stop>
+                <stop stop-color=\\"inherit\\" offset=\\"100%\\"></stop>
+              </linearGradient>
+            </defs>
+            <g stroke=\\"none\\" stroke-width=\\"1\\" fill-rule=\\"nonzero\\">
+              <path d=\\"M15.3919738,2.47536112 C12.1140721,7.66880375 12.3303344,13.4206726 14.4894164,17.7389677 L18.4247607,25.6099185 C18.5435803,25.8472956 18.7860721,25.9971972 19.0515148,25.9971972 L27.2130885,25.9971972 C27.5999738,25.9971972 27.9136787,25.6836234 27.9136787,25.296607 C27.9136787,25.1878857 27.8883672,25.080607 27.8397115,24.9832956 C27.8397115,24.9832956 16.8599082,3.0204103 16.5835803,2.47090211 C16.3367607,1.97896768 15.7093508,1.97227916 15.3919738,2.47536112\\" fill=\\"currentColor\\"></path>
+              <path d=\\"M9.93632602,13.3906651 L4.07411881,25.1153419 C4.02453136,25.214648 4.00065592,25.3199886 4,25.4238861 L4,25.4332001 C4.00183657,25.6884836 4.14338381,25.9335348 4.38738555,26.0555357 C4.48472387,26.1042049 4.59216334,26.1295233 4.70091465,26.1295233 L12.8650027,26.1295233 C13.132224,26.1358202 13.3779311,25.9840406 13.4917986,25.7420066 C15.2522842,22.1023141 14.1857605,16.5683286 11.0938912,13.2648599 C10.9303051,13.0902544 10.7250026,13 10.5271775,13 C10.2924898,13 10.0681657,13.1269858 9.93632602,13.3906651\\" fill=\\"url(#32218e48-7e07-4586-953a-b62cf76302f9)\\"></path>
+            </g>
+          </svg>",
+        }
+      }
+      size="medium"
+    />
+  </styled.span>
+</AtlassianIcon>
+`;
+
+exports[`Product Icons Snapshot BitbucketIcon 1`] = `
+.c0 {
+  color: inherit;
+  display: inline-block;
+  fill: currentColor;
+  height: 32px;
+  position: relative;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c0 > svg {
+  fill: inherit;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.c0 > canvas {
+  display: block;
+  height: 100%;
+  visibility: hidden;
+}
+
+.c0 stop {
+  stop-color: currentColor;
+}
+
+<BitbucketIcon
+  iconColor="inherit"
+  iconGradientStart="inherit"
+  iconGradientStop="inherit"
+  size="medium"
+  textColor="currentColor"
+>
+  <styled.span
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "<canvas height=\\"32\\" width=\\"32\\" aria-hidden=\\"true\\"></canvas>
+        <svg viewBox=\\"0 0 32 32\\" xmlns=\\"http://www.w3.org/2000/svg\\" focusable=\\"false\\" aria-hidden=\\"true\\">
+          <defs>
+            <linearGradient x1=\\"100%\\" x2=\\"45.339%\\" y1=\\"29.23%\\" y2=\\"75.038%\\" id=\\"d253ead0-a1ce-11e8-815a-af9193f658a7\\">
+              <stop stop-color=\\"inherit\\" stop-opacity=\\"0.4\\" offset=\\"0%\\"></stop>
+              <stop stop-color=\\"inherit\\" offset=\\"100%\\"></stop>
+            </linearGradient>
+          </defs>
+          <g stroke=\\"none\\" stroke-width=\\"1\\" fill-rule=\\"nonzero\\">
+            <path d=\\"M4.78580435,5 C4.55423538,4.99701333 4.33319771,5.09657765 4.18198458,5.27198488 C4.03077145,5.44739211 3.96486141,5.68068714 4.00193478,5.9092887 L7.32946109,26.1096074 C7.3703589,26.355373 7.49665951,26.578828 7.68612174,26.7406224 C7.87680866,26.9055104 8.11992598,26.9972003 8.37200761,26.9992993 L14.5488998,19.5995707 L13.6827239,19.5995707 L12.3227102,12.3958093 L27.3886833,12.3958093 L28.4469072,5.91712739 C28.4862006,5.68935393 28.4229655,5.45584955 28.2741046,5.27903 C28.1252437,5.10221045 27.9059335,5.00010264 27.6747957,5 L4.78580435,5 Z\\" fill=\\"url(#d253ead0-a1ce-11e8-815a-af9193f658a7)\\"></path>
+            <path d=\\"M27.3886833,12.3958093 L20.0320674,12.3958093 L18.7974728,19.5995707 L13.7023207,19.5995707 L7.68612174,26.7445417 C7.87680866,26.9094297 8.11992598,27.0011197 8.37200761,27.0032187 L24.3394307,27.0032187 C24.727754,27.0082167 25.0611955,26.7281258 25.1233002,26.3447683 L27.3886833,12.3958093 Z\\" fill=\\"currentColor\\"></path>
+          </g>
+        </svg>",
+      }
+    }
+    iconColor="inherit"
+    iconGradientStart="inherit"
+    iconGradientStop="inherit"
+    size="medium"
+    textColor="currentColor"
+  >
+    <span
+      className="c0"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<canvas height=\\"32\\" width=\\"32\\" aria-hidden=\\"true\\"></canvas>
+          <svg viewBox=\\"0 0 32 32\\" xmlns=\\"http://www.w3.org/2000/svg\\" focusable=\\"false\\" aria-hidden=\\"true\\">
+            <defs>
+              <linearGradient x1=\\"100%\\" x2=\\"45.339%\\" y1=\\"29.23%\\" y2=\\"75.038%\\" id=\\"d253ead0-a1ce-11e8-815a-af9193f658a7\\">
+                <stop stop-color=\\"inherit\\" stop-opacity=\\"0.4\\" offset=\\"0%\\"></stop>
+                <stop stop-color=\\"inherit\\" offset=\\"100%\\"></stop>
+              </linearGradient>
+            </defs>
+            <g stroke=\\"none\\" stroke-width=\\"1\\" fill-rule=\\"nonzero\\">
+              <path d=\\"M4.78580435,5 C4.55423538,4.99701333 4.33319771,5.09657765 4.18198458,5.27198488 C4.03077145,5.44739211 3.96486141,5.68068714 4.00193478,5.9092887 L7.32946109,26.1096074 C7.3703589,26.355373 7.49665951,26.578828 7.68612174,26.7406224 C7.87680866,26.9055104 8.11992598,26.9972003 8.37200761,26.9992993 L14.5488998,19.5995707 L13.6827239,19.5995707 L12.3227102,12.3958093 L27.3886833,12.3958093 L28.4469072,5.91712739 C28.4862006,5.68935393 28.4229655,5.45584955 28.2741046,5.27903 C28.1252437,5.10221045 27.9059335,5.00010264 27.6747957,5 L4.78580435,5 Z\\" fill=\\"url(#d253ead0-a1ce-11e8-815a-af9193f658a7)\\"></path>
+              <path d=\\"M27.3886833,12.3958093 L20.0320674,12.3958093 L18.7974728,19.5995707 L13.7023207,19.5995707 L7.68612174,26.7445417 C7.87680866,26.9094297 8.11992598,27.0011197 8.37200761,27.0032187 L24.3394307,27.0032187 C24.727754,27.0082167 25.0611955,26.7281258 25.1233002,26.3447683 L27.3886833,12.3958093 Z\\" fill=\\"currentColor\\"></path>
+            </g>
+          </svg>",
+        }
+      }
+      size="medium"
+    />
+  </styled.span>
+</BitbucketIcon>
+`;
+
+exports[`Product Icons Snapshot ConfluenceIcon 1`] = `
+.c0 {
+  color: inherit;
+  display: inline-block;
+  fill: currentColor;
+  height: 32px;
+  position: relative;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c0 > svg {
+  fill: inherit;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.c0 > canvas {
+  display: block;
+  height: 100%;
+  visibility: hidden;
+}
+
+.c0 stop {
+  stop-color: currentColor;
+}
+
+<ConfluenceIcon
+  iconColor="inherit"
+  iconGradientStart="inherit"
+  iconGradientStop="inherit"
+  size="medium"
+  textColor="currentColor"
+>
+  <styled.span
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "<canvas height=\\"32\\" width=\\"32\\" aria-hidden=\\"true\\"></canvas>
+        <svg viewBox=\\"0 0 32 32\\" xmlns=\\"http://www.w3.org/2000/svg\\" focusable=\\"false\\" aria-hidden=\\"true\\">
+          <defs>
+            <linearGradient x1=\\"94.714%\\" x2=\\"34.077%\\" y1=\\"114.519%\\" y2=\\"39.454%\\" id=\\"7becf552-6e07-41ac-b519-18f0c0401f02-1\\">
+              <stop stop-color=\\"inherit\\" stop-opacity=\\"0.4\\" offset=\\"0%\\"></stop>
+              <stop stop-color=\\"inherit\\" offset=\\"100%\\"></stop>
+            </linearGradient>
+            <linearGradient x1=\\"14.1838118%\\" y1=\\"5.80047897%\\" x2=\\"61.141783%\\" y2=\\"70.9663868%\\" id=\\"7becf552-6e07-41ac-b519-18f0c0401f02-2\\">
+              <stop stop-color=\\"inherit\\" stop-opacity=\\"0.4\\" offset=\\"0%\\"></stop>
+              <stop stop-color=\\"inherit\\" offset=\\"100%\\"></stop>
+            </linearGradient>
+          </defs>
+          <g stroke=\\"none\\" stroke-width=\\"1\\" fill-rule=\\"nonzero\\">
+            <path d=\\"M5.21454927,22.0245336 C4.97082816,22.4219865 4.69711061,22.8831818 4.46463817,23.2506383 C4.25655728,23.602269 4.36826343,24.0557627 4.71585838,24.2705174 L9.59028054,27.2701618 C9.76138278,27.3758032 9.96774369,27.4083016 10.1630326,27.3603607 C10.3583215,27.3124197 10.5261749,27.1880564 10.6289074,27.015192 C10.8238843,26.6889807 11.0751045,26.2652809 11.3488221,25.8115847 C13.2798432,22.6244625 15.2221129,23.0144163 18.7241978,24.686718 L23.5573748,26.9851956 C23.7404243,27.0723219 23.9509502,27.0816253 24.1409716,27.0109854 C24.3309931,26.9403455 24.4843191,26.7957811 24.5660052,26.61024 L26.8869801,21.3608623 C27.0509607,20.9859459 26.8841076,20.5487907 26.5120245,20.3784788 C25.4921454,19.8985357 23.4636359,18.942399 21.6376024,18.0612535 C15.0683811,14.8741313 9.48529299,15.0841064 5.21454927,22.0245336 Z\\" fill=\\"url(#7becf552-6e07-41ac-b519-18f0c0401f02-1)\\"></path>
+            <path d=\\"M27.0752616,9.74267061 C27.3190367,9.34512979 27.5928148,8.88383241 27.8253387,8.51629467 C28.0334656,8.1645861 27.9217347,7.71099215 27.5740629,7.4961899 L22.6985622,4.49588177 C22.5250856,4.3802891 22.3113292,4.3421035 22.1085604,4.39048341 C21.9057917,4.43886333 21.7323024,4.56944439 21.6297024,4.75090796 C21.4346824,5.07719147 21.1834066,5.50098499 20.9096284,5.9547816 C18.9781801,9.14260899 17.0354806,8.75256893 13.5326208,7.07989715 L8.71337588,4.78466143 C8.53028584,4.69751579 8.31971336,4.68821035 8.1296499,4.75886591 C7.93958645,4.82952147 7.78622651,4.97411777 7.70452227,5.15969994 L5.38303386,10.4102392 C5.21901692,10.7852385 5.38590698,11.2224905 5.75807237,11.3928401 C6.77817714,11.8728894 8.80713551,12.8292376 10.6335731,13.7105781 C17.2192494,16.8946551 22.8035729,16.6846336 27.0752616,9.74267061 Z\\" fill=\\"url(#7becf552-6e07-41ac-b519-18f0c0401f02-2)\\"></path>
+          </g>
+        </svg>",
+      }
+    }
+    iconColor="inherit"
+    iconGradientStart="inherit"
+    iconGradientStop="inherit"
+    size="medium"
+    textColor="currentColor"
+  >
+    <span
+      className="c0"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<canvas height=\\"32\\" width=\\"32\\" aria-hidden=\\"true\\"></canvas>
+          <svg viewBox=\\"0 0 32 32\\" xmlns=\\"http://www.w3.org/2000/svg\\" focusable=\\"false\\" aria-hidden=\\"true\\">
+            <defs>
+              <linearGradient x1=\\"94.714%\\" x2=\\"34.077%\\" y1=\\"114.519%\\" y2=\\"39.454%\\" id=\\"7becf552-6e07-41ac-b519-18f0c0401f02-1\\">
+                <stop stop-color=\\"inherit\\" stop-opacity=\\"0.4\\" offset=\\"0%\\"></stop>
+                <stop stop-color=\\"inherit\\" offset=\\"100%\\"></stop>
+              </linearGradient>
+              <linearGradient x1=\\"14.1838118%\\" y1=\\"5.80047897%\\" x2=\\"61.141783%\\" y2=\\"70.9663868%\\" id=\\"7becf552-6e07-41ac-b519-18f0c0401f02-2\\">
+                <stop stop-color=\\"inherit\\" stop-opacity=\\"0.4\\" offset=\\"0%\\"></stop>
+                <stop stop-color=\\"inherit\\" offset=\\"100%\\"></stop>
+              </linearGradient>
+            </defs>
+            <g stroke=\\"none\\" stroke-width=\\"1\\" fill-rule=\\"nonzero\\">
+              <path d=\\"M5.21454927,22.0245336 C4.97082816,22.4219865 4.69711061,22.8831818 4.46463817,23.2506383 C4.25655728,23.602269 4.36826343,24.0557627 4.71585838,24.2705174 L9.59028054,27.2701618 C9.76138278,27.3758032 9.96774369,27.4083016 10.1630326,27.3603607 C10.3583215,27.3124197 10.5261749,27.1880564 10.6289074,27.015192 C10.8238843,26.6889807 11.0751045,26.2652809 11.3488221,25.8115847 C13.2798432,22.6244625 15.2221129,23.0144163 18.7241978,24.686718 L23.5573748,26.9851956 C23.7404243,27.0723219 23.9509502,27.0816253 24.1409716,27.0109854 C24.3309931,26.9403455 24.4843191,26.7957811 24.5660052,26.61024 L26.8869801,21.3608623 C27.0509607,20.9859459 26.8841076,20.5487907 26.5120245,20.3784788 C25.4921454,19.8985357 23.4636359,18.942399 21.6376024,18.0612535 C15.0683811,14.8741313 9.48529299,15.0841064 5.21454927,22.0245336 Z\\" fill=\\"url(#7becf552-6e07-41ac-b519-18f0c0401f02-1)\\"></path>
+              <path d=\\"M27.0752616,9.74267061 C27.3190367,9.34512979 27.5928148,8.88383241 27.8253387,8.51629467 C28.0334656,8.1645861 27.9217347,7.71099215 27.5740629,7.4961899 L22.6985622,4.49588177 C22.5250856,4.3802891 22.3113292,4.3421035 22.1085604,4.39048341 C21.9057917,4.43886333 21.7323024,4.56944439 21.6297024,4.75090796 C21.4346824,5.07719147 21.1834066,5.50098499 20.9096284,5.9547816 C18.9781801,9.14260899 17.0354806,8.75256893 13.5326208,7.07989715 L8.71337588,4.78466143 C8.53028584,4.69751579 8.31971336,4.68821035 8.1296499,4.75886591 C7.93958645,4.82952147 7.78622651,4.97411777 7.70452227,5.15969994 L5.38303386,10.4102392 C5.21901692,10.7852385 5.38590698,11.2224905 5.75807237,11.3928401 C6.77817714,11.8728894 8.80713551,12.8292376 10.6335731,13.7105781 C17.2192494,16.8946551 22.8035729,16.6846336 27.0752616,9.74267061 Z\\" fill=\\"url(#7becf552-6e07-41ac-b519-18f0c0401f02-2)\\"></path>
+            </g>
+          </svg>",
+        }
+      }
+      size="medium"
+    />
+  </styled.span>
+</ConfluenceIcon>
+`;
+
+exports[`Product Icons Snapshot HipchatIcon 1`] = `
+.c0 {
+  color: inherit;
+  display: inline-block;
+  fill: currentColor;
+  height: 32px;
+  position: relative;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c0 > svg {
+  fill: inherit;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.c0 > canvas {
+  display: block;
+  height: 100%;
+  visibility: hidden;
+}
+
+.c0 stop {
+  stop-color: currentColor;
+}
+
+<HipchatIcon
+  iconColor="inherit"
+  iconGradientStart="inherit"
+  iconGradientStop="inherit"
+  size="medium"
+  textColor="currentColor"
+>
+  <styled.span
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "<canvas height=\\"32\\" width=\\"32\\" aria-hidden=\\"true\\"></canvas>
+        <svg viewBox=\\"0 0 32 32\\" xmlns=\\"http://www.w3.org/2000/svg\\" focusable=\\"false\\" aria-hidden=\\"true\\">
+          <defs>
+            <linearGradient x1=\\"50%\\" x2=\\"50%\\" y1=\\"109.344%\\" y2=\\"50%\\" id=\\"7ff213e0-e83d-40eb-bd53-70ccd03138b0\\">
+              <stop stop-color=\\"inherit\\" stop-opacity=\\"0.4\\" offset=\\"0%\\"></stop>
+              <stop stop-color=\\"inherit\\" offset=\\"100%\\"></stop>
+            </linearGradient>
+          </defs>
+          <g stroke=\\"none\\" stroke-width=\\"1\\" fill-rule=\\"nonzero\\">
+            <path d=\\"M23.7345538,23.2663616 C23.7345538,23.2663616 23.8370709,23.1967963 24.005492,23.0649886 C26.4585812,21.1684211 28,18.415103 28,15.3505721 C28,9.63524027 22.6251716,5 15.9981693,5 C9.37116705,5 4,9.63524027 4,15.3505721 C4,21.0659039 9.37116705,25.7084668 15.9981693,25.7084668 C16.8443253,25.7085918 17.6887221,25.6313828 18.5208238,25.4778032 L18.780778,25.4302059 C20.4686499,26.5286041 22.9217391,27.421968 25.0672769,27.421968 C25.7372998,27.421968 26.0485126,26.8764302 25.6237986,26.3235698 C24.9757437,25.5034325 24.0823799,24.2475973 23.7345538,23.2663616 Z M22.2700229,18.7409611 C21.5560641,19.8100686 19.3409611,21.6297483 16.016476,21.6297483 L15.97254,21.6297483 C12.6443936,21.6297483 10.4292906,19.7990847 9.71899314,18.7409611 C9.57610016,18.5841129 9.48084942,18.3898014 9.44439359,18.180778 C9.43329033,18.0479311 9.4771359,17.9163408 9.56570231,17.8167036 C9.65426872,17.7170664 9.77981099,17.6580954 9.91304348,17.6535469 C10.030087,17.6573963 10.1434115,17.6955956 10.2389016,17.7633867 C11.8654801,19.0871958 13.8973189,19.8122986 15.994508,19.8173913 C18.1018351,19.8400381 20.1471166,19.1045684 21.7574371,17.7450801 C21.8437646,17.6671264 21.9559962,17.6240608 22.0723112,17.6242563 C22.3357824,17.6242486 22.5499338,17.8367653 22.5519451,18.1002288 C22.521169,18.3343594 22.4275401,18.5557793 22.2810069,18.7409611 L22.2700229,18.7409611 Z\\" fill=\\"url(#7ff213e0-e83d-40eb-bd53-70ccd03138b0)\\"></path>
+          </g>
+        </svg>",
+      }
+    }
+    iconColor="inherit"
+    iconGradientStart="inherit"
+    iconGradientStop="inherit"
+    size="medium"
+    textColor="currentColor"
+  >
+    <span
+      className="c0"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<canvas height=\\"32\\" width=\\"32\\" aria-hidden=\\"true\\"></canvas>
+          <svg viewBox=\\"0 0 32 32\\" xmlns=\\"http://www.w3.org/2000/svg\\" focusable=\\"false\\" aria-hidden=\\"true\\">
+            <defs>
+              <linearGradient x1=\\"50%\\" x2=\\"50%\\" y1=\\"109.344%\\" y2=\\"50%\\" id=\\"7ff213e0-e83d-40eb-bd53-70ccd03138b0\\">
+                <stop stop-color=\\"inherit\\" stop-opacity=\\"0.4\\" offset=\\"0%\\"></stop>
+                <stop stop-color=\\"inherit\\" offset=\\"100%\\"></stop>
+              </linearGradient>
+            </defs>
+            <g stroke=\\"none\\" stroke-width=\\"1\\" fill-rule=\\"nonzero\\">
+              <path d=\\"M23.7345538,23.2663616 C23.7345538,23.2663616 23.8370709,23.1967963 24.005492,23.0649886 C26.4585812,21.1684211 28,18.415103 28,15.3505721 C28,9.63524027 22.6251716,5 15.9981693,5 C9.37116705,5 4,9.63524027 4,15.3505721 C4,21.0659039 9.37116705,25.7084668 15.9981693,25.7084668 C16.8443253,25.7085918 17.6887221,25.6313828 18.5208238,25.4778032 L18.780778,25.4302059 C20.4686499,26.5286041 22.9217391,27.421968 25.0672769,27.421968 C25.7372998,27.421968 26.0485126,26.8764302 25.6237986,26.3235698 C24.9757437,25.5034325 24.0823799,24.2475973 23.7345538,23.2663616 Z M22.2700229,18.7409611 C21.5560641,19.8100686 19.3409611,21.6297483 16.016476,21.6297483 L15.97254,21.6297483 C12.6443936,21.6297483 10.4292906,19.7990847 9.71899314,18.7409611 C9.57610016,18.5841129 9.48084942,18.3898014 9.44439359,18.180778 C9.43329033,18.0479311 9.4771359,17.9163408 9.56570231,17.8167036 C9.65426872,17.7170664 9.77981099,17.6580954 9.91304348,17.6535469 C10.030087,17.6573963 10.1434115,17.6955956 10.2389016,17.7633867 C11.8654801,19.0871958 13.8973189,19.8122986 15.994508,19.8173913 C18.1018351,19.8400381 20.1471166,19.1045684 21.7574371,17.7450801 C21.8437646,17.6671264 21.9559962,17.6240608 22.0723112,17.6242563 C22.3357824,17.6242486 22.5499338,17.8367653 22.5519451,18.1002288 C22.521169,18.3343594 22.4275401,18.5557793 22.2810069,18.7409611 L22.2700229,18.7409611 Z\\" fill=\\"url(#7ff213e0-e83d-40eb-bd53-70ccd03138b0)\\"></path>
+            </g>
+          </svg>",
+        }
+      }
+      size="medium"
+    />
+  </styled.span>
+</HipchatIcon>
+`;
+
+exports[`Product Icons Snapshot JiraCoreIcon 1`] = `
+.c0 {
+  color: inherit;
+  display: inline-block;
+  fill: currentColor;
+  height: 32px;
+  position: relative;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c0 > svg {
+  fill: inherit;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.c0 > canvas {
+  display: block;
+  height: 100%;
+  visibility: hidden;
+}
+
+.c0 stop {
+  stop-color: currentColor;
+}
+
+<JiraCoreIcon
+  iconColor="inherit"
+  iconGradientStart="inherit"
+  iconGradientStop="inherit"
+  size="medium"
+  textColor="currentColor"
+>
+  <styled.span
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "<canvas height=\\"32\\" width=\\"32\\" aria-hidden=\\"true\\"></canvas>
+        <svg viewBox=\\"0 0 32 32\\" xmlns=\\"http://www.w3.org/2000/svg\\" focusable=\\"false\\" aria-hidden=\\"true\\">
+          <defs>
+            <linearGradient x1=\\"26.51%\\" y1=\\"20.831%\\" y2=\\"63.912%\\" id=\\"e750805d-5752-436c-bd18-6ac73e730e4d\\">
+              <stop stop-color=\\"inherit\\" stop-opacity=\\"0.4\\" offset=\\"17%\\"></stop>
+              <stop stop-color=\\"inherit\\" offset=\\"100%\\"></stop>
+            </linearGradient>
+          </defs>
+          <g stroke=\\"none\\" stroke-width=\\"1\\" fill-rule=\\"nonzero\\">
+            <path d=\\"M15.52,20.5269517 C15.52,25.2103264 19.3166253,29.0069517 24,29.0069517 L24,12.11 L15.52,17.9183271 L15.52,20.5269517 Z\\" fill=\\"url(#e750805d-5752-436c-bd18-6ac73e730e4d)\\"></path>
+            <path d=\\"M23.9969697,12.1078788 L23.9969697,4.26454545 C23.9961315,3.79791901 23.7375983,3.36992522 23.3249582,3.15205124 C22.912318,2.93417725 22.4130783,2.9620669 22.0272727,3.22454545 L2.35,16.6578788 C4.98320643,20.5274016 10.2540962,21.5307928 14.1248485,18.8993939 L23.9969697,12.1078788 Z\\" fill=\\"currentColor\\"></path>
+          </g>
+        </svg>",
+      }
+    }
+    iconColor="inherit"
+    iconGradientStart="inherit"
+    iconGradientStop="inherit"
+    size="medium"
+    textColor="currentColor"
+  >
+    <span
+      className="c0"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<canvas height=\\"32\\" width=\\"32\\" aria-hidden=\\"true\\"></canvas>
+          <svg viewBox=\\"0 0 32 32\\" xmlns=\\"http://www.w3.org/2000/svg\\" focusable=\\"false\\" aria-hidden=\\"true\\">
+            <defs>
+              <linearGradient x1=\\"26.51%\\" y1=\\"20.831%\\" y2=\\"63.912%\\" id=\\"e750805d-5752-436c-bd18-6ac73e730e4d\\">
+                <stop stop-color=\\"inherit\\" stop-opacity=\\"0.4\\" offset=\\"17%\\"></stop>
+                <stop stop-color=\\"inherit\\" offset=\\"100%\\"></stop>
+              </linearGradient>
+            </defs>
+            <g stroke=\\"none\\" stroke-width=\\"1\\" fill-rule=\\"nonzero\\">
+              <path d=\\"M15.52,20.5269517 C15.52,25.2103264 19.3166253,29.0069517 24,29.0069517 L24,12.11 L15.52,17.9183271 L15.52,20.5269517 Z\\" fill=\\"url(#e750805d-5752-436c-bd18-6ac73e730e4d)\\"></path>
+              <path d=\\"M23.9969697,12.1078788 L23.9969697,4.26454545 C23.9961315,3.79791901 23.7375983,3.36992522 23.3249582,3.15205124 C22.912318,2.93417725 22.4130783,2.9620669 22.0272727,3.22454545 L2.35,16.6578788 C4.98320643,20.5274016 10.2540962,21.5307928 14.1248485,18.8993939 L23.9969697,12.1078788 Z\\" fill=\\"currentColor\\"></path>
+            </g>
+          </svg>",
+        }
+      }
+      size="medium"
+    />
+  </styled.span>
+</JiraCoreIcon>
+`;
+
+exports[`Product Icons Snapshot JiraIcon 1`] = `
+.c0 {
+  color: inherit;
+  display: inline-block;
+  fill: currentColor;
+  height: 32px;
+  position: relative;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c0 > svg {
+  fill: inherit;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.c0 > canvas {
+  display: block;
+  height: 100%;
+  visibility: hidden;
+}
+
+.c0 stop {
+  stop-color: currentColor;
+}
+
+<JiraIcon
+  iconColor="inherit"
+  iconGradientStart="inherit"
+  iconGradientStop="inherit"
+  size="medium"
+  textColor="currentColor"
+>
+  <styled.span
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "<canvas height=\\"32\\" width=\\"32\\" aria-hidden=\\"true\\"></canvas>
+        <svg viewBox=\\"0 0 32 32\\" xmlns=\\"http://www.w3.org/2000/svg\\" focusable=\\"false\\" aria-hidden=\\"true\\">
+          <defs>
+            <linearGradient x1=\\"94.092%\\" x2=\\"56.535%\\" y1=\\"6.033%\\" y2=\\"43.087%\\" id=\\"677e5ce7-e261-4ef9-9151-94ae7b94b48a\\">
+              <stop stop-color=\\"inherit\\" stop-opacity=\\"0.4\\" offset=\\"18%\\"></stop>
+              <stop stop-color=\\"inherit\\" offset=\\"100%\\"></stop>
+            </linearGradient>
+          </defs>
+          <g stroke=\\"none\\" stroke-width=\\"1\\" fill-rule=\\"nonzero\\">
+            <path d=\\"M26.0406546,5 L14.9983562,5 C14.9983562,6.32163748 15.5233746,7.58914413 16.4579134,8.52368295 C17.3924523,9.45822178 18.6599589,9.98324022 19.9815964,9.98324022 L22.0151159,9.98324022 L22.0151159,11.9465283 C22.0168782,14.6974491 24.2474348,16.9265768 26.9983562,16.9265762 L26.9983562,5.95770152 C26.9983562,5.42877757 26.5695786,5 26.0406546,5 Z\\" fill=\\"currentColor\\"></path>
+            <path d=\\"M20.0420436,11 L9,11 C9.00176139,13.7504065 11.2309666,15.9796117 13.9813731,15.9813731 L16.0154337,15.9813731 L16.0154337,17.9451836 C16.0154337,19.2671728 16.5405919,20.5350167 17.4753794,21.4698042 C18.4101669,22.4045917 19.6780108,22.9297499 21,22.9297499 L21,11.9579564 C21,11.4288917 20.5711083,11 20.0420436,11 Z\\" fill=\\"url(#677e5ce7-e261-4ef9-9151-94ae7b94b48a)\\"></path>
+            <path d=\\"M14.0420436,17 L3,17 C3.00176275,19.7516528 5.23291286,21.9813736 7.98456626,21.9813731 L10.0250133,21.9813731 L10.0250133,23.9451836 C10.0250082,26.6943468 12.2508419,28.9244664 15,28.9297499 L15,17.9579564 C15,17.4288917 14.5711083,17 14.0420436,17 Z\\" fill=\\"url(#677e5ce7-e261-4ef9-9151-94ae7b94b48a)\\"></path>
+          </g>
+        </svg>",
+      }
+    }
+    iconColor="inherit"
+    iconGradientStart="inherit"
+    iconGradientStop="inherit"
+    size="medium"
+    textColor="currentColor"
+  >
+    <span
+      className="c0"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<canvas height=\\"32\\" width=\\"32\\" aria-hidden=\\"true\\"></canvas>
+          <svg viewBox=\\"0 0 32 32\\" xmlns=\\"http://www.w3.org/2000/svg\\" focusable=\\"false\\" aria-hidden=\\"true\\">
+            <defs>
+              <linearGradient x1=\\"94.092%\\" x2=\\"56.535%\\" y1=\\"6.033%\\" y2=\\"43.087%\\" id=\\"677e5ce7-e261-4ef9-9151-94ae7b94b48a\\">
+                <stop stop-color=\\"inherit\\" stop-opacity=\\"0.4\\" offset=\\"18%\\"></stop>
+                <stop stop-color=\\"inherit\\" offset=\\"100%\\"></stop>
+              </linearGradient>
+            </defs>
+            <g stroke=\\"none\\" stroke-width=\\"1\\" fill-rule=\\"nonzero\\">
+              <path d=\\"M26.0406546,5 L14.9983562,5 C14.9983562,6.32163748 15.5233746,7.58914413 16.4579134,8.52368295 C17.3924523,9.45822178 18.6599589,9.98324022 19.9815964,9.98324022 L22.0151159,9.98324022 L22.0151159,11.9465283 C22.0168782,14.6974491 24.2474348,16.9265768 26.9983562,16.9265762 L26.9983562,5.95770152 C26.9983562,5.42877757 26.5695786,5 26.0406546,5 Z\\" fill=\\"currentColor\\"></path>
+              <path d=\\"M20.0420436,11 L9,11 C9.00176139,13.7504065 11.2309666,15.9796117 13.9813731,15.9813731 L16.0154337,15.9813731 L16.0154337,17.9451836 C16.0154337,19.2671728 16.5405919,20.5350167 17.4753794,21.4698042 C18.4101669,22.4045917 19.6780108,22.9297499 21,22.9297499 L21,11.9579564 C21,11.4288917 20.5711083,11 20.0420436,11 Z\\" fill=\\"url(#677e5ce7-e261-4ef9-9151-94ae7b94b48a)\\"></path>
+              <path d=\\"M14.0420436,17 L3,17 C3.00176275,19.7516528 5.23291286,21.9813736 7.98456626,21.9813731 L10.0250133,21.9813731 L10.0250133,23.9451836 C10.0250082,26.6943468 12.2508419,28.9244664 15,28.9297499 L15,17.9579564 C15,17.4288917 14.5711083,17 14.0420436,17 Z\\" fill=\\"url(#677e5ce7-e261-4ef9-9151-94ae7b94b48a)\\"></path>
+            </g>
+          </svg>",
+        }
+      }
+      size="medium"
+    />
+  </styled.span>
+</JiraIcon>
+`;
+
+exports[`Product Icons Snapshot JiraServiceDeskIcon 1`] = `
+.c0 {
+  color: inherit;
+  display: inline-block;
+  fill: currentColor;
+  height: 32px;
+  position: relative;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c0 > svg {
+  fill: inherit;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.c0 > canvas {
+  display: block;
+  height: 100%;
+  visibility: hidden;
+}
+
+.c0 stop {
+  stop-color: currentColor;
+}
+
+<JiraServiceDeskIcon
+  iconColor="inherit"
+  iconGradientStart="inherit"
+  iconGradientStop="inherit"
+  size="medium"
+  textColor="currentColor"
+>
+  <styled.span
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "<canvas height=\\"32\\" width=\\"32\\" aria-hidden=\\"true\\"></canvas>
+        <svg viewBox=\\"0 0 32 32\\" xmlns=\\"http://www.w3.org/2000/svg\\" focusable=\\"false\\" aria-hidden=\\"true\\">
+          <defs>
+            <linearGradient x1=\\"40.063%\\" x2=\\"69.955%\\" y1=\\"0%\\" y2=\\"50%\\" id=\\"266b8e9c-3163-4fb4-b93d-fc1ea533d2f7\\">
+              <stop stop-color=\\"inherit\\" stop-opacity=\\"0.4\\" offset=\\"0%\\"></stop>
+              <stop stop-color=\\"inherit\\" offset=\\"100%\\"></stop>
+            </linearGradient>
+          </defs>
+          <g stroke=\\"none\\" stroke-width=\\"1\\" fill-rule=\\"nonzero\\">
+            <path d=\\"M18.4838727,13.07 L26.3504842,13.1005351 C26.8138769,13.102696 27.2364009,13.3661074 27.4423455,13.781227 C27.64829,14.1963467 27.6024124,14.6921363 27.3237913,15.0624169 L15.7128101,30.5666265 C13.9597489,29.2574035 12.7986975,27.3052951 12.485161,25.1398891 C12.1716246,22.974483 12.731296,20.7732253 14.041012,19.0205325 L18.4838727,13.07 Z\\" fill=\\"url(#266b8e9c-3163-4fb4-b93d-fc1ea533d2f7)\\"></path>
+            <path d=\\"M14.0396053,19.0156579 L6.22105263,18.9660526 C5.75779361,18.9638923 5.33539149,18.700557 5.12950634,18.2855571 C4.92362119,17.8705572 4.96948557,17.3749106 5.24802632,17.0047368 L16.7411842,1.65 C18.4937397,2.9588453 19.6544561,4.91039056 19.9679021,7.0751719 C20.2813481,9.23995324 19.7218382,11.4405759 18.4125,13.1927632 L14.0396053,19.0156579 Z\\" fill=\\"currentColor\\"></path>
+          </g>
+        </svg>",
+      }
+    }
+    iconColor="inherit"
+    iconGradientStart="inherit"
+    iconGradientStop="inherit"
+    size="medium"
+    textColor="currentColor"
+  >
+    <span
+      className="c0"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<canvas height=\\"32\\" width=\\"32\\" aria-hidden=\\"true\\"></canvas>
+          <svg viewBox=\\"0 0 32 32\\" xmlns=\\"http://www.w3.org/2000/svg\\" focusable=\\"false\\" aria-hidden=\\"true\\">
+            <defs>
+              <linearGradient x1=\\"40.063%\\" x2=\\"69.955%\\" y1=\\"0%\\" y2=\\"50%\\" id=\\"266b8e9c-3163-4fb4-b93d-fc1ea533d2f7\\">
+                <stop stop-color=\\"inherit\\" stop-opacity=\\"0.4\\" offset=\\"0%\\"></stop>
+                <stop stop-color=\\"inherit\\" offset=\\"100%\\"></stop>
+              </linearGradient>
+            </defs>
+            <g stroke=\\"none\\" stroke-width=\\"1\\" fill-rule=\\"nonzero\\">
+              <path d=\\"M18.4838727,13.07 L26.3504842,13.1005351 C26.8138769,13.102696 27.2364009,13.3661074 27.4423455,13.781227 C27.64829,14.1963467 27.6024124,14.6921363 27.3237913,15.0624169 L15.7128101,30.5666265 C13.9597489,29.2574035 12.7986975,27.3052951 12.485161,25.1398891 C12.1716246,22.974483 12.731296,20.7732253 14.041012,19.0205325 L18.4838727,13.07 Z\\" fill=\\"url(#266b8e9c-3163-4fb4-b93d-fc1ea533d2f7)\\"></path>
+              <path d=\\"M14.0396053,19.0156579 L6.22105263,18.9660526 C5.75779361,18.9638923 5.33539149,18.700557 5.12950634,18.2855571 C4.92362119,17.8705572 4.96948557,17.3749106 5.24802632,17.0047368 L16.7411842,1.65 C18.4937397,2.9588453 19.6544561,4.91039056 19.9679021,7.0751719 C20.2813481,9.23995324 19.7218382,11.4405759 18.4125,13.1927632 L14.0396053,19.0156579 Z\\" fill=\\"currentColor\\"></path>
+            </g>
+          </svg>",
+        }
+      }
+      size="medium"
+    />
+  </styled.span>
+</JiraServiceDeskIcon>
+`;
+
+exports[`Product Icons Snapshot JiraSoftwareIcon 1`] = `
+.c0 {
+  color: inherit;
+  display: inline-block;
+  fill: currentColor;
+  height: 32px;
+  position: relative;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c0 > svg {
+  fill: inherit;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.c0 > canvas {
+  display: block;
+  height: 100%;
+  visibility: hidden;
+}
+
+.c0 stop {
+  stop-color: currentColor;
+}
+
+<JiraSoftwareIcon
+  iconColor="inherit"
+  iconGradientStart="inherit"
+  iconGradientStop="inherit"
+  size="medium"
+  textColor="currentColor"
+>
+  <styled.span
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "<canvas height=\\"32\\" width=\\"32\\" aria-hidden=\\"true\\"></canvas>
+        <svg viewBox=\\"0 0 32 32\\" xmlns=\\"http://www.w3.org/2000/svg\\" focusable=\\"false\\" aria-hidden=\\"true\\">
+          <defs>
+            <linearGradient x1=\\"76.93%\\" x2=\\"0%\\" y1=\\"13.688%\\" y2=\\"57.886%\\" id=\\"68e561fd-ad31-45cc-9b45-fd7a11a9c303-1\\">
+              <stop stop-color=\\"inherit\\" stop-opacity=\\"0.4\\" offset=\\"0%\\"></stop>
+              <stop stop-color=\\"inherit\\" offset=\\"100%\\"></stop>
+            </linearGradient>
+            <linearGradient x1=\\"87.955%\\" x2=\\"7.007%\\" y1=\\"45.217%\\" y2=\\"100%\\" id=\\"68e561fd-ad31-45cc-9b45-fd7a11a9c303-2\\">
+              <stop stop-color=\\"inherit\\" stop-opacity=\\"0.4\\" offset=\\"0%\\"></stop>
+              <stop stop-color=\\"inherit\\" offset=\\"100%\\"></stop>
+            </linearGradient>
+          </defs>
+          <g stroke=\\"none\\" stroke-width=\\"1\\" fill-rule=\\"nonzero\\">
+            <path d=\\"M15.9669691 29.3616152C17.2195568 28.1097726 17.9233158 26.4114623 17.9233158 24.6405626 17.9233158 22.8696629 17.2195568 21.1713527 15.9669691 19.91951L7.26805808 11.2489111 3.31143376 15.2055354C2.89743442 15.6200502 2.89743442 16.291565 3.31143376 16.7060799L15.9669691 29.3616152zM28.6225045 15.2055354L15.9669691 2.55 15.9280399 2.58892922C13.3485687 5.19994003 13.3612164 9.40374108 15.9563521 11.9991833L24.6623412 20.6662432 28.6225045 16.7060799C29.0365039 16.291565 29.0365039 15.6200502 28.6225045 15.2055354z\\" fill=\\"currentColor\\"></path>
+            <path d=\\"M15.9669691,11.9921053 C13.3718335,9.39666304 13.3591857,5.19286199 15.938657,2.58185118 L6.91061706,11.6063521 L11.6316697,16.3274047 L15.9669691,11.9921053 Z\\" fill=\\"url(#68e561fd-ad31-45cc-9b45-fd7a11a9c303-1)\\"></path>
+            <path d=\\"M20.2951906,15.5912886 L15.9669691,19.91951 C17.2195568,21.1713527 17.9233158,22.8696629 17.9233158,24.6405626 C17.9233158,26.4114623 17.2195568,28.1097726 15.9669691,29.3616152 L25.0162432,20.3123412 L20.2951906,15.5912886 Z\\" fill=\\"url(#68e561fd-ad31-45cc-9b45-fd7a11a9c303-2)\\"></path>
+          </g>
+        </svg>",
+      }
+    }
+    iconColor="inherit"
+    iconGradientStart="inherit"
+    iconGradientStop="inherit"
+    size="medium"
+    textColor="currentColor"
+  >
+    <span
+      className="c0"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<canvas height=\\"32\\" width=\\"32\\" aria-hidden=\\"true\\"></canvas>
+          <svg viewBox=\\"0 0 32 32\\" xmlns=\\"http://www.w3.org/2000/svg\\" focusable=\\"false\\" aria-hidden=\\"true\\">
+            <defs>
+              <linearGradient x1=\\"76.93%\\" x2=\\"0%\\" y1=\\"13.688%\\" y2=\\"57.886%\\" id=\\"68e561fd-ad31-45cc-9b45-fd7a11a9c303-1\\">
+                <stop stop-color=\\"inherit\\" stop-opacity=\\"0.4\\" offset=\\"0%\\"></stop>
+                <stop stop-color=\\"inherit\\" offset=\\"100%\\"></stop>
+              </linearGradient>
+              <linearGradient x1=\\"87.955%\\" x2=\\"7.007%\\" y1=\\"45.217%\\" y2=\\"100%\\" id=\\"68e561fd-ad31-45cc-9b45-fd7a11a9c303-2\\">
+                <stop stop-color=\\"inherit\\" stop-opacity=\\"0.4\\" offset=\\"0%\\"></stop>
+                <stop stop-color=\\"inherit\\" offset=\\"100%\\"></stop>
+              </linearGradient>
+            </defs>
+            <g stroke=\\"none\\" stroke-width=\\"1\\" fill-rule=\\"nonzero\\">
+              <path d=\\"M15.9669691 29.3616152C17.2195568 28.1097726 17.9233158 26.4114623 17.9233158 24.6405626 17.9233158 22.8696629 17.2195568 21.1713527 15.9669691 19.91951L7.26805808 11.2489111 3.31143376 15.2055354C2.89743442 15.6200502 2.89743442 16.291565 3.31143376 16.7060799L15.9669691 29.3616152zM28.6225045 15.2055354L15.9669691 2.55 15.9280399 2.58892922C13.3485687 5.19994003 13.3612164 9.40374108 15.9563521 11.9991833L24.6623412 20.6662432 28.6225045 16.7060799C29.0365039 16.291565 29.0365039 15.6200502 28.6225045 15.2055354z\\" fill=\\"currentColor\\"></path>
+              <path d=\\"M15.9669691,11.9921053 C13.3718335,9.39666304 13.3591857,5.19286199 15.938657,2.58185118 L6.91061706,11.6063521 L11.6316697,16.3274047 L15.9669691,11.9921053 Z\\" fill=\\"url(#68e561fd-ad31-45cc-9b45-fd7a11a9c303-1)\\"></path>
+              <path d=\\"M20.2951906,15.5912886 L15.9669691,19.91951 C17.2195568,21.1713527 17.9233158,22.8696629 17.9233158,24.6405626 C17.9233158,26.4114623 17.2195568,28.1097726 15.9669691,29.3616152 L25.0162432,20.3123412 L20.2951906,15.5912886 Z\\" fill=\\"url(#68e561fd-ad31-45cc-9b45-fd7a11a9c303-2)\\"></path>
+            </g>
+          </svg>",
+        }
+      }
+      size="medium"
+    />
+  </styled.span>
+</JiraSoftwareIcon>
+`;
+
+exports[`Product Icons Snapshot StatuspageIcon 1`] = `
+.c0 {
+  color: inherit;
+  display: inline-block;
+  fill: currentColor;
+  height: 32px;
+  position: relative;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c0 > svg {
+  fill: inherit;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.c0 > canvas {
+  display: block;
+  height: 100%;
+  visibility: hidden;
+}
+
+.c0 stop {
+  stop-color: currentColor;
+}
+
+<StatuspageIcon
+  iconColor="inherit"
+  iconGradientStart="inherit"
+  iconGradientStop="inherit"
+  size="medium"
+  textColor="currentColor"
+>
+  <styled.span
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "<canvas height=\\"32\\" width=\\"32\\" aria-hidden=\\"true\\"></canvas>
+        <svg viewBox=\\"0 0 32 32\\" xmlns=\\"http://www.w3.org/2000/svg\\" focusable=\\"false\\" aria-hidden=\\"true\\">
+          <defs>
+              <linearGradient x1=\\"50%\\" x2=\\"50%\\" y1=\\"0%\\" y2=\\"68.184%\\" id=\\"a6b4991c-f9b3-4b8c-97ee-5d02f4a848f8\\">
+                  <stop stop-color=\\"inherit\\" stop-opacity=\\"0.4\\" offset=\\"0%\\"></stop>
+                  <stop stop-color=\\"inherit\\" offset=\\"100%\\"></stop>
+              </linearGradient>
+          </defs>
+          <g stroke=\\"none\\" stroke-width=\\"1\\" fill-rule=\\"nonzero\\">
+            <ellipse fill=\\"url(#a6b4991c-f9b3-4b8c-97ee-5d02f4a848f8)\\" cx=\\"16.0000005\\" cy=\\"19.5878182\\" rx=\\"5.4000001\\" ry=\\"5.39981818\\"></ellipse>
+            <pathd=\\"M3.15511518,12.9260684 L6.43896953,16.7678667 C6.68897511,17.0467148 7.11846411,17.078724 7.40809003,16.8400939 C12.7068784,12.1590845 19.2850452,12.1590845 24.5838335,16.8400939 C24.8734595,17.078724 25.3029485,17.0467148 25.552954,16.7678667 L28.8402944,12.9260684 C29.0719048,12.6494664 29.04914,12.2436871 28.7880038,11.9939938 C21.0838444,5.3353354 10.9080792,5.3353354 3.21786399,11.9939938 C2.9535556,12.2408944 2.92622614,12.6468478 3.15511518,12.9260684 Z\\" fill=\\"currentColor\\"></path>
+          </g>
+        </svg>",
+      }
+    }
+    iconColor="inherit"
+    iconGradientStart="inherit"
+    iconGradientStop="inherit"
+    size="medium"
+    textColor="currentColor"
+  >
+    <span
+      className="c0"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<canvas height=\\"32\\" width=\\"32\\" aria-hidden=\\"true\\"></canvas>
+          <svg viewBox=\\"0 0 32 32\\" xmlns=\\"http://www.w3.org/2000/svg\\" focusable=\\"false\\" aria-hidden=\\"true\\">
+            <defs>
+                <linearGradient x1=\\"50%\\" x2=\\"50%\\" y1=\\"0%\\" y2=\\"68.184%\\" id=\\"a6b4991c-f9b3-4b8c-97ee-5d02f4a848f8\\">
+                    <stop stop-color=\\"inherit\\" stop-opacity=\\"0.4\\" offset=\\"0%\\"></stop>
+                    <stop stop-color=\\"inherit\\" offset=\\"100%\\"></stop>
+                </linearGradient>
+            </defs>
+            <g stroke=\\"none\\" stroke-width=\\"1\\" fill-rule=\\"nonzero\\">
+              <ellipse fill=\\"url(#a6b4991c-f9b3-4b8c-97ee-5d02f4a848f8)\\" cx=\\"16.0000005\\" cy=\\"19.5878182\\" rx=\\"5.4000001\\" ry=\\"5.39981818\\"></ellipse>
+              <pathd=\\"M3.15511518,12.9260684 L6.43896953,16.7678667 C6.68897511,17.0467148 7.11846411,17.078724 7.40809003,16.8400939 C12.7068784,12.1590845 19.2850452,12.1590845 24.5838335,16.8400939 C24.8734595,17.078724 25.3029485,17.0467148 25.552954,16.7678667 L28.8402944,12.9260684 C29.0719048,12.6494664 29.04914,12.2436871 28.7880038,11.9939938 C21.0838444,5.3353354 10.9080792,5.3353354 3.21786399,11.9939938 C2.9535556,12.2408944 2.92622614,12.6468478 3.15511518,12.9260684 Z\\" fill=\\"currentColor\\"></path>
+            </g>
+          </svg>",
+        }
+      }
+      size="medium"
+    />
+  </styled.span>
+</StatuspageIcon>
+`;
+
+exports[`Product Icons Snapshot StrideIcon 1`] = `
+.c0 {
+  color: inherit;
+  display: inline-block;
+  fill: currentColor;
+  height: 32px;
+  position: relative;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.c0 > svg {
+  fill: inherit;
+  height: 100%;
+  left: 0;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+.c0 > canvas {
+  display: block;
+  height: 100%;
+  visibility: hidden;
+}
+
+.c0 stop {
+  stop-color: currentColor;
+}
+
+<StrideIcon
+  iconColor="inherit"
+  iconGradientStart="inherit"
+  iconGradientStop="inherit"
+  size="medium"
+  textColor="currentColor"
+>
+  <styled.span
+    dangerouslySetInnerHTML={
+      Object {
+        "__html": "<canvas height=\\"32\\" width=\\"32\\" aria-hidden=\\"true\\"></canvas>
+        <svg viewBox=\\"0 0 32 32\\" xmlns=\\"http://www.w3.org/2000/svg\\" focusable=\\"false\\" aria-hidden=\\"true\\">
+          <defs>
+              <linearGradient x1=\\"62.272%\\" x2=\\"15.737%\\" y1=\\"26.041%\\" y2=\\"68.741%\\" id=\\"8169ae9d-4bf4-4de3-a08e-2dece06fa0e9\\">
+                  <stop stop-color=\\"inherit\\" stop-opacity=\\"0.4\\" offset=\\"18%\\"></stop>
+                  <stop stop-color=\\"inherit\\" offset=\\"100%\\"></stop>
+              </linearGradient>
+          </defs>
+          <g stroke=\\"none\\" stroke-width=\\"1\\" fill-rule=\\"nonzero\\">
+            <path d=\\"M10.6584152,5 L10.6584152,9.39679183 C10.6584152,15.48435 7.60464338,17.8346351 3.71947823,18.1903755 C3.30945638,18.231579 2.99793812,18.5777104 3.00000321,18.9897922 C3.00000321,20.6285964 3.00000321,24.5017703 3.00000321,26.1845425 C2.9996704,26.4044035 3.08990281,26.6146964 3.24947191,26.7659467 C3.40904102,26.9171971 3.62385939,26.9960518 3.84338782,26.9839592 C13.572289,26.4883208 19.4320134,19.3895005 19.4320134,10.5759315 L19.459993,10.5759315 L19.459993,5 L10.6584152,5 Z\\" fill=\\"url(#8169ae9d-4bf4-4de3-a08e-2dece06fa0e9)\\"></path>
+            <path d=\\"M30.1816696,25.829953 L19.8806163,5 L10.6588351,5 L21.5394976,26.3336133 C21.7449071,26.7337742 22.1569759,26.9853368 22.6067778,26.9851739 L29.4741467,26.9851739 C29.7493704,26.982283 30.0037535,26.8380195 30.1475068,26.6033038 C30.29126,26.3685881 30.304166,26.0764302 30.1816696,25.829953 Z\\" fill=\\"currentColor\\"></path>
+          </g>
+        </svg>",
+      }
+    }
+    iconColor="inherit"
+    iconGradientStart="inherit"
+    iconGradientStop="inherit"
+    size="medium"
+    textColor="currentColor"
+  >
+    <span
+      className="c0"
+      dangerouslySetInnerHTML={
+        Object {
+          "__html": "<canvas height=\\"32\\" width=\\"32\\" aria-hidden=\\"true\\"></canvas>
+          <svg viewBox=\\"0 0 32 32\\" xmlns=\\"http://www.w3.org/2000/svg\\" focusable=\\"false\\" aria-hidden=\\"true\\">
+            <defs>
+                <linearGradient x1=\\"62.272%\\" x2=\\"15.737%\\" y1=\\"26.041%\\" y2=\\"68.741%\\" id=\\"8169ae9d-4bf4-4de3-a08e-2dece06fa0e9\\">
+                    <stop stop-color=\\"inherit\\" stop-opacity=\\"0.4\\" offset=\\"18%\\"></stop>
+                    <stop stop-color=\\"inherit\\" offset=\\"100%\\"></stop>
+                </linearGradient>
+            </defs>
+            <g stroke=\\"none\\" stroke-width=\\"1\\" fill-rule=\\"nonzero\\">
+              <path d=\\"M10.6584152,5 L10.6584152,9.39679183 C10.6584152,15.48435 7.60464338,17.8346351 3.71947823,18.1903755 C3.30945638,18.231579 2.99793812,18.5777104 3.00000321,18.9897922 C3.00000321,20.6285964 3.00000321,24.5017703 3.00000321,26.1845425 C2.9996704,26.4044035 3.08990281,26.6146964 3.24947191,26.7659467 C3.40904102,26.9171971 3.62385939,26.9960518 3.84338782,26.9839592 C13.572289,26.4883208 19.4320134,19.3895005 19.4320134,10.5759315 L19.459993,10.5759315 L19.459993,5 L10.6584152,5 Z\\" fill=\\"url(#8169ae9d-4bf4-4de3-a08e-2dece06fa0e9)\\"></path>
+              <path d=\\"M30.1816696,25.829953 L19.8806163,5 L10.6588351,5 L21.5394976,26.3336133 C21.7449071,26.7337742 22.1569759,26.9853368 22.6067778,26.9851739 L29.4741467,26.9851739 C29.7493704,26.982283 30.0037535,26.8380195 30.1475068,26.6033038 C30.29126,26.3685881 30.304166,26.0764302 30.1816696,25.829953 Z\\" fill=\\"currentColor\\"></path>
+            </g>
+          </svg>",
+        }
+      }
+      size="medium"
+    />
+  </styled.span>
+</StrideIcon>
+`;

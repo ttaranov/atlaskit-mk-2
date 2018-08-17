@@ -33,8 +33,11 @@
     "@atlaskit/docs": "^5.0.5",
     "@atlaskit/field-radio-group": "^4.0.6",
     "@atlaskit/select": "^5.0.12",
+    "@atlaskit/theme": "^5.1.2",
     "@atlaskit/util-shared-styles": "^2.10.3",
+    "@atlaskit/visual-regression": "^0.0.1",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "jest-in-case": "^1.0.2",
     "react-dom": "^16.4.2"
   }
 }
