@@ -30,15 +30,9 @@ export default md`
 
   ${(
     <Example
-      Component={require('../examples/0-static-tree').default}
-      title="Basic Static Tree"
-      source={require('!!raw-loader!../examples/0-static-tree')}
-    />
-  )}
-
-  ${(
-    <Props
-      props={require('!!extract-react-types-loader!../src/components/Tree')}
+      Component={require('../examples/5-pure-tree').default}
+      title="Basic Drag-n-Drop Tree"
+      source={require('!!raw-loader!../examples/5-pure-tree')}
     />
   )}
 `;

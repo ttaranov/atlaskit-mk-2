@@ -10,20 +10,29 @@ import type {
 import { type RenderItemParams } from '../TreeItem/TreeItem-types';
 
 export type Props = {|
+  /** The tree data structure. */
   tree: TreeData,
+  /** Function that will be called when a parent item needs to be expanded. */
   onExpand: (itemId: ItemId, path: Path) => void,
+  /** Function that will be called when a parent item needs to be collapsed. */
   onCollapse: (itemId: ItemId, path: Path) => void,
+  /** Function that will be called when the user starts dragging. */
   onDragStart: (itemId: ItemId) => void,
+  /** Function that will be called when the user finishes dragging */
   onDragEnd: (
     sourcePosition: TreePosition,
     destinationPosition: ?TreePosition,
   ) => void,
+  /** Function that will be called to render each item. */
   renderItem: RenderItemParams => React.Node,
+  /** Number of pixel is used to scaffold the tree by the consumer. */
   offsetPerLevel: number,
+  /** Boolean to turn on Drag&Drop functionality on the tree */
   isDragEnabled: boolean,
 |};
 
 export type State = {|
+  /** The flattened tree data structure transformed from props.tree */
   flattenedTree: FlattenedTree,
   dropAnimationOffset: number,
 |};
