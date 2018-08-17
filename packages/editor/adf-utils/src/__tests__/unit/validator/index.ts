@@ -1,4 +1,4 @@
-import { validate } from '../../src/validator';
+import { validate } from '../../../validator';
 
 describe('validate', () => {
   it('should throw when required attrs are missing', () => {
