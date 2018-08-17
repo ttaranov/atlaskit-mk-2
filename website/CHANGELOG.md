@@ -1,5 +1,27 @@
 # @atlaskit/website
 
+## 4.0.4
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/quick-search@4.2.7
+  - @atlaskit/tooltip@12.0.9
+  - @atlaskit/tag@6.0.5
+  - @atlaskit/spinner@9.0.6
+  - @atlaskit/single-select@6.0.4
+  - @atlaskit/navigation@33.1.5
+  - @atlaskit/modal-dialog@6.0.9
+  - @atlaskit/lozenge@6.1.5
+  - @atlaskit/layer-manager@5.0.6
+  - @atlaskit/inline-dialog@9.0.2
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/flag@9.0.5
+  - @atlaskit/field-text@7.0.6
+  - @atlaskit/dynamic-table@10.0.9
+  - @atlaskit/code@8.0.1
+  - @atlaskit/button@9.0.6
+  - @atlaskit/badge@9.1.0
+  - @atlaskit/docs@5.0.6
+
 ## 4.0.3
 
 

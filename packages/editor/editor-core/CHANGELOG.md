@@ -1,5 +1,28 @@
 # @atlaskit/editor-core
 
+## 77.0.14
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/task-decision@8.1.5
+  - @atlaskit/emoji@39.0.4
+  - @atlaskit/date@0.1.2
+  - @atlaskit/renderer@20.0.7
+  - @atlaskit/tooltip@12.0.9
+  - @atlaskit/spinner@9.0.6
+  - @atlaskit/select@5.0.9
+  - @atlaskit/modal-dialog@6.0.9
+  - @atlaskit/lozenge@6.1.5
+  - @atlaskit/layer-manager@5.0.6
+  - @atlaskit/item@8.0.5
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/droplist@7.0.7
+  - @atlaskit/code@8.0.1
+  - @atlaskit/calendar@7.0.5
+  - @atlaskit/button@9.0.6
+  - @atlaskit/avatar-group@2.1.1
+  - @atlaskit/avatar@14.0.8
+  - @atlaskit/docs@5.0.6
+
 ## 77.0.13
 - [patch] ED-5178: added card node to default schema [51e7446](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51e7446)
 - [none] Updated dependencies [51e7446](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51e7446)

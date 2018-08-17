@@ -1,5 +1,14 @@
 # @atlaskit/tree
 
+## 2.0.6
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/spinner@9.0.6
+  - @atlaskit/section-message@1.0.5
+  - @atlaskit/navigation@33.1.5
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/docs@5.0.6
+
 ## 2.0.5
 - [patch] Bumping react-beautiful-dnd to version 9. Making use of use onBeforeDragStart for dynamic table [9cbd494](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9cbd494)
 - [none] Updated dependencies [9cbd494](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9cbd494)

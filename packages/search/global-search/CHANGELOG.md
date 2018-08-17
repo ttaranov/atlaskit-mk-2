@@ -1,5 +1,18 @@
 # @atlaskit/global-search
 
+## 5.5.5
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/quick-search@4.2.7
+  - @atlaskit/navigation@33.1.5
+  - @atlaskit/modal-dialog@6.0.9
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/flag@9.0.5
+  - @atlaskit/field-text-area@4.0.6
+  - @atlaskit/button@9.0.6
+  - @atlaskit/avatar@14.0.8
+  - @atlaskit/docs@5.0.6
+
 ## 5.5.4
 - [patch] Use UserSearch instead of AccountCentricUserSearch for People searches. [5731f20](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5731f20)
 

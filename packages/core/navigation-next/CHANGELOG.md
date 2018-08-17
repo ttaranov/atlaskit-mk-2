@@ -1,5 +1,21 @@
 # @atlaskit/navigation-next
 
+## 3.3.5
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/tooltip@12.0.9
+  - @atlaskit/toggle@5.0.6
+  - @atlaskit/select@5.0.9
+  - @atlaskit/section-message@1.0.5
+  - @atlaskit/lozenge@6.1.5
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/global-navigation@4.1.4
+  - @atlaskit/field-base@11.0.5
+  - @atlaskit/dropdown-menu@6.1.8
+  - @atlaskit/badge@9.1.0
+  - @atlaskit/avatar@14.0.8
+  - @atlaskit/docs@5.0.6
+
 ## 3.3.4
 
 - [patch] Fix analytics instrumentation of custom component clicks. Custom components will no longer be wrapped with a div that listens to click events and instead will have their onClick prop wrapped with analytics. If custom components wish to send navigationItem click events, they should attach the onClick prop to a DOM element under their control. [4ab7c4e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4ab7c4e)

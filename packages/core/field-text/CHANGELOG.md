@@ -1,5 +1,12 @@
 # @atlaskit/field-text
 
+## 7.0.6
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/field-base@11.0.5
+  - @atlaskit/button@9.0.6
+  - @atlaskit/docs@5.0.6
+
 ## 7.0.5
 - [patch] Textfield and textarea now correctly show the invalid icon in Firefox and Edge. [4d5bcd9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4d5bcd9)
 - [none] Updated dependencies [4d5bcd9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4d5bcd9)

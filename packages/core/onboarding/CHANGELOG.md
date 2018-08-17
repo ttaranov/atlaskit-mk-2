@@ -1,5 +1,14 @@
 # @atlaskit/onboarding
 
+## 5.1.6
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/modal-dialog@6.0.9
+  - @atlaskit/layer-manager@5.0.6
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/button@9.0.6
+  - @atlaskit/docs@5.0.6
+
 ## 5.1.5
 - [patch] Updated dependencies [8242529](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8242529)
   - @atlaskit/layer@5.0.5
