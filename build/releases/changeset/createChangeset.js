@@ -128,6 +128,7 @@ async function createChangeset(
     );
     // dependents will be a list of packages that depend on nextRelease ie. ['avatar-group', 'comment']
     const dependents = dependencyGraph.get(nextRelease.name);
+
     dependents.forEach(dependent => {
       // For each dependent we are going to see whether it needs to be bumped because it's dependency
       // is leaving the version range.
@@ -159,6 +160,7 @@ async function createChangeset(
         // Exit early here, we don't want to execute the rest of the code
         return;
       }
+
       // we can exit early if we have seen this dependent before or we know we are going to look
       // at it later because that means it's already definitely being released
       if (changeset.dependents.some(dep => dep.name === dependent)) return;
