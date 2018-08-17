@@ -5,12 +5,14 @@ import type { ComponentType } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  type WithAnalyticsEventsProps,
 } from '@atlaskit/analytics-next';
-
-import { navigationChannel } from '../common/constants';
+import type { ViewLayer } from '../view-controller/types';
 
 const getDisplayName = component =>
   component ? component.displayName || component.name : undefined;
+
+export const navigationChannel = 'navigation';
 
 export const navigationItemClicked = (
   Component: ComponentType<any>,
@@ -40,3 +42,16 @@ export const navigationItemClicked = (
     })(Component),
   );
 };
+
+export const navigationUILoaded = (
+  createAnalyticsEvent: $PropertyType<
+    WithAnalyticsEventsProps,
+    'createAnalyticsEvent',
+  >,
+  { layer }: { layer: ViewLayer },
+) =>
+  createAnalyticsEvent({
+    action: 'initialised',
+    actionSubject: 'navigationUI',
+    actionSubjectId: layer,
+  }).fire(navigationChannel);

@@ -34,7 +34,7 @@ type ViewGroupArgs = {
 
 export type ViewData = Array<ViewItemArgs | ViewGroupArgs>;
 export type ViewID = string;
-type ViewLayer = 'product' | 'container';
+export type ViewLayer = 'product' | 'container';
 type GetItemsSignature = () => Promise<ViewData> | ViewData;
 
 export type View = {
