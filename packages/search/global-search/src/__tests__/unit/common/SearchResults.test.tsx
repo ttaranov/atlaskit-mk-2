@@ -1,8 +1,6 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import SearchResults, {
-  Props,
-} from '../../../components/common/GenericSearchResults';
+import SearchResults, { Props } from '../../../components/common/SearchResults';
 import SearchError from '../../../components/SearchError';
 import PreQueryState from '../../../components/common/PreQueryState';
 import { PostQueryAnalyticsComponent } from '../../../components/common/ScreenAnalyticsHelper';
