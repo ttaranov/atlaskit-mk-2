@@ -137,7 +137,6 @@ async function createChangeset(
         dependentPkg.config,
         nextRelease.name,
       );
-
       // Firstly we check if it is a peerDependency because if it is, we can't do any early exits
       // and our dependent bump type needs to be major.
       if (

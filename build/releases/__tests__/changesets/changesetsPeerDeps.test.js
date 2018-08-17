@@ -11,6 +11,14 @@ import {
 } from '@atlaskit/build-utils/cli';
 import fs from 'fs';
 
+/*
+    Bumping peerDeps is a tricky issue, so we are testing every single combination here so that
+    we can have absolute certainty when changing anything to do with them.
+    In general the rule for bumping peerDeps is that:
+      * All MINOR or MAJOR peerDep bumps must MAJOR bump all dependents - regardless of ranges
+      * Otherwise - normal patching rules apply
+ */
+
 jest.mock('@atlaskit/build-utils/logger');
 jest.mock('@atlaskit/build-utils/cli');
 jest.mock('@atlaskit/build-utils/packages');
@@ -30,132 +38,13 @@ const mockUserResponses = mockResponses => {
   askConfirm.mockReturnValueOnce(shouldCommit);
 };
 
-describe('making them changesets', () => {
+describe('Changesets - bumping peerDeps', () => {
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should generate changeset to patch a single package', async () => {
-    const cwd = await copyFixtureIntoTempDir(__dirname, 'simple-project');
-    mockUserResponses({ releases: { 'pkg-a': 'patch' } });
-    const cs = await changesetCommand({ cwd });
-
-    const expectedChangeset = {
-      summary: 'summary message mock',
-      releases: [{ name: 'pkg-a', type: 'patch' }],
-      dependents: [],
-    };
-    const call = createChangesetCommit.mock.calls[0][0];
-    expect(call).toEqual(expectedChangeset);
-  });
-
-  it('should patch a single pinned dependent', async () => {
-    const cwd = await copyFixtureIntoTempDir(
-      __dirname,
-      'pinned-caret-tilde-dependents',
-    );
-    mockUserResponses({ releases: { 'depended-upon': 'patch' } });
-    const cs = await changesetCommand({ cwd });
-
-    const expectedChangeset = {
-      summary: 'summary message mock',
-      releases: [{ name: 'depended-upon', type: 'patch' }],
-      dependents: [
-        { name: 'pinned-dep', type: 'patch', dependencies: ['depended-upon'] },
-      ],
-    };
-    const call = createChangesetCommit.mock.calls[0][0];
-    expect(call).toEqual(expectedChangeset);
-  });
-
-  it('should patch a pinned and a tilde dependent', async () => {
-    const cwd = await copyFixtureIntoTempDir(
-      __dirname,
-      'pinned-caret-tilde-dependents',
-    );
-    mockUserResponses({ releases: { 'depended-upon': 'minor' } });
-    const cs = await changesetCommand({ cwd });
-
-    const expectedChangeset = {
-      summary: 'summary message mock',
-      releases: [{ name: 'depended-upon', type: 'minor' }],
-      dependents: [
-        { name: 'pinned-dep', type: 'patch', dependencies: ['depended-upon'] },
-        { name: 'tilde-dep', type: 'patch', dependencies: ['depended-upon'] },
-      ],
-    };
-    const call = createChangesetCommit.mock.calls[0][0];
-    expect(call).toEqual(expectedChangeset);
-  });
-
-  it('should patch a pinned and a tilde dependent', async () => {
-    const cwd = await copyFixtureIntoTempDir(
-      __dirname,
-      'pinned-caret-tilde-dependents',
-    );
-    mockUserResponses({ releases: { 'depended-upon': 'major' } });
-    const cs = await changesetCommand({ cwd });
-
-    const expectedChangeset = {
-      summary: 'summary message mock',
-      releases: [{ name: 'depended-upon', type: 'major' }],
-      dependents: [
-        { name: 'caret-dep', type: 'patch', dependencies: ['depended-upon'] },
-        { name: 'pinned-dep', type: 'patch', dependencies: ['depended-upon'] },
-        { name: 'tilde-dep', type: 'patch', dependencies: ['depended-upon'] },
-      ],
-    };
-    const call = createChangesetCommit.mock.calls[0][0];
-    expect(call).toEqual(expectedChangeset);
-  });
-
-  it('should patch a transitively bumped dependent', async () => {
-    // Here we have a project where b -> a and c -> b, all pinned, so bumping a should bump b and c
-    const cwd = await copyFixtureIntoTempDir(
-      __dirname,
-      'simplest-transitive-dependents',
-    );
-    mockUserResponses({ releases: { 'pkg-a': 'patch' } });
-    const cs = await changesetCommand({ cwd });
-
-    const expectedChangeset = {
-      summary: 'summary message mock',
-      releases: [{ name: 'pkg-a', type: 'patch' }],
-      dependents: [
-        { name: 'pkg-b', type: 'patch', dependencies: ['pkg-a'] },
-        { name: 'pkg-c', type: 'patch', dependencies: ['pkg-b'] },
-      ],
-    };
-    const call = createChangesetCommit.mock.calls[0][0];
-    expect(call).toEqual(expectedChangeset);
-  });
-
-  it('should patch a previously checked transitive dependent', async () => {
-    // Here we use project where b->a (caret) and c->a (pinned) and b -> c (pinned)
-    // Therefore bumping a will bump c (but not b), but bumping c will bump b anyway
-    const cwd = await copyFixtureIntoTempDir(
-      __dirname,
-      'previously-checked-transitive-dependent',
-    );
-    mockUserResponses({ releases: { 'pkg-a': 'patch' } });
-    const cs = await changesetCommand({ cwd });
-
-    const expectedChangeset = {
-      summary: 'summary message mock',
-      releases: [{ name: 'pkg-a', type: 'patch' }],
-      dependents: [
-        { name: 'pkg-c', type: 'patch', dependencies: ['pkg-a'] },
-        { name: 'pkg-b', type: 'patch', dependencies: ['pkg-c', 'pkg-a'] },
-      ],
-    };
-    const call = createChangesetCommit.mock.calls[0][0];
-    expect(call).toEqual(expectedChangeset);
-  });
-
   it('should patch a pinned peerDep', async () => {
-    // Bumping a pinned peer dep should patch the dependent
-    // We are being very cautious with the tests here, since there is so much complexity around
-    // peerDep bumping
+    // Bumping a pinned peer dep should patch the dependent - regular bumping rules
     const cwd = await copyFixtureIntoTempDir(
       __dirname,
       'simple-pinned-peer-dep',
@@ -179,9 +68,8 @@ describe('making them changesets', () => {
   });
 
   it('should not bump the dependent when bumping a tilde peerDep by patch', async () => {
-    // example: has-peer-dep has a tilde peerDep on dependend-upon. If depended-upon is patched
-    // we wont leave semver range, therefore, should not bump. This behviour should also happen
-    // for a caret dep.
+    // since we aren't leaving the version range AND the bumptype is patch, we should not bump
+    // any dependents
     const cwd = await copyFixtureIntoTempDir(
       __dirname,
       'simple-tilde-peer-dep',
@@ -199,8 +87,7 @@ describe('making them changesets', () => {
   });
 
   it('should major bump dependent when bumping a tilde peerDep by minor', async () => {
-    // example: has-peer-dep has a tilde peerDep on dependend-upon. If depended-upon is minor bumped
-    // we will leave semver range, therefore, should bump, but it's a peerDep, so we major bump
+    // minor bump that is leaving version range, therefore: major bump to dependent
     const cwd = await copyFixtureIntoTempDir(
       __dirname,
       'simple-tilde-peer-dep',
@@ -305,6 +192,30 @@ describe('making them changesets', () => {
           type: 'major',
           dependencies: ['depended-upon'],
         },
+      ],
+    };
+    const call = createChangesetCommit.mock.calls[0][0];
+    expect(call).toEqual(expectedChangeset);
+  });
+
+  it('should patch bump transitive dep that is only affected by peerDep bump', async () => {
+    // example: pkg-b has a caretDep on pkg-a and a caret dep on pkg-c, pkg-c has a caret peerDep
+    // on pkg-a.
+    // Minor bumping pkg-a should not cause pkg-b to release, but will cause a major on pkg-c, which
+    // in turn patches pkg-b
+    const cwd = await copyFixtureIntoTempDir(
+      __dirname,
+      'previously-checked-transitive-peer-dependent',
+    );
+    mockUserResponses({ releases: { 'pkg-a': 'minor' } });
+    const cs = await changesetCommand({ cwd });
+
+    const expectedChangeset = {
+      summary: 'summary message mock',
+      releases: [{ name: 'pkg-a', type: 'minor' }],
+      dependents: [
+        { name: 'pkg-c', type: 'major', dependencies: ['pkg-a'] },
+        { name: 'pkg-b', type: 'patch', dependencies: ['pkg-c', 'pkg-a'] },
       ],
     };
     const call = createChangesetCommit.mock.calls[0][0];
