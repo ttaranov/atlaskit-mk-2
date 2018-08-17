@@ -1,9 +1,9 @@
-import { getConversation, getComments } from '../../src/internal/selectors';
+import { getConversation, getComments } from '../../../internal/selectors';
 import {
   mockConversation,
   mockComment,
   mockReplyComment,
-} from '../../example-helpers/MockData';
+} from '../../../../example-helpers/MockData';
 
 const state = {
   conversations: [mockConversation],
