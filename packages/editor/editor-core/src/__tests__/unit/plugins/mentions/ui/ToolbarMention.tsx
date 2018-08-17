@@ -1,6 +1,10 @@
-import { mount } from 'enzyme';
 import * as React from 'react';
-import { doc, p, createEditor } from '@atlaskit/editor-test-helpers';
+import {
+  doc,
+  p,
+  createEditor,
+  mountWithIntlContext,
+} from '@atlaskit/editor-test-helpers';
 import MentionIcon from '@atlaskit/icon/glyph/editor/mention';
 import { analyticsService } from '../../../../../analytics';
 import mentionsPlugin from '../../../../../plugins/mentions';
@@ -17,7 +21,7 @@ describe('ToolbarMention', () => {
 
   it('should create a mentionQuery by clicking on the ToolbarMention icon', () => {
     const { editorView } = editor(doc(p('{<>}')));
-    const toolbarMention = mount(
+    const toolbarMention = mountWithIntlContext(
       <ToolbarMention pluginKey={mentionPluginKey} editorView={editorView} />,
     );
     toolbarMention.find(MentionIcon).simulate('click');
@@ -33,7 +37,7 @@ describe('ToolbarMention', () => {
       const trackEvent = jest.fn();
       analyticsService.trackEvent = trackEvent;
       const { editorView } = editor(doc(p('')), trackEvent);
-      const toolbarOption = mount(
+      const toolbarOption = mountWithIntlContext(
         <ToolbarMention pluginKey={mentionPluginKey} editorView={editorView} />,
       );
       toolbarOption.find(MentionIcon).simulate('click');

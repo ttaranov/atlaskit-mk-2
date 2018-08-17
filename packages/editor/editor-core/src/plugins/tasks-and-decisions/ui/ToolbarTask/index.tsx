@@ -28,7 +28,8 @@ export default class ToolbarTask extends PureComponent<Props, State> {
         onClick={this.handleInsertTask}
         disabled={disabled || isDisabled}
         spacing={isReducedSpacing ? 'none' : 'default'}
-        title="Create action []"
+        intlTitle="action"
+        shortcut="[]"
         iconBefore={<TaskIcon label="Create action" />}
       />
     );

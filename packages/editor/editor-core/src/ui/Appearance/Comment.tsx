@@ -16,7 +16,8 @@ import { stateKey as mediaPluginKey } from '../../plugins/media/pm-plugins/main'
 import { ClickAreaBlock } from '../Addon';
 import { tableCommentEditorStyles } from '../../plugins/table/ui/styles';
 import WithFlash from '../WithFlash';
-import { akEditorMenuZIndex } from '@atlaskit/editor-common';
+import { akEditorMenuZIndex, messages } from '@atlaskit/editor-common';
+import { FormattedMessage } from 'react-intl';
 
 export interface CommentEditorProps {
   isMaxContentSizeReached?: boolean;
@@ -202,7 +203,7 @@ export default class Editor extends React.Component<
                   disabled || (mediaState && !mediaState.allUploadsFinished)
                 }
               >
-                Save
+                <FormattedMessage {...messages.save} />
               </Button>
             )}
             {!!onCancel && (
@@ -211,7 +212,7 @@ export default class Editor extends React.Component<
                 onClick={this.handleCancel}
                 isDisabled={disabled}
               >
-                Cancel
+                <FormattedMessage {...messages.cancel} />
               </Button>
             )}
           </ButtonGroup>

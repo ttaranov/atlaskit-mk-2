@@ -50,7 +50,7 @@ export default class ToolbarMedia extends PureComponent<Props, State> {
       <ToolbarButton
         onClick={this.handleClickMediaButton}
         disabled={isDisabled}
-        title="Insert files and images"
+        intlTitle="file_images"
         spacing={isReducedSpacing ? 'none' : 'default'}
         iconBefore={<AttachmentIcon label="Insert files and images" />}
       />

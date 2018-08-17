@@ -178,6 +178,10 @@ export default defineMessages({
     id: 'fabric.editor.panel',
     defaultMessage: 'Panel',
   },
+  action: {
+    id: 'fabric.editor.action',
+    defaultMessage: 'Action',
+  },
   decision: {
     id: 'fabric.editor.decision',
     defaultMessage: 'Decision',
@@ -396,5 +400,39 @@ export default defineMessages({
   link_unlink: {
     id: 'fabric.editor.link_unlink',
     defaultMessage: 'Unlink',
+  },
+  // help dialog
+  help_open: {
+    id: 'fabric.editor.help_open',
+    defaultMessage: 'Open help dialog',
+  },
+  help_protip: {
+    id: 'fabric.editor.help_protip',
+    defaultMessage: 'Press {shortcut} to quickly open this dialog at any time',
+  },
+  help_close: {
+    id: 'fabric.editor.help_close',
+    defaultMessage: 'Close help dialog',
+  },
+  help_title: {
+    id: 'fabric.editor.help_title',
+    defaultMessage: 'Editor help',
+  },
+  help_keyboard_shortcuts: {
+    id: 'fabric.editor.help_keyboard_shortcuts',
+    defaultMessage: 'Keyboard Shortcuts',
+  },
+  help_markdown: {
+    id: 'fabric.editor.help_markdown',
+    defaultMessage: 'Markdown',
+  },
+  // Others
+  save: {
+    id: 'fabric.editor.save',
+    defaultMessage: 'Save',
+  },
+  cancel: {
+    id: 'fabric.editor.cancel',
+    defaultMessage: 'Cancel',
   },
 });

@@ -1,9 +1,11 @@
 import { name } from '../package.json';
-import { mount } from 'enzyme';
 import * as React from 'react';
 import Editor from '../src/editor';
 import { EditorView } from 'prosemirror-view';
-import { insertText } from '../../editor-test-helpers/src';
+import {
+  insertText,
+  mountWithIntlContext,
+} from '../../editor-test-helpers/src';
 import Button from '@atlaskit/button';
 import { sendKeyToPm } from '@atlaskit/editor-test-helpers';
 
@@ -13,7 +15,9 @@ describe(name, () => {
       it('should fire onChange when text is inserted', () => {
         const handleChange = jest.fn();
 
-        const wrapper = mount(<Editor onChange={handleChange} />);
+        const wrapper = mountWithIntlContext(
+          <Editor onChange={handleChange} />,
+        );
 
         const editorView: EditorView = (wrapper.instance() as any).editorActions
           .editorView;
@@ -25,7 +29,7 @@ describe(name, () => {
       describe('Comment appearance', () => {
         it('should fire onSave when Save is clicked', () => {
           const handleSave = jest.fn();
-          const wrapper = mount(
+          const wrapper = mountWithIntlContext(
             <Editor onSave={handleSave} appearance="comment" />,
           );
 
@@ -39,7 +43,7 @@ describe(name, () => {
 
         it('should fire onCancel when Cancel is clicked', () => {
           const cancelled = jest.fn();
-          const wrapper = mount(
+          const wrapper = mountWithIntlContext(
             <Editor onCancel={cancelled} appearance="comment" />,
           );
 
@@ -56,7 +60,7 @@ describe(name, () => {
     describe('save on enter', () => {
       it('should fire onSave when user presses Enter', () => {
         const handleSave = jest.fn();
-        const wrapper = mount(
+        const wrapper = mountWithIntlContext(
           <Editor onSave={handleSave} saveOnEnter={true} />,
         );
 
@@ -71,7 +75,7 @@ describe(name, () => {
     describe('submit-editor (save on mod-enter)', () => {
       it('should fire onSave when user presses Enter', () => {
         const handleSave = jest.fn();
-        const wrapper = mount(<Editor onSave={handleSave} />);
+        const wrapper = mountWithIntlContext(<Editor onSave={handleSave} />);
 
         const editorView: EditorView = (wrapper.instance() as any).editorActions
           .editorView;

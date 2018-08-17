@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Schema } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import { browser } from '@atlaskit/editor-common';
+import { browser, messages } from '@atlaskit/editor-common';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import Modal from '@atlaskit/modal-dialog';
 import {
@@ -21,6 +21,7 @@ import {
 import * as keymaps from '../../../keymaps';
 import ToolbarButton from '../../../ui/ToolbarButton';
 import { closeHelpCommand } from '../';
+import { FormattedMessage } from 'react-intl';
 
 // tslint:disable-next-line:variable-name
 const AkModalDialog: React.ComponentClass<any> = Modal;
@@ -294,11 +295,11 @@ export interface Props {
 // tslint:disable-next-line:variable-name
 const ModalHeader = ({ onClose, showKeyline }) => (
   <Header showKeyline={showKeyline}>
-    Editor Help
+    <FormattedMessage {...messages.help_title} />
     <div>
       <ToolbarButton
         onClick={onClose}
-        title="Close help dialog"
+        intlTitle="help_close"
         spacing="compact"
         iconBefore={<CrossIcon label="Close help dialog" size="medium" />}
       />
@@ -309,8 +310,12 @@ const ModalHeader = ({ onClose, showKeyline }) => (
 // tslint:disable-next-line:variable-name
 const ModalFooter = ({ onClose, showKeyline }) => (
   <Footer showKeyline={showKeyline}>
-    Press {getComponentFromKeymap(keymaps.openHelp)} to quickly open this dialog
-    at any time
+    <FormattedMessage
+      {...messages.help_protip}
+      values={{
+        shortcut: getComponentFromKeymap(keymaps.openHelp),
+      }}
+    />
   </Footer>
 );
 
@@ -365,7 +370,9 @@ export default class HelpDialog extends React.Component<Props, any> {
           <Line />
           <Content>
             <ColumnLeft>
-              <Title>Keyboard Shortcuts</Title>
+              <Title>
+                <FormattedMessage {...messages.help_keyboard_shortcuts} />
+              </Title>
               <div>
                 {this.formatting
                   .filter(form => {
@@ -397,7 +404,9 @@ export default class HelpDialog extends React.Component<Props, any> {
             </ColumnLeft>
             <Line />
             <ColumnRight>
-              <Title>Markdown</Title>
+              <Title>
+                <FormattedMessage {...messages.help_markdown} />
+              </Title>
               <div>
                 {this.formatting
                   .filter(

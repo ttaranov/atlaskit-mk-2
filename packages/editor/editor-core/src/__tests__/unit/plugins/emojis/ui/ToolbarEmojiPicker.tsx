@@ -1,4 +1,3 @@
-import { mount } from 'enzyme';
 import * as React from 'react';
 import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import { EmojiPicker as AkEmojiPicker } from '@atlaskit/emoji';
@@ -11,6 +10,7 @@ import {
   emoji,
   code_block,
   mentionQuery,
+  mountWithIntlContext,
 } from '@atlaskit/editor-test-helpers';
 import ToolbarEmojiPicker from '../../../../../plugins/emoji/ui/ToolbarEmojiPicker';
 import ToolbarButton from '../../../../../ui/ToolbarButton';
@@ -63,7 +63,7 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
 
   it('should have Popup component defined in it', () => {
     const { editorView } = editor(doc(p('')));
-    const toolbarEmojiPicker = mount(
+    const toolbarEmojiPicker = mountWithIntlContext(
       <ToolbarEmojiPicker
         pluginKey={pluginKey}
         emojiProvider={emojiProvider}
@@ -79,7 +79,7 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
 
   it('should be enabled by default', () => {
     const { editorView } = editor(doc(p('')));
-    const toolbarEmojiPicker = mount(
+    const toolbarEmojiPicker = mountWithIntlContext(
       <ToolbarEmojiPicker
         pluginKey={pluginKey}
         emojiProvider={emojiProvider}
@@ -94,7 +94,7 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
 
   it('should disable the ToolbarEmojiPicker when in a code block', () => {
     const { editorView } = editor(doc(code_block()('<{}>')));
-    const toolbarEmojiPicker = mount(
+    const toolbarEmojiPicker = mountWithIntlContext(
       <ToolbarEmojiPicker
         pluginKey={pluginKey}
         emojiProvider={emojiProvider}
@@ -108,7 +108,7 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
 
   it('should disable the ToolbarEmojiPicker when in an active mention query mark', () => {
     const { editorView } = editor(doc(p(mentionQuery()('@'))));
-    const toolbarEmojiPicker = mount(
+    const toolbarEmojiPicker = mountWithIntlContext(
       <ToolbarEmojiPicker
         pluginKey={pluginKey}
         emojiProvider={emojiProvider}
@@ -122,7 +122,7 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
 
   it('should be disabled if isDisabled property is true', () => {
     const { editorView } = editor(doc(p('text')));
-    const toolbarOption = mount(
+    const toolbarOption = mountWithIntlContext(
       <ToolbarEmojiPicker
         pluginKey={pluginKey}
         emojiProvider={emojiProvider}
@@ -137,7 +137,7 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
 
   it('should have state variable isOpen set to true when toolbar emoji button is clicked', () => {
     const { editorView } = editor(doc(p('')));
-    const toolbarEmojiPicker = mount(
+    const toolbarEmojiPicker = mountWithIntlContext(
       <ToolbarEmojiPicker
         pluginKey={pluginKey}
         emojiProvider={emojiProvider}
@@ -152,7 +152,7 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
 
   it('should have state variable isOpen set to false when toolbar emoji button is clicked twice', () => {
     const { editorView } = editor(doc(p('')));
-    const toolbarEmojiPicker = mount(
+    const toolbarEmojiPicker = mountWithIntlContext(
       <ToolbarEmojiPicker
         pluginKey={pluginKey}
         emojiProvider={emojiProvider}
@@ -168,7 +168,7 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
 
   it('should have state variable isOpen set to false when toolbar emoji button is opened, but then disabled', () => {
     const { editorView } = editor(doc(p('')));
-    const toolbarEmojiPicker = mount(
+    const toolbarEmojiPicker = mountWithIntlContext(
       <ToolbarEmojiPicker
         pluginKey={pluginKey}
         emojiProvider={emojiProvider}
@@ -188,7 +188,7 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
 
   it('should render the picker if the button has been clicked once', () => {
     const { editorView } = editor(doc(p('')));
-    const toolbarEmojiPicker = mount(
+    const toolbarEmojiPicker = mountWithIntlContext(
       <ToolbarEmojiPicker
         pluginKey={pluginKey}
         emojiProvider={emojiProvider}
@@ -204,7 +204,7 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
 
   it('should not render the picker if the button has not been clicked', () => {
     const { editorView } = editor(doc(p('')));
-    const toolbarEmojiPicker = mount(
+    const toolbarEmojiPicker = mountWithIntlContext(
       <ToolbarEmojiPicker
         pluginKey={pluginKey}
         emojiProvider={emojiProvider}
@@ -219,7 +219,7 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
 
   it('should have an onSelection handler in the rendered picker', () => {
     const { editorView } = editor(doc(p('')));
-    const toolbarEmojiPicker = mount(
+    const toolbarEmojiPicker = mountWithIntlContext(
       <ToolbarEmojiPicker
         pluginKey={pluginKey}
         emojiProvider={emojiProvider}
@@ -235,7 +235,7 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
 
   it('should insert an emoji into editor if the picker registers a selection', () => {
     const { editorView } = editor(doc(p('')));
-    const toolbarEmojiPicker = mount(
+    const toolbarEmojiPicker = mountWithIntlContext(
       <ToolbarEmojiPicker
         pluginKey={pluginKey}
         emojiProvider={emojiProvider}
@@ -257,7 +257,7 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
 
   it('should close the picker if an external node is clicked', () => {
     const { editorView } = editor(doc(p('')));
-    const toolbarEmojiPicker = mount(
+    const toolbarEmojiPicker = mountWithIntlContext(
       <ToolbarEmojiPicker
         pluginKey={pluginKey}
         emojiProvider={emojiProvider}
@@ -277,7 +277,7 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
 
   it('should add an ESC keydown event listener on mount', () => {
     const { editorView } = editor(doc(p('')));
-    const toolbarEmojiPicker = mount(
+    const toolbarEmojiPicker = mountWithIntlContext(
       <ToolbarEmojiPicker
         pluginKey={pluginKey}
         emojiProvider={emojiProvider}
@@ -293,7 +293,7 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
 
   it('should remove an ESC keydown event listener on unmount', () => {
     const { editorView } = editor(doc(p('')));
-    const toolbarEmojiPicker = mount(
+    const toolbarEmojiPicker = mountWithIntlContext(
       <ToolbarEmojiPicker
         pluginKey={pluginKey}
         emojiProvider={emojiProvider}
@@ -309,7 +309,7 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
 
   it('should close the picker on handleEscape', () => {
     const { editorView } = editor(doc(p('')));
-    const toolbarEmojiPicker = mount(
+    const toolbarEmojiPicker = mountWithIntlContext(
       <ToolbarEmojiPicker
         pluginKey={pluginKey}
         emojiProvider={emojiProvider}
@@ -327,7 +327,7 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
     it('should trigger analyticsService.trackEvent when emoji is inserted via picker', () => {
       const trackEvent = jest.fn();
       const { editorView } = editor(doc(p('')), trackEvent);
-      const toolbarEmojiPicker = mount(
+      const toolbarEmojiPicker = mountWithIntlContext(
         <ToolbarEmojiPicker
           pluginKey={pluginKey}
           emojiProvider={emojiProvider}

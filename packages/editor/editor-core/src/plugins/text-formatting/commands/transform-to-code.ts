@@ -38,8 +38,9 @@ export function transformToCodeAction(
   );
 
   children.forEach(({ node, pos }) => {
+    const start = from > pos ? from : pos;
     if (node.type === mention || node.type === emoji) {
-      const currentPos = tr.mapping.map(pos);
+      const currentPos = tr.mapping.map(start);
       tr.replaceWith(
         currentPos,
         currentPos + node.nodeSize,
@@ -47,10 +48,11 @@ export function transformToCodeAction(
       );
     } else if (node.type === text) {
       if (node.text) {
+        const text = from > pos ? node.text.substr(from - pos) : node.text;
         let match: RegExpExecArray | null;
-        while ((match = FIND_SMART_CHAR.exec(node.text))) {
+        while ((match = FIND_SMART_CHAR.exec(text))) {
           const { 0: smartChar, index: offset } = match;
-          const replacePos = tr.mapping.map(pos + offset);
+          const replacePos = tr.mapping.map(start + offset);
           const replacementText = schema.text(SMART_TO_ASCII[smartChar]);
           tr.replaceWith(
             replacePos,

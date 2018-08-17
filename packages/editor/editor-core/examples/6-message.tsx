@@ -6,6 +6,7 @@ import { EditorContext } from '../src';
 import getPropsPreset from './../src/create-editor/get-props-preset';
 import ToolsDrawer from '../example-helpers/ToolsDrawer';
 import { DevTools } from '../example-helpers/DevTools';
+import { IntlProvider } from 'react-intl';
 
 // tslint:disable-next-line:no-console
 const SAVE_ACTION = () => console.log('Save');
@@ -30,21 +31,23 @@ export default function Example() {
           }) => (
             <AnalyticsListener onEvent={analyticsHandler}>
               <AnalyticsDecorator data={{ editorType: 'message' }}>
-                <EditorWithAnalytics
-                  {...getPropsPreset('message')}
-                  quickInsert={true}
-                  analyticsHandler={analyticsHandler}
-                  disabled={disabled}
-                  maxHeight={305}
-                  maxContentSize={500}
-                  mentionProvider={mentionProvider}
-                  emojiProvider={emojiProvider}
-                  mediaProvider={mediaProvider}
-                  taskDecisionProvider={taskDecisionProvider}
-                  contextIdentifierProvider={contextIdentifierProvider}
-                  onChange={onChange}
-                  onSave={SAVE_ACTION}
-                />
+                <IntlProvider locale="en">
+                  <EditorWithAnalytics
+                    {...getPropsPreset('message')}
+                    quickInsert={true}
+                    analyticsHandler={analyticsHandler}
+                    disabled={disabled}
+                    maxHeight={305}
+                    maxContentSize={500}
+                    mentionProvider={mentionProvider}
+                    emojiProvider={emojiProvider}
+                    mediaProvider={mediaProvider}
+                    taskDecisionProvider={taskDecisionProvider}
+                    contextIdentifierProvider={contextIdentifierProvider}
+                    onChange={onChange}
+                    onSave={SAVE_ACTION}
+                  />
+                </IntlProvider>
               </AnalyticsDecorator>
             </AnalyticsListener>
           )}

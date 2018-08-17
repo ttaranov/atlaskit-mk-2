@@ -4,7 +4,10 @@ import * as React from 'react';
 import LayerManager from '@atlaskit/layer-manager';
 import { EditorView } from 'prosemirror-view';
 import { browser, createSchema, doc } from '@atlaskit/editor-common';
-import { createEditor } from '@atlaskit/editor-test-helpers';
+import {
+  createEditor,
+  mountWithIntlContext,
+} from '@atlaskit/editor-test-helpers';
 import HelpDialog, {
   formatting,
   getComponentFromKeymap,
@@ -29,7 +32,7 @@ describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
   });
 
   it('should not be null if isVisible is true', () => {
-    const helpDialog = mount(
+    const helpDialog = mountWithIntlContext(
       <LayerManager>
         <HelpDialog editorView={editorView} isVisible={true} />
       </LayerManager>,
