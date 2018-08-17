@@ -2,7 +2,7 @@ import * as React from 'react';
 import { JiraResultsMap, GenericResultObject } from '../../model/Result';
 import { ScreenCounter } from '../../util/ScreenCounter';
 import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
-import GenericSearchResults from '../common/GenericSearchResults';
+import SearchResults from '../common/SearchResults';
 import { FormattedHTMLMessage } from 'react-intl';
 import {
   mapRecentResultsToUIGroups,
@@ -27,7 +27,7 @@ export default class JiraSearchResults extends React.Component<Props> {
     const { recentItems, searchResults, query } = this.props;
 
     return (
-      <GenericSearchResults
+      <SearchResults
         {...this.props}
         renderAdvancedSearchLink={() => (
           <FormattedHTMLMessage

@@ -1,7 +1,6 @@
 import * as React from 'react';
 import PreQueryState from './PreQueryState';
 import { isEmpty } from '../SearchResultsUtil';
-import SearchResults from '../SearchResults';
 import { PostQueryAnalyticsComponent } from './ScreenAnalyticsHelper';
 import { ScreenCounter } from '../../util/ScreenCounter';
 import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
@@ -28,7 +27,7 @@ export interface Props {
   referralContextIdentifiers?: ReferralContextIdentifiers;
 }
 
-export default class GenericSearchResults extends React.Component<Props> {
+export default class SearchResults extends React.Component<Props> {
   hasNoResult() {
     return this.props
       .getSearchResultsGroups()
