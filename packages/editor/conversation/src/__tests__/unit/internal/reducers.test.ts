@@ -1,4 +1,5 @@
 import createStore from '../../../internal/store';
+//@ts-ignore
 import { reducers } from '../../../internal/reducers';
 import {
   FETCH_CONVERSATIONS_REQUEST,
