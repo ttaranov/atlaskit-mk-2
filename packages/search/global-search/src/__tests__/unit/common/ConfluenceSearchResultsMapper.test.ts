@@ -3,7 +3,6 @@ import {
   makePersonResult,
   makeConfluenceContainerResult,
 } from '../_test-util';
-import { ConfluenceResultsMap } from '../../../model/Result';
 import {
   MAX_PAGES,
   MAX_PEOPLE,
@@ -56,7 +55,7 @@ import {
           spacesCount,
         });
 
-        const groups = mapper(recentResultsMap as ConfluenceResultsMap);
+        const groups = mapper(recentResultsMap);
         expect(groups.length).toBe(3);
         expect(groups.map(group => group.key)).toEqual([
           'objects',
