@@ -1,4 +1,4 @@
-import { filter } from '../../src/traverse/filter';
+import { filter } from '../../../traverse/filter';
 import * as emojisDoc from './__fixtures__/multiple-emojis.json';
 import * as marksDoc from './__fixtures__/marks.json';
 

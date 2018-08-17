@@ -1,4 +1,4 @@
-import { doc, p, emoji, a, em, b, u, mention } from '../../src/builders';
+import { doc, p, emoji, a, em, b, u, mention } from '../../../builders';
 
 describe('Builders', () => {
   const nodes = [
