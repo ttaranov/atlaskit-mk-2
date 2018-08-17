@@ -710,6 +710,10 @@ aggregate-error@^1.0.0:
     clean-stack "^1.0.0"
     indent-string "^3.0.0"
 
+ajv-errors@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/ajv-errors/-/ajv-errors-1.0.0.tgz#ecf021fa108fd17dfb5e6b383f2dd233e31ffc59"
+
 ajv-keywords@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-2.1.0.tgz#a296e17f7bfae7c1ce4f7e0de53d29cb32162df0"
@@ -6374,11 +6378,13 @@ graceful-fs@^4.1.0, graceful-fs@^4.1.11, graceful-fs@^4.1.2, graceful-fs@^4.1.3,
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/graceful-readlink/-/graceful-readlink-1.0.1.tgz#4cafad76bc62f02fa039b2f94e9a3dd3a391a725"
 
-gray-matter-loader@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/gray-matter-loader/-/gray-matter-loader-0.0.2.tgz#90ef164047f8d487dff00089d6355875ffde9a10"
+gray-matter-loader@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/gray-matter-loader/-/gray-matter-loader-0.0.7.tgz#d8b38fa1a90193ff1b13ee3e333eae90b65ee6a7"
   dependencies:
     gray-matter "^4.0.1"
+    loader-utils "^1.1.0"
+    schema-utils "^1.0.0"
 
 gray-matter@^4.0.1:
   version "4.0.1"
@@ -12900,6 +12906,14 @@ schema-utils@^0.4.0, schema-utils@^0.4.3, schema-utils@^0.4.4, schema-utils@^0.4
   resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-0.4.5.tgz#21836f0608aac17b78f9e3e24daff14a5ca13a3e"
   dependencies:
     ajv "^6.1.0"
+    ajv-keywords "^3.1.0"
+
+schema-utils@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-1.0.0.tgz#0b79a93204d7b600d4b2850d1f66c2a34951c770"
+  dependencies:
+    ajv "^6.1.0"
+    ajv-errors "^1.0.0"
     ajv-keywords "^3.1.0"
 
 scoped-regex@^1.0.0:
