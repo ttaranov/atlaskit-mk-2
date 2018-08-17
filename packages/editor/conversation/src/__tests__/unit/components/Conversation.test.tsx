@@ -24,7 +24,7 @@ describe('Conversation', () => {
 
   describe('comments', () => {
     it('should render comments if any', () => {
-      //@ts-ignore
+      // @ts-ignore
       expect(conversation.find(CommentContainer).length).toBe(comments.length);
     });
   });

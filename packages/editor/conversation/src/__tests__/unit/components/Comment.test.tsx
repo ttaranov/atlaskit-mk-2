@@ -13,7 +13,7 @@ import Comment, { DeletedMessage } from '../../../../src/components/Comment';
 import Editor from '../../../../src/components/Editor';
 import CommentContainer from '../../../../src/containers/Comment';
 
-//@ts-ignore
+// @ts-ignore
 function findEditAction(comment) {}
 // avoid polluting test logs with error message in console
 // please ensure you fix it if you expect console.error to be thrown
