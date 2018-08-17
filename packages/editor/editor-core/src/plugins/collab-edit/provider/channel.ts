@@ -85,7 +85,10 @@ export class Channel {
 
   private debounce(getState: any) {
     logger(`Debouncing steps`);
-    clearTimeout(this.debounced);
+
+    if (this.debounced) {
+      clearTimeout(this.debounced);
+    }
 
     this.debounced = setTimeout(() => {
       logger(`Sending debounced`);
@@ -143,7 +146,7 @@ export class Channel {
   /**
    * Get steps from version x to latest
    */
-  private async getSteps(version: number) {
+  async getSteps(version: number) {
     try {
       const response = await utils.requestService<DocumentResponse>(
         this.config,
