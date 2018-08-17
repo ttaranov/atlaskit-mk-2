@@ -36,13 +36,13 @@ export type ResultsWithTiming = {
   };
 };
 
-export interface ConfluenceResultItemsMap extends GenericResultObject {
+export interface ConfluenceResultsMap extends GenericResultObject {
   people: Result[];
   objects: Result[];
   spaces: Result[];
 }
 
-export interface JiraRecentlyViewedItemsMap extends GenericResultObject {
+export interface JiraResultsMap extends GenericResultObject {
   issues: Result[];
   boards: Result[];
   projects: Result[];
