@@ -1,4 +1,4 @@
-import { validate } from '../../src/validator';
+import { validate } from '../../../validator';
 
 describe('media', () => {
   it('should not throw for valid document', () => {
