@@ -1,4 +1,4 @@
-import { MarkdownSerializer, marks, nodes } from '../src/serializer';
+import { MarkdownSerializer, marks, nodes } from '../../serializer';
 import { defaultSchema } from '@atlaskit/editor-common';
 import {
   p,
