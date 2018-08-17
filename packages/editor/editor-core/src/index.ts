@@ -15,7 +15,7 @@ export {
   MediaProvider,
   CustomMediaPicker,
 } from './plugins/media';
-export { CollabEditProvider, CollabProvider } from './plugins/collab-edit';
+export { CollabEditProvider } from './plugins/collab-edit';
 export { MediaOptions } from './plugins/media';
 export {
   AbstractMentionResource,

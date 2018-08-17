@@ -414,7 +414,6 @@
     "sentence-case": "^2.1.1",
     "sinon-chai": "^2.9.0",
     "snake-case": "^2.1.0",
-    "socket.io-client": "^2.1.1",
     "source-trace": "^2.0.0",
     "string-raw": "^1.0.1",
     "styled-components": "^3.2.6",
