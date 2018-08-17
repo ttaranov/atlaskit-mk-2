@@ -44,10 +44,14 @@ export type ReactElement = React.ReactElement<any> | React.ReactElement<any>[];
 
 export type InsertMenuCustomItem = {
   content: string;
-  value: { name: string };
-  tooltipDescription: string;
-  tooltipPosition: string;
-  onClick: (editorActions: EditorActions) => void;
+  value: { name: string | null };
+  tooltipDescription?: string;
+  tooltipPosition?: string;
+  elemBefore?: ReactElement | string;
+  elemAfter?: ReactElement | string;
+  isDisabled?: boolean;
+  className?: string;
+  onClick?: (editorActions: EditorActions) => void;
 };
 
 export interface ExtensionConfig {
