@@ -9,6 +9,7 @@ import ResultGroupsComponent, {
   ResultGroupType,
 } from './ResultGroupsComponent';
 import { ResultsGroup } from '../../model/Result';
+import SearchError from '../SearchError';
 
 export interface Props {
   query: string;
@@ -28,6 +29,76 @@ export interface Props {
 }
 
 export default class GenericSearchResults extends React.Component<Props> {
+  hasNoResult() {
+    return this.props
+      .getSearchResultsGroups()
+      .map(({ items }) => items)
+      .every(isEmpty);
+  }
+
+  renderNoResult() {
+    const {
+      renderNoResult,
+      postQueryScreenCounter,
+      searchSessionId,
+      referralContextIdentifiers,
+    } = this.props;
+    return (
+      <>
+        {renderNoResult()}
+        <PostQueryAnalyticsComponent
+          screenCounter={postQueryScreenCounter}
+          searchSessionId={searchSessionId}
+          referralContextIdentifiers={referralContextIdentifiers}
+          key="post-query-analytics"
+        />
+      </>
+    );
+  }
+
+  renderPreQueryState() {
+    const {
+      query,
+      searchSessionId,
+      preQueryScreenCounter,
+      renderAdvancedSearchLink,
+      referralContextIdentifiers,
+      renderAdvancedSearchGroup,
+      getRecentlyViewedGroups,
+    } = this.props;
+    return (
+      <PreQueryState
+        resultsGroup={getRecentlyViewedGroups()}
+        renderAdvancedSearchLink={renderAdvancedSearchLink}
+        query={query}
+        searchSessionId={searchSessionId}
+        screenCounter={preQueryScreenCounter}
+        referralContextIdentifiers={referralContextIdentifiers}
+        renderAdvancedSearchGroup={renderAdvancedSearchGroup}
+      />
+    );
+  }
+
+  renderSearchResultsState() {
+    const {
+      searchSessionId,
+      referralContextIdentifiers,
+      renderAdvancedSearchGroup,
+      getSearchResultsGroups,
+      postQueryScreenCounter,
+    } = this.props;
+    return (
+      <ResultGroupsComponent
+        type={ResultGroupType.PostQuery}
+        renderAdvancedSearch={renderAdvancedSearchGroup}
+        resultsGroup={getSearchResultsGroups()}
+        searchSessionId={searchSessionId}
+        screenCounter={postQueryScreenCounter}
+        referralContextIdentifiers={referralContextIdentifiers}
+      />
+    );
+  }
+
   render() {
     const {
       query,
@@ -35,62 +106,29 @@ export default class GenericSearchResults extends React.Component<Props> {
       isLoading,
       retrySearch,
       keepPreQueryState,
-      searchSessionId,
-      preQueryScreenCounter,
-      postQueryScreenCounter,
-      referralContextIdentifiers,
-      getRecentlyViewedGroups,
-      getSearchResultsGroups,
-      renderNoResult,
-      renderAdvancedSearchLink,
-      renderAdvancedSearchGroup,
     } = this.props;
 
-    return (
-      <SearchResults
-        retrySearch={retrySearch}
-        query={query}
-        isLoading={isLoading}
-        isError={isError}
-        keepPreQueryState={keepPreQueryState}
-        renderPreQueryStateComponent={() => (
-          <PreQueryState
-            resultsGroup={getRecentlyViewedGroups()}
-            renderAdvancedSearchLink={renderAdvancedSearchLink}
-            query={query}
-            searchSessionId={searchSessionId}
-            screenCounter={preQueryScreenCounter}
-            referralContextIdentifiers={referralContextIdentifiers}
-            renderAdvancedSearchGroup={renderAdvancedSearchGroup}
-          />
-        )}
-        shouldRenderNoResultsState={() =>
-          getSearchResultsGroups()
-            .map(({ items }) => items)
-            .every(isEmpty)
-        }
-        renderNoResultsStateComponent={() => (
-          <>
-            {renderNoResult()}
-            <PostQueryAnalyticsComponent
-              screenCounter={postQueryScreenCounter}
-              searchSessionId={searchSessionId}
-              referralContextIdentifiers={referralContextIdentifiers}
-              key="post-query-analytics"
-            />
-          </>
-        )}
-        renderSearchResultsStateComponent={() => (
-          <ResultGroupsComponent
-            type={ResultGroupType.PostQuery}
-            renderAdvancedSearch={renderAdvancedSearchGroup}
-            resultsGroup={getSearchResultsGroups()}
-            searchSessionId={searchSessionId}
-            screenCounter={postQueryScreenCounter}
-            referralContextIdentifiers={referralContextIdentifiers}
-          />
-        )}
-      />
-    );
+    if (isError) {
+      return <SearchError onRetryClick={retrySearch} />;
+    }
+
+    if (query.length === 0) {
+      if (isLoading) {
+        return null;
+      }
+
+      return this.renderPreQueryState();
+    }
+
+    // the state when the user starts typing from the pre query screen while we are waiting for search results
+    if (isLoading && keepPreQueryState) {
+      return this.renderPreQueryState();
+    }
+
+    if (this.hasNoResult()) {
+      return this.renderNoResult();
+    }
+
+    return this.renderSearchResultsState();
   }
 }
