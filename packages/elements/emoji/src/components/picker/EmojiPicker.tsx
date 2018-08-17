@@ -46,9 +46,7 @@ export class EmojiPickerInternal extends LoadingEmojiComponent<
   asyncLoadComponent() {
     emojiPickerLoader().then(component => {
       EmojiPickerInternal.AsyncLoadedComponent = component;
-      this.setState({
-        asyncLoadedComponent: component,
-      });
+      this.setAsyncState(component);
     });
   }
 

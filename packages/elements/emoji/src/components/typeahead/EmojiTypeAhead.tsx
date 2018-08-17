@@ -73,9 +73,7 @@ export default class EmojiTypeahead extends LoadingEmojiComponent<
   asyncLoadComponent() {
     emojiTypeAheadComponentLoader().then(component => {
       EmojiTypeahead.AsyncLoadedComponent = component;
-      this.setState({
-        asyncLoadedComponent: component,
-      });
+      this.setAsyncState(component);
     });
   }
 

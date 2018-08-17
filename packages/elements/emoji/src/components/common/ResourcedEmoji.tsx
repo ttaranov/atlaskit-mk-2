@@ -36,9 +36,7 @@ export default class ResourcedEmoji extends LoadingEmojiComponent<
   asyncLoadComponent() {
     resourcedEmojiComponentLoader().then(component => {
       ResourcedEmoji.AsyncLoadedComponent = component;
-      this.setState({
-        asyncLoadedComponent: component,
-      });
+      this.setAsyncState(component);
     });
   }
 

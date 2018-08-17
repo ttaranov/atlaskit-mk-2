@@ -70,16 +70,21 @@ export default abstract class LoadingEmojiComponent<
   }
 
   private loaded = <
-    S extends State,
-    T extends S & {
+    T extends State & {
       asyncLoadedComponent: ComponentClass<any>;
       loadedEmojiProvider: EmojiProvider;
     }
   >(
-    state: S,
+    state: State,
   ): state is T => !!state.asyncLoadedComponent && !!state.loadedEmojiProvider;
 
   abstract asyncLoadComponent(): void;
+
+  protected setAsyncState(asyncLoadedComponent: ComponentClass<any>) {
+    if (!this.isUnmounted) {
+      this.setState({ asyncLoadedComponent });
+    }
+  }
 
   renderLoading(): JSX.Element | null {
     return null;
