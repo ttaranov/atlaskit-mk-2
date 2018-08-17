@@ -6,4 +6,4 @@ export type { RenderItemParams } from './components/TreeItem/TreeItem-types';
 
 export type { ItemId, Path, TreeData, TreeItem, TreePosition } from './types';
 
-export { mutateTree } from './utils/tree';
+export { mutateTree, moveItemOnTree } from './utils/tree';

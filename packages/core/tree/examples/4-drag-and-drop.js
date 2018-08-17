@@ -12,7 +12,7 @@ import Tree, {
   type TreeData,
   type ItemId,
   type TreePosition,
-} from '../src/';
+} from '../src';
 import { complexTree } from '../mockdata/complexTree';
 
 const PADDING_PER_LEVEL = 35;
