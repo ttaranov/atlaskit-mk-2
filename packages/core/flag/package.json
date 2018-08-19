@@ -20,7 +20,7 @@
   "dependencies": {
     "@atlaskit/analytics-next": "^3.0.4",
     "@atlaskit/icon": "^13.2.5",
-    "@atlaskit/portal": "^0.0.4",
+    "@atlaskit/portal": "^0.0.6",
     "@atlaskit/theme": "^6.0.0",
     "babel-runtime": "^6.26.0",
     "react-transition-group": "^2.2.1",
