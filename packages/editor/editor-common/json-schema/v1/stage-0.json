@@ -1519,6 +1519,80 @@
       ],
       "additionalProperties": false
     },
+    "layoutColumn_node": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "layoutColumn"
+          ]
+        },
+        "content": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/definitions/paragraph_node"
+              },
+              {
+                "$ref": "#/definitions/bulletList_node"
+              },
+              {
+                "$ref": "#/definitions/mediaSingle_node"
+              },
+              {
+                "$ref": "#/definitions/orderedList_node"
+              },
+              {
+                "$ref": "#/definitions/heading_node"
+              },
+              {
+                "$ref": "#/definitions/panel_node"
+              },
+              {
+                "$ref": "#/definitions/blockquote_node"
+              },
+              {
+                "$ref": "#/definitions/rule_node"
+              },
+              {
+                "$ref": "#/definitions/mediaGroup_node"
+              },
+              {
+                "$ref": "#/definitions/table_node"
+              },
+              {
+                "$ref": "#/definitions/applicationCard_node"
+              },
+              {
+                "$ref": "#/definitions/decisionList_node"
+              },
+              {
+                "$ref": "#/definitions/taskList_node"
+              },
+              {
+                "$ref": "#/definitions/extension_node"
+              },
+              {
+                "$ref": "#/definitions/bodiedExtension_node"
+              },
+              {
+                "$ref": "#/definitions/blockCard_node"
+              },
+              {
+                "$ref": "#/definitions/codeBlock_node"
+              }
+            ]
+          },
+          "minItems": 1
+        }
+      },
+      "required": [
+        "type",
+        "content"
+      ],
+      "additionalProperties": false
+    },
     "blockCard_node": {
       "type": "object",
       "properties": {
@@ -1761,6 +1835,85 @@
           },
           {
             "$ref": "#/definitions/bodiedExtension_node"
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "enum": [
+                  "layoutSection"
+                ]
+              },
+              "attrs": {
+                "type": "object",
+                "properties": {
+                  "layoutType": {
+                    "enum": [
+                      "two_equal",
+                      "two_right_sidebar",
+                      "two_left_sidebar"
+                    ]
+                  }
+                },
+                "required": [
+                  "layoutType"
+                ],
+                "additionalProperties": false
+              },
+              "content": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/layoutColumn_node"
+                },
+                "minItems": 2,
+                "maxItems": 2
+              }
+            },
+            "required": [
+              "type",
+              "attrs",
+              "content"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "type": {
+                "enum": [
+                  "layoutSection"
+                ]
+              },
+              "attrs": {
+                "type": "object",
+                "properties": {
+                  "layoutType": {
+                    "enum": [
+                      "three_equal",
+                      "three_with_sidebars"
+                    ]
+                  }
+                },
+                "required": [
+                  "layoutType"
+                ],
+                "additionalProperties": false
+              },
+              "content": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/layoutColumn_node"
+                },
+                "minItems": 3,
+                "maxItems": 3
+              }
+            },
+            "required": [
+              "type",
+              "attrs",
+              "content"
+            ],
+            "additionalProperties": false
           },
           {
             "$ref": "#/definitions/blockCard_node"

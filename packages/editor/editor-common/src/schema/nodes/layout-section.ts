@@ -1,12 +1,39 @@
 import { NodeSpec } from 'prosemirror-model';
+import { LayoutColumnDefinition } from './layout-column';
 
-export type LayoutSectionLayoutType =
-  | 'two_equal'
-  | 'two_right_sidebar'
-  | 'two_left_sidebar'
-  | 'three_equal'
-  | 'three_with_sidebars';
+export type LayoutSectionTwoColumnDefinition = {
+  type: 'layoutSection';
+  attrs: {
+    layoutType: 'two_equal' | 'two_right_sidebar' | 'two_left_sidebar';
+  };
+  /**
+   * @minItems 2
+   * @maxItems 2
+   */
+  content: LayoutColumnDefinition[];
+};
 
+export type LayoutSectionThreeColumnDefinition = {
+  type: 'layoutSection';
+  attrs: {
+    layoutType: 'three_equal' | 'three_with_sidebars';
+  };
+  /**
+   * @minItems 3
+   * @maxItems 3
+   */
+  content: LayoutColumnDefinition[];
+};
+
+/**
+ * @name layoutSection_node
+ * @stage 0
+ */
+export type LayoutSectionDefinition =
+  | LayoutSectionTwoColumnDefinition
+  | LayoutSectionThreeColumnDefinition;
+
+export type LayoutSectionLayoutType = LayoutSectionDefinition['attrs']['layoutType'];
 const LAYOUT_TYPES: LayoutSectionLayoutType[] = [
   'two_equal',
   'two_right_sidebar',
