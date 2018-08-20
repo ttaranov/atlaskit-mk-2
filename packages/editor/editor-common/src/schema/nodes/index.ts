@@ -94,10 +94,7 @@ export { date, DateDefinition } from './date';
 export { placeholder, PlaceholderDefinition } from './placeholder';
 export { layoutSection } from './layout-section';
 export { layoutColumn } from './layout-column';
-export {
-  inlineCard,
-  CardAttributes,
-  InlineCardDefinition,
-} from './inline-card';
+export { inlineCard, InlineCardDefinition } from './inline-card';
+export { blockCard, CardAttributes, BlockCardDefinition } from './block-card';
 export { unsupportedBlock } from './unsupported-block';
 export { unsupportedInline } from './unsupported-inline';

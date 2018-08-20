@@ -141,10 +141,6 @@ type ItemProps = {
 };
 
 export default class Option extends PureComponent<ItemProps> {
-  static defaultProps = {
-    text: '',
-  };
-
   render() {
     const { data, innerProps, isFocused, isSelected } = this.props;
     const { avatar, subText, text, ...dataProps } = data;

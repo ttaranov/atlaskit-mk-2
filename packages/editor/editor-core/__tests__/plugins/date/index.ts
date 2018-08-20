@@ -10,6 +10,7 @@ import {
   setDatePickerAt,
   insertDate,
   openDatePicker,
+  closeDatePicker,
 } from '../../../src/plugins/date/actions';
 import { pluginKey } from '../../../src/plugins/date/plugin';
 import datePlugin from '../../../src/plugins/date';
@@ -83,12 +84,28 @@ describe('date plugin', () => {
     });
 
     describe('openDatePicker', () => {
-      it('should set "element" prop in plugin state to a DOM node and select the node', () => {
+      it('should set "showDatePickerAt" prop in plugin state to a DOM node and select the node', () => {
         const { editorView: view } = editor(doc(paragraph('hello{<>}')));
         openDatePicker(view.domAtPos.bind(view))(view.state, view.dispatch);
         const pluginState = pluginKey.getState(view.state);
         expect(pluginState.showDatePickerAt).toBeTruthy();
         expect(view.state.selection instanceof NodeSelection).toEqual(true);
+      });
+    });
+
+    describe('closeDatePicker', () => {
+      it('should set "showDatePickerAt" prop to falsy and move selection to after the node', () => {
+        const { editorView: view } = editor(doc(paragraph('hello{<>}')));
+        openDatePicker(view.domAtPos.bind(view))(view.state, view.dispatch);
+        const pluginState = pluginKey.getState(view.state);
+        expect(pluginState.showDatePickerAt).toBeTruthy();
+        expect(view.state.selection instanceof NodeSelection).toEqual(true);
+
+        closeDatePicker()(view.state, view.dispatch);
+        const newPluginState = pluginKey.getState(view.state);
+        expect(newPluginState.showDatePickerAt).toBeFalsy();
+        expect(view.state.selection instanceof NodeSelection).toEqual(false);
+        expect(view.state.selection.from).toEqual(6);
       });
     });
   });

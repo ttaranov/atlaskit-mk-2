@@ -15,6 +15,10 @@ export default class PrimitiveSchemaNode<
     const obj = { type: this.type };
     return keys.length ? this.mergeValidationInfo(keys, obj) : obj;
   }
+
+  toSpec() {
+    return this.toJSON();
+  }
 }
 
 export { Indexed };

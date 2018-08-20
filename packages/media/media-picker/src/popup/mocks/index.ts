@@ -48,6 +48,7 @@ export const mockState: State = {
   context: ContextFactory.create({
     authProvider: jest.fn(),
   }),
+  config: {},
 };
 
 export const mockStore = (state?: Partial<State>) => ({

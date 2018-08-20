@@ -79,5 +79,22 @@ describe('AvatarGroup', () => {
       expect(moreIndicator.length).toBe(1);
       expect(moreIndicator.prop('count')).toBe(2);
     });
+
+    it('should pass moreButtonProps to the MoreIndicator', () => {
+      const showMoreButtonProps = {
+        tabIndex: -1,
+      };
+      const wrapper = mount(
+        <AvatarGroup
+          appearance="stack"
+          data={generateData(4)}
+          maxCount={maxCount}
+          showMoreButtonProps={showMoreButtonProps}
+        />,
+      );
+      expect(wrapper.find(MoreIndicator).props()).toEqual(
+        expect.objectContaining(showMoreButtonProps),
+      );
+    });
   });
 });

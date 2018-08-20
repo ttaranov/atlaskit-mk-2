@@ -1,5 +1,6 @@
 // @flow
 import React, { Component, type Node } from 'react';
+import styled from 'styled-components';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
@@ -11,6 +12,10 @@ import {
   version as packageVersion,
 } from '../package.json';
 import TextArea from './styled/TextArea';
+
+const Wrapper = styled.div`
+  flex: 1 1 100%;
+`;
 
 type Props = {
   /** Set whether the fields should expand to fill available horizontal space. */
@@ -24,7 +29,7 @@ type Props = {
   /** Sets styling to indicate that the input is invalid. */
   isInvalid?: boolean,
   /** Label to be displayed above the input. */
-  label?: string,
+  label: string,
   /** Name value to be passed to the html input. */
   name?: string,
   /** Text to display in the input if the input is empty. */
@@ -74,6 +79,7 @@ class FieldTextAreaStateless extends Component<Props, void> {
     isReadOnly: false,
     required: false,
     isInvalid: false,
+    label: '',
     type: 'text',
     isSpellCheckEnabled: true,
     minimumRows: 1,
@@ -111,8 +117,7 @@ class FieldTextAreaStateless extends Component<Props, void> {
     } = this.props;
 
     return (
-      <div>
-        {/* // $FlowFixMe - Label signature interpreted incorrectly */}
+      <Wrapper>
         <Label
           htmlFor={id}
           isDisabled={disabled}
@@ -151,7 +156,7 @@ class FieldTextAreaStateless extends Component<Props, void> {
             }}
           />
         </Base>
-      </div>
+      </Wrapper>
     );
   }
 }

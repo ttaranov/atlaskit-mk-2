@@ -1,5 +1,18 @@
 # @atlaskit/analytics-namespaced-context
 
+## 2.1.0
+
+- [minor] Add NavigationContext component that provides context to events fired on the navigation channel [89225ce](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/89225ce)
+- [patch] Updated dependencies [808b55b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/808b55b)
+  - @atlaskit/analytics-listeners@3.2.0
+- [none] Updated dependencies [89225ce](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/89225ce)
+  - @atlaskit/analytics-listeners@3.2.0
+
+## 2.0.3
+- [patch] Fix es5 exports of some of the newer modules [3f0cd7d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f0cd7d)
+- [none] Updated dependencies [3f0cd7d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f0cd7d)
+  - @atlaskit/analytics-gas-types@3.1.3
+
 ## 2.0.2
 - [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
   - @atlaskit/button@9.0.4

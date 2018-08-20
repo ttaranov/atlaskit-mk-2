@@ -66,6 +66,11 @@ const codeBlockPlugin = (options: CodeBlockOptions = {}) =>
             if (activeCodeBlock) {
               const { pos, node } = activeCodeBlock;
               const codeBlockDOM = domAtPos(pos) as HTMLElement;
+
+              if (!codeBlockDOM) {
+                return null;
+              }
+
               const setLanguage = (language: string) => {
                 setNodeAttributes(pos, { language })(view.state, view.dispatch);
                 view.focus();

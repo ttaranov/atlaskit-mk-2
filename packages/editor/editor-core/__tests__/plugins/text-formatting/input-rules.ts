@@ -166,6 +166,8 @@ describe('text-formatting input rules', () => {
     notautoformats("'t hate");
     notautoformats("let'. it");
     notautoformats("let' it 'be");
+    notautoformats("' test'");
+    notautoformats("'test '");
 
     autoformats('"hello" "world"', p('“hello” “world”'), 'quote');
     autoformats('let " it\'d close"', p('let “ it’d close”'), 'quote');
@@ -341,6 +343,30 @@ describe('text-formatting input rules', () => {
         doc(p('hello ', strong('text'), ' there')),
       );
     });
+
+    it('should not apply strong to ** prefixed words when later ** pair found', () => {
+      const { editorView, sel } = editor(
+        doc(p('using **prefixed words along with **strong{<>}')),
+      );
+
+      insertText(editorView, '**', sel);
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p('using **prefixed words along with ', strong('strong'))),
+      );
+    });
+
+    it('should not apply strong to __ prefixed words when later __ pair found', () => {
+      const { editorView, sel } = editor(
+        doc(p('using __prefixed words along with __strong{<>}')),
+      );
+
+      insertText(editorView, '__', sel);
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p('using __prefixed words along with ', strong('strong'))),
+      );
+    });
   });
 
   describe('em rule', () => {
@@ -350,6 +376,56 @@ describe('text-formatting input rules', () => {
       insertText(editorView, '*italic*', sel);
       expect(editorView.state.doc).toEqualDocument(
         doc(p(strong('This is bold '), em(strong('italic')))),
+      );
+    });
+
+    it('should not apply em to _ prefixed words when later _ pair found', () => {
+      const { editorView, sel } = editor(
+        doc(p('using _prefixed words along with _italics{<>}')),
+      );
+
+      insertText(editorView, '_', sel);
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p('using _prefixed words along with ', em('italics'))),
+      );
+    });
+
+    it('should not apply em to * prefixed words when later * pair found', () => {
+      const { editorView, sel } = editor(
+        doc(p('using *prefixed words along with *italics{<>}')),
+      );
+
+      insertText(editorView, '*', sel);
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p('using *prefixed words along with ', em('italics'))),
+      );
+    });
+
+    it('should allow single _ in strong', () => {
+      const { editorView, sel } = editor(
+        doc(p('plain text __this_is_strong{<>}')),
+      );
+
+      insertText(editorView, '__', sel);
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p('plain text ', strong('this_is_strong'))),
+      );
+    });
+  });
+
+  describe('strike rule', () => {
+    it('should not apply strike to ~~ prefixed words when later ~~ pair found', () => {
+      const { editorView, sel } = editor(
+        doc(p('using ~~prefixed words along with ~~strike{<>}')),
+      );
+
+      insertText(editorView, '~~', sel);
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p('using ~~prefixed words along with ', strike('strike'))),
       );
     });
   });

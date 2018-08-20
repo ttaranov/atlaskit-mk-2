@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { RendererContext, BreakoutConsumer } from '..';
 import { renderNodes, Serializer } from '../..';
-import { ADNode, ExtensionHandlers } from '@atlaskit/editor-common';
+import {
+  ADNode,
+  ExtensionHandlers,
+  ExtensionLayout,
+} from '@atlaskit/editor-common';
 import { calcExtensionWidth } from '@atlaskit/editor-common';
 
 export interface Props {
@@ -12,14 +16,14 @@ export interface Props {
   extensionKey: string;
   text?: string;
   parameters?: any;
-  layout?: string;
+  layout?: ExtensionLayout;
 }
 
 export const renderExtension = (content: any, layout: string) => (
   <BreakoutConsumer>
     {containerWidth => (
       <div
-        className="Extension"
+        className={`Extension-${layout}`}
         style={{
           width: calcExtensionWidth(layout, containerWidth),
         }}

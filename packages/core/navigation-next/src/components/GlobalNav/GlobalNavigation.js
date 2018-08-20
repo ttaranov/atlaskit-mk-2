@@ -5,7 +5,8 @@
  * opinionated 'GlobalNavigation' component.
  */
 
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 import GlobalItem from '../GlobalItem';
 
 import {
@@ -21,38 +22,66 @@ export default class GlobalNavigation extends Component<GlobalNavigationProps> {
     const wrapperStyles = theme.mode.globalNav();
 
     return (
-      <div css={wrapperStyles}>
-        <PrimaryItemsList>
-          {primaryItems.map((props, index) => {
-            // Render the first item with a margin beneath it and a large icon
-            if (!index) {
-              const { icon: Icon, ...rest } = props;
-              return (
-                <FirstPrimaryItemWrapper key={props.key || props.label}>
-                  <GlobalItem
-                    {...rest}
-                    icon={provided => <Icon {...provided} size="large" />}
-                    size="large"
-                  />
-                </FirstPrimaryItemWrapper>
-              );
-            }
-            return (
-              <GlobalItem
-                {...props}
-                key={props.key || props.label}
-                size="large"
-              />
-            );
-          })}
-        </PrimaryItemsList>
+      <NavigationAnalyticsContext
+        data={{
+          attributes: { navigationLayer: 'global' },
+          componentName: 'globalNav',
+        }}
+      >
+        <div css={wrapperStyles}>
+          <PrimaryItemsList>
+            <NavigationAnalyticsContext
+              data={{ attributes: { navigationIconGrouping: 'primary' } }}
+            >
+              <Fragment>
+                {primaryItems.map((props, index) => {
+                  // Render the first item with a margin beneath it and a large icon
+                  if (!index) {
+                    const { icon: Icon, ...rest } = props;
+                    return (
+                      <FirstPrimaryItemWrapper
+                        key={props.id || props.key || props.label}
+                      >
+                        <GlobalItem
+                          {...rest}
+                          icon={provided => <Icon {...provided} size="large" />}
+                          size="large"
+                          index={index}
+                        />
+                      </FirstPrimaryItemWrapper>
+                    );
+                  }
+                  return (
+                    <GlobalItem
+                      {...props}
+                      key={props.id || props.key || props.label}
+                      size="large"
+                      index={index}
+                    />
+                  );
+                })}
+              </Fragment>
+            </NavigationAnalyticsContext>
+          </PrimaryItemsList>
 
-        <SecondaryItemsList>
-          {secondaryItems.map(props => (
-            <GlobalItem {...props} key={props.label} size="small" />
-          ))}
-        </SecondaryItemsList>
-      </div>
+          <SecondaryItemsList>
+            <NavigationAnalyticsContext
+              data={{ attributes: { navigationIconGrouping: 'secondary' } }}
+            >
+              <Fragment>
+                {secondaryItems.map((props, index) => (
+                  <GlobalItem
+                    {...props}
+                    key={props.id || props.label}
+                    size="small"
+                    index={index}
+                  />
+                ))}
+              </Fragment>
+            </NavigationAnalyticsContext>
+          </SecondaryItemsList>
+        </div>
+      </NavigationAnalyticsContext>
     );
   }
 }

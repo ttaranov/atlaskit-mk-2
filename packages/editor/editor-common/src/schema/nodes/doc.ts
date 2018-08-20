@@ -26,6 +26,7 @@ import { EmojiDefinition as Emoji } from './emoji';
 import { DateDefinition as Date } from './date';
 import { PlaceholderDefinition as Placeholder } from './placeholder';
 import { InlineCardDefinition as InlineCard } from './inline-card';
+import { BlockCardDefinition as BlockCard } from './block-card';
 
 // Marks
 import { LinkDefinition as Link } from '../marks/link';
@@ -59,6 +60,7 @@ export type TopLevel = Array<
   | Table
   | Extension
   | BodiedExtension
+  | BlockCard
 >;
 
 /**
@@ -80,6 +82,7 @@ export type TableCellContent = Array<
   | DecisionList
   | TaskList
   | Extension
+  | BlockCard
 >;
 
 // exclude Extension and BodiedExtension
@@ -103,6 +106,7 @@ export type ExtensionContent = Array<
   | TaskList
   | Table
   | Extension
+  | BlockCard
 >;
 
 /**

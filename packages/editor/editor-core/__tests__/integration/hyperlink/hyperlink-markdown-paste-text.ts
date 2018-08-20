@@ -2,14 +2,15 @@ import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import {
   getDocFromElement,
-  editors,
+  comment,
+  fullpage,
   editable,
   clipboardHelper,
   copyAsPlaintextButton,
   clipboardInput,
 } from '../_helpers';
 
-editors.forEach(editor => {
+[comment, fullpage].forEach(editor => {
   BrowserTestCase(
     `Link: link markdown with pasting link text ${editor.name} editor`,
     {

@@ -75,7 +75,7 @@ describe('createPluginsList', () => {
   });
 
   it('should add layoutPlugin if allowLayout prop is provided', () => {
-    const plugins = createPluginsList({ UNSAFE_allowLayouts: true });
+    const plugins = createPluginsList({ allowLayouts: true });
     expect(plugins).toContain(layoutPlugin);
   });
 

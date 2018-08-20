@@ -2,12 +2,13 @@
 
 import React, { PureComponent } from 'react';
 
+import { navigationItemClicked } from '../../common/analytics';
 import InteractionStateManager from '../InteractionStateManager';
 import { styleReducerNoOp } from '../../theme';
 import GlobalItemPrimitive from './primitives';
 import type { GlobalItemProps } from './types';
 
-export default class GlobalItem extends PureComponent<GlobalItemProps> {
+class GlobalItem extends PureComponent<GlobalItemProps> {
   static defaultProps = {
     label: '',
     size: 'large',
@@ -20,4 +21,6 @@ export default class GlobalItem extends PureComponent<GlobalItemProps> {
   }
 }
 
-export type { GlobalItemProps } from './types';
+export default navigationItemClicked(GlobalItem, 'globalItem');
+
+export type { GlobalItemProps };

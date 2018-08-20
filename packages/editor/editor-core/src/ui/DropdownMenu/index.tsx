@@ -87,6 +87,13 @@ export default class DropdownMenuWrapper extends PureComponent<Props, State> {
 
   private renderItem(item) {
     const { onItemActivated, onMouseEnter, onMouseLeave } = this.props;
+
+    // onClick and value.name are the action indicators in the handlers
+    // If neither are present, don't wrap in an Item.
+    if (!item.onClick && !item.value && !item.value.name) {
+      return <span key={item.content}>{item.content}</span>;
+    }
+
     const dropListItem = (
       <ItemWrapper key={item.key || item.content} isSelected={item.isActive}>
         <Item

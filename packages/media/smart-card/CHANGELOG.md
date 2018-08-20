@@ -1,5 +1,31 @@
 # @atlaskit/smart-card
 
+## 7.0.6
+
+
+
+
+
+- [patch] Updated dependencies [333a440](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/333a440)
+  - @atlaskit/inline-message@7.0.0
+- [none] Updated dependencies [1d9e75a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1d9e75a)
+  - @atlaskit/inline-message@7.0.0
+- [none] Updated dependencies [a3109d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a3109d3)
+  - @atlaskit/inline-message@7.0.0
+- [none] Updated dependencies [87d45d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87d45d3)
+  - @atlaskit/inline-message@7.0.0
+- [none] Updated dependencies [a08b0c2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a08b0c2)
+  - @atlaskit/inline-message@7.0.0
+
+## 7.0.5
+- [patch] ED-4824: added renderer support for smart cards [7cf0a78](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7cf0a78)
+
+## 7.0.4
+- [patch] ED-5222: bump react-lazily-render package [5844820](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5844820)
+
+## 7.0.3
+- [patch] Fix es5 exports of some of the newer modules [3f0cd7d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f0cd7d)
+
 ## 7.0.2
 - [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
   - @atlaskit/select@5.0.7

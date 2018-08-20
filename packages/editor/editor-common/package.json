@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-common",
-  "version": "14.0.1",
+  "version": "14.0.9",
   "description": "A package that contains common classes and components for editor and renderer",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -11,9 +11,9 @@
   "sideEffects": false,
   "scripts": {
     "build:json-schema": "mkdir -p dist && cp -r json-schema dist",
-    "generate:json-schema": "yarn generate:json-schema:full && yarn generate:json-schema:stage-0",
-    "generate:json-schema:stage-0": "../json-schema-generator/bin.js --stage=0 ./src/schema/nodes/doc.ts > ./json-schema/v1/stage-0.json",
-    "generate:json-schema:full": "../json-schema-generator/bin.js ./src/schema/nodes/doc.ts > ./json-schema/v1/full.json"
+    "generate:json-schema": "mkdir -p json-schema/v1/ && yarn generate:json-schema:full && yarn generate:json-schema:stage-0",
+    "generate:json-schema:stage-0": "../json-schema-generator/bin.js --outDir=./json-schema/v1/ --stage=0 ./src/schema/nodes/doc.ts",
+    "generate:json-schema:full": "../json-schema-generator/bin.js --outDir=./json-schema/v1/ ./src/schema/nodes/doc.ts"
   },
   "files": [
     "dist"
@@ -50,8 +50,8 @@
   },
   "devDependencies": {
     "@atlaskit/editor-json-transformer": "^4.0.4",
-    "@atlaskit/editor-test-helpers": "^6.0.0",
-    "@atlaskit/json-schema-generator": "^1.0.1",
+    "@atlaskit/editor-test-helpers": "^6.0.2",
+    "@atlaskit/json-schema-generator": "^1.1.0",
     "@atlaskit/media-core": "^23.0.0",
     "@atlaskit/webdriver-runner": "^0.0.3",
     "@types/chai": "^4.0.4",

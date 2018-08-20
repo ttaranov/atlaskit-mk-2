@@ -11,7 +11,7 @@ import {
 } from '../../../src/plugins/layout/actions';
 
 const editor = doc =>
-  createEditor({ doc, editorProps: { UNSAFE_allowLayouts: true } });
+  createEditor({ doc, editorProps: { allowLayouts: true } });
 
 describe('layout actions', () => {
   describe('#setActiveLayoutType', () => {

@@ -38,7 +38,12 @@ const providers = {
     undefined: undefined,
   },
   emojiProvider: {
-    resolved: emoji.storyData.getEmojiResource({ uploadSupported: true }),
+    resolved: emoji.storyData.getEmojiResource({
+      uploadSupported: true,
+      currentUser: {
+        id: emoji.storyData.loggedUser,
+      },
+    }),
     external: Promise.resolve(
       new EmojiResource({
         providers: [
@@ -70,6 +75,10 @@ const providers = {
   },
   mediaProvider: {
     resolved: storyMediaProviderFactory(),
+    'resolved (no auth provider)': storyMediaProviderFactory({
+      useMediaPickerAuthProvider: false,
+    }),
+
     pending: pendingPromise,
     rejected: rejectedPromise,
     'view only': storyMediaProviderFactory({
@@ -81,6 +90,7 @@ const providers = {
     'w/o userAuthProvider': storyMediaProviderFactory({
       includeUserAuthProvider: false,
     }),
+
     undefined: undefined,
   },
   activityProvider: {
@@ -225,6 +235,9 @@ export default class ToolsDrawer extends React.Component<Props & any, State> {
                             providerKey,
                             providerStateName,
                           )}
+                          className={`${providerKey}-${providerStateName
+                            .replace(/[()]/g, '')
+                            .replace(/ /g, '-')}`}
                           appearance={
                             providerStateName === this.state[providerKey]
                               ? 'primary'
@@ -255,6 +268,7 @@ export default class ToolsDrawer extends React.Component<Props & any, State> {
                     onClick={this.reloadEditor}
                     theme="dark"
                     spacing="compact"
+                    className="reloadEditorButton"
                   >
                     Reload Editor
                   </Button>
@@ -264,6 +278,7 @@ export default class ToolsDrawer extends React.Component<Props & any, State> {
                       appearance={mediaMockEnabled ? 'primary' : 'default'}
                       theme="dark"
                       spacing="compact"
+                      className="mediaPickerMock"
                     >
                       {mediaMockEnabled ? 'Disable' : 'Enable'} Media-Picker
                       Mock
