@@ -225,6 +225,23 @@ export class Card extends Component<CardProps, CardState> {
     return getBaseAnalyticsContext('Card', id);
   }
 
+  get status(): CardStatus {
+    const { status, metadata } = this.state;
+    const { identifier } = this.props;
+
+    if (
+      status === 'complete' &&
+      identifier.mediaItemType === 'file' &&
+      metadata
+    ) {
+      if (!(metadata as FileDetails).size) {
+        return 'processing';
+      }
+    }
+
+    return status;
+  }
+
   render() {
     const {
       isLazy,
@@ -240,8 +257,8 @@ export class Card extends Component<CardProps, CardState> {
       disableOverlay,
       identifier,
     } = this.props;
-    const { status, progress, metadata, dataURI } = this.state;
-    const { analyticsContext, onRetry } = this;
+    const { progress, metadata, dataURI } = this.state;
+    const { analyticsContext, onRetry, status } = this;
     const card = (
       <AnalyticsContext data={analyticsContext}>
         <CardView

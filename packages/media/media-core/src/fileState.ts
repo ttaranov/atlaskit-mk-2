@@ -70,7 +70,7 @@ const apiProcessingStatusToFileStatus = (
       return 'processed';
     case 'failed':
     case undefined:
-      return 'error';
+      return 'processing';
   }
 };
 
