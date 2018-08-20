@@ -1,7 +1,8 @@
 // @flow
 import React, { Children, cloneElement, Component } from 'react';
 import { Transition } from 'react-transition-group';
-import { withRenderTarget } from '@atlaskit/layer-manager';
+import Portal from '@atlaskit/portal';
+import { layers } from '@atlaskit/theme';
 
 import Wrapper from '../../styled/Wrapper';
 import Group, { SROnly, Inner } from './styledFlagGroup';
@@ -16,7 +17,7 @@ type Props = {
   onDismissed?: FunctionType,
 };
 
-class FlagGroup extends Component<Props, {}> {
+export default class FlagGroup extends Component<Props, {}> {
   props: Props; // eslint-disable-line react/sort-comp
 
   renderChildren = () => {
@@ -45,18 +46,12 @@ class FlagGroup extends Component<Props, {}> {
 
   render() {
     return (
-      <Group>
-        <SROnly>Flag notifications</SROnly>
-        <Inner component="div">{this.renderChildren()}</Inner>
-      </Group>
+      <Portal zIndex={layers.flag()}>
+        <Group>
+          <SROnly>Flag notifications</SROnly>
+          <Inner component="div">{this.renderChildren()}</Inner>
+        </Group>
+      </Portal>
     );
   }
 }
-
-export default withRenderTarget(
-  {
-    target: 'flag',
-    withTransitionGroup: false,
-  },
-  FlagGroup,
-);
