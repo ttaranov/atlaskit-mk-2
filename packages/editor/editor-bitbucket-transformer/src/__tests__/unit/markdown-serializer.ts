@@ -1,5 +1,5 @@
-import { MarkdownSerializer, marks, nodes } from '../src/serializer';
-import { stringRepeat } from '../src/util';
+import { MarkdownSerializer, marks, nodes } from '../../serializer';
+import { stringRepeat } from '../../util';
 import {
   a,
   blockquote,
