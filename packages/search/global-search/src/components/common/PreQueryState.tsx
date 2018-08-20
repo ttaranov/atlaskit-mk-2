@@ -30,18 +30,20 @@ export default class PreQueryState extends React.Component<Props> {
       renderAdvancedSearchGroup,
     } = this.props;
 
-    if ((resultsGroup || []).map(({ items }) => items).every(isEmpty)) {
-      return [
-        <PreQueryAnalyticsComponent
-          key="pre-query-analytics"
-          screenCounter={screenCounter}
-          searchSessionId={searchSessionId}
-          referralContextIdentifiers={referralContextIdentifiers}
-        />,
-        <NoRecentActivity key="no-recent-activity">
-          {renderAdvancedSearchLink()}
-        </NoRecentActivity>,
-      ];
+    if ((resultsGroup || []).every(({ items }) => isEmpty(items))) {
+      return (
+        <>
+          <PreQueryAnalyticsComponent
+            key="pre-query-analytics"
+            screenCounter={screenCounter}
+            searchSessionId={searchSessionId}
+            referralContextIdentifiers={referralContextIdentifiers}
+          />,
+          <NoRecentActivity key="no-recent-activity">
+            {renderAdvancedSearchLink()}
+          </NoRecentActivity>,
+        </>
+      );
     }
 
     return (

@@ -32,11 +32,11 @@ const mapGroupsToSections = (resultsToShow: ResultsGroup[]): JSX.Element[] => {
 
   return resultsToShow
     .filter(({ items }) => items && items.length)
-    .map((result, index) => (
+    .map((group, index) => (
       <ResultGroup
-        key={result.key}
-        title={<FormattedMessage id={result.titleI18nId} />}
-        results={result.items}
+        key={group.key}
+        title={<FormattedMessage id={group.titleI18nId} />}
+        results={group.items}
         sectionIndex={index}
         analyticsData={analyticsData}
       />
@@ -51,7 +51,7 @@ export default class ResultGroupsComponent extends React.Component<Props> {
       type,
     } = this.props;
     switch (type) {
-      case ResultGroupType.PostQuery:
+      case ResultGroupType.PreQuery:
         return (
           <PreQueryAnalyticsComponent
             key="pre-query-analytics"
@@ -60,7 +60,7 @@ export default class ResultGroupsComponent extends React.Component<Props> {
             referralContextIdentifiers={referralContextIdentifiers}
           />
         );
-      case ResultGroupType.PreQuery:
+      case ResultGroupType.PostQuery:
         return (
           <PostQueryAnalyticsComponent
             key="post-query-analytics"
