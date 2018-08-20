@@ -1,7 +1,7 @@
 import { EmojiProvider } from '@atlaskit/emoji';
 import { emoji } from '@atlaskit/util-data-test';
 import * as React from 'react';
-import { ConnectedReactionPicker, ConnectedReactionsView, ReactionProvider } from '../src';
+import { ConnectedReactionPicker, ConnectedReactionsView, ReactionStore } from '../src';
 import { MockReactionsAdapter } from '../src/adapter';
 
 const { getEmojiResource } = emoji.storyData;
@@ -12,7 +12,7 @@ const adapter = new MockReactionsAdapter(500);
 
 export default function Example() {
   return (
-    <ReactionProvider adapter={adapter}>
+    <ReactionStore adapter={adapter}>
       <div>
         <div style={{ display: 'flex' }}>
           <p>Lorem ipsum dolor sit amet...</p>
@@ -29,6 +29,6 @@ export default function Example() {
           emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
         />
       </div>
-    </ReactionProvider>
+    </ReactionStore>
   );
 }

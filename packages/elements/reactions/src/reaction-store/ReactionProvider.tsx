@@ -30,7 +30,7 @@ export type Props = {
   url?: string;
 };
 
-export class ReactionProvider extends React.Component<Props, State> {
+export class ReactionStore extends React.Component<Props, State> {
   private adapter: ReactionAdapter;
   private actions: Actions;
 
@@ -155,6 +155,17 @@ export class ReactionProvider extends React.Component<Props, State> {
     });
   };
 
+  /**
+   * Utility function to help execute a callback to Reaction if its state is ready.
+   *
+   *
+   * @param containerAri
+   * @param ari
+   *
+   * @returns (updater: Updater<ReactionsReadyState>) => ReactionsState?
+   *  A function that will execute the received callback with the ReactionsState if
+   *  ready. If some state is returned, the new state will be applied.
+   */
   private withReadyReaction(containerAri: string, ari: string) {
     return (updater: Updater<ReactionsReadyState>) => {
       const reactionsState = this.getReactionsState(containerAri, ari);
@@ -167,6 +178,19 @@ export class ReactionProvider extends React.Component<Props, State> {
     };
   }
 
+  /**
+   * Utility function to help execute actions with a reaction. It handles reaction discovery
+   * and branching between reacted and not reacted.
+   *
+   * @param reactedCallback callback that will be executed when the user has already reacted
+   * with the emoji
+   * @param notReactedCallback callback that will be executed when the user hasn't reacted
+   * with the emoji
+   *
+   * @returns (containerAri: string, ari: string, emojiId: string) => ReactionsState?
+   *  A function that will execute the correct callback to the triple containerAri, ari and
+   *  emojiId. If some state is returned, the new state will be applied.
+   */
   private withReaction(
     reactedCallback: Updater<ReactionSummary>,
     notReactedCallback?: Updater<ReactionSummary>,

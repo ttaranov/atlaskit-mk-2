@@ -4,7 +4,7 @@ import * as React from 'react';
 import {
   ConnectedReactionsView,
   MockReactionsAdapter,
-  ReactionProvider,
+  ReactionStore,
 } from '../src';
 
 const { getEmojiResource } = emoji.storyData;
@@ -15,7 +15,7 @@ const adapter = new MockReactionsAdapter(1000);
 
 export default function Example() {
   return (
-    <ReactionProvider adapter={adapter}>
+    <ReactionStore adapter={adapter}>
       <div>
         <p>This is a message with some reactions</p>
         <ConnectedReactionsView
@@ -24,6 +24,6 @@ export default function Example() {
           emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
         />
       </div>
-    </ReactionProvider>
+    </ReactionStore>
   );
 }

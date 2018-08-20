@@ -1,7 +1,7 @@
 import { EmojiProvider } from '@atlaskit/emoji';
 import { emoji } from '@atlaskit/util-data-test';
 import * as React from 'react';
-import { ConnectedReactionsView, MockReactionsAdapter, ReactionProvider } from '../src';
+import { ConnectedReactionsView, MockReactionsAdapter, ReactionStore } from '../src';
 
 const { getEmojiResource } = emoji.storyData;
 const demoAri = 'ari:cloud:owner:demo-cloud-id:item/1';
@@ -11,7 +11,7 @@ const adapter = new MockReactionsAdapter(500);
 
 export default function Example() {
   return (
-    <ReactionProvider adapter={adapter}>
+    <ReactionStore adapter={adapter}>
       <div>
         <p>This is a message with some reactions</p>
         <ConnectedReactionsView
@@ -21,6 +21,6 @@ export default function Example() {
           allowAllEmojis={true}
         />
       </div>
-    </ReactionProvider>
+    </ReactionStore>
   );
 }

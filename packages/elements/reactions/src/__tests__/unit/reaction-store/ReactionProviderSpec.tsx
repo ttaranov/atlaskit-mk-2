@@ -8,7 +8,7 @@ import {
 } from '../../../adapter/MockReactionsAdapter';
 import { ReactionAdapter } from '../../../adapter/ReactionAdapter';
 import {
-  ReactionProvider,
+  ReactionStore,
   Props,
   State,
 } from '../../../reaction-store/ReactionProvider';
@@ -42,7 +42,7 @@ describe('ReactionProvider', () => {
 
   const renderProvider = () =>
     shallow(
-      <ReactionProvider
+      <ReactionStore
         adapter={fakeAdaptor}
         url="http://reactions.atlassian.com"
       />,

@@ -4,7 +4,7 @@ import * as React from 'react';
 import {
   ConnectedReactionsView,
   MockReactionsAdapter,
-  ReactionProvider,
+  ReactionStore,
 } from '../src';
 
 const { getEmojiResource } = emoji.storyData;
@@ -15,7 +15,7 @@ const adapter = new MockReactionsAdapter(500);
 
 export default function Example() {
   return (
-    <ReactionProvider adapter={adapter}>
+    <ReactionStore adapter={adapter}>
       <div
         style={{
           width: '300px',
@@ -30,6 +30,6 @@ export default function Example() {
           allowAllEmojis={true}
         />
       </div>
-    </ReactionProvider>
+    </ReactionStore>
   );
 }
