@@ -135,9 +135,15 @@ The View state controller contains the active view, and methods for adding and a
 ${code`
 import { withNavigationViewController } from '@atlaskit/navigation-next';
 
+const myView = {
+  id: 'my-view',
+  type: 'product',
+  getItems: () => [/* ... */],
+};
+
 class MyComponent extends React.Component {
   componentDidMount() {
-    this.props.navigationViewController.addView(view);
+    this.props.navigationViewController.addView(myView);
   }
 
   render() {
