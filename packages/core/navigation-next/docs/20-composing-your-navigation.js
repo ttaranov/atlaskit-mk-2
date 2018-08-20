@@ -7,7 +7,7 @@ import { Contents, ContentsProvider, H, IframeExample } from './shared';
 
 export default (
   <ContentsProvider>{md`
-This guide will introduce you to many of the components exported by \`@atlaskit/navigation-next\`, and will walk you through composing a simple navigation.
+This guide will introduce you to many of the components exported by \`navigation-next\`, and will walk you through composing a simple navigation.
 
 ${<Contents listType="ol" />}
 

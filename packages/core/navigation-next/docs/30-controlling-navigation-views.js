@@ -7,7 +7,7 @@ import { Contents, ContentsProvider, IframeExample, H } from './shared';
 
 export default (
   <ContentsProvider>{md`
-This guide will introduce you to some of the more advanced concepts in navigation-next.
+If you're wondering how to manage the state of your navigation, this guide is for you. It will introduce you to some of the more advanced concepts in \`navigation-next\`.
 
 ${<Contents listType="ol" />}
 
@@ -103,7 +103,7 @@ A few things to note:
 
 * Some \`type\`s are built into the package (such as, 'Item' and 'Section') and these types can be provided as a string. In the above example the Jira wordmark component isn't built into \`navigation-next\`, so we have to provide a component as the type.
 * A view is expected to be an array of Sections. Sections should not be nested.
-* You can find a complete list of the in-built item types here. **INSERT LINK HERE AT SOME POINT**
+* You can find a complete [list of the in-built item types here](/packages/core/navigation-next/docs/state-controllers).
 
 ${<H>A smart LayoutManager</H>}
 

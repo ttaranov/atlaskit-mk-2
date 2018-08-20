@@ -40,6 +40,7 @@
   "devDependencies": {
     "@atlaskit/analytics-listeners": "^3.3.0",
     "@atlaskit/badge": "^9.1.0",
+    "@atlaskit/button": "^9.0.6",
     "@atlaskit/docs": "^5.0.6",
     "@atlaskit/dropdown-menu": "^6.1.8",
     "@atlaskit/field-base": "^11.0.5",
