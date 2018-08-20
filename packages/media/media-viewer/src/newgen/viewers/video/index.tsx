@@ -27,7 +27,7 @@ export type State = {
 const sdArtifact = 'video_640.mp4';
 const hdArtifact = 'video_1280.mp4';
 export class VideoViewer extends React.Component<Props, State> {
-  state: State = { src: { status: 'PENDING' }, isHDActive: false };
+  state: State = { src: Outcome.pending(), isHDActive: false };
 
   componentDidMount() {
     this.init();
@@ -40,37 +40,33 @@ export class VideoViewer extends React.Component<Props, State> {
   };
 
   render() {
-    const { src, isHDActive } = this.state;
+    const { isHDActive } = this.state;
     const { item, featureFlags, showControls, previewCount } = this.props;
     const useCustomVideoPlayer =
       !isIE() && getFeatureFlag('customVideoPlayer', featureFlags);
     const isAutoPlay = previewCount === 0;
-    switch (src.status) {
-      case 'PENDING':
-        return <Spinner />;
-      case 'SUCCESSFUL':
-        if (useCustomVideoPlayer) {
-          return (
-            <CustomVideo
-              isAutoPlay={isAutoPlay}
-              onHDToggleClick={this.onHDChange}
-              showControls={showControls}
-              src={src.data}
-              isHDActive={isHDActive}
-              isHDAvailable={isHDAvailable(item)}
-            />
-          );
-        } else {
-          return <Video autoPlay={isAutoPlay} controls src={src.data} />;
-        }
-      case 'FAILED':
-        return (
-          <ErrorMessage error={src.err}>
-            <p>Try downloading the file to view it.</p>
-            {this.renderDownloadButton()}
-          </ErrorMessage>
-        );
-    }
+    return this.state.src.match({
+      pending: () => <Spinner />,
+      successful: src =>
+        useCustomVideoPlayer ? (
+          <CustomVideo
+            isAutoPlay={isAutoPlay}
+            onHDToggleClick={this.onHDChange}
+            showControls={showControls}
+            src={src}
+            isHDActive={isHDActive}
+            isHDAvailable={isHDAvailable(item)}
+          />
+        ) : (
+          <Video autoPlay={isAutoPlay} controls src={src} />
+        ),
+      failed: err => (
+        <ErrorMessage error={err}>
+          <p>Try downloading the file to view it.</p>
+          {this.renderDownloadButton()}
+        </ErrorMessage>
+      ),
+    });
   }
 
   private async init(isHDActive?: boolean) {
@@ -82,17 +78,13 @@ export class VideoViewer extends React.Component<Props, State> {
         throw new Error('No video artifacts found');
       }
       this.setState({
-        src: {
-          status: 'SUCCESSFUL',
-          data: await constructAuthTokenUrl(videoUrl, context, collectionName),
-        },
+        src: Outcome.successful(
+          await constructAuthTokenUrl(videoUrl, context, collectionName),
+        ),
       });
     } catch (err) {
       this.setState({
-        src: {
-          status: 'FAILED',
-          err: createError('previewFailed', item, err),
-        },
+        src: Outcome.failed(createError('previewFailed', item, err)),
       });
     }
   }

@@ -17,9 +17,9 @@ import {
   OnEmojiEvent,
   SpriteRepresentation,
 } from '../../types';
+import { deleteEmojiLabel } from '../../constants';
 import { leftClick } from '../../util/mouse';
 import { shouldUseAltRepresentation } from '../../api/EmojiUtils';
-import closest from '../../util/closest';
 
 export interface Props {
   /**
@@ -84,7 +84,10 @@ export interface Props {
 
 const handleMouseDown = (props: Props, event: MouseEvent<any>) => {
   // Clicked emoji delete button
-  if (event.target instanceof Element && closest(event.target, 'svg')) {
+  if (
+    event.target instanceof Element &&
+    event.target.getAttribute('aria-label') === deleteEmojiLabel
+  ) {
     return;
   }
   const { emoji, onSelected } = props;
@@ -241,7 +244,7 @@ const renderAsImage = (props: Props) => {
     deleteButton = (
       <span className={styles.deleteButton}>
         <CrossCircleIcon
-          label="delete-emoji"
+          label={deleteEmojiLabel}
           primaryColor={colors.N500}
           size="small"
           onClick={event => handleDelete(props, event)}

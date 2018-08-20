@@ -57,6 +57,20 @@ export const setDatePickerAt = (showDatePickerAt: number | null) => (
   return true;
 };
 
+export const closeDatePicker = () => (state, dispatch) => {
+  const { showDatePickerAt } = pluginKey.getState(state);
+
+  if (!showDatePickerAt) {
+    return false;
+  }
+
+  dispatch(
+    state.tr
+      .setMeta(pluginKey, { showDatePickerAt: null })
+      .setSelection(Selection.near(state.tr.doc.resolve(showDatePickerAt + 2))),
+  );
+};
+
 export const openDatePicker = (
   domAtPos: (pos: number) => { node: Node; offset: number },
 ) => (state: EditorState, dispatch: (tr: Transaction) => void): boolean => {

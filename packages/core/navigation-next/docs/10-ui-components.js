@@ -1,17 +1,29 @@
 // @flow
 
 import React from 'react';
+import { Prop } from 'pretty-proptypes'; // TODO export this from @atlaskit/docs
 import { Example, md, Props } from '@atlaskit/docs';
+import { colors } from '@atlaskit/theme';
 
 import { Contents, ContentsProvider, H } from './shared';
+
+const Hr = () => (
+  <hr
+    css={{
+      backgroundColor: colors.N40,
+      border: 0,
+      height: 1,
+      marginBottom: '2em',
+      marginTop: '2em',
+    }}
+  />
+);
 
 export default (
   <ContentsProvider>{md`
 ${<Contents />}
 
-&nbsp;
-  
-***
+${<Hr />}
 
 ${<H>ContainerHeader</H>}
 
@@ -31,7 +43,7 @@ See [Item](#Item).
 
 &nbsp;
 
-***
+${<Hr />}
 
 ${<H>GlobalItem</H>}
 
@@ -52,7 +64,7 @@ ${(
     />
   )}
 
-***
+${<Hr />}
 
 ${<H>GlobalNav</H>}
 
@@ -67,7 +79,7 @@ ${(
     />
   )}
 
-***
+${<Hr />}
 
 ${<H>Group</H>}
 
@@ -90,7 +102,7 @@ ${(
     />
   )}
 
-***
+${<Hr />}
 
 ${<H>GroupHeading</H>}
 
@@ -103,7 +115,7 @@ ${(
     />
   )}
 
-***
+${<Hr />}
 
 ${<H>Item</H>}
 
@@ -122,7 +134,7 @@ ${(
     />
   )}
 
-***
+${<Hr />}
 
 ${<H>ItemAvatar</H>}
 
@@ -135,7 +147,7 @@ ${(
     />
   )}
 
-***
+${<Hr />}
 
 ${<H>LayoutManager</H>}
 
@@ -148,7 +160,7 @@ ${(
     />
   )}
 
-***
+${<Hr />}
 
 ${<H>Section</H>}
 
@@ -171,10 +183,40 @@ ${(
     />
   )}
 
-***
+${<Hr />}
 
 ${<H>Separator</H>}
 
 Separates a group of items. This component takes no props.
+
+${<Hr />}
+
+<a name="Switcher"></a>
+# Switcher
+
+The Switcher component should be used within container navigation for switching projects or boards.
+
+It's recommended that the value be derived from the URL for accessibility, and to make updates via browser's history API \`onChange\`.
+
+${(
+    <Example
+      Component={require('./examples/ui-components/Switcher').default}
+      title="Switcher"
+      source={require('!!raw-loader!./examples/ui-components/Switcher')}
+    />
+  )}
+
+${(
+    <Props
+      heading="Switcher props"
+      props={require('!!extract-react-types-loader!../src/components/Switcher')}
+      overrides={{
+        // NOTE remove horrible (aesthetically) default value from docs
+        // it's not really relevant to the consumer.
+        // eslint-disable-next-line react/prop-types
+        components: ({ defaultValue, ...props }) => <Prop {...props} />,
+      }}
+    />
+  )}
 `}</ContentsProvider>
 );

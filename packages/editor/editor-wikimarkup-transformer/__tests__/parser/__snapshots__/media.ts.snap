@@ -1,5 +1,38 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`JIRA wiki markup - Images and attachments [CS-216] should parse media filename with "(" and ")" 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "attrs": Object {
+        "layout": "wide",
+      },
+      "content": Array [
+        Object {
+          "attrs": Object {
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "__key": null,
+            "collection": "",
+            "height": null,
+            "id": "Screen Shot (9db1eca8-8257-4763-92fb-e6417f9e34c9).jpeg",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+      ],
+      "type": "mediaSingle",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
 exports[`JIRA wiki markup - Images and attachments should find absolute URL images and convert it to link 1`] = `
 Object {
   "content": Array [

@@ -17,6 +17,7 @@ export { underline as u } from './marks/underline';
 
 export { blockQuote } from './nodes/blockquote';
 export { bodiedExtension } from './nodes/bodied-extension';
+export { blockCard } from './nodes/block-card';
 export { bulletList } from './nodes/bullet-list';
 export { bulletList as ul } from './nodes/bullet-list';
 export { codeBlock } from './nodes/code-block';

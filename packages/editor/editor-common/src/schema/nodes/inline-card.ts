@@ -1,4 +1,5 @@
 import { NodeSpec, Node as PMNode } from 'prosemirror-model';
+import { CardAttributes } from './block-card';
 
 export interface UrlType {
   url: string;
@@ -10,8 +11,6 @@ export interface DataType {
    */
   data: object;
 }
-
-export type CardAttributes = UrlType | DataType;
 
 /**
  * @name inlineCard_node

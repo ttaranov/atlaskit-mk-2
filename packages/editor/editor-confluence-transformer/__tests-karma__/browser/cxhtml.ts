@@ -411,21 +411,6 @@ describe('ConfluenceTransformer: encode - parse:', () => {
         );
       });
 
-      it('normalizes named HTML colours to hex when parsing', () => {
-        const actual = parse(
-          '<p>Text with <span style="color: papayawhip">some colour</span>.</p>',
-        );
-        expect(actual).to.deep.equal(
-          doc(
-            p(
-              'Text with ',
-              textColor({ color: '#ffefd5' })('some colour'),
-              '.',
-            ),
-          ),
-        );
-      });
-
       check(
         '<i><sub> nesting',
         '<p>Text with <i><sub>subscript emphasised words</sub></i>.</p>',

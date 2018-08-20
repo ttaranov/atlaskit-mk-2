@@ -10,12 +10,12 @@ const input = `
 `;
 
 describe('CodeBlock', () => {
-  it('should have an empty string as the default language', () => {
+  it('should have "clike" as the default language', () => {
     expect(
       mount(<ThemedCodeBlock text={input} />)
         .find(CodeBlock)
         .prop('language'),
-    ).toBe('');
+    ).toBe('clike');
   });
 
   it('should have "showLineNumbers" enabled by default', () => {

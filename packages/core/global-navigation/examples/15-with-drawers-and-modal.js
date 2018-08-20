@@ -1,6 +1,8 @@
 // @flow
 
 import React, { Fragment, Component } from 'react';
+
+import FabricAnalyticsListeners from '@atlaskit/analytics-listeners';
 import EmojiAtlassianIcon from '@atlaskit/icon/glyph/emoji/atlassian';
 import Modal from '@atlaskit/modal-dialog';
 import Lorem from 'react-lorem-component';
@@ -159,6 +161,13 @@ class GlobalNavWithDrawers extends Component<Props, State> {
   }
 }
 
+const mockClient = {
+  sendUIEvent: console.log,
+  sendOperationalEvent: console.log,
+  sendTrackEvent: console.log,
+  sendScreenEvent: console.log,
+};
+
 type NavState = {
   isCreateDrawerEnabled: boolean,
 };
@@ -179,25 +188,27 @@ export default class extends Component<{||}, NavState> {
   render() {
     return (
       <NavigationProvider>
-        <LayoutManager
-          globalNavigation={props => (
-            <GlobalNavWithDrawers
-              {...props}
-              isCreateDrawerEnabled={this.state.isCreateDrawerEnabled}
-            />
-          )}
-          productNavigation={() => null}
-          containerNavigation={() => null}
-        >
-          <Fragment>
-            <div>Page content</div>
-            <button onClick={this.toggleCreateDrawer}>{`Enable ${
-              this.state.isCreateDrawerEnabled
-                ? 'Create Drawer'
-                : 'Create Modal'
-            }`}</button>
-          </Fragment>
-        </LayoutManager>
+        <FabricAnalyticsListeners client={Promise.resolve(mockClient)}>
+          <LayoutManager
+            globalNavigation={props => (
+              <GlobalNavWithDrawers
+                {...props}
+                isCreateDrawerEnabled={this.state.isCreateDrawerEnabled}
+              />
+            )}
+            productNavigation={() => null}
+            containerNavigation={() => null}
+          >
+            <Fragment>
+              <div>Page content</div>
+              <button onClick={this.toggleCreateDrawer}>{`Enable ${
+                this.state.isCreateDrawerEnabled
+                  ? 'Create Drawer'
+                  : 'Create Modal'
+              }`}</button>
+            </Fragment>
+          </LayoutManager>
+        </FabricAnalyticsListeners>
       </NavigationProvider>
     );
   }

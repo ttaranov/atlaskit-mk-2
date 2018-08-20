@@ -1,24 +1,43 @@
 // @flow
-import React from 'react';
-import { colors } from '@atlaskit/theme';
+import React, { Component } from 'react';
+import Button from '@atlaskit/button';
 import InlineDialog from '../src';
 
-const centeredContainerStyles = {
-  display: 'flex',
-  justifyContent: 'center',
+type State = {
+  dialogOpen: boolean,
 };
 
-const targetStyles = {
-  background: colors.G300,
-  padding: '10px',
-};
-
-const dialogContent = <div>This is some inline dialog content!</div>;
-
-export default () => (
-  <div style={centeredContainerStyles}>
-    <InlineDialog content={dialogContent} isOpen>
-      <div style={targetStyles}>I am the target</div>
-    </InlineDialog>
+const content = (
+  <div>
+    <p>Hello!</p>
   </div>
 );
+
+export default class InlineDialogExample extends Component<{}, State> {
+  state = {
+    dialogOpen: true,
+  };
+
+  toggleDialog = () => this.setState({ dialogOpen: !this.state.dialogOpen });
+
+  render() {
+    return (
+      <div style={{ minHeight: '120px' }}>
+        <InlineDialog
+          onClose={() => {
+            this.setState({ dialogOpen: false });
+          }}
+          content={content}
+          isOpen={this.state.dialogOpen}
+        >
+          <Button
+            isSelected={this.state.dialogOpen}
+            onClick={this.toggleDialog}
+          >
+            Click me!
+          </Button>
+        </InlineDialog>
+      </div>
+    );
+  }
+}

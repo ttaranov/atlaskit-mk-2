@@ -1,4 +1,10 @@
-import { EditorState, TextSelection, PluginSpec } from 'prosemirror-state';
+import {
+  EditorState,
+  TextSelection,
+  PluginSpec,
+  AllSelection,
+} from 'prosemirror-state';
+import { Decoration, DecorationSet } from 'prosemirror-view';
 import {
   layoutSection,
   layoutColumn,
@@ -8,6 +14,7 @@ import {
   RefsNode,
   hr,
   createEditor,
+  sendKeyToPm,
 } from '@atlaskit/editor-test-helpers';
 import {
   default as layoutPlugin,
@@ -16,7 +23,7 @@ import {
 } from '../../../../src/plugins/layout/pm-plugins/main';
 
 const editor = doc =>
-  createEditor({ doc, editorProps: { UNSAFE_allowLayouts: true } });
+  createEditor({ doc, editorProps: { allowLayouts: true } });
 const toState = (node: RefsNode) =>
   EditorState.create({
     doc: node,
@@ -96,6 +103,103 @@ describe('layout', () => {
         );
         expect(pluginKey.getState(editorView.state)).toEqual({
           pos: null,
+        });
+      });
+    });
+
+    describe('#decorations', () => {
+      it('should render a Node decoration when cursor inside layout', () => {
+        const { editorView } = editor(
+          doc(
+            layoutSection({ layoutType: 'two_equal' })(
+              layoutColumn(p('{<>}')),
+              layoutColumn(p('')),
+            ),
+          ),
+        );
+
+        const decorations = (layoutPlugin.spec as PluginSpec).props!
+          .decorations!(editorView.state) as DecorationSet;
+        expect(decorations.find()).toHaveLength(1);
+        expect(decorations.find()).toEqual([
+          Decoration.node(0, 10, { class: 'selected' }),
+        ]);
+      });
+
+      it('should render no decorations when cursor is outside layout', () => {
+        const { editorView } = editor(doc(p('{<>}')));
+
+        const decorations = (layoutPlugin.spec as PluginSpec).props!
+          .decorations!(editorView.state) as DecorationSet;
+        expect(decorations).toBeUndefined();
+      });
+    });
+
+    describe('#keymaps', () => {
+      describe('Mod-A', () => {
+        it('should select all content in layoutColumn', () => {
+          const {
+            editorView,
+            refs: { from, to },
+          } = editor(
+            doc(
+              layoutSection({ layoutType: 'two_equal' })(
+                layoutColumn('{from}', p('start{<>}stop'), '{to}'),
+                layoutColumn(p('')),
+              ),
+            ),
+          );
+          sendKeyToPm(editorView, 'Mod-a');
+          expect(editorView.state.selection).toEqual(
+            TextSelection.create(editorView.state.doc, from, to),
+          );
+        });
+        it('should select whole document when layoutColumn already selected', () => {
+          const { editorView } = editor(
+            doc(
+              layoutSection({ layoutType: 'two_equal' })(
+                layoutColumn('{<}', p('startstop'), '{>}'),
+                layoutColumn(p('')),
+              ),
+            ),
+          );
+          sendKeyToPm(editorView, 'Mod-a');
+          expect(editorView.state.selection).toBeInstanceOf(AllSelection);
+        });
+      });
+      describe('Tab', () => {
+        it('should move to the next column', () => {
+          const {
+            editorView,
+            refs: { secondColumnPos },
+          } = editor(
+            doc(
+              layoutSection({ layoutType: 'two_equal' })(
+                layoutColumn(p('content{<>}')),
+                layoutColumn(p('{secondColumnPos}content')),
+              ),
+            ),
+          );
+          sendKeyToPm(editorView, 'Tab');
+          expect(editorView.state.selection).toEqual(
+            TextSelection.create(editorView.state.doc, secondColumnPos),
+          );
+        });
+
+        it('should not do anything when in the last column', () => {
+          const { editorView, sel } = editor(
+            doc(
+              layoutSection({ layoutType: 'two_equal' })(
+                layoutColumn(p('')),
+                layoutColumn(p('content{<>}')),
+              ),
+              p(''),
+            ),
+          );
+          sendKeyToPm(editorView, 'Tab');
+          expect(editorView.state.selection).toEqual(
+            TextSelection.create(editorView.state.doc, sel),
+          );
         });
       });
     });

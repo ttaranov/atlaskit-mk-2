@@ -6,12 +6,16 @@
 // in node_modules folder which contains circular symbolic links
 
 const DirectoryWatcher = require('watchpack/lib/DirectoryWatcher');
-const _oldcreateNestedWatcher = DirectoryWatcher.prototype.createNestedWatcher;
-DirectoryWatcher.prototype.createNestedWatcher = function(
-  dirPath /*: string */,
+const _oldSetDirectory = DirectoryWatcher.prototype.setDirectory;
+DirectoryWatcher.prototype.setDirectory = function(
+  directoryPath,
+  exist,
+  initial,
+  type,
 ) {
-  if (dirPath.includes('node_modules')) return;
-  _oldcreateNestedWatcher.call(this, dirPath);
+  if (!directoryPath.includes('node_modules')) {
+    _oldSetDirectory.call(this, directoryPath, exist, initial, type);
+  }
 };
 
 // End of the hack
@@ -102,6 +106,8 @@ async function runDevServer() {
       timings: true,
       chunks: false,
       chunkModules: false,
+      // https://github.com/TypeStrong/ts-loader/issues/751
+      warningsFilter: /export .* was not found in/,
     },
   });
 

@@ -5,15 +5,13 @@ import SearchResultsState from './SearchResultsState';
 import PreQueryState from './PreQueryState';
 import { isEmpty } from '../SearchResultsUtil';
 import SearchResults from '../SearchResults';
+import { PostQueryAnalyticsComponent } from './ScreenAnalyticsHelper';
+import { ScreenCounter } from '../../util/ScreenCounter';
+import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
 
 export const MAX_PAGES_BLOGS_ATTACHMENTS = 8;
 export const MAX_SPACES = 3;
 export const MAX_PEOPLE = 3;
-
-export interface ScreenCounter {
-  getCount(): number;
-  increment();
-}
 
 export interface Props {
   query: string;
@@ -30,6 +28,7 @@ export interface Props {
   searchSessionId: string;
   preQueryScreenCounter?: ScreenCounter;
   postQueryScreenCounter?: ScreenCounter;
+  referralContextIdentifiers?: ReferralContextIdentifiers;
 }
 
 export default class ConfluenceSearchResults extends React.Component<Props> {
@@ -49,6 +48,7 @@ export default class ConfluenceSearchResults extends React.Component<Props> {
       searchSessionId,
       preQueryScreenCounter,
       postQueryScreenCounter,
+      referralContextIdentifiers,
     } = this.props;
 
     return (
@@ -66,12 +66,23 @@ export default class ConfluenceSearchResults extends React.Component<Props> {
             recentlyInteractedPeople={recentlyInteractedPeople}
             searchSessionId={searchSessionId}
             screenCounter={preQueryScreenCounter}
+            referralContextIdentifiers={referralContextIdentifiers}
           />
         )}
         shouldRenderNoResultsState={() =>
           [objectResults, spaceResults, peopleResults].every(isEmpty)
         }
-        renderNoResultsStateComponent={() => <NoResultsState query={query} />}
+        renderNoResultsStateComponent={() => (
+          <>
+            <NoResultsState query={query} />
+            <PostQueryAnalyticsComponent
+              screenCounter={postQueryScreenCounter}
+              searchSessionId={searchSessionId}
+              referralContextIdentifiers={referralContextIdentifiers}
+              key="post-query-analytics"
+            />
+          </>
+        )}
         renderSearchResultsStateComponent={() => (
           <SearchResultsState
             query={query}
@@ -80,6 +91,7 @@ export default class ConfluenceSearchResults extends React.Component<Props> {
             peopleResults={peopleResults}
             searchSessionId={searchSessionId}
             screenCounter={postQueryScreenCounter}
+            referralContextIdentifiers={referralContextIdentifiers}
           />
         )}
       />

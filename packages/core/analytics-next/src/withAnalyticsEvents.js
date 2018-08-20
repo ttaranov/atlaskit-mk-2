@@ -26,7 +26,7 @@ type AnalyticsEventsProps = {
 type AnalyticsEventCreator<ProvidedProps: {}> = (
   create: CreateUIAnalyticsEvent,
   props: ProvidedProps,
-) => UIAnalyticsEvent;
+) => ?UIAnalyticsEvent;
 
 type EventMap<ProvidedProps: {}> = {
   [string]: AnalyticsEventPayload | AnalyticsEventCreator<ProvidedProps>,

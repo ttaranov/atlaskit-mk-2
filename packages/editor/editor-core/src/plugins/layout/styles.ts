@@ -24,7 +24,7 @@ export const layoutStyles = css`
         padding: ${akGridSizeUnitless * 2}px;
         flex: 1;
         min-width: 0;
-        border: 2px solid ${akColorN40};
+        border: 2px solid transparent;
         border-radius: 5px;
       }
 
@@ -35,8 +35,12 @@ export const layoutStyles = css`
         * Border to show when node is selected
         * Helps visualise when 'selectNodeBackwards' selects the node for deletion
         */
-      &.ProseMirror-selectednode {
+      &.ProseMirror-selectednode > * {
         border-color: ${akColorB200};
+      }
+      /* Shows the border when cursor is inside a layout */
+      &.selected > * {
+        border-color: ${akColorN40};
       }
     }
   }

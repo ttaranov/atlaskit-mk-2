@@ -279,7 +279,12 @@ describe('table keymap', () => {
         view.dispatch(tr.delete($head.pos - 1, $head.pos));
       };
 
-      const excludeNodes = ['doc', 'table', 'applicationCard'];
+      const excludeNodes = [
+        'doc',
+        'table',
+        'applicationCard',
+        'bodiedExtension',
+      ];
 
       Object.keys(defaultSchema.nodes).forEach(nodeName => {
         const node = defaultSchema.nodes[nodeName];

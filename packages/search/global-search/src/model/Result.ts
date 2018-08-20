@@ -19,7 +19,17 @@ export interface Result {
   resultType: ResultType;
   // optional container id
   containerId?: string;
+  // optional id for the experiment that generated this result
+  experimentId?: string;
 }
+/**
+ * Map of String keys and Array of results value, but can be empty as well
+ */
+export type GenericResultObject =
+  | {
+      [key: string]: Result[];
+    }
+  | {};
 
 export interface ConfluenceObjectResult extends Result {
   containerName: string;
@@ -30,9 +40,10 @@ export interface ConfluenceObjectResult extends Result {
 }
 
 export interface JiraObjectResult extends Result {
-  objectKey: string;
-  containerName: string;
+  objectKey?: string;
+  containerName?: string;
   resultType: ResultType.JiraObjectResult;
+  contentType?: ContentType;
 }
 
 export interface ContainerResult extends Result {
@@ -54,6 +65,10 @@ export enum ContentType {
   ConfluencePage = 'confluence-page',
   ConfluenceBlogpost = 'confluence-blogpost',
   ConfluenceAttachment = 'confluence-attachment',
+  JiraIssue = 'jira-issue',
+  JiraBoard = 'jira-board',
+  JiraFilter = 'jira-filter',
+  JiraProject = 'jira-project',
   Person = 'person',
 }
 

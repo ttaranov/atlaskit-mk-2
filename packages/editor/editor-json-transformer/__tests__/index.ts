@@ -385,6 +385,52 @@ describe('JSONTransformer:', () => {
           ],
         });
       });
+      [[0], [200], [100, 200], [100, 0]].forEach(colwidth => {
+        describe(`when colwidth=${JSON.stringify(colwidth)}`, () => {
+          it(`should preserve colwidth attributes as an array of widths`, () => {
+            const { editorView } = editor(
+              doc(table()(tr(schemaBuilder({ colwidth })(p('foo'))))),
+            );
+            expect(toJSON(editorView.state.doc)).toEqual({
+              version: 1,
+              type: 'doc',
+              content: [
+                {
+                  type: 'table',
+                  attrs: {
+                    isNumberColumnEnabled: false,
+                    layout: 'default',
+                  },
+                  content: [
+                    {
+                      type: 'tableRow',
+                      content: [
+                        {
+                          type: nodeName,
+                          attrs: {
+                            colwidth,
+                          },
+                          content: [
+                            {
+                              type: 'paragraph',
+                              content: [
+                                {
+                                  type: 'text',
+                                  text: 'foo',
+                                },
+                              ],
+                            },
+                          ],
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            });
+          });
+        });
+      });
     });
   });
 

@@ -68,7 +68,7 @@ const MyContainerNavigation = () => (
         <div className={className}>
           <Item text="Things in this container" />
           <Item text="Reports" />
-          <Item text="Some other thing" />
+          <Item text="Some other thing selected" isSelected />
           <Separator />
           <GroupHeading>Shortcuts</GroupHeading>
           <Item before={ShortcutIcon} text="Team space" />

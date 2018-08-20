@@ -23,31 +23,50 @@ const isNotEmpty = obj => {
 };
 
 const generateDropDown = (
-  Trigger: ComponentType<{}>,
+  Trigger: ComponentType<{ className: string, onClick: () => void }>,
   DropdownItems: ComponentType<{}>,
-) => ({ className }: { className: string }) => (
-  <Dropdown
-    trigger={
-      <span className={className}>
-        <Trigger />
-      </span>
-    }
-    position="right bottom"
-    boundariesElement="window"
-  >
-    <DropdownItems />
-  </Dropdown>
-);
+) => {
+  const GeneratedDropdown = ({
+    className,
+    onClick,
+  }: {
+    className: string,
+    onClick: () => void,
+  }) => {
+    return (
+      <Dropdown
+        trigger={<Trigger className={className} onClick={onClick} />}
+        position="right bottom"
+        boundariesElement="window"
+      >
+        <DropdownItems />
+      </Dropdown>
+    );
+  };
+  return GeneratedDropdown;
+};
 
-const generateAvatar = profileIconUrl => () => (
-  <Avatar
-    borderColor="transparent"
-    src={profileIconUrl}
-    isActive={false}
-    isHover={false}
-    size="small"
-  />
-);
+const generateAvatar = profileIconUrl => {
+  const GeneratedAvatar = ({
+    className,
+    onClick,
+  }: {
+    className: string,
+    onClick: () => void,
+  }) => (
+    <span className={className}>
+      <Avatar
+        borderColor="transparent"
+        src={profileIconUrl}
+        isActive={false}
+        isHover={false}
+        size="small"
+        onClick={onClick}
+      />
+    </span>
+  );
+  return GeneratedAvatar;
+};
 type OtherConfig = {
   href?: string,
   badge?: ?StatelessFunctionalComponent<*>,
@@ -92,11 +111,20 @@ function helpConfigFactory(items, tooltip, otherConfig = {}) {
 
   if (!items) return null;
 
+  const HelpIcon = ({
+    className,
+    onClick,
+  }: {
+    className: string,
+    onClick: () => void,
+  }) => (
+    <button className={className} onClick={onClick}>
+      <QuestionIcon secondaryColor={'inherit'} />
+    </button>
+  );
+
   return {
-    component: generateDropDown(
-      () => <QuestionIcon secondaryColor={'inherit'} />,
-      items,
-    ),
+    component: generateDropDown(HelpIcon, items),
     ...(tooltip ? { tooltip, label: tooltip } : null),
     ...otherConfig,
   };

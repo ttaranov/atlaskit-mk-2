@@ -47,6 +47,8 @@ const isIE11 = browser.ie_version === 11;
 export const tableStyles = css`
   .ProseMirror {
     ${tableSharedStyle} .table-container table {
+      table-layout: fixed;
+
       td,
       th {
         position: relative;

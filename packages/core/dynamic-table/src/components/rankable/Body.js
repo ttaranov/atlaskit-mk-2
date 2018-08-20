@@ -58,7 +58,7 @@ const computeRankDestination = (
 };
 
 export class RankableBody extends Component<Props, {}> {
-  onDragStart = (dragStart: DragStart) => {
+  onBeforeDragStart = (dragStart: DragStart) => {
     const {
       draggableId: key,
       source: { index },
@@ -99,7 +99,7 @@ export class RankableBody extends Component<Props, {}> {
 
     return (
       <DragDropContext
-        onDragStart={this.onDragStart}
+        onBeforeDragStart={this.onBeforeDragStart}
         onDragEnd={this.onDragEnd}
       >
         <Droppable

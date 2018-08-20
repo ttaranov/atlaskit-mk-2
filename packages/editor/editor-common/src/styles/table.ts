@@ -33,7 +33,6 @@ const tableSharedStyle = css`
     border-collapse: collapse;
     margin: ${tableMarginTop}px ${tableMarginSides}px ${tableMarginBottom}px;
     border: 1px solid ${akEditorTableBorder};
-    table-layout: fixed;
     width: 100%;
 
     &[data-autosize='true'] {
