@@ -26,20 +26,26 @@ describe('table toolbar', () => {
   const editor = (
     doc: any,
     permittedLayouts: PermittedLayoutsDescriptor = 'all',
-  ) =>
-    createEditor<TablePluginState>({
+  ) => {
+    const tableOptions = {
+      allowNumberColumn: true,
+      allowHeaderRow: true,
+      allowHeaderColumn: true,
+      permittedLayouts,
+    };
+    return createEditor<TablePluginState>({
       doc,
-      editorPlugins: [tablesPlugin, layoutPlugin, extensionPlugin],
+      editorPlugins: [
+        tablesPlugin(tableOptions),
+        layoutPlugin,
+        extensionPlugin,
+      ],
       editorProps: {
-        allowTables: {
-          allowNumberColumn: true,
-          allowHeaderRow: true,
-          allowHeaderColumn: true,
-          permittedLayouts,
-        },
+        allowTables: tableOptions,
       },
       pluginKey: tablePluginKey,
     });
+  };
 
   describe('supportsTableLayout()', () => {
     (['default', 'wide', 'full-width'] as TableLayout[]).forEach(layout => {
