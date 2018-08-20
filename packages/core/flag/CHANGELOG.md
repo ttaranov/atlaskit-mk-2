@@ -1,5 +1,9 @@
 # @atlaskit/flag
 
+## 9.0.6
+- [patch] Updated flags to use atlaskit portal instead of Layer manger [b9e6757](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b9e6757)
+- [none] Updated dependencies [b9e6757](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b9e6757)
+
 ## 9.0.5
 - [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
   - @atlaskit/theme@6.0.0
