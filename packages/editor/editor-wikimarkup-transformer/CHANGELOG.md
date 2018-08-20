@@ -1,5 +1,8 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 2.0.7
+- [patch] whitelist supported language for wiki markup [a3edfda](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a3edfda)
+
 ## 2.0.6
 - [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
   - @atlaskit/theme@6.0.0
