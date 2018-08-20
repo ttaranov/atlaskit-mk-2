@@ -28,7 +28,7 @@ function renderMount(partialProps: Partial<Props>) {
   const props: Props = {
     resultsGroup: [],
     type: ResultGroupType.PreQuery,
-    renderAdvancedSearch: () => <a>link</a>,
+    renderAdvancedSearch: () => <a key="advanced-link">link</a>,
     searchSessionId: '0',
     ...partialProps,
   };

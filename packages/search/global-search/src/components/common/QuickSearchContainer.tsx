@@ -4,7 +4,7 @@ import { LinkComponent } from '../GlobalQuickSearchWrapper';
 import GlobalQuickSearch from '../GlobalQuickSearch';
 import performanceNow from '../../util/performance-now';
 import {
-  GenericResultObject,
+  GenericResultMap,
   ResultsWithTiming,
   Result,
 } from '../../model/Result';
@@ -34,7 +34,7 @@ export interface Props {
     startTime: number,
   ): Promise<ResultsWithTiming>;
 
-  getDisplayedResults?(results: GenericResultObject): Result[][];
+  getDisplayedResults?(results: GenericResultMap): Result[][];
   createAnalyticsEvent?: CreateAnalyticsEventFn;
   handleSearchSubmit?({ target: string }): void;
   isSendSearchTermsEnabled?: boolean;
@@ -47,8 +47,8 @@ export interface State {
   isLoading: boolean;
   isError: boolean;
   keepPreQueryState: boolean;
-  searchResults: GenericResultObject | null;
-  recentItems: GenericResultObject | null;
+  searchResults: GenericResultMap | null;
+  recentItems: GenericResultMap | null;
 }
 
 /**
@@ -56,7 +56,7 @@ export interface State {
  */
 export class QuickSearchContainer extends React.Component<Props, State> {
   static defaultProps = {
-    getDisplayedResults(results: GenericResultObject) {
+    getDisplayedResults(results: GenericResultMap) {
       return Object.keys(results).map(key => results[key]);
     },
   };
