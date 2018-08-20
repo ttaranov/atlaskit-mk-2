@@ -17,8 +17,8 @@ export interface Props {
   renderNoResult: () => JSX.Element;
   renderAdvancedSearchLink: () => JSX.Element;
   retrySearch();
-  getRecentlyViewedGroups: () => ResultsGroup[];
-  getSearchResultsGroups: () => ResultsGroup[];
+  getPreQueryGroups: () => ResultsGroup[];
+  getPostQueryGroups: () => ResultsGroup[];
   renderAdvancedSearchGroup: () => JSX.Element;
   keepPreQueryState: boolean;
   searchSessionId: string;
@@ -30,7 +30,7 @@ export interface Props {
 export default class SearchResults extends React.Component<Props> {
   hasNoResult() {
     return this.props
-      .getSearchResultsGroups()
+      .getPostQueryGroups()
       .map(({ items }) => items)
       .every(isEmpty);
   }
@@ -63,11 +63,11 @@ export default class SearchResults extends React.Component<Props> {
       renderAdvancedSearchLink,
       referralContextIdentifiers,
       renderAdvancedSearchGroup,
-      getRecentlyViewedGroups,
+      getPreQueryGroups,
     } = this.props;
     return (
       <PreQueryState
-        resultsGroup={getRecentlyViewedGroups()}
+        resultsGroups={getPreQueryGroups()}
         renderAdvancedSearchLink={renderAdvancedSearchLink}
         query={query}
         searchSessionId={searchSessionId}
@@ -83,14 +83,14 @@ export default class SearchResults extends React.Component<Props> {
       searchSessionId,
       referralContextIdentifiers,
       renderAdvancedSearchGroup,
-      getSearchResultsGroups,
+      getPostQueryGroups,
       postQueryScreenCounter,
     } = this.props;
     return (
       <ResultGroupsComponent
         type={ResultGroupType.PostQuery}
         renderAdvancedSearch={renderAdvancedSearchGroup}
-        resultsGroup={getSearchResultsGroups()}
+        resultsGroups={getPostQueryGroups()}
         searchSessionId={searchSessionId}
         screenCounter={postQueryScreenCounter}
         referralContextIdentifiers={referralContextIdentifiers}

@@ -42,8 +42,8 @@ export default class ConfluenceSearchResults extends React.Component<Props> {
         renderAdvancedSearchGroup={() => (
           <AdvancedSearchGroup key="advanced" query={query} />
         )}
-        getRecentlyViewedGroups={() => mapRecentResultsToUIGroups(recentItems)}
-        getSearchResultsGroups={() => mapSearchResultsToUIGroups(searchResults)}
+        getPreQueryGroups={() => mapRecentResultsToUIGroups(recentItems)}
+        getPostQueryGroups={() => mapSearchResultsToUIGroups(searchResults)}
         renderNoResult={() => <NoResultsState query={query} />}
       />
     );

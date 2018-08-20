@@ -19,8 +19,8 @@ const defaultProps = {
   renderAdvancedSearchLink: () => <div id="advanced-search-link" />,
   renderNoResult: () => <div id="no-result" />,
   renderAdvancedSearchGroup: () => <div id="advanced-search-group" />,
-  getRecentlyViewedGroups: () => [],
-  getSearchResultsGroups: () => [],
+  getPreQueryGroups: () => [],
+  getPostQueryGroups: () => [],
 };
 
 const mockResultsGroup = [
@@ -72,7 +72,7 @@ it('should render pre query state when there is no query entered', () => {
   const props: Partial<Props> = {
     query: '',
     isLoading: false,
-    getRecentlyViewedGroups: mockFn,
+    getPreQueryGroups: mockFn,
   };
 
   const wrapper = render(props);
@@ -85,7 +85,7 @@ it('should render pre query state when there is no query entered', () => {
     renderAdvancedSearchLink: defaultProps.renderAdvancedSearchLink,
     searchSessionId: defaultProps.searchSessionId,
     renderAdvancedSearchGroup: defaultProps.renderAdvancedSearchGroup,
-    resultsGroup: mockResultsGroup,
+    resultsGroups: mockResultsGroup,
   });
 });
 
@@ -95,7 +95,7 @@ it('should render pre query state while its loading and it should keep the previ
     query: 'davo',
     isLoading: true,
     keepPreQueryState: true,
-    getRecentlyViewedGroups: mockFn,
+    getPreQueryGroups: mockFn,
   };
 
   const wrapper = render(props);
@@ -110,7 +110,7 @@ it('should render no results state when there are no results and a query is ente
     query: 'foo',
     isLoading: false,
     keepPreQueryState: false,
-    getSearchResultsGroups: jest.fn(() => [{ items: [] }]),
+    getPostQueryGroups: jest.fn(() => [{ items: [] }]),
     renderNoResult: jest.fn(),
   };
 
@@ -121,7 +121,7 @@ it('should render no results state when there are no results and a query is ente
   expect(postQueryAnalytics.props()).toMatchObject({
     searchSessionId: defaultProps.searchSessionId,
   });
-  expect(props.getSearchResultsGroups).toHaveBeenCalled();
+  expect(props.getPostQueryGroups).toHaveBeenCalled();
   expect(props.renderNoResult).toHaveBeenCalled();
 });
 
@@ -129,18 +129,18 @@ it('should render search results when there are results', () => {
   const props: Partial<Props> = {
     query: 'foo',
     isLoading: false,
-    getSearchResultsGroups: jest.fn(() => mockResultsGroup),
+    getPostQueryGroups: jest.fn(() => mockResultsGroup),
   };
 
   const wrapper = render(props);
   const resultGroupsComponent = wrapper.find(ResultGroupsComponent);
 
-  expect(props.getSearchResultsGroups).toHaveBeenCalled();
+  expect(props.getPostQueryGroups).toHaveBeenCalled();
   expect(resultGroupsComponent.length).toBe(1);
   expect(resultGroupsComponent.props()).toMatchObject({
     type: ResultGroupType.PostQuery,
     renderAdvancedSearch: defaultProps.renderAdvancedSearchGroup,
-    resultsGroup: mockResultsGroup,
+    resultsGroups: mockResultsGroup,
     searchSessionId: defaultProps.searchSessionId,
   });
 });

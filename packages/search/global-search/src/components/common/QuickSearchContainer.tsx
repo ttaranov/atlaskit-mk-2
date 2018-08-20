@@ -4,7 +4,7 @@ import { LinkComponent } from '../GlobalQuickSearchWrapper';
 import GlobalQuickSearch from '../GlobalQuickSearch';
 import performanceNow from '../../util/performance-now';
 import {
-  GenericResultObject,
+  GenericResultMap,
   ResultsWithTiming,
   Result,
 } from '../../model/Result';
@@ -34,11 +34,17 @@ export interface Props {
     startTime: number,
   ): Promise<ResultsWithTiming>;
 
-  getDisplayedResults?(results: GenericResultObject): Result[][];
+  /**
+   * return displayed groups from result groups
+   * Used by analytics to tell how many ui groups are displayed for user
+   * for example in jira we pass (issues, boards, filters and projects but we display only 2 groups issues and others combined)
+   * @param results
+   */
+  getDisplayedResults?(results: GenericResultMap): Result[][];
   createAnalyticsEvent?: CreateAnalyticsEventFn;
   handleSearchSubmit?({ target: string }): void;
   isSendSearchTermsEnabled?: boolean;
-  placeHolder?: string;
+  placeholder?: string;
 }
 
 export interface State {
@@ -47,8 +53,8 @@ export interface State {
   isLoading: boolean;
   isError: boolean;
   keepPreQueryState: boolean;
-  searchResults: GenericResultObject | null;
-  recentItems: GenericResultObject | null;
+  searchResults: GenericResultMap | null;
+  recentItems: GenericResultMap | null;
 }
 
 /**
@@ -56,7 +62,7 @@ export interface State {
  */
 export class QuickSearchContainer extends React.Component<Props, State> {
   static defaultProps = {
-    getDisplayedResults(results: GenericResultObject) {
+    getDisplayedResults(results: GenericResultMap) {
       return Object.keys(results).map(key => results[key]);
     },
   };
@@ -241,7 +247,7 @@ export class QuickSearchContainer extends React.Component<Props, State> {
       linkComponent,
       isSendSearchTermsEnabled,
       getSearchResultsComponent,
-      placeHolder,
+      placeholder,
     } = this.props;
     const {
       isLoading,
@@ -259,7 +265,7 @@ export class QuickSearchContainer extends React.Component<Props, State> {
         onSearch={this.handleSearch}
         onSearchSubmit={this.props.handleSearchSubmit}
         isLoading={isLoading}
-        placeholder={placeHolder}
+        placeholder={placeholder}
         linkComponent={linkComponent}
         searchSessionId={searchSessionId}
         isSendSearchTermsEnabled={isSendSearchTermsEnabled}

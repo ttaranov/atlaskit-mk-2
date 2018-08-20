@@ -241,7 +241,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
 
     return (
       <QuickSearchContainer
-        placeHolder={this.props.intl.formatMessage({
+        placeholder={this.props.intl.formatMessage({
           id: 'global-search.confluence.search-placeholder',
         })}
         linkComponent={linkComponent}
