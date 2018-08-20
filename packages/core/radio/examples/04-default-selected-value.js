@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import RadioGroup from '../src/RadioGroup';
+import { RadioGroup } from '../src';
 
 const radioValues = [
   { name: 'color', value: 'blue', label: 'Blue' },

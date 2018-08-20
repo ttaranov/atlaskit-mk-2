@@ -57,7 +57,7 @@ describe(name, () => {
             expect(radio.prop('value')).toBe(item.value);
             expect(radio.prop('children')).toBe(item.label);
             expect(radio.prop('isDisabled')).toBe(!!item.isDisabled);
-            expect(radio.prop('isSelected')).toBe(!!item.isSelected);
+            expect(radio.prop('isChecked')).toBe(!!item.isChecked);
           }
         });
       });

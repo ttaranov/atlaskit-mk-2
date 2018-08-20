@@ -1,17 +1,17 @@
 // @flow
 import React, { Component } from 'react';
 import Button from '@atlaskit/button';
-import FieldRadioGroup, { AkRadio } from '../src';
-import type { ItemsPropTypeSmart } from '../src/types';
+import { Radio, RadioGroup } from '../src';
+import type { ItemsPropType } from '../src/types';
 
 const formTestUrl = '//httpbin.org/get';
-const colorItems: ItemsPropTypeSmart = [
+const colorItems: ItemsPropType = [
   { name: 'color', value: 'red', label: 'Red' },
   { name: 'color', value: 'blue', label: 'Blue', defaultSelected: true },
   { name: 'color', value: 'yellow', label: 'Yellow' },
   { name: 'color', value: 'green', label: 'Green' },
 ];
-const fruitItems: ItemsPropTypeSmart = [
+const fruitItems: ItemsPropType = [
   { name: 'fruit', value: 'apple', label: 'Apple' },
   { name: 'fruit', value: 'orange', label: 'Orange' },
   { name: 'fruit', value: 'peach', label: 'Peach', defaultSelected: true },
@@ -31,24 +31,19 @@ export default class FormExample extends Component<void, void> {
           style={{ backgroundColor: 'white' }}
           target="submitFrame"
         >
-          <AkRadio
+          <Radio
             name="standalone"
             value="single-radio"
             onChange={this.onRadioChange}
           >
             Single Radio button
-          </AkRadio>
-          <FieldRadioGroup
+          </Radio>
+          <RadioGroup
             items={colorItems}
-            label="Pick a color:"
-            onRadioChange={this.onRadioChange}
+            onChange={this.onRadioChange}
             isRequired
           />
-          <FieldRadioGroup
-            items={fruitItems}
-            label="Pick a fruit:"
-            onRadioChange={this.onRadioChange}
-          />
+          <RadioGroup items={fruitItems} onChange={this.onRadioChange} />
           <p>
             <Button type="submit" appearance="primary">
               Submit
