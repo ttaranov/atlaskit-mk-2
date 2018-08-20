@@ -1,5 +1,5 @@
 import { BitbucketTransformer } from '../..';
-import { bitbucketSchema as schema, paragraph } from '@atlaskit/editor-common';
+import { bitbucketSchema as schema } from '@atlaskit/editor-common';
 import {
   a,
   blockquote,
@@ -12,7 +12,6 @@ import {
   h5,
   h6,
   hr,
-  img,
   li,
   emoji,
   mention,
