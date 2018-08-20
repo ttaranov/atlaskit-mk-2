@@ -8,6 +8,7 @@ import DropdownMenu, {
 } from '@atlaskit/dropdown-menu';
 import AdvancedSearchResult from '../AdvancedSearchResult';
 import { AnalyticsType } from '../../model/Result';
+import { getJiraAdvancedSearchUrl } from '../SearchResultsUtil';
 
 export interface Props {
   query: string;
@@ -45,7 +46,10 @@ export default class JiraAdvancedSearch extends React.Component<Props> {
 
   renderDropDownItems = () =>
     items.map(item => (
-      <DropdownItem onClick={() => this.setState({ selectedItem: item })}>
+      <DropdownItem
+        onClick={() => this.setState({ selectedItem: item })}
+        key={item}
+      >
         {getItem(item)}
       </DropdownItem>
     ));
@@ -54,8 +58,8 @@ export default class JiraAdvancedSearch extends React.Component<Props> {
     const { query, showKeyboardLozenge, showSearchIcon } = this.props;
     return (
       <AdvancedSearchResult
-        href={`#${query}`}
-        key="search_confluence"
+        href={getJiraAdvancedSearchUrl(this.state.selectedItem, query)}
+        key="search_jira"
         resultId="advanced-jira-search"
         text={
           <Container>
