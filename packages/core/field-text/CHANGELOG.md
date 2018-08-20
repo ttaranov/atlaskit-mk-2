@@ -1,5 +1,9 @@
 # @atlaskit/field-text
 
+## 7.0.7
+- [patch] Textfield and textarea components now play nicer with flex parents in IE [4e81369](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e81369)
+- [none] Updated dependencies [4e81369](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e81369)
+
 ## 7.0.6
 - [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
   - @atlaskit/theme@6.0.0
