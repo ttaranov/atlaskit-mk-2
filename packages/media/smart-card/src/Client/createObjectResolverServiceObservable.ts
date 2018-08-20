@@ -12,16 +12,18 @@ import {
 import { Command, ObjectState, AuthService } from './types';
 import fetch$ from './fetch';
 
+export type RemoteResourceAuthConfig = {
+  key: string;
+  displayName: string;
+  url: string;
+};
+
 // @see https://product-fabric.atlassian.net/wiki/spaces/CS/pages/279347271/Object+Provider
 interface ResolveResponse {
   meta: {
     visibility: 'public' | 'restricted' | 'other' | 'not_found';
     access: 'granted' | 'unauthorised' | 'forbidden';
-    auth: {
-      key: string;
-      displayName: string;
-      url: string;
-    }[];
+    auth: RemoteResourceAuthConfig[];
     definitionId: string;
   };
   data?: {
@@ -106,12 +108,12 @@ export function createObjectResolverServiceObservable(options: Options) {
         }),
       );
     }),
-    catchError(() => {
-      return of<ObjectState>({
+    catchError(() =>
+      of<ObjectState>({
         status: 'errored',
         services: [],
-      });
-    }),
+      }),
+    ),
     publishReplay(1),
     refCount(),
   );

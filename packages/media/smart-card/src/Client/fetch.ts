@@ -1,5 +1,4 @@
 import { Observable } from 'rxjs/Observable';
-import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
 
 export default function<T>(
   method: string,

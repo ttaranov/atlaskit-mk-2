@@ -1,12 +1,13 @@
-import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
 import 'whatwg-fetch';
+import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
 import * as fetchMock from 'fetch-mock';
 import { Client, ClientOptions } from '../..';
+import { RemoteResourceAuthConfig } from '../../createObjectResolverServiceObservable';
 const RESOLVE_URL =
   'https://api-private.stg.atlassian.com/object-resolver/resolve';
 const OBJECT_URL = 'http://example.com/foobar';
 
-const auth: any = [];
+const remoteResourceMetaAuth: RemoteResourceAuthConfig[] = [];
 
 const definitionId = 'abc-123';
 
@@ -29,7 +30,7 @@ function resolved() {
         meta: {
           visibility: 'restricted',
           access: 'granted',
-          auth,
+          auth: remoteResourceMetaAuth,
           definitionId,
         },
         data: {
@@ -61,7 +62,7 @@ function notfound() {
         meta: {
           visibility: 'not_found',
           access: 'granted',
-          auth,
+          auth: remoteResourceMetaAuth,
           definitionId,
         },
       }),
@@ -70,7 +71,6 @@ function notfound() {
 }
 
 describe('Client', () => {
-  // beforeEach(() => mock.setup());
   afterEach(() => fetchMock.restore());
 
   it('should be resolving when the object is being retrieved', async () => {
@@ -126,7 +126,7 @@ describe('Client', () => {
           meta: {
             visibility: 'restricted',
             access: 'unauthorised',
-            auth,
+            auth: remoteResourceMetaAuth,
             definitionId,
           },
           data: {
@@ -159,7 +159,7 @@ describe('Client', () => {
           meta: {
             visibility: 'restricted',
             access: 'forbidden',
-            auth,
+            auth: remoteResourceMetaAuth,
             definitionId,
           },
           data: {

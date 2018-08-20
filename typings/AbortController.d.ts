@@ -1,10 +1,10 @@
-interface IAbortController {
+interface AbortController {
   readonly signal: EventTarget;
   abort(): void;
 }
 
 interface AbortControllerConstructor {
-  new (): IAbortController;
+  new (): AbortController;
 }
 
 declare var AbortController: AbortControllerConstructor;

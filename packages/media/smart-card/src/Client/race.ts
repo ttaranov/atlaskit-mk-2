@@ -1,6 +1,6 @@
 import { Observable } from 'rxjs/Observable';
 import { ObjectState } from './types';
-import { Subscriber } from '../../node_modules/rxjs';
+import { Subscriber } from 'rxjs/Subscriber';
 
 // this is very hacky but used because rxjs' race() won't work with never ending observables and intermediate values
 export function race(
