@@ -25,9 +25,26 @@ jest.mock('@atlaskit/build-utils/packages');
 jest.mock('@atlaskit/build-utils/git');
 jest.mock('../../changeset/createChangesetCommit');
 
-getChangedPackagesSinceMaster.mockReturnValue([]);
+// This is some sad flow hackery
+const unsafeGetChangedPackagesSinceMaster: any = getChangedPackagesSinceMaster;
+unsafeGetChangedPackagesSinceMaster.mockReturnValue([]);
 
-const mockUserResponses = mockResponses => {
+type releases = {
+  [string]: string,
+};
+type dependent = {
+  name: string,
+  type: string,
+  dependencies: Array<string>,
+};
+type mockResponses = {
+  summary?: string,
+  shouldCommit?: string,
+  releases: releases,
+  dependents?: Array<dependent>,
+};
+
+const mockUserResponses = (mockResponses: mockResponses) => {
   const summary = mockResponses.summary || 'summary message mock';
   const shouldCommit = mockResponses.shouldCommit || 'n';
   askCheckboxPlus.mockReturnValueOnce(Object.keys(mockResponses.releases));
