@@ -91,7 +91,7 @@ export interface FolderViewDispatchProps {
   ) => void;
   readonly setUpfrontIdDeferred: (
     id: string,
-    resolver: Function,
+    resolver: (id: string) => void,
     rejecter: Function,
   ) => void;
 }

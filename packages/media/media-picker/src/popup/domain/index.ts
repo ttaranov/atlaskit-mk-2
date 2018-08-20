@@ -42,7 +42,7 @@ export interface State {
   readonly onCancelUpload: CancelUploadHandler;
   readonly config: Partial<PopupConfig>;
   readonly deferredIdUpfronts: {
-    [id: string]: { resolver: Function; rejecter: Function };
+    [id: string]: { resolver: (id: string) => void; rejecter: Function };
   };
 }
 
