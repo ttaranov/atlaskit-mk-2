@@ -244,8 +244,10 @@ class ResizeControl extends PureComponent<Props, State> {
     let shouldCollapse;
     const expandThreshold = 24;
 
+    const resizerClicked = !isDragging && !this.invalidDragAttempted;
+
     // check if the intention was just a click, and toggle
-    if (!isDragging && !this.invalidDragAttempted) {
+    if (resizerClicked) {
       publishWidth = Math.max(CONTENT_NAV_WIDTH, width);
       this.toggleCollapse('resizerClick');
     }
@@ -263,7 +265,10 @@ class ResizeControl extends PureComponent<Props, State> {
       shouldCollapse = navigation.state.isCollapsed;
     }
 
-    if ((didDragOpen && !shouldCollapse) || (!didDragOpen && shouldCollapse)) {
+    if (
+      !resizerClicked &&
+      ((didDragOpen && !shouldCollapse) || (!didDragOpen && shouldCollapse))
+    ) {
       navigationExpandedCollapsed(createAnalyticsEvent, {
         trigger: 'resizerDrag',
         isCollapsed: shouldCollapse,
