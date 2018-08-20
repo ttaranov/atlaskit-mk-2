@@ -25,20 +25,28 @@ export interface Result {
 /**
  * Map of String keys and Array of results value, but can be empty as well
  */
-export interface GenericResultObject {
+export interface GenericResultMap {
   [key: string]: Result[];
 }
 
-export interface ConfluenceRecentlyViewedItemsMap extends GenericResultObject {
-  recentlyInteractedPeople: Result[];
-  recentlyViewedPages: Result[];
-  recentlyViewedSpaces: Result[];
+export type ResultsWithTiming = {
+  results: GenericResultMap;
+  timings?: {
+    [key: string]: number | string;
+  };
+};
+
+export interface ConfluenceResultsMap extends GenericResultMap {
+  people: Result[];
+  objects: Result[];
+  spaces: Result[];
 }
 
-export interface JiraRecentlyViewedItemsMap extends GenericResultObject {
-  recentlyViewedIssues: Result[];
-  recentlyViewdBoards: Result[];
-  recentlyViewedProjects: Result[];
+export interface JiraResultsMap extends GenericResultMap {
+  issues: Result[];
+  boards: Result[];
+  projects: Result[];
+  filters: Result[];
 }
 
 export interface ConfluenceObjectResult extends Result {

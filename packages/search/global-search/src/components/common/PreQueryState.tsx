@@ -11,7 +11,7 @@ import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
 
 export interface Props {
   query: string;
-  resultsGroup: ResultsGroup[];
+  resultsGroups: ResultsGroup[];
   searchSessionId: string;
   screenCounter?: ScreenCounter;
   referralContextIdentifiers?: ReferralContextIdentifiers;
@@ -22,7 +22,7 @@ export interface Props {
 export default class PreQueryState extends React.Component<Props> {
   render() {
     const {
-      resultsGroup,
+      resultsGroups,
       searchSessionId,
       screenCounter,
       renderAdvancedSearchLink,
@@ -30,25 +30,27 @@ export default class PreQueryState extends React.Component<Props> {
       renderAdvancedSearchGroup,
     } = this.props;
 
-    if ((resultsGroup || []).map(({ items }) => items).every(isEmpty)) {
-      return [
-        <PreQueryAnalyticsComponent
-          key="pre-query-analytics"
-          screenCounter={screenCounter}
-          searchSessionId={searchSessionId}
-          referralContextIdentifiers={referralContextIdentifiers}
-        />,
-        <NoRecentActivity key="no-recent-activity">
-          {renderAdvancedSearchLink()}
-        </NoRecentActivity>,
-      ];
+    if (resultsGroups.every(({ items }) => isEmpty(items))) {
+      return (
+        <>
+          <PreQueryAnalyticsComponent
+            key="pre-query-analytics"
+            screenCounter={screenCounter}
+            searchSessionId={searchSessionId}
+            referralContextIdentifiers={referralContextIdentifiers}
+          />,
+          <NoRecentActivity key="no-recent-activity">
+            {renderAdvancedSearchLink()}
+          </NoRecentActivity>,
+        </>
+      );
     }
 
     return (
       <ResultGroupsComponent
         type={ResultGroupType.PreQuery}
         renderAdvancedSearch={renderAdvancedSearchGroup}
-        resultsGroup={resultsGroup}
+        resultsGroups={resultsGroups}
         searchSessionId={searchSessionId}
         screenCounter={screenCounter}
         referralContextIdentifiers={referralContextIdentifiers}

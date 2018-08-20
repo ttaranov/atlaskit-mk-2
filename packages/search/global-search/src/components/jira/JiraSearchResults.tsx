@@ -1,24 +1,20 @@
 import * as React from 'react';
-import { ConfluenceResultsMap } from '../../model/Result';
+import { JiraResultsMap, GenericResultMap } from '../../model/Result';
 import { ScreenCounter } from '../../util/ScreenCounter';
 import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
-import NoResultsState from './NoResultsState';
 import SearchResults from '../common/SearchResults';
-import { getConfluenceAdvancedSearchLink } from '../SearchResultsUtil';
 import { FormattedHTMLMessage } from 'react-intl';
-import AdvancedSearchGroup from './AdvancedSearchGroup';
 import {
   mapRecentResultsToUIGroups,
   mapSearchResultsToUIGroups,
-} from './ConfluenceSearchResultsMapper';
-
+} from './JiraSearchResultsMapper';
 export interface Props {
   query: string;
   isError: boolean;
   isLoading: boolean;
   retrySearch();
-  recentItems: ConfluenceResultsMap;
-  searchResults: ConfluenceResultsMap;
+  searchResults: GenericResultMap;
+  recentItems: JiraResultsMap;
   keepPreQueryState: boolean;
   searchSessionId: string;
   preQueryScreenCounter?: ScreenCounter;
@@ -26,7 +22,7 @@ export interface Props {
   referralContextIdentifiers?: ReferralContextIdentifiers;
 }
 
-export default class ConfluenceSearchResults extends React.Component<Props> {
+export default class JiraSearchResults extends React.Component<Props> {
   render() {
     const { recentItems, searchResults, query } = this.props;
 
@@ -36,15 +32,17 @@ export default class ConfluenceSearchResults extends React.Component<Props> {
         renderAdvancedSearchLink={() => (
           <FormattedHTMLMessage
             id="global-search.no-recent-activity-body"
-            values={{ url: getConfluenceAdvancedSearchLink() }}
+            values={{ url: 'http://www.jdog.jira-dev.com' }}
           />
         )}
         renderAdvancedSearchGroup={() => (
-          <AdvancedSearchGroup key="advanced" query={query} />
+          <div id="jira-advanced-search" key="jira-advanced-search" />
         )}
         getPreQueryGroups={() => mapRecentResultsToUIGroups(recentItems)}
-        getPostQueryGroups={() => mapSearchResultsToUIGroups(searchResults)}
-        renderNoResult={() => <NoResultsState query={query} />}
+        getPostQueryGroups={() =>
+          mapSearchResultsToUIGroups(searchResults as JiraResultsMap)
+        }
+        renderNoResult={() => <div id="no-result" key={query} />}
       />
     );
   }

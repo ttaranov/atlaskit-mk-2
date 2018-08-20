@@ -14,7 +14,7 @@ import ResultGroup from '../../../components/ResultGroup';
 
 function render(partialProps: Partial<Props>) {
   const props: Props = {
-    resultsGroup: [],
+    resultsGroups: [],
     type: ResultGroupType.PreQuery,
     renderAdvancedSearch: () => <a>link</a>,
     searchSessionId: '0',
@@ -26,9 +26,9 @@ function render(partialProps: Partial<Props>) {
 
 function renderMount(partialProps: Partial<Props>) {
   const props: Props = {
-    resultsGroup: [],
+    resultsGroups: [],
     type: ResultGroupType.PreQuery,
-    renderAdvancedSearch: () => <a>link</a>,
+    renderAdvancedSearch: () => <a key="advanced-link">link</a>,
     searchSessionId: '0',
     ...partialProps,
   };
@@ -37,7 +37,7 @@ function renderMount(partialProps: Partial<Props>) {
 }
 
 it('should render passed objects', () => {
-  const resultsGroup = [
+  const resultsGroups = [
     {
       items: [makeConfluenceObjectResult(), makeConfluenceObjectResult()],
       key: 'recentlyViewedPages',
@@ -56,7 +56,7 @@ it('should render passed objects', () => {
   ];
 
   const wrapper = render({
-    resultsGroup,
+    resultsGroups,
   });
 
   const groups = wrapper.find(ResultGroup);
@@ -65,14 +65,14 @@ it('should render passed objects', () => {
     expect(group.props()).toMatchObject({
       analyticsData: { resultCount: 6 },
       sectionIndex: index,
-      results: resultsGroup[index].items,
+      results: resultsGroups[index].items,
     });
-    expect(group.key()).toBe(resultsGroup[index].key);
+    expect(group.key()).toBe(resultsGroups[index].key);
   });
 });
 
 it('should filter out empty groups', () => {
-  const resultsGroup = [
+  const resultsGroups = [
     {
       items: [makeConfluenceObjectResult(), makeConfluenceObjectResult()],
       key: 'recentlyViewedPages',
@@ -96,7 +96,7 @@ it('should filter out empty groups', () => {
   ];
 
   const wrapper = render({
-    resultsGroup,
+    resultsGroups,
   });
 
   const groups = wrapper.find(ResultGroup);
@@ -107,7 +107,7 @@ it('should filter out empty groups', () => {
       sectionIndex: group.props().sectionIndex,
     }))
     .forEach(({ key, sectionIndex }, index) => {
-      expect(key).toBe(resultsGroup[index * 3].key);
+      expect(key).toBe(resultsGroups[index * 3].key);
       expect(sectionIndex).toBe(index);
     });
 });
@@ -120,7 +120,7 @@ it('should fire pre query screen event', () => {
   };
 
   renderMount({
-    resultsGroup: [
+    resultsGroups: [
       {
         items: [makeConfluenceContainerResult()],
         key: 'recentlyViewedSpaces',
