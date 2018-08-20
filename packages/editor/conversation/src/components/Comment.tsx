@@ -129,7 +129,7 @@ export default class Comment extends React.Component<Props, State> {
   };
 
   private onReply = (value: any, analyticsEvent: AnalyticsEvent) => {
-    const { containerId, comment: parentComment } = this.props;
+    const { containerId } = this.props;
 
     fireEvent(analyticsEvent, actionSubjectIds.replyButton, containerId);
 
@@ -160,8 +160,6 @@ export default class Comment extends React.Component<Props, State> {
   };
 
   private onCancelReply = () => {
-    const { comment: parentComment } = this.props;
-
     this.props.sendAnalyticsEvent(actionSubjectIds.cancelButton);
     this.setState({
       isReplying: false,
