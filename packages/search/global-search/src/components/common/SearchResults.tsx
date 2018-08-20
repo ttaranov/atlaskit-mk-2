@@ -67,7 +67,7 @@ export default class SearchResults extends React.Component<Props> {
     } = this.props;
     return (
       <PreQueryState
-        resultsGroup={getPreQueryGroups()}
+        resultsGroups={getPreQueryGroups()}
         renderAdvancedSearchLink={renderAdvancedSearchLink}
         query={query}
         searchSessionId={searchSessionId}
@@ -90,7 +90,7 @@ export default class SearchResults extends React.Component<Props> {
       <ResultGroupsComponent
         type={ResultGroupType.PostQuery}
         renderAdvancedSearch={renderAdvancedSearchGroup}
-        resultsGroup={getPostQueryGroups()}
+        resultsGroups={getPostQueryGroups()}
         searchSessionId={searchSessionId}
         screenCounter={postQueryScreenCounter}
         referralContextIdentifiers={referralContextIdentifiers}

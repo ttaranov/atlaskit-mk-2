@@ -85,7 +85,7 @@ it('should render pre query state when there is no query entered', () => {
     renderAdvancedSearchLink: defaultProps.renderAdvancedSearchLink,
     searchSessionId: defaultProps.searchSessionId,
     renderAdvancedSearchGroup: defaultProps.renderAdvancedSearchGroup,
-    resultsGroup: mockResultsGroup,
+    resultsGroups: mockResultsGroup,
   });
 });
 
@@ -140,7 +140,7 @@ it('should render search results when there are results', () => {
   expect(resultGroupsComponent.props()).toMatchObject({
     type: ResultGroupType.PostQuery,
     renderAdvancedSearch: defaultProps.renderAdvancedSearchGroup,
-    resultsGroup: mockResultsGroup,
+    resultsGroups: mockResultsGroup,
     searchSessionId: defaultProps.searchSessionId,
   });
 });

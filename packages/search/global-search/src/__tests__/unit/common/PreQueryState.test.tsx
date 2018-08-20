@@ -8,7 +8,7 @@ import ResultGroupsComponent from '../../../components/common/ResultGroupsCompon
 function render(partialProps: Partial<Props>) {
   const props: Props = {
     query: '',
-    resultsGroup: [],
+    resultsGroups: [],
     searchSessionId: '0',
     renderAdvancedSearchLink: () => <div id="search link" />,
     renderAdvancedSearchGroup: () => <div id="search-group" />,
@@ -27,7 +27,7 @@ it('should render no recent activity when there is no recent activity', () => {
 
 it('should render recent activities when there is recent activity', () => {
   const wrapper = render({
-    resultsGroup: [
+    resultsGroups: [
       {
         items: [makeConfluenceObjectResult()],
         key: 'recentlyViewedPages',

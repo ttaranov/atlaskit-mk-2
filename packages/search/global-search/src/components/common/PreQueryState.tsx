@@ -11,7 +11,7 @@ import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
 
 export interface Props {
   query: string;
-  resultsGroup: ResultsGroup[];
+  resultsGroups: ResultsGroup[];
   searchSessionId: string;
   screenCounter?: ScreenCounter;
   referralContextIdentifiers?: ReferralContextIdentifiers;
@@ -22,7 +22,7 @@ export interface Props {
 export default class PreQueryState extends React.Component<Props> {
   render() {
     const {
-      resultsGroup,
+      resultsGroups,
       searchSessionId,
       screenCounter,
       renderAdvancedSearchLink,
@@ -30,7 +30,7 @@ export default class PreQueryState extends React.Component<Props> {
       renderAdvancedSearchGroup,
     } = this.props;
 
-    if ((resultsGroup || []).every(({ items }) => isEmpty(items))) {
+    if (resultsGroups.every(({ items }) => isEmpty(items))) {
       return (
         <>
           <PreQueryAnalyticsComponent
@@ -50,7 +50,7 @@ export default class PreQueryState extends React.Component<Props> {
       <ResultGroupsComponent
         type={ResultGroupType.PreQuery}
         renderAdvancedSearch={renderAdvancedSearchGroup}
-        resultsGroup={resultsGroup}
+        resultsGroups={resultsGroups}
         searchSessionId={searchSessionId}
         screenCounter={screenCounter}
         referralContextIdentifiers={referralContextIdentifiers}

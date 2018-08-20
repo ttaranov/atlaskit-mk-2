@@ -88,7 +88,7 @@ export class JiraQuickSearchContainer extends React.Component<
 
     return (
       <QuickSearchContainer
-        placeHolder={this.props.intl.formatMessage({
+        placeholder={this.props.intl.formatMessage({
           id: 'global-search.jira.search-placeholder',
         })}
         linkComponent={linkComponent}

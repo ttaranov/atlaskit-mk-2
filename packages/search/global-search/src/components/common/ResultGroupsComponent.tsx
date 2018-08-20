@@ -15,7 +15,7 @@ export enum ResultGroupType {
 }
 
 export interface Props {
-  resultsGroup: ResultsGroup[];
+  resultsGroups: ResultsGroup[];
   type: ResultGroupType;
   renderAdvancedSearch: () => JSX.Element;
   searchSessionId: string;
@@ -73,10 +73,10 @@ export default class ResultGroupsComponent extends React.Component<Props> {
   }
 
   render() {
-    const { renderAdvancedSearch, resultsGroup } = this.props;
+    const { renderAdvancedSearch, resultsGroups } = this.props;
 
     return [
-      ...mapGroupsToSections(resultsGroup),
+      ...mapGroupsToSections(resultsGroups),
       renderAdvancedSearch(),
       this.getAnalyticsComponent(),
     ];

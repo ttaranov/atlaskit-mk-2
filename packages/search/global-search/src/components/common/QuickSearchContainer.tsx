@@ -44,7 +44,7 @@ export interface Props {
   createAnalyticsEvent?: CreateAnalyticsEventFn;
   handleSearchSubmit?({ target: string }): void;
   isSendSearchTermsEnabled?: boolean;
-  placeHolder?: string;
+  placeholder?: string;
 }
 
 export interface State {
@@ -247,7 +247,7 @@ export class QuickSearchContainer extends React.Component<Props, State> {
       linkComponent,
       isSendSearchTermsEnabled,
       getSearchResultsComponent,
-      placeHolder,
+      placeholder,
     } = this.props;
     const {
       isLoading,
@@ -265,7 +265,7 @@ export class QuickSearchContainer extends React.Component<Props, State> {
         onSearch={this.handleSearch}
         onSearchSubmit={this.props.handleSearchSubmit}
         isLoading={isLoading}
-        placeholder={placeHolder}
+        placeholder={placeholder}
         linkComponent={linkComponent}
         searchSessionId={searchSessionId}
         isSendSearchTermsEnabled={isSendSearchTermsEnabled}
