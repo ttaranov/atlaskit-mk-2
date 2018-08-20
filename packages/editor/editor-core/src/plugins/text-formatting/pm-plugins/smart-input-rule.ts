@@ -66,7 +66,7 @@ function createSingleQuotesRules(trackingEventName): Array<InputRule> {
   return [
     // wrapped text
     createInputRule(
-      /(\s+|^)'(.*)'$/,
+      /(\s+|^)'(\S+.*\S+)'$/,
       (state, match, start, end): Transaction => {
         const [, spacing, innerContent] = match;
         const replacement = spacing + '‘' + innerContent + '’';

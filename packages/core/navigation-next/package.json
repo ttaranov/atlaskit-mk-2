@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/navigation-next",
-  "version": "3.3.5",
+  "version": "3.4.0",
   "description": "The Atlassian navigation component.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -12,8 +12,7 @@
   "author": "Atlassian Pty Ltd",
   "maintainers": [
     "Jed W",
-    "Jared C",
-    "Joss M"
+    "Jared C"
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
@@ -21,7 +20,7 @@
     "@atlaskit/analytics-next": "^3.0.5",
     "@atlaskit/avatar": "^14.0.8",
     "@atlaskit/icon": "^13.2.5",
-    "@atlaskit/select": "^5.0.9",
+    "@atlaskit/select": "^5.0.10",
     "@atlaskit/theme": "^6.0.0",
     "@atlaskit/tooltip": "^12.0.9",
     "chromatism": "^2.6.0",
@@ -38,7 +37,7 @@
     "react": "^16.4.0"
   },
   "devDependencies": {
-    "@atlaskit/analytics-listeners": "^3.1.1",
+    "@atlaskit/analytics-listeners": "^3.3.0",
     "@atlaskit/badge": "^9.1.0",
     "@atlaskit/docs": "^5.0.6",
     "@atlaskit/dropdown-menu": "^6.1.8",
@@ -50,6 +49,7 @@
     "@atlaskit/toggle": "^5.0.6",
     "@atlaskit/webdriver-runner": "^0.0.3",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "pretty-proptypes": "^0.2.2",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2"
   }

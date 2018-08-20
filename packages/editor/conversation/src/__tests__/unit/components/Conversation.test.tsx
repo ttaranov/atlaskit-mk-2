@@ -1,9 +1,12 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import { mockConversation, MOCK_USERS } from '../../example-helpers/MockData';
-import Conversation from '../../src/components/Conversation';
-import Editor from '../../src/components/Editor';
-import CommentContainer from '../../src/containers/Comment';
+import {
+  mockConversation,
+  MOCK_USERS,
+} from '../../../../example-helpers/MockData';
+import Conversation from '../../../components/Conversation';
+import Editor from '../../../components/Editor';
+import CommentContainer from '../../../containers/Comment';
 
 const containerId = 'ari:cloud:platform::conversation/demo';
 const { comments } = mockConversation;
@@ -21,6 +24,7 @@ describe('Conversation', () => {
 
   describe('comments', () => {
     it('should render comments if any', () => {
+      // @ts-ignore
       expect(conversation.find(CommentContainer).length).toBe(comments.length);
     });
   });

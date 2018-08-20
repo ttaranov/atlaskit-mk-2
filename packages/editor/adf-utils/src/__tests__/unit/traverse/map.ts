@@ -1,4 +1,4 @@
-import { map } from '../../src/traverse/map';
+import { map } from '../../../traverse/map';
 import * as mentionsDoc from './__fixtures__/mentions.json';
 
 describe('Traverse#map', () => {

@@ -353,6 +353,7 @@
     "pretty-proptypes": "^0.2.2",
     "prismjs": "^1.6.0",
     "prop-types": "^15.5.10",
+    "prosemirror-collab": "^1.0.0",
     "prosemirror-commands": "^1.0.7",
     "prosemirror-history": "^1.0.2",
     "prosemirror-inputrules": "^1.0.1",

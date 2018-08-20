@@ -1,4 +1,4 @@
-import { traverse } from '../../src/traverse/traverse';
+import { traverse } from '../../../traverse/traverse';
 import * as mentionsDoc from './__fixtures__/mentions.json';
 import * as emojiDoc from './__fixtures__/emoji.json';
 

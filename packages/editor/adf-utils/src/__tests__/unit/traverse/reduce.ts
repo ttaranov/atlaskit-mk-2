@@ -1,4 +1,4 @@
-import { reduce } from '../../src/traverse/reduce';
+import { reduce } from '../../../traverse/reduce';
 import * as emojisDoc from './__fixtures__/multiple-emojis.json';
 
 describe('Traverse#reduce', () => {

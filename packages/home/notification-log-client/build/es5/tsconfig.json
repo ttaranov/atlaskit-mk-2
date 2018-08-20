@@ -5,7 +5,7 @@
     "outDir": "../../dist/es5",
     "rootDir": "../../src",
     "target": "es5",
-    "module": "es5"
+    "module": "commonjs"
   },
   "include": [
     "../../src/**/*.ts",

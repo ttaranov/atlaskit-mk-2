@@ -7,12 +7,13 @@ import {
   mockComment,
   mockInlineComment,
   MOCK_USERS,
-} from '../../example-helpers/MockData';
-import { getDataProviderFactory } from '../../example-helpers/MockProvider';
-import Comment, { DeletedMessage } from '../../src/components/Comment';
-import Editor from '../../src/components/Editor';
-import CommentContainer from '../../src/containers/Comment';
+} from '../../../../example-helpers/MockData';
+import { getDataProviderFactory } from '../../../../example-helpers/MockProvider';
+import Comment, { DeletedMessage } from '../../../../src/components/Comment';
+import Editor from '../../../../src/components/Editor';
+import CommentContainer from '../../../../src/containers/Comment';
 
+// @ts-ignore
 function findEditAction(comment) {}
 // avoid polluting test logs with error message in console
 // please ensure you fix it if you expect console.error to be thrown
