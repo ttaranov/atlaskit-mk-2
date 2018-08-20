@@ -2,8 +2,8 @@ import * as React from 'react';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { ELEMENTS_CONTEXT } from '@atlaskit/analytics-namespaced-context';
 import { GasPayload } from '@atlaskit/analytics-gas-types';
-import { sendEvent } from './analytics-web-client-wrapper';
-import { ListenerProps, FabricChannel } from './types';
+import { sendEvent } from '../analytics-web-client-wrapper';
+import { ListenerProps, FabricChannel } from '../types';
 import * as merge from 'lodash.merge';
 
 export const ELEMENTS_TAG = 'fabricElements';

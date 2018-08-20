@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 import { AnalyticsWebClient, FabricChannel } from './types';
-import FabricElementsListener from './FabricElementsListener';
+import FabricElementsListener from './fabric/FabricElementsListener';
 import AtlaskitListener from './atlaskit/AtlaskitListener';
 import Logger from './helpers/logger';
 import NavigationListener from './navigation/NavigationListener';
