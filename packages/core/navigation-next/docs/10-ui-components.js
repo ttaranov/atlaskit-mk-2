@@ -3,21 +3,8 @@
 import React from 'react';
 import { Prop } from 'pretty-proptypes'; // TODO export this from @atlaskit/docs
 import { Example, md, Props } from '@atlaskit/docs';
-import { colors } from '@atlaskit/theme';
 
-import { Contents, ContentsProvider, H } from './shared';
-
-const Hr = () => (
-  <hr
-    css={{
-      backgroundColor: colors.N40,
-      border: 0,
-      height: 1,
-      marginBottom: '2em',
-      marginTop: '2em',
-    }}
-  />
-);
+import { Contents, ContentsProvider, H, Hr } from './shared';
 
 export default (
   <ContentsProvider>{md`
@@ -40,8 +27,6 @@ ${(
 ## ContainerHeader props
 
 See [Item](#Item).
-
-&nbsp;
 
 ${<Hr />}
 

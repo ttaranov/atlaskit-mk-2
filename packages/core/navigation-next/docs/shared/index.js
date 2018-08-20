@@ -4,6 +4,7 @@
 
 import React, { Component, createContext, Fragment, type Node } from 'react';
 import { Example } from '@atlaskit/docs';
+import { colors } from '@atlaskit/theme';
 
 /**
  * Load an example in an iframe
@@ -147,4 +148,19 @@ export const H = (props: HProps) => (
   <ContentsContextConsumer>
     {context => <HWithContext {...props} __context={context} />}
   </ContentsContextConsumer>
+);
+
+/**
+ * Horizontal rule
+ */
+export const Hr = () => (
+  <hr
+    css={{
+      backgroundColor: colors.N40,
+      border: 0,
+      height: 2,
+      marginBottom: '3em',
+      marginTop: '3em',
+    }}
+  />
 );
