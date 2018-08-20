@@ -4,6 +4,7 @@ import { ScreenCounter } from '../../util/ScreenCounter';
 import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
 import SearchResults from '../common/SearchResults';
 import { FormattedHTMLMessage } from 'react-intl';
+import NoResultsState from './NoResultsState';
 import {
   mapRecentResultsToUIGroups,
   mapSearchResultsToUIGroups,
@@ -36,13 +37,15 @@ export default class JiraSearchResults extends React.Component<Props> {
           />
         )}
         renderAdvancedSearchGroup={() => (
-          <div id="jira-advanced-search" key="jira-advanced-search" />
+          <a href="#" key="jira-advanced-search">
+            Search JIRA
+          </a>
         )}
         getRecentlyViewedGroups={() => mapRecentResultsToUIGroups(recentItems)}
         getSearchResultsGroups={() =>
           mapSearchResultsToUIGroups(searchResults as JiraResultsMap)
         }
-        renderNoResult={() => <div id="no-result" key={query} />}
+        renderNoResult={() => <NoResultsState query={query} />}
       />
     );
   }

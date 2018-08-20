@@ -20,5 +20,10 @@ export default {
   "global-search.search-error-body.link": "try again",
   "global-search.jira.search-placeholder": "Search Jira",
   "global-search.jira.recent-issues-heading": "ISSUES",
-  "global-search.jira.recent-containers": "BOARDS, FILTERS AND PROJECTS "
+  "global-search.jira.recent-containers": "BOARDS, FILTERS AND PROJECTS",
+  "global-search.jira.advanced-search": "Go to Advanced search for",
+  "global-search.no-results.issues": "issues",
+  "global-search.no-results.projects": "projects",
+  "global-search.no-results.boards": "boards",
+  "global-search.no-results.filters": "filters"
 }
