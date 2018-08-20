@@ -209,7 +209,8 @@ const groupComponents = {
   Section,
 };
 
-const components = { ...itemComponents, ...groupComponents };
+// Exported for testing purposes only.
+export const components = { ...itemComponents, ...groupComponents };
 
 /**
  * RENDERER

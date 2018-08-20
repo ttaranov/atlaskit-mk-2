@@ -276,7 +276,7 @@ We create components for the Dashboards and Issues and Filters routes which look
 ${code`class MyRouteBase extends Component {
   componentDidMount() {
     const { navigationViewController } = this.props;
-    navigationViewController.setView(productHomeView.id);
+    navigationViewController.setView(myView.id);
   }
 
   render() {
@@ -310,6 +310,8 @@ ${code`class App extends Component {
 const AppWithNavigationViewController = withNavigationViewController(App);
 
 export default () => (
+  /* Note: in this example we're using HashRouter from react-router, but you can
+  use any routing solution you wish. */
 + <HashRouter>
     <NavigationProvider>
       <AppWithNavigationViewController />
