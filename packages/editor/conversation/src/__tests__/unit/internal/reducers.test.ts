@@ -1,5 +1,6 @@
-import createStore from '../../src/internal/store';
-import { reducers } from '../../src/internal/reducers';
+import createStore from '../../../internal/store';
+// @ts-ignore
+import { reducers } from '../../../internal/reducers';
 import {
   FETCH_CONVERSATIONS_REQUEST,
   FETCH_CONVERSATIONS_SUCCESS,
@@ -16,14 +17,14 @@ import {
   DELETE_COMMENT_SUCCESS,
   DELETE_COMMENT_ERROR,
   REVERT_COMMENT,
-} from '../../src/internal/actions';
+} from '../../../internal/actions';
 
 import {
   mockInlineConversation as mockInlineConversationClean,
   mockConversation as mockConversationClean,
   mockComment2 as mockComment2Clean,
   mockComment as mockCommentClean,
-} from '../../example-helpers/MockData';
+} from '../../../../example-helpers/MockData';
 
 describe('Reducers', () => {
   let mockInlineConversation;
