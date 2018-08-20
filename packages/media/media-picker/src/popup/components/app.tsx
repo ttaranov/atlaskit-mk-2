@@ -91,7 +91,7 @@ export class App extends Component<AppProps, AppState> {
   private readonly mpBrowser: MpBrowser;
   private readonly mpDropzone: MpDropzone;
   private readonly mpBinary: MpBinary;
-  private readonly cardContext: Context;
+  private readonly userContext: Context;
 
   constructor(props: AppProps) {
     super(props);
@@ -123,7 +123,7 @@ export class App extends Component<AppProps, AppState> {
     };
 
     // We need to create a new context since Cards in recents view need user auth
-    this.cardContext = ContextFactory.create({
+    this.userContext = ContextFactory.create({
       authProvider: userAuthProvider,
     });
 
@@ -230,7 +230,7 @@ export class App extends Component<AppProps, AppState> {
       return (
         <UploadView
           mpBrowser={this.mpBrowser}
-          context={this.cardContext}
+          context={this.userContext}
           recentsCollection={RECENTS_COLLECTION}
         />
       );

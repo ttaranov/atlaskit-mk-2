@@ -40,25 +40,23 @@ export interface CancellableFileUpload {
 
 export class NewUploadServiceImpl implements UploadService {
   private readonly userMediaStore?: MediaStore;
+  private readonly tenantMediaStore: MediaStore;
   private readonly userContext?: Context;
-  private readonly mediaStore: MediaStore;
-
-  private uploadParams: UploadParams;
+  private userUploadParams: UploadParams;
   private tenantUploadParams: UploadParams;
-
   private readonly emitter: EventEmitter2;
   private cancellableFilesUploads: { [key: string]: CancellableFileUpload };
 
   constructor(
-    private readonly context: Context,
+    private readonly tenantContext: Context,
     tenantUploadParams: UploadParams,
-    uploadParams?: UploadParams,
+    userUploadParams?: UploadParams,
   ) {
     this.emitter = new EventEmitter2();
     this.cancellableFilesUploads = {};
-    const { authProvider, userAuthProvider } = context.config;
+    const { authProvider, userAuthProvider } = tenantContext.config;
     // We need a non user auth store, since we want to create the empty file in the public collection
-    this.mediaStore = new MediaStore({
+    this.tenantMediaStore = new MediaStore({
       authProvider,
     });
 
@@ -76,11 +74,11 @@ export class NewUploadServiceImpl implements UploadService {
 
     this.tenantUploadParams = tenantUploadParams;
 
-    this.setUploadParams(uploadParams);
+    this.setUploadParams(userUploadParams);
   }
 
   setUploadParams(uploadParams?: UploadParams): void {
-    this.uploadParams = {
+    this.userUploadParams = {
       ...defaultUploadParams,
       ...uploadParams,
     };
@@ -112,7 +110,7 @@ export class NewUploadServiceImpl implements UploadService {
         const { collection } = this.tenantUploadParams;
         const options = { collection, occurrenceKey };
         // We want to create an empty file in the tenant collection
-        const response = await this.mediaStore.createFile(options);
+        const response = await this.tenantMediaStore.createFile(options);
         const id = response.data.id;
 
         resolve(id);
@@ -129,16 +127,12 @@ export class NewUploadServiceImpl implements UploadService {
     const cancellableFileUploads: CancellableFileUpload[] = files.map(file => {
       const id = uuid.v4();
       const uploadableFile: UploadableFile = {
-        collection: this.uploadParams.collection,
+        collection: this.userUploadParams.collection,
         content: file,
         name: file.name,
         mimeType: file.type,
       };
-      const {
-        userContext,
-        context: tenantContext,
-        shouldCopyFileToRecents,
-      } = this;
+      const { userContext, tenantContext, shouldCopyFileToRecents } = this;
       const controller = this.createUploadController();
       const context = shouldCopyFileToRecents ? tenantContext : userContext;
       let observable: Observable<FileState> | undefined;
@@ -272,7 +266,7 @@ export class NewUploadServiceImpl implements UploadService {
     fileId: string,
   ) => {
     const { mediaFile } = cancellableFileUpload;
-    const { collection } = this.uploadParams;
+    const { collection } = this.userUploadParams;
 
     this.copyFileToUsersCollection(fileId, collection).catch(console.log); // We intentionally swallow these errors
 
@@ -341,7 +335,7 @@ export class NewUploadServiceImpl implements UploadService {
   };
 
   get shouldCopyFileToRecents(): boolean {
-    const { copyFileToRecents } = this.uploadParams;
+    const { copyFileToRecents } = this.userUploadParams;
 
     return Boolean(copyFileToRecents);
   }
@@ -357,7 +351,7 @@ export class NewUploadServiceImpl implements UploadService {
     if (!shouldCopyFileToRecents || !userMediaStore) {
       return Promise.resolve();
     }
-    return this.context.config
+    return this.tenantContext.config
       .authProvider({ collectionName: sourceCollection })
       .then(auth => {
         const body: MediaStoreCopyFileWithTokenBody = {

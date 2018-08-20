@@ -208,9 +208,7 @@ export class StatelessUploadView extends Component<
       const { id } = fileMetadata;
       const selected = selectedUploadIds.indexOf(id) > -1;
       const status = progress !== null ? 'uploading' : 'complete';
-      const onClick = () => {
-        onFileClick(fileMetadata, 'upload');
-      };
+      const onClick = () => onFileClick(fileMetadata, 'upload');
 
       const actions: CardAction[] = [];
       if (mediaType === 'image' && dataURI) {
@@ -222,7 +220,8 @@ export class StatelessUploadView extends Component<
           ),
         );
       }
-      const { upfrontId, ...fileDetails } = file.metadata;
+      // We remove not needed properties from the metadata
+      const { upfrontId, occurrenceKey, ...fileDetails } = file.metadata;
       const metadata: FileDetails = {
         ...fileDetails,
         mediaType,
