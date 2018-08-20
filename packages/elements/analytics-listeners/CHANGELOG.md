@@ -1,5 +1,9 @@
 # @atlaskit/analytics-listeners
 
+## 3.3.0
+- [minor] Update navigation listener to process operational events [2d53fc1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d53fc1)
+- [none] Updated dependencies [2d53fc1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d53fc1)
+
 ## 3.2.0
 - [minor] Update navigation listener to process NavigationAnalyticsContext [808b55b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/808b55b)
 
