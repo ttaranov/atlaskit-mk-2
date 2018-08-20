@@ -1,4 +1,4 @@
-import FrontendFeatureFlagClient from '../feature-flag-client';
+import FrontendFeatureFlagClient from '../../feature-flag-client';
 
 const sampleFlagsJson = {
   'experiment.boolean.false': false,
