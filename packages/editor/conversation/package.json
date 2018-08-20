@@ -39,6 +39,7 @@
     "tslib": "^1.8.0"
   },
   "devDependencies": {
+    "@atlaskit/analytics-listeners": "^3.3.0",
     "@atlaskit/docs": "^5.0.2",
     "@atlaskit/single-select": "^6.0.3",
     "@atlaskit/util-data-test": "^10.0.4",

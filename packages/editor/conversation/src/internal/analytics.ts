@@ -1,4 +1,4 @@
-export const ANALYTICS_CHANNEL = 'fabric-editor';
+export const ANALYTICS_CHANNEL = 'editor';
 
 export type createAnalyticsEvent = (event: object) => AnalyticsEvent;
 
@@ -28,6 +28,7 @@ export function fireEvent(
   analyticsEvent.update({
     actionSubjectId: actionSubjectId,
     containerId: containerId,
+    eventType: 'ui',
     attributes: {
       ...analyticsEvent.attributes,
     },

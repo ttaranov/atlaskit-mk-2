@@ -8,7 +8,9 @@ import { State } from '../src/internal/store';
 import { MOCK_USERS } from './MockData';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { selectAll } from 'prosemirror-commands';
-import { AnalyticsListener } from '@atlaskit/analytics-next';
+import AtlaskitAnalyticsListener, {
+  AnalyticsWebClient,
+} from '@atlaskit/analytics-listeners';
 
 const DUMMY_CODE = `
 class Main() {
@@ -161,6 +163,14 @@ const analyticsHandler = (action, channel) => {
     action,
   );
 };
+
+const fakeAnalyticsClient: Promise<AnalyticsWebClient> = Promise.resolve({
+  sendUIEvent: event => console.log('Received UI event', event),
+  sendOperationalEvent: event =>
+    console.log('Received operational event', event),
+  sendTrackEvent: event => console.log('Received track event', event),
+  sendScreenEvent: event => console.log('Received screen event', event),
+});
 
 export class Demo extends React.Component<
   { provider: ResourceProvider; dataProviders: ProviderFactory },
@@ -326,7 +336,7 @@ export class Demo extends React.Component<
     );
 
     return (
-      <AnalyticsListener channel="fabric-editor" onEvent={analyticsHandler}>
+      <AtlaskitAnalyticsListener client={fakeAnalyticsClient}>
         <div style={{ margin: '20px' }}>
           {this.renderOptions()}
           {this.renderConversations(prConversations)}
@@ -354,7 +364,7 @@ export class Demo extends React.Component<
             dataProviders={dataProviders}
           />
         </div>
-      </AnalyticsListener>
+      </AtlaskitAnalyticsListener>
     );
   }
 }

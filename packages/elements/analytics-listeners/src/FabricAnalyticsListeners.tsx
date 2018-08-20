@@ -5,6 +5,7 @@ import FabricElementsListener from './fabric/FabricElementsListener';
 import AtlaskitListener from './atlaskit/AtlaskitListener';
 import Logger from './helpers/logger';
 import NavigationListener from './navigation/NavigationListener';
+import FabricEditorListener from './fabric/FabricEditorListener';
 
 export type Props = {
   /** Children! */
@@ -17,6 +18,7 @@ export type Props = {
 
 const listenerMap = {
   [FabricChannel.elements]: FabricElementsListener,
+  [FabricChannel.editor]: FabricEditorListener,
   [FabricChannel.atlaskit]: AtlaskitListener,
   [FabricChannel.navigation]: NavigationListener,
 };
