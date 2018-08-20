@@ -17,5 +17,8 @@ export default {
   "global-search.people.advanced-search": "Search people",
   "global-search.search-error-title": "We're having trouble searching.",
   "global-search.search-error-body": "It might just be hiccup. Best thing is to {link}.",
-  "global-search.search-error-body.link": "try again"
+  "global-search.search-error-body.link": "try again",
+  "global-search.jira.search-placeholder": "Search Jira",
+  "global-search.jira.recent-issues-heading": "ISSUES",
+  "global-search.jira.recent-containers": "BOARDS, FILTERS AND PROJECTS "
 }

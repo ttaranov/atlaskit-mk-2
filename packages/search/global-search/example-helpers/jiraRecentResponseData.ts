@@ -19,7 +19,8 @@ export const JiraRecentResponse = [
         title: 'Create the Jira boilerplate code',
         subtitle: 'QS-40',
         metadata: 'QS-40',
-        avatarUrl: '/images/icons/issuetypes/story.svg',
+        avatarUrl:
+          'https://product-fabric.atlassian.net/images/icons/issuetypes/story.svg',
         url: 'https://product-fabric.atlassian.net/browse/QS-40',
         favourite: false,
       },
@@ -49,7 +50,8 @@ export const JiraRecentResponse = [
         title: 'Update Global Search UI to use XPSearch',
         subtitle: 'QS-21',
         metadata: 'QS-21',
-        avatarUrl: '/images/icons/issuetypes/story.svg',
+        avatarUrl:
+          'https://product-fabric.atlassian.net/images/icons/issuetypes/story.svg',
         url: 'https://product-fabric.atlassian.net/browse/QS-21',
         favourite: false,
       },
@@ -58,7 +60,8 @@ export const JiraRecentResponse = [
         title: 'Retro: Add unit testing for analytics',
         subtitle: 'QS-95',
         metadata: 'QS-95',
-        avatarUrl: '/images/icons/issuetypes/story.svg',
+        avatarUrl:
+          'https://product-fabric.atlassian.net/images/icons/issuetypes/story.svg',
         url: 'https://product-fabric.atlassian.net/browse/QS-95',
         favourite: false,
       },
@@ -180,7 +183,8 @@ export const TransformedResponse = [
     name: 'Create the Jira boilerplate code',
     href: 'https://product-fabric.atlassian.net/browse/QS-40',
     analyticsType: 'recent-jira',
-    avatarUrl: '/images/icons/issuetypes/story.svg',
+    avatarUrl:
+      'https://product-fabric.atlassian.net/images/icons/issuetypes/story.svg',
     contentType: 'jira-issue',
     containerName: 'QS-40',
   },
@@ -213,7 +217,8 @@ export const TransformedResponse = [
     name: 'Update Global Search UI to use XPSearch',
     href: 'https://product-fabric.atlassian.net/browse/QS-21',
     analyticsType: 'recent-jira',
-    avatarUrl: '/images/icons/issuetypes/story.svg',
+    avatarUrl:
+      'https://product-fabric.atlassian.net/images/icons/issuetypes/story.svg',
     contentType: 'jira-issue',
     containerName: 'QS-21',
   },
@@ -223,7 +228,8 @@ export const TransformedResponse = [
     name: 'Retro: Add unit testing for analytics',
     href: 'https://product-fabric.atlassian.net/browse/QS-95',
     analyticsType: 'recent-jira',
-    avatarUrl: '/images/icons/issuetypes/story.svg',
+    avatarUrl:
+      'https://product-fabric.atlassian.net/images/icons/issuetypes/story.svg',
     contentType: 'jira-issue',
     containerName: 'QS-95',
   },
