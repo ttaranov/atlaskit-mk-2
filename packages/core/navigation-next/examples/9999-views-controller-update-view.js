@@ -2,13 +2,12 @@
 
 import React, { Component } from 'react';
 import GlobalNavigation from '@atlaskit/global-navigation';
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import FolderIcon from '@atlaskit/icon/glyph/folder';
 import IssueIcon from '@atlaskit/icon/glyph/issue';
 import PortfolioIcon from '@atlaskit/icon/glyph/portfolio';
-import { JiraWordmark } from '@atlaskit/logo';
+import { JiraIcon, JiraWordmark } from '@atlaskit/logo';
 import {
   LayoutManagerWithViewController,
   NavigationProvider,
@@ -17,7 +16,10 @@ import {
 } from '../src';
 
 const MyGlobalNavigation = () => (
-  <GlobalNavigation productIcon={AtlassianIcon} onProductClick={() => {}} />
+  <GlobalNavigation
+    productIcon={() => <JiraIcon size="medium" />}
+    onProductClick={() => {}}
+  />
 );
 
 const productHomeView = {
