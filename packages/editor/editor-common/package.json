@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-common",
-  "version": "14.0.8",
+  "version": "14.0.9",
   "description": "A package that contains common classes and components for editor and renderer",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
