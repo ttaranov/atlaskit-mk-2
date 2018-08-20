@@ -8,10 +8,23 @@ import AddIcon from '@atlaskit/icon/glyph/add';
 import JiraIcon from '@atlaskit/icon/glyph/jira';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
+import { colors } from '@atlaskit/theme';
 
-import { GlobalItem, GlobalItemPrimitive, light, dark, settings } from '../src';
+import {
+  GlobalItem,
+  GlobalItemPrimitive,
+  light,
+  dark,
+  settings,
+  modeGenerator,
+} from '../src';
 
-const themeModes = { light, dark, settings };
+const custom = modeGenerator({
+  text: colors.N0,
+  background: colors.G500,
+});
+
+const themeModes = { light, dark, settings, custom };
 
 const ConfiguredBadge = () => (
   <Badge appearance="important" max={9} value={3} />
@@ -132,6 +145,14 @@ const variations: Array<VariationCategory> = [
         size: 'small',
         themeContext: 'expanded',
         themeMode: 'settings',
+      },
+      {
+        badge: ConfiguredBadge,
+        description: 'Custom mode, expanded context',
+        icon: TrayIcon,
+        size: 'small',
+        themeContext: 'expanded',
+        themeMode: 'custom',
       },
     ],
   },

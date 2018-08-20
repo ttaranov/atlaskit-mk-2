@@ -6,6 +6,7 @@ import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import BacklogIcon from '@atlaskit/icon/glyph/backlog';
 import IssuesIcon from '@atlaskit/icon/glyph/issue';
 import ReportsIcon from '@atlaskit/icon/glyph/graph-line';
+import { colors } from '@atlaskit/theme';
 
 import {
   GlobalNav,
@@ -20,16 +21,22 @@ import {
   ContainerHeader,
   ItemAvatar,
   Item,
+  modeGenerator,
 } from '../src';
 
-const themeModes = { light, dark, settings };
+const custom = modeGenerator({
+  text: colors.N0,
+  background: colors.G500,
+});
+
+const themeModes = { light, dark, settings, custom };
 
 const GlobalNavigation = () => (
   <GlobalNav primaryItems={[]} secondaryItems={[]} />
 );
 
 type State = {
-  themeMode: 'light' | 'dark' | 'settings',
+  themeMode: 'light' | 'dark' | 'settings' | 'custom',
   shouldShowContainer: boolean,
   shouldRenderIcons: boolean,
   shouldRenderSkeleton: boolean,
@@ -187,6 +194,7 @@ export default class Example extends Component<{}, State> {
                   <option value="light">Light mode</option>
                   <option value="dark">Dark mode</option>
                   <option value="settings">Settings mode</option>
+                  <option value="custom">Custom mode</option>
                 </select>
               </p>
             </div>

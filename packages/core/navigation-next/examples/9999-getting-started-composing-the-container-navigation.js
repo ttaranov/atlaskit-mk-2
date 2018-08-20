@@ -1,10 +1,13 @@
 // @flow
 
-import React from 'react';
+import React, { Component } from 'react';
 import GlobalNavigation from '@atlaskit/global-navigation';
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import ShortcutIcon from '@atlaskit/icon/glyph/shortcut';
 import { AtlassianWordmark } from '@atlaskit/logo';
+import { ThemeProvider } from 'emotion-theming';
+import { colors } from '@atlaskit/theme';
+
 import {
   ContainerHeader,
   GroupHeading,
@@ -14,7 +17,18 @@ import {
   NavigationProvider,
   Section,
   Separator,
+  light,
+  dark,
+  settings,
+  modeGenerator,
 } from '../src';
+
+const custom = modeGenerator({
+  text: colors.N0,
+  background: colors.G500,
+});
+
+const themeModes = { light, dark, settings, custom };
 
 const MyGlobalNavigation = () => (
   <GlobalNavigation productIcon={AtlassianIcon} onProductClick={() => {}} />
@@ -76,14 +90,45 @@ const MyContainerNavigation = () => (
   </div>
 );
 
-export default () => (
-  <NavigationProvider>
-    <LayoutManager
-      globalNavigation={MyGlobalNavigation}
-      productNavigation={MyProductNavigation}
-      containerNavigation={MyContainerNavigation}
-    >
-      <div>Page content goes here.</div>
-    </LayoutManager>
-  </NavigationProvider>
-);
+type State = {
+  themeMode: 'light' | 'dark' | 'settings' | 'custom',
+};
+
+export default class Example extends Component<{}, State> {
+  state = {
+    themeMode: 'light',
+  };
+
+  handleThemeModeChange = ({ target: { value: themeMode } }: any) => {
+    this.setState({ themeMode });
+  };
+
+  render() {
+    const { themeMode } = this.state;
+    return (
+      <NavigationProvider>
+        <ThemeProvider
+          theme={theme => ({
+            ...theme,
+            mode: themeModes[themeMode],
+          })}
+        >
+          <LayoutManager
+            globalNavigation={MyGlobalNavigation}
+            productNavigation={MyProductNavigation}
+            containerNavigation={MyContainerNavigation}
+          >
+            <div>Page content goes here.</div>
+            <p> Change theme to:</p>
+            <select onChange={this.handleThemeModeChange} value={themeMode}>
+              <option value="light">Light mode</option>
+              <option value="dark">Dark mode</option>
+              <option value="settings">Settings mode</option>
+              <option value="custom">Custom mode</option>
+            </select>
+          </LayoutManager>
+        </ThemeProvider>
+      </NavigationProvider>
+    );
+  }
+}

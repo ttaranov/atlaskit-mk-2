@@ -1,26 +1,29 @@
 {
   "extends": ["airbnb", "prettier"],
   "parser": "babel-eslint",
-  "plugins": [
-    "flowtype",
-    "jest",
-    "prettier"
-  ],
+  "plugins": ["flowtype", "jest", "prettier"],
   "rules": {
-    "import/no-extraneous-dependencies": ["error", {
-      "devDependencies": [
-        "**/docs/**/*.js",
-        "**/__tests__/**/*.js",
-        "**/examples/**/*.js",
-        "./projector.js",
-        "./resolver.js"
-      ]
-    }],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": [
+          "**/docs/**/*.js",
+          "**/__tests__/**/*.js",
+          "**/examples/**/*.js",
+          "./projector.js",
+          "./resolver.js"
+        ]
+      }
+    ],
     "import/no-unresolved": ["off"],
     "import/prefer-default-export": "off",
-    "import/extensions": ["error", "never", {
-      "json": "always"
-    }],
+    "import/extensions": [
+      "error",
+      "never",
+      {
+        "json": "always"
+      }
+    ],
 
     "no-labels": "off",
     "no-restricted-syntax": "off",
@@ -40,9 +43,17 @@
     "react/jsx-filename-extension": "off",
     "react/require-default-props": "off",
 
-
-    "flowtype/require-valid-file-annotation": [2, "always", { "annotationStyle": "line" }],
+    "flowtype/require-valid-file-annotation": [
+      2,
+      "always",
+      { "annotationStyle": "line" }
+    ],
     "flowtype/define-flow-type": 1,
+    "flowtype/no-types-missing-file-annotation": 2,
+    "no-duplicate-imports": 0,
+    "import/no-duplicates": 1,
+    "flowtype/use-flow-type": 1,
+    "flowtype/valid-syntax": 1,
 
     "jest/no-disabled-tests": "warn",
     "jest/no-focused-tests": "error",

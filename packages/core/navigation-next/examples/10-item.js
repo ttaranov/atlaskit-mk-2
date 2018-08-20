@@ -17,6 +17,7 @@ import CrossIcon from '@atlaskit/icon/glyph/cross';
 import EditIcon from '@atlaskit/icon/glyph/edit';
 import Lozenge from '@atlaskit/lozenge';
 import Tooltip from '@atlaskit/tooltip';
+import { colors } from '@atlaskit/theme';
 
 import {
   Item,
@@ -27,9 +28,15 @@ import {
   settings,
   SkeletonContainerHeader,
   SkeletonItem,
+  modeGenerator,
 } from '../src';
 
-const themeModes = { light, dark, settings };
+const custom = modeGenerator({
+  text: colors.N0,
+  background: colors.G500,
+});
+
+const themeModes = { light, dark, settings, custom };
 
 /**
  * Helper components
@@ -271,6 +278,13 @@ const variations: Array<VariationCategory> = [
         text: 'Settings mode, product context',
         subText: 'Sub text',
         themeMode: 'settings',
+        themeContext: 'product',
+      },
+      {
+        before: ConfiguredAvatar,
+        text: 'Custom mode, product context.',
+        subText: 'It applies default container context',
+        themeMode: 'custom',
         themeContext: 'product',
       },
     ],
