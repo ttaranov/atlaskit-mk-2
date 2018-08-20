@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
+import { gridSize } from '@atlaskit/theme';
 import styled from 'styled-components';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import DropdownMenu, {
@@ -21,7 +22,8 @@ export interface State {
 }
 
 const TextContainer = styled.div`
-  padding: 8px;
+  padding: ${gridSize}px 0;
+  margin-right: ${gridSize}px;
 `;
 const Container = styled.div`
   display: flex;
@@ -47,7 +49,9 @@ export default class JiraAdvancedSearch extends React.Component<Props> {
   renderDropDownItems = () =>
     items.map(item => (
       <DropdownItem
-        onClick={() => this.setState({ selectedItem: item })}
+        onClick={() => {
+          this.setState({ selectedItem: item });
+        }}
         key={item}
       >
         {getItem(item)}
@@ -66,16 +70,24 @@ export default class JiraAdvancedSearch extends React.Component<Props> {
             <TextContainer>
               <FormattedMessage id="global-search.jira.advanced-search" />
             </TextContainer>
-            <DropdownMenu
-              trigger={getItem(this.state.selectedItem)}
-              triggerType="button"
-              shouldFlip={false}
-              position="right bottom"
+            <div
+              onClick={e => {
+                // we need to cancel on click event on the dropdown to stop navigation
+                e.preventDefault();
+                e.stopPropagation();
+              }}
             >
-              <DropdownItemGroup>
-                {this.renderDropDownItems()}
-              </DropdownItemGroup>
-            </DropdownMenu>
+              <DropdownMenu
+                trigger={getItem(this.state.selectedItem)}
+                triggerType="button"
+                shouldFlip={false}
+                position="right bottom"
+              >
+                <DropdownItemGroup>
+                  {this.renderDropDownItems()}
+                </DropdownItemGroup>
+              </DropdownMenu>
+            </div>
           </Container>
         }
         icon={
