@@ -15,7 +15,7 @@ export default class Radio extends Component<RadioBasePropTypes, State> {
   static defaultProps = {
     isDisabled: false,
     isInvalid: false,
-    isSelected: false,
+    isChecked: false,
   };
 
   state: State = {
@@ -25,7 +25,7 @@ export default class Radio extends Component<RadioBasePropTypes, State> {
     isMouseDown: false,
   };
 
-  onBlur = () =>
+  onBlur = () => {
     this.setState({
       // onBlur is called after onMouseDown if the checkbox was focused, however
       // in this case on blur is called immediately after, and we need to check
@@ -33,7 +33,10 @@ export default class Radio extends Component<RadioBasePropTypes, State> {
       isActive: this.state.isMouseDown && this.state.isActive,
       isFocused: false,
     });
-  onFocus = () => this.setState({ isFocused: true });
+  };
+  onFocus = () => {
+    this.setState({ isFocused: true });
+  };
   onMouseLeave = () => this.setState({ isActive: false, isHovered: false });
   onMouseEnter = () => this.setState({ isHovered: true });
   onMouseUp = () => this.setState({ isActive: false, isMouseDown: false });
@@ -45,7 +48,7 @@ export default class Radio extends Component<RadioBasePropTypes, State> {
       isDisabled,
       isRequired,
       isInvalid,
-      isSelected,
+      isChecked,
       name,
       onChange,
       value,
@@ -63,7 +66,7 @@ export default class Radio extends Component<RadioBasePropTypes, State> {
         onMouseUp={this.onMouseUp}
       >
         <RadioInput
-          isChecked={isSelected}
+          isChecked={isChecked}
           isDisabled={isDisabled}
           isFocused={isFocused}
           isHovered={isHovered}
