@@ -45,5 +45,5 @@ export interface SharedProps {
   placeholder?: string;
   disableScrollTo?: boolean;
   allowFeedbackAndHelpButtons?: boolean;
-  sendAnalyticsEvent: (action: string, commentLevel?: number) => void;
+  sendAnalyticsEvent: (action: string) => void;
 }
