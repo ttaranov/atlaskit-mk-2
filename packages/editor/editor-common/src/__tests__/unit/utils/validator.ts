@@ -1,5 +1,6 @@
 declare var global: any;
 
+// TO-DO remove chai validation
 import { expect } from 'chai';
 import {
   ADDoc,
@@ -536,7 +537,7 @@ describe('Renderer - Validator', () => {
         expect(validNode.content![0].text).to.equal(
           'var foo = {};\nvar bar = [];',
         );
-        expect(validNode.content![0].marks).to.not.exist;
+        expect(validNode.content![0].marks).to.equal(undefined);
       });
     });
 
