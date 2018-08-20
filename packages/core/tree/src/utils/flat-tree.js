@@ -8,6 +8,10 @@ import {
   moveAfterPath,
 } from './path';
 
+import {
+  between
+} from './handy';
+
 export const getFlatItemPath = (
   flattenedTree: FlattenedTree,
   sourceIndex: number,
@@ -49,45 +53,55 @@ export const getDestinationPath = (
   const sourcePath: Path = getSourcePath(flattenedTree, sourceIndex);
   // Stayed at the same place
   const sameIndex: boolean = destinationIndex === sourceIndex;
-  // Stayed on the same level
-  const sameLevel: boolean = !level || level === sourcePath.length;
   // Path of the upper item where the item was dropped
   const upperPath: ?Path = down
     ? flattenedTree[destinationIndex].path
     : flattenedTree[destinationIndex - 1] &&
-      flattenedTree[destinationIndex - 1].path;
+    flattenedTree[destinationIndex - 1].path;
   // Path of the lower item where the item was dropped
-  const lowerPath: ?Path =
-    down || sameIndex
-      ? flattenedTree[destinationIndex + 1] &&
-        flattenedTree[destinationIndex + 1].path
-      : flattenedTree[destinationIndex].path;
-
-  if (sameIndex && sameLevel) {
-    // We do nothing
-    return sourcePath;
-  }
-
+  const lowerPath: ?Path = down || sameIndex
+    ? flattenedTree[destinationIndex + 1] && flattenedTree[destinationIndex + 1].path
+    : flattenedTree[destinationIndex].path;
+  
   /*
-      We are going to differentiate between 3 cases:
-        - item moved to the top of a list
-        - item moved between two items on the same level
-        - item moved to the end of list. This is an ambiguous case.
-     */
+    We are going to differentiate 4 cases:
+      - item didn't change position, only moved horizontally
+      - item moved to the top of a list
+      - item moved between two items on the same level
+      - item moved to the end of list. This is an ambiguous case.
+  */
 
-  // Top of the list
-  if (lowerPath && isTopOfSubtree(upperPath, lowerPath)) {
-    if (sameIndex) {
+  // Stayed in place, might moved horizontally
+  if (sameIndex) {
+    if(typeof level !== 'number') {
       return sourcePath;
     }
+    if(!upperPath) {
+      // Not possible to move
+      return sourcePath;
+    }
+    const minLevel = lowerPath ? lowerPath.length : 1;
+    const maxLevel = Math.max(sourcePath.length, upperPath.length);
+    const finalLevel = between(minLevel, maxLevel, level);
+    const sameLevel: boolean = finalLevel === sourcePath.length;
+    if(sameLevel) {
+      // Didn't change level
+      return sourcePath;
+    }
+    const previousPathOnTheFinalLevel: Path = getPathOnLevel(
+      upperPath,
+      finalLevel,
+    );
+    return moveAfterPath(previousPathOnTheFinalLevel, sourcePath);
+  }
+
+  // Moved to top of the list
+  if (lowerPath && isTopOfSubtree(upperPath, lowerPath)) {
     return lowerPath;
   }
 
-  // Between two items on the same level
+  // Moved between two items on the same level
   if (upperPath && lowerPath && hasSameParent(upperPath, lowerPath)) {
-    if (sameIndex) {
-      return sourcePath;
-    }
     if (down && hasSameParent(upperPath, sourcePath)) {
       // if item was moved down within the list, it will replace the displaced item
       return upperPath;
@@ -95,8 +109,8 @@ export const getDestinationPath = (
     return lowerPath;
   }
 
+  // Moved to end of list
   if (upperPath) {
-    // End of list
     // this means that the upper item is deeper in the tree.
     const finalLevel = calculateFinalLevel(
       upperPath,
@@ -104,12 +118,6 @@ export const getDestinationPath = (
       sourcePath,
       level,
     );
-
-    if (finalLevel === upperPath.length) {
-      // Insert to the upper list
-      return moveAfterPath(upperPath, sourcePath);
-    }
-
     // Insert to higher levels
     const previousPathOnTheFinalLevel: Path = getPathOnLevel(
       upperPath,
@@ -118,7 +126,7 @@ export const getDestinationPath = (
     return moveAfterPath(previousPathOnTheFinalLevel, sourcePath);
   }
 
-  // Impossible case
+  // In case of any other impossible case
   return sourcePath;
 };
 
@@ -134,7 +142,7 @@ const calculateFinalLevel = (
   if (typeof level === 'number') {
     // Explicit disambiguation based on level
     // Final level has to be between the levels of bounding items, inclusive
-    return Math.min(upperLevel, Math.max(lowerLevel, level));
+    return between(lowerLevel, upperLevel, level);
   }
   // Automatic disambiguation based on the initial level
   return sourceLevel <= lowerLevel ? lowerLevel : upperLevel;

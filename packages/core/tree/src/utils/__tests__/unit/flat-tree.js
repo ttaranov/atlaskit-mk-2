@@ -32,6 +32,21 @@ describe('@atlaskit/tree - utils/flat-tree', () => {
       it('changes path if different and valid level specified (moving right)', () => {
         expect(getDestinationPath(flatComplexTree, 7, 7, 2)).toEqual([2, 4]);
       });
+      it('changes path if the only child and valid level specified (moving left)', () => {
+        // Making the first parent to have only one child
+        const treeWithSingleChild = {
+          ...treeWithTwoBranches,
+          items: {
+            ...treeWithTwoBranches.items,
+            '1-1': {
+              ...treeWithTwoBranches.items['1-1'],
+              children: ['1-1-1'],
+            }
+          }
+        };
+
+        expect(getDestinationPath(flattenTree(treeWithSingleChild), 1, 1, 1)).toEqual([1]);
+      });
       it('returns the same path if on top of subtree (moving left)', () => {
         expect(getDestinationPath(flatComplexTree, 3, 3, 1)).toEqual([2, 0]);
       });
