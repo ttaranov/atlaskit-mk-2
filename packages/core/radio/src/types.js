@@ -4,7 +4,7 @@ import type { Node } from 'react';
 // Used by RadioGroupStateless
 export type ItemPropType = {
   isDisabled?: boolean,
-  isSelected?: boolean,
+  isChecked?: boolean,
   label?: Node,
   name?: string,
   value?: string,
@@ -29,9 +29,9 @@ export type RadioBasePropTypes = {
   /** Marks this as a required field */
   isRequired?: boolean,
   /** Field is invalid */
-  isInvalid: boolean,
+  isInvalid?: boolean,
   /** Set the field as selected */
-  isSelected?: boolean,
+  isChecked?: boolean,
   /** Field name */
   name?: string,
   /** onChange event handler */
@@ -46,7 +46,7 @@ export type RadioGroupBasePropTypes = {|
   /** Label to display above the radio button options. */
   label?: string,
   /** Called when the value changes; passed the event */
-  onRadioChange: any => mixed,
+  onRadioChange: (SyntheticEvent<*>) => void,
 |};
 
 export type RadioGroupStatelessPropTypes = {
