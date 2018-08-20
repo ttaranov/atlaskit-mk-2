@@ -73,15 +73,9 @@ export default class Conversation extends React.PureComponent<Props, State> {
     Only use this method when instrumenting something that isn't instrumented itself (like Editor)
     Once editor is instrumented use the analyticsEvent passed in by editor instead.
 
-    nestedDepth is always 0 when using the save handlers in this file. 
-    Because a new comment created on the conversation itself is always going to be the top comment.
-
     @deprecated
   */
-  sendEditorAnalyticsEvent = (
-    actionSubjectId: actionSubjectIds,
-    nestedDepth: number = 0,
-  ) => {
+  sendEditorAnalyticsEvent = (actionSubjectId: actionSubjectIds) => {
     const { createAnalyticsEvent, containerId } = this.props;
 
     const analyticsEvent = createAnalyticsEvent({
@@ -89,7 +83,7 @@ export default class Conversation extends React.PureComponent<Props, State> {
       action: 'clicked',
     });
 
-    fireEvent(analyticsEvent, actionSubjectId, containerId, nestedDepth);
+    fireEvent(analyticsEvent, actionSubjectId, containerId);
   };
 
   private renderComments() {

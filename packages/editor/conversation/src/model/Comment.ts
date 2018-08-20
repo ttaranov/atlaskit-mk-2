@@ -22,5 +22,4 @@ export interface Comment extends Pick<Conversation, 'comments' | 'error'> {
   };
   isPlaceholder?: boolean; // Whether this has been generated as a placeholder comment
   commentAri?: string;
-  nestedDepth?: number;
 }

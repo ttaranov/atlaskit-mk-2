@@ -24,14 +24,12 @@ export function fireEvent(
   analyticsEvent: AnalyticsEvent,
   actionSubjectId: actionSubjectIds,
   containerId: string = '',
-  nestedDepth?: number,
 ) {
   analyticsEvent.update({
     actionSubjectId: actionSubjectId,
     containerId: containerId,
     attributes: {
       ...analyticsEvent.attributes,
-      nestedDepth,
     },
   });
   analyticsEvent.fire(ANALYTICS_CHANNEL);
