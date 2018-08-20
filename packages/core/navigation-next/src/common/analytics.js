@@ -56,3 +56,18 @@ export const navigationUILoaded = (
     actionSubjectId: layer,
     eventType: 'operational',
   }).fire(navigationChannel);
+
+export const navigationExpandedCollapsed = (
+  createAnalyticsEvent: $PropertyType<
+    WithAnalyticsEventsProps,
+    'createAnalyticsEvent',
+  >,
+  { isCollapsed, trigger }: { isCollapsed: boolean, trigger: string },
+) =>
+  createAnalyticsEvent({
+    action: isCollapsed ? 'collapsed' : 'expanded',
+    actionSubject: 'productNavigation',
+    attributes: {
+      trigger,
+    },
+  }).fire(navigationChannel);
