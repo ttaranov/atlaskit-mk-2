@@ -91,7 +91,7 @@ export interface EditorProps {
   allowInlineAction?: boolean;
 
   // Temporary flag to enable layouts while it's under development
-  UNSAFE_allowLayouts?: boolean;
+  allowLayouts?: boolean;
 
   quickInsert?: QuickInsertOptions;
 
