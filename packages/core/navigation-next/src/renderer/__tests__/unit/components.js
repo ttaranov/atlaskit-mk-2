@@ -60,6 +60,8 @@ describe('navigation-next view renderer', () => {
       const view = {
         id: 'view',
         type: 'product',
+        // Returning a Promise here means that the view will be set as the
+        // incomingView.
         getItems: () => new Promise(() => {}),
       };
       viewController.addView(view);

@@ -144,7 +144,7 @@ const GroupHeading = ({ text, ...props }: GroupHeadingProps) => (
   <GroupHeadingComponent {...props}>{text}</GroupHeadingComponent>
 );
 
-const Debug = props => (
+const Debug = (props: *) => (
   <pre
     css={{
       backgroundColor: 'rgba(0, 0, 0, 0.1)',

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { code, md } from '@atlaskit/docs';
+import SectionMessage from '@atlaskit/section-message';
 
 import { Contents, ContentsProvider, IframeExample, H } from './shared';
 
@@ -352,6 +353,94 @@ Here's what changed:
 1. We added a view called \`'project/home'\` with the \`'container'\` type. We register this view along with the rest of the views in our App's \`componentDidMount\` method.
 2. We created a new component for the projects route, which sets the \`project/home\` view when it mounts. We added a \`Link\` to this route in the Dashboards component.
 3. We set the \`product/home\` view as the initial peek view in our App's \`componentDidMount\` method. The 'peek view' is the product navigation view which should be active when a container view is being rendered over the top of the product navigation layer. **Note:** The concept of peeking has been removed from the UX spec so this feature will soon be deprecated and removed, but please continue to do this for now.
+
+${<H>Using reducers</H>}
+
+You may run into situations in your application where one part of the app wants to affect a view without directly editing its \`getItems\` function. The view controller exposes a mechanism for 'reducing' the items in a view before they're rendered.
+
+${(
+    <IframeExample
+      source={require('!!raw-loader!../examples/9999-views-controller-reducing-views')}
+      title="Container views"
+      url="/examples.html?groupId=core&packageId=navigation-next&exampleId=views-controller-reducing-views"
+    />
+  )}
+
+In this example we imagine that the Growth team wants to add a Lozenge to one of the items to see if it increases click-through rates. They could have modified the \`getItems\` function directly, but this quickly becomes quite messy. By using a 'reducer' they can keep their experimental code isolated and easy to remove. Here's how it works:
+
+#### 1. Create a component which adds the reducer
+
+We added a \`GrowthExperiment\` component:
+
+${code`import {
+  viewReducerUtils,
+  withNavigationViewController,
+} from '@atlaskit/navigation-next';
+
+class GrowthExperimentBase extends Component {
+  componentDidMount() {
+    const { navigationViewController } = this.props;
+    navigationViewController.addReducer(productHomeView.id, this.reducer);
+  }
+
+  componentWillUnmount() {
+    const { navigationViewController } = this.props;
+    navigationViewController.removeReducer(productHomeView.id, this.reducer);
+  }
+
+  reducer = viewItems => {
+    const addBadge = item => ({
+      ...item,
+      after: () => (
+        <Lozenge appearance="success" isBold>
+          New
+        </Lozenge>
+      ),
+    });
+    return viewReducerUtils.findId('portfolio')(addBadge)(viewItems);
+  };
+
+  render() {
+    return null;
+  }
+}
+const GrowthExperiment = withNavigationViewController(GrowthExperimentBase);`}
+
+This component doesn't render anything, but when it mounts it registers a reducer which runs against the \`'product/home'\` view. The reducer walks the items in that view, finds the one with the \`'portfolio'\` ID, and adds an \`after\` prop to that item.
+
+The \`findId\` function is provided by the library. You can find a full list of [reducer utility functions here](/packages/core/navigation-next/docs/state-controllers).
+
+#### 2. Drop it in
+
+It's then as simple as rendering the \`GrowthExperiment\` component as long as we want the reducer to be active. Our App's \`render\` function now looks like this:
+
+${code`render() {
+  return (
+    <LayoutManagerWithViewController globalNavigation={MyGlobalNavigation}>
+      <Switch>
+        <Route path="/projects/my-project" component={ProjectBacklogRoute} />
+        <Route path="/issues" component={IssuesAndFiltersRoute} />
+        <Route path="/" component={DashboardsRoute} />
+      </Switch>
++     <GrowthExperiment />
+    </LayoutManagerWithViewController>
+  );
+}`}
+
+&nbsp;
+
+${(
+    <SectionMessage
+      appearance="warning"
+      title="Reducers should only be used as an escape hatch."
+    >
+      Recommended uses for this feature are pretty much limited to experiments
+      and legacy (non-React) integrations. If {`you're`} trying to create a
+      stateful view, either control the state externally and pass props to the{' '}
+      <code>getItems</code> function, or use a custom item in the view which
+      manages some internal state.
+    </SectionMessage>
+  )}
 
 `}</ContentsProvider>
 );
