@@ -1,3 +1,7 @@
+import { ProviderFactory } from '@atlaskit/editor-common';
+import { Comment as CommentType, User } from '../model';
+import { Editor as AkEditor, EditorProps } from '@atlaskit/editor-core';
+
 /**
  * Props which are passed down from the parent Conversation/Comment
  */
