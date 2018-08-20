@@ -34,6 +34,12 @@ export interface Props {
     startTime: number,
   ): Promise<ResultsWithTiming>;
 
+  /**
+   * return displayed groups from result groups
+   * Used by analytics to tell how many ui groups are displayed for user
+   * for example in jira we pass (issues, boards, filters and projects but we display only 2 groups issues and others combined)
+   * @param results
+   */
   getDisplayedResults?(results: GenericResultMap): Result[][];
   createAnalyticsEvent?: CreateAnalyticsEventFn;
   handleSearchSubmit?({ target: string }): void;

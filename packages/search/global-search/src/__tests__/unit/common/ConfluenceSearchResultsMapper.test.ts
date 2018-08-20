@@ -40,7 +40,7 @@ type TestParam = {
 
     [
       {
-        desc: 'it should return 3 groups event with empty result',
+        desc: 'it should return 3 groups even with empty result',
         objectsCount: undefined,
         spacesCount: undefined,
         peopleCount: undefined,
