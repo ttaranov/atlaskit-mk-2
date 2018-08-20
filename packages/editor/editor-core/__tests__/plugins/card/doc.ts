@@ -17,6 +17,8 @@ import {
 import { EditorView } from 'prosemirror-view';
 
 import { setTextSelection } from '../../../src/utils';
+import { Fragment, Slice } from 'prosemirror-model';
+import { queueCardsFromChangedTr } from '../../../src/plugins/card/pm-plugins/doc';
 
 describe('card', () => {
   const editor = (doc: any) => {
@@ -37,16 +39,12 @@ describe('card', () => {
         );
 
         const { state, dispatch } = editorView;
-
-        const provider = new CardMockProvider();
-        setProvider(provider)(state, dispatch);
-
-        const promise = queueCard(href, refs['<>'], 'inline')(editorView);
+        dispatch(queueCard(href, refs['<>'], 'inline')(state.tr));
 
         // should be at initial pos
         const initialState = {
           requests: [{ url: href, pos: refs['<>'], appearance: 'inline' }],
-          provider: provider,
+          provider: null,
         } as CardPluginState;
         expect(pluginKey.getState(editorView.state)).toEqual(initialState);
 
@@ -56,7 +54,38 @@ describe('card', () => {
 
         // nothing should have changed
         expect(pluginKey.getState(editorView.state)).toEqual(initialState);
-        return promise;
+      });
+
+      it('queues the link in a slice as the only node', () => {
+        const href = 'http://www.atlassian.com/';
+        const linkDoc = p(
+          a({
+            href,
+          })(href),
+        );
+
+        const { editorView } = editor(doc(p('blah')));
+
+        const from = 0;
+        const to = editorView.state.doc.nodeSize - 2;
+        const tr = editorView.state.tr.replaceRange(
+          from,
+          to,
+          new Slice(Fragment.from(linkDoc(editorView.state.schema)), 1, 1),
+        );
+
+        editorView.dispatch(queueCardsFromChangedTr(editorView.state, tr));
+
+        expect(pluginKey.getState(editorView.state)).toEqual({
+          requests: [
+            {
+              url: 'http://www.atlassian.com/',
+              pos: 1,
+              appearance: 'inline',
+            },
+          ],
+          provider: null,
+        });
       });
 
       it('remaps positions for typing before the link', () => {
@@ -67,11 +96,7 @@ describe('card', () => {
         );
 
         const { state, dispatch } = editorView;
-
-        const provider = new CardMockProvider();
-        setProvider(provider)(state, dispatch);
-
-        const promise = queueCard(href, refs['link'], 'inline')(editorView);
+        dispatch(queueCard(href, refs['link'], 'inline')(state.tr));
 
         // type something at start
         const typedText = 'before everything';
@@ -86,9 +111,8 @@ describe('card', () => {
               appearance: 'inline',
             },
           ],
-          provider: provider,
+          provider: null,
         } as CardPluginState);
-        return promise;
       });
 
       it('only remaps the relevant link based on position', () => {
@@ -109,14 +133,13 @@ describe('card', () => {
           ),
         );
 
-        const { state, dispatch } = editorView;
-
-        const provider = new CardMockProvider();
-        setProvider(provider)(state, dispatch);
+        const { dispatch } = editorView;
 
         // queue both links
-        const promises = Object.keys(hrefs).map(key => {
-          return queueCard(hrefs[key], refs[key], 'inline')(editorView);
+        Object.keys(hrefs).map(key => {
+          dispatch(
+            queueCard(hrefs[key], refs[key], 'inline')(editorView.state.tr),
+          );
         });
 
         // everything should be at initial pos
@@ -125,7 +148,7 @@ describe('card', () => {
             { url: hrefs['A'], pos: refs['A'], appearance: 'inline' },
             { url: hrefs['B'], pos: refs['B'], appearance: 'inline' },
           ],
-          provider: provider,
+          provider: null,
         });
 
         // type something in between the links
@@ -138,11 +161,8 @@ describe('card', () => {
             { url: hrefs['B'], pos: refs['B'] + 2, appearance: 'inline' },
           ],
 
-          provider: provider,
+          provider: null,
         });
-
-        // empty the promise queue
-        return Promise.all(promises);
       });
     });
 
@@ -161,6 +181,7 @@ describe('card', () => {
       });
 
       it('does not replace if provider returns invalid ADF', async () => {
+        const { dispatch } = view;
         const doc = {
           type: 'mediaSingle',
           content: [
@@ -184,27 +205,28 @@ describe('card', () => {
           }
         }();
 
-        setProvider(provider)(view.state, view.dispatch);
+        dispatch(setProvider(provider)(view.state.tr));
 
         // try to replace the link using bad provider
-        expect(
-          queueCard(href, view.state.selection.from, 'inline')(view),
-        ).resolves.toEqual(doc);
+        dispatch(
+          queueCard(href, view.state.selection.from, 'inline')(view.state.tr),
+        );
       });
 
       it('does not replace if provider rejects', async () => {
+        const { dispatch } = view;
         provider = new class implements CardProvider {
           resolve(url: string): Promise<any> {
             return Promise.reject('error');
           }
         }();
 
-        setProvider(provider)(view.state, view.dispatch);
+        dispatch(setProvider(provider)(view.state.tr));
 
         // try to replace the link using bad provider
-        expect(
-          queueCard(href, view.state.selection.from, 'inline')(view),
-        ).rejects.toEqual('error');
+        dispatch(
+          queueCard(href, view.state.selection.from, 'inline')(view.state.tr),
+        );
       });
 
       afterEach(async () => {
@@ -218,74 +240,95 @@ describe('card', () => {
       });
     });
 
-    it('does not replace if link text changes', async () => {
-      const href = 'http://www.atlassian.com/';
-      const { editorView } = editor(
-        doc(p('hello have a link ', a({ href })('{<>}' + href))),
-      );
+    describe('changed document', () => {
+      let promises: Promise<any>[] = [];
+      let provider: CardMockProvider;
 
-      setProvider(new CardMockProvider())(
-        editorView.state,
-        editorView.dispatch,
-      );
+      beforeEach(() => {
+        provider = new class implements CardProvider {
+          resolve(url: string): Promise<any> {
+            const promise = new Promise(resolve =>
+              resolve({
+                type: 'paragraph',
+                content: [
+                  {
+                    type: 'text',
+                    text: 'hello world',
+                  },
+                ],
+              }),
+            );
 
-      // queue it
-      const promise = queueCard(
-        href,
-        editorView.state.selection.from,
-        'inline',
-      )(editorView);
+            promises.push(promise);
+            return promise;
+          }
+        }();
+      });
 
-      // now, change the link text (+1 so we change inside the text node with the mark, otherwise
-      // we prefer to change on the other side of the boundary)
-      insertText(editorView, 'change', editorView.state.selection.from + 1);
+      afterEach(() => {
+        promises = [];
+      });
 
-      expect(editorView.state.doc).toEqualDocument(
-        doc(
-          p(
-            'hello have a link ',
-            a({ href })(href[0] + 'change{<>}' + href.slice(1)),
+      it('does not replace if link text changes', async () => {
+        const href = 'http://www.sick.com/';
+        const { editorView } = editor(
+          doc(p('hello have a link ', a({ href })('{<>}' + href))),
+        );
+
+        const { dispatch } = editorView;
+        dispatch(setProvider(provider)(editorView.state.tr));
+
+        // queue it
+        dispatch(
+          queueCard(href, editorView.state.selection.from, 'inline')(
+            editorView.state.tr,
           ),
-        ),
-      );
+        );
 
-      // resolve the provider
-      await promise;
+        // now, change the link text (+1 so we change inside the text node with the mark, otherwise
+        // we prefer to change on the other side of the boundary)
+        insertText(editorView, 'change', editorView.state.selection.from + 1);
 
-      // link should not have been replaced, but text will have changed
-      expect(editorView.state.doc).toEqualDocument(
-        doc(
-          p(
-            'hello have a link ',
-            a({ href })(href[0] + 'change{<>}' + href.slice(1)),
+        await Promise.all(promises);
+
+        // link should not have been replaced, but text will have changed
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            p(
+              'hello have a link ',
+              a({ href })(href[0] + 'change{<>}' + href.slice(1)),
+            ),
           ),
-        ),
-      );
-    });
+        );
 
-    it('does not replace if position is some other content', async () => {
-      const href = 'http://www.atlassian.com/';
-      const initialDoc = doc(p('hello have a link '), p('{<>}' + href));
+        // queue should be empty
+        expect(pluginKey.getState(editorView.state)).toEqual({
+          requests: [],
+          provider: provider,
+        });
+      });
 
-      const { editorView } = editor(initialDoc);
+      it('does not replace if position is some other content', async () => {
+        const href = 'http://www.atlassian.com/';
+        const initialDoc = doc(p('hello have a link '), p('{<>}' + href));
 
-      setProvider(new CardMockProvider())(
-        editorView.state,
-        editorView.dispatch,
-      );
+        const { editorView } = editor(initialDoc);
+        const { dispatch } = editorView;
+        dispatch(setProvider(provider)(editorView.state.tr));
 
-      // queue a non-link node
-      const promise = queueCard(
-        href,
-        editorView.state.selection.from,
-        'inline',
-      )(editorView);
+        // queue a non-link node
+        dispatch(
+          queueCard(href, editorView.state.selection.from, 'inline')(
+            editorView.state.tr,
+          ),
+        );
 
-      // resolve the provider
-      await promise;
+        // resolve the provider
+        await Promise.all(promises);
 
-      // nothing should change
-      expect(editorView.state.doc).toEqualDocument(initialDoc);
+        // nothing should change
+        expect(editorView.state.doc).toEqualDocument(initialDoc);
+      });
     });
   });
 });

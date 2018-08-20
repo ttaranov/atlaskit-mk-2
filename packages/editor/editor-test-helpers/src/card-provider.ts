@@ -16,11 +16,15 @@ export class DelayedCardMockProvider implements CardProvider {
   public config = {};
 
   resolve(url: string): Promise<any> {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve(inlineCard);
-      }, 1000);
-    });
+    if (url.match(/https?:\/\/\w+\.atlassian\.com\/?/)) {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          resolve(inlineCard);
+        }, 1000);
+      });
+    }
+
+    return Promise.reject(undefined);
   }
 }
 

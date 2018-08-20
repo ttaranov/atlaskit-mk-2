@@ -1,0 +1,106 @@
+import { pluginKey } from './main';
+import { CardPluginState } from '../types';
+import { Command } from '../../../types';
+import { processRawValue } from '../../../utils';
+import { Transaction, EditorState } from 'prosemirror-state';
+import { resolveCard, queueCard } from './actions';
+
+export const replaceQueuedUrlWithCard = (
+  url: string,
+  cardData: any,
+): Command => (editorState, dispatch) => {
+  const state = pluginKey.getState(editorState) as CardPluginState | undefined;
+  if (!state) {
+    return false;
+  }
+
+  // find the requests for this URL
+  const requests = state.requests.filter(req => req.url === url);
+
+  // try to transform response to ADF
+  const schema = editorState.schema;
+  const cardAdf = processRawValue(schema, cardData);
+
+  let tr = editorState.tr;
+  if (cardAdf) {
+    requests.forEach(request => {
+      // replace all the outstanding links with their cards
+      const pos = tr.mapping.map(request.pos);
+      const node = tr.doc.nodeAt(pos);
+      if (!node || !node.type.isText) {
+        return;
+      }
+
+      // not a link anymore
+      const linkMark = node.marks.find(mark => mark.type.name === 'link');
+      if (!linkMark) {
+        return;
+      }
+
+      const textSlice = node.text;
+      if (linkMark.attrs.href !== url || textSlice !== url) {
+        return;
+      }
+
+      tr.replaceWith(pos, pos + url.length, cardAdf);
+    });
+  }
+
+  dispatch(resolveCard(url)(tr));
+  return true;
+};
+
+const getStepRange = (
+  transaction: Transaction,
+): { from: number; to: number } | null => {
+  let from = -1;
+  let to = -1;
+
+  transaction.steps.forEach(step => {
+    step.getMap().forEach((_oldStart, _oldEnd, newStart, newEnd) => {
+      from = newStart < from || from === -1 ? newStart : from;
+      to = newEnd < to || to === -1 ? newEnd : to;
+    });
+  });
+
+  if (from !== -1) {
+    return { from, to };
+  }
+
+  return null;
+};
+
+export const queueCardsFromChangedTr = (
+  state: EditorState,
+  tr: Transaction,
+): Transaction => {
+  const { schema } = state;
+  const { link } = schema.marks;
+
+  const stepRange = getStepRange(tr);
+  if (!stepRange) {
+    // no steps mutate this document, do nothing
+    return tr;
+  }
+
+  tr.doc.nodesBetween(stepRange.from, stepRange.to, (node, pos) => {
+    if (!node.isText) {
+      return true;
+    }
+
+    const linkMark = node.marks.find(mark => mark.type === link);
+
+    if (linkMark) {
+      // don't bother queueing nodes that have user-defined text for a link
+      if (node.text !== linkMark.attrs.href) {
+        return false;
+      }
+
+      queueCard(linkMark.attrs.href, pos, 'inline')(tr);
+    }
+
+    return false;
+  });
+
+  return tr;
+};

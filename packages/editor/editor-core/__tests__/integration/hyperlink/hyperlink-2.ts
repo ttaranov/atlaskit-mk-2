@@ -20,7 +20,7 @@ const copyAsHTMLButton = '#copy-as-html';
     { skip: ['edge', 'ie', 'safari'] },
     async client => {
       const sample = await new Page(client);
-      const linkText1 = 'https://www.atlassian.com';
+      const linkText1 = 'https://www.google.com';
       await sample.goto(clipboardHelper);
       await sample.isVisible(clipboardInput);
       await sample.type(

@@ -37,7 +37,7 @@ import {
   transformSliceToJoinAdjacentCodeBlocks,
   transformSingleLineCodeBlockToCodeMark,
 } from '../../code-block/utils';
-import { queueCardFromTr } from '../../card/pm-plugins/actions';
+import { queueCardsFromChangedTr } from '../../card/pm-plugins/doc';
 
 export const stateKey = new PluginKey('pastePlugin');
 
@@ -122,19 +122,12 @@ export function createPlugin(
 
           if (doc && doc.content) {
             const tr = closeHistory(state.tr);
-            const replacementSlice = new Slice(
-              doc.content,
-              slice.openStart,
-              slice.openEnd,
+            tr.replaceSelection(
+              new Slice(doc.content, slice.openStart, slice.openEnd),
             );
 
-            // replace the selection
-            tr.replaceSelection(replacementSlice);
+            queueCardsFromChangedTr(state, tr);
             dispatch(tr.scrollIntoView());
-
-            // queue cards, ignoring any errors
-            Promise.all(queueCardFromTr(tr)(view)).catch(rejected => {});
-
             return true;
           }
         }
@@ -180,25 +173,25 @@ export function createPlugin(
 
           // get prosemirror-tables to handle pasting tables if it can
           // otherwise, just the replace the selection with the content
-          if (!handlePasteTable(view, null, slice)) {
-            closeHistory(tr);
-            tr.replaceSelection(slice);
-            tr.setStoredMarks([]);
-            if (
-              tr.selection.empty &&
-              tr.selection.$from.parent.type === codeBlock
-            ) {
-              tr.setSelection(TextSelection.near(
-                tr.selection.$from,
-                1,
-              ) as Selection);
-            }
+          if (handlePasteTable(view, null, slice)) {
+            return true;
+          }
 
-            dispatch(tr);
+          closeHistory(tr);
+          tr.replaceSelection(slice);
+          tr.setStoredMarks([]);
+          if (
+            tr.selection.empty &&
+            tr.selection.$from.parent.type === codeBlock
+          ) {
+            tr.setSelection(TextSelection.near(
+              tr.selection.$from,
+              1,
+            ) as Selection);
           }
 
           // queue link cards, ignoring any errors
-          Promise.all(queueCardFromTr(tr)(view)).catch(rejected => {});
+          dispatch(queueCardsFromChangedTr(state, tr));
           return true;
         }
 

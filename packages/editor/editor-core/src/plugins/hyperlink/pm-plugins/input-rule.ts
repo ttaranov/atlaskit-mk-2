@@ -4,6 +4,7 @@ import { Plugin, EditorState } from 'prosemirror-state';
 import { analyticsService } from '../../../analytics';
 import { createInputRule } from '../../../utils/input-rules';
 import { Match, LinkMatcher, normalizeUrl } from '../utils';
+import { pluginKey as cardPluginKey } from '../../card/pm-plugins/main';
 
 export function createLinkInputRule(
   regexp: RegExp,
@@ -30,7 +31,13 @@ export function createLinkInputRule(
           end - (link.input!.length - link.lastIndex),
           markType,
         )
-        .insertText(' ');
+        .insertText(' ')
+        .setMeta(cardPluginKey, {
+          type: 'QUEUE',
+          url: link.url,
+          pos: start - (link.input!.length - link.lastIndex),
+          appearance: 'inline',
+        });
     },
   );
 }
