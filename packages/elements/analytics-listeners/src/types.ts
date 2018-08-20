@@ -27,4 +27,5 @@ export enum FabricChannel {
   atlaskit = 'atlaskit',
   elements = 'elements',
   navigation = 'navigation',
+  editor = 'editor',
 }

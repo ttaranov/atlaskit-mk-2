@@ -1,62 +1,55 @@
 import * as React from 'react';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
-import { ELEMENTS_CONTEXT } from '@atlaskit/analytics-namespaced-context';
 import { GasPayload } from '@atlaskit/analytics-gas-types';
 import { sendEvent } from '../analytics-web-client-wrapper';
 import { ListenerProps, FabricChannel } from '../types';
-import * as merge from 'lodash.merge';
+
+import { processEventPayload } from './process-event-payload';
 
 export const ELEMENTS_TAG = 'fabricElements';
+export const EDITOR_TAG = 'fabricEditor';
 
 export type ListenerFunction = (
   event: { payload: GasPayload; context: Array<{}> },
 ) => void;
 
-// merge all context objects from left to right. In case of attribute conflict the right one takes precedence
-const processContext = (contexts: Array<{}>) =>
-  contexts
-    .filter(ctx => !!ctx[ELEMENTS_CONTEXT])
-    .map(ctx => ctx[ELEMENTS_CONTEXT])
-    .reduce((result, item) => merge(result || {}, item), {});
-
-const updatePayloadWithContext = (event: {
-  payload: GasPayload;
-  context: Array<{}>;
-}) => {
-  if (event.context.length === 0) {
-    return event.payload;
-  }
-  const mergedContext: any = processContext(event.context);
-  event.payload.attributes = merge(
-    mergedContext,
-    event.payload.attributes || {},
-  );
-  return event.payload;
-};
-
 export default class FabricElementsListener extends React.Component<
   ListenerProps
 > {
-  listenerHandler: ListenerFunction = event => {
+  sendEvent(payload) {
     const { client, logger } = this.props;
+    return sendEvent(client, logger)(payload);
+  }
+
+  handleEvent(event, tag) {
     if (event.payload) {
-      const payload = updatePayloadWithContext(event);
-
-      const tags: Set<string> = new Set(payload.tags || []);
-      tags.add(ELEMENTS_TAG);
-      payload.tags = Array.from(tags);
-
-      sendEvent(client, logger)(payload);
+      return;
     }
+
+    const payload = processEventPayload(event, tag);
+    this.sendEvent(payload);
+  }
+
+  elementsListenerHandler: ListenerFunction = event => {
+    this.handleEvent(event, ELEMENTS_TAG);
+  };
+
+  editorListenerHandler: ListenerFunction = event => {
+    this.handleEvent(event, EDITOR_TAG);
   };
 
   render() {
     return (
       <AnalyticsListener
-        onEvent={this.listenerHandler}
+        onEvent={this.elementsListenerHandler}
         channel={FabricChannel.elements}
       >
-        {this.props.children}
+        <AnalyticsListener
+          onEvent={this.editorListenerHandler}
+          channel={FabricChannel.editor}
+        >
+          {this.props.children}
+        </AnalyticsListener>
       </AnalyticsListener>
     );
   }
