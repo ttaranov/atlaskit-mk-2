@@ -1,5 +1,10 @@
 # @atlaskit/code
 
+## 8.0.1
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/docs@5.0.6
+
 ## 8.0.0
 - [major] ED-4989: replace hjs with prism [f9c0cdb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9c0cdb)
 - [none] Updated dependencies [f9c0cdb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9c0cdb)

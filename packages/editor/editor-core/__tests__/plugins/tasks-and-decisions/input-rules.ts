@@ -41,7 +41,7 @@ describe('tasks and decisions - input rules', () => {
         allowTasksAndDecisions: true,
         allowTables: true,
         allowExtension: true,
-        UNSAFE_allowLayouts: true,
+        allowLayouts: true,
       },
       doc,
     });

@@ -1,5 +1,11 @@
 # @atlaskit/popper
 
+## 0.2.1
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/button@9.0.6
+  - @atlaskit/docs@5.0.6
+
 ## 0.2.0
 
 

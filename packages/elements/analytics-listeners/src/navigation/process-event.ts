@@ -90,28 +90,27 @@ export default (event: EventNextType, logger: Logger): GasPayload | null => {
   tags.add(NAVIGATION_TAG);
 
   if (event.payload) {
-    if (eventType === UI_EVENT_TYPE) {
-      return {
-        eventType,
-        source,
-        actionSubject,
-        action,
-        actionSubjectId,
-        attributes,
-        tags: Array.from(tags),
-      } as any;
-    }
-
-    if (
-      eventType === TRACK_EVENT_TYPE ||
-      eventType === OPERATIONAL_EVENT_TYPE ||
-      eventType === SCREEN_EVENT_TYPE
-    ) {
-      logger.error(
-        'Track, screen and operational events are currently not supported for navigation events',
-      );
-    } else {
-      logger.error('Invalid event type', eventType);
+    switch (eventType) {
+      case UI_EVENT_TYPE:
+      case OPERATIONAL_EVENT_TYPE:
+        return {
+          eventType,
+          source,
+          actionSubject,
+          action,
+          actionSubjectId,
+          attributes,
+          tags: Array.from(tags),
+        } as any;
+      case SCREEN_EVENT_TYPE:
+      case TRACK_EVENT_TYPE:
+        logger.error(
+          'Screen and Track events are currently not supported for navigation events',
+        );
+        break;
+      default:
+        logger.error('Invalid event type', eventType);
+        break;
     }
   }
 

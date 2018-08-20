@@ -15,6 +15,7 @@ export interface GraphqlResponse {
   data?: {
     AccountCentricUserSearch?: SearchResult[];
     Collaborators?: SearchResult[];
+    UserSearch?: SearchResult[];
   };
 }
 
@@ -149,11 +150,11 @@ export default class PeopleSearchClientImpl implements PeopleSearchClient {
       throw new Error(makeGraphqlErrorMessage(response.errors));
     }
 
-    if (!response.data || !response.data.AccountCentricUserSearch) {
+    if (!response.data || !response.data.UserSearch) {
       throw new Error('PeopleSearchClient: Response data missing');
     }
 
-    return response.data.AccountCentricUserSearch.map(userSearchResultToResult);
+    return response.data.UserSearch.map(userSearchResultToResult);
   }
 }
 

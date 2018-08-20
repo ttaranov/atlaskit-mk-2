@@ -1,5 +1,14 @@
 # @atlaskit/drawer
 
+## 1.0.6
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/section-message@1.0.5
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/button@9.0.6
+  - @atlaskit/blanket@7.0.5
+  - @atlaskit/docs@5.0.6
+
 ## 1.0.5
 - [patch] Add variable name displayNames for anonymous function SFC components to improve debugging experience [50d469f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/50d469f)
 

@@ -157,7 +157,7 @@ export class ExampleEditor extends React.Component<Props, State> {
             }}
             allowRule={true}
             allowDate={true}
-            UNSAFE_allowLayouts={true}
+            allowLayouts={true}
             allowGapCursor={true}
             allowTemplatePlaceholders={{ allowInserting: true }}
             UNSAFE_cards={{
@@ -203,7 +203,7 @@ export class ExampleEditor extends React.Component<Props, State> {
   };
 }
 
-export default function Example(defaultValue) {
+export default function Example({ defaultValue }) {
   return (
     <EditorContext>
       <div style={{ height: '100%' }}>

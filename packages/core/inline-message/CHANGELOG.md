@@ -1,5 +1,13 @@
 # @atlaskit/inline-message
 
+## 7.0.1
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/inline-dialog@9.0.2
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/button@9.0.6
+  - @atlaskit/docs@5.0.6
+
 ## 7.0.0
 - [major] Inline-message "position" prop has been changed to "placement" to align with what is in @atlaskit/inline-dialog and react-popper [333a440](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/333a440)
 

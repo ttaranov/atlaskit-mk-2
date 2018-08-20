@@ -29,7 +29,7 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://bitbucket.org/atlassian/atlaskit"
+    "url": "https://bitbucket.org/atlassian/atlaskit-mk-2"
   },
   "devDependencies": {
     "@atlaskit/analytics-listeners": "^3.2.0",

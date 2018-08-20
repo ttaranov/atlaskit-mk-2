@@ -50,6 +50,7 @@ export default createSchema({
     'layoutSection',
     'layoutColumn',
     'inlineCard',
+    'blockCard',
   ],
   marks: [
     'em',

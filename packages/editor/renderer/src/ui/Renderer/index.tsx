@@ -67,6 +67,7 @@ export default class Renderer extends PureComponent<Props, {}> {
       extensionHandlers,
       schema,
       useNewApplicationCard,
+      appearance,
     } = props;
 
     this.serializer = new ReactSerializer({
@@ -80,6 +81,7 @@ export default class Renderer extends PureComponent<Props, {}> {
         ...rendererContext,
       } as RendererContext,
       useNewApplicationCard,
+      appearance,
     });
   }
 

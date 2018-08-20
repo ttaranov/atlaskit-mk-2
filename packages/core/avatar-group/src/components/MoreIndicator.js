@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { withPseudoState, getProps, type SizeType } from '@atlaskit/avatar';
 import { Outer, Inner } from '../styled/MoreIndicator';
 
-type Props = {
+export type Props = {
   /** Used to override the default border color of the presence indicator.
    Accepts any color argument that the border-color CSS property accepts. */
   borderColor?: string,

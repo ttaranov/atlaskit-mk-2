@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/global-navigation",
-  "version": "4.1.2",
+  "version": "4.1.4",
   "description": "Global navigation component for Atlassian",
   "main": "dist/cjs/index.js",
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
@@ -12,15 +12,15 @@
   ],
   "dependencies": {
     "@atlaskit/analytics-namespaced-context": "^2.0.3",
-    "@atlaskit/avatar": "^14.0.6",
-    "@atlaskit/badge": "^9.0.4",
-    "@atlaskit/blanket": "^7.0.4",
-    "@atlaskit/docs": "^5.0.2",
-    "@atlaskit/drawer": "^1.0.5",
-    "@atlaskit/dropdown-menu": "^6.1.5",
-    "@atlaskit/icon": "^13.2.4",
-    "@atlaskit/navigation-next": "^3.3.3",
-    "@atlaskit/theme": "^5.1.3",
+    "@atlaskit/avatar": "^14.0.8",
+    "@atlaskit/badge": "^9.1.0",
+    "@atlaskit/blanket": "^7.0.5",
+    "@atlaskit/docs": "^5.0.6",
+    "@atlaskit/drawer": "^1.0.6",
+    "@atlaskit/dropdown-menu": "^6.1.8",
+    "@atlaskit/icon": "^13.2.5",
+    "@atlaskit/navigation-next": "^3.3.5",
+    "@atlaskit/theme": "^6.0.0",
     "emotion": "^9.1.1",
     "emotion-theming": "^9.0.0",
     "prop-types": "^15.5.10",
@@ -33,9 +33,9 @@
   },
   "devDependencies": {
     "@atlaskit/analytics-listeners": "^3.0.3",
-    "@atlaskit/modal-dialog": "^6.0.6",
-    "@atlaskit/onboarding": "^5.1.4",
-    "@atlaskit/section-message": "^1.0.4",
+    "@atlaskit/modal-dialog": "^6.0.9",
+    "@atlaskit/onboarding": "^5.1.6",
+    "@atlaskit/section-message": "^1.0.5",
     "react-lorem-component": "^0.12.2"
   }
 }

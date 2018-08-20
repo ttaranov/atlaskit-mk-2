@@ -392,6 +392,8 @@ export const layoutSection = (
 export const layoutColumn = nodeFactory(sampleSchema.nodes.layoutColumn);
 export const inlineCard = (attrs: CardAttributes) =>
   nodeFactory(sampleSchema.nodes.inlineCard, attrs);
+export const blockCard = (attrs: CardAttributes) =>
+  nodeFactory(sampleSchema.nodes.blockCard, attrs);
 
 //
 // Marks

@@ -286,7 +286,7 @@ export const toJSONTableCell = (node: PmNode) => ({
 
 export const tableHeader = {
   content:
-    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | mediaSingle  | applicationCard | decisionList | taskList | extension)+',
+    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | mediaSingle  | applicationCard | decisionList | taskList | blockCard | extension)+',
   attrs: cellAttrs,
   tableRole: 'header_cell',
   isolating: true,

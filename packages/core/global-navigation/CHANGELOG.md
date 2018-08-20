@@ -1,5 +1,28 @@
 # @atlaskit/global-navigation
 
+## 4.1.4
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/section-message@1.0.5
+  - @atlaskit/onboarding@5.1.6
+  - @atlaskit/navigation-next@3.3.5
+  - @atlaskit/modal-dialog@6.0.9
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/dropdown-menu@6.1.8
+  - @atlaskit/drawer@1.0.6
+  - @atlaskit/blanket@7.0.5
+  - @atlaskit/badge@9.1.0
+  - @atlaskit/avatar@14.0.8
+  - @atlaskit/docs@5.0.6
+
+## 4.1.3
+- [patch] Fix navigationItem click events not firing for help and profile icons [06bf373](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06bf373)
+
+- [none] Updated dependencies [06bf373](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06bf373)
+  - @atlaskit/navigation-next@3.3.4
+- [patch] Updated dependencies [4ab7c4e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4ab7c4e)
+  - @atlaskit/navigation-next@3.3.4
+
 ## 4.1.2
 - [patch] Updated dependencies [15f93f0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/15f93f0)
   - @atlaskit/navigation-next@3.3.3

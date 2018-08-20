@@ -1,6 +1,6 @@
 // @flow
 
-import React, { type Node } from 'react';
+import React from 'react';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
 import BacklogIcon from '@atlaskit/icon/glyph/backlog';
@@ -23,6 +23,7 @@ import GroupHeadingComponent from '../components/GroupHeading';
 import Switcher from '../components/Switcher';
 import { withNavigationUI } from '../ui-controller';
 import { withNavigationViewController } from '../view-controller';
+
 import type {
   GoToItemProps,
   GroupProps,
@@ -44,18 +45,6 @@ const iconMap = {
 };
 
 const gridSize = gridSizeFn();
-
-const AnalyticsWrapper = ({
-  children,
-  onClick,
-}: {
-  children: Node,
-  onClick: () => void,
-}) => (
-  <div role="presentation" onClick={onClick}>
-    {children}
-  </div>
-);
 
 /**
  * ITEMS
@@ -215,10 +204,7 @@ const components = { ...itemComponents, ...groupComponents };
 /**
  * RENDERER
  */
-export const ItemsRenderer = ({
-  customComponents = {},
-  items,
-}: ItemsRendererProps) =>
+const ItemsRenderer = ({ customComponents = {}, items }: ItemsRendererProps) =>
   items.map(({ type, ...props }, index) => {
     const key =
       typeof props.nestedGroupKey === 'string'
@@ -227,29 +213,20 @@ export const ItemsRenderer = ({
 
     // If they've provided a component as the type
     if (typeof type === 'function') {
-      const C = type;
-      const Wrapper = navigationItemClicked(
-        AnalyticsWrapper,
-        C.displayName || 'inlineCustomComponent',
-        {
-          ...props,
-          index,
-          // Define onClick so that the click is recorded by analytics.
-          // Override the existing version in props if it exists, so it does not
-          // get executed multiple times.
-          onClick: () => {},
-        },
+      const CustomComponent = navigationItemClicked(
+        type,
+        type.displayName || 'inlineCustomComponent',
       );
       return (
-        <Wrapper key={key}>
-          <C
-            {...props}
-            // We pass our in-built components through to custom components so
-            // they can wrap/render them if they want to.
-            components={components}
-            customComponents={customComponents}
-          />
-        </Wrapper>
+        <CustomComponent
+          key={key}
+          {...props}
+          index={index}
+          // We pass our in-built components through to custom components so
+          // they can wrap/render them if they want to.
+          components={components}
+          customComponents={customComponents}
+        />
       );
     }
 
@@ -271,28 +248,25 @@ export const ItemsRenderer = ({
       // If they've provided a type which matches one of their defined custom
       // components.
       if (customComponents[type]) {
-        const Wrapper = navigationItemClicked(AnalyticsWrapper, type, {
-          ...props,
-          index,
-          // Define onClick so that the click is recorded by analytics.
-          // Override the existing version in props if it exists, so it does not
-          // get executed multiple times.
-          onClick: () => {},
-        });
-        const C = customComponents[type];
+        const CustomComponent = navigationItemClicked(
+          customComponents[type],
+          type,
+        );
         return (
-          <Wrapper key={key}>
-            <C
-              {...props}
-              // We pass our in-built components through to custom components so
-              // they can wrap/render them if they want to.
-              components={components}
-              customComponents={customComponents}
-            />
-          </Wrapper>
+          <CustomComponent
+            key={key}
+            {...props}
+            index={index}
+            // We pass our in-built components through to custom components so
+            // they can wrap/render them if they want to.
+            components={components}
+            customComponents={customComponents}
+          />
         );
       }
     }
 
     return <Debug key={key} type={type} {...props} />;
   });
+
+export default ItemsRenderer;
