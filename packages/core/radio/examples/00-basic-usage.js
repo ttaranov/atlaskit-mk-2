@@ -1,9 +1,9 @@
 // @flow
 import React, { PureComponent } from 'react';
-import FieldRadioGroup from '../src';
-import type { ItemsPropTypeSmart } from '../src/types';
+import { RadioGroup } from '../src';
+import type { ItemsPropType } from '../src/types';
 
-const items: ItemsPropTypeSmart = [
+const items: ItemsPropType = [
   { name: 'color', value: 'red', label: 'Red' },
   { name: 'color', value: 'blue', label: 'Blue', defaultSelected: true },
   { name: 'color', value: 'yellow', label: 'Yellow' },
@@ -30,10 +30,10 @@ export default class BasicExample extends PureComponent<void, State> {
   render() {
     return (
       <div>
-        <FieldRadioGroup
+        <RadioGroup
           items={items}
           label="Pick a color:"
-          onRadioChange={this.onRadioChange}
+          onChange={this.onRadioChange}
         />
         <div
           style={{

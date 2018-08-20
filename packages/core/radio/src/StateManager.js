@@ -6,20 +6,20 @@ import React, {
 } from 'react';
 import RadioGroup from './RadioGroup';
 
-type Props = {
-  selectedValue?: string,
-  defaultSelectedValue: string,
+type StateManagerProps = {
+  selectedValue?: string | number | null,
+  defaultSelectedValue: string | number | null,
   onChange?: (event: SyntheticEvent<*>) => void,
 };
 
 type State = {
-  selectedValue: string,
+  selectedValue: string | number | null,
 };
 
 export default (
   WrappedComponent: ComponentType<ElementConfig<typeof RadioGroup>>,
-) => {
-  return class StateManager extends Component<Props, State> {
+): ComponentType<StateManagerProps> => {
+  return class StateManager extends Component<StateManagerProps, State> {
     static defaultProps = {
       defaultSelectedValue: null,
     };
