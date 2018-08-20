@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
@@ -79,14 +79,19 @@ class LayoutManagerWithViewControllerBase extends Component<
     } = this.props;
     const { hasInitialised } = this.state;
 
+    /* We are embedding the LayerInitialised analytics component within global navigation so that
+     * the event it fires can access the analytics context within LayerManager. The component
+     * cannot be rendered directly within LayerManager since it needs access to view data which
+     * only exists in LayoutManagerWithViewController. */
     return (
-      <LayerInitialised
-        activeView={activeView}
-        initialised={hasInitialised}
-        onInitialised={this.onInitialised}
-      >
+      <Fragment>
         <GlobalNavigation />
-      </LayerInitialised>
+        <LayerInitialised
+          activeView={activeView}
+          initialised={hasInitialised}
+          onInitialised={this.onInitialised}
+        />
+      </Fragment>
     );
   };
 

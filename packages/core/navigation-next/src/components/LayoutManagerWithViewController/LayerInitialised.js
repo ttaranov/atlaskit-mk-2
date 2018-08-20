@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component, Fragment } from 'react';
+import { Component } from 'react';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 
 import { navigationUILoaded } from '../../common/analytics';
@@ -32,7 +32,7 @@ class LayerInitialised extends Component<LayerInitialisedProps> {
   };
 
   render() {
-    return <Fragment>{this.props.children}</Fragment>;
+    return null;
   }
 }
 

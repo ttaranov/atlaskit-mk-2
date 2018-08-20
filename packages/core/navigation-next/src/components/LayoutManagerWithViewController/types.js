@@ -20,7 +20,6 @@ export type LayoutManagerWithViewControllerState = {
 };
 
 export type LayerInitialisedProps = WithAnalyticsEventsProps & {
-  children: Node,
   activeView: $PropertyType<ViewControllerState, 'activeView'>,
   initialised: boolean,
   onInitialised?: () => void,

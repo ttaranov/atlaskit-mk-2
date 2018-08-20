@@ -213,12 +213,12 @@ const ItemsRenderer = ({ customComponents = {}, items }: ItemsRendererProps) =>
 
     // If they've provided a component as the type
     if (typeof type === 'function') {
-      const Comp = navigationItemClicked(
+      const CustomComponent = navigationItemClicked(
         type,
         type.displayName || 'inlineCustomComponent',
       );
       return (
-        <Comp
+        <CustomComponent
           key={key}
           {...props}
           index={index}
@@ -248,9 +248,12 @@ const ItemsRenderer = ({ customComponents = {}, items }: ItemsRendererProps) =>
       // If they've provided a type which matches one of their defined custom
       // components.
       if (customComponents[type]) {
-        const Comp = navigationItemClicked(customComponents[type], type);
+        const CustomComponent = navigationItemClicked(
+          customComponents[type],
+          type,
+        );
         return (
-          <Comp
+          <CustomComponent
             key={key}
             {...props}
             index={index}
