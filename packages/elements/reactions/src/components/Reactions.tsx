@@ -55,7 +55,7 @@ export class Reactions extends React.PureComponent<Props> {
   }
 
   private isDisabled = (): boolean =>
-    this.props.status === 'LOADING' || this.props.status === 'ERROR';
+    this.props.status !== ReactionStatus.ready;
 
   private getTooltip = (): string | undefined => {
     const { status, errorMessage } = this.props;
