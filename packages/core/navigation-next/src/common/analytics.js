@@ -5,6 +5,7 @@ import type { ComponentType } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  type WithAnalyticsEventsProps,
 } from '@atlaskit/analytics-next';
 
 import { navigationChannel } from '../common/constants';
@@ -40,3 +41,18 @@ export const navigationItemClicked = (
     })(Component),
   );
 };
+
+export const navigationExpandedCollapsed = (
+  createAnalyticsEvent: $PropertyType<
+    WithAnalyticsEventsProps,
+    'createAnalyticsEvent',
+  >,
+  { isCollapsed, trigger }: { isCollapsed: boolean, trigger: string },
+) =>
+  createAnalyticsEvent({
+    action: isCollapsed ? 'collapsed' : 'expanded',
+    actionSubject: 'productNavigation',
+    attributes: {
+      trigger,
+    },
+  }).fire(navigationChannel);
