@@ -7,6 +7,8 @@ import {
   getMediaTypeFromMimeType,
   ContextFactory,
   FileState,
+  FileStreamCache,
+  fileStreamsCache,
 } from '@atlaskit/media-core';
 import {
   MediaStore,
@@ -178,7 +180,15 @@ export class NewUploadServiceImpl implements UploadService {
           controller.abort();
         },
       };
+
       this.cancellableFilesUploads[id] = cancellableFileUpload;
+      // Save observable in the cache
+      upfrontId.then(id => {
+        if (context && observable) {
+          const key = FileStreamCache.createKey(id);
+          fileStreamsCache.set(key, observable);
+        }
+      });
 
       return cancellableFileUpload;
     });

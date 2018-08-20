@@ -39,7 +39,7 @@ import {
   FileState,
   mapMediaFileToFileState,
 } from '../fileState';
-import FileStreamCache from './fileStreamCache';
+import FileStreamCache, { fileStreamsCache } from './fileStreamCache';
 import { getMediaTypeFromUploadableFile } from '../utils/getMediaTypeFromUploadableFile';
 
 const DEFAULT_CACHE_SIZE = 200;
@@ -95,7 +95,6 @@ export class ContextFactory {
 }
 
 const pollingInterval = 1000;
-const fileStreamsCache = new FileStreamCache();
 
 class ContextImpl implements Context {
   private readonly collectionPool = RemoteMediaCollectionProviderFactory.createPool();
@@ -103,13 +102,11 @@ class ContextImpl implements Context {
   private readonly urlPreviewPool = MediaUrlPreviewProvider.createPool();
   private readonly fileItemCache: LRUCache<string, FileItem>;
   private readonly localPreviewCache: LRUCache<string, string>;
-  private readonly fileStreamsCache: FileStreamCache;
   private readonly mediaStore: MediaStore;
 
   constructor(readonly config: ContextConfig) {
     this.fileItemCache = new LRUCache(config.cacheSize || DEFAULT_CACHE_SIZE);
     this.localPreviewCache = new LRUCache(10);
-    this.fileStreamsCache = fileStreamsCache;
     this.mediaStore = new MediaStore({
       authProvider: config.authProvider,
     });
@@ -118,7 +115,7 @@ class ContextImpl implements Context {
   getFile(id: string, options?: GetFileOptions): Observable<FileState> {
     const key = FileStreamCache.createKey(id, options);
 
-    return this.fileStreamsCache.getOrInsert(key, () => {
+    return fileStreamsCache.getOrInsert(key, () => {
       const collection = options && options.collectionName;
       const fileStream$ = publishReplay<FileState>(1)(
         this.createDownloadFileStream(id, collection),
@@ -284,7 +281,7 @@ class ContextImpl implements Context {
         onId: id => {
           fileId = id;
           const key = FileStreamCache.createKey(fileId, { collectionName });
-          this.fileStreamsCache.set(key, fileStream);
+          fileStreamsCache.set(key, fileStream);
           if (file.content instanceof Blob) {
             observer.next({
               name,

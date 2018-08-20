@@ -42,4 +42,5 @@ export class FileStreamCache {
   }
 }
 
+export const fileStreamsCache = new FileStreamCache();
 export default FileStreamCache;
