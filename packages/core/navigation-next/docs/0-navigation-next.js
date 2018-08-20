@@ -3,25 +3,9 @@
 import React from 'react';
 import { md } from '@atlaskit/docs';
 import Button from '@atlaskit/button';
-import SectionMessage from '@atlaskit/section-message';
 import { Hr } from './shared';
 
 export default md`
-${(
-  <SectionMessage appearance="warning">
-    <p>
-      <strong>
-        Note: @atlaskit/navigation-next is currently a developer preview.
-      </strong>
-    </p>
-    <p>
-      Please experiment with and test this package, but be aware that the API
-      may change at any time. Use at your own risk, preferrably not in
-      production.
-    </p>
-  </SectionMessage>
-)}
-
 ## Guides and documentation
 
 ### 🗺 Composing your navigation
@@ -60,7 +44,7 @@ ${<Hr />}
 
 ### 📦 UI component documentation
 
-The props documentation for all of the components exported by \`navigation-next\`.
+Props documentation for all of the components exported by \`navigation-next\`.
 
 ${(
   <p>
