@@ -1,6 +1,6 @@
 import { pluginKey } from '../../../src/plugins/card/pm-plugins/main';
 import cardPlugin from '../../../src/plugins/card';
-import { CardProvider } from '../../../src/plugins/card/types';
+import { CardProvider, CardPluginState } from '../../../src/plugins/card/types';
 import {
   setProvider,
   queueCard,
@@ -29,18 +29,81 @@ describe('card', () => {
 
   describe('doc', () => {
     describe('#state.update', async () => {
-      it('remaps document positions for items in queue', () => {
+      it('keeps positions the same for typing after the link', () => {
+        const href = 'http://www.atlassian.com/';
+
+        const { editorView, refs } = editor(
+          doc(p('hello have a link {<>}', a({ href })(href))),
+        );
+
+        const { state, dispatch } = editorView;
+
+        const provider = new CardMockProvider();
+        setProvider(provider)(state, dispatch);
+
+        const promise = queueCard(href, refs['<>'], 'inline')(editorView);
+
+        // should be at initial pos
+        const initialState = {
+          requests: [{ url: href, pos: refs['<>'], appearance: 'inline' }],
+          provider: provider,
+        } as CardPluginState;
+        expect(pluginKey.getState(editorView.state)).toEqual(initialState);
+
+        // type something at end
+        setTextSelection(editorView, editorView.state.doc.nodeSize - 2);
+        insertText(editorView, 'more text', editorView.state.selection.from);
+
+        // nothing should have changed
+        expect(pluginKey.getState(editorView.state)).toEqual(initialState);
+        return promise;
+      });
+
+      it('remaps positions for typing before the link', () => {
+        const href = 'http://www.atlassian.com/';
+
+        const { editorView, refs } = editor(
+          doc(p('{<>}hello have a link', a({ href })('{link}' + href))),
+        );
+
+        const { state, dispatch } = editorView;
+
+        const provider = new CardMockProvider();
+        setProvider(provider)(state, dispatch);
+
+        const promise = queueCard(href, refs['link'], 'inline')(editorView);
+
+        // type something at start
+        const typedText = 'before everything';
+        insertText(editorView, typedText, refs['<>']);
+
+        // nothing should have changed
+        expect(pluginKey.getState(editorView.state)).toEqual({
+          requests: [
+            {
+              url: href,
+              pos: refs['link'] + typedText.length,
+              appearance: 'inline',
+            },
+          ],
+          provider: provider,
+        } as CardPluginState);
+        return promise;
+      });
+
+      it('only remaps the relevant link based on position', () => {
         const hrefs = {
           A: 'http://www.atlassian.com/',
           B: 'http://www.google.com/',
         };
 
+        // create a doc with 2 links
         const { editorView, refs } = editor(
           doc(
             p(
               'hello have a link {<>}',
               a({ href: hrefs.A })('{A}' + hrefs.B),
-              ' and another ',
+              ' and {middle} another ',
               a({ href: hrefs.B })('{B}' + hrefs.B),
             ),
           ),
@@ -51,48 +114,30 @@ describe('card', () => {
         const provider = new CardMockProvider();
         setProvider(provider)(state, dispatch);
 
-        const initialPos = state.selection.from;
-
+        // queue both links
         const promises = Object.keys(hrefs).map(key => {
-          // queue some stuff before the current position
           return queueCard(hrefs[key], refs[key], 'inline')(editorView);
         });
 
         // everything should be at initial pos
-        const initialRequests = Object.keys(hrefs).reduce((requests, key) => {
-          requests[hrefs[key]] = { positions: [refs[key]] };
-          return requests;
-        }, {});
-
         expect(pluginKey.getState(editorView.state)).toEqual({
-          requests: initialRequests,
-          schema: editorView.state.schema,
+          requests: [
+            { url: hrefs['A'], pos: refs['A'], appearance: 'inline' },
+            { url: hrefs['B'], pos: refs['B'], appearance: 'inline' },
+          ],
           provider: provider,
         });
 
-        // type something
-        insertText(editorView, 'ok', initialPos);
+        // type something in between the links
+        insertText(editorView, 'ok', refs['middle']);
 
-        // all positions should have moved 2 places to the right
-        const mappedRequests = Object.keys(hrefs).reduce((requests, key) => {
-          requests[hrefs[key]] = { positions: [refs[key] + 2] };
-          return requests;
-        }, {});
-
+        // only B should have moved 2 to the right
         expect(pluginKey.getState(editorView.state)).toEqual({
-          requests: mappedRequests,
-          schema: editorView.state.schema,
-          provider: provider,
-        });
+          requests: [
+            { url: hrefs['A'], pos: refs['A'], appearance: 'inline' },
+            { url: hrefs['B'], pos: refs['B'] + 2, appearance: 'inline' },
+          ],
 
-        // move to end, and type again
-        setTextSelection(editorView, editorView.state.doc.nodeSize - 2);
-        insertText(editorView, 'more text', editorView.state.selection.from);
-
-        // ensure nothing changed (since the links were before the typing)
-        expect(pluginKey.getState(editorView.state)).toEqual({
-          requests: mappedRequests,
-          schema: editorView.state.schema,
           provider: provider,
         });
 
@@ -150,9 +195,7 @@ describe('card', () => {
       it('does not replace if provider rejects', async () => {
         provider = new class implements CardProvider {
           resolve(url: string): Promise<any> {
-            return new Promise((resolve, reject) => {
-              reject('error');
-            });
+            return Promise.reject('error');
           }
         }();
 
@@ -167,8 +210,7 @@ describe('card', () => {
       afterEach(async () => {
         // queue should now be empty, and document should remain the same
         expect(pluginKey.getState(view.state)).toEqual({
-          requests: {},
-          schema: view.state.schema,
+          requests: [],
           provider: provider,
         });
 

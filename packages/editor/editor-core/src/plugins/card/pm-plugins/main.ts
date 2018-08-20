@@ -1,5 +1,5 @@
-import { EditorState, Plugin, PluginKey } from 'prosemirror-state';
-import { CardProvider, CardPluginState, Request } from '../types';
+import { Plugin, PluginKey } from 'prosemirror-state';
+import { CardProvider, CardPluginState } from '../types';
 import reducer from './reducers';
 import { EditorView } from 'prosemirror-view';
 import { setProvider } from './actions';
@@ -15,10 +15,9 @@ export const createPlugin = ({
 }) =>
   new Plugin({
     state: {
-      init(config, state: EditorState): CardPluginState {
+      init(): CardPluginState {
         return {
-          requests: {},
-          schema: state.schema,
+          requests: [],
           provider: null,
         };
       },
@@ -27,31 +26,16 @@ export const createPlugin = ({
         // update all the positions
         const remappedState = {
           ...pluginState,
-          requests: Object.keys(pluginState.requests).reduce(
-            (requests, url) => {
-              const originalRequest = pluginState.requests[url];
-
-              requests[url] = {
-                positions: originalRequest.positions.map(pos =>
-                  tr.mapping.map(pos),
-                ),
-              } as Request;
-
-              return requests;
-            },
-            {},
-          ),
-        } as CardPluginState;
+          requests: pluginState.requests.map(request => ({
+            ...request,
+            pos: tr.mapping.map(request.pos),
+          })),
+        };
 
         // apply any actions
         const meta = tr.getMeta(pluginKey);
         if (meta) {
           const nextPluginState = reducer(remappedState, meta);
-          if (pluginState !== nextPluginState) {
-            // only notify plugins of changed state
-            dispatch(pluginKey, nextPluginState);
-          }
-
           return nextPluginState;
         }
 

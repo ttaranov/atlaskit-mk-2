@@ -19,19 +19,16 @@ describe('card', () => {
   };
 
   describe('reducers', () => {
-    let editorState;
     let initialState;
     beforeAll(() => {
-      const { editorView, pluginState } = editor(doc(p()));
-      editorState = editorView.state;
+      const { pluginState } = editor(doc(p()));
       initialState = pluginState;
     });
 
     describe('#state.init', () => {
-      it('creates an empty state, copying in schema', () => {
+      it('creates an empty state', () => {
         expect(initialState).toEqual({
-          requests: {},
-          schema: editorState.schema,
+          requests: [],
           provider: null,
         });
       });
@@ -45,15 +42,17 @@ describe('card', () => {
               type: 'QUEUE',
               url: 'http://www.atlassian.com/',
               pos: 42,
+              appearance: 'inline',
             }),
           ).toEqual({
-            requests: {
-              'http://www.atlassian.com/': {
-                positions: [42],
+            requests: [
+              {
+                url: 'http://www.atlassian.com/',
+                pos: 42,
+                appearance: 'inline',
               },
-            },
+            ],
             provider: null,
-            schema: editorState.schema,
           } as CardPluginState);
         });
 
@@ -62,6 +61,7 @@ describe('card', () => {
             type: 'QUEUE',
             url: 'http://www.atlassian.com/',
             pos: 42,
+            appearance: 'inline',
           });
 
           expect(
@@ -69,15 +69,22 @@ describe('card', () => {
               type: 'QUEUE',
               url: 'http://www.atlassian.com/',
               pos: 420,
+              appearance: 'inline',
             }),
           ).toEqual({
-            requests: {
-              'http://www.atlassian.com/': {
-                positions: [42, 420],
+            requests: [
+              {
+                url: 'http://www.atlassian.com/',
+                pos: 42,
+                appearance: 'inline',
               },
-            },
+              {
+                url: 'http://www.atlassian.com/',
+                pos: 420,
+                appearance: 'inline',
+              },
+            ],
             provider: null,
-            schema: editorState.schema,
           } as CardPluginState);
         });
       });
@@ -90,9 +97,8 @@ describe('card', () => {
               provider: cardProvider,
             }),
           ).toEqual({
-            requests: {},
+            requests: [],
             provider: cardProvider,
-            schema: editorState.schema,
           });
         });
       });
@@ -112,6 +118,7 @@ describe('card', () => {
             type: 'QUEUE',
             url: 'http://www.atlassian.com/',
             pos: 42,
+            appearance: 'inline',
           });
 
           expect(
@@ -130,6 +137,7 @@ describe('card', () => {
                 type: 'QUEUE',
                 url: 'http://www.atlassian.com/',
                 pos,
+                appearance: 'inline',
               }),
             initialState,
           );
@@ -139,6 +147,7 @@ describe('card', () => {
             type: 'QUEUE',
             url: 'http://www.google.com/',
             pos: 0,
+            appearance: 'inline',
           });
 
           // resolve the first one, leaving the other one
@@ -148,13 +157,14 @@ describe('card', () => {
               url: 'http://www.atlassian.com/',
             }),
           ).toEqual({
-            requests: {
-              'http://www.google.com/': {
-                positions: [0],
+            requests: [
+              {
+                url: 'http://www.google.com/',
+                pos: 0,
+                appearance: 'inline',
               },
-            },
+            ],
             provider: null,
-            schema: editorState.schema,
           } as CardPluginState);
         });
       });

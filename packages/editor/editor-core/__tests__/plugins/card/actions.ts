@@ -36,8 +36,7 @@ describe('card', () => {
         setProvider(provider)(state, dispatch);
 
         expect(pluginKey.getState(editorView.state)).toEqual({
-          requests: {},
-          schema: editorView.state.schema,
+          requests: [],
           provider: provider,
         });
       });
@@ -49,8 +48,7 @@ describe('card', () => {
           const { editorView } = editor(doc(p()));
           queueCard('http://www.atlassian.com/', 24, 'inline')(editorView);
           expect(pluginKey.getState(editorView.state)).toEqual({
-            requests: {},
-            schema: editorView.state.schema,
+            requests: [],
             provider: null,
           });
         });
@@ -73,19 +71,24 @@ describe('card', () => {
         it('adds a url to the queue', () => {
           queueCard('http://www.atlassian.com/', 0, 'inline')(editorView);
           expect(pluginKey.getState(editorView.state)).toEqual({
-            requests: {
-              'http://www.atlassian.com/': {
-                positions: [0],
+            requests: [
+              {
+                url: 'http://www.atlassian.com/',
+                pos: 0,
+                appearance: 'inline',
               },
-            },
-            schema: editorView.state.schema,
+            ],
             provider: provider,
           });
         });
 
         it('queues the link in a slice as the only node', () => {
           const href = 'http://www.atlassian.com/';
-          const linkDoc = p(a({ href })(href));
+          const linkDoc = p(
+            a({
+              href,
+            })(href),
+          );
 
           const from = 0;
           const to = editorView.state.doc.nodeSize - 2;
@@ -98,12 +101,13 @@ describe('card', () => {
           queueCardFromTr(tr)(editorView);
 
           expect(pluginKey.getState(editorView.state)).toEqual({
-            requests: {
-              'http://www.atlassian.com/': {
-                positions: [1],
+            requests: [
+              {
+                url: 'http://www.atlassian.com/',
+                pos: 1,
+                appearance: 'inline',
               },
-            },
-            schema: editorView.state.schema,
+            ],
             provider: provider,
           });
         });
@@ -113,20 +117,20 @@ describe('card', () => {
             editorView,
           );
           expect(pluginKey.getState(editorView.state)).toEqual({
-            requests: {
-              'http://www.atlassian.com/': {
-                positions: [0],
+            requests: [
+              {
+                url: 'http://www.atlassian.com/',
+                pos: 0,
+                appearance: 'inline',
               },
-            },
-            schema: editorView.state.schema,
+            ],
             provider: provider,
           });
 
           await promise;
 
           expect(pluginKey.getState(editorView.state)).toEqual({
-            requests: {},
-            schema: editorView.state.schema,
+            requests: [],
             provider: provider,
           });
         });

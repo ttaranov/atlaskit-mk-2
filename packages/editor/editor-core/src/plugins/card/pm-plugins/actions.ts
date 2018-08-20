@@ -14,55 +14,48 @@ const cardAction = (tr, action: CardPluginAction) => {
   return tr.setMeta(pluginKey, action);
 };
 
-export const resolve = (url: string, cardData: any): Command => (
+export const resolveWithCardData = (url: string, cardData: any): Command => (
   editorState,
   dispatch,
 ) => {
-  // get info we need from state
   const state = pluginKey.getState(editorState) as CardPluginState | undefined;
   if (!state) {
     return false;
   }
 
-  const request = state.requests[url];
-  if (!request) {
-    // request has expired
-    return false;
-  }
+  const requests = state.requests.filter(req => req.url === url);
 
   // try to transform to ADF
   const schema = editorState.schema;
   const cardAdf = processRawValue(schema, cardData);
 
   let tr = editorState.tr;
-
   if (cardAdf) {
-    // replace all the outstanding links with their cards
-    tr = request.positions.reduce((tr, unmappedPos) => {
-      // remap across the replacement
-      const pos = tr.mapping.map(unmappedPos);
+    requests.forEach(request => {
+      // replace all the outstanding links with their cards
+      const pos = tr.mapping.map(request.pos);
       const node = tr.doc.nodeAt(pos);
       if (!node) {
-        return tr;
+        return;
       }
 
       if (!node.type.isText) {
-        return tr;
+        return;
       }
 
       // not a link anymore
       const linkMark = node.marks.find(mark => mark.type.name === 'link');
       if (!linkMark) {
-        return tr;
+        return;
       }
 
       const textSlice = node.text;
       if (linkMark.attrs.href !== url || textSlice !== url) {
-        return tr;
+        return;
       }
 
-      return tr.replaceWith(pos, pos + url.length, cardAdf);
-    }, tr);
+      tr.replaceWith(pos, pos + url.length, cardAdf);
+    });
   }
 
   // mark as resolved
@@ -92,7 +85,7 @@ export const queueCard = (
 
   const promise = state.provider.resolve(url, appearance).then(
     resolvedCard => {
-      resolve(url, resolvedCard)(view.state, view.dispatch);
+      resolveWithCardData(url, resolvedCard)(view.state, view.dispatch);
       return resolvedCard;
     },
     rejected => {
@@ -111,6 +104,7 @@ export const queueCard = (
       type: 'QUEUE',
       url,
       pos,
+      appearance,
     }),
   );
 
@@ -125,8 +119,8 @@ const getStepRange = (
 
   transaction.steps.forEach(step => {
     step.getMap().forEach((_oldStart, _oldEnd, newStart, newEnd) => {
-      from = newStart < from || from == -1 ? newStart : from;
-      to = newEnd < to || to == -1 ? newEnd : to;
+      from = newStart < from || from === -1 ? newStart : from;
+      to = newEnd < to || to === -1 ? newEnd : to;
     });
   });
 
@@ -160,6 +154,11 @@ export const queueCardFromTr = (
     const linkMark = node.marks.find(mark => mark.type === link);
 
     if (linkMark) {
+      // don't bother queueing nodes that have user-defined text for a link
+      if (node.text !== linkMark.attrs.href) {
+        return false;
+      }
+
       promises.push(queueCard(linkMark.attrs.href, pos, 'inline')(view));
     }
 

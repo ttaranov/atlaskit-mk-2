@@ -1,5 +1,3 @@
-import { Schema } from 'prosemirror-model';
-
 export type CardAppearance = 'inline' | 'block';
 export type CardType = 'smart-card' | 'custom' | 'unsupported';
 
@@ -12,13 +10,13 @@ export interface CardOptions {
 }
 
 export type Request = {
-  positions: number[];
-  // appearance: CardAppearance;
+  pos: number;
+  url: string;
+  appearance: CardAppearance;
 };
 
 export type CardPluginState = {
-  requests: { [url: string]: Request };
-  schema: Schema;
+  requests: Request[];
   provider: CardProvider | null;
 };
 
@@ -32,6 +30,7 @@ export type Queue = {
   type: 'QUEUE';
   url: string;
   pos: number;
+  appearance: CardAppearance;
 };
 
 export type Resolve = {

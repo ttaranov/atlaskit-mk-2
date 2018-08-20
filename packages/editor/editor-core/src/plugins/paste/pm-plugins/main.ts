@@ -130,10 +130,6 @@ export function createPlugin(
 
             // replace the selection
             tr.replaceSelection(replacementSlice);
-
-            const remappedFrom = tr.mapping.map(state.selection.from, -1);
-            console.log('remapped from', remappedFrom);
-
             dispatch(tr.scrollIntoView());
 
             // queue cards, ignoring any errors

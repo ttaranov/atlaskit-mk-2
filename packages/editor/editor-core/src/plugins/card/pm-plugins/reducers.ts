@@ -4,34 +4,33 @@ import {
   SetProvider,
   Queue,
   Resolve,
+  Request,
 } from '../types';
 
 const queue = (state: CardPluginState, action: Queue) => {
-  const { url, pos } = action;
-  const { requests } = state;
-
-  const request = requests[url] || { positions: [] };
-  const positions = [...request.positions, pos];
+  const request = {
+    url: action.url,
+    appearance: action.appearance,
+    pos: action.pos,
+  } as Request;
 
   return {
     ...state,
-    requests: {
-      ...requests,
-      [url]: {
-        positions,
-      },
-    },
+    requests: state.requests.concat([request]),
   };
 };
 
 const resolve = (state: CardPluginState, action: Resolve) => {
-  const requests = Object.keys(state.requests).reduce((requests, url) => {
-    if (url !== action.url) {
-      requests[url] = state.requests[url];
-    }
+  const requests = state.requests.reduce(
+    (requests, request) => {
+      if (request.url !== action.url) {
+        requests.push(request);
+      }
 
-    return requests;
-  }, {});
+      return requests;
+    },
+    [] as Request[],
+  );
 
   return {
     ...state,
@@ -43,7 +42,10 @@ const setProvider = (state: CardPluginState, action: SetProvider) => {
   return { ...state, provider: action.provider };
 };
 
-export default (state: CardPluginState, action: CardPluginAction) => {
+export default (
+  state: CardPluginState,
+  action: CardPluginAction,
+): CardPluginState => {
   switch (action.type) {
     case 'QUEUE':
       return queue(state, action);
@@ -51,7 +53,5 @@ export default (state: CardPluginState, action: CardPluginAction) => {
       return setProvider(state, action);
     case 'RESOLVE':
       return resolve(state, action);
-    default:
-      return state;
   }
 };
