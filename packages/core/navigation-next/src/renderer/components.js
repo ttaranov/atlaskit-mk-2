@@ -10,6 +10,7 @@ import GraphLineIcon from '@atlaskit/icon/glyph/graph-line';
 import FolderIcon from '@atlaskit/icon/glyph/folder';
 import IssuesIcon from '@atlaskit/icon/glyph/issues';
 import ShipIcon from '@atlaskit/icon/glyph/ship';
+import Spinner from '@atlaskit/spinner';
 import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import ContainerHeader from '../components/ContainerHeader';
@@ -54,12 +55,21 @@ const GoToItemBase = ({
   goTo,
   navigationUIController,
   navigationViewController,
+  spinnerDelay = 200,
   ...rest
 }: GoToItemProps) => {
   let after;
   if (typeof afterProp === 'undefined') {
-    after = ({ isActive, isHover }: *) =>
-      isActive || isHover ? <ArrowRightIcon size="small" /> : null;
+    after = ({ isActive, isHover }: *) => {
+      const { incomingView } = navigationViewController.state;
+      if (incomingView && incomingView.id === goTo) {
+        return <Spinner delay={spinnerDelay} invertColor size="small" />;
+      }
+      if (isActive || isHover) {
+        return <ArrowRightIcon size="small" />;
+      }
+      return null;
+    };
   }
 
   const props = { ...rest, after };
