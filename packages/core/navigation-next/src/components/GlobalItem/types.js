@@ -10,6 +10,8 @@ type Size = 'large' | 'small';
 export type GlobalItemPresentationProps = {
   /** Whether the Item is currently in the 'active' interaction state. */
   isActive: boolean,
+  /** Whether the Item is currently in the 'select' interaction state. */
+  isSelected: boolean,
   /** Whether the Item is currently in the 'hover' interaction state. */
   isHover: boolean,
   /** The size of the GlobalItem. */
@@ -42,6 +44,12 @@ export type GlobalItemProps = {
    * is an assumption that this will typically be an Atlaskit Icon component, so
    * it will be passed `label`, `secondaryColor`, and `size` props. */
   icon: ?ComponentType<GlobalItemIconProps>,
+  /* The id of the item to be used in analytics and react keying */
+  id?: string,
+  /** The zero-based index for the position of the item within the global sidebar section.
+   *  Used for analytics purposes.
+   */
+  index?: number,
   /** A label to pass to the `icon` component. */
   label?: string,
   /** A handler which will be called when the GlobalItem is clicked. */

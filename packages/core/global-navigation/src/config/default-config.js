@@ -14,6 +14,7 @@ export default function generateDefaultConfig(): DefaultConfigShape {
       rank: 1,
       section: 'primary',
       tooltip: 'Atlassian',
+      id: 'productLogo',
     },
     starred: {
       icon: StarLargeIcon,
@@ -21,6 +22,7 @@ export default function generateDefaultConfig(): DefaultConfigShape {
       rank: 2,
       section: 'primary',
       tooltip: 'Starred and recent',
+      id: 'starDrawer',
     },
     search: {
       icon: SearchIcon,
@@ -28,6 +30,7 @@ export default function generateDefaultConfig(): DefaultConfigShape {
       section: 'primary',
       rank: 3,
       tooltip: 'Search',
+      id: 'quickSearch',
     },
     create: {
       icon: CreateIcon,
@@ -35,6 +38,7 @@ export default function generateDefaultConfig(): DefaultConfigShape {
       section: 'primary',
       rank: 4,
       tooltip: 'Create',
+      id: 'create',
     },
     notification: {
       icon: NotificationIcon,
@@ -42,24 +46,26 @@ export default function generateDefaultConfig(): DefaultConfigShape {
       section: 'secondary',
       rank: 1,
       tooltip: 'Notifications',
+      id: 'notifications',
     },
     appSwitcher: {
-      label: 'App Switcher',
       section: 'secondary',
       rank: 3,
-      tooltip: 'App Switcher',
+      id: 'appSwitcher',
     },
     help: {
       label: 'Help',
       section: 'secondary',
       rank: 4,
       tooltip: 'Help',
+      id: 'help',
     },
     profile: {
       label: 'Your profile and Settings',
       section: 'secondary',
       rank: 5,
       tooltip: 'Your profile and Settings',
+      id: 'profile',
     },
   };
 }

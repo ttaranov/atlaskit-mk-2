@@ -1,6 +1,6 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
-import { getDocFromElement, editors, editable } from '../_helpers';
+import { getDocFromElement, comment, fullpage, editable } from '../_helpers';
 
 const linkText1 = 'http://hello.com ';
 const linkText2 = 'FAB-983';
@@ -13,7 +13,7 @@ process.env.TEST_CASE = __filename
 
 // https://product-fabric.atlassian.net/browse/ED-4162 - Firefox
 // Floating toolbar is not showin up on IE and edge
-editors.forEach(editor => {
+[comment, fullpage].forEach(editor => {
   BrowserTestCase(
     `Link:create link using toolbar,unlinkify ${editor.name} editor`,
     {

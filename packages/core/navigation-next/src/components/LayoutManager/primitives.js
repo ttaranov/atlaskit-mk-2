@@ -1,6 +1,7 @@
 // @flow
 
 import React, { type ElementRef } from 'react';
+import { layers } from '@atlaskit/theme';
 
 export const LayoutContainer = (props: {}) => (
   <div
@@ -22,6 +23,7 @@ export const NavigationContainer = (props: {}) => (
       left: 0,
       position: 'fixed',
       top: 0,
+      zIndex: layers.navigation(),
     }}
     {...props}
   />
@@ -83,8 +85,9 @@ export const PageWrapper = ({
   <div
     ref={innerRef}
     css={{
-      flex: 1,
+      flex: '1 1 auto',
       marginLeft: offset,
+      width: 0, // fix flexbox growth to available width instead of 100%
       ...applyDisabledProperties(disableInteraction),
     }}
     {...props}

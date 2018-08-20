@@ -1,5 +1,19 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 2.0.7
+- [patch] whitelist supported language for wiki markup [a3edfda](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a3edfda)
+
+## 2.0.6
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/profilecard@4.0.7
+  - @atlaskit/renderer@20.0.7
+  - @atlaskit/editor-core@77.0.14
+  - @atlaskit/docs@5.0.6
+
+## 2.0.5
+- [patch] wikimarkup parser should parse media item with ( and ) correctly [76adf36](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/76adf36)
+
 ## 2.0.4
 
 

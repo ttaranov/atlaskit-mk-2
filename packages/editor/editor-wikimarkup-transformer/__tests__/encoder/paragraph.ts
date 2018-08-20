@@ -128,4 +128,18 @@ describe('ADF => WikiMarkup - Paragraph', () => {
     )(defaultSchema);
     expect(transformer.encode(node)).toMatchSnapshot();
   });
+
+  test('[CS-206] should convert mixed text format', () => {
+    const node = doc(
+      p(
+        strong('Some '),
+        textColor({ color: '#6554c0' })(strong('text with ')),
+        textColor({ color: '#6554c0' })(strong(underline('bold and'))),
+        textColor({ color: '#6554c0' })(strong(' underline and')),
+        strong(' '),
+        em(strong(underline('color'))),
+      ),
+    )(defaultSchema);
+    expect(transformer.encode(node)).toMatchSnapshot();
+  });
 });

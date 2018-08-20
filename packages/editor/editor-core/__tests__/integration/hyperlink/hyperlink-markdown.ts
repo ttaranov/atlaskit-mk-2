@@ -1,8 +1,8 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
-import { getDocFromElement, editors, editable } from '../_helpers';
+import { getDocFromElement, comment, fullpage, editable } from '../_helpers';
 
-editors.forEach(editor => {
+[comment, fullpage].forEach(editor => {
   BrowserTestCase(
     `Link:entering link markdown ${editor.name} editor`,
     {

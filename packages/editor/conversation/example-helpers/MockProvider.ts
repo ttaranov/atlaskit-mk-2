@@ -66,6 +66,7 @@ export class MockProvider extends AbstractConversationResource {
   constructor(config: ConversationResourceConfig) {
     super();
     this.config = config;
+    //@ts-ignore
     this.updateUser(config.user);
     this.responseCode = 200;
   }
@@ -158,6 +159,7 @@ export class MockProvider extends AbstractConversationResource {
     doc: any,
     localId: string = <string>uuid.generate(),
   ): Comment {
+    //@ts-ignore
     return {
       commentAri: `abc:cloud:platform::comment/${localId}`,
       createdBy: this.config.user,
@@ -208,6 +210,7 @@ export class MockProvider extends AbstractConversationResource {
       dispatch({ type, payload });
     }, 500);
 
+    //@ts-ignore
     return result;
   }
 

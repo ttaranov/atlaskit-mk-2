@@ -1,130 +1,124 @@
 // @flow
 
-import React, { Component, type Node as NodeType } from 'react';
-import ReactDOM from 'react-dom';
+import React, { Component } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
-import Layer from '@atlaskit/layer';
-import { gridSize } from '@atlaskit/theme';
+import NodeResolver from 'react-node-resolver';
+import { Manager, Reference, Popper } from '@atlaskit/popper';
+import type { Props } from '../types';
 import {
   name as packageName,
   version as packageVersion,
 } from '../../package.json';
 import { Container } from './styled';
-import type { PositionType, FlipPositionsType } from '../types';
-
-// TODO: expose positions and flipPositions from Layer and pull in here
-
-type Props = {
-  /** Element to act as a boundary for the InlineDialog.
-  The InlineDialog Layer will not sit outside this element if it can help it.
-  If, through it's normal positoning,
-  it would end up outside the boundary
-  the layer will flip positions. */
-  boundariesElement?: 'viewport' | 'window' | 'scrollParent',
-  /** The elements that the InlineDialog will be positioned relative to. */
-  children?: NodeType,
-  /** The elements to be displayed within the InlineDialog. */
-  content?: NodeType,
-  /** Sets whether to show or hide the dialog. */
-  isOpen?: boolean,
-  /** Function called when you lose focus on the object. */
-  onContentBlur?: Function,
-  /** Function called when you click on the open dialog. */
-  onContentClick?: Function,
-  /** Function called when you focus on the open dialog. */
-  onContentFocus?: Function,
-  /** Function called when the dialog is open and a click occurs anywhere outside
-  the dialog. Calls with an object { isOpen: false } and the type of event that
-  triggered the close. */
-  onClose?: Function,
-  /** Where the dialog should appear, relative to the contents of the children. */
-  position?: PositionType,
-  /** Whether the dialog's position should be altered when there is no space
-  for it in its default position. If an array is passed, it will use the first
-  position where there is enough space, displaying in the last position if none
-  have enough space. */
-  shouldFlip?: boolean | Array<FlipPositionsType>,
-};
 
 class InlineDialog extends Component<Props, {}> {
   static defaultProps = {
+    children: null,
+    content: null,
     isOpen: false,
     onContentBlur: () => {},
     onContentClick: () => {},
     onContentFocus: () => {},
     onClose: () => {},
-    position: 'bottom center',
-    shouldFlip: false,
+    placement: 'bottom-start',
   };
 
-  componentDidMount = () => {
-    document.addEventListener('click', this.handleClickOutside);
-  };
+  containerRef: ?HTMLElement = null;
+  triggerRef: ?HTMLElement = null;
 
-  componentWillUnmount = () => {
-    document.removeEventListener('click', this.handleClickOutside);
-  };
+  componentDidUpdate(prevProps: Props) {
+    if (typeof window === 'undefined') return;
 
-  handleClickOutside = (event: Event) => {
-    if (event.defaultPrevented) return;
+    if (!prevProps.isOpen && this.props.isOpen) {
+      window.addEventListener('click', this.handleClickOutside);
+    } else if (prevProps.isOpen && !this.props.isOpen) {
+      window.removeEventListener('click', this.handleClickOutside);
+    }
+  }
+
+  componentDidMount() {
+    if (typeof window === 'undefined') return;
 
     if (this.props.isOpen) {
-      const domNode = ReactDOM.findDOMNode(this); // eslint-disable-line react/no-find-dom-node
-      if (
-        !domNode ||
-        (event.target instanceof Node && !domNode.contains(event.target))
-      ) {
-        if (this.props.onClose) this.props.onClose({ isOpen: false, event });
-      }
+      window.addEventListener('click', this.handleClickOutside);
+    }
+  }
+
+  componentWillUnMount() {
+    if (typeof window === 'undefined') return;
+
+    window.removeEventListener('click', this.handleClickOutside);
+  }
+
+  handleClickOutside = (event: any) => {
+    const { isOpen, onClose } = this.props;
+
+    if (event.defaultPrevented) return;
+
+    const container: ?HTMLElement = this.containerRef;
+    const trigger: ?HTMLElement = this.triggerRef;
+    const target: HTMLElement = event.target;
+
+    // exit if we click outside but on the trigger — it can handle the clicks itself
+    if (trigger && trigger.contains(target)) return;
+
+    // call onClose if the click originated from outside the dialog
+    if (isOpen && container && !container.contains(target)) {
+      onClose({ isOpen: false, event });
     }
   };
 
   render() {
     const {
-      boundariesElement,
       children,
-      content,
+      placement,
       isOpen,
+      content,
       onContentBlur,
-      onContentClick,
       onContentFocus,
-      position,
-      shouldFlip,
+      onContentClick,
     } = this.props;
 
-    // this offset is passed to popper as two space separated numbers representing
-    // the offset from the target the first is distance along the same axis you are
-    // on (top or bottom aligned would move left/right) and the second is on the
-    // perpendicular axis (how far 'away' you are from the target) both are measured
-    // in pixels
-    // $FlowFixMe - no arguments are expected by function
-    const dialogOffset = `0 ${gridSize(this.props)}`;
-
-    const layerContent = isOpen ? (
-      <Container
-        onBlurCapture={onContentBlur}
-        onClick={onContentClick}
-        onFocusCapture={onContentFocus}
-        tabIndex="-1"
-      >
-        {content}
-      </Container>
+    const popper = isOpen ? (
+      <Popper placement={placement}>
+        {({ ref, style, outOfBoundaries }) => (
+          <Container
+            onBlur={onContentBlur}
+            onFocus={onContentFocus}
+            onClick={onContentClick}
+            outOfBoundaries={outOfBoundaries}
+            innerRef={node => {
+              this.containerRef = node;
+              ref(node);
+            }}
+            style={style}
+          >
+            {content}
+          </Container>
+        )}
+      </Popper>
     ) : null;
 
     return (
-      <Layer
-        boundariesElement={boundariesElement}
-        autoFlip={shouldFlip}
-        content={layerContent}
-        offset={dialogOffset}
-        position={position}
-      >
-        <div>{children}</div>
-      </Layer>
+      <Manager>
+        <Reference>
+          {({ ref }) => (
+            <NodeResolver
+              innerRef={node => {
+                this.triggerRef = node;
+                ref(node);
+              }}
+            >
+              {children}
+            </NodeResolver>
+          )}
+        </Reference>
+        {popper}
+      </Manager>
     );
   }
 }

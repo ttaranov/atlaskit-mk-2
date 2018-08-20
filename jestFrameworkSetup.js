@@ -137,6 +137,13 @@ const removeIdsFromDoc = transformDoc(node => {
           /(temporary:)?([a-z0-9\-]+)(:.*)?$/,
           '$11234-5678-abcd-efgh$3',
         ),
+
+        __key: node.attrs.__key.replace(
+          /(temporary:)?([a-z0-9\-]+)(:.*)?$/,
+          '$11234-5678-abcd-efgh$3',
+        ),
+
+        __fileName: 'example.png',
       },
     };
   }
@@ -231,10 +238,15 @@ expect.extend({
         .slice(0, -1)
         .join(' ');
 
+    // we append the browser name to the end of the test, so remove it so
+    // all the individual browser snapshots map to the same one
     const newTestName = removeLastWord(currentTestName);
+
+    // remove ids that may change from the document so snapshots are repeatable
     const transformedDoc = removeIdsFromDoc(actual);
 
-    // We are only overriding snapshot for doc snapshot. The gotcha is test names have to be unique per file
+    // since the test runner fires off multiple browsers for a single test, map each snapshot to the same one
+    // (otherwise we'll try to create as many snapshots as there are browsers)
     const oldCounters = snapshotState._counters;
     snapshotState._counters = Object.create(oldCounters, {
       set: {
