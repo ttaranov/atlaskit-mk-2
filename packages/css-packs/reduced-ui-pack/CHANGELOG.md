@@ -1,5 +1,10 @@
 # @atlaskit/reduced-ui-pack
 
+## 9.1.2
+- [patch] Update warning message and fix test for reduced-ui-pack [4b166d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b166d8)
+- [none] Updated dependencies [4b166d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b166d8)
+  - @atlaskit/icon@13.2.6
+
 ## 9.1.1
 - [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
   - @atlaskit/icon@13.2.2
