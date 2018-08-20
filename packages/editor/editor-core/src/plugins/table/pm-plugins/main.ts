@@ -1,9 +1,6 @@
 import { Node as PmNode } from 'prosemirror-model';
 import { EditorState, Plugin, PluginKey, Transaction } from 'prosemirror-state';
-import {
-  TableMap,
-  columnResizingPluginKey as resizingPluginKey,
-} from 'prosemirror-tables';
+import { TableMap } from 'prosemirror-tables';
 import {
   findTable,
   findParentDomRefOfType,
@@ -41,6 +38,8 @@ import {
   handleSelectionChanged,
   handleToggleContextualMenu,
 } from '../action-handlers';
+
+import { getColResizePluginKey } from '../index';
 
 export const pluginKey = new PluginKey('tablePlugin');
 
@@ -178,7 +177,9 @@ export const createPlugin = (
             setTableRef(tableRef)(state, dispatch);
           }
 
-          const dragging = (resizingPluginKey.getState(state) || {}).dragging;
+          const dragging = (
+            getColResizePluginKey(pluginConfig).getState(state) || {}
+          ).dragging;
           const targetCellRef =
             editorHasFocus && tableRef && !dragging && targetCellPosition
               ? (findDomRefAtPos(targetCellPosition, domAtPos) as HTMLElement)
@@ -203,12 +204,16 @@ export const createPlugin = (
       nodeViews: {
         table: (node: PmNode, view: EditorView, getPos: () => number) => {
           const {
-            pluginConfig: { allowColumnResizing },
+            pluginConfig: {
+              allowColumnResizing,
+              UNSAFE_allowFlexiColumnResizing,
+            },
           } = getPluginState(view.state);
           return new TableNodeView({
             node,
             view,
             allowColumnResizing,
+            UNSAFE_allowFlexiColumnResizing,
             eventDispatcher,
             portalProviderAPI,
             getPos,

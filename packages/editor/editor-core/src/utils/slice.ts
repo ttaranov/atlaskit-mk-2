@@ -3,7 +3,9 @@ import { Node, Fragment, Slice } from 'prosemirror-model';
 /**
  * A helper to get the underlying array of a fragment.
  */
-function getFragmentBackingArray(fragment: Fragment): ReadonlyArray<Node> {
+export function getFragmentBackingArray(
+  fragment: Fragment,
+): ReadonlyArray<Node> {
   return (fragment as any).content as Node[];
 }
 
