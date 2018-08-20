@@ -85,13 +85,13 @@ function copyFile({
     replaceFileId,
     occurrenceKey,
   };
+  const { deferredIdUpfronts } = store.getState();
+  const deferred = deferredIdUpfronts[sourceFile.id];
 
   return fetcher
     .copyFile(sourceFile, destination)
     .then(destinationFile => {
       const publicId = destinationFile.id;
-      const { deferredIdUpfronts } = store.getState();
-      const deferred = deferredIdUpfronts[sourceFile.id];
       if (deferred) {
         const { resolver } = deferred;
 
@@ -137,6 +137,12 @@ function copyFile({
       );
     })
     .catch(error => {
+      if (deferred) {
+        const { rejecter } = deferred;
+
+        rejecter();
+      }
+
       return store.dispatch(
         sendUploadEvent({
           event: {
