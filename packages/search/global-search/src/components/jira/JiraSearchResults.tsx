@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { JiraResultsMap, GenericResultObject } from '../../model/Result';
+import { JiraResultsMap, GenericResultMap } from '../../model/Result';
 import { ScreenCounter } from '../../util/ScreenCounter';
 import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
 import SearchResults from '../common/SearchResults';
@@ -13,7 +13,7 @@ export interface Props {
   isError: boolean;
   isLoading: boolean;
   retrySearch();
-  searchResults: GenericResultObject;
+  searchResults: GenericResultMap;
   recentItems: JiraResultsMap;
   keepPreQueryState: boolean;
   searchSessionId: string;
@@ -38,8 +38,8 @@ export default class JiraSearchResults extends React.Component<Props> {
         renderAdvancedSearchGroup={() => (
           <div id="jira-advanced-search" key="jira-advanced-search" />
         )}
-        getRecentlyViewedGroups={() => mapRecentResultsToUIGroups(recentItems)}
-        getSearchResultsGroups={() =>
+        getPreQueryGroups={() => mapRecentResultsToUIGroups(recentItems)}
+        getPostQueryGroups={() =>
           mapSearchResultsToUIGroups(searchResults as JiraResultsMap)
         }
         renderNoResult={() => <div id="no-result" key={query} />}
