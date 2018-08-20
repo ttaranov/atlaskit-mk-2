@@ -25,5 +25,7 @@ export default {
   "global-search.no-results.issues": "issues",
   "global-search.no-results.projects": "projects",
   "global-search.no-results.boards": "boards",
-  "global-search.no-results.filters": "filters"
+  "global-search.no-results.filters": "filters",
+  "global-search.jira.no-results-title": "No results in issue summaries, names and people",
+  "global-search.jira.no-results-body": "Try searching with a different term. You can search all text fields in issues as well with advanced search, or search for other items more specifically."
 }
