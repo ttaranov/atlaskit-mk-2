@@ -20,9 +20,9 @@ import {
   BlockCardDefinition,
 } from '@atlaskit/editor-common';
 
-import { DocNode, TopLevel } from '@atlaskit/editor-common';
+import { DocNode, DocContent } from '@atlaskit/editor-common';
 
-export const doc = (...content: TopLevel): DocNode => ({
+export const doc = (...content: DocContent): DocNode => ({
   type: 'doc',
   version: 1,
   content,
