@@ -255,7 +255,7 @@ class DashboardsRouteBase extends Component<{
 
   render() {
     return (
-      <div>
+      <div css={{ padding: 30 }}>
         <h1>Dashboards</h1>
         <h3>Projects:</h3>
         <ul>
@@ -279,7 +279,7 @@ class IssuesAndFiltersRouteBase extends Component<{
 
   render() {
     return (
-      <div>
+      <div css={{ padding: 30 }}>
         <h1>Issues and filters</h1>
       </div>
     );
@@ -299,7 +299,7 @@ class ProjectBacklogRouteBase extends Component<{
 
   render() {
     return (
-      <div>
+      <div css={{ padding: 30 }}>
         <h1>My Project</h1>
         <p>
           <Link to="/">Back to Dashboards</Link>

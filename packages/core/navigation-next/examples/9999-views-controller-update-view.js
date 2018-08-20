@@ -134,7 +134,7 @@ class App extends Component<{
   render() {
     return (
       <LayoutManagerWithViewController globalNavigation={MyGlobalNavigation}>
-        <div>Page content goes here.</div>
+        <div css={{ padding: 30 }}>Page content goes here.</div>
       </LayoutManagerWithViewController>
     );
   }

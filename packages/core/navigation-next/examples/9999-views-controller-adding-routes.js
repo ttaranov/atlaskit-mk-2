@@ -157,7 +157,7 @@ class DashboardsRouteBase extends Component<{
 
   render() {
     return (
-      <div>
+      <div css={{ padding: 30 }}>
         <h1>Dashboards</h1>
       </div>
     );
@@ -175,7 +175,7 @@ class IssuesAndFiltersRouteBase extends Component<{
 
   render() {
     return (
-      <div>
+      <div css={{ padding: 30 }}>
         <h1>Issues and filters</h1>
       </div>
     );
