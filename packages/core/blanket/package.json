@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/blanket",
-  "version": "7.0.4",
+  "version": "7.0.5",
   "description": "A React component that covers the underlying UI for a layered component.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -19,7 +19,7 @@
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/analytics-next": "^3.0.4",
-    "@atlaskit/theme": "^5.1.3"
+    "@atlaskit/theme": "^6.0.0"
   },
   "peerDependencies": {
     "react": "^16.4.0",
@@ -27,8 +27,8 @@
   },
   "devDependencies": {
     "@atlaskit/build-utils": "^1.11.0",
-    "@atlaskit/button": "^9.0.5",
-    "@atlaskit/docs": "^5.0.2",
+    "@atlaskit/button": "^9.0.6",
+    "@atlaskit/docs": "^5.0.6",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.2"
   },

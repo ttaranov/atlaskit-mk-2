@@ -19,10 +19,10 @@ import {
 } from './shared/routes';
 
 const mockClient = {
-  sendUIEvent: console.log,
-  sendOperationalEvent: console.log,
-  sendTrackEvent: console.log,
-  sendScreenEvent: console.log,
+  sendUIEvent: (...args) => console.log('UI event', ...args),
+  sendOperationalEvent: (...args) => console.log('Operational event', ...args),
+  sendTrackEvent: (...args) => console.log('Track event', ...args),
+  sendScreenEvent: (...args) => console.log('Screen event', ...args),
 };
 
 export default class App extends Component<{}, { isDebugEnabled: boolean }> {

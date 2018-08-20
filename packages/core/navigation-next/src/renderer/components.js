@@ -23,6 +23,7 @@ import GroupHeadingComponent from '../components/GroupHeading';
 import Switcher from '../components/Switcher';
 import { withNavigationUI } from '../ui-controller';
 import { withNavigationViewController } from '../view-controller';
+
 import type {
   GoToItemProps,
   GroupProps,
@@ -203,10 +204,7 @@ const components = { ...itemComponents, ...groupComponents };
 /**
  * RENDERER
  */
-export const ItemsRenderer = ({
-  customComponents = {},
-  items,
-}: ItemsRendererProps) =>
+const ItemsRenderer = ({ customComponents = {}, items }: ItemsRendererProps) =>
   items.map(({ type, ...props }, index) => {
     const key =
       typeof props.nestedGroupKey === 'string'
@@ -215,12 +213,12 @@ export const ItemsRenderer = ({
 
     // If they've provided a component as the type
     if (typeof type === 'function') {
-      const Component = navigationItemClicked(
+      const CustomComponent = navigationItemClicked(
         type,
         type.displayName || 'inlineCustomComponent',
       );
       return (
-        <Component
+        <CustomComponent
           key={key}
           {...props}
           index={index}
@@ -250,9 +248,12 @@ export const ItemsRenderer = ({
       // If they've provided a type which matches one of their defined custom
       // components.
       if (customComponents[type]) {
-        const Component = navigationItemClicked(customComponents[type], type);
+        const CustomComponent = navigationItemClicked(
+          customComponents[type],
+          type,
+        );
         return (
-          <Component
+          <CustomComponent
             key={key}
             {...props}
             index={index}
@@ -267,3 +268,5 @@ export const ItemsRenderer = ({
 
     return <Debug key={key} type={type} {...props} />;
   });
+
+export default ItemsRenderer;

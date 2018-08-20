@@ -1,7 +1,10 @@
 // tslint:disable-next-line no-implicit-dependencies
 import * as React from 'react';
 import { mount } from 'enzyme';
-import { UI_EVENT_TYPE } from '@atlaskit/analytics-gas-types';
+import {
+  UI_EVENT_TYPE,
+  OPERATIONAL_EVENT_TYPE,
+} from '@atlaskit/analytics-gas-types';
 import * as cases from 'jest-in-case';
 
 import NavigationListener from '../../../navigation/NavigationListener';
@@ -68,8 +71,13 @@ describe('NavigationListener', () => {
   });
 
   cases(
-    'should transform events from analyticsListener and fire UI events to the analyticsWebClient',
-    ({ eventPayload, clientPayload, context = [] }) => {
+    'should transform events from analyticsListener and fire UI and Operational events to the analyticsWebClient',
+    ({
+      eventPayload,
+      clientPayload,
+      eventType = UI_EVENT_TYPE,
+      context = [],
+    }) => {
       const spy = jest.fn();
       const ButtonWithAnalytics = createButtonWithAnalytics(eventPayload);
       const AnalyticsContexts = createAnalyticsContexts(context);
@@ -84,10 +92,13 @@ describe('NavigationListener', () => {
 
       component.find(ButtonWithAnalytics).simulate('click');
 
+      const mockFn =
+        eventType === OPERATIONAL_EVENT_TYPE
+          ? analyticsWebClientMock.sendOperationalEvent
+          : analyticsWebClientMock.sendUIEvent;
+
       return clientPromise.then(client => {
-        expect(
-          (analyticsWebClientMock.sendUIEvent as any).mock.calls[0][0],
-        ).toMatchObject(clientPayload);
+        expect((mockFn as any).mock.calls[0][0]).toMatchObject(clientPayload);
       });
     },
     [
@@ -305,6 +316,30 @@ describe('NavigationListener', () => {
           action: 'someAction',
           actionSubject: 'someComponent',
           actionSubjectId: 'someComponentId',
+          attributes: {
+            sourceHierarchy: 'navigation',
+            packageHierarchy: undefined,
+            componentHierarchy: 'navigationNext',
+            packageName: undefined,
+            packageVersion: undefined,
+          },
+          source: 'navigation',
+          tags: ['navigation'],
+        },
+      },
+
+      {
+        name: 'with operational event type',
+        eventType: OPERATIONAL_EVENT_TYPE,
+        eventPayload: {
+          action: 'initialised',
+          actionSubject: 'someComponent',
+          eventType: OPERATIONAL_EVENT_TYPE,
+        },
+        context: [{ component: 'navigationNext', source: 'navigation' }],
+        clientPayload: {
+          action: 'initialised',
+          actionSubject: 'someComponent',
           attributes: {
             sourceHierarchy: 'navigation',
             packageHierarchy: undefined,

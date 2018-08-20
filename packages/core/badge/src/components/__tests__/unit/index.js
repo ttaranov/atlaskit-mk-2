@@ -3,7 +3,7 @@
 import { mount } from 'enzyme';
 import React from 'react';
 import Badge from '../..';
-import Format from '../../Format';
+import { Format } from '../../Format';
 
 function getFormatProps(badge) {
   return mount(badge)

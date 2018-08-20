@@ -1,5 +1,14 @@
 # @atlaskit/field-base
 
+## 11.0.5
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/spinner@9.0.6
+  - @atlaskit/input@4.0.4
+  - @atlaskit/inline-dialog@9.0.2
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/docs@5.0.6
+
 ## 11.0.4
 
 - [patch] Fieldbase now using new inline-dialog and @atlaskit/popper under the hood [a3109d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a3109d3)

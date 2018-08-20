@@ -21,7 +21,7 @@ describe('collab-edit | Avatars', () => {
   const editor = (doc: any) =>
     createEditor<PluginState>({
       doc,
-      editorPlugins: [collabEdit],
+      editorPlugins: [collabEdit()],
       pluginKey,
       providerFactory,
     });

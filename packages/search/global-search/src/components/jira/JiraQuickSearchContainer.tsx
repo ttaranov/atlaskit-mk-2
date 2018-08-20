@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
-import { withAnalytics } from '../../../../../core/analytics/src';
+import { withAnalytics } from '@atlaskit/analytics';
 import { CreateAnalyticsEventFn } from '../analytics/types';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { JiraClient } from '../../api/JiraClient';

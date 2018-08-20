@@ -129,11 +129,11 @@ function addCodeMark(
   };
 }
 
-export const strongRegex1 = /(\S*)(\_\_([^\_\s].*[^\_\s]|[^\_\s])\_\_)$/;
-export const strongRegex2 = /(\S*)(\*\*([^\*\s].*[^\*\s]|[^\*\s])\*\*)$/;
-export const italicRegex1 = /(\S*[^\s\_]*)(\_([^\s\_].*[^\s\_]|[^\s\_])\_)$/;
-export const italicRegex2 = /(\S*[^\s\*]*)(\*([^\s\*].*[^\s\*]|[^\s\*])\*)$/;
-export const strikeRegex = /(\S*)(\~\~([^\s\~].*[^\s\~]|[^\s\~])\~\~)$/;
+export const strongRegex1 = /(\S*)(\_\_([^\_\s](\_(?!\_)|[^\_])*[^\_\s]|[^\_\s])\_\_)$/;
+export const strongRegex2 = /(\S*)(\*\*([^\*\s](\*(?!\*)|[^\*])*[^\*\s]|[^\*\s])\*\*)$/;
+export const italicRegex1 = /(\S*[^\s\_]*)(\_([^\s\_][^\_]*[^\s\_]|[^\s\_])\_)$/;
+export const italicRegex2 = /(\S*[^\s\*]*)(\*([^\s\*][^\*]*[^\s\*]|[^\s\*])\*)$/;
+export const strikeRegex = /(\S*)(\~\~([^\s\~](\~(?!\~)|[^\~])*[^\s\~]|[^\s\~])\~\~)$/;
 export const codeRegex = /(\S*)(`[^\s][^`]*`)$/;
 
 export function inputRulePlugin(schema: Schema): Plugin | undefined {

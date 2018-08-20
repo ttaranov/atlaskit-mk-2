@@ -1,5 +1,59 @@
 # @atlaskit/editor-core
 
+## 77.1.2
+- [patch] Minor changes to collab plugin [02cef16](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/02cef16)
+- [none] Updated dependencies [02cef16](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/02cef16)
+
+## 77.1.1
+- [patch] Fixes renderer tables for Mobile [7f1ef74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7f1ef74)
+- [none] Updated dependencies [7f1ef74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7f1ef74)
+  - @atlaskit/editor-common@14.0.9
+
+## 77.1.0
+- [minor] Rename UNSAFE_allowLayouts to allowLayouts. ED-4198 [b0e9bcb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b0e9bcb)
+- [none] Updated dependencies [b0e9bcb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b0e9bcb)
+
+## 77.0.17
+- [patch] Allow simple text elements in the block type insert menu. ED-5225 [3836740](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3836740)
+- [none] Updated dependencies [3836740](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3836740)
+
+## 77.0.16
+- [patch] Fixed input-rule em and strong markdown regex matching to correctly match words with a prefix before a later pair found [5350da0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5350da0)
+- [none] Updated dependencies [5350da0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5350da0)
+
+## 77.0.15
+- [patch] ED-4411, fix for smartinsert of single quotes. [c452857](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c452857)
+- [patch] Updated dependencies [c452857](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c452857)
+
+## 77.0.14
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/task-decision@8.1.5
+  - @atlaskit/emoji@39.0.4
+  - @atlaskit/date@0.1.2
+  - @atlaskit/renderer@20.0.7
+  - @atlaskit/tooltip@12.0.9
+  - @atlaskit/spinner@9.0.6
+  - @atlaskit/select@5.0.9
+  - @atlaskit/modal-dialog@6.0.9
+  - @atlaskit/lozenge@6.1.5
+  - @atlaskit/layer-manager@5.0.6
+  - @atlaskit/item@8.0.5
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/droplist@7.0.7
+  - @atlaskit/code@8.0.1
+  - @atlaskit/calendar@7.0.5
+  - @atlaskit/button@9.0.6
+  - @atlaskit/avatar-group@2.1.1
+  - @atlaskit/avatar@14.0.8
+  - @atlaskit/docs@5.0.6
+
+## 77.0.13
+- [patch] ED-5178: added card node to default schema [51e7446](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51e7446)
+- [none] Updated dependencies [51e7446](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51e7446)
+  - @atlaskit/editor-test-helpers@6.0.2
+  - @atlaskit/editor-common@14.0.8
+
 ## 77.0.12
 - [patch] Updated dependencies [f9c0cdb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9c0cdb)
   - @atlaskit/code@8.0.0
