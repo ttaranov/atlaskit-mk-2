@@ -1,5 +1,11 @@
 # @atlaskit/editor-core
 
+## 77.1.3
+- [patch] Updated dependencies [dd91bcf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd91bcf)
+  - @atlaskit/emoji@39.1.0
+  - @atlaskit/renderer@20.0.10
+  - @atlaskit/editor-common@14.0.10
+
 ## 77.1.2
 - [patch] Minor changes to collab plugin [02cef16](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/02cef16)
 - [none] Updated dependencies [02cef16](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/02cef16)

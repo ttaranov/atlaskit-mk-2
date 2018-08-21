@@ -1,5 +1,9 @@
 # @atlaskit/renderer
 
+## 20.0.10
+- [patch] Updated dependencies [dd91bcf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd91bcf)
+  - @atlaskit/editor-common@14.0.10
+
 ## 20.0.9
 
 
