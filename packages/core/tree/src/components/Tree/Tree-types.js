@@ -18,16 +18,16 @@ export type Props = {|
   onCollapse: (itemId: ItemId, path: Path) => void,
   /** Function that will be called when the user starts dragging. */
   onDragStart: (itemId: ItemId) => void,
-  /** Function that will be called when the user finishes dragging */
+  /** Function that will be called when the user finishes dragging. */
   onDragEnd: (
     sourcePosition: TreePosition,
     destinationPosition: ?TreePosition,
   ) => void,
-  /** Function that will be called to render each item. */
+  /** Function that will be called to render a single item. */
   renderItem: RenderItemParams => React.Node,
   /** Number of pixel is used to scaffold the tree by the consumer. */
   offsetPerLevel: number,
-  /** Boolean to turn on Drag&Drop functionality on the tree */
+  /** Boolean to turn on drag&drop re-ordering on the tree */
   isDragEnabled: boolean,
 |};
 
