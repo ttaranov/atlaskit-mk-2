@@ -18,6 +18,17 @@ if (!global.WEBSITE_ENV) {
   global.WEBSITE_ENV = 'local';
 }
 
+// Adds `localStorage` globally if is not available
+if (!global.localStorage) {
+  global.localStorage = {
+    setItem: Function.prototype,
+    getItem: Function.prototype,
+    clear: Function.prototype,
+    removeItem: Function.prototype,
+    key: Function.prototype,
+  };
+}
+
 /*
   This file is executed after the test framework is setup for each test file. Addons that modify
   the `expect` object can be applied here.
