@@ -1,4 +1,4 @@
-import { MarkdownTransformer } from '../src';
+import { MarkdownTransformer } from '../../index';
 
 import {
   doc,
