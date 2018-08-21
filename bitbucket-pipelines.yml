@@ -130,6 +130,17 @@ pipelines:
             - yarn test:webdriver:browserstack website
           caches:
             - node
+    # This should only be called by a scheduled or manual build
+    build-website-report:
+      - step:
+          script:
+            - source ./build-setup.sh
+            - bolt install --pure-lockfile
+            - cd website
+            - yarn build:report
+            - node ../build/ci-scripts/upload.build.artefact.for.commit.js dist/report.html
+          caches:
+            - node
 
     # This will run with the webdriver tests
     build-webdriver:
