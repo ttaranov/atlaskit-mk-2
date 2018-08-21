@@ -1,6 +1,7 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, type ElementRef } from 'react';
 import Button from '@atlaskit/button';
+import Form, { Field, FormFooter } from '@atlaskit/form';
 import { Radio, RadioGroup } from '../src';
 import type { ItemsPropType } from '../src/types';
 
@@ -19,17 +20,29 @@ const fruitItems: ItemsPropType = [
 ];
 
 export default class FormExample extends Component<void, void> {
+  form: any;
   onRadioChange = (event: any) => {
     console.log(event.target.value);
+  };
+  getFormRef = (form: any) => {
+    this.form = form;
+  };
+  submitClickHandler = () => {
+    this.form.submit();
   };
   render() {
     return (
       <div>
-        <form
+        <Form
+          onSubmitHandler={d => console.log(d)}
+          ref={this.getFormRef}
+          name="form-example"
           action={formTestUrl}
-          method="get"
-          style={{ backgroundColor: 'white' }}
+          method="GET"
           target="submitFrame"
+        >
+          {/* <Field
+          label="standalone radio"
         >
           <Radio
             name="standalone"
@@ -38,22 +51,36 @@ export default class FormExample extends Component<void, void> {
           >
             Single Radio button
           </Radio>
-          <RadioGroup
-            items={colorItems}
-            onChange={this.onRadioChange}
-            isRequired
-          />
+        </Field> */}
+          <Field label="required radio group" isRequired required>
+            <RadioGroup items={colorItems} onChange={this.onRadioChange} />
+          </Field>
+          {/* <Field
+          label="regular radio group"
+        >
           <RadioGroup items={fruitItems} onChange={this.onRadioChange} />
-          <p>
-            <Button type="submit" appearance="primary">
+        </Field> */}
+          <FormFooter
+            actionsContent={[
+              {
+                id: 'submit-button',
+              },
+            ]}
+          >
+            <Button
+              onClick={this.submitClickHandler}
+              type="submit"
+              appearance="primary"
+            >
               Submit
             </Button>
-          </p>
-        </form>
+          </FormFooter>
+        </Form>
+
         <p>The data submitted by the form will appear below:</p>
         <iframe
           src=""
-          title="Checkbox Resopnse Frame"
+          title="Radio Response Frame"
           id="submitFrame"
           name="submitFrame"
           style={{
