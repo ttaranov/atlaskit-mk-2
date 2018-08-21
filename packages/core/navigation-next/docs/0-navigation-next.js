@@ -67,10 +67,9 @@ ${(
   <p>
     <Button
       appearance="primary"
-      href="/packages/core/navigation-next/docs/controlling-navigation-views"
-      isDisabled
+      href="/packages/core/navigation-next/docs/state-controllers"
     >
-      Coming soon!
+      Read the docs
     </Button>
   </p>
 )}
