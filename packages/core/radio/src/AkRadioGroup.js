@@ -38,7 +38,7 @@ export default class FieldRadioGroup extends Component<
         return this.props.items.map(
           item =>
             item.value === this.state.selectedValue
-              ? { ...item, ...{ isSelected: true } }
+              ? { ...item, isChecked: true }
               : item,
         );
       }
@@ -49,8 +49,7 @@ export default class FieldRadioGroup extends Component<
       );
       if (hasDefaultSelected && this.props.items) {
         return this.props.items.map(
-          item =>
-            item.defaultSelected ? { ...item, ...{ isSelected: true } } : item,
+          item => (item.defaultSelected ? { ...item, isChecked: true } : item),
         );
       }
     }
