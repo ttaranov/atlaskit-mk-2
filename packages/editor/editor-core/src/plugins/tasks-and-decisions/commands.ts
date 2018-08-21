@@ -56,7 +56,7 @@ export const insertTaskDecision = (
   return false;
 };
 
-const changeInDepth = (before: ResolvedPos, after: ResolvedPos) =>
+export const changeInDepth = (before: ResolvedPos, after: ResolvedPos) =>
   after.depth - before.depth;
 
 export const createListAtSelection = (

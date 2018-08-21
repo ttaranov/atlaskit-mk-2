@@ -13,6 +13,7 @@ import {
   leafNodeReplacementCharacter,
 } from '../../../utils/input-rules';
 import { canInsert } from 'prosemirror-utils';
+import { changeInDepth } from '../commands';
 
 const createListRule = (
   regex: RegExp,
@@ -73,6 +74,7 @@ const createListRule = (
           .delete(start + 1, end + 1)
           .setSelection(new TextSelection(tr.doc.resolve(start + 1)));
       } else {
+        const depthAdjustment = changeInDepth($from, tr.selection.$from);
         tr
           .split($from.pos)
           .setSelection(new NodeSelection(tr.doc.resolve($from.pos + 1)))
@@ -84,6 +86,9 @@ const createListRule = (
                 (tr.doc.nodeAt($from.pos + 1) as Node).content,
               ),
             ]),
+          )
+          .setSelection(
+            new TextSelection(tr.doc.resolve($from.pos + depthAdjustment)),
           )
           .delete(start, end + 1);
       }

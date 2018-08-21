@@ -358,7 +358,7 @@ describe('tasks and decisions - input rules', () => {
           tr(
             td({})(
               taskList({ localId: 'local-decision' })(
-                taskItem({ localId: 'local-decision' })(''),
+                taskItem({ localId: 'local-decision' })('{<>}'),
               ),
             ),
           ),
@@ -389,7 +389,7 @@ describe('tasks and decisions - input rules', () => {
             td({})(
               p('Hello'),
               taskList({ localId: 'local-decision' })(
-                taskItem({ localId: 'local-decision' })(''),
+                taskItem({ localId: 'local-decision' })('{<>}'),
               ),
             ),
           ),
@@ -418,7 +418,7 @@ describe('tasks and decisions - input rules', () => {
           extensionType: 'type',
         })(
           taskList({ localId: 'local-decision' })(
-            taskItem({ localId: 'local-decision' })(),
+            taskItem({ localId: 'local-decision' })('{<>}'),
           ),
         ),
       );
@@ -437,7 +437,7 @@ describe('tasks and decisions - input rules', () => {
         layoutSection()(
           layoutColumn(
             taskList({ localId: 'local-decision' })(
-              taskItem({ localId: 'local-decision' })(''),
+              taskItem({ localId: 'local-decision' })('{<>}'),
             ),
           ),
           layoutColumn(p('')),
