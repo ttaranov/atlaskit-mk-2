@@ -1,5 +1,8 @@
 # @atlaskit/navigation-next
 
+## 3.6.0
+- [minor] GoToItems in views automatically render a Spinner when their goTo prop matches the incoming view ID. [ac0084c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ac0084c)
+
 ## 3.5.2
 - [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
   - @atlaskit/badge@9.1.1

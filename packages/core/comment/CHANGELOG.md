@@ -1,5 +1,8 @@
 # @atlaskit/comment
 
+## 6.0.9
+- [patch] Clean changelogs and exclude the editor example from the ssr test [ced154b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ced154b)
+
 ## 6.0.8
 - [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
   - @atlaskit/editor-core@77.1.4
