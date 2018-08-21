@@ -17,14 +17,10 @@ import {
 } from '@atlaskit/editor-core';
 
 afterEach(() => {
-  // @ts-ignore
-  indentList.mockClear();
-  // @ts-ignore
-  outdentList.mockClear();
-  // @ts-ignore
-  toggleOrderedList.mockClear();
-  // @ts-ignore
-  toggleBulletList.mockClear();
+  (indentList as jest.Mock<{}>).mockClear();
+  (outdentList as jest.Mock<{}>).mockClear();
+  (toggleOrderedList as jest.Mock<{}>).mockClear();
+  (toggleBulletList as jest.Mock<{}>).mockClear();
 });
 
 describe('lists should work', () => {
