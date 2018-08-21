@@ -17,7 +17,7 @@ exports[`<FabricAnalyticsListeners /> FabricAnalyticsListener should render all 
       }
     }
   >
-    <FabricElementsListener
+    <FabricEditorListener
       client={Promise {}}
       logger={
         Logger {
@@ -25,10 +25,19 @@ exports[`<FabricAnalyticsListeners /> FabricAnalyticsListener should render all 
         }
       }
     >
-      <div>
-        Child
-      </div>
-    </FabricElementsListener>
+      <FabricElementsListener
+        client={Promise {}}
+        logger={
+          Logger {
+            "logLevel": 4,
+          }
+        }
+      >
+        <div>
+          Child
+        </div>
+      </FabricElementsListener>
+    </FabricEditorListener>
   </AtlaskitListener>
 </NavigationListener>
 `;

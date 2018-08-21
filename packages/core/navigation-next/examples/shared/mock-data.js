@@ -20,7 +20,7 @@ export const LinkItem = ({ components: C, to, ...props }: *) => {
         <C.Item
           after={() => <LinkIcon size="small" />}
           component={({ children, className }) => (
-            <Link className={className} to={to}>
+            <Link className={className} to={to} onClick={props.onClick}>
               {children}
             </Link>
           )}

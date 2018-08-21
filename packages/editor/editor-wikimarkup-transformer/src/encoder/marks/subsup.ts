@@ -1,12 +1,13 @@
 import { MarkEncoder } from '..';
+import { baseMarkPattern } from './__base';
 
 export const subsup: MarkEncoder = (
   text: string,
   attrs: { type: 'sub' | 'sup' },
 ): string => {
   if (attrs.type === 'sub') {
-    return `~${text}~`;
+    return baseMarkPattern(text, '~');
   } else {
-    return `^${text}^`;
+    return baseMarkPattern(text, '^');
   }
 };

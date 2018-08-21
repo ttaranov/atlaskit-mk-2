@@ -5,10 +5,13 @@
     "outDir": "../../dist/es5",
     "lib": ["dom", "es6"],
     "target": "es5",
-    "module": "es5"
+    "module": "commonjs"
   },
   "include": [
     "../../src/**/*.ts",
     "../../src/**/*.tsx"
+  ],
+  "exclude": [
+    "../../src/**/__tests__/*"
   ]
 }

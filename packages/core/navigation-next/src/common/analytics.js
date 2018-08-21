@@ -5,27 +5,24 @@ import type { ComponentType } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  type WithAnalyticsEventsProps,
 } from '@atlaskit/analytics-next';
-
-import { navigationChannel } from '../common/constants';
+import type { ViewLayer } from '../view-controller/types';
 
 const getDisplayName = component =>
   component ? component.displayName || component.name : undefined;
 
+export const navigationChannel = 'navigation';
+
 export const navigationItemClicked = (
   Component: ComponentType<any>,
   componentName: string,
-  staticProps: any,
-) => {
+): ComponentType<any> => {
   return withAnalyticsContext({
     componentName,
   })(
     withAnalyticsEvents({
-      onClick: (createAnalyticsEvent, componentProps) => {
-        // If we aren't wrapping an actual Item component and instead wrapping a div
-        // wrapper, we will want to use static props if they exist.
-        // Otherwise, use component props.
-        const props = staticProps || componentProps;
+      onClick: (createAnalyticsEvent, props) => {
         const event = createAnalyticsEvent({
           action: 'clicked',
           actionSubject: 'navigationItem',
@@ -45,3 +42,32 @@ export const navigationItemClicked = (
     })(Component),
   );
 };
+
+export const navigationUILoaded = (
+  createAnalyticsEvent: $PropertyType<
+    WithAnalyticsEventsProps,
+    'createAnalyticsEvent',
+  >,
+  { layer }: { layer: ViewLayer },
+) =>
+  createAnalyticsEvent({
+    action: 'initialised',
+    actionSubject: 'navigationUI',
+    actionSubjectId: layer,
+    eventType: 'operational',
+  }).fire(navigationChannel);
+
+export const navigationExpandedCollapsed = (
+  createAnalyticsEvent: $PropertyType<
+    WithAnalyticsEventsProps,
+    'createAnalyticsEvent',
+  >,
+  { isCollapsed, trigger }: { isCollapsed: boolean, trigger: string },
+) =>
+  createAnalyticsEvent({
+    action: isCollapsed ? 'collapsed' : 'expanded',
+    actionSubject: 'productNavigation',
+    attributes: {
+      trigger,
+    },
+  }).fire(navigationChannel);

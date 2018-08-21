@@ -1,3 +1,4 @@
+import { receiveTransaction } from 'prosemirror-collab';
 import { Step } from 'prosemirror-transform';
 import { AllSelection, NodeSelection, Selection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
@@ -9,10 +10,15 @@ import {
   PresenceData,
   TelepointerData,
   SendableSelection,
+  CollabEditOptions,
 } from './types';
 
-export const handleInit = (initData: InitData, view: EditorView) => {
-  const { doc, json } = initData;
+export const handleInit = (
+  initData: InitData,
+  view: EditorView,
+  options?: CollabEditOptions,
+) => {
+  const { doc, json, version } = initData;
   if (doc) {
     const {
       state,
@@ -27,11 +33,21 @@ export const handleInit = (initData: InitData, view: EditorView) => {
       tr.replaceWith(0, state.doc.nodeSize - 2, content);
       tr.setSelection(Selection.atStart(tr.doc));
       tr.scrollIntoView();
-      const newState = state.apply(tr);
+      let newState = state.apply(tr);
+
+      if (typeof version !== undefined) {
+        const collabState = { version, unconfirmed: [] };
+        const { tr } = newState;
+
+        if (options && options.useNativePlugin) {
+          newState = newState.apply(tr.setMeta('collab$', collabState));
+        }
+      }
+
       view.updateState(newState);
     }
   } else if (json) {
-    applyRemoteSteps(json, view);
+    applyRemoteSteps(json, undefined, view);
   }
 };
 
@@ -55,31 +71,47 @@ export const handlePresence = (
   view.dispatch(tr.setMeta('presence', presenceData));
 };
 
-export const applyRemoteData = (remoteData: RemoteData, view: EditorView) => {
-  const { json, newState } = remoteData;
+export const applyRemoteData = (
+  remoteData: RemoteData,
+  view: EditorView,
+  options?: CollabEditOptions,
+) => {
+  const { json, newState, userIds = [] } = remoteData;
   if (json) {
-    applyRemoteSteps(json, view);
+    applyRemoteSteps(json, userIds, view, options);
   } else if (newState) {
     view.updateState(newState);
   }
 };
 
-export const applyRemoteSteps = (json: any[], view: EditorView) => {
+export const applyRemoteSteps = (
+  json: any[],
+  userIds: string[] | undefined,
+  view: EditorView,
+  options?: CollabEditOptions,
+) => {
   const {
     state,
     state: { schema },
   } = view;
-  let { tr } = state;
 
-  json.forEach(stepJson => {
-    const step = Step.fromJSON(schema, stepJson);
-    tr.step(step);
-  });
+  const steps = json.map(step => Step.fromJSON(schema, step));
 
-  tr.setMeta('addToHistory', false);
-  tr.scrollIntoView();
-  const newState = state.apply(tr);
-  view.updateState(newState);
+  let tr;
+
+  if (options && options.useNativePlugin) {
+    tr = receiveTransaction(state, steps, userIds);
+  } else {
+    tr = state.tr;
+    steps.forEach(step => tr.step(step));
+  }
+
+  if (tr) {
+    tr.setMeta('addToHistory', false);
+    tr.scrollIntoView();
+    const newState = state.apply(tr);
+    view.updateState(newState);
+  }
 };
 
 export const handleTelePointer = (

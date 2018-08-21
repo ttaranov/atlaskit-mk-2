@@ -1,5 +1,20 @@
 # @atlaskit/media-viewer
 
+## 17.0.6
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/media-ui@5.1.2
+
+## 17.0.5
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/media-ui@5.1.1
+  - @atlaskit/spinner@9.0.6
+  - @atlaskit/modal-dialog@6.0.9
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/field-range@5.0.4
+  - @atlaskit/button@9.0.6
+  - @atlaskit/docs@5.0.6
+
 ## 17.0.4
 - [patch] Use Camera class in avatar picker [335ab1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/335ab1e)
 - [patch] Updated dependencies [335ab1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/335ab1e)

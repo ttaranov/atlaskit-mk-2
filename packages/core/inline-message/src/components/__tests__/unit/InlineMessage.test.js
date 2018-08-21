@@ -54,16 +54,16 @@ describe('Inline Message', () => {
         ).toBe('error');
       });
     });
-    describe('position', () => {
-      it('should default to "bottom left"', () => {
-        expect(mount(<InlineMessage />).prop('position')).toBe('bottom left');
+    describe('placement', () => {
+      it('should default to "bottom-start"', () => {
+        expect(mount(<InlineMessage />).prop('placement')).toBe('bottom-start');
       });
       it('should be passed to InlineDialog component', () => {
         expect(
-          shallow(<InlineMessage position="right middle" />)
+          shallow(<InlineMessage placement="right" />)
             .find(InlineDialog)
-            .prop('position'),
-        ).toBe('right middle');
+            .prop('placement'),
+        ).toBe('right');
       });
     });
   });

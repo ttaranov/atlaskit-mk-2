@@ -13,6 +13,7 @@ import {
   ParagraphDefinition,
   RuleDefinition,
   TaskListDefinition,
+  BlockCardDefinition,
 } from '@atlaskit/editor-common';
 
 import { TableHeaderDefinition, CellAttributes } from '@atlaskit/editor-common';
@@ -40,4 +41,5 @@ export {
   ParagraphDefinition,
   RuleDefinition,
   TaskListDefinition,
+  BlockCardDefinition,
 };

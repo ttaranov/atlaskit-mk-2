@@ -1,5 +1,57 @@
 # @atlaskit/navigation-next
 
+## 3.5.2
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/badge@9.1.1
+  - @atlaskit/global-navigation@4.1.6
+
+## 3.5.1
+- [patch] Updated dependencies [dfa100e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dfa100e)
+  - @atlaskit/analytics-listeners@3.3.1
+  - @atlaskit/analytics-namespaced-context@2.1.1
+  - @atlaskit/global-navigation@4.1.5
+
+## 3.5.0
+- [minor] Instrument expanding and collapsing navigation with analytics [e7d32d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7d32d5)
+- [none] Updated dependencies [e7d32d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7d32d5)
+
+## 3.4.0
+- [minor] Add an operational event for navigation UI initialisation within the LayerManagerWithViewController component [6c2fdd3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6c2fdd3)
+- [none] Updated dependencies [2d53fc1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d53fc1)
+  - @atlaskit/analytics-listeners@3.3.0
+
+## 3.3.6
+- [patch] add switcher to nav-next ui components docs page [e083d63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e083d63)
+- [none] Updated dependencies [e083d63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e083d63)
+  - @atlaskit/select@5.0.10
+
+## 3.3.5
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/tooltip@12.0.9
+  - @atlaskit/toggle@5.0.6
+  - @atlaskit/select@5.0.9
+  - @atlaskit/section-message@1.0.5
+  - @atlaskit/lozenge@6.1.5
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/global-navigation@4.1.4
+  - @atlaskit/field-base@11.0.5
+  - @atlaskit/dropdown-menu@6.1.8
+  - @atlaskit/badge@9.1.0
+  - @atlaskit/avatar@14.0.8
+  - @atlaskit/docs@5.0.6
+
+## 3.3.4
+
+- [patch] Fix analytics instrumentation of custom component clicks. Custom components will no longer be wrapped with a div that listens to click events and instead will have their onClick prop wrapped with analytics. If custom components wish to send navigationItem click events, they should attach the onClick prop to a DOM element under their control. [4ab7c4e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4ab7c4e)
+- [none] Updated dependencies [06bf373](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06bf373)
+  - @atlaskit/global-navigation@4.1.3
+
+## 3.3.3
+- [patch] Fixing update active view method in ViewController [15f93f0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/15f93f0)
+- [patch] Updated dependencies [15f93f0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/15f93f0)
+  - @atlaskit/global-navigation@4.1.2
+
 ## 3.3.2
 - [patch] Fixing dynamic styles on global nagivation [0b2daf0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0b2daf0)
 - [patch] Updated dependencies [0b2daf0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0b2daf0)
@@ -10,26 +62,16 @@
 - [patch] Updated dependencies [ee25869](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ee25869)
 
 ## 3.3.0
-
-
 - [minor] Instrument analytics for global and product nav item clicks. These will automatically be captured when using the FabricAnalyticsListeners component to listen for them. Note that some event data attributes rely on the ViewRenderer and LayoutManagerWithViewController being used instead of manual component composition. [51e9bee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51e9bee)
 - [patch] Updated dependencies [f7432a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f7432a2)
   - @atlaskit/analytics-next@3.0.5
   - @atlaskit/global-navigation@4.1.0
 - [none] Updated dependencies [b77a884](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b77a884)
   - @atlaskit/global-navigation@4.1.0
-- [none] Updated dependencies [51e9bee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51e9bee)
-  - @atlaskit/global-navigation@4.1.0
 
 ## 3.2.4
-
-
 - [patch] Add variable name displayNames for anonymous function SFC components to improve debugging experience [2e148df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e148df)
 - [none] Updated dependencies [50d469f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/50d469f)
-  - @atlaskit/global-navigation@4.0.6
-- [none] Updated dependencies [1602872](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1602872)
-  - @atlaskit/global-navigation@4.0.6
-- [none] Updated dependencies [2e148df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e148df)
   - @atlaskit/global-navigation@4.0.6
 
 ## 3.2.3
@@ -141,11 +183,6 @@
   - @atlaskit/select@4.4.0
 
 ## 1.0.3
-
-
-- [none] Updated dependencies [da63331](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da63331)
-  - @atlaskit/dropdown-menu@5.2.3
-  - @atlaskit/avatar@13.0.0
 - [patch] Updated dependencies [7724115](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7724115)
   - @atlaskit/avatar@13.0.0
   - @atlaskit/dropdown-menu@5.2.3

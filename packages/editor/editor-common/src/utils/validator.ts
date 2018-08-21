@@ -405,6 +405,16 @@ export const getValidNode = (
         }
         break;
       }
+      case 'inlineCard':
+      case 'blockCard': {
+        if (attrs && (attrs.url || attrs.data)) {
+          return {
+            type,
+            attrs,
+          };
+        }
+        break;
+      }
       case 'bodiedExtension': {
         if (attrs && attrs.extensionType && attrs.extensionKey && content) {
           return {

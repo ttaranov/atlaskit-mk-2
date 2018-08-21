@@ -109,7 +109,7 @@ export interface WithObjectProps {
   children: (props: WithObjectRenderProps) => React.ReactNode;
 }
 
-export function WithObject(props) {
+export function WithObject(props: WithObjectProps) {
   const { client: clientFromProps, url, children } = props;
   return (
     <Context.Consumer>
