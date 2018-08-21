@@ -213,6 +213,9 @@ export default class ViewController extends Container<ViewControllerState>
     }
   };
 
+  /**
+   * Set whether the view controller is in debug mode.
+   */
   setIsDebugEnabled = (isDebugEnabled: boolean) => {
     this.isDebugEnabled = isDebugEnabled;
   };
