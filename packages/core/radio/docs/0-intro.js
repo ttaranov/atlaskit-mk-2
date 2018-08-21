@@ -31,7 +31,7 @@ AkRadio component to render. Both stateful and stateless
     <Example
       Component={require('../examples/01-controlled-example').default}
       title="Stateless Checkbox"
-      source={require('!!raw-loader!../examples/01-stateless-example')}
+      source={require('!!raw-loader!../examples/01-controlled-example')}
     />
   )}
 
