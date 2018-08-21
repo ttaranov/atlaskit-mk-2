@@ -1,5 +1,5 @@
 import { sendEvent } from '../analytics-web-client-wrapper';
-import { client } from '../types';
+import { Client } from '../types';
 import Logger from '../helpers/logger';
 import { processEventPayload } from './process-event-payload';
 import { event } from './types';
@@ -7,7 +7,7 @@ import { event } from './types';
 export const handleEvent = (
   event: event,
   tag: string,
-  client: client,
+  client: Client,
   logger: Logger,
 ) => {
   if (!event.payload) {
