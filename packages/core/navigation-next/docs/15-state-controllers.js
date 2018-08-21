@@ -25,9 +25,11 @@ ${<Hr />}
 
 ${<H>UI controller</H>}
 
+The UI controller manages the visual state of the navigation component. To see this feature in action, [check out this guide](/packages/core/navigation-next/docs/composing-your-navigation#managing-the-ui-state).
+
 ### UIController
 
-The UI controller manages the visual state of the navigation component. It has the following interface:
+ The UIController class is the container for the UI state. It has the following interface:
 
 ${code`interface UIControllerInterface {
   state: {
@@ -100,5 +102,137 @@ class MyComponentBase extends Component {
   }
 }
 const MyComponent = withNavigationUI(MyComponentBase);`}
+
+${<Hr />}
+
+${<H>View controller</H>}
+
+The view controller manages which set of items should be rendered in the navigation. For an in-depth walk-through of how to use this feature, [check out this guide](/packages/core/navigation-next/docs/controlling-navigation-views).
+
+### ViewController
+
+The ViewController class is the container for the view state. It has the following interface:
+
+${code`interface ViewControllerInterface {
+  state: {
+    /** The view which is currently being rendered in the navigation. */
+    activeView: {
+      /** The unique ID for this view. */
+      id: string,
+      /** The layer of navigation this view should be rendered on. */
+      type: 'container' | 'product',
+      /** An array of items. */
+      data: [],
+    } | null,
+
+    /** The view which will become active once it has loaded. */
+    incomingView: {
+      /** The unique ID for this view. */
+      id: string,
+      /** The layer of navigation this view should be rendered on. */
+      type: 'container' | 'product',
+    } | null,
+
+    /** The view which should be rendered on the product navigation layer when
+     * the active view is a 'container' view. @deprecated: The concept of
+     * peeking no longer exists in the UX spec, so this feature will be removed
+     * in a future release. */
+    activePeekView: {
+      /** The unique ID for this view. */
+      id: string,
+      /** The layer of navigation this view should be rendered on. */
+      type: 'container' | 'product',
+      /** An array of items. */
+      data: [],
+    } | null,
+  
+    /** The view which will become the active peek view once it has loaded.
+     * @deprecated */
+    incomingPeekView: {
+      /** The unique ID for this view. */
+      id: string,
+      /** The layer of navigation this view should be rendered on. */
+      type: 'container' | 'product',
+    } | null,
+  };
+
+  /** Register a view. You must provide an \`id\`, the \`type\` of view
+   * ('product' or 'container'), and a \`getItems\` function which should return
+   * either an array of data, or a Promise which will resolve to an array of
+   * data. */
+  addView: ({
+    /** A unique ID for this view. */
+    id: string,
+    /** The layer of navigation this view should be rendered on. */
+    type: 'container' | 'product',
+    /** A function which should return an array of items, or a Promise which
+     * will resolve to an array of items. */
+    getItems: () => Promise<[]> | [],
+  }) => void;
+
+  /** Un-register a view. If the view being removed is active it will remain so
+   * until a different view is set. */
+  removeView: string => void;
+
+  /** Set the registered view with the given ID as the active view. */
+  setView: string => void;
+
+  /** Add a reducer to the view with the given ID. */
+  addReducer: (string, ([]) => []) => void;
+
+  /** Remove a reducer from the view with the given ID. */
+  removeReducer: (string, ([]) => []) => void;
+
+  /** Specify which view should be treated as the initial peek view. */
+  setInitialPeekViewId: string => void;
+
+  /** Will re-resolve the active view and re-reduce its data. Accepts an
+   * optional view ID to only re-resolve if the given ID matches the active
+   * view. */
+  updateActiveView: (string | void) => void;
+
+  /** Set whether the view controller is in debug mode. */
+  setIsDebugEnabled: boolean => void;
+}`}
+
+### ViewControllerSubscriber
+
+A render component which provides the view controller instance to its children.
+
+${code`import { ViewControllerSubscriber } from '@atlaskit/navigation-next';
+
+const MyComponent = () => (
+  <ViewControllerSubscriber>
+    {viewController => (
+      <button onClick={() => viewController.setView('view-id')}>
+        Click me
+      </button>
+    )}
+  </ViewControllerSubscriber>
+);`}
+
+### withNavigationViewController
+
+A higher-order component which provides the view controller instance through the \`navigationViewController\` prop to the component it wraps.
+
+${code`import { withNavigationViewController } from '@atlaskit/navigation-next';
+
+class MyComponentBase extends Component {
+  render() {
+    const { navigationViewController } = this.props;
+    navigationViewController.setView('view-id');
+  }
+
+  render() {
+    return null;
+  }
+}
+const MyComponent = withNavigationViewController(MyComponentBase);`}
+
+${<Hr />}
+
+${<H>Reducer utility functions</H>}
+
+Stuff
 `}</ContentsProvider>
 );
