@@ -1,4 +1,4 @@
-import { mapImageToEmoji } from '../src/emojiHelper';
+import { mapImageToEmoji } from '../../emojiHelper';
 import { doc, p, emoji } from '@atlaskit/editor-test-helpers';
 import { checkParse, checkEncode } from './_test-helpers';
 import { createJIRASchema } from '@atlaskit/editor-common';
