@@ -7,20 +7,18 @@ export const OPERATIONAL_EVENT_TYPE = 'operational';
 
 export type EventType = 'ui' | 'track' | 'screen' | 'operational';
 
-export type ScreenAnalyticsEventPayload = {
+export type GasScreenEventPayload = {
   name: string;
-  [key: string]: any;
+  eventType: EventType;
+  attributes?: {
+    [key: string]: any;
+  };
+  tags?: Array<string>;
 };
 
-export type BasePayload =
-  | AnalyticsEventPayload & {
-      actionSubject: string;
-      actionSubjectId?: string;
-      source: string;
-    }
-  | ScreenAnalyticsEventPayload;
-
-export type GasPayload = BasePayload & {
+export type GasCorePayload = {
+  actionSubject: string;
+  actionSubjectId?: string;
   eventType: EventType;
   attributes?: {
     packageName: string;
@@ -32,4 +30,7 @@ export type GasPayload = BasePayload & {
     [key: string]: any;
   };
   tags?: Array<string>;
+  source: string;
 };
+
+export type GasPayload = AnalyticsEventPayload & GasCorePayload;
