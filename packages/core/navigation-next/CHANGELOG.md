@@ -1,5 +1,11 @@
 # @atlaskit/navigation-next
 
+## 3.5.1
+- [patch] Updated dependencies [dfa100e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dfa100e)
+  - @atlaskit/analytics-listeners@3.3.1
+  - @atlaskit/analytics-namespaced-context@2.1.1
+  - @atlaskit/global-navigation@4.1.5
+
 ## 3.5.0
 - [minor] Instrument expanding and collapsing navigation with analytics [e7d32d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7d32d5)
 - [none] Updated dependencies [e7d32d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7d32d5)

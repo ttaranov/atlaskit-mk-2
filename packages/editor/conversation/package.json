@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/conversation",
-  "version": "9.1.3",
+  "version": "9.1.4",
   "config": {
     "access": "public"
   },
@@ -39,7 +39,7 @@
     "tslib": "^1.8.0"
   },
   "devDependencies": {
-    "@atlaskit/analytics-listeners": "^3.3.0",
+    "@atlaskit/analytics-listeners": "^3.3.1",
     "@atlaskit/docs": "^5.0.2",
     "@atlaskit/single-select": "^6.0.3",
     "@atlaskit/util-data-test": "^10.0.4",
