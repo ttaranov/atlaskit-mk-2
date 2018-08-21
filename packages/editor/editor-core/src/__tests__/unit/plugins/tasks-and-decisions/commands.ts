@@ -42,7 +42,7 @@ describe('tasks and decisions - commands', () => {
         doc(
           taskList({ localId: 'local-highlight' })(
             taskItem({ localId: 'local-highlight', state: 'TODO' })(
-              'Hello World',
+              'Hello{<>} World',
             ),
           ),
         ),
@@ -55,7 +55,7 @@ describe('tasks and decisions - commands', () => {
       expect(editorView.state.doc).toEqualDocument(
         doc(
           decisionList({ localId: 'local-highlight' })(
-            decisionItem({ localId: 'local-highlight' })('Hello World'),
+            decisionItem({ localId: 'local-highlight' })('Hello{<>} World'),
           ),
         ),
       );
@@ -67,7 +67,7 @@ describe('tasks and decisions - commands', () => {
       expect(editorView.state.doc).toEqualDocument(
         doc(
           taskList({ localId: 'local-highlight' })(
-            taskItem({ localId: 'local-highlight', state: 'TODO' })(''),
+            taskItem({ localId: 'local-highlight', state: 'TODO' })('{<>}'),
           ),
         ),
       );
@@ -79,7 +79,7 @@ describe('tasks and decisions - commands', () => {
       expect(editorView.state.doc).toEqualDocument(
         doc(
           decisionList({ localId: 'local-highlight' })(
-            decisionItem({ localId: 'local-highlight' })(''),
+            decisionItem({ localId: 'local-highlight' })('{<>}'),
           ),
         ),
       );
