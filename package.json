@@ -356,7 +356,7 @@
     "pdfjs-dist": "^2.0.489",
     "polished": "1.5.0",
     "postis": "^2.2.0",
-    "pretty-proptypes": "^0.2.2",
+    "pretty-proptypes": "^0.2.3",
     "prismjs": "^1.6.0",
     "prop-types": "^15.5.10",
     "prosemirror-collab": "^1.0.0",

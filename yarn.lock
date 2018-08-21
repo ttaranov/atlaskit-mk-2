@@ -11207,9 +11207,9 @@ pretty-format@^21.2.1:
     ansi-regex "^3.0.0"
     ansi-styles "^3.2.0"
 
-pretty-proptypes@^0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/pretty-proptypes/-/pretty-proptypes-0.2.2.tgz#f415bc3e820f29f90446f11bcc51b72d2287b1d9"
+pretty-proptypes@^0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/pretty-proptypes/-/pretty-proptypes-0.2.3.tgz#e5a84722a3097cf02b6276c3a185d5eb74aacc48"
   dependencies:
     emotion "^9.1.1"
     kind2string "^0.4.1"
