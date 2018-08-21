@@ -35,4 +35,12 @@ export default md`
       source={require('!!raw-loader!../examples/5-pure-tree')}
     />
   )}
+
+  ${(
+    <Props
+      heading=" "
+      props={require('!!extract-react-types-loader!../src/components/Tree/')}
+    />
+  )}
+
 `;
