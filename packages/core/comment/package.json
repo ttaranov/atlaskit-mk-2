@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/comment",
-  "version": "6.0.7",
+  "version": "6.0.8",
   "description": "Comments enable discussions on an entity such as a page, blog post, issue or pull request",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -32,7 +32,7 @@
     "@atlaskit/avatar": "^14.0.8",
     "@atlaskit/build-utils": "^1.12.1",
     "@atlaskit/docs": "^5.0.6",
-    "@atlaskit/editor-core": "^77.0.14",
+    "@atlaskit/editor-core": "^77.1.4",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.2"
   },

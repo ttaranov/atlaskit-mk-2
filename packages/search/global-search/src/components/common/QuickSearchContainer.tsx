@@ -1,10 +1,24 @@
 import * as React from 'react';
 import * as uuid from 'uuid/v4';
-import { InjectedIntl } from 'react-intl';
 import { LinkComponent } from '../GlobalQuickSearchWrapper';
 import GlobalQuickSearch from '../GlobalQuickSearch';
 import performanceNow from '../../util/performance-now';
-import { GenericResultObject } from '../../model/Result';
+import {
+  GenericResultMap,
+  ResultsWithTiming,
+  Result,
+} from '../../model/Result';
+import {
+  ShownAnalyticsAttributes,
+  buildShownEventDetails,
+  PerformanceTiming,
+} from '../../util/analytics-util';
+import {
+  firePreQueryShownEvent,
+  firePostQueryShownEvent,
+} from '../../util/analytics-event-helper';
+
+import { CreateAnalyticsEventFn } from '../analytics/types';
 
 export interface SearchResultProps extends State {
   retrySearch: Function;
@@ -13,28 +27,24 @@ export interface SearchResultProps extends State {
 export interface Props {
   linkComponent?: LinkComponent;
   getSearchResultsComponent(state: SearchResultProps): React.ReactNode;
-  getRecentItems(sessionId: string): Promise<GenericResultObject>;
+  getRecentItems(sessionId: string): Promise<ResultsWithTiming>;
   getSearchResults(
     query: string,
     sessionId: string,
     startTime: number,
-  ): Promise<GenericResultObject>;
-  fireShownPreQueryEvent(
-    searchSessionId: string,
-    recentItems: GenericResultObject,
-    requestStartTime?: number,
-  ): void;
-  fireShownPostQueryEvent(
-    startTime: number,
-    elapsedMs: number,
-    searchResults: GenericResultObject,
-    searchSessionId: string,
-    latestSearchQuery: string,
-  ): void;
+  ): Promise<ResultsWithTiming>;
 
+  /**
+   * return displayed groups from result groups
+   * Used by analytics to tell how many ui groups are displayed for user
+   * for example in jira we pass (issues, boards, filters and projects but we display only 2 groups issues and others combined)
+   * @param results
+   */
+  getDisplayedResults?(results: GenericResultMap): Result[][];
+  createAnalyticsEvent?: CreateAnalyticsEventFn;
   handleSearchSubmit?({ target: string }): void;
   isSendSearchTermsEnabled?: boolean;
-  intl: InjectedIntl;
+  placeholder?: string;
 }
 
 export interface State {
@@ -43,14 +53,20 @@ export interface State {
   isLoading: boolean;
   isError: boolean;
   keepPreQueryState: boolean;
-  searchResults: object | null;
-  recentItems: object | null;
+  searchResults: GenericResultMap | null;
+  recentItems: GenericResultMap | null;
 }
 
 /**
  * Container/Stateful Component that handles the data fetching and state handling when the user interacts with Search.
  */
 export class QuickSearchContainer extends React.Component<Props, State> {
+  static defaultProps = {
+    getDisplayedResults(results: GenericResultMap) {
+      return Object.keys(results).map(key => results[key]);
+    },
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -71,7 +87,7 @@ export class QuickSearchContainer extends React.Component<Props, State> {
     });
 
     try {
-      const searchResults = await this.props.getSearchResults(
+      const { results, timings } = await this.props.getSearchResults(
         query,
         this.state.searchSessionId,
         startTime,
@@ -81,16 +97,17 @@ export class QuickSearchContainer extends React.Component<Props, State> {
       if (this.state.latestSearchQuery === query) {
         this.setState(
           {
-            searchResults,
+            searchResults: results,
             isError: false,
             isLoading: false,
             keepPreQueryState: false,
           },
           () => {
-            this.props.fireShownPostQueryEvent(
+            this.fireShownPostQueryEvent(
               startTime,
               elapsedMs,
               this.state.searchResults || {},
+              timings || {},
               this.state.searchSessionId,
               this.state.latestSearchQuery,
             );
@@ -103,6 +120,60 @@ export class QuickSearchContainer extends React.Component<Props, State> {
         isLoading: false,
         keepPreQueryState: false,
       });
+    }
+  };
+
+  fireShownPreQueryEvent = (
+    searchSessionId,
+    recentItems,
+    requestStartTime?: number,
+  ) => {
+    const { createAnalyticsEvent, getDisplayedResults } = this.props;
+    if (createAnalyticsEvent && getDisplayedResults) {
+      const elapsedMs: number = requestStartTime
+        ? performanceNow() - requestStartTime
+        : 0;
+
+      const eventAttributes: ShownAnalyticsAttributes = buildShownEventDetails(
+        ...getDisplayedResults(recentItems),
+      );
+
+      firePreQueryShownEvent(
+        eventAttributes,
+        elapsedMs,
+        searchSessionId,
+        createAnalyticsEvent,
+      );
+    }
+  };
+
+  fireShownPostQueryEvent = (
+    startTime,
+    elapsedMs,
+    searchResults,
+    timings,
+    searchSessionId,
+    latestSearchQuery: string,
+  ) => {
+    const performanceTiming: PerformanceTiming = {
+      startTime,
+      elapsedMs,
+      ...timings,
+    };
+
+    const { createAnalyticsEvent, getDisplayedResults } = this.props;
+    if (createAnalyticsEvent && getDisplayedResults) {
+      const resultsDetails: ShownAnalyticsAttributes = buildShownEventDetails(
+        ...getDisplayedResults(searchResults),
+      );
+
+      firePostQueryShownEvent(
+        resultsDetails,
+        performanceTiming,
+        searchSessionId,
+        latestSearchQuery,
+        createAnalyticsEvent,
+      );
     }
   };
 
@@ -123,7 +194,7 @@ export class QuickSearchContainer extends React.Component<Props, State> {
           keepPreQueryState: true,
         },
         () =>
-          this.props.fireShownPreQueryEvent(
+          this.fireShownPreQueryEvent(
             this.state.searchSessionId,
             this.state.recentItems || {},
           ),
@@ -149,14 +220,14 @@ export class QuickSearchContainer extends React.Component<Props, State> {
     const sessionId = this.state.searchSessionId;
 
     try {
-      const recentItems = await this.props.getRecentItems(sessionId);
+      const { results } = await this.props.getRecentItems(sessionId);
       this.setState(
         {
-          recentItems,
+          recentItems: results,
           isLoading: false,
         },
         () =>
-          this.props.fireShownPreQueryEvent(
+          this.fireShownPreQueryEvent(
             this.state.searchSessionId,
             this.state.recentItems || {},
             startTime,
@@ -176,6 +247,7 @@ export class QuickSearchContainer extends React.Component<Props, State> {
       linkComponent,
       isSendSearchTermsEnabled,
       getSearchResultsComponent,
+      placeholder,
     } = this.props;
     const {
       isLoading,
@@ -193,9 +265,7 @@ export class QuickSearchContainer extends React.Component<Props, State> {
         onSearch={this.handleSearch}
         onSearchSubmit={this.props.handleSearchSubmit}
         isLoading={isLoading}
-        placeholder={this.props.intl.formatMessage({
-          id: 'global-search.confluence.search-placeholder',
-        })}
+        placeholder={placeholder}
         linkComponent={linkComponent}
         searchSessionId={searchSessionId}
         isSendSearchTermsEnabled={isSendSearchTermsEnabled}

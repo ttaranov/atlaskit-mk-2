@@ -1,5 +1,9 @@
 # @atlaskit/media-picker
 
+## 12.1.2
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/media-card@32.0.5
+
 ## 12.1.1
 - [patch] Fix MediaPicker Dropzone UI on IE11 [79f780a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/79f780a)
 

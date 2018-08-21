@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { AnalyticsListener } from '@atlaskit/analytics-next';
+import { AnalyticsListener } from '../../../core/analytics-next/src/';
 import { setupMocks, teardownMocks } from '../example-helpers/mockApis';
 import { GlobalQuickSearch } from '../src';
 import withNavigation from '../example-helpers/withNavigation';

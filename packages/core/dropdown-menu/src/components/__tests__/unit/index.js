@@ -13,7 +13,7 @@ import Menu, {
   DropdownItemGroup,
   DropdownItemGroupCheckbox,
 } from '../../..';
-import { KEY_SPACE, KEY_ENTER, KEY_DOWN } from '../../../util/keys';
+import { KEY_SPACE, KEY_ENTER, KEY_DOWN, KEY_ESC } from '../../../util/keys';
 
 const itemsList = (
   <DropdownItemGroup title="test1" elemAfter="AK-1234">
@@ -176,6 +176,20 @@ describe('dropdown menu', () => {
         expect(preventDefaultSpy).toHaveBeenCalled();
       });
     });
+
+    test(`pressing ESC key should not call onOpenChange if menu is not opened`, () => {
+      const spy = jest.fn();
+      const wrapper = mount(
+        <Menu trigger={<div id="trigger">test</div>} onOpenChange={spy} />,
+      );
+      expect(wrapper.state().isOpen).toBe(false);
+      const trigger = wrapper.find('#trigger');
+
+      trigger.simulate('keydown', { key: KEY_ESC });
+      expect(spy).not.toHaveBeenCalled();
+      expect(wrapper.state().isOpen).toBe(false);
+    });
+
     /* TODO: create integration tests to replace these See https://ecosystem.atlassian.net/browse/AK-5183
     test('interacting with checkbox item should not close the menu', () => {
       const wrapper = mount(

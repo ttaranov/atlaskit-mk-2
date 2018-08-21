@@ -1,6 +1,12 @@
 // @flow
 
 export { default } from './components';
-export * from './components/Container';
-export * from './components/Format';
-export * from './theme';
+export { Container } from './components/Container';
+export { Format } from './components/Format';
+export {
+  backgroundColors,
+  textColors,
+  theme,
+  ThemeAppearance,
+  ThemeProps,
+} from './theme';

@@ -19,6 +19,10 @@ function findEditAction(comment) {}
 // please ensure you fix it if you expect console.error to be thrown
 let consoleError = console.error;
 describe('Comment', () => {
+  const defaultProps = {
+    sendAnalyticsEvent: () => {},
+  };
+
   let comment;
   beforeEach(() => {
     console.error = jest.fn();
@@ -30,6 +34,7 @@ describe('Comment', () => {
     beforeEach(() => {
       comment = shallow(
         <Comment
+          {...defaultProps}
           conversationId={mockComment.conversationId}
           comment={mockComment}
         />,
@@ -69,6 +74,7 @@ describe('Comment', () => {
     it('should render child-comments if any', () => {
       const comment = shallow(
         <Comment
+          {...defaultProps}
           conversationId={mockComment.conversationId}
           comment={mockComment}
           comments={[mockInlineComment]}
@@ -86,6 +92,7 @@ describe('Comment', () => {
 
       const deleted = mount(
         <Comment
+          {...defaultProps}
           conversationId={mockComment.conversationId}
           comment={deletedComment}
         />,
@@ -102,6 +109,7 @@ describe('Comment', () => {
     it('should render reply link if user is set', () => {
       const comment = mount(
         <Comment
+          {...defaultProps}
           conversationId={mockComment.conversationId}
           comment={mockComment}
           user={user}
@@ -121,6 +129,7 @@ describe('Comment', () => {
     it('should not render reply link if user is not set', () => {
       const comment = mount(
         <Comment
+          {...defaultProps}
           conversationId={mockComment.conversationId}
           comment={mockComment}
         />,
@@ -149,6 +158,7 @@ describe('Comment', () => {
 
       comment = mount(
         <Comment
+          {...defaultProps}
           conversationId={mockComment.conversationId}
           comment={mockComment}
           user={user}
@@ -174,6 +184,7 @@ describe('Comment', () => {
       const otherUser = MOCK_USERS[1];
       const secondComment = mount(
         <Comment
+          {...defaultProps}
           conversationId={mockComment.conversationId}
           comment={mockComment}
           user={otherUser}
@@ -275,6 +286,7 @@ describe('Comment', () => {
 
       comment = mount(
         <Comment
+          {...defaultProps}
           conversationId={mockComment.conversationId}
           comment={mockComment}
           user={user}
@@ -301,6 +313,7 @@ describe('Comment', () => {
       const otherUser = MOCK_USERS[1];
       const secondComment = mount(
         <Comment
+          {...defaultProps}
           conversationId={mockComment.conversationId}
           comment={mockComment}
           user={otherUser}
@@ -339,6 +352,7 @@ describe('Comment', () => {
 
       comment = mount(
         <Comment
+          {...defaultProps}
           conversationId={mockComment.conversationId}
           comment={mockComment}
           user={user}
@@ -369,6 +383,7 @@ describe('Comment', () => {
     it('should render reactions-component if dataProvider contains reactionsProvider and emojiProvider', () => {
       const comment = mount(
         <Comment
+          {...defaultProps}
           conversationId={mockComment.conversationId}
           containerId="ari:cloud:platform::conversation/demo"
           comment={mockComment}
@@ -384,6 +399,7 @@ describe('Comment', () => {
     it('should not render reactions-component if reactionsProvider is missing', () => {
       const comment = mount(
         <Comment
+          {...defaultProps}
           conversationId={mockComment.conversationId}
           containerId="ari:cloud:platform::conversation/demo"
           comment={mockComment}
@@ -403,6 +419,7 @@ describe('Comment', () => {
     it('should not render reactions-component if emojiProvider is missing', () => {
       const comment = mount(
         <Comment
+          {...defaultProps}
           conversationId={mockComment.conversationId}
           containerId="ari:cloud:platform::conversation/demo"
           comment={mockComment}
@@ -422,6 +439,7 @@ describe('Comment', () => {
     it('should not render reactions-component if containerId is missing', () => {
       const comment = mount(
         <Comment
+          {...defaultProps}
           conversationId={mockComment.conversationId}
           comment={mockComment}
           dataProviders={getDataProviderFactory()}
@@ -437,6 +455,7 @@ describe('Comment', () => {
     it('should not render reactions-component if commentAri is missing', () => {
       const comment = mount(
         <Comment
+          {...defaultProps}
           conversationId={mockComment.conversationId}
           containerId="ari:cloud:platform::conversation/demo"
           comment={{
@@ -456,6 +475,7 @@ describe('Comment', () => {
     it('should not render reactions-component if user is missing', () => {
       const comment = mount(
         <Comment
+          {...defaultProps}
           conversationId={mockComment.conversationId}
           containerId="ari:cloud:platform::conversation/demo"
           comment={mockComment}
