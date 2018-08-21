@@ -19,6 +19,7 @@ describe('<FolderViewr />', () => {
       onFileClick: jest.fn(),
       onFolderClick: jest.fn(),
       onLoadMoreClick: jest.fn(),
+      setUpfrontIdDeferred: jest.fn(),
     };
 
     return { props };

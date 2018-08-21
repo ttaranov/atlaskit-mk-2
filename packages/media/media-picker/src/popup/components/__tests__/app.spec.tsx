@@ -7,6 +7,9 @@ import Browser from '../views/browser/browser';
 import { getComponentClassWithStore, mockStore } from '../../mocks';
 import { fileUploadsStart } from '../../actions/fileUploadsStart';
 import { AuthProvider, ContextFactory } from '@atlaskit/media-core';
+import { UploadParams } from '../../../index';
+
+const tenantUploadParams: UploadParams = {};
 
 describe('App', () => {
   const baseUrl = 'some-api-url';
@@ -49,6 +52,7 @@ describe('App', () => {
         selectedServiceName="upload"
         isVisible={true}
         context={context}
+        tenantUploadParams={tenantUploadParams}
         {...handlers}
       />,
     );
@@ -64,6 +68,7 @@ describe('App', () => {
         selectedServiceName="google"
         context={context}
         isVisible={true}
+        tenantUploadParams={tenantUploadParams}
         {...handlers}
       />,
     );
@@ -79,6 +84,7 @@ describe('App', () => {
         selectedServiceName="upload"
         context={context}
         isVisible={true}
+        tenantUploadParams={tenantUploadParams}
         {...handlers}
       />,
     );
@@ -94,6 +100,7 @@ describe('App', () => {
         selectedServiceName="google"
         context={context}
         isVisible={false}
+        tenantUploadParams={tenantUploadParams}
         {...handlers}
       />
     );
@@ -113,6 +120,7 @@ describe('App', () => {
         selectedServiceName="google"
         context={context}
         isVisible={true}
+        tenantUploadParams={tenantUploadParams}
         {...handlers}
       />
     );
@@ -132,6 +140,7 @@ describe('App', () => {
         selectedServiceName="google"
         context={context}
         isVisible={true}
+        tenantUploadParams={tenantUploadParams}
         {...handlers}
       />
     );
@@ -142,26 +151,6 @@ describe('App', () => {
 
     expect(spy).toBeCalled();
   });
-
-  it('should pass new context to the local MediaPicker components', () => {
-    const { handlers, store, context, userAuthProvider } = setup();
-    const component = shallow(
-      <App
-        store={store}
-        selectedServiceName="upload"
-        context={context}
-        isVisible={true}
-        {...handlers}
-      />,
-    );
-    const instance = component.instance();
-    const mpContext = instance['mpContext'];
-
-    expect(mpContext.config.authProvider).toEqual(userAuthProvider);
-    expect(instance['mpBrowser'].context).toEqual(mpContext);
-    expect(instance['mpDropzone'].context).toEqual(mpContext);
-    expect(instance['mpBinary'].context).toEqual(mpContext);
-  });
 });
 
 describe('Connected App', () => {
@@ -169,15 +158,18 @@ describe('Connected App', () => {
     const store = mockStore();
     const dispatch = store.dispatch;
     const ConnectedAppWithStore = getComponentClassWithStore(ConnectedApp);
-    const component = shallow(<ConnectedAppWithStore store={store} />).find(
-      App,
-    );
+    const component = shallow(
+      <ConnectedAppWithStore
+        store={store}
+        tenantUploadParams={tenantUploadParams}
+      />,
+    ).find(App);
     return { dispatch, component };
   };
 
   it('should dispatch FILE_UPLOADS_START when onUploadsStart is called', () => {
     const { component, dispatch } = setup();
-
+    const upfrontId = Promise.resolve('');
     const nowDate = Date.now();
     const payload = {
       files: [
@@ -187,6 +179,7 @@ describe('Connected App', () => {
           size: 42,
           creationDate: nowDate,
           type: 'image/jpg',
+          upfrontId,
         },
       ],
     };
@@ -201,6 +194,7 @@ describe('Connected App', () => {
             size: 42,
             creationDate: nowDate,
             type: 'image/jpg',
+            upfrontId,
           },
         ],
       }),

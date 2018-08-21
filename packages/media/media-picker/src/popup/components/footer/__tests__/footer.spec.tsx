@@ -22,6 +22,7 @@ const createConnectedComponent = () => {
 };
 
 describe('<Footer />', () => {
+  const upfrontId = Promise.resolve('1');
   const SELECTED_ITEM: SelectedItem = {
     serviceName: 'google',
     mimeType: 'image/jpg',
@@ -29,6 +30,7 @@ describe('<Footer />', () => {
     name: 'some-name',
     size: 123456,
     date: Date.now(),
+    upfrontId,
   };
 
   describe('Connected Footer component', () => {

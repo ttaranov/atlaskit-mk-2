@@ -13,12 +13,14 @@ describe('finalizeUploadMiddleware', () => {
     clientId: 'some-client-id',
     token: 'some-token',
   };
+  const upfrontId = Promise.resolve('1');
   const file = {
     id: 'some-file-id',
     name: 'some-file-name',
     type: 'some-file-type',
     creationDate: Date.now(),
     size: 12345,
+    upfrontId,
   };
   const copiedFile = {
     ...file,

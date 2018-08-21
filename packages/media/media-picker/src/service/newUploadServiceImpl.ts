@@ -56,10 +56,13 @@ export class NewUploadServiceImpl implements UploadService {
   ) {
     this.emitter = new EventEmitter2();
     this.cancellableFilesUploads = {};
-    const { authProvider, userAuthProvider } = tenantContext.config;
+    const {
+      authProvider: tenantAuthProvider,
+      userAuthProvider,
+    } = tenantContext.config;
     // We need a non user auth store, since we want to create the empty file in the public collection
     this.tenantMediaStore = new MediaStore({
-      authProvider,
+      authProvider: tenantAuthProvider,
     });
 
     if (userAuthProvider) {
@@ -104,11 +107,7 @@ export class NewUploadServiceImpl implements UploadService {
             subscrition.unsubscribe();
           },
         });
-      } else {
-        if (!this.userMediaStore) {
-          return;
-        }
-
+      } else if (this.userMediaStore) {
         const { collection } = this.tenantUploadParams;
         const options = { collection, occurrenceKey };
         // We want to create an empty file in the tenant collection

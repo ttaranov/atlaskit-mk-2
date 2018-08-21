@@ -82,6 +82,7 @@ describe('Media PickerFacade', () => {
     activate: jest.fn(),
     browse: jest.fn(),
   };
+  const upfrontId = Promise.resolve('1');
 
   // Helpers
   function triggerStart(payload?: Partial<UploadsStartEventPayload>) {
@@ -484,6 +485,7 @@ describe('Media PickerFacade', () => {
             size: Math.round(Math.random() * 1047552),
             type: 'image/png',
             creationDate: Date.UTC(0, 1),
+            upfrontId,
           };
 
           triggerPreviewUpdate({ file });

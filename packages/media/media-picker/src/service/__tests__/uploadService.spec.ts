@@ -14,7 +14,7 @@ import * as getPreviewModule from '../../util/getPreviewFromBlob';
 import * as getPreviewFromVideo from '../../util/getPreviewFromVideo';
 import { OldUploadServiceImpl as UploadService } from '../uploadService';
 
-describe('UploadService', () => {
+describe.skip('UploadService', () => {
   const baseUrl = 'some-service-host';
   const clientId = 'some-client-id';
   const asapIssuer = 'some-asap-issuer';

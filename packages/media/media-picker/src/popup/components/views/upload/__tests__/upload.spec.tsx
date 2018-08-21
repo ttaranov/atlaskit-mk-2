@@ -70,6 +70,7 @@ describe('<StatelessUploadView />', () => {
       items: recentItems,
       nextKey: '',
     };
+    const setUpfrontIdDeferred = jest.fn();
 
     return (
       <StatelessUploadView
@@ -83,6 +84,7 @@ describe('<StatelessUploadView />', () => {
         onFileClick={() => {}}
         onEditorShowImage={() => {}}
         onEditRemoteImage={() => {}}
+        setUpfrontIdDeferred={setUpfrontIdDeferred}
       />
     );
   };
@@ -217,6 +219,7 @@ describe('<StatelessUploadView />', () => {
 
 describe('<UploadView />', () => {
   let state: State;
+  const upfrontId = Promise.resolve('');
   beforeEach(() => {
     state = {
       ...mockState,
@@ -246,8 +249,10 @@ describe('<UploadView />', () => {
               name: 'some-name',
               size: 1000,
               mimeType: 'image/png',
+              upfrontId,
             },
             dataURI: 'some-data-uri',
+            // upfrontId
           },
           index: 0,
           events: [],
@@ -281,6 +286,7 @@ describe('<UploadView />', () => {
       mimeType: 'some-mime-type',
       name: 'some-name',
       size: 42,
+      upfrontId,
     };
     props.onFileClick(metadata, 'google');
     expect(dispatch).toBeCalledWith(
@@ -291,6 +297,7 @@ describe('<UploadView />', () => {
           name: 'some-name',
           size: 42,
           date: 0,
+          upfrontId,
         },
         'google',
       ),

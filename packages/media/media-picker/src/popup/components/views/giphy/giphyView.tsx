@@ -48,7 +48,7 @@ export interface GiphyViewDispatchProps {
   onCardClick(item: ImageCardModel, upfrontId: Promise<string>): void;
   setUpfrontIdDeferred: (
     id: string,
-    resolver: Function,
+    resolver: (id: string) => void,
     rejecter: Function,
   ) => void;
 }

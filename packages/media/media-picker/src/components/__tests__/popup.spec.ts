@@ -29,6 +29,7 @@ describe('MediaPickerPopup', () => {
 
       const expectedUploadParams: UploadParams = {
         collection: '',
+        copyFileToRecents: true,
       };
       expect((mediaPicker as any)['uploadParams'] as UploadParams).toEqual(
         expectedUploadParams,
@@ -46,6 +47,7 @@ describe('MediaPickerPopup', () => {
 
       expect((mediaPicker as any)['uploadParams'] as UploadParams).toEqual({
         collection: 'hello-world',
+        copyFileToRecents: true,
       });
     });
   });
