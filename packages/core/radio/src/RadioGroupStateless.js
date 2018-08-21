@@ -38,7 +38,7 @@ class FieldRadioGroupStateless extends Component<
           key={index}
           isDisabled={item.isDisabled}
           isRequired={this.props.isRequired}
-          isSelected={item.isChecked}
+          isChecked={item.isChecked}
           name={item.name}
           onChange={this.props.onRadioChange}
           value={item.value}

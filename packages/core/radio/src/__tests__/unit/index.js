@@ -63,7 +63,7 @@ describe(name, () => {
             expect(radio.prop('value')).toBe(item.value);
             expect(radio.prop('children')).toBe(item.label);
             expect(radio.prop('isDisabled')).toBe(!!item.isDisabled);
-            expect(radio.prop('isSelected')).toBe(false);
+            expect(radio.prop('isChecked')).toBe(false);
           }
         });
       });
@@ -82,7 +82,7 @@ describe(name, () => {
             wrapper
               .find(Radio)
               .at(2)
-              .prop('isSelected'),
+              .prop('isChecked'),
           ).toBe(true);
         });
 
@@ -101,9 +101,9 @@ describe(name, () => {
             sampleItemsWithDefault[0].value,
           );
           const r = radios();
-          expect(r.at(0).prop('isSelected')).toBe(true);
-          expect(r.at(1).prop('isSelected')).toBe(false);
-          expect(r.at(2).prop('isSelected')).toBe(false);
+          expect(r.at(0).prop('isChecked')).toBe(true);
+          expect(r.at(1).prop('isChecked')).toBe(false);
+          expect(r.at(2).prop('isChecked')).toBe(false);
         });
       });
 
