@@ -139,6 +139,7 @@ pipelines:
             - cd website
             - yarn build:report
             - node ../build/ci-scripts/upload.build.artefact.for.commit.js dist/report.html
+            - node ../build/ci-scripts/upload.build.artefact.for.commit.js dist/stats.json
           caches:
             - node
 
