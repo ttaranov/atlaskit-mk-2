@@ -21,8 +21,14 @@ const getAdapter = ({ adapter, url }: Props): ReactionAdapter => {
 };
 
 export type State = {
-  reactions: {};
-  flash: {};
+  reactions: {
+    [key: string]: ReactionsState;
+  };
+  flash: {
+    [key: string]: {
+      [emojiId: string]: boolean;
+    };
+  };
 };
 
 export type Props = {

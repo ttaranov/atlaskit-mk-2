@@ -1,7 +1,7 @@
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock/src/client';
 
-import { ReactionServiceAdapter } from '../../../../adapter/ReactionServiceAdapter';
+import { ReactionServiceAdapter } from '../../../adapter/ReactionServiceAdapter';
 
 describe('ReactionServiceAdapter', () => {
   const baseUrl = 'http://reactions.atlassian.com';

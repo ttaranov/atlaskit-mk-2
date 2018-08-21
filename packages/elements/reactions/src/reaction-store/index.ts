@@ -1,2 +1,2 @@
-export * from './connect';
-export * from './ReactionProvider';
+export { ReactionConsumer } from './ReactionConsumer';
+export { ReactionStore } from './ReactionStore';

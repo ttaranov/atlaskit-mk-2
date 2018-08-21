@@ -11,7 +11,7 @@ import {
   ReactionStore,
   Props,
   State,
-} from '../../../reaction-store/ReactionProvider';
+} from '../../../reaction-store/ReactionStore';
 import {
   Actions,
   ReactionsContext,

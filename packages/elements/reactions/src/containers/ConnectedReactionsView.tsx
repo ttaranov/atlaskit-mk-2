@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { Reactions } from '../components/Reactions';
-import { ReactionConsumer } from '../reaction-store/connect';
+import { ReactionConsumer } from '../reaction-store/ReactionConsumer';
 import { ReactionStatus } from '../types/ReactionStatus';
 
 export type Props = {

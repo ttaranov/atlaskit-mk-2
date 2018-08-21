@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { State } from './ReactionProvider';
+import { State } from './ReactionStore';
 import { Actions, ReactionsContext } from './ReactionsContext';
 
 export type Props<PropsFromState extends {}, PropsFromActions extends {}> = {
