@@ -7,6 +7,7 @@ import { createContext } from '../_stubs';
 import { Subject } from 'rxjs';
 import { MediaItem, MediaItemType, MediaType } from '@atlaskit/media-core';
 import Header from '../../src/newgen/header';
+import { FeedbackButton } from '../../src/newgen/feedback-button';
 import { MetadataFileName, MetadataSubText } from '../../src/newgen/styled';
 import DownloadIcon from '@atlaskit/icon/glyph/download';
 import { LeftHeader } from '../../src/newgen/styled';
@@ -257,6 +258,33 @@ describe('<Header />', () => {
     el.update();
     el.find(DownloadIcon).simulate('click');
     expect(constructAuthTokenUrlSpy.mock.calls[0][2]).toEqual(collectionName);
+  });
+
+  describe('Feedback button', () => {
+    let jQuery;
+
+    beforeEach(() => {
+      jQuery = window.jQuery;
+    });
+
+    afterEach(() => {
+      window.jQuery = jQuery;
+    });
+
+    it('should not show the feedback button if jQuery is not found in window object', () => {
+      const subject = new Subject<MediaItem>();
+      const context = createContext({ subject });
+      const el = mount(<Header context={context} identifier={identifier} />);
+      expect(el.find(FeedbackButton)).toHaveLength(0);
+    });
+
+    it('should show the feedback button if jQuery is found in window object', () => {
+      const subject = new Subject<MediaItem>();
+      const context = createContext({ subject });
+      window.jQuery = {};
+      const el = mount(<Header context={context} identifier={identifier} />);
+      expect(el.find(FeedbackButton)).toHaveLength(1);
+    });
   });
 
   describe('Download button', () => {

@@ -1,5 +1,5 @@
+declare var jQuery: any;
 import * as React from 'react';
-import * as jQuery from 'jquery';
 import FeedbackIcon from '@atlaskit/icon/glyph/feedback';
 import Button from '@atlaskit/button';
 import { FeedbackWrapper } from './styled';

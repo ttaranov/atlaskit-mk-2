@@ -115,11 +115,12 @@ export default class Header extends React.Component<Props, State> {
   };
 
   render() {
+    const isJQueryAvailable = typeof window.jQuery !== 'undefined';
     return (
       <HeaderWrapper className={hideControlsClassName}>
         <LeftHeader>{this.renderMetadata()}</LeftHeader>
         <RightHeader>
-          <FeedbackButton />
+          {isJQueryAvailable ? <FeedbackButton /> : null}
           {this.renderDownload()}
         </RightHeader>
       </HeaderWrapper>
