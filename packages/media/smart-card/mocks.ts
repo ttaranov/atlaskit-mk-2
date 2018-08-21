@@ -153,12 +153,16 @@ mock.post(
   delay((req, res) => {
     const url = JSON.parse(req.body()).resourceUrl;
     const response =
-      flowResponsesByUrl[url] &&
-      flowResponsesByUrl[url][flowIndiciesByUrl[url] || 0];
+      (flowResponsesByUrl as any)[url] &&
+      (flowResponsesByUrl as any)[url][(flowIndiciesByUrl as any)[url] || 0];
     if (response) {
-      flowIndiciesByUrl[url] = (flowIndiciesByUrl[url] || 0) + 1;
-      if (flowIndiciesByUrl[url] >= flowResponsesByUrl[url].length) {
-        flowIndiciesByUrl[url] = 0;
+      (flowIndiciesByUrl as any)[url] =
+        ((flowIndiciesByUrl as any)[url] || 0) + 1;
+      if (
+        (flowIndiciesByUrl as any)[url] >=
+        (flowResponsesByUrl as any)[url].length
+      ) {
+        (flowIndiciesByUrl as any)[url] = 0;
       }
       if (response.status) res.status(response.status);
       if (response.headers) res.headers(response.headers);

@@ -34,6 +34,7 @@
     "./typings/json.d.ts",
     "./typings/jest.frameworkSetup.d.ts",
     "./typings/node.d.ts",
-    "./typings/prosemirror-markdown.d.ts"
+    "./typings/prosemirror-markdown.d.ts",
+    "./typings/AbortController.d.ts"
   ]
 }
