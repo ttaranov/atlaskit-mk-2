@@ -67,7 +67,7 @@ class RadioGroup extends Component<RadioGroupProps> {
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
 export default withAnalyticsContext({
-  componentName: 'RadioGroup',
+  componentName: 'radioGroup',
   packageName,
   packageVersion,
 })(
@@ -75,8 +75,8 @@ export default withAnalyticsContext({
     onChange: createAndFireEventOnAtlaskit({
       action: 'selected',
       actionSubject: 'radioItem',
-      attribute: {
-        componentName: 'RadioGroup',
+      attributes: {
+        componentName: 'radioGroup',
         packageName,
         packageVersion,
       },

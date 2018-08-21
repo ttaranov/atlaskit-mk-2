@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, type ElementRef } from 'react';
+import React, { Component } from 'react';
 import Button from '@atlaskit/button';
 import Form, { Field, FormFooter } from '@atlaskit/form';
 import { Radio, RadioGroup } from '../src';
@@ -41,25 +41,21 @@ export default class FormExample extends Component<void, void> {
           method="GET"
           target="submitFrame"
         >
-          {/* <Field
-          label="standalone radio"
-        >
-          <Radio
-            name="standalone"
-            value="single-radio"
-            onChange={this.onRadioChange}
-          >
-            Single Radio button
-          </Radio>
-        </Field> */}
+          <Field label="standalone radio">
+            <Radio
+              name="standalone"
+              value="single-radio"
+              onChange={this.onRadioChange}
+            >
+              Single Radio button
+            </Radio>
+          </Field>
           <Field label="required radio group" isRequired required>
             <RadioGroup items={colorItems} onChange={this.onRadioChange} />
           </Field>
-          {/* <Field
-          label="regular radio group"
-        >
-          <RadioGroup items={fruitItems} onChange={this.onRadioChange} />
-        </Field> */}
+          <Field label="regular radio group">
+            <RadioGroup items={fruitItems} onChange={this.onRadioChange} />
+          </Field>
           <FormFooter
             actionsContent={[
               {
