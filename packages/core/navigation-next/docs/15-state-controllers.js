@@ -231,8 +231,197 @@ const MyComponent = withNavigationViewController(MyComponentBase);`}
 
 ${<Hr />}
 
+${<H>Built-in view item types</H>}
+
+Every item in a view must have a \`type\` property. This can be a component, but the primitive UI component types are built into the renderer and can be identified using a string:
+
+* \`'ContainerHeader'\`
+* \`'Group'\`
+* \`'GroupHeading'\`
+* \`'Item'\`
+* \`'Section'\`
+* \`'Separator'\`
+* \`'Switcher'\`
+
+### API differences
+
+For the most part these built-in types take exactly the same props as their component counterparts, however there are a few differences:
+
+* All items must have an \`id\` property. This ID is used as the React \`key\`, and should be unique within the view so that reducers can accurately select individual items by ID.
+* Rather than passing a \`children\` prop to \`'Group'\` and \`'Section'\` types, you should specify their descendants as an array with the \`items\` property. Any item with an \`items\` property will be walked by reducers.
+* The \`'Item'\` type accepts a special \`goTo\` property, which should be a view ID. When an \`'Item'\` with a \`goTo\` is clicked, that view will be activated. It will also render a right-arrow icon when hovered, or a loading spinner when its \`goTo\` property matches the incoming view ID.
+* The \`'GroupHeading'\` type accepts a \`text\` property instead of \`children\`.
+
+${<Hr />}
+
 ${<H>Reducer utility functions</H>}
 
-Stuff
+The library exposes a number of utility functions for composing a reducer.
+
+${code`import { viewReducerUtils } from '@atlaskit/navigation-next';`}
+
+The lowest-level function that we provide is the \`walkView\` function. It has the following signature:
+
+${code`type WalkView = Selector => Modifier => View => View;`}
+
+The function will recursively walk a view. It will run the Selector function over each item in the view. If the Selector returns true, it will apply the Modifier function to that item, and replace it with the result. As such, it can take an array of view items and return a new set of items.
+
+The library also provides some pre-composed selector functions, along with some common modifiers.
+
+### Selectors
+
+Selectors are higher-order wrappers around the \`walkView\` function which abstract common item selection logic.
+
+${(
+    <table>
+      <thead>
+        <tr>
+          <td>
+            <strong>Function</strong>
+          </td>
+          <td>
+            <strong>Signature</strong>
+          </td>
+          <td>
+            <strong>Description</strong>
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>findId</td>
+          <td>
+            <code>{`string => Modifier => View => View`}</code>
+          </td>
+          <td>
+            Select the item in the view with the given <code>id</code>.
+          </td>
+        </tr>
+        <tr>
+          <td>matchId</td>
+          <td>
+            <code>{`RegExp => Modifier => View => View`}</code>
+          </td>
+          <td>
+            Select the items in the view with <code>id</code>s that match the
+            given regular expression.
+          </td>
+        </tr>
+        <tr>
+          <td>findLegacyId</td>
+          <td>
+            <code>{`string => Modifier => View => View`}</code>
+          </td>
+          <td>
+            Select the item in the view with the given <code>legacyId</code>.
+          </td>
+        </tr>
+        <tr>
+          <td>matchLegacyId</td>
+          <td>
+            <code>{`RegExp => Modifier => View => View`}</code>
+          </td>
+          <td>
+            Select the items in the view with <code>legacyId</code>s that match
+            the given regular expression.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  )}
+
+Example usage:
+
+${code`import { viewReducerUtils } from '@atlaskit/navigation-next';
+
+const { findId } = viewReducerUtils;
+
+const myReducer = viewData => {
+  const modifyIcon = item => ({ ...item, before: NewIcon });
+  return findId('my-item')(modifyIcon)(viewData);
+};`}
+
+### Modifiers
+
+Modifiers are functions which can be configured to perform a common kind of modification to an item.
+
+${(
+    <table>
+      <thead>
+        <tr>
+          <td>
+            <strong>Function</strong>
+          </td>
+          <td>
+            <strong>Signature</strong>
+          </td>
+          <td>
+            <strong>Description</strong>
+          </td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>removeItem</td>
+          <td>
+            <code>{`Item => null`}</code>
+          </td>
+          <td>Remove the selected item from the view.</td>
+        </tr>
+        <tr>
+          <td>insertBefore</td>
+          <td>
+            <code>{`Item[] => Item => Item[]`}</code>
+          </td>
+          <td>Insert the given array of items before the selected item.</td>
+        </tr>
+        <tr>
+          <td>insertAfter</td>
+          <td>
+            <code>{`Item[] => Item => Item[]`}</code>
+          </td>
+          <td>Insert the given array of items after the selected item.</td>
+        </tr>
+        <tr>
+          <td>prependChildren</td>
+          <td>
+            <code>{`Item[] => Item => Item`}</code>
+          </td>
+          <td>
+            Insert the given array of items at the start of the selected{' '}
+            {`item's`} <code>items</code> property.
+          </td>
+        </tr>
+        <tr>
+          <td>appendChildren</td>
+          <td>
+            <code>{`Item[] => Item => Item`}</code>
+          </td>
+          <td>
+            Insert the given array of items at the end of the selected{' '}
+            {`item's`} <code>items</code> property.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  )}
+
+Example usage:
+
+${code`import { viewReducerUtils } from '@atlaskit/navigation-next';
+
+const { appendChildren } = viewReducerUtils;
+
+const myReducer = viewData => {
+  const appendCrossSellLink = appendChildren([
+    {
+      type: 'Item',
+      text: 'Try Confluence!',
+      href: 'https://www.atlassian.com/software/confluence',
+      id: 'try-confluence',
+    },
+  ]);
+  return findId('menu-section')(appendCrossSellLink)(viewData);
+};`}
 `}</ContentsProvider>
 );
