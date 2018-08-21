@@ -19,6 +19,8 @@ if (!global.WEBSITE_ENV) {
 }
 
 // Adds `localStorage` globally if is not available
+// So that it can be mocked using Jest/sinon
+// (`sinon` is used in some of the tests across `@atlaskit` components)
 if (!global.localStorage) {
   global.localStorage = {
     setItem: Function.prototype,

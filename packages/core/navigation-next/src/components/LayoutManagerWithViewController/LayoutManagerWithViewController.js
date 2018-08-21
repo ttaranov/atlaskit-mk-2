@@ -53,11 +53,13 @@ class LayoutManagerWithViewControllerBase extends Component<
     this.renderContainerNavigation.displayName = 'ContainerNavigationRenderer';
     this.renderProductNavigation.displayName = 'ProductNavigationRenderer';
   }
+
   onInitialised = () => {
     this.setState({
       hasInitialised: true,
     });
   };
+
   renderContainerNavigation = () => {
     const {
       navigationViewController: {
