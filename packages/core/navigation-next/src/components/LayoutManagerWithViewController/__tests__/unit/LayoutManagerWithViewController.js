@@ -57,22 +57,8 @@ describe('LayoutManagerWithViewController', () => {
   });
 
   it('should render skeleton using `product` context', () => {
-    const componentWrapper = mount(
-      <NavigationProvider initialPeekViewId="root/index" isDebugEnabled={false}>
-        <LayoutManagerWithViewController
-          customComponents={{ ProjectSwitcher }}
-          globalNavigation={DefaultGlobalNavigation}
-        >
-          <p>
-            Children requires to have `NavigationProvider` as a parent Because
-            of `unstated`. This is an issue
-          </p>
-        </LayoutManagerWithViewController>
-      </NavigationProvider>,
-    );
-
     expect(
-      componentWrapper
+      wrapper
         .find('SkeletonItem')
         .first()
         .props().theme.context,
