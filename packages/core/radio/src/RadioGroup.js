@@ -35,13 +35,23 @@ class RadioGroup extends Component<RadioGroupProps> {
       if (item.value === props.selectedValue) {
         const itemProps = { ...item, isChecked: true };
         return (
-          <Radio key={index} onChange={props.onChange} {...itemProps}>
+          <Radio
+            key={index}
+            onChange={props.onChange}
+            {...itemProps}
+            isRequired={props.isRequired}
+          >
             {item.label}
           </Radio>
         );
       }
       return (
-        <Radio key={index} onChange={props.onChange} {...item}>
+        <Radio
+          key={index}
+          onChange={props.onChange}
+          {...item}
+          isRequired={props.isRequired}
+        >
           {item.label}
         </Radio>
       );
