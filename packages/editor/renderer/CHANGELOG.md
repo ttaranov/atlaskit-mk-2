@@ -1,5 +1,14 @@
 # @atlaskit/renderer
 
+## 20.0.9
+
+
+- [patch] Updated dependencies [48b95b0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/48b95b0)
+  - @atlaskit/smart-card@8.0.0
+  - @atlaskit/media-card@32.0.4
+- [none] Updated dependencies [e9b1477](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e9b1477)
+  - @atlaskit/media-card@32.0.4
+
 ## 20.0.8
 - [patch] Renderer now only renders double height emojis when appearance is 'message' [fa78199](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fa78199)
 - [none] Updated dependencies [fa78199](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fa78199)

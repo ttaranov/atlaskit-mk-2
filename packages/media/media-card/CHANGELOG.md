@@ -1,5 +1,13 @@
 # @atlaskit/media-image
 
+## 32.0.4
+
+
+- [patch] Updated dependencies [48b95b0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/48b95b0)
+  - @atlaskit/smart-card@8.0.0
+- [none] Updated dependencies [e9b1477](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e9b1477)
+  - @atlaskit/smart-card@8.0.0
+
 ## 32.0.3
 - [patch] ED-5222: bump react-lazily-render package [5844820](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5844820)
 - [none] Updated dependencies [5844820](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5844820)
