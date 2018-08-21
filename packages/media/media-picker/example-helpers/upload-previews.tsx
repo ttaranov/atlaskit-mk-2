@@ -48,7 +48,7 @@ export class UploadPreviews extends React.Component<
     });
 
     this.setState({
-      previewsData: [...newPreviewData, ...previewsData],
+      previewsData: [...previewsData, ...newPreviewData],
     });
   };
 
