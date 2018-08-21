@@ -1,6 +1,6 @@
 import { Node, Schema } from 'prosemirror-model';
 
-import { JIRATransformer, JIRACustomEncoders, MediaContextInfo } from '../src';
+import { JIRATransformer, JIRACustomEncoders, MediaContextInfo } from '../../';
 
 export function parseWithSchema(html: string, schema: Schema) {
   const transformer = new JIRATransformer(schema);

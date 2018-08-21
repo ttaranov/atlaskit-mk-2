@@ -1,4 +1,4 @@
-import fixDoc from '../src/fix-doc';
+import fixDoc from '../../fix-doc';
 
 const attachments = `<span class="image-wrap" style="">
   <a

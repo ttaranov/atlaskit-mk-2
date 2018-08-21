@@ -6,7 +6,7 @@ import {
   checkParseEncodeRoundTrips,
 } from './_test-helpers';
 import { createJIRASchema, MediaAttributes } from '@atlaskit/editor-common';
-import { JIRATransformer } from '../src';
+import { JIRATransformer } from '../../index';
 
 const schema = createJIRASchema({ allowMedia: true });
 
