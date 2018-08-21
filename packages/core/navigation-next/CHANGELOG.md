@@ -1,5 +1,10 @@
 # @atlaskit/navigation-next
 
+## 3.5.2
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/badge@9.1.1
+  - @atlaskit/global-navigation@4.1.6
+
 ## 3.5.1
 - [patch] Updated dependencies [dfa100e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dfa100e)
   - @atlaskit/analytics-listeners@3.3.1
