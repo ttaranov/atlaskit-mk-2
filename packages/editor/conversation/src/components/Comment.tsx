@@ -22,12 +22,12 @@ import {
 } from '../internal/analytics';
 import { SharedProps } from './types';
 
-interface Props extends SharedProps {
+export interface Props extends SharedProps {
   conversationId: string;
   comment: CommentType;
 }
 
-interface State {
+export interface State {
   isEditing?: boolean;
   isReplying?: boolean;
   lastDispatch?: {
