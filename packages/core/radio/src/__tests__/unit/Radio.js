@@ -56,9 +56,9 @@ describe(name, () => {
         expectPropReflectedToInput('isRequired', 'required', false);
       });
 
-      describe('isSelected prop', () => {
-        expectPropReflectedToInput('isSelected', 'checked', true);
-        expectPropReflectedToInput('isSelected', 'checked', false);
+      describe('isChecked prop', () => {
+        expectPropReflectedToInput('isChecked', 'checked', true);
+        expectPropReflectedToInput('isChecked', 'checked', false);
       });
 
       describe('name prop', () => {
