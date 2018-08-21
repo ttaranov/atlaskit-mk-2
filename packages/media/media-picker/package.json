@@ -20,7 +20,9 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
+    "@atlaskit/analytics-gas-types": "^3.2.1",
     "@atlaskit/analytics-next": "^3.0.4",
+    "@atlaskit/analytics-next-types": "^3.0.1",
     "@atlaskit/button": "^9.0.5",
     "@atlaskit/dropdown-menu": "^6.1.5",
     "@atlaskit/field-text": "^7.0.4",
@@ -40,7 +42,6 @@
     "filesize": "^3.2.1",
     "lodash.debounce": "^4.0.8",
     "postis": "^2.2.0",
-    "prop-types": "^15.5.10",
     "react-redux": "^5.0.0",
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2",
@@ -59,6 +60,7 @@
   },
   "devDependencies": {
     "@atlaskit/docs": "^5.0.7",
+    "@atlaskit/layer-manager": "^5.0.6",
     "@atlaskit/media-core": "^23.1.0",
     "@atlaskit/media-test-helpers": "^17.0.0",
     "@atlaskit/toggle": "^5.0.5",
@@ -68,7 +70,6 @@
     "@types/eventemitter2": "^4.1.0",
     "@types/filesize": "^3.2.15",
     "@types/lodash.chunk": "^4.2.3",
-    "@types/prop-types": "^15.5.1",
     "@types/react": "^16.3.0",
     "@types/react-redux": "^4.4.0",
     "@types/redux": "^3.6.0",
