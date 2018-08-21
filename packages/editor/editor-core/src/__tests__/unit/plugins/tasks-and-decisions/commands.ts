@@ -1,5 +1,6 @@
 import { NodeSelection } from 'prosemirror-state';
 import {
+  compareSelection,
   createEditor,
   doc,
   p,
@@ -28,7 +29,7 @@ describe('tasks and decisions - commands', () => {
     uuid.setStatic(false);
   });
 
-  const editor = (doc: any) =>
+  const editorFactory = (doc: any) =>
     createEditor({
       doc,
       editorPlugins: [tasksAndDecisionsPlugin, mediaPlugin(), panelPlugin],
@@ -36,57 +37,62 @@ describe('tasks and decisions - commands', () => {
 
   describe('insertTaskDecision', () => {
     it('can convert paragraph node to action', () => {
-      const { editorView } = editor(doc(p('Hello{<>} World')));
+      const { editorView } = editorFactory(doc(p('Hello{<>} World')));
+
       expect(insertTaskDecision(editorView, 'taskList')).toBe(true);
-      expect(editorView.state.doc).toEqualDocument(
-        doc(
-          taskList({ localId: 'local-highlight' })(
-            taskItem({ localId: 'local-highlight', state: 'TODO' })(
-              'Hello{<>} World',
-            ),
+
+      const expectedDoc = doc(
+        taskList({ localId: 'local-highlight' })(
+          taskItem({ localId: 'local-highlight', state: 'TODO' })(
+            'Hello{<>} World',
           ),
         ),
       );
+      expect(editorView.state.doc).toEqualDocument(expectedDoc);
+      compareSelection(editorFactory, expectedDoc, editorView);
     });
 
     it('can convert paragraph node to decision', () => {
-      const { editorView } = editor(doc(p('Hello{<>} World')));
+      const { editorView } = editorFactory(doc(p('Hello{<>} World')));
       expect(insertTaskDecision(editorView, 'decisionList')).toBe(true);
-      expect(editorView.state.doc).toEqualDocument(
-        doc(
-          decisionList({ localId: 'local-highlight' })(
-            decisionItem({ localId: 'local-highlight' })('Hello{<>} World'),
-          ),
+
+      const expectedDoc = doc(
+        decisionList({ localId: 'local-highlight' })(
+          decisionItem({ localId: 'local-highlight' })('Hello{<>} World'),
         ),
       );
+      expect(editorView.state.doc).toEqualDocument(expectedDoc);
+      compareSelection(editorFactory, expectedDoc, editorView);
     });
 
     it('can convert empty paragraph node to action', () => {
-      const { editorView } = editor(doc(p('{<>}')));
+      const { editorView } = editorFactory(doc(p('{<>}')));
       expect(insertTaskDecision(editorView, 'taskList')).toBe(true);
-      expect(editorView.state.doc).toEqualDocument(
-        doc(
-          taskList({ localId: 'local-highlight' })(
-            taskItem({ localId: 'local-highlight', state: 'TODO' })('{<>}'),
-          ),
+
+      const expectedDoc = doc(
+        taskList({ localId: 'local-highlight' })(
+          taskItem({ localId: 'local-highlight', state: 'TODO' })('{<>}'),
         ),
       );
+      expect(editorView.state.doc).toEqualDocument(expectedDoc);
+      compareSelection(editorFactory, expectedDoc, editorView);
     });
 
     it('can convert empty paragraph node to decision', () => {
-      const { editorView } = editor(doc(p('{<>}')));
+      const { editorView } = editorFactory(doc(p('{<>}')));
       expect(insertTaskDecision(editorView, 'decisionList')).toBe(true);
-      expect(editorView.state.doc).toEqualDocument(
-        doc(
-          decisionList({ localId: 'local-highlight' })(
-            decisionItem({ localId: 'local-highlight' })('{<>}'),
-          ),
+
+      const expectedDoc = doc(
+        decisionList({ localId: 'local-highlight' })(
+          decisionItem({ localId: 'local-highlight' })('{<>}'),
         ),
       );
+      expect(editorView.state.doc).toEqualDocument(expectedDoc);
+      compareSelection(editorFactory, expectedDoc, editorView);
     });
 
     it('can convert decision item to action', () => {
-      const { editorView } = editor(
+      const { editorView } = editorFactory(
         doc(
           decisionList({ localId: 'local-highlight' })(
             decisionItem({ localId: 'local-highlight' })('Hello World'),
@@ -103,10 +109,11 @@ describe('tasks and decisions - commands', () => {
           ),
         ),
       );
+      // TODO FS-2896 - change in behaviour
     });
 
     it('can convert action item to decision', () => {
-      const { editorView } = editor(
+      const { editorView } = editorFactory(
         doc(
           taskList({ localId: 'local-highlight' })(
             taskItem({ localId: 'local-highlight' })('Hello World'),
@@ -121,10 +128,13 @@ describe('tasks and decisions - commands', () => {
           ),
         ),
       );
+      // TODO FS-2896 - change in behaviour
     });
 
     it('can convert blockquote to action/decision', () => {
-      const { editorView } = editor(doc(blockquote(p('Hello{<>} World'))));
+      const { editorView } = editorFactory(
+        doc(blockquote(p('Hello{<>} World'))),
+      );
       expect(insertTaskDecision(editorView, 'taskList')).toBe(true);
       expect(editorView.state.doc).toEqualDocument(
         doc(
@@ -138,23 +148,24 @@ describe('tasks and decisions - commands', () => {
     });
 
     it('can convert content with hardbreaks to action/decision', () => {
-      const { editorView } = editor(doc(p('Hello', br(), ' World')));
+      const { editorView } = editorFactory(doc(p('Hello', br(), ' World{<>}')));
       expect(insertTaskDecision(editorView, 'taskList')).toBe(true);
-      expect(editorView.state.doc).toEqualDocument(
-        doc(
-          taskList({ localId: 'local-highlight' })(
-            taskItem({ localId: 'local-highlight', state: 'TODO' })(
-              'Hello',
-              br(),
-              ' World',
-            ),
+
+      const expectedDoc = doc(
+        taskList({ localId: 'local-highlight' })(
+          taskItem({ localId: 'local-highlight', state: 'TODO' })(
+            'Hello',
+            br(),
+            ' World{<>}',
           ),
         ),
       );
+      expect(editorView.state.doc).toEqualDocument(expectedDoc);
+      compareSelection(editorFactory, expectedDoc, editorView);
     });
 
     it('cannot convert media node to action/decision', () => {
-      const { editorView } = editor(
+      const { editorView } = editorFactory(
         doc(
           mediaGroup(
             media({
@@ -173,7 +184,7 @@ describe('tasks and decisions - commands', () => {
 
     describe('when cursor is inside of a block node', () => {
       it('should append an empty task list after the parent block node', () => {
-        const { editorView } = editor(doc(panel()(p('te{<>}xt'))));
+        const { editorView } = editorFactory(doc(panel()(p('te{<>}xt'))));
         insertTaskDecision(editorView, 'taskList');
 
         expect(editorView.state.doc).toEqualDocument(
@@ -189,7 +200,7 @@ describe('tasks and decisions - commands', () => {
 
     describe('when cursor is inside empty task item', () => {
       it('should not create another task item', () => {
-        const { editorView } = editor(
+        const { editorView } = editorFactory(
           doc(
             taskList({ localId: 'local-highlight' })(
               taskItem({ localId: 'local-highlight', state: 'TODO' })('{<>}'),
@@ -206,11 +217,12 @@ describe('tasks and decisions - commands', () => {
           ),
         );
       });
+      // TODO FS-2896 - change in behaviour
     });
 
     describe('when cursor is inside non-empty task item', () => {
       it('should add a task item to task list', () => {
-        const { editorView } = editor(
+        const { editorView } = editorFactory(
           doc(
             taskList({ localId: 'local-highlight' })(
               taskItem({ localId: 'local-highlight', state: 'TODO' })(
@@ -221,22 +233,23 @@ describe('tasks and decisions - commands', () => {
         );
         insertTaskDecision(editorView, 'taskList');
 
-        expect(editorView.state.doc).toEqualDocument(
-          doc(
-            taskList({ localId: 'local-highlight' })(
-              taskItem({ localId: 'local-highlight', state: 'TODO' })(
-                'Hello World',
-              ),
-              taskItem({ localId: 'local-highlight', state: 'TODO' })(''),
+        const expectedDoc = doc(
+          taskList({ localId: 'local-highlight' })(
+            taskItem({ localId: 'local-highlight', state: 'TODO' })(
+              'Hello World',
             ),
+            taskItem({ localId: 'local-highlight', state: 'TODO' })('{<>}'),
           ),
         );
+
+        expect(editorView.state.doc).toEqualDocument(expectedDoc);
+        compareSelection(editorFactory, expectedDoc, editorView);
       });
     });
 
     describe('switching back and forth between types is possible FS-2800', () => {
       it('should change p -> taskList -> decisionList -> taskList', () => {
-        const { editorView } = editor(doc(p('Hello{<>}')));
+        const { editorView } = editorFactory(doc(p('Hello{<>}')));
 
         expect(insertTaskDecision(editorView, 'taskList')).toBe(true);
         expect(editorView.state.doc).toEqualDocument(
@@ -270,7 +283,7 @@ describe('tasks and decisions - commands', () => {
     });
 
     it('should change p -> decisionList -> taskList -> decisionList', () => {
-      const { editorView } = editor(doc(p('Hello{<>}')));
+      const { editorView } = editorFactory(doc(p('Hello{<>}')));
 
       expect(insertTaskDecision(editorView, 'decisionList')).toBe(true);
       expect(editorView.state.doc).toEqualDocument(

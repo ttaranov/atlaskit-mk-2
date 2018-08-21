@@ -1,6 +1,7 @@
 import {
   sendKeyToPm,
   insertText,
+  compareSelection,
   createEditor,
   doc,
   blockquote,
@@ -35,7 +36,7 @@ describe('tasks and decisions - input rules', () => {
     uuid.setStatic(false);
   });
 
-  const editor = (doc: any) =>
+  const editorFactory = (doc: any) =>
     createEditor({
       editorProps: {
         allowTasksAndDecisions: true,
@@ -48,68 +49,68 @@ describe('tasks and decisions - input rules', () => {
 
   describe('decisions', () => {
     it('should replace "<> " with a decisionList', () => {
-      const { editorView, sel } = editor(doc(p('{<>}')));
+      const { editorView, sel } = editorFactory(doc(p('{<>}')));
       insertText(editorView, '<> ', sel);
 
-      expect(editorView.state.doc).toEqualDocument(
-        doc(
-          decisionList({ localId: 'local-decision' })(
-            decisionItem({ localId: 'local-decision' })(''),
-          ),
+      const expectedDoc = doc(
+        decisionList({ localId: 'local-decision' })(
+          decisionItem({ localId: 'local-decision' })(''),
         ),
       );
+      expect(editorView.state.doc).toEqualDocument(expectedDoc);
+      compareSelection(editorFactory, expectedDoc, editorView);
     });
 
     it('should replace "<> " with a decisionList inside table header', () => {
-      const { editorView, sel } = editor(
+      const { editorView, sel } = editorFactory(
         doc(table()(tr(thCursor), tr(tdEmpty), tr(tdEmpty))),
       );
 
       insertText(editorView, '<> ', sel);
 
-      expect(editorView.state.doc).toEqualDocument(
-        doc(
-          table()(
-            tr(
-              th({})(
-                decisionList({ localId: 'local-decision' })(
-                  decisionItem({ localId: 'local-decision' })(''),
-                ),
+      const expectedDoc = doc(
+        table()(
+          tr(
+            th({})(
+              decisionList({ localId: 'local-decision' })(
+                decisionItem({ localId: 'local-decision' })('{<>}'),
               ),
             ),
-            tr(tdEmpty),
-            tr(tdEmpty),
           ),
+          tr(tdEmpty),
+          tr(tdEmpty),
         ),
       );
+      expect(editorView.state.doc).toEqualDocument(expectedDoc);
+      compareSelection(editorFactory, expectedDoc, editorView);
     });
 
     it('should replace "<> " with a decisionList inside table cell', () => {
-      const { editorView, sel } = editor(
+      const { editorView, sel } = editorFactory(
         doc(table()(tr(thEmpty), tr(tdCursor), tr(tdEmpty))),
       );
 
       insertText(editorView, '<> ', sel);
 
-      expect(editorView.state.doc).toEqualDocument(
-        doc(
-          table()(
-            tr(thEmpty),
-            tr(
-              td({})(
-                decisionList({ localId: 'local-decision' })(
-                  decisionItem({ localId: 'local-decision' })(''),
-                ),
+      const expectedDoc = doc(
+        table()(
+          tr(thEmpty),
+          tr(
+            td({})(
+              decisionList({ localId: 'local-decision' })(
+                decisionItem({ localId: 'local-decision' })('{<>}'),
               ),
             ),
-            tr(tdEmpty),
           ),
+          tr(tdEmpty),
         ),
       );
+      expect(editorView.state.doc).toEqualDocument(expectedDoc);
+      compareSelection(editorFactory, expectedDoc, editorView);
     });
 
     it('should replace "<> " after shift+enter with a decisionList inside table cell', () => {
-      const { editorView, sel } = editor(
+      const { editorView, sel } = editorFactory(
         doc(
           table()(
             tr(thEmpty),
@@ -121,55 +122,55 @@ describe('tasks and decisions - input rules', () => {
 
       insertText(editorView, '<> ', sel);
 
-      expect(editorView.state.doc).toEqualDocument(
-        doc(
-          table()(
-            tr(thEmpty),
-            tr(
-              td({})(
-                p('Hello'),
-                decisionList({ localId: 'local-decision' })(
-                  decisionItem({ localId: 'local-decision' })(''),
-                ),
+      const expectedDoc = doc(
+        table()(
+          tr(thEmpty),
+          tr(
+            td({})(
+              p('Hello'),
+              decisionList({ localId: 'local-decision' })(
+                decisionItem({ localId: 'local-decision' })('{<>}'),
               ),
             ),
-            tr(tdEmpty),
           ),
+          tr(tdEmpty),
         ),
       );
+      expect(editorView.state.doc).toEqualDocument(expectedDoc);
+      compareSelection(editorFactory, expectedDoc, editorView);
     });
 
     it('should preserve existing content on row when converting', () => {
-      const { editorView, sel } = editor(doc(p('{<>}Hello World')));
+      const { editorView, sel } = editorFactory(doc(p('{<>}Hello World')));
       insertText(editorView, '<> ', sel);
 
-      expect(editorView.state.doc).toEqualDocument(
-        doc(
-          decisionList({ localId: 'local-decision' })(
-            decisionItem({ localId: 'local-decision' })('Hello World'),
-          ),
+      const expectedDoc = doc(
+        decisionList({ localId: 'local-decision' })(
+          decisionItem({ localId: 'local-decision' })('{<>}Hello World'),
         ),
       );
+      expect(editorView.state.doc).toEqualDocument(expectedDoc);
+      compareSelection(editorFactory, expectedDoc, editorView);
     });
 
     it('should split on hardBreak and preserve content when converting', () => {
-      const { editorView, sel } = editor(
+      const { editorView, sel } = editorFactory(
         doc(p('Hello', hardBreak(), '{<>}World')),
       );
       insertText(editorView, '<> ', sel);
 
-      expect(editorView.state.doc).toEqualDocument(
-        doc(
-          p('Hello'),
-          decisionList({ localId: 'local-decision' })(
-            decisionItem({ localId: 'local-decision' })('World'),
-          ),
+      const expectedDoc = doc(
+        p('Hello'),
+        decisionList({ localId: 'local-decision' })(
+          decisionItem({ localId: 'local-decision' })('{<>}World'),
         ),
       );
+      expect(editorView.state.doc).toEqualDocument(expectedDoc);
+      compareSelection(editorFactory, expectedDoc, editorView);
     });
 
     it('should replace "<> " with a decisionList inside bodiedExtension', () => {
-      const { editorView, sel } = editor(
+      const { editorView, sel } = editorFactory(
         doc(
           bodiedExtension({
             extensionKey: 'key',
@@ -180,43 +181,43 @@ describe('tasks and decisions - input rules', () => {
 
       insertText(editorView, '<> ', sel);
 
-      expect(editorView.state.doc).toEqualDocument(
-        doc(
-          bodiedExtension({
-            extensionKey: 'key',
-            extensionType: 'type',
-          })(
-            decisionList({ localId: 'local-decision' })(
-              decisionItem({ localId: 'local-decision' })(),
-            ),
+      const expectedDoc = doc(
+        bodiedExtension({
+          extensionKey: 'key',
+          extensionType: 'type',
+        })(
+          decisionList({ localId: 'local-decision' })(
+            decisionItem({ localId: 'local-decision' })('{<>}'),
           ),
         ),
       );
+      expect(editorView.state.doc).toEqualDocument(expectedDoc);
+      compareSelection(editorFactory, expectedDoc, editorView);
     });
 
     it('should replace "<> " with a decisionList inside layouts', () => {
-      const { editorView, sel } = editor(
+      const { editorView, sel } = editorFactory(
         doc(layoutSection()(layoutColumn(p('{<>}')), layoutColumn(p('')))),
       );
 
       insertText(editorView, '<> ', sel);
 
-      expect(editorView.state.doc).toEqualDocument(
-        doc(
-          layoutSection()(
-            layoutColumn(
-              decisionList({ localId: 'local-decision' })(
-                decisionItem({ localId: 'local-decision' })(''),
-              ),
+      const expectedDoc = doc(
+        layoutSection()(
+          layoutColumn(
+            decisionList({ localId: 'local-decision' })(
+              decisionItem({ localId: 'local-decision' })('{<>}'),
             ),
-            layoutColumn(p('')),
           ),
+          layoutColumn(p('')),
         ),
       );
+      expect(editorView.state.doc).toEqualDocument(expectedDoc);
+      compareSelection(editorFactory, expectedDoc, editorView);
     });
 
     it('should not create decisionList inside nested blockquote', () => {
-      const { editorView, sel } = editor(
+      const { editorView, sel } = editorFactory(
         doc(blockquote(p('Hello World'), p('{<>}'))),
       );
       insertText(editorView, '<> ', sel);
@@ -227,7 +228,7 @@ describe('tasks and decisions - input rules', () => {
     });
 
     it('should convert long link to hyperlink in decision', () => {
-      const { editorView, sel } = editor(doc(p('{<>}')));
+      const { editorView, sel } = editorFactory(doc(p('{<>}')));
       insertText(editorView, '<> ', sel);
       insertText(
         editorView,
@@ -248,7 +249,7 @@ describe('tasks and decisions - input rules', () => {
     });
 
     it('should convert markdown link in decision', () => {
-      const { editorView, sel } = editor(doc(p('{<>}')));
+      const { editorView, sel } = editorFactory(doc(p('{<>}')));
       insertText(editorView, '<> ', sel);
       insertText(editorView, '[text](http://foo)', sel + 1);
 
@@ -263,7 +264,7 @@ describe('tasks and decisions - input rules', () => {
     });
 
     it('should add hardbreaks on Shift-Enter', () => {
-      const { editorView, sel } = editor(doc(p('{<>}')));
+      const { editorView, sel } = editorFactory(doc(p('{<>}')));
       insertText(editorView, '<> ', sel);
       sendKeyToPm(editorView, 'Shift-Enter');
 
@@ -279,96 +280,97 @@ describe('tasks and decisions - input rules', () => {
 
   describe('tasks', () => {
     it('should replace "[] " with a taskList', () => {
-      const { editorView, sel } = editor(doc(p('{<>}')));
+      const { editorView, sel } = editorFactory(doc(p('{<>}')));
       insertText(editorView, '[] ', sel);
 
-      expect(editorView.state.doc).toEqualDocument(
-        doc(
-          taskList({ localId: 'local-decision' })(
-            taskItem({ localId: 'local-decision' })(''),
-          ),
+      const expectedDoc = doc(
+        taskList({ localId: 'local-decision' })(
+          taskItem({ localId: 'local-decision' })('{<>}'),
         ),
       );
+      expect(editorView.state.doc).toEqualDocument(expectedDoc);
+      compareSelection(editorFactory, expectedDoc, editorView);
     });
 
     it('should preserve existing content on row when converting', () => {
-      const { editorView, sel } = editor(doc(p('{<>}Hello World')));
+      const { editorView, sel } = editorFactory(doc(p('{<>}Hello World')));
       insertText(editorView, '[] ', sel);
 
-      expect(editorView.state.doc).toEqualDocument(
-        doc(
-          taskList({ localId: 'local-decision' })(
-            taskItem({ localId: 'local-decision' })('Hello World'),
-          ),
+      const expectedDoc = doc(
+        taskList({ localId: 'local-decision' })(
+          taskItem({ localId: 'local-decision' })('{<>}Hello World'),
         ),
       );
+      expect(editorView.state.doc).toEqualDocument(expectedDoc);
+      compareSelection(editorFactory, expectedDoc, editorView);
     });
 
     it('should split on hardBreak and preserve content when converting', () => {
-      const { editorView, sel } = editor(
+      const { editorView, sel } = editorFactory(
         doc(p('Hello', hardBreak(), '{<>}World')),
       );
       insertText(editorView, '[] ', sel);
 
-      expect(editorView.state.doc).toEqualDocument(
-        doc(
-          p('Hello'),
-          taskList({ localId: 'local-decision' })(
-            taskItem({ localId: 'local-decision' })('World'),
-          ),
+      const expectedDoc = doc(
+        p('Hello'),
+        taskList({ localId: 'local-decision' })(
+          taskItem({ localId: 'local-decision' })('{<>}World'),
         ),
       );
+      expect(editorView.state.doc).toEqualDocument(expectedDoc);
+      compareSelection(editorFactory, expectedDoc, editorView);
     });
+
     it('should replace "[] " with a taskList inside table header', () => {
-      const { editorView, sel } = editor(
+      const { editorView, sel } = editorFactory(
         doc(table()(tr(thCursor), tr(tdEmpty), tr(tdEmpty))),
       );
 
       insertText(editorView, '[] ', sel);
 
-      expect(editorView.state.doc).toEqualDocument(
-        doc(
-          table()(
-            tr(
-              th({})(
-                taskList({ localId: 'local-decision' })(
-                  taskItem({ localId: 'local-decision' })(''),
-                ),
+      const expectedDoc = doc(
+        table()(
+          tr(
+            th({})(
+              taskList({ localId: 'local-decision' })(
+                taskItem({ localId: 'local-decision' })('{<>}'),
               ),
             ),
-            tr(tdEmpty),
-            tr(tdEmpty),
           ),
+          tr(tdEmpty),
+          tr(tdEmpty),
         ),
       );
+      expect(editorView.state.doc).toEqualDocument(expectedDoc);
+      compareSelection(editorFactory, expectedDoc, editorView);
     });
 
     it('should replace "[] " with a taskList inside table cell', () => {
-      const { editorView, sel } = editor(
+      const { editorView, sel } = editorFactory(
         doc(table()(tr(thEmpty), tr(tdCursor), tr(tdEmpty))),
       );
 
       insertText(editorView, '[] ', sel);
 
-      expect(editorView.state.doc).toEqualDocument(
-        doc(
-          table()(
-            tr(thEmpty),
-            tr(
-              td({})(
-                taskList({ localId: 'local-decision' })(
-                  taskItem({ localId: 'local-decision' })(''),
-                ),
+      const expectedDoc = doc(
+        table()(
+          tr(thEmpty),
+          tr(
+            td({})(
+              taskList({ localId: 'local-decision' })(
+                taskItem({ localId: 'local-decision' })(''),
               ),
             ),
-            tr(tdEmpty),
           ),
+          tr(tdEmpty),
         ),
       );
+      expect(editorView.state.doc).toEqualDocument(expectedDoc);
+      compareSelection(editorFactory, expectedDoc, editorView);
     });
 
     it('should replace "[] " after shift+enter with a taskList inside table cell', () => {
-      const { editorView, sel } = editor(
+      const { editorView, sel } = editorFactory(
         doc(
           table()(
             tr(thEmpty),
@@ -380,26 +382,26 @@ describe('tasks and decisions - input rules', () => {
 
       insertText(editorView, '[] ', sel);
 
-      expect(editorView.state.doc).toEqualDocument(
-        doc(
-          table()(
-            tr(thEmpty),
-            tr(
-              td({})(
-                p('Hello'),
-                taskList({ localId: 'local-decision' })(
-                  taskItem({ localId: 'local-decision' })(''),
-                ),
+      const expectedDoc = doc(
+        table()(
+          tr(thEmpty),
+          tr(
+            td({})(
+              p('Hello'),
+              taskList({ localId: 'local-decision' })(
+                taskItem({ localId: 'local-decision' })(''),
               ),
             ),
-            tr(tdEmpty),
           ),
+          tr(tdEmpty),
         ),
       );
+      expect(editorView.state.doc).toEqualDocument(expectedDoc);
+      compareSelection(editorFactory, expectedDoc, editorView);
     });
 
     it('should replace "[] " with a taskList inside bodiedExtension', () => {
-      const { editorView, sel } = editor(
+      const { editorView, sel } = editorFactory(
         doc(
           bodiedExtension({
             extensionKey: 'key',
@@ -410,43 +412,43 @@ describe('tasks and decisions - input rules', () => {
 
       insertText(editorView, '[] ', sel);
 
-      expect(editorView.state.doc).toEqualDocument(
-        doc(
-          bodiedExtension({
-            extensionKey: 'key',
-            extensionType: 'type',
-          })(
-            taskList({ localId: 'local-decision' })(
-              taskItem({ localId: 'local-decision' })(),
-            ),
+      const expectedDoc = doc(
+        bodiedExtension({
+          extensionKey: 'key',
+          extensionType: 'type',
+        })(
+          taskList({ localId: 'local-decision' })(
+            taskItem({ localId: 'local-decision' })(),
           ),
         ),
       );
+      expect(editorView.state.doc).toEqualDocument(expectedDoc);
+      compareSelection(editorFactory, expectedDoc, editorView);
     });
 
     it('should replace "[] " with a taskList inside layouts', () => {
-      const { editorView, sel } = editor(
+      const { editorView, sel } = editorFactory(
         doc(layoutSection()(layoutColumn(p('{<>}')), layoutColumn(p('')))),
       );
 
       insertText(editorView, '[] ', sel);
 
-      expect(editorView.state.doc).toEqualDocument(
-        doc(
-          layoutSection()(
-            layoutColumn(
-              taskList({ localId: 'local-decision' })(
-                taskItem({ localId: 'local-decision' })(''),
-              ),
+      const expectedDoc = doc(
+        layoutSection()(
+          layoutColumn(
+            taskList({ localId: 'local-decision' })(
+              taskItem({ localId: 'local-decision' })(''),
             ),
-            layoutColumn(p('')),
           ),
+          layoutColumn(p('')),
         ),
       );
+      expect(editorView.state.doc).toEqualDocument(expectedDoc);
+      compareSelection(editorFactory, expectedDoc, editorView);
     });
 
     it('should not create taskList inside blockquote', () => {
-      const { editorView, sel } = editor(
+      const { editorView, sel } = editorFactory(
         doc(blockquote(p('Hello World'), p('{<>}'))),
       );
       insertText(editorView, '[] ', sel);
@@ -457,7 +459,7 @@ describe('tasks and decisions - input rules', () => {
     });
 
     it('should convert long link to hyperlink in action', () => {
-      const { editorView, sel } = editor(doc(p('{<>}')));
+      const { editorView, sel } = editorFactory(doc(p('{<>}')));
       insertText(editorView, '[] ', sel);
       insertText(
         editorView,
@@ -478,7 +480,7 @@ describe('tasks and decisions - input rules', () => {
     });
 
     it('should convert markdown link in action', () => {
-      const { editorView, sel } = editor(doc(p('{<>}')));
+      const { editorView, sel } = editorFactory(doc(p('{<>}')));
       insertText(editorView, '[] ', sel);
       insertText(editorView, '[text](http://foo)', sel + 1);
 
