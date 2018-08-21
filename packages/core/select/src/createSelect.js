@@ -114,7 +114,7 @@ function baseStyles(validationState, isCompact) {
       if (validationState === 'error') borderColor = colors.R400;
       if (validationState === 'success') borderColor = colors.G400;
 
-      let borderColorHover = isFocused ? colors.B100 : colors.N20;
+      let borderColorHover = isFocused ? colors.B100 : colors.N30;
       if (validationState === 'error') borderColorHover = colors.R400;
       if (validationState === 'success') borderColorHover = colors.G400;
 
