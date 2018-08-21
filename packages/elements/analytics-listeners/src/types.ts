@@ -6,11 +6,11 @@ export type AnalyticsWebClient = {
   sendTrackEvent: (event: any) => void;
   sendScreenEvent: (event: any) => void;
 };
-export type client = Promise<AnalyticsWebClient>;
+export type Client = Promise<AnalyticsWebClient>;
 
 export type ListenerProps = {
   children?: React.ReactNode;
-  client: client;
+  client: Client;
   logger: Logger;
 };
 
