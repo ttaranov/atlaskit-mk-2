@@ -27,7 +27,7 @@ describe('TableFloatingControls', () => {
   const editor = (doc: any) =>
     createEditor<TablePluginState>({
       doc,
-      editorPlugins: [tablesPlugin],
+      editorPlugins: [tablesPlugin()],
       pluginKey: pluginKey,
     });
 

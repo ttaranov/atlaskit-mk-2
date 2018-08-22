@@ -38,7 +38,7 @@ describe('table keymap', () => {
   const editor = (doc: any, trackEvent = () => {}) =>
     createEditor<TablePluginState>({
       doc,
-      editorPlugins: [tablesPlugin],
+      editorPlugins: [tablesPlugin()],
       editorProps: {
         analyticsHandler: trackEvent,
       },
@@ -48,7 +48,7 @@ describe('table keymap', () => {
     createEditor<TablePluginState>({
       doc,
       editorPlugins: [
-        tablesPlugin,
+        tablesPlugin(),
         rulePlugin,
         listsPlugin,
         panelPlugin,

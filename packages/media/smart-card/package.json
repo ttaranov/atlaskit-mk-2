@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/smart-card",
-  "version": "7.0.6",
+  "version": "8.1.0",
   "description": "Smart card component",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -17,7 +17,7 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/media-ui": "^5.0.2",
+    "@atlaskit/media-ui": "^5.1.2",
     "@atlassian/outbound-auth-flow-client": "^1.0.4",
     "@types/react": "^16.3.0",
     "react-lazily-render": "^1.1.0",
@@ -36,6 +36,10 @@
     "@atlaskit/page": "^8.0.2",
     "@atlaskit/select": "^5.0.7",
     "@types/enzyme": "^3.1.6",
+    "@types/fetch-mock": "^5.12.1",
+    "abortcontroller-polyfill": "^1.1.9",
+    "fetch-mock": "^5.12.1",
+    "whatwg-fetch": "^2.0.3",
     "brace": "^0.11.1",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react": "^16.4.0",

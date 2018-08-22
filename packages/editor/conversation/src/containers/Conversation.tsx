@@ -4,6 +4,8 @@ import { Editor as AkEditor, EditorProps } from '@atlaskit/editor-core';
 import { Provider, connect, Dispatch } from 'react-redux';
 import Conversation, { Props as BaseProps } from '../components/Conversation';
 import { ResourceProvider } from '../api/ConversationResource';
+import { withAnalyticsEvents } from '@atlaskit/analytics-next';
+
 import {
   addComment,
   updateComment,
@@ -88,8 +90,8 @@ const mapDispatchToProps = (
   },
 });
 
-const ResourcedConversation = connect(mapStateToProps, mapDispatchToProps)(
-  Conversation as any,
+const ResourcedConversation = withAnalyticsEvents()(
+  connect(mapStateToProps, mapDispatchToProps)(Conversation as any),
 );
 
 export interface ContainerProps {

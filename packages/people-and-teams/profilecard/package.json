@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/profilecard",
-  "version": "4.0.7",
+  "version": "4.0.8",
   "config": {
     "access": "public"
   },
@@ -31,7 +31,7 @@
     "@atlaskit/docs": "^5.0.6",
     "@atlaskit/dynamic-table": "^10.0.9",
     "@atlaskit/util-common-test": "^2.4.2",
-    "@atlaskit/util-data-test": "^10.0.4",
+    "@atlaskit/util-data-test": "^10.0.7",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "fetch-mock": "^5.12.1",
     "loader-utils": "^1.1.0",

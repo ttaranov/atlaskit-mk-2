@@ -1,8 +1,4 @@
-export function createTestsForObject(
-  type: string,
-  fixture: any,
-  extractor: Function,
-) {
+export function createTestsForObject(fixture: any, extractor: Function) {
   const empty = {};
 
   it('should extract a link when the object has a url', () => {

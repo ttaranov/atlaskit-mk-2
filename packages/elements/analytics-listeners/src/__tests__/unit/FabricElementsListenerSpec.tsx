@@ -3,7 +3,7 @@ import { mount } from 'enzyme';
 import { FabricChannel } from '../../index';
 import FabricElementsListener, {
   ELEMENTS_TAG,
-} from '../../FabricElementsListener';
+} from '../../fabric/FabricElementsListener';
 import {
   DummyComponentWithAnalytics,
   TaggedDummyComponentWithAnalytics,

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/emoji",
-  "version": "39.0.4",
+  "version": "39.1.1",
   "config": {
     "access": "public"
   },
@@ -63,7 +63,7 @@
     "@atlaskit/layer": "^5.0.4",
     "@atlaskit/media-core": "^23.0.0",
     "@atlaskit/util-common-test": "^2.4.2",
-    "@atlaskit/util-data-test": "^10.0.6",
+    "@atlaskit/util-data-test": "^10.0.7",
     "@types/chai": "^4.0.4",
     "chai": "^4.1.2",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
