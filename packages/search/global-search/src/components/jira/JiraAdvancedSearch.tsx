@@ -22,18 +22,18 @@ export interface State {
 }
 
 const TextContainer = styled.div`
-  padding: ${gridSize}px 0;
-  margin-right: ${gridSize}px;
+  padding: ${gridSize()}px 0;
+  margin-right: ${gridSize()}px;
 `;
 const Container = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: left;
 `;
-const items = ['issues', 'projects', 'boards', 'filters'];
+const itemI18nKeySuffix = ['issues', 'projects', 'boards', 'filters'];
 
-const getItem = item => (
-  <FormattedMessage id={`global-search.no-results.${item}`} />
+const getI18nItemName = i18nKeySuffix => (
+  <FormattedMessage id={`global-search.jira.no-results.${i18nKeySuffix}`} />
 );
 
 export default class JiraAdvancedSearch extends React.Component<Props> {
@@ -46,15 +46,15 @@ export default class JiraAdvancedSearch extends React.Component<Props> {
     showSearchIcon: false,
   };
 
-  renderDropDownItems = () =>
-    items.map(item => (
+  renderDropdownItems = () =>
+    itemI18nKeySuffix.map(item => (
       <DropdownItem
         onClick={() => {
           this.setState({ selectedItem: item });
         }}
         key={item}
       >
-        {getItem(item)}
+        {getI18nItemName(item)}
       </DropdownItem>
     ));
 
@@ -78,13 +78,13 @@ export default class JiraAdvancedSearch extends React.Component<Props> {
               }}
             >
               <DropdownMenu
-                trigger={getItem(this.state.selectedItem)}
+                trigger={getI18nItemName(this.state.selectedItem)}
                 triggerType="button"
                 shouldFlip={false}
                 position="right bottom"
               >
                 <DropdownItemGroup>
-                  {this.renderDropDownItems()}
+                  {this.renderDropdownItems()}
                 </DropdownItemGroup>
               </DropdownMenu>
             </div>

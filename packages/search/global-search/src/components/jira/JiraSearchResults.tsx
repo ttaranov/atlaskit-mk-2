@@ -30,7 +30,7 @@ const StickyFooter = styled.div`
   bottom: 0;
   background: white;
   border-top: 1px solid ${colors.N40};
-  padding: ${gridSize}px 0;
+  padding: ${gridSize()}px 0;
 `;
 
 export default class JiraSearchResults extends React.Component<Props> {
