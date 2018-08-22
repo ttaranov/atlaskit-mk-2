@@ -15,7 +15,7 @@ export interface Props {
   searchSessionId: string;
   screenCounter?: ScreenCounter;
   referralContextIdentifiers?: ReferralContextIdentifiers;
-  renderAdvancedSearchLink: () => JSX.Element;
+  renderNoRecentActivity: () => JSX.Element;
   renderAdvancedSearchGroup: () => JSX.Element;
 }
 
@@ -25,7 +25,7 @@ export default class PreQueryState extends React.Component<Props> {
       resultsGroups,
       searchSessionId,
       screenCounter,
-      renderAdvancedSearchLink,
+      renderNoRecentActivity,
       referralContextIdentifiers,
       renderAdvancedSearchGroup,
     } = this.props;
@@ -40,7 +40,7 @@ export default class PreQueryState extends React.Component<Props> {
             referralContextIdentifiers={referralContextIdentifiers}
           />,
           <NoRecentActivity key="no-recent-activity">
-            {renderAdvancedSearchLink()}
+            {renderNoRecentActivity()}
           </NoRecentActivity>,
         </>
       );
