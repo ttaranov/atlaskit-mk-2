@@ -88,7 +88,6 @@ export default class JiraAdvancedSearch extends React.Component<Props> {
             </TextContainer>
             <StyledButton
               onClick={() => {
-                debugger;
                 this.allowNavigationOnClick = true;
               }}
             >
