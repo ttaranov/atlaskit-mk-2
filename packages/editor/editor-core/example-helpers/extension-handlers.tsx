@@ -1,5 +1,11 @@
 import * as React from 'react';
 import { ExtensionHandlers } from '@atlaskit/editor-common';
+import {
+  EDITOR_APPS_EXTENSION_TYPE,
+  POLL_EXTENSION_KEY,
+  PollApp,
+} from '../apps/Poll';
+import { TABS_EXTENSION_KEY, TabsApp } from '../apps/Tabs';
 
 const FakeExtension = ({ colour, children }) => {
   return (
@@ -44,6 +50,19 @@ export const extensionHandlers: ExtensionHandlers = {
         return <BodiedExtension {...macroProps} />;
       case 'inline-eh':
         return <InlineExtension {...macroProps} />;
+    }
+
+    return null;
+  },
+  [EDITOR_APPS_EXTENSION_TYPE]: (ext, doc) => {
+    const { extensionKey, parameters } = ext;
+
+    if (extensionKey === POLL_EXTENSION_KEY) {
+      return <PollApp {...parameters} editable={true} />;
+    }
+
+    if (extensionKey === TABS_EXTENSION_KEY) {
+      return <TabsApp {...parameters} editable={true} />;
     }
 
     return null;
