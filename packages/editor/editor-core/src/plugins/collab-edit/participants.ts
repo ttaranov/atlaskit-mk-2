@@ -58,10 +58,12 @@ export class Participants implements ReadOnlyParticipants {
   eq(other: Participants) {
     const left = this.toArray()
       .map(p => p.sessionId)
+      .sort((a, b) => (a > b ? -1 : 1))
       .join('');
     const right = other
       .toArray()
       .map(p => p.sessionId)
+      .sort((a, b) => (a > b ? -1 : 1))
       .join('');
 
     return left === right;

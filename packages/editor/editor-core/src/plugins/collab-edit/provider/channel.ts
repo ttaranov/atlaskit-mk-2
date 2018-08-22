@@ -137,7 +137,7 @@ export class Channel {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             version,
-            steps: steps.map(step => step.toJSON()),
+            steps,
           }),
         },
       });
