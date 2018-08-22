@@ -37,6 +37,12 @@ class Example extends React.Component<ExampleProps, ExampleState> {
     isSelected: false,
   };
 
+  setPredefinedUrl(url: string) {
+    return () => {
+      this.setState({ url });
+    };
+  }
+
   handleUrlChange = (event: React.FormEvent<HTMLInputElement>) => {
     this.setState({ url: (event.target as HTMLInputElement).value });
   };
@@ -59,6 +65,37 @@ class Example extends React.Component<ExampleProps, ExampleState> {
       <Provider>
         <Page>
           <Grid>
+            <GridColumn>
+              <p>Switch to</p>
+              <button
+                onClick={this.setPredefinedUrl(
+                  'https://docs.google.com/document/d/1igbED2X5Qt8rQCeO-5rbDGG6u51wUNumlo2P_EtC9lo/edit',
+                )}
+              >
+                Public Google Document
+              </button>
+              <button
+                onClick={this.setPredefinedUrl(
+                  'https://docs.google.com/spreadsheets/d/168cPaeXw_2zbo6md4pGUdEmXzRsXRQmNP0712ID2TKA/edit?usp=sharing',
+                )}
+              >
+                Public Google Sheet
+              </button>
+              <button
+                onClick={this.setPredefinedUrl(
+                  'https://docs.google.com/document/d/1nXGwmxJuvQ8CdVQsGnRLOJOo7kJPqesmiBgvcaXD4Aw/edit',
+                )}
+              >
+                Protected Google Document, anyone in org. can view
+              </button>
+              <button
+                onClick={this.setPredefinedUrl(
+                  'https://docs.google.com/spreadsheets/d/1pHwRAZWA7_aGtlAwOjAOrHGoT5gT0oKS635HTI6gI8I/edit?usp=drive_web&ouid=110769160460483925018',
+                )}
+              >
+                Protected Google Sheet, anyone in org can view
+              </button>
+            </GridColumn>
             <GridColumn>
               <Field label="Appearance">
                 <Select

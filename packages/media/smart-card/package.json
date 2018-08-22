@@ -17,11 +17,14 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
+    "@atlaskit/icon": "^13.2.6",
     "@atlaskit/media-ui": "^6.0.0",
+    "@atlaskit/theme": "^6.0.0",
     "@atlassian/outbound-auth-flow-client": "^1.0.4",
     "@types/react": "^16.3.0",
     "react-lazily-render": "^1.1.0",
-    "rxjs": "^5.5.0"
+    "rxjs": "^5.5.0",
+    "moment": "^2.22.2"
   },
   "peerDependencies": {
     "react": "^16.4.0",
@@ -37,6 +40,7 @@
     "@atlaskit/page": "^8.0.2",
     "@atlaskit/select": "^6.0.0",
     "@types/enzyme": "^3.1.6",
+    "@types/moment": "^2.13.0",
     "@types/fetch-mock": "^6.0.3",
     "abortcontroller-polyfill": "^1.1.9",
     "brace": "^0.11.1",

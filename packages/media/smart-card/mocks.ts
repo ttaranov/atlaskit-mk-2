@@ -1,4 +1,7 @@
-import mock, { delay, proxy } from 'xhr-mock';
+// import mock, { delay, proxy } from 'xhr-mock';
+import * as fm from 'fetch-mock';
+import { fn } from 'moment';
+// const fm = require('fetch-mock');
 
 const resolveUrl =
   'https://api-private.stg.atlassian.com/object-resolver/resolve';
@@ -144,34 +147,138 @@ const flowResponsesByUrl = {
   ],
 };
 
-const flowIndiciesByUrl = {};
+// const flowIndiciesByUrl = {};
 
-mock.setup();
+// mock.setup();
 
-mock.post(
-  `${resolveUrl}`,
-  delay((req, res) => {
-    const url = JSON.parse(req.body()).resourceUrl;
-    const response =
-      (flowResponsesByUrl as any)[url] &&
-      (flowResponsesByUrl as any)[url][(flowIndiciesByUrl as any)[url] || 0];
-    if (response) {
-      (flowIndiciesByUrl as any)[url] =
-        ((flowIndiciesByUrl as any)[url] || 0) + 1;
-      if (
-        (flowIndiciesByUrl as any)[url] >=
-        (flowResponsesByUrl as any)[url].length
-      ) {
-        (flowIndiciesByUrl as any)[url] = 0;
-      }
-      if (response.status) res.status(response.status);
-      if (response.headers) res.headers(response.headers);
-      if (response.body) res.body(JSON.stringify(response.body));
-      return res;
-    } else {
-      return undefined;
+let cntr = 0;
+fm.mock('*', (_, opts: any) => {
+  const { resourceUrl } = JSON.parse(opts.body);
+  if (resourceUrl === 'private-happy') {
+    cntr++;
+    if (cntr > 8) {
+      return resolvedBody;
     }
-  }, 900),
-);
+    if (cntr > 4) {
+      return forbiddenBody;
+    }
+    return unauthorisedBody;
+  }
+  return unauthorisedBody;
+});
 
-mock.use(proxy);
+// 'private-happy': [
+//   {
+//     status: 200,
+//     body: unauthorisedBody,
+//   },
+//   {
+//     status: 200,
+//     body: resolvedBody,
+//   },
+// ],
+// 'private-happy-b': [
+//   {
+//     status: 200,
+//     body: unauthorisedBody,
+//   },
+//   {
+//     status: 200,
+//     body: {
+//       ...resolvedBody,
+//       data: {
+//         ...resolvedBody.data,
+//         name: 'URL B',
+//       },
+//     },
+//   },
+// // ],
+// 'private-happy-c': [
+//   {
+//     status: 200,
+//     body: unauthorisedBody,
+//   },
+//   {
+//     status: 200,
+//     body: {
+//       ...resolvedBody,
+//       data: {
+//         ...resolvedBody.data,
+//         name: 'URL C',
+//       },
+//     },
+//   },
+// ],
+
+fm.post('private-happy', unauthorisedBody);
+// .post('private-happy', resolvedBody);
+
+// fm.post('private-happy-b', unauthorisedBody)
+//   .post('private-happy-b', {
+//     ...resolvedBody,
+//     data: {
+//       ...resolvedBody.data,
+//       name: 'URL B',
+//     },
+//   });
+
+// fm.post('private-happy-c', unauthorisedBody)
+//   .post('private-happy-c', {
+//     ...resolvedBody,
+//     data: {
+//       ...resolvedBody.data,
+//       name: 'URL C',
+//     },
+//   });
+
+// fm.post(
+//   `${resolveUrl}`,
+//   (url) => {
+//     const response =
+//       (flowResponsesByUrl as any)[url] &&
+//       (flowResponsesByUrl as any)[url][(flowIndiciesByUrl as any)[url] || 0];
+//     if (response) {
+//       (flowIndiciesByUrl as any)[url] =
+//         ((flowIndiciesByUrl as any)[url] || 0) + 1;
+//       if (
+//         (flowIndiciesByUrl as any)[url] >=
+//         (flowResponsesByUrl as any)[url].length
+//       ) {
+//         (flowIndiciesByUrl as any)[url] = 0;
+//       }
+//       if (response.status) res.status(response.status);
+//       if (response.headers) res.headers(response.headers);
+//       if (response.body) res.body(JSON.stringify(response.body));
+//       return res;
+//     } else {
+//       return undefined;
+//     },
+//     {
+
+//     }
+//   }
+// delay((req, res) => {
+//   const url = JSON.parse(req.body()).resourceUrl;
+//   const response =
+//     (flowResponsesByUrl as any)[url] &&
+//     (flowResponsesByUrl as any)[url][(flowIndiciesByUrl as any)[url] || 0];
+//   if (response) {
+//     (flowIndiciesByUrl as any)[url] =
+//       ((flowIndiciesByUrl as any)[url] || 0) + 1;
+//     if (
+//       (flowIndiciesByUrl as any)[url] >=
+//       (flowResponsesByUrl as any)[url].length
+//     ) {
+//       (flowIndiciesByUrl as any)[url] = 0;
+//     }
+//     if (response.status) res.status(response.status);
+//     if (response.headers) res.headers(response.headers);
+//     if (response.body) res.body(JSON.stringify(response.body));
+//     return res;
+//   } else {
+//     return undefined;
+//   }
+// }, 900),
+// );
+
+// mock.use(proxy);

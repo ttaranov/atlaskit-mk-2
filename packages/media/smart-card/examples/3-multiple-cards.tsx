@@ -45,24 +45,6 @@ export default () => (
           <Card url={URL_C} appearance="block" />
         </GridColumn>
       </Grid>
-      <br />
-      <br />
-      <Grid>
-        <GridColumn>
-          <p>
-            <small>
-              These cards are all different URLs for different providers. They
-              should not share any state or any content.
-            </small>
-          </p>
-          <br />
-          <Card url="" appearance="block" />
-          <br />
-          <Card url="" appearance="block" />
-          <br />
-          <Card url="" appearance="block" />
-        </GridColumn>
-      </Grid>
     </Page>
   </Provider>
 );
