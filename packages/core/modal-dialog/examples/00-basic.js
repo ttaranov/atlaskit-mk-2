@@ -2,7 +2,9 @@
 import React, { PureComponent } from 'react';
 import Lorem from 'react-lorem-component';
 import Button from '@atlaskit/button';
-import Modal from '../src';
+import Modal, { ModalTransition } from '../src';
+
+const Abstraction = props => <Modal {...props} />;
 
 type State = {
   isOpen: boolean,
@@ -24,14 +26,17 @@ export default class ExampleBasic extends PureComponent<{}, State> {
       <div>
         <Button onClick={this.open}>Open Modal</Button>
 
-        <Modal
-          actions={actions}
-          onClose={this.close}
-          heading="Modal Title"
-          isOpen={isOpen}
-        >
-          <Lorem count={2} />
-        </Modal>
+        <ModalTransition>
+          {isOpen && (
+            <Abstraction
+              actions={actions}
+              onClose={this.close}
+              heading="Modal Title"
+            >
+              <Lorem count={2} />
+            </Abstraction>
+          )}
+        </ModalTransition>
       </div>
     );
   }

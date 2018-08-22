@@ -50,7 +50,12 @@ function getInitialState() {
   };
 }
 
-type Props = OuterProps & {};
+type Props = OuterProps & {
+  /**
+    Whether or not the dialog is visible
+  */
+  isOpen: boolean,
+};
 
 type State = {
   dialogNode: Node | null,

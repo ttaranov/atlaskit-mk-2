@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import { layers } from '@atlaskit/theme';
 import Portal from '@atlaskit/portal';
+import { ModalTransitionConsumer } from './ModalTransition';
 
 import type {
   AppearanceType,
@@ -30,7 +31,7 @@ export type Props = {
     Boolean indicating whether to focus on the first tabbable element inside the focus lock.
   */
   autoFocus: boolean | (() => HTMLElement | null),
-  components: { Body: ComponentType },
+  components?: { Body: ComponentType },
   /**
     Content of the modal
   */
@@ -57,10 +58,6 @@ export type Props = {
    */
   isHeadingMultiline?: boolean,
   /**
-    Whether or not the dialog is visible
-  */
-  isOpen: boolean,
-  /**
     Height of the modal. If not set, the modal grows to fit the content until it
     runs out of vertical space, at which point scrollbars appear. If a number is
     provided, the height is set to that number in pixels. A string including pixels,
@@ -75,7 +72,7 @@ export type Props = {
   /**
     Function that will be called when the exit transition is complete.
   */
-  onCloseComplete?: ElementType => void,
+  onCloseComplete: ElementType => void,
   /**
     Function that will be called when the enter transition is complete.
   */
@@ -125,35 +122,32 @@ class ModalWrapper extends Component<Props, State> {
     shouldCloseOnEscapePress: true,
     shouldCloseOnOverlayClick: true,
     isChromeless: false,
-    isOpen: true,
     width: 'medium',
     isHeadingMultiline: true,
+    onCloseComplete: () => {},
   };
 
-  static getDerivedStateFromProps(props: Props, state: State) {
-    return {
-      modalVisible: props.isOpen || state.modalVisible,
-    };
-  }
-
-  state = {
-    modalVisible: this.props.isOpen,
-  };
-
-  onModalClosed = (...args) => {
-    this.setState({ modalVisible: false });
-    if (this.props.onCloseComplete) {
-      this.props.onCloseComplete(...args);
+  onModalClosed = (onExited?: () => any) => (e: ElementType) => {
+    if (onExited) {
+      onExited();
     }
+    this.props.onCloseComplete(e);
   };
 
   render() {
-    const { modalVisible } = this.state;
-    return modalVisible ? (
-      <Portal zIndex={layers.modal()}>
-        <Modal {...this.props} onCloseComplete={this.onModalClosed} />
-      </Portal>
-    ) : null;
+    return (
+      <ModalTransitionConsumer>
+        {({ isOpen, onExited }) => (
+          <Portal zIndex={layers.modal()}>
+            <Modal
+              {...this.props}
+              isOpen={isOpen}
+              onCloseComplete={this.onModalClosed(onExited)}
+            />
+          </Portal>
+        )}
+      </ModalTransitionConsumer>
+    );
   }
 }
 
