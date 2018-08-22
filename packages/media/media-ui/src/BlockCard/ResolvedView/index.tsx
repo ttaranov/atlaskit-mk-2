@@ -56,7 +56,7 @@ export interface BadgeViewModel {
 
 export interface DetailViewModel {
   title?: string;
-  icon?: string;
+  icon?: string | JSX.Element;
   badge?: BadgeViewModel;
   lozenge?: LozengeViewModel;
   text?: string;
@@ -400,25 +400,33 @@ export class ResolvedView extends React.Component<
           ) : null}
           <RightWrapper>
             {this.renderThumbnail()}
-            <Tooltip content={title ? title.tooltip : undefined}>
-              <Title>{title ? title.text : undefined}</Title>
-            </Tooltip>
+            {title && title.text ? (
+              title.tooltip ? (
+                <Tooltip content={title.tooltip}>
+                  <Title>{title.text}</Title>
+                </Tooltip>
+              ) : (
+                <Title>{title.text}</Title>
+              )
+            ) : null}
             {byline &&
-              byline.text && (
-                <Tooltip content={byline ? byline.tooltip : undefined}>
-                  <Byline>{byline ? byline.text : undefined}</Byline>
+              byline.text &&
+              (byline.tooltip ? (
+                <Tooltip content={byline.tooltip}>
+                  <Byline>{byline.text}</Byline>
                 </Tooltip>
-              )}
+              ) : (
+                <Byline>{byline.text}</Byline>
+              ))}
             {description &&
-              description.text && (
-                <Tooltip
-                  content={description ? description.tooltip : undefined}
-                >
-                  <Description>
-                    {description ? description.text : undefined}
-                  </Description>
+              description.text &&
+              (description.tooltip ? (
+                <Tooltip content={description.tooltip}>
+                  <Description>{description.text}</Description>
                 </Tooltip>
-              )}
+              ) : (
+                <Description>{description.text}</Description>
+              ))}
             <Widgets details={details} />
             {this.renderUsers()}
             {this.renderActions()}
