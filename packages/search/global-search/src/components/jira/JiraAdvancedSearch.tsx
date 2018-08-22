@@ -68,16 +68,18 @@ export default class JiraAdvancedSearch extends React.Component<Props> {
   };
 
   renderDropdownItems = () =>
-    itemI18nKeySuffix.map(item => (
-      <DropdownItem
-        onClick={() => {
-          this.setState({ selectedItem: item });
-        }}
-        key={item}
-      >
-        {getI18nItemName(item)}
-      </DropdownItem>
-    ));
+    itemI18nKeySuffix
+      .filter(item => item !== this.state.selectedItem)
+      .map(item => (
+        <DropdownItem
+          onClick={() => {
+            this.setState({ selectedItem: item });
+          }}
+          key={item}
+        >
+          {getI18nItemName(item)}
+        </DropdownItem>
+      ));
 
   render() {
     const { query, showKeyboardLozenge, showSearchIcon } = this.props;

@@ -75,9 +75,8 @@ describe('JiraAdvancedSearch', () => {
     expect(dropDownMenu.length).toBe(1);
 
     const items = dropDownMenu.find(DropdownItem);
-    expect(items.length).toBe(5);
+    expect(items.length).toBe(4);
     expect(items.map(item => item.key())).toMatchObject([
-      'issues',
       'people',
       'projects',
       'filters',
