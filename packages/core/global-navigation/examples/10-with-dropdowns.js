@@ -26,13 +26,6 @@ const GlobalNav = () => (
   />
 );
 
-const mockClient = {
-  sendUIEvent: console.log,
-  sendOperationalEvent: console.log,
-  sendTrackEvent: console.log,
-  sendScreenEvent: console.log,
-};
-
 export default () => (
   <NavigationProvider>
     <LayoutManager

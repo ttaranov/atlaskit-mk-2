@@ -160,13 +160,6 @@ class GlobalNavWithDrawers extends Component<Props, State> {
   }
 }
 
-const mockClient = {
-  sendUIEvent: console.log,
-  sendOperationalEvent: console.log,
-  sendTrackEvent: console.log,
-  sendScreenEvent: console.log,
-};
-
 type NavState = {
   isCreateDrawerEnabled: boolean,
 };
