@@ -4,6 +4,7 @@ import { withAnalytics } from '@atlaskit/analytics';
 import { CreateAnalyticsEventFn } from '../analytics/types';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { JiraClient } from '../../api/JiraClient';
+import { PeopleSearchClient } from '../../api/PeopleSearchClient';
 import { LinkComponent } from '../GlobalQuickSearchWrapper';
 import { QuickSearchContainer } from '../common/QuickSearchContainer';
 import JiraSearchResults from './JiraSearchResults';
@@ -11,8 +12,10 @@ export interface Props {
   createAnalyticsEvent?: CreateAnalyticsEventFn;
   linkComponent?: LinkComponent;
   jiraClient: JiraClient;
+  peopleSearchClient: PeopleSearchClient;
 }
-import { ContentType, JiraObjectResult } from '../../model/Result';
+import { handlePromiseError } from '../SearchResultsUtil';
+import { ContentType, JiraObjectResult, Result } from '../../model/Result';
 
 const contentTypeToSection = {
   [ContentType.JiraIssue]: 'issues',
@@ -53,9 +56,18 @@ export class JiraQuickSearchContainer extends React.Component<
       />
     );
   };
-  getRecentItems = (sessionId: string) => {
-    const { jiraClient } = this.props;
-    return jiraClient
+
+  getRecentlyInteractedPeople = () => {
+    const peoplePromise: Promise<
+      Result[]
+    > = this.props.peopleSearchClient.getRecentPeople();
+    return handlePromiseError<Result[]>(peoplePromise, []).then(people => ({
+      people,
+    }));
+  };
+
+  getJiraRecentItems = (sessionId: string) => {
+    const jiraRecentItemsPromise = this.props.jiraClient
       .getRecentItems(sessionId)
       .then(items =>
         items.reduce(
@@ -74,7 +86,23 @@ export class JiraQuickSearchContainer extends React.Component<
           },
           {},
         ),
-      )
+      );
+    return handlePromiseError(jiraRecentItemsPromise, {
+      issues: [],
+      boards: [],
+      filters: [],
+      projects: [],
+    });
+  };
+
+  getRecentItems = (sessionId: string) => {
+    return Promise.all([
+      this.getJiraRecentItems(sessionId),
+      this.getRecentlyInteractedPeople(),
+    ])
+      .then(([jiraItems, people]) => {
+        return { ...jiraItems, ...people };
+      })
       .then(results => ({ results }));
   };
 

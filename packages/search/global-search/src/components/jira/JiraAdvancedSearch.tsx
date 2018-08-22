@@ -10,7 +10,10 @@ import DropdownMenu, {
 } from '@atlaskit/dropdown-menu';
 import AdvancedSearchResult from '../AdvancedSearchResult';
 import { AnalyticsType } from '../../model/Result';
-import { getJiraAdvancedSearchUrl } from '../SearchResultsUtil';
+import {
+  getJiraAdvancedSearchUrl,
+  JiraEntityTypes,
+} from '../SearchResultsUtil';
 
 export interface Props {
   query: string;
@@ -19,7 +22,7 @@ export interface Props {
 }
 
 export interface State {
-  selectedItem: string;
+  selectedItem: JiraEntityTypes;
 }
 
 const TextContainer = styled.div`
@@ -37,7 +40,7 @@ const StyledButton = styled(Button)`
   margin-right: ${gridSize() * 0.25}px;
 `;
 
-const itemI18nKeySuffix = ['issues', 'projects', 'boards', 'filters'];
+const itemI18nKeySuffix = Object.keys(JiraEntityTypes);
 
 const getI18nItemName = i18nKeySuffix => (
   <FormattedMessage id={`global-search.jira.no-results.${i18nKeySuffix}`} />
@@ -45,7 +48,7 @@ const getI18nItemName = i18nKeySuffix => (
 
 export default class JiraAdvancedSearch extends React.Component<Props> {
   state = {
-    selectedItem: 'issues',
+    selectedItem: JiraEntityTypes.Issues,
   };
 
   allowNavigationOnClick = false;

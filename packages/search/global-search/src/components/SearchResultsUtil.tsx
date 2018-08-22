@@ -2,6 +2,22 @@ export const ADVANCED_CONFLUENCE_SEARCH_RESULT_ID = 'search_confluence';
 export const ADVANCED_JIRA_SEARCH_RESULT_ID = 'search_jira';
 export const ADVANCED_PEOPLE_SEARCH_RESULT_ID = 'search_people';
 
+export enum JiraEntityTypes {
+  Projects = 'projects',
+  Issues = 'issues',
+  Boards = 'boards',
+  Filters = 'filters',
+  People = 'people',
+}
+
+const JIRA_ADVANCED_SEARCH_URLS = {
+  [JiraEntityTypes.Issues]: '/issues',
+  [JiraEntityTypes.Boards]: '/secure/ManageRapidViews.jspa',
+  [JiraEntityTypes.Filters]: '/ManageFilters.jspa',
+  [JiraEntityTypes.Projects]: '/projects',
+  [JiraEntityTypes.People]: '/people',
+};
+
 export const isAdvancedSearchResult = (resultId: string) =>
   [
     ADVANCED_CONFLUENCE_SEARCH_RESULT_ID,
@@ -14,8 +30,11 @@ export function getConfluenceAdvancedSearchLink(query?: string) {
   return `/wiki/dosearchsite.action${queryString}`;
 }
 
-export function getJiraAdvancedSearchUrl(entityType: string, query?: string) {
-  return `/search/${entityType}?query=${query}`;
+export function getJiraAdvancedSearchUrl(
+  entityType: JiraEntityTypes,
+  query?: string,
+) {
+  return `${JIRA_ADVANCED_SEARCH_URLS[entityType]}?query=${query}`;
 }
 
 export function redirectToConfluenceAdvancedSearch(query = '') {

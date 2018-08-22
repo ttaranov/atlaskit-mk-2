@@ -75,10 +75,12 @@ export default class ResultGroupsComponent extends React.Component<Props> {
   render() {
     const { renderAdvancedSearch, resultsGroups } = this.props;
 
-    return [
-      ...mapGroupsToSections(resultsGroups),
-      renderAdvancedSearch(),
-      this.getAnalyticsComponent(),
-    ];
+    return (
+      <>
+        {mapGroupsToSections(resultsGroups)},
+        {renderAdvancedSearch()},
+        {this.getAnalyticsComponent()},
+      </>
+    );
   }
 }
