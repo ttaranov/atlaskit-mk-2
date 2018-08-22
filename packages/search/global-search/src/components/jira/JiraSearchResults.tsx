@@ -1,9 +1,12 @@
 import * as React from 'react';
+import styled from 'styled-components';
+import { colors, gridSize } from '@atlaskit/theme';
 import { JiraResultsMap, GenericResultMap } from '../../model/Result';
 import { ScreenCounter } from '../../util/ScreenCounter';
 import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
 import SearchResults from '../common/SearchResults';
-import { FormattedHTMLMessage } from 'react-intl';
+import NoResultsState from './NoResultsState';
+import JiraAdvancedSearch from './JiraAdvancedSearch';
 import {
   mapRecentResultsToUIGroups,
   mapSearchResultsToUIGroups,
@@ -22,6 +25,14 @@ export interface Props {
   referralContextIdentifiers?: ReferralContextIdentifiers;
 }
 
+const StickyFooter = styled.div`
+  position: sticky;
+  bottom: 0;
+  background: white;
+  border-top: 1px solid ${colors.N40};
+  padding: ${gridSize()}px 0;
+`;
+
 export default class JiraSearchResults extends React.Component<Props> {
   render() {
     const { recentItems, searchResults, query } = this.props;
@@ -29,20 +40,21 @@ export default class JiraSearchResults extends React.Component<Props> {
     return (
       <SearchResults
         {...this.props}
-        renderAdvancedSearchLink={() => (
-          <FormattedHTMLMessage
-            id="global-search.no-recent-activity-body"
-            values={{ url: 'http://www.jdog.jira-dev.com' }}
-          />
-        )}
+        renderAdvancedSearchLink={() => <JiraAdvancedSearch query={query} />}
         renderAdvancedSearchGroup={() => (
-          <div id="jira-advanced-search" key="jira-advanced-search" />
+          <StickyFooter>
+            <JiraAdvancedSearch
+              query={query}
+              showKeyboardLozenge
+              showSearchIcon
+            />
+          </StickyFooter>
         )}
         getPreQueryGroups={() => mapRecentResultsToUIGroups(recentItems)}
         getPostQueryGroups={() =>
           mapSearchResultsToUIGroups(searchResults as JiraResultsMap)
         }
-        renderNoResult={() => <div id="no-result" key={query} />}
+        renderNoResult={() => <NoResultsState query={query} />}
       />
     );
   }
