@@ -8,6 +8,7 @@ import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
 import SearchResults from '../common/SearchResults';
 import NoResultsState from './NoResultsState';
 import JiraAdvancedSearch from './JiraAdvancedSearch';
+import { JiraEntityTypes } from '../SearchResultsUtil';
 import {
   mapRecentResultsToUIGroups,
   mapSearchResultsToUIGroups,
@@ -24,6 +25,7 @@ export interface Props {
   preQueryScreenCounter?: ScreenCounter;
   postQueryScreenCounter?: ScreenCounter;
   referralContextIdentifiers?: ReferralContextIdentifiers;
+  onAdvancedSearchChange?(jiraEntityType: JiraEntityTypes): void;
 }
 
 const StickyFooter = styled.div`
@@ -40,7 +42,12 @@ const AdvancedSearchContainer = styled.div`
 
 export default class JiraSearchResults extends React.Component<Props> {
   render() {
-    const { recentItems, searchResults, query } = this.props;
+    const {
+      recentItems,
+      searchResults,
+      query,
+      onAdvancedSearchChange,
+    } = this.props;
 
     return (
       <SearchResults
@@ -59,6 +66,7 @@ export default class JiraSearchResults extends React.Component<Props> {
               query={query}
               showKeyboardLozenge
               showSearchIcon
+              onAdvancedSearchChange={onAdvancedSearchChange}
             />
           </StickyFooter>
         )}

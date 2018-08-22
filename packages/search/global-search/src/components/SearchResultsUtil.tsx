@@ -42,6 +42,13 @@ export function redirectToConfluenceAdvancedSearch(query = '') {
   window.location.assign(getConfluenceAdvancedSearchLink(query));
 }
 
+export function redirectToJiraAdvancedSearch(
+  entityType: JiraEntityTypes,
+  query = '',
+) {
+  window.location.assign(getJiraAdvancedSearchUrl(entityType, query));
+}
+
 export function take<T>(array: Array<T>, n: number) {
   return (array || []).slice(0, n);
 }

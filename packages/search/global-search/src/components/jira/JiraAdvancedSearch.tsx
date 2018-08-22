@@ -18,6 +18,7 @@ import {
 
 export interface Props {
   query: string;
+  onAdvancedSearchChange?(entity: JiraEntityTypes): void;
   showKeyboardLozenge?: boolean;
   showSearchIcon?: boolean;
 }
@@ -41,10 +42,18 @@ const StyledButton = styled(Button)`
   margin-right: ${math.divide(gridSize, 4)}px;
 `;
 
-const itemI18nKeySuffix = Object.keys(JiraEntityTypes);
+const itemI18nKeySuffix = [
+  JiraEntityTypes.Issues,
+  JiraEntityTypes.People,
+  JiraEntityTypes.Projects,
+  JiraEntityTypes.Filters,
+  JiraEntityTypes.Boards,
+];
 
 const getI18nItemName = i18nKeySuffix => (
-  <FormattedMessage id={`global-search.jira.no-results.${i18nKeySuffix}`} />
+  <FormattedMessage
+    id={`global-search.jira.advanced-search-${i18nKeySuffix}`}
+  />
 );
 
 export default class JiraAdvancedSearch extends React.Component<Props> {

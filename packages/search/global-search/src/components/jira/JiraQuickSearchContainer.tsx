@@ -14,7 +14,11 @@ export interface Props {
   jiraClient: JiraClient;
   peopleSearchClient: PeopleSearchClient;
 }
-import { handlePromiseError } from '../SearchResultsUtil';
+import {
+  handlePromiseError,
+  JiraEntityTypes,
+  redirectToJiraAdvancedSearch,
+} from '../SearchResultsUtil';
 import { ContentType, JiraObjectResult, Result } from '../../model/Result';
 
 const contentTypeToSection = {
@@ -24,7 +28,9 @@ const contentTypeToSection = {
   [ContentType.JiraProject]: 'projects',
 };
 
-export interface State {}
+export interface State {
+  advancedSearchEntity: JiraEntityTypes;
+}
 
 /**
  * Container/Stateful Component that handles the data fetching and state handling when the user interacts with Search.
@@ -33,6 +39,16 @@ export class JiraQuickSearchContainer extends React.Component<
   Props & InjectedIntlProps,
   State
 > {
+  state = {
+    advancedSearchEntity: JiraEntityTypes.Issues,
+  };
+
+  handleSearchSubmit = ({ target }) => {
+    debugger;
+    const query = target.value;
+    redirectToJiraAdvancedSearch(this.state.advancedSearchEntity, query);
+  };
+
   getSearchResultsComponent = ({
     retrySearch,
     latestSearchQuery,
@@ -53,6 +69,9 @@ export class JiraQuickSearchContainer extends React.Component<
         recentItems={recentItems}
         keepPreQueryState={keepPreQueryState}
         searchSessionId={searchSessionId}
+        onAdvancedSearchChange={entityType =>
+          this.setState({ advancedSearchEntity: entityType })
+        }
       />
     );
   };
@@ -133,6 +152,7 @@ export class JiraQuickSearchContainer extends React.Component<
         getSearchResultsComponent={this.getSearchResultsComponent}
         getRecentItems={this.getRecentItems}
         getSearchResults={this.getSearchResults}
+        handleSearchSubmit={this.handleSearchSubmit}
       />
     );
   }

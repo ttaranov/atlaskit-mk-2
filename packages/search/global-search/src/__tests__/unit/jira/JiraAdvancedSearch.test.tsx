@@ -77,11 +77,11 @@ describe('JiraAdvancedSearch', () => {
     const items = dropDownMenu.find(DropdownItem);
     expect(items.length).toBe(5);
     expect(items.map(item => item.key())).toMatchObject([
-      'Projects',
-      'Issues',
-      'Boards',
-      'Filters',
-      'People',
+      'issues',
+      'people',
+      'projects',
+      'filters',
+      'boards',
     ]);
   });
 
@@ -114,7 +114,7 @@ describe('JiraAdvancedSearch', () => {
     advancedSearchResult = wrapper.find(AdvancedSearchResult);
 
     expect(getJiraAdvancedSearchUrlMock).toHaveBeenLastCalledWith(
-      'Projects',
+      'projects',
       'query',
     );
     expect(getJiraAdvancedSearchUrlMock).toHaveBeenCalledTimes(2);
