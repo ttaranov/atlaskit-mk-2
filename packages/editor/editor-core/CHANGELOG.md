@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 77.1.5
+- [patch] New floating toolbar for extensions [23437c0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23437c0)
+- [none] Updated dependencies [23437c0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23437c0)
+
 ## 77.1.4
 - [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
   - @atlaskit/renderer@20.0.11
