@@ -5,6 +5,7 @@ import Adapter from 'enzyme-adapter-react-16';
 import React, { PureComponent } from 'react';
 import sinon from 'sinon';
 import AddIcon from '@atlaskit/icon/glyph/add';
+import root from 'window-or-global';
 import NavigationWithAnalytics, {
   NavigationWithoutAnalytics as Navigation,
 } from '../../components/js/Navigation';
@@ -32,7 +33,7 @@ const globalOpenWidth = globalOpenWidthFn(false);
 const standardOpenWidth = standardOpenWidthFn(false);
 const resizeClosedBreakpoint = resizeClosedBreakpointFn(false);
 
-const expect = window.expect;
+const expect = root.expect;
 
 class Child extends PureComponent<any> {
   render() {

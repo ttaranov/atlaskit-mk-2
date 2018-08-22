@@ -1,9 +1,9 @@
 // @flow
-
 import React, { PureComponent, type Node } from 'react';
 import Blanket from '@atlaskit/blanket';
 import { withAnalytics } from '@atlaskit/analytics';
 import ScrollLock from 'react-scrolllock';
+import root from 'window-or-global';
 import DrawerTrigger from './DrawerTrigger';
 import DrawerBackIcon from './DrawerBackIcon';
 import ContainerHeader from './ContainerHeader';
@@ -62,7 +62,7 @@ export class DrawerImpl extends PureComponent<Props, State> {
   };
 
   componentDidMount() {
-    window.addEventListener('keydown', this.handleKeyDown);
+    root.addEventListener('keydown', this.handleKeyDown);
   }
 
   componentWillReceiveProps(nextProps: Props) {
@@ -79,7 +79,7 @@ export class DrawerImpl extends PureComponent<Props, State> {
   }
 
   componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKeyDown);
+    root.removeEventListener('keydown', this.handleKeyDown);
   }
 
   // eslint-disable-next-line react/sort-comp

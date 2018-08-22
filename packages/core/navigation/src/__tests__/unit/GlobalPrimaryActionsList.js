@@ -2,12 +2,13 @@
 import React, { PureComponent } from 'react';
 import { shallow, mount, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
+import root from 'window-or-global';
 import GlobalPrimaryActionsList from '../../components/js/GlobalPrimaryActionsList';
 
 configure({ adapter: new Adapter() });
 
-const describe = window.describe;
-const it = window.it;
+const describe = root.describe;
+const it = root.it;
 
 class Child extends PureComponent<any> {
   render() {

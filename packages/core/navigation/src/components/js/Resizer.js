@@ -2,6 +2,7 @@
 import React, { PureComponent, type ElementRef } from 'react';
 import { withTheme } from 'styled-components';
 import rafSchedule from 'raf-schd';
+import root from 'window-or-global';
 import ResizerInner from '../styled/ResizerInner';
 import ResizerButton from './ResizerButton';
 import {
@@ -68,15 +69,15 @@ class Resizer extends PureComponent<Props, State> {
       startScreenX: e.screenX,
     });
     this.props.onResizeStart();
-    window.addEventListener('mousemove', this.mouseMoveHandler);
-    window.addEventListener('mouseup', this.mouseUpHandler);
-    window.addEventListener('mouseout', this.handleOutofBounds);
+    root.addEventListener('mousemove', this.mouseMoveHandler);
+    root.addEventListener('mouseup', this.mouseUpHandler);
+    root.addEventListener('mouseout', this.handleOutofBounds);
   };
 
   mouseUpHandler = (e, outOfBounds = false) => {
-    window.removeEventListener('mousemove', this.mouseMoveHandler);
-    window.removeEventListener('mouseup', this.mouseUpHandler);
-    window.removeEventListener('mouseout', this.handleOutofBounds);
+    root.removeEventListener('mousemove', this.mouseMoveHandler);
+    root.removeEventListener('mouseup', this.mouseUpHandler);
+    root.removeEventListener('mouseout', this.handleOutofBounds);
     this.setState({
       isResizing: false,
     });

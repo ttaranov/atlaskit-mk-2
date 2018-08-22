@@ -3,6 +3,7 @@ import { mount, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
 import PropTypes from 'prop-types';
+import root from 'window-or-global';
 import Blanket from '@atlaskit/blanket';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
 import Drawer, { analyticsNamespace } from '../../components/js/Drawer';
@@ -26,7 +27,7 @@ describe('<Drawer />', () => {
     // has limited support. #FML
     // $FlowFixMe
     event.keyCode = keyCode;
-    window.dispatchEvent(event);
+    root.dispatchEvent(event);
   };
 
   let drawerWrapper;

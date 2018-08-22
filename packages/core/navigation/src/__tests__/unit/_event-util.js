@@ -1,14 +1,16 @@
 // @flow
+import root from 'window-or-global';
+
 // eslint-disable-next-line import/prefer-default-export
 export const dispatchMouseEvent = (
   eventName: string,
   options?: Object = {},
-  target: EventTarget = window,
+  target: EventTarget = root,
 ): MouseEvent => {
-  const event = new window.MouseEvent(eventName, {
+  const event = new root.MouseEvent(eventName, {
     bubbles: true,
     cancelable: true,
-    view: window,
+    view: root,
     ...options,
   });
 

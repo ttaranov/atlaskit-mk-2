@@ -1,5 +1,6 @@
 // @flow
 import styled from 'styled-components';
+import root from 'window-or-global';
 import { getProvided, whenNotCollapsed } from '../../theme/util';
 import {
   scrollBarSize,
@@ -7,8 +8,13 @@ import {
   scrollHintHeight,
 } from '../../shared-variables';
 
-const doubleIfNotWebkit = width =>
-  width * (window.navigator.userAgent.indexOf('AppleWebKit') >= 0 ? 1 : 2);
+const multiplier = (() => {
+  let value = 2;
+  if (root && root.navigator && root.navigator.userAgent) {
+    if (root.navigator.userAgent.indexOf('AppleWebKit') >= 0) value = 1;
+  }
+  return value;
+})();
 
 const ContainerNavigationChildrenWrapper = styled.div`
   display: flex;
@@ -32,7 +38,7 @@ const ContainerNavigationChildrenWrapper = styled.div`
 
       // Because we are using a custom scrollbar for WebKit in ScrollHintScrollContainer, the
       // right margin needs to be calculated based on whether that feature is in use.
-      right: ${scrollHintSpacing + doubleIfNotWebkit(scrollBarSize)}px;
+      right: ${scrollHintSpacing + scrollBarSize * multiplier}px;
     }
 
     &:before {

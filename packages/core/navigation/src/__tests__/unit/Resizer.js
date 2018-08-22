@@ -2,6 +2,7 @@
 import { mount, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
+import root from 'window-or-global';
 import Resizer from '../../components/js/Resizer';
 import ResizerInner from '../../components/styled/ResizerInner';
 import ResizerButton from '../../components/js/ResizerButton';
@@ -116,8 +117,8 @@ describe('<Resizer />', () => {
       expect(resizeEndSpy).not.toHaveBeenCalled();
     });
     it('should unbind all window listeners when resize ends', () => {
-      const addSpy = jest.spyOn(window, 'addEventListener');
-      const removeSpy = jest.spyOn(window, 'removeEventListener');
+      const addSpy = jest.spyOn(root, 'addEventListener');
+      const removeSpy = jest.spyOn(root, 'removeEventListener');
 
       // Clear any mock info from previous tests
       addSpy.mockReset();
