@@ -132,7 +132,7 @@ describe('Renderer - ReactSerializer', () => {
         describe(`${appearance} appearance`, () => {
           // Should the emoji render as double height in this appearance
           const doubleHeight: boolean =
-            emojiDoubleHeightIn.indexOf(appearance) != -1;
+            emojiDoubleHeightIn.indexOf(appearance) !== -1;
 
           it(`emoji ${
             doubleHeight ? 'should' : 'should not'
