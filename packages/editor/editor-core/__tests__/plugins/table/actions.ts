@@ -37,7 +37,7 @@ describe('table plugin: actions', () => {
   const editor = (doc: any) =>
     createEditor<TablePluginState>({
       doc,
-      editorPlugins: [tablesPlugin, panelPlugin],
+      editorPlugins: [tablesPlugin(), panelPlugin],
       pluginKey,
     });
 
