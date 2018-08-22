@@ -27,18 +27,14 @@ export default class FormExample extends Component<void, void> {
   getFormRef = (form: any) => {
     this.form = form;
   };
-  submitClickHandler = () => {
-    this.form.submit();
-  };
   render() {
     return (
       <div>
         <Form
-          onSubmitHandler={d => console.log(d)}
           ref={this.getFormRef}
           name="form-example"
           action={formTestUrl}
-          method="GET"
+          method="POST"
           target="submitFrame"
         >
           <Field label="standalone radio">
@@ -63,11 +59,7 @@ export default class FormExample extends Component<void, void> {
               },
             ]}
           >
-            <Button
-              onClick={this.submitClickHandler}
-              type="submit"
-              appearance="primary"
-            >
+            <Button type="submit" appearance="primary">
               Submit
             </Button>
           </FormFooter>

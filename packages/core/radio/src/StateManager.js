@@ -1,34 +1,32 @@
 // @flow
-import React, {
-  Component,
-  type ComponentType,
-  type ElementConfig,
-} from 'react';
-import RadioGroup from './RadioGroup';
+import React, { Component, type ComponentType } from 'react';
+import { type RadioGroupProps } from './RadioGroup';
 
 type StateManagerProps = {
-  selectedValue?: string | number | null,
+  ...RadioGroupProps,
   defaultSelectedValue: string | number | null,
-  onChange?: (event: SyntheticEvent<*>) => void,
 };
 
 type State = {
   selectedValue: string | number | null,
 };
 
-export default (
-  WrappedComponent: ComponentType<ElementConfig<typeof RadioGroup>>,
-): ComponentType<StateManagerProps> => {
+export default function(WrappedComponent: ComponentType<RadioGroupProps>) {
   return class StateManager extends Component<StateManagerProps, State> {
     static defaultProps = {
       defaultSelectedValue: null,
     };
-    state = {
-      selectedValue:
-        this.props.selectedValue !== undefined
-          ? this.props.selectedValue
-          : this.props.defaultSelectedValue,
-    };
+
+    constructor(props: StateManagerProps) {
+      super(props);
+      this.state = {
+        selectedValue:
+          props.selectedValue !== undefined
+            ? props.selectedValue
+            : props.defaultSelectedValue,
+      };
+    }
+
     getProp = (key: string) => {
       return this.props[key] !== undefined ? this.props[key] : this.state[key];
     };
@@ -51,4 +49,4 @@ export default (
       );
     }
   };
-};
+}

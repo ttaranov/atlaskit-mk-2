@@ -26,11 +26,13 @@ type RadioElementArray = Array<Element<typeof Radio>>;
 class RadioGroup extends Component<RadioGroupProps> {
   static defaultProps = {
     onChange: () => {},
+    items: [],
   };
 
   items: RadioElementArray = [];
 
   buildItems = (props: RadioGroupProps) => {
+    if (!props.items.length) return null;
     return (props.items.map((item: ItemPropType, index: number) => {
       if (item.value === props.selectedValue) {
         const itemProps = { ...item, isChecked: true };
@@ -60,12 +62,12 @@ class RadioGroup extends Component<RadioGroupProps> {
 
   render() {
     const items = this.buildItems(this.props);
-    return <Fragment>{items.length ? items : null}</Fragment>;
+    return <Fragment>{items}</Fragment>;
   }
 }
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
-
+export const RadioGroupWithoutAnalytics = stateManager(RadioGroup);
 export default withAnalyticsContext({
   componentName: 'radioGroup',
   packageName,
@@ -81,5 +83,5 @@ export default withAnalyticsContext({
         packageVersion,
       },
     }),
-  })(stateManager(RadioGroup)),
+  })(RadioGroupWithoutAnalytics),
 );
