@@ -1,12 +1,11 @@
 // @flow
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
-import Base from '@atlaskit/field-base';
 
 import Radio from '../../RadioBase';
-import AkFieldRadioGroupWithAnalytics, {
-  AkFieldRadioGroupWithoutAnalytics as AkFieldRadioGroup,
-} from '../../RadioGroupStateless';
+import RadioGroupWithAnalytics, {
+  RadioGroupWithoutAnalytics as RadioGroup,
+} from '../../RadioGroup';
 import { name } from '../../../package.json';
 import type { ItemPropTypeSmart } from '../../types';
 
@@ -14,30 +13,31 @@ describe(name, () => {
   describe('AkFieldRadioGroup (stateless)', () => {
     const sampleItems = [
       { name: 'test', value: '1', label: 'one' },
-      { name: 'test', value: '2', label: 'two', isSelected: true },
+      { name: 'test', value: '2', label: 'two' },
       { name: 'test', value: '3', label: <i>three</i>, isDisabled: true },
     ];
 
     describe('exports', () => {
       it('the AkFieldRadioGroup component', () => {
-        expect(AkFieldRadioGroup).not.toBe(undefined);
-        expect(new AkFieldRadioGroup()).toBeInstanceOf(Component);
+        expect(RadioGroup).not.toBe(undefined);
+        expect(
+          new RadioGroup({ selectedValue: null, defaultSelectedValue: null }),
+        ).toBeInstanceOf(Component);
       });
     });
 
     describe('construction', () => {
       it('should be able to create a component', () => {
-        const wrapper = shallow(<AkFieldRadioGroup onRadioChange={() => {}} />);
+        const wrapper = shallow(<RadioGroup onChange={() => {}} />);
         expect(wrapper).not.toBe(undefined);
         expect(wrapper.instance()).toBeInstanceOf(Component);
       });
 
       it('should render a FieldBase containing a Radio for each item', () => {
         const wrapper = mount(
-          <AkFieldRadioGroup onRadioChange={() => {}} items={sampleItems} />,
+          <RadioGroup onChange={() => {}} items={sampleItems} />,
         );
-        expect(wrapper.find(Base).length).toBe(1);
-        expect(wrapper.find(Base).find(Radio).length).toBe(3);
+        expect(wrapper.find(Radio).length).toBe(3);
       });
     });
 
@@ -45,7 +45,7 @@ describe(name, () => {
       describe('items prop', () => {
         it('renders a Radio with correct props for each item in the array', () => {
           const wrapper = mount(
-            <AkFieldRadioGroup onRadioChange={() => {}} items={sampleItems} />,
+            <RadioGroup onChange={() => {}} items={sampleItems} />,
           );
           expect(wrapper.find(Radio).length).toBe(sampleItems.length);
 
@@ -62,35 +62,11 @@ describe(name, () => {
         });
       });
 
-      describe('label prop', () => {
-        it('is reflected to the FieldBase', () => {
-          const label = 'string label content';
-          const wrapper = shallow(
-            <AkFieldRadioGroup onRadioChange={() => {}} label={label} />,
-          );
-          expect(wrapper.find(Base).prop('label')).toBe(label);
-        });
-      });
-
       describe('isRequired prop', () => {
-        it('is reflected to the FieldBase', () => {
-          const isRequired = true;
-          const wrapper = shallow(
-            <AkFieldRadioGroup
-              onRadioChange={() => {}}
-              isRequired={isRequired}
-            />,
-          );
-          expect(wrapper.find(Base).prop('isRequired')).toBe(isRequired);
-        });
-
         it('is reflected to each Radio item', () => {
           const isRequired = true;
           const wrapper = shallow(
-            <AkFieldRadioGroup
-              onRadioChange={() => {}}
-              isRequired={isRequired}
-            />,
+            <RadioGroup onChange={() => {}} isRequired={isRequired} />,
           );
           wrapper
             .find(Radio)
@@ -100,11 +76,11 @@ describe(name, () => {
         });
       });
 
-      describe('onRadioChange prop', () => {
+      describe('onChange prop', () => {
         it('is called when a radio item is changed', () => {
           const spy = jest.fn();
           const wrapper = mount(
-            <AkFieldRadioGroup onRadioChange={spy} items={sampleItems} />,
+            <RadioGroup onChange={spy} items={sampleItems} />,
           );
           wrapper
             .find(Radio)
@@ -132,10 +108,14 @@ describe(name, () => {
         const items = [
           { name: 'n', value: '0' },
           { name: 'n', value: '1' },
-          { name: 'n', value: '2', isSelected: true },
+          { name: 'n', value: '2' },
         ];
         const wrapper = shallow(
-          <AkFieldRadioGroup onRadioChange={() => {}} items={items} />,
+          <RadioGroup
+            items={items}
+            onChange={() => {}}
+            selectedValue={items[2].value}
+          />,
         );
         expectRadioSelected(wrapper, 2);
       });
@@ -146,7 +126,7 @@ describe(name, () => {
           { name: 'n', value: '2' },
         ];
         const wrapper = shallow(
-          <AkFieldRadioGroup onRadioChange={() => {}} items={items} />,
+          <RadioGroup onChange={() => {}} items={items} />,
         );
         expectNoRadioSelected(wrapper);
       });
@@ -154,10 +134,14 @@ describe(name, () => {
         const items = [
           { name: 'n', value: '0' },
           { name: 'n', value: '1' },
-          { name: 'n', value: '2', isSelected: true, isDisabled: true },
+          { name: 'n', value: '2', isDisabled: true },
         ];
         const wrapper = shallow(
-          <AkFieldRadioGroup onRadioChange={() => {}} items={items} />,
+          <RadioGroup
+            items={items}
+            onChange={() => {}}
+            selectedValue={items[2].value}
+          />,
         );
         expectRadioSelected(wrapper, 2);
       });
@@ -176,7 +160,7 @@ describe('AkFieldRadioGroupWithAnalytics', () => {
   });
 
   it('should mount without errors', () => {
-    mount(<AkFieldRadioGroupWithAnalytics onRadioChange={() => {}} />);
+    mount(<RadioGroupWithAnalytics onChange={() => {}} />);
     /* eslint-disable no-console */
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();
