@@ -259,5 +259,21 @@ describe('<MediaViewer />', () => {
 
       expect(context.getMediaCollectionProvider).not.toHaveBeenCalled();
     });
+
+    it('should prioritise the list datasource', () => {
+      const context = Stubs.context(contextConfig);
+      mount(
+        <MediaViewer
+          context={context as any}
+          selectedItem={selectedItem}
+          dataSource={{ collectionName, list }}
+          collectionName={collectionName}
+          MediaViewer={Stubs.mediaViewerConstructor() as any}
+          basePath={basePath}
+        />,
+      );
+      expect(context.getMediaCollectionProvider).not.toHaveBeenCalled();
+      expect(context.getMediaItemProvider).toHaveBeenCalledTimes(3);
+    });
   });
 });
