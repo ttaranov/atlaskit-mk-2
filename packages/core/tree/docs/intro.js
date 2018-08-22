@@ -152,6 +152,9 @@ onExpand = (itemId: ItemId) => {
   **Events:** _onDragStart_ and _onDragEnd_ functions will be triggered at the beginning and the end of re-ordering. They provide the necessary information as _TreePosition_ 
    to change the tree.
 
+  **Current limitations = Plans:** Currently it's not possible to drag a parent, which is already expanded. Addition to this, it's not possible to hover over another item to 
+  expand it or drop on top to nest. We are actively working on these features and we will update the documentation once they are ready.
+
   **Example**
 
   ${code`
