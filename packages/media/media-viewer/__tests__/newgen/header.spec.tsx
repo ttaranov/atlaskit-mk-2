@@ -276,7 +276,7 @@ describe('<Header />', () => {
       const subject = new Subject<MediaItem>();
       const context = createContext({ subject });
       const el = mount(<Header context={context} identifier={identifier} />);
-      expect(el.find(FeedbackButton)).toHaveLength(0);
+      expect(el.find(FeedbackButton).html()).toBeNull();
     });
 
     it('should show the feedback button if jQuery is found in window object', () => {
@@ -284,7 +284,7 @@ describe('<Header />', () => {
       const context = createContext({ subject });
       window.jQuery = {};
       const el = mount(<Header context={context} identifier={identifier} />);
-      expect(el.find(FeedbackButton)).toHaveLength(1);
+      expect(el.find(FeedbackButton).html()).not.toBeNull();
     });
   });
 
