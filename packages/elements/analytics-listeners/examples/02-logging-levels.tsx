@@ -28,7 +28,7 @@ const analyticsWebClientMock = {
   sendScreenEvent: (event: any) => {},
 };
 
-export default class Example extends React.Component {
+class Example extends React.Component {
   state = {
     loggingLevelIdx: 0,
   };
@@ -70,3 +70,8 @@ export default class Example extends React.Component {
     );
   }
 }
+
+export default {
+  useListener: false,
+  component: Example,
+};

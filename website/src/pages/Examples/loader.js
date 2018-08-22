@@ -1,9 +1,12 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, type ComponentType } from 'react';
+import * as ReactIs from 'react-is';
 import styled from 'styled-components';
+import FabricAnalyticsListeners from '@atlaskit/analytics-listeners';
 import { colors, gridSize } from '@atlaskit/theme';
 import Loadable from 'react-loadable';
 import qs from 'query-string';
+
 import packageResolver from '../../utils/packageResolver';
 import * as fs from '../../utils/fs';
 import type { File } from '../../types';
@@ -67,6 +70,33 @@ export default class ExamplesIFrame extends Component<{}, State> {
   }
 }
 
+// Using console.debug instead of console.log to reduce noise.
+// Chrome's default logging level excludes debug
+const mockClient = {
+  sendUIEvent: (...args) => console.debug('UI event', ...args),
+  sendOperationalEvent: (...args) =>
+    console.debug('Operational event', ...args),
+  sendTrackEvent: (...args) => console.debug('Track event', ...args),
+  sendScreenEvent: (...args) => console.debug('Screen event', ...args),
+};
+
+type MetaObject = {
+  /** The example component to load */
+  component: ComponentType<any>,
+  /** Whether to wrap the example component with FabricAnalyticsListener that logs
+   * events to the console.
+   */
+  useListener?: boolean,
+};
+
+type Example = {
+  default: ComponentType<any> | MetaObject,
+};
+
+const defaultExampleMeta = {
+  useListener: true,
+};
+
 function ExampleLoader(props: ExampleLoaderProps) {
   const ExampleComponent = Loadable({
     loader: () => props.example.exports(),
@@ -80,7 +110,19 @@ function ExampleLoader(props: ExampleLoaderProps) {
         );
       }
 
-      return <loaded.default />;
+      const hasMeta =
+        typeof loaded.default === 'object' &&
+        !ReactIs.isValidElementType(loaded.default);
+      const meta = hasMeta ? { ...defaultExampleMeta, ...loaded.default } : {};
+      const ExampleComp = hasMeta ? meta.component : loaded.default;
+
+      return meta.useListener ? (
+        <FabricAnalyticsListeners client={Promise.resolve(mockClient)}>
+          <ExampleComp />
+        </FabricAnalyticsListeners>
+      ) : (
+        <ExampleComp />
+      );
     },
   });
 

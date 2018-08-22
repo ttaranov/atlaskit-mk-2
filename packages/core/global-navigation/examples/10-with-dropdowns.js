@@ -1,7 +1,6 @@
 // @flow
 
 import React from 'react';
-import FabricAnalyticsListeners from '@atlaskit/analytics-listeners';
 import { LayoutManager, NavigationProvider } from '@atlaskit/navigation-next';
 import { DropdownItemGroup, DropdownItem } from '@atlaskit/dropdown-menu';
 
@@ -36,14 +35,12 @@ const mockClient = {
 
 export default () => (
   <NavigationProvider>
-    <FabricAnalyticsListeners client={Promise.resolve(mockClient)}>
-      <LayoutManager
-        globalNavigation={GlobalNav}
-        productNavigation={() => null}
-        containerNavigation={() => null}
-      >
-        Page content
-      </LayoutManager>
-    </FabricAnalyticsListeners>
+    <LayoutManager
+      globalNavigation={GlobalNav}
+      productNavigation={() => null}
+      containerNavigation={() => null}
+    >
+      Page content
+    </LayoutManager>
   </NavigationProvider>
 );

@@ -27,7 +27,7 @@ const analyticsWebClientMock = {
   },
 };
 
-export default function Example() {
+function Example() {
   return (
     <FabricAnalyticsListeners
       client={Promise.resolve(analyticsWebClientMock)}
@@ -54,3 +54,8 @@ export default function Example() {
     </FabricAnalyticsListeners>
   );
 }
+
+export default {
+  useListener: false,
+  component: Example,
+};
