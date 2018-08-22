@@ -14,7 +14,6 @@ import { AnalyticsWebClient } from '../../types';
 
 describe('<FabricEditorsListener />', () => {
   let analyticsWebClientMock: AnalyticsWebClient;
-  let clientPromise: Promise<AnalyticsWebClient>;
   let loggerMock;
 
   beforeEach(() => {
@@ -24,7 +23,6 @@ describe('<FabricEditorsListener />', () => {
       sendTrackEvent: jest.fn(),
       sendScreenEvent: jest.fn(),
     };
-    clientPromise = Promise.resolve(analyticsWebClientMock);
     loggerMock = {
       debug: jest.fn(),
       info: jest.fn(),
@@ -39,7 +37,7 @@ describe('<FabricEditorsListener />', () => {
   ) => {
     const compOnClick = jest.fn();
     const component = mount(
-      <FabricEditorListener client={clientPromise} logger={loggerMock}>
+      <FabricEditorListener client={analyticsWebClientMock} logger={loggerMock}>
         <Component onClick={compOnClick} />
       </FabricEditorListener>,
     );
@@ -53,8 +51,8 @@ describe('<FabricEditorsListener />', () => {
     const dummy = analyticsListener.find('#dummy');
     dummy.simulate('click');
 
-    return clientPromise.then(client => {
-      expect(client.sendUIEvent).toBeCalledWith(expectedEvent);
+    setTimeout(() => {
+      expect(analyticsWebClientMock.sendUIEvent).toBeCalledWith(expectedEvent);
     });
   };
 

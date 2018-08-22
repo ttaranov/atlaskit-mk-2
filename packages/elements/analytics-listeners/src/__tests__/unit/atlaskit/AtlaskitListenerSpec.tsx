@@ -37,7 +37,6 @@ const createAnalyticsContexts = contexts => ({ children }) =>
 
 describe('AtlaskitListener', () => {
   let analyticsWebClientMock: AnalyticsWebClient;
-  let clientPromise: Promise<AnalyticsWebClient>;
   let loggerMock;
 
   beforeEach(() => {
@@ -47,7 +46,6 @@ describe('AtlaskitListener', () => {
       sendTrackEvent: jest.fn(),
       sendScreenEvent: jest.fn(),
     };
-    clientPromise = Promise.resolve(analyticsWebClientMock);
     loggerMock = {
       debug: jest.fn(),
       info: jest.fn(),
@@ -58,7 +56,7 @@ describe('AtlaskitListener', () => {
 
   it('should register an Analytics listener on the atlaskit channel', () => {
     const component = mount(
-      <AtlaskitListener client={clientPromise} logger={loggerMock}>
+      <AtlaskitListener client={analyticsWebClientMock} logger={loggerMock}>
         <div />
       </AtlaskitListener>,
     );
@@ -75,7 +73,7 @@ describe('AtlaskitListener', () => {
       const AnalyticsContexts = createAnalyticsContexts(context);
 
       const component = mount(
-        <AtlaskitListener client={clientPromise} logger={loggerMock}>
+        <AtlaskitListener client={analyticsWebClientMock} logger={loggerMock}>
           <AnalyticsContexts>
             <ButtonWithAnalytics onClick={spy} />
           </AnalyticsContexts>
@@ -84,7 +82,7 @@ describe('AtlaskitListener', () => {
 
       component.find(ButtonWithAnalytics).simulate('click');
 
-      return clientPromise.then(client => {
+      setTimeout(() => {
         expect(
           (analyticsWebClientMock.sendUIEvent as any).mock.calls[0][0],
         ).toMatchObject(clientPayload);

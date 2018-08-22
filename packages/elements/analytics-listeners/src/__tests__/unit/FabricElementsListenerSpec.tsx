@@ -16,7 +16,6 @@ import { FabricElementsAnalyticsContext } from '@atlaskit/analytics-namespaced-c
 
 describe('<FabricElementsListener />', () => {
   let analyticsWebClientMock: AnalyticsWebClient;
-  let clientPromise: Promise<AnalyticsWebClient>;
   let loggerMock;
 
   beforeEach(() => {
@@ -26,7 +25,6 @@ describe('<FabricElementsListener />', () => {
       sendTrackEvent: jest.fn(),
       sendScreenEvent: jest.fn(),
     };
-    clientPromise = Promise.resolve(analyticsWebClientMock);
     loggerMock = {
       debug: jest.fn(),
       info: jest.fn(),
@@ -41,7 +39,10 @@ describe('<FabricElementsListener />', () => {
   ) => {
     const compOnClick = jest.fn();
     const component = mount(
-      <FabricElementsListener client={clientPromise} logger={loggerMock}>
+      <FabricElementsListener
+        client={analyticsWebClientMock}
+        logger={loggerMock}
+      >
         <Component onClick={compOnClick} />
       </FabricElementsListener>,
     );
@@ -55,8 +56,8 @@ describe('<FabricElementsListener />', () => {
     const dummy = analyticsListener.find('#dummy');
     dummy.simulate('click');
 
-    return clientPromise.then(client => {
-      expect(client.sendUIEvent).toBeCalledWith(expectedEvent);
+    setTimeout(() => {
+      expect(analyticsWebClientMock.sendUIEvent).toBeCalledWith(expectedEvent);
     });
   };
 
@@ -81,7 +82,10 @@ describe('<FabricElementsListener />', () => {
 
     it('should fire event with context merged into the attributes', () => {
       const component = mount(
-        <FabricElementsListener client={clientPromise} logger={loggerMock}>
+        <FabricElementsListener
+          client={analyticsWebClientMock}
+          logger={loggerMock}
+        >
           <FabricElementsAnalyticsContext
             data={{ issueId: 100, greeting: 'hello' }}
           >
@@ -100,9 +104,9 @@ describe('<FabricElementsListener />', () => {
       const dummy = analyticsListener.find('#dummy');
       dummy.simulate('click');
 
-      // note: AnalyticsContext data should not be in propagated in the attributes, only FabricElementsAnalyticsContext
-      return clientPromise.then(client => {
-        expect(client.sendUIEvent).toBeCalledWith(
+      setTimeout(() => {
+        // note: AnalyticsContext data should not be in propagated in the attributes, only FabricElementsAnalyticsContext
+        expect(analyticsWebClientMock.sendUIEvent).toBeCalledWith(
           expect.objectContaining({
             action: 'someAction',
             actionSubject: 'someComponent',

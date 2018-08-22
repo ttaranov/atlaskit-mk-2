@@ -11,7 +11,7 @@ export default class FabricEditorListener extends React.Component<
   ListenerProps
 > {
   handleEvent = (event: event) => {
-    handleEvent(event, EDITOR_TAG, this.props.client, this.props.logger);
+    handleEvent(event, EDITOR_TAG, this.props.logger, this.props.client);
   };
 
   render() {

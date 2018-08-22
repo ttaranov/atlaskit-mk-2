@@ -29,7 +29,7 @@ const analyticsWebClientMock = {
 function Example() {
   return (
     <FabricAnalyticsListeners
-      client={Promise.resolve(analyticsWebClientMock)}
+      client={analyticsWebClientMock}
       excludedChannels={[FabricChannel.atlaskit]}
     >
       <div>
