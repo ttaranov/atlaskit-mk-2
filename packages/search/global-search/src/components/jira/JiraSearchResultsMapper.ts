@@ -6,17 +6,19 @@ const MAX_PROJECTS = 2;
 const MAX_BOARDS = 2;
 const MAX_FILTERS = 2;
 
+const DEFAULT_JIRA_RESULTS_MAP = {
+  issues: [],
+  boards: [],
+  filters: [],
+  projects: [],
+};
+
 export const mapRecentResultsToUIGroups = (
   recentlyViewedObjects: JiraResultsMap,
 ): ResultsGroup[] => {
   const { issues, boards, filters, projects } = recentlyViewedObjects
     ? recentlyViewedObjects
-    : {
-        issues: [],
-        boards: [],
-        filters: [],
-        projects: [],
-      };
+    : DEFAULT_JIRA_RESULTS_MAP;
 
   const [issuesToDisplay, ...others] = [
     { items: issues, count: MAX_ISSUES },
