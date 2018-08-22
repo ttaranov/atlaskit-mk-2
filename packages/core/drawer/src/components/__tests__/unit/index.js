@@ -54,7 +54,7 @@ describe('Drawer Transitions', () => {
 
     eventHandler(event);
 
-    expect(onClose).toHaveBeenCalledWith(event);
+    expect(onClose.mock.calls[0][0]).toBe(event);
   });
 
   it('should call onKeyDown if user press ESC', () => {
