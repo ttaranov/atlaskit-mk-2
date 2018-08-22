@@ -101,7 +101,7 @@ function ExampleLoader(props: ExampleLoaderProps) {
   const ExampleComponent = Loadable({
     loader: () => props.example.exports(),
     loading: Loading,
-    render(loaded) {
+    render(loaded: Example) {
       if (!loaded.default) {
         return (
           <ErrorMessage>
@@ -113,15 +113,16 @@ function ExampleLoader(props: ExampleLoaderProps) {
       const hasMeta =
         typeof loaded.default === 'object' &&
         !ReactIs.isValidElementType(loaded.default);
-      const meta = hasMeta ? { ...defaultExampleMeta, ...loaded.default } : {};
-      const ExampleComp = hasMeta ? meta.component : loaded.default;
+      const meta: MetaObject = hasMeta
+        ? { ...defaultExampleMeta, ...loaded.default }
+        : { ...defaultExampleMeta, component: (loaded.default: any) };
 
       return meta.useListener ? (
         <FabricAnalyticsListeners client={Promise.resolve(mockClient)}>
-          <ExampleComp />
+          <meta.component />
         </FabricAnalyticsListeners>
       ) : (
-        <ExampleComp />
+        <meta.component />
       );
     },
   });
