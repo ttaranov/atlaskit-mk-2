@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { mount } from 'enzyme';
 import { AnalyticsContext } from '@atlaskit/analytics-next';
 import FabricAnalyticsListeners, { FabricChannel } from '../src';
 import {
@@ -55,7 +54,10 @@ function Example() {
   );
 }
 
-export default {
-  useListener: false,
-  component: Example,
-};
+Object.assign(Example, {
+  meta: {
+    noListener: true,
+  },
+});
+
+export default Example;

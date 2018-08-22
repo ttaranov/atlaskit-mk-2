@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { mount } from 'enzyme';
 import Button from '@atlaskit/button';
 import FabricAnalyticsListeners from '../src/FabricAnalyticsListeners';
 import {
@@ -71,7 +70,10 @@ class Example extends React.Component {
   }
 }
 
-export default {
-  useListener: false,
-  component: Example,
-};
+Object.assign(Example, {
+  meta: {
+    noListener: true,
+  },
+});
+
+export default Example;
