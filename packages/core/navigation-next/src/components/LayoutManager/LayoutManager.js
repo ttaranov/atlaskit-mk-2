@@ -123,7 +123,8 @@ export default class LayoutManager extends Component<LayoutManagerProps> {
     return (
       <NavigationAnalyticsContext
         data={{
-          attributes: { isExpanded: !isCollapsed, componentName: 'navigation' },
+          attributes: { isExpanded: !isCollapsed },
+          componentName: 'navigation',
           packageName,
           packageVersion,
         }}
