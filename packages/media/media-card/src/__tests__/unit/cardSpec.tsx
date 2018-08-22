@@ -366,6 +366,20 @@ describe('Card', () => {
     });
   });
 
+  it('should work with async identifier', async () => {
+    const identifier: FileIdentifier = {
+      id: Promise.resolve('file-id'),
+      mediaItemType: 'file',
+      collectionName: 'collection',
+    };
+    const { context } = setup(undefined, { identifier });
+    await nextTick();
+    expect(context.getFile).toHaveBeenCalledTimes(1);
+    expect(context.getFile).toBeCalledWith('file-id', {
+      collectionName: 'collection',
+    });
+  });
+
   it('should set dataURI only if its not present', async () => {
     const { component } = setup();
     await nextTick();
@@ -606,6 +620,28 @@ describe('Card', () => {
     component.unmount();
     expect(unsubscribe).toHaveBeenCalledTimes(1);
     expect(releaseDataURI).toHaveBeenCalledTimes(1);
+  });
+
+  it('should pass status=processing if file size is 0', async () => {
+    const getImage = jest.fn();
+    const context = {
+      getFile: () =>
+        Observable.of({
+          id: '123',
+          status: 'processed',
+          mediaType: 'image',
+          mimeType: 'image/png',
+          name: 'file-name',
+          size: 0,
+        }),
+      getImage,
+    } as any;
+    const { component } = setup(context);
+
+    await nextTick();
+    component.update();
+
+    expect(component.find(CardView).prop('status')).toEqual('processing');
   });
 
   describe('Retry', () => {

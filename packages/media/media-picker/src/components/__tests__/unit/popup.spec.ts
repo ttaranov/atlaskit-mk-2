@@ -1,6 +1,8 @@
+jest.mock('react-dom');
+import { ContextFactory } from '@atlaskit/media-core';
+import { render } from 'react-dom';
 import { Popup, PopupConfig } from '../../popup';
 import { UploadParams } from '../../..';
-import { ContextFactory } from '@atlaskit/media-core';
 
 describe('MediaPickerPopup', () => {
   const context = ContextFactory.create({
@@ -22,6 +24,10 @@ describe('MediaPickerPopup', () => {
       collection: '',
     },
   };
+
+  beforeEach(() => {
+    render.mockReset();
+  });
 
   describe('constructor', () => {
     it('sets uploadParams to the default when none are supplied', () => {
@@ -83,6 +89,21 @@ describe('MediaPickerPopup', () => {
     it('should blow up with empty argument', () => {
       const mediaPicker = new Popup(context, popupConfig);
       expect(() => mediaPicker.cancel()).toThrow();
+    });
+  });
+
+  describe('render', () => {
+    it('should render <App /> with the right properties', () => {
+      const mediaPicker = new Popup(context, popupConfig) as any;
+
+      expect(render.mock.calls[0][0].props).toEqual({
+        proxyReactContext: undefined,
+        store: mediaPicker.store,
+        tenantUploadParams: {
+          collection: '',
+          copyFileToRecents: true,
+        },
+      });
     });
   });
 });

@@ -159,7 +159,6 @@ export class NewUploadServiceImpl implements UploadService {
         });
       }
 
-      // TODO: Make this when pressing "insert"
       const occurrenceKey = uuid.v4();
       const upfrontId = this.getUpfrontId(observable, occurrenceKey);
       const mediaFile: MediaFile = {

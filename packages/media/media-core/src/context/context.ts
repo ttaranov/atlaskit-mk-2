@@ -264,46 +264,50 @@ class ContextImpl implements Context {
         mimeType = file.content.type;
       }
 
-      const { deferredFileId, cancel } = uploadFile(file, this.apiConfig, {
-        onProgress: progress => {
-          if (fileId) {
-            observer.next({
-              progress,
-              name,
-              size,
-              mediaType,
-              mimeType,
-              id: fileId,
-              status: 'uploading',
-            });
-          }
+      const { deferredFileId: onUploadFinish, cancel } = uploadFile(
+        file,
+        this.apiConfig,
+        {
+          onProgress: progress => {
+            if (fileId) {
+              observer.next({
+                progress,
+                name,
+                size,
+                mediaType,
+                mimeType,
+                id: fileId,
+                status: 'uploading',
+              });
+            }
+          },
+          onId: id => {
+            fileId = id;
+            const key = FileStreamCache.createKey(fileId, { collectionName });
+            fileStreamsCache.set(key, fileStream);
+            if (file.content instanceof Blob) {
+              observer.next({
+                name,
+                size,
+                mediaType,
+                mimeType,
+                id: fileId,
+                progress: 0,
+                status: 'uploading',
+                preview: {
+                  blob: file.content,
+                },
+              });
+            }
+          },
         },
-        onId: id => {
-          fileId = id;
-          const key = FileStreamCache.createKey(fileId, { collectionName });
-          fileStreamsCache.set(key, fileStream);
-          if (file.content instanceof Blob) {
-            observer.next({
-              name,
-              size,
-              mediaType,
-              mimeType,
-              id: fileId,
-              progress: 0,
-              status: 'uploading',
-              preview: {
-                blob: file.content,
-              },
-            });
-          }
-        },
-      });
+      );
 
       if (controller) {
         controller.setAbort(cancel);
       }
 
-      deferredFileId
+      onUploadFinish
         .then(() => {
           observer.next({
             id: fileId,

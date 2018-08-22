@@ -111,7 +111,7 @@ export class MediaCollectionService implements CollectionService {
       // This prevents showing "ghost" files
       const contents = response.data.contents.filter(
         (item: MediaCollectionFileItem) =>
-          item.details.size && item.details.size > 0,
+          item.details && item.details.size && item.details.size > 0,
       );
 
       return {
