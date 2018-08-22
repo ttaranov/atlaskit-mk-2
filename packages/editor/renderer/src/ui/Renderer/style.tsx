@@ -19,6 +19,7 @@ import {
 import {
   tableSharedStyle,
   columnLayoutSharedStyle,
+  mediaSingleSharedStyle,
 } from '@atlaskit/editor-common';
 import { RendererAppearance } from './';
 
@@ -242,7 +243,7 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     }
   }
 
-  & .wrap-left + .wrap-right,
+  ${mediaSingleSharedStyle} & .wrap-left + .wrap-right,
   & .wrap-right + .wrap-left {
     margin-left: 0;
     margin-right: 0;
@@ -290,7 +291,8 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     }
   }
 
-  & .Extension {
+  & .Extension-wide,
+  & .Extension-full-width {
     margin-left: 50%;
     transform: translateX(-50%);
   }

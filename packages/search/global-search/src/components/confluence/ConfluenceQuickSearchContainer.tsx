@@ -8,11 +8,7 @@ import {
 } from '../../api/CrossProductSearchClient';
 import { Result } from '../../model/Result';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
-import ConfluenceSearchResults, {
-  MAX_PAGES_BLOGS_ATTACHMENTS,
-  MAX_SPACES,
-  MAX_PEOPLE,
-} from './ConfluenceSearchResults';
+import ConfluenceSearchResults from './ConfluenceSearchResults';
 import { SearchScreenCounter, ScreenCounter } from '../../util/ScreenCounter';
 import {
   LinkComponent,
@@ -22,17 +18,7 @@ import {
   redirectToConfluenceAdvancedSearch,
   handlePromiseError,
 } from '../SearchResultsUtil';
-import {
-  ShownAnalyticsAttributes,
-  buildShownEventDetails,
-  SearchPerformanceTiming,
-} from '../../util/analytics-util';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
-import { take } from '../SearchResultsUtil';
-import {
-  firePreQueryShownEvent,
-  firePostQueryShownEvent,
-} from '../../util/analytics-event-helper';
 import { CreateAnalyticsEventFn } from '../analytics/types';
 import performanceNow from '../../util/performance-now';
 import { QuickSearchContainer } from '../common/QuickSearchContainer';
@@ -131,66 +117,6 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   ): ((reason: any) => void) => error =>
     this.handleSearchErrorAnalytics(error, source);
 
-  fireShownPreQueryEvent = (
-    searchSessionId,
-    recentItems,
-    requestStartTime?: number,
-  ) => {
-    const { createAnalyticsEvent } = this.props;
-    if (createAnalyticsEvent) {
-      const elapsedMs: number = requestStartTime
-        ? performanceNow() - requestStartTime
-        : 0;
-
-      const eventAttributes: ShownAnalyticsAttributes = buildShownEventDetails(
-        take(
-          recentItems.recentlyViewedPages || [],
-          MAX_PAGES_BLOGS_ATTACHMENTS,
-        ),
-        take(recentItems.recentlyViewedSpaces || [], MAX_SPACES),
-        take(recentItems.recentlyInteractedPeople || [], MAX_PEOPLE),
-      );
-
-      firePreQueryShownEvent(
-        eventAttributes,
-        elapsedMs,
-        searchSessionId,
-        createAnalyticsEvent,
-      );
-    }
-  };
-
-  fireShownPostQueryEvent = (
-    startTime,
-    elapsedMs,
-    searchResults,
-    searchSessionId,
-    latestSearchQuery: string,
-  ) => {
-    const searchPerformanceTiming: SearchPerformanceTiming = {
-      startTime,
-      elapsedMs,
-      ...searchResults.searchTimings,
-    };
-
-    const resultsDetails: ShownAnalyticsAttributes = buildShownEventDetails(
-      take(searchResults.objectResults || [], MAX_PAGES_BLOGS_ATTACHMENTS),
-      take(searchResults.spaceResults || [], MAX_SPACES),
-      take(searchResults.peopleResults || [], MAX_PEOPLE),
-    );
-
-    const { createAnalyticsEvent } = this.props;
-    if (createAnalyticsEvent) {
-      firePostQueryShownEvent(
-        resultsDetails,
-        searchPerformanceTiming,
-        searchSessionId,
-        latestSearchQuery,
-        createAnalyticsEvent,
-      );
-    }
-  };
-
   getSearchResults = (query, sessionId, startTime) => {
     const useAggregator = this.props.useAggregatorForConfluenceObjects;
 
@@ -236,12 +162,14 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         confSearchElapsedMs,
         peopleElapsedMs,
       ]) => ({
-        objectResults: useAggregator
-          ? xpsearchResultsMap.get(Scope.ConfluencePageBlogAttachment) || []
-          : objectResults,
-        spaceResults: xpsearchResultsMap.get(Scope.ConfluenceSpace) || [],
-        peopleResults,
-        searchTimings: {
+        results: {
+          objects: useAggregator
+            ? xpsearchResultsMap.get(Scope.ConfluencePageBlogAttachment) || []
+            : objectResults,
+          spaces: xpsearchResultsMap.get(Scope.ConfluenceSpace) || [],
+          people: peopleResults,
+        },
+        timings: {
           quickNavElapsedMs,
           confSearchElapsedMs,
           peopleElapsedMs,
@@ -274,9 +202,11 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         recentlyViewedSpaces = [],
         recentlyInteractedPeople = [],
       ]) => ({
-        recentlyViewedPages,
-        recentlyViewedSpaces,
-        recentlyInteractedPeople,
+        results: {
+          objects: recentlyViewedPages,
+          spaces: recentlyViewedSpaces,
+          people: recentlyInteractedPeople,
+        },
       }),
     );
   };
@@ -291,28 +221,14 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     keepPreQueryState,
     searchSessionId,
   }) => {
-    const { objectResults = [], spaceResults = [], peopleResults = [] } =
-      searchResults || {};
-
-    const {
-      recentlyViewedPages = [],
-      recentlyViewedSpaces = [],
-      recentlyInteractedPeople = [],
-    } =
-      recentItems || {};
-
     return (
       <ConfluenceSearchResults
         retrySearch={retrySearch}
         query={latestSearchQuery}
         isError={isError}
-        objectResults={objectResults}
-        spaceResults={spaceResults}
-        peopleResults={peopleResults}
+        searchResults={searchResults}
+        recentItems={recentItems}
         isLoading={isLoading}
-        recentlyViewedPages={recentlyViewedPages}
-        recentlyViewedSpaces={recentlyViewedSpaces}
-        recentlyInteractedPeople={recentlyInteractedPeople}
         keepPreQueryState={keepPreQueryState}
         searchSessionId={searchSessionId}
         referralContextIdentifiers={this.props.referralContextIdentifiers}
@@ -325,11 +241,11 @@ export class ConfluenceQuickSearchContainer extends React.Component<
 
     return (
       <QuickSearchContainer
-        intl={this.props.intl}
+        placeholder={this.props.intl.formatMessage({
+          id: 'global-search.confluence.search-placeholder',
+        })}
         linkComponent={linkComponent}
         getSearchResultsComponent={this.getSearchResultsComponent}
-        fireShownPreQueryEvent={this.fireShownPreQueryEvent}
-        fireShownPostQueryEvent={this.fireShownPostQueryEvent}
         getRecentItems={this.getRecentItems}
         getSearchResults={this.getSearchResults}
         handleSearchSubmit={this.handleSearchSubmit}

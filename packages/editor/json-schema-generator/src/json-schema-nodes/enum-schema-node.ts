@@ -13,4 +13,11 @@ export default class EnumSchemaNode extends SchemaNode {
   toJSON(): object {
     return { enum: Array.from(this.values) };
   }
+
+  toSpec() {
+    return {
+      type: 'enum',
+      values: Array.from(this.values),
+    };
+  }
 }

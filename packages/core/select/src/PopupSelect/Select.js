@@ -159,7 +159,9 @@ export default class PopupSelect extends PureComponent<Props, State> {
       returnFocusOnDeactivate: true,
     };
     this.focusTrap = createFocusTrap(this.menuRef, trapConfig);
-    this.focusTrap.activate();
+
+    // allow time for the HTMLElement to render
+    setTimeout(() => this.focusTrap.activate(), 1);
   };
   close = () => {
     const { onClose } = this.props;

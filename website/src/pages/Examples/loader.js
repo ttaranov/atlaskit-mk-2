@@ -9,18 +9,6 @@ import * as fs from '../../utils/fs';
 import type { File } from '../../types';
 import Loading from '../../components/Loading';
 
-const Content = styled.div`
-  flex: 1 1 auto;
-`;
-
-const ComponentContainer = styled.div`
-  height: 100%;
-  position: relative;
-  box-sizing: border-box;
-  width: 100%;
-  padding: ${gridSize() * 2}px;
-`;
-
 const ErrorMessage = styled.div`
   background-color: ${colors.R400};
   color: white;
@@ -72,11 +60,9 @@ export default class ExamplesIFrame extends Component<{}, State> {
     }
 
     return (
-      <Content>
-        <ErrorMessage>
-          {fs.titleize(packageId)} does not have examples
-        </ErrorMessage>
-      </Content>
+      <ErrorMessage>
+        {fs.titleize(packageId)} does not have examples
+      </ErrorMessage>
     );
   }
 }
@@ -94,17 +80,9 @@ function ExampleLoader(props: ExampleLoaderProps) {
         );
       }
 
-      return (
-        <ComponentContainer>
-          <loaded.default />
-        </ComponentContainer>
-      );
+      return <loaded.default />;
     },
   });
 
-  return (
-    <Content>
-      <ExampleComponent />
-    </Content>
-  );
+  return <ExampleComponent />;
 }

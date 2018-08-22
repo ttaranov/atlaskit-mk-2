@@ -1,10 +1,13 @@
 {
   "name": "@atlaskit/adf-utils",
-  "version": "2.0.5",
+  "version": "2.1.2",
   "description": "Set of utilities to traverse, modify and create ADF documents.",
   "license": "Apache-2.0",
   "atlaskit:src": "src/index.ts",
   "sideEffects": false,
+  "scripts": {
+    "generate:spec": "rm -rf ./src/validator/specs/ && ../json-schema-generator/bin.js --outDir=./src/validator/specs/ --mode=Spec ./src/validator/entry.ts"
+  },
   "files": [
     "dist",
     "builders.es.js",
@@ -14,17 +17,22 @@
     "traverse.es.js",
     "traverse.es.d.ts",
     "traverse.js",
-    "traverse.d.ts"
+    "traverse.d.ts",
+    "validate.es.js",
+    "validate.es.d.ts",
+    "validate.js",
+    "validate.d.ts"
   ],
   "author": "Atlassian Pty Ltd",
   "maintainers": [
     "Stanislav S"
   ],
   "dependencies": {
-    "@atlaskit/editor-common": "^14.0.0"
+    "@atlaskit/editor-common": "^14.0.11"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^5.0.2"
+    "@atlaskit/docs": "^5.0.2",
+    "@atlaskit/json-schema-generator": "^1.1.0"
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2"
 }

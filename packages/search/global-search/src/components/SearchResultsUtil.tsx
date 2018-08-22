@@ -20,7 +20,7 @@ export function redirectToConfluenceAdvancedSearch(query = '') {
 }
 
 export function take<T>(array: Array<T>, n: number) {
-  return array.slice(0, n);
+  return (array || []).slice(0, n);
 }
 
 export function isEmpty<T>(array: Array<T>) {

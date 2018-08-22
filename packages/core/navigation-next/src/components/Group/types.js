@@ -9,4 +9,6 @@ export type GroupProps = {
   hasSeparator: boolean,
   /** A heading to render before the group. */
   heading: Node,
+  /** A unique identifier for the group. Used for analytics. */
+  id?: string,
 };

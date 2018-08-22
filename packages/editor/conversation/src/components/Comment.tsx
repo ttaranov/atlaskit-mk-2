@@ -6,8 +6,8 @@ import AkComment, {
   CommentAction,
   CommentTime,
 } from '@atlaskit/comment';
-import { Editor as AkEditor, EditorProps } from '@atlaskit/editor-core';
-import { WithProviders, ProviderFactory } from '@atlaskit/editor-common';
+
+import { WithProviders } from '@atlaskit/editor-common';
 import { ResourcedReactions } from '@atlaskit/reactions';
 import { ReactRenderer } from '@atlaskit/renderer';
 import styled from 'styled-components';
@@ -15,51 +15,12 @@ import Editor from './Editor';
 import { Comment as CommentType, User } from '../model';
 import CommentContainer from '../containers/Comment';
 import { HttpError } from '../api/HttpError';
-
-/**
- * Props which are passed down from the parent Conversation/Comment
- */
-export interface SharedProps {
-  user?: User;
-  comments?: CommentType[];
-
-  // Dispatch
-  onAddComment?: (
-    conversationId: string,
-    parentId: string,
-    value: any,
-    localId?: string,
-  ) => void;
-  onUpdateComment?: (
-    conversationId: string,
-    commentId: string,
-    value: any,
-  ) => void;
-  onDeleteComment?: (conversationId: string, commentId: string) => void;
-  onRevertComment?: (conversationId: string, commentId: string) => void;
-  onCancelComment?: (conversationId: string, commentId: string) => void;
-  onCancel?: () => void;
-  onHighlightComment?: (commentId: string) => void;
-  onEditorOpen?: () => void;
-  onEditorClose?: () => void;
-
-  // Provider
-  dataProviders?: ProviderFactory;
-
-  // Event Hooks
-  onUserClick?: (user: User) => void;
-  onRetry?: (localId?: string) => void;
-
-  // Editor
-  renderEditor?: (Editor: typeof AkEditor, props: EditorProps) => JSX.Element;
-
-  containerId?: string;
-
-  isHighlighted?: boolean;
-  placeholder?: string;
-  disableScrollTo?: boolean;
-  allowFeedbackAndHelpButtons?: boolean;
-}
+import {
+  fireEvent,
+  actionSubjectIds,
+  AnalyticsEvent,
+} from '../internal/analytics';
+import { SharedProps } from './types';
 
 export interface Props extends SharedProps {
   conversationId: string;
@@ -167,16 +128,31 @@ export default class Comment extends React.Component<Props, State> {
     }
   };
 
-  private onReply = () => {
+  private onReply = (value: any, analyticsEvent: AnalyticsEvent) => {
+    const { containerId } = this.props;
+
+    fireEvent(analyticsEvent, actionSubjectIds.replyButton, containerId);
+
     this.setState({
       isReplying: true,
     });
   };
 
   private onSaveReply = async (value: any) => {
-    const { conversationId, comment } = this.props;
+    const {
+      conversationId,
+      comment: parentComment,
+      sendAnalyticsEvent,
+    } = this.props;
 
-    this.dispatch('onAddComment', conversationId, comment.commentId, value);
+    sendAnalyticsEvent(actionSubjectIds.saveButton);
+
+    this.dispatch(
+      'onAddComment',
+      conversationId,
+      parentComment.commentId,
+      value,
+    );
 
     this.setState({
       isReplying: false,
@@ -184,25 +160,38 @@ export default class Comment extends React.Component<Props, State> {
   };
 
   private onCancelReply = () => {
+    this.props.sendAnalyticsEvent(actionSubjectIds.cancelButton);
     this.setState({
       isReplying: false,
     });
   };
 
-  private onDelete = () => {
-    const { conversationId, comment } = this.props;
+  private onDelete = (value: any, analyticsEvent: AnalyticsEvent) => {
+    const {
+      comment: { commentId },
+      containerId,
+      conversationId,
+    } = this.props;
 
-    this.dispatch('onDeleteComment', conversationId, comment.commentId);
+    fireEvent(analyticsEvent, actionSubjectIds.deleteButton, containerId);
+
+    this.dispatch('onDeleteComment', conversationId, commentId);
   };
 
-  private onEdit = () => {
+  private onEdit = (value: any, analyticsEvent: AnalyticsEvent) => {
+    const { containerId } = this.props;
+
+    fireEvent(analyticsEvent, actionSubjectIds.editButton, containerId);
+
     this.setState({
       isEditing: true,
     });
   };
 
   private onSaveEdit = async (value: any) => {
-    const { conversationId, comment } = this.props;
+    const { conversationId, comment, sendAnalyticsEvent } = this.props;
+
+    sendAnalyticsEvent(actionSubjectIds.saveButton);
 
     this.dispatch('onUpdateComment', conversationId, comment.commentId, value);
 
@@ -212,29 +201,47 @@ export default class Comment extends React.Component<Props, State> {
   };
 
   private onCancelEdit = () => {
+    this.props.sendAnalyticsEvent(actionSubjectIds.cancelButton);
+
     this.setState({
       isEditing: false,
     });
   };
 
-  private onRequestCancel = () => {
-    const { comment, onCancel } = this.props;
+  private onRequestCancel = (value: any, analyticsEvent: AnalyticsEvent) => {
+    const { comment, onCancel, containerId } = this.props;
 
     // Invoke optional onCancel hook
     if (onCancel) {
       onCancel();
     }
 
+    fireEvent(
+      analyticsEvent,
+      actionSubjectIds.cancelFailedRequestButton,
+      containerId,
+    );
+
     this.dispatch('onRevertComment', comment.conversationId, comment.commentId);
   };
 
-  private onRequestRetry = () => {
+  private onRequestRetry = (value: any, analyticsEvent: AnalyticsEvent) => {
     const { lastDispatch } = this.state;
-    const { onRetry, comment } = this.props;
+    const {
+      containerId,
+      onRetry,
+      comment: { localId, isPlaceholder },
+    } = this.props;
 
-    if (onRetry && comment.isPlaceholder) {
-      return onRetry(comment.localId);
+    if (onRetry && isPlaceholder) {
+      return onRetry(localId);
     }
+
+    fireEvent(
+      analyticsEvent,
+      actionSubjectIds.retryFailedRequestButton,
+      containerId,
+    );
 
     if (!lastDispatch) {
       return;
@@ -317,6 +324,7 @@ export default class Comment extends React.Component<Props, State> {
       disableScrollTo,
       onEditorClose,
       onEditorOpen,
+      sendAnalyticsEvent,
     } = this.props;
 
     if (!comments || comments.length === 0) {
@@ -344,6 +352,7 @@ export default class Comment extends React.Component<Props, State> {
         renderEditor={renderEditor}
         containerId={containerId}
         disableScrollTo={disableScrollTo}
+        sendAnalyticsEvent={sendAnalyticsEvent}
       />
     ));
   }

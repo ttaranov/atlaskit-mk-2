@@ -3,7 +3,7 @@ import {
   sanitizeSearchQuery,
   sanitizeContainerId,
   ShownAnalyticsAttributes,
-  SearchPerformanceTiming,
+  PerformanceTiming,
   DEFAULT_GAS_CHANNEL,
   DEFAULT_GAS_ATTRIBUTES,
   DEFAULT_GAS_SOURCE,
@@ -114,7 +114,7 @@ export function fireDismissedEvent(
 }
 export function firePostQueryShownEvent(
   resultsDetails: ShownAnalyticsAttributes,
-  timings: SearchPerformanceTiming,
+  timings: PerformanceTiming,
   searchSessionId: string,
   query: string,
   createAnalyticsEvent: CreateAnalyticsEventFn,

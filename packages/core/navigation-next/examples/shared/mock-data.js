@@ -20,7 +20,7 @@ export const LinkItem = ({ components: C, to, ...props }: *) => {
         <C.Item
           after={() => <LinkIcon size="small" />}
           component={({ children, className }) => (
-            <Link className={className} to={to}>
+            <Link className={className} to={to} onClick={props.onClick}>
               {children}
             </Link>
           )}
@@ -41,14 +41,14 @@ const JiraWordmark = () => (
 );
 
 export const globalNavPrimaryItems = [
-  { key: 'jira', icon: JiraIcon, label: 'Jira' },
-  { key: 'peek-toggle', component: PeekToggleItem, icon: null },
-  { key: 'search', icon: SearchIcon },
-  { key: 'create', icon: AddIcon },
+  { id: 'jira', icon: JiraIcon, label: 'Jira' },
+  { id: 'peek-toggle', component: PeekToggleItem, icon: null },
+  { id: 'search', icon: SearchIcon },
+  { id: 'create', icon: AddIcon },
 ];
 
 export const globalNavSecondaryItems = [
-  { icon: QuestionCircleIcon, label: 'Help', size: 'small' },
+  { id: 'help', icon: QuestionCircleIcon, label: 'Help', size: 'small' },
   {
     icon: () => (
       <Avatar
@@ -60,6 +60,7 @@ export const globalNavSecondaryItems = [
     ),
     label: 'Profile',
     size: 'small',
+    id: 'profile',
   },
 ];
 
@@ -114,12 +115,18 @@ const rootIssues = [
     id: 'root/issues:menu',
     items: [
       {
-        type: LinkItem,
-        id: 'search-issues',
-        text: 'Search issues',
-        to: '/issues/search',
+        type: 'Group',
+        hasSeparator: true,
+        id: 'search-issues-group',
+        items: [
+          {
+            type: LinkItem,
+            id: 'search-issues',
+            text: 'Search issues',
+            to: '/issues/search',
+          },
+        ],
       },
-      { type: 'Separator', id: 'separator-1' },
       { type: 'Item', id: 'my-open-issues', text: 'My open issues' },
       { type: 'Item', id: 'reported-by-me', text: 'Reported by me' },
       { type: 'Item', id: 'all-issues', text: 'All issues' },
