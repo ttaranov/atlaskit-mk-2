@@ -1,5 +1,9 @@
 import { Store, Dispatch, Middleware } from 'redux';
-
+import {
+  MediaStore,
+  MediaStoreCopyFileWithTokenBody,
+  MediaStoreCopyFileWithTokenParams,
+} from '@atlaskit/media-store';
 import { Fetcher } from '../tools/fetcher/fetcher';
 import {
   FinalizeUploadAction,
@@ -69,7 +73,7 @@ type CopyFileParams = {
   occurrenceKey?: string;
 };
 
-function copyFile({
+async function copyFile({
   store,
   fetcher,
   file,
@@ -79,19 +83,24 @@ function copyFile({
   replaceFileId,
   occurrenceKey,
 }: CopyFileParams): Promise<SendUploadEventAction> {
-  const destination = {
-    auth: tenant.auth,
-    collection: tenant.uploadParams.collection,
-    replaceFileId,
-    occurrenceKey,
-  };
   const { deferredIdUpfronts } = store.getState();
   const deferred = deferredIdUpfronts[sourceFile.id];
+  const mediaStore = new MediaStore({
+    authProvider: () => Promise.resolve(tenant.auth),
+  });
+  const body: MediaStoreCopyFileWithTokenBody = {
+    sourceFile,
+  };
+  const params: MediaStoreCopyFileWithTokenParams = {
+    collection: tenant.uploadParams.collection,
+    replaceFileId: replaceFileId ? await replaceFileId : undefined,
+    occurrenceKey,
+  };
 
-  return fetcher
-    .copyFile(sourceFile, destination)
+  return mediaStore
+    .copyFileWithToken(body, params)
     .then(destinationFile => {
-      const publicId = destinationFile.id;
+      const { id: publicId } = destinationFile.data;
       if (deferred) {
         const { resolver } = deferred;
 
@@ -115,7 +124,7 @@ function copyFile({
 
       return fetcher.pollFile(
         tenant.auth,
-        destinationFile.id,
+        publicId,
         tenant.uploadParams.collection,
       );
     })

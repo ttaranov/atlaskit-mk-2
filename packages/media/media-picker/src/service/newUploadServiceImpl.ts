@@ -375,7 +375,7 @@ export class NewUploadServiceImpl implements UploadService {
           collection: 'recents',
         };
 
-        return userMediaStore.copyFileWithToken(body, params);
+        userMediaStore.copyFileWithToken(body, params);
       });
   }
 }
