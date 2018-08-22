@@ -2,17 +2,17 @@ import {
   createPromise,
   rejectPromise,
   resolvePromise,
+  setCounter,
   SubmitPromiseToNative,
-  counter,
-} from '../src/cross-platform-promise';
-import { toNativeBridge } from '../src/web-to-native';
+} from '../../cross-platform-promise';
+import { toNativeBridge } from '../../web-to-native';
 
-jest.mock('../src/web-to-native');
+jest.mock('../../web-to-native');
 toNativeBridge.submitPromise = jest.fn();
 
 beforeEach(() => {
-  counter = 0;
-}, 0);
+  setCounter(0);
+});
 
 describe('create promise', () => {
   it('should returns object', () => {

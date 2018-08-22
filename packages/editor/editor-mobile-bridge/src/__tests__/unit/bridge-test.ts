@@ -8,7 +8,7 @@ jest.mock('@atlaskit/editor-core', () => {
   };
 });
 
-import WebBridgeImpl from '../src/native-to-web';
+import WebBridgeImpl from '../../native-to-web';
 import {
   indentList,
   outdentList,
@@ -17,10 +17,10 @@ import {
 } from '@atlaskit/editor-core';
 
 afterEach(() => {
-  indentList.mockClear();
-  outdentList.mockClear();
-  toggleOrderedList.mockClear();
-  toggleBulletList.mockClear();
+  (indentList as jest.Mock<{}>).mockClear();
+  (outdentList as jest.Mock<{}>).mockClear();
+  (toggleOrderedList as jest.Mock<{}>).mockClear();
+  (toggleBulletList as jest.Mock<{}>).mockClear();
 });
 
 describe('lists should work', () => {
