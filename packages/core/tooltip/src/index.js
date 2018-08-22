@@ -1,4 +1,4 @@
 // @flow
 
-export { default } from './components/Tooltip';
+export { default, TooltipWithoutAnalytics } from './components/Tooltip';
 export { TooltipPrimitive } from './styled';

@@ -3,10 +3,12 @@ import React from 'react';
 import { md, Example, Props } from '@atlaskit/docs';
 
 export default md`
-  This package exports \`Tooltip\` and \`TooltipPrimitive\` components.
+  This package exports \`Tooltip\`, \`TooltipWithoutAnalytics\`, and \`TooltipPrimitive\` components.
 
   You can wrap \`Tooltip\` around any other React component to display the given
   \`content\` when the user hovers over the wrapped component.
+
+  \`TooltipWithoutAnalytics\` is the same as \`Tooltip\`, but does not fire analytics events.
 
   You can extend \`TooltipPrimitive\` to create a custom tooltip. It is
   a component with basic styles required by the tooltip. You can then pass this
