@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "77.2.0",
+  "version": "77.2.1",
   "description": "A package contains Atlassian editor core functionality",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -101,7 +101,7 @@
     "@atlaskit/button": "^9.0.6",
     "@atlaskit/docs": "^5.0.6",
     "@atlaskit/editor-bitbucket-transformer": "^4.0.7",
-    "@atlaskit/editor-test-helpers": "^6.0.3",
+    "@atlaskit/editor-test-helpers": "^6.0.4",
     "@atlaskit/layer-manager": "^5.0.6",
     "@atlaskit/lozenge": "^6.1.5",
     "@atlaskit/media-core": "^23.0.0",
