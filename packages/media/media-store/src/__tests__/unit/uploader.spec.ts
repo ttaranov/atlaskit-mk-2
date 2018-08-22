@@ -251,4 +251,25 @@ describe('Uploader', () => {
 
     await uploadFile({ content: '' }, config).deferredFileId;
   });
+
+  it('should call onId when empty file is created', async () => {
+    const {
+      MediaStoreMock,
+      ChunkinatorMock,
+      config,
+      createFileFromUpload,
+    } = setup();
+    const onProgress = jest.fn();
+    const onId = jest.fn();
+
+    (MediaStore as any) = MediaStoreMock;
+    (chunkinator as any) = ChunkinatorMock;
+
+    await uploadFile({ content: '' }, config, { onProgress, onId })
+      .deferredFileId;
+    await createFileFromUpload();
+
+    expect(onId).toHaveBeenCalledTimes(1);
+    expect(onId).toBeCalledWith('id-upfront-123');
+  });
 });

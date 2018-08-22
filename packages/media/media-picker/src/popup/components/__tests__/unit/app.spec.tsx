@@ -7,7 +7,7 @@ import Browser from '../../views/browser/browser';
 import { getComponentClassWithStore, mockStore } from '../../../mocks';
 import { fileUploadsStart } from '../../../actions/fileUploadsStart';
 import { AuthProvider, ContextFactory } from '@atlaskit/media-core';
-import { UploadParams } from '../../../index';
+import { UploadParams } from '../../../../domain/config';
 
 const tenantUploadParams: UploadParams = {};
 
