@@ -3,6 +3,7 @@ import { Participant } from './types';
 export interface ReadOnlyParticipants {
   get(sessionId: string): Participant | undefined;
   toArray(): ReadonlyArray<Participant>;
+  eq(other: ReadOnlyParticipants): boolean;
 }
 
 export class Participants implements ReadOnlyParticipants {
@@ -52,5 +53,17 @@ export class Participants implements ReadOnlyParticipants {
 
   get(sessionId: string) {
     return this.participants.get(sessionId);
+  }
+
+  eq(other: Participants) {
+    const left = this.toArray()
+      .map(p => p.sessionId)
+      .join('');
+    const right = other
+      .toArray()
+      .map(p => p.sessionId)
+      .join('');
+
+    return left === right;
   }
 }
