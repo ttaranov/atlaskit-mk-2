@@ -1,9 +1,3 @@
-jest.mock('uuid', () => ({
-  v4() {
-    return 'some-uuid';
-  },
-}));
-
 import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import {
@@ -15,9 +9,10 @@ import {
   UploadingFileState,
 } from '../src';
 import { ContextFactory } from '../src/context/context';
-
+import { fileStreamsCache } from '../src/context/fileStreamCache';
 import { uploadFile, MediaApiConfig } from '@atlaskit/media-store';
 
+const getOrInsertSpy = jest.spyOn(fileStreamsCache, 'getOrInsert');
 const authProvider: AuthProvider = () =>
   Promise.resolve({
     token: 'some-token-that-does-not-really-matter-in-this-tests',
@@ -35,6 +30,8 @@ const createFakeContext = () => {
 const uploadFileMock: jest.Mock<any> = uploadFile as any;
 
 describe('Context', () => {
+  const deferredFileId = Promise.resolve('file-id-1');
+
   beforeEach(() => {
     uploadFileMock.mockReset();
   });
@@ -279,7 +276,8 @@ describe('Context', () => {
           };
         });
         (context as any).mediaStore = { getFile };
-        const observer = context.getFile('1');
+
+        const observer = context.getFile('123');
         const next = jest.fn();
 
         observer.subscribe({
@@ -299,31 +297,15 @@ describe('Context', () => {
 
     it('should pass options down', () => {
       const context = createFakeContext();
-      const getFile = jest.fn().mockReturnValue({
-        data: {
-          processingStatus: 'succeeded',
-          id: '1',
-          name: 'file-one',
-          size: 1,
-        },
-      });
-      const has = jest.fn();
-      const getOrInsert = jest.fn();
-      (context as any).mediaStore = {
-        getFile,
-      };
-      (context as any).fileStreamsCache = {
-        has,
-        getOrInsert,
-        set: jest.fn(),
-        get: jest.fn(),
-      };
+
       context.getFile('1', {
         collectionName: 'my-collection',
         occurrenceKey: 'some-occurrenceKey',
       });
-      expect(getOrInsert.mock.calls[0][0]).toEqual(
+
+      expect(getOrInsertSpy).toHaveBeenLastCalledWith(
         '1-my-collection-some-occurrenceKey',
+        expect.anything(),
       );
     });
 
@@ -333,12 +315,13 @@ describe('Context', () => {
         // we don't want to resolve this to simulate the file is uploading
       });
       const getFile = jest.fn();
+      const content = new Blob();
       const file = {
-        content: 'some-base-64',
+        content,
       };
       (context as any).mediaStore = { getFile };
       uploadFileMock.mockImplementation((_, __, callbacks) => {
-        callbacks.onProgress(0.5);
+        callbacks.onId('1');
         return { deferredFileId };
       });
 
@@ -351,11 +334,14 @@ describe('Context', () => {
                 expect(state).toEqual({
                   id: fileId,
                   status: 'uploading',
-                  progress: 0.5,
+                  progress: 0,
                   name: '',
                   mediaType: 'unknown',
                   mimeType: '',
                   size: 0,
+                  preview: {
+                    blob: content,
+                  },
                 });
                 expect(getFile).not.toBeCalled();
                 resolve();
@@ -368,7 +354,6 @@ describe('Context', () => {
 
     it('should return file state regardless of the state', () => {
       const context = createFakeContext();
-      const deferredFileId = Promise.resolve('file-id-1');
       const getFile = jest.fn().mockReturnValue({
         data: {
           processingStatus: 'succeeded',
@@ -386,6 +371,7 @@ describe('Context', () => {
       (context as any).mediaStore = { getFile };
       uploadFileMock.mockImplementation((_, __, callbacks) => {
         callbacks.onProgress(0.1);
+        callbacks.onId('file-id');
         return { deferredFileId };
       });
 
@@ -393,25 +379,16 @@ describe('Context', () => {
         context.uploadFile(file).subscribe({
           next,
           complete() {
-            expect(next).toHaveBeenCalledTimes(3);
+            expect(next).toHaveBeenCalledTimes(2);
             expect(next.mock.calls[0][0]).toEqual({
-              id: 'some-uuid',
-              progress: 0.1,
-              status: 'uploading',
-              mediaType: 'unknown',
-              mimeType: '',
-              name: '',
-              size: 0,
-            });
-            expect(next.mock.calls[1][0]).toEqual({
-              id: 'file-id-1',
+              id: 'file-id',
               status: 'processing',
               mediaType: 'unknown',
               mimeType: '',
               name: '',
               size: 0,
             });
-            expect(next.mock.calls[2][0]).toEqual({
+            expect(next.mock.calls[1][0]).toEqual({
               id: 'file-id-1',
               status: 'processed',
               name: 'file-one',
@@ -426,70 +403,12 @@ describe('Context', () => {
         });
       });
     });
-
-    it('should find the file with temp and public id', () => {
-      const context = createFakeContext();
-      const deferredFileId = Promise.resolve('file-id-1');
-      const getFile = jest.fn().mockImplementation(id => {
-        if (id === 'file-id-1') {
-          return Promise.resolve({
-            data: {
-              processingStatus: 'succeeded',
-              id: 'file-id-1',
-              name: 'file-one',
-              size: 1,
-            },
-          });
-        } else {
-          return Promise.reject('');
-        }
-      });
-      const next = jest.fn();
-      const file = {
-        content: new Blob(),
-      };
-      (context as any).mediaStore = { getFile };
-      uploadFileMock.mockImplementation((_, __, callbacks) => {
-        callbacks.onProgress(0.1);
-        return { deferredFileId };
-      });
-
-      return new Promise(resolve => {
-        context.uploadFile(file).subscribe({
-          next,
-          complete() {
-            const publicId = next.mock.calls[2][0].id;
-
-            context.getFile('some-uuid').subscribe({
-              next(tempIdState) {
-                context.getFile(publicId).subscribe({
-                  next(publicIdState) {
-                    expect(tempIdState).toEqual({
-                      id: 'file-id-1',
-                      status: 'processed',
-                      name: 'file-one',
-                      size: 1,
-                      artifacts: undefined,
-                      mediaType: undefined,
-                      binaryUrl: '/file/file-id-1/binary',
-                    });
-                    expect(tempIdState).toEqual(publicIdState);
-                    resolve();
-                  },
-                });
-              },
-            });
-          },
-        });
-      });
-    });
   });
 
   describe('.uploadFile()', () => {
     it('should call media-store uploadFile with given arguments', () => {
       const context = createFakeContext();
       const file: UploadableFile = {} as any;
-      const deferredFileId = Promise.resolve('file-id-1');
       uploadFileMock.mockImplementation((_, __, callbacks) => {
         callbacks.onProgress(0.1);
         return { deferredFileId };
@@ -510,7 +429,6 @@ describe('Context', () => {
 
     it('should pass collection name when creating the download stream', () => {
       const context = createFakeContext();
-      const deferredFileId = Promise.resolve('file-id-1');
       const getFile = jest.fn().mockReturnValue({
         data: {
           processingStatus: 'succeeded',
@@ -531,7 +449,7 @@ describe('Context', () => {
       (context as any).mediaStore = { getFile };
       (context as any).createDownloadFileStream = createDownloadFileStream;
       uploadFileMock.mockImplementation((_, __, callbacks) => {
-        callbacks.onProgress(0.1);
+        callbacks.onId('file-id-1');
         return { deferredFileId };
       });
 
@@ -612,6 +530,12 @@ describe('Context', () => {
         content: new File([], '', { type: 'image/png' }),
         name: 'file-name.png',
       };
+
+      uploadFileMock.mockImplementation((_, __, callbacks) => {
+        callbacks.onId('1');
+        return { deferredFileId };
+      });
+
       (context as any).mediaStore = { getFile };
 
       return new Promise(resolve => {
@@ -639,6 +563,11 @@ describe('Context', () => {
       const file = {
         content: new File([], '', { type: 'image/png' }),
       };
+      uploadFileMock.mockImplementation((_, __, callbacks) => {
+        callbacks.onId('1');
+        return { deferredFileId };
+      });
+
       (context as any).mediaStore = { getFile };
 
       return new Promise(resolve => {

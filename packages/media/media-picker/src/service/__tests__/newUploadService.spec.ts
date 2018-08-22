@@ -25,7 +25,6 @@ describe('UploadService', () => {
   const collection = 'some-collection';
   const tenantUploadParams = {};
   const upfrontId = Promise.resolve('1');
-  const occurrenceKey = 'some-occurrence-key';
   const clientBasedAuthProvider = jest.fn(() =>
     Promise.resolve<Auth>({ clientId, token, baseUrl }),
   );
