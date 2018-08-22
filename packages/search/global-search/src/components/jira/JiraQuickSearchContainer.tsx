@@ -19,7 +19,12 @@ import {
   JiraEntityTypes,
   redirectToJiraAdvancedSearch,
 } from '../SearchResultsUtil';
-import { ContentType, JiraObjectResult, Result } from '../../model/Result';
+import {
+  ContentType,
+  JiraObjectResult,
+  Result,
+  ResultsWithTiming,
+} from '../../model/Result';
 
 const contentTypeToSection = {
   [ContentType.JiraIssue]: 'issues',
@@ -44,7 +49,6 @@ export class JiraQuickSearchContainer extends React.Component<
   };
 
   handleSearchSubmit = ({ target }) => {
-    debugger;
     const query = target.value;
     redirectToJiraAdvancedSearch(this.state.advancedSearchEntity, query);
   };
@@ -76,13 +80,13 @@ export class JiraQuickSearchContainer extends React.Component<
     );
   };
 
-  getRecentlyInteractedPeople = () => {
+  getRecentlyInteractedPeople = (): Promise<{ people: Result[] }> => {
     const peoplePromise: Promise<
       Result[]
     > = this.props.peopleSearchClient.getRecentPeople();
     return handlePromiseError<Result[]>(peoplePromise, []).then(people => ({
       people,
-    }));
+    })) as Promise<{ people: Result[] }>;
   };
 
   getJiraRecentItems = (sessionId: string) => {
@@ -114,7 +118,7 @@ export class JiraQuickSearchContainer extends React.Component<
     });
   };
 
-  getRecentItems = (sessionId: string) => {
+  getRecentItems = (sessionId: string): Promise<ResultsWithTiming> => {
     return Promise.all([
       this.getJiraRecentItems(sessionId),
       this.getRecentlyInteractedPeople(),
@@ -125,7 +129,11 @@ export class JiraQuickSearchContainer extends React.Component<
       .then(results => ({ results }));
   };
 
-  getSearchResults = (query: string, sessionId: string, startTime: number) => {
+  getSearchResults = (
+    query: string,
+    sessionId: string,
+    startTime: number,
+  ): Promise<ResultsWithTiming> => {
     return this.props.peopleSearchClient.search(query).then(people => ({
       results: {
         people,
