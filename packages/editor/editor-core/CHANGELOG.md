@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 77.2.0
+- [minor] Disable table context menu if advanced table features aren't enabled. ED-5252 [5ad6057](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ad6057)
+- [none] Updated dependencies [5ad6057](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ad6057)
+
 ## 77.1.5
 - [patch] New floating toolbar for extensions [23437c0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23437c0)
 - [none] Updated dependencies [23437c0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23437c0)
