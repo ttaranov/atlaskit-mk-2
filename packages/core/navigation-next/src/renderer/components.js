@@ -10,6 +10,7 @@ import GraphLineIcon from '@atlaskit/icon/glyph/graph-line';
 import FolderIcon from '@atlaskit/icon/glyph/folder';
 import IssuesIcon from '@atlaskit/icon/glyph/issues';
 import ShipIcon from '@atlaskit/icon/glyph/ship';
+import Spinner from '@atlaskit/spinner';
 import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import { navigationItemClicked } from '../common/analytics';
@@ -56,12 +57,21 @@ const GoToItemBase = ({
   goTo,
   navigationUIController,
   navigationViewController,
+  spinnerDelay = 200,
   ...rest
 }: GoToItemProps) => {
   let after;
   if (typeof afterProp === 'undefined') {
-    after = ({ isActive, isHover }: *) =>
-      isActive || isHover ? <ArrowRightIcon size="small" /> : null;
+    after = ({ isActive, isHover }: *) => {
+      const { incomingView } = navigationViewController.state;
+      if (incomingView && incomingView.id === goTo) {
+        return <Spinner delay={spinnerDelay} invertColor size="small" />;
+      }
+      if (isActive || isHover) {
+        return <ArrowRightIcon size="small" />;
+      }
+      return null;
+    };
   }
 
   const props = { ...rest, after };
@@ -134,7 +144,7 @@ const GroupHeading = ({ text, ...props }: GroupHeadingProps) => (
   <GroupHeadingComponent {...props}>{text}</GroupHeadingComponent>
 );
 
-const Debug = props => (
+const Debug = (props: *) => (
   <pre
     css={{
       backgroundColor: 'rgba(0, 0, 0, 0.1)',
@@ -199,7 +209,8 @@ const groupComponents = {
   Section,
 };
 
-const components = { ...itemComponents, ...groupComponents };
+// Exported for testing purposes only.
+export const components = { ...itemComponents, ...groupComponents };
 
 /**
  * RENDERER

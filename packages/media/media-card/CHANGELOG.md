@@ -1,5 +1,11 @@
 # @atlaskit/media-image
 
+## 32.0.5
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/badge@9.1.1
+  - @atlaskit/media-ui@5.1.2
+  - @atlaskit/smart-card@8.0.1
+
 ## 32.0.4
 
 

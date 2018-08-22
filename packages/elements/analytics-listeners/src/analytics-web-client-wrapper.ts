@@ -1,11 +1,14 @@
 import { AnalyticsWebClient } from './types';
-import { GasPayload } from '@atlaskit/analytics-gas-types';
+import {
+  GasPayload,
+  GasScreenEventPayload,
+} from '@atlaskit/analytics-gas-types';
 import Logger from './helpers/logger';
 
 export const sendEvent = (
   client: Promise<AnalyticsWebClient>,
   logger: Logger,
-) => (event: GasPayload): void => {
+) => (event: GasPayload | GasScreenEventPayload): void => {
   const gasEvent = {
     ...event,
   };
