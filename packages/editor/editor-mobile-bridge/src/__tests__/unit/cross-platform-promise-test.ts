@@ -2,9 +2,8 @@ import {
   createPromise,
   rejectPromise,
   resolvePromise,
+  setCounter,
   SubmitPromiseToNative,
-  // @ts-ignore
-  counter,
 } from '../../cross-platform-promise';
 import { toNativeBridge } from '../../web-to-native';
 
@@ -12,9 +11,8 @@ jest.mock('../../web-to-native');
 toNativeBridge.submitPromise = jest.fn();
 
 beforeEach(() => {
-  // @ts-ignore
-  counter = 0;
-}, 0);
+  setCounter(0);
+});
 
 describe('create promise', () => {
   it('should returns object', () => {
