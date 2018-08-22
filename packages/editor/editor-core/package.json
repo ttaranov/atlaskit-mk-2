@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-core",
-  "version": "77.2.1",
+  "version": "77.2.2",
   "description": "A package contains Atlassian editor core functionality",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
