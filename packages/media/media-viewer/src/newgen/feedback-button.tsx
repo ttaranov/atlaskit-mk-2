@@ -42,6 +42,10 @@ const loadIssueCollector: () => Promise<ShowIssueCollectorFn> = (function() {
 
 export class FeedbackButton extends React.Component<{}, {}> {
   render() {
+    const isJQueryAvailable = typeof jQuery !== 'undefined';
+    if (!isJQueryAvailable) {
+      return null;
+    }
     return (
       <FeedbackWrapper>
         <Button

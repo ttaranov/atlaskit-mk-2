@@ -1,3 +1,4 @@
+declare var window: any;
 import * as util from '../../src/newgen/utils';
 const constructAuthTokenUrlSpy = jest.spyOn(util, 'constructAuthTokenUrl');
 
@@ -261,14 +262,14 @@ describe('<Header />', () => {
   });
 
   describe('Feedback button', () => {
-    let jQuery;
+    let jquery: any;
 
     beforeEach(() => {
-      jQuery = window.jQuery;
+      jquery = window.jQuery;
     });
 
     afterEach(() => {
-      window.jQuery = jQuery;
+      window.jQuery = jquery;
     });
 
     it('should not show the feedback button if jQuery is not found in window object', () => {
