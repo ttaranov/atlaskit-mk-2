@@ -1,6 +1,6 @@
 // @flow
 import React, { Component, type ComponentType } from 'react';
-import * as ReactIs from 'react-is';
+import { isValidElementType } from 'react-is';
 import styled from 'styled-components';
 import FabricAnalyticsListeners from '@atlaskit/analytics-listeners';
 import { colors, gridSize } from '@atlaskit/theme';
@@ -112,7 +112,7 @@ function ExampleLoader(props: ExampleLoaderProps) {
 
       const hasMeta =
         typeof loaded.default === 'object' &&
-        !ReactIs.isValidElementType(loaded.default);
+        !isValidElementType(loaded.default);
       const meta: MetaObject = hasMeta
         ? { ...defaultExampleMeta, ...loaded.default }
         : { ...defaultExampleMeta, component: (loaded.default: any) };
