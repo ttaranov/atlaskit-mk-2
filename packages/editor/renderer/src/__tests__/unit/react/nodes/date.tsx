@@ -3,10 +3,7 @@ import { shallow } from 'enzyme';
 import { expect } from 'chai';
 import DateComponent from '../../../../react/nodes/date';
 
-import {
-  timestampToString,
-  timestampToTaskContext,
-} from '@atlaskit/editor-common';
+import { timestampToString } from '@atlaskit/editor-common';
 
 describe('Renderer - React/Nodes/Date', () => {
   const timestamp = new Date().getTime();

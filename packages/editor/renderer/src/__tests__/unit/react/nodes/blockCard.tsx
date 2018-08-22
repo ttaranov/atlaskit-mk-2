@@ -3,11 +3,6 @@ import { mount } from 'enzyme';
 import { expect } from 'chai';
 import BlockCard from '../../../../react/nodes/blockCard';
 
-import {
-  timestampToString,
-  timestampToTaskContext,
-} from '@atlaskit/editor-common';
-
 describe('Renderer - React/Nodes/BlockCard', () => {
   const url =
     'https://extranet.atlassian.com/pages/viewpage.action?pageId=3088533424';

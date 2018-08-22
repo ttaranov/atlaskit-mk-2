@@ -1,15 +1,11 @@
 import * as React from 'react';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import { expect } from 'chai';
 import BodiedExtension from '../../../../react/nodes/bodiedExtension';
 
 import { RendererContext } from '../../../../react';
 import ReactSerializer from '../../../../react';
-import {
-  defaultSchema,
-  ExtensionHandlers,
-  ExtensionHandler,
-} from '@atlaskit/editor-common';
+import { defaultSchema, ExtensionHandlers } from '@atlaskit/editor-common';
 
 describe('Renderer - React/Nodes/BodiedExtension', () => {
   const extensionHandlers: ExtensionHandlers = {

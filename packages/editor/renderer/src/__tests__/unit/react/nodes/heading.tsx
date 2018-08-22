@@ -15,7 +15,7 @@ const contentGenerator = headerText => {
 };
 
 describe('<Heading />', () => {
-  let headers = [];
+  let headers: any[] = [];
   for (let i = 1; i < 7; i++) {
     const header = shallow(
       <Heading

@@ -14,6 +14,7 @@ describe('Renderer - utils', () => {
     });
 
     it('should pass the default schema to the transformer provider', () => {
+      // @ts-ignore
       const encoder = new ADFEncoder(transformerProvider);
       expect(transformerProvider).toHaveBeenCalledWith(defaultSchema);
       expect(transformerProvider).toHaveBeenCalledTimes(1);
