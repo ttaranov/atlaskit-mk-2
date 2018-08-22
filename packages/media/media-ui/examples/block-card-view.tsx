@@ -51,7 +51,11 @@ export default () => (
             text: 'Dropbox',
             icon: icon,
           }}
-          title={{ text: 'foo bar' }}
+          title={{
+            text: 'foo bar',
+            tooltip:
+              'Qui dolor laborum consectetur nostrud et eu sint adipisicing.',
+          }}
           byline={{ text: 'foo bar' }}
         />
         <br />
@@ -117,7 +121,11 @@ export default () => (
             },
           ]}
           users={[
-            { name: 'James' },
+            {
+              name: 'James',
+              icon:
+                'https://www.timelinecoverbanner.com/facebook-covers/2012/11/sunrise-earth.jpg',
+            },
             { name: 'Scotty' },
             { name: 'Artur' },
             { name: 'Adam' },

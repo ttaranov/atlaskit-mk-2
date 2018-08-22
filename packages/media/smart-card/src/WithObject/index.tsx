@@ -54,8 +54,8 @@ class InnerWithObject extends React.Component<
   reload = () => {
     const { client } = this.props;
     const { state } = this.state;
-    if (state && state.provider) {
-      client.reload(state.provider);
+    if (state && state.definitionId) {
+      client.reload(state.definitionId);
     }
   };
 
