@@ -22,8 +22,8 @@ export interface State {
 }
 
 const TextContainer = styled.div`
-  padding: ${gridSize}px 0;
-  margin-right: ${gridSize}px;
+  padding: ${gridSize()}px 0;
+  margin-right: ${gridSize()}px;
 `;
 const Container = styled.div`
   display: flex;
@@ -59,6 +59,13 @@ export default class JiraAdvancedSearch extends React.Component<Props> {
     ));
 
   render() {
+    console.log(
+      'grid size is ',
+      gridSize,
+      typeof gridSize,
+      gridSize(),
+      `grid size is ${gridSize}`,
+    );
     const { query, showKeyboardLozenge, showSearchIcon } = this.props;
     return (
       <AdvancedSearchResult
