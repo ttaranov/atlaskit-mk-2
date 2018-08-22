@@ -3,6 +3,7 @@ import { FormattedMessage } from 'react-intl';
 import { gridSize } from '@atlaskit/theme';
 import styled from 'styled-components';
 import SearchIcon from '@atlaskit/icon/glyph/search';
+import Button from '@atlaskit/button';
 import DropdownMenu, {
   DropdownItemGroup,
   DropdownItem,
@@ -25,15 +26,21 @@ const TextContainer = styled.div`
   padding: ${gridSize()}px 0;
   margin-right: ${gridSize()}px;
 `;
+
 const Container = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: left;
 `;
-const items = ['issues', 'projects', 'boards', 'filters'];
 
-const getItem = item => (
-  <FormattedMessage id={`global-search.no-results.${item}`} />
+const StyledButton = styled(Button)`
+  margin-right: ${gridSize() * 0.25}px;
+`;
+
+const itemI18nKeySuffix = ['issues', 'projects', 'boards', 'filters'];
+
+const getI18nItemName = i18nKeySuffix => (
+  <FormattedMessage id={`global-search.jira.no-results.${i18nKeySuffix}`} />
 );
 
 export default class JiraAdvancedSearch extends React.Component<Props> {
@@ -41,31 +48,25 @@ export default class JiraAdvancedSearch extends React.Component<Props> {
     selectedItem: 'issues',
   };
 
+  allowNavigationOnClick = false;
   static defaultProps = {
     showKeyboardLozenge: false,
     showSearchIcon: false,
   };
 
-  renderDropDownItems = () =>
-    items.map(item => (
+  renderDropdownItems = () =>
+    itemI18nKeySuffix.map(item => (
       <DropdownItem
         onClick={() => {
           this.setState({ selectedItem: item });
         }}
         key={item}
       >
-        {getItem(item)}
+        {getI18nItemName(item)}
       </DropdownItem>
     ));
 
   render() {
-    console.log(
-      'grid size is ',
-      gridSize,
-      typeof gridSize,
-      gridSize(),
-      `grid size is ${gridSize}`,
-    );
     const { query, showKeyboardLozenge, showSearchIcon } = this.props;
     return (
       <AdvancedSearchResult
@@ -73,28 +74,36 @@ export default class JiraAdvancedSearch extends React.Component<Props> {
         key="search_jira"
         resultId="advanced-jira-search"
         text={
-          <Container>
+          <Container
+            onClick={e => {
+              // we need to cancel on click event on the dropdown to stop navigation
+              if (!this.allowNavigationOnClick) {
+                e.preventDefault();
+                e.stopPropagation();
+              }
+            }}
+          >
             <TextContainer>
               <FormattedMessage id="global-search.jira.advanced-search" />
             </TextContainer>
-            <div
-              onClick={e => {
-                // we need to cancel on click event on the dropdown to stop navigation
-                e.preventDefault();
-                e.stopPropagation();
+            <StyledButton
+              onClick={() => {
+                debugger;
+                this.allowNavigationOnClick = true;
               }}
             >
-              <DropdownMenu
-                trigger={getItem(this.state.selectedItem)}
-                triggerType="button"
-                shouldFlip={false}
-                position="right bottom"
-              >
-                <DropdownItemGroup>
-                  {this.renderDropDownItems()}
-                </DropdownItemGroup>
-              </DropdownMenu>
-            </div>
+              {getI18nItemName(this.state.selectedItem)}
+            </StyledButton>
+            <DropdownMenu
+              trigger=""
+              triggerType="button"
+              shouldFlip={false}
+              position="right bottom"
+            >
+              <DropdownItemGroup>
+                {this.renderDropdownItems()}
+              </DropdownItemGroup>
+            </DropdownMenu>
           </Container>
         }
         icon={
