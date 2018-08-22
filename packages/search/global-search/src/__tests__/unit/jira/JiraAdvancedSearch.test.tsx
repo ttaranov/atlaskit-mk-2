@@ -75,12 +75,13 @@ describe('JiraAdvancedSearch', () => {
     expect(dropDownMenu.length).toBe(1);
 
     const items = dropDownMenu.find(DropdownItem);
-    expect(items.length).toBe(4);
+    expect(items.length).toBe(5);
     expect(items.map(item => item.key())).toMatchObject([
-      'issues',
-      'projects',
-      'boards',
-      'filters',
+      'Projects',
+      'Issues',
+      'Boards',
+      'Filters',
+      'People',
     ]);
   });
 
@@ -102,8 +103,10 @@ describe('JiraAdvancedSearch', () => {
 
     const dropDownMenu = shallow(advancedSearchResult.props()
       .text as JSX.Element).find(DropdownMenu);
+
     const projectsItem = dropDownMenu.findWhere(
-      item => item.is(DropdownItem) && item.key() === 'projects',
+      item =>
+        item.is(DropdownItem) && item.key().toLocaleLowerCase() === 'projects',
     );
 
     projectsItem.props().onClick();
@@ -111,7 +114,7 @@ describe('JiraAdvancedSearch', () => {
     advancedSearchResult = wrapper.find(AdvancedSearchResult);
 
     expect(getJiraAdvancedSearchUrlMock).toHaveBeenLastCalledWith(
-      'projects',
+      'Projects',
       'query',
     );
     expect(getJiraAdvancedSearchUrlMock).toHaveBeenCalledTimes(2);

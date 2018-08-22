@@ -67,7 +67,7 @@ it('should render passed objects', () => {
       sectionIndex: index,
       results: resultsGroups[index].items,
     });
-    expect(group.key()).toBe(resultsGroups[index].key);
+    expect(group.key()).toBe(`${resultsGroups[index].key}-${index}`);
   });
 });
 
@@ -107,7 +107,7 @@ it('should filter out empty groups', () => {
       sectionIndex: group.props().sectionIndex,
     }))
     .forEach(({ key, sectionIndex }, index) => {
-      expect(key).toBe(resultsGroups[index * 3].key);
+      expect(key).toBe(`${resultsGroups[index * 3].key}-${sectionIndex}`);
       expect(sectionIndex).toBe(index);
     });
 });

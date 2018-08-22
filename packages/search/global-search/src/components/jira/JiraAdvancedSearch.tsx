@@ -13,6 +13,7 @@ import { AnalyticsType } from '../../model/Result';
 import {
   getJiraAdvancedSearchUrl,
   JiraEntityTypes,
+  ADVANCED_JIRA_SEARCH_RESULT_ID,
 } from '../SearchResultsUtil';
 
 export interface Props {
@@ -75,7 +76,7 @@ export default class JiraAdvancedSearch extends React.Component<Props> {
       <AdvancedSearchResult
         href={getJiraAdvancedSearchUrl(this.state.selectedItem, query)}
         key="search_jira"
-        resultId="advanced-jira-search"
+        resultId={ADVANCED_JIRA_SEARCH_RESULT_ID}
         text={
           <Container
             onClick={e => {
