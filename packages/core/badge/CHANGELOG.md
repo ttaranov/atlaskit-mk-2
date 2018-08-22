@@ -1,5 +1,8 @@
 # @atlaskit/badge
 
+## 9.1.1
+- [patch] Remove export from * to fix the cjs export [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+
 ## 9.1.0
 - [minor] Update badge to the new theming API. Rework experimental theming API. [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
 - [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)

@@ -1,5 +1,12 @@
 # @atlaskit/editor-bitbucket-transformer
 
+## 4.0.7
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/util-data-test@10.0.7
+  - @atlaskit/editor-common@14.0.11
+  - @atlaskit/editor-test-helpers@6.0.3
+  - @atlaskit/editor-core@77.1.4
+
 ## 4.0.6
 
 

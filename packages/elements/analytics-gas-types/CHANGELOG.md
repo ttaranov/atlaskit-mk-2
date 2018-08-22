@@ -1,5 +1,8 @@
 # @atlaskit/analytics-gas-types
 
+## 3.2.0
+- [minor] Update GasPayload to include proper format for screen events [85ddb9e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/85ddb9e)
+
 ## 3.1.3
 - [patch] Fix es5 exports of some of the newer modules [3f0cd7d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f0cd7d)
 

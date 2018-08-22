@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/smart-card",
-  "version": "8.0.0",
+  "version": "8.1.0",
   "description": "Smart card component",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -17,7 +17,7 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/media-ui": "^5.0.2",
+    "@atlaskit/media-ui": "^5.1.2",
     "@atlassian/outbound-auth-flow-client": "^1.0.4",
     "@types/react": "^16.3.0",
     "react-lazily-render": "^1.1.0",

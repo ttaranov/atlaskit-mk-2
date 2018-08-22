@@ -1,5 +1,10 @@
 # @atlaskit/editor-test-helpers
 
+## 6.0.3
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/editor-common@14.0.11
+  - @atlaskit/editor-core@77.1.4
+
 ## 6.0.2
 - [patch] ED-5178: added card node to default schema [51e7446](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51e7446)
 - [none] Updated dependencies [51e7446](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51e7446)
