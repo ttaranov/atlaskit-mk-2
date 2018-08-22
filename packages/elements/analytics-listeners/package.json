@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/analytics-listeners",
-  "version": "3.4.0",
+  "version": "3.4.1",
   "description": "Fabric analytics listeners to be used by the products",
   "config": {
     "access": "public"

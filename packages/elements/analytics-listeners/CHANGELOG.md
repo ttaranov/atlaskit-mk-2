@@ -1,5 +1,8 @@
 # @atlaskit/analytics-listeners
 
+## 3.4.1
+- [patch] Fix elements listener listening on wrong channel [2b817e1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2b817e1)
+
 ## 3.4.0
 - [minor] Support the screen event type for navigation events [20b8844](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/20b8844)
 
