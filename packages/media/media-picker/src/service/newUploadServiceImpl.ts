@@ -15,6 +15,8 @@ import {
   MediaStoreCopyFileWithTokenBody,
   UploadController,
   MediaStoreCopyFileWithTokenParams,
+  MediaStoreResponse,
+  MediaFile as MediaStoreMediaFile,
 } from '@atlaskit/media-store';
 import { EventEmitter2 } from 'eventemitter2';
 import { defaultUploadParams } from '../domain/uploadParams';
@@ -353,7 +355,7 @@ export class NewUploadServiceImpl implements UploadService {
   private copyFileToUsersCollection(
     sourceFileId: string,
     sourceCollection?: string,
-  ): Promise<void> {
+  ): Promise<MediaStoreResponse<MediaStoreMediaFile> | void> {
     const { shouldCopyFileToRecents, userMediaStore } = this;
 
     if (!shouldCopyFileToRecents || !userMediaStore) {
@@ -375,7 +377,7 @@ export class NewUploadServiceImpl implements UploadService {
           collection: 'recents',
         };
 
-        userMediaStore.copyFileWithToken(body, params);
+        return userMediaStore.copyFileWithToken(body, params);
       });
   }
 }

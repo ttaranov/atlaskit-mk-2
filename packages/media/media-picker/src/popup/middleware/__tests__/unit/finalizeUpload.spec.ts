@@ -1,3 +1,5 @@
+jest.mock('@atlaskit/media-store');
+import { MediaStore } from '@atlaskit/media-store';
 import { mockStore, mockFetcher } from '../../../mocks';
 import { sendUploadEvent } from '../../../actions/sendUploadEvent';
 import finalizeUploadMiddleware, { finalizeUpload } from '../../finalizeUpload';
@@ -46,7 +48,9 @@ describe('finalizeUploadMiddleware', () => {
     userAuthProvider.mockImplementation(() => Promise.resolve(auth));
 
     const fetcher = mockFetcher();
-    fetcher.copyFile.mockImplementation(() => Promise.resolve(copiedFile));
+    (MediaStore as any).mockImplementation(() => ({
+      copyFileWithToken: () => Promise.resolve({ data: copiedFile }),
+    }));
     fetcher.pollFile.mockImplementation(() => Promise.resolve(copiedFile));
 
     return {
@@ -127,7 +131,9 @@ describe('finalizeUploadMiddleware', () => {
       message: 'some-error-message',
     };
 
-    fetcher.copyFile.mockImplementation(() => Promise.reject(error));
+    (MediaStore as any).mockImplementation(() => ({
+      copyFileWithToken: () => Promise.reject(error),
+    }));
 
     return finalizeUpload(fetcher, store, action).then(action => {
       expect(store.dispatch).toBeCalledWith(
