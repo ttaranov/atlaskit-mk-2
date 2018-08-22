@@ -49,7 +49,7 @@ export default md`
 
   **State handling:** This data structure is the single source of truth. After any interaction the consumer's responsibility to execute the mutation
    on the tree, which will be passed down in props to refresh the rendered tree. A few utils functions (_mutateTree_, _moveItemOnTree_) are provided 
-   in order to help you make those changes easily and in a performant way.
+   in order to help you make those changes easily and in a efficient way.
 
   **Performance / Side-effects:** We put some effort into optimizing rendering based on reference equality. We only re-render an Item if it's reference changed or 
   moved on the tree.
@@ -78,7 +78,11 @@ type TreeItem = {|
 
   **Root item** is not rendered by design. If you want to render a tree with a single root, you will need to create a virtual root above your effective root.
 
-  **Important:** _provided.innerRef_ must be bound to the highest possible DOM node in the ReactElement, even if you don't activate drag&drop.
+  **Provided** is a concept inherited from react-beautiful-dnd library in order to provide flexible drag&drop functionality.
+
+   - _innerRef_ must be bound to the highest possible DOM node in the ReactElement. We do this in order to avoid needing to use ReactDOM to look up your DOM node.
+   - _draggableProps_ is an Object that contains a data attribute and an inline style. This Object needs to be applied to the same node that you apply provided.innerRef to. This controls the movement of the draggable when it is dragging and not dragging.
+   - _dragHandleProps_ is used to drag the whole tree item. Often this will be the highest level node, but sometimes it can be a child node. dragHandleProps need to be applied to the node that you want to be the drag handle.
 
   ${code`
 type RenderItemParams = {|
