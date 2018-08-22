@@ -37,14 +37,14 @@ export class Client {
     if (temporaryResolver) {
       return race(
         createTemporaryResolverObservable(url, temporaryResolver),
-        createObjectResolverServiceObservable(url, {
+        createObjectResolverServiceObservable({
           serviceUrl: this.serviceUrl,
           objectUrl: url,
           $commands: this.$commands,
         }),
       );
     } else {
-      return createObjectResolverServiceObservable(url, {
+      return createObjectResolverServiceObservable({
         serviceUrl: this.serviceUrl,
         objectUrl: url,
         $commands: this.$commands,

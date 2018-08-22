@@ -1,23 +1,18 @@
 import { EditorState, Transaction, NodeSelection } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
 import { findParentNodeOfType } from 'prosemirror-utils';
 import { Slice, Schema } from 'prosemirror-model';
 import {
-  hasParentNodeOfType,
   removeSelectedNode,
   removeParentNodeOfType,
-  selectParentNodeOfType,
   findSelectedNodeOfType,
 } from 'prosemirror-utils';
 import { pluginKey } from './plugin';
 import { MacroProvider, insertMacroFromMacroBrowser } from '../macro';
 import { getExtensionNode } from './utils';
 import { mapFragment } from '../../utils/slice';
+import { Command } from '../../types';
 
-export const updateExtensionLayout = layout => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-) => {
+export const updateExtensionLayout = (layout): Command => (state, dispatch) => {
   const { selection, schema, tr } = state;
   const { bodiedExtension, extension, inlineExtension } = schema.nodes;
   const parentExtNode = findParentNodeOfType([bodiedExtension])(selection);
@@ -32,7 +27,7 @@ export const updateExtensionLayout = layout => (
   ])(selection);
 
   if (!parentExtNode && !selectedNode) {
-    return;
+    return false;
   }
 
   if (selectedNode) {
@@ -58,31 +53,23 @@ export const updateExtensionLayout = layout => (
 };
 
 export const editExtension = (macroProvider: MacroProvider | null) => (
-  view: EditorView,
+  state,
+  dispatch,
 ): boolean => {
-  const { state, dispatch } = view;
-  // insert macro if there's macroProvider available
-  const pluginState = pluginKey.getState(state);
-  if (macroProvider) {
-    const node = getExtensionNode(state);
-    if (node) {
-      const { bodiedExtension } = state.schema.nodes;
-      let tr = state.tr.setMeta(pluginKey, { ...pluginState, element: null });
-      if (hasParentNodeOfType(bodiedExtension)(tr.selection)) {
-        dispatch(selectParentNodeOfType(bodiedExtension)(tr));
-      }
-      insertMacroFromMacroBrowser(macroProvider, node.node)(view);
-      return true;
-    }
+  const node = getExtensionNode(state);
+
+  if (!node || !macroProvider) {
+    return false;
   }
 
-  return false;
+  insertMacroFromMacroBrowser(macroProvider, node.node, true)(state, dispatch);
+  return true;
 };
 
-export const removeExtension = (
+export const removeExtension = (): Command => (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
-): boolean => {
+) => {
   const { schema, selection } = state;
   const pluginState = pluginKey.getState(state);
   let tr = state.tr.setMeta(pluginKey, { ...pluginState, element: null });

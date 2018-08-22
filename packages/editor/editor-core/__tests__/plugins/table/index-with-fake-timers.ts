@@ -15,29 +15,34 @@ import { mediaPlugin } from '../../../src/plugins';
 import listPlugin from '../../../src/plugins/lists';
 import TableView from '../../../src/plugins/table/nodeviews/table';
 import { pluginKey } from '../../../src/plugins/table/pm-plugins/main';
-import { TablePluginState } from '../../../src/plugins/table/types';
+import {
+  TablePluginState,
+  PluginConfig,
+} from '../../../src/plugins/table/types';
 
 describe('TableView', () => {
-  const editor = (doc: any, trackEvent = () => {}) =>
-    createEditor<TablePluginState>({
+  const editor = (doc: any, trackEvent = () => {}) => {
+    const tableOptions = {
+      allowNumberColumn: true,
+      allowHeaderRow: true,
+      allowHeaderColumn: true,
+      permittedLayouts: 'all',
+    } as PluginConfig;
+    return createEditor<TablePluginState>({
       doc,
       editorPlugins: [
         listPlugin,
-        tablesPlugin,
+        tablesPlugin(tableOptions),
         codeBlockPlugin(),
         mediaPlugin({ allowMediaSingle: true }),
       ],
       editorProps: {
         analyticsHandler: trackEvent,
-        allowTables: {
-          allowNumberColumn: true,
-          allowHeaderRow: true,
-          allowHeaderColumn: true,
-          permittedLayouts: 'all',
-        },
+        allowTables: tableOptions,
       },
       pluginKey,
     });
+  };
   // previous regression involved PM trying to render child DOM elements,
   // but the NodeView had an undefined contentDOM after the React render finishes
   // (since render is not synchronous)

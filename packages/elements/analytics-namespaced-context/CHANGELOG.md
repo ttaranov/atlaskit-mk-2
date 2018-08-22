@@ -1,5 +1,9 @@
 # @atlaskit/analytics-namespaced-context
 
+## 2.1.1
+- [patch] Updated dependencies [dfa100e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dfa100e)
+  - @atlaskit/analytics-listeners@3.3.1
+
 ## 2.1.0
 
 - [minor] Add NavigationContext component that provides context to events fired on the navigation channel [89225ce](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/89225ce)
