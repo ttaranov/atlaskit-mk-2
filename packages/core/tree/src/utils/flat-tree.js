@@ -8,9 +8,7 @@ import {
   moveAfterPath,
 } from './path';
 
-import {
-  between
-} from './handy';
+import { between } from './handy';
 
 export const getFlatItemPath = (
   flattenedTree: FlattenedTree,
@@ -57,12 +55,14 @@ export const getDestinationPath = (
   const upperPath: ?Path = down
     ? flattenedTree[destinationIndex].path
     : flattenedTree[destinationIndex - 1] &&
-    flattenedTree[destinationIndex - 1].path;
+      flattenedTree[destinationIndex - 1].path;
   // Path of the lower item where the item was dropped
-  const lowerPath: ?Path = down || sameIndex
-    ? flattenedTree[destinationIndex + 1] && flattenedTree[destinationIndex + 1].path
-    : flattenedTree[destinationIndex].path;
-  
+  const lowerPath: ?Path =
+    down || sameIndex
+      ? flattenedTree[destinationIndex + 1] &&
+        flattenedTree[destinationIndex + 1].path
+      : flattenedTree[destinationIndex].path;
+
   /*
     We are going to differentiate 4 cases:
       - item didn't change position, only moved horizontally
@@ -73,10 +73,10 @@ export const getDestinationPath = (
 
   // Stayed in place, might moved horizontally
   if (sameIndex) {
-    if(typeof level !== 'number') {
+    if (typeof level !== 'number') {
       return sourcePath;
     }
-    if(!upperPath) {
+    if (!upperPath) {
       // Not possible to move
       return sourcePath;
     }
@@ -84,7 +84,7 @@ export const getDestinationPath = (
     const maxLevel = Math.max(sourcePath.length, upperPath.length);
     const finalLevel = between(minLevel, maxLevel, level);
     const sameLevel: boolean = finalLevel === sourcePath.length;
-    if(sameLevel) {
+    if (sameLevel) {
       // Didn't change level
       return sourcePath;
     }
