@@ -1,5 +1,9 @@
 # @atlaskit/field-range
 
+## 5.0.5
+- [patch] Refactored hacky change handler out of field-range. Should help server-side-rendering also. [2741c07](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2741c07)
+- [none] Updated dependencies [2741c07](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2741c07)
+
 ## 5.0.4
 - [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
   - @atlaskit/theme@6.0.0

@@ -1,5 +1,8 @@
 # @atlaskit/datetime-picker
 
+## 6.3.3
+- [patch] Updating datetime-picker and select styles [981b96c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/981b96c)
+
 ## 6.3.2
 - [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
   - @atlaskit/theme@6.0.0

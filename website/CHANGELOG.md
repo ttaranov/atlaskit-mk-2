@@ -1,5 +1,15 @@
 # @atlaskit/website
 
+## 4.0.6
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/badge@9.1.1
+  - @atlaskit/media-card@32.0.5
+  - @atlaskit/media-filmstrip@11.0.1
+
+## 4.0.5
+- [patch] Updated dependencies [dfa100e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dfa100e)
+  - @atlaskit/analytics-listeners@3.3.1
+
 ## 4.0.4
 - [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
   - @atlaskit/theme@6.0.0

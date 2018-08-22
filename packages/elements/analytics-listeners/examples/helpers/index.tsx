@@ -4,7 +4,7 @@ import { GasPayload } from '@atlaskit/analytics-gas-types';
 import Button from '@atlaskit/button';
 
 import { FabricChannel } from '../../src';
-import { ELEMENTS_TAG } from '../../src/FabricElementsListener';
+import { ELEMENTS_TAG } from '../../src/fabric/FabricElementsListener';
 
 export type Props = {
   text?: string;

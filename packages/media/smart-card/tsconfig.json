@@ -1,12 +1,11 @@
 {
-  "extends": "../../../tsconfig.fabric.json",
+  "extends": "../../../tsconfig.media.json",
   "include": [
     "./src/**/*.ts",
     "./src/**/*.tsx",
     "./docs/*.ts",
     "./docs/*.tsx",
     "./examples/*.ts",
-    "./examples/*.tsx",
-    "./typings/**/*.d.ts"
+    "./examples/*.tsx"
   ]
 }

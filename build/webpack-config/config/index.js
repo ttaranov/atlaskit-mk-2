@@ -92,8 +92,14 @@ module.exports = function createWebpackConfig(
         },
         {
           test: /\.md$/,
-          exclude: /node_modules/,
+          exclude: /node_modules|docs/,
           loader: require.resolve('raw-loader'),
+        },
+        {
+          test: /\.md$/,
+          include: /docs/,
+          exclude: /node_modules/,
+          loader: require.resolve('gray-matter-loader'),
         },
         {
           test: /\.js$/,
@@ -202,6 +208,7 @@ function getPlugins(
     new webpack.DefinePlugin({
       WEBSITE_ENV: `"${websiteEnv}"`,
       BASE_TITLE: `"Atlaskit by Atlassian ${!isProduction ? '- DEV' : ''}"`,
+      DEFAULT_META_DESCRIPTION: `"Atlaskit is the official component library for Atlassian's Design System."`,
     }),
 
     new HappyPack({

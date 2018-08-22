@@ -12,6 +12,8 @@ export default md`
   yarn add @atlaskit/smart-card
   ~~~
 
+  _Note_: this package uses an AbortController, so you might need to provide a polyfill for that.
+
   ## Usage
   ${(
     <Example

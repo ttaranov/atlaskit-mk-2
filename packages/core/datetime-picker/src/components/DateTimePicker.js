@@ -88,39 +88,46 @@ type State = {
   zoneValue: string,
 };
 
-/** Border style is defined by the appearnace and whether it is invalid. */
-function getBorderStyle(isInvalid: boolean, appearance: 'default' | 'subtle') {
-  if (isInvalid) return `2px solid ${colors.R400}`;
-  if (appearance === 'subtle') return `2px solid transparent`;
-  return `1px solid ${colors.N20}`;
-}
-/** Padding style is defined by the appearnace and whether it is invalid. */
-function getPaddingStyle(isFocused: boolean, appearance: 'default' | 'subtle') {
-  if (appearance === 'subtle' || !isFocused) return `1px`;
-  return '0px';
-}
+const getBorder = ({ appearance, isFocused, isInvalid }) => {
+  let color = colors.N20;
+  if (appearance === 'subtle') color = 'transparent';
+  if (isFocused) color = colors.B100;
+  if (isInvalid) color = colors.R400;
+
+  return `border: 2px solid ${color}`;
+};
+
+const getBorderColorHover = ({ isFocused, isInvalid, isDisabled }) => {
+  let color = colors.N30;
+  if (isFocused || isDisabled) return ``;
+  if (isInvalid) color = colors.R400;
+  return `border-color: ${color}`;
+};
+
+const getBackgroundColor = ({ appearance, isFocused }) => {
+  let color = colors.N20;
+  if (isFocused) color = colors.N0;
+  if (appearance === 'subtle') color = 'transparent';
+  return `background-color: ${color}`;
+};
+
+const getBackgroundColorHover = ({ isFocused, isInvalid, isDisabled }) => {
+  let color = colors.N30;
+  if (isFocused || isDisabled) return ``;
+  if (isInvalid) color = colors.N0;
+  return `background-color: ${color}`;
+};
 
 const Flex = styled.div`
-  ${({ appearance }) => `
-    background-color: ${appearance === 'subtle' ? 'transparent' : colors.N10}
-    };
-  `} border-radius: ${borderRadius()}px;
+  ${getBackgroundColor}
+  ${getBorder}
+  border-radius: ${borderRadius()}px;
   display: flex;
   transition: background-color 200ms ease-in-out, border-color 200ms ease-in-out;
-  ${({ isFocused, isInvalid, appearance }) => `
-    border: ${
-      isFocused
-        ? `2px solid ${colors.B100}`
-        : `${getBorderStyle(isInvalid, appearance)}`
-    };
-    padding: ${getPaddingStyle(isFocused, appearance)};
-  `} &:hover {
-    ${({ isFocused, isDisabled }) =>
-      !isFocused && !isDisabled
-        ? `
-        background-color: ${colors.N20};
-      `
-        : ''};
+  &:hover {
+    cursor: ${props => (props.isDisabled ? 'default' : 'pointer')};
+    ${getBackgroundColorHover}
+    ${getBorderColorHover}
   }
 `;
 
@@ -139,6 +146,7 @@ const styles = {
     paddingLeft: 0,
     ':hover': {
       backgroundColor: 'transparent',
+      cursor: 'inherit',
     },
   }),
 };

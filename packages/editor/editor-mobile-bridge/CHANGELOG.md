@@ -1,5 +1,11 @@
 # @atlaskit/editor-mobile-bridge
 
+## 3.0.3
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/mention@15.0.6
+  - @atlaskit/editor-json-transformer@4.0.6
+  - @atlaskit/editor-core@77.1.4
+
 ## 3.0.2
 - [patch] Allow all nodes and fix load time on Mobile [a9080a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a9080a7)
 

@@ -1,6 +1,6 @@
 jest.mock('react-lazily-render', () => {
   return {
-    default: ({ content }) => content,
+    default: (data: any) => data.content,
   };
 });
 
@@ -11,6 +11,7 @@ import { mount } from 'enzyme';
 import { Client, ObjectState, ObjectStatus } from '../../../Client';
 import { BlockCard, InlineCard } from '@atlaskit/media-ui';
 import { Card } from '../..';
+import { Observer } from 'rxjs/Observer';
 
 function isNotResolved(state: ObjectState) {
   return state.status !== 'resolved';
@@ -22,7 +23,7 @@ function createClient(
 ): Client {
   const client = new Client();
   jest.spyOn(client, 'get').mockReturnValue(
-    Observable.create(observer => {
+    Observable.create((observer: Observer<any>) => {
       observer.next({
         status: 'resolving',
       });
@@ -44,14 +45,18 @@ describe('Card', () => {
 
   it('should render an error when there is no client provided', async () => {
     expect(() => {
-      mount(<Card url="https://www.atlassian.com/" />);
+      mount(<Card appearance="block" url="https://www.atlassian.com/" />);
     }).toThrow('@atlaskit/smart-card: No client provided.');
   });
 
   it('should render the resolving view when resolving', () => {
     const client = createClient();
     const wrapper = mount(
-      <Card client={client} url="https://www.atlassian.com/" />,
+      <Card
+        appearance="block"
+        client={client}
+        url="https://www.atlassian.com/"
+      />,
     );
     expect(wrapper.find(BlockCard.ResolvingView).exists()).toBeTruthy();
   });
@@ -59,7 +64,11 @@ describe('Card', () => {
   it('should render the errored view when errored', async () => {
     const client = createClient('errored');
     const wrapper = mount(
-      <Card client={client} url="https://www.atlassian.com/" />,
+      <Card
+        appearance="block"
+        client={client}
+        url="https://www.atlassian.com/"
+      />,
     );
 
     try {
@@ -77,7 +86,11 @@ describe('Card', () => {
   it('should render the errored view when not-found', async () => {
     const client = createClient('not-found');
     const wrapper = mount(
-      <Card client={client} url="https://www.atlassian.com/" />,
+      <Card
+        appearance="block"
+        client={client}
+        url="https://www.atlassian.com/"
+      />,
     );
 
     try {
@@ -95,7 +108,11 @@ describe('Card', () => {
   it('should render the forbidden view when forbidden', async () => {
     const client = createClient('forbidden');
     const wrapper = mount(
-      <Card client={client} url="https://www.atlassian.com/" />,
+      <Card
+        appearance="block"
+        client={client}
+        url="https://www.atlassian.com/"
+      />,
     );
 
     try {
@@ -110,17 +127,21 @@ describe('Card', () => {
     }
   });
 
-  it('should render the unauthorised view when unauthorised', async () => {
-    const client = createClient('unauthorised');
+  it('should render the unauthorized view when unauthorized', async () => {
+    const client = createClient('unauthorized');
     const wrapper = mount(
-      <Card client={client} url="https://www.atlassian.com/" />,
+      <Card
+        appearance="block"
+        client={client}
+        url="https://www.atlassian.com/"
+      />,
     );
 
     try {
       // wait for the data to be loaded
       await client
         .get('https://www.atlassian.com/')
-        .pipe(takeWhile(state => state.status !== 'unauthorised'))
+        .pipe(takeWhile(state => state.status !== 'unauthorized'))
         .toPromise();
     } catch (error) {
       wrapper.update();
@@ -131,7 +152,11 @@ describe('Card', () => {
   it('should render the resolved view when resolved', async () => {
     const client = createClient();
     const wrapper = mount(
-      <Card client={client} url="https://www.atlassian.com/" />,
+      <Card
+        appearance="block"
+        client={client}
+        url="https://www.atlassian.com/"
+      />,
     );
 
     // wait for the data to be loaded
@@ -147,7 +172,11 @@ describe('Card', () => {
   it('should reload the object state when the url changes', async () => {
     const client = createClient();
     const wrapper = mount(
-      <Card client={client} url="https://www.atlassian.com/" />,
+      <Card
+        appearance="block"
+        client={client}
+        url="https://www.atlassian.com/"
+      />,
     );
 
     // wait for the data to be loaded
@@ -184,7 +213,11 @@ describe('Card', () => {
         'The most popular voted pages and posts from EAC as voted for all time.',
     });
     const wrapper = mount(
-      <Card client={client} url="https://www.atlassian.com/" />,
+      <Card
+        appearance="block"
+        client={client}
+        url="https://www.atlassian.com/"
+      />,
     );
 
     // wait for the data to be loaded
@@ -206,7 +239,9 @@ describe('Card', () => {
   });
 
   it('should render the resolved view when data is provided', async () => {
-    const wrapper = mount(<Card data={{ name: 'foobar' }} />);
+    const wrapper = mount(
+      <Card appearance="block" data={{ name: 'foobar' }} />,
+    );
     wrapper.update();
     expect(wrapper.find(BlockCard.ResolvedView)).toHaveLength(1);
     expect(wrapper.find(BlockCard.ResolvedView).props()).toEqual(

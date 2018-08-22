@@ -2,6 +2,7 @@ import * as React from 'react';
 import { ReactElement } from 'react';
 import * as ReactDOM from 'react-dom';
 import { EditorView } from 'prosemirror-view';
+import { Node as PMNode } from 'prosemirror-model';
 import AddIcon from '@atlaskit/icon/glyph/editor/add';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import TableIcon from '@atlaskit/icon/glyph/editor/table';
@@ -86,7 +87,9 @@ export interface Props {
   onInsertBlockType?: (name: string) => Command;
   onInsertMacroFromMacroBrowser?: (
     macroProvider: MacroProvider,
-  ) => (editorView: EditorView) => void;
+    node?: PMNode,
+    isEditing?: boolean,
+  ) => (state, dispatch) => void;
 }
 
 export interface State {
@@ -584,7 +587,10 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         analytics.trackEvent(
           `atlassian.editor.format.${item.value.name}.button`,
         );
-        onInsertMacroFromMacroBrowser!(macroProvider!)(editorView);
+        onInsertMacroFromMacroBrowser!(macroProvider!)(
+          editorView.state,
+          editorView.dispatch,
+        );
         break;
       case 'date':
         this.createDate();

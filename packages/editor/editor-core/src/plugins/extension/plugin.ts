@@ -16,7 +16,7 @@ import { getExtensionNode } from './utils';
 export const pluginKey = new PluginKey('extensionPlugin');
 
 export type ExtensionState = {
-  element: HTMLElement | null;
+  element: HTMLElement | undefined;
   layout: ExtensionLayout;
   node: PMNode;
   allowBreakout: boolean;

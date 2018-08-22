@@ -7,18 +7,18 @@ const MAX_BOARDS = 2;
 const MAX_FILTERS = 2;
 const MAX_PEOPLE = 3;
 
-export const mapRecentResultsToUIGroups = (
-  recentlyViewedObjects: JiraResultsMap,
-): ResultsGroup[] => {
-  const { issues, boards, filters, projects, people } = recentlyViewedObjects
-    ? recentlyViewedObjects
-    : {
-        issues: [],
-        boards: [],
-        filters: [],
-        projects: [],
-        people: [],
-      };
+const DEFAULT_JIRA_RESULTS_MAP = {
+  issues: [],
+  boards: [],
+  filters: [],
+  projects: [],
+  people: [],
+};
+
+const sliceResults = (resultsMap: JiraResultsMap) => {
+  const { issues, boards, filters, projects, people } = resultsMap
+    ? resultsMap
+    : DEFAULT_JIRA_RESULTS_MAP;
 
   const [issuesToDisplay, peopleToDisplay, ...others] = [
     { items: issues, count: MAX_ISSUES },
@@ -27,6 +27,20 @@ export const mapRecentResultsToUIGroups = (
     { items: filters, count: MAX_FILTERS },
     { items: projects, count: MAX_PROJECTS },
   ].map(({ items, count }) => take(items, count));
+
+  return {
+    issuesToDisplay,
+    others,
+    peopleToDisplay,
+  };
+};
+
+export const mapRecentResultsToUIGroups = (
+  recentlyViewedObjects: JiraResultsMap,
+): ResultsGroup[] => {
+  const { issuesToDisplay, peopleToDisplay, others } = sliceResults(
+    recentlyViewedObjects,
+  );
 
   return [
     {
@@ -50,5 +64,24 @@ export const mapRecentResultsToUIGroups = (
 export const mapSearchResultsToUIGroups = (
   searchResultsObjects: JiraResultsMap,
 ): ResultsGroup[] => {
-  return [];
+  const { issuesToDisplay, peopleToDisplay, others } = sliceResults(
+    searchResultsObjects,
+  );
+  return [
+    {
+      items: issuesToDisplay,
+      key: 'issues',
+      titleI18nId: 'global-search.jira.seach-result-issues-heading',
+    },
+    {
+      items: others.reduce((acc, arr) => [...acc, ...arr]),
+      key: 'containers',
+      titleI18nId: 'global-search.jira.seach-result-containers-heading',
+    },
+    {
+      items: peopleToDisplay,
+      key: 'people',
+      titleI18nId: 'global-search.jira.seach-result-people-heading',
+    },
+  ];
 };

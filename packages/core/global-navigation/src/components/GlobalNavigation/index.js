@@ -10,6 +10,7 @@ import {
 } from '../../../package.json';
 import generateDefaultConfig from '../../config/default-config';
 import generateProductConfig from '../../config/product-config';
+import ViewTracker from '../ViewTracker';
 
 import type { GlobalNavItemData, NavItem } from '../../config/types';
 import type { GlobalNavigationProps, DrawerName } from './types';
@@ -38,6 +39,13 @@ const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
 });
 
 const noop = () => {};
+
+const analyticsNameMap = {
+  search: 'quickSearchDrawer',
+  notification: 'notificationsDrawer',
+  create: 'createDrawer',
+  starred: 'starDrawer',
+};
 
 type GlobalNavigationState = {
   [any]: boolean, // Need an indexer property to appease flow for is${capitalisedDrawerName}Open
@@ -228,6 +236,7 @@ export default class GlobalNavigation
                 onClose={this.closeDrawer(drawer)}
                 width="wide"
               >
+                <ViewTracker name={analyticsNameMap[drawer]} />
                 <DrawerContents />
               </Drawer>
             );

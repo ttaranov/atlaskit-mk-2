@@ -23,6 +23,7 @@ export type GoToItemProps = {
   goTo: string,
   navigationUIController: UIController,
   navigationViewController: ViewController,
+  spinnerDelay: number,
 };
 
 export type GroupHeadingProps = {

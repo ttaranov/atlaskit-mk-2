@@ -7,7 +7,7 @@ export function createTestsForDocument(
 ) {
   const empty = {};
 
-  createTestsForObject(type, fixture, extractor);
+  createTestsForObject(fixture, extractor);
 
   it(`should extract comment details when the ${type} has a comment count`, () => {
     expect(extractor(fixture)).toHaveProperty(

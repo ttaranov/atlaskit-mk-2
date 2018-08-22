@@ -47,6 +47,7 @@
       "./typings/events.d.ts",
       "./typings/lodash.last.d.ts",
       "./typings/lodash.debounce.d.ts",
-      "./typings/lodash.matches.d.ts"
+      "./typings/lodash.matches.d.ts",
+      "./typings/AbortController.d.ts"
     ]
   }

@@ -106,10 +106,17 @@ export class JiraQuickSearchContainer extends React.Component<
       .then(results => ({ results }));
   };
 
-  getSearchResults = (query: string, sessionId: string, startTime: number) =>
-    Promise.resolve({
-      results: {},
-    });
+  getSearchResults = (query: string, sessionId: string, startTime: number) => {
+    return this.props.peopleSearchClient.search(query).then(people => ({
+      results: {
+        people,
+        issues: [],
+        boards: [],
+        filters: [],
+        projects: [],
+      },
+    }));
+  };
 
   render() {
     const { linkComponent } = this.props;

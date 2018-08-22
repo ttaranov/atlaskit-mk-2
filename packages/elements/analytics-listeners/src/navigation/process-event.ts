@@ -15,6 +15,7 @@ import {
   TRACK_EVENT_TYPE,
   OPERATIONAL_EVENT_TYPE,
   GasPayload,
+  GasScreenEventPayload,
 } from '@atlaskit/analytics-gas-types';
 
 import {
@@ -56,7 +57,10 @@ const NAVIGATION_TAG = 'navigation';
  *  }
  */
 
-export default (event: EventNextType, logger: Logger): GasPayload | null => {
+export default (
+  event: EventNextType,
+  logger: Logger,
+): GasPayload | GasScreenEventPayload | null => {
   const sources = getSources(event);
   const source = last(sources) || 'unknown';
   const extraAttributes = getExtraAttributes(event);
@@ -76,6 +80,7 @@ export default (event: EventNextType, logger: Logger): GasPayload | null => {
     actionSubject,
     actionSubjectId,
     attributes: payloadAttributes,
+    name,
   } = event.payload;
   const attributes = {
     listenerVersion,
@@ -103,9 +108,15 @@ export default (event: EventNextType, logger: Logger): GasPayload | null => {
           tags: Array.from(tags),
         } as any;
       case SCREEN_EVENT_TYPE:
+        return {
+          eventType,
+          name,
+          attributes,
+          tags: Array.from(tags),
+        };
       case TRACK_EVENT_TYPE:
         logger.error(
-          'Screen and Track events are currently not supported for navigation events',
+          'Track events are currently not supported for navigation events',
         );
         break;
       default:

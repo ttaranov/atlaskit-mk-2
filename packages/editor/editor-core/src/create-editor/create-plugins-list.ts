@@ -104,7 +104,7 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
   }
 
   if (props.allowTables) {
-    plugins.push(tablesPlugin);
+    plugins.push(tablesPlugin(props.allowTables));
   }
 
   if (props.allowTasksAndDecisions) {

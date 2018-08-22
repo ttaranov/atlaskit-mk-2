@@ -2,8 +2,7 @@
 
 import React from 'react';
 import GlobalNavigation from '@atlaskit/global-navigation';
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
-import { AtlassianWordmark } from '@atlaskit/logo';
+import { AtlassianIcon, AtlassianWordmark } from '@atlaskit/logo';
 import {
   GroupHeading,
   Item,
@@ -14,7 +13,10 @@ import {
 } from '../src';
 
 const MyGlobalNavigation = () => (
-  <GlobalNavigation productIcon={AtlassianIcon} onProductClick={() => {}} />
+  <GlobalNavigation
+    productIcon={() => <AtlassianIcon size="medium" />}
+    onProductClick={() => {}}
+  />
 );
 
 const MyProductNavigation = () => (

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
-import { gridSize } from '@atlaskit/theme';
+import { gridSize, math } from '@atlaskit/theme';
 import styled from 'styled-components';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import Button from '@atlaskit/button';
@@ -37,7 +37,7 @@ const Container = styled.div`
 `;
 
 const StyledButton = styled(Button)`
-  margin-right: ${gridSize() * 0.25}px;
+  margin-right: ${math.divide(gridSize, 4)}px;
 `;
 
 const itemI18nKeySuffix = Object.keys(JiraEntityTypes);
