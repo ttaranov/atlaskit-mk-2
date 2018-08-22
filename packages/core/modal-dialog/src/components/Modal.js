@@ -157,13 +157,6 @@ class Modal extends Component<Props, State> {
     const widthName = WIDTH_ENUM.values.includes(width) ? width : null;
     const widthValue = widthName ? null : width;
 
-    // Pass an afterEnded custom transition to Positioner so we can update styles to remove the transform property
-    // This fixes an issue with react-beautiful-dnd within modals - AK-4328
-    const customTransition =
-      this.state.hasEntered && !this.state.isExiting && !isBackground
-        ? 'afterEntered'
-        : '';
-
     return (
       <Animation in={isOpen} onExited={onCloseComplete} stackIndex={stackIndex}>
         {({ fade, slide }) => (
@@ -180,7 +173,6 @@ class Modal extends Component<Props, State> {
               <Blanket isTinted onBlanketClicked={this.handleOverlayClick} />
               <Positioner
                 style={slide}
-                customTransition={customTransition}
                 onClick={this.handleOverlayClick}
                 onEntered={this.handleEntered}
                 scrollBehavior={scrollBehavior}
