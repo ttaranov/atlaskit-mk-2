@@ -1,16 +1,16 @@
-import * as React from 'react';
-
-export interface Props {
-  keyCode: number;
-  handler: () => void;
-}
+import { Component } from 'react';
 
 export const keyCodes = {
   space: 32,
   m: 77,
 };
 
-export class Shortcut extends React.Component<Props, {}> {
+export interface ShortcutProps {
+  keyCode: number;
+  handler: () => void;
+}
+
+export class Shortcut extends Component<ShortcutProps, {}> {
   componentDidMount() {
     this.init();
   }

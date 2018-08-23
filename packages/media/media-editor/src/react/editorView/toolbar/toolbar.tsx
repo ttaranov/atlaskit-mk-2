@@ -49,27 +49,55 @@ export class Toolbar extends Component<ToolbarProps, ToolbarState> {
   }
 
   render() {
-    const { color } = this.props;
+    const { color, lineWidth, onColorChanged, onLineWidthChanged } = this.props;
 
     const onColorButtonClick = () => this.showOrHidePopup('color');
     const onLineWidthButtonClick = () => this.showOrHidePopup('lineWidth');
 
-    const isColorButtonActive = this.state.popup === 'color';
-    const isLineWidthButtonActive = this.state.popup === 'lineWidth';
+    const showColorPopup = this.state.popup === 'color';
+    const showLineWidthPopup = this.state.popup === 'lineWidth';
+
+    const onPickColor = (color: Color) => {
+      onColorChanged(color);
+      this.setState({ popup: 'none' });
+    };
+
+    const onLineWidthClick = (lineWidth: number) => {
+      onLineWidthChanged(lineWidth);
+      this.setState({ popup: 'none' });
+    };
 
     return (
       <ToolbarContainer>
         <CenterButtons>
           {this.renderToolButtons()}
-          <LineWidthButton
-            isActive={isLineWidthButtonActive}
-            onClick={onLineWidthButtonClick}
-          />
-          <ColorButton
+
+          <LineWidthPopup
+            onLineWidthClick={onLineWidthClick}
+            lineWidth={lineWidth}
+            isOpen={showLineWidthPopup}
+          >
+            <div>
+              <LineWidthButton
+                isActive={showLineWidthPopup}
+                onClick={onLineWidthButtonClick}
+              />
+            </div>
+          </LineWidthPopup>
+
+          <ColorPopup
+            onPickColor={onPickColor}
             color={color}
-            isActive={isColorButtonActive}
-            onClick={onColorButtonClick}
-          />
+            isOpen={showColorPopup}
+          >
+            <div>
+              <ColorButton
+                color={color}
+                isActive={showColorPopup}
+                onClick={onColorButtonClick}
+              />
+            </div>
+          </ColorPopup>
         </CenterButtons>
 
         <RightButtons>
@@ -88,8 +116,6 @@ export class Toolbar extends Component<ToolbarProps, ToolbarState> {
             {buttonCancel}
           </RightButton>
         </RightButtons>
-
-        {this.renderPopup()}
       </ToolbarContainer>
     );
   }
@@ -114,35 +140,5 @@ export class Toolbar extends Component<ToolbarProps, ToolbarState> {
     } else {
       this.setState({ popup: target });
     }
-  }
-
-  private renderPopup(): JSX.Element | null {
-    const { color, lineWidth, onColorChanged, onLineWidthChanged } = this.props;
-    const { popup } = this.state;
-
-    if (popup === 'color') {
-      const onPickColor = (color: Color) => {
-        onColorChanged(color);
-        this.setState({ popup: 'none' });
-      };
-
-      return <ColorPopup onPickColor={onPickColor} color={color} />;
-    }
-
-    if (popup === 'lineWidth') {
-      const onLineWidthClick = (lineWidth: number) => {
-        onLineWidthChanged(lineWidth);
-        this.setState({ popup: 'none' });
-      };
-
-      return (
-        <LineWidthPopup
-          onLineWidthClick={onLineWidthClick}
-          lineWidth={lineWidth}
-        />
-      );
-    }
-
-    return null;
   }
 }

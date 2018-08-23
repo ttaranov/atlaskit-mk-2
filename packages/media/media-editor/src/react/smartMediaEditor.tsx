@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Context, UploadableFile } from '@atlaskit/media-core';
 import { FileIdentifier } from '@atlaskit/media-card';
+import { Shortcut } from '@atlaskit/media-ui';
 import { EditorView } from './editorView/editorView';
 import { Blanket } from './styled';
 import { Subscription } from 'rxjs/Subscription';
@@ -8,46 +9,11 @@ import { Subscription } from 'rxjs/Subscription';
 export interface SmartMediaEditorProps {
   identifier: FileIdentifier;
   context: Context;
-  onFinish: (identifier: FileIdentifier) => void;
+  onFinish: (identifier: FileIdentifier, preview?: string) => void;
 }
 
 export interface SmartMediaEditorState {
   imageUrl?: string;
-}
-
-// TODO This is copy paste from media-viewer
-export interface ShortcutProps {
-  keyCode: number;
-  handler: () => void;
-}
-
-export class Shortcut extends React.Component<ShortcutProps, {}> {
-  componentDidMount() {
-    this.init();
-  }
-
-  componentWillUnmount() {
-    this.release();
-  }
-
-  render() {
-    return null;
-  }
-
-  private keyHandler = (e: KeyboardEvent) => {
-    const { keyCode, handler } = this.props;
-    if (e.keyCode === keyCode) {
-      handler();
-    }
-  };
-
-  private init = () => {
-    document.addEventListener('keydown', this.keyHandler);
-  };
-
-  private release = () => {
-    document.removeEventListener('keydown', this.keyHandler);
-  };
 }
 
 export class SmartMediaEditor extends React.Component<
@@ -103,12 +69,12 @@ export class SmartMediaEditor extends React.Component<
     });
   };
 
-  onSave = (imageUrl: string) => {
+  onSave = (imageData: string) => {
     const { fileName } = this;
     const { context, identifier, onFinish } = this.props;
     const { collectionName } = identifier;
     const uploadableFile: UploadableFile = {
-      content: imageUrl,
+      content: imageData,
       collection: collectionName,
       name: fileName,
     };
@@ -123,7 +89,7 @@ export class SmartMediaEditor extends React.Component<
             collectionName,
           };
 
-          onFinish(identifier);
+          onFinish(identifier, imageData);
           this.uploadFileSubscription &&
             this.uploadFileSubscription.unsubscribe();
         }

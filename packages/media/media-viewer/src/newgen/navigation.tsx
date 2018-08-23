@@ -4,6 +4,7 @@ import { Identifier } from './domain';
 import ArrowLeftCircleIcon from '@atlaskit/icon/glyph/chevron-left-circle';
 import ArrowRightCircleIcon from '@atlaskit/icon/glyph/chevron-right-circle';
 import { colors } from '@atlaskit/theme';
+import { Shortcut } from '@atlaskit/media-ui';
 import {
   ArrowsWrapper,
   RightWrapper,
@@ -12,7 +13,6 @@ import {
   hideControlsClassName,
 } from './styled';
 import { getSelectedIndex } from './utils';
-import { Shortcut } from './shortcut';
 
 export type NavigationDirection = 'prev' | 'next';
 

@@ -32,6 +32,7 @@ export class LineWidthButton extends Component<LineWidthButtonProps> {
       borderRadius: `${lineWidth}px`,
     };
 
+    // TODO Simplify this.
     return (
       <Container onClick={onClick}>
         <HoverArea>

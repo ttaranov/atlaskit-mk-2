@@ -4,23 +4,18 @@ import styled from 'styled-components';
 
 import { HTMLAttributes, ComponentClass } from 'react';
 import {
-  akColorB50,
+  akColorB400,
   akColorN0,
   akColorN500,
 } from '@atlaskit/util-shared-styles';
 
-const transparent = 'rgba(0, 0, 0, 0)';
-const buttonHoverBackgroundColor = 'rgba(255, 255, 255, 0.15)';
-const buttonClickedBackgroundColor = 'rgba(76, 154, 255, 0.25)';
-const optionsColorNormal = 'rgba(255, 255, 255, 0.6)';
-const optionsColorActive = 'rgba(66, 82, 110, 0.6)';
+const optionsColorNormal = akColorN500;
+const optionsColorActive = akColorB400;
 const colorSampleOutlineColor = 'rgba(255, 255, 255, 0.5)';
 
-const ButtonBase: ComponentClass<HTMLAttributes<{}>> = styled.div`
+export const ToolbarButton: ComponentClass<HTMLAttributes<{}>> = styled.div`
   cursor: pointer;
   position: relative; /* for the child OptionsAreaBase which uses absolute positioning */
-  background-color: ${transparent};
-  color: ${akColorN0};
   width: 40px;
   height: 32px;
   border-radius: 4px;
@@ -31,27 +26,11 @@ const ButtonBase: ComponentClass<HTMLAttributes<{}>> = styled.div`
   align-items: center;
 `;
 
-export const ButtonNormal: ComponentClass<HTMLAttributes<{}>> = styled(
-  ButtonBase,
+export const ActiveToolbarButton: ComponentClass<HTMLAttributes<{}>> = styled(
+  ToolbarButton,
 )`
-  &:hover {
-    background-color: ${buttonHoverBackgroundColor};
-    color: ${akColorN0};
-  }
-`;
-
-export const ButtonClicked: ComponentClass<HTMLAttributes<{}>> = styled(
-  ButtonBase,
-)`
-  background-color: ${buttonClickedBackgroundColor};
-  color: ${akColorB50};
-`;
-
-export const ButtonActive: ComponentClass<HTMLAttributes<{}>> = styled(
-  ButtonBase,
-)`
-  background-color: ${akColorN0};
-  color: ${akColorN500};
+  background-color: ${akColorN500};
+  color: ${akColorN0};
 `;
 
 export interface OptionsIconWrapperProps {
@@ -64,7 +43,6 @@ export const OptionsIconWrapper: ComponentClass<
   position: absolute;
   right: -7px;
   bottom: -10px;
-
   color: ${({ isActive }: OptionsIconWrapperProps) =>
     isActive ? optionsColorActive : optionsColorNormal};
 `;

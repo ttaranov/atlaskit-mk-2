@@ -15,6 +15,7 @@ import { EditorContainer } from './styles';
 
 const DEFAULT_WIDTH = 845;
 const DEFAULT_HEIGHT = 530;
+export const TOOLBAR_HEIGHT = 64;
 const TRANSPARENT_COLOR = { red: 0, green: 0, blue: 0, alpha: 0 };
 
 // Properties' names in the local storage
@@ -49,7 +50,10 @@ export class EditorView extends Component<EditorViewProps, EditorViewState> {
     super(props);
 
     this.state = {
-      dimensions: { width: DEFAULT_WIDTH, height: DEFAULT_HEIGHT },
+      dimensions: {
+        width: DEFAULT_WIDTH,
+        height: DEFAULT_HEIGHT - TOOLBAR_HEIGHT,
+      },
       color: { red: 0xbf, green: 0x26, blue: 0x00 },
       lineWidth: 10,
       tool: 'arrow',
@@ -60,7 +64,7 @@ export class EditorView extends Component<EditorViewProps, EditorViewState> {
     const rect = this.rootDiv.getBoundingClientRect();
     const dimensions = {
       width: rect.width || DEFAULT_WIDTH,
-      height: rect.height || DEFAULT_HEIGHT,
+      height: (rect.height || DEFAULT_HEIGHT) - TOOLBAR_HEIGHT,
     };
 
     this.setState({ dimensions });

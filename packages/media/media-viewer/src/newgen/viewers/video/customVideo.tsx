@@ -15,6 +15,7 @@ import Video, {
 } from 'react-video-renderer';
 import { colors } from '@atlaskit/theme';
 import FieldRange from '@atlaskit/field-range';
+import { Shortcut } from '@atlaskit/media-ui';
 import { TimeRange } from './TimeRange';
 import {
   CurrentTime,
@@ -32,7 +33,6 @@ import {
 } from './styled';
 import { formatDuration } from '../../utils/formatDuration';
 import { hideControlsClassName } from '../../styled';
-import { Shortcut, keyCodes } from '../../shortcut';
 import {
   toggleFullscreen,
   getFullscreenElement,

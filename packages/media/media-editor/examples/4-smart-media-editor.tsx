@@ -17,29 +17,25 @@ const context = createUploadContext();
 
 class SmartMediaEditorExample extends React.Component<{}, State> {
   state: State = {
-    showEditor: false,
+    showEditor: true,
   };
 
   openSmartEditor = () => {
     this.setState({ showEditor: true });
   };
 
-  onFinish = identifier => {
-    console.log('onFinish', identifier);
+  onFinish = (identifier, preview) => {
+    console.log('onFinish', identifier, preview);
     this.setState({
-      showEditor: false
-    })
+      showEditor: false,
+    });
   };
 
   renderCardList = () => {
     return (
       <CardListWrapper>
         <h1>Public collection: {defaultCollectionName}</h1>
-        <CardList
-          context={context}
-          collectionName={defaultCollectionName}
-          // cardAppearance="small"
-        />
+        <CardList context={context} collectionName={defaultCollectionName} />
       </CardListWrapper>
     );
   };
