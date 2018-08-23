@@ -163,7 +163,7 @@ export const Blanket: ComponentClass<HTMLAttributes<{}>> = styled.div`
   z-index: ${overlayZindex};
 `;
 
-export const SpinnerWrapper = styled.div`
+export const SpinnerWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: absolute;
   top: 50%;
   left: 50%;

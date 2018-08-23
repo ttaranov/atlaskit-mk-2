@@ -41,6 +41,7 @@ export const fakeContext = (
   const getImage = {} as any;
   const defaultContext: Context = {
     getImage,
+    getImageUrl: getUrlPreviewProvider,
     getFile,
     getBlobService,
     getLocalPreview,
