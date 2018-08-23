@@ -84,6 +84,7 @@ export class MediaPluginState {
   private dropzonePicker?: PickerFacade;
   private customPicker?: PickerFacade;
   public editingMediaId?: string;
+  public showEditingDialog?: boolean;
 
   private linkRanges: Array<URLInfo>;
   public editorAppearance: EditorAppearance;
@@ -92,6 +93,7 @@ export class MediaPluginState {
   private reactContext: () => {};
 
   public resolvedUploadContext: Context | undefined;
+  public resolvedViewContext: Context | undefined;
 
   constructor(
     state: EditorState,
@@ -192,6 +194,8 @@ export class MediaPluginState {
     if (stateManager) {
       this.stateManager = stateManager;
     }
+
+    this.resolvedUploadContext = await resolvedMediaProvider.viewContext;
 
     this.allowsLinks = !!resolvedMediaProvider.linkCreateContext;
     this.allowsUploads = !!resolvedMediaProvider.uploadContext;
@@ -506,12 +510,18 @@ export class MediaPluginState {
     }
 
     this.editingMediaId = selected.attrs.__key;
+    this.showEditingDialog = true;
 
     // triggers contentComponent render
     this.view.dispatch(this.view.state.tr.setMeta(stateKey, 'edit'));
   };
 
-  onFinishEditing = (newId: FileIdentifier, oldNode: Node) => {
+  onCloseEditing = () => {
+    this.showEditingDialog = false;
+    this.view.dispatch(this.view.state.tr.setMeta(stateKey, 'close-edit'));
+  };
+
+  onFinishEditing = (newId: FileIdentifier, preview: string, oldNode: Node) => {
     const oldId = this.editingMediaId;
     if (!oldId) {
       console.warn('no old id');
@@ -549,11 +559,14 @@ export class MediaPluginState {
 
     console.log('tr', tr);
 
+    this.editingMediaId = undefined;
     this.view.dispatch(
       tr.setMeta('addToHistory', false).setMeta(stateKey, 'noedit'),
     );
 
-    this.editingMediaId = undefined;
+    console.log('resolved upload context', this.resolvedUploadContext);
+    this.resolvedViewContext!.setLocalPreview(oldNode.attrs.__key, preview);
+    // this.resolvedUploadContext!.setLocalPreview(oldNode.attrs.id, preview);
   };
 
   align = (layout: MediaSingleLayout): boolean => {

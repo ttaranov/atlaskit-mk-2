@@ -156,7 +156,7 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
               return null;
             }
 
-            if (node && pluginState.editingMediaId) {
+            if (node && pluginState.showEditingDialog) {
               const identifier: FileIdentifier = {
                 id: node.attrs.id,
                 mediaItemType: 'file',
@@ -168,9 +168,19 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
                   context={
                     (pluginState as MediaPluginState).resolvedUploadContext!
                   }
-                  onFinish={newIdentifier =>
-                    pluginState.onFinishEditing(newIdentifier, node)
-                  }
+                  onUploadStart={(
+                    deferredIdentifier: Promise<FileIdentifier>,
+                    preview: string,
+                  ) => {
+                    pluginState.onCloseEditing();
+
+                    deferredIdentifier.then(identifier =>
+                      pluginState.onFinishEditing(identifier, preview, node),
+                    );
+                  }}
+                  onFinish={finish => {
+                    console.log('finish');
+                  }}
                 />
               );
             }
