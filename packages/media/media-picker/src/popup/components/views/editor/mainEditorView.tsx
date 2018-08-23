@@ -11,7 +11,7 @@ import { MainContainer } from './styles';
 import { editorClose } from '../../../actions/editorClose';
 import { editorShowError } from '../../../actions/editorShowError';
 import { editorShowImage } from '../../../actions/editorShowImage';
-import { EditorViewProps } from './editorView/editorView';
+import { EditorViewProps } from '@atlaskit/media-editor';
 import editorViewLoader from './editorViewLoader';
 export interface MainEditorViewStateProps {
   readonly editorData?: EditorData;

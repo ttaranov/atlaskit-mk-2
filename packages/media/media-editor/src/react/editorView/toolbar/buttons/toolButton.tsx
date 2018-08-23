@@ -8,7 +8,7 @@ import BlurIcon from '@atlaskit/icon/glyph/media-services/blur';
 import OvalIcon from '@atlaskit/icon/glyph/media-services/oval';
 import RectIcon from '@atlaskit/icon/glyph/media-services/rectangle';
 import TextIcon from '@atlaskit/icon/glyph/media-services/text';
-import { Tool } from '@atlaskit/media-editor';
+import { Tool } from '../../../..';
 
 import { GenericButton } from './genericButton';
 

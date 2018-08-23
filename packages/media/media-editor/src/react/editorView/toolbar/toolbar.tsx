@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { Tool, Color } from '@atlaskit/media-editor';
+import { Tool, Color } from '../../../..';
 
 import { LineWidthButton } from './buttons/lineWidthButton';
 import { ColorButton } from './buttons/colorButton';
@@ -13,7 +13,7 @@ import {
   RightButtons,
   RightButton,
 } from './styles';
-import { buttonSave, buttonCancel } from '../../phrases';
+import { buttonSave, buttonCancel } from '../../../react/editorView/phrases';
 
 export type PopupState = 'none' | 'color' | 'lineWidth';
 

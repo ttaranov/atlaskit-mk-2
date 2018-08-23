@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import CheckIcon from '@atlaskit/icon/glyph/check';
-import { Color } from '@atlaskit/media-editor';
+import { Color } from '../../../..';
 
 import {
   Container,

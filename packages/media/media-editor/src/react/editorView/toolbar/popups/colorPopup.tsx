@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { Color } from '@atlaskit/media-editor';
+import { Color } from '../../../..';
 
 import { ColorButton } from './colorButton';
 import { ColorPopupContainer } from './popupStyles';

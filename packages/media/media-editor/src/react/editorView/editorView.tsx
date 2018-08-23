@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { connect } from 'react-redux';
 import {
   MediaEditor,
   Tool,
@@ -8,12 +7,11 @@ import {
   Dimensions,
   LoadParameters,
   ShapeParameters,
-} from '@atlaskit/media-editor';
+} from '../..';
 
 import { Toolbar, tools } from './toolbar/toolbar';
-import { couldNotLoadEditor, couldNotSaveImage } from '../phrases';
+import { couldNotLoadEditor, couldNotSaveImage } from './phrases';
 import { EditorContainer } from './styles';
-import { State } from '../../../../domain';
 
 const DEFAULT_WIDTH = 845;
 const DEFAULT_HEIGHT = 530;
@@ -204,9 +202,3 @@ export class EditorView extends Component<EditorViewProps, EditorViewState> {
 function isTool(value: string): value is Tool {
   return tools.some(tool => tool === value);
 }
-
-export default connect<EditorViewStateProps, {}, EditorViewOwnProps>(
-  ({ editorData }: State) => ({
-    imageUrl: editorData ? editorData.imageUrl || '' : '',
-  }),
-)(EditorView);
