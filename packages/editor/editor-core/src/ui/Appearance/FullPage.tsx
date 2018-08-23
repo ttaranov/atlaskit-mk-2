@@ -193,7 +193,7 @@ export default class Editor extends React.Component<
       popupsScrollableElement,
       disabled,
       collabEdit,
-      viewMode,
+      readOnlyMode,
     } = this.props;
 
     const { showKeyline } = this.state;
@@ -202,7 +202,7 @@ export default class Editor extends React.Component<
       <FullPageEditorWrapper>
         <MainToolbar showKeyline={showKeyline}>
           <Toolbar
-            viewMode={viewMode}
+            readOnlyMode={readOnlyMode}
             editorView={editorView!}
             editorActions={editorActions}
             eventDispatcher={eventDispatcher!}

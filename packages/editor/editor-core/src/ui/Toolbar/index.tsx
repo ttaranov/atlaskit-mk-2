@@ -6,7 +6,7 @@ import { ProviderFactory } from '@atlaskit/editor-common';
 import {
   EditorAppearance,
   ToolbarUIComponentFactory,
-  ViewMode,
+  ReadOnlyMode,
 } from '../../types';
 import { EventDispatcher } from '../../event-dispatcher';
 import EditorActions from '../../actions';
@@ -48,7 +48,7 @@ export interface ToolbarProps {
   eventDispatcher: EventDispatcher;
   providerFactory: ProviderFactory;
   appearance: EditorAppearance;
-  viewMode: ViewMode;
+  readOnlyMode: ReadOnlyMode;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
@@ -91,7 +91,7 @@ export class ToolbarInner extends React.Component<ToolbarInnerProps> {
       isToolbarReducedSpacing,
     } = this.props;
 
-    if (!items || !items.length || this.props.viewMode) {
+    if (!items || !items.length || this.props.readOnlyMode) {
       return null;
     }
 

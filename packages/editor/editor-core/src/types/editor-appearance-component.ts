@@ -10,7 +10,7 @@ import {
 import { CollabEditOptions } from '../plugins/collab-edit';
 
 export interface EditorAppearanceComponentProps {
-  viewMode: boolean;
+  readOnlyMode: boolean;
   onUiReady?: (ref) => void;
   onSave?: (editorView: EditorView) => void;
   onCancel?: (editorView: EditorView) => void;

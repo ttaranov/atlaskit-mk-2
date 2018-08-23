@@ -31,7 +31,7 @@ import { CodeBlockOptions } from '../plugins/code-block';
 import { CardProvider, CardOptions } from '../plugins/card';
 import { QuickInsertOptions } from '../plugins/quick-insert/types';
 
-export type ViewMode = boolean;
+export type ReadOnlyMode = boolean;
 export type EditorAppearance =
   | 'message'
   | 'inline-comment'
@@ -61,7 +61,7 @@ export interface ExtensionConfig {
 }
 
 export interface EditorProps {
-  viewMode?: boolean;
+  readOnlyMode?: boolean;
   appearance?: EditorAppearance;
   // Legacy analytics support
   analyticsHandler?: AnalyticsHandler;

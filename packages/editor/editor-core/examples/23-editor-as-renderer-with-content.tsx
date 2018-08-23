@@ -98,7 +98,7 @@ const EditButtons = props => (
 );
 
 const MainToolbar = props => {
-  if (props.isViewMode) {
+  if (props.readOnlyMode) {
     return <EditButtons {...props} />;
   }
   return <SaveAndCancelButtons {...props} />;
@@ -107,7 +107,7 @@ const MainToolbar = props => {
 export type Props = {
   defaultValue?: Object;
 };
-export type State = { disabled: boolean; viewMode: boolean };
+export type State = { disabled: boolean; readOnlyMode: boolean };
 
 const providers = {
   emojiProvider: emoji.storyData.getEmojiResource({
@@ -132,7 +132,7 @@ const mediaProvider = storyMediaProviderFactory({
 const quickInsertProvider = quickInsertProviderFactory();
 
 export class ExampleEditor extends React.Component<Props, State> {
-  state: State = { disabled: true, viewMode: true };
+  state: State = { disabled: true, readOnlyMode: true };
 
   componentDidMount() {
     // tslint:disable-next-line:no-console
@@ -186,10 +186,10 @@ export class ExampleEditor extends React.Component<Props, State> {
             placeholder="Write something..."
             shouldFocus={false}
             disabled={this.state.disabled}
-            viewMode={this.state.viewMode}
+            readOnlyMode={this.state.readOnlyMode}
             contentComponents={
               <TitleInput
-                disabled={this.state.viewMode}
+                disabled={this.state.readOnlyMode}
                 placeholder="Give this page a title..."
                 // tslint:disable-next-line:jsx-no-lambda
                 innerRef={this.handleTitleRef}
@@ -203,10 +203,10 @@ export class ExampleEditor extends React.Component<Props, State> {
                 render={actions => (
                   <MainToolbar
                     toggleEditMode={() =>
-                      this.setState({ viewMode: !this.state.viewMode })
+                      this.setState({ readOnlyMode: !this.state.readOnlyMode })
                     }
                     editorActions={actions}
-                    isViewMode={this.state.viewMode}
+                    readOnlyMode={this.state.readOnlyMode}
                   />
                 )}
               />
