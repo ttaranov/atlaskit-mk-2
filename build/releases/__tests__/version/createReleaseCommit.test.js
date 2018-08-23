@@ -1,6 +1,6 @@
 const outdent = require('outdent');
-const createRelease = require('../../changeset/createRelease');
-const createReleaseCommit = require('../../changeset/createReleaseCommit');
+const createRelease = require('../../version/createRelease');
+const createReleaseCommit = require('../../version/createReleaseCommit');
 
 const fakeAllPackages = [
   { name: 'package-a', config: { version: '1.0.0' } },
