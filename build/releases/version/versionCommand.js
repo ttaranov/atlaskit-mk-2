@@ -22,7 +22,7 @@ async function bumpReleasedPackages(releaseObj, allPackages) {
 
 async function run(opts) {
   const cwd = opts.cwd || process.cwd();
-  const changelogFlag = opts.changelogs;
+  const noChangelogFlag = opts.noChangelog;
   const allPackages = await bolt.getWorkspaces({ cwd });
 
   const lastPublishCommit = await git.getLastPublishCommit();
@@ -58,7 +58,8 @@ async function run(opts) {
     await git.add(pkgPath);
   }
 
-  if (changelogFlag) {
+  // This double negative is bad, but cleaner than the alternative
+  if (!noChangelogFlag) {
     logger.log('Updating changelogs...');
     // Now update the changelogs
     const changelogPaths = await changelog.updateChangelog(releaseObj, { cwd });

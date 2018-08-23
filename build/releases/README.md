@@ -35,12 +35,14 @@ Dependents: @atlaskit/global-navigation@patch, @atlaskit/navigation-next@patch, 
 ### version
 
 ```
-build-releases version [--withChangelog]
+build-releases version [--noChangelog]
 ```
 
 Creates release commit with bumped versions for all packages (and depdendencies) described in changeset commits since last release. Should be part of release process on CI.
 
-`--withChangelog` - enables generation of changelog file (or if it exists appends new version changelog on the top of current file)
+Will also create/append to a CHANGELOG file for each package using the summaries from the changesets.
+
+`--noChangelog` - disables the changelog functionality
 
 Example of commit message:
 
@@ -63,6 +65,8 @@ Deleted:
 
 [skip ci]
 ```
+
+> `[skip ci]` is used to prevent this commit from triggering a CI build as the common use case would be to run this in master and then push back to master. We want to avoid the infinite loop there. If you are running version locally, you may need to make another commit after this to trigger your CI.
 
 ### publish
 
