@@ -1,7 +1,7 @@
 const spawn = require('projector-spawn');
 const path = require('path');
 
-const parseChangesetCommit = require('../releases/changeset/parseChangesetCommit');
+const parseChangesetCommit = require('@atlaskit/build-releases/changeset/parseChangesetCommit');
 
 // Parses lines that are in the form 'HASH message goes here'
 const parseCommitLine = line => {
@@ -151,6 +151,8 @@ async function getAndParseJsonFromCommitsStartingWith(str, since) {
   return parsedCommits;
 }
 
+// TODO: Don't parse these, just return the commits
+// LB: BETTER DO THIS SOON
 async function getAllReleaseCommits(since) {
   return getAndParseJsonFromCommitsStartingWith('RELEASING: ', since);
 }

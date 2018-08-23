@@ -1,11 +1,11 @@
 const path = require('path');
 const bolt = require('bolt');
-const logger = require('../../utils/logger');
-const git = require('../../utils/git');
+const logger = require('@atlaskit/build-utils/logger');
+const git = require('@atlaskit/build-utils/git');
 const createRelease = require('./createRelease');
 const createReleaseCommit = require('./createReleaseCommit');
 const changelog = require('../changelog');
-const fs = require('../../utils/fs');
+const fs = require('@atlaskit/build-utils/fs');
 
 async function bumpReleasedPackages(releaseObj, allPackages) {
   for (const release of releaseObj.releases) {
