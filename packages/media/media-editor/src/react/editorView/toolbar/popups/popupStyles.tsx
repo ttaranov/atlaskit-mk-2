@@ -3,31 +3,24 @@
 import styled from 'styled-components';
 
 import { HTMLAttributes, ComponentClass } from 'react';
-import { akColorN0 } from '@atlaskit/util-shared-styles';
-
-export const PopupBase: ComponentClass<HTMLAttributes<{}>> = styled.div`
-  position: absolute;
-  pointer-events: auto;
-  border-radius: 4px;
-  display: flex;
-  flex-wrap: wrap;
-  bottom: 48px;
-  padding: 4px;
-  background-color: ${akColorN0};
-`;
 
 export const LineWidthPopupContainer: ComponentClass<
   HTMLAttributes<{}>
-> = styled(PopupBase)`
+> = styled.div`
+  display: flex;
+  flex-wrap: wrap;
   right: 270px;
   width: 160px;
   padding: 9px;
+  margin: -21px -28px; // Compensation for default big padding that inline dialog comes with
 `;
 
-export const ColorPopupContainer: ComponentClass<HTMLAttributes<{}>> = styled(
-  PopupBase,
-)`
-  width: 192px;
-  right: 226px;
+export const ColorPopupContentWrapper: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  width: 128px;
   padding: 8px;
+  margin: -16px -24px; // Compensation for default big padding that inline dialog comes with
 `;

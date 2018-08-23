@@ -25,7 +25,7 @@ export interface LineWidthFrontCircleProps {
   width: number;
 }
 
-export const blanketColor = colors.DN30;
+export const blanketColor = colors.N0;
 const overlayZindex = layers.modal() + 10;
 
 export const EditorContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`

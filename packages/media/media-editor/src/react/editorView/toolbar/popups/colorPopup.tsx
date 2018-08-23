@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { Component } from 'react';
+import InlineDialog from '@atlaskit/inline-dialog';
 import { Color } from '../../../..';
 
 import { ColorButton } from './colorButton';
-import { ColorPopupContainer } from './popupStyles';
+import { ColorPopupContentWrapper } from './popupStyles';
 
 const colors = [
   { red: 0x17, green: 0x2b, blue: 0x4d },
@@ -21,13 +22,24 @@ const colors = [
 ];
 
 export interface ColorPopupProps {
+  readonly isOpen: boolean;
   readonly color: Color;
   readonly onPickColor: (color: Color) => void;
 }
 
 export class ColorPopup extends Component<ColorPopupProps> {
-  render(): JSX.Element {
-    return <ColorPopupContainer>{this.renderButtons()}</ColorPopupContainer>;
+  render() {
+    const { isOpen, children } = this.props;
+    const content = (
+      <ColorPopupContentWrapper>
+        {this.renderButtons()}
+      </ColorPopupContentWrapper>
+    );
+    return (
+      <InlineDialog isOpen={isOpen} placement="top-start" content={content}>
+        {children}
+      </InlineDialog>
+    );
   }
 
   private renderButtons(): JSX.Element[] {

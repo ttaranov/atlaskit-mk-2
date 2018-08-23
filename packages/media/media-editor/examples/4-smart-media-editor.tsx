@@ -17,7 +17,7 @@ const context = createUploadContext();
 
 class SmartMediaEditorExample extends React.Component<{}, State> {
   state: State = {
-    showEditor: false,
+    showEditor: true,
   };
 
   openSmartEditor = () => {
