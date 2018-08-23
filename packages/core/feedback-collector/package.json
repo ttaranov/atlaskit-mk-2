@@ -1,0 +1,62 @@
+{
+  "name": "@atlaskit/feedback-collector",
+  "version": "0.0.0",
+  "config": {
+    "access": "public"
+  },
+  "description": "A component that collects feedback across Atlassian products.",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "atlaskit:src": "src/index.js",
+  "files": [
+    "dist",
+    "src"
+  ],
+  "dependencies": {
+    "@atlaskit/button": "^9.0.6",
+    "@atlaskit/checkbox": "^4.0.4",
+    "@atlaskit/field-text": "^7.0.7",
+    "@atlaskit/field-text-area": "^4.0.7",
+    "@atlaskit/flag": "^9.0.6",
+    "@atlaskit/form": "^3.1.6",
+    "@atlaskit/icon": "^13.3.0",
+    "@atlaskit/modal-dialog": "^6.0.9",
+    "@atlaskit/select": "^5.0.11",
+    "@atlaskit/theme": "^6.0.0"
+  },
+  "devDependencies": {
+    "@atlaskit/build-utils": "^2.0.1",
+    "@atlaskit/docs": "^5.0.6",
+    "@atlaskit/global-navigation": "^4.2.0",
+    "@atlaskit/logo": "^9.0.4",
+    "@atlaskit/navigation-next": "^3.6.1",
+    "@atlaskit/section-message": "^1.0.5",
+    "axios": "^0.17.1",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "react-dom": "^16.4.2"
+  },
+  "peerDependencies": {
+    "@atlaskit/button": "^9.0.6",
+    "react": "^16.4.0",
+    "styled-components": "^3.2.6"
+  },
+  "author": "Atlassian Pty. Ltd",
+  "maintainers": [
+    "Eric S",
+    "Carla B",
+    "Raja B"
+  ],
+  "atlaskit": {
+    "name": "Feedback Collector"
+  },
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit-mk-2"
+  },
+  "keywords": [
+    "atlaskit",
+    "react",
+    "ui"
+  ]
+}
