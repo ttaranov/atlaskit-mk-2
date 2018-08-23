@@ -17,6 +17,9 @@ type Props = {
 
 type State = {
   type: 'bug' | 'comment' | 'suggestion' | 'question' | 'empty',
+  description: string,
+  canBeContacted: boolean,
+  enrollInResearchGroup: boolean,
 };
 
 const Footer = styled.span`
@@ -27,7 +30,7 @@ const Footer = styled.span`
 
 const options = {
   bug: 'Describe the bug or issue',
-  comment: "Let us know what's on your mind?",
+  comment: "Let us know what's on your mind",
   suggestion: "Let us know what you'd like to improve",
   question: 'What would you like to know?',
   empty: 'Select an option',
@@ -35,11 +38,15 @@ const options = {
 
 export default class FeedbackCollector extends React.Component<Props, State> {
   static defaultProps: $Shape<Props> = {
-    myProp: '',
+    onClose: () => {},
+    onSubmit: () => {},
   };
 
   state = {
     type: 'empty',
+    description: '',
+    canBeContacted: false,
+    enrollInResearchGroup: false,
   };
 
   isTypeSelected = () => this.state.type !== 'empty';
@@ -50,11 +57,16 @@ export default class FeedbackCollector extends React.Component<Props, State> {
         <Button
           appearance="primary"
           type="submit"
-          isDisabled={!this.isTypeSelected()}
+          isDisabled={!this.isTypeSelected() || !this.state.description}
+          onClick={() => this.props.onSubmit(this.state)}
         >
           Submit
         </Button>
-        <Button appearance="subtle" type="button">
+        <Button
+          appearance="subtle"
+          type="button"
+          onClick={() => this.props.onClose()}
+        >
           Cancel
         </Button>
       </Footer>
@@ -63,25 +75,26 @@ export default class FeedbackCollector extends React.Component<Props, State> {
 
   render() {
     return (
-      <Modal heading="Share us your thoughts" footer={this.renderActions}>
+      <Modal
+        heading="Share your thoughts"
+        footer={this.renderActions}
+        onClose={this.props.onClose}
+      >
         <Form name="feedback-collector">
-          <Field>
-            <Select
-              isSearchable={false}
-              onChange={option => this.setState({ type: option.value })}
-              menuPortalTarget={document.body}
-              styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
-              defaultValue={{
-                label: 'I want to...',
-              }}
-              options={[
-                { label: 'Ask a question', value: 'question' },
-                { label: 'Leave a comment', value: 'comment' },
-                { label: 'Report a bug', value: 'bug' },
-                { label: 'Suggest an improvement', value: 'suggestion' },
-              ]}
-            />
-          </Field>
+          <Select
+            onChange={option => this.setState({ type: option.value })}
+            menuPortalTarget={document.body}
+            styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
+            defaultValue={{
+              label: 'I want to...',
+            }}
+            options={[
+              { label: 'Ask a question', value: 'question' },
+              { label: 'Leave a comment', value: 'comment' },
+              { label: 'Report a bug', value: 'bug' },
+              { label: 'Suggest an improvement', value: 'suggestion' },
+            ]}
+          />
 
           {this.isTypeSelected() ? (
             <Fragment>
@@ -90,21 +103,31 @@ export default class FeedbackCollector extends React.Component<Props, State> {
                   name="repo_name"
                   isRequired
                   shouldFitContainer
+                  minimumRows={6}
+                  onChange={e => this.setState({ description: e.target.value })}
                 />
               </Field>
 
               <Field>
                 <CheckboxGroup>
                   <Checkbox
-                    value="Basic checkbox"
-                    name="checkbox-basic"
+                    value="canBeContacted"
+                    name="can-be-contacted"
                     label="Atlassian can contact me about this feedback"
+                    onChange={checkbox =>
+                      this.setState({ canBeContacted: checkbox.isChecked })
+                    }
                   />
 
                   <Checkbox
-                    value="Basic checkbox"
-                    name="checkbox-basic"
+                    value="enrollInResearchGroup"
+                    name="enroll-in-research-group"
                     label="I'd like to participate in product research"
+                    onChange={checkbox =>
+                      this.setState({
+                        enrollInResearchGroup: checkbox.isChecked,
+                      })
+                    }
                   />
                 </CheckboxGroup>
               </Field>
