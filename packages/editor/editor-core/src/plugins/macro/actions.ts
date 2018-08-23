@@ -10,6 +10,7 @@ import {
   replaceSelectedNode,
   replaceParentNodeOfType,
 } from 'prosemirror-utils';
+import { pluginKey as extensionPluginKey } from '../extension/plugin';
 
 export const insertMacroFromMacroBrowser = (
   macroProvider: MacroProvider,
@@ -42,7 +43,14 @@ export const insertMacroFromMacroBrowser = (
       macroNode!.type === bodiedExtension &&
       !(tr.selection instanceof NodeSelection);
 
-    if (nonSelectedBodiedExtension && !isEditing) {
+    if (1) {
+      const pluginState = extensionPluginKey.getState(state);
+      tr = tr.setMeta(extensionPluginKey, {
+        ...pluginState,
+        showSidebar: true,
+        nodePos: state.selection.$from,
+      });
+    } else if (nonSelectedBodiedExtension && !isEditing) {
       tr = safeInsert(node)(tr);
     } else if (nonSelectedBodiedExtension) {
       tr = replaceParentNodeOfType(bodiedExtension, node)(tr);

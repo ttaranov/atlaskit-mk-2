@@ -9,6 +9,76 @@
     "@atlaskit/util-service-support" "^2.0.1"
     tslib "^1.7.1"
 
+"@atlaskit/analytics-next@^3.0.4":
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/@atlaskit/analytics-next/-/analytics-next-3.0.5.tgz#cd5c12776e89a55517599abf5c5a257c03d60779"
+  dependencies:
+    prop-types "^15.5.10"
+
+"@atlaskit/field-base@^11.0.5":
+  version "11.0.5"
+  resolved "https://registry.yarnpkg.com/@atlaskit/field-base/-/field-base-11.0.5.tgz#463b5b81b734c3bcde264b63f944a8a45d5a151d"
+  dependencies:
+    "@atlaskit/icon" "^13.2.5"
+    "@atlaskit/inline-dialog" "^9.0.2"
+    "@atlaskit/spinner" "^9.0.6"
+    "@atlaskit/theme" "^6.0.0"
+    babel-runtime "^6.26.0"
+
+"@atlaskit/field-text@^7.0.7":
+  version "7.0.7"
+  resolved "https://registry.yarnpkg.com/@atlaskit/field-text/-/field-text-7.0.7.tgz#aba947e5b8e6cdf98c86412293f56ff992227270"
+  dependencies:
+    "@atlaskit/analytics-next" "^3.0.4"
+    "@atlaskit/field-base" "^11.0.5"
+    "@atlaskit/theme" "^6.0.0"
+
+"@atlaskit/form@^3.1.6":
+  version "3.1.6"
+  resolved "https://registry.yarnpkg.com/@atlaskit/form/-/form-3.1.6.tgz#9623c6d6cecfdbc60febe3e6dddefcc39ba01eef"
+  dependencies:
+    "@atlaskit/icon" "^13.2.5"
+    "@atlaskit/theme" "^6.0.0"
+    "@atlaskit/util-shared-styles" "^2.10.3"
+
+"@atlaskit/icon@^13.2.5":
+  version "13.3.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-13.3.0.tgz#0037f45f40ae657ed3a98e09bedbbe7700ade059"
+  dependencies:
+    "@atlaskit/theme" "^6.0.0"
+    babel-runtime "^6.26.0"
+    uuid "^3.1.0"
+
+"@atlaskit/inline-dialog@^9.0.2":
+  version "9.0.2"
+  resolved "https://registry.yarnpkg.com/@atlaskit/inline-dialog/-/inline-dialog-9.0.2.tgz#e4aca4f6fedfe6da871af69f7d1884e52a108231"
+  dependencies:
+    "@atlaskit/analytics-next" "^3.0.4"
+    "@atlaskit/popper" "^0.2.1"
+    "@atlaskit/theme" "^6.0.0"
+    react-node-resolver "^1.0.1"
+
+"@atlaskit/popper@^0.2.1":
+  version "0.2.1"
+  resolved "https://registry.yarnpkg.com/@atlaskit/popper/-/popper-0.2.1.tgz#9e2e56e9dfb56941ea1f503c2e178ca1822a3914"
+  dependencies:
+    memoize-one "^3.0.1"
+    react-popper "^1.0.0"
+
+"@atlaskit/spinner@^9.0.6":
+  version "9.0.6"
+  resolved "https://registry.yarnpkg.com/@atlaskit/spinner/-/spinner-9.0.6.tgz#318522a2150d3a67b508fce821177336461cac0a"
+  dependencies:
+    "@atlaskit/theme" "^6.0.0"
+    babel-runtime "^6.26.0"
+    react-transition-group "^2.2.1"
+
+"@atlaskit/theme@^6.0.0":
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/theme/-/theme-6.0.0.tgz#a638bf42d1042caf44e5c810121e3d83e7cd587c"
+  dependencies:
+    prop-types "^15.5.10"
+
 "@atlaskit/util-common-test@^2.4.2":
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/@atlaskit/util-common-test/-/util-common-test-2.4.2.tgz#d564fdb9969fff819402d94dc58fee5e9570731c"
@@ -12422,6 +12492,10 @@ react-motion@^0.5.2:
     performance-now "^0.2.0"
     prop-types "^15.5.8"
     raf "^3.1.0"
+
+react-native-listener@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-native-listener/-/react-native-listener-1.0.2.tgz#3e9f8f0492b63280d50674d0be8a93d669705e92"
 
 react-node-resolver@^1.0.1:
   version "1.0.1"

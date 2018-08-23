@@ -14,6 +14,7 @@ import { tableFullPageEditorStyles } from '../../plugins/table/ui/styles';
 import { akEditorToolbarKeylineHeight } from '../../styles';
 import rafSchedule from 'raf-schd';
 import { scrollbarStyles } from '../styles';
+import { ExtensionEditor } from '../../extension-editor/index.tsx';
 
 const GUTTER_PADDING = 32;
 
@@ -119,7 +120,7 @@ export default class Editor extends React.Component<
   EditorAppearanceComponentProps,
   any
 > {
-  state = { showKeyline: false };
+  state = { showKeyline: false, showSidebar: false };
 
   static displayName = 'FullPageEditor';
   private appearance: EditorAppearance = 'full-page';
@@ -161,6 +162,12 @@ export default class Editor extends React.Component<
     this.setState({ showKeyline: scrollTop > akEditorToolbarKeylineHeight });
 
     return false;
+  };
+
+  toggleExtensionSidebar = () => {
+    this.setState({
+      showSidebar: !this.state.showSidebar,
+    });
   };
 
   private scheduleUpdateToolbarKeyline = rafSchedule(this.updateToolbarKeyline);
