@@ -203,4 +203,65 @@ describe('template', () => {
     `;
     expect(output).toEqual(expectedOutput);
   });
+
+  it.only('should correctly display multiple dependent bumps for one package', () => {
+    const input = {
+      releases: [
+        { name: '@atlaskit/badge', version: '1.1.0', commits: ['496287c'] },
+        { name: '@atlaskit/tag', version: '1.0.1', commits: ['496287c'] },
+        { name: '@atlaskit/button', version: '1.0.1', commits: ['496287c'] },
+      ],
+      changesets: [
+        {
+          summary: 'We fix few bugs in badge.',
+          commit: '496287c',
+          releases: [
+            {
+              name: '@atlaskit/badge',
+              type: 'patch',
+            },
+          ],
+          dependents: [
+            {
+              name: '@atlaskit/badge',
+              type: 'minor',
+              dependencies: ['@atlaskit/button', '@atlaskit/tag'],
+            },
+          ],
+        },
+        {
+          summary: 'We fix few bugs in button.',
+          commit: '999999',
+          releases: [
+            {
+              name: '@atlaskit/button',
+              type: 'patch',
+            },
+          ],
+          dependents: [
+            {
+              name: '@atlaskit/badge',
+              type: 'patch',
+              dependencies: ['@atlaskit/button', '@atlaskit/tag'],
+            },
+          ],
+        },
+      ],
+    };
+
+    const output = generateMarkdownTemplate(
+      input.releases[0],
+      input,
+      'https://some-website.com',
+    );
+    const expectedOutput = outdent`
+      ## 1.1.0
+      - [patch] We fix few bugs in badge. [496287c](https://some-website.com/496287c)
+      - [minor] Updated dependencies [496287c](https://some-website.com/496287c)
+      - [patch] Updated dependencies [999999](https://some-website.com/999999)
+        - @atlaskit/button@1.0.1
+        - @atlaskit/tag@1.0.1
+    `;
+    expect(output).toEqual(expectedOutput);
+  });
 });
