@@ -68,6 +68,7 @@ const SaveAndCancelButtons = props => (
     <Button
       appearance="primary"
       onClick={() =>
+        !props.toggleEditMode() &&
         props.editorActions
           .getValue()
           // tslint:disable-next-line:no-console
@@ -79,17 +80,32 @@ const SaveAndCancelButtons = props => (
     <Button
       appearance="subtle"
       // tslint:disable-next-line:jsx-no-lambda
-      onClick={() => props.editorActions.clear()}
+      onClick={() => !props.toggleEditMode()}
     >
       Close
     </Button>
   </ButtonGroup>
 );
 
+const EditButtons = props => (
+  <ButtonGroup>
+    <Button appearance="subtle" onClick={props.toggleEditMode}>
+      Edit
+    </Button>
+  </ButtonGroup>
+);
+
+const MainToolbar = props => {
+  if (props.isViewMode) {
+    return <EditButtons {...props} />;
+  }
+  return <SaveAndCancelButtons {...props} />;
+};
+
 export type Props = {
   defaultValue?: Object;
 };
-export type State = { disabled: boolean };
+export type State = { disabled: boolean; viewMode: boolean };
 
 const providers = {
   emojiProvider: emoji.storyData.getEmojiResource({
@@ -114,7 +130,7 @@ const mediaProvider = storyMediaProviderFactory({
 const quickInsertProvider = quickInsertProviderFactory();
 
 export class ExampleEditor extends React.Component<Props, State> {
-  state: State = { disabled: true };
+  state: State = { disabled: true, viewMode: true };
 
   componentDidMount() {
     // tslint:disable-next-line:no-console
@@ -168,8 +184,10 @@ export class ExampleEditor extends React.Component<Props, State> {
             placeholder="Write something..."
             shouldFocus={false}
             disabled={this.state.disabled}
+            viewMode={this.state.viewMode}
             contentComponents={
               <TitleInput
+                disabled={this.state.viewMode}
                 placeholder="Give this page a title..."
                 // tslint:disable-next-line:jsx-no-lambda
                 innerRef={this.handleTitleRef}
@@ -181,7 +199,13 @@ export class ExampleEditor extends React.Component<Props, State> {
               <WithEditorActions
                 // tslint:disable-next-line:jsx-no-lambda
                 render={actions => (
-                  <SaveAndCancelButtons editorActions={actions} />
+                  <MainToolbar
+                    toggleEditMode={() =>
+                      this.setState({ viewMode: !this.state.viewMode })
+                    }
+                    editorActions={actions}
+                    isViewMode={this.state.viewMode}
+                  />
                 )}
               />
             }

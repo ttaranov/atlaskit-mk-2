@@ -3,7 +3,11 @@ import styled from 'styled-components';
 import { EditorView } from 'prosemirror-view';
 import SizeDetector from '@atlaskit/size-detector';
 import { ProviderFactory } from '@atlaskit/editor-common';
-import { EditorAppearance, ToolbarUIComponentFactory } from '../../types';
+import {
+  EditorAppearance,
+  ToolbarUIComponentFactory,
+  ViewMode,
+} from '../../types';
 import { EventDispatcher } from '../../event-dispatcher';
 import EditorActions from '../../actions';
 
@@ -44,6 +48,7 @@ export interface ToolbarProps {
   eventDispatcher: EventDispatcher;
   providerFactory: ProviderFactory;
   appearance: EditorAppearance;
+  viewMode: ViewMode;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
@@ -86,7 +91,7 @@ export class ToolbarInner extends React.Component<ToolbarInnerProps> {
       isToolbarReducedSpacing,
     } = this.props;
 
-    if (!items || !items.length) {
+    if (!items || !items.length || this.props.viewMode) {
       return null;
     }
 
