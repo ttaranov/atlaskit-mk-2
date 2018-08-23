@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/inline-dialog",
-  "version": "9.0.2",
+  "version": "9.0.3",
   "description": "An inline dialog React component for secondary content and controls that are displayed on user request",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -18,9 +18,9 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/analytics-next": "^3.0.4",
+    "@atlaskit/analytics-next": "^3.0.6",
     "@atlaskit/popper": "^0.2.1",
-    "@atlaskit/theme": "^6.0.0",
+    "@atlaskit/theme": "^6.0.1",
     "react-node-resolver": "^1.0.1"
   },
   "peerDependencies": {
@@ -28,12 +28,12 @@
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/build-utils": "^1.11.0",
-    "@atlaskit/button": "^9.0.6",
-    "@atlaskit/datetime-picker": "^6.3.2",
+    "@atlaskit/build-utils": "^2.0.0",
+    "@atlaskit/button": "^9.0.7",
+    "@atlaskit/datetime-picker": "^6.3.4",
     "@atlaskit/docs": "^5.0.6",
-    "@atlaskit/icon": "^13.2.5",
-    "@atlaskit/select": "^5.0.9",
+    "@atlaskit/icon": "^13.3.1",
+    "@atlaskit/select": "^5.0.12",
     "@atlaskit/single-select": "^6.0.4",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.2",
