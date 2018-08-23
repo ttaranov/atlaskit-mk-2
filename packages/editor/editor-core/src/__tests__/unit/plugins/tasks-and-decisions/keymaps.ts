@@ -199,25 +199,55 @@ describe('tasks and decisions - keymaps', () => {
       });
 
       describe('when cursor is at the end of empty decisionItem', () => {
-        it('should remove decisionItem and insert a paragraph', () => {
+        it('should remove decisionItem and insert a paragraph after', () => {
           const { editorView } = editorFactory(
             doc(
+              p('before'),
               decisionList({ localId: 'local-decision' })(
                 decisionItem({ localId: 'local-decision' })('Hello World'),
                 decisionItem({ localId: 'local-decision' })('{<>}'),
               ),
+              p('after'),
             ),
           );
 
           sendKeyToPm(editorView, 'Enter');
 
           const expectedDoc = doc(
+            p('before'),
             decisionList({ localId: 'local-decision' })(
               decisionItem({ localId: 'local-decision' })('Hello World'),
             ),
             p('{<>}'),
+            p('after'),
           );
 
+          expect(editorView.state.doc).toEqualDocument(expectedDoc);
+          compareSelection(editorFactory, expectedDoc, editorView);
+        });
+
+        it('should remove taskItem and insert a paragraph before', () => {
+          const { editorView } = editorFactory(
+            doc(
+              p('before'),
+              decisionList({ localId: 'local-decision' })(
+                decisionItem({ localId: 'local-decision' })('{<>}'),
+                decisionItem({ localId: 'local-decision' })('Hello World'),
+              ),
+              p('after'),
+            ),
+          );
+
+          sendKeyToPm(editorView, 'Enter');
+
+          const expectedDoc = doc(
+            p('before'),
+            p('{<>}'),
+            decisionList({ localId: 'local-decision' })(
+              decisionItem({ localId: 'local-decision' })('Hello World'),
+            ),
+            p('after'),
+          );
           expect(editorView.state.doc).toEqualDocument(expectedDoc);
           compareSelection(editorFactory, expectedDoc, editorView);
         });
@@ -225,17 +255,20 @@ describe('tasks and decisions - keymaps', () => {
         it('should split decisionList and insert a paragraph when in middle', () => {
           const { editorView } = editorFactory(
             doc(
+              p('before'),
               decisionList({ localId: 'local-decision' })(
                 decisionItem({ localId: 'local-decision' })('Hello World'),
                 decisionItem({ localId: 'local-decision' })('{<>}'),
                 decisionItem({ localId: 'local-decision' })('Goodbye World'),
               ),
+              p('after'),
             ),
           );
 
           sendKeyToPm(editorView, 'Enter');
 
           const expectedDoc = doc(
+            p('before'),
             decisionList({ localId: 'local-decision' })(
               decisionItem({ localId: 'local-decision' })('Hello World'),
             ),
@@ -243,6 +276,7 @@ describe('tasks and decisions - keymaps', () => {
             decisionList({ localId: 'local-decision' })(
               decisionItem({ localId: 'local-decision' })('Goodbye World'),
             ),
+            p('after'),
           );
           expect(editorView.state.doc).toEqualDocument(expectedDoc);
           compareSelection(editorFactory, expectedDoc, editorView);
@@ -516,23 +550,53 @@ describe('tasks and decisions - keymaps', () => {
       });
 
       describe('when cursor is at the end of empty taskItem', () => {
-        it('should remove decisionItem and insert a paragraph', () => {
+        it('should remove taskItem and insert a paragraph after', () => {
           const { editorView } = editorFactory(
             doc(
+              p('before'),
               taskList({ localId: 'local-decision' })(
                 taskItem({ localId: 'local-decision' })('Hello World'),
                 taskItem({ localId: 'local-decision' })('{<>}'),
               ),
+              p('after'),
             ),
           );
 
           sendKeyToPm(editorView, 'Enter');
 
           const expectedDoc = doc(
+            p('before'),
             taskList({ localId: 'local-decision' })(
               taskItem({ localId: 'local-decision' })('Hello World'),
             ),
             p('{<>}'),
+            p('after'),
+          );
+          expect(editorView.state.doc).toEqualDocument(expectedDoc);
+          compareSelection(editorFactory, expectedDoc, editorView);
+        });
+
+        it('should remove taskItem and insert a paragraph before', () => {
+          const { editorView } = editorFactory(
+            doc(
+              p('before'),
+              taskList({ localId: 'local-decision' })(
+                taskItem({ localId: 'local-decision' })('{<>}'),
+                taskItem({ localId: 'local-decision' })('Hello World'),
+              ),
+              p('after'),
+            ),
+          );
+
+          sendKeyToPm(editorView, 'Enter');
+
+          const expectedDoc = doc(
+            p('before'),
+            p('{<>}'),
+            taskList({ localId: 'local-decision' })(
+              taskItem({ localId: 'local-decision' })('Hello World'),
+            ),
+            p('after'),
           );
           expect(editorView.state.doc).toEqualDocument(expectedDoc);
           compareSelection(editorFactory, expectedDoc, editorView);

@@ -1,14 +1,16 @@
 import { uuid } from '@atlaskit/editor-common';
-import { ResolvedPos, Schema } from 'prosemirror-model';
+import { Node as PMNode, ResolvedPos, Schema } from 'prosemirror-model';
 import { EditorState, Transaction, TextSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import {
   safeInsert,
   hasParentNodeOfType,
   replaceParentNodeOfType,
+  findParentNodeOfType,
 } from 'prosemirror-utils';
-import { findParentNodeOfType } from 'prosemirror-utils';
 import { GapCursorSelection } from '../gap-cursor';
+
+export type TaskDecisionListType = 'taskList' | 'decisionList';
 
 const getListTypes = (
   listType: TaskDecisionListType,
@@ -27,8 +29,6 @@ const getListTypes = (
     item: decisionItem,
   };
 };
-
-export type TaskDecisionListType = 'taskList' | 'decisionList';
 
 export const insertTaskDecision = (
   view: EditorView,
@@ -125,4 +125,93 @@ export const createListAtSelection = (
 
   safeInsert(emptyList)(tr);
   return true;
+};
+
+export const splitListAtSelection = (
+  tr: Transaction,
+  schema: Schema,
+  state: EditorState,
+): Transaction => {
+  const { selection } = state;
+  const { $from, $to } = selection;
+  if ($from.parent !== $to.parent) {
+    // ignore selections across multiple nodes
+    return tr;
+  }
+
+  const {
+    decisionItem,
+    decisionList,
+    paragraph,
+    taskItem,
+    taskList,
+  } = schema.nodes;
+
+  const parentList = findParentNodeOfType([decisionList, taskList])(selection);
+
+  if (!parentList) {
+    return tr;
+  }
+
+  const item = findParentNodeOfType([decisionItem, taskItem])(selection);
+  if (!item) {
+    return tr;
+  }
+
+  const resolvedItemPos = state.doc.resolve(item.pos);
+
+  const newListIds = [
+    parentList.node.attrs['localId'] || uuid.generate(), // first new list keeps list id
+    uuid.generate(), // second list gets new id
+  ];
+
+  const beforeItems: PMNode[] = [];
+  const afterItems: PMNode[] = [];
+  parentList.node.content.forEach((item, offset, index) => {
+    if (offset < resolvedItemPos.parentOffset) {
+      beforeItems.push(item);
+    } else if (offset > resolvedItemPos.parentOffset) {
+      afterItems.push(item);
+    }
+  });
+
+  const content: PMNode[] = [];
+
+  if (beforeItems.length) {
+    content.push(
+      parentList.node.type.createChecked(
+        {
+          localId: newListIds.shift(),
+        },
+        beforeItems,
+      ),
+    );
+  }
+
+  content.push(paragraph.createChecked({}));
+
+  if (afterItems.length) {
+    content.push(
+      parentList.node.type.createChecked(
+        {
+          localId: newListIds.shift(),
+        },
+        afterItems,
+      ),
+    );
+  }
+
+  // If no list remains at start, then the new selection is different relative to the original selection.
+  const posAdjust = beforeItems.length === 0 ? -1 : 1;
+
+  tr = tr.replaceWith(
+    resolvedItemPos.start() - 1,
+    resolvedItemPos.end() + 1,
+    content,
+  );
+  tr = tr.setSelection(
+    new TextSelection(tr.doc.resolve($from.pos + posAdjust)),
+  );
+
+  return tr;
 };

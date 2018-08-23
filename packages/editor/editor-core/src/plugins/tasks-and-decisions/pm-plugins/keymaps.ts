@@ -2,6 +2,8 @@ import { uuid } from '@atlaskit/editor-common';
 import { keymap } from 'prosemirror-keymap';
 import { ResolvedPos, Schema } from 'prosemirror-model';
 import { EditorState, Selection, Transaction, Plugin } from 'prosemirror-state';
+import { liftListItem } from 'prosemirror-schema-list';
+import { splitListAtSelection } from '../commands';
 
 // tries to find a valid cursor position
 const setTextSelection = (pos: number) => (tr: Transaction) => {
@@ -118,9 +120,6 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
       const isEmpty = node && node.textContent.length === 0;
 
       if (nodeIsTaskOrDecisionItem) {
-        const list = $from.node($from.depth - 1);
-        const end = $from.end($from.depth - 1) + 1;
-
         if (!isEmpty) {
           tr.split($from.pos, 1, [
             { type: nodeType, attrs: { localId: uuid.generate() } },
@@ -129,20 +128,10 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
           return true;
         }
 
-        // If list is empty, replace with paragraph
-        if (isEmpty && list.childCount === 1) {
-          deleteList($from, tr, schema.nodes.paragraph.create({}));
-          dispatch(tr);
-          return true;
-        }
-
-        // If last child, remove it and insert a paragraph
-        if (isEmpty && list.child(list.childCount - 1) === node) {
-          tr.insert(end, schema.nodes.paragraph.create({}));
-          deleteCurrentItem($from, tr);
-          dispatch(tr);
-          return true;
-        }
+        // Otherwise, split list
+        splitListAtSelection(tr, schema, state);
+        dispatch(tr);
+        return true;
       }
       return false;
     },
