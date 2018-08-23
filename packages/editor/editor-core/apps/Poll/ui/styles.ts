@@ -76,3 +76,12 @@ export const ProgressBar: ComponentClass<
   border-radius: 5px;
   width: ${(props: { width: number }) => props.width}%;
 `;
+
+export const SpinnerWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
+  padding: 10px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;

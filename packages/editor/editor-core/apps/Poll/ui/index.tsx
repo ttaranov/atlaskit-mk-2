@@ -3,12 +3,15 @@ import Button from '@atlaskit/button';
 import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle';
 import MediaServicesPreselectedIcon from '@atlaskit/icon/glyph/media-services/preselected';
 import { akColorB300, akColorN70 } from '@atlaskit/util-shared-styles';
+import Spinner from '@atlaskit/spinner';
+
 import {
   CompletedChoiceContainer,
   Meta,
   Header,
   ChoicesContainer,
   ProgressBar,
+  SpinnerWrapper,
 } from './styles';
 import { getExpiresInLabel, isCompleted, getUserId } from './utils';
 import { db, snapshotToArray } from '../../_db';
@@ -96,12 +99,16 @@ export class PollApp extends React.Component<Props, State> {
   }
 
   render() {
-    const { title, choices, finishDate, id } = this.props;
+    const { title, choices, finishDate } = this.props;
     const { loading, userId, selectedChoiceId, votes } = this.state;
     const allowedToVote = userId && !isCompleted({ votes, userId });
 
     if (loading) {
-      return <div>loading...</div>;
+      return (
+        <SpinnerWrapper>
+          <Spinner size="medium" />
+        </SpinnerWrapper>
+      );
     }
 
     return (
