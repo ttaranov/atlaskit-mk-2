@@ -85,6 +85,10 @@ export interface Context {
   ): Observable<FileState>;
 
   getImage(id: string, params?: MediaStoreGetFileImageParams): Promise<Blob>;
+  getImageUrl(
+    id: string,
+    params?: MediaStoreGetFileImageParams,
+  ): Promise<string>;
 
   readonly config: ContextConfig;
 }
@@ -343,6 +347,13 @@ class ContextImpl implements Context {
 
   getImage(id: string, params?: MediaStoreGetFileImageParams): Promise<Blob> {
     return this.mediaStore.getImage(id, params);
+  }
+
+  getImageUrl(
+    id: string,
+    params?: MediaStoreGetFileImageParams,
+  ): Promise<string> {
+    return this.mediaStore.getFileImageURL(id, params);
   }
 
   private get apiConfig(): MediaApiConfig {
