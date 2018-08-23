@@ -35,11 +35,8 @@ interface State {
   // dynamic prop, fetching this from API
   votes: Votes;
 }
-export const initPoll = (props: { id: string }) => {
-  return getPollVotes(props.id);
-};
 
-const getPollVotes = (id: string) => {
+const updateDatabase = (id: string) => {
   return new Promise((resolve, reject) => {
     db
       .ref('/polls/' + id)
@@ -61,7 +58,7 @@ export const vote = (props: {
     userId,
     choiceId,
   });
-  return getPollVotes(id);
+  return updateDatabase(id);
 };
 const CompletedChoice = (props: {
   id: string;
@@ -85,21 +82,21 @@ const CompletedChoice = (props: {
 export class PollApp extends React.Component<Props, State> {
   constructor(props) {
     super(props);
-
+    const { id } = props;
     this.state = {
       votes: [],
       userId: getUserId(),
       loading: true,
     };
 
-    initPoll({ id: props.id }).then(votes => {
-      // @ts-ignore
-      this.setState({ votes, loading: false });
+    db.ref('/polls/' + id).on('value', snapshot => {
+      const votesArray = snapshotToArray(snapshot);
+      this.setState({ votes: votesArray, loading: false });
     });
   }
 
   render() {
-    const { title, choices, finishDate } = this.props;
+    const { title, choices, finishDate, id } = this.props;
     const { loading, userId, selectedChoiceId, votes } = this.state;
     const allowedToVote = userId && !isCompleted({ votes, userId });
 
