@@ -224,7 +224,7 @@ export class Rsvp extends React.Component<Props, State> {
           </Field>
           <div>{this.renderOptions(parameters)}</div>
           <Button
-            className="react"
+            className="react submit-btn"
             type="submit"
             appearance="primary"
             onClick={this.saveExtension}

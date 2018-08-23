@@ -132,7 +132,7 @@ export class Poll extends React.Component<Props, State> {
           if (item.id === key) {
             return {
               id: item.id,
-              value: e.target.value,
+              name: e.target.value,
             };
           }
           return item;
@@ -174,7 +174,6 @@ export class Poll extends React.Component<Props, State> {
             <span className="add-option">
               <Button
                 className="react"
-                type="submit"
                 appearance="link"
                 onClick={this.addOption}
               >

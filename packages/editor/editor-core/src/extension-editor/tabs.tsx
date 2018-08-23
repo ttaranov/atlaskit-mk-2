@@ -5,9 +5,13 @@ import { FormWrapper } from './styles';
 import { setNodeSelection } from '../utils';
 import { resolveMacro } from '../plugins/macro/actions';
 import Button from '@atlaskit/button';
-import { replaceParentNodeOfType } from 'prosemirror-utils';
-
+import {
+  replaceParentNodeOfType,
+  replaceSelectedNode,
+} from 'prosemirror-utils';
+import { pluginKey } from '../plugins/extension/plugin';
 import Form, { Field, FormHeader } from '@atlaskit/form';
+import { generateUuid } from '@atlaskit/editor-common';
 
 export interface Props {
   showSidebar: boolean;
@@ -20,9 +24,6 @@ export interface State {
   params: Object;
   nodePos: number;
 }
-
-const dummyTab =
-  '[{"type":"paragraph","content":[{"type":"text","text":"P1"}]}]';
 
 export class Tabs extends React.Component<Props, State> {
   constructor(props) {
@@ -67,7 +68,8 @@ export class Tabs extends React.Component<Props, State> {
   }
 
   saveExtension = () => {
-    const { dispatch, state } = this.props.view;
+    const { view } = this.props;
+    const { dispatch, state } = view;
     const { node } = this.props.node;
 
     const newNode = resolveMacro(
@@ -79,13 +81,19 @@ export class Tabs extends React.Component<Props, State> {
         },
         content: node && node.content.toJSON(),
       } as any,
-      this.props.view.state,
+      view.state,
     );
+    setNodeSelection(view, this.state.nodePos);
+    // debugger
+    dispatch(replaceSelectedNode(newNode)(view.state.tr));
+  };
 
+  dismiss = () => {
+    const { dispatch, state } = this.props.view;
     dispatch(
-      replaceParentNodeOfType(state.schema.nodes.bodiedExtension, newNode)(
-        state.tr,
-      ),
+      state.tr.setMeta(pluginKey, {
+        showSidebar: false,
+      }),
     );
   };
 
@@ -106,31 +114,41 @@ export class Tabs extends React.Component<Props, State> {
   }
 
   addOption = e => {
-    // e.preventDefault();
-    // e.stopPropagation();
-    this.setState(
-      {
-        params: {
-          ...this.state.params,
-          tabs: [...this.state.params.tabs, []],
-          tabsContent: [
-            ...this.state.params.tabsContent,
-            { id: this.state.params.tabs.length + 1, content: dummyTab },
-          ],
-        },
+    const { params } = this.state;
+    const newTabId = `${generateUuid()}`;
+    const nextState = {
+      params: {
+        ...params,
+        tabs: [
+          ...params.tabs,
+          {
+            id: newTabId,
+            name: 'New tab',
+          },
+        ],
+        tabsContent: [
+          ...params.tabsContent,
+          {
+            tabId: newTabId,
+            content: [{ type: 'paragraph', content: [] }],
+          },
+        ],
       },
-      () => {
-        setNodeSelection(this.props.view, this.state.nodePos);
-      },
-    );
+    };
+
+    this.setState(nextState, () => {
+      setNodeSelection(this.props.view, this.state.nodePos);
+      this.saveExtension();
+    });
   };
 
   updateInput = (key, e) => {
     e.persist();
-    this.setState(prev => ({
+    const { params } = this.state;
+    const nextState = {
       params: {
-        ...prev.params,
-        tabs: prev.params.tabs.map((item, idx) => {
+        ...params,
+        tabs: params.tabs.map((item, idx) => {
           if (item.id === key) {
             return {
               id: item.id,
@@ -140,7 +158,8 @@ export class Tabs extends React.Component<Props, State> {
           return item;
         }),
       },
-    }));
+    };
+    this.setState(nextState);
   };
 
   renderForm(node) {
@@ -150,25 +169,27 @@ export class Tabs extends React.Component<Props, State> {
     const { extensionKey, parameters } = node.node && node.node.attrs;
     return (
       <FormWrapper>
-        <Form
-          name="edit-extension"
-          target="submitEdit"
-          onSubmit={this.saveExtension}
-        >
+        <Form name="edit-extension" target="submitEdit">
           <FormHeader title={extensionKey} />
           <div className="options">{this.renderTabs(parameters)}</div>
           <div>
             <span className="add-option">
-              <a className="react" onClick={this.addOption}>
+              <Button
+                className="react"
+                appearance="link"
+                onClick={this.addOption}
+              >
                 + Add option
-              </a>
+              </Button>
             </span>
           </div>
           <Button
-            className="react"
-            type="submit"
+            className="react submit-btn"
             appearance="primary"
-            onClick={this.saveExtension}
+            onClick={() => {
+              this.saveExtension();
+              this.dismiss();
+            }}
           >
             Save
           </Button>
