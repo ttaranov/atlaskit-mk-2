@@ -122,16 +122,16 @@ async function rebaseAndPush(maxAttempts = 3) {
 }
 
 // helper method for getAllReleaseCommits and getAllChangesetCommits as they are almost identical
-async function getAndParseJsonFromCommitsStartingWith(str) {
+async function getAndParseJsonFromCommitsStartingWith(str, since) {
   // --grep lets us pass a regex, -z splits commits using NUL instead of newlines
-  const gitCmd = await spawn('git', [
-    'log',
-    '--grep',
-    `^${str}`,
-    '-z',
-    '--no-merges',
-  ]);
+  const cmdArgs = ['log', '--grep', `^${str}`, '-z', '--no-merges'];
+  if (since) {
+    cmdArgs.push(`${since}..`);
+  }
+  console.log(`since=${since} Running git`, cmdArgs.join(' '));
+  const gitCmd = await spawn('git', cmdArgs);
   const result = gitCmd.stdout.trim().split('\0');
+  console.log('result:', result);
   const parsedCommits = result
     .map(parseFullCommit)
     // unfortunately, we have left some test data in the repo, which wont parse properly, so we
@@ -146,16 +146,15 @@ async function getAndParseJsonFromCommitsStartingWith(str) {
     })
     // this filter is for the same reason as above due to some unparsable JSON strings
     .filter(parsed => !!parsed);
-
   return parsedCommits;
 }
 
-async function getAllReleaseCommits() {
-  return getAndParseJsonFromCommitsStartingWith('RELEASING: ');
+async function getAllReleaseCommits(since) {
+  return getAndParseJsonFromCommitsStartingWith('RELEASING: ', since);
 }
 
-async function getAllChangesetCommits() {
-  return getAndParseJsonFromCommitsStartingWith('CHANGESET: ');
+async function getAllChangesetCommits(since) {
+  return getAndParseJsonFromCommitsStartingWith('CHANGESET: ', since);
 }
 
 // TODO: This function could be a lot cleaner, simpler and less error prone if we played with
@@ -163,7 +162,6 @@ async function getAllChangesetCommits() {
 // (i.e this function breaks if you dont put '--no-merges' in the git log command)
 function parseFullCommit(commitStr) {
   const lines = commitStr.trim().split('\n');
-
   const hash = lines
     .shift()
     .replace('commit ', '')
@@ -190,24 +188,27 @@ function parseFullCommit(commitStr) {
 }
 
 async function getLastPublishCommit() {
-  const isPublishCommit = msg => msg.startsWith('RELEASING: ');
+  const gitCmd = await spawn('git', [
+    'log',
+    '--grep',
+    '^RELEASING: ',
+    '--no-merges',
+    '--max-count=1',
+    '--format="%H"',
+  ]);
+  const commit = gitCmd.stdout.trim().replace(/"/g, '');
 
-  const gitCmd = await spawn('git', ['log', '-n', '500', '--oneline']);
-  const result = gitCmd.stdout
-    .trim()
-    .split('\n')
-    .map(line => parseCommitLine(line));
-  const latestPublishCommit = result.find(res => isPublishCommit(res.message));
-
-  return latestPublishCommit.commit;
+  return commit;
 }
 
-async function getUnpublishedChangesetCommits() {
+async function getUnpublishedChangesetCommits(since) {
   // We fetch **all** of the commits because otherwise we can end up in race conditions where a
   // master build is running and another changeset is merged whilst its still running (the new
   // changeset would be released without being tested)
-  const releaseCommits = await getAllReleaseCommits();
-  const changesetCommits = await getAllChangesetCommits();
+  const releaseCommits = await getAllReleaseCommits(
+    since ? `${since}~1` : undefined,
+  );
+  const changesetCommits = await getAllChangesetCommits(since);
   // to find unpublished commits, we'll go through them one by one and compare them to all release
   // commits and see if there are any that dont have a release commit that matches them
   const unpublishedCommits = changesetCommits.filter(cs => {
