@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Context, UploadableFile } from '@atlaskit/media-core';
 import { FileIdentifier } from '@atlaskit/media-card';
 import { Shortcut } from '@atlaskit/media-ui';
+import Spinner from '@atlaskit/spinner';
 import { EditorView } from './editorView/editorView';
 import { Blanket } from './styled';
 import { Subscription } from 'rxjs/Subscription';
@@ -105,26 +106,32 @@ export class SmartMediaEditor extends React.Component<
 
   onError = () => {};
 
-  renderEditor = () => {
-    const { imageUrl } = this.state;
-    if (!imageUrl) {
-      return <div>loading...</div>;
-    }
+  renderLoading = () => {
+    return <Spinner />;
+  };
 
+  renderEditor = (imageUrl: string) => {
     return (
-      <Blanket>
-        <Shortcut keyCode={27} handler={this.onCancel} />
-        <EditorView
-          imageUrl={imageUrl}
-          onSave={this.onSave}
-          onCancel={this.onCancel}
-          onError={this.onError}
-        />
-      </Blanket>
+      <EditorView
+        imageUrl={imageUrl}
+        onSave={this.onSave}
+        onCancel={this.onCancel}
+        onError={this.onError}
+      />
     );
   };
 
   render() {
-    return this.renderEditor();
+    const { imageUrl } = this.state;
+    const content = imageUrl
+      ? this.renderEditor(imageUrl)
+      : this.renderLoading();
+
+    return (
+      <Blanket>
+        <Shortcut keyCode={27} handler={this.onCancel} />
+        {content}
+      </Blanket>
+    );
   }
 }
