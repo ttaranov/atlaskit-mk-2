@@ -133,7 +133,11 @@ export class PollApp extends React.Component<Props, State> {
           })}
         </ChoicesContainer>
         {allowedToVote && (
-          <Button appearance="primary" onClick={this.handleVote}>
+          <Button
+            appearance="primary"
+            onClick={this.handleVote}
+            isDisabled={!selectedChoiceId}
+          >
             Vote
           </Button>
         )}
