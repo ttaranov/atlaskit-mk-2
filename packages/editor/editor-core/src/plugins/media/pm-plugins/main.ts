@@ -195,7 +195,7 @@ export class MediaPluginState {
       this.stateManager = stateManager;
     }
 
-    this.resolvedUploadContext = await resolvedMediaProvider.viewContext;
+    this.resolvedViewContext = await resolvedMediaProvider.viewContext;
 
     this.allowsLinks = !!resolvedMediaProvider.linkCreateContext;
     this.allowsUploads = !!resolvedMediaProvider.uploadContext;
@@ -522,6 +522,8 @@ export class MediaPluginState {
   };
 
   onFinishEditing = (newId: FileIdentifier, preview: string, oldNode: Node) => {
+    this.showEditingDialog = false;
+
     const oldId = this.editingMediaId;
     if (!oldId) {
       console.warn('no old id');
@@ -543,9 +545,6 @@ export class MediaPluginState {
     const newNode = this.view.state.schema.nodes.media!.create({
       ...oldNode.attrs,
       id: newId.id,
-      // __key: newId.id,
-      // width: mediaNode.attrs.width,
-      // height: mediaNode.attrs.height,
     });
 
     console.log('new node', newNode);
@@ -559,12 +558,7 @@ export class MediaPluginState {
 
     console.log('tr', tr);
 
-    this.editingMediaId = undefined;
-    this.view.dispatch(
-      tr.setMeta('addToHistory', false).setMeta(stateKey, 'noedit'),
-    );
-
-    console.log('resolved upload context', this.resolvedUploadContext);
+    console.log('resolved view context', this.resolvedViewContext);
     this.resolvedViewContext!.setLocalPreview(oldNode.attrs.__key, preview);
     // this.resolvedUploadContext!.setLocalPreview(oldNode.attrs.id, preview);
   };

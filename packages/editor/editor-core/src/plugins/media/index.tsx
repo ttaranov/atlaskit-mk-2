@@ -179,7 +179,7 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
                     );
                   }}
                   onFinish={finish => {
-                    console.log('finish');
+                    pluginState.onCloseEditing();
                   }}
                 />
               );
