@@ -188,6 +188,7 @@ export class ExampleEditor extends React.Component<Props, State> {
             onSave={SAVE_ACTION}
             insertMenuItems={customInsertMenuItems}
             extensionHandlers={extensionHandlers}
+            {...this.props}
           />
         </Content>
       </Wrapper>
@@ -203,12 +204,12 @@ export class ExampleEditor extends React.Component<Props, State> {
   };
 }
 
-export default function Example({ defaultValue }) {
+export default function Example(props) {
   return (
     <EditorContext>
       <div style={{ height: '100%' }}>
         <DevTools />
-        <ExampleEditor defaultValue={defaultValue} />
+        <ExampleEditor {...props} />
       </div>
     </EditorContext>
   );

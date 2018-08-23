@@ -14,13 +14,19 @@ export const exampleDocument = {
       ],
     },
     {
-      type: 'extension',
+      type: 'bodiedExtension',
       attrs: {
         extensionType: EDITOR_APPS_EXTENSION_TYPE,
         extensionKey: TABS_EXTENSION_KEY,
         parameters: {},
         layout: 'default',
       },
+      content: [
+        {
+          type: 'paragraph',
+          content: [],
+        },
+      ],
     },
   ],
 };
