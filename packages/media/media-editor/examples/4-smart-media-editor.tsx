@@ -1,7 +1,10 @@
 import * as React from 'react';
 import Button from '@atlaskit/button';
 import { SmartMediaEditor } from '../src';
-import { createStorybookContext } from '@atlaskit/media-test-helpers';
+import {
+  createStorybookContext,
+  imageFileId,
+} from '@atlaskit/media-test-helpers';
 
 interface State {
   showEditor: boolean;
@@ -21,7 +24,13 @@ class SmartMediaEditorExample extends React.Component<{}, State> {
   render() {
     const { showEditor } = this.state;
 
-    const editor = <SmartMediaEditor id={} context={} onFinish={} />;
+    const editor = (
+      <SmartMediaEditor
+        id={imageFileId}
+        context={context}
+        onFinish={() => console.log('finished')}
+      />
+    );
 
     return (
       <div>
