@@ -1,11 +1,7 @@
 // @flow
 import type { DragState } from './Tree-types';
 import { getTreePosition } from '../../utils/tree';
-import {
-  getDestinationPath,
-  getSourcePath,
-  getFlatItemPath,
-} from '../../utils/flat-tree';
+import { getDestinationPath, getSourcePath } from '../../utils/flat-tree';
 import type { Path, TreePosition, TreeData, FlattenedTree } from '../../types';
 
 /*
@@ -36,27 +32,4 @@ export const calculateFinalDropPositions = (
     destinationPath,
   );
   return { sourcePosition, destinationPosition };
-};
-
-export const calculatePendingDropAnimatingOffset = (
-  flattenedTree: FlattenedTree,
-  dragState: DragState,
-  offsetPerLevel: number,
-): number => {
-  const { source, destination, horizontalLevel } = dragState;
-
-  if (!destination) {
-    return 0;
-  }
-
-  const destinationPath: Path = getDestinationPath(
-    flattenedTree,
-    source.index,
-    destination.index,
-    horizontalLevel,
-  );
-  const displacedPath: Path = getFlatItemPath(flattenedTree, destination.index);
-  const offsetDifference: number =
-    destinationPath.length - displacedPath.length;
-  return offsetDifference * offsetPerLevel;
 };

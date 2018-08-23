@@ -12,21 +12,14 @@ import {
   type DroppableProvided,
 } from 'react-beautiful-dnd';
 import { getBox } from 'css-box-model';
-import memoizeOne from 'memoize-one';
-import {
-  calculateFinalDropPositions,
-  calculatePendingDropAnimatingOffset,
-} from './Tree-utils';
+import { calculateFinalDropPositions } from './Tree-utils';
 import type { Props, State, DragState } from './Tree-types';
 import { noop } from '../../utils/handy';
 import { flattenTree } from '../../utils/tree';
-import type { FlattenedItem, ItemId } from '../../types';
+import type { FlattenedItem, ItemId, Path } from '../../types';
 import TreeItem from '../TreeItem';
-import {
-  type TreeDraggableProvided,
-  type TreeDraggingStyle,
-  type DragActionType,
-} from '../TreeItem/TreeItem-types';
+import { type DragActionType } from '../TreeItem/TreeItem-types';
+import { getDestinationPath } from '../../utils/flat-tree';
 
 export default class Tree extends Component<Props, State> {
   static defaultProps = {
@@ -108,9 +101,30 @@ export default class Tree extends Component<Props, State> {
     }
   };
 
-  calculatePendingDropAnimatingOffset = memoizeOne(
-    calculatePendingDropAnimatingOffset,
-  );
+  calculateEffectivePath = (
+    flatItem: FlattenedItem,
+    snapshot: DraggableStateSnapshot,
+  ): Path => {
+    const { flattenedTree } = this.state;
+
+    if (
+      this.dragState &&
+      this.dragState.draggedItemId === flatItem.item.id &&
+      this.dragState.destination
+    ) {
+      // We only change the if it's being dragged by keyboard or just dropped
+      if (this.dragAction === 'key' || snapshot.isDropAnimating) {
+        const { source, destination, horizontalLevel } = this.dragState;
+        return getDestinationPath(
+          flattenedTree,
+          source.index,
+          destination.index,
+          horizontalLevel,
+        );
+      }
+    }
+    return flatItem.path;
+  };
 
   isDraggable = (item: FlattenedItem): boolean =>
     this.props.isDragEnabled && !item.item.isExpanded;
@@ -126,60 +140,13 @@ export default class Tree extends Component<Props, State> {
     const containerLeft = getBox(this.containerElement).contentBox.left;
     const itemElement = this.itemsElement[draggedItemId];
     if (itemElement) {
-      const currentLeft: number = getBox(itemElement).borderBox.left;
+      const currentLeft: number = getBox(itemElement).contentBox.left;
       const relativeLeft: number = Math.max(currentLeft - containerLeft, 0);
       return (
         Math.floor((relativeLeft + offsetPerLevel / 2) / offsetPerLevel) + 1
       );
     }
     return undefined;
-  };
-
-  patchDraggableProvided = (
-    provided: DraggableProvided,
-    snapshot: DraggableStateSnapshot,
-  ): TreeDraggableProvided => {
-    const { offsetPerLevel } = this.props;
-    const { flattenedTree } = this.state;
-
-    if (
-      // Patching is needed
-      (!snapshot.isDropAnimating && this.dragAction !== 'key') ||
-      // Patching is possible
-      !provided.draggableProps.style ||
-      !provided.draggableProps.style.left ||
-      !this.dragState
-    ) {
-      // $ExpectError
-      return provided;
-    }
-
-    const dropAnimationOffset: number = this.calculatePendingDropAnimatingOffset(
-      flattenedTree,
-      this.dragState,
-      offsetPerLevel,
-    );
-    // During drop we apply some additional offset to the dropped item
-    // in order to precisely land it at the right location
-    // $ExpectError
-    const finalStyle: TreeDraggingStyle = {
-      ...provided.draggableProps.style,
-      // overwrite left position
-      // $ExpectError // This drives me crazy. Flow complains: property left is missing in null or undefined
-      left: provided.draggableProps.style.left + dropAnimationOffset,
-      // animate so it doesn't jump immediately
-      transition: 'left 0.277s ease-out',
-    };
-
-    // $ExpectError
-    const finalProvided: TreeDraggableProvided = {
-      ...provided,
-      draggableProps: {
-        ...provided.draggableProps,
-        style: finalStyle,
-      },
-    };
-    return finalProvided;
   };
 
   patchDroppableProvided = (provided: DroppableProvided): DroppableProvided => {
@@ -197,7 +164,7 @@ export default class Tree extends Component<Props, State> {
   };
 
   renderItems = (): Array<Node> => {
-    const { renderItem, onExpand, onCollapse } = this.props;
+    const { renderItem, onExpand, onCollapse, offsetPerLevel } = this.props;
     const { flattenedTree } = this.state;
 
     return flattenedTree.map((flatItem: FlattenedItem, index: number) => (
@@ -208,22 +175,23 @@ export default class Tree extends Component<Props, State> {
         isDragDisabled={!this.isDraggable(flatItem)}
       >
         {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => {
-          const finalProvided: TreeDraggableProvided = this.patchDraggableProvided(
-            provided,
+          const currentPath: Path = this.calculateEffectivePath(
+            flatItem,
             snapshot,
           );
           return (
             <TreeItem
               key={flatItem.item.id}
               item={flatItem.item}
-              path={flatItem.path}
+              path={currentPath}
               onExpand={onExpand}
               onCollapse={onCollapse}
               onDragAction={this.onDragAction}
               renderItem={renderItem}
-              provided={finalProvided}
+              provided={provided}
               snapshot={snapshot}
               itemRef={this.setItemRef}
+              offsetPerLevel={offsetPerLevel}
             />
           );
         }}

@@ -1,6 +1,7 @@
 //@flow
 import * as React from 'react';
 import {
+  type DraggableProvided,
   type DraggableStateSnapshot,
   type DragHandleProps,
   type DraggingStyle,
@@ -10,12 +11,13 @@ import type { ItemId, Path, TreeItem } from '../../types';
 
 export type TreeDraggingStyle = {|
   ...DraggingStyle,
-  transition: string,
+  paddingLeft: number,
+  transition: 'none' | string,
 |};
 
 type TreeDraggableStyle = NotDraggingStyle | TreeDraggingStyle;
 
-type TreeDraggableProps = {|
+export type TreeDraggableProps = {|
   // Props that can be spread onto the element directly
   // inline style
   style: ?TreeDraggableStyle,
@@ -49,7 +51,8 @@ export type Props = {|
   onCollapse: (itemId: ItemId, path: Path) => void,
   onDragAction: (actionType: DragActionType) => void,
   renderItem: RenderItemParams => React.Node,
-  provided: TreeDraggableProvided,
+  provided: DraggableProvided,
   snapshot: DraggableStateSnapshot,
   itemRef: (itemId: ItemId, ?HTMLElement) => void,
+  offsetPerLevel: number,
 |};
