@@ -144,6 +144,13 @@ export class RSVPApp extends Component<Props, State> {
     this.dbRef.off();
   }
 
+  async UNSAFE_componentWillReceiveProps(nextProps) {
+    if (this.props.location !== nextProps.location) {
+      const center = await getLocationFromAddress(nextProps.location);
+      this.map.flyTo({ center });
+    }
+  }
+
   render() {
     const { title, dateTime, duration, location, showMap } = this.props;
     const { appState, showForm, hasJoined, attendees } = this.state;
