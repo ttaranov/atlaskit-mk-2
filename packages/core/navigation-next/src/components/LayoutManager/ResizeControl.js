@@ -110,7 +110,7 @@ function applyMutations(
 }
 
 // helper for tooltip content keyboard shortcut highlight
-function makeTooltipNode({ text, char }) {
+function makeTooltipNode({ text, char }: { text: string, char: string }) {
   return (
     <div
       css={{
@@ -141,6 +141,7 @@ type Props = WithAnalyticsEventsProps & {
   children: State => any,
   mutationRefs: Array<{ ref: HTMLElement, property: string }>,
   collapseToggleTooltipContent: CollapseToggleTooltipContent,
+  mouseIsOverNavigation: boolean,
   navigation: Object,
 };
 type State = {
@@ -150,6 +151,7 @@ type State = {
   initialX: number,
   isDragging: boolean,
   mouseIsDown: boolean,
+  mouseIsOverGrabArea: boolean,
   width: number,
 };
 
@@ -164,6 +166,7 @@ class ResizeControl extends PureComponent<Props, State> {
     initialWidth: 0,
     initialX: 0,
     mouseIsDown: false,
+    mouseIsOverGrabArea: false,
     width: this.props.navigation.state.productNavWidth,
   };
 
@@ -369,6 +372,7 @@ class ResizeControl extends PureComponent<Props, State> {
               {collapseToggleTooltipContent ? (
                 <Tooltip
                   content={makeTooltipNode(
+                    // $FlowFixMe
                     collapseToggleTooltipContent(isCollapsed),
                   )}
                   delay={600}

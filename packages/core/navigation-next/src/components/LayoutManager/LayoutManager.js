@@ -37,7 +37,7 @@ type State = {
   mouseIsOverNavigation: boolean,
 };
 
-function defaultTooltipContent(isCollapsed) {
+function defaultTooltipContent(isCollapsed: boolean) {
   return isCollapsed
     ? { text: 'Expand', char: '[' }
     : { text: 'Collapse', char: '[' };
@@ -179,6 +179,7 @@ export default class LayoutManager extends Component<
                   navigation={navigationUIController}
                   mouseIsOverNavigation={this.state.mouseIsOverNavigation}
                   collapseToggleTooltipContent={
+                    // $FlowFixMe
                     this.props.collapseToggleTooltipContent
                   }
                   mutationRefs={[

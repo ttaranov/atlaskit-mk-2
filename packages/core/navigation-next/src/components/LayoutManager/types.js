@@ -28,7 +28,7 @@ export type ConnectedLayoutManagerProps = {
   /** Called when the navigation completes collapsing. */
   onCollapseEnd?: CollapseListener,
   /** Displayed when the user's mouse is over the collapse/expand toggle. */
-  collapseToggleTooltipContent: CollapseToggleTooltipContent,
+  collapseToggleTooltipContent?: CollapseToggleTooltipContent,
 };
 
 export type LayoutManagerProps = ConnectedLayoutManagerProps & {
