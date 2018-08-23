@@ -3,6 +3,7 @@ import { Context, UploadableFile } from '@atlaskit/media-core';
 import { FileIdentifier } from '@atlaskit/media-card';
 import { EditorView } from './editorView/editorView';
 import { Blanket } from './styled';
+import { Subscription } from 'rxjs/Subscription';
 
 export interface SmartMediaEditorProps {
   identifier: FileIdentifier;
@@ -55,6 +56,8 @@ export class SmartMediaEditor extends React.Component<
 > {
   fileName: string;
   state: SmartMediaEditorState = {};
+  getFileSubscription?: Subscription;
+  uploadFileSubscription?: Subscription;
 
   componentDidMount() {
     const { identifier } = this.props;
@@ -62,22 +65,31 @@ export class SmartMediaEditor extends React.Component<
     this.getFile(identifier);
   }
 
+  componentWillUnmount() {
+    const { getFileSubscription, uploadFileSubscription } = this;
+
+    getFileSubscription && getFileSubscription.unsubscribe();
+    uploadFileSubscription && uploadFileSubscription.unsubscribe();
+  }
+
   getFile = (identifier: FileIdentifier) => {
     const { context } = this.props;
     const { id, collectionName } = identifier;
-    // TODO: unsubscribe when unmounting
-    const subscription = context.getFile(id, { collectionName }).subscribe({
-      next: state => {
-        if (state.status === 'processed') {
-          const { name } = state;
 
-          this.fileName = name;
-          // we can only ask for the image once the file is processed
-          this.setImageUrl(identifier);
-          subscription.unsubscribe();
-        }
-      },
-    });
+    this.getFileSubscription = context
+      .getFile(id, { collectionName })
+      .subscribe({
+        next: state => {
+          if (state.status === 'processed') {
+            const { name } = state;
+
+            this.fileName = name;
+            // we can only ask for the image once the file is processed
+            this.setImageUrl(identifier);
+            this.getFileSubscription && this.getFileSubscription.unsubscribe();
+          }
+        },
+      });
   };
 
   setImageUrl = async (identifier: FileIdentifier) => {
@@ -101,7 +113,7 @@ export class SmartMediaEditor extends React.Component<
       name: fileName,
     };
 
-    const subscription = context.uploadFile(uploadableFile).subscribe({
+    this.uploadFileSubscription = context.uploadFile(uploadableFile).subscribe({
       next(state) {
         if (state.status === 'processing') {
           const { id } = state;
@@ -112,14 +124,17 @@ export class SmartMediaEditor extends React.Component<
           };
 
           onFinish(identifier);
-          subscription.unsubscribe();
+          this.uploadFileSubscription &&
+            this.uploadFileSubscription.unsubscribe();
         }
       },
     });
   };
 
   onCancel = () => {
-    this.props.onFinish(this.props.identifier);
+    const { onFinish, identifier } = this.props;
+
+    onFinish(identifier);
   };
 
   onError = () => {};
