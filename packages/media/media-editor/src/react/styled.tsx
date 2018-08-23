@@ -14,6 +14,7 @@ import {
   akColorN600A,
 } from '@atlaskit/util-shared-styles';
 import { ButtonProps } from './toolbarButtons';
+import { colors, layers } from '@atlaskit/theme';
 
 export interface ToolbarButtonProps {
   selected: boolean;
@@ -23,6 +24,9 @@ export interface ToolbarButtonProps {
 export interface LineWidthFrontCircleProps {
   width: number;
 }
+
+export const blanketColor = colors.DN30;
+const overlayZindex = layers.modal() + 10;
 
 export const EditorContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
   position: relative;
@@ -146,4 +150,15 @@ export const ToolIcon: ComponentClass<HTMLAttributes<{}>> = styled.div`
   height: 20px;
   margin: 4px;
   color: ${akColorN40};
+`;
+
+// TODO This is copy paste from media-viewer
+export const Blanket: ComponentClass<HTMLAttributes<{}>> = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: ${blanketColor};
+  z-index: ${overlayZindex};
 `;
