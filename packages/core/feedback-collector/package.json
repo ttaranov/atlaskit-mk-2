@@ -23,6 +23,7 @@
     "@atlaskit/theme": "^6.0.0"
   },
   "devDependencies": {
+    "axios": "^0.17.1",
     "@atlaskit/build-utils": "^1.11.0",
     "@atlaskit/docs": "^5.0.6",
     "@atlaskit/section-message": "^1.0.5",
