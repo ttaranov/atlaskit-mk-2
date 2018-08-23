@@ -10,7 +10,7 @@ import {
   makeConfluenceClient,
 } from '../mocks/_mockConfluenceClient';
 import { shallowWithIntl } from '../helpers/_intl-enzyme-test-helper';
-import { QuickSearchContainer } from '../../../components/common/QuickSearchContainer';
+import QuickSearchContainer from '../../../components/common/QuickSearchContainer';
 import {
   makeConfluenceObjectResult,
   makePersonResult,
