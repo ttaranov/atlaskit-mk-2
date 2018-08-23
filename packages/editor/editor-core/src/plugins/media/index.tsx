@@ -1,7 +1,9 @@
 import * as React from 'react';
 import EditorImageIcon from '@atlaskit/icon/glyph/editor/image';
 import { media, mediaGroup, mediaSingle } from '@atlaskit/editor-common';
-
+import { SmartMediaEditor } from '@atlaskit/media-editor';
+import { NodeSelection } from 'prosemirror-state';
+import { isNodeSelection } from 'prosemirror-utils';
 import { EditorPlugin } from '../../types';
 import { legacyNodeViewFactory } from '../../nodeviews';
 import WithPluginState from '../../ui/WithPluginState';
@@ -151,17 +153,41 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
     if (typeof allowMediaSingle === 'object') {
       disableLayout = allowMediaSingle.disableLayout;
     }
-
     if (
       (typeof allowMediaSingle === 'boolean' && allowMediaSingle === false) ||
       (typeof disableLayout === 'boolean' && disableLayout === true)
     ) {
       return null;
     }
-
     const pluginState = pluginKey.getState(editorView.state);
 
-    return <MediaSingleEdit pluginState={pluginState} />;
+    return (
+      <>
+        <MediaSingleEdit pluginState={pluginState} />
+        <WithPluginState
+          plugins={{
+            mediaState: pluginKey,
+          }}
+          render={({ mediaState }) => {
+            const { state } = editorView;
+            const node =
+              isNodeSelection(state.selection) &&
+              (state.selection as NodeSelection).node;
+
+            if (node && pluginState.showMediaEditor) {
+              return (
+                <SmartMediaEditor
+                  identifier={node.attrs.id}
+                  context={node.attrs.context}
+                  onFinish={pluginState.onFinishEditing}
+                />
+              );
+            }
+            return null;
+          }}
+        />
+      </>
+    );
   },
 
   secondaryToolbarComponent({ editorView, disabled }) {

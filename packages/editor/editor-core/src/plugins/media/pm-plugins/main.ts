@@ -82,6 +82,7 @@ export class MediaPluginState {
   private clipboardPicker?: PickerFacade;
   private dropzonePicker?: PickerFacade;
   private customPicker?: PickerFacade;
+  public showMediaEditor?: boolean;
 
   private linkRanges: Array<URLInfo>;
   public editorAppearance: EditorAppearance;
@@ -489,6 +490,17 @@ export class MediaPluginState {
    */
   handleMediaNodeUnmount = (oldNode: PMNode) => {
     this.mediaNodes = this.mediaNodes.filter(({ node }) => oldNode !== node);
+  };
+
+  edit = () => {
+    this.showMediaEditor = true;
+    // triggers contentComponent render
+    this.view.dispatch(this.view.state.tr.setMeta(stateKey, 'edit'));
+  };
+
+  onFinishEditing = (id: string) => {
+    this.showMediaEditor = false;
+    console.log('~onFinishEditing~');
   };
 
   align = (layout: MediaSingleLayout): boolean => {

@@ -7,6 +7,7 @@ import CenterIcon from '@atlaskit/icon/glyph/editor/media-center';
 import WideIcon from '@atlaskit/icon/glyph/editor/media-wide';
 import FullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
+import EditorEditIcon from '@atlaskit/icon/glyph/editor/edit';
 import {
   MediaSingleLayout,
   akEditorFullPageMaxWidth,
@@ -118,25 +119,32 @@ export default class MediaSingleEdit extends React.Component<Props, State> {
     ) {
       return (
         <FloatingToolbar target={target} offset={[0, 12]} fitHeight={32}>
-          {Object.keys(icons).map((layout, index) => {
+          {Object.keys(icons).map((type, index) => {
             // Don't render Wide and Full width button for image smaller than editor content width
             if (index > 2 && !allowBreakout) {
               return;
             }
-            const Icon = icons[layout].icon;
-            const label = icons[layout].label;
+            const Icon = icons[type].icon;
+            const label = icons[type].label;
             return (
               <ToolbarButton
                 spacing="compact"
                 key={index}
                 disabled={!allowLayout}
-                selected={layout === selectedLayout}
-                onClick={this.handleChangeLayout.bind(this, layout)}
+                selected={type === selectedLayout}
+                onClick={this.handleChangeLayout.bind(this, type)}
                 title={label}
                 iconBefore={<Icon label={`Change layout to ${label}`} />}
               />
             );
           })}
+          <ToolbarButton
+            spacing="compact"
+            disabled={!allowLayout}
+            onClick={this.handleEdit}
+            title="Edit"
+            iconBefore={<EditorEditIcon label="Change layout to Edit" />}
+          />
           <Separator />
           <ToolbarButtonDestructive
             spacing="compact"
@@ -159,6 +167,10 @@ export default class MediaSingleEdit extends React.Component<Props, State> {
   private handleChangeLayout(layout: MediaSingleLayout) {
     this.props.pluginState.align(layout);
   }
+
+  private handleEdit = () => {
+    this.props.pluginState.edit();
+  };
 
   private handlePluginStateChange = (pluginState: MediaPluginState) => {
     const { element: target, layout } = pluginState;
