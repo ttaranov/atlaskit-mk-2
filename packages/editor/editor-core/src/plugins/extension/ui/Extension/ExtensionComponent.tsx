@@ -1,12 +1,15 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
+import { NodeSelection } from 'prosemirror-state';
 import { Node as PMNode } from 'prosemirror-model';
 import {
   selectParentNodeOfType,
   findSelectedNodeOfType,
+  replaceSelectedNode,
+  isNodeSelection,
 } from 'prosemirror-utils';
-import { MacroProvider } from '../../../macro';
+import { MacroProvider, resolveMacro } from '../../../macro';
 import InlineExtension from './InlineExtension';
 import Extension from './Extension';
 import { ExtensionHandlers } from '@atlaskit/editor-common';
@@ -100,6 +103,7 @@ export default class ExtensionComponent extends Component<Props, State> {
     let { tr } = state;
 
     if (hasBody) {
+      // debugger;
       tr = selectParentNodeOfType([schema.nodes.bodiedExtension])(state.tr);
       dispatch(tr);
     } else if (
@@ -129,16 +133,39 @@ export default class ExtensionComponent extends Component<Props, State> {
     return null;
   }
 
+  private syncEditorState = (parameters: any, content: any) => {
+    const { editorView, node } = this.props;
+    const { state, dispatch } = editorView;
+    const newNode = resolveMacro(
+      {
+        type: node.type.name,
+        attrs: {
+          ...node.attrs,
+          parameters,
+        },
+        content,
+      } as any,
+      state,
+    );
+
+    if (newNode) {
+      dispatch(replaceSelectedNode(newNode)(state.tr));
+    }
+  };
+
+  private isSelected = () => {
+    const { selection, schema } = this.props.editorView.state;
+    return (
+      isNodeSelection(selection) &&
+      (selection as NodeSelection).node.type === schema.nodes.bodiedExtension
+    );
+  };
+
   private handleExtension = (node: PMNode) => {
     const { extensionHandlers, editorView } = this.props;
     const { extensionType, extensionKey, parameters } = node.attrs;
-    const isBodiedExtension = node.type.name === 'bodiedExtension';
 
-    if (
-      !extensionHandlers ||
-      !extensionHandlers[extensionType] ||
-      isBodiedExtension
-    ) {
+    if (!extensionHandlers || !extensionHandlers[extensionType]) {
       return;
     }
 
@@ -154,6 +181,8 @@ export default class ExtensionComponent extends Component<Props, State> {
         content: node.content,
       },
       editorView.state.doc,
+      this.syncEditorState,
+      this.isSelected,
     );
   };
 }

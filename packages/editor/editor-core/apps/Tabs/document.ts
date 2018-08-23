@@ -18,13 +18,59 @@ export const exampleDocument = {
       attrs: {
         extensionType: EDITOR_APPS_EXTENSION_TYPE,
         extensionKey: TABS_EXTENSION_KEY,
-        parameters: {},
+        parameters: {
+          tabs: [
+            {
+              name: 'Tab 1',
+              id: '1',
+            },
+            {
+              name: 'Tab 2',
+              id: '2',
+            },
+          ],
+          tabsContent: [
+            {
+              tabId: '1',
+              content: [
+                {
+                  type: 'paragraph',
+                  content: [
+                    {
+                      type: 'text',
+                      text: 'P1',
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              tabId: '2',
+              content: [
+                {
+                  type: 'paragraph',
+                  content: [
+                    {
+                      type: 'text',
+                      text: 'P2',
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
         layout: 'default',
       },
       content: [
         {
           type: 'paragraph',
-          content: [],
+          content: [
+            {
+              type: 'text',
+              text: 'P1',
+            },
+          ],
         },
       ],
     },

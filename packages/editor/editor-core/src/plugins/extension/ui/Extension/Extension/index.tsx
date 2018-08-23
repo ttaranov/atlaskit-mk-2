@@ -45,11 +45,11 @@ export default class Extension extends Component<Props, any> {
               style={{
                 width: calcExtensionWidth(node.attrs.layout, width),
               }}
+              onClick={this.onSelectExtension}
             >
               <Overlay className="extension-overlay" />
               <Header
                 contentEditable={false}
-                onClick={this.onSelectExtension}
                 className={hasChildren ? 'with-children' : ''}
               >
                 {children ? children : <ExtensionLozenge node={node} />}

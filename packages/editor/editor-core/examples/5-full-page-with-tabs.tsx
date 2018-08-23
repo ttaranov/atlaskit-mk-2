@@ -9,7 +9,23 @@ const tabsExtensionDefault = {
     extensionType: 'com.atlassian.editor.apps.core',
     extensionKey: 'tabs',
     parameters: {
-      tabs: [{ start: 0, end: 0 }, { start: 0, end: 0 }],
+      tabs: [
+        {
+          name: 'Tab',
+          id: '1',
+        },
+      ],
+      tabsContent: [
+        {
+          tabId: '1',
+          content: [
+            {
+              type: 'paragraph',
+              content: [],
+            },
+          ],
+        },
+      ],
     },
   },
   content: [

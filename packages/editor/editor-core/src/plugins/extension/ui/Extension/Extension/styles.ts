@@ -39,5 +39,6 @@ export const Content: ComponentClass<
 `;
 
 export const ContentWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
-  padding: 0 ${padding}px ${padding}px;
+  /* padding: 0 ${padding}px ${padding}px; */
+  padding: 0 ;
 `;

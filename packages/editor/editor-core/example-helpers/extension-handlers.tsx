@@ -54,15 +54,23 @@ export const extensionHandlers: ExtensionHandlers = {
 
     return null;
   },
-  [EDITOR_APPS_EXTENSION_TYPE]: (ext, doc) => {
-    const { extensionKey, parameters } = ext;
+  [EDITOR_APPS_EXTENSION_TYPE]: (ext, doc, syncEditorState, isSelected) => {
+    const { extensionKey, parameters, content } = ext;
 
     if (extensionKey === POLL_EXTENSION_KEY) {
       return <PollApp {...parameters} editable={true} />;
     }
 
     if (extensionKey === TABS_EXTENSION_KEY) {
-      return <TabsApp {...parameters} editable={true} />;
+      return (
+        <TabsApp
+          {...parameters}
+          editable={true}
+          syncEditorState={syncEditorState}
+          content={content}
+          isSelected={isSelected}
+        />
+      );
     }
 
     return null;
