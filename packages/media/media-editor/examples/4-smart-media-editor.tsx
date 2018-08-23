@@ -28,7 +28,7 @@ class SmartMediaEditorExample extends React.Component<{}, State> {
       <SmartMediaEditor
         identifier={imageFileId}
         context={context}
-        onFinish={() => console.log('finished')}
+        onFinish={() => this.setState({ showEditor: false })}
       />
     );
 

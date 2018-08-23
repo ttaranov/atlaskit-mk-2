@@ -88,7 +88,9 @@ export class SmartMediaEditor extends React.Component<
     });
   };
 
-  onCancel = () => {};
+  onCancel = () => {
+    this.props.onFinish(this.props.identifier);
+  };
 
   onError = () => {};
 
