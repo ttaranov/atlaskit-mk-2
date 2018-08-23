@@ -5,7 +5,7 @@ export const MAX_PAGES = 8;
 export const MAX_SPACES = 3;
 export const MAX_PEOPLE = 3;
 
-const sliceResults = (resultsMap: ConfluenceResultsMap) => {
+export const sliceResults = (resultsMap: ConfluenceResultsMap) => {
   const { people, objects, spaces } = resultsMap;
   return {
     objects: take(objects, MAX_PAGES),

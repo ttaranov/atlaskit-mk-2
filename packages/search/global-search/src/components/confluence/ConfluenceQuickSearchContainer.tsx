@@ -6,7 +6,7 @@ import {
   CrossProductSearchClient,
   Scope,
 } from '../../api/CrossProductSearchClient';
-import { Result } from '../../model/Result';
+import { Result, ConfluenceResultsMap } from '../../model/Result';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
 import ConfluenceSearchResults from './ConfluenceSearchResults';
 import { SearchScreenCounter, ScreenCounter } from '../../util/ScreenCounter';
@@ -18,10 +18,10 @@ import {
   redirectToConfluenceAdvancedSearch,
   handlePromiseError,
 } from '../SearchResultsUtil';
-import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { CreateAnalyticsEventFn } from '../analytics/types';
 import performanceNow from '../../util/performance-now';
-import { QuickSearchContainer } from '../common/QuickSearchContainer';
+import QuickSearchContainer from '../common/QuickSearchContainer';
+import { sliceResults } from './ConfluenceSearchResultsMapper';
 
 export interface Props {
   crossProductSearchClient: CrossProductSearchClient;
@@ -237,11 +237,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     );
   };
   render() {
-    const {
-      linkComponent,
-      isSendSearchTermsEnabled,
-      createAnalyticsEvent,
-    } = this.props;
+    const { linkComponent, isSendSearchTermsEnabled } = this.props;
 
     return (
       <QuickSearchContainer
@@ -254,12 +250,17 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         getSearchResults={this.getSearchResults}
         handleSearchSubmit={this.handleSearchSubmit}
         isSendSearchTermsEnabled={isSendSearchTermsEnabled}
-        createAnalyticsEvent={createAnalyticsEvent}
+        getDisplayedResults={result => {
+          const slicedResults = sliceResults(result as ConfluenceResultsMap);
+          return Object.keys(slicedResults)
+            .map(key => slicedResults[key])
+            .reduce((acc: Result[][], value) => [...acc, value], []);
+        }}
       />
     );
   }
 }
 
 export default injectIntl<Props>(
-  withAnalyticsEvents()(withAnalytics(ConfluenceQuickSearchContainer, {}, {})),
+  withAnalytics(ConfluenceQuickSearchContainer, {}, {}),
 );
