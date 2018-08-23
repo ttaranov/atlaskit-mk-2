@@ -112,11 +112,10 @@ export class RSVPApp extends Component<Props, State> {
     if (center) {
       this.map = new mapboxgl.Map({
         container: this.mapContainer,
-        style: 'mapbox://styles/mapbox/light-v9',
+        style: 'mapbox://styles/mapbox/streets-v9',
         center,
         zoom: 15,
       });
-      new mapboxgl.Marker().setLngLat(center).addTo(this.map);
     }
 
     this.dbRef
