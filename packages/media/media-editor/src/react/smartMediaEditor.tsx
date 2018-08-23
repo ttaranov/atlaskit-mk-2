@@ -9,7 +9,7 @@ import { Subscription } from 'rxjs/Subscription';
 export interface SmartMediaEditorProps {
   identifier: FileIdentifier;
   context: Context;
-  onFinish: (identifier: FileIdentifier) => void;
+  onFinish: (identifier: FileIdentifier, preview?: string) => void;
 }
 
 export interface SmartMediaEditorState {
@@ -69,12 +69,12 @@ export class SmartMediaEditor extends React.Component<
     });
   };
 
-  onSave = (imageUrl: string) => {
+  onSave = (imageData: string) => {
     const { fileName } = this;
     const { context, identifier, onFinish } = this.props;
     const { collectionName } = identifier;
     const uploadableFile: UploadableFile = {
-      content: imageUrl,
+      content: imageData,
       collection: collectionName,
       name: fileName,
     };
@@ -89,7 +89,7 @@ export class SmartMediaEditor extends React.Component<
             collectionName,
           };
 
-          onFinish(identifier);
+          onFinish(identifier, imageData);
           this.uploadFileSubscription &&
             this.uploadFileSubscription.unsubscribe();
         }
