@@ -10,9 +10,6 @@ jest.mock('@atlaskit/build-utils/git');
 jest.mock('@atlaskit/build-utils/logger');
 jest.mock('../../changeset/parseChangesetCommit');
 
-git.add.mockImplementation(() => Promise.resolve(true));
-git.commit.mockImplementation(() => Promise.resolve(true));
-git.push.mockImplementation(() => Promise.resolve(true));
 git.tag.mockImplementation(() => Promise.resolve(true));
 // we want to keep other bolt commands still running so our tests are more e2e
 // NOTE: This is pretty terrible. Quite obviously bolt is not going to return these results
@@ -82,7 +79,6 @@ describe('running release', () => {
 
       expect(git.tag).toHaveBeenCalledWith('pkg-a@1.1.0');
       expect(git.tag).toHaveBeenCalledWith('pkg-b@1.0.1');
-      expect(git.push).toHaveBeenCalled();
     });
   });
 });

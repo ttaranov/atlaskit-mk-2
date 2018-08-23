@@ -9,11 +9,13 @@ Standalone library to help monorepos that are using bolt to bump version across 
 ```
 build-releases changeset
 ```
-Launches interactive changeset commit creation. 
 
-Changeset is a commit message describing which packages should be bumped along with it's dependants. Also describes how to bump them: patch, minor, major version. By convention changeset commits do not contain any actual file changes. 
+Launches interactive changeset commit creation.
+
+Changeset is a commit message describing which packages should be bumped along with it's dependants. Also describes how to bump them: patch, minor, major version. By convention changeset commits do not contain any actual file changes.
 
 Example of changeset commit message:
+
 ```
 CHANGESET: removed promise from FabricAnalyticsListener.client property
 
@@ -35,6 +37,7 @@ Dependents: @atlaskit/global-navigation@patch, @atlaskit/navigation-next@patch, 
 ```
 build-releases version [--withChangelog]
 ```
+
 Creates release commit with bumped versions for all packages (and depdendencies) described in changeset commits since last release. Should be part of release process on CI.
 
 `--withChangelog` - enables generation of changelog file (or if it exists appends new version changelog on the top of current file)
@@ -60,10 +63,17 @@ Deleted:
 
 [skip ci]
 ```
+
 ### publish
 
 ```
 build-releases publish
 ```
 
-Publishes to NPM repo, tags and git pushes release commit. Because this command assumes that last commit is the release commit you should not commit any changes between calling `version` and `publish`. These commands are separate to enable you to check if release commit is acurate. Should be part of release process on CI.
+Publishes to NPM repo, and creates tags. Because this command assumes that last commit is the release commit you should not commit any changes between calling `version` and `publish`. These commands are separate to enable you to check if release commit is acurate. Should be part of release process on CI.
+
+**NOTE:** You will still need to push your changes back to master after this
+
+```
+git push --follow-tags
+```

@@ -26,8 +26,12 @@ pipelines:
             # - yarn test:browser:browserstack
             # Bump all packages and their dependents using saved changesets
             - node ./build/releases/bin/build-releases.js version
+            # We push the bumped packages to master now as it's much better to fail whilst BB is
+            # ahead of npm, than the other way round.
+            - git push
             # Release all unreleased packages
             - node ./build/releases/bin/build-releases.js publish
+            - git push --tags # push only the tags
             - (cd build/ci-scripts && yarn restart-stopped-build)
           caches:
             - node
