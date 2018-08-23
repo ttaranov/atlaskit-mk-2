@@ -7,8 +7,8 @@ const PARALLELIZE_TESTS = process.env.PARALLELIZE_TESTS;
 const OVERRIDE_TEST_IGNORE = process.env.OVERRIDE_TEST_IGNORE;
 const PROD = process.env.PROD;
 // These are set by Pipelines if you are running in a parallel steps
-const STEP_IDX = process.env.STEP_IDX;
-const STEPS = process.env.STEPS;
+const STEP_IDX = Number(process.env.STEP_IDX);
+const STEPS = Number(process.env.STEPS);
 
 /**
  * USAGE for parallelizing: setting PARALLELIZE_TESTS to an array of globs or an array of test files when you
