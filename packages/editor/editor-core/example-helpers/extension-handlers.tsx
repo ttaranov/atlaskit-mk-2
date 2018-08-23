@@ -6,6 +6,7 @@ import {
   PollApp,
 } from '../apps/Poll';
 import { TABS_EXTENSION_KEY, TabsApp } from '../apps/Tabs';
+import { RSVP_EXTENSION_KEY, RSVPApp } from '../apps/RSVP';
 
 const FakeExtension = ({ colour, children }) => {
   return (
@@ -71,6 +72,10 @@ export const extensionHandlers: ExtensionHandlers = {
           isSelected={isSelected}
         />
       );
+    }
+
+    if (extensionKey === RSVP_EXTENSION_KEY) {
+      return <RSVPApp {...parameters} editable={true} />;
     }
 
     return null;
