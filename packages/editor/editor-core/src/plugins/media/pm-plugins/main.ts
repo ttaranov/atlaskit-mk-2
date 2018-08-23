@@ -502,7 +502,7 @@ export class MediaPluginState {
       return;
     }
 
-    this.editingMediaId = selected.attrs.id;
+    this.editingMediaId = selected.attrs.__key;
 
     // triggers contentComponent render
     this.view.dispatch(this.view.state.tr.setMeta(stateKey, 'edit'));
@@ -511,13 +511,17 @@ export class MediaPluginState {
   onFinishEditing = (newId: string) => {
     const oldId = this.editingMediaId;
     if (!oldId) {
+      console.warn('no old id');
       return;
     }
 
     const mediaNodeWithPos = this.findMediaNode(oldId);
     if (!mediaNodeWithPos) {
+      console.warn('no media node with id', oldId);
       return;
     }
+
+    console.log('new id', newId);
 
     const { getPos, node: mediaNode } = mediaNodeWithPos;
 
@@ -526,6 +530,8 @@ export class MediaPluginState {
       id: newId,
     });
 
+    console.log('new node', newNode);
+
     const nodePos = getPos();
     const tr = this.view.state.tr.replaceWith(
       nodePos,
@@ -533,10 +539,13 @@ export class MediaPluginState {
       newNode,
     );
 
-    this.editingMediaId = undefined;
+    console.log('tr', tr);
+
     this.view.dispatch(
       tr.setMeta('addToHistory', false).setMeta(stateKey, 'noedit'),
     );
+
+    this.editingMediaId = undefined;
   };
 
   align = (layout: MediaSingleLayout): boolean => {
