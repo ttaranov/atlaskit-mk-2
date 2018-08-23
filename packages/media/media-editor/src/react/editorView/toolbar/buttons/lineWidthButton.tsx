@@ -2,7 +2,8 @@ import * as React from 'react';
 import { Component } from 'react';
 import MediaServicesLineThicknessIcon from '@atlaskit/icon/glyph/media-services/line-thickness';
 import { GenericButton } from './genericButton';
-import { OptionsIcon } from './optionsIcon';
+import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
+import { DropdownIconWrapper } from './styles';
 
 export interface LineWidthButtonProps {
   readonly isActive: boolean;
@@ -15,8 +16,10 @@ export class LineWidthButton extends Component<LineWidthButtonProps> {
 
     return (
       <GenericButton isActive={isActive} onClick={onClick}>
-        <MediaServicesLineThicknessIcon label="line width" />
-        <OptionsIcon isActive={isActive} />
+        <DropdownIconWrapper>
+          <MediaServicesLineThicknessIcon label="line width" />
+        </DropdownIconWrapper>
+        <ChevronDownIcon label="chevron-icon" />
       </GenericButton>
     );
   }

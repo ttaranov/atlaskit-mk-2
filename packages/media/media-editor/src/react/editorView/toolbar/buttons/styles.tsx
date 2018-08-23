@@ -16,11 +16,11 @@ const colorSampleOutlineColor = 'rgba(255, 255, 255, 0.5)';
 export const ToolbarButton: ComponentClass<HTMLAttributes<{}>> = styled.div`
   cursor: pointer;
   position: relative; /* for the child OptionsAreaBase which uses absolute positioning */
-  width: 40px;
+  min-width: 32px;
   height: 32px;
   border-radius: 4px;
-  margin-left: 2px;
-  margin-right: 2px;
+  margin-left: 4px;
+  margin-right: 4px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -48,10 +48,18 @@ export const OptionsIconWrapper: ComponentClass<
 `;
 
 export const ColorSample: ComponentClass<HTMLAttributes<{}>> = styled.div`
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
   border-radius: 3px;
   border-style: solid;
   border-width: 1px;
   border-color: ${colorSampleOutlineColor};
+  box-sizing: border-box;
+`;
+
+export const DropdownIconWrapper: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
+  margin-right: -4px;
+  margin-left: 4px;
 `;

@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
+import Button, { ButtonGroup } from '@atlaskit/button';
 import { Tool, Color } from '../../../..';
 
 import { LineWidthButton } from './buttons/lineWidthButton';
@@ -7,12 +8,7 @@ import { ColorButton } from './buttons/colorButton';
 import { ToolButton } from './buttons/toolButton';
 import { LineWidthPopup } from './popups/lineWidthPopup';
 import { ColorPopup } from './popups/colorPopup';
-import {
-  ToolbarContainer,
-  CenterButtons,
-  RightButtons,
-  RightButton,
-} from './styles';
+import { ToolbarContainer, CenterButtons, VerticalLine } from './styles';
 import { buttonSave, buttonCancel } from '../../../react/editorView/phrases';
 
 export type PopupState = 'none' | 'color' | 'lineWidth';
@@ -72,6 +68,7 @@ export class Toolbar extends Component<ToolbarProps, ToolbarState> {
         <CenterButtons>
           {this.renderToolButtons()}
 
+          <VerticalLine />
           <LineWidthPopup
             onLineWidthClick={onLineWidthClick}
             lineWidth={lineWidth}
@@ -98,24 +95,26 @@ export class Toolbar extends Component<ToolbarProps, ToolbarState> {
               />
             </div>
           </ColorPopup>
-        </CenterButtons>
 
-        <RightButtons>
-          <RightButton
-            appearance="primary"
-            theme="dark"
-            onClick={this.props.onSave}
-          >
-            {buttonSave}
-          </RightButton>
-          <RightButton
-            appearance="subtle"
-            onClick={this.props.onCancel}
-            theme="dark"
-          >
-            {buttonCancel}
-          </RightButton>
-        </RightButtons>
+          <VerticalLine />
+
+          <ButtonGroup>
+            <Button
+              appearance="primary"
+              theme="dark"
+              onClick={this.props.onSave}
+            >
+              {buttonSave}
+            </Button>
+            <Button
+              appearance="subtle"
+              onClick={this.props.onCancel}
+              theme="dark"
+            >
+              {buttonCancel}
+            </Button>
+          </ButtonGroup>
+        </CenterButtons>
       </ToolbarContainer>
     );
   }

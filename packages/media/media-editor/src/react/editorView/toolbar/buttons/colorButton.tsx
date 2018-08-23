@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { Component } from 'react';
+import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import { Color } from '../../../..';
 
 import { GenericButton } from './genericButton';
-import { OptionsIcon } from './optionsIcon';
-import { ColorSample } from './styles';
+import { ColorSample, DropdownIconWrapper } from './styles';
 
 export interface ColorButtonProps {
   readonly color: Color;
@@ -20,8 +20,10 @@ export class ColorButton extends Component<ColorButtonProps> {
 
     return (
       <GenericButton isActive={isActive} onClick={onClick}>
-        <ColorSample style={style} />
-        <OptionsIcon isActive={isActive} />
+        <DropdownIconWrapper>
+          <ColorSample style={style} />
+        </DropdownIconWrapper>
+        <ChevronDownIcon label="chevron-icon" />
       </GenericButton>
     );
   }

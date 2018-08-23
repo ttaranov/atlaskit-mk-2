@@ -4,6 +4,7 @@ import styled from 'styled-components';
 
 import { HTMLAttributes, ComponentClass } from 'react';
 import Button from '@atlaskit/button';
+import { akColorN30A } from '@atlaskit/util-shared-styles';
 
 export const ToolbarContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
@@ -24,17 +25,9 @@ export const CenterButtons: ComponentClass<HTMLAttributes<{}>> = styled.div`
   align-items: center;
 `;
 
-export const RightButtons: ComponentClass<HTMLAttributes<{}>> = styled.div`
-  position: absolute;
-  pointer-events: auto;
-  right: 16px;
-  height: 48px;
-  bottom: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
-
-export const RightButton: ComponentClass<any> = styled(Button)`
-  margin-left: 4px;
+export const VerticalLine: ComponentClass<HTMLAttributes<{}>> = styled.div`
+  width: 1px;
+  background: ${akColorN30A};
+  height: 32px;
+  margin: 0 8px;
 `;
