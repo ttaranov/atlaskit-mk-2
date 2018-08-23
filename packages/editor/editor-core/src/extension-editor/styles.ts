@@ -23,8 +23,8 @@ import {
 export const ExtensionEditorContainer: ComponentClass<
   HTMLAttributes<{}>
 > = styled.div`
-  padding: 10px;
-  min-width: 320px;
+  padding: 40px;
+  min-width: 280px;
   position: fixed;
   height: 100vh;
   z-index: 100000;
@@ -32,17 +32,25 @@ export const ExtensionEditorContainer: ComponentClass<
   right: 0;
   top: 0;
   border-left: 1px solid #efefef;
-  box-shadow: 2px -9px 4px 1px #aaaaaa;
+  box-shadow: -2px 0px 10px 2px rgba(9, 30, 66, 0.12);
   border-top: 2px solid #efefef;
   transition: 1s ease-in;
+
+  label {
+    color: ${akColorN100};
+  }
+
+  h1 {
+    margin: 10px 0;
+    text-transform: capitalize;
+    font-size: 130%;
+  }
+  .submit-btn {
+    margin-top: 20px;
+  }
 `;
 
 export const FormWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
-  h1 {
-    margin: 25px 0;
-    text-transform: capitalize;
-  }
-
   .options {
     margin: 20px 0;
   }

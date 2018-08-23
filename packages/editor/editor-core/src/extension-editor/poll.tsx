@@ -6,6 +6,7 @@ import { setNodeSelection } from '../utils';
 import { resolveMacro } from '../plugins/macro/actions';
 import { replaceSelectedNode } from 'prosemirror-utils';
 import Button from '@atlaskit/button';
+import { generateUuid } from '@atlaskit/editor-common';
 
 import Form, { Field, FormHeader } from '@atlaskit/form';
 
@@ -155,13 +156,18 @@ export class Poll extends React.Component<Props, State> {
           <div className="options">{this.renderChoices(parameters)}</div>
           <div>
             <span className="add-option">
-              <a className="react" onClick={this.addOption}>
+              <Button
+                className="react"
+                type="submit"
+                appearance="link"
+                onClick={this.addOption}
+              >
                 + Add option
-              </a>
+              </Button>
             </span>
           </div>
           <Button
-            className="react"
+            className="react submit-btn"
             type="submit"
             appearance="primary"
             onClick={this.saveExtension}

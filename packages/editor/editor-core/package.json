@@ -31,6 +31,7 @@
     "@atlaskit/checkbox": "^4.0.4",
     "@atlaskit/code": "^8.0.1",
     "@atlaskit/date": "^0.1.2",
+    "@atlaskit/datetime-picker": "^6.3.3",
     "@atlaskit/droplist": "^7.0.7",
     "@atlaskit/editor-common": "^14.0.11",
     "@atlaskit/editor-json-transformer": "^4.0.6",

@@ -36,6 +36,14 @@ export const ChoicesContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
     text-align: left;
     height: auto;
     padding: 8px 5px;
+
+    > span {
+      justify-content: flex-start !important;
+
+      > span {
+        margin: 0px 4px !important;
+      }
+    }
   }
 `;
 
