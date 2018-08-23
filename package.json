@@ -228,6 +228,7 @@
     "@atlaskit/util-common-test": "^2.4.2",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "@atlassian/outbound-auth-flow-client": "^1.0.4",
+    "@firebase/database": "^0.3.4",
     "@lbatchelor/netlify": "^1.2.0-patched.7",
     "@lbatchelor/netlify-cli": "^1.2.2-patched.7",
     "@types/bricks.js": "^1.8.0",

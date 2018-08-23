@@ -52,6 +52,7 @@
     "@atlaskit/tooltip": "^12.0.9",
     "@atlaskit/util-service-support": "^3.0.2",
     "@atlaskit/util-shared-styles": "^2.10.3",
+    "@firebase/database": "^0.3.4",
     "@types/codemirror": "^0.0.40",
     "@types/orderedmap": "^1.0.0",
     "@types/prosemirror-commands": "^1.0.0",
