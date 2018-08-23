@@ -106,15 +106,11 @@ if (OVERRIDE_TEST_IGNORE) {
  */
 if (PARALLELIZE_TESTS) {
   const allTests = JSON.parse(PARALLELIZE_TESTS);
-  const filesPerJob = Math.ceil(allTests.length / Number(STEPS));
-  const startIdx = filesPerJob * Number(STEP_IDX);
-  const endIdx = startIdx + filesPerJob;
-  config.testMatch = allTests.slice(startIdx, startIdx + filesPerJob);
+  config.testMatch = allTests.filter((_, i) => i % STEPS - STEP_IDX === 0);
 
   console.log('Parallelising jest tests.');
   console.log(`Parallel step ${String(STEP_IDX)} of ${String(STEPS)}`);
   console.log('Total test files', allTests.length);
-  console.log(`Running files: ${startIdx}-${endIdx}`);
 }
 
 // Annoyingly, if the array is empty, jest will fallback to its defaults and run everything
