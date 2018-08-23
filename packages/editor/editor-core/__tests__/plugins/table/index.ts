@@ -31,7 +31,10 @@ import {
   pluginKey,
   getPluginState,
 } from '../../../src/plugins/table/pm-plugins/main';
-import { TablePluginState } from '../../../src/plugins/table/types';
+import {
+  TablePluginState,
+  PluginConfig,
+} from '../../../src/plugins/table/types';
 import {
   createTable,
   setEditorFocus,
@@ -59,26 +62,28 @@ import listPlugin from '../../../src/plugins/lists';
 import { TextSelection } from 'prosemirror-state';
 
 describe('table plugin', () => {
-  const editor = (doc: any, trackEvent = () => {}) =>
-    createEditor<TablePluginState>({
+  const editor = (doc: any, trackEvent = () => {}) => {
+    const tableOptions = {
+      allowNumberColumn: true,
+      allowHeaderRow: true,
+      allowHeaderColumn: true,
+      permittedLayouts: 'all',
+    } as PluginConfig;
+    return createEditor<TablePluginState>({
       doc,
       editorPlugins: [
         listPlugin,
-        tablesPlugin,
+        tablesPlugin(tableOptions),
         codeBlockPlugin(),
         mediaPlugin({ allowMediaSingle: true }),
       ],
       editorProps: {
         analyticsHandler: trackEvent,
-        allowTables: {
-          allowNumberColumn: true,
-          allowHeaderRow: true,
-          allowHeaderColumn: true,
-          permittedLayouts: 'all',
-        },
+        allowTables: tableOptions,
       },
       pluginKey,
     });
+  };
 
   let trackEvent;
   beforeEach(() => {
@@ -508,7 +513,7 @@ describe('table plugin', () => {
         const editorTableHeader = (doc: any) =>
           createEditor<TablePluginState>({
             doc,
-            editorPlugins: [tablesPlugin],
+            editorPlugins: [tablesPlugin({ isHeaderRowRequired: true })],
             editorProps: {
               allowTables: {
                 isHeaderRowRequired: true,

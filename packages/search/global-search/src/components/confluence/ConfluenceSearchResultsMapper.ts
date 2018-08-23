@@ -17,7 +17,13 @@ const sliceResults = (resultsMap: ConfluenceResultsMap) => {
 export const mapRecentResultsToUIGroups = (
   recentlyViewedObjects: ConfluenceResultsMap,
 ): ResultsGroup[] => {
-  const { people, objects, spaces } = sliceResults(recentlyViewedObjects);
+  const { people, objects, spaces } = recentlyViewedObjects
+    ? sliceResults(recentlyViewedObjects)
+    : {
+        people: [],
+        objects: [],
+        spaces: [],
+      };
 
   return [
     {

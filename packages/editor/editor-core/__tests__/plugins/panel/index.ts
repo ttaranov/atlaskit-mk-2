@@ -29,7 +29,7 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
   const editor = (doc: any) =>
     createEditor<PanelState>({
       doc,
-      editorPlugins: [panelPlugin, listPlugin, tablesPlugin],
+      editorPlugins: [panelPlugin, listPlugin, tablesPlugin()],
       pluginKey: panelPluginKey,
     });
 

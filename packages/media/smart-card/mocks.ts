@@ -36,7 +36,7 @@ const resolvedBody = {
 const unauthorisedBody = {
   meta: {
     visibility: 'restricted',
-    access: 'unauthorised',
+    access: 'unauthorized',
     auth: [serviceAuth],
     definitionId,
   },

@@ -127,8 +127,8 @@ describe('Card', () => {
     }
   });
 
-  it('should render the unauthorised view when unauthorised', async () => {
-    const client = createClient('unauthorised');
+  it('should render the unauthorized view when unauthorized', async () => {
+    const client = createClient('unauthorized');
     const wrapper = mount(
       <Card
         appearance="block"
@@ -141,7 +141,7 @@ describe('Card', () => {
       // wait for the data to be loaded
       await client
         .get('https://www.atlassian.com/')
-        .pipe(takeWhile(state => state.status !== 'unauthorised'))
+        .pipe(takeWhile(state => state.status !== 'unauthorized'))
         .toPromise();
     } catch (error) {
       wrapper.update();

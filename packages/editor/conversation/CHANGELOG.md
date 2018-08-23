@@ -1,5 +1,14 @@
 # @atlaskit/conversation
 
+## 9.1.5
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/renderer@20.0.11
+  - @atlaskit/util-data-test@10.0.7
+  - @atlaskit/editor-common@14.0.11
+  - @atlaskit/reactions@13.0.8
+  - @atlaskit/editor-core@77.1.4
+  - @atlaskit/comment@6.0.8
+
 ## 9.1.4
 - [patch] Add next gen analytics to conversation component [dfa100e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dfa100e)
 - [patch] Add nextgen analytics to conversation component [9e2626f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9e2626f)

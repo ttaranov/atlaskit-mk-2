@@ -30,7 +30,7 @@ describe('tasks and decisions - keymaps', () => {
   const editor = (doc: any) =>
     createEditor({
       doc,
-      editorPlugins: [tablesPlugin, tasksAndDecisionsPlugin, mentionsPlugin],
+      editorPlugins: [tablesPlugin(), tasksAndDecisionsPlugin, mentionsPlugin],
     });
 
   describe('decisions', () => {
