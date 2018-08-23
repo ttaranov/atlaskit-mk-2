@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { layers } from '@atlaskit/theme';
 import Portal from '@atlaskit/portal';
 import { ModalTransitionConsumer } from './ModalTransition';
+import StackConsumer from './StackConsumer';
 
 import type {
   AppearanceType,
@@ -139,11 +140,16 @@ class ModalWrapper extends Component<Props, State> {
       <ModalTransitionConsumer>
         {({ isOpen, onExited }) => (
           <Portal zIndex={layers.modal()}>
-            <Modal
-              {...this.props}
-              isOpen={isOpen}
-              onCloseComplete={this.onModalClosed(onExited)}
-            />
+            <StackConsumer>
+              {naturalStackIndex => (
+                <Modal
+                  {...this.props}
+                  isOpen={isOpen}
+                  stackIndex={this.props.stackIndex || naturalStackIndex}
+                  onCloseComplete={this.onModalClosed(onExited)}
+                />
+              )}
+            </StackConsumer>
           </Portal>
         )}
       </ModalTransitionConsumer>

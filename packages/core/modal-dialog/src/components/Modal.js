@@ -215,6 +215,8 @@ class Modal extends Component<Props, State> {
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
+export const ModalDialogWithoutAnalytics = Modal;
+
 export default withAnalyticsContext({
   componentName: 'modalDialog',
   packageName,
