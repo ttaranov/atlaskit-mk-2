@@ -40,6 +40,16 @@ class SmartMediaEditorExample extends React.Component<{}, State> {
     );
   };
 
+  onUploadStart = async (deferredIdentifier, preview) => {
+    console.log('onUploadStart', preview);
+    this.setState({
+      showEditor: false,
+    });
+    const identifier = await deferredIdentifier;
+
+    console.log({ identifier });
+  };
+
   render() {
     const { showEditor } = this.state;
 
@@ -48,6 +58,7 @@ class SmartMediaEditorExample extends React.Component<{}, State> {
         identifier={imageFileId}
         context={context}
         onFinish={this.onFinish}
+        onUploadStart={this.onUploadStart}
       />
     );
 

@@ -10,6 +10,10 @@ import { Subscription } from 'rxjs/Subscription';
 export interface SmartMediaEditorProps {
   identifier: FileIdentifier;
   context: Context;
+  onUploadStart: (
+    deferredIdentifier: Promise<FileIdentifier>,
+    preview: string,
+  ) => void;
   onFinish: (identifier: FileIdentifier, preview?: string) => void;
 }
 
@@ -33,10 +37,9 @@ export class SmartMediaEditor extends React.Component<
   }
 
   componentWillUnmount() {
-    const { getFileSubscription, uploadFileSubscription } = this;
-
-    getFileSubscription && getFileSubscription.unsubscribe();
-    uploadFileSubscription && uploadFileSubscription.unsubscribe();
+    // const { getFileSubscription, uploadFileSubscription } = this;
+    // getFileSubscription && getFileSubscription.unsubscribe();
+    // uploadFileSubscription && uploadFileSubscription.unsubscribe();
   }
 
   getFile = (identifier: FileIdentifier) => {
@@ -72,30 +75,36 @@ export class SmartMediaEditor extends React.Component<
 
   onSave = (imageData: string) => {
     const { fileName } = this;
-    const { context, identifier, onFinish } = this.props;
+    const { context, identifier, onUploadStart, onFinish } = this.props;
     const { collectionName } = identifier;
     const uploadableFile: UploadableFile = {
       content: imageData,
       collection: collectionName,
       name: fileName,
     };
+    const deferredIdentifier = new Promise<FileIdentifier>(resolve => {
+      this.uploadFileSubscription = context
+        .uploadFile(uploadableFile)
+        .subscribe({
+          next(state) {
+            if (state.status === 'processing') {
+              const { id } = state;
+              const identifier: FileIdentifier = {
+                id,
+                mediaItemType: 'file',
+                collectionName,
+              };
 
-    this.uploadFileSubscription = context.uploadFile(uploadableFile).subscribe({
-      next(state) {
-        if (state.status === 'processing') {
-          const { id } = state;
-          const identifier: FileIdentifier = {
-            id,
-            mediaItemType: 'file',
-            collectionName,
-          };
-
-          onFinish(identifier, imageData);
-          this.uploadFileSubscription &&
-            this.uploadFileSubscription.unsubscribe();
-        }
-      },
+              resolve(identifier);
+              onFinish(identifier, imageData);
+              this.uploadFileSubscription &&
+                this.uploadFileSubscription.unsubscribe();
+            }
+          },
+        });
     });
+
+    onUploadStart(deferredIdentifier, imageData);
   };
 
   onCancel = () => {
