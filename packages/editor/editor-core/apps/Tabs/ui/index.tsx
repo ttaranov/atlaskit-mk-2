@@ -41,6 +41,8 @@ interface State {
 }
 
 export class TabsApp extends React.Component<Props, State> {
+  ref: HTMLElement | null;
+
   constructor(props) {
     super(props);
 
@@ -51,12 +53,42 @@ export class TabsApp extends React.Component<Props, State> {
     };
   }
 
+  componentDidMount() {
+    if (!this.props.editable) {
+      this.activateTab(this.state.activeTabId);
+    }
+  }
+
+  activateTab = (tabId: string) => {
+    if (this.props.editable) {
+      return;
+    }
+    const parent = this.ref!.parentNode!.parentNode as HTMLElement;
+    if (parent) {
+      const currentTab = parent.querySelector(
+        `[data-tabid="${this.state.activeTabId}"]`,
+      );
+      if (currentTab) {
+        currentTab.setAttribute('hidden', 'true');
+      }
+      const nextTab = parent.querySelector(`[data-tabid="${tabId}"]`);
+      if (nextTab) {
+        nextTab.removeAttribute('hidden');
+      }
+    }
+  };
+
   render() {
     const { tabs } = this.props;
     const { activeTabId } = this.state;
 
     return (
-      <div contentEditable={false}>
+      <div
+        contentEditable={false}
+        ref={ref => {
+          this.ref = ref;
+        }}
+      >
         {tabs.map(tab => (
           <Link
             key={tab.id}
@@ -72,31 +104,35 @@ export class TabsApp extends React.Component<Props, State> {
   }
 
   private handleSelectTab = (activeTabId: string) => {
-    const { tabs, tabsContent } = this.props;
-    if (activeTabId === this.state.activeTabId || !this.props.isSelected()) {
-      return;
-    }
-
-    const newTabsContent = [...tabsContent];
-    // take the content from bodiedExtension and save it in attributes
-    for (let i = 0, count = newTabsContent.length; i < count; i++) {
-      if (newTabsContent[i].tabId === this.state.activeTabId) {
-        newTabsContent[i] = {
-          ...tabsContent[i],
-          content: this.props.content.toJSON(),
-        };
-        break;
+    const { editable, tabs, tabsContent } = this.props;
+    if (editable) {
+      if (activeTabId === this.state.activeTabId || !this.props.isSelected()) {
+        return;
       }
+
+      const newTabsContent = [...tabsContent];
+      // take the content from bodiedExtension and save it in attributes
+      for (let i = 0, count = newTabsContent.length; i < count; i++) {
+        if (newTabsContent[i].tabId === this.state.activeTabId) {
+          newTabsContent[i] = {
+            ...tabsContent[i],
+            content: this.props.content.toJSON(),
+          };
+          break;
+        }
+      }
+
+      const nextTabContent = this.getTabContentById(activeTabId);
+
+      // sync with Editor by replacing the node
+      const parameters = {
+        tabs,
+        tabsContent: newTabsContent,
+      };
+      this.props.syncEditorState(parameters, nextTabContent);
+    } else {
+      this.activateTab(activeTabId);
     }
-
-    const nextTabContent = this.getTabContentById(activeTabId);
-
-    // sync with Editor by replacing the node
-    const parameters = {
-      tabs,
-      tabsContent: newTabsContent,
-    };
-    this.props.syncEditorState(parameters, nextTabContent);
 
     this.setState({ activeTabId });
   };

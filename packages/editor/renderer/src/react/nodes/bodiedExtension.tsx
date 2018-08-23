@@ -41,6 +41,24 @@ const BodiedExtension: React.StatelessComponent<Props> = ({
       );
 
       switch (true) {
+        case !!parameters.tabsContent:
+          const wrappedNodes = parameters.tabsContent.map(tab => (
+            <div data-tabId={tab.tabId} hidden>
+              {renderNodes(
+                tab.content,
+                serializer,
+                rendererContext.schema,
+                'div',
+              )}
+            </div>
+          ));
+          // Return the extensionContent directly if it's a valid JSX.Element
+          return (
+            <div>
+              {renderExtension(extensionContent, layout)}
+              {wrappedNodes}
+            </div>
+          );
         case extensionContent && React.isValidElement(extensionContent):
           // Return the extensionContent directly if it's a valid JSX.Element
           return renderExtension(extensionContent, layout);
