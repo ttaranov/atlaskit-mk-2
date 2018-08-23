@@ -81,3 +81,7 @@ Publishes to NPM repo, and creates tags. Because this command assumes that last 
 ```
 git push --follow-tags
 ```
+
+### Bumping peerDependencies
+
+> TODO: explain the intricacies of bumping peerDeps
