@@ -42,6 +42,12 @@ Creates release commit with bumped versions for all packages (and depdendencies)
 
 Will also create/append to a CHANGELOG file for each package using the summaries from the changesets.
 
+The reccomended approach is to run `version`, then push to master, then publish, so that your repo is the source of truth.
+
+```
+git push origin master
+```
+
 `--noChangelog` - disables the changelog functionality
 
 Example of commit message:
@@ -81,3 +87,7 @@ Publishes to NPM repo, and creates tags. Because this command assumes that last 
 ```
 git push --follow-tags
 ```
+
+### Bumping peerDependencies
+
+> TODO: explain the intricacies of bumping peerDeps
