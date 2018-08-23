@@ -82,13 +82,15 @@ export class MediaPluginState {
   private clipboardPicker?: PickerFacade;
   private dropzonePicker?: PickerFacade;
   private customPicker?: PickerFacade;
-  public showMediaEditor?: boolean;
+  public editingMediaId?: string;
 
   private linkRanges: Array<URLInfo>;
   public editorAppearance: EditorAppearance;
   private removeOnCloseListener: () => void = () => {};
 
   private reactContext: () => {};
+
+  public resolvedUploadContext: Context | undefined;
 
   constructor(
     state: EditorState,
@@ -210,6 +212,8 @@ export class MediaPluginState {
           Picker,
           this.reactContext,
         );
+
+        this.resolvedUploadContext = uploadContext;
       } else {
         this.destroyPickers();
       }
@@ -493,14 +497,46 @@ export class MediaPluginState {
   };
 
   edit = () => {
-    this.showMediaEditor = true;
+    const selected = this.selectedMediaNode();
+    if (!selected) {
+      return;
+    }
+
+    this.editingMediaId = selected.attrs.id;
+
     // triggers contentComponent render
     this.view.dispatch(this.view.state.tr.setMeta(stateKey, 'edit'));
   };
 
-  onFinishEditing = (id: string) => {
-    this.showMediaEditor = false;
-    console.log('~onFinishEditing~');
+  onFinishEditing = (newId: string) => {
+    const oldId = this.editingMediaId;
+    if (!oldId) {
+      return;
+    }
+
+    const mediaNodeWithPos = this.findMediaNode(oldId);
+    if (!mediaNodeWithPos) {
+      return;
+    }
+
+    const { getPos, node: mediaNode } = mediaNodeWithPos;
+
+    const newNode = this.view.state.schema.nodes.media!.create({
+      ...mediaNode.attrs,
+      id: newId,
+    });
+
+    const nodePos = getPos();
+    const tr = this.view.state.tr.replaceWith(
+      nodePos,
+      nodePos + mediaNode.nodeSize,
+      newNode,
+    );
+
+    this.editingMediaId = undefined;
+    this.view.dispatch(
+      tr.setMeta('addToHistory', false).setMeta(stateKey, 'noedit'),
+    );
   };
 
   align = (layout: MediaSingleLayout): boolean => {

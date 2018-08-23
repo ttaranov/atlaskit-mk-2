@@ -1,6 +1,11 @@
 import * as React from 'react';
 import EditorImageIcon from '@atlaskit/icon/glyph/editor/image';
-import { media, mediaGroup, mediaSingle } from '@atlaskit/editor-common';
+import {
+  media,
+  mediaGroup,
+  mediaSingle,
+  WithProviders,
+} from '@atlaskit/editor-common';
 import { SmartMediaEditor } from '@atlaskit/media-editor';
 import { NodeSelection } from 'prosemirror-state';
 import { isNodeSelection } from 'prosemirror-utils';
@@ -16,6 +21,7 @@ import {
   MediaState,
   MediaStateManager,
   DefaultMediaStateManager,
+  MediaPluginState,
 } from './pm-plugins/main';
 import keymapMediaSinglePlugin from './pm-plugins/keymap-media-single';
 import keymapPlugin from './pm-plugins/keymap';
@@ -25,6 +31,7 @@ import ReactMediaGroupNode from './nodeviews/media-group';
 import ReactMediaNode from './nodeviews/media';
 import ReactMediaSingleNode from './nodeviews/media-single';
 import { CustomMediaPicker } from './types';
+import { FileIdentifier } from '@atlaskit/media-card';
 
 export {
   MediaState,
@@ -169,16 +176,24 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
             mediaState: pluginKey,
           }}
           render={({ mediaState }) => {
-            const { state } = editorView;
-            const node =
-              isNodeSelection(state.selection) &&
-              (state.selection as NodeSelection).node;
+            const node = pluginState.selectedMediaNode();
 
-            if (node && pluginState.showMediaEditor) {
+            if (!pluginState.resolvedUploadContext) {
+              return null;
+            }
+
+            if (node && pluginState.editingMediaId) {
+              const identifier: FileIdentifier = {
+                id: node.attrs.id,
+                mediaItemType: 'file',
+                collectionName: node.attrs.collection,
+              };
               return (
                 <SmartMediaEditor
-                  identifier={node.attrs.id}
-                  context={node.attrs.context}
+                  identifier={identifier}
+                  context={
+                    (pluginState as MediaPluginState).resolvedUploadContext!
+                  }
                   onFinish={pluginState.onFinishEditing}
                 />
               );
