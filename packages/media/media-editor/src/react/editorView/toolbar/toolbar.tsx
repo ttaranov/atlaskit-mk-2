@@ -10,8 +10,10 @@ import { LineWidthPopup } from './popups/lineWidthPopup';
 import { ColorPopup } from './popups/colorPopup';
 import { ToolbarContainer, CenterButtons, VerticalLine } from './styles';
 import { buttonSave, buttonCancel } from '../../../react/editorView/phrases';
+import { ShapePopup, shapeTools } from './popups/shapePopup';
+import { ShapeButton } from './buttons/shapeButton';
 
-export type PopupState = 'none' | 'color' | 'lineWidth';
+export type PopupState = 'none' | 'color' | 'lineWidth' | 'shape';
 
 export const tools: Tool[] = [
   'arrow',
@@ -45,13 +47,21 @@ export class Toolbar extends Component<ToolbarProps, ToolbarState> {
   }
 
   render() {
-    const { color, lineWidth, onColorChanged, onLineWidthChanged } = this.props;
+    const {
+      color,
+      tool,
+      lineWidth,
+      onColorChanged,
+      onLineWidthChanged,
+    } = this.props;
 
     const onColorButtonClick = () => this.showOrHidePopup('color');
     const onLineWidthButtonClick = () => this.showOrHidePopup('lineWidth');
+    const onShapeButtonClick = () => this.showOrHidePopup('shape');
 
     const showColorPopup = this.state.popup === 'color';
     const showLineWidthPopup = this.state.popup === 'lineWidth';
+    const showShapePopup = this.state.popup === 'shape';
 
     const onPickColor = (color: Color) => {
       onColorChanged(color);
@@ -63,10 +73,30 @@ export class Toolbar extends Component<ToolbarProps, ToolbarState> {
       this.setState({ popup: 'none' });
     };
 
+    const isShapeTool = shapeTools.indexOf(tool) > -1;
+
     return (
       <ToolbarContainer>
         <CenterButtons>
-          {this.renderToolButtons()}
+          {this.renderSimpleTool('arrow')}
+          {this.renderSimpleTool('text')}
+
+          <ShapePopup
+            isOpen={showShapePopup}
+            shape={tool}
+            onPickShape={this.onToolClick}
+          >
+            <div>
+              <ShapeButton
+                onClick={onShapeButtonClick}
+                isActive={isShapeTool}
+                activeShape={tool}
+              />
+            </div>
+          </ShapePopup>
+
+          {this.renderSimpleTool('brush')}
+          {this.renderSimpleTool('blur')}
 
           <VerticalLine />
           <LineWidthPopup
@@ -119,18 +149,22 @@ export class Toolbar extends Component<ToolbarProps, ToolbarState> {
     );
   }
 
-  private renderToolButtons(): JSX.Element[] {
-    const { tool: activeTool, onToolChanged } = this.props;
-    const onToolClick = (tool: Tool) => onToolChanged(tool);
+  private onToolClick = (tool: Tool) => {
+    this.setState({ popup: 'none' });
+    this.props.onToolChanged(tool);
+  };
 
-    return tools.map(tool => (
+  private renderSimpleTool(tool: Tool) {
+    const { tool: activeTool } = this.props;
+
+    return (
       <ToolButton
         key={tool}
         tool={tool}
         activeTool={activeTool}
-        onToolClick={onToolClick}
+        onToolClick={this.onToolClick}
       />
-    ));
+    );
   }
 
   private showOrHidePopup(target: PopupState): void {

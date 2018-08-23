@@ -63,3 +63,7 @@ export const DropdownIconWrapper: ComponentClass<
   margin-right: -4px;
   margin-left: 4px;
 `;
+
+export const ShapeTitle = styled.span`
+  text-transform: capitalize;
+`;
