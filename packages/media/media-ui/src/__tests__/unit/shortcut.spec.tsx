@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
-import { Shortcut } from '../../src/newgen/shortcut';
+import { Shortcut } from '../..';
 
 export class KeyboardEventWithKeyCode extends KeyboardEvent {
   constructor(type: string, options: any) {

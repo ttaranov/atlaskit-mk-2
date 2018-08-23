@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Context, UploadableFile } from '@atlaskit/media-core';
 import { FileIdentifier } from '@atlaskit/media-card';
+import { Shortcut } from '@atlaskit/media-ui';
 import { EditorView } from './editorView/editorView';
 import { Blanket } from './styled';
 import { Subscription } from 'rxjs/Subscription';
@@ -13,41 +14,6 @@ export interface SmartMediaEditorProps {
 
 export interface SmartMediaEditorState {
   imageUrl?: string;
-}
-
-// TODO This is copy paste from media-viewer
-export interface ShortcutProps {
-  keyCode: number;
-  handler: () => void;
-}
-
-export class Shortcut extends React.Component<ShortcutProps, {}> {
-  componentDidMount() {
-    this.init();
-  }
-
-  componentWillUnmount() {
-    this.release();
-  }
-
-  render() {
-    return null;
-  }
-
-  private keyHandler = (e: KeyboardEvent) => {
-    const { keyCode, handler } = this.props;
-    if (e.keyCode === keyCode) {
-      handler();
-    }
-  };
-
-  private init = () => {
-    document.addEventListener('keydown', this.keyHandler);
-  };
-
-  private release = () => {
-    document.removeEventListener('keydown', this.keyHandler);
-  };
 }
 
 export class SmartMediaEditor extends React.Component<

@@ -1,11 +1,11 @@
 import * as React from 'react';
 import { Context } from '@atlaskit/media-core';
+import { Shortcut } from '@atlaskit/media-ui';
 import { Identifier, ItemSource, MediaViewerFeatureFlags } from './domain';
 import { List } from './list';
 import { Collection } from './collection';
 import { Content } from './content';
 import { Blanket } from './styled';
-import { Shortcut } from './shortcut';
 import { ThemeProvider } from 'styled-components';
 import { theme } from './theme';
 

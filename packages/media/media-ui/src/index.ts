@@ -8,3 +8,4 @@ export * from './mixins';
 export { BlockCard, InlineCard };
 
 export * from './camera';
+export * from './shortcut';
