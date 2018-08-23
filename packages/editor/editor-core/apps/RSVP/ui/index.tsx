@@ -1,25 +1,24 @@
 import * as React from 'react';
 import { Component } from 'react';
+import mapboxgl from 'mapbox-gl';
 import styled from 'styled-components';
 import { format, addMilliseconds } from 'date-fns';
-import mapboxgl from 'mapbox-gl';
 
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import LocationIcon from '@atlaskit/icon/glyph/location';
 import ScheduleIcon from '@atlaskit/icon/glyph/schedule';
+import LeaveIcon from '@atlaskit/icon/glyph/editor/close';
 import Button from '@atlaskit/button';
+import Spinner from '@atlaskit/spinner';
 
-import {
-  MAP_BOX_TOKEN,
-  join,
-  loadAttendees,
-  getLocationFromAddress,
-} from '../actions';
+import { db, snapshotToArray } from '../../_db';
+import { MAP_BOX_TOKEN, getUserId, getLocationFromAddress } from '../actions';
 import AttendForm from './AttendForm';
 
 mapboxgl.accessToken = MAP_BOX_TOKEN;
 
 export interface Props {
+  id: string;
   title: string;
   location: string;
   dateTime: Date;
@@ -33,7 +32,7 @@ export enum AppState {
   ERROR,
   LOADING,
   READY,
-  JOINING,
+  UPDATING,
 }
 
 export interface Attendee {
@@ -46,6 +45,7 @@ export interface Attendee {
 export interface State {
   appState: AppState;
   showForm: boolean;
+  hasJoined: boolean;
   attendees: Array<Attendee>;
 }
 
@@ -79,24 +79,36 @@ const AttendContainer = styled.div`
   }
 `;
 
+const SpinnerContainer = styled.div`
+  margin: 20px 0;
+`;
+
 const DATE_FORMAT = 'dddd, D MMMM YYYY';
 const TIME_FORMAT = 'h:mm a';
 const GOOGLE_CALENDAR_FORMAT = 'YYYYMMDD[T]hhmmss[Z]';
 
 export class RSVPApp extends Component<Props, State> {
-  map: {
-    remove: Function;
-  };
+  map: any;
   mapContainer: HTMLElement | null;
+  dbRef: firebase.database.Reference;
+  userId: string;
 
   state = {
     appState: AppState.LOADING,
     showForm: false,
+    hasJoined: false,
     attendees: [] as Array<Attendee>,
   };
 
+  constructor(props) {
+    super(props);
+    this.userId = getUserId();
+    this.dbRef = db.ref(`/rsvp/${props.id}/attendees`);
+  }
+
   async componentDidMount() {
-    const center = await getLocationFromAddress(this.props.location, true);
+    const { location } = this.props;
+    const center = await getLocationFromAddress(location, true);
     if (center) {
       this.map = new mapboxgl.Map({
         container: this.mapContainer,
@@ -107,19 +119,33 @@ export class RSVPApp extends Component<Props, State> {
       new mapboxgl.Marker().setLngLat(center).addTo(this.map);
     }
 
-    const attendees = await loadAttendees();
-    if (attendees) {
+    this.dbRef
+      .orderByChild('id')
+      .equalTo(this.userId)
+      .once('value', snapshot => {
+        if (snapshot.val()) {
+          this.setState({ hasJoined: true });
+        }
+      });
+
+    this.dbRef.on('value', snapshot => {
+      const { appState, hasJoined } = this.state;
+      if (appState === AppState.UPDATING) {
+        this.setState({ hasJoined: !hasJoined });
+      }
+      const attendees = snapshotToArray(snapshot);
       this.setState({ attendees, appState: AppState.READY });
-    }
+    });
   }
 
   componentWillUnmount() {
     this.map.remove();
+    this.dbRef.off();
   }
 
   render() {
     const { title, dateTime, duration, location } = this.props;
-    const { appState, showForm, attendees } = this.state;
+    const { appState, showForm, hasJoined, attendees } = this.state;
     const endTime = addMilliseconds(dateTime, duration);
     return (
       <RSVP>
@@ -155,19 +181,35 @@ export class RSVPApp extends Component<Props, State> {
           </div>
         </div>
         <MapContainer innerRef={el => (this.mapContainer = el)} />
-        {appState < AppState.JOINING && (
-          <div>
-            {!showForm && this.renderAttend()}
-            {showForm && (
-              <AttendForm
-                onSubmit={this.handleFormSubmit}
-                onCancel={this.handleFormCancel}
-              />
-            )}
-          </div>
+        {appState < AppState.UPDATING &&
+          !hasJoined && (
+            <div>
+              {!showForm && this.renderAttend()}
+              {showForm && (
+                <AttendForm
+                  onSubmit={this.handleFormSubmit}
+                  onCancel={this.handleFormCancel}
+                />
+              )}
+            </div>
+          )}
+        {hasJoined && (
+          <AttendContainer>
+            <Button
+              appearance="danger"
+              onClick={this.handleLeave}
+              isLoading={appState === AppState.LOADING}
+              iconBefore={<LeaveIcon label="Leave" />}
+            >
+              Leave
+            </Button>
+          </AttendContainer>
         )}
-        {appState === AppState.JOINING && <div> Joining...</div>}
-        {appState === AppState.LOADING && <div>Loading...</div>}
+        {(appState === AppState.UPDATING || appState === AppState.LOADING) && (
+          <SpinnerContainer>
+            <Spinner />
+          </SpinnerContainer>
+        )}
         {appState >= AppState.READY && (
           <table>
             <thead>
@@ -221,10 +263,32 @@ export class RSVPApp extends Component<Props, State> {
     this.setState({ showForm: true });
   };
 
+  handleLeave = () => {
+    this.setState({ appState: AppState.UPDATING, showForm: false }, () => {
+      this.dbRef
+        .orderByChild('id')
+        .equalTo(this.userId)
+        .once('value', snapshot => {
+          const updates = {};
+          snapshot.forEach(child => {
+            if (child.key) {
+              updates[child.key] = null;
+            }
+          });
+          this.dbRef.update(updates);
+        });
+    });
+  };
+
   handleFormSubmit = async ({ name, comment }) => {
-    this.setState({ appState: AppState.JOINING });
-    const attendees = await join(name, comment);
-    this.setState({ attendees, appState: AppState.READY });
+    this.setState({ appState: AppState.UPDATING }, () => {
+      this.dbRef.push({
+        id: this.userId,
+        name,
+        comment,
+        joined: new Date(),
+      });
+    });
   };
 
   handleFormCancel = () => {

@@ -1,11 +1,10 @@
 import * as firebase from 'firebase';
 export function snapshotToArray(snapshot) {
-  let returnArr = [];
+  const returnArr: Array<any> = [];
 
   snapshot.forEach(childSnapshot => {
     let item = childSnapshot.val();
     // item.key = childSnapshot.key;
-    // @ts-ignore
     returnArr.push(item);
   });
 

@@ -84,6 +84,7 @@ export const exampleDocument = {
         extensionType: EDITOR_APPS_EXTENSION_TYPE,
         extensionKey: RSVP_EXTENSION_KEY,
         parameters: {
+          id: '6f4c4f14-a5db-4553-95c3-391e00fe8f49',
           title: 'Sydney Big Bash 2018 - White Rabbit',
           location: 'The Star\nPyrmont, NSW 2009',
           showMap: true,
