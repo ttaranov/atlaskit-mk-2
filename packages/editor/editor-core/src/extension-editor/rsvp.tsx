@@ -111,7 +111,7 @@ export class Rsvp extends React.Component<Props, State> {
               this.setState({
                 params: {
                   ...this.state.params,
-                  dateTime: parse(e.target.value),
+                  dateTime: e.target.value,
                 },
               });
             }}

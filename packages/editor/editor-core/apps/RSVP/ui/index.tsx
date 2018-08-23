@@ -107,15 +107,17 @@ export class RSVPApp extends Component<Props, State> {
   }
 
   async componentDidMount() {
-    const { location } = this.props;
-    const center = await getLocationFromAddress(location);
-    if (center) {
-      this.map = new mapboxgl.Map({
-        container: this.mapContainer,
-        style: 'mapbox://styles/mapbox/streets-v9',
-        center,
-        zoom: 15,
-      });
+    const { location, showMap } = this.props;
+    if (showMap) {
+      const center = await getLocationFromAddress(location);
+      if (center) {
+        this.map = new mapboxgl.Map({
+          container: this.mapContainer,
+          style: 'mapbox://styles/mapbox/streets-v9',
+          center,
+          zoom: 15,
+        });
+      }
     }
 
     this.dbRef
@@ -143,7 +145,7 @@ export class RSVPApp extends Component<Props, State> {
   }
 
   render() {
-    const { title, dateTime, duration, location } = this.props;
+    const { title, dateTime, duration, location, showMap } = this.props;
     const { appState, showForm, hasJoined, attendees } = this.state;
     const endTime = addMilliseconds(dateTime, duration);
     return (
@@ -179,7 +181,7 @@ export class RSVPApp extends Component<Props, State> {
             <p>{location}</p>
           </div>
         </div>
-        <MapContainer innerRef={el => (this.mapContainer = el)} />
+        {showMap && <MapContainer innerRef={el => (this.mapContainer = el)} />}
         {appState < AppState.UPDATING &&
           !hasJoined && (
             <div>
