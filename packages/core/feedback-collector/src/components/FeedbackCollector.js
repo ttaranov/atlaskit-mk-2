@@ -1,13 +1,10 @@
 // @flow
 import React from 'react';
+import styled from 'styled-components';
 import { FieldTextAreaStateless } from '@atlaskit/field-text-area';
+import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
-import Form, {
-  Field,
-  FormHeader,
-  FormSection,
-  FormFooter,
-} from '@atlaskit/form';
+import Form, { Field, FormHeader, FormSection } from '@atlaskit/form';
 import Checkbox, { CheckboxGroup } from '@atlaskit/checkbox';
 // import type { Element } from 'react';
 
@@ -17,6 +14,12 @@ type Props = {
   myProp: string,
 };
 
+const Footer = styled.span`
+  display: flex;
+  flex: auto;
+  justify-content: flex-end;
+`;
+
 export default class FeedbackCollector extends React.Component<Props> {
   static defaultProps: $Shape<Props> = {
     myProp: '',
@@ -24,7 +27,7 @@ export default class FeedbackCollector extends React.Component<Props> {
 
   render() {
     return (
-      <Form>
+      <Form name="feedback-collector">
         <FormHeader title="Tell us what you think" />
         <FormSection>
           <Field>
@@ -52,11 +55,27 @@ export default class FeedbackCollector extends React.Component<Props> {
 
           <Field>
             <CheckboxGroup>
-              <Checkbox label="Atlassian can contact me about this feedback" />
+              <Checkbox
+                value="Basic checkbox"
+                name="checkbox-basic"
+                label="Atlassian can contact me about this feedback"
+              />
 
-              <Checkbox label="I'd like to participate in product research" />
+              <Checkbox
+                value="Basic checkbox"
+                name="checkbox-basic"
+                label="I'd like to participate in product research"
+              />
             </CheckboxGroup>
           </Field>
+          <Footer>
+            <Button appearance="primary" type="submit">
+              Submit
+            </Button>
+            <Button appearance="subtle" type="button">
+              Cancel
+            </Button>
+          </Footer>
         </FormSection>
       </Form>
     );
