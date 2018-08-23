@@ -53,17 +53,35 @@ export class SmartMediaEditor extends React.Component<
   SmartMediaEditorProps,
   SmartMediaEditorState
 > {
+  fileName: string;
   state: SmartMediaEditorState = {};
 
   componentDidMount() {
     const { identifier } = this.props;
 
-    this.setImageUrl(identifier);
+    this.getFile(identifier);
   }
+
+  getFile = (identifier: FileIdentifier) => {
+    const { context } = this.props;
+    const { id, collectionName } = identifier;
+    // TODO: unsubscribe when unmounting
+    const subscription = context.getFile(id, { collectionName }).subscribe({
+      next: state => {
+        if (state.status === 'processed') {
+          const { name } = state;
+
+          this.fileName = name;
+          // we can only ask for the image once the file is processed
+          this.setImageUrl(identifier);
+          subscription.unsubscribe();
+        }
+      },
+    });
+  };
 
   setImageUrl = async (identifier: FileIdentifier) => {
     const { context } = this.props;
-
     const imageUrl = await context.getImageUrl(identifier.id, {
       collection: identifier.collectionName,
     });
@@ -74,12 +92,13 @@ export class SmartMediaEditor extends React.Component<
   };
 
   onSave = (imageUrl: string) => {
+    const { fileName } = this;
     const { context, identifier, onFinish } = this.props;
     const { collectionName } = identifier;
     const uploadableFile: UploadableFile = {
       content: imageUrl,
       collection: collectionName,
-      name: 'hector_rocks.jpeg', // TODO: get the real file name from /file/id endpoint
+      name: fileName,
     };
 
     const subscription = context.uploadFile(uploadableFile).subscribe({
