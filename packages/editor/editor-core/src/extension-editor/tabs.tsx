@@ -8,6 +8,7 @@ import Button from '@atlaskit/button';
 import {
   replaceParentNodeOfType,
   replaceSelectedNode,
+  isNodeSelection,
 } from 'prosemirror-utils';
 import { pluginKey } from '../plugins/extension/plugin';
 import Form, { Field, FormHeader } from '@atlaskit/form';
@@ -69,7 +70,7 @@ export class Tabs extends React.Component<Props, State> {
 
   saveExtension = () => {
     const { view } = this.props;
-    const { dispatch, state } = view;
+    const { dispatch } = view;
     const { node } = this.props.node;
 
     const newNode = resolveMacro(
@@ -83,8 +84,9 @@ export class Tabs extends React.Component<Props, State> {
       } as any,
       view.state,
     );
-    setNodeSelection(view, this.state.nodePos);
-    // debugger
+    if (!isNodeSelection(view.state.selection)) {
+      setNodeSelection(view, this.state.nodePos);
+    }
     dispatch(replaceSelectedNode(newNode)(view.state.tr));
   };
 
