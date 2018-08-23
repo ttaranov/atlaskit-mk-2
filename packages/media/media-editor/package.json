@@ -21,6 +21,7 @@
   "dependencies": {
     "@atlaskit/button": "^9.0.6",
     "@atlaskit/icon": "^13.2.2",
+    "@atlaskit/media-card": "^32.0.5",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "tslib": "^1.8.0"
   },
