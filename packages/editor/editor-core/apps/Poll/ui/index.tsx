@@ -42,7 +42,6 @@ export const initPoll = (props: { id: string }) => {
 const getPollVotes = (id: string) => {
   return new Promise((resolve, reject) => {
     db
-      .database()
       .ref('/polls/' + id)
       .once('value')
       .then(function(snapshot) {
@@ -58,13 +57,10 @@ export const vote = (props: {
   id: string;
 }) => {
   const { userId, choiceId, id } = props;
-  db
-    .database()
-    .ref('polls/' + id)
-    .push({
-      userId,
-      choiceId,
-    });
+  db.ref('polls/' + id).push({
+    userId,
+    choiceId,
+  });
   return getPollVotes(id);
 };
 const CompletedChoice = (props: {
