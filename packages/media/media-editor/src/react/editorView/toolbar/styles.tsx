@@ -3,7 +3,6 @@
 import styled from 'styled-components';
 
 import { HTMLAttributes, ComponentClass } from 'react';
-import Button from '@atlaskit/button';
 import { akColorN30A } from '@atlaskit/util-shared-styles';
 
 export const ToolbarContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`

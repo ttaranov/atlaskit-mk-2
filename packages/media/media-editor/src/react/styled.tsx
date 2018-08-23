@@ -162,3 +162,10 @@ export const Blanket: ComponentClass<HTMLAttributes<{}>> = styled.div`
   background-color: ${blanketColor};
   z-index: ${overlayZindex};
 `;
+
+export const SpinnerWrapper = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+`;

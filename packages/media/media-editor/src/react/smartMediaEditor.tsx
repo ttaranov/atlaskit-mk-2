@@ -4,7 +4,7 @@ import { FileIdentifier } from '@atlaskit/media-card';
 import { Shortcut } from '@atlaskit/media-ui';
 import Spinner from '@atlaskit/spinner';
 import { EditorView } from './editorView/editorView';
-import { Blanket } from './styled';
+import { Blanket, SpinnerWrapper } from './styled';
 import { Subscription } from 'rxjs/Subscription';
 
 export interface SmartMediaEditorProps {
@@ -116,7 +116,11 @@ export class SmartMediaEditor extends React.Component<
   onError = () => {};
 
   renderLoading = () => {
-    return <Spinner />;
+    return (
+      <SpinnerWrapper>
+        <Spinner size="large" />
+      </SpinnerWrapper>
+    );
   };
 
   renderEditor = (imageUrl: string) => {

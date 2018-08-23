@@ -12,7 +12,7 @@ import { Tool } from '../../../..';
 
 import { GenericButton } from './genericButton';
 
-const toolIcons = {
+export const toolIcons = {
   line: LineIcon,
   blur: BlurIcon,
   arrow: ArrowIcon,
