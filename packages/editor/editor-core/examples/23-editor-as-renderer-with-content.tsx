@@ -203,7 +203,10 @@ export class ExampleEditor extends React.Component<Props, State> {
                 render={actions => (
                   <MainToolbar
                     toggleEditMode={() =>
-                      this.setState({ readOnlyMode: !this.state.readOnlyMode })
+                      this.setState({
+                        disabled: !this.state.readOnlyMode,
+                        readOnlyMode: !this.state.readOnlyMode,
+                      })
                     }
                     editorActions={actions}
                     readOnlyMode={this.state.readOnlyMode}
@@ -221,7 +224,11 @@ export class ExampleEditor extends React.Component<Props, State> {
   }
 
   private handleTitleOnFocus = () => this.setState({ disabled: true });
-  private handleTitleOnBlur = () => this.setState({ disabled: false });
+  private handleTitleOnBlur = () => {
+    if (!this.state.readOnlyMode) {
+      this.setState({ disabled: false });
+    }
+  };
   private handleTitleRef = (ref?: HTMLElement) => {
     if (ref) {
       ref.focus();
