@@ -4,6 +4,7 @@ import React from 'react';
 
 type Props = {
   /** Description */
+  // eslint-disable-next-line
   myProp: string,
 };
 
