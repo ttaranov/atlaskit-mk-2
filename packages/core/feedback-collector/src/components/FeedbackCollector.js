@@ -19,6 +19,7 @@ type Props = {
   embeddableKey: string,
 };
 
+const EMAIL_PLACEHOLDER = 'do-not-reply@atlassian.com';
 const TYPE_ID = 'customfield_10042';
 const SUMMARY_ID = 'summary';
 const DESCRIPTION_ID = 'description';
@@ -40,18 +41,22 @@ export default class FeedbackCollector extends Component<Props> {
   props: Props;
 
   truncate = (text: string) => {
-    if (text.length < 50) {
-      return text;
+    const newText = text.replace(/\n/g, ' ');
+    if (newText.length < 50) {
+      return newText;
     }
-    return `${text.replace(/\n/g, ' ').substring(0, 49)}...`;
+    return `${newText.substring(0, 49)}...`;
   };
 
   mapFormToJSD = (formValues: FormFields): feedbackType => {
+    const email = formValues.canBeContacted
+      ? this.props.email
+      : EMAIL_PLACEHOLDER;
     const fields = [
       { id: TYPE_ID, value: { id: TYPE_VALUE_ID[formValues.type] } },
       { id: SUMMARY_ID, value: this.truncate(formValues.description) },
       { id: DESCRIPTION_ID, value: formValues.description },
-      { id: EMAIL_ID, value: this.props.email },
+      { id: EMAIL_ID, value: email },
       { id: CUSTOMER_NAME_ID, value: this.props.name },
     ];
 

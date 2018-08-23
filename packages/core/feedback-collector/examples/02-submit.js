@@ -5,8 +5,8 @@ import FeedbackCollector, { FeedbackFlag } from '../src/';
 
 type State = { isOpen: boolean, displayFlag: boolean };
 
-const EMBEDDABLE_KEY = '98d7ccb7-00ba-4207-9ba9-b16e919a20af';
-const REQUEST_TYPE_ID = '24';
+const EMBEDDABLE_KEY = 'your_jsd_embeddable_key';
+const REQUEST_TYPE_ID = 'your_jsd_request_type_id';
 const name = 'Feedback Sender';
 const email = 'fsender@atlassian.com';
 
