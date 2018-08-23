@@ -38,7 +38,9 @@ function flattenReleases(changesets) {
       flattened.push({ name, type, commits: [commit] });
     } else {
       foundBefore.type = maxBumpType(foundBefore.type, type);
-      foundBefore.commits.push(commit);
+      if (!foundBefore.commits.includes(commit)) {
+        foundBefore.commits.push(commit);
+      }
     }
   });
 

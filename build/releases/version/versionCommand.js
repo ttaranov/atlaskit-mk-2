@@ -1,10 +1,7 @@
 const path = require('path');
 const bolt = require('bolt');
-const cli = require('../../utils/cli');
 const logger = require('../../utils/logger');
 const git = require('../../utils/git');
-const isRunningInPipelines = require('../../utils/isRunningInPipelines');
-const parseChangesetCommit = require('../changeset/parseChangesetCommit');
 const createRelease = require('./createRelease');
 const createReleaseCommit = require('./createReleaseCommit');
 const changelog = require('../changelog');
@@ -39,7 +36,7 @@ async function run(opts) {
 
   if (unreleasedChangesets.length === 0) {
     logger.warn('No unreleased changesets found, exiting.');
-    process.exit(0);
+    return;
   }
 
   await bumpReleasedPackages(releaseObj, allPackages);

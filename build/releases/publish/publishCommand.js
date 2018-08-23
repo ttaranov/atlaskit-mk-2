@@ -1,6 +1,7 @@
 /* eslint-disable */
 const bolt = require('bolt');
 const logger = require('../../utils/logger');
+const git = require('../../utils/git');
 
 function logReleases(status, pkgs) {
   const mappedPkgs = pkgs.map(p => `${p.name}@${p.newVersion}`).join('\n');
@@ -24,7 +25,7 @@ async function run(opts) {
     for (let pkg of successful) {
       const tag = `${pkg.name}@${pkg.newVersion}`;
       logger.log('New tag: ', tag);
-      // await git.tag(tag);
+      await git.tag(tag);
     }
 
     logger.log('Pushing tags...');
@@ -34,7 +35,7 @@ async function run(opts) {
     // we are behind current master
     // Finally we came back to `git push --tags` but with annotated tags (`git tag tagName -m tagMsg`)
     // and this should finally work
-    // await git.push(['--tags']);
+    await git.push(['--tags']);
   }
 
   if (unsuccessful.length > 0) {
