@@ -26,6 +26,15 @@ const changesetWithDep = {
   commit: '695fad0',
 };
 
+const changesetWithCircularDep = {
+  summary: 'This is another summary',
+  releases: [{ name: 'package-a', type: 'minor' }],
+  dependents: [
+    { name: 'package-a', type: 'patch', dependencies: ['package-a'] },
+  ],
+  commit: '695fad0',
+};
+
 const changesetWithNone = {
   summary: 'This is another summary',
   releases: [{ name: 'package-a', type: 'minor' }],
@@ -71,6 +80,25 @@ describe('createRelease', () => {
       ],
       deleted: [],
       changesets: [simpleChangeset, simpleChangeset2],
+    });
+  });
+
+  it('should flatten commits in changeset with circular dependency', () => {
+    const releaseObj = createRelease(
+      [changesetWithCircularDep],
+      fakeAllPackages,
+    );
+
+    expect(releaseObj).toEqual({
+      releases: [
+        {
+          name: 'package-a',
+          commits: ['695fad0'],
+          version: '1.1.0',
+        },
+      ],
+      deleted: [],
+      changesets: [changesetWithCircularDep],
     });
   });
 

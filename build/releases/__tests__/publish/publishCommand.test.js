@@ -1,20 +1,12 @@
 import { copyFixtureIntoTempDir } from 'jest-fixtures';
 const bolt = require('bolt');
-const path = require('path');
 const runRelease = require('../../publish/publishCommand');
-const versionCommand = require('../../version/versionCommand');
-const createRelease = require('../../version/createRelease');
-const cli = require('../../../utils/cli');
 const git = require('../../../utils/git');
-const fs = require('../../../utils/fs');
-const isRunningInPipelines = require('../../../utils/isRunningInPipelines');
-const logger = require('../../../utils/logger');
 // avoid polluting test logs with error message in console
 let consoleError = console.error;
 
 jest.mock('../../../utils/cli');
 jest.mock('../../../utils/git');
-jest.mock('../../../utils/isRunningInPipelines');
 jest.mock('../../changeset/parseChangesetCommit');
 jest.mock('../../../utils/logger');
 
@@ -34,13 +26,6 @@ bolt.publish = jest.fn(() =>
   ]),
 );
 
-const simpleChangeset = {
-  summary: 'This is a summary',
-  releases: [{ name: 'pkg-a', type: 'minor' }],
-  dependents: [],
-  commit: 'b8bb699',
-};
-
 const simpleChangeset2 = {
   summary: 'This is a summary',
   releases: [
@@ -51,45 +36,17 @@ const simpleChangeset2 = {
   commit: 'b8bb699',
 };
 
-const simpleReleaseObj = {
-  releases: [{ name: 'pkg-a', commits: ['b8bb699'], version: '1.1.0' }],
-  changesets: [
-    {
-      summary: 'This is a summary',
-      releases: [{ name: 'pkg-a', type: 'minor' }],
-      dependents: [],
-      commit: 'b8bb699',
-    },
-  ],
-};
-
-const multipleReleaseObj = {
-  releases: [
-    { name: 'pkg-a', commits: ['b8bb699'], version: '1.1.0' },
-    { name: 'pkg-b', commits: ['b8bb699'], version: '1.0.1' },
-  ],
-  changesets: [
-    {
-      summary: 'This is a summary',
-      releases: [
-        { name: 'pkg-a', type: 'minor' },
-        { name: 'pkg-b', type: 'patch' },
-      ],
-      dependents: [],
-      commit: 'b8bb699',
-    },
-  ],
+const mockUnpublishedChangesetCommits = commits => {
+  git.getUnpublishedChangesetCommits.mockImplementationOnce(() =>
+    Promise.resolve(commits),
+  );
 };
 
 describe('running release', () => {
-  let cwd, pkgAConfigPath, pkgBConfigPath, pkgAChangelogPath, pkgBChangelogPath;
+  let cwd;
 
   beforeEach(async () => {
     cwd = await copyFixtureIntoTempDir(__dirname, 'simple-project');
-    pkgAConfigPath = path.join(cwd, 'packages/pkg-a/package.json');
-    pkgBConfigPath = path.join(cwd, 'packages/pkg-b/package.json');
-    pkgAChangelogPath = path.join(cwd, 'packages/pkg-a/CHANGELOG.md');
-    pkgBChangelogPath = path.join(cwd, 'packages/pkg-b/CHANGELOG.md');
     console.error = jest.fn();
   });
 
@@ -98,42 +55,34 @@ describe('running release', () => {
     console.error = consoleError;
   });
 
-  describe('when runing in CI', () => {
-    beforeEach(() => {
-      isRunningInPipelines.mockReturnValueOnce(true);
+  describe('When there is no changeset commits', () => {
+    // we make sure we still do this so that a later build can clean up after a previously
+    // failed one (where the change was pushed back but not released and the next build has no
+    // changeset commits)
+    it('should still run bolt.publish', async () => {
+      await runRelease({ cwd });
+
+      expect(bolt.publish).toHaveBeenCalled();
+    });
+  });
+
+  describe('When there is a changeset commit', () => {
+    it('should run bolt.publish', async () => {
+      mockUnpublishedChangesetCommits([simpleChangeset2]);
+
+      await runRelease({ cwd });
+
+      expect(bolt.publish).toHaveBeenCalled();
     });
 
-    describe('When there is no changeset commits', () => {
-      // we make sure we still do this so that a later build can clean up after a previously
-      // failed one (where the change was pushed back but not released and the next build has no
-      // changeset commits)
-      it('should still run bolt.publish', async () => {
-        await runRelease({ cwd });
+    it('should add git tags', async () => {
+      mockUnpublishedChangesetCommits([simpleChangeset2]);
 
-        expect(bolt.publish).toHaveBeenCalled();
-      });
-    });
+      await runRelease({ cwd });
 
-    describe('When there is a changeset commit', () => {
-      beforeEach(() => {
-        git.getUnpublishedChangesetCommits.mockImplementationOnce(() =>
-          Promise.resolve([simpleChangeset2]),
-        );
-      });
-
-      it('should run bolt.publish', async () => {
-        await runRelease({ cwd });
-
-        expect(bolt.publish).toHaveBeenCalled();
-      });
-
-      it('should add git tags', async () => {
-        await runRelease({ cwd });
-
-        expect(git.tag).toHaveBeenCalledWith('pkg-a@1.1.0');
-        expect(git.tag).toHaveBeenCalledWith('pkg-b@1.0.1');
-        expect(git.push).toHaveBeenCalled();
-      });
+      expect(git.tag).toHaveBeenCalledWith('pkg-a@1.1.0');
+      expect(git.tag).toHaveBeenCalledWith('pkg-b@1.0.1');
+      expect(git.push).toHaveBeenCalled();
     });
   });
 });

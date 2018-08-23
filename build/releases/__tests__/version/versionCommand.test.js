@@ -1,20 +1,15 @@
 import { copyFixtureIntoTempDir } from 'jest-fixtures';
 const bolt = require('bolt');
 const path = require('path');
-const runRelease = require('../../publish/publishCommand');
 const versionCommand = require('../../version/versionCommand');
-const createRelease = require('../../version/createRelease');
-const cli = require('../../../utils/cli');
 const git = require('../../../utils/git');
 const fs = require('../../../utils/fs');
-const isRunningInPipelines = require('../../../utils/isRunningInPipelines');
 const logger = require('../../../utils/logger');
 // avoid polluting test logs with error message in console
 let consoleError = console.error;
 
 jest.mock('../../../utils/cli');
 jest.mock('../../../utils/git');
-jest.mock('../../../utils/isRunningInPipelines');
 jest.mock('../../changeset/parseChangesetCommit');
 jest.mock('../../../utils/logger');
 
@@ -51,45 +46,21 @@ const simpleChangeset2 = {
   commit: 'b8bb699',
 };
 
-const simpleReleaseObj = {
-  releases: [{ name: 'pkg-a', commits: ['b8bb699'], version: '1.1.0' }],
-  changesets: [
-    {
-      summary: 'This is a summary',
-      releases: [{ name: 'pkg-a', type: 'minor' }],
-      dependents: [],
-      commit: 'b8bb699',
-    },
-  ],
+const mockNoChangesetCommits = () => {
+  mockUnpublishedChangesetCommits([]);
 };
 
-const multipleReleaseObj = {
-  releases: [
-    { name: 'pkg-a', commits: ['b8bb699'], version: '1.1.0' },
-    { name: 'pkg-b', commits: ['b8bb699'], version: '1.0.1' },
-  ],
-  changesets: [
-    {
-      summary: 'This is a summary',
-      releases: [
-        { name: 'pkg-a', type: 'minor' },
-        { name: 'pkg-b', type: 'patch' },
-      ],
-      dependents: [],
-      commit: 'b8bb699',
-    },
-  ],
+const mockUnpublishedChangesetCommits = commits => {
+  git.getUnpublishedChangesetCommits.mockImplementationOnce(() =>
+    Promise.resolve(commits),
+  );
 };
 
-describe('running release', () => {
-  let cwd, pkgAConfigPath, pkgBConfigPath, pkgAChangelogPath, pkgBChangelogPath;
+describe('running version in a simple project', () => {
+  let cwd;
 
   beforeEach(async () => {
     cwd = await copyFixtureIntoTempDir(__dirname, 'simple-project');
-    pkgAConfigPath = path.join(cwd, 'packages/pkg-a/package.json');
-    pkgBConfigPath = path.join(cwd, 'packages/pkg-b/package.json');
-    pkgAChangelogPath = path.join(cwd, 'packages/pkg-a/CHANGELOG.md');
-    pkgBChangelogPath = path.join(cwd, 'packages/pkg-b/CHANGELOG.md');
     console.error = jest.fn();
   });
 
@@ -98,113 +69,99 @@ describe('running release', () => {
     console.error = consoleError;
   });
 
-  describe('in a simple project', () => {
-    describe('when there are no changeset commits', () => {
-      beforeEach(() => {
-        git.getUnpublishedChangesetCommits.mockImplementation(() =>
-          Promise.resolve([]),
-        );
-      });
+  describe('when there are no changeset commits', () => {
+    it('should warn if no changeset commits exist', async () => {
+      mockNoChangesetCommits();
+      await versionCommand({ cwd });
+      const loggerWarnCalls = logger.warn.mock.calls;
+      expect(loggerWarnCalls.length).toEqual(1);
+      expect(loggerWarnCalls[0][0]).toEqual(
+        'No unreleased changesets found, exiting.',
+      );
+    });
+  });
 
-      it('should warn if no changeset commits exist', async () => {
-        await versionCommand({ cwd });
-        const loggerWarnCalls = logger.warn.mock.calls;
-        expect(loggerWarnCalls.length).toEqual(1);
-        expect(loggerWarnCalls[0][0]).toEqual(
-          'No unreleased changesets found, exiting.',
-        );
-      });
+  describe('When there is a changeset commit', () => {
+    it('should bump releasedPackages', async () => {
+      const spy = jest.spyOn(fs, 'writeFile');
+      mockUnpublishedChangesetCommits([simpleChangeset2]);
+
+      await versionCommand({ cwd });
+      const calls = spy.mock.calls;
+
+      expect(JSON.parse(calls[0][1])).toEqual(
+        expect.objectContaining({ name: 'pkg-a', version: '1.1.0' }),
+      );
+      expect(JSON.parse(calls[1][1])).toEqual(
+        expect.objectContaining({ name: 'pkg-b', version: '1.0.1' }),
+      );
     });
 
-    describe('when runing in CI', () => {
-      beforeEach(() => {
-        isRunningInPipelines.mockReturnValueOnce(true);
-      });
+    it('should git add the expected files (without changelog)', async () => {
+      mockUnpublishedChangesetCommits([simpleChangeset2]);
+      await versionCommand({ cwd });
 
-      describe('When there is a changeset commit', () => {
-        beforeEach(() => {
-          git.getUnpublishedChangesetCommits.mockImplementationOnce(() =>
-            Promise.resolve([simpleChangeset2]),
-          );
-        });
+      const mocks = git.add.mock.calls;
+      const pkgAConfigPath = path.join(cwd, 'packages/pkg-a/package.json');
+      const pkgBConfigPath = path.join(cwd, 'packages/pkg-b/package.json');
 
-        it('should bump releasedPackages', async () => {
-          const spy = jest.spyOn(fs, 'writeFile');
+      // First two are adding the package.json actual versions
+      expect(mocks[0]).toEqual([pkgAConfigPath]);
+      expect(mocks[1]).toEqual([pkgBConfigPath]);
+      // Next is update package.json for A after its B dependency is bumped.
+      expect(mocks[2]).toEqual([pkgAConfigPath]);
+    });
 
-          await versionCommand({ cwd });
-          const calls = spy.mock.calls;
-          expect(JSON.parse(calls[0][1])).toEqual(
-            expect.objectContaining({ name: 'pkg-a', version: '1.1.0' }),
-          );
-          expect(JSON.parse(calls[1][1])).toEqual(
-            expect.objectContaining({ name: 'pkg-b', version: '1.0.1' }),
-          );
-        });
+    it('should git add the expected files (with changelog)', async () => {
+      mockUnpublishedChangesetCommits([simpleChangeset2]);
+      await versionCommand({ cwd, changelogs: true });
+      const mocks = git.add.mock.calls;
+      const pkgAChangelogPath = path.join(cwd, 'packages/pkg-a/CHANGELOG.md');
+      const pkgBChangelogPath = path.join(cwd, 'packages/pkg-b/CHANGELOG.md');
 
-        it('should git add the expected files (without changelog)', async () => {
-          await versionCommand({ cwd });
-          const mocks = git.add.mock.calls;
+      // First two are adding the package.json actual versions
+      // Next is update package.json for A after its B dependency is bumped.
+      // Final two bump changelogs
+      expect(mocks[3]).toEqual([pkgAChangelogPath]);
+      expect(mocks[4]).toEqual([pkgBChangelogPath]);
+    });
+  });
 
-          // First two are adding the package.json actual versions
-          expect(mocks[0]).toEqual([pkgAConfigPath]);
-          expect(mocks[1]).toEqual([pkgBConfigPath]);
-          // Next is update package.json for A after its B dependency is bumped.
-          expect(mocks[2]).toEqual([pkgAConfigPath]);
-        });
+  describe('when there are multiple changeset commits', () => {
+    it('should bump releasedPackages', async () => {
+      mockUnpublishedChangesetCommits([simpleChangeset, simpleChangeset2]);
+      const spy = jest.spyOn(fs, 'writeFile');
 
-        it('should git add the expected files (with changelog)', async () => {
-          await versionCommand({ cwd, changelogs: true });
-          const mocks = git.add.mock.calls;
+      await versionCommand({ cwd });
+      const calls = spy.mock.calls;
+      expect(JSON.parse(calls[0][1])).toEqual(
+        expect.objectContaining({ name: 'pkg-a', version: '1.1.0' }),
+      );
+      expect(JSON.parse(calls[1][1])).toEqual(
+        expect.objectContaining({ name: 'pkg-b', version: '1.0.1' }),
+      );
+    });
 
-          // First two are adding the package.json actual versions
-          // Next is update package.json for A after its B dependency is bumped.
-          // Final two bump changelogs
-          expect(mocks[3]).toEqual([pkgAChangelogPath]);
-          expect(mocks[4]).toEqual([pkgBChangelogPath]);
-        });
-      });
+    it('should bump multiple released packages if required', async () => {
+      mockUnpublishedChangesetCommits([simpleChangeset, simpleChangeset2]);
+      const spy = jest.spyOn(fs, 'writeFile');
+      await versionCommand({ cwd });
+      const calls = spy.mock.calls;
 
-      describe('when there are multiple changeset commits', () => {
-        beforeEach(() => {
-          git.getUnpublishedChangesetCommits.mockImplementationOnce(() =>
-            Promise.resolve([simpleChangeset, simpleChangeset2]),
-          );
-        });
-
-        it('should bump releasedPackages', async () => {
-          const spy = jest.spyOn(fs, 'writeFile');
-
-          await versionCommand({ cwd });
-          const calls = spy.mock.calls;
-          expect(JSON.parse(calls[0][1])).toEqual(
-            expect.objectContaining({ name: 'pkg-a', version: '1.1.0' }),
-          );
-          expect(JSON.parse(calls[1][1])).toEqual(
-            expect.objectContaining({ name: 'pkg-b', version: '1.0.1' }),
-          );
-        });
-
-        it('should bump multiple released packages if required', async () => {
-          const spy = jest.spyOn(fs, 'writeFile');
-          await versionCommand({ cwd });
-          const calls = spy.mock.calls;
-
-          // first call should be minor bump
-          expect(JSON.parse(calls[0][1])).toEqual(
-            expect.objectContaining({
-              name: 'pkg-a',
-              version: '1.1.0',
-            }),
-          );
-          // second should be a patch
-          expect(JSON.parse(calls[1][1])).toEqual(
-            expect.objectContaining({
-              name: 'pkg-b',
-              version: '1.0.1',
-            }),
-          );
-        });
-      });
+      // first call should be minor bump
+      expect(JSON.parse(calls[0][1])).toEqual(
+        expect.objectContaining({
+          name: 'pkg-a',
+          version: '1.1.0',
+        }),
+      );
+      // second should be a patch
+      expect(JSON.parse(calls[1][1])).toEqual(
+        expect.objectContaining({
+          name: 'pkg-b',
+          version: '1.0.1',
+        }),
+      );
     });
   });
 });
