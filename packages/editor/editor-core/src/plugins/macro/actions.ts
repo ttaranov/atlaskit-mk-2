@@ -75,7 +75,7 @@ export const resolveMacro = (
   }
 
   const { schema } = state;
-  const { type, attrs } = getValidNode(macro, schema);
+  const { type, attrs } = macro;
   let node;
 
   if (type === 'extension') {

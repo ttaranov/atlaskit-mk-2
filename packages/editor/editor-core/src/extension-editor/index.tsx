@@ -10,6 +10,7 @@ import { replaceSelectedNode } from 'prosemirror-utils';
 import Button from '@atlaskit/button';
 import { Poll } from './poll';
 import { Rsvp } from './rsvp';
+import { Tabs } from './tabs';
 //
 
 import Form, {
@@ -51,6 +52,9 @@ export class ExtensionEditor extends React.Component<Props, State> {
       }
       case 'rsvp': {
         return <Rsvp {...this.props} />;
+      }
+      case 'tabs': {
+        return <Tabs {...this.props} />;
       }
       default:
         return null;

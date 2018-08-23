@@ -2,11 +2,9 @@ import * as React from 'react';
 import { ExtensionEditorContainer } from './styles';
 import FieldText from '@atlaskit/field-text';
 import { FormWrapper } from './styles';
-import { setNodeSelection } from '../utils';
 import { resolveMacro } from '../plugins/macro/actions';
 import { replaceSelectedNode } from 'prosemirror-utils';
 import Button from '@atlaskit/button';
-import Checkbox from '@atlaskit/checkbox';
 import * as format from 'date-fns/format';
 import * as parse from 'date-fns/parse';
 
@@ -182,15 +180,6 @@ export class Rsvp extends React.Component<Props, State> {
             }
           />
         </Field>
-        <div className="react">
-          <Checkbox
-            value={true}
-            onChange={e => {
-              console.log('change');
-            }}
-            label="Show Map"
-          />
-        </div>
       </>
     );
   }
