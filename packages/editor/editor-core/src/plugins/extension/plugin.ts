@@ -21,6 +21,7 @@ export type ExtensionState = {
   node: PMNode;
   allowBreakout: boolean;
   stickToolbarToBottom: boolean;
+  showSidebar: boolean;
 };
 
 export default (
@@ -48,12 +49,13 @@ export default (
           stickToolbarToBottom,
           node: null,
           allowBreakout,
+          showSidebar: false,
         };
       },
       apply(tr, state: ExtensionState, prevState, nextState) {
-        const nextPluginState = tr.getMeta(pluginKey);
-        console.log(nextPluginState);
-        if (nextPluginState) {
+        const meta = tr.getMeta(pluginKey);
+        if (meta) {
+          const nextPluginState = { ...state, ...meta };
           dispatch(pluginKey, nextPluginState);
           return nextPluginState;
         }

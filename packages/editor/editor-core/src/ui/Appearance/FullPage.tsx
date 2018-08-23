@@ -14,7 +14,6 @@ import { tableFullPageEditorStyles } from '../../plugins/table/ui/styles';
 import { akEditorToolbarKeylineHeight } from '../../styles';
 import rafSchedule from 'raf-schd';
 import { scrollbarStyles } from '../styles';
-import { ExtensionEditor } from '../../extension-editor/index.tsx';
 
 const GUTTER_PADDING = 32;
 

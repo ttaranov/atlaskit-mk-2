@@ -7,7 +7,7 @@ import { resolveMacro } from '../plugins/macro/actions';
 import { replaceSelectedNode } from 'prosemirror-utils';
 import Button from '@atlaskit/button';
 import { generateUuid } from '@atlaskit/editor-common';
-
+import { pluginKey } from '../plugins/extension/plugin';
 import Form, { Field, FormHeader } from '@atlaskit/form';
 
 export interface Props {
@@ -78,9 +78,11 @@ export class Poll extends React.Component<Props, State> {
       } as any,
       this.props.view.state,
     );
-
-    console.log(newNode);
-    dispatch(replaceSelectedNode(newNode)(state.tr));
+    dispatch(
+      replaceSelectedNode(newNode)(state.tr).setMeta(pluginKey, {
+        showSidebar: false,
+      }),
+    );
   };
 
   renderChoices(params) {
@@ -100,13 +102,19 @@ export class Poll extends React.Component<Props, State> {
   }
 
   addOption = e => {
-    // e.preventDefault();
-    // e.stopPropagation();
+    const { params } = this.state;
+
     this.setState(
       {
         params: {
-          ...this.state.params,
-          choices: [...this.state.params.choices, []],
+          ...params,
+          choices: [
+            ...params.choices,
+            {
+              id: `${generateUuid()}`,
+              value: '',
+            },
+          ],
         },
       },
       () => {
@@ -133,6 +141,17 @@ export class Poll extends React.Component<Props, State> {
     }));
   };
 
+  updateTitle = e => {
+    e.persist();
+
+    this.setState(prev => ({
+      params: {
+        ...prev.params,
+        title: e.target.value,
+      },
+    }));
+  };
+
   renderForm(node) {
     if (!node) {
       return;
@@ -140,17 +159,14 @@ export class Poll extends React.Component<Props, State> {
     const { extensionKey, parameters } = node.node && node.node.attrs;
     return (
       <FormWrapper>
-        <Form
-          name="edit-extension"
-          target="submitEdit"
-          onSubmit={this.saveExtension}
-        >
+        <Form name="edit-extension" target="submitEdit">
           <FormHeader title={extensionKey} />
           <Field label="Description" isRequired>
             <FieldText
               name="ext_name"
               shouldFitContainer
               value={parameters.title}
+              onChange={this.updateTitle}
             />
           </Field>
           <div className="options">{this.renderChoices(parameters)}</div>
@@ -168,7 +184,6 @@ export class Poll extends React.Component<Props, State> {
           </div>
           <Button
             className="react submit-btn"
-            type="submit"
             appearance="primary"
             onClick={this.saveExtension}
           >
