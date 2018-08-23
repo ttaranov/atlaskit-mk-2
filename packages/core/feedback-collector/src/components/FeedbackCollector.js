@@ -1,142 +1,97 @@
 // @flow
-import React, { Fragment } from 'react';
-import styled from 'styled-components';
-import { FieldTextAreaStateless } from '@atlaskit/field-text-area';
-import Button from '@atlaskit/button';
-import Select from '@atlaskit/select';
-import Form, { Field } from '@atlaskit/form';
-import Checkbox, { CheckboxGroup } from '@atlaskit/checkbox';
-import Modal, { ModalFooter } from '@atlaskit/modal-dialog';
-// import type { Element } from 'react';
+import React, { Component } from 'react';
+import FeedbackForm from './FeedbackForm';
+import type { FormFields } from '../types';
+
+type feedbackType = {
+  fields: Array<{
+    id: string,
+    value: string | Object | Array<Object>,
+  }>,
+};
 
 type Props = {
-  /** Description */
-  // eslint-disable-next-line
-  myProp: string,
+  onClose: func,
+  email: string,
+  name: string,
+  requestTypeId: string,
+  embeddableKey: string,
 };
 
-type State = {
-  type: 'bug' | 'comment' | 'suggestion' | 'question' | 'empty',
-  description: string,
-  canBeContacted: boolean,
-  enrollInResearchGroup: boolean,
+const TYPE_ID = 'customfield_10042';
+const SUMMARY_ID = 'summary';
+const DESCRIPTION_ID = 'description';
+const CAN_BE_CONTACTED_ID = 'customfield_10043';
+const CAN_BE_CONTACTED_VALUE_ID = '10109';
+const ENROLL_IN_RESEARCH_GROUP_ID = 'customfield_10044';
+const ENROLL_IN_RESEARCH_GROUP_VALUE_ID = '10110';
+const EMAIL_ID = 'email';
+const CUSTOMER_NAME_ID = 'customfield_10045';
+const TYPE_VALUE_ID = {
+  bug: '10105',
+  comment: '10106',
+  suggestion: '10107',
+  question: '10108',
 };
 
-const Footer = styled.span`
-  display: flex;
-  flex: auto;
-  justify-content: flex-end;
-`;
-
-const options = {
-  bug: 'Describe the bug or issue',
-  comment: "Let us know what's on your mind",
-  suggestion: "Let us know what you'd like to improve",
-  question: 'What would you like to know?',
-  empty: 'Select an option',
-};
-
-export default class FeedbackCollector extends React.Component<Props, State> {
-  static defaultProps: $Shape<Props> = {
-    onClose: () => {},
-    onSubmit: () => {},
+export default class FeedbackCollector extends Component<Props, State> {
+  truncate: string = (text: string) => {
+    if (text.length < 50) {
+      return text;
+    }
+    return text.replace(/\n/g, ' ').substring(0, 49) + '...';
   };
 
-  state = {
-    type: 'empty',
-    description: '',
-    canBeContacted: false,
-    enrollInResearchGroup: false,
+  mapFormToJSD: feedbackType = (formValues: FormFields) => {
+    const fields = [
+      { id: TYPE_ID, value: { id: TYPE_VALUE_ID[formValues.type] } },
+      { id: SUMMARY_ID, value: this.truncate(formValues.description) },
+      { id: DESCRIPTION_ID, value: formValues.description },
+      { id: EMAIL_ID, value: this.props.email },
+      { id: CUSTOMER_NAME_ID, value: this.props.name },
+    ];
+
+    if (formValues.canBeContacted) {
+      fields.push({
+        id: CAN_BE_CONTACTED_ID,
+        value: [{ id: CAN_BE_CONTACTED_VALUE_ID }],
+      });
+    }
+
+    if (formValues.enrollInResearchGroup) {
+      fields.push({
+        id: ENROLL_IN_RESEARCH_GROUP_ID,
+        value: [{ id: ENROLL_IN_RESEARCH_GROUP_VALUE_ID }],
+      });
+    }
+
+    return { fields };
   };
 
-  isTypeSelected = () => this.state.type !== 'empty';
+  postFeedback = (formValues: FormFields) => {
+    const body = this.mapFormToJSD(formValues);
 
-  renderActions = () => (
-    <ModalFooter>
-      <Footer>
-        <Button
-          appearance="primary"
-          type="submit"
-          isDisabled={!this.isTypeSelected() || !this.state.description}
-          onClick={() => this.props.onSubmit(this.state)}
-        >
-          Submit
-        </Button>
-        <Button
-          appearance="subtle"
-          type="button"
-          onClick={() => this.props.onClose()}
-        >
-          Cancel
-        </Button>
-      </Footer>
-    </ModalFooter>
-  );
+    fetch(
+      `https://jsd-widget.atlassian.com/api/embeddable/${
+        this.props.embeddableKey
+      }/request?requestTypeId=${this.props.requestTypeId}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      },
+    ).then(r => {
+      if (r.ok) console.log('Success!');
+      this.props.onClose();
+      // return r.json()
+    });
+  };
 
   render() {
     return (
-      <Modal
-        heading="Share your thoughts"
-        footer={this.renderActions}
-        onClose={this.props.onClose}
-      >
-        <Form name="feedback-collector">
-          <Select
-            onChange={option => this.setState({ type: option.value })}
-            menuPortalTarget={document.body}
-            styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
-            defaultValue={{
-              label: 'I want to...',
-            }}
-            options={[
-              { label: 'Ask a question', value: 'question' },
-              { label: 'Leave a comment', value: 'comment' },
-              { label: 'Report a bug', value: 'bug' },
-              { label: 'Suggest an improvement', value: 'suggestion' },
-            ]}
-          />
-
-          {this.isTypeSelected() ? (
-            <Fragment>
-              <Field label={options[this.state.type]} isRequired>
-                <FieldTextAreaStateless
-                  name="repo_name"
-                  isRequired
-                  shouldFitContainer
-                  minimumRows={6}
-                  onChange={e => this.setState({ description: e.target.value })}
-                />
-              </Field>
-
-              <Field>
-                <CheckboxGroup>
-                  <Checkbox
-                    value="canBeContacted"
-                    name="can-be-contacted"
-                    label="Atlassian can contact me about this feedback"
-                    onChange={checkbox =>
-                      this.setState({ canBeContacted: checkbox.isChecked })
-                    }
-                  />
-
-                  <Checkbox
-                    value="enrollInResearchGroup"
-                    name="enroll-in-research-group"
-                    label="I'd like to participate in product research"
-                    onChange={checkbox =>
-                      this.setState({
-                        enrollInResearchGroup: checkbox.isChecked,
-                      })
-                    }
-                  />
-                </CheckboxGroup>
-              </Field>
-            </Fragment>
-          ) : (
-            <Fragment />
-          )}
-        </Form>
-      </Modal>
+      <FeedbackForm onSubmit={this.postFeedback} onClose={this.props.onClose} />
     );
   }
 }

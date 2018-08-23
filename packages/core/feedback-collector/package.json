@@ -17,16 +17,17 @@
     "@atlaskit/checkbox": "^4.0.4",
     "@atlaskit/field-text": "^7.0.7",
     "@atlaskit/field-text-area": "^4.0.7",
+    "@atlaskit/flag": "^9.0.6",
     "@atlaskit/form": "^3.1.6",
     "@atlaskit/modal-dialog": "^6.0.9",
     "@atlaskit/select": "^5.0.11",
     "@atlaskit/theme": "^6.0.0"
   },
   "devDependencies": {
-    "axios": "^0.17.1",
     "@atlaskit/build-utils": "^1.11.0",
     "@atlaskit/docs": "^5.0.6",
     "@atlaskit/section-message": "^1.0.5",
+    "axios": "^0.17.1",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.2"
   },
