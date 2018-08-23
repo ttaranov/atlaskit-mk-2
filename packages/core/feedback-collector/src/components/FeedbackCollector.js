@@ -11,11 +11,17 @@ type feedbackType = {
 };
 
 type Props = {
+  /** The function to close the feedback collector */
   onClose: () => void,
+  /** The function to submit the feedback collector */
   onSubmit: () => void,
+  /** The customer email */
   email: string,
+  /** The customer name */
   name: string,
+  /** The request id to access the JSD widget service */
   requestTypeId: string,
+  /** The embeddable key to access the JSD widget service */
   embeddableKey: string,
 };
 

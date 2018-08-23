@@ -5,6 +5,7 @@ import { colors } from '@atlaskit/theme';
 import SuccessIcon from '@atlaskit/icon/glyph/check-circle';
 
 type Props = {
+  /** The function to dismiss the flag */
   onDismissed: () => void,
 };
 

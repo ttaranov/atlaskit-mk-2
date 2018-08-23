@@ -10,7 +10,9 @@ import { FieldTextAreaStateless } from '@atlaskit/field-text-area';
 import type { FormFields } from '../types';
 
 type Props = {
+  /** The function to close the form */
   onClose: () => void,
+  /** The function to submit the form */
   onSubmit: (formValues: FormFields) => void,
 };
 

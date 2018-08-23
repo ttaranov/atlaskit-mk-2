@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { md } from '@atlaskit/docs';
+import { md, Example, Props } from '@atlaskit/docs';
 import SectionMessage from '@atlaskit/section-message';
 
 export default md`
@@ -18,4 +18,22 @@ ${(
     </p>
   </SectionMessage>
 )}
+
+Feedback collector is a form component that collects customer feedback across Atlassian products.
+
+${(
+  <Example
+    Component={require('../examples/02-button').default}
+    title="As a button"
+    source={require('!!raw-loader!../examples/02-button')}
+  />
+)}
+
+${(
+  <Props
+    heading="Props"
+    props={require('!!extract-react-types-loader!../src/components/FeedbackCollector')}
+  />
+)}
+
 `;
