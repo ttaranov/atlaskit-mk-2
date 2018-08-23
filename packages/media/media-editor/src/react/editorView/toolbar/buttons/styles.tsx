@@ -48,8 +48,9 @@ export const OptionsIconWrapper: ComponentClass<
 `;
 
 export const ColorSample: ComponentClass<HTMLAttributes<{}>> = styled.div`
-  width: 24px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
+  margin: 4px;
   border-radius: 3px;
   border-style: solid;
   border-width: 1px;
