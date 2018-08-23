@@ -2,12 +2,13 @@
 
 const changesetCommand = require('../changeset/changesetCommand');
 const versionCommand = require('../version/versionCommand');
+const publishCommand = require('../publish/publishCommand');
 
 const args = process.argv.slice(2);
-const VALID_COMMANDS = ['changeset', 'version', 'release'];
+const VALID_COMMANDS = ['changeset', 'version', 'publish'];
 if (args.length < 1) {
   console.error('Expected a command to run');
-  console.error('`bolt-version [changeset|version|release]`');
+  console.error('`bolt-version [changeset|version|publish]`');
   process.exit(1);
 }
 
@@ -23,5 +24,10 @@ if (!VALID_COMMANDS.includes(command)) {
 if (command === 'changeset') {
   changesetCommand({ cwd: process.cwd() });
 } else if (command === 'version') {
-  versionCommand({ cwd: process.cwd() });
+  versionCommand({
+    cwd: process.cwd(),
+    changelogs: flags.includes('--changelogs'),
+  });
+} else if (command === 'publish') {
+  publishCommand({ cwd: process.cwd() });
 }

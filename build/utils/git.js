@@ -128,10 +128,8 @@ async function getAndParseJsonFromCommitsStartingWith(str, since) {
   if (since) {
     cmdArgs.push(`${since}..`);
   }
-  console.log(`since=${since} Running git`, cmdArgs.join(' '));
   const gitCmd = await spawn('git', cmdArgs);
   const result = gitCmd.stdout.trim().split('\0');
-  console.log('result:', result);
   const parsedCommits = result
     .map(parseFullCommit)
     // unfortunately, we have left some test data in the repo, which wont parse properly, so we

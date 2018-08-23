@@ -5,8 +5,8 @@ const logger = require('../../utils/logger');
 const git = require('../../utils/git');
 const isRunningInPipelines = require('../../utils/isRunningInPipelines');
 const parseChangesetCommit = require('../changeset/parseChangesetCommit');
-const createRelease = require('../changeset/createRelease');
-const createReleaseCommit = require('../changeset/createReleaseCommit');
+const createRelease = require('./createRelease');
+const createReleaseCommit = require('./createReleaseCommit');
 const changelog = require('../changelog');
 const fs = require('../../utils/fs');
 
@@ -25,7 +25,7 @@ async function bumpReleasedPackages(releaseObj, allPackages) {
 
 async function run(opts) {
   const cwd = opts.cwd || process.cwd();
-  const changesetsFlag = opts.changesets;
+  const changelogFlag = opts.changelogs;
   const allPackages = await bolt.getWorkspaces({ cwd });
 
   const lastPublishCommit = await git.getLastPublishCommit();
@@ -61,7 +61,7 @@ async function run(opts) {
     await git.add(pkgPath);
   }
 
-  if (changesetsFlag) {
+  if (changelogFlag) {
     logger.log('Updating changelogs...');
     // Now update the changelogs
     const changelogPaths = await changelog.updateChangelog(releaseObj, { cwd });
