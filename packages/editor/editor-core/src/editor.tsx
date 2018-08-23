@@ -207,7 +207,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
                   render={({ editor, view, eventDispatcher, config }) => (
                     <Component
                       viewMode={!!this.props.viewMode}
-                      disabled={this.props.viewMode || this.props.disabled}
+                      disabled={!!this.props.viewMode || this.props.disabled}
                       editorActions={this.editorActions}
                       editorDOMElement={editor}
                       editorView={view}
