@@ -224,8 +224,9 @@
   },
   "dependencies": {
     "@atlaskit/activity": "^1.0.1",
-    "@atlaskit/field-text": "^7.0.7",
-    "@atlaskit/form": "^3.1.6",
+    "@atlaskit/checkbox": "^4.0.5",
+    "@atlaskit/datetime-picker": "^6.3.4",
+    "@atlaskit/form": "^3.1.7",
     "@atlaskit/util-common": "^1.5.2",
     "@atlaskit/util-common-test": "^2.4.2",
     "@atlaskit/util-shared-styles": "^2.10.3",

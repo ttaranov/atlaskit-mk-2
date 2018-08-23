@@ -9,53 +9,92 @@
     "@atlaskit/util-service-support" "^2.0.1"
     tslib "^1.7.1"
 
-"@atlaskit/analytics-next@^3.0.4":
-  version "3.0.5"
-  resolved "https://registry.yarnpkg.com/@atlaskit/analytics-next/-/analytics-next-3.0.5.tgz#cd5c12776e89a55517599abf5c5a257c03d60779"
+"@atlaskit/analytics-next@^3.0.6":
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/@atlaskit/analytics-next/-/analytics-next-3.0.6.tgz#8be37c5147513d7f6ef534e85d1949fa5e9758fe"
   dependencies:
     prop-types "^15.5.10"
 
-"@atlaskit/field-base@^11.0.5":
-  version "11.0.5"
-  resolved "https://registry.yarnpkg.com/@atlaskit/field-base/-/field-base-11.0.5.tgz#463b5b81b734c3bcde264b63f944a8a45d5a151d"
+"@atlaskit/button@^9.0.7":
+  version "9.0.7"
+  resolved "https://registry.yarnpkg.com/@atlaskit/button/-/button-9.0.7.tgz#b69664fbdcc6efeb469db1442b00f1c6c9bfcf60"
   dependencies:
-    "@atlaskit/icon" "^13.2.5"
-    "@atlaskit/inline-dialog" "^9.0.2"
-    "@atlaskit/spinner" "^9.0.6"
-    "@atlaskit/theme" "^6.0.0"
+    "@atlaskit/analytics-next" "^3.0.6"
+    "@atlaskit/spinner" "9.0.7"
+    "@atlaskit/theme" "^6.0.1"
     babel-runtime "^6.26.0"
 
-"@atlaskit/field-text@^7.0.7":
-  version "7.0.7"
-  resolved "https://registry.yarnpkg.com/@atlaskit/field-text/-/field-text-7.0.7.tgz#aba947e5b8e6cdf98c86412293f56ff992227270"
+"@atlaskit/calendar@^7.0.6":
+  version "7.0.6"
+  resolved "https://registry.yarnpkg.com/@atlaskit/calendar/-/calendar-7.0.6.tgz#973144ecca843008431f4515bfe1b9db7764e3b9"
   dependencies:
-    "@atlaskit/analytics-next" "^3.0.4"
-    "@atlaskit/field-base" "^11.0.5"
-    "@atlaskit/theme" "^6.0.0"
+    "@atlaskit/analytics-next" "^3.0.6"
+    "@atlaskit/button" "^9.0.7"
+    "@atlaskit/icon" "^13.3.1"
+    "@atlaskit/theme" "^6.0.1"
+    calendar-base "^0.3.0"
+    lodash.pick "^4.4.0"
+    uuid "^3.1.0"
 
-"@atlaskit/form@^3.1.6":
-  version "3.1.6"
-  resolved "https://registry.yarnpkg.com/@atlaskit/form/-/form-3.1.6.tgz#9623c6d6cecfdbc60febe3e6dddefcc39ba01eef"
+"@atlaskit/checkbox@^4.0.5":
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/@atlaskit/checkbox/-/checkbox-4.0.5.tgz#8084ef47aec9a9ab8ce02c3571d5f648d35799d1"
   dependencies:
-    "@atlaskit/icon" "^13.2.5"
-    "@atlaskit/theme" "^6.0.0"
+    "@atlaskit/analytics-next" "^3.0.6"
+    "@atlaskit/icon" "^13.3.1"
+    "@atlaskit/theme" "^6.0.1"
+    babel-runtime "^6.26.0"
+    prop-types "^15.5.10"
+
+"@atlaskit/datetime-picker@^6.3.4":
+  version "6.3.4"
+  resolved "https://registry.yarnpkg.com/@atlaskit/datetime-picker/-/datetime-picker-6.3.4.tgz#1dd6ccd6ac82eb43f3a0a7636c26a9352904f1a6"
+  dependencies:
+    "@atlaskit/analytics-next" "^3.0.6"
+    "@atlaskit/calendar" "^7.0.6"
+    "@atlaskit/field-base" "^11.0.6"
+    "@atlaskit/icon" "^13.3.1"
+    "@atlaskit/popper" "^0.2.1"
+    "@atlaskit/select" "^5.0.12"
+    "@atlaskit/theme" "^6.0.1"
+    babel-runtime "^6.26.0"
+    date-fns "^1.29.0"
+    lodash.pick "^4.4.0"
+    react-scrolllock "^3.0.1"
+
+"@atlaskit/field-base@^11.0.6":
+  version "11.0.6"
+  resolved "https://registry.yarnpkg.com/@atlaskit/field-base/-/field-base-11.0.6.tgz#2121b7f9403d267e29ed9c482ed38b9d8dbdecdd"
+  dependencies:
+    "@atlaskit/icon" "^13.3.1"
+    "@atlaskit/inline-dialog" "^9.0.3"
+    "@atlaskit/spinner" "^9.0.7"
+    "@atlaskit/theme" "^6.0.1"
+    babel-runtime "^6.26.0"
+
+"@atlaskit/form@^3.1.7":
+  version "3.1.7"
+  resolved "https://registry.yarnpkg.com/@atlaskit/form/-/form-3.1.7.tgz#14f6658f358bf2c57f8f22ccb5b3c4d7f729b861"
+  dependencies:
+    "@atlaskit/icon" "^13.3.1"
+    "@atlaskit/theme" "^6.0.1"
     "@atlaskit/util-shared-styles" "^2.10.3"
 
-"@atlaskit/icon@^13.2.5":
-  version "13.3.0"
-  resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-13.3.0.tgz#0037f45f40ae657ed3a98e09bedbbe7700ade059"
+"@atlaskit/icon@^13.3.1":
+  version "13.3.1"
+  resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-13.3.1.tgz#5de43e798a0eaacb23aa16a67f39062beb7eacd4"
   dependencies:
-    "@atlaskit/theme" "^6.0.0"
+    "@atlaskit/theme" "^6.0.1"
     babel-runtime "^6.26.0"
     uuid "^3.1.0"
 
-"@atlaskit/inline-dialog@^9.0.2":
-  version "9.0.2"
-  resolved "https://registry.yarnpkg.com/@atlaskit/inline-dialog/-/inline-dialog-9.0.2.tgz#e4aca4f6fedfe6da871af69f7d1884e52a108231"
+"@atlaskit/inline-dialog@^9.0.3":
+  version "9.0.3"
+  resolved "https://registry.yarnpkg.com/@atlaskit/inline-dialog/-/inline-dialog-9.0.3.tgz#fbca776a20555fe9f9dd0de7548c83c001bb860b"
   dependencies:
-    "@atlaskit/analytics-next" "^3.0.4"
+    "@atlaskit/analytics-next" "^3.0.6"
     "@atlaskit/popper" "^0.2.1"
-    "@atlaskit/theme" "^6.0.0"
+    "@atlaskit/theme" "^6.0.1"
     react-node-resolver "^1.0.1"
 
 "@atlaskit/popper@^0.2.1":
@@ -65,17 +104,33 @@
     memoize-one "^3.0.1"
     react-popper "^1.0.0"
 
-"@atlaskit/spinner@^9.0.6":
-  version "9.0.6"
-  resolved "https://registry.yarnpkg.com/@atlaskit/spinner/-/spinner-9.0.6.tgz#318522a2150d3a67b508fce821177336461cac0a"
+"@atlaskit/select@^5.0.12":
+  version "5.0.12"
+  resolved "https://registry.yarnpkg.com/@atlaskit/select/-/select-5.0.12.tgz#f3d091a889c6817a248e7cf16df2e6b09f6f6e51"
   dependencies:
-    "@atlaskit/theme" "^6.0.0"
+    "@atlaskit/analytics-next" "^3.0.6"
+    "@atlaskit/icon" "^13.3.1"
+    "@atlaskit/spinner" "^9.0.7"
+    "@atlaskit/theme" "^6.0.1"
+    focus-trap "^2.4.5"
+    memoize-one "^3.0.1"
+    react-fast-compare "^2.0.1"
+    react-node-resolver "^1.0.1"
+    react-popper "^1.0.0"
+    react-select "^2.0.0-beta.7"
+    react-transition-group "^2.2.1"
+
+"@atlaskit/spinner@9.0.7", "@atlaskit/spinner@^9.0.7":
+  version "9.0.7"
+  resolved "https://registry.yarnpkg.com/@atlaskit/spinner/-/spinner-9.0.7.tgz#c21463642ee82db36a5968ddf0b527eeefcdd187"
+  dependencies:
+    "@atlaskit/theme" "^6.0.1"
     babel-runtime "^6.26.0"
     react-transition-group "^2.2.1"
 
-"@atlaskit/theme@^6.0.0":
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/@atlaskit/theme/-/theme-6.0.0.tgz#a638bf42d1042caf44e5c810121e3d83e7cd587c"
+"@atlaskit/theme@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@atlaskit/theme/-/theme-6.0.1.tgz#1fa4e1f46aebf815535a91eb01eefee175d5edb6"
   dependencies:
     prop-types "^15.5.10"
 
