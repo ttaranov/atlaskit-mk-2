@@ -16,7 +16,7 @@ export interface LineWidthButtonProps {
   readonly onLineWidthClick: (lineWidth: number) => void;
 }
 
-export class LineWidthButton extends Component<LineWidthButtonProps> {
+export class LineWidthIcon extends Component<LineWidthButtonProps> {
   render() {
     const { lineWidth, currentLineWidth, onLineWidthClick } = this.props;
     const onClick = () => onLineWidthClick(lineWidth);

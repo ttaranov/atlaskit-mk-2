@@ -106,6 +106,7 @@ export class Toolbar extends Component<ToolbarProps, ToolbarState> {
           >
             <div>
               <LineWidthButton
+                lineWidth={lineWidth}
                 isActive={showLineWidthPopup}
                 onClick={onLineWidthButtonClick}
               />

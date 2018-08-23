@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import InlineDialog from '@atlaskit/inline-dialog';
 import { LineWidthPopupContainer } from './popupStyles';
-import { LineWidthButton } from './lineWidthButton';
+import { LineWidthIcon } from './lineWidthIcon';
 
 export interface LineWidthPopupProps {
   readonly isOpen: boolean;
@@ -28,7 +28,7 @@ export class LineWidthPopup extends Component<LineWidthPopupProps> {
     const lineWidths = [4, 6, 8, 10, 12];
 
     return lineWidths.map(lineWidth => (
-      <LineWidthButton
+      <LineWidthIcon
         key={`${lineWidth}`}
         lineWidth={lineWidth}
         currentLineWidth={currentLineWidth}
