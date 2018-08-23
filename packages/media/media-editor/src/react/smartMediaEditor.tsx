@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Context } from '@atlaskit/media-core';
+import { Context, UploadableFile } from '@atlaskit/media-core';
 import { FileIdentifier } from '@atlaskit/media-card';
 import { EditorView } from './editorView/editorView';
 
@@ -17,6 +17,8 @@ export class SmartMediaEditor extends React.Component<
   SmartMediaEditorProps,
   SmartMediaEditorState
 > {
+  state: SmartMediaEditorState = {};
+
   componentDidMount() {
     const { identifier } = this.props;
 
@@ -35,7 +37,20 @@ export class SmartMediaEditor extends React.Component<
     });
   };
 
-  onSave = () => {};
+  onSave = (imageUrl: string) => {
+    const { context, identifier, onFinish } = this.props;
+    const uploadableFile: UploadableFile = {
+      content: imageUrl,
+      collection: identifier.collectionName,
+      name: 'hector_rocks.jpeg', // TODO: get the real file name from /file/id endpoint
+    };
+
+    context.uploadFile(uploadableFile).subscribe({
+      next(state) {
+        console.log(state);
+      },
+    });
+  };
 
   onCancel = () => {};
 
