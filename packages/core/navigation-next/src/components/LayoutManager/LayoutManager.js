@@ -33,16 +33,40 @@ type RenderContentNavigationArgs = {
   transitionStyle: Object,
   width: number,
 };
+type State = {
+  mouseIsOverNavigation: boolean,
+};
 
-export default class LayoutManager extends Component<LayoutManagerProps> {
+function defaultTooltipContent(isCollapsed) {
+  return isCollapsed
+    ? { text: 'Expand', char: '[' }
+    : { text: 'Collapse', char: '[' };
+}
+
+export default class LayoutManager extends Component<
+  LayoutManagerProps,
+  State,
+> {
+  state = { mouseIsOverNavigation: false };
   productNavRef: HTMLElement;
   pageRef: HTMLElement;
+
+  static defaultProps = {
+    collapseToggleTooltipContent: defaultTooltipContent,
+  };
 
   getNavRef = (ref: ElementRef<*>) => {
     this.productNavRef = ref;
   };
   getPageRef = (ref: ElementRef<*>) => {
     this.pageRef = ref;
+  };
+
+  mouseEnter = () => {
+    this.setState({ mouseIsOverNavigation: true });
+  };
+  mouseLeave = () => {
+    this.setState({ mouseIsOverNavigation: false });
   };
 
   renderGlobalNavigation = (shouldRenderShadow: boolean) => {
@@ -147,9 +171,16 @@ export default class LayoutManager extends Component<LayoutManagerProps> {
               isCollapsed && !isPeeking && !isTransitioning(transitionState);
 
             return (
-              <NavigationContainer>
+              <NavigationContainer
+                onMouseEnter={this.mouseEnter}
+                onMouseLeave={this.mouseLeave}
+              >
                 <ResizeControl
                   navigation={navigationUIController}
+                  mouseIsOverNavigation={this.state.mouseIsOverNavigation}
+                  collapseToggleTooltipContent={
+                    this.props.collapseToggleTooltipContent
+                  }
                   mutationRefs={[
                     { ref: this.pageRef, property: 'padding-left' },
                     { ref: this.productNavRef, property: 'width' },

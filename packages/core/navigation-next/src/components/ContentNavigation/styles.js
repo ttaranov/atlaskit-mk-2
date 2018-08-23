@@ -10,7 +10,6 @@ const baseStyles = {
   height: '100%',
   left: 0,
   minWidth: CONTENT_NAV_WIDTH,
-  overflowX: 'hidden',
   position: 'absolute',
   top: 0,
   width: '100%',

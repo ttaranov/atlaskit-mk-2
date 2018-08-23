@@ -6,6 +6,10 @@ import UIController from '../../ui-controller/UIController';
 
 export type CollapseListener = number => void;
 
+export type CollapseToggleTooltipContent = (
+  isCollapsed: boolean,
+) => { text: string, char: string } | null;
+
 export type ConnectedLayoutManagerProps = {
   /** Your page content. */
   children: Node,
@@ -23,6 +27,8 @@ export type ConnectedLayoutManagerProps = {
   onCollapseStart?: CollapseListener,
   /** Called when the navigation completes collapsing. */
   onCollapseEnd?: CollapseListener,
+  /** Displayed when the user's mouse is over the collapse/expand toggle. */
+  collapseToggleTooltipContent: CollapseToggleTooltipContent,
 };
 
 export type LayoutManagerProps = ConnectedLayoutManagerProps & {

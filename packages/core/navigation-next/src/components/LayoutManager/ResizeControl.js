@@ -1,105 +1,95 @@
 // @flow
 
 import React, { PureComponent, Fragment } from 'react';
-import { css } from 'emotion';
 import raf from 'raf-schd';
 import {
   withAnalyticsEvents,
   type WithAnalyticsEventsProps,
 } from '@atlaskit/analytics-next';
 import { colors } from '@atlaskit/theme';
-import ChevronLeft from '@atlaskit/icon/glyph/chevron-left-circle';
-import ChevronRight from '@atlaskit/icon/glyph/chevron-right-circle';
+import ChevronLeft from '@atlaskit/icon/glyph/chevron-left-large';
+import MenuIcon from '@atlaskit/icon/glyph/menu';
+import Tooltip from '@atlaskit/tooltip';
 
 import { navigationExpandedCollapsed } from '../../common/analytics';
 import { GLOBAL_NAV_WIDTH, CONTENT_NAV_WIDTH } from '../../common/constants';
 import { Shadow } from '../../common/primitives';
 import PropertyToggle from './PropertyToggle';
 
+import type { CollapseToggleTooltipContent } from './types';
+
 const OUTER_WIDTH = 32;
+const HANDLE_WIDTH = 2;
 
 const Outer = props => (
   <div css={{ position: 'relative', width: OUTER_WIDTH }} {...props} />
 );
-const innerStyles = css({
-  height: '100%',
-  opacity: 0,
-  position: 'relative',
-  transition: 'opacity 300ms cubic-bezier(0.2, 0, 0, 1) 80ms',
-  width: OUTER_WIDTH,
-  ':hover': {
-    opacity: 1,
-  },
-});
-
-const Inner = ({ ...props }) => <div className={innerStyles} {...props} />;
-const Handle = props => {
-  const handleWidth = 12;
-  const lineWidth = 2;
-
-  // prepare color stops
-  const csOne = `${handleWidth / 2 - lineWidth / 2}px`;
-  const csTwo = `${handleWidth / 2 + lineWidth / 2}px`;
-
-  return (
-    <div
-      css={{
-        background: `linear-gradient(to right, transparent, transparent ${csOne},
-          ${colors.B200} ${csOne}, ${colors.B200} ${csTwo},
-          transparent ${csTwo}, transparent)`,
-        cursor: 'ew-resize',
-        height: '100%',
-        left: -(handleWidth / 2 - lineWidth / 2),
-        pointerEvents: 'all',
-        position: 'absolute',
-        width: handleWidth,
-        zIndex: 1,
-      }}
-      {...props}
-    />
-  );
-};
-const Button = ({ ...props }) => (
-  <button
-    type="button"
+const GrabArea = (props: *) => (
+  <div
     css={{
-      background: 0,
-      border: 0,
-      boxSizing: 'content-box',
-      cursor: 'pointer',
-      height: 24,
-      margin: 4,
-      outline: 0,
-      padding: 6,
-      paddingRight: 0,
-      position: 'absolute',
-      width: 24,
-      transform: 'translateX(-20%)',
-      transition: 'transform 300ms cubic-bezier(0.2, 0, 0, 1)',
-      transitionDelay: 0,
+      cursor: 'ew-resize',
+      height: '100%',
+      left: -1,
+      position: 'relative',
+      transition: 'box-shadow 300ms cubic-bezier(0.2, 0, 0, 1)',
+      width: OUTER_WIDTH,
 
-      ':focus': {
-        boxShadow: 'none',
-      },
-
-      [`.${innerStyles}:hover &`]: {
-        transform: 'translateX(0)',
-        transitionDelay: '120ms',
-      },
-
-      '& svg': {
-        color: 'transparent',
-        fill: colors.B200,
-        transition: 'color 100ms linear, fill 100ms linear',
-      },
-
-      ':hover svg, :focus svg': {
-        color: colors.B200,
-        fill: colors.N0,
+      ':hover': {
+        boxShadow: `inset ${HANDLE_WIDTH}px 0 0 ${colors.B100}`,
       },
     }}
     {...props}
   />
+);
+const Button = ({
+  children,
+  hasHighlight,
+  isOffset,
+  isVisible,
+  ...props
+}: *) => (
+  <button
+    type="button"
+    css={{
+      background: 0,
+      backgroundColor: 'white',
+      border: 0,
+      borderRadius: '50%',
+      boxShadow: `0 0 0 1px ${colors.N30A}, 0 2px 4px 1px ${colors.N30A}`,
+      color: hasHighlight ? colors.B100 : colors.N200,
+      cursor: 'pointer',
+      height: 24,
+      opacity: isVisible ? 1 : 0,
+      outline: 0,
+      padding: 0,
+      position: 'absolute',
+      top: 28,
+      transition: `
+        background-color 100ms linear,
+        color 100ms linear,
+        opacity 300ms cubic-bezier(0.2, 0, 0, 1),
+        transform 300ms cubic-bezier(0.2, 0, 0, 1)
+      `,
+      transform: `translate(${isOffset ? '8px' : '-50%'})`,
+      width: 24,
+
+      ':hover': {
+        backgroundColor: colors.B100,
+        color: 'white',
+      },
+      ':active': {
+        backgroundColor: colors.B200,
+        color: 'white',
+      },
+    }}
+    {...props}
+  >
+    <div
+      // increase hit-area
+      css={{ position: 'absolute', left: -4, right: -4, bottom: -4, top: -4 }}
+    />
+    {children}
+  </button>
 );
 
 // tinker with the DOM directly by setting style properties, makes the
@@ -119,9 +109,38 @@ function applyMutations(
   });
 }
 
+// helper for tooltip content keyboard shortcut highlight
+function makeTooltipNode({ text, char }) {
+  return (
+    <div
+      css={{
+        alignItems: 'baseline',
+        display: 'flex',
+        lineHeight: 1.3,
+        paddingBottom: 1,
+        paddingTop: 1,
+      }}
+    >
+      <span>{text}</span>
+      <div
+        css={{
+          backgroundColor: colors.N400,
+          borderRadius: 2,
+          lineHeight: 1.2,
+          marginLeft: 4,
+          padding: '1px 8px',
+        }}
+      >
+        {char}
+      </div>
+    </div>
+  );
+}
+
 type Props = WithAnalyticsEventsProps & {
   children: State => any,
   mutationRefs: Array<{ ref: HTMLElement, property: string }>,
+  collapseToggleTooltipContent: CollapseToggleTooltipContent,
   navigation: Object,
 };
 type State = {
@@ -150,6 +169,13 @@ class ResizeControl extends PureComponent<Props, State> {
 
   onResizerChevronClick = () => {
     this.toggleCollapse('chevron');
+  };
+
+  mouseEnterGrabArea = () => {
+    this.setState({ mouseIsOverGrabArea: true });
+  };
+  mouseLeaveGrabArea = () => {
+    this.setState({ mouseIsOverGrabArea: false });
   };
 
   toggleCollapse = trigger => {
@@ -296,15 +322,37 @@ class ResizeControl extends PureComponent<Props, State> {
   };
 
   render() {
-    const { didDragOpen, isDragging, mouseIsDown } = this.state;
-    const { children, navigation } = this.props;
+    const {
+      didDragOpen,
+      isDragging,
+      mouseIsDown,
+      mouseIsOverGrabArea,
+    } = this.state;
+    const {
+      children,
+      mouseIsOverNavigation,
+      navigation,
+      collapseToggleTooltipContent,
+    } = this.props;
     const { isCollapsed } = navigation.state;
 
     const isDisabled = navigation.state.isPeeking;
 
     // the button shouldn't "flip" until the drag is complete
     const ButtonIcon =
-      isCollapsed || (didDragOpen && isDragging) ? ChevronRight : ChevronLeft;
+      isCollapsed || (didDragOpen && isDragging) ? MenuIcon : ChevronLeft;
+
+    const button = (
+      <Button
+        onClick={this.onResizerChevronClick}
+        isOffset={isCollapsed}
+        // maintain styles when user is dragging
+        isVisible={isCollapsed || mouseIsDown || mouseIsOverNavigation}
+        hasHighlight={mouseIsDown || mouseIsOverGrabArea}
+      >
+        <ButtonIcon />
+      </Button>
+    );
 
     return (
       <Fragment>
@@ -313,12 +361,25 @@ class ResizeControl extends PureComponent<Props, State> {
           <Fragment>
             <Outer>
               <Shadow isBold={mouseIsDown} />
-              <Inner>
-                <Handle onMouseDown={this.handleResizeStart} />
-                <Button onClick={this.onResizerChevronClick}>
-                  <ButtonIcon />
-                </Button>
-              </Inner>
+              <GrabArea
+                onMouseEnter={this.mouseEnterGrabArea}
+                onMouseLeave={this.mouseLeaveGrabArea}
+                onMouseDown={this.handleResizeStart}
+              />
+              {collapseToggleTooltipContent ? (
+                <Tooltip
+                  content={makeTooltipNode(
+                    collapseToggleTooltipContent(isCollapsed),
+                  )}
+                  delay={600}
+                  hideTooltipOnClick
+                  position="right"
+                >
+                  {button}
+                </Tooltip>
+              ) : (
+                button
+              )}
             </Outer>
             <PropertyToggle
               isActive={isDragging}
