@@ -48,6 +48,11 @@ export const ExtensionEditorContainer: ComponentClass<
   .submit-btn {
     margin-top: 20px;
   }
+
+  .remove-option {
+    font-size: 12px;
+    padding: 0;
+  }
 `;
 
 export const FormWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`

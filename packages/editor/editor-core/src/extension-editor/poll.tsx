@@ -9,6 +9,7 @@ import Button from '@atlaskit/button';
 import { generateUuid } from '@atlaskit/editor-common';
 import { pluginKey } from '../plugins/extension/plugin';
 import Form, { Field, FormHeader } from '@atlaskit/form';
+import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
 
 export interface Props {
   showSidebar: boolean;
@@ -69,18 +70,47 @@ export class Poll extends React.Component<Props, State> {
     );
   };
 
+  removeItem = id => {
+    console.log('removing');
+
+    this.setState(
+      {
+        params: {
+          ...this.state.params,
+          choices: this.state.params.choices.filter(
+            (item, idx) => item.id !== id,
+          ),
+        },
+      },
+      () => {
+        setNodeSelection(this.props.view, this.state.nodePos);
+      },
+    );
+  };
+
   renderChoices(params) {
     return this.state.params.choices.map((item, idx) => {
       return (
-        <Field id={item.id} label={`Option ${idx + 1}`} isRequired>
-          <FieldText
-            name="ext_name"
-            onChange={this.updateInput.bind(null, item.id)}
-            shouldFitContainer
-            value={item.value}
-            onBlur={this.saveExtension}
-          />
-        </Field>
+        <>
+          <Field id={item.id} label={`Option ${idx + 1}`} isRequired>
+            <FieldText
+              name="ext_name"
+              onChange={this.updateInput.bind(null, item.id)}
+              onBlur={this.saveExtension}
+              value={item.value}
+              shouldFitContainer
+            />
+          </Field>
+          {idx > 1 && (
+            <Button
+              className="react remove-option"
+              appearance="link"
+              onClick={this.removeItem.bind(null, item.id)}
+            >
+              Remove
+            </Button>
+          )}
+        </>
       );
     });
   }
