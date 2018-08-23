@@ -1,33 +1,21 @@
 import { copyFixtureIntoTempDir } from 'jest-fixtures';
-const bolt = require('bolt');
 const path = require('path');
 const versionCommand = require('../../version/versionCommand');
-const git = require('../../../utils/git');
-const fs = require('../../../utils/fs');
-const logger = require('../../../utils/logger');
+const git = require('@atlaskit/build-utils/git');
+const fs = require('@atlaskit/build-utils/fs');
+const logger = require('@atlaskit/build-utils/logger');
 // avoid polluting test logs with error message in console
 let consoleError = console.error;
 
-jest.mock('../../../utils/cli');
-jest.mock('../../../utils/git');
+jest.mock('@atlaskit/build-utils/cli');
+jest.mock('@atlaskit/build-utils/git');
 jest.mock('../../changeset/parseChangesetCommit');
-jest.mock('../../../utils/logger');
+jest.mock('@atlaskit/build-utils/logger');
 
 git.add.mockImplementation(() => Promise.resolve(true));
 git.commit.mockImplementation(() => Promise.resolve(true));
 git.push.mockImplementation(() => Promise.resolve(true));
 git.tag.mockImplementation(() => Promise.resolve(true));
-// we want to keep other bolt commands still running so our tests are more e2e
-// NOTE: This is pretty terrible. Quite obviously bolt is not going to return these results
-// each time, but there is only one test that uses the output of this function ('should add git tags')
-// and we know this will be heavily refactored once its moved into the bolt org anyway. So we are happy
-// to keep this debt in for now. LB takes full responsibility for this if it becomes flakey.
-bolt.publish = jest.fn(() =>
-  Promise.resolve([
-    { name: 'pkg-a', newVersion: '1.1.0', published: true },
-    { name: 'pkg-b', newVersion: '1.0.1', published: true },
-  ]),
-);
 
 const simpleChangeset = {
   summary: 'This is a summary',

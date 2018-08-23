@@ -1,7 +1,7 @@
 /* eslint-disable */
 const bolt = require('bolt');
-const logger = require('../../utils/logger');
-const git = require('../../utils/git');
+const logger = require('@atlaskit/build-utils/logger');
+const git = require('@atlaskit/build-utils/git');
 
 function logReleases(status, pkgs) {
   const mappedPkgs = pkgs.map(p => `${p.name}@${p.newVersion}`).join('\n');

@@ -5,7 +5,7 @@ const path = require('path');
 const os = require('os');
 const util = require('util');
 const { sep } = require('path');
-const logger = require('../../utils/logger');
+const logger = require('@atlaskit/build-utils/logger');
 
 function writeFile(filePath, fileContents) {
   return util.promisify(cb => fs.writeFile(filePath, fileContents, cb))();

@@ -1,14 +1,14 @@
 import { copyFixtureIntoTempDir } from 'jest-fixtures';
 const bolt = require('bolt');
+const git = require('@atlaskit/build-utils/git');
 const runRelease = require('../../publish/publishCommand');
-const git = require('../../../utils/git');
 // avoid polluting test logs with error message in console
 let consoleError = console.error;
 
-jest.mock('../../../utils/cli');
-jest.mock('../../../utils/git');
+jest.mock('@atlaskit/build-utils/cli');
+jest.mock('@atlaskit/build-utils/git');
+jest.mock('@atlaskit/build-utils/logger');
 jest.mock('../../changeset/parseChangesetCommit');
-jest.mock('../../../utils/logger');
 
 git.add.mockImplementation(() => Promise.resolve(true));
 git.commit.mockImplementation(() => Promise.resolve(true));
