@@ -2,7 +2,6 @@
 
 const karma = require('projector-karma');
 const spawn = require('spawndamnit');
-const release = require('./build/releases/release');
 const { getKarmaConfig } = require('./build/karma-config');
 
 const log = (type /*: string */ = 'log') => (
