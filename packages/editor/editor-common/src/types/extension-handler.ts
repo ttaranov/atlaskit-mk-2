@@ -12,7 +12,7 @@ export type ExtensionHandler<T> = (
   ext: ExtensionParams<T>,
   doc: Object,
   syncEditorState: (parameters: any, content: any) => void,
-  isSelected: () => boolean,
+  isFocused: () => boolean,
 ) => JSX.Element | ADNode[] | null;
 
 export interface ExtensionHandlers {

@@ -33,7 +33,7 @@ interface Props {
   tabsContent: TabsContent[];
   content: any;
   syncEditorState: (parameters: any, content: any) => void;
-  isSelected: () => boolean;
+  isFocused: () => boolean;
 }
 
 interface State {
@@ -92,7 +92,6 @@ export class TabsApp extends React.Component<Props, State> {
         {tabs.map(tab => (
           <Link
             key={tab.id}
-            // appearance={tab.id === activeTabId ? 'primary' : 'default'}
             onClick={() => this.handleSelectTab(tab.id)}
             isActive={tab.id === activeTabId}
           >
@@ -106,7 +105,7 @@ export class TabsApp extends React.Component<Props, State> {
   private handleSelectTab = (activeTabId: string) => {
     const { editable, tabs, tabsContent } = this.props;
     if (editable) {
-      if (activeTabId === this.state.activeTabId || !this.props.isSelected()) {
+      if (activeTabId === this.state.activeTabId || !this.props.isFocused()) {
         return;
       }
 

@@ -8,6 +8,7 @@ import {
   findSelectedNodeOfType,
   replaceSelectedNode,
   isNodeSelection,
+  hasParentNodeOfType,
 } from 'prosemirror-utils';
 import { MacroProvider, resolveMacro } from '../../../macro';
 import InlineExtension from './InlineExtension';
@@ -149,7 +150,11 @@ export default class ExtensionComponent extends Component<Props, State> {
     );
 
     if (newNode) {
-      dispatch(replaceSelectedNode(newNode)(state.tr));
+      setTimeout(() => {
+        if (this.isSelected()) {
+          dispatch(replaceSelectedNode(newNode)(editorView.state.tr));
+        }
+      });
     }
   };
 
@@ -158,6 +163,14 @@ export default class ExtensionComponent extends Component<Props, State> {
     return (
       isNodeSelection(selection) &&
       (selection as NodeSelection).node.type === schema.nodes.bodiedExtension
+    );
+  };
+
+  private isFocused = () => {
+    const { selection, schema } = this.props.editorView.state;
+    return (
+      this.isSelected() ||
+      hasParentNodeOfType(schema.nodes.bodiedExtension)(selection)
     );
   };
 
@@ -182,7 +195,7 @@ export default class ExtensionComponent extends Component<Props, State> {
       },
       editorView.state.doc,
       this.syncEditorState,
-      this.isSelected,
+      this.isFocused,
     );
   };
 }

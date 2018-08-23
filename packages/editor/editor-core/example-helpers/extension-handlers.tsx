@@ -55,7 +55,7 @@ export const extensionHandlers: ExtensionHandlers = {
 
     return null;
   },
-  [EDITOR_APPS_EXTENSION_TYPE]: (ext, doc, syncEditorState, isSelected) => {
+  [EDITOR_APPS_EXTENSION_TYPE]: (ext, doc, syncEditorState, isFocused) => {
     const { extensionKey, parameters, content } = ext;
 
     if (extensionKey === POLL_EXTENSION_KEY) {
@@ -69,7 +69,7 @@ export const extensionHandlers: ExtensionHandlers = {
           editable={true}
           syncEditorState={syncEditorState}
           content={content}
-          isSelected={isSelected}
+          isFocused={isFocused}
         />
       );
     }
