@@ -75,15 +75,26 @@ export class SmartMediaEditor extends React.Component<
 
   onSave = (imageUrl: string) => {
     const { context, identifier, onFinish } = this.props;
+    const { collectionName } = identifier;
     const uploadableFile: UploadableFile = {
       content: imageUrl,
-      collection: identifier.collectionName,
+      collection: collectionName,
       name: 'hector_rocks.jpeg', // TODO: get the real file name from /file/id endpoint
     };
 
-    context.uploadFile(uploadableFile).subscribe({
+    const subscription = context.uploadFile(uploadableFile).subscribe({
       next(state) {
-        console.log(state);
+        if (state.status === 'processing') {
+          const { id } = state;
+          const identifier: FileIdentifier = {
+            id,
+            mediaItemType: 'file',
+            collectionName,
+          };
+
+          onFinish(identifier);
+          subscription.unsubscribe();
+        }
       },
     });
   };
