@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { Fragment } from 'react';
 import styled from 'styled-components';
 import { FieldTextAreaStateless } from '@atlaskit/field-text-area';
 import Button from '@atlaskit/button';
@@ -14,15 +14,31 @@ type Props = {
   myProp: string,
 };
 
+type State = {
+  type: 'bug' | 'compliment' | 'suggestion' | 'question' | 'empty',
+};
+
 const Footer = styled.span`
   display: flex;
   flex: auto;
   justify-content: flex-end;
 `;
 
-export default class FeedbackCollector extends React.Component<Props> {
+const options = {
+  bug: 'Yikes! Describe your bug or issue',
+  compliment: 'Aw thanks! What would you like to share?',
+  suggestion: "That's great! What would you like to share with us?",
+  question: 'What would you like to ask us?',
+  empty: 'Select an option',
+};
+
+export default class FeedbackCollector extends React.Component<Props, State> {
   static defaultProps: $Shape<Props> = {
     myProp: '',
+  };
+
+  state = {
+    type: 'empty',
   };
 
   render() {
@@ -33,6 +49,7 @@ export default class FeedbackCollector extends React.Component<Props> {
           <Field>
             <Select
               isSearchable={false}
+              onChange={option => this.setState({ type: option.value })}
               defaultValue={{
                 label: "Choose what you'd like to give feedback on",
               }}
@@ -44,39 +61,44 @@ export default class FeedbackCollector extends React.Component<Props> {
               ]}
             />
           </Field>
-
-          <Field label="Repository name" isRequired>
-            <FieldTextAreaStateless
-              name="repo_name"
-              isRequired
-              shouldFitContainer
-            />
-          </Field>
-
-          <Field>
-            <CheckboxGroup>
-              <Checkbox
-                value="Basic checkbox"
-                name="checkbox-basic"
-                label="Atlassian can contact me about this feedback"
-              />
-
-              <Checkbox
-                value="Basic checkbox"
-                name="checkbox-basic"
-                label="I'd like to participate in product research"
-              />
-            </CheckboxGroup>
-          </Field>
-          <Footer>
-            <Button appearance="primary" type="submit">
-              Submit
-            </Button>
-            <Button appearance="subtle" type="button">
-              Cancel
-            </Button>
-          </Footer>
         </FormSection>
+        {this.state.type !== 'empty' ? (
+          <Fragment>
+            <Field label={options[this.state.type]} isRequired>
+              <FieldTextAreaStateless
+                name="repo_name"
+                isRequired
+                shouldFitContainer
+              />
+            </Field>
+
+            <Field>
+              <CheckboxGroup>
+                <Checkbox
+                  value="Basic checkbox"
+                  name="checkbox-basic"
+                  label="Atlassian can contact me about this feedback"
+                />
+
+                <Checkbox
+                  value="Basic checkbox"
+                  name="checkbox-basic"
+                  label="I'd like to participate in product research"
+                />
+              </CheckboxGroup>
+            </Field>
+            <Footer>
+              <Button appearance="primary" type="submit">
+                Submit
+              </Button>
+              <Button appearance="subtle" type="button">
+                Cancel
+              </Button>
+            </Footer>
+          </Fragment>
+        ) : (
+          <Fragment />
+        )}
       </Form>
     );
   }
