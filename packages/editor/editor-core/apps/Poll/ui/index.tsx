@@ -11,7 +11,7 @@ import {
   ProgressBar,
 } from './styles';
 import { getExpiresInLabel, isCompleted, getUserId } from './utils';
-import { initPoll, vote } from './actions';
+import { db, snapshotToArray } from '../../_db';
 
 const CheckIcon = <CheckCircleIcon label="Vote" primaryColor={akColorB300} />;
 const CircleIcon = (
@@ -35,7 +35,38 @@ interface State {
   // dynamic prop, fetching this from API
   votes: Votes;
 }
+export const initPoll = (props: { id: string }) => {
+  return getPollVotes(props.id);
+};
 
+const getPollVotes = (id: string) => {
+  return new Promise((resolve, reject) => {
+    db
+      .database()
+      .ref('/polls/' + id)
+      .once('value')
+      .then(function(snapshot) {
+        const array = snapshotToArray(snapshot);
+        resolve(array);
+      });
+  });
+};
+
+export const vote = (props: {
+  choiceId: string;
+  userId: string;
+  id: string;
+}) => {
+  const { userId, choiceId, id } = props;
+  db
+    .database()
+    .ref('polls/' + id)
+    .push({
+      userId,
+      choiceId,
+    });
+  return getPollVotes(id);
+};
 const CompletedChoice = (props: {
   id: string;
   value: string;
@@ -66,7 +97,7 @@ export class PollApp extends React.Component<Props, State> {
     };
 
     initPoll({ id: props.id }).then(votes => {
-      console.log(`setting up Poll with ${votes.length} `);
+      // @ts-ignore
       this.setState({ votes, loading: false });
     });
   }
@@ -122,11 +153,11 @@ export class PollApp extends React.Component<Props, State> {
 
   private handleVote = () => {
     const { selectedChoiceId, userId } = this.state;
-    const { editable } = this.props;
+    const { editable, id } = this.props;
     if (typeof selectedChoiceId !== 'undefined' && userId && !editable) {
       this.setState({ loading: true });
 
-      vote({ choiceId: selectedChoiceId, userId }).then(votes => {
+      vote({ choiceId: selectedChoiceId, userId, id }).then(votes => {
         console.log('voted! all new votes:', votes);
 
         // @ts-ignore
