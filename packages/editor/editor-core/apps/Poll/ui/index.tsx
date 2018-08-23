@@ -128,7 +128,9 @@ export class PollApp extends React.Component<Props, State> {
 
       vote({ choiceId: selectedChoiceId, userId }).then(votes => {
         console.log('voted! all new votes:', votes);
-        // this.setState({ votes, loading: false });
+
+        // @ts-ignore
+        this.setState({ votes, loading: false });
       });
     }
   };

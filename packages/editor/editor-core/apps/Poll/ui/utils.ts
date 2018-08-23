@@ -40,10 +40,9 @@ export const isCompleted = ({ votes, userId }) => {
 export const getUserId = (): string | null => {
   const storageName = 'editor-apps-poll-user-id';
   let userId = localStorage.getItem(storageName);
-  if (!userId) {
+  if (userId) {
     userId = generateUuid();
     localStorage.setItem(storageName, userId);
   }
-
   return userId;
 };
