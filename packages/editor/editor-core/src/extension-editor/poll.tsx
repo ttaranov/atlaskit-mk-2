@@ -63,8 +63,13 @@ export class Poll extends React.Component<Props, State> {
       } as any,
       this.props.view.state,
     );
+    dispatch(replaceSelectedNode(newNode)(state.tr));
+  };
+
+  dismiss = () => {
+    const { dispatch, state } = this.props.view;
     dispatch(
-      replaceSelectedNode(newNode)(state.tr).setMeta(pluginKey, {
+      state.tr.setMeta(pluginKey, {
         showSidebar: false,
       }),
     );
@@ -177,15 +182,19 @@ export class Poll extends React.Component<Props, State> {
       <FormWrapper>
         <Form name="edit-extension" target="submitEdit">
           <FormHeader title={extensionKey} />
-          <Field label="Description" isRequired>
-            <FieldText
-              name="ext_name"
-              shouldFitContainer
-              value={parameters.title}
-              onChange={this.updateTitle}
-            />
-          </Field>
-          <div className="options">{this.renderChoices(parameters)}</div>
+          <div onBlur={this.saveExtension}>
+            <Field label="Description" isRequired>
+              <FieldText
+                name="ext_name"
+                shouldFitContainer
+                value={parameters.title}
+                onChange={this.updateTitle}
+              />
+            </Field>
+          </div>
+          <div className="options" onBlur={this.saveExtension}>
+            {this.renderChoices(parameters)}
+          </div>
           <div>
             <span className="add-option">
               <Button
@@ -200,7 +209,10 @@ export class Poll extends React.Component<Props, State> {
           <Button
             className="react submit-btn"
             appearance="primary"
-            onClick={this.saveExtension}
+            onClick={() => {
+              this.saveExtension();
+              this.dismiss();
+            }}
           >
             Save
           </Button>
