@@ -18,10 +18,12 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
+    "emotion": "^9.0.2",
     "@atlaskit/analytics-next": "^3.0.4",
     "@atlaskit/field-base": "^11.0.5",
     "@atlaskit/icon": "^13.2.5",
-    "@atlaskit/theme": "^6.0.0"
+    "@atlaskit/theme": "^6.0.0",
+    "react-emotion": "^9.0.2"
   },
   "peerDependencies": {
     "react": "^16.4.0",
