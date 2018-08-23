@@ -237,7 +237,11 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     );
   };
   render() {
-    const { linkComponent, isSendSearchTermsEnabled } = this.props;
+    const {
+      linkComponent,
+      isSendSearchTermsEnabled,
+      createAnalyticsEvent,
+    } = this.props;
 
     return (
       <QuickSearchContainer
@@ -250,6 +254,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         getSearchResults={this.getSearchResults}
         handleSearchSubmit={this.handleSearchSubmit}
         isSendSearchTermsEnabled={isSendSearchTermsEnabled}
+        createAnalyticsEvent={createAnalyticsEvent}
       />
     );
   }
