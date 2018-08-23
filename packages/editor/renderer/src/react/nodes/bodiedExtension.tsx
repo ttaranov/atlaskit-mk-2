@@ -42,8 +42,15 @@ const BodiedExtension: React.StatelessComponent<Props> = ({
 
       switch (true) {
         case !!parameters.tabsContent:
+          // doing what it takes to win the shipit :lol:
+          const tabStyles = {
+            border: '1px solid #DFE1E6',
+            padding: '10px',
+            borderRadius: 5,
+            marginTop: '10px',
+          };
           const wrappedNodes = parameters.tabsContent.map(tab => (
-            <div data-tabId={tab.tabId} hidden>
+            <div style={tabStyles} data-tabId={tab.tabId} hidden>
               {renderNodes(
                 tab.content,
                 serializer,
