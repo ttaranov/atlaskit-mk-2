@@ -65,7 +65,8 @@ export class PollApp extends React.Component<Props, State> {
       loading: true,
     };
 
-    initPoll({ id: props.id }).then(({ votes }) => {
+    initPoll({ id: props.id }).then(votes => {
+      console.log(`setting up Poll with ${votes.length} `);
       this.setState({ votes, loading: false });
     });
   }
@@ -125,8 +126,9 @@ export class PollApp extends React.Component<Props, State> {
     if (typeof selectedChoiceId !== 'undefined' && userId && !editable) {
       this.setState({ loading: true });
 
-      vote({ choiceId: selectedChoiceId, userId }).then(({ votes }) => {
-        this.setState({ votes, loading: false });
+      vote({ choiceId: selectedChoiceId, userId }).then(votes => {
+        console.log('voted! all new votes:', votes);
+        // this.setState({ votes, loading: false });
       });
     }
   };

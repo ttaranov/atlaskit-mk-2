@@ -304,6 +304,7 @@
     "eventemitter2": "^4.1.0",
     "execa": "^0.10.0",
     "filesize": "^3.2.1",
+    "firebase": "^5.4.0",
     "flow": "^0.2.3",
     "flushable": "^1.0.0",
     "focus-trap": "^2.4.5",
