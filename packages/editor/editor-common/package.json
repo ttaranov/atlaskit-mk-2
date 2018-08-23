@@ -56,10 +56,13 @@
     "@atlaskit/webdriver-runner": "^0.0.3",
     "@types/chai": "^4.0.4",
     "@types/prosemirror-state": "^1.0.0",
+    "axios":"^0.17.1",
     "chai": "^4.1.2",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "json-schema-diff-validator": "^0.1.1",
     "prosemirror-state": "^1.1.0",
     "raf-stub": "^2.0.1",
+    "react": "^16.4.0",
     "sinon": "^2.2.0"
   }
 }

@@ -73,7 +73,7 @@ describe('Media plugin', () => {
         }),
         codeBlockPlugin(),
         rulePlugin,
-        tablePlugin,
+        tablePlugin(),
       ],
       editorProps: editorProps,
       providerFactory,

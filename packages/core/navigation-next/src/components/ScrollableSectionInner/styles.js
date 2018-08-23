@@ -8,9 +8,12 @@ import type { ThemedContentNavigationComponentStyles } from '../../theme/types';
 const scrollHintHeight = 2;
 const scrollHintSpacing = gridSize() * 2;
 
-const isGecko = window && window.navigator.userAgent.indexOf('Gecko') >= 0;
+const isGecko =
+  typeof window !== 'undefined' &&
+  window.navigator.userAgent.indexOf('Gecko') >= 0;
 const isWebkit =
-  window && window.navigator.userAgent.indexOf('AppleWebKit') >= 0;
+  typeof window !== 'undefined' &&
+  window.navigator.userAgent.indexOf('AppleWebKit') >= 0;
 const scrollBarSize = isGecko || isWebkit ? 15 : 30;
 
 const baseStyles = {

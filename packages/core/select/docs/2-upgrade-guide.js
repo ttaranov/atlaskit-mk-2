@@ -40,10 +40,12 @@ export default md`
     * [filterValues](#filtervalues)
     * [description](#description)
 
+  <a name="prop-upgrade-table"></a>
   ## Prop upgrade table:
 
   ${<PropChanges data={propChanges} />}
 
+  <a name="validation"></a>
   ## Validation
 
   We no longer support the \`invalidMessage\`, \`isInvalid\` and \`required\` props.
@@ -59,7 +61,9 @@ export default md`
     />
   )}
 
+  <a name="options"></a>
   ## Options
+
   We no longer enforce opinions on the shape of your passed in options (previously named items in single and multi select).
   Previously options had the following shape:
 
@@ -79,7 +83,9 @@ export default md`
   While the shape of each item is much less explicit, due to how @atlaskit/select exposes component customisation, the same functionality that the previous item shape enabled
   can still be achieved, without locking you down to any particular set of opinions. For example:
 
+  <a name="elemBefore"></a>
   ### elemBefore
+
   While elemBefore is no longer an explicitly supported property on passed in options,
   @atlaskit/select exposes a formatOptionLabel method of the following shape
 
@@ -97,6 +103,7 @@ export default md`
 
   For more information on how to customise filtering and displaying options / values please see the custom data structures section of our [api docs](/packages/core/select/docs/api)
 
+  <a name="tooltipdescription---tooltipposition"></a>
   ### tooltipDescription & tooltipPosition
 
   Previously @atlaskit/single-select & @atlaskit/multi-select optionally rendered @atlaskit/tooltip, depending on whether or not a tooltipDescription was passed in.
@@ -113,7 +120,9 @@ export default md`
     />
   )}
 
+  <a name="filtervalues"></a>
   ### filterValues
+
   Previously @atlaskit/single-select and @atlaskit/multi-select items optionally contained a filterValues prop with the following shape:
 
   ${code`filterValues: Array<string>`}
@@ -137,7 +146,9 @@ export default md`
     />
   )}
 
+  <a name="description"></a>
   ### description
+  
   Similar to elemBefore, you can recreate the functionality provided by the **description** property in items,
   by using the \`formatOptionLabel\` prop @atlaskit/select provides you. See below for an example of how to do this:
 

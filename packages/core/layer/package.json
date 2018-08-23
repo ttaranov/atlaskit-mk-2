@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/layer",
-  "version": "5.0.5",
+  "version": "5.0.6",
   "description": "A React layer component responsible for the position of an element on a page",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -28,7 +28,7 @@
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/build-utils": "^1.11.0",
+    "@atlaskit/build-utils": "^2.0.0",
     "@atlaskit/docs": "^5.0.2",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "raf-stub": "^2.0.1",

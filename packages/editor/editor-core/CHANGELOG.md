@@ -1,5 +1,20 @@
 # @atlaskit/editor-core
 
+## 77.2.2
+- [patch] ED-5153, add react-intl to editor and expose locale support. [68a0978](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/68a0978)
+- [patch] Updated dependencies [68a0978](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/68a0978)
+
+## 77.2.1
+- [patch] Check current selected nodes before change node selection when interacting with extensions. ED-5199 [bb15908](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb15908)
+
+## 77.2.0
+- [minor] Disable table context menu if advanced table features aren't enabled. ED-5252 [5ad6057](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ad6057)
+- [none] Updated dependencies [5ad6057](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ad6057)
+
+## 77.1.5
+- [patch] New floating toolbar for extensions [23437c0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23437c0)
+- [none] Updated dependencies [23437c0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23437c0)
+
 ## 77.1.4
 - [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
   - @atlaskit/renderer@20.0.11
