@@ -6,21 +6,26 @@ export const MAP_BOX_TOKEN =
 
 const geocodingClient = mbxGeocoding({ accessToken: MAP_BOX_TOKEN });
 
-export async function getLocationFromAddress(
-  address: string,
-  isMock: boolean = false,
-) {
-  if (!isMock) {
-    const response = await geocodingClient
-      .forwardGeocode({
-        query: address,
-        limit: 1,
-      })
-      .send();
-
-    if (response && response.body) {
-      return response.body.features[0].center;
+export async function getLocationFromAddress(address: string) {
+  const cache = localStorage && localStorage.getItem(address);
+  if (cache) {
+    try {
+      return JSON.parse(cache);
+    } catch {
+      return [151.195, -33.8683];
     }
+  }
+  const response = await geocodingClient
+    .forwardGeocode({
+      query: address,
+      limit: 1,
+    })
+    .send();
+
+  if (response && response.body) {
+    const coords = response.body.features[0].center;
+    localStorage && localStorage.setItem(address, JSON.stringify(coords));
+    return coords;
   }
   return [151.195, -33.8683];
 }

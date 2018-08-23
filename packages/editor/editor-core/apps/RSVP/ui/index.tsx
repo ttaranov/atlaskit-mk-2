@@ -108,7 +108,7 @@ export class RSVPApp extends Component<Props, State> {
 
   async componentDidMount() {
     const { location } = this.props;
-    const center = await getLocationFromAddress(location, true);
+    const center = await getLocationFromAddress(location);
     if (center) {
       this.map = new mapboxgl.Map({
         container: this.mapContainer,
