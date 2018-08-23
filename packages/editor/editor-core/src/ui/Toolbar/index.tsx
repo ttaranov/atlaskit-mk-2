@@ -48,7 +48,7 @@ export interface ToolbarProps {
   eventDispatcher: EventDispatcher;
   providerFactory: ProviderFactory;
   appearance: EditorAppearance;
-  readOnlyMode: ReadOnlyMode;
+  readOnlyMode?: ReadOnlyMode;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
