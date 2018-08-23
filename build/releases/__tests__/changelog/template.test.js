@@ -204,7 +204,7 @@ describe('template', () => {
     expect(output).toEqual(expectedOutput);
   });
 
-  it.only('should correctly display multiple dependent bumps for one package', () => {
+  it('should correctly display multiple dependent bumps for one package', () => {
     const input = {
       releases: [
         { name: '@atlaskit/badge', version: '1.1.0', commits: ['496287c'] },
