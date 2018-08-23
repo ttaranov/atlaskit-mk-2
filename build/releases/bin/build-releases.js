@@ -26,7 +26,7 @@ if (command === 'changeset') {
 } else if (command === 'version') {
   versionCommand({
     cwd: process.cwd(),
-    changelogs: flags.includes('--changelogs'),
+    changelogs: flags.includes('--withChangelog'),
   });
 } else if (command === 'publish') {
   publishCommand({ cwd: process.cwd() });
