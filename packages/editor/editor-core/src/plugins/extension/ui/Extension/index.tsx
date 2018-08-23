@@ -55,7 +55,9 @@ export default class Extension extends Component<Props, any> {
           render={({ extension }) => {
             return (
               <>
-                <ExtensionEditor {...extension} view={editorView} />
+                {extension.showSidebar && (
+                  <ExtensionEditor {...extension} view={editorView} />
+                )}
                 <ExtensionComponent
                   editorView={editorView}
                   node={node}

@@ -41,8 +41,8 @@ export class ExtensionEditor extends React.Component<Props, State> {
   };
 
   renderExtensions() {
-    const { showSidebar, node } = this.props;
-    if (!showSidebar || !node) {
+    const { node } = this.props;
+    if (!node) {
       return null;
     }
 
@@ -62,8 +62,8 @@ export class ExtensionEditor extends React.Component<Props, State> {
   }
 
   render() {
-    const { showSidebar, node } = this.props;
-    if (!showSidebar || !node) {
+    const { node } = this.props;
+    if (!node) {
       return null;
     }
 

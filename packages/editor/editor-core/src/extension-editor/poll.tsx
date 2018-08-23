@@ -25,7 +25,6 @@ export interface State {
 export class Poll extends React.Component<Props, State> {
   constructor(props) {
     super(props);
-    const { showSidebar, node, nodePos } = props;
 
     this.state = {
       ...props,
@@ -34,15 +33,12 @@ export class Poll extends React.Component<Props, State> {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (
-      this.props.showSidebar !== nextProps.showSidebar ||
-      this.props.node.node !== nextProps.node.node
-    ) {
+  componentDidUpdate(nextProps) {
+    if (this.props.node.node !== nextProps.node.node) {
       this.setState((prev, next) => {
         return {
-          showSidebar: nextProps.showSidebar,
-          node: nextProps.node && nextProps.node.node,
+          node:
+            nextProps.node && nextProps.node.node ? nextProps.node.node : null,
           params:
             (prev.node && prev.params) ||
             (nextProps.node && nextProps.node.node.attrs.parameters),
@@ -50,18 +46,6 @@ export class Poll extends React.Component<Props, State> {
         };
       });
     }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    // return true;
-    if (
-      this.props.node !== nextProps.node ||
-      this.props.showSidebar !== nextProps.showSidebar ||
-      this.props.params !== nextProps.params
-    ) {
-      return true;
-    }
-    return false;
   }
 
   saveExtension = () => {
@@ -125,20 +109,22 @@ export class Poll extends React.Component<Props, State> {
 
   updateInput = (key, e) => {
     e.persist();
-    this.setState(prev => ({
+    const { params } = this.state;
+    const nextState = {
       params: {
-        ...prev.params,
-        choices: prev.params.choices.map((item, idx) => {
+        ...params,
+        choices: params.choices.map((item, idx) => {
           if (item.id === key) {
             return {
               id: item.id,
-              name: e.target.value,
+              value: e.target.value,
             };
           }
           return item;
         }),
       },
-    }));
+    };
+    this.setState(nextState);
   };
 
   updateTitle = e => {
@@ -194,8 +180,8 @@ export class Poll extends React.Component<Props, State> {
   }
 
   render() {
-    const { showSidebar, node } = this.state;
-    if (!showSidebar || !node.node) {
+    const { node } = this.props;
+    if (!node || !node.node) {
       return null;
     }
 

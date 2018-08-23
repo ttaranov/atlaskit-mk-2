@@ -5,22 +5,16 @@ import { FormWrapper } from './styles';
 import { setNodeSelection } from '../utils';
 import { resolveMacro } from '../plugins/macro/actions';
 import Button from '@atlaskit/button';
-import {
-  replaceParentNodeOfType,
-  replaceSelectedNode,
-  isNodeSelection,
-} from 'prosemirror-utils';
+import { replaceSelectedNode, isNodeSelection } from 'prosemirror-utils';
 import { pluginKey } from '../plugins/extension/plugin';
 import Form, { Field, FormHeader } from '@atlaskit/form';
 import { generateUuid } from '@atlaskit/editor-common';
 
 export interface Props {
-  showSidebar: boolean;
   node: Object;
 }
 
 export interface State {
-  showSidebar: boolean;
   node: Object;
   params: Object;
   nodePos: number;
@@ -29,8 +23,6 @@ export interface State {
 export class Tabs extends React.Component<Props, State> {
   constructor(props) {
     super(props);
-    const { showSidebar, node, nodePos } = props;
-
     this.state = {
       ...props,
       nodePos: props.node && props.node.pos,
@@ -38,15 +30,12 @@ export class Tabs extends React.Component<Props, State> {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (
-      this.props.showSidebar !== nextProps.showSidebar ||
-      this.props.node.node !== nextProps.node.node
-    ) {
+  componentDidUpdate(nextProps) {
+    if (this.props.node.node !== nextProps.node.node) {
       this.setState((prev, next) => {
         return {
-          showSidebar: nextProps.showSidebar,
-          node: nextProps.node && nextProps.node.node,
+          node:
+            nextProps.node && nextProps.node.node ? nextProps.node.node : null,
           params:
             (prev.node && prev.params) ||
             (nextProps.node && nextProps.node.node.attrs.parameters),
@@ -54,18 +43,6 @@ export class Tabs extends React.Component<Props, State> {
         };
       });
     }
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    // return true;
-    if (
-      this.props.node !== nextProps.node ||
-      this.props.showSidebar !== nextProps.showSidebar ||
-      this.props.params !== nextProps.params
-    ) {
-      return true;
-    }
-    return false;
   }
 
   saveExtension = () => {
@@ -139,7 +116,6 @@ export class Tabs extends React.Component<Props, State> {
     };
 
     this.setState(nextState, () => {
-      setNodeSelection(this.props.view, this.state.nodePos);
       this.saveExtension();
     });
   };
@@ -173,7 +149,9 @@ export class Tabs extends React.Component<Props, State> {
       <FormWrapper>
         <Form name="edit-extension" target="submitEdit">
           <FormHeader title={extensionKey} />
-          <div className="options">{this.renderTabs(parameters)}</div>
+          <div className="options" onBlur={this.saveExtension}>
+            {this.renderTabs(parameters)}
+          </div>
           <div>
             <span className="add-option">
               <Button
@@ -201,8 +179,8 @@ export class Tabs extends React.Component<Props, State> {
   }
 
   render() {
-    const { showSidebar, node } = this.state;
-    if (!showSidebar || !node.node) {
+    const { node } = this.props;
+    if (!node || !node.node) {
       return null;
     }
 
