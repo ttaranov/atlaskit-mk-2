@@ -11,7 +11,6 @@ import type {
   Props,
   TreeDraggableProvided,
   TreeDraggableProps,
-  TreeDraggingStyle,
 } from './TreeItem-types';
 
 export default class TreeItem extends Component<Props> {
