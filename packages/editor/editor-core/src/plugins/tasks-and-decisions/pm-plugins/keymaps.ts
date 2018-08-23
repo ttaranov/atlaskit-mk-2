@@ -2,7 +2,6 @@ import { uuid } from '@atlaskit/editor-common';
 import { keymap } from 'prosemirror-keymap';
 import { ResolvedPos, Schema } from 'prosemirror-model';
 import { EditorState, Selection, Transaction, Plugin } from 'prosemirror-state';
-import { liftListItem } from 'prosemirror-schema-list';
 import { splitListAtSelection } from '../commands';
 
 // tries to find a valid cursor position
