@@ -8,6 +8,7 @@ import {
 } from '../src/plugins/quick-insert/types';
 import { getPollDefaultNode } from '../apps/Poll/document';
 import { EDITOR_APPS_EXTENSION_TYPE, RSVP_EXTENSION_KEY } from '../apps/RSVP';
+import { getTabsDefaultNode } from '../apps/Tabs/document';
 
 export const rsvpExtensionDefault = {
   type: 'extension',
@@ -18,38 +19,7 @@ export const rsvpExtensionDefault = {
   },
 };
 
-export const tabsExtensionDefault = {
-  type: 'bodiedExtension',
-  attrs: {
-    extensionType: 'com.atlassian.editor.apps.core',
-    extensionKey: 'tabs',
-    parameters: {
-      tabs: [
-        {
-          name: 'Tab',
-          id: '1',
-        },
-      ],
-      tabsContent: [
-        {
-          tabId: '1',
-          content: [
-            {
-              type: 'paragraph',
-              content: [],
-            },
-          ],
-        },
-      ],
-    },
-  },
-  content: [
-    {
-      type: 'paragraph',
-      content: [],
-    },
-  ],
-};
+export const tabsExtensionDefault = getTabsDefaultNode();
 
 const items: Array<QuickInsertItem> = [
   {

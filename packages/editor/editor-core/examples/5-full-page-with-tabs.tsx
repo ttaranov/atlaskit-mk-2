@@ -2,39 +2,9 @@ import * as React from 'react';
 import FolderIcon from '@atlaskit/icon/glyph/folder';
 import { default as FullPageExample } from './5-full-page';
 import { exampleDocument } from '../apps/Tabs/document';
+import { getTabsDefaultNode } from '../apps/Tabs/document';
 
-const tabsExtensionDefault = {
-  type: 'bodiedExtension',
-  attrs: {
-    extensionType: 'com.atlassian.editor.apps.core',
-    extensionKey: 'tabs',
-    parameters: {
-      tabs: [
-        {
-          name: 'Tab',
-          id: '1',
-        },
-      ],
-      tabsContent: [
-        {
-          tabId: '1',
-          content: [
-            {
-              type: 'paragraph',
-              content: [],
-            },
-          ],
-        },
-      ],
-    },
-  },
-  content: [
-    {
-      type: 'paragraph',
-      content: [],
-    },
-  ],
-};
+export const tabsExtensionDefault = getTabsDefaultNode();
 
 const quickInsertItems = [
   {
