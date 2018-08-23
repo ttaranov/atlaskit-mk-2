@@ -1,8 +1,9 @@
 import { copyFixtureIntoTempDir } from 'jest-fixtures';
 const bolt = require('bolt');
 const path = require('path');
-const runRelease = require('../../release').run;
-const createRelease = require('../../changeset/createRelease');
+const runRelease = require('../../publish/publishCommand');
+const versionCommand = require('../../version/versionCommand');
+const createRelease = require('../../version/createRelease');
 const cli = require('../../../utils/cli');
 const git = require('../../../utils/git');
 const fs = require('../../../utils/fs');
@@ -106,11 +107,11 @@ describe('running release', () => {
       });
 
       it('should warn if no changeset commits exist', async () => {
-        await runRelease({ cwd });
+        await versionCommand({ cwd });
         const loggerWarnCalls = logger.warn.mock.calls;
         expect(loggerWarnCalls.length).toEqual(1);
         expect(loggerWarnCalls[0][0]).toEqual(
-          'No unreleased changesets found.',
+          'No unreleased changesets found, exiting.',
         );
       });
     });
@@ -118,17 +119,6 @@ describe('running release', () => {
     describe('when runing in CI', () => {
       beforeEach(() => {
         isRunningInPipelines.mockReturnValueOnce(true);
-      });
-
-      describe('When there is no changeset commits', () => {
-        // we make sure we still do this so that a later build can clean up after a previously
-        // failed one (where the change was pushed back but not released and the next build has no
-        // changeset commits)
-        it('should still run bolt.publish', async () => {
-          await runRelease({ cwd });
-
-          expect(bolt.publish).toHaveBeenCalled();
-        });
       });
 
       describe('When there is a changeset commit', () => {
@@ -141,7 +131,7 @@ describe('running release', () => {
         it('should bump releasedPackages', async () => {
           const spy = jest.spyOn(fs, 'writeFile');
 
-          await runRelease({ cwd });
+          await versionCommand({ cwd });
           const calls = spy.mock.calls;
           expect(JSON.parse(calls[0][1])).toEqual(
             expect.objectContaining({ name: 'pkg-a', version: '1.1.0' }),
@@ -151,8 +141,8 @@ describe('running release', () => {
           );
         });
 
-        it('should git add the expected files', async () => {
-          await runRelease({ cwd });
+        it('should git add the expected files (without changelog)', async () => {
+          await versionCommand({ cwd });
           const mocks = git.add.mock.calls;
 
           // First two are adding the package.json actual versions
@@ -160,23 +150,17 @@ describe('running release', () => {
           expect(mocks[1]).toEqual([pkgBConfigPath]);
           // Next is update package.json for A after its B dependency is bumped.
           expect(mocks[2]).toEqual([pkgAConfigPath]);
+        });
+
+        it('should git add the expected files (with changelog)', async () => {
+          await versionCommand({ cwd, changelogs: true });
+          const mocks = git.add.mock.calls;
+
+          // First two are adding the package.json actual versions
+          // Next is update package.json for A after its B dependency is bumped.
           // Final two bump changelogs
           expect(mocks[3]).toEqual([pkgAChangelogPath]);
           expect(mocks[4]).toEqual([pkgBChangelogPath]);
-        });
-
-        it('should run bolt.publish', async () => {
-          await runRelease({ cwd });
-
-          expect(bolt.publish).toHaveBeenCalled();
-        });
-
-        it('should add git tags', async () => {
-          await runRelease({ cwd });
-
-          expect(git.tag).toHaveBeenCalledWith('pkg-a@1.1.0');
-          expect(git.tag).toHaveBeenCalledWith('pkg-b@1.0.1');
-          expect(git.push).toHaveBeenCalled();
         });
       });
 
@@ -190,7 +174,7 @@ describe('running release', () => {
         it('should bump releasedPackages', async () => {
           const spy = jest.spyOn(fs, 'writeFile');
 
-          await runRelease({ cwd });
+          await versionCommand({ cwd });
           const calls = spy.mock.calls;
           expect(JSON.parse(calls[0][1])).toEqual(
             expect.objectContaining({ name: 'pkg-a', version: '1.1.0' }),
@@ -202,7 +186,7 @@ describe('running release', () => {
 
         it('should bump multiple released packages if required', async () => {
           const spy = jest.spyOn(fs, 'writeFile');
-          await runRelease({ cwd });
+          await versionCommand({ cwd });
           const calls = spy.mock.calls;
 
           // first call should be minor bump

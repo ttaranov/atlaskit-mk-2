@@ -1,4 +1,4 @@
-const createRelease = require('../../changeset/createRelease');
+const createRelease = require('../../version/createRelease');
 
 const fakeAllPackages = [
   { name: 'package-a', config: { version: '1.0.0' } },

@@ -39,7 +39,7 @@ async function run(opts) {
 
   if (unreleasedChangesets.length === 0) {
     logger.warn('No unreleased changesets found, exiting.');
-    process.exit(0);
+    return;
   }
 
   await bumpReleasedPackages(releaseObj, allPackages);
