@@ -12,11 +12,11 @@ import {
 } from '../pm-plugins/main';
 import { stateKey as nodeViewStateKey } from '../../base/pm-plugins/react-nodeview';
 import { PortalProviderAPI } from '../../../ui/PortalProvider';
-import { ProviderFactory } from '../../..';
 import { ReactNodeView } from '../../../nodeviews';
 import MediaNode from './media';
 import { getPosHandler } from '../../../nodeviews/ReactNodeView';
 import wrapComponentWithClickArea from '../ui/wrapper-click-area';
+import { ProviderFactory } from '@atlaskit/editor-common';
 
 export interface MediaGroupNodeProps {
   view: EditorView;

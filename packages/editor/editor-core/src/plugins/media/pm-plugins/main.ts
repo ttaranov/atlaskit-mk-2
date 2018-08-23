@@ -550,6 +550,11 @@ export class MediaPluginState {
     console.log('new node', newNode);
 
     const nodePos = getPos();
+    if (!nodePos) {
+      console.warn('no nodepos on existing node');
+      return;
+    }
+
     const tr = this.view.state.tr.replaceWith(
       nodePos,
       nodePos + mediaNode.nodeSize,

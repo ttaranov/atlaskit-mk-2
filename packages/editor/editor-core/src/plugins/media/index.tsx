@@ -1,14 +1,7 @@
 import * as React from 'react';
 import EditorImageIcon from '@atlaskit/icon/glyph/editor/image';
-import {
-  media,
-  mediaGroup,
-  mediaSingle,
-  WithProviders,
-} from '@atlaskit/editor-common';
+import { media, mediaGroup, mediaSingle } from '@atlaskit/editor-common';
 import { SmartMediaEditor } from '@atlaskit/media-editor';
-import { NodeSelection } from 'prosemirror-state';
-import { isNodeSelection } from 'prosemirror-utils';
 import { EditorPlugin } from '../../types';
 
 import {
