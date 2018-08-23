@@ -162,9 +162,10 @@ export class PollApp extends React.Component<Props, State> {
   }
 
   render() {
-    const { title, choices, finishDate } = this.props;
+    const { title, choices, finishDate, editable } = this.props;
     const { loading, userId, selectedChoiceId, votes } = this.state;
-    const allowedToVote = userId && !isCompleted({ votes, userId });
+    const allowedToVote =
+      editable || (userId && !isCompleted({ votes, userId }));
 
     if (loading) {
       return (
