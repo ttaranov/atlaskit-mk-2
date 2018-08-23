@@ -11,7 +11,8 @@ type feedbackType = {
 };
 
 type Props = {
-  onClose: func,
+  onClose: () => void,
+  onSubmit: () => void,
   email: string,
   name: string,
   requestTypeId: string,
@@ -32,17 +33,20 @@ const TYPE_VALUE_ID = {
   comment: '10106',
   suggestion: '10107',
   question: '10108',
+  empty: 'missing',
 };
 
-export default class FeedbackCollector extends Component<Props, State> {
-  truncate: string = (text: string) => {
+export default class FeedbackCollector extends Component<Props> {
+  props: Props;
+
+  truncate = (text: string) => {
     if (text.length < 50) {
       return text;
     }
-    return text.replace(/\n/g, ' ').substring(0, 49) + '...';
+    return `${text.replace(/\n/g, ' ').substring(0, 49)}...`;
   };
 
-  mapFormToJSD: feedbackType = (formValues: FormFields) => {
+  mapFormToJSD = (formValues: FormFields): feedbackType => {
     const fields = [
       { id: TYPE_ID, value: { id: TYPE_VALUE_ID[formValues.type] } },
       { id: SUMMARY_ID, value: this.truncate(formValues.description) },
@@ -82,11 +86,11 @@ export default class FeedbackCollector extends Component<Props, State> {
         },
         body: JSON.stringify(body),
       },
-    ).then(r => {
-      if (r.ok) console.log('Success!');
-      this.props.onClose();
-      // return r.json()
-    });
+    );
+
+    this.props.onClose();
+    // slightly delay confirming submit since we don't wait for the REST call to succeed
+    setTimeout(this.props.onSubmit, 700);
   };
 
   render() {

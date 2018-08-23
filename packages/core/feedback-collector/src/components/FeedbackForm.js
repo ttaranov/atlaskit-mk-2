@@ -1,19 +1,17 @@
 // @flow
 import React, { Fragment } from 'react';
 import styled from 'styled-components';
-import { FieldTextAreaStateless } from '@atlaskit/field-text-area';
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
 import Form, { Field } from '@atlaskit/form';
 import Checkbox, { CheckboxGroup } from '@atlaskit/checkbox';
 import Modal, { ModalFooter } from '@atlaskit/modal-dialog';
+import { FieldTextAreaStateless } from '@atlaskit/field-text-area';
 import type { FormFields } from '../types';
 
-// import type { Element } from 'react';
-
 type Props = {
-  onClose: func,
-  onSubmit: func,
+  onClose: () => void,
+  onSubmit: (formValues: FormFields) => void,
 };
 
 const Footer = styled.span`
@@ -31,11 +29,6 @@ const options = {
 };
 
 export default class FeedbackForm extends React.Component<Props, FormFields> {
-  static defaultProps: $Shape<Props> = {
-    onClose: () => {},
-    onSubmit: () => {},
-  };
-
   state = {
     type: 'empty',
     description: '',
@@ -94,8 +87,9 @@ export default class FeedbackForm extends React.Component<Props, FormFields> {
             <Fragment>
               <Field label={options[this.state.type]} isRequired>
                 <FieldTextAreaStateless
-                  name="repo_name"
+                  name="description"
                   isRequired
+                  autoFocus
                   shouldFitContainer
                   minimumRows={6}
                   onChange={e => this.setState({ description: e.target.value })}
@@ -105,7 +99,7 @@ export default class FeedbackForm extends React.Component<Props, FormFields> {
               <Field>
                 <CheckboxGroup>
                   <Checkbox
-                    value="canBeContacted"
+                    value="true"
                     name="can-be-contacted"
                     label="Atlassian can contact me about this feedback"
                     onChange={checkbox =>
@@ -114,7 +108,7 @@ export default class FeedbackForm extends React.Component<Props, FormFields> {
                   />
 
                   <Checkbox
-                    value="enrollInResearchGroup"
+                    value="true"
                     name="enroll-in-research-group"
                     label="I'd like to participate in product research"
                     onChange={checkbox =>

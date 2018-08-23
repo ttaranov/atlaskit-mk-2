@@ -1,3 +1,6 @@
 // @flow
+import FeedbackCollector from './components/FeedbackCollector';
+import FeedbackFlag from './components/FeedbackFlag';
 
-export { default } from './components/FeedbackCollector';
+export default FeedbackCollector;
+export { FeedbackFlag };
