@@ -1,155 +1,131 @@
 // @flow
-import React from 'react';
+import React, { Component } from 'react';
 import Button from '@atlaskit/button';
-// import type { Element } from 'react';
+import Modal, {
+  ModalHeader,
+  ModalFooter,
+  ModalTitle,
+} from '@atlaskit/modal-dialog';
+import Select from '@atlaskit/select';
+import Checkbox, { CheckboxGroup } from '@atlaskit/checkbox';
+import Form, { Field, FormSection } from '@atlaskit/form';
 
+/* eslint-disable react/no-unused-prop-types*/
 type Props = {
-  /** Description */
-  // eslint-disable-next-line
-  myProp: string,
+  onClose: Function,
+  showKeyline: boolean,
 };
 
-export default class Submit extends React.Component<Props> {
-  static defaultProps: $Shape<Props> = {
-    myProp: '',
-  };
+const Header = ({ showKeyline }: Props) => (
+  <ModalHeader showKeyline={showKeyline}>
+    <ModalTitle>Give Feedback</ModalTitle>
+  </ModalHeader>
+);
+
+type FooterState = { isOpen: boolean };
+class Footer extends Component<Props, FooterState> {
+  state = { isOpen: false };
+
+  open = () => this.setState({ isOpen: true });
+  close = () => this.setState({ isOpen: false });
 
   render() {
-    return <Button appearance="primary">Submit</Button>;
+    const { onClose, showKeyline } = this.props;
+
+    return (
+      <ModalFooter showKeyline={showKeyline}>
+        <Button type="submit" appearance="primary">
+          Create
+        </Button>
+        <Button appearance="subtle" onClick={onClose}>
+          Cancel
+        </Button>
+      </ModalFooter>
+    );
   }
 }
 
-// @flow
-// import React, { Component } from 'react';
-// import Button from '@atlaskit/button';
-// import Modal, {
-//   ModalHeader,
-//   ModalFooter,
-//   ModalTitle,
-// } from '@atlaskit/modal-dialog';
-// import Select from '@atlaskit/select';
-// import FieldText from '@atlaskit/field-text';
+type State = { isOpen: boolean };
+// eslint-disable-next-line react/no-multi-comp
+export default class CreateIssueExample extends Component<void, State> {
+  state = { isOpen: false };
+  formRef: any;
 
-// import Form, { Field, FormSection } from '@atlaskit/form';
+  open = () => this.setState({ isOpen: true });
+  close = () => this.setState({ isOpen: false });
 
-// /* eslint-disable react/no-unused-prop-types*/
-// type Props = {
-//   onClose: Function,
-//   showKeyline: boolean,
-// };
+  // Form Event Handlers
+  onSubmitHandler = () => {
+    console.log('onSubmitHandler');
+  };
+  // Footer Button Handlers
+  submitClickHandler = () => {
+    return this.formRef.validate();
+  };
 
-// const Header = ({ showKeyline }: Props) => (
-//   <ModalHeader showKeyline={showKeyline}>
-//     <ModalTitle>Create Issue</ModalTitle>
-//   </ModalHeader>
-// );
+  validateClickHandler = () => {
+    this.formRef.validate();
+  };
 
-// type FooterState = { isOpen: boolean };
-// class Footer extends Component<Props, FooterState> {
-//   state = { isOpen: false };
+  render() {
+    const { isOpen } = this.state;
 
-//   open = () => this.setState({ isOpen: true });
-//   close = () => this.setState({ isOpen: false });
+    return (
+      <div>
+        <Button onClick={this.open}>Create Issue</Button>
 
-//   render() {
-//     const { onClose, showKeyline } = this.props;
-
-//     return (
-//       <ModalFooter showKeyline={showKeyline}>
-//         <Button type="submit" appearance="primary">
-//           Create
-//         </Button>
-//         <Button appearance="subtle" onClick={onClose}>
-//           Cancel
-//         </Button>
-//       </ModalFooter>
-//     );
-//   }
-// }
-
-// type State = { isOpen: boolean };
-// // eslint-disable-next-line react/no-multi-comp
-// export default class CreateIssueExample extends Component<void, State> {
-//   state = { isOpen: false };
-//   formRef: any;
-
-//   open = () => this.setState({ isOpen: true });
-//   close = () => this.setState({ isOpen: false });
-
-//   // Form Event Handlers
-//   onSubmitHandler = () => {
-//     console.log('onSubmitHandler');
-//   };
-//   // Footer Button Handlers
-//   submitClickHandler = () => {
-//     return this.formRef.validate();
-//   };
-
-//   validateClickHandler = () => {
-//     this.formRef.validate();
-//   };
-
-//   render() {
-//     const { isOpen } = this.state;
-
-//     return (
-//       <div>
-//         <Button onClick={this.open}>Create Issue</Button>
-
-//         {isOpen && (
-//           <Form
-//             name="create-issue"
-//             onSubmit={this.onSubmitHandler}
-//             ref={form => {
-//               this.formRef = form;
-//             }}
-//           >
-//             <Modal
-//               footer={Footer}
-//               header={Header}
-//               onClose={this.close}
-//               onCloseComplete={node =>
-//                 console.log('exit transition complete', node)
-//               }
-//               shouldCloseOnEscapePress={false}
-//               shouldCloseOnOverlayClick={false}
-//               width={800}
-//             >
-//               <FormSection name="text-fields">
-//                 <Field label="Project" isRequired>
-//                   <Select
-//                     name="select"
-//                     options={[
-//                       { label: 'Design System Support (AK)', value: 'AK' },
-//                       { label: 'Design Platform (DP)', value: 'DP' },
-//                       { label: 'ADG Feedback (ADGF)', value: 'ADGF' },
-//                     ]}
-//                   />
-//                 </Field>
-//                 <Field
-//                   label="Issue Type"
-//                   isRequired
-//                   helperText="Some issue types are unavailable due to incompatible field configuration and/or workflow associations."
-//                 >
-//                   <Select
-//                     name="select"
-//                     options={[
-//                       { label: 'Bug', value: 'bug' },
-//                       { label: 'Documenation', value: 'doc' },
-//                       { label: 'Epic', value: 'epic' },
-//                     ]}
-//                   />
-//                 </Field>
-//                 <Field label="Summary" isRequired>
-//                   <FieldText name="summary" value="" shouldFitContainer />
-//                 </Field>
-
-//                 <span>More fields...</span>
-//               </FormSection>
-//             </Modal>
-//           </Form>
-//         )}
-//       </div>
-//     );
-//   }
-// }
+        {isOpen && (
+          <Form
+            name="create-issue"
+            onSubmit={this.onSubmitHandler}
+            ref={form => {
+              this.formRef = form;
+            }}
+          >
+            <Modal
+              footer={Footer}
+              header={Header}
+              onClose={this.close}
+              onCloseComplete={node =>
+                console.log('exit transition complete', node)
+              }
+              shouldCloseOnEscapePress={false}
+              shouldCloseOnOverlayClick={false}
+              width={800}
+            >
+              <FormSection name="text-fields">
+                <Field label="Project" isRequired>
+                  <Select
+                    name="select"
+                    options={[
+                      { label: 'Question 1', value: 'Question 1 - value' },
+                      { label: 'Question 2', value: 'Question 2 - value' },
+                      { label: 'Question 3', value: 'Question 3 - value' },
+                      { label: 'Question 4', value: 'Question 4 - value' },
+                    ]}
+                  />
+                </Field>
+                <Field label="Checkbox" helperText="hello">
+                  <CheckboxGroup>
+                    <Checkbox
+                      label="contact"
+                      name="checkbox"
+                      value="checkbox"
+                    />
+                    <Checkbox
+                      label="participate"
+                      name="checkbox"
+                      value="checkbox"
+                    />
+                  </CheckboxGroup>
+                  <Field label="Email" value="email" />
+                  <Field label="Name" value="name" />
+                </Field>
+              </FormSection>
+            </Modal>
+          </Form>
+        )}
+      </div>
+    );
+  }
+}
