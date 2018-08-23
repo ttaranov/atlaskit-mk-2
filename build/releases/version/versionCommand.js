@@ -73,7 +73,7 @@ async function run(opts) {
   logger.log('Committing changes...');
   // TODO: Check if there are any unstaged changed before committing and throw
   // , as it means something went super-odd.
-  // await git.commit(publishCommit);
+  await git.commit(publishCommit);
 }
 
 module.exports = run;

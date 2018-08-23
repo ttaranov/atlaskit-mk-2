@@ -27,10 +27,6 @@ const spawnWithLog = async (...args) => {
   return child;
 };
 
-exports.release = async () => {
-  await release.run({ cwd: __dirname });
-};
-
 exports.start = async ({ packages } /*: { packages: string } */) => {
   const args = ['start'];
   if (packages) {

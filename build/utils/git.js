@@ -129,7 +129,11 @@ async function getAndParseJsonFromCommitsStartingWith(str, since) {
     cmdArgs.push(`${since}..`);
   }
   const gitCmd = await spawn('git', cmdArgs);
-  const result = gitCmd.stdout.trim().split('\0');
+  const result = gitCmd.stdout
+    .trim()
+    .split('\0')
+    .filter(Boolean);
+  if (result.length === 0) return [];
   const parsedCommits = result
     .map(parseFullCommit)
     // unfortunately, we have left some test data in the repo, which wont parse properly, so we
@@ -200,9 +204,7 @@ async function getLastPublishCommit() {
 }
 
 async function getUnpublishedChangesetCommits(since) {
-  // We fetch **all** of the commits because otherwise we can end up in race conditions where a
-  // master build is running and another changeset is merged whilst its still running (the new
-  // changeset would be released without being tested)
+  // Start one commit before the "since" if it's passed in so that we can find that commit if required
   const releaseCommits = await getAllReleaseCommits(
     since ? `${since}~1` : undefined,
   );
