@@ -41,6 +41,7 @@ import { insertMediaSingleNode } from '../utils/media-single';
 
 import { hasParentNodeOfType } from 'prosemirror-utils';
 import { getPosHandler } from '../../../nodeviews/ReactNodeView';
+import { FileIdentifier } from '@atlaskit/media-card';
 export { DefaultMediaStateManager };
 export { MediaState, MediaProvider, MediaStateStatus, MediaStateManager };
 
@@ -510,7 +511,7 @@ export class MediaPluginState {
     this.view.dispatch(this.view.state.tr.setMeta(stateKey, 'edit'));
   };
 
-  onFinishEditing = (newId: string) => {
+  onFinishEditing = (newId: FileIdentifier, oldNode: Node) => {
     const oldId = this.editingMediaId;
     if (!oldId) {
       console.warn('no old id');
@@ -527,9 +528,14 @@ export class MediaPluginState {
 
     const { getPos, node: mediaNode } = mediaNodeWithPos;
 
+    console.log('old node', mediaNode);
+
     const newNode = this.view.state.schema.nodes.media!.create({
-      ...mediaNode.attrs,
-      id: newId,
+      ...oldNode.attrs,
+      id: newId.id,
+      // __key: newId.id,
+      // width: mediaNode.attrs.width,
+      // height: mediaNode.attrs.height,
     });
 
     console.log('new node', newNode);
@@ -853,25 +859,33 @@ export class MediaPluginState {
       return;
     }
     const { width, height } = (thumbnail && thumbnail.dimensions) || {
-      width: undefined,
-      height: undefined,
+      width: mediaNodeWithPos.node.attrs.width,
+      height: mediaNodeWithPos.node.attrs.height,
     };
     const { getPos, node: mediaNode } = mediaNodeWithPos;
     const attrs = {
       ...mediaNode.attrs,
       id: publicId || id,
-      width,
-      height,
+      width: width,
+      height: height,
       __fileName: fileName,
       __fileSize: fileSize,
       __fileMimeType: fileMimeType,
     };
 
-    console.log('setting attributes on', mediaNode, 'to', attrs);
+    console.log(
+      'setting attributes on',
+      mediaNode,
+      'to',
+      attrs,
+      'at pos',
+      getPos(),
+    );
 
     // replace the old node with a new one
     const nodePos = getPos();
     if (typeof nodePos === 'undefined') {
+      console.warn('no nodepos!');
       return;
     }
 

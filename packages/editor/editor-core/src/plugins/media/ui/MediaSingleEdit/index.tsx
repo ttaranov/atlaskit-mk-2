@@ -7,7 +7,6 @@ import CenterIcon from '@atlaskit/icon/glyph/editor/media-center';
 import WideIcon from '@atlaskit/icon/glyph/editor/media-wide';
 import FullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
-import EditorEditIcon from '@atlaskit/icon/glyph/editor/edit';
 import {
   MediaSingleLayout,
   akEditorFullPageMaxWidth,
@@ -22,6 +21,7 @@ import { MediaPluginState } from '../../pm-plugins/main';
 import UiToolbarButton from '../../../../ui/ToolbarButton';
 import UiSeparator from '../../../../ui/Separator';
 import UiFloatingToolbar from '../../../../ui/FloatingToolbar';
+import MediaServicesAnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
 
 import { closestElement } from '../../../../utils';
 
@@ -138,12 +138,13 @@ export default class MediaSingleEdit extends React.Component<Props, State> {
               />
             );
           })}
+          <Separator />
           <ToolbarButton
             spacing="compact"
             disabled={!allowLayout}
             onClick={this.handleEdit}
-            title="Edit"
-            iconBefore={<EditorEditIcon label="Change layout to Edit" />}
+            title="Annotate image"
+            iconBefore={<MediaServicesAnnotateIcon label="Annotate image" />}
           />
           <Separator />
           <ToolbarButtonDestructive

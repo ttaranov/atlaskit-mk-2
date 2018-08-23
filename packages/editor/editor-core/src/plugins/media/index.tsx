@@ -28,6 +28,7 @@ import { mediaSingleNodeView } from './nodeviews/media-single';
 import { mediaGroupNodeView } from './nodeviews/media-group';
 import { CustomMediaPicker } from './types';
 import { FileIdentifier } from '@atlaskit/media-card';
+import WithPluginState from '../../ui/WithPluginState';
 
 export {
   MediaState,
@@ -167,7 +168,9 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
                   context={
                     (pluginState as MediaPluginState).resolvedUploadContext!
                   }
-                  onFinish={pluginState.onFinishEditing}
+                  onFinish={newIdentifier =>
+                    pluginState.onFinishEditing(newIdentifier, node)
+                  }
                 />
               );
             }
