@@ -4,7 +4,7 @@ import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { CardDimensions, CardEventHandler } from '@atlaskit/media-card';
-import { ProsemirrorGetPosHandler, ReactNodeProps } from '../../../nodeviews';
+import { ReactNodeProps } from '../ui/wrapper-click-area';
 import UIMedia from '../ui/Media';
 import {
   MediaPluginState,
@@ -12,13 +12,14 @@ import {
 } from '../pm-plugins/main';
 import { akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
 import ProgressLoader from '../../../ui/ProgressLoader';
+import { getPosHandler } from '../../../nodeviews/ReactNodeView';
 
 export interface MediaNodeProps extends ReactNodeProps {
-  getPos: ProsemirrorGetPosHandler;
+  getPos: getPosHandler;
   view: EditorView;
   node: PMNode;
   providerFactory: ProviderFactory;
-  cardDimensions: CardDimensions;
+  cardDimensions?: CardDimensions;
   isMediaSingle?: boolean;
   progress?: number;
   onExternalImageLoaded?: (
@@ -41,8 +42,20 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
   }
 
   componentWillUnmount() {
+    console.log('unmounting', this);
     const { node } = this.props;
     this.pluginState.handleMediaNodeUnmount(node);
+  }
+
+  componentWillReceiveProps(newProps: MediaNodeProps) {
+    if (
+      this.props.getPos !== newProps.getPos ||
+      this.props.node.attrs.__key !== newProps.node.attrs.__key
+    ) {
+      console.log('remounting');
+      this.pluginState.handleMediaNodeUnmount(this.props.node);
+      this.handleNewNode(newProps);
+    }
   }
 
   cancelProgress = () => {
@@ -69,7 +82,8 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
 
     const deleteEventHandler = isMediaSingle ? undefined : this.handleRemove;
     if (
-      !width &&
+      !!!width &&
+      progress < 1 &&
       this.pluginState.editorAppearance !== 'message' &&
       isMediaSingle &&
       type !== 'external'
@@ -84,12 +98,14 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
       );
     }
 
+    console.log('render media item, id', id, '__key', __key, 'url', url);
+
     return (
       <UIMedia
         key={`media-node-${__key}`}
         editorView={view}
+        __key={__key!}
         id={id!}
-        tempId={__key!}
         type={type!}
         collection={collection!}
         providers={providerFactory}

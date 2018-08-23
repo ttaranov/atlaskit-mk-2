@@ -10,9 +10,6 @@ import { SmartMediaEditor } from '@atlaskit/media-editor';
 import { NodeSelection } from 'prosemirror-state';
 import { isNodeSelection } from 'prosemirror-utils';
 import { EditorPlugin } from '../../types';
-import { legacyNodeViewFactory } from '../../nodeviews';
-import WithPluginState from '../../ui/WithPluginState';
-import { pluginKey as widthPluginKey } from '../width';
 
 import {
   stateKey as pluginKey,
@@ -27,9 +24,8 @@ import keymapMediaSinglePlugin from './pm-plugins/keymap-media-single';
 import keymapPlugin from './pm-plugins/keymap';
 import ToolbarMedia from './ui/ToolbarMedia';
 import MediaSingleEdit from './ui/MediaSingleEdit';
-import ReactMediaGroupNode from './nodeviews/media-group';
-import ReactMediaNode from './nodeviews/media';
-import ReactMediaSingleNode from './nodeviews/media-single';
+import { mediaSingleNodeView } from './nodeviews/media-single';
+import { mediaGroupNodeView } from './nodeviews/media-group';
 import { CustomMediaPicker } from './types';
 import { FileIdentifier } from '@atlaskit/media-card';
 
@@ -94,37 +90,14 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
             {
               providerFactory,
               nodeViews: {
-                mediaGroup: legacyNodeViewFactory(
+                mediaGroup: mediaGroupNodeView(
                   portalProviderAPI,
                   providerFactory,
-                  {
-                    mediaGroup: ReactMediaGroupNode,
-                    media: ReactMediaNode,
-                  },
                 ),
-                mediaSingle: legacyNodeViewFactory(
+                mediaSingle: mediaSingleNodeView(
                   portalProviderAPI,
+                  eventDispatcher,
                   providerFactory,
-                  {
-                    mediaSingle: ({ view, node, ...props }) => (
-                      <WithPluginState
-                        editorView={view}
-                        eventDispatcher={eventDispatcher}
-                        plugins={{
-                          width: widthPluginKey,
-                        }}
-                        render={({ width }) => (
-                          <ReactMediaSingleNode
-                            view={view}
-                            node={node}
-                            width={width}
-                            {...props}
-                          />
-                        )}
-                      />
-                    ),
-                    media: ReactMediaNode,
-                  },
                 ),
               },
               errorReporter,

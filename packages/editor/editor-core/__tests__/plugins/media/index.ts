@@ -660,14 +660,14 @@ describe('Media plugin', () => {
     stateManager.on(thirdTemporaryFileId, spy);
 
     let pos: number;
-    pos = getNodePos(pluginState, firstTemporaryFileId);
+    pos = getNodePos(pluginState, firstTemporaryFileId)!;
     editorView.dispatch(editorView.state.tr.delete(pos, pos + 1));
     // When removing multiple nodes with node view, ProseMirror performs the DOM update
     // asynchronously after a 20ms timeout. In order for the operations to succeed, we
     // must wait for the DOM reconciliation to conclude before proceeding.
     await sleep(100);
 
-    pos = getNodePos(pluginState, secondTemporaryFileId);
+    pos = getNodePos(pluginState, secondTemporaryFileId)!;
     editorView.dispatch(editorView.state.tr.delete(pos, pos + 1));
     await sleep(100);
 

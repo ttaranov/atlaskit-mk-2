@@ -21,6 +21,9 @@ class Task extends ReactNodeView {
   private handleOnChange = (taskId: string, isChecked: boolean) => {
     const { tr } = this.view.state;
     const nodePos = this.getPos();
+    if (typeof nodePos === 'undefined') {
+      return;
+    }
 
     tr.setNodeMarkup(nodePos, undefined, {
       state: isChecked ? 'DONE' : 'TODO',
