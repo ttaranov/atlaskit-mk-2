@@ -11,6 +11,7 @@ import { MacroProvider, insertMacroFromMacroBrowser } from '../macro';
 import { getExtensionNode } from './utils';
 import { mapFragment } from '../../utils/slice';
 import { Command } from '../../types';
+// import { initSideBar } from '../../extension-editor'
 
 export const updateExtensionLayout = (layout): Command => (state, dispatch) => {
   const { selection, schema, tr } = state;
@@ -63,6 +64,7 @@ export const editExtension = (macroProvider: MacroProvider | null) => (
   }
 
   insertMacroFromMacroBrowser(macroProvider, node.node, true)(state, dispatch);
+  // initSideBar();
   return true;
 };
 

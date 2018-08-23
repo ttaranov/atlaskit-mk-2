@@ -52,6 +52,7 @@ export default (
       },
       apply(tr, state: ExtensionState, prevState, nextState) {
         const nextPluginState = tr.getMeta(pluginKey);
+        console.log(nextPluginState);
         if (nextPluginState) {
           dispatch(pluginKey, nextPluginState);
           return nextPluginState;

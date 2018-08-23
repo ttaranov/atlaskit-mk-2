@@ -8,6 +8,9 @@ import {
   ExtensionHandlers,
 } from '@atlaskit/editor-common';
 import ExtensionComponent from './ExtensionComponent';
+import { ExtensionEditor } from '../../../../extension-editor';
+import { pluginKey } from '../../plugin';
+import WithPluginState from '../../../../ui/WithPluginState';
 
 export interface Props {
   editorView: EditorView;
@@ -43,13 +46,28 @@ export default class Extension extends Component<Props, any> {
     const { macroProvider } = providers;
 
     return (
-      <ExtensionComponent
-        editorView={editorView}
-        node={node}
-        macroProvider={macroProvider}
-        handleContentDOMRef={handleContentDOMRef}
-        extensionHandlers={extensionHandlers}
-      />
+      <div>
+        <WithPluginState
+          editorView={editorView}
+          plugins={{
+            extension: pluginKey,
+          }}
+          render={({ extension }) => {
+            return (
+              <>
+                <ExtensionEditor {...extension} view={editorView} />
+                <ExtensionComponent
+                  editorView={editorView}
+                  node={node}
+                  macroProvider={macroProvider}
+                  handleContentDOMRef={handleContentDOMRef}
+                  extensionHandlers={extensionHandlers}
+                />
+              </>
+            );
+          }}
+        />
+      </div>
     );
   };
 
