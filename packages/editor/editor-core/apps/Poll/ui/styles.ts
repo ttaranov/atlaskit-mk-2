@@ -75,6 +75,7 @@ export const ProgressBar: ComponentClass<
   opacity: 0.2;
   border-radius: 5px;
   width: ${(props: { width: number }) => props.width}%;
+  transition: width 1.5s ease-out;
 `;
 
 export const SpinnerWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`

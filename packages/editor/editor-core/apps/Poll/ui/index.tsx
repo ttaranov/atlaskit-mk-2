@@ -63,24 +63,87 @@ export const vote = (props: {
   });
   return updateDatabase(id);
 };
-const CompletedChoice = (props: {
+
+interface CompletedChoiceProps {
   id: string;
   value: string;
   votes: Votes;
-}) => {
-  const { votes, id, value } = props;
-  const numOfChoices = votes.filter(vote => vote.choiceId === id).length;
-  const percent = Math.round(numOfChoices * 100 / votes.length);
-  return (
-    <CompletedChoiceContainer>
-      <ProgressBar width={percent} />
-      <div>
-        <span className="completed-choice-percent">{`${percent}%`}</span>
-        <span className="completed-choice-value">{value}</span>
-      </div>
-    </CompletedChoiceContainer>
-  );
-};
+}
+
+interface CompletedChoiceState {
+  percent: number;
+  totalPercent: number;
+}
+
+class CompletedChoice extends React.Component<
+  CompletedChoiceProps,
+  CompletedChoiceState
+> {
+  private timeout: number;
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      percent: 0,
+      totalPercent: 0,
+    };
+  }
+
+  componentDidMount() {
+    const { votes, id } = this.props;
+    const numOfChoices = votes.filter(vote => vote.choiceId === id).length;
+    const totalPercent = Math.round(numOfChoices * 100 / votes.length);
+    const step = 1;
+
+    setTimeout(() => {
+      this.setState({
+        totalPercent,
+      });
+    });
+
+    const update = () => {
+      if (this.state.percent + step <= totalPercent) {
+        this.setState(
+          {
+            percent: this.state.percent + step,
+          },
+          () => {
+            this.clearTimeout();
+            this.timeout = setTimeout(update, 20);
+          },
+        );
+      }
+    };
+
+    update();
+  }
+
+  clearTimeout = () => {
+    if (this.timeout) {
+      clearTimeout(this.timeout);
+    }
+  };
+
+  componentWillMount() {
+    this.clearTimeout();
+  }
+
+  render() {
+    const { value, id } = this.props;
+    return (
+      <CompletedChoiceContainer key={id}>
+        <ProgressBar width={this.state.totalPercent} />
+        <div>
+          <span className="completed-choice-percent">{`${
+            this.state.percent
+          }%`}</span>
+          <span className="completed-choice-value">{value}</span>
+        </div>
+      </CompletedChoiceContainer>
+    );
+  }
+}
 
 export class PollApp extends React.Component<Props, State> {
   constructor(props) {
