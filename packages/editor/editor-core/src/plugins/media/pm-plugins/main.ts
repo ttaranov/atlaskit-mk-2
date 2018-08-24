@@ -516,8 +516,39 @@ export class MediaPluginState {
     this.view.dispatch(this.view.state.tr.setMeta(stateKey, 'edit'));
   };
 
-  onCloseEditing = () => {
+  onCloseEditing = preview => {
     this.showEditingDialog = false;
+
+    if (!this.editingMediaId) {
+      return;
+    }
+
+    const oldId = this.selectedMediaNode()!.attrs.__key;
+    this.editingMediaId = oldId;
+
+    const mediaNodeWithPos = this.findMediaNode(oldId);
+    if (!mediaNodeWithPos) {
+      console.warn('no media node with id', oldId);
+      return;
+    }
+
+    console.log('oldState', this.stateManager.getState(oldId));
+
+    const existingNode = mediaNodeWithPos.node;
+
+    console.log('setting preview on', oldId);
+    this.stateManager.updateState(oldId, {
+      ready: false,
+      preview: true,
+      thumbnail: {
+        src: preview,
+        dimensions: {
+          width: existingNode.attrs.width,
+          height: existingNode.attrs.height,
+        },
+      },
+    });
+
     this.view.dispatch(this.view.state.tr.setMeta(stateKey, 'close-edit'));
   };
 
@@ -536,18 +567,12 @@ export class MediaPluginState {
       return;
     }
 
-    console.log('new id', newId);
-
     const { getPos, node: mediaNode } = mediaNodeWithPos;
-
-    console.log('old node', mediaNode);
 
     const newNode = this.view.state.schema.nodes.media!.create({
       ...oldNode.attrs,
       id: newId.id,
     });
-
-    console.log('new node', newNode);
 
     const nodePos = getPos();
     if (!nodePos) {
@@ -563,9 +588,24 @@ export class MediaPluginState {
 
     console.log('tr', tr);
 
-    console.log('resolved view context', this.resolvedViewContext);
-    this.resolvedViewContext!.setLocalPreview(oldNode.attrs.__key, preview);
-    // this.resolvedUploadContext!.setLocalPreview(oldNode.attrs.id, preview);
+    this.view.dispatch(tr.setMeta('addToHistory', false));
+    this.editingMediaId = undefined;
+
+    this.resolvedViewContext!.setLocalPreview(newId.id, preview);
+
+    this.stateManager.updateState(oldId, {
+      ready: true,
+      progress: 1,
+      status: 'ready',
+      publicId: newId.id,
+      thumbnail: {
+        src: preview,
+        dimensions: {
+          width: mediaNode.attrs.width,
+          height: mediaNode.attrs.height,
+        },
+      },
+    });
   };
 
   align = (layout: MediaSingleLayout): boolean => {

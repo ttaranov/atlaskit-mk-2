@@ -165,7 +165,7 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
                     deferredIdentifier: Promise<FileIdentifier>,
                     preview: string,
                   ) => {
-                    pluginState.onCloseEditing();
+                    pluginState.onCloseEditing(preview);
 
                     deferredIdentifier.then(identifier =>
                       pluginState.onFinishEditing(identifier, preview, node),

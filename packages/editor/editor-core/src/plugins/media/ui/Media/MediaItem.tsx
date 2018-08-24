@@ -51,6 +51,7 @@ export default class MediaItem extends PureComponent<Props, {}> {
   private renderWithProvider = providers => {
     const {
       id,
+      __key,
       type,
       collection,
       cardDimensions,
@@ -68,6 +69,7 @@ export default class MediaItem extends PureComponent<Props, {}> {
     return (
       <MediaComponent
         id={id}
+        __key={__key}
         mediaProvider={providers.mediaProvider}
         type={type}
         collection={collection}
