@@ -7,8 +7,13 @@ import {
   makeConfluenceRecentPagesData,
   makeConfluenceRecentSpacesData,
   makeQuickNavSearchData,
-} from '../example-helpers/mockData';
-import { JiraRecentResponse } from '../example-helpers/jiraRecentResponseData';
+} from './mockData';
+import { JiraRecentResponse } from './jiraRecentResponseData';
+
+type Request = {
+  json: Function;
+  url: string;
+};
 
 const recentResponse = recentData();
 const confluenceRecentPagesResponse = makeConfluenceRecentPagesData();
@@ -37,7 +42,7 @@ function mockConfluenceRecentApi() {
 }
 
 function mockCrossProductSearchApi() {
-  fetchMock.post(new RegExp('/quicksearch/v1'), async request => {
+  fetchMock.post(new RegExp('/quicksearch/v1'), async (request: Request) => {
     const body = await request.json();
     const query = body.query;
     const results = queryMockSearch(query);
@@ -47,7 +52,7 @@ function mockCrossProductSearchApi() {
 }
 
 function mockQuickNavApi() {
-  fetchMock.mock(new RegExp('/quicknav/1'), async request => {
+  fetchMock.mock(new RegExp('/quicknav/1'), async (request: Request) => {
     const query = request.url.split('query=')[1];
     const results = queryMockQuickNav(query);
 
@@ -56,7 +61,7 @@ function mockQuickNavApi() {
 }
 
 function mockPeopleApi() {
-  fetchMock.post(new RegExp('/graphql'), async request => {
+  fetchMock.post(new RegExp('/graphql'), async (request: Request) => {
     const body = await request.json();
     const query = body.variables.displayName || '';
     const results = queryPeopleSearch(query);

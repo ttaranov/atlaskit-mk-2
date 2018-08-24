@@ -10,7 +10,9 @@ import {
   makeConfluenceClient,
 } from '../mocks/_mockConfluenceClient';
 import { shallowWithIntl } from '../helpers/_intl-enzyme-test-helper';
-import QuickSearchContainer from '../../../components/common/QuickSearchContainer';
+import QuickSearchContainer, {
+  Props as QuickSearchContainerProps,
+} from '../../../components/common/QuickSearchContainer';
 import {
   makeConfluenceObjectResult,
   makePersonResult,
@@ -53,9 +55,9 @@ describe('ConfluenceQuickSearchContainer', () => {
       confluenceClient: mockConfluenceClient,
     });
     const quickSearchContainer = wrapper.find(QuickSearchContainer);
-    const recentItems = await quickSearchContainer
-      .props()
-      .getRecentItems(sessionId);
+    const recentItems = await (quickSearchContainer.props() as QuickSearchContainerProps).getRecentItems(
+      sessionId,
+    );
     expect(recentItems).toMatchObject({
       results: {
         objects: [
@@ -89,9 +91,11 @@ describe('ConfluenceQuickSearchContainer', () => {
     });
 
     const quickSearchContainer = wrapper.find(QuickSearchContainer);
-    const searchResults = await quickSearchContainer
-      .props()
-      .getSearchResults('query', sessionId, 100);
+    const searchResults = await (quickSearchContainer.props() as QuickSearchContainerProps).getSearchResults(
+      'query',
+      sessionId,
+      100,
+    );
 
     expect(searchResults).toMatchObject({
       results: {
@@ -133,9 +137,8 @@ describe('ConfluenceQuickSearchContainer', () => {
     const quickSearchContainer = wrapper.find(QuickSearchContainer);
     const spaceResults = [makeConfluenceContainerResult()];
     const recentlyInteractedPeople = [makePersonResult()];
-    const searchResultsComponent = quickSearchContainer
-      .props()
-      .getSearchResultsComponent({
+    const searchResultsComponent = (quickSearchContainer.props() as QuickSearchContainerProps).getSearchResultsComponent(
+      {
         retrySearch: jest.fn(),
         latestSearchQuery: 'query',
         isError: false,
@@ -151,7 +154,8 @@ describe('ConfluenceQuickSearchContainer', () => {
         },
         keepPreQueryState: false,
         searchSessionId: sessionId,
-      });
+      },
+    );
     const { type = '', props = {} } =
       (searchResultsComponent as React.ReactElement<Props>) || {};
     expect(type).toBe(ConfluenceSearchResults);

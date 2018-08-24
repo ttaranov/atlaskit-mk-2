@@ -36,11 +36,6 @@ describe('Quick Search Analytics', () => {
     teardownMocks();
   });
 
-  // afterEach(() => {
-  //   updateSpy.mockReset();
-  //   onEventSpy.mockReset();
-  // });
-
   const renderComponent = onEvent => {
     return mount(
       <AnalyticsListener onEvent={onEvent} channel="fabric-elements">
@@ -72,6 +67,11 @@ describe('Quick Search Analytics', () => {
   };
 
   describe('Initial events', () => {
+    afterAll(() => {
+      updateSpy.mockReset();
+      onEventSpy.mockReset();
+    });
+
     it('should trigger globalSearchDrawer', async () => {
       expect(onEventSpy).toBeCalled();
       const event = onEventSpy.mock.calls[0][0];
