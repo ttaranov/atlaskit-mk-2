@@ -146,7 +146,7 @@ export default new Plugin({
             state.schema.nodes.layoutColumn,
           )(state.selection)!;
           const layoutColumnEnd =
-            layoutColumn.pos + layoutColumn.node.nodeSize - 1;
+            layoutColumn.pos + layoutColumn.node.nodeSize - 2;
           const isFullColumnLayoutSelection =
             layoutColumn.start === from && layoutColumnEnd === to;
           if (!isFullColumnLayoutSelection) {
