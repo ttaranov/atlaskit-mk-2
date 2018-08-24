@@ -29,5 +29,8 @@ if (command === 'changeset') {
     noChangelog: flags.includes('--noChangelog'),
   });
 } else if (command === 'publish') {
-  publishCommand({ cwd: process.cwd() });
+  publishCommand({
+    cwd: process.cwd(),
+    publicFlag: flags.includes('--public'),
+  });
 }

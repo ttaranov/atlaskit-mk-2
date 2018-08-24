@@ -30,7 +30,7 @@ pipelines:
             # ahead of npm, than the other way round.
             - git push
             # Release all unreleased packages
-            - node ./build/releases/bin/build-releases.js publish
+            - node ./build/releases/bin/build-releases.js publish --public
             - git push --tags # push only the tags
             - (cd build/ci-scripts && yarn restart-stopped-build)
           caches:

@@ -11,7 +11,10 @@ function logReleases(status, pkgs) {
 
 async function run(opts) {
   const cwd = opts.cwd || process.cwd();
-  const response = await bolt.publish({});
+  const publishOpts = {};
+  // if not public, we wont pass the access, and it works as normal
+  if (opts.publicFlag) publishOpts.access = 'public';
+  const response = await bolt.publish(publishOpts);
 
   const successful = response.filter(p => p.published);
   const unsuccessful = response.filter(p => !p.published);
