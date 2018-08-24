@@ -12,6 +12,8 @@ import { getTabsDefaultNode } from '../apps/Tabs/document';
 
 const getRSVPDefault = () => {
   const date = new Date();
+  date.setHours(12);
+  date.setMinutes(0, 0);
   return {
     type: 'extension',
     attrs: {
@@ -20,11 +22,11 @@ const getRSVPDefault = () => {
       parameters: {
         id: '6f4c4f14-a5db-4553-95c3-391e00fe8f49',
         title: 'ShipIt 43',
-        location: '363 George Street, NSW 2009',
+        location: '363 George Street, NSW 2000',
         showMap: true,
         dateTime: date.setDate(date.getDate() + 7),
         // deadline: new Date(2018, 11, 12),
-        duration: 2 * 60 * 60 * 1000,
+        duration: 60 * 60 * 1000,
         maxAttendees: 5,
       },
     },

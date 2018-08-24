@@ -129,17 +129,17 @@ export class Rsvp extends React.Component<Props, State> {
             />
           </Field>
         )}
-        <Field label="Event Duration" isRequired>
+        <Field label="Duration (minutes)" isRequired>
           <FieldText
             name="evt_duration"
             shouldFitContainer
             onBlur={this.saveExtension}
-            value={duration}
+            value={duration / 60 / 1000}
             onChange={e => {
               this.setState({
                 params: {
                   ...this.state.params,
-                  duration: e.target.value,
+                  duration: Number(e.target.value) * 60 * 1000,
                 },
               });
             }}
@@ -211,14 +211,14 @@ export class Rsvp extends React.Component<Props, State> {
           target="submitEdit"
           onSubmit={this.saveExtension}
         >
-          <FormHeader title={extensionKey} />
-          <Field label="Description" isRequired>
+          <FormHeader title={extensionKey.toUpperCase()} />
+          {/* <Field label="Description" isRequired>
             <FieldText
               name="ext_name"
               shouldFitContainer
               value={parameters.title}
             />
-          </Field>
+          </Field> */}
           <div>{this.renderOptions(parameters)}</div>
           <Button
             className="react submit-btn"
