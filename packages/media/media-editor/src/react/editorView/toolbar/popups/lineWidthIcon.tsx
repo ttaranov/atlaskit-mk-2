@@ -4,10 +4,7 @@ import {
   Container,
   HoverArea,
   MainArea,
-  BackAreaNormal,
-  BackAreaSelected,
-  FrontAreaNormal,
-  FrontAreaSelected,
+  FrontArea,
 } from './lineWidthButtonStyles';
 
 export interface LineWidthButtonProps {
@@ -23,23 +20,21 @@ export class LineWidthIcon extends Component<LineWidthButtonProps> {
 
     const isSelected = lineWidth === currentLineWidth;
 
-    const BackArea = isSelected ? BackAreaSelected : BackAreaNormal; // tslint:disable-line:variable-name
-    const FrontArea = isSelected ? FrontAreaSelected : FrontAreaNormal; // tslint:disable-line:variable-name
-
     const style = {
-      width: `${lineWidth * 2}px`,
-      height: `${lineWidth * 2}px`,
+      width: `${lineWidth}px`,
+      height: `${lineWidth}px`,
       borderRadius: `${lineWidth}px`,
     };
 
-    // TODO Simplify this.
+    const mainAreaStyle = {
+      padding: `${(24 - lineWidth) / 2}px`,
+    };
+
     return (
       <Container onClick={onClick}>
         <HoverArea>
-          <MainArea>
-            <BackArea>
-              <FrontArea style={style} />
-            </BackArea>
+          <MainArea isSelected={isSelected} style={mainAreaStyle}>
+            <FrontArea style={style} isSelected={isSelected} />
           </MainArea>
         </HoverArea>
       </Container>

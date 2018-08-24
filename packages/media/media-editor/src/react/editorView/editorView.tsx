@@ -55,7 +55,7 @@ export class EditorView extends Component<EditorViewProps, EditorViewState> {
         height: DEFAULT_HEIGHT - TOOLBAR_HEIGHT,
       },
       color: { red: 0xbf, green: 0x26, blue: 0x00 },
-      lineWidth: 10,
+      lineWidth: 8,
       tool: 'arrow',
     };
   }
@@ -147,6 +147,7 @@ export class EditorView extends Component<EditorViewProps, EditorViewState> {
   private onSave = (): void => {
     const { imageGetter } = this.loadParameters;
     const image = imageGetter();
+    this.saveProperties();
 
     if (image.isExported && image.content) {
       this.props.onSave(image.content);

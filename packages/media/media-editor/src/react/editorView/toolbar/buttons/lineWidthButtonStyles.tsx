@@ -8,41 +8,23 @@ import {
   akColorB400,
   akColorN0,
   akColorN30,
-  akColorN30A,
   akColorN50,
   akColorN500,
 } from '@atlaskit/util-shared-styles';
 
-export const Container: ComponentClass<HTMLAttributes<{}>> = styled.div`
-  width: 32px;
-  height: 32px;
-  padding: 1px;
-  box-sizing: border-box;
-`;
-
-export const HoverArea: ComponentClass<HTMLAttributes<{}>> = styled.div`
-  box-sizing: border-box;
-  width: 30px;
-  height: 30px;
-  border-radius: 15px;
-  padding: 1px;
-  border: 2px solid transparent;
-  &:hover {
-    border: 2px solid ${akColorN30A};
-  }
-`;
 export interface AreaProps {
-  isSelected: boolean;
+  isActive: boolean;
 }
+
 export const MainArea: ComponentClass<
   HTMLAttributes<{}> & AreaProps
 > = styled.div`
   box-sizing: border-box;
-  width: 24px;
-  height: 24px;
+  width: 18px;
+  height: 18px;
   border-radius: 15px;
   background-color: ${(props: AreaProps) =>
-    props.isSelected ? akColorN500 : akColorN30A};
+    props.isActive ? akColorN500 : akColorN30};
 `;
 
 export const FrontArea: ComponentClass<
@@ -50,5 +32,5 @@ export const FrontArea: ComponentClass<
 > = styled.div`
   box-sizing: border-box;
   background-color: ${(props: AreaProps) =>
-    props.isSelected ? akColorN0 : akColorN500};
+    props.isActive ? akColorN0 : akColorN500};
 `;

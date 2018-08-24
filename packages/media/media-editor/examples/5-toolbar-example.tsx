@@ -12,7 +12,7 @@ interface State {
 class ToolbarExample extends React.Component<{}, State> {
   state: State = {
     color: { red: 0xbf, green: 0x26, blue: 0x00 },
-    lineWidth: 10,
+    lineWidth: 8,
     tool: 'arrow',
   };
 
