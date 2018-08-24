@@ -3,8 +3,12 @@ import { Component } from 'react';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import { Color } from '../../../..';
 
-import { GenericButton } from './genericButton';
-import { ColorSample, DropdownIconWrapper } from './styles';
+import Button from '@atlaskit/button';
+import {
+  ColorSample,
+  DropdownRightIconWrapper,
+  DropdownLeftIconWrapper,
+} from './styles';
 
 export interface ColorButtonProps {
   readonly color: Color;
@@ -18,13 +22,24 @@ export class ColorButton extends Component<ColorButtonProps> {
     const { red, green, blue } = color;
     const style = { backgroundColor: `rgb(${red}, ${green}, ${blue})` };
 
-    return (
-      <GenericButton isActive={isActive} onClick={onClick}>
-        <DropdownIconWrapper>
-          <ColorSample style={style} />
-        </DropdownIconWrapper>
+    const iconBefore = (
+      <DropdownLeftIconWrapper>
+        <ColorSample style={style} />
+      </DropdownLeftIconWrapper>
+    );
+    const iconAfter = (
+      <DropdownRightIconWrapper>
         <ChevronDownIcon label="chevron-icon" />
-      </GenericButton>
+      </DropdownRightIconWrapper>
+    );
+    return (
+      <Button
+        iconBefore={iconBefore}
+        iconAfter={iconAfter}
+        appearance="subtle"
+        onClick={onClick}
+        isSelected={isActive}
+      />
     );
   }
 }

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 
+import Button from '@atlaskit/button';
 import ArrowIcon from '@atlaskit/icon/glyph/media-services/arrow';
 import BrushIcon from '@atlaskit/icon/glyph/media-services/brush';
 import LineIcon from '@atlaskit/icon/glyph/media-services/line';
@@ -9,8 +10,7 @@ import OvalIcon from '@atlaskit/icon/glyph/media-services/oval';
 import RectIcon from '@atlaskit/icon/glyph/media-services/rectangle';
 import TextIcon from '@atlaskit/icon/glyph/media-services/text';
 import { Tool } from '../../../..';
-
-import { GenericButton } from './genericButton';
+import { ButtonIconWrapper } from './styles';
 
 export const toolIcons = {
   line: LineIcon,
@@ -36,11 +36,18 @@ export class ToolButton extends Component<ToolButtonProps> {
     const onClick = () => {
       onToolClick(tool);
     };
-
-    return (
-      <GenericButton isActive={isActive} onClick={onClick}>
+    const iconBefore = (
+      <ButtonIconWrapper>
         <Icon label={tool} size="medium" />
-      </GenericButton>
+      </ButtonIconWrapper>
+    );
+    return (
+      <Button
+        iconBefore={iconBefore}
+        appearance="subtle"
+        onClick={onClick}
+        isSelected={isActive}
+      />
     );
   }
 }

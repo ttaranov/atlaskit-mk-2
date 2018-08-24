@@ -58,13 +58,35 @@ export const ColorSample: ComponentClass<HTMLAttributes<{}>> = styled.div`
   box-sizing: border-box;
 `;
 
-export const DropdownIconWrapper: ComponentClass<
+export const DropdownLeftIconWrapper: ComponentClass<
   HTMLAttributes<{}>
 > = styled.div`
-  margin-right: -4px;
-  margin-left: 4px;
+  margin-right: -6px;
+  margin-left: -8px;
+`;
+
+export const DropdownRightIconWrapper: ComponentClass<
+  HTMLAttributes<{}>
+> = styled.div`
+  margin-right: -10px;
+  margin-left: -8px;
+`;
+
+export const ButtonIconWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
+  margin-right: -2px;
+  margin-left: -2px;
 `;
 
 export const ShapeTitle: ComponentClass<HTMLAttributes<{}>> = styled.span`
   text-transform: capitalize;
+`;
+
+export const GroupItem = styled.div`
+  flex: 1 0 auto;
+  margin: 0 4px;
+`;
+
+export const Group = styled.div`
+  display: inline-flex;
+  margin: 0 -4px;
 `;

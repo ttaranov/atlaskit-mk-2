@@ -28,5 +28,4 @@ export const VerticalLine: ComponentClass<HTMLAttributes<{}>> = styled.div`
   width: 1px;
   background: ${akColorN30A};
   height: 32px;
-  margin: 0 8px;
 `;

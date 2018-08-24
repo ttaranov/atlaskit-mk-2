@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
-import Button, { ButtonGroup } from '@atlaskit/button';
+import Button from '@atlaskit/button';
 import { Tool, Color } from '../../../..';
 
 import { LineWidthButton } from './buttons/lineWidthButton';
@@ -12,6 +12,7 @@ import { ToolbarContainer, CenterButtons, VerticalLine } from './styles';
 import { buttonSave, buttonCancel } from '../../../react/editorView/phrases';
 import { ShapePopup, shapeTools } from './popups/shapePopup';
 import { ShapeButton } from './buttons/shapeButton';
+import { ButtonGroup } from './buttons/buttonGroup';
 
 export type PopupState = 'none' | 'color' | 'lineWidth' | 'shape';
 
@@ -78,58 +79,58 @@ export class Toolbar extends Component<ToolbarProps, ToolbarState> {
     return (
       <ToolbarContainer>
         <CenterButtons>
-          {this.renderSimpleTool('arrow')}
-          {this.renderSimpleTool('text')}
-
-          <ShapePopup
-            isOpen={showShapePopup}
-            shape={tool}
-            onPickShape={this.onToolClick}
-          >
-            <div>
-              <ShapeButton
-                onClick={onShapeButtonClick}
-                isActive={isShapeTool}
-                activeShape={tool}
-              />
-            </div>
-          </ShapePopup>
-
-          {this.renderSimpleTool('brush')}
-          {this.renderSimpleTool('blur')}
-
-          <VerticalLine />
-          <LineWidthPopup
-            onLineWidthClick={onLineWidthClick}
-            lineWidth={lineWidth}
-            isOpen={showLineWidthPopup}
-          >
-            <div>
-              <LineWidthButton
-                lineWidth={lineWidth}
-                isActive={showLineWidthPopup}
-                onClick={onLineWidthButtonClick}
-              />
-            </div>
-          </LineWidthPopup>
-
-          <ColorPopup
-            onPickColor={onPickColor}
-            color={color}
-            isOpen={showColorPopup}
-          >
-            <div>
-              <ColorButton
-                color={color}
-                isActive={showColorPopup}
-                onClick={onColorButtonClick}
-              />
-            </div>
-          </ColorPopup>
-
-          <VerticalLine />
-
           <ButtonGroup>
+            {this.renderSimpleTool('arrow')}
+            {this.renderSimpleTool('text')}
+
+            <ShapePopup
+              isOpen={showShapePopup}
+              shape={tool}
+              onPickShape={this.onToolClick}
+            >
+              <div>
+                <ShapeButton
+                  onClick={onShapeButtonClick}
+                  isActive={isShapeTool}
+                  activeShape={tool}
+                />
+              </div>
+            </ShapePopup>
+
+            {this.renderSimpleTool('brush')}
+            {this.renderSimpleTool('blur')}
+
+            <VerticalLine />
+            <LineWidthPopup
+              onLineWidthClick={onLineWidthClick}
+              lineWidth={lineWidth}
+              isOpen={showLineWidthPopup}
+            >
+              <div>
+                <LineWidthButton
+                  lineWidth={lineWidth}
+                  isActive={showLineWidthPopup}
+                  onClick={onLineWidthButtonClick}
+                />
+              </div>
+            </LineWidthPopup>
+
+            <ColorPopup
+              onPickColor={onPickColor}
+              color={color}
+              isOpen={showColorPopup}
+            >
+              <div>
+                <ColorButton
+                  color={color}
+                  isActive={showColorPopup}
+                  onClick={onColorButtonClick}
+                />
+              </div>
+            </ColorPopup>
+
+            <VerticalLine />
+
             <Button
               appearance="primary"
               theme="dark"
