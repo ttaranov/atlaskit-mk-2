@@ -77,10 +77,12 @@ Deleted:
 ### publish
 
 ```
-build-releases publish
+build-releases publish [--public]
 ```
 
 Publishes to NPM repo, and creates tags. Because this command assumes that last commit is the release commit you should not commit any changes between calling `version` and `publish`. These commands are separate to enable you to check if release commit is acurate. Should be part of release process on CI.
+
+`--public` - enables the `--access-public` flag when publishing. This is required if trying to publish public scoped packages.
 
 **NOTE:** You will still need to push your changes back to master after this
 
