@@ -125,7 +125,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     activityProvider={activityProvider}
                     mentionProvider={mentionProvider}
                     emojiProvider={emojiProvider}
-                    mediaProvider={mediaProvider}
+                    media={{ provider: mediaProvider, allowMediaSingle: true }}
                     taskDecisionProvider={taskDecisionProvider}
                     contextIdentifierProvider={contextIdentifierProvider}
                     onChange={onChange}
