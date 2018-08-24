@@ -49,11 +49,11 @@ export const exampleDocument = {
           title: 'Tabs or spaces?',
           choices: [
             {
-              id: `${generateUuid()}`,
+              id: `1`,
               value: 'Tabs',
             },
             {
-              id: `${generateUuid()}`,
+              id: `2`,
               value: 'Spaces',
             },
           ],
