@@ -14,7 +14,7 @@ import {
   Separator,
 } from '@atlaskit/navigation-next';
 
-import FeedbackCollector from '../src/';
+import FeedbackCollector from '../src';
 
 class FeedbackCollectorNavItem extends Component<*, *> {
   state = {
