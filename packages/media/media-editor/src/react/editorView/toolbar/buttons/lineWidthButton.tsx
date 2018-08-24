@@ -3,7 +3,7 @@ import { Component } from 'react';
 import Button from '@atlaskit/button';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import { DropdownRightIconWrapper, DropdownLeftIconWrapper } from './styles';
-import { LineWidthIcon } from '../popups/lineWidthIcon';
+import { LineWidthIcon } from './lineWidthIcon';
 
 export interface LineWidthButtonProps {
   readonly lineWidth: number;
@@ -18,7 +18,7 @@ export class LineWidthButton extends Component<LineWidthButtonProps> {
     const iconBefore = (
       <DropdownLeftIconWrapper>
         <LineWidthIcon
-          currentLineWidth={lineWidth}
+          isActive={isActive}
           lineWidth={lineWidth}
           onLineWidthClick={() => {}}
         />
