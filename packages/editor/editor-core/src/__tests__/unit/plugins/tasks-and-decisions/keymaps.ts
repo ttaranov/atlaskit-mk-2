@@ -9,6 +9,11 @@ import {
   taskList,
   taskItem,
   mention,
+  table,
+  td,
+  tdCursor,
+  tdEmpty,
+  tr,
 } from '@atlaskit/editor-test-helpers';
 import { uuid } from '@atlaskit/editor-common';
 import tasksAndDecisionsPlugin from '../../../../plugins/tasks-and-decisions';
@@ -144,6 +149,30 @@ describe('tasks and decisions - keymaps', () => {
             expect(editorView.state.doc).toEqualDocument(
               doc(list(listProps)(item(itemProps)('World'))),
             );
+          });
+        });
+
+        describe('when nested inside tables', () => {
+          describe('when cursor is at the begining of the first taskItem', () => {
+            it('should convert item to paragraph and keep the cursor in the same cell', () => {
+              const { editorView } = editorFactory(
+                doc(
+                  table()(
+                    tr(
+                      tdEmpty,
+                      td()(list(listProps)(item(itemProps)('{<>}'))),
+                      tdEmpty,
+                    ),
+                  ),
+                ),
+              );
+
+              sendKeyToPm(editorView, 'Backspace');
+
+              const expectedDoc = doc(table()(tr(tdEmpty, tdCursor, tdEmpty)));
+              expect(editorView.state.doc).toEqualDocument(expectedDoc);
+              compareSelection(editorFactory, expectedDoc, editorView);
+            });
           });
         });
       });
