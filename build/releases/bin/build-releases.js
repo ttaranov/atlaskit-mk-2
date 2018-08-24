@@ -26,8 +26,11 @@ if (command === 'changeset') {
 } else if (command === 'version') {
   versionCommand({
     cwd: process.cwd(),
-    changelogs: flags.includes('--withChangelog'),
+    noChangelog: flags.includes('--noChangelog'),
   });
 } else if (command === 'publish') {
-  publishCommand({ cwd: process.cwd() });
+  publishCommand({
+    cwd: process.cwd(),
+    publicFlag: flags.includes('--public'),
+  });
 }

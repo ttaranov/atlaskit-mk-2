@@ -35,12 +35,20 @@ Dependents: @atlaskit/global-navigation@patch, @atlaskit/navigation-next@patch, 
 ### version
 
 ```
-build-releases version [--withChangelog]
+build-releases version [--noChangelog]
 ```
 
 Creates release commit with bumped versions for all packages (and depdendencies) described in changeset commits since last release. Should be part of release process on CI.
 
-`--withChangelog` - enables generation of changelog file (or if it exists appends new version changelog on the top of current file)
+Will also create/append to a CHANGELOG file for each package using the summaries from the changesets.
+
+The reccomended approach is to run `version`, then push to master, then publish, so that your repo is the source of truth.
+
+```
+git push origin master
+```
+
+`--noChangelog` - disables the changelog functionality
 
 Example of commit message:
 
@@ -64,16 +72,24 @@ Deleted:
 [skip ci]
 ```
 
+> `[skip ci]` is used to prevent this commit from triggering a CI build as the common use case would be to run this in master and then push back to master. We want to avoid the infinite loop there. If you are running version locally, you may need to make another commit after this to trigger your CI.
+
 ### publish
 
 ```
-build-releases publish
+build-releases publish [--public]
 ```
 
 Publishes to NPM repo, and creates tags. Because this command assumes that last commit is the release commit you should not commit any changes between calling `version` and `publish`. These commands are separate to enable you to check if release commit is acurate. Should be part of release process on CI.
+
+`--public` - enables the `--access-public` flag when publishing. This is required if trying to publish public scoped packages.
 
 **NOTE:** You will still need to push your changes back to master after this
 
 ```
 git push --follow-tags
 ```
+
+### Bumping peerDependencies
+
+> TODO: explain the intricacies of bumping peerDeps
