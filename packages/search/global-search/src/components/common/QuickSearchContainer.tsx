@@ -17,7 +17,7 @@ import {
   firePreQueryShownEvent,
   firePostQueryShownEvent,
 } from '../../util/analytics-event-helper';
-
+import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { CreateAnalyticsEventFn } from '../analytics/types';
 
 export interface SearchResultProps extends State {
@@ -284,3 +284,5 @@ export class QuickSearchContainer extends React.Component<Props, State> {
     );
   }
 }
+
+export default withAnalyticsEvents()(QuickSearchContainer);

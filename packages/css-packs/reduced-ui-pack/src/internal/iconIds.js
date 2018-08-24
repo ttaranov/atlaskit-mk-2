@@ -375,6 +375,7 @@ const iconIds: Array<string> = [
   'recent',
   'redo',
   'refresh',
+  'roadmap',
   'room-menu',
   'schedule-filled',
   'schedule',

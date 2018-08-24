@@ -60,9 +60,10 @@ export default class JiraSearchResults extends React.Component<Props> {
             </AdvancedSearchContainer>
           </>
         )}
-        renderAdvancedSearchGroup={() => (
+        renderAdvancedSearchGroup={(analyticsData?) => (
           <StickyFooter>
             <JiraAdvancedSearch
+              analyticsData={analyticsData}
               query={query}
               showKeyboardLozenge
               showSearchIcon

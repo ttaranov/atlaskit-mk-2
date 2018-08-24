@@ -12,6 +12,7 @@ export interface Props {
   type: string;
   isSelected?: boolean; // injected by quick-search
   showKeyboardLozenge?: boolean;
+  analyticsData?: object;
 }
 
 export default class AdvancedSearchResult extends React.Component<Props> {

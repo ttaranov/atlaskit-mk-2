@@ -17,19 +17,16 @@ export enum ResultGroupType {
 export interface Props {
   resultsGroups: ResultsGroup[];
   type: ResultGroupType;
-  renderAdvancedSearch: () => JSX.Element;
+  renderAdvancedSearch: (analyticsData?) => JSX.Element;
   searchSessionId: string;
   screenCounter?: ScreenCounter;
   referralContextIdentifiers?: ReferralContextIdentifiers;
 }
 
-const mapGroupsToSections = (resultsToShow: ResultsGroup[]): JSX.Element[] => {
-  const analyticsData = {
-    resultCount: resultsToShow
-      .map(({ items }) => items.length)
-      .reduce((total, count) => total + count, 0),
-  };
-
+const mapGroupsToSections = (
+  resultsToShow: ResultsGroup[],
+  analyticsData,
+): JSX.Element[] => {
   return resultsToShow
     .filter(({ items }) => items && items.length)
     .map((group, index) => (
@@ -72,13 +69,19 @@ export default class ResultGroupsComponent extends React.Component<Props> {
     }
   }
 
+  getAnalyticsData = () => ({
+    resultCount: this.props.resultsGroups
+      .map(({ items }) => items.length)
+      .reduce((total, count) => total + count, 0),
+  });
+
   render() {
     const { renderAdvancedSearch, resultsGroups } = this.props;
-
+    const analyticsData = this.getAnalyticsData();
     return (
       <>
-        {mapGroupsToSections(resultsGroups)}
-        {renderAdvancedSearch()}
+        {mapGroupsToSections(resultsGroups, analyticsData)}
+        {renderAdvancedSearch(analyticsData)}
         {this.getAnalyticsComponent()}
       </>
     );
