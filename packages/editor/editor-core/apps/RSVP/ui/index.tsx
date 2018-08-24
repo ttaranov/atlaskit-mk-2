@@ -100,10 +100,6 @@ export class RSVPApp extends Component<Props, State> {
     attendees: [] as Array<Attendee>,
   };
 
-  static defaultProps = {
-    duration: 7200000,
-  };
-
   constructor(props) {
     super(props);
     this.userId = getUserId();
@@ -155,20 +151,10 @@ export class RSVPApp extends Component<Props, State> {
     }
   }
 
-  private ensureDateTime(dateTime) {
-    if (dateTime) {
-      return dateTime;
-    }
-
-    const date = new Date();
-    return date.setDate(date.getDate() + 7);
-  }
-
   render() {
     const { title, dateTime, duration, location, showMap } = this.props;
     const { appState, showForm, hasJoined, attendees } = this.state;
-    const eventDateTime = this.ensureDateTime(dateTime);
-    const endTime = addMilliseconds(eventDateTime, duration);
+    const endTime = addMilliseconds(dateTime, duration);
     return (
       <RSVP>
         <div className="info">
@@ -177,10 +163,9 @@ export class RSVPApp extends Component<Props, State> {
               <CalendarIcon label="Date and Time" /> Date and Time
             </h5>
             <p>
-              {format(eventDateTime, DATE_FORMAT)}
+              {format(dateTime, DATE_FORMAT)}
               <br />
-              {format(eventDateTime, TIME_FORMAT)} -{' '}
-              {format(endTime, TIME_FORMAT)}
+              {format(dateTime, TIME_FORMAT)} - {format(endTime, TIME_FORMAT)}
               <br />
               <a
                 target="_blank"
