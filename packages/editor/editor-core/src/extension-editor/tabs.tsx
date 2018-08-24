@@ -36,19 +36,21 @@ export interface State {
 export class Tabs extends React.Component<Props, State> {
   constructor(props) {
     super(props);
+
+    const node = props.view.state.doc.nodeAt(props.node.pos);
     this.state = {
       ...props,
       nodePos: props.node && props.node.pos,
-      params: props.node && props.node.node.attrs.parameters,
+      params: node && node.attrs.parameters,
     };
   }
 
-  componentDidUpdate(nextProps) {
+  componentWillReceiveProps(nextProps) {
     if (this.props.node.node !== nextProps.node.node) {
       this.setState(prev => {
         return {
-          node:
-            nextProps.node && nextProps.node.node ? nextProps.node.node : null,
+          showSidebar: nextProps.showSidebar,
+          node: nextProps.node && nextProps.node.node,
           params:
             (prev.node && prev.params) ||
             (nextProps.node && nextProps.node.node.attrs.parameters),
@@ -61,7 +63,7 @@ export class Tabs extends React.Component<Props, State> {
   saveExtension = () => {
     const { view } = this.props;
     const { dispatch } = view;
-    const { node } = this.props.node;
+    const node = view.state.doc.nodeAt(this.props.node.pos);
 
     const newNode = resolveMacro(
       {
@@ -119,8 +121,10 @@ export class Tabs extends React.Component<Props, State> {
   }
 
   addOption = e => {
-    const { params } = this.state;
+    const node = this.props.view.state.doc.nodeAt(this.props.node.pos);
+    const params = node.attrs.parameters;
     const newTabId = `${generateUuid()}`;
+
     const nextState = {
       params: {
         ...params,
