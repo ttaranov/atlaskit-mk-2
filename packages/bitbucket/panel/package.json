@@ -1,0 +1,36 @@
+{
+  "name": "@atlaskit/panel",
+  "version": "0.0.1",
+  "description": "React component that displays panel that can be collapsed and expanded",
+  "license": "Apache-2.0",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "atlaskit:src": "src/index.js",
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    "Tyler T"
+  ],
+  "atlaskit": {
+    "name": "Panel",
+    "team": "bitbucket"
+  },
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
+  "dependencies": {
+    "@atlaskit/icon": "^13.2.0",
+    "@atlaskit/size-detector": "^5.0.5",
+    "@atlaskit/theme": "^6.0.1",
+    "enzyme-to-json": "^3.3.0",
+    "react-animate-height": "^2.0.4"
+  },
+  "peerDependencies": {
+    "react": "^16.4.0",
+    "styled-components": "^3.2.6"
+  },
+  "devDependencies": {
+    "@atlaskit/docs": "^5.0.6",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
+  }
+}
