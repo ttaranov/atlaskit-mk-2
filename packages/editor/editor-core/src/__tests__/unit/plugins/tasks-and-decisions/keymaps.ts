@@ -65,15 +65,19 @@ describe('tasks and decisions - keymaps', () => {
               doc(list(listProps)(item(itemProps)('HelloWorld'))),
             );
           });
+
           it(`should remove paragraph with ${name}Item and preserve content`, () => {
             const { editorView } = editorFactory(
               doc(list(listProps)(item(itemProps)('Hello')), p('{<>}')),
             );
 
             sendKeyToPm(editorView, 'Backspace');
-            expect(editorView.state.doc).toEqualDocument(
-              doc(list(listProps)(item(itemProps)('Hello'))),
+
+            const expectedDoc = doc(
+              list(listProps)(item(itemProps)('Hello{<>}')),
             );
+            expect(editorView.state.doc).toEqualDocument(expectedDoc);
+            compareSelection(editorFactory, expectedDoc, editorView);
           });
 
           it('should delete only internal node on backspace', () => {
@@ -90,27 +94,58 @@ describe('tasks and decisions - keymaps', () => {
             );
 
             sendKeyToPm(editorView, 'Backspace');
-            expect(editorView.state.doc).toEqualDocument(
-              doc(list(listProps)(item(itemProps)('Hello '))),
+
+            const expectedDoc = doc(
+              list(listProps)(item(itemProps)('Hello {<>}')),
             );
+            expect(editorView.state.doc).toEqualDocument(expectedDoc);
+            compareSelection(editorFactory, expectedDoc, editorView);
           });
         });
 
         describe(`when cursor is at the begining of a ${name}Item`, () => {
-          it('should merge content of current item with previous item', () => {
+          it('should convert item to paragraph, splitting the list', () => {
             const { editorView } = editorFactory(
               doc(
                 list(listProps)(
                   item(itemProps)('Hello'),
                   item(itemProps)('{<>}World'),
+                  item(itemProps)('Cheese is great!'),
                 ),
               ),
             );
 
             sendKeyToPm(editorView, 'Backspace');
-            expect(editorView.state.doc).toEqualDocument(
-              doc(list(listProps)(item(itemProps)('HelloWorld'))),
+            const expectedDoc = doc(
+              list(listProps)(item(itemProps)('Hello')),
+              p('{<>}World'),
+              list(listProps)(item(itemProps)('Cheese is great!')),
             );
+            expect(editorView.state.doc).toEqualDocument(expectedDoc);
+            compareSelection(editorFactory, expectedDoc, editorView);
+          });
+
+          it('should merge with previous item, when backspacing twice', () => {
+            const { editorView } = editorFactory(
+              doc(
+                list(listProps)(
+                  item(itemProps)('Hello'),
+                  item(itemProps)('{<>}World'),
+                  item(itemProps)('Cheese is great!'),
+                ),
+              ),
+            );
+
+            sendKeyToPm(editorView, 'Backspace');
+            sendKeyToPm(editorView, 'Backspace');
+
+            const expectedDoc = doc(
+              list(listProps)(item(itemProps)('Hello{<>}World')),
+              // TODO - list merging FS-2947
+              list(listProps)(item(itemProps)('Cheese is great!')),
+            );
+            expect(editorView.state.doc).toEqualDocument(expectedDoc);
+            compareSelection(editorFactory, expectedDoc, editorView);
           });
         });
 
@@ -126,9 +161,13 @@ describe('tasks and decisions - keymaps', () => {
             );
 
             sendKeyToPm(editorView, 'Backspace');
-            expect(editorView.state.doc).toEqualDocument(
-              doc(p('Hello'), list(listProps)(item(itemProps)('World'))),
+
+            const expectedDoc = doc(
+              p('{<>}Hello'),
+              list(listProps)(item(itemProps)('World')),
             );
+            expect(editorView.state.doc).toEqualDocument(expectedDoc);
+            compareSelection(editorFactory, expectedDoc, editorView);
           });
 
           it('should convert item to paragraph and remove the list if it is empty', () => {
@@ -137,7 +176,10 @@ describe('tasks and decisions - keymaps', () => {
             );
 
             sendKeyToPm(editorView, 'Backspace');
-            expect(editorView.state.doc).toEqualDocument(doc(p('Hello World')));
+
+            const expectedDoc = doc(p('{<>}Hello World'));
+            expect(editorView.state.doc).toEqualDocument(expectedDoc);
+            compareSelection(editorFactory, expectedDoc, editorView);
           });
 
           it(`should delete selection and keep ${name}Item`, () => {
@@ -146,9 +188,12 @@ describe('tasks and decisions - keymaps', () => {
             );
 
             sendKeyToPm(editorView, 'Backspace');
-            expect(editorView.state.doc).toEqualDocument(
-              doc(list(listProps)(item(itemProps)('World'))),
+
+            const expectedDoc = doc(
+              list(listProps)(item(itemProps)('{<>}World')),
             );
+            expect(editorView.state.doc).toEqualDocument(expectedDoc);
+            compareSelection(editorFactory, expectedDoc, editorView);
           });
         });
 

@@ -188,7 +188,7 @@ export const splitListAtSelection = (
     );
   }
 
-  content.push(paragraph.createChecked({}));
+  content.push(paragraph.createChecked({}, item.node.content));
 
   if (afterItems.length) {
     content.push(

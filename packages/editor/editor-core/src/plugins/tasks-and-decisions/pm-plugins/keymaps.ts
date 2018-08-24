@@ -18,14 +18,6 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
     return tr.delete($from.before($from.depth) - 1, $from.end($from.depth) + 1);
   };
 
-  const deleteList = ($from: ResolvedPos, tr: Transaction, content: any) => {
-    return tr.replaceWith(
-      $from.start($from.depth - 1) - 1,
-      $from.end($from.depth - 1) + 1,
-      content,
-    );
-  };
-
   /*
    * Since the DecisionItem and TaskItem only accepts inline-content, we won't get any of the default behaviour from ProseMirror
    * eg. behaviour for backspace and enter etc. So we need to implement it.
@@ -50,27 +42,14 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
         return false;
       }
 
-      const nodeType = $from.node($from.depth).type;
-      const isFirstItemInList =
-        (nodeType === decisionItem || nodeType === taskItem) &&
-        $from.index($from.depth - 1) === 0;
-
       // Don't do anything if the cursor isn't at the beginning of the node.
       if ($from.parentOffset !== 0) {
-        return false;
-      }
-
-      if ($from.depth !== 1 && !isFirstItemInList) {
         return false;
       }
 
       const previousPos = tr.doc.resolve(
         Math.max(0, $from.before($from.depth) - 1),
       );
-
-      if (previousPos.pos === 0 && !isFirstItemInList) {
-        return false;
-      }
 
       const previousNodeType =
         previousPos.pos > 0 && previousPos.node(1) && previousPos.node(1).type;
@@ -86,24 +65,11 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
         deleteCurrentItem($from, tr).insert(insertPos, content);
         dispatch(setTextSelection(insertPos)(tr).scrollIntoView());
         return true;
-      } else if (isFirstItemInList) {
-        const content = schema.nodes.paragraph.create(
-          {},
-          $from.node($from.depth).content,
-        );
-        const isOnlyChild = $from.node($from.depth - 1).childCount === 1;
-        const insertPos = previousPos.pos > 0 ? previousPos.pos + 1 : 0;
-
-        if (!isOnlyChild) {
-          deleteCurrentItem($from, tr).insert(insertPos, content);
-        } else {
-          deleteList($from, tr, content);
-        }
-        dispatch(setTextSelection(insertPos)(tr).scrollIntoView());
-        return true;
       }
 
-      return false;
+      dispatch(splitListAtSelection(tr, schema, state));
+
+      return true;
     },
     Enter: (state: EditorState, dispatch) => {
       const {
