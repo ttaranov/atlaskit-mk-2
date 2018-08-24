@@ -15,6 +15,16 @@ type Request = {
   url: string;
 };
 
+type MocksConfig = {
+  crossProductSearchDelay: number;
+  quickNavDelay: number;
+};
+
+const DEFAULT_MOCKS_CONFIG: MocksConfig = {
+  crossProductSearchDelay: 650,
+  quickNavDelay: 500,
+};
+
 const recentResponse = recentData();
 const confluenceRecentPagesResponse = makeConfluenceRecentPagesData();
 const confluenceRecentSpacesResponse = makeConfluenceRecentSpacesData();
@@ -41,22 +51,22 @@ function mockConfluenceRecentApi() {
   );
 }
 
-function mockCrossProductSearchApi() {
+function mockCrossProductSearchApi(delayMs: number) {
   fetchMock.post(new RegExp('/quicksearch/v1'), async (request: Request) => {
     const body = await request.json();
     const query = body.query;
     const results = queryMockSearch(query);
 
-    return delay(650, results);
+    return delay(delayMs, results);
   });
 }
 
-function mockQuickNavApi() {
+function mockQuickNavApi(delayMs: number) {
   fetchMock.mock(new RegExp('/quicknav/1'), async (request: Request) => {
     const query = request.url.split('query=')[1];
     const results = queryMockQuickNav(query);
 
-    return delay(650, results);
+    return delay(delayMs, results);
   });
 }
 
@@ -77,12 +87,12 @@ function mockJiraApi() {
   );
 }
 
-export function setupMocks() {
+export function setupMocks(config: MocksConfig = DEFAULT_MOCKS_CONFIG) {
   mockRecentApi();
-  mockCrossProductSearchApi();
+  mockCrossProductSearchApi(config.crossProductSearchDelay);
   mockPeopleApi();
   mockConfluenceRecentApi();
-  mockQuickNavApi();
+  mockQuickNavApi(config.quickNavDelay);
   mockJiraApi();
 }
 

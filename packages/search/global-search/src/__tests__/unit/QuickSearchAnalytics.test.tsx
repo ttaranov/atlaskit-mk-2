@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { setupMocks, teardownMocks } from '../../../example-helpers/mockApis';
-import { GlobalQuickSearch } from '../../../src';
-import { QuickSearchContainer } from '../../../src/components/common/QuickSearchContainer';
+import { GlobalQuickSearch } from '../..';
+import { QuickSearchContainer } from '../../components/common/QuickSearchContainer';
 import BasicNavigation from '../../../example-helpers/BasicNavigation';
 import LocaleIntlProvider from '../../../example-helpers/LocaleIntlProvider';
 
@@ -12,7 +12,7 @@ import {
   validateEvent,
   GlobalSearchDrawerEvent,
   PreQuerySearchResultsEvent,
-} from './EventsPayloads';
+} from './helpers/EventsPayloads';
 
 const spyOnComponentDidUpdate = () => {
   if (QuickSearchContainer.prototype.componentDidUpdate) {
@@ -28,7 +28,10 @@ describe('Quick Search Analytics', () => {
   const onEventSpy = jest.fn();
 
   beforeAll(async () => {
-    setupMocks();
+    setupMocks({
+      quickNavDelay: 0,
+      crossProductSearchDelay: 0,
+    });
     await renderAndWaitForUpdate();
   });
 
