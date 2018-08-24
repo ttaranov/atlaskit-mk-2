@@ -51,15 +51,13 @@ const participants = [
   'Patricia Scovil',
 ];
 
-export const getParticipant = sid => {
-  const name = participants[(sid | 0) % participants.length];
+export const getParticipant = (userId: string) => {
+  const id = +userId.split('/')[1];
+  const name = participants[(id | 0) % participants.length];
   return {
-    sid,
+    userId,
     name,
     avatar: `https://api.adorable.io/avatars/80/${name.replace(/\s/g, '')}.png`,
+    email: `${name.replace(/\s/g, '').toLocaleLowerCase()}@atlassian.com`,
   };
-};
-
-export const getRandomUser = () => {
-  return Math.floor(Math.random() * 10000).toString();
 };
