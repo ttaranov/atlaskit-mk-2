@@ -31,7 +31,6 @@ function noMasterRunning() {
     .get(`${PIPELINES_ENDPOINT}?${+new Date()}`, axiosRequestConfig)
     .then(response => {
       const allPipelines = response.data.values;
-      console.log(allPipelines.slice(5).map(p => p.state.name));
       const runningPipelines = allPipelines
         .filter(
           pipeline =>
