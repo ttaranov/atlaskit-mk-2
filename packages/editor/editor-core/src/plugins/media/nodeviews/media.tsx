@@ -42,7 +42,7 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
   }
 
   componentWillUnmount() {
-    console.log('unmounting', this);
+    // console.log('unmounting', this);
     const { node } = this.props;
     this.pluginState.handleMediaNodeUnmount(node);
   }
@@ -52,7 +52,7 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
       this.props.getPos !== newProps.getPos ||
       this.props.node.attrs.__key !== newProps.node.attrs.__key
     ) {
-      console.log('remounting');
+      // console.log('remounting');
       this.pluginState.handleMediaNodeUnmount(this.props.node);
       this.handleNewNode(newProps);
     }
@@ -98,7 +98,7 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
       );
     }
 
-    console.log('render media item, id', id, '__key', __key, 'url', url);
+    // console.log('render media item, id', id, '__key', __key, 'url', url);
 
     return (
       <UIMedia

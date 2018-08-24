@@ -162,8 +162,6 @@ export class MediaComponentInternal extends Component<Props, State> {
   private renderLoadingCard(mediaItemType: MediaItemType, url?: string) {
     const { cardDimensions } = this.props;
 
-    console.log('rendering loading card');
-
     return (
       <CardView
         status="loading"
@@ -295,8 +293,6 @@ export class MediaComponentInternal extends Component<Props, State> {
       progress = 0.0;
     }
 
-    console.log('this state', this.state);
-
     const isImageFile = isImage(fileMimeType);
 
     // Construct file details object
@@ -311,8 +307,6 @@ export class MediaComponentInternal extends Component<Props, State> {
     if (onDelete) {
       otherProps.actions = [createDeleteAction(onDelete)];
     }
-
-    // console.log('render temp', progress);
 
     return (
       <CardView

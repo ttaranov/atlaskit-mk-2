@@ -532,11 +532,8 @@ export class MediaPluginState {
       return;
     }
 
-    console.log('oldState', this.stateManager.getState(oldId));
-
     const existingNode = mediaNodeWithPos.node;
 
-    console.log('setting preview on', oldId);
     this.stateManager.updateState(oldId, {
       ready: false,
       preview: true,
@@ -585,8 +582,6 @@ export class MediaPluginState {
       nodePos + mediaNode.nodeSize,
       newNode,
     );
-
-    console.log('tr', tr);
 
     this.view.dispatch(tr.setMeta('addToHistory', false));
     this.editingMediaId = undefined;
@@ -655,14 +650,14 @@ export class MediaPluginState {
         }
 
         const { node } = nodeWithPos;
-        console.log(
-          '\tlooking for node with id',
-          id,
-          'have id',
-          node.attrs.id,
-          '__key',
-          node.attrs.__key,
-        );
+        // console.log(
+        //   '\tlooking for node with id',
+        //   id,
+        //   'have id',
+        //   node.attrs.id,
+        //   '__key',
+        //   node.attrs.__key,
+        // );
         if (node.attrs.__key === id) {
           return nodeWithPos;
         }
@@ -828,7 +823,7 @@ export class MediaPluginState {
   // upload from drag-drop:
   //  uploading -> preview -> uploading -> processing -> ready
   private handleMediaState = async (state: MediaState) => {
-    console.log('new media state', state.status, state);
+    // console.log('new media state', state.status, state);
     switch (state.status) {
       case 'error':
         this.removeNodeById(state.id);
@@ -925,14 +920,14 @@ export class MediaPluginState {
       __fileMimeType: fileMimeType,
     };
 
-    console.log(
-      'setting attributes on',
-      mediaNode,
-      'to',
-      attrs,
-      'at pos',
-      getPos(),
-    );
+    // console.log(
+    //   'setting attributes on',
+    //   mediaNode,
+    //   'to',
+    //   attrs,
+    //   'at pos',
+    //   getPos(),
+    // );
 
     // replace the old node with a new one
     const nodePos = getPos();
