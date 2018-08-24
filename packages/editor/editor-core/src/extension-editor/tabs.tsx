@@ -10,13 +10,26 @@ import { pluginKey } from '../plugins/extension/plugin';
 import Form, { Field, FormHeader } from '@atlaskit/form';
 import { generateUuid } from '@atlaskit/editor-common';
 
+type Parameters = {
+  tabs: Array<{
+    id: string;
+    name: string;
+  }>;
+  tabsContent: Array<{
+    tabId: string;
+    content: any;
+  }>;
+};
+
 export interface Props {
   node: Object;
+  view: any;
+  params: Parameters;
 }
 
 export interface State {
   node: Object;
-  params: Object;
+  params: Parameters;
   nodePos: number;
 }
 
@@ -32,7 +45,7 @@ export class Tabs extends React.Component<Props, State> {
 
   componentDidUpdate(nextProps) {
     if (this.props.node.node !== nextProps.node.node) {
-      this.setState((prev, next) => {
+      this.setState(prev => {
         return {
           node:
             nextProps.node && nextProps.node.node ? nextProps.node.node : null,
@@ -64,7 +77,9 @@ export class Tabs extends React.Component<Props, State> {
     if (!isNodeSelection(view.state.selection)) {
       setNodeSelection(view, this.state.nodePos);
     }
-    dispatch(replaceSelectedNode(newNode)(view.state.tr));
+    if (newNode) {
+      dispatch(replaceSelectedNode(newNode)(view.state.tr));
+    }
   };
 
   dismiss = () => {
@@ -79,15 +94,26 @@ export class Tabs extends React.Component<Props, State> {
   renderTabs(params) {
     return this.state.params.tabs.map((item, idx) => {
       return (
-        <Field id={item.id} label={`Option ${idx + 1}`} isRequired>
-          <FieldText
-            name="tab_name"
-            onChange={this.updateInput.bind(null, item.id)}
-            shouldFitContainer
-            value={item.name}
-            onBlur={this.saveExtension}
-          />
-        </Field>
+        <>
+          <Field key={idx} id={item.id} label={`Option ${idx + 1}`} isRequired>
+            <FieldText
+              name="tab_name"
+              onChange={this.updateInput.bind(null, item.id)}
+              shouldFitContainer
+              value={item.name}
+              onBlur={this.saveExtension}
+            />
+          </Field>
+          {idx > 1 && (
+            <Button
+              className="react remove-option"
+              appearance="link"
+              onClick={() => this.removeOption(item.id)}
+            >
+              Remove
+            </Button>
+          )}
+        </>
       );
     });
   }
@@ -118,6 +144,22 @@ export class Tabs extends React.Component<Props, State> {
     this.setState(nextState, () => {
       this.saveExtension();
     });
+  };
+
+  removeOption = tabId => {
+    this.setState(
+      prevState => ({
+        params: {
+          tabs: prevState.params.tabs.filter(i => i.id !== tabId),
+          tabsContent: prevState.params.tabsContent.filter(
+            i => i.tabId !== tabId,
+          ),
+        },
+      }),
+      () => {
+        this.saveExtension();
+      },
+    );
   };
 
   updateInput = (key, e) => {

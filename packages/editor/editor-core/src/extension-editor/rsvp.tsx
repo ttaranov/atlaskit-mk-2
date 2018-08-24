@@ -110,23 +110,25 @@ export class Rsvp extends React.Component<Props, State> {
             }}
           />
         </Field>
-        <Field label="Deadline" isRequired>
-          <FieldText
-            name="evt_deadline"
-            type="datetime-local"
-            shouldFitContainer
-            onBlur={this.saveExtension}
-            value={format(deadline, 'YYYY-MM-DDTHH:mm:ss')}
-            onChange={e => {
-              this.setState({
-                params: {
-                  ...this.state.params,
-                  deadline: parse(e.target.value),
-                },
-              });
-            }}
-          />
-        </Field>
+        {deadline && (
+          <Field label="Deadline" isRequired>
+            <FieldText
+              name="evt_deadline"
+              type="datetime-local"
+              shouldFitContainer
+              onBlur={this.saveExtension}
+              value={format(deadline, 'YYYY-MM-DDTHH:mm:ss')}
+              onChange={e => {
+                this.setState({
+                  params: {
+                    ...this.state.params,
+                    deadline: parse(e.target.value),
+                  },
+                });
+              }}
+            />
+          </Field>
+        )}
         <Field label="Event Duration" isRequired>
           <FieldText
             name="evt_duration"
