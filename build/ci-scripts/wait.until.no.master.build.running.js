@@ -26,24 +26,27 @@ const axiosRequestConfig = {
 
 function noMasterRunning() {
   console.log(+new Date(), 'Checking if master is running...');
-  return axios.get(PIPELINES_ENDPOINT, axiosRequestConfig).then(response => {
-    const allPipelines = response.data.values;
-    console.log(allPipelines.map(p => p.state.name));
-    const runningPipelines = allPipelines
-      .filter(
-        pipeline =>
-          pipeline.state.name === 'IN_PROGRESS' ||
-          pipeline.state.name === 'PENDING',
-      )
-      // remove the scheduled builds (website, etc)
-      .filter(job => job.trigger.name !== 'SCHEDULE');
-    console.log(runningPipelines.length, 'master build running');
-    return runningPipelines.length === 0;
-  });
+  // We add a queryString to ensure we dont get cached responses
+  return axios
+    .get(`${PIPELINES_ENDPOINT}?${+new Date()}`, axiosRequestConfig)
+    .then(response => {
+      const allPipelines = response.data.values;
+      console.log(allPipelines.slice(5).map(p => p.state.name));
+      const runningPipelines = allPipelines
+        .filter(
+          pipeline =>
+            pipeline.state.name === 'IN_PROGRESS' ||
+            pipeline.state.name === 'PENDING',
+        )
+        // remove the scheduled builds (website, etc)
+        .filter(job => job.trigger.name !== 'SCHEDULE');
+      console.log(runningPipelines.length, 'master build running');
+      return runningPipelines.length === 0;
+    });
 }
 
 console.log(
   'Waiting until there is no master build running so that we can merge...',
 );
 
-pWaitFor(noMasterRunning, 15000);
+pWaitFor(noMasterRunning, 5000);
