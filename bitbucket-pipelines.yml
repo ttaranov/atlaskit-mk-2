@@ -242,7 +242,13 @@ pipelines:
                 - git merge master --no-edit
                 - bolt install --pure-lockfile
                 - STEPS="4" STEP_IDX="3" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
-
+      - step:
+          name: Wait until no master is running
+          script:
+            - source ./build-setup.sh
+            - cd build/ci-scripts
+            - yarn
+            - node ./wait.until.no.master.build.running.js
     # This build should only be run on the master branch, once per day.
     # It manually clears the cache and runs a very quick install node_modules
     # We split into two steps so that one can clear the cache so that the second one starts with no cache

@@ -18,6 +18,7 @@
     "bolt-webpack-analyzer": "^0.0.1",
     "chalk": "^2.1.0",
     "npm-run": "^4.1.2",
+    "p-wait-for": "^1.0.0",
     "s3-cli": "^0.13.0",
     "spawndamnit": "^1.0.0"
   }
