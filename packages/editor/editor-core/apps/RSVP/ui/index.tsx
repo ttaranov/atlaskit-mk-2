@@ -117,6 +117,39 @@ export class RSVPApp extends Component<Props, State> {
           center,
           zoom: 15,
         });
+
+        this.map.on('load', () => {
+          this.map.addLayer({
+            id: '3d-buildings',
+            source: 'composite',
+            'source-layer': 'building',
+            filter: ['==', 'extrude', 'true'],
+            type: 'fill-extrusion',
+            minzoom: 10,
+            paint: {
+              'fill-extrusion-color': '#aaa',
+              'fill-extrusion-height': [
+                'interpolate',
+                ['linear'],
+                ['zoom'],
+                10,
+                0,
+                10.05,
+                ['get', 'height'],
+              ],
+              'fill-extrusion-base': [
+                'interpolate',
+                ['linear'],
+                ['zoom'],
+                10,
+                0,
+                10.05,
+                ['get', 'min_height'],
+              ],
+              'fill-extrusion-opacity': 0.5,
+            },
+          });
+        });
       }
     }
 
