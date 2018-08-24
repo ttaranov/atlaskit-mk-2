@@ -42,7 +42,6 @@ export class Rsvp extends React.Component<Props, State> {
       this.setState((prev, next) => {
         return {
           showSidebar: nextProps.showSidebar,
-          node: nextProps.node && nextProps.node.node,
           params:
             (prev.node && prev.params) ||
             (nextProps.node && nextProps.node.node.attrs.parameters),
@@ -92,10 +91,6 @@ export class Rsvp extends React.Component<Props, State> {
       maxAttendees,
       showMap,
     } = this.state.params;
-    const x = format;
-    const y = parse;
-    console.log(x(dateTime, 'YYYY-MM-DDTHH:mm:ss'));
-    // console.log
     return (
       <>
         <Field label="Date" isRequired>
@@ -148,7 +143,7 @@ export class Rsvp extends React.Component<Props, State> {
             }}
           />
         </Field>
-        <Field label="location" isRequired>
+        <Field label="Address" isRequired>
           <FieldText
             name="ext_location"
             shouldFitContainer
@@ -164,7 +159,7 @@ export class Rsvp extends React.Component<Props, State> {
             }
           />
         </Field>
-        <Field label="Max Attendees" isRequired>
+        <Field label="Max attendees" isRequired>
           <FieldText
             name="ext_attendees"
             shouldFitContainer
@@ -244,7 +239,6 @@ export class Rsvp extends React.Component<Props, State> {
 
     return (
       <ExtensionEditorContainer>
-        <h1>Extension Editor </h1>
         {this.renderForm(node)}
       </ExtensionEditorContainer>
     );

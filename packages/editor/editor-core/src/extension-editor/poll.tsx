@@ -9,7 +9,6 @@ import Button from '@atlaskit/button';
 import { generateUuid } from '@atlaskit/editor-common';
 import { pluginKey } from '../plugins/extension/plugin';
 import Form, { Field, FormHeader } from '@atlaskit/form';
-import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
 
 export interface Props {
   showSidebar: boolean;
@@ -76,8 +75,6 @@ export class Poll extends React.Component<Props, State> {
   };
 
   removeItem = id => {
-    console.log('removing');
-
     this.setState(
       {
         params: {
@@ -229,7 +226,6 @@ export class Poll extends React.Component<Props, State> {
 
     return (
       <ExtensionEditorContainer>
-        <h1>Extension Editor </h1>
         {this.renderForm(node)}
       </ExtensionEditorContainer>
     );

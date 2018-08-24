@@ -1,24 +1,10 @@
 import * as React from 'react';
-import { ExtensionEditorContainer } from './styles';
-import FieldText from '@atlaskit/field-text';
-import { FormWrapper } from './styles';
 import * as ReactDOM from 'react-dom';
 import NativeListener from 'react-native-listener';
-import { setNodeSelection } from '../utils';
-import { resolveMacro } from '../plugins/macro/actions';
-import { replaceSelectedNode } from 'prosemirror-utils';
-import Button from '@atlaskit/button';
 import { Poll } from './poll';
 import { Rsvp } from './rsvp';
 import { Tabs } from './tabs';
-//
-
-import Form, {
-  Field,
-  FormHeader,
-  FormSection,
-  FormFooter,
-} from '@atlaskit/form';
+import { Wrapper } from './styles';
 
 export interface Props {
   showSidebar: boolean;
@@ -62,15 +48,16 @@ export class ExtensionEditor extends React.Component<Props, State> {
   }
 
   render() {
-    const { node } = this.props;
-    if (!node) {
-      return null;
-    }
+    const { node, showSidebar } = this.props;
 
     return ReactDOM.createPortal(
-      <NativeListener onClick={this.preventDefault.bind(this)}>
-        {this.renderExtensions()}
-      </NativeListener>,
+      <Wrapper
+        style={{ width: node && node.node && showSidebar ? '320px' : '0' }}
+      >
+        <NativeListener onClick={this.preventDefault.bind(this)}>
+          {this.renderExtensions()}
+        </NativeListener>
+      </Wrapper>,
       document.body,
     );
   }

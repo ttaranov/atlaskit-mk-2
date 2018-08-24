@@ -23,18 +23,7 @@ import {
 export const ExtensionEditorContainer: ComponentClass<
   HTMLAttributes<{}>
 > = styled.div`
-  padding: 40px;
-  min-width: 280px;
-  position: fixed;
-  height: 100vh;
-  z-index: 100000;
-  background: white;
-  right: 0;
-  top: 0;
-  border-left: 1px solid #efefef;
-  box-shadow: -2px 0px 10px 2px rgba(9, 30, 66, 0.12);
-  border-top: 2px solid #efefef;
-  transition: 1s ease-in;
+  padding: 20px;
 
   label {
     color: ${akColorN100};
@@ -59,4 +48,18 @@ export const FormWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   .options {
     margin: 20px 0;
   }
+`;
+
+export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
+  position: fixed;
+  height: 100vh;
+  z-index: 100000;
+  background: white;
+  overflow: auto;
+  right: 0;
+  top: 0;
+  border-left: 1px solid #efefef;
+  box-shadow: -2px 0px 10px 2px rgba(9, 30, 66, 0.12);
+  border-top: 2px solid #efefef;
+  transition: 250ms ease-in all;
 `;

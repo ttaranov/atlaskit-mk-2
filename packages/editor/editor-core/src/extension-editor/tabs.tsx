@@ -186,7 +186,6 @@ export class Tabs extends React.Component<Props, State> {
 
     return (
       <ExtensionEditorContainer>
-        <h1>Extension Editor </h1>
         {this.renderForm(node)}
       </ExtensionEditorContainer>
     );
