@@ -34,7 +34,7 @@ export const ShapePopupContentWrapper: ComponentClass<
   flex-wrap: wrap;
   width: 128px;
   padding: 8px;
-  margin: -24px -32px; // Compensation for default big padding that inline dialog comes with
+  margin: -20px -32px; // Compensation for default big padding that inline dialog comes with
   > * {
     text-align: left;
     border-radius: 0;
