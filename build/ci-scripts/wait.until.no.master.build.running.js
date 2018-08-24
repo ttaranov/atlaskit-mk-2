@@ -19,7 +19,7 @@ const axiosRequestConfig = {
     pagelen: BUILDS_PER_PAGE,
     // get the most recent builds first
     sort: '-created_on',
-    'target.ref_name': 'lbatch/fixing-more-bugs-in-changelog',
+    'target.ref_name': 'master',
     'target.ref_type': 'BRANCH',
   },
 };
