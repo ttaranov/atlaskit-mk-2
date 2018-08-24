@@ -1,5 +1,5 @@
 // @flow
-import React from 'react';
+import React, { Fragment, Component } from 'react';
 import GlobalNavigation from '@atlaskit/global-navigation';
 import FeedbackIcon from '@atlaskit/icon/glyph/feedback';
 import { AtlassianIcon, AtlassianWordmark } from '@atlaskit/logo';
@@ -16,10 +16,43 @@ import {
 
 import FeedbackCollector from '../src/';
 
-const EMBEDDABLE_KEY = 'your_jsd_embeddable_key';
-const REQUEST_TYPE_ID = 'your_jsd_request_type_id';
-const name = 'Feedback Sender';
-const email = 'fsender@atlassian.com';
+class FeedbackCollectorNavItem extends Component<*, *> {
+  state = {
+    isFeedbackModalOpen: false,
+  };
+  openModal = () => {
+    this.setState({ isFeedbackModalOpen: true });
+  };
+  closeModal = () => {
+    this.setState({ isFeedbackModalOpen: false });
+  };
+  handleSubmit = () => {
+    /* ... */
+  };
+  render() {
+    const { email, name, REQUEST_TYPE_ID, EMBEDDABLE_KEY } = this.props;
+    const { isFeedbackModalOpen } = this.state;
+    return (
+      <Fragment>
+        <Item
+          before={FeedbackIcon}
+          text="Give Feedback"
+          onClick={this.openModal}
+        />
+        {isFeedbackModalOpen && (
+          <FeedbackCollector
+            onClose={this.closeModal}
+            onSubmit={this.handleSubmit}
+            email={email}
+            name={name}
+            requestTypeId={REQUEST_TYPE_ID}
+            embeddableKey={EMBEDDABLE_KEY}
+          />
+        )}
+      </Fragment>
+    );
+  }
+}
 
 const MyGlobalNavigation = () => (
   <GlobalNavigation
@@ -79,20 +112,7 @@ const MyContainerNavigation = () => (
           <Item text="Reports" />
           <Separator />
           <GroupHeading>Feedback</GroupHeading>
-          <Item
-            before={FeedbackIcon}
-            text="Give Feedback"
-            onClick={() => (
-              <FeedbackCollector
-                onClose={() => {}}
-                onSubmit={() => {}}
-                email={email}
-                name={name}
-                requestTypeId={REQUEST_TYPE_ID}
-                embeddableKey={EMBEDDABLE_KEY}
-              />
-            )}
-          />
+          <FeedbackCollectorNavItem />
         </div>
       )}
     </Section>
@@ -106,7 +126,7 @@ export default () => (
       productNavigation={MyProductNavigation}
       containerNavigation={MyContainerNavigation}
     >
-      <div>Page content goes here.</div>
+      <div>Kanban Board or Queues with some awesome feedback.</div>
     </LayoutManager>
   </NavigationProvider>
 );
