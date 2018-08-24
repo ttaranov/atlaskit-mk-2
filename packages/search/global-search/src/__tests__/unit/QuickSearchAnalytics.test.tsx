@@ -5,6 +5,7 @@ import { GlobalQuickSearch } from '../..';
 import { QuickSearchContainer } from '../../components/common/QuickSearchContainer';
 import BasicNavigation from '../../../example-helpers/BasicNavigation';
 import LocaleIntlProvider from '../../../example-helpers/LocaleIntlProvider';
+import { ResultBase } from '@atlaskit/quick-search';
 
 import { mount, ReactWrapper } from 'enzyme';
 import { waitUntil } from './_test-util';
@@ -14,7 +15,8 @@ import {
   getPreQuerySearchResultsEvent,
   getPostQuerySearchResultsEvent,
   getTextEnteredEvent,
-  getDismissedEvent,
+  getAdvancedSearchLinkSelectedEvent,
+  getHighlightEvent,
 } from './helpers/_events_payloads';
 
 const spyOnComponentDidUpdate = () => {
@@ -60,6 +62,16 @@ describe('Quick Search Analytics', () => {
   afterAll(() => {
     teardownMocks();
   });
+
+  const inputFocus = (focus = true) => {
+    const input = wrapper.find('input');
+    expect(input.length).toBe(1);
+    input.simulate(focus ? 'focus' : 'blur');
+  };
+
+  const inputBlur = () => {
+    inputFocus(false);
+  };
 
   const renderComponent = onEvent => {
     return mount(
@@ -116,6 +128,94 @@ describe('Quick Search Analytics', () => {
         event,
         getPreQuerySearchResultsEvent(CONFLUECE_RECENT_ITEMS),
       );
+    });
+  });
+
+  describe('Highlight and select', () => {
+    afterEach(() => {
+      updateSpy.mockReset();
+      onEventSpy.mockReset();
+      inputBlur();
+    });
+
+    const keyPress = (key: 'ArrowUp' | 'ArrowDown' | 'Enter', withShift?) => {
+      const input = wrapper.find('input');
+      expect(input.length).toBe(1);
+      input.simulate('keyDown', {
+        key,
+        shiftKey: withShift,
+      });
+    };
+
+    it('should trigger highlight result event', () => {
+      const count = 9;
+      for (let i = 0; i < count; i++) {
+        keyPress('ArrowDown');
+      }
+      expect(onEventSpy).toHaveBeenCalledTimes(count);
+      onEventSpy.mock.calls.forEach(([event], index) => {
+        validateEvent(
+          event,
+          getHighlightEvent({
+            key: 'ArrowDown',
+            indexWithinSection: index % (count - 1),
+            globalIndex: index,
+            resultCount: 16, // 14 + 2 advanced
+            sectionIndex: Math.floor(index / (count - 1)),
+            sectionId: 'recent-confluence',
+            type: index === 8 ? undefined : 'confluence-page',
+          }),
+        );
+      });
+    });
+
+    it('should trigger highlight result event on arrow up', () => {
+      keyPress('ArrowUp');
+      expect(onEventSpy).toHaveBeenCalledTimes(1);
+      const event = onEventSpy.mock.calls[0][0];
+      validateEvent(
+        event,
+        getHighlightEvent({
+          key: 'ArrowUp',
+          indexWithinSection: undefined,
+          globalIndex: 15,
+          resultCount: 16, // 14 + 2 advanced
+          sectionIndex: undefined, // advanced results is not a section
+          sectionId: 'advanced-search-confluence',
+          type: undefined,
+        }),
+      );
+    });
+
+    it('should trigger advanced result selected', () => {
+      const results = wrapper.find(ResultBase);
+      expect(results.length).toBe(16);
+      const advancedSearchResult = results.last();
+      advancedSearchResult.simulate('click', {
+        metaKey: true,
+      });
+      expect(onEventSpy).toHaveBeenCalled();
+      const event = onEventSpy.mock.calls[0][0];
+      validateEvent(
+        event,
+        getAdvancedSearchLinkSelectedEvent({
+          resultContentId: 'search_confluence',
+          sectionId: 'advanced-search-confluence',
+          globalIndex: 15,
+          resultCount: 14, // does not include advanced search links
+        }),
+      );
+    });
+
+    it('should trigger normal result selected', () => {
+      const results = wrapper.find(ResultBase);
+      expect(results.length).toBe(16);
+      const result = results.at(10);
+      result.simulate('click', {
+        metaKey: true,
+      });
+      console.log(onEventSpy.mock.calls);
+      console.log(onEventSpy.mock.calls[0][0]);
     });
   });
 
@@ -238,12 +338,5 @@ describe('Quick Search Analytics', () => {
         });
       });
     });
-  });
-
-  it('should be trigger dismissed event', () => {
-    wrapper.unmount();
-    expect(onEventSpy).toHaveBeenCalledTimes(1);
-    const dismissedEvent = onEventSpy.mock.calls[0][0];
-    validateEvent(dismissedEvent, getDismissedEvent());
   });
 });
