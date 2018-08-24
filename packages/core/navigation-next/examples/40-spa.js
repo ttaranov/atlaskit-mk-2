@@ -5,7 +5,6 @@ import { Route, Switch } from 'react-router';
 import { HashRouter } from 'react-router-dom';
 import { Label } from '@atlaskit/field-base';
 import { ToggleStateless } from '@atlaskit/toggle';
-import FabricAnalyticsListeners from '@atlaskit/analytics-listeners';
 
 import { LayoutManagerWithViewController, NavigationProvider } from '../src';
 
@@ -17,13 +16,6 @@ import {
   DashboardsView,
   SearchIssuesView,
 } from './shared/routes';
-
-const mockClient = {
-  sendUIEvent: (...args) => console.log('UI event', ...args),
-  sendOperationalEvent: (...args) => console.log('Operational event', ...args),
-  sendTrackEvent: (...args) => console.log('Track event', ...args),
-  sendScreenEvent: (...args) => console.log('Screen event', ...args),
-};
 
 export default class App extends Component<{}, { isDebugEnabled: boolean }> {
   state = {
@@ -38,33 +30,31 @@ export default class App extends Component<{}, { isDebugEnabled: boolean }> {
     const { isDebugEnabled } = this.state;
 
     return (
-      <FabricAnalyticsListeners client={Promise.resolve(mockClient)}>
-        <HashRouter>
-          <NavigationProvider
-            initialPeekViewId="root/index"
-            isDebugEnabled={isDebugEnabled}
+      <HashRouter>
+        <NavigationProvider
+          initialPeekViewId="root/index"
+          isDebugEnabled={isDebugEnabled}
+        >
+          <LayoutManagerWithViewController
+            customComponents={{ ProjectSwitcher }}
+            globalNavigation={DefaultGlobalNavigation}
           >
-            <LayoutManagerWithViewController
-              customComponents={{ ProjectSwitcher }}
-              globalNavigation={DefaultGlobalNavigation}
-            >
-              <div style={{ padding: 30 }}>
-                <Switch>
-                  <Route path="/projects/:projectId" component={BacklogView} />
-                  <Route path="/projects" component={ProjectsView} />
-                  <Route path="/issues/search" component={SearchIssuesView} />
-                  <Route path="/" component={DashboardsView} />
-                </Switch>
-                <Label label="Toggle debug logger" />
-                <ToggleStateless
-                  isChecked={isDebugEnabled}
-                  onChange={this.onDebugToggle}
-                />
-              </div>
-            </LayoutManagerWithViewController>
-          </NavigationProvider>
-        </HashRouter>
-      </FabricAnalyticsListeners>
+            <div style={{ padding: 30 }}>
+              <Switch>
+                <Route path="/projects/:projectId" component={BacklogView} />
+                <Route path="/projects" component={ProjectsView} />
+                <Route path="/issues/search" component={SearchIssuesView} />
+                <Route path="/" component={DashboardsView} />
+              </Switch>
+              <Label label="Toggle debug logger" />
+              <ToggleStateless
+                isChecked={isDebugEnabled}
+                onChange={this.onDebugToggle}
+              />
+            </div>
+          </LayoutManagerWithViewController>
+        </NavigationProvider>
+      </HashRouter>
     );
   }
 }
