@@ -18,6 +18,7 @@ import {
   getAdvancedSearchLinkSelectedEvent,
   getResultSelectedEvent,
   getHighlightEvent,
+  getDismissedEvent,
 } from './helpers/_events_payloads';
 
 const spyOnComponentDidUpdate = () => {
@@ -46,7 +47,9 @@ const CONFLUECE_RECENT_ITEMS = [
     resultsCount: 3,
   },
 ];
-
+/**
+ * !!!! NOTE: Test Order matters
+ */
 describe('Quick Search Analytics', () => {
   const updateSpy = spyOnComponentDidUpdate();
   const onEventSpy = jest.fn();
@@ -376,6 +379,22 @@ describe('Quick Search Analytics', () => {
           );
         });
       });
+    });
+  });
+
+  describe('Dismissed Event', () => {
+    it('should not trigger dismissed Event when result is selected', () => {
+      wrapper.unmount();
+      expect(onEventSpy).not.toHaveBeenCalled();
+    });
+
+    it('should be trigger dismissed event', () => {
+      // remount
+      wrapper.mount();
+      wrapper.unmount();
+      expect(onEventSpy).toHaveBeenCalledTimes(1);
+      const dismissedEvent = onEventSpy.mock.calls[0][0];
+      validateEvent(dismissedEvent, getDismissedEvent());
     });
   });
 });
