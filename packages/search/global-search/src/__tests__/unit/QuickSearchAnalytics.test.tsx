@@ -16,6 +16,7 @@ import {
   getPostQuerySearchResultsEvent,
   getTextEnteredEvent,
   getAdvancedSearchLinkSelectedEvent,
+  getResultSelectedEvent,
   getHighlightEvent,
 } from './helpers/_events_payloads';
 
@@ -50,8 +51,10 @@ describe('Quick Search Analytics', () => {
   const updateSpy = spyOnComponentDidUpdate();
   const onEventSpy = jest.fn();
   let wrapper: ReactWrapper;
+  let originalWindowAssign = window.location.assign;
 
   beforeAll(async () => {
+    window.location.assign = jest.fn();
     setupMocks({
       quickNavDelay: 0,
       crossProductSearchDelay: 0,
@@ -60,6 +63,7 @@ describe('Quick Search Analytics', () => {
   });
 
   afterAll(() => {
+    window.location.assign = originalWindowAssign;
     teardownMocks();
   });
 
@@ -194,7 +198,7 @@ describe('Quick Search Analytics', () => {
       advancedSearchResult.simulate('click', {
         metaKey: true,
       });
-      expect(onEventSpy).toHaveBeenCalled();
+      expect(onEventSpy).toHaveBeenCalledTimes(1);
       const event = onEventSpy.mock.calls[0][0];
       validateEvent(
         event,
@@ -207,15 +211,50 @@ describe('Quick Search Analytics', () => {
       );
     });
 
-    it('should trigger normal result selected', () => {
+    it('should trigger result selected', () => {
       const results = wrapper.find(ResultBase);
       expect(results.length).toBe(16);
       const result = results.at(10);
       result.simulate('click', {
         metaKey: true,
       });
-      console.log(onEventSpy.mock.calls);
-      console.log(onEventSpy.mock.calls[0][0]);
+
+      expect(onEventSpy).toHaveBeenCalledTimes(1);
+      const event = onEventSpy.mock.calls[0][0];
+      validateEvent(
+        event,
+        getResultSelectedEvent({
+          sectionId: 'recent-confluence',
+          globalIndex: 10,
+          resultCount: 14, // does not include advanced search links
+          sectionIndex: 1,
+          indexWithinSection: 2,
+          trigger: 'click',
+          newTab: true,
+          type: undefined,
+        }),
+      );
+    });
+
+    it('should trigger result selected via keyboard navigation', () => {
+      keyPress('ArrowDown');
+      keyPress('ArrowDown');
+      keyPress('Enter');
+      expect(onEventSpy).toHaveBeenCalled();
+      const event = onEventSpy.mock.calls[onEventSpy.mock.calls.length - 1][0];
+      validateEvent(
+        event,
+        getResultSelectedEvent({
+          sectionId: 'recent-confluence',
+          globalIndex: 1,
+          resultCount: 16, // include advanced search links
+          sectionIndex: 0,
+          indexWithinSection: 1,
+          trigger: 'returnKey',
+          newTab: false,
+          type: 'confluence-page',
+        }),
+      );
     });
   });
 

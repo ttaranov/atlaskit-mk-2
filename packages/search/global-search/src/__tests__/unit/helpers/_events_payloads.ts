@@ -204,7 +204,16 @@ export const getAdvancedSearchLinkSelectedEvent = ({
   ...COMMON_EVENT_DATA,
 });
 
-export const getResultSelectedEvent = () => ({
+export const getResultSelectedEvent = ({
+  sectionId,
+  globalIndex,
+  resultCount,
+  sectionIndex,
+  indexWithinSection,
+  newTab,
+  trigger,
+  type,
+}) => ({
   payload: {
     action: 'selected',
     actionSubject: 'navigationItem',
@@ -212,21 +221,20 @@ export const getResultSelectedEvent = () => ({
     eventType: 'track',
     source: 'globalSearchDrawer',
     attributes: {
-      trigger: 'click',
+      trigger,
       searchSessionId: expect.any(String),
-      newTab: true,
+      newTab,
       resultContentId: expect.any(String),
-      type: undefined,
-      sectionId: 'recent-confluence',
-      sectionIndex: 1,
-      globalIndex: 10,
-      indexWithinSection: 2,
-      containerId: '',
-      resultCount: 14,
-      experimentId: undefined,
+      sectionId,
+      sectionIndex,
+      globalIndex,
+      indexWithinSection,
+      containerId: expect.any(String),
+      resultCount,
       packageName: 'global-search',
       packageVersion: '0.0.0',
       componentName: 'GlobalQuickSearch',
+      type,
     },
   },
   ...COMMON_EVENT_DATA,
