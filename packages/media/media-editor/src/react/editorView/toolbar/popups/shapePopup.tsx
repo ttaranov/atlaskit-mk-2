@@ -44,6 +44,7 @@ export class ShapePopup extends Component<ShapePopupProps> {
 
       return (
         <Button
+          appearance="subtle"
           key={shape}
           isSelected={isSelected}
           shouldFitContainer
