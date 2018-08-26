@@ -2,7 +2,6 @@
   "extends": "../../../tsconfig.editor.json",
   "include": [
     "./src/**/*.ts",
-    "./__tests__/**/*.ts",
     "./docs/**/*.ts",
     "./examples/**/*.ts"
   ]
