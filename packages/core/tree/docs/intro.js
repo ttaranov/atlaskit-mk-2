@@ -115,17 +115,12 @@ renderItem = ({
 }: RenderItemParams) => {
   return (
     <div
-      key={item.id}
-      style={{ paddingLeft: depth * 16 }}
+      ref={provided.innerRef} 
+      {...provided.draggableProps}
+      {...provided.dragHandleProps}
     >
-      <div
-        ref={provided.innerRef}
-        {...provided.draggableProps}
-        {...provided.dragHandleProps}
-      >
-        <span>{getIcon(item, onExpand, onCollapse)}</span>
-        <span>{item.data ? item.data.title : ''}</span>
-      </div>
+      <span>{getIcon(item, onExpand, onCollapse)}</span>
+      <span>{item.data ? item.data.title : ''}</span>
     </div>
   );
 };

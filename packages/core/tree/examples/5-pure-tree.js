@@ -46,23 +46,15 @@ export default class PureTree extends Component<void, State> {
     tree: treeWithTwoBranches,
   };
 
-  renderItem = ({
-    item,
-    depth,
-    onExpand,
-    onCollapse,
-    provided,
-  }: RenderItemParams) => {
+  renderItem = ({ item, onExpand, onCollapse, provided }: RenderItemParams) => {
     return (
-      <div key={item.id} style={{ paddingLeft: depth * PADDING_PER_LEVEL }}>
-        <div
-          ref={provided.innerRef}
-          {...provided.draggableProps}
-          {...provided.dragHandleProps}
-        >
-          <span>{getIcon(item, onExpand, onCollapse)}</span>
-          <span>{item.data ? item.data.title : ''}</span>
-        </div>
+      <div
+        ref={provided.innerRef}
+        {...provided.draggableProps}
+        {...provided.dragHandleProps}
+      >
+        <span>{getIcon(item, onExpand, onCollapse)}</span>
+        <span>{item.data ? item.data.title : ''}</span>
       </div>
     );
   };
