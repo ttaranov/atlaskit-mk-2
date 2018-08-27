@@ -4,7 +4,6 @@ import type { Node } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
-  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import Tooltip from '@atlaskit/tooltip';
 import {
@@ -36,6 +35,27 @@ class Avatar extends Component<AvatarPropTypes> {
     size: 'medium',
   };
 
+  // Hello dear code explorer: unfortunately, to stop click always being
+  // provided if it is added by the HoC for analytics, we must handle adding
+  // onClick in avatar directly, only if it is provided.
+  clickAnalyticsCaller = () => {
+    const { createAnalyticsEvent } = this.props;
+    const analyticsEvent = createAnalyticsEvent({
+      action: 'clicked',
+      actionSubject: 'avatar',
+
+      attributes: {
+        componentName: 'avatar',
+        packageName,
+        packageVersion,
+      },
+    });
+    const consumerEvent = analyticsEvent.clone();
+
+    analyticsEvent.fire('atlaskit');
+    return consumerEvent;
+  };
+
   // expose blur/focus to consumers via ref
   blur = () => {
     if (this.ref) this.ref.blur();
@@ -47,13 +67,18 @@ class Avatar extends Component<AvatarPropTypes> {
   // disallow click on disabled avatars
   // only return avatar data properties
   guardedClick = (event: KeyboardEvent | MouseEvent) => {
-    const { isDisabled, onClick } = this.props;
+    const { isDisabled, onClick, createAnalyticsEvent } = this.props;
 
     if (isDisabled || typeof onClick !== 'function') return;
 
     const item = omit(this.props, ...propsOmittedFromClickData);
 
-    onClick({ item, event });
+    let analyticsEvent;
+    if (createAnalyticsEvent) {
+      analyticsEvent = this.clickAnalyticsCaller();
+    }
+
+    onClick({ item, event }, analyticsEvent);
   };
 
   // enforce status / presence rules
@@ -175,23 +200,8 @@ export const AvatarWithoutAnalytics = mapProps({
     ), // 2
 })(withPseudoState(Avatar));
 
-const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
-
 export default withAnalyticsContext({
   componentName: 'avatar',
   packageName,
   packageVersion,
-})(
-  withAnalyticsEvents({
-    onClick: createAndFireEventOnAtlaskit({
-      action: 'clicked',
-      actionSubject: 'avatar',
-
-      attributes: {
-        componentName: 'avatar',
-        packageName,
-        packageVersion,
-      },
-    }),
-  })(AvatarWithoutAnalytics),
-);
+})(withAnalyticsEvents()(AvatarWithoutAnalytics));

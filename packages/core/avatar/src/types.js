@@ -1,5 +1,6 @@
 // @flow
 import type { Node, ComponentType } from 'react';
+import type { AnalyticsEventInterface } from '@atlaskit/analytics-next';
 
 export type AppearanceType = 'circle' | 'square';
 export type PresenceType = ('online' | 'busy' | 'focus' | 'offline') | Node;
@@ -18,6 +19,7 @@ export type StyledComponentType = 'custom' | 'button' | 'link' | 'span';
 
 export type AvatarClickType = (
   ?{ event?: KeyboardEvent | MouseEvent, item: Object },
+  ?AnalyticsEventInterface,
 ) => void;
 
 export type AvatarPropTypesBase = {
@@ -68,6 +70,9 @@ export type AvatarPropTypesBase = {
   tabIndex?: number,
   /** Pass target down to the anchor, if href is provided. */
   target?: '_blank' | '_self' | '_top' | '_parent',
+  /** You should not be accessing this prop under any circumstances. It is
+   provided by @atlaskit/analytics-next. */
+  createAnalyticsEvent: any,
 };
 
 export type AvatarPropTypes = AvatarPropTypesBase & {
