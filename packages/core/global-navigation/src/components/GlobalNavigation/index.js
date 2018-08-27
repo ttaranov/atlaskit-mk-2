@@ -10,6 +10,7 @@ import {
 } from '../../../package.json';
 import generateDefaultConfig from '../../config/default-config';
 import generateProductConfig from '../../config/product-config';
+import generatePlatformIntegration from '../../platform-integration';
 import ViewTracker from '../ViewTracker';
 
 import type { GlobalNavItemData, NavItem } from '../../config/types';
@@ -180,14 +181,19 @@ export default class GlobalNavigation
   };
 
   constructNavItems = () => {
-    const productConfig = generateProductConfig(this.props, this.openDrawer);
     const defaultConfig = generateDefaultConfig();
+    const productConfig = generateProductConfig(this.props, this.openDrawer);
+    const platformIntegration = generatePlatformIntegration(
+      this.props,
+      this.openDrawer,
+    );
 
-    const navItems: NavItem[] = Object.keys(productConfig).map(item => ({
+    const navItems: NavItem[] = Object.keys(defaultConfig).map(item => ({
       ...(productConfig[item]
         ? {
             ...defaultConfig[item],
             ...productConfig[item],
+            ...platformIntegration[item],
           }
         : null),
     }));
