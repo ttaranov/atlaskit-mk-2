@@ -409,7 +409,6 @@
     "redux-devtools-extension": "^2.13.2",
     "redux-thunk": "^2.2.0",
     "resolve-from": "^4.0.0",
-    "resumablejs": "1.0.2",
     "rusha": "^0.8.13",
     "rxjs": "^5.1.0",
     "s3-cli": "^0.13.0",
