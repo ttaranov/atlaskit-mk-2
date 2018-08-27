@@ -7,8 +7,8 @@ import {
   editable,
 } from '../../integration/_helpers';
 
-const snapshot = async (page, editable) => {
-  const image = await page.takeElementScreenShot(editable);
+const snapshot = async page => {
+  const image = await page.screenshot();
   // @ts-ignore
   expect(image).toMatchProdImageSnapshot();
 };
@@ -21,7 +21,6 @@ describe('Snapshot Test: Media', () => {
   ['full-page-with-toolbar', 'comment'].forEach(editor => {
     describe(`${editor} editor`, () => {
       let page;
-      let placeholder;
       beforeEach(async () => {
         // @ts-ignore
         page = global.page;
@@ -51,7 +50,7 @@ describe('Snapshot Test: Media', () => {
           // now we can insert media as necessary
           await insertMedia(page);
           await page.waitForSelector('.media-card');
-          await snapshot(page, placeholder);
+          await snapshot(page);
         });
       });
     });

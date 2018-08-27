@@ -37,7 +37,7 @@ export const clipboardInput = '#input';
 export const copyAsPlaintextButton = '#copy-as-plaintext';
 export const copyAsHTMLButton = '#copy-as-html';
 
-export const mediaInsertDelay = 200;
+export const mediaInsertDelay = 500;
 
 const mediaPickerMock = '.mediaPickerMock';
 export const setupMediaMocksProviders = async browser => {
@@ -53,7 +53,7 @@ export const setupMediaMocksProviders = async browser => {
   await browser.click('.reloadEditorButton');
 };
 
-export const insertMedia = async (browser, indexes = [0]) => {
+export const insertMedia = async (browser, indexes = [-1]) => {
   const openMediaPopup = '[aria-label="Insert files and images"]';
   const insertMediaButton = '.e2e-insert-button';
 

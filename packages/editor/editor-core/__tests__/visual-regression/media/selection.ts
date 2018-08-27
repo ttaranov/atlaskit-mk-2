@@ -58,7 +58,8 @@ describe('Snapshot Test: Media', () => {
       // @ts-ignore
       page = global.page;
 
-      await page.setViewport({ width: 1920, height: 1080 });
+      // half height to cut off JSON output which changes depending on media ID
+      await page.setViewport({ width: 1920, height: 540 });
       await initEditor(page, 'comment');
       await setupMediaMocksProviders(page);
 
