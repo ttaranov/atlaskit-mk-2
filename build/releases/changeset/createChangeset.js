@@ -4,8 +4,8 @@
 const { green, yellow, red } = require('chalk');
 const bolt = require('bolt');
 
-const cli = require('../../utils/cli');
-const logger = require('../../utils/logger');
+const cli = require('@atlaskit/build-utils/cli');
+const logger = require('@atlaskit/build-utils/logger');
 const createReleaseNotesFile = require('./createReleaseNotesFile');
 const inquirer = require('inquirer');
 const semver = require('semver');

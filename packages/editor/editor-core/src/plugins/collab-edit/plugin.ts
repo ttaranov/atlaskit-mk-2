@@ -52,8 +52,9 @@ export const createPlugin = (
 
         if (collabEditProvider) {
           const selectionChanged = !oldState.selection.eq(newState.selection);
-          const participantsChanged =
-            prevActiveParticipants !== activeParticipants;
+          const participantsChanged = !prevActiveParticipants.eq(
+            activeParticipants,
+          );
 
           if (
             (sessionId && selectionChanged && !tr.docChanged) ||

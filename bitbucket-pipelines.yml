@@ -24,7 +24,14 @@ pipelines:
             # - yarn test
             # Disabled until we find the source of the flakeyness
             # - yarn test:browser:browserstack
-            - yarn release
+            # Bump all packages and their dependents using saved changesets
+            - node ./build/releases/bin/build-releases.js version
+            # We push the bumped packages to master now as it's much better to fail whilst BB is
+            # ahead of npm, than the other way round.
+            - git push
+            # Release all unreleased packages
+            - node ./build/releases/bin/build-releases.js publish --public
+            - git push --tags # push only the tags
             - (cd build/ci-scripts && yarn restart-stopped-build)
           caches:
             - node
@@ -80,7 +87,7 @@ pipelines:
               - node build/ci-scripts/run.tool.if.changed.js browserstack  -- yarn test:browser:browserstack
               - echo "Run browser integration tests using Webdriver + Browserstack"
               # If we have changed any packages with webdriver tests, we wait until browserstack has free resources, then run our tests
-              -  LOCAL_IDENTIFIER=$(date +%s) BS_RETRY=5 BS_BUILD_ALLOWED=3 node build/ci-scripts/run.tool.if.changed.js webdriver -- node build/ci-scripts/wait.for.browserstack.resources.js && yarn test:webdriver:browserstack:changed
+              - LOCAL_IDENTIFIER=$(date +%s) BS_RETRY=5 BS_BUILD_ALLOWED=3 node build/ci-scripts/run.tool.if.changed.js webdriver -- node build/ci-scripts/wait.for.browserstack.resources.js && yarn test:webdriver:browserstack:changed
             caches:
               - node
         - step:
@@ -106,9 +113,7 @@ pipelines:
           - node download.build.artefact.for.commit.js netlify-build.txt
           - node update.build.status.with.netlify.link.js
 
-
   custom: # Pipelines that can be scheduled or triggered manually
-
     # This should only be called by a scheduled build
     build-website-production:
       - step:
@@ -128,7 +133,7 @@ pipelines:
 
     # This will run with the webdriver tests
     build-webdriver:
-    - step:
+      - step:
           script:
             - source ./build-setup.sh
             - bolt install --pure-lockfile
@@ -136,9 +141,9 @@ pipelines:
           caches:
             - node
 
-    # This will run with the visual regression tool
+      # This will run with the visual regression tool
     build-visual-regression:
-    - step:
+      - step:
           script:
             #to overcome puppeteer drawback yarn add again
             # When running Puppeteer in Docker,
@@ -156,8 +161,8 @@ pipelines:
           caches:
             - node
 
-    # This will run essentially the branch builds, but without any optimizations and should be manually
-    # run in any potentially risky builds
+      # This will run essentially the branch builds, but without any optimizations and should be manually
+      # run in any potentially risky builds
     run-full-suite:
       - step:
           script:
@@ -181,7 +186,6 @@ pipelines:
             - yarn build:bundle-analysis
           caches:
             - node
-
 
     landkid:
       - parallel:
@@ -238,7 +242,13 @@ pipelines:
                 - git merge master --no-edit
                 - bolt install --pure-lockfile
                 - STEPS="4" STEP_IDX="3" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
-
+      - step:
+          name: Wait until no master is running
+          script:
+            - source ./build-setup.sh
+            - cd build/ci-scripts
+            - yarn
+            - node ./wait.until.no.master.build.running.js
     # This build should only be run on the master branch, once per day.
     # It manually clears the cache and runs a very quick install node_modules
     # We split into two steps so that one can clear the cache so that the second one starts with no cache
