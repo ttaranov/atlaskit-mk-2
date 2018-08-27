@@ -5,7 +5,6 @@ import {
   withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
-import stateManager from './StateManager';
 import Radio from './Radio';
 import type { ItemPropType } from './types';
 import {
@@ -15,44 +14,64 @@ import {
 /* eslint-disable react/no-array-index-key */
 
 export type RadioGroupProps = {
-  selectedValue?: string | number | null,
-  onChange: (event: SyntheticEvent<*>) => void,
+  defaultSelectedValue?: string | number | null,
   isRequired?: boolean,
   items: Array<ItemPropType>,
+  onChange: (event: SyntheticEvent<*>) => void,
+  selectedValue?: string | number | null,
 };
 
 type RadioElementArray = Array<Element<typeof Radio>>;
 
-class RadioGroup extends Component<RadioGroupProps> {
+type State = { selectedValue?: string | number | null };
+
+class RadioGroup extends Component<RadioGroupProps, State> {
   static defaultProps = {
     onChange: () => {},
     items: [],
   };
 
+  constructor(props: RadioGroupProps) {
+    super(props);
+    this.state = {
+      selectedValue:
+        this.props.selectedValue !== undefined
+          ? this.props.selectedValue
+          : this.props.defaultSelectedValue,
+    };
+  }
+
   items: RadioElementArray = [];
 
-  buildItems = (props: RadioGroupProps) => {
-    if (!props.items.length) return null;
-    return (props.items.map((item: ItemPropType, index: number) => {
-      if (item.value === props.selectedValue) {
-        const itemProps = { ...item, isChecked: true };
-        return (
-          <Radio
-            key={index}
-            onChange={props.onChange}
-            {...itemProps}
-            isRequired={props.isRequired}
-          >
-            {item.label}
-          </Radio>
-        );
+  getProp = (key: string) => {
+    return this.props[key] ? this.props[key] : this.state[key];
+  };
+
+  onChange = (event: SyntheticEvent<*>) => {
+    this.setState({
+      selectedValue: event.currentTarget.value,
+    });
+    if (typeof this.props.onChange === 'function') {
+      this.props.onChange(event);
+    }
+  };
+
+  buildItems = () => {
+    const { items, isRequired } = this.props;
+    const selectedValue = this.getProp('selectedValue');
+    if (!items.length) return null;
+
+    return (items.map((item: ItemPropType, index: number) => {
+      let itemProps = { ...item };
+      if (item.value === selectedValue) {
+        itemProps = { ...item, isChecked: true };
       }
       return (
         <Radio
           key={index}
-          onChange={props.onChange}
-          {...item}
-          isRequired={props.isRequired}
+          onChange={this.onChange}
+          {...itemProps}
+          isRequired={isRequired}
         >
           {item.label}
         </Radio>
@@ -61,13 +80,13 @@ class RadioGroup extends Component<RadioGroupProps> {
   };
 
   render() {
-    const items = this.buildItems(this.props);
+    const items = this.buildItems();
     return <Fragment>{items}</Fragment>;
   }
 }
 
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
-export const RadioGroupWithoutAnalytics = stateManager(RadioGroup);
+export const RadioGroupWithoutAnalytics = RadioGroup;
 export default withAnalyticsContext({
   componentName: 'radioGroup',
   packageName,

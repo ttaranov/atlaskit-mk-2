@@ -52,8 +52,8 @@ AkRadio component to render. Both stateful and stateless
 
   ${(
     <Props
-      props={require('!!extract-react-types-loader!../src/RadioGroupStateless')}
-      heading="AkFieldRadioGroup (Stateless) Props"
+      props={require('!!extract-react-types-loader!../src/RadioInput')}
+      heading="RadioInput Props"
     />
   )}
 
