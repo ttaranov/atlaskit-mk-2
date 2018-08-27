@@ -108,16 +108,14 @@ describe('Tag component', () => {
   describe('appearance prop', () => {
     it('should set the isRounded prop of Chrome and Remove to true when set to "rounded"', () => {
       const wrapper = mount(
-        <Tag appearance="rounded" text="foo" removeButtonText="foo" />,
+        <Tag shape="rounded" text="foo" removeButtonText="foo" />,
       );
       expect(wrapper.find(Chrome).prop('isRounded')).toBe(true);
       expect(wrapper.find(Remove).prop('isRounded')).toBe(true);
     });
 
     it('should set the isRounded prop of Chrome and Remove to false when not set to "rounded"', () => {
-      const wrapper = mount(
-        <Tag appearance="default" text="foo" removeButtonText="foo" />,
-      );
+      const wrapper = mount(<Tag text="foo" removeButtonText="foo" />);
       expect(wrapper.find(Chrome).prop('isRounded')).toBe(false);
       expect(wrapper.find(Remove).prop('isRounded')).toBe(false);
     });
