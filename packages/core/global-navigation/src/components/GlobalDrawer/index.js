@@ -69,7 +69,7 @@ export default class GlobalDrawers
     });
   }
 
-  componentDidUpdate(prevProps: GlobalNavigationProps) {
+  componentDidUpdate(prevProps: GlobalDrawerProps) {
     this.drawers.forEach(drawer => {
       const capitalisedDrawerName = this.getCapitalisedDrawerName(drawer);
       // Do nothing if it's a controlled drawer
