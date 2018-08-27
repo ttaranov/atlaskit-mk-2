@@ -1,6 +1,5 @@
 // @flow
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import rafSchedule from 'raf-schd';
 import ScrollLock from 'react-scrolllock';
 
@@ -101,19 +100,10 @@ export default class Content extends Component<Props, State> {
     body: Body,
     isHeadingMultiline: true,
   };
-  static contextTypes = {
-    /** available when invoked within @atlaskit/layer-manager */
-    appId: PropTypes.string,
-  };
 
   escapeIsHeldDown: boolean = false;
   _isMounted: boolean = false;
   scrollContainer: HTMLElement | void;
-
-  constructor(props: Props, context: mixed) {
-    super(props, context);
-    this.determineKeylines = rafSchedule(this.determineKeylines);
-  }
 
   state: State = getInitialState();
 
@@ -161,7 +151,7 @@ export default class Content extends Component<Props, State> {
     }
   }
 
-  determineKeylines = () => {
+  determineKeylines = rafSchedule(() => {
     if (!this.scrollContainer) return;
 
     const { scrollTop, scrollHeight, clientHeight } = this.scrollContainer;
@@ -170,7 +160,7 @@ export default class Content extends Component<Props, State> {
     const showFooterKeyline = scrollTop <= scrollableDistance - keylineHeight;
 
     this.setState({ showHeaderKeyline, showFooterKeyline });
-  };
+  });
   getScrollContainer = (ref: HTMLElement) => {
     if (!ref) return;
     this.scrollContainer = ref;

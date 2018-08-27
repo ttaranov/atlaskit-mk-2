@@ -25,8 +25,12 @@ import { Animation } from './Animation';
 import Content from './Content';
 import { type Props as OuterProps } from './ModalWrapper';
 
-// eslint-disable-next-line react/prop-types
-const Positioner = ({ scrollBehavior, ...props }) => {
+export const Positioner = ({
+  scrollBehavior,
+  ...props
+}: {
+  scrollBehavior: void | 'inside' | 'outside',
+}) => {
   const PositionComponent =
     scrollBehavior === 'inside' ? PositionerAbsolute : PositionerRelative;
 
