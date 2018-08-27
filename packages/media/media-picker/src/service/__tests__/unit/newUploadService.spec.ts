@@ -10,13 +10,16 @@ import {
   UploadableFile,
   Context,
   Auth,
+  fileStreamsCache,
 } from '@atlaskit/media-core';
-import { fakeContext } from '@atlaskit/media-test-helpers';
+import { fakeContext, nextTick } from '@atlaskit/media-test-helpers';
 import { Observable } from 'rxjs/Observable';
 import { MediaFile, UploadParams } from '../../..';
 import * as getPreviewModule from '../../../util/getPreviewFromBlob';
 import * as getPreviewFromVideo from '../../../util/getPreviewFromVideo';
 import { UploadServiceFactory } from '../../uploadServiceFactory';
+
+const fileStreamCacheSpy = jest.spyOn(fileStreamsCache, 'set');
 
 describe('UploadService', () => {
   const baseUrl = 'some-api-url';
@@ -25,17 +28,27 @@ describe('UploadService', () => {
   const collection = 'some-collection';
   const tenantUploadParams = {};
   const upfrontId = Promise.resolve('1');
-  const clientBasedAuthProvider = jest.fn(() =>
+  const authProvider = jest.fn(() =>
     Promise.resolve<Auth>({ clientId, token, baseUrl }),
   );
-
+  const usersClientId = 'some-users-collection-client-id';
+  const usersToken = 'some-users-collection-client-id';
+  const userAuthProvider: AuthProvider = () =>
+    Promise.resolve({
+      clientId: usersClientId,
+      token: usersToken,
+      baseUrl,
+    });
   const getContext = (options = {}) =>
     ContextFactory.create({
-      authProvider: clientBasedAuthProvider,
+      authProvider,
       ...options,
     });
-
-  const setup = (context: Context = getContext(), collection = '') => {
+  const file = { size: 100, name: 'some-filename', type: 'video/mp4' } as File;
+  const setup = (
+    context: Context = getContext(),
+    userUploadParams: UploadParams = { collection: '' },
+  ) => {
     jest.spyOn(context, 'uploadFile').mockReturnValue({
       subscribe() {},
     });
@@ -43,9 +56,7 @@ describe('UploadService', () => {
     const uploadService = UploadServiceFactory.create(
       context,
       tenantUploadParams,
-      {
-        collection,
-      },
+      userUploadParams,
       true,
     );
 
@@ -53,8 +64,19 @@ describe('UploadService', () => {
       uploadService.on('files-added', () => resolve()),
     );
 
-    return { uploadService, filesAddedPromise };
+    return { uploadService, filesAddedPromise, context };
   };
+
+  beforeEach(() => {
+    (getPreviewModule.getPreviewFromBlob as any).mockReset();
+    (getPreviewFromVideo.getPreviewFromVideo as any).mockReset();
+    (getPreviewModule.getPreviewFromBlob as any).mockReturnValue(
+      Promise.resolve(),
+    );
+    (getPreviewFromVideo.getPreviewFromVideo as any).mockReturnValue(
+      Promise.resolve(),
+    );
+  });
 
   describe('setUploadParams', () => {
     const setup = () => ({
@@ -95,17 +117,6 @@ describe('UploadService', () => {
   });
 
   describe('addFiles', () => {
-    beforeEach(() => {
-      (getPreviewModule.getPreviewFromBlob as any).mockReset();
-      (getPreviewFromVideo.getPreviewFromVideo as any).mockReset();
-      (getPreviewModule.getPreviewFromBlob as any).mockReturnValue(
-        Promise.resolve(),
-      );
-      (getPreviewFromVideo.getPreviewFromVideo as any).mockReturnValue(
-        Promise.resolve(),
-      );
-    });
-
     it('should NOT emit file upload event when file type is NOT "image"', async () => {
       const { uploadService } = setup();
       const file = { size: 100, name: 'some-filename', type: 'unknown' };
@@ -134,7 +145,6 @@ describe('UploadService', () => {
 
     it('should emit file-preview-update for video files', async () => {
       const { uploadService, filesAddedPromise } = setup();
-      const file = { size: 100, name: 'some-filename', type: 'video/mp4' };
 
       const callback = jest.fn();
       uploadService.on('file-preview-update', callback);
@@ -143,7 +153,7 @@ describe('UploadService', () => {
         Promise.resolve({ preview: true }),
       );
 
-      uploadService.addFiles([file as File]);
+      uploadService.addFiles([file]);
       await filesAddedPromise;
 
       expect(callback).toHaveBeenCalledWith({
@@ -199,11 +209,6 @@ describe('UploadService', () => {
     it('should emit files-added event with correct payload when addFiles() is called with multiple files', () => {
       const { uploadService } = setup();
       const currentTimestamp = Date.now();
-      const file1: File = {
-        size: 100,
-        name: 'some-filename',
-        type: 'video/mp4',
-      } as any;
       const file2: File = {
         size: 10e7,
         name: 'some-other-filename',
@@ -213,7 +218,7 @@ describe('UploadService', () => {
       const filesAddedCallback = jest.fn();
       uploadService.on('files-added', filesAddedCallback);
 
-      uploadService.addFiles([file1, file2]);
+      uploadService.addFiles([file, file2]);
       expect(filesAddedCallback).toHaveBeenCalledWith({
         files: [
           {
@@ -248,11 +253,6 @@ describe('UploadService', () => {
     });
 
     it('should call uploadFile for each given file', () => {
-      const file1: File = {
-        size: 100,
-        name: 'some-filename',
-        type: 'video/mp4',
-      } as any;
       const file2: File = {
         size: 10e7,
         name: 'some-other-filename',
@@ -263,8 +263,10 @@ describe('UploadService', () => {
         subscribe() {},
       });
       (context as any).uploadFile = uploadFile;
-      const { uploadService } = setup(context, 'some-collection');
-      uploadService.addFiles([file1, file2]);
+      const { uploadService } = setup(context, {
+        collection: 'some-collection',
+      });
+      uploadService.addFiles([file, file2]);
       expect(uploadFile).toHaveBeenCalledTimes(2);
       const expectedUploadableFile2: UploadableFile = {
         collection: 'some-collection',
@@ -274,7 +276,7 @@ describe('UploadService', () => {
       };
       const expectedUploadableFile1: UploadableFile = {
         collection: 'some-collection',
-        content: file1,
+        content: file,
         name: 'some-filename',
         mimeType: 'video/mp4',
       };
@@ -283,13 +285,10 @@ describe('UploadService', () => {
     });
 
     it.skip('should emit file-converting when uploadFile resolves', async () => {
-      const file: File = {
-        size: 100,
-        name: 'some-filename',
-        type: 'video/mp4',
-      } as any;
       const context = getContext();
-      const { uploadService } = setup(context, 'some-collection');
+      const { uploadService } = setup(context, {
+        collection: 'some-collection',
+      });
       const fileConvertingCallback = jest.fn();
       uploadService.on('file-converting', fileConvertingCallback);
       jest.spyOn(context, 'uploadFile').mockReturnValue(
@@ -320,13 +319,7 @@ describe('UploadService', () => {
     });
 
     it.skip('should emit file-converted when file is successfully processed', done => {
-      const file: File = {
-        size: 100,
-        name: 'some-filename',
-        type: 'video/mp4',
-      } as any;
       const context = getContext();
-
       const pendingFileItem: FileItem = {
         type: 'file',
         details: {
@@ -334,7 +327,6 @@ describe('UploadService', () => {
           processingStatus: 'pending',
         },
       };
-
       const succeededFileItem: FileItem = {
         type: 'file',
         details: {
@@ -342,7 +334,6 @@ describe('UploadService', () => {
           processingStatus: 'succeeded',
         },
       };
-
       const failedFileItem: FileItem = {
         type: 'file',
         details: {
@@ -350,7 +341,6 @@ describe('UploadService', () => {
           processingStatus: 'failed',
         },
       };
-
       const mediaItemProvider: MediaItemProvider = {
         observable: () =>
           Observable.create(observer => {
@@ -387,7 +377,9 @@ describe('UploadService', () => {
       jest
         .spyOn(context, 'getMediaItemProvider')
         .mockReturnValue(mediaItemProvider);
-      const { uploadService } = setup(context, 'some-collection');
+      const { uploadService } = setup(context, {
+        collection: 'some-collection',
+      });
       const fileConvertedCallback = jest.fn();
       uploadService.on('file-converted', fileConvertedCallback);
       jest.spyOn(context, 'uploadFile').mockReturnValue(
@@ -404,14 +396,10 @@ describe('UploadService', () => {
     });
 
     it.skip('should call emit "file-uploading" when it receives an onProgress event from Context#uploadFile()', () => {
-      const file: File = {
-        size: 100,
-        name: 'some-filename',
-        type: 'video/mp4',
-      } as any;
-
       const context = getContext();
-      const { uploadService } = setup(context, 'some-collection');
+      const { uploadService } = setup(context, {
+        collection: 'some-collection',
+      });
 
       jest.spyOn(context, 'uploadFile').mockReturnValue({
         subscribe(subscription) {
@@ -446,15 +434,10 @@ describe('UploadService', () => {
     });
 
     it.skip('should emit "file-upload-error" when uploadFile fail', () => {
-      const file: File = {
-        size: 100,
-        name: 'some-filename',
-        type: 'video/mp4',
-      } as any;
-
       const context = getContext();
-      const { uploadService } = setup(context, 'some-collection');
-
+      const { uploadService } = setup(context, {
+        collection: 'some-collection',
+      });
       const fileUploadErrorCallback = jest.fn();
       uploadService.on('file-upload-error', fileUploadErrorCallback);
 
@@ -704,7 +687,7 @@ describe('UploadService', () => {
       const collectionNameStub = 'some-collection-name';
 
       const clientBasedConfig: ContextConfig = {
-        authProvider: clientBasedAuthProvider,
+        authProvider,
       };
 
       const context = fakeContext(
@@ -752,17 +735,7 @@ describe('UploadService', () => {
     });
 
     it('calls the authProvider with the sourceCollection', () => {
-      const usersClientId = 'some-users-collection-client-id';
-      const usersToken = 'some-users-collection-client-id';
-      const userAuthProvider: AuthProvider = () =>
-        Promise.resolve({
-          clientId: usersClientId,
-          token: usersToken,
-          baseUrl,
-        });
-
       const copyFileWithTokenSpy = () => Promise.resolve('some-upload-id');
-
       const {
         uploadService,
         authProvider,
@@ -784,15 +757,6 @@ describe('UploadService', () => {
     });
 
     it('resolves with api#copyFileToCollection response when userAuthProvider was passed into UploadService', () => {
-      const usersClientId = 'some-users-collection-client-id';
-      const usersToken = 'some-users-collection-client-id';
-      const userAuthProvider: AuthProvider = () =>
-        Promise.resolve({
-          clientId: usersClientId,
-          token: usersToken,
-          baseUrl,
-        });
-
       const copyFileWithTokenSpy = jest
         .fn()
         .mockReturnValue(Promise.resolve('some-MediaApi-response'));
@@ -867,6 +831,65 @@ describe('UploadService', () => {
           },
         });
       });
+    });
+  });
+
+  describe('upfront id', () => {
+    it('should use tenantContext context to upload file when copyFileToRecents=true', () => {
+      const { uploadService, context } = setup();
+
+      uploadService.addFiles([file]);
+      expect(context.uploadFile).toHaveBeenCalledTimes(1);
+    });
+
+    it('should use userContext context to upload file when copyFileToRecents=false', () => {
+      const context = fakeContext({}, { authProvider, userAuthProvider });
+      const { uploadService } = setup(context, { copyFileToRecents: false });
+      const uploadFileSpy = jest.spyOn(
+        (uploadService as any).userContext,
+        'uploadFile',
+      );
+
+      uploadService.addFiles([file]);
+      expect(uploadFileSpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should populate fileStreamsCache once we have the upfront id', async () => {
+      const { uploadService } = setup();
+      const getUpfrontId = jest.fn().mockReturnValue(Promise.resolve('1234'));
+
+      (uploadService as any).getUpfrontId = getUpfrontId;
+      uploadService.addFiles([file]);
+
+      await nextTick();
+
+      expect(fileStreamCacheSpy).toHaveBeenCalledTimes(1);
+      expect(fileStreamCacheSpy).lastCalledWith('1234', expect.anything());
+    });
+  });
+
+  describe('getUpfrontId()', () => {
+    it('should create an empty file on the tenant when shouldCopyFileToRecents=false', async () => {
+      const context = fakeContext({}, { authProvider, userAuthProvider });
+      const { uploadService } = setup(context, { copyFileToRecents: false });
+      const createFileSpy = jest
+        .spyOn((uploadService as any).tenantMediaStore, 'createFile')
+        .mockReturnValue({
+          data: {
+            id: '12',
+          },
+        });
+      const id = await (uploadService as any).getUpfrontId(
+        undefined,
+        'occurrenceKey-1',
+      );
+
+      expect(createFileSpy).toHaveBeenCalledTimes(1);
+      expect(createFileSpy).lastCalledWith({
+        collection: undefined,
+        occurrenceKey: 'occurrenceKey-1',
+      });
+      expect(id).toEqual('12');
     });
   });
 });
