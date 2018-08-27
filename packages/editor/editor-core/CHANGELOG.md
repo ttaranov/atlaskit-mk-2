@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 77.2.3
+- [patch] Adding support for telepointers in new collab provider [cc35c67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc35c67)
+- [none] Updated dependencies [cc35c67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc35c67)
+
 ## 77.2.2
 - [patch] ED-5153, add react-intl to editor and expose locale support. [68a0978](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/68a0978)
 - [patch] Updated dependencies [68a0978](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/68a0978)
