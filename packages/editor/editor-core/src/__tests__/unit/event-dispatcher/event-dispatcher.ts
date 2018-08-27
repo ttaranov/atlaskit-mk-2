@@ -1,5 +1,5 @@
-import { name } from '../../package.json';
-import { EventDispatcher, createDispatch } from '../../src/event-dispatcher';
+import { name } from '../../../../package.json';
+import { EventDispatcher, createDispatch } from '../../../event-dispatcher';
 import { PluginKey } from 'prosemirror-state';
 
 describe(name, () => {

@@ -1,4 +1,4 @@
-import { name } from '../../package.json';
+import { name } from '../../../../package.json';
 import { shallow, mount } from 'enzyme';
 import * as React from 'react';
 import { TextSelection } from 'prosemirror-state';
@@ -11,11 +11,11 @@ import {
   defaultSchema,
   storyMediaProviderFactory,
 } from '@atlaskit/editor-test-helpers';
-import ReactEditorView from '../../src/create-editor/ReactEditorView';
-import { toJSON } from '../../src/utils';
+import ReactEditorView from '../../../create-editor/ReactEditorView';
+import { toJSON } from '../../../utils';
 import { patchEditorViewForJSDOM } from '@atlaskit/editor-test-helpers/';
 import { EditorView } from 'prosemirror-view';
-import { EventDispatcher } from '../../src/event-dispatcher';
+import { EventDispatcher } from '../../../event-dispatcher';
 
 const portalProviderAPI: any = {
   render() {},

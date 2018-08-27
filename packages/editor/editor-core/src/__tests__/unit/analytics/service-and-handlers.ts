@@ -3,8 +3,8 @@ import {
   AnalyticsProperties,
   detectHandler,
   hermentHandler,
-} from '../../src/analytics/handler';
-import service from '../../src/analytics/service';
+} from '../../../analytics/handler';
+import service from '../../../analytics/service';
 
 describe('analytics service', () => {
   it('auto-detects Herment', () => {

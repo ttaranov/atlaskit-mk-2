@@ -1,4 +1,4 @@
-jest.mock('../../src/plugins', () => ({
+jest.mock('../../../plugins', () => ({
   mediaPlugin: jest.fn(),
   tablesPlugin: jest.fn(),
   insertBlockPlugin: jest.fn(),
@@ -15,9 +15,9 @@ import {
   insertBlockPlugin,
   placeholderTextPlugin,
   layoutPlugin,
-} from '../../src/plugins';
+} from '../../../plugins';
 
-import createPluginsList from '../../src/create-editor/create-plugins-list';
+import createPluginsList from '../../../create-editor/create-plugins-list';
 
 describe('createPluginsList', () => {
   beforeEach(() => {

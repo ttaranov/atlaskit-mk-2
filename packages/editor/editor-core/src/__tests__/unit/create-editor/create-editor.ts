@@ -1,4 +1,4 @@
-import { name } from '../../package.json';
+import { name } from '../../../../package.json';
 import { Selection } from 'prosemirror-state';
 import { createEditor } from '@atlaskit/editor-test-helpers';
 import {
@@ -6,7 +6,7 @@ import {
   fixExcludes,
   createPMPlugins,
   processPluginsList,
-} from '../../src/create-editor/create-editor';
+} from '../../../create-editor/create-editor';
 
 describe(name, () => {
   describe('create-editor', () => {
