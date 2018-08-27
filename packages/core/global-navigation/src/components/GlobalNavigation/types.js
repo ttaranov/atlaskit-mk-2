@@ -54,7 +54,6 @@ export type GlobalNavigationProps = {
   searchTooltip?: string,
 
   appSwitcherComponent?: ComponentType<*>, // AppSwitcher component
-  appSwitcherTooltip?: string,
 
   helpTooltip?: string,
   helpItems?: ComponentType<{}>, // GlobalNavigation will render DropdownItemGroup with the correct trigger

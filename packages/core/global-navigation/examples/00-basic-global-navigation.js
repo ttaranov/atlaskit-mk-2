@@ -21,7 +21,6 @@ const Global = () => (
         <AppSwitcherIcon onClick={() => console.log('AppSwitcher clicked')} />
       </button>
     )}
-    appSwitcherTooltip="Switch to ..."
     loginHref="#login"
   />
 );
