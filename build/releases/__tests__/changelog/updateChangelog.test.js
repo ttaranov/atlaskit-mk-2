@@ -3,7 +3,7 @@ import { updateChangelog } from '../../changelog';
 import path from 'path';
 import fs from 'fs';
 
-jest.mock('../../../utils/logger');
+jest.mock('@atlaskit/build-utils/logger');
 
 const emptyFileChangeset = {
   releases: [

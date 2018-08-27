@@ -14,20 +14,14 @@ import {
   storyContextIdentifierProviderFactory,
 } from '@atlaskit/editor-test-helpers';
 import { mention, emoji, taskDecision } from '@atlaskit/util-data-test';
-
-import {
-  akEditorCodeBackground,
-  akEditorCodeBlockPadding,
-  akEditorCodeFontFamily,
-} from '../src/styles';
-
-import { akBorderRadius } from '@atlaskit/util-shared-styles';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
 import { extensionHandlers } from '../example-helpers/extension-handlers';
 import { CollabProvider } from '../src/plugins/collab-edit';
 
-import { getRandomUser } from '../example-helpers/collab-provider';
+export const getRandomUser = () => {
+  return Math.floor(Math.random() * 10000).toString();
+};
 
 const userId = `ari:cloud:identity::user/${getRandomUser()}`;
 const asapToken =
@@ -63,15 +57,6 @@ export const Content: any = styled.div`
   height: 50%;
   background: #fff;
   box-sizing: border-box;
-
-  & .ProseMirror {
-    & pre {
-      font-family: ${akEditorCodeFontFamily};
-      background: ${akEditorCodeBackground};
-      padding: ${akEditorCodeBlockPadding};
-      border-radius: ${akBorderRadius};
-    }
-  }
 `;
 Content.displayName = 'Content';
 
