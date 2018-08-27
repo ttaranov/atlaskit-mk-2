@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/item",
-  "version": "8.0.5",
+  "version": "8.0.6",
   "description": "A generic item component to be used within other components",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -17,7 +17,7 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/theme": "^6.0.0",
+    "@atlaskit/theme": "^6.0.1",
     "prop-types": "^15.5.10",
     "react-addons-text-content": "^0.0.4",
     "uuid": "^3.1.0"
@@ -28,12 +28,12 @@
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/avatar": "^14.0.8",
-    "@atlaskit/build-utils": "^1.11.0",
+    "@atlaskit/avatar": "^14.0.9",
+    "@atlaskit/build-utils": "^2.0.0",
     "@atlaskit/docs": "^5.0.6",
-    "@atlaskit/icon": "^13.2.5",
-    "@atlaskit/lozenge": "^6.1.5",
-    "@atlaskit/tooltip": "^12.0.9",
+    "@atlaskit/icon": "^13.3.1",
+    "@atlaskit/lozenge": "^6.1.6",
+    "@atlaskit/tooltip": "^12.0.10",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "polished": "1.5.0",
     "react-dom": "^16.4.2",

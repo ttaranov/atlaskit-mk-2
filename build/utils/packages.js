@@ -2,7 +2,7 @@
 
 const path = require('path');
 const bolt = require('bolt');
-const git = require('../utils/git');
+const git = require('./git');
 
 async function getChangedPackagesSinceCommit(commit) {
   const changedFiles = await git.getChangedFilesSince(commit, true);

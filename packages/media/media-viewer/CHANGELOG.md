@@ -1,5 +1,13 @@
 # @atlaskit/media-viewer
 
+## 17.0.8
+- [patch] Updated dependencies [911a570](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/911a570)
+  - @atlaskit/media-test-helpers@17.0.0
+  - @atlaskit/media-core@23.0.2
+
+## 17.0.7
+- [patch] List datasource takes priority to be consistent with the old behaviour MS-410 [31fafe6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/31fafe6)
+
 ## 17.0.6
 - [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
   - @atlaskit/media-ui@5.1.2

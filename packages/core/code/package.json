@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/code",
-  "version": "8.0.1",
+  "version": "8.0.2",
   "config": {
     "access": "public"
   },
@@ -13,12 +13,12 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/theme": "^6.0.0",
+    "@atlaskit/theme": "^6.0.1",
     "memoize-one": "^3.0.1",
     "react-syntax-highlighter": "^6.0.2"
   },
   "devDependencies": {
-    "@atlaskit/build-utils": "^1.11.0",
+    "@atlaskit/build-utils": "^2.0.0",
     "@atlaskit/docs": "^5.0.6",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.2"

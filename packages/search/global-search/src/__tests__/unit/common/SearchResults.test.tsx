@@ -18,7 +18,9 @@ const defaultProps = {
   searchSessionId: 'session_id',
   renderNoRecentActivity: () => <div id="advanced-search-link" />,
   renderNoResult: () => <div id="no-result" />,
-  renderAdvancedSearchGroup: () => <div id="advanced-search-group" />,
+  renderAdvancedSearchGroup: (analyticsData?) => (
+    <div id="advanced-search-group" />
+  ),
   getPreQueryGroups: () => [],
   getPostQueryGroups: () => [],
 };

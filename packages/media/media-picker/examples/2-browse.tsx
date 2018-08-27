@@ -7,7 +7,6 @@ import {
   defaultMediaPickerCollectionName,
 } from '@atlaskit/media-test-helpers';
 import Button from '@atlaskit/button';
-import Toggle from '@atlaskit/toggle';
 import DropdownMenu, { DropdownItem } from '@atlaskit/dropdown-menu';
 import { MediaPicker, Browser, UploadParams, BrowserConfig } from '../src';
 import { PopupHeader, PopupContainer } from '../example-helpers/styled';
@@ -17,7 +16,6 @@ import { ContextFactory } from '@atlaskit/media-core';
 
 export interface BrowserWrapperState {
   collectionName: string;
-  useNewUploadService: boolean;
   authEnvironment: AuthEnvironment;
   fileBrowser?: Browser;
 }
@@ -26,7 +24,6 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
   dropzoneContainer: HTMLDivElement;
 
   state: BrowserWrapperState = {
-    useNewUploadService: true,
     authEnvironment: 'client',
     collectionName: defaultMediaPickerCollectionName,
   };
@@ -35,7 +32,7 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
     this.createBrowse();
   }
 
-  createBrowse(useNewUploadService: boolean = this.state.useNewUploadService) {
+  createBrowse() {
     const context = ContextFactory.create({
       authProvider: mediaPickerAuthProvider(),
     });
@@ -46,7 +43,6 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
       multiple: true,
       fileExtensions: ['image/jpeg', 'image/png', 'video/mp4'],
       uploadParams,
-      useNewUploadService,
     };
     if (this.state.fileBrowser) {
       this.state.fileBrowser.teardown();
@@ -55,7 +51,6 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
 
     this.setState({
       fileBrowser,
-      useNewUploadService,
     });
   }
 
@@ -86,17 +81,8 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
     this.setState({ authEnvironment });
   };
 
-  onUseNewUploadServiceChange = () => {
-    this.createBrowse(!this.state.useNewUploadService);
-  };
-
   render() {
-    const {
-      collectionName,
-      authEnvironment,
-      useNewUploadService,
-      fileBrowser,
-    } = this.state;
+    const { collectionName, authEnvironment, fileBrowser } = this.state;
 
     return (
       <PopupContainer>
@@ -116,11 +102,6 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
             <DropdownItem onClick={this.onAuthTypeChange}>client</DropdownItem>
             <DropdownItem onClick={this.onAuthTypeChange}>asap</DropdownItem>
           </DropdownMenu>
-          Use new upload service
-          <Toggle
-            isDefaultChecked={useNewUploadService}
-            onChange={this.onUseNewUploadServiceChange}
-          />
         </PopupHeader>
         {fileBrowser ? <UploadPreviews picker={fileBrowser} /> : null}
       </PopupContainer>
