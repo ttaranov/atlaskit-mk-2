@@ -109,7 +109,7 @@ const productIssuesView = {
           id: 'jira-wordmark',
         },
         {
-          type: 'Item',
+          type: 'BackItem',
           id: 'back-item',
           after: null,
           before: ArrowLeftIcon,
@@ -124,12 +124,6 @@ const productIssuesView = {
       id: 'product/issues:menu',
       parentId: 'product/home:menu',
       items: [
-        {
-          type: LinkItem,
-          text: 'Search issues',
-          to: '/issues',
-          id: 'search-issues',
-        },
         { type: 'GroupHeading', id: 'other-heading', text: 'Other' },
         { type: 'Item', text: 'My open issues', id: 'my-open-issues' },
         { type: 'Item', text: 'Reported by me', id: 'reported-by-me' },
