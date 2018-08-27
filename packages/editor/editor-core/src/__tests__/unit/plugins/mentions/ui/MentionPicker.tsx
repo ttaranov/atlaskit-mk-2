@@ -10,6 +10,7 @@ import * as React from 'react';
 import { analyticsService } from '../../../../../analytics';
 import { enter } from '../../../../../keymaps';
 import { MentionPicker } from '../../../../../plugins/mentions/ui/MentionPicker';
+import { FabricElementsAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
 const sessionIdRegex = /^[0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12}$/i;
 
@@ -392,6 +393,31 @@ describe('MentionPicker', () => {
       });
 
       describe('sessionId', () => {
+        it('should render FabricElementsAnalyticsContext with sessionId', () => {
+          state.subscribe.mock.calls[0][0]({
+            ...state,
+            queryActive: true,
+            focused: true,
+            anchorElement: {},
+            query: '',
+          });
+
+          component.update();
+
+          const elementsAnalyticsCtx = component.find(
+            FabricElementsAnalyticsContext,
+          );
+          expect(elementsAnalyticsCtx).toHaveLength(1);
+
+          const sessionId = elementsAnalyticsCtx.props().data.sessionId;
+          expect(sessionId).toBeDefined();
+          expect(sessionId).toEqual(
+            expect.stringMatching(
+              /^[a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12}$/,
+            ),
+          );
+        });
+
         it('should recreate sessionId when first session is dismissed', () => {
           state.subscribe.mock.calls[0][0]({
             ...state,
