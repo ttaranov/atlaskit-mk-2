@@ -47,9 +47,6 @@ const CONFLUECE_RECENT_ITEMS = [
     resultsCount: 3,
   },
 ];
-/**
- * !!!! NOTE: Test Order matters
- */
 describe('Quick Search Analytics', () => {
   const updateSpy = spyOnComponentDidUpdate();
   const onEventSpy = jest.fn();
