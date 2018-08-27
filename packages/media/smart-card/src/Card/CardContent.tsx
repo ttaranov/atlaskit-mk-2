@@ -125,7 +125,7 @@ export class CardContent extends React.Component<CardContentProps> {
       case 'resolved':
         return this.renderBlockResolvedState();
 
-      case 'unauthorised':
+      case 'unauthorized':
         return this.renderBlockUnauthorisedState();
 
       case 'forbidden':
@@ -214,7 +214,7 @@ export class CardContent extends React.Component<CardContentProps> {
       case 'resolved':
         return this.renderInlineResolvedState();
 
-      case 'unauthorised':
+      case 'unauthorized':
         return this.renderInlineUnauthorisedState();
 
       case 'forbidden':

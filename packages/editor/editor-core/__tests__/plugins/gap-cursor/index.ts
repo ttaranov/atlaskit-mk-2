@@ -51,7 +51,7 @@ describe('gap-cursor', () => {
         gapCursorPlugin,
         mediaPlugin({ allowMediaSingle: true }),
         extensionPlugin,
-        tablesPlugin,
+        tablesPlugin(),
         tasksAndDecisionsPlugin,
         codeBlockPlugin(),
         rulePlugin,

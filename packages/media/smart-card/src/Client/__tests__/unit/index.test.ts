@@ -117,7 +117,7 @@ describe('Client', () => {
     });
   });
 
-  it('should be unauthorised when the object cannot be accessed by the current user', async () => {
+  it('should be unauthorized when the object cannot be accessed by the current user', async () => {
     fetchMock.mock({
       matcher: `begin:${RESOLVE_URL}`,
       response: {
@@ -125,7 +125,7 @@ describe('Client', () => {
         body: JSON.stringify({
           meta: {
             visibility: 'restricted',
-            access: 'unauthorised',
+            access: 'unauthorized',
             auth: remoteResourceMetaAuth,
             definitionId,
           },
@@ -142,7 +142,7 @@ describe('Client', () => {
       .take(2)
       .takeLast(1)
       .toPromise();
-    expect(state.status).toEqual('unauthorised');
+    expect(state.status).toEqual('unauthorized');
     expect(state.services).toEqual([]);
     expect(state.data).toEqual({
       '@context': {},

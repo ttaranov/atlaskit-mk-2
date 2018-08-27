@@ -67,8 +67,7 @@
     "start:stride": "                        yarn run website:start **/packages/stride/**",
     "start:trello": "                        yarn run website:start **/packages/trello/**",
     "start:teamwork-ecosystem": "            yarn run website:start **/packages/teamwork-ecosystem/**",
-    "changeset": "                           node ./runChangeset",
-    "release": "                             projector ./projector release",
+    "changeset": "                           node ./build/releases/bin/build-releases.js changeset",
     "build:editor-common:json-schema": "     cd packages/editor/editor-common && yarn run build:json-schema && echo 'Done.'",
     "build:editor-mobile-bridge": "          cd packages/editor/editor-mobile-bridge && yarn build:minimize",
     "build:media-editor:copy-binaries": "    cd packages/media/media-editor && cp -r src/engine/core/binaries dist/es5/engine/core && cp -r src/engine/core/binaries dist/es2015/engine/core",
@@ -465,5 +464,14 @@
   },
   "jest-junit": {
     "output": "test-reports/junit.xml"
-  }
+  },
+  "browserlist": [
+    "last 1 chrome versions",
+    "last 1 edge versions",
+    "last 1 firefox versions",
+    "last 1 safari versions",
+    "last 1 and_chr versions",
+    "last 1 ios_saf versions",
+    "ie 11"
+  ]
 }

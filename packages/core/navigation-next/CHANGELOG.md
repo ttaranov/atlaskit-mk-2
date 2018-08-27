@@ -1,5 +1,32 @@
 # @atlaskit/navigation-next
 
+## 3.6.2
+- [patch] add better guards around browser globals for SSR [a3db793](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a3db793)
+
+## 3.6.1
+- [patch] Fix navigation componentName analytics context attribute being placed underneath attributes. It will now appear in componentHierarchy correctly in the resulting event payload rather than componentName [ac34b7a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ac34b7a)
+
+
+
+- [none] Updated dependencies [ac34b7a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ac34b7a)
+  - @atlaskit/global-navigation@4.2.0
+- [none] Updated dependencies [f02fb34](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f02fb34)
+  - @atlaskit/global-navigation@4.2.0
+- [none] Updated dependencies [20b8844](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/20b8844)
+  - @atlaskit/analytics-listeners@3.4.0
+  - @atlaskit/global-navigation@4.2.0
+- [none] Updated dependencies [85ddb9e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/85ddb9e)
+  - @atlaskit/global-navigation@4.2.0
+  - @atlaskit/analytics-listeners@3.4.0
+
+## 3.6.0
+- [minor] GoToItems in views automatically render a Spinner when their goTo prop matches the incoming view ID. [ac0084c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ac0084c)
+
+## 3.5.2
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/badge@9.1.1
+  - @atlaskit/global-navigation@4.1.6
+
 ## 3.5.1
 - [patch] Updated dependencies [dfa100e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dfa100e)
   - @atlaskit/analytics-listeners@3.3.1

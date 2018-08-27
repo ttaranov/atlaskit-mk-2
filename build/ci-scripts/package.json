@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/ci-scripts",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "description": "A collection of scripts for use in CI",
   "main": "index.js",
@@ -11,13 +11,14 @@
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",
   "dependencies": {
-    "@atlaskit/build-utils": "^1.12.1",
+    "@atlaskit/build-utils": "^2.0.0",
     "adf-builder": "^3.2.0",
     "axios": "^0.17.1",
     "bitbucket-build-status": "^1.0.3",
     "bolt-webpack-analyzer": "^0.0.1",
     "chalk": "^2.1.0",
     "npm-run": "^4.1.2",
+    "p-wait-for": "^1.0.0",
     "s3-cli": "^0.13.0",
     "spawndamnit": "^1.0.0"
   }

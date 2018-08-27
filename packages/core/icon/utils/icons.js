@@ -377,6 +377,7 @@ import RadioIcon from '../glyph/radio';
 import RecentIcon from '../glyph/recent';
 import RedoIcon from '../glyph/redo';
 import RefreshIcon from '../glyph/refresh';
+import RoadmapIcon from '../glyph/roadmap';
 import RoomMenuIcon from '../glyph/room-menu';
 import ScheduleFilledIcon from '../glyph/schedule-filled';
 import ScheduleIcon from '../glyph/schedule';
@@ -2644,6 +2645,12 @@ export default {
     component: RefreshIcon,
     componentName: 'RefreshIcon',
     package: '@atlaskit/icon/glyph/refresh',
+  },
+  roadmap: {
+    keywords: ['roadmap'],
+    component: RoadmapIcon,
+    componentName: 'RoadmapIcon',
+    package: '@atlaskit/icon/glyph/roadmap',
   },
   'room-menu': {
     keywords: ['room-menu', 'roommenu'],

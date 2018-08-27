@@ -23,7 +23,7 @@ export function race(
         return;
       } else if (
         state.status === 'resolved' ||
-        state.status === 'unauthorised' ||
+        state.status === 'unauthorized' ||
         state.status === 'forbidden'
       ) {
         winner = 'a';
@@ -43,7 +43,7 @@ export function race(
         return;
       } else if (
         state.status === 'resolved' ||
-        state.status === 'unauthorised' ||
+        state.status === 'unauthorized' ||
         state.status === 'forbidden'
       ) {
         winner = 'b';

@@ -80,21 +80,14 @@ const mockClient = {
   sendScreenEvent: (...args) => console.debug('Screen event', ...args),
 };
 
-type MetaObject = {
-  /** The example component to load */
-  component: ComponentType<any>,
-  /** Whether to wrap the example component with FabricAnalyticsListener that logs
-   * events to the console.
-   */
-  useListener?: boolean,
+type Metadata = {
+  meta?: {
+    noListener?: boolean,
+  },
 };
 
 type Example = {
-  default: ComponentType<any> | MetaObject,
-};
-
-const defaultExampleMeta = {
-  useListener: true,
+  default: ComponentType<any> & Metadata,
 };
 
 function ExampleLoader(props: ExampleLoaderProps) {
@@ -102,7 +95,8 @@ function ExampleLoader(props: ExampleLoaderProps) {
     loader: () => props.example.exports(),
     loading: Loading,
     render(loaded: Example) {
-      if (!loaded.default) {
+      const ExampleComp = loaded.default;
+      if (!ExampleComp) {
         return (
           <ErrorMessage>
             Example "{props.example.id}" doesn't have default export.
@@ -110,19 +104,14 @@ function ExampleLoader(props: ExampleLoaderProps) {
         );
       }
 
-      const hasMeta =
-        typeof loaded.default === 'object' &&
-        !isValidElementType(loaded.default);
-      const meta: MetaObject = hasMeta
-        ? { ...defaultExampleMeta, ...loaded.default }
-        : { ...defaultExampleMeta, component: (loaded.default: any) };
+      const meta = ExampleComp.meta || {};
 
-      return meta.useListener ? (
-        <FabricAnalyticsListeners client={Promise.resolve(mockClient)}>
-          <meta.component />
-        </FabricAnalyticsListeners>
+      return meta.noListener ? (
+        <ExampleComp />
       ) : (
-        <meta.component />
+        <FabricAnalyticsListeners client={Promise.resolve(mockClient)}>
+          <ExampleComp />
+        </FabricAnalyticsListeners>
       );
     },
   });

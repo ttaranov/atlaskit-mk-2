@@ -7,9 +7,12 @@ import {
   PubSubClient,
   StepResponse,
   Config,
+  TelepointerData,
+  Participant,
 } from './types';
 import { Channel } from './channel';
 import { logger } from './';
+import { getParticipant } from './mock-users';
 
 export class CollabProvider implements CollabEditProvider {
   private eventEmitter: EventEmitter2 = new EventEmitter2();
@@ -18,6 +21,8 @@ export class CollabProvider implements CollabEditProvider {
   private config: Config;
 
   private getState = (): any => {};
+
+  private participants: Map<string, Participant> = new Map();
 
   constructor(config: Config, pubSubClient: PubSubClient) {
     this.config = config;
@@ -36,6 +41,7 @@ export class CollabProvider implements CollabEditProvider {
           .emit('connected', { sid: userId }); // Let the plugin know that we're connected an ready to go
       })
       .on('data', this.onReceiveData)
+      .on('telepointer', this.onReceiveTelepointer)
       .connect();
 
     return this;
@@ -54,10 +60,22 @@ export class CollabProvider implements CollabEditProvider {
   }
 
   /**
-   * Send arbitrary messages, such as telepointers, to other
-   * participants.
+   * Send messages, such as telepointers, to other participants.
    */
-  sendMessage(data: any) {}
+  sendMessage(data: any) {
+    if (!data) {
+      return;
+    }
+
+    const { type } = data;
+    switch (type) {
+      case 'telepointer':
+        this.channel.sendTelepointer({
+          ...data,
+          timestamp: new Date().getTime(),
+        });
+    }
+  }
 
   private queueData(data: StepResponse) {
     logger(`Queuing data for version ${data.version}`);
@@ -116,6 +134,55 @@ export class CollabProvider implements CollabEditProvider {
       this.queueData(data);
     }
   };
+
+  private onReceiveTelepointer = (
+    data: TelepointerData & { timestamp: number },
+  ) => {
+    const { sessionId } = data;
+
+    if (sessionId === this.config.userId) {
+      return;
+    }
+
+    const participant = this.participants.get(sessionId);
+
+    if (participant && participant.lastActive > data.timestamp) {
+      logger(`Old telepointer event. Ignoring.`);
+      return;
+    }
+
+    this.updateParticipant(sessionId, data.timestamp);
+    logger(`Remote telepointer from ${sessionId}`);
+
+    this.emit('telepointer', data);
+  };
+
+  private updateParticipant(userId: string, timestamp: number) {
+    // TODO: Make batch-request to backend to resolve participants
+    const { name = '', email = '', avatar = '' } = getParticipant(userId);
+
+    this.participants.set(userId, {
+      name,
+      email,
+      avatar,
+      sessionId: userId,
+      lastActive: timestamp,
+    });
+
+    const joined = [this.participants.get(userId)];
+
+    // Filter out participants that's been inactive for
+    // more than 5 minutes.
+
+    const now = new Date().getTime();
+    const left = Array.from(this.participants.values()).filter(
+      p => (now - p.lastActive) / 1000 > 300,
+    );
+
+    left.forEach(p => this.participants.delete(p.sessionId));
+
+    this.emit('presence', { joined, left });
+  }
 
   /**
    * Emit events to subscribers

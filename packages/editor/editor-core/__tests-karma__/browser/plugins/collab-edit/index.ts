@@ -19,7 +19,7 @@ const setupEditor = (setProvider: boolean = true) => {
   }
 
   const { editorView } = createEditor({
-    editorPlugins: [collabEdit(), tablesPlugin],
+    editorPlugins: [collabEdit(), tablesPlugin()],
     providerFactory,
   });
 

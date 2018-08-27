@@ -10,7 +10,7 @@ function render(partialProps: Partial<Props>) {
     query: '',
     resultsGroups: [],
     searchSessionId: '0',
-    renderAdvancedSearchLink: () => <div id="search link" />,
+    renderNoRecentActivity: () => <div id="search link" />,
     renderAdvancedSearchGroup: () => <div id="search-group" />,
     ...partialProps,
   };

@@ -1,5 +1,12 @@
 # @atlaskit/smart-card
 
+## 8.1.0
+- [minor] Switched to the amerizan way of spelling unauthorized [7c223f9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7c223f9)
+
+## 8.0.1
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/media-ui@5.1.2
+
 ## 8.0.0
 - [major] fix call to ORS by switching to fetch from XHR [48b95b0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/48b95b0)
 - [patch] Cleaner fetch function [e9b1477](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e9b1477)

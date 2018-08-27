@@ -9,21 +9,26 @@ import type { NavigationProviderProps } from './types';
 
 const LS_KEY = 'ATLASKIT_NAVIGATION_UI_STATE';
 
+const DEFAULT_UI_STATE = {
+  isPeekHinting: false,
+  isPeeking: false,
+  isCollapsed: false,
+  productNavWidth: CONTENT_NAV_WIDTH,
+  isResizing: false,
+};
+
 function defaultGetCache(): UIControllerShape {
-  const stored = localStorage.getItem(LS_KEY);
-  return stored
-    ? JSON.parse(stored)
-    : {
-        isPeekHinting: false,
-        isPeeking: false,
-        isCollapsed: false,
-        productNavWidth: CONTENT_NAV_WIDTH,
-        isResizing: false,
-      };
+  if (typeof localStorage !== 'undefined') {
+    const stored = localStorage.getItem(LS_KEY);
+    return stored ? JSON.parse(stored) : DEFAULT_UI_STATE;
+  }
+  return DEFAULT_UI_STATE;
 }
 
 function defaultSetCache(state: UIControllerShape) {
-  localStorage.setItem(LS_KEY, JSON.stringify(state));
+  if (typeof localStorage !== 'undefined') {
+    localStorage.setItem(LS_KEY, JSON.stringify(state));
+  }
 }
 
 export default class NavigationProvider extends Component<
