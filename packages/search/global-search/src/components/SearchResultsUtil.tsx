@@ -11,11 +11,14 @@ export enum JiraEntityTypes {
 }
 
 const JIRA_ADVANCED_SEARCH_URLS = {
-  [JiraEntityTypes.Issues]: '/issues',
-  [JiraEntityTypes.Boards]: '/secure/ManageRapidViews.jspa',
-  [JiraEntityTypes.Filters]: '/ManageFilters.jspa',
-  [JiraEntityTypes.Projects]: '/projects',
-  [JiraEntityTypes.People]: '/people',
+  [JiraEntityTypes.Issues]: query =>
+    `/secure/QuickSearch.jspa?searchString=${query}`,
+  [JiraEntityTypes.Boards]: query =>
+    `/secure/ManageRapidViews.jspa?contains=${query}`,
+  [JiraEntityTypes.Filters]: query =>
+    `/secure/ManageFilters.jspa?Search=Search&filterView=search&name=${query}`,
+  [JiraEntityTypes.Projects]: query => `/projects?contains=${query}`,
+  [JiraEntityTypes.People]: query => `/people/search?q=${query}`,
 };
 
 export const isAdvancedSearchResult = (resultId: string) =>
@@ -34,7 +37,8 @@ export function getJiraAdvancedSearchUrl(
   entityType: JiraEntityTypes,
   query?: string,
 ) {
-  return `${JIRA_ADVANCED_SEARCH_URLS[entityType]}?query=${query}`;
+  const getUrl = JIRA_ADVANCED_SEARCH_URLS[entityType];
+  return getUrl(query);
 }
 
 export function redirectToConfluenceAdvancedSearch(query = '') {
