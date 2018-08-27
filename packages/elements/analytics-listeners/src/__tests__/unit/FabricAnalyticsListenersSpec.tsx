@@ -223,7 +223,7 @@ describe('<FabricAnalyticsListeners />', () => {
   });
 
   describe('<FabricElementsListener />', () => {
-    it('should listen and fire a UI event with analyticsWebClient', () => {
+    it('should listen and fire a UI event with analyticsWebClient', done => {
       const compOnClick = jest.fn();
       const component = mount(
         <FabricAnalyticsListeners client={analyticsWebClientMock}>
@@ -242,12 +242,15 @@ describe('<FabricAnalyticsListeners />', () => {
 
       dummyComponent.simulate('click');
 
-      setTimeout(() => expect(analyticsWebClientMock.sendUIEvent).toBeCalled());
+      setTimeout(() => {
+        expect(analyticsWebClientMock.sendUIEvent).toBeCalled();
+        done();
+      });
     });
   });
 
   describe('<AtlaskitListener />', () => {
-    it('should listen and fire a UI event with analyticsWebClient', () => {
+    it('should listen and fire a UI event with analyticsWebClient', done => {
       const compOnClick = jest.fn();
       const component = mount(
         <FabricAnalyticsListeners client={analyticsWebClientMock}>
@@ -266,12 +269,15 @@ describe('<FabricAnalyticsListeners />', () => {
 
       dummyComponent.simulate('click');
 
-      setTimeout(() => expect(analyticsWebClientMock.sendUIEvent).toBeCalled());
+      setTimeout(() => {
+        expect(analyticsWebClientMock.sendUIEvent).toBeCalled();
+        done();
+      });
     });
   });
 
   describe('<NavigationListener />', () => {
-    it('should listen and fire a UI event with analyticsWebClient', () => {
+    it('should listen and fire a UI event with analyticsWebClient', done => {
       const compOnClick = jest.fn();
       const component = mount(
         <FabricAnalyticsListeners client={analyticsWebClientMock}>
@@ -290,7 +296,10 @@ describe('<FabricAnalyticsListeners />', () => {
 
       dummyComponent.simulate('click');
 
-      setTimeout(() => expect(analyticsWebClientMock.sendUIEvent).toBeCalled());
+      setTimeout(() => {
+        expect(analyticsWebClientMock.sendUIEvent).toBeCalled();
+        done();
+      });
     });
   });
 });

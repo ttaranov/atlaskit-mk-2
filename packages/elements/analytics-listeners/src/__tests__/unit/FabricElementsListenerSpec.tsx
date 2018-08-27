@@ -56,14 +56,14 @@ describe('<FabricElementsListener />', () => {
     const dummy = analyticsListener.find('#dummy');
     dummy.simulate('click');
 
-    setTimeout(() => {
+    return Promise.resolve({}).then(() => {
       expect(analyticsWebClientMock.sendUIEvent).toBeCalledWith(expectedEvent);
     });
   };
 
   describe('Listen and fire an UI event with analyticsWebClient', () => {
     it('should fire event with elements tag', () => {
-      fireAndVerifySentEvent(DummyComponentWithAnalytics, {
+      return fireAndVerifySentEvent(DummyComponentWithAnalytics, {
         action: 'someAction',
         actionSubject: 'someComponent',
         source: 'unknown',
@@ -72,7 +72,7 @@ describe('<FabricElementsListener />', () => {
     });
 
     it('should fire event without duplicating the tag', () => {
-      fireAndVerifySentEvent(TaggedDummyComponentWithAnalytics, {
+      return fireAndVerifySentEvent(TaggedDummyComponentWithAnalytics, {
         action: 'someAction',
         actionSubject: 'someComponent',
         source: 'unknown',
@@ -80,7 +80,7 @@ describe('<FabricElementsListener />', () => {
       });
     });
 
-    it('should fire event with context merged into the attributes', () => {
+    it('should fire event with context merged into the attributes', done => {
       const component = mount(
         <FabricElementsListener
           client={analyticsWebClientMock}
@@ -122,6 +122,7 @@ describe('<FabricElementsListener />', () => {
             tags: [ELEMENTS_TAG],
           }),
         );
+        done();
       });
     });
   });

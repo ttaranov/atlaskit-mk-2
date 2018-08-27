@@ -70,12 +70,10 @@ describe('NavigationListener', () => {
 
   cases(
     'should transform events from analyticsListener and fire UI and Operational events to the analyticsWebClient',
-    ({
-      eventPayload,
-      clientPayload,
-      eventType = UI_EVENT_TYPE,
-      context = [],
-    }) => {
+    (
+      { eventPayload, clientPayload, eventType = UI_EVENT_TYPE, context = [] },
+      done,
+    ) => {
       const spy = jest.fn();
       const ButtonWithAnalytics = createButtonWithAnalytics(eventPayload);
       const AnalyticsContexts = createAnalyticsContexts(context);
@@ -95,9 +93,10 @@ describe('NavigationListener', () => {
           ? analyticsWebClientMock.sendOperationalEvent
           : analyticsWebClientMock.sendUIEvent;
 
-      setTimeout(() =>
-        expect((mockFn as any).mock.calls[0][0]).toMatchObject(clientPayload),
-      );
+      setTimeout(() => {
+        expect((mockFn as any).mock.calls[0][0]).toMatchObject(clientPayload);
+        done();
+      });
     },
     [
       {

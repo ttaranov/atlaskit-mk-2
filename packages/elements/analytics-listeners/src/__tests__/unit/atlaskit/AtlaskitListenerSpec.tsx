@@ -67,7 +67,7 @@ describe('AtlaskitListener', () => {
 
   cases(
     'should transform events from analyticsListener and fire UI events to the analyticsWebClient',
-    ({ eventPayload, clientPayload, context = [] }) => {
+    ({ eventPayload, clientPayload, context = [] }, done) => {
       const spy = jest.fn();
       const ButtonWithAnalytics = createButtonWithAnalytics(eventPayload);
       const AnalyticsContexts = createAnalyticsContexts(context);
@@ -86,6 +86,7 @@ describe('AtlaskitListener', () => {
         expect(
           (analyticsWebClientMock.sendUIEvent as any).mock.calls[0][0],
         ).toMatchObject(clientPayload);
+        done();
       });
     },
     [
