@@ -1,5 +1,11 @@
 # @atlaskit/conversation
 
+## 9.2.1
+- [patch] Updated dependencies [911a570](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/911a570)
+  - @atlaskit/renderer@20.1.1
+  - @atlaskit/editor-core@78.0.0
+  - @atlaskit/comment@6.0.11
+
 ## 9.2.0
 - [minor] Adds option to disable heading ids in renderer, and disable them by default in conversations [efcca1a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/efcca1a)
 
