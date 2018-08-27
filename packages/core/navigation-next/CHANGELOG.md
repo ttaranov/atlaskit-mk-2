@@ -1,5 +1,8 @@
 # @atlaskit/navigation-next
 
+## 3.6.4
+- [patch] Remove BackItem extra margin [bc2d997](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bc2d997)
+
 ## 3.6.3
 - [patch] Update navigation item click analytics to use an attribute identifier rather than action subject ID. Also convert kebab-case ids to camelCase. [5efaeaf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5efaeaf)
 
