@@ -142,7 +142,7 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
       );
       expect(pluginState.activePanelType).toEqual('info');
       changePanelType('note')(editorView.state, editorView.dispatch);
-      //Wait till the dispatch cycle finishes and the state updates
+      // Wait till the dispatch cycle finishes and the state updates
       setTimeout(() => {
         expect(pluginState.activePanelType).toEqual('note');
       }, 0);
