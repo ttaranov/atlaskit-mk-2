@@ -195,6 +195,7 @@ export default function generateProductConfig(
     notificationDrawerContents,
 
     appSwitcherComponent,
+    appSwitcherTooltip,
 
     helpItems,
     helpTooltip,
@@ -242,7 +243,11 @@ export default function generateProductConfig(
       profileIconUrl,
     ),
     appSwitcher: appSwitcherComponent
-      ? { component: appSwitcherComponent }
+      ? {
+          component: appSwitcherComponent,
+          label: appSwitcherTooltip,
+          tooltip: appSwitcherTooltip,
+        }
       : null,
   };
 }
