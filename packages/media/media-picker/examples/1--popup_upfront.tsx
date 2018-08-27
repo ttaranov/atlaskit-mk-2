@@ -25,13 +25,11 @@ import {
 } from '../src/domain/uploadEvent';
 
 const context = createUploadContext();
-const useNewUploadService = true;
 const popup = MediaPicker('popup', context, {
   container: document.body,
   uploadParams: {
     collection: defaultMediaPickerCollectionName,
   },
-  useNewUploadService,
 });
 
 popup.show();
