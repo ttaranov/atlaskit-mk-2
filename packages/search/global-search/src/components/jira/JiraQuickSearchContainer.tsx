@@ -7,6 +7,8 @@ import { PeopleSearchClient } from '../../api/PeopleSearchClient';
 import { LinkComponent } from '../GlobalQuickSearchWrapper';
 import QuickSearchContainer from '../common/QuickSearchContainer';
 import JiraSearchResults from './JiraSearchResults';
+import { sliceResults } from './JiraSearchResultsMapper';
+
 export interface Props {
   createAnalyticsEvent?: CreateAnalyticsEventFn;
   linkComponent?: LinkComponent;
@@ -153,9 +155,7 @@ export class JiraQuickSearchContainer extends React.Component<
           id: 'global-search.jira.search-placeholder',
         })}
         linkComponent={linkComponent}
-        getDisplayedResults={({ issues, boards, projects, filters }) => {
-          return [issues, ...[boards, projects, filters]];
-        }}
+        getDisplayedResults={sliceResults}
         getSearchResultsComponent={this.getSearchResultsComponent}
         getRecentItems={this.getRecentItems}
         getSearchResults={this.getSearchResults}

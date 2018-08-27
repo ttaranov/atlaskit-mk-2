@@ -19,6 +19,7 @@ import {
 } from '../../util/analytics-event-helper';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { CreateAnalyticsEventFn } from '../analytics/types';
+import { ObjectValues } from '../SearchResultsUtil';
 
 export interface SearchResultProps extends State {
   retrySearch: Function;
@@ -40,7 +41,7 @@ export interface Props {
    * for example in jira we pass (issues, boards, filters and projects but we display only 2 groups issues and others combined)
    * @param results
    */
-  getDisplayedResults?(results: GenericResultMap): Result[][];
+  getDisplayedResults?(results: GenericResultMap): GenericResultMap;
   createAnalyticsEvent?: CreateAnalyticsEventFn;
   handleSearchSubmit?({ target: string }): void;
   isSendSearchTermsEnabled?: boolean;
@@ -63,7 +64,7 @@ export interface State {
 export class QuickSearchContainer extends React.Component<Props, State> {
   static defaultProps = {
     getDisplayedResults(results: GenericResultMap) {
-      return Object.keys(results).map(key => results[key]);
+      return results;
     },
   };
 
@@ -135,7 +136,10 @@ export class QuickSearchContainer extends React.Component<Props, State> {
         : 0;
 
       const eventAttributes: ShownAnalyticsAttributes = buildShownEventDetails(
-        ...getDisplayedResults(recentItems),
+        ...ObjectValues(getDisplayedResults(recentItems)).reduce(
+          (acc: Result[][], value) => [...acc, value],
+          [],
+        ),
       );
 
       firePreQueryShownEvent(
@@ -164,7 +168,10 @@ export class QuickSearchContainer extends React.Component<Props, State> {
     const { createAnalyticsEvent, getDisplayedResults } = this.props;
     if (createAnalyticsEvent && getDisplayedResults) {
       const resultsDetails: ShownAnalyticsAttributes = buildShownEventDetails(
-        ...getDisplayedResults(searchResults),
+        ...ObjectValues(getDisplayedResults(searchResults)).reduce(
+          (acc: Result[][], value) => [...acc, value],
+          [],
+        ),
       );
 
       firePostQueryShownEvent(

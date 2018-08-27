@@ -15,7 +15,7 @@ const DEFAULT_JIRA_RESULTS_MAP = {
   people: [],
 };
 
-const sliceResults = (resultsMap: JiraResultsMap) => {
+export const sliceResults = (resultsMap: JiraResultsMap) => {
   const { issues, boards, filters, projects, people } = resultsMap
     ? resultsMap
     : DEFAULT_JIRA_RESULTS_MAP;

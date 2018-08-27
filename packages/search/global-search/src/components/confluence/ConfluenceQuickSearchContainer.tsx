@@ -250,12 +250,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         getSearchResults={this.getSearchResults}
         handleSearchSubmit={this.handleSearchSubmit}
         isSendSearchTermsEnabled={isSendSearchTermsEnabled}
-        getDisplayedResults={result => {
-          const slicedResults = sliceResults(result as ConfluenceResultsMap);
-          return Object.keys(slicedResults)
-            .map(key => slicedResults[key])
-            .reduce((acc: Result[][], value) => [...acc, value], []);
-        }}
+        getDisplayedResults={sliceResults}
       />
     );
   }
