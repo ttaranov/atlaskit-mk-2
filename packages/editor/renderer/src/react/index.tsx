@@ -43,6 +43,7 @@ export interface ConstructorParams {
   objectContext?: RendererContext;
   useNewApplicationCard?: boolean;
   appearance?: RendererAppearance;
+  disableHeadingIDs?: boolean;
 }
 
 export default class ReactSerializer implements Serializer<JSX.Element> {
@@ -53,6 +54,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
   private rendererContext?: RendererContext;
   private useNewApplicationCard?: boolean;
   private appearance?: RendererAppearance;
+  private disableHeadingIDs?: boolean;
 
   constructor({
     providers,
@@ -62,6 +64,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     objectContext,
     useNewApplicationCard,
     appearance,
+    disableHeadingIDs,
   }: ConstructorParams) {
     this.providers = providers;
     this.eventHandlers = eventHandlers;
@@ -70,6 +73,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     this.rendererContext = objectContext;
     this.useNewApplicationCard = useNewApplicationCard;
     this.appearance = appearance;
+    this.disableHeadingIDs = disableHeadingIDs;
   }
 
   serializeFragment(
@@ -203,6 +207,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
       serializer: this,
       content: node.content ? node.content.toJSON() : undefined,
       useNewApplicationCard: this.useNewApplicationCard,
+      disableHeadingIDs: this.disableHeadingIDs,
       ...node.attrs,
     };
   }

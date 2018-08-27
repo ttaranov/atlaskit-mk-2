@@ -34,3 +34,8 @@ if (command === 'changeset') {
     publicFlag: flags.includes('--public'),
   });
 }
+
+process.on('unhandledRejection', e => {
+  console.error('There was an unhandled rejection in this script');
+  throw e;
+});
