@@ -82,7 +82,7 @@ describe('UploadService', () => {
         tenantUploadParams,
         {
           collection: '',
-        }
+        },
       ),
     });
 

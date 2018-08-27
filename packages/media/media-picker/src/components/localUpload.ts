@@ -40,7 +40,7 @@ export class LocalUploadComponent<
     this.uploadService = UploadServiceFactory.create(
       this.context,
       tenantUploadParams,
-      uploadParams
+      uploadParams,
     );
     this.config = config;
     this.uploadService.on('files-added', this.onFilesAdded);

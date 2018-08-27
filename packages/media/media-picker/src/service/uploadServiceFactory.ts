@@ -46,10 +46,6 @@ export class UploadServiceFactory {
     tenantUploadParams: UploadParams,
     uploadParams?: UploadParams,
   ): UploadService {
-    return new NewUploadServiceImpl(
-      context,
-      tenantUploadParams,
-      uploadParams,
-    );
+    return new NewUploadServiceImpl(context, tenantUploadParams, uploadParams);
   }
 }

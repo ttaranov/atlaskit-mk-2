@@ -104,7 +104,7 @@ export class App extends Component<AppProps, AppState> {
       onUploadEnd,
       onUploadError,
       context,
-      tenantUploadParams
+      tenantUploadParams,
     } = props;
     const { userAuthProvider } = context.config;
 
