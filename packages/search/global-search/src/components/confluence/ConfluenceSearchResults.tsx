@@ -39,8 +39,12 @@ export default class ConfluenceSearchResults extends React.Component<Props> {
             values={{ url: getConfluenceAdvancedSearchLink() }}
           />
         )}
-        renderAdvancedSearchGroup={() => (
-          <AdvancedSearchGroup key="advanced" query={query} />
+        renderAdvancedSearchGroup={(analyticsData?) => (
+          <AdvancedSearchGroup
+            key="advanced"
+            query={query}
+            analyticsData={analyticsData}
+          />
         )}
         getPreQueryGroups={() => mapRecentResultsToUIGroups(recentItems)}
         getPostQueryGroups={() => mapSearchResultsToUIGroups(searchResults)}
