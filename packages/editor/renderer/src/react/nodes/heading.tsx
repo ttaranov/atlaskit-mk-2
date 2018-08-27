@@ -2,13 +2,14 @@ import * as React from 'react';
 import { getText } from '../../utils';
 
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
-export interface Props {
-  level: HeadingLevel;
-  content: any[];
-  disableHeadingIDs?: boolean;
-}
 
-export default function Heading(props: Props & React.Props<any>) {
+export default function Heading(
+  props: {
+    level: HeadingLevel;
+    content: any[];
+    disableHeadingIDs?: boolean;
+  } & React.Props<any>,
+) {
   const { level, children, content } = props;
   const headerId = !props.disableHeadingIDs ? getHeaderId(content) : undefined;
 
