@@ -10,7 +10,8 @@ import { analyticsService } from '../../../../../analytics';
 
 describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
   let languagePicker: ReactWrapper<any, any>;
-  let setLanguageStub, deleteCodeBlockStub;
+  let setLanguageStub;
+  let deleteCodeBlockStub;
   let dom: HTMLElement;
 
   beforeEach(() => {
@@ -112,7 +113,7 @@ describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
 
     it('should call setLanguage when dropdown item selected', () => {
       expect(setLanguageStub).toHaveBeenCalledTimes(0);
-      console.log(languagePicker.find(Select).instance());
+      languagePicker.find(Select).instance();
       const onChange: Function = languagePicker.find(Select).prop('onChange');
       onChange({
         label: 'Javascript',

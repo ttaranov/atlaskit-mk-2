@@ -50,7 +50,6 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
       expect(pluginState.element).not.toBe(undefined);
       expect(pluginState.activePanelType).not.toBe(undefined);
       changePanelType('note')(editorView.state, editorView.dispatch);
-      //Wait till the dispatch cycle finishes and the state updates
       setTimeout(() => {
         expect(pluginState.activePanelType).toEqual('note');
       }, 0);

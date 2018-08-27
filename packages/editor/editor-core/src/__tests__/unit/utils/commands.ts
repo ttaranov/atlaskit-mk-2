@@ -46,8 +46,8 @@ describe('filter', () => {
   });
 
   it('does nothing with one falsey predicate in array', () => {
-    const trueFilter = jest.fn(),
-      falseFilter = jest.fn();
+    const trueFilter = jest.fn();
+    const falseFilter = jest.fn();
 
     const { editorView } = createEditor({});
     const result = filter(
