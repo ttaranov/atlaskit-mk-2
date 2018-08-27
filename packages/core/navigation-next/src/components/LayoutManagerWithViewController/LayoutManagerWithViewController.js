@@ -64,7 +64,8 @@ class LayoutManagerWithViewControllerBase extends Component<
         state: { activeView },
       },
     } = this.props;
-
+    console.log('render container', activeView);
+    debugger; // eslint-disable-line
     return activeView && activeView.type === 'container'
       ? this.renderView(activeView)
       : skeleton;
@@ -78,7 +79,8 @@ class LayoutManagerWithViewControllerBase extends Component<
       },
     } = this.props;
     const { hasInitialised } = this.state;
-
+    console.log('>>>>>>>>>>>>>>>>>>>');
+    debugger; // eslint-disable-line
     /* We are embedding the LayerInitialised analytics component within global navigation so that
      * the event it fires can access the analytics context within LayerManager. The component
      * cannot be rendered directly within LayerManager since it needs access to view data which
@@ -104,7 +106,8 @@ class LayoutManagerWithViewControllerBase extends Component<
         state: { activeView, activePeekView },
       },
     } = this.props;
-
+    console.log('render prod', activeView, activePeekView);
+    debugger; // eslint-disable-line
     if (
       activePeekView &&
       (isPeeking || (activeView && activeView.type === 'container'))

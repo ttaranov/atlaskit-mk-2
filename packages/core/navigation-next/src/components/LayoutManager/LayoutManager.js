@@ -47,6 +47,8 @@ export default class LayoutManager extends Component<LayoutManagerProps> {
 
   renderGlobalNavigation = (shouldRenderShadow: boolean) => {
     const { globalNavigation: GlobalNavigation } = this.props;
+    console.log('renderGlobalNavigation', this.props);
+    debugger; // eslint-disable-line
     return (
       <ThemeProvider
         theme={theme => ({
@@ -80,6 +82,10 @@ export default class LayoutManager extends Component<LayoutManagerProps> {
     const isVisible = transitionState !== 'exited';
     const shouldDisableInteraction =
       isResizing || isTransitioning(transitionState);
+
+    console.log('LayoutManager: transition', args);
+    console.log('LayoutManager: props', this.props);
+    debugger; // eslint-disable-line
 
     return (
       <ContentNavigationWrapper
@@ -119,6 +125,16 @@ export default class LayoutManager extends Component<LayoutManagerProps> {
       isResizing,
       productNavWidth,
     } = navigationUIController.state;
+
+    console.log(
+      'LayoutManager: navigation props to be rendered',
+      navigationUIController,
+      onExpandStart,
+      onExpandEnd,
+      onCollapseStart,
+      onCollapseEnd,
+    );
+    debugger; // eslint-disable-line
 
     return (
       <NavigationAnalyticsContext
