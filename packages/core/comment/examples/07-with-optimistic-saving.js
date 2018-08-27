@@ -19,7 +19,7 @@ export default () => (
         <p>Also, this text should be grey!</p>
       </div>
     }
-    restrictedTo="atlassian-staff"
+    restrictedTo="Restricted to atlassian-staff"
     actions={[<CommentAction>Like</CommentAction>]}
   />
 );

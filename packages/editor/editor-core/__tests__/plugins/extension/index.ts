@@ -40,18 +40,29 @@ describe('extension', () => {
 
   const extensionAttrs = bodiedExtensionData[1].attrs;
 
-  describe('when cursor is at the beginning of the content', () => {
-    it('should create a paragraph above extension node on Enter', () => {
+  describe('when cursor is in between two paragraphs in an extension', () => {
+    it("shouldn't create a new extension node on Enter", () => {
       const { editorView } = editor(
         doc(
-          bodiedExtension(extensionAttrs)(paragraph('{<>}'), paragraph('text')),
+          bodiedExtension(extensionAttrs)(
+            paragraph('paragraph 1'),
+            paragraph('{<>}'),
+            paragraph('paragraph 2'),
+          ),
         ),
       );
 
       sendKeyToPm(editorView, 'Enter');
 
       expect(editorView.state.doc).toEqualDocument(
-        doc(paragraph(''), bodiedExtension(extensionAttrs)(paragraph('text'))),
+        doc(
+          bodiedExtension(extensionAttrs)(
+            paragraph('paragraph 1'),
+            paragraph(''),
+            paragraph('{<>}'),
+            paragraph('paragraph 2'),
+          ),
+        ),
       );
     });
   });
@@ -62,26 +73,32 @@ describe('extension', () => {
         const { editorView } = editor(
           doc(bodiedExtension(extensionAttrs)(paragraph('te{<>}xt'))),
         );
-        expect(editExtension(null)(editorView)).toBe(false);
+        expect(editExtension(null)(editorView.state, editorView.dispatch)).toBe(
+          false,
+        );
       });
       it('should return false if extension node is not selected or cursor is not inside extension body', async () => {
         const { editorView } = editor(doc(paragraph('te{<>}xt')));
         const provider = await macroProviderPromise;
-        expect(editExtension(provider)(editorView)).toBe(false);
+        expect(
+          editExtension(provider)(editorView.state, editorView.dispatch),
+        ).toBe(false);
       });
       it('should return true if macroProvider is available and cursor is inside extension node', async () => {
         const { editorView } = editor(
           doc(bodiedExtension(extensionAttrs)(paragraph('te{<>}xt'))),
         );
         const provider = await macroProviderPromise;
-        expect(editExtension(provider)(editorView)).toBe(true);
+        expect(
+          editExtension(provider)(editorView.state, editorView.dispatch),
+        ).toBe(true);
       });
       it('should replace selected bodiedExtension node with a new bodiedExtension node', async () => {
         const { editorView } = editor(
           doc(bodiedExtension(extensionAttrs)(paragraph('{<>}'))),
         );
         const provider = await macroProviderPromise;
-        editExtension(provider)(editorView);
+        editExtension(provider)(editorView.state, editorView.dispatch);
         await sleep(0);
         expect(editorView.state.doc).toEqualDocument(
           doc(
@@ -111,7 +128,7 @@ describe('extension', () => {
           new MockMacroProvider(inlineExtensionData[1]),
         );
         const provider = await macroProviderPromise;
-        editExtension(provider)(editorView);
+        editExtension(provider)(editorView.state, editorView.dispatch);
         await sleep(0);
         expect(editorView.state.doc).toEqualDocument(
           doc(
@@ -123,6 +140,58 @@ describe('extension', () => {
           ),
         );
       });
+
+      describe('when nested in bodiedExtension', () => {
+        it('should replace selected inlineExtension node with a new inlineExtension node', async () => {
+          const { editorView } = editor(
+            doc(
+              bodiedExtension(extensionAttrs)(
+                paragraph(
+                  inlineExtension(inlineExtensionData[0].attrs)(),
+                  'two',
+                ),
+              ),
+            ),
+          );
+          editorView.dispatch(
+            editorView.state.tr.setSelection(
+              NodeSelection.create(editorView.state.doc, 2),
+            ),
+          );
+          const macroProviderPromise = Promise.resolve(
+            new MockMacroProvider(inlineExtensionData[1]),
+          );
+          const provider = await macroProviderPromise;
+          editExtension(provider)(editorView.state, editorView.dispatch);
+          await sleep(0);
+          expect(editorView.state.doc).toEqualDocument(
+            doc(
+              bodiedExtension(extensionAttrs)(
+                paragraph(
+                  inlineExtension(inlineExtensionData[1].attrs)(),
+                  'two',
+                ),
+              ),
+            ),
+          );
+        });
+      });
+
+      it('should preserve the extension breakout mode on edit', async () => {
+        const { editorView } = editor(
+          doc(
+            bodiedExtension({ ...extensionAttrs, layout: 'full-width' })(
+              paragraph('te{<>}xt'),
+            ),
+          ),
+        );
+        const pluginState = pluginKey.getState(editorView.state);
+        const provider = await macroProviderPromise;
+        expect(
+          editExtension(provider)(editorView.state, editorView.dispatch),
+        ).toBe(true);
+        expect(pluginState.node.node.attrs.layout).toEqual('full-width');
+      });
     });
 
     describe('removeExtension', () => {
@@ -131,7 +200,7 @@ describe('extension', () => {
           doc(bodiedExtension(extensionAttrs)(paragraph('te{<>}xt'))),
         );
 
-        expect(removeExtension(editorView.state, editorView.dispatch)).toBe(
+        expect(removeExtension()(editorView.state, editorView.dispatch)).toBe(
           true,
         );
 

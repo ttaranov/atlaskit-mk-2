@@ -29,6 +29,44 @@ Object {
 }
 `;
 
+exports[`task-decision: can insert mention into an action using click 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "attrs": Object {
+        "localId": "abc-123",
+      },
+      "content": Array [
+        Object {
+          "attrs": Object {
+            "localId": "abc-123",
+            "state": "TODO",
+          },
+          "content": Array [
+            Object {
+              "attrs": Object {
+                "accessLevel": "",
+                "id": "0",
+                "text": "@Carolyn",
+                "userType": null,
+              },
+              "type": "mention",
+            },
+            Object {
+              "text": " ",
+              "type": "text",
+            },
+          ],
+          "type": "taskItem",
+        },
+      ],
+      "type": "taskList",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
 exports[`task-decision: can paste plain text into an action 1`] = `
 Object {
   "content": Array [
@@ -44,7 +82,24 @@ Object {
           },
           "content": Array [
             Object {
-              "text": "<p>this is a link <a href=\\"http://www.google.com\\">www.google.com</a></p><p>more elements with some <strong>format</strong></p><p>some addition<em> formatting</em></p>",
+              "text": "this is a link ",
+              "type": "text",
+            },
+            Object {
+              "marks": Array [
+                Object {
+                  "attrs": Object {
+                    "__confluenceMetadata": null,
+                    "href": "http://www.google.com",
+                  },
+                  "type": "link",
+                },
+              ],
+              "text": "http://www.google.com",
+              "type": "text",
+            },
+            Object {
+              "text": " more elements with some **format** some addition *formatting*",
               "type": "text",
             },
           ],

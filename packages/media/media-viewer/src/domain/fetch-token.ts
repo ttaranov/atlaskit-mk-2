@@ -38,6 +38,8 @@ function refreshAuthentication(
       collectionName,
     )}`;
   }
+
+  return undefined;
 }
 
 function refreshQueryString(

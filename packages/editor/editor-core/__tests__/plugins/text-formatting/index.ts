@@ -16,8 +16,10 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import {
   TextFormattingState,
-  stateKey as textFormattingPluginKey,
+  pluginKey as textFormattingPluginKey,
 } from '../../../src/plugins/text-formatting/pm-plugins/main';
+import * as commands from '../../../src/plugins/text-formatting/commands/text-formatting';
+import { anyMarkActive } from '../../../src/plugins/text-formatting/utils';
 
 describe('text-formatting', () => {
   let trackEvent;
@@ -230,63 +232,42 @@ describe('text-formatting', () => {
     });
   });
 
-  it('should allow a change handler to be attached', () => {
-    const { pluginState } = editor(doc(p('text')));
-    const spy = jest.fn();
-    pluginState.subscribe(spy);
-
-    expect(spy).toHaveBeenCalledTimes(1);
-    expect(spy).toHaveBeenCalledWith(pluginState);
-  });
-
   describe('code', () => {
     it('should be able to toggle code on a character', () => {
-      const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
-
-      expect(pluginState.toggleCode(editorView));
+      const { editorView } = editor(doc(p('{<}t{>}ext')));
+      expect(commands.toggleCode()(editorView.state, editorView.dispatch));
       expect(editorView.state.doc).toEqualDocument(doc(p(code('t'), 'ext')));
-      expect(pluginState.toggleCode(editorView));
+      expect(commands.toggleCode()(editorView.state, editorView.dispatch));
       expect(editorView.state.doc).toEqualDocument(doc(p('text')));
     });
 
     it('should expose whether code is active on an empty selection', () => {
-      const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
-
-      expect(pluginState.codeActive).toBe(false);
-      expect(pluginState.toggleCode(editorView));
+      const { pluginState } = editor(doc(p(code('some{<>}code'))));
       expect(pluginState.codeActive).toBe(true);
     });
 
     it('should expose whether code is active on a text selection', () => {
-      const { editorView, pluginState } = editor(doc(p('t{<}e{>}xt')));
-
-      expect(pluginState.codeActive).toBe(false);
-      expect(pluginState.toggleCode(editorView));
+      const { pluginState } = editor(doc(p(code('t{<}e{>}xt'))));
       expect(pluginState.codeActive).toBe(true);
     });
 
     it('exposes code as disabled when the mark cannot be applied', () => {
       const { pluginState } = editor(doc(code_block()('te{<>}xt')));
-
       expect(pluginState.codeDisabled).toBe(true);
     });
 
     it('exposes code as not disabled when the mark can be applied', () => {
       const { pluginState } = editor(doc(p('te{<>}xt')));
-
       expect(pluginState.codeDisabled).toBe(false);
     });
 
     it('should convert smart characters to normal ascii', () => {
-      const { editorView, pluginState } = editor(
-        doc(p('{<}… → ← – “ ” ‘ ’{>}')),
-      );
-
-      expect(pluginState.toggleCode(editorView));
+      const { editorView } = editor(doc(p('{<}… → ← – “ ” ‘ ’{>}')));
+      expect(commands.toggleCode()(editorView.state, editorView.dispatch));
       expect(editorView.state.doc).toEqualDocument(
         doc(p(code('... -> <- -- " " \' \''))),
       );
-      expect(pluginState.toggleCode(editorView));
+      expect(commands.toggleCode()(editorView.state, editorView.dispatch));
       expect(editorView.state.doc).toEqualDocument(
         doc(p('... -> <- -- " " \' \'')),
       );
@@ -295,284 +276,428 @@ describe('text-formatting', () => {
 
   describe('em', () => {
     it('should be able to toggle em on a character', () => {
-      const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
-
-      expect(pluginState.toggleEm(editorView));
+      const { editorView } = editor(doc(p('{<}t{>}ext')));
+      expect(commands.toggleEm()(editorView.state, editorView.dispatch));
       expect(editorView.state.doc).toEqualDocument(doc(p(em('t'), 'ext')));
-      expect(pluginState.toggleEm(editorView));
+      expect(commands.toggleEm()(editorView.state, editorView.dispatch));
       expect(editorView.state.doc).toEqualDocument(doc(p('text')));
     });
 
     it('should expose whether em is active on an empty selection', () => {
-      const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
-
-      expect(pluginState.emActive).toBe(false);
-      expect(pluginState.toggleEm(editorView));
+      const { pluginState } = editor(doc(p(em('te{<>}xt'))));
       expect(pluginState.emActive).toBe(true);
     });
 
     it('should expose whether em is active on a text selection', () => {
-      const { editorView, pluginState } = editor(doc(p('t{<}e{>}xt')));
-
-      expect(pluginState.emActive).toBe(false);
-      expect(pluginState.toggleEm(editorView));
+      const { pluginState } = editor(doc(p(em('t{<}e{>}xt'))));
       expect(pluginState.emActive).toBe(true);
     });
 
     it('exposes em as disabled when the mark cannot be applied', () => {
       const { pluginState } = editor(doc(code_block()('te{<>}xt')));
-
       expect(pluginState.emDisabled).toBe(true);
     });
 
     it('exposes em as not disabled when the mark can be applied', () => {
       const { pluginState } = editor(doc(p('te{<>}xt')));
-
       expect(pluginState.emDisabled).toBe(false);
     });
   });
 
   describe('strong', () => {
     it('should be able to toggle strong on a character', () => {
-      const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
-
-      expect(pluginState.toggleStrong(editorView));
+      const { editorView } = editor(doc(p('{<}t{>}ext')));
+      expect(commands.toggleStrong()(editorView.state, editorView.dispatch));
       expect(editorView.state.doc).toEqualDocument(doc(p(strong('t'), 'ext')));
-      expect(pluginState.toggleStrong(editorView));
+      expect(commands.toggleStrong()(editorView.state, editorView.dispatch));
       expect(editorView.state.doc).toEqualDocument(doc(p('text')));
     });
 
     it('should expose whether strong is active on an empty selection', () => {
-      const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
-
-      expect(pluginState.strongActive).toBe(false);
-      expect(pluginState.toggleStrong(editorView));
+      const { pluginState } = editor(doc(p(strong('te{<>}xt'))));
       expect(pluginState.strongActive).toBe(true);
     });
 
     it('should expose whether strong is active on a text selection', () => {
-      const { editorView, pluginState } = editor(doc(p('t{<}e{>}xt')));
-
-      expect(pluginState.strongActive).toBe(false);
-      expect(pluginState.toggleStrong(editorView));
+      const { pluginState } = editor(doc(p(strong('t{<}e{>}xt'))));
       expect(pluginState.strongActive).toBe(true);
     });
 
     it('exposes strong as disabled when the mark cannot be applied', () => {
       const { pluginState } = editor(doc(code_block()('te{<>}xt')));
-
       expect(pluginState.strongDisabled).toBe(true);
     });
 
     it('exposes strong as not disabled when the mark can be applied', () => {
       const { pluginState } = editor(doc(p('te{<>}xt')));
-
       expect(pluginState.strongDisabled).toBe(false);
     });
   });
 
   describe('underline', () => {
     it('should be able to toggle underline on a character', () => {
-      const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
-
-      expect(pluginState.toggleUnderline(editorView));
+      const { editorView } = editor(doc(p('{<}t{>}ext')));
+      expect(commands.toggleUnderline()(editorView.state, editorView.dispatch));
       expect(editorView.state.doc).toEqualDocument(
         doc(p(underline('t'), 'ext')),
       );
-      expect(pluginState.toggleUnderline(editorView));
+      expect(commands.toggleUnderline()(editorView.state, editorView.dispatch));
       expect(editorView.state.doc).toEqualDocument(doc(p('text')));
     });
 
     it('should expose whether underline is active on an empty selection', () => {
-      const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
-
-      expect(pluginState.underlineActive).toBe(false);
-      expect(pluginState.toggleUnderline(editorView));
+      const { pluginState } = editor(doc(p(underline('te{<>}xt'))));
       expect(pluginState.underlineActive).toBe(true);
     });
 
     it('should expose whether underline is active on a text selection', () => {
-      const { editorView, pluginState } = editor(doc(p('t{<}e{>}xt')));
-
-      expect(pluginState.underlineActive).toBe(false);
-      expect(pluginState.toggleUnderline(editorView));
+      const { pluginState } = editor(doc(p(underline('t{<}e{>}xt'))));
       expect(pluginState.underlineActive).toBe(true);
     });
 
     it('exposes underline as disabled when the mark cannot be applied', () => {
       const { pluginState } = editor(doc(code_block()('te{<>}xt')));
-
       expect(pluginState.underlineDisabled).toBe(true);
     });
 
     it('exposes underline as not disabled when the mark can be applied', () => {
       const { pluginState } = editor(doc(p('te{<>}xt')));
-
       expect(pluginState.underlineDisabled).toBe(false);
     });
   });
 
   describe('strike', () => {
     it('should be able to toggle strike on a character', () => {
-      const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
-
-      expect(pluginState.toggleStrike(editorView));
+      const { editorView } = editor(doc(p('{<}t{>}ext')));
+      expect(commands.toggleStrike()(editorView.state, editorView.dispatch));
       expect(editorView.state.doc).toEqualDocument(doc(p(strike('t'), 'ext')));
-      expect(pluginState.toggleStrike(editorView));
+      expect(commands.toggleStrike()(editorView.state, editorView.dispatch));
       expect(editorView.state.doc).toEqualDocument(doc(p('text')));
     });
 
     it('should expose whether strike is active on an empty selection', () => {
-      const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
-
-      expect(pluginState.strikeActive).toBe(false);
-      expect(pluginState.toggleStrike(editorView));
+      const { pluginState } = editor(doc(p(strike('te{<>}xt'))));
       expect(pluginState.strikeActive).toBe(true);
     });
 
     it('should expose whether strike is active on a text selection', () => {
-      const { editorView, pluginState } = editor(doc(p('t{<}e{>}xt')));
-
-      expect(pluginState.strikeActive).toBe(false);
-      expect(pluginState.toggleStrike(editorView));
+      const { pluginState } = editor(doc(p(strike('t{<}e{>}xt'))));
       expect(pluginState.strikeActive).toBe(true);
     });
 
     it('exposes strike as disabled when the mark cannot be applied', () => {
       const { pluginState } = editor(doc(code_block()('te{<>}xt')));
-
       expect(pluginState.strikeDisabled).toBe(true);
     });
 
     it('exposes strike as not disabled when the mark can be applied', () => {
       const { pluginState } = editor(doc(p('te{<>}xt')));
-
       expect(pluginState.strikeDisabled).toBe(false);
     });
   });
 
   describe('subscript', () => {
     it('should be able to toggle subscript on a character', () => {
-      const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
-
-      expect(pluginState.toggleSubscript(editorView));
+      const { editorView } = editor(doc(p('{<}t{>}ext')));
+      expect(commands.toggleSubscript()(editorView.state, editorView.dispatch));
       expect(editorView.state.doc).toEqualDocument(
         doc(p(subsup({ type: 'sub' })('t'), 'ext')),
       );
-      expect(pluginState.toggleSubscript(editorView));
+      expect(commands.toggleSubscript()(editorView.state, editorView.dispatch));
       expect(editorView.state.doc).toEqualDocument(doc(p('text')));
     });
 
     it('should expose whether subcript is active on an empty selection', () => {
-      const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
-
-      expect(pluginState.subscriptActive).toBe(false);
-      expect(pluginState.toggleSubscript(editorView));
+      const { pluginState } = editor(
+        doc(p(subsup({ type: 'sub' })('te{<>}xt'))),
+      );
       expect(pluginState.subscriptActive).toBe(true);
     });
 
     it('should expose whether subcript is active on a text selection', () => {
-      const { editorView, pluginState } = editor(doc(p('t{<}e{>}xt')));
-
-      expect(pluginState.subscriptActive).toBe(false);
-      expect(pluginState.toggleSubscript(editorView));
+      const { pluginState } = editor(
+        doc(p(subsup({ type: 'sub' })('t{<}e{>}xt'))),
+      );
       expect(pluginState.subscriptActive).toBe(true);
     });
 
     it('exposes subcript as disabled when the mark cannot be applied', () => {
       const { pluginState } = editor(doc(code_block()('te{<>}xt')));
-
       expect(pluginState.subscriptDisabled).toBe(true);
     });
 
     it('exposes subcript as not disabled when the mark can be applied', () => {
       const { pluginState } = editor(doc(p('te{<>}xt')));
-
       expect(pluginState.subscriptDisabled).toBe(false);
     });
 
-    it('deactives superscript after toggling subscript for an empty selection', () => {
-      const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
-
-      pluginState.toggleSuperscript(editorView);
-      pluginState.toggleSubscript(editorView);
+    it('deactives superscript if subscript is already active at empty selection', () => {
+      const { pluginState } = editor(
+        doc(p(subsup({ type: 'sub' })('te{<>}xt'))),
+      );
       expect(pluginState.superscriptActive).toBe(false);
     });
 
-    it('deactives superscript after toggling subscript for selected text', () => {
-      const { editorView, pluginState } = editor(doc(p('t{<}e{>}xt')));
-
-      pluginState.toggleSuperscript(editorView);
-      pluginState.toggleSubscript(editorView);
+    it('deactives superscript if subscript is already active at selected text', () => {
+      const { pluginState } = editor(
+        doc(p(subsup({ type: 'sub' })('t{<}e{>}xt'))),
+      );
       expect(pluginState.superscriptActive).toBe(false);
     });
   });
 
   describe('superscript', () => {
     it('should be able to toggle superscript on a character', () => {
-      const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
-      pluginState.toggleSuperscript(editorView);
+      const { editorView } = editor(doc(p('{<}t{>}ext')));
+      commands.toggleSuperscript()(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(
         doc(p(subsup({ type: 'sup' })('t'), 'ext')),
       );
-      pluginState.toggleSuperscript(editorView);
+      commands.toggleSuperscript()(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(doc(p('text')));
     });
 
     it('should expose whether superscript is active on an empty selection', () => {
-      const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
-
-      expect(pluginState.superscriptActive).toBe(false);
-      expect(pluginState.toggleSuperscript(editorView));
+      const { pluginState } = editor(
+        doc(p(subsup({ type: 'sup' })('te{<>}xt'))),
+      );
       expect(pluginState.superscriptActive).toBe(true);
     });
 
     it('should expose whether superscript is active on a text selection', () => {
-      const { editorView, pluginState } = editor(doc(p('t{<}e{>}xt')));
-
-      expect(pluginState.superscriptActive).toBe(false);
-      expect(pluginState.toggleSuperscript(editorView));
+      const { pluginState } = editor(
+        doc(p(subsup({ type: 'sup' })('t{<}e{>}xt'))),
+      );
       expect(pluginState.superscriptActive).toBe(true);
     });
 
     it('exposes superscript as disabled when the mark cannot be applied', () => {
       const { pluginState } = editor(doc(code_block()('te{<>}xt')));
-
       expect(pluginState.superscriptDisabled).toBe(true);
     });
 
     it('exposes superscript as not disabled when the mark can be applied', () => {
       const { pluginState } = editor(doc(p('te{<>}xt')));
-
       expect(pluginState.superscriptDisabled).toBe(false);
     });
 
     it('deactives subscript after toggling superscript for an empty selection', () => {
       const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
-
-      pluginState.toggleSubscript(editorView);
-      pluginState.toggleSuperscript(editorView);
+      commands.toggleSubscript()(editorView.state, editorView.dispatch);
+      commands.toggleSuperscript()(editorView.state, editorView.dispatch);
       expect(pluginState.subscriptActive).toBe(false);
     });
 
     it('deactives subscript after toggling superscript for selected text', () => {
       const { editorView, pluginState } = editor(doc(p('t{<}e{>}xt')));
-
-      pluginState.toggleSubscript(editorView);
-      pluginState.toggleSuperscript(editorView);
+      commands.toggleSubscript()(editorView.state, editorView.dispatch);
+      commands.toggleSuperscript()(editorView.state, editorView.dispatch);
       expect(pluginState.subscriptActive).toBe(false);
     });
 
-    it('deactives strong, em, strike after toggling code for selected text', () => {
-      const { editorView, pluginState } = editor(doc(p('t{<}e{>}xt')));
-
-      expect(pluginState.strongDisabled).toBe(false);
-      expect(pluginState.emDisabled).toBe(false);
-      expect(pluginState.strikeDisabled).toBe(false);
-      pluginState.toggleCode(editorView);
+    it('deactives strong, em, strike if selected text is inside code mark', () => {
+      const { pluginState } = editor(doc(p(code('t{<}e{>}xt'))));
       expect(pluginState.strongDisabled).toBe(true);
       expect(pluginState.emDisabled).toBe(true);
       expect(pluginState.strikeDisabled).toBe(true);
+    });
+  });
+
+  describe('code', () => {
+    describe('when the cursor is right after the code mark', () => {
+      it('should not be able to delete character with "Backspace" without entering into mark editing mode', () => {
+        const { editorView, pluginState } = editor(doc(p(code('hell{<}o{>}'))));
+        sendKeyToPm(editorView, 'Backspace');
+        expect(pluginState.codeActive).toEqual(true);
+      });
+    });
+    describe('when two code nodes separated with one non-code character', () => {
+      describe('when moving between two code nodes with ArrowLeft', () => {
+        it('should disable code for the first node and then enable for the second node', () => {
+          const { editorView, refs } = editor(
+            doc(p(code('hello{nextPos}'), 'x', code('h{<>}ello'))),
+          );
+          const { code: codeMark } = editorView.state.schema.marks;
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(true);
+          sendKeyToPm(editorView, 'ArrowLeft');
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(true);
+          sendKeyToPm(editorView, 'ArrowLeft');
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(false);
+          sendKeyToPm(editorView, 'ArrowLeft');
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(false);
+          sendKeyToPm(editorView, 'ArrowLeft');
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(true);
+          expect(editorView.state.selection.$from.pos).toEqual(refs.nextPos);
+        });
+      });
+    });
+
+    describe('when exiting code with ArrowRight', () => {
+      describe('when code is the last node', () => {
+        it('should disable code and preserve the cursor position', () => {
+          const { editorView, refs } = editor(
+            doc(p(code('hello{<>}'), '{nextPos}')),
+          );
+          const { code: codeMark } = editorView.state.schema.marks;
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(true);
+          sendKeyToPm(editorView, 'ArrowRight');
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(false);
+          expect(editorView.state.selection.$from.pos).toEqual(refs.nextPos);
+        });
+      });
+      describe('when code is not the last node', () => {
+        it('should disable code and preserve the cursor position', () => {
+          const { editorView, refs } = editor(
+            doc(p(code('hello{<>}'), '{nextPos}text')),
+          );
+          const { code: codeMark } = editorView.state.schema.marks;
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(true);
+          sendKeyToPm(editorView, 'ArrowRight');
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(false);
+          expect(editorView.state.selection.$from.pos).toEqual(refs.nextPos);
+        });
+      });
+      describe('when code has only one character long', () => {
+        it('should disable code and preserve the cursor position', () => {
+          const { editorView, refs } = editor(
+            doc(p(code('x{<>}'), '{nextPos}text')),
+          );
+          const { code: codeMark } = editorView.state.schema.marks;
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(true);
+          sendKeyToPm(editorView, 'ArrowRight');
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(false);
+          expect(editorView.state.selection.$from.pos).toEqual(refs.nextPos);
+        });
+      });
+    });
+
+    describe('when exiting code with ArrowLeft', () => {
+      describe('when code is the first node', () => {
+        it('should disable code and preserve the cursor position', () => {
+          const { editorView, refs } = editor(
+            doc(p('{nextPos}', code('{<>}hello'))),
+          );
+          const { code: codeMark } = editorView.state.schema.marks;
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(true);
+          sendKeyToPm(editorView, 'ArrowLeft');
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(false);
+          expect(editorView.state.selection.$from.pos).toEqual(refs.nextPos);
+        });
+      });
+      describe('when code is not the first node', () => {
+        it('should disable code and preserve the cursor position', () => {
+          const { editorView, refs } = editor(
+            doc(p('text{nextPos}', code('h{<>}ello'))),
+          );
+          const { code: codeMark } = editorView.state.schema.marks;
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(true);
+          sendKeyToPm(editorView, 'ArrowLeft');
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(true);
+          sendKeyToPm(editorView, 'ArrowLeft');
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(false);
+          expect(editorView.state.selection.$from.pos).toEqual(refs.nextPos);
+        });
+      });
+      describe('when code has only one character long', () => {
+        it('should disable code and preserve the cursor position', () => {
+          const { editorView, refs } = editor(
+            doc(p('text{nextPos}', code('x{<>}'))),
+          );
+          const { code: codeMark } = editorView.state.schema.marks;
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(true);
+          sendKeyToPm(editorView, 'ArrowLeft');
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(true);
+          sendKeyToPm(editorView, 'ArrowLeft');
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(false);
+          expect(editorView.state.selection.$from.pos).toEqual(refs.nextPos);
+        });
+      });
+    });
+
+    describe('when entering code with ArrowRight', () => {
+      describe('when code is the first node', () => {
+        it('should enable code and preserve the cursor position', () => {
+          const { editorView, refs } = editor(
+            doc(p('{<>}', code('{nextPos}hello'))),
+          );
+          const { code: codeMark } = editorView.state.schema.marks;
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(true);
+          sendKeyToPm(editorView, 'ArrowLeft');
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(false);
+          sendKeyToPm(editorView, 'ArrowRight');
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(true);
+          expect(editorView.state.selection.$from.pos).toEqual(refs.nextPos);
+        });
+      });
+      describe('when code is not the first node', () => {
+        it('should enable code and preserve the cursor position', () => {
+          const { editorView, refs } = editor(
+            doc(p('text{<>}', code('{nextPos}hello'))),
+          );
+          const { code: codeMark } = editorView.state.schema.marks;
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(false);
+          sendKeyToPm(editorView, 'ArrowRight');
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(true);
+          expect(editorView.state.selection.$from.pos).toEqual(refs.nextPos);
+        });
+      });
+      describe('when code has only one character long', () => {
+        it('should enable code and preserve the cursor position', () => {
+          const { editorView, refs } = editor(
+            doc(p('text{<>}', code('{nextPos}x'))),
+          );
+          const { code: codeMark } = editorView.state.schema.marks;
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(false);
+          sendKeyToPm(editorView, 'ArrowRight');
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(true);
+          expect(editorView.state.selection.$from.pos).toEqual(refs.nextPos);
+        });
+      });
+    });
+
+    describe('when entering code with ArrowLeft', () => {
+      describe('when code is the last node', () => {
+        it('should enable code and preserve the cursor position', () => {
+          const { editorView, refs } = editor(
+            doc(p(code('hello{nextPos}'), '{<>}')),
+          );
+          const { code: codeMark } = editorView.state.schema.marks;
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(true);
+          sendKeyToPm(editorView, 'ArrowRight');
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(false);
+          sendKeyToPm(editorView, 'ArrowLeft');
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(true);
+          expect(editorView.state.selection.$from.pos).toEqual(refs.nextPos);
+        });
+      });
+      describe('when code is not the last node', () => {
+        it('should enable code and preserve the cursor position', () => {
+          const { editorView, refs } = editor(
+            doc(p(code('hello{nextPos}'), 't{<>}ext')),
+          );
+          const { code: codeMark } = editorView.state.schema.marks;
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(false);
+          sendKeyToPm(editorView, 'ArrowLeft');
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(false);
+          sendKeyToPm(editorView, 'ArrowLeft');
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(true);
+          expect(editorView.state.selection.$from.pos).toEqual(refs.nextPos);
+        });
+      });
+      describe('when code has only one character long', () => {
+        it('should enable code and preserve the cursor position', () => {
+          const { editorView, refs } = editor(
+            doc(p(code('x{nextPos}'), 't{<>}ext')),
+          );
+          const { code: codeMark } = editorView.state.schema.marks;
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(false);
+          sendKeyToPm(editorView, 'ArrowLeft');
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(false);
+          sendKeyToPm(editorView, 'ArrowLeft');
+          expect(anyMarkActive(editorView.state, codeMark)).toEqual(true);
+          expect(editorView.state.selection.$from.pos).toEqual(refs.nextPos);
+        });
+      });
     });
   });
 });

@@ -11,7 +11,6 @@ import {
 } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { createPlugin } from './pm-plugins/main';
-import pastePlugin from './pm-plugins/paste-plugin';
 import inputRulePlugin from './pm-plugins/input-rules';
 import keymap from './pm-plugins/keymaps';
 import ToolbarDecision from './ui/ToolbarDecision';
@@ -25,18 +24,17 @@ const TaskDecisionToolbarGroup = styled.div`
 const tasksAndDecisionsPlugin: EditorPlugin = {
   nodes() {
     return [
-      { name: 'decisionList', node: decisionList, rank: 1800 },
-      { name: 'decisionItem', node: decisionItem, rank: 1900 },
-      { name: 'taskList', node: taskList, rank: 2000 },
-      { name: 'taskItem', node: taskItem, rank: 2100 },
+      { name: 'decisionList', node: decisionList },
+      { name: 'decisionItem', node: decisionItem },
+      { name: 'taskList', node: taskList },
+      { name: 'taskItem', node: taskItem },
     ];
   },
 
   pmPlugins() {
     return [
-      { rank: 50, plugin: () => pastePlugin() }, // must before default paste plugin
       {
-        rank: 500,
+        name: 'tasksAndDecisions',
         plugin: ({ schema, props, portalProviderAPI, providerFactory }) => {
           const { delegateAnalyticsEvent } = props;
           return createPlugin(
@@ -46,8 +44,14 @@ const tasksAndDecisionsPlugin: EditorPlugin = {
           );
         },
       },
-      { rank: 510, plugin: ({ schema }) => inputRulePlugin(schema) },
-      { rank: 9800, plugin: ({ schema }) => keymap(schema) }, // Needs to be after "save-on-enter"
+      {
+        name: 'tasksAndDecisionsInputRule',
+        plugin: ({ schema }) => inputRulePlugin(schema),
+      },
+      {
+        name: 'tasksAndDecisionsKeyMap',
+        plugin: ({ schema }) => keymap(schema),
+      }, // Needs to be after "save-on-enter"
     ];
   },
 
@@ -72,6 +76,7 @@ const tasksAndDecisionsPlugin: EditorPlugin = {
     quickInsert: [
       {
         title: 'Action',
+        priority: 100,
         keywords: ['task'],
         icon: () => <EditorTaskIcon label="Action" />,
         action(insert, state) {
@@ -87,6 +92,7 @@ const tasksAndDecisionsPlugin: EditorPlugin = {
       },
       {
         title: 'Decision',
+        priority: 900,
         icon: () => <EditorDecisionIcon label="Insert Decision" />,
         action(insert, state) {
           return insert(

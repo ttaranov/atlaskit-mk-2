@@ -3,7 +3,7 @@ import { shallow } from 'enzyme';
 import Button from '@atlaskit/button';
 import { ZoomControls, ZoomControlsProps } from '../../src/newgen/zoomControls';
 import { ZoomLevelIndicator } from '../../src/newgen/styled';
-import { ZoomLevel } from '../../src/newgen/domain';
+import { ZoomLevel } from '../../src/newgen/domain/zoomLevel';
 
 describe('Zooming', () => {
   describe('<ZoomControls />', () => {
@@ -11,7 +11,7 @@ describe('Zooming', () => {
       const onChange = jest.fn();
       const component = shallow(
         <ZoomControls
-          zoomLevel={new ZoomLevel()}
+          zoomLevel={new ZoomLevel(1)}
           onChange={onChange}
           {...props}
         />,
@@ -25,36 +25,24 @@ describe('Zooming', () => {
 
     it('should increase and decrease zoom', () => {
       const { component, onChange } = setup();
+      const zoomLevel = new ZoomLevel(1);
 
       component
         .find(Button)
         .first()
         .simulate('click');
-      expect(onChange).lastCalledWith({ value: 0.5 });
+      expect(onChange).lastCalledWith(zoomLevel.zoomOut());
       component
         .find(Button)
         .last()
         .simulate('click');
-      expect(onChange).lastCalledWith({ value: 2 });
-    });
-
-    it('should allow zooming with constrains', () => {
-      const { component, onChange } = setup();
-
-      component
-        .find(Button)
-        .first()
-        .simulate('click');
-      expect(onChange).lastCalledWith({ value: 0.5 });
-      component
-        .find(Button)
-        .last()
-        .simulate('click');
-      expect(onChange).lastCalledWith({ value: 2 });
+      expect(onChange).lastCalledWith(zoomLevel.zoomIn());
     });
 
     it('should not allow zooming above upper limit', () => {
-      const { component, onChange } = setup({ zoomLevel: new ZoomLevel(5) });
+      const { component, onChange } = setup({
+        zoomLevel: new ZoomLevel(1).fullyZoomIn(),
+      });
       component
         .find(Button)
         .last()
@@ -63,7 +51,9 @@ describe('Zooming', () => {
     });
 
     it('should not allow zooming below lower limit', () => {
-      const { component, onChange } = setup({ zoomLevel: new ZoomLevel(0.2) });
+      const { component, onChange } = setup({
+        zoomLevel: new ZoomLevel(1).fullyZoomOut(),
+      });
       component
         .find(Button)
         .first()

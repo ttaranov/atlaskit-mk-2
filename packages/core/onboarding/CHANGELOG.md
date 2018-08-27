@@ -1,5 +1,96 @@
 # @atlaskit/onboarding
 
+## 5.1.6
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/modal-dialog@6.0.9
+  - @atlaskit/layer-manager@5.0.6
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/button@9.0.6
+  - @atlaskit/docs@5.0.6
+
+## 5.1.5
+- [patch] Updated dependencies [8242529](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8242529)
+  - @atlaskit/layer@5.0.5
+
+## 5.1.4
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/modal-dialog@6.0.6
+  - @atlaskit/analytics-next@3.0.4
+  - @atlaskit/button@9.0.5
+  - @atlaskit/theme@5.1.3
+  - @atlaskit/layer@5.0.4
+  - @atlaskit/layer-manager@5.0.5
+  - @atlaskit/icon@13.2.4
+
+## 5.1.3
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/layer-manager@5.0.4
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/button@9.0.4
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/analytics-next@3.0.3
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/layer@5.0.3
+  - @atlaskit/modal-dialog@6.0.5
+
+## 5.1.2
+- [patch] Add a SSR test for every package, add react-dom and build-utils in devDependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+- [none] Updated dependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+  - @atlaskit/modal-dialog@6.0.4
+  - @atlaskit/analytics-next@3.0.2
+  - @atlaskit/button@9.0.3
+  - @atlaskit/theme@5.1.1
+  - @atlaskit/layer@5.0.2
+  - @atlaskit/layer-manager@5.0.3
+  - @atlaskit/icon@13.2.1
+
+## 5.1.1
+- [patch] onboarding spotlight: fix margin affecting target position [0e33c70](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0e33c70)
+- [none] Updated dependencies [0e33c70](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0e33c70)
+
+## 5.1.0
+- [minor] round corners for onboarding modal image [785e99a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/785e99a)
+- [none] Updated dependencies [785e99a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/785e99a)
+
+## 5.0.1
+- [patch] Move analytics tests and replace elements to core [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+- [none] Updated dependencies [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+  - @atlaskit/modal-dialog@6.0.1
+  - @atlaskit/analytics-next@3.0.1
+  - @atlaskit/button@9.0.2
+  - @atlaskit/docs@5.0.1
+
+## 5.0.0
+- [major] Provides analytics for common component interations. See the [Instrumented Components](https://atlaskit.atlassian.com/packages/core/analytics-next) section for more details. If you are using enzyme for testing you will have to use [our forked version of the library](https://atlaskit.atlassian.com/docs/guides/testing#we-use-a-forked-version-of-enzyme). [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/modal-dialog@6.0.0
+  - @atlaskit/analytics-next@3.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/layer@5.0.0
+  - @atlaskit/layer-manager@5.0.0
+  - @atlaskit/icon@13.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/modal-dialog@6.0.0
+  - @atlaskit/analytics-next@3.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/layer@5.0.0
+  - @atlaskit/layer-manager@5.0.0
+  - @atlaskit/icon@13.0.0
+
+## 4.1.7
+- [patch] Remove or update $FlowFixMe [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
+- [none] Updated dependencies [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
+  - @atlaskit/button@8.2.4
+  - @atlaskit/icon@12.6.1
+  - @atlaskit/modal-dialog@5.2.6
+
 ## 4.1.6
 - [patch] Fixes positioning issue when target is relatively positioned [11e8465](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/11e8465)
 - [none] Updated dependencies [11e8465](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/11e8465)

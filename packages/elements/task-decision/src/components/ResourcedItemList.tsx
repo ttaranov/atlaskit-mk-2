@@ -72,7 +72,7 @@ interface ItemsByDate {
 }
 
 interface LoadingWrapperProps {
-  height: string;
+  fullHeight?: boolean;
 }
 
 // tslint:disable-next-line:variable-name
@@ -80,8 +80,10 @@ const LoadingWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 20px 0;
-  height: ${(props: LoadingWrapperProps) => props.height || 'auto'};
+  margin: ${(props: LoadingWrapperProps) =>
+    props.fullHeight ? '0' : '20px 0'};
+  height: ${(props: LoadingWrapperProps) =>
+    props.fullHeight ? '100%' : 'auto'};
 `;
 
 export default class ResourcedItemList extends PureComponent<Props, State> {
@@ -132,20 +134,16 @@ export default class ResourcedItemList extends PureComponent<Props, State> {
 
   private loadLatest = (recentUpdateContext: RecentUpdateContext) => {
     const { initialQuery, taskDecisionProvider } = this.props;
-    const { items } = this.state;
     taskDecisionProvider.then(provider => {
-      loadLatestItems(
-        initialQuery,
-        items || [],
-        provider,
-        recentUpdateContext,
-      ).then(latestItems => {
-        if (this.mounted) {
-          this.setState({
-            items: latestItems,
-          });
-        }
-      });
+      loadLatestItems(initialQuery, provider, recentUpdateContext).then(
+        latestItems => {
+          if (this.mounted) {
+            this.setState({
+              items: latestItems,
+            });
+          }
+        },
+      );
     });
   };
 
@@ -166,6 +164,11 @@ export default class ResourcedItemList extends PureComponent<Props, State> {
   ) {
     const { taskDecisionProvider } = this.props;
     const items = replaceAll ? [] : this.state.items;
+    const { loading, nextQuery } = this.state;
+    if (loading && nextQuery) {
+      // Already performing a query, and not on the initial load of component, so don't run query again
+      return;
+    }
     this.setState({
       loading: true,
       error: false,
@@ -336,12 +339,9 @@ export default class ResourcedItemList extends PureComponent<Props, State> {
     }
 
     if (loading) {
-      let height;
-      if (!items || items.length === 0) {
-        height = '100%';
-      }
+      const fullHeight = !items || items.length === 0;
       loadingSpinner = (
-        <LoadingWrapper height={height}>
+        <LoadingWrapper fullHeight={fullHeight}>
           <Spinner size="medium" />
         </LoadingWrapper>
       );

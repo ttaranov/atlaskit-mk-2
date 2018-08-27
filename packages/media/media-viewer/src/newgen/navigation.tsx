@@ -11,7 +11,7 @@ import {
   Arrow,
   hideControlsClassName,
 } from './styled';
-import { getSelectedIndex } from './util';
+import { getSelectedIndex } from './utils';
 import { Shortcut } from './shortcut';
 
 export type NavigationDirection = 'prev' | 'next';
@@ -58,10 +58,10 @@ export default class Navigation extends Component<NavigationProps, any> {
     const next = this.navigate('next');
 
     return (
-      <ArrowsWrapper className={hideControlsClassName}>
+      <ArrowsWrapper>
         <LeftWrapper>
           {isLeftVisible ? (
-            <Arrow>
+            <Arrow className={hideControlsClassName}>
               <Shortcut keyCode={37} handler={prev} />
               <ArrowLeftCircleIcon
                 onClick={prev}
@@ -75,7 +75,7 @@ export default class Navigation extends Component<NavigationProps, any> {
 
         <RightWrapper>
           {isRightVisible ? (
-            <Arrow>
+            <Arrow className={hideControlsClassName}>
               <Shortcut keyCode={39} handler={next} />
               <ArrowRightCircleIcon
                 onClick={next}

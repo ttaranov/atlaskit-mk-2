@@ -56,6 +56,7 @@ const mdToPmMapping = {
     block: 'heading',
     attrs: (tok: any) => ({ level: +tok.tag.slice(1) }),
   },
+  softbreak: { node: 'hardBreak' },
   code_block: { block: 'codeBlock' },
   list_item: { block: 'listItem' },
   bullet_list: { block: 'bulletList' },
@@ -125,11 +126,11 @@ export class MarkdownTransformer implements Transformer<Markdown> {
     });
 
     if (schema.nodes.table) {
-      md.use(markdownItTable);
+      tokenizer.use(markdownItTable);
     }
 
     if (schema.nodes.media && schema.nodes.mediaSingle) {
-      md.use(markdownItMedia);
+      tokenizer.use(markdownItMedia);
     }
 
     this.markdownParser = new MarkdownParser(

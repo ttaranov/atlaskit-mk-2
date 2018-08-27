@@ -1,9 +1,9 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
 import { getType as getListType, ListBuilder } from '../builder/list-builder';
 import { parseString } from '../text';
-import { normalizePMNodes } from '../utils/normalize';
+import { isNextLineEmpty, normalizePMNodes } from '../utils/normalize';
 import { Token, TokenType } from './';
-import { parseWhitespace } from './whitespace';
+import { parseNewlineOnly } from './whitespace';
 
 const LIST_ITEM_REGEXP = /^([*\-#]+)\s(.*)/;
 const NEWLINE = /\r?\n/;
@@ -14,7 +14,7 @@ export function list(input: string, schema: Schema): Token {
 
   /**
    * The following token types will be ignored in parsing
-   * the content of a strong mark
+   * the content of a listItem
    */
   const ignoreTokenTypes = [
     TokenType.DOUBLE_DASH_SYMBOL,
@@ -25,39 +25,89 @@ export function list(input: string, schema: Schema): Token {
   ];
 
   let builder: ListBuilder | null = null;
+  let lineBuffer: string[] = [];
+  let preStyle: string = '';
   for (const line of input.split(NEWLINE)) {
     const match = line.match(LIST_ITEM_REGEXP);
 
-    if (!match) {
-      break;
+    if (match) {
+      // This would be starting of a new list item
+      const [, style, rawContent] = match;
+
+      if (!builder) {
+        // This is the first list item
+        builder = new ListBuilder(schema, style);
+      }
+
+      if (lineBuffer.length > 0) {
+        // Wrap up previous node and empty lineBuffer
+        const content = parseString(
+          lineBuffer.join('\n'),
+          schema,
+          ignoreTokenTypes,
+        );
+        const normalizedContent = normalizePMNodes(content, schema);
+        builder.add([
+          { style: preStyle, content: sanitize(normalizedContent, schema) },
+        ]);
+        lineBuffer = [];
+      }
+
+      const type = getListType(style);
+      preStyle = style;
+      // If it's top level and doesn't match, create a new list
+      if (type !== builder.type && style.length === 1) {
+        output.push(builder.buildPMNode());
+        builder = new ListBuilder(schema, style);
+      }
+
+      lineBuffer.push(rawContent);
+      index += line.length;
+      // Finding the length of the line break at the end of this line
+      const length = parseNewlineOnly(input.substring(index));
+      if (length) {
+        index += length;
+      }
+      continue;
     }
 
-    const [, style, rawContent] = match;
-
-    if (!builder) {
-      builder = new ListBuilder(schema, style);
+    if (!isNextLineEmpty(input.substring(index))) {
+      lineBuffer.push(line);
+      index += line.length;
+      // Finding the length of the line break at the end of this line
+      const length = parseNewlineOnly(input.substring(index));
+      if (length) {
+        index += length;
+      }
+      continue;
     }
 
-    const type = getListType(style);
-    // If it's top level and doesn't match, create a new list
-    if (type !== builder.type && style.length === 1) {
-      output.push(builder.buildPMNode());
-      builder = new ListBuilder(schema, style);
-    }
-
-    const content = parseString(rawContent, schema, ignoreTokenTypes);
-    const normalizedContent = normalizePMNodes(content, schema);
-
-    builder.add([{ style, content: sanitize(normalizedContent, schema) }]);
+    /**
+     * When we reach here, it means its an empty line,
+     * so we would break out of the list builder
+     */
 
     index += line.length;
     // Finding the length of the line break
-    const lengthOfLineBreak = parseWhitespace(input.substring(index), true);
+    const lengthOfLineBreak = parseNewlineOnly(input.substring(index));
     if (lengthOfLineBreak) {
       index += lengthOfLineBreak;
     }
+    break;
   }
 
+  if (builder && lineBuffer.length > 0) {
+    // Wrap up previous node and empty lineBuffer
+    const content = parseString(
+      lineBuffer.join('\n'),
+      schema,
+      ignoreTokenTypes,
+    );
+    const normalizedContent = normalizePMNodes(content, schema);
+    builder.add([
+      { style: preStyle, content: sanitize(normalizedContent, schema) },
+    ]);
+  }
   if (builder) {
     output.push(builder.buildPMNode());
   }

@@ -1,8 +1,7 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
+import { createPortal } from 'react-dom';
 import rafSchedule from 'raf-schd';
 import { akEditorFloatingPanelZIndex } from '../../styles';
-import Portal from '../Portal';
 import {
   calculatePosition,
   calculatePlacement,
@@ -37,7 +36,7 @@ export interface State {
   overflowScrollParent: HTMLElement | false;
 }
 
-export default class Popup extends PureComponent<Props, State> {
+export default class Popup extends React.Component<Props, State> {
   scrollElement: undefined | false | HTMLElement;
   static defaultProps = {
     offset: [0, 0],
@@ -48,7 +47,6 @@ export default class Popup extends PureComponent<Props, State> {
     overflowScrollParent: false,
   };
 
-  private scheduledResizeFrame: number | null = null;
   private placement: [string, string] = ['', ''];
 
   /**
@@ -98,6 +96,24 @@ export default class Popup extends PureComponent<Props, State> {
     this.setState({ position });
   }
 
+  private cannotSetPopup(popup, target, overflowScrollParent) {
+    /**
+     * Check whether:
+     * 1. Popup's offset targets which means whether or not its possible to correctly position popup along with given target.
+     * 2. Popup is inside "overflow: scroll" container, but its offset parent isn't.
+     *
+     * Currently Popup isn't capable of position itself correctly in case 2,
+     * Add "position: relative" to "overflow: scroll" container or to some other FloatingPanel wrapper inside it.
+     */
+
+    return (
+      (document.body.contains(target) &&
+        (popup.offsetParent && !popup.offsetParent.contains(target!))) ||
+      (overflowScrollParent &&
+        !overflowScrollParent.contains(popup.offsetParent))
+    );
+  }
+
   /**
    * Popup initialization.
    * Checks whether it's possible to position popup along given target, and if it's not throws an error.
@@ -106,19 +122,8 @@ export default class Popup extends PureComponent<Props, State> {
     const { target } = this.props;
     const overflowScrollParent = findOverflowScrollParent(popup);
 
-    if (popup.offsetParent && !popup.offsetParent.contains(target!)) {
-      throw new Error(
-        "Popup's offset parent doesn't contain target which means it's impossible to correctly position popup along with given target.",
-      );
-    }
-
-    if (
-      overflowScrollParent &&
-      !overflowScrollParent.contains(popup.offsetParent)
-    ) {
-      throw new Error(
-        'Popup is inside "overflow: scroll" container, but its offset parent isn\'t. Currently Popup isn\'t capable of position itself correctly in such case. Add "position: relative" to "overflow: scroll" container or to some other FloatingPanel wrapper inside it.',
-      );
+    if (this.cannotSetPopup(popup, target, overflowScrollParent)) {
+      return;
     }
 
     this.setState({ popup, overflowScrollParent }, () => this.updatePosition());
@@ -132,18 +137,20 @@ export default class Popup extends PureComponent<Props, State> {
     this.initPopup(popup);
   };
 
-  private scheduledUpdatePosition = rafSchedule(() => this.updatePosition());
+  private scheduledUpdatePosition = rafSchedule(props =>
+    this.updatePosition(props),
+  );
 
-  private handleReposition = () => {
-    this.scheduledResizeFrame = this.scheduledUpdatePosition();
-  };
+  onResize = () => this.scheduledUpdatePosition();
 
   componentWillReceiveProps(newProps: Props) {
-    this.updatePosition(newProps);
+    // We are delaying `updatePosition` otherwise it happens before the children
+    // get rendered and we end up with a wrong position
+    this.scheduledUpdatePosition(newProps);
   }
 
   componentDidMount() {
-    window.addEventListener('resize', this.handleReposition);
+    window.addEventListener('resize', this.onResize);
 
     const { stickToBottom } = this.props;
 
@@ -153,19 +160,16 @@ export default class Popup extends PureComponent<Props, State> {
       this.scrollElement = this.props.scrollableElement;
     }
     if (this.scrollElement) {
-      this.scrollElement.addEventListener('scroll', this.handleReposition);
+      this.scrollElement.addEventListener('scroll', this.onResize);
     }
   }
 
   componentWillUnmount() {
-    window.removeEventListener('resize', this.handleReposition);
-    if (this.scheduledResizeFrame) {
-      cancelAnimationFrame(this.scheduledResizeFrame);
-    }
-
+    window.removeEventListener('resize', this.onResize);
     if (this.scrollElement) {
-      this.scrollElement.removeEventListener('scroll', this.handleReposition);
+      this.scrollElement.removeEventListener('scroll', this.onResize);
     }
+    this.scheduledUpdatePosition.cancel();
   }
 
   private renderPopup() {
@@ -180,6 +184,8 @@ export default class Popup extends PureComponent<Props, State> {
           ...position,
         }}
         aria-label={this.props.ariaLabel || 'Popup'}
+        // Indicates component is an editor pop. Required for focus handling in Message.tsx
+        data-editor-popup
       >
         {this.props.children}
       </div>
@@ -192,11 +198,11 @@ export default class Popup extends PureComponent<Props, State> {
     }
 
     if (this.props.mountTo) {
-      return <Portal mountTo={this.props.mountTo}>{this.renderPopup()}</Portal>;
+      return createPortal(this.renderPopup(), this.props.mountTo);
     }
 
     // Without mountTo property renders popup as is,
-    // which means it will be croped by "overflow: hidden" container.
+    // which means it will be cropped by "overflow: hidden" container.
     return this.renderPopup();
   }
 }

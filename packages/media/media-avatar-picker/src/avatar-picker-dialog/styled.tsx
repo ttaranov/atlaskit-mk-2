@@ -29,4 +29,8 @@ export const ModalFooterButtons: ComponentClass<
 > = styled.div`
   text-align: right;
   width: 100%;
+
+  button:first-child {
+    margin-right: 3px;
+  }
 `;

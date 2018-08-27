@@ -25,32 +25,34 @@ export default function Example() {
   return (
     <div>
       <Item>
-        <p>Default</p>
-        <Badge value={5} />
+        <p>Added</p>
+        <Badge appearance="added" max={99}>
+          {3000}
+        </Badge>
       </Item>
       <Item>
-        <p>Primary</p>
-        <Badge appearance="primary" value={-5} />
+        <p>Default</p>
+        <Badge>{5}</Badge>
+      </Item>
+      <Item>
+        <p>Default (∞)</p>
+        <Badge max={Infinity}>{Infinity}</Badge>
       </Item>
       <Item>
         <p>Important</p>
-        <Badge appearance="important" value={25} />
+        <Badge appearance="important">{25}</Badge>
+      </Item>
+      <Item>
+        <p>Primary</p>
+        <Badge appearance="primary">{-5}</Badge>
       </Item>
       <Item inverted>
         <p>Primary Inverted</p>
-        <Badge appearance="primaryInverted" value={-5} />
+        <Badge appearance="primaryInverted">{5}</Badge>
       </Item>
       <Item>
-        <p>Added (no theme change)</p>
-        <Badge appearance="added" max={99} value={3000} />
-      </Item>
-      <Item>
-        <p>Removed (no theme change)</p>
-        <Badge appearance="removed" />
-      </Item>
-      <Item>
-        <p>Infinity (∞)</p>
-        <Badge max={Infinity} value={Infinity} />
+        <p>Removed</p>
+        <Badge appearance="removed">{100}</Badge>
       </Item>
     </div>
   );

@@ -1,5 +1,14 @@
 // @flow
 
+/*
+  NOTE
+  ----------------------------------------------------------------------------
+  This is the source file for the webdriver test. If you make changes here,
+  please update the tests to reflect those changes:
+
+  `packages/core/navigation-next/src/__tests__/integration/navigation.js`
+*/
+
 import React from 'react';
 import Avatar from '@atlaskit/avatar';
 import AddIcon from '@atlaskit/icon/glyph/add';
@@ -17,15 +26,23 @@ import { JiraWordmark } from '@atlaskit/logo';
 import {
   ContainerHeader,
   GlobalNav,
+  GroupHeading,
   Item,
   ItemAvatar,
   LayoutManager,
   NavigationProvider,
-  NavigationSubscriber,
   Section,
-  SectionSeparator,
-  SectionTitle,
+  Separator,
+  UIControllerSubscriber,
 } from '../src';
+
+function makeTestItem(key) {
+  return ({ children, className }: *) => (
+    <div data-webdriver-test-key={key} className={className}>
+      {children}
+    </div>
+  );
+}
 
 /**
  * Data
@@ -34,32 +51,32 @@ const globalNavPrimaryItems = [
   {
     key: 'jira',
     component: ({ className, children }: *) => (
-      <NavigationSubscriber>
-        {navigation => {
+      <UIControllerSubscriber>
+        {navigationUIController => {
           function onClick() {
-            if (navigation.state.productNavIsCollapsed) {
-              navigation.expandProductNav();
+            if (navigationUIController.state.isCollapsed) {
+              navigationUIController.expand();
             }
-            navigation.togglePeek();
+            navigationUIController.togglePeek();
           }
           return (
             <button
               className={className}
               onClick={onClick}
-              onMouseEnter={navigation.hint}
-              onMouseLeave={navigation.unHint}
+              onMouseEnter={navigationUIController.peekHint}
+              onMouseLeave={navigationUIController.unPeekHint}
             >
               {children}
             </button>
           );
         }}
-      </NavigationSubscriber>
+      </UIControllerSubscriber>
     ),
     icon: JiraIcon,
     label: 'Jira',
   },
-  { key: 'search', icon: SearchIcon },
-  { key: 'create', icon: AddIcon },
+  { key: 'search', icon: SearchIcon, label: 'Search' },
+  { key: 'create', icon: AddIcon, label: 'Add' },
 ];
 
 const globalNavSecondaryItems = [
@@ -78,14 +95,17 @@ const globalNavSecondaryItems = [
   },
 ];
 
-const productRootNavSections = [
+const productNavSections = [
   {
     key: 'header',
     isRootLevel: true,
     items: [
       {
         type: () => (
-          <div css={{ padding: '12px 0' }}>
+          <div
+            data-webdriver-test-key="product-header"
+            css={{ padding: '12px 0' }}
+          >
             <JiraWordmark />
           </div>
         ),
@@ -98,24 +118,38 @@ const productRootNavSections = [
     isRootLevel: true,
     items: [
       {
-        type: Item,
+        before: DashboardIcon,
+        component: makeTestItem('product-item-dashboards'),
         key: 'dashboards',
         text: 'Dashboards',
-        before: DashboardIcon,
+        type: Item,
       },
-      { type: Item, key: 'projects', text: 'Projects', before: FolderIcon },
-      { type: Item, key: 'issues', text: 'Issues', before: IssuesIcon },
+      {
+        before: FolderIcon,
+        component: makeTestItem('product-item-projects'),
+        key: 'projects',
+        text: 'Projects',
+        type: Item,
+      },
+      {
+        before: IssuesIcon,
+        component: makeTestItem('product-item-issues'),
+        key: 'issues',
+        text: 'Issues',
+        type: Item,
+      },
     ],
   },
 ];
 
-const productContainerNavSections = [
+const containerNavSections = [
   {
     key: 'header',
     isRootLevel: true,
     items: [
       {
         type: ContainerHeader,
+        component: makeTestItem('container-header'),
         key: 'project-switcher',
         before: itemState => (
           <ItemAvatar itemState={itemState} appearance="square" />
@@ -129,23 +163,55 @@ const productContainerNavSections = [
     key: 'menu',
     isRootLevel: true,
     items: [
-      { type: SectionTitle, key: 'title', children: 'Section title' },
-      { type: Item, key: 'backlog', text: 'Backlog', before: BacklogIcon },
-      { type: Item, key: 'sprints', text: 'Active sprints', before: BoardIcon },
-      { type: Item, key: 'reports', text: 'Reports', before: GraphLineIcon },
-      { type: SectionSeparator, key: 'separator' },
+      {
+        children: 'Group heading',
+        key: 'title',
+        type: GroupHeading,
+      },
+      {
+        before: BacklogIcon,
+        component: makeTestItem('container-item-backlog'),
+        isSelected: true,
+        key: 'backlog',
+        text: 'Backlog',
+        type: Item,
+      },
+      {
+        before: BoardIcon,
+        component: makeTestItem('container-item-sprints'),
+        key: 'sprints',
+        text: 'Active sprints',
+        type: Item,
+      },
+      {
+        before: GraphLineIcon,
+        component: makeTestItem('container-item-reports'),
+        key: 'reports',
+        text: 'Reports',
+        type: Item,
+      },
+      {
+        key: 'separator',
+        type: Separator,
+      },
     ],
   },
 ];
 
-/**
- * Render components
- */
-const GlobalNavigation = () => (
+// ==============================
+// Render components
+// ==============================
+
+function makeTestComponent(key, element) {
+  return () => <div data-webdriver-test-key={key}>{element}</div>;
+}
+
+const GlobalNavigation = makeTestComponent(
+  'global-navigation',
   <GlobalNav
     primaryItems={globalNavPrimaryItems}
     secondaryItems={globalNavSecondaryItems}
-  />
+  />,
 );
 
 const RenderSection = ({ section }: *) => (
@@ -156,7 +222,7 @@ const RenderSection = ({ section }: *) => (
           <div
             css={{ ...css, ...(isRootLevel ? { padding: '0 16px' } : null) }}
           >
-            {items.map(({ type: Component, ...props }) => (
+            {items.map(({ type: Component, ...props }: any) => (
               <Component {...props} />
             ))}
           </div>
@@ -165,19 +231,27 @@ const RenderSection = ({ section }: *) => (
     ))}
   </div>
 );
-const ProductRoot = () => <RenderSection section={productRootNavSections} />;
-const ProductContainer = () => (
-  <RenderSection section={productContainerNavSections} />
+const ProductNavigation = makeTestComponent(
+  'product-navigation',
+  <RenderSection section={productNavSections} />,
+);
+const ContainerNavigation = makeTestComponent(
+  'container-navigation',
+  <RenderSection section={containerNavSections} />,
+);
+const Content = makeTestComponent(
+  'content',
+  <div style={{ padding: 30 }}>Page content</div>,
 );
 
 export default () => (
   <NavigationProvider>
     <LayoutManager
       globalNavigation={GlobalNavigation}
-      productRootNavigation={ProductRoot}
-      productContainerNavigation={ProductContainer}
+      productNavigation={ProductNavigation}
+      containerNavigation={ContainerNavigation}
     >
-      <div style={{ padding: 30 }}>Page content</div>
+      <Content />
     </LayoutManager>
   </NavigationProvider>
 );

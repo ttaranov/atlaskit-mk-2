@@ -13,7 +13,9 @@ type Props = {
 export default class SelectedIconForType extends Component<Props, {}> {
   render() {
     const { type, isHovered, isOpen } = this.props;
-    const { [type]: { icon: SelectedIcon, iconSize } } = typesMapping;
+    const {
+      [type]: { icon: SelectedIcon, iconSize },
+    } = typesMapping;
 
     return (
       <IconWrapper appearance={type} isHovered={isHovered} isOpen={isOpen}>

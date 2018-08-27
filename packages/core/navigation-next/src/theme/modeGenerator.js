@@ -1,6 +1,8 @@
 // @flow
 
-import { brightness } from 'chromatism';
+// TODO: @atlassian/navigation package is the only other package that uses chromatism (currently).
+// We should update to chromatism@3.0.0 once @atlassian/navigation package is deprecated.
+import chromatism from 'chromatism';
 import { colors } from '@atlaskit/theme';
 
 import { light } from './modes';
@@ -13,12 +15,29 @@ type Args = {
 };
 
 export default ({ background, text }: Args): Mode => {
-  const backgroundColorActive = brightness(10, background).hex;
-  const backgroundColorSelected = brightness(-20, background).hex;
-  const backgroundColorHover = brightness(-10, background).hex;
+  const backgroundColorActive = chromatism.brightness(10, background).hex;
+  const backgroundColorSelected = chromatism.brightness(-20, background).hex;
+  const backgroundColorHover = chromatism.brightness(-10, background).hex;
+
+  const getBackgroundColorByState = ({ isActive, isSelected, isHover }) => {
+    if (isActive) return backgroundColorActive;
+    if (isSelected) return backgroundColorSelected;
+    if (isHover) return backgroundColorHover;
+    return background;
+  };
+
   return {
     globalItem: args => {
-      return light.globalItem(args);
+      const styles = light.globalItem(args);
+
+      return {
+        ...styles,
+        itemBase: {
+          ...styles.itemBase,
+          backgroundColor: getBackgroundColorByState(args),
+          color: text,
+        },
+      };
     },
     globalNav: () => {
       const styles = light.globalNav();
@@ -28,20 +47,31 @@ export default ({ background, text }: Args): Mode => {
         color: text,
       };
     },
-    productNav: () => {
-      const { container, root } = light.productNav();
+    contentNav: () => {
+      const { container, product } = light.contentNav();
       return {
         container: {
           ...container,
           backgroundColor: background,
           color: text,
         },
-        root: {
-          ...root,
+        product: {
+          ...product,
           backgroundColor: background,
           color: text,
         },
       };
+    },
+    heading: () => {
+      const { product } = light.heading();
+      const productStyles = {
+        ...product,
+        titleBase: {
+          ...product.titleBase,
+          color: chromatism.brightness(20, text).hex,
+        },
+      };
+      return { container: productStyles, product: productStyles };
     },
     item: ({
       isActive,
@@ -49,67 +79,66 @@ export default ({ background, text }: Args): Mode => {
       isSelected,
       spacing,
     }: ItemPresentationProps) => {
-      const { root } = light.item({
+      const { product } = light.item({
         isActive,
         isHover,
         isSelected,
         spacing,
       });
-      const rootStyles = {
-        ...root,
+      const productStyles = {
+        ...product,
         itemBase: {
-          ...root.itemBase,
-          backgroundColor: (() => {
-            if (isActive) return backgroundColorActive;
-            if (isSelected) return backgroundColorSelected;
-            if (isHover) return backgroundColorHover;
-            return background;
-          })(),
+          ...product.itemBase,
+          backgroundColor: getBackgroundColorByState({
+            isActive,
+            isHover,
+            isSelected,
+          }),
         },
         textWrapper: {
-          ...root.textWrapper,
+          ...product.textWrapper,
           color: text,
         },
         subTextWrapper: {
-          ...root.subTextWrapper,
-          color: brightness(20, text).hex,
+          ...product.subTextWrapper,
+          color: chromatism.brightness(20, text).hex,
         },
       };
-      return { container: rootStyles, root: rootStyles };
-    },
-    sectionTitle: () => {
-      const { root } = light.sectionTitle();
-      const rootStyles = {
-        ...root,
-        titleBase: { ...root.titleBase, color: brightness(20, text).hex },
-      };
-      return { container: rootStyles, root: rootStyles };
-    },
-    sectionSeparator: () => {
-      const { root } = light.sectionSeparator();
-      const rootStyles = { ...root, backgroundColor: colors.N80A };
-      return { container: rootStyles, root: rootStyles };
+      return { container: productStyles, product: productStyles };
     },
     scrollHint: () => {
-      const { root } = light.scrollHint();
-      const rootStyles = {
-        ...root,
+      const { product } = light.scrollHint();
+      const productStyles = {
+        ...product,
         wrapper: {
-          ...root.wrapper,
+          ...product.wrapper,
           '&::before': {
-            ...root.wrapper['&::before'],
+            ...product.wrapper['&::before'],
             backgroundColor: colors.N80A,
           },
         },
         inner: {
-          ...root.inner,
+          ...product.inner,
           '&::before': {
-            ...root.inner['&::before'],
+            ...product.inner['&::before'],
             backgroundColor: background,
           },
         },
       };
-      return { container: rootStyles, root: rootStyles };
+      return { container: productStyles, product: productStyles };
+    },
+    separator: () => {
+      const { product } = light.separator();
+      const productStyles = { ...product, backgroundColor: colors.N80A };
+      return { container: productStyles, product: productStyles };
+    },
+    skeletonItem: () => {
+      const { product } = light.skeletonItem();
+      const productStyles = {
+        ...product,
+        backgroundColor: chromatism.brightness(20, background).hex,
+      };
+      return { container: productStyles, product: productStyles };
     },
   };
 };

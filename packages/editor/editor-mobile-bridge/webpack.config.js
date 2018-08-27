@@ -3,10 +3,14 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 module.exports = {
   entry: {
     bundle: './src/index.tsx',
+  },
+  stats: {
+    warnings: false,
   },
   output: {
     filename: '[name].js',
@@ -15,13 +19,25 @@ module.exports = {
   resolve: {
     mainFields: ['atlaskit:src', 'browser', 'main'],
     extensions: ['.js', '.ts', '.tsx'],
+    alias: {
+      '@atlaskit/media-picker': `${path.resolve(__dirname)}/empty.ts`,
+      '@atlaskit/tooltip': `${path.resolve(__dirname)}/empty.ts`,
+      '@atlaskit/modal-dialog': `${path.resolve(__dirname)}/empty.ts`,
+      '@atlaskit/logo': `${path.resolve(__dirname)}/empty.ts`,
+      '@atlaskit/avatar': `${path.resolve(__dirname)}/empty.ts`,
+      '@atlaskit/avatar-group': `${path.resolve(__dirname)}/empty.ts`,
+      '@atlaskit/profilecard': `${path.resolve(__dirname)}/empty.ts`,
+      '@atlaskit/select': `${path.resolve(__dirname)}/empty.ts`,
+      'react-select': `${path.resolve(__dirname)}/empty.ts`,
+      'components/picker/EmojiPicker': `${path.resolve(__dirname)}/empty.ts`,
+      'react-virtualized/dist/commonjs/List': `${path.resolve(
+        __dirname,
+      )}/empty.ts`,
+      'react-virtualized': `${path.resolve(__dirname)}/empty.ts`,
+    },
   },
   module: {
     rules: [
-      {
-        test: /\.json$/,
-        loader: 'json-loader',
-      },
       {
         test: /\.js$/,
         exclude: /node_modules/,
@@ -49,6 +65,21 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'public/index.html.ejs'),
+    }),
+    new UglifyJsPlugin({
+      test: /\.js($|\?)/i,
+      sourceMap: true,
+      uglifyOptions: {
+        mangle: {
+          keep_fnames: true,
+        },
+        compress: {
+          warnings: false,
+        },
+        output: {
+          beautify: false,
+        },
+      },
     }),
   ],
 };

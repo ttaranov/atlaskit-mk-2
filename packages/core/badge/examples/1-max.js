@@ -8,18 +8,14 @@ export default function Example() {
     <div>
       <p>with no value</p>
       <Badge />
-
       <p>with a negative value</p>
-      <Badge value={-5} />
-
+      <Badge>{5}</Badge>
       <p>with a value greater than max value</p>
-      <Badge value={500} max={99} />
-
+      <Badge max={99}>{500}</Badge>
       <p>with a value less than max value</p>
-      <Badge value={50} max={99} />
-
+      <Badge max={99}>{50}</Badge>
       <p>with a value equal to max value</p>
-      <Badge value={99} max={99} />
+      <Badge max={99}>{99}</Badge>
     </div>
   );
 }

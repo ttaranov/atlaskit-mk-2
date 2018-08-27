@@ -8,14 +8,15 @@ import {
   strong,
 } from '@atlaskit/editor-test-helpers';
 import {
-  TextColorState,
-  stateKey as textColorPluginKey,
+  TextColorPluginState,
+  pluginKey as textColorPluginKey,
 } from '../../../src/plugins/text-color/pm-plugins/main';
+import { changeColor } from '../../../src/plugins/text-color/commands/change-color';
 import textColorPlugin from '../../../src/plugins/text-color';
 
 describe('text-color', () => {
   const editor = (doc: any) =>
-    createEditor<TextColorState>({
+    createEditor<TextColorPluginState>({
       doc,
       editorPlugins: [textColorPlugin],
       pluginKey: textColorPluginKey,
@@ -25,66 +26,44 @@ describe('text-color', () => {
   const testColor2 = '#0747a6';
   const createTextColor = (color: string) => textColor({ color });
 
-  it('should allow a change handler to be attached', () => {
-    const { pluginState } = editor(doc(p('text')));
-    const spy = jest.fn();
-    pluginState.subscribe(spy);
-
-    expect(spy).toHaveBeenCalledTimes(1);
-    expect(spy).toHaveBeenCalledWith(pluginState);
-  });
-
   it('should be able to replace textColor on a character', () => {
-    const { editorView, pluginState } = editor(doc(p('{<}t{>}ext')));
+    const { editorView } = editor(
+      doc(p(createTextColor(testColor1)('{<}t{>}'), 'ext')),
+    );
+    const { dispatch, state } = editorView;
 
-    expect(
-      pluginState.toggleTextColor(
-        editorView.state,
-        editorView.dispatch,
-        testColor1,
-      ),
-    );
-    expect(editorView.state.doc).toEqualDocument(
-      doc(p(createTextColor(testColor1)('t'), 'ext')),
-    );
-    expect(
-      pluginState.toggleTextColor(
-        editorView.state,
-        editorView.dispatch,
-        testColor2,
-      ),
-    );
+    expect(changeColor(testColor2)(state, dispatch));
     expect(editorView.state.doc).toEqualDocument(
       doc(p(createTextColor(testColor2)('t'), 'ext')),
     );
+
+    editorView.destroy();
   });
 
   it('should expose whether textColor has any color on an empty selection', () => {
     const { editorView, pluginState } = editor(doc(p('te{<>}xt')));
+    const { dispatch, state } = editorView;
 
     expect(pluginState.color).toBe(pluginState.defaultColor);
-    expect(
-      pluginState.toggleTextColor(
-        editorView.state,
-        editorView.dispatch,
-        testColor1,
-      ),
-    );
-    expect(pluginState.color).toBe(testColor1);
+    expect(changeColor(testColor2)(state, dispatch));
+
+    const updatedPluginState = textColorPluginKey.getState(editorView.state);
+    expect(updatedPluginState.color).toBe(testColor2);
+
+    editorView.destroy();
   });
 
   it('should expose whether textColor has any color on a text selection', () => {
     const { editorView, pluginState } = editor(doc(p('t{<}e{>}xt')));
+    const { dispatch, state } = editorView;
 
     expect(pluginState.color).toBe(pluginState.defaultColor);
-    expect(
-      pluginState.toggleTextColor(
-        editorView.state,
-        editorView.dispatch,
-        testColor1,
-      ),
-    );
-    expect(pluginState.color).toBe(testColor1);
+    expect(changeColor(testColor1)(state, dispatch));
+
+    const updatedPluginState = textColorPluginKey.getState(editorView.state);
+    expect(updatedPluginState.color).toBe(testColor1);
+
+    editorView.destroy();
   });
 
   it('exposes textColor as disabled when the mark cannot be applied', () => {

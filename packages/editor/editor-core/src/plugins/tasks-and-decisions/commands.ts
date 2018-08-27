@@ -1,5 +1,5 @@
 import { uuid } from '@atlaskit/editor-common';
-import { Schema } from 'prosemirror-model';
+import { ResolvedPos, Schema } from 'prosemirror-model';
 import { EditorState, Transaction, TextSelection } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import {
@@ -56,6 +56,9 @@ export const changeToTaskDecision = (
   return false;
 };
 
+const changeInDepth = (before: ResolvedPos, after: ResolvedPos) =>
+  after.depth - before.depth;
+
 export const createListAtSelection = (
   tr: Transaction,
   list: any,
@@ -107,7 +110,12 @@ export const createListAtSelection = (
       ]),
     )(tr);
 
-    tr = tr.setSelection(new TextSelection(tr.doc.resolve($to.pos + 1)));
+    // Adjust depth for new selection, if it has changed (e.g. paragraph to list (ol > li))
+    const depthAdjustment = changeInDepth($to, newTr.selection.$to);
+
+    tr = tr.setSelection(
+      new TextSelection(tr.doc.resolve($to.pos + depthAdjustment)),
+    );
 
     // replacing successful
     if (newTr !== tr) {

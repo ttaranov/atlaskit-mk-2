@@ -1,16 +1,22 @@
+import * as uuid from 'uuid';
 import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/publishReplay';
+import { Observer } from 'rxjs/Observer';
+import { of } from 'rxjs/observable/of';
+import { Subscriber } from 'rxjs/Subscriber';
+import { defer } from 'rxjs/observable/defer';
+import { concat } from 'rxjs/operators/concat';
+import { refCount } from 'rxjs/operators/refCount';
+import { startWith } from 'rxjs/operators/startWith';
+import { publishReplay } from 'rxjs/operators/publishReplay';
 
 import {
   MediaStore,
   uploadFile,
   UploadableFile,
-  UploadFileCallbacks,
   ContextConfig,
   MediaApiConfig,
-  UploadFileResult,
+  UploadController,
+  MediaStoreGetFileImageParams,
 } from '@atlaskit/media-store';
 
 import {
@@ -34,8 +40,8 @@ import {
   FileState,
   mapMediaFileToFileState,
 } from '../fileState';
-import { Observer } from 'rxjs/Observer';
 import FileStreamCache from './fileStreamCache';
+import { getMediaTypeFromUploadableFile } from '../utils/getMediaTypeFromUploadableFile';
 
 const DEFAULT_CACHE_SIZE = 200;
 
@@ -73,11 +79,12 @@ export interface Context {
   refreshCollection(collectionName: string, pageSize: number): void;
 
   getFile(id: string, options?: GetFileOptions): Observable<FileState>;
-
   uploadFile(
     file: UploadableFile,
-    callbacks?: UploadFileCallbacks,
-  ): UploadFileResult;
+    controller?: UploadController,
+  ): Observable<FileState>;
+
+  getImage(id: string, params?: MediaStoreGetFileImageParams): Promise<Blob>;
 
   readonly config: ContextConfig;
 }
@@ -104,7 +111,6 @@ class ContextImpl implements Context {
     this.localPreviewCache = new LRUCache(10);
     this.fileStreamsCache = new FileStreamCache();
     this.mediaStore = new MediaStore({
-      serviceHost: config.serviceHost,
       authProvider: config.authProvider,
     });
   }
@@ -114,10 +120,9 @@ class ContextImpl implements Context {
 
     return this.fileStreamsCache.getOrInsert(key, () => {
       const collection = options && options.collectionName;
-      const fileStream$ = this.createDownloadFileStream(
-        id,
-        collection,
-      ).publishReplay(1);
+      const fileStream$ = publishReplay<FileState>(1)(
+        this.createDownloadFileStream(id, collection),
+      );
 
       fileStream$.connect();
 
@@ -172,7 +177,7 @@ class ContextImpl implements Context {
     if (mediaItem && (isMediaItemLink || isMediaItemFileAndNotPending)) {
       return {
         observable() {
-          return Observable.of(mediaItem);
+          return of(mediaItem);
         },
       };
     }
@@ -189,7 +194,7 @@ class ContextImpl implements Context {
     if (mediaItem) {
       return {
         observable() {
-          return provider.observable().startWith(mediaItem);
+          return provider.observable().pipe(startWith(mediaItem));
         },
       };
     }
@@ -210,11 +215,7 @@ class ContextImpl implements Context {
   }
 
   getDataUriService(collectionName?: string): DataUriService {
-    return new MediaDataUriService(
-      this.config.authProvider,
-      this.config.serviceHost,
-      collectionName,
-    );
+    return new MediaDataUriService(this.config.authProvider, collectionName);
   }
 
   setLocalPreview(id: string, preview: string) {
@@ -230,11 +231,7 @@ class ContextImpl implements Context {
   }
 
   getBlobService(collectionName?: string): BlobService {
-    return new MediaBlobService(
-      this.config.authProvider,
-      this.config.serviceHost,
-      collectionName,
-    );
+    return new MediaBlobService(this.config.authProvider, collectionName);
   }
 
   getUrlPreviewProvider(url: string): MediaUrlPreviewProvider {
@@ -256,18 +253,100 @@ class ContextImpl implements Context {
 
   uploadFile(
     file: UploadableFile,
-    callbacks?: UploadFileCallbacks,
-  ): UploadFileResult {
-    return uploadFile(file, this.apiConfig, callbacks);
+    controller?: UploadController,
+  ): Observable<FileState> {
+    let fileId: string;
+    // TODO [MSW-796]: get file size for base64
+    const size = file.content instanceof Blob ? file.content.size : 0;
+    const mediaType = getMediaTypeFromUploadableFile(file);
+    const collectionName = file.collection;
+    const name = file.name || ''; // name property is not available in base64 image
+    // TODO [MSW-678]: remove when id upfront is exposed
+    const tempFileId = uuid.v4();
+    const tempKey = FileStreamCache.createKey(tempFileId, { collectionName });
+    let mimeType = '';
+
+    const fileStreamSubscribe = (observer: Subscriber<FileState>) => {
+      if (file.content instanceof Blob) {
+        mimeType = file.content.type;
+        observer.next({
+          name,
+          size,
+          mediaType,
+          mimeType,
+          id: tempFileId,
+          progress: 0,
+          status: 'uploading',
+          preview: {
+            blob: file.content,
+          },
+        });
+      }
+
+      const { deferredFileId, cancel } = uploadFile(file, this.apiConfig, {
+        onProgress: progress => {
+          observer.next({
+            progress,
+            name,
+            size,
+            mediaType,
+            mimeType,
+            id: tempFileId,
+            status: 'uploading',
+          });
+        },
+      });
+
+      if (controller) {
+        controller.setAbort(cancel);
+      }
+
+      deferredFileId
+        .then(id => {
+          fileId = id;
+          const key = FileStreamCache.createKey(id, { collectionName });
+
+          // we create a new entry in the cache with the same stream to make the temp/public id mapping to work
+          this.fileStreamsCache.set(key, fileStream);
+          observer.next({
+            id,
+            name,
+            size,
+            mediaType,
+            mimeType,
+            status: 'processing',
+          });
+          observer.complete();
+        })
+        .catch(error => {
+          // we can't use .catch(observer.error) due that will change the Subscriber context
+          observer.error(error);
+        });
+    };
+
+    const fileStream = new Observable<FileState>(fileStreamSubscribe).pipe(
+      concat(
+        defer(() => this.createDownloadFileStream(fileId, collectionName)),
+      ),
+      publishReplay(1),
+      refCount(),
+    );
+
+    this.fileStreamsCache.set(tempKey, fileStream);
+
+    return fileStream;
   }
 
   refreshCollection(collectionName: string, pageSize: number): void {
     this.getMediaCollectionProvider(collectionName, pageSize).refresh();
   }
 
+  getImage(id: string, params?: MediaStoreGetFileImageParams): Promise<Blob> {
+    return this.mediaStore.getImage(id, params);
+  }
+
   private get apiConfig(): MediaApiConfig {
     return {
-      serviceHost: this.config.serviceHost,
       authProvider: this.config.authProvider,
     };
   }

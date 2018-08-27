@@ -54,7 +54,9 @@ export function createDispatch(eventDispatcher: EventDispatcher): Dispatch {
     }
 
     const event =
-      typeof eventName === 'string' ? eventName : (eventName as any).key;
+      typeof eventName === 'string'
+        ? eventName
+        : (eventName as PluginKey & { key: string }).key;
     eventDispatcher.emit(event, data);
   };
 }

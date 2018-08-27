@@ -1,31 +1,34 @@
 // @flow
 import styled, { css } from 'styled-components';
-import { colors, fontSize } from '@atlaskit/theme';
+import { colors, fontSize, themed } from '@atlaskit/theme';
 
-const getPlaceholderStyle = style => css`
+const getPlaceholderColor = ({ disabled }) => {
+  if (disabled) {
+    return themed({ light: colors.N70, dark: colors.DN90 });
+  }
+  return themed({ light: colors.N100, dark: colors.DN90 });
+};
+
+// can't group these placeholder styles into one block because browsers drop
+// entire style blocks when any single selector fails to parse
+const getPlaceholderStyle = () => css`
   &::-webkit-input-placeholder {
     /* WebKit, Blink, Edge */
-    ${style};
+    color: ${getPlaceholderColor};
   }
   &::-moz-placeholder {
     /* Mozilla Firefox 19+ */
-    ${style} opacity: 1;
+    color: ${getPlaceholderColor};
+    opacity: 1;
   }
   &::-ms-input-placeholder {
     /* Microsoft Edge */
-    ${style};
-  }
-  &:-moz-placeholder {
-    /* Mozilla Firefox 4 to 18 */
-    ${style} opacity: 1;
+    color: ${getPlaceholderColor};
   }
   &:-ms-input-placeholder {
     /* Internet Explorer 10-11 */
-    ${style};
+    color: ${getPlaceholderColor};
   }
-`;
-const getPlaceholderColor = css`
-  color: ${colors.placeholderText};
 `;
 
 // Safari puts on some difficult to remove styles, mainly for disabled inputs
@@ -43,6 +46,7 @@ const InputElement = styled.input`
   cursor: inherit;
   font-family: inherit;
   font-size: ${fontSize}px;
+  min-width: 0;
   outline: none;
   width: 100%;
 
@@ -57,7 +61,7 @@ const InputElement = styled.input`
   &:invalid {
     box-shadow: none;
   }
-  ${getPlaceholderStyle(getPlaceholderColor)};
+  ${getPlaceholderStyle};
 `;
 
 export default InputElement;

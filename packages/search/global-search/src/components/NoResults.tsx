@@ -9,13 +9,19 @@ const NoResultsWrapper = styled.div`
   margin-bottom: ${math.multiply(gridSize, 4)}px;
 `;
 
-export default class NoResults extends React.Component {
+export interface Props {
+  title: JSX.Element | string;
+  body: JSX.Element | string;
+}
+
+export default class NoResults extends React.Component<Props> {
   render() {
+    const { title, body } = this.props;
     return (
       <NoResultsWrapper>
         <NoResultsImage />
-        <h3>We couldn't find any search results.</h3>
-        <p>Try a different query, or use more specialized searches below.</p>
+        <h3>{title}</h3>
+        <p>{body}</p>
       </NoResultsWrapper>
     );
   }

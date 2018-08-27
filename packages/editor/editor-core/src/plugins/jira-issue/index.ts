@@ -22,15 +22,13 @@ const createPlugin: PMPluginFactory = ({ portalProviderAPI }) => {
 
 const jiraIssuePlugin: EditorPlugin = {
   nodes() {
-    return [
-      { rank: 1400, name: 'confluenceJiraIssue', node: confluenceJiraIssue },
-    ];
+    return [{ name: 'confluenceJiraIssue', node: confluenceJiraIssue }];
   },
 
   pmPlugins() {
     return [
       {
-        rank: 1410,
+        name: 'jiraIssue',
         plugin: createPlugin,
       },
     ];

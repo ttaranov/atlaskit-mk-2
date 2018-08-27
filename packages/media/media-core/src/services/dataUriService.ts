@@ -17,14 +17,9 @@ export class MediaDataUriService implements DataUriService {
 
   constructor(
     readonly authProvider: AuthProvider,
-    readonly serviceHost: string,
     readonly collectionName?: string,
   ) {
-    this.blobService = new MediaBlobService(
-      authProvider,
-      serviceHost,
-      collectionName,
-    );
+    this.blobService = new MediaBlobService(authProvider, collectionName);
   }
 
   fetchOriginalDataUri(mediaItem: MediaItem): Promise<DataUri> {

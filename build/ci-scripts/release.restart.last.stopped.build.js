@@ -18,9 +18,7 @@ const BB_USERNAME = process.env.BITBUCKET_USER;
 const BB_PASSWORD = process.env.BITBUCKET_PASSWORD;
 const REPO_OWNER = process.env.BITBUCKET_REPO_OWNER;
 const REPO_SLUG = process.env.BITBUCKET_REPO_SLUG;
-const PIPELINES_ENDPOINT = `https://api.bitbucket.org/2.0/repositories/${
-  REPO_OWNER
-}/${REPO_SLUG}/pipelines/`;
+const PIPELINES_ENDPOINT = `https://api.bitbucket.org/2.0/repositories/${REPO_OWNER}/${REPO_SLUG}/pipelines/`;
 
 const axiosRequestConfig = {
   auth: {
@@ -97,9 +95,7 @@ axios
   .then(response => {
     if (response && response.status === 201) {
       const newPipelinesUUID = response.data.uuid;
-      const newPipelineURL = `https://bitbucket.org/atlassian/atlaskit/addon/pipelines/home#!/results/${
-        newPipelinesUUID
-      }`;
+      const newPipelineURL = `https://bitbucket.org/atlassian/atlaskit/addon/pipelines/home#!/results/${newPipelinesUUID}`;
       console.log(`Successfully restarted pipeline at: ${newPipelineURL}`);
     }
   })

@@ -15,10 +15,8 @@ import {
   thEmpty,
 } from '@atlaskit/editor-test-helpers';
 
-import {
-  TablePluginState,
-  stateKey,
-} from '../../../../src/plugins/table/pm-plugins/main';
+import { pluginKey } from '../../../../src/plugins/table/pm-plugins/main';
+import { TablePluginState } from '../../../../src/plugins/table/types';
 import ColumnControls from '../../../../src/plugins/table/ui/TableFloatingControls/ColumnControls';
 import {
   ColumnControlsButtonWrap,
@@ -49,8 +47,8 @@ describe('ColumnControls', () => {
   const editor = (doc: any) =>
     createEditor<TablePluginState>({
       doc,
-      editorPlugins: [tablesPlugin],
-      pluginKey: stateKey,
+      editorPlugins: [tablesPlugin()],
+      pluginKey,
     });
 
   [1, 2, 3].forEach(column => {
@@ -157,8 +155,8 @@ describe('ColumnControls', () => {
           .at(column)
           .simulate('mousedown');
 
-        // reapply state to force re-render
-        floatingControls.setState(floatingControls.state());
+        // set numberOfColumns prop to trick shouldComponentUpdate and force re-render
+        floatingControls.setProps({ numberOfColumns: 3 });
 
         // we should now have a delete button
         expect(floatingControls.find(DeleteColumnButton).length).toBe(1);
@@ -208,15 +206,9 @@ describe('ColumnControls', () => {
         tableRef={document.querySelector('table')!}
         isTableHovered={false}
         editorView={editorView}
+        dangerColumns={[0, 1, 2]}
       />,
     );
-
-    editorView.dispatch(selectColumns([0, 1])(editorView.state.tr));
-
-    // reapply state to force re-render
-    floatingControls.setState(floatingControls.state());
-
-    floatingControls.find(DeleteColumnButton).simulate('mouseenter');
 
     floatingControls
       .find(ColumnControlsButtonWrap)
@@ -250,8 +242,8 @@ describe('ColumnControls', () => {
     // select the whole table
     editorView.dispatch(selectTable(editorView.state.tr));
 
-    // reapply state to force re-render
-    floatingControls.setState(floatingControls.state());
+    // set numberOfColumns prop to trick shouldComponentUpdate and force re-render
+    floatingControls.setProps({ numberOfColumns: 3 });
 
     expect(floatingControls.find(DeleteColumnButton).length).toBe(0);
     floatingControls.unmount();
@@ -281,8 +273,8 @@ describe('ColumnControls', () => {
 
       editorView.dispatch(selectColumns([0, 1])(editorView.state.tr));
 
-      // reapply state to force re-render
-      floatingControls.setState(floatingControls.state());
+      // set numberOfColumns prop to trick shouldComponentUpdate and force re-render
+      floatingControls.setProps({ numberOfColumns: 3 });
 
       expect(floatingControls.find(InsertColumnButton).length).toBe(2);
 
@@ -312,8 +304,8 @@ describe('ColumnControls', () => {
 
       editorView.dispatch(selectColumns([0, 1, 2])(editorView.state.tr));
 
-      // reapply state to force re-render
-      floatingControls.setState(floatingControls.state());
+      // set numberOfColumns prop to trick shouldComponentUpdate and force re-render
+      floatingControls.setProps({ numberOfColumns: 3 });
 
       expect(floatingControls.find(InsertColumnButton).length).toBe(1);
 
@@ -341,8 +333,8 @@ describe('ColumnControls', () => {
 
       editorView.dispatch(selectColumns([0, 1])(editorView.state.tr));
 
-      // reapply state to force re-render
-      floatingControls.setState(floatingControls.state());
+      // set numberOfColumns prop to trick shouldComponentUpdate and force re-render
+      floatingControls.setProps({ numberOfColumns: 3 });
 
       expect(floatingControls.find(DeleteColumnButton).length).toBe(1);
 

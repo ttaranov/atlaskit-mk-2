@@ -1,5 +1,133 @@
 # @atlaskit/comment
 
+## 6.0.9
+- [patch] Clean changelogs and exclude the editor example from the ssr test [ced154b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ced154b)
+
+## 6.0.8
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/editor-core@77.1.4
+
+## 6.0.7
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/editor-core@77.0.14
+  - @atlaskit/lozenge@6.1.5
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/button@9.0.6
+  - @atlaskit/avatar@14.0.8
+  - @atlaskit/docs@5.0.6
+
+## 6.0.6
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/editor-core@77.0.2
+  - @atlaskit/analytics-next@3.0.4
+  - @atlaskit/button@9.0.5
+  - @atlaskit/theme@5.1.3
+  - @atlaskit/lozenge@6.1.4
+  - @atlaskit/icon@13.2.4
+  - @atlaskit/avatar@14.0.6
+
+## 6.0.5
+- [none] Updated dependencies [597e0bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/597e0bd)
+  - @atlaskit/editor-core@77.0.0
+
+## 6.0.4
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/editor-core@76.4.5
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/button@9.0.4
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/lozenge@6.1.3
+  - @atlaskit/analytics-next@3.0.3
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/avatar@14.0.5
+
+## 6.0.3
+- [patch] Add a SSR test for every package, add react-dom and build-utils in devDependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+- [none] Updated dependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+  - @atlaskit/analytics-next@3.0.2
+  - @atlaskit/button@9.0.3
+  - @atlaskit/theme@5.1.1
+  - @atlaskit/lozenge@6.1.2
+  - @atlaskit/icon@13.2.1
+  - @atlaskit/avatar@14.0.4
+
+## 6.0.2
+- [patch] Move analytics tests and replace elements to core [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+- [none] Updated dependencies [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+  - @atlaskit/analytics-next@3.0.1
+  - @atlaskit/button@9.0.2
+  - @atlaskit/lozenge@6.1.1
+  - @atlaskit/docs@5.0.1
+  - @atlaskit/avatar@14.0.2
+
+## 6.0.1
+- [none] Updated dependencies [25353c3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25353c3)
+  - @atlaskit/editor-core@76.0.0
+- [patch] Updated dependencies [38c0543](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/38c0543)
+  - @atlaskit/editor-core@76.0.0
+
+## 6.0.0
+- [major] Provides analytics for common component interations. See the [Instrumented Components](https://atlaskit.atlassian.com/packages/core/analytics-next) section for more details. If you are using enzyme for testing you will have to use [our forked version of the library](https://atlaskit.atlassian.com/docs/guides/testing#we-use-a-forked-version-of-enzyme). [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/editor-core@75.0.0
+  - @atlaskit/analytics-next@3.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/lozenge@6.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/icon@13.0.0
+  - @atlaskit/avatar@14.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/editor-core@75.0.0
+  - @atlaskit/analytics-next@3.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/lozenge@6.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/icon@13.0.0
+  - @atlaskit/avatar@14.0.0
+
+## 5.0.6
+- [none] Updated dependencies [da63331](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da63331)
+  - @atlaskit/button@8.2.5
+  - @atlaskit/editor-core@74.0.8
+  - @atlaskit/avatar@13.0.0
+- [patch] Updated dependencies [7724115](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7724115)
+  - @atlaskit/avatar@13.0.0
+  - @atlaskit/editor-core@74.0.8
+  - @atlaskit/button@8.2.5
+
+## 5.0.5
+- [patch] Updated dependencies [af0cde6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af0cde6)
+  - @atlaskit/editor-core@74.0.0
+
+## 5.0.4
+- [patch] Updated dependencies [8a01bcd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a01bcd)
+  - @atlaskit/avatar@12.0.0
+  - @atlaskit/editor-core@73.9.19
+
+## 5.0.3
+- [patch] Updated dependencies [8d5053e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d5053e)
+  - @atlaskit/editor-core@73.9.5
+
+## 5.0.2
+- [patch] Updated dependencies [0cf2f52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0cf2f52)
+  - @atlaskit/editor-core@73.9.2
+
+## 5.0.1
+
+
+- [patch] Updated dependencies [5b79a19](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b79a19)
+  - @atlaskit/editor-core@73.8.20
+- [none] Updated dependencies [d708792](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d708792)
+  - @atlaskit/editor-core@73.8.20
+
+## 5.0.0
+- [major] No longer add a "Restricted to " prefix to the value of the retrictedTo prop. The "restricted to" label will show whatever you set to the restrictedTo prop. [8efe0af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8efe0af)
+
 ## 4.1.2
 - [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
 - [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)

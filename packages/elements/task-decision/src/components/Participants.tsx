@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { AvatarGroup } from '@atlaskit/avatar';
+import AvatarGroup from '@atlaskit/avatar-group';
 import { colors } from '@atlaskit/theme';
 
 import { Participant } from '../types';

@@ -1,26 +1,32 @@
 // @flow
 import React, { PureComponent } from 'react';
-import SyntaxHighlighter from 'react-syntax-highlighter';
-import { normalizeLanguage } from './supportedLanguages';
-import { type Theme, applyTheme } from './themes/themeBuilder';
+import SyntaxHighlighter from 'react-syntax-highlighter/prism-light';
+import { withTheme, ThemeProvider } from 'styled-components';
+import {
+  normalizeLanguage,
+  type ADFSupportedLanguages,
+} from './supportedLanguages';
+import { type Theme, type ThemeProps, applyTheme } from './themes/themeBuilder';
 
 type CodeBlockProps = {
   /** The code to be formatted */
   text: string,
   /** The language in which the code is written */
-  language?: string,
+  language?: ADFSupportedLanguages | string,
   /** Indicates whether or not to show line numbers */
   showLineNumbers?: boolean,
   /** A custom theme to be applied, implements the Theme interface */
-  theme?: Theme,
+  theme?: Theme | ThemeProps,
 };
 
-export default class CodeBlock extends PureComponent<CodeBlockProps, {}> {
+const LANGUAGE_FALLBACK = 'clike';
+
+export class CodeBlock extends PureComponent<CodeBlockProps, {}> {
   static displayName = 'CodeBlock';
 
   static defaultProps = {
     showLineNumbers: true,
-    language: '',
+    language: LANGUAGE_FALLBACK,
     theme: {},
   };
 
@@ -40,14 +46,13 @@ export default class CodeBlock extends PureComponent<CodeBlockProps, {}> {
   };
 
   render() {
-    const { language } = this.props;
     const {
       lineNumberContainerStyle,
       codeBlockStyle,
       codeContainerStyle,
     } = applyTheme(this.props.theme);
     const props = {
-      language: normalizeLanguage(language),
+      language: normalizeLanguage(this.props.language || LANGUAGE_FALLBACK),
       style: codeBlockStyle,
       showLineNumbers: this.props.showLineNumbers,
       PreTag: 'span',
@@ -62,4 +67,14 @@ export default class CodeBlock extends PureComponent<CodeBlockProps, {}> {
       </SyntaxHighlighter>
     );
   }
+}
+
+const CodeBlockWithTheme = withTheme(CodeBlock);
+const emptyTheme = {};
+export default function(props: {}) {
+  return (
+    <ThemeProvider theme={emptyTheme}>
+      <CodeBlockWithTheme {...props} />
+    </ThemeProvider>
+  );
 }

@@ -2,7 +2,8 @@
 
 import type { ComponentType } from 'react';
 
-import type { View } from '../../src/api/types';
+import { UIController, ViewController } from '../';
+import type { ViewData } from '../../src/view-controller/types';
 
 /**
  * Components
@@ -20,9 +21,12 @@ export type GoToItemProps = {
   ...ItemProps,
   after?: ?ComponentType<*>,
   goTo: string,
+  navigationUIController: UIController,
+  navigationViewController: ViewController,
+  spinnerDelay: number,
 };
 
-export type TitleProps = {
+export type GroupHeadingProps = {
   text: string,
 };
 
@@ -31,21 +35,20 @@ type CustomComponents = { [string]: ComponentType<any> };
 type SharedGroupTypeProps = {
   customComponents?: CustomComponents,
   id: string,
-  isRootLevel?: boolean,
-  items: View,
+  items: ViewData,
 };
 
 export type GroupProps = SharedGroupTypeProps & {
   hasSeparator: boolean,
-  title?: string,
+  heading?: string,
 };
 
-export type NestedProps = SharedGroupTypeProps & {
+export type SectionProps = SharedGroupTypeProps & {
   nestedGroupKey: string,
   parentId: string | null,
 };
 
 export type ItemsRendererProps = {
   customComponents?: CustomComponents,
-  items: View,
+  items: ViewData,
 };

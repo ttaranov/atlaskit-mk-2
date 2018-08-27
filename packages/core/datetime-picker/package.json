@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/datetime-picker",
-  "version": "5.2.1",
+  "version": "6.3.4",
   "description": "A React component for picking date/time values",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -18,32 +18,37 @@
   ],
   "atlaskit": {
     "name": "Date-time picker",
-    "team": "elements"
+    "team": "core"
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/calendar": "^6.1.2",
-    "@atlaskit/field-base": "^10.1.2",
-    "@atlaskit/icon": "^12.1.2",
-    "@atlaskit/layer": "^4.0.3",
-    "@atlaskit/select": "^4.2.3",
-    "@atlaskit/theme": "^4.0.4",
+    "@atlaskit/analytics-next": "^3.0.6",
+    "@atlaskit/calendar": "^7.0.6",
+    "@atlaskit/field-base": "^11.0.6",
+    "@atlaskit/icon": "^13.3.1",
+    "@atlaskit/popper": "^0.2.1",
+    "@atlaskit/select": "^5.0.12",
+    "@atlaskit/theme": "^6.0.1",
     "babel-runtime": "^6.26.0",
     "date-fns": "^1.29.0",
-    "lodash.pick": "^4.4.0"
+    "lodash.pick": "^4.4.0",
+    "react-scrolllock": "^3.0.1"
   },
   "peerDependencies": {
-    "react": "^16.3.0",
+    "react": "^16.4.0",
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/button": "^8.1.2",
-    "@atlaskit/docs": "^4.1.0",
-    "@atlaskit/field-range": "^4.0.3",
-    "@atlaskit/field-text": "^6.0.4",
-    "@atlaskit/modal-dialog": "^5.2.2",
+    "@atlaskit/build-utils": "^2.0.0",
+    "@atlaskit/button": "^9.0.7",
+    "@atlaskit/docs": "^5.0.6",
+    "@atlaskit/field-range": "^5.0.6",
+    "@atlaskit/field-text": "^7.0.8",
+    "@atlaskit/modal-dialog": "^6.0.10",
+    "@atlaskit/webdriver-runner": "^0.0.3",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
-    "react-dom": "^16.3.0",
+    "moment": "^2.22.2",
+    "react-dom": "^16.4.2",
     "react-lorem-component": "^0.12.2",
     "react-test-renderer": "^16.3.0"
   }

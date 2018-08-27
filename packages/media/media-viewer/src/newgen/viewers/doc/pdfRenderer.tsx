@@ -3,16 +3,20 @@ import * as PDFJSViewer from 'pdfjs-dist/web/pdf_viewer';
 import * as pdfjsLib from 'pdfjs-dist/build/pdf';
 import { injectGlobal } from 'styled-components';
 import { ZoomControls } from '../../zoomControls';
-import { ErrorMessage, PDFWrapper } from '../../styled';
+import { PDFWrapper } from '../../styled';
 import { closeOnDirectClick } from '../../utils/closeOnDirectClick';
-import { Outcome, ZoomLevel } from '../../domain';
+import { Outcome } from '../../domain';
 import { Spinner } from '../../loading';
+import { ErrorMessage, createError, MediaViewerError } from '../../error';
+import { ZoomLevel } from '../../domain/zoomLevel';
 
 export const pdfViewerClassName = 'pdfViewer';
 
 /* tslint:disable:no-unused-expression */
 injectGlobal`
   .${pdfViewerClassName} {
+    margin-top: 64px;
+    margin-bottom: 64px;
     .page {
       margin: 1px auto -8px auto;
       border: 9px solid transparent;
@@ -32,18 +36,18 @@ injectGlobal`
         line-height: 1;
         font-family: sans-serif;
         opacity: 0.8;
-        
+
         ::selection {
           background: rgb(0,0,255);
         }
       }
-      
+
       .annotationLayer {
         position: absolute;
         top: 0;
         bottom: 0;
       }
-      
+
       .textLayer > div, .annotationLayer > section {
         color: transparent;
         position: absolute;
@@ -86,17 +90,17 @@ export type Props = {
 };
 
 export type State = {
-  doc: Outcome<any, Error>;
+  doc: Outcome<any, MediaViewerError>;
   zoomLevel: ZoomLevel;
 };
 
 const initialState: State = {
-  zoomLevel: new ZoomLevel(),
-  doc: { status: 'PENDING' },
+  zoomLevel: new ZoomLevel(1),
+  doc: Outcome.pending(),
 };
 
 export class PDFRenderer extends React.Component<Props, State> {
-  private el: HTMLDivElement;
+  private el?: HTMLDivElement;
   private pdfViewer: any;
 
   state: State = initialState;
@@ -108,44 +112,53 @@ export class PDFRenderer extends React.Component<Props, State> {
   private async init() {
     try {
       const doc = await fetch(this.props.src);
-      this.setState({ doc: { status: 'SUCCESSFUL', data: doc } }, () => {
+      this.setState({ doc: Outcome.successful(doc) }, () => {
         this.pdfViewer = new PDFJSViewer.PDFViewer({ container: this.el });
         this.pdfViewer.setDocument(doc);
+        this.pdfViewer.firstPagePromise.then(this.scaleToFit);
       });
     } catch (err) {
-      this.setState({ doc: { status: 'FAILED', err } });
+      this.setState({
+        doc: Outcome.failed(createError('previewFailed', undefined, err)),
+      });
     }
   }
 
-  private savePdfElement = el => {
+  private savePdfElement = (el: HTMLDivElement) => {
     this.el = el;
   };
 
-  private handleZoom = zoomLevel => {
+  private handleZoom = (zoomLevel: ZoomLevel) => {
     this.pdfViewer.currentScale = zoomLevel.value;
     this.setState({ zoomLevel });
   };
 
-  render() {
-    const { doc } = this.state;
-    switch (doc.status) {
-      case 'PENDING':
-        return <Spinner />;
-      case 'SUCCESSFUL':
-        return (
-          <PDFWrapper innerRef={this.savePdfElement}>
-            <div
-              className={pdfViewerClassName}
-              onClick={closeOnDirectClick(this.props.onClose)}
-            />
-            <ZoomControls
-              zoomLevel={this.state.zoomLevel}
-              onChange={this.handleZoom}
-            />
-          </PDFWrapper>
-        );
-      case 'FAILED':
-        return <ErrorMessage>{doc.err.message}</ErrorMessage>;
+  private scaleToFit = () => {
+    const { pdfViewer } = this;
+    if (pdfViewer) {
+      pdfViewer.currentScaleValue = 'page-width';
+      this.setState({
+        zoomLevel: new ZoomLevel(pdfViewer.currentScale),
+      });
     }
+  };
+
+  render() {
+    return this.state.doc.match({
+      pending: () => <Spinner />,
+      successful: () => (
+        <PDFWrapper innerRef={this.savePdfElement}>
+          <div
+            className={pdfViewerClassName}
+            onClick={closeOnDirectClick(this.props.onClose)}
+          />
+          <ZoomControls
+            zoomLevel={this.state.zoomLevel}
+            onChange={this.handleZoom}
+          />
+        </PDFWrapper>
+      ),
+      failed: err => <ErrorMessage error={err} />,
+    });
   }
 }

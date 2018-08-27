@@ -1,37 +1,15 @@
-import * as util from '../../src/newgen/util';
+import * as util from '../../src/newgen/utils';
 const constructAuthTokenUrlSpy = jest.spyOn(util, 'constructAuthTokenUrl');
 
 import * as React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
-import { Stubs } from '../_stubs';
+import { createContext } from '../_stubs';
 import { Subject } from 'rxjs';
-import {
-  MediaItem,
-  MediaItemType,
-  MediaType,
-  Context,
-  FileItem,
-} from '@atlaskit/media-core';
-import Header, { createDownloadUrl } from '../../src/newgen/header';
+import { MediaItem, MediaItemType, MediaType } from '@atlaskit/media-core';
+import Header from '../../src/newgen/header';
 import { MetadataFileName, MetadataSubText } from '../../src/newgen/styled';
 import DownloadIcon from '@atlaskit/icon/glyph/download';
 import { LeftHeader } from '../../src/newgen/styled';
-
-function createContext(subject: Subject<MediaItem>): Context {
-  const token = 'some-token';
-  const clientId = 'some-client-id';
-  const serviceHost = 'some-service-host';
-  const authProvider = jest.fn(() => Promise.resolve({ token, clientId }));
-  const contextConfig = {
-    serviceHost,
-    authProvider,
-  };
-  return Stubs.context(
-    contextConfig,
-    undefined,
-    Stubs.mediaItemProvider(subject),
-  ) as any;
-}
 
 const identifier = {
   id: 'some-id',
@@ -80,7 +58,7 @@ describe('<Header />', () => {
   it('shows an empty header while loading', () => {
     const subject = new Subject<MediaItem>();
     const el = mount(
-      <Header context={createContext(subject)} identifier={identifier} />,
+      <Header context={createContext({ subject })} identifier={identifier} />,
     );
     const metadata = el.find(LeftHeader);
     expect(metadata.text()).toEqual('');
@@ -88,7 +66,7 @@ describe('<Header />', () => {
 
   it('resubscribes to the provider when the data property value is changed', () => {
     const subject = new Subject<MediaItem>();
-    const context = createContext(subject);
+    const context = createContext({ subject });
     const el = mount(<Header context={context} identifier={identifier} />);
     subject.next(imageItem);
     el.update();
@@ -101,12 +79,12 @@ describe('<Header />', () => {
 
   it('component resets initial state when new props are passed', () => {
     const subject = new Subject<MediaItem>();
-    const context = createContext(subject);
+    const context = createContext({ subject });
     const el = mount(<Header context={context} identifier={identifier} />);
     subject.next(imageItem);
-    expect(el.state()).toMatchObject({ item: { status: 'SUCCESSFUL' } });
+    expect(el.state().item.status).toEqual('SUCCESSFUL');
     el.setProps({ identifier: identifier2 });
-    expect(el.state()).toMatchObject({ item: { status: 'PENDING' } });
+    expect(el.state().item.status).toEqual('PENDING');
   });
 
   describe('Metadata', () => {
@@ -114,7 +92,10 @@ describe('<Header />', () => {
       it('shows the title when loaded', () => {
         const subject = new Subject<MediaItem>();
         const el = mount(
-          <Header context={createContext(subject)} identifier={identifier} />,
+          <Header
+            context={createContext({ subject })}
+            identifier={identifier}
+          />,
         );
         subject.next(imageItem);
         el.update();
@@ -133,7 +114,10 @@ describe('<Header />', () => {
         };
         const subject = new Subject<MediaItem>();
         const el = mount(
-          <Header context={createContext(subject)} identifier={identifier} />,
+          <Header
+            context={createContext({ subject })}
+            identifier={identifier}
+          />,
         );
         subject.next(noNameItem);
         el.update();
@@ -159,7 +143,10 @@ describe('<Header />', () => {
 
         const subject = new Subject<MediaItem>();
         const el = mount(
-          <Header context={createContext(subject)} identifier={identifier} />,
+          <Header
+            context={createContext({ subject })}
+            identifier={identifier}
+          />,
         );
         subject.next(item);
         el.update();
@@ -188,7 +175,10 @@ describe('<Header />', () => {
         };
         const subject = new Subject<MediaItem>();
         const el = mount(
-          <Header context={createContext(subject)} identifier={identifier} />,
+          <Header
+            context={createContext({ subject })}
+            identifier={identifier}
+          />,
         );
         subject.next(noSizeItem);
         el.update();
@@ -207,7 +197,10 @@ describe('<Header />', () => {
         };
         const subject = new Subject<MediaItem>();
         const el = mount(
-          <Header context={createContext(subject)} identifier={identifier} />,
+          <Header
+            context={createContext({ subject })}
+            identifier={identifier}
+          />,
         );
         subject.next(noSizeItem);
         el.update();
@@ -218,7 +211,7 @@ describe('<Header />', () => {
     it('shows nothing when metadata failed to be retrieved', () => {
       const subject = new Subject<MediaItem>();
       const el = mount(
-        <Header context={createContext(subject)} identifier={identifier} />,
+        <Header context={createContext({ subject })} identifier={identifier} />,
       );
       subject.error(new Error('error'));
       const metadata = el.find(LeftHeader);
@@ -227,7 +220,7 @@ describe('<Header />', () => {
 
     it('should not display metadata for links (not supported at this point)', () => {
       const subject = new Subject<MediaItem>();
-      const context = createContext(subject);
+      const context = createContext({ subject });
       const el = mount(
         <Header context={context} identifier={linkIdentifier} />,
       );
@@ -240,7 +233,7 @@ describe('<Header />', () => {
   it('MSW-720: passes the collectionName to the provider', () => {
     const collectionName = 'some-collection';
     const subject = new Subject<MediaItem>();
-    const context = createContext(subject);
+    const context = createContext({ subject });
     const identifierWithCollection = { ...identifier, collectionName };
     const el = mount(
       <Header context={context} identifier={identifierWithCollection} />,
@@ -255,7 +248,7 @@ describe('<Header />', () => {
   it('MSW-720: passes the collectionName to constructAuthTokenUrl', () => {
     const collectionName = 'some-collection';
     const subject = new Subject<MediaItem>();
-    const context = createContext(subject);
+    const context = createContext({ subject });
     const identifierWithCollection = { ...identifier, collectionName };
     const el = mount(
       <Header context={context} identifier={identifierWithCollection} />,
@@ -280,7 +273,7 @@ describe('<Header />', () => {
     it('should show the download button disabled while the item metadata is loading', () => {
       const subject = new Subject<MediaItem>();
       const el = mount(
-        <Header context={createContext(subject)} identifier={identifier} />,
+        <Header context={createContext({ subject })} identifier={identifier} />,
       );
       el.update();
       assertDownloadButton(el, false);
@@ -289,7 +282,7 @@ describe('<Header />', () => {
     it('should show the download button enabled when the item is loaded', () => {
       const subject = new Subject<MediaItem>();
       const el = mount(
-        <Header context={createContext(subject)} identifier={identifier} />,
+        <Header context={createContext({ subject })} identifier={identifier} />,
       );
       subject.next(imageItem);
       el.update();
@@ -299,7 +292,7 @@ describe('<Header />', () => {
     it('should show the download button disabled when there is an error', () => {
       const subject = new Subject<MediaItem>();
       const el = mount(
-        <Header context={createContext(subject)} identifier={identifier} />,
+        <Header context={createContext({ subject })} identifier={identifier} />,
       );
       subject.error(new Error('error'));
       el.update();
@@ -308,36 +301,12 @@ describe('<Header />', () => {
 
     it('should use a fresh token for the download link', () => {
       const subject = new Subject<MediaItem>();
-      const context = createContext(subject);
+      const context = createContext({ subject });
       const el = mount(<Header context={context} identifier={identifier} />);
       subject.next(imageItem);
       el.update();
       el.find(DownloadIcon).simulate('click');
       expect(context.config.authProvider).toHaveBeenCalled();
-    });
-
-    it('should generate a valid download link', async () => {
-      const subject = new Subject<MediaItem>();
-      const context = createContext(subject);
-      const item: FileItem = {
-        type: 'file',
-        details: {
-          id: '123',
-        },
-      };
-      const url = await createDownloadUrl(item, context);
-      const urlWithCollection = await createDownloadUrl(
-        item,
-        context,
-        'some-collection',
-      );
-
-      expect(url).toEqual(
-        'some-service-host/file/123/binary?client=some-client-id&token=some-token&dl=true',
-      );
-      expect(urlWithCollection).toEqual(
-        'some-service-host/file/123/binary?client=some-client-id&collection=some-collection&token=some-token&dl=true',
-      );
     });
   });
 });

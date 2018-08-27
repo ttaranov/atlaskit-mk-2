@@ -22,8 +22,8 @@ export interface TimeRangeState {
 }
 
 export class TimeRange extends Component<TimeRangeProps, TimeRangeState> {
-  wrapperElement: HTMLElement;
-  thumbElement: HTMLElement;
+  wrapperElement?: HTMLElement;
+  thumbElement?: HTMLElement;
   wrapperElementWidth: number;
 
   state: TimeRangeState = {
@@ -82,7 +82,7 @@ export class TimeRange extends Component<TimeRangeProps, TimeRangeState> {
     });
   };
 
-  onNavigate = e => {
+  onNavigate = (e: any) => {
     // We don't want to navigate if the event was starting with a drag
     if (e.target === this.thumbElement) {
       return;
@@ -97,14 +97,14 @@ export class TimeRange extends Component<TimeRangeProps, TimeRangeState> {
     onChange(currentTime);
   };
 
-  private saveWrapperElement = el => {
+  private saveWrapperElement = (el?: HTMLElement) => {
     if (el) {
       this.wrapperElement = el;
       this.setWrapperWidth();
     }
   };
 
-  private saveThumbElement = el => {
+  private saveThumbElement = (el?: HTMLElement) => {
     if (el) {
       this.thumbElement = el;
     }

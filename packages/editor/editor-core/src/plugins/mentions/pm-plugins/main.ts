@@ -150,6 +150,10 @@ export class MentionsState {
       this.dirty = true;
       return;
     }
+
+    if (this.dirty) {
+      this.notifySubscribers();
+    }
   }
 
   update(state: EditorState) {

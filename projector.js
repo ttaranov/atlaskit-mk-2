@@ -2,7 +2,6 @@
 
 const karma = require('projector-karma');
 const spawn = require('spawndamnit');
-const release = require('./build/releases/release');
 const { getKarmaConfig } = require('./build/karma-config');
 
 const log = (type /*: string */ = 'log') => (
@@ -25,10 +24,6 @@ const spawnWithLog = async (...args) => {
   child.on('stdout', log());
   child.on('stderr', log('error'));
   return child;
-};
-
-exports.release = async () => {
-  await release.run({ cwd: __dirname });
 };
 
 exports.start = async ({ packages } /*: { packages: string } */) => {

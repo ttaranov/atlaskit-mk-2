@@ -1,25 +1,31 @@
+jest.mock('../../src/newgen/viewers/video/fullscreen');
 import * as React from 'react';
 import { mount } from 'enzyme';
-import EditorMediaFullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
+import FullScreenIcon from '@atlaskit/icon/glyph/vid-full-screen-on';
 import VidPlayIcon from '@atlaskit/icon/glyph/vid-play';
 import VidHdCircleIcon from '@atlaskit/icon/glyph/vid-hd-circle';
 import Button from '@atlaskit/button';
+import Spinner from '@atlaskit/spinner';
+import FieldRange from '@atlaskit/field-range';
 import {
   CustomVideo,
   CustomVideoProps,
 } from '../../src/newgen/viewers/video/customVideo';
+import { toggleFullscreen } from '../../src/newgen/viewers/video/fullscreen';
 import { TimeRange } from '../../src/newgen/viewers/video/TimeRange';
-import {
-  VolumeRange,
-  CurrentTime,
-} from '../../src/newgen/viewers/video/styled';
+import { CurrentTime } from '../../src/newgen/viewers/video/styled';
 import { Shortcut } from '../../src/newgen/shortcut';
 
 describe('<CustomVideo />', () => {
   const setup = (props?: Partial<CustomVideoProps>) => {
     const onChange = jest.fn();
     const component = mount(
-      <CustomVideo isHDAvailable={false} src="video-src" {...props} />,
+      <CustomVideo
+        isAutoPlay={true}
+        isHDAvailable={false}
+        src="video-src"
+        {...props}
+      />,
     );
 
     return {
@@ -54,7 +60,7 @@ describe('<CustomVideo />', () => {
     it('should render the volume controls', () => {
       const { component } = setup();
 
-      expect(component.find(VolumeRange).prop('value')).toEqual(1);
+      expect(component.find(FieldRange).prop('value')).toEqual(1);
     });
 
     it('should render the time (current/total) in the right format', () => {
@@ -71,7 +77,7 @@ describe('<CustomVideo />', () => {
           .find(Button)
           .last()
           .prop('iconBefore') as any).type,
-      ).toEqual(EditorMediaFullWidthIcon);
+      ).toEqual(FullScreenIcon);
     });
 
     it('should render hd button if available', () => {
@@ -83,13 +89,20 @@ describe('<CustomVideo />', () => {
       expect(
         (component
           .find(Button)
-          .at(1)
+          .at(2)
           .prop('iconBefore') as any).type,
       ).toEqual(VidHdCircleIcon);
       component.setProps({
         isHDAvailable: false,
       });
       expect(component.find(Button)).toHaveLength(3);
+    });
+
+    it('should render spinner when the video is in loading state', () => {
+      const { component } = setup();
+
+      component.find('video').simulate('waiting');
+      expect(component.find(Spinner)).toHaveLength(1);
     });
   });
 
@@ -98,9 +111,17 @@ describe('<CustomVideo />', () => {
       const showControls = jest.fn();
       const { component } = setup({ showControls });
 
-      component.find(Shortcut).prop('handler')();
+      component
+        .find(Shortcut)
+        .first()
+        .prop('handler')();
+      component
+        .find(Shortcut)
+        .last()
+        .prop('handler')();
 
-      expect(showControls).toHaveBeenCalledTimes(1);
+      expect(component.find(Shortcut)).toHaveLength(2);
+      expect(showControls).toHaveBeenCalledTimes(2);
     });
 
     it('should fire callback when hd button is clicked', () => {
@@ -112,9 +133,75 @@ describe('<CustomVideo />', () => {
 
       component
         .find(Button)
-        .at(1)
+        .at(2)
         .simulate('click');
       expect(onHDToggleClick).toHaveBeenCalledTimes(1);
+    });
+
+    it('should request full screen when fullscreen button is clicked', () => {
+      const { component } = setup();
+
+      component
+        .find(Button)
+        .last()
+        .simulate('click');
+      expect(toggleFullscreen).toHaveBeenCalledTimes(1);
+    });
+
+    it('should update TimeRange when time changes', () => {
+      const { component } = setup();
+
+      component.find('video').simulate('timeUpdate', {
+        target: {
+          currentTime: 10,
+          buffered: [],
+        },
+      });
+      expect(component.find(TimeRange).prop('currentTime')).toEqual(10);
+    });
+
+    it('should update buffered time when it changes', () => {
+      const { component } = setup();
+
+      component.find('video').simulate('timeUpdate', {
+        target: {
+          currentTime: 10,
+          buffered: {
+            length: 1,
+            end: () => 10,
+          },
+        },
+      });
+      expect(component.find(TimeRange).prop('bufferedTime')).toEqual(10);
+    });
+
+    it('should update FieldRange when volume changes', () => {
+      const { component } = setup();
+
+      component.find('video').simulate('volumeChange', {
+        target: {
+          volume: 0.3,
+        },
+      });
+      expect(component.find(FieldRange).prop('value')).toEqual(0.3);
+    });
+  });
+
+  describe('auto play', () => {
+    it('should use autoplay when requested', () => {
+      const { component } = setup({
+        isHDAvailable: true,
+        isAutoPlay: true,
+      });
+      expect(component.find({ autoPlay: true })).toHaveLength(2);
+    });
+
+    it('should not use autoplay when not requested', () => {
+      const { component } = setup({
+        isHDAvailable: true,
+        isAutoPlay: false,
+      });
+      expect(component.find({ autoPlay: true })).toHaveLength(0);
     });
   });
 });

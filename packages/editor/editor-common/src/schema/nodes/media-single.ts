@@ -1,5 +1,5 @@
 import { NodeSpec, Node } from 'prosemirror-model';
-import { Definition as Media } from './media';
+import { MediaDefinition as Media } from './media';
 
 export type Layout =
   | 'wrap-right'
@@ -11,16 +11,16 @@ export type Layout =
 /**
  * @name mediaSingle_node
  */
-export interface Definition {
+export interface MediaSingleDefinition {
   type: 'mediaSingle';
   /**
    * @minItems 1
    * @maxItems 1
    */
   content: Array<Media>;
-  attrs?: Attributes;
+  attrs?: MediaSingleAttributes;
 }
-export interface Attributes {
+export interface MediaSingleAttributes {
   layout: Layout;
 }
 

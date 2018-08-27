@@ -42,7 +42,10 @@ const Wrapper = ({ width = 'narrow', ...props }: DrawerWrapperProps) => {
 // ------------------------------
 
 const Content = props => (
-  <div css={{ flex: 1, paddingTop: 3 * gridSize() }} {...props} />
+  <div
+    css={{ flex: 1, paddingTop: 3 * gridSize(), overflow: 'auto' }}
+    {...props}
+  />
 );
 
 // Sidebar / Icons etc.

@@ -100,6 +100,7 @@ export default class MessageRenderer extends React.PureComponent<any, any> {
                   contextIdentifierProvider={contextIdentifierProvider}
                   maxHeight={305}
                   onChange={onChange}
+                  quickInsert={true}
                 />
               );
             }}

@@ -4,65 +4,31 @@ import codeBlockNodeView from '../nodeviews/code-block';
 import { findParentNodeOfType } from 'prosemirror-utils';
 import { Dispatch } from '../../../event-dispatcher';
 
-export type ToolbarStatus = 'FOCUS' | 'BLUR';
-export type ActiveCodeBlock = { node: Node; pos: number };
-export interface CodeBlockState {
-  isEditorFocused: boolean;
-  activeCodeBlock?: ActiveCodeBlock;
-}
-
-const setActiveCodeBlock = (
-  state: CodeBlockState,
-  activeCodeBlock?: ActiveCodeBlock,
-) => ({
-  ...state,
-  activeCodeBlock: activeCodeBlock,
-});
+export type ActiveCodeBlock = { node: Node; pos: number } | undefined;
 
 export const stateKey = new PluginKey('codeBlockPlugin');
 
 export const plugin = (dispatch: Dispatch) =>
   new Plugin({
     state: {
-      init(config, state: EditorState): CodeBlockState {
-        const activeCodeBlock = findParentNodeOfType(
-          state.schema.nodes.codeBlock,
-        )(state.selection);
-        return setActiveCodeBlock({ isEditorFocused: true }, activeCodeBlock);
+      init(_, state: EditorState): ActiveCodeBlock {
+        return findParentNodeOfType(state.schema.nodes.codeBlock)(
+          state.selection,
+        );
       },
-      apply(
-        tr,
-        pluginState: CodeBlockState,
-        oldState,
-        newState,
-      ): CodeBlockState {
-        const nextToolbarStatus = tr.getMeta(stateKey) as ToolbarStatus;
-        let state: CodeBlockState = pluginState;
-        if (nextToolbarStatus) {
-          state = {
-            ...pluginState,
-            isEditorFocused: nextToolbarStatus === 'FOCUS',
-          };
-        } else if (!oldState.selection.eq(tr.selection)) {
-          let activeCodeBlock = findParentNodeOfType(
-            tr.doc.type.schema.nodes.codeBlock,
-          )(tr.selection);
-          state = setActiveCodeBlock(pluginState, activeCodeBlock);
-        } else if (tr.docChanged && pluginState.activeCodeBlock) {
-          const {
-            activeCodeBlock: { pos, node },
-          } = pluginState;
-          const trPos = tr.mapping.map(pos);
-          const trNode = tr.doc.nodeAt(trPos);
-          // Update activeCodeBlock when node updated or deleted
-          if (trNode && trNode !== node && trNode.type === node.type) {
-            state = setActiveCodeBlock(pluginState, {
-              pos: trPos,
-              node: trNode,
-            });
+      apply(tr, pluginState: ActiveCodeBlock): ActiveCodeBlock {
+        let state: ActiveCodeBlock = pluginState;
+        if (tr.docChanged && !tr.selectionSet && pluginState) {
+          const { pos, deleted } = tr.mapping.mapResult(pluginState.pos);
+          if (deleted) {
+            state = undefined;
           } else {
-            state = { isEditorFocused: pluginState.isEditorFocused };
+            state = { pos, node: tr.doc.nodeAt(pos) as Node };
           }
+        } else if (tr.docChanged || tr.selectionSet) {
+          state = findParentNodeOfType(tr.doc.type.schema.nodes.codeBlock)(
+            tr.selection,
+          );
         }
         if (state !== pluginState) {
           dispatch(stateKey, state);
@@ -74,30 +40,6 @@ export const plugin = (dispatch: Dispatch) =>
     props: {
       nodeViews: {
         codeBlock: codeBlockNodeView,
-      },
-      handleDOMEvents: {
-        click: (view, event) => {
-          const pluginState: CodeBlockState = stateKey.getState(view.state);
-          if (!pluginState.isEditorFocused) {
-            const focusType = view.hasFocus() ? 'FOCUS' : 'BLUR';
-            view.dispatch(view.state.tr.setMeta(stateKey, focusType));
-          }
-          return false;
-        },
-        focus: (view, event) => {
-          const pluginState: CodeBlockState = stateKey.getState(view.state);
-          if (!pluginState.isEditorFocused) {
-            view.dispatch(view.state.tr.setMeta(stateKey, 'FOCUS'));
-          }
-          return false;
-        },
-        blur: (view, event: FocusEvent) => {
-          const pluginState: CodeBlockState = stateKey.getState(view.state);
-          if (pluginState.isEditorFocused) {
-            view.dispatch(view.state.tr.setMeta(stateKey, 'BLUR'));
-          }
-          return false;
-        },
       },
     },
   });

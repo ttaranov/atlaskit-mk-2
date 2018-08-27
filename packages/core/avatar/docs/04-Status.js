@@ -3,6 +3,10 @@ import React from 'react';
 import { md, Example, Props } from '@atlaskit/docs';
 
 export default md`
+  \`Status\` Indicates contextual information by showing a small icon on the avatar. In most
+  cases, you can pass the string of the status you want directly to avatar instead
+  of using this component directly.
+
 ${(
   <Example
     Component={require('../examples/05-basicStatus').default}

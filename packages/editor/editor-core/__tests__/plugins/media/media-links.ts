@@ -22,7 +22,7 @@ import * as utils from '../../../src/utils/input-rules';
 import mediaPlugin from '../../../src/plugins/media';
 import tasksAndDecisionsPlugin from '../../../src/plugins/tasks-and-decisions';
 import { DefaultMediaStateManager } from '../../../src/plugins/media';
-import { AnalyticsHandler, analyticsService } from '../../../src';
+import { AnalyticsHandler, analyticsService } from '../../../src/analytics';
 
 describe('media-links', () => {
   const testCollectionName = `media-plugin-mock-collection-${randomId()}`;

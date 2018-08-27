@@ -3,20 +3,19 @@ import {
   defaultCollectionName,
   StoryBookAuthProvider,
   userAuthProvider,
-  defaultParams,
-  defaultServiceHost,
-  userAuthProviderBaseURL,
+  mediaPickerAuthProvider,
+  defaultMediaPickerAuthProvider,
 } from '@atlaskit/media-test-helpers';
 import { MediaProvider, MediaStateManager } from '@atlaskit/editor-core';
 
 export interface MediaProviderFactoryConfig {
-  serviceHost?: string;
   collectionName?: string;
   stateManager?: MediaStateManager;
   dropzoneContainer?: HTMLElement;
   includeUploadContext?: boolean;
   includeLinkCreateContext?: boolean;
   includeUserAuthProvider?: boolean;
+  useMediaPickerAuthProvider?: boolean;
 }
 
 /**
@@ -27,47 +26,37 @@ export function storyMediaProviderFactory(
   mediaProviderFactoryConfig: MediaProviderFactoryConfig = {},
 ) {
   const {
-    serviceHost,
     collectionName,
     stateManager,
     includeUploadContext,
     includeLinkCreateContext,
     includeUserAuthProvider,
+    useMediaPickerAuthProvider = true,
   } = mediaProviderFactoryConfig;
   const collection = collectionName || defaultCollectionName;
+  const context = ContextFactory.create({
+    authProvider: useMediaPickerAuthProvider
+      ? mediaPickerAuthProvider()
+      : defaultMediaPickerAuthProvider,
+    userAuthProvider:
+      includeUserAuthProvider === false ? undefined : userAuthProvider,
+  });
 
   return Promise.resolve<MediaProvider>({
+    featureFlags: {
+      useNewUploadService: true,
+    },
     stateManager,
     uploadParams: { collection },
-    viewContext: Promise.resolve<Context>(
-      ContextFactory.create({
-        serviceHost: serviceHost || defaultParams.serviceHost,
-        authProvider: StoryBookAuthProvider.create(false),
-      }),
-    ),
+    viewContext: Promise.resolve<Context>(context),
     uploadContext:
       includeUploadContext === false
         ? undefined
-        : Promise.resolve<Context>(
-            ContextFactory.create({
-              serviceHost: userAuthProviderBaseURL,
-              authProvider: StoryBookAuthProvider.create(false, {
-                [`urn:filestore:collection:${collection}`]: ['read', 'insert'],
-                'urn:filestore:chunk:*': ['create', 'read'],
-                'urn:filestore:upload': ['create'],
-                'urn:filestore:upload:*': ['read', 'update'],
-              }),
-              userAuthProvider:
-                includeUserAuthProvider === false
-                  ? undefined
-                  : userAuthProvider,
-            }),
-          ),
+        : Promise.resolve<Context>(context),
     linkCreateContext: !includeLinkCreateContext
       ? undefined
       : Promise.resolve<Context>(
           ContextFactory.create({
-            serviceHost: defaultServiceHost,
             authProvider: StoryBookAuthProvider.create(false, {
               [`urn:filestore:collection:${collection}`]: ['read', 'update'],
               'urn:filestore:file:*': ['read'],

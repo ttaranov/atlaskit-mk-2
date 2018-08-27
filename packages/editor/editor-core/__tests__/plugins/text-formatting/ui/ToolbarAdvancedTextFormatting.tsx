@@ -2,8 +2,8 @@ import { mount } from 'enzyme';
 import * as React from 'react';
 import DropList from '@atlaskit/droplist';
 import Item from '@atlaskit/item';
-import { stateKey } from '../../../../src/plugins/text-formatting/pm-plugins/main';
-import { stateKey as clearFormattingPluginKey } from '../../../../src/plugins/text-formatting/pm-plugins/clear-formatting';
+import { pluginKey } from '../../../../src/plugins/text-formatting/pm-plugins/main';
+import { pluginKey as clearFormattingPluginKey } from '../../../../src/plugins/text-formatting/pm-plugins/clear-formatting';
 import ToolbarAdvancedTextFormatting from '../../../../src/plugins/text-formatting/ui/ToolbarAdvancedTextFormatting';
 import ToolbarButton from '../../../../src/ui/ToolbarButton';
 import {
@@ -12,6 +12,8 @@ import {
   panel,
   strike,
   createEditor,
+  code,
+  em,
 } from '@atlaskit/editor-test-helpers';
 import panelPlugin from '../../../../src/plugins/panel';
 
@@ -20,7 +22,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     createEditor({
       doc,
       editorPlugins: [panelPlugin],
-      pluginKey: stateKey,
+      pluginKey: pluginKey,
       editorProps: {
         analyticsHandler: trackEvent,
       },
@@ -59,16 +61,14 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
   });
 
   it('should have only 6 child elements if both pluginStateTextFormatting and pluginStateClearFormatting are defined', () => {
-    const { editorView, pluginState: textFormattingPluginState } = editor(
-      doc(p('text')),
-    );
-    const clearFormattingPluginState = clearFormattingPluginKey.getState(
+    const { editorView, pluginState } = editor(doc(p('text')));
+    const clearFormattingState = clearFormattingPluginKey.getState(
       editorView.state,
     );
     const toolbarOption = mount(
       <ToolbarAdvancedTextFormatting
-        pluginStateTextFormatting={textFormattingPluginState}
-        pluginStateClearFormatting={clearFormattingPluginState}
+        textFormattingState={pluginState}
+        clearFormattingState={clearFormattingState}
         editorView={editorView}
       />,
     );
@@ -81,7 +81,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     const { editorView, pluginState } = editor(doc(p('text')));
     const toolbarOption = mount(
       <ToolbarAdvancedTextFormatting
-        pluginStateTextFormatting={pluginState}
+        textFormattingState={pluginState}
         editorView={editorView}
       />,
     );
@@ -92,12 +92,12 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
 
   it('should return only 1 items if only pluginStateClearFormatting is defined', () => {
     const { editorView } = editor(doc(p('text')));
-    const clearFormattingPluginState = clearFormattingPluginKey.getState(
+    const clearFormattingState = clearFormattingPluginKey.getState(
       editorView.state,
     );
     const toolbarOption = mount(
       <ToolbarAdvancedTextFormatting
-        pluginStateClearFormatting={clearFormattingPluginState}
+        clearFormattingState={clearFormattingState}
         editorView={editorView}
       />,
     );
@@ -107,26 +107,26 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
   });
 
   it('should render disabled toolbar button when all marks and strikethrough and clearformatting are disabled', () => {
-    const { editorView, pluginState: textFormattingPluginState } = editor(
+    const { editorView, pluginState: textFormattingState } = editor(
       doc(p('text')),
     );
-    const clearFormattingPluginState = clearFormattingPluginKey.getState(
+    const clearFormattingState = clearFormattingPluginKey.getState(
       editorView.state,
     );
-    if (textFormattingPluginState) {
-      textFormattingPluginState.strikeDisabled = true;
-      textFormattingPluginState.codeDisabled = true;
-      textFormattingPluginState.underlineDisabled = true;
-      textFormattingPluginState.subscriptDisabled = true;
-      textFormattingPluginState.superscriptDisabled = true;
+    if (textFormattingState) {
+      textFormattingState.strikeDisabled = true;
+      textFormattingState.codeDisabled = true;
+      textFormattingState.underlineDisabled = true;
+      textFormattingState.subscriptDisabled = true;
+      textFormattingState.superscriptDisabled = true;
     }
-    if (clearFormattingPluginState) {
-      clearFormattingPluginState.formattingIsPresent = false;
+    if (clearFormattingState) {
+      clearFormattingState.formattingIsPresent = false;
     }
     const toolbarOption = mount(
       <ToolbarAdvancedTextFormatting
-        pluginStateTextFormatting={textFormattingPluginState}
-        pluginStateClearFormatting={clearFormattingPluginState}
+        textFormattingState={textFormattingState}
+        clearFormattingState={clearFormattingState}
         editorView={editorView}
       />,
     );
@@ -134,45 +134,43 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     toolbarOption.unmount();
   });
 
-  it('should trigger toggleCode in pluginState when clicked', () => {
-    const { editorView, pluginState } = editor(doc(p('text')));
+  it('should add code mark when clicked', () => {
+    const { editorView, pluginState } = editor(doc(p('{<}text{>}')));
     const toolbarOption = mount(
       <ToolbarAdvancedTextFormatting
-        pluginStateTextFormatting={pluginState}
+        textFormattingState={pluginState}
         editorView={editorView}
       />,
     );
     toolbarOption.find(ToolbarButton).simulate('click');
-    pluginState.toggleCode = jest.fn();
     const strikeButton = toolbarOption
       .find(Item)
       .filterWhere(n => n.text() === 'Code');
     strikeButton.simulate('click');
-    expect(pluginState.toggleCode).toHaveBeenCalledTimes(1);
+    expect(editorView.state.doc).toEqualDocument(doc(p(code('text'))));
     toolbarOption.unmount();
   });
 
-  it('should trigger toggleStrike of pluginStateTextFormatting when strikethrough option is clicked', () => {
-    const { editorView, pluginState: textFormattingPluginState } = editor(
-      doc(p('text')),
+  it('should add strikemark when strikethrough option is clicked', () => {
+    const { editorView, pluginState: textFormattingState } = editor(
+      doc(p('{<}text{>}')),
     );
-    const clearFormattingPluginState = clearFormattingPluginKey.getState(
+    const clearFormattingState = clearFormattingPluginKey.getState(
       editorView.state,
     );
     const toolbarOption = mount(
       <ToolbarAdvancedTextFormatting
-        pluginStateTextFormatting={textFormattingPluginState}
-        pluginStateClearFormatting={clearFormattingPluginState}
+        textFormattingState={textFormattingState}
+        clearFormattingState={clearFormattingState}
         editorView={editorView}
       />,
     );
     toolbarOption.find(ToolbarButton).simulate('click');
-    textFormattingPluginState.toggleStrike = jest.fn();
     const strikeButton = toolbarOption
       .find(Item)
       .filterWhere(n => n.text() === 'Strikethrough');
     strikeButton.simulate('click');
-    expect(textFormattingPluginState.toggleStrike).toHaveBeenCalledTimes(1);
+    expect(editorView.state.doc).toEqualDocument(doc(p(strike('text'))));
     toolbarOption.unmount();
   });
 
@@ -180,17 +178,19 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     const { editorView, pluginState: textFormattingPluginState } = editor(
       doc(p('text')),
     );
-    const clearFormattingPluginState = clearFormattingPluginKey.getState(
+    const clearFormattingState = clearFormattingPluginKey.getState(
       editorView.state,
     );
     const toolbarOption = mount(
       <ToolbarAdvancedTextFormatting
-        pluginStateTextFormatting={textFormattingPluginState}
-        pluginStateClearFormatting={clearFormattingPluginState}
+        textFormattingState={{
+          ...textFormattingPluginState,
+          strikeHidden: true,
+        }}
+        clearFormattingState={clearFormattingState}
         editorView={editorView}
       />,
     );
-    toolbarOption.setState({ strikeHidden: true });
     toolbarOption.find(ToolbarButton).simulate('click');
     const strikeButton = toolbarOption.findWhere(
       wrapper => wrapper.is('span') && wrapper.text() === 'Strikethrough',
@@ -199,28 +199,20 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     toolbarOption.unmount();
   });
 
-  it('should trigger clearFormatting function of pluginStateTextFormatting when clearFormatting option is clicked', () => {
-    const { editorView, pluginState: textFormattingPluginState } = editor(
-      doc(p('text')),
-    );
-    const clearFormattingPluginState = clearFormattingPluginKey.getState(
-      editorView.state,
-    );
-    clearFormattingPluginState.formattingIsPresent = true;
+  it('should clear formatting when clearFormatting option is clicked', () => {
+    const { editorView } = editor(doc(p(em('{<}text{>}'))));
     const toolbarOption = mount(
       <ToolbarAdvancedTextFormatting
-        pluginStateTextFormatting={textFormattingPluginState}
-        pluginStateClearFormatting={clearFormattingPluginState}
+        clearFormattingState={{ formattingIsPresent: true }}
         editorView={editorView}
       />,
     );
     toolbarOption.find(ToolbarButton).simulate('click');
-    clearFormattingPluginState.clearFormatting = jest.fn();
     const clearFormattingButton = toolbarOption
       .find(Item)
       .filterWhere(n => n.text() === 'Clear Formatting');
     clearFormattingButton.simulate('click');
-    expect(clearFormattingPluginState.clearFormatting).toHaveBeenCalledTimes(1);
+    expect(editorView.state.doc).toEqualDocument(doc(p('text')));
     toolbarOption.unmount();
   });
 
@@ -228,13 +220,13 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     const { editorView, pluginState: textFormattingPluginState } = editor(
       doc(p('text')),
     );
-    const clearFormattingPluginState = clearFormattingPluginKey.getState(
+    const clearFormattingState = clearFormattingPluginKey.getState(
       editorView.state,
     );
     const toolbarOption = mount(
       <ToolbarAdvancedTextFormatting
-        pluginStateTextFormatting={textFormattingPluginState}
-        pluginStateClearFormatting={clearFormattingPluginState}
+        textFormattingState={textFormattingPluginState}
+        clearFormattingState={clearFormattingState}
         editorView={editorView}
         isDisabled
       />,
@@ -247,7 +239,7 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     const { editorView, pluginState: textFormattingPluginState } = editor(
       doc(p('text')),
     );
-    const clearFormattingPluginState = clearFormattingPluginKey.getState(
+    const clearFormattingState = clearFormattingPluginKey.getState(
       editorView.state,
     );
     if (textFormattingPluginState) {
@@ -257,13 +249,13 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
       textFormattingPluginState.subscriptDisabled = true;
       textFormattingPluginState.superscriptDisabled = true;
     }
-    if (clearFormattingPluginState) {
-      clearFormattingPluginState.formattingIsPresent = false;
+    if (clearFormattingState) {
+      clearFormattingState.formattingIsPresent = false;
     }
     const toolbarOption = mount(
       <ToolbarAdvancedTextFormatting
-        pluginStateTextFormatting={textFormattingPluginState}
-        pluginStateClearFormatting={clearFormattingPluginState}
+        textFormattingState={textFormattingPluginState}
+        clearFormattingState={clearFormattingState}
         editorView={editorView}
       />,
     );
@@ -275,13 +267,13 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     const { editorView, pluginState: textFormattingPluginState } = editor(
       doc(p(strike('text'))),
     );
-    const clearFormattingPluginState = clearFormattingPluginKey.getState(
+    const clearFormattingState = clearFormattingPluginKey.getState(
       editorView.state,
     );
     const toolbarOption = mount(
       <ToolbarAdvancedTextFormatting
-        pluginStateTextFormatting={textFormattingPluginState}
-        pluginStateClearFormatting={clearFormattingPluginState}
+        textFormattingState={textFormattingPluginState}
+        clearFormattingState={clearFormattingState}
         editorView={editorView}
       />,
     );
@@ -296,16 +288,13 @@ describe('@atlaskit/editor-core/ui/ToolbarAdvancedTextFormatting', () => {
     beforeEach(() => {
       trackEvent = jest.fn();
       const { editorView, pluginState: textFormattingPluginState } = editor(
-        doc(panel()(p('text'))),
+        doc(panel()(p(em('text')))),
         trackEvent,
-      );
-      const clearFormattingPluginState = clearFormattingPluginKey.getState(
-        editorView.state,
       );
       toolbarOption = mount(
         <ToolbarAdvancedTextFormatting
-          pluginStateTextFormatting={textFormattingPluginState}
-          pluginStateClearFormatting={clearFormattingPluginState}
+          textFormattingState={textFormattingPluginState}
+          clearFormattingState={{ formattingIsPresent: true }}
           editorView={editorView}
         />,
       );

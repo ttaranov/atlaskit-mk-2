@@ -9,32 +9,33 @@ import {
   tableRow,
 } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
-import WithPluginState from '../../ui/WithPluginState';
-import TableFloatingToolbar from './ui/TableFloatingToolbar';
-import { createPlugin, PluginConfig, stateKey } from './pm-plugins/main';
+import { PluginConfig } from './types';
+import { createPlugin, pluginKey } from './pm-plugins/main';
 import { keymapPlugin } from './pm-plugins/keymap';
-import hoverSelectionPlugin from './pm-plugins/hover-selection-plugin';
 import tableColumnResizingPlugin from './pm-plugins/table-column-resizing-plugin';
+import { getToolbarConfig } from './toolbar';
+import FloatingContextualMenu from './ui/FloatingContextualMenu';
+import WithPluginState from '../../ui/WithPluginState';
 
 export const CELL_MIN_WIDTH = 128;
 
 const pluginConfig = (tablesConfig?: PluginConfig | boolean) =>
   !tablesConfig || typeof tablesConfig === 'boolean' ? {} : tablesConfig;
 
-const tablesPlugin: EditorPlugin = {
+const tablesPlugin = (options?: PluginConfig | boolean): EditorPlugin => ({
   nodes() {
     return [
-      { rank: 1700, name: 'table', node: table },
-      { rank: 1800, name: 'tableHeader', node: tableHeader },
-      { rank: 1900, name: 'tableRow', node: tableRow },
-      { rank: 2000, name: 'tableCell', node: tableCell },
+      { name: 'table', node: table },
+      { name: 'tableHeader', node: tableHeader },
+      { name: 'tableRow', node: tableRow },
+      { name: 'tableCell', node: tableCell },
     ];
   },
 
   pmPlugins() {
     return [
       {
-        rank: 900,
+        name: 'table',
         plugin: ({
           props: { allowTables },
           eventDispatcher,
@@ -50,14 +51,14 @@ const tablesPlugin: EditorPlugin = {
         },
       },
       {
-        rank: 910,
+        name: 'tablePMColResizing',
         plugin: ({ props: { allowTables } }) =>
           pluginConfig(allowTables).allowColumnResizing
             ? columnResizing({ handleWidth: 6, cellMinWidth: CELL_MIN_WIDTH })
             : undefined,
       },
       {
-        rank: 920,
+        name: 'tableColResizing',
         plugin: ({ props: { allowTables } }) =>
           pluginConfig(allowTables).allowColumnResizing
             ? tableColumnResizingPlugin
@@ -65,28 +66,31 @@ const tablesPlugin: EditorPlugin = {
       },
       // Needs to be lower priority than prosemirror-tables.tableEditing
       // plugin as it is currently swallowing backspace events inside tables
-      { rank: 905, plugin: () => keymapPlugin() },
-      { rank: 930, plugin: () => tableEditing() },
-      { rank: 940, plugin: () => hoverSelectionPlugin },
+      { name: 'tableKeymap', plugin: () => keymapPlugin() },
+      { name: 'tableEditing', plugin: () => tableEditing() },
     ];
   },
 
   contentComponent({ editorView, popupsMountPoint, popupsBoundariesElement }) {
+    const config = pluginConfig(options);
+    if (!config.allowMergeCells && !config.allowBackgroundColor) {
+      return null;
+    }
+
     return (
       <WithPluginState
-        plugins={{ tablesState: stateKey }}
+        plugins={{
+          tablesState: pluginKey,
+        }}
         render={({ tablesState }) => (
-          <TableFloatingToolbar
+          <FloatingContextualMenu
             editorView={editorView}
-            popupsMountPoint={popupsMountPoint}
-            popupsBoundariesElement={popupsBoundariesElement}
+            mountPoint={popupsMountPoint}
+            boundariesElement={popupsBoundariesElement}
+            targetCellRef={tablesState.targetCellRef}
+            targetCellPosition={tablesState.targetCellPosition}
+            isOpen={tablesState.isContextualMenuOpen}
             pluginConfig={tablesState.pluginConfig}
-            tableRef={tablesState.tableRef}
-            tableLayout={
-              tablesState.tableNode
-                ? tablesState.tableNode.attrs.layout
-                : undefined
-            }
           />
         )}
       />
@@ -97,13 +101,15 @@ const tablesPlugin: EditorPlugin = {
     quickInsert: [
       {
         title: 'Table',
+        priority: 600,
         icon: () => <TableIcon label="Table" />,
         action(insert, state) {
           return insert(createTable(state.schema));
         },
       },
     ],
+    floatingToolbar: getToolbarConfig,
   },
-};
+});
 
 export default tablesPlugin;

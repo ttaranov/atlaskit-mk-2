@@ -3,7 +3,7 @@ import type { Logs } from '../components/ChangeLog';
 
 export const divvyChangelog = (changelog): Logs => {
   const splitToken = `__CHANGELOG_SPLIT_${Date.now()}__`;
-  return changelog
+  return changelog.default
     .replace(/[\n\r\s]## /g, `${splitToken}## `)
     .split(splitToken)
     .reduce((all, md) => {

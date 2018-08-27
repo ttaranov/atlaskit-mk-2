@@ -1,17 +1,24 @@
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
 import { Subject } from 'rxjs/Subject';
-import { MediaItemType, MediaItem } from '@atlaskit/media-core';
+import {
+  MediaItemType,
+  MediaItem,
+  ContextConfig,
+  Auth,
+} from '@atlaskit/media-core';
 import { MediaFileListViewer } from '../../src/components/media-file-list-viewer';
 import { Stubs } from '../_stubs';
+import { MediaFileAttributes } from '../../src/mediaviewer';
 
 describe('<MediaFileListViewer />', () => {
   const token = 'some-token';
   const clientId = 'some-client-id';
-  const serviceHost = 'some-service-host';
-  const authProvider = jest.fn(() => Promise.resolve({ token, clientId }));
-  const contextConfig = {
-    serviceHost,
+  const baseUrl = 'some-base-url';
+  const authProvider = jest.fn(() =>
+    Promise.resolve<Auth>({ token, clientId, baseUrl }),
+  );
+  const contextConfig: ContextConfig = {
     authProvider,
   };
   const collectionName = 'some-collection';
@@ -158,14 +165,14 @@ describe('<MediaFileListViewer />', () => {
       Stubs.mediaItemProvider(subject),
     ) as any;
 
-    const setFiles = files => {
+    const setFiles = (files: MediaFileAttributes[]) => {
       expect(files.length).toEqual(3);
       expect(files[0].id).toEqual('stub-some-custom-occurrence-key');
       expect(files[1].id).toEqual('stub-some-custom-occurrence-key-2');
       expect(files[2].id).toEqual('stub-some-custom-occurrence-key-3');
     };
 
-    const open = ({ id }) => {
+    const open = ({ id }: MediaFileAttributes) => {
       expect(id).toEqual('some-id-some-custom-occurrence-key');
       done();
     };
@@ -258,7 +265,7 @@ describe('<MediaFileListViewer />', () => {
       Stubs.mediaItemProvider(subject),
     ) as any;
 
-    const setFiles = files => {
+    const setFiles = (files: MediaFileAttributes[]) => {
       expect(files.length).toEqual(2);
       expect(files[0].id).toEqual('some-id-some-custom-occurrence-key');
       expect(files[0].type).toEqual('error');
@@ -267,7 +274,7 @@ describe('<MediaFileListViewer />', () => {
       expect(files[1].type).toEqual('error');
     };
 
-    const open = ({ id }) => {
+    const open = ({ id }: MediaFileAttributes) => {
       expect(id).toEqual('some-id-some-custom-occurrence-key');
       done();
     };

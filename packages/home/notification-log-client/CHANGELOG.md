@@ -1,5 +1,27 @@
 # @atlaskit/notification-log-service
 
+## 3.0.2
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/notification-indicator@4.0.3
+
+## 3.0.1
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/notification-indicator@4.0.1
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/util-service-support@3.0.1
+
+## 3.0.0
+
+
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/notification-indicator@4.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/util-service-support@3.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/notification-indicator@4.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/util-service-support@3.0.0
+
 ## 2.0.8
 - [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
 - [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)

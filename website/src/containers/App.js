@@ -19,10 +19,9 @@ import PackagesList from '../pages/PackagesList';
 import PackageDocument from '../pages/PackageDocument';
 import ChangelogModal from '../pages/Package/ChangelogModal';
 import ExamplesModal from '../pages/Package/ExamplesModal';
-import GoogleAnalyticsListener from '../components/GoogleAnalyticsListener';
+import AnalyticsListeners from '../components/Analytics/AnalyticsListeners';
 
 import Nav from './Nav';
-import { GOOGLE_ANALYTICS_ID } from '../constants';
 
 // eslint-disable-next-line
 injectGlobal`
@@ -43,14 +42,6 @@ injectGlobal`
 const AppContent = styled.div`
   flex: 1 1 auto;
 `;
-
-const SiteAnlaytics = ({ children }) => {
-  return (
-    <GoogleAnalyticsListener gaId={GOOGLE_ANALYTICS_ID}>
-      {children}
-    </GoogleAnalyticsListener>
-  );
-};
 
 class ScrollToTop extends Component {
   componentDidUpdate(prevProps) {
@@ -85,7 +76,7 @@ class Boundary extends Component {
 export default function App() {
   return (
     <BrowserRouter>
-      <SiteAnlaytics>
+      <AnalyticsListeners>
         <Route>
           <ScrollHandler />
         </Route>
@@ -178,7 +169,7 @@ export default function App() {
             </LayerManager>
           </Route>
         </Switch>
-      </SiteAnlaytics>
+      </AnalyticsListeners>
     </BrowserRouter>
   );
 }

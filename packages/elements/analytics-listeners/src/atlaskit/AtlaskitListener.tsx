@@ -2,11 +2,9 @@ import * as React from 'react';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 
 import { sendEvent } from '../analytics-web-client-wrapper';
-import { ListenerProps, ListenerFunction } from '../types';
+import { ListenerProps, ListenerFunction, FabricChannel } from '../types';
 
 import processEvent from './process-event';
-
-const ATLASKIT_CHANNEL = 'atlaskit';
 
 export default class AtlaskitListener extends React.Component<ListenerProps> {
   listenerHandler: ListenerFunction = event => {
@@ -24,9 +22,9 @@ export default class AtlaskitListener extends React.Component<ListenerProps> {
     return (
       <AnalyticsListener
         onEvent={this.listenerHandler}
-        channel={ATLASKIT_CHANNEL}
+        channel={FabricChannel.atlaskit}
       >
-        {React.Children.only(this.props.children)}
+        {this.props.children}
       </AnalyticsListener>
     );
   }

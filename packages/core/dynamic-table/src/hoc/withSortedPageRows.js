@@ -27,10 +27,7 @@ const getSortedRows = (head, rows, sortKey, sortOrder) => {
 
     // modifier used for sorting type (ascending or descending)
     const modifier = sortOrder === ASC ? 1 : -1;
-
-    // $FlowFixMe
     if (!valA || valA < valB) return -modifier;
-    // $FlowFixMe
     if (!valB || valA > valB) return modifier;
     return 0;
   });

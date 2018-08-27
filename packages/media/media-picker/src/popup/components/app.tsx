@@ -12,6 +12,7 @@ import {
   BinaryUploader as MpBinary,
   Browser as MpBrowser,
   Dropzone as MpDropzone,
+  PopupConfig,
 } from '../..';
 
 /* Components */
@@ -50,8 +51,8 @@ import { MediaPickerPopupWrapper, SidebarWrapper, ViewWrapper } from './styled';
 export interface AppStateProps {
   readonly selectedServiceName: ServiceName;
   readonly isVisible: boolean;
-  readonly useNewUploadService?: boolean;
   readonly context: Context;
+  readonly config?: Partial<PopupConfig>;
 }
 
 export interface AppDispatchProps {
@@ -69,8 +70,13 @@ export interface AppDispatchProps {
   readonly onUploadError: (payload: UploadErrorEventPayload) => void;
 }
 
+export interface AppProxyReactContext {
+  getAtlaskitAnalyticsEventHandlers: () => any[];
+}
+
 export interface AppOwnProps {
   store: Store<State>;
+  proxyReactContext?: AppProxyReactContext;
 }
 
 export type AppProps = AppStateProps & AppOwnProps & AppDispatchProps;
@@ -96,6 +102,7 @@ export class App extends Component<AppProps, AppState> {
       onUploadEnd,
       onUploadError,
       context,
+      config = {},
     } = props;
 
     const { userAuthProvider } = context.config;
@@ -115,14 +122,13 @@ export class App extends Component<AppProps, AppState> {
 
     // We can't just use the given context since the Cards in the recents view needs a different authProvider
     this.mpContext = ContextFactory.create({
-      serviceHost: context.config.serviceHost,
       authProvider: userAuthProvider,
     });
 
     this.mpBrowser = MediaPicker('browser', this.mpContext, {
       ...defaultConfig,
       multiple: true,
-      useNewUploadService: this.props.useNewUploadService,
+      useNewUploadService: config.useNewUploadService || false,
     });
     this.mpBrowser.on('uploads-start', onUploadsStart);
     this.mpBrowser.on('upload-preview-update', onUploadPreviewUpdate);
@@ -134,7 +140,7 @@ export class App extends Component<AppProps, AppState> {
     this.mpDropzone = MediaPicker('dropzone', this.mpContext, {
       ...defaultConfig,
       headless: true,
-      useNewUploadService: this.props.useNewUploadService,
+      useNewUploadService: config.useNewUploadService || false,
     });
     this.mpDropzone.on('drag-enter', () => this.setDropzoneActive(true));
     this.mpDropzone.on('drag-leave', () => this.setDropzoneActive(false));
@@ -147,7 +153,7 @@ export class App extends Component<AppProps, AppState> {
 
     this.mpBinary = MediaPicker('binary', this.mpContext, {
       ...defaultConfig,
-      useNewUploadService: this.props.useNewUploadService,
+      useNewUploadService: config.useNewUploadService || false,
     });
     this.mpBinary.on('uploads-start', onUploadsStart);
     this.mpBinary.on('upload-preview-update', onUploadPreviewUpdate);
@@ -180,7 +186,13 @@ export class App extends Component<AppProps, AppState> {
   }
 
   render() {
-    const { selectedServiceName, isVisible, onClose, store } = this.props;
+    const {
+      selectedServiceName,
+      isVisible,
+      onClose,
+      store,
+      proxyReactContext,
+    } = this.props;
     const { isDropzoneActive } = this.state;
 
     if (!isVisible) {
@@ -190,7 +202,7 @@ export class App extends Component<AppProps, AppState> {
     return (
       <Provider store={store}>
         <ModalDialog onClose={onClose} width="x-large" isChromeless={true}>
-          <PassContext store={store}>
+          <PassContext store={store} proxyReactContext={proxyReactContext}>
             <MediaPickerPopupWrapper>
               <SidebarWrapper>
                 <Sidebar />
@@ -231,14 +243,10 @@ export class App extends Component<AppProps, AppState> {
   };
 }
 
-const mapStateToProps = ({
-  view,
-  context,
-  useNewUploadService,
-}: State): AppStateProps => ({
+const mapStateToProps = ({ view, context, config }: State): AppStateProps => ({
   selectedServiceName: view.service.name,
   isVisible: view.isVisible,
-  useNewUploadService,
+  config,
   context,
 });
 

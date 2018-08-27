@@ -1,10 +1,17 @@
 import { Node as PmNode } from 'prosemirror-model';
 import { EditorState, Plugin, PluginKey, Transaction } from 'prosemirror-state';
-import { TableMap } from 'prosemirror-tables';
-import { findTable, findParentDomRefOfType } from 'prosemirror-utils';
-import { EditorView } from 'prosemirror-view';
-import { TableLayout } from '@atlaskit/editor-common';
-
+import {
+  TableMap,
+  columnResizingPluginKey as resizingPluginKey,
+} from 'prosemirror-tables';
+import {
+  findTable,
+  findParentDomRefOfType,
+  findDomRefAtPos,
+} from 'prosemirror-utils';
+import { EditorView, DecorationSet } from 'prosemirror-view';
+import { browser } from '@atlaskit/editor-common';
+import { PluginConfig, TablePluginState } from '../types';
 import {
   isElementInTableCell,
   setNodeSelection,
@@ -15,30 +22,49 @@ import { Dispatch } from '../../../event-dispatcher';
 import TableNodeView from '../nodeviews/table';
 import { EventDispatcher } from '../../../event-dispatcher';
 import { PortalProviderAPI } from '../../../ui/PortalProvider';
+import {
+  setEditorFocus,
+  setTargetCell,
+  setTableRef,
+  clearHoverSelection,
+} from '../actions';
+import {
+  handleSetFocus,
+  handleSetTableRef,
+  handleSetTargetCellRef,
+  handleSetTargetCellPosition,
+  handleClearSelection,
+  handleHoverColumns,
+  handleHoverRows,
+  handleHoverTable,
+  handleDocChanged,
+  handleSelectionChanged,
+  handleToggleContextualMenu,
+} from '../action-handlers';
 
-export type PermittedLayoutsDescriptor = (TableLayout)[] | 'all';
+export const pluginKey = new PluginKey('tablePlugin');
 
-export interface PluginConfig {
-  allowBackgroundColor?: boolean;
-  allowColumnResizing?: boolean;
-  allowHeaderColumn?: boolean;
-  allowHeaderRow?: boolean;
-  allowMergeCells?: boolean;
-  allowNumberColumn?: boolean;
-  isHeaderRowRequired?: boolean;
-  stickToolbarToBottom?: boolean;
-  permittedLayouts?: PermittedLayoutsDescriptor;
+export const defaultTableSelection = {
+  dangerColumns: [],
+  dangerRows: [],
+  hoverDecoration: DecorationSet.empty,
+  isTableInDanger: false,
+  isTableHovered: false,
+};
+
+const isIE11 = browser.ie_version === 11;
+
+export enum ACTIONS {
+  SET_EDITOR_FOCUS,
+  SET_TABLE_REF,
+  SET_TARGET_CELL_REF,
+  SET_TARGET_CELL_POSITION,
+  CLEAR_HOVER_SELECTION,
+  HOVER_COLUMNS,
+  HOVER_ROWS,
+  HOVER_TABLE,
+  TOGGLE_CONTEXTUAL_MENU,
 }
-
-export interface TablePluginState {
-  pluginConfig: PluginConfig;
-  tableRef?: HTMLElement;
-  // controls need to be re-rendered when table content changes
-  // e.g. when pressing enter inside of a cell, it creates a new p and we need to update row controls
-  tableNode?: PmNode;
-}
-
-export const stateKey = new PluginKey('tablePlugin');
 
 export const createPlugin = (
   dispatch: Dispatch,
@@ -50,6 +76,7 @@ export const createPlugin = (
     state: {
       init: (): TablePluginState => ({
         pluginConfig,
+        ...defaultTableSelection,
       }),
       apply(
         tr: Transaction,
@@ -57,24 +84,77 @@ export const createPlugin = (
         _,
         state: EditorState,
       ) {
-        const nextPluginState = tr.getMeta(stateKey);
-        if (nextPluginState) {
-          dispatch(stateKey, nextPluginState);
-          return nextPluginState;
+        const meta = tr.getMeta(pluginKey) || {};
+        const data = meta.data || {};
+        const {
+          editorHasFocus,
+          tableRef,
+          targetCellRef,
+          targetCellPosition,
+          hoverDecoration,
+          dangerColumns,
+          dangerRows,
+          isTableInDanger,
+          isContextualMenuOpen,
+        } = data;
+
+        switch (meta.action) {
+          case ACTIONS.SET_EDITOR_FOCUS:
+            return handleSetFocus(editorHasFocus)(pluginState, dispatch);
+
+          case ACTIONS.SET_TABLE_REF:
+            return handleSetTableRef(state, tableRef)(pluginState, dispatch);
+
+          case ACTIONS.SET_TARGET_CELL_REF:
+            return handleSetTargetCellRef(targetCellRef)(pluginState, dispatch);
+
+          case ACTIONS.SET_TARGET_CELL_POSITION:
+            return handleSetTargetCellPosition(targetCellPosition)(
+              pluginState,
+              dispatch,
+            );
+
+          case ACTIONS.CLEAR_HOVER_SELECTION:
+            return handleClearSelection(pluginState, dispatch);
+
+          case ACTIONS.HOVER_COLUMNS:
+            return handleHoverColumns(state, hoverDecoration, dangerColumns)(
+              pluginState,
+              dispatch,
+            );
+
+          case ACTIONS.HOVER_ROWS:
+            return handleHoverRows(state, hoverDecoration, dangerRows)(
+              pluginState,
+              dispatch,
+            );
+
+          case ACTIONS.HOVER_TABLE:
+            return handleHoverTable(hoverDecoration, isTableInDanger)(
+              pluginState,
+              dispatch,
+            );
+
+          case ACTIONS.TOGGLE_CONTEXTUAL_MENU:
+            return handleToggleContextualMenu(isContextualMenuOpen)(
+              pluginState,
+              dispatch,
+            );
+
+          default:
+            break;
         }
 
         if (tr.docChanged) {
-          const table = findTable(state.selection);
-          const tableNode = table ? table.node : undefined;
-          if (pluginState.tableNode !== tableNode) {
-            return setState({ tableNode }, pluginState, dispatch);
-          }
+          return handleDocChanged(state)(pluginState, dispatch, tr);
+        } else if (tr.selectionSet) {
+          return handleSelectionChanged(state)(pluginState, dispatch);
         }
 
         return pluginState;
       },
     },
-    key: stateKey,
+    key: pluginKey,
     view: (editorView: EditorView) => {
       const domAtPos = editorView.domAtPos.bind(editorView);
 
@@ -82,10 +162,10 @@ export const createPlugin = (
         update: (view: EditorView) => {
           const { state, dispatch } = view;
           const { selection } = state;
-          const pluginState = stateKey.getState(state);
-
+          const pluginState = getPluginState(state);
+          const { editorHasFocus, targetCellPosition } = pluginState;
           let tableRef;
-          if (view.hasFocus()) {
+          if (editorHasFocus) {
             const parent = findParentDomRefOfType(
               state.schema.nodes.table,
               domAtPos,
@@ -95,22 +175,36 @@ export const createPlugin = (
             }
           }
           if (pluginState.tableRef !== tableRef) {
-            dispatch(
-              state.tr.setMeta(stateKey, {
-                ...pluginState,
-                tableRef,
-              }),
-            );
+            setTableRef(tableRef)(state, dispatch);
+          }
+
+          const dragging = (resizingPluginKey.getState(state) || {}).dragging;
+          const targetCellRef =
+            editorHasFocus && tableRef && !dragging && targetCellPosition
+              ? (findDomRefAtPos(targetCellPosition, domAtPos) as HTMLElement)
+              : undefined;
+
+          if (pluginState.targetCellRef !== targetCellRef) {
+            setTargetCell(targetCellRef)(state, dispatch);
           }
         },
       };
     },
     props: {
+      decorations: state => getPluginState(state).hoverDecoration,
+
+      handleClick: ({ state, dispatch }) => {
+        if (getPluginState(state).hoverDecoration !== DecorationSet.empty) {
+          clearHoverSelection(state, dispatch);
+        }
+        return false;
+      },
+
       nodeViews: {
         table: (node: PmNode, view: EditorView, getPos: () => number) => {
           const {
             pluginConfig: { allowColumnResizing },
-          } = stateKey.getState(view.state);
+          } = getPluginState(view.state);
           return new TableNodeView({
             node,
             view,
@@ -122,6 +216,21 @@ export const createPlugin = (
         },
       },
       handleDOMEvents: {
+        blur(view: EditorView, event) {
+          const { state, dispatch } = view;
+          // fix for issue ED-4665
+          if (!isIE11) {
+            setEditorFocus(false)(state, dispatch);
+          }
+          event.preventDefault();
+          return false;
+        },
+        focus(view: EditorView, event) {
+          const { state, dispatch } = view;
+          setEditorFocus(true)(state, dispatch);
+          event.preventDefault();
+          return false;
+        },
         click(view: EditorView, event) {
           const element = event.target as HTMLElement;
           const table = findTable(view.state.selection)!;
@@ -175,15 +284,6 @@ export const createPlugin = (
     },
   });
 
-export const setState = (
-  prop: Object,
-  pluginState: TablePluginState,
-  dispatch: Dispatch,
-) => {
-  const nextPluginState = {
-    ...pluginState,
-    ...prop,
-  };
-  dispatch(stateKey, nextPluginState);
-  return nextPluginState;
+export const getPluginState = (state: EditorState) => {
+  return pluginKey.getState(state);
 };

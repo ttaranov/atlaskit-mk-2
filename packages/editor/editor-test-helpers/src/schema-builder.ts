@@ -262,6 +262,27 @@ export const fragment = (...content: BuilderContent[]) =>
 export const slice = (...content: BuilderContent[]) =>
   new Slice(Fragment.from(coerce(content, sampleSchema).nodes), 0, 0);
 
+/**
+ * Builds a 'clean' version of the nodes, without Refs or RefTrackers
+ */
+export const clean = (content: BuilderContentFn) => (schema: Schema) => {
+  const node = content(schema);
+  if (Array.isArray(node)) {
+    return node.reduce(
+      (acc, next) => {
+        if (next instanceof Node) {
+          acc.push(Node.fromJSON(schema, next.toJSON()));
+        }
+        return acc;
+      },
+      [] as Node[],
+    );
+  }
+  return node instanceof Node
+    ? Node.fromJSON(schema, node.toJSON())
+    : undefined;
+};
+
 //
 // Nodes
 //
@@ -371,6 +392,8 @@ export const layoutSection = (
 export const layoutColumn = nodeFactory(sampleSchema.nodes.layoutColumn);
 export const inlineCard = (attrs: CardAttributes) =>
   nodeFactory(sampleSchema.nodes.inlineCard, attrs);
+export const blockCard = (attrs: CardAttributes) =>
+  nodeFactory(sampleSchema.nodes.blockCard, attrs);
 
 //
 // Marks

@@ -1,23 +1,19 @@
 // @flow
+/* eslint-disable react/no-multi-comp */
 
-import React from 'react';
-import { JiraWordmark as JiraWordmarkLogo } from '@atlaskit/logo';
+import React, { PureComponent } from 'react';
 import { gridSize as gridSizeFn } from '@atlaskit/theme';
-import { Route } from 'react-router';
-import { Link } from 'react-router-dom';
-import LinkIcon from '@atlaskit/icon/glyph/link';
+import { withRouter } from 'react-router-dom';
+import ChevronDown from '@atlaskit/icon/glyph/chevron-down';
 
-import {
-  GlobalNav,
-  ContainerViewSubscriber,
-  ItemAvatar,
-  RootViewSubscriber,
-  NavRenderer,
-} from '../../src';
+import { GlobalNav, ItemAvatar } from '../../src';
 import { globalNavPrimaryItems, globalNavSecondaryItems } from './mock-data';
 
 const gridSize = gridSizeFn();
 
+// ==============================
+// Simple global navigation
+// ==============================
 export const DefaultGlobalNavigation = () => (
   <GlobalNav
     primaryItems={globalNavPrimaryItems}
@@ -25,64 +21,62 @@ export const DefaultGlobalNavigation = () => (
   />
 );
 
-export const JiraWordmark = () => (
-  <div css={{ padding: `${gridSize * 2}px 0` }}>
-    <JiraWordmarkLogo />
-  </div>
+// ==============================
+// Project Switcher
+// ==============================
+const SwitcherBefore = itemState => (
+  <ItemAvatar itemState={itemState} appearance="square" />
 );
+class Switcher extends PureComponent<*, *> {
+  state = {
+    selected: this.props.defaultSelected,
+  };
+  getTarget = () => {
+    const { components: C, isSelected } = this.props;
+    const { selected } = this.state;
 
-export const LinkItem = ({ components: C, to, ...props }: *) => {
-  return (
-    <Route
-      render={({ location: { pathname } }) => (
-        <C.Item
-          after={() => <LinkIcon size="small" />}
-          component={({ children, className }) => (
-            <Link className={className} to={to}>
-              {children}
-            </Link>
-          )}
-          isSelected={pathname === to}
-          {...props}
-        />
-      )}
-    />
-  );
-};
-
-export const ProjectSwitcher = ({ components: C, ...props }: *) => (
-  <div css={{ paddingBottom: `${gridSize}px` }}>
-    <C.ContainerHeader
-      before={itemState => (
-        <ItemAvatar itemState={itemState} appearance="square" />
-      )}
-      {...props}
-    />
-  </div>
-);
-
-const ViewRenderer = ({ view }: *) => {
-  const { activeView, data } = view.state;
-  return activeView && data ? (
-    <div css={{ padding: `${gridSize * 2}px 0` }}>
-      <NavRenderer
-        customComponents={{ JiraWordmark, LinkItem, ProjectSwitcher }}
-        items={data}
+    return (
+      <C.ContainerHeader
+        before={SwitcherBefore}
+        after={ChevronDown}
+        text={selected.text}
+        subText={selected.subText}
+        isSelected={isSelected}
       />
-    </div>
-  ) : (
-    'LOADING'
-  );
-};
-
-export const ProductRoot = () => (
-  <RootViewSubscriber>
-    {rootView => <ViewRenderer view={rootView} />}
-  </RootViewSubscriber>
-);
-
-export const ProductContainer = () => (
-  <ContainerViewSubscriber>
-    {containerView => <ViewRenderer view={containerView} />}
-  </ContainerViewSubscriber>
-);
+    );
+  };
+  onSwitch = selected => {
+    const { location, history } = this.props;
+    if (selected.pathname === location.pathname) return;
+    history.push(selected.pathname);
+    this.setState({ selected });
+  };
+  render() {
+    const { components: C, options } = this.props;
+    const { selected } = this.state;
+    return (
+      <div css={{ paddingBottom: `${gridSize}px` }}>
+        <C.Switcher
+          onChange={this.onSwitch}
+          create={{
+            onClick: () => {
+              // eslint-disable-next-line
+              const boardName = window.prompt(
+                'What would you like to call your new board?',
+              );
+              if (boardName && boardName.length)
+                console.log(`You created the board "${boardName}"`);
+            },
+            text: 'Create board',
+          }}
+          options={options}
+          isMulti={false}
+          hideSelectedOptions
+          target={this.getTarget()}
+          value={selected}
+        />
+      </div>
+    );
+  }
+}
+export const ProjectSwitcher = withRouter(Switcher);

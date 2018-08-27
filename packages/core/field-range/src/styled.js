@@ -1,7 +1,7 @@
 // @flow
 /* eslint-disable no-mixed-operators */
 import styled, { css } from 'styled-components';
-import { colors } from '@atlaskit/theme';
+import { colors, elevation } from '@atlaskit/theme';
 import { thumb, track } from './theme';
 
 const sliderThumbSize = 16;
@@ -14,14 +14,14 @@ const sliderThumbStyle = css`
   background: ${thumb.default.background};
   border: ${sliderThumbBorderThickness}px solid transparent;
   border-radius: 50%;
-  box-shadow: 0 0 1px ${colors.N60A}, 0 2px 8px -2px ${colors.N50A};
   height: ${sliderThumbSize}px;
   width: ${sliderThumbSize}px;
+  box-sizing: border-box;
+  ${elevation.e200};
 `;
 
 const sliderThumbFocusedStyle = css`
-  border: ${sliderThumbBorderThickness}px solid ${colors.B200};
-  box-sizing: content-box;
+  border-color: ${colors.B200};
 `;
 
 const sliderThumbDisabledStyle = css`
@@ -70,7 +70,6 @@ const chromeRangeInputStyle = css`
   }
 
   &:focus::-webkit-slider-thumb {
-    margin-top: -${sliderThumbSize / 2 - sliderLineThickness / 2 + sliderThumbBorderThickness / 2}px;
     ${sliderThumbFocusedStyle};
   }
 
@@ -136,6 +135,7 @@ const firefoxRangeInputStyle = css`
 
 const IERangeInputStyle = css`
   &::-ms-thumb {
+    margin-top: 0;
     transition: border-color ${transitionDuration} ease-in-out;
     ${sliderThumbStyle};
   }

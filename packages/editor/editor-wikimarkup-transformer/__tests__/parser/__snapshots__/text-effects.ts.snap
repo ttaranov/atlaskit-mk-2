@@ -197,9 +197,11 @@ Object {
           "text": "https://app.datadoghq.com/screen/220506/product-fabric-content-service?tv_mode=true",
           "type": "text",
         },
-        Object {
-          "type": "hardBreak",
-        },
+      ],
+      "type": "paragraph",
+    },
+    Object {
+      "content": Array [
         Object {
           "marks": Array [
             Object {

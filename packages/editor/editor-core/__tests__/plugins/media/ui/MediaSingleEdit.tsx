@@ -27,7 +27,7 @@ describe('@atlaskit/editor-core/ui/MediaSingleEdit', () => {
           allowMediaSingle: true,
         },
         allowExtension: true,
-        UNSAFE_allowLayouts: true,
+        allowLayouts: true,
       },
     });
   it('should have layout options if media single not inside bodied extension', () => {

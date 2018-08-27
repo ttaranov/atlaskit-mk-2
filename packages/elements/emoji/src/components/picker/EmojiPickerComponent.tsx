@@ -39,6 +39,7 @@ import {
 } from '../../api/EmojiResource';
 import { getEmojiVariation } from '../../api/EmojiRepository';
 import { FireAnalyticsEvent } from '@atlaskit/analytics';
+import { CategoryId } from './categories';
 
 const FREQUENTLY_USED_MAX = 16;
 
@@ -62,9 +63,9 @@ export interface State {
   // The emojis that are frequently used.
   frequentlyUsedEmojis?: EmojiDescription[];
   selectedEmoji?: EmojiDescription;
-  activeCategory?: string;
+  activeCategory?: CategoryId;
   disableCategories?: boolean;
-  dynamicCategories: string[];
+  dynamicCategories: CategoryId[];
   selectedTone?: ToneSelection;
   toneEmoji?: OptionalEmojiDescriptionWithVariations;
   query: string;
@@ -186,7 +187,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     }
   };
 
-  onCategoryActivated = (category: string) => {
+  onCategoryActivated = (category: CategoryId) => {
     if (this.state.activeCategory !== category) {
       this.setState({
         activeCategory: category,
@@ -194,7 +195,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     }
   };
 
-  onCategorySelected = (categoryId: string) => {
+  onCategorySelected = (categoryId: CategoryId) => {
     const { emojiProvider } = this.props;
     emojiProvider.findInCategory(categoryId).then(emojisInCategory => {
       const { disableCategories } = this.state;
@@ -365,7 +366,7 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     } as State);
   }
 
-  private onDynamicCategoryChange = (categories: string[]) => {
+  private onDynamicCategoryChange = (categories: CategoryId[]) => {
     this.setState({
       dynamicCategories: categories,
     });
@@ -498,12 +499,14 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     this.fireAnalytics('upload.cancel');
   };
 
-  private getDynamicCategories(): Promise<string[]> {
+  private getDynamicCategories(): Promise<CategoryId[]> {
     if (!this.props.emojiProvider.calculateDynamicCategories) {
       return Promise.resolve([]);
     }
 
-    return this.props.emojiProvider.calculateDynamicCategories();
+    return this.props.emojiProvider.calculateDynamicCategories() as Promise<
+      CategoryId[]
+    >;
   }
 
   private handlePickerRef = (ref: any) => {
@@ -557,7 +560,11 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     const classes = [styles.emojiPicker];
 
     const picker = (
-      <div className={classNames(classes)} ref={this.handlePickerRef}>
+      <div
+        className={classNames(classes)}
+        ref={this.handlePickerRef}
+        data-emoji-picker-container
+      >
         <CategorySelector
           activeCategoryId={activeCategory}
           dynamicCategories={dynamicCategories}

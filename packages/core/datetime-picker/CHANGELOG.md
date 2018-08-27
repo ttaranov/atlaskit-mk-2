@@ -1,5 +1,197 @@
 # @atlaskit/datetime-picker
 
+## 6.3.3
+- [patch] Updating datetime-picker and select styles [981b96c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/981b96c)
+
+## 6.3.2
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/select@5.0.9
+  - @atlaskit/popper@0.2.1
+  - @atlaskit/modal-dialog@6.0.9
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/field-text@7.0.6
+  - @atlaskit/field-range@5.0.4
+  - @atlaskit/field-base@11.0.5
+  - @atlaskit/calendar@7.0.5
+  - @atlaskit/button@9.0.6
+  - @atlaskit/docs@5.0.6
+
+## 6.3.1
+
+
+- [patch] Removed some broken styles from the datetime-picker menu [87d45d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87d45d3)
+
+- [none] Updated dependencies [1d9e75a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1d9e75a)
+  - @atlaskit/popper@0.2.0
+  - @atlaskit/modal-dialog@6.0.8
+  - @atlaskit/field-base@11.0.4
+- [none] Updated dependencies [a3109d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a3109d3)
+  - @atlaskit/field-base@11.0.4
+  - @atlaskit/popper@0.2.0
+  - @atlaskit/modal-dialog@6.0.8
+- [none] Updated dependencies [87d45d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87d45d3)
+  - @atlaskit/popper@0.2.0
+  - @atlaskit/modal-dialog@6.0.8
+  - @atlaskit/field-base@11.0.4
+- [patch] Updated dependencies [a08b0c2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a08b0c2)
+  - @atlaskit/popper@0.2.0
+  - @atlaskit/modal-dialog@6.0.8
+  - @atlaskit/field-base@11.0.4
+
+## 6.3.0
+- [minor] added formatDisplayLabel prop to timePicker and datePicker to enable configuration of the label string rendered in the input [bce02a8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bce02a8)
+- [none] Updated dependencies [bce02a8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bce02a8)
+
+## 6.2.0
+- [minor] Added parseDateValue prop to datetimepicker which accepts a function that takes an iso datestring, a date value, a time value and a zone value and returns an object containing a formatted dateValue, timeValue and zoneValue. The defaultProp uses date-fn's parse and format functions under the hood.  [6249709](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6249709)
+- [none] Updated dependencies [6249709](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6249709)
+
+## 6.1.2
+- [patch] Replace @atlaskit/layer in date time picker with @atlaskit/popper, changed configuration of flipBehaviour modifier to use viewport as the element boundary rather than the window. [4286672](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4286672)
+- [patch] Updated datetime-picker to use @atlaskit/popper internally instead of @atlaskit/layer. Minor fix to @atlaskit/popper, boundariesElement for flipbehaviour is now viewport and not window. [f2159f4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f2159f4)
+- [patch] Updated dependencies [4286672](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4286672)
+  - @atlaskit/popper@0.1.2
+- [none] Updated dependencies [f2159f4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f2159f4)
+
+## 6.1.1
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/select@5.0.8
+  - @atlaskit/modal-dialog@6.0.6
+  - @atlaskit/field-base@11.0.3
+  - @atlaskit/field-text@7.0.4
+  - @atlaskit/analytics-next@3.0.4
+  - @atlaskit/calendar@7.0.4
+  - @atlaskit/button@9.0.5
+  - @atlaskit/theme@5.1.3
+  - @atlaskit/field-range@5.0.3
+  - @atlaskit/layer@5.0.4
+  - @atlaskit/icon@13.2.4
+
+## 6.1.0
+- [minor] Added parseInputValue prop to datePicker and timePicker, which allows for the customisation of logic around parsing input values into the requisite date object. Also added datePickerProps and timePickerProps props to dateTimePicker to expose these two (and later other datePicker and timePicker explicit props) at the dateTimePicker level [9a75b8b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9a75b8b)
+- [none] Updated dependencies [9a75b8b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9a75b8b)
+
+## 6.0.3
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/select@5.0.7
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/calendar@7.0.3
+  - @atlaskit/button@9.0.4
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/field-range@5.0.2
+  - @atlaskit/field-text@7.0.3
+  - @atlaskit/analytics-next@3.0.3
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/layer@5.0.3
+  - @atlaskit/modal-dialog@6.0.5
+  - @atlaskit/field-base@11.0.2
+
+## 6.0.2
+- [patch] Add a SSR test for every package, add react-dom and build-utils in devDependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+- [none] Updated dependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+  - @atlaskit/select@5.0.6
+  - @atlaskit/modal-dialog@6.0.4
+  - @atlaskit/field-base@11.0.1
+  - @atlaskit/field-text@7.0.2
+  - @atlaskit/analytics-next@3.0.2
+  - @atlaskit/calendar@7.0.2
+  - @atlaskit/button@9.0.3
+  - @atlaskit/theme@5.1.1
+  - @atlaskit/field-range@5.0.1
+  - @atlaskit/layer@5.0.2
+  - @atlaskit/icon@13.2.1
+
+## 6.0.1
+- [patch] Move analytics tests and replace elements to core [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+- [none] Updated dependencies [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+  - @atlaskit/select@5.0.2
+  - @atlaskit/modal-dialog@6.0.1
+  - @atlaskit/field-text@7.0.1
+  - @atlaskit/analytics-next@3.0.1
+  - @atlaskit/calendar@7.0.1
+  - @atlaskit/button@9.0.2
+  - @atlaskit/docs@5.0.1
+
+## 6.0.0
+- [major] Provides analytics for common component interations. See the [Instrumented Components](https://atlaskit.atlassian.com/packages/core/analytics-next) section for more details. If you are using enzyme for testing you will have to use [our forked version of the library](https://atlaskit.atlassian.com/docs/guides/testing#we-use-a-forked-version-of-enzyme). [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/select@5.0.0
+  - @atlaskit/modal-dialog@6.0.0
+  - @atlaskit/field-base@11.0.0
+  - @atlaskit/field-text@7.0.0
+  - @atlaskit/analytics-next@3.0.0
+  - @atlaskit/calendar@7.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/field-range@5.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/layer@5.0.0
+  - @atlaskit/icon@13.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/select@5.0.0
+  - @atlaskit/modal-dialog@6.0.0
+  - @atlaskit/field-base@11.0.0
+  - @atlaskit/field-text@7.0.0
+  - @atlaskit/analytics-next@3.0.0
+  - @atlaskit/calendar@7.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/field-range@5.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/layer@5.0.0
+  - @atlaskit/icon@13.0.0
+
+## 5.4.5
+- [patch] Updated dependencies [da661fd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da661fd)
+  - @atlaskit/select@4.5.2
+
+## 5.4.4
+- [patch] atlaskit/select now invokes a makeAnimated function to wrap passed in components in default animated behaviour. As this invocation returns a new set of react components each time, we've also implemented a lightweight component cache using memoize-one and react-fast-compare. Additionally updates made to datetime-picker to not instantiate a new component on render everytime (for performance reasons as well as to satisfy our caching logic), we now also pass relevant state values through the select as props to be ingested by our custom components, instead of directly capturing them within lexical scope.  [9b01264](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b01264)
+- [patch] Updated dependencies [9b01264](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b01264)
+  - @atlaskit/select@4.5.0
+
+## 5.4.3
+- [patch] Fix disabled dates could be selected with keyboard [832b4ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/832b4ab)
+- [patch] Updated dependencies [832b4ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/832b4ab)
+
+## 5.4.2
+- [patch] Fix Calendar width increasing for some months [29ffb24](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/29ffb24)
+- [patch] Updated dependencies [29ffb24](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/29ffb24)
+  - @atlaskit/calendar@6.2.2
+
+## 5.4.1
+- [patch] Calendar chevrons use large versions [a973ac3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a973ac3)
+- [patch] Updated dependencies [a973ac3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a973ac3)
+  - @atlaskit/calendar@6.2.1
+
+## 5.4.0
+- [minor] Visual changes to match ADG3 guidelines [059d111](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/059d111)
+- [minor] Updated dependencies [059d111](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/059d111)
+  - @atlaskit/calendar@6.2.0
+
+## 5.3.3
+- [patch] Updated dependencies [b53da28](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b53da28)
+  - @atlaskit/select@4.3.6
+
+## 5.3.2
+- [patch] Remove or update $FlowFixMe [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
+- [none] Updated dependencies [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
+  - @atlaskit/field-text@6.1.1
+  - @atlaskit/button@8.2.4
+  - @atlaskit/icon@12.6.1
+  - @atlaskit/modal-dialog@5.2.6
+
+## 5.3.1
+- [patch] TimePicker timesIsEditable invalid values are set to empty strings  [b710290](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b710290)
+- [patch] Updated dependencies [b710290](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b710290)
+
+## 5.3.0
+- [minor] Backspace now clears input & fixed tab clearing input [5783a8d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5783a8d)
+- [minor] Updated dependencies [5783a8d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5783a8d)
+
 ## 5.2.1
 - [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
 - [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)

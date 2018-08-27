@@ -13,7 +13,7 @@ import {
 
 type Props = {
   author?: Node,
-  restrictedTo?: string,
+  restrictedTo?: Node,
   isSaving?: boolean,
   savingText?: string,
   time?: Node,
@@ -36,9 +36,9 @@ const HeaderItems = ({
     <Restricted>
       <BulletSpacer>&bull;</BulletSpacer>
       <RestrictedIconWrapper>
-        <LockFilledIcon label="restricted" size="small" />
+        <LockFilledIcon size="small" />
       </RestrictedIconWrapper>{' '}
-      Restricted to {restrictedTo}
+      {restrictedTo}
     </Restricted>
   ) : null;
 

@@ -1,5 +1,178 @@
 # @atlaskit/emoji
 
+## 39.1.1
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/util-data-test@10.0.7
+
+## 39.1.0
+- [minor] FS-2892 add code splitting to emoji components [dd91bcf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd91bcf)
+- [none] Updated dependencies [dd91bcf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd91bcf)
+
+## 39.0.4
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/tooltip@12.0.9
+  - @atlaskit/spinner@9.0.6
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/field-base@11.0.5
+  - @atlaskit/button@9.0.6
+  - @atlaskit/docs@5.0.6
+
+## 39.0.3
+- [patch] FS-2819 use aria-label as selector rather than closest [84a7235](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84a7235)
+- [none] Updated dependencies [84a7235](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84a7235)
+
+## 39.0.2
+- [patch] Update emoji examples to use valid emoji in test data [62ebfd7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/62ebfd7)
+- [none] Updated dependencies [62ebfd7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/62ebfd7)
+  - @atlaskit/util-data-test@10.0.6
+
+## 39.0.1
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/util-data-test@10.0.4
+  - @atlaskit/tooltip@12.0.5
+  - @atlaskit/field-base@11.0.3
+  - @atlaskit/button@9.0.5
+  - @atlaskit/theme@5.1.3
+  - @atlaskit/spinner@9.0.5
+  - @atlaskit/layer@5.0.4
+  - @atlaskit/analytics@4.0.4
+  - @atlaskit/icon@13.2.4
+
+## 39.0.0
+
+
+
+
+- [patch] Synchronous property "serviceHost" as part of many Interfaces in media components (like MediaApiConfig) is removed and replaced with asynchronous "baseUrl" as part of Auth object. [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+- [none] Updated dependencies [597e0bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/597e0bd)
+  - @atlaskit/util-data-test@10.0.3
+- [none] Updated dependencies [61df453](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/61df453)
+  - @atlaskit/util-data-test@10.0.3
+- [none] Updated dependencies [812a39c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/812a39c)
+  - @atlaskit/util-data-test@10.0.3
+- [none] Updated dependencies [c8eb097](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8eb097)
+  - @atlaskit/util-data-test@10.0.3
+- [major] Updated dependencies [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+  - @atlaskit/media-core@23.0.0
+  - @atlaskit/util-data-test@10.0.3
+
+## 38.0.5
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/util-data-test@10.0.2
+  - @atlaskit/tooltip@12.0.4
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/button@9.0.4
+  - @atlaskit/media-core@22.2.1
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/spinner@9.0.4
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/util-service-support@3.0.1
+  - @atlaskit/layer@5.0.3
+  - @atlaskit/analytics@4.0.3
+  - @atlaskit/field-base@11.0.2
+
+## 38.0.4
+- [patch] FS-2111 Code review feedback [cf930e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cf930e3)
+- [patch] Fix emoji picker focus issue for IE11 [ce6eb48](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce6eb48)
+- [none] Updated dependencies [cf930e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cf930e3)
+- [none] Updated dependencies [ce6eb48](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce6eb48)
+
+## 38.0.3
+- [patch] FS-2819 fix typechecking of target element [8edc3a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8edc3a2)
+- [none] Updated dependencies [8edc3a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8edc3a2)
+
+## 38.0.2
+- [patch] FS-2819 use internal version of closest [1cd9438](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1cd9438)
+- [none] Updated dependencies [1cd9438](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1cd9438)
+
+## 38.0.1
+- [patch] Updated dependencies [e6b1985](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6b1985)
+  - @atlaskit/tooltip@12.0.0
+  - @atlaskit/icon@13.1.1
+
+## 38.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/tooltip@11.0.0
+  - @atlaskit/util-data-test@10.0.0
+  - @atlaskit/field-base@11.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/media-core@22.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/spinner@9.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/util-service-support@3.0.0
+  - @atlaskit/layer@5.0.0
+  - @atlaskit/analytics@4.0.0
+  - @atlaskit/icon@13.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/util-data-test@10.0.0
+  - @atlaskit/media-core@22.0.0
+  - @atlaskit/tooltip@11.0.0
+  - @atlaskit/field-base@11.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/spinner@9.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/util-service-support@3.0.0
+  - @atlaskit/layer@5.0.0
+  - @atlaskit/analytics@4.0.0
+  - @atlaskit/icon@13.0.0
+
+## 37.0.2
+- [patch] Move emoji tests [0c6d1c7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c6d1c7)
+- [none] Updated dependencies [0c6d1c7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c6d1c7)
+
+## 37.0.1
+- [patch] Move the tests under src and club the tests under unit, integration and visual regression [f1a9069](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1a9069)
+- [none] Updated dependencies [f1a9069](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1a9069)
+  - @atlaskit/util-service-support@2.0.12
+  - @atlaskit/util-data-test@9.1.18
+
+## 37.0.0
+- [major] FS-2011 change EmojiRepository to use CategoryId [f897c79](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f897c79)
+- [minor] FS-2011 fix scroll to user custom upload section [cacf096](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cacf096)
+- [none] Updated dependencies [f897c79](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f897c79)
+  - @atlaskit/util-data-test@9.1.17
+- [none] Updated dependencies [cacf096](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cacf096)
+  - @atlaskit/util-data-test@9.1.17
+
+## 36.0.2
+
+
+- [none] Updated dependencies [8c711bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c711bd)
+- [patch] Updated dependencies [42ee1ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42ee1ea)
+  - @atlaskit/media-core@21.0.0
+
+## 36.0.1
+- [patch] Updated dependencies [8d5053e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d5053e)
+  - @atlaskit/media-picker@8.1.6
+  - @atlaskit/util-data-test@9.1.15
+
+## 36.0.0
+- [major] remove MediaPicker and use media-core to upload files [0cf2f52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0cf2f52)
+- [patch] Updated dependencies [0cf2f52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0cf2f52)
+  - @atlaskit/util-data-test@9.1.14
+
+## 35.1.4
+- [patch] Updated dependencies [c57e9c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c57e9c1)
+  - @atlaskit/media-picker@8.1.4
+  - @atlaskit/media-core@20.0.0
+
+## 35.1.3
+- [patch] FS-2056 defer input focus in EmojiPickerListSearch [b062ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b062ab4)
+- [none] Updated dependencies [b062ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b062ab4)
+
+## 35.1.2
+- [patch] Updated dependencies [cdba8b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cdba8b3)
+  - @atlaskit/spinner@8.0.0
+  - @atlaskit/media-picker@8.1.3
+  - @atlaskit/field-base@10.1.3
+  - @atlaskit/button@8.2.3
+
 ## 35.1.1
 - [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
 - [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)

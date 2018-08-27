@@ -1,4 +1,5 @@
-image: node:8.4.0
+# Note: This image can be found in build/pipelines/docker-image
+image: atlassianlabs/atlaskit-mk-2:1.0.3
 # This ensures we do a full clone on each build which prevents issues when cross referencing
 # changesets and releases
 clone:
@@ -23,7 +24,14 @@ pipelines:
             # - yarn test
             # Disabled until we find the source of the flakeyness
             # - yarn test:browser:browserstack
-            - yarn release
+            # Bump all packages and their dependents using saved changesets
+            - node ./build/releases/bin/build-releases.js version
+            # We push the bumped packages to master now as it's much better to fail whilst BB is
+            # ahead of npm, than the other way round.
+            - git push
+            # Release all unreleased packages
+            - node ./build/releases/bin/build-releases.js publish --public
+            - git push --tags # push only the tags
             - (cd build/ci-scripts && yarn restart-stopped-build)
           caches:
             - node
@@ -48,7 +56,17 @@ pipelines:
               - node build/ci-scripts/run.tool.if.changed.js tslint -- yarn lint:tslint
               - node build/ci-scripts/run.tool.if.changed.js stylelint -- yarn lint:stylelint
               - node build/ci-scripts/run.tool.if.changed.js flow -- yarn typecheck:flow
+              # The script below counts flowfixme and fails if above the threshold.
+              # The goal is to reduce the threshold over time.
+              - source build/ci-scripts/count-flowfixme.sh 126
               - node build/ci-scripts/run.tool.if.changed.js typescript -- yarn typecheck:typescript
+              # Get the commit that we diverged from master at
+              - export DIVERGED_AT=$(git merge-base master HEAD)
+              # Get a comma separated list of changed files
+              - export CHANGED_FILES=$(git diff --name-only $DIVERGED_AT -- 'packages' 'build' 'website' | grep -E 'js$|ts$|tsx$' | tr '\n' ',')
+              # The below runs prettier over all changed files and fails if anyone of them don't match prettier's rules
+              # We add fileMock.js to the list of files so that we never pass an empty list to prettier
+              - yarn prettier --no-editorconfig "{$CHANGED_FILES,fileMock.js}" --list-different
             caches:
               - node
         - step:
@@ -61,19 +79,15 @@ pipelines:
             caches:
               - node
         - step:
-            name: Browser Unit Testing - Karma
-            script:
-              - source ./build-setup.sh 
-              - bolt install --pure-lockfile
-              - node build/ci-scripts/run.tool.if.changed.js browserstack  -- yarn test:browser:browserstack
-            caches:
-              - node
-        - step:
-            name: Browser Integration Testing - Webdriver
+            name: Browser Testing
             script:
               - source ./build-setup.sh
               - bolt install --pure-lockfile
-              - node build/ci-scripts/run.tool.if.changed.js webdriver -- yarn test:webdriver:browserstack:changed  
+              - echo "Run browser unit tests using Karma + Browserstack"
+              - node build/ci-scripts/run.tool.if.changed.js browserstack  -- yarn test:browser:browserstack
+              - echo "Run browser integration tests using Webdriver + Browserstack"
+              # If we have changed any packages with webdriver tests, we wait until browserstack has free resources, then run our tests
+              - LOCAL_IDENTIFIER=$(date +%s) BS_RETRY=5 BS_BUILD_ALLOWED=3 node build/ci-scripts/run.tool.if.changed.js webdriver -- node build/ci-scripts/wait.for.browserstack.resources.js && yarn test:webdriver:browserstack:changed
             caches:
               - node
         - step:
@@ -81,9 +95,13 @@ pipelines:
             script:
               - source ./build-setup.sh
               - bolt install --pure-lockfile
-              - set -o pipefail && (cd website && yarn deploy-staging:no-minimize) | tee netlify-build.txt
+              - cd website
+              - WEBSITE_ENV=staging yarn build:no-minimize
+              - yarn build:copy
+              - yarn build:zip
+              - yarn deploy:staging | tee netlify-build.txt
               - echo "Uploading netlify build link to s3 so that we can fetch at the end..."
-              - node build/ci-scripts/upload.build.artefact.for.commit.js netlify-build.txt
+              - node ../build/ci-scripts/upload.build.artefact.for.commit.js netlify-build.txt
             caches:
               - node
     - step:
@@ -95,16 +113,19 @@ pipelines:
           - node download.build.artefact.for.commit.js netlify-build.txt
           - node update.build.status.with.netlify.link.js
 
-
   custom: # Pipelines that can be scheduled or triggered manually
-
     # This should only be called by a scheduled build
     build-website-production:
       - step:
           script:
             - source ./build-setup.sh
             - bolt install --pure-lockfile
-            - (cd website && yarn deploy)
+            - cd website
+            - WEBSITE_ENV=production yarn build
+            - yarn build:copy
+            - yarn build:zip
+            - yarn deploy:production
+            - cd ..
             # This is a sanity check to make sure the website renders on all browsers without error
             - yarn test:webdriver:browserstack website
           caches:
@@ -112,7 +133,7 @@ pipelines:
 
     # This will run with the webdriver tests
     build-webdriver:
-    - step:
+      - step:
           script:
             - source ./build-setup.sh
             - bolt install --pure-lockfile
@@ -120,18 +141,18 @@ pipelines:
           caches:
             - node
 
-    # This will run with the visual regression tool
+      # This will run with the visual regression tool
     build-visual-regression:
-    - step:
+      - step:
           script:
             #to overcome puppeteer drawback yarn add again
-            # When running Puppeteer in Docker, 
+            # When running Puppeteer in Docker,
             # getting headless Chrome up and running in Docker can be tricky.
             # The bundled Chromium that Puppeteer installs is missing the necessary shared library dependencies.
             # To fix, you'll need to install the missing dependencies and the latest Chromium package in your Dockerfile:
             - source ./build/visual-regression/puppeteer.sh
             - source ./build-setup.sh
-            - bolt install --pure-lockfile 
+            - bolt install --pure-lockfile
             # Install puppeteer so it's available in the container.
             # Even if it is present in the package.json
             # For further details see: https://github.com/GoogleChrome/puppeteer/blob/master/docs/troubleshooting.md
@@ -140,8 +161,8 @@ pipelines:
           caches:
             - node
 
-    # This will run essentially the branch builds, but without any optimizations and should be manually
-    # run in any potentially risky builds
+      # This will run essentially the branch builds, but without any optimizations and should be manually
+      # run in any potentially risky builds
     run-full-suite:
       - step:
           script:
@@ -164,8 +185,7 @@ pipelines:
             - yarn build
             - yarn build:bundle-analysis
           caches:
-            - node 
-
+            - node
 
     landkid:
       - parallel:
@@ -222,7 +242,13 @@ pipelines:
                 - git merge master --no-edit
                 - bolt install --pure-lockfile
                 - STEPS="4" STEP_IDX="3" PARALLELIZE_TESTS="$(yarn --silent jest --listTests)" yarn jest --runInBand
-
+      - step:
+          name: Wait until no master is running
+          script:
+            - source ./build-setup.sh
+            - cd build/ci-scripts
+            - yarn
+            - node ./wait.until.no.master.build.running.js
     # This build should only be run on the master branch, once per day.
     # It manually clears the cache and runs a very quick install node_modules
     # We split into two steps so that one can clear the cache so that the second one starts with no cache

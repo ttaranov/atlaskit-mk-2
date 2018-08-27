@@ -8,13 +8,12 @@ import {
   akEditorTableToolbar,
   akEditorWideLayoutWidth,
   akEditorTableNumberColumnWidth,
-} from './';
+  akEditorBreakoutPadding,
+} from './consts';
 
 export const tableMarginTop = 32;
 export const tableMarginBottom = 20;
 export const tableMarginSides = 8;
-
-const CONTROLLER_PADDING = 64;
 
 const tableSharedStyle = css`
   .table-container {
@@ -23,7 +22,7 @@ const tableSharedStyle = css`
     box-sizing: border-box;
   }
   .table-container[data-number-column='true'] {
-    padding-left: ${akEditorTableNumberColumnWidth + 1}px;
+    padding-left: ${akEditorTableNumberColumnWidth - 1}px;
   }
   .table-container[data-layout='full-width'],
   .table-container[data-layout='wide'] {
@@ -34,7 +33,7 @@ const tableSharedStyle = css`
     border-collapse: collapse;
     margin: ${tableMarginTop}px ${tableMarginSides}px ${tableMarginBottom}px;
     border: 1px solid ${akEditorTableBorder};
-    table-layout: fixed;
+    width: 100%;
 
     &[data-autosize='true'] {
       table-layout: auto;
@@ -71,8 +70,13 @@ const tableSharedStyle = css`
       }
       th {
         background-color: ${akEditorTableToolbar};
-        font-weight: bold;
         text-align: left;
+        & * {
+          font-weight: normal;
+        }
+        & > p {
+          font-weight: bold;
+        }
       }
     }
   }
@@ -87,12 +91,12 @@ export const calcTableWidth = (
     case 'full-width':
       return containerWidth
         ? `${containerWidth -
-            (addControllerPadding ? CONTROLLER_PADDING : 0)}px`
+            (addControllerPadding ? akEditorBreakoutPadding : 0)}px`
         : '100%';
     case 'wide':
       if (containerWidth) {
         const targetWidth =
-          containerWidth - (addControllerPadding ? CONTROLLER_PADDING : 0);
+          containerWidth - (addControllerPadding ? akEditorBreakoutPadding : 0);
         return targetWidth < akEditorWideLayoutWidth
           ? `${targetWidth}px`
           : `${akEditorWideLayoutWidth}px`;

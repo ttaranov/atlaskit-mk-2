@@ -7,10 +7,14 @@ export { dark, light, settings } from './modes';
 export { default as modeGenerator } from './modeGenerator';
 
 // Helper/util functions
-export { styleReducerNoOp } from './utils';
+export { default as styleReducerNoOp } from './styleReducerNoOp';
 
 // withTheme
-export { default as withTheme } from './withTheme';
+export {
+  default as withTheme,
+  withContentTheme,
+  withGlobalTheme,
+} from './withTheme';
 
 // Types
-export { GlobalTheme } from './types';
+export { GlobalTheme, ProductTheme } from './types';

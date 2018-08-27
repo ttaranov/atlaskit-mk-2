@@ -1,24 +1,37 @@
-import * as React from 'react';
-import { PureComponent } from 'react';
-import { PluginKey } from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
-import { Popup, ContextIdentifierProvider } from '@atlaskit/editor-common';
+import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import {
+  AnalyticsEventPayload,
+  WithAnalyticsEventProps,
+} from '@atlaskit/analytics-next-types';
+import { ContextIdentifierProvider, Popup } from '@atlaskit/editor-common';
+import {
+  ELEMENTS_CHANNEL,
+  isSpecialMention,
+  MentionDescription,
   MentionPicker as AkMentionPicker,
   MentionProvider,
-  MentionDescription,
-  isSpecialMention,
+  ContextMentionResource,
 } from '@atlaskit/mention';
+import { PluginKey } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
+import * as React from 'react';
+import { Component } from 'react';
+import * as uuid from 'uuid';
 import { analyticsService } from '../../../../analytics';
 import {
   getInsertTypeForKey,
   InsertType,
 } from '../../../../analytics/fabric-analytics-helper';
 import { MentionsState } from '../../pm-plugins/main';
+import {
+  buildTypeAheadCancelPayload,
+  buildTypeAheadInsertedPayload,
+} from '../analytics';
+import { promiseAllWithNonFailFast } from '../../../../utils/promise-util';
 
 export interface Props {
   editorView?: EditorView;
-  contextIdentifierProvider: Promise<ContextIdentifierProvider>;
+  contextIdentifierProvider?: Promise<ContextIdentifierProvider>;
   mentionProvider: Promise<MentionProvider>;
   pluginKey: PluginKey;
   presenceProvider?: any;
@@ -31,21 +44,40 @@ export interface Props {
 
 export interface State {
   query?: string;
-  queryActive?: boolean;
+  queryActive: boolean;
   anchorElement?: HTMLElement;
   mentionProvider?: MentionProvider;
   contextIdentifierProvider?: ContextIdentifierProvider;
-  focused?: boolean;
+  focused: boolean;
 }
 
-export default class MentionPicker extends PureComponent<Props, State> {
-  state: State = {};
+export interface StateForRender extends State {
+  mentionProvider: MentionProvider;
+}
+
+const shouldRenderPicker = (state: State): state is StateForRender => {
+  const { focused, anchorElement, queryActive, mentionProvider } = state;
+  return !!(focused && anchorElement && queryActive && mentionProvider);
+};
+
+export class MentionPicker extends Component<
+  Props & WithAnalyticsEventProps,
+  State
+> {
+  state: State = {
+    queryActive: false,
+    focused: false,
+  };
   content?: HTMLElement;
   private pluginState?: MentionsState;
   private picker?: AkMentionPicker;
   private pickerOpenTime: number;
   private pickerElapsedTime: number;
   private insertType?: InsertType;
+  private nextCount: number = 0;
+  private previousCount: number = 0;
+  private mentions?: MentionDescription[];
+  private sessionId: string = uuid();
 
   componentWillMount() {
     this.pickerOpenTime = 0;
@@ -54,8 +86,8 @@ export default class MentionPicker extends PureComponent<Props, State> {
   }
 
   componentDidMount() {
-    this.resolveResourceProvider(this.props.mentionProvider);
-    this.resolveContextIdentifierProvider(this.props.contextIdentifierProvider);
+    this.refreshMentionProvider();
+    this.setPluginState(this.props);
   }
 
   componentWillUnmount() {
@@ -64,27 +96,60 @@ export default class MentionPicker extends PureComponent<Props, State> {
     if (pluginState) {
       pluginState.unsubscribe(this.handlePluginStateChange);
     }
+    this.unsubscribeMentionProvider();
   }
 
-  componentWillUpdate(nextProps: Props) {
+  componentWillUpdate(nextProps: Props, nextState: State) {
     if (!this.pluginState) {
       this.setPluginState(nextProps);
     }
   }
 
   componentWillReceiveProps(nextProps: Props) {
-    if (nextProps.mentionProvider !== this.props.mentionProvider) {
-      this.resolveResourceProvider(nextProps.mentionProvider);
-    }
     if (
-      nextProps.contextIdentifierProvider !==
-      this.props.contextIdentifierProvider
+      this.hasChanged('contextIdentifierProvider', nextProps) ||
+      this.hasChanged('mentionProvider', nextProps)
     ) {
-      this.resolveContextIdentifierProvider(
-        nextProps.contextIdentifierProvider,
-      );
+      this.refreshMentionProvider(nextProps);
     }
   }
+
+  refreshMentionProvider = (
+    { mentionProvider, contextIdentifierProvider }: Props = this.props,
+  ) => {
+    const errors: any[] = [];
+
+    return promiseAllWithNonFailFast(
+      [
+        contextIdentifierProvider || Promise.resolve(undefined),
+        mentionProvider,
+      ],
+      error => errors.push(error),
+    ).then(([contextIdentifierProvider, mentionProvider]) => {
+      this.resolveResourceProvider(mentionProvider, contextIdentifierProvider);
+    });
+  };
+
+  private getSessionId(): string {
+    return this.sessionId;
+  }
+
+  private hasChanged = (name: keyof Props, nextProps: Props): boolean =>
+    this.props[name] !== nextProps[name];
+
+  private unsubscribeMentionProvider() {
+    if (this.state.mentionProvider) {
+      this.state.mentionProvider.unsubscribe('MentionPickerPlugin');
+    }
+  }
+
+  private endSession = () => {
+    this.nextCount = 0;
+    this.previousCount = 0;
+    this.sessionId = uuid();
+    this.insertType = undefined;
+    this.setState({ mentionProvider: undefined });
+  };
 
   private setPluginState(props: Props) {
     const { editorView, pluginKey } = props;
@@ -101,35 +166,45 @@ export default class MentionPicker extends PureComponent<Props, State> {
       pluginState.onSelectPrevious = this.handleSelectPrevious;
       pluginState.onSelectNext = this.handleSelectNext;
       pluginState.onSelectCurrent = this.handleSelectCurrent;
-      pluginState.onDismiss = this.handleOnClose;
+      pluginState.onDismiss = this.handleDismiss;
       pluginState.onSpaceTyped = this.handleSpaceTyped;
     }
   }
 
-  private resolveResourceProvider(resourceProvider): void {
-    if (resourceProvider) {
-      resourceProvider.then((mentionProvider: MentionProvider) => {
-        this.setState({ mentionProvider });
-      });
-    } else {
-      this.setState({ mentionProvider: undefined });
-    }
-  }
+  private handleMentionResults = (mentions: MentionDescription[]) => {
+    this.mentions = mentions;
+  };
 
-  private resolveContextIdentifierProvider(contextIdentifierPromise): void {
-    if (contextIdentifierPromise) {
-      contextIdentifierPromise.then(
-        (contextIdentifierProvider: ContextIdentifierProvider) => {
-          this.setState({ contextIdentifierProvider });
-        },
+  private resolveResourceProvider(
+    mentionProvider?: MentionProvider,
+    contextIdentifierProvider?: ContextIdentifierProvider,
+  ) {
+    if (mentionProvider) {
+      const wrappedMentionProvider = new ContextMentionResource(
+        mentionProvider,
+        { sessionId: this.getSessionId(), ...contextIdentifierProvider },
+      );
+      this.setState({
+        mentionProvider: wrappedMentionProvider,
+        contextIdentifierProvider,
+      });
+      mentionProvider.subscribe(
+        'MentionPickerPlugin',
+        this.handleMentionResults,
       );
     } else {
-      this.setState({ contextIdentifierProvider: undefined });
+      this.setState({ mentionProvider: undefined, contextIdentifierProvider });
     }
   }
 
   private handlePluginStateChange = (state: MentionsState) => {
     const { anchorElement, query, focused, queryActive } = state;
+    // If queryActive is true it means that the user is in a TypeAhead session.
+    // If it was false before, it means that a new session has started,
+    // so we need to create a MentionProvider with the analytics context information.
+    if (queryActive && !this.state.queryActive) {
+      this.refreshMentionProvider();
+    }
     this.setState({ anchorElement, query, queryActive, focused });
   };
 
@@ -151,14 +226,51 @@ export default class MentionPicker extends PureComponent<Props, State> {
     return true;
   };
 
+  private fireEvent = <T extends AnalyticsEventPayload>(payload: T): void => {
+    if (this.props.createAnalyticsEvent) {
+      this.props.createAnalyticsEvent(payload).fire(ELEMENTS_CHANNEL);
+    }
+  };
+
+  private sendCancelledEvent = () =>
+    this.fireEvent(
+      buildTypeAheadCancelPayload(
+        this.pickerElapsedTime,
+        this.previousCount,
+        this.nextCount,
+        this.getSessionId(),
+        this.pluginState && this.pluginState.lastQuery,
+      ),
+    );
+
+  private sendSelectedAnalyticsEvent = (
+    mention: MentionDescription,
+    insertType: InsertType,
+  ) =>
+    this.fireEvent(
+      buildTypeAheadInsertedPayload(
+        this.pickerElapsedTime,
+        this.previousCount,
+        this.nextCount,
+        this.getSessionId(),
+        insertType,
+        mention,
+        this.mentions,
+        this.pluginState && this.pluginState.lastQuery,
+      ),
+    );
+
+  private handleDismiss = () => {
+    this.handleOnClose();
+    this.sendCancelledEvent();
+    this.endSession();
+  };
+
   render() {
-    const {
-      focused,
-      anchorElement,
-      query,
-      queryActive,
-      mentionProvider,
-    } = this.state;
+    if (!shouldRenderPicker(this.state)) {
+      return null;
+    }
+
     const {
       popupsBoundariesElement,
       popupsMountPoint,
@@ -166,9 +278,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
       popupsScrollableElement,
     } = this.props;
 
-    if (!focused || !anchorElement || !queryActive || !mentionProvider) {
-      return null;
-    }
+    const { anchorElement, query, mentionProvider } = this.state;
 
     return (
       <Popup
@@ -208,6 +318,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
     if (this.picker) {
       (this.picker as AkMentionPicker).selectPrevious();
     }
+    this.previousCount++;
 
     return true;
   };
@@ -216,6 +327,7 @@ export default class MentionPicker extends PureComponent<Props, State> {
     if (this.picker) {
       (this.picker as AkMentionPicker).selectNext();
     }
+    this.nextCount++;
 
     return true;
   };
@@ -238,15 +350,10 @@ export default class MentionPicker extends PureComponent<Props, State> {
     const { accessLevel } = mention;
     const lastQuery = this.pluginState && this.pluginState.lastQuery;
 
-    const contextIdentifier = this.state.contextIdentifierProvider
-      ? ({
-          objectId: this.state.contextIdentifierProvider.objectId,
-          containerId: this.state.contextIdentifierProvider.containerId,
-        } as ContextIdentifierProvider)
-      : {};
-
+    const contextIdentifier = this.state.contextIdentifierProvider || {};
+    const mode: InsertType = this.insertType || InsertType.SELECTED;
     analyticsService.trackEvent('atlassian.fabric.mention.picker.insert', {
-      mode: this.insertType || InsertType.SELECTED,
+      mode,
       isSpecial: isSpecialMention(mention) || false,
       accessLevel: accessLevel || '',
       queryLength: lastQuery ? lastQuery.length : 0,
@@ -255,14 +362,16 @@ export default class MentionPicker extends PureComponent<Props, State> {
       ...contextIdentifier,
     });
 
-    this.insertType = undefined;
+    this.sendSelectedAnalyticsEvent(mention, mode);
+    this.endSession();
   };
 
-  private getMentionsCount(): number {
-    return (this.picker && this.picker.mentionsCount()) || 0;
-  }
+  private getMentionsCount = (): number =>
+    (this.mentions && this.mentions.length) || 0;
 
   handleSpaceTyped = (): void => {
     analyticsService.trackEvent('atlassian.fabric.mention.picker.space', {});
   };
 }
+
+export default withAnalyticsEvents()(MentionPicker);

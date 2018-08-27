@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
-import { MediaItemType } from '@atlaskit/media-core';
+import { Auth, ContextConfig, MediaItemType } from '@atlaskit/media-core';
 import { MediaViewer } from '../../src/components/media-viewer';
 import { MediaViewer as MediaViewerNextGen } from '../../src/newgen/media-viewer';
+import { List } from '../../src/newgen/list';
+import { Collection } from '../../src/newgen/collection';
 import { Stubs } from '../_stubs';
 
 declare var global: any;
@@ -10,10 +12,11 @@ declare var global: any;
 describe('<MediaViewer />', () => {
   const token = 'some-token';
   const clientId = 'some-client-id';
-  const serviceHost = 'some-service-host';
-  const authProvider = jest.fn(() => Promise.resolve({ token, clientId }));
-  const contextConfig = {
-    serviceHost,
+  const baseUrl = 'some-service-host';
+  const authProvider = jest.fn(() =>
+    Promise.resolve<Auth>({ token, clientId, baseUrl }),
+  );
+  const contextConfig: ContextConfig = {
     authProvider,
   };
   const occurrenceKey = 'some-occurence-key';
@@ -61,6 +64,42 @@ describe('<MediaViewer />', () => {
         />,
       );
       expect(el.find(MediaViewerNextGen)).toHaveLength(1);
+    });
+
+    it('should pass dark features down the list component', () => {
+      const featureFlags = { nextGen: true };
+      const context = Stubs.context(contextConfig);
+      const el = mount(
+        <MediaViewer
+          context={context as any}
+          selectedItem={selectedItem}
+          dataSource={listDataSource}
+          collectionName={collectionName}
+          MediaViewer={Stubs.mediaViewerConstructor() as any}
+          basePath={basePath}
+          featureFlags={featureFlags}
+        />,
+      );
+      const listComponent = el.find(List);
+      expect(listComponent.prop('featureFlags')).toEqual(featureFlags);
+    });
+
+    it('should pass dark features down the collection component', () => {
+      const featureFlags = { nextGen: true };
+      const context = Stubs.context(contextConfig);
+      const el = mount(
+        <MediaViewer
+          context={context as any}
+          selectedItem={selectedItem}
+          dataSource={collectionDataSource}
+          collectionName={collectionName}
+          MediaViewer={Stubs.mediaViewerConstructor() as any}
+          basePath={basePath}
+          featureFlags={featureFlags}
+        />,
+      );
+      const collectionComponent = el.find(Collection);
+      expect(collectionComponent.prop('featureFlags')).toEqual(featureFlags);
     });
 
     describe('MSW-720: the collectionName is added to selectedItem for MVNG', () => {
@@ -125,7 +164,7 @@ describe('<MediaViewer />', () => {
     it('should show the next gen viewer when dev flag is enabled', () => {
       let originalLocalStorage = global.window.localStorage;
       global.window.localStorage = {
-        getItem: key => key === 'MediaViewerNextGenEnabled',
+        getItem: (key: string) => key === 'MediaViewerNextGenEnabled',
       };
       const context = Stubs.context(contextConfig);
       const el = mount(

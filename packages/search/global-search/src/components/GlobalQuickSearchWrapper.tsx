@@ -1,12 +1,16 @@
 import * as React from 'react';
+import memoizeOne from 'memoize-one';
 import HomeQuickSearchContainer, {
   Props as HomeContainerProps,
 } from './home/HomeQuickSearchContainer';
 import ConfluenceQuickSearchContainer, {
   Props as ConfContainerProps,
 } from './confluence/ConfluenceQuickSearchContainer';
+import JiraQuickSearchContainer, {
+  Props as JiraContainerProps,
+} from './jira/JiraQuickSearchContainer';
 import configureSearchClients, { Config } from '../api/configureSearchClients';
-import memoizeOne from 'memoize-one';
+import MessagesIntlProvider from './MessagesIntlProvider';
 
 const memoizeOneTyped: <T extends Function>(func: T) => T = memoizeOne;
 
@@ -17,6 +21,11 @@ export type LinkComponent = React.ComponentType<{
   target?: string;
 }>;
 
+export type ReferralContextIdentifiers = {
+  searchReferrerId: string;
+  currentContentId: string;
+};
+
 export interface Props {
   /**
    * The cloudId of the site the component is embedded in.
@@ -26,7 +35,7 @@ export interface Props {
   /**
    * The context for quick-search determines the UX and what kind of entities the component is searching.
    */
-  context: 'confluence' | 'home';
+  context: 'confluence' | 'home' | 'jira';
 
   /**
    * For development purposes only: Overrides the URL to the activity service.
@@ -49,11 +58,31 @@ export interface Props {
   confluenceUrl?: string;
 
   /**
+   * The URL for Jira. Must include the context path.
+   */
+  jiraUrl?: string;
+
+  /**
    * React component to be used for rendering links. It receives a className prop that needs to be applied for
    * proper styling, a children prop that needs to be rendered, and optional href/target props that should be
    * respected.
    */
   linkComponent?: LinkComponent;
+
+  /**
+   * An object containing referral IDs, i.e. the searchReferrerId and currentContentId.
+   */
+  referralContextIdentifiers?: ReferralContextIdentifiers;
+
+  /**
+   * Indicates if search terms should be send in analytic events when a search is performed.
+   */
+  isSendSearchTermsEnabled?: boolean;
+
+  /**
+   * Indicates whether or not the aggregator should be used for object searches.
+   */
+  useAggregatorForConfluenceObjects?: boolean;
 }
 
 /**
@@ -92,16 +121,26 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
   }
 
   private getContainerComponent(): React.ComponentClass<
-    HomeContainerProps | ConfContainerProps
+    HomeContainerProps | ConfContainerProps | JiraContainerProps
   > {
     if (this.props.context === 'confluence') {
       return ConfluenceQuickSearchContainer;
     } else if (this.props.context === 'home') {
       return HomeQuickSearchContainer;
+    } else if (this.props.context === 'jira') {
+      return JiraQuickSearchContainer;
     } else {
       // fallback to home if nothing specified
       return HomeQuickSearchContainer;
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return (
+      Object.keys({ ...nextProps, ...this.props })
+        .map(key => this.props[key] !== nextProps[key])
+        .reduce((acc, value) => acc || value, false) || this.state !== nextState
+    );
   }
 
   render() {
@@ -110,10 +149,23 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
       this.props.cloudId,
       this.makeConfig(),
     );
-    const { linkComponent } = this.props;
+    const {
+      linkComponent,
+      isSendSearchTermsEnabled,
+      useAggregatorForConfluenceObjects,
+      referralContextIdentifiers,
+    } = this.props;
 
     return (
-      <ContainerComponent {...searchClients} linkComponent={linkComponent} />
+      <MessagesIntlProvider>
+        <ContainerComponent
+          {...searchClients}
+          linkComponent={linkComponent}
+          isSendSearchTermsEnabled={isSendSearchTermsEnabled}
+          useAggregatorForConfluenceObjects={useAggregatorForConfluenceObjects}
+          referralContextIdentifiers={referralContextIdentifiers}
+        />
+      </MessagesIntlProvider>
     );
   }
 }

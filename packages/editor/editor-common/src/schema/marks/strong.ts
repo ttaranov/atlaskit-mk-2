@@ -4,7 +4,7 @@ import { FONT_STYLE } from '../groups';
 /**
  * @name strong_mark
  */
-export interface Definition {
+export interface StrongDefinition {
   type: 'strong';
 }
 

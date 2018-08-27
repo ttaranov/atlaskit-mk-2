@@ -66,7 +66,9 @@ describe('Media with mock facade', () => {
         setUploadParams: jest.fn(),
         show: jest.fn(),
         deactivate: jest.fn(),
+        activate: jest.fn(),
         destroy: jest.fn(),
+        type: 'popup',
       };
       spies[pickerType] = picker;
       return picker;
@@ -112,6 +114,22 @@ describe('Media with mock facade', () => {
     pluginState.showMediaPicker();
     expect(spies.popup.show).toHaveBeenCalledTimes(1);
     expect(spies.dropzone.deactivate).toHaveBeenCalledTimes(1);
+    pluginState.destroy();
+  });
+
+  it('should activate the drop-zone picker after media picker closed', async () => {
+    spies.popup.show.mockClear();
+    spies.dropzone.activate.mockClear();
+    const { pluginState } = editor(doc(p('{<>}')));
+    await waitForPluginStateChange(pluginState);
+
+    const provider = await mediaProvider;
+    await provider.uploadContext;
+
+    pluginState.showMediaPicker();
+    expect(spies.dropzone.activate).toHaveBeenCalledTimes(0);
+    pluginState.onPopupPickerClose();
+    expect(spies.dropzone.activate).toHaveBeenCalledTimes(1);
     pluginState.destroy();
   });
 });

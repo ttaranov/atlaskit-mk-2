@@ -112,6 +112,7 @@ export default function Example() {
             onChange={onChange}
             onSave={SAVE_ACTION}
             addonToolbarComponents={addons}
+            quickInsert={true}
           />
         )}
       />

@@ -1,5 +1,6 @@
 // @flow
 import styled from 'styled-components';
+import { type ComponentType } from 'react';
 import CustomComponentProxy from '../components/CustomComponentProxy';
 
 // This is necessary because we don't know what DOM element the custom component will render.
@@ -24,7 +25,7 @@ export default (styles: Function) => {
     href,
     onClick,
   }: {
-    component?: Node,
+    component?: ComponentType<*>,
     href?: string,
     onClick?: Function,
   }) {

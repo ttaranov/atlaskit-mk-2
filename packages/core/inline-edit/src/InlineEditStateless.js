@@ -1,10 +1,19 @@
 // @flow
 import React, { Component, cloneElement } from 'react';
-import ReactDOM from 'react-dom';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import Button from '@atlaskit/button';
 import ConfirmIcon from '@atlaskit/icon/glyph/check';
 import CancelIcon from '@atlaskit/icon/glyph/cross';
 import FieldBase, { Label } from '@atlaskit/field-base';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
 
 import type { StatelessProps } from './types';
 import RootWrapper from './styled/RootWrapper';
@@ -19,14 +28,12 @@ const DRAG_THRESHOLD = 5;
 
 type State = {
   fieldBaseWrapperIsHover?: boolean,
-  resetFieldBase?: boolean,
-  shouldResetFieldBase?: boolean,
   wasFocusReceivedSinceLastBlur?: boolean,
-  startX?: number,
-  startY?: number,
+  startX: number,
+  startY: number,
 };
 
-export default class InlineEdit extends Component<StatelessProps, State> {
+class InlineEdit extends Component<StatelessProps, State> {
   confirmButtonRef: HTMLElement | null;
   cancelButtonRef: HTMLElement | null;
 
@@ -39,20 +46,17 @@ export default class InlineEdit extends Component<StatelessProps, State> {
     isLabelHidden: false,
     isWaiting: false,
     shouldConfirmOnEnter: false,
+    editButtonLabel: 'Edit',
+    confirmButtonLabel: 'Confirm',
+    cancelButtonLabel: 'Cancel',
   };
 
   state = {
     fieldBaseWrapperIsHover: false,
-    resetFieldBase: false,
-    shouldResetFieldBase: false,
     wasFocusReceivedSinceLastBlur: false,
+    startX: 0,
+    startY: 0,
   };
-
-  componentWillReceiveProps(nextProps: StatelessProps) {
-    this.setState({
-      shouldResetFieldBase: this.props.isEditing && !nextProps.isEditing,
-    });
-  }
 
   onMouseDown = (client: { clientX: number, clientY: number }) =>
     this.setState({ startX: client.clientX, startY: client.clientY });
@@ -85,16 +89,17 @@ export default class InlineEdit extends Component<StatelessProps, State> {
   };
 
   onConfirmClick = (event: any) => {
-    // $FlowFixMe because Flow cant be sure the node will be a HTMLElement
-    ReactDOM.findDOMNode(this.confirmButtonRef).focus(); //eslint-disable-line react/no-find-dom-node
+    if (this.confirmButtonRef) {
+      this.confirmButtonRef.focus();
+    }
     event.preventDefault();
     this.props.onConfirm();
   };
 
   onCancelClick = (event: any) => {
-    // $FlowFixMe because Flow cant be sure the node will be a HTMLElement
-    ReactDOM.findDOMNode(this.cancelButtonRef).focus(); // eslint-disable-line react/no-find-dom-node
-
+    if (this.cancelButtonRef) {
+      this.cancelButtonRef.focus();
+    }
     event.preventDefault();
     this.props.onCancel();
   };
@@ -110,8 +115,8 @@ export default class InlineEdit extends Component<StatelessProps, State> {
     this.setState({ fieldBaseWrapperIsHover: false });
 
   mouseHasMoved = (event: { clientX: number, clientY: number }) => {
-    const startX: number = this.state.startX || 0;
-    const startY: number = this.state.startY || 0;
+    const startX: number = this.state.startX;
+    const startY: number = this.state.startY;
 
     return (
       Math.abs(startX - event.clientX) >= DRAG_THRESHOLD ||
@@ -150,7 +155,6 @@ export default class InlineEdit extends Component<StatelessProps, State> {
         appearance={isEditing ? 'standard' : 'subtle'}
         isDisabled={this.shouldRenderSpinner()}
         isLoading={this.shouldRenderSpinner()}
-        shouldReset={this.state.shouldResetFieldBase}
         invalidMessage={invalidMessage}
         onDialogClick={this.onDialogClick}
       >
@@ -164,22 +168,23 @@ export default class InlineEdit extends Component<StatelessProps, State> {
       <ButtonsWrapper>
         <ButtonWrapper>
           <Button
-            iconBefore={<ConfirmIcon label="confirm" size="small" />}
+            ariaLabel={this.props.confirmButtonLabel}
+            type="submit"
+            iconBefore={<ConfirmIcon size="small" />}
             onClick={this.onConfirmClick}
             shouldFitContainer
-            ref={ref => {
-              // $FlowFixMe - `React.Component` [1] is incompatible with `HTMLElement`
+            innerRef={ref => {
               this.confirmButtonRef = ref;
             }}
           />
         </ButtonWrapper>
         <ButtonWrapper>
           <Button
-            iconBefore={<CancelIcon label="cancel" size="small" />}
+            ariaLabel={this.props.cancelButtonLabel}
+            iconBefore={<CancelIcon size="small" />}
             onClick={this.onCancelClick}
             shouldFitContainer
-            ref={ref => {
-              // $FlowFixMe - `React.Component` [1] is incompatible with `HTMLElement`
+            innerRef={ref => {
               this.cancelButtonRef = ref;
             }}
           />
@@ -192,6 +197,7 @@ export default class InlineEdit extends Component<StatelessProps, State> {
       <ReadViewContentWrapper>
         {this.props.readView}
         <EditButton
+          aria-label={this.props.editButtonLabel}
           type="button"
           fieldBaseWrapperIsHover={this.state.fieldBaseWrapperIsHover}
         />
@@ -250,3 +256,47 @@ export default class InlineEdit extends Component<StatelessProps, State> {
     );
   }
 }
+
+export { InlineEdit as InlineEditStatelessWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'inlineEdit',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onCancel: createAndFireEventOnAtlaskit({
+      action: 'canceled',
+      actionSubject: 'inlineEdit',
+
+      attributes: {
+        componentName: 'inlineEdit',
+        packageName,
+        packageVersion,
+      },
+    }),
+
+    onConfirm: createAndFireEventOnAtlaskit({
+      action: 'confirmed',
+      actionSubject: 'inlineEdit',
+
+      attributes: {
+        componentName: 'inlineEdit',
+        packageName,
+        packageVersion,
+      },
+    }),
+
+    onEditRequested: createAndFireEventOnAtlaskit({
+      action: 'focused',
+      actionSubject: 'inlineEdit',
+
+      attributes: {
+        componentName: 'inlineEdit',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(InlineEdit),
+);

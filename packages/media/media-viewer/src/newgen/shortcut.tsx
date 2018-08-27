@@ -5,6 +5,11 @@ export interface Props {
   handler: () => void;
 }
 
+export const keyCodes = {
+  space: 32,
+  m: 77,
+};
+
 export class Shortcut extends React.Component<Props, {}> {
   componentDidMount() {
     this.init();

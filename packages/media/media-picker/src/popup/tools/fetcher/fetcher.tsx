@@ -73,7 +73,6 @@ export interface ImageCardModel {
 
 export interface Fetcher {
   fetchCloudAccountFolder(
-    apiUrl: string,
     auth: Auth,
     serviceName: ServiceName,
     accountId: string,
@@ -81,38 +80,21 @@ export interface Fetcher {
     cursor?: string,
   ): Promise<ServiceFolder>;
   pollFile(
-    apiUrl: string,
     auth: Auth,
     fileId: string,
     collection?: string,
   ): Promise<FileDetails>;
-  getPreview(
-    apiUrl: string,
-    auth: Auth,
-    fileId: string,
-    collection?: string,
-  ): Promise<Preview>;
-  getImage(
-    apiUrl: string,
-    auth: Auth,
-    fileId: string,
-    collection?: string,
-  ): Promise<Blob>;
-  getServiceList(apiUrl: string, auth: Auth): Promise<ServiceAccountWithType[]>;
+  getPreview(auth: Auth, fileId: string, collection?: string): Promise<Preview>;
+  getImage(auth: Auth, fileId: string, collection?: string): Promise<Blob>;
+  getServiceList(auth: Auth): Promise<ServiceAccountWithType[]>;
   getRecentFiles(
-    apiUrl: string,
     auth: Auth,
     limit: number,
     sortDirection: string,
     inclusiveStartKey?: string,
   ): Promise<GetRecentFilesData>;
-  unlinkCloudAccount(
-    apiUrl: string,
-    auth: Auth,
-    accountId: string,
-  ): Promise<void>;
+  unlinkCloudAccount(auth: Auth, accountId: string): Promise<void>;
   copyFile(
-    apiUrl: string,
     sourceFile: SourceFile,
     destination: CopyFileDestination,
     collection?: string,
@@ -125,7 +107,6 @@ export class MediaApiFetcher implements Fetcher {
   constructor() {}
 
   fetchCloudAccountFolder(
-    apiUrl: string,
     auth: Auth,
     serviceName: ServiceName,
     accountId: string,
@@ -133,7 +114,7 @@ export class MediaApiFetcher implements Fetcher {
     cursor?: string,
   ): Promise<ServiceFolder> {
     return this.query<{ data: ServiceFolder }>(
-      `${this.pickerUrl(apiUrl)}/service/${serviceName}/${accountId}/folder`,
+      `${pickerUrl(auth.baseUrl)}/service/${serviceName}/${accountId}/folder`,
       'GET',
       {
         folderId,
@@ -154,14 +135,13 @@ export class MediaApiFetcher implements Fetcher {
   }
 
   pollFile(
-    apiUrl: string,
     auth: Auth,
     fileId: string,
     collection?: string,
   ): Promise<FileDetails> {
     return new Promise((resolve, reject) => {
       return this.query<{ data: FileDetails }>(
-        `${this.fileStoreUrl(apiUrl)}/file/${fileId}`,
+        `${fileStoreUrl(auth.baseUrl)}/file/${fileId}`,
         'GET',
         {
           collection,
@@ -176,10 +156,7 @@ export class MediaApiFetcher implements Fetcher {
             resolve(file);
           } else {
             setTimeout(() => {
-              this.pollFile(apiUrl, auth, fileId, collection).then(
-                resolve,
-                reject,
-              );
+              this.pollFile(auth, fileId, collection).then(resolve, reject);
             }, METADATA_POLL_INTERVAL_MS);
           }
         })
@@ -191,12 +168,11 @@ export class MediaApiFetcher implements Fetcher {
   }
 
   getPreview(
-    apiUrl: string,
     auth: Auth,
     fileId: string,
     collection?: string,
   ): Promise<Preview> {
-    return this.pollFile(apiUrl, auth, fileId, collection).then(file => {
+    return this.pollFile(auth, fileId, collection).then(file => {
       if (file.processingStatus === 'failed') {
         return Promise.reject('get_preview_failed');
       }
@@ -207,7 +183,7 @@ export class MediaApiFetcher implements Fetcher {
         : NON_IMAGE_PREVIEW_HEIGHT;
 
       return this.query(
-        `${this.fileStoreUrl(apiUrl)}/file/${fileId}/image`,
+        `${fileStoreUrl(auth.baseUrl)}/file/${fileId}/image`,
         'GET',
         {
           width,
@@ -220,15 +196,10 @@ export class MediaApiFetcher implements Fetcher {
     });
   }
 
-  getImage(
-    apiUrl: string,
-    auth: Auth,
-    fileId: string,
-    collection?: string,
-  ): Promise<Blob> {
+  getImage(auth: Auth, fileId: string, collection?: string): Promise<Blob> {
     const collectionName = collection ? `?collection=${collection}` : '';
-    const url = `${this.fileStoreUrl(
-      apiUrl,
+    const url = `${fileStoreUrl(
+      auth.baseUrl,
     )}/file/${fileId}/image${collectionName}`;
 
     return this.query(
@@ -240,12 +211,9 @@ export class MediaApiFetcher implements Fetcher {
     );
   }
 
-  getServiceList(
-    apiUrl: string,
-    auth: Auth,
-  ): Promise<ServiceAccountWithType[]> {
+  getServiceList(auth: Auth): Promise<ServiceAccountWithType[]> {
     return this.query<{ data: Service[] }>(
-      `${this.pickerUrl(apiUrl)}/accounts`,
+      `${pickerUrl(auth.baseUrl)}/accounts`,
       'GET',
       {},
       mapAuthToAuthHeaders(auth),
@@ -253,14 +221,13 @@ export class MediaApiFetcher implements Fetcher {
   }
 
   getRecentFiles(
-    apiUrl: string,
     auth: Auth,
     limit: number,
     sortDirection: string,
     inclusiveStartKey?: string,
   ): Promise<GetRecentFilesData> {
     return this.query<{ data: GetRecentFilesData }>(
-      `${this.fileStoreUrl(apiUrl)}/collection/recents/items`,
+      `${fileStoreUrl(auth.baseUrl)}/collection/recents/items`,
       'GET',
       {
         sortDirection,
@@ -268,16 +235,18 @@ export class MediaApiFetcher implements Fetcher {
         inclusiveStartKey,
       },
       mapAuthToAuthHeaders(auth),
-    ).then(({ data }) => data);
+    ).then(({ data }) => ({
+      ...data,
+      // This prevents showing "ghost" files in recents
+      contents: data.contents.filter(
+        item => item.details.size && item.details.size > 0,
+      ),
+    }));
   }
 
-  unlinkCloudAccount(
-    apiUrl: string,
-    auth: Auth,
-    accountId: string,
-  ): Promise<void> {
+  unlinkCloudAccount(auth: Auth, accountId: string): Promise<void> {
     return this.query(
-      `${this.pickerUrl(apiUrl)}/account/${accountId}`,
+      `${pickerUrl(auth.baseUrl)}/account/${accountId}`,
       'DELETE',
       {},
       mapAuthToAuthHeaders(auth),
@@ -285,13 +254,12 @@ export class MediaApiFetcher implements Fetcher {
   }
 
   copyFile(
-    apiUrl: string,
     sourceFile: SourceFile,
     { auth, collection }: CopyFileDestination,
   ): Promise<FileDetails> {
     const params = collection ? `?collection=${collection}` : '';
     return this.query<{ data: FileDetails }>(
-      `${this.fileStoreUrl(apiUrl)}/file/copy/withToken${params}`,
+      `${fileStoreUrl(auth.baseUrl)}/file/copy/withToken${params}`,
       'POST',
       JSON.stringify({ sourceFile }),
       mapAuthToAuthHeaders(auth),
@@ -448,16 +416,16 @@ export class MediaApiFetcher implements Fetcher {
       }
     });
   }
-
-  private fileStoreUrl(apiUrl: string): string {
-    const { protocol, host } = url.parse(apiUrl);
-    return `${protocol}//${host}`;
-  }
-
-  private pickerUrl(apiUrl: string): string {
-    return `${this.fileStoreUrl(apiUrl)}/picker`;
-  }
 }
+
+export const fileStoreUrl = (baseUrl: string): string => {
+  const { protocol, host } = url.parse(baseUrl);
+  return `${protocol}//${host}`;
+};
+
+export const pickerUrl = (baseUrl: string): string => {
+  return `${fileStoreUrl(baseUrl)}/picker`;
+};
 
 export function flattenAccounts(services: Service[]): ServiceAccountWithType[] {
   return services.reduce(

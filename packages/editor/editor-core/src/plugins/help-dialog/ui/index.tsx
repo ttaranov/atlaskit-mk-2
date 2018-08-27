@@ -30,6 +30,7 @@ export interface Format {
   type: string;
   keymap?: Function;
   autoFormatting?: Function;
+  imageEnabled?: boolean;
 }
 
 export const formatting: Format[] = [
@@ -183,6 +184,7 @@ export const formatting: Format[] = [
       </span>
     ),
   },
+
   {
     name: 'Mention',
     type: 'mention',
@@ -193,8 +195,13 @@ export const formatting: Format[] = [
     ),
   },
 ];
+const shortcutNamesWithoutKeymap: string[] = [
+  'Emoji',
+  'Mention',
+  'Quick insert',
+];
 
-const otherFormatting = [
+const otherFormatting: Format[] = [
   {
     name: 'Clear formatting',
     type: 'clearFormatting',
@@ -210,16 +217,50 @@ const otherFormatting = [
     type: 'redo',
     keymap: () => keymaps.redo,
   },
+  {
+    name: 'Paste plain text',
+    type: 'paste',
+    keymap: () => keymaps.pastePlainText,
+  },
 ];
 
-export const getSupportedFormatting = (schema: Schema): Format[] => {
+const imageAutoFormat: Format = {
+  name: 'Image',
+  type: 'image',
+  autoFormatting: () => (
+    <span>
+      <CodeLg>![Alt Text](http://www.image.com)</CodeLg>
+    </span>
+  ),
+};
+
+const quickInsertAutoFormat: Format = {
+  name: 'Quick insert',
+  type: 'quickInsert',
+  autoFormatting: () => (
+    <span>
+      <CodeLg>/</CodeLg>
+    </span>
+  ),
+};
+
+export const getSupportedFormatting = (
+  schema: Schema,
+  imageEnabled?: boolean,
+  quickInsertEnabled?: boolean,
+): Format[] => {
   const supportedBySchema = formatting.filter(
     format => schema.nodes[format.type] || schema.marks[format.type],
   );
-  return supportedBySchema.concat(otherFormatting);
+  return [
+    ...supportedBySchema,
+    ...(imageEnabled ? [imageAutoFormat] : []),
+    ...(quickInsertEnabled ? [quickInsertAutoFormat] : []),
+    ...otherFormatting,
+  ];
 };
 
-export const getComponentFromKeymap = (keymap): any => {
+export const getComponentFromKeymap = keymap => {
   const shortcut: string = keymap[browser.mac ? 'mac' : 'windows'];
   const keyParts = shortcut.replace(/\-(?=.)/g, ' + ').split(' ');
   return (
@@ -246,12 +287,14 @@ export interface Props {
   editorView: EditorView;
   isVisible: boolean;
   appearance?: string;
+  imageEnabled?: boolean;
+  quickInsertEnabled?: boolean;
 }
 
 // tslint:disable-next-line:variable-name
 const ModalHeader = ({ onClose, showKeyline }) => (
   <Header showKeyline={showKeyline}>
-    Keyboard shortcuts
+    Editor Help
     <div>
       <ToolbarButton
         onClick={onClose}
@@ -277,11 +320,18 @@ export default class HelpDialog extends React.Component<Props, any> {
   constructor(props) {
     super(props);
     const { schema } = this.props.editorView.state;
-    this.formatting = getSupportedFormatting(schema);
+    this.formatting = getSupportedFormatting(
+      schema,
+      this.props.imageEnabled,
+      this.props.quickInsertEnabled,
+    );
   }
 
   closeDialog = () => {
-    const { state: { tr }, dispatch } = this.props.editorView;
+    const {
+      state: { tr },
+      dispatch,
+    } = this.props.editorView;
     closeHelpCommand(tr, dispatch);
   };
 
@@ -315,7 +365,7 @@ export default class HelpDialog extends React.Component<Props, any> {
           <Line />
           <Content>
             <ColumnLeft>
-              <Title>Text Formatting</Title>
+              <Title>Keyboard Shortcuts</Title>
               <div>
                 {this.formatting
                   .filter(form => {
@@ -330,20 +380,39 @@ export default class HelpDialog extends React.Component<Props, any> {
                       )}
                     </Row>
                   ))}
+
+                {this.formatting
+                  .filter(
+                    form =>
+                      shortcutNamesWithoutKeymap.indexOf(form.name) !== -1,
+                  )
+                  .filter(form => form.autoFormatting)
+                  .map(form => (
+                    <Row key={`autoFormatting-${form.name}`}>
+                      <span>{form.name}</span>
+                      {form.autoFormatting!()}
+                    </Row>
+                  ))}
               </div>
             </ColumnLeft>
+            <Line />
             <ColumnRight>
               <Title>Markdown</Title>
               <div>
-                {this.formatting.map(
-                  form =>
-                    form.autoFormatting && (
-                      <Row key={`autoFormatting-${form.name}`}>
-                        <span>{form.name}</span>
-                        {form.autoFormatting()}
-                      </Row>
-                    ),
-                )}
+                {this.formatting
+                  .filter(
+                    form =>
+                      shortcutNamesWithoutKeymap.indexOf(form.name) === -1,
+                  )
+                  .map(
+                    form =>
+                      form.autoFormatting && (
+                        <Row key={`autoFormatting-${form.name}`}>
+                          <span>{form.name}</span>
+                          {form.autoFormatting()}
+                        </Row>
+                      ),
+                  )}
               </div>
             </ColumnRight>
           </Content>

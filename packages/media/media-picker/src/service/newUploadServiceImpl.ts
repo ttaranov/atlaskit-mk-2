@@ -4,8 +4,13 @@ import {
   UploadableFile,
   MediaType,
   FileItem,
+  getMediaTypeFromMimeType,
 } from '@atlaskit/media-core';
-import { MediaStore } from '@atlaskit/media-store';
+import {
+  MediaStore,
+  MediaStoreCopyFileWithTokenBody,
+  UploadController,
+} from '@atlaskit/media-store';
 import { EventEmitter2 } from 'eventemitter2';
 import { defaultUploadParams } from '../domain/uploadParams';
 import { MediaFile, PublicMediaFile } from '../domain/file';
@@ -43,7 +48,6 @@ export class NewUploadServiceImpl implements UploadService {
 
     if (context.config.userAuthProvider) {
       this.userMediaStore = new MediaStore({
-        serviceHost: context.config.serviceHost,
         authProvider: context.config.userAuthProvider,
       });
     }
@@ -57,11 +61,16 @@ export class NewUploadServiceImpl implements UploadService {
       ...uploadParams,
     };
   }
+  // Used for testing
+  private createUploadController(): UploadController {
+    return new UploadController();
+  }
 
   addFiles(files: File[]): void {
     if (files.length === 0) {
       return;
     }
+
     const creationDate = Date.now();
     const cancellableFileUploads: CancellableFileUpload[] = files.map(file => ({
       mediaFile: {
@@ -90,17 +99,29 @@ export class NewUploadServiceImpl implements UploadService {
         name: file.name,
         mimeType: file.type,
       };
-      const { deferredFileId, cancel } = this.context.uploadFile(
-        uploadableFile,
-        {
-          onProgress: this.onFileProgress.bind(this, cancellableFileUpload),
-        },
-      );
-      cancellableFileUpload.cancel = cancel;
-      deferredFileId.then(
-        this.onFileSuccess.bind(this, cancellableFileUpload),
-        this.onFileError.bind(this, mediaFile, 'upload_fail'),
-      );
+      const controller = this.createUploadController();
+      const subscrition = this.context
+        .uploadFile(uploadableFile, controller)
+        .subscribe({
+          next: state => {
+            if (state.status === 'uploading') {
+              this.onFileProgress(cancellableFileUpload, state.progress);
+            }
+
+            if (state.status === 'processing') {
+              subscrition.unsubscribe();
+              this.onFileSuccess(cancellableFileUpload, state.id);
+            }
+          },
+          error: error => {
+            this.onFileError(mediaFile, 'upload_fail', error);
+          },
+        });
+
+      cancellableFileUpload.cancel = () => {
+        // we can't do "cancellableFileUpload.cancel = controller.abort" because will change the "this" context
+        controller.abort();
+      };
     });
   }
 
@@ -166,13 +187,8 @@ export class NewUploadServiceImpl implements UploadService {
 
   private getMediaTypeFromFile(file: File): MediaType {
     const { type } = file;
-    if (type.match(/^image\//)) {
-      return 'image';
-    } else if (type.match(/^video\//)) {
-      return 'video';
-    }
 
-    return 'unknown';
+    return getMediaTypeFromMimeType(type);
   }
 
   private releaseCancellableFile(mediaFile: MediaFile): void {
@@ -278,7 +294,7 @@ export class NewUploadServiceImpl implements UploadService {
     return this.context.config
       .authProvider({ collectionName: sourceCollection })
       .then(auth => {
-        const body = {
+        const body: MediaStoreCopyFileWithTokenBody = {
           sourceFile: {
             id: sourceFileId,
             collection: sourceCollection,

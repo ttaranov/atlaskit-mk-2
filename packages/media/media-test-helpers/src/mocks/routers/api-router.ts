@@ -1,17 +1,18 @@
 import { Router, Response } from 'kakapo';
-import * as Faker from 'faker';
+import * as uuid from 'uuid';
 
 import { mapDataUriToBlob } from '../../utils';
+import { mockDataUri } from '../database/mockData';
 import {
   DatabaseSchema,
   createCollection,
   createCollectionItem,
 } from '../database';
-import { defaultServiceHost } from '../..';
+import { defaultBaseUrl } from '../..';
 
 export function createApiRouter(): Router<DatabaseSchema> {
   const router = new Router<DatabaseSchema>({
-    host: defaultServiceHost,
+    host: defaultBaseUrl,
     requestDelay: 10,
   });
 
@@ -49,7 +50,7 @@ export function createApiRouter(): Router<DatabaseSchema> {
       .map(record => record.data);
     return {
       data: {
-        nextInclusiveStartKey: Faker.random.number(),
+        nextInclusiveStartKey: Math.floor(Math.random() * 99999),
         contents,
       },
     };
@@ -57,7 +58,7 @@ export function createApiRouter(): Router<DatabaseSchema> {
 
   router.get('/file/:fileId/image', ({ query }) => {
     const { width, height, 'max-age': maxAge = 3600 } = query;
-    const dataUri = Faker.image.dataUri(
+    const dataUri = mockDataUri(
       Number.parseInt(width),
       Number.parseInt(height),
     );
@@ -172,9 +173,9 @@ export function createApiRouter(): Router<DatabaseSchema> {
     const { details, type, blob } = sourceRecord.data;
 
     const record = database.push('collectionItem', {
-      id: Faker.random.uuid(),
+      id: uuid.v4(),
       insertedAt: Date.now(),
-      occurrenceKey: Faker.random.uuid(),
+      occurrenceKey: uuid.v4(),
       type,
       details,
       blob,

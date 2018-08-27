@@ -11,6 +11,11 @@ import {
   akColorR50,
   akColorR300,
   akColorR75,
+  akColorN20A,
+  akBorderRadius,
+  akColorN60A,
+  akColorN30,
+  akColorN90,
 } from '@atlaskit/util-shared-styles';
 import {
   browser,
@@ -34,12 +39,16 @@ export const tableToolbarSize = akEditorTableToolbarSize;
 export const tableBorderRadiusSize = 3;
 export const tableInsertColumnButtonSize = 20;
 export const tableDeleteColumnButtonSize = 16;
+export const contextualMenuTriggerSize = 16;
+export const contextualMenuDropdownWidth = 180;
 
 const isIE11 = browser.ie_version === 11;
 
 export const tableStyles = css`
   .ProseMirror {
     ${tableSharedStyle} .table-container table {
+      table-layout: fixed;
+
       td,
       th {
         position: relative;
@@ -74,13 +83,16 @@ export const tableStyles = css`
     .table-column-controls-wrapper,
     .table-row-controls-wrapper {
       position: absolute;
-      top: ${(isIE11 ? 0 : tableMarginTop) - tableToolbarSize + 1}px;
+      top: ${(isIE11 ? 0 : tableMarginTop) - tableToolbarSize}px;
+    }
+    .table-row-controls-wrapper.scrolling {
+      z-index: 1;
     }
     .table-column-controls-wrapper {
       left: 0;
     }
     .table-row-controls-wrapper {
-      left: -${tableToolbarSize - 2}px;
+      left: -${tableToolbarSize}px;
     }
     .table-wrapper {
       padding-right: ${tableInsertColumnButtonSize / 2}px;
@@ -90,10 +102,6 @@ export const tableStyles = css`
       /* fixes gap cursor height */
       overflow: ${isIE11 ? 'none' : 'auto'};
       position: relative;
-    }
-    .table-decoration {
-      position: relative;
-      left: -1px;
     }
   }
 
@@ -152,6 +160,56 @@ export const tableStyles = css`
 
   .ProseMirror.resize-cursor {
     cursor: col-resize;
+  }
+
+  /* =============== TABLE CONTEXTUAL MENU ================== */
+  .ProseMirror-table-contextual-menu-trigger {
+    > div {
+      background: ${akColorN20A};
+      border-radius: ${akBorderRadius};
+      display: flex;
+      height: ${contextualMenuTriggerSize}px;
+      flex-direction: column;
+    }
+    button {
+      flex-direction: column;
+      padding: 0;
+    }
+  }
+  .ProseMirror-table-contextual-submenu {
+    border-radius: ${akBorderRadius};
+    background: white;
+    box-shadow: 0 4px 8px -2px ${akColorN60A}, 0 0 1px ${akColorN60A};
+    display: block;
+    position: absolute;
+    width: 130px;
+    height: 64px;
+    top: 0;
+    left: ${contextualMenuDropdownWidth}px;
+    padding: 5px;
+
+    > div {
+      padding: 0;
+    }
+  }
+  .ProseMirror-contextual-submenu-icon {
+    border: 1px solid ${akColorN30};
+    border-radius: ${akBorderRadius};
+    display: block;
+    width: 20px;
+    height: 20px;
+    position: relative;
+    left: -10px;
+
+    &::after {
+      content: '›';
+      display: inline-block;
+      width: 1px;
+      position: relative;
+      left: 25px;
+      top: -3px;
+      color: ${akColorN90};
+    }
   }
 `;
 

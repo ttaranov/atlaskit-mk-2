@@ -24,12 +24,21 @@ export type CategoryId =
   | 'SYMBOLS'
   | 'FLAGS'
   | 'ATLASSIAN'
-  | 'USER_CUSTOM'
   | 'CUSTOM';
 
-export type CategoryMap = { [id in CategoryId]: CategoryDescription };
+export type CategoryGroupKey = CategoryId | 'USER_CUSTOM' | 'SEARCH';
 
-export const CategoryDescriptionMap: CategoryMap = {
+export type CategoryDescriptionMap = {
+  [key in CategoryGroupKey]: CategoryDescription
+};
+
+export const CategoryDescriptionMap: CategoryDescriptionMap = {
+  SEARCH: {
+    id: 'SEARCH',
+    name: 'Search results',
+    icon: undefined,
+    order: 0,
+  },
   FREQUENT: {
     id: 'FREQUENT',
     name: 'Frequent',

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/task-decision",
-  "version": "7.1.1",
+  "version": "8.1.6",
   "config": {
     "access": "public"
   },
@@ -16,13 +16,13 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/analytics": "^3.0.4",
-    "@atlaskit/avatar": "^11.1.0",
-    "@atlaskit/button": "^8.1.2",
-    "@atlaskit/icon": "^12.1.2",
-    "@atlaskit/spinner": "^7.0.2",
-    "@atlaskit/theme": "^4.0.4",
-    "@atlaskit/util-service-support": "^2.0.10",
+    "@atlaskit/analytics": "^4.0.4",
+    "@atlaskit/avatar-group": "^2.1.1",
+    "@atlaskit/button": "^9.0.6",
+    "@atlaskit/icon": "^13.2.5",
+    "@atlaskit/spinner": "^9.0.6",
+    "@atlaskit/theme": "^6.0.0",
+    "@atlaskit/util-service-support": "^3.0.1",
     "date-fns": "^1.29.0",
     "lodash.debounce": "^4.0.8",
     "tslib": "^1.8.0",
@@ -35,17 +35,28 @@
   ],
   "license": "Apache-2.0",
   "peerDependencies": {
-    "react": "^16.3.0",
-    "react-dom": "^16.3.0",
-    "styled-components": "^3.2.6"
+    "react": "^16.4.0",
+    "react-dom": "^16.4.2",
+    "rxjs": "^5.1.0",
+    "styled-components": "^3.2.6",
+    "url-search-params": "^0.10.0",
+    "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^4.1.0",
-    "@atlaskit/editor-common": "^11.2.1",
-    "@atlaskit/renderer": "^18.1.2",
+    "@atlaskit/avatar": "^14.0.8",
+    "@atlaskit/docs": "^5.0.6",
+    "@atlaskit/editor-common": "^14.0.11",
+    "@atlaskit/renderer": "^20.0.11",
     "@atlaskit/util-common-test": "^2.4.2",
-    "@atlaskit/util-data-test": "^9.1.13",
-    "fetch-mock": "^5.12.1"
+    "@atlaskit/util-data-test": "^10.0.7",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "enzyme-adapter-react-16": "https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.7.tgz",
+    "fetch-mock": "^5.12.1",
+    "react": "^16.4.0",
+    "rxjs": "^5.1.0",
+    "sinon": "^2.2.0",
+    "url-search-params": "^0.10.0",
+    "whatwg-fetch": "^2.0.3"
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2"
 }

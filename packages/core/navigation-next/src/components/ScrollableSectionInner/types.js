@@ -7,5 +7,5 @@ import type { ProductTheme, StyleReducer } from '../../theme/types';
 export type ScrollableSectionInnerProps = {
   children: Node,
   theme: ProductTheme,
-  styles: StyleReducer<void>,
+  styles: StyleReducer,
 };

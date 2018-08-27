@@ -127,13 +127,13 @@ const placeholderTextPlugin = (
   options: PlaceholderTextOptions,
 ): EditorPlugin => ({
   nodes() {
-    return [{ name: 'placeholder', node: placeholder, rank: 1600 }];
+    return [{ name: 'placeholder', node: placeholder }];
   },
 
   pmPlugins() {
     return [
       {
-        rank: 400,
+        name: 'placeholderText',
         plugin: ({ schema, props, dispatch }) =>
           createPlugin(dispatch, options),
       },

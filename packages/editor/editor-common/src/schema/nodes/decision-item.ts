@@ -5,7 +5,7 @@ import { uuid } from '../../utils';
 /**
  * @name decisionItem_node
  */
-export interface Definition {
+export interface DecisionItemDefinition {
   type: 'decisionItem';
   content: Array<Inline>;
   attrs: {
@@ -16,6 +16,7 @@ export interface Definition {
 
 export const decisionItem: NodeSpec = {
   content: 'inline*',
+  defining: true,
   marks: '_',
   attrs: {
     localId: { default: '' },

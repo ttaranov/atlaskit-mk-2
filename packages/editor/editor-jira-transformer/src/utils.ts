@@ -205,7 +205,7 @@ export function convert(
             const fileName = dataNode.getAttribute('data-file-name');
             const displayType = dataNode.getAttribute('data-display-type');
 
-            return schema.nodes.media.create({
+            return schema.nodes.media.createChecked({
               id,
               type,
               collection,
@@ -238,7 +238,8 @@ export function convert(
         const level = Number(tag.charAt(1));
         const supportedMarks = [schema.marks.link].filter(mark => !!mark);
         return schema.nodes.heading.createChecked(
-          { level },
+          // @see ED-4708
+          { level: level === 6 ? 5 : level },
           schema.nodes.heading.validContent(content)
             ? content
             : ensureInline(schema, content, supportedMarks as any),
@@ -331,7 +332,7 @@ export function convert(
       let blockquoteContent =
         content && (content as any).content.length
           ? content
-          : schema.nodes.paragraph.create();
+          : schema.nodes.paragraph.createChecked();
       return schema.nodes.blockquote!.createChecked({}, blockquoteContent);
     }
 

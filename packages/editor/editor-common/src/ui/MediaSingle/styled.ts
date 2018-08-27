@@ -7,6 +7,7 @@ import { MediaSingleLayout } from '../../schema';
 import {
   akEditorFullPageMaxWidth,
   akEditorWideLayoutWidth,
+  akEditorBreakoutPadding,
 } from '../../styles';
 
 function float(layout: MediaSingleLayout): string {
@@ -25,9 +26,6 @@ function calcWidth(
   width: number,
   containerWidth: number,
 ): string {
-  // we need 4px space for the gap cursor
-  const gapCursorSpace = 4;
-
   switch (layout) {
     case 'wrap-right':
     case 'wrap-left':
@@ -37,7 +35,7 @@ function calcWidth(
     case 'wide':
       return `${Math.min(akEditorWideLayoutWidth, width)}px`;
     case 'full-width':
-      return `${Math.min(width, containerWidth) - gapCursorSpace}px`;
+      return `${Math.min(width, containerWidth) - akEditorBreakoutPadding}px`;
     default:
       return width > akEditorFullPageMaxWidth ? '100%' : `${width}px`;
   }
@@ -73,7 +71,7 @@ const MediaSingleDimensionHelper = ({
   width: ${calcWidth(layout, width, containerWidth)};
   max-width: ${containerWidth < akEditorFullPageMaxWidth
     ? '100%'
-    : containerWidth};
+    : `${containerWidth}px`};
   float: ${float(layout)};
   margin: ${calcMargin(layout)};
   &::after {

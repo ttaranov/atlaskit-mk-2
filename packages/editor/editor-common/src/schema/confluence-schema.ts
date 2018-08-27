@@ -39,6 +39,8 @@ const nodes = [
   'layoutSection',
   'layoutColumn',
   'inlineCard',
+  'unsupportedBlock',
+  'unsupportedInline',
 ];
 
 const marks = [

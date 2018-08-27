@@ -1,13 +1,13 @@
 import * as React from 'react';
 import { KeyboardEvent, PureComponent } from 'react';
 import styled from 'styled-components';
-import { EditorView } from 'prosemirror-view';
 import { ActivityProvider, ActivityItem } from '@atlaskit/activity';
 
 import { analyticsService } from '../../../../analytics';
 import PanelTextInput from '../../../../ui/PanelTextInput';
-import { HyperlinkState } from '../../pm-plugins/main';
 import RecentList from './RecentList';
+import { FloatingToolbar } from '../styles';
+import { getNearestNonTextNode } from '../../../../ui/FloatingToolbar';
 
 const Container = styled.span`
   width: 420px;
@@ -17,40 +17,42 @@ const Container = styled.span`
 `;
 
 export interface Props {
-  pluginState: HyperlinkState;
-  editorView: EditorView;
+  onBlur?: (text: string) => void;
+  onSubmit?: (href: string, text?: string) => void;
+
+  target: Node;
+  popupsMountPoint?: HTMLElement;
+  popupsBoundariesElement?: HTMLElement;
+
+  autoFocus?: boolean;
+  placeholder: string;
   activityProvider: Promise<ActivityProvider>;
 }
 
 export interface State {
   activityProvider?: ActivityProvider;
-  items?: Array<ActivityItem>;
+  items: Array<ActivityItem>;
   selectedIndex: number;
-  input?: string;
-  linkAdded: boolean;
+  text: string;
   isLoading: boolean;
 }
 
 export default class RecentSearch extends PureComponent<Props, State> {
-  state: State = {
+  state = {
     selectedIndex: -1,
-    linkAdded: false,
     isLoading: false,
-  };
+    text: '',
+    items: [],
+  } as State;
 
   async resolveProvider() {
     const activityProvider = await this.props.activityProvider;
-
-    this.setState({
-      activityProvider: activityProvider,
-    });
-
+    this.setState({ activityProvider });
     return activityProvider;
   }
 
   async componentDidMount() {
     const activityProvider = await this.resolveProvider();
-
     this.loadRecentItems(activityProvider);
   }
 
@@ -64,9 +66,7 @@ export default class RecentSearch extends PureComponent<Props, State> {
   }
 
   private updateInput = async (input: string) => {
-    this.setState({
-      input: input,
-    });
+    this.setState({ text: input });
 
     if (this.state.activityProvider) {
       if (input.length === 0) {
@@ -84,35 +84,53 @@ export default class RecentSearch extends PureComponent<Props, State> {
   };
 
   render() {
+    const {
+      target,
+      popupsMountPoint,
+      popupsBoundariesElement,
+      placeholder,
+    } = this.props;
     const { items, isLoading, selectedIndex } = this.state;
 
     return (
-      <Container>
-        <PanelTextInput
-          placeholder="Paste link or search recently viewed"
-          autoFocus={true}
-          onSubmit={this.handleSubmit}
-          onChange={this.updateInput}
-          onBlur={this.handleBlur}
-          onCancel={this.handleBlur}
-          onKeyDown={this.handleKeyDown}
-        />
-        <RecentList
-          items={items}
-          isLoading={isLoading}
-          selectedIndex={selectedIndex}
-          onSelect={this.handleSelected}
-          onMouseMove={this.handleMouseMove}
-        />
-      </Container>
+      <FloatingToolbar
+        alignX="left"
+        target={getNearestNonTextNode(target)!}
+        popupsMountPoint={popupsMountPoint}
+        popupsBoundariesElement={popupsBoundariesElement}
+        fitHeight={350}
+        offset={[0, 12]}
+        className="recent-search"
+      >
+        <Container>
+          <PanelTextInput
+            placeholder={placeholder}
+            autoFocus={true}
+            onSubmit={this.handleSubmit}
+            onChange={this.updateInput}
+            onBlur={this.handleBlur}
+            onCancel={this.handleBlur}
+            onKeyDown={this.handleKeyDown}
+          />
+          <RecentList
+            items={items}
+            isLoading={isLoading}
+            selectedIndex={selectedIndex}
+            onSelect={this.handleSelected}
+            onMouseMove={this.handleMouseMove}
+          />
+        </Container>
+      </FloatingToolbar>
     );
   }
 
   private handleSelected = (href: string, text: string) => {
-    this.addLink(href, text);
-    this.trackAutoCompleteAnalyticsEvent(
-      'atlassian.editor.format.hyperlink.autocomplete.click',
-    );
+    if (this.props.onSubmit) {
+      this.props.onSubmit(href, text);
+      this.trackAutoCompleteAnalyticsEvent(
+        'atlassian.editor.format.hyperlink.autocomplete.click',
+      );
+    }
   };
 
   private handleMouseMove = (objectId: string) => {
@@ -127,26 +145,30 @@ export default class RecentSearch extends PureComponent<Props, State> {
   };
 
   private handleSubmit = () => {
-    const { items, input, selectedIndex } = this.state;
+    const { items, text, selectedIndex } = this.state;
 
     // add the link selected in the dropdown if there is one, otherwise submit the value of the input field
     if (items && items.length > 0 && selectedIndex > -1) {
       const item = items[selectedIndex];
-      this.addLink(item.url, item.name);
-      this.trackAutoCompleteAnalyticsEvent(
-        'atlassian.editor.format.hyperlink.autocomplete.keyboard',
-      );
-    } else if (input && input.length > 0) {
-      this.addLink(input);
-      this.trackAutoCompleteAnalyticsEvent(
-        'atlassian.editor.format.hyperlink.autocomplete.notselected',
-      );
+      if (this.props.onSubmit) {
+        this.props.onSubmit(item.url, item.name);
+        this.trackAutoCompleteAnalyticsEvent(
+          'atlassian.editor.format.hyperlink.autocomplete.keyboard',
+        );
+      }
+    } else if (text && text.length > 0) {
+      if (this.props.onSubmit) {
+        this.props.onSubmit(text);
+        this.trackAutoCompleteAnalyticsEvent(
+          'atlassian.editor.format.hyperlink.autocomplete.notselected',
+        );
+      }
     }
   };
 
   private handleKeyDown = (e: KeyboardEvent<any>) => {
     const { items, selectedIndex } = this.state;
-    if (!items) {
+    if (!items || !items.length) {
       return;
     }
 
@@ -166,41 +188,13 @@ export default class RecentSearch extends PureComponent<Props, State> {
   };
 
   private handleBlur = () => {
-    const { editorView, pluginState } = this.props;
-    const { linkAdded } = this.state;
-
-    if (
-      linkAdded ||
-      (editorView.state.selection.empty && !pluginState.active)
-    ) {
-      pluginState.hideLinkPanel(editorView.state, editorView.dispatch);
-      editorView.focus();
-    } else {
-      pluginState.removeLink(editorView);
+    if (this.props.onBlur) {
+      this.props.onBlur(this.state.text);
     }
-  };
-
-  private addLink = (href: string, text?: string) => {
-    const { editorView, pluginState } = this.props;
-
-    if (editorView.state.selection.empty) {
-      pluginState.addLink({ href, text }, editorView);
-    } else {
-      pluginState.updateLink({ href }, editorView);
-    }
-
-    this.setState(
-      {
-        linkAdded: true,
-      },
-      () => {
-        editorView.focus();
-      },
-    );
   };
 
   private trackAutoCompleteAnalyticsEvent(name: string) {
-    const numChars = this.state.input ? this.state.input.length : 0;
+    const numChars = this.state.text ? this.state.text.length : 0;
 
     analyticsService.trackEvent(name, { numChars: numChars });
   }

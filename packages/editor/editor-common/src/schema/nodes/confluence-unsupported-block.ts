@@ -5,7 +5,7 @@ const name = 'confluenceUnsupportedBlock';
 export const confluenceUnsupportedBlock = {
   group: 'block',
   attrs: { cxhtml: { default: null } },
-  toDOM(node): [string, any, string] {
+  toDOM(node) {
     // NOTE: This node cannot be "contenteditable: false". If it's the only node in a document, PM throws an error because there's nowhere to put the cursor.
     const attrs = {
       'data-node-type': name,

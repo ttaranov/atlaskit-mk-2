@@ -64,7 +64,6 @@ export default class GlobalItem extends PureComponent<Props> {
 
     const hoverOverrideStyles = href ? '&:hover { color: inherit; }' : '';
 
-    // $FlowFixMe
     if (CustomComponent) {
       const StyledComponent = styled(CustomComponent)`
         ${globalItemStyles};

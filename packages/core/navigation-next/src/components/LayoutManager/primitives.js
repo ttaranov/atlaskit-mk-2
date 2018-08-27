@@ -1,6 +1,7 @@
 // @flow
 
 import React, { type ElementRef } from 'react';
+import { layers } from '@atlaskit/theme';
 
 export const LayoutContainer = (props: {}) => (
   <div
@@ -13,7 +14,7 @@ export const LayoutContainer = (props: {}) => (
   />
 );
 
-export const NavContainer = (props: {}) => (
+export const NavigationContainer = (props: {}) => (
   <div
     css={{
       bottom: 0,
@@ -22,6 +23,7 @@ export const NavContainer = (props: {}) => (
       left: 0,
       position: 'fixed',
       top: 0,
+      zIndex: layers.navigation(),
     }}
     {...props}
   />
@@ -42,9 +44,9 @@ export function applyDisabledProperties(disableInteraction: boolean) {
     : null;
 }
 
-// Product Nav
+// Content navigation
 
-export const ProductNavWrapper = ({
+export const ContentNavigationWrapper = ({
   innerRef,
   disableInteraction,
   ...props
@@ -59,7 +61,7 @@ export const ProductNavWrapper = ({
     {...props}
   />
 );
-export const ContainerNavMask = (props: any) => (
+export const ContainerNavigationMask = (props: any) => (
   <div
     css={{
       display: 'flex',
@@ -83,8 +85,9 @@ export const PageWrapper = ({
   <div
     ref={innerRef}
     css={{
-      flex: 1,
+      flex: '1 1 auto',
       marginLeft: offset,
+      width: 0, // fix flexbox growth to available width instead of 100%
       ...applyDisabledProperties(disableInteraction),
     }}
     {...props}

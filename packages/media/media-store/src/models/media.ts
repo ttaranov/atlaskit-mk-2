@@ -6,13 +6,14 @@ export type MediaFileArtifacts = {
 };
 
 export type MediaFileProcessingStatus = 'pending' | 'succeeded' | 'failed';
+export type MediaType = 'doc' | 'audio' | 'video' | 'image' | 'unknown';
 
 export type MediaFile = {
   readonly id: string;
-  readonly mediaType: string;
+  readonly mediaType: MediaType;
   readonly mimeType: string;
   readonly name: string;
-  readonly processingStatus: MediaFileProcessingStatus;
+  readonly processingStatus?: MediaFileProcessingStatus;
   readonly size: number;
   readonly artifacts: MediaFileArtifacts;
 };

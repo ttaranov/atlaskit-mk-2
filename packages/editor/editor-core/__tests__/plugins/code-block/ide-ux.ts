@@ -9,10 +9,14 @@ import {
 import { AllSelection } from 'prosemirror-state';
 
 describe('IDE UX plugin', () => {
+  let trackEvent = jest.fn();
   const editor = doc =>
     createEditor({
       doc,
-      editorProps: { allowCodeBlocks: { enableKeybindingsForIDE: true } },
+      editorProps: {
+        allowCodeBlocks: { enableKeybindingsForIDE: true },
+        analyticsHandler: trackEvent,
+      },
     });
   describe('Select-All', () => {
     describe('when cursor inside code-block', () => {
@@ -68,6 +72,15 @@ describe('IDE UX plugin', () => {
   describe('Indentation', () => {
     describe('Mod-] pressed', () => {
       describe('when cursor on line', () => {
+        it('should not expand selection to include added indent', () => {
+          const { editorView } = editor(
+            doc(code_block()('top\n{<>}start\nbottom')),
+          );
+          sendKeyToPm(editorView, 'Mod-]');
+          expect(editorView.state.selection.empty).toBe(true);
+          expect(editorView.state.selection.from).toBe(7);
+        });
+
         describe('and line starts with spaces', () => {
           it('should indent by 2 spaces', () => {
             const { editorView } = editor(
@@ -113,6 +126,16 @@ describe('IDE UX plugin', () => {
       });
 
       describe('when selection is across multiple lines', () => {
+        it('should expand selection to include added indent', () => {
+          const { editorView } = editor(
+            doc(code_block()('\n{<}top\nstart\nbott{>}om\n')),
+          );
+          sendKeyToPm(editorView, 'Mod-]');
+          expect(editorView.state.selection.empty).toBe(false);
+          expect(editorView.state.selection.from).toBe(2);
+          expect(editorView.state.selection.to).toBe(22);
+        });
+
         describe('and line starts with spaces', () => {
           it('should indent only selected lines by two spaces', () => {
             const { editorView } = editor(
@@ -178,6 +201,14 @@ describe('IDE UX plugin', () => {
             doc(code_block()('to'), p('end')),
           );
         });
+      });
+
+      it('should track when Mod-] is pressed', () => {
+        const { editorView } = editor(doc(code_block()('top\n{<>}start\nend')));
+        sendKeyToPm(editorView, 'Mod-]');
+        expect(trackEvent).toHaveBeenCalledWith(
+          'atlassian.editor.codeblock.indent',
+        );
       });
     });
 
@@ -303,6 +334,16 @@ describe('IDE UX plugin', () => {
           );
         });
       });
+
+      it('should track when Mod-[ is pressed', () => {
+        const { editorView } = editor(
+          doc(code_block()('top\n{<>}   start\nend')),
+        );
+        sendKeyToPm(editorView, 'Mod-[');
+        expect(trackEvent).toHaveBeenCalledWith(
+          'atlassian.editor.codeblock.outdent',
+        );
+      });
     });
 
     describe('Tab pressed', () => {
@@ -417,6 +458,14 @@ describe('IDE UX plugin', () => {
             doc(code_block()('to'), p('end')),
           );
         });
+      });
+
+      it('should track when Tab is pressed', () => {
+        const { editorView } = editor(doc(code_block()('top\n{<>}start\nend')));
+        sendKeyToPm(editorView, 'Tab');
+        expect(trackEvent).toHaveBeenLastCalledWith(
+          'atlassian.editor.codeblock.indent.insert',
+        );
       });
     });
 
@@ -542,6 +591,16 @@ describe('IDE UX plugin', () => {
           );
         });
       });
+
+      it('should track when Shift-Tab is pressed', () => {
+        const { editorView } = editor(
+          doc(code_block()('top\n{<>}   start\nend')),
+        );
+        sendKeyToPm(editorView, 'Shift-Tab');
+        expect(trackEvent).toHaveBeenLastCalledWith(
+          'atlassian.editor.codeblock.outdent',
+        );
+      });
     });
 
     describe('Enter pressed', () => {
@@ -564,6 +623,62 @@ describe('IDE UX plugin', () => {
           sendKeyToPm(editorView, 'Enter');
           expect(editorView.state.doc).toEqualDocument(
             doc(code_block()('top\n\t\tstart\n\t\t\nbottom')),
+          );
+        });
+      });
+    });
+
+    describe('Backspace pressed', () => {
+      describe('when cursor on line', () => {
+        describe('and next to leading indentation', () => {
+          it('should remove two spaces when indentation ends with two spaces', () => {
+            const { editorView } = editor(
+              doc(code_block()('    {<>}start middle end')),
+            );
+            sendKeyToPm(editorView, 'Backspace');
+            expect(editorView.state.doc).toEqualDocument(
+              doc(code_block()('  start middle end')),
+            );
+          });
+          it('should only remove one space when indentation has odd number of preceding tokens', () => {
+            const { editorView } = editor(
+              doc(code_block()('   {<>}start middle end')),
+            );
+            sendKeyToPm(editorView, 'Backspace');
+            expect(editorView.state.doc).toEqualDocument(
+              doc(code_block()('  start middle end')),
+            );
+          });
+          it('should remove tab when indentation ends with tab', () => {
+            const { editorView } = editor(
+              doc(code_block()('\t\t{<>}start middle end')),
+            );
+            sendKeyToPm(editorView, 'Backspace');
+            expect(editorView.state.doc).toEqualDocument(
+              doc(code_block()('\tstart middle end')),
+            );
+          });
+        });
+        it('should fallback to the default Backspace when in the middle of a line', () => {
+          const { editorView } = editor(
+            doc(code_block()('  start mid  {<>}dle end')),
+          );
+          sendKeyToPm(editorView, 'Backspace');
+          // Document doesn't change since PM doesn't handle backspace itself.
+          // It normally relies on the content-editable to change
+          expect(editorView.state.doc).toEqualDocument(
+            doc(code_block()('  start mid  dle end')),
+          );
+        });
+      });
+      describe('when selection is across multiple lines', () => {
+        it('should fallback to the default Backspace behaviour', () => {
+          const { editorView } = editor(
+            doc(code_block()('  {<} start\n  {>}end')),
+          );
+          sendKeyToPm(editorView, 'Backspace');
+          expect(editorView.state.doc).toEqualDocument(
+            doc(code_block()('  end')),
           );
         });
       });
@@ -602,6 +717,17 @@ describe('IDE UX plugin', () => {
           insertText(editorView, right, sel);
           expect(editorView.state.doc).toEqualDocument(
             doc(code_block()(`${left}${right}`)),
+          );
+          expect(editorView.state.selection.from).toBe(sel + 1);
+        });
+        const nonMatchingBracket = right === '}' ? ']' : '}';
+        it(`should insert non-matching closing bracket when '${nonMatchingBracket}' inserted`, () => {
+          const { editorView, sel } = editor(
+            doc(code_block()(`${left}{<>}${right}`)),
+          );
+          insertText(editorView, nonMatchingBracket, sel);
+          expect(editorView.state.doc).toEqualDocument(
+            doc(code_block()(`${left}${nonMatchingBracket}${right}`)),
           );
           expect(editorView.state.selection.from).toBe(sel + 1);
         });

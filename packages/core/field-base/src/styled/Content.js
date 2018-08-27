@@ -7,45 +7,29 @@ import {
   getBackgroundColorHover,
   getBorderColor,
   getBorderColorFocus,
-  getBorderColorHover,
 } from './theme';
 
-const borderRadius = '5px';
-const borderWidth = 1;
-const borderWidthFocused = 2;
-// subtle border needs to match the focused thickness to avoid jank when transitioning on focus
-const borderWidthSubtle = borderWidthFocused;
-const spacing = gridSize();
-const lineHeightBase = spacing * 2.5;
-const lineHeightCompact = spacing * 2;
-const heightBase = spacing * 5;
-const heightCompact = spacing * 4;
-const horizontalPadding = spacing;
-const innerHeight = spacing * 3;
+const borderRadius = '3px';
+const borderWidth = 2;
+const grid = gridSize();
+const lineHeightBase = grid * 2.5;
+const lineHeightCompact = grid * 2;
+const heightBase = grid * 5;
+const heightCompact = grid * 4;
+const horizontalPadding = grid;
+const innerHeight = grid * 3;
 const transitionDuration = '0.2s';
 
-const getBorderAndPadding = ({
-  paddingDisabled,
-  invalid,
-  isFocused,
-  compact,
-  subtle,
-  none,
-}) => {
-  let border;
+const getBorderAndPadding = ({ paddingDisabled, compact }) => {
   const height = compact ? heightCompact : heightBase;
 
-  if (invalid || isFocused || none) border = borderWidthFocused;
-  else if (subtle) border = borderWidthSubtle;
-  else border = borderWidth;
-
   const padding = paddingDisabled
-    ? `${borderWidthFocused - border}px`
-    : `${(height - 2 * border - innerHeight) / 2}px ${horizontalPadding -
-        border}px`;
+    ? `0`
+    : `${(height - 2 * borderWidth - innerHeight) / 2}px ${horizontalPadding -
+        borderWidth}px`;
 
   return css`
-    border-width: ${border}px;
+    border-width: ${borderWidth}px;
     padding: ${padding};
   `;
 };
@@ -56,7 +40,7 @@ const getLineHeight = props => {
   return currentLineHeight / fontSize();
 };
 
-const getDisabledColor = themed({ light: colors.N60, dark: colors.DN90 });
+const getDisabledColor = themed({ light: colors.N70, dark: colors.DN90 });
 
 const getDisabledState = props =>
   props.disabled &&
@@ -71,7 +55,6 @@ const getHoverState = props => {
   return css`
     &:hover {
       background-color: ${getBackgroundColorHover(props)};
-      border-color: ${getBorderColorHover(props)};
     }
   `;
 };
@@ -140,18 +123,18 @@ export const ContentWrapper = styled.div`
     `
       cursor: not-allowed;
     `} ${props =>
-      props.grow
-        ? css`
-            flex: 0 0 ${getMaxWidth(props.maxWidth)};
-          `
-        : `
+  props.grow
+    ? css`
+        flex: 0 0 ${getMaxWidth(props.maxWidth)};
+      `
+    : `
           flex: 0 0 auto;
         `} ${props =>
-      props.grow
-        ? `
+  props.grow
+    ? `
           display: block;
         `
-        : `
+    : `
           display: inline-block;
           vertical-align: top;
         `} max-width: ${props => getMaxWidth(props.maxWidth)};

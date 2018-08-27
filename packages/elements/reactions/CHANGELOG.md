@@ -1,5 +1,128 @@
 # @atlaskit/reactions
 
+## 13.0.8
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/util-data-test@10.0.7
+  - @atlaskit/emoji@39.1.1
+
+## 13.0.7
+- [patch] Updated dependencies [dd91bcf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd91bcf)
+  - @atlaskit/emoji@39.1.0
+
+## 13.0.6
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/emoji@39.0.4
+  - @atlaskit/tooltip@12.0.9
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/button@9.0.6
+  - @atlaskit/docs@5.0.6
+
+## 13.0.5
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/util-data-test@10.0.4
+  - @atlaskit/emoji@39.0.1
+  - @atlaskit/tooltip@12.0.5
+  - @atlaskit/button@9.0.5
+  - @atlaskit/theme@5.1.3
+  - @atlaskit/layer@5.0.4
+  - @atlaskit/icon@13.2.4
+
+## 13.0.4
+
+
+- [patch] Bumping to latest version of emoji (major bump) [a95ee92](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a95ee92)
+
+
+
+- [none] Updated dependencies [597e0bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/597e0bd)
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/emoji@39.0.0
+- [none] Updated dependencies [61df453](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/61df453)
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/emoji@39.0.0
+- [none] Updated dependencies [812a39c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/812a39c)
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/emoji@39.0.0
+- [none] Updated dependencies [c8eb097](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8eb097)
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/emoji@39.0.0
+- [none] Updated dependencies [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+  - @atlaskit/emoji@39.0.0
+  - @atlaskit/util-data-test@10.0.3
+
+## 13.0.3
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/util-data-test@10.0.2
+  - @atlaskit/emoji@38.0.5
+  - @atlaskit/tooltip@12.0.4
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/button@9.0.4
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/layer@5.0.3
+
+## 13.0.2
+- [patch] Updated dependencies [e6b1985](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6b1985)
+  - @atlaskit/tooltip@12.0.0
+  - @atlaskit/emoji@38.0.1
+  - @atlaskit/icon@13.1.1
+
+## 13.0.1
+- [patch] Ensure reactions wrap if insufficient horizontal space [bb7129d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb7129d)
+
+## 13.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/tooltip@11.0.0
+  - @atlaskit/util-data-test@10.0.0
+  - @atlaskit/emoji@38.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/layer@5.0.0
+  - @atlaskit/icon@13.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/util-data-test@10.0.0
+  - @atlaskit/emoji@38.0.0
+  - @atlaskit/tooltip@11.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/layer@5.0.0
+  - @atlaskit/icon@13.0.0
+
+## 12.2.2
+- [patch] Move the tests under src and club the tests under unit, integration and visual regression [f1a9069](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1a9069)
+- [none] Updated dependencies [f1a9069](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f1a9069)
+  - @atlaskit/util-data-test@9.1.18
+  - @atlaskit/emoji@37.0.1
+
+## 12.2.1
+
+
+- [patch] Updated dependencies [f897c79](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f897c79)
+  - @atlaskit/util-data-test@9.1.17
+  - @atlaskit/emoji@37.0.0
+- [none] Updated dependencies [cacf096](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cacf096)
+  - @atlaskit/emoji@37.0.0
+  - @atlaskit/util-data-test@9.1.17
+
+## 12.2.0
+- [minor] FS-1907 adding reaction sends itemCreationDate of object to service [ddcc42f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ddcc42f)
+
+## 12.1.5
+- [patch] Updated dependencies [8d5053e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d5053e)
+  - @atlaskit/emoji@36.0.1
+  - @atlaskit/util-data-test@9.1.15
+
+## 12.1.4
+- [patch] Updated dependencies [0cf2f52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0cf2f52)
+  - @atlaskit/emoji@36.0.0
+  - @atlaskit/util-data-test@9.1.14
+
 ## 12.1.3
 - [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
 - [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)

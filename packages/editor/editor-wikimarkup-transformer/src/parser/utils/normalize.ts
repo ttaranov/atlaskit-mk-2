@@ -1,6 +1,12 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
-import { createParagraphNodeFromInlineNodes } from '../nodes/paragraph';
-import { parseWhitespace } from '../tokenize/whitespace';
+import {
+  createParagraphNodeFromInlineNodes,
+  createEmptyParagraphNode,
+} from '../nodes/paragraph';
+import {
+  parseNewlineOnly,
+  parseWhitespaceAndNewLine,
+} from '../tokenize/whitespace';
 
 export function normalizePMNodes(nodes: PMNode[], schema: Schema): PMNode[] {
   const output: PMNode[] = [];
@@ -10,27 +16,23 @@ export function normalizePMNodes(nodes: PMNode[], schema: Schema): PMNode[] {
       inlineNodeBuffer.push(node);
       continue;
     }
-    if (inlineNodeBuffer.length > 0) {
+    const trimedInlineNodes = trimInlineNodes(inlineNodeBuffer);
+    if (trimedInlineNodes.length > 0) {
       output.push(
-        createParagraphNodeFromInlineNodes(
-          trimInlineNodes(inlineNodeBuffer),
-          schema,
-        ),
+        ...createParagraphNodeFromInlineNodes(trimedInlineNodes, schema),
       );
-      inlineNodeBuffer = []; // clear buffer
     }
+    inlineNodeBuffer = []; // clear buffer
     output.push(node);
   }
-  if (inlineNodeBuffer.length > 0) {
+  const trimedInlineNodes = trimInlineNodes(inlineNodeBuffer);
+  if (trimedInlineNodes.length > 0) {
     output.push(
-      createParagraphNodeFromInlineNodes(
-        trimInlineNodes(inlineNodeBuffer),
-        schema,
-      ),
+      ...createParagraphNodeFromInlineNodes(trimedInlineNodes, schema),
     );
   }
   if (nodes.length === 0) {
-    return [createParagraphNodeFromInlineNodes([], schema)];
+    return [createEmptyParagraphNode(schema)];
   }
   return output;
 }
@@ -63,12 +65,12 @@ function trimInlineNodes(nodes: PMNode[]) {
 export function isNextLineEmpty(input: string) {
   let index = 0;
   while (index < input.length) {
-    const length = parseWhitespace(input);
+    const length = parseWhitespaceAndNewLine(input);
 
-    if (parseWhitespace(input) === 0) {
+    if (length === 0) {
       return false;
     }
-    if (parseWhitespace(input, true)) {
+    if (parseNewlineOnly(input)) {
       return true;
     }
 

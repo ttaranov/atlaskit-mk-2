@@ -1,67 +1,66 @@
 // @flow
 
 import React, { Fragment, Component } from 'react';
+
 import EmojiAtlassianIcon from '@atlaskit/icon/glyph/emoji/atlassian';
 import Modal from '@atlaskit/modal-dialog';
-import Drawer from '@atlaskit/drawer';
 import Lorem from 'react-lorem-component';
 import { LayoutManager, NavigationProvider } from '@atlaskit/navigation-next';
 
 import GlobalNavigation from '../src';
 
-type State = {
-  isCreateModalOpen: boolean,
-  isSearchDrawerOpen: boolean,
-  isNotificationDrawerOpen: boolean,
-  isPeopleDrawerOpen: boolean,
-  isYourWorkOpen: boolean,
-  notificationCount: number,
-};
-
 const DrawerContent = ({
-  closeDrawer,
-  drawerText,
+  drawerTitle,
+  drawerBody,
 }: {
-  closeDrawer: () => void,
-  drawerText: string,
+  drawerTitle: string,
+  drawerBody: string,
 }) => (
   <div>
-    <h1>
-      <code
-        css={{
-          textTransform: 'capitalize',
-        }}
-      >{`${drawerText[0].toUpperCase()}${drawerText.slice(1)}`}</code>
-    </h1>
-    <button
-      onClick={closeDrawer}
-      type="button"
+    <h1
       css={{
-        marginTop: '3rem',
+        textTransform: 'capitalize',
       }}
     >
-      Close Drawer
-    </button>
+      {drawerTitle}
+    </h1>
+    <div>{drawerBody}</div>
   </div>
 );
 
-class GlobalNavWithDrawers extends Component<Object, State> {
+type State = {
+  isCreateModalOpen: boolean,
+  isSearchDrawerOpen: boolean,
+  notificationCount: number,
+};
+
+type Props = {
+  isCreateDrawerEnabled: boolean,
+};
+
+class GlobalNavWithDrawers extends Component<Props, State> {
   state = {
     isCreateModalOpen: false,
     isSearchDrawerOpen: false,
-    isNotificationDrawerOpen: false,
-    isPeopleDrawerOpen: false,
-    isYourWorkOpen: false,
-    notificationCount: 0,
+    notificationCount: 5,
   };
 
-  drawers = ['search', 'notification', 'people', 'yourWork'];
-  widths = {
-    search: 'wide',
-    yourWork: 'wide',
-    notification: 'narrow',
-    people: 'full',
+  componentDidMount() {
+    window.addEventListener('keydown', this.handleKeyboardShortcut);
+  }
+
+  handleKeyboardShortcut = e => {
+    if (e.key === '\\') {
+      if (this.state.isSearchDrawerOpen) return this.closeSearchDrawer();
+
+      return this.openSearchDrawer();
+    }
+    return null;
   };
+
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.handleKeyboardShortcut);
+  }
 
   openCreateModal = () => {
     this.setState({
@@ -75,48 +74,31 @@ class GlobalNavWithDrawers extends Component<Object, State> {
     });
   };
 
-  secondaryAction = ({ target }: Object) => console.log(target.innerText);
-
-  getDrawerStateKey = drawerName =>
-    `is${drawerName[0].toUpperCase()}${drawerName.slice(1)}Open`;
-
-  isDrawerOpen = drawer => {
-    return this.state[this.getDrawerStateKey(drawer)];
-  };
-
-  closeDrawer = drawer => () => {
+  openSearchDrawer = () => {
     this.setState({
-      [this.getDrawerStateKey(drawer)]: false,
-      ...(drawer === 'notification' ? { notificationCount: 0 } : null),
+      isSearchDrawerOpen: true,
     });
   };
 
-  openDrawer = drawer => () => {
-    this.setState(({ notificationCount }) => ({
-      [this.getDrawerStateKey(drawer)]: true,
-      ...(drawer !== 'notification'
-        ? {
-            notificationCount: notificationCount + 1,
-          }
-        : null),
-    }));
+  closeSearchDrawer = () => {
+    this.setState({
+      isSearchDrawerOpen: false,
+    });
   };
 
-  renderDrawers = () => {
-    return this.drawers.map(drawer => (
-      <Drawer
-        onClose={this.closeDrawer(drawer)}
-        isOpen={this.isDrawerOpen(drawer)}
-        width={this.widths[drawer]}
-        key={drawer}
-      >
-        <DrawerContent
-          closeDrawer={this.closeDrawer(drawer)}
-          drawerText={`${drawer} Drawer`}
-        />
-      </Drawer>
-    ));
+  updateNotifications = () => {
+    this.setState({
+      notificationCount: 5,
+    });
   };
+
+  resetNotificationCount = () => {
+    this.setState({
+      notificationCount: 0,
+    });
+  };
+
+  secondaryAction = ({ target }: Object) => console.log(target.innerText);
 
   render() {
     const actions = [
@@ -124,17 +106,45 @@ class GlobalNavWithDrawers extends Component<Object, State> {
       { text: 'Secondary Action', onClick: this.secondaryAction },
     ];
 
+    const { isCreateDrawerEnabled } = this.props;
+
     return (
       <Fragment>
         <GlobalNavigation
           productIcon={EmojiAtlassianIcon}
+          onCreateClick={isCreateDrawerEnabled ? this.openCreateModal : null}
+          createDrawerContents={() => (
+            <DrawerContent
+              drawerTitle="Create Modal"
+              drawerBody="You can toggle between a search drawer and the search modal"
+            />
+          )}
           onProductClick={() => console.log('product clicked')}
-          onCreateClick={this.openCreateModal}
-          onSearchClick={this.openDrawer('search')}
-          onYourWorkClick={this.openDrawer('yourWork')}
-          onNotificationClick={this.openDrawer('notification')}
+          onSearchClick={this.openSearchDrawer}
+          searchTooltip="Search (\)"
+          isSearchDrawerOpen={this.state.isSearchDrawerOpen}
+          searchDrawerContents={() => (
+            <DrawerContent
+              drawerTitle="Controlled Search Drawer"
+              drawerBody="Can be controlled by passing the onSearchClick prop"
+            />
+          )}
+          onSearchDrawerClose={this.closeSearchDrawer}
+          starredDrawerContents={() => (
+            <DrawerContent
+              drawerTitle="Starred Drawer"
+              drawerBody="Sets notification count to 5 in `onStarredDrawerOpen` callback"
+            />
+          )}
+          onStarredDrawerOpen={this.updateNotifications}
+          notificationDrawerContents={() => (
+            <DrawerContent
+              drawerTitle="Notification Drawer"
+              drawerBody="Resets notification count in `onNotificationDrawerOpen` callback"
+            />
+          )}
+          onNotificationDrawerOpen={this.resetNotificationCount}
           notificationCount={this.state.notificationCount}
-          onPeopleClick={this.openDrawer('people')}
         />
         {this.state.isCreateModalOpen && (
           <Modal
@@ -145,20 +155,51 @@ class GlobalNavWithDrawers extends Component<Object, State> {
             <Lorem count={2} />
           </Modal>
         )}
-        {this.renderDrawers()}
       </Fragment>
     );
   }
 }
 
-export default () => (
-  <NavigationProvider>
-    <LayoutManager
-      globalNavigation={props => <GlobalNavWithDrawers {...props} />}
-      productRootNavigation={() => null}
-      productContainerNavigation={() => null}
-    >
-      <div>Page content</div>
-    </LayoutManager>
-  </NavigationProvider>
-);
+type NavState = {
+  isCreateDrawerEnabled: boolean,
+};
+
+// Need two componentss because both have state
+// eslint-disable-next-line react/no-multi-comp
+export default class extends Component<{||}, NavState> {
+  state = {
+    isCreateDrawerEnabled: true,
+  };
+
+  toggleCreateDrawer = () => {
+    this.setState(prevState => ({
+      isCreateDrawerEnabled: !prevState.isCreateDrawerEnabled,
+    }));
+  };
+
+  render() {
+    return (
+      <NavigationProvider>
+        <LayoutManager
+          globalNavigation={props => (
+            <GlobalNavWithDrawers
+              {...props}
+              isCreateDrawerEnabled={this.state.isCreateDrawerEnabled}
+            />
+          )}
+          productNavigation={() => null}
+          containerNavigation={() => null}
+        >
+          <Fragment>
+            <div>Page content</div>
+            <button onClick={this.toggleCreateDrawer}>{`Enable ${
+              this.state.isCreateDrawerEnabled
+                ? 'Create Drawer'
+                : 'Create Modal'
+            }`}</button>
+          </Fragment>
+        </LayoutManager>
+      </NavigationProvider>
+    );
+  }
+}

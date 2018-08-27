@@ -6,17 +6,17 @@ import * as styles from './styles';
 import { CategoryDescription, OnCategory } from '../../types';
 import { defaultCategories } from '../../constants';
 
-import { CategoryDescriptionMap } from './categories';
+import { CategoryDescriptionMap, CategoryId } from './categories';
 
 export interface Props {
-  dynamicCategories?: string[];
-  activeCategoryId?: string;
+  dynamicCategories?: CategoryId[];
+  activeCategoryId?: CategoryId;
   disableCategories?: boolean;
   onCategorySelected?: OnCategory;
 }
 
 export interface State {
-  categories: string[];
+  categories: CategoryId[];
 }
 
 export type CategoryMap = {
@@ -27,9 +27,9 @@ export const sortCategories = (c1, c2) =>
   CategoryDescriptionMap[c1].order - CategoryDescriptionMap[c2].order;
 
 const addNewCategories = (
-  oldCategories: string[],
-  newCategories?: string[],
-): string[] => {
+  oldCategories: CategoryId[],
+  newCategories?: CategoryId[],
+): CategoryId[] => {
   if (!newCategories) {
     return oldCategories;
   }
@@ -59,7 +59,7 @@ export default class CategorySelector extends PureComponent<Props, State> {
     };
   }
 
-  onClick = categoryId => {
+  onClick = (categoryId: CategoryId) => {
     const { onCategorySelected } = this.props;
     if (onCategorySelected) {
       onCategorySelected(categoryId);
@@ -84,7 +84,7 @@ export default class CategorySelector extends PureComponent<Props, State> {
     if (categories) {
       categoriesSection = (
         <ul>
-          {categories.map(categoryId => {
+          {categories.map((categoryId: CategoryId) => {
             const category = CategoryDescriptionMap[categoryId];
             const categoryClasses = [styles.category];
             if (categoryId === this.props.activeCategoryId) {

@@ -1,7 +1,6 @@
 import { State } from './domain';
 
 const state: State = {
-  apiUrl: '',
   redirectUrl: '',
   userAuthProvider: () => Promise.reject('User AuthProvider not provided.'),
   uploads: {},
@@ -14,6 +13,7 @@ const state: State = {
     auth: {
       clientId: '',
       token: '',
+      baseUrl: '',
     },
     uploadParams: {},
   },
@@ -43,6 +43,7 @@ const state: State = {
     throw new Error('onCancelUpload has not been set yet.');
   },
   context: {} as any, // TODO: fix this
+  config: {},
 };
 
 export default state;

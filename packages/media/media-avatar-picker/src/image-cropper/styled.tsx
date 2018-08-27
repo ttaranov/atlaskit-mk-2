@@ -38,6 +38,7 @@ export const Image: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
   -moz-user-select: none; /* Firefox all */
   -ms-user-select: none; /* IE 10+ */
   user-select: none; /* Likely future */
+  border-radius: ${akBorderRadius};
 `;
 
 export const containerPadding = 28;

@@ -401,7 +401,12 @@ export const reducers = createReducer(initialState, {
   },
 
   [CREATE_CONVERSATION_ERROR](state: State, action: Action) {
-    const { payload: { comments: [comment], error } } = action;
+    const {
+      payload: {
+        comments: [comment],
+        error,
+      },
+    } = action;
 
     const conversations = updateCommentInConversation(state.conversations, {
       ...comment,

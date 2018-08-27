@@ -321,3 +321,7 @@ export const confluenceJiraIssue = (attrs: {
   server?: string;
   serverId?: string;
 }) => sampleSchema.nodes.confluenceJiraIssue.create(attrs);
+export const unsupportedBlock = (originalValue: object) =>
+  nodeFactory(sampleSchema.nodes.unsupportedBlock, { originalValue })();
+export const unsupportedInline = (originalValue: object) =>
+  nodeFactory(sampleSchema.nodes.unsupportedInline, { originalValue })();

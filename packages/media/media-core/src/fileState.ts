@@ -2,6 +2,7 @@ import {
   MediaFileProcessingStatus,
   MediaFile,
   MediaStoreResponse,
+  MediaType,
 } from '@atlaskit/media-store';
 
 export type FileStatus = 'uploading' | 'processing' | 'processed' | 'error';
@@ -24,6 +25,8 @@ export interface UploadingFileState {
   name: string;
   size: number;
   progress: number;
+  mediaType: MediaType;
+  mimeType: string;
   preview?: FilePreview;
 }
 export interface ProcessingFileState {
@@ -31,6 +34,8 @@ export interface ProcessingFileState {
   id: string;
   name: string;
   size: number;
+  mediaType: MediaType;
+  mimeType: string;
   preview?: FilePreview;
 }
 export interface ProcessedFileState {
@@ -39,13 +44,15 @@ export interface ProcessedFileState {
   name: string;
   size: number;
   artifacts: Object;
-  mediaType: string;
+  mediaType: MediaType;
+  mimeType: string;
   binaryUrl: string;
   preview?: FilePreview;
 }
 export interface ErrorFileState {
   status: 'error';
   id: string;
+  message?: string;
 }
 export type FileState =
   | UploadingFileState
@@ -54,7 +61,7 @@ export type FileState =
   | ErrorFileState;
 
 const apiProcessingStatusToFileStatus = (
-  fileStatus: MediaFileProcessingStatus,
+  fileStatus?: MediaFileProcessingStatus,
 ): FileStatus => {
   switch (fileStatus) {
     case 'pending':
@@ -62,6 +69,7 @@ const apiProcessingStatusToFileStatus = (
     case 'succeeded':
       return 'processed';
     case 'failed':
+    case undefined:
       return 'error';
   }
 };
@@ -76,17 +84,19 @@ export const mapMediaFileToFileState = (
     processingStatus,
     artifacts,
     mediaType,
+    mimeType,
   } = mediaFile.data;
   const status = apiProcessingStatusToFileStatus(processingStatus);
 
   switch (status) {
-    // This state will not be used until we merge uploadFile + getFile
     case 'uploading':
       return {
         id,
         status,
         name,
         size,
+        mediaType,
+        mimeType,
         progress: 0,
       };
     case 'processing':
@@ -95,6 +105,8 @@ export const mapMediaFileToFileState = (
         status,
         name,
         size,
+        mediaType,
+        mimeType,
       };
     case 'processed':
       return {
@@ -104,6 +116,7 @@ export const mapMediaFileToFileState = (
         size,
         artifacts,
         mediaType,
+        mimeType,
         binaryUrl: `/file/${id}/binary`,
       };
     case 'error':

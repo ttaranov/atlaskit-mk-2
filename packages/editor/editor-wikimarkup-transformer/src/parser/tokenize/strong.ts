@@ -2,7 +2,7 @@ import { Schema } from 'prosemirror-model';
 import { parseString } from '../text';
 import { Token, TokenType } from './';
 import { macro } from './macro';
-import { parseWhitespace } from './whitespace';
+import { parseNewlineOnly } from './whitespace';
 
 const processState = {
   START: 0,
@@ -45,7 +45,7 @@ export function strong(input: string, schema: Schema): Token {
       }
       case processState.BUFFER: {
         // the linebreak would break the strong marks
-        const length = parseWhitespace(input.substring(index), true);
+        const length = parseNewlineOnly(input.substring(index));
         if (length) {
           return {
             type: 'text',

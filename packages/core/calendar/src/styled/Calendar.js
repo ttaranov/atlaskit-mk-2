@@ -6,7 +6,7 @@ import styled, { css } from 'styled-components';
 import { colors, themed } from '@atlaskit/theme';
 
 const wrapperBackgroundColor = themed({ light: colors.N0, dark: colors.N700 });
-const getCalendarThColor = themed({ light: colors.N80, dark: colors.N80 });
+const getCalendarThColor = themed({ light: colors.N200, dark: colors.N200 });
 
 export const Announcer = styled.div`
   border: 0;
@@ -32,19 +32,21 @@ export const CalendarTbody = styled.tbody`
 // FIXME: first-child
 // @atlaskit/css-reset should adjust default behaviours
 const thSpacing = css`
-  padding: 6px 8px;
+  padding: 8px 8px;
+  min-width: 40px;
+  box-sizing: border-box;
 `;
 export const CalendarTh = styled.th`
   border: 0;
   color: ${getCalendarThColor};
-  font-size: 8px;
-  padding: ${thSpacing};
+  font-size: 11px;
+  ${thSpacing};
   text-transform: uppercase;
   text-align: center;
 
   &:last-child,
   &:first-child {
-    padding: ${thSpacing};
+    ${thSpacing};
   }
 `;
 
@@ -56,7 +58,7 @@ export const Wrapper = styled.div`
   background-color: ${wrapperBackgroundColor};
   color: ${colors.text};
   display: inline-block;
-  padding: 10px;
+  padding: 16px;
   user-select: none;
   box-sizing: border-box;
   outline: none;

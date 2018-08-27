@@ -13,7 +13,6 @@ import {
   UploadStatusUpdateEventPayload,
 } from '../domain/uploadEvent';
 import { UploadComponent } from './component';
-import { MediaPickerContext } from '../domain/context';
 import { UploadParams } from '../domain/config';
 
 export interface LocalUploadConfig {
@@ -28,12 +27,8 @@ export class LocalUploadComponent<
   readonly context: Context;
   config: LocalUploadConfig;
 
-  constructor(
-    analyticsContext: MediaPickerContext,
-    context: Context,
-    config: LocalUploadConfig,
-  ) {
-    super(analyticsContext);
+  constructor(context: Context, config: LocalUploadConfig) {
+    super();
 
     this.context = context;
     this.uploadService = UploadServiceFactory.create(

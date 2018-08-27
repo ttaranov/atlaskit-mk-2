@@ -1,23 +1,19 @@
 import * as React from 'react';
-import { MentionStyle, MentionContainer } from './styles';
+import { MentionStyle } from './styles';
 import Tooltip from '@atlaskit/tooltip';
-import {
-  isRestricted,
-  MentionType,
-  isSpecialMentionText,
-  MentionEventHandler,
-} from '../../types';
+import { isRestricted, MentionType, MentionEventHandler } from '../../types';
+import { fireAnalyticsMentionEvent, fireAnalytics } from '../../util/analytics';
+
 import { FireAnalyticsEvent, withAnalytics } from '@atlaskit/analytics';
 
-import { GasPayload } from '@atlaskit/analytics-gas-types';
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../../../package.json';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
-import { ELEMENTS_CHANNEL } from '../../constants';
 
-const MENTION_ANALYTICS_PREFIX = 'atlassian.fabric.mention';
+import {
+  WithAnalyticsEventProps,
+  CreateUIAnalyticsEventSignature,
+  UIAnalyticsEventInterface,
+} from '@atlaskit/analytics-next-types';
+
 export const ANALYTICS_HOVER_DELAY = 1000;
 
 export type OwnProps = {
@@ -36,36 +32,7 @@ export type OldAnalytics = {
   firePrivateAnalyticsEvent?: FireAnalyticsEvent;
 };
 
-export type Props = OwnProps & OldAnalytics;
-
-const mentionPayload = (
-  actionSubject: string,
-  action: string,
-  { accessLevel, text }: Props,
-): GasPayload => ({
-  action,
-  actionSubject,
-  eventType: 'ui',
-  attributes: {
-    packageName,
-    packageVersion,
-    componentName: 'mention',
-    accessLevel,
-    isSpecial: isSpecialMentionText(text),
-  },
-  source: 'unknown',
-});
-
-const fireAnalytics = (eventName: string, props: Props) => {
-  const { accessLevel, text, firePrivateAnalyticsEvent } = props;
-
-  if (firePrivateAnalyticsEvent) {
-    firePrivateAnalyticsEvent(`${MENTION_ANALYTICS_PREFIX}.${eventName}`, {
-      accessLevel,
-      isSpecial: isSpecialMentionText(text),
-    });
-  }
-};
+export type Props = OwnProps & OldAnalytics & WithAnalyticsEventProps;
 
 export class MentionInternal extends React.PureComponent<Props, {}> {
   private hoverTimeout?: number;
@@ -139,7 +106,7 @@ export class MentionInternal extends React.PureComponent<Props, {}> {
     );
 
     return (
-      <MentionContainer
+      <span
         data-mention-id={id}
         data-access-level={accessLevel}
         spellCheck={false}
@@ -154,7 +121,7 @@ export class MentionInternal extends React.PureComponent<Props, {}> {
         ) : (
           mentionComponent
         )}
-      </MentionContainer>
+      </span>
     );
   }
 }
@@ -163,22 +130,50 @@ export class MentionInternal extends React.PureComponent<Props, {}> {
 const MentionWithAnalytics: React.ComponentClass<
   OwnProps
 > = withAnalyticsEvents({
-  onClick: (createEvent, props: Props) => {
-    createEvent(mentionPayload('mention', 'selected', props)).fire(
-      ELEMENTS_CHANNEL,
+  onClick: (
+    createEvent: CreateUIAnalyticsEventSignature,
+    props: Props,
+  ): UIAnalyticsEventInterface => {
+    const { id, text, accessLevel, firePrivateAnalyticsEvent } = props;
+
+    const event = fireAnalyticsMentionEvent(createEvent)(
+      'mention',
+      'selected',
+      text,
+      id,
+      accessLevel,
     );
 
     // old analytics
-    fireAnalytics('lozenge.select', props);
+    fireAnalytics(firePrivateAnalyticsEvent)(
+      'lozenge.select',
+      text,
+      accessLevel,
+    );
+    return event;
   },
 
-  onHover: (createEvent, props) => {
-    createEvent(mentionPayload('mention', 'hovered', props)).fire(
-      ELEMENTS_CHANNEL,
+  onHover: (
+    createEvent: CreateUIAnalyticsEventSignature,
+    props: Props,
+  ): UIAnalyticsEventInterface => {
+    const { id, text, accessLevel, firePrivateAnalyticsEvent } = props;
+
+    const event = fireAnalyticsMentionEvent(createEvent)(
+      'mention',
+      'hovered',
+      text,
+      id,
+      accessLevel,
     );
 
     // old analytics
-    fireAnalytics('lozenge.hover', props);
+    fireAnalytics(firePrivateAnalyticsEvent)(
+      'lozenge.hover',
+      text,
+      accessLevel,
+    );
+    return event;
   },
 })(MentionInternal) as React.ComponentClass<OwnProps>;
 

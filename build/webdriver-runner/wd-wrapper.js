@@ -81,6 +81,12 @@ export default class Page {
       .then(obj => obj.value);
   }
 
+  count(selector) {
+    return this.$$(selector).then(function(result) {
+      return result.value.length;
+    });
+  }
+
   type(selector, text) {
     return this.browser.addValue(selector, text);
   }
@@ -183,9 +189,17 @@ export default class Page {
     return this.browser.waitForVisible(selector, ms, reverse);
   }
 
+  waitUntil(predicate) {
+    return this.browser.waitUntil(predicate, WAIT_TIMEOUT);
+  }
+
   // Window
   setViewPort(size, type) {
     return this.browser.setViewPort(size, type);
+  }
+
+  chooseFile(selector, localPath) {
+    return this.browser.chooseFile(selector, localPath);
   }
 }
 //TODO: Maybe wrapping all functions?

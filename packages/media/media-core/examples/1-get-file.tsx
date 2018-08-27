@@ -3,7 +3,6 @@ import { Component, SyntheticEvent } from 'react';
 import {
   videoProcessingFailedId,
   imageFileId,
-  defaultServiceHost,
   defaultCollectionName,
   mediaPickerAuthProvider,
 } from '@atlaskit/media-test-helpers';
@@ -18,7 +17,6 @@ export interface ComponentState {
 }
 
 const mediaContext = ContextFactory.create({
-  serviceHost: defaultServiceHost,
   authProvider: mediaPickerAuthProvider('asap'),
 });
 
@@ -71,13 +69,12 @@ class Example extends Component<ComponentProps, ComponentState> {
 
   uploadFile = async (event: SyntheticEvent<HTMLInputElement>) => {
     const file = event.currentTarget.files![0];
-    const { deferredFileId } = mediaContext.uploadFile({
+    const stream = mediaContext.uploadFile({
       content: file,
       name: file.name,
       collection: defaultCollectionName,
     });
-    const fileId = await deferredFileId;
-    this.getFile(fileId);
+    this.addStream(stream);
   };
 
   addStream = (stream: Observable<FileState>) => {

@@ -1,5 +1,6 @@
 // @flow
-import faker from 'faker';
+import uuid from 'uuid/v1';
+
 import {
   type ObjectItemShape,
   type PersonItemShape,
@@ -7,9 +8,69 @@ import {
 } from './types';
 
 function pickRandom<T>(array: Array<T>): T {
-  const index = faker.random.number(array.length - 1);
-  return array[index];
+  return array[Math.floor(Math.random() * array.length)];
 }
+
+const mockCatchPhrases = [
+  'Focused bandwidth-monitored open system',
+  'Synergistic multi-tasking architecture',
+  'Robust national conglomeration',
+  'Mandatory heuristic groupware',
+  'Triple-buffered multi-tasking methodology',
+  'Reduced dedicated initiative',
+  'Triple-buffered analyzing superstructure',
+  'Optimized intangible initiative',
+];
+
+const mockCompanyNames = [
+  'Gusikowski, Schimmel and Rau',
+  'Gaylord, Kreiger and Hand',
+  'Harber - Rowe',
+  'Senger Group',
+  'McGlynn, McLaughlin and Connelly',
+  'Kovacek Inc',
+  'Muller - Ortiz',
+  'Heaney, Heller and Corwin',
+];
+
+const mockUrls = [
+  'https://jacquelyn.name',
+  'https://sheridan.net',
+  'http://carmelo.info',
+  'https://zoe.biz',
+  'https://kris.net',
+  'http://kolby.net',
+  'http://aracely.com',
+  'http://justyn.org',
+];
+
+const mockNames = [
+  'Priya Brantley',
+  'Tomas MacGinnis',
+  'Osiris Meszaros',
+  'Newell Corkery',
+  'Sif Leitzke',
+  'Garfield Schulist ',
+  'Julianne Osinski ',
+];
+
+const mockAvatarUrls = [
+  'https://s3.amazonaws.com/uifaces/faces/twitter/magugzbrand2d/128.jpg',
+  'https://s3.amazonaws.com/uifaces/faces/twitter/jonathansimmons/128.jpg',
+  'https://s3.amazonaws.com/uifaces/faces/twitter/megdraws/128.jpg',
+  'https://s3.amazonaws.com/uifaces/faces/twitter/vickyshits/128.jpg',
+  'https://s3.amazonaws.com/uifaces/faces/twitter/ainsleywagon/128.jpg',
+  'https://s3.amazonaws.com/uifaces/faces/twitter/xamorep/128.jpg',
+  'https://s3.amazonaws.com/uifaces/faces/twitter/shoaib253/128.jpg',
+  'https://s3.amazonaws.com/uifaces/faces/twitter/jefffis/128.jpg',
+];
+
+const getMockCompanyName = () => pickRandom(mockCompanyNames);
+const getMockUrl = () => pickRandom(mockUrls);
+const getMockAvatarUrl = () => pickRandom(mockAvatarUrls);
+const getMockName = () => pickRandom(mockNames);
+
+const getMockCatchPhrase = () => pickRandom(mockCatchPhrases);
 
 export function randomJiraIconUrl() {
   const urls = [
@@ -46,7 +107,7 @@ function randomProduct() {
 
 function randomIssueKey() {
   const keys = ['ETH', 'XRP', 'ADA', 'TRON', 'DOGE'];
-  return `${pickRandom(keys)}-${faker.random.number(1000)}`;
+  return `${pickRandom(keys)}-${Math.floor(Math.random() * 1001)}`;
 }
 
 export function objectData(n: number): ObjectItemShape[] {
@@ -59,12 +120,12 @@ export function objectData(n: number): ObjectItemShape[] {
       provider === 'jira' ? randomJiraIconUrl() : randomConfluenceIconUrl();
 
     items.push({
-      resultId: faker.random.uuid(),
+      resultId: uuid(),
       type: 'object',
-      name: faker.company.catchPhrase(),
-      containerName: faker.company.companyName(),
+      name: getMockCatchPhrase(),
+      containerName: getMockCompanyName(),
       avatarUrl: iconUrl,
-      href: faker.internet.url(),
+      href: getMockUrl(),
       objectKey: randomIssueKey(),
     });
   }
@@ -77,9 +138,9 @@ export function containerData(n: number): ContainerItemShape[] {
 
   for (let i = 0; i < n; i++) {
     items.push({
-      resultId: faker.random.uuid(),
+      resultId: uuid(),
       type: 'container',
-      name: faker.company.companyName(),
+      name: getMockCompanyName(),
       avatarUrl: getContainerAvatarUrl(i),
     });
   }
@@ -92,10 +153,10 @@ export function personData(n: number): PersonItemShape[] {
 
   for (let i = 0; i < n; i++) {
     items.push({
-      resultId: faker.random.uuid(),
+      resultId: uuid(),
       type: 'person',
-      name: faker.name.findName(),
-      avatarUrl: faker.image.avatar(),
+      name: getMockName(),
+      avatarUrl: getMockAvatarUrl(),
       presenceState: randomPresenceState(),
     });
   }

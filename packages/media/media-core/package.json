@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-core",
-  "version": "19.1.3",
+  "version": "23.0.1",
   "description": "It holds shared code between MediaComponents like models, providers, interfaces and utilities",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -8,7 +8,6 @@
   "jsnext:main": "dist/es2015/index.js",
   "module": "dist/es2015/index.js",
   "atlaskit:src": "src/index.ts",
-  "sideEffects": true,
   "files": [
     "dist"
   ],
@@ -21,19 +20,22 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/media-store": "^4.1.1",
+    "@atlaskit/media-store": "^6.0.0",
     "axios": "^0.17.1",
     "lru-fast": "^0.2.2",
-    "tslib": "^1.8.0"
+    "tslib": "^1.8.0",
+    "uuid": "^3.1.0"
   },
   "peerDependencies": {
-    "react": "^16.3.0",
+    "react": "^16.4.0",
     "rxjs": "^5.1.0"
   },
   "devDependencies": {
-    "@atlaskit/button": "^8.1.2",
-    "@atlaskit/docs": "^4.1.1",
-    "@atlaskit/media-test-helpers": "^14.0.3",
+    "@atlaskit/button": "^9.0.4",
+    "@atlaskit/docs": "^5.0.2",
+    "@atlaskit/media-test-helpers": "^16.0.0",
+    "sinon": "^2.2.0",
+    "rxjs": "^5.1.0",
     "styled-components": "^3.2.6"
   }
 }

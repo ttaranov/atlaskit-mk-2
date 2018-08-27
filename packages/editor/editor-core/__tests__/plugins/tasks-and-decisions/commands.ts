@@ -197,5 +197,75 @@ describe('tasks and decisions - commands', () => {
         );
       });
     });
+
+    describe('switching back and forth between types is possible FS-2800', () => {
+      it('should change p -> taskList -> decisionList -> taskList', () => {
+        const { editorView } = editor(doc(p('Hello{<>}')));
+
+        expect(changeToTaskDecision(editorView, 'taskList')).toBe(true);
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            taskList({ localId: 'local-highlight' })(
+              taskItem({ localId: 'local-highlight', state: 'TODO' })('Hello'),
+            ),
+          ),
+        );
+
+        expect(changeToTaskDecision(editorView, 'decisionList')).toBe(true);
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            decisionList({ localId: 'local-highlight' })(
+              decisionItem({ localId: 'local-highlight', state: 'DECIDED' })(
+                'Hello',
+              ),
+            ),
+          ),
+        );
+
+        expect(changeToTaskDecision(editorView, 'taskList')).toBe(true);
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            taskList({ localId: 'local-highlight' })(
+              taskItem({ localId: 'local-highlight', state: 'TODO' })('Hello'),
+            ),
+          ),
+        );
+      });
+    });
+
+    it('should change p -> decisionList -> taskList -> decisionList', () => {
+      const { editorView } = editor(doc(p('Hello{<>}')));
+
+      expect(changeToTaskDecision(editorView, 'decisionList')).toBe(true);
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          decisionList({ localId: 'local-highlight' })(
+            decisionItem({ localId: 'local-highlight', state: 'DECIDED' })(
+              'Hello',
+            ),
+          ),
+        ),
+      );
+
+      expect(changeToTaskDecision(editorView, 'taskList')).toBe(true);
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          taskList({ localId: 'local-highlight' })(
+            taskItem({ localId: 'local-highlight', state: 'TODO' })('Hello'),
+          ),
+        ),
+      );
+
+      expect(changeToTaskDecision(editorView, 'decisionList')).toBe(true);
+      expect(editorView.state.doc).toEqualDocument(
+        doc(
+          decisionList({ localId: 'local-highlight' })(
+            decisionItem({ localId: 'local-highlight', state: 'DECIDED' })(
+              'Hello',
+            ),
+          ),
+        ),
+      );
+    });
   });
 });

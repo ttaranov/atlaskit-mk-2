@@ -12,11 +12,14 @@ export interface Participant {
 export interface InitData {
   doc?: any;
   json?: any;
+  version?: number;
+  sid?: string;
 }
 
 export interface RemoteData {
   json?: any;
   newState?: EditorState;
+  userIds?: string[];
 }
 
 export interface ConnectionData {
@@ -44,4 +47,6 @@ export interface CollabEditOptions {
   provider?: Promise<CollabEditProvider>;
   inviteToEditHandler?: (event: Event) => void;
   isInviteToEditButtonSelected?: boolean;
+  userId?: string;
+  useNativePlugin?: boolean;
 }

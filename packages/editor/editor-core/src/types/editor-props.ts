@@ -14,7 +14,8 @@ import { MentionProvider } from '@atlaskit/mention';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { TaskDecisionProvider } from '@atlaskit/task-decision';
 
-import { PluginConfig as TablesPluginConfig } from '../plugins/table/pm-plugins/main';
+import { PluginConfig as TablesPluginConfig } from '../plugins/table/types';
+import { TextColorPluginConfig } from '../plugins/text-color/pm-plugins/main';
 import { MediaProvider, MediaState } from '../plugins/media/pm-plugins/main';
 import { ErrorReportingHandler } from '../utils/error-reporter';
 import { AnalyticsHandler } from '../analytics';
@@ -28,6 +29,7 @@ import { PlaceholderTextOptions } from '../plugins/placeholder-text';
 import { CollabEditOptions } from '../plugins/collab-edit';
 import { CodeBlockOptions } from '../plugins/code-block';
 import { CardProvider, CardOptions } from '../plugins/card';
+import { QuickInsertOptions } from '../plugins/quick-insert/types';
 
 export type EditorAppearance =
   | 'message'
@@ -42,10 +44,14 @@ export type ReactElement = React.ReactElement<any> | React.ReactElement<any>[];
 
 export type InsertMenuCustomItem = {
   content: string;
-  value: { name: string };
-  tooltipDescription: string;
-  tooltipPosition: string;
-  onClick: (editorActions: EditorActions) => void;
+  value: { name: string | null };
+  tooltipDescription?: string;
+  tooltipPosition?: string;
+  elemBefore?: ReactElement | string;
+  elemAfter?: ReactElement | string;
+  isDisabled?: boolean;
+  className?: string;
+  onClick?: (editorActions: EditorActions) => void;
 };
 
 export interface ExtensionConfig {
@@ -66,12 +72,11 @@ export interface EditorProps {
   addonToolbarComponents?: ReactElement;
 
   allowBlockType?: { exclude?: Array<string> };
-  allowMentions?: boolean;
   allowTasksAndDecisions?: boolean;
   allowRule?: boolean;
   allowCodeBlocks?: boolean | CodeBlockOptions;
   allowLists?: boolean;
-  allowTextColor?: boolean;
+  allowTextColor?: boolean | TextColorPluginConfig;
   allowTables?: boolean | TablesPluginConfig;
   allowHelpDialog?: boolean;
   allowJiraIssue?: boolean;
@@ -86,9 +91,9 @@ export interface EditorProps {
   allowInlineAction?: boolean;
 
   // Temporary flag to enable layouts while it's under development
-  UNSAFE_allowLayouts?: boolean;
+  allowLayouts?: boolean;
 
-  quickInsert?: boolean;
+  quickInsert?: QuickInsertOptions;
 
   UNSAFE_cards?: CardOptions;
 
@@ -134,9 +139,6 @@ export interface EditorProps {
   onChange?: (editorView: EditorView) => void;
   onSave?: (editorView: EditorView) => void;
   onCancel?: (editorView: EditorView) => void;
-
-  // TODO: Deprecated remove after v63.0.0
-  allowTextFormatting?: boolean | TextFormattingOptions;
 
   extensionHandlers?: ExtensionHandlers;
 }

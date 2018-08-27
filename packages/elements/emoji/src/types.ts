@@ -1,4 +1,7 @@
 import { SyntheticEvent } from 'react';
+import { CategoryId } from './components/picker/categories';
+
+export type CategoryId = CategoryId;
 
 export type RelativePosition = 'above' | 'below' | 'auto';
 
@@ -182,7 +185,7 @@ export interface OnEmojiEvent<T = any> {
 }
 
 export interface OnCategory {
-  (categoryId: string | null): void;
+  (categoryId: CategoryId | null): void;
 }
 
 export const enum SearchSort {

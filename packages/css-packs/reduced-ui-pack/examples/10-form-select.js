@@ -65,6 +65,45 @@ export default () => (
         </select>
       </div>
       <div className="ak-field-group">
+        <label htmlFor="fav-movie">Favourite movie</label>
+        <select
+          className="ak-field-select"
+          id="fav-movie"
+          name="fav-movie"
+          defaultValue="Star Wars"
+          disabled
+        >
+          <optgroup label="Sci-fi">
+            <option>Star Wars</option>
+            <option>Star Trek</option>
+          </optgroup>
+          <optgroup label="Adventure">
+            <option>Indiana Jones</option>
+            <option>Tomb Raider</option>
+          </optgroup>
+        </select>
+      </div>
+      <div className="ak-field-group">
+        <label htmlFor="fav-movies">Favourite movies (multi select)</label>
+        <select
+          className="ak-field-select"
+          multiple
+          defaultValue={['Star Wars', 'Indiana Jones']}
+          id="fav-movies"
+          name="fav-movies"
+          disabled
+        >
+          <optgroup label="Sci-fi">
+            <option>Star Wars</option>
+            <option>Star Trek</option>
+          </optgroup>
+          <optgroup label="Adventure">
+            <option>Indiana Jones</option>
+            <option>Tomb Raider</option>
+          </optgroup>
+        </select>
+      </div>
+      <div className="ak-field-group">
         <button className="ak-button ak-button__appearance-primary">
           Save
         </button>

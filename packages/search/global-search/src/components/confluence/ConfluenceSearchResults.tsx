@@ -1,138 +1,51 @@
 import * as React from 'react';
-import { ResultItemGroup } from '@atlaskit/quick-search';
-import SearchIcon from '@atlaskit/icon/glyph/search';
-import { Result } from '../../model/Result';
-import SearchError from '../SearchError';
-import NoResults from '../NoResults';
+import { ConfluenceResultsMap } from '../../model/Result';
+import { ScreenCounter } from '../../util/ScreenCounter';
+import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
+import NoResultsState from './NoResultsState';
+import SearchResults from '../common/SearchResults';
+import { getConfluenceAdvancedSearchLink } from '../SearchResultsUtil';
+import { FormattedHTMLMessage } from 'react-intl';
+import AdvancedSearchGroup from './AdvancedSearchGroup';
 import {
-  renderResults,
-  searchConfluenceItem,
-  searchPeopleItem,
-  take,
-  isEmpty,
-} from '../SearchResultsUtil';
-
-const renderObjectsGroup = (title: string, results: Result[], query: string) =>
-  results.length > 0 ? (
-    <ResultItemGroup title={title} key="objects">
-      {renderResults(results)}
-    </ResultItemGroup>
-  ) : null;
-
-const renderSpacesGroup = (title: string, results: Result[], query: string) =>
-  results.length > 0 ? (
-    <ResultItemGroup title={title} key="spaces">
-      {renderResults(results)}
-    </ResultItemGroup>
-  ) : null;
-
-const renderPeopleGroup = (title: string, results: Result[], query: string) =>
-  results.length > 0 ? (
-    <ResultItemGroup title={title} key="people">
-      {renderResults(results)}
-    </ResultItemGroup>
-  ) : null;
-
-export const renderSearchConfluenceItem = (query: string, text: string) =>
-  searchConfluenceItem({
-    query: query,
-    icon: <SearchIcon size="medium" label="Advanced search" />,
-    text: text,
-    showKeyboardLozenge: true,
-  });
-
-const renderSearchPeopleItem = (query: string) =>
-  searchPeopleItem({
-    query: query,
-    icon: <SearchIcon size="medium" label="Search People" />,
-    text: 'People directory',
-  });
-
-const renderNoResults = (query: string) => [
-  <NoResults key="no-results" />,
-  <ResultItemGroup title="" key="advanced-search">
-    {renderSearchConfluenceItem(query, 'Advanced search with filters')}
-    {renderSearchPeopleItem(query)}
-  </ResultItemGroup>,
-];
-
-const renderAdvancedSearchGroup = (query: string) => {
-  const text =
-    query.length === 0 ? 'Advanced Search' : `Advanced Search for "${query}"`;
-
-  return (
-    <ResultItemGroup key="advanced-search">
-      {renderSearchPeopleItem(query)}
-      {renderSearchConfluenceItem(query, text)}
-    </ResultItemGroup>
-  );
-};
+  mapRecentResultsToUIGroups,
+  mapSearchResultsToUIGroups,
+} from './ConfluenceSearchResultsMapper';
 
 export interface Props {
   query: string;
   isError: boolean;
   isLoading: boolean;
   retrySearch();
-  recentlyViewedPages: Result[];
-  recentlyViewedSpaces: Result[];
-  recentlyInteractedPeople: Result[];
-  objectResults: Result[];
-  spaceResults: Result[];
-  peopleResults: Result[];
+  recentItems: ConfluenceResultsMap;
+  searchResults: ConfluenceResultsMap;
+  keepPreQueryState: boolean;
+  searchSessionId: string;
+  preQueryScreenCounter?: ScreenCounter;
+  postQueryScreenCounter?: ScreenCounter;
+  referralContextIdentifiers?: ReferralContextIdentifiers;
 }
 
-export default function searchResults(props: Props) {
-  const {
-    query,
-    isError,
-    isLoading,
-    retrySearch,
-    recentlyViewedPages,
-    recentlyViewedSpaces,
-    recentlyInteractedPeople,
-    objectResults,
-    spaceResults,
-    peopleResults,
-  } = props;
+export default class ConfluenceSearchResults extends React.Component<Props> {
+  render() {
+    const { recentItems, searchResults, query } = this.props;
 
-  if (isLoading) {
-    return null; // better than showing empty error, but worth some more thought.
+    return (
+      <SearchResults
+        {...this.props}
+        renderNoRecentActivity={() => (
+          <FormattedHTMLMessage
+            id="global-search.no-recent-activity-body"
+            values={{ url: getConfluenceAdvancedSearchLink() }}
+          />
+        )}
+        renderAdvancedSearchGroup={() => (
+          <AdvancedSearchGroup key="advanced" query={query} />
+        )}
+        getPreQueryGroups={() => mapRecentResultsToUIGroups(recentItems)}
+        getPostQueryGroups={() => mapSearchResultsToUIGroups(searchResults)}
+        renderNoResult={() => <NoResultsState query={query} />}
+      />
+    );
   }
-
-  if (isError) {
-    return <SearchError onRetryClick={retrySearch} />;
-  }
-
-  if (query.length === 0) {
-    // TODO: insert error state here if the recent results are empty.
-    return [
-      renderObjectsGroup(
-        'Recent pages and blogs',
-        take(recentlyViewedPages, 8),
-        query,
-      ),
-      renderSpacesGroup('Recent spaces', take(recentlyViewedSpaces, 3), query),
-      renderPeopleGroup(
-        'Recently worked with',
-        take(recentlyInteractedPeople, 3),
-        query,
-      ),
-      renderAdvancedSearchGroup(query),
-    ];
-  }
-
-  if ([objectResults, spaceResults, peopleResults].every(isEmpty)) {
-    return renderNoResults(query);
-  }
-
-  return [
-    renderObjectsGroup(
-      'Pages, blogs and attachments',
-      take(objectResults, 8),
-      query,
-    ),
-    renderSpacesGroup('Spaces', take(spaceResults, 3), query),
-    renderPeopleGroup('People', take(peopleResults, 3), query),
-    renderAdvancedSearchGroup(query),
-  ];
 }

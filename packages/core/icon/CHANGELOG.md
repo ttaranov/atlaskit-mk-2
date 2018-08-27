@@ -1,5 +1,118 @@
 # @atlaskit/icon
 
+## 13.3.0
+- [minor] Add new icon [d36f760](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d36f760)
+- [patch] Add new icon for Roadmap [7cf05b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7cf05b3)
+
+## 13.2.6
+- [patch] Update warning message and fix test for reduced-ui-pack [4b166d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b166d8)
+- [none] Updated dependencies [4b166d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b166d8)
+
+## 13.2.5
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/tooltip@12.0.9
+  - @atlaskit/modal-dialog@6.0.9
+  - @atlaskit/field-text@7.0.6
+  - @atlaskit/button@9.0.6
+  - @atlaskit/docs@5.0.6
+
+## 13.2.4
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/tooltip@12.0.5
+  - @atlaskit/modal-dialog@6.0.6
+  - @atlaskit/field-text@7.0.4
+  - @atlaskit/button@9.0.5
+  - @atlaskit/theme@5.1.3
+
+## 13.2.3
+- [patch] Added pointer-events: none targeting the <svg> element within the Icon component to prevent type errors in JS [b755d8a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b755d8a)
+- [none] Updated dependencies [b755d8a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b755d8a)
+
+## 13.2.2
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/tooltip@12.0.4
+  - @atlaskit/button@9.0.4
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/field-text@7.0.3
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/modal-dialog@6.0.5
+
+## 13.2.1
+- [patch] Add a SSR test for every package, add react-dom and build-utils in devDependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+- [none] Updated dependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+  - @atlaskit/tooltip@12.0.3
+  - @atlaskit/modal-dialog@6.0.4
+  - @atlaskit/field-text@7.0.2
+  - @atlaskit/button@9.0.3
+  - @atlaskit/theme@5.1.1
+
+## 13.2.0
+- [minor] Add Layout Type icons for the Editor. ED-4196 [259ef37](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/259ef37)
+- [none] Updated dependencies [259ef37](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/259ef37)
+
+## 13.1.1
+- [patch] Updated dependencies [e6b1985](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6b1985)
+  - @atlaskit/tooltip@12.0.0
+
+## 13.1.0
+- [minor] Add a new star large icon [5dd7d0e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5dd7d0e)
+- [none] Updated dependencies [5dd7d0e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5dd7d0e)
+
+## 13.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/tooltip@11.0.0
+  - @atlaskit/modal-dialog@6.0.0
+  - @atlaskit/field-text@7.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/tooltip@11.0.0
+  - @atlaskit/modal-dialog@6.0.0
+  - @atlaskit/field-text@7.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+
+## 12.8.0
+- [minor] Add new media viewer icons  and replace existing ones [623a2a0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/623a2a0)
+- [none] Updated dependencies [623a2a0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/623a2a0)
+
+## 12.7.0
+- [minor] Add chevron large icons [086b5d7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/086b5d7)
+- [none] Updated dependencies [086b5d7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/086b5d7)
+
+## 12.6.2
+- [patch] Prevent icons shrinking when they are flex-children [a78cd4d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a78cd4d)
+- [none] Updated dependencies [a78cd4d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a78cd4d)
+
+## 12.6.1
+- [patch] Remove or update $FlowFixMe [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
+- [none] Updated dependencies [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
+  - @atlaskit/field-text@6.1.1
+  - @atlaskit/button@8.2.4
+  - @atlaskit/modal-dialog@5.2.6
+
+## 12.6.0
+- [minor] Add a new badge id: department and suitcase [e46ff5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e46ff5e)
+- [none] Updated dependencies [e46ff5e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e46ff5e)
+
+## 12.5.1
+- [patch] Update to select-clear icon to allow for primaryColor and secondaryColor configuration [216b20d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/216b20d)
+- [none] Updated dependencies [216b20d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/216b20d)
+
+## 12.5.0
+- [minor] Added select-clear icon  [91ab036](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/91ab036)
+- [none] Updated dependencies [91ab036](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/91ab036)
+
+## 12.4.0
+- [minor] Add the new app-switcher icon [8c0cacd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c0cacd)
+- [none] Updated dependencies [8c0cacd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c0cacd)
+
 ## 12.3.1
 - [patch] Fix $FlowFixMe and release packages [25d0b2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d0b2d)
 - [none] Updated dependencies [25d0b2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d0b2d)

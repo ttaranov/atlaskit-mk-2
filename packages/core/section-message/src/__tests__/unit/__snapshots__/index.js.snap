@@ -1,0 +1,551 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`SectionMessage dom snapshot appearances change 1`] = `
+.c2 {
+  color: #403294;
+  display: inline-block;
+  fill: #EAE6FF;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.c2 > svg {
+  max-height: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  vertical-align: bottom;
+}
+
+.c2 stop {
+  stop-color: currentColor;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-radius: 3px;
+  background-color: #EAE6FF;
+  padding: 16px;
+}
+
+* + .c3 {
+  margin-top: 8px;
+}
+
+.c1 {
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  width: 40px;
+}
+
+.c1 > span {
+  margin: -2px 0;
+  vertical-align: top;
+}
+
+<SectionMessage
+  appearance="change"
+>
+  <styled.section
+    backgroundColor="#EAE6FF"
+  >
+    <section
+      className="c0"
+    >
+      <styled.div>
+        <div
+          className="c1"
+        >
+          <QuestionCircleIcon
+            primaryColor="#403294"
+            secondaryColor="#EAE6FF"
+          >
+            <Icon
+              dangerouslySetGlyph="<svg width=\\"24\\" height=\\"24\\" viewBox=\\"0 0 24 24\\" focusable=\\"false\\" role=\\"presentation\\"><g fill-rule=\\"evenodd\\"><circle fill=\\"currentColor\\" cx=\\"12\\" cy=\\"12\\" r=\\"10\\"/><circle fill=\\"inherit\\" cx=\\"12\\" cy=\\"18\\" r=\\"1\\"/><path d=\\"M15.89 9.05a3.975 3.975 0 0 0-2.957-2.942C10.321 5.514 8.017 7.446 8 9.95l.005.147a.992.992 0 0 0 .982.904c.552 0 1-.447 1.002-.998a2.004 2.004 0 0 1 4.007-.002c0 1.102-.898 2-2.003 2H12a1 1 0 0 0-1 .987v2.014a1.001 1.001 0 0 0 2.004 0v-.782c0-.217.145-.399.35-.472A3.99 3.99 0 0 0 15.89 9.05\\" fill=\\"inherit\\"/></g></svg>"
+              onClick={[Function]}
+              primaryColor="#403294"
+              secondaryColor="#EAE6FF"
+            >
+              <styled.span
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "<svg width=\\"24\\" height=\\"24\\" viewBox=\\"0 0 24 24\\" focusable=\\"false\\" role=\\"presentation\\"><g fill-rule=\\"evenodd\\"><circle fill=\\"currentColor\\" cx=\\"12\\" cy=\\"12\\" r=\\"10\\"/><circle fill=\\"inherit\\" cx=\\"12\\" cy=\\"18\\" r=\\"1\\"/><path d=\\"M15.89 9.05a3.975 3.975 0 0 0-2.957-2.942C10.321 5.514 8.017 7.446 8 9.95l.005.147a.992.992 0 0 0 .982.904c.552 0 1-.447 1.002-.998a2.004 2.004 0 0 1 4.007-.002c0 1.102-.898 2-2.003 2H12a1 1 0 0 0-1 .987v2.014a1.001 1.001 0 0 0 2.004 0v-.782c0-.217.145-.399.35-.472A3.99 3.99 0 0 0 15.89 9.05\\" fill=\\"inherit\\"/></g></svg>",
+                  }
+                }
+                onClick={[Function]}
+                primaryColor="#403294"
+                secondaryColor="#EAE6FF"
+              >
+                <span
+                  className="c2"
+                  dangerouslySetInnerHTML={
+                    Object {
+                      "__html": "<svg width=\\"24\\" height=\\"24\\" viewBox=\\"0 0 24 24\\" focusable=\\"false\\" role=\\"presentation\\"><g fill-rule=\\"evenodd\\"><circle fill=\\"currentColor\\" cx=\\"12\\" cy=\\"12\\" r=\\"10\\"/><circle fill=\\"inherit\\" cx=\\"12\\" cy=\\"18\\" r=\\"1\\"/><path d=\\"M15.89 9.05a3.975 3.975 0 0 0-2.957-2.942C10.321 5.514 8.017 7.446 8 9.95l.005.147a.992.992 0 0 0 .982.904c.552 0 1-.447 1.002-.998a2.004 2.004 0 0 1 4.007-.002c0 1.102-.898 2-2.003 2H12a1 1 0 0 0-1 .987v2.014a1.001 1.001 0 0 0 2.004 0v-.782c0-.217.145-.399.35-.472A3.99 3.99 0 0 0 15.89 9.05\\" fill=\\"inherit\\"/></g></svg>",
+                    }
+                  }
+                  onClick={[Function]}
+                />
+              </styled.span>
+            </Icon>
+          </QuestionCircleIcon>
+        </div>
+      </styled.div>
+      <div>
+        <styled.div>
+          <div
+            className="c3"
+          >
+            The section message is awesome!
+          </div>
+        </styled.div>
+      </div>
+    </section>
+  </styled.section>
+</SectionMessage>
+`;
+
+exports[`SectionMessage dom snapshot appearances confirmation 1`] = `
+.c2 {
+  color: #006644;
+  display: inline-block;
+  fill: #E3FCEF;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.c2 > svg {
+  max-height: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  vertical-align: bottom;
+}
+
+.c2 stop {
+  stop-color: currentColor;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-radius: 3px;
+  background-color: #E3FCEF;
+  padding: 16px;
+}
+
+* + .c3 {
+  margin-top: 8px;
+}
+
+.c1 {
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  width: 40px;
+}
+
+.c1 > span {
+  margin: -2px 0;
+  vertical-align: top;
+}
+
+<SectionMessage
+  appearance="confirmation"
+>
+  <styled.section
+    backgroundColor="#E3FCEF"
+  >
+    <section
+      className="c0"
+    >
+      <styled.div>
+        <div
+          className="c1"
+        >
+          <CheckCircleIcon
+            primaryColor="#006644"
+            secondaryColor="#E3FCEF"
+          >
+            <Icon
+              dangerouslySetGlyph="<svg width=\\"24\\" height=\\"24\\" viewBox=\\"0 0 24 24\\" focusable=\\"false\\" role=\\"presentation\\"><g fill-rule=\\"evenodd\\"><circle fill=\\"currentColor\\" cx=\\"12\\" cy=\\"12\\" r=\\"10\\"/><path d=\\"M9.707 11.293a1 1 0 1 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 1 0-1.414-1.414L11 12.586l-1.293-1.293z\\" fill=\\"inherit\\"/></g></svg>"
+              onClick={[Function]}
+              primaryColor="#006644"
+              secondaryColor="#E3FCEF"
+            >
+              <styled.span
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "<svg width=\\"24\\" height=\\"24\\" viewBox=\\"0 0 24 24\\" focusable=\\"false\\" role=\\"presentation\\"><g fill-rule=\\"evenodd\\"><circle fill=\\"currentColor\\" cx=\\"12\\" cy=\\"12\\" r=\\"10\\"/><path d=\\"M9.707 11.293a1 1 0 1 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 1 0-1.414-1.414L11 12.586l-1.293-1.293z\\" fill=\\"inherit\\"/></g></svg>",
+                  }
+                }
+                onClick={[Function]}
+                primaryColor="#006644"
+                secondaryColor="#E3FCEF"
+              >
+                <span
+                  className="c2"
+                  dangerouslySetInnerHTML={
+                    Object {
+                      "__html": "<svg width=\\"24\\" height=\\"24\\" viewBox=\\"0 0 24 24\\" focusable=\\"false\\" role=\\"presentation\\"><g fill-rule=\\"evenodd\\"><circle fill=\\"currentColor\\" cx=\\"12\\" cy=\\"12\\" r=\\"10\\"/><path d=\\"M9.707 11.293a1 1 0 1 0-1.414 1.414l2 2a1 1 0 0 0 1.414 0l4-4a1 1 0 1 0-1.414-1.414L11 12.586l-1.293-1.293z\\" fill=\\"inherit\\"/></g></svg>",
+                    }
+                  }
+                  onClick={[Function]}
+                />
+              </styled.span>
+            </Icon>
+          </CheckCircleIcon>
+        </div>
+      </styled.div>
+      <div>
+        <styled.div>
+          <div
+            className="c3"
+          >
+            The section message is awesome!
+          </div>
+        </styled.div>
+      </div>
+    </section>
+  </styled.section>
+</SectionMessage>
+`;
+
+exports[`SectionMessage dom snapshot appearances error 1`] = `
+.c2 {
+  color: #BF2600;
+  display: inline-block;
+  fill: #FFEBE6;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.c2 > svg {
+  max-height: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  vertical-align: bottom;
+}
+
+.c2 stop {
+  stop-color: currentColor;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-radius: 3px;
+  background-color: #FFEBE6;
+  padding: 16px;
+}
+
+* + .c3 {
+  margin-top: 8px;
+}
+
+.c1 {
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  width: 40px;
+}
+
+.c1 > span {
+  margin: -2px 0;
+  vertical-align: top;
+}
+
+<SectionMessage
+  appearance="error"
+>
+  <styled.section
+    backgroundColor="#FFEBE6"
+  >
+    <section
+      className="c0"
+    >
+      <styled.div>
+        <div
+          className="c1"
+        >
+          <ErrorIcon
+            primaryColor="#BF2600"
+            secondaryColor="#FFEBE6"
+          >
+            <Icon
+              dangerouslySetGlyph="<svg width=\\"24\\" height=\\"24\\" viewBox=\\"0 0 24 24\\" focusable=\\"false\\" role=\\"presentation\\"><g fill-rule=\\"evenodd\\"><path d=\\"M13.416 4.417a2.002 2.002 0 0 0-2.832 0l-6.168 6.167a2.002 2.002 0 0 0 0 2.833l6.168 6.167a2.002 2.002 0 0 0 2.832 0l6.168-6.167a2.002 2.002 0 0 0 0-2.833l-6.168-6.167z\\" fill=\\"currentColor\\"/><path d=\\"M12 14a1 1 0 0 1-1-1V8a1 1 0 0 1 2 0v5a1 1 0 0 1-1 1m0 3a1 1 0 0 1 0-2 1 1 0 0 1 0 2\\" fill=\\"inherit\\"/></g></svg>"
+              onClick={[Function]}
+              primaryColor="#BF2600"
+              secondaryColor="#FFEBE6"
+            >
+              <styled.span
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "<svg width=\\"24\\" height=\\"24\\" viewBox=\\"0 0 24 24\\" focusable=\\"false\\" role=\\"presentation\\"><g fill-rule=\\"evenodd\\"><path d=\\"M13.416 4.417a2.002 2.002 0 0 0-2.832 0l-6.168 6.167a2.002 2.002 0 0 0 0 2.833l6.168 6.167a2.002 2.002 0 0 0 2.832 0l6.168-6.167a2.002 2.002 0 0 0 0-2.833l-6.168-6.167z\\" fill=\\"currentColor\\"/><path d=\\"M12 14a1 1 0 0 1-1-1V8a1 1 0 0 1 2 0v5a1 1 0 0 1-1 1m0 3a1 1 0 0 1 0-2 1 1 0 0 1 0 2\\" fill=\\"inherit\\"/></g></svg>",
+                  }
+                }
+                onClick={[Function]}
+                primaryColor="#BF2600"
+                secondaryColor="#FFEBE6"
+              >
+                <span
+                  className="c2"
+                  dangerouslySetInnerHTML={
+                    Object {
+                      "__html": "<svg width=\\"24\\" height=\\"24\\" viewBox=\\"0 0 24 24\\" focusable=\\"false\\" role=\\"presentation\\"><g fill-rule=\\"evenodd\\"><path d=\\"M13.416 4.417a2.002 2.002 0 0 0-2.832 0l-6.168 6.167a2.002 2.002 0 0 0 0 2.833l6.168 6.167a2.002 2.002 0 0 0 2.832 0l6.168-6.167a2.002 2.002 0 0 0 0-2.833l-6.168-6.167z\\" fill=\\"currentColor\\"/><path d=\\"M12 14a1 1 0 0 1-1-1V8a1 1 0 0 1 2 0v5a1 1 0 0 1-1 1m0 3a1 1 0 0 1 0-2 1 1 0 0 1 0 2\\" fill=\\"inherit\\"/></g></svg>",
+                    }
+                  }
+                  onClick={[Function]}
+                />
+              </styled.span>
+            </Icon>
+          </ErrorIcon>
+        </div>
+      </styled.div>
+      <div>
+        <styled.div>
+          <div
+            className="c3"
+          >
+            The section message is awesome!
+          </div>
+        </styled.div>
+      </div>
+    </section>
+  </styled.section>
+</SectionMessage>
+`;
+
+exports[`SectionMessage dom snapshot appearances info 1`] = `
+.c2 {
+  color: #0747A6;
+  display: inline-block;
+  fill: #DEEBFF;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.c2 > svg {
+  max-height: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  vertical-align: bottom;
+}
+
+.c2 stop {
+  stop-color: currentColor;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-radius: 3px;
+  background-color: #DEEBFF;
+  padding: 16px;
+}
+
+* + .c3 {
+  margin-top: 8px;
+}
+
+.c1 {
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  width: 40px;
+}
+
+.c1 > span {
+  margin: -2px 0;
+  vertical-align: top;
+}
+
+<SectionMessage
+  appearance="info"
+>
+  <styled.section
+    backgroundColor="#DEEBFF"
+  >
+    <section
+      className="c0"
+    >
+      <styled.div>
+        <div
+          className="c1"
+        >
+          <InfoIcon
+            primaryColor="#0747A6"
+            secondaryColor="#DEEBFF"
+          >
+            <Icon
+              dangerouslySetGlyph="<svg width=\\"24\\" height=\\"24\\" viewBox=\\"0 0 24 24\\" focusable=\\"false\\" role=\\"presentation\\"><g fill-rule=\\"evenodd\\"><path d=\\"M2 12c0 5.523 4.477 10 10 10s10-4.477 10-10S17.523 2 12 2 2 6.477 2 12z\\" fill=\\"currentColor\\"/><rect fill=\\"inherit\\" x=\\"11\\" y=\\"10\\" width=\\"2\\" height=\\"7\\" rx=\\"1\\"/><circle fill=\\"inherit\\" cx=\\"12\\" cy=\\"8\\" r=\\"1\\"/></g></svg>"
+              onClick={[Function]}
+              primaryColor="#0747A6"
+              secondaryColor="#DEEBFF"
+            >
+              <styled.span
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "<svg width=\\"24\\" height=\\"24\\" viewBox=\\"0 0 24 24\\" focusable=\\"false\\" role=\\"presentation\\"><g fill-rule=\\"evenodd\\"><path d=\\"M2 12c0 5.523 4.477 10 10 10s10-4.477 10-10S17.523 2 12 2 2 6.477 2 12z\\" fill=\\"currentColor\\"/><rect fill=\\"inherit\\" x=\\"11\\" y=\\"10\\" width=\\"2\\" height=\\"7\\" rx=\\"1\\"/><circle fill=\\"inherit\\" cx=\\"12\\" cy=\\"8\\" r=\\"1\\"/></g></svg>",
+                  }
+                }
+                onClick={[Function]}
+                primaryColor="#0747A6"
+                secondaryColor="#DEEBFF"
+              >
+                <span
+                  className="c2"
+                  dangerouslySetInnerHTML={
+                    Object {
+                      "__html": "<svg width=\\"24\\" height=\\"24\\" viewBox=\\"0 0 24 24\\" focusable=\\"false\\" role=\\"presentation\\"><g fill-rule=\\"evenodd\\"><path d=\\"M2 12c0 5.523 4.477 10 10 10s10-4.477 10-10S17.523 2 12 2 2 6.477 2 12z\\" fill=\\"currentColor\\"/><rect fill=\\"inherit\\" x=\\"11\\" y=\\"10\\" width=\\"2\\" height=\\"7\\" rx=\\"1\\"/><circle fill=\\"inherit\\" cx=\\"12\\" cy=\\"8\\" r=\\"1\\"/></g></svg>",
+                    }
+                  }
+                  onClick={[Function]}
+                />
+              </styled.span>
+            </Icon>
+          </InfoIcon>
+        </div>
+      </styled.div>
+      <div>
+        <styled.div>
+          <div
+            className="c3"
+          >
+            The section message is awesome!
+          </div>
+        </styled.div>
+      </div>
+    </section>
+  </styled.section>
+</SectionMessage>
+`;
+
+exports[`SectionMessage dom snapshot appearances warning 1`] = `
+.c2 {
+  color: #FF8B00;
+  display: inline-block;
+  fill: #FFFAE6;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.c2 > svg {
+  max-height: 100%;
+  max-width: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  vertical-align: bottom;
+}
+
+.c2 stop {
+  stop-color: currentColor;
+}
+
+.c0 {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  border-radius: 3px;
+  background-color: #FFFAE6;
+  padding: 16px;
+}
+
+* + .c3 {
+  margin-top: 8px;
+}
+
+.c1 {
+  -webkit-flex: 0 0 auto;
+  -ms-flex: 0 0 auto;
+  flex: 0 0 auto;
+  width: 40px;
+}
+
+.c1 > span {
+  margin: -2px 0;
+  vertical-align: top;
+}
+
+<SectionMessage
+  appearance="warning"
+>
+  <styled.section
+    backgroundColor="#FFFAE6"
+  >
+    <section
+      className="c0"
+    >
+      <styled.div>
+        <div
+          className="c1"
+        >
+          <WarningIcon
+            primaryColor="#FF8B00"
+            secondaryColor="#FFFAE6"
+          >
+            <Icon
+              dangerouslySetGlyph="<svg width=\\"24\\" height=\\"24\\" viewBox=\\"0 0 24 24\\" focusable=\\"false\\" role=\\"presentation\\"><g fill-rule=\\"evenodd\\"><path d=\\"M12.938 4.967c-.518-.978-1.36-.974-1.876 0L3.938 18.425c-.518.978-.045 1.771 1.057 1.771h14.01c1.102 0 1.573-.797 1.057-1.771L12.938 4.967z\\" fill=\\"currentColor\\"/><path d=\\"M12 15a1 1 0 0 1-1-1V9a1 1 0 0 1 2 0v5a1 1 0 0 1-1 1m0 3a1 1 0 0 1 0-2 1 1 0 0 1 0 2\\" fill=\\"inherit\\"/></g></svg>"
+              onClick={[Function]}
+              primaryColor="#FF8B00"
+              secondaryColor="#FFFAE6"
+            >
+              <styled.span
+                dangerouslySetInnerHTML={
+                  Object {
+                    "__html": "<svg width=\\"24\\" height=\\"24\\" viewBox=\\"0 0 24 24\\" focusable=\\"false\\" role=\\"presentation\\"><g fill-rule=\\"evenodd\\"><path d=\\"M12.938 4.967c-.518-.978-1.36-.974-1.876 0L3.938 18.425c-.518.978-.045 1.771 1.057 1.771h14.01c1.102 0 1.573-.797 1.057-1.771L12.938 4.967z\\" fill=\\"currentColor\\"/><path d=\\"M12 15a1 1 0 0 1-1-1V9a1 1 0 0 1 2 0v5a1 1 0 0 1-1 1m0 3a1 1 0 0 1 0-2 1 1 0 0 1 0 2\\" fill=\\"inherit\\"/></g></svg>",
+                  }
+                }
+                onClick={[Function]}
+                primaryColor="#FF8B00"
+                secondaryColor="#FFFAE6"
+              >
+                <span
+                  className="c2"
+                  dangerouslySetInnerHTML={
+                    Object {
+                      "__html": "<svg width=\\"24\\" height=\\"24\\" viewBox=\\"0 0 24 24\\" focusable=\\"false\\" role=\\"presentation\\"><g fill-rule=\\"evenodd\\"><path d=\\"M12.938 4.967c-.518-.978-1.36-.974-1.876 0L3.938 18.425c-.518.978-.045 1.771 1.057 1.771h14.01c1.102 0 1.573-.797 1.057-1.771L12.938 4.967z\\" fill=\\"currentColor\\"/><path d=\\"M12 15a1 1 0 0 1-1-1V9a1 1 0 0 1 2 0v5a1 1 0 0 1-1 1m0 3a1 1 0 0 1 0-2 1 1 0 0 1 0 2\\" fill=\\"inherit\\"/></g></svg>",
+                    }
+                  }
+                  onClick={[Function]}
+                />
+              </styled.span>
+            </Icon>
+          </WarningIcon>
+        </div>
+      </styled.div>
+      <div>
+        <styled.div>
+          <div
+            className="c3"
+          >
+            The section message is awesome!
+          </div>
+        </styled.div>
+      </div>
+    </section>
+  </styled.section>
+</SectionMessage>
+`;

@@ -42,6 +42,9 @@ export const defaultSchema: Schema = createSchema({
     'layoutSection',
     'layoutColumn',
     'inlineCard',
+    'blockCard',
+    'unsupportedBlock',
+    'unsupportedInline',
   ],
   marks: [
     'action',

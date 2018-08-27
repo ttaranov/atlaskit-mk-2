@@ -1,6 +1,15 @@
 // @flow
 
 import React, { Component } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 import { Container, IndicatorButton, IndicatorDiv } from '../styled/Dots';
 
 type Props = {
@@ -22,7 +31,7 @@ type Props = {
   values: Array<any>,
 };
 
-export default class ProgressDots extends Component<Props, {}> {
+class ProgressDots extends Component<Props, {}> {
   props: Props; // eslint-disable-line react/sort-comp
   tablist: { children: Array<HTMLElement> };
   static defaultProps = {
@@ -121,3 +130,25 @@ export default class ProgressDots extends Component<Props, {}> {
     );
   }
 }
+
+export { ProgressDots as ProgressDotsWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'progressIndicator',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onSelect: createAndFireEventOnAtlaskit({
+      action: 'selected',
+      actionSubject: 'progressIndicator',
+
+      attributes: {
+        componentName: 'progressIndicator',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(ProgressDots),
+);

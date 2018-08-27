@@ -5,11 +5,16 @@ export const layoutColumn: NodeSpec = {
   isolating: true,
   parseDOM: [
     {
-      context: 'layoutSection/',
-      tag: 'div',
+      context: 'layoutSection//|layoutColumn//',
+      tag: 'div[data-layout-column]',
+      skip: true,
+    },
+    {
+      tag: 'div[data-layout-column]',
     },
   ],
   toDOM() {
-    return ['div', 0];
+    const attrs = { 'data-layout-column': 'true' };
+    return ['div', attrs, 0];
   },
 };

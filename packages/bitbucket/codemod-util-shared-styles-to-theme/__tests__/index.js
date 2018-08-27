@@ -7,7 +7,7 @@ const testSuiteName = path.basename(path.resolve(__dirname, '..'));
 jest.autoMockOff();
 const { runInlineTest } = require('jscodeshift/dist/testUtils');
 
-// $FlowFixMe
+// $FlowFixMe - in require it should be a string litteral
 const transformFn = require(path.resolve(__dirname, '..', 'src', 'index.js')); // eslint-disable-line
 
 function getFixtureFiles() {

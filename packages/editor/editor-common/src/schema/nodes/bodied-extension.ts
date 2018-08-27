@@ -4,7 +4,7 @@ export type ExtensionLayout = 'default' | 'wide' | 'full-width';
 /**
  * @name bodiedExtension_node
  */
-export interface Definition {
+export interface BodiedExtensionDefinition {
   type: 'bodiedExtension';
   attrs: {
     /**
@@ -26,9 +26,10 @@ export const bodiedExtension: NodeSpec = {
   inline: false,
   group: 'block',
   content:
-    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | mediaSingle | applicationCard | decisionList | taskList | table | extension)+',
+    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | mediaSingle | applicationCard | decisionList | taskList | table | blockCard | extension)+',
   defining: true,
   selectable: true,
+  isolating: true,
   attrs: {
     extensionType: { default: '' },
     extensionKey: { default: '' },
@@ -37,6 +38,11 @@ export const bodiedExtension: NodeSpec = {
     layout: { default: 'default' },
   },
   parseDOM: [
+    {
+      context: 'bodiedExtension//',
+      tag: '[data-node-type="bodied-extension"]',
+      skip: true,
+    },
     {
       tag: '[data-node-type="bodied-extension"]',
       getAttrs: (dom: HTMLElement) => ({

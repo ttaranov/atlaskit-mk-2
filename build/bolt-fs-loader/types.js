@@ -4,6 +4,7 @@ export type File = {
   type: 'file',
   id: string,
   path: string,
+  uid: string,
 };
 
 export type Directory = {

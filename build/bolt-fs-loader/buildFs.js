@@ -4,14 +4,14 @@
 import type { Directory, File } from './types';
 */
 
-const path = require('path');
+const nodePath = require('path');
 
 function dir(id /*: string */, path /*: string */ = '') {
   return { type: 'dir', id, path, children: [] };
 }
 
-function file(id /*: string */, path /*: string */) {
-  return { type: 'file', id, path };
+function file(id /*: string */, path /*: string */, rootDir /*: string */) {
+  return { type: 'file', id, path, uid: nodePath.relative(rootDir, path) };
 }
 
 function findInDir(dir /*: Directory */, id /*: string */) {
@@ -31,15 +31,23 @@ function appendToDir(dir /*: Directory */, child /*: Directory | File */) {
 function buildFs(
   curDir /*: Directory */,
   [seg, ...restSegments] /*: Array<string> */,
+  rootDir /*: string */,
 ) {
   if (!seg) return curDir;
 
   let item = findInDir(curDir, seg);
   if (item && item.type === 'file') return curDir;
   if (!restSegments || !restSegments.length)
-    return appendToDir(curDir, file(seg, path.join(curDir.path, seg)));
+    return appendToDir(
+      curDir,
+      file(seg, nodePath.join(curDir.path, seg), rootDir),
+    );
 
-  item = buildFs(item || dir(seg, path.join(curDir.path, seg)), restSegments);
+  item = buildFs(
+    item || dir(seg, nodePath.join(curDir.path, seg)),
+    restSegments,
+    rootDir,
+  );
   return appendToDir(curDir, item);
 }
 

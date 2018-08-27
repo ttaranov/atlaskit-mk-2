@@ -9,9 +9,9 @@ import {
 } from '../../../../src/newgen/viewers/doc/pdfRenderer';
 import { ZoomControls } from '../../../../src/newgen/zoomControls';
 import { Spinner } from '../../../../src/newgen/loading';
-import { ErrorMessage } from '../../../../src/newgen/styled';
+import { ErrorMessage } from '../../../../src/newgen/error';
 
-function createFixture(documentPromise) {
+function createFixture(documentPromise: Promise<any>) {
   const onClose = jest.fn();
   pdfjsLib.getDocument = jest.fn(() => ({
     promise: documentPromise,
@@ -19,6 +19,7 @@ function createFixture(documentPromise) {
   PDFJSViewer.PDFViewer = jest.fn(() => {
     return {
       setDocument: jest.fn(),
+      firstPagePromise: new Promise(() => {}),
     };
   });
   const el = mount(<PDFRenderer src={''} onClose={onClose} />);
@@ -26,8 +27,8 @@ function createFixture(documentPromise) {
 }
 
 describe('PDFRenderer', () => {
-  let originalGetDocument;
-  let originalViewer;
+  let originalGetDocument: any;
+  let originalViewer: any;
   beforeEach(() => {
     originalGetDocument = pdfjsLib.getDocument;
     originalViewer = PDFJSViewer.PDFViewer;
@@ -67,7 +68,13 @@ describe('PDFRenderer', () => {
     // wait for promise rejection ignoring the error
     await failedDocumentPromise.catch(() => {});
     el.update();
-    expect(el.find(ErrorMessage)).toHaveLength(1);
+
+    const errorMessage = el.find(ErrorMessage);
+    expect(errorMessage).toHaveLength(1);
+    expect(errorMessage.text()).toContain(
+      "We couldn't generate a preview for this file",
+    );
+    expect(errorMessage.find(Button)).toHaveLength(0);
   });
 
   it('MSW-700: clicking on background of DocViewer does not close it', async () => {

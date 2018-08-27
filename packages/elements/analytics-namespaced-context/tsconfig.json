@@ -1,0 +1,9 @@
+{
+  "extends": "../../../tsconfig.fabric.json",
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.tsx",
+    "./docs/**/*.ts",
+    "./docs/**/*.tsx",
+  ]
+}

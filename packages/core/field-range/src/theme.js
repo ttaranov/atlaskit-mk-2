@@ -15,14 +15,14 @@ export const thumb = {
 export const track = {
   default: {
     lower: colors.B400,
-    upper: colors.N30A,
+    upper: colors.N30,
   },
   disabled: {
     lower: colors.N50,
-    upper: colors.N30A,
+    upper: colors.N30,
   },
   hover: {
     lower: colors.B300,
-    upper: colors.N40A,
+    upper: colors.N40,
   },
 };

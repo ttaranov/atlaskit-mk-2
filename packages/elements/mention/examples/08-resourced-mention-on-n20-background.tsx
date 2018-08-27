@@ -5,7 +5,7 @@ import { onMentionEvent } from '../example-helpers/index';
 import {
   mockMentionData as mentionData,
   mockMentionProvider as mentionProvider,
-} from '../__tests__/_test-helpers';
+} from '../src/__tests__/unit/_test-helpers';
 import { akColorN20 } from '@atlaskit/util-shared-styles';
 import ResourcedMention from '../src/components/Mention/ResourcedMention';
 

@@ -3,13 +3,10 @@ import { colors, themed } from '@atlaskit/theme';
 
 // The following are the name for color mappings in @atlaskit/themes
 // The exports are the functions, not the objects, so could not be used here
-const codeBlock = { light: colors.N20, dark: colors.DN80 };
-const hover = { light: colors.N20, dark: colors.DN30 };
 const disabled = { light: colors.N20, dark: colors.DN20 };
 // For validation red is the new 'yellow' which was { light: colors.Y300, dark: colors.Y300 }
 const red = { light: colors.R400, dark: colors.R400 };
-// linkOutline has been altered based on the colors in the text-field spec
-const linkOutline = { light: colors.B100, dark: colors.B75 };
+
 // The following do not yet have a darkmode 'map': N20A, N10
 
 export const getBackgroundColor = themed('appearance', {
@@ -29,33 +26,25 @@ export const getBackgroundColorFocus = themed('appearance', {
 });
 
 export const getBackgroundColorHover = themed('appearance', {
-  standard: hover,
+  standard: { light: colors.N30, dark: colors.DN30 },
   disabled,
-  invalid: hover,
-  subtle: hover,
+  invalid: { light: colors.N30, dark: colors.DN30 },
+  subtle: { light: colors.N30, dark: colors.DN30 },
   none: { light: 'transparent', dark: 'transparent' },
 });
 
 export const getBorderColor = themed('appearance', {
-  standard: codeBlock,
-  disabled: { light: colors.N20A, dark: colors.DN20A },
+  standard: { light: colors.N40, dark: colors.DN40 },
+  disabled: { light: colors.N40, dark: colors.DN40 },
   invalid: red,
   subtle: { light: 'transparent', dark: 'transparent' },
   none: { light: 'transparent', dark: 'transparent' },
 });
 
 export const getBorderColorFocus = themed('appearance', {
-  standard: linkOutline,
-  disabled: { light: colors.N20A, dark: colors.DN20A },
-  invalid: linkOutline,
-  subtle: linkOutline,
-  none: { light: 'transparent', dark: 'transparent' },
-});
-
-export const getBorderColorHover = themed('appearance', {
-  standard: codeBlock,
-  disabled: { light: colors.N20A, dark: colors.DN20A },
-  invalid: red,
-  subtle: codeBlock,
+  standard: { light: colors.B100, dark: colors.B75 },
+  disabled: { light: colors.B100, dark: colors.B75 },
+  invalid: { light: colors.B100, dark: colors.B75 },
+  subtle: { light: colors.B100, dark: colors.B75 },
   none: { light: 'transparent', dark: 'transparent' },
 });

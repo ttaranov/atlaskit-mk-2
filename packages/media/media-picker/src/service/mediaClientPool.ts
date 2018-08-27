@@ -5,17 +5,14 @@ export class MediaClientPool {
   private clients: { [collection: string]: MediaClient } = {};
   private clientForAbsentCollection?: MediaClient;
 
-  constructor(
-    private readonly apiUrl: string,
-    private readonly authProvider: AuthProvider,
-  ) {}
+  constructor(private readonly authProvider: AuthProvider) {}
 
   getMediaClient = (collection?: string): MediaClient => {
     return this.getStoredClient(collection) || this.createNewClient(collection);
   };
 
   private createNewClient = (collection?: string): MediaClient => {
-    const client = new MediaClient(this.apiUrl, this.authProvider, collection);
+    const client = new MediaClient(this.authProvider, collection);
     this.setClient(client, collection);
     return client;
   };

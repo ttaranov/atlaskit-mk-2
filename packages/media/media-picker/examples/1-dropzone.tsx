@@ -4,7 +4,6 @@ import { Component } from 'react';
 import {
   userAuthProvider,
   defaultMediaPickerAuthProvider,
-  userAuthProviderBaseURL,
 } from '@atlaskit/media-test-helpers';
 import Button from '@atlaskit/button';
 import Toggle from '@atlaskit/toggle';
@@ -45,11 +44,9 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
     this.setState({ isFetchingLastItems: true });
 
     userAuthProvider()
-      .then(({ clientId, token }) => {
+      .then(({ clientId, token, baseUrl }) => {
         const queryParams = `client=${clientId}&token=${token}&limit=5&details=full&sortDirection=desc`;
-        return fetch(
-          `${userAuthProviderBaseURL}/collection/recents/items?${queryParams}`,
-        );
+        return fetch(`${baseUrl}/collection/recents/items?${queryParams}`);
       })
       .then(r => r.json())
       .then(data => {
@@ -64,7 +61,6 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
   createDropzone() {
     const { isConnectedToUsersCollection } = this.state;
     const context = ContextFactory.create({
-      serviceHost: userAuthProviderBaseURL,
       authProvider: defaultMediaPickerAuthProvider,
       userAuthProvider: isConnectedToUsersCollection
         ? userAuthProvider

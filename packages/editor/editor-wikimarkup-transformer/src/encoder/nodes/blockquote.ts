@@ -6,7 +6,5 @@ export const blockquote: NodeEncoder = (node: PMNode): string => {
   node.forEach(n => {
     result.push(encode(n));
   });
-  return `{quote}
-${result.join('\n\n')}
-{quote}`;
+  return `{quote}${result.join('\n\n')}{quote}`;
 };

@@ -1,5 +1,5 @@
 export class MarkState {
-  markName: string;
+  name: string;
   active: boolean;
   enabled: boolean;
 }
@@ -7,37 +7,37 @@ export class MarkState {
 export function valueOf(state): MarkState[] {
   let states: MarkState[] = [
     {
-      markName: 'strong',
+      name: 'strong',
       active: state.strongActive,
       enabled: !state.strongDisabled,
     },
     {
-      markName: 'em',
+      name: 'em',
       active: state.emActive,
       enabled: !state.emDisabled,
     },
     {
-      markName: 'code',
+      name: 'code',
       active: state.codeActive,
       enabled: !state.codeDisabled,
     },
     {
-      markName: 'underline',
+      name: 'underline',
       active: state.underlineActive,
       enabled: !state.underlineDisabled,
     },
     {
-      markName: 'strike',
+      name: 'strike',
       active: state.strikeActive,
       enabled: !state.strongDisabled,
     },
     {
-      markName: 'sup',
+      name: 'sup',
       active: state.superscriptActive,
       enabled: !state.superscriptDisabled,
     },
     {
-      markName: 'sub',
+      name: 'sub',
       active: state.subscriptActive,
       enabled: !state.subscriptDisabled,
     },

@@ -33,7 +33,8 @@ const packageDirs: Directory = fs.getById(dirs, 'packages');
 
 for (const child of fs.getDirectories(packageDirs.children)) {
   const children = child.children.filter(pkg => !isInternal(child.id, pkg.id));
-  publicPackages.children.push(Object.assign({}, child, { children }));
+  if (children.length > 0)
+    publicPackages.children.push(Object.assign({}, child, { children }));
 }
 
 export const getConfig = (groupId: string, pkgId: string) => {

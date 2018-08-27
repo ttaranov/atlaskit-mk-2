@@ -2,12 +2,13 @@ import * as React from 'react';
 import EditorCodeIcon from '@atlaskit/icon/glyph/editor/code';
 import { codeBlock } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
-import { plugin, stateKey, CodeBlockState } from './pm-plugins/main';
+import { plugin, stateKey, ActiveCodeBlock } from './pm-plugins/main';
 import keymap from './pm-plugins/keymaps';
 import ideUX from './pm-plugins/ide-ux';
 import LanguagePicker from './ui/LanguagePicker';
 import WithPluginState from '../../ui/WithPluginState';
 import { setNodeAttributes, deleteNodeAtPos } from './commands';
+import { focusStateKey } from '../base/pm-plugins/focus-handler';
 
 export interface CodeBlockOptions {
   enableKeybindingsForIDE?: boolean;
@@ -16,17 +17,23 @@ export interface CodeBlockOptions {
 const codeBlockPlugin = (options: CodeBlockOptions = {}) =>
   ({
     nodes() {
-      return [{ name: 'codeBlock', node: codeBlock, rank: 800 }];
+      return [{ name: 'codeBlock', node: codeBlock }];
     },
 
     pmPlugins() {
       return [
-        { rank: 700, plugin: ({ dispatch }) => plugin(dispatch) },
         {
-          rank: 710,
+          name: 'codeBlock',
+          plugin: ({ dispatch }) => plugin(dispatch),
+        },
+        {
+          name: 'codeBlockIDEKeyBindings',
           plugin: () => (options.enableKeybindingsForIDE ? ideUX : undefined),
         },
-        { rank: 720, plugin: ({ schema }) => keymap(schema) },
+        {
+          name: 'codeBlockKeyMap',
+          plugin: ({ schema }) => keymap(schema),
+        },
       ];
     },
 
@@ -45,11 +52,25 @@ const codeBlockPlugin = (options: CodeBlockOptions = {}) =>
       };
       return (
         <WithPluginState
-          plugins={{ codeBlockState: stateKey }}
-          render={({ codeBlockState }: { codeBlockState: CodeBlockState }) => {
-            if (codeBlockState.activeCodeBlock) {
-              const { pos, node } = codeBlockState.activeCodeBlock;
+          plugins={{
+            activeCodeBlock: stateKey,
+            isEditorFocused: focusStateKey,
+          }}
+          render={({
+            activeCodeBlock,
+            isEditorFocused,
+          }: {
+            activeCodeBlock: ActiveCodeBlock;
+            isEditorFocused: boolean;
+          }) => {
+            if (activeCodeBlock) {
+              const { pos, node } = activeCodeBlock;
               const codeBlockDOM = domAtPos(pos) as HTMLElement;
+
+              if (!codeBlockDOM) {
+                return null;
+              }
+
               const setLanguage = (language: string) => {
                 setNodeAttributes(pos, { language })(view.state, view.dispatch);
                 view.focus();
@@ -62,7 +83,7 @@ const codeBlockPlugin = (options: CodeBlockOptions = {}) =>
                   setLanguage={setLanguage}
                   deleteCodeBlock={deleteCodeBlock}
                   activeLanguage={node.attrs.language}
-                  isEditorFocused={codeBlockState.isEditorFocused}
+                  isEditorFocused={isEditorFocused}
                   popupsMountPoint={popupsMountPoint}
                   popupsBoundariesElement={popupsBoundariesElement}
                 />
@@ -78,6 +99,7 @@ const codeBlockPlugin = (options: CodeBlockOptions = {}) =>
       quickInsert: [
         {
           title: 'Code block',
+          priority: 700,
           keywords: ['javascript', 'typescript'],
           icon: () => <EditorCodeIcon label="Code block" />,
           action(insert, state) {

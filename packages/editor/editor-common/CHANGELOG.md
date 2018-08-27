@@ -1,5 +1,378 @@
 # @atlaskit/editor-common
 
+## 14.0.11
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/profilecard@4.0.8
+  - @atlaskit/editor-test-helpers@6.0.3
+  - @atlaskit/mention@15.0.6
+  - @atlaskit/emoji@39.1.1
+  - @atlaskit/editor-json-transformer@4.0.6
+  - @atlaskit/media-card@32.0.5
+
+## 14.0.10
+- [patch] Updated dependencies [dd91bcf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd91bcf)
+  - @atlaskit/emoji@39.1.0
+
+## 14.0.9
+- [patch] Fixes renderer tables for Mobile [7f1ef74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7f1ef74)
+- [none] Updated dependencies [7f1ef74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7f1ef74)
+
+## 14.0.8
+- [patch] ED-5178: added card node to default schema [51e7446](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51e7446)
+- [none] Updated dependencies [51e7446](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51e7446)
+  - @atlaskit/editor-test-helpers@6.0.2
+
+## 14.0.7
+- [patch] Updated dependencies [16971e9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/16971e9)
+  - @atlaskit/editor-test-helpers@6.0.1
+
+## 14.0.6
+- [patch] ED-5190: fixed mediaSingle styles in renderer [4f09dea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4f09dea)
+- [none] Updated dependencies [4f09dea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4f09dea)
+
+## 14.0.5
+- [patch] ED-4824: added renderer support for smart cards [7cf0a78](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7cf0a78)
+- [none] Updated dependencies [7cf0a78](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7cf0a78)
+
+## 14.0.4
+- [patch] ED-4421 ADF Validator [fd7e953](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fd7e953)
+- [none] Updated dependencies [fd7e953](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fd7e953)
+  - @atlaskit/json-schema-generator@1.1.0
+
+## 14.0.3
+- [patch] Fixed bodied-extension to not split when pressing enter in middle empty paragraph [4c0ecd7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4c0ecd7)
+- [none] Updated dependencies [4c0ecd7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4c0ecd7)
+
+## 14.0.2
+- [patch] Updated dependencies [79f780a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/79f780a)
+
+## 14.0.1
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/media-card@32.0.1
+  - @atlaskit/profilecard@4.0.4
+  - @atlaskit/mention@15.0.5
+  - @atlaskit/emoji@39.0.1
+  - @atlaskit/icon@13.2.4
+
+## 14.0.0
+
+
+
+
+
+- [none] Updated dependencies [597e0bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/597e0bd)
+  - @atlaskit/profilecard@4.0.3
+  - @atlaskit/emoji@39.0.0
+  - @atlaskit/editor-json-transformer@4.0.4
+  - @atlaskit/editor-test-helpers@6.0.0
+- [none] Updated dependencies [61df453](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/61df453)
+  - @atlaskit/profilecard@4.0.3
+  - @atlaskit/editor-test-helpers@6.0.0
+  - @atlaskit/emoji@39.0.0
+  - @atlaskit/editor-json-transformer@4.0.4
+- [none] Updated dependencies [812a39c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/812a39c)
+  - @atlaskit/profilecard@4.0.3
+  - @atlaskit/emoji@39.0.0
+  - @atlaskit/editor-json-transformer@4.0.4
+  - @atlaskit/editor-test-helpers@6.0.0
+- [none] Updated dependencies [c8eb097](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8eb097)
+  - @atlaskit/profilecard@4.0.3
+  - @atlaskit/editor-test-helpers@6.0.0
+  - @atlaskit/emoji@39.0.0
+  - @atlaskit/editor-json-transformer@4.0.4
+- [major] Updated dependencies [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+  - @atlaskit/media-core@23.0.0
+  - @atlaskit/emoji@39.0.0
+  - @atlaskit/profilecard@4.0.3
+  - @atlaskit/editor-json-transformer@4.0.4
+  - @atlaskit/media-card@32.0.0
+  - @atlaskit/editor-test-helpers@6.0.0
+
+## 13.2.8
+- [patch] Updated dependencies [59ccb09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59ccb09)
+  - @atlaskit/media-card@31.3.0
+
+## 13.2.7
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/media-card@31.2.1
+  - @atlaskit/profilecard@4.0.2
+  - @atlaskit/mention@15.0.2
+  - @atlaskit/emoji@38.0.5
+  - @atlaskit/editor-json-transformer@4.0.3
+  - @atlaskit/editor-test-helpers@5.1.2
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/media-core@22.2.1
+
+## 13.2.6
+- [patch] Bump prosemirror-model to 1.6 in order to use toDebugString on Text node spec [fdd5c5d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd5c5d)
+- [none] Updated dependencies [fdd5c5d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd5c5d)
+  - @atlaskit/editor-test-helpers@5.1.1
+  - @atlaskit/editor-json-transformer@4.0.2
+
+## 13.2.5
+- [patch] When copying a table respect the table layout and cell attributes. ED-4947 [d25b42c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d25b42c)
+- [none] Updated dependencies [d25b42c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d25b42c)
+
+## 13.2.4
+- [patch] ED-4995: added support for the rest of the page layout types in the renderer [9d9acfa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d9acfa)
+- [none] Updated dependencies [9d9acfa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d9acfa)
+
+## 13.2.3
+- [patch] Updated dependencies [3485c00](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3485c00)
+  - @atlaskit/media-core@22.2.0
+  - @atlaskit/media-card@31.1.1
+
+## 13.2.2
+- [patch] ED-5033, fixes for multiple date related issues. [c9911e0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9911e0)
+- [patch] Updated dependencies [c9911e0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c9911e0)
+
+## 13.2.1
+- [patch] Updated dependencies [fad25ec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fad25ec)
+  - @atlaskit/media-core@22.1.0
+  - @atlaskit/media-card@31.1.0
+  - @atlaskit/editor-test-helpers@5.0.3
+
+## 13.2.0
+
+
+
+
+- [patch] Updated dependencies [fa6f865](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fa6f865)
+  - @atlaskit/media-card@31.0.0
+- [none] Updated dependencies [fdd03d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd03d8)
+  - @atlaskit/media-card@31.0.0
+- [patch] Updated dependencies [49c8425](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49c8425)
+  - @atlaskit/media-card@31.0.0
+- [minor] Updated dependencies [3476e01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3476e01)
+  - @atlaskit/media-card@31.0.0
+
+## 13.1.0
+- [minor] Updated dependencies [f6bf6c8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f6bf6c8)
+  - @atlaskit/mention@15.0.0
+
+## 13.0.11
+- [patch] quick fix for invalid codeBlock throwing errors. We should handle it in a better way. Rifat is working on a proper solution [7d549c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d549c4)
+- [none] Updated dependencies [7d549c4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d549c4)
+
+## 13.0.10
+- [patch] Fix deleting the panel macro crashes the page [f0a4fb9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0a4fb9)
+- [none] Updated dependencies [f0a4fb9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f0a4fb9)
+
+## 13.0.9
+- [patch] ED-4199, Adding support for column layout in renderer. [51ccf5f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51ccf5f)
+- [none] Updated dependencies [51ccf5f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51ccf5f)
+
+## 13.0.8
+- [patch] FS-2816 - Prevent clicks in pop ups from triggering focus of the message editor [247855f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/247855f)
+- [none] Updated dependencies [247855f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/247855f)
+
+## 13.0.7
+- [patch] Updated dependencies [b1e8a47](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1e8a47)
+
+## 13.0.6
+- [patch] Fix popup reposition error on scroll and resize and karma test [aeec6b8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aeec6b8)
+- [none] Updated dependencies [aeec6b8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aeec6b8)
+
+## 13.0.5
+- [patch] New floating toolbar for Panel [4d528ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4d528ab)
+- [none] Updated dependencies [4d528ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4d528ab)
+
+## 13.0.4
+- [patch] Fallback to use containerId from MentionResourceConfig if ContextIdentifier promise fails [5ecb9a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ecb9a7)
+- [patch] add support for childObjectId in ContextIdentifiers and pass it to the mention service endpoints [6e31eb6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e31eb6)
+- [none] Updated dependencies [5ecb9a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ecb9a7)
+  - @atlaskit/mention@14.0.2
+  - @atlaskit/editor-test-helpers@5.0.2
+- [patch] Updated dependencies [6e31eb6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e31eb6)
+  - @atlaskit/mention@14.0.2
+  - @atlaskit/editor-test-helpers@5.0.2
+
+## 13.0.3
+- [patch] Improves type coverage by removing casts to any [8928280](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8928280)
+- [none] Updated dependencies [8928280](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8928280)
+
+## 13.0.2
+- [patch] ED-4676, text in table header should be bold y default. [1bf849c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1bf849c)
+- [patch] Updated dependencies [1bf849c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1bf849c)
+
+## 13.0.1
+- [patch] ED-5063 always render tables to full width of container [4342d93](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4342d93)
+- [none] Updated dependencies [4342d93](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4342d93)
+
+## 13.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/media-card@30.0.0
+  - @atlaskit/profilecard@4.0.0
+  - @atlaskit/editor-json-transformer@4.0.0
+  - @atlaskit/editor-test-helpers@5.0.0
+  - @atlaskit/mention@14.0.0
+  - @atlaskit/emoji@38.0.0
+  - @atlaskit/media-core@22.0.0
+  - @atlaskit/icon@13.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/media-card@30.0.0
+  - @atlaskit/profilecard@4.0.0
+  - @atlaskit/mention@14.0.0
+  - @atlaskit/emoji@38.0.0
+  - @atlaskit/editor-json-transformer@4.0.0
+  - @atlaskit/editor-test-helpers@5.0.0
+  - @atlaskit/media-core@22.0.0
+  - @atlaskit/icon@13.0.0
+
+## 12.0.0
+
+- [major] Refactor existing 'paste' slice handling code, to use common utilities. Remove unused linkifySlice export from editor-common. [5958588](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5958588)
+- [none] Updated dependencies [5f6ec84](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5f6ec84)
+  - @atlaskit/editor-test-helpers@4.2.4
+  - @atlaskit/editor-json-transformer@3.1.8
+- [none] Updated dependencies [5958588](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5958588)
+  - @atlaskit/editor-test-helpers@4.2.4
+  - @atlaskit/editor-json-transformer@3.1.8
+
+## 11.4.6
+
+
+
+- [patch] Updated dependencies [c98857e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c98857e)
+  - @atlaskit/mention@13.1.10
+  - @atlaskit/editor-test-helpers@4.2.3
+- [patch] Updated dependencies [8a125a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a125a7)
+  - @atlaskit/mention@13.1.10
+  - @atlaskit/editor-test-helpers@4.2.3
+- [patch] Updated dependencies [cacfb53](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cacfb53)
+  - @atlaskit/mention@13.1.10
+  - @atlaskit/editor-test-helpers@4.2.3
+
+## 11.4.5
+- [patch] Updated dependencies [6f51fdb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6f51fdb)
+
+## 11.4.4
+
+
+- [patch] Updated dependencies [f897c79](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f897c79)
+  - @atlaskit/emoji@37.0.0
+- [none] Updated dependencies [cacf096](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cacf096)
+  - @atlaskit/emoji@37.0.0
+
+## 11.4.3
+- [patch] ED-5034 unify full-width sizes of media, tables and extensions [dac304d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dac304d)
+- [none] Updated dependencies [dac304d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dac304d)
+
+## 11.4.2
+- [patch] Updated dependencies [9a1b6a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9a1b6a2)
+  - @atlaskit/media-card@29.1.9
+
+## 11.4.1
+- [patch] FS-1704 - Bug fix - copy and pasting of rendered actions/decisions into the editor [9d47846](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d47846)
+- [none] Updated dependencies [9d47846](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9d47846)
+
+## 11.4.0
+- [minor] Add @atlaskit/adf-utils package [dd2efd5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd2efd5)
+- [none] Updated dependencies [dd2efd5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd2efd5)
+
+## 11.3.14
+- [patch] Replace Portal component with ReactDOM.createPortal [17b638b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/17b638b)
+- [none] Updated dependencies [17b638b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/17b638b)
+
+## 11.3.13
+- [patch] ED-4420: added unsupported nodes [f33ac3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f33ac3c)
+- [none] Updated dependencies [f33ac3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f33ac3c)
+
+## 11.3.12
+
+
+- [none] Updated dependencies [8c711bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c711bd)
+  - @atlaskit/editor-test-helpers@4.2.1
+  - @atlaskit/emoji@36.0.2
+- [patch] Updated dependencies [42ee1ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42ee1ea)
+  - @atlaskit/media-core@21.0.0
+  - @atlaskit/emoji@36.0.2
+  - @atlaskit/media-card@29.1.8
+  - @atlaskit/editor-test-helpers@4.2.1
+
+## 11.3.11
+- [patch] Move removing nulls to the transformer instead of only in the tests. ED-4496 [617d8c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/617d8c1)
+- [none] Updated dependencies [617d8c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/617d8c1)
+  - @atlaskit/editor-json-transformer@3.1.6
+
+## 11.3.10
+- [patch] Updated dependencies [d7dca64](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d7dca64)
+  - @atlaskit/mention@13.1.4
+
+## 11.3.9
+
+
+- [patch] [refactor] Use ParseRule->context to prevent pasting layoutColumn/layoutSections inside each other. [541341e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/541341e)
+- [patch] [refactor] Use ParseRule->context to prevent nesting bodiedExtensions on paste. [fe383b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fe383b4)
+- [none] Updated dependencies [2625ade](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2625ade)
+  - @atlaskit/editor-test-helpers@4.2.0
+- [none] Updated dependencies [e3c6479](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e3c6479)
+  - @atlaskit/editor-test-helpers@4.2.0
+- [none] Updated dependencies [541341e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/541341e)
+  - @atlaskit/editor-test-helpers@4.2.0
+- [none] Updated dependencies [fe383b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fe383b4)
+  - @atlaskit/editor-test-helpers@4.2.0
+
+## 11.3.8
+- [patch] Updated dependencies [8d5053e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d5053e)
+  - @atlaskit/emoji@36.0.1
+  - @atlaskit/mention@13.1.3
+  - @atlaskit/editor-json-transformer@3.1.5
+  - @atlaskit/editor-test-helpers@4.1.9
+
+## 11.3.7
+- [patch] Updated dependencies [0cf2f52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0cf2f52)
+  - @atlaskit/emoji@36.0.0
+  - @atlaskit/mention@13.1.2
+  - @atlaskit/editor-json-transformer@3.1.4
+  - @atlaskit/editor-test-helpers@4.1.8
+
+## 11.3.6
+- [patch] Bitbucket images were displaying at 100% of the container, and not respect max-width of the image. ED-4946 [370c812](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/370c812)
+- [none] Updated dependencies [370c812](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/370c812)
+  - @atlaskit/media-card@29.1.6
+
+## 11.3.5
+- [patch] Updated dependencies [c57e9c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c57e9c1)
+  - @atlaskit/media-card@29.1.5
+  - @atlaskit/emoji@35.1.4
+  - @atlaskit/editor-test-helpers@4.1.7
+  - @atlaskit/media-core@20.0.0
+
+## 11.3.4
+- [patch] ED-4934: fix table styles by avoiding circular imports [d1375ee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d1375ee)
+- [none] Updated dependencies [d1375ee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d1375ee)
+
+## 11.3.3
+- [patch] Fixing the cursor navigation between inline nodes [b9e3213](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b9e3213)
+- [none] Updated dependencies [b9e3213](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b9e3213)
+
+## 11.3.2
+- [patch] ED-4520, date renderer should render UTC value of date. [28e3c31](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/28e3c31)
+- [none] Updated dependencies [28e3c31](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/28e3c31)
+
+## 11.3.1
+- [patch] ED-4924: fix table control styles [377ebeb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/377ebeb)
+- [none] Updated dependencies [377ebeb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/377ebeb)
+
+## 11.3.0
+- [minor] Remove pinned prosemirror-model@1.4.0 and move back to caret ranges for prosemirror-model@^1.5.0 [4faccc0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4faccc0)
+- [none] Updated dependencies [4faccc0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4faccc0)
+  - @atlaskit/editor-test-helpers@4.1.5
+  - @atlaskit/editor-json-transformer@3.1.3
+
+## 11.2.11
+- [patch] Removing unnecessary throw of error [bfa8b69](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bfa8b69)
+- [none] Updated dependencies [bfa8b69](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bfa8b69)
+
+## 11.2.10
+- [patch] Bump prosemirror-view to 1.3.3 to fix issue where newlines in code-blocks would vanish in IE11. (ED-4830) [fc5a082](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc5a082)
+- [none] Updated dependencies [fc5a082](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc5a082)
+  - @atlaskit/editor-test-helpers@4.1.4
+
 ## 11.2.9
 - [patch] ED-4741, adding support for date node in renderer. [2460f47](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2460f47)
 - [none] Updated dependencies [2460f47](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2460f47)

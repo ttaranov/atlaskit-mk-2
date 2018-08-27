@@ -2,24 +2,23 @@ import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
 import { isTableSelected, selectTable } from 'prosemirror-utils';
+import { Selection } from 'prosemirror-state';
 import { toolbarSize } from '../styles';
 import { CornerContainer, CornerButton } from './styles';
 import InsertColumnButton from '../ColumnControls/InsertColumnButton';
 import InsertRowButton from '../RowControls/InsertRowButton';
-import { getLineMarkerWidth } from '../utils';
-import {
-  checkIfHeaderColumnEnabled,
-  checkIfHeaderRowEnabled,
-  checkIfNumberColumnEnabled,
-} from '../../../utils';
 import { hoverTable, insertColumn, insertRow } from '../../../actions';
+import { getLineMarkerWidth } from '../utils';
 
 export interface Props {
   editorView: EditorView;
+  selection?: Selection;
   tableRef: HTMLElement;
-  resetHoverSelection: () => void;
-  scroll?: number;
+  clearHoverSelection: () => void;
   isTableInDanger?: boolean;
+  isHeaderColumnEnabled?: boolean;
+  isHeaderRowEnabled?: boolean;
+  isNumberColumnEnabled?: boolean;
 }
 
 export default class CornerControls extends Component<Props, any> {
@@ -31,12 +30,12 @@ export default class CornerControls extends Component<Props, any> {
     const {
       tableRef,
       editorView: { state },
-      scroll,
       isTableInDanger,
+      isHeaderRowEnabled,
+      isHeaderColumnEnabled,
+      isNumberColumnEnabled,
     } = this.props;
     const tableHeight = tableRef.offsetHeight;
-    const lineMarkerWidth = getLineMarkerWidth(tableRef, scroll!);
-
     return (
       <CornerContainer
         className={isTableSelected(state.selection) ? 'active' : ''}
@@ -44,24 +43,24 @@ export default class CornerControls extends Component<Props, any> {
         <CornerButton
           onClick={this.selectTable}
           onMouseOver={this.hoverTable}
-          onMouseOut={this.props.resetHoverSelection}
-          className={[
-            isTableInDanger ? 'danger' : '',
-            scroll && scroll > 0 ? 'scrolling' : '',
-          ].join(' ')}
+          onMouseOut={this.props.clearHoverSelection}
+          className={isTableInDanger ? 'danger' : ''}
         />
-        {!checkIfHeaderColumnEnabled(state) &&
-          !checkIfNumberColumnEnabled(state) && (
+        {!isHeaderColumnEnabled &&
+          !isNumberColumnEnabled && (
             <InsertColumnButton
               onClick={this.insertColumn}
               lineMarkerHeight={tableHeight + toolbarSize}
             />
           )}
-        {!checkIfHeaderRowEnabled(state) && (
+        {!isHeaderRowEnabled && (
           <InsertRowButton
             style={{ top: 2 }}
             onClick={this.insertRow}
-            lineMarkerWidth={lineMarkerWidth}
+            lineMarkerWidth={getLineMarkerWidth(
+              tableRef,
+              (tableRef.parentNode as HTMLElement).scrollLeft,
+            )}
           />
         )}
       </CornerContainer>

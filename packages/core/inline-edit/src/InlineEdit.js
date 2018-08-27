@@ -10,6 +10,9 @@ type State = {
 type DefaultProps = {
   label: string,
   readView: string,
+  editButtonLabel: string,
+  confirmButtonLabel: string,
+  cancelButtonLabel: string,
 };
 
 export default class InlineEditor extends Component<StatefulProps, State> {
@@ -20,6 +23,9 @@ export default class InlineEditor extends Component<StatefulProps, State> {
   static defaultProps: DefaultProps = {
     label: '',
     readView: '',
+    editButtonLabel: 'Edit',
+    confirmButtonLabel: 'Confirm',
+    cancelButtonLabel: 'Cancel',
   };
 
   onConfirm = () => {
@@ -49,6 +55,9 @@ export default class InlineEditor extends Component<StatefulProps, State> {
         onEditRequested={this.enterEditingMode}
         onConfirm={this.onConfirm}
         onCancel={this.onCancel}
+        editButtonLabel={this.props.editButtonLabel}
+        confirmButtonLabel={this.props.confirmButtonLabel}
+        cancelButtonLabel={this.props.cancelButtonLabel}
       />
     );
   }

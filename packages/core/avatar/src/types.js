@@ -1,13 +1,8 @@
 // @flow
-export type ChildrenType = any;
-export type ComponentType = any;
-export type ElementType = any;
-export type FunctionType = (...args: Array<any>) => mixed;
+import type { Node, ComponentType } from 'react';
 
 export type AppearanceType = 'circle' | 'square';
-export type PresenceType =
-  | ('online' | 'busy' | 'focus' | 'offline')
-  | ComponentType;
+export type PresenceType = ('online' | 'busy' | 'focus' | 'offline') | Node;
 
 export type SizeType =
   | 'xsmall'
@@ -35,9 +30,11 @@ export type AvatarPropTypesBase = {
   enableTooltip: boolean,
   /** Used to override the default border color of the presence indicator.
    Accepts any color argument that the border-color CSS property accepts. */
-  borderColor?: string | FunctionType,
-  /** A custom component to use instead of the default span. */
-  component?: ComponentType,
+  borderColor?: string | (() => mixed),
+  /** A custom component to use instead of the default span.
+   * A `className` prop is passed to the component which has classNames for all the default styles for the avatar.
+   * */
+  component?: ComponentType<*>,
 
   /** Provides a url for avatars being used as a link. */
   href?: string,

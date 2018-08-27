@@ -4,7 +4,7 @@ import { Inline } from './doc';
 /**
  * @name heading_node
  */
-export interface Definition {
+export interface HeadingDefinition {
   type: 'heading';
   /**
    * @minItems 0

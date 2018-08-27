@@ -1,42 +1,43 @@
 import { NodeSpec } from 'prosemirror-model';
 
 // Nodes
-import { Definition as Panel } from './panel';
-import { Definition as Paragraph } from './paragraph';
-import { Definition as Blockquote } from './blockquote';
-import { Definition as OrderedList } from './ordered-list';
-import { Definition as BulletList } from './bullet-list';
-import { Definition as Rule } from './rule';
-import { Definition as Heading } from './heading';
-import { Definition as CodeBlock } from './code-block';
-import { Definition as MediaGroup } from './media-group';
-import { Definition as MediaSingle } from './media-single';
-import { Definition as ApplicationCard } from './applicationCard';
-import { Definition as DecisionList } from './decision-list';
-import { Definition as TaskList } from './task-list';
-import { Table } from './tableNodes';
-import { Definition as Extension } from './extension';
-import { Definition as InlineExtension } from './inline-extension';
-import { Definition as BodiedExtension } from './bodied-extension';
+import { PanelDefinition as Panel } from './panel';
+import { ParagraphDefinition as Paragraph } from './paragraph';
+import { BlockQuoteDefinition as Blockquote } from './blockquote';
+import { OrderedListDefinition as OrderedList } from './ordered-list';
+import { BulletListDefinition as BulletList } from './bullet-list';
+import { RuleDefinition as Rule } from './rule';
+import { HeadingDefinition as Heading } from './heading';
+import { CodeBlockDefinition as CodeBlock } from './code-block';
+import { MediaGroupDefinition as MediaGroup } from './media-group';
+import { MediaSingleDefinition as MediaSingle } from './media-single';
+import { ApplicationCardDefinition as ApplicationCard } from './applicationCard';
+import { DecisionListDefinition as DecisionList } from './decision-list';
+import { TaskListDefinition as TaskList } from './task-list';
+import { TableDefinition as Table } from './tableNodes';
+import { ExtensionDefinition as Extension } from './extension';
+import { InlineExtensionDefinition as InlineExtension } from './inline-extension';
+import { BodiedExtensionDefinition as BodiedExtension } from './bodied-extension';
 
-import { Definition as Text } from './text';
-import { Definition as HardBreak } from './hard-break';
-import { Definition as Mention } from './mention';
-import { Definition as Emoji } from './emoji';
-import { Definition as Date } from './date';
-import { Definition as Placeholder } from './placeholder';
+import { TextDefinition as Text } from './text';
+import { HardBreakDefinition as HardBreak } from './hard-break';
+import { MentionDefinition as Mention } from './mention';
+import { EmojiDefinition as Emoji } from './emoji';
+import { DateDefinition as Date } from './date';
+import { PlaceholderDefinition as Placeholder } from './placeholder';
 import { InlineCardDefinition as InlineCard } from './inline-card';
+import { BlockCardDefinition as BlockCard } from './block-card';
 
 // Marks
-import { Definition as Link } from '../marks/link';
-import { Definition as Em } from '../marks/em';
-import { Definition as Strong } from '../marks/strong';
-import { Definition as Strike } from '../marks/strike';
-import { Definition as Code } from '../marks/code';
-import { Definition as SubSup } from '../marks/subsup';
-import { Definition as Underline } from '../marks/underline';
-import { Definition as TextColor } from '../marks/text-color';
-import { Definition as Action } from '../marks/action';
+import { LinkDefinition as Link } from '../marks/link';
+import { EmDefinition as Em } from '../marks/em';
+import { StrongDefinition as Strong } from '../marks/strong';
+import { StrikeDefinition as Strike } from '../marks/strike';
+import { CodeDefinition as Code } from '../marks/code';
+import { SubSupDefinition as SubSup } from '../marks/subsup';
+import { UnderlineDefinition as Underline } from '../marks/underline';
+import { TextColorDefinition as TextColor } from '../marks/text-color';
+import { ActionDefinition as Action } from '../marks/action';
 
 /**
  * @name top_level_node
@@ -59,6 +60,7 @@ export type TopLevel = Array<
   | Table
   | Extension
   | BodiedExtension
+  | BlockCard
 >;
 
 /**
@@ -80,6 +82,7 @@ export type TableCellContent = Array<
   | DecisionList
   | TaskList
   | Extension
+  | BlockCard
 >;
 
 // exclude Extension and BodiedExtension
@@ -103,6 +106,7 @@ export type ExtensionContent = Array<
   | TaskList
   | Table
   | Extension
+  | BlockCard
 >;
 
 /**
@@ -160,7 +164,7 @@ export type Inline = InlineFormattedText | InlineCode | InlineAtomic;
 /**
  * @name doc_node
  */
-export interface Doc {
+export interface DocNode {
   version: 1;
   type: 'doc';
   content: TopLevel;

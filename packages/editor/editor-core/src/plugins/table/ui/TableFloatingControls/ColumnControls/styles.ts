@@ -12,9 +12,7 @@ import {
   tableInsertColumnButtonSize,
   tableDeleteColumnButtonSize,
   tableBorderRadiusSize,
-  tableBorderSelectedColor,
   tableToolbarSize,
-  tableBorderDeleteColor,
   tableBorderColor,
 } from '../../styles';
 
@@ -40,7 +38,7 @@ export const ColumnControlsButtonWrap: ComponentClass<
 > = styled.div`
   position: relative;
   margin-right: -1px;
-  &:hover,
+
   &.active {
     z-index: 1;
   }
@@ -51,18 +49,11 @@ export const HeaderButton: ComponentClass<ButtonHTMLAttributes<{}>> = styled(
 )`
   border-right: 1px solid ${tableBorderColor};
   border-bottom: none;
-  height: ${tableToolbarSize - 1}px;
+  height: ${tableToolbarSize}px;
   width: 100%;
-
-  &:hover,
-  .active > &,
-  .tableHovered & {
-    border-bottom: 1px solid ${tableBorderSelectedColor};
-    height: ${tableToolbarSize}px;
-  }
-
-  .danger > & {
-    border-bottom: 1px solid ${tableBorderDeleteColor};
+  &:hover {
+    z-index: 1;
+    position: relative;
   }
 `;
 
@@ -88,7 +79,6 @@ export const DeleteColumnButtonWrap: ComponentClass<
   top: -${tableDeleteColumnButtonSize + 6}px;
   height: ${tableDeleteColumnButtonSize}px;
   width: ${tableDeleteColumnButtonSize}px;
-  z-index: 2;
   cursor: pointer;
   & > div {
     display: flex;

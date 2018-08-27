@@ -7,6 +7,7 @@ export default function Example() {
     <EditorContext>
       <Editor
         appearance="comment"
+        quickInsert={true}
         onSave={actions =>
           actions
             .getValue()

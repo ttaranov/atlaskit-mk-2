@@ -24,7 +24,7 @@ export interface JIRACustomEncoders {
 
 export interface ContextInfo {
   clientId: string;
-  serviceHost: string;
+  baseUrl: string;
   token: string;
   collection: string;
 }
@@ -80,7 +80,10 @@ export class JIRATransformer implements Transformer<string> {
     // JIRA encodes empty content as a single nbsp
     if (nodes.length === 1 && nodes[0].textContent === '\xa0') {
       const schemaNodes = this.schema.nodes;
-      return schemaNodes.doc.create({}, schemaNodes.paragraph.create());
+      return schemaNodes.doc.createChecked(
+        {},
+        schemaNodes.paragraph.createChecked(),
+      );
     }
 
     // Process through nodes in reverse (so deepest child elements are first).
@@ -229,7 +232,9 @@ export class JIRATransformer implements Transformer<string> {
       return specialsEncoded;
     }
 
-    const elem = this.doc.createElement(`h${node.attrs.level}`);
+    const { level } = node.attrs;
+    // @see ED-4708
+    const elem = this.doc.createElement(`h${level === 6 ? 5 : level}`);
     const anchor = this.doc.createElement('a');
     anchor.setAttribute('name', anchorNameEncode(node.textContent));
     elem.appendChild(anchor);
@@ -452,8 +457,8 @@ export class JIRATransformer implements Transformer<string> {
   }
 
   private buildURLWithContextInfo(fileId: string, contextInfo: ContextInfo) {
-    const { clientId, serviceHost, token, collection } = contextInfo;
-    return `${serviceHost}/file/${fileId}/image?token=${token}&client=${clientId}&collection=${collection}&width=200&height=200&mode=fit`;
+    const { clientId, baseUrl, token, collection } = contextInfo;
+    return `${baseUrl}/file/${fileId}/image?token=${token}&client=${clientId}&collection=${collection}&width=200&height=200&mode=fit`;
   }
 
   private isImageMimeType(mimeType?: string) {

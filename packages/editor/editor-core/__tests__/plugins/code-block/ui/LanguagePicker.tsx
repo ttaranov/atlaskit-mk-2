@@ -6,6 +6,7 @@ import { TrashToolbarButton } from '../../../../src/plugins/code-block/ui/Langua
 import LanguagePickerWithOutsideListeners, {
   LanguagePicker,
 } from '../../../../src/plugins/code-block/ui/LanguagePicker';
+import { analyticsService } from '../../../../src/analytics';
 
 describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
   let languagePicker: ReactWrapper<any, any>;
@@ -27,6 +28,21 @@ describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
 
   afterEach(() => {
     languagePicker.unmount();
+  });
+
+  describe('Tracking selection', () => {
+    it('should track the selected language', () => {
+      const trackSpy = jest.spyOn(analyticsService, 'trackEvent');
+      const onChange: Function = languagePicker.find(Select).prop('onChange');
+      onChange({
+        label: 'Javascript',
+        value: 'javascript',
+      });
+      expect(trackSpy).toHaveBeenCalledWith(
+        'atlassian.editor.codeblock.language.set',
+        { language: 'javascript' },
+      );
+    });
   });
 
   describe('#shouldComponentUpdate', () => {
@@ -96,9 +112,9 @@ describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
 
     it('should call setLanguage when dropdown item selected', () => {
       expect(setLanguageStub).toHaveBeenCalledTimes(0);
-      (languagePicker
-        .find(Select)
-        .instance() as any).select.select.selectOption({
+      console.log(languagePicker.find(Select).instance());
+      const onChange: Function = languagePicker.find(Select).prop('onChange');
+      onChange({
         label: 'Javascript',
         value: 'javascript',
       });
@@ -122,7 +138,7 @@ describe('@atlaskit/editor-core/ui/LanguagePickerWithOutsideListeners', () => {
         activeCodeBlockDOM={document.body}
         deleteCodeBlock={jest.fn()}
         setLanguage={jest.fn()}
-        isEditorFocused={true}
+        isEditorFocused
       />,
     );
     instance = wrapper.instance() as LanguagePickerWithOutsideListeners;

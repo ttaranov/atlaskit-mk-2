@@ -20,6 +20,7 @@ export default class Example extends React.Component<{}, State> {
         renderEditor={Editor => (
           <Editor
             appearance="comment"
+            quickInsert={true}
             onSave={() => alert('Saved!')}
             onCancel={this.toggleExpanded}
           />

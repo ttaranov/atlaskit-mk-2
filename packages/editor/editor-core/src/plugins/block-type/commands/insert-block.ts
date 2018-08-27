@@ -1,4 +1,4 @@
-import { NodeType } from 'prosemirror-model';
+import { NodeType, Node as PMNode } from 'prosemirror-model';
 import {
   TextSelection,
   NodeSelection,
@@ -37,12 +37,16 @@ export const insertBlock = (
 
   // If node has more content split at the end of autoformatting.
   let nodeHasMoreContent = false;
-  tr.doc.nodesBetween(start, start + currentNode!.nodeSize, (node, pos) => {
-    if (!nodeHasMoreContent && node.type === hardBreak) {
-      nodeHasMoreContent = true;
-      tr = tr.split(pos + 1).delete(pos, pos + 1);
-    }
-  });
+  tr.doc.nodesBetween(
+    start,
+    start + (currentNode as PMNode).nodeSize,
+    (node, pos) => {
+      if (!nodeHasMoreContent && node.type === hardBreak) {
+        nodeHasMoreContent = true;
+        tr = tr.split(pos + 1).delete(pos, pos + 1);
+      }
+    },
+  );
   if (nodeHasMoreContent) {
     currentNode = tr.doc.nodeAt(start + 1);
   }
@@ -53,10 +57,10 @@ export const insertBlock = (
   let depth;
   if (nodeType === blockquote) {
     depth = 3;
-    content = [paragraph.create({}, currentNode!.content)];
+    content = [paragraph.create({}, (currentNode as PMNode).content)];
   } else {
     depth = 2;
-    content = currentNode!.content;
+    content = (currentNode as PMNode).content;
   }
   const newNode = nodeType.create(attrs, content);
 

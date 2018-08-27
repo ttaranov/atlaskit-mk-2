@@ -6,7 +6,8 @@ import SkeletonContainerItem from './SkeletonContainerItem';
 import SkeletonNavigationItems from './styled/SkeletonNavigationItems';
 
 export type Props = {
-  isCollapsed: boolean,
+  isCollapsed?: boolean,
+  itemTextWidth?: string,
 };
 
 export default class SkeletonContainerItems extends Component<Props> {
@@ -15,14 +16,29 @@ export default class SkeletonContainerItems extends Component<Props> {
   };
 
   render() {
-    const { isCollapsed } = this.props;
+    const { isCollapsed, itemTextWidth } = this.props;
     return (
       <SkeletonNavigationItems>
-        <SkeletonContainerItem isCollapsed={isCollapsed} />
-        <SkeletonContainerItem isCollapsed={isCollapsed} />
-        <SkeletonContainerItem isCollapsed={isCollapsed} />
-        <SkeletonContainerItem isCollapsed={isCollapsed} />
-        <SkeletonContainerItem isCollapsed={isCollapsed} />
+        <SkeletonContainerItem
+          isCollapsed={isCollapsed}
+          itemTextWidth={itemTextWidth}
+        />
+        <SkeletonContainerItem
+          isCollapsed={isCollapsed}
+          itemTextWidth={itemTextWidth}
+        />
+        <SkeletonContainerItem
+          isCollapsed={isCollapsed}
+          itemTextWidth={itemTextWidth}
+        />
+        <SkeletonContainerItem
+          isCollapsed={isCollapsed}
+          itemTextWidth={itemTextWidth}
+        />
+        <SkeletonContainerItem
+          isCollapsed={isCollapsed}
+          itemTextWidth={itemTextWidth}
+        />
       </SkeletonNavigationItems>
     );
   }

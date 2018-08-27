@@ -7,8 +7,8 @@ import ShiftReturnHighlighted from '../assets/ShiftReturnHighlighted';
 export interface Props {
   href: string;
   resultId: string;
-  text: string;
-  icon: JSX.Element;
+  text: string | JSX.Element;
+  icon?: JSX.Element;
   type: string;
   isSelected?: boolean; // injected by quick-search
   showKeyboardLozenge?: boolean;

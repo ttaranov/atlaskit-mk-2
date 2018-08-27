@@ -1,7 +1,7 @@
 import { Schema } from 'prosemirror-model';
 import { parseString } from '../text';
 import { Token, TokenType } from './';
-import { parseWhitespace } from './whitespace';
+import { parseNewlineOnly } from './whitespace';
 
 const processState = {
   START: 0,
@@ -40,7 +40,7 @@ export function monospace(input: string, schema: Schema): Token {
       }
       case processState.BUFFER: {
         // the linebreak would break the monospace
-        const length = parseWhitespace(buffer, true);
+        const length = parseNewlineOnly(buffer);
         if (length) {
           return fallback();
         }

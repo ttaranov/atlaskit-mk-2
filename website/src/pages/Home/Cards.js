@@ -7,7 +7,7 @@ import debounce from 'lodash.debounce';
 
 import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import PackagesIcon from '@atlaskit/icon/glyph/component';
-import BlogIcon from '@atlaskit/icon/glyph/objects/24/blog';
+import BlogIcon from '@atlaskit/icon/glyph/objects/24/object-24-blog';
 import MediaDocIcon from '@atlaskit/icon/glyph/media-services/document';
 import CodeIcon from '@atlaskit/icon/glyph/code';
 

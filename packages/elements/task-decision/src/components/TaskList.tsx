@@ -14,10 +14,14 @@ export default class TaskList extends PureComponent<Props, {}> {
       return null;
     }
 
+    // Data attributes are required for copy and paste from rendered content
+    // to preserve the task
     return (
-      <ListWrapper>
+      <ListWrapper data-task-list-local-id="">
         {React.Children.map(children, (child, idx) => (
-          <li key={idx}>{child}</li>
+          <li key={idx} data-task-local-id="">
+            {child}
+          </li>
         ))}
       </ListWrapper>
     );

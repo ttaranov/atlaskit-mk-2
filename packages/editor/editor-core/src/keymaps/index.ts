@@ -10,6 +10,10 @@ export const toggleStrikethrough = makeKeyMapWithCommon(
   'Mod-Shift-s',
 );
 export const toggleCode = makeKeyMapWithCommon('Code', 'Mod-Shift-m');
+export const pastePlainText = makeKeyMapWithCommon(
+  'Paste Plain Text',
+  'Mod-Shift-v',
+);
 export const clearFormatting = makeKeyMapWithCommon(
   'Clear formatting',
   'Mod-\\',
@@ -193,43 +197,6 @@ export function findKeyMapForBrowser(kayMap: Keymap): string | undefined {
     return kayMap.windows;
   }
 }
-
-export const keyCodes: { [key: string]: number } = {
-  Enter: 13,
-  Backspace: 8,
-  Tab: 9,
-  Shift: 16,
-  Ctrl: 17,
-  Alt: 18,
-  Pause: 19,
-  CapsLock: 20,
-  Esc: 27,
-  Space: 32,
-  PageUp: 63276,
-  PageDown: 63277,
-  End: 63275,
-  Home: 63273,
-  Left: 63234,
-  Up: 63232,
-  Right: 63235,
-  Down: 63233,
-  PrintScrn: 44,
-  Insert: 63302,
-  Delete: 46,
-  ';': 186,
-  '=': 187,
-  Mod: 93,
-  '*': 106,
-  '-': 189,
-  '.': 190,
-  '/': 191,
-  ',': 188,
-  '`': 192,
-  '[': 219,
-  '\\': 220,
-  ']': 221,
-  "'": 222,
-};
 
 export const LEFT = 37;
 export const RIGHT = 39;

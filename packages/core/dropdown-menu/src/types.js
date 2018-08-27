@@ -87,6 +87,8 @@ type DropdownMenuBaseProps = {
    * Button component with an 'expand' icon, and the `trigger` prop contents inside the
    * button. */
   triggerType: 'default' | 'button',
+  /** Callback to know when the menu is correctly positioned after it is opened */
+  onPositioned?: Function,
 };
 
 export type OnOpenChangeArgs = {

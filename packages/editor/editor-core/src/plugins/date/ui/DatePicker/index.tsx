@@ -2,8 +2,9 @@ import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import {
   Popup,
-  timestampToDate,
-  timestampToIso,
+  timestampToUTCDate,
+  timestampToIsoFormat,
+  akEditorFloatingPanelZIndex,
 } from '@atlaskit/editor-common';
 import Calendar from '@atlaskit/calendar';
 import { akColorN60A, akBorderRadius } from '@atlaskit/util-shared-styles';
@@ -20,7 +21,7 @@ const calendarStyle = {
 
 export interface Props {
   element: HTMLElement | null;
-  onClickOutside: () => void;
+  closeDatePicker: () => void;
   onSelect: (date: DateType) => void;
 }
 
@@ -37,9 +38,9 @@ export default class DatePicker extends React.Component<Props, State> {
 
     const timestamp = props.element!.getAttribute('timestamp');
     if (timestamp) {
-      const { day, month, year } = timestampToDate(timestamp);
+      const { day, month, year } = timestampToUTCDate(timestamp);
       this.state = {
-        selected: [timestampToIso(timestamp)],
+        selected: [timestampToIsoFormat(timestamp)],
         day,
         month,
         year,
@@ -48,7 +49,7 @@ export default class DatePicker extends React.Component<Props, State> {
   }
 
   render() {
-    const { element, onClickOutside, onSelect } = this.props;
+    const { element, closeDatePicker, onSelect } = this.props;
     const timestamp = element!.getAttribute('timestamp');
     if (!timestamp) {
       return null;
@@ -58,8 +59,9 @@ export default class DatePicker extends React.Component<Props, State> {
       <PopupWithListeners
         target={element!}
         offset={[0, 8]}
-        handleClickOutside={onClickOutside}
-        handleEscapeKeydown={onClickOutside}
+        handleClickOutside={closeDatePicker}
+        handleEscapeKeydown={closeDatePicker}
+        zIndex={akEditorFloatingPanelZIndex + 1}
       >
         <Calendar
           onChange={this.handleChange}

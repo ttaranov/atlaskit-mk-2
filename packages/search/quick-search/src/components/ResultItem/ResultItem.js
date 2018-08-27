@@ -9,6 +9,7 @@ import {
   ResultItemCaption,
   ResultItemIcon,
   ResultItemTextAfter,
+  ResultItemSubText,
 } from './styled';
 
 const Item = withItemClick(withItemFocus(baseItem));
@@ -73,6 +74,10 @@ class ResultItem extends PureComponent<Props> {
       <ResultItemCaption>{this.props.caption}</ResultItemCaption>
     ) : null;
 
+    const wrappedSubText = this.props.subText ? (
+      <ResultItemSubText>{this.props.subText}</ResultItemSubText>
+    ) : null;
+
     const interactiveWrapperProps = {
       onClick: this.props.onClick,
       onMouseEnter: this.props.onMouseEnter,
@@ -84,7 +89,7 @@ class ResultItem extends PureComponent<Props> {
       <Item
         elemBefore={icon}
         elemAfter={after}
-        description={this.props.subText}
+        description={wrappedSubText}
         isSelected={this.props.isSelected}
         isCompact={this.props.isCompact}
         target={this.props.target}

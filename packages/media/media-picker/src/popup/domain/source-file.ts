@@ -3,11 +3,13 @@ import { Auth, isClientBasedAuth } from '@atlaskit/media-core';
 export type ClientBasedSourceFileOwner = {
   readonly id: string;
   readonly token: string;
+  readonly baseUrl: string;
 };
 
 export type AsapBasedSourceFileOwner = {
   readonly asapIssuer: string;
   readonly token: string;
+  readonly baseUrl: string;
 };
 
 export type SourceFileOwner =
@@ -25,6 +27,7 @@ export function mapAuthToSourceFileOwner(auth: Auth): SourceFileOwner {
     return {
       id: auth.clientId,
       token: auth.token,
+      baseUrl: auth.baseUrl,
     };
   } else {
     return auth;

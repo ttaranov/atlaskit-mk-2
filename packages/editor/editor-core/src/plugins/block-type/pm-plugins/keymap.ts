@@ -8,6 +8,10 @@ import * as keymaps from '../../../keymaps';
 import * as commands from '../../../commands';
 import { trackAndInvoke } from '../../../analytics';
 import * as blockTypes from '../types';
+import {
+  insertBlockType,
+  removeEmptyHeadingAtStartOfDocument,
+} from '../../block-type/commands';
 
 const analyticsEventName = (blockTypeName: string, eventSource: string) =>
   `atlassian.editor.format.${blockTypeName}.${eventSource}`;
@@ -61,7 +65,7 @@ export default function keymapPlugin(schema: Schema): Plugin {
 
   keymaps.bindKeymapWithCommand(
     keymaps.backspace.common!,
-    commands.removeEmptyHeadingAtStartOfDocument,
+    removeEmptyHeadingAtStartOfDocument,
     list,
   );
 
@@ -81,7 +85,7 @@ export default function keymapPlugin(schema: Schema): Plugin {
         const eventName = analyticsEventName(blockType.name, 'keyboard');
         keymaps.bindKeymapWithCommand(
           shortcut,
-          trackAndInvoke(eventName, commands.insertBlockType(blockType.name)),
+          trackAndInvoke(eventName, insertBlockType(blockType.name)),
           list,
         );
       }

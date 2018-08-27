@@ -13,7 +13,7 @@ import {
 } from '@atlaskit/media-test-helpers';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 
-import { UIAnalyticsEventInterface } from '../src/analytics-next';
+import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
 
 import { Card } from '../src';
 import { createApiCards } from '../example-helpers';

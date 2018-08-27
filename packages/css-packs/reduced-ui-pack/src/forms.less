@@ -2,27 +2,23 @@
 @import '../node_modules/@atlaskit/util-shared-styles/src/colors.less';
 @import '../node_modules/@atlaskit/util-shared-styles/src/grid.less';
 
-@label-inner-height: @ak-grid-size * 2;
 @label-font-size: 12;
-@label-line-height: @label-inner-height / @label-font-size;
+@label-line-height: 16 / @label-font-size;
 
-@base-background-color-disabled: @ak-color-N40;
+@base-background-color: @ak-color-N10;
 @base-background-color-focused: @ak-color-N0;
 @base-background-color-hover: @ak-color-N30;
-@base-background-color-subtle: transparent;
-@base-background-color: @ak-color-N20;
-@base-border-color-disabled: @ak-color-N40;
+@base-background-color-disabled: @ak-color-N20;
+@base-border-color: @ak-color-N40;
 @base-border-color-focused: @ak-color-B100;
 @base-border-color-hover: @ak-color-N40;
-@base-border-color: @ak-color-N40;
-@base-border-radius: 5px;
-@base-border-width-focused: 2;
-@base-border-width-subtle: 0;
-@base-border-width: 1;
-@base-color-disabled: @ak-color-N50;
-@base-color-invalid: @ak-color-R400;
+@base-border-color-disabled: @ak-color-N40;
+@base-border-radius: 3px;
+@base-border-width: 2;
+@base-color: @ak-color-N800;
+@base-color-disabled: @ak-color-N70;
+@base-color-invalid: @ak-color-R300;
 @base-font-size: 14;
-@base-height-compact: @ak-grid-size * 4;
 @base-height: @ak-grid-size * 5;
 @base-horizontal-padding: @ak-grid-size;
 @base-inner-height: @ak-grid-size * 2.5;
@@ -30,13 +26,15 @@
 @base-transition-duration: 0.2s; // Transition speed
 @base-padding-y: 10px;
 @base-padding-x: 8px;
+@selected-color: @ak-color-B400;
+@selected-color-hover: @ak-color-B300;
 
 .ak-field {
   &-group {
     border: 0;
     margin: 0;
     min-width: 0;
-    padding: (@ak-grid-size * 2.5) 0 0 0;
+    padding: (@ak-grid-size * 2) 0 0 0;
 
     > label,
     > legend {
@@ -46,7 +44,7 @@
       font-weight: 600;
       line-height: 1;
       padding: 0;
-      margin-bottom: 6px; // results in 8px gap taking into account the baseline
+      margin-bottom: (@ak-grid-size / 2);
     }
     > legend {
       float: left;
@@ -73,7 +71,7 @@
     border: unit(@base-border-width, px) solid @base-border-color;
     box-shadow: none;
     box-sizing: border-box;
-    color: @ak-color-N800;
+    color: @base-color;
     font-family: inherit;
     font-size: @ak-font-size-default;
     line-height: 20px;
@@ -92,9 +90,6 @@
     &:focus {
       background-color: @base-background-color-focused;
       border-color: @base-border-color-focused;
-      border-width: unit(@base-border-width-focused, px);
-      padding: (@base-padding-y - @base-border-width-focused) (@base-padding-x -
-            @base-border-width-focused);
     }
     &:focus:invalid,
     &:focus:out-of-range {
@@ -102,10 +97,11 @@
     }
     &[disabled],
     &[disabled]:hover {
-      background-color: @base-background-color;
-      border-color: @ak-color-N20;
+      background-color: @base-background-color-disabled;
+      border-color: transparent;
       color: @base-color-disabled;
       cursor: not-allowed;
+      resize: none;
     }
     &::-webkit-input-placeholder {
       // Chrome/Opera/Safari
@@ -126,7 +122,20 @@
   }
 
   &-textarea {
+    display: block;
     overflow: auto;
+  }
+
+  &__resize {
+    &-none {
+      resize: none;
+    }
+    &-horizontal {
+      resize: both;
+    }
+    &-vertical {
+      resize: both;
+    }
   }
 
   &-search {
@@ -145,15 +154,13 @@
     border: unit(@base-border-width, px) solid @base-border-color;
     box-sizing: border-box;
     height: (@ak-grid-size * 5);
-    padding: 7px 5px; // special sizes just for color inputs
+    padding: 6px 4px; // special sizes just for color inputs
     transition: border-color @base-transition-duration ease-in-out;
 
     &:focus {
-      outline: none;
       background-color: @base-background-color-focused;
       border-color: @base-border-color-focused;
-      border-width: unit(@base-border-width-focused, px);
-      padding: 6px 4px; // special sizes just for color inputs
+      outline: none;
     }
     &:focus:invalid {
       border-color: @ak-color-R400;
@@ -185,11 +192,6 @@
       background-position-y: center;
       background-repeat: no-repeat;
       padding-right: 35px;
-
-      &:focus {
-        padding-right: 34px;
-        background-position-x: ~'calc(100% - 6px)';
-      }
     }
     &[multiple] {
       overflow-y: auto;
@@ -197,8 +199,8 @@
 
       > option {
         box-sizing: border-box;
-        line-height: 1.428571428571429;
         height: (@ak-grid-size * 3);
+        line-height: 1.428571428571429;
         padding: 2px 6px;
 
         &:checked {
@@ -207,8 +209,6 @@
         }
       }
       &:focus {
-        padding: 0;
-
         > option:checked {
           background-color: @base-border-color-focused;
           color: white;
@@ -229,14 +229,14 @@
     position: relative;
 
     & > input[type='checkbox'] {
-      position: absolute;
-      outline: none;
-      width: 12px;
+      left: 0;
       margin: 0 @ak-grid-size;
       opacity: 0;
-      left: 0;
+      outline: none;
+      position: absolute;
       top: 50%;
       transform: translateY(-50%);
+      width: 12px;
 
       + label {
         box-sizing: border-box;
@@ -246,36 +246,45 @@
         width: 100%;
 
         &::after {
-          background: data-uri('icons/checkbox-unchecked.svg') no-repeat 0 0;
-          border-color: transparent;
+          background: data-uri('icons/checkbox-unchecked.svg') no-repeat 50% 50%;
           border-radius: @base-border-radius;
-          border-style: solid;
-          border-width: unit(@base-border-width-focused, px);
+          border: unit(@base-border-width, px) solid @base-border-color-hover;
+          box-sizing: border-box;
           content: '';
-          height: 12px;
-          left: 8px;
+          height: 14px;
+          left: 7px;
           position: absolute;
+          top: 6px;
           transition: border-color @base-transition-duration ease-in-out;
-          top: 7px;
-          width: 12px;
+          width: 14px;
         }
-      }
-      &:focus + label::after {
-        border-color: @base-border-color-focused;
       }
       &:not([disabled]) + label:hover::after {
         background-image: data-uri('icons/checkbox-unchecked-hover.svg');
+        border-color: @base-border-color-hover;
       }
       &[disabled] + label {
-        opacity: 0.5;
+        color: @base-color-disabled;
+        &::after {
+          background-image: data-uri('icons/checkbox-unchecked-disabled.svg');
+          border-color: transparent;
+          cursor: not-allowed;
+        }
       }
       &:checked {
         + label::after {
           background-image: data-uri('icons/checkbox-checked.svg');
+          border-color: transparent;
         }
         &:not([disabled]) + label:hover::after {
           background-image: data-uri('icons/checkbox-checked-hover.svg');
         }
+        &[disabled] + label::after {
+          background-image: data-uri('icons/checkbox-checked-disabled.svg');
+        }
+      }
+      &:focus + label::after {
+        border-color: @base-border-color-focused !important;
       }
     }
   }
@@ -285,14 +294,14 @@
     position: relative;
 
     & > input[type='radio'] {
-      position: absolute;
-      outline: none;
-      width: 12px;
+      left: 0;
       margin: 0 8px;
       opacity: 0;
-      left: 0;
+      outline: none;
+      position: absolute;
       top: 50%;
       transform: translateY(-50%);
+      width: 12px;
 
       + label {
         box-sizing: border-box;
@@ -302,36 +311,45 @@
         width: 100%;
 
         &::after {
-          background: data-uri('icons/radio-unchecked.svg') no-repeat 0 0;
-          border-color: transparent;
+          background: data-uri('icons/radio-unchecked.svg') no-repeat 50% 50%;
           border-radius: 50%;
-          border-style: solid;
-          border-width: unit(@base-border-width-focused, px);
+          border: unit(@base-border-width, px) solid @base-border-color-hover;
+          box-sizing: border-box;
           content: '';
-          height: 12px;
-          left: 8px;
+          height: 14px;
+          left: 7px;
           position: absolute;
           transition: border-color @base-transition-duration ease-in-out;
-          top: 7px;
-          width: 12px;
+          top: 6px;
+          width: 14px;
         }
-      }
-      &:focus + label::after {
-        border-color: @base-border-color-focused;
       }
       &:not([disabled]) + label:hover::after {
         background-image: data-uri('icons/radio-unchecked-hover.svg');
+        border-color: @base-border-color-hover;
       }
       &[disabled] + label {
-        opacity: 0.5;
+        color: @base-color-disabled;
+        &::after {
+          background-image: data-uri('icons/radio-unchecked-disabled.svg');
+          border-color: transparent;
+          cursor: not-allowed;
+        }
       }
       &:checked {
         + label::after {
           background-image: data-uri('icons/radio-checked.svg');
+          border-color: transparent;
         }
         &:not([disabled]) + label:hover::after {
           background-image: data-uri('icons/radio-checked-hover.svg');
         }
+        &[disabled] + label::after {
+          background-image: data-uri('icons/radio-checked-disabled.svg');
+        }
+      }
+      &:focus + label::after {
+        border-color: @base-border-color-focused !important;
       }
     }
   }
@@ -347,10 +365,10 @@
       max-width: 240px;
     }
     &-large {
-      max-width: 344px;
+      max-width: 320px;
     }
     &-xlarge {
-      max-width: 496px;
+      max-width: 480px;
     }
   }
 }

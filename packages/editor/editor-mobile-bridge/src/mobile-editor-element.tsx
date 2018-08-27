@@ -4,9 +4,13 @@ import {
   Editor,
   mentionPluginKey,
   textFormattingStateKey,
+  blockPluginStateKey,
+  ListsState,
+  listsStateKey,
 } from '@atlaskit/editor-core';
 import { MentionDescription, MentionProvider } from '@atlaskit/mention';
-import { valueOf } from './web-to-native/markState';
+import { valueOf as valueOfMarkState } from './web-to-native/markState';
+import { valueOf as valueOfListState } from './web-to-native/listState';
 import { toNativeBridge } from './web-to-native';
 import WebBridgeImpl from './native-to-web';
 import { ContextFactory } from '@atlaskit/media-core';
@@ -50,20 +54,29 @@ class EditorWithState extends Editor {
     transformer?: any;
   }) {
     super.onEditorCreated(instance);
-    bridge.editorView = instance.view;
-    bridge.editorActions._privateRegisterEditor(
-      instance.view,
-      instance.eventDispatcher,
-    );
+    const { eventDispatcher, view } = instance;
+    bridge.editorView = view;
+    bridge.editorActions._privateRegisterEditor(view, eventDispatcher);
     if (this.props.media && this.props.media.customMediaPicker) {
       bridge.mediaPicker = this.props.media.customMediaPicker;
     }
-    subscribeForMentionStateChanges(instance.view);
-    subscribeForTextFormatChanges(instance.view);
+    subscribeForMentionStateChanges(view, eventDispatcher);
+    subscribeForTextFormatChanges(view, eventDispatcher);
+    subscribeForBlockStateChanges(view, eventDispatcher);
+    subscribeForListStateChanges(view, eventDispatcher);
   }
 
-  onEditorDestroyed(instance: { view: EditorView; transformer?: any }) {
+  onEditorDestroyed(instance: {
+    view: EditorView;
+    eventDispatcher: any;
+    transformer?: any;
+  }) {
     super.onEditorDestroyed(instance);
+
+    const { eventDispatcher, view } = instance;
+    unsubscribeFromBlockStateChanges(view, eventDispatcher);
+    unsubscribeFromListStateChanges(view, eventDispatcher);
+
     bridge.editorActions._privateUnregisterEditor();
     bridge.editorView = null;
     bridge.mentionsPluginState = null;
@@ -71,7 +84,10 @@ class EditorWithState extends Editor {
   }
 }
 
-function subscribeForMentionStateChanges(view) {
+function subscribeForMentionStateChanges(
+  view: EditorView,
+  eventDispatcher: any,
+) {
   let mentionsPluginState = mentionPluginKey.getState(view.state);
   bridge.mentionsPluginState = mentionsPluginState;
   if (mentionsPluginState) {
@@ -87,14 +103,46 @@ function sendToNative(state) {
   }
 }
 
-function subscribeForTextFormatChanges(view: EditorView) {
+function subscribeForTextFormatChanges(view: EditorView, eventDispatcher: any) {
   let textFormattingPluginState = textFormattingStateKey.getState(view.state);
   bridge.textFormattingPluginState = textFormattingPluginState;
-  if (textFormattingPluginState) {
-    textFormattingPluginState.subscribe(state =>
-      toNativeBridge.updateTextFormat(JSON.stringify(valueOf(state))),
-    );
-  }
+  eventDispatcher.on((textFormattingStateKey as any).key, state => {
+    toNativeBridge.updateTextFormat(JSON.stringify(valueOfMarkState(state)));
+  });
+}
+
+const blockStateUpdated = state => {
+  toNativeBridge.updateBlockState(state.currentBlockType.name);
+};
+
+function subscribeForBlockStateChanges(view: EditorView, eventDispatcher: any) {
+  bridge.blockState = blockPluginStateKey.getState(view.state);
+  eventDispatcher.on((blockPluginStateKey as any).key, blockStateUpdated);
+}
+
+function unsubscribeFromBlockStateChanges(
+  view: EditorView,
+  eventDispatcher: any,
+) {
+  eventDispatcher.off((blockPluginStateKey as any).key, blockStateUpdated);
+  bridge.blockState = undefined;
+}
+
+const listStateUpdated = state => {
+  toNativeBridge.updateListState(JSON.stringify(valueOfListState(state)));
+};
+
+function subscribeForListStateChanges(view: EditorView, eventDispatcher: any) {
+  const listState: ListsState = listsStateKey.getState(view.state);
+  bridge.listState = listState;
+  eventDispatcher.on((listsStateKey as any).key, listStateUpdated);
+}
+
+function unsubscribeFromListStateChanges(
+  view: EditorView,
+  eventDispatcher: any,
+) {
+  eventDispatcher.off((listsStateKey as any).key, listStateUpdated);
 }
 
 function getToken(context?: any) {
@@ -102,10 +150,15 @@ function getToken(context?: any) {
 }
 
 function getUploadContext(): Promise<any> {
+  // TODO Make sure getToken returns baseUrl and revert that back to just getToken
+  const authProviderWithBaseUrl = (context?: any) =>
+    getToken(context).then(auth => {
+      auth.baseUrl = toNativeBridge.getServiceHost();
+      return auth;
+    });
   return Promise.resolve(
     ContextFactory.create({
-      serviceHost: toNativeBridge.getServiceHost(),
-      authProvider: getToken,
+      authProvider: authProviderWithBaseUrl,
     }),
   );
 }
@@ -128,10 +181,22 @@ export default function mobileEditor() {
       media={{
         customMediaPicker: new MobilePicker(),
         provider: Promise.resolve(createMediaProvider()),
+        allowMediaSingle: true,
       }}
+      allowLists={true}
       onChange={() => {
         toNativeBridge.updateText(bridge.getContent());
       }}
+      allowPanel={true}
+      allowCodeBlocks={true}
+      allowTables={{
+        allowControls: false,
+      }}
+      allowExtension={true}
+      allowTextColor={true}
+      allowDate={true}
+      allowRule={true}
+      allowTasksAndDecisions={true}
     />
   );
 }

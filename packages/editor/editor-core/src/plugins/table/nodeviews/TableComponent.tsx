@@ -4,12 +4,9 @@ import { updateColumnsOnResize } from 'prosemirror-tables';
 import { browser, akEditorTableToolbarSize } from '@atlaskit/editor-common';
 import TableFloatingControls from '../ui/TableFloatingControls';
 import ColumnControls from '../ui/TableFloatingControls/ColumnControls';
-import { stateKey } from '../pm-plugins/main';
-import { pluginKey as hoverSelectionPluginKey } from '../pm-plugins/hover-selection-plugin';
 
-import { pluginKey as widthPluginKey } from '../../width';
-
-import WithPluginState from '../../../ui/WithPluginState';
+import { getPluginState } from '../pm-plugins/main';
+import { TablePluginState } from '../types';
 import { calcTableWidth } from '@atlaskit/editor-common';
 import { CELL_MIN_WIDTH } from '../';
 
@@ -17,11 +14,18 @@ const isIE11 = browser.ie_version === 11;
 const SHADOW_MAX_WIDTH = 8;
 
 import { Props } from './table';
-import { containsHeaderRow } from '../utils';
+import {
+  containsHeaderRow,
+  checkIfHeaderColumnEnabled,
+  checkIfHeaderRowEnabled,
+} from '../utils';
 
 export interface ComponentProps extends Props {
-  onComponentUpdate: () => void;
+  onComponentMount: () => void;
   contentDOM: (element: HTMLElement | undefined) => void;
+
+  containerWidth: number;
+  pluginState: TablePluginState;
 }
 
 class TableComponent extends React.Component<ComponentProps> {
@@ -48,6 +52,8 @@ class TableComponent extends React.Component<ComponentProps> {
   }
 
   componentDidMount() {
+    this.props.onComponentMount();
+
     if (this.props.allowColumnResizing && this.wrapper && !isIE11) {
       this.wrapper.addEventListener('scroll', this.handleScrollDebounced);
     }
@@ -62,7 +68,16 @@ class TableComponent extends React.Component<ComponentProps> {
   }
 
   render() {
-    const { eventDispatcher, view, node, allowColumnResizing } = this.props;
+    const {
+      view,
+      node,
+      allowColumnResizing,
+      pluginState,
+      containerWidth,
+    } = this.props;
+    const {
+      pluginConfig: { allowControls = true },
+    } = pluginState;
     const columnShadows = allowColumnResizing
       ? [
           <div
@@ -83,73 +98,78 @@ class TableComponent extends React.Component<ComponentProps> {
       : [];
 
     // doesn't work well with WithPluginState
-    const {
-      isTableHovered,
-      isTableInDanger,
-    } = hoverSelectionPluginKey.getState(view.state);
+    const { isTableHovered, isTableInDanger } = getPluginState(view.state);
+
+    const tableRef = this.table || undefined;
+    const tableActive = this.table === pluginState.tableRef;
+    const { scroll } = this.state;
+
+    const rowControls = [
+      <div
+        key={0}
+        className={`table-row-controls-wrapper ${
+          scroll > 0 ? 'scrolling' : ''
+        }`}
+      >
+        <TableFloatingControls
+          editorView={view}
+          tableRef={tableRef}
+          tableActive={tableActive}
+          isTableHovered={isTableHovered}
+          isTableInDanger={isTableInDanger}
+          isNumberColumnEnabled={node.attrs.isNumberColumnEnabled}
+          isHeaderColumnEnabled={checkIfHeaderColumnEnabled(view.state)}
+          isHeaderRowEnabled={checkIfHeaderRowEnabled(view.state)}
+          hasHeaderRow={containsHeaderRow(view.state, node)}
+          // pass `selection` and `tableHeight` to control re-render
+          selection={view.state.selection}
+          tableHeight={tableRef ? tableRef.offsetHeight : undefined}
+        />
+      </div>,
+    ];
+
+    const columnControls = [
+      <div key={0} className="table-column-controls-wrapper">
+        <ColumnControls
+          editorView={view}
+          tableRef={tableRef}
+          isTableHovered={isTableHovered}
+          isTableInDanger={isTableInDanger}
+          // pass `selection` and `numberOfColumns` to control re-render
+          selection={view.state.selection}
+          numberOfColumns={node.firstChild!.childCount}
+        />
+      </div>,
+    ];
 
     return (
-      <WithPluginState
-        plugins={{
-          containerWidth: widthPluginKey,
-          pluginState: stateKey,
+      <div
+        style={{
+          width: calcTableWidth(node.attrs.layout, containerWidth),
         }}
-        eventDispatcher={eventDispatcher}
-        editorView={view}
-        render={({ containerWidth, pluginState }) => {
-          const tableActive = this.table === pluginState.tableRef;
-          return (
-            <div
-              style={{
-                width: calcTableWidth(node.attrs.layout, containerWidth),
-              }}
-              className={`table-container ${
-                tableActive ? 'with-controls' : ''
-              }`}
-              data-number-column={node.attrs.isNumberColumnEnabled}
-              data-layout={node.attrs.layout}
-            >
-              <div className="table-row-controls-wrapper">
-                <TableFloatingControls
-                  editorView={view}
-                  tableRef={this.table || undefined}
-                  tableActive={tableActive}
-                  isTableHovered={isTableHovered}
-                  isTableInDanger={isTableInDanger}
-                  isNumberColumnEnabled={node.attrs.isNumberColumnEnabled}
-                  hasHeaderRow={containsHeaderRow(view.state, node)}
-                  scroll={this.state.scroll}
-                />
-              </div>
-              <div
-                className="table-wrapper"
-                ref={elem => {
-                  this.wrapper = elem;
-                  this.props.contentDOM(elem ? elem : undefined);
-                  if (elem) {
-                    this.table = elem.querySelector('table');
-                  }
-                }}
-              >
-                <div className="table-column-controls-wrapper">
-                  <ColumnControls
-                    editorView={view}
-                    tableRef={pluginState.tableRef}
-                    isTableHovered={isTableHovered}
-                    isTableInDanger={isTableInDanger}
-                  />
-                </div>
-              </div>
-              {columnShadows}
-            </div>
-          );
-        }}
-      />
+        className={`table-container ${tableActive ? 'with-controls' : ''}`}
+        data-number-column={node.attrs.isNumberColumnEnabled}
+        data-layout={node.attrs.layout}
+      >
+        {allowControls && rowControls}
+        <div
+          className="table-wrapper"
+          ref={elem => {
+            this.wrapper = elem;
+            this.props.contentDOM(elem ? elem : undefined);
+            if (elem) {
+              this.table = elem.querySelector('table');
+            }
+          }}
+        >
+          {allowControls && columnControls}
+        </div>
+        {columnShadows}
+      </div>
     );
   }
 
   componentDidUpdate() {
-    this.props.onComponentUpdate();
     this.updateShadows();
 
     if (this.props.allowColumnResizing && this.table) {
@@ -166,7 +186,7 @@ class TableComponent extends React.Component<ComponentProps> {
     if (!this.wrapper || event.target !== this.wrapper) {
       return;
     }
-    this.updateShadows();
+
     this.setState({ scroll: this.wrapper.scrollLeft });
   };
 
@@ -174,12 +194,13 @@ class TableComponent extends React.Component<ComponentProps> {
     if (!this.wrapper || !this.table || !this.leftShadow || !this.rightShadow) {
       return;
     }
+
     updateShadows(
       this.wrapper,
       this.table,
       this.leftShadow,
       this.rightShadow,
-      !!stateKey.getState(this.props.view.state).tableRef,
+      !!getPluginState(this.props.view.state).tableRef,
     );
   }
 

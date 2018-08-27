@@ -98,5 +98,4 @@ class ContainerTitleDropdown extends PureComponent<Props> {
   }
 }
 
-// $FlowFixMe
 export default withTheme(ContainerTitleDropdown);

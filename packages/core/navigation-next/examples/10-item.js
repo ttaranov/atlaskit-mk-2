@@ -18,7 +18,16 @@ import EditIcon from '@atlaskit/icon/glyph/edit';
 import Lozenge from '@atlaskit/lozenge';
 import Tooltip from '@atlaskit/tooltip';
 
-import { Item, ItemPrimitive, ItemAvatar, light, dark, settings } from '../src';
+import {
+  Item,
+  ItemPrimitive,
+  ItemAvatar,
+  light,
+  dark,
+  settings,
+  SkeletonContainerHeader,
+  SkeletonItem,
+} from '../src';
 
 const themeModes = { light, dark, settings };
 
@@ -173,6 +182,12 @@ const variations: Array<VariationCategory> = [
         subText: 'Sub text',
       },
       {
+        after: EditIcon,
+        before: BoardIcon,
+        isSelected: true,
+        text: 'Selected',
+      },
+      {
         after: BadgeOrCloseOnHover,
         before: ConfiguredAvatar,
         isSelected: true,
@@ -225,10 +240,10 @@ const variations: Array<VariationCategory> = [
       },
       {
         before: ConfiguredAvatar,
-        text: 'Light mode, root context',
+        text: 'Light mode, product context',
         subText: 'Sub text',
         themeMode: 'light',
-        themeContext: 'root',
+        themeContext: 'product',
       },
       {
         before: ConfiguredAvatar,
@@ -239,10 +254,10 @@ const variations: Array<VariationCategory> = [
       },
       {
         before: ConfiguredAvatar,
-        text: 'Dark mode, root context',
+        text: 'Dark mode, product context',
         subText: 'Sub text',
         themeMode: 'dark',
-        themeContext: 'root',
+        themeContext: 'product',
       },
       {
         before: ConfiguredAvatar,
@@ -253,10 +268,10 @@ const variations: Array<VariationCategory> = [
       },
       {
         before: ConfiguredAvatar,
-        text: 'Settings mode, root context',
+        text: 'Settings mode, product context',
         subText: 'Sub text',
         themeMode: 'settings',
-        themeContext: 'root',
+        themeContext: 'product',
       },
     ],
   },
@@ -334,6 +349,134 @@ const variations: Array<VariationCategory> = [
     itemComponent: ({ render: RenderComponent, ...itemProps }: ItemType) => (
       <RenderComponent {...itemProps} />
     ),
+  },
+  {
+    itemComponent: ({
+      themeContext: context,
+      themeMode: mode,
+      ...props
+    }: ItemType) => (
+      <ThemeProvider
+        theme={theme => ({
+          ...theme,
+          context,
+          mode: themeModes[mode],
+        })}
+      >
+        <SkeletonItem {...props} />
+      </ThemeProvider>
+    ),
+    title: 'Skeleton',
+    items: [
+      {
+        key: 'light-container-skeleton',
+        themeMode: 'light',
+        themeContext: 'container',
+      },
+      {
+        hasBefore: true,
+        key: 'light-container-skeleton-with-icon',
+        themeMode: 'light',
+        themeContext: 'container',
+      },
+      {
+        key: 'light-product-skeleton',
+        themeMode: 'light',
+        themeContext: 'product',
+      },
+      {
+        hasBefore: true,
+        key: 'light-product-skeleton-with-icon',
+        themeMode: 'light',
+        themeContext: 'product',
+      },
+      {
+        key: 'dark-container-skeleton',
+        themeMode: 'dark',
+        themeContext: 'container',
+      },
+      {
+        hasBefore: true,
+        key: 'dark-container-skeleton-with-icon',
+        themeMode: 'dark',
+        themeContext: 'container',
+      },
+      {
+        key: 'settings-container-skeleton',
+        themeMode: 'settings',
+        themeContext: 'container',
+      },
+      {
+        hasBefore: true,
+        key: 'settings-container-skeleton-with-icon',
+        themeMode: 'settings',
+        themeContext: 'container',
+      },
+    ],
+  },
+  {
+    itemComponent: ({
+      themeContext: context,
+      themeMode: mode,
+      ...props
+    }: ItemType) => (
+      <ThemeProvider
+        theme={theme => ({
+          ...theme,
+          context,
+          mode: themeModes[mode],
+        })}
+      >
+        <SkeletonContainerHeader {...props} />
+      </ThemeProvider>
+    ),
+    title: 'Skeleton',
+    items: [
+      {
+        key: 'light-container-skeleton',
+        themeMode: 'light',
+        themeContext: 'container',
+      },
+      {
+        hasBefore: true,
+        key: 'light-container-skeleton-with-icon',
+        themeMode: 'light',
+        themeContext: 'container',
+      },
+      {
+        key: 'light-product-skeleton',
+        themeMode: 'light',
+        themeContext: 'product',
+      },
+      {
+        hasBefore: true,
+        key: 'light-product-skeleton-with-icon',
+        themeMode: 'light',
+        themeContext: 'product',
+      },
+      {
+        key: 'dark-container-skeleton',
+        themeMode: 'dark',
+        themeContext: 'container',
+      },
+      {
+        hasBefore: true,
+        key: 'dark-container-skeleton-with-icon',
+        themeMode: 'dark',
+        themeContext: 'container',
+      },
+      {
+        key: 'settings-container-skeleton',
+        themeMode: 'settings',
+        themeContext: 'container',
+      },
+      {
+        hasBefore: true,
+        key: 'settings-container-skeleton-with-icon',
+        themeMode: 'settings',
+        themeContext: 'container',
+      },
+    ],
   },
 ];
 

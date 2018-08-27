@@ -16,8 +16,7 @@ const config: ServiceConfig = {
 
 function webInfo() {
   return `
-Location: ${window.location.href}
-Referrer: ${document.referrer}
+Domain: ${window.location.hostname}
 User-Agent: ${navigator.userAgent}
 Screen Resolution: ${screen.width} x ${screen.height}
   `;

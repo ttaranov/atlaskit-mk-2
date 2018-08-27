@@ -1,6 +1,19 @@
 // @flow
-import React from 'react';
-import type { AvatarPropTypesBase } from '../types';
+import React, { Component } from 'react';
+import type { AvatarPropTypes } from '../types';
+
+/**
+ * innerRef is passed by Avatar component
+ * TODO: Check if other props are needed?
+ */
+type CustomComponentProxyPropType = AvatarPropTypes & {
+  avatar?: mixed,
+  groupAppearance?: mixed,
+  innerRef?: () => void,
+  primaryText?: mixed,
+  secondaryText?: mixed,
+};
+
 /**
  * Styling a avatar is complicated and there are a number of properties which
  * inform its appearance. We want to be able to style any arbitrary component
@@ -11,24 +24,28 @@ import type { AvatarPropTypesBase } from '../types';
  * component.
  */
 
-export default function CustomComponentProxy({
-  appearance,
-  avatar,
-  borderColor,
-  component: ProxiedComponent,
-  enableTooltip,
-  groupAppearance,
-  innerRef,
-  isActive,
-  isDisabled,
-  isFocus,
-  isHover,
-  isSelected,
-  primaryText,
-  secondaryText,
-  stackIndex,
-  ...props
-}: AvatarPropTypesBase) {
-  if (ProxiedComponent) return <ProxiedComponent {...props} />;
-  return null;
+export default class CustomComponentProxy extends Component<
+  CustomComponentProxyPropType,
+> {
+  render() {
+    const {
+      appearance,
+      avatar,
+      borderColor,
+      component: ProxiedComponent,
+      enableTooltip,
+      groupAppearance,
+      innerRef,
+      isActive,
+      isDisabled,
+      isFocus,
+      isHover,
+      isSelected,
+      primaryText,
+      secondaryText,
+      stackIndex,
+      ...rest
+    } = this.props;
+    return ProxiedComponent ? <ProxiedComponent {...rest} /> : null;
+  }
 }

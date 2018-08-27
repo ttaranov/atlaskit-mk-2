@@ -124,7 +124,7 @@ describe('filter', () => {
 describe('isNthParentOfType', () => {
   const { editorView } = createEditor({
     doc: table()(tr(td()(p('hel{<>}lo')))),
-    editorPlugins: [tablesPlugin],
+    editorPlugins: [tablesPlugin()],
   });
 
   it('returns true for paragraph at selection depth', () => {
@@ -203,7 +203,7 @@ describe('isEmptySelectionAtStart', () => {
     it('returns true with selection at start', () => {
       const { editorView } = createEditor({
         doc: doc(table()(tr(td()(p('{<>}hello'))))),
-        editorPlugins: [tablesPlugin],
+        editorPlugins: [tablesPlugin()],
       });
 
       expect(isEmptySelectionAtStart(editorView.state)).toBe(true);
@@ -212,7 +212,7 @@ describe('isEmptySelectionAtStart', () => {
     it('returns false with selection at end', () => {
       const { editorView } = createEditor({
         doc: doc(table()(tr(td()(p('hello{<>}'))))),
-        editorPlugins: [tablesPlugin],
+        editorPlugins: [tablesPlugin()],
       });
 
       expect(isEmptySelectionAtStart(editorView.state)).toBe(false);
@@ -221,7 +221,7 @@ describe('isEmptySelectionAtStart', () => {
     it('returns false with selection at middle', () => {
       const { editorView } = createEditor({
         doc: doc(table()(tr(td()(p('he{<>}llo'))))),
-        editorPlugins: [tablesPlugin],
+        editorPlugins: [tablesPlugin()],
       });
 
       expect(isEmptySelectionAtStart(editorView.state)).toBe(false);
@@ -374,7 +374,7 @@ describe('findCutBefore', () => {
   it('does not search across isolating boundaries', () => {
     const { editorView } = createEditor({
       doc: doc(table()(tr(td()(p('{<>}hey'))))),
-      editorPlugins: [tablesPlugin, listsPlugin],
+      editorPlugins: [tablesPlugin(), listsPlugin],
     });
 
     const { $from } = editorView.state.selection;

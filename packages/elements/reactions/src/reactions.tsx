@@ -19,15 +19,19 @@ export interface OnEmoji {
 
 const reactionStyle = style({
   display: 'inline-block',
-  margin: '0 4px',
+  // top margin of 2px to allow spacing between rows when wrapped (paired with top margin in reactionsStyle)
+  margin: '2px 4px 0 4px',
 });
 
 const reactionsStyle = style({
   display: 'flex',
+  flexWrap: 'wrap',
   position: 'relative',
   background: 'white',
   alignItems: 'center',
   borderRadius: '15px',
+  // To allow to row spacing of 2px on wrap, and 0px on first row
+  marginTop: '-2px',
   $nest: { '& > :first-child': { marginLeft: 0 } },
 });
 

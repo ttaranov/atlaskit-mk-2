@@ -19,8 +19,6 @@ export default class PersonResult extends PureComponent<Props> {
     isSelected: false,
     mentionPrefix: '@',
     onClick: () => {},
-    onMouseEnter: () => {},
-    onMouseLeave: () => {},
     presenceState: null, // No presence indicator by default
     type: PERSON_RESULT_TYPE,
   };

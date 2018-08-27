@@ -3,9 +3,18 @@
 import React, { Component, type Node } from 'react';
 import { findDOMNode } from 'react-dom';
 import uuid from 'uuid/v1';
+import {
+  withAnalyticsEvents,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import Button from '@atlaskit/button';
 import Droplist, { Item, Group } from '@atlaskit/droplist';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 
 import DropdownItemFocusManager from './context/DropdownItemFocusManager';
 import DropdownItemClickManager from './context/DropdownItemClickManager';
@@ -25,9 +34,10 @@ type OpenCloseArgs = {
 
 type State = {
   id: string,
+  autoFocusDropdownItems: boolean,
 };
 
-export default class DropdownMenuStateless extends Component<
+class DropdownMenuStateless extends Component<
   DropdownMenuStatelessProps,
   State,
 > {
@@ -38,6 +48,7 @@ export default class DropdownMenuStateless extends Component<
   triggerContainer: ?HTMLElement;
 
   sourceOfIsOpen: ?string;
+  dropdownListPositioned: boolean = false;
 
   static defaultProps = {
     appearance: 'default',
@@ -53,10 +64,12 @@ export default class DropdownMenuStateless extends Component<
     shouldFitContainer: false,
     shouldFlip: true,
     triggerType: 'default',
+    onPositioned: () => {},
   };
 
   state = {
     id: uuid(),
+    autoFocusDropdownItems: false,
   };
 
   componentDidMount = () => {
@@ -242,6 +255,8 @@ export default class DropdownMenuStateless extends Component<
   isUsingDeprecatedAPI = () => Boolean(this.props.items.length);
 
   handleClick = (event: SyntheticMouseEvent<any>) => {
+    // For any clicks we don't want autofocus
+    this.setState({ autoFocusDropdownItems: false });
     if (this.isUsingDeprecatedAPI()) {
       this.handleClickDeprecated(event);
       return;
@@ -253,7 +268,7 @@ export default class DropdownMenuStateless extends Component<
     if (
       triggerContainer &&
       triggerContainer.contains(target) &&
-      // $FlowFixMe
+      // $FlowFixMe - disabled is not in Element
       target.disabled !== true
     ) {
       const { isOpen } = this.props;
@@ -298,6 +313,10 @@ export default class DropdownMenuStateless extends Component<
   open = (attrs: OpenCloseArgs) => {
     this.sourceOfIsOpen = attrs.source;
     this.props.onOpenChange({ isOpen: true, event: attrs.event });
+    // Dropdown opened via keyboard gets auto focussed
+    this.setState({
+      autoFocusDropdownItems: this.sourceOfIsOpen === 'keydown',
+    });
   };
 
   close = (attrs: OpenCloseArgs) => {
@@ -381,11 +400,38 @@ export default class DropdownMenuStateless extends Component<
     );
   };
 
+  /** Ensure droplist is positioned before focussing to avoid container scrolling to top */
+  onDroplistPositioned = () => {
+    this.dropdownListPositioned = true;
+    // Trigger render so item focus manager can auto focus for keyboard trigger
+    this.setState({
+      autoFocusDropdownItems: this.sourceOfIsOpen === 'keydown',
+    });
+
+    if (this.props.onPositioned) this.props.onPositioned();
+  };
+
+  /** Render items only after droplist has been positioned */
+  renderDropdownItems = () => {
+    if (this.dropdownListPositioned) {
+      return (
+        <DropdownItemClickManager onItemClicked={this.handleItemClicked}>
+          <DropdownItemFocusManager
+            autoFocus={this.state.autoFocusDropdownItems}
+            close={this.close}
+          >
+            {this.props.children}
+          </DropdownItemFocusManager>
+        </DropdownItemClickManager>
+      );
+    }
+    return null;
+  };
+
   render() {
     const {
       appearance,
       boundariesElement,
-      children,
       isLoading,
       isOpen,
       onOpenChange,
@@ -406,7 +452,6 @@ export default class DropdownMenuStateless extends Component<
       : {
           onKeyDown: this.handleKeyboardInteractionForClosed,
         };
-
     return (
       <DropdownItemSelectionCache>
         <Droplist
@@ -421,7 +466,13 @@ export default class DropdownMenuStateless extends Component<
           shouldFitContainer={shouldFitContainer}
           shouldFlip={shouldFlip}
           trigger={this.renderTrigger()}
+          onPositioned={this.onDroplistPositioned}
           {...deprecatedProps}
+          analyticsContext={{
+            componentName: 'dropdownMenu',
+            packageName,
+            packageVersion,
+          }}
         >
           {isDeprecated ? (
             this.renderDeprecated()
@@ -431,14 +482,7 @@ export default class DropdownMenuStateless extends Component<
               role="menu"
               shouldFitContainer={shouldFitContainer}
             >
-              <DropdownItemClickManager onItemClicked={this.handleItemClicked}>
-                <DropdownItemFocusManager
-                  autoFocus={this.sourceOfIsOpen === 'keydown'}
-                  close={this.close}
-                >
-                  {children}
-                </DropdownItemFocusManager>
-              </DropdownItemClickManager>
+              {this.renderDropdownItems()}
             </WidthConstrainer>
           )}
         </Droplist>
@@ -446,3 +490,19 @@ export default class DropdownMenuStateless extends Component<
     );
   }
 }
+
+export { DropdownMenuStateless as DropdownMenuStatelessWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsEvents({
+  onOpenChange: createAndFireEventOnAtlaskit({
+    action: 'toggled',
+    actionSubject: 'dropdownMenu',
+
+    attributes: {
+      componentName: 'dropdownMenu',
+      packageName,
+      packageVersion,
+    },
+  }),
+})(DropdownMenuStateless);

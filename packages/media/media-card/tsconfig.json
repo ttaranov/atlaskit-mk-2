@@ -3,10 +3,6 @@
   "include": [
     "./src/**/*.ts",
     "./src/**/*.tsx",
-    "./__tests__/**/*.ts",
-    "./__tests__/**/*.tsx",
-    "./tests/**/*.ts",
-    "./tests/**/*.tsx",
     "./examples/*.ts",
     "./examples/*.tsx",
     "./example-helpers/*.ts",
@@ -16,6 +12,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
+      "@atlaskit/analytics-next": ["node_modules/@atlaskit/analytics-next-types"],
       "@atlaskit/dropdown-menu": ["typings/@atlaskit/dropdown-menu"],
       "@atlaskit/item": ["typings/@atlaskit/item"]
     }

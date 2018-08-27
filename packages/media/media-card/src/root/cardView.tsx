@@ -12,7 +12,7 @@ import {
   withAnalyticsEvents,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
-import { WithAnalyticsEventProps } from '../analytics-next';
+import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
 
 import {
   SharedCardProps,

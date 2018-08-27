@@ -5,9 +5,6 @@ import {
   p,
   blockquote,
   code_block,
-  ul,
-  li,
-  ol,
   panel,
   table,
   tr,
@@ -29,15 +26,14 @@ import {
   h1,
 } from '@atlaskit/editor-test-helpers';
 
-import { setTextSelection, setGapCursorSelection } from '../../../src';
-
+import { setTextSelection } from '../../../src';
+import { setGapCursorSelection } from '../../../src/utils';
 import gapCursorPlugin, {
   GapCursorSelection,
   Side,
 } from '../../../src/plugins/gap-cursor';
 import { pluginKey } from '../../../src/plugins/gap-cursor/pm-plugins/main';
 import codeBlockPlugin from '../../../src/plugins/code-block';
-import listsPlugin from '../../../src/plugins/lists';
 import rulePlugin from '../../../src/plugins/rule';
 import panelPlugin from '../../../src/plugins/panel';
 import tasksAndDecisionsPlugin from '../../../src/plugins/tasks-and-decisions';
@@ -55,10 +51,9 @@ describe('gap-cursor', () => {
         gapCursorPlugin,
         mediaPlugin({ allowMediaSingle: true }),
         extensionPlugin,
-        tablesPlugin,
+        tablesPlugin(),
         tasksAndDecisionsPlugin,
         codeBlockPlugin(),
-        listsPlugin,
         rulePlugin,
         panelPlugin,
       ],
@@ -73,8 +68,6 @@ describe('gap-cursor', () => {
 
   const blockNodes = {
     code_block: code_block({ language: 'java' })('{<>}'),
-    ul: ul(li(p('{<>}'))),
-    ol: ol(li(p('{<>}'))),
     panel: panel()(p('{<>}')),
     table: table()(tr(tdCursor)),
     decisionList: decisionList({ localId: 'test' })(

@@ -96,8 +96,11 @@ export class ImageUploadState {
     this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
   }
 
-  // TODO: Fix types (ED-2987)
-  update(state: EditorState, docView: any, dirty = false): void {
+  update(
+    state: EditorState,
+    domAtPos: EditorView['domAtPos'],
+    dirty = false,
+  ): void {
     this.state = state;
     const newActive = this.isImageSelected();
     if (newActive !== this.active) {
@@ -112,7 +115,7 @@ export class ImageUploadState {
     }
 
     const newElement = newActive
-      ? this.getActiveImageElement(docView)
+      ? this.getActiveImageElement(domAtPos)
       : undefined;
     if (newElement !== this.element) {
       this.element = newElement;
@@ -152,10 +155,9 @@ export class ImageUploadState {
     };
   }
 
-  // TODO: Fix types (ED-2987)
-  private getActiveImageElement(docView: any): HTMLElement {
+  private getActiveImageElement(domAtPos: EditorView['domAtPos']): HTMLElement {
     const { $from } = this.state.selection;
-    const { node, offset } = docView.domFromPos($from.pos);
+    const { node, offset } = domAtPos($from.pos);
 
     if (node.childNodes.length === 0) {
       return node.parentElement!;
@@ -205,16 +207,13 @@ export const createPlugin = (
       },
     },
     key: stateKey,
-    view: (view: EditorView & { docView?: any }) => {
+    view: view => {
       const pluginState: ImageUploadState = stateKey.getState(view.state);
-      pluginState.update(view.state, view.docView, true);
+      pluginState.update(view.state, view.domAtPos.bind(view), true);
 
       return {
-        update: (
-          view: EditorView & { docView?: any },
-          prevState: EditorState,
-        ) => {
-          pluginState.update(view.state, view.docView);
+        update: (view, prevState) => {
+          pluginState.update(view.state, view.domAtPos.bind(view));
         },
         destroy() {
           if (options && options.providerFactory) {

@@ -5,7 +5,7 @@ import { uuid } from '../../utils';
 /**
  * @name taskItem_node
  */
-export interface Definition {
+export interface TaskItemDefinition {
   type: 'taskItem';
   content: Array<Inline>;
   attrs: {
@@ -16,6 +16,7 @@ export interface Definition {
 
 export const taskItem: NodeSpec = {
   content: 'inline*',
+  defining: true,
   marks: '_',
   attrs: {
     localId: { default: '' },
@@ -25,7 +26,7 @@ export const taskItem: NodeSpec = {
     {
       tag: 'li[data-task-local-id]',
 
-      // Default priority is 50. We normaly don't change this but since this node type is
+      // Default priority is 50. We normally don't change this but since this node type is
       // also used by list-item we need to make sure that we run this parser first.
       priority: 100,
 

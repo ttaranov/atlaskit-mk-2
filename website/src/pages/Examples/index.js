@@ -2,6 +2,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Redirect } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import LinkIcon from '@atlaskit/icon/glyph/link';
@@ -381,13 +382,20 @@ export default class Examples extends React.Component<Props, State> {
           loadingSandbox={this.state.loadingSandbox}
           config={config}
         />
+        <Helmet>
+          <title>
+            Example - {fs.titleize(exampleId)} - {fs.titleize(packageId)} -{' '}
+            {BASE_TITLE}
+          </title>
+        </Helmet>
         {examples && exampleId ? (
           <ExampleDisplay
             displayCode={this.state.displayCode}
             example={fs.getById(fs.getFiles(examples.children), exampleId)}
             name={config.name}
             src={loaderUrl}
-            render={(ExampleCode, ExampleComponent, displayCode) => {
+          >
+            {(ExampleCode, ExampleComponent, displayCode) => {
               return (
                 <Content>
                   <ExampleComponentWrapper codeIsVisible={displayCode}>
@@ -399,7 +407,7 @@ export default class Examples extends React.Component<Props, State> {
                 </Content>
               );
             }}
-          />
+          </ExampleDisplay>
         ) : (
           <Content>
             <ErrorMessage>

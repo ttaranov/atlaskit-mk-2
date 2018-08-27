@@ -12,13 +12,16 @@ import {
   RightHeader,
   MetadataWrapper,
   MetadataSubText,
+  MedatadataTextWrapper,
   MetadataIconWrapper,
   MetadataFileName,
   hideControlsClassName,
 } from './styled';
 import { MediaTypeIcon } from './media-type-icon';
 import { FeedbackButton } from './feedback-button';
-import { constructAuthTokenUrl } from './util';
+import { downloadItem } from './domain/download';
+import { MediaViewerError, createError } from './error';
+
 export type Props = {
   readonly identifier: Identifier;
   readonly context: Context;
@@ -26,34 +29,19 @@ export type Props = {
 };
 
 export type State = {
-  item: Outcome<FileItem, Error>;
-};
-
-export const createDownloadUrl = async (
-  item: FileItem,
-  context: Context,
-  collectionName?: string,
-): Promise<string> => {
-  const url = `/file/${item.details.id}/binary`;
-  const tokenizedUrl = await constructAuthTokenUrl(
-    url,
-    context,
-    collectionName,
-  );
-
-  return `${tokenizedUrl}&dl=true`;
+  item: Outcome<FileItem, MediaViewerError>;
 };
 
 const initialState: State = {
-  item: { status: 'PENDING' },
+  item: Outcome.pending(),
 };
 
 export default class Header extends React.Component<Props, State> {
   state: State = initialState;
 
-  private subscription: Subscription;
+  private subscription?: Subscription;
 
-  componentWillUpdate(nextProps) {
+  componentWillUpdate(nextProps: Props) {
     if (this.needsReset(this.props, nextProps)) {
       this.release();
       this.init(nextProps);
@@ -81,71 +69,49 @@ export default class Header extends React.Component<Props, State> {
         next: mediaItem => {
           if (mediaItem.type === 'file') {
             this.setState({
-              item: {
-                status: 'SUCCESSFUL',
-                data: mediaItem,
-              },
+              item: Outcome.successful(mediaItem),
             });
           } else if (mediaItem.type === 'link') {
             this.setState({
-              item: {
-                status: 'FAILED',
-                err: new Error('links are not supported'),
-              },
+              item: Outcome.failed(createError('linksNotSupported')),
             });
           }
         },
         error: err => {
           this.setState({
-            item: {
-              status: 'FAILED',
-              err,
-            },
+            item: Outcome.failed(createError('metadataFailed', undefined, err)),
           });
         },
       });
     });
   }
 
-  downloadItem = (item: FileItem) => async () => {
-    const { identifier, context } = this.props;
-    const link = document.createElement('a');
-    const name = item.details.name || 'download';
-    const href = await createDownloadUrl(
-      item,
-      context,
-      identifier.collectionName,
-    );
-
-    link.href = href;
-    link.download = name;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  };
-
   private renderDownload = () => {
     const { item } = this.state;
+    const { identifier, context } = this.props;
     const icon = <DownloadIcon label="Download" />;
-    if (item.status !== 'SUCCESSFUL') {
-      return (
+
+    const disabledDownloadButton = (
+      <Button
+        label="Download"
+        appearance="toolbar"
+        isDisabled={true}
+        iconBefore={icon}
+      />
+    );
+
+    return item.match({
+      pending: () => disabledDownloadButton,
+      failed: () => disabledDownloadButton,
+      successful: item => (
         <Button
           label="Download"
           appearance="toolbar"
-          isDisabled={true}
+          onClick={downloadItem(item, context, identifier.collectionName)}
           iconBefore={icon}
         />
-      );
-    } else {
-      return (
-        <Button
-          label="Download"
-          appearance="toolbar"
-          onClick={this.downloadItem(item.data)}
-          iconBefore={icon}
-        />
-      );
-    }
+      ),
+    });
   };
 
   render() {
@@ -162,14 +128,11 @@ export default class Header extends React.Component<Props, State> {
 
   private renderMetadata() {
     const { item } = this.state;
-    switch (item.status) {
-      case 'PENDING':
-        return '';
-      case 'SUCCESSFUL':
-        return this.renderMetadataLayout(item.data);
-      case 'FAILED':
-        return '';
-    }
+    return item.match({
+      successful: item => this.renderMetadataLayout(item),
+      pending: () => null,
+      failed: () => null,
+    });
   }
 
   private renderMetadataLayout(item: FileItem) {
@@ -178,13 +141,13 @@ export default class Header extends React.Component<Props, State> {
         <MetadataIconWrapper>
           {this.getMediaIcon(item.details.mediaType)}
         </MetadataIconWrapper>
-        <div>
+        <MedatadataTextWrapper>
           <MetadataFileName>{item.details.name || 'unknown'}</MetadataFileName>
           <MetadataSubText>
             {this.renderFileTypeText(item.details.mediaType)}
             {this.renderSize(item)}
           </MetadataSubText>
-        </div>
+        </MedatadataTextWrapper>
       </MetadataWrapper>
     );
   }

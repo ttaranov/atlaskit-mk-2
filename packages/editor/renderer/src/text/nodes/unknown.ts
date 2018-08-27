@@ -1,14 +1,6 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
+import { getText } from '../../utils';
 import { reduce, NodeReducer } from './';
-
-const getText = (node: PMNode): string => {
-  return (
-    node.text ||
-    node.attrs.text ||
-    node.attrs.shortName ||
-    `[${node.type.name}]`
-  );
-};
 
 const unknown: NodeReducer = (node: PMNode, schema: Schema) => {
   const result: string[] = [];

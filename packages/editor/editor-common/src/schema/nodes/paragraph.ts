@@ -4,7 +4,7 @@ import { Inline } from './doc';
 /**
  * @name paragraph_node
  */
-export interface Definition {
+export interface ParagraphDefinition {
   type: 'paragraph';
   content: Array<Inline>;
 }

@@ -21,10 +21,8 @@ import {
   pmNodeBuilder,
 } from '@atlaskit/editor-test-helpers';
 
-import {
-  TablePluginState,
-  stateKey as tablesPluginKey,
-} from '../../../src/plugins/table/pm-plugins/main';
+import { pluginKey } from '../../../src/plugins/table/pm-plugins/main';
+import { TablePluginState } from '../../../src/plugins/table/types';
 import {
   tablesPlugin,
   extensionPlugin,
@@ -40,17 +38,17 @@ describe('table keymap', () => {
   const editor = (doc: any, trackEvent = () => {}) =>
     createEditor<TablePluginState>({
       doc,
-      editorPlugins: [tablesPlugin],
+      editorPlugins: [tablesPlugin()],
       editorProps: {
         analyticsHandler: trackEvent,
       },
-      pluginKey: tablesPluginKey,
+      pluginKey,
     });
   const editorWithPlugins = (doc: any, trackEvent = () => {}) =>
     createEditor<TablePluginState>({
       doc,
       editorPlugins: [
-        tablesPlugin,
+        tablesPlugin(),
         rulePlugin,
         listsPlugin,
         panelPlugin,
@@ -62,7 +60,7 @@ describe('table keymap', () => {
       editorProps: {
         analyticsHandler: trackEvent,
       },
-      pluginKey: tablesPluginKey,
+      pluginKey,
     });
   let trackEvent;
   beforeEach(() => {
@@ -281,7 +279,12 @@ describe('table keymap', () => {
         view.dispatch(tr.delete($head.pos - 1, $head.pos));
       };
 
-      const excludeNodes = ['doc', 'table', 'applicationCard'];
+      const excludeNodes = [
+        'doc',
+        'table',
+        'applicationCard',
+        'bodiedExtension',
+      ];
 
       Object.keys(defaultSchema.nodes).forEach(nodeName => {
         const node = defaultSchema.nodes[nodeName];

@@ -32,7 +32,10 @@ const createListRule = (
       start: number,
       end: number,
     ) => {
-      const { tr, selection: { $from } } = state;
+      const {
+        tr,
+        selection: { $from },
+      } = state;
 
       const content = $from.node($from.depth).content;
       let shouldBreakNode = false;

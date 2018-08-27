@@ -1,5 +1,196 @@
 # @atlaskit/editor-test-helpers
 
+## 6.0.4
+- [patch] Check current selected nodes before change node selection when interacting with extensions. ED-5199 [bb15908](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bb15908)
+
+## 6.0.3
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/editor-common@14.0.11
+  - @atlaskit/editor-core@77.1.4
+
+## 6.0.2
+- [patch] ED-5178: added card node to default schema [51e7446](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51e7446)
+- [none] Updated dependencies [51e7446](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51e7446)
+  - @atlaskit/editor-core@77.0.13
+  - @atlaskit/editor-common@14.0.8
+
+## 6.0.1
+- [patch] add useMediaPickerAuthProvider option to storyMediaProviderFactory [16971e9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/16971e9)
+- [none] Updated dependencies [16971e9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/16971e9)
+  - @atlaskit/editor-common@14.0.7
+
+## 6.0.0
+
+
+
+
+- [major] Synchronous property "serviceHost" as part of many Interfaces in media components (like MediaApiConfig) is removed and replaced with asynchronous "baseUrl" as part of Auth object. [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+- [none] Updated dependencies [597e0bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/597e0bd)
+  - @atlaskit/editor-core@77.0.0
+  - @atlaskit/editor-common@14.0.0
+- [none] Updated dependencies [61df453](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/61df453)
+  - @atlaskit/editor-common@14.0.0
+  - @atlaskit/editor-core@77.0.0
+- [none] Updated dependencies [812a39c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/812a39c)
+  - @atlaskit/editor-core@77.0.0
+  - @atlaskit/editor-common@14.0.0
+- [none] Updated dependencies [c8eb097](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8eb097)
+  - @atlaskit/editor-common@14.0.0
+  - @atlaskit/editor-core@77.0.0
+- [major] Updated dependencies [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+  - @atlaskit/media-test-helpers@16.0.0
+  - @atlaskit/media-core@23.0.0
+  - @atlaskit/editor-common@14.0.0
+  - @atlaskit/editor-core@77.0.0
+
+## 5.1.2
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/editor-common@13.2.7
+  - @atlaskit/editor-core@76.4.5
+  - @atlaskit/media-core@22.2.1
+  - @atlaskit/media-test-helpers@15.2.1
+
+## 5.1.1
+- [patch] Bump prosemirror-model to 1.6 in order to use toDebugString on Text node spec [fdd5c5d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd5c5d)
+- [none] Updated dependencies [fdd5c5d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd5c5d)
+  - @atlaskit/editor-common@13.2.6
+  - @atlaskit/editor-core@76.4.2
+
+## 5.1.0
+- [minor] Updated dependencies [25ef2e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25ef2e4)
+  - @atlaskit/editor-core@76.4.0
+
+## 5.0.3
+- [patch] Updated dependencies [fad25ec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fad25ec)
+  - @atlaskit/media-test-helpers@15.2.0
+  - @atlaskit/media-core@22.1.0
+  - @atlaskit/editor-common@13.2.1
+  - @atlaskit/editor-core@76.2.3
+
+## 5.0.2
+- [patch] Fallback to use containerId from MentionResourceConfig if ContextIdentifier promise fails [5ecb9a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ecb9a7)
+
+- [none] Updated dependencies [5ecb9a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5ecb9a7)
+  - @atlaskit/editor-core@76.0.4
+  - @atlaskit/editor-common@13.0.4
+- [none] Updated dependencies [6e31eb6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e31eb6)
+  - @atlaskit/editor-core@76.0.4
+  - @atlaskit/editor-common@13.0.4
+
+## 5.0.1
+
+
+- [none] Updated dependencies [25353c3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25353c3)
+  - @atlaskit/editor-core@76.0.0
+- [patch] Updated dependencies [38c0543](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/38c0543)
+  - @atlaskit/editor-core@76.0.0
+
+## 5.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/editor-common@13.0.0
+  - @atlaskit/editor-core@75.0.0
+  - @atlaskit/media-core@22.0.0
+  - @atlaskit/media-test-helpers@15.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/editor-core@75.0.0
+  - @atlaskit/editor-common@13.0.0
+  - @atlaskit/media-test-helpers@15.0.0
+  - @atlaskit/media-core@22.0.0
+
+## 4.2.4
+
+
+- [none] Updated dependencies [5f6ec84](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5f6ec84)
+  - @atlaskit/editor-core@74.0.17
+  - @atlaskit/editor-common@12.0.0
+- [patch] Updated dependencies [5958588](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5958588)
+  - @atlaskit/editor-core@74.0.17
+  - @atlaskit/editor-common@12.0.0
+
+## 4.2.3
+
+
+
+- [none] Updated dependencies [c98857e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c98857e)
+  - @atlaskit/editor-core@74.0.16
+  - @atlaskit/editor-common@11.4.6
+- [patch] Updated dependencies [8a125a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a125a7)
+  - @atlaskit/editor-core@74.0.16
+  - @atlaskit/editor-common@11.4.6
+- [none] Updated dependencies [cacfb53](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cacfb53)
+  - @atlaskit/editor-core@74.0.16
+  - @atlaskit/editor-common@11.4.6
+
+## 4.2.2
+- [patch] Updated dependencies [af0cde6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/af0cde6)
+  - @atlaskit/editor-core@74.0.0
+
+## 4.2.1
+
+
+- [none] Updated dependencies [8c711bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c711bd)
+  - @atlaskit/editor-core@73.9.26
+  - @atlaskit/editor-common@11.3.12
+- [patch] Updated dependencies [42ee1ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42ee1ea)
+  - @atlaskit/media-test-helpers@14.0.6
+  - @atlaskit/media-core@21.0.0
+  - @atlaskit/editor-common@11.3.12
+  - @atlaskit/editor-core@73.9.26
+
+## 4.2.0
+- [minor] Export 'clean' function from schema-builder to allow converting RefNodes to normal PM nodes [2625ade](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2625ade)
+
+
+
+- [none] Updated dependencies [2625ade](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2625ade)
+  - @atlaskit/editor-core@73.9.8
+  - @atlaskit/editor-common@11.3.9
+- [none] Updated dependencies [e3c6479](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e3c6479)
+  - @atlaskit/editor-core@73.9.8
+  - @atlaskit/editor-common@11.3.9
+- [none] Updated dependencies [541341e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/541341e)
+  - @atlaskit/editor-core@73.9.8
+  - @atlaskit/editor-common@11.3.9
+- [none] Updated dependencies [fe383b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fe383b4)
+  - @atlaskit/editor-core@73.9.8
+  - @atlaskit/editor-common@11.3.9
+
+## 4.1.9
+- [patch] Updated dependencies [8d5053e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d5053e)
+  - @atlaskit/editor-common@11.3.8
+  - @atlaskit/editor-core@73.9.5
+
+## 4.1.8
+- [patch] Updated dependencies [0cf2f52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0cf2f52)
+  - @atlaskit/editor-core@73.9.2
+  - @atlaskit/editor-common@11.3.7
+
+## 4.1.7
+- [patch] Updated dependencies [c57e9c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c57e9c1)
+  - @atlaskit/media-test-helpers@14.0.4
+  - @atlaskit/editor-common@11.3.5
+  - @atlaskit/editor-core@73.8.19
+  - @atlaskit/media-core@20.0.0
+
+## 4.1.6
+- [patch] Introduce regression tests for pasting content from 3rd-party vendors into the editor. `dispatchPasteEvent` now returns the event that was fired when successful, to allow consumers to tell whether it was modified by ProseMirror. (ED-3726) [e358e9f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e358e9f)
+- [none] Updated dependencies [e358e9f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e358e9f)
+  - @atlaskit/editor-core@73.8.11
+
+## 4.1.5
+- [patch] Remove pinned prosemirror-model@1.4.0 and move back to caret ranges for prosemirror-model@^1.5.0 [4faccc0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4faccc0)
+- [patch] Updated dependencies [4faccc0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4faccc0)
+  - @atlaskit/editor-common@11.3.0
+  - @atlaskit/editor-core@73.8.6
+
+## 4.1.4
+- [patch] Bump prosemirror-view to 1.3.3 to fix issue where newlines in code-blocks would vanish in IE11. (ED-4830) [fc5a082](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc5a082)
+- [none] Updated dependencies [fc5a082](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fc5a082)
+  - @atlaskit/editor-core@73.8.3
+  - @atlaskit/editor-common@11.2.10
+
 ## 4.1.3
 - [patch] ED-4489 Fix can't submit with enter using Korean and Japanese IME [0274524](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0274524)
 - [none] Updated dependencies [0274524](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0274524)

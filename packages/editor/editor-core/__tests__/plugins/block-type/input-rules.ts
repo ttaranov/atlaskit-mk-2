@@ -220,13 +220,32 @@ describe('inputrules', () => {
         });
 
         it('should convert "```" in middle of paragraph to a code block', () => {
-          const { editorView, sel } = editor(doc(p('code ``{<>}')));
+          const { editorView, sel } = editor(doc(p('code ``{<>}block!')));
           insertText(editorView, '`', sel);
           expect(editorView.state.doc).toEqualDocument(
-            doc(code_block()('code ')),
+            doc(p('code '), code_block()('block!')),
           );
           expect(trackEvent).toHaveBeenCalledWith(
             'atlassian.editor.format.codeblock.autoformatting',
+          );
+        });
+
+        it('should convert "```" at the end of a paragraph to a code block without preceeding content', () => {
+          const { editorView, sel } = editor(doc(p('code ``{<>}')));
+          insertText(editorView, '`', sel);
+          expect(editorView.state.doc).toEqualDocument(
+            doc(p('code '), code_block()()),
+          );
+          expect(trackEvent).toHaveBeenCalledWith(
+            'atlassian.editor.format.codeblock.autoformatting',
+          );
+        });
+
+        it('should convert "```" to a code block without first character', () => {
+          const { editorView, sel } = editor(doc(p(' ``{<>}')));
+          insertText(editorView, '`', sel);
+          expect(editorView.state.doc).toEqualDocument(
+            doc(p(' '), code_block()()),
           );
         });
       });

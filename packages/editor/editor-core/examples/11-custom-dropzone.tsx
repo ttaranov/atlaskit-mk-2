@@ -20,6 +20,7 @@ class DemoEditor extends React.PureComponent<any, State> {
     const editor = !dropzoneRef ? null : (
       <Editor
         appearance="comment"
+        quickInsert={true}
         media={{
           provider: mediaProvider,
           customDropzoneContainer: dropzoneRef,

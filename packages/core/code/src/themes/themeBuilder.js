@@ -8,43 +8,48 @@ import {
 
 import { defaultColors } from './defaultTheme';
 
+export type ThemeModes = 'light' | 'dark';
+export type ThemeProps = {
+  __ATLASKIT_THEME__: { mode: ThemeModes },
+};
+
 export type Theme = {
-  lineNumberColor?: string,
-  lineNumberBgColor?: string,
-  backgroundColor?: string,
-  textColor?: string,
-  substringColor?: string,
-  keywordColor?: string,
-  attributeColor?: string,
-  selectorTagColor?: string,
-  docTagColor?: string,
-  nameColor?: string,
-  builtInColor?: string,
-  literalColor?: string,
-  bulletColor?: string,
-  codeColor?: string,
-  additionColor?: string,
-  regexpColor?: string,
-  symbolColor?: string,
-  variableColor?: string,
-  templateVariableColor?: string,
-  linkColor?: string,
-  selectorAttributeColor?: string,
-  selectorPseudoColor?: string,
-  typeColor?: string,
-  stringColor?: string,
-  selectorIdColor?: string,
-  selectorClassColor?: string,
-  quoteColor?: string,
-  templateTagColor?: string,
-  deletionColor?: string,
-  titleColor?: string,
-  sectionColor?: string,
-  commentColor?: string,
-  metaKeywordColor?: string,
-  metaColor?: string,
-  functionColor?: string,
-  numberColor?: string,
+  lineNumberColor?: string | number,
+  lineNumberBgColor?: string | number,
+  backgroundColor?: string | number,
+  textColor?: string | number,
+  substringColor?: string | number,
+  keywordColor?: string | number,
+  attributeColor?: string | number,
+  selectorTagColor?: string | number,
+  docTagColor?: string | number,
+  nameColor?: string | number,
+  builtInColor?: string | number,
+  literalColor?: string | number,
+  bulletColor?: string | number,
+  codeColor?: string | number,
+  additionColor?: string | number,
+  regexpColor?: string | number,
+  symbolColor?: string | number,
+  variableColor?: string | number,
+  templateVariableColor?: string | number,
+  linkColor?: string | number,
+  selectorAttributeColor?: string | number,
+  selectorPseudoColor?: string | number,
+  typeColor?: string | number,
+  stringColor?: string | number,
+  selectorIdColor?: string | number,
+  selectorClassColor?: string | number,
+  quoteColor?: string | number,
+  templateTagColor?: string | number,
+  deletionColor?: string | number,
+  titleColor?: string | number,
+  sectionColor?: string | number,
+  commentColor?: string | number,
+  metaKeywordColor?: string | number,
+  metaColor?: string | number,
+  functionColor?: string | number,
+  numberColor?: string | number,
 };
 
 const codeContainerStyle = {
@@ -54,7 +59,6 @@ const codeContainerStyle = {
   left: '16px', // 2x akGridSize
   position: 'relative',
   paddingRight: '16px', // 2x akGridSize
-  display: 'inline-block',
 };
 
 const lineNumberContainerStyle = (theme: Theme) => ({
@@ -70,151 +74,149 @@ const lineNumberContainerStyle = (theme: Theme) => ({
   userSelect: 'none',
 });
 
-const codeBlockStyle = (theme: Theme) => ({
-  // These properties map to highlightjs css selectors
-  hljs: {
-    fontFamily: codeFontFamily,
-    fontSize: '12px',
-    lineHeight: '20px',
-    background: theme.backgroundColor,
-    color: theme.textColor,
-    borderRadius: borderRadius(),
-    display: 'block',
-    overflowX: 'auto',
-    whiteSpace: 'pre',
-    paddingRight: '16px',
-    transform: 'translate3d(0,0,0)',
-  },
-  'hljs-subst': {
-    color: theme.substringColor,
-  },
-  'hljs-keyword': {
+const sharedCodeStyle = (theme: Theme) => ({
+  keyword: {
     color: theme.keywordColor,
     fontWeight: 'bolder',
   },
-  'hljs-attribute': {
+  'attr-name': {
     color: theme.attributeColor,
   },
-  'hljs-selector-tag': {
+  selector: {
     color: theme.selectorTagColor,
   },
-  'hljs-doctag': {
-    color: theme.docTagColor,
-  },
-  'hljs-name': {
-    color: theme.nameColor,
-  },
-  'hljs-built_in': {
-    color: theme.builtInColor,
-  },
-  'hljs-literal': {
-    color: theme.literalColor,
-  },
-  'hljs-bullet': {
-    color: theme.bulletColor,
-  },
-  'hljs-code': {
-    color: theme.codeColor,
-  },
-  'hljs-addition': {
-    color: theme.additionColor,
-  },
-  'hljs-regexp': {
-    color: theme.regexpColor,
-  },
-  'hljs-symbol': {
-    color: theme.symbolColor,
-  },
-  'hljs-variable': {
-    color: theme.variableColor,
-  },
-  'hljs-template-variable': {
-    color: theme.templateVariableColor,
-  },
-  'hljs-link': {
-    color: theme.linkColor,
-  },
-  'hljs-selector-attr': {
-    color: theme.selectorAttributeColor,
-  },
-  'hljs-selector-pseudo': {
-    color: theme.selectorPseudoColor,
-  },
-  'hljs-type': {
-    color: theme.typeColor,
-  },
-  'hljs-string': {
-    color: theme.stringColor,
-  },
-  'hljs-selector-id': {
-    color: theme.selectorIdColor,
-  },
-  'hljs-selector-class': {
-    color: theme.selectorClassColor,
-  },
-  'hljs-quote': {
-    color: theme.quoteColor,
-  },
-  'hljs-template-tag': {
-    color: theme.templateTagColor,
-  },
-  'hljs-deletion': {
-    color: theme.deletionColor,
-  },
-  'hljs-title': {
-    color: theme.titleColor,
-  },
-  'hljs-section': {
-    color: theme.sectionColor,
-  },
-  'hljs-comment': {
+  comment: {
     color: theme.commentColor,
     fontFamily: `SFMono-MediumItalic, ${codeFontFamily()}`,
     fontStyle: 'italic',
   },
-  'hljs-meta-keyword': {
-    color: theme.metaKeywordColor,
-  },
-  'hljs-meta': {
-    color: theme.metaColor,
-  },
-  'hljs-emphasis': {
+  'block-comment': {
+    color: theme.commentColor,
+    fontFamily: `SFMono-MediumItalic, ${codeFontFamily()}`,
     fontStyle: 'italic',
   },
-  'hljs-strong': {
+  'function-name': {
+    color: theme.sectionColor,
+  },
+  'class-name': {
+    color: theme.sectionColor,
+  },
+  doctype: {
+    color: theme.docTagColor,
+  },
+  substr: {
+    color: theme.substringColor,
+  },
+  namespace: {
+    color: theme.nameColor,
+  },
+  builtin: {
+    color: theme.builtInColor,
+  },
+  entity: {
+    color: theme.literalColor,
+  },
+  bullet: {
+    color: theme.bulletColor,
+  },
+  code: {
+    color: theme.codeColor,
+  },
+  addition: {
+    color: theme.additionColor,
+  },
+  regex: {
+    color: theme.regexpColor,
+  },
+  symbol: {
+    color: theme.symbolColor,
+  },
+  variable: {
+    color: theme.variableColor,
+  },
+  url: {
+    color: theme.linkColor,
+  },
+  'selector-attr': {
+    color: theme.selectorAttributeColor,
+  },
+  'selector-pseudo': {
+    color: theme.selectorPseudoColor,
+  },
+  type: {
+    color: theme.typeColor,
+  },
+  string: {
+    color: theme.stringColor,
+  },
+  quote: {
+    color: theme.quoteColor,
+  },
+  tag: {
+    color: theme.templateTagColor,
+  },
+  deletion: {
+    color: theme.deletionColor,
+  },
+  title: {
+    color: theme.titleColor,
+  },
+  section: {
+    color: theme.sectionColor,
+  },
+  'meta-keyword': {
+    color: theme.metaKeywordColor,
+  },
+  meta: {
+    color: theme.metaColor,
+  },
+  italic: {
+    fontStyle: 'italic',
+  },
+  bold: {
     fontWeight: 'bolder',
   },
-  'hljs-function': {
+  function: {
     color: theme.functionColor,
   },
-  'hljs-number': {
+  number: {
     color: theme.numberColor,
   },
 });
 
-const inlineCodeStyle = (theme: Theme) => ({
-  hljs: {
-    fontFamily: codeFontFamily,
-    fontSize: '12px',
-    background: theme.backgroundColor,
-    color: theme.textColor,
-    borderRadius: borderRadius(),
-    display: 'inline',
-    overflowX: 'auto',
-    padding: '2px 4px',
-    transform: 'translate3d(0,0,0)',
-  },
+const codeStyle = theme => ({
+  fontFamily: codeFontFamily,
+  fontSize: '12px',
+  background: theme.backgroundColor,
+  color: theme.textColor,
+  borderRadius: borderRadius(),
+  display: 'block',
+  lineHeight: 1.6,
+  overflowX: 'auto',
+  transform: 'translate3d(0,0,0)',
+  whiteSpace: 'pre',
 });
 
-export function applyTheme(theme: Theme = {}) {
-  const newTheme = { ...defaultColors, ...theme };
+const codeBlockStyle = (theme: Theme) => ({
+  'pre[class*="language-"]': codeStyle(theme),
+  ...sharedCodeStyle(theme),
+});
+
+const inlineCodeStyle = (theme: Theme) => ({
+  'pre[class*="language-"]': {
+    ...codeStyle(theme),
+    padding: '2px 4px',
+    display: 'inline',
+  },
+  ...sharedCodeStyle(theme),
+});
+
+export function applyTheme(theme: ThemeProps | Theme = {}) {
+  const newTheme = { ...defaultColors(theme), ...theme };
   return {
     lineNumberContainerStyle: lineNumberContainerStyle(newTheme),
     codeBlockStyle: codeBlockStyle(newTheme),
-    inlineCodeStyle: {
-      ...codeBlockStyle(newTheme),
-      ...inlineCodeStyle(newTheme),
-    },
+    inlineCodeStyle: inlineCodeStyle(newTheme),
     codeContainerStyle,
   };
 }

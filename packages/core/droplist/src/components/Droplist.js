@@ -2,10 +2,19 @@
 
 import React, { Component, type Node } from 'react';
 import PropTypes from 'prop-types';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import Layer from '@atlaskit/layer';
 import Spinner from '@atlaskit/spinner';
 import { ThemeProvider } from 'styled-components';
 import { gridSize } from '@atlaskit/theme';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 import Wrapper, {
   Content,
   SpinnerContainer,
@@ -52,9 +61,11 @@ type Props = {
   maxHeight?: number,
   /** Content which will trigger the drop list to open and close. */
   trigger?: Node,
+  /** Callback to know when the list is first correctly positioned within it's Layer */
+  onPositioned?: Function,
 };
 
-export default class Droplist extends Component<Props, void> {
+class Droplist extends Component<Props, void> {
   static defaultProps = {
     appearance: 'default',
     boundariesElement: 'viewport',
@@ -70,6 +81,7 @@ export default class Droplist extends Component<Props, void> {
     shouldFitContainer: false,
     shouldFlip: true,
     trigger: null,
+    onPositioned: () => {},
   };
 
   static childContextTypes = {
@@ -123,7 +135,7 @@ export default class Droplist extends Component<Props, void> {
 
   handleClickOutside = (event: Event): void => {
     if (this.props.isOpen) {
-      // $FlowFixMe
+      // $FlowFixMe - flow is lost and if not an instance of Node
       if (event.target instanceof Node) {
         // Rather than check for the target within the entire Droplist, we specify the trigger/content.
         // This aids with future effort in scroll-locking Droplist when isMenuFixed is enabled; the scroll
@@ -176,6 +188,7 @@ export default class Droplist extends Component<Props, void> {
       shouldFitContainer,
       shouldFlip,
       trigger,
+      onPositioned,
     } = this.props;
 
     const layerContent = isOpen ? (
@@ -204,9 +217,10 @@ export default class Droplist extends Component<Props, void> {
           boundariesElement={boundariesElement}
           content={layerContent}
           offset={dropOffset}
-          // $FlowFixMe
+          // $FlowFixMe - Cannot create `Layer` element because in property `position
           position={position}
           isAlwaysFixed={isOpen && isMenuFixed}
+          onPositioned={onPositioned}
         >
           <Trigger fit={shouldFitContainer} innerRef={this.handleTriggerRef}>
             {trigger}
@@ -216,3 +230,25 @@ export default class Droplist extends Component<Props, void> {
     );
   }
 }
+
+export { Droplist as DroplistWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'droplist',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onOpenChange: createAndFireEventOnAtlaskit({
+      action: 'toggled',
+      actionSubject: 'droplist',
+
+      attributes: {
+        componentName: 'droplist',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(Droplist),
+);

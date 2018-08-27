@@ -1,4 +1,5 @@
 // @flow
+
 import React, { Component, type ElementType, type Node } from 'react';
 import { ThemeProvider } from 'styled-components';
 import Modal from '@atlaskit/modal-dialog';
@@ -25,55 +26,57 @@ type Props = {|
 |};
 /* eslint-enable react/no-unused-prop-types */
 
-const noop = () => {};
+// NOTE: @atlaskit/modal-dialog expects a component for header/footer. This is
+// inconsistent with Spotlight so we take the element and create a
+// stateless-functional component.
+function makeFnComp(element) {
+  return element ? () => element : null;
+}
+function noop() {}
 
-export default class OnboardingModal extends Component<Props, null> {
+export default class OnboardingModal extends Component<Props> {
+  headerComponent = (props: Props) => {
+    const { header: headerElement, heading, image: src } = props;
+
+    const imageElement = <Image alt={heading} src={src} />;
+    const header = makeFnComp(headerElement);
+    const image = makeFnComp(imageElement);
+
+    return header || image;
+  };
+  footerComponent = (props: Props) => {
+    const { footer: footerElement, actions: actionList } = props;
+
+    const actionsElement = actionList ? (
+      <ThemeProvider theme={getModalTheme}>
+        <Actions>
+          {actionList.map(({ text, ...rest }, idx) => {
+            const variant = idx ? 'subtle-link' : 'primary';
+            return (
+              <ActionItem key={text || idx}>
+                <Button appearance={variant} autoFocus={!idx} {...rest}>
+                  {text}
+                </Button>
+              </ActionItem>
+            );
+          })}
+        </Actions>
+      </ThemeProvider>
+    ) : null;
+    const footer = makeFnComp(footerElement);
+    const actions = makeFnComp(actionsElement);
+
+    return footer || actions;
+  };
+
   render() {
-    const {
-      footer: footerElement,
-      header: headerElement,
-      actions,
-      children,
-      heading,
-      image,
-      ...props
-    } = this.props;
-    // NOTE: @atlaskit/modal-dialog expects a component for header/footer. This
-    // is inconsistent with Spotlight so we take the element and create a component.
-    const footer = footerElement ? () => footerElement : null;
-    const header = headerElement ? () => headerElement : null;
-
-    const safeActions = actions;
-
-    const footerComponent =
-      footer ||
-      (safeActions
-        ? () => (
-            <ThemeProvider theme={getModalTheme}>
-              <Actions>
-                {safeActions.map(({ text, ...rest }, idx) => {
-                  const variant = idx ? 'subtle-link' : 'primary';
-                  return (
-                    <ActionItem key={text || idx}>
-                      <Button appearance={variant} autoFocus={!idx} {...rest}>
-                        {text}
-                      </Button>
-                    </ActionItem>
-                  );
-                })}
-              </Actions>
-            </ThemeProvider>
-          )
-        : null);
-
-    const headerComponent =
-      header || (image ? () => <Image alt={heading} src={image} /> : null);
+    const { actions, children, heading, ...props } = this.props;
 
     return (
       <Modal
         autoFocus
-        footer={footerComponent}
-        header={headerComponent}
+        footer={this.footerComponent(this.props)}
+        header={this.headerComponent(this.props)}
         onClose={noop}
         scrollBehavior="outside"
         shouldCloseOnOverlayClick={false}

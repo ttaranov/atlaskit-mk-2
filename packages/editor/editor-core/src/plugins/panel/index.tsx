@@ -2,27 +2,23 @@ import * as React from 'react';
 import InfoIcon from '@atlaskit/icon/glyph/editor/info';
 import { panel } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
-import { createPlugin, stateKey } from './pm-plugins/main';
-import PanelEdit from './ui/PanelEdit';
+import { createPlugin } from './pm-plugins/main';
+import { getToolbarConfig } from './toolbar';
 
 const panelPlugin: EditorPlugin = {
   nodes() {
-    return [{ rank: 1100, name: 'panel', node: panel }];
+    return [{ name: 'panel', node: panel }];
   },
 
   pmPlugins() {
-    return [{ rank: 1110, plugin: createPlugin }];
-  },
-
-  contentComponent({ editorView }) {
-    const pluginState = stateKey.getState(editorView.state);
-    return <PanelEdit editorView={editorView} pluginState={pluginState} />;
+    return [{ name: 'panel', plugin: createPlugin }];
   },
 
   pluginsOptions: {
     quickInsert: [
       {
         title: 'Panel',
+        priority: 1000,
         icon: () => <InfoIcon label="Panel" />,
         action(insert, state) {
           return insert(
@@ -34,6 +30,7 @@ const panelPlugin: EditorPlugin = {
         },
       },
     ],
+    floatingToolbar: getToolbarConfig,
   },
 };
 

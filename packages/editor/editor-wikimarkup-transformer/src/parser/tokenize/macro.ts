@@ -4,6 +4,7 @@ import { blockquoteMacro } from '../macro/blockQuote';
 import { codeBlockMacro } from '../macro/codeBlock';
 import { colorMacro } from '../macro/color';
 import { panelMacro } from '../macro/panel';
+import { adfMacro } from '../macro/adf';
 import { unknownMacro } from '../macro/unknown';
 import { Token } from './';
 
@@ -44,6 +45,9 @@ export function macro(input: string, schema: Schema): Token {
       break;
     case 'color':
       nodes = colorMacro(attrs, rawContent, schema);
+      break;
+    case 'adf':
+      nodes = adfMacro(attrs, rawContent, schema);
       break;
     default:
       nodes = unknownMacro(macroName, rawAttrs, rawContent, schema);

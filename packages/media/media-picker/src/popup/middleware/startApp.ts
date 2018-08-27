@@ -12,8 +12,8 @@ export default function(eventEmitter: PopupUploadEventEmitter) {
     action: Action,
   ) => {
     if (isStartAppAction(action)) {
-      const { apiUrl, redirectUrl } = store.getState();
-      store.dispatch(updatePopupUrls({ apiUrl, redirectUrl }));
+      const { redirectUrl } = store.getState();
+      store.dispatch(updatePopupUrls({ redirectUrl }));
     }
     return next(action);
   };

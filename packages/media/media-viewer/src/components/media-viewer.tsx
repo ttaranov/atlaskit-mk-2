@@ -92,6 +92,7 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
             selectedItem={identifier}
             onClose={onClose}
             itemSource={itemSource}
+            featureFlags={featureFlags}
           />
         );
       }

@@ -1,5 +1,169 @@
 # @atlaskit/media-picker
 
+## 12.1.2
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/media-card@32.0.5
+
+## 12.1.1
+- [patch] Fix MediaPicker Dropzone UI on IE11 [79f780a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/79f780a)
+
+## 12.1.0
+- [minor] New option "singleSelect" allows to limit number of selected files to just 1. [4ac210e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4ac210e)
+
+## 12.0.1
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/media-card@32.0.1
+  - @atlaskit/modal-dialog@6.0.6
+  - @atlaskit/field-text@7.0.4
+  - @atlaskit/analytics-next@3.0.4
+  - @atlaskit/toggle@5.0.5
+  - @atlaskit/flag@9.0.4
+  - @atlaskit/button@9.0.5
+  - @atlaskit/spinner@9.0.5
+  - @atlaskit/icon@13.2.4
+  - @atlaskit/dropdown-menu@6.1.5
+
+## 12.0.0
+- [major] Synchronous property "serviceHost" as part of many Interfaces in media components (like MediaApiConfig) is removed and replaced with asynchronous "baseUrl" as part of Auth object. [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+- [major] Updated dependencies [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+  - @atlaskit/media-test-helpers@16.0.0
+  - @atlaskit/media-store@6.0.0
+  - @atlaskit/media-editor@11.0.0
+  - @atlaskit/media-core@23.0.0
+  - @atlaskit/media-card@32.0.0
+
+## 11.2.2
+- [patch] Updated dependencies [59ccb09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59ccb09)
+  - @atlaskit/media-card@31.3.0
+
+## 11.2.1
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/media-card@31.2.1
+  - @atlaskit/flag@9.0.3
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/media-editor@10.0.1
+  - @atlaskit/toggle@5.0.4
+  - @atlaskit/button@9.0.4
+  - @atlaskit/media-core@22.2.1
+  - @atlaskit/media-test-helpers@15.2.1
+  - @atlaskit/media-store@5.1.1
+  - @atlaskit/spinner@9.0.4
+  - @atlaskit/field-text@7.0.3
+  - @atlaskit/analytics-next@3.0.3
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/dropdown-menu@6.1.4
+  - @atlaskit/modal-dialog@6.0.5
+
+## 11.2.0
+- [minor] MediaPicker Popup now supports passing of optional parent react context as a parameter [25ef2e4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25ef2e4)
+
+## 11.1.2
+- [patch] pass mimeType to files in uploads-start event in MediaPicker [3485c00](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3485c00)
+- [patch] Updated dependencies [3485c00](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3485c00)
+  - @atlaskit/media-core@22.2.0
+  - @atlaskit/media-card@31.1.1
+
+## 11.1.1
+- [patch] use context.getFile in media-card [fad25ec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fad25ec)
+- [patch] Updated dependencies [fad25ec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fad25ec)
+  - @atlaskit/media-test-helpers@15.2.0
+  - @atlaskit/media-store@5.1.0
+  - @atlaskit/media-core@22.1.0
+  - @atlaskit/media-card@31.1.0
+
+## 11.1.0
+
+
+
+
+- [patch] Updated dependencies [fa6f865](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fa6f865)
+  - @atlaskit/media-card@31.0.0
+  - @atlaskit/media-test-helpers@15.1.0
+- [none] Updated dependencies [fdd03d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd03d8)
+  - @atlaskit/media-card@31.0.0
+  - @atlaskit/media-test-helpers@15.1.0
+- [patch] Updated dependencies [49c8425](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49c8425)
+  - @atlaskit/media-card@31.0.0
+  - @atlaskit/media-test-helpers@15.1.0
+- [minor] Updated dependencies [3476e01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3476e01)
+  - @atlaskit/media-card@31.0.0
+
+## 11.0.0
+
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/media-card@30.0.0
+  - @atlaskit/modal-dialog@6.0.0
+  - @atlaskit/field-text@7.0.0
+  - @atlaskit/analytics-next@3.0.0
+  - @atlaskit/toggle@5.0.0
+  - @atlaskit/flag@9.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/media-core@22.0.0
+  - @atlaskit/media-test-helpers@15.0.0
+  - @atlaskit/media-store@5.0.0
+  - @atlaskit/media-editor@10.0.0
+  - @atlaskit/spinner@9.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/icon@13.0.0
+  - @atlaskit/dropdown-menu@6.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/media-card@30.0.0
+  - @atlaskit/media-test-helpers@15.0.0
+  - @atlaskit/media-store@5.0.0
+  - @atlaskit/media-editor@10.0.0
+  - @atlaskit/media-core@22.0.0
+  - @atlaskit/modal-dialog@6.0.0
+  - @atlaskit/field-text@7.0.0
+  - @atlaskit/analytics-next@3.0.0
+  - @atlaskit/toggle@5.0.0
+  - @atlaskit/flag@9.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/spinner@9.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/icon@13.0.0
+  - @atlaskit/dropdown-menu@6.0.0
+
+## 10.0.0
+- [major] Remove old analytics client, context and tracker code [daf6227](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/daf6227)
+
+## 9.0.1
+- [patch] [MSW-847 ] Fix Safari issue with not selecting files in MediaPicker recents [6f51fdb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6f51fdb)
+
+## 9.0.0
+- [major] Use more strict type for MediaArtifacts [8c711bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c711bd)
+- [patch] Use media.tsconfig in MediaViewer [42ee1ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42ee1ea)
+- [patch] Updated dependencies [42ee1ea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42ee1ea)
+  - @atlaskit/media-test-helpers@14.0.6
+  - @atlaskit/media-editor@9.1.4
+  - @atlaskit/media-core@21.0.0
+  - @atlaskit/media-card@29.1.8
+
+## 8.1.6
+- [patch] Safely handle paste handler for clipboard to avoid error noise in unsupported browsers [8d5053e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d5053e)
+
+## 8.1.5
+- [patch] re-enable usage of file id upfront in new MediaPicker uploader [3fb464b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3fb464b)
+- [patch] Updated dependencies [3fb464b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3fb464b)
+  - @atlaskit/media-store@4.2.1
+
+## 8.1.4
+- [patch] merge getFile and uploadFile + update MediaPicker NewUploadService + expose UploadController from MediaStore [c57e9c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c57e9c1)
+- [patch] Updated dependencies [c57e9c1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c57e9c1)
+  - @atlaskit/media-store@4.2.0
+  - @atlaskit/media-test-helpers@14.0.4
+  - @atlaskit/media-editor@9.1.3
+  - @atlaskit/media-card@29.1.5
+  - @atlaskit/media-core@20.0.0
+
+## 8.1.3
+- [patch] Updated dependencies [cdba8b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cdba8b3)
+  - @atlaskit/spinner@8.0.0
+  - @atlaskit/media-card@29.1.4
+  - @atlaskit/flag@8.1.3
+  - @atlaskit/button@8.2.3
+
 ## 8.1.2
 - [patch] Clean Changelogs - remove duplicates and empty entries [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)
 - [none] Updated dependencies [e7756cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7756cd)

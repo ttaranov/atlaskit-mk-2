@@ -1,8 +1,3 @@
-// mutate RxJS Observable with required methods
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/mergeMap';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/fromPromise';
 import { MouseEvent } from 'react';
 import {
   MediaItemDetails,
@@ -10,16 +5,17 @@ import {
   MediaType,
   FileProcessingStatus,
 } from '@atlaskit/media-core';
+import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
 
 import { CardAction } from './actions';
-
-import { UIAnalyticsEventInterface } from './analytics-next';
 
 // the only components we expose to consumers is Card, CardView and CardList
 export * from './root/card';
 export * from './root/cardView';
+export * from './root/domain';
 export * from './list';
 export * from './actions';
+export { isUrlPreviewIdentifier } from './utils/identifier';
 // TODO: don't expose this directly https://jira.atlassian.com/browse/FIL-4396
 export {
   AppCardView,

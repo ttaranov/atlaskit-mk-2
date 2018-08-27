@@ -250,7 +250,7 @@ export function createCodeFragment(
   let nodeSize = 0;
 
   if (!!title) {
-    const titleNode = schema.nodes.heading.create(
+    const titleNode = schema.nodes.heading.createChecked(
       { level: 5 },
       schema.text(title),
     );
@@ -258,7 +258,7 @@ export function createCodeFragment(
     nodeSize += titleNode.nodeSize;
   }
 
-  const codeBlockNode = schema.nodes.codeBlock.create(
+  const codeBlockNode = schema.nodes.codeBlock.createChecked(
     { language },
     schema.text(codeContent),
   );

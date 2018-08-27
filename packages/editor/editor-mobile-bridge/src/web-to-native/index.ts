@@ -1,4 +1,5 @@
 import {
+  ListBridge,
   MediaBridge,
   MentionBridge,
   PromiseBridge,
@@ -15,6 +16,7 @@ declare global {
     textFormatBridge?: TextFormattingBridge;
     mediaBridge?: MediaBridge;
     promiseBridge?: PromiseBridge;
+    listBridge?: ListBridge;
     webkit?: any;
   }
 }

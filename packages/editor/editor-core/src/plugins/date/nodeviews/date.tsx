@@ -2,61 +2,34 @@ import * as React from 'react';
 import styled from 'styled-components';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import {
-  akColorN40,
-  akColorN800,
-  akColorN30A,
-  akColorR50,
-  akColorR75,
-  akColorR500,
-  akBorderRadius,
-  akColorB200,
-} from '@atlaskit/util-shared-styles';
+import { akBorderRadius, akColorB200 } from '@atlaskit/util-shared-styles';
 import {
   timestampToString,
   timestampToTaskContext,
   isPastDate,
 } from '@atlaskit/editor-common';
-import { selectElement } from '../actions';
+import { Date } from '@atlaskit/date';
+import { setDatePickerAt } from '../actions';
 import { defaultEditorFontStyles } from '../../../styles';
 
-const Overlay = styled.div`
-  background: transparent;
-  border-radius: ${akBorderRadius};
-  box-sizing: border-box;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-`;
-
-const DateNode = styled.span`
+const SelectableDate = styled(Date)`
   ${defaultEditorFontStyles};
 
-  background: ${akColorN30A};
-  border-radius: ${akBorderRadius};
-  color: ${akColorN800};
-  padding: 2px 4px;
-  margin: 0 1px;
-  position: relative;
-  cursor: pointer;
-  transition: background 0.3s;
-  white-space: nowrap;
-
-  &:hover {
-    background: ${akColorN40};
-  }
-  .ProseMirror-selectednode & > div {
-    border: 2px solid ${akColorB200};
-  }
-  &.past-due {
-    background: ${akColorR50};
-    color: ${akColorR500};
-
-    &:hover {
-      background: ${akColorR75};
+  .ProseMirror-selectednode & {
+    display: 'relative';
+    &::before {
+      content: '';
+      border: 2px solid ${akColorB200};
+      display: 'absolute';
+      background: transparent;
+      border-radius: ${akBorderRadius};
+      box-sizing: border-box;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
     }
   }
 `;
@@ -67,27 +40,37 @@ export interface Props {
   node: PMNode;
 }
 
-export default class DateNodeView extends React.Component<Props, any> {
+export default class DateNodeView extends React.Component<Props> {
   render() {
-    const { attrs: { timestamp } } = this.props.node;
-    const { view: { state: { schema, selection } } } = this.props;
-    const withinTask = selection.$from.parent.type === schema.nodes.taskItem;
+    const {
+      attrs: { timestamp },
+    } = this.props.node;
+    const {
+      view: {
+        state: { schema, selection },
+      },
+    } = this.props;
+    const parent = selection.$from.parent;
+    const withinIncompleteTask =
+      parent.type === schema.nodes.taskItem && parent.attrs.state !== 'DONE';
+
+    const color =
+      withinIncompleteTask && isPastDate(timestamp) ? 'red' : undefined;
 
     return (
-      <DateNode
-        onClick={this.handleClick}
-        className={withinTask && isPastDate(timestamp) ? 'past-due' : ''}
-      >
-        <Overlay />
-        {withinTask
-          ? timestampToTaskContext(timestamp)
-          : timestampToString(timestamp)}
-      </DateNode>
+      <span id={Math.random().toString()} onClick={this.handleClick}>
+        <SelectableDate color={color} value={timestamp}>
+          {withinIncompleteTask
+            ? timestampToTaskContext(timestamp)
+            : timestampToString(timestamp)}
+        </SelectableDate>
+      </span>
     );
   }
 
   private handleClick = (event: React.SyntheticEvent<any>) => {
+    event.nativeEvent.stopImmediatePropagation();
     const { state, dispatch } = this.props.view;
-    selectElement(event.currentTarget.parentElement)(state, dispatch);
+    setDatePickerAt(state.selection.from)(state, dispatch);
   };
 }

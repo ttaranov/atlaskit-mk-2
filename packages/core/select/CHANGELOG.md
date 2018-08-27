@@ -1,5 +1,153 @@
 # @atlaskit/select
 
+## 5.0.11
+- [patch] Updating datetime-picker and select styles [981b96c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/981b96c)
+
+## 5.0.10
+- [patch] add switcher to nav-next ui components docs page [e083d63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e083d63)
+- [none] Updated dependencies [e083d63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e083d63)
+
+## 5.0.9
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/tooltip@12.0.9
+  - @atlaskit/spinner@9.0.6
+  - @atlaskit/modal-dialog@6.0.9
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/form@3.1.6
+  - @atlaskit/checkbox@4.0.4
+  - @atlaskit/button@9.0.6
+  - @atlaskit/docs@5.0.6
+
+## 5.0.8
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/tooltip@12.0.5
+  - @atlaskit/modal-dialog@6.0.6
+  - @atlaskit/analytics-next@3.0.4
+  - @atlaskit/checkbox@4.0.3
+  - @atlaskit/button@9.0.5
+  - @atlaskit/theme@5.1.3
+  - @atlaskit/spinner@9.0.5
+  - @atlaskit/icon@13.2.4
+  - @atlaskit/form@3.1.5
+
+## 5.0.7
+- [patch] Fix bug with Popup select not opening if target was an SVG object [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/tooltip@12.0.4
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/checkbox@4.0.2
+  - @atlaskit/button@9.0.4
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/spinner@9.0.4
+  - @atlaskit/analytics-next@3.0.3
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/modal-dialog@6.0.5
+  - @atlaskit/form@3.1.4
+
+## 5.0.6
+- [patch] Add a SSR test for every package, add react-dom and build-utils in devDependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+- [patch] Updated dependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+  - @atlaskit/tooltip@12.0.3
+  - @atlaskit/modal-dialog@6.0.4
+  - @atlaskit/analytics-next@3.0.2
+  - @atlaskit/checkbox@4.0.1
+  - @atlaskit/button@9.0.3
+  - @atlaskit/theme@5.1.1
+  - @atlaskit/spinner@9.0.3
+  - @atlaskit/icon@13.2.1
+  - @atlaskit/form@3.1.3
+
+## 5.0.5
+- [patch] Removed incorrect min-height for forms. Fixed select dev dep range for form. [186a2ee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/186a2ee)
+- [none] Updated dependencies [186a2ee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/186a2ee)
+  - @atlaskit/form@3.1.2
+
+## 5.0.4
+- [patch] Updated dependencies [25d6e48](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d6e48)
+  - @atlaskit/form@3.1.1
+
+## 5.0.3
+- [patch] Updated dependencies [e33f19d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e33f19d)
+  - @atlaskit/form@3.1.0
+
+## 5.0.2
+- [patch] Move analytics tests and replace elements to core [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+- [none] Updated dependencies [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+  - @atlaskit/tooltip@12.0.1
+  - @atlaskit/modal-dialog@6.0.1
+  - @atlaskit/analytics-next@3.0.1
+  - @atlaskit/button@9.0.2
+  - @atlaskit/spinner@9.0.2
+  - @atlaskit/docs@5.0.1
+
+## 5.0.1
+- [patch] Updated dependencies [e6b1985](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6b1985)
+  - @atlaskit/tooltip@12.0.0
+  - @atlaskit/icon@13.1.1
+  - @atlaskit/form@3.0.1
+
+## 5.0.0
+- [major] Provides analytics for common component interations. See the [Instrumented Components](https://atlaskit.atlassian.com/packages/core/analytics-next) section for more details. If you are using enzyme for testing you will have to use [our forked version of the library](https://atlaskit.atlassian.com/docs/guides/testing#we-use-a-forked-version-of-enzyme). [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/tooltip@11.0.0
+  - @atlaskit/modal-dialog@6.0.0
+  - @atlaskit/analytics-next@3.0.0
+  - @atlaskit/checkbox@4.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/icon@13.0.0
+  - @atlaskit/form@3.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/tooltip@11.0.0
+  - @atlaskit/modal-dialog@6.0.0
+  - @atlaskit/analytics-next@3.0.0
+  - @atlaskit/checkbox@4.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/icon@13.0.0
+  - @atlaskit/form@3.0.0
+
+## 4.5.2
+- [patch] Update loading indicator to be inline with ADG3  [da661fd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da661fd)
+- [none] Updated dependencies [da661fd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da661fd)
+
+## 4.5.1
+- [patch] fixed actionMeta not being passed to onChange of PopupSelect [83833be](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/83833be)
+- [none] Updated dependencies [83833be](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/83833be)
+
+## 4.5.0
+- [minor] atlaskit/select now invokes a makeAnimated function to wrap passed in components in default animated behaviour. As this invocation returns a new set of react components each time, we've also implemented a lightweight component cache using memoize-one and react-fast-compare. Additionally updates made to datetime-picker to not instantiate a new component on render everytime (for performance reasons as well as to satisfy our caching logic), we now also pass relevant state values through the select as props to be ingested by our custom components, instead of directly capturing them within lexical scope.  [9b01264](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b01264)
+- [none] Updated dependencies [9b01264](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9b01264)
+
+## 4.4.0
+- [minor] Added nav-next "Switcher" component. Minor fixes and dep bump for select. [ed5d8d1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed5d8d1)
+- [none] Updated dependencies [ed5d8d1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ed5d8d1)
+
+## 4.3.6
+- [patch] ADG3 guideline allignemnt, updated padding and height, update colors for hover and active, update icons  [b53da28](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b53da28)
+- [none] Updated dependencies [b53da28](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b53da28)
+
+## 4.3.5
+- [patch] Updated dependencies [60c715f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/60c715f)
+  - @atlaskit/form@2.1.5
+
+## 4.3.4
+- [patch] Updated dependencies [a78cd4d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a78cd4d)
+  - @atlaskit/icon@12.6.2
+
+## 4.3.3
+- [patch] Replace internal styled components with emotion styled components [415a64a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/415a64a)
+- [none] Updated dependencies [415a64a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/415a64a)
+
+## 4.3.2
+- [patch] Updated dependencies [470a1fb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/470a1fb)
+  - @atlaskit/form@2.1.4
+
 ## 4.3.1
 - [patch] Fix $FlowFixMe and release packages [25d0b2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d0b2d)
 - [patch] Updated dependencies [25d0b2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d0b2d)

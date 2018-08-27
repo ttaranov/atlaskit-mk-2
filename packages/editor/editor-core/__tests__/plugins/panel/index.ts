@@ -1,6 +1,6 @@
 import {
   PanelState,
-  stateKey as panelPluginKey,
+  pluginKey as panelPluginKey,
 } from '../../../src/plugins/panel/pm-plugins/main';
 import {
   doc,
@@ -19,81 +19,24 @@ import {
 import panelPlugin from '../../../src/plugins/panel';
 import listPlugin from '../../../src/plugins/lists';
 import tablesPlugin from '../../../src/plugins/table';
+import {
+  removePanel,
+  changePanelType,
+} from '../../../src/plugins/panel/actions';
 
 describe('@atlaskit/editor-core ui/PanelPlugin', () => {
   const event = createEvent('event');
   const editor = (doc: any) =>
     createEditor<PanelState>({
       doc,
-      editorPlugins: [panelPlugin, listPlugin, tablesPlugin],
+      editorPlugins: [panelPlugin, listPlugin, tablesPlugin()],
       pluginKey: panelPluginKey,
     });
 
   describe('API', () => {
-    it('should get current state immediately once subscribed', () => {
-      const { pluginState } = editor(doc(panel()(p('te{<>}xt'))));
-      const spy = jest.fn();
-      pluginState.subscribe(spy);
-      expect(spy).toHaveBeenCalledTimes(1);
-    });
-
-    it('should call subscribers with argument panel state', () => {
-      const { pluginState } = editor(doc(panel()(p('te{<>}xt'))));
-      const spy = jest.fn();
-      pluginState.subscribe(spy);
-      expect(spy).toHaveBeenCalledWith(pluginState);
-    });
-
     it('should call subscribers when panel is clicked', () => {
-      const { editorView, plugin, pluginState, sel } = editor(
-        doc(panel()(p('te{<>}xt'))),
-      );
-      const spy = jest.fn();
-      pluginState.subscribe(spy);
-      plugin.props.handleClick!(editorView, sel, event);
-      expect(spy).toHaveBeenCalledTimes(2);
-    });
-
-    it('should not call subscribers when another block in editor is clicked', () => {
-      const { editorView, plugin, pluginState, sel } = editor(
-        doc(p('te{<>}xt'), panel()(p('text'))),
-      );
-      const spy = jest.fn();
-      pluginState.subscribe(spy);
-      plugin.props.handleClick!(editorView, sel, event);
-      expect(spy).toHaveBeenCalledTimes(1);
-    });
-
-    it('should call subscribers when panel was focused and editor blur', () => {
-      const { editorView, plugin, pluginState } = editor(
-        doc(panel()(p('te{<>}xt'))),
-      );
-      const spy = jest.fn();
-      pluginState.subscribe(spy);
-      plugin.props.handleDOMEvents!.focus(editorView, event);
-      plugin.props.handleDOMEvents!.blur(editorView, event);
-      expect(spy).toHaveBeenCalledTimes(2);
-    });
-
-    it('should not call subscribers when another block was focused and editor blur', () => {
-      const { editorView, plugin, pluginState } = editor(
-        doc(p('te{<>}xt'), panel()(p('text'))),
-      );
-      const spy = jest.fn();
-      pluginState.subscribe(spy);
-      plugin.props.handleDOMEvents!.focus(editorView, event);
-      plugin.props.handleDOMEvents!.blur(editorView, event);
-      expect(spy).toHaveBeenCalledTimes(1);
-    });
-
-    it('should not call subscribers when panel received focus', () => {
-      const { editorView, plugin, pluginState } = editor(
-        doc(panel()(p('text'))),
-      );
-      const spy = jest.fn();
-      pluginState.subscribe(spy);
-      plugin.props.handleDOMEvents!.focus(editorView, event);
-      expect(spy).toHaveBeenCalledTimes(1);
+      const { pluginState } = editor(doc(panel()(p('te{<>}xt'))));
+      expect(pluginState.element).not.toBe(undefined);
     });
 
     it('should be able to identify panel node', () => {
@@ -101,20 +44,21 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
       expect(pluginState.element).not.toBe(undefined);
     });
 
-    it('should be able to change panel type using function changeType', () => {
+    it('should be able to change panel type using function changeType', async () => {
       const { pluginState, editorView } = editor(doc(panel()(p('te{<>}xt'))));
       expect(pluginState.activePanelType).toEqual('info');
       expect(pluginState.element).not.toBe(undefined);
       expect(pluginState.activePanelType).not.toBe(undefined);
-      pluginState.changePanelType(editorView, { panelType: 'note' });
-      expect(pluginState.activePanelType).toEqual('note');
+      changePanelType('note')(editorView.state, editorView.dispatch);
+      //Wait till the dispatch cycle finishes and the state updates
+      setTimeout(() => {
+        expect(pluginState.activePanelType).toEqual('note');
+      }, 0);
     });
 
     it('should be able to change panel type using function changeType for panel with multiple blocks', () => {
-      const { pluginState, editorView } = editor(
-        doc(panel()(p('te{<>}xt'), p('text'))),
-      );
-      pluginState.changePanelType(editorView, { panelType: 'note' });
+      const { editorView } = editor(doc(panel()(p('te{<>}xt'), p('text'))));
+      changePanelType('note')(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(
         doc(panelNote(p('text'), p('text'))),
       );
@@ -123,7 +67,7 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
     it('should be able to remove panel type using function removePanel', () => {
       const { pluginState, editorView } = editor(doc(panel()(p('te{<>}xt'))));
       expect(pluginState.activePanelType).toEqual('info');
-      pluginState.removePanel(editorView);
+      removePanel()(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(doc(p()));
     });
 
@@ -132,7 +76,7 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
         doc(panel()(p('te{<>}xt'), p('te{<>}xt'), p('te{<>}xt'))),
       );
       expect(pluginState.activePanelType).toEqual('info');
-      pluginState.removePanel(editorView);
+      removePanel()(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(doc(p()));
     });
 
@@ -141,7 +85,7 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
         doc(table()(tr(td({})(panel()(p('text{<>}')))))),
       );
       expect(pluginState.activePanelType).toEqual('info');
-      pluginState.removePanel(editorView);
+      removePanel()(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(
         doc(table()(tr(td({})(p())))),
       );
@@ -152,7 +96,7 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
         doc(table()(tr(td({})(panel()(p('{<>}')))))),
       );
       expect(pluginState.activePanelType).toEqual('info');
-      pluginState.removePanel(editorView);
+      removePanel()(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(
         doc(table()(tr(td({})(p())))),
       );
@@ -161,7 +105,7 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
     it('should be able to remove panel type using function removePanel even if panel has no text content', () => {
       const { pluginState, editorView } = editor(doc(panel()(p('{<>}'))));
       expect(pluginState.activePanelType).toEqual('info');
-      pluginState.removePanel(editorView);
+      removePanel()(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(doc(p()));
     });
 
@@ -170,7 +114,7 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
         doc(panel()(p('te{<>}xt'), p('text'))),
       );
       expect(pluginState.activePanelType).toEqual('info');
-      pluginState.removePanel(editorView);
+      removePanel()(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(doc(p()));
     });
 
@@ -179,38 +123,17 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
         doc(p('testing'), panel()(p('te{<>}xt'), p('text')), p('testing')),
       );
       expect(pluginState.activePanelType).toEqual('info');
-      pluginState.removePanel(editorView);
+      removePanel()(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(
         doc(p('testing'), p('testing')),
       );
     });
 
-    it('should call handlers for change in panel type', () => {
-      const { pluginState, editorView } = editor(doc(panel()(p('te{<>}xt'))));
-      const spy = jest.fn();
-      pluginState.subscribe(spy);
-      expect(spy).toHaveBeenCalledTimes(1);
-      expect(pluginState.activePanelType).toEqual('info');
-      pluginState.changePanelType(editorView, { panelType: 'note' });
-      expect(pluginState.activePanelType).toEqual('note');
-      expect(spy).toHaveBeenCalledTimes(2);
-    });
-
-    it('shoul call handlers when panel is removed', () => {
-      const { pluginState, editorView } = editor(doc(panel()(p('te{<>}xt'))));
-      const spy = jest.fn();
-      pluginState.subscribe(spy);
-      expect(spy).toHaveBeenCalledTimes(1);
-      expect(pluginState.activePanelType).toEqual('info');
-      pluginState.removePanel(editorView);
-      expect(spy).toHaveBeenCalledTimes(2);
-    });
-
     it('should be able to remove panel node if cursor is inside nested list node', () => {
-      const { pluginState, editorView } = editor(
+      const { editorView } = editor(
         doc(p('one'), panel()(p('text'), ol(li(p('te{<>}xt')))), p('two')),
       );
-      pluginState.removePanel(editorView);
+      removePanel()(editorView.state, editorView.dispatch);
       expect(editorView.state.doc).toEqualDocument(doc(p('one'), p('two')));
     });
 
@@ -219,8 +142,11 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
         doc(panel()(p('text'), ol(li(p('te{<>}xt'))))),
       );
       expect(pluginState.activePanelType).toEqual('info');
-      pluginState.changePanelType(editorView, { panelType: 'note' });
-      expect(pluginState.activePanelType).toEqual('note');
+      changePanelType('note')(editorView.state, editorView.dispatch);
+      //Wait till the dispatch cycle finishes and the state updates
+      setTimeout(() => {
+        expect(pluginState.activePanelType).toEqual('note');
+      }, 0);
     });
   });
 
@@ -230,7 +156,6 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
         const { editorView, plugin, pluginState } = editor(
           doc(p('te{<>}xt'), panel()(p('text'))),
         );
-        plugin.props.handleDOMEvents!.focus(editorView, event);
         plugin.props.handleDOMEvents!.blur(editorView, event);
         expect(pluginState.toolbarVisible).toBe(false);
       });
@@ -238,35 +163,10 @@ describe('@atlaskit/editor-core ui/PanelPlugin', () => {
 
     describe('when focus is inside a list in panel', () => {
       it('it is true', () => {
-        const { editorView, plugin, pluginState } = editor(
+        const { pluginState } = editor(
           doc(p('text'), panel()(p('text'), ol(li(p('te{<>}xt'))))),
         );
-        plugin.props.handleDOMEvents!.focus(editorView, event);
-        plugin.props.handleClick!(editorView, 2, createEvent('event'));
         expect(pluginState.toolbarVisible).toBe(true);
-      });
-    });
-  });
-
-  describe('editorFocued', () => {
-    describe('when editor is focused', () => {
-      it('it is true', () => {
-        const { editorView, plugin, pluginState } = editor(
-          doc(p('te{<>}xt'), panel()(p('text'))),
-        );
-        plugin.props.handleDOMEvents!.focus(editorView, event);
-        expect(pluginState.editorFocused).toBe(true);
-      });
-    });
-
-    describe('when editor is blur', () => {
-      it('it is false', () => {
-        const { editorView, plugin, pluginState } = editor(
-          doc(p('te{<>}xt'), panel()(p('text'))),
-        );
-        plugin.props.handleDOMEvents!.focus(editorView, event);
-        plugin.props.handleDOMEvents!.blur(editorView, event);
-        expect(pluginState.editorFocused).toBe(false);
       });
     });
   });

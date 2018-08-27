@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
 import { akColorN30 } from '@atlaskit/util-shared-styles';
 
-const Separator: ComponentClass<HTMLAttributes<{}>> = styled.span`
+const Separator: ComponentClass<HTMLAttributes<HTMLSpanElement>> = styled.span`
   background: ${akColorN30};
   height: 100%;
   padding-left: 1px;

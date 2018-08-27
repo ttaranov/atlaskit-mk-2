@@ -6,8 +6,8 @@ import { cities } from './common/data';
 // data imported for brevity; equal to the options from Single Select example
 const RadioExample = () => (
   <RadioSelect
-    className="react-select"
-    classNamePrefix="select"
+    className="radio-select"
+    classNamePrefix="react-select"
     options={[
       ...cities,
       {

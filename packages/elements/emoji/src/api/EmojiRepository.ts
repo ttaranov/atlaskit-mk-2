@@ -13,12 +13,16 @@ import {
   SearchSort,
   SearchOptions,
 } from '../types';
-import { isEmojiDescriptionWithVariations } from '../type-helpers';
+import {
+  isEmojiDescriptionWithVariations,
+  getCategoryId,
+} from '../type-helpers';
 import {
   createSearchEmojiComparator,
   createUsageOnlyEmojiComparator,
 } from './internal/Comparators';
 import { UsageFrequencyTracker } from './internal/UsageFrequencyTracker';
+import { CategoryId } from '../components/picker/categories';
 
 XRegExpUnicodeBase(XRegExp);
 XRegExpUnicodeScripts(XRegExp);
@@ -160,7 +164,7 @@ export default class EmojiRepository {
   private shortNameMap: EmojiByKey;
   private idMap: EmojiByKey;
   private asciiMap: Map<string, EmojiDescription>;
-  private dynamicCategoryList: string[];
+  private dynamicCategoryList: CategoryId[];
   private static readonly defaultEmojiWeight: number = 1000000;
 
   // protected to allow subclasses to access (for testing and storybooks).
@@ -238,7 +242,7 @@ export default class EmojiRepository {
     return this.asciiMap.get(asciiEmoji);
   }
 
-  findInCategory(categoryId: string): EmojiDescription[] {
+  findInCategory(categoryId: CategoryId): EmojiDescription[] {
     if (categoryId === frequentCategory) {
       return this.getFrequentlyUsed();
     } else {
@@ -277,7 +281,7 @@ export default class EmojiRepository {
     return emojiResult;
   }
 
-  getDynamicCategoryList(): string[] {
+  getDynamicCategoryList(): CategoryId[] {
     return this.dynamicCategoryList.slice();
   }
 
@@ -426,11 +430,12 @@ export default class EmojiRepository {
   }
 
   private addToDynamicCategories(emoji: EmojiDescription): void {
+    const category = getCategoryId(emoji);
     if (
-      defaultCategories.indexOf(emoji.category) === -1 &&
-      this.dynamicCategoryList.indexOf(emoji.category) === -1
+      defaultCategories.indexOf(category) === -1 &&
+      this.dynamicCategoryList.indexOf(category) === -1
     ) {
-      this.dynamicCategoryList.push(emoji.category);
+      this.dynamicCategoryList.push(category);
     }
   }
 }

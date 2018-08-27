@@ -13,6 +13,7 @@ import {
   containerPadding,
 } from './styled';
 import { ERROR } from '../avatar-picker-dialog';
+import { CONTAINER_INNER_SIZE } from '../image-navigator';
 
 export interface LoadParameters {
   export: () => string;
@@ -28,7 +29,7 @@ export interface ImageCropperProp {
   top: number;
   left: number;
   imageWidth?: number;
-  onDragStarted?: () => void;
+  onDragStarted?: (x: number, y: number) => void;
   onImageSize: (width: number, height: number) => void;
   onLoad?: OnLoadHandler;
   onRemoveImage: () => void;
@@ -38,10 +39,10 @@ export interface ImageCropperProp {
 const defaultScale = 1;
 
 export class ImageCropper extends Component<ImageCropperProp, {}> {
-  private imageElement: HTMLImageElement;
+  private imageElement?: HTMLImageElement;
 
   static defaultProps = {
-    containerSize: 200,
+    containerSize: CONTAINER_INNER_SIZE,
     isCircleMask: false,
     scale: defaultScale,
     onDragStarted: () => {},
@@ -62,11 +63,16 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
     }
   }
 
-  onDragStarted = () => this.props.onDragStarted && this.props.onDragStarted();
+  onDragStarted = (e: React.MouseEvent<{}>) => {
+    if (this.props.onDragStarted) {
+      this.props.onDragStarted(e.screenX, e.screenY);
+    }
+  };
 
-  onImageLoaded = e => {
-    this.props.onImageSize(e.target.naturalWidth, e.target.naturalHeight);
-    this.imageElement = e.target;
+  onImageLoaded = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    const image = e.target as HTMLImageElement;
+    this.props.onImageSize(image.naturalWidth, image.naturalHeight);
+    this.imageElement = image;
   };
 
   onImageError = () => {
@@ -93,7 +99,7 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
       top: `${top}px`,
       left: `${left}px`,
     };
-    let crossOrigin;
+    let crossOrigin: '' | 'anonymous' | 'use-credentials' | undefined;
     try {
       crossOrigin = isImageRemote(imageSource) ? 'anonymous' : undefined;
     } catch (e) {
@@ -139,7 +145,7 @@ export class ImageCropper extends Component<ImageCropperProp, {}> {
 
     const context = canvas.getContext('2d');
 
-    if (context) {
+    if (context && this.imageElement) {
       const sourceLeft = (-left + containerPadding) / scaleWithDefault;
       const sourceTop = (-top + containerPadding) / scaleWithDefault;
       const sourceWidth = destinationSize / scaleWithDefault;

@@ -9,13 +9,17 @@ export const getFeatureFlag = (
   featureName: keyof MediaViewerFeatureFlags,
   featureFlags?: MediaViewerFeatureFlags,
 ): boolean => {
-  if (featureFlags && featureFlags[featureName] !== undefined) {
-    return Boolean(featureFlags[featureName]);
+  if (window.localStorage) {
+    const devOverride = window.localStorage.getItem(
+      featureFlagsMap[featureName],
+    );
+
+    if (devOverride !== null) {
+      // localStorage stores strings only.
+      // Every string except 'false' will enable the flag.
+      return devOverride !== 'false';
+    }
   }
 
-  const devOverride =
-    window.localStorage &&
-    Boolean(window.localStorage.getItem(featureFlagsMap[featureName]));
-
-  return devOverride;
+  return Boolean(featureFlags && featureFlags[featureName]);
 };

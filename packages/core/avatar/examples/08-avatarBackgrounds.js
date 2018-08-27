@@ -15,8 +15,8 @@ const exampleColors: string[] = [
   colors.N0,
 ];
 
-const presences: PresenceType[] = ['focus', 'online', 'offline', 'busy'];
-const statuses: StatusType[] = ['approved', 'locked', 'declined'];
+const presences: Array<PresenceType> = ['focus', 'online', 'offline', 'busy'];
+const statuses: Array<StatusType> = ['approved', 'locked', 'declined'];
 const styles = {
   column: {
     alignItems: 'center',

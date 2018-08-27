@@ -3,12 +3,6 @@ import {
   utils as serviceUtils,
 } from '@atlaskit/util-service-support';
 import {
-  MediaPicker,
-  BinaryConfig,
-  BinaryUploader,
-} from '@atlaskit/media-picker';
-
-import {
   EmojiDescription,
   EmojiId,
   EmojiServiceDescription,
@@ -34,7 +28,7 @@ import {
 import TokenManager from './TokenManager';
 
 import debug from '../../util/logger';
-import { Context, ContextFactory, FileDetails } from '@atlaskit/media-core';
+import { ContextFactory } from '@atlaskit/media-core';
 
 export interface EmojiUploadResponse {
   emojis: EmojiServiceDescription[];
@@ -105,49 +99,47 @@ export default class SiteEmojiResource {
       return new Promise<EmojiDescription>((resolve, reject) => {
         const { url, clientId, collectionName } = uploadToken;
         const context = ContextFactory.create({
-          serviceHost: url,
           authProvider: () =>
             Promise.resolve({
               clientId,
               token: uploadToken.jwt,
+              baseUrl: url,
             }),
         });
-        const mpConfig = {
-          uploadParams: {
+        const subscription = context
+          .uploadFile({
+            content: upload.dataURL,
+            name: upload.filename,
             collection: collectionName,
-          },
-        };
-
-        const mpBinary = this.createMediaPicker(context, mpConfig);
-        mpBinary.on('upload-end', result => {
-          const totalUploadTime = Date.now() - startTime;
-          const mediaUploadTime = totalUploadTime - tokenLoadTime;
-          debug(
-            'total upload / media upload times',
-            totalUploadTime,
-            mediaUploadTime,
-          );
-          this.postToEmojiService(upload, result.public)
-            .then(emoji => {
-              resolve(emoji);
-            })
-            .catch(httpError => {
-              reject(httpError.reason || httpError);
-            });
-        });
-        mpBinary.on('upload-error', errorResult => {
-          reject(errorResult.error);
-        });
-        mpBinary.on('upload-status-update', statusUpdate => {
-          debug('upload progress', statusUpdate.progress);
-          if (progressCallback) {
-            progressCallback({
-              percent:
-                statusUpdate.progress.portion * mediaProportionOfProgress,
-            });
-          }
-        });
-        mpBinary.upload(upload.dataURL, upload.filename);
+          })
+          .subscribe({
+            next: state => {
+              if (state.status === 'uploading' && progressCallback) {
+                progressCallback({
+                  percent: state.progress * mediaProportionOfProgress,
+                });
+              } else if (state.status === 'processing') {
+                subscription.unsubscribe();
+                const totalUploadTime = Date.now() - startTime;
+                const mediaUploadTime = totalUploadTime - tokenLoadTime;
+                debug(
+                  'total upload / media upload times',
+                  totalUploadTime,
+                  mediaUploadTime,
+                );
+                this.postToEmojiService(upload, state.id)
+                  .then(emoji => {
+                    resolve(emoji);
+                  })
+                  .catch(httpError => {
+                    reject(httpError.reason || httpError);
+                  });
+              }
+            },
+            error(error) {
+              reject(error);
+            },
+          });
       });
     });
   }
@@ -214,19 +206,9 @@ export default class SiteEmojiResource {
     );
   }
 
-  /**
-   * Intended to be overridden for unit testing.
-   */
-  protected createMediaPicker(
-    context: Context,
-    config: BinaryConfig,
-  ): BinaryUploader {
-    return MediaPicker('binary', context, config);
-  }
-
   private postToEmojiService = (
     upload: EmojiUpload,
-    mediaApiData: FileDetails,
+    fileId: string,
   ): Promise<EmojiDescription> => {
     const { shortName, name } = upload;
     const { width, height } = upload;
@@ -240,7 +222,7 @@ export default class SiteEmojiResource {
         name,
         width,
         height,
-        fileId: mediaApiData.id,
+        fileId,
       }),
     };
 

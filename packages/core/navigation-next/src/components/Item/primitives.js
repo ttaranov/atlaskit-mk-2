@@ -3,37 +3,37 @@
 import React, { PureComponent, type ComponentType } from 'react';
 import { css } from 'emotion';
 
-import { light, styleReducerNoOp, withTheme } from '../../theme';
-import type { ItemPrimitiveProps, ItemRenderComponentProps } from './types';
+import { styleReducerNoOp, withContentTheme } from '../../theme';
+import type { ItemProps, ItemRenderComponentProps } from './types';
 
 const getItemBase = (
-  itemProps: ItemPrimitiveProps,
+  itemProps: ItemProps,
 ): ComponentType<ItemRenderComponentProps> => {
   const { component: CustomComponent, href, onClick, target } = itemProps;
 
+  let ItemBase;
+
   if (CustomComponent) {
     // The custom component gets passed all of the item's props
-    return props => <CustomComponent {...itemProps} {...props} />;
-  }
-
-  if (href) {
+    ItemBase = props => <CustomComponent {...itemProps} {...props} />;
+  } else if (href) {
     // We have to specifically destructure children here or else eslint
     // complains about the <a> not having content
-    return ({ children, ...props }: ItemRenderComponentProps) => (
+    ItemBase = ({ children, ...props }: ItemRenderComponentProps) => (
       <a href={href} onClick={onClick} target={target} {...props}>
         {children}
       </a>
     );
+  } else if (onClick) {
+    ItemBase = props => <button {...props} onClick={onClick} />;
+  } else {
+    ItemBase = props => <span {...props} />;
   }
 
-  if (onClick) {
-    return props => <button {...props} onClick={onClick} />;
-  }
-
-  return props => <span {...props} />;
+  return ItemBase;
 };
 
-class NavigationItemPrimitive extends PureComponent<ItemPrimitiveProps> {
+class ItemPrimitive extends PureComponent<ItemProps> {
   static defaultProps = {
     isActive: false,
     isHover: false,
@@ -45,7 +45,7 @@ class NavigationItemPrimitive extends PureComponent<ItemPrimitiveProps> {
 
   ItemBase: ComponentType<ItemRenderComponentProps> = getItemBase(this.props);
 
-  componentWillReceiveProps(nextProps: ItemPrimitiveProps) {
+  componentWillReceiveProps(nextProps: ItemProps) {
     if (
       nextProps.component !== this.props.component ||
       nextProps.href !== this.props.href ||
@@ -97,6 +97,4 @@ class NavigationItemPrimitive extends PureComponent<ItemPrimitiveProps> {
   }
 }
 
-export default withTheme({ mode: light, context: 'container' })(
-  NavigationItemPrimitive,
-);
+export default withContentTheme(ItemPrimitive);

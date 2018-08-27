@@ -1,8 +1,8 @@
 //@flow
 'use strict';
-/* 
+/*
 * util module to build webpack-dev-server for running integration test.
-* const CHANGED_PACKAGES accepts environment variable which is used to 
+* const CHANGED_PACKAGES accepts environment variable which is used to
 * identify changed packages and return changed packages containing webdriverTests to be built.
 */
 
@@ -86,8 +86,8 @@ async function getPackagesWithTests() /*: Promise<Array<string>> */ {
 //
 async function startDevServer() {
   const workspacesGlob = await getPackagesWithTests();
-  const env = 'production';
-  const includePatterns = workspacesGlob ? false : true; // if glob exists we just want to show what matches it
+  const mode = 'production';
+  const websiteEnv = 'production';
   const projectRoot = (await bolt.getProject({ cwd: process.cwd() })).dir;
   const workspaces = await bolt.getWorkspaces();
   const filteredWorkspaces = workspacesGlob
@@ -106,13 +106,10 @@ async function startDevServer() {
   }
 
   config = createConfig({
-    entry: './src/index.js',
-    host: HOST,
-    port: PORT,
     globs,
-    includePatterns,
-    env,
-    cwd: path.join(__dirname, '../../..', 'website'),
+    websiteEnv,
+    mode,
+    websiteDir: path.join(__dirname, '../../..', 'website'),
   });
 
   const compiler = webpack(config);

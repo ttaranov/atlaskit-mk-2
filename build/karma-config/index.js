@@ -9,9 +9,6 @@ const babelPolyfill = require.resolve('babel-polyfill');
 const customEventPolyfill = require.resolve('custom-event-polyfill');
 const entry = require.resolve('./entry');
 const browserFetcher = puppeteer.createBrowserFetcher();
-const revisionInfo = browserFetcher.download(ChromiumRevision);
-
-process.env.CHROME_BIN = revisionInfo.executablePath;
 
 const webpackConfig = {
   module: {
@@ -68,6 +65,9 @@ async function getAliases(cwd) {
 }
 
 async function getKarmaConfig({ cwd, watch, browserstack }) {
+  const revisionInfo = await browserFetcher.download(ChromiumRevision);
+  process.env.CHROME_BIN = revisionInfo.executablePath;
+
   const aliases = await getAliases(cwd);
   webpackConfig.resolve.alias = { ...aliases, ...webpackConfig.resolve.alias };
 
@@ -153,6 +153,7 @@ async function getKarmaConfig({ cwd, watch, browserstack }) {
         retryLimit: 5,
         startTunnel: true,
         tunnelIdentifier: process.env.BITBUCKET_COMMIT || 'ak_tunnel',
+        localIdentifier: `${process.env.BITBUCKET_COMMIT}_unit_tests`,
         project: 'Atlaskit',
         build: `${process.env.BITBUCKET_BRANCH} ${time} ${
           process.env.BITBUCKET_COMMIT
@@ -176,7 +177,7 @@ async function getKarmaConfig({ cwd, watch, browserstack }) {
 async function getPackagesWithKarmaTests() /*: Promise<Array<string>> */ {
   const project /*: any */ = await boltQuery({
     cwd: __dirname,
-    workspaceFiles: { karma: 'tests/browser/**/*.+(js|ts|tsx)' },
+    workspaceFiles: { karma: '__tests-karma__/**/*.+(js|ts|tsx)' },
   });
 
   return project.workspaces

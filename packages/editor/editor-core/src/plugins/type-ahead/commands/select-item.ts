@@ -65,16 +65,29 @@ export const selectItem = (
   item: TypeAheadItem,
 ): Command => (state, dispatch) => {
   return withTypeAheadQueryMarkPosition(state, (start, end) => {
-    const insert = (node?: Node) => {
+    const insert = (maybeNode?: Node | Object | string) => {
       let tr = state.tr;
 
       tr = tr
         .setMeta(pluginKey, { action: ACTIONS.SELECT_CURRENT })
         .replaceWith(start, end, Fragment.empty);
 
-      if (!node) {
-        dispatch(tr);
-        return true;
+      if (!maybeNode) {
+        return tr;
+      }
+
+      let node;
+      try {
+        node =
+          maybeNode instanceof Node
+            ? maybeNode
+            : typeof maybeNode === 'string'
+              ? state.schema.text(maybeNode)
+              : Node.fromJSON(state.schema, maybeNode);
+      } catch (e) {
+        // tslint:disable-next-line:no-console
+        console.error(e);
+        return tr;
       }
 
       if (node.isText) {
@@ -109,18 +122,20 @@ export const selectItem = (
         );
       }
 
-      dispatch(tr);
-      return true;
+      return tr;
     };
 
     analyticsService.trackEvent('atlassian.editor.typeahead.select', {
       item: item.title,
     });
 
-    if (handler.selectItem(state, item, insert) === false) {
+    const tr = handler.selectItem(state, item, insert);
+
+    if (tr === false) {
       return insertFallbackCommand(start, end)(state, dispatch);
     }
 
+    dispatch(tr);
     return true;
   });
 };

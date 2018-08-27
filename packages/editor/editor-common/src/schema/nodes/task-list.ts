@@ -1,11 +1,11 @@
 import { Node, NodeSpec } from 'prosemirror-model';
-import { Definition as TaskItemNode } from './task-item';
+import { TaskItemDefinition as TaskItemNode } from './task-item';
 import { uuid } from '../../utils';
 
 /**
  * @name taskList_node
  */
-export interface Definition {
+export interface TaskListDefinition {
   type: 'taskList';
   /**
    * @minItems 1
@@ -18,6 +18,7 @@ export interface Definition {
 
 export const taskList: NodeSpec = {
   group: 'block',
+  defining: true,
   content: 'taskItem+',
   attrs: {
     localId: { default: '' },

@@ -38,7 +38,7 @@ class DeleteRowButton extends React.Component<ButtonProps> {
         onMouseLeave={this.onMouseLeave}
       >
         <InsertButton>
-          <AkTooltip content="Remove row">
+          <AkTooltip position="right" content="Remove row">
             <AkButton
               onClick={onClick}
               iconBefore={<CrossIcon label="Remove row" />}

@@ -1,6 +1,7 @@
 /* tslint:disable:no-console */
 import * as React from 'react';
 import { Component } from 'react';
+import * as PropTypes from 'prop-types';
 import { ContextFactory } from '@atlaskit/media-core';
 import Button from '@atlaskit/button';
 import DropdownMenu, { DropdownItem } from '@atlaskit/dropdown-menu';
@@ -10,7 +11,6 @@ import {
   mediaPickerAuthProvider,
   defaultCollectionName,
   defaultMediaPickerCollectionName,
-  userAuthProviderBaseURL,
   createStorybookContext,
 } from '@atlaskit/media-test-helpers';
 import { Card } from '@atlaskit/media-card';
@@ -58,6 +58,8 @@ export interface PopupWrapperState {
   publicFiles: { [key: string]: PublicFile };
   isUploadingFilesVisible: boolean;
   useNewUploadService: boolean;
+  singleSelect: boolean;
+  useProxyContext: boolean;
   popup?: Popup;
 }
 
@@ -71,6 +73,12 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     publicFiles: {},
     isUploadingFilesVisible: true,
     useNewUploadService: true,
+    useProxyContext: true,
+    singleSelect: false,
+  };
+
+  static contextTypes = {
+    getAtlaskitAnalyticsEventHandlers: PropTypes.func,
   };
 
   componentDidMount() {
@@ -86,6 +94,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
 
   private createPopup(
     useNewUploadService: boolean = this.state.useNewUploadService,
+    singleSelect: boolean = this.state.singleSelect,
   ) {
     const { popup } = this.state;
     if (popup) {
@@ -94,7 +103,6 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     }
 
     const context = ContextFactory.create({
-      serviceHost: userAuthProviderBaseURL,
       authProvider: mediaPickerAuthProvider(this.state.authEnvironment),
       userAuthProvider,
     });
@@ -105,6 +113,8 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
         collection: defaultMediaPickerCollectionName,
       },
       useNewUploadService,
+      singleSelect,
+      proxyReactContext: this.state.useProxyContext ? this.context : undefined,
     });
 
     newPopup.on('uploads-start', this.onUploadsStart);
@@ -118,6 +128,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     this.setState({
       popup: newPopup,
       useNewUploadService,
+      singleSelect,
     });
   }
 
@@ -326,7 +337,11 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
   };
 
   onuseNewUploadServiceChange = () => {
-    this.createPopup(!this.state.useNewUploadService);
+    this.createPopup(!this.state.useNewUploadService, this.state.singleSelect);
+  };
+
+  onSingleSelectChange = () => {
+    this.createPopup(this.state.useNewUploadService, !this.state.singleSelect);
   };
 
   renderUploadingFiles = () => {
@@ -385,6 +400,13 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     );
   };
 
+  toggleProxyContext = () => {
+    this.setState(
+      ({ useProxyContext }) => ({ useProxyContext: !useProxyContext }),
+      this.createPopup,
+    );
+  };
+
   render() {
     const {
       closedTimes,
@@ -394,76 +416,90 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
       inflightUploads,
       isUploadingFilesVisible,
       useNewUploadService,
+      singleSelect,
       popup,
     } = this.state;
     const hasTorndown = !popup;
     const isCancelButtonDisabled = Object.keys(inflightUploads).length === 0;
 
     return (
-      <AnalyticsListener onEvent={this.onEvent} channel="media">
-        <PopupContainer>
-          <PopupHeader>
-            <Button
-              appearance="primary"
-              onClick={this.onShow}
-              isDisabled={hasTorndown}
-            >
-              Show
-            </Button>
-            <Button
-              appearance="warning"
-              onClick={this.onCancelUpload}
-              isDisabled={isCancelButtonDisabled || hasTorndown}
-            >
-              Cancel uploads
-            </Button>
-            <Button
-              appearance="danger"
-              onClick={this.onTeardown}
-              isDisabled={hasTorndown}
-            >
-              Teardown
-            </Button>
-            <Button
-              onClick={this.onUploadingFilesToggle}
-              isDisabled={hasTorndown}
-            >
-              Toggle Uploading files
-            </Button>
-            <DropdownMenu trigger={collectionName} triggerType="button">
-              <DropdownItem onClick={this.onCollectionChange}>
-                {defaultMediaPickerCollectionName}
-              </DropdownItem>
-              <DropdownItem onClick={this.onCollectionChange}>
-                {defaultCollectionName}
-              </DropdownItem>
-            </DropdownMenu>
-            <DropdownMenu trigger={authEnvironment} triggerType="button">
-              <DropdownItem onClick={this.onAuthTypeChange}>
-                client
-              </DropdownItem>
-              <DropdownItem onClick={this.onAuthTypeChange}>asap</DropdownItem>
-            </DropdownMenu>
-            Use new upload service
-            <Toggle
-              isDefaultChecked={useNewUploadService}
-              onChange={this.onuseNewUploadServiceChange}
-            />
-            Closed times: {closedTimes}
-          </PopupHeader>
-          {isUploadingFilesVisible ? (
-            <FilesInfoWrapper>
-              {this.renderUploadingFiles()}
-              {this.renderCards()}
-            </FilesInfoWrapper>
-          ) : (
-            undefined
-          )}
-          <PopupEventsWrapper>{this.renderEvents(events)}</PopupEventsWrapper>
-        </PopupContainer>
-      </AnalyticsListener>
+      <PopupContainer>
+        <PopupHeader>
+          <Button
+            appearance="primary"
+            onClick={this.onShow}
+            isDisabled={hasTorndown}
+          >
+            Show
+          </Button>
+          <Button
+            appearance="warning"
+            onClick={this.onCancelUpload}
+            isDisabled={isCancelButtonDisabled || hasTorndown}
+          >
+            Cancel uploads
+          </Button>
+          <Button
+            appearance="danger"
+            onClick={this.onTeardown}
+            isDisabled={hasTorndown}
+          >
+            Teardown
+          </Button>
+          <Button
+            onClick={this.onUploadingFilesToggle}
+            isDisabled={hasTorndown}
+          >
+            Toggle Uploading files
+          </Button>
+          <DropdownMenu trigger={collectionName} triggerType="button">
+            <DropdownItem onClick={this.onCollectionChange}>
+              {defaultMediaPickerCollectionName}
+            </DropdownItem>
+            <DropdownItem onClick={this.onCollectionChange}>
+              {defaultCollectionName}
+            </DropdownItem>
+          </DropdownMenu>
+          <DropdownMenu trigger={authEnvironment} triggerType="button">
+            <DropdownItem onClick={this.onAuthTypeChange}>client</DropdownItem>
+            <DropdownItem onClick={this.onAuthTypeChange}>asap</DropdownItem>
+          </DropdownMenu>
+          Use new upload service:
+          <Toggle
+            isDefaultChecked={useNewUploadService}
+            onChange={this.onuseNewUploadServiceChange}
+          />
+          Only select single item:
+          <Toggle
+            isDefaultChecked={singleSelect}
+            onChange={this.onSingleSelectChange}
+          />
+          Proxy context from Popup creator:
+          <Toggle isDefaultChecked onChange={this.toggleProxyContext} />
+          Closed times: {closedTimes}
+        </PopupHeader>
+        {isUploadingFilesVisible ? (
+          <FilesInfoWrapper>
+            {this.renderUploadingFiles()}
+            {this.renderCards()}
+          </FilesInfoWrapper>
+        ) : (
+          undefined
+        )}
+        <PopupEventsWrapper>{this.renderEvents(events)}</PopupEventsWrapper>
+      </PopupContainer>
     );
   }
 }
 
-export default () => <PopupWrapper />;
+const onEvent = event => {
+  console.log('Example', event);
+};
+
+export default () => (
+  <AnalyticsListener onEvent={onEvent} channel="media">
+    <AnalyticsListener onEvent={onEvent} channel="atlaskit">
+      <PopupWrapper />
+    </AnalyticsListener>
+  </AnalyticsListener>
+);

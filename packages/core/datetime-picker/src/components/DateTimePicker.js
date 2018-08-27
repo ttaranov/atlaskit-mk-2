@@ -3,9 +3,19 @@
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import { mergeStyles } from '@atlaskit/select';
 import { borderRadius, colors } from '@atlaskit/theme';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import pick from 'lodash.pick';
 import React, { Component } from 'react';
 import styled from 'styled-components';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 
 import DatePicker from './DatePicker';
 import TimePicker from './TimePicker';
@@ -48,6 +58,15 @@ type Props = {
   hideIcon?: boolean,
   /** Format the date with a string that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format). */
   dateFormat?: string,
+  datePickerProps: {},
+  timePickerProps: {},
+  /** Function to parse passed in dateTimePicker value into the requisite sub values date, time and zone. **/
+  parseValue: (
+    dateTimeValue: string,
+    date: string,
+    time: string,
+    timezone: string,
+  ) => { dateValue: string, timeValue: string, zoneValue: string },
   /** [Select props](/packages/core/select) to pass onto the DatePicker component. This can be used to set options such as placeholder text. */
   datePickerSelectProps: {},
   /** [Select props](/packages/core/select) to pass onto the TimePicker component. This can be used to set options such as placeholder text. */
@@ -56,6 +75,8 @@ type Props = {
   times?: Array<string>,
   /** Time format that is accepted by [date-fns's format function](https://date-fns.org/v1.29.0/docs/format)*/
   timeFormat?: string,
+  /* This prop affects the height of the select control. Compact is gridSize() * 4, default is gridSize * 5  */
+  spacing?: 'compact' | 'default',
 };
 
 type State = {
@@ -67,39 +88,46 @@ type State = {
   zoneValue: string,
 };
 
-/** Border style is defined by the appearnace and whether it is invalid. */
-function getBorderStyle(isInvalid: boolean, appearance: 'default' | 'subtle') {
-  if (isInvalid) return `2px solid ${colors.R400}`;
-  if (appearance === 'subtle') return `2px solid transparent`;
-  return `1px solid ${colors.N20}`;
-}
-/** Padding style is defined by the appearnace and whether it is invalid. */
-function getPaddingStyle(isFocused: boolean, appearance: 'default' | 'subtle') {
-  if (appearance === 'subtle' || !isFocused) return `1px`;
-  return '0px';
-}
+const getBorder = ({ appearance, isFocused, isInvalid }) => {
+  let color = colors.N20;
+  if (appearance === 'subtle') color = 'transparent';
+  if (isFocused) color = colors.B100;
+  if (isInvalid) color = colors.R400;
+
+  return `border: 2px solid ${color}`;
+};
+
+const getBorderColorHover = ({ isFocused, isInvalid, isDisabled }) => {
+  let color = colors.N30;
+  if (isFocused || isDisabled) return ``;
+  if (isInvalid) color = colors.R400;
+  return `border-color: ${color}`;
+};
+
+const getBackgroundColor = ({ appearance, isFocused }) => {
+  let color = colors.N20;
+  if (isFocused) color = colors.N0;
+  if (appearance === 'subtle') color = 'transparent';
+  return `background-color: ${color}`;
+};
+
+const getBackgroundColorHover = ({ isFocused, isInvalid, isDisabled }) => {
+  let color = colors.N30;
+  if (isFocused || isDisabled) return ``;
+  if (isInvalid) color = colors.N0;
+  return `background-color: ${color}`;
+};
 
 const Flex = styled.div`
-  ${({ appearance }) => `
-    background-color: ${appearance === 'subtle' ? 'transparent' : colors.N10}
-    };
-  `} border-radius: ${borderRadius()}px;
+  ${getBackgroundColor}
+  ${getBorder}
+  border-radius: ${borderRadius()}px;
   display: flex;
   transition: background-color 200ms ease-in-out, border-color 200ms ease-in-out;
-  ${({ isFocused, isInvalid, appearance }) => `
-    border: ${
-      isFocused
-        ? `2px solid ${colors.B100}`
-        : `${getBorderStyle(isInvalid, appearance)}`
-    };
-    padding: ${getPaddingStyle(isFocused, appearance)};
-  `} &:hover {
-    ${({ isFocused, isDisabled }) =>
-      !isFocused && !isDisabled
-        ? `
-        background-color: ${colors.N20};
-      `
-        : ''};
+  &:hover {
+    cursor: ${props => (props.isDisabled ? 'default' : 'pointer')};
+    ${getBackgroundColorHover}
+    ${getBorderColorHover}
   }
 `;
 
@@ -118,6 +146,7 @@ const styles = {
     paddingLeft: 0,
     ':hover': {
       backgroundColor: 'transparent',
+      cursor: 'inherit',
     },
   }),
 };
@@ -130,7 +159,7 @@ function formatDateTimeZoneIntoIso(
   return `${date}T${time}${zone}`;
 }
 
-export default class DateTimePicker extends Component<Props, State> {
+class DateTimePicker extends Component<Props, State> {
   static defaultProps = {
     appearance: 'default',
     autoFocus: false,
@@ -145,11 +174,15 @@ export default class DateTimePicker extends Component<Props, State> {
     timeIsEditable: false,
     isInvalid: false,
     hideIcon: false,
+    datePickerProps: {},
+    timePickerProps: {},
+    parseValue: parseDateIntoStateValues,
     datePickerSelectProps: {},
     timePickerSelectProps: {},
     times: defaultTimes,
     timeFormat: defaultTimeFormat,
     dateFormat: defaultDateFormat,
+    spacing: 'default',
   };
 
   state = {
@@ -171,7 +204,7 @@ export default class DateTimePicker extends Component<Props, State> {
 
     return {
       ...mappedState,
-      ...parseDateIntoStateValues(
+      ...this.props.parseValue(
         mappedState.value,
         mappedState.dateValue,
         mappedState.timeValue,
@@ -208,7 +241,8 @@ export default class DateTimePicker extends Component<Props, State> {
     zoneValue: string,
   }) {
     this.setState({ dateValue, timeValue, zoneValue });
-    if (dateValue && timeValue) {
+
+    if (dateValue || timeValue) {
       const value = formatDateTimeZoneIntoIso(dateValue, timeValue, zoneValue);
       this.setState({ value });
       this.props.onChange(value);
@@ -224,7 +258,9 @@ export default class DateTimePicker extends Component<Props, State> {
       name,
       timeIsEditable,
       dateFormat,
+      datePickerProps,
       datePickerSelectProps,
+      timePickerProps,
       timePickerSelectProps,
       times,
       timeFormat,
@@ -240,6 +276,7 @@ export default class DateTimePicker extends Component<Props, State> {
       onFocus: this.onFocus,
       isInvalid: this.props.isInvalid,
       appearance: this.props.appearance,
+      spacing: this.props.spacing,
     };
 
     const { styles: datePickerStyles = {} } = (datePickerSelectProps: any);
@@ -274,6 +311,7 @@ export default class DateTimePicker extends Component<Props, State> {
             onChange={this.onDateChange}
             selectProps={mergedDatePickerSelectProps}
             value={dateValue}
+            {...datePickerProps}
           />
         </FlexItem>
         <FlexItem>
@@ -286,9 +324,32 @@ export default class DateTimePicker extends Component<Props, State> {
             timeIsEditable={timeIsEditable}
             times={times}
             timeFormat={timeFormat}
+            {...timePickerProps}
           />
         </FlexItem>
       </Flex>
     );
   }
 }
+
+export { DateTimePicker as DateTimePickerWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'dateTimePicker',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onChange: createAndFireEventOnAtlaskit({
+      action: 'changed',
+      actionSubject: 'dateTimePicker',
+
+      attributes: {
+        componentName: 'dateTimePicker',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(DateTimePicker),
+);

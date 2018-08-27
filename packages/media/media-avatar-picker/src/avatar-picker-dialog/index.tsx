@@ -83,7 +83,7 @@ export class AvatarPickerDialog extends PureComponent<
 
   setSelectedImageState = (selectedImage: File, crop: CropProperties) => {
     // this is the main method to update the image state,
-    // it is bubbled from the ImageCropper component through ImageNavigator when the image is loaded.
+    // it is bubbled from the ImageCropper component through ImageNavigator when the image is loaded
     this.setState({ selectedImage, crop });
     fileToDataURI(selectedImage).then(dataURI => {
       this.setState({ selectedImageSource: dataURI });
@@ -217,7 +217,7 @@ export class AvatarPickerDialog extends PureComponent<
           >
             {primaryButtonText || 'Save'}
           </Button>
-          <Button appearance="subtle-link" onClick={onCancel}>
+          <Button appearance="default" onClick={onCancel}>
             Cancel
           </Button>
         </ModalFooterButtons>

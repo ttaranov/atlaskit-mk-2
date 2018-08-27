@@ -1,6 +1,7 @@
 // @flow
 import React, { Component, type Node, type ElementRef } from 'react';
 import styled from 'styled-components';
+import rafSchedule from 'raf-schd';
 
 import Popper from '../../popper/index-min';
 import ScrollBlock from './internal/ScrollBlock';
@@ -41,6 +42,8 @@ export type Props = {
   lockScroll?: boolean,
   /** Force the layer to always be positioned fixed to the viewport. Note that the layer will become detached from the target element when scrolling so scroll lock or close on scroll handling may be necessary. */
   isAlwaysFixed?: boolean,
+  /** Callback that is used to know when the Layer positions it's content. This will only be called once soon after mounting when the Layer's transformed/flipped position is first calculated. */
+  onPositioned?: Function,
 };
 
 type State = {
@@ -59,7 +62,7 @@ type State = {
   cssPosition: CSSPositionType,
   originalHeight: ?number,
   maxHeight: ?number,
-  fixedOffset: ?number,
+  fixedOffset: ?OffsetStateType,
 };
 
 // We create a dummy target when making the menu fixed so that we can force popper.js to use fixed positioning
@@ -72,7 +75,8 @@ const FixedTarget = styled.div`
       const rect = actualTarget.getBoundingClientRect();
       return `
         position: fixed;
-        top: ${fixedOffset}px;
+        top: ${fixedOffset.top}px;
+        left: ${fixedOffset.left}px;
         height: ${rect.height}px;
         width: ${rect.width}px;
         z-index: -1;
@@ -104,6 +108,7 @@ export default class Layer extends Component<Props, State> {
     zIndex: 400,
     lockScroll: false,
     isAlwaysFixed: false,
+    onPositioned: () => {},
   };
 
   constructor(props: Props) {
@@ -129,7 +134,8 @@ export default class Layer extends Component<Props, State> {
       maxHeight: null,
       fixedOffset: null,
     };
-    this.extractStyles = this.extractStyles.bind(this);
+
+    this.extractStyles = rafSchedule(this.extractStyles.bind(this));
   }
 
   componentDidMount() {
@@ -143,19 +149,26 @@ export default class Layer extends Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props, prevState: State) {
-    if (
-      prevState.flipped !== this.state.flipped &&
-      this.props.onFlippedChange
-    ) {
-      this.props.onFlippedChange({
-        flipped: this.state.flipped,
-        actualPosition: this.state.actualPosition,
-        originalPosition: this.state.originalPosition,
-      });
+    const { onFlippedChange, onPositioned } = this.props;
+    const {
+      flipped,
+      actualPosition,
+      originalPosition,
+      hasExtractedStyles,
+    } = this.state;
+
+    if (prevState.flipped !== flipped && onFlippedChange) {
+      onFlippedChange({ flipped, actualPosition, originalPosition });
+    }
+
+    // This flag is set the first time the position is calculated from Popper and applied to the content
+    if (!prevState.hasExtractedStyles && hasExtractedStyles && onPositioned) {
+      onPositioned();
     }
   }
 
   componentWillUnmount() {
+    this.extractStyles.cancel();
     if (this.popper) {
       this.popper.destroy();
     }
@@ -202,9 +215,16 @@ export default class Layer extends Component<Props, State> {
 
     if (isAlwaysFixed && this.targetRef) {
       const actualTarget = this.targetRef.firstChild;
-      this.setState({ fixedOffset: actualTarget.getBoundingClientRect().top });
+      this.setState({
+        fixedOffset: {
+          top: actualTarget.getBoundingClientRect().top,
+          left: actualTarget.getBoundingClientRect().left,
+        },
+      });
     } else if (!isAlwaysFixed && this.state.fixedOffset !== null) {
-      this.setState({ fixedOffset: null });
+      this.setState({
+        fixedOffset: null,
+      });
     }
   }
 

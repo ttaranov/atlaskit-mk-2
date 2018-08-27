@@ -1,11 +1,22 @@
-import { EditorState } from 'prosemirror-state';
+import { EditorState, Transaction } from 'prosemirror-state';
 import { Node } from 'prosemirror-model';
 import { TypeAheadItem } from '../type-ahead/types';
 
 export type QuickInsertItem = TypeAheadItem & {
   keywords?: Array<string>;
+  priority?: number;
   action: (
-    insert: (node?: Node, prependSpace?: boolean) => boolean,
+    insert: (node?: Node | Object | string) => Transaction,
     state: EditorState,
-  ) => boolean;
+  ) => Transaction | false;
 };
+
+export type QuickInsertProvider = {
+  getItems: () => Promise<Array<QuickInsertItem>>;
+};
+
+export type QuickInsertOptions =
+  | boolean
+  | {
+      provider: Promise<QuickInsertProvider>;
+    };

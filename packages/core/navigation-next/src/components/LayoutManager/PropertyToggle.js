@@ -68,7 +68,9 @@ const LifeCycleProvider = ({ isActive, ...props }: Props & ProviderProps) =>
   isActive ? <PropertyToggle {...props} /> : null;
 
 // appease flow
-const defaultTarget = ((document.body: any): HTMLElement);
+const defaultTarget = (((typeof document !== 'undefined'
+  ? document.body
+  : null): any): HTMLElement);
 
 LifeCycleProvider.defaultProps = {
   attributes: {},

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/dropdown-menu",
-  "version": "5.1.0",
+  "version": "6.1.10",
   "description": "Creates a dropdown menu, with optional groups, headings, icons, checkbox items, radio group items and disabled items.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -18,26 +18,29 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/button": "^8.2.0",
-    "@atlaskit/droplist": "^6.1.2",
-    "@atlaskit/icon": "^12.2.0",
-    "@atlaskit/item": "^7.0.5",
-    "@atlaskit/theme": "^4.0.4",
+    "@atlaskit/analytics-next": "^3.0.6",
+    "@atlaskit/button": "^9.0.7",
+    "@atlaskit/droplist": "^7.0.8",
+    "@atlaskit/icon": "^13.3.1",
+    "@atlaskit/item": "^8.0.6",
+    "@atlaskit/theme": "^6.0.1",
     "array-find": "^1.0.0",
     "prop-types": "^15.5.10",
     "uuid": "^3.1.0"
   },
   "peerDependencies": {
-    "react": "^16.3.0",
-    "react-dom": "^16.3.0",
+    "react": "^16.4.0",
+    "react-dom": "^16.4.2",
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/avatar": "^11.2.0",
-    "@atlaskit/docs": "^4.1.1",
-    "@atlaskit/lozenge": "5.0.4",
-    "@atlaskit/tooltip": "^10.3.0",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
+    "@atlaskit/avatar": "^14.0.9",
+    "@atlaskit/build-utils": "^2.0.0",
+    "@atlaskit/docs": "^5.0.6",
+    "@atlaskit/lozenge": "6.1.6",
+    "@atlaskit/tooltip": "^12.0.10",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "react-dom": "^16.4.2"
   },
   "keywords": [
     "atlaskit",

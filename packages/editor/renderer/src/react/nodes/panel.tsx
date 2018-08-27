@@ -1,5 +1,8 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
+import styled from 'styled-components';
+
+import { PanelType } from '@atlaskit/editor-common';
 import {
   akBorderRadius,
   akGridSizeUnitless,
@@ -20,15 +23,6 @@ import SuccessIcon from '@atlaskit/icon/glyph/editor/success';
 import ErrorIcon from '@atlaskit/icon/glyph/editor/error';
 import NoteIcon from '@atlaskit/icon/glyph/editor/note';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
-import styled from 'styled-components';
-
-export type PanelType =
-  | 'info'
-  | 'note'
-  | 'tip'
-  | 'success'
-  | 'warning'
-  | 'error';
 
 export interface Props {
   panelType: PanelType;

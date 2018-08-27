@@ -1,5 +1,92 @@
 # @atlaskit/button
 
+## 9.0.6
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/spinner@9.0.6
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/checkbox@4.0.4
+  - @atlaskit/docs@5.0.6
+
+## 9.0.5
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [patch] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/analytics-next@3.0.4
+  - @atlaskit/checkbox@4.0.3
+  - @atlaskit/theme@5.1.3
+  - @atlaskit/spinner@9.0.5
+  - @atlaskit/icon@13.2.4
+
+## 9.0.4
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/checkbox@4.0.2
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/spinner@9.0.4
+  - @atlaskit/analytics-next@3.0.3
+  - @atlaskit/docs@5.0.2
+
+## 9.0.3
+- [patch] Add a SSR test for every package, add react-dom and build-utils in devDependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+- [patch] Updated dependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+  - @atlaskit/analytics-next@3.0.2
+  - @atlaskit/checkbox@4.0.1
+  - @atlaskit/theme@5.1.1
+  - @atlaskit/spinner@9.0.3
+  - @atlaskit/icon@13.2.1
+
+## 9.0.2
+- [patch] Move analytics tests and replace elements to core [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+- [patch] Updated dependencies [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+  - @atlaskit/analytics-next@3.0.1
+  - @atlaskit/spinner@9.0.2
+  - @atlaskit/docs@5.0.1
+
+## 9.0.1
+- [patch] Updated dependencies [619ab41](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/619ab41)
+  - @atlaskit/spinner@9.0.1
+
+## 9.0.0
+- [major] Provides analytics for common component interations. See the [Instrumented Components](https://atlaskit.atlassian.com/packages/core/analytics-next) section for more details. If you are using enzyme for testing you will have to use [our forked version of the library](https://atlaskit.atlassian.com/docs/guides/testing#we-use-a-forked-version-of-enzyme). [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/analytics-next@3.0.0
+  - @atlaskit/checkbox@4.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/spinner@9.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/icon@13.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/analytics-next@3.0.0
+  - @atlaskit/checkbox@4.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/spinner@9.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/icon@13.0.0
+
+## 8.2.7
+- [patch] Fixed spinner position and size for isLoading state of buttons [d6fb3c9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d6fb3c9)
+- [none] Updated dependencies [d6fb3c9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d6fb3c9)
+
+## 8.2.6
+- [patch] Updated prop description for button. Added button label props for inline-edit accessibility. [11205df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/11205df)
+- [none] Updated dependencies [11205df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/11205df)
+
+## 8.2.5
+- [patch] Fix flow types [da63331](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da63331)
+
+- [none] Updated dependencies [da63331](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da63331)
+- [none] Updated dependencies [7724115](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7724115)
+
+## 8.2.4
+- [patch] Remove or update $FlowFixMe [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
+- [none] Updated dependencies [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
+  - @atlaskit/icon@12.6.1
+
+## 8.2.3
+- [patch] Updated dependencies [cdba8b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cdba8b3)
+  - @atlaskit/spinner@8.0.0
+
 ## 8.2.2
 - [patch] Fix $FlowFixMe and release packages [25d0b2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d0b2d)
 - [patch] Updated dependencies [25d0b2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d0b2d)

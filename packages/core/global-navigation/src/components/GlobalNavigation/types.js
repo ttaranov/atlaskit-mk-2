@@ -16,34 +16,56 @@ export type NavigationStateShape = InitialNavigationStateShape & {
   isResizing?: boolean,
 };
 
+export type GlobalNavDrawerProps = {
+  isCreateDrawerOpen?: boolean,
+  createDrawerContents?: ComponentType<*>,
+  onCreateDrawerOpen?: () => void,
+  onCreateDrawerClose?: () => void,
+
+  isSearchDrawerOpen?: boolean,
+  searchDrawerContents?: ComponentType<*>,
+  onSearchDrawerOpen?: () => void,
+  onSearchDrawerClose?: () => void,
+
+  isNotificationDrawerOpen?: boolean,
+  notificationDrawerContents?: ComponentType<*>,
+  onNotificationDrawerOpen?: () => void,
+  onNotificationDrawerClose?: () => void,
+
+  isStarredDrawerOpen?: boolean,
+  starredDrawerContents?: ComponentType<*>,
+  onStarredDrawerOpen?: () => void,
+  onStarredDrawerClose?: () => void,
+};
+
 export type GlobalNavigationProps = {
-  productIcon?: ComponentType<*>,
+  productIcon?: ComponentType<{}>,
   onProductClick?: () => void,
   productTooltip?: string,
+  productHref?: string,
 
-  onCreateClick?: () => void,
+  onCreateClick?: ?() => void,
   createTooltip?: string,
 
-  onYourWorkClick?: () => void,
-  yourWorkTooltip?: string,
+  onStarredClick?: ?() => void,
+  starredTooltip?: string,
 
-  onSearchClick?: () => void,
+  onSearchClick?: ?() => void,
   searchTooltip?: string,
 
   appSwitcherComponent?: ComponentType<*>, // AppSwitcher component
 
   helpTooltip?: string,
-  helpItems?: ComponentType<*>, // GlobalNavigation will render DropdownItemGroup with the correct trigger
+  helpItems?: ComponentType<{}>, // GlobalNavigation will render DropdownItemGroup with the correct trigger
 
   profileTooltip?: string,
-  profileItems?: ComponentType<*>, // GlobalNavigation will render DropdownItemGroup with the correct trigger
+  profileItems?: ComponentType<{}>, // GlobalNavigation will render DropdownItemGroup with the correct trigger
   profileIconUrl?: string,
   loginHref?: string, // Login url to redirect anonymous users to login page.
 
-  onPeopleClick?: () => void,
-  peopleTooltip?: string,
-
-  onNotificationClick?: () => void,
+  onNotificationClick?: ?() => void,
   notificationCount?: number,
   notificationTooltip?: string,
-};
+} & GlobalNavDrawerProps;
+
+export type DrawerName = 'search' | 'notification' | 'starred' | 'create';

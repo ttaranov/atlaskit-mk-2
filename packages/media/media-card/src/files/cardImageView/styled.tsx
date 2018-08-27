@@ -12,6 +12,7 @@ export interface WrapperProps {
   selectable?: boolean;
   selected?: boolean;
   hasOnClick?: boolean;
+  mediaType?: string;
 }
 
 const getShadowAttribute = (props: WrapperProps) => {
@@ -29,6 +30,11 @@ const getBorderAttribute = (props: WrapperProps) => {
   return `border: 2px solid ${
     selected && selectable ? akColorB200 : 'transparent'
   };`;
+};
+
+const getBackgroundColor = (props: WrapperProps) => {
+  const { mediaType } = props;
+  return `background: ${mediaType === 'image' ? 'transparent' : akColorN20};`;
 };
 
 export const Wrapper: ComponentClass<WrapperProps> = styled(Root)`
@@ -52,7 +58,8 @@ export const Wrapper: ComponentClass<WrapperProps> = styled(Root)`
   }
 
   ${size()} .wrapper {
-    ${borderRadius} background: ${akColorN20};
+    ${borderRadius};
+    ${getBackgroundColor};
     display: block;
     height: inherit;
     position: relative;

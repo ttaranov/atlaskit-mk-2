@@ -1,26 +1,39 @@
 export { confluenceJiraIssue } from './confluence-jira-issue';
 export { confluenceUnsupportedBlock } from './confluence-unsupported-block';
 export { confluenceUnsupportedInline } from './confluence-unsupported-inline';
-export { doc } from './doc';
-export { blockquote } from './blockquote';
-export { bulletList } from './bullet-list';
-export { codeBlock, toJSON as codeBlockToJSON } from './code-block';
-export { hardBreak } from './hard-break';
-export { heading } from './heading';
-export { rule } from './rule';
-export { orderedList } from './ordered-list';
-export { paragraph } from './paragraph';
-export { emoji, Attributes as EmojiAttributes } from './emoji';
+export {
+  doc,
+  DocNode,
+  TopLevel,
+  Inline,
+  ExtensionContent,
+  NoMark,
+  MarksObject,
+} from './doc';
+export { blockquote, BlockQuoteDefinition } from './blockquote';
+export { bulletList, BulletListDefinition } from './bullet-list';
+export {
+  codeBlock,
+  toJSON as codeBlockToJSON,
+  CodeBlockDefinition,
+} from './code-block';
+export { hardBreak, HardBreakDefinition } from './hard-break';
+export { heading, HeadingDefinition } from './heading';
+export { rule, RuleDefinition } from './rule';
+export { orderedList, OrderedListDefinition } from './ordered-list';
+export { paragraph, ParagraphDefinition } from './paragraph';
+export { emoji, EmojiAttributes, EmojiDefinition } from './emoji';
 export { image } from './image';
 export {
   mention,
-  Attributes as MentionAttributes,
+  MentionAttributes,
   toJSON as mentionToJSON,
   UserType as MentionUserType,
+  MentionDefinition,
 } from './mention';
-export { listItem } from './list-item';
-export { panel, Attributes as PanelAttributes } from './panel';
-export { text } from './text';
+export { listItem, ListItemArray, ListItemDefinition } from './list-item';
+export { panel, PanelAttributes, PanelDefinition, PanelType } from './panel';
+export { text, TextDefinition } from './text';
 export { default as unknownBlock } from './unknown-block';
 export {
   media,
@@ -31,12 +44,14 @@ export {
   DisplayType as MediaDisplayType,
   copyPrivateAttributes as copyPrivateMediaAttributes,
   toJSON as mediaToJSON,
+  MediaDefinition,
 } from './media';
-export { mediaGroup } from './media-group';
+export { mediaGroup, MediaGroupDefinition } from './media-group';
 export {
   mediaSingle,
   Layout as MediaSingleLayout,
-  Attributes as MediaSingleAttributes,
+  MediaSingleDefinition,
+  MediaSingleAttributes,
 } from './media-single';
 export {
   table,
@@ -53,21 +68,33 @@ export {
   CellAttributes,
   Layout as TableLayout,
   calcTableColumnWidths,
+  TableDefinition,
+  TableCell as TableCellDefinition,
+  TableHeader as TableHeaderDefinition,
+  TableRow as TableRowDefinition,
 } from './tableNodes';
 export {
   applicationCard,
-  Attributes as ApplicationCardAttributes,
+  ApplicationCardAttributes,
   AppCardAction,
+  ApplicationCardDefinition,
 } from './applicationCard';
-export { decisionList } from './decision-list';
-export { decisionItem } from './decision-item';
-export { taskList } from './task-list';
-export { taskItem } from './task-item';
-export { extension } from './extension';
-export { inlineExtension } from './inline-extension';
-export { bodiedExtension, ExtensionLayout } from './bodied-extension';
-export { date } from './date';
-export { placeholder } from './placeholder';
+export { decisionList, DecisionListDefinition } from './decision-list';
+export { decisionItem, DecisionItemDefinition } from './decision-item';
+export { taskList, TaskListDefinition } from './task-list';
+export { taskItem, TaskItemDefinition } from './task-item';
+export { extension, ExtensionDefinition } from './extension';
+export { inlineExtension, InlineExtensionDefinition } from './inline-extension';
+export {
+  bodiedExtension,
+  BodiedExtensionDefinition,
+  ExtensionLayout,
+} from './bodied-extension';
+export { date, DateDefinition } from './date';
+export { placeholder, PlaceholderDefinition } from './placeholder';
 export { layoutSection } from './layout-section';
 export { layoutColumn } from './layout-column';
-export { inlineCard, CardAttributes } from './inline-card';
+export { inlineCard, InlineCardDefinition } from './inline-card';
+export { blockCard, CardAttributes, BlockCardDefinition } from './block-card';
+export { unsupportedBlock } from './unsupported-block';
+export { unsupportedInline } from './unsupported-inline';

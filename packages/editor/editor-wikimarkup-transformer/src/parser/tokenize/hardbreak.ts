@@ -1,6 +1,6 @@
 import { Schema } from 'prosemirror-model';
 import { Token } from './';
-import { parseWhitespace } from './whitespace';
+import { parseNewlineOnly } from './whitespace';
 
 export function hardbreak(input: string, schema: Schema): Token {
   // Look for special hardbreak \\
@@ -14,7 +14,7 @@ export function hardbreak(input: string, schema: Schema): Token {
   }
 
   // Look for normal hardbreak \r, \n, \r\n
-  const length = parseWhitespace(input, true);
+  const length = parseNewlineOnly(input);
 
   if (length === 0) {
     // not a valid hardbreak

@@ -12,27 +12,27 @@ Enzyme.configure({ adapter: new Adapter() });
 
 const contexts = {
   'editor-core': require.context(
-    '../../packages/editor/editor-core/tests/browser/',
+    '../../packages/editor/editor-core/__tests-karma__/',
     true,
     /^[^_]*.(js|jsx|ts|tsx)$/,
   ),
   'editor-test-helpers': require.context(
-    '../../packages/editor/editor-test-helpers/tests/browser/',
+    '../../packages/editor/editor-test-helpers/__tests-karma__/',
     true,
     /^[^_]*.(js|jsx|ts|tsx)$/,
   ),
   'editor-common': require.context(
-    '../../packages/editor/editor-common/tests/browser/',
+    '../../packages/editor/editor-common/__tests-karma__/',
     true,
     /^[^_]*.(js|jsx|ts|tsx)$/,
   ),
   'editor-confluence-transformer': require.context(
-    '../../packages/editor/editor-confluence-transformer/tests/browser/',
+    '../../packages/editor/editor-confluence-transformer/__tests-karma__/',
     true,
     /^[^_]*.(js|jsx|ts|tsx)$/,
   ),
   'editor-mobile-bridge': require.context(
-    '../../packages/editor/editor-mobile-bridge/tests/browser/',
+    '../../packages/editor/editor-mobile-bridge/__tests-karma__/',
     true,
     /^[^_]*.(js|jsx|ts|tsx)$/,
   ),

@@ -19,6 +19,7 @@ import { EmojiProvider } from '@atlaskit/emoji';
 
 import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
 import { extensionHandlers } from '../example-helpers/extension-handlers';
+import quickInsertProviderFactory from '../example-helpers/quick-insert-provider';
 import { DevTools } from '../example-helpers/DevTools';
 
 export const TitleInput: any = styled.input`
@@ -85,12 +86,17 @@ const SaveAndCancelButtons = props => (
   </ButtonGroup>
 );
 
-export type Props = {};
+export type Props = {
+  defaultValue?: Object;
+};
 export type State = { disabled: boolean };
 
 const providers = {
   emojiProvider: emoji.storyData.getEmojiResource({
     uploadSupported: true,
+    currentUser: {
+      id: emoji.storyData.loggedUser,
+    },
   }) as Promise<EmojiProvider>,
   mentionProvider: Promise.resolve(mention.storyData.resourceProvider),
   taskDecisionProvider: Promise.resolve(
@@ -100,9 +106,12 @@ const providers = {
   activityProvider: Promise.resolve(new MockActivityResource()),
   macroProvider: Promise.resolve(macroProvider),
 };
+
 const mediaProvider = storyMediaProviderFactory({
   includeUserAuthProvider: true,
 });
+
+const quickInsertProvider = quickInsertProviderFactory();
 
 export class ExampleEditor extends React.Component<Props, State> {
   state: State = { disabled: true };
@@ -121,9 +130,10 @@ export class ExampleEditor extends React.Component<Props, State> {
       <Wrapper>
         <Content>
           <Editor
+            defaultValue={this.props.defaultValue}
             appearance="full-page"
             analyticsHandler={analyticsHandler}
-            quickInsert={true}
+            quickInsert={{ provider: Promise.resolve(quickInsertProvider) }}
             delegateAnalyticsEvent={(...args) => console.log(args)}
             allowTasksAndDecisions={true}
             allowCodeBlocks={{ enableKeybindingsForIDE: true }}
@@ -147,7 +157,7 @@ export class ExampleEditor extends React.Component<Props, State> {
             }}
             allowRule={true}
             allowDate={true}
-            UNSAFE_allowLayouts={true}
+            allowLayouts={true}
             allowGapCursor={true}
             allowTemplatePlaceholders={{ allowInserting: true }}
             UNSAFE_cards={{
@@ -193,12 +203,12 @@ export class ExampleEditor extends React.Component<Props, State> {
   };
 }
 
-export default function Example() {
+export default function Example({ defaultValue }) {
   return (
     <EditorContext>
       <div style={{ height: '100%' }}>
         <DevTools />
-        <ExampleEditor />
+        <ExampleEditor defaultValue={defaultValue} />
       </div>
     </EditorContext>
   );

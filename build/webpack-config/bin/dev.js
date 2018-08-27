@@ -6,12 +6,16 @@
 // in node_modules folder which contains circular symbolic links
 
 const DirectoryWatcher = require('watchpack/lib/DirectoryWatcher');
-const _oldcreateNestedWatcher = DirectoryWatcher.prototype.createNestedWatcher;
-DirectoryWatcher.prototype.createNestedWatcher = function(
-  dirPath /*: string */,
+const _oldSetDirectory = DirectoryWatcher.prototype.setDirectory;
+DirectoryWatcher.prototype.setDirectory = function(
+  directoryPath,
+  exist,
+  initial,
+  type,
 ) {
-  if (dirPath.includes('node_modules')) return;
-  _oldcreateNestedWatcher.call(this, dirPath);
+  if (!directoryPath.includes('node_modules')) {
+    _oldSetDirectory.call(this, directoryPath, exist, initial, type);
+  }
 };
 
 // End of the hack
@@ -29,13 +33,13 @@ const HOST = 'localhost';
 const PORT = +process.env.ATLASKIT_DEV_PORT || 9000;
 
 async function runDevServer() {
-  const [entry, workspacesGlobRaw = ''] = process.argv.slice(2);
+  const [workspacesGlobRaw = ''] = process.argv.slice(2);
   const report = !!process.argv.find(arg => arg.startsWith('--report'));
   const workspacesGlob = workspacesGlobRaw.startsWith('--')
     ? ''
     : workspacesGlobRaw.replace(/^['"](.+)['"]$/, '$1'); // Unwrap string from quotes
-  const env = 'development';
-  const includePatterns = workspacesGlob ? false : true; // if glob exists we just want to show what matches it
+  const mode = 'development';
+  const websiteEnv = 'local';
   const projectRoot = (await bolt.getProject({ cwd: process.cwd() })).dir;
   const workspaces = await bolt.getWorkspaces();
 
@@ -62,7 +66,6 @@ async function runDevServer() {
 
   print(
     devServerBanner({
-      entry,
       workspacesGlob,
       workspaces: filteredWorkspaces,
       port: PORT,
@@ -76,12 +79,9 @@ async function runDevServer() {
   //
 
   const config = createConfig({
-    entry,
-    host: HOST,
-    port: PORT,
     globs,
-    env,
-    includePatterns,
+    mode,
+    websiteEnv,
     report,
   });
 
@@ -100,12 +100,14 @@ async function runDevServer() {
     overlay: true,
     stats: {
       colors: true,
-      assets: true,
+      assets: false,
       version: false,
       hash: false,
-      timings: false,
+      timings: true,
       chunks: false,
-      chunkModules: true,
+      chunkModules: false,
+      // https://github.com/TypeStrong/ts-loader/issues/751
+      warningsFilter: /export .* was not found in/,
     },
   });
 

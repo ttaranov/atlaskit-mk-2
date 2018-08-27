@@ -3,7 +3,7 @@ import { NodeSpec, Node as PMNode } from 'prosemirror-model';
 /**
  * @name inlineExtension_node
  */
-export interface Definition {
+export interface InlineExtensionDefinition {
   type: 'inlineExtension';
   attrs: {
     /**

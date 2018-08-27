@@ -75,6 +75,7 @@ export default function Example() {
               mediaProvider={mediaProvider}
               onChange={onChange}
               onSave={SAVE_ACTION}
+              quickInsert={true}
             />
           )}
         />

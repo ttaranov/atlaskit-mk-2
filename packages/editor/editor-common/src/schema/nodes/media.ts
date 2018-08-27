@@ -13,7 +13,7 @@ export type DefaultAttributes<T> = {
 /**
  * @name media_node
  */
-export interface Definition {
+export interface MediaDefinition {
   type: 'media';
   /**
    * @minItems 1

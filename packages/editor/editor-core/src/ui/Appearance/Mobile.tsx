@@ -6,6 +6,7 @@ import ContentStyles from '../ContentStyles';
 import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import { pluginKey as maxContentSizePluginKey } from '../../plugins/max-content-size';
 import { mentionPluginKey } from '../../plugins/mentions/pm-plugins/main';
+import WithFlash from '../WithFlash';
 
 export interface MobileEditorProps {
   isMaxContentSizeReached?: boolean;
@@ -35,7 +36,7 @@ const ContentArea = styled(ContentStyles)`
   height: 100%;
 
   .ProseMirror {
-    height: 100%;
+    min-height: 100vh;
   }
 `;
 ContentArea.displayName = 'ContentArea';
@@ -45,8 +46,6 @@ export default class Editor extends React.Component<
   any
 > {
   static displayName = 'MobileEditor';
-
-  private flashToggle = false;
 
   private appearance: EditorAppearance = 'mobile';
 
@@ -68,25 +67,25 @@ export default class Editor extends React.Component<
     } = this.props;
     const maxContentSizeReached =
       maxContentSize && maxContentSize.maxContentSizeReached;
-    this.flashToggle = maxContentSizeReached && !this.flashToggle;
     return (
-      <MobileEditor
-        className={this.flashToggle ? '-flash' : ''}
-        isMaxContentSizeReached={maxContentSizeReached}
-        maxHeight={maxHeight}
-      >
-        <ContentArea innerRef={this.handleRef}>
-          {customContentComponents}
-          <PluginSlot
-            editorView={editorView}
-            eventDispatcher={eventDispatcher}
-            providerFactory={providerFactory}
-            appearance={this.appearance}
-            disabled={!!disabled}
-          />
-          {editorDOMElement}
-        </ContentArea>
-      </MobileEditor>
+      <WithFlash animate={maxContentSizeReached}>
+        <MobileEditor
+          isMaxContentSizeReached={maxContentSizeReached}
+          maxHeight={maxHeight}
+        >
+          <ContentArea innerRef={this.handleRef}>
+            {customContentComponents}
+            <PluginSlot
+              editorView={editorView}
+              eventDispatcher={eventDispatcher}
+              providerFactory={providerFactory}
+              appearance={this.appearance}
+              disabled={!!disabled}
+            />
+            {editorDOMElement}
+          </ContentArea>
+        </MobileEditor>
+      </WithFlash>
     );
   };
 

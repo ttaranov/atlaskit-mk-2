@@ -39,7 +39,7 @@ describe('WikiMarkup Transformer', () => {
   });
 
   describe('standard emojis multiline', () => {
-    const WIKI_NOTATION = `some smiley faces here:\n\n:-)\n\n:-(\n\n:)\n\n;-)\n\n:D\n\n:P\n\n:p`;
+    const WIKI_NOTATION = `some smiley faces here:\n:-)\n:-(\n:)\n;-)\n:D\n:P\n:p`;
 
     checkParseEncodeRoundTrips(
       WIKI_NOTATION,

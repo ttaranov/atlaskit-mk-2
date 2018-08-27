@@ -1,7 +1,7 @@
 // @flow
 import Button from '@atlaskit/button';
 import styled, { css } from 'styled-components';
-// $FlowFixMe
+
 const ButtonElement = styled(Button)`
   ${({ truncationWidth }: { truncationWidth: number }) =>
     truncationWidth

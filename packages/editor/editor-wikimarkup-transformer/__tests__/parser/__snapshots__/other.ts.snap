@@ -26,9 +26,11 @@ Object {
           "text": "foo",
           "type": "text",
         },
-        Object {
-          "type": "hardBreak",
-        },
+      ],
+      "type": "paragraph",
+    },
+    Object {
+      "content": Array [
         Object {
           "text": "bar",
           "type": "text",

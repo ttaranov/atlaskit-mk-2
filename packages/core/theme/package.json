@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/theme",
-  "version": "4.0.4",
+  "version": "6.0.1",
   "description": "The Atlaskit theme framework",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -20,13 +20,17 @@
     "prop-types": "^15.5.10"
   },
   "peerDependencies": {
-    "react": "^16.3.0",
+    "react": "^16.4.0",
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/button": "^8.1.2",
-    "@atlaskit/docs": "^4.1.1",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
+    "@atlaskit/build-utils": "^2.0.0",
+    "@atlaskit/button": "^9.0.7",
+    "@atlaskit/docs": "^5.0.6",
+    "@atlaskit/lozenge": "^6.1.6",
+    "color": "^3.0.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "react-dom": "^16.4.2"
   },
   "keywords": [
     "atlaskit",

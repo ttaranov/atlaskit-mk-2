@@ -1,5 +1,115 @@
 # @atlaskit/avatar
 
+## 14.0.8
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/tooltip@12.0.9
+  - @atlaskit/toggle@5.0.6
+  - @atlaskit/section-message@1.0.5
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/field-base@11.0.5
+  - @atlaskit/button@9.0.6
+  - @atlaskit/docs@5.0.6
+
+## 14.0.7
+- [patch] updated the custom component proxy to be class instead of function to fix the errors related to innerRef [06690a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06690a6)
+- [none] Updated dependencies [06690a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06690a6)
+
+## 14.0.6
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/tooltip@12.0.5
+  - @atlaskit/field-base@11.0.3
+  - @atlaskit/analytics-next@3.0.4
+  - @atlaskit/toggle@5.0.5
+  - @atlaskit/button@9.0.5
+  - @atlaskit/theme@5.1.3
+  - @atlaskit/section-message@1.0.4
+  - @atlaskit/icon@13.2.4
+
+## 14.0.5
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/tooltip@12.0.4
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/toggle@5.0.4
+  - @atlaskit/section-message@1.0.3
+  - @atlaskit/button@9.0.4
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/analytics-next@3.0.3
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/field-base@11.0.2
+
+## 14.0.4
+- [patch] Add a SSR test for every package, add react-dom and build-utils in devDependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+- [none] Updated dependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+  - @atlaskit/tooltip@12.0.3
+  - @atlaskit/field-base@11.0.1
+  - @atlaskit/analytics-next@3.0.2
+  - @atlaskit/toggle@5.0.3
+  - @atlaskit/button@9.0.3
+  - @atlaskit/theme@5.1.1
+  - @atlaskit/section-message@1.0.2
+  - @atlaskit/icon@13.2.1
+
+## 14.0.3
+- [patch] Update docs, change dev deps [25d6e48](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d6e48)
+- [none] Updated dependencies [25d6e48](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d6e48)
+
+## 14.0.2
+- [patch] Move analytics tests and replace elements to core [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+- [none] Updated dependencies [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
+  - @atlaskit/tooltip@12.0.1
+  - @atlaskit/analytics-next@3.0.1
+  - @atlaskit/toggle@5.0.1
+  - @atlaskit/button@9.0.2
+  - @atlaskit/docs@5.0.1
+
+## 14.0.1
+- [patch] Updated dependencies [e6b1985](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6b1985)
+  - @atlaskit/tooltip@12.0.0
+  - @atlaskit/icon@13.1.1
+
+## 14.0.0
+- [major] Provides analytics for common component interations. See the [Instrumented Components](https://atlaskit.atlassian.com/packages/core/analytics-next) section for more details. If you are using enzyme for testing you will have to use [our forked version of the library](https://atlaskit.atlassian.com/docs/guides/testing#we-use-a-forked-version-of-enzyme). [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+- [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+- [major] Updated dependencies [563a7eb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/563a7eb)
+  - @atlaskit/tooltip@11.0.0
+  - @atlaskit/field-base@11.0.0
+  - @atlaskit/analytics-next@3.0.0
+  - @atlaskit/toggle@5.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/icon@13.0.0
+- [major] Updated dependencies [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)
+  - @atlaskit/tooltip@11.0.0
+  - @atlaskit/field-base@11.0.0
+  - @atlaskit/analytics-next@3.0.0
+  - @atlaskit/toggle@5.0.0
+  - @atlaskit/button@9.0.0
+  - @atlaskit/theme@5.0.0
+  - @atlaskit/docs@5.0.0
+  - @atlaskit/icon@13.0.0
+
+## 13.0.0
+
+- [major] Remove unneeded componentType and functionType type exports [7724115](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7724115)
+- [none] Updated dependencies [da63331](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da63331)
+  - @atlaskit/button@8.2.5
+- [none] Updated dependencies [7724115](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7724115)
+  - @atlaskit/button@8.2.5
+
+## 12.0.0
+- [major] Split avatar-group into its own package [8a01bcd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a01bcd)
+- [none] Updated dependencies [8a01bcd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8a01bcd)
+
+## 11.2.2
+- [patch] Remove or update $FlowFixMe [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
+- [none] Updated dependencies [e8ad98a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8ad98a)
+  - @atlaskit/button@8.2.4
+  - @atlaskit/icon@12.6.1
+  - @atlaskit/dropdown-menu@5.2.1
+
 ## 11.2.1
 - [patch] Fix $FlowFixMe and release packages [25d0b2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d0b2d)
 - [none] Updated dependencies [25d0b2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25d0b2d)
@@ -118,7 +228,7 @@
 - [patch] Packages Flow types for elements components [3111e74](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3111e74)
 
 ## 9.0.0
-- [major] update api onAvatarClick for Avatar Group [23a488e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23a488e)
+- [major] onAvatarClick prop on AvatarGroup now has a second argument. This second argument is the item that was clicked on. [23a488e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23a488e)
 
 ## 8.4.1
 - [patch] Migrate Navigation from Ak repo to ak mk 2 repo, Fixed flow typing inconsistencies in ak mk 2 [bdeef5b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bdeef5b)

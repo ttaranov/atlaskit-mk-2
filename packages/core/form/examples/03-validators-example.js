@@ -11,7 +11,6 @@ import Form, {
   FormFooter,
   Validator,
 } from '../src';
-//import type { FormRef } from '../src/Form';
 
 const resultBoxStyle = {
   width: '95%',
@@ -32,6 +31,7 @@ const resultBoxStyle = {
 type State = {
   validateOnChange: boolean,
   eventResult: string,
+  title: string,
 };
 
 // CUSTOM VALIDATOR EXAMPLES
@@ -73,7 +73,6 @@ const isMojitoIngredient = (value: {
   label: string,
   value: string,
 }): boolean => {
-  console.log(JSON.stringify(value));
   return mojitoIngredients.map(item => item.value).indexOf(value.value) > -1;
 };
 
@@ -100,13 +99,26 @@ export default class ValidatorsExample extends PureComponent<void, State> {
     validateOnChange: true,
     eventResult:
       'Click into and out of the input above to trigger onBlur & onFocus in the Fieldbase',
+    title: '',
   };
 
   formRef: any;
 
   // Form Event Handlers
+
+  // If you provide a submit handler you can do any custom data handling & validation
   onSubmitHandler = () => {
     console.log('onSubmitHandler');
+    // Calling validate on the form will update it's fields state
+    const validateResult = this.formRef.validate();
+    console.log(validateResult);
+
+    if (validateResult.isInvalid) {
+      console.log('onSubmitHandler = Form Fields Invalid');
+    } else {
+      // Now call submit when your done
+      this.formRef.submit();
+    }
   };
 
   onValidateHandler = () => {
@@ -136,6 +148,9 @@ export default class ValidatorsExample extends PureComponent<void, State> {
     this.formRef.validate();
   };
 
+  onStatelessChangeHandler = (event: SyntheticInputEvent<HTMLInputElement>) => {
+    this.setState({ title: event.currentTarget.value });
+  };
   render() {
     return (
       <div
@@ -228,18 +243,38 @@ export default class ValidatorsExample extends PureComponent<void, State> {
             </Field>
 
             <Field
-              label="Send to an Atlassian"
+              label="Name"
+              validateOnChange
+              description="validateOnChange using stateless component"
+              validators={[
+                <Validator
+                  func={value => value.trim && !!value.trim()}
+                  invalid="This can't be empty"
+                  valid="Thanks!"
+                />,
+              ]}
+            >
+              <FieldText
+                name="title"
+                id="title"
+                value={this.state.title}
+                onChange={this.onChangeHandler}
+              />
+            </Field>
+
+            <Field
+              label="Atlassian Email"
               helperText="Uses a custom validator & isEmail"
               validators={[
                 <Validator
                   func={isEmail}
                   invalid="Must be a valid email."
-                  valid=""
+                  valid="Valid Email"
                 />,
                 <Validator
                   func={isAtlassian}
                   invalid="And it must be an Atlassian address."
-                  valid="Ready to Send"
+                  valid="Atlassian address too!"
                 />,
               ]}
             >
@@ -256,11 +291,7 @@ export default class ValidatorsExample extends PureComponent<void, State> {
           </FormSection>
 
           <FormFooter actions={{}}>
-            <Button
-              type="submit"
-              appearance="primary"
-              onClick={this.submitClickHandler}
-            >
+            <Button type="submit" appearance="primary">
               Submit
             </Button>
             <Button appearance="subtle" onClick={this.validateClickHandler}>
@@ -268,7 +299,6 @@ export default class ValidatorsExample extends PureComponent<void, State> {
             </Button>
           </FormFooter>
         </Form>
-
         <p>The data submitted by the form will appear below:</p>
         <iframe
           src=""

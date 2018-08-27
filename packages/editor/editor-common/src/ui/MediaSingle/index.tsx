@@ -1,11 +1,10 @@
 import * as React from 'react';
-import { ReactElement } from 'react';
 import { MediaSingleLayout } from '../../schema';
 import Wrapper from './styled';
 import * as classnames from 'classnames';
 
 export interface Props {
-  children: ReactElement<any>;
+  children: React.ReactChild;
   layout: MediaSingleLayout;
   width: number;
   height: number;

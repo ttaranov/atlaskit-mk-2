@@ -1,4 +1,3 @@
-import * as sinon from 'sinon';
 import { CellSelection, TableMap } from 'prosemirror-tables';
 import {
   selectRow,
@@ -27,12 +26,19 @@ import {
   sendKeyToPm,
   randomId,
 } from '@atlaskit/editor-test-helpers';
-import { TableLayout, defaultSchema } from '@atlaskit/editor-common';
+import { TableLayout } from '@atlaskit/editor-common';
+import {
+  pluginKey,
+  getPluginState,
+} from '../../../src/plugins/table/pm-plugins/main';
 import {
   TablePluginState,
-  stateKey as tablePluginKey,
-} from '../../../src/plugins/table/pm-plugins/main';
-import { createTable } from '../../../src/plugins/table/actions';
+  PluginConfig,
+} from '../../../src/plugins/table/types';
+import {
+  createTable,
+  setEditorFocus,
+} from '../../../src/plugins/table/actions';
 import { setNodeSelection } from '../../../src/utils';
 import {
   toggleHeaderRow,
@@ -53,87 +59,35 @@ import codeBlockPlugin from '../../../src/plugins/code-block';
 import { mediaPlugin } from '../../../src/plugins';
 import { insertMediaAsMediaSingle } from '../../../src/plugins/media/utils/media-single';
 import listPlugin from '../../../src/plugins/lists';
-import TableView from '../../../src/plugins/table/nodeviews/table';
+import { TextSelection } from 'prosemirror-state';
 
 describe('table plugin', () => {
-  const editor = (doc: any, trackEvent = () => {}) =>
-    createEditor<TablePluginState>({
+  const editor = (doc: any, trackEvent = () => {}) => {
+    const tableOptions = {
+      allowNumberColumn: true,
+      allowHeaderRow: true,
+      allowHeaderColumn: true,
+      permittedLayouts: 'all',
+    } as PluginConfig;
+    return createEditor<TablePluginState>({
       doc,
       editorPlugins: [
         listPlugin,
-        tablesPlugin,
+        tablesPlugin(tableOptions),
         codeBlockPlugin(),
         mediaPlugin({ allowMediaSingle: true }),
       ],
       editorProps: {
         analyticsHandler: trackEvent,
-        allowTables: {
-          allowNumberColumn: true,
-          allowHeaderRow: true,
-          allowHeaderColumn: true,
-          permittedLayouts: 'all',
-        },
+        allowTables: tableOptions,
       },
-      pluginKey: tablePluginKey,
+      pluginKey,
     });
+  };
 
   let trackEvent;
   beforeEach(() => {
     trackEvent = jest.fn();
-  });
-
-  describe('TableView', () => {
-    // previous regression involved PM trying to render child DOM elements,
-    // but the NodeView had an undefined contentDOM after the React render finishes
-    // (since render is not synchronous)
-    it('always provides a content DOM', () => {
-      jest.useFakeTimers();
-
-      const originalHandleRef = (TableView.prototype as any)._handleRef;
-      const handleRefInnerMock = jest.fn(originalHandleRef);
-
-      // in the tests, handleRef gets called immediately (due to event loop ordering)
-      // however, the ref callback function can be called async from React after
-      // calling render, which can often occur in the browser
-      //
-      // to simulate this, we add a callback to force it to run out-of-order
-      const handleRefMock = sinon
-        // @ts-ignore
-        .stub(TableView.prototype, '_handleRef')
-        .callsFake(ref => {
-          setTimeout(ref => handleRefInnerMock.call(this, ref), 0);
-        });
-
-      // create the NodeView
-      const node = table()(tr(tdCursor, tdEmpty, tdEmpty))(defaultSchema);
-      const { editorView, portalProviderAPI } = editor(doc(p()));
-      const tableView = new TableView({
-        node,
-        allowColumnResizing: false,
-        view: editorView,
-        portalProviderAPI,
-        getPos: () => 1,
-      }).init();
-
-      // we expect to have a contentDOM after instanciating the NodeView so that
-      // ProseMirror will render the node's children into the element
-      expect(tableView.contentDOM).toBeDefined();
-
-      // we shouldn't have called the mock yet, since it's behind the setTimeout
-      expect(handleRefInnerMock).not.toBeCalled();
-
-      // run the timers through
-      jest.runAllTimers();
-
-      // the timer should have expired now
-      expect(handleRefInnerMock).toBeCalled();
-
-      // ensure we still have a contentDOM
-      expect(tableView.contentDOM).toBeDefined();
-
-      // reset the mock
-      handleRefMock.reset();
-    });
   });
 
   describe('createTable()', () => {
@@ -335,6 +289,108 @@ describe('table plugin', () => {
         });
       });
     });
+
+    describe('when adding a new row', () => {
+      describe('when table has merged columns in rows', () => {
+        it('copies the structure', () => {
+          const { editorView } = editor(
+            doc(
+              table()(
+                tr(td({})(p('row1')), td()(p())),
+                tr(td({ colspan: 2, background: '#e6fcff' })(p('row2{<>}'))),
+              ),
+            ),
+            trackEvent,
+          );
+
+          insertRow(2)(editorView.state, editorView.dispatch);
+
+          expect(editorView.state.doc).toEqualDocument(
+            doc(
+              table()(
+                tr(td({})(p('row1')), td()(p())),
+                tr(td({ colspan: 2, background: '#e6fcff' })(p('row2'))),
+                tr(td({ colspan: 2, background: '#e6fcff' })(p('{<>}'))),
+              ),
+            ),
+          );
+
+          expect(trackEvent).toHaveBeenLastCalledWith(
+            'atlassian.editor.format.table.row.button',
+          );
+
+          editorView.destroy();
+        });
+      });
+
+      it('copies the structure from a tableCell', () => {
+        const { editorView } = editor(
+          doc(
+            table()(
+              tr(th({})(p()), th({})(p())),
+              tr(td({ background: '#e6fcff' })(p('row1')), td()(p('{<>}'))),
+              tr(td({ colspan: 2, background: '#e6fcff' })(p('row2'))),
+            ),
+          ),
+          trackEvent,
+        );
+
+        insertRow(2)(editorView.state, editorView.dispatch);
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            table()(
+              tr(th({})(p()), th({})(p())),
+              tr(td({ background: '#e6fcff' })(p('row1')), td()(p())),
+              tr(td({ background: '#e6fcff' })(p('{<>}')), td()(p())),
+              tr(td({ colspan: 2, background: '#e6fcff' })(p('row2'))),
+            ),
+          ),
+        );
+
+        expect(trackEvent).toHaveBeenLastCalledWith(
+          'atlassian.editor.format.table.row.button',
+        );
+
+        editorView.destroy();
+      });
+
+      it('copies the structure from a tableHeader', () => {
+        const { editorView } = editor(
+          doc(
+            table()(
+              tr(th({})(p('row1')), th()(p()), th()(p('{<>}'))),
+              tr(
+                th({ colspan: 2, background: '#e6fcff' })(p('row2')),
+                td()(p()),
+              ),
+            ),
+          ),
+          trackEvent,
+        );
+
+        insertRow(2)(editorView.state, editorView.dispatch);
+
+        expect(editorView.state.doc).toEqualDocument(
+          doc(
+            table()(
+              tr(th({})(p('row1')), th()(p()), th()(p())),
+              tr(
+                th({ colspan: 2, background: '#e6fcff' })(p('row2')),
+                td()(p()),
+              ),
+              tr(th({ colspan: 2, background: '#e6fcff' })(p()), td()(p())),
+            ),
+          ),
+        );
+
+        expect(trackEvent).toHaveBeenLastCalledWith(
+          'atlassian.editor.format.table.row.button',
+        );
+
+        editorView.destroy();
+      });
+    });
   });
 
   describe('selectColumn(number)', () => {
@@ -457,13 +513,13 @@ describe('table plugin', () => {
         const editorTableHeader = (doc: any) =>
           createEditor<TablePluginState>({
             doc,
-            editorPlugins: [tablesPlugin],
+            editorPlugins: [tablesPlugin({ isHeaderRowRequired: true })],
             editorProps: {
               allowTables: {
                 isHeaderRowRequired: true,
               },
             },
-            pluginKey: tablePluginKey,
+            pluginKey,
           });
 
         it('it should convert first following row to header if isHeaderRowRequired is true', () => {
@@ -1042,7 +1098,7 @@ describe('table plugin', () => {
             editorView.state,
             editorView.dispatch,
           );
-          const { tableNode } = tablePluginKey.getState(editorView.state);
+          const { tableNode } = getPluginState(editorView.state);
           expect(tableNode.attrs.layout).toBe(nextLayout);
           editorView.destroy();
         });
@@ -1061,6 +1117,43 @@ describe('table plugin', () => {
       expect(tableElement.getAttribute('data-layout')).toBe('full-width');
 
       editorView.destroy();
+    });
+  });
+
+  describe('table plugin state', () => {
+    it('should update tableNode when cursor enters the table', () => {
+      const {
+        editorView: view,
+        refs: { nextPos },
+      } = editor(doc(table()(tr(td()(p('{nextPos}')))), p('te{<>}xt')));
+
+      setEditorFocus(true)(view.state, view.dispatch);
+
+      view.dispatch(
+        view.state.tr.setSelection(
+          new TextSelection(view.state.doc.resolve(nextPos)),
+        ),
+      );
+      const { tableNode } = getPluginState(view.state);
+      expect(tableNode).toBeDefined();
+      expect(tableNode.type.name).toEqual('table');
+    });
+    it('should update targetCellRef when table looses focus', () => {
+      const {
+        editorView: view,
+        refs: { nextPos },
+      } = editor(doc(table()(tr(td()(p('{<>}')))), p('te{nextPos}xt')));
+
+      setEditorFocus(true)(view.state, view.dispatch);
+
+      expect(getPluginState(view.state).targetCellRef).toBeDefined();
+
+      view.dispatch(
+        view.state.tr.setSelection(
+          new TextSelection(view.state.doc.resolve(nextPos)),
+        ),
+      );
+      expect(getPluginState(view.state).targetCellRef).not.toBeDefined();
     });
   });
 });

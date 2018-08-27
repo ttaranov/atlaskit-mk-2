@@ -1,242 +1,112 @@
-import { Mark, MarkType, Node } from 'prosemirror-model';
-import {
-  Plugin,
-  PluginKey,
-  EditorState,
-  SelectionRange,
-  TextSelection,
-  Transaction,
-} from 'prosemirror-state';
+import { Plugin, PluginKey, Transaction, EditorState } from 'prosemirror-state';
+
 import { colorPalette, borderColorPalette } from '@atlaskit/editor-common';
 import { akColorN800 } from '@atlaskit/util-shared-styles';
 
-export type StateChangeHandler = (state: TextColorState) => any;
+import { Dispatch } from '../../../event-dispatcher';
+import { getActiveColor } from '../utils/color';
+import { getDisabledState } from '../utils/disabled';
 
-// TODO: Pass during plugin initialization
-// https://product-fabric.atlassian.net/browse/ED-1682
+export type TextColorPluginState = {
+  palette: Map<string, string>;
+  borderColorPalette: Object;
+  defaultColor: string;
+  disabled?: boolean;
+  color?: string;
+};
+
+export type ActionHandlerParams = {
+  dispatch: Dispatch;
+  pluginState: TextColorPluginState;
+  tr: Transaction;
+  params?: {
+    color?: string;
+    disabled?: boolean;
+  };
+};
+
+export type TextColorDefaultColor = {
+  color: string;
+  label: string;
+};
+
+export interface TextColorPluginConfig {
+  defaultColor: TextColorDefaultColor;
+}
+
 export const DEFAULT_COLOR = {
-  color: akColorN800,
+  color: akColorN800.toLowerCase(),
   label: 'Dark grey',
 };
 
-export class TextColorState {
-  color?: string;
-  disabled: boolean;
-  palette: Map<string, string>;
-  borderColorPalette: Object;
-  // For caching the default color,
-  // because this will be accessed every time we change selection in editor
-  defaultColor: string;
-  private changeHandlers: StateChangeHandler[] = [];
-  private state: EditorState;
+export function createInitialPluginState(
+  editorState: EditorState,
+  pluginConfig?: TextColorPluginConfig,
+): TextColorPluginState {
+  const defaultColor =
+    (pluginConfig && pluginConfig.defaultColor) || DEFAULT_COLOR;
+  const palette = new Map<string, string>([
+    [defaultColor.color, defaultColor.label],
+  ]);
 
-  constructor(state: EditorState, palette: Map<string, string>) {
-    this.state = state;
-    this.palette = palette;
-    this.borderColorPalette = borderColorPalette;
-    this.defaultColor = palette.keys().next().value;
-    this.update(state);
-  }
+  // Typescript can't spread Map as of 11 May, 2017
+  colorPalette.forEach((label, color) => palette.set(color, label));
 
-  subscribe(cb: StateChangeHandler) {
-    this.changeHandlers.push(cb);
-    cb(this);
-  }
-
-  unsubscribe(cb: StateChangeHandler) {
-    this.changeHandlers = this.changeHandlers.filter(ch => ch !== cb);
-  }
-
-  update(newEditorState: EditorState) {
-    this.state = newEditorState;
-
-    const { state } = this;
-    const { textColor } = state.schema.marks;
-
-    let dirty = false;
-    if (textColor) {
-      let activeColor = this.getActiveColor();
-      if (this.color !== activeColor) {
-        this.color = activeColor;
-        dirty = true;
-      }
-
-      const disabled = !this.toggleTextColor(state);
-      if (this.disabled !== disabled) {
-        this.disabled = disabled;
-        dirty = true;
-      }
-    }
-
-    if (dirty) {
-      this.triggerOnChange();
-    }
-  }
-
-  toggleTextColor(
-    state: EditorState,
-    dispatch?: (tr: Transaction) => void,
-    color?: string,
-  ): boolean {
-    const { textColor } = this.state.schema.marks;
-    if (textColor) {
-      const { empty, ranges, $cursor } = state.selection as TextSelection;
-      if (
-        (empty && !$cursor) ||
-        !this.markApplies(state.doc, ranges, textColor)
-      ) {
-        return false;
-      }
-      if (this.isExcluded(state.storedMarks || ($cursor && $cursor.marks()))) {
-        return false;
-      }
-      if (dispatch && color) {
-        if ($cursor) {
-          dispatch(state.tr.addStoredMark(textColor.create({ color })));
-        } else {
-          let tr = state.tr;
-          for (let i = 0; i < ranges.length; i++) {
-            const { $from, $to } = ranges[i];
-            tr.addMark($from.pos, $to.pos, textColor.create({ color }));
-          }
-          dispatch(tr.scrollIntoView());
-        }
-      }
-      return true;
-    }
-    return false;
-  }
-
-  removeTextColor(
-    state: EditorState,
-    dispatch: (tr: Transaction) => void,
-    color?: string,
-  ): boolean {
-    const { textColor } = this.state.schema.marks;
-    if (textColor) {
-      const { from, to, $cursor } = state.selection as TextSelection;
-      if ($cursor) {
-        dispatch(state.tr.removeStoredMark(textColor));
-      } else {
-        dispatch(state.tr.removeMark(from, to, textColor));
-      }
-      return true;
-    }
-    return false;
-  }
-
-  private triggerOnChange() {
-    this.changeHandlers.forEach(cb => cb(this));
-  }
-
-  private getActiveColor(): string | undefined {
-    const { state } = this;
-    const { $from, $to, $cursor } = state.selection as TextSelection;
-
-    // Filter out other marks
-    let marks: Array<Mark | undefined> = [];
-    if ($cursor) {
-      marks.push(this.findTextColorMark(state.storedMarks || $cursor.marks()));
-    } else {
-      state.doc.nodesBetween($from.pos, $to.pos, currentNode => {
-        const mark = this.findTextColorMark(currentNode.marks);
-        marks.push(mark);
-        return !mark;
-      });
-    }
-
-    // Merge consecutive same color marks
-    let prevMark: Mark | undefined;
-    marks = marks.filter(mark => {
-      if (mark && prevMark && mark.attrs.color === prevMark.attrs.color) {
-        return false;
-      }
-      prevMark = mark;
-      return true;
-    });
-
-    const marksWithColor = marks.filter(mark => !!mark) as Array<Mark>;
-    // When mutiple color is selected revert back to default color
-    if (
-      marksWithColor.length > 1 ||
-      (marksWithColor.length === 1 && marks.length > 2)
-    ) {
-      return;
-    }
-    return marksWithColor.length
-      ? marksWithColor[0].attrs.color
-      : this.defaultColor;
-  }
-
-  private findTextColorMark(marks: Array<Mark>): Mark | undefined {
-    const { textColor } = this.state.schema.marks;
-    return this.findMarkType(textColor, marks);
-  }
-
-  private findMarkType(
-    markType: MarkType,
-    marks: Array<Mark>,
-  ): Mark | undefined {
-    for (let i = 0; i < marks.length; i++) {
-      const currentMark = marks[i];
-      if (markType === currentMark.type) {
-        return currentMark;
-      }
-    }
-  }
-
-  // Copied from
-  // https://github.com/ProseMirror/prosemirror-commands/blob/1c27e7a/src/commands.js#L395~L406
-  // This function only checks if the current node allows mark or not, doesn't respect excludes
-  private markApplies(
-    doc: Node,
-    ranges: Array<SelectionRange>,
-    type: MarkType,
-  ): boolean {
-    for (let i = 0; i < ranges.length; i++) {
-      const { $from, $to } = ranges[i];
-      let can = $from.depth === 0 ? doc.type.allowsMarkType(type) : false;
-      doc.nodesBetween($from.pos, $to.pos, node => {
-        if (can) {
-          return false;
-        }
-        can = node.inlineContent && node.type.allowsMarkType(type);
-      });
-      if (can) {
-        return can;
-      }
-    }
-    return false;
-  }
-
-  private isExcluded(marks?: Array<Mark> | null): boolean {
-    if (marks) {
-      const { textColor } = this.state.schema.marks;
-      return marks.some(
-        mark => mark.type !== textColor && mark.type.excludes(textColor),
-      );
-    }
-    return false;
-  }
+  return {
+    color: getActiveColor(editorState),
+    disabled: getDisabledState(editorState),
+    palette,
+    borderColorPalette,
+    defaultColor: palette.keys().next().value,
+  };
 }
 
-export const stateKey = new PluginKey('textColorPlugin');
+export enum ACTIONS {
+  RESET_COLOR,
+  SET_COLOR,
+  DISABLE,
+}
 
-export const plugin = new Plugin({
-  state: {
-    init(config, state: EditorState) {
-      const palette = new Map<string, string>([
-        [DEFAULT_COLOR.color.toLowerCase(), DEFAULT_COLOR.label],
-      ]);
-      // Typescript can't spread Map as of 11 May, 2017
-      colorPalette.forEach((label, color) => palette.set(color, label));
+export const pluginKey = new PluginKey('textColorPlugin');
 
-      return new TextColorState(state, palette);
+export function createPlugin(
+  dispatch: Dispatch,
+  pluginConfig?: TextColorPluginConfig,
+): Plugin {
+  return new Plugin({
+    key: pluginKey,
+    state: {
+      init(config, editorState) {
+        return createInitialPluginState(editorState, pluginConfig);
+      },
+      apply(tr, pluginState, _, newState) {
+        const meta = tr.getMeta(pluginKey) || {};
+
+        let nextState;
+        switch (meta.action) {
+          case ACTIONS.RESET_COLOR:
+            nextState = { ...pluginState, color: pluginState.defaultColor };
+            break;
+
+          case ACTIONS.SET_COLOR:
+            nextState = { ...pluginState, color: meta.color, disabled: false };
+            break;
+
+          case ACTIONS.DISABLE:
+            nextState = { ...pluginState, disabled: true };
+            break;
+
+          default:
+            nextState = {
+              ...pluginState,
+              color: getActiveColor(newState),
+              disabled: getDisabledState(newState),
+            };
+        }
+
+        dispatch(pluginKey, nextState);
+        return nextState;
+      },
     },
-    apply(tr, pluginState: TextColorState, oldState, newState) {
-      pluginState.update(newState);
-      return pluginState;
-    },
-  },
-  key: stateKey,
-});
+  });
+}

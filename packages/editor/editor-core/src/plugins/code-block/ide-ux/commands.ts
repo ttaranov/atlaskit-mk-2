@@ -1,10 +1,12 @@
+import { EditorState, TextSelection } from 'prosemirror-state';
 import {
   getLinesFromSelection,
   getLineInfo,
   forEachLine,
   getStartOfCurrentLine,
 } from './line-handling';
-import { EditorState, TextSelection } from 'prosemirror-state';
+
+import { analyticsService } from '../../../analytics';
 
 export function indent(state: EditorState, dispatch) {
   const { text, start } = getLinesFromSelection(state);
@@ -16,19 +18,22 @@ export function indent(state: EditorState, dispatch) {
         indentToken.size,
     );
     tr.insertText(indentToAdd, tr.mapping.map(start + offset, -1));
-    tr.setSelection(
-      TextSelection.create(
-        tr.doc,
-        tr.mapping.map(selection.from, -1),
-        tr.selection.to,
-      ),
-    );
+    if (!selection.empty) {
+      tr.setSelection(
+        TextSelection.create(
+          tr.doc,
+          tr.mapping.map(selection.from, -1),
+          tr.selection.to,
+        ),
+      );
+    }
   });
   dispatch(tr);
+  analyticsService.trackEvent(`atlassian.editor.codeblock.indent`);
   return true;
 }
 
-export function deindent(state: EditorState, dispatch) {
+export function outdent(state: EditorState, dispatch) {
   const { text, start } = getLinesFromSelection(state);
   const { tr } = state;
   forEachLine(text, (line, offset) => {
@@ -43,6 +48,7 @@ export function deindent(state: EditorState, dispatch) {
     }
   });
   dispatch(tr);
+  analyticsService.trackEvent('atlassian.editor.codeblock.outdent');
   return true;
 }
 
@@ -54,6 +60,7 @@ export function insertIndent(state: EditorState, dispatch) {
       indentToken.size,
   );
   dispatch(state.tr.insertText(indentToAdd));
+  analyticsService.trackEvent('atlassian.editor.codeblock.indent.insert');
   return true;
 }
 

@@ -8,13 +8,14 @@ import { getValidNode } from '@atlaskit/editor-common';
 import {
   safeInsert,
   replaceSelectedNode,
-  hasParentNodeOfType,
+  replaceParentNodeOfType,
 } from 'prosemirror-utils';
 
 export const insertMacroFromMacroBrowser = (
   macroProvider: MacroProvider,
   macroNode?: PmNode,
-) => async (view: EditorView): Promise<boolean> => {
+  isEditing?: boolean,
+) => async (state, dispatch): Promise<boolean> => {
   if (!macroProvider) {
     return false;
   }
@@ -23,23 +24,34 @@ export const insertMacroFromMacroBrowser = (
     macroNode,
   );
   if (newMacro) {
-    const node = resolveMacro(newMacro, view.state);
-    const { schema: { nodes: { bodiedExtension } } } = view.state;
-    let { tr } = view.state;
-    if (node) {
-      if (
-        // trying to replace selected node
-        tr.selection instanceof NodeSelection &&
-        // selected node is not nested in bodiedExtension
-        !hasParentNodeOfType(bodiedExtension)(tr.selection)
-      ) {
-        tr = replaceSelectedNode(node)(tr);
-      } else {
-        tr = safeInsert(node)(tr);
-      }
-      view.dispatch(tr.scrollIntoView());
-      return true;
+    const currentLayout = (macroNode && macroNode.attrs.layout) || 'default';
+    const node = resolveMacro(newMacro, state, { layout: currentLayout });
+
+    if (!node) {
+      return false;
     }
+
+    const {
+      schema: {
+        nodes: { bodiedExtension },
+      },
+    } = state;
+    let { tr } = state;
+
+    const nonSelectedBodiedExtension =
+      macroNode!.type === bodiedExtension &&
+      !(tr.selection instanceof NodeSelection);
+
+    if (nonSelectedBodiedExtension && !isEditing) {
+      tr = safeInsert(node)(tr);
+    } else if (nonSelectedBodiedExtension) {
+      tr = replaceParentNodeOfType(bodiedExtension, node)(tr);
+    } else if (tr.selection instanceof NodeSelection) {
+      tr = replaceSelectedNode(node)(tr);
+    }
+
+    dispatch(tr.scrollIntoView());
+    return true;
   }
 
   return false;
@@ -48,6 +60,7 @@ export const insertMacroFromMacroBrowser = (
 export const resolveMacro = (
   macro?: MacroAttributes,
   state?: EditorState,
+  optionalAttrs?: object,
 ): PmNode | null => {
   if (!macro || !state) {
     return null;
@@ -58,10 +71,10 @@ export const resolveMacro = (
   let node;
 
   if (type === 'extension') {
-    node = schema.nodes.extension.create(attrs);
+    node = schema.nodes.extension.create({ ...attrs, ...optionalAttrs });
   } else if (type === 'bodiedExtension') {
     node = schema.nodes.bodiedExtension.create(
-      attrs,
+      { ...attrs, ...optionalAttrs },
       schema.nodeFromJSON(macro).content,
     );
   } else if (type === 'inlineExtension') {

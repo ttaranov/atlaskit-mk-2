@@ -13,11 +13,10 @@ import {
 } from '@atlaskit/editor-test-helpers';
 
 import {
-  TablePluginState,
-  stateKey,
+  pluginKey,
+  getPluginState,
 } from '../../../../src/plugins/table/pm-plugins/main';
-import { pluginKey as hoverStateKey } from '../../../../src/plugins/table//pm-plugins/hover-selection-plugin';
-
+import { TablePluginState } from '../../../../src/plugins/table/types';
 import { hoverTable } from '../../../../src/plugins/table/actions';
 import TableFloatingControls from '../../../../src/plugins/table/ui/TableFloatingControls';
 import CornerControls from '../../../../src/plugins/table/ui/TableFloatingControls/CornerControls';
@@ -28,8 +27,8 @@ describe('TableFloatingControls', () => {
   const editor = (doc: any) =>
     createEditor<TablePluginState>({
       doc,
-      editorPlugins: [tablesPlugin],
-      pluginKey: stateKey,
+      editorPlugins: [tablesPlugin()],
+      pluginKey: pluginKey,
     });
 
   describe('when tableRef is undefined', () => {
@@ -79,11 +78,9 @@ describe('TableFloatingControls', () => {
       );
       hoverTable(true)(editorView.state, editorView.dispatch);
       const {
-        decorationSet,
-      }: { decorationSet: DecorationSet } = hoverStateKey.getState(
-        editorView.state,
-      );
-      const decoration = decorationSet.find()[0] as any;
+        hoverDecoration,
+      }: { hoverDecoration: DecorationSet } = getPluginState(editorView.state);
+      const decoration = hoverDecoration.find()[0] as any;
       expect(decoration.type.attrs.class.indexOf('danger')).toBeGreaterThan(-1);
     });
   });

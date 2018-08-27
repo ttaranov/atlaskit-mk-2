@@ -11,6 +11,7 @@ import {
   EmojiRepresentation,
 } from './types';
 import { customCategory, dataURLPrefix } from './constants';
+import { CategoryId } from './components/picker/categories';
 
 export const isSpriteServiceRepresentation = (
   rep,
@@ -140,3 +141,6 @@ export const buildEmojiDescriptionWithAltRepresentation = (
     altRepresentation,
   };
 };
+
+export const getCategoryId = (emoji: EmojiDescription): CategoryId =>
+  emoji.category as CategoryId;

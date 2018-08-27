@@ -15,10 +15,8 @@ import {
   thEmpty,
 } from '@atlaskit/editor-test-helpers';
 import AkButton from '@atlaskit/button';
-import {
-  TablePluginState,
-  stateKey,
-} from '../../../../src/plugins/table/pm-plugins/main';
+import { pluginKey } from '../../../../src/plugins/table/pm-plugins/main';
+import { TablePluginState } from '../../../../src/plugins/table/types';
 import RowControls from '../../../../src/plugins/table/ui/TableFloatingControls/RowControls';
 import {
   RowControlsButtonWrap,
@@ -28,7 +26,7 @@ import TableFloatingControls from '../../../../src/plugins/table/ui/TableFloatin
 import {
   hoverRows,
   insertRow,
-  resetHoverSelection,
+  clearHoverSelection,
   deleteSelectedRows,
 } from '../../../../src/plugins/table/actions';
 import { tablesPlugin } from '../../../../src/plugins';
@@ -56,8 +54,8 @@ describe('RowControls', () => {
   const editor = (doc: any) =>
     createEditor<TablePluginState>({
       doc,
-      editorPlugins: [tablesPlugin],
-      pluginKey: stateKey,
+      editorPlugins: [tablesPlugin()],
+      pluginKey,
     });
 
   [1, 2, 3].forEach(row => {
@@ -152,8 +150,8 @@ describe('RowControls', () => {
             hoverRows={(rows, danger) => {
               hoverRows(rows, danger)(editorView.state, editorView.dispatch);
             }}
-            resetHoverSelection={() => {
-              resetHoverSelection(editorView.state, editorView.dispatch);
+            clearHoverSelection={() => {
+              clearHoverSelection(editorView.state, editorView.dispatch);
             }}
             isTableHovered={false}
             insertRow={row => {
@@ -175,8 +173,8 @@ describe('RowControls', () => {
           .simulate('click');
 
         // selecting the row mutates the editor state (which is inside editorView)
-        // so, re-apply the updated prop
-        floatingControls.setProps({ editorView });
+        // we set tableHeight prop to trick shouldComponentUpdate and force re-render
+        floatingControls.setProps({ tableHeight: 100 });
 
         // we should now have a delete button
         expect(floatingControls.find(DeleteRowButton).length).toBe(1);
@@ -227,8 +225,8 @@ describe('RowControls', () => {
         hoverRows={(rows, danger) => {
           hoverRows(rows, danger)(editorView.state, editorView.dispatch);
         }}
-        resetHoverSelection={() => {
-          resetHoverSelection(editorView.state, editorView.dispatch);
+        clearHoverSelection={() => {
+          clearHoverSelection(editorView.state, editorView.dispatch);
         }}
         isTableHovered={false}
         insertRow={row => {
@@ -274,8 +272,8 @@ describe('RowControls', () => {
         hoverRows={(rows, danger) => {
           hoverRows(rows, danger)(editorView.state, editorView.dispatch);
         }}
-        resetHoverSelection={() => {
-          resetHoverSelection(editorView.state, editorView.dispatch);
+        clearHoverSelection={() => {
+          clearHoverSelection(editorView.state, editorView.dispatch);
         }}
         isTableHovered={false}
         insertRow={row => {
@@ -291,8 +289,8 @@ describe('RowControls', () => {
     editorView.dispatch(selectRows([0, 1])(editorView.state.tr));
 
     // selecting the row mutates the editor state (which is inside editorView)
-    // so, re-apply the updated prop
-    floatingControls.setProps({ editorView });
+    // we set tableHeight prop to trick shouldComponentUpdate and force re-render
+    floatingControls.setProps({ tableHeight: 100 });
 
     expect(floatingControls.find(DeleteRowButton).length).toBe(1);
 
@@ -325,8 +323,8 @@ describe('RowControls', () => {
         hoverRows={(rows, danger) => {
           hoverRows(rows, danger)(editorView.state, editorView.dispatch);
         }}
-        resetHoverSelection={() => {
-          resetHoverSelection(editorView.state, editorView.dispatch);
+        clearHoverSelection={() => {
+          clearHoverSelection(editorView.state, editorView.dispatch);
         }}
         isTableHovered={false}
         insertRow={row => {
@@ -345,8 +343,8 @@ describe('RowControls', () => {
     editorView.dispatch(selectTable(editorView.state.tr));
 
     // selecting the row mutates the editor state (which is inside editorView)
-    // so, re-apply the updated prop
-    floatingControls.setProps({ editorView });
+    // we set tableHeight prop to trick shouldComponentUpdate and force re-render
+    floatingControls.setProps({ tableHeight: 100 });
 
     expect(floatingControls.find(DeleteRowButton).length).toBe(0);
     floatingControls.unmount();
@@ -371,8 +369,8 @@ describe('RowControls', () => {
           hoverRows={(rows, danger) => {
             hoverRows(rows, danger)(editorView.state, editorView.dispatch);
           }}
-          resetHoverSelection={() => {
-            resetHoverSelection(editorView.state, editorView.dispatch);
+          clearHoverSelection={() => {
+            clearHoverSelection(editorView.state, editorView.dispatch);
           }}
           isTableHovered={false}
           insertRow={row => {
@@ -392,8 +390,8 @@ describe('RowControls', () => {
       editorView.dispatch(selectRows([0, 1])(editorView.state.tr));
 
       // selecting the row mutates the editor state (which is inside editorView)
-      // so, re-apply the updated prop
-      floatingControls.setProps({ editorView });
+      // we set tableHeight prop to trick shouldComponentUpdate and force re-render
+      floatingControls.setProps({ tableHeight: 100 });
 
       expect(floatingControls.find(InsertRowButton).length).toBe(2);
 
@@ -418,8 +416,8 @@ describe('RowControls', () => {
           hoverRows={(rows, danger) => {
             hoverRows(rows, danger)(editorView.state, editorView.dispatch);
           }}
-          resetHoverSelection={() => {
-            resetHoverSelection(editorView.state, editorView.dispatch);
+          clearHoverSelection={() => {
+            clearHoverSelection(editorView.state, editorView.dispatch);
           }}
           isTableHovered={false}
           insertRow={row => {
@@ -439,8 +437,8 @@ describe('RowControls', () => {
       editorView.dispatch(selectRows([0, 1, 2])(editorView.state.tr));
 
       // selecting the row mutates the editor state (which is inside editorView)
-      // so, re-apply the updated prop
-      floatingControls.setProps({ editorView });
+      // we set tableHeight prop to trick shouldComponentUpdate and force re-render
+      floatingControls.setProps({ tableHeight: 100 });
 
       expect(floatingControls.find(InsertRowButton).length).toBe(1);
 
@@ -465,8 +463,8 @@ describe('RowControls', () => {
           hoverRows={(rows, danger) => {
             hoverRows(rows, danger)(editorView.state, editorView.dispatch);
           }}
-          resetHoverSelection={() => {
-            resetHoverSelection(editorView.state, editorView.dispatch);
+          clearHoverSelection={() => {
+            clearHoverSelection(editorView.state, editorView.dispatch);
           }}
           isTableHovered={false}
           insertRow={row => {
@@ -484,8 +482,8 @@ describe('RowControls', () => {
       editorView.dispatch(selectRows([0, 1])(editorView.state.tr));
 
       // selecting the row mutates the editor state (which is inside editorView)
-      // so, re-apply the updated prop
-      floatingControls.setProps({ editorView });
+      // we set tableHeight prop to trick shouldComponentUpdate and force re-render
+      floatingControls.setProps({ tableHeight: 100 });
 
       expect(floatingControls.find(DeleteRowButton).length).toBe(1);
 

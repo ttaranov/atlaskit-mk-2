@@ -1,6 +1,15 @@
 // @flow
 
 import React, { Component, type Node } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 import EditedStyles from '../styled/EditedStyles';
 
 type Props = {
@@ -12,7 +21,7 @@ type Props = {
   onMouseOver?: Function,
 };
 
-export default class Edited extends Component<Props, {}> {
+class Edited extends Component<Props, {}> {
   render() {
     const { children, onFocus, onMouseOver } = this.props;
     return (
@@ -22,3 +31,25 @@ export default class Edited extends Component<Props, {}> {
     );
   }
 }
+
+export { Edited as CommentEditedWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'commentEdited',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onClick: createAndFireEventOnAtlaskit({
+      action: 'clicked',
+      actionSubject: 'commentEdited',
+
+      attributes: {
+        componentName: 'commentEdited',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(Edited),
+);

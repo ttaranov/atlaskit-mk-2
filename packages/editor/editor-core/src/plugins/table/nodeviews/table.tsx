@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {
   Node as PmNode,
-  DOMSerializer,
   DOMOutputSpec,
+  DOMSerializer,
 } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
@@ -11,6 +11,10 @@ import ReactNodeView from '../../../nodeviews/ReactNodeView';
 import { PortalProviderAPI } from '../../../ui/PortalProvider';
 import { parseDOMColumnWidths } from '../utils';
 import TableComponent from './TableComponent';
+
+import WithPluginState from '../../../ui/WithPluginState';
+import { pluginKey as widthPluginKey } from '../../width';
+import { pluginKey } from '../pm-plugins/main';
 
 export interface Props {
   node: PmNode;
@@ -22,53 +26,76 @@ export interface Props {
   getPos: () => number;
 }
 
+const tableAttributes = (node: PmNode) => {
+  return {
+    'data-number-column': node.attrs.isNumberColumnEnabled,
+    'data-layout': node.attrs.layout,
+    'data-autosize': node.attrs.__autoSize,
+  };
+};
+
 const toDOM = (node: PmNode, props: Props) =>
   [
     'table',
-    {
-      'data-number-column': node.attrs.isNumberColumnEnabled,
-      'data-layout': node.attrs.layout,
-      'data-autosize': node.attrs.__autoSize,
-    },
+    tableAttributes(node),
     props.allowColumnResizing ? ['colgroup'] : '',
     ['tbody', 0],
   ] as DOMOutputSpec;
 
 export default class TableView extends ReactNodeView {
+  private table: HTMLElement | undefined;
+
   constructor(props: Props) {
     super(props.node, props.view, props.getPos, props.portalProviderAPI, props);
   }
 
   getContentDOM() {
-    return DOMSerializer.renderSpec(
+    const rendered = DOMSerializer.renderSpec(
       document,
       toDOM(this.node, this.reactComponentProps as Props),
     );
+
+    if (rendered.dom) {
+      this.table = rendered.dom as HTMLElement;
+    }
+
+    return rendered;
   }
 
-  update(node: PmNode, decorations) {
-    return super.update(
-      node,
-      decorations,
-      (currentNode, newNode) =>
-        node.attrs.isNumberColumnEnabled ===
-          this.node.attrs.isNumberColumnEnabled &&
-        node.attrs.layout === this.node.attrs.layout,
-    );
+  setDomAttrs(node) {
+    if (!this.table) {
+      return;
+    }
+
+    const attrs = tableAttributes(node);
+    Object.keys(attrs).forEach(attr => {
+      this.table!.setAttribute(attr, attrs[attr]);
+    });
   }
 
   render(props, forwardRef) {
     return (
-      <TableComponent
-        {...props}
-        node={this.node}
-        contentDOM={forwardRef}
-        onComponentUpdate={this.componentDidUpdate}
+      <WithPluginState
+        plugins={{
+          containerWidth: widthPluginKey,
+          pluginState: pluginKey,
+        }}
+        eventDispatcher={props.eventDispatcher}
+        editorView={props.view}
+        render={pluginStates => (
+          <TableComponent
+            {...props}
+            {...pluginStates}
+            node={this.node}
+            contentDOM={forwardRef}
+            onComponentMount={this.componentDidMount}
+          />
+        )}
       />
     );
   }
 
-  componentDidUpdate = () => {
+  componentDidMount = () => {
     // When we get a table with an 'auto' attribute, we want to:
     // 1. render with table-layout: auto
     // 2. capture the column widths

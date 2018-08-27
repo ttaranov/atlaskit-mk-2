@@ -1,38 +1,26 @@
-import * as util from '../../../../src/newgen/util';
+import * as util from '../../../../src/newgen/utils';
 const constructAuthTokenUrlSpy = jest.spyOn(util, 'constructAuthTokenUrl');
 
 import * as React from 'react';
 import { mount } from 'enzyme';
-import { Subject } from 'rxjs/Subject';
 import { FileItem } from '@atlaskit/media-core';
-import { Stubs } from '../../../_stubs';
+import { createContext } from '../../../_stubs';
 import { Spinner } from '../../../../src/newgen/loading';
 import { DocViewer } from '../../../../src/newgen/viewers/doc/index';
+import { ErrorMessage, createError } from '../../../../src/newgen/error';
+import Button from '@atlaskit/button';
 
-function createContext() {
-  const subject = new Subject<FileItem>();
-  const token = 'some-token';
-  const clientId = 'some-client-id';
-  const serviceHost = 'some-service-host';
-  const authProvider = jest.fn(() => Promise.resolve({ token, clientId }));
-  const contextConfig = {
-    serviceHost,
-    authProvider,
-  };
-  return Stubs.context(
-    contextConfig,
-    undefined,
-    Stubs.mediaItemProvider(subject),
-  ) as any;
-}
-
-function createFixture(fetchPromise, item, collectionName?) {
-  const context = createContext();
+function createFixture(
+  fetchPromise: Promise<any>,
+  item: FileItem,
+  collectionName?: string,
+) {
+  const context = createContext(undefined as any);
   const onClose = jest.fn(() => fetchPromise);
   const el = mount(
     <DocViewer item={item} context={context} collectionName={collectionName} />,
   );
-  el.instance()['fetch'] = jest.fn();
+  (el as any).instance()['fetch'] = jest.fn();
   return { context, el, onClose };
 }
 
@@ -57,13 +45,9 @@ describe('DocViewer', () => {
       },
     };
     const { el } = createFixture(fetchPromise, item);
-    await el.instance()['init']();
+    await (el as any).instance()['init']();
 
-    expect(el.state()).toMatchObject({
-      src: {
-        status: 'SUCCESSFUL',
-      },
-    });
+    expect(el.state().src.status).toEqual('SUCCESSFUL');
   });
 
   it('shows an indicator while loading', async () => {
@@ -82,12 +66,12 @@ describe('DocViewer', () => {
       },
     };
     const { el } = createFixture(fetchPromise, item);
-    await el.instance()['init']();
+    await (el as any).instance()['init']();
 
     expect(el.find(Spinner)).toHaveLength(1);
   });
 
-  it('shows an error if no artifact found', async () => {
+  it('shows an error message and download button if no artifact found', async () => {
     const fetchPromise = Promise.resolve(() => {});
     const item: FileItem = {
       type: 'file',
@@ -100,14 +84,23 @@ describe('DocViewer', () => {
     };
     const { el } = createFixture(fetchPromise, item);
 
-    await el.instance()['init']();
+    await (el as any).instance()['init']();
 
-    expect(el.state()).toMatchObject({
-      src: {
-        status: 'FAILED',
-        err: new Error('no pdf artifacts found for this file'),
-      },
-    });
+    const { src } = el.state();
+    expect(src.status).toEqual('FAILED');
+    expect(src.err).toEqual(createError('noPDFArtifactsFound'));
+
+    const errorMessage = el.find(ErrorMessage);
+    expect(errorMessage).toHaveLength(1);
+    expect(errorMessage.text()).toContain(
+      'No PDF artifacts found for this file.',
+    );
+
+    // download button
+    expect(errorMessage.text()).toContain(
+      'Try downloading the file to view it',
+    );
+    expect(errorMessage.find(Button)).toHaveLength(1);
   });
 
   it('MSW-720: passes collectionName to constructAuthTokenUrl', async () => {
@@ -127,7 +120,7 @@ describe('DocViewer', () => {
       },
     };
     const { el } = createFixture(fetchPromise, item, collectionName);
-    await el.instance()['init']();
+    await (el as any).instance()['init']();
     expect(constructAuthTokenUrlSpy.mock.calls[0][2]).toEqual(collectionName);
   });
 });

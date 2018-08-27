@@ -41,7 +41,7 @@ TitleInput.displayName = 'TitleInput';
 
 export const Content: any = styled.div`
   padding: 0 20px;
-  height: 50%;
+  height: 50vh;
   background: #fff;
   box-sizing: border-box;
 
@@ -124,9 +124,10 @@ export default class Example extends React.Component<Props, State> {
                 analyticsHandler={analyticsHandler}
                 allowTasksAndDecisions={true}
                 allowCodeBlocks={true}
-                UNSAFE_allowLayouts={true}
+                allowLayouts={true}
                 allowLists={true}
                 allowTextColor={true}
+                allowDate={true}
                 allowTables={{
                   allowColumnResizing: true,
                   allowMergeCells: true,
@@ -161,6 +162,7 @@ export default class Example extends React.Component<Props, State> {
                 }}
                 placeholder="Write something..."
                 shouldFocus={false}
+                quickInsert={true}
                 contentComponents={
                   <TitleInput
                     placeholder="Give this page a title..."
@@ -191,6 +193,7 @@ export default class Example extends React.Component<Props, State> {
                 allowCodeBlocks={true}
                 allowLists={true}
                 allowTextColor={true}
+                allowDate={true}
                 allowTables={{
                   allowColumnResizing: true,
                   allowMergeCells: true,
@@ -220,6 +223,7 @@ export default class Example extends React.Component<Props, State> {
                 }}
                 placeholder="Write something..."
                 shouldFocus={false}
+                quickInsert={true}
                 contentComponents={
                   <TitleInput
                     placeholder="Give this page a title..."

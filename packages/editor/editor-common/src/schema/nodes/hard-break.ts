@@ -3,7 +3,7 @@ import { NodeSpec } from 'prosemirror-model';
 /**
  * @name hardBreak_node
  */
-export interface Definition {
+export interface HardBreakDefinition {
   type: 'hardBreak';
   attrs?: {
     text?: '\n';

@@ -1,0 +1,36 @@
+{
+  "name": "@atlaskit/analytics-next-types",
+  "version": "3.1.0",
+  "description": "TypeScript Type Definitions for @atlaskit/analytics-next",
+  "config": {
+    "access": "public"
+  },
+  "main": "index.d.ts",
+  "types": "index.d.ts",
+  "files": [
+    "index.d.ts"
+  ],
+  "author": "Atlassian Pty. Ltd",
+  "maintainers": [
+    "Eduardo S",
+    "Aleksandr Motsjonov"
+  ],
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit-mk-2"
+  },
+  "atlaskit": {
+    "internal": true
+  },
+  "keywords": [
+    "fabric",
+    "ui"
+  ],
+  "devDependencies": {
+    "react": "^16.4.0"
+  },
+  "peerDependencies": {
+    "react": "^16.4.0"
+  }
+}
