@@ -413,7 +413,7 @@ class DropdownMenuStateless extends Component<
 
   /** Render items only after droplist has been positioned */
   renderDropdownItems = () => {
-    if (this.dropdownListPositioned) {
+    if (this.sourceOfIsOpen === 'keydown' && this.dropdownListPositioned) {
       return (
         <DropdownItemClickManager onItemClicked={this.handleItemClicked}>
           <DropdownItemFocusManager
@@ -425,7 +425,11 @@ class DropdownMenuStateless extends Component<
         </DropdownItemClickManager>
       );
     }
-    return null;
+    return (
+      <DropdownItemClickManager onItemClicked={this.handleItemClicked}>
+        {this.props.children}
+      </DropdownItemClickManager>
+    );
   };
 
   render() {
