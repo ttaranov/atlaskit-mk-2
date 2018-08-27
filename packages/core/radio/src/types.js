@@ -10,15 +10,7 @@ export type ItemPropType = {
   value?: string,
 };
 
-export type ItemPropTypeSmart = {
-  ...ItemPropType,
-  defaultSelected?: boolean,
-};
-
 export type ItemsPropType = Array<ItemPropType>;
-
-// Used by RadioGroup
-export type ItemsPropTypeSmart = Array<ItemPropTypeSmart>;
 
 export type RadioBasePropTypes = {
   children?: Node,
@@ -60,5 +52,5 @@ export type RadioGroupPropTypes = {
   ...RadioGroupBasePropTypes,
   /** Items to be rendered by a single Radio component. Passes options down to
    an AkRadio component, with label passed as children. */
-  items?: ItemsPropTypeSmart,
+  items?: ItemsPropType,
 };

@@ -7,7 +7,7 @@ import RadioGroupWithAnalytics, {
   RadioGroupWithoutAnalytics as RadioGroup,
 } from '../../RadioGroup';
 import { name } from '../../../package.json';
-import type { ItemPropTypeSmart } from '../../types';
+import type { ItemPropType } from '../../types';
 
 describe(name, () => {
   describe('AkFieldRadioGroup (stateless)', () => {
@@ -21,7 +21,12 @@ describe(name, () => {
       it('the AkFieldRadioGroup component', () => {
         expect(RadioGroup).not.toBe(undefined);
         expect(
-          new RadioGroup({ selectedValue: null, defaultSelectedValue: null }),
+          new RadioGroup({
+            selectedValue: null,
+            defaultSelectedValue: null,
+            items: [],
+            onChange: () => {},
+          }),
         ).toBeInstanceOf(Component);
       });
     });
@@ -52,7 +57,7 @@ describe(name, () => {
           const radios = wrapper.find(Radio);
           for (let i = 0; i < sampleItems.length; i++) {
             const radio = radios.at(i);
-            const item: ItemPropTypeSmart = sampleItems[i];
+            const item: ItemPropType = sampleItems[i];
             expect(radio.prop('name')).toBe(item.name);
             expect(radio.prop('value')).toBe(item.value);
             expect(radio.prop('children')).toBe(item.label);

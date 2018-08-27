@@ -2,14 +2,14 @@
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 
-import FieldRadioGroup, { AkFieldRadioGroup } from '../..';
+import { RadioGroupWithoutAnalytics as RadioGroup } from '../../RadioGroup';
 import { name } from '../../../package.json';
 import Radio from '../../RadioBase';
-import type { ItemsPropTypeSmart } from '../../types';
+import type { ItemsPropType } from '../../types';
 
 describe(name, () => {
-  describe('FieldRadioGroup (smart)', () => {
-    const sampleItems: ItemsPropTypeSmart = [
+  describe('RadioGroup', () => {
+    const sampleItems: ItemsPropType = [
       { name: 'test', value: '1', label: 'one' },
       { name: 'test', value: '2', label: 'two' },
       { name: 'test', value: '3', label: <i>three</i>, isDisabled: true },
@@ -17,8 +17,15 @@ describe(name, () => {
 
     describe('exports', () => {
       it('the FieldRadioGroup component', () => {
-        expect(FieldRadioGroup).not.toBe(undefined);
-        expect(new FieldRadioGroup()).toBeInstanceOf(Component);
+        expect(RadioGroup).not.toBe(undefined);
+        expect(
+          new RadioGroup({
+            selectedValue: null,
+            defaultSelectedValue: null,
+            items: [],
+            onChange: () => {},
+          }),
+        ).toBeInstanceOf(Component);
       });
     });
 
@@ -26,7 +33,7 @@ describe(name, () => {
       let wrapper;
 
       beforeEach(() => {
-        wrapper = shallow(<FieldRadioGroup />);
+        wrapper = shallow(<RadioGroup />);
       });
 
       it('should be able to create a component', () => {
@@ -34,25 +41,15 @@ describe(name, () => {
         expect(wrapper.instance()).toBeInstanceOf(Component);
       });
 
-      it('should render a FieldRadioGroup component', () => {
-        expect(wrapper.find(AkFieldRadioGroup).length).toBe(1);
-      });
-
-      it('should set up the onRadioChange prop for the AkFieldRadioGroup', () => {
-        expect(
-          typeof wrapper.find(AkFieldRadioGroup).prop('onRadioChange'),
-        ).toBe('function');
-      });
-
       it('should set up the initial state', () => {
-        expect(wrapper.state('selectedValue')).toBe(null);
+        expect(wrapper.state('selectedValue')).toBe(undefined);
       });
     });
 
     describe('props', () => {
       describe('defaultValue prop', () => {
         it('renders an Radio with correct props for each item in the array', () => {
-          const wrapper = mount(<FieldRadioGroup items={sampleItems} />);
+          const wrapper = mount(<RadioGroup items={sampleItems} />);
           expect(wrapper.find(Radio).length).toBe(sampleItems.length);
 
           const radios = wrapper.find(Radio);
@@ -69,14 +66,16 @@ describe(name, () => {
       });
 
       describe('items prop with defaultValue', () => {
-        const sampleItemsWithDefault: ItemsPropTypeSmart = sampleItems.map(
-          item => ({ ...item }),
-        );
-        sampleItemsWithDefault[2].defaultSelected = true;
+        const sampleItemsWithDefault: ItemsPropType = sampleItems.map(item => ({
+          ...item,
+        }));
 
         it('selects the item by default', () => {
           const wrapper = mount(
-            <FieldRadioGroup items={sampleItemsWithDefault} />,
+            <RadioGroup
+              defaultSelectedValue={sampleItemsWithDefault[2].value}
+              items={sampleItemsWithDefault}
+            />,
           );
           expect(
             wrapper
@@ -88,7 +87,10 @@ describe(name, () => {
 
         it('is overridden when an item is selected', () => {
           const wrapper = mount(
-            <FieldRadioGroup items={sampleItemsWithDefault} />,
+            <RadioGroup
+              defaultSelectedValue={sampleItemsWithDefault[2].value}
+              items={sampleItemsWithDefault}
+            />,
           );
 
           const radios = () => wrapper.find(Radio);
@@ -111,7 +113,7 @@ describe(name, () => {
         it('should be called when a value is selected', () => {
           const spy = jest.fn();
           const wrapper = mount(
-            <FieldRadioGroup items={sampleItems} onRadioChange={spy} />,
+            <RadioGroup items={sampleItems} onChange={spy} />,
           );
           wrapper
             .find(Radio)
@@ -122,8 +124,8 @@ describe(name, () => {
         });
 
         it('updates the selectedValue state when a radio is changed', () => {
-          const wrapper = mount(<FieldRadioGroup items={sampleItems} />);
-          expect(wrapper.state('selectedValue')).toBe(null);
+          const wrapper = mount(<RadioGroup items={sampleItems} />);
+          expect(wrapper.state('selectedValue')).toBe(undefined);
           wrapper
             .find(Radio)
             .first()
