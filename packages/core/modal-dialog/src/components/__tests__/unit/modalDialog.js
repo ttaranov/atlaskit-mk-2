@@ -3,7 +3,7 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Blanket from '@atlaskit/blanket';
 
-import ModalDialogWithAnalytics from '../../..';
+import ModalDialogWithAnalytics, { ModalTransition } from '../../..';
 import { ModalDialogWithoutAnalytics as ModalDialog } from '../../Modal';
 import Content from '../../Content';
 import { Body } from '../../../styled/Content';
@@ -22,12 +22,20 @@ const StubDialog = props => <ModalDialog onClose={noop} {...props} />;
 // wait for react-transition-group to mount the modal
 const wait = fn => setTimeout(fn, 1);
 
-describe('modal-dialog', () => {
-  it('should be possible to create a component', () => {
-    const wrapper = shallow(<ModalDialog onClose={noop} />);
-    expect(wrapper).not.toBe(undefined);
-  });
+const MyContent = () => 'Hello';
 
+test('should render a modal dialog with content', () => {
+  const wrapper = mount(
+    <ModalTransition>
+      <ModalDialogWithAnalytics onClose={noop}>
+        <MyContent />
+      </ModalDialogWithAnalytics>
+    </ModalTransition>,
+  );
+  expect(wrapper.find(Content)).toHaveLength(1);
+});
+
+describe('modal-dialog', () => {
   /* eslint-disable jest/no-disabled-tests */
   xdescribe('scrolling window', () => {
     xit('should be locked when initiated by the user', () => {});
@@ -39,12 +47,11 @@ describe('modal-dialog', () => {
   describe('props', () => {
     describe('height', () => {
       it('should be passed to Dialog', () => {
-        const wrapper = mount(<StubDialog height="42%" />);
-
-        wait(() => {
-          const dialogHeightProp = wrapper.find(Dialog).prop('heightValue');
-          expect(dialogHeightProp).toBe('42%');
-        });
+        const wrapper = mount(
+          <ModalDialogWithAnalytics onClose={noop} height="42%" />,
+        );
+        const dialogHeightProp = wrapper.find(Dialog).prop('heightValue');
+        expect(dialogHeightProp).toBe('42%');
       });
 
       it('should return px if number', () => {
@@ -68,10 +75,11 @@ describe('modal-dialog', () => {
 
       it('should be passed to Dialog', () => {
         const wrapper = mount(
-          <StubDialog width="42%" scrollBehavior={'inside'} />,
+          <ModalDialog width="42%" scrollBehavior={'inside'} />,
         );
 
         wait(() => {
+          throw Error('hi');
           const dialogWidthProp = wrapper.find(Dialog).prop('widthValue');
           expect(dialogWidthProp).toBe('42%');
         });
@@ -104,11 +112,10 @@ describe('modal-dialog', () => {
     describe('header', () => {
       it('should render when set', () => {
         const node = <span>My header</span>;
-        const wrapper = mount(<StubDialog header={() => node} />);
-
-        wait(() => {
-          expect(wrapper.contains(node)).toBe(true);
-        });
+        const wrapper = mount(
+          <ModalDialogWithAnalytics header={() => node} onClose={noop} />,
+        );
+        expect(wrapper.contains(node)).toBe(true);
       });
     });
 
@@ -144,6 +151,7 @@ describe('modal-dialog', () => {
         const wrapper = mount(<StubDialog onClose={spy} />);
 
         wait(() => {
+          throw Error('hi');
           const blanket = wrapper.find(Blanket);
 
           blanket.simulate('click');

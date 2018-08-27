@@ -23,6 +23,7 @@
     "@atlaskit/button": "^9.0.7",
     "@atlaskit/icon": "^13.3.1",
     "@atlaskit/layer-manager": "^5.0.7",
+    "@atlaskit/portal": "^0.0.6",
     "@atlaskit/theme": "^6.0.1",
     "prop-types": "^15.5.10",
     "raf-schd": "^2.1.0",
