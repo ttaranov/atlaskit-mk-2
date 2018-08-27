@@ -1,6 +1,6 @@
-import analytics from '../../src/analytics/decorator';
-import { AnalyticsHandler } from '../../src/analytics/handler';
-import service from '../../src/analytics/service';
+import analytics from '../../../analytics/decorator';
+import { AnalyticsHandler } from '../../../analytics/handler';
+import service from '../../../analytics/service';
 
 describe('analytics decorator', () => {
   let spy: any;

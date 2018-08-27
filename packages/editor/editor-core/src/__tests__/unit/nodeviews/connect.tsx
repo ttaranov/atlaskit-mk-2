@@ -2,8 +2,8 @@ import * as React from 'react';
 import { Component } from 'react';
 import { mount } from 'enzyme';
 
-import { EventDispatcher } from '../../src/event-dispatcher';
-import connect from '../../src/nodeviews/legacy-nodeview-factory/connect';
+import { EventDispatcher } from '../../../event-dispatcher';
+import connect from '../../../nodeviews/legacy-nodeview-factory/connect';
 
 describe('connect', () => {
   class DummyComponent extends Component {

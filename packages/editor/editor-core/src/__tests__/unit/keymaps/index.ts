@@ -1,5 +1,5 @@
 import { browser } from '@atlaskit/editor-common';
-import * as keymaps from '../../src/keymaps';
+import * as keymaps from '../../../keymaps';
 
 describe('keymaps', () => {
   const keymap = {
