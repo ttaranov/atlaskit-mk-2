@@ -22,11 +22,12 @@ const StickyFooter = styled.div`
 
 export interface Props {
   query: string;
+  analyticsData?: object;
 }
 
 export default class AdvancedSearchGroup extends React.Component<Props> {
   render() {
-    const { query } = this.props;
+    const { query, analyticsData } = this.props;
     const text =
       query.length === 0 ? (
         <FormattedMessage id="global-search.confluence.advanced-search" />
@@ -40,6 +41,7 @@ export default class AdvancedSearchGroup extends React.Component<Props> {
     return [
       <PeopleSearchWrapper key="people-search">
         <SearchPeopleItem
+          analyticsData={analyticsData}
           query={query}
           text={<FormattedMessage id="global-search.people.advanced-search" />}
           icon={
@@ -49,6 +51,7 @@ export default class AdvancedSearchGroup extends React.Component<Props> {
       </PeopleSearchWrapper>,
       <StickyFooter key="advanced-search">
         <SearchConfluenceItem
+          analyticsData={analyticsData}
           query={query}
           text={text}
           icon={<SearchIcon size="medium" label="Advanced search" />}

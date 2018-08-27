@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 5.5.8
+- [patch] Ensure SPA transitions are happening for Confluence pages. [0909b85](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0909b85)
+
 ## 5.5.7
 - [patch] Fixes import in relative import in global search. [0147e49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0147e49)
 

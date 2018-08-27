@@ -117,7 +117,7 @@ const backItemPrimitiveStyles = styles => ({
 });
 
 const BackItem = ({ goTo, href, subText, id, index, text = 'Back' }: *) => (
-  <div css={{ display: 'flex', marginBottom: '8px' }}>
+  <div css={{ display: 'flex' }}>
     <div css={{ flexShrink: 0 }}>
       <GoToItem
         after={null}

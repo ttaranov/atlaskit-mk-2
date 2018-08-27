@@ -1,5 +1,17 @@
 # @atlaskit/renderer
 
+## 20.1.1
+- [patch] Updated dependencies [911a570](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/911a570)
+  - @atlaskit/media-test-helpers@17.0.0
+  - @atlaskit/media-filmstrip@11.0.2
+  - @atlaskit/media-core@23.0.2
+  - @atlaskit/editor-json-transformer@4.0.7
+  - @atlaskit/media-card@32.0.6
+  - @atlaskit/editor-test-helpers@6.0.5
+
+## 20.1.0
+- [minor] Adds option to disable heading ids in renderer, and disable them by default in conversations [efcca1a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/efcca1a)
+
 ## 20.0.11
 - [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
   - @atlaskit/smart-card@8.0.1

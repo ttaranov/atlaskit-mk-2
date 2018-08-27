@@ -42,7 +42,7 @@ describe('CrossProductSearchClient', () => {
             results: [
               {
                 title: '@@@hl@@@page@@@endhl@@@ name',
-                baseUrl: 'baseUrl',
+                baseUrl: 'http://baseUrl/wiki',
                 url: '/url',
                 container: {
                   title: 'containerTitle',
@@ -67,7 +67,7 @@ describe('CrossProductSearchClient', () => {
       )![0] as ConfluenceObjectResult;
       expect(item.resultId).toEqual('123');
       expect(item.name).toEqual('page name');
-      expect(item.href).toEqual('baseUrl/url?search_id=test_uuid');
+      expect(item.href).toEqual('/wiki/url?search_id=test_uuid');
       expect(item.containerName).toEqual('containerTitle');
       expect(item.analyticsType).toEqual(AnalyticsType.ResultConfluence);
       expect(item.resultType).toEqual(ResultType.ConfluenceObjectResult);
@@ -83,7 +83,7 @@ describe('CrossProductSearchClient', () => {
               {
                 title: 'abc',
                 url: 'url',
-                baseUrl: 'baseUrl',
+                baseUrl: 'https://baseUrl/wiki',
                 container: {
                   title: 'containerTitle',
                   displayUrl: '/displayUrl',
@@ -108,9 +108,9 @@ describe('CrossProductSearchClient', () => {
 
       const item = result.get(Scope.ConfluenceSpace)![0] as ContainerResult;
       expect(item.resultId).toEqual('space-key');
-      expect(item.avatarUrl).toEqual('baseUrl/spaceIconPath');
+      expect(item.avatarUrl).toEqual('https://baseUrl/wiki/spaceIconPath');
       expect(item.name).toEqual('containerTitle');
-      expect(item.href).toEqual('baseUrl/displayUrl?search_id=test_uuid');
+      expect(item.href).toEqual('/wiki/displayUrl?search_id=test_uuid');
       expect(item.analyticsType).toEqual(AnalyticsType.ResultConfluence);
       expect(item.resultType).toEqual(ResultType.GenericContainerResult);
     });

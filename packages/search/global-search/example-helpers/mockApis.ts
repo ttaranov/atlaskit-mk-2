@@ -7,8 +7,23 @@ import {
   makeConfluenceRecentPagesData,
   makeConfluenceRecentSpacesData,
   makeQuickNavSearchData,
-} from '../example-helpers/mockData';
-import { JiraRecentResponse } from '../example-helpers/jiraRecentResponseData';
+} from './mockData';
+import { JiraRecentResponse } from './jiraRecentResponseData';
+
+type Request = {
+  json: Function;
+  url: string;
+};
+
+type MocksConfig = {
+  crossProductSearchDelay: number;
+  quickNavDelay: number;
+};
+
+const DEFAULT_MOCKS_CONFIG: MocksConfig = {
+  crossProductSearchDelay: 650,
+  quickNavDelay: 500,
+};
 
 const recentResponse = recentData();
 const confluenceRecentPagesResponse = makeConfluenceRecentPagesData();
@@ -36,27 +51,27 @@ function mockConfluenceRecentApi() {
   );
 }
 
-function mockCrossProductSearchApi() {
-  fetchMock.post(new RegExp('/quicksearch/v1'), async request => {
+function mockCrossProductSearchApi(delayMs: number) {
+  fetchMock.post(new RegExp('/quicksearch/v1'), async (request: Request) => {
     const body = await request.json();
     const query = body.query;
     const results = queryMockSearch(query);
 
-    return delay(650, results);
+    return delay(delayMs, results);
   });
 }
 
-function mockQuickNavApi() {
-  fetchMock.mock(new RegExp('/quicknav/1'), async request => {
+function mockQuickNavApi(delayMs: number) {
+  fetchMock.mock(new RegExp('/quicknav/1'), async (request: Request) => {
     const query = request.url.split('query=')[1];
     const results = queryMockQuickNav(query);
 
-    return delay(650, results);
+    return delay(delayMs, results);
   });
 }
 
 function mockPeopleApi() {
-  fetchMock.post(new RegExp('/graphql'), async request => {
+  fetchMock.post(new RegExp('/graphql'), async (request: Request) => {
     const body = await request.json();
     const query = body.variables.displayName || '';
     const results = queryPeopleSearch(query);
@@ -72,12 +87,12 @@ function mockJiraApi() {
   );
 }
 
-export function setupMocks() {
+export function setupMocks(config: MocksConfig = DEFAULT_MOCKS_CONFIG) {
   mockRecentApi();
-  mockCrossProductSearchApi();
+  mockCrossProductSearchApi(config.crossProductSearchDelay);
   mockPeopleApi();
   mockConfluenceRecentApi();
-  mockQuickNavApi();
+  mockQuickNavApi(config.quickNavDelay);
   mockJiraApi();
 }
 
