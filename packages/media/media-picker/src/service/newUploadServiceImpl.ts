@@ -99,7 +99,7 @@ export class NewUploadServiceImpl implements UploadService {
     observable?: Observable<FileState>,
     occurrenceKey?: string,
   ): Promise<string> => {
-    return new Promise<string>(async resolve => {
+    return new Promise<string>(async (resolve, reject) => {
       const { shouldCopyFileToRecents } = this;
 
       if (shouldCopyFileToRecents && observable) {
@@ -117,6 +117,8 @@ export class NewUploadServiceImpl implements UploadService {
         const id = response.data.id;
 
         resolve(id);
+      } else {
+        reject();
       }
     });
   };

@@ -362,4 +362,20 @@ describe('<UploadView />', () => {
       handler: expect.any(Function),
     });
   });
+
+  it('should set deferred upfront id when clicking on a card', () => {
+    const { component, dispatch } = createConnectedComponent(state, mount);
+
+    component
+      .find('Card')
+      .first()
+      .props()
+      .onClick({ mediaItemDetails: { id: 'some-id' } });
+    expect(dispatch.mock.calls[0][0]).toEqual({
+      id: 'some-id',
+      type: 'SET_UPFRONT_ID_DEFERRED',
+      resolver: expect.anything(),
+      rejecter: expect.anything(),
+    });
+  });
 });
