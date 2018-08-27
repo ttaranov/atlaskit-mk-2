@@ -6,6 +6,8 @@ import { Subscribe } from 'unstated';
 import UIController from './UIController';
 import type { UIControllerSubscriberProps } from './types';
 
-export default ({ children }: UIControllerSubscriberProps) => (
+const UIControllerSubscriber = ({ children }: UIControllerSubscriberProps) => (
   <Subscribe to={[UIController]}>{children}</Subscribe>
 );
+
+export default UIControllerSubscriber;

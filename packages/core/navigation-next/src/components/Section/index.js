@@ -3,6 +3,7 @@
 import React, { PureComponent, Fragment } from 'react';
 import { TransitionGroup, Transition } from 'react-transition-group';
 import { css as parseJss } from 'emotion';
+import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
 import { transitionDurationMs } from '../../common/constants';
 import { getSectionWrapperStyles } from './styles';
@@ -37,7 +38,16 @@ export default class Section extends PureComponent<SectionProps, SectionState> {
             // This allows consumers to patch the styles if they want to, or
             // simply apply the className if they're not using a JSS parser like
             // emotion.
-            return children({ className, css });
+            return (
+              <NavigationAnalyticsContext
+                data={{
+                  attributes: { viewSection: id },
+                  componentName: 'Section',
+                }}
+              >
+                {children({ className, css })}
+              </NavigationAnalyticsContext>
+            );
           }}
         </Transition>
       </TransitionGroup>

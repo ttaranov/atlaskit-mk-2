@@ -1,5 +1,7 @@
 import { MediaItemType } from '@atlaskit/media-core';
 
+export { Outcome } from './outcome';
+
 export type Identifier = {
   type: MediaItemType;
   id: string;
@@ -10,19 +12,6 @@ export type Identifier = {
 export type ItemSource =
   | { kind: 'COLLECTION'; collectionName: string; pageSize: number }
   | { kind: 'ARRAY'; items: Identifier[] };
-
-export type Outcome<Data, Err> =
-  | {
-      status: 'PENDING';
-    }
-  | {
-      status: 'SUCCESSFUL';
-      data: Data;
-    }
-  | {
-      status: 'FAILED';
-      err: Err;
-    };
 
 export type MediaViewerFeatureFlags = {
   nextGen?: boolean;

@@ -6,10 +6,11 @@ export type AnalyticsWebClient = {
   sendTrackEvent: (event: any) => void;
   sendScreenEvent: (event: any) => void;
 };
+export type Client = Promise<AnalyticsWebClient>;
 
 export type ListenerProps = {
   children?: React.ReactNode;
-  client: Promise<AnalyticsWebClient>;
+  client: Client;
   logger: Logger;
 };
 
@@ -22,3 +23,10 @@ export type EventNextType = {
 };
 
 export type ListenerFunction = (event: EventNextType) => void;
+
+export enum FabricChannel {
+  atlaskit = 'atlaskit',
+  elements = 'fabric-elements',
+  navigation = 'navigation',
+  editor = 'editor',
+}

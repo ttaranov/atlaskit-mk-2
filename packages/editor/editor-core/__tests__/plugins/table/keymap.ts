@@ -38,7 +38,7 @@ describe('table keymap', () => {
   const editor = (doc: any, trackEvent = () => {}) =>
     createEditor<TablePluginState>({
       doc,
-      editorPlugins: [tablesPlugin],
+      editorPlugins: [tablesPlugin()],
       editorProps: {
         analyticsHandler: trackEvent,
       },
@@ -48,7 +48,7 @@ describe('table keymap', () => {
     createEditor<TablePluginState>({
       doc,
       editorPlugins: [
-        tablesPlugin,
+        tablesPlugin(),
         rulePlugin,
         listsPlugin,
         panelPlugin,
@@ -279,7 +279,12 @@ describe('table keymap', () => {
         view.dispatch(tr.delete($head.pos - 1, $head.pos));
       };
 
-      const excludeNodes = ['doc', 'table', 'applicationCard'];
+      const excludeNodes = [
+        'doc',
+        'table',
+        'applicationCard',
+        'bodiedExtension',
+      ];
 
       Object.keys(defaultSchema.nodes).forEach(nodeName => {
         const node = defaultSchema.nodes[nodeName];

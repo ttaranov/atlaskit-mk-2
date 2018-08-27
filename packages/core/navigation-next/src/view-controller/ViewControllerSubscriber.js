@@ -9,4 +9,8 @@ type Props = {|
   children: ViewController => Node,
 |};
 
-export default (props: Props) => <Subscribe to={[ViewController]} {...props} />;
+const ViewControllerSubscriber = (props: Props) => (
+  <Subscribe to={[ViewController]} {...props} />
+);
+
+export default ViewControllerSubscriber;

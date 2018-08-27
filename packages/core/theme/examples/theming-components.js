@@ -1,73 +1,44 @@
 // @flow
 
-import React, {
-  Component,
-  Fragment,
-  type ComponentType,
-  type Node,
-} from 'react';
+import React, { Component, Fragment, type Node } from 'react';
 import { Theme } from '../src';
-import type { ThemeDefinition } from '../src/types';
 
-type MyTheme = ThemeDefinition<{
-  // eslint-disable-next-line react/no-unused-prop-types
-  button: ({ hover: boolean }) => {
+type MyTheme = {
+  button?: ({ hover: boolean }) => {
     backgroundColor: string,
     textColor: string,
   },
-}>;
+};
 
-const DefaultButtonTheme = (props: MyTheme) => (
-  <Theme
-    values={{
-      button: (state, { button }) => ({
-        backgroundColor: state.hover ? '#ddd' : '#eee',
-        textColor: '#333',
-        ...button(state),
-      }),
-      ...props.values,
-    }}
-  >
-    {props.children}
-  </Theme>
-);
+const defaultButtonTheme = (theme: MyTheme) => ({
+  button: state => ({
+    backgroundColor: state.hover ? '#ddd' : '#eee',
+    textColor: '#333',
+    ...(theme.button ? theme.button(state) : null),
+  }),
+  ...theme,
+});
 
-const AppTheme = (props: MyTheme) => (
-  <Theme
-    values={{
-      button: (state, { button }) => ({
-        ...button(state),
-        backgroundColor: state.hover ? 'rebeccapurple' : 'palevioletred',
-        textColor: state.hover ? '#fff' : 'papayawhip',
-      }),
-      ...props.values,
-    }}
-  >
-    {props.children}
-  </Theme>
-);
+const appTheme = (theme: MyTheme) => ({
+  ...theme,
+  button: state => ({
+    ...(theme.button ? theme.button(state) : null),
+    backgroundColor: state.hover ? 'rebeccapurple' : 'palevioletred',
+    textColor: state.hover ? '#fff' : 'papayawhip',
+  }),
+});
 
-const CustomButtonTheme = (props: MyTheme) => (
-  <DefaultButtonTheme>
-    <Theme
-      values={{
-        button: (state, { button }) => ({
-          ...button(state),
-          backgroundColor: state.hover ? 'palevioletred' : 'rebeccapurple',
-        }),
-        ...props.values,
-      }}
-    >
-      {props.children}
-    </Theme>
-  </DefaultButtonTheme>
-);
+const customButtonTheme = (theme: MyTheme) => ({
+  ...theme,
+  button: state => ({
+    ...(theme.button ? theme.button(state) : null),
+    backgroundColor: state.hover ? 'palevioletred' : 'rebeccapurple',
+  }),
+});
 
 type Props = {
-  // eslint-disable-next-line react/no-unused-prop-types
   children: Node,
-  // eslint-disable-next-line react/no-unused-prop-types
-  theme: ComponentType<MyTheme>,
+  theme: (*) => MyTheme,
 };
 
 type State = {
@@ -76,7 +47,7 @@ type State = {
 
 class Button extends Component<Props, State> {
   static defaultProps = {
-    theme: DefaultButtonTheme,
+    theme: defaultButtonTheme,
   };
   state = {
     hover: false,
@@ -84,11 +55,12 @@ class Button extends Component<Props, State> {
   onMouseEnter = () => this.setState({ hover: true });
   onMouseLeave = () => this.setState({ hover: false });
   render() {
-    const { props, state } = this;
     return (
-      <props.theme>
-        {({ button }) => {
-          const { backgroundColor, textColor: color } = button(state);
+      <Theme values={this.props.theme}>
+        {theme => {
+          const { backgroundColor, textColor: color } = theme.button(
+            this.state,
+          );
           return (
             <button
               onMouseEnter={this.onMouseEnter}
@@ -105,11 +77,11 @@ class Button extends Component<Props, State> {
               }}
               type="button"
             >
-              {props.children}
+              {this.props.children}
             </button>
           );
         }}
-      </props.theme>
+      </Theme>
     );
   }
 }
@@ -117,9 +89,9 @@ class Button extends Component<Props, State> {
 export default () => (
   <Fragment>
     <Button>Default</Button>
-    <AppTheme>
+    <Theme values={appTheme}>
       <Button>Context</Button>
-      <Button theme={CustomButtonTheme}>Custom</Button>
-    </AppTheme>
+      <Button theme={customButtonTheme}>Custom</Button>
+    </Theme>
   </Fragment>
 );

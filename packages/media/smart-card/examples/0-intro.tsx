@@ -4,6 +4,7 @@ import { Field } from '@atlaskit/form';
 import Select from '@atlaskit/select';
 import TextField from '@atlaskit/field-text';
 import { Provider, Card } from '../src';
+import { CardAppearance } from '../src/Card/CardContent';
 import '../mocks';
 
 const params =
@@ -17,8 +18,13 @@ const defaultURL = param
 
 export interface ExampleProps {}
 
+export type AppearanceOption = {
+  label: string;
+  value: CardAppearance;
+};
+
 export interface ExampleState {
-  appearance: { label: string; value: string };
+  appearance: AppearanceOption;
   url: string;
 }
 
@@ -28,11 +34,11 @@ class Example extends React.Component<ExampleProps, ExampleState> {
     url: defaultURL,
   };
 
-  handleUrlChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ url: event.target.value });
+  handleUrlChange = (event: React.FormEvent<HTMLInputElement>) => {
+    this.setState({ url: (event.target as HTMLInputElement).value });
   };
 
-  handleAppearanceChange = option => {
+  handleAppearanceChange = (option: AppearanceOption) => {
     this.setState({
       appearance: option,
     });
@@ -67,10 +73,7 @@ class Example extends React.Component<ExampleProps, ExampleState> {
           <Grid>
             <GridColumn>
               <br />
-              <Card
-                appearance={appearance.value === 'block' ? 'block' : 'inline'}
-                url={url}
-              />
+              <Card appearance={appearance.value} url={url} />
             </GridColumn>
           </Grid>
         </Page>

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/theme",
-  "version": "5.1.3",
+  "version": "6.0.0",
   "description": "The Atlaskit theme framework",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -25,9 +25,9 @@
   },
   "devDependencies": {
     "@atlaskit/build-utils": "^1.11.0",
-    "@atlaskit/button": "^9.0.5",
-    "@atlaskit/docs": "^5.0.2",
-    "@atlaskit/lozenge": "^6.1.4",
+    "@atlaskit/button": "^9.0.6",
+    "@atlaskit/docs": "^5.0.6",
+    "@atlaskit/lozenge": "^6.1.5",
     "color": "^3.0.0",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.2"

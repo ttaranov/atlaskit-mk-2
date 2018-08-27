@@ -14,8 +14,14 @@ module.exports = () => {
       callbackOnDefinedFill,
       {
         params: Object.assign({}, callbackOnDefinedFill.params, {
-          callback: fill =>
-            console.warn(`"${filename}": has a fill of "${fill}"`),
+          callback: fill => {
+            // file-types and objects are colored icons
+            if (
+              fill.toString().startsWith('#') &&
+              !(filename.includes('file-types') || filename.includes('objects'))
+            )
+              console.warn(`"${filename}": has a fill of "${fill}"`);
+          },
         }),
       },
     );

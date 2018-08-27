@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
+import { FabricChannel } from '../../index';
 import FabricElementsListener, {
-  ELEMENTS_CHANNEL,
   ELEMENTS_TAG,
-} from '../../FabricElementsListener';
+} from '../../fabric/FabricElementsListener';
 import {
   DummyComponentWithAnalytics,
   TaggedDummyComponentWithAnalytics,
@@ -49,7 +49,7 @@ describe('<FabricElementsListener />', () => {
     const analyticsListener = component.find(AnalyticsListener);
     expect(analyticsListener.props()).toHaveProperty(
       'channel',
-      ELEMENTS_CHANNEL,
+      FabricChannel.elements,
     );
 
     const dummy = analyticsListener.find('#dummy');

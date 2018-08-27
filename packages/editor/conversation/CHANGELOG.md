@@ -1,5 +1,20 @@
 # @atlaskit/conversation
 
+## 9.1.5
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/renderer@20.0.11
+  - @atlaskit/util-data-test@10.0.7
+  - @atlaskit/editor-common@14.0.11
+  - @atlaskit/reactions@13.0.8
+  - @atlaskit/editor-core@77.1.4
+  - @atlaskit/comment@6.0.8
+
+## 9.1.4
+- [patch] Add next gen analytics to conversation component [dfa100e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dfa100e)
+- [patch] Add nextgen analytics to conversation component [9e2626f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9e2626f)
+- [patch] Updated dependencies [dfa100e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dfa100e)
+  - @atlaskit/analytics-listeners@3.3.1
+
 ## 9.1.3
 - [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
 - [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)

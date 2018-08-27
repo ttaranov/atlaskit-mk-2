@@ -42,7 +42,7 @@ const filterNull = subject => {
       return acc;
     }
 
-    if (typeof current === 'object') {
+    if (typeof current === 'object' && !Array.isArray(current)) {
       current = filterNull(current);
     }
 

@@ -26,7 +26,7 @@ export const taskItem: NodeSpec = {
     {
       tag: 'li[data-task-local-id]',
 
-      // Default priority is 50. We normaly don't change this but since this node type is
+      // Default priority is 50. We normally don't change this but since this node type is
       // also used by list-item we need to make sure that we run this parser first.
       priority: 100,
 

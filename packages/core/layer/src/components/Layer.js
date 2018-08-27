@@ -62,7 +62,7 @@ type State = {
   cssPosition: CSSPositionType,
   originalHeight: ?number,
   maxHeight: ?number,
-  fixedOffset: ?number,
+  fixedOffset: ?OffsetStateType,
 };
 
 // We create a dummy target when making the menu fixed so that we can force popper.js to use fixed positioning
@@ -75,7 +75,8 @@ const FixedTarget = styled.div`
       const rect = actualTarget.getBoundingClientRect();
       return `
         position: fixed;
-        top: ${fixedOffset}px;
+        top: ${fixedOffset.top}px;
+        left: ${fixedOffset.left}px;
         height: ${rect.height}px;
         width: ${rect.width}px;
         z-index: -1;
@@ -214,9 +215,16 @@ export default class Layer extends Component<Props, State> {
 
     if (isAlwaysFixed && this.targetRef) {
       const actualTarget = this.targetRef.firstChild;
-      this.setState({ fixedOffset: actualTarget.getBoundingClientRect().top });
+      this.setState({
+        fixedOffset: {
+          top: actualTarget.getBoundingClientRect().top,
+          left: actualTarget.getBoundingClientRect().left,
+        },
+      });
     } else if (!isAlwaysFixed && this.state.fixedOffset !== null) {
-      this.setState({ fixedOffset: null });
+      this.setState({
+        fixedOffset: null,
+      });
     }
   }
 

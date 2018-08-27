@@ -1,5 +1,37 @@
 # @atlaskit/modal-dialog
 
+## 6.0.9
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/layer-manager@5.0.6
+  - @atlaskit/inline-dialog@9.0.2
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/field-text@7.0.6
+  - @atlaskit/field-radio-group@4.0.5
+  - @atlaskit/checkbox@4.0.4
+  - @atlaskit/button@9.0.6
+  - @atlaskit/blanket@7.0.5
+  - @atlaskit/avatar@14.0.8
+  - @atlaskit/docs@5.0.6
+
+## 6.0.8
+
+
+
+
+- [patch] Updated dependencies [1d9e75a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1d9e75a)
+  - @atlaskit/inline-dialog@9.0.0
+- [none] Updated dependencies [a3109d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a3109d3)
+  - @atlaskit/inline-dialog@9.0.0
+- [none] Updated dependencies [87d45d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87d45d3)
+  - @atlaskit/inline-dialog@9.0.0
+- [none] Updated dependencies [a08b0c2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a08b0c2)
+  - @atlaskit/inline-dialog@9.0.0
+
+## 6.0.7
+- [patch] Bumping react-beautiful-dnd to version 9. Making use of use onBeforeDragStart for dynamic table [9cbd494](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9cbd494)
+- [none] Updated dependencies [9cbd494](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9cbd494)
+
 ## 6.0.6
 - [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
 - [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)

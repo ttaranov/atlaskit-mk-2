@@ -46,6 +46,7 @@ export default {
     'tableColResizing',
     'blockTypeKeyMap',
     'tableEditing',
+    'pmCollab',
     'collab',
     'ruleInputRule',
     'ruleKeymap',
@@ -64,6 +65,7 @@ export default {
     'extension',
     'layout',
     'date',
+    'dateKeymap',
     'floatingToolbar',
     'clearMarksOnChange',
     'saveOnEnter',
@@ -115,6 +117,7 @@ export default {
     'layoutSection',
     'layoutColumn',
     'inlineCard',
+    'blockCard',
   ],
   marks: [
     'link',

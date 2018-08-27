@@ -1,6 +1,7 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
+import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import ViewRenderer from '../../renderer';
@@ -10,7 +11,11 @@ import LayoutManager from '../LayoutManager';
 import Section from '../Section';
 import SkeletonContainerHeader from '../SkeletonContainerHeader';
 import SkeletonItem from '../SkeletonItem';
-import type { LayoutManagerWithViewControllerProps } from './types';
+import type {
+  LayoutManagerWithViewControllerProps,
+  LayoutManagerWithViewControllerState,
+} from './types';
+import LayerInitialised from './LayerInitialised';
 
 const gridSize = gridSizeFn();
 
@@ -37,7 +42,22 @@ const skeleton = (
 
 class LayoutManagerWithViewControllerBase extends Component<
   LayoutManagerWithViewControllerProps,
+  LayoutManagerWithViewControllerState,
 > {
+  state = {
+    hasInitialised: false,
+  };
+
+  constructor(props: LayoutManagerWithViewControllerProps) {
+    super(props);
+    this.renderContainerNavigation.displayName = 'ContainerNavigationRenderer';
+    this.renderProductNavigation.displayName = 'ProductNavigationRenderer';
+  }
+  onInitialised = () => {
+    this.setState({
+      hasInitialised: true,
+    });
+  };
   renderContainerNavigation = () => {
     const {
       navigationViewController: {
@@ -48,6 +68,31 @@ class LayoutManagerWithViewControllerBase extends Component<
     return activeView && activeView.type === 'container'
       ? this.renderView(activeView)
       : skeleton;
+  };
+
+  renderGlobalNavigation = () => {
+    const {
+      globalNavigation: GlobalNavigation,
+      navigationViewController: {
+        state: { activeView },
+      },
+    } = this.props;
+    const { hasInitialised } = this.state;
+
+    /* We are embedding the LayerInitialised analytics component within global navigation so that
+     * the event it fires can access the analytics context within LayerManager. The component
+     * cannot be rendered directly within LayerManager since it needs access to view data which
+     * only exists in LayoutManagerWithViewController. */
+    return (
+      <Fragment>
+        <GlobalNavigation />
+        <LayerInitialised
+          activeView={activeView}
+          initialised={hasInitialised}
+          onInitialised={this.onInitialised}
+        />
+      </Fragment>
+    );
   };
 
   renderProductNavigation = () => {
@@ -84,24 +129,27 @@ class LayoutManagerWithViewControllerBase extends Component<
   render() {
     const {
       children,
-      globalNavigation,
       navigationViewController: {
         state: { activeView },
       },
     } = this.props;
 
     return (
-      <LayoutManager
-        globalNavigation={globalNavigation}
-        containerNavigation={
-          activeView && activeView.type === 'container'
-            ? this.renderContainerNavigation
-            : null
-        }
-        productNavigation={this.renderProductNavigation}
+      <NavigationAnalyticsContext
+        data={{ attributes: { view: activeView && activeView.id } }}
       >
-        {children}
-      </LayoutManager>
+        <LayoutManager
+          globalNavigation={this.renderGlobalNavigation}
+          containerNavigation={
+            activeView && activeView.type === 'container'
+              ? this.renderContainerNavigation
+              : null
+          }
+          productNavigation={this.renderProductNavigation}
+        >
+          {children}
+        </LayoutManager>
+      </NavigationAnalyticsContext>
     );
   }
 }

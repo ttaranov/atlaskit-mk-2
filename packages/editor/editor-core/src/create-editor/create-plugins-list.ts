@@ -104,7 +104,7 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
   }
 
   if (props.allowTables) {
-    plugins.push(tablesPlugin);
+    plugins.push(tablesPlugin(props.allowTables));
   }
 
   if (props.allowTasksAndDecisions) {
@@ -133,7 +133,7 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
   }
 
   if (props.collabEdit || props.collabEditProvider) {
-    plugins.push(collabEditPlugin);
+    plugins.push(collabEditPlugin(props.collabEdit));
   }
 
   if (props.maxContentSize) {
@@ -176,7 +176,7 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(placeholderTextPlugin(options));
   }
 
-  if (props.UNSAFE_allowLayouts) {
+  if (props.allowLayouts) {
     plugins.push(layoutPlugin);
   }
 

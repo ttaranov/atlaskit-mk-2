@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import SyntaxHighlighter from 'react-syntax-highlighter/light';
+import SyntaxHighlighter from 'react-syntax-highlighter/prism-light';
 import { withTheme, ThemeProvider } from 'styled-components';
 import {
   normalizeLanguage,
@@ -19,12 +19,14 @@ type CodeBlockProps = {
   theme?: Theme | ThemeProps,
 };
 
+const LANGUAGE_FALLBACK = 'clike';
+
 export class CodeBlock extends PureComponent<CodeBlockProps, {}> {
   static displayName = 'CodeBlock';
 
   static defaultProps = {
     showLineNumbers: true,
-    language: '',
+    language: LANGUAGE_FALLBACK,
     theme: {},
   };
 
@@ -50,7 +52,7 @@ export class CodeBlock extends PureComponent<CodeBlockProps, {}> {
       codeContainerStyle,
     } = applyTheme(this.props.theme);
     const props = {
-      language: normalizeLanguage(this.props.language),
+      language: normalizeLanguage(this.props.language || LANGUAGE_FALLBACK),
       style: codeBlockStyle,
       showLineNumbers: this.props.showLineNumbers,
       PreTag: 'span',

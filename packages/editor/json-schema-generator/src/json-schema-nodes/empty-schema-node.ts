@@ -4,4 +4,8 @@ export default class EmptySchemaNode extends SchemaNode {
   toJSON(): object {
     return {};
   }
+
+  toSpec() {
+    return {};
+  }
 }

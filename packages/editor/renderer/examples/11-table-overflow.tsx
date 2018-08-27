@@ -7,7 +7,7 @@ import SizeDetector from '@atlaskit/size-detector';
 
 import { BreakoutProvider } from '../src';
 import { default as Renderer } from '../src/ui/Renderer';
-import * as document from './helper/table-overflow.adf.json';
+import document from './helper/table-overflow.adf.json';
 
 const Wrapper: ComponentClass<HTMLAttributes<HTMLDivElement>> = styled.div`
   max-width: ${akEditorFullPageMaxWidth}px;

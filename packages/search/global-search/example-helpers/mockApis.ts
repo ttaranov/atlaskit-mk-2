@@ -8,6 +8,7 @@ import {
   makeConfluenceRecentSpacesData,
   makeQuickNavSearchData,
 } from '../example-helpers/mockData';
+import { JiraRecentResponse } from '../example-helpers/jiraRecentResponseData';
 
 const recentResponse = recentData();
 const confluenceRecentPagesResponse = makeConfluenceRecentPagesData();
@@ -64,12 +65,20 @@ function mockPeopleApi() {
   });
 }
 
+function mockJiraApi() {
+  fetchMock.get(
+    new RegExp('/rest/internal/2/productsearch/recent?'),
+    async request => delay(500, JiraRecentResponse),
+  );
+}
+
 export function setupMocks() {
   mockRecentApi();
   mockCrossProductSearchApi();
   mockPeopleApi();
   mockConfluenceRecentApi();
   mockQuickNavApi();
+  mockJiraApi();
 }
 
 export function teardownMocks() {

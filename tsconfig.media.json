@@ -20,6 +20,7 @@
       "strictFunctionTypes": true,
 
       "target": "es5",
+      "module": "esnext",
       "lib": [
         "dom",
         "es5",
@@ -46,6 +47,7 @@
       "./typings/events.d.ts",
       "./typings/lodash.last.d.ts",
       "./typings/lodash.debounce.d.ts",
-      "./typings/lodash.matches.d.ts"
+      "./typings/lodash.matches.d.ts",
+      "./typings/AbortController.d.ts"
     ]
   }

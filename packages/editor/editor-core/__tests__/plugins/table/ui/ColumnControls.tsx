@@ -47,7 +47,7 @@ describe('ColumnControls', () => {
   const editor = (doc: any) =>
     createEditor<TablePluginState>({
       doc,
-      editorPlugins: [tablesPlugin],
+      editorPlugins: [tablesPlugin()],
       pluginKey,
     });
 

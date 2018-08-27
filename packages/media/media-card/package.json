@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-card",
-  "version": "32.0.1",
+  "version": "32.0.5",
   "description": "Includes all media card related components, CardView, CardViewSmall, Card...",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -8,7 +8,6 @@
   "jsnext:main": "dist/es2015/index.js",
   "module": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
-  "sideEffects": true,
   "files": [
     "dist"
   ],
@@ -29,14 +28,14 @@
     "@atlaskit/analytics-next": "^3.0.4",
     "@atlaskit/analytics-next-types": "^3.0.1",
     "@atlaskit/avatar": "^14.0.6",
-    "@atlaskit/badge": "^9.0.4",
+    "@atlaskit/badge": "^9.1.1",
     "@atlaskit/button": "^9.0.5",
     "@atlaskit/dropdown-menu": "^6.1.5",
     "@atlaskit/field-text": "^7.0.4",
     "@atlaskit/icon": "^13.2.4",
     "@atlaskit/lozenge": "^6.1.4",
-    "@atlaskit/media-ui": "^5.0.2",
-    "@atlaskit/smart-card": "^7.0.2",
+    "@atlaskit/media-ui": "^5.1.2",
+    "@atlaskit/smart-card": "^8.0.1",
     "@atlaskit/spinner": "^9.0.5",
     "@atlaskit/tooltip": "^12.0.5",
     "@atlaskit/util-shared-styles": "^2.10.3",
@@ -45,7 +44,7 @@
     "classnames": "^2.2.5",
     "deep-equal": "^1.0.1",
     "lodash.debounce": "^4.0.8",
-    "react-lazily-render": "^1.0.1",
+    "react-lazily-render": "^1.1.0",
     "react-render-image": "^1.1.2",
     "react-transition-group": "^2.2.1",
     "tslib": "^1.8.0",
@@ -53,7 +52,7 @@
     "video-snapshot": "^1.0.1"
   },
   "peerDependencies": {
-    "@atlaskit/media-core": "^23.0.0",
+    "@atlaskit/media-core": "^23.0.1",
     "react": "^16.4.0",
     "react-dom": "^16.4.2",
     "rxjs": "^5.1.0",
@@ -63,12 +62,13 @@
     "@atlaskit/docs": "^5.0.2",
     "@atlaskit/field-radio-group": "^4.0.4",
     "@atlaskit/field-range": "^5.0.3",
-    "@atlaskit/media-core": "^23.0.0",
+    "@atlaskit/media-core": "^23.0.1",
     "@atlaskit/media-test-helpers": "^16.0.0",
     "@atlaskit/toggle": "^5.0.5",
     "deepcopy": "0.6.3",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react": "^16.4.0",
+    "react-dom": "^16.4.2",
     "rxjs": "^5.1.0",
     "scrollparent": "^2.0.1"
   }
