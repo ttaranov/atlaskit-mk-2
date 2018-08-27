@@ -1,15 +1,13 @@
 # Adding documentation to atlaskit.atlassian.com
 
-The documentation for a package on the `atlaskit.atlassian.com` website consists of three main parts; the main component page, examples pages, and possibly sub-pages. This document details how to write and format all of these so they are rendered correctly, as well as some information on the tools being used in the website.
+The documentation for a package on the `atlaskit.atlassian.com` website consists of three main parts; the main component page, possibly sub-pages, and examples pages. This document details how to write and format all of these so they are rendered correctly, as well as some information on the tools being used in the website.
 
 ## The Pages
 
 ### Main page
 Exists: Always
 
-#### Subsections
-
-##### Header
+#### Header
 Header contents is automatically generated. The links come from the package.json information, and extrapolating from them. The changelog info is pulled from the changelog md file at the package root. All packages have a link to examples.
 
 - link to examples modal
@@ -21,7 +19,7 @@ Header contents is automatically generated. The links come from the package.json
 - latest changelog
 - button to full changelog explorer
 
-##### Content
+#### Content
 The main content below the header. This is pulled from a JS file exporting a react component. The first file found in the `docs` subdirectory of the component will be used for the main page.
 
 We expect the main page to contain:
@@ -40,7 +38,7 @@ Exists: As needed
 Sub-pages within docs exist when a single document will be too unwieldy. Common reasons to use sub-pages are:
 
 - Explicitly detail a concept that you will need to use the package effectively
-- Call out and explain a common use-case that requires a particular patter
+- Call out and explain a common use-case that requires a particular pattern
 - Details exports other than the default export of a package, so that it can be easily found
 
 See information on the `docs/` folder below for information on how to create these.
@@ -50,13 +48,13 @@ Exists: Always
 
 Examples are displayed in three different formats:
 
-- The examples modal which can be launched from the main docs page of a package. This is useful for quickly checking an example, and displays the other examples for the package in a sidebar of the modal.
-- The explorer, which is a full page, and has dropdowns for both the examples within this package, as well as switching which package you are seeing the examples for.
+- The examples modal which can be launched from the main docs page of a package. This is useful for quickly checking an example, and displays the other examples for the package in a sidebar of the modal. This examples is rendered in an iframe.
+- The explorer, which is a full page, and has dropdowns for both the examples within this package, as well as switching which package you are seeing the examples for. This examples is rendered in an iframe.
 - The 'isolated view', which renders the code for the example and nothing else. This allows you to look at the example without worrying other page elements may interfere with it. Some packages such as navigation may require looking at in an isolated view.
 
-The first two ways to view an example render the example within an iframe, and have buttons that will show the code for the file the example is pulled from. These two also contain a link to open the example in codesandbox, so it can be remixed and experimented upon. This also pulls in other files that the example uses.
+The modal and the explorer also contain links to view the file the example comes from, and to open the example in codesandboxer so it can be remixed.
 
-## The `docs/` folder
+## The docs/ folder
 
 When generating the website, we look at every `.js` file in the docs folder for a package, and make a page on the website that renders the export of that file.
 
@@ -85,7 +83,7 @@ An average intro file may look something like this:
 
 ```
 import { md, Props, Example } from '@atlaskit/docs'
-import SpecailCustomThing from '../somwhere'
+import SpecialCustomThing from '../somwhere'
 
 export default md`
 # Hello
@@ -147,7 +145,7 @@ The second is [pretty-proptypes](https://github.com/Noviny/pretty-proptypes), wh
 
 For anything other than the standard use-case, see the pretty-proptypes docs.
 
-## The `examples\/` folder
+## The examples folder
 
 Every `.js` file in the examples folder is assumed to export a react component. each file uses its name, minus any initial numbers. As such, naming these files to be clear about their contents is vital to making useful examples.
 
