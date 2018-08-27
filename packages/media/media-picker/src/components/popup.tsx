@@ -23,7 +23,6 @@ export interface PopupConfig {
   readonly container?: HTMLElement;
   readonly uploadParams: UploadParams;
   readonly proxyReactContext?: AppProxyReactContext;
-  readonly useNewUploadService?: boolean;
   readonly singleSelect?: boolean;
 }
 
@@ -53,7 +52,6 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
     {
       container = document.body,
       uploadParams,
-      useNewUploadService,
       proxyReactContext,
       singleSelect,
     }: PopupConfig,
@@ -62,7 +60,6 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
     this.proxyReactContext = proxyReactContext;
 
     this.store = createStore(this, context, {
-      useNewUploadService,
       singleSelect,
     });
 

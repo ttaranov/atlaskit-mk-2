@@ -40,7 +40,7 @@ describe('paste plugins', () => {
         codeBlockPlugin(),
         extensionPlugin,
         tasksAndDecisionsPlugin,
-        tablesPlugin,
+        tablesPlugin(),
       ],
     });
 

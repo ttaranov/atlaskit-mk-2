@@ -5,7 +5,7 @@ const path = require('path');
 const os = require('os');
 const util = require('util');
 const { sep } = require('path');
-const logger = require('../../utils/logger');
+const logger = require('@atlaskit/build-utils/logger');
 
 function writeFile(filePath, fileContents) {
   return util.promisify(cb => fs.writeFile(filePath, fileContents, cb))();
@@ -27,19 +27,18 @@ async function getRepoUrl(cwd, opts) {
 async function updateChangelog(releaseObject, opts = { cwd: '', repoUrl: '' }) {
   const cwd = opts.cwd || process.cwd();
   const allPackages = await bolt.getWorkspaces({ cwd });
-  const prefix = opts.prefix || '';
   const repoUrl = await getRepoUrl(cwd, opts);
   let udpatedChangelogs = [];
   // Updating ChangeLog files for each package
-  for (let i = 0; i < releaseObject.releases.length; i++) {
-    const release = releaseObject.releases[i];
+  for (const release of releaseObject.releases) {
     const pkg = allPackages.find(a => a.name === release.name);
-    if (!pkg)
+    if (!pkg) {
       logger.warn(
         `While writing changelog, could not find workspace ${
           release.name
         } in project.`,
       );
+    }
     const changelogPath = path.join(pkg.dir, 'CHANGELOG.md');
 
     const templateString = `\n\n${generateMarkdownTemplate(
@@ -55,6 +54,7 @@ async function updateChangelog(releaseObject, opts = { cwd: '', repoUrl: '' }) {
       }
     } catch (e) {
       logger.warn(e);
+      return;
     }
     logger.log(`Updated file ${changelogPath}`);
     udpatedChangelogs.push(changelogPath);
@@ -64,6 +64,7 @@ async function updateChangelog(releaseObject, opts = { cwd: '', repoUrl: '' }) {
 
 async function prependFile(filePath, data, pkg) {
   const fileData = fs.readFileSync(filePath).toString();
+  // if the file exists but doesn't have the header, we'll add it in
   if (!fileData) {
     const completelyNewChangelog = `# ${pkg.name}${data}`;
     fs.writeFileSync(filePath, completelyNewChangelog);

@@ -7,7 +7,10 @@ import {
   RemoteData,
   TelepointerData,
   PresenceData,
+  Participant,
 } from '../types';
+
+export { TelepointerData, Participant };
 
 export type CollabEvent =
   | 'init'

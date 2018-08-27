@@ -31,7 +31,7 @@ describe('table hover selection plugin', () => {
   const editor = (doc: any) =>
     createEditor<TablePluginState>({
       doc,
-      editorPlugins: [tablesPlugin],
+      editorPlugins: [tablesPlugin()],
       pluginKey,
     });
 

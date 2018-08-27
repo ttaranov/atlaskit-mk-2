@@ -19,7 +19,6 @@ import { defaultUploadParams } from '../domain/uploadParams';
 export interface LocalUploadConfig {
   uploadParams: UploadParams;
   tenantUploadParams?: UploadParams;
-  useNewUploadService?: boolean;
 }
 
 export class LocalUploadComponent<
@@ -31,7 +30,6 @@ export class LocalUploadComponent<
 
   constructor(context: Context, config: LocalUploadConfig) {
     super();
-    const { useNewUploadService } = config;
     const uploadParams = { ...defaultUploadParams, ...config.uploadParams };
     const tenantUploadParams = {
       ...defaultUploadParams,
@@ -42,8 +40,7 @@ export class LocalUploadComponent<
     this.uploadService = UploadServiceFactory.create(
       this.context,
       tenantUploadParams,
-      uploadParams,
-      useNewUploadService,
+      uploadParams
     );
     this.config = config;
     this.uploadService.on('files-added', this.onFilesAdded);

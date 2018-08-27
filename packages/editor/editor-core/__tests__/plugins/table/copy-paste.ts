@@ -17,7 +17,10 @@ import {
   dispatchPasteEvent,
 } from '@atlaskit/editor-test-helpers';
 import { pluginKey as tablePluginKey } from '../../../src/plugins/table/pm-plugins/main';
-import { TablePluginState } from '../../../src/plugins/table/types';
+import {
+  TablePluginState,
+  PluginConfig,
+} from '../../../src/plugins/table/types';
 import tablesPlugin from '../../../src/plugins/table';
 import {
   unwrapContentFromTable,
@@ -39,21 +42,23 @@ const selectCell = (cell: {
 };
 
 describe('table plugin', () => {
-  const editor = (doc: any, trackEvent = () => {}) =>
-    createEditor<TablePluginState>({
+  const editor = (doc: any, trackEvent = () => {}) => {
+    const tableOptions = {
+      allowNumberColumn: true,
+      allowHeaderRow: true,
+      allowHeaderColumn: true,
+      permittedLayouts: 'all',
+    } as PluginConfig;
+    return createEditor<TablePluginState>({
       doc,
-      editorPlugins: [tablesPlugin],
+      editorPlugins: [tablesPlugin(tableOptions)],
       editorProps: {
         analyticsHandler: trackEvent,
-        allowTables: {
-          allowNumberColumn: true,
-          allowHeaderRow: true,
-          allowHeaderColumn: true,
-          permittedLayouts: 'all',
-        },
+        allowTables: tableOptions,
       },
       pluginKey: tablePluginKey,
     });
+  };
 
   describe('TableView', () => {
     describe('copy paste', () => {

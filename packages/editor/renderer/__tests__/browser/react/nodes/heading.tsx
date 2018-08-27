@@ -14,6 +14,33 @@ const contentGenerator = headerText => {
   return content;
 };
 
+const headingContent = [
+  {
+    type: 'text',
+    text: 'This is a Heading',
+  },
+  {
+    type: 'emoji',
+    attrs: {
+      shortName: ':grin:',
+      id: '1f601',
+      text: ' 😁 ',
+    },
+  },
+  {
+    type: 'text',
+    text: 'with a emoji',
+    marks: [
+      {
+        type: 'link',
+        attrs: {
+          href: 'www.atlassian.com',
+        },
+      },
+    ],
+  },
+];
+
 describe('<Heading />', () => {
   let headers = [];
   for (let i = 1; i < 7; i++) {
@@ -58,34 +85,7 @@ describe('<Heading />', () => {
     expect(headers[5].prop('id')).to.equal('This-is-a-Heading-6');
   });
 
-  it('should have heading id', () => {
-    const headingContent = [
-      {
-        type: 'text',
-        text: 'This is a Heading',
-      },
-      {
-        type: 'emoji',
-        attrs: {
-          shortName: ':grin:',
-          id: '1f601',
-          text: ' 😁 ',
-        },
-      },
-      {
-        type: 'text',
-        text: 'with a emoji',
-        marks: [
-          {
-            type: 'link',
-            attrs: {
-              href: 'www.atlassian.com',
-            },
-          },
-        ],
-      },
-    ];
-
+  it('should have heading id if "disableHeadingIDs" is false/undefined', () => {
     const heading = shallow(
       <Heading level={1} content={headingContent}>
         This is a Heading 😁 with a emoji
@@ -93,5 +93,15 @@ describe('<Heading />', () => {
     );
     expect(heading.name()).to.equal('h1');
     expect(heading.prop('id')).to.equal('This-is-a-Heading-😁-with-a-emoji');
+  });
+
+  it('should not have heading id if "disableHeadingIDs" is true', () => {
+    const heading = shallow(
+      <Heading level={1} content={headingContent} disableHeadingIDs={true}>
+        This is a Heading 😁 with a emoji
+      </Heading>,
+    );
+    expect(heading.name()).to.equal('h1');
+    expect(heading.prop('id')).to.equal(undefined);
   });
 });

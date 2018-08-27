@@ -104,10 +104,8 @@ export class App extends Component<AppProps, AppState> {
       onUploadEnd,
       onUploadError,
       context,
-      tenantUploadParams,
-      config = {},
+      tenantUploadParams
     } = props;
-    const useNewUploadService = config.useNewUploadService || false;
     const { userAuthProvider } = context.config;
 
     if (!userAuthProvider) {
@@ -129,7 +127,6 @@ export class App extends Component<AppProps, AppState> {
 
     this.mpBrowser = MediaPicker('browser', context, {
       uploadParams,
-      useNewUploadService,
       tenantUploadParams,
       multiple: true,
     });
@@ -142,7 +139,6 @@ export class App extends Component<AppProps, AppState> {
 
     this.mpDropzone = MediaPicker('dropzone', context, {
       uploadParams,
-      useNewUploadService,
       tenantUploadParams,
       headless: true,
     });
@@ -157,7 +153,6 @@ export class App extends Component<AppProps, AppState> {
 
     this.mpBinary = MediaPicker('binary', context, {
       uploadParams,
-      useNewUploadService,
       tenantUploadParams,
     });
     this.mpBinary.on('uploads-start', onUploadsStart);

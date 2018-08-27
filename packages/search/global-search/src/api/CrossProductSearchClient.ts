@@ -198,10 +198,13 @@ function mapConfluenceItemToResultObject(
   searchSessionId: string,
   experimentId?: string,
 ): ConfluenceObjectResult {
+  const href = new URI(`${item.baseUrl}${item.url}`);
+  href.addQuery('search_id', searchSessionId);
+
   return {
     resultId: item.content!.id, // content always available for pages/blogs/attachments
     name: removeHighlightTags(item.title),
-    href: `${item.baseUrl}${item.url}?search_id=${searchSessionId}`,
+    href: `${href.pathname()}?${href.query()}`,
     containerName: item.container.title,
     analyticsType: AnalyticsType.ResultConfluence,
     contentType: `confluence-${item.content!.type}` as ContentType,
@@ -240,7 +243,7 @@ function mapConfluenceItemToResultSpace(
     resultId: `space-${spaceItem.space!.key}`, // space is always defined for space results
     avatarUrl: `${spaceItem.baseUrl}${spaceItem.space!.icon.path}`,
     name: spaceItem.container.title,
-    href: href.toString(),
+    href: `${href.pathname()}?${href.query()}`,
     analyticsType: AnalyticsType.ResultConfluence,
     resultType: ResultType.GenericContainerResult,
     experimentId: experimentId,

@@ -1,12 +1,13 @@
 jest.mock('../../src/plugins', () => ({
   mediaPlugin: jest.fn(),
+  tablesPlugin: jest.fn(),
   insertBlockPlugin: jest.fn(),
   placeholderTextPlugin: jest.fn(),
   textFormattingPlugin: jest.fn(),
 }));
 
 import {
-  tablePlugin,
+  tablesPlugin,
   mediaPlugin,
   helpDialogPlugin,
   fakeTextCursorPlugin,
@@ -35,8 +36,10 @@ describe('createPluginsList', () => {
   });
 
   it('should add tablePlugin if allowTables is true', () => {
-    const plugins = createPluginsList({ allowTables: true });
-    expect(plugins).toContain(tablePlugin);
+    const tableOptions = { allowTables: true };
+    createPluginsList(tableOptions);
+    expect(tablesPlugin).toHaveBeenCalledTimes(1);
+    expect(tablesPlugin).toHaveBeenCalledWith(true);
   });
 
   it('should always add submitEditorPlugin to the editor', () => {

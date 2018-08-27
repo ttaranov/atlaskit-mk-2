@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 20.1.0
+- [minor] Adds option to disable heading ids in renderer, and disable them by default in conversations [efcca1a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/efcca1a)
+
 ## 20.0.11
 - [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
   - @atlaskit/smart-card@8.0.1

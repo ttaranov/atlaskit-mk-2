@@ -52,7 +52,3 @@ export function copyPublicMediaFileForUpload(
     occurrenceKey,
   };
 }
-
-export function isPublicMediaFile(file: MediaFile): file is PublicMediaFile {
-  return !!(file as PublicMediaFile).publicId;
-}

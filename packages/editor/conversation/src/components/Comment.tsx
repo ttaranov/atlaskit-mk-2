@@ -301,6 +301,7 @@ export default class Comment extends React.Component<Props, State> {
       <ReactRenderer
         document={comment.document.adf}
         dataProviders={dataProviders}
+        disableHeadingIDs={true}
       />
     );
   }

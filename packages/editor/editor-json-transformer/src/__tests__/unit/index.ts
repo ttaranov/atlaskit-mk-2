@@ -69,7 +69,7 @@ describe('JSONTransformer:', () => {
           panelPlugin,
           listPlugin,
           rulePlugin,
-          tablesPlugin,
+          tablesPlugin(),
         ],
         providerFactory: ProviderFactory.create({ emojiProvider }),
       });

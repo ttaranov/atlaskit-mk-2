@@ -78,7 +78,6 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
       uploadParams: {
         collection: defaultMediaPickerCollectionName,
       },
-      useNewUploadService: true,
     });
 
     dropzone.activate();

@@ -52,14 +52,11 @@ describe('UploadService', () => {
     jest.spyOn(context, 'uploadFile').mockReturnValue({
       subscribe() {},
     });
-
     const uploadService = UploadServiceFactory.create(
       context,
       tenantUploadParams,
       userUploadParams,
-      true,
     );
-
     const filesAddedPromise = new Promise(resolve =>
       uploadService.on('files-added', () => resolve()),
     );
@@ -85,8 +82,7 @@ describe('UploadService', () => {
         tenantUploadParams,
         {
           collection: '',
-        },
-        true,
+        }
       ),
     });
 
@@ -701,9 +697,7 @@ describe('UploadService', () => {
         {
           collection: collectionNameStub,
         },
-        true,
       );
-
       (uploadService as any).userMediaStore = config.userAuthProvider && {
         copyFileWithToken: config.copyFileWithTokenSpy,
       };
