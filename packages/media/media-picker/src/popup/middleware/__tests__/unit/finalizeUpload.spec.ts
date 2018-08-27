@@ -8,7 +8,7 @@ import {
   FinalizeUploadAction,
   FINALIZE_UPLOAD,
 } from '../../../actions/finalizeUpload';
-import { Tenant } from '../../../domain';
+import { Tenant, State } from '../../../domain';
 
 describe('finalizeUploadMiddleware', () => {
   const auth = {
@@ -42,8 +42,11 @@ describe('finalizeUploadMiddleware', () => {
     },
     uploadParams: {},
   };
-  const setup = (uploadParams: UploadParams = {}) => {
-    const store = mockStore();
+  const setup = (
+    uploadParams: UploadParams = {},
+    state: Partial<State> = {},
+  ) => {
+    const store = mockStore(state);
     const { userAuthProvider } = store.getState();
     userAuthProvider.mockImplementation(() => Promise.resolve(auth));
 
@@ -151,6 +154,24 @@ describe('finalizeUploadMiddleware', () => {
           uploadId,
         }),
       );
+    });
+  });
+
+  it('Should resolve deferred id when the source id is on the store', () => {
+    const resolver = jest.fn();
+    const rejecter = jest.fn();
+    const { fetcher, store, action } = setup(undefined, {
+      deferredIdUpfronts: {
+        'some-file-id': {
+          resolver,
+          rejecter,
+        },
+      },
+    });
+
+    return finalizeUpload(fetcher, store, action).then(action => {
+      expect(resolver).toHaveBeenCalledTimes(1);
+      expect(resolver).toBeCalledWith('some-copied-file-id');
     });
   });
 });
