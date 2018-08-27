@@ -9,10 +9,13 @@ import {
 } from '@atlaskit/analytics-next';
 import type { ViewLayer } from '../view-controller/types';
 
+export const navigationChannel = 'navigation';
+
 const getDisplayName = component =>
   component ? component.displayName || component.name : undefined;
 
-export const navigationChannel = 'navigation';
+const kebabToCamelCase = (str: string) =>
+  str.replace(/-([a-z])/gi, g => g[1].toUpperCase());
 
 export const navigationItemClicked = (
   Component: ComponentType<any>,
@@ -26,11 +29,11 @@ export const navigationItemClicked = (
         const event = createAnalyticsEvent({
           action: 'clicked',
           actionSubject: 'navigationItem',
-          actionSubjectId: props.id,
           attributes: {
             componentName,
             iconSource:
               getDisplayName(props.icon) || getDisplayName(props.before),
+            itemId: kebabToCamelCase(props.id),
             navigationItemIndex: props.index,
           },
         });

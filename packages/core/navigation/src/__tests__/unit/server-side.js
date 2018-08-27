@@ -7,7 +7,7 @@ import ReactDOMServer from 'react-dom/server';
 
 // AK-5164
 // eslint-disable-next-line
-test.skip('Navigation server side rendering', async () => {
+test('Navigation server side rendering', async () => {
   (await getExamplesFor('navigation')).forEach(examples => {
     expect(
       () =>

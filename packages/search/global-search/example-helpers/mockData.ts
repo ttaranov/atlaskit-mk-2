@@ -1,13 +1,12 @@
 import { GraphqlResponse, SearchResult } from '../src/api/PeopleSearchClient';
 import { RecentItemsResponse } from '../src/api/RecentSearchClient';
-import { QuickNavResponse, QuickNavResult } from '../src/api/ConfluenceClient';
+import { QuickNavResult } from '../src/api/ConfluenceClient';
 import {
   CrossProductSearchResponse,
   Scope,
   ConfluenceItem,
   JiraItem,
 } from '../src/api/CrossProductSearchClient';
-import { RecentPage, RecentSpace } from '../src/api/ConfluenceClient';
 
 import * as uuid from 'uuid/v4';
 
@@ -137,10 +136,6 @@ const getPastDate = () => {
   let offset = 0 - Math.round(Math.random() * 365 * 24 * 3600 * 1000);
   return getDateWithOffset(offset);
 };
-const getFutureDate = () => {
-  let offset = 100000 + Math.round(Math.random() * 10000);
-  return getDateWithOffset(offset);
-};
 
 function randomJiraIconUrl() {
   const urls = [
@@ -175,7 +170,7 @@ function randomSpaceIconUrl() {
 }
 
 export function recentData(n = 50): RecentItemsResponse {
-  const items = [];
+  const items: any = [];
 
   for (let i = 0; i < n; i++) {
     const provider = randomProvider();
@@ -269,7 +264,10 @@ export function makeCrossProductSearchData(
       title: title,
       baseUrl: '',
       url: getMockUrl(),
-      content: null,
+      content: {
+        id: uuid(),
+        type: i % 3 ? 'blogpost' : 'page',
+      },
       container: {
         title: title,
         displayUrl: getMockUrl(),
