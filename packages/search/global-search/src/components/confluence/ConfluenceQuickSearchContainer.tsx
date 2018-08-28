@@ -6,7 +6,7 @@ import {
   CrossProductSearchClient,
   Scope,
 } from '../../api/CrossProductSearchClient';
-import { Result, ConfluenceResultsMap } from '../../model/Result';
+import { Result } from '../../model/Result';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
 import ConfluenceSearchResults from './ConfluenceSearchResults';
 import { SearchScreenCounter, ScreenCounter } from '../../util/ScreenCounter';
