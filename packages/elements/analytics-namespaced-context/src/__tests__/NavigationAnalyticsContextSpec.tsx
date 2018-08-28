@@ -4,12 +4,6 @@ import { FabricChannel } from '@atlaskit/analytics-listeners';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { createDummyComponentWithAnalytics } from '../../examples/helpers';
 import { NavigationAnalyticsContext } from '../NavigationAnalyticsContext';
-import { GasPayload } from '../../../analytics-gas-types';
-
-export type ListenerFunction = (
-  event: { payload: GasPayload; context: Array<{}> },
-  channel: string,
-) => void;
 
 const NavigationComponentWithAnalytics = createDummyComponentWithAnalytics(
   FabricChannel.navigation,
