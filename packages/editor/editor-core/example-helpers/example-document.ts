@@ -30,6 +30,8 @@ export const exampleDocument = {
             type: 'file',
             id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
             collection: 'MediaServicesSample',
+            // width: 300,
+            // height:200
           },
         },
       ],

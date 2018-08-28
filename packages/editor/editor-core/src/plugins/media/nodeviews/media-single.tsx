@@ -5,7 +5,7 @@ import { EditorView } from 'prosemirror-view';
 import { MediaSingle } from '@atlaskit/editor-common';
 import { MediaNodeProps } from './media';
 import { stateKey, MediaPluginState } from '../pm-plugins/main';
-import MediaFallback from './MediaFallback';
+import MediaBase from './MediaBase';
 
 const DEFAULT_WIDTH = 250;
 const DEFAULT_HEIGHT = 200;
@@ -115,52 +115,13 @@ export default class MediaSingleNode extends Component<
       if (height === null) {
         height = stateHeight || DEFAULT_HEIGHT;
       }
-    }
-
-    console.log(`mediaSingle: w: ${width}, h: ${height}`);
-    if (!height || !width) {
-      console.log('EDITOR rendering mediaFallback because null width');
-
-      return (
-        <MediaFallback>
-          {/* {React.cloneElement(
-            this.child as ReactElement<any>,
-            {
-              cardDimensions: {
-                width: '100%',
-                height: '100%',
-              },
-              isMediaSingle: false,
-              progress,
-              onExternalImageLoaded: this.onExternalImageLoaded,
-            } as MediaNodeProps,
-          )} */}
-
-          {this.child}
-        </MediaFallback>
-      );
-      // return (
-      //   <MediaFallback
-      //     layout={layout}
-      //     width={width}
-      //     height={height}
-      //     containerWidth={this.props.width}
-      //     isLoading={!width}
-      //   >
-      //     {React.cloneElement(
-      //       this.child as ReactElement<any>,
-      //       {
-      //         cardDimensions: {
-      //           width: '100%',
-      //           height: '100%',
-      //         },
-      //         isMediaSingle: true,
-      //         progress,
-      //         onExternalImageLoaded: this.onExternalImageLoaded,
-      //       } as MediaNodeProps,
-      //     )}
-      //   </MediaFallback>
-      // );
+    } else {
+      if (height === null || width === null) {
+        console.log('height or width is NULL');
+        return <MediaBase> {this.child} </MediaBase>;
+      } else {
+        console.log('not null height or width');
+      }
     }
 
     return (

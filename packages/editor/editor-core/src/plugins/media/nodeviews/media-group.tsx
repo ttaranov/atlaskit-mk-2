@@ -1,7 +1,6 @@
 import * as assert from 'assert';
 import * as React from 'react';
 import { Component } from 'react';
-import styled from 'styled-components';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 
@@ -11,7 +10,7 @@ import {
   MediaPluginState,
   stateKey as mediaStateKey,
 } from '../pm-plugins/main';
-import MediaFallback from './MediaFallback';
+import MediaBase from './MediaBase';
 
 export interface MediaGroupNodeProps {
   view: EditorView;
@@ -22,14 +21,6 @@ export interface MediaGroupNodeState {
   animate: boolean;
   offset: number;
 }
-
-// Need `padding-left` override for media item drop-shadow
-// const Wrapper = styled.div`
-//   margin-bottom: 8px;
-//   &&& ul {
-//     padding: 0;
-//   }
-// `;
 
 export default class MediaGroupNode extends Component<
   MediaGroupNodeProps,
@@ -104,14 +95,14 @@ export default class MediaGroupNode extends Component<
   render() {
     const { animate, offset } = this.state;
     return (
-      <MediaFallback
+      <MediaBase
         animate={animate}
         offset={offset}
         onSize={this.handleSize}
         onScroll={this.handleScroll}
       >
         {this.props.children}
-      </MediaFallback>
+      </MediaBase>
     );
   }
 

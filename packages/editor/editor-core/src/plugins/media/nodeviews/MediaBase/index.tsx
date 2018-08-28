@@ -18,7 +18,7 @@ const Wrapper = styled.div`
   }
 `;
 
-export default class MediaFallback extends Component<Props, {}> {
+export default class MediaBase extends Component<Props, {}> {
   constructor(props) {
     super(props);
   }
@@ -36,20 +36,6 @@ export default class MediaFallback extends Component<Props, {}> {
           {this.props.children}
         </FilmstripView>
       </Wrapper>
-
-      // <Wrapper
-      //   layout={layout}
-      //   width={width}
-      //   height={height}
-      //   containerWidth={containerWidth}
-      //   className={classnames('media-single', layout, className, {
-      //     'is-loading': isLoading,
-      //     'media-wrapped': layout === 'wrap-left' || layout === 'wrap-right',
-      //   })}
-      // >
-      //   <h1>Media Fallback</h1>
-      //   {React.Children.only(children)}
-      // </Wrapper>
     );
   }
 }
