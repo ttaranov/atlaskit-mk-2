@@ -26,6 +26,7 @@
     "@atlaskit/theme": "^6.0.1",
     "prop-types": "^15.5.10",
     "raf-schd": "^2.1.0",
+    "react-focus-lock": "^1.11.3",
     "react-scrolllock": "^3.0.1",
     "react-transition-group": "^2.2.1"
   },
