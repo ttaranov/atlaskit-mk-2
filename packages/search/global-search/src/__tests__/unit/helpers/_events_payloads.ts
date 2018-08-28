@@ -239,3 +239,24 @@ export const getResultSelectedEvent = ({
   },
   ...COMMON_EVENT_DATA,
 });
+
+export const getExperimentExposureEvent = ({
+  searchSessionId,
+  experimentId,
+}) => ({
+  payload: {
+    action: 'exposed',
+    actionSubject: 'quickSearchExperiment',
+    actionSubjectId: '',
+    eventType: 'operational',
+    source: 'globalSearchDrawer',
+    attributes: {
+      searchSessionId: searchSessionId,
+      experimentId: experimentId,
+      packageName: 'global-search',
+      packageVersion: '0.0.0',
+      componentName: 'GlobalQuickSearch',
+    },
+  },
+  ...COMMON_EVENT_DATA,
+});

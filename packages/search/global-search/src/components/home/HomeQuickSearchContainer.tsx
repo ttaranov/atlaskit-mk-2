@@ -96,12 +96,12 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
 
     if (this.state.latestSearchQuery === query) {
       this.setState({
-        jiraResults: results.get(Scope.JiraIssue) || [],
-        confluenceResults: results.get(Scope.ConfluencePageBlog) || [],
+        jiraResults: results.results.get(Scope.JiraIssue) || [],
+        confluenceResults: results.results.get(Scope.ConfluencePageBlog) || [],
       });
     }
 
-    return results;
+    return results.results;
   }
 
   async searchPeople(query: string): Promise<Result[]> {

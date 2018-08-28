@@ -60,9 +60,9 @@ describe('CrossProductSearchClient', () => {
       const result = await searchClient.search('query', 'test_uuid', [
         Scope.ConfluencePageBlog,
       ]);
-      expect(result.get(Scope.ConfluencePageBlog)).toHaveLength(1);
+      expect(result.results.get(Scope.ConfluencePageBlog)).toHaveLength(1);
 
-      const item = result.get(
+      const item = result.results.get(
         Scope.ConfluencePageBlog,
       )![0] as ConfluenceObjectResult;
       expect(item.resultId).toEqual('123');
@@ -79,6 +79,7 @@ describe('CrossProductSearchClient', () => {
         scopes: [
           {
             id: 'confluence.space' as Scope,
+            experimentId: '123',
             results: [
               {
                 title: 'abc',
@@ -104,9 +105,12 @@ describe('CrossProductSearchClient', () => {
       const result = await searchClient.search('query', 'test_uuid', [
         Scope.ConfluenceSpace,
       ]);
-      expect(result.get(Scope.ConfluenceSpace)).toHaveLength(1);
+      expect(result.results.get(Scope.ConfluenceSpace)).toHaveLength(1);
+      expect(result.experimentId).toBe('123');
 
-      const item = result.get(Scope.ConfluenceSpace)![0] as ContainerResult;
+      const item = result.results.get(
+        Scope.ConfluenceSpace,
+      )![0] as ContainerResult;
       expect(item.resultId).toEqual('space-key');
       expect(item.avatarUrl).toEqual('https://baseUrl/wiki/spaceIconPath');
       expect(item.name).toEqual('containerTitle');
@@ -132,6 +136,7 @@ describe('CrossProductSearchClient', () => {
         scopes: [
           {
             id: 'jira.issue' as Scope,
+            experimentId: '123',
             results: [
               {
                 key: 'key-1',
@@ -153,9 +158,10 @@ describe('CrossProductSearchClient', () => {
       const result = await searchClient.search('query', 'test_uuid', [
         Scope.JiraIssue,
       ]);
-      expect(result.get(Scope.JiraIssue)).toHaveLength(1);
+      expect(result.results.get(Scope.JiraIssue)).toHaveLength(1);
+      expect(result.experimentId).toBe('123');
 
-      const item = result.get(Scope.JiraIssue)![0] as JiraObjectResult;
+      const item = result.results.get(Scope.JiraIssue)![0] as JiraObjectResult;
       expect(item.name).toEqual('summary');
       expect(item.avatarUrl).toEqual('iconUrl');
       expect(item.href).toEqual('/browse/key-1');
@@ -171,6 +177,7 @@ describe('CrossProductSearchClient', () => {
       scopes: [
         {
           id: 'jira.issue' as Scope,
+          experimentId: '123',
           results: [
             {
               key: 'key-1',
@@ -199,8 +206,8 @@ describe('CrossProductSearchClient', () => {
       Scope.ConfluenceSpace,
     ]);
 
-    expect(result.get(Scope.JiraIssue)).toHaveLength(1);
-    expect(result.get(Scope.ConfluencePageBlog)).toHaveLength(0);
+    expect(result.results.get(Scope.JiraIssue)).toHaveLength(1);
+    expect(result.results.get(Scope.ConfluencePageBlog)).toHaveLength(0);
   });
 
   it('should send the right body', async () => {
