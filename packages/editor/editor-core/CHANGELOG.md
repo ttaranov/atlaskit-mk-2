@@ -1,5 +1,11 @@
 # @atlaskit/editor-core
 
+## 78.0.2
+- [patch] ED-5172 pressing enter after media single in list no longer deletes list [74824f8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/74824f8)
+
+## 78.0.1
+- [patch] "update dependencies" [9ab9471](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ab9471)
+
 ## 78.0.0
 - [major] Remove new upload service feature flag (useNewUploadService). Now new upload service will be used by default. [911a570](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/911a570)
 - [patch] Updated dependencies [911a570](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/911a570)

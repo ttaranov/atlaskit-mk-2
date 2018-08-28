@@ -15,7 +15,7 @@ const getDisplayName = component =>
   component ? component.displayName || component.name : undefined;
 
 const kebabToCamelCase = (str: string) =>
-  str.replace(/-([a-z])/gi, g => g[1].toUpperCase());
+  `${str}`.replace(/-([a-z])/gi, g => g[1].toUpperCase());
 
 export const navigationItemClicked = (
   Component: ComponentType<any>,

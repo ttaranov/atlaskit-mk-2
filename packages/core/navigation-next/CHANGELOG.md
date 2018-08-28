@@ -1,5 +1,8 @@
 # @atlaskit/navigation-next
 
+## 3.6.5
+- [patch] Update navigation item analytics to gracefully handle invalid or missing ID prop [c3e29af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3e29af)
+
 ## 3.6.4
 - [patch] Remove BackItem extra margin [bc2d997](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bc2d997)
 

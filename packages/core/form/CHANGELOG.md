@@ -1,5 +1,8 @@
 # @atlaskit/form
 
+## 3.1.8
+- [patch] Fix Form submit handlers being called when no onSubmit prop is passed [1086a6b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1086a6b)
+
 ## 3.1.6
 - [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
   - @atlaskit/theme@6.0.0
