@@ -67,6 +67,11 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
         return true;
       }
 
+      const nodeType = $from.node().type;
+      if (nodeType !== decisionItem && nodeType !== taskItem) {
+        return false;
+      }
+
       dispatch(splitListAtSelection(tr, schema));
 
       return true;
