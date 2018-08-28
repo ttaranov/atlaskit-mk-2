@@ -11,7 +11,7 @@ export default class FabricElementsListener extends React.Component<
   ListenerProps
 > {
   handleEvent = (event: event) => {
-    handleEvent(event, ELEMENTS_TAG, this.props.client, this.props.logger);
+    handleEvent(event, ELEMENTS_TAG, this.props.logger, this.props.client);
   };
 
   render() {

@@ -16,6 +16,7 @@ import {
 import {
   firePreQueryShownEvent,
   firePostQueryShownEvent,
+  fireExperimentExposureEvent,
 } from '../../util/analytics-event-helper';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { CreateAnalyticsEventFn } from '../analytics/types';
@@ -88,7 +89,11 @@ export class QuickSearchContainer extends React.Component<Props, State> {
     });
 
     try {
-      const { results, timings } = await this.props.getSearchResults(
+      const {
+        results,
+        timings,
+        experimentId,
+      } = await this.props.getSearchResults(
         query,
         this.state.searchSessionId,
         startTime,
@@ -112,6 +117,12 @@ export class QuickSearchContainer extends React.Component<Props, State> {
               this.state.searchSessionId,
               this.state.latestSearchQuery,
             );
+            if (experimentId) {
+              this.fireExperimentExposureEvent(
+                experimentId,
+                this.state.searchSessionId,
+              );
+            }
           },
         );
       }
@@ -121,6 +132,18 @@ export class QuickSearchContainer extends React.Component<Props, State> {
         isLoading: false,
         keepPreQueryState: false,
       });
+    }
+  };
+
+  fireExperimentExposureEvent = (experimentId, searchSessionId) => {
+    const { createAnalyticsEvent } = this.props;
+
+    if (createAnalyticsEvent) {
+      fireExperimentExposureEvent(
+        experimentId,
+        searchSessionId,
+        createAnalyticsEvent,
+      );
     }
   };
 

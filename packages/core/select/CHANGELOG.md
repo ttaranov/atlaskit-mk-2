@@ -1,5 +1,8 @@
 # @atlaskit/select
 
+## 5.0.13
+- [patch] Using the latest popper to avoid recursive setState calls. [9dceca9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9dceca9)
+
 ## 5.0.11
 - [patch] Updating datetime-picker and select styles [981b96c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/981b96c)
 

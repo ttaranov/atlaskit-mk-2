@@ -1,5 +1,20 @@
 # @atlaskit/navigation-next
 
+## 3.6.6
+- [patch] Updated dependencies [90ba6bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/90ba6bd)
+  - @atlaskit/global-navigation@4.2.2
+  - @atlaskit/analytics-namespaced-context@2.1.2
+  - @atlaskit/analytics-listeners@4.0.0
+
+## 3.6.5
+- [patch] Update navigation item analytics to gracefully handle invalid or missing ID prop [c3e29af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3e29af)
+
+## 3.6.4
+- [patch] Remove BackItem extra margin [bc2d997](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bc2d997)
+
+## 3.6.3
+- [patch] Update navigation item click analytics to use an attribute identifier rather than action subject ID. Also convert kebab-case ids to camelCase. [5efaeaf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5efaeaf)
+
 ## 3.6.2
 - [patch] add better guards around browser globals for SSR [a3db793](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a3db793)
 

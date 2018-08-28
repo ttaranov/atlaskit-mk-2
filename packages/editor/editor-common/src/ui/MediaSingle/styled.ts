@@ -41,6 +41,22 @@ function calcWidth(
   }
 }
 
+function calcMaxWidth(
+  layout: MediaSingleLayout,
+  width: number,
+  containerWidth: number,
+) {
+  switch (layout) {
+    case 'wide':
+    case 'full-width':
+      return containerWidth < akEditorFullPageMaxWidth
+        ? '100%'
+        : `${containerWidth}px`;
+    default:
+      return '100%';
+  }
+}
+
 function calcMargin(layout: MediaSingleLayout): string {
   switch (layout) {
     case 'wrap-right':
@@ -69,9 +85,7 @@ const MediaSingleDimensionHelper = ({
   containerWidth,
 }: WrapperProps) => css`
   width: ${calcWidth(layout, width, containerWidth)};
-  max-width: ${containerWidth < akEditorFullPageMaxWidth
-    ? '100%'
-    : `${containerWidth}px`};
+  max-width: ${calcMaxWidth(layout, width, containerWidth)};
   float: ${float(layout)};
   margin: ${calcMargin(layout)};
   &::after {

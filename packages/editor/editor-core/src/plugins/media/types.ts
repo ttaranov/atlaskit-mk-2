@@ -43,9 +43,7 @@ export interface MediaStateManager {
   destroy(): void;
 }
 
-export interface FeatureFlags {
-  useNewUploadService?: boolean;
-}
+export interface FeatureFlags {}
 
 export interface MediaProvider {
   uploadParams?: UploadParams;

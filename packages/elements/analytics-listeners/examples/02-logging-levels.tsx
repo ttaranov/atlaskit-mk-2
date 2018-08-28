@@ -42,7 +42,7 @@ class Example extends React.Component {
     const logLevel = logLevels[this.state.loggingLevelIdx];
     return (
       <FabricAnalyticsListeners
-        client={Promise.resolve(analyticsWebClientMock)}
+        client={analyticsWebClientMock}
         logLevel={logLevel.level}
       >
         <div>

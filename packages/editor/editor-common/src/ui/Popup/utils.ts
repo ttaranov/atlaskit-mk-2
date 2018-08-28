@@ -203,25 +203,14 @@ export function calculatePosition({
         offset[0],
     );
   } else if (horizontalPlacement === 'center') {
-    /**
-     * `target.parentElement` can be `null` if we call this function after removing
-     * the DOM. Which shouldn't happen ideally but this guard will protect the code
-     * from failing.
-     */
-    if (target.parentElement) {
-      const parentWidth = target.parentElement.clientWidth;
-      const parentLeft = target.parentElement.getBoundingClientRect().left;
-      const newTargetWidth = target.clientWidth || targetWidth;
-      position.left = Math.ceil(
-        parentLeft -
-          popupOffsetParentLeft +
-          (newTargetWidth > parentWidth ? newTargetWidth : parentWidth) / 2 -
-          popup.clientWidth / 2 +
-          offset[0],
-      );
-    } else {
-      position.left = 0;
-    }
+    position.left = Math.ceil(
+      targetLeft -
+        popupOffsetParentLeft +
+        (isBody(popupOffsetParent) ? 0 : popupOffsetParent.scrollLeft) +
+        offset[0] +
+        targetWidth / 2 -
+        popup.clientWidth / 2,
+    );
   } else {
     position.right = Math.ceil(
       popupOffsetParentRight -

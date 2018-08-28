@@ -4,10 +4,14 @@ import { getText } from '../../utils';
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6;
 
 export default function Heading(
-  props: { level: HeadingLevel; content: any[] } & React.Props<any>,
+  props: {
+    level: HeadingLevel;
+    content: any[];
+    disableHeadingIDs?: boolean;
+  } & React.Props<any>,
 ) {
   const { level, children, content } = props;
-  const headerId = getHeaderId(content) || '';
+  const headerId = !props.disableHeadingIDs ? getHeaderId(content) : undefined;
 
   switch (level) {
     case 1:

@@ -139,16 +139,19 @@ export class MockProvider extends AbstractConversationResource {
 
     dispatch({ type: ADD_COMMENT_REQUEST, payload: result });
 
-    setTimeout(() => {
-      const errResult = {
-        ...result,
-        error: new HttpError(responseCode, RESPONSE_MESSAGES[responseCode]),
-      };
-      const type =
-        responseCode >= 400 ? ADD_COMMENT_ERROR : ADD_COMMENT_SUCCESS;
-      const payload = responseCode >= 400 ? errResult : result;
-      dispatch({ type, payload });
-    }, 1000);
+    await new Promise(resolve => {
+      setTimeout(() => {
+        const errResult = {
+          ...result,
+          error: new HttpError(responseCode, RESPONSE_MESSAGES[responseCode]),
+        };
+        const type =
+          responseCode >= 400 ? ADD_COMMENT_ERROR : ADD_COMMENT_SUCCESS;
+        const payload = responseCode >= 400 ? errResult : result;
+        dispatch({ type, payload });
+        resolve();
+      }, 1000);
+    });
 
     return result as Comment;
   }

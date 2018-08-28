@@ -1,5 +1,14 @@
 # @atlaskit/media-picker
 
+## 13.0.0
+- [major] Remove new upload service feature flag (useNewUploadService). Now new upload service will be used by default. [911a570](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/911a570)
+- [patch] Updated dependencies [911a570](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/911a570)
+  - @atlaskit/media-test-helpers@17.0.0
+  - @atlaskit/media-store@6.0.1
+  - @atlaskit/media-editor@11.0.1
+  - @atlaskit/media-core@23.0.2
+  - @atlaskit/media-card@32.0.6
+
 ## 12.1.2
 - [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
   - @atlaskit/media-card@32.0.5

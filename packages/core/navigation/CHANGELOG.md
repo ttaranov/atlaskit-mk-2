@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 33.1.7
+- [patch] Make navigation SSR-friendly [59f7cb4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59f7cb4)
+
 ## 33.1.5
 - [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
   - @atlaskit/theme@6.0.0
