@@ -3,6 +3,7 @@ import InfoIcon from '@atlaskit/icon/glyph/editor/info';
 import { panel } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { createPlugin } from './pm-plugins/main';
+import keymap from './pm-plugins/keymaps';
 import { getToolbarConfig } from './toolbar';
 
 const panelPlugin: EditorPlugin = {
@@ -11,7 +12,13 @@ const panelPlugin: EditorPlugin = {
   },
 
   pmPlugins() {
-    return [{ name: 'panel', plugin: createPlugin }];
+    return [
+      { name: 'panel', plugin: createPlugin },
+      {
+        name: 'panelKeyMap',
+        plugin: ({ schema }) => keymap(schema),
+      },
+    ];
   },
 
   pluginsOptions: {
