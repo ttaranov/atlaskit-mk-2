@@ -51,6 +51,7 @@ export default class Radio extends Component<RadioBasePropTypes, State> {
       isChecked,
       name,
       onChange,
+      onInvalid,
       value,
       ...props
     } = this.props;
@@ -74,6 +75,7 @@ export default class Radio extends Component<RadioBasePropTypes, State> {
           isRequired={isRequired}
           isActive={isActive}
           onChange={onChange}
+          onInvalid={onInvalid}
           onBlur={this.onBlur}
           onFocus={this.onFocus}
           name={name}

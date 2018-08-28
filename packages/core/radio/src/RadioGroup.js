@@ -6,7 +6,7 @@ import {
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import Radio from './Radio';
-import type { ItemPropType } from './types';
+import type { OptionsPropType, OptionPropType } from './types';
 import {
   name as packageName,
   version as packageVersion,
@@ -16,7 +16,8 @@ import {
 export type RadioGroupProps = {
   defaultSelectedValue?: string | number | null,
   isRequired?: boolean,
-  items: Array<ItemPropType>,
+  options: OptionsPropType,
+  onInvalid?: (event: SyntheticEvent<*>) => void,
   onChange: (event: SyntheticEvent<*>) => void,
   selectedValue?: string | number | null,
 };
@@ -28,7 +29,7 @@ type State = { selectedValue?: string | number | null };
 class RadioGroup extends Component<RadioGroupProps, State> {
   static defaultProps = {
     onChange: () => {},
-    items: [],
+    options: [],
   };
 
   constructor(props: RadioGroupProps) {
@@ -40,8 +41,6 @@ class RadioGroup extends Component<RadioGroupProps, State> {
           : this.props.defaultSelectedValue,
     };
   }
-
-  items: RadioElementArray = [];
 
   getProp = (key: string) => {
     return this.props[key] ? this.props[key] : this.state[key];
@@ -56,32 +55,33 @@ class RadioGroup extends Component<RadioGroupProps, State> {
     }
   };
 
-  buildItems = () => {
-    const { items, isRequired } = this.props;
+  buildOptions = () => {
+    const { options, isRequired, onInvalid } = this.props;
     const selectedValue = this.getProp('selectedValue');
-    if (!items.length) return null;
+    if (!options.length) return null;
 
-    return (items.map((item: ItemPropType, index: number) => {
-      let itemProps = { ...item };
-      if (item.value === selectedValue) {
-        itemProps = { ...item, isChecked: true };
+    return (options.map((option: OptionPropType, index: number) => {
+      let optionProps = { ...option };
+      if (option.value === selectedValue) {
+        optionProps = { ...option, isChecked: true };
       }
       return (
         <Radio
           key={index}
           onChange={this.onChange}
-          {...itemProps}
+          {...optionProps}
+          onInvalid={onInvalid}
           isRequired={isRequired}
         >
-          {item.label}
+          {option.label}
         </Radio>
       );
     }): RadioElementArray);
   };
 
   render() {
-    const items = this.buildItems();
-    return <Fragment>{items}</Fragment>;
+    const options = this.buildOptions();
+    return <Fragment>{options}</Fragment>;
   }
 }
 
