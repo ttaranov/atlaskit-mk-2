@@ -5,6 +5,7 @@
   "license": "SEE LICENSE IN LICENSE",
   "main": "es5/index.js",
   "module": "dist/esm/index.js",
+  "sideEffects": false,
   "files": [
     "dist",
     "glyph",

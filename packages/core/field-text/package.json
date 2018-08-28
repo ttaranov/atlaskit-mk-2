@@ -8,6 +8,7 @@
   "atlaskit:src": "src/index.js",
   "atlaskit:designLink": "https://atlassian.design/guidelines/product/components/text-field",
   "types": "src/index.d.ts",
+  "sideEffects": false,
   "files": [
     "dist",
     "src/index.d.ts"
