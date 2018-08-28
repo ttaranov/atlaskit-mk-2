@@ -19,6 +19,8 @@ import {
   fireEvent,
   actionSubjectIds,
   AnalyticsEvent,
+  eventTypes,
+  trackEventActions,
 } from '../internal/analytics';
 import { SharedProps } from './types';
 
@@ -129,14 +131,12 @@ export default class Comment extends React.Component<Props, State> {
   };
 
   private onReply = (value: any, analyticsEvent: AnalyticsEvent) => {
-    const { containerId, comment: parentComment } = this.props;
+    const { containerId } = this.props;
 
-    fireEvent(
-      analyticsEvent,
-      actionSubjectIds.replyButton,
+    fireEvent(analyticsEvent, {
+      actionSubjectId: actionSubjectIds.replyButton,
       containerId,
-      (parentComment.nestedDepth || 0) + 1,
-    );
+    });
 
     this.setState({
       isReplying: true,
@@ -150,16 +150,27 @@ export default class Comment extends React.Component<Props, State> {
       sendAnalyticsEvent,
     } = this.props;
 
-    sendAnalyticsEvent(
-      actionSubjectIds.saveButton,
-      (parentComment.nestedDepth || 0) + 1,
-    );
+    sendAnalyticsEvent({
+      actionSubjectId: actionSubjectIds.saveButton,
+    });
 
     this.dispatch(
       'onAddComment',
       conversationId,
       parentComment.commentId,
       value,
+      undefined,
+      id => {
+        sendAnalyticsEvent({
+          actionSubjectId: id,
+          action: trackEventActions.created,
+          eventType: eventTypes.TRACK,
+          actionSubject: 'comment',
+          attributes: {
+            nestedDepth: (parentComment.nestedDepth || 0) + 1,
+          },
+        });
+      },
     );
 
     this.setState({
@@ -168,12 +179,10 @@ export default class Comment extends React.Component<Props, State> {
   };
 
   private onCancelReply = () => {
-    const { comment: parentComment } = this.props;
+    this.props.sendAnalyticsEvent({
+      actionSubjectId: actionSubjectIds.cancelButton,
+    });
 
-    this.props.sendAnalyticsEvent(
-      actionSubjectIds.cancelButton,
-      (parentComment.nestedDepth || 0) + 1,
-    );
     this.setState({
       isReplying: false,
     });
@@ -184,30 +193,34 @@ export default class Comment extends React.Component<Props, State> {
       comment: { nestedDepth, commentId },
       containerId,
       conversationId,
+      sendAnalyticsEvent,
     } = this.props;
 
-    fireEvent(
-      analyticsEvent,
-      actionSubjectIds.deleteButton,
+    fireEvent(analyticsEvent, {
+      actionSubjectId: actionSubjectIds.deleteButton,
       containerId,
-      nestedDepth,
-    );
+    });
 
-    this.dispatch('onDeleteComment', conversationId, commentId);
+    this.dispatch('onDeleteComment', conversationId, commentId, id => {
+      sendAnalyticsEvent({
+        actionSubjectId: id,
+        action: trackEventActions.deleted,
+        eventType: eventTypes.TRACK,
+        actionSubject: 'comment',
+        attributes: {
+          nestedDepth: nestedDepth || 0,
+        },
+      });
+    });
   };
 
   private onEdit = (value: any, analyticsEvent: AnalyticsEvent) => {
-    const {
-      comment: { nestedDepth },
-      containerId,
-    } = this.props;
+    const { containerId } = this.props;
 
-    fireEvent(
-      analyticsEvent,
-      actionSubjectIds.editButton,
+    fireEvent(analyticsEvent, {
+      actionSubjectId: actionSubjectIds.editButton,
       containerId,
-      nestedDepth,
-    );
+    });
 
     this.setState({
       isEditing: true,
@@ -217,9 +230,27 @@ export default class Comment extends React.Component<Props, State> {
   private onSaveEdit = async (value: any) => {
     const { conversationId, comment, sendAnalyticsEvent } = this.props;
 
-    sendAnalyticsEvent(actionSubjectIds.saveButton, comment.nestedDepth);
+    sendAnalyticsEvent({
+      actionSubjectId: actionSubjectIds.saveButton,
+    });
 
-    this.dispatch('onUpdateComment', conversationId, comment.commentId, value);
+    this.dispatch(
+      'onUpdateComment',
+      conversationId,
+      comment.commentId,
+      value,
+      id => {
+        sendAnalyticsEvent({
+          actionSubjectId: id,
+          action: trackEventActions.updated,
+          eventType: eventTypes.TRACK,
+          actionSubject: 'comment',
+          attributes: {
+            nestedDepth: comment.nestedDepth || 0,
+          },
+        });
+      },
+    );
 
     this.setState({
       isEditing: false,
@@ -227,10 +258,9 @@ export default class Comment extends React.Component<Props, State> {
   };
 
   private onCancelEdit = () => {
-    this.props.sendAnalyticsEvent(
-      actionSubjectIds.cancelButton,
-      this.props.comment.nestedDepth,
-    );
+    this.props.sendAnalyticsEvent({
+      actionSubjectId: actionSubjectIds.cancelButton,
+    });
 
     this.setState({
       isEditing: false,
@@ -238,24 +268,17 @@ export default class Comment extends React.Component<Props, State> {
   };
 
   private onRequestCancel = (value: any, analyticsEvent: AnalyticsEvent) => {
-    const {
-      comment,
-      onCancel,
-      containerId,
-      comment: { nestedDepth },
-    } = this.props;
+    const { comment, onCancel, containerId } = this.props;
 
     // Invoke optional onCancel hook
     if (onCancel) {
       onCancel();
     }
 
-    fireEvent(
-      analyticsEvent,
-      actionSubjectIds.cancelFailedRequestButton,
+    fireEvent(analyticsEvent, {
+      actionSubjectId: actionSubjectIds.cancelFailedRequestButton,
       containerId,
-      nestedDepth,
-    );
+    });
 
     this.dispatch('onRevertComment', comment.conversationId, comment.commentId);
   };
@@ -265,19 +288,17 @@ export default class Comment extends React.Component<Props, State> {
     const {
       containerId,
       onRetry,
-      comment: { nestedDepth, localId, isPlaceholder },
+      comment: { localId, isPlaceholder },
     } = this.props;
 
     if (onRetry && isPlaceholder) {
       return onRetry(localId);
     }
 
-    fireEvent(
-      analyticsEvent,
-      actionSubjectIds.retryFailedRequestButton,
+    fireEvent(analyticsEvent, {
+      actionSubjectId: actionSubjectIds.retryFailedRequestButton,
       containerId,
-      nestedDepth,
-    );
+    });
 
     if (!lastDispatch) {
       return;
