@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component, ReactElement } from 'react';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import { MediaSingle } from '@atlaskit/editor-common';
+import { MediaSingle, MediaFallback } from '@atlaskit/editor-common';
 import { MediaNodeProps } from './media';
 import { stateKey, MediaPluginState } from '../pm-plugins/main';
 
@@ -114,6 +114,33 @@ export default class MediaSingleNode extends Component<
       if (height === null) {
         height = stateHeight || DEFAULT_HEIGHT;
       }
+    }
+
+    console.log(`mediaSingle: w: ${width}, h: ${height}`);
+    if (!height || !width) {
+      console.log('EDITOR null width');
+      return (
+        <MediaFallback
+          layout={layout}
+          width={width}
+          height={height}
+          containerWidth={this.props.width}
+          isLoading={!width}
+        >
+          {React.cloneElement(
+            this.child as ReactElement<any>,
+            {
+              cardDimensions: {
+                width: '100%',
+                height: '100%',
+              },
+              isMediaSingle: true,
+              progress,
+              onExternalImageLoaded: this.onExternalImageLoaded,
+            } as MediaNodeProps,
+          )}
+        </MediaFallback>
+      );
     }
 
     return (
