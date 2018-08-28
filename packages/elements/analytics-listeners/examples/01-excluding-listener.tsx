@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { mount } from 'enzyme';
 import { AnalyticsContext } from '@atlaskit/analytics-next';
 import FabricAnalyticsListeners, { FabricChannel } from '../src';
 import {
@@ -27,10 +26,10 @@ const analyticsWebClientMock = {
   },
 };
 
-export default function Example() {
+function Example() {
   return (
     <FabricAnalyticsListeners
-      client={Promise.resolve(analyticsWebClientMock)}
+      client={analyticsWebClientMock}
       excludedChannels={[FabricChannel.atlaskit]}
     >
       <div>
@@ -54,3 +53,11 @@ export default function Example() {
     </FabricAnalyticsListeners>
   );
 }
+
+Object.assign(Example, {
+  meta: {
+    noListener: true,
+  },
+});
+
+export default Example;

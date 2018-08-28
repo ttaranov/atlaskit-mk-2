@@ -15,11 +15,11 @@ export interface Props {
   isError: boolean;
   isLoading: boolean;
   renderNoResult: () => JSX.Element;
-  renderAdvancedSearchLink: () => JSX.Element;
+  renderNoRecentActivity: () => JSX.Element;
   retrySearch();
   getPreQueryGroups: () => ResultsGroup[];
   getPostQueryGroups: () => ResultsGroup[];
-  renderAdvancedSearchGroup: () => JSX.Element;
+  renderAdvancedSearchGroup: (analyticsData?) => JSX.Element;
   keepPreQueryState: boolean;
   searchSessionId: string;
   preQueryScreenCounter?: ScreenCounter;
@@ -60,7 +60,7 @@ export default class SearchResults extends React.Component<Props> {
       query,
       searchSessionId,
       preQueryScreenCounter,
-      renderAdvancedSearchLink,
+      renderNoRecentActivity,
       referralContextIdentifiers,
       renderAdvancedSearchGroup,
       getPreQueryGroups,
@@ -68,7 +68,7 @@ export default class SearchResults extends React.Component<Props> {
     return (
       <PreQueryState
         resultsGroups={getPreQueryGroups()}
-        renderAdvancedSearchLink={renderAdvancedSearchLink}
+        renderNoRecentActivity={renderNoRecentActivity}
         query={query}
         searchSessionId={searchSessionId}
         screenCounter={preQueryScreenCounter}

@@ -299,9 +299,9 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
 
   ${columnLayoutSharedStyle};
   & [data-layout-type] {
-    margin: ${akGridSizeUnitless * 3}px 0;
+    margin-top: ${akGridSizeUnitless * 2.5}px;
     & > div + div {
-      padding-left: ${akGridSizeUnitless * 3}px;
+      margin-left: ${akGridSizeUnitless * 4}px;
     }
   }
 `;

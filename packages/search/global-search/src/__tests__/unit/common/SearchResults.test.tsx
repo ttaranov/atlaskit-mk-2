@@ -16,9 +16,11 @@ const defaultProps = {
   retrySearch: () => {},
   keepPreQueryState: false,
   searchSessionId: 'session_id',
-  renderAdvancedSearchLink: () => <div id="advanced-search-link" />,
+  renderNoRecentActivity: () => <div id="advanced-search-link" />,
   renderNoResult: () => <div id="no-result" />,
-  renderAdvancedSearchGroup: () => <div id="advanced-search-group" />,
+  renderAdvancedSearchGroup: (analyticsData?) => (
+    <div id="advanced-search-group" />
+  ),
   getPreQueryGroups: () => [],
   getPostQueryGroups: () => [],
 };
@@ -82,7 +84,7 @@ it('should render pre query state when there is no query entered', () => {
   expect(preQueryState.length).toBe(1);
   expect(preQueryState.props()).toMatchObject({
     query: '',
-    renderAdvancedSearchLink: defaultProps.renderAdvancedSearchLink,
+    renderNoRecentActivity: defaultProps.renderNoRecentActivity,
     searchSessionId: defaultProps.searchSessionId,
     renderAdvancedSearchGroup: defaultProps.renderAdvancedSearchGroup,
     resultsGroups: mockResultsGroup,

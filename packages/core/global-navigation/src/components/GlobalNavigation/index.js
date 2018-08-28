@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component, Fragment } from 'react';
+import type { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 import { GlobalNav } from '@atlaskit/navigation-next';
 import Drawer from '@atlaskit/drawer';
@@ -10,6 +11,8 @@ import {
 } from '../../../package.json';
 import generateDefaultConfig from '../../config/default-config';
 import generateProductConfig from '../../config/product-config';
+import ViewTracker from '../ViewTracker';
+import { NAVIGATION_CHANNEL } from '../../constants';
 
 import type { GlobalNavItemData, NavItem } from '../../config/types';
 import type { GlobalNavigationProps, DrawerName } from './types';
@@ -38,6 +41,13 @@ const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
 });
 
 const noop = () => {};
+
+const analyticsNameMap = {
+  search: 'quickSearchDrawer',
+  notification: 'notificationsDrawer',
+  create: 'createDrawer',
+  starred: 'starDrawer',
+};
 
 type GlobalNavigationState = {
   [any]: boolean, // Need an indexer property to appease flow for is${capitalisedDrawerName}Open
@@ -149,12 +159,21 @@ export default class GlobalNavigation
     }
   };
 
-  closeDrawer = (drawerName: DrawerName) => () => {
+  closeDrawer = (drawerName: DrawerName) => (
+    event: SyntheticMouseEvent<*> | SyntheticKeyboardEvent<*>,
+    analyticsEvent: UIAnalyticsEvent,
+  ) => {
     const capitalisedDrawerName = this.getCapitalisedDrawerName(drawerName);
     const onCloseCallback =
       typeof this.props[`on${capitalisedDrawerName}Close`] === 'function'
         ? this.props[`on${capitalisedDrawerName}Close`]
         : noop;
+
+    analyticsEvent
+      .update({
+        actionSubjectId: analyticsNameMap[drawerName],
+      })
+      .fire(NAVIGATION_CHANNEL);
 
     // Update the state only if it's a controlled drawer.
     // componentDidMount takes care of the uncontrolled drawers
@@ -228,6 +247,7 @@ export default class GlobalNavigation
                 onClose={this.closeDrawer(drawer)}
                 width="wide"
               >
+                <ViewTracker name={analyticsNameMap[drawer]} />
                 <DrawerContents />
               </Drawer>
             );

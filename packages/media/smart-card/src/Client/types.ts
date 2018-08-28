@@ -11,7 +11,7 @@ export type ObjectStatus =
   | 'resolving'
   | 'not-found'
   | 'resolved'
-  | 'unauthorised'
+  | 'unauthorized'
   | 'forbidden'
   | 'errored';
 

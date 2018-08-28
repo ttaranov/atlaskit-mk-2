@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { mount } from 'enzyme';
 import { AnalyticsContext } from '@atlaskit/analytics-next';
 import FabricAnalyticsListeners from '../src/FabricAnalyticsListeners';
 import {
@@ -28,9 +27,9 @@ const analyticsWebClientMock = {
   },
 };
 
-export default function Example() {
+function Example() {
   return (
-    <FabricAnalyticsListeners client={Promise.resolve(analyticsWebClientMock)}>
+    <FabricAnalyticsListeners client={analyticsWebClientMock}>
       <div>
         <DummyComponentWithAnalytics
           text="Fabric Elements event - component without attributes"
@@ -73,3 +72,11 @@ export default function Example() {
     </FabricAnalyticsListeners>
   );
 }
+
+Object.assign(Example, {
+  meta: {
+    noListener: true,
+  },
+});
+
+export default Example;

@@ -14,7 +14,6 @@ import { AnalyticsWebClient } from '../../types';
 
 describe('<FabricEditorsListener />', () => {
   let analyticsWebClientMock: AnalyticsWebClient;
-  let clientPromise: Promise<AnalyticsWebClient>;
   let loggerMock;
 
   beforeEach(() => {
@@ -24,7 +23,6 @@ describe('<FabricEditorsListener />', () => {
       sendTrackEvent: jest.fn(),
       sendScreenEvent: jest.fn(),
     };
-    clientPromise = Promise.resolve(analyticsWebClientMock);
     loggerMock = {
       debug: jest.fn(),
       info: jest.fn(),
@@ -39,7 +37,7 @@ describe('<FabricEditorsListener />', () => {
   ) => {
     const compOnClick = jest.fn();
     const component = mount(
-      <FabricEditorListener client={clientPromise} logger={loggerMock}>
+      <FabricEditorListener client={analyticsWebClientMock} logger={loggerMock}>
         <Component onClick={compOnClick} />
       </FabricEditorListener>,
     );
@@ -53,28 +51,32 @@ describe('<FabricEditorsListener />', () => {
     const dummy = analyticsListener.find('#dummy');
     dummy.simulate('click');
 
-    return clientPromise.then(client => {
-      expect(client.sendUIEvent).toBeCalledWith(expectedEvent);
-    });
+    expect(analyticsWebClientMock.sendUIEvent).toBeCalledWith(expectedEvent);
   };
 
   describe('Listen and fire an UI event with analyticsWebClient', () => {
     it('should fire event with editor tag', () => {
-      fireAndVerifySentEvent(DummyComponentWithAnalytics, {
-        action: 'someAction',
-        actionSubject: 'someComponent',
-        source: 'unknown',
-        tags: [EDITOR_TAG],
-      });
+      fireAndVerifySentEvent(
+        DummyComponentWithAnalytics(FabricChannel.editor),
+        {
+          action: 'someAction',
+          actionSubject: 'someComponent',
+          source: 'unknown',
+          tags: [EDITOR_TAG],
+        },
+      );
     });
 
     it('should fire event without duplicating the tag', () => {
-      fireAndVerifySentEvent(TaggedDummyComponentWithAnalytics, {
-        action: 'someAction',
-        actionSubject: 'someComponent',
-        source: 'unknown',
-        tags: [EDITOR_TAG, 'foo'],
-      });
+      fireAndVerifySentEvent(
+        TaggedDummyComponentWithAnalytics(FabricChannel.editor, EDITOR_TAG),
+        {
+          action: 'someAction',
+          actionSubject: 'someComponent',
+          source: 'unknown',
+          tags: [EDITOR_TAG, 'foo'],
+        },
+      );
     });
   });
 });

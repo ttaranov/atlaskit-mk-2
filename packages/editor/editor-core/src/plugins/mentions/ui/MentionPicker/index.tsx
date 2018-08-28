@@ -3,7 +3,11 @@ import {
   AnalyticsEventPayload,
   WithAnalyticsEventProps,
 } from '@atlaskit/analytics-next-types';
-import { ContextIdentifierProvider, Popup } from '@atlaskit/editor-common';
+import {
+  ContextIdentifierProvider,
+  Popup,
+  akEditorFloatingDialogZIndex,
+} from '@atlaskit/editor-common';
 import {
   ELEMENTS_CHANNEL,
   isSpecialMention,
@@ -285,7 +289,7 @@ export class MentionPicker extends Component<
         target={anchorElement}
         fitHeight={300}
         fitWidth={340}
-        zIndex={500}
+        zIndex={akEditorFloatingDialogZIndex}
         boundariesElement={popupsBoundariesElement}
         mountTo={popupsMountPoint}
         scrollableElement={popupsScrollableElement}

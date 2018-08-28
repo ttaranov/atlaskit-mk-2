@@ -1,5 +1,12 @@
 # @atlaskit/icon
 
+## 13.4.0
+- [minor] Add the new check circle outline [22af4c5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/22af4c5)
+
+## 13.3.0
+- [minor] Add new icon [d36f760](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d36f760)
+- [patch] Add new icon for Roadmap [7cf05b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7cf05b3)
+
 ## 13.2.6
 - [patch] Update warning message and fix test for reduced-ui-pack [4b166d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b166d8)
 - [none] Updated dependencies [4b166d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b166d8)

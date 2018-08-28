@@ -33,7 +33,6 @@ export { default as rulePlugin } from './rule';
 export { default as quickInsertPlugin } from './quick-insert';
 export { default as saveOnEnterPlugin } from './save-on-enter';
 export { default as submitEditorPlugin } from './submit-editor';
-export { default as tablePlugin } from './table';
 export { default as tablesPlugin } from './table';
 export { default as tasksAndDecisionsPlugin } from './tasks-and-decisions';
 export { default as textColorPlugin } from './text-color';

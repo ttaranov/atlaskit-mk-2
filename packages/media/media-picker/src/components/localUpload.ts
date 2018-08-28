@@ -17,7 +17,6 @@ import { UploadParams } from '../domain/config';
 
 export interface LocalUploadConfig {
   uploadParams: UploadParams;
-  useNewUploadService?: boolean;
 }
 
 export class LocalUploadComponent<
@@ -34,7 +33,6 @@ export class LocalUploadComponent<
     this.uploadService = UploadServiceFactory.create(
       this.context,
       config.uploadParams || { collection: '' },
-      config.useNewUploadService,
     );
     this.config = config;
     this.uploadService.on('files-added', this.onFilesAdded);

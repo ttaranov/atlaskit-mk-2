@@ -139,30 +139,6 @@ export default new Plugin({
       return undefined;
     },
     handleKeyDown: keydownHandler({
-      'Mod-a': (state: EditorState, dispatch) => {
-        if (isWholeSelectionInsideLayoutColumn(state)) {
-          const { from, to } = state.selection;
-          const layoutColumn = findParentNodeOfType(
-            state.schema.nodes.layoutColumn,
-          )(state.selection)!;
-          const layoutColumnEnd =
-            layoutColumn.pos + layoutColumn.node.nodeSize - 1;
-          const isFullColumnLayoutSelection =
-            layoutColumn.start === from && layoutColumnEnd === to;
-          if (!isFullColumnLayoutSelection) {
-            dispatch(
-              state.tr.setSelection(
-                TextSelection.create(
-                  state.doc,
-                  layoutColumn.start,
-                  layoutColumnEnd,
-                ),
-              ),
-            );
-            return true;
-          }
-        }
-      },
       Tab: filter(isWholeSelectionInsideLayoutColumn, moveCursorToNextColumn),
     }),
   },

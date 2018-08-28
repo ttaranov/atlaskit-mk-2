@@ -22,7 +22,7 @@ export const CELL_MIN_WIDTH = 128;
 const pluginConfig = (tablesConfig?: PluginConfig | boolean) =>
   !tablesConfig || typeof tablesConfig === 'boolean' ? {} : tablesConfig;
 
-const tablesPlugin: EditorPlugin = {
+const tablesPlugin = (options?: PluginConfig | boolean): EditorPlugin => ({
   nodes() {
     return [
       { name: 'table', node: table },
@@ -72,6 +72,11 @@ const tablesPlugin: EditorPlugin = {
   },
 
   contentComponent({ editorView, popupsMountPoint, popupsBoundariesElement }) {
+    const config = pluginConfig(options);
+    if (!config.allowMergeCells && !config.allowBackgroundColor) {
+      return null;
+    }
+
     return (
       <WithPluginState
         plugins={{
@@ -105,6 +110,6 @@ const tablesPlugin: EditorPlugin = {
     ],
     floatingToolbar: getToolbarConfig,
   },
-};
+});
 
 export default tablesPlugin;

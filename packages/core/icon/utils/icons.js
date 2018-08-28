@@ -54,6 +54,7 @@ import CameraRotateIcon from '../glyph/camera-rotate';
 import CameraTakePictureIcon from '../glyph/camera-take-picture';
 import CameraIcon from '../glyph/camera';
 import CanvasIcon from '../glyph/canvas';
+import CheckCircleOutlineIcon from '../glyph/check-circle-outline';
 import CheckCircleIcon from '../glyph/check-circle';
 import CheckIcon from '../glyph/check';
 import CheckboxIndeterminateIcon from '../glyph/checkbox-indeterminate';
@@ -377,6 +378,7 @@ import RadioIcon from '../glyph/radio';
 import RecentIcon from '../glyph/recent';
 import RedoIcon from '../glyph/redo';
 import RefreshIcon from '../glyph/refresh';
+import RoadmapIcon from '../glyph/roadmap';
 import RoomMenuIcon from '../glyph/room-menu';
 import ScheduleFilledIcon from '../glyph/schedule-filled';
 import ScheduleIcon from '../glyph/schedule';
@@ -706,6 +708,12 @@ export default {
     component: CanvasIcon,
     componentName: 'CanvasIcon',
     package: '@atlaskit/icon/glyph/canvas',
+  },
+  'check-circle-outline': {
+    keywords: ['check-circle-outline', 'checkcircleoutline'],
+    component: CheckCircleOutlineIcon,
+    componentName: 'CheckCircleOutlineIcon',
+    package: '@atlaskit/icon/glyph/check-circle-outline',
   },
   'check-circle': {
     keywords: ['check-circle', 'checkcircle', 'tick'],
@@ -2644,6 +2652,12 @@ export default {
     component: RefreshIcon,
     componentName: 'RefreshIcon',
     package: '@atlaskit/icon/glyph/refresh',
+  },
+  roadmap: {
+    keywords: ['roadmap'],
+    component: RoadmapIcon,
+    componentName: 'RoadmapIcon',
+    package: '@atlaskit/icon/glyph/roadmap',
   },
   'room-menu': {
     keywords: ['room-menu', 'roommenu'],

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { mount } from 'enzyme';
 import Button from '@atlaskit/button';
 import FabricAnalyticsListeners from '../src/FabricAnalyticsListeners';
 import {
@@ -28,7 +27,7 @@ const analyticsWebClientMock = {
   sendScreenEvent: (event: any) => {},
 };
 
-export default class Example extends React.Component {
+class Example extends React.Component {
   state = {
     loggingLevelIdx: 0,
   };
@@ -43,7 +42,7 @@ export default class Example extends React.Component {
     const logLevel = logLevels[this.state.loggingLevelIdx];
     return (
       <FabricAnalyticsListeners
-        client={Promise.resolve(analyticsWebClientMock)}
+        client={analyticsWebClientMock}
         logLevel={logLevel.level}
       >
         <div>
@@ -70,3 +69,11 @@ export default class Example extends React.Component {
     );
   }
 }
+
+Object.assign(Example, {
+  meta: {
+    noListener: true,
+  },
+});
+
+export default Example;

@@ -5,7 +5,9 @@ export const MAX_PAGES = 8;
 export const MAX_SPACES = 3;
 export const MAX_PEOPLE = 3;
 
-const sliceResults = (resultsMap: ConfluenceResultsMap) => {
+export const sliceResults = (
+  resultsMap: ConfluenceResultsMap,
+): ConfluenceResultsMap => {
   const { people, objects, spaces } = resultsMap;
   return {
     objects: take(objects, MAX_PAGES),
@@ -17,7 +19,13 @@ const sliceResults = (resultsMap: ConfluenceResultsMap) => {
 export const mapRecentResultsToUIGroups = (
   recentlyViewedObjects: ConfluenceResultsMap,
 ): ResultsGroup[] => {
-  const { people, objects, spaces } = sliceResults(recentlyViewedObjects);
+  const { people, objects, spaces } = recentlyViewedObjects
+    ? sliceResults(recentlyViewedObjects)
+    : {
+        people: [],
+        objects: [],
+        spaces: [],
+      };
 
   return [
     {

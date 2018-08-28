@@ -1,5 +1,8 @@
 # @atlaskit/smart-card
 
+## 8.1.0
+- [minor] Switched to the amerizan way of spelling unauthorized [7c223f9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7c223f9)
+
 ## 8.0.1
 - [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
   - @atlaskit/media-ui@5.1.2

@@ -15,6 +15,10 @@ import {
   tableToolbarSize,
   tableBorderColor,
 } from '../../styles';
+import {
+  akEditorUnitZIndex,
+  akEditorSmallZIndex,
+} from '@atlaskit/editor-common';
 
 export const ColumnContainer: ComponentClass<HTMLAttributes<{}>> = styled.div`
   height: ${tableToolbarSize}px;
@@ -40,7 +44,7 @@ export const ColumnControlsButtonWrap: ComponentClass<
   margin-right: -1px;
 
   &.active {
-    z-index: 1;
+    z-index: ${akEditorUnitZIndex};
   }
 `;
 
@@ -52,7 +56,7 @@ export const HeaderButton: ComponentClass<ButtonHTMLAttributes<{}>> = styled(
   height: ${tableToolbarSize}px;
   width: 100%;
   &:hover {
-    z-index: 1;
+    z-index: ${akEditorUnitZIndex};
     position: relative;
   }
 `;
@@ -65,7 +69,7 @@ export const InsertColumnButtonWrap: ComponentClass<
   right: -${tableInsertColumnButtonSize / 2}px;
   height: ${tableInsertColumnButtonSize}px;
   width: ${tableInsertColumnButtonSize}px;
-  z-index: 2;
+  z-index: ${akEditorSmallZIndex};
   cursor: pointer;
   &:hover > div {
     display: flex;

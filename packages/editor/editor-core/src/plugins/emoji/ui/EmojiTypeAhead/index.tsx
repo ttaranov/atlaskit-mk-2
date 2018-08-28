@@ -2,7 +2,7 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import { Popup } from '@atlaskit/editor-common';
+import { Popup, akEditorFloatingDialogZIndex } from '@atlaskit/editor-common';
 import {
   EmojiTypeAhead as AkEmojiTypeAhead,
   EmojiDescription,
@@ -119,7 +119,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
         target={anchorElement}
         fitHeight={350}
         fitWidth={350}
-        zIndex={500}
+        zIndex={akEditorFloatingDialogZIndex}
         boundariesElement={popupsBoundariesElement}
         scrollableElement={popupsScrollableElement}
         mountTo={popupsMountPoint}

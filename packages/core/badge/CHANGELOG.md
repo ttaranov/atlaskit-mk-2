@@ -1,5 +1,8 @@
 # @atlaskit/badge
 
+## 9.1.2
+- [patch] Fix broken type export [a203203](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a203203)
+
 ## 9.1.1
 - [patch] Remove export from * to fix the cjs export [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
 
