@@ -41,6 +41,7 @@ import {
   inlineActionPlugin,
   cardPlugin,
   floatingToolbarPlugin,
+  gridPlugin,
 } from '../plugins';
 
 /**
@@ -195,6 +196,10 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
       horizontalRuleEnabled: props.allowRule,
     }),
   );
+
+  if (props.UNSAFE_mediaSingle_grid) {
+    plugins.push(gridPlugin);
+  }
 
   plugins.push(submitEditorPlugin);
   plugins.push(fakeTextCursorPlugin);

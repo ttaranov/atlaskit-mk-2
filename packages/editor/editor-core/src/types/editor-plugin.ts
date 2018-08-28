@@ -36,6 +36,7 @@ export type UiComponentFactoryParams = {
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
+  containerElement: HTMLElement | undefined;
   disabled: boolean;
 };
 
