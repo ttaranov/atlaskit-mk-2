@@ -6,6 +6,7 @@
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
+  "sideEffects": false,
   "atlaskit:designLink": "https://atlassian.design/guidelines/product/components/single-select",
   "files": [
     "dist"
