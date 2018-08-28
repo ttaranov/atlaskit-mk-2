@@ -45,11 +45,26 @@ export class DrawerBase extends Component<DrawerProps> {
   body = document.querySelector('body');
 
   componentDidMount() {
-    window.addEventListener('keydown', this.handleKeyDown);
+    const { isOpen } = this.props;
+
+    if (isOpen) {
+      window.addEventListener('keydown', this.handleKeyDown);
+    }
   }
 
   componentWillUnmount() {
     window.removeEventListener('keydown', this.handleKeyDown);
+  }
+
+  componentDidUpdate(prevProps: DrawerProps) {
+    const { isOpen } = this.props;
+    if (isOpen !== prevProps.isOpen) {
+      if (isOpen) {
+        window.addEventListener('keydown', this.handleKeyDown);
+      } else {
+        window.removeEventListener('keydown', this.handleKeyDown);
+      }
+    }
   }
 
   handleBlanketClick = (event: SyntheticMouseEvent<*>) => {
@@ -74,9 +89,9 @@ export class DrawerBase extends Component<DrawerProps> {
   };
 
   handleKeyDown = (event: SyntheticKeyboardEvent<*>) => {
-    const { onKeyDown } = this.props;
+    const { isOpen, onKeyDown } = this.props;
 
-    if (event.key === 'Escape') {
+    if (event.key === 'Escape' && isOpen) {
       this.handleClose(event, 'escKey');
     }
     if (onKeyDown) {
