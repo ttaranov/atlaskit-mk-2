@@ -17,7 +17,7 @@ describe('NativeToWebBridge', () => {
   let editor;
 
   beforeEach(() => {
-    editor = mount(mobileEditor());
+    editor = mount(mobileEditor({}));
   });
 
   afterEach(() => {
@@ -60,13 +60,7 @@ describe('NativeToWebBridge', () => {
 
 describe('insert media', () => {
   let editor;
-  const getCollection = sinon.stub(toNativeBridge, 'getCollection');
-  const getServiceHost = sinon.stub(toNativeBridge, 'getServiceHost');
   beforeEach(async () => {
-    getCollection.reset();
-    getCollection.returns('FabricSampleCollection');
-    getServiceHost.reset();
-    getServiceHost.returns('http://www.atlassian.com/');
     editor = await mountEditor();
   });
 
