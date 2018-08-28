@@ -45,26 +45,7 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
 
     const defaultPageSize = 30;
 
-    if (dataSource.collectionName) {
-      const itemSource: ItemSource = {
-        kind: 'COLLECTION',
-        collectionName: dataSource.collectionName,
-        pageSize: pageSize || defaultPageSize,
-      };
-      const identifier = {
-        ...selectedItem,
-        collectionName: dataSource.collectionName,
-      };
-      return (
-        <MediaViewerNextGen
-          context={context}
-          selectedItem={identifier}
-          onClose={onClose}
-          itemSource={itemSource}
-          featureFlags={featureFlags}
-        />
-      );
-    } else if (dataSource.list) {
+    if (dataSource.list) {
       const items = dataSource.list.map(i => ({
         ...i,
         collectionName,
@@ -76,6 +57,25 @@ export class MediaViewer extends Component<MediaViewerProps, MediaViewerState> {
       const identifier = {
         ...selectedItem,
         collectionName,
+      };
+      return (
+        <MediaViewerNextGen
+          context={context}
+          selectedItem={identifier}
+          onClose={onClose}
+          itemSource={itemSource}
+          featureFlags={featureFlags}
+        />
+      );
+    } else if (dataSource.collectionName) {
+      const itemSource: ItemSource = {
+        kind: 'COLLECTION',
+        collectionName: dataSource.collectionName,
+        pageSize: pageSize || defaultPageSize,
+      };
+      const identifier = {
+        ...selectedItem,
+        collectionName: dataSource.collectionName,
       };
       return (
         <MediaViewerNextGen
