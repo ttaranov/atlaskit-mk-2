@@ -5,12 +5,13 @@ import styled from 'styled-components';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 
-import { FilmstripView } from '@atlaskit/media-filmstrip';
+// import { FilmstripView } from '@atlaskit/media-filmstrip';
 import { MediaNodeProps } from './media';
 import {
   MediaPluginState,
   stateKey as mediaStateKey,
 } from '../pm-plugins/main';
+import MediaFallback from './MediaFallback';
 
 export interface MediaGroupNodeProps {
   view: EditorView;
@@ -23,12 +24,12 @@ export interface MediaGroupNodeState {
 }
 
 // Need `padding-left` override for media item drop-shadow
-const Wrapper = styled.div`
-  margin-bottom: 8px;
-  &&& ul {
-    padding: 0;
-  }
-`;
+// const Wrapper = styled.div`
+//   margin-bottom: 8px;
+//   &&& ul {
+//     padding: 0;
+//   }
+// `;
 
 export default class MediaGroupNode extends Component<
   MediaGroupNodeProps,
@@ -103,16 +104,25 @@ export default class MediaGroupNode extends Component<
   render() {
     const { animate, offset } = this.state;
     return (
-      <Wrapper>
-        <FilmstripView
-          animate={animate}
-          offset={offset}
-          onSize={this.handleSize}
-          onScroll={this.handleScroll}
-        >
-          {this.props.children}
-        </FilmstripView>
-      </Wrapper>
+      <MediaFallback
+        animate={animate}
+        offset={offset}
+        onSize={this.handleSize}
+        onScroll={this.handleScroll}
+      >
+        {this.props.children}
+      </MediaFallback>
+
+      // <Wrapper>
+      //   <FilmstripView
+      //     animate={animate}
+      //     offset={offset}
+      //     onSize={this.handleSize}
+      //     onScroll={this.handleScroll}
+      //   >
+      //     {this.props.children}
+      //   </FilmstripView>
+      // </Wrapper>
 
       /*
 
