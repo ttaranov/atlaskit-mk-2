@@ -6,7 +6,6 @@ type Props = {
 };
 
 type State = {
-  useChildrenFromProps: boolean,
   currentChildren: Node,
 };
 
@@ -15,32 +14,37 @@ const { Consumer, Provider } = createContext({
   onExited: undefined,
 });
 
-class ModalTransition extends React.Component<Props, State> {
+// checks if children exist and are truthy
+const hasChildren = children =>
+  React.Children.count(children) > 0 &&
+  React.Children.map(children, child => !!child).filter(Boolean).length > 0;
+
+class Transition extends React.Component<Props, State> {
   static getDerivedStateFromProps(props: Props, state: State) {
-    const { useChildrenFromProps, currentChildren } = state;
-    const exiting = Boolean(currentChildren) && !props.children;
+    const { currentChildren: previousChildren } = state;
+    const exiting =
+      hasChildren(previousChildren) && !hasChildren(props.children);
     return {
-      currentChildren:
-        exiting && !useChildrenFromProps ? currentChildren : props.children,
-      useChildrenFromProps: false,
+      currentChildren: exiting ? previousChildren : props.children,
     };
   }
+
   state = {
-    useChildrenFromProps: false,
     currentChildren: undefined,
   };
+
   onExited = () => {
     this.setState({
       currentChildren: this.props.children,
-      useChildrenFromProps: true,
     });
   };
+
   render() {
     return (
       <Provider
         value={{
           onExited: this.onExited,
-          isOpen: Boolean(this.props.children),
+          isOpen: hasChildren(this.props.children),
         }}
       >
         {this.state.currentChildren}
@@ -51,4 +55,4 @@ class ModalTransition extends React.Component<Props, State> {
 
 export const ModalTransitionConsumer = Consumer;
 
-export default ModalTransition;
+export default Transition;
