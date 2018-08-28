@@ -2,7 +2,7 @@ import { uuid } from '@atlaskit/editor-common';
 import { keymap } from 'prosemirror-keymap';
 import { ResolvedPos, Schema } from 'prosemirror-model';
 import { EditorState, Selection, Transaction, Plugin } from 'prosemirror-state';
-import { splitListAtSelection } from '../commands';
+import { isSupportedSourceNode, splitListAtSelection } from '../commands';
 
 // tries to find a valid cursor position
 const setTextSelection = (pos: number) => (tr: Transaction) => {
@@ -67,10 +67,80 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
         return true;
       }
 
-      dispatch(splitListAtSelection(tr, schema, state));
+      dispatch(splitListAtSelection(tr, schema));
 
       return true;
     },
+    Delete: (state: EditorState, dispatch) => {
+      const {
+        selection,
+        schema: { nodes },
+        tr,
+      } = state;
+      const { decisionList, decisionItem, taskList, taskItem } = nodes;
+
+      if ((!decisionItem || !decisionList) && (!taskList || !taskItem)) {
+        return false;
+      }
+
+      const { $from, $to } = selection;
+
+      // Don't do anything if selection is a range
+      if ($from.pos !== $to.pos) {
+        return false;
+      }
+
+      // Don't do anything if the cursor isn't at the end of the node.
+      const endOfItem = $from.end();
+      const isAtEndOfItem = $from.pos === endOfItem;
+
+      if (!isAtEndOfItem) {
+        return false;
+      }
+
+      const list = $from.node($from.depth - 1);
+      const isAtEndOfList = list.lastChild === $from.node();
+
+      // split list, converted next item to a paragraph when not at end
+      if (!isAtEndOfList) {
+        setTextSelection(endOfItem + 2)(tr);
+        splitListAtSelection(tr, schema);
+        setTextSelection($from.pos)(tr);
+        tr.scrollIntoView();
+        dispatch(tr);
+        return true;
+      }
+
+      const listPos = tr.doc.resolve($from.after($from.depth - 1));
+      const nodeAfterList = listPos.nodeAfter;
+
+      if (!nodeAfterList) {
+        // nothing after - default to prosemirror
+        return false;
+      }
+
+      if (!isSupportedSourceNode(schema, selection)) {
+        // Unsupported content in following node, do nothing.
+        return true;
+      }
+
+      const nodeAfterPos = tr.doc.resolve(listPos.pos + 1);
+      const nodeAfterType = nodeAfterList.type;
+      if (nodeAfterType === decisionList || nodeAfterType === taskList) {
+        // Do nothing until FS-2896 is implemented
+        return true;
+      }
+
+      const newContent = nodeAfterList.content;
+      tr.delete(nodeAfterPos.before(), nodeAfterPos.after());
+      tr.insert($from.pos, newContent);
+      setTextSelection($from.pos)(tr);
+      tr.scrollIntoView();
+      dispatch(tr);
+
+      return true;
+    },
+
     Enter: (state: EditorState, dispatch) => {
       const {
         selection,
@@ -94,7 +164,7 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
         }
 
         // Otherwise, split list
-        splitListAtSelection(tr, schema, state);
+        splitListAtSelection(tr, schema);
         dispatch(tr);
         return true;
       }

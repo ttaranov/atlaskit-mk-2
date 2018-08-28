@@ -61,9 +61,12 @@ describe('tasks and decisions - keymaps', () => {
             );
 
             sendKeyToPm(editorView, 'Backspace');
-            expect(editorView.state.doc).toEqualDocument(
-              doc(list(listProps)(item(itemProps)('HelloWorld'))),
+
+            const expectedDoc = doc(
+              list(listProps)(item(itemProps)('Hello{<>}World')),
             );
+            expect(editorView.state.doc).toEqualDocument(expectedDoc);
+            compareSelection(editorFactory, expectedDoc, editorView);
           });
 
           it(`should remove paragraph with ${name}Item and preserve content`, () => {
@@ -103,7 +106,7 @@ describe('tasks and decisions - keymaps', () => {
           });
         });
 
-        describe(`when cursor is at the begining of a ${name}Item`, () => {
+        describe(`when cursor is at the beginning of a ${name}Item`, () => {
           it('should convert item to paragraph, splitting the list', () => {
             const { editorView } = editorFactory(
               doc(
@@ -149,7 +152,7 @@ describe('tasks and decisions - keymaps', () => {
           });
         });
 
-        describe(`when cursor is at the begining of the first ${name}Item`, () => {
+        describe(`when cursor is at the beginning of the first ${name}Item`, () => {
           it('should convert item to paragraph', () => {
             const { editorView } = editorFactory(
               doc(
@@ -198,7 +201,7 @@ describe('tasks and decisions - keymaps', () => {
         });
 
         describe('when nested inside tables', () => {
-          describe('when cursor is at the begining of the first taskItem', () => {
+          describe('when cursor is at the beginning of the first taskItem', () => {
             it('should convert item to paragraph and keep the cursor in the same cell', () => {
               const { editorView } = editorFactory(
                 doc(
@@ -215,6 +218,157 @@ describe('tasks and decisions - keymaps', () => {
               sendKeyToPm(editorView, 'Backspace');
 
               const expectedDoc = doc(table()(tr(tdEmpty, tdCursor, tdEmpty)));
+              expect(editorView.state.doc).toEqualDocument(expectedDoc);
+              compareSelection(editorFactory, expectedDoc, editorView);
+            });
+          });
+        });
+      });
+
+      describe('Delete', () => {
+        describe(`when ${name}List exists before paragraph`, () => {
+          it(`should merge paragraph with ${name}Item and preserve content`, () => {
+            const { editorView } = editorFactory(
+              doc(list(listProps)(item(itemProps)('Hello{<>}')), p('World')),
+            );
+
+            sendKeyToPm(editorView, 'Delete');
+
+            const expectedDoc = doc(
+              list(listProps)(item(itemProps)('Hello{<>}World')),
+            );
+            expect(editorView.state.doc).toEqualDocument(expectedDoc);
+            compareSelection(editorFactory, expectedDoc, editorView);
+          });
+
+          it(`should remove paragraph with ${name}Item and preserve content`, () => {
+            const { editorView } = editorFactory(
+              doc(list(listProps)(item(itemProps)('Hello{<>}')), p()),
+            );
+
+            sendKeyToPm(editorView, 'Delete');
+
+            const expectedDoc = doc(
+              list(listProps)(item(itemProps)('Hello{<>}')),
+            );
+            expect(editorView.state.doc).toEqualDocument(expectedDoc);
+            compareSelection(editorFactory, expectedDoc, editorView);
+          });
+
+          it('should delete only internal node on delete', () => {
+            const { editorView } = editorFactory(
+              doc(
+                list(listProps)(
+                  item(itemProps)(
+                    'Hello {<>}',
+                    mention({ id: '1234', text: '@Oscar Wallhult' })(),
+                  ),
+                ),
+              ),
+            );
+
+            sendKeyToPm(editorView, 'Delete');
+
+            const expectedDoc = doc(
+              list(listProps)(item(itemProps)('Hello {<>}')),
+            );
+            expect(editorView.state.doc).toEqualDocument(expectedDoc);
+            compareSelection(editorFactory, expectedDoc, editorView);
+          });
+        });
+
+        describe(`when cursor is at the end of a ${name}Item`, () => {
+          it('should convert item to paragraph, splitting the list', () => {
+            const { editorView } = editorFactory(
+              doc(
+                list(listProps)(
+                  item(itemProps)('Hello{<>}'),
+                  item(itemProps)('World'),
+                  item(itemProps)('Cheese is great!'),
+                ),
+              ),
+            );
+
+            sendKeyToPm(editorView, 'Delete');
+
+            const expectedDoc = doc(
+              list(listProps)(item(itemProps)('Hello{<>}')),
+              p('World'),
+              list(listProps)(item(itemProps)('Cheese is great!')),
+            );
+            expect(editorView.state.doc).toEqualDocument(expectedDoc);
+            compareSelection(editorFactory, expectedDoc, editorView);
+          });
+
+          it('should merge with previous item, when deleting twice', () => {
+            const { editorView } = editorFactory(
+              doc(
+                list(listProps)(
+                  item(itemProps)('Hello{<>}'),
+                  item(itemProps)('World'),
+                  item(itemProps)('Cheese is great!'),
+                ),
+              ),
+            );
+
+            sendKeyToPm(editorView, 'Delete');
+            sendKeyToPm(editorView, 'Delete');
+
+            const expectedDoc = doc(
+              list(listProps)(item(itemProps)('Hello{<>}World')),
+              // TODO - list merging FS-2947
+              list(listProps)(item(itemProps)('Cheese is great!')),
+            );
+            expect(editorView.state.doc).toEqualDocument(expectedDoc);
+            compareSelection(editorFactory, expectedDoc, editorView);
+          });
+        });
+
+        it(`should delete selection and keep ${name}Item`, () => {
+          const { editorView } = editorFactory(
+            doc(list(listProps)(item(itemProps)('{<}Hello {>}World'))),
+          );
+
+          sendKeyToPm(editorView, 'Delete');
+
+          const expectedDoc = doc(
+            list(listProps)(item(itemProps)('{<>}World')),
+          );
+          expect(editorView.state.doc).toEqualDocument(expectedDoc);
+          compareSelection(editorFactory, expectedDoc, editorView);
+        });
+
+        describe('when nested inside tables', () => {
+          describe('when cursor is at the end of the first taskItem', () => {
+            it('should convert second item to paragraph', () => {
+              const { editorView } = editorFactory(
+                doc(
+                  table()(
+                    tr(
+                      tdEmpty,
+                      td()(
+                        list(listProps)(
+                          item(itemProps)('{<>}'),
+                          item(itemProps)('Hello'),
+                        ),
+                      ),
+                      tdEmpty,
+                    ),
+                  ),
+                ),
+              );
+
+              sendKeyToPm(editorView, 'Delete');
+
+              const expectedDoc = doc(
+                table()(
+                  tr(
+                    tdEmpty,
+                    td()(list(listProps)(item(itemProps)('{<>}')), p('Hello')),
+                    tdEmpty,
+                  ),
+                ),
+              );
               expect(editorView.state.doc).toEqualDocument(expectedDoc);
               compareSelection(editorFactory, expectedDoc, editorView);
             });

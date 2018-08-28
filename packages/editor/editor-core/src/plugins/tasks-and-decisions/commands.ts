@@ -1,6 +1,11 @@
 import { uuid } from '@atlaskit/editor-common';
 import { Node as PMNode, ResolvedPos, Schema } from 'prosemirror-model';
-import { EditorState, Transaction, TextSelection } from 'prosemirror-state';
+import {
+  EditorState,
+  Selection,
+  Transaction,
+  TextSelection,
+} from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import {
   safeInsert,
@@ -56,6 +61,17 @@ export const insertTaskDecision = (
   return false;
 };
 
+export const isSupportedSourceNode = (
+  schema: Schema,
+  selection: Selection,
+): boolean => {
+  const { paragraph, blockquote, decisionList, taskList } = schema.nodes;
+
+  return hasParentNodeOfType([blockquote, paragraph, decisionList, taskList])(
+    selection,
+  );
+};
+
 export const changeInDepth = (before: ResolvedPos, after: ResolvedPos) =>
   after.depth - before.depth;
 
@@ -95,11 +111,7 @@ export const createListAtSelection = (
   }
 
   // try to replace any of the given nodeTypes
-  if (
-    hasParentNodeOfType([blockquote, paragraph, decisionList, taskList])(
-      selection,
-    )
-  ) {
+  if (isSupportedSourceNode(schema, selection)) {
     const newTr = replaceParentNodeOfType(
       [blockquote, paragraph, decisionList, taskList],
       list.create({ localId: uuid.generate() }, [
@@ -130,9 +142,9 @@ export const createListAtSelection = (
 export const splitListAtSelection = (
   tr: Transaction,
   schema: Schema,
-  state: EditorState,
+  // state: EditorState,
 ): Transaction => {
-  const { selection } = state;
+  const { selection } = tr;
   const { $from, $to } = selection;
   if ($from.parent !== $to.parent) {
     // ignore selections across multiple nodes
@@ -158,7 +170,7 @@ export const splitListAtSelection = (
     return tr;
   }
 
-  const resolvedItemPos = state.doc.resolve(item.pos);
+  const resolvedItemPos = tr.doc.resolve(item.pos);
 
   const newListIds = [
     parentList.node.attrs['localId'] || uuid.generate(), // first new list keeps list id
