@@ -19,7 +19,7 @@
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "memoize-one": "^3.0.1",
-    "react-popper": "^1.0.0"
+    "react-popper": "^1.0.2"
   },
   "peerDependencies": {
     "react": "^16.4.0"
