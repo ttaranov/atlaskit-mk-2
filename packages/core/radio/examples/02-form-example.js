@@ -19,10 +19,21 @@ const fruitItems: ItemsPropType = [
   { name: 'fruit', value: 'pair', label: 'Pair' },
 ];
 
-export default class FormExample extends Component<void, void> {
+export default class FormExample extends Component<
+  void,
+  { isChecked: boolean },
+> {
   form: any;
-  onRadioChange = (event: any) => {
-    console.log(event.target.value);
+  state = {
+    isChecked: false,
+  };
+  onChange = (event: SyntheticEvent<*>) => {
+    if (event.currentTarget.value === 'single-radio') {
+      this.setState({
+        isChecked: true,
+      });
+    }
+    console.log(event.currentTarget.value);
   };
   getFormRef = (form: any) => {
     this.form = form;
@@ -34,23 +45,24 @@ export default class FormExample extends Component<void, void> {
           ref={this.getFormRef}
           name="form-example"
           action={formTestUrl}
-          method="POST"
+          method="GET"
           target="submitFrame"
         >
           <Field label="standalone radio">
             <Radio
+              isChecked={this.state.isChecked}
               name="standalone"
               value="single-radio"
-              onChange={this.onRadioChange}
+              onChange={this.onChange}
             >
               Single Radio button
             </Radio>
           </Field>
-          <Field label="required radio group" isRequired required>
-            <RadioGroup items={colorItems} onChange={this.onRadioChange} />
+          <Field label="required radio group" isRequired>
+            <RadioGroup items={colorItems} onChange={this.onChange} />
           </Field>
           <Field label="regular radio group">
-            <RadioGroup items={fruitItems} onChange={this.onRadioChange} />
+            <RadioGroup items={fruitItems} onChange={this.onChange} />
           </Field>
           <FormFooter
             actionsContent={[
