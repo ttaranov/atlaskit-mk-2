@@ -1,5 +1,8 @@
 # @atlaskit/dropdown-menu
 
+## 6.1.11
+- [patch] Fix initial position glitch when opening dropdown menu [d79e361](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d79e361)
+
 ## 6.1.9
 - [patch] Fix dropdown menu calls onOpenChange unnecessarily [2868a72](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2868a72)
 - [patch] Updated dependencies [2868a72](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2868a72)

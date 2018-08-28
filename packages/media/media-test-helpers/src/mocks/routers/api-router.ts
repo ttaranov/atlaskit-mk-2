@@ -1,4 +1,13 @@
-import { Router, Response } from 'kakapo';
+/* tslint:disable:no-console */
+import {
+  Router,
+  Response,
+  Request,
+  Record,
+  RouterOptions,
+  RequestHandler,
+  Database,
+} from 'kakapo';
 import * as uuid from 'uuid';
 
 import { mapDataUriToBlob } from '../../utils';
@@ -9,9 +18,54 @@ import {
   createCollectionItem,
 } from '../database';
 import { defaultBaseUrl } from '../..';
+import { Chunk } from '../database/chunk';
+
+class RouterWithLogging<M extends DatabaseSchema> extends Router<M> {
+  constructor(options?: RouterOptions) {
+    super(options);
+  }
+
+  register(method: string, path: string, originalHandler: RequestHandler<M>) {
+    const handler: RequestHandler<M> = (
+      request: Request,
+      database: Database<M>,
+    ) => {
+      let response: Response;
+      let requestWithBodyObject: any;
+      let error: any;
+
+      try {
+        response = originalHandler(request, database);
+        let body = request.body;
+        try {
+          body = JSON.parse(body);
+        } catch (e) {}
+        requestWithBodyObject = { request: { ...request, body } };
+      } catch (e) {
+        error = e;
+      }
+
+      console.log({
+        method,
+        path,
+        request: requestWithBodyObject,
+        database,
+        response: response!,
+        error,
+      });
+
+      if (error) {
+        throw error;
+      } else {
+        return response!;
+      }
+    };
+    return super.register(method, path, handler);
+  }
+}
 
 export function createApiRouter(): Router<DatabaseSchema> {
-  const router = new Router<DatabaseSchema>({
+  const router = new RouterWithLogging<DatabaseSchema>({
     host: defaultBaseUrl,
     requestDelay: 10,
   });
@@ -98,6 +152,34 @@ export function createApiRouter(): Router<DatabaseSchema> {
     return new Response(201, undefined, {});
   });
 
+  router.post('/chunk/probe', ({ body }, database) => {
+    const requestedChunks = body.chunks;
+    const allChunks: Record<Chunk>[] = database.all('chunk') as any;
+    const existingChunks: string[] = [];
+    const nonExistingChunks: string[] = [];
+
+    allChunks.forEach(({ data: { id } }) => {
+      if (requestedChunks.indexOf(id) > -1) {
+        existingChunks.push(id);
+      } else {
+        nonExistingChunks.push(id);
+      }
+    });
+
+    return new Response(
+      200,
+      {
+        data: {
+          results: [
+            ...existingChunks.map(() => ({ exists: true })),
+            ...nonExistingChunks.map(() => ({ exists: false })),
+          ],
+        },
+      },
+      {},
+    );
+  });
+
   router.post('/upload', ({ query }, database) => {
     const { createUpTo = '1' } = query;
 
@@ -120,6 +202,24 @@ export function createApiRouter(): Router<DatabaseSchema> {
     });
 
     return new Response(200, undefined, {});
+  });
+
+  router.post('/file', ({ query }, database) => {
+    const { collection } = query;
+    const item = createCollectionItem({
+      collectionName: collection,
+    });
+    database.push('collectionItem', item);
+    return new Response(
+      201,
+      {
+        data: {
+          id: item.id,
+          insertedAt: Date.now(),
+        },
+      },
+      {},
+    );
   });
 
   router.post('/file/upload', ({ query, body }, database) => {
@@ -152,12 +252,16 @@ export function createApiRouter(): Router<DatabaseSchema> {
       collectionName: collection,
     });
 
-    return {
-      data: {
-        id: fileId,
-        ...record.data.details,
-      },
-    };
+    if (record) {
+      return {
+        data: {
+          id: fileId,
+          ...record.data.details,
+        },
+      };
+    } else {
+      return new Response(404, undefined, {});
+    }
   });
 
   router.post('/file/copy/withToken', (request, database) => {

@@ -29,7 +29,7 @@ const analyticsWebClientMock = {
 
 function Example() {
   return (
-    <FabricAnalyticsListeners client={Promise.resolve(analyticsWebClientMock)}>
+    <FabricAnalyticsListeners client={analyticsWebClientMock}>
       <div>
         <DummyComponentWithAnalytics
           text="Fabric Elements event - component without attributes"

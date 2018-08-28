@@ -39,13 +39,9 @@ describe('UploadService', () => {
       subscribe() {},
     });
 
-    const uploadService = UploadServiceFactory.create(
-      context,
-      {
-        collection,
-      },
-      true,
-    );
+    const uploadService = UploadServiceFactory.create(context, {
+      collection,
+    });
 
     const filesAddedPromise = new Promise(resolve =>
       uploadService.on('files-added', () => resolve()),
@@ -56,13 +52,9 @@ describe('UploadService', () => {
 
   describe('setUploadParams', () => {
     const setup = () => ({
-      uploadService: UploadServiceFactory.create(
-        getContext(),
-        {
-          collection: '',
-        },
-        true,
-      ),
+      uploadService: UploadServiceFactory.create(getContext(), {
+        collection: '',
+      }),
     });
 
     it('should apply defaultUploadParams', () => {
@@ -694,13 +686,9 @@ describe('UploadService', () => {
         { ...clientBasedConfig, userAuthProvider: config.userAuthProvider },
       );
 
-      const uploadService = UploadServiceFactory.create(
-        context,
-        {
-          collection: collectionNameStub,
-        },
-        true,
-      );
+      const uploadService = UploadServiceFactory.create(context, {
+        collection: collectionNameStub,
+      });
 
       (uploadService as any).userMediaStore = config.userAuthProvider && {
         copyFileWithToken: config.copyFileWithTokenSpy,

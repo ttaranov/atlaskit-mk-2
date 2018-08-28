@@ -47,6 +47,7 @@ const iconIds: Array<string> = [
   'camera',
   'canvas',
   'check-circle',
+  'check-circle-outline',
   'check',
   'checkbox-indeterminate',
   'checkbox',

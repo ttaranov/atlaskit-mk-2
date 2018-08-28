@@ -1,5 +1,14 @@
 # @atlaskit/global-navigation
 
+## 4.2.2
+- [patch] Updated dependencies [90ba6bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/90ba6bd)
+  - @atlaskit/navigation-next@3.6.6
+  - @atlaskit/analytics-namespaced-context@2.1.2
+  - @atlaskit/analytics-listeners@4.0.0
+
+## 4.2.1
+- [patch] Notification badge icon should show 9+ instead of 1x [d716569](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d716569)
+
 ## 4.2.0
 
 - [minor] Add screen analytics events for navigation drawers [f02fb34](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f02fb34)

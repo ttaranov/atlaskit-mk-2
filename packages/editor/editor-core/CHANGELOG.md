@@ -1,5 +1,38 @@
 # @atlaskit/editor-core
 
+## 78.0.5
+- [patch] move tests under src [fd063e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fd063e3)
+
+## 78.0.4
+- [patch] Stop Grammarly from attempting to hook into the editor [e9db931](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e9db931)
+
+## 78.0.3
+- [patch] Update Page Layout sizing to be more compact, fix quick-insert icon, fix issue with Popup not centering toolbar in certain situations [1effb83](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1effb83)
+
+## 78.0.2
+- [patch] ED-5172 pressing enter after media single in list no longer deletes list [74824f8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/74824f8)
+
+## 78.0.1
+- [patch] "update dependencies" [9ab9471](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9ab9471)
+
+## 78.0.0
+- [major] Remove new upload service feature flag (useNewUploadService). Now new upload service will be used by default. [911a570](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/911a570)
+- [patch] Updated dependencies [911a570](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/911a570)
+  - @atlaskit/media-test-helpers@17.0.0
+  - @atlaskit/media-picker@13.0.0
+  - @atlaskit/media-filmstrip@11.0.2
+  - @atlaskit/media-core@23.0.2
+  - @atlaskit/editor-json-transformer@4.0.7
+  - @atlaskit/editor-bitbucket-transformer@4.0.8
+  - @atlaskit/editor-markdown-transformer@2.0.7
+  - @atlaskit/media-card@32.0.6
+  - @atlaskit/renderer@20.1.1
+  - @atlaskit/editor-test-helpers@6.0.5
+
+## 77.2.3
+- [patch] Adding support for telepointers in new collab provider [cc35c67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc35c67)
+- [none] Updated dependencies [cc35c67](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc35c67)
+
 ## 77.2.2
 - [patch] ED-5153, add react-intl to editor and expose locale support. [68a0978](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/68a0978)
 - [patch] Updated dependencies [68a0978](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/68a0978)
