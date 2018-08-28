@@ -72,7 +72,7 @@ export type AvatarPropTypesBase = {
   target?: '_blank' | '_self' | '_top' | '_parent',
   /** You should not be accessing this prop under any circumstances. It is
    provided by @atlaskit/analytics-next. */
-  createAnalyticsEvent: any,
+  createAnalyticsEvent?: any,
 };
 
 export type AvatarPropTypes = AvatarPropTypesBase & {

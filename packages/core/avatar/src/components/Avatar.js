@@ -4,6 +4,7 @@ import type { Node } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
+  createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import Tooltip from '@atlaskit/tooltip';
 import {
@@ -35,25 +36,24 @@ class Avatar extends Component<AvatarPropTypes> {
     size: 'medium',
   };
 
-  // Hello dear code explorer: unfortunately, to stop click always being
-  // provided if it is added by the HoC for analytics, we must handle adding
-  // onClick in avatar directly, only if it is provided.
+  createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
   clickAnalyticsCaller = () => {
     const { createAnalyticsEvent } = this.props;
-    const analyticsEvent = createAnalyticsEvent({
-      action: 'clicked',
-      actionSubject: 'avatar',
 
-      attributes: {
-        componentName: 'avatar',
-        packageName,
-        packageVersion,
-      },
-    });
-    const consumerEvent = analyticsEvent.clone();
+    if (createAnalyticsEvent) {
+      return this.createAndFireEventOnAtlaskit({
+        action: 'clicked',
+        actionSubject: 'avatar',
 
-    analyticsEvent.fire('atlaskit');
-    return consumerEvent;
+        attributes: {
+          componentName: 'avatar',
+          packageName,
+          packageVersion,
+        },
+      })(createAnalyticsEvent);
+    }
+    return undefined;
   };
 
   // expose blur/focus to consumers via ref
@@ -67,16 +67,13 @@ class Avatar extends Component<AvatarPropTypes> {
   // disallow click on disabled avatars
   // only return avatar data properties
   guardedClick = (event: KeyboardEvent | MouseEvent) => {
-    const { isDisabled, onClick, createAnalyticsEvent } = this.props;
+    const { isDisabled, onClick } = this.props;
 
     if (isDisabled || typeof onClick !== 'function') return;
 
     const item = omit(this.props, ...propsOmittedFromClickData);
 
-    let analyticsEvent;
-    if (createAnalyticsEvent) {
-      analyticsEvent = this.clickAnalyticsCaller();
-    }
+    const analyticsEvent = this.clickAnalyticsCaller();
 
     onClick({ item, event }, analyticsEvent);
   };
@@ -162,6 +159,8 @@ class Avatar extends Component<AvatarPropTypes> {
     // provide element type based on props
     // TODO: why not enhanced props?
     const Inner: any = getStyledAvatar(this.props);
+
+    Inner.displayName = 'Inner';
 
     const AvatarNode = (
       <Outer size={size} stackIndex={stackIndex}>
