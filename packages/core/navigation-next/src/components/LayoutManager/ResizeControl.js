@@ -21,22 +21,19 @@ import type { CollapseToggleTooltipContent } from './types';
 const OUTER_WIDTH = 32;
 const HANDLE_WIDTH = 2;
 
-const Outer = props => (
+const Outer = (props: *) => (
   <div css={{ position: 'relative', width: OUTER_WIDTH }} {...props} />
 );
-const GrabArea = (props: *) => (
+const GrabArea = ({ showHandle, ...props }: *) => (
   <div
     css={{
+      boxShadow: `inset ${showHandle ? HANDLE_WIDTH : 0}px 0 0 ${colors.B100}`,
       cursor: 'ew-resize',
       height: '100%',
       left: -1,
       position: 'relative',
-      transition: 'box-shadow 300ms cubic-bezier(0.2, 0, 0, 1)',
+      transition: 'box-shadow 200ms cubic-bezier(0.2, 0, 0, 1)',
       width: OUTER_WIDTH,
-
-      ':hover': {
-        boxShadow: `inset ${HANDLE_WIDTH}px 0 0 ${colors.B100}`,
-      },
     }}
     {...props}
   />
@@ -365,6 +362,7 @@ class ResizeControl extends PureComponent<Props, State> {
             <Outer>
               <Shadow isBold={mouseIsDown} />
               <GrabArea
+                showHandle={mouseIsDown || mouseIsOverGrabArea}
                 onMouseEnter={this.mouseEnterGrabArea}
                 onMouseLeave={this.mouseLeaveGrabArea}
                 onMouseDown={this.handleResizeStart}

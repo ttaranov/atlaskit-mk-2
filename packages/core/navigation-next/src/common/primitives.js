@@ -5,10 +5,15 @@ import { transitionTimingFunction, transitionDuration } from './constants';
 
 type ShadowProps = { isBold?: boolean, isOverDarkBg?: boolean };
 export const Shadow = ({ isBold, isOverDarkBg, ...props }: ShadowProps) => {
-  let width = isOverDarkBg ? 8 : 6;
-  if (isBold) width = isOverDarkBg ? 16 : 12;
+  let width = isOverDarkBg ? 6 : 3;
+  if (isBold) width = isOverDarkBg ? 12 : 6;
 
-  const colorStops = 'rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0) 66%';
+  const colorStops = `
+    rgba(0, 0, 0, 0.2) 0%,
+    rgba(0, 0, 0, 0.2) 1px,
+    rgba(0, 0, 0, 0.1) 1px,
+    rgba(0, 0, 0, 0) 100%
+  `;
 
   return (
     <div

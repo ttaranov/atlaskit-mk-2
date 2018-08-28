@@ -69,8 +69,11 @@ export default class LayoutManager extends Component<
     this.setState({ mouseIsOverNavigation: false });
   };
 
-  renderGlobalNavigation = (shouldRenderShadow: boolean) => {
-    const { globalNavigation: GlobalNavigation } = this.props;
+  renderGlobalNavigation = () => {
+    const {
+      containerNavigation,
+      globalNavigation: GlobalNavigation,
+    } = this.props;
     return (
       <ThemeProvider
         theme={theme => ({
@@ -79,9 +82,11 @@ export default class LayoutManager extends Component<
         })}
       >
         <Fragment>
-          {shouldRenderShadow ? (
-            <Shadow isOverDarkBg style={{ marginLeft: GLOBAL_NAV_WIDTH }} />
-          ) : null}
+          <Shadow
+            isBold={!!containerNavigation}
+            isOverDarkBg
+            style={{ marginLeft: GLOBAL_NAV_WIDTH }}
+          />
           <GlobalNavigation />
         </Fragment>
       </ThemeProvider>
@@ -139,7 +144,6 @@ export default class LayoutManager extends Component<
     } = this.props;
     const {
       isCollapsed,
-      isPeeking,
       isResizing,
       productNavWidth,
     } = navigationUIController.state;
@@ -167,9 +171,6 @@ export default class LayoutManager extends Component<
           onCollapseEnd={onCollapseEnd}
         >
           {({ transitionStyle, transitionState }) => {
-            const shouldRenderGlobalNavShadow =
-              isCollapsed && !isPeeking && !isTransitioning(transitionState);
-
             return (
               <NavigationContainer
                 onMouseEnter={this.mouseEnter}
@@ -189,7 +190,7 @@ export default class LayoutManager extends Component<
                 >
                   {({ isDragging, width }) => (
                     <ContainerNavigationMask>
-                      {this.renderGlobalNavigation(shouldRenderGlobalNavShadow)}
+                      {this.renderGlobalNavigation()}
                       {this.renderContentNavigation({
                         isDragging,
                         transitionState,
