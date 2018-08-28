@@ -47,14 +47,21 @@ export default class LayoutManager extends Component<LayoutManagerProps> {
 
   renderGlobalNavigation = (shouldRenderShadow: boolean) => {
     const { globalNavigation: GlobalNavigation } = this.props;
-    console.log('renderGlobalNavigation', this.props);
-    debugger; // eslint-disable-line
+    console.log(
+      'LayoutManager: renderGlobalNavigation',
+      this.props,
+      shouldRenderShadow,
+    );
+    // debugger; // eslint-disable-line
     return (
       <ThemeProvider
-        theme={theme => ({
-          mode: light, // If no theme already exists default to light mode
-          ...theme,
-        })}
+        theme={theme => {
+          console.log('LayoutManager: theme provider', theme);
+          return {
+            mode: light, // If no theme already exists default to light mode
+            ...theme,
+          };
+        }}
       >
         <Fragment>
           {shouldRenderShadow ? (
@@ -85,7 +92,7 @@ export default class LayoutManager extends Component<LayoutManagerProps> {
 
     console.log('LayoutManager: transition', args);
     console.log('LayoutManager: props', this.props);
-    debugger; // eslint-disable-line
+    // debugger; // eslint-disable-line
 
     return (
       <ContentNavigationWrapper
@@ -94,7 +101,7 @@ export default class LayoutManager extends Component<LayoutManagerProps> {
         disableInteraction={shouldDisableInteraction}
         style={transitionStyle}
       >
-        {isVisible ? (
+        {isVisible && (
           <ContentNavigation
             container={containerNavigation}
             isDragging={isDragging}
@@ -106,7 +113,7 @@ export default class LayoutManager extends Component<LayoutManagerProps> {
             transitionState={transitionState}
             width={width}
           />
-        ) : null}
+        )}
       </ContentNavigationWrapper>
     );
   };
@@ -134,7 +141,7 @@ export default class LayoutManager extends Component<LayoutManagerProps> {
       onCollapseStart,
       onCollapseEnd,
     );
-    debugger; // eslint-disable-line
+    // debugger; // eslint-disable-line
 
     return (
       <NavigationAnalyticsContext

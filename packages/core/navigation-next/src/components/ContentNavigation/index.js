@@ -29,7 +29,16 @@ function interpolateBlanketOpacity({ floor, ceil, val }) {
 
 export default class ContentNavigation extends Component<
   ContentNavigationProps,
+  { firstPageLoad: boolean },
 > {
+  state = {
+    firstPageLoad: true,
+  };
+
+  componentDidMount() {
+    this.setState({ firstPageLoad: false });
+  }
+
   render() {
     const {
       container: Container,
@@ -42,6 +51,8 @@ export default class ContentNavigation extends Component<
       width,
     } = this.props;
 
+    const { firstPageLoad } = this.state;
+
     const opacity = interpolateBlanketOpacity({
       floor: CONTENT_NAV_WIDTH,
       ceil: 0,
@@ -49,7 +60,9 @@ export default class ContentNavigation extends Component<
     });
     const overlayStyle = isDragging ? { opacity } : null;
     const overlayIsVisible = isPeeking || transitionState === 'exiting';
-
+    const transitionTimeout = firstPageLoad ? 0 : transitionDurationMs;
+    console.log('ContentNavigation: render props', this.props);
+    // debugger; // eslint-disable-line
     return (
       <Fragment>
         <ProductNavigation>
@@ -61,7 +74,7 @@ export default class ContentNavigation extends Component<
         </ProductNavigation>
         <Transition
           in={!!Container}
-          timeout={transitionDurationMs}
+          timeout={transitionTimeout}
           mountOnEnter
           unmountOnExit
         >

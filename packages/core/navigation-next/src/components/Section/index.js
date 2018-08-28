@@ -24,12 +24,15 @@ export default class Section extends PureComponent<SectionProps, SectionState> {
   }
 
   render() {
-    const { id, children } = this.props;
-
+    const { id, children, disableTransition } = this.props;
+    const transitionTimeout = disableTransition ? 0 : transitionDurationMs;
+    console.log('Section render', this.props);
     return (
       <TransitionGroup component={Fragment}>
-        <Transition key={id} timeout={transitionDurationMs}>
+        <Transition key={id} timeout={transitionTimeout}>
           {state => {
+            console.log('Section Transition render', state, this.state);
+            // debugger; // eslint-disable-line
             const { traversalDirection } = this.state;
             const css = getSectionWrapperStyles({ state, traversalDirection });
             const className = parseJss(css);

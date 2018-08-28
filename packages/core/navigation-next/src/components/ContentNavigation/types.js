@@ -11,4 +11,5 @@ export type ContentNavigationProps = {
   product: ComponentType<{}>,
   transitionState: 'entered' | 'entering' | 'exited' | 'exiting',
   width: number,
+  disableAnimation?: boolean,
 };

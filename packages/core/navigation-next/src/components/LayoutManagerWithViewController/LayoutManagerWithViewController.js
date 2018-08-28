@@ -19,33 +19,13 @@ import LayerInitialised from './LayerInitialised';
 
 const gridSize = gridSizeFn();
 
-const skeleton = (
-  <div css={{ padding: `${gridSize * 2}px 0` }}>
-    <Section>
-      {({ className }) => (
-        <div className={className}>
-          <SkeletonContainerHeader hasBefore />
-        </div>
-      )}
-    </Section>
-    <Section>
-      {({ className }) => (
-        <div className={className}>
-          <SkeletonItem hasBefore />
-          <SkeletonItem hasBefore />
-          <SkeletonItem hasBefore />
-        </div>
-      )}
-    </Section>
-  </div>
-);
-
 class LayoutManagerWithViewControllerBase extends Component<
   LayoutManagerWithViewControllerProps,
   LayoutManagerWithViewControllerState,
 > {
   state = {
     hasInitialised: false,
+    enableAnimationOnFirstLoad: false,
   };
 
   constructor(props: LayoutManagerWithViewControllerProps) {
@@ -53,22 +33,98 @@ class LayoutManagerWithViewControllerBase extends Component<
     this.renderContainerNavigation.displayName = 'ContainerNavigationRenderer';
     this.renderProductNavigation.displayName = 'ProductNavigationRenderer';
   }
+
   onInitialised = () => {
     this.setState({
       hasInitialised: true,
     });
   };
-  renderContainerNavigation = () => {
+
+  // shouldComponentUpdate(nextProps) {
+  //   console.log(
+  //     'LayoutManagerWithViewController: shouldComponentUpdate',
+  //     nextProps,
+  //   );
+  //   return (
+  //     nextProps.navigationUIController.state.isPeeking !==
+  //       this.props.avigationUIController.state.isPeeking ||
+  //     nextProps.navigationViewController.state.activeView !==
+  //       this.props.navigationViewController.state.activeView ||
+  //     nextProps.navigationViewController.state.activePeekView !==
+  //       this.props.navigationViewController.state.activePeekView
+  //   );
+  // }
+
+  componentDidMount() {
+    this.setState({ enableAnimationOnFirstLoad: true });
+  }
+
+  renderSkeleton = () => {
     const {
       navigationViewController: {
         state: { activeView },
       },
     } = this.props;
-    console.log('render container', activeView);
-    debugger; // eslint-disable-line
-    return activeView && activeView.type === 'container'
-      ? this.renderView(activeView)
-      : skeleton;
+    const { enableAnimationOnFirstLoad } = this.state;
+    console.log(
+      'LayoutManagerWithViewController: renderSkeleton',
+      activeView,
+      this.props,
+    );
+    return (
+      <div css={{ padding: `${gridSize * 2}px 0`, border: '1px solid red' }}>
+        <Section disableAnimation={enableAnimationOnFirstLoad}>
+          {({ className }) => (
+            <div className={className}>
+              <SkeletonContainerHeader hasBefore />
+            </div>
+          )}
+        </Section>
+        <Section disableAnimation={enableAnimationOnFirstLoad}>
+          {({ className }) => {
+            return (
+              <div className={className}>
+                <SkeletonItem hasBefore />
+                <SkeletonItem hasBefore />
+                <SkeletonItem hasBefore />
+                <SkeletonItem hasBefore />
+                <SkeletonItem hasBefore />
+              </div>
+            );
+          }}
+        </Section>
+      </div>
+    );
+  };
+
+  renderContainerNavigation = () => {
+    const {
+      navigationViewController: {
+        state: { activeView },
+      },
+      firstSkeleton,
+    } = this.props;
+
+    console.log(
+      'LayoutManagerWithViewController: render container renderContainerNavigation',
+      activeView,
+      firstSkeleton,
+      this.state,
+    );
+    // debugger; // eslint-disable-line
+
+    if (
+      [null, undefined, 'container'].includes(firstSkeleton) &&
+      !this.state.enableAnimationOnFirstLoad
+    ) {
+      return this.renderSkeleton();
+    }
+
+    if (activeView && activeView.type === 'container') {
+      return this.renderView(activeView);
+    }
+
+    return null;
   };
 
   renderGlobalNavigation = () => {
@@ -79,8 +135,11 @@ class LayoutManagerWithViewControllerBase extends Component<
       },
     } = this.props;
     const { hasInitialised } = this.state;
-    console.log('>>>>>>>>>>>>>>>>>>>');
-    debugger; // eslint-disable-line
+    console.log(
+      'LayoutManagerWithViewController: renderGlobalNavigation',
+      hasInitialised,
+    );
+    // // debugger; // eslint-disable-line
     /* We are embedding the LayerInitialised analytics component within global navigation so that
      * the event it fires can access the analytics context within LayerManager. The component
      * cannot be rendered directly within LayerManager since it needs access to view data which
@@ -105,9 +164,22 @@ class LayoutManagerWithViewControllerBase extends Component<
       navigationViewController: {
         state: { activeView, activePeekView },
       },
+      firstSkeleton,
     } = this.props;
-    console.log('render prod', activeView, activePeekView);
-    debugger; // eslint-disable-line
+    console.log(
+      'LayoutManagerWithViewController: renderProductNavigation',
+      activeView,
+      activePeekView,
+    );
+    // debugger; // eslint-disable-line
+
+    if (
+      [null, undefined, 'product'].includes(firstSkeleton) &&
+      !this.state.enableAnimationOnFirstLoad
+    ) {
+      return this.renderSkeleton();
+    }
+
     if (
       activePeekView &&
       (isPeeking || (activeView && activeView.type === 'container'))
@@ -117,11 +189,17 @@ class LayoutManagerWithViewControllerBase extends Component<
     if (activeView && activeView.type === 'product') {
       return this.renderView(activeView);
     }
-    return skeleton;
+
+    return null;
   };
 
   renderView(view) {
     const { customComponents } = this.props;
+    console.log(
+      'LayoutManagerWithViewController: renderView',
+      view,
+      customComponents,
+    );
     return (
       <div css={{ padding: `${gridSize * 2}px 0` }}>
         <ViewRenderer customComponents={customComponents} items={view.data} />
@@ -135,20 +213,26 @@ class LayoutManagerWithViewControllerBase extends Component<
       navigationViewController: {
         state: { activeView },
       },
+      firstSkeleton,
     } = this.props;
+    const { enableAnimationOnFirstLoad } = this.state;
 
+    console.log(
+      'LayoutManagerWithViewControllerBase RENDER: ',
+      activeView,
+      firstSkeleton,
+    );
+    // // debugger; // eslint-disable-line
     return (
       <NavigationAnalyticsContext
         data={{ attributes: { view: activeView && activeView.id } }}
       >
         <LayoutManager
           globalNavigation={this.renderGlobalNavigation}
-          containerNavigation={
-            activeView && activeView.type === 'container'
-              ? this.renderContainerNavigation
-              : null
-          }
+          containerNavigation={this.renderContainerNavigation}
           productNavigation={this.renderProductNavigation}
+          disableAnimation={enableAnimationOnFirstLoad}
+          firstSkeleton={firstSkeleton}
         >
           {children}
         </LayoutManager>

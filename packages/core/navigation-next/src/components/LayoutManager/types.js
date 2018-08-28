@@ -23,8 +23,11 @@ export type ConnectedLayoutManagerProps = {
   onCollapseStart?: CollapseListener,
   /** Called when the navigation completes collapsing. */
   onCollapseEnd?: CollapseListener,
+  disableAnimation?: boolean,
 };
 
 export type LayoutManagerProps = ConnectedLayoutManagerProps & {
   navigationUIController: UIController,
+  /** First skeleton to be rendered using SSR */
+  firstSkeleton?: 'product' | 'container',
 };

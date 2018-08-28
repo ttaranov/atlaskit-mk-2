@@ -17,6 +17,7 @@ export type SectionProps = {
    * with a styles object which should be applied to the outermost element to
    * enable transition animations. */
   children: RenderProvided => Node,
+  disableTransition?: boolean,
 };
 
 export type SectionState = {

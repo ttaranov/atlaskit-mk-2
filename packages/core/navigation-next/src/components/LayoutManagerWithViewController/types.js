@@ -13,10 +13,13 @@ export type LayoutManagerWithViewControllerProps = {
   globalNavigation: ComponentType<{}>,
   navigationUIController: UIController,
   navigationViewController: ViewController,
+  disableAnimation?: boolean, // TODO: revisit this name
+  firstSkeleton?: 'product' | 'container',
 };
 
 export type LayoutManagerWithViewControllerState = {
   hasInitialised: boolean,
+  enableAnimationOnFirstLoad: boolean,
 };
 
 export type LayerInitialisedProps = WithAnalyticsEventsProps & {
