@@ -247,6 +247,7 @@ export default class Editor extends React.Component<
                     popupsBoundariesElement={popupsBoundariesElement}
                     popupsScrollableElement={popupsScrollableElement}
                     disabled={!!disabled}
+                    containerElement={this.scrollContainer}
                   />
                 }
                 {editorDOMElement}
