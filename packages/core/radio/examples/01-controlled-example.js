@@ -1,16 +1,16 @@
 // @flow
 import React, { Component } from 'react';
 import { RadioGroup } from '../src';
-import type { ItemsPropType } from '../src/types';
+import type { OptionsPropType } from '../src/types';
 
 type State = {
   selectedValue: string | number | null,
-  items: ItemsPropType,
+  options: OptionsPropType,
 };
 export default class StatelessExample extends Component<void, State> {
   state = {
     selectedValue: null,
-    items: [
+    options: [
       { name: 'color2', value: 'red', label: 'Red' },
       { name: 'color2', value: 'blue', label: 'Blue' },
       { name: 'color2', value: 'yellow', label: 'Yellow' },
@@ -27,8 +27,8 @@ export default class StatelessExample extends Component<void, State> {
     return (
       <div>
         <RadioGroup
-          items={this.state.items}
-          defaultSelectedValue={this.state.items[0].value}
+          options={this.state.options}
+          defaultSelectedValue={this.state.options[0].value}
           label="Pick a color (Checked state isn't managed by the component):"
           onChange={this.setValue}
         />
