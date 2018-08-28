@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 78.0.4
+- [patch] Stop Grammarly from attempting to hook into the editor [e9db931](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e9db931)
+
 ## 78.0.3
 - [patch] Update Page Layout sizing to be more compact, fix quick-insert icon, fix issue with Popup not centering toolbar in certain situations [1effb83](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1effb83)
 
