@@ -38,7 +38,7 @@
     "@atlaskit/icon": "^13.3.1",
     "@atlaskit/toggle": "^5.0.7",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
-    "pretty-proptypes": "^0.2.2",
+    "pretty-proptypes": "^0.3.0",
     "react-dom": "^16.4.2"
   },
   "keywords": [

@@ -97,7 +97,7 @@ export class MediaPluginState {
   ) {
     this.reactContext = reactContext;
     this.options = options;
-    this.editorAppearance = editorAppearance;
+    this.editorAppearance = editorAppearance!;
     this.waitForMediaUpload =
       options.waitForMediaUpload === undefined
         ? true
