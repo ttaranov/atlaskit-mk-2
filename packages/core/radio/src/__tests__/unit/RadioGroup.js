@@ -81,7 +81,7 @@ describe(name, () => {
         });
       });
 
-      describe.only('selectedValue prop', () => {
+      describe('selectedValue prop', () => {
         it('sets the corresponding Radio instance isChecked prop to true', () => {
           const wrapper = mount(
             <RadioGroup
