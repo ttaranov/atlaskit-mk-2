@@ -28,7 +28,9 @@
     "bolt-query": "^1.1.4",
     "chalk": "^2.1.0",
     "extract-react-types-loader": "^0.2.2",
-    "netlify-cli": "^1.2.2"
+    "netlify-cli": "^1.2.2",
+    "node-fetch": "^2.2.0",
+    "tty-table": "^2.6.8"
   },
   "dependencies": {
     "@atlaskit/analytics-listeners": "^4.0.0",
