@@ -11,6 +11,7 @@ export type Coordinates = {
 };
 
 export interface Props {
+  zIndex?: number;
   className?: string;
   containerRef?: (node: HTMLElement) => void;
   target?: HTMLElement;
@@ -43,6 +44,7 @@ export default class FloatingToolbar extends PureComponent<Props, any> {
       popupsBoundariesElement,
       className,
       alignX = 'center',
+      zIndex,
     } = this.props;
 
     if (!target) {
@@ -53,6 +55,7 @@ export default class FloatingToolbar extends PureComponent<Props, any> {
       <Popup
         alignX={alignX}
         target={target}
+        zIndex={zIndex}
         mountTo={popupsMountPoint}
         boundariesElement={popupsBoundariesElement}
         offset={offset}

@@ -45,7 +45,6 @@ export const Overlay: ComponentClass<HTMLAttributes<{}>> = styled.div`
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s;
-  z-index: 1;
 `;
 
 export const PlaceholderFallback: ComponentClass<
