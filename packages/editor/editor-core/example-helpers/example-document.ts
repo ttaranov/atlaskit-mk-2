@@ -19,6 +19,22 @@ export const exampleDocument = {
   version: 1,
   content: [
     {
+      type: 'mediaSingle',
+      attrs: {
+        layout: 'full-width',
+      },
+      content: [
+        {
+          type: 'media',
+          attrs: {
+            type: 'file',
+            id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+            collection: 'MediaServicesSample',
+          },
+        },
+      ],
+    },
+    {
       type: 'paragraph',
       content: [
         {
