@@ -14,7 +14,7 @@ export default class AtlaskitListener extends React.Component<ListenerProps> {
     logger.debug('Processed Atlaskit event', payload);
 
     if (payload) {
-      sendEvent(client, logger)(payload);
+      sendEvent(logger, client)(payload);
     }
   };
 

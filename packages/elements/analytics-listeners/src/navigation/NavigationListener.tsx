@@ -14,7 +14,7 @@ export default class NavigationListener extends React.Component<ListenerProps> {
     logger.debug('Processed Navigation event', payload);
 
     if (payload) {
-      sendEvent(client, logger)(payload);
+      sendEvent(logger, client)(payload);
     }
   };
 
