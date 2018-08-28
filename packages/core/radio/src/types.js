@@ -2,7 +2,7 @@
 import type { Node } from 'react';
 
 // Used by RadioGroupStateless
-export type ItemPropType = {
+export type OptionPropType = {
   isDisabled?: boolean,
   isChecked?: boolean,
   label?: Node,
@@ -10,7 +10,41 @@ export type ItemPropType = {
   value?: string,
 };
 
-export type ItemsPropType = Array<ItemPropType>;
+export type OptionsPropType = Array<OptionPropType>;
+
+export type RadioIconProps = {
+  /* Boolean for field active state */
+  isActive?: boolean,
+  /* Field checked state */
+  isChecked?: boolean,
+  /* Field disabled state */
+  isDisabled?: boolean,
+  /* Field focused state */
+  isFocused?: boolean,
+  /* Field hovered state */
+  isHovered?: boolean,
+  /* Field invalid state */
+  isInvalid?: boolean,
+};
+
+export type RadioInputProps = RadioIconProps & {
+  /* Field required state */
+  isRequired?: boolean,
+  /* Optional onError callback */
+  onError?: (SyntheticEvent<*>) => void,
+  /* onChange event handler */
+  onChange: (SyntheticEvent<*>) => void,
+  /* onBlur event handler */
+  onBlur: (SyntheticEvent<*>) => void,
+  /* onFocus event handler */
+  onFocus: (SyntheticEvent<*>) => void,
+  /* onInvalid event handler, to hook into native validation */
+  onInvalid?: (SyntheticEvent<*>) => void,
+  /* Field name */
+  name?: string,
+  /* Field value */
+  value?: string,
+};
 
 export type RadioBasePropTypes = {
   children?: Node,
@@ -26,31 +60,10 @@ export type RadioBasePropTypes = {
   isChecked?: boolean,
   /** Field name */
   name?: string,
-  /** onChange event handler */
+  /** onChange event handler, passed into the props of each Radio Component instantiated within RadioGroup */
   onChange: (SyntheticEvent<*>) => void,
+  /** onInvalid event handler, passed into the props of each Radio Component instantiated within RadioGroup */
+  onInvalid?: (SyntheticEvent<*>) => void,
   /** Field value */
   value?: string,
-};
-
-export type RadioGroupBasePropTypes = {|
-  /** Mark whether this field is required for form validation. */
-  isRequired?: boolean,
-  /** Label to display above the radio button options. */
-  label?: string,
-  /** Called when the value changes; passed the event */
-  onRadioChange: (SyntheticEvent<*>) => void,
-|};
-
-export type RadioGroupStatelessPropTypes = {
-  ...RadioGroupBasePropTypes,
-  /** Items to be rendered by a single Radio component. Passes options down to
-   an AkRadio component, with label passed as children. */
-  items?: ItemsPropType,
-};
-
-export type RadioGroupPropTypes = {
-  ...RadioGroupBasePropTypes,
-  /** Items to be rendered by a single Radio component. Passes options down to
-   an AkRadio component, with label passed as children. */
-  items?: ItemsPropType,
 };
