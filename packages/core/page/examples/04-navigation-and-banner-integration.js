@@ -59,7 +59,7 @@ export default class NavigationExample extends Component<void, State> {
     return (
       /* This wrapping div exists to help this example display nicely on the
       atlaskit website. It probably shouldn't be in code otherwise. */
-      <div style={{ margin: '-16px' }}>
+      <div>
         <Page
           isBannerOpen={isErrorBannerOpen || isAnnouncementBannerOpen}
           bannerHeight={this.getOffset()}
