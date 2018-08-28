@@ -60,6 +60,24 @@ export function firePreQueryShownEvent(
   );
 }
 
+export function fireExperimentExposureEvent(
+  experimentId: string,
+  searchSessionId: string,
+  createAnalyticsEvent: CreateAnalyticsEventFn,
+) {
+  fireGasEvent(
+    createAnalyticsEvent,
+    'exposed',
+    'quickSearchExperiment',
+    '',
+    'operational',
+    {
+      searchSessionId,
+      experimentId,
+    },
+  );
+}
+
 const getQueryAttributes = query => {
   const sanitizedQuery = sanitizeSearchQuery(query);
   return {
