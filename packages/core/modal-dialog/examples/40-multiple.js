@@ -65,7 +65,7 @@ export default class ShowHideDemo extends Component<{}, State> {
                 onClose={this.close}
                 onCloseComplete={next && this.handleCloseComplete}
                 onStackChange={
-                  next ? id => this.handleStackChange(id, name) : null
+                  next ? id => this.handleStackChange(id, name) : undefined
                 }
                 heading={`Modal: ${name}`}
                 width={name}

@@ -73,7 +73,7 @@ export type Props = {
   /**
     Function that will be called when the exit transition is complete.
   */
-  onCloseComplete: ElementType => void,
+  onCloseComplete?: ElementType => void,
   /**
     Function that will be called when the enter transition is complete.
   */
@@ -126,14 +126,15 @@ class ModalWrapper extends Component<Props, State> {
     width: 'medium',
     isHeadingMultiline: true,
     onClose: () => {},
-    onCloseComplete: () => {},
   };
 
-  onModalClosed = (onExited?: () => any) => (e: ElementType) => {
+  onModalClosed = (onExited?: () => any) => (e: HTMLElement) => {
     if (onExited) {
       onExited();
     }
-    this.props.onCloseComplete(e);
+    if (this.props.onCloseComplete) {
+      this.props.onCloseComplete(e);
+    }
   };
 
   render() {

@@ -16,7 +16,8 @@ const verticalOffset = 16;
 
 type AnimationProps = {
   in: boolean,
-  onExited: any => void,
+  onExited?: HTMLElement => void,
+  onEntered?: (HTMLElement, boolean) => void,
   stackIndex?: number,
   children: ({ fade: Object, slide: Object }) => Node,
 };
@@ -25,9 +26,16 @@ export const Animation = ({
   in: hasEntered,
   stackIndex,
   onExited,
+  onEntered,
   children,
 }: AnimationProps) => (
-  <Transition in={hasEntered} timeout={duration} onExited={onExited} appear>
+  <Transition
+    in={hasEntered}
+    timeout={duration}
+    onExited={onExited}
+    onEntered={onEntered}
+    appear
+  >
     {status => {
       if (status === 'exited') return null;
       // Fade styles
