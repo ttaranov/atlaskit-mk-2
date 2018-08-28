@@ -126,10 +126,11 @@ export class Card extends Component<CardProps, CardState> {
     }
 
     const { id, collectionName } = identifier;
+    const resolvedId = await id;
 
     this.unsubscribe();
     this.subscription = context
-      .getFile(await id, { collectionName })
+      .getFile(resolvedId, { collectionName })
       .subscribe({
         next: async state => {
           const {
@@ -174,7 +175,7 @@ export class Card extends Component<CardProps, CardState> {
                 const height = getDataURIDimension('height', options);
                 try {
                   const allowAnimated = appearance !== 'small';
-                  const blob = await context.getImage(state.id, {
+                  const blob = await context.getImage(resolvedId, {
                     collection: collectionName,
                     mode: resizeMode,
                     height,

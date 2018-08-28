@@ -91,6 +91,10 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
   renderCards = () => {
     const { files } = this.state;
     const cards = files.map((upfrontId, key) => {
+      upfrontId.then(id => {
+        console.log(`<Card id="${id}" />`);
+      });
+
       return (
         <CardItemWrapper key={key}>
           <Card

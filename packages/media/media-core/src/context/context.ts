@@ -1,13 +1,9 @@
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import { of } from 'rxjs/observable/of';
-import { Subscriber } from 'rxjs/Subscriber';
-import { defer } from 'rxjs/observable/defer';
-import { concat } from 'rxjs/operators/concat';
-import { refCount } from 'rxjs/operators/refCount';
 import { startWith } from 'rxjs/operators/startWith';
 import { publishReplay } from 'rxjs/operators/publishReplay';
-
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 import {
   MediaStore,
   uploadFile,
@@ -38,6 +34,7 @@ import {
   GetFileOptions,
   FileState,
   mapMediaFileToFileState,
+  FilePreview,
 } from '../fileState';
 import FileStreamCache, { fileStreamsCache } from './fileStreamCache';
 import { getMediaTypeFromUploadableFile } from '../utils/getMediaTypeFromUploadableFile';
@@ -254,86 +251,80 @@ class ContextImpl implements Context {
   ): Observable<FileState> {
     let fileId: string;
     let mimeType = '';
+    let preview: FilePreview;
     // TODO [MSW-796]: get file size for base64
     const size = file.content instanceof Blob ? file.content.size : 0;
     const mediaType = getMediaTypeFromUploadableFile(file);
     const collectionName = file.collection;
     const name = file.name || ''; // name property is not available in base64 image
-    const fileStreamSubscribe = (observer: Subscriber<FileState>) => {
-      if (file.content instanceof Blob) {
-        mimeType = file.content.type;
-      }
+    const subject = new ReplaySubject<FileState>(1);
 
-      const { deferredFileId: onUploadFinish, cancel } = uploadFile(
-        file,
-        this.apiConfig,
-        {
-          onProgress: progress => {
-            if (fileId) {
-              observer.next({
-                progress,
-                name,
-                size,
-                mediaType,
-                mimeType,
-                id: fileId,
-                status: 'uploading',
-              });
-            }
-          },
-          onId: id => {
-            fileId = id;
-            const key = FileStreamCache.createKey(fileId, { collectionName });
-            fileStreamsCache.set(key, fileStream);
-            if (file.content instanceof Blob) {
-              observer.next({
-                name,
-                size,
-                mediaType,
-                mimeType,
-                id: fileId,
-                progress: 0,
-                status: 'uploading',
-                preview: {
-                  blob: file.content,
-                },
-              });
-            }
-          },
+    if (file.content instanceof Blob) {
+      mimeType = file.content.type;
+      preview = {
+        blob: file.content,
+      };
+    }
+    const { deferredFileId: onUploadFinish, cancel } = uploadFile(
+      file,
+      this.apiConfig,
+      {
+        onProgress: progress => {
+          if (fileId) {
+            subject.next({
+              progress,
+              name,
+              size,
+              mediaType,
+              mimeType,
+              id: fileId,
+              status: 'uploading',
+            });
+          }
         },
-      );
-
-      if (controller) {
-        controller.setAbort(cancel);
-      }
-
-      onUploadFinish
-        .then(() => {
-          observer.next({
-            id: fileId,
-            name,
-            size,
-            mediaType,
-            mimeType,
-            status: 'processing',
-          });
-          observer.complete();
-        })
-        .catch(error => {
-          // we can't use .catch(observer.error) due that will change the Subscriber context
-          observer.error(error);
-        });
-    };
-
-    const fileStream = new Observable<FileState>(fileStreamSubscribe).pipe(
-      concat(
-        defer(() => this.createDownloadFileStream(fileId, collectionName)),
-      ),
-      publishReplay(1),
-      refCount(),
+        onId: id => {
+          fileId = id;
+          const key = FileStreamCache.createKey(fileId, { collectionName });
+          fileStreamsCache.set(key, subject);
+          if (file.content instanceof Blob) {
+            subject.next({
+              name,
+              size,
+              mediaType,
+              mimeType,
+              id: fileId,
+              progress: 0,
+              status: 'uploading',
+              preview,
+            });
+          }
+        },
+      },
     );
 
-    return fileStream;
+    if (controller) {
+      controller.setAbort(cancel);
+    }
+
+    onUploadFinish
+      .then(id => {
+        subject.next({
+          id: fileId,
+          name,
+          size,
+          mediaType,
+          mimeType,
+          status: 'processing',
+          preview,
+        });
+        subject.complete();
+      })
+      .catch(error => {
+        // we can't use .catch(subject.error) due that will change the Subscriber context
+        subject.error(error);
+      });
+
+    return subject;
   }
 
   refreshCollection(collectionName: string, pageSize: number): void {
