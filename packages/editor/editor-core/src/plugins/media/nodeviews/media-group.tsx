@@ -112,24 +112,6 @@ export default class MediaGroupNode extends Component<
       >
         {this.props.children}
       </MediaFallback>
-
-      // <Wrapper>
-      //   <FilmstripView
-      //     animate={animate}
-      //     offset={offset}
-      //     onSize={this.handleSize}
-      //     onScroll={this.handleScroll}
-      //   >
-      //     {this.props.children}
-      //   </FilmstripView>
-      // </Wrapper>
-
-      /*
-
-media-group uses the fallback by deafult
-\
-media single uses when width or height is null
-*/
     );
   }
 

@@ -123,7 +123,7 @@ export default class MediaSingleNode extends Component<
 
       return (
         <MediaFallback>
-          {React.cloneElement(
+          {/* {React.cloneElement(
             this.child as ReactElement<any>,
             {
               cardDimensions: {
@@ -134,7 +134,9 @@ export default class MediaSingleNode extends Component<
               progress,
               onExternalImageLoaded: this.onExternalImageLoaded,
             } as MediaNodeProps,
-          )}
+          )} */}
+
+          {this.child}
         </MediaFallback>
       );
       // return (
