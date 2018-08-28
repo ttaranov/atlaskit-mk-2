@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 78.0.5
+- [patch] move tests under src [fd063e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fd063e3)
+
 ## 78.0.4
 - [patch] Stop Grammarly from attempting to hook into the editor [e9db931](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e9db931)
 
