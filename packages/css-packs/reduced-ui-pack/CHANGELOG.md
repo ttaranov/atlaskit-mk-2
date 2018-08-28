@@ -1,5 +1,20 @@
 # @atlaskit/reduced-ui-pack
 
+## 9.2.0
+- [minor] Add new icon [d36f760](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d36f760)
+- [patch] Add new icon for Roadmap [365460a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/365460a)
+
+## 9.1.2
+- [patch] Update warning message and fix test for reduced-ui-pack [4b166d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b166d8)
+- [none] Updated dependencies [4b166d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b166d8)
+  - @atlaskit/icon@13.2.6
+
+## 9.1.1
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/css-reset@3.0.1
+
 ## 9.1.0
 - [minor] Add a new star large icon [5dd7d0e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5dd7d0e)
 - [none] Updated dependencies [5dd7d0e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5dd7d0e)

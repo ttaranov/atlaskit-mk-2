@@ -1,5 +1,72 @@
 # @atlaskit/editor-cq-transformer
 
+## 5.0.7
+- [patch] Updated dependencies [911a570](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/911a570)
+  - @atlaskit/editor-test-helpers@6.0.5
+  - @atlaskit/editor-core@78.0.0
+
+## 5.0.6
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/util-data-test@10.0.7
+  - @atlaskit/editor-common@14.0.11
+  - @atlaskit/editor-test-helpers@6.0.3
+  - @atlaskit/editor-core@77.1.4
+
+## 5.0.5
+
+
+
+
+
+- [none] Updated dependencies [597e0bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/597e0bd)
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/editor-core@77.0.0
+  - @atlaskit/editor-test-helpers@6.0.0
+  - @atlaskit/editor-common@14.0.0
+- [none] Updated dependencies [61df453](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/61df453)
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/editor-common@14.0.0
+  - @atlaskit/editor-test-helpers@6.0.0
+  - @atlaskit/editor-core@77.0.0
+- [none] Updated dependencies [812a39c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/812a39c)
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/editor-core@77.0.0
+  - @atlaskit/editor-test-helpers@6.0.0
+  - @atlaskit/editor-common@14.0.0
+- [none] Updated dependencies [c8eb097](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8eb097)
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/editor-common@14.0.0
+  - @atlaskit/editor-test-helpers@6.0.0
+  - @atlaskit/editor-core@77.0.0
+- [patch] Updated dependencies [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/editor-common@14.0.0
+  - @atlaskit/editor-test-helpers@6.0.0
+  - @atlaskit/editor-core@77.0.0
+
+## 5.0.4
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/util-data-test@10.0.2
+  - @atlaskit/editor-common@13.2.7
+  - @atlaskit/editor-test-helpers@5.1.2
+  - @atlaskit/editor-core@76.4.5
+  - @atlaskit/button@9.0.4
+  - @atlaskit/spinner@9.0.4
+  - @atlaskit/docs@5.0.2
+
+## 5.0.3
+- [patch] Bump prosemirror-model to 1.6 in order to use toDebugString on Text node spec [fdd5c5d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd5c5d)
+- [none] Updated dependencies [fdd5c5d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd5c5d)
+  - @atlaskit/editor-common@13.2.6
+  - @atlaskit/editor-test-helpers@5.1.1
+  - @atlaskit/editor-core@76.4.2
+
+## 5.0.2
+- [patch] Improves type coverage by removing casts to any [8928280](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8928280)
+- [none] Updated dependencies [8928280](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8928280)
+  - @atlaskit/editor-core@76.0.3
+  - @atlaskit/editor-common@13.0.3
+
 ## 5.0.1
 
 

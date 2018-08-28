@@ -19,6 +19,7 @@ function createFixture(documentPromise: Promise<any>) {
   PDFJSViewer.PDFViewer = jest.fn(() => {
     return {
       setDocument: jest.fn(),
+      firstPagePromise: new Promise(() => {}),
     };
   });
   const el = mount(<PDFRenderer src={''} onClose={onClose} />);

@@ -28,14 +28,14 @@ import { handleCloudFetchingEvent } from '../popup/middleware/handleCloudFetchin
 import searchGiphy from '../popup/middleware/searchGiphy';
 import hidePopupMiddleware from '../popup/middleware/hidePopup';
 import sendUploadEventMiddleware from '../popup/middleware/sendUploadEvent';
-import { PopupUploadEventEmitter } from '../components/popup';
+import { PopupConfig, PopupUploadEventEmitter } from '../components/popup';
 
 export default (
   eventEmitter: PopupUploadEventEmitter,
   context: Context,
-  useNewUploadService?: boolean,
+  config: Partial<PopupConfig>,
 ): Store<State> => {
-  const { userAuthProvider, serviceHost, authProvider } = context.config;
+  const { userAuthProvider, authProvider } = context.config;
   if (!userAuthProvider) {
     throw new Error('userAuthProvider must be provided in the context');
   }
@@ -44,17 +44,15 @@ export default (
   const fetcher = new MediaApiFetcher();
   const wsProvider = new WsProvider();
   const cloudService = new CloudService(userAuthProvider);
-
   return createStore(
     reducers,
     {
       ...defaultState,
-      apiUrl: serviceHost,
       redirectUrl,
       tenantAuthProvider: authProvider,
       userAuthProvider,
       context,
-      useNewUploadService,
+      config,
     } as Partial<State>,
     composeWithDevTools(
       applyMiddleware(

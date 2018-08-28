@@ -66,8 +66,17 @@ class EditorWithState extends Editor {
     subscribeForListStateChanges(view, eventDispatcher);
   }
 
-  onEditorDestroyed(instance: { view: EditorView; transformer?: any }) {
+  onEditorDestroyed(instance: {
+    view: EditorView;
+    eventDispatcher: any;
+    transformer?: any;
+  }) {
     super.onEditorDestroyed(instance);
+
+    const { eventDispatcher, view } = instance;
+    unsubscribeFromBlockStateChanges(view, eventDispatcher);
+    unsubscribeFromListStateChanges(view, eventDispatcher);
+
     bridge.editorActions._privateUnregisterEditor();
     bridge.editorView = null;
     bridge.mentionsPluginState = null;
@@ -97,29 +106,43 @@ function sendToNative(state) {
 function subscribeForTextFormatChanges(view: EditorView, eventDispatcher: any) {
   let textFormattingPluginState = textFormattingStateKey.getState(view.state);
   bridge.textFormattingPluginState = textFormattingPluginState;
-  if (textFormattingPluginState) {
-    textFormattingPluginState.subscribe(state =>
-      toNativeBridge.updateTextFormat(JSON.stringify(valueOfMarkState(state))),
-    );
-  }
+  eventDispatcher.on((textFormattingStateKey as any).key, state => {
+    toNativeBridge.updateTextFormat(JSON.stringify(valueOfMarkState(state)));
+  });
 }
 
+const blockStateUpdated = state => {
+  toNativeBridge.updateBlockState(state.currentBlockType.name);
+};
+
 function subscribeForBlockStateChanges(view: EditorView, eventDispatcher: any) {
-  let blockState = blockPluginStateKey.getState(view.state);
-  bridge.blockState = blockState;
-  if (blockState) {
-    blockState.subscribe(state =>
-      toNativeBridge.updateBlockState(state.currentBlockType.name),
-    );
-  }
+  bridge.blockState = blockPluginStateKey.getState(view.state);
+  eventDispatcher.on((blockPluginStateKey as any).key, blockStateUpdated);
 }
+
+function unsubscribeFromBlockStateChanges(
+  view: EditorView,
+  eventDispatcher: any,
+) {
+  eventDispatcher.off((blockPluginStateKey as any).key, blockStateUpdated);
+  bridge.blockState = undefined;
+}
+
+const listStateUpdated = state => {
+  toNativeBridge.updateListState(JSON.stringify(valueOfListState(state)));
+};
 
 function subscribeForListStateChanges(view: EditorView, eventDispatcher: any) {
   const listState: ListsState = listsStateKey.getState(view.state);
   bridge.listState = listState;
-  eventDispatcher.on(listsStateKey, state => {
-    toNativeBridge.updateListState(JSON.stringify(valueOfListState(state)));
-  });
+  eventDispatcher.on((listsStateKey as any).key, listStateUpdated);
+}
+
+function unsubscribeFromListStateChanges(
+  view: EditorView,
+  eventDispatcher: any,
+) {
+  eventDispatcher.off((listsStateKey as any).key, listStateUpdated);
 }
 
 function getToken(context?: any) {
@@ -127,10 +150,15 @@ function getToken(context?: any) {
 }
 
 function getUploadContext(): Promise<any> {
+  // TODO Make sure getToken returns baseUrl and revert that back to just getToken
+  const authProviderWithBaseUrl = (context?: any) =>
+    getToken(context).then(auth => {
+      auth.baseUrl = toNativeBridge.getServiceHost();
+      return auth;
+    });
   return Promise.resolve(
     ContextFactory.create({
-      serviceHost: toNativeBridge.getServiceHost(),
-      authProvider: getToken,
+      authProvider: authProviderWithBaseUrl,
     }),
   );
 }
@@ -153,13 +181,22 @@ export default function mobileEditor() {
       media={{
         customMediaPicker: new MobilePicker(),
         provider: Promise.resolve(createMediaProvider()),
+        allowMediaSingle: true,
       }}
-      allowPanel={true}
-      allowCodeBlocks={true}
       allowLists={true}
       onChange={() => {
         toNativeBridge.updateText(bridge.getContent());
       }}
+      allowPanel={true}
+      allowCodeBlocks={true}
+      allowTables={{
+        allowControls: false,
+      }}
+      allowExtension={true}
+      allowTextColor={true}
+      allowDate={true}
+      allowRule={true}
+      allowTasksAndDecisions={true}
     />
   );
 }

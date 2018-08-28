@@ -6,6 +6,10 @@ import { randomJiraIconUrl } from './utils/mockData';
 
 const defaultProps = {
   resultId: 'result_id',
+  type: 'base',
+  isSelected: false,
+  isCompact: false,
+  onClick: () => {},
 };
 
 /*eslint-disable */

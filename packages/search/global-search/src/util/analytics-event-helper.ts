@@ -1,7 +1,9 @@
 import * as Rusha from 'rusha';
 import {
   sanitizeSearchQuery,
+  sanitizeContainerId,
   ShownAnalyticsAttributes,
+  PerformanceTiming,
   DEFAULT_GAS_CHANNEL,
   DEFAULT_GAS_ATTRIBUTES,
   DEFAULT_GAS_SOURCE,
@@ -16,10 +18,11 @@ const fireGasEvent = (
   actionSubjectId: string,
   eventType: EventType,
   extraAtrributes: object,
+  nonPrivacySafeAttributes?: object | null,
 ): void => {
   if (createAnalyticsEvent) {
     const event = createAnalyticsEvent();
-    const payload = {
+    const payload: GasPayload = {
       action,
       actionSubject,
       actionSubjectId,
@@ -30,6 +33,9 @@ const fireGasEvent = (
         ...DEFAULT_GAS_ATTRIBUTES,
       },
     };
+    if (nonPrivacySafeAttributes) {
+      payload.nonPrivacySafeAttributes = nonPrivacySafeAttributes;
+    }
     event.update(payload).fire(DEFAULT_GAS_CHANNEL);
   }
 };
@@ -54,6 +60,24 @@ export function firePreQueryShownEvent(
   );
 }
 
+export function fireExperimentExposureEvent(
+  experimentId: string,
+  searchSessionId: string,
+  createAnalyticsEvent: CreateAnalyticsEventFn,
+) {
+  fireGasEvent(
+    createAnalyticsEvent,
+    'exposed',
+    'quickSearchExperiment',
+    '',
+    'operational',
+    {
+      searchSessionId,
+      experimentId,
+    },
+  );
+}
+
 const getQueryAttributes = query => {
   const sanitizedQuery = sanitizeSearchQuery(query);
   return {
@@ -64,18 +88,33 @@ const getQueryAttributes = query => {
   };
 };
 
+const getNonPrivacySafeAttributes = query => {
+  return {
+    query: sanitizeSearchQuery(query),
+  };
+};
+
 export function fireTextEnteredEvent(
   query: string,
   searchSessionId: string,
   queryVersion: number,
+  isSendSearchTermsEnabled?: boolean,
   createAnalyticsEvent?: CreateAnalyticsEventFn,
 ) {
-  fireGasEvent(createAnalyticsEvent, 'entered', 'text', '', 'track', {
-    queryId: null,
-    queryVersion: queryVersion,
-    ...getQueryAttributes(query),
-    searchSessionId: searchSessionId,
-  });
+  fireGasEvent(
+    createAnalyticsEvent,
+    'entered',
+    'text',
+    'globalSearchInputBar',
+    'track',
+    {
+      queryId: null,
+      queryVersion: queryVersion,
+      ...getQueryAttributes(query),
+      searchSessionId: searchSessionId,
+    },
+    isSendSearchTermsEnabled ? getNonPrivacySafeAttributes(query) : undefined,
+  );
 }
 
 export function fireDismissedEvent(
@@ -93,14 +132,14 @@ export function fireDismissedEvent(
 }
 export function firePostQueryShownEvent(
   resultsDetails: ShownAnalyticsAttributes,
-  elapsedMs: number,
-  quickNavElapsedMs: number,
+  timings: PerformanceTiming,
   searchSessionId: string,
   query: string,
   createAnalyticsEvent: CreateAnalyticsEventFn,
 ) {
   const event = createAnalyticsEvent();
 
+  const { elapsedMs, ...otherPerformanceTimings } = timings;
   const payload: GasPayload = {
     action: 'shown',
     actionSubject: 'searchResults',
@@ -111,7 +150,7 @@ export function firePostQueryShownEvent(
       ...getQueryAttributes(query),
       postQueryRequestDurationMs: elapsedMs,
       searchSessionId,
-      quickNavElapsedMs,
+      ...otherPerformanceTimings,
       ...resultsDetails,
       ...DEFAULT_GAS_ATTRIBUTES,
     },
@@ -126,6 +165,9 @@ const transformSearchResultEventData = (eventData: SearchResultEvent) => ({
   sectionIndex: eventData.sectionIndex,
   globalIndex: eventData.index,
   indexWithinSection: eventData.indexWithinSection,
+  containerId: sanitizeContainerId(eventData.containerId),
+  resultCount: eventData.resultCount,
+  experimentId: eventData.experimentId,
 });
 
 const hash = (str: string): string =>
@@ -140,6 +182,9 @@ export interface SearchResultEvent {
   sectionIndex: string;
   index: string;
   indexWithinSection: string;
+  containerId?: string;
+  resultCount?: string;
+  experimentId?: string;
 }
 
 export interface KeyboardControlEvent extends SearchResultEvent {
@@ -156,6 +201,8 @@ export interface AdvancedSearchSelectedEvent extends SelectedSearchResultEvent {
   queryVersion: number;
   queryId: null | string;
   wasOnNoResultsScreen: boolean;
+  trigger?: string;
+  isLoading: boolean;
 }
 
 export type AnalyticsNextEvent = {
@@ -186,6 +233,19 @@ export function fireSelectedSearchResult(
   );
 }
 
+/**
+ * checks if advanced link is clicked on no result screen
+ * @param eventData
+ */
+const checkOnNoResultScreen = eventData => {
+  const index = eventData.index || 0;
+  const sectionIndex = eventData.sectionIndex || 0;
+  const resultCount = eventData.resultCount || 0;
+  // no result screen if results count is 2 (2 advanced confluence search and advanced people search)
+  // or when index = 0 and section index is 1 => empty first section
+  return +!index === 0 && (+sectionIndex === 1 || +resultCount === 2);
+};
+
 export function fireSelectedAdvancedSearch(
   eventData: AdvancedSearchSelectedEvent,
   searchSessionId: string,
@@ -204,9 +264,9 @@ export function fireSelectedAdvancedSearch(
       newTab,
       queryVersion,
       queryId: null,
+      isLoading: eventData.isLoading,
       ...getQueryAttributes(query),
-      wasOnNoResultsScreen:
-        +eventData.index === 0 && +eventData.sectionIndex === 1,
+      wasOnNoResultsScreen: checkOnNoResultScreen(eventData),
       ...transformSearchResultEventData(eventData),
     },
   );

@@ -560,7 +560,11 @@ export default class EmojiPickerComponent extends PureComponent<Props, State> {
     const classes = [styles.emojiPicker];
 
     const picker = (
-      <div className={classNames(classes)} ref={this.handlePickerRef}>
+      <div
+        className={classNames(classes)}
+        ref={this.handlePickerRef}
+        data-emoji-picker-container
+      >
         <CategorySelector
           activeCategoryId={activeCategory}
           dynamicCategories={dynamicCategories}

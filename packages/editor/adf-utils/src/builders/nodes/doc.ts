@@ -17,6 +17,7 @@ import {
   TableDefinition,
   TaskItemDefinition,
   TaskListDefinition,
+  BlockCardDefinition,
 } from '@atlaskit/editor-common';
 
 import { DocNode, TopLevel } from '@atlaskit/editor-common';
@@ -46,4 +47,5 @@ export {
   TableDefinition,
   TaskItemDefinition,
   TaskListDefinition,
+  BlockCardDefinition,
 };

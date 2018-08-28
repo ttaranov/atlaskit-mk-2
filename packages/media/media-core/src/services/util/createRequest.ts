@@ -108,7 +108,7 @@ export default (requesterOptions: RequesterOptions): CreateRequestFunc => {
   const {
     preventPreflight,
     collectionName,
-    config: { authProvider, serviceHost },
+    config: { authProvider },
   } = requesterOptions;
 
   return requestOptions => {
@@ -119,14 +119,19 @@ export default (requesterOptions: RequesterOptions): CreateRequestFunc => {
       Promise.all([
         buildHeaders(auth, headers, preventPreflight, responseType),
         buildParams(auth, params, preventPreflight, collectionName),
+        auth.baseUrl,
       ]);
 
     const source = axios.CancelToken.source();
-    const sendAxiosRequest = ([headers, params]: object[]) =>
+    const sendAxiosRequest = ([headers, params, baseUrl]: [
+      object,
+      object,
+      string
+    ]) =>
       axios({
         method: method || 'get',
         url,
-        baseURL: serviceHost,
+        baseURL: baseUrl,
         headers,
         params,
         data,

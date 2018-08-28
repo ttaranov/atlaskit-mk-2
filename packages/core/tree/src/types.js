@@ -27,4 +27,7 @@ export type FlattenedItem = {|
   path: Path,
 |};
 
-export type TargetPosition = 'above' | 'below' | 'ontop';
+export type TreePosition = {|
+  parentId: ItemId,
+  index: number,
+|};

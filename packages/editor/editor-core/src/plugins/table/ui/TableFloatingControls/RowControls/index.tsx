@@ -22,7 +22,7 @@ export interface Props {
   hoverRows: (rows: number[], danger?: boolean) => void;
   dangerRows?: number[];
   hoveredRows?: number[];
-  resetHoverSelection: () => void;
+  clearHoverSelection: () => void;
   isTableInDanger?: boolean;
 }
 
@@ -79,6 +79,7 @@ export default class RowControls extends Component<Props, any> {
       editorView: { state },
       isTableHovered,
       isTableInDanger,
+      dangerRows,
     } = this.props;
 
     if (
@@ -89,7 +90,7 @@ export default class RowControls extends Component<Props, any> {
       classNames.push('active');
     }
 
-    if (this.props.dangerRows!.indexOf(i) !== -1 || isTableInDanger) {
+    if ((dangerRows || []).indexOf(i) !== -1 || isTableInDanger) {
       classNames.push('danger');
     }
 
@@ -139,7 +140,7 @@ export default class RowControls extends Component<Props, any> {
           <HeaderButton
             onClick={() => this.props.selectRow(i)}
             onMouseOver={() => this.props.hoverRows([i])}
-            onMouseOut={() => this.props.resetHoverSelection()}
+            onMouseOut={() => this.props.clearHoverSelection()}
           />
           {/* tslint:enable:jsx-no-lambda */}
           {!(

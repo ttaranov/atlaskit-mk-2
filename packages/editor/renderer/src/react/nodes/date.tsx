@@ -8,14 +8,14 @@ import {
 
 export interface Props {
   timestamp: string;
-  parentIsTask?: boolean;
+  parentIsIncompleteTask?: boolean;
 }
 
 export default class Date extends PureComponent<Props, {}> {
   render() {
-    const { timestamp, parentIsTask } = this.props;
+    const { timestamp, parentIsIncompleteTask } = this.props;
     const className =
-      !!parentIsTask && isPastDate(timestamp)
+      !!parentIsIncompleteTask && isPastDate(timestamp)
         ? 'date-node date-node-highlighted'
         : 'date-node';
     return (
@@ -24,7 +24,7 @@ export default class Date extends PureComponent<Props, {}> {
         data-node-type="date"
         data-timestamp={timestamp}
       >
-        {parentIsTask
+        {parentIsIncompleteTask
           ? timestampToTaskContext(timestamp)
           : timestampToString(timestamp)}
       </span>

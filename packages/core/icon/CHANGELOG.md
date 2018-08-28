@@ -1,5 +1,60 @@
 # @atlaskit/icon
 
+## 13.4.0
+- [minor] Add the new check circle outline [22af4c5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/22af4c5)
+
+## 13.3.0
+- [minor] Add new icon [d36f760](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d36f760)
+- [patch] Add new icon for Roadmap [7cf05b3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7cf05b3)
+
+## 13.2.6
+- [patch] Update warning message and fix test for reduced-ui-pack [4b166d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b166d8)
+- [none] Updated dependencies [4b166d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b166d8)
+
+## 13.2.5
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/tooltip@12.0.9
+  - @atlaskit/modal-dialog@6.0.9
+  - @atlaskit/field-text@7.0.6
+  - @atlaskit/button@9.0.6
+  - @atlaskit/docs@5.0.6
+
+## 13.2.4
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/tooltip@12.0.5
+  - @atlaskit/modal-dialog@6.0.6
+  - @atlaskit/field-text@7.0.4
+  - @atlaskit/button@9.0.5
+  - @atlaskit/theme@5.1.3
+
+## 13.2.3
+- [patch] Added pointer-events: none targeting the <svg> element within the Icon component to prevent type errors in JS [b755d8a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b755d8a)
+- [none] Updated dependencies [b755d8a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b755d8a)
+
+## 13.2.2
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/tooltip@12.0.4
+  - @atlaskit/button@9.0.4
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/field-text@7.0.3
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/modal-dialog@6.0.5
+
+## 13.2.1
+- [patch] Add a SSR test for every package, add react-dom and build-utils in devDependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+- [none] Updated dependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+  - @atlaskit/tooltip@12.0.3
+  - @atlaskit/modal-dialog@6.0.4
+  - @atlaskit/field-text@7.0.2
+  - @atlaskit/button@9.0.3
+  - @atlaskit/theme@5.1.1
+
+## 13.2.0
+- [minor] Add Layout Type icons for the Editor. ED-4196 [259ef37](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/259ef37)
+- [none] Updated dependencies [259ef37](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/259ef37)
+
 ## 13.1.1
 - [patch] Updated dependencies [e6b1985](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e6b1985)
   - @atlaskit/tooltip@12.0.0

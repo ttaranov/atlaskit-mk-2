@@ -16,21 +16,21 @@ const typeAheadPlugin: EditorPlugin = {
   name: 'typeAhead',
 
   marks() {
-    return [{ name: 'typeAheadQuery', mark: typeAheadQuery, rank: 1300 }];
+    return [{ name: 'typeAheadQuery', mark: typeAheadQuery }];
   },
 
   pmPlugins(typeAhead: Array<TypeAheadHandler> = []) {
     return [
       {
-        rank: 600,
+        name: 'typeAhead',
         plugin: ({ dispatch }) => createPlugin(dispatch, typeAhead),
       },
       {
-        rank: 620,
+        name: 'typeAheadInputRule',
         plugin: ({ schema }) => inputRulePlugin(schema, typeAhead),
       },
       {
-        rank: 640,
+        name: 'typeAheadKeymap',
         plugin: () => keymapPlugin(),
       },
     ];

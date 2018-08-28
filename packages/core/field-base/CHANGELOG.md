@@ -1,5 +1,55 @@
 # @atlaskit/field-base
 
+## 11.0.5
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/spinner@9.0.6
+  - @atlaskit/input@4.0.4
+  - @atlaskit/inline-dialog@9.0.2
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/docs@5.0.6
+
+## 11.0.4
+
+- [patch] Fieldbase now using new inline-dialog and @atlaskit/popper under the hood [a3109d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a3109d3)
+
+
+- [patch] Updated dependencies [1d9e75a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1d9e75a)
+  - @atlaskit/inline-dialog@9.0.0
+- [none] Updated dependencies [a3109d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a3109d3)
+  - @atlaskit/inline-dialog@9.0.0
+- [none] Updated dependencies [87d45d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87d45d3)
+  - @atlaskit/inline-dialog@9.0.0
+- [none] Updated dependencies [a08b0c2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a08b0c2)
+  - @atlaskit/inline-dialog@9.0.0
+
+## 11.0.3
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/inline-dialog@8.0.4
+  - @atlaskit/input@4.0.3
+  - @atlaskit/theme@5.1.3
+  - @atlaskit/spinner@9.0.5
+  - @atlaskit/icon@13.2.4
+
+## 11.0.2
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/inline-dialog@8.0.3
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/input@4.0.2
+  - @atlaskit/spinner@9.0.4
+  - @atlaskit/docs@5.0.2
+
+## 11.0.1
+- [patch] Add a SSR test for every package, add react-dom and build-utils in devDependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+- [none] Updated dependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+  - @atlaskit/inline-dialog@8.0.2
+  - @atlaskit/input@4.0.1
+  - @atlaskit/theme@5.1.1
+  - @atlaskit/spinner@9.0.3
+  - @atlaskit/icon@13.2.1
+
 ## 11.0.0
 
 - [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)

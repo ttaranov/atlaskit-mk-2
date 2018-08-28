@@ -20,8 +20,6 @@ export default class ObjectResult extends PureComponent<Props> {
     isCompact: false,
     isSelected: false,
     onClick: () => {},
-    onMouseEnter: () => {},
-    onMouseLeave: () => {},
     type: OBJECT_RESULT_TYPE,
   };
 

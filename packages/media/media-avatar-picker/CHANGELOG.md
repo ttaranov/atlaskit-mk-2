@@ -1,5 +1,53 @@
 # @atlaskit/media-avatar-picker
 
+## 10.0.3
+- [patch] Updated dependencies [911a570](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/911a570)
+  - @atlaskit/media-test-helpers@17.0.0
+
+## 10.0.2
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/media-ui@5.1.2
+
+## 10.0.1
+- [patch] Use Camera class in avatar picker [335ab1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/335ab1e)
+- [patch] Updated dependencies [335ab1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/335ab1e)
+  - @atlaskit/media-ui@5.1.0
+
+## 10.0.0
+- [major] Updated dependencies [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+  - @atlaskit/media-test-helpers@16.0.0
+
+## 9.2.1
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/media-ui@5.0.2
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/button@9.0.4
+  - @atlaskit/media-test-helpers@15.2.1
+  - @atlaskit/field-range@5.0.2
+  - @atlaskit/spinner@9.0.4
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/modal-dialog@6.0.5
+
+## 9.2.0
+
+
+
+
+- [patch] Updated dependencies [fa6f865](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fa6f865)
+  - @atlaskit/media-ui@5.0.0
+  - @atlaskit/media-test-helpers@15.1.0
+- [patch] Updated dependencies [fdd03d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd03d8)
+  - @atlaskit/media-ui@5.0.0
+  - @atlaskit/media-test-helpers@15.1.0
+- [patch] Updated dependencies [49c8425](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49c8425)
+  - @atlaskit/media-ui@5.0.0
+  - @atlaskit/media-test-helpers@15.1.0
+- [minor] Updated dependencies [3476e01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3476e01)
+  - @atlaskit/media-ui@5.0.0
+
+## 9.1.0
+- [minor] fix panning and origin problems. minor visual improvements. [2045263](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2045263)
+
 ## 9.0.0
 
 - [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)

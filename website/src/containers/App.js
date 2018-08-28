@@ -22,7 +22,6 @@ import ExamplesModal from '../pages/Package/ExamplesModal';
 import AnalyticsListeners from '../components/Analytics/AnalyticsListeners';
 
 import Nav from './Nav';
-import { GOOGLE_ANALYTICS_ID } from '../constants';
 
 // eslint-disable-next-line
 injectGlobal`

@@ -147,14 +147,6 @@ export const ErrorImage = styled.img`
   user-select: none;
 `;
 
-export const Img: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
-  transition: transform 0.2s;
-  transform-origin: center;
-  max-width: 100%;
-  max-height: 100%;
-  user-select: none;
-`;
-
 export const Video: ComponentClass<VideoHTMLAttributes<{}>> = styled.video`
   width: 100vw;
   height: 100vh;
@@ -217,9 +209,35 @@ export const ImageWrapper = styled.div`
   width: 100vw;
   height: 100vh;
   overflow: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+`;
+
+export const BaselineExtend = styled.div`
+  height: 100%;
+  display: inline-block;
+  vertical-align: middle;
+`;
+
+export type ImgProps = {
+  canDrag: boolean;
+  isDragging: boolean;
+};
+
+export const Img: ComponentClass<ImgHTMLAttributes<{}> & ImgProps> = styled.img`
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  cursor: ${({ canDrag, isDragging }: ImgProps) => {
+    if (canDrag && isDragging) {
+      return 'grabbing';
+    } else if (canDrag) {
+      return 'grab';
+    } else {
+      return 'auto';
+    }
+  }};
 `;
 
 export const MedatadataTextWrapper = styled.div`

@@ -1,15 +1,22 @@
 import { Subject } from 'rxjs';
-import { Context, MediaItem, FileItem } from '@atlaskit/media-core';
+import {
+  Context,
+  MediaItem,
+  FileItem,
+  Auth,
+  ContextConfig,
+} from '@atlaskit/media-core';
 import { Stubs } from '../_stubs';
 import { createDownloadUrl } from '../../src/newgen/domain/download';
 
 function createContext(subject: Subject<MediaItem>): Context {
   const token = 'some-token';
   const clientId = 'some-client-id';
-  const serviceHost = 'some-service-host';
-  const authProvider = jest.fn(() => Promise.resolve({ token, clientId }));
-  const contextConfig = {
-    serviceHost,
+  const baseUrl = 'some-service-host';
+  const authProvider = jest.fn(() =>
+    Promise.resolve<Auth>({ token, clientId, baseUrl }),
+  );
+  const contextConfig: ContextConfig = {
     authProvider,
   };
   return Stubs.context(

@@ -52,8 +52,8 @@ end to end. If you have any questions/problems, feel free to contact James Kyle
 or Luke Batchelor.
 
 A more in-depth view of how we want to work with other teams and open source
-contributions can be found at
-[atlaskit.atlassian.com/docs/guides/contributing](atlaskit.atlassian.com/docs/guides/contributing).
+contributions can be found on the
+[website](https://atlaskit.atlassian.com/docs/guides/contributing).
 
 That all being said, let's dive into it:
 
@@ -93,9 +93,36 @@ bolt install
 This will take a minute or two the first time, but every subsequent run should
 only take about a second.
 
+#### Linux / Mac / Windows
+
+The main `bolt` / `bolt install` commands work on all platforms. However, custom commands may not work in a Windows environment (i.e. `bolt start`). For now, if you're running Windows, you'll have to do the following:
+
+1. Run `bolt` / `bolt install` from `cmd.exe`. It doesn't work in WSL.
+2. Run any custom commands from WSL. We haven't made our custom scripts cross-platform yet.
+
+#### In case you use IntelliJ IDEA or WebStorm
+
+After running `bolt install` you will most likely experiencing issues with IDE indexing taking forever. VS Code does not have this problem. If you do not want to change the IDE you use, do the following: 
+
+1. Close IntelliJ
+1. run in terminal 
+    ```
+    {find . -type d -name 'node_modules' | grep 'node_modules$' | grep -v 'node_modules/' | while read line ; do echo "<excludeFolder url=\"file://\$MODULE_DIR$/$line\" />"; done;} | pbcopy
+    ``` 
+    This will find paths to each node_modules/ folder in the project, create <excludeFolder> tags for each of them and copy resulting text to clipboard 
+1. Open `.idea/atlaskit.iml` in your favorite text editor. 
+1. Pres Ctrl + V to paste text from clipboard after existing `<excludeFolder>` tags. Or paste inside `<content>` if you do not have `<excludeFolder>` tags. Save the file.
+1. Open IntelliJ. You should be fine
+
+Unfortunately, you will have to repeat this process if you pulled repository and new packages were introduced.
+
+The root of this problem is in cyclical symbolic links between packages in node_modules, which exist because atlaskit-mk-2 is a mono repository. 
+IntelliJ and WebStorm don't handle it properly. There are tickets raised in YouTrack to handle this situation.
+
+
 ## Exploring the Project
 
-See the [directory structure docs](docs/guides/00-directory-structure.md) for
+See the [directory structure docs](https://atlaskit.atlassian.com/docs/guides/directory-structure) for
 more information.
 
 ## Writing new code
@@ -118,7 +145,7 @@ bolt upgrade <dep>[@<version>] [--dev/peer/etc]
 bolt remove <dep>[@<version>] [--dev/peer/etc]
 ```
 
-> Note: The bolt updgrade command is not implemented yet. To bump an external
+> Note: The `bolt upgrade` command is not implemented yet. To bump an external
 > dep, you need to bump it in the root
 >
 > ```
@@ -261,7 +288,7 @@ atlastart flag,tooltip
  ```
  - webdriver tests
  ```sh
-  yarn run test:webriver
+  yarn run test:webdriver
  ```
 
 Please refer to [testing in atlaskit][testing] for more information about testing.

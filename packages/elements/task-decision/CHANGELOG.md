@@ -1,5 +1,81 @@
 # @atlaskit/task-decision
 
+## 8.1.6
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/renderer@20.0.11
+  - @atlaskit/util-data-test@10.0.7
+  - @atlaskit/editor-common@14.0.11
+
+## 8.1.5
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/renderer@20.0.7
+  - @atlaskit/spinner@9.0.6
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/button@9.0.6
+  - @atlaskit/avatar-group@2.1.1
+  - @atlaskit/avatar@14.0.8
+  - @atlaskit/docs@5.0.6
+
+## 8.1.4
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/util-data-test@10.0.4
+  - @atlaskit/editor-common@14.0.1
+  - @atlaskit/button@9.0.5
+  - @atlaskit/theme@5.1.3
+  - @atlaskit/spinner@9.0.5
+  - @atlaskit/analytics@4.0.4
+  - @atlaskit/icon@13.2.4
+  - @atlaskit/avatar-group@2.0.7
+  - @atlaskit/avatar@14.0.6
+
+## 8.1.3
+
+
+
+
+
+- [none] Updated dependencies [597e0bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/597e0bd)
+  - @atlaskit/renderer@20.0.0
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/editor-common@14.0.0
+- [none] Updated dependencies [61df453](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/61df453)
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/editor-common@14.0.0
+  - @atlaskit/renderer@20.0.0
+- [none] Updated dependencies [812a39c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/812a39c)
+  - @atlaskit/renderer@20.0.0
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/editor-common@14.0.0
+- [none] Updated dependencies [c8eb097](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8eb097)
+  - @atlaskit/renderer@20.0.0
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/editor-common@14.0.0
+- [patch] Updated dependencies [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/editor-common@14.0.0
+  - @atlaskit/renderer@20.0.0
+
+## 8.1.2
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/renderer@19.2.6
+  - @atlaskit/util-data-test@10.0.2
+  - @atlaskit/editor-common@13.2.7
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/button@9.0.4
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/spinner@9.0.4
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/util-service-support@3.0.1
+  - @atlaskit/analytics@4.0.3
+  - @atlaskit/avatar-group@2.0.4
+  - @atlaskit/avatar@14.0.5
+
+## 8.1.1
+- [patch] FS-1712 - Ensure empty state loading spinner is not taller than container [4defa84](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4defa84)
+- [none] Updated dependencies [4defa84](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4defa84)
+
 ## 8.1.0
 - [minor] Refreshing of a ResourcedItemList now replaces all content rather than merging. This is required as actions may now be deleted. [edcbf25](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/edcbf25)
 - [none] Updated dependencies [edcbf25](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/edcbf25)

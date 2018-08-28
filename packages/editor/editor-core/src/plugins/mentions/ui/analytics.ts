@@ -1,9 +1,9 @@
+import { EventType, GasPayload } from '@atlaskit/analytics-gas-types';
+import { isSpecialMention, MentionDescription } from '@atlaskit/mention';
 import {
   name as packageName,
   version as packageVersion,
 } from '../../../../package.json';
-import { GasPayload, EventType } from '@atlaskit/analytics-gas-types';
-import { MentionDescription, isSpecialMention } from '@atlaskit/mention';
 import { InsertType } from '../../../analytics/fabric-analytics-helper';
 
 export const buildAnalyticsPayload = (
@@ -11,6 +11,7 @@ export const buildAnalyticsPayload = (
   action: string,
   actionSubjectId: string,
   eventType: EventType,
+  sessionId: string,
   otherAttributes = {},
 ): GasPayload => ({
   action,
@@ -21,6 +22,7 @@ export const buildAnalyticsPayload = (
     packageName,
     packageVersion,
     componentName: 'mention',
+    sessionId,
     ...otherAttributes,
   },
   source: 'unknown',
@@ -50,6 +52,7 @@ export const buildTypeAheadCancelPayload = (
   duration: number,
   upKeyCount: number,
   downKeyCount: number,
+  sessionId: string,
   query?: string,
 ): GasPayload => {
   const { queryLength, spaceInQuery } = extractAttributesFromQuery(query);
@@ -58,6 +61,7 @@ export const buildTypeAheadCancelPayload = (
     'cancelled',
     'mentionTypeahead',
     'ui',
+    sessionId,
     {
       duration,
       downKeyCount,
@@ -88,6 +92,7 @@ export const buildTypeAheadInsertedPayload = (
   duration: number,
   upKeyCount: number,
   downKeyCount: number,
+  sessionId: string,
   insertType: InsertType,
   mention: MentionDescription,
   mentionList?: MentionDescription[],
@@ -99,6 +104,7 @@ export const buildTypeAheadInsertedPayload = (
     isClicked(insertType) ? 'clicked' : 'pressed',
     'mentionTypeahead',
     'ui',
+    sessionId,
     {
       duration,
       position: getPosition(mentionList, mention),

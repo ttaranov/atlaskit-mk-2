@@ -24,7 +24,7 @@ export interface JIRACustomEncoders {
 
 export interface ContextInfo {
   clientId: string;
-  serviceHost: string;
+  baseUrl: string;
   token: string;
   collection: string;
 }
@@ -457,8 +457,8 @@ export class JIRATransformer implements Transformer<string> {
   }
 
   private buildURLWithContextInfo(fileId: string, contextInfo: ContextInfo) {
-    const { clientId, serviceHost, token, collection } = contextInfo;
-    return `${serviceHost}/file/${fileId}/image?token=${token}&client=${clientId}&collection=${collection}&width=200&height=200&mode=fit`;
+    const { clientId, baseUrl, token, collection } = contextInfo;
+    return `${baseUrl}/file/${fileId}/image?token=${token}&client=${clientId}&collection=${collection}&width=200&height=200&mode=fit`;
   }
 
   private isImageMimeType(mimeType?: string) {

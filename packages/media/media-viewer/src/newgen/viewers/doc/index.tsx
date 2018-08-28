@@ -3,7 +3,7 @@ import { Context, FileItem } from '@atlaskit/media-core';
 import { Outcome } from '../../domain';
 import { ErrorMessage, createError, MediaViewerError } from '../../error';
 import { Spinner } from '../../loading';
-import { constructAuthTokenUrl } from '../../util';
+import { constructAuthTokenUrl } from '../../utils';
 import { Props as RendererProps } from './pdfRenderer';
 import { ComponentClass } from 'react';
 import { renderDownloadButton } from '../../domain/download';
@@ -26,7 +26,7 @@ export type State = {
 };
 
 const initialState: State = {
-  src: { status: 'PENDING' },
+  src: Outcome.pending(),
 };
 
 export class DocViewer extends React.Component<Props, State> {
@@ -47,10 +47,7 @@ export class DocViewer extends React.Component<Props, State> {
     const pdfArtifactUrl = getPDFUrl(item);
     if (!pdfArtifactUrl) {
       this.setState({
-        src: {
-          status: 'FAILED',
-          err: createError('noPDFArtifactsFound'),
-        },
+        src: Outcome.failed(createError('noPDFArtifactsFound')),
       });
       return;
     }
@@ -61,17 +58,11 @@ export class DocViewer extends React.Component<Props, State> {
         collectionName,
       );
       this.setState({
-        src: {
-          status: 'SUCCESSFUL',
-          data: src,
-        },
+        src: Outcome.successful(src),
       });
     } catch (err) {
       this.setState({
-        src: {
-          status: 'FAILED',
-          err: createError('previewFailed', undefined, err),
-        },
+        src: Outcome.failed(createError('previewFailed', undefined, err)),
       });
     }
   }
@@ -89,25 +80,21 @@ export class DocViewer extends React.Component<Props, State> {
   render() {
     const { onClose } = this.props;
     const { PDFComponent } = DocViewer;
-    const { src } = this.state;
 
     if (!PDFComponent) {
       return <Spinner />;
     }
 
-    switch (src.status) {
-      case 'PENDING':
-        return <Spinner />;
-      case 'SUCCESSFUL':
-        return <PDFComponent src={src.data} onClose={onClose} />;
-      case 'FAILED':
-        return (
-          <ErrorMessage error={src.err}>
-            <p>Try downloading the file to view it.</p>
-            {this.renderDownloadButton()}
-          </ErrorMessage>
-        );
-    }
+    return this.state.src.match({
+      pending: () => <Spinner />,
+      successful: src => <PDFComponent src={src} onClose={onClose} />,
+      failed: err => (
+        <ErrorMessage error={err}>
+          <p>Try downloading the file to view it.</p>
+          {this.renderDownloadButton()}
+        </ErrorMessage>
+      ),
+    });
   }
 }
 

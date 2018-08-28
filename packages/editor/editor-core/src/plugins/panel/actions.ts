@@ -1,4 +1,5 @@
 import { setParentNodeMarkup, removeParentNodeOfType } from 'prosemirror-utils';
+import { PanelType } from '@atlaskit/editor-common';
 import { analyticsService } from '../../analytics';
 import { Command } from '../../types';
 
@@ -9,18 +10,22 @@ export const removePanel = (): Command => (state, dispatch) => {
     schema: { nodes },
     tr,
   } = state;
+  analyticsService.trackEvent(`atlassian.editor.format.panel.delete.button`);
   dispatch(removeParentNodeOfType(nodes.panel)(tr));
   return true;
 };
 
-export const changePanelType = (panelType): Command => (state, dispatch) => {
-  analyticsService.trackEvent(
-    `atlassian.editor.format.${panelType.panelType}.button`,
-  );
+export const changePanelType = (panelType: PanelType): Command => (
+  state,
+  dispatch,
+) => {
   const {
     schema: { nodes },
     tr,
   } = state;
-  dispatch(setParentNodeMarkup(nodes.panel, null, panelType)(tr));
+  analyticsService.trackEvent(
+    `atlassian.editor.format.panel.${panelType}.button`,
+  );
+  dispatch(setParentNodeMarkup(nodes.panel, null, { panelType })(tr));
   return true;
 };

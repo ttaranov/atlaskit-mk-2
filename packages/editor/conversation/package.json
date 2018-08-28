@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/conversation",
-  "version": "9.0.1",
+  "version": "9.3.1",
   "config": {
     "access": "public"
   },
@@ -19,27 +19,30 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "peerDependencies": {
-    "react": "^16.4.0",
-    "react-dom": "^16.4.0",
+    "react-dom": "^16.4.2",
     "styled-components": "^3.2.6"
   },
   "dependencies": {
-    "@atlaskit/avatar": "^14.0.0",
-    "@atlaskit/comment": "^6.0.1",
-    "@atlaskit/editor-common": "^13.0.0",
-    "@atlaskit/editor-core": "^76.0.0",
-    "@atlaskit/reactions": "^13.0.0",
-    "@atlaskit/renderer": "^19.0.0",
+    "@atlaskit/analytics-next": "^3.0.0",
+    "@atlaskit/avatar": "^14.0.6",
+    "@atlaskit/comment": "^6.0.11",
+    "@atlaskit/editor-common": "^14.0.11",
+    "@atlaskit/editor-core": "^78.0.0",
+    "@atlaskit/reactions": "^13.0.8",
+    "@atlaskit/renderer": "^20.1.1",
     "date-fns": "^1.29.0",
     "prop-types": "^15.5.10",
+    "react": "^16.4.0",
     "react-redux": "^5.0.0",
     "redux": "^3.7.2",
     "redux-thunk": "^2.2.0",
     "tslib": "^1.8.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^5.0.0",
-    "@atlaskit/single-select": "^6.0.0",
-    "@atlaskit/util-data-test": "^10.0.0"
+    "@atlaskit/analytics-listeners": "^4.0.0",
+    "@atlaskit/docs": "^5.0.2",
+    "@atlaskit/single-select": "^6.0.3",
+    "@atlaskit/util-data-test": "^10.0.7",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   }
 }

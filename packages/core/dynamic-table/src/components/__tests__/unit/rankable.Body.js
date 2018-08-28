@@ -55,42 +55,6 @@ test('only one DragDropContext and Droppable are rendered', () => {
   expect(draggable).toHaveLength(rowsWithKeys.length);
 });
 
-test('width is set when table is in ranking state', () => {
-  const props = createProps();
-  const width = 1000;
-  const height = 500;
-
-  const wrapper = mount(
-    <table>
-      <RankableBody {...props} isRanking refWidth={width} refHeight={height} />
-    </table>,
-  );
-
-  const body = wrapper.find('tbody');
-  expect(body.props().style.height).toBe(height);
-  expect(body.props().style.width).toBe(width);
-});
-
-test('width is not set when table is not in ranking state', () => {
-  const props = createProps();
-  const width = 1000;
-  const height = 500;
-
-  const wrapper = mount(
-    <table>
-      <RankableBody
-        {...props}
-        isRanking={false}
-        refWidth={width}
-        refHeight={height}
-      />
-    </table>,
-  );
-
-  const body = wrapper.find('tbody');
-  expect(body.props().style).toEqual({});
-});
-
 test('onDragStart - onRankStart is called with proper arguments', () => {
   const props = createProps();
   const key = 'draggable-id';
@@ -99,7 +63,7 @@ test('onDragStart - onRankStart is called with proper arguments', () => {
   const wrapper = shallow(<RankableBody {...props} isRanking />);
 
   const dndContext = wrapper.find(DragDropContext);
-  dndContext.simulate('dragStart', {
+  dndContext.simulate('beforeDragStart', {
     draggableId: key,
     source: { index },
   });

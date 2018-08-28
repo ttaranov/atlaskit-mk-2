@@ -1,11 +1,15 @@
 // @flow
 
-import React from 'react';
+import React, { Component } from 'react';
 
-import { light, withTheme } from '../../theme';
-import type { GroupHeadingProps } from './types';
+import { withContentTheme } from '../../theme';
+import type { ConnectedGroupHeadingProps, GroupHeadingProps } from './types';
 
-const GroupHeading = ({ after: After, children, theme }: GroupHeadingProps) => {
+const GroupHeadingPrimitive = ({
+  after: After,
+  children,
+  theme,
+}: GroupHeadingProps) => {
   const { mode, context } = theme;
   const styles = mode.heading()[context];
 
@@ -20,5 +24,12 @@ const GroupHeading = ({ after: After, children, theme }: GroupHeadingProps) => {
     </div>
   );
 };
+const GroupHeadingPrimitiveWithTheme = withContentTheme(GroupHeadingPrimitive);
 
-export default withTheme({ mode: light, context: 'container' })(GroupHeading);
+export default class GroupHeading extends Component<
+  ConnectedGroupHeadingProps,
+> {
+  render() {
+    return <GroupHeadingPrimitiveWithTheme {...this.props} />;
+  }
+}

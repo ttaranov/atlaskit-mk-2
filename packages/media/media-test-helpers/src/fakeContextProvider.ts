@@ -1,12 +1,12 @@
 import { Observable } from 'rxjs';
 import { Context, ContextConfig } from '@atlaskit/media-core';
 
-const defaultContextConfig = {
-  serviceHost: 'some-service-host',
+const defaultContextConfig: ContextConfig = {
   authProvider: () =>
     Promise.resolve({
       clientId: 'some-client-id',
       token: 'some-token',
+      baseUrl: 'some-service-host',
     }),
 };
 export const fakeContext = (
@@ -31,14 +31,16 @@ export const fakeContext = (
   const getUrlPreviewProvider = returns({
     observable: returns(Observable.of('nothing')),
   });
-  const getFile = jest.fn();
+  const getFile = jest.fn().mockReturnValue(Observable.of({}));
   const getLocalPreview = jest.fn();
   const setLocalPreview = jest.fn();
   const removeLocalPreview = jest.fn();
   const refreshCollection = jest.fn();
   const getBlobService = jest.fn();
   const uploadFile = jest.fn();
+  const getImage = {} as any;
   const defaultContext: Context = {
+    getImage,
     getFile,
     getBlobService,
     getLocalPreview,

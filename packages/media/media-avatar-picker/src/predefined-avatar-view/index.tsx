@@ -74,7 +74,7 @@ export class PredefinedAvatarView extends PureComponent<
 
   createOnItemClickHandler(avatar: Avatar) {
     const { onAvatarSelected } = this.props;
-    return e => {
+    return () => {
       if (onAvatarSelected) {
         onAvatarSelected(avatar);
       }

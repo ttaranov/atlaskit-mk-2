@@ -33,7 +33,10 @@ import {
   handlePasteAsPlainText,
   handleMacroAutoConvert,
 } from '../handlers';
-import { transformSliceToJoinAdjacentCodeBlocks } from '../../code-block/utils';
+import {
+  transformSliceToJoinAdjacentCodeBlocks,
+  transformSingleLineCodeBlockToCodeMark,
+} from '../../code-block/utils';
 
 export const stateKey = new PluginKey('pastePlugin');
 
@@ -142,10 +145,32 @@ export function createPlugin(
             }
           }
 
+          // In case user is pasting inline code,
+          // any backtick ` immediately preceding it should be removed.
+          const tr = state.tr;
+          if (
+            slice.content.firstChild &&
+            slice.content.firstChild.marks.some(
+              m => m.type === state.schema.marks.code,
+            )
+          ) {
+            const {
+              $from: { nodeBefore },
+              from,
+            } = tr.selection;
+            if (
+              nodeBefore &&
+              nodeBefore.isText &&
+              nodeBefore.text!.endsWith('`')
+            ) {
+              tr.delete(from - 1, from);
+            }
+          }
+
           // get prosemirror-tables to handle pasting tables if it can
           // otherwise, just the replace the selection with the content
           if (!handlePasteTable(view, null, slice)) {
-            const tr = closeHistory(state.tr);
+            closeHistory(tr);
             tr.replaceSelection(slice);
             tr.setStoredMarks([]);
             if (
@@ -178,6 +203,8 @@ export function createPlugin(
         /* Bitbucket copies diffs as multiple adjacent code blocks
          * so we merge ALL adjacent code blocks to support paste here */
         slice = transformSliceToJoinAdjacentCodeBlocks(slice);
+
+        slice = transformSingleLineCodeBlockToCodeMark(slice, schema);
 
         if (
           slice.content.childCount &&

@@ -1,7 +1,12 @@
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
 import { Subject } from 'rxjs/Subject';
-import { MediaItemType, MediaItem } from '@atlaskit/media-core';
+import {
+  MediaItemType,
+  MediaItem,
+  ContextConfig,
+  Auth,
+} from '@atlaskit/media-core';
 import { MediaFileListViewer } from '../../src/components/media-file-list-viewer';
 import { Stubs } from '../_stubs';
 import { MediaFileAttributes } from '../../src/mediaviewer';
@@ -9,10 +14,11 @@ import { MediaFileAttributes } from '../../src/mediaviewer';
 describe('<MediaFileListViewer />', () => {
   const token = 'some-token';
   const clientId = 'some-client-id';
-  const serviceHost = 'some-service-host';
-  const authProvider = jest.fn(() => Promise.resolve({ token, clientId }));
-  const contextConfig = {
-    serviceHost,
+  const baseUrl = 'some-base-url';
+  const authProvider = jest.fn(() =>
+    Promise.resolve<Auth>({ token, clientId, baseUrl }),
+  );
+  const contextConfig: ContextConfig = {
     authProvider,
   };
   const collectionName = 'some-collection';

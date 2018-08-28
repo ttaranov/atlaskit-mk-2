@@ -4,7 +4,6 @@ import { LocalUploadComponent, LocalUploadConfig } from '../localUpload';
 import { whenDomReady } from '../../util/documentReady';
 import dropzoneUI from './dropzoneUI';
 import { UploadEventPayloadMap } from '../..';
-import { OldUploadServiceImpl } from '../../service/uploadService';
 
 export interface DropzoneConfig extends LocalUploadConfig {
   userAuthProvider?: AuthProvider;
@@ -60,14 +59,6 @@ export class Dropzone extends LocalUploadComponent<
       });
   }
 
-  private addDropzone() {
-    if (this.config.useNewUploadService) {
-      this.container.addEventListener('drop', this.onFileDropped);
-    } else {
-      (this.uploadService as OldUploadServiceImpl).addDropzone(this.container);
-    }
-  }
-
   private readonly onFileDropped = (dragEvent: DragEvent) => {
     dragEvent.preventDefault();
     dragEvent.stopPropagation();
@@ -83,12 +74,12 @@ export class Dropzone extends LocalUploadComponent<
     this.removeDropzone();
   }
 
+  private addDropzone() {
+    this.container.addEventListener('drop', this.onFileDropped);
+  }
+
   private removeDropzone() {
-    if (this.config.useNewUploadService) {
-      this.container.removeEventListener('drop', this.onFileDropped);
-    } else {
-      (this.uploadService as OldUploadServiceImpl).removeDropzone();
-    }
+    this.container.removeEventListener('drop', this.onFileDropped);
   }
 
   private onDragOver = (e: DragEvent): void => {
@@ -137,10 +128,6 @@ export class Dropzone extends LocalUploadComponent<
   private createInstance(): void {
     this.instance = this.getDropzoneUI();
     this.container.appendChild(this.instance);
-
-    if (!this.config.useNewUploadService) {
-      this.uploadService.on('file-dropped', this.onDrop);
-    }
   }
 
   private getDropzoneUI(): HTMLElement {

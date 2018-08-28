@@ -2,7 +2,7 @@
 
 import React, { Component } from 'react';
 
-import { light, styleReducerNoOp, withTheme } from '../../theme';
+import { styleReducerNoOp, withContentTheme } from '../../theme';
 import type { ScrollableSectionInnerProps } from './types';
 
 class ScrollableSectionInner extends Component<ScrollableSectionInnerProps> {
@@ -24,6 +24,4 @@ class ScrollableSectionInner extends Component<ScrollableSectionInnerProps> {
   }
 }
 
-export default withTheme({ mode: light, context: 'container' })(
-  ScrollableSectionInner,
-);
+export default withContentTheme(ScrollableSectionInner);

@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FormattedMessage, FormattedHTMLMessage } from 'react-intl';
+import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
 import { gridSize } from '@atlaskit/theme';
 import { akTypographyMixins } from '@atlaskit/util-shared-styles';
@@ -28,28 +28,24 @@ const TextWrapper = styled.div`
 `;
 
 const Title = styled.h4`
-  ${akTypographyMixins.h600};
+  ${akTypographyMixins.h600 as any};
   margin-bottom: ${gridSize() * 2}px;
   margin-top: 0;
 `;
 
 export interface Props {
-  advancedSearchUrl: string;
+  children: JSX.Element;
 }
 
-const Text = ({ url }) => (
+const Text = ({ children }) => (
   <TextWrapper>
     <Title>
       <FormattedMessage id="global-search.no-recent-activity-title" />
     </Title>
-    <div>
-      <FormattedHTMLMessage
-        id="global-search.no-recent-activity-body"
-        values={{ url: url }}
-      />
-    </div>
+    {children}
   </TextWrapper>
 );
+
 export default class NoRecentActivity extends React.Component<Props> {
   render() {
     return (
@@ -57,7 +53,7 @@ export default class NoRecentActivity extends React.Component<Props> {
         <ImageWrapper>
           <MaginfyingGlassImage />
         </ImageWrapper>
-        <Text url={this.props.advancedSearchUrl} />
+        <Text children={this.props.children} />
       </Wrapper>
     );
   }

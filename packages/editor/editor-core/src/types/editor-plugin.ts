@@ -23,6 +23,7 @@ export type PMPluginFactory = (
     providerFactory: ProviderFactory;
     errorReporter: ErrorReporter;
     portalProviderAPI: PortalProviderAPI;
+    reactContext: () => { [key: string]: any };
   },
 ) => Plugin | undefined;
 
@@ -74,15 +75,15 @@ export interface EditorPlugin {
    */
   pmPlugins?: (
     pluginOptions?: any,
-  ) => { rank: number; plugin: PMPluginFactory }[];
+  ) => { name: string; plugin: PMPluginFactory }[];
 
   /**
-   * List of Nodes to add to the schema. Needs to specify a rank for each node according to spec in Document Structure.
+   * List of Nodes to add to the schema.
    */
   nodes?: (editorProps: EditorProps) => NodeConfig[];
 
   /**
-   * List of Marks to add to the schema. Needs to specify a rank for each mark according to spec in Document Structure.
+   * List of Marks to add to the schema.
    */
   marks?: (editorProps: EditorProps) => MarkConfig[];
 

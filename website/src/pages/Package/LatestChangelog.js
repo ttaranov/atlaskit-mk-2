@@ -58,9 +58,6 @@ const LogWrapper = styled.div`
       margin-bottom: 0;
     }
   }
-  p {
-    display: none;
-  }
 `;
 const Button = styled(Btn)`
   position: absolute;

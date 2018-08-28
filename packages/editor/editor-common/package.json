@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-common",
-  "version": "13.0.2",
+  "version": "14.0.14",
   "description": "A package that contains common classes and components for editor and renderer",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -11,9 +11,9 @@
   "sideEffects": false,
   "scripts": {
     "build:json-schema": "mkdir -p dist && cp -r json-schema dist",
-    "generate:json-schema": "yarn generate:json-schema:full && yarn generate:json-schema:stage-0",
-    "generate:json-schema:stage-0": "../json-schema-generator/bin.js --stage=0 ./src/schema/nodes/doc.ts > ./json-schema/v1/stage-0.json",
-    "generate:json-schema:full": "../json-schema-generator/bin.js ./src/schema/nodes/doc.ts > ./json-schema/v1/full.json"
+    "generate:json-schema": "mkdir -p json-schema/v1/ && yarn generate:json-schema:full && yarn generate:json-schema:stage-0",
+    "generate:json-schema:stage-0": "../json-schema-generator/bin.js --outDir=./json-schema/v1/ --stage=0 ./src/schema/nodes/doc.ts",
+    "generate:json-schema:full": "../json-schema-generator/bin.js --outDir=./json-schema/v1/ ./src/schema/nodes/doc.ts"
   },
   "files": [
     "dist"
@@ -25,11 +25,11 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/emoji": "^38.0.0",
-    "@atlaskit/icon": "^13.0.0",
-    "@atlaskit/media-card": "^30.0.0",
-    "@atlaskit/mention": "^14.0.0",
-    "@atlaskit/profilecard": "^4.0.0",
+    "@atlaskit/emoji": "^39.1.1",
+    "@atlaskit/icon": "^13.2.4",
+    "@atlaskit/media-card": "^32.0.5",
+    "@atlaskit/mention": "^15.0.6",
+    "@atlaskit/profilecard": "^4.0.8",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "@types/prosemirror-model": "^1.0.0",
     "@types/prosemirror-view": "^1.0.0",
@@ -38,27 +38,31 @@
     "css-color-names": "0.0.4",
     "date-fns": "^1.29.0",
     "linkify-it": "^2.0.3",
-    "prosemirror-model": "^1.5.0",
+    "prosemirror-model": "^1.6.1",
     "prosemirror-view": "^1.3.3",
     "raf-schd": "^2.1.0"
   },
   "peerDependencies": {
-    "@atlaskit/media-core": "^22.0.0",
+    "@atlaskit/media-core": "^23.0.0",
     "react": "^16.4.0",
-    "react-dom": "^16.4.0",
+    "react-dom": "^16.4.2",
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/editor-json-transformer": "^4.0.0",
-    "@atlaskit/editor-test-helpers": "^5.0.0",
-    "@atlaskit/json-schema-generator": "^1.0.1",
-    "@atlaskit/media-core": "^22.0.0",
+    "@atlaskit/editor-json-transformer": "^4.0.6",
+    "@atlaskit/editor-test-helpers": "^6.0.3",
+    "@atlaskit/json-schema-generator": "^1.1.0",
+    "@atlaskit/media-core": "^23.0.0",
     "@atlaskit/webdriver-runner": "^0.0.3",
     "@types/chai": "^4.0.4",
     "@types/prosemirror-state": "^1.0.0",
+    "axios": "^0.17.1",
     "chai": "^4.1.2",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "json-schema-diff-validator": "^0.1.1",
     "prosemirror-state": "^1.1.0",
+    "raf-stub": "^2.0.1",
+    "react": "^16.4.0",
     "sinon": "^2.2.0"
   }
 }

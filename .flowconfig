@@ -1,7 +1,5 @@
 [ignore]
 .*/node_modules/styled-components/.*
-.*/node_modules/raf-schd/test/.*
-.*/node_modules/react-beautiful-dnd/lib/.*
 .*/website/dist/sandbox/.*
 .*/website/.*
 .*/packages/bitbucket/codemod-util-shared-styles-to-theme/__fixtures__/.*
@@ -50,6 +48,7 @@ module.name_mapper.extension='less' -> '<PROJECT_ROOT>/typings/less.js'
 
 suppress_comment=\\(.\\|\n\\)*\\$ExpectError
 suppress_comment=\\(.\\|\n\\)*\\$FlowFixMe
+suppress_comment=\\(.\\|\n\\)*\\$StringLitteral
 
 [lints]
 all=warn

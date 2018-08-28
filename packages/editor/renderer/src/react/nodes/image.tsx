@@ -4,8 +4,11 @@ export default function Image(
   props: { alt?: string; title?: string; src: string } & React.Props<any>,
 ) {
   return (
-    <div className="img-wrapper">
-      <img src={props.src} alt={props.alt} title={props.title} />
-    </div>
+    <img
+      className="renderer-image"
+      src={props.src}
+      alt={props.alt}
+      title={props.title}
+    />
   );
 }

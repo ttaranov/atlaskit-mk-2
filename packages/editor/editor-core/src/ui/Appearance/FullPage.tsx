@@ -2,7 +2,10 @@ import * as React from 'react';
 import { MouseEvent } from 'react';
 import styled from 'styled-components';
 import { akColorN30 } from '@atlaskit/util-shared-styles';
-import { akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
+import {
+  akEditorFullPageMaxWidth,
+  akEditorMenuZIndex,
+} from '@atlaskit/editor-common';
 import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import Avatars from '../../plugins/collab-edit/ui/avatars';
 import PluginSlot from '../PluginSlot';
@@ -88,7 +91,7 @@ const MainToolbar: React.ComponentClass<
       ? `0 ${akEditorToolbarKeylineHeight}px 0 0 ${akColorN30}`
       : 'none'};
   transition: box-shadow 200ms;
-  z-index: 1;
+  z-index: ${akEditorMenuZIndex};
   display: flex;
   height: 80px;
   flex-shrink: 0;
@@ -229,7 +232,7 @@ export default class Editor extends React.Component<
             <ContentArea>
               <div
                 style={{ padding: `0 ${GUTTER_PADDING}px` }}
-                className="content-area"
+                className="ak-editor-content-area"
               >
                 {customContentComponents}
                 {

@@ -4,7 +4,6 @@ import React, { Component } from 'react';
 import AddIcon from '@atlaskit/icon/glyph/add';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import Button from '@atlaskit/button';
-import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import ConfluenceIcon from '@atlaskit/icon/glyph/confluence';
 import EditorAlignLeftIcon from '@atlaskit/icon/glyph/editor/align-left';
 import JiraIcon from '@atlaskit/icon/glyph/jira';
@@ -12,7 +11,6 @@ import Lorem from 'react-lorem-component';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import Tooltip from '@atlaskit/tooltip';
-import QuestionIcon from '@atlaskit/icon/glyph/question';
 import { AkSearch } from '@atlaskit/quick-search';
 
 import SecondaryActions from './utils/confluence-example/SecondaryActions';
@@ -88,33 +86,11 @@ export default class ConfluenceHome extends Component<*, *> {
     width: this.props.width,
   };
 
-  getCreateDrawer = () => (
-    <AkCreateDrawer
-      backIcon={BackIcon}
-      isOpen={this.state.openDrawer === 'create'}
-      key="create"
-      onBackButton={this.closeDrawer}
-      primaryIcon={<ConfluenceIcon label="Confluence icon" size="large" />}
-    >
-      <AkNavigationItem text="Item outside a group" />
-      <AkNavigationItemGroup title="Create item group">
-        <AkNavigationItem
-          icon={<ConfluenceIcon label="Confluence icon" />}
-          text="Item with an icon"
-        />
-        <AkNavigationItem
-          icon={<JiraIcon label="Jira icon" />}
-          text="A really, really, quite long, actually super long container name"
-        />
-      </AkNavigationItemGroup>
-    </AkCreateDrawer>
-  );
-
   getSearchDrawer = () => (
     <AkSearchDrawer
       backIcon={BackIcon}
       isOpen={this.state.openDrawer === 'search'}
-      key="seach"
+      key="search"
       onBackButton={this.closeDrawer}
       primaryIcon={<ConfluenceIcon label="Confluence icon" size="large" />}
     >
@@ -140,23 +116,28 @@ export default class ConfluenceHome extends Component<*, *> {
     </AkSearchDrawer>
   );
 
-  addOnsNestedNav = () => {
-    this.setState({
-      stack: [
-        ...this.state.stack,
-        [
-          <AkNavigationItem
-            icon={<CalendarIcon label="Calendar" />}
-            text="Calendars"
-          />,
-          <AkNavigationItem
-            icon={<QuestionIcon label="Question" />}
-            text="Questions"
-          />,
-        ],
-      ],
-    });
-  };
+  getCreateDrawer = () => (
+    <AkCreateDrawer
+      backIcon={BackIcon}
+      isOpen={this.state.openDrawer === 'create'}
+      key="create"
+      onBackButton={this.closeDrawer}
+      primaryIcon={<ConfluenceIcon label="Confluence icon" size="large" />}
+    >
+      <AkNavigationItem text="Item outside a group" />
+      <AkNavigationItemGroup title="Create item group">
+        <AkNavigationItem
+          icon={<ConfluenceIcon label="Confluence icon" />}
+          text="Item with an icon"
+        />
+        <AkNavigationItem
+          icon={<JiraIcon label="Jira icon" />}
+          text="A really, really, quite long, actually super long container name"
+        />
+      </AkNavigationItemGroup>
+    </AkCreateDrawer>
+  );
+
   openDrawer = (name: string) => {
     console.log(`on ${name} drawer open called`);
 

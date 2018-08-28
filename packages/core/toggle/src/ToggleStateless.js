@@ -84,7 +84,8 @@ class ToggleStateless extends Component<StatelessProps, State> {
             <IconWrapper isChecked={isChecked} size={size}>
               <Icon
                 label={label || (isChecked ? 'Uncheck' : 'Check')}
-                size={size === 'large' ? 'medium' : 'small'}
+                size={size === 'large' ? null : 'small'}
+                primaryColor="inherit"
               />
             </IconWrapper>
           </Inner>

@@ -43,6 +43,7 @@ export type Mode = {
   contentNav: ContentNavigationComponentTheme<void>,
   scrollHint: ContentNavigationComponentTheme<void>,
   separator: ContentNavigationComponentTheme<void>,
+  skeletonItem: ContentNavigationComponentTheme<void>,
 };
 
 export type ProductTheme = {
@@ -54,4 +55,8 @@ export type GlobalTheme = {
   mode: Mode,
 };
 
-export type StyleReducer<State> = (ObjectType, State) => ObjectType;
+// export type StyleReducer<State> = (ObjectType, State) => ObjectType;
+export type StyleReducer = (
+  Styles: ObjectType,
+  State?: ObjectType,
+) => ObjectType;

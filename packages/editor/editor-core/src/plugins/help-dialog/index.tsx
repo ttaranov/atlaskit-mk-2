@@ -7,6 +7,7 @@ import * as keymaps from '../../keymaps';
 import { analyticsService } from '../../analytics';
 import WithPluginState from '../../ui/WithPluginState';
 import HelpDialog from './ui';
+import { pluginKey as quickInsertPluginKey } from '../quick-insert';
 
 export const pluginKey = new PluginKey('helpDialogPlugin');
 
@@ -20,7 +21,7 @@ export const closeHelpCommand = (tr: Transaction, dispatch: Function): void => {
   dispatch(tr);
 };
 
-export const stopPropagationCommand = (e: any): void => e.stopPropagation();
+export const stopPropagationCommand = (e: Event): void => e.stopPropagation();
 
 export function createPlugin(dispatch: Function, imageEnabled: boolean) {
   return new Plugin({
@@ -47,11 +48,14 @@ const helpDialog: EditorPlugin = {
   pmPlugins() {
     return [
       {
-        rank: 2200,
+        name: 'helpDialog',
         plugin: ({ dispatch, props: { legacyImageUploadProvider } }) =>
           createPlugin(dispatch, !!legacyImageUploadProvider),
       },
-      { rank: 2210, plugin: ({ schema }) => keymapPlugin(schema) },
+      {
+        name: 'helpDialogKeymap',
+        plugin: ({ schema }) => keymapPlugin(schema),
+      },
     ];
   },
 
@@ -60,12 +64,14 @@ const helpDialog: EditorPlugin = {
       <WithPluginState
         plugins={{
           helpDialog: pluginKey,
+          quickInsert: quickInsertPluginKey,
         }}
-        render={({ helpDialog = {} as any }) => (
+        render={({ helpDialog = {} as any, quickInsert }) => (
           <HelpDialog
             appearance={appearance}
             editorView={editorView}
             isVisible={helpDialog.isVisible}
+            quickInsertEnabled={!!quickInsert}
             imageEnabled={helpDialog.imageEnabled}
           />
         )}
@@ -78,7 +84,7 @@ const keymapPlugin = (schema: Schema): Plugin => {
   const list = {};
   keymaps.bindKeymapWithCommand(
     keymaps.openHelp.common!,
-    (state: any, dispatch: Function): boolean => {
+    (state, dispatch) => {
       let { tr } = state;
       const isVisible = tr.getMeta(pluginKey);
       if (!isVisible) {

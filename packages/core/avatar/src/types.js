@@ -31,7 +31,9 @@ export type AvatarPropTypesBase = {
   /** Used to override the default border color of the presence indicator.
    Accepts any color argument that the border-color CSS property accepts. */
   borderColor?: string | (() => mixed),
-  /** A custom component to use instead of the default span. */
+  /** A custom component to use instead of the default span.
+   * A `className` prop is passed to the component which has classNames for all the default styles for the avatar.
+   * */
   component?: ComponentType<*>,
 
   /** Provides a url for avatars being used as a link. */

@@ -1,5 +1,71 @@
 # @atlaskit/dropdown-menu
 
+## 6.1.11
+- [patch] Fix initial position glitch when opening dropdown menu [d79e361](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d79e361)
+
+## 6.1.9
+- [patch] Fix dropdown menu calls onOpenChange unnecessarily [2868a72](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2868a72)
+- [patch] Updated dependencies [2868a72](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2868a72)
+
+## 6.1.8
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/tooltip@12.0.9
+  - @atlaskit/lozenge@6.1.5
+  - @atlaskit/item@8.0.5
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/droplist@7.0.7
+  - @atlaskit/button@9.0.6
+  - @atlaskit/avatar@14.0.8
+  - @atlaskit/docs@5.0.6
+
+## 6.1.7
+- [patch] Updated dependencies [8242529](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8242529)
+  - @atlaskit/droplist@7.0.6
+
+## 6.1.6
+- [patch] Fix scroll to top of container issue when menu is opened via keydown [0a09918](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0a09918)
+- [patch] Updated dependencies [0a09918](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0a09918)
+
+## 6.1.5
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [patch] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/tooltip@12.0.5
+  - @atlaskit/analytics-next@3.0.4
+  - @atlaskit/button@9.0.5
+  - @atlaskit/theme@5.1.3
+  - @atlaskit/lozenge@6.1.4
+  - @atlaskit/item@8.0.4
+  - @atlaskit/icon@13.2.4
+  - @atlaskit/droplist@7.0.5
+  - @atlaskit/avatar@14.0.6
+
+## 6.1.4
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/tooltip@12.0.4
+  - @atlaskit/item@8.0.3
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/button@9.0.4
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/lozenge@6.1.3
+  - @atlaskit/analytics-next@3.0.3
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/droplist@7.0.4
+  - @atlaskit/avatar@14.0.5
+
+## 6.1.3
+- [patch] Add a SSR test for every package, add react-dom and build-utils in devDependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+- [patch] Updated dependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+  - @atlaskit/tooltip@12.0.3
+  - @atlaskit/analytics-next@3.0.2
+  - @atlaskit/button@9.0.3
+  - @atlaskit/theme@5.1.1
+  - @atlaskit/lozenge@6.1.2
+  - @atlaskit/item@8.0.2
+  - @atlaskit/icon@13.2.1
+  - @atlaskit/droplist@7.0.3
+  - @atlaskit/avatar@14.0.4
+
 ## 6.1.2
 - [patch] Move analytics tests and replace elements to core [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
 - [patch] Updated dependencies [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)

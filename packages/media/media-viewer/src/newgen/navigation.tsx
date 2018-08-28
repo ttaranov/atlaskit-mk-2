@@ -11,7 +11,7 @@ import {
   Arrow,
   hideControlsClassName,
 } from './styled';
-import { getSelectedIndex } from './util';
+import { getSelectedIndex } from './utils';
 import { Shortcut } from './shortcut';
 
 export type NavigationDirection = 'prev' | 'next';

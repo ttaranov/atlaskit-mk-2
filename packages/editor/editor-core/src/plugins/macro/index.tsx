@@ -52,7 +52,7 @@ export default {
   pmPlugins() {
     return [
       {
-        rank: 2310,
+        name: 'macro',
         plugin: ({ dispatch, providerFactory }) =>
           createPlugin(dispatch, providerFactory),
       },

@@ -54,6 +54,7 @@ import CameraRotateIcon from '../glyph/camera-rotate';
 import CameraTakePictureIcon from '../glyph/camera-take-picture';
 import CameraIcon from '../glyph/camera';
 import CanvasIcon from '../glyph/canvas';
+import CheckCircleOutlineIcon from '../glyph/check-circle-outline';
 import CheckCircleIcon from '../glyph/check-circle';
 import CheckIcon from '../glyph/check';
 import CheckboxIndeterminateIcon from '../glyph/checkbox-indeterminate';
@@ -120,6 +121,11 @@ import EditorImageIcon from '../glyph/editor/image';
 import EditorIndentIcon from '../glyph/editor/indent';
 import EditorInfoIcon from '../glyph/editor/info';
 import EditorItalicIcon from '../glyph/editor/italic';
+import EditorLayoutThreeEqualIcon from '../glyph/editor/layout-three-equal';
+import EditorLayoutThreeWithSidebarsIcon from '../glyph/editor/layout-three-with-sidebars';
+import EditorLayoutTwoEqualIcon from '../glyph/editor/layout-two-equal';
+import EditorLayoutTwoLeftSidebarIcon from '../glyph/editor/layout-two-left-sidebar';
+import EditorLayoutTwoRightSidebarIcon from '../glyph/editor/layout-two-right-sidebar';
 import EditorLinkIcon from '../glyph/editor/link';
 import EditorMediaCenterIcon from '../glyph/editor/media-center';
 import EditorMediaFullWidthIcon from '../glyph/editor/media-full-width';
@@ -372,6 +378,7 @@ import RadioIcon from '../glyph/radio';
 import RecentIcon from '../glyph/recent';
 import RedoIcon from '../glyph/redo';
 import RefreshIcon from '../glyph/refresh';
+import RoadmapIcon from '../glyph/roadmap';
 import RoomMenuIcon from '../glyph/room-menu';
 import ScheduleFilledIcon from '../glyph/schedule-filled';
 import ScheduleIcon from '../glyph/schedule';
@@ -701,6 +708,12 @@ export default {
     component: CanvasIcon,
     componentName: 'CanvasIcon',
     package: '@atlaskit/icon/glyph/canvas',
+  },
+  'check-circle-outline': {
+    keywords: ['check-circle-outline', 'checkcircleoutline'],
+    component: CheckCircleOutlineIcon,
+    componentName: 'CheckCircleOutlineIcon',
+    package: '@atlaskit/icon/glyph/check-circle-outline',
   },
   'check-circle': {
     keywords: ['check-circle', 'checkcircle', 'tick'],
@@ -1097,6 +1110,36 @@ export default {
     component: EditorItalicIcon,
     componentName: 'EditorItalicIcon',
     package: '@atlaskit/icon/glyph/editor/italic',
+  },
+  'editor/layout-three-equal': {
+    keywords: ['editor/layout-three-equal', 'editorlayoutthreeequal'],
+    component: EditorLayoutThreeEqualIcon,
+    componentName: 'EditorLayoutThreeEqualIcon',
+    package: '@atlaskit/icon/glyph/editor/layout-three-equal',
+  },
+  'editor/layout-three-with-sidebars': {
+    keywords: ['editor/layout-three-with-sidebars', 'editorlayoutthreewithsidebars'],
+    component: EditorLayoutThreeWithSidebarsIcon,
+    componentName: 'EditorLayoutThreeWithSidebarsIcon',
+    package: '@atlaskit/icon/glyph/editor/layout-three-with-sidebars',
+  },
+  'editor/layout-two-equal': {
+    keywords: ['editor/layout-two-equal', 'editorlayouttwoequal'],
+    component: EditorLayoutTwoEqualIcon,
+    componentName: 'EditorLayoutTwoEqualIcon',
+    package: '@atlaskit/icon/glyph/editor/layout-two-equal',
+  },
+  'editor/layout-two-left-sidebar': {
+    keywords: ['editor/layout-two-left-sidebar', 'editorlayouttwoleftsidebar'],
+    component: EditorLayoutTwoLeftSidebarIcon,
+    componentName: 'EditorLayoutTwoLeftSidebarIcon',
+    package: '@atlaskit/icon/glyph/editor/layout-two-left-sidebar',
+  },
+  'editor/layout-two-right-sidebar': {
+    keywords: ['editor/layout-two-right-sidebar', 'editorlayouttworightsidebar'],
+    component: EditorLayoutTwoRightSidebarIcon,
+    componentName: 'EditorLayoutTwoRightSidebarIcon',
+    package: '@atlaskit/icon/glyph/editor/layout-two-right-sidebar',
   },
   'editor/link': {
     keywords: ['editor/link', 'editorlink'],
@@ -2609,6 +2652,12 @@ export default {
     component: RefreshIcon,
     componentName: 'RefreshIcon',
     package: '@atlaskit/icon/glyph/refresh',
+  },
+  roadmap: {
+    keywords: ['roadmap'],
+    component: RoadmapIcon,
+    componentName: 'RoadmapIcon',
+    package: '@atlaskit/icon/glyph/roadmap',
   },
   'room-menu': {
     keywords: ['room-menu', 'roommenu'],

@@ -72,6 +72,8 @@ export type FieldState = {
   validateOnInvalid?: boolean,
   /** The value type passed for onChange from the field component. Most are html-input */
   componentType: string,
+  /** List of validators messages that the field failed on validate */
+  invalidMessages: Array<string>,
 };
 
 export type FieldComponent = React$Element<*> & {
@@ -169,6 +171,7 @@ export default class Field extends Component<Props, State> {
       validateOnInvalid,
       componentType:
         childComponent.props.componentType || childComponent.type.name,
+      invalidMessages: [],
     };
     // For some components like Checkbox that are wrapped in withTheme and exported via anon function
     // we need to check for known props to idenitfy them. TODO: Fix this in the affected components and remove this hack
@@ -231,8 +234,12 @@ export default class Field extends Component<Props, State> {
 
     // Update Field State and pass on
     this.setState({ fieldState });
+
+    // Update form field state from the validate result or use the current state
     if (this.props.validateOnChange) {
-      this.validate();
+      this.updateFormState(this.validate());
+    } else {
+      this.updateFormState(this.state.fieldState);
     }
   };
 
@@ -241,20 +248,21 @@ export default class Field extends Component<Props, State> {
    */
   handleOnBlur = () => {
     if (this.props.validateOnBlur) {
-      this.validate();
+      this.updateFormState(this.validate());
     }
   };
 
   /**
    * Run any validators passed for this field
    */
-  validate = () => {
+  validate = (): FieldState => {
     const { validators, value } = this.state.fieldState;
     const {
       isInvalid,
       invalidMessage,
       validMessage,
       required,
+      invalidMessages,
       ...rest
     } = this.state.fieldState;
 
@@ -262,6 +270,7 @@ export default class Field extends Component<Props, State> {
     let invalid: string = '';
     let valid: string = '';
     let invalidCount = 0;
+    let validatedFieldState = {};
 
     // Is the field required?
     if (required && !value) {
@@ -283,19 +292,31 @@ export default class Field extends Component<Props, State> {
             invalid = invalid.concat(
               validators[i].props.invalid + messageSeperator,
             );
+
+            invalidMessages.push(validators[i].props.invalid);
           }
         }
       }
     }
 
-    this.setState({
+    validatedFieldState = {
       fieldState: {
         isInvalid: !!invalidCount,
         invalidMessage: invalid,
+        invalidMessages,
         validMessage: valid,
         ...rest,
       },
-    });
+    };
+    this.setState(validatedFieldState);
+    return validatedFieldState.fieldState;
+  };
+
+  /** If a parent Form exists we update this fields state  */
+  updateFormState = (fieldState?: FieldState) => {
+    if (this.props.form && this.props.form.setFieldState) {
+      this.props.form.setFieldState(fieldState || this.state.fieldState);
+    }
   };
 
   /** Render a label & make it required / not required. */

@@ -1,5 +1,59 @@
 # @atlaskit/media-filmstrip
 
+## 11.0.2
+- [patch] Updated dependencies [911a570](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/911a570)
+  - @atlaskit/media-test-helpers@17.0.0
+  - @atlaskit/media-core@23.0.2
+  - @atlaskit/media-card@32.0.6
+
+## 11.0.1
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/media-card@32.0.5
+
+## 11.0.0
+- [major] Updated dependencies [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+  - @atlaskit/media-test-helpers@16.0.0
+  - @atlaskit/media-core@23.0.0
+  - @atlaskit/media-card@32.0.0
+
+## 10.2.2
+- [patch] Updated dependencies [59ccb09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59ccb09)
+  - @atlaskit/media-card@31.3.0
+
+## 10.2.1
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/media-card@31.2.1
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/field-radio-group@4.0.3
+  - @atlaskit/checkbox@4.0.2
+  - @atlaskit/button@9.0.4
+  - @atlaskit/media-core@22.2.1
+  - @atlaskit/media-test-helpers@15.2.1
+  - @atlaskit/field-range@5.0.2
+  - @atlaskit/docs@5.0.2
+
+## 10.2.0
+- [minor] expose smart Filmstrip from media-filmstrip [7fa84a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7fa84a2)
+- [minor] Updated dependencies [7fa84a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7fa84a2)
+  - @atlaskit/media-card@31.2.0
+
+## 10.1.0
+
+
+
+
+- [patch] Updated dependencies [fa6f865](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fa6f865)
+  - @atlaskit/media-card@31.0.0
+  - @atlaskit/media-test-helpers@15.1.0
+- [none] Updated dependencies [fdd03d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fdd03d8)
+  - @atlaskit/media-card@31.0.0
+  - @atlaskit/media-test-helpers@15.1.0
+- [patch] Updated dependencies [49c8425](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49c8425)
+  - @atlaskit/media-card@31.0.0
+  - @atlaskit/media-test-helpers@15.1.0
+- [minor] Updated dependencies [3476e01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3476e01)
+  - @atlaskit/media-card@31.0.0
+
 ## 10.0.0
 
 - [major] Updates to React ^16.4.0 [7edb866](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7edb866)

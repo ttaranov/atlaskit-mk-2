@@ -1,14 +1,19 @@
+// @ts-ignore
+// @ts-ignore: unused variable
 import styled, { ThemedOuterStyledProps } from 'styled-components';
-import { HTMLAttributes, ComponentClass } from 'react';
+import {
+  // @ts-ignore: unused variable
+  HTMLAttributes,
+  // @ts-ignore: unused variable
+  ComponentClass,
+} from 'react';
 import { akColorN50A } from '@atlaskit/util-shared-styles';
 
 export interface MutableCardContainerProps {
   mutable: boolean;
 }
 
-export const MutableCardContainer: ComponentClass<
-  HTMLAttributes<{}> & ThemedOuterStyledProps<MutableCardContainerProps, {}>
-> = styled.div`
+export const MutableCardContainer = styled.div`
   min-width: 250px;
   height: 200px;
   background-color: ${(props: MutableCardContainerProps) =>
@@ -19,24 +24,28 @@ export const MutableCardContainer: ComponentClass<
   }
 `;
 
-export const MutableCardContentContainer: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const MutableCardContentContainer = styled.div`
   background-color: rgba(0, 0, 0, 0.3);
   height: 50px;
   width: 100%;
 `;
 
-export const FilmstripContainer: ComponentClass<
-  HTMLAttributes<{}>
-> = styled.div`
+export const FilmstripContainer = styled.div`
   border: 1px dotted ${akColorN50A};
   margin-top: 10px;
   margin-bottom: 10px;
 `;
 
-export const Code: ComponentClass<HTMLAttributes<{}>> = styled.code`
+export const Code = styled.code`
   font-family: monospace;
   padding: 3px;
   border-radius: 5px;
+`;
+
+export const ExampleWrapper = styled.div``;
+
+export const FilmstripWrapper = styled.div`
+  border: 1px solid #ccc;
+  width: 800px;
+  margin-bottom: 20px;
 `;

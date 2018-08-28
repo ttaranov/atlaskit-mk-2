@@ -2,15 +2,11 @@ import { CellSelection } from 'prosemirror-tables';
 import { EditorState, Selection } from 'prosemirror-state';
 import { TableMap } from 'prosemirror-tables';
 import { isCellSelection, findTable } from 'prosemirror-utils';
+import { CellRect } from '../types';
 
-export interface Rect {
-  left: number;
-  right: number;
-  top: number;
-  bottom: number;
-}
-
-export const getSelectionRect = (selection: Selection): Rect | undefined => {
+export const getSelectionRect = (
+  selection: Selection,
+): CellRect | undefined => {
   const table = findTable(selection);
   if (!isCellSelection(selection) || !table) {
     return;

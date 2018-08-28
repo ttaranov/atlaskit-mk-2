@@ -36,21 +36,16 @@ export const MentionStyle: ComponentClass<
   HTMLAttributes<{}> & MentionStyleProps
 > = styled.span`
   ${(props: MentionStyleProps) => `
-  display: inline-block;
+  display: inline;
   background: ${mentionStyle[props.mentionType].background};
   border: 1px solid ${mentionStyle[props.mentionType].border};
   border-radius: 20px;
   color: ${mentionStyle[props.mentionType].text};
   cursor: pointer;
   padding: 0 4px 2px 3px;
-  white-space: nowrap;
   line-height: 16px;
   font-size: ${akFontSizeDefault};
   font-weight: normal;
+  word-break: break-word;
 `};
-`;
-
-export const MentionContainer: ComponentClass<HTMLAttributes<{}>> = styled.span`
-  display: inline-table;
-  white-space: nowrap;
 `;

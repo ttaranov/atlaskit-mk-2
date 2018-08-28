@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-editor",
-  "version": "10.0.0",
+  "version": "11.0.1",
   "description": "Media component for image annotations",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -19,18 +19,18 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/icon": "^13.0.0",
+    "@atlaskit/icon": "^13.2.2",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "tslib": "^1.8.0"
   },
   "peerDependencies": {
-    "@atlaskit/media-core": "^22.0.0",
+    "@atlaskit/media-core": "^23.0.2",
     "react": "^16.4.0",
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^5.0.0",
-    "@atlaskit/media-core": "^22.0.0",
-    "@atlaskit/media-test-helpers": "^15.0.0"
+    "@atlaskit/docs": "^5.0.2",
+    "@atlaskit/media-core": "^23.0.2",
+    "@atlaskit/media-test-helpers": "^17.0.0"
   }
 }

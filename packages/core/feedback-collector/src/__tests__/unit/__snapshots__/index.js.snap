@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Feedback collector should match the DOM snapshot 1`] = `
+<FeedbackCollector
+  email="email"
+  embeddableKey="embeddable_key"
+  name="name"
+  onClose={[Function]}
+  onSubmit={[Function]}
+  requestTypeId="request_type_id"
+>
+  <FeedbackForm
+    onClose={[Function]}
+    onSubmit={[Function]}
+  >
+    <ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(_class)))
+      footer={[Function]}
+      heading="Share your thoughts"
+      onClose={[Function]}
+    >
+      <AnalyticsContext
+        data={
+          Object {
+            "componentName": "modalDialog",
+            "packageName": "@atlaskit/modal-dialog",
+            "packageVersion": "6.0.10",
+          }
+        }
+      >
+        <ForwardRef(WithAnalyticsEvents(_class))
+          footer={[Function]}
+          heading="Share your thoughts"
+          onClose={[Function]}
+        >
+          <AnalyticsContextConsumer>
+            <_class
+              createAnalyticsEvent={[Function]}
+              footer={[Function]}
+              heading="Share your thoughts"
+              onClose={[Function]}
+            >
+              <PortalWithThemeProvider
+                id="gateway-or-portal"
+                into="modal"
+                withTransitionGroup={true}
+              >
+                <ThemeProvider
+                  theme={Object {}}
+                >
+                  <WithTheme(Portal)
+                    id="gateway-or-portal"
+                    into="modal"
+                    withTransitionGroup={true}
+                  >
+                    <Portal
+                      id="gateway-or-portal"
+                      into="modal"
+                      theme={Object {}}
+                      withTransitionGroup={true}
+                    />
+                  </WithTheme(Portal)>
+                </ThemeProvider>
+              </PortalWithThemeProvider>
+            </_class>
+          </AnalyticsContextConsumer>
+        </ForwardRef(WithAnalyticsEvents(_class))>
+      </AnalyticsContext>
+    </ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(_class)))>
+  </FeedbackForm>
+</FeedbackCollector>
+`;

@@ -1,5 +1,49 @@
 # @atlaskit/table-tree
 
+## 4.1.4
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/spinner@9.0.6
+  - @atlaskit/select@5.0.9
+  - @atlaskit/section-message@1.0.5
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/button@9.0.6
+  - @atlaskit/docs@5.0.6
+
+## 4.1.3
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/select@5.0.8
+  - @atlaskit/analytics-next@3.0.4
+  - @atlaskit/button@9.0.5
+  - @atlaskit/theme@5.1.3
+  - @atlaskit/spinner@9.0.5
+  - @atlaskit/section-message@1.0.4
+  - @atlaskit/icon@13.2.4
+
+## 4.1.2
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/select@5.0.7
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/button@9.0.4
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/spinner@9.0.4
+  - @atlaskit/analytics-next@3.0.3
+  - @atlaskit/docs@5.0.2
+
+## 4.1.1
+- [patch] Add a SSR test for every package, add react-dom and build-utils in devDependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+- [none] Updated dependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+  - @atlaskit/select@5.0.6
+  - @atlaskit/analytics-next@3.0.2
+  - @atlaskit/button@9.0.3
+  - @atlaskit/theme@5.1.1
+  - @atlaskit/spinner@9.0.3
+  - @atlaskit/icon@13.2.1
+
+## 4.1.0
+- [minor] Added a new helper method appendItem in tableTreeHelper class [f520c93](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f520c93)
+
 ## 4.0.1
 - [patch] Move analytics tests and replace elements to core [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
 - [none] Updated dependencies [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)

@@ -32,7 +32,7 @@ export {
   MentionDefinition,
 } from './mention';
 export { listItem, ListItemArray, ListItemDefinition } from './list-item';
-export { panel, PanelAttributes, PanelDefinition } from './panel';
+export { panel, PanelAttributes, PanelDefinition, PanelType } from './panel';
 export { text, TextDefinition } from './text';
 export { default as unknownBlock } from './unknown-block';
 export {
@@ -94,10 +94,7 @@ export { date, DateDefinition } from './date';
 export { placeholder, PlaceholderDefinition } from './placeholder';
 export { layoutSection } from './layout-section';
 export { layoutColumn } from './layout-column';
-export {
-  inlineCard,
-  CardAttributes,
-  InlineCardDefinition,
-} from './inline-card';
+export { inlineCard, InlineCardDefinition } from './inline-card';
+export { blockCard, CardAttributes, BlockCardDefinition } from './block-card';
 export { unsupportedBlock } from './unsupported-block';
 export { unsupportedInline } from './unsupported-inline';

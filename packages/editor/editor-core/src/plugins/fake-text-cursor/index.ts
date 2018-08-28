@@ -15,7 +15,7 @@ export const createPlugin = () =>
 
 const fakeTextCursorPlugin: EditorPlugin = {
   pmPlugins() {
-    return [{ rank: 2100, plugin: () => createPlugin() }];
+    return [{ name: 'fakeTextCursor', plugin: () => createPlugin() }];
   },
 };
 

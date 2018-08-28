@@ -20,7 +20,7 @@ export const confluenceInlineComment: MarkSpec = {
     },
   },
   parseDOM: [{ tag: 'span[data-mark-type="confluenceInlineComment"]' }],
-  toDOM(node): [string, any] {
+  toDOM(node) {
     return [
       'span',
       {

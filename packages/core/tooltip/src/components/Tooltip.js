@@ -8,12 +8,16 @@ import React, {
   type Element,
   type ComponentType,
 } from 'react';
+import NodeResolver from 'react-node-resolver';
+import flushable from 'flushable';
 
+import Portal from '@atlaskit/portal';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
+import { layers } from '@atlaskit/theme';
 import {
   name as packageName,
   version as packageVersion,
@@ -21,11 +25,9 @@ import {
 
 import type { CoordinatesType, PositionType, PositionTypeBase } from '../types';
 import { Tooltip as StyledTooltip } from '../styled';
+import Animation from './Animation';
+import Position from './Position';
 
-import Portal from './Portal';
-import TooltipMarshal from './Marshal';
-import Transition from './Transition';
-import { getPosition } from './utils';
 import { hoveredPayload, unhoveredPayload } from './utils/analytics-payloads';
 
 type Props = {
@@ -71,34 +73,30 @@ type Props = {
 type State = {
   immediatelyHide: boolean,
   immediatelyShow: boolean,
-  isFlipped: boolean,
   isVisible: boolean,
-  /** This is used for the slide transition of tooltips. */
-  position: PositionType,
-  mousePosition: PositionTypeBase,
-  coordinates: CoordinatesType | null,
+  everBeenVisible: boolean,
 };
 
-// global tooltip marshal
-// export for testing purposes
-export const marshal = new TooltipMarshal();
+let pendingHide;
 
-function getInitialState(props): State {
-  return {
-    immediatelyHide: false,
-    immediatelyShow: false,
-    isVisible: false,
-    isFlipped: false,
-    position: props.position,
-    mousePosition: props.mousePosition,
-    coordinates: null,
-  };
-}
+const showTooltip = (fn: boolean => void, defaultDelay: number) => {
+  const isHidePending = pendingHide && pendingHide.pending();
+  if (isHidePending) {
+    pendingHide.flush();
+  }
+  const pendingShow = flushable(
+    () => fn(isHidePending),
+    isHidePending ? 0 : defaultDelay,
+  );
+  return pendingShow.cancel;
+};
+
+const hideTooltip = (fn: boolean => void, defaultDelay: number) => {
+  pendingHide = flushable(flushed => fn(flushed), defaultDelay);
+  return pendingHide.cancel;
+};
 
 class Tooltip extends Component<Props, State> {
-  state = getInitialState(this.props);
-  wrapper: HTMLElement | null;
-  mouseCoordinates: CoordinatesType | null = null;
   static defaultProps = {
     component: StyledTooltip,
     delay: 300,
@@ -107,124 +105,72 @@ class Tooltip extends Component<Props, State> {
     tag: 'div',
   };
 
-  componentWillReceiveProps(nextProps: Props) {
-    const { position, truncate, mousePosition } = nextProps;
-
-    // handle case where position is changed while visible
-    if (
-      position !== this.props.position ||
-      mousePosition !== this.props.mousePosition
-    ) {
-      this.setState({ position, mousePosition, coordinates: null });
-    }
-
-    // handle case where truncate is changed while visible
-    if (truncate !== this.props.truncate) {
-      this.setState({ coordinates: null });
-    }
-  }
-
-  componentWillUnmount() {
-    marshal.unmount(this);
-  }
-
-  handleWrapperRef = (ref: HTMLElement | null) => {
-    this.wrapper = ref;
+  wrapperRef: HTMLElement | null;
+  targetRef: HTMLElement | null;
+  mouseCoordinates: CoordinatesType | null = null;
+  cancelPendingSetState = () => {}; // set in mouseover/mouseout handlers
+  state = {
+    immediatelyHide: false,
+    immediatelyShow: false,
+    isVisible: false,
+    everBeenVisible: false,
   };
 
-  handleMeasureRef = (tooltip: HTMLElement) => {
-    if (!tooltip || !this.wrapper) return;
-
-    const { position, mousePosition } = this.props;
-    const { mouseCoordinates } = this;
-    const target = this.wrapper.children.length
-      ? this.wrapper.children[0]
-      : this.wrapper;
-
-    const positionData = getPosition({
-      position,
-      target,
-      tooltip,
-      mouseCoordinates,
-      mousePosition,
-    });
-    this.setState(positionData);
-  };
-
-  renderTooltip() {
-    const { content, truncate, component } = this.props;
-    const {
-      immediatelyHide,
-      immediatelyShow,
-      isVisible,
-      mousePosition,
-      position,
-      coordinates,
-    } = this.state;
-
-    // bail immediately when not visible, or when there is no content
-    if (!isVisible || !content) return null;
-
-    // render node for measuring in alternate tree via portal
-    if (!coordinates) {
-      const MeasurableTooltip = component;
-      return (
-        <Portal>
-          <MeasurableTooltip
-            innerRef={this.handleMeasureRef}
-            style={{ visibility: 'hidden' }}
-          >
-            {content}
-          </MeasurableTooltip>
-        </Portal>
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    const scrollOptions = { capture: true, passive: true };
+    if (!prevState.isVisible && this.state.isVisible) {
+      window.addEventListener('scroll', this.handleWindowScroll, scrollOptions);
+    } else if (prevState.isVisible && !this.state.isVisible) {
+      window.removeEventListener(
+        'scroll',
+        this.handleWindowScroll,
+        scrollOptions,
       );
     }
-
-    // render and animate tooltip when coordinates available
-    const transitionProps = {
-      component,
-      immediatelyHide,
-      immediatelyShow,
-      mousePosition,
-      position,
-      coordinates,
-      truncate,
-    };
-
-    return <Transition {...transitionProps}>{content}</Transition>;
   }
 
-  show = ({ immediate }: { immediate: boolean }) => {
-    const { onShow } = this.props;
-    this.setState({
-      immediatelyShow: immediate,
-      isVisible: true,
-      coordinates: null,
-    });
-    if (onShow) onShow();
-  };
-  // eslint-disable-next-line react/no-unused-prop-types
-  hide = ({ immediate }: { immediate: boolean }) => {
-    const { onHide } = this.props;
-    // Update state twice to allow for the updated `immediate` prop to pass through
-    // to the Transition component before the tooltip is removed
-    this.setState({ immediatelyHide: immediate }, () => {
-      this.setState({ isVisible: false, coordinates: null });
-    });
-    if (onHide) onHide();
+  handleWindowScroll = () => {
+    if (this.state.isVisible) {
+      this.cancelPendingSetState();
+      this.setState({ isVisible: false, immediatelyHide: true });
+    }
   };
 
-  handleMouseOver = (event: MouseEvent) => {
-    // bail if over the wrapper, we only want to target the first child.
-    if (event.target === this.wrapper) return;
-
-    marshal.show(this);
+  handleMouseClick = () => {
+    if (this.props.hideTooltipOnClick) {
+      this.cancelPendingSetState();
+      this.setState({ isVisible: false, immediatelyHide: true });
+    }
   };
-  handleMouseOut = (event: MouseEvent) => {
-    // bail if over the wrapper, we only want to target the first child.
-    if (event.target === this.wrapper) return;
 
-    marshal.hide(this);
+  handleMouseOver = (e: SyntheticMouseEvent<>) => {
+    if (e.target === this.wrapperRef) return;
+    this.cancelPendingSetState();
+    if (Boolean(this.props.content) && !this.state.isVisible) {
+      this.cancelPendingSetState = showTooltip(immediatelyShow => {
+        this.setState({
+          isVisible: true,
+          everBeenVisible: true,
+          immediatelyShow,
+        });
+        if (this.props.onShow) {
+          this.props.onShow();
+        }
+      }, this.props.delay);
+    }
+  };
+
+  handleMouseLeave = (e: SyntheticMouseEvent<>) => {
+    if (e.target === this.wrapperRef) return;
+    this.cancelPendingSetState();
+    if (this.state.isVisible) {
+      this.cancelPendingSetState = hideTooltip(immediatelyHide => {
+        this.setState({ isVisible: false, immediatelyHide });
+        if (this.props.onHide) {
+          this.props.onHide();
+        }
+      }, this.props.delay);
+    }
   };
 
   // Update mouse coordinates, used when position is 'mouse'.
@@ -239,26 +185,75 @@ class Tooltip extends Component<Props, State> {
     };
   };
 
-  handleClick = () => {
-    const { hideTooltipOnClick } = this.props;
-
-    if (hideTooltipOnClick) this.hide({ immediate: true });
-  };
-
   render() {
-    const { children, tag: Tag } = this.props;
-
+    const {
+      children,
+      content,
+      position,
+      mousePosition,
+      truncate,
+      component: TooltipContainer,
+      tag: TargetContainer,
+    } = this.props;
+    const {
+      isVisible,
+      everBeenVisible,
+      immediatelyShow,
+      immediatelyHide,
+    } = this.state;
     return (
-      <Tag
-        onClick={this.handleClick}
-        onMouseMove={this.handleMouseMove}
-        onMouseOver={this.handleMouseOver}
-        onMouseOut={this.handleMouseOut}
-        ref={this.handleWrapperRef}
-      >
-        {Children.only(children)}
-        {this.renderTooltip()}
-      </Tag>
+      <React.Fragment>
+        <TargetContainer
+          onClick={this.handleMouseClick}
+          onMouseOver={this.handleMouseOver}
+          onMouseOut={this.handleMouseLeave}
+          onMouseMove={this.handleMouseMove}
+          ref={wrapperRef => {
+            this.wrapperRef = wrapperRef;
+          }}
+        >
+          <NodeResolver
+            innerRef={targetRef => {
+              this.targetRef = targetRef;
+            }}
+          >
+            {Children.only(children)}
+          </NodeResolver>
+        </TargetContainer>
+        {everBeenVisible && (
+          <Animation
+            immediatelyShow={immediatelyShow}
+            immediatelyHide={immediatelyHide}
+            in={isVisible}
+          >
+            {getAnimationStyles => (
+              <Portal zIndex={layers.tooltip()}>
+                <Position
+                  key={position}
+                  mouseCoordinates={this.mouseCoordinates}
+                  mousePosition={mousePosition}
+                  position={position}
+                  target={this.targetRef}
+                >
+                  {(ref, placement, positionStyles) => (
+                    <TooltipContainer
+                      innerRef={ref}
+                      style={{
+                        ...positionStyles,
+                        ...getAnimationStyles(placement),
+                      }}
+                      truncate={truncate}
+                      data-placement={placement}
+                    >
+                      {content}
+                    </TooltipContainer>
+                  )}
+                </Position>
+              </Portal>
+            )}
+          </Animation>
+        )}
+      </React.Fragment>
     );
   }
 }

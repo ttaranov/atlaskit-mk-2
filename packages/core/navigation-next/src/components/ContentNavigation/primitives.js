@@ -12,7 +12,7 @@ import {
   transitionTimingFunction,
 } from '../../common/constants';
 import { Shadow } from '../../common/primitives';
-import { light, withTheme } from '../../theme';
+import { light, withContentTheme, type ProductTheme } from '../../theme';
 
 const animationFade = state => {
   const defaultStyle = {
@@ -52,14 +52,23 @@ const ScrollProvider = (props: any) => (
 /**
  * ProductNavigation
  */
-const ProductNavigationPrimitive = withTheme({
-  mode: light,
-  context: 'product',
-})(({ children, theme = { mode: light } }) => (
+type ProductNavigationPrimitiveBaseProps = {
+  children: Node,
+  theme: ProductTheme,
+};
+
+const ProductNavigationPrimitiveBase = ({
+  children,
+  theme = { mode: light, context: 'product' },
+}: ProductNavigationPrimitiveBaseProps) => (
   <div css={theme.mode.contentNav().product}>
     <ScrollProvider>{children}</ScrollProvider>
   </div>
-));
+);
+
+const ProductNavigationPrimitive = withContentTheme(
+  ProductNavigationPrimitiveBase,
+);
 
 type ProductNavigationProps = { children: Node };
 
@@ -79,10 +88,22 @@ const slideIn = keyframes`
 /**
  * ContainerNavigation
  */
-const ContainerNavigationPrimitive = withTheme({
-  mode: light,
-  context: 'container',
-})(({ children, isEntering, isExiting, isPeekHinting, isPeeking, theme }) => {
+type ContainerNavigationPrimitiveBaseProps = {
+  children: Node,
+  isEntering: boolean,
+  isExiting: boolean,
+  isPeekHinting: boolean,
+  isPeeking: boolean,
+  theme: ProductTheme,
+};
+const ContainerNavigationPrimitiveBase = ({
+  children,
+  isEntering,
+  isExiting,
+  isPeekHinting,
+  isPeeking,
+  theme,
+}: ContainerNavigationPrimitiveBaseProps) => {
   let animationName;
   if (isEntering) animationName = slideIn;
 
@@ -109,7 +130,11 @@ const ContainerNavigationPrimitive = withTheme({
       <ScrollProvider>{children}</ScrollProvider>
     </div>
   );
-});
+};
+
+const ContainerNavigationPrimitive = withContentTheme(
+  ContainerNavigationPrimitiveBase,
+);
 
 type ContainerNavigationProps = {
   children: Node,
@@ -117,9 +142,7 @@ type ContainerNavigationProps = {
 };
 
 export const ContainerNavigation = (props: ContainerNavigationProps) => (
-  <ThemeProvider
-    theme={oldTheme => ({ mode: light, ...oldTheme, context: 'container' })}
-  >
+  <ThemeProvider theme={{ mode: light, context: 'container' }}>
     <ContainerNavigationPrimitive {...props} />
   </ThemeProvider>
 );

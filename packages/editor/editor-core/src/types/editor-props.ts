@@ -14,7 +14,8 @@ import { MentionProvider } from '@atlaskit/mention';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { TaskDecisionProvider } from '@atlaskit/task-decision';
 
-import { PluginConfig as TablesPluginConfig } from '../plugins/table/pm-plugins/main';
+import { PluginConfig as TablesPluginConfig } from '../plugins/table/types';
+import { TextColorPluginConfig } from '../plugins/text-color/pm-plugins/main';
 import { MediaProvider, MediaState } from '../plugins/media/pm-plugins/main';
 import { ErrorReportingHandler } from '../utils/error-reporter';
 import { AnalyticsHandler } from '../analytics';
@@ -43,10 +44,14 @@ export type ReactElement = React.ReactElement<any> | React.ReactElement<any>[];
 
 export type InsertMenuCustomItem = {
   content: string;
-  value: { name: string };
-  tooltipDescription: string;
-  tooltipPosition: string;
-  onClick: (editorActions: EditorActions) => void;
+  value: { name: string | null };
+  tooltipDescription?: string;
+  tooltipPosition?: string;
+  elemBefore?: ReactElement | string;
+  elemAfter?: ReactElement | string;
+  isDisabled?: boolean;
+  className?: string;
+  onClick?: (editorActions: EditorActions) => void;
 };
 
 export interface ExtensionConfig {
@@ -71,7 +76,7 @@ export interface EditorProps {
   allowRule?: boolean;
   allowCodeBlocks?: boolean | CodeBlockOptions;
   allowLists?: boolean;
-  allowTextColor?: boolean;
+  allowTextColor?: boolean | TextColorPluginConfig;
   allowTables?: boolean | TablesPluginConfig;
   allowHelpDialog?: boolean;
   allowJiraIssue?: boolean;
@@ -86,7 +91,7 @@ export interface EditorProps {
   allowInlineAction?: boolean;
 
   // Temporary flag to enable layouts while it's under development
-  UNSAFE_allowLayouts?: boolean;
+  allowLayouts?: boolean;
 
   quickInsert?: QuickInsertOptions;
 

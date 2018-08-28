@@ -603,7 +603,7 @@ export function moveLeft(view: EditorView) {
  * Function will create a list of wrapper blocks present in a selection.
  */
 function getSelectedWrapperNodes(state: EditorState): NodeType[] {
-  const nodes: any[] = [];
+  const nodes: Array<NodeType> = [];
   if (state.selection) {
     const { $from, $to } = state.selection;
     const {

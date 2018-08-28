@@ -16,9 +16,8 @@ const NavigationAndContent = styled.div`
 
 const BannerContainer = styled.div`
   flex: 1 0 auto;
-  transition: max-height 0.25s ease-in-out;
-  max-height: ${props =>
-    props.isBannerOpen ? 52 : 0}px; /* 52 is line height (20) + 4*grid */
+  transition: height 0.25s ease-in-out;
+  height: ${props => (props.isBannerOpen ? props.bannerHeight : 0)}px;
   position: relative;
   width: 100%;
   z-index: 3;
@@ -44,10 +43,45 @@ const PageContent = styled.div`
 const emptyTheme = {};
 
 type Props = {
+  /*
+    If you provide the banner or banners you are to use, page will help you
+    coordinate the showing and hiding of them in conjunction with `isBannerOpen`.
+    This is designed to take [our banner](/packages/core/banner) component, and
+    matches the animation timing of our banner.
+
+    The only time that two banners should be rendered are when an announcement
+    banner is loaded alongside an error or warning banner.
+  */
   banner?: Node,
-  children?: Node,
-  isBannerOpen?: boolean,
+  /*
+    Takes our [navigation component](/packages/core/navigation) and helps
+    position it with consideration to rendered banners.
+  */
   navigation?: Node,
+  /*
+    The contents of the page, to be rendered next to navigation. It will be
+    correctly position with relation to both any banner, as well as navigation.
+  */
+  children?: Node,
+  /*
+    Sets whether to show or hide the banner. This is responsible for moving the
+    page contents down, as well as whether to render the banner component.
+  */
+  isBannerOpen?: boolean,
+  /*
+    52 is line height (20) + 4*grid. This is the height of all banners aside
+    from the dynamically heighted announcement banner.
+
+    Banner height can be retrieved from banner using its innerRef, which always
+    returns its height when expanded even when collapsed.
+
+    In addition to setting the height of the banner's container for dynamically
+    heighted banners, you will need to set the `pageOffset` in navigation. Since
+    this is a lot to think about, [here](/examples/core/page/navigation-example)
+    is an example that implements displaying both an announcement banner and a
+    warning banner on a page, while matching the height of each.
+  */
+  bannerHeight: number,
 };
 
 export default class Page extends Component<Props, void> {
@@ -55,23 +89,33 @@ export default class Page extends Component<Props, void> {
 
   static defaultProps = {
     isBannerOpen: false,
+    bannerHeight: 52,
   };
 
   render() {
+    const {
+      isBannerOpen,
+      banner,
+      navigation,
+      children,
+      bannerHeight,
+    } = this.props;
+
     return (
       <ThemeProvider theme={emptyTheme}>
         <Wrapper>
           {this.props.banner ? (
             <BannerContainer
-              aria-hidden={this.props.isBannerOpen}
-              isBannerOpen={this.props.isBannerOpen}
+              aria-hidden={isBannerOpen}
+              isBannerOpen={isBannerOpen}
+              bannerHeight={bannerHeight}
             >
-              <Banner>{this.props.banner}</Banner>
+              <Banner>{banner}</Banner>
             </BannerContainer>
           ) : null}
           <NavigationAndContent>
-            <Navigation>{this.props.navigation}</Navigation>
-            <PageContent>{this.props.children}</PageContent>
+            <Navigation>{navigation}</Navigation>
+            <PageContent>{children}</PageContent>
           </NavigationAndContent>
         </Wrapper>
       </ThemeProvider>

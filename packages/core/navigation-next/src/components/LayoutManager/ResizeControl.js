@@ -3,10 +3,15 @@
 import React, { PureComponent, Fragment } from 'react';
 import { css } from 'emotion';
 import raf from 'raf-schd';
+import {
+  withAnalyticsEvents,
+  type WithAnalyticsEventsProps,
+} from '@atlaskit/analytics-next';
 import { colors } from '@atlaskit/theme';
 import ChevronLeft from '@atlaskit/icon/glyph/chevron-left-circle';
 import ChevronRight from '@atlaskit/icon/glyph/chevron-right-circle';
 
+import { navigationExpandedCollapsed } from '../../common/analytics';
 import { GLOBAL_NAV_WIDTH, CONTENT_NAV_WIDTH } from '../../common/constants';
 import { Shadow } from '../../common/primitives';
 import PropertyToggle from './PropertyToggle';
@@ -73,6 +78,10 @@ const Button = ({ ...props }) => (
       transition: 'transform 300ms cubic-bezier(0.2, 0, 0, 1)',
       transitionDelay: 0,
 
+      ':focus': {
+        boxShadow: 'none',
+      },
+
       [`.${innerStyles}:hover &`]: {
         transform: 'translateX(0)',
         transitionDelay: '120ms',
@@ -84,7 +93,7 @@ const Button = ({ ...props }) => (
         transition: 'color 100ms linear, fill 100ms linear',
       },
 
-      ':hover svg': {
+      ':hover svg, :focus svg': {
         color: colors.B200,
         fill: colors.N0,
       },
@@ -110,7 +119,7 @@ function applyMutations(
   });
 }
 
-type Props = {
+type Props = WithAnalyticsEventsProps & {
   children: State => any,
   mutationRefs: Array<{ ref: HTMLElement, property: string }>,
   navigation: Object,
@@ -125,7 +134,7 @@ type State = {
   width: number,
 };
 
-export default class ResizeControl extends PureComponent<Props, State> {
+class ResizeControl extends PureComponent<Props, State> {
   invalidDragAttempted = false;
   lastWidth: number;
   wrapper: HTMLElement;
@@ -139,8 +148,18 @@ export default class ResizeControl extends PureComponent<Props, State> {
     width: this.props.navigation.state.productNavWidth,
   };
 
-  toggleCollapse = () => {
-    this.props.navigation.toggleCollapse();
+  onResizerChevronClick = () => {
+    this.toggleCollapse('chevron');
+  };
+
+  toggleCollapse = trigger => {
+    const { navigation, createAnalyticsEvent } = this.props;
+    const newCollapsedState = !navigation.state.isCollapsed;
+    navigation.toggleCollapse();
+    navigationExpandedCollapsed(createAnalyticsEvent, {
+      trigger,
+      isCollapsed: newCollapsedState,
+    });
   };
 
   handleResizeStart = (event: MouseEvent) => {
@@ -218,17 +237,19 @@ export default class ResizeControl extends PureComponent<Props, State> {
     }
   });
   handleResizeEnd = () => {
-    const { navigation } = this.props;
+    const { navigation, createAnalyticsEvent } = this.props;
     const { delta, didDragOpen, isDragging, width } = this.state;
 
     let publishWidth = width;
     let shouldCollapse;
     const expandThreshold = 24;
 
+    const resizerClicked = !isDragging && !this.invalidDragAttempted;
+
     // check if the intention was just a click, and toggle
-    if (!isDragging && !this.invalidDragAttempted) {
+    if (resizerClicked) {
       publishWidth = Math.max(CONTENT_NAV_WIDTH, width);
-      this.toggleCollapse();
+      this.toggleCollapse('resizerClick');
     }
 
     // prevent the user from creating an unusable width
@@ -242,6 +263,16 @@ export default class ResizeControl extends PureComponent<Props, State> {
       }
     } else {
       shouldCollapse = navigation.state.isCollapsed;
+    }
+
+    if (
+      !resizerClicked &&
+      ((didDragOpen && !shouldCollapse) || (!didDragOpen && shouldCollapse))
+    ) {
+      navigationExpandedCollapsed(createAnalyticsEvent, {
+        trigger: 'resizerDrag',
+        isCollapsed: shouldCollapse,
+      });
     }
 
     // reset everything
@@ -284,7 +315,7 @@ export default class ResizeControl extends PureComponent<Props, State> {
               <Shadow isBold={mouseIsDown} />
               <Inner>
                 <Handle onMouseDown={this.handleResizeStart} />
-                <Button onClick={this.toggleCollapse}>
+                <Button onClick={this.onResizerChevronClick}>
                   <ButtonIcon />
                 </Button>
               </Inner>
@@ -299,3 +330,5 @@ export default class ResizeControl extends PureComponent<Props, State> {
     );
   }
 }
+
+export default withAnalyticsEvents()(ResizeControl);

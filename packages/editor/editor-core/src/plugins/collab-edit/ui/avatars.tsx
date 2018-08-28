@@ -5,6 +5,7 @@ import Avatar from '@atlaskit/avatar';
 import AvatarGroup from '@atlaskit/avatar-group';
 import { akGridSizeUnitless, akColorN20 } from '@atlaskit/util-shared-styles';
 import InviteTeamIcon from '@atlaskit/icon/glyph/editor/add';
+import { akEditorSmallZIndex } from '@atlaskit/editor-common';
 
 import WithPluginState from '../../../ui/WithPluginState';
 import { EventDispatcher } from '../../../event-dispatcher';
@@ -69,7 +70,7 @@ const AvatarItem: any = styled.div`
     bottom: -1px;
     width: 13px;
     height: 13px;
-    z-index: 10;
+    z-index: ${akEditorSmallZIndex};
     border-radius: 3px;
     background: ${(props: any) => props.badgeColor};
     color: #fff;

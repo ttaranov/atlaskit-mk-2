@@ -173,6 +173,7 @@ function converter(
                 schema,
                 content,
                 convertedNodesReverted,
+                // TODO: Fix any, potential issue. ED-5048
                 supportedMarks as any,
               ),
         );
@@ -400,6 +401,7 @@ function converter(
               schema,
               Fragment.from(codeHeader),
               convertedNodesReverted,
+              // TODO: Fix any, potential issue. ED-5048
               supportedMarks as any,
             ),
           );
@@ -444,7 +446,7 @@ function convertConfluenceMacro(
     case 'NOTE':
     case 'TIP':
       const panelTitle = params.title;
-      let panelBody: any[] = [];
+      let panelBody: Array<PMNode | Fragment> = [];
 
       if (panelTitle) {
         panelBody.push(
@@ -462,7 +464,8 @@ function convertConfluenceMacro(
       }
       return schema.nodes.panel.createChecked(
         { panelType: mapPanelTypeToPm(macroName) },
-        panelBody,
+        // TODO: Fix any, potential issue. ED-5048
+        panelBody as any,
       );
 
     case 'PANEL':

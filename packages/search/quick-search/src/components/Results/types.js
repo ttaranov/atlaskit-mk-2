@@ -1,7 +1,9 @@
 // @flow
 import type { Node, Element, ComponentType } from 'react';
 
-type AnalyticsData = {};
+export type AnalyticsData = {
+  [key: string]: string | number,
+};
 
 // The data that's passed to the Click and MouseEnter events
 export type ResultData = {|
@@ -24,33 +26,40 @@ type CommonResultProps = {
   isSelected: boolean,
   /** Triggered by mouseClick event. Called with { `resultId`,  `type` }. */
   onClick: (resultData: ResultData) => mixed,
-  /** Triggered by mouseEnter event. Called with { `resultId`,  `type` }. */
-  onMouseEnter: (resultData: ResultData) => mixed,
-  /** Standard onMouseLeave event. */
-  onMouseLeave: () => void,
   /** Unique ID of the result. This is passed as a parameter to certain callbacks */
   resultId: string | number,
   /** Type of the result. This is passed as a parameter to certain callbacks. */
   type: string,
-  /** Type of the result content. This is passed as a parameter to certain callbacks. */
-  contentType?: string,
+};
+
+export type Context = {
+  /** Register itself as keyboard navigation target */
+  registerResult: (result: any) => void,
+  /** Triggered by mouseEnter event. Called with { `resultId`,  `type` }. */
+  onMouseEnter: (resultData: ResultData) => void,
+  /** Standard onMouseLeave event. */
+  onMouseLeave: () => void,
+  /** Fires an analytics event */
+  sendAnalytics: (string, AnalyticsData) => mixed,
+  /** get the index of the search result in the list of */
+  getIndex: (string | number) => number | null,
+  /** React component to be used for rendering links */
+  linkComponent?: ComponentType<*>,
 };
 
 export type ResultType = CommonResultProps & {
-  /** Data to be sent with analytics events */
-  analyticsData?: AnalyticsData,
   /** Text to appear to the right of the text. It has a lower font-weight. */
   caption?: string,
   /** React element to appear to the left of the text. */
   icon?: Node,
-  /** Fires an analytics event */
-  sendAnalytics: (string, AnalyticsData) => mixed,
   /** Text to be shown alongside the main `text`. */
   subText?: string,
   /** Main text to be displayed as the item. */
   text: Element<any> | string,
-  /** React component to be used for rendering links */
-  linkComponent?: ComponentType<*>,
+  /** The context provided by QuickSearch. */
+  context?: Context,
+  /** key/value pairs of attributes to be send in analytics events. */
+  analyticsData?: AnalyticsData,
 };
 
 export type ContainerResultType = CommonResultProps & {

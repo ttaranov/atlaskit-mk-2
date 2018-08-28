@@ -1,5 +1,61 @@
 # @atlaskit/quick-search
 
+## 4.2.7
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/navigation@33.1.5
+  - @atlaskit/item@8.0.5
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/field-base@11.0.5
+  - @atlaskit/avatar@14.0.8
+  - @atlaskit/docs@5.0.6
+
+## 4.2.6
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/navigation@33.1.3
+  - @atlaskit/field-base@11.0.3
+  - @atlaskit/theme@5.1.3
+  - @atlaskit/analytics@4.0.4
+  - @atlaskit/item@8.0.4
+  - @atlaskit/icon@13.2.4
+  - @atlaskit/avatar@14.0.6
+
+## 4.2.5
+- [patch] Make context prop optional [3f902d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f902d5)
+- [none] Updated dependencies [3f902d5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f902d5)
+
+## 4.2.4
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/navigation@33.1.2
+  - @atlaskit/item@8.0.3
+  - @atlaskit/icon@13.2.2
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/analytics@4.0.3
+  - @atlaskit/avatar@14.0.5
+  - @atlaskit/field-base@11.0.2
+
+## 4.2.3
+- [patch] add missing attributes to analytics [2a0346a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2a0346a)
+- [patch] Updated dependencies [2a0346a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2a0346a)
+
+## 4.2.2
+- [patch] fix keyboard navigation [2dbff95](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2dbff95)
+- [patch] Updated dependencies [2dbff95](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2dbff95)
+
+## 4.2.1
+- [patch] reduce number of updates/rendering in quick-search [9fbaafd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9fbaafd)
+- [patch] Updated dependencies [9fbaafd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9fbaafd)
+
+## 4.2.0
+- [minor] Rewrite internal keyboard handling implementation. [0ebfc9a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0ebfc9a)
+- [none] Updated dependencies [0ebfc9a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0ebfc9a)
+
+## 4.1.0
+- [minor] Passes the keyboard event from quick search to the submit event handler to ensure global search redirects with the complete search query. [2d6668f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d6668f)
+- [none] Updated dependencies [2d6668f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d6668f)
+
 ## 4.0.1
 - [patch] Add extra analytics event for highlight and selection of a search result [12e79bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12e79bf)
 - [patch] Updated dependencies [12e79bf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12e79bf)

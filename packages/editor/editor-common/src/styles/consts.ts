@@ -14,6 +14,7 @@ import {
   akColorN700,
   akColorN900,
   akZIndexLayer,
+  akZIndexBlanket,
   akColorR300,
   akColorR50,
   akColorR75,
@@ -33,6 +34,16 @@ export const akEditorPrimaryButton = akColorB400;
 export const akEditorCodeBackground = akColorN20;
 export const akEditorCodeBlockPadding = '12px';
 export const akEditorCodeInlinePadding = '2px 4px';
+export const akEditorUnitZIndex = 1;
+export const akEditorSmallZIndex = 2;
+// z-index for main menu bar -
+// this is highest as it should be above anything else in editor below.
+export const akEditorMenuZIndex = akZIndexBlanket;
+// z-index used for pickers (date, emoji, mentions) and type-aheads, hyperlinks
+export const akEditorFloatingDialogZIndex = akZIndexLayer + 10;
+// z-index used for floating toolbars table cell menu which are above block toolbars
+export const akEditorFloatingOverlapPanelZIndex = akZIndexLayer + 5;
+// z-index used for floating toolbars like code block, table etc
 export const akEditorFloatingPanelZIndex = akZIndexLayer;
 export const akEditorMentionSelected = akColorN100;
 export const akEditorTableToolbarSize = 11;

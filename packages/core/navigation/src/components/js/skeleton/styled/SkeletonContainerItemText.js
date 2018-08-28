@@ -8,9 +8,8 @@ const SkeletonContainerItemText = styled.div`
   background-color: currentColor;
   border-radius: ${math.divide(gridSize, 2)}px;
   opacity: 0.15;
-
   margin-left: ${gridSize() * 3}px;
-  width: ${gridSize() * 17}px;
+  width: ${props => props.textWidth || `${gridSize() * 17}px`};
 `;
 
 SkeletonContainerItemText.displayName = 'SkeletonContainerItemText';

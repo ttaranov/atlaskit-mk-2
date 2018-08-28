@@ -1,4 +1,4 @@
-import { Node, Slice, Fragment } from 'prosemirror-model';
+import { Node, Slice, Fragment, Schema } from 'prosemirror-model';
 import { mapSlice } from '../../utils/slice';
 
 function joinCodeBlocks(left: Node, right: Node) {
@@ -33,3 +33,29 @@ export function transformSliceToJoinAdjacentCodeBlocks(slice: Slice): Slice {
     slice.openEnd,
   );
 }
+
+export const transformSingleLineCodeBlockToCodeMark = (
+  slice: Slice,
+  schema: Schema,
+) => {
+  if (slice.content.childCount === 1 && (slice.openStart || slice.openEnd)) {
+    const maybeCodeBlock = slice.content.firstChild;
+    if (maybeCodeBlock && maybeCodeBlock.type === schema.nodes.codeBlock) {
+      if (
+        maybeCodeBlock.textContent &&
+        maybeCodeBlock.textContent.indexOf('\n') === -1
+      ) {
+        return new Slice(
+          Fragment.from(
+            schema.text(maybeCodeBlock.textContent, [
+              schema.marks.code.create(),
+            ]),
+          ),
+          0,
+          0,
+        );
+      }
+    }
+  }
+  return slice;
+};

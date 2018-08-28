@@ -2,7 +2,6 @@ import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
 import { Selection } from 'prosemirror-state';
-import { selectRow } from 'prosemirror-utils';
 import { browser } from '@atlaskit/editor-common';
 import CornerControls from './CornerControls';
 import RowControls from './RowControls';
@@ -10,14 +9,14 @@ import NumberColumn from './NumberColumn';
 import { Container } from './styles';
 import { isSelectionUpdated } from './utils';
 import {
-  resetHoverSelection,
+  clearHoverSelection,
   hoverRows,
   insertRow,
   deleteSelectedRows,
+  selectRow,
 } from '../../actions';
 
 export interface State {
-  dangerRows: number[];
   hoveredRows: number[];
 }
 
@@ -33,11 +32,15 @@ export interface Props {
   isNumberColumnEnabled?: boolean;
   hasHeaderRow?: boolean;
   tableHeight?: number;
+  dangerRows?: number[];
 }
 
 export default class TableFloatingControls extends Component<Props, State> {
-  state: State = {
+  static defaultProps = {
     dangerRows: [],
+  };
+
+  state: State = {
     hoveredRows: [],
   };
 
@@ -57,7 +60,7 @@ export default class TableFloatingControls extends Component<Props, State> {
       tableHeight !== nextProps.tableHeight ||
       isTableHovered !== nextProps.isTableHovered ||
       isTableInDanger !== nextProps.isTableInDanger ||
-      this.state.dangerRows !== nextState.dangerRows ||
+      this.props.dangerRows !== nextProps.dangerRows ||
       this.state.hoveredRows !== nextState.hoveredRows ||
       isHeaderRowEnabled !== nextProps.isHeaderRowEnabled ||
       isHeaderColumnEnabled !== nextProps.isHeaderColumnEnabled ||
@@ -77,6 +80,7 @@ export default class TableFloatingControls extends Component<Props, State> {
       isHeaderRowEnabled,
       tableActive,
       hasHeaderRow,
+      dangerRows,
     } = this.props;
 
     if (!tableRef) {
@@ -89,10 +93,10 @@ export default class TableFloatingControls extends Component<Props, State> {
           <NumberColumn
             state={editorView.state}
             hoverRows={this.hoverRows}
-            resetHoverSelection={this.resetHoverSelection}
+            clearHoverSelection={this.clearHoverSelection}
             tableRef={tableRef}
             tableActive={tableActive}
-            dangerRows={this.state.dangerRows}
+            dangerRows={dangerRows}
             hoveredRows={this.state.hoveredRows}
             hasHeaderRow={hasHeaderRow}
             isTableHovered={isTableHovered}
@@ -104,7 +108,7 @@ export default class TableFloatingControls extends Component<Props, State> {
           editorView={editorView}
           selection={editorView.state.selection}
           tableRef={tableRef}
-          resetHoverSelection={this.resetHoverSelection}
+          clearHoverSelection={this.clearHoverSelection}
           isTableInDanger={isTableInDanger}
           isHeaderColumnEnabled={isHeaderColumnEnabled}
           isHeaderRowEnabled={isHeaderRowEnabled}
@@ -116,9 +120,9 @@ export default class TableFloatingControls extends Component<Props, State> {
           isTableHovered={isTableHovered!}
           deleteSelectedRows={this.deleteSelectedRows}
           hoverRows={this.hoverRows}
-          dangerRows={this.state.dangerRows}
+          dangerRows={dangerRows}
           hoveredRows={this.state.hoveredRows}
-          resetHoverSelection={this.resetHoverSelection}
+          clearHoverSelection={this.clearHoverSelection}
           isTableInDanger={isTableInDanger}
           selectRow={this.selectRow}
           insertRow={this.insertRow}
@@ -127,10 +131,10 @@ export default class TableFloatingControls extends Component<Props, State> {
     );
   }
 
-  private resetHoverSelection = () => {
+  private clearHoverSelection = () => {
     const { state, dispatch } = this.props.editorView;
-    this.setState({ dangerRows: [], hoveredRows: [] });
-    resetHoverSelection(state, dispatch);
+    this.setState({ hoveredRows: [] });
+    clearHoverSelection(state, dispatch);
   };
 
   private selectRow = (row: number) => {
@@ -140,8 +144,8 @@ export default class TableFloatingControls extends Component<Props, State> {
     if (browser.ie_version === 11) {
       (editorView.dom as HTMLElement).blur();
     }
-    dispatch(selectRow(row)(state.tr));
-    this.resetHoverSelection();
+    selectRow(row)(state, dispatch);
+    this.clearHoverSelection();
   };
 
   private insertRow = (row: number) => {
@@ -150,7 +154,7 @@ export default class TableFloatingControls extends Component<Props, State> {
   };
 
   private hoverRows = (rows, danger) => {
-    this.setState({ dangerRows: danger ? rows : [], hoveredRows: rows });
+    this.setState({ hoveredRows: rows });
     const { state, dispatch } = this.props.editorView;
     hoverRows(rows, danger)(state, dispatch);
   };
@@ -158,7 +162,7 @@ export default class TableFloatingControls extends Component<Props, State> {
   private deleteSelectedRows = () => {
     const { state, dispatch } = this.props.editorView;
     deleteSelectedRows(state, dispatch);
-    this.resetHoverSelection();
+    this.clearHoverSelection();
   };
 
   private handleMouseDown = event => {

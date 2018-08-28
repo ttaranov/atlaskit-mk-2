@@ -69,7 +69,7 @@ export class MediaPluginState {
   private mediaNodes: MediaNodeWithPosHandler[] = [];
   private pendingTask = Promise.resolve<MediaState | null>(null);
   private options: MediaPluginOptions;
-  private view: EditorView & { docView?: any };
+  private view: EditorView;
   private pluginStateChangeSubscribers: PluginStateChangeSubscriber[] = [];
   private useDefaultStateManager = true;
   private destroyed = false;
@@ -87,11 +87,15 @@ export class MediaPluginState {
   public editorAppearance: EditorAppearance;
   private removeOnCloseListener: () => void = () => {};
 
+  private reactContext: () => {};
+
   constructor(
     state: EditorState,
     options: MediaPluginOptions,
+    reactContext: () => {},
     editorAppearance?: EditorAppearance,
   ) {
+    this.reactContext = reactContext;
     this.options = options;
     this.editorAppearance = editorAppearance;
     this.waitForMediaUpload =
@@ -203,6 +207,7 @@ export class MediaPluginState {
           resolvedMediaProvider.uploadParams,
           uploadContext,
           Picker,
+          this.reactContext,
         );
       } else {
         this.destroyPickers();
@@ -219,7 +224,7 @@ export class MediaPluginState {
   updateElement(): void {
     let newElement;
     if (this.selectedMediaNode() && this.isMediaSingle()) {
-      newElement = this.getDomElement(this.view.docView);
+      newElement = this.getDomElement(this.view.domAtPos.bind(this.view));
     }
 
     if (this.element !== newElement) {
@@ -259,14 +264,14 @@ export class MediaPluginState {
     return selection.$from.parent.type === schema.nodes.mediaSingle;
   }
 
-  private getDomElement(docView: any): HTMLElement | undefined {
+  private getDomElement(domAtPos: EditorView['domAtPos']) {
     const { from } = this.view.state.selection;
     if (this.selectedMediaNode()) {
-      const { node } = docView.domFromPos(from);
+      const { node } = domAtPos(from);
       if (!node.childNodes.length) {
-        return node.parentNode;
+        return node.parentNode as HTMLElement | undefined;
       }
-      return node.querySelector('.wrapper');
+      return (node as HTMLElement).querySelector('.wrapper');
     }
   }
 
@@ -382,7 +387,11 @@ export class MediaPluginState {
 
   // TODO [MSW-454]: remove this logic from Editor
   onPopupPickerClose = () => {
-    if (this.dropzonePicker) {
+    if (
+      this.dropzonePicker &&
+      this.popupPicker &&
+      this.popupPicker.type === 'popup'
+    ) {
       this.dropzonePicker.activate();
     }
   };
@@ -391,7 +400,7 @@ export class MediaPluginState {
     if (!this.popupPicker) {
       return;
     }
-    if (this.dropzonePicker) {
+    if (this.dropzonePicker && this.popupPicker.type === 'popup') {
       this.dropzonePicker.deactivate();
     }
     this.popupPicker.show();
@@ -576,6 +585,7 @@ export class MediaPluginState {
     uploadParams: UploadParams,
     context: Context,
     Picker: typeof PickerFacade,
+    reactContext: () => {},
   ) {
     if (this.destroyed) {
       return;
@@ -588,12 +598,9 @@ export class MediaPluginState {
         stateManager,
         errorReporter,
       };
-      const { featureFlags } = this.mediaProvider;
       const defaultPickerConfig = {
-        useNewUploadService: !!(
-          featureFlags && featureFlags.useNewUploadService
-        ),
         uploadParams,
+        proxyReactContext: reactContext(),
       };
 
       if (this.options.customMediaPicker) {
@@ -873,6 +880,7 @@ export const getMediaPluginState = (state: EditorState) =>
 export const createPlugin = (
   schema: Schema,
   options: MediaPluginOptions,
+  reactContext: () => {},
   dispatch?: Dispatch,
   editorAppearance?: EditorAppearance,
 ) => {
@@ -881,7 +889,12 @@ export const createPlugin = (
   return new Plugin({
     state: {
       init(config, state) {
-        return new MediaPluginState(state, options, editorAppearance);
+        return new MediaPluginState(
+          state,
+          options,
+          reactContext,
+          editorAppearance,
+        );
       },
       apply(tr, pluginState: MediaPluginState, oldState, newState) {
         pluginState.detectLinkRangesInSteps(tr, oldState);

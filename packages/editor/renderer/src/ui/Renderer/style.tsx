@@ -16,7 +16,11 @@ import {
   akFontSizeDefault,
   akBorderRadius,
 } from '@atlaskit/util-shared-styles';
-import { tableSharedStyle } from '@atlaskit/editor-common';
+import {
+  tableSharedStyle,
+  columnLayoutSharedStyle,
+  mediaSingleSharedStyle,
+} from '@atlaskit/editor-common';
 import { RendererAppearance } from './';
 
 export interface Props {
@@ -207,11 +211,9 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     border-radius: 1px;
   }
 
-  & img {
+  & .renderer-image {
     max-width: 100%;
-  }
-
-  & .img-wrapper {
+    display: block;
     margin: ${akGridSizeUnitless * 3}px 0;
   }
 
@@ -241,7 +243,7 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     }
   }
 
-  & .wrap-left + .wrap-right,
+  ${mediaSingleSharedStyle} & .wrap-left + .wrap-right,
   & .wrap-right + .wrap-left {
     margin-left: 0;
     margin-right: 0;
@@ -249,6 +251,7 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
 
   ${tableSharedStyle} & .table-container {
     transition: all 0.1s linear;
+    overflow-x: auto;
     table {
       margin-left: 0;
       margin-right: 0;
@@ -285,6 +288,20 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     margin-top: 12px;
     &:first-child {
       margin-top: 0;
+    }
+  }
+
+  & .Extension-wide,
+  & .Extension-full-width {
+    margin-left: 50%;
+    transform: translateX(-50%);
+  }
+
+  ${columnLayoutSharedStyle};
+  & [data-layout-type] {
+    margin-top: ${akGridSizeUnitless * 2.5}px;
+    & > div + div {
+      margin-left: ${akGridSizeUnitless * 4}px;
     }
   }
 `;

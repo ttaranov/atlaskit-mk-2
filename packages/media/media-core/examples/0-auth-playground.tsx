@@ -7,7 +7,7 @@ import { Context, ContextFactory, MediaItem, isError } from '../src';
 import { Auth, AuthProvider, isClientBasedAuth } from '@atlaskit/media-store';
 
 const collectionName = 'MediaServicesSample';
-const serviceHost = 'https://dt-api-filestore.internal.app.dev.atlassian.io';
+const baseUrl = 'https://dt-api-filestore.internal.app.dev.atlassian.io';
 const playgroundBaseURL =
   'https://api-private.dev.atlassian.com/media-playground/api';
 const access = {
@@ -60,7 +60,7 @@ const asapIssuerBaseAuthProvider = (): Promise<Auth> =>
   );
 
 const createContext = (authProvider: AuthProvider) =>
-  ContextFactory.create({ serviceHost, authProvider });
+  ContextFactory.create({ authProvider });
 
 interface State {
   auth?: Auth;
@@ -119,7 +119,7 @@ class AuthPlayground extends Component<Props, State> {
       const itemId = item.details.id;
       if (item.type === 'file' && this.state.auth) {
         const authParams = getAuthQueryParams(this.state.auth);
-        const fileThumbnailUrl = `${serviceHost}/file/${itemId}/image?${authParams}&height=150`;
+        const fileThumbnailUrl = `${baseUrl}/file/${itemId}/image?${authParams}&height=150`;
         return (
           <li key={itemId}>
             <img src={fileThumbnailUrl} />

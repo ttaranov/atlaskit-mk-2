@@ -24,7 +24,7 @@ export type State = {
   item: Outcome<FileItem, MediaViewerError>;
 };
 
-const initialState: State = { item: { status: 'PENDING' } };
+const initialState: State = { item: Outcome.pending() };
 export class ItemViewer extends React.Component<Props, State> {
   state: State = initialState;
 
@@ -54,12 +54,10 @@ export class ItemViewer extends React.Component<Props, State> {
       onClose,
       previewCount,
     } = this.props;
-    const { item } = this.state;
-    switch (item.status) {
-      case 'PENDING':
-        return <Spinner />;
-      case 'SUCCESSFUL':
-        const itemUnwrapped = item.data;
+
+    return this.state.item.match({
+      successful: item => {
+        const itemUnwrapped = item;
         const viewerProps = {
           context,
           item: itemUnwrapped,
@@ -90,9 +88,11 @@ export class ItemViewer extends React.Component<Props, State> {
               </ErrorMessage>
             );
         }
-      case 'FAILED':
-        const error = item.err;
-        const fileItem = item.err.fileItem;
+      },
+      pending: () => <Spinner />,
+      failed: err => {
+        const error = err;
+        const fileItem = err.fileItem;
         if (fileItem) {
           return (
             <ErrorMessage error={error}>
@@ -103,7 +103,8 @@ export class ItemViewer extends React.Component<Props, State> {
         } else {
           return <ErrorMessage error={error} />;
         }
-    }
+      },
+    });
   }
 
   private renderDownloadButton(fileItem: FileItem) {
@@ -124,36 +125,24 @@ export class ItemViewer extends React.Component<Props, State> {
       next: mediaItem => {
         if (mediaItem.type === 'link') {
           this.setState({
-            item: {
-              status: 'FAILED',
-              err: createError('linksNotSupported'),
-            },
+            item: Outcome.failed(createError('linksNotSupported')),
           });
         } else {
           const { processingStatus } = mediaItem.details;
           if (processingStatus === 'failed') {
             this.setState({
-              item: {
-                status: 'FAILED',
-                err: createError('previewFailed', mediaItem),
-              },
+              item: Outcome.failed(createError('previewFailed', mediaItem)),
             });
           } else if (processingStatus === 'succeeded') {
             this.setState({
-              item: {
-                status: 'SUCCESSFUL',
-                data: mediaItem,
-              },
+              item: Outcome.successful(mediaItem),
             });
           }
         }
       },
       error: err => {
         this.setState({
-          item: {
-            status: 'FAILED',
-            err: createError('metadataFailed', undefined, err),
-          },
+          item: Outcome.failed(createError('metadataFailed', undefined, err)),
         });
       },
     });

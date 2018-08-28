@@ -1,6 +1,8 @@
 import { md } from '@atlaskit/docs';
 
 export default md`
+
+``
   # Auth Provider
 
   **AuthProvider** type can be described as:
@@ -65,9 +67,9 @@ export default md`
 
   The function takes 1 argument:
 
-  1. _context_ - object with additional information for auth generation.
-     Context is optional:
-     It can contain the following members (all are optional): - **collectionName** - name of the collection where Media Picker will upload to.
+  1.  _context_ - object with additional information for auth generation.
+      Context is optional:
+      It can contain the following members (all are optional): - **collectionName** - name of the collection where Media Picker will upload to.
 
   The code might look like this:
 
@@ -76,4 +78,4 @@ export default md`
     return fetch(https://get-auth?collection=context.collectionName);
   }
   ~~~
-`;
+```;

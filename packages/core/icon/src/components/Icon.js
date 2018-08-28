@@ -23,6 +23,7 @@ export const IconWrapper = styled.span`
     ${getSize} max-height: 100%;
     max-width: 100%;
     overflow: hidden;
+    pointer-events: none;
     vertical-align: bottom;
   }
   /* Stop-color doesn't properly apply in chrome when the inherited/current color changes.

@@ -2,12 +2,13 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
-import { Popup } from '@atlaskit/editor-common';
+import { Popup, akEditorFloatingDialogZIndex } from '@atlaskit/editor-common';
 import {
   EmojiTypeAhead as AkEmojiTypeAhead,
   EmojiDescription,
   OptionalEmojiDescription,
   EmojiProvider,
+  EmojiId,
 } from '@atlaskit/emoji';
 import { analyticsService } from '../../../../analytics';
 import {
@@ -118,7 +119,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
         target={anchorElement}
         fitHeight={350}
         fitWidth={350}
-        zIndex={500}
+        zIndex={akEditorFloatingDialogZIndex}
         boundariesElement={popupsBoundariesElement}
         scrollableElement={popupsScrollableElement}
         mountTo={popupsMountPoint}
@@ -138,7 +139,7 @@ export default class EmojiTypeAhead extends PureComponent<Props, State> {
   private calculateElapsedTime = () => Date.now() - this.openTime;
 
   private handleSelectedEmoji = (
-    emojiId: any,
+    emojiId: EmojiId,
     emoji: OptionalEmojiDescription,
   ) => {
     const _emoji = emoji as EmojiDescription;

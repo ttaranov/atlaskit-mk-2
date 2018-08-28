@@ -1,16 +1,8 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { CardDimensions, CardAppearance } from '../../index';
+import { CardAppearance } from '../../index';
 
-import {
-  ErrorCard,
-  CardFrame,
-  CardPreview,
-  LinkIcon,
-} from '@atlaskit/media-ui';
-import { getCardMinWidth, getCardMaxWidth } from '../../utils/cardDimensions';
-import { CardAction } from '../../actions';
-import CardDetails from './CardDetails';
+import { BlockCard } from '@atlaskit/media-ui';
 import { defaultLinkCardAppearance } from '../card';
 
 export interface LinkCardGenericViewProps {
@@ -22,12 +14,10 @@ export interface LinkCardGenericViewProps {
   iconUrl?: string;
 
   appearance?: CardAppearance;
-  dimensions?: CardDimensions;
 
   isLoading?: boolean;
   errorMessage?: string;
   onRetry?: () => void;
-  actions?: Array<CardAction>;
 }
 
 export class LinkCardGenericView extends Component<LinkCardGenericViewProps> {
@@ -38,77 +28,53 @@ export class LinkCardGenericView extends Component<LinkCardGenericViewProps> {
     appearance: defaultLinkCardAppearance,
   };
 
-  private get isHorizontal() {
-    const { appearance } = this.props;
-    return appearance === 'horizontal';
-  }
-
-  private renderIcon() {
-    const { iconUrl, isLoading } = this.props;
-
-    if (isLoading) {
-      return undefined;
-    }
-
-    return <LinkIcon src={iconUrl} />;
-  }
-
-  renderPreview() {
-    const { isHorizontal } = this;
-    const { isLoading, thumbnailUrl } = this.props;
-
-    if (isHorizontal) {
-      return null;
-    }
-
-    return (
-      <CardPreview
-        key="preview"
-        isPlaceholder={isLoading}
-        url={thumbnailUrl || ''}
-      />
-    );
-  }
-
-  renderDetails() {
-    const { isHorizontal } = this;
-    const { isLoading, title, description, thumbnailUrl } = this.props;
-    return (
-      <CardDetails
-        isPlaceholder={isLoading}
-        isThumbnailVisible={isHorizontal}
-        title={title}
-        description={description}
-        thumbnail={isHorizontal ? thumbnailUrl : undefined}
-      />
-    );
-  }
+  handleClick = () => {
+    window.open(this.props.linkUrl);
+  };
 
   render() {
-    const { isLoading, site, linkUrl, appearance, errorMessage } = this.props;
+    const {
+      isLoading,
+      linkUrl,
+      site,
+      iconUrl,
+      title,
+      description,
+      thumbnailUrl,
+      appearance,
+      errorMessage,
+      onRetry,
+    } = this.props;
 
     if (errorMessage) {
       return (
-        <ErrorCard
-          hasPreview={appearance !== 'horizontal'}
-          minWidth={getCardMinWidth(appearance)}
-          maxWidth={getCardMaxWidth(appearance)}
+        <BlockCard.ErroredView
+          url={linkUrl || ''}
+          message="We stumbled a bit here"
+          onClick={this.handleClick}
+          onRetry={onRetry}
         />
       );
     }
 
+    if (isLoading) {
+      return <BlockCard.ResolvingView onClick={this.handleClick} />;
+    }
+
+    const isSquare = appearance === 'square';
+
     return (
-      <CardFrame
-        isPlaceholder={isLoading}
-        href={linkUrl}
-        icon={this.renderIcon()}
-        text={site || linkUrl}
-        minWidth={getCardMinWidth(appearance)}
-        maxWidth={getCardMaxWidth(appearance)}
-      >
-        {this.renderPreview()}
-        {this.renderDetails()}
-      </CardFrame>
+      <BlockCard.ResolvedView
+        context={{
+          text: site || linkUrl || '',
+          icon: iconUrl,
+        }}
+        title={title ? { text: title } : undefined}
+        description={description ? { text: description } : undefined}
+        preview={isSquare ? thumbnailUrl : undefined}
+        thumbnail={!isSquare ? thumbnailUrl : undefined}
+        onClick={this.handleClick}
+      />
     );
   }
 }

@@ -38,7 +38,3 @@ export function copyPublicMediaFileForUpload(
     publicId,
   };
 }
-
-export function isPublicMediaFile(file: MediaFile): file is PublicMediaFile {
-  return !!(file as PublicMediaFile).publicId;
-}

@@ -1,4 +1,4 @@
-import { MediaType } from './mediaTypes';
+import { MediaType } from '@atlaskit/media-store';
 import { SmartCardResponse } from './smartCardResponse';
 
 export type MediaItemType = 'file' | 'link';

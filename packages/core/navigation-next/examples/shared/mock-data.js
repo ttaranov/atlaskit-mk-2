@@ -6,18 +6,49 @@ import AddIcon from '@atlaskit/icon/glyph/add';
 import JiraIcon from '@atlaskit/icon/glyph/jira';
 import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import SearchIcon from '@atlaskit/icon/glyph/search';
+import LinkIcon from '@atlaskit/icon/glyph/link';
+import { JiraWordmark as JiraWordmarkLogo } from '@atlaskit/logo';
+import { gridSize as gridSizeFn } from '@atlaskit/theme';
+import { Link, Route } from 'react-router-dom';
 
 import { PeekToggleItem } from '../../src';
 
+export const LinkItem = ({ components: C, to, ...props }: *) => {
+  return (
+    <Route
+      render={({ location: { pathname } }) => (
+        <C.Item
+          after={() => <LinkIcon size="small" />}
+          component={({ children, className }) => (
+            <Link className={className} to={to} onClick={props.onClick}>
+              {children}
+            </Link>
+          )}
+          isSelected={pathname === to}
+          {...props}
+        />
+      )}
+    />
+  );
+};
+
+const gridSize = gridSizeFn();
+
+const JiraWordmark = () => (
+  <div css={{ padding: `${gridSize * 2}px 0` }}>
+    <JiraWordmarkLogo />
+  </div>
+);
+
 export const globalNavPrimaryItems = [
-  { key: 'jira', icon: JiraIcon, label: 'Jira' },
-  { key: 'peek-toggle', component: PeekToggleItem },
-  { key: 'search', icon: SearchIcon },
-  { key: 'create', icon: AddIcon },
+  { id: 'jira', icon: JiraIcon, label: 'Jira' },
+  { id: 'peek-toggle', component: PeekToggleItem, icon: null },
+  { id: 'search', icon: SearchIcon },
+  { id: 'create', icon: AddIcon },
 ];
 
 export const globalNavSecondaryItems = [
-  { icon: QuestionCircleIcon, label: 'Help', size: 'small' },
+  { id: 'help', icon: QuestionCircleIcon, label: 'Help', size: 'small' },
   {
     icon: () => (
       <Avatar
@@ -29,6 +60,7 @@ export const globalNavSecondaryItems = [
     ),
     label: 'Profile',
     size: 'small',
+    id: 'profile',
   },
 ];
 
@@ -36,21 +68,21 @@ export const globalNavSecondaryItems = [
 const rootIndex = [
   {
     id: 'root/index:header',
-    items: [{ type: 'JiraWordmark', id: 'jira-wordmark' }],
+    items: [{ type: JiraWordmark, id: 'jira-wordmark' }],
     type: 'Section',
   },
   {
     id: 'root/index:menu',
     items: [
       {
-        type: 'LinkItem',
+        type: LinkItem,
         id: 'dashboards',
         text: 'Dashboards',
         icon: 'DashboardIcon',
         to: '/',
       },
       {
-        type: 'LinkItem',
+        type: LinkItem,
         id: 'projects',
         text: 'Projects',
         icon: 'FolderIcon',
@@ -74,7 +106,7 @@ const rootIssues = [
   {
     id: 'root/issues:header',
     items: [
-      { type: 'JiraWordmark', id: 'jira-wordmark' },
+      { type: JiraWordmark, id: 'jira-wordmark' },
       { type: 'BackItem', goTo: 'root/index', id: 'back' },
     ],
     type: 'Section',
@@ -83,12 +115,18 @@ const rootIssues = [
     id: 'root/issues:menu',
     items: [
       {
-        type: 'LinkItem',
-        id: 'search-issues',
-        text: 'Search issues',
-        to: '/issues/search',
+        type: 'Group',
+        hasSeparator: true,
+        id: 'search-issues-group',
+        items: [
+          {
+            type: LinkItem,
+            id: 'search-issues',
+            text: 'Search issues',
+            to: '/issues/search',
+          },
+        ],
       },
-      { type: 'Separator', id: 'separator-1' },
       { type: 'Item', id: 'my-open-issues', text: 'My open issues' },
       { type: 'Item', id: 'reported-by-me', text: 'Reported by me' },
       { type: 'Item', id: 'all-issues', text: 'All issues' },
@@ -192,7 +230,7 @@ const containerProject = [
         id: 'backlog',
         text: 'Backlog',
         to: '/projects/endeavour',
-        type: 'LinkItem',
+        type: LinkItem,
       },
       {
         icon: 'BoardIcon',

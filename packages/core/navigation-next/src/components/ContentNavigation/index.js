@@ -1,8 +1,9 @@
 // @flow
 
-import React, { PureComponent, Fragment } from 'react';
+import React, { Component, Fragment } from 'react';
 import interpolate, { clamp } from 'interpolate-range';
 import { Transition } from 'react-transition-group';
+import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
 import {
   CONTENT_NAV_WIDTH,
@@ -26,7 +27,7 @@ function interpolateBlanketOpacity({ floor, ceil, val }) {
   return lerp(val);
 }
 
-export default class ContentNavigation extends PureComponent<
+export default class ContentNavigation extends Component<
   ContentNavigationProps,
 > {
   render() {
@@ -52,7 +53,11 @@ export default class ContentNavigation extends PureComponent<
     return (
       <Fragment>
         <ProductNavigation>
-          <Product />
+          <NavigationAnalyticsContext
+            data={{ attributes: { navigationLayer: 'product' } }}
+          >
+            <Product />
+          </NavigationAnalyticsContext>
         </ProductNavigation>
         <Transition
           in={!!Container}
@@ -67,14 +72,18 @@ export default class ContentNavigation extends PureComponent<
               isPeekHinting={isPeekHinting}
               isPeeking={isPeeking}
             >
-              <Fragment>
-                {Container && <Container />}
-                <ContainerOverlay
-                  isVisible={overlayIsVisible}
-                  onClick={onOverlayClick}
-                  style={overlayStyle}
-                />
-              </Fragment>
+              <NavigationAnalyticsContext
+                data={{ attributes: { navigationLayer: 'container' } }}
+              >
+                <Fragment>
+                  {Container && <Container />}
+                  <ContainerOverlay
+                    isVisible={overlayIsVisible}
+                    onClick={onOverlayClick}
+                    style={overlayStyle}
+                  />
+                </Fragment>
+              </NavigationAnalyticsContext>
             </ContainerNavigation>
           )}
         </Transition>

@@ -219,6 +219,17 @@ export const errorFileId = {
   collectionName,
 };
 
+export const gifFileId = {
+  id: '26adc5af-3af4-42a8-9c24-62b6ce0f9369',
+  mediaItemType: fileType,
+  collectionName,
+};
+
+export const noMetadataFileId = {
+  id: '1adaf6f9-37f6-4171-ab6b-455ec3115381',
+  mediaItemType: fileType,
+  collectionName,
+};
 // === DETAILS ===
 
 export const genericUrlPreview: UrlPreview = {

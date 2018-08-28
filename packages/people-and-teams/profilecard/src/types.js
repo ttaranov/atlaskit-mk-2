@@ -28,7 +28,7 @@ export type ProfilecardProps = {
   actions?: ProfileCardAction[],
   isLoading?: boolean,
   hasError?: boolean,
-  errorType?: ProfileCardErrorType,
+  errorType?: ?ProfileCardErrorType,
   clientFetchProfile?: Function,
   analytics?: Function,
   presenceMessage?: string,

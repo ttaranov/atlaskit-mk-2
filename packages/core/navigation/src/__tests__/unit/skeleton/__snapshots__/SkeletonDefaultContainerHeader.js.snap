@@ -1,7 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`renders a skeleton representation of a container header 1`] = `
-<SkeletonDefaultContainerHeaderInner>
+<SkeletonDefaultContainerHeaderInner
+  isAvatarHidden={false}
+>
   <Skeleton
     appearance="square"
     size="large"
@@ -10,13 +12,17 @@ exports[`renders a skeleton representation of a container header 1`] = `
   <HiddenWhenCollapsed
     isCollapsed={false}
   >
-    <SkeletonContainerHeaderText />
+    <SkeletonContainerHeaderText
+      isAvatarHidden={false}
+    />
   </HiddenWhenCollapsed>
 </SkeletonDefaultContainerHeaderInner>
 `;
 
 exports[`shows a compact version when collapsed 1`] = `
-<SkeletonDefaultContainerHeaderInner>
+<SkeletonDefaultContainerHeaderInner
+  isAvatarHidden={false}
+>
   <Skeleton
     appearance="square"
     size="large"
@@ -25,7 +31,23 @@ exports[`shows a compact version when collapsed 1`] = `
   <HiddenWhenCollapsed
     isCollapsed={true}
   >
-    <SkeletonContainerHeaderText />
+    <SkeletonContainerHeaderText
+      isAvatarHidden={false}
+    />
+  </HiddenWhenCollapsed>
+</SkeletonDefaultContainerHeaderInner>
+`;
+
+exports[`shows a version with hidden avatar 1`] = `
+<SkeletonDefaultContainerHeaderInner
+  isAvatarHidden={true}
+>
+  <HiddenWhenCollapsed
+    isCollapsed={false}
+  >
+    <SkeletonContainerHeaderText
+      isAvatarHidden={true}
+    />
   </HiddenWhenCollapsed>
 </SkeletonDefaultContainerHeaderInner>
 `;

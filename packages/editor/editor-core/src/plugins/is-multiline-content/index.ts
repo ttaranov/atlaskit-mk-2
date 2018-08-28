@@ -54,7 +54,7 @@ const isMultilineContentPlugin: EditorPlugin = {
   pmPlugins() {
     return [
       {
-        rank: 20000,
+        name: 'multilineContent',
         plugin: ({ dispatch }) => createPlugin(dispatch),
       },
     ];

@@ -1,17 +1,21 @@
 import { InputRule } from 'prosemirror-inputrules';
 import { EditorState, Transaction } from 'prosemirror-state';
 
-export type InputRuleHandler =
-  | string
-  | ((state: EditorState, match, start, end) => Transaction | null | undefined);
+export type InputRuleWithHandler = InputRule & { handler: InputRuleHandler };
+
+export type InputRuleHandler = ((
+  state: EditorState,
+  match,
+  start,
+  end,
+) => Transaction | null | undefined);
 
 export function defaultInputRuleHandler(
-  inputRule: InputRule,
+  inputRule: InputRuleWithHandler,
   isBlockNodeRule: boolean = false,
-): InputRule {
+): InputRuleWithHandler {
   const originalHandler = (inputRule as any).handler;
-  // TODO: Fix types (ED-2987)
-  (inputRule as any).handler = (state: EditorState, match, start, end) => {
+  inputRule.handler = (state: EditorState, match, start, end) => {
     // Skip any input rule inside code
     // https://product-fabric.atlassian.net/wiki/spaces/E/pages/37945345/Editor+content+feature+rules#Editorcontent/featurerules-Rawtextblocks
     const unsupportedMarks = isBlockNodeRule
@@ -29,9 +33,9 @@ export function createInputRule(
   match: RegExp,
   handler: InputRuleHandler,
   isBlockNodeRule: boolean = false,
-): InputRule {
+): InputRuleWithHandler {
   return defaultInputRuleHandler(
-    new InputRule(match, handler),
+    new InputRule(match, handler) as InputRuleWithHandler,
     isBlockNodeRule,
   );
 }

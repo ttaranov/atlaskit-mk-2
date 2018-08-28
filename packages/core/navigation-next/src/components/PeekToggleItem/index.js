@@ -6,15 +6,18 @@ import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 
 import { GlobalItemPrimitive } from '../../';
 import InteractionStateManager from '../InteractionStateManager';
-import { UIState, UIStateSubscriber } from '../../ui-state';
-import { ViewState, withNavigationViews } from '../../view-state';
+import { UIController, UIControllerSubscriber } from '../../ui-controller';
+import {
+  ViewController,
+  withNavigationViewController,
+} from '../../view-controller';
 
 type PeekToggleProps = {
   label: string,
   tooltip: string,
   isPeeking: boolean,
-  navigationUI: UIState,
-  navigationViews: ViewState,
+  navigationUIController: UIController,
+  navigationViewController: ViewController,
 };
 
 class PeekToggle extends Component<PeekToggleProps> {
@@ -24,7 +27,10 @@ class PeekToggle extends Component<PeekToggleProps> {
   };
 
   getIsHomeViewActive() {
-    const { activeView, activePeekView } = this.props.navigationViews.state;
+    const {
+      activeView,
+      activePeekView,
+    } = this.props.navigationViewController.state;
     if (!activeView || !activePeekView) {
       return false;
     }
@@ -32,25 +38,31 @@ class PeekToggle extends Component<PeekToggleProps> {
   }
 
   handleClick = () => {
-    const { isPeeking, navigationUI, navigationViews } = this.props;
-    if (!isPeeking && navigationViews.initialPeekViewId) {
-      navigationViews.setPeekView(navigationViews.initialPeekViewId);
+    const {
+      isPeeking,
+      navigationUIController,
+      navigationViewController,
+    } = this.props;
+    if (!isPeeking && navigationViewController.initialPeekViewId) {
+      navigationViewController.setPeekView(
+        navigationViewController.initialPeekViewId,
+      );
     }
-    navigationUI.togglePeek();
+    navigationUIController.togglePeek();
   };
 
   renderIcon = () => (this.props.isPeeking ? ArrowLeftIcon : MenuIcon);
 
   renderComponent = ({ className, children }) => {
     const isHomeViewActive = this.getIsHomeViewActive();
-    const { isPeeking, navigationUI } = this.props;
+    const { isPeeking, navigationUIController } = this.props;
 
     return (
       <button
         className={className}
         onClick={isHomeViewActive && !isPeeking ? null : this.handleClick}
-        onMouseEnter={navigationUI.peekHint}
-        onMouseLeave={navigationUI.unPeekHint}
+        onMouseEnter={navigationUIController.peekHint}
+        onMouseLeave={navigationUIController.unPeekHint}
       >
         {children}
       </button>
@@ -79,16 +91,16 @@ class PeekToggle extends Component<PeekToggleProps> {
   }
 }
 
-const PeekToggleWithUIState = (props: *) => (
-  <UIStateSubscriber>
-    {navigationUI => (
+const PeekToggleWithUIController = (props: *) => (
+  <UIControllerSubscriber>
+    {navigationUIController => (
       <PeekToggle
-        isPeeking={navigationUI.state.isPeeking}
-        navigationUI={navigationUI}
+        isPeeking={navigationUIController.state.isPeeking}
+        navigationUIController={navigationUIController}
         {...props}
       />
     )}
-  </UIStateSubscriber>
+  </UIControllerSubscriber>
 );
 
-export default withNavigationViews(PeekToggleWithUIState);
+export default withNavigationViewController(PeekToggleWithUIController);

@@ -7,8 +7,9 @@ MATCHES=$(grep -r --exclude-dir=node_modules '$FlowFixMe' --include \*.js . | wc
 
 if [[ MATCHES -gt THRESHOLD ]]; then
   echo "Too many \$FlowFixMe's found:" ${MATCHES} "please try to reduce this number"
-  exit 1
+  # Note: These need to `return` not `exit` as an exit will exit the whole pipeline
+  return 1
 else
-  echo "Currently, this repository has" ${MATCHES} "\$FlowFixMe's" 
-  exit 0
+  echo "Currently, this repository has" ${MATCHES} "\$FlowFixMe's"
+  return 0
 fi

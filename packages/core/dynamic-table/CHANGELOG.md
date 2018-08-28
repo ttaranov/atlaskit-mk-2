@@ -1,5 +1,68 @@
 # @atlaskit/dynamic-table
 
+## 10.0.9
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/toggle@5.0.6
+  - @atlaskit/spinner@9.0.6
+  - @atlaskit/dropdown-menu@6.1.8
+  - @atlaskit/button@9.0.6
+  - @atlaskit/avatar@14.0.8
+  - @atlaskit/docs@5.0.6
+
+## 10.0.8
+- [patch] Bumping react-beautiful-dnd to version 9. Making use of use onBeforeDragStart for dynamic table [9cbd494](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9cbd494)
+- [none] Updated dependencies [9cbd494](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9cbd494)
+
+## 10.0.7
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/analytics-next@3.0.4
+  - @atlaskit/toggle@5.0.5
+  - @atlaskit/pagination@7.0.4
+  - @atlaskit/button@9.0.5
+  - @atlaskit/theme@5.1.3
+  - @atlaskit/spinner@9.0.5
+  - @atlaskit/dropdown-menu@6.1.5
+  - @atlaskit/avatar@14.0.6
+
+## 10.0.6
+- [patch] Bumping react-beautiful-dnd to 8.0.7 to fix timing issue with onDragStart [812a39c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/812a39c)
+
+## 10.0.5
+- [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
+  - @atlaskit/toggle@5.0.4
+  - @atlaskit/button@9.0.4
+  - @atlaskit/theme@5.1.2
+  - @atlaskit/spinner@9.0.4
+  - @atlaskit/pagination@7.0.3
+  - @atlaskit/analytics-next@3.0.3
+  - @atlaskit/docs@5.0.2
+  - @atlaskit/dropdown-menu@6.1.4
+  - @atlaskit/avatar@14.0.5
+
+## 10.0.4
+- [patch] Add a SSR test for every package, add react-dom and build-utils in devDependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+- [none] Updated dependencies [7e331b5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e331b5)
+  - @atlaskit/analytics-next@3.0.2
+  - @atlaskit/toggle@5.0.3
+  - @atlaskit/pagination@7.0.2
+  - @atlaskit/button@9.0.3
+  - @atlaskit/theme@5.1.1
+  - @atlaskit/spinner@9.0.3
+  - @atlaskit/dropdown-menu@6.1.3
+  - @atlaskit/avatar@14.0.4
+
+## 10.0.3
+- [patch] Upgrading react-beautiful-dnd to 8.0.1 [87cd977](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87cd977)
+- [patch] Upgrading react-beautiful-dnd to 8.0.0 [22efc08](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/22efc08)
+- [none] Updated dependencies [87cd977](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87cd977)
+- [none] Updated dependencies [22efc08](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/22efc08)
+
+## 10.0.2
+- [patch] Upgrading react-beautiful-dnd to 8.0.5 [6052132](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6052132)
+- [none] Updated dependencies [6052132](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6052132)
+
 ## 10.0.1
 - [patch] Move analytics tests and replace elements to core [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)
 - [none] Updated dependencies [49d4ab4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/49d4ab4)

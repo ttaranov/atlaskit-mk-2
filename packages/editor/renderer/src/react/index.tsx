@@ -2,10 +2,10 @@ import * as React from 'react';
 // @ts-ignore: unused variable
 // prettier-ignore
 import { ComponentClass, Consumer, Provider } from 'react';
-
 import { Fragment, Mark, Node, Schema } from 'prosemirror-model';
 
 import { Serializer } from '../';
+import { RendererAppearance } from '../ui/Renderer';
 
 import {
   Doc,
@@ -42,6 +42,8 @@ export interface ConstructorParams {
   portal?: HTMLElement;
   objectContext?: RendererContext;
   useNewApplicationCard?: boolean;
+  appearance?: RendererAppearance;
+  disableHeadingIDs?: boolean;
 }
 
 export default class ReactSerializer implements Serializer<JSX.Element> {
@@ -51,6 +53,8 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
   private portal?: HTMLElement;
   private rendererContext?: RendererContext;
   private useNewApplicationCard?: boolean;
+  private appearance?: RendererAppearance;
+  private disableHeadingIDs?: boolean;
 
   constructor({
     providers,
@@ -59,6 +63,8 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     portal,
     objectContext,
     useNewApplicationCard,
+    appearance,
+    disableHeadingIDs,
   }: ConstructorParams) {
     this.providers = providers;
     this.eventHandlers = eventHandlers;
@@ -66,6 +72,8 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     this.portal = portal;
     this.rendererContext = objectContext;
     this.useNewApplicationCard = useNewApplicationCard;
+    this.appearance = appearance;
+    this.disableHeadingIDs = disableHeadingIDs;
   }
 
   serializeFragment(
@@ -73,7 +81,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     props: any = {},
     target: any = Doc,
     key: string = 'root-0',
-    parentInfo?: { parentIsTask: boolean },
+    parentInfo?: { parentIsIncompleteTask: boolean },
   ): JSX.Element | null {
     const emojiBlock = isEmojiDoc(fragment, props);
     const content = ReactSerializer.getChildNodes(fragment).map(
@@ -82,7 +90,8 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
           return this.serializeTextWrapper((node as TextWrapper).content);
         }
         let props;
-        if (emojiBlock) {
+
+        if (emojiBlock && this.appearance === 'message') {
           props = this.getEmojiBlockProps(node as Node);
         } else if (node.type.name === 'table') {
           props = this.getTableProps(node as Node);
@@ -93,8 +102,11 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
         }
 
         let pInfo = parentInfo;
-        if (node.type.name === 'taskItem') {
-          pInfo = { parentIsTask: true };
+        if (
+          node.type.name === 'taskItem' &&
+          (node as Node).attrs.state !== 'DONE'
+        ) {
+          pInfo = { parentIsIncompleteTask: true };
         }
 
         return this.serializeFragment(
@@ -176,11 +188,11 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
 
   private getDateProps(
     node: Node,
-    parentInfo: { parentIsTask: boolean } | undefined,
+    parentInfo: { parentIsIncompleteTask: boolean } | undefined,
   ) {
     return {
       timestamp: node.attrs && node.attrs.timestamp,
-      parentIsTask: parentInfo && parentInfo.parentIsTask,
+      parentIsIncompleteTask: parentInfo && parentInfo.parentIsIncompleteTask,
     };
   }
 
@@ -195,6 +207,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
       serializer: this,
       content: node.content ? node.content.toJSON() : undefined,
       useNewApplicationCard: this.useNewApplicationCard,
+      disableHeadingIDs: this.disableHeadingIDs,
       ...node.attrs,
     };
   }
@@ -267,10 +280,20 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
 
   static fromSchema(
     schema: Schema,
-    { providers, eventHandlers, extensionHandlers }: ConstructorParams,
+    {
+      providers,
+      eventHandlers,
+      extensionHandlers,
+      appearance,
+    }: ConstructorParams,
   ): ReactSerializer {
     // TODO: Do we actually need the schema here?
-    return new ReactSerializer({ providers, eventHandlers, extensionHandlers });
+    return new ReactSerializer({
+      providers,
+      eventHandlers,
+      extensionHandlers,
+      appearance,
+    });
   }
 }
 

@@ -60,25 +60,26 @@ export default class ToolbarLists extends PureComponent<Props, State> {
       bulletListActive,
       orderedListActive,
     } = this.props;
-    let items: any[] = [];
-    items.push({
-      content: 'Bullet List',
-      value: { name: 'bullet_list' },
-      isDisabled: bulletListDisabled,
-      isActive: bulletListActive,
-      tooltipDescription: 'Numbered list',
-      tooltipPosition: 'right',
-      elemBefore: <BulletListIcon label="Numbered list" />,
-    });
-    items.push({
-      content: 'Ordered List',
-      value: { name: 'ordered_list' },
-      isDisabled: orderedListDisabled,
-      isActive: orderedListActive,
-      tooltipDescription: 'Ordered list',
-      tooltipPosition: 'right',
-      elemBefore: <NumberListIcon label="Ordered list" />,
-    });
+    let items = [
+      {
+        content: 'Bullet List',
+        value: { name: 'bullet_list' },
+        isDisabled: bulletListDisabled,
+        isActive: Boolean(bulletListActive),
+        tooltipDescription: 'Numbered list',
+        tooltipPosition: 'right',
+        elemBefore: <BulletListIcon label="Numbered list" />,
+      },
+      {
+        content: 'Ordered List',
+        value: { name: 'ordered_list' },
+        isDisabled: orderedListDisabled,
+        isActive: Boolean(orderedListActive),
+        tooltipDescription: 'Ordered list',
+        tooltipPosition: 'right',
+        elemBefore: <NumberListIcon label="Ordered list" />,
+      },
+    ];
     if (this.props.allowTasks) {
       items.push({
         content: 'Create action',

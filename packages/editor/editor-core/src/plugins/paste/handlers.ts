@@ -1,5 +1,6 @@
 import { hasParentNodeOfType } from 'prosemirror-utils';
 import { taskDecisionSliceFilter } from '../../utils/filter';
+import { linkifyContent } from '../hyperlink/utils';
 import { analyticsService } from '../../analytics';
 import { Slice } from 'prosemirror-model';
 import { EditorState } from 'prosemirror-state';
@@ -22,9 +23,14 @@ export const handlePasteIntoTaskAndDecision = (slice: Slice) => (
         analyticsService.trackEvent(
           'atlassian.fabric.action-decision.editor.paste',
         );
-        const tr = closeHistory(state.tr);
-        tr.replaceSelection(taskDecisionSliceFilter(slice, state.schema));
-        dispatch(tr.scrollIntoView());
+        slice = taskDecisionSliceFilter(slice, state.schema);
+        slice = linkifyContent(state.schema, slice);
+
+        dispatch(
+          closeHistory(state.tr)
+            .replaceSelection(slice)
+            .scrollIntoView(),
+        );
         return true;
       }
     }

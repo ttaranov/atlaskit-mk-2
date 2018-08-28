@@ -10,7 +10,7 @@ The examples are written in react, however the rendered html code should be
 copyable into your application, with the change of \`className\` to \`class\`.
 
 If you want to see an example running using base html, you can see that use-case
-in [codesandbox](https://codesandbox.io/s/nzvrz6zxj).
+in [codesandbox](https://codesandbox.io/s/8kj9x61yr9).
   ---
 
   The reduced UI pack is designed to allow you to use some ADG3 styling easily

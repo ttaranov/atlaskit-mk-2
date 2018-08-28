@@ -7,6 +7,11 @@ import EditorDoneIcon from '@atlaskit/icon/glyph/editor/done';
 
 import { DropdownOptionT } from './Dropdown';
 
+export const menuItemDimensions = {
+  width: 175,
+  height: 32,
+};
+
 const Spacer = styled.span`
   display: flex;
   flex: 1;
@@ -14,11 +19,11 @@ const Spacer = styled.span`
 `;
 
 const MenuContainer = styled.div`
-  min-width: 175px;
+  min-width: ${menuItemDimensions.width}px;
 `;
 
 const padding = gridSize();
-const itemSpacing = gridSize() / 2;
+export const itemSpacing = gridSize() / 2;
 
 const editorItemTheme = {
   borderRadius: 0,
@@ -32,6 +37,9 @@ const editorItemTheme = {
       right: padding,
       top: padding,
     },
+  },
+  height: {
+    compact: menuItemDimensions.height,
   },
 };
 

@@ -2,6 +2,8 @@ import * as React from 'react';
 import { mount, shallow } from 'enzyme';
 import { Subject } from 'rxjs/Subject';
 import {
+  Auth,
+  ContextConfig,
   MediaCollection,
   MediaCollectionFileItem,
   MediaItemType,
@@ -17,10 +19,11 @@ import { Stubs } from '../_stubs';
 describe('<MediaCollectionViewer />', () => {
   const token = 'some-token';
   const clientId = 'some-client-id';
-  const serviceHost = 'some-service-host';
-  const authProvider = jest.fn(() => Promise.resolve({ token, clientId }));
-  const contextConfig = {
-    serviceHost,
+  const baseUrl = 'some-service-host';
+  const authProvider = jest.fn(() =>
+    Promise.resolve<Auth>({ token, clientId, baseUrl }),
+  );
+  const contextConfig: ContextConfig = {
     authProvider,
   };
   const occurrenceKey = 'some-occurence-key';
@@ -206,7 +209,7 @@ describe('<MediaCollectionViewer />', () => {
     expect((mediaViewer.off as any).mock.calls[1][0]).toBe('fv.changeFile');
   });
 
-  it('should open media viewer with query, given media viewer is not open', () => {
+  it('should open media viewer with query, given media viewer is not open', async () => {
     const subject = new Subject<MediaCollection>();
     const wrapper = mount<
       MediaCollectionViewerProps,
@@ -228,12 +231,14 @@ describe('<MediaCollectionViewer />', () => {
 
     const files = MediaFileAttributesFactory.fromMediaCollection(
       collection,
-      serviceHost,
+      baseUrl,
     );
     const { mediaViewer } = wrapper.state();
     (mediaViewer.isOpen as any).mockImplementation(() => false);
 
     subject.next(collection);
+
+    await Promise.resolve();
 
     expect(mediaViewer.open).toHaveBeenCalledWith({
       id: 'some-media-id-some-occurence-key',
@@ -241,7 +246,7 @@ describe('<MediaCollectionViewer />', () => {
     expect(mediaViewer.setFiles).toHaveBeenCalledWith(files);
   });
 
-  it('should open media viewer with first item from the collection, if no selectedItem passed', () => {
+  it('should open media viewer with first item from the collection, if no selectedItem passed', async () => {
     const subject = new Subject<MediaCollection>();
     const wrapper = mount<
       MediaCollectionViewerProps,
@@ -262,12 +267,13 @@ describe('<MediaCollectionViewer />', () => {
 
     const files = MediaFileAttributesFactory.fromMediaCollection(
       collection,
-      serviceHost,
+      baseUrl,
     );
     const { mediaViewer } = wrapper.state();
     (mediaViewer.isOpen as any).mockImplementation(() => false);
 
     subject.next(collection);
+    await Promise.resolve();
 
     expect(mediaViewer.open).toHaveBeenCalledWith({ id: 'file-1-occurence-1' });
     expect(mediaViewer.setFiles).toHaveBeenCalledWith(files);
@@ -330,7 +336,7 @@ describe('<MediaCollectionViewer />', () => {
     expect(mediaViewer.setFiles).not.toHaveBeenCalled();
   });
 
-  it('should set files with query and not open media viewer, given media viewer is already open', () => {
+  it('should set files with query and not open media viewer, given media viewer is already open', async () => {
     const subject = new Subject<MediaCollection>();
     const wrapper = mount<
       MediaCollectionViewerProps,
@@ -352,7 +358,7 @@ describe('<MediaCollectionViewer />', () => {
 
     const files = MediaFileAttributesFactory.fromMediaCollection(
       collection,
-      serviceHost,
+      baseUrl,
     );
     const currentFile = files[0];
     const { mediaViewer } = wrapper.state();
@@ -361,6 +367,8 @@ describe('<MediaCollectionViewer />', () => {
     (mediaViewer.getCurrent as any).mockImplementation(() => currentFile);
 
     subject.next(collection);
+
+    await Promise.resolve();
 
     expect(mediaViewer.open).not.toHaveBeenCalled();
     expect(mediaViewer.setFiles).toHaveBeenCalledWith(files, {

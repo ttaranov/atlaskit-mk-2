@@ -65,13 +65,12 @@ function copyFile({
   sourceFile,
   tenant,
 }: CopyFileParams): Promise<SendUploadEventAction> {
-  const { apiUrl } = store.getState();
   const destination = {
     auth: tenant.auth,
     collection: tenant.uploadParams.collection,
   };
   return fetcher
-    .copyFile(apiUrl, sourceFile, destination)
+    .copyFile(sourceFile, destination)
     .then(destinationFile => {
       store.dispatch(
         sendUploadEvent({
@@ -89,7 +88,6 @@ function copyFile({
       );
 
       return fetcher.pollFile(
-        apiUrl,
         tenant.auth,
         destinationFile.id,
         tenant.uploadParams.collection,
