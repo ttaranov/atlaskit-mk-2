@@ -199,6 +199,76 @@ describe('modal-dialog', () => {
   });
 });
 
+test('multiple modals should stack on one another', () => {
+  const wrapper = mount(
+    <div>
+      <ModalDialog>back</ModalDialog>
+      <ModalDialog>middle</ModalDialog>
+      <ModalDialog>front</ModalDialog>
+    </div>,
+  );
+  const indexes = wrapper
+    .find(Content)
+    .map(content => content.prop('stackIndex'));
+  expect(indexes).toEqual([2, 1, 0]);
+});
+
+test('nested modals should stack on one another', () => {
+  const wrapper = mount(
+    <div>
+      <ModalDialog>back</ModalDialog>
+      <ModalDialog>
+        middle
+        <ModalDialog>front</ModalDialog>
+      </ModalDialog>
+    </div>,
+  );
+  const indexes = wrapper
+    .find(Content)
+    .map(content => content.prop('stackIndex'));
+  expect(indexes).toEqual([2, 1, 0]);
+});
+
+test('multiple modals update stack on unmount', () => {
+  class Wrapper extends React.Component<{}, { open: boolean }> {
+    state = { open: true };
+    render() {
+      return (
+        <div>
+          <ModalDialog />
+          <ModalDialog />
+          {this.state.open && (
+            <ModalDialog>
+              <button onClick={() => this.setState({ open: false })}>
+                close
+              </button>
+            </ModalDialog>
+          )}
+        </div>
+      );
+    }
+  }
+  const wrapper = mount(<Wrapper />);
+  wrapper.find('button').simulate('click');
+  const indexes = wrapper
+    .find(Content)
+    .map(content => content.prop('stackIndex'));
+  expect(indexes).toEqual([1, 0]);
+});
+
+test('can manually override modals stack', () => {
+  const wrapper = mount(
+    <div>
+      <ModalDialog>back</ModalDialog>
+      <ModalDialog stackIndex={1}>front</ModalDialog>
+    </div>,
+  );
+  const indexes = wrapper
+    .find(Content)
+    .map(content => content.prop('stackIndex'));
+  expect(indexes).toEqual([1, 1]);
+});
+
 describe('ModalDialog', () => {
   beforeEach(() => {
     jest.spyOn(global.console, 'warn');

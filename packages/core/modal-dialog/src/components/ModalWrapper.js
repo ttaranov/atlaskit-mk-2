@@ -125,6 +125,7 @@ class ModalWrapper extends Component<Props, State> {
     isChromeless: false,
     width: 'medium',
     isHeadingMultiline: true,
+    onClose: () => {},
     onCloseComplete: () => {},
   };
 
