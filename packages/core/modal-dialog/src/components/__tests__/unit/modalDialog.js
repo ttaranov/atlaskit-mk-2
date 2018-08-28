@@ -269,6 +269,17 @@ test('can manually override modals stack', () => {
   expect(indexes).toEqual([1, 1]);
 });
 
+// beautiful-dnd will miscalculate positions if the container has a transform applied to it.
+test('no transform is applied to content', () => {
+  jest.useFakeTimers();
+  const wrapper = mount(<ModalDialog />);
+  jest.runAllTimers();
+  // update enzyme's view of component tree after animations have finished
+  wrapper.update();
+  const style = wrapper.find(Positioner).prop('style');
+  expect(style.transform).toEqual(null);
+});
+
 describe('ModalDialog', () => {
   beforeEach(() => {
     jest.spyOn(global.console, 'warn');
