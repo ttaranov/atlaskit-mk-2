@@ -1,6 +1,6 @@
 // @flow
 /* eslint-disable react/no-array-index-key */
-import React, { Component, type Node } from 'react';
+import React, { Component, Fragment, type Node } from 'react';
 import { findDOMNode } from 'react-dom';
 import uuid from 'uuid/v1';
 import {
@@ -411,25 +411,19 @@ class DropdownMenuStateless extends Component<
     if (this.props.onPositioned) this.props.onPositioned();
   };
 
-  /** Render items only after droplist has been positioned */
+  /** Render focusManager only after droplist has been positioned when trigger via keyboard */
   renderDropdownItems = () => {
     if (this.sourceOfIsOpen === 'keydown' && this.dropdownListPositioned) {
       return (
-        <DropdownItemClickManager onItemClicked={this.handleItemClicked}>
-          <DropdownItemFocusManager
-            autoFocus={this.state.autoFocusDropdownItems}
-            close={this.close}
-          >
-            {this.props.children}
-          </DropdownItemFocusManager>
-        </DropdownItemClickManager>
+        <DropdownItemFocusManager
+          autoFocus={this.state.autoFocusDropdownItems}
+          close={this.close}
+        >
+          {this.props.children}
+        </DropdownItemFocusManager>
       );
     }
-    return (
-      <DropdownItemClickManager onItemClicked={this.handleItemClicked}>
-        {this.props.children}
-      </DropdownItemClickManager>
-    );
+    return <Fragment>{this.props.children}</Fragment>;
   };
 
   render() {
@@ -486,7 +480,9 @@ class DropdownMenuStateless extends Component<
               role="menu"
               shouldFitContainer={shouldFitContainer}
             >
-              {this.renderDropdownItems()}
+              <DropdownItemClickManager onItemClicked={this.handleItemClicked}>
+                {this.renderDropdownItems()}
+              </DropdownItemClickManager>
             </WidthConstrainer>
           )}
         </Droplist>
