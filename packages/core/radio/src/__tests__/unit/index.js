@@ -5,11 +5,11 @@ import { mount, shallow } from 'enzyme';
 import { RadioGroupWithoutAnalytics as RadioGroup } from '../../RadioGroup';
 import { name } from '../../../package.json';
 import Radio from '../../RadioBase';
-import type { ItemsPropType } from '../../types';
+import type { OptionsPropType } from '../../types';
 
 describe(name, () => {
   describe('RadioGroup', () => {
-    const sampleItems: ItemsPropType = [
+    const sampleItems: OptionsPropType = [
       { name: 'test', value: '1', label: 'one' },
       { name: 'test', value: '2', label: 'two' },
       { name: 'test', value: '3', label: <i>three</i>, isDisabled: true },
@@ -22,7 +22,7 @@ describe(name, () => {
           new RadioGroup({
             selectedValue: null,
             defaultSelectedValue: null,
-            items: [],
+            options: [],
             onChange: () => {},
           }),
         ).toBeInstanceOf(Component);
@@ -33,7 +33,7 @@ describe(name, () => {
       let wrapper;
 
       beforeEach(() => {
-        wrapper = shallow(<RadioGroup />);
+        wrapper = shallow(<RadioGroup options={[]} onChange={() => {}} />);
       });
 
       it('should be able to create a component', () => {
@@ -49,7 +49,7 @@ describe(name, () => {
     describe('props', () => {
       describe('defaultValue prop', () => {
         it('renders an Radio with correct props for each item in the array', () => {
-          const wrapper = mount(<RadioGroup items={sampleItems} />);
+          const wrapper = mount(<RadioGroup options={sampleItems} />);
           expect(wrapper.find(Radio).length).toBe(sampleItems.length);
 
           const radios = wrapper.find(Radio);
@@ -66,15 +66,17 @@ describe(name, () => {
       });
 
       describe('items prop with defaultValue', () => {
-        const sampleItemsWithDefault: ItemsPropType = sampleItems.map(item => ({
-          ...item,
-        }));
+        const sampleItemsWithDefault: OptionsPropType = sampleItems.map(
+          item => ({
+            ...item,
+          }),
+        );
 
         it('selects the item by default', () => {
           const wrapper = mount(
             <RadioGroup
               defaultSelectedValue={sampleItemsWithDefault[2].value}
-              items={sampleItemsWithDefault}
+              options={sampleItemsWithDefault}
             />,
           );
           expect(
@@ -89,7 +91,7 @@ describe(name, () => {
           const wrapper = mount(
             <RadioGroup
               defaultSelectedValue={sampleItemsWithDefault[2].value}
-              items={sampleItemsWithDefault}
+              options={sampleItemsWithDefault}
             />,
           );
 
@@ -113,7 +115,7 @@ describe(name, () => {
         it('should be called when a value is selected', () => {
           const spy = jest.fn();
           const wrapper = mount(
-            <RadioGroup items={sampleItems} onChange={spy} />,
+            <RadioGroup options={sampleItems} onChange={spy} />,
           );
           wrapper
             .find(Radio)
@@ -124,7 +126,7 @@ describe(name, () => {
         });
 
         it('updates the selectedValue state when a radio is changed', () => {
-          const wrapper = mount(<RadioGroup items={sampleItems} />);
+          const wrapper = mount(<RadioGroup options={sampleItems} />);
           expect(wrapper.state('selectedValue')).toBe(undefined);
           wrapper
             .find(Radio)
