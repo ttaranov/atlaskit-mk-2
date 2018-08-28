@@ -79,7 +79,7 @@ export default class MediaSingle extends Component<
 
     console.log(`mediaSingle: w: ${width}, h: ${height}`);
     if (!height || !width) {
-      console.log('WE HAVE A NULL WIDTH/HEIGHT IN MEDIASINGLE');
+      console.log('RENDERER: rendering MediaGroup because null width/height');
       return (
         <BreakoutConsumer>
           {containerWidth => <MediaGroup>{media}</MediaGroup>}
