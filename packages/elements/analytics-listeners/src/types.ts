@@ -13,16 +13,6 @@ export type ListenerProps = {
   logger: Logger;
 };
 
-export type EventNextType = {
-  payload: {
-    action: string;
-    [key: string]: any;
-  };
-  context: Array<{}>;
-};
-
-export type ListenerFunction = (event: EventNextType) => void;
-
 export enum FabricChannel {
   atlaskit = 'atlaskit',
   elements = 'fabric-elements',

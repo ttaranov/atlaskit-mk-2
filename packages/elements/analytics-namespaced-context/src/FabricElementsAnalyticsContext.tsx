@@ -1,5 +1,5 @@
 import { StatelessComponent } from 'react';
-import createNamespaceContext, { Props } from './lib/createNamespaceContext';
+import createNamespaceContext, { Props } from './helper/createNamespaceContext';
 
 export const ELEMENTS_CONTEXT = 'fabricElementsCtx';
 

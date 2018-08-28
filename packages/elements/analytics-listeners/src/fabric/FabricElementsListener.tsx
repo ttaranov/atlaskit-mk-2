@@ -3,21 +3,21 @@ import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { ListenerProps, FabricChannel } from '../types';
 
 import { handleEvent } from './handle-event';
-import { event } from './types';
+import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
 
 export const ELEMENTS_TAG = 'fabricElements';
 
 export default class FabricElementsListener extends React.Component<
   ListenerProps
 > {
-  handleEvent = (event: event) => {
+  handleEventWrapper = (event: UIAnalyticsEventInterface) => {
     handleEvent(event, ELEMENTS_TAG, this.props.logger, this.props.client);
   };
 
   render() {
     return (
       <AnalyticsListener
-        onEvent={this.handleEvent}
+        onEvent={this.handleEventWrapper}
         channel={FabricChannel.elements}
       >
         {this.props.children}

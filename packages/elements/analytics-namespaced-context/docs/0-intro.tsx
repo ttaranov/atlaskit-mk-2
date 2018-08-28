@@ -24,6 +24,7 @@ ${code`
   import { withAnalyticsEvents, AnalyticsListener } from '@atlaskit/analytics-next';
   import { GasPayload } from '@atlaskit/analytics-gas-types';
   import { FabricElementsAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
+  import { FabricChannel } from '@atlaskit/analytics-listeners';
 
   export type Props = {
     onClick: e => void,
@@ -46,7 +47,7 @@ ${code`
         eventType: 'ui',
         source: 'unknown',
       };
-      createEvent(event).fire('fabricElements');
+      createEvent(event).fire(FabricChannel.elements);
     },
   })(DummyComponent);
 
@@ -57,7 +58,7 @@ ${code`
   // Pass the analyticsWebClient instance created by the Product
   ReactDOM.render(
     <div>      
-      <AnalyticsListener onEvent={listenerHandler} channel="fabricElements">
+      <AnalyticsListener onEvent={listenerHandler} channel={FabricChannel.elements}>
         <div>
           <FabricElementsAnalyticsContext data={{ greeting: 'hello' }}>
             <DummyComponentWithAnalytics onClick={myOnClickHandler} />
