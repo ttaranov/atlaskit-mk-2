@@ -81,7 +81,7 @@ const getAuthQueryParams = (auth: Auth) => {
 };
 
 class AuthPlayground extends Component<Props, State> {
-  context: Context;
+  private mediaContext?: Context;
 
   constructor(props: any) {
     super(props);
@@ -92,17 +92,19 @@ class AuthPlayground extends Component<Props, State> {
   }
 
   componentWillMount() {
-    this.context = createContext(this.props.authProvider);
+    this.mediaContext = createContext(this.props.authProvider);
   }
 
   componentDidMount() {
-    this.context.config.authProvider({ collectionName }).then((auth: Auth) => {
-      this.setState({ auth });
-    });
+    this.mediaContext!.config.authProvider({ collectionName }).then(
+      (auth: Auth) => {
+        this.setState({ auth });
+      },
+    );
   }
 
   getMediaCollection = () => {
-    const mediaCollectionProvider = this.context.getMediaCollectionProvider(
+    const mediaCollectionProvider = this.mediaContext!.getMediaCollectionProvider(
       collectionName,
       3,
     );

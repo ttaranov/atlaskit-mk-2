@@ -51,7 +51,12 @@ export default class PlaceholderTextNode {
         -1,
         true,
       );
-      this.view.dispatch(state.tr.setSelection(selectionToLeftOfClick!));
+      if (
+        selectionToLeftOfClick !== undefined &&
+        selectionToLeftOfClick !== null
+      ) {
+        this.view.dispatch(state.tr.setSelection(selectionToLeftOfClick));
+      }
     } else {
       document.getSelection().removeAllRanges();
       this.view.dispatch(state.tr.setSelection(selectionAtClick));

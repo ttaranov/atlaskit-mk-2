@@ -39,7 +39,7 @@ export class MediaCollectionViewer extends Component<
   MediaCollectionViewerProps,
   MediaCollectionViewerState
 > {
-  private subscription: Subscription;
+  private subscription: Subscription | null;
 
   static readonly defaultPageSize = 10;
 
@@ -75,6 +75,7 @@ export class MediaCollectionViewer extends Component<
         fetchToken: fetchToken(authProvider, collectionName),
       }),
     };
+    this.subscription = null;
   }
 
   componentDidMount(): void {
@@ -118,7 +119,7 @@ export class MediaCollectionViewer extends Component<
 
   componentWillUnmount(): void {
     const { mediaViewer } = this.state;
-    this.subscription.unsubscribe();
+    this.subscription!.unsubscribe();
     mediaViewer.off('fv.close', this.onClose);
     mediaViewer.off('fv.changeFile', this.loadNextPageIfRequired);
   }
@@ -129,7 +130,7 @@ export class MediaCollectionViewer extends Component<
 
   private onClose = () => {
     const { onClose } = this.props;
-    this.subscription.unsubscribe();
+    this.subscription!.unsubscribe();
     if (onClose) {
       onClose();
     }

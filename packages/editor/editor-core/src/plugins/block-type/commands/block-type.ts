@@ -113,7 +113,10 @@ function insertCodeBlock(): Command {
     const { $to } = state.selection;
     const { codeBlock } = state.schema.nodes;
     const moveSel = $to.node($to.depth).textContent ? 1 : 0;
-    tr.replaceRangeWith($to.pos, $to.pos, codeBlock.createAndFill()!);
+    const node = codeBlock.createAndFill();
+    if (node !== undefined && node !== null) {
+      tr.replaceRangeWith($to.pos, $to.pos, node);
+    }
     tr.setSelection(
       Selection.near(tr.doc.resolve(state.selection.to + moveSel)),
     );

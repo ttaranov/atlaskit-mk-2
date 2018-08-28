@@ -24,7 +24,7 @@ export interface TimeRangeState {
 export class TimeRange extends Component<TimeRangeProps, TimeRangeState> {
   wrapperElement?: HTMLElement;
   thumbElement?: HTMLElement;
-  wrapperElementWidth: number;
+  wrapperElementWidth?: number;
 
   state: TimeRangeState = {
     isDragging: false,
@@ -52,7 +52,7 @@ export class TimeRange extends Component<TimeRangeProps, TimeRangeState> {
 
   onMouseMove = (e: MouseEvent) => {
     const { isDragging } = this.state;
-    if (!isDragging) {
+    if (!isDragging || this.wrapperElementWidth === undefined) {
       return;
     }
     e.stopPropagation();
@@ -84,7 +84,10 @@ export class TimeRange extends Component<TimeRangeProps, TimeRangeState> {
 
   onNavigate = (e: any) => {
     // We don't want to navigate if the event was starting with a drag
-    if (e.target === this.thumbElement) {
+    if (
+      e.target === this.thumbElement ||
+      this.wrapperElementWidth === undefined
+    ) {
       return;
     }
 
