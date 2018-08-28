@@ -2,21 +2,7 @@
 import React from 'react';
 import RadioIcon from './RadioIcon';
 import { HiddenInput } from './styled/Radio';
-
-type RadioInputProps = {
-  isActive?: boolean,
-  isChecked?: boolean,
-  isDisabled?: boolean,
-  isFocused?: boolean,
-  isHovered?: boolean,
-  isInvalid?: boolean,
-  isRequired?: boolean,
-  onChange: (SyntheticEvent<*>) => void,
-  onBlur: (SyntheticEvent<*>) => void,
-  onFocus: (SyntheticEvent<*>) => void,
-  name?: string,
-  value?: string,
-};
+import type { RadioInputProps } from './types';
 
 const RadioInput = ({
   isActive,
@@ -28,6 +14,7 @@ const RadioInput = ({
   isRequired,
   name,
   onChange,
+  onInvalid,
   onBlur,
   onFocus,
   value,
@@ -46,6 +33,7 @@ const RadioInput = ({
         name={name}
         onChange={onChange}
         onBlur={onBlur}
+        onInvalid={onInvalid}
         onFocus={onFocus}
         required={isRequired}
         type="radio"

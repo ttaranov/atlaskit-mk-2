@@ -2,15 +2,7 @@
 import React from 'react';
 import Icon from '@atlaskit/icon/glyph/radio';
 import { IconWrapper } from './styled/Radio';
-
-type Props = {
-  isActive?: boolean,
-  isChecked?: boolean,
-  isDisabled?: boolean,
-  isFocused?: boolean,
-  isHovered?: boolean,
-  isInvalid?: boolean,
-};
+import type { RadioIconProps } from './types';
 
 export default ({
   isActive,
@@ -19,7 +11,7 @@ export default ({
   isFocused,
   isHovered,
   isInvalid,
-}: Props) => (
+}: RadioIconProps) => (
   <IconWrapper
     isActive={isActive}
     isChecked={isChecked}
