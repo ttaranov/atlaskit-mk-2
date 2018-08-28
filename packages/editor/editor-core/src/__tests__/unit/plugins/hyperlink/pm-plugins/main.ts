@@ -251,7 +251,7 @@ describe('hyperlink', () => {
           const { pluginState } = editor(
             doc(p(a({ href: 'google.com' })('link{<>}'))),
           );
-          expect(pluginState).toBe(undefined);
+          expect(pluginState.activeLinkMark).toBe(undefined);
         });
       });
 
@@ -260,7 +260,7 @@ describe('hyperlink', () => {
           const { pluginState } = editor(
             doc(p(a({ href: 'google.com' })('{<>}link'))),
           );
-          expect(pluginState).toBe(undefined);
+          expect(pluginState.activeLinkMark).toBe(undefined);
         });
       });
 

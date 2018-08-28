@@ -18,7 +18,7 @@ import { pluginKey } from '../../../../plugins/table/pm-plugins/main';
 import {
   TablePluginState,
   PluginConfig,
-} from '../../../src/plugins/table/types';
+} from '../../../../plugins/table/types';
 
 describe('TableView', () => {
   const editor = (doc: any, trackEvent = () => {}) => {

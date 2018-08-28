@@ -6,7 +6,7 @@ import {
   sleep,
 } from '@atlaskit/editor-test-helpers';
 import { EditorView } from 'prosemirror-view';
-import { TestingEditorView } from '../../../../editor-test-helpers/src/types/prosemirror';
+import { TestingEditorView } from '../../../../../../editor-test-helpers/src/types/prosemirror';
 
 interface InputEvent extends UIEvent, Event {
   data: string;
