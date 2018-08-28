@@ -42,7 +42,7 @@ export default class Chrome extends PureComponent<Props> {
       isRemoving,
       isRounded,
       markedForRemoval,
-      // appearance,
+      ...anyAdditionProps
     } = this.props;
 
     const props = {
@@ -66,6 +66,10 @@ export default class Chrome extends PureComponent<Props> {
       props.tabIndex = 0;
     }
 
-    return <Span {...props}>{children}</Span>;
+    return (
+      <Span {...props} {...anyAdditionProps}>
+        {children}
+      </Span>
+    );
   }
 }

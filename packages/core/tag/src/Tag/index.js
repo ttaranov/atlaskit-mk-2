@@ -118,11 +118,11 @@ class Tag extends Component<Props, State> {
     const onAnimationEnd = () => isRemoving && this.handleRemoveComplete();
 
     return (
-      <Appearance props={appearance} theme={theme}>
-        {merged => {
-          const styleProps = { ...styled, ...merged };
-          return (
-            <Container {...styleProps} onAnimationEnd={onAnimationEnd}>
+      <Container onAnimationEnd={onAnimationEnd}>
+        <Appearance props={appearance} theme={theme}>
+          {merged => {
+            const styleProps = { ...styled, ...merged };
+            return (
               <Chrome
                 {...styleProps}
                 isLink={!!href}
@@ -145,10 +145,10 @@ class Tag extends Component<Props, State> {
                   />
                 ) : null}
               </Chrome>
-            </Container>
-          );
-        }}
-      </Appearance>
+            );
+          }}
+        </Appearance>
+      </Container>
     );
   }
 }
