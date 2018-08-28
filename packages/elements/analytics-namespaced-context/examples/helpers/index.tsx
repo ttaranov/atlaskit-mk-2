@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { GasPayload } from '../../../analytics-gas-types';
-import Button from '@atlaskit/button';
 
 export type Props = {
   text?: string;
@@ -10,7 +9,7 @@ export type Props = {
 
 export const DummyComponent: React.StatelessComponent<Props> = props => (
   <div id="dummy" onClick={props.onClick} style={{ paddingBottom: 12 }}>
-    <Button appearance="help">{props.text ? props.text : 'Test'}</Button>
+    <button>{props.text ? props.text : 'Test'}</button>
   </div>
 );
 
