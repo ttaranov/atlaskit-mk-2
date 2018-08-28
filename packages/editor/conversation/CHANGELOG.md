@@ -1,5 +1,9 @@
 # @atlaskit/conversation
 
+## 9.3.1
+- [patch] Updated dependencies [90ba6bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/90ba6bd)
+  - @atlaskit/analytics-listeners@4.0.0
+
 ## 9.3.0
 - [minor] Add analytics track events to Conversation component [2d6ab8d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d6ab8d)
 

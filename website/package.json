@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@atlaskit/website",
-  "version": "4.1.1",
+  "version": "4.1.2",
   "description": "",
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
@@ -31,7 +31,7 @@
     "netlify-cli": "^1.2.2"
   },
   "dependencies": {
-    "@atlaskit/analytics-listeners": "^3.3.1",
+    "@atlaskit/analytics-listeners": "^4.0.0",
     "@atlaskit/badge": "^9.1.1",
     "@atlaskit/button": "^9.0.6",
     "@atlaskit/code": "^8.0.1",
