@@ -1,7 +1,7 @@
 // @flow
 import type { Node } from 'react';
 
-export type FieldTextProps = {
+export type FieldTextProps = {|
   /** Standard HTML input autocomplete attribute. */
   autoComplete?: 'on' | 'off',
   /** Standard HTML input form attribute. This is useful if the input cannot be included directly
@@ -64,4 +64,4 @@ export type FieldTextProps = {
   /** Hide the validation message and style. This is used by <Field> to disable Validation display handling by FieldBase
    */
   isValidationHidden?: boolean,
-};
+|};

@@ -20,7 +20,6 @@ const Wrapper = styled.div`
 `;
 
 type Props = {|
-  // $FlowFixMe - inexact `FieldTextProps` is incompatible with exact `Props`
   ...FieldTextProps,
   innerRef?: (node: ?HTMLInputElement) => void,
 |};
