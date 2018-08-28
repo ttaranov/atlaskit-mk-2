@@ -2,10 +2,8 @@
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 
-import Radio from '../../RadioBase';
-import RadioGroupWithAnalytics, {
-  RadioGroupWithoutAnalytics as RadioGroup,
-} from '../../RadioGroup';
+import Radio from '../../Radio';
+import RadioGroup from '../../RadioGroup';
 import { name } from '../../../package.json';
 import type { OptionPropType } from '../../types';
 
@@ -221,7 +219,7 @@ describe(name, () => {
       function expectRadioSelected(wrapper, index) {
         const radios = wrapper.find(Radio);
         for (let i = 0; i < radios.length; i++) {
-          expect(radios.at(i).prop('isSelected')).toBe(index === i);
+          expect(radios.at(i).prop('isChecked')).toBe(index === i);
         }
       }
 
@@ -271,24 +269,5 @@ describe(name, () => {
         expectRadioSelected(wrapper, 2);
       });
     });
-  });
-});
-
-describe('RadioGroupWithAnalytics', () => {
-  beforeEach(() => {
-    jest.spyOn(global.console, 'warn');
-    jest.spyOn(global.console, 'error');
-  });
-  afterEach(() => {
-    global.console.warn.mockRestore();
-    global.console.error.mockRestore();
-  });
-
-  it('should mount without errors', () => {
-    mount(<RadioGroupWithAnalytics onChange={() => {}} />);
-    /* eslint-disable no-console */
-    expect(console.warn).not.toHaveBeenCalled();
-    expect(console.error).not.toHaveBeenCalled();
-    /* eslint-enable no-console */
   });
 });

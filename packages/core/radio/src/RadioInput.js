@@ -1,5 +1,15 @@
 // @flow
 import React from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
+
 import RadioIcon from './RadioIcon';
 import { HiddenInput } from './styled/Radio';
 import type { RadioInputProps } from './types';
@@ -51,4 +61,22 @@ const RadioInput = ({
   );
 };
 
-export default RadioInput;
+export const RadioInputWithoutAnalytics = RadioInput;
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+export default withAnalyticsContext({
+  componentName: 'radioInput',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onChange: createAndFireEventOnAtlaskit({
+      action: 'isChecked',
+      actionSubject: 'radioInput',
+      attributes: {
+        componentName: 'radioInput',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(RadioInput),
+);

@@ -1,16 +1,7 @@
 // @flow
 import React, { Component, Fragment, type Element } from 'react';
-import {
-  withAnalyticsEvents,
-  withAnalyticsContext,
-  createAndFireEvent,
-} from '@atlaskit/analytics-next';
 import Radio from './Radio';
 import type { OptionsPropType, OptionPropType } from './types';
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../package.json';
 /* eslint-disable react/no-array-index-key */
 
 export type RadioGroupProps = {
@@ -26,7 +17,7 @@ type RadioElementArray = Array<Element<typeof Radio>>;
 
 type State = { selectedValue?: string | number | null };
 
-class RadioGroup extends Component<RadioGroupProps, State> {
+export default class RadioGroup extends Component<RadioGroupProps, State> {
   static defaultProps = {
     onChange: () => {},
     options: [],
@@ -84,23 +75,3 @@ class RadioGroup extends Component<RadioGroupProps, State> {
     return <Fragment>{options}</Fragment>;
   }
 }
-
-const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
-export const RadioGroupWithoutAnalytics = RadioGroup;
-export default withAnalyticsContext({
-  componentName: 'radioGroup',
-  packageName,
-  packageVersion,
-})(
-  withAnalyticsEvents({
-    onChange: createAndFireEventOnAtlaskit({
-      action: 'selected',
-      actionSubject: 'radioItem',
-      attributes: {
-        componentName: 'radioGroup',
-        packageName,
-        packageVersion,
-      },
-    }),
-  })(RadioGroupWithoutAnalytics),
-);
