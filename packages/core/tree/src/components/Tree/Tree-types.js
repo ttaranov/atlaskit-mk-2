@@ -1,5 +1,6 @@
 // @flow
 import * as React from 'react';
+import { type DraggableLocation } from 'react-beautiful-dnd';
 import type {
   TreeData,
   Path,
@@ -25,5 +26,15 @@ export type Props = {|
 
 export type State = {|
   flattenedTree: FlattenedTree,
-  dropAnimationOffset: number,
+|};
+
+export type DragState = {|
+  // Id of the currently dragged item
+  draggedItemId: ItemId,
+  // Source location
+  source: DraggableLocation,
+  // Pending destination location
+  destination?: ?DraggableLocation,
+  // Last level, while the user moved an item horizontally
+  horizontalLevel?: ?number,
 |};
