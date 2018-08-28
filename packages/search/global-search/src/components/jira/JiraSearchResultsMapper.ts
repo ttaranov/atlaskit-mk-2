@@ -1,4 +1,4 @@
-import { ResultsGroup, JiraResultsMap } from '../../model/Result';
+import { ResultsGroup, JiraResultsMap, Result } from '../../model/Result';
 import { take } from '../SearchResultsUtil';
 
 const MAX_ISSUES = 8;
@@ -8,11 +8,11 @@ const MAX_FILTERS = 2;
 const MAX_PEOPLE = 3;
 
 const DEFAULT_JIRA_RESULTS_MAP = {
-  issues: [],
-  boards: [],
-  filters: [],
-  projects: [],
-  people: [],
+  issues: [] as Result[],
+  boards: [] as Result[],
+  filters: [] as Result[],
+  projects: [] as Result[],
+  people: [] as Result[],
 };
 
 export const sliceResults = (resultsMap: JiraResultsMap) => {
