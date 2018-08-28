@@ -1,1 +1,4 @@
+# Enforce https
+http://atlaskit.atlassian.com/* https://atlaskit.atlassian.com/:splat 301!
+
 /*    /index.html   200
