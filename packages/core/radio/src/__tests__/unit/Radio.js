@@ -1,9 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
-
-import AkRadio from '../../Radio';
-import Radio from '../../RadioBase';
+import Radio from '../../Radio';
 import { name } from '../../../package.json';
 
 describe(name, () => {
@@ -41,7 +39,7 @@ describe(name, () => {
       function expectPropReflectedToInput(prop, inputProp, val) {
         it('should be reflected to the input', () => {
           const props = ({ [prop]: val }: { [string]: any });
-          const wrapper = mount(<AkRadio onChange={() => {}} {...props} />);
+          const wrapper = mount(<Radio onChange={() => {}} {...props} />);
           expect(wrapper.find('input').prop(inputProp)).toBe(val);
         });
       }
@@ -66,9 +64,6 @@ describe(name, () => {
       });
 
       describe('onChange prop', () => {
-        const func = () => {};
-        expectPropReflectedToInput('onChange', 'onChange', func);
-
         it('should be reflected to the input', () => {
           const spy = jest.fn();
           const wrapper = mount(<Radio onChange={spy} />);
