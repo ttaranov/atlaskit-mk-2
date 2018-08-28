@@ -14,6 +14,10 @@ import { AnalyticsListener, AnalyticsContext } from '@atlaskit/analytics-next';
 import { AnalyticsWebClient } from '../../types';
 import { FabricElementsAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
+const DummyCompWithAttributesWithAnalytics = DummyComponentWithAttributesWithAnalytics(
+  FabricChannel.elements,
+);
+
 describe('<FabricElementsListener />', () => {
   let analyticsWebClientMock: AnalyticsWebClient;
   let loggerMock;
@@ -56,31 +60,35 @@ describe('<FabricElementsListener />', () => {
     const dummy = analyticsListener.find('#dummy');
     dummy.simulate('click');
 
-    return Promise.resolve({}).then(() => {
-      expect(analyticsWebClientMock.sendUIEvent).toBeCalledWith(expectedEvent);
-    });
+    expect(analyticsWebClientMock.sendUIEvent).toBeCalledWith(expectedEvent);
   };
 
   describe('Listen and fire an UI event with analyticsWebClient', () => {
     it('should fire event with elements tag', () => {
-      return fireAndVerifySentEvent(DummyComponentWithAnalytics, {
-        action: 'someAction',
-        actionSubject: 'someComponent',
-        source: 'unknown',
-        tags: [ELEMENTS_TAG],
-      });
+      fireAndVerifySentEvent(
+        DummyComponentWithAnalytics(FabricChannel.elements),
+        {
+          action: 'someAction',
+          actionSubject: 'someComponent',
+          source: 'unknown',
+          tags: [ELEMENTS_TAG],
+        },
+      );
     });
 
     it('should fire event without duplicating the tag', () => {
-      return fireAndVerifySentEvent(TaggedDummyComponentWithAnalytics, {
-        action: 'someAction',
-        actionSubject: 'someComponent',
-        source: 'unknown',
-        tags: [ELEMENTS_TAG, 'foo'],
-      });
+      fireAndVerifySentEvent(
+        TaggedDummyComponentWithAnalytics(FabricChannel.elements, ELEMENTS_TAG),
+        {
+          action: 'someAction',
+          actionSubject: 'someComponent',
+          source: 'unknown',
+          tags: [ELEMENTS_TAG, 'foo'],
+        },
+      );
     });
 
-    it('should fire event with context merged into the attributes', done => {
+    it('should fire event with context merged into the attributes', () => {
       const component = mount(
         <FabricElementsListener
           client={analyticsWebClientMock}
@@ -91,9 +99,7 @@ describe('<FabricElementsListener />', () => {
           >
             <AnalyticsContext data={{ issueId: 200, msg: 'boo' }}>
               <FabricElementsAnalyticsContext data={{ issueId: 300 }}>
-                <DummyComponentWithAttributesWithAnalytics
-                  onClick={jest.fn()}
-                />
+                <DummyCompWithAttributesWithAnalytics onClick={jest.fn()} />
               </FabricElementsAnalyticsContext>
             </AnalyticsContext>
           </FabricElementsAnalyticsContext>
@@ -104,26 +110,23 @@ describe('<FabricElementsListener />', () => {
       const dummy = analyticsListener.find('#dummy');
       dummy.simulate('click');
 
-      setTimeout(() => {
-        // note: AnalyticsContext data should not be in propagated in the attributes, only FabricElementsAnalyticsContext
-        expect(analyticsWebClientMock.sendUIEvent).toBeCalledWith(
-          expect.objectContaining({
-            action: 'someAction',
-            actionSubject: 'someComponent',
-            source: 'unknown',
-            attributes: {
-              packageName: '@atlaskit/foo',
-              packageVersion: '1.0.0',
-              componentName: 'foo',
-              fooBar: 'yay',
-              greeting: 'hello',
-              issueId: 300, // right most object attribute wins the conflict
-            },
-            tags: [ELEMENTS_TAG],
-          }),
-        );
-        done();
-      });
+      // note: AnalyticsContext data should not be in propagated in the attributes, only FabricElementsAnalyticsContext
+      expect(analyticsWebClientMock.sendUIEvent).toBeCalledWith(
+        expect.objectContaining({
+          action: 'someAction',
+          actionSubject: 'someComponent',
+          source: 'unknown',
+          attributes: {
+            packageName: '@atlaskit/foo',
+            packageVersion: '1.0.0',
+            componentName: 'foo',
+            fooBar: 'yay',
+            greeting: 'hello',
+            issueId: 300, // right most object attribute wins the conflict
+          },
+          tags: [ELEMENTS_TAG],
+        }),
+      );
     });
   });
 });

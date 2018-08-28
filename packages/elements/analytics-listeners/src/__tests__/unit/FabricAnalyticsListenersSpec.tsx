@@ -7,8 +7,6 @@ import {
   DummyComponentWithAnalytics,
   DummyComponent,
   IncorrectEventType,
-  DummyAtlaskitComponentWithAnalytics,
-  DummyNavigationComponentWithAnalytics,
 } from '../../../examples/helpers';
 import { AnalyticsWebClient } from '../../types';
 import { LOG_LEVEL } from '../../helpers/logger';
@@ -16,6 +14,17 @@ import { FabricChannel } from '../../index';
 import NavigationListener from '../../navigation/NavigationListener';
 
 declare const global: any;
+
+const DummyElementsCompWithAnalytics = DummyComponentWithAnalytics(
+  FabricChannel.elements,
+);
+const DummyAtlaskitCompWithAnalytics = DummyComponentWithAnalytics(
+  FabricChannel.atlaskit,
+);
+const DummyNavigationCompWithAnalytics = DummyComponentWithAnalytics(
+  FabricChannel.navigation,
+);
+const AtlaskitIncorrectEventType = IncorrectEventType(FabricChannel.atlaskit);
 
 describe('<FabricAnalyticsListeners />', () => {
   let analyticsWebClientMock: AnalyticsWebClient;
@@ -36,7 +45,7 @@ describe('<FabricAnalyticsListeners />', () => {
         mount(
           // @ts-ignore
           <FabricAnalyticsListeners>
-            <DummyComponentWithAnalytics onClick={compOnClick} />
+            <DummyElementsCompWithAnalytics onClick={compOnClick} />
           </FabricAnalyticsListeners>,
         ),
       ).toThrow();
@@ -51,7 +60,7 @@ describe('<FabricAnalyticsListeners />', () => {
           client={analyticsWebClientMock}
           logLevel={LOG_LEVEL.ERROR}
         >
-          <IncorrectEventType onClick={compOnClick} />
+          <AtlaskitIncorrectEventType onClick={compOnClick} />
         </FabricAnalyticsListeners>,
       );
 
@@ -223,11 +232,11 @@ describe('<FabricAnalyticsListeners />', () => {
   });
 
   describe('<FabricElementsListener />', () => {
-    it('should listen and fire a UI event with analyticsWebClient', done => {
+    it('should listen and fire a UI event with analyticsWebClient', () => {
       const compOnClick = jest.fn();
       const component = mount(
         <FabricAnalyticsListeners client={analyticsWebClientMock}>
-          <DummyComponentWithAnalytics onClick={compOnClick} />
+          <DummyElementsCompWithAnalytics onClick={compOnClick} />
         </FabricAnalyticsListeners>,
       );
 
@@ -242,19 +251,16 @@ describe('<FabricAnalyticsListeners />', () => {
 
       dummyComponent.simulate('click');
 
-      setTimeout(() => {
-        expect(analyticsWebClientMock.sendUIEvent).toBeCalled();
-        done();
-      });
+      expect(analyticsWebClientMock.sendUIEvent).toBeCalled();
     });
   });
 
   describe('<AtlaskitListener />', () => {
-    it('should listen and fire a UI event with analyticsWebClient', done => {
+    it('should listen and fire a UI event with analyticsWebClient', () => {
       const compOnClick = jest.fn();
       const component = mount(
         <FabricAnalyticsListeners client={analyticsWebClientMock}>
-          <DummyAtlaskitComponentWithAnalytics onClick={compOnClick} />
+          <DummyAtlaskitCompWithAnalytics onClick={compOnClick} />
         </FabricAnalyticsListeners>,
       );
 
@@ -269,19 +275,16 @@ describe('<FabricAnalyticsListeners />', () => {
 
       dummyComponent.simulate('click');
 
-      setTimeout(() => {
-        expect(analyticsWebClientMock.sendUIEvent).toBeCalled();
-        done();
-      });
+      expect(analyticsWebClientMock.sendUIEvent).toBeCalled();
     });
   });
 
   describe('<NavigationListener />', () => {
-    it('should listen and fire a UI event with analyticsWebClient', done => {
+    it('should listen and fire a UI event with analyticsWebClient', () => {
       const compOnClick = jest.fn();
       const component = mount(
         <FabricAnalyticsListeners client={analyticsWebClientMock}>
-          <DummyNavigationComponentWithAnalytics onClick={compOnClick} />
+          <DummyNavigationCompWithAnalytics onClick={compOnClick} />
         </FabricAnalyticsListeners>,
       );
 
@@ -296,10 +299,7 @@ describe('<FabricAnalyticsListeners />', () => {
 
       dummyComponent.simulate('click');
 
-      setTimeout(() => {
-        expect(analyticsWebClientMock.sendUIEvent).toBeCalled();
-        done();
-      });
+      expect(analyticsWebClientMock.sendUIEvent).toBeCalled();
     });
   });
 });

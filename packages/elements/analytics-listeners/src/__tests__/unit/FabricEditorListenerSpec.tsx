@@ -51,28 +51,32 @@ describe('<FabricEditorsListener />', () => {
     const dummy = analyticsListener.find('#dummy');
     dummy.simulate('click');
 
-    setTimeout(() => {
-      expect(analyticsWebClientMock.sendUIEvent).toBeCalledWith(expectedEvent);
-    });
+    expect(analyticsWebClientMock.sendUIEvent).toBeCalledWith(expectedEvent);
   };
 
   describe('Listen and fire an UI event with analyticsWebClient', () => {
     it('should fire event with editor tag', () => {
-      fireAndVerifySentEvent(DummyComponentWithAnalytics, {
-        action: 'someAction',
-        actionSubject: 'someComponent',
-        source: 'unknown',
-        tags: [EDITOR_TAG],
-      });
+      fireAndVerifySentEvent(
+        DummyComponentWithAnalytics(FabricChannel.editor),
+        {
+          action: 'someAction',
+          actionSubject: 'someComponent',
+          source: 'unknown',
+          tags: [EDITOR_TAG],
+        },
+      );
     });
 
     it('should fire event without duplicating the tag', () => {
-      fireAndVerifySentEvent(TaggedDummyComponentWithAnalytics, {
-        action: 'someAction',
-        actionSubject: 'someComponent',
-        source: 'unknown',
-        tags: [EDITOR_TAG, 'foo'],
-      });
+      fireAndVerifySentEvent(
+        TaggedDummyComponentWithAnalytics(FabricChannel.editor, EDITOR_TAG),
+        {
+          action: 'someAction',
+          actionSubject: 'someComponent',
+          source: 'unknown',
+          tags: [EDITOR_TAG, 'foo'],
+        },
+      );
     });
   });
 });
