@@ -26,19 +26,12 @@ const events = knownSplitsAssets.map(asset => ({
     chunkSizeKb: parseFloat(asset.sizeInKb),
   },
 }));
-console.log(events);
 
 sendAnalyticsEvents(events)
-  .then(res => {
-    console.log('Success!');
-    return res.json();
-  })
-  .then(json => {
-    console.log(JSON.stringify(json));
-  })
+  .then(() => console.log('Success!'))
   .catch(err => {
-    console.log('error');
     console.log(err);
+    process.exit(1);
   });
 
 function sendAnalyticsEvents(events) {
