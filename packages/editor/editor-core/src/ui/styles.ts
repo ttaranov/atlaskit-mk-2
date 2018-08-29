@@ -37,8 +37,7 @@ export const Wrapper: ComponentClass<
   > div > div {
     display: flex;
   }
-  /* see ED-4591 */
-  margin-left: ${({ isSmall }: { isSmall?: boolean }) => (isSmall ? 5 : 4)}px;
+  margin-left: ${({ isSmall }: { isSmall?: boolean }) => (isSmall ? 4 : 0)}px;
   min-width: ${({ isSmall }: { isSmall?: boolean }) =>
     isSmall ? '40px' : 'auto'};
 `;

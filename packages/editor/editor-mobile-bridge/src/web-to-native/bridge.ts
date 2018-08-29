@@ -27,4 +27,4 @@ export default interface NativeBridge
     TextFormattingBridge,
     MediaBridge,
     PromiseBridge,
-    ListBridge {};
+    ListBridge {}

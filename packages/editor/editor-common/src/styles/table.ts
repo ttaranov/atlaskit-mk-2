@@ -33,7 +33,7 @@ const tableSharedStyle = css`
     border-collapse: collapse;
     margin: ${tableMarginTop}px ${tableMarginSides}px ${tableMarginBottom}px;
     border: 1px solid ${akEditorTableBorder};
-    table-layout: fixed;
+    width: 100%;
 
     &[data-autosize='true'] {
       table-layout: auto;
@@ -70,8 +70,13 @@ const tableSharedStyle = css`
       }
       th {
         background-color: ${akEditorTableToolbar};
-        font-weight: bold;
         text-align: left;
+        & * {
+          font-weight: normal;
+        }
+        & > p {
+          font-weight: bold;
+        }
       }
     }
   }

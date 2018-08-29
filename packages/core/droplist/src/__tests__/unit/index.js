@@ -7,7 +7,8 @@ import Item, { ItemGroup } from '@atlaskit/item';
 
 import { name } from '../../../package.json';
 
-import Droplist from '../../../src';
+import DroplistWithAnalytics from '../../../src';
+import { DroplistWithoutAnalytics as Droplist } from '../../components/Droplist';
 import { Trigger, Content } from '../../styled/Droplist';
 
 const itemsList = (
@@ -115,5 +116,24 @@ describe(`${name} - core`, () => {
       const wrapper = mount(<Droplist isLoading>{itemsList}</Droplist>);
       expect(wrapper.find(Spinner).length).toBe(0);
     });
+  });
+});
+
+describe('DroplistWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<DroplistWithAnalytics />);
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

@@ -23,8 +23,10 @@ const Example = () => (
       },
     ]}
   >
-    The main use for passing a custom link component is to pass in a
-    react-router-link component.
+    <p>
+      The main use for passing a custom link component is to pass in a
+      react-router-link component.
+    </p>
   </SectionMessage>
 );
 

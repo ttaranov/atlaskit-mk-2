@@ -99,11 +99,11 @@ export default class SiteEmojiResource {
       return new Promise<EmojiDescription>((resolve, reject) => {
         const { url, clientId, collectionName } = uploadToken;
         const context = ContextFactory.create({
-          serviceHost: url,
           authProvider: () =>
             Promise.resolve({
               clientId,
               token: uploadToken.jwt,
+              baseUrl: url,
             }),
         });
         const subscription = context

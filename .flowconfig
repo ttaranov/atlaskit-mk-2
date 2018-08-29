@@ -1,7 +1,5 @@
 [ignore]
 .*/node_modules/styled-components/.*
-.*/node_modules/raf-schd/test/.*
-.*/node_modules/react-beautiful-dnd/lib/.*
 .*/website/dist/sandbox/.*
 .*/website/.*
 .*/packages/bitbucket/codemod-util-shared-styles-to-theme/__fixtures__/.*
@@ -46,10 +44,11 @@ module.name_mapper='\!\!raw-loader\!.*' -> '<PROJECT_ROOT>/typings/raw-loader.js
 module.name_mapper='\!\!extract-react-types-loader\!.*' -> '<PROJECT_ROOT>/typings/extract-react-types-loader.js'
 module.name_mapper='extract-react-types' -> '<PROJECT_ROOT>/typings/extract-react-types.js'
 module.name_mapper='.*\.md' -> '<PROJECT_ROOT>/typings/md.js'
-module.name_mapper.extension='less' -> 'empty/object'
+module.name_mapper.extension='less' -> '<PROJECT_ROOT>/typings/less.js'
 
 suppress_comment=\\(.\\|\n\\)*\\$ExpectError
 suppress_comment=\\(.\\|\n\\)*\\$FlowFixMe
+suppress_comment=\\(.\\|\n\\)*\\$StringLitteral
 
 [lints]
 all=warn

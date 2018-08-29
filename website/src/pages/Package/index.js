@@ -3,6 +3,7 @@
 import React, { Component, type Node } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 import { gridSize, colors, math } from '@atlaskit/theme';
 import Button from '@atlaskit/button';
 import ExamplesIcon from '@atlaskit/icon/glyph/screen';
@@ -104,7 +105,9 @@ export default class Package extends Component<PackageProps, PackageState> {
   }
 
   componentWillReceiveProps({
-    match: { params: { groupId, pkgId } },
+    match: {
+      params: { groupId, pkgId },
+    },
   }: PackageProps) {
     if (
       groupId === this.props.match.params.groupId &&
@@ -185,6 +188,7 @@ export default class Package extends Component<PackageProps, PackageState> {
   };
 
   render() {
+    const { isExact: urlIsExactMatch } = this.props.match;
     const { groupId, pkgId } = this.props.match.params;
     const { pkg, doc, changelog, missing } = this.state;
 
@@ -205,6 +209,13 @@ export default class Package extends Component<PackageProps, PackageState> {
 
     return (
       <Page>
+        {urlIsExactMatch && (
+          <Helmet>
+            <title>
+              {fs.titleize(pkgId)} package - {BASE_TITLE}
+            </title>
+          </Helmet>
+        )}
         <Title>
           <h1>{fs.titleize(pkgId)}</h1>
           {examplePath && (

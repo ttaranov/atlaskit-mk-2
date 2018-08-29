@@ -7,6 +7,7 @@ export const customTitle = 'All uploads';
 export const userCustomTitle = 'Your uploads';
 
 export const dataURLPrefix = 'data:';
+export const deleteEmojiLabel = 'delete-emoji';
 
 /**
  * A constant used in sorting/ordering to represent a number 'obviously much bigger than any item in the set being handled'.

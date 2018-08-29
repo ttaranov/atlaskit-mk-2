@@ -3,9 +3,10 @@ import React from 'react';
 import { shallow, mount } from 'enzyme';
 import Blanket from '@atlaskit/blanket';
 
-import ModalDialog from '../../..';
-import { Body } from '../../../styled/Content';
+import ModalDialogWithAnalytics from '../../..';
+import { ModalDialogWithoutAnalytics as ModalDialog } from '../../Modal';
 import Content from '../../Content';
+import { Body } from '../../../styled/Content';
 import {
   dialogHeight,
   dialogWidth,
@@ -227,5 +228,24 @@ describe('modal-dialog', () => {
         expect(wrapper.contains(node)).toBe(false);
       });
     });
+  });
+});
+
+describe('ModalDialogWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<ModalDialogWithAnalytics onClose={noop} />);
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

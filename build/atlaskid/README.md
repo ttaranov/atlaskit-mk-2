@@ -107,9 +107,14 @@ I'll write more docs around this next time we are making a major change, so that
 ### DDEV
 
 * deployed [here](https://atlaskit-atlaskid.ap-southeast-2.dev.public.atl-paas.net/).
-* logs [here](https://splunk.atlassian.io/en-US/app/search/search?q=search%20source%3DHyOo_YRSz%20m.t%3Dapplication%20env%3Dddev%20index%3Dobzg6zdvmn2c2ztbmjzgsyy&earliest=-15m&latest=now&display.page.search.mode=verbose&dispatch.sample_ratio=1&sid=1517375378.26745_4DCAA4A3-284A-4537-9FEC-85A2DF05C4ED)
+* logs [here](https://splunk.paas-inf.net/en-US/app/search/search?q=search%20source%3DHyOo_YRSz%20m.t%3Dapplication%20env%3Dddev%20index%3Dobzg6zdvmn2c2ztbmjzgsyy&earliest=-15m&latest=now&display.page.search.mode=verbose&dispatch.sample_ratio=1&sid=1517375378.26745_4DCAA4A3-284A-4537-9FEC-85A2DF05C4ED)
 
 ### PROD
 
 * deployed [here](https://atlaskit-atlaskid.us-west-1.staging.public.atl-paas.net/)
-* logs [here](https://splunk.atlassian.io/en-GB/app/search/search?earliest=-15m&latest=now&q=search%20source%3DHyOo_YRSz%20m.t%3Dapplication%20env%3Dstg-west%20index%3Dobzg6zdvmn2c2ztbmjzgsyy&display.events.fields=%5B%22message%22%2C%20%22m.sv%22%5D&display.page.search.mode=verbose&dispatch.sample_ratio=1&sid=1517460620.41659_E7788A4C-2494-4763-81E0-36C703BBF35D)
+* logs [here](https://splunk.paas-inf.net/en-GB/app/search/search?earliest=-15m&latest=now&q=search%20source%3DHyOo_YRSz%20m.t%3Dapplication%20env%3Dstg-west%20index%3Dobzg6zdvmn2c2ztbmjzgsyy&display.events.fields=%5B%22message%22%2C%20%22m.sv%22%5D&display.page.search.mode=verbose&dispatch.sample_ratio=1&sid=1517460620.41659_E7788A4C-2494-4763-81E0-36C703BBF35D)
+
+### Report to show 500 errors from builds with their retrys
+
+[Report to show 500 errors from builds with their retrys](https://splunk.paas-inf.net/en-GB/app/search/report?sid=1533094344.15292_4DCAA4A3-284A-4537-9FEC-85A2DF05C4ED&s=%2FservicesNS%2Flbatchelor%2Fsearch%2Fsaved%2Fsearches%2FLandkid%20Build%20Failures)
+

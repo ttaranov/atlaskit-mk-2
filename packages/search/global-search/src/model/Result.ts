@@ -17,6 +17,37 @@ export interface Result {
   analyticsType: AnalyticsType;
   // field to disambiguate between result types
   resultType: ResultType;
+  // optional container id
+  containerId?: string;
+  // optional id for the experiment that generated this result
+  experimentId?: string;
+}
+/**
+ * Map of String keys and Array of results value, but can be empty as well
+ */
+export interface GenericResultMap {
+  [key: string]: Result[];
+}
+
+export type ResultsWithTiming = {
+  results: GenericResultMap;
+  timings?: {
+    [key: string]: number | string;
+  };
+  experimentId?: string;
+};
+
+export interface ConfluenceResultsMap extends GenericResultMap {
+  people: Result[];
+  objects: Result[];
+  spaces: Result[];
+}
+
+export interface JiraResultsMap extends GenericResultMap {
+  issues: Result[];
+  boards: Result[];
+  projects: Result[];
+  filters: Result[];
 }
 
 export interface ConfluenceObjectResult extends Result {
@@ -24,12 +55,20 @@ export interface ConfluenceObjectResult extends Result {
   containerId: string;
   contentType?: ContentType;
   resultType: ResultType.ConfluenceObjectResult;
+  iconClass?: string;
 }
 
+export type ResultsGroup = {
+  items: Result[];
+  key: string;
+  titleI18nId: string;
+};
+
 export interface JiraObjectResult extends Result {
-  objectKey: string;
-  containerName: string;
+  objectKey?: string;
+  containerName?: string;
   resultType: ResultType.JiraObjectResult;
+  contentType?: ContentType;
 }
 
 export interface ContainerResult extends Result {
@@ -51,6 +90,10 @@ export enum ContentType {
   ConfluencePage = 'confluence-page',
   ConfluenceBlogpost = 'confluence-blogpost',
   ConfluenceAttachment = 'confluence-attachment',
+  JiraIssue = 'jira-issue',
+  JiraBoard = 'jira-board',
+  JiraFilter = 'jira-filter',
+  JiraProject = 'jira-project',
   Person = 'person',
 }
 

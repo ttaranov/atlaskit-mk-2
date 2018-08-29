@@ -3,7 +3,7 @@
 import React from 'react';
 import EmojiAtlassianIcon from '@atlaskit/icon/glyph/emoji/atlassian';
 import { LayoutManager, NavigationProvider } from '@atlaskit/navigation-next';
-import MenuIcon from '@atlaskit/icon/glyph/menu';
+import AppSwitcherIcon from '@atlaskit/icon/glyph/app-switcher';
 
 import GlobalNavigation from '../src';
 
@@ -14,14 +14,14 @@ const Global = () => (
     productHref="#"
     onCreateClick={() => console.log('create clicked')}
     onSearchClick={() => console.log('search clicked')}
-    onYourWorkClick={() => console.log('your work clicked')}
+    onStarredClick={() => console.log('your work clicked')}
     onNotificationClick={() => console.log('notification clicked')}
-    onPeopleClick={() => console.log('People clicked')}
     appSwitcherComponent={({ className }) => (
       <button className={className}>
-        <MenuIcon onClick={() => console.log('AppSwitcher clicked')} />
+        <AppSwitcherIcon onClick={() => console.log('AppSwitcher clicked')} />
       </button>
     )}
+    appSwitcherTooltip="Switch to ..."
     loginHref="#login"
   />
 );
@@ -30,8 +30,8 @@ export default () => (
   <NavigationProvider>
     <LayoutManager
       globalNavigation={Global}
-      productRootNavigation={() => null}
-      productContainerNavigation={() => null}
+      productNavigation={() => null}
+      containerNavigation={() => null}
     >
       Page content
     </LayoutManager>

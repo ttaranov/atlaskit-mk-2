@@ -19,14 +19,11 @@ import {
   DropzoneConstructor,
 } from './components/dropzone';
 import { Popup, PopupConfig, PopupConstructor } from './components/popup';
-import { UserTracker } from './outer/analytics/tracker';
 import { handleError } from './util/handleError';
 import { Context } from '@atlaskit/media-core';
 
 export { DropzoneUploadEventPayloadMap } from './components/dropzone';
 export { PopupUploadEventPayloadMap } from './components/popup';
-
-const trackEvent = new UserTracker().track();
 
 // Events public API and types
 export {
@@ -43,8 +40,6 @@ export { MediaFile, PublicMediaFile } from './domain/file';
 export { MediaProgress } from './domain/progress';
 export { MediaError } from './domain/error';
 export { ImagePreview, Preview, NonImagePreview } from './domain/preview';
-
-export { MediaFileData } from './service/mediaApi';
 
 // Constructor public API and types
 export interface MediaPickerConstructors {
@@ -114,33 +109,21 @@ export function MediaPicker<K extends keyof MediaPickerComponents>(
   pickerConfig?: ComponentConfigs[K],
 ): MediaPickerComponents[K] | MediaPickerConstructors[K] {
   if (context) {
-    const analyticsContext = { trackEvent };
-
     switch (componentName) {
       case 'binary':
-        return new BinaryUploader(
-          analyticsContext,
-          context,
-          pickerConfig as BinaryConfig,
-        );
+        return new BinaryUploader(context, pickerConfig as BinaryConfig);
       case 'browser':
-        return new Browser(analyticsContext, context, pickerConfig as
-          | BrowserConfig
-          | undefined);
+        return new Browser(context, pickerConfig as BrowserConfig | undefined);
       case 'clipboard':
-        return new Clipboard(analyticsContext, context, pickerConfig as
+        return new Clipboard(context, pickerConfig as
           | ClipboardConfig
           | undefined);
       case 'dropzone':
-        return new Dropzone(analyticsContext, context, pickerConfig as
+        return new Dropzone(context, pickerConfig as
           | DropzoneConfig
           | undefined);
       case 'popup':
-        return new Popup(
-          analyticsContext,
-          context,
-          pickerConfig as PopupConfig,
-        );
+        return new Popup(context, pickerConfig as PopupConfig);
       default:
         const message = `The component ${componentName} does not exist`;
         handleError('wrong_component', message);

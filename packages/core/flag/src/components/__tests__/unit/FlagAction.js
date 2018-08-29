@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { mount } from 'enzyme';
-import Flag from '../../..';
+import { FlagWithoutAnalytics as Flag } from '../../Flag';
 import Actions from '../../FlagActions';
 import { Action } from '../../FlagActions/styledFlagActions';
 

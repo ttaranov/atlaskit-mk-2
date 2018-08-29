@@ -24,7 +24,10 @@ function replaceTextUsingCaptureGroup(
       );
     }
 
-    let { tr, selection: { $to } } = state;
+    let {
+      tr,
+      selection: { $to },
+    } = state;
     tr.replaceWith(start, end, state.schema.text(replacement, $to.marks()));
     tr.setSelection(Selection.near(tr.doc.resolve(tr.selection.to)));
     return tr;
@@ -63,7 +66,7 @@ function createSingleQuotesRules(trackingEventName): Array<InputRule> {
   return [
     // wrapped text
     createInputRule(
-      /(\s+|^)'(.*)'$/,
+      /(\s+|^)'(\S+.*\S+)'$/,
       (state, match, start, end): Transaction => {
         const [, spacing, innerContent] = match;
         const replacement = spacing + '‘' + innerContent + '’';

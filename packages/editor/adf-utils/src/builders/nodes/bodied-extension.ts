@@ -16,6 +16,7 @@ import {
   MediaGroupDefinition,
   MediaSingleDefinition,
   TableDefinition,
+  BlockCardDefinition,
 } from '@atlaskit/editor-common';
 
 import {
@@ -49,4 +50,5 @@ export {
   MediaGroupDefinition,
   MediaSingleDefinition,
   TableDefinition,
+  BlockCardDefinition,
 };

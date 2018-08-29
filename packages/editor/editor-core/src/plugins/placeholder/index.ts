@@ -93,7 +93,7 @@ const placeholderPlugin: EditorPlugin = {
   pmPlugins() {
     return [
       {
-        rank: 10000,
+        name: 'placeholder',
         plugin: ({ schema, props }) => createPlugin(props.placeholder),
       },
     ];

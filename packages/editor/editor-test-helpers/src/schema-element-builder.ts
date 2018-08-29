@@ -39,6 +39,7 @@ import {
   textColor,
   text,
   inlineCard,
+  blockCard,
 } from './schema-builder';
 
 export const createText: Function = txt => schema => text(txt, schema);
@@ -83,12 +84,15 @@ export const pmNodeFactory: object = {
       layout: 'default',
     })(content),
   bodiedExtension: content =>
-    bodiedExtension({ 
-      extensionKey: '123', 
+    bodiedExtension({
+      extensionKey: '123',
       extensionType: 'bodiedExtension',
-      layout: 'default', })(content),
+      layout: 'default',
+    })(content),
   inlineCard: () =>
     inlineCard({ url: 'https://product-fabric.atlassian.net/browse/ED-1' }),
+  blockCard: () =>
+    blockCard({ url: 'https://product-fabric.atlassian.net/browse/ED-1' }),
 };
 
 export const pmNodeBuilder: object = {

@@ -14,8 +14,9 @@ import {
   akBorderRadius,
 } from '@atlaskit/util-shared-styles';
 import { colors, layers } from '@atlaskit/theme';
+import { ellipsis } from '@atlaskit/media-ui';
 
-const overlayZindex = layers.blanket();
+const overlayZindex = layers.modal() + 10;
 
 export const mediaTypeIconColors = {
   image: akColorY200,
@@ -146,13 +147,6 @@ export const ErrorImage = styled.img`
   user-select: none;
 `;
 
-export const Img: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
-  transition: transform 0.2s;
-  transform-origin: center;
-  max-width: 100%;
-  max-height: 100%;
-`;
-
 export const Video: ComponentClass<VideoHTMLAttributes<{}>> = styled.video`
   width: 100vw;
   height: 100vh;
@@ -169,6 +163,16 @@ export const PDFWrapper = styled.div`
 
 export const Arrow = styled.span`
   cursor: pointer;
+
+  > span {
+    color: rgba(27, 38, 56, 0.5);
+    fill: #9fb0cc;
+    filter: drop-shadow(1px 1px 1px rgba(27, 38, 56, 0.2));
+
+    &:hover {
+      color: #fff;
+    }
+  }
 `;
 
 const ArrowWrapper = styled.div`
@@ -194,7 +198,8 @@ export const Header = styled.div`
 `;
 
 export const LeftHeader = styled.div`
-  flex: 0.8;
+  flex: 1;
+  overflow: hidden;
   > * {
     pointer-events: all;
   }
@@ -204,10 +209,41 @@ export const ImageWrapper = styled.div`
   width: 100vw;
   height: 100vh;
   overflow: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
 `;
+
+export const BaselineExtend = styled.div`
+  height: 100%;
+  display: inline-block;
+  vertical-align: middle;
+`;
+
+export type ImgProps = {
+  canDrag: boolean;
+  isDragging: boolean;
+};
+
+export const Img: ComponentClass<ImgHTMLAttributes<{}> & ImgProps> = styled.img`
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  cursor: ${({ canDrag, isDragging }: ImgProps) => {
+    if (canDrag && isDragging) {
+      return 'grabbing';
+    } else if (canDrag) {
+      return 'grab';
+    } else {
+      return 'auto';
+    }
+  }};
+`;
+
+export const MedatadataTextWrapper = styled.div`
+  overflow: hidden;
+`;
+
 export const MetadataWrapper = styled.div`
   display: flex;
 `;
@@ -216,10 +252,12 @@ export const MetadataFileName = styled.div`
   &::first-letter {
     text-transform: uppercase;
   }
+  ${ellipsis()};
 `;
 
 export const MetadataSubText = styled.div`
   color: ${colors.DN400};
+  ${ellipsis()};
 `;
 
 export const MetadataIconWrapper = styled.div`
@@ -240,10 +278,9 @@ export const IconWrapper: ComponentClass<
 `;
 
 export const RightHeader = styled.div`
-  flex: 0.2;
-  flex-basis: 200px;
   text-align: right;
   margin-right: 40px;
+  min-width: 200px;
   > * {
     pointer-events: all;
   }

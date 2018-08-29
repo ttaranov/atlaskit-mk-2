@@ -11,36 +11,36 @@ const Example = () => (
   <Fragment>
     <Padding>
       <SectionMessage apperance="authentication" title="More">
-        <div>I count the steps from one end of my island to the other</div>
-        <div>It{"'"}s a hundred steps from where I sleep to the sea</div>
+        <p>I count the steps from one end of my island to the other</p>
+        <p>It{"'"}s a hundred steps from where I sleep to the sea</p>
       </SectionMessage>
     </Padding>
     <Padding>
       <SectionMessage appearance="warning">
-        <div>And when I say I{"'"}ve learned all there is to know</div>
-        <div>Well there{"'"}s another little island lesson</div>
-        <div>Gramma Tala shows me</div>
+        <p>And when I say I{"'"}ve learned all there is to know</p>
+        <p>Well there{"'"}s another little island lesson</p>
+        <p>Gramma Tala shows me</p>
       </SectionMessage>
     </Padding>
     <Padding>
       <SectionMessage appearance="error">
-        <div>I know where I am from the scent of the breeze</div>
-        <div>The ascent of the climb</div>
-        <div>From the tangle of the trees</div>
+        <p>I know where I am from the scent of the breeze</p>
+        <p>The ascent of the climb</p>
+        <p>From the tangle of the trees</p>
       </SectionMessage>
     </Padding>
     <Padding>
       <SectionMessage appearance="confirmation">
-        <div>From the angle of the mountain</div>
-        <div>To the sand on our island shore</div>
-        <div>I{"'"}ve been here before</div>
+        <p>From the angle of the mountain</p>
+        <p>To the sand on our island shore</p>
+        <p>I{"'"}ve been here before</p>
       </SectionMessage>
     </Padding>
     <Padding>
       <SectionMessage appearance="change">
-        <div>From the angle of the mountain</div>
-        <div>To the sand on our island shore</div>
-        <div>I{"'"}ve been here before</div>
+        <p>From the angle of the mountain</p>
+        <p>To the sand on our island shore</p>
+        <p>I{"'"}ve been here before</p>
       </SectionMessage>
     </Padding>
   </Fragment>

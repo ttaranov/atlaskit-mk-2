@@ -6,12 +6,42 @@ import WarningIcon from '@atlaskit/icon/glyph/warning';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
 import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle';
 import InfoIcon from '@atlaskit/icon/glyph/info';
+import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import Button from '@atlaskit/button';
 import styled from 'styled-components';
 
 import SectionMessage from '../../';
 import { type Appearance } from '../../types';
 import { Title, Action } from '../../components/styled';
+
+// We added a property `type` because `name` was clashing with `name` from jest-in-case
+const appearancesCase = [
+  {
+    name: 'info',
+    type: 'info',
+    icon: InfoIcon,
+  },
+  {
+    name: 'warning',
+    type: 'warning',
+    icon: WarningIcon,
+  },
+  {
+    name: 'error',
+    type: 'error',
+    icon: ErrorIcon,
+  },
+  {
+    name: 'confirmation',
+    type: 'confirmation',
+    icon: CheckCircleIcon,
+  },
+  {
+    name: 'change',
+    type: 'change',
+    icon: QuestionCircleIcon,
+  },
+];
 
 describe('SectionMessage', () => {
   it('should render correct defaults', () => {
@@ -68,35 +98,37 @@ describe('SectionMessage', () => {
   });
   cases(
     'appearances',
-    ({ name, icon }: { name: Appearance, icon: Node }) => {
+    ({ type, icon }: { type: Appearance, icon: Node }) => {
       const wrapper = shallow(
-        <SectionMessage appearance={name}>boo</SectionMessage>,
+        <SectionMessage appearance={type}>boo</SectionMessage>,
       );
 
       const foundIcon = wrapper.find(icon);
       expect(foundIcon.length).toBe(1);
     },
-    [
-      {
-        name: 'info',
-        icon: InfoIcon,
-      },
-      {
-        name: 'warning',
-        icon: WarningIcon,
-      },
-      {
-        name: 'error',
-        icon: ErrorIcon,
-      },
-      {
-        name: 'confirmation',
-        icon: CheckCircleIcon,
-      },
-      {
-        name: 'change',
-        icon: InfoIcon,
-      },
-    ],
+    appearancesCase,
   );
+  describe('dom snapshot', () => {
+    cases(
+      'appearances',
+      ({ type }: { type: Appearance }) => {
+        const wrapper = mount(
+          <SectionMessage appearance={type}>
+            The section message is awesome!
+          </SectionMessage>,
+        );
+        expect(wrapper).toMatchSnapshot();
+      },
+      appearancesCase,
+    );
+  });
+  describe('styled rule', () => {
+    it('should have background color and default color', () => {
+      // $FlowFixMe - https://github.com/facebook/flow/issues/396
+      expect(shallow(<SectionMessage />)).toHaveStyleRule(
+        'background-color',
+        '#DEEBFF',
+      );
+    });
+  });
 });

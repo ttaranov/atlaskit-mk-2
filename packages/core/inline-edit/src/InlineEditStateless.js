@@ -1,9 +1,19 @@
 // @flow
 import React, { Component, cloneElement } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import Button from '@atlaskit/button';
 import ConfirmIcon from '@atlaskit/icon/glyph/check';
 import CancelIcon from '@atlaskit/icon/glyph/cross';
 import FieldBase, { Label } from '@atlaskit/field-base';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
 
 import type { StatelessProps } from './types';
 import RootWrapper from './styled/RootWrapper';
@@ -18,14 +28,12 @@ const DRAG_THRESHOLD = 5;
 
 type State = {
   fieldBaseWrapperIsHover?: boolean,
-  resetFieldBase?: boolean,
-  shouldResetFieldBase?: boolean,
   wasFocusReceivedSinceLastBlur?: boolean,
   startX: number,
   startY: number,
 };
 
-export default class InlineEdit extends Component<StatelessProps, State> {
+class InlineEdit extends Component<StatelessProps, State> {
   confirmButtonRef: HTMLElement | null;
   cancelButtonRef: HTMLElement | null;
 
@@ -45,18 +53,10 @@ export default class InlineEdit extends Component<StatelessProps, State> {
 
   state = {
     fieldBaseWrapperIsHover: false,
-    resetFieldBase: false,
-    shouldResetFieldBase: false,
     wasFocusReceivedSinceLastBlur: false,
     startX: 0,
     startY: 0,
   };
-
-  componentWillReceiveProps(nextProps: StatelessProps) {
-    this.setState({
-      shouldResetFieldBase: this.props.isEditing && !nextProps.isEditing,
-    });
-  }
 
   onMouseDown = (client: { clientX: number, clientY: number }) =>
     this.setState({ startX: client.clientX, startY: client.clientY });
@@ -155,7 +155,6 @@ export default class InlineEdit extends Component<StatelessProps, State> {
         appearance={isEditing ? 'standard' : 'subtle'}
         isDisabled={this.shouldRenderSpinner()}
         isLoading={this.shouldRenderSpinner()}
-        shouldReset={this.state.shouldResetFieldBase}
         invalidMessage={invalidMessage}
         onDialogClick={this.onDialogClick}
       >
@@ -257,3 +256,47 @@ export default class InlineEdit extends Component<StatelessProps, State> {
     );
   }
 }
+
+export { InlineEdit as InlineEditStatelessWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'inlineEdit',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onCancel: createAndFireEventOnAtlaskit({
+      action: 'canceled',
+      actionSubject: 'inlineEdit',
+
+      attributes: {
+        componentName: 'inlineEdit',
+        packageName,
+        packageVersion,
+      },
+    }),
+
+    onConfirm: createAndFireEventOnAtlaskit({
+      action: 'confirmed',
+      actionSubject: 'inlineEdit',
+
+      attributes: {
+        componentName: 'inlineEdit',
+        packageName,
+        packageVersion,
+      },
+    }),
+
+    onEditRequested: createAndFireEventOnAtlaskit({
+      action: 'focused',
+      actionSubject: 'inlineEdit',
+
+      attributes: {
+        componentName: 'inlineEdit',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(InlineEdit),
+);

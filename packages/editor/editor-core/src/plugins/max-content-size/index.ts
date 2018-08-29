@@ -33,7 +33,7 @@ const maxContentSizePlugin: EditorPlugin = {
   pmPlugins() {
     return [
       {
-        rank: 10000,
+        name: 'maxContentSize',
         plugin: ({ dispatch, props }) =>
           createPlugin(dispatch, props.maxContentSize),
       },

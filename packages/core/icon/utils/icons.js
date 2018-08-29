@@ -54,6 +54,7 @@ import CameraRotateIcon from '../glyph/camera-rotate';
 import CameraTakePictureIcon from '../glyph/camera-take-picture';
 import CameraIcon from '../glyph/camera';
 import CanvasIcon from '../glyph/canvas';
+import CheckCircleOutlineIcon from '../glyph/check-circle-outline';
 import CheckCircleIcon from '../glyph/check-circle';
 import CheckIcon from '../glyph/check';
 import CheckboxIndeterminateIcon from '../glyph/checkbox-indeterminate';
@@ -68,6 +69,7 @@ import ChevronRightLargeIcon from '../glyph/chevron-right-large';
 import ChevronRightIcon from '../glyph/chevron-right';
 import ChevronUpCircleIcon from '../glyph/chevron-up-circle';
 import ChevronUpIcon from '../glyph/chevron-up';
+import ChildIssuesIcon from '../glyph/child-issues';
 import CodeIcon from '../glyph/code';
 import CommentIcon from '../glyph/comment';
 import ComponentIcon from '../glyph/component';
@@ -120,6 +122,11 @@ import EditorImageIcon from '../glyph/editor/image';
 import EditorIndentIcon from '../glyph/editor/indent';
 import EditorInfoIcon from '../glyph/editor/info';
 import EditorItalicIcon from '../glyph/editor/italic';
+import EditorLayoutThreeEqualIcon from '../glyph/editor/layout-three-equal';
+import EditorLayoutThreeWithSidebarsIcon from '../glyph/editor/layout-three-with-sidebars';
+import EditorLayoutTwoEqualIcon from '../glyph/editor/layout-two-equal';
+import EditorLayoutTwoLeftSidebarIcon from '../glyph/editor/layout-two-left-sidebar';
+import EditorLayoutTwoRightSidebarIcon from '../glyph/editor/layout-two-right-sidebar';
 import EditorLinkIcon from '../glyph/editor/link';
 import EditorMediaCenterIcon from '../glyph/editor/media-center';
 import EditorMediaFullWidthIcon from '../glyph/editor/media-full-width';
@@ -281,6 +288,8 @@ import MediaServicesButtonOptionIcon from '../glyph/media-services/button-option
 import MediaServicesCodeIcon from '../glyph/media-services/code';
 import MediaServicesDocumentIcon from '../glyph/media-services/document';
 import MediaServicesFilterIcon from '../glyph/media-services/filter';
+import MediaServicesFitToPageIcon from '../glyph/media-services/fit-to-page';
+import MediaServicesFullScreenIcon from '../glyph/media-services/full-screen';
 import MediaServicesGridIcon from '../glyph/media-services/grid';
 import MediaServicesImageIcon from '../glyph/media-services/image';
 import MediaServicesLineThicknessIcon from '../glyph/media-services/line-thickness';
@@ -370,6 +379,7 @@ import RadioIcon from '../glyph/radio';
 import RecentIcon from '../glyph/recent';
 import RedoIcon from '../glyph/redo';
 import RefreshIcon from '../glyph/refresh';
+import RoadmapIcon from '../glyph/roadmap';
 import RoomMenuIcon from '../glyph/room-menu';
 import ScheduleFilledIcon from '../glyph/schedule-filled';
 import ScheduleIcon from '../glyph/schedule';
@@ -384,6 +394,7 @@ import ShortcutIcon from '../glyph/shortcut';
 import SignInIcon from '../glyph/sign-in';
 import SignOutIcon from '../glyph/sign-out';
 import StarFilledIcon from '../glyph/star-filled';
+import StarLargeIcon from '../glyph/star-large';
 import StarIcon from '../glyph/star';
 import StatuspageIcon from '../glyph/statuspage';
 import StrideIcon from '../glyph/stride';
@@ -405,6 +416,7 @@ import VidAudioMutedIcon from '../glyph/vid-audio-muted';
 import VidAudioOnIcon from '../glyph/vid-audio-on';
 import VidBackwardIcon from '../glyph/vid-backward';
 import VidCameraOffIcon from '../glyph/vid-camera-off';
+import VidCameraOnIcon from '../glyph/vid-camera-on';
 import VidConnectionCircleIcon from '../glyph/vid-connection-circle';
 import VidForwardIcon from '../glyph/vid-forward';
 import VidFullScreenOffIcon from '../glyph/vid-full-screen-off';
@@ -416,6 +428,9 @@ import VidPlayIcon from '../glyph/vid-play';
 import VidRaisedHandIcon from '../glyph/vid-raised-hand';
 import VidShareScreenIcon from '../glyph/vid-share-screen';
 import VidSpeakingCircleIcon from '../glyph/vid-speaking-circle';
+import VidVolumeFullIcon from '../glyph/vid-volume-full';
+import VidVolumeHalfIcon from '../glyph/vid-volume-half';
+import VidVolumeMutedIcon from '../glyph/vid-volume-muted';
 import VideoCircleIcon from '../glyph/video-circle';
 import VideoFilledIcon from '../glyph/video-filled';
 import WarningIcon from '../glyph/warning';
@@ -695,6 +710,12 @@ export default {
     componentName: 'CanvasIcon',
     package: '@atlaskit/icon/glyph/canvas',
   },
+  'check-circle-outline': {
+    keywords: ['check-circle-outline', 'checkcircleoutline'],
+    component: CheckCircleOutlineIcon,
+    componentName: 'CheckCircleOutlineIcon',
+    package: '@atlaskit/icon/glyph/check-circle-outline',
+  },
   'check-circle': {
     keywords: ['check-circle', 'checkcircle', 'tick'],
     component: CheckCircleIcon,
@@ -778,6 +799,12 @@ export default {
     component: ChevronUpIcon,
     componentName: 'ChevronUpIcon',
     package: '@atlaskit/icon/glyph/chevron-up',
+  },
+  'child-issues': {
+    keywords: ['child-issues', 'childissues'],
+    component: ChildIssuesIcon,
+    componentName: 'ChildIssuesIcon',
+    package: '@atlaskit/icon/glyph/child-issues',
   },
   code: {
     keywords: ['code', 'source'],
@@ -1090,6 +1117,36 @@ export default {
     component: EditorItalicIcon,
     componentName: 'EditorItalicIcon',
     package: '@atlaskit/icon/glyph/editor/italic',
+  },
+  'editor/layout-three-equal': {
+    keywords: ['editor/layout-three-equal', 'editorlayoutthreeequal'],
+    component: EditorLayoutThreeEqualIcon,
+    componentName: 'EditorLayoutThreeEqualIcon',
+    package: '@atlaskit/icon/glyph/editor/layout-three-equal',
+  },
+  'editor/layout-three-with-sidebars': {
+    keywords: ['editor/layout-three-with-sidebars', 'editorlayoutthreewithsidebars'],
+    component: EditorLayoutThreeWithSidebarsIcon,
+    componentName: 'EditorLayoutThreeWithSidebarsIcon',
+    package: '@atlaskit/icon/glyph/editor/layout-three-with-sidebars',
+  },
+  'editor/layout-two-equal': {
+    keywords: ['editor/layout-two-equal', 'editorlayouttwoequal'],
+    component: EditorLayoutTwoEqualIcon,
+    componentName: 'EditorLayoutTwoEqualIcon',
+    package: '@atlaskit/icon/glyph/editor/layout-two-equal',
+  },
+  'editor/layout-two-left-sidebar': {
+    keywords: ['editor/layout-two-left-sidebar', 'editorlayouttwoleftsidebar'],
+    component: EditorLayoutTwoLeftSidebarIcon,
+    componentName: 'EditorLayoutTwoLeftSidebarIcon',
+    package: '@atlaskit/icon/glyph/editor/layout-two-left-sidebar',
+  },
+  'editor/layout-two-right-sidebar': {
+    keywords: ['editor/layout-two-right-sidebar', 'editorlayouttworightsidebar'],
+    component: EditorLayoutTwoRightSidebarIcon,
+    componentName: 'EditorLayoutTwoRightSidebarIcon',
+    package: '@atlaskit/icon/glyph/editor/layout-two-right-sidebar',
   },
   'editor/link': {
     keywords: ['editor/link', 'editorlink'],
@@ -2057,6 +2114,18 @@ export default {
     componentName: 'MediaServicesFilterIcon',
     package: '@atlaskit/icon/glyph/media-services/filter',
   },
+  'media-services/fit-to-page': {
+    keywords: ['media-services/fit-to-page', 'mediaservicesfittopage'],
+    component: MediaServicesFitToPageIcon,
+    componentName: 'MediaServicesFitToPageIcon',
+    package: '@atlaskit/icon/glyph/media-services/fit-to-page',
+  },
+  'media-services/full-screen': {
+    keywords: ['media-services/full-screen', 'mediaservicesfullscreen'],
+    component: MediaServicesFullScreenIcon,
+    componentName: 'MediaServicesFullScreenIcon',
+    package: '@atlaskit/icon/glyph/media-services/full-screen',
+  },
   'media-services/grid': {
     keywords: ['media-services/grid', 'mediaservicesgrid', 'table'],
     component: MediaServicesGridIcon,
@@ -2591,6 +2660,12 @@ export default {
     componentName: 'RefreshIcon',
     package: '@atlaskit/icon/glyph/refresh',
   },
+  roadmap: {
+    keywords: ['roadmap'],
+    component: RoadmapIcon,
+    componentName: 'RoadmapIcon',
+    package: '@atlaskit/icon/glyph/roadmap',
+  },
   'room-menu': {
     keywords: ['room-menu', 'roommenu'],
     component: RoomMenuIcon,
@@ -2674,6 +2749,12 @@ export default {
     component: StarFilledIcon,
     componentName: 'StarFilledIcon',
     package: '@atlaskit/icon/glyph/star-filled',
+  },
+  'star-large': {
+    keywords: ['star-large', 'starlarge'],
+    component: StarLargeIcon,
+    componentName: 'StarLargeIcon',
+    package: '@atlaskit/icon/glyph/star-large',
   },
   star: {
     keywords: ['star'],
@@ -2801,6 +2882,12 @@ export default {
     componentName: 'VidCameraOffIcon',
     package: '@atlaskit/icon/glyph/vid-camera-off',
   },
+  'vid-camera-on': {
+    keywords: ['vid-camera-on', 'vidcameraon'],
+    component: VidCameraOnIcon,
+    componentName: 'VidCameraOnIcon',
+    package: '@atlaskit/icon/glyph/vid-camera-on',
+  },
   'vid-connection-circle': {
     keywords: ['vid-connection-circle', 'vidconnectioncircle', 'signal', 'bar'],
     component: VidConnectionCircleIcon,
@@ -2866,6 +2953,24 @@ export default {
     component: VidSpeakingCircleIcon,
     componentName: 'VidSpeakingCircleIcon',
     package: '@atlaskit/icon/glyph/vid-speaking-circle',
+  },
+  'vid-volume-full': {
+    keywords: ['vid-volume-full', 'vidvolumefull'],
+    component: VidVolumeFullIcon,
+    componentName: 'VidVolumeFullIcon',
+    package: '@atlaskit/icon/glyph/vid-volume-full',
+  },
+  'vid-volume-half': {
+    keywords: ['vid-volume-half', 'vidvolumehalf'],
+    component: VidVolumeHalfIcon,
+    componentName: 'VidVolumeHalfIcon',
+    package: '@atlaskit/icon/glyph/vid-volume-half',
+  },
+  'vid-volume-muted': {
+    keywords: ['vid-volume-muted', 'vidvolumemuted'],
+    component: VidVolumeMutedIcon,
+    componentName: 'VidVolumeMutedIcon',
+    package: '@atlaskit/icon/glyph/vid-volume-muted',
   },
   'video-circle': {
     keywords: ['video-circle', 'videocircle', 'video', 'camera'],

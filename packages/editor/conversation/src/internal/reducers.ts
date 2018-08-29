@@ -21,6 +21,35 @@ import { Action, State } from './store';
 import { User, Conversation, Comment } from '../model';
 import { createReducer } from './create-reducer';
 
+export const getNestedDepth = (
+  conversation: Conversation,
+  parentId?: string,
+  level: number = 0,
+): number => {
+  if (
+    !conversation ||
+    !conversation.comments ||
+    !parentId ||
+    conversation.conversationId === parentId
+  ) {
+    return level;
+  }
+
+  const parent = conversation.comments.find(
+    comment => comment.commentId === parentId,
+  );
+
+  if (!parent) {
+    return level;
+  }
+
+  if (typeof parent.nestedDepth === 'number') {
+    return parent.nestedDepth + 1;
+  }
+
+  return getNestedDepth(conversation, parent.parentId, level + 1);
+};
+
 const updateComment = (
   comments: Comment[] | undefined,
   newComment: Comment,
@@ -100,6 +129,11 @@ const addOrUpdateCommentInConversation = (
         };
       }
 
+      newComment.nestedDepth = getNestedDepth(
+        conversation,
+        newComment.parentId,
+      );
+
       // Otherwise, add it
       return {
         ...conversation,
@@ -176,9 +210,26 @@ export const reducers = createReducer(initialState, {
   },
 
   [FETCH_CONVERSATIONS_SUCCESS](state: State, action: Action) {
+    const leveledConversations: Conversation[] = action.payload.map(
+      (conversation: Conversation) => {
+        if (!conversation.comments) {
+          return {
+            ...conversation,
+          };
+        }
+
+        conversation.comments = conversation.comments.map(comment => ({
+          ...comment,
+          nestedDepth: getNestedDepth(conversation, comment.parentId),
+        }));
+
+        return conversation;
+      },
+    );
+
     const conversations: Conversation[] = [
       ...state.conversations,
-      ...action.payload,
+      ...leveledConversations,
     ];
 
     return {
@@ -401,7 +452,12 @@ export const reducers = createReducer(initialState, {
   },
 
   [CREATE_CONVERSATION_ERROR](state: State, action: Action) {
-    const { payload: { comments: [comment], error } } = action;
+    const {
+      payload: {
+        comments: [comment],
+        error,
+      },
+    } = action;
 
     const conversations = updateCommentInConversation(state.conversations, {
       ...comment,

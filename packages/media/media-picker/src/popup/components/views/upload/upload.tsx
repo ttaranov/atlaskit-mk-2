@@ -10,23 +10,24 @@ import {
   CardAction,
   CardEventHandler,
 } from '@atlaskit/media-card';
-import { Context, MediaItem, FileDetails } from '@atlaskit/media-core';
-
+import {
+  Context,
+  MediaItem,
+  FileDetails,
+  getMediaTypeFromMimeType,
+} from '@atlaskit/media-core';
 import Spinner from '@atlaskit/spinner';
 import Flag, { FlagGroup } from '@atlaskit/flag';
 import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
 import EditorInfoIcon from '@atlaskit/icon/glyph/error';
-
 import { Browser } from '../../../../components/browser';
-
-import { isImage } from '../../../tools/isImage';
 import { isWebGLAvailable } from '../../../tools/webgl';
-
 import { Dropzone } from './dropzone';
-
 import { fileClick } from '../../../actions/fileClick';
 import { editorShowImage } from '../../../actions/editorShowImage';
 import { editRemoteImage } from '../../../actions/editRemoteImage';
+import { setUpfrontIdDeferred } from '../../../actions/setUpfrontIdDeferred';
+
 import {
   FileReference,
   LocalUploadFileMetadata,
@@ -35,7 +36,6 @@ import {
   SelectedItem,
   State,
 } from '../../../domain';
-
 import { menuEdit } from '../editor/phrases';
 import {
   Wrapper,
@@ -66,7 +66,6 @@ export interface UploadViewStateProps {
   readonly recents: Recents;
   readonly uploads: LocalUploads;
   readonly selectedItems: SelectedItem[];
-  readonly apiUrl: string;
 }
 
 export interface UploadViewDispatchProps {
@@ -78,6 +77,11 @@ export interface UploadViewDispatchProps {
   readonly onEditRemoteImage: (
     file: FileReference,
     collectionName: string,
+  ) => void;
+  readonly setUpfrontIdDeferred: (
+    id: string,
+    resolver: (id: string) => void,
+    rejecter: Function,
   ) => void;
 }
 
@@ -194,8 +198,7 @@ export class StatelessUploadView extends Component<
       const item = this.props.uploads[key];
       const { progress, file } = item;
       const { dataURI } = file;
-
-      const mediaType = isImage(file.metadata.mimeType) ? 'image' : 'unknown';
+      const mediaType = getMediaTypeFromMimeType(file.metadata.mimeType);
       const fileMetadata: LocalUploadFileMetadata = {
         ...file.metadata,
         mimeType: mediaType,
@@ -203,7 +206,6 @@ export class StatelessUploadView extends Component<
 
       // mimeType
       const { id } = fileMetadata;
-
       const selected = selectedUploadIds.indexOf(id) > -1;
       const status = progress !== null ? 'uploading' : 'complete';
       const onClick = () => onFileClick(fileMetadata, 'upload');
@@ -218,9 +220,10 @@ export class StatelessUploadView extends Component<
           ),
         );
       }
-
+      // We remove not needed properties from the metadata
+      const { upfrontId, occurrenceKey, ...fileDetails } = file.metadata;
       const metadata: FileDetails = {
-        ...file.metadata,
+        ...fileDetails,
         mediaType,
       };
 
@@ -252,6 +255,7 @@ export class StatelessUploadView extends Component<
       selectedItems,
       onFileClick,
       onEditRemoteImage,
+      setUpfrontIdDeferred,
     } = this.props;
     const { items } = recents;
 
@@ -262,12 +266,18 @@ export class StatelessUploadView extends Component<
     const onClick = ({ mediaItemDetails }: CardEvent) => {
       const fileDetails = mediaItemDetails as FileDetails;
       if (fileDetails) {
+        const { id } = fileDetails;
+        const upfrontId = new Promise<string>((resolve, reject) => {
+          setUpfrontIdDeferred(id, resolve, reject);
+        });
+
         onFileClick(
           {
-            id: fileDetails.id,
+            id,
             name: fileDetails.name || '',
             mimeType: fileDetails.mimeType || '',
             size: fileDetails.size || 0,
+            upfrontId,
           },
           'recent_files',
         );
@@ -354,13 +364,15 @@ const mapStateToProps = (state: State): UploadViewStateProps => ({
   recents: state.recents,
   uploads: state.uploads,
   selectedItems: state.selectedItems,
-  apiUrl: state.apiUrl,
 });
 
 const mapDispatchToProps = (
   dispatch: Dispatch<any>,
 ): UploadViewDispatchProps => ({
-  onFileClick: ({ id, mimeType, name, size }, serviceName) =>
+  onFileClick: (
+    { id, mimeType, name, size, upfrontId, occurrenceKey },
+    serviceName,
+  ) =>
     dispatch(
       fileClick(
         {
@@ -369,6 +381,8 @@ const mapDispatchToProps = (
           mimeType,
           name,
           size,
+          upfrontId,
+          occurrenceKey,
         },
         serviceName,
       ),
@@ -377,6 +391,8 @@ const mapDispatchToProps = (
     dispatch(editorShowImage(dataUri, file)),
   onEditRemoteImage: (file, collectionName) =>
     dispatch(editRemoteImage(file, collectionName)),
+  setUpfrontIdDeferred: (id, resolver, rejecter) =>
+    dispatch(setUpfrontIdDeferred(id, resolver, rejecter)),
 });
 
 export default connect<

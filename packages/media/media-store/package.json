@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-store",
-  "version": "4.2.1",
+  "version": "6.1.0",
   "description": "Media Store API Web Client Library",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -25,7 +25,7 @@
     "uuid": "^3.1.0"
   },
   "devDependencies": {
-    "@atlaskit/media-test-helpers": "^14.0.4",
+    "@atlaskit/media-test-helpers": "^17.0.0",
     "@types/fetch-mock": "^5.12.1",
     "fetch-mock": "^5.12.1",
     "whatwg-fetch": "^2.0.3"

@@ -1,5 +1,4 @@
 // @flow
-/* eslint-disable no-console */ // While in dev preview console.info will be used
 /* eslint-disable react/no-unused-prop-types */
 import React, { Component, type Node } from 'react';
 import type { FieldState } from './Field';
@@ -41,14 +40,13 @@ type State = {
   header: Node,
   /** Optional formfooter */
   footer: Node,
-  /** Flattened store of all field values. */
-  fields: FormFields,
 };
 
 /** Our Form reference or API accessable by children via their form prop  */
 export type FormRef = {
   name: string,
   registerField: (fieldState: FieldState) => any,
+  setFieldState: (fieldState: FieldState) => any,
   unregisterField: (name: string) => any,
   getFieldByName: (name: string) => any,
   submit: () => any,
@@ -74,9 +72,6 @@ type FormFields = {
 
 export default class Form extends Component<Props, State> {
   static defaultProps = {
-    onSubmit: () => {},
-    onReset: () => {},
-    onValidate: () => {},
     target: '_self',
   };
 
@@ -88,20 +83,45 @@ export default class Form extends Component<Props, State> {
       sections: [],
       header: null,
       footer: null,
-      fields: this.initFields(),
     };
   }
 
   // Reference to the form in the DOM so we can call submit, reset...
   form: HTMLFormElement;
+  // Init Form field state
+  fields: FormFields = {
+    fieldStates: [],
+    validFields: [],
+    invalidFields: [],
+    isInvalid: false,
+    isValidated: false,
+    isSubmitted: false,
+  };
 
   /** Extract Header, Footer & Sections */
-  componentDidMount() {}
+  componentDidMount() {
+    if (this.form) {
+      // $FlowFixMe Only for dev preview. TODO: resolve this type error
+      this.form.addEventListener('submit', this.onSubmit);
+    }
+  }
+
+  componentWillUnmount() {
+    if (this.form) {
+      // $FlowFixMe Only for dev preview. TODO: resolve this type error
+      this.form.removeEventListener('submit', this.onSubmit);
+    }
+  }
 
   // EVENT HANDLERS
   onSubmit = (event: SyntheticEvent<*>) => {
-    if (this.props.onSubmit) this.props.onSubmit(event);
+    if (this.props.onSubmit) {
+      this.props.onSubmit(event);
+      event.preventDefault();
+      event.stopPropagation();
+    }
   };
+
   onValidate = (event: SyntheticEvent<*>) => {
     if (this.props.onValidate) this.props.onValidate(event);
   };
@@ -121,14 +141,16 @@ export default class Form extends Component<Props, State> {
 
   /** Returns the form state and methods accessed by children. With 16.3 we can look at using new context API */
   getForm = (): FormRef => {
-    const { name, fields } = this.state;
+    const { name } = this.state;
     const {
       registerField,
       unregisterField,
       getFieldByName,
+      setFieldState,
       submit,
       validate,
       reset,
+      fields,
     } = this;
 
     return {
@@ -137,6 +159,7 @@ export default class Form extends Component<Props, State> {
       registerField,
       unregisterField,
       getFieldByName,
+      setFieldState,
       submit,
       validate,
       reset,
@@ -147,37 +170,41 @@ export default class Form extends Component<Props, State> {
    * Register field with this form
    */
   registerField = (fieldState: FieldState) => {
-    this.setState(prevState => ({
-      fields: {
-        ...prevState.fields,
-        fieldStates: [...prevState.fields.fieldStates, fieldState],
-      },
-    }));
+    const prevFields = { ...this.fields };
+    this.fields = {
+      ...prevFields,
+      fieldStates: [...prevFields.fieldStates, fieldState],
+    };
   };
 
   /** Update Field State */
-  setFieldState = () => {};
+  setFieldState = (fieldState: FieldState) => {
+    const { fieldStates, ...rest } = this.fields;
+    const updatedFieldStates = fieldStates.map(obj => {
+      return obj.name === fieldState.name ? fieldState : obj;
+    });
+    this.fields = {
+      ...rest,
+      fieldStates: updatedFieldStates,
+    };
+  };
 
   /** Remove field from form */
   unregisterField = (name: string) => {
-    const { fieldStates } = this.state.fields;
+    const { fieldStates, ...rest } = this.fields;
     const fieldState = fieldStates.find(field => field.name === name);
 
-    this.setState(prevState => ({
-      fields: {
-        ...prevState.fields,
-        fieldStates: fieldStates.splice(fieldStates.indexOf(fieldState)),
-      },
-    }));
-
+    this.fields = {
+      ...rest,
+      fieldStates: fieldStates.splice(fieldStates.indexOf(fieldState)),
+    };
     return fieldState;
   };
   /** Method to get a field by name */
   getFieldByName = (name: string) => {
-    return this.state.fields.fieldStates.find(
-      fieldState => fieldState.name === name,
-    );
+    return this.fields.fieldStates.find(fieldState => fieldState.name === name);
   };
+
   /** Submit the form after passing validation */
   submit = () => {
     this.form.submit();
@@ -187,11 +214,26 @@ export default class Form extends Component<Props, State> {
     this.form.reset();
   };
   /** Validate all fields for the form or hand validation to custom validate handler if defined */
-  validate = () => {
-    const fields = this.getForm().fields;
+  validate = (): FormFields => {
+    const fields: FormFields = this.getForm().fields;
+    // Reset our validate results
+    fields.invalidFields = [];
+    fields.validFields = [];
+    fields.isInvalid = false;
     for (let i = 0; i < fields.fieldStates.length; i++) {
-      if (fields.fieldStates[i].validate) fields.fieldStates[i].validate();
+      if (fields.fieldStates[i].validate) {
+        fields.fieldStates[i].validate();
+        if (fields.fieldStates[i].isInvalid) {
+          fields.invalidFields.push(fields.fieldStates[i]);
+        } else {
+          fields.validFields.push(fields.fieldStates[i]);
+        }
+        fields.isInvalid = !!fields.invalidFields.length;
+        fields.isValidated = true;
+      }
     }
+    // Update Form validation
+    return fields;
   };
 
   renderHeader = () => {};

@@ -45,6 +45,7 @@ export interface RecentPage {
   title: string;
   type: string;
   url: string;
+  iconClass: string;
 }
 
 export interface RecentSpace {
@@ -155,6 +156,7 @@ function recentPageToResult(
     analyticsType: AnalyticsType.RecentConfluence,
     resultType: ResultType.ConfluenceObjectResult,
     contentType: `confluence-${recentPage.contentType}` as ContentType,
+    iconClass: recentPage.iconClass,
     containerId: recentPage.spaceKey,
   } as ConfluenceObjectResult;
 }
@@ -194,6 +196,7 @@ function quickNavResultToObjectResult(
     analyticsType: AnalyticsType.ResultConfluence,
     resultType: ResultType.ConfluenceObjectResult,
     containerId: quickNavResult.spaceKey!,
+    iconClass: quickNavResult.className,
   };
 }
 

@@ -62,6 +62,7 @@ const TextArea = styled.textarea`
   font-family: inherit;
   font-size: ${fontSize}px;
   line-height: ${20 / fontSize()};
+  min-width: 0;
   outline: none;
   width: 100%;
 

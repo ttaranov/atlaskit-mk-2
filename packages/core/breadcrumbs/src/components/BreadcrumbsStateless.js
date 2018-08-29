@@ -1,5 +1,14 @@
 // @flow
 import React, { Children, Component, type Node, type Element } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../package.json';
 import EllipsisItem from './EllipsisItem';
 import Container from '../styled/BreadcrumbsContainer';
 
@@ -25,7 +34,7 @@ type Props = {
   itemsAfterCollapse: number,
 };
 
-export default class BreadcrumbsStateless extends Component<Props, {}> {
+class BreadcrumbsStateless extends Component<Props, {}> {
   static defaultProps = {
     isExpanded: false,
     children: null,
@@ -81,3 +90,25 @@ export default class BreadcrumbsStateless extends Component<Props, {}> {
     );
   }
 }
+
+export { BreadcrumbsStateless as BreadcrumbsStatelessWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'breadcrumbs',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onExpand: createAndFireEventOnAtlaskit({
+      action: 'expanded',
+      actionSubject: 'breadcrumbs',
+
+      attributes: {
+        componentName: 'breadcrumbs',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(BreadcrumbsStateless),
+);

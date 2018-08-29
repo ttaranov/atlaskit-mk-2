@@ -3,10 +3,6 @@
   "include": [
     "./src/**/*.ts",
     "./src/**/*.tsx",
-    "./__tests__/**/*.ts",
-    "./__tests__/**/*.tsx",
-    "./tests/**/*.ts",
-    "./tests/**/*.tsx",
     "./examples/*.ts",
     "./examples/*.tsx",
     "./example-helpers/*.ts",
@@ -14,6 +10,6 @@
     "./typings/atlaskit.d.ts"
   ],
   "exclude": [
-    "./__tests__/integration/**/*.ts"
+    "./src/__tests__/integration/**/*.ts"
   ]
 }

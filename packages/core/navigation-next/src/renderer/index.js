@@ -1,3 +1,3 @@
 // @flow
 
-export { ItemsRenderer as default } from './components';
+export { default } from './components';

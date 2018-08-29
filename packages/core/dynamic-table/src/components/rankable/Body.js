@@ -6,7 +6,6 @@ import {
   type DropResult,
   type DragStart,
 } from 'react-beautiful-dnd';
-import { RankableTableBody } from '../../styled/rankable/TableBody';
 import TableRow from './TableRow';
 import type {
   HeadType,
@@ -18,20 +17,15 @@ import type {
 import withSortedPageRows, {
   type WithSortedPageRowsProps,
 } from '../../hoc/withSortedPageRows';
-import withDimensions, {
-  type WithDimensionsProps,
-} from '../../hoc/withDimensions';
-import { inlineStylesIfRanking } from '../../internal/helpers';
 
-type Props = WithDimensionsProps &
-  WithSortedPageRowsProps & {
-    onRankStart: RankStart => void,
-    onRankEnd: RankEnd => void,
-    isFixedSize: boolean,
-    isRanking: boolean,
-    isRankingDisabled: boolean,
-    head: HeadType | void,
-  };
+type Props = WithSortedPageRowsProps & {
+  onRankStart: RankStart => void,
+  onRankEnd: RankEnd => void,
+  isFixedSize: boolean,
+  isRanking: boolean,
+  isRankingDisabled: boolean,
+  head: HeadType | void,
+};
 
 // computes destination of ranking
 // - if drag was cancelled returns undefined
@@ -64,12 +58,7 @@ const computeRankDestination = (
 };
 
 export class RankableBody extends Component<Props, {}> {
-  innerRef = (innerRefFn: Function) => (ref: HTMLElement) => {
-    innerRefFn(ref);
-    this.props.innerRef(ref);
-  };
-
-  onDragStart = (dragStart: DragStart) => {
+  onBeforeDragStart = (dragStart: DragStart) => {
     const {
       draggableId: key,
       source: { index },
@@ -105,15 +94,12 @@ export class RankableBody extends Component<Props, {}> {
       head,
       isFixedSize,
       isRanking,
-      refWidth,
-      refHeight,
       isRankingDisabled,
     } = this.props;
-    const inlineStyle = inlineStylesIfRanking(isRanking, refWidth, refHeight);
 
     return (
       <DragDropContext
-        onDragStart={this.onDragStart}
+        onBeforeDragStart={this.onBeforeDragStart}
         onDragEnd={this.onDragEnd}
       >
         <Droppable
@@ -121,12 +107,7 @@ export class RankableBody extends Component<Props, {}> {
           isDropDisabled={isRankingDisabled}
         >
           {provided => (
-            <RankableTableBody
-              innerRef={this.innerRef(provided.innerRef)}
-              isRanking={isRanking}
-              style={inlineStyle}
-              {...provided.droppableProps}
-            >
+            <tbody ref={provided.innerRef} {...provided.droppableProps}>
               {pageRows.map((row, rowIndex) => (
                 <TableRow
                   head={head}
@@ -139,7 +120,7 @@ export class RankableBody extends Component<Props, {}> {
                 />
               ))}
               {provided.placeholder}
-            </RankableTableBody>
+            </tbody>
           )}
         </Droppable>
       </DragDropContext>
@@ -147,4 +128,4 @@ export class RankableBody extends Component<Props, {}> {
   }
 }
 
-export default withDimensions(withSortedPageRows(RankableBody));
+export default withSortedPageRows(RankableBody);

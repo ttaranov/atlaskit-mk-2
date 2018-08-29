@@ -20,7 +20,7 @@ export const Head = styled.thead`
 
 export const HeadCell = styled.th`
   ${p => onClickStyle(p)} ${p => truncateStyle(p)} ${p =>
-      arrowsStyle(p)} ${cellStyle} border: none;
+  arrowsStyle(p)} ${cellStyle} border: none;
   color: ${head.textColor};
   box-sizing: border-box;
   font-size: 12px;

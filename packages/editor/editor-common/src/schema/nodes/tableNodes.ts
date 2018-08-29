@@ -17,7 +17,7 @@ import {
   akColorT75,
   akColorY75,
 } from '@atlaskit/util-shared-styles';
-import { hexToRgba } from '../../utils';
+import { hexToRgba, isHex } from '../../utils';
 import {
   akEditorTableCellBackgroundOpacity,
   akEditorTableNumberColumnWidth,
@@ -40,7 +40,11 @@ const getCellAttrs = (dom: HTMLElement) => {
 };
 
 const setCellAttrs = (node: PmNode) => {
-  const attrs: any = {};
+  const attrs: {
+    colspan?: number;
+    rowspan?: number;
+    style?: string;
+  } = {};
   if (node.attrs.colspan !== 1) {
     attrs.colspan = node.attrs.colspan;
   }
@@ -65,9 +69,10 @@ const setCellAttrs = (node: PmNode) => {
 
     if (!ignored) {
       const color =
-        nodeType === 'tableCell'
+        nodeType === 'tableCell' && isHex(background)
           ? hexToRgba(background, akEditorTableCellBackgroundOpacity)
           : background;
+
       attrs.style = `${attrs.style || ''}background-color: ${color};`;
     }
   }
@@ -195,7 +200,7 @@ export interface CellAttributes {
   background?: string;
 }
 
-// "any", because NodeSpec doesn't support "tableRole" yet
+// TODO: Fix any, potential issue. ED-5048
 export const table: any = {
   content: 'tableRow+',
   attrs: {
@@ -236,7 +241,7 @@ export const tableToJSON = (node: PmNode) => ({
     }, {}),
 });
 
-export const tableRow: any = {
+export const tableRow = {
   content: '(tableCell | tableHeader)+',
   tableRole: 'row',
   parseDOM: [{ tag: 'tr' }],
@@ -252,7 +257,7 @@ const cellAttrs = {
   background: { default: null },
 };
 
-export const tableCell: any = {
+export const tableCell = {
   content:
     '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock |  mediaGroup | mediaSingle | applicationCard | decisionList | taskList | extension)+',
   attrs: cellAttrs,
@@ -279,9 +284,9 @@ export const toJSONTableCell = (node: PmNode) => ({
   }, {}),
 });
 
-export const tableHeader: any = {
+export const tableHeader = {
   content:
-    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | mediaSingle  | applicationCard | decisionList | taskList | extension)+',
+    '(paragraph | panel | blockquote | orderedList | bulletList | rule | heading | codeBlock | mediaGroup | mediaSingle  | applicationCard | decisionList | taskList | blockCard | extension)+',
   attrs: cellAttrs,
   tableRole: 'header_cell',
   isolating: true,

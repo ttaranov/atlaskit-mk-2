@@ -17,9 +17,13 @@ import Extension, { Props as ExtensionProps } from './extension';
 import HardBreak from './hardBreak';
 import Heading from './heading';
 import Image from './image';
+import InlineCard from './inlineCard';
+import BlockCard from './blockCard';
 import InlineExtension, {
   Props as InlineExtensionProps,
 } from './inlineExtension';
+import LayoutSection from './layoutSection';
+import LayoutColumn from './layoutColumn';
 import ListItem from './listItem';
 import Media from './media';
 import MediaGroup from './mediaGroup';
@@ -44,6 +48,7 @@ export const nodeToReact = {
   applicationCard: ApplicationCard,
   blockquote: Blockquote,
   bulletList: BulletList,
+  blockCard: BlockCard,
   codeBlock: CodeBlock,
   date: Date,
   decisionItem: DecisionItem,
@@ -55,7 +60,10 @@ export const nodeToReact = {
   hardBreak: HardBreak,
   heading: Heading,
   image: Image,
+  inlineCard: InlineCard,
   inlineExtension: InlineExtension,
+  layoutSection: LayoutSection,
+  layoutColumn: LayoutColumn,
   listItem: ListItem,
   media: Media,
   mediaGroup: MediaGroup,
@@ -224,6 +232,7 @@ export {
   BodiedExtension,
   BodiedExtensionProps,
   BulletList,
+  BlockCard,
   CodeBlock,
   Date,
   DecisionItem,
@@ -237,8 +246,11 @@ export {
   Heading,
   ListItem,
   Image,
+  InlineCard,
   InlineExtension,
   InlineExtensionProps,
+  LayoutSection,
+  LayoutColumn,
   Media,
   MediaGroup,
   MediaSingle,

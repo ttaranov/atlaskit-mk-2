@@ -7,3 +7,6 @@ export {
   tableMarginSides,
   calcTableWidth,
 } from './table';
+
+export { columnLayoutSharedStyle } from './column-layout';
+export { mediaSingleSharedStyle } from './media-single';

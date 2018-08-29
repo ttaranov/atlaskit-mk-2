@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Flag from '../Flag';
 import type { AutoDismissFlagProps } from '../../types';
 
-export const AUTO_DISMISS_SECONDS = 15;
+export const AUTO_DISMISS_SECONDS = 8;
 
 export default class AutoDismissFlag extends Component<
   AutoDismissFlagProps,

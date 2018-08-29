@@ -1,12 +1,16 @@
 // @flow
-import React, { PureComponent } from 'react';
-
+import React, { PureComponent, type Component } from 'react';
 import { QS_ANALYTICS_EV_SUBMIT } from '../constants';
 import ResultItem from '../ResultItem/ResultItem';
-
-import type { ResultType as Props } from './types';
+import type { AnalyticsData, ResultType as Props, Context } from './types';
+import { ResultContext, SelectedResultIdContext } from '../context';
 
 const BASE_RESULT_TYPE = 'base';
+
+interface HasAnalyticsData {
+  getAnalyticsData(): AnalyticsData;
+}
+export type ResultBaseType = Component<Props> & HasAnalyticsData;
 
 // ==========================================================================================
 // This class enforces a standard set of props and behaviour for all result types to support.
@@ -14,35 +18,66 @@ const BASE_RESULT_TYPE = 'base';
 // this class to ensure consideration of these props.
 // ==========================================================================================
 
-export default class ResultBase extends PureComponent<Props> {
+// context is an optional prop but the component provides a defaultProp. However, flow type still complains
+// when you don't pass it. There doesn't seem to be a better way of declaring optional default props.
+// See: https://github.com/facebook/flow/issues/1660
+type DefaultProps = {
+  context: Context,
+};
+
+class ResultBase extends PureComponent<DefaultProps & Props>
+  implements HasAnalyticsData {
   static defaultProps = {
     isCompact: false,
     isSelected: false,
     onClick: () => {},
-    onMouseEnter: () => {},
-    onMouseLeave: () => {},
-    sendAnalytics: () => {},
     type: BASE_RESULT_TYPE,
+    context: {
+      registerResult: () => {},
+      onMouseEnter: () => {},
+      onMouseLeave: () => {},
+      sendAnalytics: () => {},
+      getIndex: () => null,
+    },
+    analyticsData: {},
   };
 
-  handleClick = () => {
-    const {
-      analyticsData,
-      onClick,
+  registerResult() {
+    const { context } = this.props;
+    context.registerResult(this);
+  }
+
+  componentDidMount() {
+    this.registerResult();
+  }
+
+  componentDidUpdate() {
+    this.registerResult();
+  }
+
+  getAnalyticsData() {
+    const { resultId, analyticsData, type, context } = this.props;
+    return {
+      index: context.getIndex(resultId),
+      type,
       resultId,
-      sendAnalytics,
-      type,
-    } = this.props;
-    sendAnalytics(QS_ANALYTICS_EV_SUBMIT, {
       ...analyticsData,
+    };
+  }
+
+  handleClick = (e: ?MouseEvent) => {
+    const { onClick, resultId, type } = this.props;
+
+    this.props.context.sendAnalytics(QS_ANALYTICS_EV_SUBMIT, {
+      ...this.getAnalyticsData(),
       method: 'click',
-      type,
+      newTab: e && (e.metaKey || e.shiftKey || e.ctrlKey),
     });
     onClick({ resultId, type });
   };
 
   handleMouseEnter = () => {
-    this.props.onMouseEnter({
+    this.props.context.onMouseEnter({
       resultId: this.props.resultId,
       type: this.props.type,
     });
@@ -56,29 +91,38 @@ export default class ResultBase extends PureComponent<Props> {
       target,
       icon,
       isCompact,
-      isSelected,
-      onMouseLeave,
-      text,
       subText,
-      linkComponent,
+      text,
+      resultId,
+      context,
     } = this.props;
 
     return (
-      <ResultItem
-        caption={caption}
-        href={href}
-        target={target}
-        icon={icon}
-        isCompact={isCompact}
-        isSelected={isSelected}
-        onClick={this.handleClick}
-        onMouseEnter={this.handleMouseEnter}
-        onMouseLeave={onMouseLeave}
-        subText={subText}
-        text={text}
-        textAfter={elemAfter}
-        linkComponent={linkComponent}
-      />
+      <SelectedResultIdContext.Consumer>
+        {selectedResultId => (
+          <ResultItem
+            caption={caption}
+            href={href}
+            target={target}
+            icon={icon}
+            isCompact={isCompact}
+            isSelected={resultId === selectedResultId}
+            onClick={this.handleClick}
+            onMouseEnter={this.handleMouseEnter}
+            onMouseLeave={context.onMouseLeave}
+            subText={subText}
+            text={text}
+            textAfter={elemAfter}
+            linkComponent={context.linkComponent}
+          />
+        )}
+      </SelectedResultIdContext.Consumer>
     );
   }
 }
+
+export default (props: Props) => (
+  <ResultContext.Consumer>
+    {context => <ResultBase context={context} {...props} />}
+  </ResultContext.Consumer>
+);

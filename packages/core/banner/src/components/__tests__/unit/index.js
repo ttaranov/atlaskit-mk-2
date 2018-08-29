@@ -7,11 +7,11 @@ import WarningIcon from '@atlaskit/icon/glyph/warning';
 import Banner from '../../Banner';
 import {
   backgroundColor,
-  getMaxHeight,
   textColor,
   testErrorBackgroundColor,
   testErrorTextColor,
   Container,
+  Visibility,
   Text,
 } from '../../../styled';
 
@@ -48,9 +48,23 @@ describe('banner', () => {
     describe('isOpen prop', () => {
       it('should default to not being open', () =>
         expect(mount(<Banner />).prop('isOpen')).toBe(false));
-      it('should apply a max-height of 52px when isOpen', () => {
-        const props = { isOpen: true };
-        expect(getMaxHeight(props)).toBe('52px');
+      it('should have height 0 on visibility component', () => {
+        expect(
+          mount(<Banner />)
+            .find(Visibility)
+            .prop('bannerHeight'),
+        ).toBe(0);
+      });
+      it('should have height in pixels when open', () => {
+        expect(
+          mount(<Banner isOpen />)
+            .find(Visibility)
+            .prop('bannerHeight'),
+          // This height will not be '0px' in a real render, and discovered
+          // that in enzyme, clientHeight is always 0. This means that checking
+          // that these sizes are correct cannot have reliable tests written for it.
+          // See https://github.com/airbnb/enzyme/issues/1435 for context
+        ).toBe(0);
       });
     });
   });

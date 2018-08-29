@@ -11,8 +11,6 @@ import {
   Actions,
   Action,
   IconWrapper,
-  Content,
-  ContentContainer,
 } from './styled';
 
 // There is a bug in eslint react with flow types being spread in function.
@@ -29,14 +27,13 @@ type Props = {
   */
   children: Node,
   /*
-    The title to be displayed with the message. If provided, it will be rendered
-    with a h5-level heading.
+    The heading of the section message.
   */
   title?: string,
   /*
-    Actions to be taken from the section message. We recommend that links are
-    used for these (as seen in the examples). According to the design spec, there
-    should be no more than two actions in a section message.
+    Actions to be taken from the section message. These accept an object which
+    are applied to @atlaskit/button components. Middots are automatically added
+    between the items. We generally recommend using no more than two actions.
   */
   actions?: Array<ActionType>,
   /*
@@ -102,22 +99,23 @@ export default class SectionMessage extends Component<Props, *> {
 
     return (
       <Container backgroundColor={appearanceObj.backgroundColor}>
-        <ContentContainer>
-          <IconWrapper>
-            <Icon primaryColor={appearanceObj.primaryIconColor} />
-          </IconWrapper>
-          <Content>
-            {title ? <Title>{title}</Title> : null}
-            {children ? <Description>{children}</Description> : null}
-            {actions && actions.length > 0 ? (
-              <Actions>
-                {actions.map(action =>
-                  this.renderAction({ ...action, linkComponent }),
-                )}
-              </Actions>
-            ) : null}
-          </Content>
-        </ContentContainer>
+        <IconWrapper>
+          <Icon
+            primaryColor={appearanceObj.primaryIconColor}
+            secondaryColor={appearanceObj.backgroundColor}
+          />
+        </IconWrapper>
+        <div>
+          {title ? <Title>{title}</Title> : null}
+          {children ? <Description>{children}</Description> : null}
+          {actions && actions.length > 0 ? (
+            <Actions>
+              {actions.map(action =>
+                this.renderAction({ ...action, linkComponent }),
+              )}
+            </Actions>
+          ) : null}
+        </div>
       </Container>
     );
   }

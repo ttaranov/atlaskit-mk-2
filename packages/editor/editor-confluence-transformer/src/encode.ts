@@ -174,7 +174,9 @@ export default function encode(node: PMNode, schema: Schema) {
       const rowElement = doc.createElement('tr');
 
       rowNode.content.forEach((colNode, _, j) => {
-        const { attrs: { background, rowspan, colspan } } = colNode;
+        const {
+          attrs: { background, rowspan, colspan },
+        } = colNode;
 
         const cellElement =
           colNode.type === schema.nodes.tableCell

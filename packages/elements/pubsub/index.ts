@@ -9,3 +9,5 @@
 // falls through to the `types` and `main` `package.json` fields.
 //
 export * from './src';
+import { default as Client } from './src';
+export default Client;

@@ -130,8 +130,8 @@ export default class NotificationIndicator extends Component<Props, State> {
         (await this.notificationLogProvider.countUnseenNotifications()).count;
 
       if (
-          this.props.onCountUpdated &&
-          (!this.state.count || this.state.count !== count)
+        this.props.onCountUpdated &&
+        (!this.state.count || this.state.count !== count)
       ) {
         this.props.onCountUpdated({
           oldCount: this.state.count || 0,

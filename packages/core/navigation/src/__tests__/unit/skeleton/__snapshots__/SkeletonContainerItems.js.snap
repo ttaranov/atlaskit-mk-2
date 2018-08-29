@@ -20,6 +20,31 @@ exports[`collapses its children container items 1`] = `
 </SkeletonNavigationItems>
 `;
 
+exports[`passes down custom styles 1`] = `
+<SkeletonNavigationItems>
+  <SkeletonContainerItem
+    isCollapsed={false}
+    itemTextWidth="100%"
+  />
+  <SkeletonContainerItem
+    isCollapsed={false}
+    itemTextWidth="100%"
+  />
+  <SkeletonContainerItem
+    isCollapsed={false}
+    itemTextWidth="100%"
+  />
+  <SkeletonContainerItem
+    isCollapsed={false}
+    itemTextWidth="100%"
+  />
+  <SkeletonContainerItem
+    isCollapsed={false}
+    itemTextWidth="100%"
+  />
+</SkeletonNavigationItems>
+`;
+
 exports[`renders a skeleton representation of a container item 1`] = `
 <SkeletonNavigationItems>
   <SkeletonContainerItem

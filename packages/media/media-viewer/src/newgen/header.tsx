@@ -12,6 +12,7 @@ import {
   RightHeader,
   MetadataWrapper,
   MetadataSubText,
+  MedatadataTextWrapper,
   MetadataIconWrapper,
   MetadataFileName,
   hideControlsClassName,
@@ -32,7 +33,7 @@ export type State = {
 };
 
 const initialState: State = {
-  item: { status: 'PENDING' },
+  item: Outcome.pending(),
 };
 
 export default class Header extends React.Component<Props, State> {
@@ -68,26 +69,17 @@ export default class Header extends React.Component<Props, State> {
         next: mediaItem => {
           if (mediaItem.type === 'file') {
             this.setState({
-              item: {
-                status: 'SUCCESSFUL',
-                data: mediaItem,
-              },
+              item: Outcome.successful(mediaItem),
             });
           } else if (mediaItem.type === 'link') {
             this.setState({
-              item: {
-                status: 'FAILED',
-                err: createError('linksNotSupported'),
-              },
+              item: Outcome.failed(createError('linksNotSupported')),
             });
           }
         },
         error: err => {
           this.setState({
-            item: {
-              status: 'FAILED',
-              err: createError('metadataFailed', undefined, err),
-            },
+            item: Outcome.failed(createError('metadataFailed', undefined, err)),
           });
         },
       });
@@ -98,25 +90,28 @@ export default class Header extends React.Component<Props, State> {
     const { item } = this.state;
     const { identifier, context } = this.props;
     const icon = <DownloadIcon label="Download" />;
-    if (item.status !== 'SUCCESSFUL') {
-      return (
+
+    const disabledDownloadButton = (
+      <Button
+        label="Download"
+        appearance="toolbar"
+        isDisabled={true}
+        iconBefore={icon}
+      />
+    );
+
+    return item.match({
+      pending: () => disabledDownloadButton,
+      failed: () => disabledDownloadButton,
+      successful: item => (
         <Button
           label="Download"
           appearance="toolbar"
-          isDisabled={true}
+          onClick={downloadItem(item, context, identifier.collectionName)}
           iconBefore={icon}
         />
-      );
-    } else {
-      return (
-        <Button
-          label="Download"
-          appearance="toolbar"
-          onClick={downloadItem(item.data, context, identifier.collectionName)}
-          iconBefore={icon}
-        />
-      );
-    }
+      ),
+    });
   };
 
   render() {
@@ -133,14 +128,11 @@ export default class Header extends React.Component<Props, State> {
 
   private renderMetadata() {
     const { item } = this.state;
-    switch (item.status) {
-      case 'PENDING':
-        return '';
-      case 'SUCCESSFUL':
-        return this.renderMetadataLayout(item.data);
-      case 'FAILED':
-        return '';
-    }
+    return item.match({
+      successful: item => this.renderMetadataLayout(item),
+      pending: () => null,
+      failed: () => null,
+    });
   }
 
   private renderMetadataLayout(item: FileItem) {
@@ -149,13 +141,13 @@ export default class Header extends React.Component<Props, State> {
         <MetadataIconWrapper>
           {this.getMediaIcon(item.details.mediaType)}
         </MetadataIconWrapper>
-        <div>
+        <MedatadataTextWrapper>
           <MetadataFileName>{item.details.name || 'unknown'}</MetadataFileName>
           <MetadataSubText>
             {this.renderFileTypeText(item.details.mediaType)}
             {this.renderSize(item)}
           </MetadataSubText>
-        </div>
+        </MedatadataTextWrapper>
       </MetadataWrapper>
     );
   }

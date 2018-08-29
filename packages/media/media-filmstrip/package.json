@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-filmstrip",
-  "version": "9.0.7",
+  "version": "12.0.0",
   "description": "Includes components that show media cards as a filmstrip",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -20,23 +20,26 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/icon": "^12.1.2",
+    "@atlaskit/icon": "^13.2.2",
+    "@atlaskit/media-card": "^33.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "debounce": "^1.0.0",
     "tslib": "^1.8.0"
   },
   "peerDependencies": {
-    "react": "^16.3.0",
+    "@atlaskit/media-core": "^23.1.0",
+    "react": "^16.4.0",
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/button": "^8.2.4",
-    "@atlaskit/checkbox": "^3.0.6",
-    "@atlaskit/docs": "^4.2.2",
-    "@atlaskit/field-radio-group": "^3.0.4",
-    "@atlaskit/field-range": "^4.0.3",
-    "@atlaskit/media-card": "^29.1.8",
-    "@atlaskit/media-core": "^21.0.0",
-    "@atlaskit/media-test-helpers": "^14.0.6"
+    "@atlaskit/button": "^9.0.4",
+    "@atlaskit/checkbox": "^4.0.2",
+    "@atlaskit/docs": "^5.0.7",
+    "@atlaskit/field-radio-group": "^4.0.3",
+    "@atlaskit/field-range": "^5.0.2",
+    "@atlaskit/media-core": "^23.1.0",
+    "@atlaskit/media-test-helpers": "^17.0.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "react": "^16.4.0"
   }
 }

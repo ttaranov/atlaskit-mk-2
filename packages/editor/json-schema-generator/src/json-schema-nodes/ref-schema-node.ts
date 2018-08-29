@@ -1,4 +1,5 @@
 import SchemaNode from './schema-node';
+import { getPmName } from '../utils';
 
 export default class RefSchemaNode extends SchemaNode {
   path: string;
@@ -9,6 +10,10 @@ export default class RefSchemaNode extends SchemaNode {
   }
 
   toJSON(): object {
-    return { $ref: this.path };
+    return { $ref: `#/definitions/${this.path}` };
+  }
+
+  toSpec() {
+    return getPmName(this.path);
   }
 }

@@ -31,7 +31,11 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
    */
   const keymaps = {
     Backspace: (state: EditorState, dispatch) => {
-      const { selection, schema: { nodes }, tr } = state;
+      const {
+        selection,
+        schema: { nodes },
+        tr,
+      } = state;
       const { decisionList, decisionItem, taskList, taskItem } = nodes;
 
       if ((!decisionItem || !decisionList) && (!taskList || !taskItem)) {
@@ -101,7 +105,11 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
       return false;
     },
     Enter: (state: EditorState, dispatch) => {
-      const { selection, tr, schema: { nodes } } = state;
+      const {
+        selection,
+        tr,
+        schema: { nodes },
+      } = state;
       const { $from } = selection;
       const node = $from.node($from.depth);
       const nodeType = node && node.type;

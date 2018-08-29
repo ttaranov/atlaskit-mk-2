@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/field-text",
-  "version": "6.1.3",
+  "version": "7.0.8",
   "description": "Field Text Component",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -20,17 +20,20 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/field-base": "^10.2.0",
-    "@atlaskit/theme": "^4.0.4"
+    "@atlaskit/analytics-next": "^3.0.6",
+    "@atlaskit/field-base": "^11.0.6",
+    "@atlaskit/theme": "^6.0.1"
   },
   "peerDependencies": {
-    "react": "^16.3.0",
+    "react": "^16.4.0",
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/button": "^8.2.4",
-    "@atlaskit/docs": "^4.1.0",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
+    "@atlaskit/build-utils": "^2.0.0",
+    "@atlaskit/button": "^9.0.7",
+    "@atlaskit/docs": "^5.0.6",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "react-dom": "^16.4.2"
   },
   "keywords": [
     "atlaskit",

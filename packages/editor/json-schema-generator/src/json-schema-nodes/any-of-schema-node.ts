@@ -5,4 +5,8 @@ export default class AnyOfSchemaNode extends OfSchemaNode {
   constructor(values: Array<SchemaNode> = []) {
     super('anyOf', values);
   }
+
+  toSpec() {
+    return this.values.map(value => value.toSpec());
+  }
 }

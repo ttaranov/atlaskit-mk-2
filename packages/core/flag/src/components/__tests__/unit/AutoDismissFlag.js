@@ -22,8 +22,8 @@ describe('Auto dismiss flag', () => {
       expect(wrapper.find(Flag).exists()).toBe(true);
     });
 
-    it('should use 15 seconds as the timer value', () => {
-      expect(AUTO_DISMISS_SECONDS).toBe(15);
+    it('should use 8 seconds as the timer value', () => {
+      expect(AUTO_DISMISS_SECONDS).toBe(8);
     });
 
     describe('timer tests', () => {
@@ -35,7 +35,7 @@ describe('Auto dismiss flag', () => {
         jest.useFakeTimers();
       });
 
-      it('should auto dismiss after 15 seconds if isDismissAllowed and onDismissed are set on mount', () => {
+      it('should auto dismiss after 8 seconds if isDismissAllowed and onDismissed are set on mount', () => {
         mount(
           <GenerateAutoDismissFlag
             id=""
@@ -48,14 +48,14 @@ describe('Auto dismiss flag', () => {
         expect(onDismissedSpy).toBeCalled();
       });
 
-      it('should not auto dismiss after 15 seconds if isDismissAllowed is not set on mount', () => {
+      it('should not auto dismiss after 8 seconds if isDismissAllowed is not set on mount', () => {
         mount(<GenerateAutoDismissFlag id="" onDismissed={onDismissedSpy} />);
         expect(onDismissedSpy).not.toBeCalled();
         runTimer();
         expect(onDismissedSpy).not.toBeCalled();
       });
 
-      it('should auto dismiss after 15 seconds if isDismissAllowed and onDismissed props are set after mount', () => {
+      it('should auto dismiss after 8 seconds if isDismissAllowed and onDismissed props are set after mount', () => {
         const wrapper = mount(<GenerateAutoDismissFlag id="" />);
         runTimer();
         expect(onDismissedSpy).not.toBeCalled();
@@ -67,7 +67,7 @@ describe('Auto dismiss flag', () => {
         expect(onDismissedSpy).toBeCalled();
       });
 
-      it('should not auto dismiss after 15 seconds if isDismissAllowed prop is set on mount but then removed', () => {
+      it('should not auto dismiss after 8 seconds if isDismissAllowed prop is set on mount but then removed', () => {
         const wrapper = mount(
           <GenerateAutoDismissFlag
             id=""

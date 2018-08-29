@@ -2,11 +2,13 @@ import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock/src/client';
 import { SecurityOptions } from '@atlaskit/util-service-support';
+import * as queryString from 'query-string';
 
 import { MentionDescription } from '../../../types';
 import MentionResource, {
   HttpError,
   MentionResourceConfig,
+  MentionStats,
 } from '../../../api/MentionResource';
 import {
   resultC,
@@ -59,6 +61,12 @@ function checkOrder(expected, actual) {
   }
 }
 
+const FULL_CONTEXT = {
+  containerId: 'someContainerId',
+  objectId: 'someObjectId',
+  childObjectId: 'someChildObjectId',
+};
+
 describe('MentionResource', () => {
   beforeEach(() => {
     fetchMock.mock(
@@ -77,6 +85,11 @@ describe('MentionResource', () => {
           },
         })
         .mock(/\/mentions\/search\?.*query=c(&|$)/, {
+          body: {
+            mentions: resultC,
+          },
+        })
+        .mock(/\/mentions\/bootstrap$/, {
           body: {
             mentions: resultC,
           },
@@ -106,7 +119,7 @@ describe('MentionResource', () => {
           },
         })
         .mock(
-          /\/mentions\/record\?selectedUserId=\d+$/,
+          /\/mentions\/record\?selectedUserId=\d+.*$/,
           {
             body: '',
           },
@@ -120,23 +133,43 @@ describe('MentionResource', () => {
 
   describe('#subscribe', () => {
     it('subscribe should receive updates', done => {
-      const resource = new MentionResource(apiConfig);
+      const resource = new MentionResource({
+        ...apiConfig,
+        containerId: 'defaultContainerId', // should be ignored
+      });
       resource.subscribe('test1', mentions => {
         expect(mentions).toHaveLength(resultCraig.length);
 
         // note: should use fetchMock.lastOptions() but it does not work
         const requestData = fetchMock.lastUrl();
+        const queryParams = queryString.parse(
+          queryString.extract(requestData.url),
+        );
+
+        expect(queryParams.containerId).toBe('someContainerId');
+        expect(queryParams.objectId).toBe('someObjectId');
+        expect(queryParams.childObjectId).toBe('someChildObjectId');
         expect(requestData.credentials).toEqual('include');
         done();
       });
-      resource.filter('craig');
+      resource.filter('craig', FULL_CONTEXT);
     });
 
     it('multiple subscriptions should receive updates', done => {
-      const resource = new MentionResource(apiConfig);
+      const resource = new MentionResource({
+        ...apiConfig,
+        containerId: 'defaultContainerId',
+      });
       let count = 0;
       resource.subscribe('test1', mentions => {
         expect(mentions).toHaveLength(resultCraig.length);
+
+        const queryParams = queryString.parse(
+          queryString.extract(fetchMock.lastUrl().url),
+        );
+        // default containerId from config should be used
+        expect(queryParams.containerId).toBe('defaultContainerId');
+
         count++;
         if (count === 2) {
           done();
@@ -154,7 +187,6 @@ describe('MentionResource', () => {
 
     it('subscribe should receive updates with credentials omitted', done => {
       const resource = new MentionResource(apiConfigWithoutCredentials);
-      // const resource = new MentionResource(apiConfig);
       resource.subscribe('test3', mentions => {
         expect(mentions).toHaveLength(0);
 
@@ -182,33 +214,78 @@ describe('MentionResource', () => {
   });
 
   describe('#filter', () => {
-    it('should add weight based on response order', done => {
+    it('should add weight based on response order - bootstrap', done => {
       const resource = new MentionResource(apiConfig);
-      resource.subscribe('test1', mentions => {
-        for (let i = 0; i < mentions.length; i++) {
-          expect(mentions[i].weight).toBe(i);
-        }
+      resource.subscribe(
+        'test1',
+        (mentions, query: string, stats?: MentionStats) => {
+          for (let i = 0; i < mentions.length; i++) {
+            expect(mentions[i].weight).toBe(i);
+          }
+          expect(stats).toBeDefined();
+          expect(stats!.duration).toBeGreaterThan(0);
+          expect(stats!.remoteSearch).toBeTruthy();
+          done();
+        },
+      );
+      resource.filter('');
+    });
 
-        done();
-      });
+    it.skip('should add weight based on response order', done => {
+      const resource = new MentionResource(apiConfig);
+      resource.subscribe(
+        'test1',
+        (mentions, query: string, stats?: MentionStats) => {
+          for (let i = 0; i < mentions.length; i++) {
+            expect(mentions[i].weight).toBe(i);
+          }
+          expect(stats).toBeDefined();
+          expect(stats!.duration).toBeGreaterThan(0);
+          expect(stats!.remoteSearch).toBeTruthy();
+          done();
+        },
+      );
       resource.filter('c');
     });
 
     it('in order responses', done => {
       const resource = new MentionResource(apiConfig);
-      const results: MentionDescription[][] = [];
-      const expected = [resultC, [], resultCraig];
-      resource.subscribe('test1', mentions => {
-        results.push(mentions);
-        // 1st: remote search for 'c'
-        // 2nd: local index for 'craig'  => no results
-        // 3rd: remote search for 'craig'
+      let sequence = 0;
 
-        if (results.length === 3) {
-          checkOrder(expected, results);
-          done();
-        }
-      });
+      resource.subscribe(
+        'test1',
+        (mentions, query: string, stats?: MentionStats) => {
+          sequence++;
+
+          expect(stats).toBeDefined();
+
+          // 1st: remote search for 'c'
+          // 2nd: local index for 'craig'  => no results
+          // 3rd: remote search for 'craig'
+
+          if (sequence === 1) {
+            expect(query).toBe('c');
+            expect(mentions).toBe(resultC);
+            expect(stats!.duration).toBeGreaterThan(0);
+            expect(stats!.remoteSearch).toBeTruthy();
+          }
+
+          if (sequence === 2) {
+            expect(query).toBe('craig');
+            expect(mentions).toBe([]);
+            expect(stats!.duration).toBeGreaterThan(0);
+            expect(stats!.remoteSearch).toBeFalsy();
+          }
+
+          if (sequence === 3) {
+            expect(query).toBe('craig');
+            expect(mentions).toMatchObject(resultCraig);
+            expect(stats!.duration).toBeGreaterThan(0);
+            expect(stats!.remoteSearch).toBeTruthy();
+            done();
+          }
+        },
+      );
       resource.filter('c');
       setTimeout(() => {
         resource.filter('craig');
@@ -224,11 +301,23 @@ describe('MentionResource', () => {
 
         if (results.length === 2) {
           checkOrder(expected, results);
+
+          const queryParams = queryString.parse(
+            queryString.extract(fetchMock.lastUrl().url),
+          );
+          expect(queryParams.containerId).toBe('someContainerId');
+          expect(queryParams.objectId).toBe('someObjectId');
           done();
         }
       });
-      resource.filter('cr');
-      resource.filter('craig');
+      resource.filter('cr', {
+        containerId: 'someContainerId',
+        objectId: 'someObjectId',
+      });
+      resource.filter('craig', {
+        containerId: 'someContainerId',
+        objectId: 'someObjectId',
+      });
     });
 
     // Temporarily disabled due to failing on Mobile Safari 9.0.0.
@@ -433,12 +522,20 @@ describe('MentionResource', () => {
   describe('#recordMentionSelection', () => {
     it('should call record endpoint', done => {
       const resource = new MentionResource(apiConfig);
-
       resource
-        .recordMentionSelection({
-          id: '666',
-        })
+        .recordMentionSelection(
+          {
+            id: '666',
+          },
+          FULL_CONTEXT,
+        )
         .then(() => {
+          const queryParams = queryString.parse(
+            queryString.extract(fetchMock.lastUrl().url),
+          );
+          expect(queryParams.containerId).toBe('someContainerId');
+          expect(queryParams.objectId).toBe('someObjectId');
+          expect(queryParams.childObjectId).toBe('someChildObjectId');
           expect(fetchMock.called('record')).toBe(true);
           done();
         });

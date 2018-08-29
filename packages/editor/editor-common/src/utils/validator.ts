@@ -357,6 +357,14 @@ export const getValidNode = (
         break;
       }
       case 'codeBlock': {
+        if (content) {
+          content = content.reduce((acc: ADNode[], val) => {
+            if (val.type === 'text') {
+              acc.push({ type: val.type, text: val.text });
+            }
+            return acc;
+          }, []);
+        }
         if (attrs && attrs.language) {
           return {
             type,
@@ -390,6 +398,16 @@ export const getValidNode = (
       case 'inlineExtension':
       case 'extension': {
         if (attrs && attrs.extensionType && attrs.extensionKey) {
+          return {
+            type,
+            attrs,
+          };
+        }
+        break;
+      }
+      case 'inlineCard':
+      case 'blockCard': {
+        if (attrs && (attrs.url || attrs.data)) {
           return {
             type,
             attrs,
@@ -608,6 +626,26 @@ export const getValidNode = (
               content,
             };
           }
+        }
+        break;
+      }
+      case 'layoutSection': {
+        if (attrs && content) {
+          const { layoutType } = attrs;
+          return {
+            type,
+            attrs: { layoutType },
+            content,
+          };
+        }
+        break;
+      }
+      case 'layoutColumn': {
+        if (content) {
+          return {
+            type,
+            content,
+          };
         }
         break;
       }

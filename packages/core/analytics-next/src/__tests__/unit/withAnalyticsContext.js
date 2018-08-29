@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import { AnalyticsContext, withAnalyticsContext } from '../..';
 
 type WrappedProps = {
@@ -85,4 +85,23 @@ it('should pass an empty object to analytics context if no default or prop value
       </AnalyticsContext>,
     ),
   ).toBe(true);
+});
+
+it('should forward the ref of inner component', () => {
+  const spy = jest.fn();
+  class Button extends React.Component<{}> {
+    render() {
+      return <button>click here</button>;
+    }
+  }
+  const ButtonWithContext = withAnalyticsContext()(Button);
+  // div is required otherwise ref doesn't work
+  mount(
+    <div>
+      <ButtonWithContext ref={spy} />
+    </div>,
+  );
+  expect(spy).toHaveBeenCalled();
+  const [ref] = spy.mock.calls[0];
+  expect(ref).toBeInstanceOf(Button);
 });

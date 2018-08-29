@@ -6,7 +6,9 @@ import { parse } from 'date-fns';
 import cases from 'jest-in-case';
 
 import Btn from '../../Btn';
-import Calendar from '../../Calendar';
+import CalendarWithAnalytics, {
+  CalendarWithoutAnalytics as Calendar,
+} from '../../Calendar';
 import Date from '../../Date';
 import { DateTd } from '../../../styled/Date';
 
@@ -164,4 +166,23 @@ test('focus()', () => {
   instance.container.focus = jest.fn();
   instance.focus();
   expect(instance.container.focus).toHaveBeenCalledTimes(1);
+});
+
+describe('CalendarWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    mount(<CalendarWithAnalytics month={1} year={2000} />);
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
+  });
 });

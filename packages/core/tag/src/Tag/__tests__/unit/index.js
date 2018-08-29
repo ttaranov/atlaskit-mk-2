@@ -5,7 +5,7 @@ import { mount, shallow } from 'enzyme';
 import Chrome from '../../../Chrome';
 import Content from '../../../Content';
 import Remove from '../../../RemoveButton';
-import Tag from '../..';
+import TagWithAnalytics, { TagWithoutAnalytics as Tag } from '../..';
 
 import Before from '../../styledBefore';
 import Container from '../../styledContainer';
@@ -250,5 +250,29 @@ describe('Tag component', () => {
       );
       expect(wrapper.find(Chrome).props().color).toBe('standard');
     });
+  });
+});
+
+describe('TagWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    const testProps = {
+      text: 'Atlassian',
+      href: 'https://www.atlassian.com',
+      removeButtonText: 'Click to remove this tag!',
+    };
+    mount(<TagWithAnalytics {...testProps} />);
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

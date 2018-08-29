@@ -1,7 +1,9 @@
 import * as React from 'react';
-import { GlobalQuickSearch } from '../src/index';
-import BasicNavigation from '../example-helpers/BasicNavigation';
 import { setupMocks, teardownMocks } from '../example-helpers/mockApis';
+import { GlobalQuickSearch } from '../src';
+import withNavigation from '../example-helpers/withNavigation';
+
+const GlobalQuickSearchInNavigation = withNavigation(GlobalQuickSearch);
 
 interface Props {
   className: string;
@@ -37,16 +39,6 @@ export default class extends React.Component {
   }
 
   render() {
-    return (
-      <BasicNavigation
-        searchDrawerContent={
-          <GlobalQuickSearch
-            cloudId="cloudId"
-            context="confluence"
-            linkComponent={AlertLinkComponent}
-          />
-        }
-      />
-    );
+    return <GlobalQuickSearchInNavigation linkComponent={AlertLinkComponent} />;
   }
 }

@@ -24,7 +24,7 @@ export const mediaGroup: NodeSpec = {
     },
   ],
 
-  toDOM(node: any) {
+  toDOM() {
     return [
       'div',
       {

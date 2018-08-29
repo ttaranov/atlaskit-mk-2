@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { constructAuthTokenUrl } from '../util';
+import { constructAuthTokenUrl } from '../utils';
 import { Context, FileItem } from '@atlaskit/media-core';
 import { DownloadButtonWrapper } from '../styled';
 import Button from '@atlaskit/button';

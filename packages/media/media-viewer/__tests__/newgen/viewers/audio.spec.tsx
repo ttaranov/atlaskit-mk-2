@@ -1,4 +1,4 @@
-import * as util from '../../../src/newgen/util';
+import * as util from '../../../src/newgen/utils';
 const constructAuthTokenUrlSpy = jest.spyOn(util, 'constructAuthTokenUrl');
 
 import * as React from 'react';
@@ -14,6 +14,7 @@ import Button from '@atlaskit/button';
 
 const token = 'some-token';
 const clientId = 'some-client-id';
+const baseUrl = 'some-base-url';
 
 const audioItem: FileItem = {
   type: 'file',
@@ -29,12 +30,26 @@ const audioItem: FileItem = {
   },
 };
 
-function createFixture(authPromise: Promise<Auth>, collectionName?: string) {
+const audioItemWithNoArtifacts: FileItem = {
+  type: 'file',
+  details: {
+    id: 'some-id',
+    processingStatus: 'succeeded',
+    mediaType: 'audio',
+    artifacts: {},
+  },
+};
+
+function createFixture(
+  authPromise: Promise<Auth>,
+  collectionName?: string,
+  item?: FileItem,
+) {
   const context = createContext({ authPromise });
   const el = mount(
     <AudioViewer
       context={context}
-      item={audioItem}
+      item={item || audioItem}
       collectionName={collectionName}
       previewCount={0}
     />,
@@ -48,12 +63,12 @@ describe('Audio viewer', () => {
   });
 
   it('assigns a src for audio files when successful', async () => {
-    const authPromise = Promise.resolve({ token, clientId });
+    const authPromise = Promise.resolve({ token, clientId, baseUrl });
     const { el } = createFixture(authPromise);
     await (el as any).instance()['init']();
     el.update();
     expect(el.find('audio').prop('src')).toEqual(
-      'some-service-host/audio?client=some-client-id&token=some-token',
+      'some-base-url/audio?client=some-client-id&token=some-token',
     );
   });
 
@@ -82,9 +97,24 @@ describe('Audio viewer', () => {
     expect(errorMessage.find(Button)).toHaveLength(1);
   });
 
+  it('shows error if no audio artifacts found', async () => {
+    const authPromise: any = new Promise(() => {});
+    const { el } = createFixture(
+      authPromise,
+      undefined,
+      audioItemWithNoArtifacts,
+    );
+    el.update();
+    const errorMessage = el.find(ErrorMessage);
+    expect(errorMessage).toHaveLength(1);
+    expect(errorMessage.text()).toContain(
+      "We couldn't generate a preview for this file",
+    );
+  });
+
   describe('cover', () => {
     it('it should show the default cover while the audio cover is loading', async () => {
-      const authPromise = Promise.resolve({ token, clientId });
+      const authPromise = Promise.resolve({ token, clientId, baseUrl });
       const { el } = createFixture(authPromise);
       await (el as any).instance()['init']();
       el.update();
@@ -92,7 +122,7 @@ describe('Audio viewer', () => {
     });
 
     it('it should show the default cover when the audio cover is errored', async () => {
-      const authPromise = Promise.resolve({ token, clientId });
+      const authPromise = Promise.resolve({ token, clientId, baseUrl });
       const { el } = createFixture(authPromise);
       const instance: any = el.instance();
 
@@ -103,7 +133,7 @@ describe('Audio viewer', () => {
     });
 
     it('it should show the audio cover if exists', async () => {
-      const authPromise = Promise.resolve({ token, clientId });
+      const authPromise = Promise.resolve({ token, clientId, baseUrl });
       const { el } = createFixture(authPromise);
       const instance: any = el.instance();
       const promiseSrc = Promise.resolve('cover-src');
@@ -115,13 +145,13 @@ describe('Audio viewer', () => {
 
       expect(el.find(DefaultCoverWrapper)).toHaveLength(0);
       expect(el.find(AudioCover).prop('src')).toEqual(
-        'some-service-host/file/some-id/image?client=some-client-id&token=some-token',
+        'some-base-url/file/some-id/image?client=some-client-id&token=some-token',
       );
     });
 
     it('MSW-720: pass the collectionName to calls to constructAuthTokenUrl', async () => {
       const collectionName = 'collectionName';
-      const authPromise = Promise.resolve({ token, clientId });
+      const authPromise = Promise.resolve({ token, clientId, baseUrl });
       const { el } = createFixture(authPromise, collectionName);
       const instance: any = el.instance();
       const promiseSrc = Promise.resolve('cover-src');
@@ -137,7 +167,7 @@ describe('Audio viewer', () => {
 
     describe('AutoPlay', () => {
       async function createAutoPlayFixture(previewCount: number) {
-        const authPromise = Promise.resolve({ token, clientId });
+        const authPromise = Promise.resolve({ token, clientId, baseUrl });
         const context = createContext({ authPromise });
         const el = mount(
           <AudioViewer

@@ -341,15 +341,18 @@ describe(name, () => {
         expect(onSort).toHaveBeenCalledTimes(1);
         headCells.at(1).simulate('click');
         expect(onSort).toHaveBeenCalledTimes(1);
-        expect(onSort).toHaveBeenCalledWith({
-          key: 'first_name',
-          sortOrder: 'ASC',
-          item: {
+        expect(onSort).toHaveBeenCalledWith(
+          {
             key: 'first_name',
-            content: 'First name',
-            isSortable: true,
+            sortOrder: 'ASC',
+            item: {
+              key: 'first_name',
+              content: 'First name',
+              isSortable: true,
+            },
           },
-        });
+          expect.anything(),
+        );
         expect(onSetPage).toHaveBeenCalledWith(1);
         expect(onSetPage).toHaveBeenCalledTimes(1);
       });

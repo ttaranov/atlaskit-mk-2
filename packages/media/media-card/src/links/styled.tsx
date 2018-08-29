@@ -21,7 +21,7 @@ export const Wrapper: ComponentClass<
   HTMLAttributes<{}> & WrapperProps
 > = styled(Root)`
   ${borderRadius} ${({ appearance }: WrapperProps) =>
-      getCSSBoundaries(appearance)} user-select: none;
+    getCSSBoundaries(appearance)} user-select: none;
   background-color: ${akColorN20};
   line-height: initial;
   padding: 0 8px 8px 8px;

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/polyfills",
-  "version": "2.0.4",
+  "version": "3.0.1",
   "description": "A package containing polyfills for native methods.",
   "license": "Apache-2.0",
   "main": "index.js",
@@ -18,9 +18,9 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "peerDependencies": {
-    "react": "^16.3.0"
+    "react": "^16.4.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^4.0.1"
+    "@atlaskit/docs": "^5.0.2"
   }
 }

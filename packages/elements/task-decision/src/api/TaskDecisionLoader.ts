@@ -1,18 +1,15 @@
 import {
-  Decision,
   Item,
   Query,
   RecentUpdateContext,
-  Task,
   TaskDecisionProvider,
 } from '../types';
 
 /**
- * Grabs the latest Items from the service, deduplicating against existing items.
+ * Grabs the latest Items from the service.
  */
 export const loadLatestItems = (
   query: Query,
-  existing: Item[],
   provider: TaskDecisionProvider,
   recentUpdateContext: RecentUpdateContext,
 ): Promise<Item[]> => {
@@ -21,38 +18,10 @@ export const loadLatestItems = (
     return retryIteration(
       () => provider.getItems(query).then(r => r.items),
       recentUpdateContext,
-    ).then(items => mergeItems(existing, items));
+    );
   }
   // Just load
-  return provider
-    .getItems(query)
-    .then(response => mergeItems(existing, response.items));
-};
-
-/**
- * Grabs the latest Decisions from the service, deduplicating against existing Decisions.
- */
-export const loadLatestDecisions = (
-  query: Query,
-  existing: Decision[],
-  provider: TaskDecisionProvider,
-): Promise<Decision[]> => {
-  return provider
-    .getDecisions(query)
-    .then(response => mergeItems(existing, response.decisions));
-};
-
-/**
- * Grabs the latest Tasks from the service, deduplicating against existing Tasks.
- */
-export const loadLatestTasks = (
-  query: Query,
-  existing: Task[],
-  provider: TaskDecisionProvider,
-): Promise<Task[]> => {
-  return provider
-    .getTasks(query)
-    .then(response => mergeItems(existing, response.tasks));
+  return provider.getItems(query).then(response => response.items);
 };
 
 export interface ItemLoader<T> {
@@ -102,19 +71,4 @@ export const loadWithDelay = <T>(
       });
     }, delay);
   });
-};
-
-export interface ItemLike {
-  localId: string;
-}
-
-export const mergeItems = <I extends ItemLike>(
-  existingItems: I[],
-  newItems: I[],
-): I[] => {
-  const newIds = new Set(newItems.map(item => item.localId));
-  const unchangedItems = existingItems.filter(
-    item => !newIds.has(item.localId),
-  );
-  return [...newItems, ...unchangedItems];
 };

@@ -91,8 +91,12 @@ describe('<QuickSearch />', () => {
       return calls[calls.length - 1];
     };
 
-    const expectEventFiredLastToBe = name =>
+    const expectEventFiredLastToBe = (name, partialPayload) => {
       expect(getLastEventFired()[0]).toBe(name);
+      if (partialPayload) {
+        expect(getLastEventFired()[1]).toMatchObject(partialPayload);
+      }
+    };
     it('should fire event on mount', () => {
       expectEventFiredLastToBe(QS_ANALYTICS_EV_OPEN);
     });
@@ -118,6 +122,15 @@ describe('<QuickSearch />', () => {
           queryLength: expect.any(Number),
           resultCount: expect.any(Number),
           type: expect.any(String),
+        });
+      });
+
+      it('should fire submit analytics on shortcut submit', () => {
+        searchInput.simulate('keydown', { key: 'Enter', shiftKey: true });
+        expectEventFiredLastToBe(QS_ANALYTICS_EV_SUBMIT, {
+          newTab: false, // enter always open in the same tab
+          resultCount: 3,
+          method: 'shortcut',
         });
       });
     });
@@ -160,14 +173,14 @@ describe('<QuickSearch />', () => {
         expect(calls[calls.length - 2][0]).toBe(QS_ANALYTICS_EV_KB_CTRLS_USED);
       });
 
-      it('should only fire once per mount', () => {
+      it('should fire event every press', () => {
         searchInput.simulate('keydown', { key: 'ArrowUp' });
         searchInput.simulate('keydown', { key: 'ArrowUp' });
         searchInput.simulate('keydown', { key: 'ArrowUp' });
         const kbCtrlsUsedEventsFired = onAnalyticsEventSpy.mock.calls.filter(
           call => call[0] === QS_ANALYTICS_EV_KB_CTRLS_USED,
         );
-        expect(kbCtrlsUsedEventsFired).toHaveLength(1);
+        expect(kbCtrlsUsedEventsFired).toHaveLength(3);
       });
     });
     describe('query-entered event', () => {

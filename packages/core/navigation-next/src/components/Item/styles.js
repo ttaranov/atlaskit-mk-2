@@ -2,7 +2,7 @@
 
 import { colors, fontSize, gridSize as gridSizeFn } from '@atlaskit/theme';
 
-import type { ThemedProductComponentStyles } from '../../theme/types';
+import type { ThemedContentNavigationComponentStyles } from '../../theme/types';
 import type { ItemPresentationProps } from './types';
 
 const gridSize = gridSizeFn();
@@ -136,6 +136,7 @@ const light = ({
     beforeWrapper: {
       ...baseStyles.beforeWrapper,
       ...layoutStyles[spacing].beforeWrapper,
+      color: isSelected ? colors.B400 : colors.N500,
     },
     contentWrapper: baseStyles.contentWrapper,
     textWrapper: {
@@ -152,7 +153,7 @@ const light = ({
       ...layoutStyles[spacing].afterWrapper,
     },
   },
-  root: {
+  product: {
     itemBase: {
       ...baseStyles.itemBase,
       ...layoutStyles[spacing].itemBase,
@@ -184,6 +185,12 @@ const light = ({
   },
 });
 
+const darkContainerTextColor = ({ isActive, isSelected }) => {
+  if (isActive) return colors.B100;
+  if (isSelected) return colors.DN900;
+  return colors.DN400;
+};
+
 // Dark theme
 const dark = ({
   isActive,
@@ -205,15 +212,12 @@ const dark = ({
     beforeWrapper: {
       ...baseStyles.beforeWrapper,
       ...layoutStyles[spacing].beforeWrapper,
+      color: darkContainerTextColor({ isActive, isSelected }),
     },
     contentWrapper: baseStyles.contentWrapper,
     textWrapper: {
       ...baseStyles.textWrapper,
-      color: (() => {
-        if (isActive) return colors.B100;
-        if (isSelected) return colors.DN900;
-        return colors.DN400;
-      })(),
+      color: darkContainerTextColor({ isActive, isSelected }),
     },
     subTextWrapper: {
       ...baseStyles.subTextWrapper,
@@ -225,7 +229,7 @@ const dark = ({
       ...layoutStyles[spacing].afterWrapper,
     },
   },
-  root: {
+  product: {
     itemBase: {
       ...baseStyles.itemBase,
       ...layoutStyles[spacing].itemBase,
@@ -297,7 +301,7 @@ const settings = ({
       ...layoutStyles[spacing].afterWrapper,
     },
   },
-  root: {
+  product: {
     itemBase: {
       ...baseStyles.itemBase,
       ...layoutStyles[spacing].itemBase,
@@ -328,7 +332,7 @@ const settings = ({
   },
 });
 
-const themes: ThemedProductComponentStyles<ItemPresentationProps> = {
+const themes: ThemedContentNavigationComponentStyles<ItemPresentationProps> = {
   dark,
   light,
   settings,

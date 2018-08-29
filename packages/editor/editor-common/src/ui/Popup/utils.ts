@@ -183,15 +183,12 @@ export function calculatePosition({
         let topOffsetTop = targetTop - scrollParent.getBoundingClientRect().top;
         let targetEnd = targetHeight + topOffsetTop;
         if (
-          scrollParent.clientHeight - targetEnd <
-            popup.clientHeight + offset[1] + 1 &&
+          scrollParent.clientHeight - targetEnd <=
+            popup.clientHeight + offset[1] * 2 &&
           topOffsetTop < scrollParent.clientHeight
         ) {
-          const marginBottom = window.getComputedStyle(target).marginBottom;
-          const marginBottomCalc = marginBottom ? parseFloat(marginBottom) : 0;
-          const scroll =
-            targetEnd + marginBottomCalc - scrollParent.clientHeight;
-          top -= scroll + popup.clientHeight + 1;
+          const scroll = targetEnd - scrollParent.clientHeight + offset[1] * 2;
+          top -= scroll + popup.clientHeight;
         }
       }
     }
@@ -206,15 +203,13 @@ export function calculatePosition({
         offset[0],
     );
   } else if (horizontalPlacement === 'center') {
-    const parentWidth = target.parentElement!.clientWidth;
-    const parentLeft = target.parentElement!.getBoundingClientRect().left;
-    const newTargetWidth = target.clientWidth || targetWidth;
     position.left = Math.ceil(
-      parentLeft -
+      targetLeft -
         popupOffsetParentLeft +
-        (newTargetWidth > parentWidth ? parentWidth : newTargetWidth) / 2 -
-        popup.clientWidth / 2 +
-        offset[0],
+        (isBody(popupOffsetParent) ? 0 : popupOffsetParent.scrollLeft) +
+        offset[0] +
+        targetWidth / 2 -
+        popup.clientWidth / 2,
     );
   } else {
     position.right = Math.ceil(

@@ -66,7 +66,7 @@ export default class AutoDismissExample extends Component<void, State> {
                 }
                 key={flagId}
                 title={`Flag #${flagId}`}
-                description="I will auto dismiss after 15 seconds"
+                description="I will auto dismiss after 8 seconds"
               />
             );
           })}

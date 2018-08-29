@@ -25,7 +25,6 @@ const ToolbarContainer = styled.div`
 `;
 
 export interface Props {
-  ariaLabel: string;
   items: Array<FloatingToolbarItem<Function>>;
   dispatchCommand: (command?: Function) => void;
   popupsMountPoint?: HTMLElement;
@@ -36,7 +35,6 @@ export interface Props {
 export default class Toolbar extends Component<Props> {
   render() {
     const {
-      ariaLabel,
       items,
       dispatchCommand,
       popupsMountPoint,
@@ -47,9 +45,8 @@ export default class Toolbar extends Component<Props> {
       return null;
     }
 
-    // console.log('Re-render');
     return (
-      <ToolbarContainer aria-label={ariaLabel}>
+      <ToolbarContainer aria-label="Floating Toolbar">
         <ButtonGroup>
           {items.filter(item => !item.hidden).map((item, idx) => {
             switch (item.type) {

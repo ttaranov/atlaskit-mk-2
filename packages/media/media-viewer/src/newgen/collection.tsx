@@ -9,7 +9,7 @@ import { Outcome, Identifier, MediaViewerFeatureFlags } from './domain';
 import { ErrorMessage, createError, MediaViewerError } from './error';
 import { List } from './list';
 import { Subscription } from 'rxjs';
-import { toIdentifier } from './util';
+import { toIdentifier } from './utils';
 import { Spinner } from './loading';
 
 export type Props = Readonly<{
@@ -26,7 +26,7 @@ export type State = {
   items: Outcome<MediaCollectionItem[], MediaViewerError>;
 };
 
-const initialState: State = { items: { status: 'PENDING' } };
+const initialState: State = { items: Outcome.pending() };
 
 export class Collection extends React.Component<Props, State> {
   state: State = initialState;
@@ -57,16 +57,11 @@ export class Collection extends React.Component<Props, State> {
       collectionName,
       showControls,
     } = this.props;
-    const { items } = this.state;
-    switch (items.status) {
-      case 'PENDING':
-        return <Spinner />;
-      case 'FAILED':
-        return <ErrorMessage error={items.err} />;
-      case 'SUCCESSFUL':
-        const identifiers = items.data.map(x =>
-          toIdentifier(x, collectionName),
-        );
+
+    return this.state.items.match({
+      pending: () => <Spinner />,
+      successful: items => {
+        const identifiers = items.map(x => toIdentifier(x, collectionName));
         const item = defaultSelectedItem
           ? { ...defaultSelectedItem, collectionName }
           : identifiers[0];
@@ -80,7 +75,9 @@ export class Collection extends React.Component<Props, State> {
             showControls={showControls}
           />
         );
-    }
+      },
+      failed: err => <ErrorMessage error={err} />,
+    });
   }
 
   private init(props: Props) {
@@ -96,17 +93,15 @@ export class Collection extends React.Component<Props, State> {
       next: collection => {
         if (isError(collection)) {
           this.setState({
-            items: {
-              status: 'FAILED',
-              err: createError('metadataFailed', undefined, collection),
-            },
+            items: Outcome.failed(
+              createError('metadataFailed', undefined, collection),
+            ),
           });
         } else {
           this.setState({
-            items: {
-              status: 'SUCCESSFUL',
-              data: collection.items.filter(collectionFileItemFilter),
-            },
+            items: Outcome.successful(
+              collection.items.filter(collectionFileItemFilter),
+            ),
           });
           if (defaultSelectedItem && this.shouldLoadNext(defaultSelectedItem)) {
             if (this.provider) {
@@ -139,10 +134,12 @@ export class Collection extends React.Component<Props, State> {
 
   private shouldLoadNext(selectedItem: Identifier): boolean {
     const { items } = this.state;
-    if (items.status !== 'SUCCESSFUL' || items.data.length === 0) {
-      return false;
-    }
-    return this.isLastItem(selectedItem, items.data);
+    return items.match({
+      pending: () => false,
+      failed: () => false,
+      successful: items =>
+        items.length !== 0 && this.isLastItem(selectedItem, items),
+    });
   }
 
   private isLastItem(selectedItem: Identifier, items: MediaCollectionItem[]) {

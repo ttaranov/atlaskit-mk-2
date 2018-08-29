@@ -1,5 +1,7 @@
 import { exactMatch, fillInResponse, MockContext } from '..';
+import { userAuthProviderBaseURL } from '../..';
 import { MockRequest, MockResponse } from 'xhr-mock';
+import { Auth } from '@atlaskit/media-core';
 
 export const tenantAuth = (context: () => MockContext) => (
   req: MockRequest,
@@ -62,9 +64,17 @@ export const tenantAuth = (context: () => MockContext) => (
         'content-length': '602',
         'content-type': 'application/json; charset=utf-8',
       },
-      body: JSON.stringify({ token: token, clientId: clientId }),
+      body: JSON.stringify(<Auth>{
+        token,
+        clientId,
+        baseUrl: userAuthProviderBaseURL,
+      }),
     };
-    context().tenantContext.auth = { clientId: clientId, token: token };
+    context().tenantContext.auth = {
+      clientId,
+      token,
+      baseUrl: userAuthProviderBaseURL,
+    };
     fillInResponse(res, resdata);
     return res;
   }

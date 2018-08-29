@@ -1,10 +1,17 @@
 import { Node as PmNode } from 'prosemirror-model';
 import { EditorState, Plugin, PluginKey, Transaction } from 'prosemirror-state';
-import { TableMap } from 'prosemirror-tables';
-import { findTable, findParentDomRefOfType } from 'prosemirror-utils';
+import {
+  TableMap,
+  columnResizingPluginKey as resizingPluginKey,
+} from 'prosemirror-tables';
+import {
+  findTable,
+  findParentDomRefOfType,
+  findDomRefAtPos,
+} from 'prosemirror-utils';
 import { EditorView, DecorationSet } from 'prosemirror-view';
-import { TableLayout } from '@atlaskit/editor-common';
-
+import { browser } from '@atlaskit/editor-common';
+import { PluginConfig, TablePluginState } from '../types';
 import {
   isElementInTableCell,
   setNodeSelection,
@@ -15,40 +22,49 @@ import { Dispatch } from '../../../event-dispatcher';
 import TableNodeView from '../nodeviews/table';
 import { EventDispatcher } from '../../../event-dispatcher';
 import { PortalProviderAPI } from '../../../ui/PortalProvider';
-
-export type PermittedLayoutsDescriptor = (TableLayout)[] | 'all';
-
-export interface PluginConfig {
-  allowBackgroundColor?: boolean;
-  allowColumnResizing?: boolean;
-  allowHeaderColumn?: boolean;
-  allowHeaderRow?: boolean;
-  allowMergeCells?: boolean;
-  allowNumberColumn?: boolean;
-  isHeaderRowRequired?: boolean;
-  stickToolbarToBottom?: boolean;
-  permittedLayouts?: PermittedLayoutsDescriptor;
-}
-
-export interface TablePluginState {
-  hoverDecoration: DecorationSet;
-  pluginConfig: PluginConfig;
-  editorHasFocus?: boolean;
-  // controls need to be re-rendered when table content changes
-  // e.g. when pressing enter inside of a cell, it creates a new p and we need to update row controls
-  tableNode?: PmNode;
-  tableRef?: HTMLElement;
-  isTableHovered?: boolean;
-  isTableInDanger?: boolean;
-}
+import {
+  setEditorFocus,
+  setTargetCell,
+  setTableRef,
+  clearHoverSelection,
+} from '../actions';
+import {
+  handleSetFocus,
+  handleSetTableRef,
+  handleSetTargetCellRef,
+  handleSetTargetCellPosition,
+  handleClearSelection,
+  handleHoverColumns,
+  handleHoverRows,
+  handleHoverTable,
+  handleDocChanged,
+  handleSelectionChanged,
+  handleToggleContextualMenu,
+} from '../action-handlers';
 
 export const pluginKey = new PluginKey('tablePlugin');
 
 export const defaultTableSelection = {
+  dangerColumns: [],
+  dangerRows: [],
+  hoverDecoration: DecorationSet.empty,
   isTableInDanger: false,
   isTableHovered: false,
-  hoverDecoration: DecorationSet.empty,
 };
+
+const isIE11 = browser.ie_version === 11;
+
+export enum ACTIONS {
+  SET_EDITOR_FOCUS,
+  SET_TABLE_REF,
+  SET_TARGET_CELL_REF,
+  SET_TARGET_CELL_POSITION,
+  CLEAR_HOVER_SELECTION,
+  HOVER_COLUMNS,
+  HOVER_ROWS,
+  HOVER_TABLE,
+  TOGGLE_CONTEXTUAL_MENU,
+}
 
 export const createPlugin = (
   dispatch: Dispatch,
@@ -68,28 +84,71 @@ export const createPlugin = (
         _,
         state: EditorState,
       ) {
-        const nextPluginState = tr.getMeta(pluginKey);
-        if (nextPluginState) {
-          dispatch(pluginKey, nextPluginState);
-          return nextPluginState;
+        const meta = tr.getMeta(pluginKey) || {};
+        const data = meta.data || {};
+        const {
+          editorHasFocus,
+          tableRef,
+          targetCellRef,
+          targetCellPosition,
+          hoverDecoration,
+          dangerColumns,
+          dangerRows,
+          isTableInDanger,
+          isContextualMenuOpen,
+        } = data;
+
+        switch (meta.action) {
+          case ACTIONS.SET_EDITOR_FOCUS:
+            return handleSetFocus(editorHasFocus)(pluginState, dispatch);
+
+          case ACTIONS.SET_TABLE_REF:
+            return handleSetTableRef(state, tableRef)(pluginState, dispatch);
+
+          case ACTIONS.SET_TARGET_CELL_REF:
+            return handleSetTargetCellRef(targetCellRef)(pluginState, dispatch);
+
+          case ACTIONS.SET_TARGET_CELL_POSITION:
+            return handleSetTargetCellPosition(targetCellPosition)(
+              pluginState,
+              dispatch,
+            );
+
+          case ACTIONS.CLEAR_HOVER_SELECTION:
+            return handleClearSelection(pluginState, dispatch);
+
+          case ACTIONS.HOVER_COLUMNS:
+            return handleHoverColumns(state, hoverDecoration, dangerColumns)(
+              pluginState,
+              dispatch,
+            );
+
+          case ACTIONS.HOVER_ROWS:
+            return handleHoverRows(state, hoverDecoration, dangerRows)(
+              pluginState,
+              dispatch,
+            );
+
+          case ACTIONS.HOVER_TABLE:
+            return handleHoverTable(hoverDecoration, isTableInDanger)(
+              pluginState,
+              dispatch,
+            );
+
+          case ACTIONS.TOGGLE_CONTEXTUAL_MENU:
+            return handleToggleContextualMenu(isContextualMenuOpen)(
+              pluginState,
+              dispatch,
+            );
+
+          default:
+            break;
         }
 
         if (tr.docChanged) {
-          const table = findTable(state.selection);
-          const tableNode = table ? table.node : undefined;
-          if (
-            pluginState.tableNode !== tableNode ||
-            pluginState.hoverDecoration !== DecorationSet.empty
-          ) {
-            const nextPluginState = {
-              ...pluginState,
-              // @see: https://product-fabric.atlassian.net/browse/ED-3796
-              ...defaultTableSelection,
-              tableNode,
-            };
-            dispatch(pluginKey, nextPluginState);
-            return nextPluginState;
-          }
+          return handleDocChanged(state)(pluginState, dispatch, tr);
+        } else if (tr.selectionSet) {
+          return handleSelectionChanged(state)(pluginState, dispatch);
         }
 
         return pluginState;
@@ -104,9 +163,9 @@ export const createPlugin = (
           const { state, dispatch } = view;
           const { selection } = state;
           const pluginState = getPluginState(state);
-
+          const { editorHasFocus, targetCellPosition } = pluginState;
           let tableRef;
-          if (pluginState.editorHasFocus) {
+          if (editorHasFocus) {
             const parent = findParentDomRefOfType(
               state.schema.nodes.table,
               domAtPos,
@@ -116,12 +175,17 @@ export const createPlugin = (
             }
           }
           if (pluginState.tableRef !== tableRef) {
-            setPluginState({
-              tableRef,
-              tableNode: tableRef
-                ? findTable(state.selection)!.node
-                : undefined,
-            })(state, dispatch);
+            setTableRef(tableRef)(state, dispatch);
+          }
+
+          const dragging = (resizingPluginKey.getState(state) || {}).dragging;
+          const targetCellRef =
+            editorHasFocus && tableRef && !dragging && targetCellPosition
+              ? (findDomRefAtPos(targetCellPosition, domAtPos) as HTMLElement)
+              : undefined;
+
+          if (pluginState.targetCellRef !== targetCellRef) {
+            setTargetCell(targetCellRef)(state, dispatch);
           }
         },
       };
@@ -131,7 +195,7 @@ export const createPlugin = (
 
       handleClick: ({ state, dispatch }) => {
         if (getPluginState(state).hoverDecoration !== DecorationSet.empty) {
-          setPluginState({ ...defaultTableSelection })(state, dispatch);
+          clearHoverSelection(state, dispatch);
         }
         return false;
       },
@@ -154,13 +218,16 @@ export const createPlugin = (
       handleDOMEvents: {
         blur(view: EditorView, event) {
           const { state, dispatch } = view;
-          setPluginState({ editorHasFocus: false })(state, dispatch);
+          // fix for issue ED-4665
+          if (!isIE11) {
+            setEditorFocus(false)(state, dispatch);
+          }
           event.preventDefault();
           return false;
         },
         focus(view: EditorView, event) {
           const { state, dispatch } = view;
-          setPluginState({ editorHasFocus: true })(state, dispatch);
+          setEditorFocus(true)(state, dispatch);
           event.preventDefault();
           return false;
         },
@@ -219,17 +286,4 @@ export const createPlugin = (
 
 export const getPluginState = (state: EditorState) => {
   return pluginKey.getState(state);
-};
-
-export const setPluginState = (stateProps: Object) => (
-  state: EditorState,
-  dispatch: (tr: Transaction) => void,
-): boolean => {
-  const pluginState = getPluginState(state);
-  const nextPluginState = {
-    ...pluginState,
-    ...stateProps,
-  };
-  dispatch(state.tr.setMeta(pluginKey, nextPluginState));
-  return true;
 };

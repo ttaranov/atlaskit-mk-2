@@ -223,4 +223,44 @@ describe('Renderer - React/Nodes/BodiedExtension', () => {
 
     extension.unmount();
   });
+
+  it('should add correct width to extension', () => {
+    const widths = [
+      {
+        layout: 'default',
+        style: 'width: inherit;',
+      },
+      {
+        layout: 'wide',
+        style: 'width: 100%;',
+      },
+      {
+        layout: 'full-width',
+        style: 'width: 100%;',
+      },
+    ];
+    widths.forEach(w => {
+      const extension = mount(
+        <BodiedExtension
+          serializer={serializer}
+          extensionHandlers={extensionHandlers}
+          rendererContext={rendererContext}
+          extensionType="com.atlassian.fabric"
+          extensionKey="error"
+          layout={w.layout}
+        >
+          <p>This is the default content of the extension</p>
+        </BodiedExtension>,
+      );
+
+      expect(
+        extension
+          .find('div')
+          .first()
+          .getDOMNode()
+          .getAttribute('style'),
+      ).to.equal(w.style);
+      extension.unmount();
+    });
+  });
 });

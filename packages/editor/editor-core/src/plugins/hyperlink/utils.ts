@@ -1,5 +1,6 @@
-import { Slice, Fragment, Node, Schema } from 'prosemirror-model';
+import { Slice, Node, Schema } from 'prosemirror-model';
 import * as LinkifyIt from 'linkify-it';
+import { mapSlice } from '../../utils/slice';
 
 export const LINK_REGEXP = /(https?|ftp):\/\/[^\s]+/;
 
@@ -70,44 +71,36 @@ export function normalizeUrl(url: string) {
 }
 
 export function linkifyContent(schema: Schema, slice: Slice): Slice {
-  const fragment = linkinfyFragment(schema, slice.content);
-  return new Slice(fragment, slice.openStart, slice.openEnd);
-}
-
-function linkinfyFragment(schema: Schema, fragment: Fragment): Fragment {
-  const linkified: Node[] = [];
-  for (let i = 0, len = fragment.childCount; i < len; i++) {
-    const child: Node = fragment.child(i);
-    if (child.type === schema.nodes.table) {
-      linkified.push(child);
-    } else if (child.isText) {
-      const text = child.textContent as string;
-      const link = child.type.schema.marks['link'];
+  return mapSlice(slice, (node, parent) => {
+    const isAllowedInParent = !parent || parent.type !== schema.nodes.codeBlock;
+    if (isAllowedInParent && node.isText) {
+      const linkified = [] as Node[];
+      const link = node.type.schema.marks['link'];
+      const text = node.text!;
       const matches: any[] = findLinkMatches(text);
       let pos = 0;
       matches.forEach(match => {
         if (match.start > 0) {
-          linkified.push(child.cut(pos, match.start));
+          linkified.push(node.cut(pos, match.start));
         }
         linkified.push(
-          child
+          node
             .cut(match.start, match.end)
             .mark(
               link
                 .create({ href: normalizeUrl(match.href) })
-                .addToSet(child.marks),
+                .addToSet(node.marks),
             ),
         );
         pos = match.end;
       });
       if (pos < text.length) {
-        linkified.push(child.cut(pos));
+        linkified.push(node.cut(pos));
       }
-    } else {
-      linkified.push(child.copy(linkinfyFragment(schema, child.content)));
+      return linkified;
     }
-  }
-  return Fragment.fromArray(linkified);
+    return node;
+  });
 }
 
 interface LinkMatch {

@@ -1,8 +1,17 @@
 // @flow
 import React, { Component } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import ChevronUpIcon from '@atlaskit/icon/glyph/chevron-up';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../../package.json';
 import Container, {
   Description,
   DismissButton,
@@ -22,7 +31,7 @@ type State = {
   isExpanded: boolean,
 };
 
-export default class Flag extends Component<FlagProps, State> {
+class Flag extends Component<FlagProps, State> {
   props: FlagProps; // eslint-disable-line react/sort-comp
 
   static defaultProps = {
@@ -148,3 +157,47 @@ export default class Flag extends Component<FlagProps, State> {
     );
   }
 }
+
+export { Flag as FlagWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'flag',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onBlur: createAndFireEventOnAtlaskit({
+      action: 'blurred',
+      actionSubject: 'flag',
+
+      attributes: {
+        componentName: 'flag',
+        packageName,
+        packageVersion,
+      },
+    }),
+
+    onDismissed: createAndFireEventOnAtlaskit({
+      action: 'dismissed',
+      actionSubject: 'flag',
+
+      attributes: {
+        componentName: 'flag',
+        packageName,
+        packageVersion,
+      },
+    }),
+
+    onFocus: createAndFireEventOnAtlaskit({
+      action: 'focused',
+      actionSubject: 'flag',
+
+      attributes: {
+        componentName: 'flag',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(Flag),
+);

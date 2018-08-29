@@ -2,7 +2,7 @@
 
 import { colors } from '@atlaskit/theme';
 
-import type { ThemedGlobalComponentStyles } from '../../theme/types';
+import type { ThemedGlobalNavigationComponentStyles } from '../../theme/types';
 import { GLOBAL_NAV_WIDTH } from '../../common/constants';
 
 const baseStyles = {
@@ -41,6 +41,10 @@ const settings = () => ({
   fill: colors.N800,
 });
 
-const themes: ThemedGlobalComponentStyles<void> = { dark, light, settings };
+const themes: ThemedGlobalNavigationComponentStyles<void> = {
+  dark,
+  light,
+  settings,
+};
 
 export default themes;

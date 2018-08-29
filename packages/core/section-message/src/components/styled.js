@@ -8,11 +8,11 @@ import {
   typography,
 } from '@atlaskit/theme';
 
-export const Container = styled.div`
+export const Container = styled.section`
+  display: flex;
   border-radius: ${borderRadius}px;
   background-color: ${({ backgroundColor }) => backgroundColor};
   padding: ${math.multiply(gridSize, 2)}px;
-  padding-right: ${math.multiply(gridSize, 2.5)}px;
 `;
 
 export const Title = styled.h1`
@@ -51,13 +51,8 @@ export const Action = styled.div`
 export const IconWrapper = styled.div`
   flex: 0 0 auto;
   width: ${math.multiply(gridSize, 5)}px;
-`;
-export const Content = styled.div`
-  margin-top: ${math.divide(gridSize, 4)}px;
-  margin-bottom: ${math.divide(gridSize, 2)}px;
-`;
-
-export const ContentContainer = styled.section`
-  display: inline-flex;
-  align-items: flex-start;
+  > span {
+    margin: -2px 0;
+    vertical-align: top;
+  }
 `;

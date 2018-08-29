@@ -14,8 +14,8 @@ export default md`
       production.
     </SectionMessage>
   )}
-  
-  ${code`import SectionMessage from '@atlaskit/section-message`}
+
+  ${code`import SectionMessage from '@atlaskit/section-message';`}
 
   Section messages are part of the content of a user interface, and are used to
   alert users of a particular screen area that needs user action. These

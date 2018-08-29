@@ -44,7 +44,7 @@ const getFocusedStyles = ({ isFocused, color, ...rest }) => {
 
 export const linkStyles = css`
   ${COMMON_STYLES} ${getFocusedStyles} text-decoration: ${({ color }) =>
-      color === 'standard' ? 'none' : 'underline'};
+  color === 'standard' ? 'none' : 'underline'};
 
   &:hover {
     color: ${colors.linkHover};

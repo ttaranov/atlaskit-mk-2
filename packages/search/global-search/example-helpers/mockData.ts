@@ -1,13 +1,12 @@
 import { GraphqlResponse, SearchResult } from '../src/api/PeopleSearchClient';
 import { RecentItemsResponse } from '../src/api/RecentSearchClient';
-import { QuickNavResponse, QuickNavResult } from '../src/api/ConfluenceClient';
+import { QuickNavResult } from '../src/api/ConfluenceClient';
 import {
   CrossProductSearchResponse,
   Scope,
   ConfluenceItem,
   JiraItem,
 } from '../src/api/CrossProductSearchClient';
-import { RecentPage, RecentSpace } from '../src/api/ConfluenceClient';
 
 import * as uuid from 'uuid/v4';
 
@@ -137,10 +136,6 @@ const getPastDate = () => {
   let offset = 0 - Math.round(Math.random() * 365 * 24 * 3600 * 1000);
   return getDateWithOffset(offset);
 };
-const getFutureDate = () => {
-  let offset = 100000 + Math.round(Math.random() * 10000);
-  return getDateWithOffset(offset);
-};
 
 function randomJiraIconUrl() {
   const urls = [
@@ -175,7 +170,7 @@ function randomSpaceIconUrl() {
 }
 
 export function recentData(n = 50): RecentItemsResponse {
-  const items = [];
+  const items: any = [];
 
   for (let i = 0; i < n; i++) {
     const provider = randomProvider();
@@ -213,6 +208,11 @@ export function makeCrossProductSearchData(
 
   for (let i = 0; i < n; i++) {
     const url = getMockUrl();
+    const type = pickRandom(['page', 'blogpost']);
+    const icon =
+      type === 'page'
+        ? 'aui-iconfont-page-default'
+        : 'aui-iconfont-blogpost-default';
     confData.push({
       title: getMockCatchPhrase(),
       container: {
@@ -222,16 +222,26 @@ export function makeCrossProductSearchData(
       url: url,
       baseUrl: DUMMY_BASE_URL,
       content: {
-        type: pickRandom(['page', 'blogpost']),
+        id: uuid(),
+        type: type,
       },
+      iconCssClass: icon,
     });
   }
 
   for (let i = 0; i < n; i++) {
     const url = getMockUrl();
+    const type = pickRandom(['page', 'blogpost', 'attachment']);
+
+    const title =
+      type === 'attachment'
+        ? `${getMockCatchPhrase()}.mp3`
+        : getMockCatchPhrase();
+    const icon =
+      type === 'attachment' ? 'icon-file-audio' : 'aui-iconfont-page-default';
 
     const newAttachment: ConfluenceItem = {
-      title: getMockCatchPhrase(),
+      title: title,
       container: {
         title: getMockCompanyName(),
         displayUrl: url,
@@ -239,8 +249,10 @@ export function makeCrossProductSearchData(
       url: url,
       baseUrl: DUMMY_BASE_URL,
       content: {
-        type: pickRandom(['page', 'blogpost', 'attachment']),
+        id: uuid(),
+        type: type,
       },
+      iconCssClass: icon,
     };
 
     confDataWithAttachments.push(newAttachment);
@@ -252,16 +264,21 @@ export function makeCrossProductSearchData(
       title: title,
       baseUrl: '',
       url: getMockUrl(),
-      content: null,
+      content: {
+        id: uuid(),
+        type: i % 3 ? 'blogpost' : 'page',
+      },
       container: {
         title: title,
         displayUrl: getMockUrl(),
       },
       space: {
+        key: getMockAbbreviation(),
         icon: {
           path: randomSpaceIconUrl(),
         },
       },
+      iconCssClass: 'aui-iconfont-space-default',
     });
   }
 
@@ -296,25 +313,29 @@ export function makeCrossProductSearchData(
     );
 
     const filteredConfResultsWithAttachments = confDataWithAttachments.filter(
-      result => result.container.title.toLowerCase().indexOf(term) > -1,
+      result => result.title.toLowerCase().indexOf(term) > -1,
     );
 
     return {
       scopes: [
         {
           id: Scope.ConfluencePageBlog,
+          experimentId: 'experiment-1',
           results: filteredConfResults,
         },
         {
           id: Scope.ConfluencePageBlogAttachment,
+          experimentId: 'experiment-1',
           results: filteredConfResultsWithAttachments,
         },
         {
           id: Scope.JiraIssue,
+          experimentId: 'experiment-1',
           results: filteredJiraResults,
         },
         {
           id: Scope.ConfluenceSpace,
+          experimentId: 'experiment-1',
           results: filteredSpaceResults,
         },
       ],
@@ -346,6 +367,7 @@ export function makePeopleSearchData(
 
     return {
       data: {
+        UserSearch: filteredItems,
         AccountCentricUserSearch: filteredItems,
         Collaborators: filteredItems,
       },

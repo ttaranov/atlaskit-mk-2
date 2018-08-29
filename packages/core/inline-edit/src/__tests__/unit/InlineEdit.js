@@ -5,7 +5,9 @@ import ConfirmIcon from '@atlaskit/icon/glyph/check';
 import CancelIcon from '@atlaskit/icon/glyph/cross';
 import FieldBase, { Label } from '@atlaskit/field-base';
 
-import InlineEditStateless from '../../InlineEditStateless';
+import InlineEditStatelessWithAnalytics, {
+  InlineEditStatelessWithoutAnalytics as InlineEditStateless,
+} from '../../InlineEditStateless';
 import FieldBaseWrapper from '../../styled/FieldBaseWrapper';
 
 const noop = () => {};
@@ -177,24 +179,6 @@ describe('@atlaskit/inline-edit', () => {
     });
   });
 
-  describe('shouldResetFieldBase', () => {
-    describe('when switching from isEditing=true to isEditing=false', () =>
-      it('should set shouldReset property on FieldBase', () => {
-        const wrapper = shallow(
-          <InlineEditStateless {...defaultProps} isEditing />,
-        );
-        wrapper.setProps({ isEditing: false });
-        expect(wrapper.find(FieldBase).prop('shouldReset')).toBe(true);
-      }));
-
-    describe('when switching from isEditing=false to isEditing=true', () =>
-      it('should not set shouldReset property on FieldBase', () => {
-        const wrapper = shallow(<InlineEditStateless {...defaultProps} />);
-        wrapper.setProps({ isEditing: true });
-        expect(wrapper.find(FieldBase).prop('shouldReset')).toBe(false);
-      }));
-  });
-
   describe('isWaiting', () => {
     describe('when isEditing is false', () =>
       it('FieldBase should not have isLoading prop', () => {
@@ -322,5 +306,30 @@ describe('@atlaskit/inline-edit', () => {
         '100%',
       );
     });
+  });
+});
+
+describe('InlineEditStatelessWithAnalytics', () => {
+  beforeEach(() => {
+    jest.spyOn(global.console, 'warn');
+    jest.spyOn(global.console, 'error');
+  });
+  afterEach(() => {
+    global.console.warn.mockRestore();
+    global.console.error.mockRestore();
+  });
+
+  it('should mount without errors', () => {
+    const readView = <span>read</span>;
+    mount(
+      <InlineEditStatelessWithAnalytics
+        {...defaultProps}
+        readView={readView}
+      />,
+    );
+    /* eslint-disable no-console */
+    expect(console.warn).not.toHaveBeenCalled();
+    expect(console.error).not.toHaveBeenCalled();
+    /* eslint-enable no-console */
   });
 });

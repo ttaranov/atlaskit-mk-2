@@ -5,7 +5,11 @@ import SelectClearIcon from '@atlaskit/icon/glyph/select-clear';
 // import { Truncate } from './utils';
 
 export { CheckboxOption, RadioOption } from './input-options';
-export { ClearIndicator, DropdownIndicator } from './indicators';
+export {
+  ClearIndicator,
+  DropdownIndicator,
+  LoadingIndicator,
+} from './indicators';
 
 export const MultiValueRemove = (props: any) => (
   <components.MultiValueRemove {...props}>

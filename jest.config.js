@@ -7,8 +7,8 @@ const PARALLELIZE_TESTS = process.env.PARALLELIZE_TESTS;
 const OVERRIDE_TEST_IGNORE = process.env.OVERRIDE_TEST_IGNORE;
 const PROD = process.env.PROD;
 // These are set by Pipelines if you are running in a parallel steps
-const STEP_IDX = process.env.STEP_IDX;
-const STEPS = process.env.STEPS;
+const STEP_IDX = Number(process.env.STEP_IDX);
+const STEPS = Number(process.env.STEPS);
 
 /**
  * USAGE for parallelizing: setting PARALLELIZE_TESTS to an array of globs or an array of test files when you
@@ -45,7 +45,7 @@ const config = {
   },
   globals: {
     'ts-jest': {
-      tsConfigFile: './tsconfig.fabric.json',
+      tsConfigFile: './tsconfig.jest.json',
       skipBabel: true,
     },
     __BASEURL__: 'http://localhost:9000',
@@ -106,15 +106,12 @@ if (OVERRIDE_TEST_IGNORE) {
  */
 if (PARALLELIZE_TESTS) {
   const allTests = JSON.parse(PARALLELIZE_TESTS);
-  const filesPerJob = Math.ceil(allTests.length / Number(STEPS));
-  const startIdx = filesPerJob * Number(STEP_IDX);
-  const endIdx = startIdx + filesPerJob;
-  config.testMatch = allTests.slice(startIdx, startIdx + filesPerJob);
+  config.testMatch = allTests.filter((_, i) => i % STEPS - STEP_IDX === 0);
 
   console.log('Parallelising jest tests.');
   console.log(`Parallel step ${String(STEP_IDX)} of ${String(STEPS)}`);
   console.log('Total test files', allTests.length);
-  console.log(`Running filess: ${startIdx}-${endIdx}`);
+  console.log('Number of test files in this step', config.testMatch.length);
 }
 
 // Annoyingly, if the array is empty, jest will fallback to its defaults and run everything

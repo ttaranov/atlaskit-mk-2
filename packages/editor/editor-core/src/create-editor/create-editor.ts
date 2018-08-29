@@ -7,9 +7,16 @@ import ErrorReporter from '../utils/error-reporter';
 import { name, version } from '../version';
 import { Dispatch, EventDispatcher } from '../event-dispatcher';
 import { PortalProviderAPI } from '../ui/PortalProvider';
+import Ranks from '../plugins/rank';
 
 export function sortByRank(a: { rank: number }, b: { rank: number }): number {
   return a.rank - b.rank;
+}
+
+function sortByOrder(item) {
+  return function(a: { name: string }, b: { name: string }): number {
+    return Ranks[item].indexOf(a.name) - Ranks[item].indexOf(b.name);
+  };
 }
 
 export function fixExcludes(marks: {
@@ -98,14 +105,13 @@ export function processPluginsList(
 
 export function createSchema(editorConfig: EditorConfig) {
   const marks = fixExcludes(
-    editorConfig.marks.sort(sortByRank).reduce((acc, mark) => {
+    editorConfig.marks.sort(sortByOrder('marks')).reduce((acc, mark) => {
       acc[mark.name] = mark.mark;
       return acc;
     }, {}),
   );
-
   const nodes = sanitizeNodes(
-    editorConfig.nodes.sort(sortByRank).reduce((acc, node) => {
+    editorConfig.nodes.sort(sortByOrder('nodes')).reduce((acc, node) => {
       acc[node.name] = node.node;
       return acc;
     }, {}),
@@ -124,6 +130,7 @@ export function createPMPlugins({
   providerFactory,
   errorReporter,
   portalProviderAPI,
+  reactContext,
 }: {
   editorConfig: EditorConfig;
   schema: Schema;
@@ -133,9 +140,10 @@ export function createPMPlugins({
   providerFactory: ProviderFactory;
   errorReporter: ErrorReporter;
   portalProviderAPI: PortalProviderAPI;
+  reactContext: () => { [key: string]: any };
 }): Plugin[] {
   return editorConfig.pmPlugins
-    .sort(sortByRank)
+    .sort(sortByOrder('plugins'))
     .map(({ plugin }) =>
       plugin({
         schema,
@@ -145,6 +153,7 @@ export function createPMPlugins({
         errorReporter,
         eventDispatcher,
         portalProviderAPI,
+        reactContext,
       }),
     )
     .filter(plugin => !!plugin) as Plugin[];

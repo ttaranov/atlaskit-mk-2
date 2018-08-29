@@ -30,7 +30,7 @@ class Task extends ReactNodeView {
     this.view.dispatch(tr);
   };
 
-  getDomRef() {
+  createDomRef() {
     const domRef = document.createElement('li');
     domRef.style['list-style-type'] = 'none';
     return domRef;
@@ -40,14 +40,13 @@ class Task extends ReactNodeView {
     return { dom: document.createElement('div') };
   }
 
-  render(props, forawardRef) {
-    const node = this.node;
-    const { localId, state } = node.attrs;
+  render(props, forwardRef) {
+    const { localId, state } = this.node.attrs;
 
     const taskItem = (
       <TaskItem
         taskId={localId}
-        contentRef={forawardRef}
+        contentRef={forwardRef}
         isDone={state === 'DONE'}
         onChange={this.handleOnChange}
         showPlaceholder={this.isContentEmpty()}
@@ -62,15 +61,20 @@ class Task extends ReactNodeView {
     );
   }
 
-  update(node: PMNode) {
+  update(node: PMNode, decorations) {
     /**
-     * Return false here because allowing node updates breaks 'checking the box'
-     * when using collab editing.
+     * Returning false here when the previous content was empty fixes an error where the editor fails to set selection
+     * inside the contentDOM after a transaction. See ED-2374.
      *
-     * This is likely because the taskDecisionProvider is updating itself &
-     * Prosemirror is interfering.
+     * Returning false also when the task state has changed to force the checkbox to update. See ED-5107
      */
-    return false;
+    return super.update(
+      node,
+      decorations,
+      (currentNode, newNode) =>
+        !this.isContentEmpty() &&
+        !!(currentNode.attrs.state === newNode.attrs.state),
+    );
   }
 }
 

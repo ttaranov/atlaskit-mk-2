@@ -9,9 +9,6 @@ const babelPolyfill = require.resolve('babel-polyfill');
 const customEventPolyfill = require.resolve('custom-event-polyfill');
 const entry = require.resolve('./entry');
 const browserFetcher = puppeteer.createBrowserFetcher();
-const revisionInfo = browserFetcher.download(ChromiumRevision);
-
-process.env.CHROME_BIN = revisionInfo.executablePath;
 
 const webpackConfig = {
   module: {
@@ -68,6 +65,9 @@ async function getAliases(cwd) {
 }
 
 async function getKarmaConfig({ cwd, watch, browserstack }) {
+  const revisionInfo = await browserFetcher.download(ChromiumRevision);
+  process.env.CHROME_BIN = revisionInfo.executablePath;
+
   const aliases = await getAliases(cwd);
   webpackConfig.resolve.alias = { ...aliases, ...webpackConfig.resolve.alias };
 

@@ -1,10 +1,8 @@
 {
-  "extends": "../../../tsconfig.fabric.json",
+  "extends": "../../../tsconfig.media.json",
   "include": [
     "./src/**/*.ts",
     "./src/**/*.tsx",
-    "./__tests__/**/*.ts",
-    "./__tests__/**/*.tsx",
     "./examples/*.ts",
     "./examples/*.tsx",
     "./example-helpers/*.ts",

@@ -28,12 +28,10 @@ type Item = {|
 |};
 
 const getItems = (count: number): Item[] =>
-  Array.from({ length: count }, (v, k) => k).map(
-    (val: number): Item => ({
-      id: `${val}`,
-      content: `item ${val}`,
-    }),
-  );
+  Array.from({ length: count }, (v, k) => k).map((val: number): Item => ({
+    id: `${val}`,
+    content: `item ${val}`,
+  }));
 
 type State = {
   items: Item[],

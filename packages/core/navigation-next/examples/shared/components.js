@@ -1,23 +1,19 @@
 // @flow
+/* eslint-disable react/no-multi-comp */
 
 import React, { PureComponent } from 'react';
-import { JiraWordmark as JiraWordmarkLogo } from '@atlaskit/logo';
 import { gridSize as gridSizeFn } from '@atlaskit/theme';
-import { Link, Route, withRouter } from 'react-router-dom';
-import LinkIcon from '@atlaskit/icon/glyph/link';
+import { withRouter } from 'react-router-dom';
 import ChevronDown from '@atlaskit/icon/glyph/chevron-down';
 
-import {
-  GlobalNav,
-  ContainerViewSubscriber,
-  ItemAvatar,
-  RootViewSubscriber,
-  NavRenderer,
-} from '../../src';
+import { GlobalNav, ItemAvatar } from '../../src';
 import { globalNavPrimaryItems, globalNavSecondaryItems } from './mock-data';
 
 const gridSize = gridSizeFn();
 
+// ==============================
+// Simple global navigation
+// ==============================
 export const DefaultGlobalNavigation = () => (
   <GlobalNav
     primaryItems={globalNavPrimaryItems}
@@ -25,35 +21,12 @@ export const DefaultGlobalNavigation = () => (
   />
 );
 
-export const JiraWordmark = () => (
-  <div css={{ padding: `${gridSize * 2}px 0` }}>
-    <JiraWordmarkLogo />
-  </div>
-);
-
-export const LinkItem = ({ components: C, to, ...props }: *) => {
-  return (
-    <Route
-      render={({ location: { pathname } }) => (
-        <C.Item
-          after={() => <LinkIcon size="small" />}
-          component={({ children, className }) => (
-            <Link className={className} to={to}>
-              {children}
-            </Link>
-          )}
-          isSelected={pathname === to}
-          {...props}
-        />
-      )}
-    />
-  );
-};
-
 // ==============================
 // Project Switcher
 // ==============================
-
+const SwitcherBefore = itemState => (
+  <ItemAvatar itemState={itemState} appearance="square" />
+);
 class Switcher extends PureComponent<*, *> {
   state = {
     selected: this.props.defaultSelected,
@@ -64,10 +37,8 @@ class Switcher extends PureComponent<*, *> {
 
     return (
       <C.ContainerHeader
-        before={itemState => (
-          <ItemAvatar itemState={itemState} appearance="square" />
-        )}
-        after={itemState => <ChevronDown itemState={itemState} />}
+        before={SwitcherBefore}
+        after={ChevronDown}
         text={selected.text}
         subText={selected.subText}
         isSelected={isSelected}
@@ -109,33 +80,3 @@ class Switcher extends PureComponent<*, *> {
   }
 }
 export const ProjectSwitcher = withRouter(Switcher);
-
-// ==============================
-// Renderers
-// ==============================
-
-const ViewRenderer = ({ view }: *) => {
-  const { activeView, data } = view.state;
-  return activeView && data ? (
-    <div css={{ padding: `${gridSize * 2}px 0` }}>
-      <NavRenderer
-        customComponents={{ JiraWordmark, LinkItem, ProjectSwitcher }}
-        items={data}
-      />
-    </div>
-  ) : (
-    'LOADING'
-  );
-};
-
-export const ProductRoot = () => (
-  <RootViewSubscriber>
-    {rootView => <ViewRenderer view={rootView} />}
-  </RootViewSubscriber>
-);
-
-export const ProductContainer = () => (
-  <ContainerViewSubscriber>
-    {containerView => <ViewRenderer view={containerView} />}
-  </ContainerViewSubscriber>
-);

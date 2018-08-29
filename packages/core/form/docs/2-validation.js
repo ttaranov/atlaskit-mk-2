@@ -1,23 +1,11 @@
 // @flow
 import React from 'react';
 import { md, Example, Props } from '@atlaskit/docs';
-import { colors } from '@atlaskit/theme';
-
-const Warning = p => (
-  <div
-    style={{
-      backgroundColor: colors.Y75,
-      boxShadow: `-4px 0 0 ${colors.Y200}`,
-      marginBottom: '1.4em',
-      padding: '1em 1.2em',
-    }}
-    {...p}
-  />
-);
+import SectionMessage from '@atlaskit/section-message';
 
 export default md`
 ${(
-  <Warning>
+  <SectionMessage appearance="warning">
     <p>
       <strong>Note: @atlaskit/form is currently a developer preview.</strong>
     </p>
@@ -25,7 +13,7 @@ ${(
       Please experiment with and test this package but be aware that the API may
       & probably will change with future releases.
     </p>
-  </Warning>
+  </SectionMessage>
 )}
 
   ### Form & Field Validation Examples

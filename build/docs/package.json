@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/docs",
-  "version": "4.2.2",
+  "version": "5.0.7",
   "description": "Utilities for building documentation",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -15,27 +15,27 @@
   ],
   "atlaskit": {
     "name": "Atlaskit docs",
-    "team": "elements"
+    "team": "core"
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/button": "^8.2.4",
-    "@atlaskit/code": "^6.0.0",
-    "@atlaskit/icon": "^12.1.1",
-    "@atlaskit/theme": "^4.0.3",
+    "@atlaskit/button": "^9.0.6",
+    "@atlaskit/code": "^8.0.1",
+    "@atlaskit/icon": "^13.2.5",
+    "@atlaskit/theme": "^6.0.0",
     "babel-runtime": "^6.26.0",
-    "pretty-proptypes": "^0.2.1",
+    "pretty-proptypes": "^0.3.0",
     "react-markings": "^1.3.0",
     "string-raw": "^1.0.1"
   },
   "peerDependencies": {
-    "react": "^16.3.0",
+    "react": "^16.4.0",
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "jest-in-case": "^1.0.2",
-    "react-dom": "^16.3.0",
+    "react-dom": "^16.4.2",
     "react-test-renderer": "^16.3.0"
   }
 }

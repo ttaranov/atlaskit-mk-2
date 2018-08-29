@@ -20,8 +20,6 @@ export default class ContainerResult extends PureComponent<Props> {
     isCompact: false,
     isSelected: false,
     onClick: () => {},
-    onMouseEnter: () => {},
-    onMouseLeave: () => {},
     type: CONTAINER_RESULT_TYPE,
   };
 

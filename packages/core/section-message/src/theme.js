@@ -1,11 +1,19 @@
 // @flow
+import type { ComponentType } from 'react';
 import { colors } from '@atlaskit/theme';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
 import ErrorIcon from '@atlaskit/icon/glyph/error';
 import CheckCircleIcon from '@atlaskit/icon/glyph/check-circle';
 import InfoIcon from '@atlaskit/icon/glyph/info';
+import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 
-export const baseAppearanceObj = {
+type Appearance = {
+  backgroundColor: string,
+  primaryIconColor: string,
+  Icon: ComponentType<*>,
+};
+
+export const baseAppearanceObj: { [string]: Appearance } = {
   info: {
     backgroundColor: colors.B50,
     Icon: InfoIcon,
@@ -28,7 +36,7 @@ export const baseAppearanceObj = {
   },
   change: {
     backgroundColor: colors.P50,
-    Icon: InfoIcon,
+    Icon: QuestionCircleIcon,
     primaryIconColor: colors.P500,
   },
 };

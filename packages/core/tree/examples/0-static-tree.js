@@ -5,12 +5,8 @@ import styled from 'styled-components';
 import Navigation, { AkNavigationItem } from '@atlaskit/navigation';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
-import Tree from '../src/';
+import Tree, { type RenderItemParams, type TreeItem } from '../src/';
 import { treeWithTwoBranches } from '../mockdata/treeWithTwoBranches';
-import type { TreeItem } from '../src/types';
-import type { RenderItemParams } from '../src/components/Tree-types';
-
-const PADDING_PER_LEVEL = 35;
 
 const Container = styled.div`
   display: flex;
@@ -37,11 +33,12 @@ export default class StaticTree extends Component<void> {
     return <Dot>&bull;</Dot>;
   }
 
-  renderItem = ({ item, depth }: RenderItemParams) => (
-    <div key={item.id} style={{ paddingLeft: depth * PADDING_PER_LEVEL }}>
+  renderItem = ({ item, provided }: RenderItemParams) => (
+    <div ref={provided.innerRef} {...provided.draggableProps}>
       <AkNavigationItem
         text={item.data ? item.data.title : ''}
         icon={StaticTree.getIcon(item)}
+        dnd={{ dragHandleProps: provided.dragHandleProps }}
       />
     </div>
   );

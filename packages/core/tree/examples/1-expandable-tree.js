@@ -5,13 +5,14 @@ import styled from 'styled-components';
 import Navigation, { AkNavigationItem } from '@atlaskit/navigation';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
-import Tree from '../src/';
+import Tree, {
+  mutateTree,
+  type RenderItemParams,
+  type TreeItem,
+  type TreeData,
+  type ItemId,
+} from '../src/';
 import { treeWithTwoBranches } from '../mockdata/treeWithTwoBranches';
-import type { TreeItem, TreeData, ItemId } from '../src/types';
-import type { RenderItemParams } from '../src/components/Tree-types';
-import { mutateTree } from '../src/utils/tree';
-
-const PADDING_PER_LEVEL = 35;
 
 const Container = styled.div`
   display: flex;
@@ -58,12 +59,13 @@ export default class StaticTree extends Component<void, State> {
     return <Dot>&bull;</Dot>;
   }
 
-  renderItem = ({ item, depth, onExpand, onCollapse }: RenderItemParams) => (
-    <div key={item.id} style={{ paddingLeft: depth * PADDING_PER_LEVEL }}>
+  renderItem = ({ item, onExpand, onCollapse, provided }: RenderItemParams) => (
+    <div ref={provided.innerRef} {...provided.draggableProps}>
       <AkNavigationItem
         text={item.data ? item.data.title : ''}
         icon={StaticTree.getIcon(item, onExpand, onCollapse)}
         onKeyDown={event => this.onKeyDown(event, item, onExpand, onCollapse)}
+        dnd={{ dragHandleProps: provided.dragHandleProps }}
       />
     </div>
   );

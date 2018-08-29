@@ -26,7 +26,7 @@ export function createPlugin(
 const widthPlugin: EditorPlugin = {
   pmPlugins: () => [
     {
-      rank: 10000,
+      name: 'width',
       plugin: ({ dispatch }) => createPlugin(dispatch),
     },
   ],

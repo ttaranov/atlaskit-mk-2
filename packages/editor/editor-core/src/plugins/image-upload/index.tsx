@@ -8,11 +8,14 @@ const imageUpload: EditorPlugin = {
   pmPlugins() {
     return [
       {
-        rank: 1298,
+        name: 'imageUpload',
         plugin: ({ schema, providerFactory }) =>
           createPlugin(schema, { providerFactory }),
       },
-      { rank: 1299, plugin: ({ schema }) => inputRulePlugin(schema) },
+      {
+        name: 'imageUploadInputRule',
+        plugin: ({ schema }) => inputRulePlugin(schema),
+      },
     ];
   },
 };

@@ -19,6 +19,7 @@ import { RemoteUploadActivity } from '../tools/websocket/upload/remoteUploadActi
 import { MediaFile, copyMediaFileForUpload } from '../../domain/file';
 import { PopupUploadEventEmitter } from '../../components/popup';
 import { sendUploadEvent } from '../actions/sendUploadEvent';
+import { setUpfrontIdDeferred } from '../actions/setUpfrontIdDeferred';
 
 export interface RemoteFileItem extends SelectedItem {
   accountId: string;
@@ -50,6 +51,8 @@ const mapSelectedItemToSelectedUploadFile = ({
   date,
   serviceName,
   accountId,
+  upfrontId,
+  occurrenceKey,
 }: SelectedItem): SelectedUploadFile => ({
   file: {
     id,
@@ -57,6 +60,8 @@ const mapSelectedItemToSelectedUploadFile = ({
     size,
     creationDate: date || Date.now(),
     type: mimeType,
+    upfrontId,
+    occurrenceKey,
   },
   serviceName,
   accountId,
@@ -80,13 +85,7 @@ export async function importFiles(
   store: Store<State>,
   wsProvider: WsProvider,
 ): Promise<void> {
-  const {
-    apiUrl,
-    uploads,
-    tenant,
-    selectedItems,
-    userAuthProvider,
-  } = store.getState();
+  const { uploads, tenant, selectedItems, userAuthProvider } = store.getState();
 
   store.dispatch(hidePopup());
 
@@ -106,17 +105,23 @@ export async function importFiles(
     const selectedItemId = file.id;
     if (serviceName === 'upload') {
       const localUpload: LocalUpload = uploads[selectedItemId];
+      const replaceFileId = file.upfrontId;
+      const occurrenceKey = file.occurrenceKey;
+
       importFilesFromLocalUpload(
         selectedItemId,
         tenant,
         uploadId,
         store,
         localUpload,
+        replaceFileId,
+        occurrenceKey,
       );
     } else if (serviceName === 'recent_files') {
       importFilesFromRecentFiles(selectedUploadFile, tenant, store);
     } else if (isRemoteService(serviceName)) {
-      const wsConnectionHolder = wsProvider.getWsConnectionHolder(apiUrl, auth);
+      const wsConnectionHolder = wsProvider.getWsConnectionHolder(auth);
+
       importFilesFromRemoteService(
         selectedUploadFile,
         tenant,
@@ -133,6 +138,8 @@ export const importFilesFromLocalUpload = (
   uploadId: string,
   store: Store<State>,
   localUpload: LocalUpload,
+  replaceFileId?: Promise<string>,
+  occurrenceKey?: string,
 ): void => {
   localUpload.events.forEach(originalEvent => {
     const event = { ...originalEvent };
@@ -144,7 +151,16 @@ export const importFilesFromLocalUpload = (
         collection: RECENTS_COLLECTION,
       };
 
-      store.dispatch(finalizeUpload(file, uploadId, source, tenant));
+      store.dispatch(
+        finalizeUpload(
+          file,
+          uploadId,
+          source,
+          tenant,
+          replaceFileId,
+          occurrenceKey,
+        ),
+      );
     } else if (event.name !== 'upload-end') {
       store.dispatch(sendUploadEvent({ event, uploadId }));
     }
@@ -175,6 +191,15 @@ export const importFilesFromRemoteService = (
   wsConnectionHolder: WsConnectionHolder,
 ): void => {
   const { uploadId, serviceName, accountId, file } = selectedUploadFile;
+  const { deferredIdUpfronts } = store.getState();
+  const deferred = deferredIdUpfronts[file.id];
+
+  if (deferred) {
+    const { rejecter, resolver } = deferred;
+    // We asociate the temporary file.id with the uploadId
+    store.dispatch(setUpfrontIdDeferred(uploadId, resolver, rejecter));
+  }
+
   const uploadActivity = new RemoteUploadActivity(
     uploadId,
     (event, payload) => {

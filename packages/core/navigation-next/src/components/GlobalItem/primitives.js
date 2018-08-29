@@ -4,7 +4,7 @@ import React, { PureComponent, type ComponentType } from 'react';
 import { css } from 'emotion';
 import Tooltip from '@atlaskit/tooltip';
 
-import { light, styleReducerNoOp, withTheme } from '../../theme';
+import { styleReducerNoOp, withGlobalTheme } from '../../theme';
 import type {
   GlobalItemPrimitiveProps,
   GlobalItemRenderComponentProps,
@@ -15,27 +15,26 @@ const getItemBase = (
 ): ComponentType<GlobalItemRenderComponentProps> => {
   const { component: CustomComponent, ...providedItemProps } = itemProps;
   const { href, onClick, target } = providedItemProps;
+  let ItemBase;
 
   if (CustomComponent) {
     // The custom component gets passed all of the item's props
-    return props => <CustomComponent {...providedItemProps} {...props} />;
-  }
-
-  if (href) {
+    ItemBase = props => <CustomComponent {...providedItemProps} {...props} />;
+  } else if (href) {
     // We have to specifically destructure children here or else eslint
     // complains about the <a> not having content
-    return ({ children, ...props }: GlobalItemRenderComponentProps) => (
+    ItemBase = ({ children, ...props }: GlobalItemRenderComponentProps) => (
       <a {...props} href={href} onClick={onClick} target={target}>
         {children}
       </a>
     );
+  } else if (onClick) {
+    ItemBase = props => <button {...props} onClick={onClick} />;
+  } else {
+    ItemBase = props => <span {...props} />;
   }
 
-  if (onClick) {
-    return props => <button {...props} onClick={onClick} />;
-  }
-
-  return props => <span {...props} />;
+  return ItemBase;
 };
 
 class GlobalNavigationItemPrimitive extends PureComponent<*> {
@@ -106,4 +105,4 @@ class GlobalNavigationItemPrimitive extends PureComponent<*> {
   }
 }
 
-export default withTheme({ mode: light })(GlobalNavigationItemPrimitive);
+export default withGlobalTheme(GlobalNavigationItemPrimitive);

@@ -8,6 +8,15 @@ import React, {
   type ElementRef,
 } from 'react';
 import { getTheme } from '@atlaskit/theme';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../../package.json';
 import GlobalNavigation from './GlobalNavigation';
 import ContainerNavigation from './ContainerNavigation';
 import NavigationFixedContainer from '../styled/NavigationFixedContainer';
@@ -132,7 +141,7 @@ type State = {
   resizeDelta: number,
 };
 
-export default class Navigation extends PureComponent<Props, State> {
+class Navigation extends PureComponent<Props, State> {
   static defaultProps = {
     drawers: [],
     globalPrimaryIconAppearance: 'round',
@@ -433,3 +442,36 @@ export default class Navigation extends PureComponent<Props, State> {
     );
   }
 }
+
+export { Navigation as NavigationWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'navigationSidebar',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onResize: createAndFireEventOnAtlaskit({
+      action: 'resized',
+      actionSubject: 'navigationSidebar',
+
+      attributes: {
+        componentName: 'navigation',
+        packageName,
+        packageVersion,
+      },
+    }),
+
+    onResizeStart: createAndFireEventOnAtlaskit({
+      action: 'resizeStarted',
+      actionSubject: 'navigationSidebar',
+
+      attributes: {
+        componentName: 'navigation',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(Navigation),
+);

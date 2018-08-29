@@ -22,7 +22,10 @@ describe('Renderer - React/Nodes/Date', () => {
 
   it('should render date formatted as today inside task task', () => {
     const date = shallow(
-      <DateComponent timestamp={timestamp.toString()} parentIsTask={true} />,
+      <DateComponent
+        timestamp={timestamp.toString()}
+        parentIsIncompleteTask={true}
+      />,
     );
     expect(date.text()).to.equal('Today');
   });

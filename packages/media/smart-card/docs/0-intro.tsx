@@ -12,65 +12,16 @@ export default md`
   yarn add @atlaskit/smart-card
   ~~~
 
-  **Note:** The [fetch](https://www.npmjs.com/package/whatwg-fetch) polyfill is required on IE11.
+  _Note_: this package uses an AbortController, so you might need to provide a polyfill for that.
 
   ## Usage
   ${(
     <Example
-      Component={require('../examples/0-block').default}
+      Component={require('../examples/0-intro').default}
       title="An editable example"
-      source={require('!!raw-loader!../examples/0-block')}
+      source={require('!!raw-loader!../examples/0-intro')}
     />
   )}
 
-  ## API
-
-  ### Client
-
-  The smart card client is responsible for obtaining the metadata for a URL.
-
-  #### Methods
-
-  ##### .constructor(options?: ClientOptions)
-
-  Creates a new smart card client.
-
-  ##### .get(url: string): Info
-
-  Get the metadata for a URL.
-
-  ### Provider
-
-  The smart card provider is responsible for injecting the smart card client into the smart card components.
-
-  #### Properties
-
-  ##### .client?: Client
-
-  The smart card client to be injected into the smart card components.
-
-  ### Components
-
-  #### BlockCard
-
-  A connected component responsible for retrieving and rendering the metadata for a block smart card.
-
-  ##### Properties
-
-  ###### .client?: Client
-
-  A smart card client that can be manually passed to the component.
-
-  ###### .url: string
-
-  The URL to retrieve and render metadata for.
-
-  #### BlockCardView
-
-  A view component that renders a block smart card.
-
-  #### InlineCardView
-
-  A view component that renders an inline smart card.
 
 `;

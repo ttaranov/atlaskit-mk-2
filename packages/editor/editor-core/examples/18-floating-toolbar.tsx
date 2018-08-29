@@ -8,12 +8,14 @@ import {
   tableBackgroundColorPalette,
   tableBackgroundBorderColors,
 } from '@atlaskit/editor-common';
-import BackgroundColorIcon from '@atlaskit/icon/glyph/editor/background-color';
-import TableDisplayOptionsIcon from '@atlaskit/icon/glyph/editor/table-display-options';
+import { colors } from '@atlaskit/theme';
+import Button, { ButtonGroup } from '@atlaskit/button';
+import { Skeleton } from '@atlaskit/icon';
 
 import Toolbar from '../src/plugins/floating-toolbar/ui/Toolbar';
+import { FloatingToolbarItem } from '../src/plugins/floating-toolbar/types';
 import ColorPalette from '../src/ui/ColorPalette';
-// import ToolsDrawer from '../example-helpers/ToolsDrawer';
+import { Content } from '../example-helpers/styles';
 
 const SAVE_ACTION = () => console.log('Save');
 // const analyticsHandler = (actionName, props) => console.log(actionName, props);
@@ -23,72 +25,158 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   width: 100%;
-  height: 80vh;
+  height: calc(100vh - 96px);
 `;
 
-const ColorPaletteContainer = styled.div`
-  width: 144px;
-`;
+const RedIcon = () => <Skeleton weight="strong" color={colors.R500} />;
+const YellowIcon = () => <Skeleton weight="strong" color={colors.Y500} />;
+const GreenIcon = () => <Skeleton weight="strong" color={colors.G500} />;
+
+const BUTTONS: Array<FloatingToolbarItem<Function>> = [
+  {
+    type: 'button',
+    icon: RedIcon,
+    onClick: () => {},
+    title: 'Red button',
+    hidden: true,
+  },
+  {
+    type: 'button',
+    icon: YellowIcon,
+    onClick: () => {},
+    title: 'Yellow button',
+  },
+  {
+    type: 'button',
+    icon: GreenIcon,
+    onClick: () => {},
+    title: 'Green button',
+  },
+];
+
+const BUTTONS_WITH_SEPARATORS: Array<FloatingToolbarItem<Function>> = [
+  {
+    type: 'button',
+    icon: RedIcon,
+    onClick: () => {},
+    title: 'Red button',
+    hidden: true,
+  },
+  {
+    type: 'separator',
+    hidden: true,
+  },
+  {
+    type: 'button',
+    icon: YellowIcon,
+    onClick: () => {},
+    title: 'Yellow button',
+  },
+  {
+    type: 'separator',
+  },
+  {
+    type: 'button',
+    icon: GreenIcon,
+    onClick: () => {},
+    title: 'Green button',
+  },
+];
+
+const DROPDOWNS: Array<FloatingToolbarItem<Function>> = [
+  {
+    type: 'dropdown',
+    title: 'Yellow dropdown',
+    icon: YellowIcon,
+    options: [
+      {
+        title: 'Header row',
+        selected: false,
+        onClick: () => {},
+      },
+      {
+        title: 'Header column',
+        selected: true,
+        onClick: () => {},
+      },
+      {
+        title: 'Number column',
+        selected: false,
+        onClick: () => {},
+      },
+    ],
+  },
+  {
+    type: 'dropdown',
+    title: 'Green dropdown',
+    icon: GreenIcon,
+    options: {
+      render: ({ hide }) => (
+        <ColorPalette
+          palette={tableBackgroundColorPalette}
+          borderColors={tableBackgroundBorderColors}
+          onClick={() => {
+            SAVE_ACTION();
+            hide();
+          }}
+        />
+      ),
+      width: 146,
+      height: 72,
+    },
+  },
+];
 
 export default class Example extends Component {
-  ref?: HTMLElement;
+  state = {
+    active: 'buttons',
+  };
 
   render() {
     return (
-      <Container>
-        <Toolbar
-          ariaLabel="Test Toolbar"
-          items={[
-            {
-              type: 'button',
-              icon: BackgroundColorIcon,
-              onClick: () => {},
-              title: 'Do Something',
-            },
-            {
-              type: 'dropdown',
-              title: 'Toggle background color menu',
-              icon: BackgroundColorIcon,
-              hidden: true,
-              options: ({ hide }) => (
-                <ColorPaletteContainer>
-                  <ColorPalette
-                    palette={tableBackgroundColorPalette}
-                    borderColors={tableBackgroundBorderColors}
-                    onClick={() => {
-                      SAVE_ACTION();
-                      hide();
-                    }}
-                  />
-                </ColorPaletteContainer>
-              ),
-            },
-            {
-              type: 'dropdown',
-              title: 'Toggle display options menu',
-              icon: TableDisplayOptionsIcon,
-              options: [
-                {
-                  title: 'Header row',
-                  selected: false,
-                  onClick: () => {},
-                },
-                {
-                  title: 'Header column',
-                  selected: true,
-                  onClick: () => {},
-                },
-                {
-                  title: 'Number column',
-                  selected: false,
-                  onClick: () => {},
-                },
-              ],
-            },
-          ]}
-          dispatchCommand={() => SAVE_ACTION}
-        />
-      </Container>
+      <Content>
+        <Container>
+          <Toolbar
+            items={this.getActiveItems()}
+            dispatchCommand={() => SAVE_ACTION}
+          />
+        </Container>
+        <div className="toolsDrawer">
+          <div>
+            <ButtonGroup>
+              {this.renderButton('buttons', 'Buttons')}
+              {this.renderButton(
+                'buttons-with-separators',
+                'Buttons with separator',
+              )}
+              {this.renderButton('dropdowns', 'Dropdowns')}
+            </ButtonGroup>
+          </div>
+        </div>
+      </Content>
     );
   }
+
+  renderButton = (name, label) => (
+    <Button
+      theme="dark"
+      spacing="compact"
+      ariaLabel={name}
+      appearance={this.state.active === name ? 'primary' : 'default'}
+      onClick={() => this.setState({ active: name })}
+    >
+      {label}
+    </Button>
+  );
+
+  getActiveItems = () => {
+    switch (this.state.active) {
+      case 'buttons-with-separators':
+        return BUTTONS_WITH_SEPARATORS;
+      case 'dropdowns':
+        return DROPDOWNS;
+      default:
+        return BUTTONS;
+    }
+  };
 }

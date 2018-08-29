@@ -3,7 +3,7 @@
 import React, {
   PureComponent,
   type ElementRef,
-  type Element,
+  type Element as ElementType,
   type Node,
 } from 'react';
 import { createPortal } from 'react-dom';
@@ -42,7 +42,7 @@ type Props = {
   popperProps?: PopperPropsNoChildren,
   searchThreshold: number,
   styles: Object,
-  target: Element<*>,
+  target: ElementType<*>,
 };
 type State = { isOpen: boolean };
 
@@ -119,7 +119,7 @@ export default class PopupSelect extends PureComponent<Props, State> {
     const { isOpen } = this.state;
 
     // appease flow
-    if (!(target instanceof HTMLElement)) return;
+    if (!(target instanceof Element)) return;
 
     // NOTE: Why not use the <Blanket /> component to close?
     // We don't want to interupt the user's flow. Taking this approach allows
@@ -159,7 +159,9 @@ export default class PopupSelect extends PureComponent<Props, State> {
       returnFocusOnDeactivate: true,
     };
     this.focusTrap = createFocusTrap(this.menuRef, trapConfig);
-    this.focusTrap.activate();
+
+    // allow time for the HTMLElement to render
+    setTimeout(() => this.focusTrap.activate(), 1);
   };
   close = () => {
     const { onClose } = this.props;

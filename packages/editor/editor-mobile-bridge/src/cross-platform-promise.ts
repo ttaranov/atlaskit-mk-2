@@ -61,3 +61,8 @@ export function rejectPromise<T>(uuid: string) {
     holder.reject();
   }
 }
+
+// expose this function for testing
+export function setCounter(value: number) {
+  counter = value;
+}

@@ -11,18 +11,22 @@ import { EditorPlugin } from '../../types';
 import { ButtonGroup } from '../../ui/styles';
 import {
   plugin as textFormattingPlugin,
-  stateKey as textFormattingStateKey,
+  pluginKey as textFormattingPluginKey,
+  TextFormattingState,
 } from './pm-plugins/main';
 import {
   plugin as clearFormattingPlugin,
-  stateKey as clearFormattingStateKey,
+  pluginKey as clearFormattingPluginKey,
+  ClearFormattingState,
 } from './pm-plugins/clear-formatting';
 import textFormattingCursorPlugin from './pm-plugins/cursor';
 import textFormattingInputRulePlugin from './pm-plugins/input-rule';
 import clearFormattingKeymapPlugin from './pm-plugins/clear-formatting-keymap';
 import textFormattingSmartInputRulePlugin from './pm-plugins/smart-input-rule';
-import ToolbarTextFormatting from './ui/ToolbarTextFormatting';
+import keymapPlugin from './pm-plugins/keymap';
 import ToolbarAdvancedTextFormatting from './ui/ToolbarAdvancedTextFormatting';
+import ToolbarTextFormatting from './ui/ToolbarTextFormatting';
+import WithPluginState from '../../ui/WithPluginState';
 
 export interface TextFormattingOptions {
   disableSuperscriptAndSubscript?: boolean;
@@ -34,44 +38,53 @@ export interface TextFormattingOptions {
 const textFormatting = (options: TextFormattingOptions): EditorPlugin => ({
   marks() {
     return [
-      { name: 'em', mark: em, rank: 200 },
-      { name: 'strong', mark: strong, rank: 300 },
-      { name: 'strike', mark: strike, rank: 400 },
+      { name: 'em', mark: em },
+      { name: 'strong', mark: strong },
+      { name: 'strike', mark: strike },
     ]
-      .concat(
-        options.disableCode ? [] : { name: 'code', mark: code, rank: 700 },
-      )
+      .concat(options.disableCode ? [] : { name: 'code', mark: code })
       .concat(
         options.disableSuperscriptAndSubscript
           ? []
-          : { name: 'subsup', mark: subsup, rank: 500 },
+          : { name: 'subsup', mark: subsup },
       )
       .concat(
-        options.disableUnderline
-          ? []
-          : { name: 'underline', mark: underline, rank: 600 },
+        options.disableUnderline ? [] : { name: 'underline', mark: underline },
       );
   },
 
   pmPlugins() {
     return [
-      { rank: 800, plugin: () => textFormattingPlugin },
-      { rank: 805, plugin: () => textFormattingCursorPlugin },
       {
-        rank: 810,
+        name: 'textFormatting',
+        plugin: ({ dispatch }) => textFormattingPlugin(dispatch),
+      },
+      {
+        name: 'textFormattingCursor',
+        plugin: () => textFormattingCursorPlugin,
+      },
+      {
+        name: 'textFormattingInputRule',
         plugin: ({ schema }) => textFormattingInputRulePlugin(schema),
       },
       {
-        rank: 811,
+        name: 'textFormattingSmartRule',
         plugin: ({ schema }) =>
           !options.disableSmartTextCompletion
             ? textFormattingSmartInputRulePlugin
             : undefined,
       },
-      { rank: 820, plugin: () => clearFormattingPlugin },
       {
-        rank: 830,
+        name: 'textFormattingClear',
+        plugin: ({ dispatch }) => clearFormattingPlugin(dispatch),
+      },
+      {
+        name: 'textFormattingClearKeymap',
         plugin: ({ schema }) => clearFormattingKeymapPlugin(schema),
+      },
+      {
+        name: 'textFormattingKeymap',
+        plugin: ({ schema }) => keymapPlugin(schema),
       },
     ];
   },
@@ -83,31 +96,40 @@ const textFormatting = (options: TextFormattingOptions): EditorPlugin => ({
     isToolbarReducedSpacing,
     disabled,
   }) {
-    const textFormattingPluginState = textFormattingStateKey.getState(
-      editorView.state,
-    );
-    const clearFormattingPluginState = clearFormattingStateKey.getState(
-      editorView.state,
-    );
-
     return (
-      <ButtonGroup width={isToolbarReducedSpacing ? 'small' : 'large'}>
-        <ToolbarTextFormatting
-          disabled={disabled}
-          editorView={editorView}
-          pluginState={textFormattingPluginState}
-          isReducedSpacing={isToolbarReducedSpacing}
-        />
-        <ToolbarAdvancedTextFormatting
-          editorView={editorView}
-          isDisabled={disabled}
-          isReducedSpacing={isToolbarReducedSpacing}
-          pluginStateTextFormatting={textFormattingPluginState}
-          pluginStateClearFormatting={clearFormattingPluginState}
-          popupsMountPoint={popupsMountPoint}
-          popupsScrollableElement={popupsScrollableElement}
-        />
-      </ButtonGroup>
+      <WithPluginState
+        plugins={{
+          textFormattingState: textFormattingPluginKey,
+          clearFormattingState: clearFormattingPluginKey,
+        }}
+        render={({
+          textFormattingState,
+          clearFormattingState,
+        }: {
+          textFormattingState: TextFormattingState;
+          clearFormattingState: ClearFormattingState;
+        }): any => {
+          return (
+            <ButtonGroup width={isToolbarReducedSpacing ? 'small' : 'large'}>
+              <ToolbarTextFormatting
+                disabled={disabled}
+                editorView={editorView}
+                textFormattingState={textFormattingState}
+                isReducedSpacing={isToolbarReducedSpacing}
+              />
+              <ToolbarAdvancedTextFormatting
+                editorView={editorView}
+                isDisabled={disabled}
+                isReducedSpacing={isToolbarReducedSpacing}
+                textFormattingState={textFormattingState}
+                clearFormattingState={clearFormattingState}
+                popupsMountPoint={popupsMountPoint}
+                popupsScrollableElement={popupsScrollableElement}
+              />
+            </ButtonGroup>
+          );
+        }}
+      />
     );
   },
 });

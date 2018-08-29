@@ -16,6 +16,7 @@ import { stateKey as mediaPluginKey } from '../../plugins/media/pm-plugins/main'
 import { ClickAreaBlock } from '../Addon';
 import { tableCommentEditorStyles } from '../../plugins/table/ui/styles';
 import WithFlash from '../WithFlash';
+import { akEditorMenuZIndex } from '@atlaskit/editor-common';
 
 export interface CommentEditorProps {
   isMaxContentSizeReached?: boolean;
@@ -54,6 +55,7 @@ const MainToolbar = styled.div`
   padding: ${akGridSize} ${akGridSize} 0;
   display: flex;
   height: auto;
+  z-index: ${akEditorMenuZIndex};
 
   padding-left: ${TableControlsPadding}px;
 
@@ -172,7 +174,7 @@ export default class Editor extends React.Component<
             </MainToolbarCustomComponentsSlot>
           </MainToolbar>
           <ClickAreaBlock editorView={editorView}>
-            <ContentArea className="content-area">
+            <ContentArea className="ak-editor-content-area">
               {customContentComponents}
               <PluginSlot
                 editorView={editorView}

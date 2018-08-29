@@ -71,8 +71,9 @@ export class MediaFileListViewer extends Component<
 
   componentDidMount(): void {
     const { context, selectedItem, list, collectionName } = this.props;
-    const { config } = context;
-    const { serviceHost } = config;
+    const {
+      config: { authProvider },
+    } = context;
     const { mediaViewer } = this.state;
 
     mediaViewer.on('fv.close', this.onClose);
@@ -116,16 +117,18 @@ export class MediaFileListViewer extends Component<
             occurrenceKey: filesToProcess[index].occurrenceKey,
           }));
 
-          const files = MediaFileAttributesFactory.fromFileItemList(
-            filesWithKeys,
-            serviceHost,
-          );
-          mediaViewer.setFiles(files);
+          authProvider().then(({ baseUrl }) => {
+            const files = MediaFileAttributesFactory.fromFileItemList(
+              filesWithKeys,
+              baseUrl,
+            );
+            mediaViewer.setFiles(files);
 
-          const id = MediaFileAttributesFactory.getUniqueMediaViewerId(
-            selectedItem,
-          );
-          mediaViewer.open({ id });
+            const id = MediaFileAttributesFactory.getUniqueMediaViewerId(
+              selectedItem,
+            );
+            mediaViewer.open({ id });
+          });
         },
       }),
       mediaViewer,

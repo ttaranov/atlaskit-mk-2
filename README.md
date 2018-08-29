@@ -21,7 +21,7 @@ may diverge in appearance:
 import '@atlaskit/css-reset';
 ```
 
-In general, you should avoid directly styling base elements (ex. p, h1, h2â€¦) and uses classes instead.
+In general, you should avoid directly styling base elements (ex. p, h1, h2…) and uses classes instead.
 
 #### Example for React projects
 
@@ -144,7 +144,7 @@ The base level of the repository is licensed under [Apache 2.0][license]. There 
 
 If you fork this repository you can continue to use those Atlassian Design Guidelines licensed components only under the given license restrictions. If you want to redistribute this repository, you will need to replace these Atlassian Design Guidelines licensed components with your own implementation.
 
-Copyright (c) 2016 Atlassian and others.
+Copyright (c) 2018 Atlassian and others.
 
 [adg]: http://atlassian.design/ "Atlassian Design Guidelines"
 [adg_license]: https://atlassian.design/guidelines/handy/license

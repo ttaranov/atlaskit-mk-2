@@ -1,13 +1,18 @@
 import * as React from 'react';
 
 import { MentionPickerStyle, MentionPickerInfoStyle } from './styles';
-import { OnMentionEvent } from '../../types';
-import { MentionProvider } from '../../api/MentionResource';
+import { OnMentionEvent, MentionDescription } from '../../types';
+import { MentionProvider, MentionStats } from '../../api/MentionResource';
 import { PresenceProvider } from '../../api/PresenceResource';
 import ResourcedMentionList from '../ResourcedMentionList';
 import Popup from '../Popup';
 import debug from '../../util/logger';
 import uniqueId from '../../util/id';
+import { withAnalyticsEvents } from '@atlaskit/analytics-next';
+
+import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
+
+import * as UtilAnalytics from '../../util/analytics';
 
 export interface OnOpen {
   (): void;
@@ -43,7 +48,10 @@ export interface State {
 /**
  * @class MentionPicker
  */
-export default class MentionPicker extends React.PureComponent<Props, State> {
+export class MentionPicker extends React.PureComponent<
+  Props & WithAnalyticsEventProps,
+  State
+> {
   private subscriberKey: string;
   private mentionListRef: ResourcedMentionList;
 
@@ -165,7 +173,11 @@ export default class MentionPicker extends React.PureComponent<Props, State> {
   };
 
   // internal, used for callbacks
-  private filterChange = mentions => {
+  private filterChange = (
+    mentions: MentionDescription[],
+    query: string,
+    stats?: MentionStats,
+  ) => {
     debug('ak-mention-picker.filterChange', mentions.length);
     const wasVisible = this.state.visible;
     const visible = mentions.length > 0;
@@ -174,6 +186,15 @@ export default class MentionPicker extends React.PureComponent<Props, State> {
     });
 
     this.onFilterVisibilityChange(wasVisible, visible);
+
+    if (stats && stats.remoteSearch) {
+      UtilAnalytics.fireAnalyticsMentionTypeaheadEvent(this.props)(
+        'rendered',
+        stats.duration,
+        mentions.map(mention => mention.id),
+        query,
+      );
+    }
   };
 
   private filterError = error => {
@@ -272,3 +293,11 @@ export default class MentionPicker extends React.PureComponent<Props, State> {
     );
   }
 }
+
+export const MentionPickerWithAnalytics: React.ComponentClass<
+  Props
+> = withAnalyticsEvents({})(MentionPicker) as React.ComponentClass<Props>;
+
+export type MentionPickerWithAnalytics = MentionPicker;
+
+export default MentionPickerWithAnalytics;

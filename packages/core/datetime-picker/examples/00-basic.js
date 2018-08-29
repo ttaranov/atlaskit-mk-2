@@ -81,12 +81,16 @@ class Controlled extends Component<Props, State> {
   }
 }
 
+const onChange = value => {
+  console.log(value);
+};
+
 export default () => {
   return (
     <div>
       <h3>Date picker</h3>
       <Label htmlFor="react-select-datepicker-1--input" label="default" />
-      <DatePicker id="datepicker-1" onChange={console.log} />
+      <DatePicker id="datepicker-1" onChange={onChange} />
 
       <Label
         htmlFor="react-select-datepicker-2--input"
@@ -110,14 +114,14 @@ export default () => {
       <DatePicker
         id="datepicker-3"
         defaultValue="2018-01-02"
-        onChange={console.log}
+        onChange={onChange}
       />
 
       <h3>Time picker</h3>
       <Label htmlFor="react-select-timepicker-1--input" label="default" />
       <TimePicker
         id="timepicker-1"
-        onChange={console.log}
+        onChange={onChange}
         selectProps={{ classNamePrefix: 'timepicker-select' }}
       />
 
@@ -146,7 +150,7 @@ export default () => {
         selectProps={{ classNamePrefix: 'timepicker-select' }}
         id="timepicker-3"
         defaultValue="14:30"
-        onChange={console.log}
+        onChange={onChange}
       />
 
       <Label
@@ -157,13 +161,13 @@ export default () => {
         selectProps={{ classNamePrefix: 'timepicker-select' }}
         id="timepicker-4"
         defaultValue="14:30"
-        onChange={console.log}
+        onChange={onChange}
         timeIsEditable
       />
 
       <h3>Date / time picker</h3>
       <Label htmlFor="react-select-datetimepicker-1--input" label="default" />
-      <DateTimePicker id="datetimepicker-1" onChange={console.log} />
+      <DateTimePicker id="datetimepicker-1" onChange={onChange} />
 
       <Label
         htmlFor="react-select-datetimepicker-2--input"
@@ -186,7 +190,7 @@ export default () => {
       <DateTimePicker
         id="datetimepicker-3"
         defaultValue="2018-01-02T14:30+10:00"
-        onChange={console.log}
+        onChange={onChange}
       />
 
       <Label
@@ -196,7 +200,7 @@ export default () => {
       <DateTimePicker
         id="datetimepicker-4"
         defaultValue="2018-01-02T14:30+10:00"
-        onChange={console.log}
+        onChange={onChange}
         timeIsEditable
       />
     </div>
