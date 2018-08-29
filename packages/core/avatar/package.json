@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/avatar",
-  "version": "14.0.9",
+  "version": "14.0.10",
   "description": "A component that represents a user",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
