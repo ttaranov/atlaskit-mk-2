@@ -1,10 +1,12 @@
 import * as React from 'react';
-import { withAnalyticsEvents } from '@atlaskit/analytics-next';
-import { GasPayload } from '@atlaskit/analytics-gas-types';
+import {
+  withAnalyticsEvents,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
+import { EventType } from '@atlaskit/analytics-gas-types';
 import Button from '@atlaskit/button';
 import { FabricChannel } from '../../src';
 import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
-import { EventType } from '../../../analytics-gas-types/src';
 
 export type OwnProps = {
   onClick: (e) => void;
@@ -84,40 +86,30 @@ const componentChannels = {
 
 export const createComponentWithAnalytics = (channel: FabricChannel) =>
   withAnalyticsEvents({
-    onClick: createEvent => {
-      const payload: GasPayload = {
-        action: 'someAction',
-        actionSubject: 'someComponent',
-        eventType: 'ui',
-        source: 'unknown',
-      };
-      const event = createEvent(payload);
-      event.fire(channel);
-      return event;
-    },
+    onClick: createAndFireEvent(channel)({
+      action: 'someAction',
+      actionSubject: 'someComponent',
+      eventType: 'ui',
+      source: 'unknown',
+    }),
   })(componentChannels[channel]);
 
 export const createComponentWithAttributesWithAnalytics = (
   channel: FabricChannel,
 ) =>
   withAnalyticsEvents({
-    onClick: createEvent => {
-      const payload: GasPayload = {
-        action: 'someAction',
-        actionSubject: 'someComponent',
-        eventType: 'ui',
-        source: 'unknown',
-        attributes: {
-          packageName: '@atlaskit/foo',
-          packageVersion: '1.0.0',
-          componentName: 'foo',
-          fooBar: 'yay',
-        },
-      };
-      const event = createEvent(payload);
-      event.fire(channel);
-      return event;
-    },
+    onClick: createAndFireEvent(channel)({
+      action: 'someAction',
+      actionSubject: 'someComponent',
+      eventType: 'ui',
+      source: 'unknown',
+      attributes: {
+        packageName: '@atlaskit/foo',
+        packageVersion: '1.0.0',
+        componentName: 'foo',
+        fooBar: 'yay',
+      },
+    }),
   })(componentChannels[channel]);
 
 export const createTaggedComponentWithAnalytics = (
@@ -125,40 +117,26 @@ export const createTaggedComponentWithAnalytics = (
   tag: string,
 ) =>
   withAnalyticsEvents({
-    onClick: createEvent => {
-      const payload: GasPayload = {
-        action: 'someAction',
-        actionSubject: 'someComponent',
-        eventType: 'ui',
-        source: 'unknown',
-        tags: [tag, 'foo'],
-      };
-      const event = createEvent(payload);
-      event.fire(channel);
-      return event;
-    },
+    onClick: createAndFireEvent(channel)({
+      action: 'someAction',
+      actionSubject: 'someComponent',
+      eventType: 'ui',
+      source: 'unknown',
+      tags: [tag, 'foo'],
+    }),
   })(componentChannels[channel]);
 
 export const IncorrectEventType = (channel: FabricChannel) =>
   withAnalyticsEvents({
-    onClick: createEvent => {
-      const payload: GasPayload = {
-        action: 'someAction',
-        actionSubject: 'someComponent',
-        eventType: 'unknown' as EventType,
-        source: 'unknown',
-      };
-      const event = createEvent(payload);
-      event.fire(channel);
-      return event;
-    },
+    onClick: createAndFireEvent(channel)({
+      action: 'someAction',
+      actionSubject: 'someComponent',
+      eventType: 'unknown' as EventType,
+      source: 'unknown',
+    }),
   })(componentChannels[channel]);
 
 export const createButtonWithAnalytics = (payload, channel: FabricChannel) =>
   withAnalyticsEvents({
-    onClick: createEvent => {
-      const event = createEvent(payload);
-      event.fire(channel);
-      return event;
-    },
+    onClick: createAndFireEvent(channel)(payload),
   })(MyButton);

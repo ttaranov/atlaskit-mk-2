@@ -1,11 +1,9 @@
 import * as React from 'react';
-import { withAnalyticsEvents } from '@atlaskit/analytics-next';
-import { GasPayload } from '../../../analytics-gas-types';
 import {
-  WithAnalyticsEventProps,
-  CreateUIAnalyticsEventSignature,
-  UIAnalyticsEventInterface,
-} from '@atlaskit/analytics-next-types';
+  withAnalyticsEvents,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
+import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
 
 export type Props = WithAnalyticsEventProps & {
   text?: string;
@@ -24,25 +22,17 @@ class DummyComponent extends React.Component<Props> {
 }
 
 export const createDummyComponentWithAnalytics = channel =>
-  withAnalyticsEvents<Props>({
-    onClick: (
-      createEvent: CreateUIAnalyticsEventSignature,
-      props: Props,
-    ): UIAnalyticsEventInterface => {
-      const payload: GasPayload = {
-        action: 'someAction',
-        actionSubject: 'someComponent',
-        eventType: 'ui',
-        source: 'unknown',
-        attributes: {
-          packageVersion: '1.0.0',
-          packageName: '@atlaskit/foo',
-          componentName: 'foo',
-          foo: 'bar',
-        },
-      };
-      const event = createEvent(payload);
-      event.fire(channel);
-      return event;
-    },
+  withAnalyticsEvents({
+    onClick: createAndFireEvent(channel)({
+      action: 'someAction',
+      actionSubject: 'someComponent',
+      eventType: 'ui',
+      source: 'unknown',
+      attributes: {
+        packageVersion: '1.0.0',
+        packageName: '@atlaskit/foo',
+        componentName: 'foo',
+        foo: 'bar',
+      },
+    }),
   })(DummyComponent);
