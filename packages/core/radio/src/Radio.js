@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import RadioInput from './RadioInput';
 import { Label } from './styled/Radio';
-import type { RadioBasePropTypes } from './types';
+import type { RadioProps } from './types';
 
 type State = {
   isHovered: boolean,
@@ -11,7 +11,7 @@ type State = {
   isMouseDown: boolean,
 };
 
-export default class Radio extends Component<RadioBasePropTypes, State> {
+export default class Radio extends Component<RadioProps, State> {
   static defaultProps = {
     isDisabled: false,
     isInvalid: false,

@@ -8,14 +8,14 @@ import type { OptionsPropType } from '../src/types';
 const formTestUrl = '//httpbin.org/get';
 const colorItems: OptionsPropType = [
   { name: 'color', value: 'red', label: 'Red' },
-  { name: 'color', value: 'blue', label: 'Blue', defaultSelected: true },
+  { name: 'color', value: 'blue', label: 'Blue', defaultChecked: true },
   { name: 'color', value: 'yellow', label: 'Yellow' },
   { name: 'color', value: 'green', label: 'Green' },
 ];
 const fruitItems: OptionsPropType = [
   { name: 'fruit', value: 'apple', label: 'Apple' },
   { name: 'fruit', value: 'orange', label: 'Orange' },
-  { name: 'fruit', value: 'peach', label: 'Peach', defaultSelected: true },
+  { name: 'fruit', value: 'peach', label: 'Peach', defaultChecked: true },
   { name: 'fruit', value: 'pair', label: 'Pair' },
 ];
 

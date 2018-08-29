@@ -20,8 +20,8 @@ describe(name, () => {
         expect(RadioGroup).not.toBe(undefined);
         expect(
           new RadioGroup({
-            selectedValue: null,
-            defaultSelectedValue: null,
+            checkedValue: null,
+            defaultCheckedValue: null,
             options: [],
             onChange: () => {},
           }),
@@ -79,11 +79,11 @@ describe(name, () => {
         });
       });
 
-      describe('selectedValue prop', () => {
+      describe('checkedValue prop', () => {
         it('sets the corresponding Radio instance isChecked prop to true', () => {
           const wrapper = mount(
             <RadioGroup
-              selectedValue={sampleOptions[0].value}
+              checkedValue={sampleOptions[0].value}
               options={sampleOptions}
               onChange={() => {}}
             />,
@@ -95,10 +95,10 @@ describe(name, () => {
           expect(rUncontrolled.at(1).prop('isChecked')).toBe(false);
           expect(rUncontrolled.at(2).prop('isChecked')).toBe(false);
         });
-        it('Ignores internal state values, if a selectedValue prop is specified', () => {
+        it('Ignores internal state values, if a checkedValue prop is specified', () => {
           const wrapper = mount(
             <RadioGroup
-              selectedValue={sampleOptions[0].value}
+              checkedValue={sampleOptions[0].value}
               options={sampleOptions}
               onChange={() => {}}
             />,
@@ -114,7 +114,7 @@ describe(name, () => {
             .at(2)
             .find('input')
             .simulate('change');
-          expect(wrapper.state('selectedValue')).toBe(sampleOptions[2].value);
+          expect(wrapper.state('checkedValue')).toBe(sampleOptions[2].value);
 
           const rUncontrolledClicked = radio();
           expect(rUncontrolledClicked.at(0).prop('isChecked')).toBe(true);
@@ -124,7 +124,7 @@ describe(name, () => {
         it('If set to undefined, it will revert to the value set in state', () => {
           const wrapper = mount(
             <RadioGroup
-              selectedValue={sampleOptions[0].value}
+              checkedValue={sampleOptions[0].value}
               options={sampleOptions}
               onChange={() => {}}
             />,
@@ -146,7 +146,7 @@ describe(name, () => {
           expect(rUncontrolledClicked.at(1).prop('isChecked')).toBe(false);
           expect(rUncontrolledClicked.at(2).prop('isChecked')).toBe(false);
 
-          wrapper.setProps({ selectedValue: undefined });
+          wrapper.setProps({ checkedValue: undefined });
           const rControlled = radio();
           expect(rControlled.at(0).prop('isChecked')).toBe(false);
           expect(rControlled.at(1).prop('isChecked')).toBe(true);
@@ -154,11 +154,11 @@ describe(name, () => {
         });
       });
 
-      describe('defaultSelectedValue prop', () => {
+      describe('defaultCheckedValue prop', () => {
         it('initially sets the corresponding Radio instance isChecked prop to true', () => {
           const wrapper = mount(
             <RadioGroup
-              defaultSelectedValue={sampleOptions[0].value}
+              defaultCheckedValue={sampleOptions[0].value}
               options={sampleOptions}
               onChange={() => {}}
             />,
@@ -174,7 +174,7 @@ describe(name, () => {
         it('overrides the checked Radio instance once a subsequent Radio has been triggered', () => {
           const wrapper = mount(
             <RadioGroup
-              defaultSelectedValue={sampleOptions[0].value}
+              defaultCheckedValue={sampleOptions[0].value}
               options={sampleOptions}
               onChange={() => {}}
             />,
@@ -191,7 +191,7 @@ describe(name, () => {
             .find('input')
             .simulate('change');
 
-          expect(wrapper.state('selectedValue')).toBe(sampleOptions[2].value);
+          expect(wrapper.state('checkedValue')).toBe(sampleOptions[2].value);
           const rNew = radio();
           expect(rNew.at(0).prop('isChecked')).toBe(false);
           expect(rNew.at(1).prop('isChecked')).toBe(false);
@@ -216,18 +216,18 @@ describe(name, () => {
     });
 
     describe('selection', () => {
-      function expectRadioSelected(wrapper, index) {
+      function expectRadioChecked(wrapper, index) {
         const radios = wrapper.find(Radio);
         for (let i = 0; i < radios.length; i++) {
           expect(radios.at(i).prop('isChecked')).toBe(index === i);
         }
       }
 
-      function expectNoRadioSelected(wrapper) {
-        return expectRadioSelected(wrapper, -1);
+      function expectNoRadioChecked(wrapper) {
+        return expectRadioChecked(wrapper, -1);
       }
 
-      it('selects the radio with a value corresponding to the specified selectedValue prop', () => {
+      it('selects the radio with a value corresponding to the specified checkedValue prop', () => {
         const options = [
           { name: 'n', value: '0' },
           { name: 'n', value: '1' },
@@ -237,10 +237,10 @@ describe(name, () => {
           <RadioGroup
             options={options}
             onChange={() => {}}
-            selectedValue={options[2].value}
+            checkedValue={options[2].value}
           />,
         );
-        expectRadioSelected(wrapper, 2);
+        expectRadioChecked(wrapper, 2);
       });
       it('does not select an option if not specified', () => {
         const options = [
@@ -251,7 +251,7 @@ describe(name, () => {
         const wrapper = shallow(
           <RadioGroup onChange={() => {}} options={options} />,
         );
-        expectNoRadioSelected(wrapper);
+        expectNoRadioChecked(wrapper);
       });
       it('can select a radio which is disabled', () => {
         const options = [
@@ -263,10 +263,10 @@ describe(name, () => {
           <RadioGroup
             options={options}
             onChange={() => {}}
-            selectedValue={options[2].value}
+            checkedValue={options[2].value}
           />,
         );
-        expectRadioSelected(wrapper, 2);
+        expectRadioChecked(wrapper, 2);
       });
     });
   });

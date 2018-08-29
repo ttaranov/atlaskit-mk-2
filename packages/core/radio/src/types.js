@@ -7,7 +7,7 @@ export type OptionPropType = {
   isChecked?: boolean,
   label?: Node,
   name?: string,
-  value?: string | number | null,
+  value?: string | number,
 };
 
 export type OptionsPropType = Array<OptionPropType>;
@@ -30,6 +30,10 @@ export type RadioIconProps = {
 export type RadioInputProps = RadioIconProps & {
   /* Field required state */
   isRequired?: boolean,
+  /* Aria-label for the hidden input */
+  label?: string,
+  /* Field name */
+  name?: string,
   /* Optional onError callback */
   onError?: (SyntheticEvent<*>) => void,
   /* onChange event handler */
@@ -40,13 +44,11 @@ export type RadioInputProps = RadioIconProps & {
   onFocus: (SyntheticEvent<*>) => void,
   /* onInvalid event handler, to hook into native validation */
   onInvalid?: (SyntheticEvent<*>) => void,
-  /* Field name */
-  name?: string,
   /* Field value */
   value?: string,
 };
 
-export type RadioBasePropTypes = {
+export type RadioProps = {
   children?: Node,
   /** Field disabled */
   isDisabled?: boolean,
@@ -56,7 +58,7 @@ export type RadioBasePropTypes = {
   isRequired?: boolean,
   /** Field is invalid */
   isInvalid?: boolean,
-  /** Set the field as selected */
+  /** Set the field as checked */
   isChecked?: boolean,
   /** Field name */
   name?: string,
@@ -65,5 +67,5 @@ export type RadioBasePropTypes = {
   /** onInvalid event handler, passed into the props of each Radio Component instantiated within RadioGroup */
   onInvalid?: (SyntheticEvent<*>) => void,
   /** Field value */
-  value?: string | number | null,
+  value?: string | number,
 };
