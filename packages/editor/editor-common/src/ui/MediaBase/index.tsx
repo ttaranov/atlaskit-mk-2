@@ -30,6 +30,12 @@ export interface Props {
 const MarginResetWrapper = styled.div`
   margin-left: 0% !important;
   transform: translateX(0%) !important;
+  ul {
+    padding-left: 0px !important;
+    li {
+      padding: 0 0 !important;
+    }
+  }
 `;
 MarginResetWrapper.displayName = 'MarginResetWrapper';
 
