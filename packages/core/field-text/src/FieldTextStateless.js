@@ -19,10 +19,9 @@ const Wrapper = styled.div`
   flex: 1 1 100%;
 `;
 
-type Props = {|
-  ...FieldTextProps,
+type Props = FieldTextProps & {
   innerRef?: (node: ?HTMLInputElement) => void,
-|};
+};
 
 class FieldTextStateless extends Component<Props, void> {
   static defaultProps = {

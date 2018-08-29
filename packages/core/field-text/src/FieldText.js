@@ -4,14 +4,10 @@ import React, { Component } from 'react';
 import FieldTextStateless from './FieldTextStateless';
 import type { FieldTextProps } from './types';
 
-type Props = {
-  ...FieldTextProps,
-};
-
 type State = {
   value?: string | number,
 };
-export default class FieldText extends Component<Props, State> {
+export default class FieldText extends Component<FieldTextProps, State> {
   static defaultProps = {
     onChange: () => {},
   };
