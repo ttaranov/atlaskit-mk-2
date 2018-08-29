@@ -4,7 +4,7 @@ import React, { Component, type Node } from 'react';
 import { ThemeProvider } from 'styled-components';
 import Lorem from 'react-lorem-component';
 
-import ModalDialog from '../src';
+import ModalDialog, { ModalTransition } from '../src';
 
 function onClose() {
   console.log('the "onClose" handler is fired');
@@ -28,16 +28,18 @@ export default class ModalDemo extends Component<Props, {}> {
 
     return (
       <ThemeProvider theme={{}}>
-        <ModalDialog
-          actions={!footer ? [{ text: 'Create issue', onClick }] : null}
-          footer={footer}
-          header={header}
-          onClose={onClose}
-          heading={heading}
-          {...this.props}
-        >
-          {children || <Lorem count="1" />}
-        </ModalDialog>
+        <ModalTransition>
+          <ModalDialog
+            actions={!footer ? [{ text: 'Create issue', onClick }] : null}
+            footer={footer}
+            header={header}
+            onClose={onClose}
+            heading={heading}
+            {...this.props}
+          >
+            {children || <Lorem count="1" />}
+          </ModalDialog>
+        </ModalTransition>
       </ThemeProvider>
     );
   }

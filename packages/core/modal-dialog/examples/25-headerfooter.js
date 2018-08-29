@@ -9,7 +9,7 @@ import CrossIcon from '@atlaskit/icon/glyph/cross';
 import InlineDialog from '@atlaskit/inline-dialog';
 import { colors } from '@atlaskit/theme';
 
-import ModalDialog, { ModalFooter } from '../src';
+import ModalDialog, { ModalFooter, ModalTransition } from '../src';
 
 const variants = [
   'header',
@@ -113,22 +113,24 @@ export default class ModalDemo extends Component<{}, State> {
         <H4>Variants</H4>
         <ButtonGroup>{variants.map(btn)}</ButtonGroup>
 
-        {variants.filter(w => w === isOpen).map(name => (
-          <ModalDialog
-            key={name}
-            actions={['footer', 'both'].includes(name) ? actions : null}
-            footer={name === 'custom footer' ? Footer : null}
-            header={name === 'custom header' ? Header : null}
-            heading={
-              ['header', 'both'].includes(name) ? `Modal: ${name}` : null
-            }
-            onClose={this.close}
-            width={name === 'custom header' ? 300 : null}
-            {...this.props}
-          >
-            <Lorem count="5" />
-          </ModalDialog>
-        ))}
+        <ModalTransition>
+          {variants.filter(w => w === isOpen).map(name => (
+            <ModalDialog
+              key={name}
+              actions={['footer', 'both'].includes(name) ? actions : null}
+              footer={name === 'custom footer' ? Footer : null}
+              header={name === 'custom header' ? Header : null}
+              heading={
+                ['header', 'both'].includes(name) ? `Modal: ${name}` : null
+              }
+              onClose={this.close}
+              width={name === 'custom header' ? 300 : null}
+              {...this.props}
+            >
+              <Lorem count="5" />
+            </ModalDialog>
+          ))}
+        </ModalTransition>
       </div>
     );
   }

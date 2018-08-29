@@ -5,7 +5,7 @@ import Lorem from 'react-lorem-component';
 
 import Button, { ButtonGroup } from '@atlaskit/button';
 
-import ModalDialog from '../src';
+import ModalDialog, { ModalTransition } from '../src';
 
 const oneLineNonBreakableString = 'one line heading without spaces';
 const multiLineNonBreakableString = 'multiline heading without spaces';
@@ -65,20 +65,22 @@ export default class ModalDemo extends Component<{}, State> {
         <H4>Variants</H4>
         <ButtonGroup>{variants.map(btn)}</ButtonGroup>
 
-        {variants.filter(w => w === isOpen).map(name => (
-          <ModalDialog
-            key={name}
-            appearance="warning"
-            actions={actions}
-            heading={variantToHeading(name)}
-            onClose={this.close}
-            isHeadingMultiline={variantToMultiline(name)}
-            width="medium"
-            {...this.props}
-          >
-            <Lorem count="5" />
-          </ModalDialog>
-        ))}
+        <ModalTransition>
+          {variants.filter(w => w === isOpen).map(name => (
+            <ModalDialog
+              key={name}
+              appearance="warning"
+              actions={actions}
+              heading={variantToHeading(name)}
+              onClose={this.close}
+              isHeadingMultiline={variantToMultiline(name)}
+              width="medium"
+              {...this.props}
+            >
+              <Lorem count="5" />
+            </ModalDialog>
+          ))}
+        </ModalTransition>
       </div>
     );
   }
