@@ -307,7 +307,7 @@ class ContextImpl implements Context {
     }
 
     onUploadFinish
-      .then(id => {
+      .then(() => {
         subject.next({
           id: fileId,
           name,

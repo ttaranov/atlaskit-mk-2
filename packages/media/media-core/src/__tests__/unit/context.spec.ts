@@ -380,7 +380,7 @@ describe('Context', () => {
         context.uploadFile(file).subscribe({
           next,
           complete() {
-            expect(next).toHaveBeenCalledTimes(2);
+            expect(next).toHaveBeenCalledTimes(1);
             expect(next.mock.calls[0][0]).toEqual({
               id: 'file-id',
               status: 'processing',
@@ -388,16 +388,6 @@ describe('Context', () => {
               mimeType: '',
               name: '',
               size: 0,
-            });
-            expect(next.mock.calls[1][0]).toEqual({
-              id: 'file-id-1',
-              status: 'processed',
-              name: 'file-one',
-              size: 1,
-              artifacts: undefined,
-              mediaType: 'image',
-              mimeType: 'image/png',
-              binaryUrl: '/file/file-id-1/binary',
             });
             resolve();
           },
@@ -422,46 +412,6 @@ describe('Context', () => {
             expect(uploadFileMock.mock.calls[0][1]).toEqual({
               authProvider,
             } as MediaApiConfig);
-            resolve();
-          },
-        });
-      });
-    });
-
-    it('should pass collection name when creating the download stream', () => {
-      const context = createFakeContext();
-      const getFile = jest.fn().mockReturnValue({
-        data: {
-          processingStatus: 'succeeded',
-          id: 'file-id-1',
-          name: 'file-one',
-          size: 1,
-        },
-      });
-      const createDownloadFileStream = jest.fn().mockReturnValue(
-        new Observable(observer => {
-          observer.complete();
-        }),
-      );
-      const file = {
-        content: new Blob(),
-        collection: 'some-collection',
-      };
-      (context as any).mediaStore = { getFile };
-      (context as any).createDownloadFileStream = createDownloadFileStream;
-      uploadFileMock.mockImplementation((_, __, callbacks) => {
-        callbacks.onId('file-id-1');
-        return { deferredFileId };
-      });
-
-      return new Promise(resolve => {
-        context.uploadFile(file).subscribe({
-          complete() {
-            expect(createDownloadFileStream).toHaveBeenCalledTimes(1);
-            expect(createDownloadFileStream).toBeCalledWith(
-              'file-id-1',
-              'some-collection',
-            );
             resolve();
           },
         });

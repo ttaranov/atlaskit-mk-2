@@ -510,7 +510,7 @@ describe('Card', () => {
     await nextTick();
 
     expect(context.getImage).toHaveBeenCalledTimes(1);
-    expect(context.getImage).toBeCalledWith('123', {
+    expect(context.getImage).toBeCalledWith('some-random-id', {
       collection: 'some-collection-name',
       height: 125,
       width: 156,
@@ -529,7 +529,7 @@ describe('Card', () => {
     await nextTick();
     await nextTick();
 
-    expect(context.getImage).toBeCalledWith('123', {
+    expect(context.getImage).toBeCalledWith('some-random-id', {
       collection: 'some-collection-name',
       height: 32,
       width: 32,
@@ -549,7 +549,7 @@ describe('Card', () => {
     await nextTick();
 
     expect(context.getImage).toBeCalledWith(
-      '123',
+      'some-random-id',
       expect.objectContaining({
         mode: 'full-fit',
       }),
