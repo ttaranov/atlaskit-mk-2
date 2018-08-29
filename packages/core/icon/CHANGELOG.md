@@ -1,5 +1,8 @@
 # @atlaskit/icon
 
+## 13.6.0
+- [minor] Add static displayName prop to all icons. This results in accurate display names even after minifying and uglifying the icon variable names. [a75db9d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a75db9d)
+
 ## 13.5.0
 - [minor] Add the new child-issues icon [8d3f8dd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d3f8dd)
 
