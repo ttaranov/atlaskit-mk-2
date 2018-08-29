@@ -8,7 +8,6 @@ import {
 } from '@atlaskit/analytics-next';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
 import CheckboxIndeterminateIcon from '@atlaskit/icon/glyph/checkbox-indeterminate';
-import { ThemeProvider } from 'styled-components';
 import {
   name as packageName,
   version as packageVersion,
@@ -51,7 +50,7 @@ type State = {|
 
 const emptyTheme = {};
 
-class CheckboxStateless extends Component<Props, State> {
+class CheckboxInput extends Component<Props, State> {
   props: Props; // eslint-disable-line react/sort-comp
   state: State = {
     isActive: false,
@@ -149,65 +148,61 @@ class CheckboxStateless extends Component<Props, State> {
     const { isFocused, isActive, isHovered } = this.state;
 
     return (
-      <ThemeProvider theme={emptyTheme}>
-        <Label
-          isDisabled={isDisabled}
-          isFullWidth={isFullWidth}
-          onMouseDown={this.onMouseDown}
-          onMouseEnter={this.onMouseEnter}
-          onMouseLeave={this.onMouseLeave}
-          onMouseUp={this.onMouseUp}
-        >
-          <HiddenCheckbox
-            disabled={isDisabled}
-            checked={isChecked}
-            onChange={onChange}
-            onBlur={this.onBlur}
-            onFocus={this.onFocus}
-            onKeyUp={this.onKeyUp}
-            onKeyDown={this.onKeyDown}
-            type="checkbox"
-            value={value}
-            name={name}
-            innerRef={r => (this.checkbox = r)} // eslint-disable-line
-          />
-          <Wrapper>
-            <IconWrapper
-              isChecked={isChecked}
-              isDisabled={isDisabled}
-              isFocused={isFocused}
-              isActive={isActive}
-              isHovered={isHovered}
-              isInvalid={isInvalid}
-            >
-              {this.renderCheckboxIcon()}
-            </IconWrapper>
-            <span>{label}</span>
-          </Wrapper>
-        </Label>
-      </ThemeProvider>
+      <span
+        style={{
+          flexShrink: 0,
+          display: 'inline-block',
+          position: 'relative',
+        }}
+      >
+        <HiddenCheckbox
+          disabled={isDisabled}
+          checked={isChecked}
+          onChange={onChange}
+          onBlur={this.onBlur}
+          onFocus={this.onFocus}
+          onKeyUp={this.onKeyUp}
+          onKeyDown={this.onKeyDown}
+          type="checkbox"
+          value={value}
+          name={name}
+          innerRef={r => (this.checkbox = r)} // eslint-disable-line
+        />
+        <Wrapper>
+          <IconWrapper
+            isChecked={isChecked}
+            isDisabled={isDisabled}
+            isFocused={isFocused}
+            isActive={isActive}
+            isHovered={isHovered}
+            isInvalid={isInvalid}
+          >
+            {this.renderCheckboxIcon()}
+          </IconWrapper>
+        </Wrapper>
+      </span>
     );
   }
 }
 
-export { CheckboxStateless as CheckboxStatelessWithoutAnalytics };
+export { CheckboxInput as CheckboxInputWithoutAnalytics };
 const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
 
 export default withAnalyticsContext({
-  componentName: 'checkbox',
+  componentName: 'checkboxInput',
   packageName,
   packageVersion,
 })(
   withAnalyticsEvents({
     onChange: createAndFireEventOnAtlaskit({
       action: 'changed',
-      actionSubject: 'checkbox',
+      actionSubject: 'checkboxInput',
 
       attributes: {
-        componentName: 'checkbox',
+        componentName: 'checkboxInput',
         packageName,
         packageVersion,
       },
     }),
-  })(CheckboxStateless),
+  })(CheckboxInput),
 );

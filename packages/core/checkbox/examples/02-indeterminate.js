@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { CheckboxStateless } from '../src';
+import Checkbox from '../src';
 
 type CheckedItems = { [value: string]: boolean };
 type State = {
@@ -34,6 +34,7 @@ export default class IndeterminateExample extends PureComponent<void, State> {
   };
 
   onChange = (event: any) => {
+    console.log(event);
     const { checkedItems } = this.state;
     const itemValue = event.target.value;
 
@@ -71,7 +72,7 @@ export default class IndeterminateExample extends PureComponent<void, State> {
           states. The parent checkbox below will be indeterminate until all
           its&#39; children are checked.
         </p>
-        <CheckboxStateless
+        <Checkbox
           isChecked={checkedItems[PARENT_ID]}
           isIndeterminate={getIsParentIndeterminate(checkedItems)}
           onChange={this.onChange}
@@ -86,14 +87,14 @@ export default class IndeterminateExample extends PureComponent<void, State> {
             paddingLeft: '24px',
           }}
         >
-          <CheckboxStateless
+          <Checkbox
             isChecked={checkedItems[CHILD_1_ID]}
             onChange={this.onChange}
             label="Child Checkbox 1"
             value={CHILD_1_ID}
             name="child-1"
           />
-          <CheckboxStateless
+          <Checkbox
             isChecked={checkedItems[CHILD_2_ID]}
             onChange={this.onChange}
             label="Child Checkbox 2"

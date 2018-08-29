@@ -9,16 +9,13 @@ export default md`
 
 ${code`
 import Checkbox, {
-  CheckboxStateless,
-  CheckboxGroup
+  CheckboxInput,
+  CheckboxIcon
 } from '@atlaskit/checkbox';
 `}
 
-  There is a stateful default export that manages the checked state of the checkbox, and a
-  stateless version that allows you to control changes in the checked state
-  directly. There is also a wrapper component to display checkboxes in a
-  group.
-
+  The default export Checkbox provides for controlled & uncontrolled usuage and includes label, input & icon.
+  
   ${(
     <Example
       Component={require('../examples/00-basic-usage').default}
@@ -29,9 +26,9 @@ import Checkbox, {
 
   ${(
     <Example
-      Component={require('../examples/01-stateless-checkbox').default}
-      title="Stateless Checkbox"
-      source={require('!!raw-loader!../examples/01-stateless-checkbox')}
+      Component={require('../examples/01-controlled').default}
+      title="Controlled Checkbox"
+      source={require('!!raw-loader!../examples/01-controlled')}
     />
   )}
 
@@ -43,13 +40,6 @@ import Checkbox, {
     />
   )}
 
-  ${(
-    <Example
-      Component={require('../examples/03-checkbox-group').default}
-      title="With CheckboxGroup"
-      source={require('!!raw-loader!../examples/03-checkbox-group')}
-    />
-  )}
 
   ${(
     <Example
@@ -60,23 +50,8 @@ import Checkbox, {
   )}
 
   ## Checkbox Props
-
   ${<Props props={require('!!extract-react-types-loader!../src/Checkbox')} />}
 
-  ## CheckboxStateless Props
 
-  ${(
-    <Props
-      props={require('!!extract-react-types-loader!../src/CheckboxStateless')}
-    />
-  )}
-
-## CheckboxGroup Props
-
-  ${(
-    <Props
-      props={require('!!extract-react-types-loader!../src/CheckboxGroup')}
-    />
-  )}
 
 `;
