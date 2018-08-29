@@ -7,7 +7,7 @@ export type OptionPropType = {
   isChecked?: boolean,
   label?: Node,
   name?: string,
-  value?: string,
+  value?: string | number | null,
 };
 
 export type OptionsPropType = Array<OptionPropType>;
@@ -65,5 +65,5 @@ export type RadioBasePropTypes = {
   /** onInvalid event handler, passed into the props of each Radio Component instantiated within RadioGroup */
   onInvalid?: (SyntheticEvent<*>) => void,
   /** Field value */
-  value?: string,
+  value?: string | number | null,
 };
