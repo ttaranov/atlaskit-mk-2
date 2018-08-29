@@ -80,11 +80,11 @@ export async function importFiles(
   store: Store<State>,
   wsProvider: WsProvider,
 ): Promise<void> {
-  const { uploads, tenant, selectedItems, userAuthProvider } = store.getState();
+  const { uploads, tenant, selectedItems, userContext } = store.getState();
 
   store.dispatch(hidePopup());
 
-  const auth = await userAuthProvider();
+  const auth = await userContext.config.authProvider();
   const selectedUploadFiles = selectedItems.map(
     mapSelectedItemToSelectedUploadFile,
   );

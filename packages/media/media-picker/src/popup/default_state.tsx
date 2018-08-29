@@ -1,8 +1,11 @@
 import { State } from './domain';
 
-const state: State = {
-  redirectUrl: '',
-  userAuthProvider: () => Promise.reject('User AuthProvider not provided.'),
+export type DefaultStateKeys = Exclude<
+  keyof State,
+  'context' | 'userContext' | 'redirectUrl' | 'config'
+>;
+export type DefaultState = Pick<State, DefaultStateKeys>;
+const defaultState: DefaultState = {
   uploads: {},
   remoteUploads: {},
   recents: {
@@ -42,8 +45,6 @@ const state: State = {
   onCancelUpload: () => {
     throw new Error('onCancelUpload has not been set yet.');
   },
-  context: {} as any, // TODO: fix this
-  config: {},
 };
 
-export default state;
+export default defaultState;

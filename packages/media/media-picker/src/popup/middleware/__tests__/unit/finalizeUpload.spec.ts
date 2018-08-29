@@ -40,8 +40,10 @@ describe('finalizeUploadMiddleware', () => {
   };
   const setup = (uploadParams: UploadParams = {}) => {
     const store = mockStore();
-    const { userAuthProvider } = store.getState();
-    userAuthProvider.mockImplementation(() => Promise.resolve(auth));
+    const { userContext } = store.getState();
+    (userContext.config.authProvider as jest.Mock<any>).mockReturnValue(
+      Promise.resolve(auth),
+    );
 
     const fetcher = mockFetcher();
     fetcher.copyFile.mockImplementation(() => Promise.resolve(copiedFile));

@@ -39,13 +39,15 @@ export const mockState: State = {
   remoteUploads: {},
   isCancelling: false,
   isUploading: false,
-  userAuthProvider: jest.fn().mockReturnValue(Promise.resolve({})),
   giphy: {
     imageCardModels: [],
     totalResultCount: 100,
   },
   onCancelUpload: jest.fn(),
   context: ContextFactory.create({
+    authProvider: jest.fn(),
+  }),
+  userContext: ContextFactory.create({
     authProvider: jest.fn(),
   }),
   config: {},
@@ -56,7 +58,7 @@ export const mockStore = (state?: Partial<State>) => ({
   getState: jest.fn().mockReturnValue({
     ...mockState,
     ...state,
-  }),
+  }) as () => State,
   subscribe: jest.fn(),
   replaceReducer: jest.fn(),
 });

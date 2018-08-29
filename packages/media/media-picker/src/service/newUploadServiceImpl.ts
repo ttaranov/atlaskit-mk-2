@@ -15,6 +15,7 @@ import { EventEmitter2 } from 'eventemitter2';
 import { defaultUploadParams } from '../domain/uploadParams';
 import { MediaFile, PublicMediaFile } from '../domain/file';
 
+import { RECENTS_COLLECTION } from '../popup/config';
 import { mapAuthToSourceFileOwner } from '../popup/domain/source-file';
 import { getPreviewFromBlob } from '../util/getPreviewFromBlob';
 import { getPreviewFromVideo } from '../util/getPreviewFromVideo';
@@ -46,6 +47,7 @@ export class NewUploadServiceImpl implements UploadService {
     this.emitter = new EventEmitter2();
     this.cancellableFilesUploads = {};
 
+    // TODO Would be nice to have two contexts: tenant and user ones
     if (context.config.userAuthProvider) {
       this.userMediaStore = new MediaStore({
         authProvider: context.config.userAuthProvider,
@@ -304,7 +306,7 @@ export class NewUploadServiceImpl implements UploadService {
           },
         };
         const params = {
-          collection: 'recents',
+          collection: RECENTS_COLLECTION,
         };
         return this.userMediaStore.copyFileWithToken(body, params);
       });

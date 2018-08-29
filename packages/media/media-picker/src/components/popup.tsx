@@ -1,4 +1,4 @@
-import { Context } from '@atlaskit/media-core';
+import { Context, ContextFactory } from '@atlaskit/media-core';
 import { Store } from 'redux';
 import * as React from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
@@ -26,8 +26,6 @@ export interface PopupConfig {
   readonly singleSelect?: boolean;
 }
 
-export const USER_RECENTS_COLLECTION = 'recents';
-
 export interface PopupConstructor {
   new (context: Context, config: PopupConfig): Popup;
 }
@@ -48,7 +46,7 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
   private proxyReactContext?: AppProxyReactContext;
 
   constructor(
-    readonly context: Context,
+    readonly tenantContext: Context,
     {
       container = document.body,
       uploadParams,
@@ -59,7 +57,16 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
     super();
     this.proxyReactContext = proxyReactContext;
 
-    this.store = createStore(this, context, {
+    const { userAuthProvider, cacheSize } = tenantContext.config;
+    if (!userAuthProvider) {
+      throw new Error('userAuthProvider must be provided in the context');
+    }
+
+    const userContext = ContextFactory.create({
+      cacheSize: cacheSize,
+      authProvider: userAuthProvider,
+    });
+    this.store = createStore(this, tenantContext, userContext, {
       singleSelect,
     });
 
@@ -75,7 +82,7 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
   }
 
   public show(): Promise<void> {
-    return this.context.config
+    return this.tenantContext.config
       .authProvider({
         collectionName: this.uploadParams.collection,
       })
@@ -91,7 +98,6 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
         this.store.dispatch(getFilesInRecents());
         // TODO [MSW-466]: Fetch remote accounts only when needed
         this.store.dispatch(getConnectedRemoteAccounts());
-
         this.store.dispatch(showPopup());
       });
   }

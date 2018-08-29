@@ -76,7 +76,10 @@ describe('handleCloudFetchingEvent', () => {
       'some-upload-id': { tenant },
     };
 
-    store.getState.mockReturnValue({ client, remoteUploads });
+    (store.getState as jest.Mock<any>).mockReturnValue({
+      client,
+      remoteUploads,
+    });
 
     handleCloudFetchingEvent(store)(next)(action);
 

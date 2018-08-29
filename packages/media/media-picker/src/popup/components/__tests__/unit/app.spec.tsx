@@ -24,6 +24,9 @@ describe('App', () => {
       authProvider: userAuthProvider,
       userAuthProvider,
     });
+    const userContext = ContextFactory.create({
+      authProvider: userAuthProvider,
+    });
     return {
       handlers: {
         onStartApp: jest.fn(),
@@ -36,19 +39,21 @@ describe('App', () => {
         onUploadError: jest.fn(),
       } as AppDispatchProps,
       context,
+      userContext,
       store: mockStore(),
       userAuthProvider,
     };
   };
 
   it('should render UploadView given selectedServiceName is "upload"', () => {
-    const { handlers, store, context } = setup();
+    const { handlers, store, context, userContext } = setup();
     const app = shallow(
       <App
         store={store}
         selectedServiceName="upload"
         isVisible={true}
         context={context}
+        userContext={userContext}
         {...handlers}
       />,
     );
@@ -57,12 +62,13 @@ describe('App', () => {
   });
 
   it('should render Browser given selectedServiceName is "google"', () => {
-    const { handlers, store, context } = setup();
+    const { handlers, store, context, userContext } = setup();
     const app = shallow(
       <App
         store={store}
         selectedServiceName="google"
         context={context}
+        userContext={userContext}
         isVisible={true}
         {...handlers}
       />,
@@ -72,12 +78,13 @@ describe('App', () => {
   });
 
   it('should call onStartApp', () => {
-    const { handlers, store, context } = setup();
+    const { handlers, store, context, userContext } = setup();
     shallow(
       <App
         store={store}
         selectedServiceName="upload"
         context={context}
+        userContext={userContext}
         isVisible={true}
         {...handlers}
       />,
@@ -87,12 +94,13 @@ describe('App', () => {
   });
 
   it('should activate dropzone when visible', () => {
-    const { handlers, store, context } = setup();
+    const { handlers, store, context, userContext } = setup();
     const element = (
       <App
         store={store}
         selectedServiceName="google"
         context={context}
+        userContext={userContext}
         isVisible={false}
         {...handlers}
       />
@@ -106,12 +114,13 @@ describe('App', () => {
   });
 
   it('should deactivate dropzone when not visible', () => {
-    const { handlers, store, context } = setup();
+    const { handlers, store, context, userContext } = setup();
     const element = (
       <App
         store={store}
         selectedServiceName="google"
         context={context}
+        userContext={userContext}
         isVisible={true}
         {...handlers}
       />
@@ -125,12 +134,13 @@ describe('App', () => {
   });
 
   it('should deactivate dropzone when unmounted', () => {
-    const { handlers, store, context } = setup();
+    const { handlers, store, context, userContext } = setup();
     const element = (
       <App
         store={store}
         selectedServiceName="google"
         context={context}
+        userContext={userContext}
         isVisible={true}
         {...handlers}
       />
@@ -144,12 +154,13 @@ describe('App', () => {
   });
 
   it('should pass new context to the local MediaPicker components', () => {
-    const { handlers, store, context, userAuthProvider } = setup();
+    const { handlers, store, context, userContext, userAuthProvider } = setup();
     const component = shallow(
       <App
         store={store}
         selectedServiceName="upload"
         context={context}
+        userContext={userContext}
         isVisible={true}
         {...handlers}
       />,

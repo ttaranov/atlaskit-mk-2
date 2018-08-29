@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { Dispatch, Store } from 'redux';
 import { connect, Provider } from 'react-redux';
 
-import { Context, ContextFactory } from '@atlaskit/media-core';
+import { Context } from '@atlaskit/media-core';
 import ModalDialog from '@atlaskit/modal-dialog';
 
 import { ServiceName, State } from '../domain';
@@ -52,6 +52,7 @@ export interface AppStateProps {
   readonly selectedServiceName: ServiceName;
   readonly isVisible: boolean;
   readonly context: Context;
+  readonly userContext: Context;
   readonly config?: Partial<PopupConfig>;
 }
 
@@ -101,14 +102,9 @@ export class App extends Component<AppProps, AppState> {
       onUploadProcessing,
       onUploadEnd,
       onUploadError,
-      context,
+      userContext,
     } = props;
 
-    const { userAuthProvider } = context.config;
-
-    if (!userAuthProvider) {
-      throw new Error('userAuthProvider must be provided in the context');
-    }
     this.state = {
       isDropzoneActive: false,
     };
@@ -120,9 +116,7 @@ export class App extends Component<AppProps, AppState> {
     };
 
     // We can't just use the given context since the Cards in the recents view needs a different authProvider
-    this.mpContext = ContextFactory.create({
-      authProvider: userAuthProvider,
-    });
+    this.mpContext = userContext;
 
     this.mpBrowser = MediaPicker('browser', this.mpContext, {
       ...defaultConfig,
@@ -239,11 +233,17 @@ export class App extends Component<AppProps, AppState> {
   };
 }
 
-const mapStateToProps = ({ view, context, config }: State): AppStateProps => ({
+const mapStateToProps = ({
+  view,
+  context,
+  userContext,
+  config,
+}: State): AppStateProps => ({
   selectedServiceName: view.service.name,
   isVisible: view.isVisible,
   config,
   context,
+  userContext,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<State>): AppDispatchProps => ({

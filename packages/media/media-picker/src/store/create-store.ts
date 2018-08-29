@@ -32,28 +32,26 @@ import { PopupConfig, PopupUploadEventEmitter } from '../components/popup';
 
 export default (
   eventEmitter: PopupUploadEventEmitter,
-  context: Context,
+  tenantContext: Context,
+  userContext: Context,
   config: Partial<PopupConfig>,
 ): Store<State> => {
-  const { userAuthProvider, authProvider } = context.config;
-  if (!userAuthProvider) {
-    throw new Error('userAuthProvider must be provided in the context');
-  }
+  const userAuthProvider = userContext.config.authProvider;
 
   const redirectUrl = appConfig.html.redirectUrl;
   const fetcher = new MediaApiFetcher();
   const wsProvider = new WsProvider();
   const cloudService = new CloudService(userAuthProvider);
+  const partialState: State = {
+    ...defaultState,
+    redirectUrl,
+    context: tenantContext,
+    userContext: userContext,
+    config,
+  };
   return createStore(
     reducers,
-    {
-      ...defaultState,
-      redirectUrl,
-      tenantAuthProvider: authProvider,
-      userAuthProvider,
-      context,
-      config,
-    } as Partial<State>,
+    partialState,
     composeWithDevTools(
       applyMiddleware(
         startAppMiddleware(eventEmitter) as Middleware,
