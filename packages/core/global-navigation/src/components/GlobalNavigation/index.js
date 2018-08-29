@@ -12,7 +12,6 @@ import generateDefaultConfig from '../../config/default-config';
 import generateProductConfig from '../../config/product-config';
 import generatePlatformIntegration from '../../platform-integration';
 import ViewTracker from '../ViewTracker';
-import GlobalDrawer from '../GlobalDrawer';
 
 import type { GlobalNavItemData, NavItem } from '../../config/types';
 import type { GlobalNavigationProps } from './types';
@@ -39,6 +38,15 @@ const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
   href,
   size,
 });
+
+const noop = () => {};
+
+const analyticsNameMap = {
+  search: 'quickSearchDrawer',
+  notification: 'notificationsDrawer',
+  create: 'createDrawer',
+  starred: 'starDrawer',
+};
 
 type GlobalNavigationState = {
   [any]: boolean, // Need an indexer property to appease flow for is${capitalisedDrawerName}Open
