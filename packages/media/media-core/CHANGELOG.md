@@ -1,5 +1,8 @@
 # @atlaskit/media-core
 
+## 23.1.0
+- [minor] Expose upfrontId in MediaPicker [7545979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7545979)
+
 ## 23.0.2
 - [patch] Updated dependencies [911a570](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/911a570)
   - @atlaskit/media-test-helpers@17.0.0
