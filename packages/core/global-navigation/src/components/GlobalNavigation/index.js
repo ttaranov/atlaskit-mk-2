@@ -10,6 +10,7 @@ import {
 } from '../../../package.json';
 import generateDefaultConfig from '../../config/default-config';
 import generateProductConfig from '../../config/product-config';
+import { notificationIntegration } from '../../platform-integration';
 import ViewTracker from '../ViewTracker';
 
 import type { GlobalNavItemData, NavItem } from '../../config/types';
@@ -66,6 +67,11 @@ export default class GlobalNavigation
   extends Component<GlobalNavigationProps, GlobalNavigationState>
   implements Global {
   drawers: DrawerName[] = ['search', 'notification', 'starred', 'create'];
+  static defaultProps = {
+    fabricNotificationLogUrl: 'test',
+    cloudId: 'test',
+  };
+
   constructor(props: GlobalNavigationProps) {
     super(props);
 
@@ -137,10 +143,19 @@ export default class GlobalNavigation
 
   openDrawer = (drawerName: DrawerName) => () => {
     const capitalisedDrawerName = this.getCapitalisedDrawerName(drawerName);
-    const onOpenCallback =
-      typeof this.props[`on${capitalisedDrawerName}Open`] === 'function'
-        ? this.props[`on${capitalisedDrawerName}Open`]
-        : noop;
+    let onOpenCallback = noop;
+
+    if (typeof this.props[`on${capitalisedDrawerName}Open`] === 'function') {
+      onOpenCallback = this.props[`on${capitalisedDrawerName}Open`];
+    }
+
+    if (drawerName === 'notification') {
+      // TODO: Avoid multiple invocations of this function
+      onOpenCallback = notificationIntegration(
+        this.props.fabricNotificationLogUrl,
+        this.props.cloudId,
+      ).onNotificationDrawerOpen;
+    }
 
     // Update the state only if it's a controlled drawer.
     // componentDidMount takes care of the uncontrolled drawers
@@ -159,10 +174,19 @@ export default class GlobalNavigation
 
   closeDrawer = (drawerName: DrawerName) => () => {
     const capitalisedDrawerName = this.getCapitalisedDrawerName(drawerName);
-    const onCloseCallback =
-      typeof this.props[`on${capitalisedDrawerName}Close`] === 'function'
-        ? this.props[`on${capitalisedDrawerName}Close`]
-        : noop;
+    let onCloseCallback = noop;
+
+    if (typeof this.props[`on${capitalisedDrawerName}Close`] === 'function') {
+      onCloseCallback = this.props[`on${capitalisedDrawerName}Close`];
+    }
+
+    if (drawerName === 'notification') {
+      // TODO: Avoid multiple invocations of this function
+      onCloseCallback = notificationIntegration(
+        this.props.fabricNotificationLogUrl,
+        this.props.cloudId,
+      ).onNotificationDrawerClose;
+    }
 
     // Update the state only if it's a controlled drawer.
     // componentDidMount takes care of the uncontrolled drawers
@@ -183,11 +207,18 @@ export default class GlobalNavigation
     const productConfig = generateProductConfig(this.props, this.openDrawer);
     const defaultConfig = generateDefaultConfig();
 
+    // TODO: Avoid multiple invocations of this function
+    const { badge } = notificationIntegration(
+      this.props.fabricNotificationLogUrl,
+      this.props.cloudId,
+    );
+
     const navItems: NavItem[] = Object.keys(productConfig).map(item => ({
       ...(productConfig[item]
         ? {
             ...defaultConfig[item],
             ...productConfig[item],
+            ...(item === 'notification' ? { badge } : {}),
           }
         : null),
     }));
@@ -207,6 +238,11 @@ export default class GlobalNavigation
   render() {
     // TODO: Look into memoizing this to avoid memory bloat
     const { primaryItems, secondaryItems } = this.constructNavItems();
+    // TODO: Avoid multiple invocations of this function
+    const { notificationDrawerContents } = notificationIntegration(
+      this.props.fabricNotificationLogUrl,
+      this.props.cloudId,
+    );
 
     return (
       <NavigationAnalyticsContext
@@ -223,7 +259,10 @@ export default class GlobalNavigation
           />
           {this.drawers.map(drawer => {
             const capitalisedDrawerName = this.getCapitalisedDrawerName(drawer);
-            const DrawerContents = this.props[`${drawer}DrawerContents`];
+            const DrawerContents =
+              drawer === 'notification'
+                ? notificationDrawerContents
+                : this.props[`${drawer}DrawerContents`];
 
             if (!DrawerContents) {
               return null;
