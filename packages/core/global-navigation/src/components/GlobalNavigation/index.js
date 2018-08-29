@@ -69,10 +69,6 @@ export default class GlobalNavigation
   extends Component<GlobalNavigationProps, GlobalNavigationState>
   implements Global {
   drawers: DrawerName[] = ['search', 'notification', 'starred', 'create'];
-  static defaultProps = {
-    fabricNotificationLogUrl: 'test',
-    cloudId: 'test',
-  };
 
   constructor(props: GlobalNavigationProps) {
     super(props);
