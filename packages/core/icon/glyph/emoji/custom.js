@@ -19,4 +19,5 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var EmojiCustomIcon = function EmojiCustomIcon(props) {
   return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path d="M13 11V7.002a.999.999 0 1 0-2 0V11H7.002a.999.999 0 1 0 0 2H11v3.998a.999.999 0 1 0 2 0V13h3.998a.999.999 0 1 0 0-2H13z" fill="currentColor" fill-rule="evenodd"/></svg>' }, props));
 };
+EmojiCustomIcon.displayName = 'EmojiCustomIcon';
 exports.default = EmojiCustomIcon;
