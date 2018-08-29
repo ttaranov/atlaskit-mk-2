@@ -8,26 +8,10 @@ import {
 import * as cases from 'jest-in-case';
 
 import NavigationListener from '../../../navigation/NavigationListener';
-import {
-  AnalyticsListener,
-  withAnalyticsEvents,
-  AnalyticsContext,
-} from '@atlaskit/analytics-next';
+import { AnalyticsListener, AnalyticsContext } from '@atlaskit/analytics-next';
 import { AnalyticsWebClient } from '../../../types';
-
-const Button: React.StatelessComponent<any> = props => (
-  <button id="dummy" onClick={props.onClick}>
-    Test [click on me]
-  </button>
-);
-Button.displayName = 'Button';
-
-const createButtonWithAnalytics = payload =>
-  withAnalyticsEvents({
-    onClick: (createEvent, props) => {
-      createEvent(payload).fire('navigation');
-    },
-  })(Button);
+import { FabricChannel } from '../../../index';
+import { createButtonWithAnalytics } from '../../../../examples/helpers';
 
 const createAnalyticsContexts = contexts => ({ children }) =>
   contexts
@@ -75,7 +59,10 @@ describe('NavigationListener', () => {
       done,
     ) => {
       const spy = jest.fn();
-      const ButtonWithAnalytics = createButtonWithAnalytics(eventPayload);
+      const ButtonWithAnalytics = createButtonWithAnalytics(
+        eventPayload,
+        FabricChannel.navigation,
+      );
       const AnalyticsContexts = createAnalyticsContexts(context);
 
       const component = mount(

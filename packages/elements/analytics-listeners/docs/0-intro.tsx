@@ -8,6 +8,7 @@ export default md`
 
   The following listeners are currently implemented:
 
+  * Fabric Editor
   * Fabric elements
   * Atlaskit (core)
   * Navigation
@@ -24,48 +25,5 @@ ${code`
 
   ## Using the component
 
-  Example firing an analytics-next event:
-
-${code`
-  import * as React from 'react';
-  import { withAnalyticsEvents } from '@atlaskit/analytics-next';
-  import AtlaskitAnalyticsListener from '@atlaskit/analytics-listeners';
-
-  import { GasPayload } from '@atlaskit/analytics-gas-types';
-
-  export type Props = {
-    onClick: e => void,
-  };
-
-  export const DummyComponent: React.StatelessComponent<Props> = (
-    props: Props,
-  ) => (
-    <div id="dummy" onClick={props.onClick}>
-      Test
-    </div>
-  );
-  DummyComponent.displayName = 'DummyComponent';
-
-  export const DummyComponentWithAnalytics = withAnalyticsEvents({
-    onClick: (createEvent, props) => {
-      const event: GasPayload = {
-        action: 'someAction',
-        actionSubject: 'someComponent',
-        eventType: 'ui',
-        source: 'unknown',
-      };
-      createEvent(event).fire('fabricElements');
-    },
-  })(DummyComponent);
-
-  // Pass the analyticsWebClient instance created by the Product
-  ReactDOM.render(
-    <div>
-      <FabricAnalyticsListeners client={analyticsWebClient}>
-        <DummyComponentWithAnalytics onClick={myOnClickHandler} />
-      </FabricAnalyticsListeners>
-    </div>,
-    container,
-  );
-`}
+  Check out [live examples](https://atlaskit.atlassian.com/packages/elements/analytics-listeners/example/fabric-listener-example).
 `;

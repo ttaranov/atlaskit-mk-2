@@ -5,12 +5,18 @@ import FabricEditorListener, {
   EDITOR_TAG,
 } from '../../fabric/FabricEditorListener';
 import {
-  DummyComponentWithAnalytics,
-  TaggedDummyComponentWithAnalytics,
-  Props,
+  createComponentWithAnalytics,
+  createTaggedComponentWithAnalytics,
+  OwnProps,
 } from '../../../examples/helpers';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { AnalyticsWebClient } from '../../types';
+
+const DummyEditorComponent = createComponentWithAnalytics(FabricChannel.editor);
+const DummyTaggedEditorComponent = createTaggedComponentWithAnalytics(
+  FabricChannel.editor,
+  EDITOR_TAG,
+);
 
 describe('<FabricEditorsListener />', () => {
   let analyticsWebClientMock: AnalyticsWebClient;
@@ -32,7 +38,7 @@ describe('<FabricEditorsListener />', () => {
   });
 
   const fireAndVerifySentEvent = (
-    Component: React.StatelessComponent<Props>,
+    Component: React.ComponentClass<OwnProps>,
     expectedEvent: any,
   ) => {
     const compOnClick = jest.fn();
@@ -56,27 +62,21 @@ describe('<FabricEditorsListener />', () => {
 
   describe('Listen and fire an UI event with analyticsWebClient', () => {
     it('should fire event with editor tag', () => {
-      fireAndVerifySentEvent(
-        DummyComponentWithAnalytics(FabricChannel.editor),
-        {
-          action: 'someAction',
-          actionSubject: 'someComponent',
-          source: 'unknown',
-          tags: [EDITOR_TAG],
-        },
-      );
+      fireAndVerifySentEvent(DummyEditorComponent, {
+        action: 'someAction',
+        actionSubject: 'someComponent',
+        source: 'unknown',
+        tags: [EDITOR_TAG],
+      });
     });
 
     it('should fire event without duplicating the tag', () => {
-      fireAndVerifySentEvent(
-        TaggedDummyComponentWithAnalytics(FabricChannel.editor, EDITOR_TAG),
-        {
-          action: 'someAction',
-          actionSubject: 'someComponent',
-          source: 'unknown',
-          tags: [EDITOR_TAG, 'foo'],
-        },
-      );
+      fireAndVerifySentEvent(DummyTaggedEditorComponent, {
+        action: 'someAction',
+        actionSubject: 'someComponent',
+        source: 'unknown',
+        tags: [EDITOR_TAG, 'foo'],
+      });
     });
   });
 });

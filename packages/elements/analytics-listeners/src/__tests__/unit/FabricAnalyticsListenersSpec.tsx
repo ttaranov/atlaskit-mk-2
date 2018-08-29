@@ -4,9 +4,11 @@ import FabricAnalyticsListeners from '../../FabricAnalyticsListeners';
 import FabricElementsListener from '../../fabric/FabricElementsListener';
 import AtlaskitListener from '../../atlaskit/AtlaskitListener';
 import {
-  DummyComponentWithAnalytics,
-  DummyComponent,
+  createComponentWithAnalytics,
   IncorrectEventType,
+  DummyAtlaskitComponent,
+  DummyNavigationComponent,
+  DummyElementsComponent,
 } from '../../../examples/helpers';
 import { AnalyticsWebClient } from '../../types';
 import { LOG_LEVEL } from '../../helpers/logger';
@@ -15,13 +17,13 @@ import NavigationListener from '../../navigation/NavigationListener';
 
 declare const global: any;
 
-const DummyElementsCompWithAnalytics = DummyComponentWithAnalytics(
+const DummyElementsCompWithAnalytics = createComponentWithAnalytics(
   FabricChannel.elements,
 );
-const DummyAtlaskitCompWithAnalytics = DummyComponentWithAnalytics(
+const DummyAtlaskitCompWithAnalytics = createComponentWithAnalytics(
   FabricChannel.atlaskit,
 );
-const DummyNavigationCompWithAnalytics = DummyComponentWithAnalytics(
+const DummyNavigationCompWithAnalytics = createComponentWithAnalytics(
   FabricChannel.navigation,
 );
 const AtlaskitIncorrectEventType = IncorrectEventType(FabricChannel.atlaskit);
@@ -65,7 +67,7 @@ describe('<FabricAnalyticsListeners />', () => {
       );
 
       const analyticsListener = component.find(FabricElementsListener);
-      const dummyComponent = analyticsListener.find(DummyComponent);
+      const dummyComponent = analyticsListener.find(DummyAtlaskitComponent);
       expect(dummyComponent).toHaveLength(1);
 
       dummyComponent.simulate('click');
@@ -246,7 +248,7 @@ describe('<FabricAnalyticsListeners />', () => {
         analyticsWebClientMock,
       );
 
-      const dummyComponent = analyticsListener.find(DummyComponent);
+      const dummyComponent = analyticsListener.find(DummyElementsComponent);
       expect(dummyComponent).toHaveLength(1);
 
       dummyComponent.simulate('click');
@@ -270,7 +272,7 @@ describe('<FabricAnalyticsListeners />', () => {
         analyticsWebClientMock,
       );
 
-      const dummyComponent = analyticsListener.find(DummyComponent);
+      const dummyComponent = analyticsListener.find(DummyAtlaskitComponent);
       expect(dummyComponent).toHaveLength(1);
 
       dummyComponent.simulate('click');
@@ -294,7 +296,7 @@ describe('<FabricAnalyticsListeners />', () => {
         analyticsWebClientMock,
       );
 
-      const dummyComponent = analyticsListener.find(DummyComponent);
+      const dummyComponent = analyticsListener.find(DummyNavigationComponent);
       expect(dummyComponent).toHaveLength(1);
 
       dummyComponent.simulate('click');
