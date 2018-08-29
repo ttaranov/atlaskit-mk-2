@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 78.0.7
+- [patch] ED-5280: Revert 68a0978 due to issues with Confluence. The IntlProviders were clashing and preventing Confluence from internationalising the elements inside the editor. [ab71cd1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ab71cd1)
+
 ## 78.0.6
 - [patch] ED-5101, align z-index of all floating things inside editor. [52ad431](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/52ad431)
 - [none] Updated dependencies [52ad431](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/52ad431)
