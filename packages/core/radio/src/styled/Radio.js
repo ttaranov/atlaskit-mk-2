@@ -52,7 +52,7 @@ const activeBorder = css`
   stroke: currentColor;
   stroke-width: 2px;
 `;
-const selectedBorder = css`
+const checkedBorder = css`
   stroke: currentColor;
   stroke-width: 2px;
 `;
@@ -69,7 +69,7 @@ const getBorderColor = (props: IconWrapperProps) => {
   if (props.isFocused) return focusBorder;
   if (props.isActive) return activeBorder;
   if (props.isInvalid) return invalidBorder;
-  if (props.isChecked) return selectedBorder;
+  if (props.isChecked) return checkedBorder;
   return border;
 };
 

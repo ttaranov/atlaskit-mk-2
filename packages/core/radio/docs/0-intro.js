@@ -52,6 +52,13 @@ AkRadio component to render. Both stateful and stateless
 
   ${(
     <Props
+      props={require('!!extract-react-types-loader!../src/Radio')}
+      heading="Radio Props"
+    />
+  )}
+
+  ${(
+    <Props
       props={require('!!extract-react-types-loader!../src/RadioInput')}
       heading="RadioInput Props"
     />
@@ -59,9 +66,8 @@ AkRadio component to render. Both stateful and stateless
 
   ${(
     <Props
-      props={require('!!extract-react-types-loader!../src/Radio')}
-      heading="Radio Props"
+      props={require('!!extract-react-types-loader!../src/RadioIcon')}
+      heading="RadioIcon Props"
     />
   )}
-
 `;

@@ -5,25 +5,23 @@ import type { OptionsPropType } from '../src/types';
 
 const options: OptionsPropType = [
   { name: 'color', value: 'red', label: 'Red' },
-  { name: 'color', value: 'blue', label: 'Blue', defaultSelected: true },
+  { name: 'color', value: 'blue', label: 'Blue', defaultChecked: true },
   { name: 'color', value: 'yellow', label: 'Yellow' },
   { name: 'color', value: 'green', label: 'Green' },
 ];
 
 type State = {
-  onRadioChangeResult: string,
+  onChangeResult: string,
 };
 
 export default class BasicExample extends PureComponent<void, State> {
   state = {
-    onRadioChangeResult: 'Click on a radio field to trigger onRadioChange',
+    onChangeResult: 'Click on a radio field to trigger onChange',
   };
 
-  onRadioChange = (event: any) => {
+  onChange = (event: any) => {
     this.setState({
-      onRadioChangeResult: `onRadioChange called with value: ${
-        event.target.value
-      }`,
+      onChangeResult: `onChange called with value: ${event.target.value}`,
     });
   };
 
@@ -33,7 +31,7 @@ export default class BasicExample extends PureComponent<void, State> {
         <RadioGroup
           options={options}
           label="Pick a color:"
-          onChange={this.onRadioChange}
+          onChange={this.onChange}
         />
         <div
           style={{
@@ -45,7 +43,7 @@ export default class BasicExample extends PureComponent<void, State> {
             margin: '0.5em',
           }}
         >
-          {this.state.onRadioChangeResult}
+          {this.state.onChangeResult}
         </div>
       </div>
     );

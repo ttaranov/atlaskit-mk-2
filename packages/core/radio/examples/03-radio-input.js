@@ -7,11 +7,11 @@ type State = {
   isChecked: boolean,
   isFocused: boolean,
   isMouseDown: boolean,
-  selectedValue: string,
+  checkedValue: string,
 };
 export default class RadioInputExample extends Component<*, State> {
   state = {
-    selectedValue: '',
+    checkedValue: '',
     isActive: false,
     isChecked: false,
     isMouseDown: false,
@@ -33,7 +33,7 @@ export default class RadioInputExample extends Component<*, State> {
   onChange = (event: SyntheticEvent<*>) => {
     console.log('onChange()', event.currentTarget.value);
     this.setState({
-      selectedValue: event.currentTarget.value,
+      checkedValue: event.currentTarget.value,
     });
   };
   onClick = (event: SyntheticEvent<*>) => {
