@@ -1,7 +1,6 @@
 // @flow
 
 import type { ComponentType } from 'react';
-import type { GlobalDrawerProps } from '../GlobalDrawer/types';
 
 export type DrawerContentProps = { closeDrawer: () => void };
 
@@ -15,6 +14,28 @@ export type InitialNavigationStateShape = {
 
 export type NavigationStateShape = InitialNavigationStateShape & {
   isResizing?: boolean,
+};
+
+export type GlobalNavDrawerProps = {
+  isCreateDrawerOpen?: boolean,
+  createDrawerContents?: ComponentType<*>,
+  onCreateDrawerOpen?: () => void,
+  onCreateDrawerClose?: () => void,
+
+  isSearchDrawerOpen?: boolean,
+  searchDrawerContents?: ComponentType<*>,
+  onSearchDrawerOpen?: () => void,
+  onSearchDrawerClose?: () => void,
+
+  isNotificationDrawerOpen?: boolean,
+  notificationDrawerContents?: ComponentType<*>,
+  onNotificationDrawerOpen?: () => void,
+  onNotificationDrawerClose?: () => void,
+
+  isStarredDrawerOpen?: boolean,
+  starredDrawerContents?: ComponentType<*>,
+  onStarredDrawerOpen?: () => void,
+  onStarredDrawerClose?: () => void,
 };
 
 export type GlobalNavigationProps = {
@@ -46,4 +67,6 @@ export type GlobalNavigationProps = {
   onNotificationClick?: ?() => void,
   notificationCount?: number,
   notificationTooltip?: string,
-} & GlobalDrawerProps;
+} & GlobalNavDrawerProps;
+
+export type DrawerName = 'search' | 'notification' | 'starred' | 'create';
