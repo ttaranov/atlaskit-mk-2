@@ -1,5 +1,8 @@
 # @atlaskit/icon
 
+## 13.5.0
+- [minor] Add the new child-issues icon [8d3f8dd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d3f8dd)
+
 ## 13.4.0
 - [minor] Add the new check circle outline [22af4c5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/22af4c5)
 
