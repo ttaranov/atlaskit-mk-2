@@ -104,6 +104,9 @@ export default class MediaSingleNode extends Component<
     const { progress } = this.state;
 
     let { width, height, type } = this.child.props.node.attrs;
+    const propsWidth = this.props.width;
+    // console.log({width,height, propsWidth})
+    // console.log("IN MEDIA SINGLEEEEEEEEEEEEEE")
 
     if (type === 'external') {
       const { width: stateWidth, height: stateHeight } = this.state;
@@ -116,14 +119,14 @@ export default class MediaSingleNode extends Component<
         height = stateHeight || DEFAULT_HEIGHT;
       }
     } else {
-      if (height === null || width === null) {
+      if (width == null && !this.props.width) {
         return (
           <MediaBase widthExists={false}>
             {React.cloneElement(
               this.child as ReactElement<any>,
               {
                 progress,
-                isMediaSingle: true,
+                // isMediaSingle: true,
                 onExternalImageLoaded: this.onExternalImageLoaded,
               } as MediaNodeProps,
             )}
@@ -131,7 +134,6 @@ export default class MediaSingleNode extends Component<
         );
       }
     }
-
     return (
       <MediaSingle
         layout={layout}
