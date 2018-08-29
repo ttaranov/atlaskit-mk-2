@@ -12,6 +12,7 @@ import {
   tableBorderDeleteColor,
   tableToolbarDeleteColor,
 } from '../styles';
+import { akEditorUnitZIndex } from '@atlaskit/editor-common';
 
 export const toolbarSize = 11;
 
@@ -44,7 +45,7 @@ export const HeaderButtonDefault: ComponentClass<
     background-color: ${tableToolbarDeleteColor};
     border-color: ${tableBorderDeleteColor};
     position: relative;
-    z-index: 1;
+    z-index: ${akEditorUnitZIndex};
   }
   &:focus {
     outline: none;
@@ -55,7 +56,7 @@ export const InsertButtonDefault: ComponentClass<
   HTMLAttributes<{}>
 > = styled.div`
   position: absolute;
-  z-index: 1;
+  z-index: ${akEditorUnitZIndex};
   display: none;
   width: 20px;
   height: 20px;
@@ -83,5 +84,5 @@ export const LineMarkerDefault: ComponentClass<HTMLAttributes<{}>> = styled.div`
   background: ${tableBorderSelectedColor};
   display: none;
   position: absolute;
-  z-index: 1;
+  z-index: ${akEditorUnitZIndex};
 `;

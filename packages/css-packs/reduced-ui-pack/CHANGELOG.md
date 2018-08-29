@@ -1,5 +1,8 @@
 # @atlaskit/reduced-ui-pack
 
+## 9.3.0
+- [minor] Add the new child-issues icon [8d3f8dd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d3f8dd)
+
 ## 9.2.0
 - [minor] Add new icon [d36f760](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d36f760)
 - [patch] Add new icon for Roadmap [365460a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/365460a)

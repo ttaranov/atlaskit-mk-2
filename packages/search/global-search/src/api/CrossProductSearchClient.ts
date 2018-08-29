@@ -15,6 +15,10 @@ import {
 import * as URI from 'urijs';
 
 export type ConfluenceItemContentType = 'page' | 'blogpost';
+export type CrossProductSearchResults = {
+  results: Map<Scope, Result[]>;
+  experimentId: string;
+};
 
 export enum Scope {
   ConfluencePageBlog = 'confluence.page,blogpost',
@@ -22,6 +26,11 @@ export enum Scope {
   ConfluenceSpace = 'confluence.space',
   JiraIssue = 'jira.issue',
 }
+
+export const EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE: CrossProductSearchResults = {
+  experimentId: '',
+  results: new Map(),
+};
 
 export interface CrossProductSearchResponse {
   scopes: ScopeResult[];
@@ -75,7 +84,7 @@ export interface CrossProductSearchClient {
     query: string,
     searchSessionId: string,
     scopes: Scope[],
-  ): Promise<Map<Scope, Result[]>>;
+  ): Promise<CrossProductSearchResults>;
 }
 
 export default class CrossProductSearchClientImpl
@@ -95,10 +104,10 @@ export default class CrossProductSearchClientImpl
     query: string,
     searchSessionId: string,
     scopes: Scope[],
-  ): Promise<Map<Scope, Result[]>> {
+  ): Promise<CrossProductSearchResults> {
     const response = await this.makeRequest(query, scopes);
 
-    return this.parseResponse(response, searchSessionId, scopes);
+    return this.parseResponse(response, searchSessionId);
   }
 
   private async makeRequest(
@@ -129,11 +138,19 @@ export default class CrossProductSearchClientImpl
     );
   }
 
+  /**
+   * Converts the raw xpsearch-aggregator response into a CrossProductSearchResults object containing
+   * the results set and the experimentId that generated them.
+   *
+   * @param response
+   * @param searchSessionId
+   * @returns a CrossProductSearchResults object
+   */
   private parseResponse(
     response: CrossProductSearchResponse,
     searchSessionId: string,
-    scopes: Scope[],
-  ): Map<Scope, Result[]> {
+  ): CrossProductSearchResults {
+    let experimentId;
     const results: Map<Scope, Result[]> = response.scopes.reduce(
       (resultsMap, scopeResult) => {
         resultsMap.set(
@@ -147,12 +164,13 @@ export default class CrossProductSearchClientImpl
             ),
           ),
         );
+        experimentId = scopeResult.experimentId;
         return resultsMap;
       },
       new Map(),
     );
 
-    return results;
+    return { results, experimentId };
   }
 }
 

@@ -3,7 +3,7 @@ import { EditorView } from 'prosemirror-view';
 import { findCellRectClosestToPos, isCellSelection } from 'prosemirror-utils';
 import {
   Popup,
-  akEditorToolbarDropdownMenuZIndex,
+  akEditorFloatingOverlapPanelZIndex,
 } from '@atlaskit/editor-common';
 import ContextualMenu from './ContextualMenu';
 import { contextualMenuTriggerSize } from '../styles';
@@ -76,7 +76,9 @@ const FloatingContextualMenu = ({
       scrollableElement={scrollableElement}
       fitHeight={100}
       fitWidth={200}
-      zIndex={akEditorToolbarDropdownMenuZIndex}
+      // z-index value below is to ensure that this menu is above other floating menu
+      // in table, but below floating dialogs like typeaheads, pickers, etc.
+      zIndex={akEditorFloatingOverlapPanelZIndex}
     >
       <ContextualMenu
         editorView={editorView}

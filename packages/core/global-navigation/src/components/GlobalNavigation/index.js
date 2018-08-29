@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component, Fragment } from 'react';
+import type { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 import { GlobalNav } from '@atlaskit/navigation-next';
 import Drawer from '@atlaskit/drawer';
@@ -12,6 +13,7 @@ import generateDefaultConfig from '../../config/default-config';
 import generateProductConfig from '../../config/product-config';
 import { notificationIntegration } from '../../platform-integration';
 import ViewTracker from '../ViewTracker';
+import { NAVIGATION_CHANNEL } from '../../constants';
 
 import type { GlobalNavItemData, NavItem } from '../../config/types';
 import type { GlobalNavigationProps, DrawerName } from './types';
@@ -172,7 +174,10 @@ export default class GlobalNavigation
     }
   };
 
-  closeDrawer = (drawerName: DrawerName) => () => {
+  closeDrawer = (drawerName: DrawerName) => (
+    event: SyntheticMouseEvent<*> | SyntheticKeyboardEvent<*>,
+    analyticsEvent: UIAnalyticsEvent,
+  ) => {
     const capitalisedDrawerName = this.getCapitalisedDrawerName(drawerName);
     let onCloseCallback = noop;
 
@@ -187,6 +192,12 @@ export default class GlobalNavigation
         this.props.cloudId,
       ).onNotificationDrawerClose;
     }
+
+    analyticsEvent
+      .update({
+        actionSubjectId: analyticsNameMap[drawerName],
+      })
+      .fire(NAVIGATION_CHANNEL);
 
     // Update the state only if it's a controlled drawer.
     // componentDidMount takes care of the uncontrolled drawers

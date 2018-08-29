@@ -11,25 +11,23 @@ import { columnLayoutSharedStyle } from '@atlaskit/editor-common';
 export const layoutStyles = css`
   .ProseMirror {
     ${columnLayoutSharedStyle} [data-layout-type] {
-      /* Ensure first column aligns with the cursor on top-level paragraph */
-      /* (margin + padding) === 24 | 24 * 2 === 48 */
       position: relative;
-      width: calc(100% + 48px);
-      /* (48px / 2) + layout-section-border (2px) + layout-column-border (2px) */
-      left: -28px;
+      width: calc(100% + 26px);
+      /* left-padding (12px) + layout-column-border (1px) */
+      left: -13px;
 
       /* Inner cursor located 26px from left */
       & > * {
-        margin: ${akGridSizeUnitless}px;
-        padding: ${akGridSizeUnitless * 2}px;
+        padding: ${akGridSizeUnitless * 1.5}px;
+        margin-top: ${akGridSizeUnitless - 1}px;
         flex: 1;
         min-width: 0;
-        border: 2px solid transparent;
+        border: 1px solid transparent;
         border-radius: 5px;
       }
-
-      border: 2px solid transparent;
-      border-radius: 5px;
+      & > * + * {
+        margin-left: ${akGridSizeUnitless - 2}px;
+      }
 
       /**
         * Border to show when node is selected
