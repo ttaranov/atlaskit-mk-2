@@ -2,7 +2,11 @@
 import React, { createContext, type Node } from 'react';
 
 type Props = {
-  children: Node,
+  /**
+    Children that are conditionally rendered. The transition happens based
+    on the existence or non-existence of children.
+  */
+  children?: Node,
 };
 
 type State = {
