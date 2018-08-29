@@ -23,6 +23,12 @@ const logoOptions = [
   StrideIcon,
 ];
 
+const iconVariants = [
+  { background: colors.B500, color: 'white' },
+  { background: colors.N40, color: colors.DN10 },
+  { background: colors.P300, color: colors.Y300 },
+];
+
 const WrapperDiv = styled.div`
   display: flex;
   align-items: center;
@@ -30,29 +36,28 @@ const WrapperDiv = styled.div`
   border-radius: 50%;
   height: 40px;
   width: 40px;
-  color: white;
-  background: ${colors.B500};
+  margin-right: 20px;
+  color: ${props => props.color};
+  background: ${props => props.background};
 `;
 /* eslint-disable */
 const Wrapper = props => (
   <Fragment>
-    <WrapperDiv>{props.children}</WrapperDiv>
+    <WrapperDiv {...props}>{props.children}</WrapperDiv>
     <br />
   </Fragment>
 );
-/* eslint-enable */
-logoOptions.map(Child => (
-  <Wrapper>
-    <Child />
-  </Wrapper>
-));
 
 export default () => (
   <Fragment>
-    {logoOptions.map(Child => (
-      <Wrapper key={Child.name}>
-        <Child />
-      </Wrapper>
+    {logoOptions.map((Child, index) => (
+      <div style={{ display: 'flex', marginBottom: '20px' }}>
+        {iconVariants.map((pairing, index2) => (
+          <Wrapper {...pairing} key={`${index}${index2}`}>
+            <Child />
+          </Wrapper>
+        ))}
+      </div>
     ))}
   </Fragment>
 );
