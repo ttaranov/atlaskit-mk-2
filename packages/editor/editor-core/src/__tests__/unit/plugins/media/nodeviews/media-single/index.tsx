@@ -3,7 +3,7 @@ import { mount, shallow } from 'enzyme';
 import { EditorView } from 'prosemirror-view';
 import { Node as PMNode } from 'prosemirror-model';
 import { mediaSingle, media } from '@atlaskit/editor-test-helpers';
-import { defaultSchema } from '@atlaskit/editor-common';
+import { defaultSchema, MediaBase } from '@atlaskit/editor-common';
 import {
   MediaPluginState,
   stateKey as mediaStateKey,
@@ -38,6 +38,25 @@ describe('nodeviews/mediaSingle', () => {
     pluginState = {} as MediaPluginState;
     pluginState.stateManager = stateManager;
     jest.spyOn(mediaStateKey, 'getState').mockImplementation(() => pluginState);
+  });
+
+  it('when the width or height is null inserts a mediaBase component using a filmstrip', () => {
+    const view = {} as EditorView;
+    const mediaSingleNode = mediaSingle({ layout: 'wrap-right' })(mediaNode);
+
+    const wrapper = shallow(
+      <MediaSingle
+        view={view}
+        node={mediaSingleNode(defaultSchema)}
+        // @ts-ignore
+        width={undefined}
+      >
+        <Media node={mediaNode(defaultSchema)} />
+      </MediaSingle>,
+    );
+
+    expect(wrapper.find(MediaBase).length).toEqual(1);
+    expect(wrapper.find(MediaSingle).length).toEqual(0);
   });
 
   it('sets child to isMediaSingle to be true', () => {

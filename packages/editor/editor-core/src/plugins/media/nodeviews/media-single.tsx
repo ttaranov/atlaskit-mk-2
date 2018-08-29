@@ -130,7 +130,6 @@ export default class MediaSingleNode extends Component<
           // transform: translateX(0%) !important;
         `;
 
-        console.log(this.child);
         return (
           // @ts-ignore
           // <div layout="not-full-width">
