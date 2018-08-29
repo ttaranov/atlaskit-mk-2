@@ -62,7 +62,14 @@ export default class InlineMessage extends Component<Props, State> {
         onMouseLeave={this.onMouseLeave}
         appearance={type}
       >
-        <InlineDialog content={children} isOpen={isOpen} placement={placement}>
+        <InlineDialog
+          onClose={() => {
+            this.setState({ isOpen: false });
+          }}
+          content={children}
+          isOpen={isOpen}
+          placement={placement}
+        >
           <Button
             appearance="subtle-link"
             onClick={this.toggleDialog}

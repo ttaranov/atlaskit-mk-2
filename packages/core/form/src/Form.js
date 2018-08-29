@@ -72,9 +72,6 @@ type FormFields = {
 
 export default class Form extends Component<Props, State> {
   static defaultProps = {
-    onSubmit: () => {},
-    onReset: () => {},
-    onValidate: () => {},
     target: '_self',
   };
 

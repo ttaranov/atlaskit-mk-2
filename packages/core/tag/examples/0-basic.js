@@ -8,7 +8,7 @@ export default () => (
     <Tag text="Base Tag" />
     <Tag text="Avatar Before" elemBefore={<Avatar size="xsmall" />} />
     <Tag text="Linked Tag" href="/components/tag" />
-    <Tag text="Rounded Tag" shape="rounded" />
+    <Tag text="Rounded Tag" isRounded />
     <Tag text="Removable button" removeButtonText="Aria label" />
     <Tag
       text="Removal halted"

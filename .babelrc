@@ -1,5 +1,25 @@
 {
-  "presets": [["env", { "modules": false }], "react", "flow"],
+  "presets": [
+    [
+      "env",
+      {
+        "modules": false,
+        "targets": {
+          "browsers": [
+            "last 1 chrome versions",
+            "last 1 edge versions",
+            "last 1 firefox versions",
+            "last 1 safari versions",
+            "last 1 and_chr versions",
+            "last 1 ios_saf versions",
+            "ie 11"
+          ]
+        }
+      }
+    ],
+    "react",
+    "flow"
+  ],
   "plugins": [
     "transform-class-properties",
     "transform-object-rest-spread",

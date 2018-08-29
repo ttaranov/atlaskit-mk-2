@@ -23,11 +23,11 @@ import * as theme from '../theme';
 import type { TagColor } from '../types';
 
 type Props = {
-  /** Set whether tags should be rounded. */
+  /** Set whether the tag should be rounded. */
   isRounded: boolean,
   /** The appearance theme to apply, setting both background and text color. */
   appearance: TagColor,
-  /** Component to be rendered before the Tag. */
+  /** Component to be rendered before the tag. */
   elemBefore?: Node,
   /** Text to be displayed in the tag. */
   text: string,

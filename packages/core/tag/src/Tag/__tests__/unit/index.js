@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 
 import Chrome from '../../../Chrome';
 import Content from '../../../Content';
