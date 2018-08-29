@@ -19,4 +19,5 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var DocumentIcon = function DocumentIcon(props) {
   return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path d="M17 10.005V19H7V5h5.99v2.49a1.5 1.5 0 0 0 1.5 1.5h4.5v-.522c0-.297-.132-.578-.359-.768l-5.074-4.236c-.36-.3-.813-.464-1.282-.464H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-8.995h-2z" fill="currentColor" fill-rule="evenodd"/></svg>' }, props));
 };
+DocumentIcon.displayName = 'DocumentIcon';
 exports.default = DocumentIcon;

@@ -19,4 +19,5 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var FileTypes16File16AudioIcon = function FileTypes16File16AudioIcon(props) {
   return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path fill="#FF5630" fill-rule="evenodd" d="M6 4h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm11 4.195v-.753c0-.271-.23-.468-.514-.44l-6.115.634a.565.565 0 0 0-.514.545v4.616a2 2 0 0 0-.571-.083H9a2 2 0 0 0-2 2V15a2 2 0 0 0 2 2h.286a2 2 0 0 0 2-2V9.76l4.285-.444v2.767A2 2 0 0 0 15 12h-.286a2 2 0 0 0-2 2v.286a2 2 0 0 0 2 2H15a2 2 0 0 0 2-2V8.195z"/></svg>' }, props));
 };
+FileTypes16File16AudioIcon.displayName = 'FileTypes16File16AudioIcon';
 exports.default = FileTypes16File16AudioIcon;

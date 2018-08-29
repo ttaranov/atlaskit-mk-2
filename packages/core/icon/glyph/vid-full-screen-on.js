@@ -19,4 +19,5 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var VidFullScreenOnIcon = function VidFullScreenOnIcon(props) {
   return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path d="M6 18h3a1 1 0 0 1 0 2H6a2 2 0 0 1-2-2v-3a1 1 0 0 1 2 0v3zm12 2h-3a1 1 0 0 1 0-2h3v-3a1 1 0 0 1 2 0v3a2 2 0 0 1-2 2zM6 4h3a1 1 0 1 1 0 2H6v3a1 1 0 1 1-2 0V6a2 2 0 0 1 2-2zm12 2h-3a1 1 0 0 1 0-2h3a2 2 0 0 1 2 2v3a1 1 0 0 1-2 0V6z" fill="currentColor" fill-rule="evenodd"/></svg>' }, props));
 };
+VidFullScreenOnIcon.displayName = 'VidFullScreenOnIcon';
 exports.default = VidFullScreenOnIcon;
