@@ -58,7 +58,7 @@ export default () => (
   <TagGroup>
     {tagNames.map(sweet => (
       <Tag
-        shape="rounded"
+        isRounded
         elemBefore={<Avatar size="xsmall" />}
         href="http://www.cupcakeipsum.com/"
         key={sweet}

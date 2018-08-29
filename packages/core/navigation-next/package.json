@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/navigation-next",
-  "version": "3.6.2",
+  "version": "3.6.5",
   "description": "The Atlassian navigation component.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -40,6 +40,7 @@
   "devDependencies": {
     "@atlaskit/analytics-listeners": "^3.4.0",
     "@atlaskit/badge": "^9.1.1",
+    "@atlaskit/build-utils": "^2.0.0",
     "@atlaskit/button": "^9.0.6",
     "@atlaskit/docs": "^5.0.6",
     "@atlaskit/dropdown-menu": "^6.1.8",
@@ -52,6 +53,7 @@
     "@atlaskit/webdriver-runner": "^0.0.3",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "pretty-proptypes": "^0.2.2",
+    "react-dom": "^16.4.2",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2"
   }

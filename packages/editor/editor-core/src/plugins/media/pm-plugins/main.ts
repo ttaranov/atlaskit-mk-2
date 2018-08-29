@@ -598,11 +598,7 @@ export class MediaPluginState {
         stateManager,
         errorReporter,
       };
-      const { featureFlags } = this.mediaProvider;
       const defaultPickerConfig = {
-        useNewUploadService: !!(
-          featureFlags && featureFlags.useNewUploadService
-        ),
         uploadParams,
         proxyReactContext: reactContext(),
       };

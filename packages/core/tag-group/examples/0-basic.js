@@ -8,13 +8,13 @@ export default () => (
     <TagGroup>
       <Tag text="Base Tag" />
       <Tag text="Linked Tag" href="/components/tag" />
-      <Tag text="Rounded Tag" shape="rounded" />
+      <Tag text="Rounded Tag" isRounded />
       <Tag text="Removable button" removeButtonText="Aria label" />
     </TagGroup>
     <TagGroup alignment="end">
       <Tag text="Base Tag" />
       <Tag text="Linked Tag" href="/components/tag" />
-      <Tag text="Rounded Tag" shape="rounded" />
+      <Tag text="Rounded Tag" isRounded />
       <Tag text="Removable button" removeButtonText="Aria label" />
     </TagGroup>
   </div>

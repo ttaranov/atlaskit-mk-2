@@ -22,7 +22,7 @@ export function hasVisibleContent(node: Node): boolean {
 
   if (node.isInline) {
     return isInlineNodeHasVisibleContent(node);
-  } else if (node.isBlock && node.isLeaf) {
+  } else if (node.isBlock && (node.isLeaf || node.isAtom)) {
     return true;
   } else if (!node.childCount) {
     return false;
@@ -40,7 +40,7 @@ export function hasVisibleContent(node: Node): boolean {
 }
 
 /**
- * Checks if a node has any content. Ignores node that only contain emoty block nodes.
+ * Checks if a node has any content. Ignores node that only contain empty block nodes.
  */
 export function isEmptyNode(node?: Node): boolean {
   if (node && node.textContent) {

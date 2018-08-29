@@ -15,6 +15,7 @@ import type {
 } from '../components/GlobalNavigation/types';
 import type { ProductConfigShape } from './types';
 
+const MAX_NOTIFICATIONS_COUNT = 9;
 const isNotEmpty = obj => {
   const values = Object.values(obj);
   return !!(
@@ -195,6 +196,7 @@ export default function generateProductConfig(
     notificationDrawerContents,
 
     appSwitcherComponent,
+    appSwitcherTooltip,
 
     helpItems,
     helpTooltip,
@@ -207,7 +209,13 @@ export default function generateProductConfig(
 
   const notificationBadge = {
     badge: notificationCount
-      ? () => <Badge appearance="important" value={notificationCount} />
+      ? () => (
+          <Badge
+            max={MAX_NOTIFICATIONS_COUNT}
+            appearance="important"
+            value={notificationCount}
+          />
+        )
       : null,
   };
 
@@ -242,7 +250,11 @@ export default function generateProductConfig(
       profileIconUrl,
     ),
     appSwitcher: appSwitcherComponent
-      ? { component: appSwitcherComponent }
+      ? {
+          component: appSwitcherComponent,
+          label: appSwitcherTooltip,
+          tooltip: appSwitcherTooltip,
+        }
       : null,
   };
 }

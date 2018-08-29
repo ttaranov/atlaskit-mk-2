@@ -27,7 +27,6 @@ describe('Dropzone', () => {
       collection: '',
     },
     container,
-    useNewUploadService: true,
   };
   // Helper functions
   const createDragOverOrDropEvent = (
