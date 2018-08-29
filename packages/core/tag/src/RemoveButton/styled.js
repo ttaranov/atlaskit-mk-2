@@ -1,7 +1,7 @@
 // @flow
 import styled from 'styled-components';
 import { colors, borderRadius, themed } from '@atlaskit/theme';
-import { buttonWidthUnitless, focusRingColor } from '../constants';
+import { buttonWidthUnitless } from '../constants';
 
 const focusColor = themed({ light: colors.R300, dark: colors.R200 });
 
@@ -12,7 +12,7 @@ export const Button = styled.button`
   align-items: center;
   appearance: none;
   background: none;
-  border: none;
+  border: 2px solid transparent;
   border-radius: ${({ isRounded }) =>
     isRounded ? `${buttonWidthUnitless / 2}px` : `${borderRadius()}px`};
   color: ${colors.N500};
@@ -28,16 +28,11 @@ export const Button = styled.button`
   }
 
   &:focus {
-    box-shadow: 0 0 0 2px ${focusColor};
+    border-color: ${focusColor};
     outline: none;
   }
 
   &:hover {
     color: ${colors.R500};
-
-    &:focus {
-      box-shadow: 0 0 0 2px ${focusRingColor};
-      outline: none;
-    }
   }
 `;

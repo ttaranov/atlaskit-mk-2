@@ -117,7 +117,7 @@ class Tag extends Component<Props, State> {
     const onAnimationEnd = () => isRemoving && this.handleRemoveComplete();
 
     return (
-      <Container onAnimationEnd={onAnimationEnd}>
+      <Container {...styled} onAnimationEnd={onAnimationEnd}>
         <Appearance props={appearance} theme={theme}>
           {merged => {
             const styleProps = { ...styled, ...merged };
