@@ -5,7 +5,6 @@ import { EditorView } from 'prosemirror-view';
 import { MediaSingle, MediaBase } from '@atlaskit/editor-common';
 import { MediaNodeProps } from './media';
 import { stateKey, MediaPluginState } from '../pm-plugins/main';
-import styled from 'styled-components';
 // import MediaBase from './MediaBase';
 // import { MediaSingle } from '@atlaskit/editor-common';
 const DEFAULT_WIDTH = 250;
@@ -118,34 +117,17 @@ export default class MediaSingleNode extends Component<
       }
     } else {
       if (height === null || width === null) {
-        const Wrapper = styled.div`
-          // .random > div {
-          // margin-left: 0% !important;
-          // transform: translateX(0%) !important;
-
-          // }
-          // [layout='full-width']
-
-          // margin-left: 0% !important;
-          // transform: translateX(0%) !important;
-        `;
-
         return (
-          // @ts-ignore
-          // <div layout="not-full-width">
           <MediaBase widthExists={false}>
-            {/* <Wrapper> */}
-
             {React.cloneElement(
               this.child as ReactElement<any>,
               {
                 progress,
+                isMediaSingle: true,
                 onExternalImageLoaded: this.onExternalImageLoaded,
               } as MediaNodeProps,
             )}
-            {/* </Wrapper> */}
           </MediaBase>
-          //  </div>
         );
       }
     }
