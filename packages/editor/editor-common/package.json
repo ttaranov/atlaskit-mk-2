@@ -25,6 +25,7 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
+    "@atlaskit/adf-utils": "^2.1.0",
     "@atlaskit/emoji": "^39.1.1",
     "@atlaskit/icon": "^13.2.4",
     "@atlaskit/media-card": "^32.0.5",

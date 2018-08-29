@@ -43,6 +43,64 @@ const isString = (s): s is string =>
 const isPlainObject = x =>
   typeof x === 'object' && x !== null && !Array.isArray(x);
 
+const copy = (source: object, dest: object, key: string) => {
+  dest[key] = source[key];
+  return dest;
+};
+
+// Preprocess all spec
+let specPreProcessed = false;
+function preProcessSpecs() {
+  if (specPreProcessed) {
+    return;
+  }
+  specPreProcessed = true;
+  Object.keys(specs).forEach(k => {
+    const spec = specs[k];
+    if (spec.props) {
+      if (isString(spec.props.content)) {
+        spec.props.content = specs[spec.props.content];
+      }
+      if (spec.props.content) {
+        if (!spec.props.content.items) {
+          /**
+           * Flatten
+           *
+           * Input:
+           * [ { type: 'array', items: [ 'tableHeader' ] },
+           * { type: 'array', items: [ 'tableCell' ] } ]
+           *
+           * Output:
+           * { type: 'array', items: [ [ 'tableHeader' ], [ 'tableCell' ] ] }
+           */
+          spec.props.content = {
+            type: 'array',
+            items: ((spec.props.content as any) || []).map(arr => arr.items),
+          };
+        }
+        spec.props.content.items = spec.props.content.items
+          // ['inline'] => [['emoji', 'hr', ...]]
+          // ['media'] => [['media']]
+          .map(
+            item =>
+              isString(item)
+                ? Array.isArray(specs[item])
+                  ? specs[item]
+                  : [item]
+                : item,
+          )
+          // [['emoji', 'hr', 'inline_code']] => [['emoji', 'hr', ['text', { marks: {} }]]]
+          .map(item =>
+            item.map(
+              subItem =>
+                Array.isArray(specs[subItem]) ? specs[subItem] : subItem,
+            ),
+          );
+      }
+    }
+  });
+}
+
 function getOptionsForType(type: string, list?: Content): false | object {
   if (!list) {
     return {};
@@ -92,56 +150,120 @@ function validateAttrs(spec: AttributesSpec, value): boolean {
   }
 }
 
-export interface Output {
-  valid: boolean;
-  entity: Entity;
-}
-
-export type ErrorCallback = (entity: Entity, err: string) => Entity;
-
-const invalidChildContent = (child: Entity, errorCallback?: ErrorCallback) => {
-  const errMsg = `${child.type}: invalid content.`;
+const invalidChildContent = (
+  child: Entity,
+  errorCallback?: ErrorCallback,
+  parentContent?: Array<string>,
+) => {
+  const message = `${child.type}: invalid content.`;
   if (!errorCallback) {
-    throw new Error(errMsg);
+    throw new Error(message);
   } else {
-    return errorCallback({ ...child }, errMsg);
+    return errorCallback(
+      { ...child },
+      {
+        code: VALIDATION_ERRORS.INVALID_CONTENT,
+        message,
+      },
+      parentContent || [],
+    );
   }
 };
+
+export const enum VALIDATION_ERRORS {
+  MISSING_PROPERTY,
+  REDUNDANT_PROPERTIES,
+  REDUNDANT_ATTRIBUTES,
+  REDUNDANT_MARKS,
+  INVALID_TYPE,
+  INVALID_TEXT,
+  INVALID_CONTENT,
+  INVALID_CONTENT_LENGTH,
+  INVALID_ATTRIBUTE,
+  INVALID_ATTRIBUTES,
+  DEPRECATED,
+}
+
+type ErrorMetadata = { [key: string]: any };
+
+export type ErrorCallback = (
+  entity: Entity,
+  /**
+   * I couldn't find any way to do index based typing for enum using TS 2.6.
+   * We can change it to 'MISSING_PROPERTY' | 'REDUNDANT_PROPERTIES' | ...
+   * if you need type for meta in future.
+   */
+  error: {
+    code: VALIDATION_ERRORS;
+    message: string;
+    meta?: ErrorMetadata;
+  },
+  parentContent: Array<string>,
+) => Entity | undefined;
+export type ValidationMode = 'strict' | 'loose';
+
+export interface Output {
+  valid: boolean;
+  entity?: Entity;
+}
+
+export interface ValidationOptions {
+  // Ignore and filter extra props or attributes
+  mode: ValidationMode;
+}
 
 export function validate(
   entity: Entity,
   errorCallback?: ErrorCallback,
-  parentContent?: Content,
+  validationOptions: ValidationOptions = { mode: 'strict' },
+  allowed?: Content,
+  parentContent: Array<string> = [],
 ): Output {
-  const { type } = entity;
-  const newEntity = { ...entity };
+  preProcessSpecs();
 
-  const err = (msg: string): Output => {
-    const errMsg = `${type}: ${msg}.`;
+  const { type } = entity;
+  let newEntity = { ...entity };
+
+  const err = (
+    code: VALIDATION_ERRORS,
+    msg: string,
+    meta?: ErrorMetadata,
+  ): Output => {
+    const message = `${type}: ${msg}.`;
     if (errorCallback) {
       return {
         valid: false,
-        entity: errorCallback(newEntity, errMsg) as Entity,
+        entity: errorCallback(
+          newEntity,
+          { code, message, meta },
+          parentContent,
+        ),
       };
     } else {
-      throw new Error(errMsg);
+      throw new Error(message);
     }
   };
 
   // Don't validate applicationCard
   if (type === 'applicationCard') {
-    return err('applicationCard is not supported');
+    return err(
+      VALIDATION_ERRORS.DEPRECATED,
+      'applicationCard is not supported',
+    );
   }
 
   if (type) {
-    const options = getOptionsForType(type, parentContent);
+    const options = getOptionsForType(type, allowed);
     if (options === false) {
-      return err('type not allowed here');
+      return err(VALIDATION_ERRORS.INVALID_TYPE, 'type not allowed here');
     }
 
     const spec = specs[type];
     if (!spec) {
-      throw new Error(`${type}: No validation spec found for type!`);
+      return err(
+        VALIDATION_ERRORS.INVALID_TYPE,
+        `${type}: No validation spec found for type!`,
+      );
     }
 
     const validator: ValidatorSpec = {
@@ -157,45 +279,16 @@ export function validate(
       // Required
       if (validator.required) {
         if (!validator.required.every(prop => isDefined(entity[prop]))) {
-          return err('required prop missing');
+          return err(
+            VALIDATION_ERRORS.MISSING_PROPERTY,
+            'required prop missing',
+          );
         }
       }
 
       if (validator.props) {
         // Accumulate the Content validator
-        if (isString(validator.props.content)) {
-          validator.props.content = specs[validator.props.content];
-        }
-
-        // It's possible to cache some of the values to improve performance
         if (validator.props.content) {
-          // Normalize [{ type: 'array', items: []}]
-          if (!validator.props.content.items) {
-            validator.props.content = {
-              type: 'array',
-              items: ((validator.props.content as any) || []).map(
-                arr => arr.items,
-              ),
-            };
-          }
-          validator.props.content.items = validator.props.content.items
-            // ['inline'] => [['emoji', 'hr', ...]]
-            // ['media'] => [['media']]
-            .map(
-              item =>
-                isString(item)
-                  ? Array.isArray(specs[item])
-                    ? specs[item]
-                    : [item]
-                  : item,
-            )
-            // [['emoji', 'hr', 'inline_code']] => [['emoji', 'hr', ['text', { marks: {} }]]]
-            .map(item =>
-              item.map(
-                subItem =>
-                  Array.isArray(specs[subItem]) ? specs[subItem] : subItem,
-              ),
-            );
         }
 
         // Check text
@@ -204,7 +297,10 @@ export function validate(
             isDefined(entity.text) &&
             !validateAttrs(validator.props.text, entity.text)
           ) {
-            return err(`'text' validation failed`);
+            return err(
+              VALIDATION_ERRORS.INVALID_TEXT,
+              `'text' validation failed`,
+            );
           }
         }
 
@@ -216,6 +312,7 @@ export function validate(
             ((entity.content && entity.content.length) || 0)
         ) {
           return err(
+            VALIDATION_ERRORS.INVALID_CONTENT_LENGTH,
             `'content' should have more than ${
               validator.props.content.minItems
             } child`,
@@ -228,56 +325,104 @@ export function validate(
             v => validator.props![v].optional || entity[v],
           )
         ) {
-          return err('required prop missing');
+          return err(
+            VALIDATION_ERRORS.MISSING_PROPERTY,
+            'required prop missing',
+          );
         }
 
         // Attributes
-        let validatorProps;
+        let validatorAttrs;
         // media attrs is an array
         if (Array.isArray(validator.props.attrs)) {
           const { type } = entity.attrs;
           if (!type) {
-            return err(`'attrs' validation failed`);
+            // If there's no type then there's no way to validate other attrs
+            return err(
+              VALIDATION_ERRORS.INVALID_ATTRIBUTES,
+              `'attrs' validation failed`,
+              { attrs: ['type'] },
+            );
           }
           const validatorPropsArr = validator.props.attrs.filter(
             attr => attr.props.type.values.indexOf(entity.attrs.type) > -1,
           );
 
           if (validatorPropsArr.length === 0) {
-            return err(`'attrs' type '${type}' is invalid`);
+            return err(
+              VALIDATION_ERRORS.INVALID_ATTRIBUTE,
+              `'attrs' type '${type}' is invalid`,
+              { attr: 'type' },
+            );
           }
 
-          validatorProps = validatorPropsArr[0];
+          validatorAttrs = validatorPropsArr[0];
         } else {
-          validatorProps = validator.props.attrs;
+          validatorAttrs = validator.props.attrs;
         }
 
         // Attributes Validation
-        if (validatorProps && validatorProps.props) {
-          if (
-            entity.attrs &&
-            !Object.keys(validatorProps.props).every(k =>
-              validateAttrs(validatorProps.props[k], entity.attrs[k]),
-            )
-          ) {
-            return err(`'attrs' validation failed`);
+        if (validatorAttrs && validatorAttrs.props && entity.attrs) {
+          const invalidAttrs = Object.keys(validatorAttrs.props).reduce(
+            (attrs, k) =>
+              validateAttrs(validatorAttrs.props[k], entity.attrs[k])
+                ? attrs
+                : attrs.concat(k),
+            [] as Array<string>,
+          );
+          if (invalidAttrs.length) {
+            if (invalidAttrs.length === 1) {
+              return err(
+                VALIDATION_ERRORS.INVALID_ATTRIBUTE,
+                `'attrs' ${invalidAttrs[0]} is invalid`,
+                { attr: invalidAttrs[0] },
+              );
+            } else {
+              return err(
+                VALIDATION_ERRORS.INVALID_ATTRIBUTES,
+                `'attrs' validation failed`,
+                { attrs: invalidAttrs },
+              );
+            }
           }
         }
 
         // Extra Props
-        if (!Object.keys(entity).every(k => !!validator.props![k])) {
-          return err(`redundant props found: ${JSON.stringify(entity)}`);
+        const props = Object.keys(entity);
+        if (!props.every(p => !!validator.props![p])) {
+          if (validationOptions.mode === 'loose') {
+            newEntity = { type };
+            props
+              .filter(p => !!validator.props![p])
+              .reduce((acc, p) => copy(entity, acc, p), newEntity);
+          } else {
+            return err(
+              VALIDATION_ERRORS.REDUNDANT_PROPERTIES,
+              `redundant props found: ${Object.keys(entity).join(', ')}`,
+            );
+          }
         }
 
         // Extra Attributes
         if (entity.attrs && validator.props) {
-          if (
-            !validatorProps ||
-            !Object.keys(entity.attrs).every(k => !!validatorProps.props[k])
-          ) {
-            return err(
-              `redundant attributes found: ${JSON.stringify(entity.attrs)}`,
-            );
+          const attrs = Object.keys(entity.attrs);
+          if (!validatorAttrs || !attrs.every(a => !!validatorAttrs.props[a])) {
+            if (validationOptions.mode === 'loose') {
+              newEntity.attrs = {};
+              attrs
+                .filter(a => !!validatorAttrs.props![a])
+                .reduce(
+                  (acc, p) => copy(entity.attrs, acc, p),
+                  newEntity.attrs,
+                );
+            } else {
+              return err(
+                VALIDATION_ERRORS.REDUNDANT_ATTRIBUTES,
+                `redundant attributes found: ${Object.keys(entity.attrs).join(
+                  ', ',
+                )}`,
+              );
+            }
           }
         }
 
@@ -326,12 +471,23 @@ export function validate(
                  */
                 let firstError;
                 let firstChild;
+                // Flatten content items
+                const validatorContent =
+                  (validator.props &&
+                    validator.props.content &&
+                    validator.props.content.items.reduce(
+                      (xs, x) => xs.concat(x),
+                      [],
+                    )) ||
+                  [];
                 for (let i = 0, len = set.length; i < len; i++) {
                   try {
                     const { valid, entity: newChildEntity } = validate(
                       child,
                       errorCallback,
+                      validationOptions,
                       [set[i]],
+                      validatorContent,
                     );
                     if (valid) {
                       return newChildEntity;
@@ -352,7 +508,10 @@ export function validate(
               }
             });
           } else {
-            return err('missing `content` prop');
+            return err(
+              VALIDATION_ERRORS.MISSING_PROPERTY,
+              'missing `content` prop',
+            );
           }
         }
 
@@ -360,31 +519,43 @@ export function validate(
         if (entity.marks) {
           if (validator.props.marks) {
             const { items, maxItems } = validator.props!.marks!;
-            newEntity.marks = entity.marks.map(
-              child =>
-                validate(
-                  child,
-                  errorCallback,
-                  /**
-                   * Kind of handling `maxItems` manually, can be fixed through generator.
-                   * Now NoMark produces `items: []`, we need it to be `items: [[]]`.
-                   */
-                  maxItems === 0 ? [] : items[0] || [],
-                ).entity,
-            );
+            /**
+             * Kind of handling `maxItems` manually, can be fixed through generator.
+             * Now NoMark produces `items: []`, we need it to be `items: [[]]`.
+             */
+            const allowed = maxItems === 0 ? [] : items[0] || [];
+            const newMarks = entity.marks
+              .map(
+                child =>
+                  validate(
+                    child,
+                    errorCallback,
+                    validationOptions,
+                    allowed,
+                    allowed,
+                  ).entity,
+              )
+              .filter(Boolean) as Entity[];
+            newEntity.marks = newMarks.length ? newMarks : undefined;
           } else {
-            return err('redundant marks');
+            return err(VALIDATION_ERRORS.REDUNDANT_MARKS, 'redundant marks');
           }
         }
       } else {
         // If there's no validator.props then there shouldn't be any key except `type`
         if (Object.keys(entity).length > 1) {
-          return err(`redundant props found: ${JSON.stringify(entity)}`);
+          return err(
+            VALIDATION_ERRORS.REDUNDANT_PROPERTIES,
+            `redundant props found: ${Object.keys(entity).join(', ')}`,
+          );
         }
       }
     }
   } else {
-    return err('ProseMirror Node/Mark should contain a `type`');
+    return err(
+      VALIDATION_ERRORS.INVALID_TYPE,
+      'ProseMirror Node/Mark should contain a `type`',
+    );
   }
   return { valid: true, entity: newEntity };
 }
