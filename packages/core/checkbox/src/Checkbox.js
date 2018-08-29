@@ -18,13 +18,29 @@ import pick from 'lodash.pick';
 
 type Props = {|
   /** Sets whether the checkbox begins checked. */
-  initiallyChecked?: boolean,
+  defaultChecked?: boolean,
+  /** Associated form id  */
+  form?: boolean,
+  /** id assigned to input */
+  id?: boolean,
+  /** Sets whether the checkbox is checked or unchecked. */
+  isChecked: boolean,
   /** Sets whether the checkbox is disabled. */
   isDisabled?: boolean,
   /** Sets whether the checkbox should take up the full width of the parent. */
   isFullWidth?: boolean,
+  /** Sets whether the checkbox is indeterminate. This only affects the
+   style and does not modify the isChecked property. */
+  isIndeterminate?: boolean,
   /** Marks the field as invalid. Changes style of unchecked component. */
   isInvalid?: boolean,
+  /** Marks the field as invalid. Changes style of unchecked component. */
+  isRequired?: boolean,
+  /** The label to be displayed to the right of the checkbox. The label is part
+   of the clickable element to select the checkbox. */
+  label: string,
+  /** The name of the submitted field in a checkbox. */
+  name: string,
   /** Function that is called whenever the state of the checkbox changes. It will
   be called with an object containing the react synthetic event as well as the
   new state of the checkbox. */
@@ -34,18 +50,7 @@ type Props = {|
     name: string,
     value: number | string,
   }) => mixed,
-  /** Sets whether the checkbox is checked or unchecked. */
-  isChecked: boolean,
-  /** Sets whether the checkbox is indeterminate. This only affects the
-   style and does not modify the isChecked property. */
-  isIndeterminate?: boolean,
-  /** Sets whether the checkbox is disabled. */
-  isDisabled?: boolean,
-  /** The label to be displayed to the right of the checkbox. The label is part
-   of the clickable element to select the checkbox. */
-  label: string,
-  /** The name of the submitted field in a checkbox. */
-  name: string,
+
   /** The value to be used in the checkbox input. This is the value that will be returned on form submission. */
   value: number | string,
 |};
@@ -90,13 +95,8 @@ class Checkbox extends Component<Props, State> {
     }
   }
 
-  // All state needs to be accessed via this function so that the state is mapped from props
-  // correctly to allow controlled/uncontrolled usage.
-  getState = () => {
-    return {
-      ...this.state,
-      ...pick(this.props, ['value', 'isOpen']),
-    };
+  getProp = (key: string) => {
+    return this.props[key] ? this.props[key] : this.state[key];
   };
 
   onChange = (event: SyntheticEvent<HTMLInputElement>) => {

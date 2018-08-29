@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { CheckboxIcon as CheckboxIconGyph } from '@atlaskit/icon/glyph/checkbox';
+import { CheckboxIcon as CheckboxIconGlyph } from '@atlaskit/icon/glyph/checkbox';
 import CheckboxIndeterminateIcon from '@atlaskit/icon/glyph/checkbox-indeterminate';
 import { ThemeProvider } from 'styled-components';
 import { IconWrapper } from './styled/Checkbox';
@@ -30,8 +30,6 @@ type Props = {
   isInvalid?: boolean,
 };
 
-const emptyTheme = {};
-
 export default class CheckboxIcon extends Component<Props, void> {
   renderCheckboxIcon() {
     const {
@@ -51,7 +49,7 @@ export default class CheckboxIcon extends Component<Props, void> {
         label=""
       />
     ) : (
-      <CheckboxIconGyph
+      <CheckboxIconGlyph
         primaryColor={primaryColor}
         secondaryColor={secondaryColor}
         isHovered={isHovered}
@@ -69,21 +67,37 @@ export default class CheckboxIcon extends Component<Props, void> {
       isActive,
       isFocused,
       isHovered,
+      primaryColor,
+      secondaryColor,
     } = this.props;
 
     return (
-      <ThemeProvider theme={emptyTheme}>
-        <IconWrapper
-          isChecked={isChecked}
-          isDisabled={isDisabled}
-          isFocused={isFocused}
-          isActive={isActive}
-          isHovered={isHovered}
-          isInvalid={isInvalid}
-        >
-          {this.renderCheckboxIcon()}
-        </IconWrapper>
-      </ThemeProvider>
+      <IconWrapper
+        isChecked={isChecked}
+        isDisabled={isDisabled}
+        isFocused={isFocused}
+        isActive={isActive}
+        isHovered={isHovered}
+        isInvalid={isInvalid}
+      >
+        {isIndeterminate ? (
+          <CheckboxIndeterminateIcon
+            primaryColor={primaryColor}
+            secondaryColor={secondaryColor}
+            isHovered={isHovered}
+            isActive={isActive}
+            label=""
+          />
+        ) : (
+          <CheckboxIconGlyph
+            primaryColor={primaryColor}
+            secondaryColor={secondaryColor}
+            isHovered={isHovered}
+            isActive={isActive}
+            label=""
+          />
+        )}
+      </IconWrapper>
     );
   }
 }

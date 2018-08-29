@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import Button from '@atlaskit/button';
-import Checkbox, { CheckboxGroup } from '../src';
+import Checkbox from '../src';
 
 const formTestUrl = '//httpbin.org/get';
 
@@ -15,18 +15,18 @@ export default class CheckboxGroupExample extends PureComponent<void> {
           style={{ backgroundColor: 'white' }}
           target="submitFrame"
         >
-          <CheckboxGroup>
+          <span>
             <Checkbox label="One" value="One" name="one" />
             <Checkbox label="Two" value="two" name="two" />
             <Checkbox label="Three" value="Three" name="three" />
-          </CheckboxGroup>
+          </span>
 
           <p>
             When checkboxes have the same name their values are grouped when
             submitted.
           </p>
 
-          <CheckboxGroup>
+          <span>
             <Checkbox
               label="Same Name - One"
               value="Same Name - One"
@@ -42,7 +42,7 @@ export default class CheckboxGroupExample extends PureComponent<void> {
               value="Same Name - Three"
               name="same-name"
             />
-          </CheckboxGroup>
+          </span>
           <p>
             <Button type="submit" appearance="primary">
               Submit

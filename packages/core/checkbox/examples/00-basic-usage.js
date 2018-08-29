@@ -12,10 +12,11 @@ const BasicUsageExample = class extends PureComponent<void, State> {
   };
 
   onChange = (event: any) => {
+    console.log(event.currentTarget);
     this.setState({
-      onChangeResult: `onChange called with value: ${event.value} isChecked: ${
-        event.isChecked
-      }`,
+      onChangeResult: `onChange called with value: ${
+        event.currentTarget.value
+      } isChecked: ${event.currentTarget.checked}`,
     });
   };
 
@@ -29,7 +30,7 @@ const BasicUsageExample = class extends PureComponent<void, State> {
           name="checkbox-basic"
         />
         <Checkbox
-          initiallyChecked
+          defaultChecked
           label="Checked by default"
           value="Checked by default"
           onChange={this.onChange}
