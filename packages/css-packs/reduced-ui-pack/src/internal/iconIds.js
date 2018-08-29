@@ -61,6 +61,7 @@ const iconIds: Array<string> = [
   'chevron-right',
   'chevron-up-circle',
   'chevron-up',
+  'child-issues',
   'code',
   'comment',
   'component',
