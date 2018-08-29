@@ -7,7 +7,12 @@ import CrossIcon from '@atlaskit/icon/glyph/cross';
 import Avatar from '@atlaskit/avatar';
 import InlineDialog from '@atlaskit/inline-dialog';
 import { colors } from '@atlaskit/theme';
-import Modal, { ModalHeader, ModalFooter, ModalTitle } from '../src';
+import Modal, {
+  ModalHeader,
+  ModalFooter,
+  ModalTitle,
+  ModalTransition,
+} from '../src';
 
 const Hint = styled.span`
   align-items: center;
@@ -84,25 +89,27 @@ export default class ExampleCustom extends Component<{}, ExampleCustomState> {
       <div>
         <Button onClick={this.open}>Open Modal</Button>
 
-        {isOpen && (
-          <Modal
-            footer={Footer}
-            header={Header}
-            onClose={this.close}
-            onCloseComplete={node =>
-              console.log('exit transition complete', node)
-            }
-            shouldCloseOnEscapePress={false}
-            shouldCloseOnOverlayClick={false}
-            width={400}
-          >
-            <Body>
-              <Lorem count={1} />
-              <Image src="https://atlaskit.atlassian.com/a857e9e1cf8677895f76f7763098083b.svg" />
-              <Lorem count={1} />
-            </Body>
-          </Modal>
-        )}
+        <ModalTransition>
+          {isOpen && (
+            <Modal
+              footer={Footer}
+              header={Header}
+              onClose={this.close}
+              onCloseComplete={node =>
+                console.log('exit transition complete', node)
+              }
+              shouldCloseOnEscapePress={false}
+              shouldCloseOnOverlayClick={false}
+              width={400}
+            >
+              <Body>
+                <Lorem count={1} />
+                <Image src="https://atlaskit.atlassian.com/a857e9e1cf8677895f76f7763098083b.svg" />
+                <Lorem count={1} />
+              </Body>
+            </Modal>
+          )}
+        </ModalTransition>
       </div>
     );
   }

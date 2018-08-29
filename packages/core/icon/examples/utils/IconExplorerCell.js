@@ -3,7 +3,7 @@ import React, { Component, type ElementRef } from 'react';
 import styled from 'styled-components';
 
 import { FieldTextStateless } from '@atlaskit/field-text';
-import Modal from '@atlaskit/modal-dialog';
+import Modal, { ModalTransition } from '@atlaskit/modal-dialog';
 import Tooltip from '@atlaskit/tooltip';
 import { colors, gridSize } from '@atlaskit/theme';
 
@@ -90,47 +90,51 @@ class IconExplorerCell extends Component<Props, { isModalOpen: boolean }> {
   render() {
     const { component: Icon, ...props } = this.props;
 
-    const modal = this.state.isModalOpen ? (
-      <Modal
-        onClose={this.closeModal}
-        header={() => (
-          <IconModalHeader>
-            <Icon label={props.componentName} size="medium" />
-            {props.componentName}
-          </IconModalHeader>
-        )}
-        actions={[
-          {
-            text: 'Copy',
-            onClick: this.copyToClipboard,
-          },
-          {
-            text: 'Close',
-            onClick: this.closeModal,
-          },
-        ]}
-      >
-        {/* eslint-disable jsx-a11y/no-static-element-interactions */}
-        <div
-          onClick={() => this.input && this.input.select()}
-          ref={ref => {
-            this.importCodeField = ref;
-          }}
-          role="presentation"
-        >
-          <FieldTextStateless
-            isLabelHidden
-            isReadOnly
-            label=""
-            onChange={() => {}}
-            shouldFitContainer
-            value={`import ${props.componentName} from '${props.package}';`}
-            ref={this.setInputRef}
-          />
-        </div>
-        {/* eslint-enable jsx-a11y/no-static-element-interactions */}
-      </Modal>
-    ) : null;
+    const modal = (
+      <ModalTransition>
+        {this.state.isModalOpen ? (
+          <Modal
+            onClose={this.closeModal}
+            header={() => (
+              <IconModalHeader>
+                <Icon label={props.componentName} size="medium" />
+                {props.componentName}
+              </IconModalHeader>
+            )}
+            actions={[
+              {
+                text: 'Copy',
+                onClick: this.copyToClipboard,
+              },
+              {
+                text: 'Close',
+                onClick: this.closeModal,
+              },
+            ]}
+          >
+            {/* eslint-disable jsx-a11y/no-static-element-interactions */}
+            <div
+              onClick={() => this.input && this.input.select()}
+              ref={ref => {
+                this.importCodeField = ref;
+              }}
+              role="presentation"
+            >
+              <FieldTextStateless
+                isLabelHidden
+                isReadOnly
+                label=""
+                onChange={() => {}}
+                shouldFitContainer
+                value={`import ${props.componentName} from '${props.package}';`}
+                ref={this.setInputRef}
+              />
+            </div>
+            {/* eslint-enable jsx-a11y/no-static-element-interactions */}
+          </Modal>
+        ) : null}
+      </ModalTransition>
+    );
 
     return (
       <div>
