@@ -3,10 +3,8 @@ import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { GasPayload } from '@atlaskit/analytics-gas-types';
 import Button from '@atlaskit/button';
 import { FabricChannel } from '../../src';
-import {
-  WithAnalyticsEventProps,
-  CreateUIAnalyticsEventSignature,
-} from '@atlaskit/analytics-next-types';
+import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
+import { EventType } from '../../../analytics-gas-types/src';
 
 export type OwnProps = {
   onClick: (e) => void;
@@ -33,7 +31,7 @@ export class DummyElementsComponent extends React.Component<Props> {
   }
 }
 
-export class DummyAtlaskitComponent extends React.Component<OwnProps> {
+export class DummyAtlaskitComponent extends React.Component<Props> {
   static displayName = 'DummyAtlaskitComponent';
   render() {
     return (
@@ -45,7 +43,7 @@ export class DummyAtlaskitComponent extends React.Component<OwnProps> {
   }
 }
 
-export class DummyNavigationComponent extends React.Component<OwnProps> {
+export class DummyNavigationComponent extends React.Component<Props> {
   static displayName = 'DummyNavigationComponent';
   render() {
     return (
@@ -57,11 +55,22 @@ export class DummyNavigationComponent extends React.Component<OwnProps> {
   }
 }
 
-export class DummyEditorComponent extends React.Component<OwnProps> {
+export class DummyEditorComponent extends React.Component<Props> {
   static displayName = 'DummyEditorComponent';
   render() {
     return (
       <CustomButton text={FabricChannel.editor} onClick={this.props.onClick} />
+    );
+  }
+}
+
+class MyButton extends React.Component<Props> {
+  static displayName = 'MyButton';
+  render() {
+    return (
+      <button id="dummy" onClick={this.props.onClick}>
+        Test [click on me]
+      </button>
     );
   }
 }
@@ -74,8 +83,8 @@ const componentChannels = {
 };
 
 export const createComponentWithAnalytics = (channel: FabricChannel) =>
-  withAnalyticsEvents<Props>({
-    onClick: (createEvent: CreateUIAnalyticsEventSignature, props: Props) => {
+  withAnalyticsEvents({
+    onClick: createEvent => {
       const payload: GasPayload = {
         action: 'someAction',
         actionSubject: 'someComponent',
@@ -86,13 +95,13 @@ export const createComponentWithAnalytics = (channel: FabricChannel) =>
       event.fire(channel);
       return event;
     },
-  })(componentChannels[channel] as any) as React.ComponentClass<OwnProps>;
+  })(componentChannels[channel]);
 
 export const createComponentWithAttributesWithAnalytics = (
   channel: FabricChannel,
 ) =>
-  withAnalyticsEvents<Props>({
-    onClick: (createEvent: CreateUIAnalyticsEventSignature, props: Props) => {
+  withAnalyticsEvents({
+    onClick: createEvent => {
       const payload: GasPayload = {
         action: 'someAction',
         actionSubject: 'someComponent',
@@ -109,14 +118,14 @@ export const createComponentWithAttributesWithAnalytics = (
       event.fire(channel);
       return event;
     },
-  })(componentChannels[channel] as any) as React.ComponentClass<OwnProps>;
+  })(componentChannels[channel]);
 
 export const createTaggedComponentWithAnalytics = (
   channel: FabricChannel,
   tag: string,
 ) =>
-  withAnalyticsEvents<Props>({
-    onClick: (createEvent: CreateUIAnalyticsEventSignature, props: Props) => {
+  withAnalyticsEvents({
+    onClick: createEvent => {
       const payload: GasPayload = {
         action: 'someAction',
         actionSubject: 'someComponent',
@@ -128,38 +137,26 @@ export const createTaggedComponentWithAnalytics = (
       event.fire(channel);
       return event;
     },
-  })(componentChannels[channel] as any) as React.ComponentClass<OwnProps>;
+  })(componentChannels[channel]);
 
 export const IncorrectEventType = (channel: FabricChannel) =>
-  withAnalyticsEvents<Props>({
-    onClick: (createEvent: CreateUIAnalyticsEventSignature, props: Props) => {
-      // @ts-ignore
+  withAnalyticsEvents({
+    onClick: createEvent => {
       const payload: GasPayload = {
         action: 'someAction',
         actionSubject: 'someComponent',
-        eventType: 'unknown',
+        eventType: 'unknown' as EventType,
         source: 'unknown',
       };
       const event = createEvent(payload);
       event.fire(channel);
       return event;
     },
-  })(componentChannels[channel] as any) as React.ComponentClass<OwnProps>;
-
-class MyButton extends React.Component<Props> {
-  static displayName = 'MyButton';
-  render() {
-    return (
-      <button id="dummy" onClick={this.props.onClick}>
-        Test [click on me]
-      </button>
-    );
-  }
-}
+  })(componentChannels[channel]);
 
 export const createButtonWithAnalytics = (payload, channel: FabricChannel) =>
-  withAnalyticsEvents<Props>({
-    onClick: (createEvent: CreateUIAnalyticsEventSignature, props: Props) => {
+  withAnalyticsEvents({
+    onClick: createEvent => {
       const event = createEvent(payload);
       event.fire(channel);
       return event;
