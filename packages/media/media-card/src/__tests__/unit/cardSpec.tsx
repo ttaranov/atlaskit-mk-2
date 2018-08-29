@@ -138,19 +138,20 @@ describe('Card', () => {
     });
   });
 
-  it('should use the new context to create the subscription when context prop changes', () => {
+  it('should use the new context to create the subscription when context prop changes', async () => {
     const firstContext = fakeContext({});
     const secondContext = fakeContext({}) as any;
     const { component } = setup(firstContext);
     component.setProps({ context: secondContext, fileIdentifier });
 
     const { id, collectionName } = fileIdentifier;
+    await nextTick();
     expect(secondContext.getFile).toHaveBeenCalledTimes(1);
     expect(secondContext.getFile).toBeCalledWith(id, { collectionName });
     expect(component.find(CardView)).toHaveLength(1);
   });
 
-  it('should create a new subscription when the identifier changes', () => {
+  it('should create a new subscription when the identifier changes', async () => {
     const firstIdentifier: FileIdentifier = fileIdentifier;
     const secondIdentifier: LinkIdentifier = linkIdentifier;
     const dummyProvider = { observable: 'dummy provider ftw!' };
@@ -161,7 +162,7 @@ describe('Card', () => {
     component.setProps({ context, identifier: secondIdentifier });
 
     const { id, mediaItemType, collectionName } = secondIdentifier;
-
+    await nextTick();
     expect(context.getFile).toHaveBeenCalledTimes(1);
     expect(context.getMediaItemProvider).toHaveBeenCalledTimes(1);
     expect(context.getMediaItemProvider).toBeCalledWith(
@@ -356,19 +357,33 @@ describe('Card', () => {
     expect(card.find(CardView).prop('disableOverlay')).toBe(true);
   });
 
-  it('should use context.getFile to fetch file data', () => {
+  it('should use context.getFile to fetch file data', async () => {
     const { context } = setup();
-
+    await nextTick();
     expect(context.getFile).toHaveBeenCalledTimes(1);
     expect(context.getFile).toBeCalledWith('some-random-id', {
       collectionName: 'some-collection-name',
     });
   });
 
+  it('should work with async identifier', async () => {
+    const identifier: FileIdentifier = {
+      id: Promise.resolve('file-id'),
+      mediaItemType: 'file',
+      collectionName: 'collection',
+    };
+    const { context } = setup(undefined, { identifier });
+    await nextTick();
+    expect(context.getFile).toHaveBeenCalledTimes(1);
+    expect(context.getFile).toBeCalledWith('file-id', {
+      collectionName: 'collection',
+    });
+  });
+
   it('should set dataURI only if its not present', async () => {
     const { component } = setup();
-    expect(getDataURIFromFileState).toHaveBeenCalledTimes(1);
     await nextTick();
+    expect(getDataURIFromFileState).toHaveBeenCalledTimes(1);
     expect(component.state('dataURI')).toEqual('some-data-uri');
   });
 
@@ -495,7 +510,7 @@ describe('Card', () => {
     await nextTick();
 
     expect(context.getImage).toHaveBeenCalledTimes(1);
-    expect(context.getImage).toBeCalledWith('123', {
+    expect(context.getImage).toBeCalledWith('some-random-id', {
       collection: 'some-collection-name',
       height: 125,
       width: 156,
@@ -514,7 +529,7 @@ describe('Card', () => {
     await nextTick();
     await nextTick();
 
-    expect(context.getImage).toBeCalledWith('123', {
+    expect(context.getImage).toBeCalledWith('some-random-id', {
       collection: 'some-collection-name',
       height: 32,
       width: 32,
@@ -534,7 +549,7 @@ describe('Card', () => {
     await nextTick();
 
     expect(context.getImage).toBeCalledWith(
-      '123',
+      'some-random-id',
       expect.objectContaining({
         mode: 'full-fit',
       }),
@@ -607,13 +622,36 @@ describe('Card', () => {
     expect(releaseDataURI).toHaveBeenCalledTimes(1);
   });
 
+  it('should pass status=processing if file size is 0', async () => {
+    const getImage = jest.fn();
+    const context = {
+      getFile: () =>
+        Observable.of({
+          id: '123',
+          status: 'processed',
+          mediaType: 'image',
+          mimeType: 'image/png',
+          name: 'file-name',
+          size: 0,
+        }),
+      getImage,
+    } as any;
+    const { component } = setup(context);
+
+    await nextTick();
+    component.update();
+
+    expect(component.find(CardView).prop('status')).toEqual('processing');
+  });
+
   describe('Retry', () => {
-    it('should pass down "onRetry" prop when an error occurs', () => {
+    it('should pass down "onRetry" prop when an error occurs', async () => {
       const { component, context } = setup();
       const cardViewOnError = component.find(CardView).prop('onRetry')!;
-
+      await nextTick();
       expect(context.getFile).toHaveBeenCalledTimes(1);
       cardViewOnError();
+      await nextTick();
       expect(context.getFile).toHaveBeenCalledTimes(2);
     });
   });

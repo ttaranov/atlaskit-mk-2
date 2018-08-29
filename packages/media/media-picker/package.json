@@ -78,6 +78,7 @@
     "lodash.chunk": "^4.2.0",
     "react": "^16.4.0",
     "react-circle": "^1.0.1",
+    "react-dom": "^16.4.2",
     "rxjs": "^5.1.0",
     "sinon": "^2.2.0"
   }

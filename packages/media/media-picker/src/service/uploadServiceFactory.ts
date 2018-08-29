@@ -43,8 +43,9 @@ export interface UploadService {
 export class UploadServiceFactory {
   public static create(
     context: Context,
+    tenantUploadParams: UploadParams,
     uploadParams?: UploadParams,
   ): UploadService {
-    return new NewUploadServiceImpl(context, uploadParams);
+    return new NewUploadServiceImpl(context, tenantUploadParams, uploadParams);
   }
 }
