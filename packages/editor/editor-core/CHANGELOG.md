@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 78.0.8
+- [patch] Fix broken import blocking confluence [5545403](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5545403)
+
 ## 78.0.7
 - [patch] ED-5280: Revert 68a0978 due to issues with Confluence. The IntlProviders were clashing and preventing Confluence from internationalising the elements inside the editor. [ab71cd1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ab71cd1)
 
