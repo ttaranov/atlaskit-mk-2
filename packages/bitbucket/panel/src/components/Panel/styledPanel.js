@@ -1,4 +1,5 @@
 // @flow
+// import Button from '@atlaskit/button';
 import { gridSize, typography } from '@atlaskit/theme';
 import styled from 'styled-components';
 
@@ -15,15 +16,16 @@ export const PanelHeader = styled.div`
   margin-bottom: ${gridSize()}px;
   margin-top: ${gridSize() * 2}px;
   position: relative;
-  text-transform: uppercase;
+  text-align: left;
 `;
 
 export const ChevronIcon = styled.div`
-  display: ${({ isHidden }) => (isHidden ? 'none' : 'block')};
+  opacity: ${({ isHidden }) => (isHidden ? 0 : 1)};
   left: -${gridSize() * 3}px;
   position: absolute;
+  transition: opacity 0.3s;
 
   ${PanelHeader}:hover & {
-    display: block;
+    opacity: 1;
   }
 `;
