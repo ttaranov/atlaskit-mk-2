@@ -82,7 +82,6 @@ describe('Media PickerFacade', () => {
     activate: jest.fn(),
     browse: jest.fn(),
   };
-  const upfrontId = Promise.resolve('1');
 
   // Helpers
   function triggerStart(payload?: Partial<UploadsStartEventPayload>) {
