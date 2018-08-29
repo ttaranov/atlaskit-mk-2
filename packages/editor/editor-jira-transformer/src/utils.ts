@@ -53,9 +53,7 @@ export function ensureBlocks(
       fragment.firstChild.type === schema.nodes.orderedList)
   ) {
     const node = schema.nodes.paragraph.createAndFill();
-    if (node !== undefined && node !== null) {
-      blockNodes.push(node);
-    }
+    blockNodes.push(node as any);
   }
 
   fragment.forEach(child => {

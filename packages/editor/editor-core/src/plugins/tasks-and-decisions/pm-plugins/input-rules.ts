@@ -73,18 +73,18 @@ const createListRule = (
           .delete(start + 1, end + 1)
           .setSelection(new TextSelection(tr.doc.resolve(start + 1)));
       } else {
-        const node = tr.doc.nodeAt($from.pos + 1);
-        if (node !== undefined && node !== null) {
-          tr
-            .split($from.pos)
-            .setSelection(new NodeSelection(tr.doc.resolve($from.pos + 1)))
-            .replaceSelectionWith(
-              list.create({ localId: uuid.generate() }, [
-                item.create({ localId: uuid.generate() }, node.content),
-              ]),
-            )
-            .delete(start, end + 1);
-        }
+        tr
+          .split($from.pos)
+          .setSelection(new NodeSelection(tr.doc.resolve($from.pos + 1)))
+          .replaceSelectionWith(
+            list.create({ localId: uuid.generate() }, [
+              item.create(
+                { localId: uuid.generate() },
+                (tr.doc.nodeAt($from.pos + 1) as any).content,
+              ),
+            ]),
+          )
+          .delete(start, end + 1);
       }
 
       return tr;
