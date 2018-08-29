@@ -11,22 +11,6 @@ export interface Props {
   widthExists?: boolean;
 }
 
-// import Wrapper from '../MediaSingle/styled'
-// export interface WrapperProps {
-//   layout: MediaSingleLayout;
-//   width: number;
-//   height: number;
-//   containerWidth: number;
-// }
-
-// Need `padding-left` override for media item drop-shadow
-// const Wrapper = styled.div`
-//   margin-bottom: 8px;
-//   &&& ul {
-//     padding: 0;
-//   }
-// `;
-
 const MarginResetWrapper = styled.div`
   margin-left: 0% !important;
   transform: translateX(0%) !important;
@@ -35,6 +19,14 @@ const MarginResetWrapper = styled.div`
     li {
       padding: 0 0 !important;
     }
+  }
+`;
+
+// Need padding-left override for media item drop-shadow
+const Wrapper = styled.div`
+  margin-bottom: 8px;
+  &&& ul {
+    padding: 0;
   }
 `;
 MarginResetWrapper.displayName = 'MarginResetWrapper';
@@ -63,11 +55,10 @@ export default class MediaBase extends Component<Props, {}> {
         {this.props.children}
       </FilmstripView>
     );
-    // debugger;
     return !widthExists ? (
       <MarginResetWrapper>{content}</MarginResetWrapper>
     ) : (
-      content
+      <Wrapper>{content}</Wrapper>
     );
   }
 }

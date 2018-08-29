@@ -25,6 +25,7 @@ export default function MediaSingle({
   return (
     <Wrapper
       width={width}
+      layout={layout}
       height={height}
       containerWidth={containerWidth}
       className={classnames('media-single', layout, className, {

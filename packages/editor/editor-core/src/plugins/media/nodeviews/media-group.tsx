@@ -4,13 +4,11 @@ import { Component } from 'react';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 
-// import { FilmstripView } from '@atlaskit/media-filmstrip';
 import { MediaNodeProps } from './media';
 import {
   MediaPluginState,
   stateKey as mediaStateKey,
 } from '../pm-plugins/main';
-// import MediaBase from './MediaBase';
 import { MediaBase } from '@atlaskit/editor-common';
 
 export interface MediaGroupNodeProps {
