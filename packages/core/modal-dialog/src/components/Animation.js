@@ -1,8 +1,6 @@
 // @flow
 import React, { type Node } from 'react';
 import { Transition } from 'react-transition-group';
-// TODO work out if i need to include this again
-import { gutter } from '../shared-variables';
 
 const duration = 500;
 const easing = 'cubic-bezier(0.23, 1, 0.32, 1)'; // easeOutQuint
@@ -24,7 +22,7 @@ type AnimationProps = {
 
 export const Animation = ({
   in: hasEntered,
-  stackIndex,
+  stackIndex = 0,
   onExited,
   onEntered,
   children,
@@ -58,9 +56,10 @@ export const Animation = ({
       };
       const slideTransitions = {
         entered: {
-          transform: stackIndex
-            ? `translate3d(0, ${stackIndex * (verticalOffset / 2)}px, 0)`
-            : null,
+          transform:
+            stackIndex > 0
+              ? `translate3d(0, ${stackIndex * (verticalOffset / 2)}px, 0)`
+              : null,
         },
         exiting: {
           transform: `translate3d(0, -${verticalOffset * 2}px, 0)`,
