@@ -105,16 +105,16 @@ describe('Tag component', () => {
     expect(wrapper.prop('href')).toBe(bitbucketHref);
   });
 
-  describe('shape prop', () => {
-    it('should set the isRounded prop of Chrome and Remove to true when set to "rounded"', () => {
+  describe('isRounded prop', () => {
+    it('should be passed to <Chrome> and <Remove>', () => {
       const wrapper = mount(
-        <Tag shape="rounded" text="foo" removeButtonText="foo" />,
+        <Tag isRounded text="foo" removeButtonText="foo" />,
       );
       expect(wrapper.find(Chrome).prop('isRounded')).toBe(true);
       expect(wrapper.find(Remove).prop('isRounded')).toBe(true);
     });
 
-    it('should set the isRounded prop of Chrome and Remove to false when not set to "rounded"', () => {
+    it('should default to false', () => {
       const wrapper = mount(<Tag text="foo" removeButtonText="foo" />);
       expect(wrapper.find(Chrome).prop('isRounded')).toBe(false);
       expect(wrapper.find(Remove).prop('isRounded')).toBe(false);
@@ -127,15 +127,6 @@ describe('Tag component', () => {
         <Tag text="foo" elemBefore={<div className="test" />} />,
       );
       expect(wrapper.find(Before).find('div.test').length).toBe(1);
-    });
-    // TODO: Need to understand how to fix this issue
-    it.skip('should render the elemBefore before the content', () => {
-      const wrapper = shallow(
-        <Tag text="foo" elemBefore={<div className="test" />} />,
-      );
-      const chrome = wrapper.find(Chrome);
-      expect(chrome.childAt(0).is(Before)).toBe(true);
-      expect(chrome.childAt(1).is(Content)).toBe(true);
     });
   });
 

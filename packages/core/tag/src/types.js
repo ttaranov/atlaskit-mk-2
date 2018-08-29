@@ -16,5 +16,3 @@ export type TagColor =
   | 'tealLight'
   | 'yellowLight'
   | {};
-
-export type TagShape = 'default' | 'rounded';

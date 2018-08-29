@@ -20,11 +20,11 @@ import Before from './styledBefore';
 import Container from './styledContainer';
 import * as theme from '../theme';
 
-import type { TagColor, TagShape } from '../types';
+import type { TagColor } from '../types';
 
 type Props = {
   /** Set whether tags should be rounded. */
-  shape: TagShape,
+  isRounded: boolean,
   /** The appearance theme to apply, setting both background and text color. */
   appearance: TagColor,
   /** Component to be rendered before the Tag. */
@@ -57,7 +57,7 @@ type State = {
 class Tag extends Component<Props, State> {
   static defaultProps = {
     appearance: 'standard',
-    shape: 'default',
+    isRounded: false,
     elemBefore: null,
     onAfterRemoveAction: () => {},
     onBeforeRemoveAction: () => true,
@@ -100,12 +100,11 @@ class Tag extends Component<Props, State> {
       href,
       removeButtonText,
       text,
-      shape,
+      isRounded,
       linkComponent,
     } = this.props;
 
     const isRemovable = Boolean(removeButtonText);
-    const isRounded = shape === 'rounded';
 
     const styled = {
       isFocused,
