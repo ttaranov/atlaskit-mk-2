@@ -112,11 +112,17 @@ const productNavSections = [
     isRootLevel: true,
     items: [
       {
+        children: 'Group heading',
+        key: 'title',
+        type: GroupHeading,
+      },
+      {
         before: DashboardIcon,
         component: makeTestItem('product-item-dashboards'),
         key: 'dashboards',
         text: 'Dashboards',
         type: Item,
+        isSelected: true,
       },
       {
         before: FolderIcon,
@@ -239,8 +245,8 @@ const Content = makeTestComponent(
 );
 
 const customThemeMode = modeGenerator({
-  text: colors.N0,
-  background: colors.G500,
+  text: colors.DN10,
+  background: colors.DN800,
 });
 
 export default () => (

@@ -15,7 +15,7 @@ type Args = {
 };
 
 export default ({ background, text }: Args): Mode => {
-  const backgroundColorActive = chromatism.brightness(15, background).hex;
+  const backgroundColorActive = chromatism.brightness(10, background).hex;
   const backgroundColorSelected = chromatism.brightness(-5, background).hex;
   const backgroundColorHover = chromatism.brightness(-8, background).hex;
 
@@ -66,8 +66,8 @@ export default ({ background, text }: Args): Mode => {
       const { product } = light.heading();
       const productStyles = {
         ...product,
-        titleBase: {
-          ...product.titleBase,
+        headingBase: {
+          ...product.headingBase,
           color: chromatism.brightness(20, text).hex,
         },
       };

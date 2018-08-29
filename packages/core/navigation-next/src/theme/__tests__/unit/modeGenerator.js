@@ -43,7 +43,7 @@ describe('NavigationNext theme: Mode generator', () => {
         size: 'small',
       };
       expect(customThemeMode.globalItem(args).itemBase).toMatchObject({
-        backgroundColor: '#abccff',
+        backgroundColor: '#b5d2ff',
       });
     });
 
@@ -55,7 +55,7 @@ describe('NavigationNext theme: Mode generator', () => {
         size: 'small',
       };
       expect(customThemeMode.globalItem(args).itemBase).toMatchObject({
-        backgroundColor: '#78adff',
+        backgroundColor: '#c4dbff',
       });
     });
   });
@@ -101,10 +101,10 @@ describe('NavigationNext theme: Mode generator', () => {
       };
 
       expect(customThemeMode.item(args).container.itemBase).toMatchObject({
-        backgroundColor: '#abccff',
+        backgroundColor: '#b5d2ff',
       });
       expect(customThemeMode.item(args).product.itemBase).toMatchObject({
-        backgroundColor: '#abccff',
+        backgroundColor: '#b5d2ff',
       });
     });
 
