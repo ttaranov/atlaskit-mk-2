@@ -15,9 +15,9 @@ type Args = {
 };
 
 export default ({ background, text }: Args): Mode => {
-  const backgroundColorActive = chromatism.brightness(10, background).hex;
-  const backgroundColorSelected = chromatism.brightness(-20, background).hex;
-  const backgroundColorHover = chromatism.brightness(-10, background).hex;
+  const backgroundColorActive = chromatism.brightness(15, background).hex;
+  const backgroundColorSelected = chromatism.brightness(-5, background).hex;
+  const backgroundColorHover = chromatism.brightness(-8, background).hex;
 
   const getBackgroundColorByState = ({ isActive, isSelected, isHover }) => {
     if (isActive) return backgroundColorActive;
