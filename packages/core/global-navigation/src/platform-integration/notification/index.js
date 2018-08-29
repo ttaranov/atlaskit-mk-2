@@ -8,6 +8,8 @@ import NotificationDrawerContents from './components/NotificationDrawerContents'
 const notificationIntegration = (
   fabricNotificationLogUrl?: string,
   cloudId?: string,
+  locale?: string,
+  product?: string,
 ) => ({
   badge: () => (
     <NotificationBadge
@@ -16,10 +18,7 @@ const notificationIntegration = (
     />
   ),
   notificationDrawerContents: () => (
-    <NotificationDrawerContents
-      cloudId={cloudId}
-      fabricNotificationLogUrl={fabricNotificationLogUrl}
-    />
+    <NotificationDrawerContents locale={locale} product={product} />
   ),
   onNotificationDrawerOpen: () => {
     console.log('clear notification badge count here');

@@ -152,6 +152,8 @@ export default class GlobalNavigation
       onOpenCallback = notificationIntegration(
         this.props.fabricNotificationLogUrl,
         this.props.cloudId,
+        this.props.locale,
+        this.props.product,
       ).onNotificationDrawerOpen;
     }
 
@@ -186,6 +188,8 @@ export default class GlobalNavigation
       onCloseCallback = notificationIntegration(
         this.props.fabricNotificationLogUrl,
         this.props.cloudId,
+        this.props.locale,
+        this.props.product,
       ).onNotificationDrawerClose;
     }
 
@@ -218,6 +222,8 @@ export default class GlobalNavigation
     const { badge } = notificationIntegration(
       this.props.fabricNotificationLogUrl,
       this.props.cloudId,
+      this.props.locale,
+      this.props.product,
     );
 
     const navItems: NavItem[] = Object.keys(productConfig).map(item => ({
@@ -249,6 +255,8 @@ export default class GlobalNavigation
     const { notificationDrawerContents } = notificationIntegration(
       this.props.fabricNotificationLogUrl,
       this.props.cloudId,
+      this.props.locale,
+      this.props.product,
     );
 
     return (

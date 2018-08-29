@@ -53,9 +53,16 @@ class GlobalNavigationItemPrimitive extends PureComponent<*> {
     if (
       nextProps.component !== this.props.component ||
       nextProps.href !== this.props.href ||
-      nextProps.onClick !== this.props.onClick ||
+      // nextProps.onClick !== this.props.onClick ||
       nextProps.target !== this.props.target
     ) {
+      console.log(
+        nextProps.component !== this.props.component,
+        nextProps.href !== this.props.href,
+        nextProps.onClick !== this.props.onClick,
+        nextProps.target !== this.props.target,
+        this.props.tooltip,
+      );
       this.ItemBase = getItemBase(nextProps);
     }
   }

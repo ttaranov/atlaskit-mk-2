@@ -31,6 +31,8 @@ export type GlobalNavDrawerProps = {
   notificationDrawerContents?: ComponentType<*>,
   onNotificationDrawerOpen?: () => void,
   onNotificationDrawerClose?: () => void,
+  locale?: string,
+  product?: string,
   fabricNotificationLogUrl?: string,
   cloudId?: string,
 
