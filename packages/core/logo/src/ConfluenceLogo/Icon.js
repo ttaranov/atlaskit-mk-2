@@ -11,13 +11,13 @@ const svg = (iconGradientStart: string, iconGradientStop: string) => {
   return `<canvas height="32" width="32" aria-hidden="true"></canvas>
   <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true">
     <defs>
-      <linearGradient x1="94.714%" x2="34.077%" y1="114.519%" y2="39.454%" id="${id}-1">
+      <linearGradient x1="60.6779047%" y1="137.626433%" x2="14.341981%" y2="112.08042%" id="${id}-1">
         <stop stop-color="${iconGradientStart}" ${
     iconGradientStart === 'inherit' ? 'stop-opacity="0.4"' : ''
   } offset="0%"></stop>
         <stop stop-color="${iconGradientStop}" offset="100%"></stop>
       </linearGradient>
-      <linearGradient x1="14.1838118%" y1="5.80047897%" x2="61.141783%" y2="70.9663868%" id="${id}-2">
+      <linearGradient x1="12.3282701%" y1="-53.9760846%" x2="74.1300776%" y2="-33.2553066%" id="${id}-2">
         <stop stop-color="${iconGradientStart}" ${
     iconGradientStart === 'inherit' ? 'stop-opacity="0.4"' : ''
   } offset="0%"></stop>
