@@ -24,7 +24,6 @@ export default function MediaSingle({
 }: Props) {
   return (
     <Wrapper
-      layout={layout}
       width={width}
       height={height}
       containerWidth={containerWidth}

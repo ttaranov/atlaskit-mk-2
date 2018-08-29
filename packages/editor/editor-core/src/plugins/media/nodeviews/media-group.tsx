@@ -10,7 +10,8 @@ import {
   MediaPluginState,
   stateKey as mediaStateKey,
 } from '../pm-plugins/main';
-import MediaBase from './MediaBase';
+// import MediaBase from './MediaBase';
+import { MediaBase } from '@atlaskit/editor-common';
 
 export interface MediaGroupNodeProps {
   view: EditorView;

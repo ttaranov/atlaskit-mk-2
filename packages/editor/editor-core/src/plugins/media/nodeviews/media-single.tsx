@@ -2,11 +2,12 @@ import * as React from 'react';
 import { Component, ReactElement } from 'react';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import { MediaSingle } from '@atlaskit/editor-common';
+import { MediaSingle, MediaBase } from '@atlaskit/editor-common';
 import { MediaNodeProps } from './media';
 import { stateKey, MediaPluginState } from '../pm-plugins/main';
-import MediaBase from './MediaBase';
-
+import styled from 'styled-components';
+// import MediaBase from './MediaBase';
+// import { MediaSingle } from '@atlaskit/editor-common';
 const DEFAULT_WIDTH = 250;
 const DEFAULT_HEIGHT = 200;
 
@@ -117,10 +118,36 @@ export default class MediaSingleNode extends Component<
       }
     } else {
       if (height === null || width === null) {
-        console.log('height or width is NULL');
-        return <MediaBase> {this.child} </MediaBase>;
-      } else {
-        console.log('not null height or width');
+        const Wrapper = styled.div`
+          // .random > div {
+          // margin-left: 0% !important;
+          // transform: translateX(0%) !important;
+
+          // }
+          // [layout='full-width']
+
+          // margin-left: 0% !important;
+          // transform: translateX(0%) !important;
+        `;
+
+        console.log(this.child);
+        return (
+          // @ts-ignore
+          // <div layout="not-full-width">
+          <MediaBase widthExists={false}>
+            {/* <Wrapper> */}
+
+            {React.cloneElement(
+              this.child as ReactElement<any>,
+              {
+                progress,
+                onExternalImageLoaded: this.onExternalImageLoaded,
+              } as MediaNodeProps,
+            )}
+            {/* </Wrapper> */}
+          </MediaBase>
+          //  </div>
+        );
       }
     }
 

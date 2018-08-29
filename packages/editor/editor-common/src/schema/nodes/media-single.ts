@@ -28,6 +28,7 @@ export const defaultAttrs = {
   layout: { default: 'center' },
 };
 
+// Change this
 export const mediaSingle: NodeSpec = {
   inline: false,
   group: 'block',
