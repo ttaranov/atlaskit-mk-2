@@ -1,30 +1,37 @@
 import { CardProvider } from '@atlaskit/editor-core';
 
-export class CardProviderMock implements CardProvider {
+const inlineCard = {
+  type: 'inlineCard',
+  attrs: {
+    data: {
+      '@context': 'https://www.w3.org/ns/activitystreams',
+      '@type': 'Document',
+      name: 'Welcome to Atlassian!',
+      url: 'http://www.atlassian.com',
+    },
+  },
+};
+
+export class DelayedCardMockProvider implements CardProvider {
   public config = {};
 
-  getType(url: string) {
-    if (/product-fabric.atlassian.net\/browse\/ED-\d+$/.test(url)) {
-      return 'smart-card';
+  resolve(url: string): Promise<any> {
+    if (url.match(/https?:\/\/\w+\.atlassian\.com\/?/)) {
+      return new Promise(resolve => {
+        setTimeout(() => {
+          resolve(inlineCard);
+        }, 1000);
+      });
     }
-    if (/www.atlassian.com/.test(url)) {
-      return 'custom';
-    }
-    return 'unsupported';
-  }
 
-  getData(url: string): Promise<any> {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        resolve({
-          '@context': 'https://www.w3.org/ns/activitystreams',
-          '@type': 'Document',
-          name: 'Welcome to Atlassian!',
-          url: 'http://www.atlassian.com',
-        });
-      }, 1000);
-    });
+    return Promise.reject(undefined);
   }
 }
 
-export const cardProvider = new CardProviderMock();
+export class CardMockProvider implements CardProvider {
+  resolve(url: string): Promise<any> {
+    return new Promise(resolve => resolve(inlineCard));
+  }
+}
+
+export const cardProvider = new DelayedCardMockProvider();
