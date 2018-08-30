@@ -25,5 +25,55 @@ ${code`
 
   ## Using the component
 
-  Check out [live examples](https://atlaskit.atlassian.com/packages/elements/analytics-listeners/example/fabric-listener-example).
+  Example firing an analytics-next event:
+
+${code`
+  import * as React from 'react';
+  import {
+    withAnalyticsEvents,
+    createAndFireEvent,
+  } from '@atlaskit/analytics-next';
+  import FabricAnalyticsListeners from '@atlaskit/analytics-listeners';
+  import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
+
+  export type Props = WithAnalyticsEventProps & {
+    onClick: (e) => void;
+  };
+
+  class DummyComponent extends React.Component<Props> {
+    static displayName = 'DummyComponent';
+
+    render() {
+      return (
+        <div id="dummy" onClick={this.props.onClick}>
+          Test
+        </div>
+      );
+    }
+  }
+
+  export const DummyComponentWithAnalytics = withAnalyticsEvents({
+    onClick: createAndFireEvent('fabric-elements')({
+      action: 'someAction',
+      actionSubject: 'someComponent',
+      eventType: 'ui',
+      source: 'unknown',
+    }),
+  })(DummyComponent);
+
+  const myOnClickHandler = (e): void => {
+    console.log('component clicked');
+  };
+
+  // Pass the analyticsWebClient instance created by the Product
+  // Refer to type AnalyticsWebClient from @atlaskit/analytics-listeners
+  ReactDOM.render(
+    <div>
+      <FabricAnalyticsListeners client={analyticsWebClient}>
+        <DummyComponentWithAnalytics onClick={myOnClickHandler} />
+      </FabricAnalyticsListeners>
+    </div>,
+    container,
+  );
+`}
 `;

@@ -5,7 +5,7 @@ import {
 } from '@atlaskit/analytics-next';
 import { EventType } from '@atlaskit/analytics-gas-types';
 import Button from '@atlaskit/button';
-import { FabricChannel } from '../../src';
+import { FabricChannel } from '../../src/types';
 import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
 
 export type OwnProps = {

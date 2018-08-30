@@ -9,8 +9,7 @@ import * as cases from 'jest-in-case';
 
 import NavigationListener from '../../../navigation/NavigationListener';
 import { AnalyticsListener, AnalyticsContext } from '@atlaskit/analytics-next';
-import { AnalyticsWebClient } from '../../../types';
-import { FabricChannel } from '../../../index';
+import { AnalyticsWebClient, FabricChannel } from '../../../types';
 import { createButtonWithAnalytics } from '../../../../examples/helpers';
 
 const createAnalyticsContexts = contexts => ({ children }) =>

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
-import { FabricChannel } from '../../index';
 import FabricEditorListener, {
   EDITOR_TAG,
 } from '../../fabric/FabricEditorListener';
@@ -10,7 +9,7 @@ import {
   OwnProps,
 } from '../../../examples/helpers';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
-import { AnalyticsWebClient } from '../../types';
+import { AnalyticsWebClient, FabricChannel } from '../../types';
 
 const DummyEditorComponent = createComponentWithAnalytics(FabricChannel.editor);
 const DummyTaggedEditorComponent = createTaggedComponentWithAnalytics(

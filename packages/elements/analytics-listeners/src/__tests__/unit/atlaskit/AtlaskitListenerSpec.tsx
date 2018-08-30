@@ -5,8 +5,7 @@ import { UI_EVENT_TYPE } from '@atlaskit/analytics-gas-types';
 import * as cases from 'jest-in-case';
 import AtlaskitListener from '../../../atlaskit/AtlaskitListener';
 import { AnalyticsListener, AnalyticsContext } from '@atlaskit/analytics-next';
-import { AnalyticsWebClient } from '../../../types';
-import { FabricChannel } from '../../../index';
+import { AnalyticsWebClient, FabricChannel } from '../../../types';
 import { createButtonWithAnalytics } from '../../../../examples/helpers';
 
 const createAnalyticsContexts = contexts => ({ children }) =>

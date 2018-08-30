@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
-import { FabricChannel } from '../../index';
 import FabricElementsListener, {
   ELEMENTS_TAG,
 } from '../../fabric/FabricElementsListener';
@@ -11,7 +10,7 @@ import {
   OwnProps,
 } from '../../../examples/helpers';
 import { AnalyticsListener, AnalyticsContext } from '@atlaskit/analytics-next';
-import { AnalyticsWebClient } from '../../types';
+import { AnalyticsWebClient, FabricChannel } from '../../types';
 import { FabricElementsAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
 const DummyCompWithAttributesWithAnalytics = createComponentWithAttributesWithAnalytics(

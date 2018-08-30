@@ -10,9 +10,8 @@ import {
   DummyNavigationComponent,
   DummyElementsComponent,
 } from '../../../examples/helpers';
-import { AnalyticsWebClient } from '../../types';
+import { AnalyticsWebClient, FabricChannel } from '../../types';
 import { LOG_LEVEL } from '../../helpers/logger';
-import { FabricChannel } from '../../index';
 import NavigationListener from '../../navigation/NavigationListener';
 
 declare const global: any;
