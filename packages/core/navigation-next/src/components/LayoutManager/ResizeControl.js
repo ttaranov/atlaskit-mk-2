@@ -18,25 +18,37 @@ import PropertyToggle from './PropertyToggle';
 
 import type { CollapseToggleTooltipContent } from './types';
 
-const OUTER_WIDTH = 32;
+const HANDLE_OFFSET = 4;
+const INNER_WIDTH = 20;
+const OUTER_WIDTH = INNER_WIDTH + HANDLE_OFFSET;
 const HANDLE_WIDTH = 2;
 
 const Outer = (props: *) => (
   <div css={{ position: 'relative', width: OUTER_WIDTH }} {...props} />
 );
-const GrabArea = ({ showHandle, ...props }: *) => (
+const GrabArea = ({ showHandle, isBold, ...props }: *) => (
   <div
     css={{
-      boxShadow: `inset ${showHandle ? HANDLE_WIDTH : 0}px 0 0 ${colors.B100}`,
       cursor: 'ew-resize',
       height: '100%',
-      left: -1,
+      left: -HANDLE_OFFSET,
       position: 'relative',
-      transition: 'box-shadow 200ms cubic-bezier(0.2, 0, 0, 1)',
       width: OUTER_WIDTH,
     }}
     {...props}
-  />
+  >
+    <div
+      css={{
+        backgroundColor: isBold ? colors.B200 : colors.B100,
+        opacity: showHandle ? 1 : 0,
+        height: '100%',
+        left: HANDLE_OFFSET - HANDLE_WIDTH / 2, // the handle should "straddle" the dividing line
+        position: 'absolute',
+        transition: 'opacity 200ms',
+        width: HANDLE_WIDTH,
+      }}
+    />
+  </div>
 );
 const Button = ({
   children,
@@ -362,6 +374,7 @@ class ResizeControl extends PureComponent<Props, State> {
             <Outer>
               <Shadow isBold={mouseIsDown} />
               <GrabArea
+                isBold={mouseIsDown}
                 showHandle={mouseIsDown || mouseIsOverGrabArea}
                 onMouseEnter={this.mouseEnterGrabArea}
                 onMouseLeave={this.mouseLeaveGrabArea}
