@@ -117,14 +117,14 @@ export default class ModalDemo extends Component<{}, State> {
           {variants.filter(w => w === isOpen).map(name => (
             <ModalDialog
               key={name}
-              actions={['footer', 'both'].includes(name) ? actions : null}
+              actions={['footer', 'both'].includes(name) ? actions : undefined}
               footer={name === 'custom footer' ? Footer : null}
               header={name === 'custom header' ? Header : null}
               heading={
-                ['header', 'both'].includes(name) ? `Modal: ${name}` : null
+                ['header', 'both'].includes(name) ? `Modal: ${name}` : undefined
               }
-              onClose={this.close}
-              width={name === 'custom header' ? 300 : null}
+              onClose={() => this.close(name)}
+              width={name === 'custom header' ? 300 : undefined}
               {...this.props}
             >
               <Lorem count="5" />

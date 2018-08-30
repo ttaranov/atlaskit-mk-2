@@ -72,7 +72,7 @@ export default class ModalDemo extends Component<{}, State> {
               appearance="warning"
               actions={actions}
               heading={variantToHeading(name)}
-              onClose={this.close}
+              onClose={() => this.close(name)}
               isHeadingMultiline={variantToMultiline(name)}
               width="medium"
               {...this.props}

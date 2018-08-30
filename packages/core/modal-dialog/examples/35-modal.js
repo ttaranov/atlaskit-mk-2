@@ -30,7 +30,7 @@ export default class ModalDemo extends Component<Props, {}> {
       <ThemeProvider theme={{}}>
         <ModalTransition>
           <ModalDialog
-            actions={!footer ? [{ text: 'Create issue', onClick }] : null}
+            actions={!footer ? [{ text: 'Create issue', onClick }] : undefined}
             footer={footer}
             header={header}
             onClose={onClose}

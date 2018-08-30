@@ -51,7 +51,7 @@ export default class NestedDemo extends Component<{}, State> {
 
         {sizes.map(name => {
           const next = sizes[sizes.indexOf(name) + 1];
-          const onClick = next ? () => this.open(next) : null;
+          const onClick = next ? () => this.open(next) : undefined;
           const actions = [{ text: 'Close', onClick: this.close }];
           if (next) actions.push({ text: `Open: ${next}`, onClick });
 
