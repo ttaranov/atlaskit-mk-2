@@ -297,5 +297,6 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
   }
 }
 
-const { Provider, Consumer } = React.createContext(0);
-export { Provider as BreakoutProvider, Consumer as BreakoutConsumer };
+const ContextComponents = React.createContext(0);
+export const BreakoutProvider = ContextComponents.Provider;
+export const BreakoutConsumer = ContextComponents.Consumer;
