@@ -1,5 +1,4 @@
 // TODO [MSW-387]: Add typings
-// This method requires CORS to be disabled
 import { ClientBasedAuth } from '@atlaskit/media-core';
 
 export const userAuthProviderBaseURL = 'https://dt-api.dev.atl-paas.net';

@@ -1,12 +1,13 @@
 {
   "name": "@atlaskit/droplist",
-  "version": "7.0.8",
+  "version": "7.0.9",
   "description": "Droplist component",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
   "atlaskit:designLink": "https://atlassian.design/guidelines/product/components/drop-menu",
+  "sideEffects": false,
   "files": [
     "dist"
   ],
@@ -19,12 +20,12 @@
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/analytics-next": "^3.0.6",
-    "@atlaskit/icon": "^13.3.1",
-    "@atlaskit/item": "^8.0.6",
-    "@atlaskit/layer": "^5.0.6",
-    "@atlaskit/spinner": "^9.0.7",
-    "@atlaskit/theme": "^6.0.1",
-    "@atlaskit/tooltip": "^12.0.10",
+    "@atlaskit/icon": "^13.6.1",
+    "@atlaskit/item": "^8.0.7",
+    "@atlaskit/layer": "^5.0.7",
+    "@atlaskit/spinner": "^9.0.8",
+    "@atlaskit/theme": "^6.0.2",
+    "@atlaskit/tooltip": "^12.0.12",
     "babel-runtime": "^6.26.0",
     "classnames": "^2.2.5",
     "keycode": "^2.1.7",
@@ -37,9 +38,9 @@
   },
   "devDependencies": {
     "@atlaskit/build-utils": "^2.0.0",
-    "@atlaskit/button": "^9.0.7",
+    "@atlaskit/button": "^9.0.8",
     "@atlaskit/docs": "^5.0.6",
-    "@atlaskit/field-base": "^11.0.6",
+    "@atlaskit/field-base": "^11.0.7",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.2"
   },

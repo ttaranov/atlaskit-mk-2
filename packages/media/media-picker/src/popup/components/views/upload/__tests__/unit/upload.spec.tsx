@@ -73,6 +73,7 @@ describe('<StatelessUploadView />', () => {
       items: recentItems,
       nextKey: '',
     };
+    const setUpfrontIdDeferred = jest.fn();
 
     return (
       <StatelessUploadView
@@ -86,6 +87,7 @@ describe('<StatelessUploadView />', () => {
         onFileClick={() => {}}
         onEditorShowImage={() => {}}
         onEditRemoteImage={() => {}}
+        setUpfrontIdDeferred={setUpfrontIdDeferred}
       />
     );
   };
@@ -220,6 +222,7 @@ describe('<StatelessUploadView />', () => {
 
 describe('<UploadView />', () => {
   let state: State;
+  const upfrontId = Promise.resolve('');
   beforeEach(() => {
     state = {
       ...mockState,
@@ -249,8 +252,10 @@ describe('<UploadView />', () => {
               name: 'some-name',
               size: 1000,
               mimeType: 'image/png',
+              upfrontId,
             },
             dataURI: 'some-data-uri',
+            // upfrontId
           },
           index: 0,
           events: [],
@@ -284,6 +289,7 @@ describe('<UploadView />', () => {
       mimeType: 'some-mime-type',
       name: 'some-name',
       size: 42,
+      upfrontId,
     };
     props.onFileClick(metadata, 'google');
     expect(dispatch).toBeCalledWith(
@@ -294,6 +300,7 @@ describe('<UploadView />', () => {
           name: 'some-name',
           size: 42,
           date: 0,
+          upfrontId,
         },
         'google',
       ),
@@ -353,6 +360,22 @@ describe('<UploadView />', () => {
         type: AnnotateIcon,
       }),
       handler: expect.any(Function),
+    });
+  });
+
+  it('should set deferred upfront id when clicking on a card', () => {
+    const { component, dispatch } = createConnectedComponent(state, mount);
+
+    component
+      .find('Card')
+      .first()
+      .props()
+      .onClick({ mediaItemDetails: { id: 'some-id' } });
+    expect(dispatch.mock.calls[0][0]).toEqual({
+      id: 'some-id',
+      type: 'SET_UPFRONT_ID_DEFERRED',
+      resolver: expect.anything(),
+      rejecter: expect.anything(),
     });
   });
 });

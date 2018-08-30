@@ -1,5 +1,8 @@
 # @atlaskit/badge
 
+## 9.1.4
+- [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
+
 ## 9.1.2
 - [patch] Fix broken type export [a203203](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a203203)
 

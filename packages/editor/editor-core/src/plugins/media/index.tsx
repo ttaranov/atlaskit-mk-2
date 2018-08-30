@@ -10,7 +10,6 @@ import { pluginKey as widthPluginKey } from '../width';
 import {
   stateKey as pluginKey,
   createPlugin,
-  MediaProvider,
   MediaState,
   MediaStateManager,
   DefaultMediaStateManager,
@@ -22,7 +21,7 @@ import MediaSingleEdit from './ui/MediaSingleEdit';
 import ReactMediaGroupNode from './nodeviews/media-group';
 import ReactMediaNode from './nodeviews/media';
 import ReactMediaSingleNode from './nodeviews/media-single';
-import { CustomMediaPicker } from './types';
+import { CustomMediaPicker, MediaProvider } from './types';
 
 export {
   MediaState,

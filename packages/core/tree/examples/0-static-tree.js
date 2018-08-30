@@ -8,8 +8,6 @@ import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
 import Tree, { type RenderItemParams, type TreeItem } from '../src/';
 import { treeWithTwoBranches } from '../mockdata/treeWithTwoBranches';
 
-const PADDING_PER_LEVEL = 35;
-
 const Container = styled.div`
   display: flex;
 `;
@@ -35,12 +33,12 @@ export default class StaticTree extends Component<void> {
     return <Dot>&bull;</Dot>;
   }
 
-  renderItem = ({ item, depth, provided }: RenderItemParams) => (
-    <div key={item.id} style={{ paddingLeft: depth * PADDING_PER_LEVEL }}>
+  renderItem = ({ item, provided }: RenderItemParams) => (
+    <div ref={provided.innerRef} {...provided.draggableProps}>
       <AkNavigationItem
         text={item.data ? item.data.title : ''}
         icon={StaticTree.getIcon(item)}
-        dnd={provided}
+        dnd={{ dragHandleProps: provided.dragHandleProps }}
       />
     </div>
   );

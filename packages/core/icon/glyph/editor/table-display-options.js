@@ -19,4 +19,5 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var EditorTableDisplayOptionsIcon = function EditorTableDisplayOptionsIcon(props) {
   return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path d="M7 6h10a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1zm3 10h6v-5h-6v5z" fill="currentColor"/></svg>' }, props));
 };
+EditorTableDisplayOptionsIcon.displayName = 'EditorTableDisplayOptionsIcon';
 exports.default = EditorTableDisplayOptionsIcon;

@@ -2,13 +2,37 @@
 import { mount, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
-import { type DropResult, type DragUpdate } from 'react-beautiful-dnd';
+import type { DropResult, DragUpdate, DragStart } from 'react-beautiful-dnd';
+import { getBox } from 'css-box-model';
 import Tree from '../../Tree';
 import { treeWithThreeLeaves } from '../../../../../mockdata/treeWithThreeLeaves';
 import { treeWithTwoBranches } from '../../../../../mockdata/treeWithTwoBranches';
-import { complexTree } from '../../../../../mockdata/complexTree';
 
 configure({ adapter: new Adapter() });
+
+const dragStart: DragStart = {
+  draggableId: '1-1',
+  type: 'any',
+  source: {
+    droppableId: 'list',
+    index: 1,
+  },
+};
+
+const dragUpdate: DragUpdate = {
+  ...dragStart,
+  destination: {
+    droppableId: 'list',
+    index: 4,
+  },
+};
+
+const dropResult: DropResult = {
+  ...dragUpdate,
+  reason: 'DROP',
+};
+
+jest.mock('css-box-model');
 
 describe('@atlaskit/tree - Tree', () => {
   const mockRender = jest.fn(({ provided }) => (
@@ -117,22 +141,23 @@ describe('@atlaskit/tree - Tree', () => {
     });
   });
 
+  describe('#onDragStart', () => {
+    it('saves the draggedItemId and source', () => {
+      const instance = mount(
+        <Tree tree={treeWithTwoBranches} renderItem={mockRender} />,
+      ).instance();
+      instance.onDragStart(dragStart);
+      expect(instance.dragState).toEqual({
+        draggedItemId: dragStart.draggableId,
+        source: dragStart.source,
+        destination: dragStart.source,
+      });
+    });
+  });
+
   describe('#onDragEnd', () => {
     it('calls props.onDragEnd when drag ends successfully', () => {
       const mockOnDragEnd = jest.fn();
-      const dropResult: DropResult = {
-        draggableId: '1-1',
-        type: 'any',
-        source: {
-          droppableId: 'list',
-          index: 1,
-        },
-        destination: {
-          droppableId: 'list',
-          index: 4,
-        },
-        reason: 'DROP',
-      };
       const instance = mount(
         <Tree
           tree={treeWithTwoBranches}
@@ -150,44 +175,42 @@ describe('@atlaskit/tree - Tree', () => {
   });
 
   describe('#onDragUpdate', () => {
-    it('should set offset 0 if not necessary', () => {
-      const dropUpdate: DragUpdate = {
-        draggableId: '1-1',
-        type: 'any',
-        source: {
-          droppableId: 'list',
-          index: 4,
-        },
-        destination: {
-          droppableId: 'list',
-          index: 4,
-        },
-      };
+    it('updates dragState', () => {
       const instance = mount(
         <Tree tree={treeWithTwoBranches} renderItem={mockRender} />,
       ).instance();
-      instance.onDragUpdate(dropUpdate);
-      expect(instance.state.dropAnimationOffset).toBe(0);
+      instance.onDragStart(dragStart);
+      instance.onDragUpdate(dragUpdate);
+      expect(instance.dragState).toEqual({
+        draggedItemId: dragUpdate.draggableId,
+        source: dragUpdate.source,
+        destination: dragUpdate.destination,
+      });
     });
+  });
 
-    it('should set offset 35 if the last displaced item is on the different level as the dragged item will be', () => {
-      const dropUpdate: DragUpdate = {
-        draggableId: '1-1',
-        type: 'any',
-        source: {
-          droppableId: 'list',
-          index: 1,
+  describe('#onPointerMove', () => {
+    it('calculates horizontal level based on the horizontal position', () => {
+      // $ExpectError: mockReturnValue is missing in function
+      getBox.mockReturnValue({
+        contentBox: {
+          left: 120,
         },
-        destination: {
-          droppableId: 'list',
-          index: 2,
+        borderBox: {
+          left: 120,
         },
-      };
+      });
       const instance = mount(
-        <Tree tree={complexTree} renderItem={mockRender} />,
+        <Tree tree={treeWithTwoBranches} renderItem={mockRender} />,
       ).instance();
-      instance.onDragUpdate(dropUpdate);
-      expect(instance.state.dropAnimationOffset).toBe(35);
+      instance.onDragStart(dragStart);
+      instance.onPointerMove();
+      expect(instance.dragState).toEqual({
+        draggedItemId: dragStart.draggableId,
+        source: dragStart.source,
+        destination: dragStart.source,
+        horizontalLevel: 1,
+      });
     });
   });
 });

@@ -1,11 +1,12 @@
 {
   "name": "@atlaskit/onboarding",
-  "version": "5.1.7",
+  "version": "5.1.8",
   "description": "Highlight elements of the UI to the user and display a complementary dialog.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
+  "sideEffects": false,
   "files": [
     "dist"
   ],
@@ -18,12 +19,12 @@
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/analytics-next": "^3.0.6",
-    "@atlaskit/button": "^9.0.7",
-    "@atlaskit/icon": "^13.3.1",
-    "@atlaskit/layer": "^5.0.6",
-    "@atlaskit/layer-manager": "^5.0.7",
-    "@atlaskit/modal-dialog": "^6.0.10",
-    "@atlaskit/theme": "^6.0.1",
+    "@atlaskit/button": "^9.0.8",
+    "@atlaskit/icon": "^13.6.1",
+    "@atlaskit/layer": "^5.0.7",
+    "@atlaskit/layer-manager": "^5.0.8",
+    "@atlaskit/modal-dialog": "^6.0.11",
+    "@atlaskit/theme": "^6.0.2",
     "prop-types": "^15.5.10",
     "react-lorem-component": "^0.12.2",
     "react-node-resolver": "^1.0.1",

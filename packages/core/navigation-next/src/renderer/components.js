@@ -18,7 +18,6 @@ import ContainerHeader from '../components/ContainerHeader';
 import BaseItem from '../components/Item';
 import ItemPrimitive from '../components/Item/primitives';
 import SectionComponent from '../components/Section';
-import ScrollableSectionInner from '../components/ScrollableSectionInner';
 import Separator from '../components/Separator';
 import GroupComponent from '../components/Group';
 import GroupHeadingComponent from '../components/GroupHeading';

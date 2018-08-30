@@ -63,16 +63,40 @@ describe('dropdown menu - DropdownMenuStateless', () => {
     });
     */
 
-    test('should NOT set DropdownItemFocusManager.autoFocus when opened via click on trigger', () => {
+    test('should NOT render DropdownItemFocusManager when opened via click on trigger', () => {
+      const wrapper = mount(
+        <DropdownMenuStateless trigger={<button className="my-trigger" />} />,
+      );
+      wrapper.instance().sourceOfIsOpen = 'mouse';
+      wrapper.update();
+      wrapper.find('.my-trigger').simulate('click');
+      wrapper.setProps({ isOpen: true });
+      expect(wrapper.find(DropdownItemFocusManager).length).toBe(0);
+    });
+
+    test('should render DropdownItemFocusManager when opened via keyboard', () => {
       const wrapper = mount(
         <DropdownMenuStateless trigger={<button className="my-trigger" />} />,
       );
       wrapper.instance().dropdownListPositioned = true;
+      wrapper.instance().sourceOfIsOpen = 'keydown';
       wrapper.update();
-      wrapper.find('.my-trigger').simulate('click');
+      wrapper.find('.my-trigger').simulate('keydown', { key: 'ArrowDown' });
+      wrapper.setProps({ isOpen: true });
+      expect(wrapper.find(DropdownItemFocusManager).length).toBe(1);
+    });
+
+    test('should set DropdownItemFocusManager.autoFocus to true when opened via keyboard', () => {
+      const wrapper = mount(
+        <DropdownMenuStateless trigger={<button className="my-trigger" />} />,
+      );
+      wrapper.instance().dropdownListPositioned = true;
+      wrapper.instance().sourceOfIsOpen = 'keydown';
+      wrapper.update();
+      wrapper.find('.my-trigger').simulate('keydown', { key: 'ArrowDown' });
       wrapper.setProps({ isOpen: true });
       expect(wrapper.find(DropdownItemFocusManager).prop('autoFocus')).toBe(
-        false,
+        true,
       );
     });
 

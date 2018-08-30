@@ -19,4 +19,5 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var FileTypes16File16GoogleSlideIcon = function FileTypes16File16GoogleSlideIcon(props) {
   return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path fill="#FFC107" fill-rule="evenodd" d="M6 4h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm8.287 2.5l-4.067.04 3.508 6.114 4.066-.041L14.287 6.5zM6 13.33l2.068 3.523 3.508-6.113-2.068-3.523L6 13.331zm4.984.106L8.987 17h7.015L18 13.437h-7.016z"/></svg>' }, props));
 };
+FileTypes16File16GoogleSlideIcon.displayName = 'FileTypes16File16GoogleSlideIcon';
 exports.default = FileTypes16File16GoogleSlideIcon;

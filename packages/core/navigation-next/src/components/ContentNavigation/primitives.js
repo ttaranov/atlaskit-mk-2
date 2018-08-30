@@ -128,7 +128,6 @@ const ContainerNavigationPrimitiveBase = ({
         transform,
       }}
     >
-      <Shadow isBold={isPeeking} isOverDarkBg />
       <ScrollProvider>{children}</ScrollProvider>
     </div>
   );

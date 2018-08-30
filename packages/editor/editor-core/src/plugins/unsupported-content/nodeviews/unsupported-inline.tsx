@@ -5,6 +5,7 @@ import {
   akColorN30,
   akColorN50,
 } from '@atlaskit/util-shared-styles';
+import { fontSize } from '@atlaskit/theme';
 
 const InlineNode = styled.span`
   align-items: center;
@@ -14,7 +15,7 @@ const InlineNode = styled.span`
   box-sizing: border-box;
   cursor: default;
   display: inline-flex;
-  font-size: 13px;
+  font-size: ${fontSize}px;
   margin: 0 2px;
   min-height: 24px;
   padding: 0 10px;

@@ -63,13 +63,7 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
     const { previewsData } = this.state;
 
     return previewsData.map((previewsData, index) => (
-      <UploadPreview
-        key={`${index}`}
-        fileId={previewsData.fileId}
-        isProcessed={previewsData.isProcessed}
-        preview={previewsData.preview}
-        uploadingProgress={previewsData.uploadingProgress}
-      />
+      <UploadPreview key={`${index}`} fileId={previewsData.fileId} />
     ));
   };
 

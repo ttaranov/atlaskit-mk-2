@@ -69,7 +69,7 @@ export function table(input: string, schema: Schema): Token {
 function parseToTableCell(input: string, schema: Schema): AddCellArgs[] {
   /**
    * The following token types will be ignored in parsing
-   * the content of a strong mark
+   * the content of a table cell
    */
   const ignoreTokenTypes = [
     TokenType.DOUBLE_DASH_SYMBOL,
@@ -80,14 +80,33 @@ function parseToTableCell(input: string, schema: Schema): AddCellArgs[] {
   ];
 
   const cells: AddCellArgs[] = [];
-  let match;
 
-  // E.g. || foo || bar -> [ "|| foo", "||", "foo" ] (invoke multiple times with .exec)
-  const tableCellRegexp = /([|]+)([^|]+)/g;
+  /**
+   * If separator is a regular expression that contains capturing parentheses,
+   * then each time separator is matched, the results (including any undefined results)
+   * of the capturing parentheses are spliced into the output array.
+   */
+  const slices = input.split(/([|]+)/);
+  /**
+   * After the split, the first item would always be a "" which we don't need
+   * For example,
+   * ||header||header||header
+   * returns:
+   * ["", "||", "header", "||", "header", "||", "header"]
+   */
+  slices.shift();
 
-  // tslint:disable-next-line:no-conditional-assignment
-  while ((match = tableCellRegexp.exec(input)) !== null) {
-    const [, /* discard */ style, rawContent] = match;
+  for (let i = 0; i < slices.length; i += 2) {
+    const style = slices[i];
+    const rawContent = i + 1 < slices.length ? slices[i + 1] : null;
+    /**
+     * We don't want to display the trailing space as a new cell
+     * https://jdog.jira-dev.com/browse/BENTO-2319
+     */
+    if (rawContent === null || /^\s*$/.test(rawContent)) {
+      continue;
+    }
+
     const contentNode = parseString(rawContent, schema, ignoreTokenTypes);
 
     cells.push({ style, content: normalizePMNodes(contentNode, schema) });
