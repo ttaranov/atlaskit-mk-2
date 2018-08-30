@@ -67,6 +67,7 @@ describe('insert media', () => {
   afterEach(() => {
     editor.unmount();
   });
+
   const contentWithMedia = {
     version: 1,
     type: 'doc',
@@ -78,7 +79,7 @@ describe('insert media', () => {
             type: 'media',
             attrs: {
               id: 'e94c3f67-5ac3-42b2-bf6a-ce35bb787894',
-              collection: 'FabricSampleCollection',
+              collection: 'MediaServicesSample',
               type: 'file',
             },
           },
@@ -95,6 +96,7 @@ describe('insert media', () => {
     const content = bridge.getContent();
     expect(JSON.parse(content)).to.be.deep.equal(contentWithMedia);
   });
+
   it('should update content on native side', async () => {
     const mock = sinon.mock(toNativeBridge);
     mock

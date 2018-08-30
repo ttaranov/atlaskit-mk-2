@@ -36,6 +36,7 @@
     "react-dom": "^16.4.2"
   },
   "devDependencies": {
+    "@atlaskit/editor-test-helpers": "^6.0.5",
     "ajv": "^4.11.3",
     "babel-loader": "^7.1.2",
     "babel-polyfill": "^6.26.0",

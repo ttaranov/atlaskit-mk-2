@@ -1,19 +1,19 @@
 import mobileEditor from '../../../src/mobile-editor-element';
 import { mount } from 'enzyme';
-import * as sinon from 'sinon';
-import { ContextFactory } from '@atlaskit/media-core';
+import {
+  storyMediaProviderFactory,
+  sleep,
+} from '@atlaskit/editor-test-helpers';
 
 export async function mountEditor() {
   const place = document.body.appendChild(document.createElement('div'));
-  const mediaProviderStub = sinon.stub();
-  mediaProviderStub.resolves({
-    uploadParams: {
-      collection: 'testCollection',
-    },
-  });
-  const editor = mount(mobileEditor({ mediaProvider: mediaProviderStub }), {
+  const mediaProvider = storyMediaProviderFactory({});
+  await mediaProvider;
+  await mediaProvider.uploadContext;
+  const editor = mount(mobileEditor({ mediaProvider: mediaProvider }), {
     attachTo: place,
   });
-  const provider = await editor.props().media.provider;
+  await editor.props().media.provider;
+  await sleep(100);
   return editor;
 }
