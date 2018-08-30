@@ -219,13 +219,14 @@ export default function generateProductConfig(
       : null,
   };
 
+  const onCreateClicks = openDrawer('create');
   return {
     product: configFactory(onProductClick, productTooltip, {
       icon: productIcon,
       href: productHref,
     }),
     create: configFactory(
-      onCreateClick || (createDrawerContents && openDrawer('create')),
+      onCreateClick || (createDrawerContents && onCreateClicks),
       createTooltip,
     ),
     search: configFactory(
@@ -252,8 +253,8 @@ export default function generateProductConfig(
     appSwitcher: appSwitcherComponent
       ? {
           component: appSwitcherComponent,
-          label: appSwitcherTooltip,
-          tooltip: appSwitcherTooltip,
+          label: appSwitcherTooltip || null,
+          tooltip: appSwitcherTooltip || null,
         }
       : null,
   };

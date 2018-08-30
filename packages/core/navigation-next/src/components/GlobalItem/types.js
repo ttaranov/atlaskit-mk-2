@@ -23,6 +23,11 @@ export type GlobalItemRenderComponentProps = {
   className: string,
 };
 
+export type GlobalItemTooltipRenderer = {
+  children: Node,
+  tooltip?: string,
+};
+
 type GlobalItemIconProps = {
   label: string,
   secondaryColor: 'inherit',

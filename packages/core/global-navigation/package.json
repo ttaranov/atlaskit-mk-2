@@ -21,7 +21,7 @@
     "@atlaskit/drawer": "^2.0.1",
     "@atlaskit/dropdown-menu": "^6.1.12",
     "@atlaskit/icon": "^13.6.1",
-    "@atlaskit/navigation-next": "^3.7.1",
+    "@atlaskit/navigation-next": "^3.6.5",
     "@atlaskit/theme": "^6.0.2",
     "emotion": "^9.1.1",
     "emotion-theming": "^9.0.0",

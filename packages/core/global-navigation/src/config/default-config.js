@@ -13,7 +13,6 @@ export default function generateDefaultConfig(): DefaultConfigShape {
       label: 'Atlassian',
       rank: 1,
       section: 'primary',
-      tooltip: 'Atlassian',
       id: 'productLogo',
     },
     starred: {
@@ -49,6 +48,7 @@ export default function generateDefaultConfig(): DefaultConfigShape {
       id: 'notifications',
     },
     appSwitcher: {
+      tooltip: 'Notifications',
       section: 'secondary',
       rank: 3,
       id: 'appSwitcher',

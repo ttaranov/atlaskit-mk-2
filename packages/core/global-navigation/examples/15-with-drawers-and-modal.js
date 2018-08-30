@@ -100,6 +100,20 @@ class GlobalNavWithDrawers extends Component<Props, State> {
 
   secondaryAction = ({ target }: Object) => console.log(target.innerText);
 
+  functionA = () => {
+    console.log(this);
+    this.setState({
+      toggle: false,
+    });
+    console.log('functionA');
+  };
+  functionB = () => {
+    this.setState({
+      toggle: true,
+    });
+    console.log('functionB');
+  };
+
   render() {
     const actions = [
       { text: 'Close', onClick: this.closeCreateModal },
@@ -129,6 +143,7 @@ class GlobalNavWithDrawers extends Component<Props, State> {
               drawerBody="Can be controlled by passing the onSearchClick prop"
             />
           )}
+          onStarredClick={this.state.toggle ? this.functionA : this.functionB}
           onSearchDrawerClose={this.closeSearchDrawer}
           starredDrawerContents={() => (
             <DrawerContent
