@@ -18,10 +18,11 @@ import ContainerHeader from '../components/ContainerHeader';
 import BaseItem from '../components/Item';
 import ItemPrimitive from '../components/Item/primitives';
 import SectionComponent from '../components/Section';
+import ScrollableSectionInner from '../components/ScrollableSectionInner';
 import Separator from '../components/Separator';
 import GroupComponent from '../components/Group';
 import GroupHeadingComponent from '../components/GroupHeading';
-import Switcher from '../components/Switcher';
+import SwitcherComponent from '../components/Switcher';
 import { withNavigationUI } from '../ui-controller';
 import { withNavigationViewController } from '../view-controller';
 
@@ -32,6 +33,7 @@ import type {
   ItemsRendererProps,
   SectionProps,
   GroupHeadingProps,
+  WordmarkProps,
 } from './types';
 
 const iconMap = {
@@ -117,7 +119,7 @@ const backItemPrimitiveStyles = styles => ({
 });
 
 const BackItem = ({ goTo, href, subText, id, index, text = 'Back' }: *) => (
-  <div css={{ display: 'flex' }}>
+  <div css={{ display: 'flex', paddingBottom: gridSize * 2 }}>
     <div css={{ flexShrink: 0 }}>
       <GoToItem
         after={null}
@@ -142,6 +144,27 @@ const BackItem = ({ goTo, href, subText, id, index, text = 'Back' }: *) => (
 // Title
 const GroupHeading = ({ text, ...props }: GroupHeadingProps) => (
   <GroupHeadingComponent {...props}>{text}</GroupHeadingComponent>
+);
+
+// Switcher
+const Switcher = (props: *) => (
+  <div css={{ paddingBottom: gridSize * 2 }}>
+    <SwitcherComponent {...props} />
+  </div>
+);
+
+// Wordmark
+const Wordmark = ({ wordmark: WordmarkLogo }: WordmarkProps) => (
+  <div
+    css={{
+      lineHeight: 0,
+      paddingBottom: gridSize * 3.5,
+      paddingLeft: gridSize * 1.5,
+      paddingTop: gridSize,
+    }}
+  >
+    <WordmarkLogo />
+  </div>
 );
 
 const Debug = (props: *) => (
@@ -182,9 +205,15 @@ const Section = ({
   items,
   nestedGroupKey,
   parentId,
+  shouldGrow,
 }: SectionProps) =>
   items.length ? (
-    <SectionComponent id={id} key={nestedGroupKey} parentId={parentId}>
+    <SectionComponent
+      id={id}
+      key={nestedGroupKey}
+      parentId={parentId}
+      shouldGrow={shouldGrow}
+    >
       {({ className }) => (
         <div className={className}>
           <ItemsRenderer items={items} customComponents={customComponents} />
@@ -193,19 +222,65 @@ const Section = ({
     </SectionComponent>
   ) : null;
 
+const HeaderSection = ({
+  customComponents,
+  id,
+  items,
+  nestedGroupKey,
+  parentId,
+}: SectionProps) =>
+  items.length ? (
+    <SectionComponent id={id} key={nestedGroupKey} parentId={parentId}>
+      {({ css }) => (
+        <div
+          css={{
+            ...css,
+            paddingTop: gridSize * 2.5,
+          }}
+        >
+          <ItemsRenderer items={items} customComponents={customComponents} />
+        </div>
+      )}
+    </SectionComponent>
+  ) : null;
+
+const MenuSection = ({
+  customComponents,
+  id,
+  items,
+  nestedGroupKey,
+  parentId,
+}: SectionProps) => (
+  <SectionComponent id={id} key={nestedGroupKey} parentId={parentId} shouldGrow>
+    {({ css }) => (
+      <div
+        css={{
+          ...css,
+          paddingBottom: gridSize * 1.5,
+        }}
+      >
+        <ItemsRenderer items={items} customComponents={customComponents} />
+      </div>
+    )}
+  </SectionComponent>
+);
+
 const itemComponents = {
+  BackItem,
   ContainerHeader,
   Debug,
   GoToItem,
-  Item,
-  BackItem,
-  Separator,
   GroupHeading,
+  Item,
+  Separator,
   Switcher,
+  Wordmark,
 };
 
 const groupComponents = {
   Group,
+  HeaderSection,
+  MenuSection,
   Section,
 };
 

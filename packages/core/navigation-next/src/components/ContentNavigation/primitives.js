@@ -40,6 +40,8 @@ const ScrollProvider = (props: any) => (
   <div
     css={{
       boxSizing: 'border-box',
+      display: 'flex',
+      flexDirection: 'column',
       height: '100%',
       overflowX: 'hidden',
       overflowY: 'auto',

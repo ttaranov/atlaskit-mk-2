@@ -42,6 +42,7 @@ export type Mode = {
   item: ContentNavigationComponentTheme<ItemPresentationProps>,
   contentNav: ContentNavigationComponentTheme<void>,
   scrollHint: ContentNavigationComponentTheme<void>,
+  section: ContentNavigationComponentTheme<void>,
   separator: ContentNavigationComponentTheme<void>,
   skeletonItem: ContentNavigationComponentTheme<void>,
 };

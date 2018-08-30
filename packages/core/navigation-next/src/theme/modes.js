@@ -7,6 +7,7 @@ import item from '../components/Item/styles';
 import heading from '../components/GroupHeading/styles';
 import separator from '../components/Separator/styles';
 import scrollHint from '../components/ScrollableSectionInner/styles';
+import section from '../components/Section/styles';
 import skeletonItem from '../components/SkeletonItem/styles';
 
 import type { Mode } from './types';
@@ -19,6 +20,7 @@ export const light: Mode = {
   heading: heading.light,
   separator: separator.light,
   scrollHint: scrollHint.light,
+  section: section.light,
   skeletonItem: skeletonItem.light,
 };
 
@@ -30,6 +32,7 @@ export const dark: Mode = {
   heading: heading.dark,
   separator: separator.dark,
   scrollHint: scrollHint.dark,
+  section: section.dark,
   skeletonItem: skeletonItem.dark,
 };
 
@@ -41,5 +44,6 @@ export const settings: Mode = {
   heading: heading.settings,
   separator: separator.settings,
   scrollHint: scrollHint.settings,
+  section: section.settings,
   skeletonItem: skeletonItem.settings,
 };

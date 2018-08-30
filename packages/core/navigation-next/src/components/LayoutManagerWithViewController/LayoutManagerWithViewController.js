@@ -120,9 +120,7 @@ class LayoutManagerWithViewControllerBase extends Component<
   renderView(view) {
     const { customComponents } = this.props;
     return (
-      <div css={{ padding: `${gridSize * 2}px 0` }}>
-        <ViewRenderer customComponents={customComponents} items={view.data} />
-      </div>
+      <ViewRenderer customComponents={customComponents} items={view.data} />
     );
   }
 

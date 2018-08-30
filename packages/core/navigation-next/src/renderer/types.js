@@ -46,9 +46,14 @@ export type GroupProps = SharedGroupTypeProps & {
 export type SectionProps = SharedGroupTypeProps & {
   nestedGroupKey: string,
   parentId: string | null,
+  shouldGrow: boolean,
 };
 
 export type ItemsRendererProps = {
   customComponents?: CustomComponents,
   items: ViewData,
+};
+
+export type WordmarkProps = {
+  wordmark: ComponentType<{}>,
 };

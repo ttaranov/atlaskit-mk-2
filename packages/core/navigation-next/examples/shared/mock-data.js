@@ -8,10 +8,7 @@ import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import LinkIcon from '@atlaskit/icon/glyph/link';
 import { JiraWordmark as JiraWordmarkLogo } from '@atlaskit/logo';
-import { gridSize as gridSizeFn } from '@atlaskit/theme';
 import { Link, Route } from 'react-router-dom';
-
-import { PeekToggleItem } from '../../src';
 
 export const LinkItem = ({ components: C, to, ...props }: *) => {
   return (
@@ -32,17 +29,8 @@ export const LinkItem = ({ components: C, to, ...props }: *) => {
   );
 };
 
-const gridSize = gridSizeFn();
-
-const JiraWordmark = () => (
-  <div css={{ padding: `${gridSize * 2}px 0` }}>
-    <JiraWordmarkLogo />
-  </div>
-);
-
 export const globalNavPrimaryItems = [
   { id: 'jira', icon: JiraIcon, label: 'Jira' },
-  { id: 'peek-toggle', component: PeekToggleItem, icon: null },
   { id: 'search', icon: SearchIcon },
   { id: 'create', icon: AddIcon },
 ];
@@ -68,8 +56,10 @@ export const globalNavSecondaryItems = [
 const rootIndex = [
   {
     id: 'root/index:header',
-    items: [{ type: JiraWordmark, id: 'jira-wordmark' }],
-    type: 'Section',
+    items: [
+      { type: 'Wordmark', wordmark: JiraWordmarkLogo, id: 'jira-wordmark' },
+    ],
+    type: 'HeaderSection',
   },
   {
     id: 'root/index:menu',
@@ -98,7 +88,7 @@ const rootIndex = [
     ],
     nestedGroupKey: 'menu',
     parentId: null,
-    type: 'Section',
+    type: 'MenuSection',
   },
 ];
 
@@ -106,10 +96,10 @@ const rootIssues = [
   {
     id: 'root/issues:header',
     items: [
-      { type: JiraWordmark, id: 'jira-wordmark' },
+      { type: 'Wordmark', wordmark: JiraWordmarkLogo, id: 'jira-wordmark' },
       { type: 'BackItem', goTo: 'root/index', id: 'back' },
     ],
-    type: 'Section',
+    type: 'HeaderSection',
   },
   {
     id: 'root/issues:menu',
@@ -139,7 +129,7 @@ const rootIssues = [
     ],
     nestedGroupKey: 'menu',
     parentId: 'root/index:menu',
-    type: 'Section',
+    type: 'MenuSection',
   },
 ];
 
@@ -219,7 +209,7 @@ const containerProject = [
   {
     id: 'container/project/index:header',
     items: [ProjectSwitcherItem],
-    type: 'Section',
+    type: 'HeaderSection',
   },
   {
     id: 'container/project/index:menu',
@@ -258,7 +248,8 @@ const containerProject = [
         type: 'GoToItem',
       },
     ],
-    type: 'Section',
+    shouldGrow: true,
+    type: 'MenuSection',
   },
 ];
 
@@ -275,7 +266,7 @@ const containerProjectIssues = [
         type: 'Group',
       },
     ],
-    type: 'Section',
+    type: 'HeaderSection',
   },
   {
     id: 'container/project/issues:menu',
@@ -294,7 +285,8 @@ const containerProjectIssues = [
       { type: 'Item', id: 'resolved-recently', text: 'Resolved recently' },
       { type: 'Item', id: 'updated-recently', text: 'Updated recently' },
     ],
-    type: 'Section',
+    shouldGrow: true,
+    type: 'MenuSection',
   },
 ];
 

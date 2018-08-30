@@ -127,6 +127,27 @@ export default ({ background, text }: Args): Mode => {
       };
       return { container: productStyles, product: productStyles };
     },
+    section: () => {
+      const { product } = light.section();
+      const productStyles = {
+        ...product,
+        wrapper: {
+          ...product.wrapper,
+          '&::before': {
+            ...product.wrapper['&::before'],
+            backgroundColor: colors.N80A,
+          },
+        },
+        inner: {
+          ...product.inner,
+          '&::before': {
+            ...product.inner['&::before'],
+            backgroundColor: background,
+          },
+        },
+      };
+      return { container: productStyles, product: productStyles };
+    },
     separator: () => {
       const { product } = light.separator();
       const productStyles = { ...product, backgroundColor: colors.N80A };
