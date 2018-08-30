@@ -134,7 +134,11 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
   private renderPopup(): HTMLElement {
     const container = document.createElement('div');
     render(
-      <App store={this.store} proxyReactContext={this.proxyReactContext} />,
+      <App
+        store={this.store}
+        proxyReactContext={this.proxyReactContext}
+        tenantUploadParams={this.uploadParams}
+      />,
       container,
     );
     return container;

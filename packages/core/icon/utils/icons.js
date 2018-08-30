@@ -54,6 +54,7 @@ import CameraRotateIcon from '../glyph/camera-rotate';
 import CameraTakePictureIcon from '../glyph/camera-take-picture';
 import CameraIcon from '../glyph/camera';
 import CanvasIcon from '../glyph/canvas';
+import CheckCircleOutlineIcon from '../glyph/check-circle-outline';
 import CheckCircleIcon from '../glyph/check-circle';
 import CheckIcon from '../glyph/check';
 import CheckboxIndeterminateIcon from '../glyph/checkbox-indeterminate';
@@ -68,6 +69,7 @@ import ChevronRightLargeIcon from '../glyph/chevron-right-large';
 import ChevronRightIcon from '../glyph/chevron-right';
 import ChevronUpCircleIcon from '../glyph/chevron-up-circle';
 import ChevronUpIcon from '../glyph/chevron-up';
+import ChildIssuesIcon from '../glyph/child-issues';
 import CodeIcon from '../glyph/code';
 import CommentIcon from '../glyph/comment';
 import ComponentIcon from '../glyph/component';
@@ -708,6 +710,12 @@ export default {
     componentName: 'CanvasIcon',
     package: '@atlaskit/icon/glyph/canvas',
   },
+  'check-circle-outline': {
+    keywords: ['check-circle-outline', 'checkcircleoutline'],
+    component: CheckCircleOutlineIcon,
+    componentName: 'CheckCircleOutlineIcon',
+    package: '@atlaskit/icon/glyph/check-circle-outline',
+  },
   'check-circle': {
     keywords: ['check-circle', 'checkcircle', 'tick'],
     component: CheckCircleIcon,
@@ -791,6 +799,12 @@ export default {
     component: ChevronUpIcon,
     componentName: 'ChevronUpIcon',
     package: '@atlaskit/icon/glyph/chevron-up',
+  },
+  'child-issues': {
+    keywords: ['child-issues', 'childissues'],
+    component: ChildIssuesIcon,
+    componentName: 'ChildIssuesIcon',
+    package: '@atlaskit/icon/glyph/child-issues',
   },
   code: {
     keywords: ['code', 'source'],

@@ -246,6 +246,19 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
       'datetime-picker/src/components/__tests__/DateTimePicker.js',
   },
   {
+    path: 'drawer/src/components/index.js',
+    testPath: 'drawer/src/components/__tests__/unit/analytics-drawer.js',
+    actionSubject: 'drawer',
+    component: 'Drawer',
+    props: {
+      onClose: 'dismissed',
+    },
+    attributes: {
+      componentName: 'drawer',
+      trigger: 'backButton | blanket | escKey',
+    },
+  },
+  {
     path: 'dropdown-menu/src/components/DropdownMenuStateless.js',
     testPath: 'dropdown-menu/__tests__/analytics.js',
     actionSubject: 'dropdownMenu',

@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 5.5.9
+- [patch] Add experiment exposure event to track which search sessions should be attributed to what search experiment [dfe8371](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dfe8371)
+
 ## 5.5.8
 - [patch] Ensure SPA transitions are happening for Confluence pages. [0909b85](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0909b85)
 

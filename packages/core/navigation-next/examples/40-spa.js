@@ -39,7 +39,7 @@ export default class App extends Component<{}, { isDebugEnabled: boolean }> {
             customComponents={{ ProjectSwitcher }}
             globalNavigation={DefaultGlobalNavigation}
           >
-            <div style={{ padding: 30 }}>
+            <div style={{ padding: 40 }}>
               <Switch>
                 <Route path="/projects/:projectId" component={BacklogView} />
                 <Route path="/projects" component={ProjectsView} />

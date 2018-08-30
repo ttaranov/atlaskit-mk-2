@@ -41,6 +41,9 @@ export interface State {
 
   readonly onCancelUpload: CancelUploadHandler;
   readonly config: Partial<PopupConfig>;
+  readonly deferredIdUpfronts: {
+    [id: string]: { resolver: (id: string) => void; rejecter: Function };
+  };
 }
 
 export type CancelUploadHandler = (uploadId: string) => void;
@@ -138,9 +141,11 @@ export interface ServiceFolder {
 export interface ServiceFile {
   readonly mimeType: string;
   readonly id: string;
+  readonly upfrontId: Promise<string>;
   readonly name: string;
   readonly size: number;
   readonly date: number;
+  readonly occurrenceKey?: string;
 }
 
 export interface SelectedItem extends ServiceFile {

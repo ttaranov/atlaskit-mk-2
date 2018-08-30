@@ -12,7 +12,6 @@ import {
   ServiceFolder,
   ServiceFolderItem,
   ServiceName,
-  SourceFile,
 } from '../../domain';
 
 import { mapAuthToAuthHeaders } from '../../domain/auth';
@@ -28,11 +27,6 @@ export interface GetRecentFilesData {
 }
 
 type Method = 'GET' | 'POST' | 'DELETE';
-
-export interface CopyFileDestination {
-  readonly auth: Auth;
-  readonly collection?: string;
-}
 
 export interface GiphyImage {
   url: string;
@@ -94,11 +88,6 @@ export interface Fetcher {
     inclusiveStartKey?: string,
   ): Promise<GetRecentFilesData>;
   unlinkCloudAccount(auth: Auth, accountId: string): Promise<void>;
-  copyFile(
-    sourceFile: SourceFile,
-    destination: CopyFileDestination,
-    collection?: string,
-  ): Promise<FileDetails>;
   fetchTrendingGifs(offset?: number): Promise<GiphyData>;
   fetchGifsRelevantToSearch(query: string, offset?: number): Promise<GiphyData>;
 }
@@ -251,19 +240,6 @@ export class MediaApiFetcher implements Fetcher {
       {},
       mapAuthToAuthHeaders(auth),
     );
-  }
-
-  copyFile(
-    sourceFile: SourceFile,
-    { auth, collection }: CopyFileDestination,
-  ): Promise<FileDetails> {
-    const params = collection ? `?collection=${collection}` : '';
-    return this.query<{ data: FileDetails }>(
-      `${fileStoreUrl(auth.baseUrl)}/file/copy/withToken${params}`,
-      'POST',
-      JSON.stringify({ sourceFile }),
-      mapAuthToAuthHeaders(auth),
-    ).then(({ data: file }) => file);
   }
 
   fetchTrendingGifs = (offset?: number): Promise<GiphyData> => {

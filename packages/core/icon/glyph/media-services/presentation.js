@@ -19,4 +19,5 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var MediaServicesPresentationIcon = function MediaServicesPresentationIcon(props) {
   return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><g fill-rule="evenodd"><rect fill="currentColor" x="4" y="4" width="16" height="16" rx="2"/><rect fill="inherit" x="8" y="12" width="2" height="3" rx="1"/><rect fill="inherit" x="11" y="10" width="2" height="5" rx="1"/><rect fill="inherit" x="14" y="8" width="2" height="7" rx="1"/></g></svg>' }, props));
 };
+MediaServicesPresentationIcon.displayName = 'MediaServicesPresentationIcon';
 exports.default = MediaServicesPresentationIcon;

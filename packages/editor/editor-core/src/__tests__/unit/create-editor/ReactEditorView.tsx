@@ -38,6 +38,7 @@ describe(name, () => {
       const { editorState } = wrapper.instance() as ReactEditorView;
       const cursorPos = (editorState.selection as TextSelection).$cursor!.pos;
       expect(cursorPos).toEqual(document.refs.endPos);
+      wrapper.unmount();
     });
 
     it('should place the initial selection at the start of the document when in full-page appearance', () => {
@@ -57,6 +58,7 @@ describe(name, () => {
       const { editorState } = wrapper.instance() as ReactEditorView;
       const cursorPos = (editorState.selection as TextSelection).$cursor!.pos;
       expect(cursorPos).toEqual(document.refs.startPos);
+      wrapper.unmount();
     });
 
     it('should place the initial selection at the start/end when document is empty', () => {
@@ -73,6 +75,7 @@ describe(name, () => {
       const { editorState } = wrapper.instance() as ReactEditorView;
       const cursorPos = (editorState.selection as TextSelection).$cursor!.pos;
       expect(cursorPos).toEqual(document.refs.endPos);
+      wrapper.unmount();
     });
 
     it('should place the initial selection near the end if a valid selection at the end does not exist', () => {
@@ -100,6 +103,7 @@ describe(name, () => {
         anchor: 6,
         type: 'text',
       });
+      wrapper.unmount();
     });
 
     it("should set `key` on the ProseMirror div node to aid React's reconciler", () => {
@@ -114,6 +118,7 @@ describe(name, () => {
       );
 
       expect(wrapper.children().key()).toEqual('ProseMirror');
+      wrapper.unmount();
     });
 
     describe('when a transaction is dispatched', () => {
@@ -135,12 +140,13 @@ describe(name, () => {
         editor.view!.dispatch(editor.view!.state.tr);
 
         expect(renderSpy).toHaveBeenCalledTimes(0);
+        wrapper.unmount();
       });
     });
 
     it('should call onEditorCreated once the editor is initialised', () => {
       let handleEditorCreated = jest.fn();
-      mount(
+      let wrapper = mount(
         <ReactEditorView
           editorProps={{ appearance: 'message' }}
           providerFactory={new ProviderFactory()}
@@ -163,6 +169,7 @@ describe(name, () => {
           secondaryToolbarComponents: expect.anything(),
         },
       });
+      wrapper.unmount();
     });
 
     it('should call onEditorDestroyed when the editor is unmounting', () => {
@@ -236,6 +243,21 @@ describe(name, () => {
       );
       wrapper.unmount();
       expect(eventDispatcherDestroySpy).toHaveBeenCalledTimes(1);
+    });
+
+    it('should disable grammarly in the editor', () => {
+      const wrapper = mount(
+        <ReactEditorView
+          editorProps={{}}
+          providerFactory={ProviderFactory.create({})}
+          portalProviderAPI={portalProviderAPI}
+          onEditorCreated={() => {}}
+          onEditorDestroyed={() => {}}
+        />,
+      );
+      const editorDOM = (wrapper.instance() as ReactEditorView).view!.dom;
+      expect(editorDOM.getAttribute('data-gramm')).toBe('false');
+      wrapper.unmount();
     });
 
     describe('when re-creating the editor view after a props change', () => {

@@ -22,6 +22,8 @@ import {
   tableMarginTop,
   tableSharedStyle,
   akEditorTableToolbarSize,
+  akEditorUnitZIndex,
+  akEditorSmallZIndex,
 } from '@atlaskit/editor-common';
 import { scrollbarStyles } from '../../../ui/styles';
 
@@ -61,7 +63,7 @@ export const tableStyles = css`
       }
       /* Give selected cells a blue overlay */
       .selectedCell::after {
-        z-index: 2;
+        z-index: ${akEditorSmallZIndex};
         position: absolute;
         content: '';
         left: 0;
@@ -86,7 +88,7 @@ export const tableStyles = css`
       top: ${(isIE11 ? 0 : tableMarginTop) - tableToolbarSize}px;
     }
     .table-row-controls-wrapper.scrolling {
-      z-index: 1;
+      z-index: ${akEditorUnitZIndex};
     }
     .table-column-controls-wrapper {
       left: 0;
@@ -97,7 +99,7 @@ export const tableStyles = css`
     .table-wrapper {
       padding-right: ${tableInsertColumnButtonSize / 2}px;
       margin-right: -${tableInsertColumnButtonSize / 2}px;
-      z-index: 0;
+      z-index: ${akEditorUnitZIndex - 1};
 
       /* fixes gap cursor height */
       overflow: ${isIE11 ? 'none' : 'auto'};
@@ -120,7 +122,7 @@ export const tableStyles = css`
     }
     .table-shadow {
       display: ${isIE11 ? 'none' : 'block'};
-      z-index: 20;
+      z-index: ${akEditorSmallZIndex};
     }
     .table-shadow.-left {
       left: 0;
@@ -150,7 +152,7 @@ export const tableStyles = css`
       width: 2px;
       height: calc(100% + 2px);
       pointer-events: none;
-      z-index: 1;
+      z-index: ${akEditorUnitZIndex};
     }
     .with-controls .column-resize-handle {
       top: -${tableToolbarSize}px;

@@ -26,3 +26,4 @@ export * from './utils';
 export * from './error';
 export * from './fileState';
 export * from './utils/getMediaTypeFromMimeType';
+export * from './context/fileStreamCache';

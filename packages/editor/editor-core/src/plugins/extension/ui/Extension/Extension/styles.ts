@@ -3,12 +3,13 @@ import styled from 'styled-components';
 // prettier-ignore
 import { HTMLAttributes, ClassAttributes, ComponentClass } from 'react';
 import { akColorN30, akBorderRadius } from '@atlaskit/util-shared-styles';
+import { blockNodesVerticalMargin } from '@atlaskit/editor-common';
 import { Wrapper as WrapperDefault, padding } from '../styles';
 
 export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled(
   WrapperDefault,
 )`
-  margin: 12px 0;
+  margin: ${blockNodesVerticalMargin} 0;
 
   /* extension container breakout */
   &[data-layout='full-width'],
