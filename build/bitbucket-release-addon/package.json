@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/bitbucket-releases-addon",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "private": true,
   "description": "Bitbucket addon for displaying releases section in PRs",
   "scripts": {
@@ -20,7 +20,7 @@
     "webpack-dev-server": "^3.1.4"
   },
   "dependencies": {
-    "@atlaskit/build-releases": "^1.27.0",
+    "@atlaskit/build-releases": "^2.0.0",
     "netlify-cli": "^1.2.2",
     "query-string": "^4.3.2",
     "whatwg-fetch": "^2.0.3"

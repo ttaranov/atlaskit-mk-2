@@ -19,4 +19,5 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var EditorLayoutTwoLeftSidebarIcon = function EditorLayoutTwoLeftSidebarIcon(props) {
   return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path d="M5 5h1a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1zm5 0h9a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1h-9a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1z" fill="currentColor" fill-rule="evenodd"/></svg>' }, props));
 };
+EditorLayoutTwoLeftSidebarIcon.displayName = 'EditorLayoutTwoLeftSidebarIcon';
 exports.default = EditorLayoutTwoLeftSidebarIcon;

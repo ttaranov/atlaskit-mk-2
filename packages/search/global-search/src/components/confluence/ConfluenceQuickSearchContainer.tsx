@@ -4,9 +4,11 @@ import { withAnalytics, FireAnalyticsEvent } from '@atlaskit/analytics';
 import { ConfluenceClient } from '../../api/ConfluenceClient';
 import {
   CrossProductSearchClient,
+  CrossProductSearchResults,
+  EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE,
   Scope,
 } from '../../api/CrossProductSearchClient';
-import { Result } from '../../model/Result';
+import { Result, ConfluenceResultsMap } from '../../model/Result';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
 import ConfluenceSearchResults from './ConfluenceSearchResults';
 import { SearchScreenCounter, ScreenCounter } from '../../util/ScreenCounter';
@@ -18,10 +20,10 @@ import {
   redirectToConfluenceAdvancedSearch,
   handlePromiseError,
 } from '../SearchResultsUtil';
-import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { CreateAnalyticsEventFn } from '../analytics/types';
 import performanceNow from '../../util/performance-now';
-import { QuickSearchContainer } from '../common/QuickSearchContainer';
+import QuickSearchContainer from '../common/QuickSearchContainer';
+import { sliceResults } from './ConfluenceSearchResultsMapper';
 
 export interface Props {
   crossProductSearchClient: CrossProductSearchClient;
@@ -75,7 +77,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   async searchCrossProductConfluence(
     query: string,
     searchSessionId: string,
-  ): Promise<Map<Scope, Result[]>> {
+  ): Promise<CrossProductSearchResults> {
     const scopes = this.props.useAggregatorForConfluenceObjects
       ? [Scope.ConfluencePageBlogAttachment, Scope.ConfluenceSpace]
       : [Scope.ConfluenceSpace];
@@ -129,7 +131,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         });
     const confXpSearchPromise = handlePromiseError(
       this.searchCrossProductConfluence(query, sessionId),
-      new Map<Scope, Result[]>(),
+      EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE,
       this.handleSearchErrorAnalyticsThunk('xpsearch-confluence'),
     );
 
@@ -156,7 +158,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     ]).then(
       ([
         objectResults = [],
-        xpsearchResultsMap = new Map<Scope, Result[]>(),
+        xpsearchResults = EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE,
         peopleResults = [],
         quickNavElapsedMs,
         confSearchElapsedMs,
@@ -164,9 +166,10 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       ]) => ({
         results: {
           objects: useAggregator
-            ? xpsearchResultsMap.get(Scope.ConfluencePageBlogAttachment) || []
+            ? xpsearchResults.results.get(Scope.ConfluencePageBlogAttachment) ||
+              []
             : objectResults,
-          spaces: xpsearchResultsMap.get(Scope.ConfluenceSpace) || [],
+          spaces: xpsearchResults.results.get(Scope.ConfluenceSpace) || [],
           people: peopleResults,
         },
         timings: {
@@ -174,6 +177,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
           confSearchElapsedMs,
           peopleElapsedMs,
         },
+        experimentId: xpsearchResults.experimentId,
       }),
     );
   };
@@ -250,11 +254,17 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         getSearchResults={this.getSearchResults}
         handleSearchSubmit={this.handleSearchSubmit}
         isSendSearchTermsEnabled={isSendSearchTermsEnabled}
+        getDisplayedResults={result => {
+          const slicedResults = sliceResults(result as ConfluenceResultsMap);
+          return Object.keys(slicedResults)
+            .map(key => slicedResults[key])
+            .reduce((acc: Result[][], value) => [...acc, value], []);
+        }}
       />
     );
   }
 }
 
 export default injectIntl<Props>(
-  withAnalyticsEvents()(withAnalytics(ConfluenceQuickSearchContainer, {}, {})),
+  withAnalytics(ConfluenceQuickSearchContainer, {}, {}),
 );

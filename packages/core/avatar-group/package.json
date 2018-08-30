@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/avatar-group",
-  "version": "2.1.1",
+  "version": "2.1.2",
   "description": "A component to display avatars as a group, either as a stack or in a grid.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -19,26 +19,26 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/avatar": "^14.0.8",
-    "@atlaskit/dropdown-menu": "^6.1.8",
-    "@atlaskit/item": "^8.0.5",
-    "@atlaskit/theme": "^6.0.0",
-    "@atlaskit/tooltip": "^12.0.9"
+    "@atlaskit/avatar": "^14.0.9",
+    "@atlaskit/dropdown-menu": "^6.1.10",
+    "@atlaskit/item": "^8.0.6",
+    "@atlaskit/theme": "^6.0.1",
+    "@atlaskit/tooltip": "^12.0.10"
   },
   "peerDependencies": {
     "react": "^16.4.0",
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/build-utils": "^1.11.0",
-    "@atlaskit/button": "^9.0.6",
-    "@atlaskit/code": "^8.0.1",
+    "@atlaskit/build-utils": "^2.0.0",
+    "@atlaskit/button": "^9.0.7",
+    "@atlaskit/code": "^8.0.2",
     "@atlaskit/docs": "^5.0.6",
-    "@atlaskit/field-base": "^11.0.5",
-    "@atlaskit/icon": "^13.2.5",
-    "@atlaskit/toggle": "^5.0.6",
+    "@atlaskit/field-base": "^11.0.6",
+    "@atlaskit/icon": "^13.3.1",
+    "@atlaskit/toggle": "^5.0.7",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
-    "pretty-proptypes": "^0.2.2",
+    "pretty-proptypes": "^0.3.0",
     "react-dom": "^16.4.2"
   },
   "keywords": [

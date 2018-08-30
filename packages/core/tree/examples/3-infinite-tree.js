@@ -16,8 +16,6 @@ import Tree, {
 } from '../src/';
 import { range } from '../src/utils/handy';
 
-const PADDING_PER_LEVEL = 35;
-
 const Container = styled.div`
   display: flex;
 `;
@@ -129,19 +127,13 @@ export default class InfiniteTree extends Component<void, State> {
     return <Dot>&bull;</Dot>;
   }
 
-  renderItem = ({
-    item,
-    depth,
-    onExpand,
-    onCollapse,
-    provided,
-  }: RenderItemParams) => {
+  renderItem = ({ item, onExpand, onCollapse, provided }: RenderItemParams) => {
     return (
-      <div key={item.id} style={{ paddingLeft: depth * PADDING_PER_LEVEL }}>
+      <div ref={provided.innerRef} {...provided.draggableProps}>
         <AkNavigationItem
           text={item.data ? item.data.title : ''}
           icon={InfiniteTree.getIcon(item, onExpand, onCollapse)}
-          dnd={provided}
+          dnd={{ dragHandleProps: provided.dragHandleProps }}
         />
       </div>
     );

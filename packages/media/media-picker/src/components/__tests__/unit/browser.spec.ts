@@ -17,7 +17,6 @@ describe('Browser', () => {
     });
     browseConfig = {
       uploadParams: {},
-      useNewUploadService: true,
     };
 
     if (browser) {

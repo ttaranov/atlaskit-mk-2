@@ -1,5 +1,10 @@
 # @atlaskit/analytics-listeners
 
+## 4.0.0
+- [patch] fixed async tests and removed redundant componenthelpers [3599b88](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3599b88)
+- [patch] Fixed async test expectations [b8c167d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b8c167d)
+- [major] removed promise from FabricAnalyticsListener.client property [90ba6bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/90ba6bd)
+
 ## 3.4.1
 - [patch] Fix elements listener listening on wrong channel [2b817e1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2b817e1)
 

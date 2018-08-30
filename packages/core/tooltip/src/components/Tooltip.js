@@ -146,7 +146,7 @@ class Tooltip extends Component<Props, State> {
   handleMouseOver = (e: SyntheticMouseEvent<>) => {
     if (e.target === this.wrapperRef) return;
     this.cancelPendingSetState();
-    if (!this.state.isVisible) {
+    if (Boolean(this.props.content) && !this.state.isVisible) {
       this.cancelPendingSetState = showTooltip(immediatelyShow => {
         this.setState({
           isVisible: true,

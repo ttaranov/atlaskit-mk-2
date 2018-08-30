@@ -19,4 +19,5 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var HipchatMediaAttachmentCountIcon = function HipchatMediaAttachmentCountIcon(props) {
   return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><circle cx="12" cy="12" r="5" fill="currentColor" fill-rule="evenodd"/></svg>' }, props));
 };
+HipchatMediaAttachmentCountIcon.displayName = 'HipchatMediaAttachmentCountIcon';
 exports.default = HipchatMediaAttachmentCountIcon;

@@ -2,10 +2,9 @@ import * as React from 'react';
 import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { withAnalytics } from '@atlaskit/analytics';
 import { CreateAnalyticsEventFn } from '../analytics/types';
-import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { JiraClient } from '../../api/JiraClient';
 import { LinkComponent } from '../GlobalQuickSearchWrapper';
-import { QuickSearchContainer } from '../common/QuickSearchContainer';
+import QuickSearchContainer from '../common/QuickSearchContainer';
 import JiraSearchResults from './JiraSearchResults';
 export interface Props {
   createAnalyticsEvent?: CreateAnalyticsEventFn;
@@ -84,7 +83,7 @@ export class JiraQuickSearchContainer extends React.Component<
     });
 
   render() {
-    const { linkComponent } = this.props;
+    const { linkComponent, createAnalyticsEvent } = this.props;
 
     return (
       <QuickSearchContainer
@@ -98,11 +97,12 @@ export class JiraQuickSearchContainer extends React.Component<
         getSearchResultsComponent={this.getSearchResultsComponent}
         getRecentItems={this.getRecentItems}
         getSearchResults={this.getSearchResults}
+        createAnalyticsEvent={createAnalyticsEvent}
       />
     );
   }
 }
 
 export default injectIntl<Props>(
-  withAnalyticsEvents()(withAnalytics(JiraQuickSearchContainer, {}, {})),
+  withAnalytics(JiraQuickSearchContainer, {}, {}),
 );

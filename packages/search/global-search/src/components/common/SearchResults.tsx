@@ -19,7 +19,7 @@ export interface Props {
   retrySearch();
   getPreQueryGroups: () => ResultsGroup[];
   getPostQueryGroups: () => ResultsGroup[];
-  renderAdvancedSearchGroup: () => JSX.Element;
+  renderAdvancedSearchGroup: (analyticsData?) => JSX.Element;
   keepPreQueryState: boolean;
   searchSessionId: string;
   preQueryScreenCounter?: ScreenCounter;
