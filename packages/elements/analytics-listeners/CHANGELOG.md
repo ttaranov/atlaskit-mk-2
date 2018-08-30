@@ -1,5 +1,11 @@
 # @atlaskit/analytics-listeners
 
+## 4.0.1
+- [patch] fixed imports, docs and made GasPayload package attributes optional [6be5eed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6be5eed)
+- [patch] use createAndFire function from analytics-next [095f356](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/095f356)
+- [patch] Fixed TS errors and code improvements [b290312](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b290312)
+- [patch] enable analytics-next TDs on analytics-listeners and analytics-namespaced-context [e65f377](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e65f377)
+
 ## 4.0.0
 - [patch] fixed async tests and removed redundant componenthelpers [3599b88](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3599b88)
 - [patch] Fixed async test expectations [b8c167d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b8c167d)

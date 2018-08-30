@@ -1,5 +1,8 @@
 # @atlaskit/portal
 
+## 0.0.7
+- [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
+
 ## 0.0.6
 
 

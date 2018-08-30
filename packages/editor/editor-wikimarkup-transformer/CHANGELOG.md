@@ -1,5 +1,11 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 2.0.13
+- [patch] Keep title of code block [95f9654](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/95f9654)
+
+## 2.0.12
+- [patch] Trailing spaces of a table should not create a empty cell [eade148](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eade148)
+
 ## 2.0.11
 - [patch] Updated dependencies [7545979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7545979)
   - @atlaskit/editor-common@15.0.0

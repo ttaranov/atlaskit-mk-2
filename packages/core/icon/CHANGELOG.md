@@ -1,5 +1,8 @@
 # @atlaskit/icon
 
+## 13.6.1
+- [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
+
 ## 13.6.0
 - [minor] Add static displayName prop to all icons. This results in accurate display names even after minifying and uglifying the icon variable names. [a75db9d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a75db9d)
 

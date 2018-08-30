@@ -1,21 +1,26 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
-import { FabricChannel } from '../../index';
 import FabricElementsListener, {
   ELEMENTS_TAG,
 } from '../../fabric/FabricElementsListener';
 import {
-  DummyComponentWithAnalytics,
-  TaggedDummyComponentWithAnalytics,
-  DummyComponentWithAttributesWithAnalytics,
-  Props,
+  createComponentWithAnalytics,
+  createTaggedComponentWithAnalytics,
+  createComponentWithAttributesWithAnalytics,
+  OwnProps,
 } from '../../../examples/helpers';
 import { AnalyticsListener, AnalyticsContext } from '@atlaskit/analytics-next';
-import { AnalyticsWebClient } from '../../types';
+import { AnalyticsWebClient, FabricChannel } from '../../types';
 import { FabricElementsAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
-const DummyCompWithAttributesWithAnalytics = DummyComponentWithAttributesWithAnalytics(
+const DummyCompWithAttributesWithAnalytics = createComponentWithAttributesWithAnalytics(
   FabricChannel.elements,
+);
+
+const DummyElementsComp = createComponentWithAnalytics(FabricChannel.elements);
+const DummyTaggedElementsComp = createTaggedComponentWithAnalytics(
+  FabricChannel.elements,
+  ELEMENTS_TAG,
 );
 
 describe('<FabricElementsListener />', () => {
@@ -38,7 +43,7 @@ describe('<FabricElementsListener />', () => {
   });
 
   const fireAndVerifySentEvent = (
-    Component: React.StatelessComponent<Props>,
+    Component: React.ComponentClass<OwnProps>,
     expectedEvent: any,
   ) => {
     const compOnClick = jest.fn();
@@ -65,27 +70,21 @@ describe('<FabricElementsListener />', () => {
 
   describe('Listen and fire an UI event with analyticsWebClient', () => {
     it('should fire event with elements tag', () => {
-      fireAndVerifySentEvent(
-        DummyComponentWithAnalytics(FabricChannel.elements),
-        {
-          action: 'someAction',
-          actionSubject: 'someComponent',
-          source: 'unknown',
-          tags: [ELEMENTS_TAG],
-        },
-      );
+      fireAndVerifySentEvent(DummyElementsComp, {
+        action: 'someAction',
+        actionSubject: 'someComponent',
+        source: 'unknown',
+        tags: [ELEMENTS_TAG],
+      });
     });
 
     it('should fire event without duplicating the tag', () => {
-      fireAndVerifySentEvent(
-        TaggedDummyComponentWithAnalytics(FabricChannel.elements, ELEMENTS_TAG),
-        {
-          action: 'someAction',
-          actionSubject: 'someComponent',
-          source: 'unknown',
-          tags: [ELEMENTS_TAG, 'foo'],
-        },
-      );
+      fireAndVerifySentEvent(DummyTaggedElementsComp, {
+        action: 'someAction',
+        actionSubject: 'someComponent',
+        source: 'unknown',
+        tags: [ELEMENTS_TAG, 'foo'],
+      });
     });
 
     it('should fire event with context merged into the attributes', () => {

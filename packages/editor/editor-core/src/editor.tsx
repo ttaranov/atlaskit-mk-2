@@ -2,7 +2,11 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { withAnalytics } from '@atlaskit/analytics';
 import { EditorView } from 'prosemirror-view';
-import { ProviderFactory, Transformer } from '@atlaskit/editor-common';
+import {
+  ProviderFactory,
+  Transformer,
+  BaseTheme,
+} from '@atlaskit/editor-common';
 import { getUiComponent } from './create-editor';
 import EditorActions from './actions';
 import { EditorProps } from './types/editor-props';
@@ -202,34 +206,38 @@ export default class Editor extends React.Component<EditorProps, {}> {
                 onEditorCreated={this.onEditorCreated}
                 onEditorDestroyed={this.onEditorDestroyed}
                 render={({ editor, view, eventDispatcher, config }) => (
-                  <Component
-                    disabled={this.props.disabled}
-                    editorActions={this.editorActions}
-                    editorDOMElement={editor}
-                    editorView={view}
-                    providerFactory={this.providerFactory}
-                    eventDispatcher={eventDispatcher}
-                    maxHeight={this.props.maxHeight}
-                    onSave={this.props.onSave ? this.handleSave : undefined}
-                    onCancel={this.props.onCancel}
-                    popupsMountPoint={this.props.popupsMountPoint}
-                    popupsBoundariesElement={this.props.popupsBoundariesElement}
-                    contentComponents={config.contentComponents}
-                    primaryToolbarComponents={config.primaryToolbarComponents}
-                    secondaryToolbarComponents={
-                      config.secondaryToolbarComponents
-                    }
-                    insertMenuItems={this.props.insertMenuItems}
-                    customContentComponents={this.props.contentComponents}
-                    customPrimaryToolbarComponents={
-                      this.props.primaryToolbarComponents
-                    }
-                    customSecondaryToolbarComponents={
-                      this.props.secondaryToolbarComponents
-                    }
-                    addonToolbarComponents={this.props.addonToolbarComponents}
-                    collabEdit={this.props.collabEdit}
-                  />
+                  <BaseTheme>
+                    <Component
+                      disabled={this.props.disabled}
+                      editorActions={this.editorActions}
+                      editorDOMElement={editor}
+                      editorView={view}
+                      providerFactory={this.providerFactory}
+                      eventDispatcher={eventDispatcher}
+                      maxHeight={this.props.maxHeight}
+                      onSave={this.props.onSave ? this.handleSave : undefined}
+                      onCancel={this.props.onCancel}
+                      popupsMountPoint={this.props.popupsMountPoint}
+                      popupsBoundariesElement={
+                        this.props.popupsBoundariesElement
+                      }
+                      contentComponents={config.contentComponents}
+                      primaryToolbarComponents={config.primaryToolbarComponents}
+                      secondaryToolbarComponents={
+                        config.secondaryToolbarComponents
+                      }
+                      insertMenuItems={this.props.insertMenuItems}
+                      customContentComponents={this.props.contentComponents}
+                      customPrimaryToolbarComponents={
+                        this.props.primaryToolbarComponents
+                      }
+                      customSecondaryToolbarComponents={
+                        this.props.secondaryToolbarComponents
+                      }
+                      addonToolbarComponents={this.props.addonToolbarComponents}
+                      collabEdit={this.props.collabEdit}
+                    />
+                  </BaseTheme>
                 )}
               />
               <PortalRenderer portalProviderAPI={portalProviderAPI} />

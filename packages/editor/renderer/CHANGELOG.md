@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 21.0.2
+- [patch] ED-3919: Fix typography and other styles, align styles between editor and renderer [d0f9293](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d0f9293)
+
 ## 21.0.1
 - [patch] Updated dependencies [da65dec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da65dec)
   - @atlaskit/editor-common@15.0.1

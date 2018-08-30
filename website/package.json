@@ -13,7 +13,7 @@
   "scripts": {
     "TODO": "FIX THE BINARY FILES",
     "start": "node ./node_modules/@atlaskit/webpack-config/bin/dev.js",
-    "build": "rm -rf dist && node ./node_modules/@atlaskit/webpack-config/bin/build.js",
+    "build": "rm -rf dist && node --max-old-space-size=8192 ./node_modules/@atlaskit/webpack-config/bin/build.js",
     "build:report": "yarn build --report",
     "build:no-minimize": "yarn build --no-minimize",
     "build:copy": "cp dist/index.html dist/404.html && cp -R public/* dist/",
@@ -28,7 +28,9 @@
     "bolt-query": "^1.1.4",
     "chalk": "^2.1.0",
     "extract-react-types-loader": "^0.2.2",
-    "netlify-cli": "^1.2.2"
+    "netlify-cli": "^1.2.2",
+    "node-fetch": "^2.2.0",
+    "tty-table": "^2.6.8"
   },
   "dependencies": {
     "@atlaskit/analytics-listeners": "^4.0.0",

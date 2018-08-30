@@ -1,5 +1,8 @@
 # @atlaskit/dropdown-menu
 
+## 6.1.12
+- [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
+
 ## 6.1.11
 - [patch] Fix initial position glitch when opening dropdown menu [d79e361](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d79e361)
 

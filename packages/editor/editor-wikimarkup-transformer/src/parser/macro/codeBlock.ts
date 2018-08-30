@@ -1,4 +1,5 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
+import { title } from '../utils/title';
 
 const SUPPORTED_CODEBOCK_LANGUAGES = [
   'actionscript',
@@ -30,15 +31,21 @@ export function codeBlockMacro(
   rawContent: string,
   schema: Schema,
 ): PMNode[] {
+  const output: PMNode[] = [];
   const { codeBlock } = schema.nodes;
 
-  const textNode = schema.text(rawContent);
+  const textNode = schema.text(rawContent.replace(/^\s+|\s+$/g, ''));
+  if (attrs.title) {
+    output.push(title(attrs.title, schema));
+  }
+
   const nodeAttrs = {
     ...attrs,
     language: getCodeLanguage(attrs),
   };
 
-  return [codeBlock.createChecked(nodeAttrs, textNode)];
+  output.push(codeBlock.createChecked(nodeAttrs, textNode));
+  return output;
 }
 
 function getCodeLanguage(attrs: { [key: string]: string }): string {
