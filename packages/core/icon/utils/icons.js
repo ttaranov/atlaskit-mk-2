@@ -395,6 +395,7 @@ import SignInIcon from '../glyph/sign-in';
 import SignOutIcon from '../glyph/sign-out';
 import StarFilledIcon from '../glyph/star-filled';
 import StarLargeIcon from '../glyph/star-large';
+import StarOutlineIcon from '../glyph/star-outline';
 import StarIcon from '../glyph/star';
 import StatuspageIcon from '../glyph/statuspage';
 import StrideIcon from '../glyph/stride';
@@ -2755,6 +2756,12 @@ export default {
     component: StarLargeIcon,
     componentName: 'StarLargeIcon',
     package: '@atlaskit/icon/glyph/star-large',
+  },
+  'star-outline': {
+    keywords: ['star-outline', 'staroutline'],
+    component: StarOutlineIcon,
+    componentName: 'StarOutlineIcon',
+    package: '@atlaskit/icon/glyph/star-outline',
   },
   star: {
     keywords: ['star'],
