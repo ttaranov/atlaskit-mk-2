@@ -5,6 +5,7 @@ import { ComponentClass, Consumer, Provider } from 'react';
 import { Fragment, Mark, Node, Schema } from 'prosemirror-model';
 
 import { Serializer } from '../';
+import { getText } from '../utils';
 import { RendererAppearance } from '../ui/Renderer';
 
 import {
@@ -55,6 +56,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
   private useNewApplicationCard?: boolean;
   private appearance?: RendererAppearance;
   private disableHeadingIDs?: boolean;
+  private headingIds: string[] = [];
 
   constructor({
     providers,
@@ -76,6 +78,10 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     this.disableHeadingIDs = disableHeadingIDs;
   }
 
+  private resetState() {
+    this.headingIds = [];
+  }
+
   serializeFragment(
     fragment: Fragment,
     props: any = {},
@@ -83,6 +89,11 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     key: string = 'root-0',
     parentInfo?: { parentIsIncompleteTask: boolean },
   ): JSX.Element | null {
+    // This makes sure that we reset internal state on re-render.
+    if (key === 'root-0') {
+      this.resetState();
+    }
+
     const emojiBlock = isEmojiDoc(fragment, props);
     const content = ReactSerializer.getChildNodes(fragment).map(
       (node, index) => {
@@ -97,6 +108,8 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
           props = this.getTableProps(node as Node);
         } else if (node.type.name === 'date') {
           props = this.getDateProps(node as Node, parentInfo);
+        } else if (node.type.name === 'heading') {
+          props = this.getHeadingProps(node as Node);
         } else {
           props = this.getProps(node as Node);
         }
@@ -207,9 +220,44 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
       serializer: this,
       content: node.content ? node.content.toJSON() : undefined,
       useNewApplicationCard: this.useNewApplicationCard,
-      disableHeadingIDs: this.disableHeadingIDs,
       ...node.attrs,
     };
+  }
+
+  private getHeadingProps(node: Node) {
+    return {
+      ...node.attrs,
+      content: node.content ? node.content.toJSON() : undefined,
+      headingId: this.getHeadingId(node),
+    };
+  }
+
+  private getHeadingId(node: Node) {
+    if (this.disableHeadingIDs || !node.content) {
+      return;
+    }
+
+    const headingId = (node as any).content
+      .toJSON()
+      .reduce((acc, node) => acc.concat(getText(node) || ''), '')
+      .replace(/ /g, '-');
+
+    return this.getUniqueHeadingId(headingId);
+  }
+
+  private getUniqueHeadingId(baseId, counter = 0) {
+    if (counter === 0 && this.headingIds.indexOf(baseId) === -1) {
+      this.headingIds.push(baseId);
+      return baseId;
+    } else if (counter !== 0) {
+      const headingId = `${baseId}.${counter}`;
+      if (this.headingIds.indexOf(headingId) === -1) {
+        this.headingIds.push(headingId);
+        return headingId;
+      }
+    }
+
+    return this.getUniqueHeadingId(baseId, ++counter);
   }
 
   private getMarkProps(mark: Mark): any {
@@ -285,6 +333,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
       eventHandlers,
       extensionHandlers,
       appearance,
+      disableHeadingIDs,
     }: ConstructorParams,
   ): ReactSerializer {
     // TODO: Do we actually need the schema here?
@@ -293,6 +342,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
       eventHandlers,
       extensionHandlers,
       appearance,
+      disableHeadingIDs,
     });
   }
 }
