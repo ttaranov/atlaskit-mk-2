@@ -27,6 +27,10 @@ const modifyStyles = defaultStyles => ({
     ...defaultStyles.afterWrapper,
     marginLeft: gridSize,
   },
+  textWrapper: {
+    ...defaultStyles.textWrapper,
+    fontWeight: 500,
+  },
 });
 
 export default class ContainerHeader extends PureComponent<

@@ -97,7 +97,12 @@ const rootIssues = [
     id: 'root/issues:header',
     items: [
       { type: 'Wordmark', wordmark: JiraWordmarkLogo, id: 'jira-wordmark' },
-      { type: 'BackItem', goTo: 'root/index', id: 'back' },
+      {
+        type: 'BackItem',
+        goTo: 'root/index',
+        id: 'back',
+        text: 'Back to Jira',
+      },
     ],
     type: 'HeaderSection',
   },
@@ -261,7 +266,12 @@ const containerProjectIssues = [
       {
         id: 'back-button',
         items: [
-          { type: 'BackItem', goTo: 'container/project/index', id: 'back' },
+          {
+            type: 'BackItem',
+            goTo: 'container/project/index',
+            id: 'back',
+            text: 'Back to project',
+          },
         ],
         type: 'Group',
       },

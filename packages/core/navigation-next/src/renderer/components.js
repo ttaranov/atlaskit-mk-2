@@ -1,7 +1,8 @@
 // @flow
 
 import React from 'react';
-import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
+import ArrowLeftCircleIcon from '@atlaskit/icon/glyph/arrow-left-circle';
+import ArrowRightCircleIcon from '@atlaskit/icon/glyph/arrow-right-circle';
 import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
 import BacklogIcon from '@atlaskit/icon/glyph/backlog';
 import BoardIcon from '@atlaskit/icon/glyph/board';
@@ -16,7 +17,6 @@ import { gridSize as gridSizeFn } from '@atlaskit/theme';
 import { navigationItemClicked } from '../common/analytics';
 import ContainerHeader from '../components/ContainerHeader';
 import BaseItem from '../components/Item';
-import ItemPrimitive from '../components/Item/primitives';
 import SectionComponent from '../components/Section';
 import Separator from '../components/Separator';
 import GroupComponent from '../components/Group';
@@ -69,7 +69,12 @@ const GoToItemBase = ({
         return <Spinner delay={spinnerDelay} invertColor size="small" />;
       }
       if (isActive || isHover) {
-        return <ArrowRightIcon size="small" />;
+        return (
+          <ArrowRightCircleIcon
+            primaryColor="currentColor"
+            secondaryColor="inherit"
+          />
+        );
       }
       return null;
     };
@@ -112,33 +117,36 @@ const Item = ({ before: beforeProp, icon, ...rest }: ItemProps) => {
 };
 
 // BackItem
-const backItemPrimitiveStyles = styles => ({
+const patchBackItemStyles = styles => ({
   ...styles,
-  itemBase: { ...styles.itemBase, cursor: 'default' },
+  textWrapper: {
+    ...styles.textWrapper,
+    fontWeight: 500,
+  },
 });
+const BackItem = ({ before: beforeProp, text, ...props }: ItemProps) => {
+  let before = beforeProp;
+  if (!before) {
+    before = () => (
+      <ArrowLeftCircleIcon
+        primaryColor="currentColor"
+        secondaryColor="inherit"
+      />
+    );
+  }
 
-const BackItem = ({ goTo, href, subText, id, index, text = 'Back' }: *) => (
-  <div css={{ display: 'flex', paddingBottom: gridSize * 2 }}>
-    <div css={{ flexShrink: 0 }}>
-      <GoToItem
+  return (
+    <div css={{ paddingBottom: gridSize * 2 }}>
+      <Item
+        {...props}
         after={null}
-        goTo={goTo}
-        href={href}
-        text={<ArrowLeftIcon size="small" />}
-        id={id}
-        index={index}
+        before={before}
+        text={text || 'Back'}
+        styles={patchBackItemStyles}
       />
     </div>
-    <div css={{ flexGrow: 1 }}>
-      <ItemPrimitive
-        spacing="compact"
-        styles={backItemPrimitiveStyles}
-        subText={subText}
-        text={text}
-      />
-    </div>
-  </div>
-);
+  );
+};
 
 // Title
 const GroupHeading = ({ text, ...props }: GroupHeadingProps) => (
@@ -147,7 +155,7 @@ const GroupHeading = ({ text, ...props }: GroupHeadingProps) => (
 
 // Switcher
 const Switcher = (props: *) => (
-  <div css={{ paddingBottom: gridSize * 2 }}>
+  <div css={{ paddingBottom: gridSize * 2.5 }}>
     <SwitcherComponent {...props} />
   </div>
 );

@@ -137,6 +137,11 @@ const light = ({
       ...baseStyles.beforeWrapper,
       ...layoutStyles[spacing].beforeWrapper,
       color: isSelected ? colors.B400 : colors.N500,
+      fill: (() => {
+        if (isActive) return colors.B50;
+        if (isSelected || isHover) return colors.N30;
+        return colors.N20;
+      })(),
     },
     contentWrapper: baseStyles.contentWrapper,
     textWrapper: {
@@ -151,6 +156,11 @@ const light = ({
     afterWrapper: {
       ...baseStyles.afterWrapper,
       ...layoutStyles[spacing].afterWrapper,
+      fill: (() => {
+        if (isActive) return colors.B50;
+        if (isSelected || isHover) return colors.N30;
+        return colors.N20;
+      })(),
     },
   },
   product: {
@@ -167,6 +177,12 @@ const light = ({
     beforeWrapper: {
       ...baseStyles.beforeWrapper,
       ...layoutStyles[spacing].beforeWrapper,
+      fill: (() => {
+        if (isActive) return colors.B200;
+        if (isSelected) return lightRootSelectedBackground;
+        if (isHover) return lightRootHoverBackground;
+        return colors.B500;
+      })(),
     },
     contentWrapper: baseStyles.contentWrapper,
     textWrapper: {
@@ -181,6 +197,12 @@ const light = ({
     afterWrapper: {
       ...baseStyles.afterWrapper,
       ...layoutStyles[spacing].afterWrapper,
+      fill: (() => {
+        if (isActive) return colors.B200;
+        if (isSelected) return lightRootSelectedBackground;
+        if (isHover) return lightRootHoverBackground;
+        return colors.B500;
+      })(),
     },
   },
 });
@@ -213,6 +235,12 @@ const dark = ({
       ...baseStyles.beforeWrapper,
       ...layoutStyles[spacing].beforeWrapper,
       color: darkContainerTextColor({ isActive, isSelected }),
+      fill: (() => {
+        if (isActive) return darkActiveSelectedBackground;
+        if (isSelected) return darkActiveSelectedBackground;
+        if (isHover) return darkHoverBackground;
+        return colors.DN20;
+      })(),
     },
     contentWrapper: baseStyles.contentWrapper,
     textWrapper: {
@@ -227,6 +255,12 @@ const dark = ({
     afterWrapper: {
       ...baseStyles.afterWrapper,
       ...layoutStyles[spacing].afterWrapper,
+      fill: (() => {
+        if (isActive) return darkActiveSelectedBackground;
+        if (isSelected) return darkActiveSelectedBackground;
+        if (isHover) return darkHoverBackground;
+        return colors.DN20;
+      })(),
     },
   },
   product: {
@@ -243,6 +277,12 @@ const dark = ({
     beforeWrapper: {
       ...baseStyles.beforeWrapper,
       ...layoutStyles[spacing].beforeWrapper,
+      fill: (() => {
+        if (isActive) return darkActiveSelectedBackground;
+        if (isSelected) return darkActiveSelectedBackground;
+        if (isHover) return darkHoverBackground;
+        return colors.DN0;
+      })(),
     },
     contentWrapper: baseStyles.contentWrapper,
     textWrapper: {
@@ -261,6 +301,12 @@ const dark = ({
     afterWrapper: {
       ...baseStyles.afterWrapper,
       ...layoutStyles[spacing].afterWrapper,
+      fill: (() => {
+        if (isActive) return darkActiveSelectedBackground;
+        if (isSelected) return darkActiveSelectedBackground;
+        if (isHover) return darkHoverBackground;
+        return colors.DN0;
+      })(),
     },
   },
 });
@@ -285,6 +331,11 @@ const settings = ({
     beforeWrapper: {
       ...baseStyles.beforeWrapper,
       ...layoutStyles[spacing].beforeWrapper,
+      fill: (() => {
+        if (isActive) return settingsActiveBackground;
+        if (isSelected || isHover) return colors.N700A;
+        return colors.N700;
+      })(),
     },
     contentWrapper: baseStyles.contentWrapper,
     textWrapper: {
@@ -299,6 +350,11 @@ const settings = ({
     afterWrapper: {
       ...baseStyles.afterWrapper,
       ...layoutStyles[spacing].afterWrapper,
+      fill: (() => {
+        if (isActive) return settingsActiveBackground;
+        if (isSelected || isHover) return colors.N700A;
+        return colors.N700;
+      })(),
     },
   },
   product: {
@@ -314,6 +370,11 @@ const settings = ({
     beforeWrapper: {
       ...baseStyles.beforeWrapper,
       ...layoutStyles[spacing].beforeWrapper,
+      fill: (() => {
+        if (isActive) return settingsActiveBackground;
+        if (isSelected || isHover) return colors.N700A;
+        return colors.N800;
+      })(),
     },
     contentWrapper: baseStyles.contentWrapper,
     textWrapper: {
@@ -328,6 +389,11 @@ const settings = ({
     afterWrapper: {
       ...baseStyles.afterWrapper,
       ...layoutStyles[spacing].afterWrapper,
+      fill: (() => {
+        if (isActive) return settingsActiveBackground;
+        if (isSelected || isHover) return colors.N700A;
+        return colors.N800;
+      })(),
     },
   },
 });

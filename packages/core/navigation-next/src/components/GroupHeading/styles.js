@@ -1,9 +1,10 @@
 // @flow
 
-import { colors, gridSize } from '@atlaskit/theme';
+import { colors, gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import type { ThemedContentNavigationComponentStyles } from '../../theme/types';
 
+const gridSize = gridSizeFn();
 const fontSize = 11;
 
 const baseStyles = {
@@ -13,9 +14,9 @@ const baseStyles = {
     flexShrink: 0,
     fontSize: `${fontSize}px`,
     fontWeight: 600,
-    lineHeight: gridSize() * 2 / fontSize,
-    margin: `${gridSize() * 2.5}px 0 ${gridSize()}px`,
-    padding: `0 ${gridSize() / 2}px`,
+    lineHeight: gridSize * 2 / fontSize,
+    margin: `${gridSize * 2.5}px 0 ${gridSize}px`,
+    padding: `0 ${gridSize * 1.5}px`,
     textTransform: 'uppercase',
   },
   textWrapper: {
@@ -27,7 +28,7 @@ const baseStyles = {
   },
   afterWrapper: {
     lineHeight: 1,
-    marginLeft: `${gridSize() / 2}px`,
+    marginLeft: `${gridSize / 2}px`,
   },
 };
 
