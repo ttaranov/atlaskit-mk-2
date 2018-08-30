@@ -1,15 +1,16 @@
 // @ts-ignore: unused variable
 // prettier-ignore
 import { css, Styles, StyledComponentClass } from 'styled-components';
+import { fontSize } from '@atlaskit/theme';
 
-import { TableLayout } from '../schema';
+import { TableLayout } from '../../schema';
 import {
   akEditorTableBorder,
   akEditorTableToolbar,
   akEditorWideLayoutWidth,
   akEditorTableNumberColumnWidth,
   akEditorBreakoutPadding,
-} from './consts';
+} from '../consts';
 
 export const tableMarginTop = 32;
 export const tableMarginBottom = 20;
@@ -33,6 +34,7 @@ const tableSharedStyle = css`
     border-collapse: collapse;
     margin: ${tableMarginTop}px ${tableMarginSides}px ${tableMarginBottom}px;
     border: 1px solid ${akEditorTableBorder};
+    font-size: ${fontSize}px;
     width: 100%;
 
     &[data-autosize='true'] {
@@ -84,7 +86,7 @@ const tableSharedStyle = css`
 
 export const calcTableWidth = (
   layout: TableLayout,
-  containerWidth: number,
+  containerWidth?: number,
   addControllerPadding: boolean = true,
 ): string => {
   switch (layout) {
