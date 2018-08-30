@@ -28,7 +28,7 @@ export default class StatelessExample extends Component<void, State> {
       <div>
         <RadioGroup
           options={this.state.options}
-          checkedValue={this.state.options[0].value}
+          checkedValue={this.state.checkedValue}
           label="Pick a color (Checked state isn't managed by the component):"
           onChange={this.setValue}
         />

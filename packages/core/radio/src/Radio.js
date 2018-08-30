@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import RadioInput from './RadioInput';
-import { Label } from './styled/Radio';
+import { Label, LabelText } from './styled/Radio';
 import type { RadioProps } from './types';
 
 type State = {
@@ -81,7 +81,7 @@ export default class Radio extends Component<RadioProps, State> {
           name={name}
           value={value}
         />
-        <span>{children}</span>
+        <LabelText>{children}</LabelText>
       </Label>
     );
   }

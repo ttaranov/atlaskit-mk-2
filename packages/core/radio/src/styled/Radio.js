@@ -2,15 +2,6 @@
 import styled, { css } from 'styled-components';
 import { colors, themed } from '@atlaskit/theme';
 
-export const HiddenInput = styled.input`
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  opacity: 0;
-`;
-
 const disabledColor = themed({ light: colors.N80, dark: colors.N80 });
 
 type LabelProps = {
@@ -19,7 +10,7 @@ type LabelProps = {
 };
 
 export const Label = styled.label`
-  display: flex;
+  align-items: flex-start;
   color: ${(props: LabelProps): string =>
     // $FlowFixMe - theme is not found in props
     props.isDisabled ? disabledColor(props) : colors.text(props)};
@@ -29,6 +20,7 @@ export const Label = styled.label`
           cursor: not-allowed;
         `
       : ''};
+  display: flex;
 `;
 
 type IconWrapperProps = {
@@ -117,6 +109,10 @@ const getCircleColor = props => {
   }
   return color(rest);
 };
+
+export const LabelText = styled.span`
+  padding: 2px 0;
+`;
 
 export const IconWrapper = styled.span`
   line-height: 0;
