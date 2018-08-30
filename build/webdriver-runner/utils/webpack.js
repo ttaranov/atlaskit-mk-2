@@ -109,6 +109,7 @@ async function startDevServer() {
     globs,
     mode,
     websiteEnv,
+    websiteDir: path.join(__dirname, '../../..', 'website'),
   });
 
   const compiler = webpack(config);
