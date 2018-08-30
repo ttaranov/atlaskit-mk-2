@@ -2,7 +2,7 @@ import { pluginKey } from '../../../src/plugins/card/pm-plugins/main';
 import cardPlugin from '../../../src/plugins/card';
 import {
   setProvider,
-  queueCard,
+  queueCards,
 } from '../../../src/plugins/card/pm-plugins/actions';
 
 import {
@@ -44,7 +44,11 @@ describe('card', () => {
           dispatch,
           state: { tr },
         } = editorView;
-        dispatch(queueCard('http://www.atlassian.com/', 24, 'inline')(tr));
+        dispatch(
+          queueCards([
+            { url: 'http://www.atlassian.com/', pos: 24, appearance: 'inline' },
+          ])(tr),
+        );
         expect(pluginKey.getState(editorView.state)).toEqual({
           requests: [
             {
@@ -62,14 +66,10 @@ describe('card', () => {
         const { dispatch } = editorView;
 
         dispatch(
-          queueCard('http://www.atlassian.com/', 24, 'inline')(
-            editorView.state.tr,
-          ),
-        );
-        dispatch(
-          queueCard('http://www.atlassian.com/', 420, 'block')(
-            editorView.state.tr,
-          ),
+          queueCards([
+            { url: 'http://www.atlassian.com/', pos: 24, appearance: 'inline' },
+            { url: 'http://www.atlassian.com/', pos: 420, appearance: 'block' },
+          ])(editorView.state.tr),
         );
 
         expect(pluginKey.getState(editorView.state)).toEqual({
@@ -93,9 +93,9 @@ describe('card', () => {
     describe('resolve', () => {
       it('eventually resolves the url from the queue', async () => {
         const { editorView } = editor(doc(p()));
-        queueCard('http://www.atlassian.com/', 1, 'inline')(
-          editorView.state.tr,
-        );
+        queueCards([
+          { url: 'http://www.atlassian.com/', pos: 1, appearance: 'inline' },
+        ])(editorView.state.tr);
 
         expect(pluginKey.getState(editorView.state)).toEqual({
           requests: [],

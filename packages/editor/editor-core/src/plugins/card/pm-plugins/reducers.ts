@@ -8,15 +8,9 @@ import {
 } from '../types';
 
 const queue = (state: CardPluginState, action: Queue) => {
-  const request = {
-    url: action.url,
-    appearance: action.appearance,
-    pos: action.pos,
-  } as Request;
-
   return {
     ...state,
-    requests: state.requests.concat([request]),
+    requests: state.requests.concat(action.requests),
   };
 };
 

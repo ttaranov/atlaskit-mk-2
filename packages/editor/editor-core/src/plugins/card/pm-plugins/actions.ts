@@ -1,5 +1,5 @@
 import { pluginKey } from './main';
-import { CardAppearance, CardProvider, CardPluginAction } from '../types';
+import { CardProvider, CardPluginAction, Request } from '../types';
 import { Transaction } from 'prosemirror-state';
 
 export const cardAction = (tr, action: CardPluginAction): Transaction => {
@@ -12,16 +12,10 @@ export const resolveCard = url => (tr: Transaction) =>
     url,
   });
 
-export const queueCard = (
-  url: string,
-  pos: number,
-  appearance: CardAppearance,
-) => (tr: Transaction) =>
+export const queueCards = (requests: Request[]) => (tr: Transaction) =>
   cardAction(tr, {
     type: 'QUEUE',
-    url,
-    pos,
-    appearance,
+    requests: requests,
   });
 
 export const setProvider = (cardProvider: CardProvider | null) => (

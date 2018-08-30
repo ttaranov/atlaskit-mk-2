@@ -3,7 +3,7 @@ import cardPlugin from '../../../src/plugins/card';
 import { CardProvider, CardPluginState } from '../../../src/plugins/card/types';
 import {
   setProvider,
-  queueCard,
+  queueCards,
 } from '../../../src/plugins/card/pm-plugins/actions';
 
 import {
@@ -39,7 +39,11 @@ describe('card', () => {
         );
 
         const { state, dispatch } = editorView;
-        dispatch(queueCard(href, refs['<>'], 'inline')(state.tr));
+        dispatch(
+          queueCards([{ url: href, pos: refs['<>'], appearance: 'inline' }])(
+            state.tr,
+          ),
+        );
 
         // should be at initial pos
         const initialState = {
@@ -96,7 +100,11 @@ describe('card', () => {
         );
 
         const { state, dispatch } = editorView;
-        dispatch(queueCard(href, refs['link'], 'inline')(state.tr));
+        dispatch(
+          queueCards([{ url: href, pos: refs['link'], appearance: 'inline' }])(
+            state.tr,
+          ),
+        );
 
         // type something at start
         const typedText = 'before everything';
@@ -138,7 +146,9 @@ describe('card', () => {
         // queue both links
         Object.keys(hrefs).map(key => {
           dispatch(
-            queueCard(hrefs[key], refs[key], 'inline')(editorView.state.tr),
+            queueCards([
+              { url: hrefs[key], pos: refs[key], appearance: 'inline' },
+            ])(editorView.state.tr),
           );
         });
 
@@ -209,7 +219,9 @@ describe('card', () => {
 
         // try to replace the link using bad provider
         dispatch(
-          queueCard(href, view.state.selection.from, 'inline')(view.state.tr),
+          queueCards([
+            { url: href, pos: view.state.selection.from, appearance: 'inline' },
+          ])(view.state.tr),
         );
       });
 
@@ -225,7 +237,9 @@ describe('card', () => {
 
         // try to replace the link using bad provider
         dispatch(
-          queueCard(href, view.state.selection.from, 'inline')(view.state.tr),
+          queueCards([
+            { url: href, pos: view.state.selection.from, appearance: 'inline' },
+          ])(view.state.tr),
         );
       });
 
@@ -280,9 +294,13 @@ describe('card', () => {
 
         // queue it
         dispatch(
-          queueCard(href, editorView.state.selection.from, 'inline')(
-            editorView.state.tr,
-          ),
+          queueCards([
+            {
+              url: href,
+              pos: editorView.state.selection.from,
+              appearance: 'inline',
+            },
+          ])(editorView.state.tr),
         );
 
         // now, change the link text (+1 so we change inside the text node with the mark, otherwise
@@ -318,9 +336,13 @@ describe('card', () => {
 
         // queue a non-link node
         dispatch(
-          queueCard(href, editorView.state.selection.from, 'inline')(
-            editorView.state.tr,
-          ),
+          queueCards([
+            {
+              url: href,
+              pos: editorView.state.selection.from,
+              appearance: 'inline',
+            },
+          ])(editorView.state.tr),
         );
 
         // resolve the provider

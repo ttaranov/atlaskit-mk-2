@@ -1,9 +1,9 @@
 import { pluginKey } from './main';
-import { CardPluginState } from '../types';
+import { CardPluginState, Request } from '../types';
 import { Command } from '../../../types';
 import { processRawValue } from '../../../utils';
 import { Transaction, EditorState } from 'prosemirror-state';
-import { resolveCard, queueCard } from './actions';
+import { resolveCard, queueCards } from './actions';
 
 export const replaceQueuedUrlWithCard = (
   url: string,
@@ -42,7 +42,7 @@ export const replaceQueuedUrlWithCard = (
         return;
       }
 
-      tr.replaceWith(pos, pos + url.length, cardAdf);
+      tr = tr.replaceWith(pos, pos + url.length, cardAdf);
     });
   }
 
@@ -83,6 +83,7 @@ export const queueCardsFromChangedTr = (
     return tr;
   }
 
+  const requests: Request[] = [];
   tr.doc.nodesBetween(stepRange.from, stepRange.to, (node, pos) => {
     if (!node.isText) {
       return true;
@@ -96,11 +97,15 @@ export const queueCardsFromChangedTr = (
         return false;
       }
 
-      queueCard(linkMark.attrs.href, pos, 'inline')(tr);
+      requests.push({
+        url: linkMark.attrs.href,
+        pos,
+        appearance: 'inline',
+      } as Request);
     }
 
     return false;
   });
 
-  return tr;
+  return queueCards(requests)(tr);
 };

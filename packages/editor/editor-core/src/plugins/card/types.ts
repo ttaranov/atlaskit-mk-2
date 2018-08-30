@@ -28,9 +28,7 @@ export type SetProvider = {
 
 export type Queue = {
   type: 'QUEUE';
-  url: string;
-  pos: number;
-  appearance: CardAppearance;
+  requests: Request[];
 };
 
 export type Resolve = {

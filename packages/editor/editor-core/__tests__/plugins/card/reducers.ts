@@ -40,9 +40,13 @@ describe('card', () => {
           expect(
             reduce(initialState, {
               type: 'QUEUE',
-              url: 'http://www.atlassian.com/',
-              pos: 42,
-              appearance: 'inline',
+              requests: [
+                {
+                  url: 'http://www.atlassian.com/',
+                  pos: 42,
+                  appearance: 'inline',
+                },
+              ],
             }),
           ).toEqual({
             requests: [
@@ -59,17 +63,25 @@ describe('card', () => {
         it('queues multiple items for the same URL', () => {
           const first = reduce(initialState, {
             type: 'QUEUE',
-            url: 'http://www.atlassian.com/',
-            pos: 42,
-            appearance: 'inline',
+            requests: [
+              {
+                url: 'http://www.atlassian.com/',
+                pos: 42,
+                appearance: 'inline',
+              },
+            ],
           });
 
           expect(
             reduce(first, {
               type: 'QUEUE',
-              url: 'http://www.atlassian.com/',
-              pos: 420,
-              appearance: 'inline',
+              requests: [
+                {
+                  url: 'http://www.atlassian.com/',
+                  pos: 420,
+                  appearance: 'inline',
+                },
+              ],
             }),
           ).toEqual({
             requests: [
@@ -116,9 +128,13 @@ describe('card', () => {
         it('resolves a single queued URL', () => {
           const added = reduce(initialState, {
             type: 'QUEUE',
-            url: 'http://www.atlassian.com/',
-            pos: 42,
-            appearance: 'inline',
+            requests: [
+              {
+                url: 'http://www.atlassian.com/',
+                pos: 42,
+                appearance: 'inline',
+              },
+            ],
           });
 
           expect(
@@ -135,9 +151,13 @@ describe('card', () => {
             (state, pos) =>
               reduce(state, {
                 type: 'QUEUE',
-                url: 'http://www.atlassian.com/',
-                pos,
-                appearance: 'inline',
+                requests: [
+                  {
+                    url: 'http://www.atlassian.com/',
+                    pos,
+                    appearance: 'inline',
+                  },
+                ],
               }),
             initialState,
           );
@@ -145,9 +165,13 @@ describe('card', () => {
           // add another, distinct URL which we don't intend to resolve
           const combined = reduce(withSameUrl, {
             type: 'QUEUE',
-            url: 'http://www.google.com/',
-            pos: 0,
-            appearance: 'inline',
+            requests: [
+              {
+                url: 'http://www.google.com/',
+                pos: 0,
+                appearance: 'inline',
+              },
+            ],
           });
 
           // resolve the first one, leaving the other one

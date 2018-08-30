@@ -4,7 +4,7 @@ import { Plugin, EditorState } from 'prosemirror-state';
 import { analyticsService } from '../../../analytics';
 import { createInputRule } from '../../../utils/input-rules';
 import { Match, LinkMatcher, normalizeUrl } from '../utils';
-import { pluginKey as cardPluginKey } from '../../card/pm-plugins/main';
+import { queueCards } from '../../card/pm-plugins/actions';
 
 export function createLinkInputRule(
   regexp: RegExp,
@@ -25,19 +25,21 @@ export function createLinkInputRule(
         'atlassian.editor.format.hyperlink.autoformatting',
       );
 
-      return state.tr
+      const tr = state.tr
         .addMark(
           start - (link.input!.length - link.lastIndex),
           end - (link.input!.length - link.lastIndex),
           markType,
         )
-        .insertText(' ')
-        .setMeta(cardPluginKey, {
-          type: 'QUEUE',
+        .insertText(' ');
+
+      return queueCards([
+        {
           url: link.url,
           pos: start - (link.input!.length - link.lastIndex),
           appearance: 'inline',
-        });
+        },
+      ])(tr);
     },
   );
 }
