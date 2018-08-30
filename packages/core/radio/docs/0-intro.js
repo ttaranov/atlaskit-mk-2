@@ -1,22 +1,34 @@
 // @flow
 import React from 'react';
 import { md, Example, Props, code } from '@atlaskit/docs';
+import SectionMessage from '@atlaskit/section-message';
 
 export default md`
+${(
+  <SectionMessage appearance="warning">
+    <p>
+      <strong>Note: @atlaskit/form is currently a developer preview.</strong>
+    </p>
+    <p>
+      Please experiment with and test this package but be aware that the API may
+      & probably will change with future releases.
+    </p>
+  </SectionMessage>
+)}
   ### Usage
 
   Provides a standard way to select a single option from a list.
 
-${code`
-import RadioGroup, { AkFieldRadioGroup, AkRadio } from '@atlaskit/field-radio-group';
-`}
+  ${code`
+  import RadioGroup, { AkFieldRadioGroup, AkRadio } from '@atlaskit/field-radio-group';
+  `}
 
   RadioGroup exports a stateful component as the default export. This
   handles the selection of items for you. You can also import a stateless
   version as AkFieldRadioGroup.
 
   Both accept a list of items that pass the properties on to a
-AkRadio component to render. Both stateful and stateless
+  AkRadio component to render. Both stateful and stateless
   maintain the state of their children AkRadio components.
 
   ${(

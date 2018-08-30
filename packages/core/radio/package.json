@@ -22,7 +22,9 @@
     "@atlaskit/analytics-next": "^3.0.6",
     "@atlaskit/field-base": "^11.0.7",
     "@atlaskit/icon": "^13.6.1",
-    "@atlaskit/theme": "^6.0.2"
+    "@atlaskit/icon": "^13.3.1",
+    "@atlaskit/section-message": "^1.0.6",
+    "@atlaskit/theme": "^6.0.1"
   },
   "peerDependencies": {
     "react": "^16.4.0",
@@ -32,7 +34,7 @@
     "@atlaskit/build-utils": "^2.0.0",
     "@atlaskit/button": "^9.0.8",
     "@atlaskit/docs": "^5.0.6",
-    "@atlaskit/form": "^3.1.6",
+    "@atlaskit/form": "^4.0.0",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.2"
   },
