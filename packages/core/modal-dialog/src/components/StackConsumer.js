@@ -2,6 +2,13 @@
 import React, { type Node } from 'react';
 
 type Props = {
+  /**
+   Whether the modal for this stack position is open
+  */
+  isOpen: boolean,
+  /**
+   Children is a function that gets passed the current stack index
+  */
   children: number => Node,
 };
 
@@ -9,27 +16,39 @@ type State = {
   stackIndex: number,
 };
 
+// This is the source of truth for open modals
 let stackConsumers = [];
 
+// This component provides the position of a modal dialog in the list of all open dialogs.
+// The key behaviours are:
+// - When a modal renders for the first time it takes the first stack position
+// - When a modal mounts, all other modals have to adjust their position
+// - When a modal unmounts, all other modals have to adjust their position
 class StackConsumer extends React.Component<Props, State> {
-  componentWillUnmount() {
-    stackConsumers
-      .filter((updateFn, i) => i > stackConsumers.indexOf(this.update))
-      .forEach(updateFn => updateFn());
-    stackConsumers = stackConsumers.filter(stack => stack !== this.update);
-  }
+  state = {
+    stackIndex: 0,
+  };
   componentDidMount() {
     stackConsumers.forEach(updateFn => updateFn());
   }
+  componentDidUpdate(prevProps: Props) {
+    if (prevProps.isOpen && !this.props.isOpen) {
+      stackConsumers = stackConsumers.filter(stack => stack !== this.update);
+      stackConsumers.forEach(updateFn => updateFn());
+    }
+  }
   update = () => {
-    this.forceUpdate();
+    const stackIndex = stackConsumers.indexOf(this.update);
+    if (this.state.stackIndex !== stackIndex) {
+      this.setState({ stackIndex });
+    }
   };
   render() {
     if (stackConsumers.indexOf(this.update) === -1) {
       // add this instance to stack consumer list
       stackConsumers = [this.update, ...stackConsumers];
     }
-    return this.props.children(stackConsumers.indexOf(this.update));
+    return this.props.children(this.state.stackIndex);
   }
 }
 
