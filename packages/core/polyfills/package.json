@@ -4,6 +4,7 @@
   "description": "A package containing polyfills for native methods.",
   "license": "Apache-2.0",
   "main": "index.js",
+  "sideEffects": false,
   "files": [
     "*.js"
   ],
