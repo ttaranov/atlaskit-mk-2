@@ -1,5 +1,8 @@
 # @atlaskit/editor-mobile-bridge
 
+## 3.0.6
+- [patch] Making the media resolution aysnc [c6bacea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c6bacea)
+
 ## 3.0.5
 - [patch] Updated dependencies [7545979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7545979)
   - @atlaskit/editor-core@79.0.0
