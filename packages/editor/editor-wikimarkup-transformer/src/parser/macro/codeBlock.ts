@@ -1,5 +1,5 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
-import { title } from './panel';
+import { title } from '../utils/title';
 
 const SUPPORTED_CODEBOCK_LANGUAGES = [
   'actionscript',
