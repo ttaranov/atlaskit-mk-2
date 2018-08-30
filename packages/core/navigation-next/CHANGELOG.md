@@ -1,5 +1,8 @@
 # @atlaskit/navigation-next
 
+## 3.7.1
+- [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
+
 ## 3.7.0
 - [minor] Align styles and behaviours with updated designs [170fda7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/170fda7)
 

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/tag-group",
-  "version": "6.0.5",
+  "version": "6.0.6",
   "description": "A React component used for grouping and controlling @atlskit/tag components",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -33,7 +33,7 @@
     "@atlaskit/avatar": "^14.0.9",
     "@atlaskit/build-utils": "^2.0.0",
     "@atlaskit/docs": "^5.0.2",
-    "@atlaskit/tag": "^6.0.6",
+    "@atlaskit/tag": "^6.0.7",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.2"
   }
