@@ -130,7 +130,7 @@ async function startDevServer() {
     hot: false,
 
     //change stats to verbose to get detailed information
-    stats: 'minimal',
+    stats: 'verbose',
     clientLogLevel: 'none',
 
     // disable hot reload for tests - they don't need it for running
