@@ -89,8 +89,8 @@ class NestedSection extends Component<{}, { activeLevel: number }> {
       <NestedSectionWrapper>
         <Section key="nested-section" {...sectionProps}>
           {({ css }) => (
-            <div css={{ ...css, paddingBottom: '16px' }}>
-              <GroupHeading>{title}</GroupHeading>
+            <div css={{ ...css, padding: '16px' }}>
+              <Item text={title} />
               {items.map(({ goTo, ...itemProps }) => (
                 <Item
                   key={itemProps.text}
@@ -134,24 +134,15 @@ export default () => (
     <VariationWrapper>
       <h3>Scroll hint section</h3>
       <ScrollableSectionWrapper>
-        <Section key="scroll-hint-section">
+        <Section key="scroll-hint-section" shouldGrow>
           {({ css }) => (
-            <ScrollableSectionInner
-              styles={styles => ({
-                ...styles,
-                inner: {
-                  ...styles.inner,
-                  ...css,
-                  paddingBottom: `16px`,
-                },
-              })}
-            >
+            <div css={css}>
               <GroupHeading>Section title</GroupHeading>
               {scrollingItems.map(itemProps => (
                 <Item key={itemProps.text} {...itemProps} />
               ))}
               <Separator />
-            </ScrollableSectionInner>
+            </div>
           )}
         </Section>
       </ScrollableSectionWrapper>

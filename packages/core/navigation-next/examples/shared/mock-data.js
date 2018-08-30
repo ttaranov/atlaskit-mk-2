@@ -273,6 +273,7 @@ const containerProjectIssues = [
     nestedGroupKey: 'menu',
     parentId: 'container/project/index:menu',
     items: [
+      { type: 'GroupHeading', id: 'heading', text: 'Issues and filters' },
       { type: 'Item', id: 'search-issues', text: 'Search issues' },
       { type: 'Separator', id: 'separator-1' },
       { type: 'Item', id: 'my-open-issues', text: 'My open issues' },
