@@ -1,5 +1,4 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
-import { parse as parseQuery } from 'querystring';
 import { blockquoteMacro } from '../macro/blockQuote';
 import { codeBlockMacro } from '../macro/codeBlock';
 import { colorMacro } from '../macro/color';
@@ -7,6 +6,7 @@ import { panelMacro } from '../macro/panel';
 import { adfMacro } from '../macro/adf';
 import { unknownMacro } from '../macro/unknown';
 import { Token } from './';
+import { parseAttrs } from '../utils/attributeParser';
 
 // {panel:bgColor=red}This is a panel{panel}
 const MACRO_REGEXP_OPENING = /{(\w+)(?::([^{]*?))?}/;
@@ -71,17 +71,4 @@ function fallback(input: string): Token {
     text: input.substr(0, 1),
     length: 1,
   };
-}
-
-function parseAttrs(str: string): { [key: string]: string } {
-  const output = parseQuery(str, '|');
-
-  // take only first value of the same keys
-  Object.keys(output).forEach(key => {
-    if (Array.isArray(output[key])) {
-      output[key] = output[key][0];
-    }
-  });
-
-  return output as { [key: string]: string };
 }

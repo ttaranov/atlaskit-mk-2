@@ -9,7 +9,7 @@ describe('JIRA wiki markup - Images and attachments', () => {
       '!http://www.host.com/image.gif!',
     ],
     [
-      'should find attachments with attributes',
+      'should find attachments with width and height attributes in mediaSingleNode',
       '!quicktime.mov|width=300,height=400!',
     ],
     [
