@@ -392,6 +392,7 @@ const iconIds: Array<string> = [
   'sign-in',
   'sign-out',
   'star-filled',
+  'star-outline',
   'star-large',
   'star',
   'statuspage',
