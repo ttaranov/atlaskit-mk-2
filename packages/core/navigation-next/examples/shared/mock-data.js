@@ -11,8 +11,6 @@ import { JiraWordmark as JiraWordmarkLogo } from '@atlaskit/logo';
 import { gridSize as gridSizeFn } from '@atlaskit/theme';
 import { Link, Route } from 'react-router-dom';
 
-import { PeekToggleItem } from '../../src';
-
 export const LinkItem = ({ components: C, to, ...props }: *) => {
   return (
     <Route
@@ -41,8 +39,7 @@ const JiraWordmark = () => (
 );
 
 export const globalNavPrimaryItems = [
-  { id: 'jira', icon: JiraIcon, label: 'Jira' },
-  { id: 'peek-toggle', component: PeekToggleItem, icon: null },
+  { id: 'jira', icon: JiraIcon, label: 'Jira', to: '/', component: Link },
   { id: 'search', icon: SearchIcon },
   { id: 'create', icon: AddIcon },
 ];
