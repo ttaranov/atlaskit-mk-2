@@ -14,6 +14,7 @@ import * as statuspageComponentDegraded from './app-card/statuspage-component-de
 import * as statuspageIncidentResolved from './app-card/statuspage-incident-resolved.json';
 import * as statuspageIncidentOutage from './app-card/statuspage-incident-outage.json';
 import * as github from './app-card/github.json';
+import { IntlProvider } from 'react-intl';
 
 const newDesign = true;
 
@@ -23,66 +24,68 @@ function convert(json: any): AppCardModel {
 }
 
 export default () => (
-  <div>
+  <IntlProvider>
     <div>
-      <h1>AppCardView: Examples</h1>
+      <div>
+        <h1>AppCardView: Examples</h1>
 
-      <Section title="Bitbucket">
-        <AppCardView model={convert(bitbucketPullRequest1)} />
-        <AppCardView
-          newDesign={newDesign}
-          model={convert(bitbucketPullRequest1)}
-        />
-        <AppCardView model={convert(bitbucketPullRequest2)} />
-        <AppCardView
-          newDesign={newDesign}
-          model={convert(bitbucketPullRequest2)}
-        />
-      </Section>
+        <Section title="Bitbucket">
+          <AppCardView model={convert(bitbucketPullRequest1)} />
+          <AppCardView
+            newDesign={newDesign}
+            model={convert(bitbucketPullRequest1)}
+          />
+          <AppCardView model={convert(bitbucketPullRequest2)} />
+          <AppCardView
+            newDesign={newDesign}
+            model={convert(bitbucketPullRequest2)}
+          />
+        </Section>
 
-      <Section title="Confluence">
-        <AppCardView model={convert(confluence)} />
-        <AppCardView newDesign={newDesign} model={convert(confluence)} />
-      </Section>
+        <Section title="Confluence">
+          <AppCardView model={convert(confluence)} />
+          <AppCardView newDesign={newDesign} model={convert(confluence)} />
+        </Section>
 
-      <Section title="Jira">
-        <AppCardView model={convert(jiraTask)} />
-        <AppCardView newDesign={newDesign} model={convert(jiraTask)} />
-        <AppCardView model={convert(jiraBug)} />
-        <AppCardView newDesign={newDesign} model={convert(jiraBug)} />
-        <AppCardView model={convert(jiraImprovement)} />
-        <AppCardView newDesign={newDesign} model={convert(jiraImprovement)} />
-        <AppCardView model={convert(jiraStory)} />
-        <AppCardView newDesign={newDesign} model={convert(jiraStory)} />
-      </Section>
+        <Section title="Jira">
+          <AppCardView model={convert(jiraTask)} />
+          <AppCardView newDesign={newDesign} model={convert(jiraTask)} />
+          <AppCardView model={convert(jiraBug)} />
+          <AppCardView newDesign={newDesign} model={convert(jiraBug)} />
+          <AppCardView model={convert(jiraImprovement)} />
+          <AppCardView newDesign={newDesign} model={convert(jiraImprovement)} />
+          <AppCardView model={convert(jiraStory)} />
+          <AppCardView newDesign={newDesign} model={convert(jiraStory)} />
+        </Section>
 
-      <Section title="StatusPage">
-        <AppCardView model={convert(statuspageComponentOperational)} />
-        <AppCardView
-          newDesign={newDesign}
-          model={convert(statuspageComponentOperational)}
-        />
-        <AppCardView model={convert(statuspageComponentDegraded)} />
-        <AppCardView
-          newDesign={newDesign}
-          model={convert(statuspageComponentDegraded)}
-        />
-        <AppCardView model={convert(statuspageIncidentResolved)} />
-        <AppCardView
-          newDesign={newDesign}
-          model={convert(statuspageIncidentResolved)}
-        />
-        <AppCardView model={convert(statuspageIncidentOutage)} />
-        <AppCardView
-          newDesign={newDesign}
-          model={convert(statuspageIncidentOutage)}
-        />
-      </Section>
+        <Section title="StatusPage">
+          <AppCardView model={convert(statuspageComponentOperational)} />
+          <AppCardView
+            newDesign={newDesign}
+            model={convert(statuspageComponentOperational)}
+          />
+          <AppCardView model={convert(statuspageComponentDegraded)} />
+          <AppCardView
+            newDesign={newDesign}
+            model={convert(statuspageComponentDegraded)}
+          />
+          <AppCardView model={convert(statuspageIncidentResolved)} />
+          <AppCardView
+            newDesign={newDesign}
+            model={convert(statuspageIncidentResolved)}
+          />
+          <AppCardView model={convert(statuspageIncidentOutage)} />
+          <AppCardView
+            newDesign={newDesign}
+            model={convert(statuspageIncidentOutage)}
+          />
+        </Section>
 
-      <Section title="Github">
-        <AppCardView model={convert(github)} />
-        <AppCardView newDesign={newDesign} model={convert(github)} />
-      </Section>
+        <Section title="Github">
+          <AppCardView model={convert(github)} />
+          <AppCardView newDesign={newDesign} model={convert(github)} />
+        </Section>
+      </div>
     </div>
-  </div>
+  </IntlProvider>
 );

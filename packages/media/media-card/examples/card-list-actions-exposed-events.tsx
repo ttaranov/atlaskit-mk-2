@@ -6,6 +6,7 @@ import {
   createStorybookContext,
   defaultCollectionName,
 } from '@atlaskit/media-test-helpers';
+import { IntlProvider } from 'react-intl';
 import { CardList, CardListEvent } from '../src';
 import { cardsActions } from '../example-helpers';
 
@@ -40,7 +41,9 @@ const cardLists = [
 ];
 
 export default () => (
-  <div style={{ margin: '40px' }}>
-    <StoryList>{cardLists}</StoryList>
-  </div>
+  <IntlProvider>
+    <div style={{ margin: '40px' }}>
+      <StoryList>{cardLists}</StoryList>
+    </div>
+  </IntlProvider>
 );

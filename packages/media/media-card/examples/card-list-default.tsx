@@ -3,10 +3,13 @@ import {
   createStorybookContext,
   defaultCollectionName,
 } from '@atlaskit/media-test-helpers';
+import { IntlProvider } from 'react-intl';
 import { CardList } from '../src';
 
 const context = createStorybookContext();
 
 export default () => (
-  <CardList context={context} collectionName={defaultCollectionName} />
+  <IntlProvider>
+    <CardList context={context} collectionName={defaultCollectionName} />
+  </IntlProvider>
 );

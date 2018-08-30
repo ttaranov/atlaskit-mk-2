@@ -5,6 +5,7 @@ import {
   createStorybookContext,
   genericFileId,
 } from '@atlaskit/media-test-helpers';
+import { IntlProvider } from 'react-intl';
 import { Card } from '../src';
 
 const GradientBackground: React.ComponentClass<
@@ -33,13 +34,15 @@ class Example extends React.Component<{}, {}> {
 
   render() {
     return (
-      <div ref={this.handleMount}>
-        <GradientBackground>
-          <DummyContent />
-          <Card context={context} identifier={genericFileId} />
-          <DummyContent />
-        </GradientBackground>
-      </div>
+      <IntlProvider>
+        <div ref={this.handleMount}>
+          <GradientBackground>
+            <DummyContent />
+            <Card context={context} identifier={genericFileId} />
+            <DummyContent />
+          </GradientBackground>
+        </div>
+      </IntlProvider>
     );
   }
 }

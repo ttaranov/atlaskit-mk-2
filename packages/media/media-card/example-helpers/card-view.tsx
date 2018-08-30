@@ -26,6 +26,7 @@ import {
   wideImage,
   genericUrlPreview,
 } from '@atlaskit/media-test-helpers';
+import { IntlProvider } from 'react-intl';
 import { CardView, CardAppearance, CardDimensions } from '../src';
 import {
   actions,
@@ -891,11 +892,13 @@ export const generateStoriesForAppearance = (appearance: CardAppearance) => {
       : null;
 
   return () => (
-    <div>
-      <div style={{ margin: '20px 40px' }}>
-        {fileCardStories}
-        {linkCardStories}
+    <IntlProvider>
+      <div>
+        <div style={{ margin: '20px 40px' }}>
+          {fileCardStories}
+          {linkCardStories}
+        </div>
       </div>
-    </div>
+    </IntlProvider>
   );
 };

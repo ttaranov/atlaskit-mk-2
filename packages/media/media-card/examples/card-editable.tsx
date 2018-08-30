@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import {
   createStorybookContext,
-  genericFileId,
+  // genericFileId,
   errorFileId,
 } from '@atlaskit/media-test-helpers';
 import Toggle from '@atlaskit/toggle';

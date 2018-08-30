@@ -21,6 +21,7 @@ import Button from '@atlaskit/button';
 import { Card, FileIdentifier, OnLoadingChangeState } from '../src';
 import { UploadController, FileState } from '@atlaskit/media-core';
 import { Observable } from 'rxjs';
+import { IntlProvider } from 'react-intl';
 import {
   CardWrapper,
   CardFlowHeader,
@@ -162,15 +163,17 @@ class Example extends Component<ComponentProps, ComponentState> {
 
   render() {
     return (
-      <div>
-        <CardFlowHeader>
-          Upload file <input type="file" onChange={this.uploadFile} />
-          <Button appearance="primary" onClick={this.cancelUpload}>
-            Cancel upload
-          </Button>
-        </CardFlowHeader>
-        {this.renderCards()}
-      </div>
+      <IntlProvider>
+        <div>
+          <CardFlowHeader>
+            Upload file <input type="file" onChange={this.uploadFile} />
+            <Button appearance="primary" onClick={this.cancelUpload}>
+              Cancel upload
+            </Button>
+          </CardFlowHeader>
+          {this.renderCards()}
+        </div>
+      </IntlProvider>
     );
   }
 }

@@ -9,6 +9,7 @@ import {
   createStorybookContext,
   defaultCollectionName as collectionName,
 } from '@atlaskit/media-test-helpers';
+import { IntlProvider } from 'react-intl';
 
 import { Card, UrlPreviewIdentifier } from '../src';
 
@@ -122,25 +123,27 @@ class LiveUrlConverter extends Component<{}, LiveUrlConverterState> {
     ];
 
     return (
-      <div style={{ margin: '20px' }}>
-        <h1>Url live preview</h1>
-        <div style={{ display: 'flex', alignItems: 'flex-end' }}>
-          <div style={{ width: '500px', marginRight: '20px' }}>
-            <FieldText
-              label="url"
-              type="text"
-              shouldFitContainer={true}
-              placeholder="Paste some url..."
-              value={this.state.link}
-              onChange={this.onInputChange}
-            />
+      <IntlProvider>
+        <div style={{ margin: '20px' }}>
+          <h1>Url live preview</h1>
+          <div style={{ display: 'flex', alignItems: 'flex-end' }}>
+            <div style={{ width: '500px', marginRight: '20px' }}>
+              <FieldText
+                label="url"
+                type="text"
+                shouldFitContainer={true}
+                placeholder="Paste some url..."
+                value={this.state.link}
+                onChange={this.onInputChange}
+              />
+            </div>
+            <Button appearance="primary" onClick={this.onAddLink}>
+              Add link
+            </Button>
           </div>
-          <Button appearance="primary" onClick={this.onAddLink}>
-            Add link
-          </Button>
+          <StoryList>{cards}</StoryList>
         </div>
-        <StoryList>{cards}</StoryList>
-      </div>
+      </IntlProvider>
     );
   }
 

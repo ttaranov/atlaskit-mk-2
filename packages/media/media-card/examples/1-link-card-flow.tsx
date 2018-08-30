@@ -18,6 +18,7 @@ import {
 } from '@atlaskit/media-test-helpers';
 import { Card, OnLoadingChangeState, Identifier } from '../src';
 import { UploadController } from '@atlaskit/media-core';
+import { IntlProvider } from 'react-intl';
 import {
   CardWrapper,
   CardsWrapper,
@@ -83,7 +84,11 @@ class Example extends Component<ComponentProps, ComponentState> {
   };
 
   render() {
-    return <div>{this.renderCards()}</div>;
+    return (
+      <IntlProvider>
+        <div>{this.renderCards()}</div>
+      </IntlProvider>
+    );
   }
 }
 

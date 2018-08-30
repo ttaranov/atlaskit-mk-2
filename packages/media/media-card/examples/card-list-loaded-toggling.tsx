@@ -4,6 +4,7 @@ import {
   createStorybookContext,
   collectionNames,
 } from '@atlaskit/media-test-helpers';
+import { IntlProvider } from 'react-intl';
 import { CardList } from '../src';
 import {
   CardSwitcherWrapper,
@@ -34,32 +35,38 @@ class CardSwitcher extends Component<CardSwitcherProps, CardSwitcherState> {
     const { collectionName } = this.state;
 
     return (
-      <CardSwitcherWrapper>
-        <CardSwitcherRow>
-          <div>NO infinite scroll</div>
-          <CardSwitcherBtn onClick={toggle}>Toggle collection</CardSwitcherBtn>
-          <CardSwitcherTitle>{collectionName}</CardSwitcherTitle>
-          <CardList
-            context={context}
-            collectionName={collectionName}
-            pageSize={30}
-            cardAppearance={'small'}
-          />
-        </CardSwitcherRow>
-        <CardSwitcherRow>
-          <div>With infinite scroll</div>
-          <CardSwitcherBtn onClick={toggle}>Toggle collection</CardSwitcherBtn>
-          <CardSwitcherTitle>{collectionName}</CardSwitcherTitle>
-          <CardList
-            context={context}
-            collectionName={collectionName}
-            pageSize={20}
-            height={320}
-            useInfiniteScroll={true}
-            cardAppearance={'small'}
-          />
-        </CardSwitcherRow>
-      </CardSwitcherWrapper>
+      <IntlProvider>
+        <CardSwitcherWrapper>
+          <CardSwitcherRow>
+            <div>NO infinite scroll</div>
+            <CardSwitcherBtn onClick={toggle}>
+              Toggle collection
+            </CardSwitcherBtn>
+            <CardSwitcherTitle>{collectionName}</CardSwitcherTitle>
+            <CardList
+              context={context}
+              collectionName={collectionName}
+              pageSize={30}
+              cardAppearance={'small'}
+            />
+          </CardSwitcherRow>
+          <CardSwitcherRow>
+            <div>With infinite scroll</div>
+            <CardSwitcherBtn onClick={toggle}>
+              Toggle collection
+            </CardSwitcherBtn>
+            <CardSwitcherTitle>{collectionName}</CardSwitcherTitle>
+            <CardList
+              context={context}
+              collectionName={collectionName}
+              pageSize={20}
+              height={320}
+              useInfiniteScroll={true}
+              cardAppearance={'small'}
+            />
+          </CardSwitcherRow>
+        </CardSwitcherWrapper>
+      </IntlProvider>
     );
   }
 
