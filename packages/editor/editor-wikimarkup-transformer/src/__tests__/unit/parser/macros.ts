@@ -18,6 +18,7 @@ describe('JIRA wiki markup - Macros', () => {
       'should not process code contents',
       '{code:xml}this is a {color:red}colored text{color}{noformat}{code}',
     ],
+    ['should process code with title', '{code:title=title}const i = 0;{code}'],
     [
       'should convert panels',
       '{panel:title=My Title|borderStyle=dashed}Panel with nested quote here{panel}',
