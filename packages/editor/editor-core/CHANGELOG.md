@@ -1,5 +1,12 @@
 # @atlaskit/editor-core
 
+## 79.0.1
+- [patch] Append timestamp in image files for Clipboard component [da65dec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da65dec)
+- [patch] Updated dependencies [da65dec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da65dec)
+  - @atlaskit/media-picker@14.0.1
+  - @atlaskit/renderer@21.0.1
+  - @atlaskit/editor-common@15.0.1
+
 ## 79.0.0
 - [major] Updated dependencies [7545979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7545979)
   - @atlaskit/editor-common@15.0.0
