@@ -373,6 +373,7 @@ import PresenceBusyIcon from '../glyph/presence-busy';
 import PresenceUnavailableIcon from '../glyph/presence-unavailable';
 import QuestionCircleIcon from '../glyph/question-circle';
 import QuestionIcon from '../glyph/question';
+import QuestionsIcon from '../glyph/questions';
 import QueuesIcon from '../glyph/queues';
 import QuoteIcon from '../glyph/quote';
 import RadioIcon from '../glyph/radio';
@@ -2623,6 +2624,12 @@ export default {
     component: QuestionIcon,
     componentName: 'QuestionIcon',
     package: '@atlaskit/icon/glyph/question',
+  },
+  questions: {
+    keywords: ['questions'],
+    component: QuestionsIcon,
+    componentName: 'QuestionsIcon',
+    package: '@atlaskit/icon/glyph/questions',
   },
   queues: {
     keywords: ['queues'],
