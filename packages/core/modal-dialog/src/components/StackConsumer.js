@@ -31,6 +31,15 @@ class StackConsumer extends React.Component<Props, State> {
   componentDidMount() {
     stackConsumers.forEach(updateFn => updateFn());
   }
+  componentWillUnmount() {
+    // This check will pass if the <Transition><Modal/></Transition> pattern has not been
+    // implemented correctly. In this case, will still need to make sure we remove ourselves
+    // from the stack list.
+    if (stackConsumers.indexOf(this.update) !== -1) {
+      stackConsumers = stackConsumers.filter(stack => stack !== this.update);
+      stackConsumers.forEach(updateFn => updateFn());
+    }
+  }
   componentDidUpdate(prevProps: Props) {
     if (prevProps.isOpen && !this.props.isOpen) {
       stackConsumers = stackConsumers.filter(stack => stack !== this.update);
