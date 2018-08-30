@@ -1,4 +1,4 @@
-import { hexToRgba, isRgb } from '../../../utils/color';
+import { hexToRgba, isRgb, normalizeHexColor } from '../../../utils/color';
 
 describe('@atlaskit/editor-core color utils', () => {
   describe('hex2rgba', () => {
@@ -26,6 +26,12 @@ describe('@atlaskit/editor-core color utils', () => {
 
     it('returns falsy for random string', () => {
       expect(isRgb('rgab(00')).toBeFalsy();
+    });
+  });
+
+  describe('normalizeHexColor', () => {
+    it('converts color name to hex', () => {
+      expect(normalizeHexColor('red')).toEqual('#ff0000');
     });
   });
 });

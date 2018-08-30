@@ -1,4 +1,4 @@
-import * as namedColors from 'css-color-names';
+import namedColors from 'css-color-names';
 
 /**
  * @return String with HEX-coded color
