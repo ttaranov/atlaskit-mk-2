@@ -1,5 +1,8 @@
 # @atlaskit/reduced-ui-pack
 
+## 9.4.0
+- [minor] Add and edit star icons [55e3ec7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/55e3ec7)
+
 ## 9.3.0
 - [minor] Add the new child-issues icon [8d3f8dd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d3f8dd)
 
