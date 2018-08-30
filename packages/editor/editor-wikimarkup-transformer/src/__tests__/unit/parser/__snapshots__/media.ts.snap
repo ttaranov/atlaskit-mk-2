@@ -4,9 +4,6 @@ exports[`JIRA wiki markup - Images and attachments [CS-216] should parse media f
 Object {
   "content": Array [
     Object {
-      "attrs": Object {
-        "layout": "wide",
-      },
       "content": Array [
         Object {
           "attrs": Object {
@@ -26,7 +23,7 @@ Object {
           "type": "media",
         },
       ],
-      "type": "mediaSingle",
+      "type": "mediaGroup",
     },
   ],
   "type": "doc",
@@ -80,9 +77,6 @@ Object {
       "type": "paragraph",
     },
     Object {
-      "attrs": Object {
-        "layout": "wide",
-      },
       "content": Array [
         Object {
           "attrs": Object {
@@ -102,7 +96,7 @@ Object {
           "type": "media",
         },
       ],
-      "type": "mediaSingle",
+      "type": "mediaGroup",
     },
     Object {
       "content": Array [
@@ -122,9 +116,6 @@ exports[`JIRA wiki markup - Images and attachments should find attachments in th
 Object {
   "content": Array [
     Object {
-      "attrs": Object {
-        "layout": "wide",
-      },
       "content": Array [
         Object {
           "attrs": Object {
@@ -144,47 +135,14 @@ Object {
           "type": "media",
         },
       ],
-      "type": "mediaSingle",
+      "type": "mediaGroup",
     },
   ],
   "type": "doc",
 }
 `;
 
-exports[`JIRA wiki markup - Images and attachments should find attachments with attributes 1`] = `
-Object {
-  "content": Array [
-    Object {
-      "attrs": Object {
-        "layout": "wide",
-      },
-      "content": Array [
-        Object {
-          "attrs": Object {
-            "__displayType": null,
-            "__fileMimeType": null,
-            "__fileName": null,
-            "__fileSize": null,
-            "__key": null,
-            "collection": "",
-            "height": null,
-            "id": "quicktime.mov",
-            "occurrenceKey": null,
-            "type": "file",
-            "url": null,
-            "width": null,
-          },
-          "type": "media",
-        },
-      ],
-      "type": "mediaSingle",
-    },
-  ],
-  "type": "doc",
-}
-`;
-
-exports[`JIRA wiki markup - Images and attachments should find attachments with attributes in mediaSingleNode 1`] = `
+exports[`JIRA wiki markup - Images and attachments should find attachments with width and height attributes in mediaSingleNode 1`] = `
 Object {
   "content": Array [
     Object {
@@ -221,9 +179,6 @@ exports[`JIRA wiki markup - Images and attachments should find images in a multi
 Object {
   "content": Array [
     Object {
-      "attrs": Object {
-        "layout": "wide",
-      },
       "content": Array [
         Object {
           "attrs": Object {
@@ -243,7 +198,7 @@ Object {
           "type": "media",
         },
       ],
-      "type": "mediaSingle",
+      "type": "mediaGroup",
     },
     Object {
       "content": Array [
@@ -263,9 +218,6 @@ exports[`JIRA wiki markup - Images and attachments should find images in the tex
 Object {
   "content": Array [
     Object {
-      "attrs": Object {
-        "layout": "wide",
-      },
       "content": Array [
         Object {
           "attrs": Object {
@@ -285,7 +237,7 @@ Object {
           "type": "media",
         },
       ],
-      "type": "mediaSingle",
+      "type": "mediaGroup",
     },
   ],
   "type": "doc",

@@ -605,37 +605,33 @@ Object {
     Object {
       "content": Array [
         Object {
-          "content": Array [
-            Object {
-              "attrs": Object {
-                "layout": "wide",
-              },
-              "content": Array [
-                Object {
-                  "attrs": Object {
-                    "__displayType": null,
-                    "__fileMimeType": null,
-                    "__fileName": null,
-                    "__fileSize": null,
-                    "__key": null,
-                    "collection": "",
-                    "height": null,
-                    "id": "attached-image.gif",
-                    "occurrenceKey": null,
-                    "type": "file",
-                    "url": null,
-                    "width": null,
-                  },
-                  "type": "media",
-                },
-              ],
-              "type": "mediaSingle",
-            },
-          ],
-          "type": "listItem",
+          "text": "* ",
+          "type": "text",
         },
       ],
-      "type": "bulletList",
+      "type": "paragraph",
+    },
+    Object {
+      "content": Array [
+        Object {
+          "attrs": Object {
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "__key": null,
+            "collection": "",
+            "height": null,
+            "id": "attached-image.gif",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+      ],
+      "type": "mediaGroup",
     },
   ],
   "type": "doc",

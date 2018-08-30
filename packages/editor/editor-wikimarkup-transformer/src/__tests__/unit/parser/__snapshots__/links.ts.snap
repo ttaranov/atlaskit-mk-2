@@ -243,9 +243,6 @@ Object {
       "type": "paragraph",
     },
     Object {
-      "attrs": Object {
-        "layout": "wide",
-      },
       "content": Array [
         Object {
           "attrs": Object {
@@ -265,7 +262,7 @@ Object {
           "type": "media",
         },
       ],
-      "type": "mediaSingle",
+      "type": "mediaGroup",
     },
     Object {
       "content": Array [
