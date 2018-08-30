@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 21.0.4
+- [patch] Unique heading IDs [d312d25](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d312d25)
+
 ## 21.0.3
 - [patch] Fix issue where BreakoutProvider would not import correctly in Typescript [6b95448](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6b95448)
 
