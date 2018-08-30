@@ -86,8 +86,8 @@ async function getPackagesWithTests() /*: Promise<Array<string>> */ {
 //
 async function startDevServer() {
   const workspacesGlob = await getPackagesWithTests();
-  const mode = 'production';
-  const websiteEnv = 'production';
+  const mode = 'development';
+  const websiteEnv = 'local';
   const projectRoot = (await bolt.getProject({ cwd: process.cwd() })).dir;
   const workspaces = await bolt.getWorkspaces();
   const filteredWorkspaces = workspacesGlob
