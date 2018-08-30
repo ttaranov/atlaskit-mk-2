@@ -18,6 +18,7 @@
     "@atlaskit/analytics-gas-types": "^3.2.0",
     "@atlaskit/analytics-namespaced-context": "^2.1.2",
     "@atlaskit/analytics-next": "^3.0.3",
+    "@atlaskit/analytics-next-types": "^3.1.0",
     "lodash.last": "^3.0.0",
     "lodash.merge": "^4.6.1",
     "tslib": "^1.8.0"

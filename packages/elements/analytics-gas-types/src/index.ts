@@ -21,9 +21,9 @@ export type GasCorePayload = {
   actionSubjectId?: string;
   eventType: EventType;
   attributes?: {
-    packageName: string;
-    packageVersion: string;
-    componentName: string;
+    packageName?: string;
+    packageVersion?: string;
+    componentName?: string;
     [key: string]: any;
   };
   nonPrivacySafeAttributes?: {

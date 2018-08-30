@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { mount } from 'enzyme';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { FabricChannel } from '@atlaskit/analytics-listeners';
 import { createDummyComponentWithAnalytics } from '../examples/helpers';
