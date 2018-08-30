@@ -1,45 +1,25 @@
 // @flow
-import {
-  withAnalyticsEvents,
-  withAnalyticsContext,
-  createAndFireEvent,
-} from '@atlaskit/analytics-next';
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../../../../package.json';
-import '../../Avatar';
+import { UIAnalyticsEvent } from '@atlaskit/analytics-next';
+import React from 'react';
+import { mount } from 'enzyme';
 
-// This is a global mock for this file that will mock all components wrapped with analytics
-// and replace them with an empty SFC that returns null. This includes components imported
-// directly in this file and others imported as dependencies of those imports.
-jest.mock('@atlaskit/analytics-next', () => ({
-  withAnalyticsEvents: jest.fn(() => jest.fn(() => () => null)),
-  withAnalyticsContext: jest.fn(() => jest.fn(() => () => null)),
-  createAndFireEvent: jest.fn(() => jest.fn(args => args)),
-}));
+import Avatar from '../../Avatar';
 
 describe('Avatar', () => {
-  it('should be wrapped with analytics context', () => {
-    expect(withAnalyticsContext).toHaveBeenCalledWith({
-      componentName: 'avatar',
-      packageName,
-      packageVersion,
-    });
-  });
+  it('should call onClick analytics event when onClick is not provided', () => {
+    const mockFn = jest.fn();
+    const wrapper = mount(<Avatar onClick={mockFn} />);
+    const inner = wrapper.find('Inner');
 
-  it('should be wrapped with analytics events', () => {
-    expect(createAndFireEvent).toHaveBeenCalledWith('atlaskit');
-    expect(withAnalyticsEvents).toHaveBeenLastCalledWith({
-      onClick: {
-        action: 'clicked',
-        actionSubject: 'avatar',
-        attributes: {
-          componentName: 'avatar',
-          packageName,
-          packageVersion,
-        },
-      },
-    });
+    inner.prop('onClick')();
+
+    expect(mockFn.mock.calls.length).toBe(1);
+    expect(mockFn.mock.calls[0][1]).toBeInstanceOf(UIAnalyticsEvent);
+  });
+  it('should not call onClick analytics event when onClick is not provided', () => {
+    const wrapper = mount(<Avatar />);
+    const inner = wrapper.find('Inner');
+
+    expect(inner.prop('onClick')).toBeUndefined();
   });
 });

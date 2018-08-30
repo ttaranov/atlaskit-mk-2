@@ -1,5 +1,9 @@
 # @atlaskit/select
 
+## 5.0.14
+- [patch] Updated dependencies [d8d8107](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d8d8107)
+  - @atlaskit/form@4.0.0
+
 ## 5.0.13
 - [patch] Using the latest popper to avoid recursive setState calls. [9dceca9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9dceca9)
 

@@ -36,6 +36,26 @@ class Avatar extends Component<AvatarPropTypes> {
     size: 'medium',
   };
 
+  createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+  clickAnalyticsCaller = () => {
+    const { createAnalyticsEvent } = this.props;
+
+    if (createAnalyticsEvent) {
+      return this.createAndFireEventOnAtlaskit({
+        action: 'clicked',
+        actionSubject: 'avatar',
+
+        attributes: {
+          componentName: 'avatar',
+          packageName,
+          packageVersion,
+        },
+      })(createAnalyticsEvent);
+    }
+    return undefined;
+  };
+
   // expose blur/focus to consumers via ref
   blur = () => {
     if (this.ref) this.ref.blur();
@@ -53,7 +73,9 @@ class Avatar extends Component<AvatarPropTypes> {
 
     const item = omit(this.props, ...propsOmittedFromClickData);
 
-    onClick({ item, event });
+    const analyticsEvent = this.clickAnalyticsCaller();
+
+    onClick({ item, event }, analyticsEvent);
   };
 
   // enforce status / presence rules
@@ -138,6 +160,8 @@ class Avatar extends Component<AvatarPropTypes> {
     // TODO: why not enhanced props?
     const Inner: any = getStyledAvatar(this.props);
 
+    Inner.displayName = 'Inner';
+
     const AvatarNode = (
       <Outer size={size} stackIndex={stackIndex}>
         <Inner
@@ -175,23 +199,8 @@ export const AvatarWithoutAnalytics = mapProps({
     ), // 2
 })(withPseudoState(Avatar));
 
-const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
-
 export default withAnalyticsContext({
   componentName: 'avatar',
   packageName,
   packageVersion,
-})(
-  withAnalyticsEvents({
-    onClick: createAndFireEventOnAtlaskit({
-      action: 'clicked',
-      actionSubject: 'avatar',
-
-      attributes: {
-        componentName: 'avatar',
-        packageName,
-        packageVersion,
-      },
-    }),
-  })(AvatarWithoutAnalytics),
-);
+})(withAnalyticsEvents()(AvatarWithoutAnalytics));

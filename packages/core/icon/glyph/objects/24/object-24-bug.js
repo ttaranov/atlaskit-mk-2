@@ -19,4 +19,5 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Objects24Object24BugIcon = function Objects24Object24BugIcon(props) {
   return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path fill="#FF5630" fill-rule="evenodd" d="M3 0h18a3 3 0 0 1 3 3v18a3 3 0 0 1-3 3H3a3 3 0 0 1-3-3V3a3 3 0 0 1 3-3zm9 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10z"/></svg>' }, props));
 };
+Objects24Object24BugIcon.displayName = 'Objects24Object24BugIcon';
 exports.default = Objects24Object24BugIcon;

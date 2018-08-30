@@ -44,6 +44,7 @@ const state: State = {
   },
   context: {} as any, // TODO: fix this
   config: {},
+  deferredIdUpfronts: {},
 };
 
 export default state;

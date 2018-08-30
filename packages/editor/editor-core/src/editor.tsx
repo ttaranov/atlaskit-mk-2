@@ -5,7 +5,7 @@ import { EditorView } from 'prosemirror-view';
 import { ProviderFactory, Transformer } from '@atlaskit/editor-common';
 import { getUiComponent } from './create-editor';
 import EditorActions from './actions';
-import { EditorProps } from './types';
+import { EditorProps } from './types/editor-props';
 import { ReactEditorView } from './create-editor';
 import { EventDispatcher } from './event-dispatcher';
 import EditorContext from './ui/EditorContext';
@@ -183,7 +183,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
   };
 
   render() {
-    const Component = getUiComponent(this.props.appearance);
+    const Component = getUiComponent(this.props.appearance!);
 
     const overriddenEditorProps = {
       ...this.props,

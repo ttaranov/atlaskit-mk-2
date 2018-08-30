@@ -1,5 +1,5 @@
-// @flow
-import { md, code } from '@atlaskit/docs';
+import * as React from 'react';
+import { md, code, Props } from '@atlaskit/docs';
 
 export default md`
   # Installing @atlaskit/editor-core
@@ -197,4 +197,15 @@ ${code`
 `}
 
   We’d love to hear your feedback.
+
+  ${(
+    <Props
+      shouldCollapseProps
+      heading="Editor Props"
+      props={
+        // @ts-ignore
+        require('!!extract-react-types-loader!../src/editor')
+      }
+    />
+  )}
 `;

@@ -1,5 +1,31 @@
 # @atlaskit/editor-core
 
+## 79.0.1
+- [patch] Append timestamp in image files for Clipboard component [da65dec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da65dec)
+- [patch] Updated dependencies [da65dec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da65dec)
+  - @atlaskit/media-picker@14.0.1
+  - @atlaskit/renderer@21.0.1
+  - @atlaskit/editor-common@15.0.1
+
+## 79.0.0
+- [major] Updated dependencies [7545979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7545979)
+  - @atlaskit/editor-common@15.0.0
+  - @atlaskit/renderer@21.0.0
+  - @atlaskit/emoji@40.0.0
+  - @atlaskit/media-card@33.0.0
+  - @atlaskit/media-filmstrip@12.0.0
+  - @atlaskit/media-picker@14.0.0
+  - @atlaskit/editor-bitbucket-transformer@4.0.9
+  - @atlaskit/editor-json-transformer@4.0.8
+  - @atlaskit/editor-markdown-transformer@2.0.8
+  - @atlaskit/editor-test-helpers@6.0.6
+  - @atlaskit/task-decision@8.1.7
+  - @atlaskit/util-data-test@10.0.8
+  - @atlaskit/media-core@23.1.0
+
+## 78.0.8
+- [patch] Fix broken import blocking confluence [5545403](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5545403)
+
 ## 78.0.7
 - [patch] ED-5280: Revert 68a0978 due to issues with Confluence. The IntlProviders were clashing and preventing Confluence from internationalising the elements inside the editor. [ab71cd1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ab71cd1)
 

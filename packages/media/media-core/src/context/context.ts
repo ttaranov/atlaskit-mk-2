@@ -1,14 +1,9 @@
-import * as uuid from 'uuid';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from 'rxjs/Observer';
 import { of } from 'rxjs/observable/of';
-import { Subscriber } from 'rxjs/Subscriber';
-import { defer } from 'rxjs/observable/defer';
-import { concat } from 'rxjs/operators/concat';
-import { refCount } from 'rxjs/operators/refCount';
 import { startWith } from 'rxjs/operators/startWith';
 import { publishReplay } from 'rxjs/operators/publishReplay';
-
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 import {
   MediaStore,
   uploadFile,
@@ -39,8 +34,9 @@ import {
   GetFileOptions,
   FileState,
   mapMediaFileToFileState,
+  FilePreview,
 } from '../fileState';
-import FileStreamCache from './fileStreamCache';
+import FileStreamCache, { fileStreamsCache } from './fileStreamCache';
 import { getMediaTypeFromUploadableFile } from '../utils/getMediaTypeFromUploadableFile';
 
 const DEFAULT_CACHE_SIZE = 200;
@@ -103,13 +99,11 @@ class ContextImpl implements Context {
   private readonly urlPreviewPool = MediaUrlPreviewProvider.createPool();
   private readonly fileItemCache: LRUCache<string, FileItem>;
   private readonly localPreviewCache: LRUCache<string, string>;
-  private readonly fileStreamsCache: FileStreamCache;
   private readonly mediaStore: MediaStore;
 
   constructor(readonly config: ContextConfig) {
     this.fileItemCache = new LRUCache(config.cacheSize || DEFAULT_CACHE_SIZE);
     this.localPreviewCache = new LRUCache(10);
-    this.fileStreamsCache = new FileStreamCache();
     this.mediaStore = new MediaStore({
       authProvider: config.authProvider,
     });
@@ -118,7 +112,7 @@ class ContextImpl implements Context {
   getFile(id: string, options?: GetFileOptions): Observable<FileState> {
     const key = FileStreamCache.createKey(id, options);
 
-    return this.fileStreamsCache.getOrInsert(key, () => {
+    return fileStreamsCache.getOrInsert(key, () => {
       const collection = options && options.collectionName;
       const fileStream$ = publishReplay<FileState>(1)(
         this.createDownloadFileStream(id, collection),
@@ -256,85 +250,81 @@ class ContextImpl implements Context {
     controller?: UploadController,
   ): Observable<FileState> {
     let fileId: string;
+    let mimeType = '';
+    let preview: FilePreview;
     // TODO [MSW-796]: get file size for base64
     const size = file.content instanceof Blob ? file.content.size : 0;
     const mediaType = getMediaTypeFromUploadableFile(file);
     const collectionName = file.collection;
     const name = file.name || ''; // name property is not available in base64 image
-    // TODO [MSW-678]: remove when id upfront is exposed
-    const tempFileId = uuid.v4();
-    const tempKey = FileStreamCache.createKey(tempFileId, { collectionName });
-    let mimeType = '';
+    const subject = new ReplaySubject<FileState>(1);
 
-    const fileStreamSubscribe = (observer: Subscriber<FileState>) => {
-      if (file.content instanceof Blob) {
-        mimeType = file.content.type;
-        observer.next({
+    if (file.content instanceof Blob) {
+      mimeType = file.content.type;
+      preview = {
+        blob: file.content,
+      };
+    }
+    const { deferredFileId: onUploadFinish, cancel } = uploadFile(
+      file,
+      this.apiConfig,
+      {
+        onProgress: progress => {
+          if (fileId) {
+            subject.next({
+              progress,
+              name,
+              size,
+              mediaType,
+              mimeType,
+              id: fileId,
+              status: 'uploading',
+            });
+          }
+        },
+        onId: id => {
+          fileId = id;
+          const key = FileStreamCache.createKey(fileId, { collectionName });
+          fileStreamsCache.set(key, subject);
+          if (file.content instanceof Blob) {
+            subject.next({
+              name,
+              size,
+              mediaType,
+              mimeType,
+              id: fileId,
+              progress: 0,
+              status: 'uploading',
+              preview,
+            });
+          }
+        },
+      },
+    );
+
+    if (controller) {
+      controller.setAbort(cancel);
+    }
+
+    onUploadFinish
+      .then(() => {
+        subject.next({
+          id: fileId,
           name,
           size,
           mediaType,
           mimeType,
-          id: tempFileId,
-          progress: 0,
-          status: 'uploading',
-          preview: {
-            blob: file.content,
-          },
+          status: 'processing',
+          preview,
         });
-      }
-
-      const { deferredFileId, cancel } = uploadFile(file, this.apiConfig, {
-        onProgress: progress => {
-          observer.next({
-            progress,
-            name,
-            size,
-            mediaType,
-            mimeType,
-            id: tempFileId,
-            status: 'uploading',
-          });
-        },
+        subject.complete();
+      })
+      .catch(error => {
+        // we can't use .catch(subject.error) due that will change the Subscriber context
+        subject.error(error);
       });
 
-      if (controller) {
-        controller.setAbort(cancel);
-      }
-
-      deferredFileId
-        .then(id => {
-          fileId = id;
-          const key = FileStreamCache.createKey(id, { collectionName });
-
-          // we create a new entry in the cache with the same stream to make the temp/public id mapping to work
-          this.fileStreamsCache.set(key, fileStream);
-          observer.next({
-            id,
-            name,
-            size,
-            mediaType,
-            mimeType,
-            status: 'processing',
-          });
-          observer.complete();
-        })
-        .catch(error => {
-          // we can't use .catch(observer.error) due that will change the Subscriber context
-          observer.error(error);
-        });
-    };
-
-    const fileStream = new Observable<FileState>(fileStreamSubscribe).pipe(
-      concat(
-        defer(() => this.createDownloadFileStream(fileId, collectionName)),
-      ),
-      publishReplay(1),
-      refCount(),
-    );
-
-    this.fileStreamsCache.set(tempKey, fileStream);
-
-    return fileStream;
+    return subject;
   }
 
   refreshCollection(collectionName: string, pageSize: number): void {

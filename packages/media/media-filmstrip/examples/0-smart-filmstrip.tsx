@@ -44,7 +44,7 @@ class Example extends Component<{}, ExampleState> {
     }
   };
 
-  getItemIndex = (id: string): number => {
+  getItemIndex = (id: string | Promise<string>): number => {
     const { items } = this.state;
     const item = items.find(
       item => (item.identifier as FileIdentifier).id === id,

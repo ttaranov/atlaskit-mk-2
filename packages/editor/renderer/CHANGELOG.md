@@ -1,5 +1,20 @@
 # @atlaskit/renderer
 
+## 21.0.1
+- [patch] Updated dependencies [da65dec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da65dec)
+  - @atlaskit/editor-common@15.0.1
+
+## 21.0.0
+- [major] Updated dependencies [7545979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7545979)
+  - @atlaskit/editor-common@15.0.0
+  - @atlaskit/media-card@33.0.0
+  - @atlaskit/media-filmstrip@12.0.0
+  - @atlaskit/editor-json-transformer@4.0.8
+  - @atlaskit/editor-test-helpers@6.0.6
+  - @atlaskit/task-decision@8.1.7
+  - @atlaskit/util-data-test@10.0.8
+  - @atlaskit/media-core@23.1.0
+
 ## 20.1.2
 - [patch] Update Page Layout sizing to be more compact, fix quick-insert icon, fix issue with Popup not centering toolbar in certain situations [1effb83](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1effb83)
 
