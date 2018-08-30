@@ -6,6 +6,7 @@ import {
   MediaSingleLayout,
 } from '@atlaskit/editor-common';
 import { BreakoutConsumer } from '../';
+import MediaGroup from './mediaGroup';
 
 export interface Props {
   children: ReactElement<any>;
@@ -74,6 +75,14 @@ export default class MediaSingle extends Component<
       if (height === null) {
         height = stateHeight || DEFAULT_HEIGHT;
       }
+    }
+
+    if (!height || !width) {
+      return (
+        <BreakoutConsumer>
+          {containerWidth => <MediaGroup>{media}</MediaGroup>}
+        </BreakoutConsumer>
+      );
     }
 
     return (

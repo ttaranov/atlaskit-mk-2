@@ -2,17 +2,16 @@ import * as React from 'react';
 import { Component, ReactElement } from 'react';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import { MediaSingle } from '@atlaskit/editor-common';
+import { MediaSingle, MediaBase } from '@atlaskit/editor-common';
 import { MediaNodeProps } from './media';
 import { stateKey, MediaPluginState } from '../pm-plugins/main';
-
 const DEFAULT_WIDTH = 250;
 const DEFAULT_HEIGHT = 200;
 
 export interface MediaSingleNodeProps {
   node: PMNode;
   view: EditorView;
-  width: number;
+  width?: number;
 }
 
 export interface MediaSingleNodeState {
@@ -114,8 +113,21 @@ export default class MediaSingleNode extends Component<
       if (height === null) {
         height = stateHeight || DEFAULT_HEIGHT;
       }
+    } else {
+      if (width === null) {
+        return (
+          <MediaBase widthExists={false}>
+            {React.cloneElement(
+              this.child as ReactElement<any>,
+              {
+                progress,
+                onExternalImageLoaded: this.onExternalImageLoaded,
+              } as MediaNodeProps,
+            )}
+          </MediaBase>
+        );
+      }
     }
-
     return (
       <MediaSingle
         layout={layout}
