@@ -5,12 +5,12 @@ import type { OptionsPropType, OptionPropType } from './types';
 /* eslint-disable react/no-array-index-key */
 
 export type RadioGroupProps = {
+  checkedValue?: string | number | null,
   defaultCheckedValue?: string | number | null,
   isRequired?: boolean,
   options: OptionsPropType,
   onInvalid?: (event: SyntheticEvent<*>) => void,
   onChange: (event: SyntheticEvent<*>) => void,
-  checkedValue?: string | number | null,
 };
 
 type RadioElementArray = Array<Element<typeof Radio>>;

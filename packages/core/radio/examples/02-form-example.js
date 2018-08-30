@@ -59,14 +59,7 @@ export default class FormExample extends Component<
             </Radio>
           </Field>
           <Field label="required radio group" isRequired>
-            <RadioGroup
-              onInvalid={event => {
-                console.log('PREVENT DEFAULT CALLED');
-                event.preventDefault();
-              }}
-              options={colorItems}
-              onChange={this.onChange}
-            />
+            <RadioGroup options={colorItems} onChange={this.onChange} />
           </Field>
           <Field label="regular radio group">
             <RadioGroup options={fruitItems} onChange={this.onChange} />

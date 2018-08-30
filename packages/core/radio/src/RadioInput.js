@@ -11,7 +11,7 @@ import {
 } from '../package.json';
 
 import RadioIcon from './RadioIcon';
-import { HiddenInput } from './styled/Radio';
+import { RadioInputWrapper, HiddenInput } from './styled/RadioInput';
 import type { RadioInputProps } from './types';
 
 class RadioInput extends Component<RadioInputProps> {
@@ -34,13 +34,7 @@ class RadioInput extends Component<RadioInputProps> {
     } = this.props;
 
     return (
-      <span
-        style={{
-          flexShrink: 0,
-          display: 'inline-block',
-          position: 'relative',
-        }}
-      >
+      <RadioInputWrapper>
         <HiddenInput
           aria-label={label}
           checked={isChecked}
@@ -62,7 +56,7 @@ class RadioInput extends Component<RadioInputProps> {
           isHovered={isHovered}
           isInvalid={isInvalid}
         />
-      </span>
+      </RadioInputWrapper>
     );
   }
 }
