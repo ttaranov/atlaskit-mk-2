@@ -30,7 +30,7 @@ describe('@atlaskit/editor-core color utils', () => {
   });
 
   describe('normalizeHexColor', () => {
-    it('converts color name to hex', () => {
+    it('return hex color of a color name', () => {
       expect(normalizeHexColor('red')).toEqual('#ff0000');
     });
   });
