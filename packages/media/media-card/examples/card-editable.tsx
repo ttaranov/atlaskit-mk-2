@@ -3,9 +3,11 @@ import { Component } from 'react';
 import {
   createStorybookContext,
   genericFileId,
+  errorFileId,
 } from '@atlaskit/media-test-helpers';
 import Toggle from '@atlaskit/toggle';
 import Slider from '@atlaskit/field-range';
+import { IntlProvider } from 'react-intl';
 import { Card, Identifier, CardDimensions } from '../src';
 import { CardDimensionsWrapper } from '../example-helpers/styled';
 import {
@@ -28,7 +30,8 @@ export interface EditableCardState {
 
 class EditableCard extends Component<{}, EditableCardState> {
   state: EditableCardState = {
-    identifier: genericFileId,
+    identifier: errorFileId,
+    // identifier: genericFileId,
     dimensions: { width: '100%', height: '50%' },
     parentDimensions: { height: 300, width: 500 },
     isWidthPercentage: true,
@@ -117,77 +120,79 @@ class EditableCard extends Component<{}, EditableCardState> {
     }
 
     return (
-      <div>
-        <EditableCardOptions>
-          Card dimensions <hr />
-          <CardDimensionsWrapper>
-            <div>
-              Card Width ({width}) | Use percentage:
-              <Toggle
-                isDefaultChecked={isWidthPercentage}
-                onChange={this.onWidthPercentageChange}
-              />
-              <Slider
-                value={Number(width)}
-                min={0}
-                max={1000}
-                onChange={this.onWidthChange}
-              />
-            </div>
-            <div>
-              Card Height ({height}) | Use percentage:
-              <Toggle
-                isDefaultChecked={isHeightPercentage}
-                onChange={this.onHeightPercentageChange}
-              />
-              <Slider
-                value={Number(height)}
-                min={50}
-                max={1000}
-                onChange={this.onHeightChange}
-              />
-            </div>
-            <div>
-              Parent Width ({parentWidth})
-              <Slider
-                value={Number(parentWidth)}
-                min={0}
-                max={1000}
-                onChange={this.onParentWidthChange}
-              />
-            </div>
-            <div>
-              Parent Height ({parentHeight})
-              <Slider
-                value={Number(parentHeight)}
-                min={50}
-                max={1000}
-                onChange={this.onParentHeightChange}
-              />
-            </div>
-          </CardDimensionsWrapper>
-          isLazy
-          <Toggle isDefaultChecked={isLazy} onChange={this.onIsLazyChange} />
-          use dimensions
-          <Toggle
-            isDefaultChecked={useDimensions}
-            onChange={this.onUseDimensionsChange}
-          />
-          use pixels
-          <Toggle
-            isDefaultChecked={usePixelUnits}
-            onChange={this.onPixelsUnitChange}
-          />
-        </EditableCardOptions>
-        <EditableCardContent style={parentStyle}>
-          <Card
-            context={context}
-            identifier={identifier}
-            dimensions={useDimensions ? newDimensions : undefined}
-            isLazy={isLazy}
-          />
-        </EditableCardContent>
-      </div>
+      <IntlProvider>
+        <div>
+          <EditableCardOptions>
+            Card dimensions <hr />
+            <CardDimensionsWrapper>
+              <div>
+                Card Width ({width}) | Use percentage:
+                <Toggle
+                  isDefaultChecked={isWidthPercentage}
+                  onChange={this.onWidthPercentageChange}
+                />
+                <Slider
+                  value={Number(width)}
+                  min={0}
+                  max={1000}
+                  onChange={this.onWidthChange}
+                />
+              </div>
+              <div>
+                Card Height ({height}) | Use percentage:
+                <Toggle
+                  isDefaultChecked={isHeightPercentage}
+                  onChange={this.onHeightPercentageChange}
+                />
+                <Slider
+                  value={Number(height)}
+                  min={50}
+                  max={1000}
+                  onChange={this.onHeightChange}
+                />
+              </div>
+              <div>
+                Parent Width ({parentWidth})
+                <Slider
+                  value={Number(parentWidth)}
+                  min={0}
+                  max={1000}
+                  onChange={this.onParentWidthChange}
+                />
+              </div>
+              <div>
+                Parent Height ({parentHeight})
+                <Slider
+                  value={Number(parentHeight)}
+                  min={50}
+                  max={1000}
+                  onChange={this.onParentHeightChange}
+                />
+              </div>
+            </CardDimensionsWrapper>
+            isLazy
+            <Toggle isDefaultChecked={isLazy} onChange={this.onIsLazyChange} />
+            use dimensions
+            <Toggle
+              isDefaultChecked={useDimensions}
+              onChange={this.onUseDimensionsChange}
+            />
+            use pixels
+            <Toggle
+              isDefaultChecked={usePixelUnits}
+              onChange={this.onPixelsUnitChange}
+            />
+          </EditableCardOptions>
+          <EditableCardContent style={parentStyle}>
+            <Card
+              context={context}
+              identifier={identifier}
+              dimensions={useDimensions ? newDimensions : undefined}
+              isLazy={isLazy}
+            />
+          </EditableCardContent>
+        </div>
+      </IntlProvider>
     );
   }
 }

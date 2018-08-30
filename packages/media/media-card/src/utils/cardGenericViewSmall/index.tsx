@@ -29,7 +29,7 @@ export interface CardGenericViewSmallProps {
   thumbnailUrl?: string;
   loading?: boolean;
   actions?: Array<CardAction>;
-  error?: string;
+  error?: JSX.Element;
   onRetry?: () => void;
 }
 

@@ -26,7 +26,7 @@ export interface FileCardImageViewProps {
   readonly selectable?: boolean;
   readonly selected?: boolean;
 
-  readonly error?: string;
+  readonly error?: JSX.Element;
 
   readonly actions?: Array<CardAction>;
   readonly onRetry?: () => void;

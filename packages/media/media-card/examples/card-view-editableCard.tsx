@@ -27,6 +27,7 @@ import {
 import { ImageResizeMode, MediaItemType } from '@atlaskit/media-core';
 import Toggle from '@atlaskit/toggle';
 import Slider from '@atlaskit/field-range';
+import { IntlProvider } from 'react-intl';
 import { CardView } from '../src/root/cardView';
 import { CardAppearance, CardStatus, CardDimensions, CardAction } from '../src';
 import {
@@ -245,215 +246,220 @@ export const generateStoriesForEditableCards = () => {
       }
 
       return (
-        <MainWrapper>
-          <CardPreviewWrapper>
-            <CardDimensionsWrapper>
-              <div>
-                Card dimensions: {width}x{height}
-              </div>
-              <div>
-                Parent dimensions: {parentWidth}x{parentHeight}
-              </div>
-            </CardDimensionsWrapper>
-            <EditableCardContent style={parentStyle}>
-              <CardView
-                onRetry={() => console.log('onRetry')}
-                appearance={appearance}
-                status={status}
-                metadata={metadata}
-                mediaItemType={mediaItemType}
-                dataURI={dataURI}
-                dimensions={useDimensions ? newDimensions : undefined}
-                actions={menuActions}
-                progress={progress}
-                selectable={selectable}
-                selected={selected}
-                resizeMode={resizeMode}
-                onClick={this.onClick}
-                onMouseEnter={this.onMouseEnter}
-              />
-            </EditableCardContent>
-          </CardPreviewWrapper>
-          <EditableCardOptions>
-            <SliderWrapper>
-              <div>
-                Card dimensions <hr />
+        <IntlProvider>
+          <MainWrapper>
+            <CardPreviewWrapper>
+              <CardDimensionsWrapper>
                 <div>
-                  Width ({width}) | Percentage
-                  <Toggle
-                    isDefaultChecked={isWidthPercentage}
-                    onChange={this.onWidthPercentageChange}
-                  />
-                  <Slider
-                    value={Number(width)}
-                    min={0}
-                    max={500}
-                    onChange={this.onWidthChange}
-                  />
+                  Card dimensions: {width}x{height}
                 </div>
                 <div>
-                  Height ({height}) | Percentage
-                  <Toggle
-                    isDefaultChecked={isHeightPercentage}
-                    onChange={this.onHeightPercentageChange}
-                  />
-                  <Slider
-                    value={Number(height)}
-                    min={0}
-                    max={500}
-                    onChange={this.onHeightChange}
-                  />
+                  Parent dimensions: {parentWidth}x{parentHeight}
                 </div>
-              </div>
-              <div>
-                Parent properties <hr />
+              </CardDimensionsWrapper>
+              <EditableCardContent style={parentStyle}>
+                <CardView
+                  onRetry={() => console.log('onRetry')}
+                  appearance={appearance}
+                  status={status}
+                  metadata={metadata}
+                  mediaItemType={mediaItemType}
+                  dataURI={dataURI}
+                  dimensions={useDimensions ? newDimensions : undefined}
+                  actions={menuActions}
+                  progress={progress}
+                  selectable={selectable}
+                  selected={selected}
+                  resizeMode={resizeMode}
+                  onClick={this.onClick}
+                  onMouseEnter={this.onMouseEnter}
+                />
+              </EditableCardContent>
+            </CardPreviewWrapper>
+            <EditableCardOptions>
+              <SliderWrapper>
                 <div>
-                  Has width
-                  <Toggle
-                    isDefaultChecked={doesParentHasWidth}
-                    onChange={this.onDoesParentHasWidthChange}
-                  />
-                </div>
-                {doesParentHasWidth ? (
+                  Card dimensions <hr />
                   <div>
-                    Width ({parentWidth})
+                    Width ({width}) | Percentage
+                    <Toggle
+                      isDefaultChecked={isWidthPercentage}
+                      onChange={this.onWidthPercentageChange}
+                    />
                     <Slider
-                      value={Number(parentWidth)}
-                      min={50}
-                      max={1000}
-                      onChange={this.onParentWidthChange}
+                      value={Number(width)}
+                      min={0}
+                      max={500}
+                      onChange={this.onWidthChange}
                     />
                   </div>
-                ) : null}
+                  <div>
+                    Height ({height}) | Percentage
+                    <Toggle
+                      isDefaultChecked={isHeightPercentage}
+                      onChange={this.onHeightPercentageChange}
+                    />
+                    <Slider
+                      value={Number(height)}
+                      min={0}
+                      max={500}
+                      onChange={this.onHeightChange}
+                    />
+                  </div>
+                </div>
                 <div>
-                  Height ({parentHeight})
+                  Parent properties <hr />
+                  <div>
+                    Has width
+                    <Toggle
+                      isDefaultChecked={doesParentHasWidth}
+                      onChange={this.onDoesParentHasWidthChange}
+                    />
+                  </div>
+                  {doesParentHasWidth ? (
+                    <div>
+                      Width ({parentWidth})
+                      <Slider
+                        value={Number(parentWidth)}
+                        min={50}
+                        max={1000}
+                        onChange={this.onParentWidthChange}
+                      />
+                    </div>
+                  ) : null}
+                  <div>
+                    Height ({parentHeight})
+                    <Slider
+                      value={Number(parentHeight)}
+                      min={50}
+                      max={1000}
+                      onChange={this.onParentHeightChange}
+                    />
+                  </div>
+                  <div>
+                    Is inline-block
+                    <Toggle
+                      isDefaultChecked={isParentInlineBlock}
+                      onChange={this.onIsParentInlineBlockChange}
+                    />
+                  </div>
+                </div>
+                <div>
+                  Progress ({progress})
                   <Slider
-                    value={Number(parentHeight)}
-                    min={50}
-                    max={1000}
-                    onChange={this.onParentHeightChange}
+                    value={Number(progress)}
+                    min={0}
+                    max={1}
+                    onChange={this.onProgressChange}
                   />
                 </div>
                 <div>
-                  Is inline-block
+                  Actions <hr />
+                  <div>
+                    <input
+                      type="checkbox"
+                      onChange={this.onActionsChange(openAction)}
+                      checked={this.isActionChecked(openAction)}
+                    />{' '}
+                    Open
+                  </div>
+                  <div>
+                    <input
+                      type="checkbox"
+                      onChange={this.onActionsChange(closeAction)}
+                      checked={this.isActionChecked(closeAction)}
+                    />{' '}
+                    Close
+                  </div>
+                  <div>
+                    <input
+                      type="checkbox"
+                      onChange={this.onActionsChange(deleteAction)}
+                      checked={this.isActionChecked(deleteAction)}
+                    />{' '}
+                    Delete
+                  </div>
+                </div>
+                <div>
+                  Selectable
                   <Toggle
-                    isDefaultChecked={isParentInlineBlock}
-                    onChange={this.onIsParentInlineBlockChange}
+                    isDefaultChecked={selectable}
+                    onChange={this.onSelectableChange}
+                  />
+                  <hr />
+                  Selected
+                  <Toggle
+                    isDefaultChecked={selected}
+                    onChange={this.onSelectedChange}
                   />
                 </div>
-              </div>
-              <div>
-                Progress ({progress})
-                <Slider
-                  value={Number(progress)}
-                  min={0}
-                  max={1}
-                  onChange={this.onProgressChange}
-                />
-              </div>
-              <div>
-                Actions <hr />
                 <div>
-                  <input
-                    type="checkbox"
-                    onChange={this.onActionsChange(openAction)}
-                    checked={this.isActionChecked(openAction)}
-                  />{' '}
-                  Open
+                  On click
+                  <Toggle
+                    isDefaultChecked={isClickHandlerActive}
+                    onChange={this.onClickChange}
+                  />
+                  <hr />
+                  On mouse enter
+                  <Toggle
+                    isDefaultChecked={isMouseEnterHandlerActive}
+                    onChange={this.onMouseEnterChange}
+                  />
+                  <hr />
+                  use dimensions
+                  <Toggle
+                    isDefaultChecked={useDimensions}
+                    onChange={this.onUseDimensionsChange}
+                  />
                 </div>
-                <div>
-                  <input
-                    type="checkbox"
-                    onChange={this.onActionsChange(closeAction)}
-                    checked={this.isActionChecked(closeAction)}
-                  />{' '}
-                  Close
-                </div>
-                <div>
-                  <input
-                    type="checkbox"
-                    onChange={this.onActionsChange(deleteAction)}
-                    checked={this.isActionChecked(deleteAction)}
-                  />{' '}
-                  Delete
-                </div>
-              </div>
-              <div>
-                Selectable
-                <Toggle
-                  isDefaultChecked={selectable}
-                  onChange={this.onSelectableChange}
+              </SliderWrapper>
+              <OptionsWrapper>
+                <FieldRadioGroup
+                  label="Appearance"
+                  items={getOptionsWithDefaultValue(
+                    appearanceOptions,
+                    appearance,
+                  )}
+                  onRadioChange={this.onAppearanceChange}
                 />
-                <hr />
-                Selected
-                <Toggle
-                  isDefaultChecked={selected}
-                  onChange={this.onSelectedChange}
+                <FieldRadioGroup
+                  label="Metadata"
+                  items={getOptionsWithDefaultValue(
+                    metadataOptions,
+                    metadataKey,
+                  )}
+                  onRadioChange={this.onMetadataChange}
                 />
-              </div>
-              <div>
-                On click
-                <Toggle
-                  isDefaultChecked={isClickHandlerActive}
-                  onChange={this.onClickChange}
+                <FieldRadioGroup
+                  label="MediaItemType"
+                  items={getOptionsWithDefaultValue(
+                    mediaItemTypeOptions,
+                    mediaItemType,
+                  )}
+                  onRadioChange={this.onMediaItemTypeChange}
                 />
-                <hr />
-                On mouse enter
-                <Toggle
-                  isDefaultChecked={isMouseEnterHandlerActive}
-                  onChange={this.onMouseEnterChange}
+                <FieldRadioGroup
+                  label="URI"
+                  items={getOptionsWithDefaultValue(dataURIOptions, dataURI)}
+                  onRadioChange={this.onDataURIChange}
                 />
-                <hr />
-                use dimensions
-                <Toggle
-                  isDefaultChecked={useDimensions}
-                  onChange={this.onUseDimensionsChange}
+                <FieldRadioGroup
+                  label="Status"
+                  items={getOptionsWithDefaultValue(statusOptions, status)}
+                  onRadioChange={this.onStatusChange}
                 />
-              </div>
-            </SliderWrapper>
-            <OptionsWrapper>
-              <FieldRadioGroup
-                label="Appearance"
-                items={getOptionsWithDefaultValue(
-                  appearanceOptions,
-                  appearance,
-                )}
-                onRadioChange={this.onAppearanceChange}
-              />
-              <FieldRadioGroup
-                label="Metadata"
-                items={getOptionsWithDefaultValue(metadataOptions, metadataKey)}
-                onRadioChange={this.onMetadataChange}
-              />
-              <FieldRadioGroup
-                label="MediaItemType"
-                items={getOptionsWithDefaultValue(
-                  mediaItemTypeOptions,
-                  mediaItemType,
-                )}
-                onRadioChange={this.onMediaItemTypeChange}
-              />
-              <FieldRadioGroup
-                label="URI"
-                items={getOptionsWithDefaultValue(dataURIOptions, dataURI)}
-                onRadioChange={this.onDataURIChange}
-              />
-              <FieldRadioGroup
-                label="Status"
-                items={getOptionsWithDefaultValue(statusOptions, status)}
-                onRadioChange={this.onStatusChange}
-              />
-              <FieldRadioGroup
-                label="Resize mode"
-                items={getOptionsWithDefaultValue(
-                  resizeModeOptions,
-                  resizeMode,
-                )}
-                onRadioChange={this.onResizeModeChange}
-              />
-            </OptionsWrapper>
-          </EditableCardOptions>
-        </MainWrapper>
+                <FieldRadioGroup
+                  label="Resize mode"
+                  items={getOptionsWithDefaultValue(
+                    resizeModeOptions,
+                    resizeMode,
+                  )}
+                  onRadioChange={this.onResizeModeChange}
+                />
+              </OptionsWrapper>
+            </EditableCardOptions>
+          </MainWrapper>
+        </IntlProvider>
       );
     }
 

@@ -4,6 +4,7 @@ import * as cx from 'classnames';
 import { MediaType } from '@atlaskit/media-core';
 import TickIcon from '@atlaskit/icon/glyph/check';
 import { Ellipsify } from '@atlaskit/media-ui';
+import { formattedMessage } from '@atlaskit/media-ui';
 // We dont require things directly from "utils" to avoid circular dependencies
 import { FileIcon } from '../../../utils/fileIcon';
 import { ErrorIcon } from '../../../utils/errorIcon';
@@ -35,7 +36,7 @@ export interface CardOverlayProps {
   selected?: boolean;
   persistent: boolean;
 
-  error?: string;
+  error?: JSX.Element;
   onRetry?: () => void;
 
   actions?: Array<CardAction>;
@@ -134,7 +135,7 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
       return (
         <ErrorWrapper>
           <ErrorIcon />
-          <Retry onClick={onRetry}>Retry</Retry>
+          <Retry onClick={onRetry}>{formattedMessage('retry')}</Retry>
         </ErrorWrapper>
       );
     } else {
