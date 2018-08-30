@@ -107,9 +107,8 @@ async function startDevServer() {
 
   config = createConfig({
     globs,
-    websiteEnv,
     mode,
-    websiteDir: path.join(__dirname, '../../..', 'website'),
+    websiteEnv,
   });
 
   const compiler = webpack(config);
@@ -124,14 +123,10 @@ async function startDevServer() {
     historyApiFallback: true,
 
     //silence webpack logs
-    quiet: false,
+    quiet: true,
     noInfo: false,
     overlay: false,
     hot: false,
-
-    //change stats to verbose to get detailed information
-    stats: 'verbose',
-    clientLogLevel: 'none',
 
     // disable hot reload for tests - they don't need it for running
     hot: false,
