@@ -7,17 +7,21 @@ import {
   generateTenantData,
 } from './database';
 
+export type MockUserCollection = { [filename: string]: string };
 export class MediaMock {
   private server = new Server();
+  private collection: MockUserCollection | undefined;
 
-  constructor() {}
+  constructor(collection?: MockUserCollection) {
+    this.collection = collection;
+  }
 
   enable() {
     this.server.use(createDatabase());
     this.server.use(createMediaPlaygroundRouter());
     this.server.use(createApiRouter());
 
-    generateUserData();
+    generateUserData(this.collection);
     generateTenantData();
   }
 
