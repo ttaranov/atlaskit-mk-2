@@ -1,6 +1,5 @@
 import {
   AbstractResource,
-  OnProviderChange,
   Provider,
   ServiceConfig,
   utils as serviceUtils,
@@ -18,13 +17,13 @@ import {
   ToneSelection,
   User,
   OptionalUser,
+  CategoryId,
 } from '../types';
 import { isMediaEmoji, isPromise, toEmojiId } from '../type-helpers';
 import debug from '../util/logger';
 import EmojiLoader from './EmojiLoader';
 import EmojiRepository from './EmojiRepository';
 import SiteEmojiResource from './media/SiteEmojiResource';
-import { CategoryId } from '../components/picker/categories';
 
 export interface EmojiResourceConfig {
   /**
@@ -54,9 +53,6 @@ export interface EmojiResourceConfig {
    */
   currentUser?: User;
 }
-
-export interface OnEmojiProviderChange
-  extends OnProviderChange<EmojiSearchResult, any, void> {}
 
 export interface Retry<T> {
   (): Promise<T> | T;
@@ -211,23 +207,6 @@ export interface UploadingEmojiProvider extends EmojiProvider {
    */
   prepareForUpload();
 }
-
-/**
- * Checks if the emojiProvider can support uploading at a feature level.
- *
- * Follow this up with an isUploadSupported() check to see if the provider is actually
- * configured to support uploads.
- */
-export const supportsUploadFeature = (
-  emojiProvider: EmojiProvider,
-): emojiProvider is UploadingEmojiProvider => {
-  const {
-    isUploadSupported,
-    prepareForUpload,
-    uploadCustomEmoji,
-  } = emojiProvider as UploadingEmojiProvider;
-  return !!(isUploadSupported && prepareForUpload && uploadCustomEmoji);
-};
 
 export interface LastQuery {
   query?: string;

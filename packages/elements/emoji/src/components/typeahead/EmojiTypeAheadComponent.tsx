@@ -4,7 +4,7 @@ import * as PropTypes from 'prop-types';
 import { PureComponent } from 'react';
 
 import * as styles from './styles';
-import { EmojiProvider, OnEmojiProviderChange } from '../../api/EmojiResource';
+import { EmojiProvider } from '../../api/EmojiResource';
 import { createRecordSelectionDefault } from '../common/RecordSelectionDefault';
 import {
   EmojiDescription,
@@ -13,6 +13,7 @@ import {
   SearchSort,
   SearchOptions,
   ToneSelection,
+  OnEmojiProviderChange,
 } from '../../types';
 import EmojiList from './EmojiTypeAheadList';
 import { EmojiContext } from '../common/internal-types';

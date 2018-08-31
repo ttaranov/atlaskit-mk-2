@@ -1,13 +1,27 @@
 import { SyntheticEvent } from 'react';
-import { CategoryId } from './components/picker/categories';
+import { OnProviderChange } from '@atlaskit/util-service-support';
 
-export type CategoryId = CategoryId;
+export type CategoryId =
+  | 'FREQUENT'
+  | 'PEOPLE'
+  | 'NATURE'
+  | 'FOODS'
+  | 'ACTIVITY'
+  | 'PLACES'
+  | 'OBJECTS'
+  | 'SYMBOLS'
+  | 'FLAGS'
+  | 'ATLASSIAN'
+  | 'CUSTOM';
 
 export type RelativePosition = 'above' | 'below' | 'auto';
 
 export interface Styles {
   [index: string]: any;
 }
+
+export interface OnEmojiProviderChange
+  extends OnProviderChange<EmojiSearchResult, any, void> {}
 
 /**
  * Minimum information to defined an emoji is the shortName.
@@ -165,13 +179,6 @@ export interface EmojiResponse {
   mediaApiToken?: MediaApiToken;
 }
 
-export interface CategoryDescription {
-  id: string;
-  name: string;
-  icon: any;
-  order: number;
-}
-
 export interface OnToneSelected {
   (variation: number): void;
 }
@@ -182,10 +189,6 @@ export interface OnEmojiEvent<T = any> {
     emoji: OptionalEmojiDescription,
     event?: SyntheticEvent<T>,
   ): void;
-}
-
-export interface OnCategory {
-  (categoryId: CategoryId | null): void;
 }
 
 export const enum SearchSort {

@@ -1,23 +1,30 @@
 import { AbstractResource } from '@atlaskit/util-service-support';
 import Emoji from './components/common/Emoji';
 import EmojiPlaceholder from './components/common/EmojiPlaceholder';
+import CachingEmoji from './components/common/CachingEmoji';
 import ResourcedEmoji from './components/common/ResourcedEmoji';
-import EmojiPicker from './components/picker/EmojiPicker';
+import EmojiPreview from './components/common/EmojiPreview';
+import LoadingEmojiComponent from './components/common/LoadingEmojiComponent';
 import EmojiTypeAhead from './components/typeahead/EmojiTypeAhead';
 import EmojiResource, {
   EmojiProvider,
   UploadingEmojiProvider,
   EmojiResourceConfig,
 } from './api/EmojiResource';
-import EmojiRepository from './api/EmojiRepository';
+import EmojiRepository, { getEmojiVariation } from './api/EmojiRepository';
 import EmojiLoader from './api/EmojiLoader';
 import { denormaliseEmojiServiceResponse } from './api/EmojiUtils';
-import { toEmojiId, toOptionalEmojiId } from './type-helpers';
+import {
+  toEmojiId,
+  toOptionalEmojiId,
+  supportsUploadFeature,
+} from './type-helpers';
 import {
   customCategory,
   defaultEmojiHeight,
-  emojiPickerWidth,
-  emojiPickerHeight,
+  frequentCategory,
+  analyticsEmojiPrefix,
+  defaultCategories,
 } from './constants';
 
 export {
@@ -26,8 +33,8 @@ export {
   Emoji,
   EmojiPlaceholder,
   EmojiLoader,
-  EmojiPicker,
   EmojiResource,
+  EmojiResourceConfig,
   EmojiRepository,
   EmojiTypeAhead,
   ResourcedEmoji,
@@ -35,17 +42,22 @@ export {
   denormaliseEmojiServiceResponse,
   toEmojiId,
   toOptionalEmojiId,
+  supportsUploadFeature,
   // interfaces
   EmojiProvider,
   UploadingEmojiProvider,
-  // Constants
-  emojiPickerWidth,
-  emojiPickerHeight,
   defaultEmojiHeight,
   customCategory,
-  EmojiResourceConfig,
+  frequentCategory,
+  analyticsEmojiPrefix,
+  defaultCategories,
+  // common components for picker
+  CachingEmoji,
+  EmojiPreview,
+  LoadingEmojiComponent,
+  getEmojiVariation,
 };
 
 export * from './types';
 
-export default EmojiPicker;
+export default EmojiTypeAhead;

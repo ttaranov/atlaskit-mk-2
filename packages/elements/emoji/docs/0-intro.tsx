@@ -24,7 +24,7 @@ export default md`
   Import the component in your React app as follows:
 
   ~~~js
-  import EmojiPicker, { EmojiResource } from '@atlaskit/emoji';
+  import EmojiResource, { EmojiTypeAhead } from '@atlaskit/emoji';
   const emojiProvider = new EmojiResource({
     providers: [
       {
@@ -42,7 +42,7 @@ export default md`
   });
 
   ReactDOM.render(
-    <EmojiPicker
+    <EmojiTypeAhead
       emojiProvider={emojiProvider}
       onSelection={emoji => {
         /* do something */

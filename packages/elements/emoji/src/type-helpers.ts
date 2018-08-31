@@ -9,9 +9,10 @@ import {
   SpriteRepresentation,
   SpriteServiceRepresentation,
   EmojiRepresentation,
+  CategoryId,
 } from './types';
 import { customCategory, dataURLPrefix } from './constants';
-import { CategoryId } from './components/picker/categories';
+import { EmojiProvider, UploadingEmojiProvider } from './api/EmojiResource';
 
 export const isSpriteServiceRepresentation = (
   rep,
@@ -144,3 +145,20 @@ export const buildEmojiDescriptionWithAltRepresentation = (
 
 export const getCategoryId = (emoji: EmojiDescription): CategoryId =>
   emoji.category as CategoryId;
+
+/**
+ * Checks if the emojiProvider can support uploading at a feature level.
+ *
+ * Follow this up with an isUploadSupported() check to see if the provider is actually
+ * configured to support uploads.
+ */
+export const supportsUploadFeature = (
+  emojiProvider: EmojiProvider,
+): emojiProvider is UploadingEmojiProvider => {
+  const {
+    isUploadSupported,
+    prepareForUpload,
+    uploadCustomEmoji,
+  } = emojiProvider as UploadingEmojiProvider;
+  return !!(isUploadSupported && prepareForUpload && uploadCustomEmoji);
+};
