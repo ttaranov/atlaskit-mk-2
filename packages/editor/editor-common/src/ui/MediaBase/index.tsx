@@ -49,10 +49,11 @@ export default class MediaBase extends Component<Props, {}> {
         {this.props.children}
       </FilmstripView>
     );
-    return !widthExists ? (
-      <Wrapper style={overrideStyles}>{content}</Wrapper>
-    ) : (
-      <Wrapper>{content}</Wrapper>
+
+    return (
+      <Wrapper style={!widthExists ? overrideStyles : undefined}>
+        {content}
+      </Wrapper>
     );
   }
 }
