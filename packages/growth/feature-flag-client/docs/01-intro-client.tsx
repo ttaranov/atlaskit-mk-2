@@ -52,5 +52,10 @@ export default md`
   if (client.getVariantValue('experiment.pojo.valid') === 'variation-1') {
     // run this
   }
+
+  // to manually fire exposure events, call fireExposureEvent - exposure events
+  // will be tracked automatically when getVariantValue is called unless you
+  // explicity pass shouldTrigger = false;
+  client.fireExposureEvent('experiment.string.control');
   ~~~
 `;

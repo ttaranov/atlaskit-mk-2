@@ -51,7 +51,7 @@ describe('Frontend feature flag client', () => {
       const frontendFeatureFlagClient = setupFrontendFeatureFlagClient(
         sampleFlagsJson,
       );
-      expect(frontendFeatureFlagClient.flags).toBe(sampleFlagsJson);
+      expect(frontendFeatureFlagClient.flags).toEqual(sampleFlagsJson);
     });
   });
 
@@ -436,6 +436,44 @@ describe('Frontend feature flag client', () => {
       );
       expect(frontendFeatureFlagClient.triggerAnalytics).toHaveBeenCalledWith(
         event,
+      );
+    });
+  });
+
+  describe('#fireExposureEvent', () => {
+    test('should fire the exposure event "once"', () => {
+      const frontendFeatureFlagClient = setupFrontendFeatureFlagClient(
+        sampleFlagsJson,
+      );
+      const experimentKey = 'experiment.pojo.valid';
+
+      expect(frontendFeatureFlagClient.triggerAnalytics).toHaveBeenCalledTimes(
+        1,
+      );
+
+      expect(frontendFeatureFlagClient.triggerAnalytics).toHaveBeenCalledWith({
+        name: 'variant.exposure.experiment.pojo.valid',
+        data: {
+          targetingRuleKey: 'eval.experiment',
+          variantValue: 'variation-1',
+        },
+      });
+
+      frontendFeatureFlagClient.fireExposureEvent(experimentKey);
+
+      expect(frontendFeatureFlagClient.triggerAnalytics).toHaveBeenCalledTimes(
+        1,
+      );
+    });
+
+    test('should not fire the exposure event if a flag does not contains evaluation details', () => {
+      const frontendFeatureFlagClient = setupFrontendFeatureFlagClient(
+        sampleFlagsJson,
+      );
+
+      frontendFeatureFlagClient.fireExposureEvent('experiment.boolean.false');
+      expect(frontendFeatureFlagClient.triggerAnalytics).toHaveBeenCalledTimes(
+        0,
       );
     });
   });

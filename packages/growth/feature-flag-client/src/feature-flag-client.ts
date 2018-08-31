@@ -8,6 +8,10 @@ function isObject(value) {
   return value !== null && typeof value === 'object';
 }
 
+function isEmptyObject(object) {
+  return isObject(object) && Object.keys(object).length === 0;
+}
+
 function isString(value) {
   return value !== null && typeof value === 'string';
 }
@@ -15,7 +19,7 @@ function isString(value) {
 export default class FrontendFeatureFlagClient {
   triggerAnalytics: Function;
   triggeredEvents: {};
-  flags: {} | null;
+  flags: {};
   uninitialisedFlagsEventName: string;
   reportedUnitialisedFlags: boolean;
 
@@ -24,7 +28,7 @@ export default class FrontendFeatureFlagClient {
    * @param {Object} clientParams - object containing all required information to initalise the client
    * @param {Function} clientParams.triggerAnalytics - function to dispatch analytic events. Call signature should
    * accept an analytic event object which looks like: {name: 'eventName', data: {variationKey: 'variationName'}}.
-   * @param {(Object | String | null)} clientParams.flags - JSON blob of all feature flags. Key = feature flag name.
+   * @param {(Object | String )} clientParams.flags - JSON blob of all feature flags. Key = feature flag name.
    * Value = feature flag value.
    * @param {string} clientParams.uninitialisedFlagsEventName - String value for the name of the analytic event to
    * be triggered when this client is accessed prior to having it's flags initialised.
@@ -59,7 +63,7 @@ export default class FrontendFeatureFlagClient {
     if (typeof flags === 'string') {
       this.flags = JSON.parse(flags);
     } else if (isObject(flags) || flags === null) {
-      this.flags = flags;
+      this.flags = flags || {};
     } else {
       throw new Error('flags is not a string or object');
     }
@@ -71,7 +75,7 @@ export default class FrontendFeatureFlagClient {
    * @returns {(boolean | null)} true if `flags` is not null, otherwise false
    */
   isFlagsSet() {
-    if (this.flags === null) {
+    if (isEmptyObject(this.flags)) {
       // @ts-ignore
       if (process.env.NODE_ENV !== 'production') {
         // tslint:disable-next-line:no-console
@@ -174,5 +178,19 @@ export default class FrontendFeatureFlagClient {
     };
     this.triggerAnalytics(event);
     this.triggeredEvents[flagKey] = true;
+  }
+
+  /**
+   * Fire exposure event if `variationValue` attribute is set.
+   * @param {string} flagKey - name of the feature flag
+   */
+  fireExposureEvent(flagKey: string): void {
+    const flag = this.flags[flagKey];
+
+    if (!flag.targetingRuleKey || !flag.variantValue) {
+      return;
+    }
+
+    this.triggerEvent(flagKey, flag.targetingRuleKey, flag.variantValue);
   }
 }
