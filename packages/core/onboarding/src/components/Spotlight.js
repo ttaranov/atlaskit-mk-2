@@ -9,6 +9,7 @@ import { layers } from '@atlaskit/theme';
 import Portal from '@atlaskit/portal';
 import { Fade } from './Animation';
 import Spotlight from './SpotlightInternal';
+import { SpotlightTransitionConsumer } from './SpotlightTransition';
 import type { ActionsType } from '../types';
 
 export type Props = {
@@ -42,8 +43,6 @@ export type Props = {
   heading?: string,
   /** Path to the the your image */
   image?: string,
-  /** Whether or not the Spotlight is visible */
-  isOpen: boolean,
   /** Whether or not to display a pulse animation around the spotlighted element */
   pulse: boolean,
   /** The name of the SpotlightTarget */
@@ -63,20 +62,22 @@ export type Props = {
 class SpotlightWrapper extends React.Component<Props> {
   static defaultProps = {
     dialogWidth: 400,
-    isOpen: true,
     pulse: true,
   };
 
   render() {
-    const { isOpen, ...rest } = this.props;
     return (
-      <Fade in={isOpen}>
-        {animationStyles => (
-          <Portal zIndex={layers.spotlight()}>
-            <Spotlight {...rest} animationStyles={animationStyles} />
-          </Portal>
+      <SpotlightTransitionConsumer>
+        {({ isOpen, onExited }) => (
+          <Fade in={isOpen} onExited={onExited}>
+            {animationStyles => (
+              <Portal zIndex={layers.spotlight()}>
+                <Spotlight {...this.props} animationStyles={animationStyles} />
+              </Portal>
+            )}
+          </Fade>
         )}
-      </Fade>
+      </SpotlightTransitionConsumer>
     );
   }
 }

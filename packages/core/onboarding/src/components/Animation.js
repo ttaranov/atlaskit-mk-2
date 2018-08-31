@@ -7,10 +7,17 @@ const duration = 100;
 type Props = {
   in: boolean,
   children: Object => Node,
+  onExited?: () => any,
 };
 
-export const Fade = ({ in: hasEntered, children }: Props) => (
-  <Transition in={hasEntered} timeout={duration} unmountOnExit appear>
+export const Fade = ({ in: hasEntered, children, onExited }: Props) => (
+  <Transition
+    in={hasEntered}
+    timeout={duration}
+    onExited={onExited}
+    unmountOnExit
+    appear
+  >
     {status => {
       const base = {
         transition: `opacity ${duration}ms`,

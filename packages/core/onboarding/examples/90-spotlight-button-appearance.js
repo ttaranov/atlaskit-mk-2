@@ -3,7 +3,12 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import { Spotlight, SpotlightManager, SpotlightTarget } from '../src';
+import {
+  Spotlight,
+  SpotlightManager,
+  SpotlightTarget,
+  SpotlightTransition,
+} from '../src';
 import { Highlight } from './styled';
 
 const Wrapper = styled.div`
@@ -34,27 +39,29 @@ export default class SpotlightDialogWidthExample extends Component<{}, State> {
         <p>
           <button onClick={this.start}>Show</button>
         </p>
-        {active && (
-          <Spotlight
-            actions={[
-              { onClick: this.finish, text: 'Default' },
-              {
-                appearance: 'subtle-link',
-                onClick: this.finish,
-                text: 'Subtle link',
-              },
-            ]}
-            dialogPlacement="top center"
-            heading={`Custom button appearances`}
-            key="custom-button-appearances"
-            target="custom-button-appearances"
-          >
-            <p>
-              Spotlight provides theming for <code>default</code> and{' '}
-              <code>subtle-link</code> button appearances.
-            </p>
-          </Spotlight>
-        )}
+        <SpotlightTransition>
+          {active && (
+            <Spotlight
+              actions={[
+                { onClick: this.finish, text: 'Default' },
+                {
+                  appearance: 'subtle-link',
+                  onClick: this.finish,
+                  text: 'Subtle link',
+                },
+              ]}
+              dialogPlacement="top center"
+              heading={`Custom button appearances`}
+              key="custom-button-appearances"
+              target="custom-button-appearances"
+            >
+              <p>
+                Spotlight provides theming for <code>default</code> and{' '}
+                <code>subtle-link</code> button appearances.
+              </p>
+            </Spotlight>
+          )}
+        </SpotlightTransition>
       </SpotlightManager>
     );
   }
