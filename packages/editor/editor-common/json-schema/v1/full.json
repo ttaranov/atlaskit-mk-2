@@ -1590,6 +1590,85 @@
       ],
       "additionalProperties": false
     },
+    "layoutSection_two_column_node": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "layoutSection"
+          ]
+        },
+        "attrs": {
+          "type": "object",
+          "properties": {
+            "layoutType": {
+              "enum": [
+                "two_equal",
+                "two_right_sidebar",
+                "two_left_sidebar"
+              ]
+            }
+          },
+          "required": [
+            "layoutType"
+          ],
+          "additionalProperties": false
+        },
+        "content": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/layoutColumn_node"
+          },
+          "minItems": 2,
+          "maxItems": 2
+        }
+      },
+      "required": [
+        "type",
+        "attrs",
+        "content"
+      ],
+      "additionalProperties": false
+    },
+    "layoutSection_three_column_node": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "layoutSection"
+          ]
+        },
+        "attrs": {
+          "type": "object",
+          "properties": {
+            "layoutType": {
+              "enum": [
+                "three_equal",
+                "three_with_sidebars"
+              ]
+            }
+          },
+          "required": [
+            "layoutType"
+          ],
+          "additionalProperties": false
+        },
+        "content": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/layoutColumn_node"
+          },
+          "minItems": 3,
+          "maxItems": 3
+        }
+      },
+      "required": [
+        "type",
+        "attrs",
+        "content"
+      ],
+      "additionalProperties": false
+    },
     "codeBlock_node": {
       "type": "object",
       "properties": {
@@ -1752,83 +1831,10 @@
             "$ref": "#/definitions/bodiedExtension_node"
           },
           {
-            "type": "object",
-            "properties": {
-              "type": {
-                "enum": [
-                  "layoutSection"
-                ]
-              },
-              "attrs": {
-                "type": "object",
-                "properties": {
-                  "layoutType": {
-                    "enum": [
-                      "two_equal",
-                      "two_right_sidebar",
-                      "two_left_sidebar"
-                    ]
-                  }
-                },
-                "required": [
-                  "layoutType"
-                ],
-                "additionalProperties": false
-              },
-              "content": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/definitions/layoutColumn_node"
-                },
-                "minItems": 2,
-                "maxItems": 2
-              }
-            },
-            "required": [
-              "type",
-              "attrs",
-              "content"
-            ],
-            "additionalProperties": false
+            "$ref": "#/definitions/layoutSection_two_column_node"
           },
           {
-            "type": "object",
-            "properties": {
-              "type": {
-                "enum": [
-                  "layoutSection"
-                ]
-              },
-              "attrs": {
-                "type": "object",
-                "properties": {
-                  "layoutType": {
-                    "enum": [
-                      "three_equal",
-                      "three_with_sidebars"
-                    ]
-                  }
-                },
-                "required": [
-                  "layoutType"
-                ],
-                "additionalProperties": false
-              },
-              "content": {
-                "type": "array",
-                "items": {
-                  "$ref": "#/definitions/layoutColumn_node"
-                },
-                "minItems": 3,
-                "maxItems": 3
-              }
-            },
-            "required": [
-              "type",
-              "attrs",
-              "content"
-            ],
-            "additionalProperties": false
+            "$ref": "#/definitions/layoutSection_three_column_node"
           },
           {
             "$ref": "#/definitions/codeBlock_node"

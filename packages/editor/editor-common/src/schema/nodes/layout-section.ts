@@ -1,6 +1,9 @@
 import { NodeSpec } from 'prosemirror-model';
 import { LayoutColumnDefinition } from './layout-column';
 
+/**
+ * @name layoutSection_two_column_node
+ */
 export type LayoutSectionTwoColumnDefinition = {
   type: 'layoutSection';
   attrs: {
@@ -13,6 +16,9 @@ export type LayoutSectionTwoColumnDefinition = {
   content: LayoutColumnDefinition[];
 };
 
+/**
+ * @name layoutSection_three_column_node
+ */
 export type LayoutSectionThreeColumnDefinition = {
   type: 'layoutSection';
   attrs: {
