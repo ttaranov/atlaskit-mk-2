@@ -1,5 +1,7 @@
 export const mediaLocalePrefix = 'fabric.media';
-export const prefixMessages = (messages: { [key: string]: string }): Object => {
+export const prefixMessages = (messages: {
+  [key: string]: string;
+}): { [key: string]: string } => {
   return Object.keys(messages).reduce((prev, current) => {
     const key = `${mediaLocalePrefix}.${current}`;
 

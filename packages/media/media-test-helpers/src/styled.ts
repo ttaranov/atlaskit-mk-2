@@ -9,4 +9,8 @@ export const LocaleSelectorWrapper = styled.div`
   padding: 10px;
   border-radius: 3px;
   background-color: white;
+
+  h2 {
+    margin-bottom: 10px;
+  }
 `;
