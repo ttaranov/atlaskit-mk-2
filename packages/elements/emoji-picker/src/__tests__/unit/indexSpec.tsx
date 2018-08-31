@@ -1,11 +1,12 @@
 import DefaultExport from '../..';
-import EmojiTypeAhead from '../../components/typeahead/EmojiTypeAhead';
+import EmojiPicker from '../../picker/EmojiPicker';
 import { name } from '../../../package.json';
+import { expect } from 'chai';
 
 describe(name, () => {
   describe('exports', () => {
     it('should not export a base component', () => {
-      expect(DefaultExport).toEqual(EmojiTypeAhead);
+      expect(DefaultExport).to.equal(EmojiPicker);
     });
   });
 });

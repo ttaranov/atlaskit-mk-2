@@ -1,10 +1,10 @@
 import * as React from 'react';
 import Layer from '@atlaskit/layer';
-import EmojiPicker from '../src/components/picker/EmojiPicker';
+import EmojiPicker from '../src/picker/EmojiPicker';
 
 import { getUsageClearEmojiResource } from '../example-helpers';
 import { UsageShowAndClearComponent } from '../example-helpers/demo-emoji-usage-components';
-import { EmojiProvider } from '../src/api/EmojiResource';
+import { EmojiProvider } from '@atlaskit/emoji';
 
 class UsageShowingEmojiPickerTextInput extends UsageShowAndClearComponent {
   constructor(props) {

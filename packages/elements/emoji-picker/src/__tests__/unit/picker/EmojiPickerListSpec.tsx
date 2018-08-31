@@ -3,9 +3,9 @@ import * as React from 'react';
 import { expect } from 'chai';
 
 import { List as VirtualList } from 'react-virtualized/dist/commonjs/List';
-import * as styles from '../../../../components/picker/styles';
-import EmojiPickerList from '../../../../components/picker/EmojiPickerList';
-import EmojiPickerCategoryHeading from '../../../../components/picker/EmojiPickerCategoryHeading';
+import * as styles from '../../../picker/styles';
+import EmojiPickerList from '../../../picker/EmojiPickerList';
+import EmojiPickerCategoryHeading from '../../../picker/EmojiPickerCategoryHeading';
 import {
   imageEmoji,
   siteEmojiFoo,
@@ -14,12 +14,9 @@ import {
   onRowsRenderedArgs,
   atlassianEmojis,
 } from '../../_test-data';
-import { EmojiDescription } from '../../../../types';
-import { deleteEmojiLabel } from '../../../../constants';
-import {
-  CachingEmoji,
-  CachingEmojiProps,
-} from '../../../../components/common/CachingEmoji';
+import { EmojiDescription } from '../../../types';
+import { deleteEmojiLabel } from '../../../constants';
+import { CachingEmoji, CachingEmojiProps } from '../../../common/CachingEmoji';
 import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
 
 const emojis = [imageEmoji];

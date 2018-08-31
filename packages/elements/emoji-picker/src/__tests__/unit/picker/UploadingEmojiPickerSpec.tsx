@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { waitUntil } from '@atlaskit/util-common-test';
 
-import * as ImageUtil from '../../../../util/image';
+import * as ImageUtil from '../../../util/image';
 
 import {
   createPngFile,
@@ -14,25 +14,23 @@ import {
   pngDataURL,
 } from '../../_test-data';
 
-import Emoji from '../../../../components/common/Emoji';
-import EmojiPickerList from '../../../../components/picker/EmojiPickerList';
-import FileChooser from '../../../../components/common/FileChooser';
-import {} from '../../../../types';
+import { Emoji, EmojiRepository } from '@atlaskit/emoji';
+import EmojiPickerList from '../../../picker/EmojiPickerList';
+import FileChooser from '../../../common/FileChooser';
 import {
   customCategory,
   customTitle,
   analyticsEmojiPrefix,
   userCustomTitle,
-} from '../../../../constants';
+} from '../../../constants';
 import * as helper from './_emoji-picker-test-helpers';
 import * as commonHelper from '../common/_common-test-helpers';
-import EmojiPickerCategoryHeading from '../../../../components/picker/EmojiPickerCategoryHeading';
+import EmojiPickerCategoryHeading from '../../../picker/EmojiPickerCategoryHeading';
 import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
-import EmojiDeletePreview from '../../../../components/common/EmojiDeletePreview';
+import EmojiDeletePreview from '../../../common/EmojiDeletePreview';
 import { MockEmojiResource } from '@atlaskit/util-data-test';
-import EmojiRepository from '../../../../api/EmojiRepository';
-import EmojiErrorMessage from '../../../../components/common/EmojiErrorMessage';
-import EmojiUploadPreview from '../../../../components/common/EmojiUploadPreview';
+import EmojiErrorMessage from '../../../common/EmojiErrorMessage';
+import EmojiUploadPreview from '../../../common/EmojiUploadPreview';
 
 describe('<UploadingEmojiPicker />', () => {
   let firePrivateAnalyticsEvent;

@@ -2,13 +2,13 @@ import { mount, ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import { expect } from 'chai';
 
-import { defaultCategories } from '../../../../constants';
-import * as styles from '../../../../components/picker/styles';
+import { defaultCategories } from '../../../constants';
+import * as styles from '../../../picker/styles';
 import CategorySelector, {
   Props,
   sortCategories,
-} from '../../../../components/picker/CategorySelector';
-import { CategoryDescriptionMap } from '../../../../components/picker/categories';
+} from '../../../picker/CategorySelector';
+import { CategoryDescriptionMap } from '../../../types';
 
 const setupComponent = (props?: Props): ReactWrapper<any, any> =>
   mount(<CategorySelector {...props} />);

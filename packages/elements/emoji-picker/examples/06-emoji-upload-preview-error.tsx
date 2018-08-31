@@ -1,6 +1,5 @@
 import * as React from 'react';
-import EmojiUploadPicker from '../src/components/common/EmojiUploadPicker';
-
+import EmojiUploadPicker from '../src/common/EmojiUploadPicker';
 import { emojiPickerWidth } from '../src/constants';
 import { onUploadEmoji, onUploadCancelled } from '../example-helpers';
 
@@ -14,6 +13,7 @@ export default function Example() {
   return (
     <div style={defaultStyles}>
       <EmojiUploadPicker
+        errorMessage="Unable to upload"
         onUploadEmoji={onUploadEmoji}
         onUploadCancelled={onUploadCancelled}
       />

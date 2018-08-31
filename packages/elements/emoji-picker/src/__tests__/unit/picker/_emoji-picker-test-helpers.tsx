@@ -1,24 +1,23 @@
 import * as React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
 import { getEmojiResourcePromise, newEmojiRepository } from '../../_test-data';
-import EmojiPicker, { Props } from '../../../../components/picker/EmojiPicker';
-import EmojiPickerComponent from '../../../../components/picker/EmojiPickerComponent';
+import EmojiPicker, { Props } from '../../../picker/EmojiPicker';
+import EmojiPickerComponent from '../../../picker/EmojiPickerComponent';
 import { waitUntil } from '@atlaskit/util-common-test';
 import AkButton from '@atlaskit/button';
-import * as commonStyles from '../../../../components/common/styles';
+import * as commonStyles from '../../../common/styles';
 
-import EmojiPickerEmojiRow from '../../../../components/picker/EmojiPickerEmojiRow';
-import CategorySelector from '../../../../components/picker/CategorySelector';
-import Emoji from '../../../../components/common/Emoji';
-import EmojiPickerCategoryHeading from '../../../../components/picker/EmojiPickerCategoryHeading';
-import EmojiPickerList from '../../../../components/picker/EmojiPickerList';
-import EmojiPickerListSearch from '../../../../components/picker/EmojiPickerListSearch';
+import EmojiPickerEmojiRow from '../../../picker/EmojiPickerEmojiRow';
+import CategorySelector from '../../../picker/CategorySelector';
+import { Emoji, EmojiDescription, EmojiPreview } from '@atlaskit/emoji';
+import EmojiPickerCategoryHeading from '../../../picker/EmojiPickerCategoryHeading';
+import EmojiPickerList from '../../../picker/EmojiPickerList';
+import EmojiPickerListSearch from '../../../picker/EmojiPickerListSearch';
 import { hasSelector } from '../../_emoji-selectors';
-import { EmojiDescription } from '../../../../types';
-import EmojiDeletePreview from '../../../../components/common/EmojiDeletePreview';
-import EmojiErrorMessage from '../../../../components/common/EmojiErrorMessage';
-import EmojiUploadPreview from '../../../../components/common/EmojiUploadPreview';
-import { CategoryDescriptionMap } from '../../../../components/picker/categories';
+import EmojiDeletePreview from '../../../common/EmojiDeletePreview';
+import EmojiErrorMessage from '../../../common/EmojiErrorMessage';
+import EmojiUploadPreview from '../../../common/EmojiUploadPreview';
+import { CategoryDescriptionMap } from '../../../types';
 
 export function setupPickerWithoutToneSelector(): Promise<
   ReactWrapper<any, any>
@@ -225,3 +224,7 @@ export const finishDelete = component =>
 
 export const errorMessageVisible = component =>
   component.update() && component.find(EmojiErrorMessage).length === 1;
+
+export const findPreview = component => component.update().find(EmojiPreview);
+
+export const previewVisible = component => findPreview(component).length > 0;

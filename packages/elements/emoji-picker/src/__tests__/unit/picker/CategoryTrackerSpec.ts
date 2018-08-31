@@ -1,5 +1,5 @@
-import CategoryTracker from '../../../../components/picker/CategoryTracker';
-import { defaultCategories } from '../../../../constants';
+import CategoryTracker from '../../../picker/CategoryTracker';
+import { defaultCategories } from '../../../constants';
 
 describe('CategoryTracker', () => {
   describe('getRow', () => {

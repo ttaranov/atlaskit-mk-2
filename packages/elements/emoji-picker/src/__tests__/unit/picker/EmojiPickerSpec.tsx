@@ -5,20 +5,23 @@ import {
   mediaEmoji,
   standardEmojis,
 } from '../../_test-data';
-import { Props } from '../../../../components/picker/EmojiPicker';
+import { Props } from '../../../picker/EmojiPicker';
 import { mockNonUploadingEmojiResourceFactory } from '@atlaskit/util-data-test';
 
-import EmojiPlaceholder from '../../../../components/common/EmojiPlaceholder';
+import EmojiPlaceholder from '../../../common/EmojiPlaceholder';
 import CategorySelector, {
   sortCategories,
-} from '../../../../components/picker/CategorySelector';
-import { CategoryDescriptionMap } from '../../../../components/picker/categories';
-import Emoji from '../../../../components/common/Emoji';
-import EmojiButton from '../../../../components/common/EmojiButton';
-import EmojiPickerFooter from '../../../../components/picker/EmojiPickerFooter';
-import EmojiPickerList from '../../../../components/picker/EmojiPickerList';
-import EmojiRepository from '../../../../api/EmojiRepository';
-import { EmojiDescription, OptionalEmojiDescription } from '../../../../types';
+} from '../../../picker/CategorySelector';
+import { CategoryDescriptionMap } from '../../../picker/categories';
+import Emoji from '../../../common/Emoji';
+import EmojiButton from '../../../common/EmojiButton';
+import EmojiPickerFooter from '../../../picker/EmojiPickerFooter';
+import EmojiPickerList from '../../../picker/EmojiPickerList';
+import {
+  EmojiDescription,
+  OptionalEmojiDescription,
+  EmojiRepository,
+} from '@atlaskit/emoji';
 import {
   customCategory,
   customTitle,
@@ -26,7 +29,7 @@ import {
   frequentCategory,
   selectedToneStorageKey,
   analyticsEmojiPrefix,
-} from '../../../../constants';
+} from '../../../constants';
 import * as helper from './_emoji-picker-test-helpers';
 
 declare var global: any;
