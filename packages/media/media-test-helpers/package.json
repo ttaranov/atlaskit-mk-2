@@ -25,10 +25,12 @@
     "@atlaskit/media-core": "^23.0.2",
     "@atlaskit/media-store": "^6.0.1",
     "@atlaskit/media-ui": "^5.1.2",
+    "@atlaskit/select": "^5.0.14",
     "axios": "^0.17.1",
     "kakapo": "^3.3.3",
     "lodash.matches": "^4.6.0",
     "react-intl": "^2.4.0",
+    "styled-components": "^3.2.6",
     "tslib": "^1.8.0",
     "uuid": "^3.1.0",
     "xhr-mock": "^2.4.0"
