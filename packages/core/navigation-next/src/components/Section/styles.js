@@ -4,6 +4,7 @@ import { colors, gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import contentNavThemes from '../ContentNavigation/styles';
 import type { ThemedContentNavigationComponentStyles } from '../../theme/types';
+import type { SectionPresentationProps } from './types';
 
 const gridSize = gridSizeFn();
 
@@ -186,7 +187,9 @@ const settings = props => {
   };
 };
 
-const themes: ThemedContentNavigationComponentStyles<void> = {
+const themes: ThemedContentNavigationComponentStyles<
+  SectionPresentationProps,
+> = {
   dark,
   light,
   settings,

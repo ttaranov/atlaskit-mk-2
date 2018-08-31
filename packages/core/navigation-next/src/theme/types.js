@@ -2,6 +2,7 @@
 
 import type { GlobalItemPresentationProps } from '../components/GlobalItem/types';
 import type { ItemPresentationProps } from '../components/Item/types';
+import type { SectionPresentationProps } from '../components/Section/types';
 
 /**
  * Types
@@ -42,7 +43,7 @@ export type Mode = {
   item: ContentNavigationComponentTheme<ItemPresentationProps>,
   contentNav: ContentNavigationComponentTheme<void>,
   scrollHint: ContentNavigationComponentTheme<void>,
-  section: ContentNavigationComponentTheme<void>,
+  section: ContentNavigationComponentTheme<SectionPresentationProps>,
   separator: ContentNavigationComponentTheme<void>,
   skeletonItem: ContentNavigationComponentTheme<void>,
 };

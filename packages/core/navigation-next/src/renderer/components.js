@@ -213,7 +213,7 @@ const Group = ({
 
 // Section
 const Section = ({
-  alwaysShowScrollHint,
+  alwaysShowScrollHint = false,
   customComponents,
   id,
   items,
@@ -260,7 +260,7 @@ const HeaderSection = ({
   ) : null;
 
 const MenuSection = ({
-  alwaysShowScrollHint,
+  alwaysShowScrollHint = false,
   customComponents,
   id,
   items,

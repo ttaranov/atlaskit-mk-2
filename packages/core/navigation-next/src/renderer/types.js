@@ -49,7 +49,7 @@ export type GroupProps = SharedGroupTypeProps & {
 };
 
 export type SectionProps = SharedGroupTypeProps & {
-  alwaysShowScrollHint: ?boolean,
+  alwaysShowScrollHint: boolean,
   nestedGroupKey: string,
   parentId: string | null,
   shouldGrow: boolean,

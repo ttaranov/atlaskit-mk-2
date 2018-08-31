@@ -127,8 +127,8 @@ export default ({ background, text }: Args): Mode => {
       };
       return { container: productStyles, product: productStyles };
     },
-    section: () => {
-      const { product } = light.section();
+    section: args => {
+      const { product } = light.section(args);
       const productStyles = {
         ...product,
         wrapper: {
