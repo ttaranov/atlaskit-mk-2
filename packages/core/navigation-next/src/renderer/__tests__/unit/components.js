@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { mount, shallow } from 'enzyme';
-import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
+import ArrowRightCircleIcon from '@atlaskit/icon/glyph/arrow-right-circle';
 import Spinner from '@atlaskit/spinner';
 import { Provider } from 'unstated';
 
@@ -34,12 +34,12 @@ describe('navigation-next view renderer', () => {
       const notInHoverState = mountWithProvider(
         <GoToItem id="id" goTo="view" />,
       );
-      expect(notInHoverState.find(ArrowRightIcon)).toHaveLength(0);
+      expect(notInHoverState.find(ArrowRightCircleIcon)).toHaveLength(0);
 
       const inHoverState = mountWithProvider(
         <GoToItem id="id" goTo="view" isHover />,
       );
-      expect(inHoverState.find(ArrowRightIcon)).toHaveLength(1);
+      expect(inHoverState.find(ArrowRightCircleIcon)).toHaveLength(1);
 
       // Confirm that the icon is being passed as the 'after' prop for the
       // underlying Item
@@ -49,7 +49,7 @@ describe('navigation-next view renderer', () => {
           .props()
           .after({ isActive: false, isHover: true, isSelected: false }),
       );
-      expect(itemAfter.find(ArrowRightIcon)).toHaveLength(1);
+      expect(itemAfter.find(ArrowRightCircleIcon)).toHaveLength(1);
     });
 
     it('should render a spinner in the after slot of the Item when the to prop matches the incomingView.id', () => {
