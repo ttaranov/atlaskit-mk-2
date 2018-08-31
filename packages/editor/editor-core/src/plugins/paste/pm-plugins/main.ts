@@ -37,6 +37,7 @@ import {
   transformSliceToJoinAdjacentCodeBlocks,
   transformSingleLineCodeBlockToCodeMark,
 } from '../../code-block/utils';
+import { queueCardsFromChangedTr } from '../../card/pm-plugins/doc';
 
 export const stateKey = new PluginKey('pastePlugin');
 
@@ -118,11 +119,14 @@ export function createPlugin(
         if (text && !html && atlassianMarkDownParser) {
           analyticsService.trackEvent('atlassian.editor.paste.markdown');
           const doc = atlassianMarkDownParser.parse(escapeLinks(text));
+
           if (doc && doc.content) {
             const tr = closeHistory(state.tr);
             tr.replaceSelection(
               new Slice(doc.content, slice.openStart, slice.openEnd),
             );
+
+            queueCardsFromChangedTr(state, tr);
             dispatch(tr.scrollIntoView());
             return true;
           }
@@ -169,22 +173,25 @@ export function createPlugin(
 
           // get prosemirror-tables to handle pasting tables if it can
           // otherwise, just the replace the selection with the content
-          if (!handlePasteTable(view, null, slice)) {
-            closeHistory(tr);
-            tr.replaceSelection(slice);
-            tr.setStoredMarks([]);
-            if (
-              tr.selection.empty &&
-              tr.selection.$from.parent.type === codeBlock
-            ) {
-              tr.setSelection(TextSelection.near(
-                tr.selection.$from,
-                1,
-              ) as Selection);
-            }
-            dispatch(tr);
+          if (handlePasteTable(view, null, slice)) {
+            return true;
           }
 
+          closeHistory(tr);
+          tr.replaceSelection(slice);
+          tr.setStoredMarks([]);
+          if (
+            tr.selection.empty &&
+            tr.selection.$from.parent.type === codeBlock
+          ) {
+            tr.setSelection(TextSelection.near(
+              tr.selection.$from,
+              1,
+            ) as Selection);
+          }
+
+          // queue link cards, ignoring any errors
+          dispatch(queueCardsFromChangedTr(state, tr));
           return true;
         }
 
