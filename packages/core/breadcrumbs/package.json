@@ -33,6 +33,7 @@
   "devDependencies": {
     "@atlaskit/build-utils": "^2.0.0",
     "@atlaskit/docs": "^5.0.6",
+    "@atlaskit/logo": "^9.0.4",
     "@atlaskit/icon": "^13.6.1",
     "@atlaskit/select": "^5.0.15",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",

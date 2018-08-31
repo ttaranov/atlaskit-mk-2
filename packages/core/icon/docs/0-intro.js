@@ -16,7 +16,7 @@ import Icon from '@atlaskit/icon';
   To use one of Atlaskit's built-in icons you should import it directly.
 
 ${code`
-import AtlassianIcon from '@atlaskit/logo';
+import { AtlassianIcon } from '@atlaskit/logo';
 `}
 
   You can explore all of our icons in the example below.

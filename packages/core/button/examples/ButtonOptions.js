@@ -1,6 +1,6 @@
 // @flow
 import React, { type Node } from 'react';
-import AtlassianIcon from '@atlaskit/logo';
+import { AtlassianIcon } from '@atlaskit/logo';
 import Button from '../src';
 
 const Icon = <AtlassianIcon label="Test icon" />;

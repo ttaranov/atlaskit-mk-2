@@ -48,6 +48,7 @@
     "@atlaskit/checkbox": "^4.0.6",
     "@atlaskit/docs": "^5.0.6",
     "@atlaskit/form": "^4.0.1",
+    "@atlaskit/logo": "^9.0.4",
     "@atlaskit/modal-dialog": "^6.0.11",
     "@atlaskit/tooltip": "^12.0.12",
     "@atlaskit/webdriver-runner": "^0.0.3",

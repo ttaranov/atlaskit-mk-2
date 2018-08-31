@@ -37,6 +37,7 @@
     "@atlaskit/checkbox": "^4.0.6",
     "@atlaskit/docs": "^5.0.6",
     "@atlaskit/icon": "^13.6.1",
+    "@atlaskit/logo": "^9.0.4",
     "@atlaskit/visual-regression": "^0.0.1",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.2",
