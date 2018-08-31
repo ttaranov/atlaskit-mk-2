@@ -4,6 +4,7 @@ import { expect } from 'chai';
 import { ReactSerializer } from '../../../index';
 import { defaultSchema as schema } from '@atlaskit/editor-common';
 import { Action } from '../../../react/marks';
+import { Heading } from '../../../react/nodes';
 import { bigEmojiHeight } from '../../../utils';
 import { RendererAppearance } from '../../../ui/Renderer';
 
