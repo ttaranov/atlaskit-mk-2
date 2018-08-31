@@ -117,7 +117,6 @@
     "chai-as-promised": "^6.0.0",
     "clipboard-polyfill": "2.4.3",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
-    "fetch-mock": "^5.12.1",
     "highlight.js": "^9.6.0",
     "jest-sandbox": "^1.1.1",
     "jquery": "^3.2.1",
