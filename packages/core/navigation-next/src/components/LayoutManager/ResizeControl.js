@@ -72,7 +72,7 @@ const Button = ({
       outline: 0,
       padding: 0,
       position: 'absolute',
-      top: 28,
+      top: 32,
       transition: `
         background-color 100ms linear,
         color 100ms linear,
