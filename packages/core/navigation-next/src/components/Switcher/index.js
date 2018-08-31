@@ -1,11 +1,15 @@
 // @flow
 
-import React, { cloneElement, Component, type Element } from 'react';
+import React, {
+  cloneElement,
+  Component,
+  type ComponentType,
+  type Element,
+} from 'react';
 import { components, PopupSelect } from '@atlaskit/select';
 import { colors, gridSize as gridSizeFn } from '@atlaskit/theme';
 import AddIcon from '@atlaskit/icon/glyph/add';
 
-import type { ConnectedItemProps } from '../Item/types';
 import Option from './Option';
 
 const gridSize = gridSizeFn();
@@ -76,8 +80,13 @@ const Footer = ({ text, onClick }: *) => (
 // ==============================
 
 type Props = {
+  /* The action and text representing a create button as the footer */
   create?: { onClick: (*) => void, text: string },
-  options: Array<ConnectedItemProps>,
+  /* Replaceable components */
+  components: { [key: string]: ComponentType<*> },
+  /* The options presented in the select menu */
+  options: Array<Object>,
+  /* The target element, which invokes the select menu */
   target: Element<*>,
 };
 type State = {

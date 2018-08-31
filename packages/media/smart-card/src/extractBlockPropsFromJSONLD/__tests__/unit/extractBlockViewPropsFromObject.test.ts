@@ -3,5 +3,5 @@ import { createTestsForObject } from './_createTestsForObject';
 import { extractPropsFromObject } from '../../extractPropsFromObject';
 
 describe('extractPropsFromObject()', () => {
-  createTestsForObject('object', object, extractPropsFromObject);
+  createTestsForObject(object, extractPropsFromObject);
 });

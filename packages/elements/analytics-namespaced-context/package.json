@@ -1,13 +1,12 @@
 {
   "name": "@atlaskit/analytics-namespaced-context",
-  "version": "2.1.0",
+  "version": "2.1.3",
   "description": "Provides a namespace for AnalyticsContext data (@atlaskit/analytics-next)",
   "config": {
     "access": "public"
   },
   "main": "dist/es5/index.js",
   "atlaskit:src": "src/index.ts",
-  "jsnext:main": "dist/es2015/index.js",
   "module": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
   "files": [
@@ -15,8 +14,8 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/analytics-gas-types": "^3.1.3",
     "@atlaskit/analytics-next": "^3.0.3",
+    "@atlaskit/analytics-next-types": "^3.1.0",
     "tslib": "^1.8.0"
   },
   "peerDependencies": {
@@ -29,11 +28,10 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://bitbucket.org/atlassian/atlaskit"
+    "url": "https://bitbucket.org/atlassian/atlaskit-mk-2"
   },
   "devDependencies": {
-    "@atlaskit/analytics-listeners": "^3.2.0",
-    "@atlaskit/button": "^9.0.4",
+    "@atlaskit/analytics-listeners": "^4.0.1",
     "@atlaskit/docs": "^5.0.2",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "enzyme-adapter-react-16": "https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.7.tgz",

@@ -10,6 +10,7 @@ import GraphLineIcon from '@atlaskit/icon/glyph/graph-line';
 import FolderIcon from '@atlaskit/icon/glyph/folder';
 import IssuesIcon from '@atlaskit/icon/glyph/issues';
 import ShipIcon from '@atlaskit/icon/glyph/ship';
+import Spinner from '@atlaskit/spinner';
 import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import { navigationItemClicked } from '../common/analytics';
@@ -23,6 +24,7 @@ import GroupHeadingComponent from '../components/GroupHeading';
 import Switcher from '../components/Switcher';
 import { withNavigationUI } from '../ui-controller';
 import { withNavigationViewController } from '../view-controller';
+
 import type {
   GoToItemProps,
   GroupProps,
@@ -55,12 +57,21 @@ const GoToItemBase = ({
   goTo,
   navigationUIController,
   navigationViewController,
+  spinnerDelay = 200,
   ...rest
 }: GoToItemProps) => {
   let after;
   if (typeof afterProp === 'undefined') {
-    after = ({ isActive, isHover }: *) =>
-      isActive || isHover ? <ArrowRightIcon size="small" /> : null;
+    after = ({ isActive, isHover }: *) => {
+      const { incomingView } = navigationViewController.state;
+      if (incomingView && incomingView.id === goTo) {
+        return <Spinner delay={spinnerDelay} invertColor size="small" />;
+      }
+      if (isActive || isHover) {
+        return <ArrowRightIcon size="small" />;
+      }
+      return null;
+    };
   }
 
   const props = { ...rest, after };
@@ -106,7 +117,7 @@ const backItemPrimitiveStyles = styles => ({
 });
 
 const BackItem = ({ goTo, href, subText, id, index, text = 'Back' }: *) => (
-  <div css={{ display: 'flex', marginBottom: '8px' }}>
+  <div css={{ display: 'flex' }}>
     <div css={{ flexShrink: 0 }}>
       <GoToItem
         after={null}
@@ -133,7 +144,7 @@ const GroupHeading = ({ text, ...props }: GroupHeadingProps) => (
   <GroupHeadingComponent {...props}>{text}</GroupHeadingComponent>
 );
 
-const Debug = props => (
+const Debug = (props: *) => (
   <pre
     css={{
       backgroundColor: 'rgba(0, 0, 0, 0.1)',
@@ -198,15 +209,13 @@ const groupComponents = {
   Section,
 };
 
-const components = { ...itemComponents, ...groupComponents };
+// Exported for testing purposes only.
+export const components = { ...itemComponents, ...groupComponents };
 
 /**
  * RENDERER
  */
-export const ItemsRenderer = ({
-  customComponents = {},
-  items,
-}: ItemsRendererProps) =>
+const ItemsRenderer = ({ customComponents = {}, items }: ItemsRendererProps) =>
   items.map(({ type, ...props }, index) => {
     const key =
       typeof props.nestedGroupKey === 'string'
@@ -215,12 +224,12 @@ export const ItemsRenderer = ({
 
     // If they've provided a component as the type
     if (typeof type === 'function') {
-      const Component = navigationItemClicked(
+      const CustomComponent = navigationItemClicked(
         type,
         type.displayName || 'inlineCustomComponent',
       );
       return (
-        <Component
+        <CustomComponent
           key={key}
           {...props}
           index={index}
@@ -250,9 +259,12 @@ export const ItemsRenderer = ({
       // If they've provided a type which matches one of their defined custom
       // components.
       if (customComponents[type]) {
-        const Component = navigationItemClicked(customComponents[type], type);
+        const CustomComponent = navigationItemClicked(
+          customComponents[type],
+          type,
+        );
         return (
-          <Component
+          <CustomComponent
             key={key}
             {...props}
             index={index}
@@ -267,3 +279,5 @@ export const ItemsRenderer = ({
 
     return <Debug key={key} type={type} {...props} />;
   });
+
+export default ItemsRenderer;

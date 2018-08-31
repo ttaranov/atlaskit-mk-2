@@ -1,5 +1,9 @@
 import { Store, Dispatch, Middleware } from 'redux';
-
+import {
+  MediaStore,
+  MediaStoreCopyFileWithTokenBody,
+  MediaStoreCopyFileWithTokenParams,
+} from '@atlaskit/media-store';
 import { Fetcher } from '../tools/fetcher/fetcher';
 import {
   FinalizeUploadAction,
@@ -25,7 +29,14 @@ export default function(fetcher: Fetcher): Middleware {
 export function finalizeUpload(
   fetcher: Fetcher,
   store: Store<State>,
-  { file, uploadId, source, tenant }: FinalizeUploadAction,
+  {
+    file,
+    uploadId,
+    source,
+    tenant,
+    replaceFileId,
+    occurrenceKey,
+  }: FinalizeUploadAction,
 ): Promise<SendUploadEventAction> {
   const { userAuthProvider } = store.getState();
   return userAuthProvider()
@@ -35,13 +46,16 @@ export function finalizeUpload(
         ...source,
         owner,
       };
-      const copyFileParams = {
+
+      const copyFileParams: CopyFileParams = {
         store,
         fetcher,
         file,
         uploadId,
         sourceFile,
         tenant,
+        replaceFileId,
+        occurrenceKey,
       };
 
       return copyFile(copyFileParams);
@@ -55,23 +69,44 @@ type CopyFileParams = {
   uploadId: string;
   sourceFile: SourceFile;
   tenant: Tenant;
+  replaceFileId?: Promise<string>;
+  occurrenceKey?: string;
 };
 
-function copyFile({
+async function copyFile({
   store,
   fetcher,
   file,
   uploadId,
   sourceFile,
   tenant,
+  replaceFileId,
+  occurrenceKey,
 }: CopyFileParams): Promise<SendUploadEventAction> {
-  const destination = {
-    auth: tenant.auth,
-    collection: tenant.uploadParams.collection,
+  const { deferredIdUpfronts } = store.getState();
+  const deferred = deferredIdUpfronts[sourceFile.id];
+  const mediaStore = new MediaStore({
+    authProvider: () => Promise.resolve(tenant.auth),
+  });
+  const body: MediaStoreCopyFileWithTokenBody = {
+    sourceFile,
   };
-  return fetcher
-    .copyFile(sourceFile, destination)
+  const params: MediaStoreCopyFileWithTokenParams = {
+    collection: tenant.uploadParams.collection,
+    replaceFileId: replaceFileId ? await replaceFileId : undefined,
+    occurrenceKey,
+  };
+
+  return mediaStore
+    .copyFileWithToken(body, params)
     .then(destinationFile => {
+      const { id: publicId } = destinationFile.data;
+      if (deferred) {
+        const { resolver } = deferred;
+
+        resolver(publicId);
+      }
+
       store.dispatch(
         sendUploadEvent({
           event: {
@@ -79,7 +114,7 @@ function copyFile({
             data: {
               file: {
                 ...file,
-                publicId: destinationFile.id,
+                publicId,
               },
             },
           },
@@ -89,7 +124,7 @@ function copyFile({
 
       return fetcher.pollFile(
         tenant.auth,
-        destinationFile.id,
+        publicId,
         tenant.uploadParams.collection,
       );
     })
@@ -111,6 +146,12 @@ function copyFile({
       );
     })
     .catch(error => {
+      if (deferred) {
+        const { rejecter } = deferred;
+
+        rejecter();
+      }
+
       return store.dispatch(
         sendUploadEvent({
           event: {

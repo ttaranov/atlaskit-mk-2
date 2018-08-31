@@ -1,5 +1,18 @@
 # @atlaskit/tooltip
 
+## 12.0.12
+- [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
+
+## 12.0.11
+- [patch] tooltip will not appear when content is undefined null or an empty string [239b448](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/239b448)
+
+## 12.0.9
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/button@9.0.6
+  - @atlaskit/docs@5.0.6
+
 ## 12.0.8
 
 

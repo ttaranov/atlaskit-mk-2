@@ -1,5 +1,26 @@
 # @atlaskit/editor-mobile-bridge
 
+## 3.0.6
+- [patch] Making the media resolution aysnc [c6bacea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c6bacea)
+
+## 3.0.5
+- [patch] Updated dependencies [7545979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7545979)
+  - @atlaskit/editor-core@79.0.0
+  - @atlaskit/editor-json-transformer@4.0.8
+  - @atlaskit/media-core@23.1.0
+
+## 3.0.4
+- [patch] Updated dependencies [911a570](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/911a570)
+  - @atlaskit/media-core@23.0.2
+  - @atlaskit/editor-json-transformer@4.0.7
+  - @atlaskit/editor-core@78.0.0
+
+## 3.0.3
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/mention@15.0.6
+  - @atlaskit/editor-json-transformer@4.0.6
+  - @atlaskit/editor-core@77.1.4
+
 ## 3.0.2
 - [patch] Allow all nodes and fix load time on Mobile [a9080a7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a9080a7)
 

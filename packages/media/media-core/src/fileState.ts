@@ -69,8 +69,9 @@ const apiProcessingStatusToFileStatus = (
     case 'succeeded':
       return 'processed';
     case 'failed':
-    case undefined:
       return 'error';
+    case undefined:
+      return 'processing';
   }
 };
 

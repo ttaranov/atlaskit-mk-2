@@ -1,7 +1,17 @@
 import { Slice, Node } from 'prosemirror-model';
-import { PluginKey, Plugin, EditorState, Transaction } from 'prosemirror-state';
+import {
+  PluginKey,
+  Plugin,
+  EditorState,
+  Transaction,
+  TextSelection,
+} from 'prosemirror-state';
+import { DecorationSet, Decoration } from 'prosemirror-view';
+import { keydownHandler } from 'prosemirror-keymap';
 import { findParentNodeOfType } from 'prosemirror-utils';
 import { isEmptyDocument } from '../../../utils';
+import { filter } from '../../../utils/commands';
+import { Command } from '../../../commands';
 
 export function enforceLayoutColumnConstraints(
   state: EditorState,
@@ -55,6 +65,42 @@ export type LayoutState = {
   pos: number | null;
 };
 
+const isWholeSelectionInsideLayoutColumn = (state: EditorState): boolean => {
+  // Since findParentNodeOfType doesn't check if selection.to shares the parent, we do this check ourselves
+  const fromParent = findParentNodeOfType(state.schema.nodes.layoutColumn)(
+    state.selection,
+  );
+  if (fromParent) {
+    const isToPosInsideSameLayoutColumn =
+      state.selection.from < fromParent.pos + fromParent.node.nodeSize;
+    return isToPosInsideSameLayoutColumn;
+  }
+  return false;
+};
+
+const moveCursorToNextColumn: Command = (state, dispatch) => {
+  const { selection } = state;
+  const {
+    schema: {
+      nodes: { layoutColumn, layoutSection },
+    },
+  } = state;
+  const section = findParentNodeOfType(layoutSection)(selection)!;
+  const column = findParentNodeOfType(layoutColumn)(selection)!;
+
+  if (column.node !== section.node.lastChild) {
+    const $nextColumn = state.doc.resolve(column.pos + column.node.nodeSize);
+    const shiftedSelection = TextSelection.findFrom($nextColumn, 1);
+    dispatch(state.tr.setSelection(shiftedSelection as TextSelection));
+  }
+  return true;
+};
+
+// TODO: Look at memoize-one-ing this fn
+const getNodeDecoration = (pos: number, node: Node) => [
+  Decoration.node(pos, pos + node.nodeSize, { class: 'selected' }),
+];
+
 export const pluginKey = new PluginKey('layout');
 export default new Plugin({
   key: pluginKey,
@@ -78,6 +124,23 @@ export default new Plugin({
       }
       return pluginState;
     },
+  },
+  props: {
+    decorations(state) {
+      const layoutState = pluginKey.getState(state) as LayoutState;
+      if (layoutState.pos !== null) {
+        return DecorationSet.create(
+          state.doc,
+          getNodeDecoration(layoutState.pos, state.doc.nodeAt(
+            layoutState.pos,
+          ) as Node),
+        );
+      }
+      return undefined;
+    },
+    handleKeyDown: keydownHandler({
+      Tab: filter(isWholeSelectionInsideLayoutColumn, moveCursorToNextColumn),
+    }),
   },
   appendTransaction(_, oldState, newState) {
     if (!oldState.doc.eq(newState.doc)) {

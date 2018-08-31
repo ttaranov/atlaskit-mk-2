@@ -97,7 +97,7 @@ export class MediaPluginState {
   ) {
     this.reactContext = reactContext;
     this.options = options;
-    this.editorAppearance = editorAppearance;
+    this.editorAppearance = editorAppearance!;
     this.waitForMediaUpload =
       options.waitForMediaUpload === undefined
         ? true
@@ -598,11 +598,7 @@ export class MediaPluginState {
         stateManager,
         errorReporter,
       };
-      const { featureFlags } = this.mediaProvider;
       const defaultPickerConfig = {
-        useNewUploadService: !!(
-          featureFlags && featureFlags.useNewUploadService
-        ),
         uploadParams,
         proxyReactContext: reactContext(),
       };

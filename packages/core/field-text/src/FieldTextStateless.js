@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
+import styled from 'styled-components';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
@@ -14,11 +15,13 @@ import {
 import Input from './styled/Input';
 import type { FieldTextProps } from './types';
 
-type Props = {|
-  // $FlowFixMe - inexact `FieldTextProps` is incompatible with exact `Props`
-  ...FieldTextProps,
+const Wrapper = styled.div`
+  flex: 1 1 100%;
+`;
+
+type Props = FieldTextProps & {
   innerRef?: (node: ?HTMLInputElement) => void,
-|};
+};
 
 class FieldTextStateless extends Component<Props, void> {
   static defaultProps = {
@@ -50,7 +53,7 @@ class FieldTextStateless extends Component<Props, void> {
 
   render() {
     return (
-      <div>
+      <Wrapper>
         <Label
           htmlFor={this.props.id}
           isDisabled={this.props.disabled}
@@ -94,7 +97,7 @@ class FieldTextStateless extends Component<Props, void> {
             value={this.props.value}
           />
         </Base>
-      </div>
+      </Wrapper>
     );
   }
 }

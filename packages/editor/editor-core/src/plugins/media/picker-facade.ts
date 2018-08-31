@@ -18,8 +18,7 @@ import {
 } from '@atlaskit/media-picker';
 import { Context } from '@atlaskit/media-core';
 
-import { ErrorReportingHandler, isImage } from '../../utils';
-import { appendTimestamp } from './utils/media-common';
+import { ErrorReportingHandler } from '../../utils';
 import { MediaStateManager, MediaState, CustomMediaPicker } from './types';
 
 export type PickerType = keyof MediaPickerComponents | 'customMediaPicker';
@@ -285,17 +284,13 @@ export default class PickerFacade {
   ) => {
     const { file, preview } = event;
     const tempId = this.generateTempId(file.id);
-
     const updatedState = {
       status: 'preview',
       thumbnail: preview,
       preview: true,
+      fileName: file.name,
     } as Partial<MediaState>;
 
-    // Add timestamp to image file names on paste @see ED-3584
-    if (this.pickerType === 'clipboard' && isImage(file.type)) {
-      updatedState.fileName = appendTimestamp(file.name, file.creationDate);
-    }
     this.stateManager.updateState(tempId, updatedState);
   };
 

@@ -1,5 +1,53 @@
 # @atlaskit/website
 
+## 4.1.3
+- [patch] Updated dependencies [7545979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7545979)
+  - @atlaskit/media-card@33.0.0
+  - @atlaskit/media-filmstrip@12.0.0
+  - @atlaskit/media-core@23.1.0
+
+## 4.1.2
+- [patch] removed promise from FabricAnalyticsListener.client property [90ba6bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/90ba6bd)
+
+## 4.1.1
+- [patch] Updated dependencies [911a570](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/911a570)
+  - @atlaskit/media-test-helpers@17.0.0
+  - @atlaskit/media-filmstrip@11.0.2
+  - @atlaskit/media-core@23.0.2
+  - @atlaskit/media-card@32.0.6
+
+## 4.0.6
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/badge@9.1.1
+  - @atlaskit/media-card@32.0.5
+  - @atlaskit/media-filmstrip@11.0.1
+
+## 4.0.5
+- [patch] Updated dependencies [dfa100e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dfa100e)
+  - @atlaskit/analytics-listeners@3.3.1
+
+## 4.0.4
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/quick-search@4.2.7
+  - @atlaskit/tooltip@12.0.9
+  - @atlaskit/tag@6.0.5
+  - @atlaskit/spinner@9.0.6
+  - @atlaskit/single-select@6.0.4
+  - @atlaskit/navigation@33.1.5
+  - @atlaskit/modal-dialog@6.0.9
+  - @atlaskit/lozenge@6.1.5
+  - @atlaskit/layer-manager@5.0.6
+  - @atlaskit/inline-dialog@9.0.2
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/flag@9.0.5
+  - @atlaskit/field-text@7.0.6
+  - @atlaskit/dynamic-table@10.0.9
+  - @atlaskit/code@8.0.1
+  - @atlaskit/button@9.0.6
+  - @atlaskit/badge@9.1.0
+  - @atlaskit/docs@5.0.6
+
 ## 4.0.3
 
 

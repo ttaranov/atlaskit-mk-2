@@ -151,3 +151,9 @@ export const CardsWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
 export const CardItemWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: inline-block;
 `;
+
+export const CardListWrapper = styled.div`
+  border: 1px solid #ccc;
+  width: 400px;
+  height: 260px;
+`;

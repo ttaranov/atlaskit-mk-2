@@ -20,6 +20,7 @@ import {
 import { Participants, ReadOnlyParticipants } from './participants';
 import { findPointers, createTelepointers } from './utils';
 import { CollabEditProvider } from './provider';
+import { CollabEditOptions } from './types';
 
 export { CollabEditProvider };
 
@@ -28,6 +29,7 @@ export const pluginKey = new PluginKey('collabEditPlugin');
 export const createPlugin = (
   dispatch: Dispatch,
   providerFactory: ProviderFactory,
+  options?: CollabEditOptions,
 ) => {
   let collabEditProvider: CollabEditProvider | null;
   let isReady = false;
@@ -50,8 +52,9 @@ export const createPlugin = (
 
         if (collabEditProvider) {
           const selectionChanged = !oldState.selection.eq(newState.selection);
-          const participantsChanged =
-            prevActiveParticipants !== activeParticipants;
+          const participantsChanged = !prevActiveParticipants.eq(
+            activeParticipants,
+          );
 
           if (
             (sessionId && selectionChanged && !tr.docChanged) ||
@@ -101,10 +104,10 @@ export const createPlugin = (
             collabEditProvider
               .on('init', data => {
                 isReady = true;
-                handleInit(data, view);
+                handleInit(data, view, options);
               })
               .on('connected', data => handleConnection(data, view))
-              .on('data', data => applyRemoteData(data, view))
+              .on('data', data => applyRemoteData(data, view, options))
               .on('presence', data => handlePresence(data, view))
               .on('telepointer', data => handleTelePointer(data, view))
               .on('error', err => {
@@ -223,11 +226,16 @@ export class PluginState {
         const rawTo = anchor >= head ? anchor : head;
         const isSelection = rawTo - rawFrom > 0;
 
-        const from = getValidPos(
-          tr,
-          isSelection ? Math.max(rawFrom - 1, 0) : rawFrom,
-        );
-        const to = isSelection ? getValidPos(tr, rawTo) : from;
+        let from = 1;
+        let to = 1;
+
+        try {
+          from = getValidPos(
+            tr,
+            isSelection ? Math.max(rawFrom - 1, 0) : rawFrom,
+          );
+          to = isSelection ? getValidPos(tr, rawTo) : from;
+        } catch (err) {}
 
         add = add.concat(
           createTelepointers(
@@ -243,39 +251,41 @@ export class PluginState {
 
     if (tr.docChanged) {
       // Adjust decoration positions to changes made by the transaction
-      decorationSet = decorationSet.map(tr.mapping, tr.doc, {
-        // Reapplies decorators those got removed by the state change
-        onRemove: (spec: { pointer: { sessionId: string } }) => {
-          if (spec.pointer && spec.pointer.sessionId) {
-            const step = tr.steps.filter(isReplaceStep)[0];
-            if (step) {
-              const { sessionId } = spec.pointer;
-              const {
-                slice: {
-                  content: { size },
-                },
-                from,
-              } = step as any;
-              const pos = getValidPos(
-                tr,
-                size
-                  ? Math.min(from + size, tr.doc.nodeSize - 3)
-                  : Math.max(from, 1),
-              );
+      try {
+        decorationSet = decorationSet.map(tr.mapping, tr.doc, {
+          // Reapplies decorators those got removed by the state change
+          onRemove: (spec: { pointer: { sessionId: string } }) => {
+            if (spec.pointer && spec.pointer.sessionId) {
+              const step = tr.steps.filter(isReplaceStep)[0];
+              if (step) {
+                const { sessionId } = spec.pointer;
+                const {
+                  slice: {
+                    content: { size },
+                  },
+                  from,
+                } = step as any;
+                const pos = getValidPos(
+                  tr,
+                  size
+                    ? Math.min(from + size, tr.doc.nodeSize - 3)
+                    : Math.max(from, 1),
+                );
 
-              add = add.concat(
-                createTelepointers(
-                  pos,
-                  pos,
-                  sessionId,
-                  false,
-                  this.getInitial(sessionId),
-                ),
-              );
+                add = add.concat(
+                  createTelepointers(
+                    pos,
+                    pos,
+                    sessionId,
+                    false,
+                    this.getInitial(sessionId),
+                  ),
+                );
+              }
             }
-          }
-        },
-      });
+          },
+        });
+      } catch (err) {}
 
       // Remove any selection decoration within the change range,
       // takes care of the issue when after pasting we end up with a dead selection

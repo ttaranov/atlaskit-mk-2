@@ -1,5 +1,32 @@
 # @atlaskit/media-viewer
 
+## 18.0.0
+- [major] Updated dependencies [7545979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7545979)
+  - @atlaskit/media-core@23.1.0
+
+## 17.0.8
+- [patch] Updated dependencies [911a570](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/911a570)
+  - @atlaskit/media-test-helpers@17.0.0
+  - @atlaskit/media-core@23.0.2
+
+## 17.0.7
+- [patch] List datasource takes priority to be consistent with the old behaviour MS-410 [31fafe6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/31fafe6)
+
+## 17.0.6
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/media-ui@5.1.2
+
+## 17.0.5
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/media-ui@5.1.1
+  - @atlaskit/spinner@9.0.6
+  - @atlaskit/modal-dialog@6.0.9
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/field-range@5.0.4
+  - @atlaskit/button@9.0.6
+  - @atlaskit/docs@5.0.6
+
 ## 17.0.4
 - [patch] Use Camera class in avatar picker [335ab1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/335ab1e)
 - [patch] Updated dependencies [335ab1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/335ab1e)

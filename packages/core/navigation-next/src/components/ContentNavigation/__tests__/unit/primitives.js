@@ -41,16 +41,6 @@ describe('NavigationNext components: ContentNavigation primitives', () => {
       expect(wrapper.find('ScrollProvider').length).toBe(1);
     });
 
-    it('should have shadow effect', () => {
-      const wrapper = mount(
-        <ContainerNavigation isPeeking>
-          <p>This is a text</p>
-        </ContainerNavigation>,
-      );
-
-      expect(wrapper.find('Shadow').length).toBe(1);
-    });
-
     it('should render the received children', () => {
       const wrapper = mount(
         <ContainerNavigation isPeeking>

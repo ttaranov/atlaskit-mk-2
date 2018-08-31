@@ -1,6 +1,7 @@
 // @flow
 
 import React, { type Node } from 'react';
+import { Helmet } from 'react-helmet';
 import CommonMark from 'commonmark';
 import ReactRenderer from 'commonmark-react-renderer';
 import { AkCodeBlock, AkCode } from '@atlaskit/code';
@@ -26,6 +27,22 @@ const renderer = new ReactRenderer({
   },
 });
 
-export default function Markdown({ children }: { children: Node }) {
-  return <div>{renderer.render(parser.parse(children))}</div>;
+export default function Markdown({
+  children,
+  description,
+}: {
+  children: Node,
+  description: string,
+}) {
+  return (
+    <div>
+      <Helmet>
+        <meta
+          name="description"
+          content={description || DEFAULT_META_DESCRIPTION}
+        />
+      </Helmet>
+      {renderer.render(parser.parse(children))}
+    </div>
+  );
 }

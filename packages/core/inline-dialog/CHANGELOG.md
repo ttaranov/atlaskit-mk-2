@@ -1,5 +1,18 @@
 # @atlaskit/inline-dialog
 
+## 9.0.4
+- [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
+
+## 9.0.2
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/single-select@6.0.4
+  - @atlaskit/select@5.0.9
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/datetime-picker@6.3.2
+  - @atlaskit/button@9.0.6
+  - @atlaskit/docs@5.0.6
+
 ## 9.0.1
 - [patch] Added z-index back and fixed onClose [d9a0c62](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d9a0c62)
 - [none] Updated dependencies [d9a0c62](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d9a0c62)

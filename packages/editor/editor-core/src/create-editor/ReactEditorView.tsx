@@ -192,7 +192,6 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
         state: this.editorState,
         dispatchTransaction: (transaction: Transaction) => {
           transaction.setMeta('isLocal', true);
-
           if (!this.view) {
             return;
           }
@@ -206,6 +205,7 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
         },
         // Disables the contentEditable attribute of the editor if the editor is disabled
         editable: state => !this.props.editorProps.disabled,
+        attributes: { 'data-gramm': 'false' },
       },
     );
   };

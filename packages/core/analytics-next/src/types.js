@@ -5,7 +5,6 @@ import UIAnalyticsEvent from './UIAnalyticsEvent';
 
 // Basic events
 export type AnalyticsEventPayload = {
-  action: string,
   [string]: any,
 };
 

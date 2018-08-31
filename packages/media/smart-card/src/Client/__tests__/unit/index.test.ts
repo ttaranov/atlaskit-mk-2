@@ -1,12 +1,13 @@
-import { Observable } from 'rxjs';
-import mock, { once } from 'xhr-mock';
+import 'whatwg-fetch';
+import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
+import * as fetchMock from 'fetch-mock';
 import { Client, ClientOptions } from '../..';
-
+import { RemoteResourceAuthConfig } from '../../createObjectResolverServiceObservable';
 const RESOLVE_URL =
   'https://api-private.stg.atlassian.com/object-resolver/resolve';
 const OBJECT_URL = 'http://example.com/foobar';
 
-const auth = [];
+const remoteResourceMetaAuth: RemoteResourceAuthConfig[] = [];
 
 const definitionId = 'abc-123';
 
@@ -20,35 +21,16 @@ function createClient(options?: ClientOptions) {
   return new Client(options);
 }
 
-const nth = (n: number) => <T>(source: Observable<T>) =>
-  new Observable<T>(observer => {
-    let count = 0;
-    return source.subscribe({
-      next(value) {
-        if (count++ === n) {
-          observer.next(value);
-          observer.complete();
-        }
-      },
-      error(error) {
-        observer.error(error);
-      },
-      complete() {
-        observer.complete();
-      },
-    });
-  });
-
 function resolved() {
-  mock.post(
-    RESOLVE_URL,
-    once({
+  fetchMock.mock({
+    matcher: `begin:${RESOLVE_URL}`,
+    response: {
       status: 200,
       body: JSON.stringify({
         meta: {
           visibility: 'restricted',
           access: 'granted',
-          auth,
+          auth: remoteResourceMetaAuth,
           definitionId,
         },
         data: {
@@ -57,41 +39,47 @@ function resolved() {
           name,
         },
       }),
-    }),
-  );
+    },
+  });
 }
 
 function errored() {
-  mock.post(RESOLVE_URL, {
-    status: 500,
+  fetchMock.mock({
+    matcher: `begin:${RESOLVE_URL}`,
+    response: {
+      status: 500,
+      throws: 'Error',
+    },
   });
 }
 
 function notfound() {
-  mock.post(
-    RESOLVE_URL,
-    once({
+  fetchMock.mock({
+    matcher: `begin:${RESOLVE_URL}`,
+    response: {
       status: 200,
       body: JSON.stringify({
         meta: {
           visibility: 'not_found',
           access: 'granted',
-          auth,
+          auth: remoteResourceMetaAuth,
           definitionId,
         },
       }),
-    }),
-  );
+    },
+  });
 }
 
 describe('Client', () => {
-  beforeEach(() => mock.setup());
-  afterEach(() => mock.teardown());
+  afterEach(() => fetchMock.restore());
 
   it('should be resolving when the object is being retrieved', async () => {
+    resolved();
+
     const state = await createClient()
       .get(OBJECT_URL)
-      .pipe(nth(0))
+      .take(1)
+      .takeLast(1)
       .toPromise();
     expect(state.status).toEqual('resolving');
     expect(state.services).toEqual([]);
@@ -103,8 +91,10 @@ describe('Client', () => {
 
     const state = await createClient()
       .get(OBJECT_URL)
-      .pipe(nth(1))
+      .take(2)
+      .takeLast(1)
       .toPromise();
+
     expect(state.status).toEqual('not-found');
     expect(state.services).toEqual([]);
     expect(state.data).toBeUndefined();
@@ -115,7 +105,8 @@ describe('Client', () => {
 
     const state = await createClient()
       .get(OBJECT_URL)
-      .pipe(nth(1))
+      .take(2)
+      .takeLast(1)
       .toPromise();
     expect(state.status).toEqual('resolved');
     expect(state.services).toEqual([]);
@@ -126,16 +117,16 @@ describe('Client', () => {
     });
   });
 
-  it('should be unauthorised when the object cannot be accessed by the current user', async () => {
-    mock.post(
-      RESOLVE_URL,
-      once({
+  it('should be unauthorized when the object cannot be accessed by the current user', async () => {
+    fetchMock.mock({
+      matcher: `begin:${RESOLVE_URL}`,
+      response: {
         status: 200,
         body: JSON.stringify({
           meta: {
             visibility: 'restricted',
-            access: 'unauthorised',
-            auth,
+            access: 'unauthorized',
+            auth: remoteResourceMetaAuth,
             definitionId,
           },
           data: {
@@ -143,14 +134,15 @@ describe('Client', () => {
             generator,
           },
         }),
-      }),
-    );
+      },
+    });
 
     const state = await createClient()
       .get(OBJECT_URL)
-      .pipe(nth(1))
+      .take(2)
+      .takeLast(1)
       .toPromise();
-    expect(state.status).toEqual('unauthorised');
+    expect(state.status).toEqual('unauthorized');
     expect(state.services).toEqual([]);
     expect(state.data).toEqual({
       '@context': {},
@@ -159,15 +151,15 @@ describe('Client', () => {
   });
 
   it('should be forbidden when the object cannot be accessed by the current user', async () => {
-    mock.post(
-      RESOLVE_URL,
-      once({
+    fetchMock.mock({
+      matcher: `begin:${RESOLVE_URL}`,
+      response: {
         status: 200,
         body: JSON.stringify({
           meta: {
             visibility: 'restricted',
             access: 'forbidden',
-            auth,
+            auth: remoteResourceMetaAuth,
             definitionId,
           },
           data: {
@@ -175,13 +167,15 @@ describe('Client', () => {
             generator,
           },
         }),
-      }),
-    );
+      },
+    });
 
     const state = await createClient()
       .get(OBJECT_URL)
-      .pipe(nth(1))
+      .take(2)
+      .takeLast(1)
       .toPromise();
+
     expect(state.status).toEqual('forbidden');
     expect(state.services).toEqual([]);
     expect(state.data).toEqual({
@@ -195,24 +189,8 @@ describe('Client', () => {
 
     const state = await createClient()
       .get(OBJECT_URL)
-      .pipe(nth(1))
-      .toPromise();
-    expect(state.status).toEqual('errored');
-    expect(state.services).toEqual([]);
-    expect(state.data).toBeUndefined();
-  });
-
-  it('should be errored when an error is thrown', async () => {
-    mock.error(() => {
-      /* silence error logging */
-    });
-    mock.post('http://object-resolver-service/resolve', () =>
-      Promise.reject(new Error('Uh oh')),
-    );
-
-    const state = await createClient()
-      .get(OBJECT_URL)
-      .pipe(nth(1))
+      .take(2)
+      .takeLast(1)
       .toPromise();
     expect(state.status).toEqual('errored');
     expect(state.services).toEqual([]);
@@ -233,7 +211,9 @@ describe('Client', () => {
 
         case 1:
           expect(status).toEqual('resolved');
+
           client.reload(definitionId);
+
           break;
 
         case 2:
@@ -271,7 +251,9 @@ describe('Client', () => {
 
         case 1:
           expect(status).toEqual('resolved');
+
           client.reload('def-456');
+
           setTimeout(() => {
             // allow other requests to happen (and fail the test)
             subscription.unsubscribe();
@@ -296,7 +278,8 @@ describe('Client', () => {
         if (stateFromFirstObserver.status === 'resolved') {
           const stateFromSecondObserver = await client
             .get(OBJECT_URL)
-            .pipe(nth(0))
+            .take(1)
+            .takeLast(1)
             .toPromise();
           expect(stateFromSecondObserver).toEqual(stateFromFirstObserver);
           subscription.unsubscribe();
@@ -311,7 +294,8 @@ describe('Client', () => {
       TEMPORARY_resolver: async () => ({ name: 'From resolver' }),
     })
       .get(OBJECT_URL)
-      .pipe(nth(2))
+      .take(3)
+      .takeLast(1)
       .toPromise();
     expect(state.status).toEqual('resolved');
     expect(state.services).toEqual([]);
@@ -328,7 +312,8 @@ describe('Client', () => {
       TEMPORARY_resolver: async () => ({ name: 'From resolver' }),
     })
       .get(OBJECT_URL)
-      .pipe(nth(2))
+      .take(3)
+      .takeLast(1)
       .toPromise();
     expect(state.status).toEqual('resolved');
     expect(state.services).toEqual([]);
@@ -345,7 +330,8 @@ describe('Client', () => {
       TEMPORARY_resolver: async () => ({ name: 'From resolver' }),
     })
       .get(OBJECT_URL)
-      .pipe(nth(2))
+      .take(3)
+      .takeLast(1)
       .toPromise();
     expect(state.status).toEqual('resolved');
     expect(state.services).toEqual([]);
@@ -364,7 +350,8 @@ describe('Client', () => {
       );
     const state = await createClient({ TEMPORARY_resolver: resolver })
       .get(OBJECT_URL)
-      .pipe(nth(2))
+      .take(3)
+      .takeLast(1)
       .toPromise();
     expect(state.status).toEqual('resolved');
     expect(state.services).toEqual([]);
@@ -380,7 +367,8 @@ describe('Client', () => {
     const resolver = () => Promise.reject(new Error('😵'));
     const state = await createClient({ TEMPORARY_resolver: resolver })
       .get(OBJECT_URL)
-      .pipe(nth(2))
+      .take(3)
+      .takeLast(1)
       .toPromise();
     expect(state.status).toEqual('resolved');
     expect(state.services).toEqual([]);

@@ -88,6 +88,6 @@ export interface Table {
 }
 
 export interface AddCellArgs extends AddArgs {
-  style: '|' | '||' | null;
+  style: string;
   content: PMNode[];
 }

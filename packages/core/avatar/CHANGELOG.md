@@ -1,5 +1,19 @@
 # @atlaskit/avatar
 
+## 14.0.10
+- [patch] Fix bug where analytics was causing avatar to always have an onClick and render with onClick styles/attributes. [966f1fb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/966f1fb)
+
+## 14.0.8
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/tooltip@12.0.9
+  - @atlaskit/toggle@5.0.6
+  - @atlaskit/section-message@1.0.5
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/field-base@11.0.5
+  - @atlaskit/button@9.0.6
+  - @atlaskit/docs@5.0.6
+
 ## 14.0.7
 - [patch] updated the custom component proxy to be class instead of function to fix the errors related to innerRef [06690a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06690a6)
 - [none] Updated dependencies [06690a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06690a6)

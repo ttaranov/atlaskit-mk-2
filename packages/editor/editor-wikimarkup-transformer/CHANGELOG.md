@@ -1,5 +1,51 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 2.0.13
+- [patch] Keep title of code block [95f9654](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/95f9654)
+
+## 2.0.12
+- [patch] Trailing spaces of a table should not create a empty cell [eade148](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eade148)
+
+## 2.0.11
+- [patch] Updated dependencies [7545979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7545979)
+  - @atlaskit/editor-common@15.0.0
+  - @atlaskit/editor-core@79.0.0
+  - @atlaskit/renderer@21.0.0
+  - @atlaskit/editor-json-transformer@4.0.8
+  - @atlaskit/editor-test-helpers@6.0.6
+  - @atlaskit/util-data-test@10.0.8
+
+## 2.0.10
+- [patch] Updated dependencies [911a570](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/911a570)
+  - @atlaskit/editor-json-transformer@4.0.7
+  - @atlaskit/renderer@20.1.1
+  - @atlaskit/editor-test-helpers@6.0.5
+  - @atlaskit/editor-core@78.0.0
+
+## 2.0.9
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/renderer@20.0.11
+  - @atlaskit/util-data-test@10.0.7
+  - @atlaskit/profilecard@4.0.8
+  - @atlaskit/editor-common@14.0.11
+  - @atlaskit/editor-test-helpers@6.0.3
+  - @atlaskit/editor-json-transformer@4.0.6
+  - @atlaskit/editor-core@77.1.4
+
+## 2.0.8
+- [patch] Convert all media items to thumbnail [eb0f1f4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/eb0f1f4)
+
+## 2.0.7
+- [patch] whitelist supported language for wiki markup [a3edfda](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a3edfda)
+
+## 2.0.6
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/profilecard@4.0.7
+  - @atlaskit/renderer@20.0.7
+  - @atlaskit/editor-core@77.0.14
+  - @atlaskit/docs@5.0.6
+
 ## 2.0.5
 - [patch] wikimarkup parser should parse media item with ( and ) correctly [76adf36](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/76adf36)
 

@@ -1,5 +1,25 @@
 # @atlaskit/datetime-picker
 
+## 6.3.5
+- [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
+
+## 6.3.3
+- [patch] Updating datetime-picker and select styles [981b96c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/981b96c)
+
+## 6.3.2
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/select@5.0.9
+  - @atlaskit/popper@0.2.1
+  - @atlaskit/modal-dialog@6.0.9
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/field-text@7.0.6
+  - @atlaskit/field-range@5.0.4
+  - @atlaskit/field-base@11.0.5
+  - @atlaskit/calendar@7.0.5
+  - @atlaskit/button@9.0.6
+  - @atlaskit/docs@5.0.6
+
 ## 6.3.1
 
 

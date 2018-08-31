@@ -15,6 +15,7 @@ import {
   TRACK_EVENT_TYPE,
   OPERATIONAL_EVENT_TYPE,
   GasPayload,
+  GasScreenEventPayload,
 } from '@atlaskit/analytics-gas-types';
 
 import {
@@ -23,9 +24,9 @@ import {
   getPackageInfo,
   getComponents,
 } from './extract-data-from-event';
-import { EventNextType } from '../types';
 import Logger from '../helpers/logger';
 import { version as listenerVersion } from '../../package.json';
+import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
 
 const NAVIGATION_TAG = 'navigation';
 
@@ -56,7 +57,10 @@ const NAVIGATION_TAG = 'navigation';
  *  }
  */
 
-export default (event: EventNextType, logger: Logger): GasPayload | null => {
+export default (
+  event: UIAnalyticsEventInterface,
+  logger: Logger,
+): GasPayload | GasScreenEventPayload | null => {
   const sources = getSources(event);
   const source = last(sources) || 'unknown';
   const extraAttributes = getExtraAttributes(event);
@@ -76,6 +80,7 @@ export default (event: EventNextType, logger: Logger): GasPayload | null => {
     actionSubject,
     actionSubjectId,
     attributes: payloadAttributes,
+    name,
   } = event.payload;
   const attributes = {
     listenerVersion,
@@ -90,28 +95,33 @@ export default (event: EventNextType, logger: Logger): GasPayload | null => {
   tags.add(NAVIGATION_TAG);
 
   if (event.payload) {
-    if (eventType === UI_EVENT_TYPE) {
-      return {
-        eventType,
-        source,
-        actionSubject,
-        action,
-        actionSubjectId,
-        attributes,
-        tags: Array.from(tags),
-      } as any;
-    }
-
-    if (
-      eventType === TRACK_EVENT_TYPE ||
-      eventType === OPERATIONAL_EVENT_TYPE ||
-      eventType === SCREEN_EVENT_TYPE
-    ) {
-      logger.error(
-        'Track, screen and operational events are currently not supported for navigation events',
-      );
-    } else {
-      logger.error('Invalid event type', eventType);
+    switch (eventType) {
+      case UI_EVENT_TYPE:
+      case OPERATIONAL_EVENT_TYPE:
+        return {
+          eventType,
+          source,
+          actionSubject,
+          action,
+          actionSubjectId,
+          attributes,
+          tags: Array.from(tags),
+        } as any;
+      case SCREEN_EVENT_TYPE:
+        return {
+          eventType,
+          name,
+          attributes,
+          tags: Array.from(tags),
+        };
+      case TRACK_EVENT_TYPE:
+        logger.error(
+          'Track events are currently not supported for navigation events',
+        );
+        break;
+      default:
+        logger.error('Invalid event type', eventType);
+        break;
     }
   }
 

@@ -1,12 +1,20 @@
 import * as React from 'react';
-import { mount } from 'enzyme';
 import { AnalyticsContext } from '@atlaskit/analytics-next';
 import FabricAnalyticsListeners, { FabricChannel } from '../src';
 import {
-  DummyComponentWithAnalytics,
-  DummyAtlaskitComponentWithAnalytics,
-  DummyComponentWithAttributesWithAnalytics,
+  createComponentWithAnalytics,
+  createComponentWithAttributesWithAnalytics,
 } from './helpers';
+
+const DummyElementsComponent = createComponentWithAnalytics(
+  FabricChannel.elements,
+);
+const DummyElementsComponentWithAttributes = createComponentWithAttributesWithAnalytics(
+  FabricChannel.elements,
+);
+const DummyAtlaskitComponent = createComponentWithAnalytics(
+  FabricChannel.atlaskit,
+);
 
 const myOnClickHandler = () => {
   console.log('Button clicked ! Yay!');
@@ -27,30 +35,32 @@ const analyticsWebClientMock = {
   },
 };
 
-export default function Example() {
+function Example() {
   return (
     <FabricAnalyticsListeners
-      client={Promise.resolve(analyticsWebClientMock)}
+      client={analyticsWebClientMock}
       excludedChannels={[FabricChannel.atlaskit]}
     >
       <div>
         <p>Excluding analytics listener</p>
-        <DummyComponentWithAnalytics
-          text="Fabric Elements event - component without attributes"
-          onClick={myOnClickHandler}
-        />
+        <DummyElementsComponent onClick={myOnClickHandler} />
 
         <AnalyticsContext data={{ issueId: 100, greeting: 'hello' }}>
           <AnalyticsContext data={{ issueId: 200 }}>
-            <DummyComponentWithAttributesWithAnalytics
-              text="Fabric Elements event - component with attributes"
-              onClick={myOnClickHandler}
-            />
+            <DummyElementsComponentWithAttributes onClick={myOnClickHandler} />
           </AnalyticsContext>
         </AnalyticsContext>
 
-        <DummyAtlaskitComponentWithAnalytics onClick={myOnClickHandler} />
+        <DummyAtlaskitComponent onClick={myOnClickHandler} />
       </div>
     </FabricAnalyticsListeners>
   );
 }
+
+Object.assign(Example, {
+  meta: {
+    noListener: true,
+  },
+});
+
+export default Example;

@@ -8,10 +8,11 @@ export interface Props {
   href: string;
   resultId: string;
   text: string | JSX.Element;
-  icon: JSX.Element;
+  icon?: JSX.Element;
   type: string;
   isSelected?: boolean; // injected by quick-search
   showKeyboardLozenge?: boolean;
+  analyticsData?: object;
 }
 
 export default class AdvancedSearchResult extends React.Component<Props> {
