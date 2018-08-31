@@ -18,6 +18,7 @@ import { navigationItemClicked } from '../common/analytics';
 import ContainerHeader from '../components/ContainerHeader';
 import BaseItem from '../components/Item';
 import SectionComponent from '../components/Section';
+import SectionHeadingComponent from '../components/SectionHeading';
 import Separator from '../components/Separator';
 import GroupComponent from '../components/Group';
 import GroupHeadingComponent from '../components/GroupHeading';
@@ -28,10 +29,11 @@ import { withNavigationViewController } from '../view-controller';
 import type {
   GoToItemProps,
   GroupProps,
+  GroupHeadingProps,
   ItemProps,
   ItemsRendererProps,
+  SectionHeadingProps,
   SectionProps,
-  GroupHeadingProps,
   WordmarkProps,
 } from './types';
 
@@ -151,6 +153,10 @@ const BackItem = ({ before: beforeProp, text, ...props }: ItemProps) => {
 // Title
 const GroupHeading = ({ text, ...props }: GroupHeadingProps) => (
   <GroupHeadingComponent {...props}>{text}</GroupHeadingComponent>
+);
+
+const SectionHeading = ({ text, ...props }: SectionHeadingProps) => (
+  <SectionHeadingComponent {...props}>{text}</SectionHeadingComponent>
 );
 
 // Switcher
@@ -279,6 +285,7 @@ const itemComponents = {
   GoToItem,
   GroupHeading,
   Item,
+  SectionHeading,
   Separator,
   Switcher,
   Wordmark,

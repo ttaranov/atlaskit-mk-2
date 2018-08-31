@@ -39,7 +39,7 @@ const baseStyles = {
     display: 'flex',
     flexShrink: 0,
     fontSize: 'inherit',
-    height: `${gridSize * 5}`,
+    height: gridSize * 5,
     outline: 'none',
     textAlign: 'left',
     textDecoration: 'none',
@@ -84,34 +84,34 @@ const baseStyles = {
 const layoutStyles = {
   compact: {
     itemBase: {
-      paddingRight: `${gridSize}px`,
-      paddingLeft: `${gridSize}px`,
+      paddingRight: gridSize,
+      paddingLeft: gridSize,
     },
     beforeWrapper: {
-      marginRight: `${gridSize}`,
+      marginRight: gridSize,
     },
     subTextWrapper: {
-      fontSize: `${10}px`,
+      fontSize: '10px',
       lineHeight: 1.2,
     },
     afterWrapper: {
-      marginLeft: `${gridSize}`,
+      marginLeft: gridSize,
     },
   },
   default: {
     itemBase: {
-      paddingRight: `${gridSize * 1.5}px`,
-      paddingLeft: `${gridSize * 1.5}px`,
+      paddingLeft: gridSize * 1.5,
+      paddingRight: gridSize * 1.5,
     },
     beforeWrapper: {
-      marginRight: `${gridSize * 2}`,
+      marginRight: gridSize * 2,
     },
     subTextWrapper: {
-      fontSize: `${12}px`,
+      fontSize: '12px',
       lineHeight: 14 / 12,
     },
     afterWrapper: {
-      marginLeft: `${gridSize * 2}`,
+      marginLeft: gridSize * 2,
     },
   },
 };

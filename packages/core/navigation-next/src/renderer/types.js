@@ -31,6 +31,10 @@ export type GroupHeadingProps = {
   text: string,
 };
 
+export type SectionHeadingProps = {
+  text: string,
+};
+
 type CustomComponents = { [string]: ComponentType<any> };
 
 type SharedGroupTypeProps = {

@@ -18,11 +18,13 @@ const mountWithProvider = element =>
 describe('navigation-next view renderer', () => {
   describe('Item', () => {
     it('should render the Item UI component', () => {
-      const wrapper = shallow(<Item id="id" />);
+      const wrapper = shallow(<Item text="Item" id="id" />);
       expect(wrapper.find(BaseItem)).toHaveLength(1);
     });
     it('should render a GoToItem if a goTo prop is passed', () => {
-      const withGoTo = mountWithProvider(<Item id="id" goTo="view" />);
+      const withGoTo = mountWithProvider(
+        <Item text="Item" id="id" goTo="view" />,
+      );
       expect(withGoTo.find(GoToItem)).toHaveLength(1);
     });
   });
