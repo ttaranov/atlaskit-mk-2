@@ -34,7 +34,7 @@ export interface State {
   readonly remoteUploads: RemoteUploads;
   readonly isCancelling: boolean;
   readonly isUploading: boolean;
-  readonly context: Context; // Tenant Context
+  readonly tenantContext: Context;
   readonly userContext: Context;
   readonly lastUploadIndex: number;
   readonly giphy: GiphyState;

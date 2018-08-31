@@ -45,7 +45,7 @@ export default (
   const partialState: State = {
     ...defaultState,
     redirectUrl,
-    context: tenantContext,
+    tenantContext: tenantContext,
     userContext: userContext,
     config,
   };

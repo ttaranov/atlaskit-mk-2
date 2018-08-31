@@ -44,7 +44,7 @@ export const mockState: State = {
     totalResultCount: 100,
   },
   onCancelUpload: jest.fn(),
-  context: ContextFactory.create({
+  tenantContext: ContextFactory.create({
     authProvider: jest.fn(),
   }),
   userContext: ContextFactory.create({

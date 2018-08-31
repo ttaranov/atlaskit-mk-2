@@ -55,7 +55,7 @@ describe('App', () => {
         store={store}
         selectedServiceName="upload"
         isVisible={true}
-        context={context}
+        tenantContext={context}
         userContext={userContext}
         tenantUploadParams={tenantUploadParams}
         {...handlers}
@@ -71,7 +71,7 @@ describe('App', () => {
       <App
         store={store}
         selectedServiceName="google"
-        context={context}
+        tenantContext={context}
         userContext={userContext}
         isVisible={true}
         tenantUploadParams={tenantUploadParams}
@@ -88,7 +88,7 @@ describe('App', () => {
       <App
         store={store}
         selectedServiceName="upload"
-        context={context}
+        tenantContext={context}
         userContext={userContext}
         isVisible={true}
         tenantUploadParams={tenantUploadParams}
@@ -105,7 +105,7 @@ describe('App', () => {
       <App
         store={store}
         selectedServiceName="google"
-        context={context}
+        tenantContext={context}
         userContext={userContext}
         isVisible={false}
         tenantUploadParams={tenantUploadParams}
@@ -126,7 +126,7 @@ describe('App', () => {
       <App
         store={store}
         selectedServiceName="google"
-        context={context}
+        tenantContext={context}
         userContext={userContext}
         isVisible={true}
         tenantUploadParams={tenantUploadParams}
@@ -147,7 +147,7 @@ describe('App', () => {
       <App
         store={store}
         selectedServiceName="google"
-        context={context}
+        tenantContext={context}
         userContext={userContext}
         isVisible={true}
         tenantUploadParams={tenantUploadParams}
