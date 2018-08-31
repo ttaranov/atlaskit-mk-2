@@ -3,9 +3,8 @@ import { Component } from 'react';
 import EmojiErrorMessage from './EmojiErrorMessage';
 import AkButton from '@atlaskit/button';
 
-import { EmojiDescription } from '../../types';
 import * as styles from './styles';
-import CachingEmoji from './CachingEmoji';
+import { CachingEmoji, EmojiDescription } from '@atlaskit/emoji';
 import RetryableButton from './RetryableButton';
 
 export interface OnDeleteEmoji {

@@ -3,10 +3,13 @@ import { PureComponent } from 'react';
 import * as classNames from 'classnames';
 
 import * as styles from './styles';
-import { CategoryDescription, OnCategory } from '../../types';
-import { defaultCategories } from '../../constants';
-
-import { CategoryDescriptionMap, CategoryId } from './categories';
+import { CategoryId } from '@atlaskit/emoji';
+import { defaultCategories } from '../constants';
+import {
+  CategoryDescription,
+  OnCategory,
+  CategoryDescriptionMap,
+} from '../types';
 
 export interface Props {
   dynamicCategories?: CategoryId[];

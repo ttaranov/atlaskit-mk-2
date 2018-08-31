@@ -9,7 +9,7 @@ import {
   customCategory,
   frequentCategory,
   analyticsEmojiPrefix,
-} from '../../constants';
+} from '../constants';
 import {
   EmojiDescription,
   OptionalEmojiDescription,
@@ -20,26 +20,21 @@ import {
   OnEmojiEvent,
   SearchOptions,
   ToneSelection,
-} from '../../types';
-import {
-  containsEmojiId,
-  isPromise /*, isEmojiIdEqual, isEmojiLoaded*/,
-} from '../../type-helpers';
-import { SearchSort } from '../../types';
-import { getToneEmoji } from '../../util/filters';
+  CategoryId,
+  SearchSort,
+  OnEmojiProviderChange,
+  supportsUploadFeature,
+  EmojiProvider,
+  getEmojiVariation,
+} from '@atlaskit/emoji';
+import { containsEmojiId, isPromise } from '../type-helpers';
+import { getToneEmoji } from '../util/filters';
 import { EmojiContext } from '../common/internal-types';
 import { createRecordSelectionDefault } from '../common/RecordSelectionDefault';
 import CategorySelector from './CategorySelector';
 import EmojiPickerList from './EmojiPickerList';
 import EmojiPickerFooter from './EmojiPickerFooter';
-import {
-  EmojiProvider,
-  OnEmojiProviderChange,
-  supportsUploadFeature,
-} from '../../api/EmojiResource';
-import { getEmojiVariation } from '../../api/EmojiRepository';
 import { FireAnalyticsEvent } from '@atlaskit/analytics';
-import { CategoryId } from './categories';
 
 const FREQUENTLY_USED_MAX = 16;
 

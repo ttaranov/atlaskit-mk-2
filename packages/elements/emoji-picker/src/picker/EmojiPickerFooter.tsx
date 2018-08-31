@@ -3,14 +3,14 @@ import { PureComponent } from 'react';
 import * as classNames from 'classnames';
 
 import * as styles from './styles';
-import EmojiPreview from '../common/EmojiPreview';
 import EmojiUploadPicker, { OnUploadEmoji } from '../common/EmojiUploadPicker';
 import {
   EmojiDescription,
   EmojiDescriptionWithVariations,
   OnToneSelected,
   ToneSelection,
-} from '../../types';
+  EmojiPreview,
+} from '@atlaskit/emoji';
 import EmojiDeletePreview, {
   OnDeleteEmoji,
 } from '../common/EmojiDeletePreview';

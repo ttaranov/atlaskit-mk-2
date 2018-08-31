@@ -1,9 +1,8 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { UploadStatus } from './internal-types';
-import { EmojiDescription } from '../../types';
-import { customCategory } from '../../constants';
-import Emoji from './Emoji';
+import { customCategory } from '../constants';
+import { Emoji, EmojiDescription } from '@atlaskit/emoji';
 import AkButton from '@atlaskit/button';
 import * as styles from './styles';
 import RetryableButton from './RetryableButton';

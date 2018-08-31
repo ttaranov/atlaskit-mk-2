@@ -4,7 +4,7 @@ import AkFieldBase from '@atlaskit/field-base';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 
 import * as styles from './styles';
-import { Styles } from '../../types';
+import { Styles } from '@atlaskit/emoji';
 
 export interface Props {
   style?: Styles;

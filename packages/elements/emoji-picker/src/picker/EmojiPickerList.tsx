@@ -4,15 +4,17 @@ import { MouseEvent, PureComponent } from 'react';
 import * as classNames from 'classnames';
 import { List as VirtualList } from 'react-virtualized/dist/commonjs/List';
 
-import { customCategory, userCustomTitle } from '../../constants';
+import { userCustomTitle } from '../constants';
+import { OnCategory, CategoryDescriptionMap, CategoryGroupKey } from '../types';
 import {
   EmojiDescription,
   EmojiId,
-  OnCategory,
   OnEmojiEvent,
   ToneSelection,
   User,
-} from '../../types';
+  CategoryId,
+  customCategory,
+} from '@atlaskit/emoji';
 import { sizes } from './EmojiPickerSizes';
 import {
   CategoryHeadingItem,
@@ -25,11 +27,6 @@ import {
 import * as Items from './EmojiPickerVirtualItems';
 import * as styles from './styles';
 import { EmojiContext } from '../common/internal-types';
-import {
-  CategoryDescriptionMap,
-  CategoryGroupKey,
-  CategoryId,
-} from './categories';
 import CategoryTracker from './CategoryTracker';
 
 const categoryClassname = 'emoji-category';

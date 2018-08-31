@@ -11,8 +11,7 @@ import {
   Props as ComponentProps,
 } from './EmojiPickerComponent';
 import { LoadingItem } from './EmojiPickerVirtualItems';
-import { OnEmojiEvent } from '../../types';
-import { EmojiProvider } from '../../api/EmojiResource';
+import { EmojiProvider, OnEmojiEvent } from '@atlaskit/emoji';
 import { FireAnalyticsEvent, withAnalytics } from '@atlaskit/analytics';
 
 const emojiPickerModuleLoader = () =>

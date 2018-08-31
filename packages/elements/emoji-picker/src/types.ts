@@ -1,3 +1,6 @@
+import { CategoryId } from '@atlaskit/emoji';
+import { customCategory, userCustomTitle, customTitle } from './constants';
+
 import EmojiActivityIcon from '@atlaskit/icon/glyph/emoji/activity';
 import EmojiCustomIcon from '@atlaskit/icon/glyph/emoji/custom';
 import EmojiFlagsIcon from '@atlaskit/icon/glyph/emoji/flags';
@@ -10,21 +13,16 @@ import EmojiSymbolsIcon from '@atlaskit/icon/glyph/emoji/symbols';
 import EmojiTravelIcon from '@atlaskit/icon/glyph/emoji/travel';
 import EmojiProductivityIcon from '@atlaskit/icon/glyph/emoji/productivity';
 
-import { CategoryDescription } from '../../types';
-import { customCategory, userCustomTitle, customTitle } from '../../constants';
+export interface CategoryDescription {
+  id: string;
+  name: string;
+  icon: any;
+  order: number;
+}
 
-export type CategoryId =
-  | 'FREQUENT'
-  | 'PEOPLE'
-  | 'NATURE'
-  | 'FOODS'
-  | 'ACTIVITY'
-  | 'PLACES'
-  | 'OBJECTS'
-  | 'SYMBOLS'
-  | 'FLAGS'
-  | 'ATLASSIAN'
-  | 'CUSTOM';
+export interface OnCategory {
+  (categoryId: CategoryId | null): void;
+}
 
 export type CategoryGroupKey = CategoryId | 'USER_CUSTOM' | 'SEARCH';
 

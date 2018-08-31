@@ -3,9 +3,9 @@ import { ChangeEvent, ChangeEventHandler, PureComponent } from 'react';
 
 import AkFieldBase from '@atlaskit/field-base';
 
-import { EmojiUpload } from '../../types';
-import * as ImageUtil from '../../util/image';
-import debug from '../../util/logger';
+import { EmojiUpload } from '@atlaskit/emoji';
+import * as ImageUtil from '../util/image';
+import debug from '../util/logger';
 import * as styles from './styles';
 import FileChooser from './FileChooser';
 import EmojiErrorMessage from './EmojiErrorMessage';

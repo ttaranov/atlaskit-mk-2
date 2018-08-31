@@ -1,16 +1,12 @@
 import { style } from 'typestyle';
 import { borderRadius, colors } from '@atlaskit/theme';
-
-import {
-  akEmojiSelectedBackgroundColor,
-  emojiFooterBoxShadow,
-  emojiPickerBorderColor,
-  emojiPickerBoxShadow,
-} from '../../shared-styles';
-
 import { emojiSprite, placeholder, emojiNode } from '../common/styles';
 
-import { emojiPickerHeight, emojiPickerWidth } from '../../constants';
+import { emojiPickerHeight, emojiPickerWidth } from '../constants';
+
+const emojiPickerBorderColor = colors.N40; // This has not been confirmed by the ADG yet
+const emojiPickerBoxShadow = '0 3px 6px rgba(0, 0, 0, 0.2)';
+const emojiFooterBoxShadow = '0px -1px 1px 0px rgba(0, 0, 0, 0.1)';
 
 export const active = 'emoji-picker-active';
 export const disable = 'emoji-picker-disable';
@@ -245,31 +241,6 @@ export const emojiItem = style({
     [`&>.${placeholder}`]: {
       padding: '0',
       margin: '7px',
-    },
-  },
-});
-
-export const addEmoji = style({
-  border: '2px dashed #ccc',
-  borderRadius: borderRadius(),
-  backgroundColor: 'transparent',
-  width: '32px',
-  height: '32px',
-  padding: 0,
-  margin: '4px',
-  verticalAlign: 'middle',
-
-  $nest: {
-    '&:hover': {
-      backgroundColor: akEmojiSelectedBackgroundColor,
-    },
-
-    '&:focus': {
-      outline: '0',
-    },
-
-    span: {
-      backgroundColor: 'inherit',
     },
   },
 });
