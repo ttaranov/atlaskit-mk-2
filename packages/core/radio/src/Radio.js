@@ -1,5 +1,6 @@
 // @flow
 import React, { Component } from 'react';
+import { ThemeProvider, withTheme } from 'emotion-theming';
 import RadioInput from './RadioInput';
 import { Label, LabelText } from './styled/Radio';
 import type { RadioProps } from './types';
@@ -11,7 +12,7 @@ type State = {
   isMouseDown: boolean,
 };
 
-export default class Radio extends Component<RadioProps, State> {
+class RadioBase extends Component<RadioProps, State> {
   static defaultProps = {
     isDisabled: false,
     isInvalid: false,
@@ -83,6 +84,18 @@ export default class Radio extends Component<RadioProps, State> {
         />
         <LabelText>{children}</LabelText>
       </Label>
+    );
+  }
+}
+
+const Radio = withTheme(RadioBase);
+// eslint-disable-next-line react/no-multi-comp
+export default class RadioWithTheme extends Component<RadioProps> {
+  render() {
+    return (
+      <ThemeProvider theme={{}}>
+        <Radio {...this.props} />
+      </ThemeProvider>
     );
   }
 }

@@ -1,5 +1,5 @@
 // @flow
-import styled, { css } from 'styled-components';
+import styled, { css } from 'react-emotion';
 import { colors, themed } from '@atlaskit/theme';
 
 const disabledColor = themed({ light: colors.N80, dark: colors.N80 });
@@ -29,40 +29,43 @@ type IconWrapperProps = {
   isDisabled: boolean,
   isFocused: boolean,
   isInvalid: boolean,
+  isHovered: boolean,
+  theme: { __ATLASKIT_THEME__: { mode: 'light' | 'dark' } },
 };
 
 const borderColor = themed({ light: colors.N40, dark: colors.DN80 });
-const focusBorder = css`
-  stroke: ${themed({ light: colors.B100, dark: colors.B75 })};
+const focusBorder = props => `
+  stroke: ${themed({ light: colors.B100, dark: colors.B75 })(props)};
   stroke-width: 2px;
 `;
-const invalidBorder = css`
-  stroke: ${themed({ light: colors.R300, dark: colors.R300 })};
+const invalidBorder = props => `
+  stroke: ${themed({ light: colors.R300, dark: colors.R300 })(props)};
   stroke-width: 2px;
 `;
-const activeBorder = css`
+const activeBorder = () => `
   stroke: currentColor;
   stroke-width: 2px;
 `;
-const checkedBorder = css`
+const checkedBorder = () => `
   stroke: currentColor;
   stroke-width: 2px;
 `;
-const border = css`
-  stroke: ${({ isHovered, ...rest }) =>
+const border = ({ isHovered, ...rest }) => `
+  stroke: ${
     isHovered
       ? themed({ light: colors.N40, dark: colors.DN200 })(rest)
-      : borderColor(rest)};
+      : borderColor(rest)
+  };
   stroke-width: 2px;
 `;
 
 const getBorderColor = (props: IconWrapperProps) => {
   if (props.isDisabled) return '';
-  if (props.isFocused) return focusBorder;
-  if (props.isActive) return activeBorder;
-  if (props.isInvalid) return invalidBorder;
-  if (props.isChecked) return checkedBorder;
-  return border;
+  if (props.isFocused) return focusBorder(props);
+  if (props.isActive) return activeBorder();
+  if (props.isInvalid) return invalidBorder(props);
+  if (props.isChecked) return checkedBorder();
+  return border(props);
 };
 
 const getDotColor = props => {

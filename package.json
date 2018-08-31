@@ -388,6 +388,7 @@
     "react-deprecate": "^0.1.0",
     "react-docgen": "^2.20.1",
     "react-dom": "^16.4.2",
+    "react-emotion": "^9.2.8",
     "react-fast-compare": "^2.0.1",
     "react-focus-lock": "^1.11.1",
     "react-ga": "^2.3.5",
