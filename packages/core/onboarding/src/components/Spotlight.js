@@ -72,7 +72,11 @@ class SpotlightWrapper extends React.Component<Props> {
           <Fade in={isOpen} onExited={onExited}>
             {animationStyles => (
               <Portal zIndex={layers.spotlight()}>
-                <Spotlight {...this.props} animationStyles={animationStyles} />
+                <Spotlight
+                  {...this.props}
+                  isOpen={isOpen}
+                  animationStyles={animationStyles}
+                />
               </Portal>
             )}
           </Fade>

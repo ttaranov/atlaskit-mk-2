@@ -32,6 +32,8 @@ import { compose, withScrollMeasurements } from '../hoc';
 import { type Props as SpotlightProps } from './Spotlight';
 
 type Props = SpotlightProps & {
+  /** whether the spotlight is open or not */
+  isOpen: boolean,
   /** js object containing the animation styles to apply to component */
   animationStyles: Object,
   /** HTML of the target element */
