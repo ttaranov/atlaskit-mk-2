@@ -34,6 +34,13 @@ export { default as tableHeader } from './tableHeader';
 export { default as extension } from './extension';
 export { default as inlineExtension } from './inlineExtension';
 export { default as bodiedExtension } from './bodiedExtension';
+export { default as layoutColumn } from './layoutColumn';
+export {
+  default as layoutSection_two_column,
+} from './layoutSection_two_column';
+export {
+  default as layoutSection_three_column,
+} from './layoutSection_three_column';
 export { default as hardBreak } from './hardBreak';
 export { default as mention } from './mention';
 export { default as emoji } from './emoji';

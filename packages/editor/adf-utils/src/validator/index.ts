@@ -19,7 +19,12 @@ type AttributesSpec =
 interface ValidatorSpec {
   props?: {
     attrs?: { props: { [key: string]: AttributesSpec } };
-    content?: { type: 'array'; items: Array<Array<string>>; minItems?: number };
+    content?: {
+      type: 'array';
+      items: Array<Array<string>>;
+      minItems?: number;
+      maxItems?: number;
+    };
     text?: AttributesSpec;
     marks?: { type: 'array'; items: Array<Array<string>>; maxItems?: number };
   };
@@ -55,7 +60,10 @@ function getOptionsForType(type: string, list?: Content): false | object {
     if (Array.isArray(spec)) {
       [name, options] = spec;
     }
-    if (name === type) {
+    if (
+      name === type ||
+      (typeof name === 'string' && matchesType(name, type))
+    ) {
       return options;
     }
   }
@@ -108,6 +116,22 @@ const invalidChildContent = (child: Entity, errorCallback?: ErrorCallback) => {
   }
 };
 
+const getSpecItem = key => {
+  if (typeof key === 'string' && key.startsWith('layoutSection')) {
+    return specs.layoutSection_two_column;
+  }
+  return specs[key];
+};
+
+const matchesType = (left: any, right: any) => {
+  if (typeof left === 'string' && typeof right === 'string') {
+    if (left.startsWith('layoutSection') && right.startsWith('layoutSection')) {
+      return true;
+    }
+  }
+  return left === right;
+};
+
 export function validate(
   entity: Entity,
   errorCallback?: ErrorCallback,
@@ -139,7 +163,7 @@ export function validate(
       return err('type not allowed here');
     }
 
-    const spec = specs[type];
+    const spec = getSpecItem(type);
     if (!spec) {
       throw new Error(`${type}: No validation spec found for type!`);
     }
@@ -164,7 +188,7 @@ export function validate(
       if (validator.props) {
         // Accumulate the Content validator
         if (isString(validator.props.content)) {
-          validator.props.content = specs[validator.props.content];
+          validator.props.content = getSpecItem(validator.props.content);
         }
 
         // It's possible to cache some of the values to improve performance
@@ -184,8 +208,8 @@ export function validate(
             .map(
               item =>
                 isString(item)
-                  ? Array.isArray(specs[item])
-                    ? specs[item]
+                  ? Array.isArray(getSpecItem(item))
+                    ? getSpecItem(item)
                     : [item]
                   : item,
             )
@@ -193,7 +217,9 @@ export function validate(
             .map(item =>
               item.map(
                 subItem =>
-                  Array.isArray(specs[subItem]) ? specs[subItem] : subItem,
+                  Array.isArray(getSpecItem(subItem))
+                    ? getSpecItem(subItem)
+                    : subItem,
               ),
             );
         }
@@ -219,6 +245,19 @@ export function validate(
             `'content' should have more than ${
               validator.props.content.minItems
             } child`,
+          );
+        }
+
+        if (
+          validator.props.content &&
+          isDefined(validator.props.content.maxItems) &&
+          validator.props.content.maxItems! <
+            ((entity.content && entity.content.length) || 0)
+        ) {
+          return err(
+            `'content' should have exactly ${
+              validator.props.content.maxItems
+            } child or less`,
           );
         }
 
@@ -297,7 +336,10 @@ export function validate(
                     : set.some(
                         // [p, hr, ...] or [p, [text, {}], ...]
                         spec =>
-                          (Array.isArray(spec) ? spec[0] : spec) === child.type,
+                          matchesType(
+                            Array.isArray(spec) ? spec[0] : spec,
+                            child.type,
+                          ),
                       ),
               );
 
@@ -311,8 +353,8 @@ export function validate(
                   validSets.length > 1
                     ? Math.min(index, validSets.length - 1)
                     : 0;
-                const set = validSets[setIndex].filter(
-                  item => (Array.isArray(item) ? item[0] : item) === child.type,
+                const set = validSets[setIndex].filter(item =>
+                  matchesType(Array.isArray(item) ? item[0] : item, child.type),
                 );
 
                 if (set.length === 0) {

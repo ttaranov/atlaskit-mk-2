@@ -18,6 +18,8 @@ export default {
       'table',
       'extension',
       'bodiedExtension',
+      'layoutSection_two_column',
+      'layoutSection_three_column',
     ],
   ],
   minItems: 1,
