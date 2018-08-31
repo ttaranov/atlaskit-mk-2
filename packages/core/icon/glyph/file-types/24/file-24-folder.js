@@ -19,4 +19,5 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var FileTypes24File24FolderIcon = function FileTypes24File24FolderIcon(props) {
   return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><g fill="#B3D4FF" fill-rule="evenodd"><path d="M10 4h12a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2z"/><path d="M0 6h24v14a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6z" style="mix-blend-mode:multiply"/></g></svg>' }, props));
 };
+FileTypes24File24FolderIcon.displayName = 'FileTypes24File24FolderIcon';
 exports.default = FileTypes24File24FolderIcon;

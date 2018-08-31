@@ -47,7 +47,7 @@ export default class ViewController extends Container<ViewControllerState>
   }
 
   /**
-   * DRY function for setting a view. Can be configred to set either the active
+   * DRY function for setting a view. Can be configured to set either the active
    * view, or the active peek view.
    */
   _setViewInternals = (stateKeys: StateKeys) => (viewId: ViewID) => {
@@ -198,24 +198,24 @@ export default class ViewController extends Container<ViewControllerState>
    */
   updateActiveView = (maybeViewId?: ViewID) => {
     const { activeView } = this.state;
+
     if (!activeView) {
       return;
     }
 
-    // If a view ID has been provided and it matches an active view, reset that
-    // view.
-    if (maybeViewId && maybeViewId === activeView) {
+    if (maybeViewId && maybeViewId === activeView.id) {
       this.setView(maybeViewId);
       return;
     }
 
-    // If a view ID hasn't been provided reset the active container and product
-    // views.
     if (!maybeViewId) {
       this.setView(activeView.id);
     }
   };
 
+  /**
+   * Set whether the view controller is in debug mode.
+   */
   setIsDebugEnabled = (isDebugEnabled: boolean) => {
     this.isDebugEnabled = isDebugEnabled;
   };

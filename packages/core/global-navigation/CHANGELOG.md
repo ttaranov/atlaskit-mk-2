@@ -1,5 +1,91 @@
 # @atlaskit/global-navigation
 
+## 4.3.1
+- [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
+
+## 4.3.0
+- [minor] Add UI analytics event for dismissing global navigation drawers [e7d5eac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7d5eac)
+- [patch] Updated dependencies [501378a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/501378a)
+  - @atlaskit/drawer@2.0.0
+
+## 4.2.2
+- [patch] Updated dependencies [90ba6bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/90ba6bd)
+  - @atlaskit/navigation-next@3.6.6
+  - @atlaskit/analytics-namespaced-context@2.1.2
+  - @atlaskit/analytics-listeners@4.0.0
+
+## 4.2.1
+- [patch] Notification badge icon should show 9+ instead of 1x [d716569](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d716569)
+
+## 4.2.0
+
+- [minor] Add screen analytics events for navigation drawers [f02fb34](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f02fb34)
+
+
+- [none] Updated dependencies [ac34b7a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ac34b7a)
+  - @atlaskit/navigation-next@3.6.1
+- [none] Updated dependencies [f02fb34](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f02fb34)
+  - @atlaskit/navigation-next@3.6.1
+- [none] Updated dependencies [20b8844](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/20b8844)
+  - @atlaskit/analytics-listeners@3.4.0
+  - @atlaskit/navigation-next@3.6.1
+- [none] Updated dependencies [85ddb9e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/85ddb9e)
+  - @atlaskit/navigation-next@3.6.1
+  - @atlaskit/analytics-listeners@3.4.0
+
+## 4.1.6
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/badge@9.1.1
+  - @atlaskit/navigation-next@3.5.2
+
+## 4.1.5
+- [patch] Updated dependencies [dfa100e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dfa100e)
+  - @atlaskit/analytics-listeners@3.3.1
+  - @atlaskit/analytics-namespaced-context@2.1.1
+  - @atlaskit/navigation-next@3.5.1
+
+## 4.1.4
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/section-message@1.0.5
+  - @atlaskit/onboarding@5.1.6
+  - @atlaskit/navigation-next@3.3.5
+  - @atlaskit/modal-dialog@6.0.9
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/dropdown-menu@6.1.8
+  - @atlaskit/drawer@1.0.6
+  - @atlaskit/blanket@7.0.5
+  - @atlaskit/badge@9.1.0
+  - @atlaskit/avatar@14.0.8
+  - @atlaskit/docs@5.0.6
+
+## 4.1.3
+- [patch] Fix navigationItem click events not firing for help and profile icons [06bf373](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06bf373)
+
+- [none] Updated dependencies [06bf373](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/06bf373)
+  - @atlaskit/navigation-next@3.3.4
+- [patch] Updated dependencies [4ab7c4e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4ab7c4e)
+  - @atlaskit/navigation-next@3.3.4
+
+## 4.1.2
+- [patch] Updated dependencies [15f93f0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/15f93f0)
+  - @atlaskit/navigation-next@3.3.3
+
+## 4.1.1
+- [patch] Updated dependencies [0b2daf0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0b2daf0)
+  - @atlaskit/navigation-next@3.3.2
+
+## 4.1.0
+
+- [minor] Instrument analytics for global nav item clicks. These events will be captured if using the FabricAnalyticsListeners component. [b77a884](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b77a884)
+
+- [none] Updated dependencies [f7432a2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f7432a2)
+  - @atlaskit/navigation-next@3.3.0
+- [none] Updated dependencies [b77a884](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b77a884)
+  - @atlaskit/navigation-next@3.3.0
+- [patch] Updated dependencies [51e9bee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51e9bee)
+  - @atlaskit/navigation-next@3.3.0
+
 ## 4.0.7
 - [patch] Remove unused dependancy on navigation-next [2d3b1ee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d3b1ee)
 - [patch] Updated dependencies [2d3b1ee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d3b1ee)

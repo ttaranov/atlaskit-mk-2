@@ -65,7 +65,7 @@ class DecisionBuilderToolsDrawer extends Component<Props, State> {
 
   render() {
     const { filteredContent } = this.state;
-    const { appearance, renderToDocument } = this.props;
+    const { appearance = 'message', renderToDocument } = this.props;
 
     return (
       <div>

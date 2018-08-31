@@ -1,17 +1,25 @@
 // @flow
 
 import React, { Component, Fragment } from 'react';
+import type { UIAnalyticsEvent } from '@atlaskit/analytics-next';
+import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 import { GlobalNav } from '@atlaskit/navigation-next';
 import Drawer from '@atlaskit/drawer';
-
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../../../package.json';
 import generateDefaultConfig from '../../config/default-config';
 import generateProductConfig from '../../config/product-config';
+import ViewTracker from '../ViewTracker';
+import { NAVIGATION_CHANNEL } from '../../constants';
 
 import type { GlobalNavItemData, NavItem } from '../../config/types';
 import type { GlobalNavigationProps, DrawerName } from './types';
 
 // TODO: Figure out a way to appease flow without this function.
 const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
+  id,
   icon,
   label,
   onClick,
@@ -21,6 +29,7 @@ const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
   href,
   size,
 }) => ({
+  id,
   icon,
   label,
   onClick,
@@ -32,6 +41,13 @@ const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
 });
 
 const noop = () => {};
+
+const analyticsNameMap = {
+  search: 'quickSearchDrawer',
+  notification: 'notificationsDrawer',
+  create: 'createDrawer',
+  starred: 'starDrawer',
+};
 
 type GlobalNavigationState = {
   [any]: boolean, // Need an indexer property to appease flow for is${capitalisedDrawerName}Open
@@ -143,12 +159,21 @@ export default class GlobalNavigation
     }
   };
 
-  closeDrawer = (drawerName: DrawerName) => () => {
+  closeDrawer = (drawerName: DrawerName) => (
+    event: SyntheticMouseEvent<*> | SyntheticKeyboardEvent<*>,
+    analyticsEvent: UIAnalyticsEvent,
+  ) => {
     const capitalisedDrawerName = this.getCapitalisedDrawerName(drawerName);
     const onCloseCallback =
       typeof this.props[`on${capitalisedDrawerName}Close`] === 'function'
         ? this.props[`on${capitalisedDrawerName}Close`]
         : noop;
+
+    analyticsEvent
+      .update({
+        actionSubjectId: analyticsNameMap[drawerName],
+      })
+      .fire(NAVIGATION_CHANNEL);
 
     // Update the state only if it's a controlled drawer.
     // componentDidMount takes care of the uncontrolled drawers
@@ -195,31 +220,40 @@ export default class GlobalNavigation
     const { primaryItems, secondaryItems } = this.constructNavItems();
 
     return (
-      <Fragment>
-        <GlobalNav
-          primaryItems={primaryItems}
-          secondaryItems={secondaryItems}
-        />
-        {this.drawers.map(drawer => {
-          const capitalisedDrawerName = this.getCapitalisedDrawerName(drawer);
-          const DrawerContents = this.props[`${drawer}DrawerContents`];
+      <NavigationAnalyticsContext
+        data={{
+          packageName,
+          packageVersion,
+          componentName: 'globalNavigation',
+        }}
+      >
+        <Fragment>
+          <GlobalNav
+            primaryItems={primaryItems}
+            secondaryItems={secondaryItems}
+          />
+          {this.drawers.map(drawer => {
+            const capitalisedDrawerName = this.getCapitalisedDrawerName(drawer);
+            const DrawerContents = this.props[`${drawer}DrawerContents`];
 
-          if (!DrawerContents) {
-            return null;
-          }
+            if (!DrawerContents) {
+              return null;
+            }
 
-          return (
-            <Drawer
-              key={drawer}
-              isOpen={this.state[`is${capitalisedDrawerName}Open`]}
-              onClose={this.closeDrawer(drawer)}
-              width="wide"
-            >
-              <DrawerContents />
-            </Drawer>
-          );
-        })}
-      </Fragment>
+            return (
+              <Drawer
+                key={drawer}
+                isOpen={this.state[`is${capitalisedDrawerName}Open`]}
+                onClose={this.closeDrawer(drawer)}
+                width="wide"
+              >
+                <ViewTracker name={analyticsNameMap[drawer]} />
+                <DrawerContents />
+              </Drawer>
+            );
+          })}
+        </Fragment>
+      </NavigationAnalyticsContext>
     );
   }
 }

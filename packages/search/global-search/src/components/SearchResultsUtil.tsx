@@ -14,13 +14,17 @@ export function getConfluenceAdvancedSearchLink(query?: string) {
   return `/wiki/dosearchsite.action${queryString}`;
 }
 
+export function getJiraAdvancedSearchUrl(entityType: string, query?: string) {
+  return `/search/${entityType}?query=${query}`;
+}
+
 export function redirectToConfluenceAdvancedSearch(query = '') {
   // XPSRCH-891: this breaks SPA navigation. Consumer needs to pass in a redirect/navigate function.
   window.location.assign(getConfluenceAdvancedSearchLink(query));
 }
 
 export function take<T>(array: Array<T>, n: number) {
-  return array.slice(0, n);
+  return (array || []).slice(0, n);
 }
 
 export function isEmpty<T>(array: Array<T>) {

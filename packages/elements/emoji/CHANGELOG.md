@@ -1,5 +1,32 @@
 # @atlaskit/emoji
 
+## 40.0.0
+- [major] Updated dependencies [7545979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7545979)
+  - @atlaskit/util-data-test@10.0.8
+  - @atlaskit/media-core@23.1.0
+
+## 39.1.1
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/util-data-test@10.0.7
+
+## 39.1.0
+- [minor] FS-2892 add code splitting to emoji components [dd91bcf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd91bcf)
+- [none] Updated dependencies [dd91bcf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd91bcf)
+
+## 39.0.4
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/tooltip@12.0.9
+  - @atlaskit/spinner@9.0.6
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/field-base@11.0.5
+  - @atlaskit/button@9.0.6
+  - @atlaskit/docs@5.0.6
+
+## 39.0.3
+- [patch] FS-2819 use aria-label as selector rather than closest [84a7235](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84a7235)
+- [none] Updated dependencies [84a7235](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/84a7235)
+
 ## 39.0.2
 - [patch] Update emoji examples to use valid emoji in test data [62ebfd7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/62ebfd7)
 - [none] Updated dependencies [62ebfd7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/62ebfd7)

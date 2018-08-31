@@ -2,7 +2,14 @@
 
 exports[`<FabricAnalyticsListeners /> FabricAnalyticsListener should render all listeners 1`] = `
 <NavigationListener
-  client={Promise {}}
+  client={
+    Object {
+      "sendOperationalEvent": [Function],
+      "sendScreenEvent": [Function],
+      "sendTrackEvent": [Function],
+      "sendUIEvent": [Function],
+    }
+  }
   logger={
     Logger {
       "logLevel": 4,
@@ -10,25 +17,55 @@ exports[`<FabricAnalyticsListeners /> FabricAnalyticsListener should render all 
   }
 >
   <AtlaskitListener
-    client={Promise {}}
+    client={
+      Object {
+        "sendOperationalEvent": [Function],
+        "sendScreenEvent": [Function],
+        "sendTrackEvent": [Function],
+        "sendUIEvent": [Function],
+      }
+    }
     logger={
       Logger {
         "logLevel": 4,
       }
     }
   >
-    <FabricElementsListener
-      client={Promise {}}
+    <FabricEditorListener
+      client={
+        Object {
+          "sendOperationalEvent": [Function],
+          "sendScreenEvent": [Function],
+          "sendTrackEvent": [Function],
+          "sendUIEvent": [Function],
+        }
+      }
       logger={
         Logger {
           "logLevel": 4,
         }
       }
     >
-      <div>
-        Child
-      </div>
-    </FabricElementsListener>
+      <FabricElementsListener
+        client={
+          Object {
+            "sendOperationalEvent": [Function],
+            "sendScreenEvent": [Function],
+            "sendTrackEvent": [Function],
+            "sendUIEvent": [Function],
+          }
+        }
+        logger={
+          Logger {
+            "logLevel": 4,
+          }
+        }
+      >
+        <div>
+          Child
+        </div>
+      </FabricElementsListener>
+    </FabricEditorListener>
   </AtlaskitListener>
 </NavigationListener>
 `;

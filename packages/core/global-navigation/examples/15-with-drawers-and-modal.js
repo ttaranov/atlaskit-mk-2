@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Fragment, Component } from 'react';
+
 import EmojiAtlassianIcon from '@atlaskit/icon/glyph/emoji/atlassian';
 import Modal from '@atlaskit/modal-dialog';
 import Lorem from 'react-lorem-component';

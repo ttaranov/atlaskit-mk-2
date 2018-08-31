@@ -2,7 +2,10 @@ import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
 import { Node as PMNode } from 'prosemirror-model';
-import { selectParentNodeOfType } from 'prosemirror-utils';
+import {
+  selectParentNodeOfType,
+  findSelectedNodeOfType,
+} from 'prosemirror-utils';
 import { MacroProvider } from '../../../macro';
 import InlineExtension from './InlineExtension';
 import Extension from './Extension';
@@ -99,7 +102,13 @@ export default class ExtensionComponent extends Component<Props, State> {
     if (hasBody) {
       tr = selectParentNodeOfType([schema.nodes.bodiedExtension])(state.tr);
       dispatch(tr);
-    } else {
+    } else if (
+      !findSelectedNodeOfType([
+        schema.nodes.inlineExtension,
+        schema.nodes.extension,
+        schema.nodes.bodiedExtension,
+      ])(selection)
+    ) {
       setNodeSelection(this.props.editorView, selection.$from.pos - 1);
     }
   };

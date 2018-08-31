@@ -77,6 +77,7 @@ export default md`
   * [Custom Data Structure](#custom-data-structure)
   * [Custom Filter](#custom-filter)
 
+  <a name="controllable-props"></a>
   ## Controllable Props
 
   **@atlaskit/single-select** and **@atlaskit/multi-select** had the concept of **stateful** and **stateless** components.
@@ -109,6 +110,7 @@ export default md`
 
   We enable this by wrapping the select in a stateManager that uses the above specified prop values if they exist, otherwise it defers to internally managed state values.
 
+  <a name="components-api"></a>
   ## Components API
 
   In single-select and multi-select, we've had several issues opened as a result of users wanting to customise
@@ -128,8 +130,9 @@ export default md`
 
   You don't have to use these props, and are free to implement or reimplement as you like - but they are intended to help make custom implementations easier to manage.
 
-  See the [Components Documentation](https://deploy-preview-2289--react-select.netlify.com/components) for more details and examples.
+  See the [Components Documentation](https://react-select.com/components) for more details and examples.
 
+  <a name="styles-api"></a>
   ## Styles API
 
   Each component that @atlaskit/select exposes also has a corresponding key that you can specify in the styles prop.
@@ -139,8 +142,9 @@ export default md`
 
   ${code`${customStyleExample}`}
 
-  See the [Styles Documentation](###ADDURL) for more details and examples.
+  See the [Styles Documentation](https://react-select.com/styles) for more details and examples.
 
+  <a name="custom-data-structure"></a>
   ## Custom Data Structure
 
   @atlaskit/select enforces as little opinion about the shape of your options as possible. With the combination of custom components API, and the styling API,
@@ -181,13 +185,13 @@ export default md`
 
   The returned Node is rendered as the label of the value/s rendered in the control.
 
-  ## isOptionDisabled
+  ### isOptionDisabled
 
   By default @atlaskit/select looks for a isDisabled property your passed in options. However as is the case with all the methods mentioned above, @atlaskit/select exposes a 'isOptionDisabled' prop that allows you to override this inbuilt logic. This takes the following shape:
 
   ${code`(option: OptionType) => boolean`}
 
-  ## isOptionSelected
+  ### isOptionSelected
 
   Similar to isOptionDisabled, for a select instance with isMulti active, @atlaskit/select provides an isOptionSelected prop to validate whether or not an option is already a selected value, before it decide whether to select or deselect an option.
 
@@ -199,7 +203,7 @@ export default md`
 
   it will override the default logic specified.
 
-  ## Action Meta
+  ### Action Meta
 
   The onChange and onInputChange props are now passed a second argument, which contains meta about why the event was called. For example:
 
@@ -210,7 +214,8 @@ export default md`
   The new onInputChange prop also passes actionMeta:
 
   ${code`${onInputChange}`}
-
+  
+  <a name="custom-filter"></a>
   ## Custom Filter
 
   @atlaskit/select exposes a **filterOption** prop that allows you to configure how options in your select get filtered down by a search value.
@@ -228,5 +233,5 @@ export default md`
 
   The goal here is to allow for varying levels of configuration of the core filtering logic used within a select instance. We recognise that you may not want to replace all of the filtering logic put have in place by default, and by invoking the createFilter export with your desired config, you should be able to pick and choose filtering decisions that best suit you, without having to rewrite the logic from scratch. If you _do_ want to do this however, supplying a filterOption function of the specified shape is always a viable option.
 
-  For more comprehensive documentation and prop specification, please see the [react-select.v2 docs](https://deploy-preview-2289--react-select.netlify.com/)
+  For more comprehensive documentation and prop specification, please see the [react-select.v2 docs](https://react-select.com/home)
 `;

@@ -4,7 +4,7 @@ import {
   Popup,
   timestampToUTCDate,
   timestampToIsoFormat,
-  akEditorFloatingPanelZIndex,
+  akEditorFloatingDialogZIndex,
 } from '@atlaskit/editor-common';
 import Calendar from '@atlaskit/calendar';
 import { akColorN60A, akBorderRadius } from '@atlaskit/util-shared-styles';
@@ -61,7 +61,7 @@ export default class DatePicker extends React.Component<Props, State> {
         offset={[0, 8]}
         handleClickOutside={closeDatePicker}
         handleEscapeKeydown={closeDatePicker}
-        zIndex={akEditorFloatingPanelZIndex + 1}
+        zIndex={akEditorFloatingDialogZIndex}
       >
         <Calendar
           onChange={this.handleChange}

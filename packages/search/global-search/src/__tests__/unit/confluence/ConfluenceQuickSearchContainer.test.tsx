@@ -10,7 +10,9 @@ import {
   makeConfluenceClient,
 } from '../mocks/_mockConfluenceClient';
 import { shallowWithIntl } from '../helpers/_intl-enzyme-test-helper';
-import { QuickSearchContainer } from '../../../components/common/QuickSearchContainer';
+import QuickSearchContainer, {
+  Props as QuickSearchContainerProps,
+} from '../../../components/common/QuickSearchContainer';
 import {
   makeConfluenceObjectResult,
   makePersonResult,
@@ -18,7 +20,6 @@ import {
 } from '../_test-util';
 import ConfluenceSearchResults from '../../../components/confluence/ConfluenceSearchResults';
 import { SearchScreenCounter } from '../../../util/ScreenCounter';
-import * as AnalyticsHelper from '../../../util/analytics-event-helper';
 
 const sessionId = 'sessionId';
 function render(partialProps?: Partial<Props>) {
@@ -40,7 +41,6 @@ describe('ConfluenceQuickSearchContainer', () => {
     const quickSearchContainer = wrapper.find(QuickSearchContainer);
 
     const props = quickSearchContainer.props();
-    expect(props.intl).toHaveProperty('locale', 'en');
     expect(props).toHaveProperty('getSearchResultsComponent');
   });
 
@@ -55,24 +55,26 @@ describe('ConfluenceQuickSearchContainer', () => {
       confluenceClient: mockConfluenceClient,
     });
     const quickSearchContainer = wrapper.find(QuickSearchContainer);
-    const recentItems = await quickSearchContainer
-      .props()
-      .getRecentItems(sessionId);
+    const recentItems = await (quickSearchContainer.props() as QuickSearchContainerProps).getRecentItems(
+      sessionId,
+    );
     expect(recentItems).toMatchObject({
-      recentlyViewedPages: [
-        {
-          analyticsType: 'result-confluence',
-          resultType: 'confluence-object-result',
-          containerName: 'containerName',
-          contentType: 'confluence-page',
-          containerId: 'containerId',
-          name: 'name',
-          avatarUrl: 'avatarUrl',
-          href: 'href',
-        },
-      ],
-      recentlyViewedSpaces: [],
-      recentlyInteractedPeople: [],
+      results: {
+        objects: [
+          {
+            analyticsType: 'result-confluence',
+            resultType: 'confluence-object-result',
+            containerName: 'containerName',
+            contentType: 'confluence-page',
+            containerId: 'containerId',
+            name: 'name',
+            avatarUrl: 'avatarUrl',
+            href: 'href',
+          },
+        ],
+        spaces: [],
+        people: [],
+      },
     });
   });
 
@@ -89,26 +91,30 @@ describe('ConfluenceQuickSearchContainer', () => {
     });
 
     const quickSearchContainer = wrapper.find(QuickSearchContainer);
-    const searchResults = await quickSearchContainer
-      .props()
-      .getSearchResults('query', sessionId, 100);
+    const searchResults = await (quickSearchContainer.props() as QuickSearchContainerProps).getSearchResults(
+      'query',
+      sessionId,
+      100,
+    );
 
     expect(searchResults).toMatchObject({
-      objectResults: [],
-      spaceResults: [],
-      peopleResults: [
-        {
-          mentionName: 'mentionName',
-          presenceMessage: 'presenceMessage',
-          analyticsType: 'result-person',
-          resultType: 'person-result',
-          name: 'name',
-          avatarUrl: 'avatarUrl',
-          href: 'href',
-        },
-      ],
+      results: {
+        objects: [],
+        spaces: [],
+        people: [
+          {
+            mentionName: 'mentionName',
+            presenceMessage: 'presenceMessage',
+            analyticsType: 'result-person',
+            resultType: 'person-result',
+            name: 'name',
+            avatarUrl: 'avatarUrl',
+            href: 'href',
+          },
+        ],
+      },
       // assert search performance timings
-      searchTimings: {
+      timings: {
         quickNavElapsedMs: expect.any(Number),
         confSearchElapsedMs: expect.any(Number),
         peopleElapsedMs: expect.any(Number),
@@ -131,142 +137,45 @@ describe('ConfluenceQuickSearchContainer', () => {
     const quickSearchContainer = wrapper.find(QuickSearchContainer);
     const spaceResults = [makeConfluenceContainerResult()];
     const recentlyInteractedPeople = [makePersonResult()];
-    const searchResultsComponent = quickSearchContainer
-      .props()
-      .getSearchResultsComponent({
+    const searchResultsComponent = (quickSearchContainer.props() as QuickSearchContainerProps).getSearchResultsComponent(
+      {
         retrySearch: jest.fn(),
         latestSearchQuery: 'query',
         isError: false,
         searchResults: {
-          objectResults: [],
-          spaceResults,
+          objects: [],
+          spaces: spaceResults,
         },
         isLoading: false,
         recentItems: {
-          recentlyViewedPages: [],
-          recentlyViewedSpaces: [],
-          recentlyInteractedPeople,
+          objects: [],
+          spaces: [],
+          people: recentlyInteractedPeople,
         },
         keepPreQueryState: false,
         searchSessionId: sessionId,
-      });
+      },
+    );
     const { type = '', props = {} } =
       (searchResultsComponent as React.ReactElement<Props>) || {};
     expect(type).toBe(ConfluenceSearchResults);
     expect(props).toMatchObject({
       query: 'query',
       isError: false,
-      objectResults: [],
-      spaceResults,
-      peopleResults: [],
+      searchResults: {
+        objects: [],
+        spaces: spaceResults,
+      },
       isLoading: false,
-      recentlyViewedPages: [],
-      recentlyViewedSpaces: [],
-      recentlyInteractedPeople,
+      recentItems: {
+        objects: [],
+        spaces: [],
+        people: recentlyInteractedPeople,
+      },
       keepPreQueryState: false,
       searchSessionId: 'sessionId',
       preQueryScreenCounter: expect.any(SearchScreenCounter),
       postQueryScreenCounter: expect.any(SearchScreenCounter),
-    });
-  });
-
-  describe('Pre and Post query analytics', () => {
-    let firePreQueryShownEventSpy;
-    let firePostQueryShownEventSpy;
-    let quickSearchContainer;
-    const mockEventObj = {
-      update: () => mockEventObj,
-      fire: () => {},
-    };
-    const createAnalyticsEvent = jest.fn(() => mockEventObj);
-    beforeEach(() => {
-      firePreQueryShownEventSpy = jest.spyOn(
-        AnalyticsHelper,
-        'firePreQueryShownEvent',
-      );
-      firePostQueryShownEventSpy = jest.spyOn(
-        AnalyticsHelper,
-        'firePostQueryShownEvent',
-      );
-      const wrapper = render({
-        peopleSearchClient: {
-          search() {
-            return Promise.resolve([]);
-          },
-          getRecentPeople() {
-            return Promise.resolve([makePersonResult()]);
-          },
-        },
-        confluenceClient: makeConfluenceClient({
-          getRecentSpaces() {
-            return Promise.resolve([makeConfluenceContainerResult()]);
-          },
-        }),
-        createAnalyticsEvent,
-      });
-
-      quickSearchContainer = wrapper.find(QuickSearchContainer);
-    });
-    it('should fire pre query analytics', () => {
-      quickSearchContainer.props().fireShownPreQueryEvent(
-        sessionId,
-        {
-          recentlyInteractedPeople: [makePersonResult()],
-        },
-        120,
-      );
-      expect(firePreQueryShownEventSpy).toHaveBeenCalledTimes(1);
-      expect(firePreQueryShownEventSpy.mock.calls[0]).toMatchObject([
-        {
-          resultCount: 1,
-          resultSectionCount: 1,
-        },
-        expect.any(Number),
-        sessionId,
-        createAnalyticsEvent,
-      ]);
-    });
-
-    it('should fire post query analytics', () => {
-      const startTime = 120;
-      const elapsedMs = 201;
-      const searchResults = {
-        objectResults: [],
-        spaceResults: [makeConfluenceContainerResult()],
-        peopleResults: [],
-      };
-      const query = 'space';
-
-      quickSearchContainer
-        .props()
-        .fireShownPostQueryEvent(
-          startTime,
-          elapsedMs,
-          searchResults,
-          sessionId,
-          query,
-        );
-      expect(firePostQueryShownEventSpy).toHaveBeenCalledTimes(1);
-      expect(firePostQueryShownEventSpy.mock.calls[0]).toMatchObject([
-        {
-          resultContext: [
-            {
-              results: [
-                {
-                  resultContentId: expect.any(String),
-                },
-              ],
-            },
-          ],
-        },
-        {
-          elapsedMs,
-          startTime,
-        },
-        sessionId,
-        query,
-        createAnalyticsEvent,
-      ]);
     });
   });
 });

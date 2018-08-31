@@ -18,7 +18,7 @@ export interface SubmitPromiseToNative<T> {
 
 export function createPromise<T>(
   name: string,
-  args: string,
+  args?: string,
 ): SubmitPromiseToNative<T> {
   const holder: Holder<T> = createHolder();
   const uuid = counter++ + '';
@@ -60,4 +60,9 @@ export function rejectPromise<T>(uuid: string) {
   if (holder) {
     holder.reject();
   }
+}
+
+// expose this function for testing
+export function setCounter(value: number) {
+  counter = value;
 }

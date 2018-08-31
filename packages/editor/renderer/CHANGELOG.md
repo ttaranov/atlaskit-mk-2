@@ -1,5 +1,112 @@
 # @atlaskit/renderer
 
+## 21.0.4
+- [patch] Unique heading IDs [d312d25](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d312d25)
+
+## 21.0.3
+- [patch] Fix issue where BreakoutProvider would not import correctly in Typescript [6b95448](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6b95448)
+
+## 21.0.2
+- [patch] ED-3919: Fix typography and other styles, align styles between editor and renderer [d0f9293](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d0f9293)
+
+## 21.0.1
+- [patch] Updated dependencies [da65dec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da65dec)
+  - @atlaskit/editor-common@15.0.1
+
+## 21.0.0
+- [major] Updated dependencies [7545979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7545979)
+  - @atlaskit/editor-common@15.0.0
+  - @atlaskit/media-card@33.0.0
+  - @atlaskit/media-filmstrip@12.0.0
+  - @atlaskit/editor-json-transformer@4.0.8
+  - @atlaskit/editor-test-helpers@6.0.6
+  - @atlaskit/task-decision@8.1.7
+  - @atlaskit/util-data-test@10.0.8
+  - @atlaskit/media-core@23.1.0
+
+## 20.1.2
+- [patch] Update Page Layout sizing to be more compact, fix quick-insert icon, fix issue with Popup not centering toolbar in certain situations [1effb83](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1effb83)
+
+## 20.1.1
+- [patch] Updated dependencies [911a570](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/911a570)
+  - @atlaskit/media-test-helpers@17.0.0
+  - @atlaskit/media-filmstrip@11.0.2
+  - @atlaskit/media-core@23.0.2
+  - @atlaskit/editor-json-transformer@4.0.7
+  - @atlaskit/media-card@32.0.6
+  - @atlaskit/editor-test-helpers@6.0.5
+
+## 20.1.0
+- [minor] Adds option to disable heading ids in renderer, and disable them by default in conversations [efcca1a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/efcca1a)
+
+## 20.0.11
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/smart-card@8.0.1
+  - @atlaskit/task-decision@8.1.6
+  - @atlaskit/util-data-test@10.0.7
+  - @atlaskit/profilecard@4.0.8
+  - @atlaskit/editor-common@14.0.11
+  - @atlaskit/editor-test-helpers@6.0.3
+  - @atlaskit/mention@15.0.6
+  - @atlaskit/editor-json-transformer@4.0.6
+  - @atlaskit/media-card@32.0.5
+  - @atlaskit/media-filmstrip@11.0.1
+
+## 20.0.10
+- [patch] Updated dependencies [dd91bcf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dd91bcf)
+  - @atlaskit/editor-common@14.0.10
+
+## 20.0.9
+
+
+- [patch] Updated dependencies [48b95b0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/48b95b0)
+  - @atlaskit/smart-card@8.0.0
+  - @atlaskit/media-card@32.0.4
+- [none] Updated dependencies [e9b1477](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e9b1477)
+  - @atlaskit/media-card@32.0.4
+
+## 20.0.8
+- [patch] Renderer now only renders double height emojis when appearance is 'message' [fa78199](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fa78199)
+- [none] Updated dependencies [fa78199](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fa78199)
+
+## 20.0.7
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/profilecard@4.0.7
+  - @atlaskit/task-decision@8.1.5
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/code@8.0.1
+  - @atlaskit/docs@5.0.6
+
+## 20.0.6
+- [patch] Updated dependencies [f9c0cdb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9c0cdb)
+  - @atlaskit/code@8.0.0
+  - @atlaskit/docs@5.0.5
+
+## 20.0.5
+- [patch] ED-5190: fixed mediaSingle styles in renderer [4f09dea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4f09dea)
+- [none] Updated dependencies [4f09dea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4f09dea)
+  - @atlaskit/editor-common@14.0.6
+
+## 20.0.4
+- [patch] ED-4824: added renderer support for smart cards [7cf0a78](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7cf0a78)
+- [none] Updated dependencies [7cf0a78](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7cf0a78)
+  - @atlaskit/smart-card@7.0.5
+  - @atlaskit/editor-common@14.0.5
+
+## 20.0.3
+- [patch] ED-5218, extensions with default width should not be centre aligned. [d6bd53e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d6bd53e)
+- [none] Updated dependencies [d6bd53e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d6bd53e)
+
+## 20.0.2
+- [patch] ED-5180: fix table columns collapse [2e0e5a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e0e5a1)
+- [none] Updated dependencies [2e0e5a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e0e5a1)
+  - @atlaskit/editor-json-transformer@4.0.5
+
+## 20.0.1
+- [patch] Fixes the examples in renderer [696acde](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/696acde)
+- [none] Updated dependencies [696acde](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/696acde)
+
 ## 20.0.0
 
 

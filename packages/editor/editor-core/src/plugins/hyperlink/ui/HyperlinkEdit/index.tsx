@@ -1,6 +1,7 @@
 import * as React from 'react';
 import OpenIcon from '@atlaskit/icon/glyph/editor/open';
 import UnlinkIcon from '@atlaskit/icon/glyph/editor/unlink';
+import { akEditorFloatingDialogZIndex } from '@atlaskit/editor-common';
 import PanelTextInput from '../../../../ui/PanelTextInput';
 import { getNearestNonTextNode } from '../../../../ui/FloatingToolbar';
 import { FloatingToolbar, Separator, ToolbarButton } from '../styles';
@@ -70,6 +71,7 @@ export default class HyperlinkEdit extends React.Component<Props, State> {
         fitHeight={32}
         offset={[0, 12]}
         className="normal"
+        zIndex={akEditorFloatingDialogZIndex}
       >
         <PanelTextInput
           autoFocus={autoFocus}

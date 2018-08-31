@@ -1,30 +1,16 @@
 // tslint:disable-next-line no-implicit-dependencies
 import * as React from 'react';
 import { mount } from 'enzyme';
-import { UI_EVENT_TYPE } from '@atlaskit/analytics-gas-types';
+import {
+  UI_EVENT_TYPE,
+  OPERATIONAL_EVENT_TYPE,
+} from '@atlaskit/analytics-gas-types';
 import * as cases from 'jest-in-case';
 
 import NavigationListener from '../../../navigation/NavigationListener';
-import {
-  AnalyticsListener,
-  withAnalyticsEvents,
-  AnalyticsContext,
-} from '@atlaskit/analytics-next';
-import { AnalyticsWebClient } from '../../../types';
-
-const Button: React.StatelessComponent<any> = props => (
-  <button id="dummy" onClick={props.onClick}>
-    Test [click on me]
-  </button>
-);
-Button.displayName = 'Button';
-
-const createButtonWithAnalytics = payload =>
-  withAnalyticsEvents({
-    onClick: (createEvent, props) => {
-      createEvent(payload).fire('navigation');
-    },
-  })(Button);
+import { AnalyticsListener, AnalyticsContext } from '@atlaskit/analytics-next';
+import { AnalyticsWebClient, FabricChannel } from '../../../types';
+import { createButtonWithAnalytics } from '../../../../examples/helpers';
 
 const createAnalyticsContexts = contexts => ({ children }) =>
   contexts
@@ -37,7 +23,6 @@ const createAnalyticsContexts = contexts => ({ children }) =>
 
 describe('NavigationListener', () => {
   let analyticsWebClientMock: AnalyticsWebClient;
-  let clientPromise: Promise<AnalyticsWebClient>;
   let loggerMock;
 
   beforeEach(() => {
@@ -47,7 +32,6 @@ describe('NavigationListener', () => {
       sendTrackEvent: jest.fn(),
       sendScreenEvent: jest.fn(),
     };
-    clientPromise = Promise.resolve(analyticsWebClientMock);
     loggerMock = {
       debug: jest.fn(),
       info: jest.fn(),
@@ -58,7 +42,7 @@ describe('NavigationListener', () => {
 
   it('should register an Analytics listener on the navigation channel', () => {
     const component = mount(
-      <NavigationListener client={clientPromise} logger={loggerMock}>
+      <NavigationListener client={analyticsWebClientMock} logger={loggerMock}>
         <div />
       </NavigationListener>,
     );
@@ -68,14 +52,20 @@ describe('NavigationListener', () => {
   });
 
   cases(
-    'should transform events from analyticsListener and fire UI events to the analyticsWebClient',
-    ({ eventPayload, clientPayload, context = [] }) => {
+    'should transform events from analyticsListener and fire UI and Operational events to the analyticsWebClient',
+    (
+      { eventPayload, clientPayload, eventType = UI_EVENT_TYPE, context = [] },
+      done,
+    ) => {
       const spy = jest.fn();
-      const ButtonWithAnalytics = createButtonWithAnalytics(eventPayload);
+      const ButtonWithAnalytics = createButtonWithAnalytics(
+        eventPayload,
+        FabricChannel.navigation,
+      );
       const AnalyticsContexts = createAnalyticsContexts(context);
 
       const component = mount(
-        <NavigationListener client={clientPromise} logger={loggerMock}>
+        <NavigationListener client={analyticsWebClientMock} logger={loggerMock}>
           <AnalyticsContexts>
             <ButtonWithAnalytics onClick={spy} />
           </AnalyticsContexts>
@@ -84,10 +74,14 @@ describe('NavigationListener', () => {
 
       component.find(ButtonWithAnalytics).simulate('click');
 
-      return clientPromise.then(client => {
-        expect(
-          (analyticsWebClientMock.sendUIEvent as any).mock.calls[0][0],
-        ).toMatchObject(clientPayload);
+      const mockFn =
+        eventType === OPERATIONAL_EVENT_TYPE
+          ? analyticsWebClientMock.sendOperationalEvent
+          : analyticsWebClientMock.sendUIEvent;
+
+      setTimeout(() => {
+        expect((mockFn as any).mock.calls[0][0]).toMatchObject(clientPayload);
+        done();
       });
     },
     [
@@ -124,72 +118,24 @@ describe('NavigationListener', () => {
           eventType: UI_EVENT_TYPE,
         },
         context: [
-          { source: 'navigationNext' },
-          { source: 'globalNavigation' },
-          { source: 'searchDrawer' },
+          { source: 'issuesPage' },
+          { navigationCtx: { source: 'navigationNext' } },
+          { navigationCtx: { source: 'globalNavigation' } },
+          { navigationCtx: { source: 'searchDrawer' } },
         ],
         clientPayload: {
           action: 'someAction',
           actionSubject: 'someComponent',
           actionSubjectId: 'someComponentId',
           attributes: {
-            sourceHierarchy: 'navigationNext.globalNavigation.searchDrawer',
+            sourceHierarchy:
+              'issuesPage.navigationNext.globalNavigation.searchDrawer',
             packageHierarchy: undefined,
             componentHierarchy: undefined,
             packageName: undefined,
             packageVersion: undefined,
           },
           source: 'searchDrawer',
-          tags: ['navigation'],
-        },
-      },
-      {
-        name: 'withContextActionSubject',
-        eventPayload: {
-          action: 'someAction',
-          eventType: UI_EVENT_TYPE,
-        },
-        context: [
-          { component: 'navigation', source: 'navigation' },
-          { component: 'button' },
-        ],
-        clientPayload: {
-          action: 'someAction',
-          actionSubject: 'button',
-          attributes: {
-            sourceHierarchy: 'navigation',
-            packageHierarchy: undefined,
-            componentHierarchy: 'navigation.button',
-            packageName: undefined,
-            packageVersion: undefined,
-          },
-          source: 'navigation',
-          tags: ['navigation'],
-        },
-      },
-      {
-        name: 'withNoContextActionSubject',
-        eventPayload: {
-          action: 'someAction',
-          eventType: UI_EVENT_TYPE,
-        },
-        context: [
-          // Component isn't the closest context array so it may not refer to the
-          // actionSubject
-          { component: 'navigation' },
-          { source: 'globalNavigation' },
-        ],
-        clientPayload: {
-          action: 'someAction',
-          actionSubject: undefined,
-          attributes: {
-            sourceHierarchy: 'globalNavigation',
-            packageHierarchy: undefined,
-            componentHierarchy: 'navigation',
-            packageName: undefined,
-            packageVersion: undefined,
-          },
-          source: 'globalNavigation',
           tags: ['navigation'],
         },
       },
@@ -202,7 +148,12 @@ describe('NavigationListener', () => {
           eventType: UI_EVENT_TYPE,
         },
         context: [
-          { packageName: '@atlaskit/navigation-next', packageVersion: '0.0.7' },
+          {
+            navigationCtx: {
+              packageName: '@atlaskit/navigation-next',
+              packageVersion: '0.0.7',
+            },
+          },
           {
             source: 'globalNavigation',
             packageName: '@atlaskit/global-navigation',
@@ -235,7 +186,7 @@ describe('NavigationListener', () => {
         },
         context: [
           { component: 'navigationNext', source: 'navigation' },
-          { component: 'globalNavigation' },
+          { navigationCtx: { component: 'globalNavigation' } },
           { component: 'globalItem' },
         ],
         clientPayload: {
@@ -271,12 +222,20 @@ describe('NavigationListener', () => {
         context: [
           { component: 'navigationNext', source: 'navigation' },
           {
-            component: 'globalNavigation',
-            attributes: { f: 'l', c: { m: 'n' } },
+            navigationCtx: {
+              component: 'globalNavigation',
+              attributes: { f: 'l', c: { m: 'n' } },
+            },
           },
           {
-            component: 'globalItem',
-            attributes: { f: 'g', c: { h: 'i', z: 'x' } },
+            navigationCtx: {
+              component: 'globalItem',
+              attributes: { f: 'g', c: { h: 'i', z: 'x' } },
+            },
+          },
+          {
+            component: 'insideGlobalItem',
+            attributes: { f: 'z', c: { y: 'w', v: 'u' } },
           },
         ],
         clientPayload: {
@@ -286,7 +245,8 @@ describe('NavigationListener', () => {
           attributes: {
             sourceHierarchy: 'navigation',
             packageHierarchy: undefined,
-            componentHierarchy: 'navigationNext.globalNavigation.globalItem',
+            componentHierarchy:
+              'navigationNext.globalNavigation.globalItem.insideGlobalItem',
             packageName: undefined,
             packageVersion: undefined,
             a: 'b',
@@ -339,6 +299,30 @@ describe('NavigationListener', () => {
           action: 'someAction',
           actionSubject: 'someComponent',
           actionSubjectId: 'someComponentId',
+          attributes: {
+            sourceHierarchy: 'navigation',
+            packageHierarchy: undefined,
+            componentHierarchy: 'navigationNext',
+            packageName: undefined,
+            packageVersion: undefined,
+          },
+          source: 'navigation',
+          tags: ['navigation'],
+        },
+      },
+
+      {
+        name: 'with operational event type',
+        eventType: OPERATIONAL_EVENT_TYPE,
+        eventPayload: {
+          action: 'initialised',
+          actionSubject: 'someComponent',
+          eventType: OPERATIONAL_EVENT_TYPE,
+        },
+        context: [{ component: 'navigationNext', source: 'navigation' }],
+        clientPayload: {
+          action: 'initialised',
+          actionSubject: 'someComponent',
           attributes: {
             sourceHierarchy: 'navigation',
             packageHierarchy: undefined,

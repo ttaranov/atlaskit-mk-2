@@ -8,12 +8,14 @@ import PeopleSearchClientImpl, {
   PeopleSearchClient,
 } from './PeopleSearchClient';
 import ConfluenceClientImpl, { ConfluenceClient } from './ConfluenceClient';
+import JiraClientImpl, { JiraClient } from './JiraClient';
 
 export interface SearchClients {
   recentSearchClient: RecentSearchClient;
   crossProductSearchClient: CrossProductSearchClient;
   peopleSearchClient: PeopleSearchClient;
   confluenceClient: ConfluenceClient;
+  jiraClient: JiraClient;
 }
 
 export interface Config {
@@ -21,6 +23,7 @@ export interface Config {
   searchAggregatorServiceUrl: string;
   directoryServiceUrl: string;
   confluenceUrl: string;
+  jiraUrl: string;
 }
 
 const defaultConfig: Config = {
@@ -28,6 +31,7 @@ const defaultConfig: Config = {
   searchAggregatorServiceUrl: '/gateway/api/xpsearch-aggregator',
   directoryServiceUrl: '/gateway/api/directory',
   confluenceUrl: '/wiki',
+  jiraUrl: '',
 };
 
 export default function configureSearchClients(
@@ -53,5 +57,6 @@ export default function configureSearchClients(
       cloudId,
     ),
     confluenceClient: new ConfluenceClientImpl(config.confluenceUrl, cloudId),
+    jiraClient: new JiraClientImpl(config.jiraUrl, cloudId),
   };
 }

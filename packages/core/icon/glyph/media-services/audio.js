@@ -19,4 +19,5 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var MediaServicesAudioIcon = function MediaServicesAudioIcon(props) {
   return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><rect fill="currentColor" x="4" y="4" width="16" height="16" rx="2"/><path d="M16 9.283V13.6h-.003A1.5 1.5 0 1 1 14.5 12c.175 0 .344.03.5.085v-2.08l-4 .431V14.6h-.003A1.5 1.5 0 0 1 8 14.5a1.5 1.5 0 0 1 2-1.415V9.034c0-.238.186-.451.432-.478l5.136-.553a.38.38 0 0 1 .432.384v.896z" fill="inherit"/></svg>' }, props));
 };
+MediaServicesAudioIcon.displayName = 'MediaServicesAudioIcon';
 exports.default = MediaServicesAudioIcon;

@@ -15,7 +15,7 @@ export interface MediaBridge {
 }
 
 export interface PromiseBridge {
-  submitPromise(name: string, uuid: string, args: string);
+  submitPromise(name: string, uuid: string, args?: string);
 }
 
 export interface ListBridge {
@@ -25,6 +25,5 @@ export interface ListBridge {
 export default interface NativeBridge
   extends MentionBridge,
     TextFormattingBridge,
-    MediaBridge,
     PromiseBridge,
     ListBridge {}

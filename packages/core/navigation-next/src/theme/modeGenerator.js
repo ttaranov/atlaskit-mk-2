@@ -18,9 +18,26 @@ export default ({ background, text }: Args): Mode => {
   const backgroundColorActive = chromatism.brightness(10, background).hex;
   const backgroundColorSelected = chromatism.brightness(-20, background).hex;
   const backgroundColorHover = chromatism.brightness(-10, background).hex;
+
+  const getBackgroundColorByState = ({ isActive, isSelected, isHover }) => {
+    if (isActive) return backgroundColorActive;
+    if (isSelected) return backgroundColorSelected;
+    if (isHover) return backgroundColorHover;
+    return background;
+  };
+
   return {
     globalItem: args => {
-      return light.globalItem(args);
+      const styles = light.globalItem(args);
+
+      return {
+        ...styles,
+        itemBase: {
+          ...styles.itemBase,
+          backgroundColor: getBackgroundColorByState(args),
+          color: text,
+        },
+      };
     },
     globalNav: () => {
       const styles = light.globalNav();
@@ -72,12 +89,11 @@ export default ({ background, text }: Args): Mode => {
         ...product,
         itemBase: {
           ...product.itemBase,
-          backgroundColor: (() => {
-            if (isActive) return backgroundColorActive;
-            if (isSelected) return backgroundColorSelected;
-            if (isHover) return backgroundColorHover;
-            return background;
-          })(),
+          backgroundColor: getBackgroundColorByState({
+            isActive,
+            isHover,
+            isSelected,
+          }),
         },
         textWrapper: {
           ...product.textWrapper,

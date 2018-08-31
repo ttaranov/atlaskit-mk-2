@@ -126,7 +126,6 @@ const ContainerNavigationPrimitiveBase = ({
         transform,
       }}
     >
-      <Shadow isBold={isPeeking} isOverDarkBg />
       <ScrollProvider>{children}</ScrollProvider>
     </div>
   );
@@ -142,9 +141,7 @@ type ContainerNavigationProps = {
 };
 
 export const ContainerNavigation = (props: ContainerNavigationProps) => (
-  <ThemeProvider
-    theme={oldTheme => ({ mode: light, ...oldTheme, context: 'container' })}
-  >
+  <ThemeProvider theme={{ mode: light, context: 'container' }}>
     <ContainerNavigationPrimitive {...props} />
   </ThemeProvider>
 );

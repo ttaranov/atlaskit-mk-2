@@ -61,6 +61,8 @@ type Props = {
   onFocus: (e: SyntheticFocusEvent<>) => void,
   /* A function for parsing input characters and transforming them into a Date object. By default uses [date-fn's parse method](https://date-fns.org/v1.29.0/docs/parse) */
   parseInputValue: (date: string, dateFormat: string) => Date,
+  /* A function for formatting the date displayed in the input. By default composes together [date-fn's parse method](https://date-fns.org/v1.29.0/docs/parse) and [date-fn's format method](https://date-fns.org/v1.29.0/docs/format) to return a correctly formatted date string*/
+  formatDisplayLabel: (value: string, dateFormat: string) => string,
   /** Props to apply to the select. This can be used to set options such as placeholder text.
    *  See [here](/packages/core/select) for documentation on select props. */
   selectProps: Object,
@@ -106,11 +108,7 @@ const arrowKeys = {
 
 const StyledMenu = styled.div`
   background-color: ${colors.N20};
-  border: 0 0 1px solid ${colors.N60A};
   border-radius: ${borderRadius()}px;
-  margin: 8px 0;
-  overflow: hidden;
-  text-align: center;
   z-index: ${layers.dialog};
   ${elevation.e200};
 `;
@@ -151,6 +149,8 @@ class DatePicker extends Component<Props, State> {
     defaultIsOpen: false,
     defaultValue: '',
     disabled: [],
+    formatDisplayLabel: (value: string, dateFormat: string): string =>
+      format(parse(value), dateFormat),
     hideIcon: false,
     icon: CalendarIcon,
     id: '',
@@ -296,6 +296,7 @@ class DatePicker extends Component<Props, State> {
     const {
       autoFocus,
       disabled,
+      formatDisplayLabel,
       id,
       innerProps,
       isDisabled,
@@ -363,7 +364,7 @@ class DatePicker extends Component<Props, State> {
           placeholder={placeholder}
           value={
             value && {
-              label: format(parse(value), dateFormat),
+              label: formatDisplayLabel(value, dateFormat),
               value,
             }
           }

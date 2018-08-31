@@ -1,5 +1,6 @@
 // @flow
 import type { Node, ComponentType } from 'react';
+import type { AnalyticsEventInterface } from '@atlaskit/analytics-next';
 
 export type AppearanceType = 'circle' | 'square';
 export type PresenceType = ('online' | 'busy' | 'focus' | 'offline') | Node;
@@ -18,6 +19,7 @@ export type StyledComponentType = 'custom' | 'button' | 'link' | 'span';
 
 export type AvatarClickType = (
   ?{ event?: KeyboardEvent | MouseEvent, item: Object },
+  ?AnalyticsEventInterface,
 ) => void;
 
 export type AvatarPropTypesBase = {
@@ -31,7 +33,9 @@ export type AvatarPropTypesBase = {
   /** Used to override the default border color of the presence indicator.
    Accepts any color argument that the border-color CSS property accepts. */
   borderColor?: string | (() => mixed),
-  /** A custom component to use instead of the default span. */
+  /** A custom component to use instead of the default span.
+   * A `className` prop is passed to the component which has classNames for all the default styles for the avatar.
+   * */
   component?: ComponentType<*>,
 
   /** Provides a url for avatars being used as a link. */
@@ -66,6 +70,9 @@ export type AvatarPropTypesBase = {
   tabIndex?: number,
   /** Pass target down to the anchor, if href is provided. */
   target?: '_blank' | '_self' | '_top' | '_parent',
+  /** You should not be accessing this prop under any circumstances. It is
+   provided by @atlaskit/analytics-next. */
+  createAnalyticsEvent?: any,
 };
 
 export type AvatarPropTypes = AvatarPropTypesBase & {

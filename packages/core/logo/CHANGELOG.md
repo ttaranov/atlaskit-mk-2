@@ -1,5 +1,13 @@
 # @atlaskit/logo
 
+## 9.1.0
+- [minor] Update product logos alignment issues [6bbf9a9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6bbf9a9)
+
+## 9.0.4
+- [patch] Updated dependencies [f9c0cdb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9c0cdb)
+  - @atlaskit/code@8.0.0
+  - @atlaskit/docs@5.0.5
+
 ## 9.0.3
 - [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
 - [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)

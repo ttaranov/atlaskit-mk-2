@@ -9,6 +9,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
 const HappyPack = require('happypack');
 
 const { createDefaultGlob } = require('./utils');
+const statsOptions = require('./statsOptions');
 
 module.exports = function createWebpackConfig(
   {
@@ -30,6 +31,7 @@ module.exports = function createWebpackConfig(
   const isProduction = mode === 'production';
 
   return {
+    stats: statsOptions,
     mode,
     performance: {
       // performance hints are used to warn you about large bundles but come at their own perf cost
@@ -92,8 +94,14 @@ module.exports = function createWebpackConfig(
         },
         {
           test: /\.md$/,
-          exclude: /node_modules/,
+          exclude: /node_modules|docs/,
           loader: require.resolve('raw-loader'),
+        },
+        {
+          test: /\.md$/,
+          include: /docs/,
+          exclude: /node_modules/,
+          loader: require.resolve('gray-matter-loader'),
         },
         {
           test: /\.js$/,
@@ -163,6 +171,10 @@ module.exports = function createWebpackConfig(
       isProduction,
       noMinimizeFlag: noMinimize,
     }),
+    stats: {
+      // https://github.com/TypeStrong/ts-loader/issues/751
+      warningsFilter: /export .* was not found in/,
+    },
   };
 };
 
@@ -198,6 +210,7 @@ function getPlugins(
     new webpack.DefinePlugin({
       WEBSITE_ENV: `"${websiteEnv}"`,
       BASE_TITLE: `"Atlaskit by Atlassian ${!isProduction ? '- DEV' : ''}"`,
+      DEFAULT_META_DESCRIPTION: `"Atlaskit is the official component library for Atlassian's Design System."`,
     }),
 
     new HappyPack({
@@ -205,17 +218,16 @@ function getPlugins(
     }),
   ];
 
-  if (report) {
-    plugins.push(
-      new BundleAnalyzerPlugin({
-        analyzerMode: 'static',
-        statsOptions: { source: false },
-        generateStatsFile: true,
-        openAnalyzer: true,
-        logLevel: 'error',
-      }),
-    );
-  }
+  plugins.push(
+    new BundleAnalyzerPlugin({
+      analyzerMode: report ? 'static' : 'disabled',
+      generateStatsFile: true,
+      openAnalyzer: report,
+      logLevel: 'error',
+      statsOptions: statsOptions,
+      defaultSizes: 'gzip',
+    }),
+  );
 
   return plugins;
 }

@@ -1,5 +1,16 @@
 # @atlaskit/util-data-test
 
+## 10.0.8
+- [patch] Updated dependencies [7545979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7545979)
+  - @atlaskit/emoji@40.0.0
+  - @atlaskit/task-decision@8.1.7
+
+## 10.0.7
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/task-decision@8.1.6
+  - @atlaskit/mention@15.0.6
+  - @atlaskit/emoji@39.1.1
+
 ## 10.0.6
 - [patch] Update emoji examples to use valid emoji in test data [62ebfd7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/62ebfd7)
 - [none] Updated dependencies [62ebfd7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/62ebfd7)

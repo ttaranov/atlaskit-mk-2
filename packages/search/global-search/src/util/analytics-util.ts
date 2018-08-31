@@ -21,13 +21,9 @@ export interface ShownAnalyticsAttributes {
   experimentId?: string;
 }
 
-export interface SearchPerformanceTiming {
-  startTime: number;
+export interface PerformanceTiming {
   elapsedMs: number;
-  confSearchElapsedMs: number;
-  peopleElapsedMs: number;
-  quickNavElapsedMs: number;
-  usingAggregator: boolean;
+  [key: string]: number;
 }
 
 export interface ShownResultContextSection {

@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ADF => WikiMarkup - Media should convert mediaGroup node 1`] = `
+"!file1.txt|thumbnail!
+!file2.txt|thumbnail!"
+`;
+
+exports[`ADF => WikiMarkup - Media should convert mediaSingle node 1`] = `"!file1.txt|thumbnail!"`;

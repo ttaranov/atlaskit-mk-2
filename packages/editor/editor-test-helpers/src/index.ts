@@ -78,6 +78,7 @@ export {
   layoutSection,
   layoutColumn,
   inlineCard,
+  blockCard,
   clean,
 } from './schema-builder';
 export { default as defaultSchema } from './schema';
@@ -101,4 +102,8 @@ export {
   bodiedExtensionData,
 } from './mock-extension-data';
 export * from './schema-element-builder';
-export { cardProvider, CardProviderMock } from './card-provider';
+export {
+  cardProvider,
+  CardMockProvider,
+  DelayedCardMockProvider,
+} from './card-provider';

@@ -43,6 +43,8 @@ const state: State = {
     throw new Error('onCancelUpload has not been set yet.');
   },
   context: {} as any, // TODO: fix this
+  config: {},
+  deferredIdUpfronts: {},
 };
 
 export default state;

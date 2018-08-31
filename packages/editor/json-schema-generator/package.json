@@ -1,8 +1,8 @@
 {
   "name": "@atlaskit/json-schema-generator",
-  "version": "1.0.1",
+  "version": "1.1.0",
   "private": true,
-  "description": "A cli tool for generating JSON Schema from typescript",
+  "description": "A CLI tool for generating JSON Schema from typescript",
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
   "maintainers": [
@@ -19,7 +19,12 @@
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "meow": "^5.0.0",
+    "mkdirp": "^0.5.1",
+    "prettier": "^1.9.2",
     "ts-node": "^6.1.1",
     "typescript": "~2.6.2"
+  },
+  "atlaskit": {
+    "internal": true
   }
 }

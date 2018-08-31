@@ -114,7 +114,7 @@ function baseStyles(validationState, isCompact) {
       if (validationState === 'error') borderColor = colors.R400;
       if (validationState === 'success') borderColor = colors.G400;
 
-      let borderColorHover = isFocused ? colors.B100 : colors.N20;
+      let borderColorHover = isFocused ? colors.B100 : colors.N30;
       if (validationState === 'error') borderColorHover = colors.R400;
       if (validationState === 'success') borderColorHover = colors.G400;
 
@@ -279,7 +279,7 @@ export default function createSelect(WrappedComponent: ComponentType<*>) {
     onSelectRef = (ref: ElementRef<*>) => {
       this.select = ref;
     };
-    /** Menu click events aren't handled or exposed in react-select so we set preventDefault to work with dialog & layer components */
+    /** Menu click events are not handled or exposed in react-select so we set preventDefault to work with dialog & layer components */
     onClick = (e: MouseEvent) => {
       if (this.props.onClickPreventDefault) {
         e.preventDefault();
