@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { expect } from 'chai';
-import Action from '../../../../react/marks/action';
 import { EventHandlers } from '@atlaskit/editor-common';
+import Action from '../../../../react/marks/action';
 
 describe('Renderer - React/Marks/Action', () => {
   const createAction = (eventHandlers = {}) =>

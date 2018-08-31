@@ -3,7 +3,11 @@ import {
   AnalyticsEventPayload,
   WithAnalyticsEventProps,
 } from '@atlaskit/analytics-next-types';
-import { ContextIdentifierProvider, Popup } from '@atlaskit/editor-common';
+import {
+  ContextIdentifierProvider,
+  Popup,
+  akEditorFloatingDialogZIndex,
+} from '@atlaskit/editor-common';
 import {
   ELEMENTS_CHANNEL,
   isSpecialMention,
@@ -28,6 +32,7 @@ import {
   buildTypeAheadInsertedPayload,
 } from '../analytics';
 import { promiseAllWithNonFailFast } from '../../../../utils/promise-util';
+import { FabricElementsAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
 export interface Props {
   editorView?: EditorView;
@@ -279,27 +284,29 @@ export class MentionPicker extends Component<
     } = this.props;
 
     const { anchorElement, query, mentionProvider } = this.state;
-
+    const sessionId = this.getSessionId();
     return (
       <Popup
         target={anchorElement}
         fitHeight={300}
         fitWidth={340}
-        zIndex={500}
+        zIndex={akEditorFloatingDialogZIndex}
         boundariesElement={popupsBoundariesElement}
         mountTo={popupsMountPoint}
         scrollableElement={popupsScrollableElement}
         offset={[0, 3]}
       >
-        <AkMentionPicker
-          resourceProvider={mentionProvider}
-          presenceProvider={presenceProvider}
-          onSelection={this.handleSelectedMention}
-          onOpen={this.handleOnOpen}
-          onClose={this.handleOnClose}
-          query={query}
-          ref={this.handleMentionPickerRef}
-        />
+        <FabricElementsAnalyticsContext data={{ sessionId }}>
+          <AkMentionPicker
+            resourceProvider={mentionProvider}
+            presenceProvider={presenceProvider}
+            onSelection={this.handleSelectedMention}
+            onOpen={this.handleOnOpen}
+            onClose={this.handleOnClose}
+            query={query}
+            ref={this.handleMentionPickerRef}
+          />
+        </FabricElementsAnalyticsContext>
       </Popup>
     );
   }

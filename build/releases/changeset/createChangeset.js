@@ -4,8 +4,8 @@
 const { green, yellow, red } = require('chalk');
 const bolt = require('bolt');
 
-const cli = require('../../utils/cli');
-const logger = require('../../utils/logger');
+const cli = require('@atlaskit/build-utils/cli');
+const logger = require('@atlaskit/build-utils/logger');
 const createReleaseNotesFile = require('./createReleaseNotesFile');
 const inquirer = require('inquirer');
 const semver = require('semver');
@@ -113,6 +113,10 @@ async function createChangeset(
   );
 
   changeset.summary = await cli.askQuestion('Summary');
+  while (changeset.summary.length === 0) {
+    logger.error('A summary is required for the changelog! 😪');
+    changeset.summary = await cli.askQuestion('Summary');
+  }
 
   const toSearch = [...changeset.releases];
 

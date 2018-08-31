@@ -4,24 +4,11 @@ import { expect } from 'chai';
 import Heading from '../../../../react/nodes/heading';
 import { HeadingLevel } from '../../../../react/nodes/heading';
 
-const contentGenerator = headerText => {
-  const content = [
-    {
-      type: 'text',
-      text: headerText,
-    },
-  ];
-  return content;
-};
-
 describe('<Heading />', () => {
   let headers: any[] = [];
   for (let i = 1; i < 7; i++) {
     const header = shallow(
-      <Heading
-        level={i as HeadingLevel}
-        content={contentGenerator(`This is a Heading ${i}`)}
-      >
+      <Heading level={i as HeadingLevel} headingId={`This-is-a-Heading-${i}`}>
         This is a Heading {i}
       </Heading>,
     );
@@ -58,40 +45,13 @@ describe('<Heading />', () => {
     expect(headers[5].prop('id')).to.equal('This-is-a-Heading-6');
   });
 
-  it('should have heading id', () => {
-    const headingContent = [
-      {
-        type: 'text',
-        text: 'This is a Heading',
-      },
-      {
-        type: 'emoji',
-        attrs: {
-          shortName: ':grin:',
-          id: '1f601',
-          text: ' 😁 ',
-        },
-      },
-      {
-        type: 'text',
-        text: 'with a emoji',
-        marks: [
-          {
-            type: 'link',
-            attrs: {
-              href: 'www.atlassian.com',
-            },
-          },
-        ],
-      },
-    ];
-
+  it('should render with "id"-attribute if headingId-prop is set', () => {
     const heading = shallow(
-      <Heading level={1} content={headingContent}>
-        This is a Heading 😁 with a emoji
+      <Heading level={1} headingId="Heading 1">
+        Heading 1
       </Heading>,
     );
     expect(heading.name()).to.equal('h1');
-    expect(heading.prop('id')).to.equal('This-is-a-Heading-😁-with-a-emoji');
+    expect(heading.prop('id')).to.equal('Heading 1');
   });
 });

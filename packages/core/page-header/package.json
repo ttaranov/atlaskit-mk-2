@@ -1,12 +1,13 @@
 {
   "name": "@atlaskit/page-header",
-  "version": "6.0.3",
+  "version": "6.0.5",
   "description": "A React component that represents Header of an application page",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
   "atlaskit:designLink": "https://atlassian.design/guidelines/product/components/page-header",
+  "sideEffects": false,
   "files": [
     "dist"
   ],
@@ -26,15 +27,15 @@
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/breadcrumbs": "^6.0.5",
-    "@atlaskit/build-utils": "^1.11.0",
-    "@atlaskit/button": "^9.0.5",
+    "@atlaskit/breadcrumbs": "^6.0.8",
+    "@atlaskit/build-utils": "^2.0.0",
+    "@atlaskit/button": "^9.0.8",
     "@atlaskit/docs": "^5.0.2",
-    "@atlaskit/field-text": "^7.0.4",
-    "@atlaskit/inline-edit": "^7.0.4",
-    "@atlaskit/input": "^4.0.3",
-    "@atlaskit/page": "^8.0.3",
-    "@atlaskit/single-select": "^6.0.3",
+    "@atlaskit/field-text": "^7.0.10",
+    "@atlaskit/inline-edit": "^7.0.8",
+    "@atlaskit/input": "^4.0.6",
+    "@atlaskit/page": "^8.0.5",
+    "@atlaskit/single-select": "^6.0.5",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.2",
     "react-test-renderer": "^16.3.0"

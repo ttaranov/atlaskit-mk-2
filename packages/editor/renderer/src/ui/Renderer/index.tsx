@@ -39,6 +39,7 @@ export interface Props {
   useNewApplicationCard?: boolean;
   appearance?: RendererAppearance;
   adfStage?: ADFStage;
+  disableHeadingIDs?: boolean;
 }
 
 export default class Renderer extends PureComponent<Props, {}> {
@@ -68,6 +69,7 @@ export default class Renderer extends PureComponent<Props, {}> {
       schema,
       useNewApplicationCard,
       appearance,
+      disableHeadingIDs,
     } = props;
 
     this.serializer = new ReactSerializer({
@@ -82,6 +84,7 @@ export default class Renderer extends PureComponent<Props, {}> {
       } as RendererContext,
       useNewApplicationCard,
       appearance,
+      disableHeadingIDs,
     });
   }
 

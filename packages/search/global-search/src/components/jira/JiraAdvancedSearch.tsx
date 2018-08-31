@@ -16,6 +16,7 @@ export interface Props {
   query: string;
   showKeyboardLozenge?: boolean;
   showSearchIcon?: boolean;
+  analyticsData?: object;
 }
 
 export interface State {
@@ -67,7 +68,12 @@ export default class JiraAdvancedSearch extends React.Component<Props> {
     ));
 
   render() {
-    const { query, showKeyboardLozenge, showSearchIcon } = this.props;
+    const {
+      query,
+      showKeyboardLozenge,
+      showSearchIcon,
+      analyticsData,
+    } = this.props;
     return (
       <AdvancedSearchResult
         href={getJiraAdvancedSearchUrl(this.state.selectedItem, query)}
@@ -114,6 +120,7 @@ export default class JiraAdvancedSearch extends React.Component<Props> {
         }
         type={AnalyticsType.AdvancedSearchJira}
         showKeyboardLozenge={showKeyboardLozenge}
+        analyticsData={analyticsData}
       />
     );
   }

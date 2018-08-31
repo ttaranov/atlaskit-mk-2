@@ -19,4 +19,5 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var MediaServicesLineIcon = function MediaServicesLineIcon(props) {
   return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path d="M4.36 17.904L17.904 4.36a1.228 1.228 0 1 1 1.736 1.736L6.096 19.64a1.228 1.228 0 1 1-1.736-1.736z" fill="currentColor"/></svg>' }, props));
 };
+MediaServicesLineIcon.displayName = 'MediaServicesLineIcon';
 exports.default = MediaServicesLineIcon;

@@ -1,6 +1,7 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
 import { parseString } from '../text';
 import { normalizePMNodes } from '../utils/normalize';
+import { title } from '../utils/title';
 
 import { getPanelType } from './panel-type';
 
@@ -19,12 +20,7 @@ export function panelMacro(
   };
 
   if (attrs.title) {
-    const headingNode = schema.nodes.heading.createChecked(
-      { level: 1 },
-      parseString(attrs.title, schema),
-    );
-
-    output.push(headingNode);
+    output.push(title(attrs.title, schema));
   }
 
   const content = parseString(rawContent, schema);

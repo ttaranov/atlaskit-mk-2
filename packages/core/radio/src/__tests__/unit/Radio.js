@@ -1,9 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
-
-import AkRadio from '../../Radio';
-import Radio from '../../RadioBase';
+import Radio from '../../Radio';
 import { name } from '../../../package.json';
 
 describe(name, () => {
@@ -40,8 +38,8 @@ describe(name, () => {
     describe('props', () => {
       function expectPropReflectedToInput(prop, inputProp, val) {
         it('should be reflected to the input', () => {
-          const props = { [prop]: val };
-          const wrapper = mount(<AkRadio onChange={() => {}} {...props} />);
+          const props = ({ [prop]: val }: { [string]: any });
+          const wrapper = mount(<Radio onChange={() => {}} {...props} />);
           expect(wrapper.find('input').prop(inputProp)).toBe(val);
         });
       }
@@ -56,9 +54,9 @@ describe(name, () => {
         expectPropReflectedToInput('isRequired', 'required', false);
       });
 
-      describe('isSelected prop', () => {
-        expectPropReflectedToInput('isSelected', 'checked', true);
-        expectPropReflectedToInput('isSelected', 'checked', false);
+      describe('isChecked prop', () => {
+        expectPropReflectedToInput('isChecked', 'checked', true);
+        expectPropReflectedToInput('isChecked', 'checked', false);
       });
 
       describe('name prop', () => {
@@ -66,9 +64,6 @@ describe(name, () => {
       });
 
       describe('onChange prop', () => {
-        const func = () => {};
-        expectPropReflectedToInput('onChange', 'onChange', func);
-
         it('should be reflected to the input', () => {
           const spy = jest.fn();
           const wrapper = mount(<Radio onChange={spy} />);

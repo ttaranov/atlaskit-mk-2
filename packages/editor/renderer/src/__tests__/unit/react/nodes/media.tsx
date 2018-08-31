@@ -1,9 +1,9 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
 import { expect } from 'chai';
-import Media from '../../../../react/nodes/media';
 import { MediaType } from '@atlaskit/editor-common';
 import { MediaCard } from '../../../../ui/MediaCard';
+import Media from '../../../../react/nodes/media';
 
 describe('Media', () => {
   const mediaNode = {

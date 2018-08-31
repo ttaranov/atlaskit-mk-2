@@ -8,26 +8,9 @@ import {
 import * as cases from 'jest-in-case';
 
 import NavigationListener from '../../../navigation/NavigationListener';
-import {
-  AnalyticsListener,
-  withAnalyticsEvents,
-  AnalyticsContext,
-} from '@atlaskit/analytics-next';
-import { AnalyticsWebClient } from '../../../types';
-
-const Button: React.StatelessComponent<any> = props => (
-  <button id="dummy" onClick={props.onClick}>
-    Test [click on me]
-  </button>
-);
-Button.displayName = 'Button';
-
-const createButtonWithAnalytics = payload =>
-  withAnalyticsEvents({
-    onClick: (createEvent, props) => {
-      createEvent(payload).fire('navigation');
-    },
-  })(Button);
+import { AnalyticsListener, AnalyticsContext } from '@atlaskit/analytics-next';
+import { AnalyticsWebClient, FabricChannel } from '../../../types';
+import { createButtonWithAnalytics } from '../../../../examples/helpers';
 
 const createAnalyticsContexts = contexts => ({ children }) =>
   contexts
@@ -40,7 +23,6 @@ const createAnalyticsContexts = contexts => ({ children }) =>
 
 describe('NavigationListener', () => {
   let analyticsWebClientMock: AnalyticsWebClient;
-  let clientPromise: Promise<AnalyticsWebClient>;
   let loggerMock;
 
   beforeEach(() => {
@@ -50,7 +32,6 @@ describe('NavigationListener', () => {
       sendTrackEvent: jest.fn(),
       sendScreenEvent: jest.fn(),
     };
-    clientPromise = Promise.resolve(analyticsWebClientMock);
     loggerMock = {
       debug: jest.fn(),
       info: jest.fn(),
@@ -61,7 +42,7 @@ describe('NavigationListener', () => {
 
   it('should register an Analytics listener on the navigation channel', () => {
     const component = mount(
-      <NavigationListener client={clientPromise} logger={loggerMock}>
+      <NavigationListener client={analyticsWebClientMock} logger={loggerMock}>
         <div />
       </NavigationListener>,
     );
@@ -72,18 +53,19 @@ describe('NavigationListener', () => {
 
   cases(
     'should transform events from analyticsListener and fire UI and Operational events to the analyticsWebClient',
-    ({
-      eventPayload,
-      clientPayload,
-      eventType = UI_EVENT_TYPE,
-      context = [],
-    }) => {
+    (
+      { eventPayload, clientPayload, eventType = UI_EVENT_TYPE, context = [] },
+      done,
+    ) => {
       const spy = jest.fn();
-      const ButtonWithAnalytics = createButtonWithAnalytics(eventPayload);
+      const ButtonWithAnalytics = createButtonWithAnalytics(
+        eventPayload,
+        FabricChannel.navigation,
+      );
       const AnalyticsContexts = createAnalyticsContexts(context);
 
       const component = mount(
-        <NavigationListener client={clientPromise} logger={loggerMock}>
+        <NavigationListener client={analyticsWebClientMock} logger={loggerMock}>
           <AnalyticsContexts>
             <ButtonWithAnalytics onClick={spy} />
           </AnalyticsContexts>
@@ -97,8 +79,9 @@ describe('NavigationListener', () => {
           ? analyticsWebClientMock.sendOperationalEvent
           : analyticsWebClientMock.sendUIEvent;
 
-      return clientPromise.then(client => {
+      setTimeout(() => {
         expect((mockFn as any).mock.calls[0][0]).toMatchObject(clientPayload);
+        done();
       });
     },
     [

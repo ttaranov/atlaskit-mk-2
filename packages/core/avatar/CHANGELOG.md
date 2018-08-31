@@ -1,5 +1,8 @@
 # @atlaskit/avatar
 
+## 14.0.10
+- [patch] Fix bug where analytics was causing avatar to always have an onClick and render with onClick styles/attributes. [966f1fb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/966f1fb)
+
 ## 14.0.8
 - [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
   - @atlaskit/theme@6.0.0

@@ -7,6 +7,7 @@ import {
   akColorN300,
   akColorN800,
 } from '@atlaskit/util-shared-styles';
+import { blockNodesVerticalMargin } from '@atlaskit/editor-common';
 import { akEditorCodeFontFamily, akEditorCodeBlockPadding } from '../../styles';
 
 export const codeBlockStyles = css`
@@ -15,8 +16,8 @@ export const codeBlockStyles = css`
     background: ${akColorN20};
     border-radius: ${akBorderRadius};
     font-size: 14px;
-    line-height: 20px;
-    margin: 12px 0 0 0;
+    line-height: 24px;
+    margin: ${blockNodesVerticalMargin} 0 0 0;
     counter-reset: line;
     display: flex;
 
@@ -28,7 +29,7 @@ export const codeBlockStyles = css`
       padding: ${akEditorCodeBlockPadding} 8px;
       border-radius: ${akBorderRadius};
       font-size: 12px;
-      line-height: 20px;
+      line-height: 24px;
 
       span {
         display: block;

@@ -1,5 +1,6 @@
 import 'babel-polyfill';
+import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import mobileEditor from './mobile-editor-element';
+import MobileEditor from './mobile-editor-element';
 
-ReactDOM.render(mobileEditor(), document.getElementById('editor'));
+ReactDOM.render(<MobileEditor />, document.getElementById('editor'));

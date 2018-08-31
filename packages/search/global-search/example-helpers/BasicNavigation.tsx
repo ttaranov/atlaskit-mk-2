@@ -1,8 +1,6 @@
 import * as React from 'react';
-import styled from 'styled-components';
 import Navigation, {
   AkGlobalItem,
-  AkCreateDrawer,
   AkSearchDrawer,
   presetThemes,
 } from '@atlaskit/navigation';
@@ -17,12 +15,12 @@ export interface Props {
 }
 
 export interface State {
-  openDrawer: string;
+  openDrawer: string | null;
 }
 
 export default class BasicNavigation extends React.Component<Props, State> {
-  constructor(...args) {
-    super(...args);
+  constructor(props) {
+    super(props);
     this.state = {
       openDrawer: 'search',
     };

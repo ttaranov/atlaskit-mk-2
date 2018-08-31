@@ -7,6 +7,7 @@ import { EditorProps } from '../../../types/editor-props';
 import { Match, getLinkMatch } from '../utils';
 import { HyperlinkState, stateKey } from '../pm-plugins/main';
 import { showLinkToolbar, hideLinkToolbar } from '../commands';
+import { queueCards } from '../../card/pm-plugins/actions';
 
 export function createKeymapPlugin(
   schema: Schema,
@@ -81,11 +82,19 @@ function mayConvertLastWordToHyperlink(
     const url = match.url;
     const markType = state.schema.mark('link', { href: url });
 
+    const tr = queueCards([
+      {
+        url,
+        pos: start,
+        appearance: 'inline',
+      },
+    ])(state.tr.addMark(start, end, markType));
+
     analyticsService.trackEvent(
       'atlassian.editor.format.hyperlink.autoformatting',
     );
 
-    dispatch(state.tr.addMark(start, end, markType));
+    dispatch(tr);
   }
   return false;
 }
