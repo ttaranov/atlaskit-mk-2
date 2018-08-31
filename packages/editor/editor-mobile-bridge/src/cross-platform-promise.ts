@@ -18,7 +18,7 @@ export interface SubmitPromiseToNative<T> {
 
 export function createPromise<T>(
   name: string,
-  args: string,
+  args?: string,
 ): SubmitPromiseToNative<T> {
   const holder: Holder<T> = createHolder();
   const uuid = counter++ + '';

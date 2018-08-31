@@ -11,6 +11,7 @@ import { transitionDurationMs, transitionTimingFunction } from '../constants';
 
 type Styles = { [string]: string | number };
 type TransitionProps = {
+  children?: Node,
   component?: ComponentType<*> | string,
   onExited?: any => void,
   in: boolean,

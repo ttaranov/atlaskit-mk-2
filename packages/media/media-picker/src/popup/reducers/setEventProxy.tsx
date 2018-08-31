@@ -1,6 +1,10 @@
 import { State } from '../domain';
+import { SetEventProxyAction } from '../actions/setEventProxy';
 
-export default function setEventProxy(state: State, action: any): State {
+export default function setEventProxy(
+  state: State,
+  action: SetEventProxyAction,
+): State {
   if (action.type === 'SET_EVENT_PROXY') {
     const { itemId, uploadId } = action;
     const { uploads } = state;

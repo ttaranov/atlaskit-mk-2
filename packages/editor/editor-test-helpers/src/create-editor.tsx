@@ -56,7 +56,7 @@ export default function createEditorForTests<T = any>({
   let portalProviderAPI;
   const wrapper = mount(
     <PortalProvider
-      render={portalProvider => {
+      render={(portalProvider: any) => {
         portalProviderAPI = portalProvider;
         return (
           <>

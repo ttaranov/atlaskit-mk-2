@@ -113,6 +113,8 @@ function generateMarkdownTemplate(release, releaseObject, repoUrl) {
   // Now we can print all the dependencies we updated
   Array.from(dependenciesUpdated).forEach(dependency => {
     const release = releases.find(r => r.name === dependency);
+    // TODO: (LB) Find out why this was possible...
+    if (!release) return;
     result.push(`  - ${dependency}@${release.version}`);
   });
 

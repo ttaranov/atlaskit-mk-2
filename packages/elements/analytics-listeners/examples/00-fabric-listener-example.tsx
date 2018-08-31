@@ -2,11 +2,23 @@ import * as React from 'react';
 import { AnalyticsContext } from '@atlaskit/analytics-next';
 import FabricAnalyticsListeners from '../src/FabricAnalyticsListeners';
 import {
-  DummyComponentWithAnalytics,
-  DummyAtlaskitComponentWithAnalytics,
-  DummyComponentWithAttributesWithAnalytics,
-  DummyNavigationComponentWithAnalytics,
+  createComponentWithAnalytics,
+  createComponentWithAttributesWithAnalytics,
 } from './helpers';
+import { FabricChannel } from '../src/types';
+
+const DummyElementsComponent = createComponentWithAnalytics(
+  FabricChannel.elements,
+);
+const DummyElementsComponentWithAttributes = createComponentWithAttributesWithAnalytics(
+  FabricChannel.elements,
+);
+const DummyAtlaskitComponent = createComponentWithAnalytics(
+  FabricChannel.atlaskit,
+);
+const DummyNavigationComponent = createComponentWithAnalytics(
+  FabricChannel.navigation,
+);
 
 const myOnClickHandler = () => {
   console.log('Button clicked ! Yay!');
@@ -29,23 +41,17 @@ const analyticsWebClientMock = {
 
 function Example() {
   return (
-    <FabricAnalyticsListeners client={Promise.resolve(analyticsWebClientMock)}>
+    <FabricAnalyticsListeners client={analyticsWebClientMock}>
       <div>
-        <DummyComponentWithAnalytics
-          text="Fabric Elements event - component without attributes"
-          onClick={myOnClickHandler}
-        />
+        <DummyElementsComponent onClick={myOnClickHandler} />
 
         <AnalyticsContext data={{ issueId: 100, greeting: 'hello' }}>
           <AnalyticsContext data={{ issueId: 200 }}>
-            <DummyComponentWithAttributesWithAnalytics
-              text="Fabric Elements event - component with attributes"
-              onClick={myOnClickHandler}
-            />
+            <DummyElementsComponentWithAttributes onClick={myOnClickHandler} />
           </AnalyticsContext>
         </AnalyticsContext>
 
-        <DummyAtlaskitComponentWithAnalytics onClick={myOnClickHandler} />
+        <DummyAtlaskitComponent onClick={myOnClickHandler} />
 
         <AnalyticsContext
           data={{
@@ -65,7 +71,7 @@ function Example() {
               source: 'componentPage',
             }}
           >
-            <DummyNavigationComponentWithAnalytics onClick={myOnClickHandler} />
+            <DummyNavigationComponent onClick={myOnClickHandler} />
           </AnalyticsContext>
         </AnalyticsContext>
       </div>

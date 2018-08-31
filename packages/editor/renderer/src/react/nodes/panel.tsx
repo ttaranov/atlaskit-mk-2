@@ -1,11 +1,6 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import styled from 'styled-components';
-
-import { PanelType } from '@atlaskit/editor-common';
 import {
-  akBorderRadius,
-  akGridSizeUnitless,
   akColorG50,
   akColorG400,
   akColorP50,
@@ -23,6 +18,7 @@ import SuccessIcon from '@atlaskit/icon/glyph/editor/success';
 import ErrorIcon from '@atlaskit/icon/glyph/editor/error';
 import NoteIcon from '@atlaskit/icon/glyph/editor/note';
 import WarningIcon from '@atlaskit/icon/glyph/warning';
+import { PanelType } from '@atlaskit/editor-common';
 
 export interface Props {
   panelType: PanelType;
@@ -61,35 +57,22 @@ const config = {
   },
 };
 
-// tslint:disable-next-line:variable-name
-const PanelWrapper = styled.div`
-  border-radius: ${akBorderRadius};
-  margin: ${akGridSizeUnitless / 2}px 0;
-  padding: ${akGridSizeUnitless}px;
-  background: ${({ panelType }: Props) => config[panelType].background};
-`;
-
-// tslint:disable-next-line:variable-name
-const IconWrapper = styled.span`
-  position: absolute;
-  height: ${akGridSizeUnitless * 3}px;
-  width: ${akGridSizeUnitless * 3}px;
-  color: ${({ panelType }: Props) => config[panelType].iconColor};
-`;
-
-// tslint:disable-next-line:variable-name
-const ContentWrapper = styled.div`
-  margin: 1px 0 1px ${akGridSizeUnitless * 4}px;
-`;
-
 export default class Panel extends PureComponent<Props, {}> {
   render() {
     const { panelType, children } = this.props;
     return (
-      <PanelWrapper panelType={panelType}>
-        <IconWrapper panelType={panelType}>{this.getIcon()}</IconWrapper>
-        <ContentWrapper>{children}</ContentWrapper>
-      </PanelWrapper>
+      <div
+        style={{ background: config[panelType].background }}
+        className="ak-editor-panel"
+      >
+        <span
+          style={{ color: config[panelType].iconColor }}
+          className="ak-editor-panel__icon"
+        >
+          {this.getIcon()}
+        </span>
+        <div className="ak-editor-panel__content">{children}</div>
+      </div>
     );
   }
 

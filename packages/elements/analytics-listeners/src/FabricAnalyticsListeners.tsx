@@ -10,7 +10,7 @@ import FabricEditorListener from './fabric/FabricEditorListener';
 export type Props = {
   /** Children! */
   children?: React.ReactNode;
-  client: Promise<AnalyticsWebClient>;
+  client?: AnalyticsWebClient;
   logLevel?: number;
   /** A list of individual listeners to exclude, identified by channel */
   excludedChannels?: FabricChannel[];

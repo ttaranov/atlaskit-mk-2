@@ -350,7 +350,6 @@ class MentionResource extends AbstractMentionResource {
     contextIdentifier?: MentionContextIdentifier,
   ): KeyValues {
     const configParams: KeyValues = {};
-    const contextParams: KeyValues = {};
 
     if (this.config.containerId) {
       configParams['containerId'] = this.config.containerId;
@@ -360,19 +359,8 @@ class MentionResource extends AbstractMentionResource {
       configParams['productIdentifier'] = this.config.productId;
     }
 
-    if (contextIdentifier) {
-      if (contextIdentifier.containerId) {
-        contextParams['containerId'] = contextIdentifier.containerId;
-      }
-      if (contextIdentifier.objectId) {
-        contextParams['objectId'] = contextIdentifier.objectId;
-      }
-      if (contextIdentifier.childObjectId) {
-        contextParams['childObjectId'] = contextIdentifier.childObjectId;
-      }
-    }
     // if contextParams exist then it will override configParams for containerId
-    return { ...configParams, ...contextParams };
+    return { ...configParams, ...contextIdentifier };
   }
 
   /**

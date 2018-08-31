@@ -1,5 +1,8 @@
 # @atlaskit/flag
 
+## 9.0.8
+- [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
+
 ## 9.0.6
 - [patch] Updated flags to use atlaskit portal instead of Layer manger [b9e6757](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b9e6757)
 - [none] Updated dependencies [b9e6757](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b9e6757)

@@ -19,6 +19,8 @@ import {
   fireEvent,
   actionSubjectIds,
   AnalyticsEvent,
+  eventTypes,
+  trackEventActions,
 } from '../internal/analytics';
 import { SharedProps } from './types';
 
@@ -131,7 +133,10 @@ export default class Comment extends React.Component<Props, State> {
   private onReply = (value: any, analyticsEvent: AnalyticsEvent) => {
     const { containerId } = this.props;
 
-    fireEvent(analyticsEvent, actionSubjectIds.replyButton, containerId);
+    fireEvent(analyticsEvent, {
+      actionSubjectId: actionSubjectIds.replyButton,
+      containerId,
+    });
 
     this.setState({
       isReplying: true,
@@ -145,13 +150,27 @@ export default class Comment extends React.Component<Props, State> {
       sendAnalyticsEvent,
     } = this.props;
 
-    sendAnalyticsEvent(actionSubjectIds.saveButton);
+    sendAnalyticsEvent({
+      actionSubjectId: actionSubjectIds.saveButton,
+    });
 
     this.dispatch(
       'onAddComment',
       conversationId,
       parentComment.commentId,
       value,
+      undefined,
+      id => {
+        sendAnalyticsEvent({
+          actionSubjectId: id,
+          action: trackEventActions.created,
+          eventType: eventTypes.TRACK,
+          actionSubject: 'comment',
+          attributes: {
+            nestedDepth: (parentComment.nestedDepth || 0) + 1,
+          },
+        });
+      },
     );
 
     this.setState({
@@ -160,7 +179,10 @@ export default class Comment extends React.Component<Props, State> {
   };
 
   private onCancelReply = () => {
-    this.props.sendAnalyticsEvent(actionSubjectIds.cancelButton);
+    this.props.sendAnalyticsEvent({
+      actionSubjectId: actionSubjectIds.cancelButton,
+    });
+
     this.setState({
       isReplying: false,
     });
@@ -168,20 +190,37 @@ export default class Comment extends React.Component<Props, State> {
 
   private onDelete = (value: any, analyticsEvent: AnalyticsEvent) => {
     const {
-      comment: { commentId },
+      comment: { nestedDepth, commentId },
       containerId,
       conversationId,
+      sendAnalyticsEvent,
     } = this.props;
 
-    fireEvent(analyticsEvent, actionSubjectIds.deleteButton, containerId);
+    fireEvent(analyticsEvent, {
+      actionSubjectId: actionSubjectIds.deleteButton,
+      containerId,
+    });
 
-    this.dispatch('onDeleteComment', conversationId, commentId);
+    this.dispatch('onDeleteComment', conversationId, commentId, id => {
+      sendAnalyticsEvent({
+        actionSubjectId: id,
+        action: trackEventActions.deleted,
+        eventType: eventTypes.TRACK,
+        actionSubject: 'comment',
+        attributes: {
+          nestedDepth: nestedDepth || 0,
+        },
+      });
+    });
   };
 
   private onEdit = (value: any, analyticsEvent: AnalyticsEvent) => {
     const { containerId } = this.props;
 
-    fireEvent(analyticsEvent, actionSubjectIds.editButton, containerId);
+    fireEvent(analyticsEvent, {
+      actionSubjectId: actionSubjectIds.editButton,
+      containerId,
+    });
 
     this.setState({
       isEditing: true,
@@ -191,9 +230,27 @@ export default class Comment extends React.Component<Props, State> {
   private onSaveEdit = async (value: any) => {
     const { conversationId, comment, sendAnalyticsEvent } = this.props;
 
-    sendAnalyticsEvent(actionSubjectIds.saveButton);
+    sendAnalyticsEvent({
+      actionSubjectId: actionSubjectIds.saveButton,
+    });
 
-    this.dispatch('onUpdateComment', conversationId, comment.commentId, value);
+    this.dispatch(
+      'onUpdateComment',
+      conversationId,
+      comment.commentId,
+      value,
+      id => {
+        sendAnalyticsEvent({
+          actionSubjectId: id,
+          action: trackEventActions.updated,
+          eventType: eventTypes.TRACK,
+          actionSubject: 'comment',
+          attributes: {
+            nestedDepth: comment.nestedDepth || 0,
+          },
+        });
+      },
+    );
 
     this.setState({
       isEditing: false,
@@ -201,7 +258,9 @@ export default class Comment extends React.Component<Props, State> {
   };
 
   private onCancelEdit = () => {
-    this.props.sendAnalyticsEvent(actionSubjectIds.cancelButton);
+    this.props.sendAnalyticsEvent({
+      actionSubjectId: actionSubjectIds.cancelButton,
+    });
 
     this.setState({
       isEditing: false,
@@ -216,11 +275,10 @@ export default class Comment extends React.Component<Props, State> {
       onCancel();
     }
 
-    fireEvent(
-      analyticsEvent,
-      actionSubjectIds.cancelFailedRequestButton,
+    fireEvent(analyticsEvent, {
+      actionSubjectId: actionSubjectIds.cancelFailedRequestButton,
       containerId,
-    );
+    });
 
     this.dispatch('onRevertComment', comment.conversationId, comment.commentId);
   };
@@ -237,11 +295,10 @@ export default class Comment extends React.Component<Props, State> {
       return onRetry(localId);
     }
 
-    fireEvent(
-      analyticsEvent,
-      actionSubjectIds.retryFailedRequestButton,
+    fireEvent(analyticsEvent, {
+      actionSubjectId: actionSubjectIds.retryFailedRequestButton,
       containerId,
-    );
+    });
 
     if (!lastDispatch) {
       return;
@@ -301,6 +358,7 @@ export default class Comment extends React.Component<Props, State> {
       <ReactRenderer
         document={comment.document.adf}
         dataProviders={dataProviders}
+        disableHeadingIDs={true}
       />
     );
   }

@@ -33,6 +33,7 @@ async function run(opts) {
 
   const releaseObj = createRelease(unreleasedChangesets, allPackages);
   const publishCommit = createReleaseCommit(releaseObj);
+  logger.log('Creating commit for release: ', publishCommit);
 
   if (unreleasedChangesets.length === 0) {
     logger.warn('No unreleased changesets found, exiting.');

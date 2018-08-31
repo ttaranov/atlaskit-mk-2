@@ -1,12 +1,13 @@
 {
   "name": "@atlaskit/comment",
-  "version": "6.0.10",
+  "version": "6.0.13",
   "description": "Comments enable discussions on an entity such as a page, blog post, issue or pull request",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
   "atlaskit:designLink": "https://atlassian.design/guidelines/product/patterns/comments",
+  "sideEffects": false,
   "files": [
     "dist"
   ],
@@ -19,10 +20,10 @@
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/analytics-next": "^3.0.6",
-    "@atlaskit/button": "^9.0.7",
-    "@atlaskit/icon": "^13.3.1",
-    "@atlaskit/lozenge": "^6.1.6",
-    "@atlaskit/theme": "^6.0.1"
+    "@atlaskit/button": "^9.0.8",
+    "@atlaskit/icon": "^13.6.1",
+    "@atlaskit/lozenge": "^6.1.7",
+    "@atlaskit/theme": "^6.0.2"
   },
   "peerDependencies": {
     "react": "^16.4.0",
@@ -31,8 +32,8 @@
   "devDependencies": {
     "@atlaskit/avatar": "^14.0.9",
     "@atlaskit/build-utils": "^2.0.0",
-    "@atlaskit/docs": "^5.0.6",
-    "@atlaskit/editor-core": "^77.1.4",
+    "@atlaskit/docs": "^5.0.7",
+    "@atlaskit/editor-core": "^79.0.0",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.2"
   },

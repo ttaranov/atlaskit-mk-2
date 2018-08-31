@@ -34,6 +34,7 @@ export type ResultsWithTiming = {
   timings?: {
     [key: string]: number | string;
   };
+  experimentId?: string;
 };
 
 export interface ConfluenceResultsMap extends GenericResultMap {

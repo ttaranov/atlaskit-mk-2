@@ -1,5 +1,13 @@
 # @atlaskit/reactions
 
+## 13.0.10
+- [patch] Change tsconfig of reactions [ecca4b6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecca4b6)
+
+## 13.0.9
+- [patch] Updated dependencies [7545979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7545979)
+  - @atlaskit/emoji@40.0.0
+  - @atlaskit/util-data-test@10.0.8
+
 ## 13.0.8
 - [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
   - @atlaskit/util-data-test@10.0.7
