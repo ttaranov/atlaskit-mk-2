@@ -4,43 +4,6 @@ import { expect } from 'chai';
 import Heading from '../../../../react/nodes/heading';
 import { HeadingLevel } from '../../../../react/nodes/heading';
 
-const contentGenerator = headerText => {
-  const content = [
-    {
-      type: 'text',
-      text: headerText,
-    },
-  ];
-  return content;
-};
-
-const headingContent = [
-  {
-    type: 'text',
-    text: 'This is a Heading',
-  },
-  {
-    type: 'emoji',
-    attrs: {
-      shortName: ':grin:',
-      id: '1f601',
-      text: ' 😁 ',
-    },
-  },
-  {
-    type: 'text',
-    text: 'with a emoji',
-    marks: [
-      {
-        type: 'link',
-        attrs: {
-          href: 'www.atlassian.com',
-        },
-      },
-    ],
-  },
-];
-
 describe('<Heading />', () => {
   let headers: any[] = [];
   for (let i = 1; i < 7; i++) {
