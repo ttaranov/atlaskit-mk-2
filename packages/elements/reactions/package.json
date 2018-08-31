@@ -19,6 +19,7 @@
     "@atlaskit/analytics-next-types": "^3.1.0",
     "@atlaskit/button": "^9.0.6",
     "@atlaskit/emoji": "^40.0.1",
+    "@atlaskit/emoji-picker": "^0.0.0",
     "@atlaskit/icon": "^13.2.5",
     "@atlaskit/layer": "^5.0.4",
     "@atlaskit/theme": "^6.0.0",

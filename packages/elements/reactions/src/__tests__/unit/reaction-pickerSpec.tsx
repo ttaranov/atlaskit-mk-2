@@ -1,4 +1,5 @@
-import { EmojiPicker, EmojiProvider } from '@atlaskit/emoji';
+import EmojiPicker from '@atlaskit/emoji-picker';
+import { EmojiProvider } from '@atlaskit/emoji';
 import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
 import * as React from 'react';
 

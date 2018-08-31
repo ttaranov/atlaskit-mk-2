@@ -5,11 +5,8 @@ import { PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { Popup } from '@atlaskit/editor-common';
 import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
-import {
-  EmojiPicker as AkEmojiPicker,
-  EmojiProvider,
-  EmojiId,
-} from '@atlaskit/emoji';
+import AkEmojiPicker from '@atlaskit/emoji-picker';
+import { EmojiProvider, EmojiId } from '@atlaskit/emoji';
 import { analyticsDecorator as analytics } from '../../../../analytics';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import { EmojiState } from '../../pm-plugins/main';

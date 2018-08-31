@@ -1,7 +1,7 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
 import Item from '@atlaskit/item';
-import { EmojiPicker as AkEmojiPicker } from '@atlaskit/emoji';
+import AkEmojiPicker from '@atlaskit/emoji-picker';
 import { emoji as emojiData } from '@atlaskit/util-data-test';
 import {
   doc,

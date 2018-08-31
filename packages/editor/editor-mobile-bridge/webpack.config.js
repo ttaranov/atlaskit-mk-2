@@ -29,7 +29,7 @@ module.exports = {
       '@atlaskit/profilecard': `${path.resolve(__dirname)}/empty.ts`,
       '@atlaskit/select': `${path.resolve(__dirname)}/empty.ts`,
       'react-select': `${path.resolve(__dirname)}/empty.ts`,
-      'components/picker/EmojiPicker': `${path.resolve(__dirname)}/empty.ts`,
+      'picker/EmojiPicker': `${path.resolve(__dirname)}/empty.ts`,
       'react-virtualized/dist/commonjs/List': `${path.resolve(
         __dirname,
       )}/empty.ts`,
