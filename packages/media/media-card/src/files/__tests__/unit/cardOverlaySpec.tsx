@@ -1,6 +1,7 @@
 import * as React from 'react';
-import { shallow, mount } from 'enzyme';
+import { shallow } from 'enzyme';
 import { Ellipsify } from '@atlaskit/media-ui';
+import { mountWithIntlContext } from '@atlaskit/media-test-helpers';
 import { CardOverlay } from '../../cardImageView/cardOverlay';
 import {
   TitleWrapper,
@@ -53,7 +54,7 @@ describe('CardOverlay', () => {
 
   it('should allow manual retry when "onRetry" is passed', () => {
     const onRetry = jest.fn();
-    const card = mount(
+    const card = mountWithIntlContext(
       <CardOverlay persistent={false} onRetry={onRetry} error={errorMessage} />,
     );
     const retryComponent = card.find(Retry);

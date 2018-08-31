@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { MouseEvent, Component } from 'react';
+import { MouseEvent, Component, ReactNode } from 'react';
 import * as cx from 'classnames';
 import { MediaType } from '@atlaskit/media-core';
 import TickIcon from '@atlaskit/icon/glyph/check';
@@ -36,7 +36,7 @@ export interface CardOverlayProps {
   selected?: boolean;
   persistent: boolean;
 
-  error?: JSX.Element;
+  error?: ReactNode;
   onRetry?: () => void;
 
   actions?: Array<CardAction>;

@@ -13,7 +13,7 @@ import { FileDetails, LinkDetails, Resource } from '@atlaskit/media-core';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 
 import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
-
+import { mountWithIntlContext } from '@atlaskit/media-test-helpers';
 import { Retry } from '../../../src/utils/cardGenericViewSmall/styled';
 import {
   CardView,
@@ -179,7 +179,7 @@ describe('CardView', () => {
 
   it('should render retry element for small cards when an error occurs', () => {
     const onRetryHandler = jest.fn();
-    const linkCard = mount(
+    const linkCard = mountWithIntlContext(
       <CardView
         status="error"
         appearance="small"
@@ -187,7 +187,7 @@ describe('CardView', () => {
         onRetry={onRetryHandler}
       />,
     );
-    const fileCard = mount(
+    const fileCard = mountWithIntlContext(
       <CardView
         status="error"
         appearance="small"
@@ -481,7 +481,7 @@ describe('CardView', () => {
   it('should fire "clicked" analytics event when metadata is not provided', () => {
     const clickHandler = jest.fn();
     const analyticsEventHandler = jest.fn();
-    const card = mount(
+    const card = mountWithIntlContext(
       <AnalyticsListener channel="media" onEvent={analyticsEventHandler}>
         <CardView status="error" onClick={clickHandler} />
       </AnalyticsListener>,
