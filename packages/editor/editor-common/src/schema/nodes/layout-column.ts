@@ -1,4 +1,16 @@
 import { NodeSpec } from 'prosemirror-model';
+import { TopLevel } from './doc';
+
+/**
+ * @name layoutColumn_node
+ */
+export interface LayoutColumnDefinition {
+  type: 'layoutColumn';
+  /**
+   * @minItems 1
+   */
+  content: TopLevel[];
+}
 
 export const layoutColumn: NodeSpec = {
   content: 'block+',

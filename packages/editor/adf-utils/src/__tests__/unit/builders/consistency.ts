@@ -26,10 +26,6 @@ const ignoredNodes = [
   'table-row',
   'table',
   'image',
-
-  // TODO: Unskip once they have definitions
-  'layout-column',
-  'layout-section',
 ];
 
 const editorCommonNodesPath = path.join(

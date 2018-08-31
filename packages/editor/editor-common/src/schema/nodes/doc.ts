@@ -38,12 +38,15 @@ import { SubSupDefinition as SubSup } from '../marks/subsup';
 import { UnderlineDefinition as Underline } from '../marks/underline';
 import { TextColorDefinition as TextColor } from '../marks/text-color';
 import { ActionDefinition as Action } from '../marks/action';
+import { LayoutSectionDefinition } from './layout-section';
 
 /**
  * @name top_level_node
  * @minItems 1
  */
-export type TopLevel = Array<
+export type DocContent = Array<TopLevel | LayoutSectionDefinition>;
+
+export type TopLevel =
   | Panel
   | Paragraph
   | Blockquote
@@ -60,8 +63,7 @@ export type TopLevel = Array<
   | Table
   | Extension
   | BodiedExtension
-  | BlockCard
->;
+  | BlockCard;
 
 /**
  * @name table_cell_content
@@ -167,7 +169,7 @@ export type Inline = InlineFormattedText | InlineCode | InlineAtomic;
 export interface DocNode {
   version: 1;
   type: 'doc';
-  content: TopLevel;
+  content: DocContent;
 }
 
 export const doc: NodeSpec = {
