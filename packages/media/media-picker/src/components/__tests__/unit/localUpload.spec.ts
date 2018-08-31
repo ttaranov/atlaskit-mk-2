@@ -1,5 +1,6 @@
 import { LocalUploadComponent } from '../../localUpload';
 import { Auth, ContextFactory } from '@atlaskit/media-core';
+import { NewUploadServiceImpl } from '../../../service/newUploadServiceImpl';
 
 describe('MediaLocalUpload', () => {
   const imagePreviewSrc = 'some-image-src';
@@ -11,7 +12,7 @@ describe('MediaLocalUpload', () => {
     type: 'image/jpg',
     publicId: 'some-public-id',
   };
-  const setup = () => {
+  const setup = (options: { shouldCopyFileToRecents?: boolean } = {}) => {
     const context = ContextFactory.create({
       authProvider: () =>
         Promise.resolve<Auth>({ clientId: '', baseUrl: '', token: '' }),
@@ -20,6 +21,7 @@ describe('MediaLocalUpload', () => {
       uploadParams: {
         collection: '',
       },
+      shouldCopyFileToRecents: options.shouldCopyFileToRecents,
     };
     const localUpload = new LocalUploadComponent(context, config);
     const uploadService = localUpload['uploadService'];
@@ -33,6 +35,15 @@ describe('MediaLocalUpload', () => {
       emitUploadServiceEvent,
       emitter,
     };
+  };
+
+  const extractShouldCopyFileToRecents = (
+    localUpload: LocalUploadComponent,
+  ) => {
+    const uploadService: NewUploadServiceImpl = localUpload[
+      'uploadService'
+    ] as any;
+    return uploadService['shouldCopyFileToRecents'];
   };
 
   it('should emit uploads-start event given upload service emits files-added event', () => {
@@ -86,5 +97,17 @@ describe('MediaLocalUpload', () => {
       file: imageFile,
       public: { id: 'some-id' },
     });
+  });
+
+  it('should use shouldCopyFileToRecents as true by default and pass to upload service', () => {
+    const { localUpload } = setup();
+    const shouldCopyFileToRecents = extractShouldCopyFileToRecents(localUpload);
+    expect(shouldCopyFileToRecents).toEqual(true);
+  });
+
+  it('should use given shouldCopyFileToRecents and pass to upload service', () => {
+    const { localUpload } = setup({ shouldCopyFileToRecents: false });
+    const shouldCopyFileToRecents = extractShouldCopyFileToRecents(localUpload);
+    expect(shouldCopyFileToRecents).toEqual(false);
   });
 });

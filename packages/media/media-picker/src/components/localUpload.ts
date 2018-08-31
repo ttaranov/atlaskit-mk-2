@@ -31,13 +31,7 @@ export class LocalUploadComponent<
 
     this.context = context;
 
-    let shouldCopyFileToRecents = true;
-    if (config.shouldCopyFileToRecents !== undefined) {
-      shouldCopyFileToRecents = config.shouldCopyFileToRecents;
-    } else if (tenantUploadParams.copyFileToRecents !== undefined) {
-      // TODO remove when is copyFileToRecents is removed from UploadParams with next breaking change
-      shouldCopyFileToRecents = tenantUploadParams.copyFileToRecents;
-    }
+    const { shouldCopyFileToRecents = true } = config;
 
     this.uploadService = new NewUploadServiceImpl(
       this.context,
