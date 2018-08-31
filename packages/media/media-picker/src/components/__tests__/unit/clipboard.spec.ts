@@ -1,12 +1,12 @@
+jest.mock('../../../service/types');
+
 import { Auth, ContextFactory } from '@atlaskit/media-core';
 import {
   MockClipboardEvent,
   MockFile,
 } from '../../../util/clipboardEventMocks';
 import { Clipboard } from '../../clipboard';
-import { UploadService } from '../../../service/uploadServiceFactory';
-
-jest.mock('../../../service/uploadServiceFactory');
+import { UploadService } from '../../../service/types';
 
 describe('Clipboard', () => {
   let clipboard: Clipboard;

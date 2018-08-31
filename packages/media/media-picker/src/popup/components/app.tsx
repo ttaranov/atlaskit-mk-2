@@ -92,7 +92,6 @@ export class App extends Component<AppProps, AppState> {
   private readonly mpBrowser: MpBrowser;
   private readonly mpDropzone: MpDropzone;
   private readonly mpBinary: MpBinary;
-  private readonly userContext: Context;
 
   constructor(props: AppProps) {
     super(props);
@@ -104,7 +103,7 @@ export class App extends Component<AppProps, AppState> {
       onUploadProcessing,
       onUploadEnd,
       onUploadError,
-      userContext,
+      context,
       tenantUploadParams,
     } = props;
 
@@ -112,17 +111,9 @@ export class App extends Component<AppProps, AppState> {
       isDropzoneActive: false,
     };
 
-    const uploadParams: UploadParams = {
-      collection: RECENTS_COLLECTION,
-      copyFileToRecents: false,
-    };
-
-    // We need to create a new context since Cards in recents view need user auth
-    this.userContext = userContext;
-
     this.mpBrowser = MediaPicker('browser', context, {
-      uploadParams,
-      tenantUploadParams,
+      uploadParams: tenantUploadParams,
+      shouldCopyFileToRecents: false,
       multiple: true,
     });
     this.mpBrowser.on('uploads-start', onUploadsStart);
@@ -133,8 +124,8 @@ export class App extends Component<AppProps, AppState> {
     this.mpBrowser.on('upload-error', onUploadError);
 
     this.mpDropzone = MediaPicker('dropzone', context, {
-      uploadParams,
-      tenantUploadParams,
+      uploadParams: tenantUploadParams,
+      shouldCopyFileToRecents: false,
       headless: true,
     });
     this.mpDropzone.on('drag-enter', () => this.setDropzoneActive(true));
@@ -147,8 +138,8 @@ export class App extends Component<AppProps, AppState> {
     this.mpDropzone.on('upload-error', onUploadError);
 
     this.mpBinary = MediaPicker('binary', context, {
-      uploadParams,
-      tenantUploadParams,
+      uploadParams: tenantUploadParams,
+      shouldCopyFileToRecents: false,
     });
     this.mpBinary.on('uploads-start', onUploadsStart);
     this.mpBinary.on('upload-preview-update', onUploadPreviewUpdate);
@@ -217,10 +208,12 @@ export class App extends Component<AppProps, AppState> {
 
   private renderCurrentView(selectedServiceName: ServiceName): JSX.Element {
     if (selectedServiceName === 'upload') {
+      // We need to create a new context since Cards in recents view need user auth
+      const { userContext } = this.props;
       return (
         <UploadView
           mpBrowser={this.mpBrowser}
-          context={this.userContext}
+          context={userContext}
           recentsCollection={RECENTS_COLLECTION}
         />
       );

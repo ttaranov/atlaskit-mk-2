@@ -1,4 +1,3 @@
-import { Context } from '@atlaskit/media-core';
 import {
   UploadEndEventPayload,
   UploadErrorEventPayload,
@@ -8,7 +7,6 @@ import {
   UploadStatusUpdateEventPayload,
   UploadParams,
 } from '..';
-import { NewUploadServiceImpl } from './newUploadServiceImpl';
 
 export type UploadServiceEventPayloadTypes = {
   readonly 'files-added': UploadsStartEventPayload;
@@ -27,7 +25,7 @@ export type UploadServiceEventListener<
 export const MAX_FILE_SIZE_FOR_PREVIEW = 10e6; // 10 MB
 
 export interface UploadService {
-  setUploadParams(uploadParams?: UploadParams);
+  setUploadParams(uploadParams: UploadParams);
   addFiles(files: File[]);
   cancel(id?: string);
   on<E extends keyof UploadServiceEventPayloadTypes>(
@@ -38,14 +36,4 @@ export interface UploadService {
     event: E,
     listener: UploadServiceEventListener<E>,
   );
-}
-
-export class UploadServiceFactory {
-  public static create(
-    context: Context,
-    tenantUploadParams: UploadParams,
-    uploadParams?: UploadParams,
-  ): UploadService {
-    return new NewUploadServiceImpl(context, tenantUploadParams, uploadParams);
-  }
 }
