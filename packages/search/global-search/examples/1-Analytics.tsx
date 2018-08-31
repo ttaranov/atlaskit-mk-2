@@ -47,7 +47,7 @@ export default class extends React.Component<any, any> {
   constructor(props) {
     super(props);
 
-    this.defaultState = {
+    this.state = {
       events: [],
     };
   }
