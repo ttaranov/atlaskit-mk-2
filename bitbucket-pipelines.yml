@@ -127,8 +127,7 @@ pipelines:
             - yarn deploy:production
             - cd ..
             # This is a sanity check to make sure the website renders on all browsers without error
-            # Test is disable as there is something wrong with webpack
-            # - yarn test:webdriver:browserstack website
+            - yarn test:webdriver:browserstack website
           caches:
             - node
 
