@@ -20,16 +20,14 @@ ${(
   Provides a standard way to select a single option from a list.
 
   ${code`
-  import RadioGroup, { AkFieldRadioGroup, AkRadio } from '@atlaskit/field-radio-group';
+  import { RadioGroup, Radio } from '@atlaskit/radio';
   `}
 
-  RadioGroup exports a stateful component as the default export. This
-  handles the selection of items for you. You can also import a stateless
-  version as AkFieldRadioGroup.
+  @atlaskit/radio exports a controllable RadioGroup component. This
+  handles the selection of items for you.
 
-  Both accept a list of items that pass the properties on to a
-  AkRadio component to render. Both stateful and stateless
-  maintain the state of their children AkRadio components.
+  It accepts a list of options that pass the properties on to a
+  Radio component to render. 
 
   ${(
     <Example
