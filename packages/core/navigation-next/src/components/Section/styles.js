@@ -18,7 +18,7 @@ const isWebkit =
   window.navigator.userAgent.indexOf('AppleWebKit') >= 0;
 const scrollBarSize = isGecko || isWebkit ? 0 : 30;
 
-const baseStyles = {
+const getBaseStyles = ({ alwaysShowScrollHint }) => ({
   wrapper: {
     height: '100%',
     overflow: 'hidden',
@@ -46,7 +46,7 @@ const baseStyles = {
 
     '&::before': {
       content: "''",
-      display: 'block',
+      display: alwaysShowScrollHint ? 'none' : 'block',
       flexShrink: 0,
       height: `${scrollHintHeight}px`,
       left: `${scrollHintSpacing}px`,
@@ -63,118 +63,128 @@ const baseStyles = {
     paddingLeft: `${gridSize * 2}px`,
     paddingRight: `${gridSize * 2}px`,
   },
+});
+
+const light = props => {
+  const baseStyles = getBaseStyles(props);
+  return {
+    container: {
+      ...baseStyles,
+      wrapper: {
+        ...baseStyles.wrapper,
+        '&::before': {
+          ...baseStyles.wrapper['&::before'],
+          backgroundColor: colors.N30A,
+        },
+      },
+      inner: {
+        ...baseStyles.inner,
+        '&::before': {
+          ...baseStyles.inner['&::before'],
+          backgroundColor: contentNavThemes.light().container.backgroundColor,
+        },
+      },
+    },
+    product: {
+      ...baseStyles,
+      wrapper: {
+        ...baseStyles.wrapper,
+        '&::before': {
+          ...baseStyles.wrapper['&::before'],
+          backgroundColor: colors.N80A,
+        },
+      },
+      inner: {
+        ...baseStyles.inner,
+        '&::before': {
+          ...baseStyles.inner['&::before'],
+          backgroundColor: contentNavThemes.light().product.backgroundColor,
+        },
+      },
+    },
+  };
 };
 
-const light = () => ({
-  container: {
-    ...baseStyles,
-    wrapper: {
-      ...baseStyles.wrapper,
-      '&::before': {
-        ...baseStyles.wrapper['&::before'],
-        backgroundColor: colors.N30A,
+const dark = props => {
+  const baseStyles = getBaseStyles(props);
+  return {
+    container: {
+      ...baseStyles,
+      wrapper: {
+        ...baseStyles.wrapper,
+        '&::before': {
+          ...baseStyles.wrapper['&::before'],
+          backgroundColor: colors.DN50,
+        },
+      },
+      inner: {
+        ...baseStyles.inner,
+        '&::before': {
+          ...baseStyles.inner['&::before'],
+          backgroundColor: contentNavThemes.dark().container.backgroundColor,
+        },
       },
     },
-    inner: {
-      ...baseStyles.inner,
-      '&::before': {
-        ...baseStyles.inner['&::before'],
-        backgroundColor: contentNavThemes.light().container.backgroundColor,
+    product: {
+      ...baseStyles,
+      wrapper: {
+        ...baseStyles.wrapper,
+        '&::before': {
+          ...baseStyles.wrapper['&::before'],
+          backgroundColor: colors.DN50,
+        },
+      },
+      inner: {
+        ...baseStyles.inner,
+        '&::before': {
+          ...baseStyles.inner['&::before'],
+          backgroundColor: contentNavThemes.dark().product.backgroundColor,
+        },
       },
     },
-  },
-  product: {
-    ...baseStyles,
-    wrapper: {
-      ...baseStyles.wrapper,
-      '&::before': {
-        ...baseStyles.wrapper['&::before'],
-        backgroundColor: colors.N80A,
-      },
-    },
-    inner: {
-      ...baseStyles.inner,
-      '&::before': {
-        ...baseStyles.inner['&::before'],
-        backgroundColor: contentNavThemes.light().product.backgroundColor,
-      },
-    },
-  },
-});
+  };
+};
 
-const dark = () => ({
-  container: {
-    ...baseStyles,
-    wrapper: {
-      ...baseStyles.wrapper,
-      '&::before': {
-        ...baseStyles.wrapper['&::before'],
-        backgroundColor: colors.DN50,
+const settings = props => {
+  const baseStyles = getBaseStyles(props);
+  return {
+    container: {
+      ...baseStyles,
+      wrapper: {
+        ...baseStyles.wrapper,
+        '&::before': {
+          ...baseStyles.wrapper['&::before'],
+          backgroundColor: colors.N900,
+        },
+      },
+      inner: {
+        ...baseStyles.inner,
+        '&::before': {
+          ...baseStyles.inner['&::before'],
+          backgroundColor: contentNavThemes.settings().container
+            .backgroundColor,
+        },
       },
     },
-    inner: {
-      ...baseStyles.inner,
-      '&::before': {
-        ...baseStyles.inner['&::before'],
-        backgroundColor: contentNavThemes.dark().container.backgroundColor,
+    product: {
+      ...baseStyles,
+      wrapper: {
+        ...baseStyles.wrapper,
+        '&::before': {
+          ...baseStyles.wrapper['&::before'],
+          backgroundColor: colors.N900,
+        },
+      },
+      inner: {
+        ...baseStyles.inner,
+        '&::before': {
+          ...baseStyles.inner['&::before'],
+          backgroundColor: contentNavThemes.settings().product.backgroundColor,
+        },
       },
     },
-  },
-  product: {
-    ...baseStyles,
-    wrapper: {
-      ...baseStyles.wrapper,
-      '&::before': {
-        ...baseStyles.wrapper['&::before'],
-        backgroundColor: colors.DN50,
-      },
-    },
-    inner: {
-      ...baseStyles.inner,
-      '&::before': {
-        ...baseStyles.inner['&::before'],
-        backgroundColor: contentNavThemes.dark().product.backgroundColor,
-      },
-    },
-  },
-});
-
-const settings = () => ({
-  container: {
-    ...baseStyles,
-    wrapper: {
-      ...baseStyles.wrapper,
-      '&::before': {
-        ...baseStyles.wrapper['&::before'],
-        backgroundColor: colors.N900,
-      },
-    },
-    inner: {
-      ...baseStyles.inner,
-      '&::before': {
-        ...baseStyles.inner['&::before'],
-        backgroundColor: contentNavThemes.settings().container.backgroundColor,
-      },
-    },
-  },
-  product: {
-    ...baseStyles,
-    wrapper: {
-      ...baseStyles.wrapper,
-      '&::before': {
-        ...baseStyles.wrapper['&::before'],
-        backgroundColor: colors.N900,
-      },
-    },
-    inner: {
-      ...baseStyles.inner,
-      '&::before': {
-        ...baseStyles.inner['&::before'],
-        backgroundColor: contentNavThemes.settings().product.backgroundColor,
-      },
-    },
-  },
-});
+  };
+};
 
 const themes: ThemedContentNavigationComponentStyles<void> = {
   dark,

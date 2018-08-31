@@ -162,6 +162,7 @@ const rootIssues = [
     nestedGroupKey: 'menu',
     parentId: 'root/index:menu',
     type: 'MenuSection',
+    alwaysShowScrollHint: true,
   },
 ];
 
@@ -280,7 +281,6 @@ const containerProject = [
         type: 'GoToItem',
       },
     ],
-    shouldGrow: true,
     type: 'MenuSection',
   },
   {
@@ -332,7 +332,7 @@ const containerProjectIssues = [
       { type: 'Item', id: 'resolved-recently', text: 'Resolved recently' },
       { type: 'Item', id: 'updated-recently', text: 'Updated recently' },
     ],
-    shouldGrow: true,
+    alwaysShowScrollHint: true,
     type: 'MenuSection',
   },
 ];

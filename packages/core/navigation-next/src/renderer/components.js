@@ -213,6 +213,7 @@ const Group = ({
 
 // Section
 const Section = ({
+  alwaysShowScrollHint,
   customComponents,
   id,
   items,
@@ -222,6 +223,7 @@ const Section = ({
 }: SectionProps) =>
   items.length ? (
     <SectionComponent
+      alwaysShowScrollHint={alwaysShowScrollHint}
       id={id}
       key={nestedGroupKey}
       parentId={parentId}
@@ -258,13 +260,20 @@ const HeaderSection = ({
   ) : null;
 
 const MenuSection = ({
+  alwaysShowScrollHint,
   customComponents,
   id,
   items,
   nestedGroupKey,
   parentId,
 }: SectionProps) => (
-  <SectionComponent id={id} key={nestedGroupKey} parentId={parentId} shouldGrow>
+  <SectionComponent
+    alwaysShowScrollHint={alwaysShowScrollHint}
+    id={id}
+    key={nestedGroupKey}
+    parentId={parentId}
+    shouldGrow
+  >
     {({ css }) => (
       <div
         css={{

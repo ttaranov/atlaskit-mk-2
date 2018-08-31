@@ -40,6 +40,7 @@ export default class Section extends PureComponent<SectionProps, SectionState> {
 
   render() {
     const {
+      alwaysShowScrollHint,
       id,
       children,
       shouldGrow,
@@ -48,7 +49,9 @@ export default class Section extends PureComponent<SectionProps, SectionState> {
     } = this.props;
 
     const { mode, context } = theme;
-    const styles = styleReducer(mode.scrollHint()[context]);
+    const styles = styleReducer(
+      mode.section({ alwaysShowScrollHint })[context],
+    );
 
     return (
       <TransitionGroup component={shouldGrow ? GrowingWrapper : StaticWrapper}>

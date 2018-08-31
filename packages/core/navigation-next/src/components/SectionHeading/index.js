@@ -19,7 +19,7 @@ export default class SectionHeading extends Component<SectionHeadingProps> {
           flexShrink: 0,
           fontSize: 'inherit',
           fontWeight: 500,
-          height: gridSize * 5.25,
+          height: gridSize * 5.5,
           paddingLeft: gridSize * 1.5,
           paddingRight: gridSize * 1.5,
           paddingTop: gridSize,
