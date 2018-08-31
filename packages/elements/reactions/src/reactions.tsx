@@ -3,7 +3,7 @@ import { Component } from 'react';
 import { style } from 'typestyle';
 import { EmojiProvider } from '@atlaskit/emoji';
 import Tooltip from '@atlaskit/tooltip';
-import Reaction from './internal/reaction';
+import Reaction, { ReactionComponent } from './internal/reaction';
 import ReactionPicker from './reaction-picker';
 import {
   ReactionsProvider,
@@ -12,10 +12,16 @@ import {
   ReactionStatus,
 } from './reactions-resource';
 import { sortByRelevance, sortByPreviousPosition } from './internal/helpers';
+import { withAnalyticsEvents } from '@atlaskit/analytics-next';
+import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
+import { elementsCreateAndFire } from './analytics';
+import { FabricElementsAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
 export interface OnEmoji {
   (emojiId: string): any;
 }
+
+type PreviousState = 'new' | 'existingNotReacted' | 'existingReacted';
 
 const reactionStyle = style({
   display: 'inline-block',
@@ -52,17 +58,23 @@ export interface State {
   error: boolean;
 }
 
-export default class Reactions extends Component<Props, State> {
+export class Reactions extends Component<
+  Props & WithAnalyticsEventProps,
+  State
+> {
   private timeouts: Array<number>;
-  private reactionRefs: { [emojiId: string]: Reaction };
+  private reactionRefs: { [emojiId: string]: ReactionComponent };
   // flag to avoid flashing the background of the first set of rections
   private flashOnMount: boolean = false;
+  private openTime: number | undefined;
+  private renderTime: number | undefined;
 
   constructor(props) {
     super(props);
     this.state = { reactions: [], loading: false, error: false };
     this.timeouts = [];
     this.reactionRefs = {};
+    this.renderTime = Date.now();
   }
 
   private onEmojiClick = (emojiId: string) => {
@@ -125,26 +137,128 @@ export default class Reactions extends Component<Props, State> {
         reactions: [],
       });
     }
-  };
-
-  private hasAlreadyReacted(emojiId: any): boolean {
-    return (
-      this.state.reactions.find(
-        reaction => reaction.emojiId === emojiId && reaction.reacted,
-      ) !== undefined
-    );
-  }
-
-  private handleReactionPickerSelection = emojiId => {
-    if (!this.hasAlreadyReacted(emojiId)) {
-      this.onEmojiClick(emojiId);
-    } else {
-      this.flash(emojiId);
+    if (this.renderTime) {
+      const { createAnalyticsEvent, containerAri, ari } = this.props;
+      if (createAnalyticsEvent) {
+        elementsCreateAndFire({
+          action: 'rendered',
+          actionSubject: 'reactionView',
+          eventType: 'ops',
+          attributes: {
+            duration: Date.now() - this.renderTime,
+            containerAri,
+            ari,
+          },
+        })(createAnalyticsEvent);
+      }
+      this.renderTime = undefined;
     }
   };
 
-  private handleReactionRef = (emojiId: string) => (reaction: Reaction) => {
+  private findReactionByEmojiId(emojiId: string): ReactionSummary | undefined {
+    return this.state.reactions.find(reaction => reaction.emojiId === emojiId);
+  }
+
+  private getPreviousState = (reaction?: ReactionSummary): PreviousState => {
+    if (reaction) {
+      if (reaction.reacted) {
+        return 'existingReacted';
+      }
+      return 'existingNotReacted';
+    }
+    return 'new';
+  };
+
+  private handleReactionPickerSelection = (emojiId, source) => {
+    const reaction = this.findReactionByEmojiId(emojiId);
+    const { createAnalyticsEvent } = this.props;
+    if (createAnalyticsEvent) {
+      const { containerAri, ari } = this.props;
+      const duration = this.openTime ? Date.now() - this.openTime : undefined;
+      elementsCreateAndFire({
+        action: 'clicked',
+        actionSubject: 'reactionPicker',
+        actionSubjectID: 'emoji',
+        eventType: 'ui',
+        attributes: {
+          duration,
+          source,
+          previousState: this.getPreviousState(reaction),
+          emojiId,
+          containerAri,
+          ari,
+        },
+      })(createAnalyticsEvent);
+    }
+    this.openTime = undefined;
+    if (reaction && reaction.reacted) {
+      this.flash(emojiId);
+    } else {
+      this.onEmojiClick(emojiId);
+    }
+  };
+
+  private handleReactionRef = (emojiId: string) => (
+    reaction: ReactionComponent,
+  ) => {
     this.reactionRefs[emojiId] = reaction;
+  };
+
+  private handleOnPickerOpen = () => {
+    this.openTime = Date.now();
+    const { createAnalyticsEvent } = this.props;
+    if (createAnalyticsEvent) {
+      const { containerAri, ari } = this.props;
+      const { reactions } = this.state;
+      elementsCreateAndFire({
+        action: 'clicked',
+        actionSubject: 'reactionPickerButton',
+        eventType: 'ui',
+        attributes: {
+          reactionEmojiCount: reactions.length,
+          containerAri,
+          ari,
+        },
+      })(createAnalyticsEvent);
+    }
+  };
+
+  private handleOnCancel = () => {
+    const { createAnalyticsEvent } = this.props;
+    if (createAnalyticsEvent) {
+      const { containerAri, ari } = this.props;
+      const duration = this.openTime ? Date.now() - this.openTime : undefined;
+      elementsCreateAndFire({
+        action: 'cancelled',
+        actionSubject: 'reactionPicker',
+        eventType: 'ui',
+        attributes: {
+          duration,
+          containerAri,
+          ari,
+        },
+      })(createAnalyticsEvent);
+    }
+    this.openTime = undefined;
+  };
+
+  private handleOnMore = () => {
+    const { createAnalyticsEvent } = this.props;
+    if (createAnalyticsEvent) {
+      const { containerAri, ari } = this.props;
+      const duration = this.openTime ? Date.now() - this.openTime : undefined;
+      elementsCreateAndFire({
+        action: 'clicked',
+        actionSubjectID: 'more',
+        actionSubject: 'reactionPicker',
+        eventType: 'ui',
+        attributes: {
+          containerAri,
+          ari,
+          duration,
+        },
+      })(createAnalyticsEvent);
+    }
   };
 
   private getTooltip = (): string | null => {
@@ -159,19 +273,30 @@ export default class Reactions extends Component<Props, State> {
   };
 
   private renderPicker() {
-    const { emojiProvider, boundariesElement, allowAllEmojis } = this.props;
+    const {
+      emojiProvider,
+      boundariesElement,
+      allowAllEmojis,
+      containerAri,
+      ari,
+    } = this.props;
 
     return (
       <Tooltip content={this.getTooltip()}>
-        <ReactionPicker
-          className={reactionStyle}
-          emojiProvider={emojiProvider}
-          onSelection={this.handleReactionPickerSelection}
-          miniMode={true}
-          boundariesElement={boundariesElement}
-          allowAllEmojis={allowAllEmojis}
-          disabled={this.state.loading || this.state.error}
-        />
+        <FabricElementsAnalyticsContext data={{ containerAri, ari }}>
+          <ReactionPicker
+            className={reactionStyle}
+            emojiProvider={emojiProvider}
+            miniMode={true}
+            boundariesElement={boundariesElement}
+            allowAllEmojis={allowAllEmojis}
+            disabled={this.state.loading || this.state.error}
+            onSelection={this.handleReactionPickerSelection}
+            onOpen={this.handleOnPickerOpen}
+            onCancel={this.handleOnCancel}
+            onMore={this.handleOnMore}
+          />
+        </FabricElementsAnalyticsContext>
       </Tooltip>
     );
   }
@@ -203,3 +328,5 @@ export default class Reactions extends Component<Props, State> {
     );
   }
 }
+
+export default withAnalyticsEvents()(Reactions);

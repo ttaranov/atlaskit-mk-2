@@ -1,8 +1,5 @@
-export { default as analyticsService } from './service';
-export {
-  AnalyticsHandler,
-  AnalyticsProperties,
-  detectHandler,
-  hermentHandler,
-  debugHandler,
-} from './handler';
+import { createAndFireEvent } from '@atlaskit/analytics-next';
+// @ts-ignore
+import { CreateAndFireEventFunction } from '@atlaskit/analytics-next-types';
+
+export const elementsCreateAndFire = createAndFireEvent('fabric-elements');
