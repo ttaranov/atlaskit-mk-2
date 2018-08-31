@@ -27,6 +27,7 @@
     "@atlaskit/media-ui": "^5.1.2",
     "@atlaskit/select": "^5.0.14",
     "axios": "^0.17.1",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "kakapo": "^3.3.3",
     "lodash.matches": "^4.6.0",
     "react-intl": "^2.4.0",

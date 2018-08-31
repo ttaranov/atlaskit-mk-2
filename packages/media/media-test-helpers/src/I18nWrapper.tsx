@@ -34,7 +34,6 @@ export class I18NWrapper extends Component<I18NWrapperProps, I18NWrapperState> {
     const { children } = this.props;
     const { locale } = this.state;
     const messages = getMessagesForLocale(locale);
-    console.log(locale, { messages });
 
     return (
       <IntlProvider locale={locale} messages={messages}>

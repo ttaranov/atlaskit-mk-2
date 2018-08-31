@@ -9,4 +9,4 @@ export { BlockCard, InlineCard };
 
 export * from './camera';
 export * from './i18n';
-export { default as formattedMessage } from './FormattedMessage';
+export { default as formattedMessage } from './formattedMessage';
