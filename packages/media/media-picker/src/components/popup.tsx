@@ -59,11 +59,13 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
 
     const { userAuthProvider, cacheSize } = tenantContext.config;
     if (!userAuthProvider) {
-      throw new Error('userAuthProvider must be provided in the context');
+      throw new Error(
+        'When using Popup media picker userAuthProvider must be provided in the context',
+      );
     }
 
     const userContext = ContextFactory.create({
-      cacheSize: cacheSize,
+      cacheSize,
       authProvider: userAuthProvider,
     });
     this.store = createStore(this, tenantContext, userContext, {
