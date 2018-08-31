@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { Context } from '@atlaskit/media-core';
-import { IntlProvider } from 'react-intl';
 import { Card, Identifier, OnSelectChangeFunc } from '../src';
 
 export interface SelectableCardProps {

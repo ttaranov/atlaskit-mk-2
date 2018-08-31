@@ -7,8 +7,6 @@ import {
 } from '@atlaskit/media-core';
 import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
 
-export { messages } from '@atlaskit/media-ui';
-
 import { CardAction } from './actions';
 
 // the only components we expose to consumers is Card, CardView and CardList

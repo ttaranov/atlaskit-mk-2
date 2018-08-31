@@ -1,4 +1,7 @@
-import styled from 'styled-components';
+// @ts-ignore
+import { ClassAttributes, HTMLAttributes } from 'react';
+// @ts-ignore
+import styled, { StyledComponentClass } from 'styled-components';
 
 export const LocaleSelectorWrapper = styled.div`
   position: fixed;
