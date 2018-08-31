@@ -4,10 +4,10 @@ import {
   createStorybookContext,
   // genericFileId,
   errorFileId,
+  I18NWrapper,
 } from '@atlaskit/media-test-helpers';
 import Toggle from '@atlaskit/toggle';
 import Slider from '@atlaskit/field-range';
-import { IntlProvider } from 'react-intl';
 import { Card, Identifier, CardDimensions } from '../src';
 import { CardDimensionsWrapper } from '../example-helpers/styled';
 import {
@@ -120,7 +120,7 @@ class EditableCard extends Component<{}, EditableCardState> {
     }
 
     return (
-      <IntlProvider>
+      <I18NWrapper>
         <div>
           <EditableCardOptions>
             Card dimensions <hr />
@@ -192,7 +192,7 @@ class EditableCard extends Component<{}, EditableCardState> {
             />
           </EditableCardContent>
         </div>
-      </IntlProvider>
+      </I18NWrapper>
     );
   }
 }
