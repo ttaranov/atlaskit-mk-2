@@ -4,7 +4,7 @@ import React, { type ComponentType } from 'react';
 import Avatar from '@atlaskit/avatar';
 import Badge from '@atlaskit/badge';
 import AddIcon from '@atlaskit/icon/glyph/add';
-import JiraIcon from '@atlaskit/icon/glyph/jira';
+import { JiraIcon } from '@atlaskit/logo';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
 

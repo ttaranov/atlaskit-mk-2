@@ -3,11 +3,10 @@
 import React from 'react';
 import Avatar from '@atlaskit/avatar';
 import AddIcon from '@atlaskit/icon/glyph/add';
-import JiraIcon from '@atlaskit/icon/glyph/jira';
 import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import LinkIcon from '@atlaskit/icon/glyph/link';
-import { JiraWordmark as JiraWordmarkLogo } from '@atlaskit/logo';
+import { JiraIcon, JiraWordmark as JiraWordmarkLogo } from '@atlaskit/logo';
 import { Link, Route } from 'react-router-dom';
 
 export const LinkItem = ({ components: C, to, ...props }: *) => {
