@@ -155,11 +155,13 @@ describe('EmojiLoader', () => {
           'refreshedSecurityProvider called once',
         ).to.equal(1);
         const firstCall = fetchMock.lastCall('auth');
+        // tslint:disable-next-line
         expect(firstCall).to.not.be.undefined;
         expect(getSecurityHeader(firstCall), 'first call').to.equal(
           defaultSecurityCode,
         );
         const secondCall = fetchMock.lastCall('auth2');
+        // tslint:disable-next-line
         expect(secondCall).to.not.be.undefined;
         expect(getSecurityHeader(secondCall), 'forced refresh call').to.equal(
           '666',
