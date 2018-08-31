@@ -1,16 +1,16 @@
 // @flow
 import React, { Component } from 'react';
-import { AkFieldRadioGroup } from '../src';
-import type { ItemsPropType } from '../src/types';
+import { RadioGroup } from '../src';
+import type { OptionsPropType } from '../src/types';
 
 type State = {
-  value: string | number,
-  items: ItemsPropType,
+  checkedValue: string | number | null,
+  options: OptionsPropType,
 };
 export default class StatelessExample extends Component<void, State> {
   state = {
-    value: '',
-    items: [
+    checkedValue: null,
+    options: [
       { name: 'color2', value: 'red', label: 'Red' },
       { name: 'color2', value: 'blue', label: 'Blue' },
       { name: 'color2', value: 'yellow', label: 'Yellow' },
@@ -19,17 +19,18 @@ export default class StatelessExample extends Component<void, State> {
 
   setValue = (e: any) => {
     this.setState({
-      value: e.target.value,
+      checkedValue: e.target.value,
     });
   };
 
   render() {
     return (
       <div>
-        <AkFieldRadioGroup
-          items={this.state.items}
+        <RadioGroup
+          options={this.state.options}
+          checkedValue={this.state.checkedValue}
           label="Pick a color (Checked state isn't managed by the component):"
-          onRadioChange={this.setValue}
+          onChange={this.setValue}
         />
         <div
           style={{
@@ -41,7 +42,7 @@ export default class StatelessExample extends Component<void, State> {
             margin: '0.5em',
           }}
         >
-          onRadioChange called with value: {this.state.value}
+          onChange called with value: {this.state.checkedValue}
         </div>
       </div>
     );

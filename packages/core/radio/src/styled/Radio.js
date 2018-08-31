@@ -2,18 +2,6 @@
 import styled, { css } from 'styled-components';
 import { colors, themed } from '@atlaskit/theme';
 
-export const HiddenInput = styled.input`
-  border: 0;
-  clip: rect(1px, 1px, 1px, 1px);
-  height: 1;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  white-space: nowrap;
-  width: 1;
-  opacity: 0;
-`;
-
 const disabledColor = themed({ light: colors.N80, dark: colors.N80 });
 
 type LabelProps = {
@@ -22,7 +10,7 @@ type LabelProps = {
 };
 
 export const Label = styled.label`
-  display: 'block';
+  align-items: flex-start;
   color: ${(props: LabelProps): string =>
     // $FlowFixMe - theme is not found in props
     props.isDisabled ? disabledColor(props) : colors.text(props)};
@@ -32,11 +20,12 @@ export const Label = styled.label`
           cursor: not-allowed;
         `
       : ''};
+  display: flex;
 `;
 
 type IconWrapperProps = {
   isActive: boolean,
-  isSelected: boolean,
+  isChecked: boolean,
   isDisabled: boolean,
   isFocused: boolean,
   isInvalid: boolean,
@@ -55,7 +44,7 @@ const activeBorder = css`
   stroke: currentColor;
   stroke-width: 2px;
 `;
-const selectedBorder = css`
+const checkedBorder = css`
   stroke: currentColor;
   stroke-width: 2px;
 `;
@@ -72,27 +61,34 @@ const getBorderColor = (props: IconWrapperProps) => {
   if (props.isFocused) return focusBorder;
   if (props.isActive) return activeBorder;
   if (props.isInvalid) return invalidBorder;
-  if (props.isSelected) return selectedBorder;
+  if (props.isChecked) return checkedBorder;
   return border;
 };
 
 const getDotColor = props => {
-  const { isSelected, isDisabled, isActive, ...rest } = props;
+  const { isChecked, isDisabled, isActive, ...rest } = props;
 
   let color = themed({ light: colors.N10, dark: colors.DN10 });
 
-  if (isDisabled && isSelected) {
+  if (isDisabled && isChecked) {
     color = themed({ light: colors.N70, dark: colors.DN90 });
-  } else if (isActive && isSelected && !isDisabled) {
+  } else if (isActive && isChecked && !isDisabled) {
     color = themed({ light: colors.B400, dark: colors.DN10 });
-  } else if (!isSelected) {
+  } else if (!isChecked) {
     color = themed({ light: 'transparent', dark: 'transparent' });
   }
   return color(rest);
 };
 
 const getCircleColor = props => {
-  const { isSelected, isDisabled, isActive, isHovered, ...rest } = props;
+  const {
+    isChecked,
+    isDisabled,
+    isActive,
+    isHovered,
+    isInvalid,
+    ...rest
+  } = props;
 
   // set the default
   let color = themed({ light: colors.N10, dark: colors.DN10 });
@@ -101,15 +97,22 @@ const getCircleColor = props => {
     color = themed({ light: colors.N20, dark: colors.DN10 });
   } else if (isActive) {
     color = themed({ light: colors.B50, dark: colors.B200 });
-  } else if (isHovered && isSelected) {
+  } else if (isHovered && isChecked) {
     color = themed({ light: colors.B300, dark: colors.B75 });
   } else if (isHovered) {
     color = themed({ light: colors.N30, dark: colors.DN30 });
-  } else if (isSelected) {
-    color = themed({ light: colors.B400, dark: colors.B400 });
+  } else if (isChecked) {
+    color = themed({
+      light: colors.B400,
+      dark: isInvalid ? colors.DN10 : colors.B400,
+    });
   }
   return color(rest);
 };
+
+export const LabelText = styled.span`
+  padding: 2px 0;
+`;
 
 export const IconWrapper = styled.span`
   line-height: 0;
@@ -123,9 +126,4 @@ export const IconWrapper = styled.span`
     transition: stroke 0.2s ease-in-out;
     ${getBorderColor};
   }
-`;
-
-export const Wrapper = styled.div`
-  display: flex;
-  align-items: center;
 `;
