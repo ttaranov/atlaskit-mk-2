@@ -6,7 +6,12 @@ import WideIcon from '@atlaskit/icon/glyph/editor/media-wide';
 import FullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import TableDisplayOptionsIcon from '@atlaskit/icon/glyph/editor/table-display-options';
+import ChartTableIcon from '@atlaskit/icon/glyph/editor/chart-table';
+import TimelineIcon from '@atlaskit/icon/glyph/editor/timeline';
+import ChartDonutIcon from '@atlaskit/icon/glyph/editor/chart-donut';
+import GraphBarIcon from '@atlaskit/icon/glyph/graph-bar';
 
+import { isTimelineAvailable, isNumberChartAvailable } from './ui/Charts/utils';
 import { Command } from '../../types';
 import {
   analyticsService as analytics,
@@ -23,6 +28,7 @@ import {
   toggleHeaderRow,
   toggleHeaderColumn,
   toggleNumberColumn,
+  setViewMode,
 } from './actions';
 import {
   checkIfHeaderRowEnabled,
@@ -67,6 +73,8 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
     const currentLayout = getTableLayout(tableState);
     const { pluginConfig } = tableState;
     const isLayoutSupported = supportsTableLayout(state);
+    const { viewMode } = tableState.tableNode.attrs;
+
     return {
       title: 'Table floating controls',
       getDomRef: () => tableState.tableRef!,
@@ -141,6 +149,41 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
           selected: currentLayout === 'full-width',
           title: 'Full width',
           hidden: !isLayoutSupported('full-width'),
+        },
+        {
+          type: 'separator',
+          hidden: false,
+        },
+        {
+          type: 'button',
+          icon: ChartTableIcon,
+          onClick: setViewMode('table'),
+          selected: viewMode === 'table',
+          title: 'View as table',
+        },
+        {
+          type: 'button',
+          icon: TimelineIcon,
+          onClick: setViewMode('timeline'),
+          selected: viewMode === 'timeline',
+          title: 'View as timeline',
+          disabled: !isTimelineAvailable(state),
+        },
+        {
+          type: 'button',
+          icon: ChartDonutIcon,
+          onClick: setViewMode('donut'),
+          selected: viewMode === 'donut',
+          title: 'View as donut chart',
+          disabled: !isNumberChartAvailable(state),
+        },
+        {
+          type: 'button',
+          icon: GraphBarIcon,
+          onClick: setViewMode('barchart'),
+          selected: viewMode === 'barchart',
+          title: 'View as bar chart',
+          disabled: !isNumberChartAvailable(state),
         },
         {
           type: 'separator',

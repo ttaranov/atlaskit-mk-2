@@ -726,3 +726,43 @@ export const selectRow = (row: number): Command => (
   );
   return true;
 };
+
+export const setViewMode = (viewMode: string): Command => (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  const tableNode = findTable(state.selection);
+  if (!tableNode) {
+    return false;
+  }
+
+  dispatch(
+    state.tr.setNodeMarkup(tableNode.pos, undefined, {
+      ...tableNode.node.attrs,
+      viewMode,
+    }),
+  );
+
+  return true;
+};
+
+export const setViewSetting = (viewMode, settings): Command => (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  const tableNode = findTable(state.selection);
+  if (!tableNode) {
+    return false;
+  }
+
+  const { viewModeSettings } = tableNode.node.attrs;
+
+  dispatch(
+    state.tr.setNodeMarkup(tableNode.pos, undefined, {
+      ...tableNode.node.attrs,
+      viewModeSettings: { ...viewModeSettings, ...settings },
+    }),
+  );
+
+  return true;
+};

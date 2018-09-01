@@ -16,6 +16,7 @@ import {
   akColorN60A,
   akColorN30,
   akColorN90,
+  akColorN100,
 } from '@atlaskit/util-shared-styles';
 import {
   browser,
@@ -211,6 +212,102 @@ export const tableStyles = css`
       left: 25px;
       top: -3px;
       color: ${akColorN90};
+    }
+  }
+
+  /* =============== TABLE PIE CHART ================== */
+  .ProseMirror {
+    .table-container.-hidden {
+      .table-row-controls-wrapper,
+      .table-column-controls-wrapper,
+      .table-shadow {
+        display: none;
+      }
+      .table-wrapper {
+        height: 0;
+        width: 0;
+        overflow: hidden;
+      }
+    }
+
+    .ProseMirror-chart-container {
+      border: 1px solid ${akColorN30};
+      border-radius: 5px;
+      margin: 32px 0 20px;
+
+      &:hover {
+        border-color: ${akColorN50};
+      }
+      &.selected {
+        border-color: ${akColorB300};
+      }
+    }
+    .ProseMirror-timeline {
+      position: relative;
+
+      .ProseMirror-timeline_swimlanes {
+        padding: 48px 12px 12px 12px;
+      }
+
+      .ProseMirror-timeline_grid {
+        height: 100%;
+        position: absolute;
+        display: flex;
+
+        .ProseMirror-timeline_month {
+          top: 0px;
+          border-left: 1px solid ${akColorN30};
+          position: absolute;
+          height: 100%;
+
+          .ProseMirror-timeline_month_label {
+            color: ${akColorN100};
+            font-size: 11px;
+            padding: 10px 20px;
+          }
+        }
+      }
+    }
+    .ProseMirror-chart {
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      max-width: 680px;
+      cursor: pointer;
+      padding: 16px;
+
+      &.-legend-right {
+        flex-direction: row-reverse;
+      }
+
+      .ProseMirror-chart_header {
+        padding-bottom: 24px;
+      }
+
+      .ProseMirror-chart_legend {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        li {
+          margin-bottom: 10px;
+          display: flex;
+          align-items: center;
+        }
+        li:last-child {
+          margin-bottom: 0;
+        }
+
+        .ProseMirror-chart_bullet {
+          border-radius: 3px;
+          display: inline-block;
+          height: 12px;
+          width: 12px;
+        }
+        .ProseMirror-chart_title {
+          margin-left: 10px;
+        }
+      }
     }
   }
 `;

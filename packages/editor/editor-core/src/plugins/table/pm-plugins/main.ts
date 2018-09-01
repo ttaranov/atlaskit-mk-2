@@ -217,10 +217,10 @@ export const createPlugin = (
       },
       handleDOMEvents: {
         blur(view: EditorView, event) {
-          const { state, dispatch } = view;
+          // const { state, dispatch } = view;
           // fix for issue ED-4665
           if (!isIE11) {
-            setEditorFocus(false)(state, dispatch);
+            // setEditorFocus(false)(state, dispatch);
           }
           event.preventDefault();
           return false;

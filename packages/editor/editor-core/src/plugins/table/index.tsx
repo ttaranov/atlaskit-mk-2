@@ -82,17 +82,23 @@ const tablesPlugin = (options?: PluginConfig | boolean): EditorPlugin => ({
         plugins={{
           tablesState: pluginKey,
         }}
-        render={({ tablesState }) => (
-          <FloatingContextualMenu
-            editorView={editorView}
-            mountPoint={popupsMountPoint}
-            boundariesElement={popupsBoundariesElement}
-            targetCellRef={tablesState.targetCellRef}
-            targetCellPosition={tablesState.targetCellPosition}
-            isOpen={tablesState.isContextualMenuOpen}
-            pluginConfig={tablesState.pluginConfig}
-          />
-        )}
+        render={({ tablesState }) => {
+          const { tableNode } = tablesState;
+          if (tableNode && tableNode.attrs.viewMode === 'table') {
+            return (
+              <FloatingContextualMenu
+                editorView={editorView}
+                mountPoint={popupsMountPoint}
+                boundariesElement={popupsBoundariesElement}
+                targetCellRef={tablesState.targetCellRef}
+                targetCellPosition={tablesState.targetCellPosition}
+                isOpen={tablesState.isContextualMenuOpen}
+                pluginConfig={tablesState.pluginConfig}
+              />
+            );
+          }
+          return null;
+        }}
       />
     );
   },

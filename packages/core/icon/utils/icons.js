@@ -102,6 +102,8 @@ import EditorAttachmentIcon from '../glyph/editor/attachment';
 import EditorBackgroundColorIcon from '../glyph/editor/background-color';
 import EditorBoldIcon from '../glyph/editor/bold';
 import EditorBulletListIcon from '../glyph/editor/bullet-list';
+import EditorChartDonutIcon from '../glyph/editor/chart-donut';
+import EditorChartTableIcon from '../glyph/editor/chart-table';
 import EditorCloseIcon from '../glyph/editor/close';
 import EditorCodeIcon from '../glyph/editor/code';
 import EditorDateIcon from '../glyph/editor/date';
@@ -153,6 +155,7 @@ import EditorTableIcon from '../glyph/editor/table';
 import EditorTaskIcon from '../glyph/editor/task';
 import EditorTextColorIcon from '../glyph/editor/text-color';
 import EditorTextStyleIcon from '../glyph/editor/text-style';
+import EditorTimelineIcon from '../glyph/editor/timeline';
 import EditorUnderlineIcon from '../glyph/editor/underline';
 import EditorUndoIcon from '../glyph/editor/undo';
 import EditorUnlinkIcon from '../glyph/editor/unlink';
@@ -1000,6 +1003,18 @@ export default {
     componentName: 'EditorBulletListIcon',
     package: '@atlaskit/icon/glyph/editor/bullet-list',
   },
+  'editor/chart-donut': {
+    keywords: ['editor/chart-donut', 'editorchartdonut'],
+    component: EditorChartDonutIcon,
+    componentName: 'EditorChartDonutIcon',
+    package: '@atlaskit/icon/glyph/editor/chart-donut',
+  },
+  'editor/chart-table': {
+    keywords: ['editor/chart-table', 'editorcharttable'],
+    component: EditorChartTableIcon,
+    componentName: 'EditorChartTableIcon',
+    package: '@atlaskit/icon/glyph/editor/chart-table',
+  },
   'editor/close': {
     keywords: ['editor/close', 'editorclose', 'x', 'cancel', 'cross'],
     component: EditorCloseIcon,
@@ -1305,6 +1320,12 @@ export default {
     component: EditorTextStyleIcon,
     componentName: 'EditorTextStyleIcon',
     package: '@atlaskit/icon/glyph/editor/text-style',
+  },
+  'editor/timeline': {
+    keywords: ['editor/timeline', 'editortimeline'],
+    component: EditorTimelineIcon,
+    componentName: 'EditorTimelineIcon',
+    package: '@atlaskit/icon/glyph/editor/timeline',
   },
   'editor/underline': {
     keywords: ['editor/underline', 'editorunderline', 'font', 'text'],

@@ -750,6 +750,13 @@
                 "full-width",
                 "default"
               ]
+            },
+            "viewMode": {
+              "enum": [
+                "table",
+                "timeline",
+                "donut"
+              ]
             }
           },
           "additionalProperties": false

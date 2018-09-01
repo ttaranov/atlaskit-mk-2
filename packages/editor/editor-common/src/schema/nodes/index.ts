@@ -67,6 +67,7 @@ export {
   tableBackgroundColorNames,
   CellAttributes,
   Layout as TableLayout,
+  ViewMode as TableViewMode,
   calcTableColumnWidths,
   TableDefinition,
   TableCell as TableCellDefinition,
