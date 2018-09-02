@@ -311,14 +311,14 @@ export const setClickedCell = (clickedCell?: Cell): Command => (
     if (clickedCell && clickedCell.node.attrs.cellType === 'mention') {
       const mark = state.schema.mark('mentionQuery', { active: true });
       const query = state.schema.text('@', [mark]);
-      clearAndInsertNode(query, clickedCell)(tr);
+      tr = setCellContent(query, clickedCell)(tr);
     }
 
     // insert emoji on click on cellType="emoji"
     if (clickedCell && clickedCell.node.attrs.cellType === 'emoji') {
       const mark = state.schema.mark('emojiQuery');
       const query = state.schema.text(':', [mark]);
-      clearAndInsertNode(query, clickedCell)(tr);
+      tr = setCellContent(query, clickedCell)(tr);
     }
 
     dispatch(tr);
@@ -327,23 +327,19 @@ export const setClickedCell = (clickedCell?: Cell): Command => (
   return false;
 };
 
-export const clearAndInsertNode = (
-  nodes: PMNode | PMNode[],
-  clickedCell: Cell,
-) => (tr: Transaction) => {
-  const paragraph = clickedCell.node.child(0);
-  const paragraphStart = clickedCell.start + 1;
-  const content = Fragment.from(nodes);
+export const setCellContent = (nodes: PMNode | PMNode[], clickedCell: Cell) => (
+  tr: Transaction,
+) => {
+  const { pos, start } = clickedCell;
+  const { paragraph } = clickedCell.node.type.schema.nodes;
+  const newCell = clickedCell.node.type.create(
+    clickedCell.node.attrs,
+    paragraph.create({}, Fragment.from(nodes)),
+  );
+
   return tr
-    .delete(
-      // beginning of the paragraph
-      paragraphStart,
-      paragraphStart + paragraph.nodeSize,
-    )
-    .insert(paragraphStart, content)
-    .setSelection(
-      Selection.near(tr.doc.resolve(paragraphStart + content.size)),
-    );
+    .replaceWith(pos, pos + clickedCell.node.nodeSize, newCell)
+    .setSelection(Selection.near(tr.doc.resolve(start)));
 };
 
 export const setDateIntoClickedCell = (iso: string): Command => (
@@ -354,10 +350,8 @@ export const setDateIntoClickedCell = (iso: string): Command => (
   const { tr, schema } = state;
   const dateNode = schema.nodes.date.create({ timestamp: getTime(iso) });
 
-  clearAndInsertNode(dateNode, pluginState.clickedCell)(tr);
-
   dispatch(
-    tr.setMeta(pluginKey, {
+    setCellContent(dateNode, pluginState.clickedCell)(tr).setMeta(pluginKey, {
       ...pluginState,
       clickedCell: undefined,
     }),
@@ -378,13 +372,14 @@ export const setEmojiIntoClickedCell = (emojiId, emoji): Command => (
   });
   const text = schema.text(' ');
 
-  clearAndInsertNode([node, text], pluginState.clickedCell)(tr);
-
   dispatch(
-    tr.setMeta(pluginKey, {
-      ...pluginState,
-      clickedCell: undefined,
-    }),
+    setCellContent([node, text], pluginState.clickedCell)(tr).setMeta(
+      pluginKey,
+      {
+        ...pluginState,
+        clickedCell: undefined,
+      },
+    ),
   );
   return true;
 };
