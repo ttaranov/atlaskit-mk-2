@@ -867,13 +867,13 @@ export const toggleSummaryRow: Command = (
   );
 
   const row = tableRow.createChecked({}, cells);
-  let rowPos = table.pos;
+  let rowPos = table.start;
   for (let i = 0; i < rowCount; i++) {
     rowPos += table.node.child(i).nodeSize;
   }
 
   const tr = state.tr.insert(rowPos, row);
-  tr.setNodeMarkup(table.pos - 1, state.schema.nodes.table, {
+  tr.setNodeMarkup(table.pos, state.schema.nodes.table, {
     ...table.node.attrs,
     isSummaryRowEnabled: true,
   });

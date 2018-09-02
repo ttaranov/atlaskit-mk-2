@@ -28,12 +28,14 @@ import {
   toggleHeaderRow,
   toggleHeaderColumn,
   toggleNumberColumn,
+  toggleSummaryRow,
   setViewMode,
 } from './actions';
 import {
   checkIfHeaderRowEnabled,
   checkIfHeaderColumnEnabled,
   checkIfNumberColumnEnabled,
+  checkIfSummaryRowEnabled,
 } from './utils';
 
 const getTableLayout = (tableState: TablePluginState) =>
@@ -96,6 +98,11 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
               ),
               selected: checkIfHeaderRowEnabled(state),
               hidden: !pluginConfig.allowHeaderRow,
+            },
+            {
+              title: 'Summary Row',
+              selected: checkIfSummaryRowEnabled(state),
+              onClick: toggleSummaryRow,
             },
             {
               title: 'Header column',

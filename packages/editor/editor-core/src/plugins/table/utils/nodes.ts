@@ -63,6 +63,14 @@ export const checkIfNumberColumnEnabled = (state: EditorState): boolean =>
     false,
   );
 
+export const checkIfSummaryRowEnabled = (state: EditorState): boolean =>
+  filterNearSelection(
+    state,
+    findTable,
+    (_, table) => !!table.attrs.isSummaryRowEnabled,
+    false,
+  );
+
 export const toFixed = value => {
   if (typeof value === 'number' && value % 1 !== 0) {
     return Number(value.toFixed(1));

@@ -83,12 +83,12 @@ const setCellAttrs = (node: PmNode) => {
 
       attrs.style = `${attrs.style || ''}background-color: ${color};`;
     }
-    if (node.attrs.cellType) {
-      attrs.cellType = node.attrs.cellType;
-    }
-    if (node.attrs.summaryType) {
-      attrs.summaryType = node.attrs.summaryType;
-    }
+  }
+  if (node.attrs.cellType) {
+    attrs.cellType = node.attrs.cellType;
+  }
+  if (node.attrs.summaryType) {
+    attrs.summaryType = node.attrs.summaryType;
   }
 
   return attrs;
