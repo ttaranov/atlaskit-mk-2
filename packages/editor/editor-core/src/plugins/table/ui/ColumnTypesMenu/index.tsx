@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
+import { Node as PmNode } from 'prosemirror-model';
 import {
   forEachCellInColumn,
   setCellAttrs,
@@ -186,8 +187,9 @@ export default class ColumnTypesMenu extends Component<Props> {
 
       // filldown for node type
       const cellType = item.value.name;
+      const { paragraph, decisionList } = editorView.state.schema.nodes;
+
       if (Object.keys(nodemap).indexOf(cellType) !== -1) {
-        let node;
         const cells = getCellsInColumn(columnIndex)(tr.selection)!;
         cells.forEach(cell => {
           if (
@@ -196,18 +198,21 @@ export default class ColumnTypesMenu extends Component<Props> {
           ) {
             return;
           }
-
+          let newCell;
           if (item.value.name === 'decision') {
-            node = editorView.state.schema.nodes.decisionList.createAndFill();
-            tr = tr.replaceWith(
-              tr.mapping.map(cell.pos),
-              tr.mapping.map(cell.pos + cell.node.nodeSize - 1),
-              node,
-            );
+            const node = decisionList.createAndFill() as PmNode;
+            newCell = cell.node.type.create(cell.node.attrs, node);
           } else {
-            node = nodemap[cellType].createChecked();
-            tr = tr.insert(tr.mapping.map(cell.pos + 1), node);
+            newCell = cell.node.type.create(
+              cell.node.attrs,
+              paragraph.create({}, nodemap[cellType].createChecked()),
+            );
           }
+          tr = tr.replaceWith(
+            tr.mapping.map(cell.pos),
+            tr.mapping.map(cell.pos + cell.node.nodeSize),
+            newCell,
+          );
         });
       }
 
