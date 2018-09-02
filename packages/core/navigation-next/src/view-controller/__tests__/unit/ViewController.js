@@ -127,7 +127,7 @@ describe('NavigationNext View Controller', () => {
         isDebugEnabled: true,
       });
 
-      viewController.addView({ ...view, getITems: () => {} });
+      viewController.addView({ ...view, getItems: () => {} });
       viewController.setView('view-id');
 
       expect(viewController.state.incomingView).toMatchObject({

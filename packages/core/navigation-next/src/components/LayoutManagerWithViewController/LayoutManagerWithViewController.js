@@ -3,7 +3,6 @@
 import React, { Component, Fragment } from 'react';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 import { gridSize as gridSizeFn } from '@atlaskit/theme';
-
 import ViewRenderer from '../../renderer';
 import { withNavigationUI } from '../../ui-controller';
 import { withNavigationViewController } from '../../view-controller';
@@ -16,29 +15,12 @@ import type {
   LayoutManagerWithViewControllerState,
 } from './types';
 import LayerInitialised from './LayerInitialised';
+import {
+  ProductNavigationTheme,
+  ContainerNavigationTheme,
+} from '../ContentNavigation/primitives';
 
 const gridSize = gridSizeFn();
-
-const skeleton = (
-  <div css={{ padding: `${gridSize * 2}px 0` }}>
-    <Section>
-      {({ className }) => (
-        <div className={className}>
-          <SkeletonContainerHeader hasBefore />
-        </div>
-      )}
-    </Section>
-    <Section>
-      {({ className }) => (
-        <div className={className}>
-          <SkeletonItem hasBefore />
-          <SkeletonItem hasBefore />
-          <SkeletonItem hasBefore />
-        </div>
-      )}
-    </Section>
-  </div>
-);
 
 class LayoutManagerWithViewControllerBase extends Component<
   LayoutManagerWithViewControllerProps,
@@ -53,21 +35,72 @@ class LayoutManagerWithViewControllerBase extends Component<
     this.renderContainerNavigation.displayName = 'ContainerNavigationRenderer';
     this.renderProductNavigation.displayName = 'ProductNavigationRenderer';
   }
+
   onInitialised = () => {
     this.setState({
       hasInitialised: true,
     });
   };
+
+  renderSkeleton = () => {
+    const { firstSkeleton } = this.props;
+    let Wrapper;
+
+    if (firstSkeleton === 'product') {
+      Wrapper = ProductNavigationTheme;
+    } else if (firstSkeleton === 'container') {
+      Wrapper = ContainerNavigationTheme;
+    } else {
+      Wrapper = 'div';
+    }
+
+    return (
+      <Wrapper>
+        <div css={{ padding: `${gridSize * 2}px 0` }}>
+          <Section>
+            {({ className }) => (
+              <div className={className}>
+                <SkeletonContainerHeader hasBefore />
+              </div>
+            )}
+          </Section>
+          <Section>
+            {({ className }) => (
+              <div className={className}>
+                <SkeletonItem hasBefore />
+                <SkeletonItem hasBefore />
+                <SkeletonItem hasBefore />
+                <SkeletonItem hasBefore />
+                <SkeletonItem hasBefore />
+              </div>
+            )}
+          </Section>
+        </div>
+      </Wrapper>
+    );
+  };
+
   renderContainerNavigation = () => {
     const {
       navigationViewController: {
         state: { activeView },
       },
+      firstSkeleton,
     } = this.props;
 
-    return activeView && activeView.type === 'container'
-      ? this.renderView(activeView)
-      : skeleton;
+    if (activeView && activeView.type === 'container') {
+      return this.renderView(activeView);
+    }
+
+    if (
+      !activeView &&
+      firstSkeleton === 'container' &&
+      !this.state.hasInitialised
+    ) {
+      return this.renderSkeleton();
+    }
+
+    return firstSkeleton !== 'container' ? null : this.renderSkeleton();
   };
 
   renderGlobalNavigation = () => {
@@ -114,7 +147,8 @@ class LayoutManagerWithViewControllerBase extends Component<
     if (activeView && activeView.type === 'product') {
       return this.renderView(activeView);
     }
-    return skeleton;
+
+    return this.renderSkeleton();
   };
 
   renderView(view) {
@@ -132,6 +166,7 @@ class LayoutManagerWithViewControllerBase extends Component<
       navigationViewController: {
         state: { activeView },
       },
+      firstSkeleton,
     } = this.props;
 
     return (
@@ -141,7 +176,10 @@ class LayoutManagerWithViewControllerBase extends Component<
         <LayoutManager
           globalNavigation={this.renderGlobalNavigation}
           containerNavigation={
-            activeView && activeView.type === 'container'
+            (activeView && activeView.type === 'container') ||
+            (!activeView &&
+              firstSkeleton === 'container' &&
+              !this.state.hasInitialised)
               ? this.renderContainerNavigation
               : null
           }
@@ -153,6 +191,7 @@ class LayoutManagerWithViewControllerBase extends Component<
     );
   }
 }
+
 export default withNavigationUI(
   withNavigationViewController(LayoutManagerWithViewControllerBase),
 );
