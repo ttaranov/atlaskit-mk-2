@@ -4,7 +4,7 @@ import { DecorationSet } from 'prosemirror-view';
 import { TableLayout } from '@atlaskit/editor-common';
 
 export type PermittedLayoutsDescriptor = TableLayout[] | 'all';
-export type Cell = { pos: number; node: PmNode };
+export type Cell = { pos: number; start: number; node: PmNode };
 export type CellTransform = (cell: Cell) => (tr: Transaction) => Transaction;
 
 export interface PluginConfig {
@@ -48,5 +48,6 @@ export interface CellRect {
 export interface TableColumnTypesPluginState {
   // clicked cell needed to position cellType dropdowns (date, emoji, mention, link)
   clickedCell?: Cell;
-  columnTypesDecoration: DecorationSet;
+  columnIndex?: number;
+  targetColumnRef?: HTMLElement;
 }

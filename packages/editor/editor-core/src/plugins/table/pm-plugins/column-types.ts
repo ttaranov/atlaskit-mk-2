@@ -16,6 +16,7 @@ import {
   findParentNodeOfTypeClosestToPos,
 } from 'prosemirror-utils';
 import {
+  Cell,
   PluginConfig,
   TableColumnTypesPluginState as PluginState,
 } from '../types';
@@ -25,9 +26,7 @@ import { EventDispatcher } from '../../../event-dispatcher';
 import { PortalProviderAPI } from '../../../ui/PortalProvider';
 import { Command } from '../../../types';
 import { pluginKey as tablePluginKey } from './main';
-
-export type Cell = { pos: number; node: PMNode };
-export type CellTransform = (cell: Cell) => (tr: Transaction) => Transaction;
+import TableHeaderView from '../nodeviews/tableHeader';
 
 export const pluginKey = new PluginKey('tableColumnTypesPlugin');
 
@@ -40,7 +39,7 @@ export const createColumnTypesPlugin = (
   new Plugin({
     state: {
       init: (): PluginState => ({
-        columnTypesDecoration: DecorationSet.empty,
+        clickedCell: undefined,
       }),
       apply(tr: Transaction, pluginState: PluginState, _, state: EditorState) {
         const nextState = tr.getMeta(pluginKey) as PluginState | undefined;
@@ -55,18 +54,18 @@ export const createColumnTypesPlugin = (
     key: pluginKey,
 
     props: {
-      decorations: state => getPluginState(state).columnTypesDecoration,
+      decorations: (state: EditorState) => createCellTypeDecoration(state),
 
       handleDOMEvents: {
         click(view: EditorView, event: MouseEvent) {
           const { state, dispatch } = view;
-          const { tableElement } = tablePluginKey.getState(state);
+          const { tableRef } = tablePluginKey.getState(state);
           const posAtCoords = view.posAtCoords({
             left: event.clientX,
             top: event.clientY,
           });
           if (
-            !tableElement ||
+            !tableRef ||
             isCellSelection(view.state.selection) ||
             !posAtCoords
           ) {
@@ -98,6 +97,19 @@ export const createColumnTypesPlugin = (
             );
           }
           return setClickedCell(cell)(state, dispatch);
+        },
+      },
+
+      nodeViews: {
+        // slider: nodeViewFactory(providerFactory, { slider: sliderNodeView }),
+
+        tableHeader: (node: PMNode, view: EditorView, getPos: () => number) => {
+          return new TableHeaderView({
+            node,
+            view,
+            getPos,
+            portalProviderAPI,
+          }).init();
         },
       },
     },
@@ -187,7 +199,7 @@ export const createCellTypeDecoration = (
   if (!table) {
     return null;
   }
-  const { pos: start } = table;
+  const { start } = table;
   const map = TableMap.get(table.node);
   const set: Decoration[] = [];
 
@@ -277,10 +289,7 @@ export const makeNumber = (text: String, currency?: boolean): Number | null => {
   return num;
 };
 
-export const setClickedCell = (clickedCell?: {
-  pos: number;
-  node: PMNode;
-}): Command => (
+export const setClickedCell = (clickedCell?: Cell): Command => (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ): boolean => {
@@ -323,7 +332,7 @@ export const clearAndInsertNode = (
   clickedCell: Cell,
 ) => (tr: Transaction) => {
   const paragraph = clickedCell.node.child(0);
-  const paragraphStart = clickedCell.pos + 1;
+  const paragraphStart = clickedCell.start + 1;
   const content = Fragment.from(nodes);
   return tr
     .delete(

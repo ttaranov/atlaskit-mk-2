@@ -73,10 +73,10 @@ const tableSharedStyle = css`
       th {
         background-color: ${akEditorTableToolbar};
         text-align: left;
-        & * {
+        & .tableHeaderWrapper * {
           font-weight: normal;
         }
-        & > p {
+        & .tableHeaderWrapper > p {
           font-weight: bold;
         }
       }
