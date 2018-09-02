@@ -27,7 +27,15 @@ export interface Props {
   mountPoint?: HTMLElement;
 }
 
-export default class ColumnTypesMenu extends Component<Props, any> {
+export interface State {
+  isOpen: boolean;
+}
+
+export default class ColumnTypesMenu extends Component<Props, State> {
+  state: State = {
+    isOpen: false,
+  };
+
   render() {
     const items = this.createItems();
     if (!items) {
