@@ -11,11 +11,19 @@ import {
 import { EditorPlugin } from '../../types';
 import { PluginConfig } from './types';
 import { createPlugin, pluginKey } from './pm-plugins/main';
+import {
+  createColumnTypesPlugin,
+  pluginKey as columnTypesPluginKey,
+  setClickedCell,
+  setDateIntoClickedCell,
+} from './pm-plugins/column-types';
 import { keymapPlugin } from './pm-plugins/keymap';
 import tableColumnResizingPlugin from './pm-plugins/table-column-resizing-plugin';
 import { getToolbarConfig } from './toolbar';
 import FloatingContextualMenu from './ui/FloatingContextualMenu';
 import WithPluginState from '../../ui/WithPluginState';
+import DatePicker from './ui/DatePicker';
+import SummaryMenu from './ui/SummaryMenu';
 
 export const CELL_MIN_WIDTH = 128;
 
@@ -43,6 +51,22 @@ const tablesPlugin = (options?: PluginConfig | boolean): EditorPlugin => ({
           portalProviderAPI,
         }) => {
           return createPlugin(
+            dispatch,
+            portalProviderAPI,
+            eventDispatcher,
+            pluginConfig(allowTables),
+          );
+        },
+      },
+      {
+        name: 'columnTypes',
+        plugin: ({
+          props: { allowTables },
+          eventDispatcher,
+          dispatch,
+          portalProviderAPI,
+        }) => {
+          return createColumnTypesPlugin(
             dispatch,
             portalProviderAPI,
             eventDispatcher,
@@ -81,11 +105,17 @@ const tablesPlugin = (options?: PluginConfig | boolean): EditorPlugin => ({
       <WithPluginState
         plugins={{
           tablesState: pluginKey,
+          columnTypesState: columnTypesPluginKey,
         }}
-        render={({ tablesState }) => {
+        render={({ tablesState, columnTypesState }) => {
           const { tableNode } = tablesState;
-          if (tableNode && tableNode.attrs.viewMode === 'table') {
-            return (
+          if (tableNode && tableNode.attrs.viewMode !== 'table') {
+            return null;
+          }
+          const { dispatch } = editorView;
+
+          return (
+            <>
               <FloatingContextualMenu
                 editorView={editorView}
                 mountPoint={popupsMountPoint}
@@ -95,9 +125,29 @@ const tablesPlugin = (options?: PluginConfig | boolean): EditorPlugin => ({
                 isOpen={tablesState.isContextualMenuOpen}
                 pluginConfig={tablesState.pluginConfig}
               />
-            );
-          }
-          return null;
+              <DatePicker
+                editorView={editorView}
+                clickedCell={columnTypesState.clickedCell}
+                onSelect={({ iso }) => {
+                  setDateIntoClickedCell(iso)(editorView.state, dispatch);
+                }}
+                onClickOutside={(event: Event) => {
+                  if (!editorView.dom.contains(event.target as HTMLElement)) {
+                    setClickedCell(undefined)(editorView.state, dispatch);
+                  }
+                }}
+              />
+              <SummaryMenu
+                editorView={editorView}
+                clickedCell={columnTypesState.clickedCell}
+                onClickOutside={(event: Event) => {
+                  if (!editorView.dom.contains(event.target as HTMLElement)) {
+                    setClickedCell(undefined)(editorView.state, dispatch);
+                  }
+                }}
+              />
+            </>
+          );
         }}
       />
     );

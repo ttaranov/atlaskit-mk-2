@@ -244,6 +244,8 @@ class TableComponent extends React.Component<
           data-number-column={node.attrs.isNumberColumnEnabled}
           data-layout={node.attrs.layout}
           data-viewmode={node.attrs.viewMode}
+          data-viewmode-settings={JSON.stringify(node.attrs.viewModeSettings)}
+          data-summary-row={node.attrs.isSummaryRowEnabled}
         >
           {allowControls && rowControls}
           <div

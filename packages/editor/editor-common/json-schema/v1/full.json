@@ -755,8 +755,15 @@
               "enum": [
                 "table",
                 "timeline",
-                "donut"
+                "donut",
+                "barchart"
               ]
+            },
+            "viewModeSettings": {
+              "type": "object"
+            },
+            "isSummaryRowEnabled": {
+              "type": "boolean"
             }
           },
           "additionalProperties": false
@@ -831,6 +838,27 @@
             },
             "background": {
               "type": "string"
+            },
+            "cellType": {
+              "enum": [
+                "number",
+                "link",
+                "emoji",
+                "mention",
+                "text",
+                "date",
+                "currency",
+                "checkbox",
+                "summary"
+              ]
+            },
+            "summaryType": {
+              "enum": [
+                "total",
+                "average",
+                "min",
+                "max"
+              ]
             }
           },
           "additionalProperties": false
@@ -870,6 +898,27 @@
             },
             "background": {
               "type": "string"
+            },
+            "cellType": {
+              "enum": [
+                "number",
+                "link",
+                "emoji",
+                "mention",
+                "text",
+                "date",
+                "currency",
+                "checkbox",
+                "summary"
+              ]
+            },
+            "summaryType": {
+              "enum": [
+                "total",
+                "average",
+                "min",
+                "max"
+              ]
             }
           },
           "additionalProperties": false

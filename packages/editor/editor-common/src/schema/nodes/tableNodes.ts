@@ -36,6 +36,12 @@ const getCellAttrs = (dom: HTMLElement) => {
     rowspan: Number(dom.getAttribute('rowspan') || 1),
     colwidth: width && width.length === colspan ? width : null,
     background: dom.style.backgroundColor || null,
+    cellType: dom.getAttribute('data-cell-type') || 'text',
+    summaryType:
+      dom.getAttribute('data-summary-type') ||
+      dom.getAttribute('data-cell-type') === 'summary'
+        ? 'total'
+        : null,
   };
 };
 
@@ -44,6 +50,8 @@ const setCellAttrs = (node: PmNode) => {
     colspan?: number;
     rowspan?: number;
     style?: string;
+    cellType?: CellType;
+    summaryType?: SummaryType;
   } = {};
   if (node.attrs.colspan !== 1) {
     attrs.colspan = node.attrs.colspan;
@@ -74,6 +82,12 @@ const setCellAttrs = (node: PmNode) => {
           : background;
 
       attrs.style = `${attrs.style || ''}background-color: ${color};`;
+    }
+    if (node.attrs.cellType) {
+      attrs.cellType = node.attrs.cellType;
+    }
+    if (node.attrs.summaryType) {
+      attrs.summaryType = node.attrs.summaryType;
     }
   }
 
@@ -144,12 +158,26 @@ export type ViewMode = 'table' | 'timeline' | 'donut' | 'barchart';
 
 export type ViewModeSettings = { [K in ViewMode]: any };
 
+export type CellType =
+  | 'text'
+  | 'number'
+  | 'currency'
+  | 'date'
+  | 'link'
+  | 'mention'
+  | 'checkbox'
+  | 'emoji'
+  | 'summary';
+
+export type SummaryType = 'total' | 'average' | 'min' | 'max';
+
 export interface TableAttributes {
   isNumberColumnEnabled?: boolean;
   layout?: Layout;
   __autoSize?: boolean;
   viewMode?: ViewMode;
   viewModeSettings?: ViewModeSettings;
+  isSummaryRowEnabled?: boolean;
 }
 
 /**
@@ -204,6 +232,9 @@ export interface CellAttributes {
   rowspan?: number;
   colwidth?: number[];
   background?: string;
+  cellType?: CellType;
+  // TODO: only add `summaryType` when the value of `cellType` is `summary`
+  summaryType?: SummaryType;
 }
 
 // TODO: Fix any, potential issue. ED-5048
@@ -215,6 +246,7 @@ export const table: any = {
     __autoSize: { default: false },
     viewMode: { default: 'table' },
     viewModeSettings: { default: {} },
+    isSummaryRowEnabled: { default: false },
   },
   tableRole: 'table',
   isolating: true,
@@ -231,6 +263,8 @@ export const table: any = {
         viewModeSettings: dom.hasAttribute('data-viewmode-settings')
           ? JSON.parse(dom.getAttribute('data-viewmode-settings')!)
           : {},
+        isSummaryRowEnabled:
+          dom.getAttribute('data-summary-row') === 'true' ? true : false,
       }),
     },
   ],
@@ -241,6 +275,7 @@ export const table: any = {
       'data-autosize': node.attrs.__autoSize,
       'data-viewmode': node.attrs.viewMode,
       'data-viewmode-settings': JSON.stringify(node.attrs.viewModeSettings),
+      'data-summary-row': node.attrs.isSummaryRowEnabled,
     };
     return ['table', attrs, ['tbody', 0]];
   },
@@ -269,6 +304,8 @@ const cellAttrs = {
   rowspan: { default: 1 },
   colwidth: { default: null },
   background: { default: null },
+  cellType: { default: 'text' },
+  summaryType: { default: null },
 };
 
 export const tableCell = {

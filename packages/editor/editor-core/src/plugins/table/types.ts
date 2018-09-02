@@ -44,3 +44,9 @@ export interface CellRect {
   top: number;
   bottom: number;
 }
+
+export interface TableColumnTypesPluginState {
+  // clicked cell needed to position cellType dropdowns (date, emoji, mention, link)
+  clickedCell?: Cell;
+  columnTypesDecoration: DecorationSet;
+}

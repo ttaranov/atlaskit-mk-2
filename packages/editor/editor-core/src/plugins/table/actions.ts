@@ -45,6 +45,8 @@ import {
   getSelectionRect,
   isHeaderRowSelected,
   isIsolating,
+  maybeCreateText,
+  calculateSummary,
 } from './utils';
 import { Command } from '../../types';
 import { analyticsService } from '../../analytics';
@@ -153,7 +155,7 @@ export const toggleHeaderRow: Command = (
   if (!table) {
     return false;
   }
-  const { tr } = state;
+  let { tr } = state;
   const map = TableMap.get(table.node);
   const { tableHeader, tableCell } = state.schema.nodes;
   const isHeaderRowEnabled = checkIfHeaderRowEnabled(state);
@@ -168,8 +170,17 @@ export const toggleHeaderRow: Command = (
     const from = tr.mapping.map(table.start + map.map[column]);
     const cell = table.node.child(0).child(column);
 
-    tr.setNodeMarkup(from, type, cell.attrs);
+    tr.setNodeMarkup(
+      from,
+      type,
+      Object.assign({}, cell.attrs, { cellType: 'text' }),
+    );
   }
+
+  if (isHeaderRowEnabled) {
+    tr = ensureCellTypes(0, state.schema)(tr);
+  }
+
   dispatch(tr);
   return true;
 };
@@ -764,5 +775,110 @@ export const setViewSetting = (viewMode, settings): Command => (
     }),
   );
 
+  return true;
+};
+
+export const ensureCellTypes = (rowIndex: number, schema: Schema) => (
+  tr: Transaction,
+): Transaction => {
+  // getting cells of a row containing all tableCells so that we know what cellTypes should be for the new row
+  const originalTable = findTable(tr.selection)!;
+  let cells: { pos: number; node: PMNode }[] | undefined = [];
+  for (let i = 0, count = originalTable.node.childCount; i < count; i++) {
+    const row = originalTable.node.child(i);
+    const cell = row.nodeAt(0);
+    if (
+      cell &&
+      cell.type === schema.nodes.tableCell &&
+      cell.attrs.cellType !== 'text' &&
+      cell.attrs.cellType !== 'summary'
+    ) {
+      cells = getCellsInRow(i)(tr.selection);
+    }
+  }
+
+  // no special cell types found
+  if (!cells || !cells.length) {
+    return tr;
+  }
+
+  const nodemap = {
+    slider: schema.nodes.slider,
+    checkbox: schema.nodes.checkbox,
+    decision: null,
+  };
+
+  const newCells = getCellsInRow(rowIndex)(tr.selection)!;
+
+  for (let i = newCells.length - 1; i >= 0; i--) {
+    const cell = newCells[i];
+    const { cellType } = cells![i].node.attrs;
+
+    tr = tr.setNodeMarkup(
+      cell.pos - 1,
+      cell.node.type,
+      Object.assign({}, cell.node.attrs, {
+        cellType,
+      }),
+    );
+
+    // apply filldown
+    if (Object.keys(nodemap).indexOf(cells![i].node.attrs.cellType) !== -1) {
+      let node;
+      if (cellType === 'decision') {
+        node = schema.nodes.decisionList.createAndFill();
+      } else {
+        node = nodemap[cellType].createChecked();
+      }
+
+      tr = tr.insert(cell.pos + 1, node);
+    }
+  }
+
+  return tr;
+};
+
+export const toggleSummaryRow: Command = (
+  state: EditorState,
+  dispatch: (tr: Transaction) => void,
+): boolean => {
+  const table = findTable(state.selection);
+
+  if (!table) {
+    return false;
+  }
+
+  // remove summary row, assume its last row for now
+  if (!!table.node.attrs.isSummaryRowEnabled) {
+    table.node.attrs.isSummaryRowEnabled = false;
+    dispatch(removeRowAt(table.node.childCount - 1)(state.tr));
+    return true;
+  }
+
+  const rowCount = table.node.childCount;
+  const { tableRow, tableCell, paragraph } = state.schema.nodes;
+  const createContent = maybeCreateText(state.schema);
+
+  const cells = calculateSummary(table.node).map(summary =>
+    tableCell.createChecked(
+      { cellType: 'summary', summaryType: summary.summaryType },
+      paragraph.createChecked({}, createContent(summary.value)),
+    ),
+  );
+
+  const row = tableRow.createChecked({}, cells);
+  let rowPos = table.pos;
+  for (let i = 0; i < rowCount; i++) {
+    rowPos += table.node.child(i).nodeSize;
+  }
+
+  const tr = state.tr.insert(rowPos, row);
+  tr.setNodeMarkup(table.pos - 1, state.schema.nodes.table, {
+    ...table.node.attrs,
+    isSummaryRowEnabled: true,
+  });
+  tr.setMeta(pluginKey, { addedSummaryRow: true });
+
+  dispatch(tr);
   return true;
 };
