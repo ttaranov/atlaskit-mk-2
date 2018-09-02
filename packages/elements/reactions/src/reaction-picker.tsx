@@ -91,7 +91,9 @@ export default class ReactionPicker extends PureComponent<Props, State> {
 
     const domNode = ReactDOM.findDOMNode(this);
     if (!domNode || (e.target instanceof Node && !domNode.contains(e.target))) {
-      this.props.onCancel && this.props.onCancel();
+      if (this.props.onCancel) {
+        this.props.onCancel();
+      }
       this.close();
     }
   };
@@ -157,7 +159,9 @@ export default class ReactionPicker extends PureComponent<Props, State> {
   };
 
   private onTriggerClick = () => {
-    this.props.onOpen && this.props.onOpen();
+    if (this.props.onOpen) {
+      this.props.onOpen();
+    }
     this.setState({
       isOpen: !this.state.isOpen,
       showFullPicker: false,
