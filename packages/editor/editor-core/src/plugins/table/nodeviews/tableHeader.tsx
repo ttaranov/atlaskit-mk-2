@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Node as PmNode } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
+import Button from '@atlaskit/button';
 import ReactNodeView from '../../../nodeviews/ReactNodeView';
 import { PortalProviderAPI } from '../../../ui/PortalProvider';
 
@@ -76,7 +77,9 @@ export default class TableHeaderView extends ReactNodeView implements NodeView {
           className="ProseMirror-tableHeader-nodeview-content"
           ref={forwardRef}
         />
-        {icon}
+        <div className="ProseMirror-tableHeader-button-container">
+          <Button appearance="subtle" iconBefore={icon} spacing="none" />
+        </div>
       </div>
     );
   }

@@ -318,15 +318,17 @@ export const tableStyles = css`
   .ProseMirror {
     table {
       .ProseMirror-tableHeader-nodeview {
-        clear: both;
+        display: flex;
+        margin-right: 12px;
       }
       .ProseMirror-tableHeader-nodeview-content {
-        width: calc(100% - 25px);
-        float: left;
+        flex: 1;
       }
-      .ProseMirror-tableHeader-nodeview-content + span {
-        float: right;
-        opacity: 0.5;
+      .ProseMirror-tableHeader-button-container {
+        background: ${akColorN20A};
+        height: 24px;
+        width: 24px;
+        border-radius: ${akBorderRadius};
       }
 
       td[celltype='date'],
