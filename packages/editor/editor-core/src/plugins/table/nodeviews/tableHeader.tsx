@@ -13,6 +13,8 @@ import EditorTaskIcon from '@atlaskit/icon/glyph/editor/task';
 import EditorEmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import EditorHorizontalRuleIcon from '@atlaskit/icon/glyph/editor/horizontal-rule';
 import DecisionIcon from '@atlaskit/icon/glyph/editor/decision';
+import { pluginKey } from '../pm-plugins/column-types';
+import { closestElement } from '../../../utils/';
 
 export interface Props {
   node: PmNode;
@@ -24,7 +26,9 @@ export interface Props {
 export default class TableHeaderView extends ReactNodeView implements NodeView {
   constructor(props: Props) {
     super(props.node, props.view, props.getPos, props.portalProviderAPI, props);
+    this.view = props.view;
   }
+  view: EditorView;
 
   createDomRef() {
     return document.createElement('th');
@@ -78,7 +82,12 @@ export default class TableHeaderView extends ReactNodeView implements NodeView {
           ref={forwardRef}
         />
         <div className="ProseMirror-tableHeader-button-container">
-          <Button appearance="subtle" iconBefore={icon} spacing="none" />
+          <Button
+            appearance="subtle"
+            iconBefore={icon}
+            spacing="none"
+            onClick={this.handleClick}
+          />
         </div>
       </div>
     );
@@ -87,4 +96,19 @@ export default class TableHeaderView extends ReactNodeView implements NodeView {
   ignoreMutation(record: MutationRecord) {
     return true;
   }
+
+  private handleClick = event => {
+    const { dispatch, state } = this.view;
+    const { target } = event;
+    const cell = (closestElement(target, 'td') ||
+      closestElement(target, 'th')) as HTMLTableDataCellElement;
+    const columnIndex = cell && cell.cellIndex;
+
+    dispatch(
+      state.tr.setMeta(pluginKey, {
+        targetColumnRef: target,
+        columnIndex,
+      }),
+    );
+  };
 }

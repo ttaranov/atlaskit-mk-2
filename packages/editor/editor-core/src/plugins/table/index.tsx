@@ -24,6 +24,7 @@ import FloatingContextualMenu from './ui/FloatingContextualMenu';
 import WithPluginState from '../../ui/WithPluginState';
 import DatePicker from './ui/DatePicker';
 import SummaryMenu from './ui/SummaryMenu';
+import ColumnTypesMenu from './ui/ColumnTypesMenu';
 
 export const CELL_MIN_WIDTH = 128;
 
@@ -145,6 +146,13 @@ const tablesPlugin = (options?: PluginConfig | boolean): EditorPlugin => ({
                     setClickedCell(undefined)(editorView.state, dispatch);
                   }
                 }}
+              />
+              <ColumnTypesMenu
+                editorView={editorView}
+                mountPoint={popupsMountPoint}
+                boundariesElement={popupsBoundariesElement}
+                targetColumnRef={columnTypesState.targetColumnRef}
+                columnIndex={columnTypesState.columnIndex}
               />
             </>
           );

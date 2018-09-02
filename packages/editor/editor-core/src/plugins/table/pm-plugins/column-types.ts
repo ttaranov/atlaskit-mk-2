@@ -332,14 +332,15 @@ export const setCellContent = (nodes: PMNode | PMNode[], clickedCell: Cell) => (
 ) => {
   const { pos, start } = clickedCell;
   const { paragraph } = clickedCell.node.type.schema.nodes;
+  const content = Fragment.from(nodes);
   const newCell = clickedCell.node.type.create(
     clickedCell.node.attrs,
-    paragraph.create({}, Fragment.from(nodes)),
+    paragraph.create({}, content),
   );
 
   return tr
     .replaceWith(pos, pos + clickedCell.node.nodeSize, newCell)
-    .setSelection(Selection.near(tr.doc.resolve(start)));
+    .setSelection(Selection.near(tr.doc.resolve(start + content.size + 1)));
 };
 
 export const setDateIntoClickedCell = (iso: string): Command => (

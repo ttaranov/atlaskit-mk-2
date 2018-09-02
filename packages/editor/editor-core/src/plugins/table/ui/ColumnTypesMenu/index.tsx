@@ -7,6 +7,11 @@ import {
   getCellsInColumn,
   findTable,
 } from 'prosemirror-utils';
+import {
+  Popup,
+  akEditorFloatingOverlapPanelZIndex,
+} from '@atlaskit/editor-common';
+
 import EditorTextStyleIcon from '@atlaskit/icon/glyph/editor/text-style';
 import EditorTextColorIcon from '@atlaskit/icon/glyph/editor/text-color';
 import CalendarIcon from '@atlaskit/icon/glyph/calendar';
@@ -15,54 +20,73 @@ import EditorTaskIcon from '@atlaskit/icon/glyph/editor/task';
 import EditorEmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import EditorHorizontalRuleIcon from '@atlaskit/icon/glyph/editor/horizontal-rule';
 import DecisionIcon from '@atlaskit/icon/glyph/editor/decision';
-import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 
 import DropdownMenu from '../../../../ui/DropdownMenu';
-import ToolbarButton from '../../../../ui/ToolbarButton';
+import withOuterListeners from '../../../../ui/with-outer-listeners';
+import { pluginKey } from '../../pm-plugins/column-types';
+
+const PopupWithListeners = withOuterListeners(Popup);
 
 export interface Props {
   editorView: EditorView;
-  toggleOpen: () => void;
   columnIndex: number;
   mountPoint?: HTMLElement;
+  boundariesElement?: HTMLElement;
+  scrollableElement?: HTMLElement;
+  targetColumnRef?: HTMLElement;
 }
 
-export interface State {
-  isOpen: boolean;
-}
-
-export default class ColumnTypesMenu extends Component<Props, State> {
-  state: State = {
-    isOpen: false,
-  };
-
+export default class ColumnTypesMenu extends Component<Props> {
   render() {
+    const {
+      targetColumnRef,
+      mountPoint,
+      boundariesElement,
+      scrollableElement,
+    } = this.props;
     const items = this.createItems();
-    if (!items) {
+    if (!items || !targetColumnRef) {
       return null;
     }
 
     return (
-      <DropdownMenu
-        items={items}
-        mountTo={this.props.mountPoint}
-        isOpen={this.state.isOpen}
-        onItemActivated={this.onMenuItemActivated}
-        fitHeight={188}
-        fitWidth={180}
-        offset={[13, -20]}
+      <PopupWithListeners
+        alignX="left"
+        alignY="top"
+        offset={[14, -12]}
+        target={targetColumnRef}
+        mountTo={mountPoint}
+        boundariesElement={boundariesElement}
+        scrollableElement={scrollableElement}
+        fitHeight={100}
+        fitWidth={200}
+        // z-index value below is to ensure that this menu is above other floating menu
+        // in table, but below floating dialogs like typeaheads, pickers, etc.
+        zIndex={akEditorFloatingOverlapPanelZIndex}
+        handleClickOutside={this.hideMenu}
       >
-        <div className="ProseMirror-table-contextual-menu-trigger">
-          <ToolbarButton
-            selected={this.state.isOpen}
-            title="Toggle contextual menu"
-            onClick={this.toggleOpen}
-            iconBefore={<ExpandIcon label="expand-dropdown-menu" />}
-          />
-        </div>
-      </DropdownMenu>
+        <DropdownMenu
+          items={items}
+          mountTo={this.props.mountPoint}
+          isOpen={true}
+          onItemActivated={this.onMenuItemActivated}
+          fitHeight={188}
+          fitWidth={180}
+          offset={[13, -20]}
+        />
+      </PopupWithListeners>
     );
   }
+
+  private hideMenu = () => {
+    const { dispatch, state } = this.props.editorView;
+    dispatch(
+      state.tr.setMeta(pluginKey, {
+        targetColumnRef: undefined,
+        columnIndex: undefined,
+      }),
+    );
+  };
 
   private createItems = () => {
     const items: any[] = [];
@@ -122,12 +146,6 @@ export default class ColumnTypesMenu extends Component<Props, State> {
     });
 
     return items.length ? [{ items }] : null;
-  };
-
-  private toggleOpen = () => {
-    this.setState({
-      isOpen: !this.state.isOpen,
-    });
   };
 
   private onMenuItemActivated = ({ item }) => {
@@ -194,7 +212,7 @@ export default class ColumnTypesMenu extends Component<Props, State> {
       }
 
       dispatch(tr);
-      this.props.toggleOpen();
+      this.hideMenu();
     }
   };
 }
