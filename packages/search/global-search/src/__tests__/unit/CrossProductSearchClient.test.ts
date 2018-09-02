@@ -221,7 +221,7 @@ describe('CrossProductSearchClient', () => {
     ]);
     const call = fetchMock.calls('xpsearch')[0];
     // @ts-ignore
-    const body = JSON.parse(call[0]._bodyText);
+    const body = JSON.parse(call[1].body);
 
     expect(body.query).toEqual('query');
     expect(body.cloudId).toEqual('123');

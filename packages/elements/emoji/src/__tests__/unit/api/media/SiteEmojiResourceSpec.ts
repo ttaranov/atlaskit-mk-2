@@ -1,4 +1,3 @@
-jest.mock('@atlaskit/media-core');
 import { ContextFactory, FileState } from '@atlaskit/media-core';
 import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
 import 'whatwg-fetch';
@@ -32,6 +31,8 @@ import {
   loadedMediaEmoji,
 } from '../../_test-data';
 import { Observable } from 'rxjs/Observable';
+
+jest.mock('@atlaskit/media-core');
 
 class TestSiteEmojiResource extends SiteEmojiResource {
   constructor(tokenManager: TokenManager) {
@@ -153,16 +154,15 @@ describe('SiteEmojiResource', () => {
 
           const uploadEmojiCalls = fetchMock.calls('emoji-upload');
           expect(uploadEmojiCalls).toHaveLength(1);
-          const uploadRequest = uploadEmojiCalls[0][0];
-          return uploadRequest.json().then(json => {
-            const { shortName, name, width, height } = upload;
-            expect(json).toEqual({
-              shortName,
-              name,
-              width,
-              height,
-              fileId: '123',
-            });
+          const options = uploadEmojiCalls[0][1];
+          const body = JSON.parse(options.body);
+          const { shortName, name, width, height } = upload;
+          expect(body).toEqual({
+            shortName,
+            name,
+            width,
+            height,
+            fileId: '123',
           });
         });
 
@@ -238,19 +238,16 @@ describe('SiteEmojiResource', () => {
 
           const uploadEmojiCalls = fetchMock.calls('emoji-upload');
           expect(uploadEmojiCalls).toHaveLength(1);
-          const uploadRequest = uploadEmojiCalls[0][0];
-
           expect(error).toEqual('Bad Request');
-
-          return uploadRequest.json().then(json => {
-            const { shortName, name, width, height } = upload;
-            expect(json).toEqual({
-              shortName,
-              name,
-              width,
-              height,
-              fileId: '123',
-            });
+          const options = uploadEmojiCalls[0][1];
+          const body = JSON.parse(options.body);
+          const { shortName, name, width, height } = upload;
+          expect(body).toEqual({
+            shortName,
+            name,
+            width,
+            height,
+            fileId: '123',
           });
         });
 
