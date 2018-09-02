@@ -189,16 +189,17 @@ export default class ColumnTypesMenu extends Component<Props> {
       const cellType = item.value.name;
       const { paragraph, decisionList } = editorView.state.schema.nodes;
 
-      if (Object.keys(nodemap).indexOf(cellType) !== -1) {
-        const cells = getCellsInColumn(columnIndex)(tr.selection)!;
-        cells.forEach(cell => {
-          if (
-            cell.node.type !== tableCell ||
-            cell.node.attrs.cellType === 'summary'
-          ) {
-            return;
-          }
-          let newCell;
+      const cells = getCellsInColumn(columnIndex)(tr.selection)!;
+      cells.forEach(cell => {
+        if (
+          cell.node.type !== tableCell ||
+          cell.node.attrs.cellType === 'summary'
+        ) {
+          return;
+        }
+        let newCell;
+        // insert node to each cell
+        if (Object.keys(nodemap).indexOf(cellType) !== -1) {
           if (item.value.name === 'decision') {
             const node = decisionList.createAndFill() as PmNode;
             newCell = cell.node.type.create(cell.node.attrs, node);
@@ -208,13 +209,20 @@ export default class ColumnTypesMenu extends Component<Props> {
               paragraph.create({}, nodemap[cellType].createChecked()),
             );
           }
-          tr = tr.replaceWith(
-            tr.mapping.map(cell.pos),
-            tr.mapping.map(cell.pos + cell.node.nodeSize),
-            newCell,
+        }
+        // otherwise clear the content
+        else {
+          newCell = cell.node.type.create(
+            cell.node.attrs,
+            paragraph.createAndFill() as PmNode,
           );
-        });
-      }
+        }
+        tr = tr.replaceWith(
+          tr.mapping.map(cell.pos),
+          tr.mapping.map(cell.pos + cell.node.nodeSize),
+          newCell,
+        );
+      });
 
       dispatch(tr);
       this.hideMenu();
