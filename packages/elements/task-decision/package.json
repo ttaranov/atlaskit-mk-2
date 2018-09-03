@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/task-decision",
-  "version": "8.1.7",
+  "version": "8.1.8",
   "config": {
     "access": "public"
   },
@@ -22,7 +22,7 @@
     "@atlaskit/icon": "^13.2.5",
     "@atlaskit/spinner": "^9.0.6",
     "@atlaskit/theme": "^6.0.0",
-    "@atlaskit/util-service-support": "^3.0.1",
+    "@atlaskit/util-service-support": "^3.0.3",
     "date-fns": "^1.29.0",
     "lodash.debounce": "^4.0.8",
     "tslib": "^1.8.0",

@@ -1,5 +1,8 @@
 # @atlaskit/reactions
 
+## 13.0.11
+- [patch] FS-2941 Stop using Request object and upgrade fetch-mock [dff332a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dff332a)
+
 ## 13.0.10
 - [patch] Change tsconfig of reactions [ecca4b6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ecca4b6)
 

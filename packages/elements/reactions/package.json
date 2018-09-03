@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/reactions",
-  "version": "13.0.10",
+  "version": "13.0.11",
   "config": {
     "access": "public"
   },
@@ -15,7 +15,7 @@
   ],
   "dependencies": {
     "@atlaskit/button": "^9.0.6",
-    "@atlaskit/emoji": "^40.0.0",
+    "@atlaskit/emoji": "^40.0.1",
     "@atlaskit/icon": "^13.2.5",
     "@atlaskit/layer": "^5.0.4",
     "@atlaskit/theme": "^6.0.0",
