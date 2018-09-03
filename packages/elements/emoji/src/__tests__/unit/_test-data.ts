@@ -29,7 +29,6 @@ export const {
   atlassianServiceEmojis,
   standardServiceEmojis,
   siteServiceEmojis,
-  siteEmojis,
   emojis,
   openMouthEmoji,
   searchableEmojis,
@@ -42,9 +41,6 @@ export const {
   mediaServiceEmoji,
   getEmojiResourcePromise,
   getEmojiResourcePromiseFromRepository,
-  getNonUploadingEmojiResourcePromise,
-  siteEmojiFoo,
-  siteEmojiWtf,
   standardBoomEmoji,
   blackFlagEmoji,
 } = testData;

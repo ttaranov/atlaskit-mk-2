@@ -4,10 +4,14 @@ import ResourcedEmojiControl, {
   getEmojiConfig,
   getRealEmojiResource,
 } from '../example-helpers/demo-resource-control';
-import { EmojiProvider, OnEmojiProviderChange } from '../src/api/EmojiResource';
+import { EmojiProvider } from '../src/api/EmojiResource';
 import ResourcedEmoji from '../src/components/common/ResourcedEmoji';
 import { toEmojiId } from '../src/type-helpers';
-import { EmojiSearchResult, EmojiDescription } from '../src/types';
+import {
+  EmojiSearchResult,
+  EmojiDescription,
+  OnEmojiProviderChange,
+} from '../src/types';
 import { customCategory } from '../src/constants';
 
 const customFilter = (emoji: EmojiDescription) =>
@@ -91,6 +95,7 @@ class ResourcedFilteredEmojiList extends PureComponent<
             emojiProvider={emojiProvider}
             emojiId={toEmojiId(emoji)}
             fitToHeight={fitToHeight}
+            showTooltip={true}
           />
         ))}
       </p>
@@ -100,10 +105,7 @@ class ResourcedFilteredEmojiList extends PureComponent<
 
 export default function Example() {
   const emojiList = (
-    <ResourcedFilteredEmojiList
-      emojiProvider={getRealEmojiResource()}
-      fitToHeight={72}
-    />
+    <ResourcedFilteredEmojiList emojiProvider={getRealEmojiResource()} />
   );
   return (
     <ResourcedEmojiControl

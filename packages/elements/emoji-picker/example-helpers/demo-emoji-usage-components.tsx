@@ -9,7 +9,6 @@ import {
   ResourcedEmoji,
 } from '@atlaskit/emoji';
 import { UsageClearEmojiResource } from '@atlaskit/util-data-test';
-import { localStoragePrefix } from '../src/constants';
 
 export interface EmojiUsageProps {
   emojiProvider: EmojiProvider;
@@ -167,7 +166,7 @@ export abstract class UsageShowAndClearComponent extends PureComponent<
   protected abstract getWrappedComponent(): JSX.Element;
 
   getEmojiQueue(): Array<string> {
-    const json = window.localStorage.getItem(`${localStoragePrefix}.lastUsed`);
+    const json = window.localStorage.getItem(`fabric.emoji.lastUsed`);
     if (json) {
       try {
         return JSON.parse(json);

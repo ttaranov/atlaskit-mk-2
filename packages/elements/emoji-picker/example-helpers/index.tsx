@@ -1,9 +1,4 @@
-import {
-  OnEmojiEvent,
-  OnToneSelected,
-  EmojiUpload,
-  EmojiRepository,
-} from '@atlaskit/emoji';
+import { OnEmojiEvent, OnToneSelected, EmojiUpload } from '@atlaskit/emoji';
 import { OnUploadEmoji } from '../src/common/EmojiUploadPicker';
 import { emoji, UsageClearEmojiResource } from '@atlaskit/util-data-test';
 import debug from '../src/util/logger';

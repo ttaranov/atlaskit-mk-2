@@ -17,11 +17,7 @@ import EmojiResource, {
 import EmojiRepository, { getEmojiVariation } from './api/EmojiRepository';
 import EmojiLoader from './api/EmojiLoader';
 import { denormaliseEmojiServiceResponse } from './api/EmojiUtils';
-import {
-  toEmojiId,
-  toOptionalEmojiId,
-  supportsUploadFeature,
-} from './type-helpers';
+import { toEmojiId, toOptionalEmojiId } from './type-helpers';
 export {
   customCategory,
   defaultEmojiHeight,

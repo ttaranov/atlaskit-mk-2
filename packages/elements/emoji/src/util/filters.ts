@@ -11,11 +11,6 @@ const byShortName = (
 const toneEmoji = (emojis: EmojiDescription[]) =>
   byShortName(emojis, toneEmojiShortName);
 
-export const getToneEmoji = (
-  provider: EmojiProvider,
-): OptionalEmojiDescription | Promise<OptionalEmojiDescription> =>
-  provider.findByShortName(toneEmojiShortName);
-
 export default {
   byShortName,
   toneEmoji,
