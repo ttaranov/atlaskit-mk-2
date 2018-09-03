@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 18.0.1
+- [patch] Fix feedback button in MVNG [44bfc3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/44bfc3a)
+
 ## 18.0.0
 - [major] Updated dependencies [7545979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7545979)
   - @atlaskit/media-core@23.1.0
