@@ -1,3 +1,8 @@
+---
+title: Adding documentation
+description: A guide to adding documentation to atlaskit.atlassian.com
+---
+
 # Adding documentation to atlaskit.atlassian.com
 
 The documentation for a package on the `atlaskit.atlassian.com` website consists of three main parts; the main component page, possibly sub-pages, and examples pages. This document details how to write and format all of these so they are rendered correctly, as well as some information on the tools being used in the website.
