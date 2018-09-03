@@ -15,7 +15,7 @@ import Spinner from '@atlaskit/spinner';
 import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import { navigationItemClicked } from '../common/analytics';
-import ContainerHeader from '../components/ContainerHeader';
+import ContainerHeaderComponent from '../components/ContainerHeader';
 import BaseItem from '../components/Item';
 import SectionComponent from '../components/Section';
 import SectionHeadingComponent from '../components/SectionHeading';
@@ -155,8 +155,16 @@ const GroupHeading = ({ text, ...props }: GroupHeadingProps) => (
   <GroupHeadingComponent {...props}>{text}</GroupHeadingComponent>
 );
 
+// SectionHeading
 const SectionHeading = ({ text, ...props }: SectionHeadingProps) => (
   <SectionHeadingComponent {...props}>{text}</SectionHeadingComponent>
+);
+
+// ContainerHeader
+const ContainerHeader = (props: *) => (
+  <div css={{ paddingBottom: gridSize * 2.5 }}>
+    <ContainerHeaderComponent {...props} />
+  </div>
 );
 
 // Switcher

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { ThemeProvider } from 'emotion-theming';
-import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
+import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left-circle';
 import BacklogIcon from '@atlaskit/icon/glyph/backlog';
 import BoardIcon from '@atlaskit/icon/glyph/board';
 import ComponentIcon from '@atlaskit/icon/glyph/component';
@@ -93,7 +93,15 @@ export default () => (
                 <JiraWordmark />
               </div>
               <div css={{ marginBottom: 16 }}>
-                <Item before={ArrowLeftIcon} text="Back" />
+                <Item
+                  before={() => (
+                    <ArrowLeftIcon
+                      primaryColor="currentColor"
+                      secondaryColor="inherit"
+                    />
+                  )}
+                  text="Back"
+                />
               </div>
             </div>
           )}
