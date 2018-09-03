@@ -3,7 +3,7 @@ import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import RangeSlider from 'react-rangeslider';
 import { Cell } from '../../types';
-import { pluginKey } from '../../pm-plugins/column-types';
+import { pluginKey, setCellContent } from '../../pm-plugins/column-types';
 
 export interface Props {
   view: EditorView;
@@ -25,15 +25,6 @@ export default class Slider extends React.PureComponent<Props, State> {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    const { node } = nextProps;
-    if (node.attrs.value !== this.state.value) {
-      this.setState({
-        value: node.attrs.value,
-      });
-    }
-  }
-
   handleChangeStart = () => {
     // console.log('Change event started')
   };
@@ -46,24 +37,15 @@ export default class Slider extends React.PureComponent<Props, State> {
 
   handleChangeComplete = () => {
     const { state, dispatch } = this.props.view;
-    const { node } = this.props;
-    const { value = 0 } = this.state;
-    const { clickedCell: cell } = pluginKey.getState(state);
-    if (!cell) {
+    const { value } = this.state;
+    const pluginState = pluginKey.getState(state);
+    const { tr, schema } = state;
+    if (!pluginState.clickedCell) {
       return;
     }
 
-    dispatch(
-      state.tr.setNodeMarkup(
-        cell.pos - 1,
-        node.type,
-        {
-          ...node.attrs,
-          value,
-        },
-        node.marks,
-      ),
-    );
+    const sliderNode = schema.nodes.slider.create({ value });
+    dispatch(setCellContent(sliderNode, pluginState.clickedCell)(tr));
   };
 
   render() {

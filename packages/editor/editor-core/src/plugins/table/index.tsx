@@ -10,7 +10,6 @@ import {
   slider,
   checkbox,
 } from '@atlaskit/editor-common';
-console.log({ slider, checkbox });
 import { EditorPlugin } from '../../types';
 import { PluginConfig } from './types';
 import { createPlugin, pluginKey } from './pm-plugins/main';
