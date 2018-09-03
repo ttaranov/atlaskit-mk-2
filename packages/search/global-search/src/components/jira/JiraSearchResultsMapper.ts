@@ -2,6 +2,7 @@ import {
   ResultsGroup,
   JiraResultsMap,
   GenericResultMap,
+  Result,
 } from '../../model/Result';
 import { take } from '../SearchResultsUtil';
 
@@ -12,7 +13,7 @@ const MAX_FILTERS = 2;
 const MAX_PEOPLE = 3;
 
 const DEFAULT_JIRA_RESULTS_MAP: GenericResultMap = {
-  issues: [],
+  issues: [] as Result[],
   boards: [],
   filters: [],
   projects: [],

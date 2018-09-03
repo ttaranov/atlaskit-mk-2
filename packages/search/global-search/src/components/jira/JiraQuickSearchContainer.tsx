@@ -128,7 +128,7 @@ export class JiraQuickSearchContainer extends React.Component<
       .then(([jiraItems, people]) => {
         return { ...jiraItems, people };
       })
-      .then(results => ({ results }));
+      .then(results => ({ results } as ResultsWithTiming));
   };
 
   getSearchResults = (
