@@ -5,13 +5,7 @@ import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
 import { colors } from '@atlaskit/theme';
 
-import {
-  GroupHeading,
-  Item,
-  Section,
-  ScrollableSectionInner,
-  Separator,
-} from '../src';
+import { GroupHeading, Item, Section, Separator } from '../src';
 
 const Container = props => (
   <div
