@@ -46,12 +46,12 @@ class LayoutManagerWithViewControllerBase extends Component<
     const { firstSkeleton } = this.props;
     let Wrapper;
 
-    if (firstSkeleton === 'product') {
+    if (firstSkeleton === 'product' && !this.state.hasInitialised) {
       Wrapper = ProductNavigationTheme;
-    } else if (firstSkeleton === 'container') {
+    } else if (firstSkeleton === 'container' && !this.state.hasInitialised) {
       Wrapper = ContainerNavigationTheme;
     } else {
-      Wrapper = 'div';
+      Wrapper = Fragment;
     }
 
     return (
