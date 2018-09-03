@@ -2,6 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
 import { Node as PmNode } from 'prosemirror-model';
+import { Selection } from 'prosemirror-state';
 import {
   forEachCellInColumn,
   setCellAttrs,
@@ -213,6 +214,7 @@ export default class ColumnTypesMenu extends Component<Props> {
         // try to keep number content for "number" and "currency" columns
         else if (
           (item.value.name === 'number' || item.value.name === 'currency') &&
+          cell.node.child(0).type.name === 'paragraph' &&
           `${parseInt(cell.node.textContent, 10)}` === cell.node.textContent
         ) {
           newCell = cell.node;
@@ -230,6 +232,17 @@ export default class ColumnTypesMenu extends Component<Props> {
           newCell,
         );
       });
+      if (cells[1]) {
+        const { start } = cells[1];
+        const newSelection = Selection.findFrom(
+          editorView.state.doc.resolve(start),
+          1,
+          true,
+        );
+        if (newSelection) {
+          tr = tr.setSelection(newSelection);
+        }
+      }
 
       dispatch(tr);
       this.hideMenu();
