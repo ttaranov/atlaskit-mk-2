@@ -16,7 +16,7 @@ import {
 import { colors, layers } from '@atlaskit/theme';
 import { ellipsis } from '@atlaskit/media-ui';
 
-const overlayZindex = layers.modal() + 10;
+const overlayZindex = layers.blanket() + 10;
 
 export const mediaTypeIconColors = {
   image: akColorY200,
@@ -323,9 +323,7 @@ export const DefaultCoverWrapper = styled.div`
   }
 `;
 
-export const FeedbackWrapper = styled.span`
-  padding-right: 5px;
-`;
+export const FeedbackWrapper = styled.span``;
 
 export const DownloadButtonWrapper = styled.div`
   margin-top: 28px;
