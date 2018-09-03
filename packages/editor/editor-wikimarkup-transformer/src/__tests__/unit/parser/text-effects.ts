@@ -10,6 +10,10 @@ describe('JIRA wiki markup - Text effects', () => {
       'should divide marks intervals into combination of marks',
       'This is a *string with a {color:red}bold red* text{color}.',
     ],
+    [
+      'should default unknown color to black #000000',
+      'This is a unknown {color:nimabi}color{color}',
+    ],
     ['should find monospace text', 'This is a string with {{monospaced text}}'],
     [
       'should not search for monospace text inside code macro',

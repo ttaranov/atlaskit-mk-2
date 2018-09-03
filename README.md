@@ -21,7 +21,7 @@ may diverge in appearance:
 import '@atlaskit/css-reset';
 ```
 
-In general, you should avoid directly styling base elements (ex. p, h1, h2…) and uses classes instead.
+In general, you should avoid directly styling base elements (ex. p, h1, h2) and uses classes instead.
 
 #### Example for React projects
 

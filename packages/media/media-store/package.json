@@ -26,8 +26,8 @@
   },
   "devDependencies": {
     "@atlaskit/media-test-helpers": "^17.0.0",
-    "@types/fetch-mock": "^5.12.1",
-    "fetch-mock": "^5.12.1",
+    "@types/fetch-mock": "^6.0.3",
+    "fetch-mock": "^6.5.2",
     "whatwg-fetch": "^2.0.3"
   },
   "peerDependencies": {

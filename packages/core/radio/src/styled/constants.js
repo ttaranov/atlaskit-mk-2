@@ -17,6 +17,6 @@ export const width = fullWidth - 2 * borderWidth; // 10
 export const maxIconWidth = fullWidth + borderWidthFocus * 2; // 16
 export const iconHorizontalPadding = (3 * width - maxIconWidth) / 2; // 7
 
-// Size of inner selection circle
+// Size of inner circle
 export const innerWidth = gridSize() / 2; // 4
 export const innerHeight = gridSize() / 2; // 4

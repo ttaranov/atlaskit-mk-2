@@ -371,6 +371,7 @@ const iconIds: Array<string> = [
   'presence-unavailable',
   'question-circle',
   'question',
+  'questions',
   'queues',
   'quote',
   'radio',

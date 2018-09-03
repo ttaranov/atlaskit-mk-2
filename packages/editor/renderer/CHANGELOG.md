@@ -1,5 +1,14 @@
 # @atlaskit/renderer
 
+## 21.0.5
+- [patch] move tests and add dev dependencies to help test  [177a858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/177a858)
+
+## 21.0.4
+- [patch] Unique heading IDs [d312d25](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d312d25)
+
+## 21.0.3
+- [patch] Fix issue where BreakoutProvider would not import correctly in Typescript [6b95448](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6b95448)
+
 ## 21.0.2
 - [patch] ED-3919: Fix typography and other styles, align styles between editor and renderer [d0f9293](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d0f9293)
 

@@ -10,12 +10,13 @@ import {
 } from './mockData';
 import { JiraRecentResponse } from './jiraRecentResponseData';
 
-type Request = {
-  json: Function;
-  url: string;
+type Request = string;
+
+type Options = {
+  body: string;
 };
 
-type MocksConfig = {
+export type MocksConfig = {
   crossProductSearchDelay: number;
   quickNavDelay: number;
 };
@@ -52,18 +53,21 @@ function mockConfluenceRecentApi() {
 }
 
 function mockCrossProductSearchApi(delayMs: number) {
-  fetchMock.post(new RegExp('/quicksearch/v1'), async (request: Request) => {
-    const body = await request.json();
-    const query = body.query;
-    const results = queryMockSearch(query);
+  fetchMock.post(
+    new RegExp('/quicksearch/v1'),
+    (request: Request, options: Options) => {
+      const body = JSON.parse(options.body);
+      const query = body.query;
+      const results = queryMockSearch(query);
 
-    return delay(delayMs, results);
-  });
+      return delay(delayMs, results);
+    },
+  );
 }
 
 function mockQuickNavApi(delayMs: number) {
-  fetchMock.mock(new RegExp('/quicknav/1'), async (request: Request) => {
-    const query = request.url.split('query=')[1];
+  fetchMock.mock(new RegExp('/quicknav/1'), (request: Request) => {
+    const query = request.split('query=')[1];
     const results = queryMockQuickNav(query);
 
     return delay(delayMs, results);
@@ -71,13 +75,16 @@ function mockQuickNavApi(delayMs: number) {
 }
 
 function mockPeopleApi() {
-  fetchMock.post(new RegExp('/graphql'), async (request: Request) => {
-    const body = await request.json();
-    const query = body.variables.displayName || '';
-    const results = queryPeopleSearch(query);
+  fetchMock.post(
+    new RegExp('/graphql'),
+    (request: Request, options: Options) => {
+      const body = JSON.parse(options.body);
+      const query = body.variables.displayName || '';
+      const results = queryPeopleSearch(query);
 
-    return delay(500, results);
-  });
+      return delay(500, results);
+    },
+  );
 }
 
 function mockJiraApi() {

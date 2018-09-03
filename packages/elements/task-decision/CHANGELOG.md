@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 8.1.8
+- [patch] FS-2941 Stop using Request object and upgrade fetch-mock [dff332a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dff332a)
+
 ## 8.1.7
 - [patch] Updated dependencies [7545979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7545979)
   - @atlaskit/editor-common@15.0.0

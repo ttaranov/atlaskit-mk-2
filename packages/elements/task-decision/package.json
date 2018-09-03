@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/task-decision",
-  "version": "8.1.7",
+  "version": "8.1.8",
   "config": {
     "access": "public"
   },
@@ -22,7 +22,7 @@
     "@atlaskit/icon": "^13.2.5",
     "@atlaskit/spinner": "^9.0.6",
     "@atlaskit/theme": "^6.0.0",
-    "@atlaskit/util-service-support": "^3.0.1",
+    "@atlaskit/util-service-support": "^3.0.3",
     "date-fns": "^1.29.0",
     "lodash.debounce": "^4.0.8",
     "tslib": "^1.8.0",
@@ -51,7 +51,7 @@
     "@atlaskit/util-data-test": "^10.0.8",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "enzyme-adapter-react-16": "https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.7.tgz",
-    "fetch-mock": "^5.12.1",
+    "fetch-mock": "^6.5.2",
     "react": "^16.4.0",
     "rxjs": "^5.1.0",
     "sinon": "^2.2.0",

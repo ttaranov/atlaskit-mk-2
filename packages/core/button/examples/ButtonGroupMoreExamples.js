@@ -18,6 +18,7 @@ export default () => (
         <Button appearance="primary">Alpha</Button>
         <Button appearance="default">Beta</Button>
         <Button appearance="warning">Delta</Button>
+        <Button appearance="help">Delta</Button>
         <Button appearance="link">Delta</Button>
         <Button appearance="subtle-link">Gamma</Button>
       </ButtonGroup>
