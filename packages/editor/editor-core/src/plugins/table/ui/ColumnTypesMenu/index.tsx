@@ -167,24 +167,31 @@ export default class ColumnTypesMenu extends Component<Props> {
     }
 
     if (columnIndex !== null) {
-      let { tr } = editorView.state;
       const lastRowIndex = table.node.childCount - 1;
       let rowIndex = 0;
-      tr = forEachCellInColumn(columnIndex, (cell, tr) => {
-        if (table.node.attrs.isSummaryRowEnabled && rowIndex === lastRowIndex) {
-          attrs = { cellType: 'summary' };
-        } else {
-          attrs = { cellType: item.value.name };
-        }
-        rowIndex++;
-        return setCellAttrs(cell, attrs)(tr);
-      })(editorView.state.tr);
+
+      dispatch(
+        forEachCellInColumn(columnIndex, (cell, tr) => {
+          if (
+            table.node.attrs.isSummaryRowEnabled &&
+            rowIndex === lastRowIndex
+          ) {
+            attrs = { cellType: 'summary' };
+          } else {
+            attrs = { cellType: item.value.name };
+          }
+          rowIndex++;
+          return setCellAttrs(cell, attrs)(tr);
+        })(editorView.state.tr),
+      );
 
       const nodemap = {
         slider: slider,
         checkbox: checkbox,
         decision: decisionItem,
       };
+
+      let { tr } = editorView.state;
 
       // filldown for node type
       const cellType = item.value.name;
