@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`JIRA wiki markup - mediaLink should create a mediaLink in mediaGroup node 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "attrs": Object {
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "__key": null,
+            "collection": "",
+            "height": null,
+            "id": "test.txt",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+      ],
+      "type": "mediaGroup",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`JIRA wiki markup - mediaLink should not include mediaLink inside a list 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "text": "* some random list ",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+    Object {
+      "content": Array [
+        Object {
+          "attrs": Object {
+            "__displayType": null,
+            "__fileMimeType": null,
+            "__fileName": null,
+            "__fileSize": null,
+            "__key": null,
+            "collection": "",
+            "height": null,
+            "id": "not-in-list.txt",
+            "occurrenceKey": null,
+            "type": "file",
+            "url": null,
+            "width": null,
+          },
+          "type": "media",
+        },
+      ],
+      "type": "mediaGroup",
+    },
+  ],
+  "type": "doc",
+}
+`;

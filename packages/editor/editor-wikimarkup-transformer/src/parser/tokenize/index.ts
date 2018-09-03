@@ -15,6 +15,7 @@ import { list } from './list';
 import { macro } from './macro';
 import { mention } from './mention';
 import { monospace } from './monospace';
+import { mediaLink } from './mediaLink';
 import { quadrupleDashSymbol } from './quadruple-dash-symbol';
 import { ruler } from './ruler';
 import { strong } from './strong';
@@ -25,6 +26,7 @@ import { tripleDashSymbol } from './triple-dash-symbol';
 
 export enum TokenType {
   MACRO = 'MACRO',
+  MEDIA_LINK = 'MEDIA_LINK',
   PANEL = 'PANEL',
   QUOTE = 'QUOTE',
   CODE = 'CODE',
@@ -95,6 +97,7 @@ const tokenToTokenParserMapping: {
   [TokenType.EMOJI]: emoji,
   [TokenType.MENTION]: mention,
   [TokenType.MACRO]: macro,
+  [TokenType.MEDIA_LINK]: mediaLink,
 };
 
 export function parseToken(
