@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Node as PMNode } from 'prosemirror-model';
-import PlaceholderTextIcon from '@atlaskit/icon/glyph/media-services/text';
+import LayoutTwoEqualIcon from '@atlaskit/icon/glyph/editor/layout-two-equal';
 import { layoutSection, layoutColumn } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { FloatingToolbarConfig } from '../floating-toolbar/types';
@@ -42,7 +42,7 @@ export default {
         title: 'Columns',
         keywords: ['layout', 'section'],
         priority: 1100,
-        icon: () => <PlaceholderTextIcon label="Insert columns" />,
+        icon: () => <LayoutTwoEqualIcon label="Insert columns" />,
         action(insert, state) {
           const { layoutSection } = state.schema.nodes;
           return insert(layoutSection.createAndFill() as PMNode);

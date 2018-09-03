@@ -19,4 +19,5 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var Objects16Object16IssueIcon = function Objects16Object16IssueIcon(props) {
   return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path fill="#2684FF" fill-rule="evenodd" d="M6 4h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm1 4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V9a1 1 0 0 0-1-1H7zm1 2v4h8v-4H8z"/></svg>' }, props));
 };
+Objects16Object16IssueIcon.displayName = 'Objects16Object16IssueIcon';
 exports.default = Objects16Object16IssueIcon;

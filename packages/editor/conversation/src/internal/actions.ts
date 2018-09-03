@@ -25,14 +25,26 @@ export const CREATE_CONVERSATION_REQUEST = 'createConversationRequest';
 export const CREATE_CONVERSATION_SUCCESS = 'createConversationSuccess';
 export const CREATE_CONVERSATION_ERROR = 'createConversationError';
 
+export type SuccessHandler = (id: string) => void;
+
 export const addComment = (
   conversationId: string,
   parentId: string,
   value: any,
   localId: string | undefined = undefined,
   provider: ResourceProvider,
+  onSuccess?: SuccessHandler,
 ) => async () => {
-  provider.addComment(conversationId, parentId, value, localId);
+  const { commentId } = await provider.addComment(
+    conversationId,
+    parentId,
+    value,
+    localId,
+  );
+
+  if (typeof onSuccess === 'function') {
+    onSuccess(commentId);
+  }
 };
 
 export const updateComment = (
@@ -40,16 +52,26 @@ export const updateComment = (
   commentId: string,
   value: any,
   provider: ResourceProvider,
+  onSuccess?: SuccessHandler,
 ) => async () => {
-  provider.updateComment(conversationId, commentId, value);
+  await provider.updateComment(conversationId, commentId, value);
+
+  if (typeof onSuccess === 'function') {
+    onSuccess(commentId);
+  }
 };
 
 export const deleteComment = (
   conversationId: string,
   commentId: string,
   provider: ResourceProvider,
+  onSuccess?: SuccessHandler,
 ) => async () => {
-  provider.deleteComment(conversationId, commentId);
+  await provider.deleteComment(conversationId, commentId);
+
+  if (typeof onSuccess === 'function') {
+    onSuccess(commentId);
+  }
 };
 
 export const revertComment = (
@@ -73,6 +95,16 @@ export const createConversation = (
   value: any,
   meta: any,
   provider: ResourceProvider,
+  onSuccess?: SuccessHandler,
 ) => async () => {
-  provider.create(localId, containerId, value, meta);
+  const { conversationId } = await provider.create(
+    localId,
+    containerId,
+    value,
+    meta,
+  );
+
+  if (typeof onSuccess === 'function') {
+    onSuccess(conversationId);
+  }
 };

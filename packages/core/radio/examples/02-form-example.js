@@ -1,64 +1,86 @@
 // @flow
 import React, { Component } from 'react';
 import Button from '@atlaskit/button';
-import FieldRadioGroup, { AkRadio } from '../src';
-import type { ItemsPropTypeSmart } from '../src/types';
+import Form, { Field, FormFooter } from '@atlaskit/form';
+import { Radio, RadioGroup } from '../src';
+import type { OptionsPropType } from '../src/types';
 
 const formTestUrl = '//httpbin.org/get';
-const colorItems: ItemsPropTypeSmart = [
+const colorItems: OptionsPropType = [
   { name: 'color', value: 'red', label: 'Red' },
-  { name: 'color', value: 'blue', label: 'Blue', defaultSelected: true },
+  { name: 'color', value: 'blue', label: 'Blue', defaultChecked: true },
   { name: 'color', value: 'yellow', label: 'Yellow' },
   { name: 'color', value: 'green', label: 'Green' },
 ];
-const fruitItems: ItemsPropTypeSmart = [
+const fruitItems: OptionsPropType = [
   { name: 'fruit', value: 'apple', label: 'Apple' },
   { name: 'fruit', value: 'orange', label: 'Orange' },
-  { name: 'fruit', value: 'peach', label: 'Peach', defaultSelected: true },
+  { name: 'fruit', value: 'peach', label: 'Peach', defaultChecked: true },
   { name: 'fruit', value: 'pair', label: 'Pair' },
 ];
 
-export default class FormExample extends Component<void, void> {
-  onRadioChange = (event: any) => {
-    console.log(event.target.value);
+export default class FormExample extends Component<
+  void,
+  { isChecked: boolean },
+> {
+  form: any;
+  state = {
+    isChecked: false,
+  };
+  onChange = (event: SyntheticEvent<*>) => {
+    if (event.currentTarget.value === 'single-radio') {
+      this.setState({
+        isChecked: true,
+      });
+    }
+    console.log(event.currentTarget.value);
+  };
+  getFormRef = (form: any) => {
+    this.form = form;
   };
   render() {
     return (
       <div>
-        <form
+        <Form
+          ref={this.getFormRef}
+          name="form-example"
           action={formTestUrl}
-          method="get"
-          style={{ backgroundColor: 'white' }}
+          method="GET"
           target="submitFrame"
         >
-          <AkRadio
-            name="standalone"
-            value="single-radio"
-            onChange={this.onRadioChange}
+          <Field label="standalone radio">
+            <Radio
+              isChecked={this.state.isChecked}
+              name="standalone"
+              value="single-radio"
+              onChange={this.onChange}
+            >
+              Single Radio button
+            </Radio>
+          </Field>
+          <Field label="required radio group" isRequired>
+            <RadioGroup options={colorItems} onChange={this.onChange} />
+          </Field>
+          <Field label="regular radio group">
+            <RadioGroup options={fruitItems} onChange={this.onChange} />
+          </Field>
+          <FormFooter
+            actionsContent={[
+              {
+                id: 'submit-button',
+              },
+            ]}
           >
-            Single Radio button
-          </AkRadio>
-          <FieldRadioGroup
-            items={colorItems}
-            label="Pick a color:"
-            onRadioChange={this.onRadioChange}
-            isRequired
-          />
-          <FieldRadioGroup
-            items={fruitItems}
-            label="Pick a fruit:"
-            onRadioChange={this.onRadioChange}
-          />
-          <p>
             <Button type="submit" appearance="primary">
               Submit
             </Button>
-          </p>
-        </form>
+          </FormFooter>
+        </Form>
+
         <p>The data submitted by the form will appear below:</p>
         <iframe
           src=""
-          title="Checkbox Resopnse Frame"
+          title="Radio Response Frame"
           id="submitFrame"
           name="submitFrame"
           style={{

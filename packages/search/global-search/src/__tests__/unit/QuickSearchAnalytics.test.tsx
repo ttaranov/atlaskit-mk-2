@@ -19,6 +19,7 @@ import {
   getResultSelectedEvent,
   getHighlightEvent,
   getDismissedEvent,
+  getExperimentExposureEvent,
 } from './helpers/_events_payloads';
 
 const spyOnComponentDidUpdate = () => {
@@ -328,6 +329,17 @@ describe('Quick Search Analytics', () => {
         validateEvent(
           event,
           getPostQuerySearchResultsEvent(expectedResults.postQueryResults),
+        );
+      });
+
+      it('should trigger experiment exposure event', () => {
+        const event = onEventSpy.mock.calls[3][0];
+        validateEvent(
+          event,
+          getExperimentExposureEvent({
+            searchSessionId: expect.any(String),
+            experimentId: 'experiment-1',
+          }),
         );
       });
 

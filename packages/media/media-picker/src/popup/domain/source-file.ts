@@ -1,4 +1,5 @@
 import { Auth, isClientBasedAuth } from '@atlaskit/media-core';
+export { SourceFile } from '@atlaskit/media-store';
 
 export type ClientBasedSourceFileOwner = {
   readonly id: string;
@@ -15,12 +16,6 @@ export type AsapBasedSourceFileOwner = {
 export type SourceFileOwner =
   | ClientBasedSourceFileOwner
   | AsapBasedSourceFileOwner;
-
-export type SourceFile = {
-  id: string;
-  collection?: string;
-  owner: SourceFileOwner;
-};
 
 export function mapAuthToSourceFileOwner(auth: Auth): SourceFileOwner {
   if (isClientBasedAuth(auth)) {

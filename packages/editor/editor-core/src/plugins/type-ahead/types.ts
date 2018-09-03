@@ -1,9 +1,10 @@
+import { ReactElement } from 'react';
 import { EditorState, Transaction } from 'prosemirror-state';
 import { Node } from 'prosemirror-model';
 
 export type TypeAheadItem = {
   title: string;
-  icon?: () => React.ReactElement<any>;
+  icon?: () => ReactElement<any>;
   [key: string]: any;
 };
 

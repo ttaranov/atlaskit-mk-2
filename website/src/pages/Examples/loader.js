@@ -109,7 +109,7 @@ function ExampleLoader(props: ExampleLoaderProps) {
       return meta.noListener ? (
         <ExampleComp />
       ) : (
-        <FabricAnalyticsListeners client={Promise.resolve(mockClient)}>
+        <FabricAnalyticsListeners client={mockClient}>
           <ExampleComp />
         </FabricAnalyticsListeners>
       );

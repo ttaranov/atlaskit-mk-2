@@ -1,10 +1,11 @@
 {
   "name": "@atlaskit/icon",
-  "version": "13.4.0",
+  "version": "13.8.0",
   "description": "A React package that contains icons",
   "license": "SEE LICENSE IN LICENSE",
   "main": "es5/index.js",
   "module": "dist/esm/index.js",
+  "sideEffects": false,
   "files": [
     "dist",
     "glyph",
@@ -24,7 +25,7 @@
     "build:babel:cjs": "NODE_ENV=production BABEL_ENV=production:cjs babel src -d es5"
   },
   "dependencies": {
-    "@atlaskit/theme": "^6.0.1",
+    "@atlaskit/theme": "^6.0.2",
     "babel-runtime": "^6.26.0",
     "uuid": "^3.1.0"
   },
@@ -34,11 +35,11 @@
   },
   "devDependencies": {
     "@atlaskit/build-utils": "^2.0.0",
-    "@atlaskit/button": "^9.0.7",
+    "@atlaskit/button": "^9.0.8",
     "@atlaskit/docs": "^5.0.6",
-    "@atlaskit/field-text": "^7.0.8",
-    "@atlaskit/modal-dialog": "^6.0.10",
-    "@atlaskit/tooltip": "^12.0.10",
+    "@atlaskit/field-text": "^7.0.10",
+    "@atlaskit/modal-dialog": "^6.0.11",
+    "@atlaskit/tooltip": "^12.0.12",
     "babel-core": "^6.26.0",
     "classnames": "^2.2.5",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",

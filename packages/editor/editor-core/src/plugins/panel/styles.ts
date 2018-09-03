@@ -1,18 +1,10 @@
 // @ts-ignore: unused variable
 // prettier-ignore
-import { css, Styles, StyledComponentClass } from 'styled-components';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { css, Styles, StyledComponentClass, InterpolationFunction, ThemeProps } from 'styled-components';
+import { panelSharedStyles } from '@atlaskit/editor-common';
 
 export const panelStyles = css`
   .ProseMirror {
-    .panelView-content-wrap {
-      min-height: 42px;
-      margin: ${akGridSizeUnitless / 2}px 0;
-      padding: 1px 0;
-
-      & > .panel-content-dom {
-        padding: ${akGridSizeUnitless}px;
-      }
-    }
+    ${panelSharedStyles};
   }
 `;

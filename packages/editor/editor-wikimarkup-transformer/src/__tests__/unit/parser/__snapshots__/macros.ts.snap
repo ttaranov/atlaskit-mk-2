@@ -4,16 +4,18 @@ exports[`JIRA wiki markup - Macros should collapse and join outer macros 1`] = `
 Object {
   "content": Array [
     Object {
-      "attrs": Object {
-        "level": 1,
-      },
       "content": Array [
         Object {
+          "marks": Array [
+            Object {
+              "type": "strong",
+            },
+          ],
           "text": "My Title",
           "type": "text",
         },
       ],
-      "type": "heading",
+      "type": "paragraph",
     },
     Object {
       "attrs": Object {
@@ -83,16 +85,18 @@ exports[`JIRA wiki markup - Macros should collapse outer macros 1`] = `
 Object {
   "content": Array [
     Object {
-      "attrs": Object {
-        "level": 1,
-      },
       "content": Array [
         Object {
+          "marks": Array [
+            Object {
+              "type": "strong",
+            },
+          ],
           "text": "My Title",
           "type": "text",
         },
       ],
-      "type": "heading",
+      "type": "paragraph",
     },
     Object {
       "attrs": Object {
@@ -182,16 +186,18 @@ exports[`JIRA wiki markup - Macros should convert panels 1`] = `
 Object {
   "content": Array [
     Object {
-      "attrs": Object {
-        "level": 1,
-      },
       "content": Array [
         Object {
+          "marks": Array [
+            Object {
+              "type": "strong",
+            },
+          ],
           "text": "My Title",
           "type": "text",
         },
       ],
-      "type": "heading",
+      "type": "paragraph",
     },
     Object {
       "attrs": Object {
@@ -358,16 +364,18 @@ exports[`JIRA wiki markup - Macros should map panel bgColor in colorName to pane
 Object {
   "content": Array [
     Object {
-      "attrs": Object {
-        "level": 1,
-      },
       "content": Array [
         Object {
+          "marks": Array [
+            Object {
+              "type": "strong",
+            },
+          ],
           "text": "My Title",
           "type": "text",
         },
       ],
-      "type": "heading",
+      "type": "paragraph",
     },
     Object {
       "attrs": Object {
@@ -395,16 +403,18 @@ exports[`JIRA wiki markup - Macros should map panel bgColor in hex value to pane
 Object {
   "content": Array [
     Object {
-      "attrs": Object {
-        "level": 1,
-      },
       "content": Array [
         Object {
+          "marks": Array [
+            Object {
+              "type": "strong",
+            },
+          ],
           "text": "My Title",
           "type": "text",
         },
       ],
-      "type": "heading",
+      "type": "paragraph",
     },
     Object {
       "attrs": Object {
@@ -432,16 +442,18 @@ exports[`JIRA wiki markup - Macros should map panel bgColor in hex value to pane
 Object {
   "content": Array [
     Object {
-      "attrs": Object {
-        "level": 1,
-      },
       "content": Array [
         Object {
+          "marks": Array [
+            Object {
+              "type": "strong",
+            },
+          ],
           "text": "My Title",
           "type": "text",
         },
       ],
-      "type": "heading",
+      "type": "paragraph",
     },
     Object {
       "attrs": Object {
@@ -497,6 +509,41 @@ Object {
       "content": Array [
         Object {
           "text": "{code}code inside noformat{code}",
+          "type": "text",
+        },
+      ],
+      "type": "codeBlock",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
+exports[`JIRA wiki markup - Macros should process code with title 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "marks": Array [
+            Object {
+              "type": "strong",
+            },
+          ],
+          "text": "title",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+    Object {
+      "attrs": Object {
+        "language": "java",
+        "uniqueId": null,
+      },
+      "content": Array [
+        Object {
+          "text": "const i = 0;",
           "type": "text",
         },
       ],

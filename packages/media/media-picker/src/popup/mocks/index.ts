@@ -49,6 +49,7 @@ export const mockState: State = {
     authProvider: jest.fn(),
   }),
   config: {},
+  deferredIdUpfronts: {},
 };
 
 export const mockStore = (state?: Partial<State>) => ({

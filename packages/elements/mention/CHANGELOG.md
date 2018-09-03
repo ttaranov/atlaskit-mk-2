@@ -1,5 +1,11 @@
 # @atlaskit/mention
 
+## 15.0.8
+- [patch] FS-2941 Stop using Request object and upgrade fetch-mock [dff332a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dff332a)
+
+## 15.0.7
+- [patch] propagate sessionId to the mentionTypeahead rendered event and service endpoints [0c37666](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c37666)
+
 ## 15.0.6
 - [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
   - @atlaskit/util-data-test@10.0.7

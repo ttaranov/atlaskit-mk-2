@@ -24,7 +24,7 @@ function float(layout: MediaSingleLayout): string {
 function calcWidth(
   layout: MediaSingleLayout,
   width: number,
-  containerWidth: number,
+  containerWidth?: number,
 ): string {
   switch (layout) {
     case 'wrap-right':
@@ -35,9 +35,26 @@ function calcWidth(
     case 'wide':
       return `${Math.min(akEditorWideLayoutWidth, width)}px`;
     case 'full-width':
-      return `${Math.min(width, containerWidth) - akEditorBreakoutPadding}px`;
+      return `${Math.min(width, containerWidth || 0) -
+        akEditorBreakoutPadding}px`;
     default:
       return width > akEditorFullPageMaxWidth ? '100%' : `${width}px`;
+  }
+}
+
+function calcMaxWidth(
+  layout: MediaSingleLayout,
+  width: number,
+  containerWidth: number,
+) {
+  switch (layout) {
+    case 'wide':
+    case 'full-width':
+      return containerWidth < akEditorFullPageMaxWidth
+        ? '100%'
+        : `${containerWidth}px`;
+    default:
+      return '100%';
   }
 }
 
@@ -55,7 +72,7 @@ export interface WrapperProps {
   layout: MediaSingleLayout;
   width: number;
   height: number;
-  containerWidth: number;
+  containerWidth?: number;
 }
 
 /**
@@ -66,12 +83,10 @@ const MediaSingleDimensionHelper = ({
   width,
   height,
   layout,
-  containerWidth,
+  containerWidth = 0,
 }: WrapperProps) => css`
   width: ${calcWidth(layout, width, containerWidth)};
-  max-width: ${containerWidth < akEditorFullPageMaxWidth
-    ? '100%'
-    : `${containerWidth}px`};
+  max-width: ${calcMaxWidth(layout, width, containerWidth)};
   float: ${float(layout)};
   margin: ${calcMargin(layout)};
   &::after {

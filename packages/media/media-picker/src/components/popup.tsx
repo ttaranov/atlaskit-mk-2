@@ -91,7 +91,6 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
         this.store.dispatch(getFilesInRecents());
         // TODO [MSW-466]: Fetch remote accounts only when needed
         this.store.dispatch(getConnectedRemoteAccounts());
-
         this.store.dispatch(showPopup());
       });
   }
@@ -128,7 +127,11 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
   private renderPopup(): HTMLElement {
     const container = document.createElement('div');
     render(
-      <App store={this.store} proxyReactContext={this.proxyReactContext} />,
+      <App
+        store={this.store}
+        proxyReactContext={this.proxyReactContext}
+        tenantUploadParams={this.uploadParams}
+      />,
       container,
     );
     return container;

@@ -1,5 +1,29 @@
 # @atlaskit/editor-common
 
+## 15.0.3
+- [patch] Fix import error from css-color-names [ce50449](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce50449)
+
+## 15.0.2
+- [patch] ED-3919: Fix typography and other styles, align styles between editor and renderer [d0f9293](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d0f9293)
+
+## 15.0.1
+- [patch] Updated dependencies [da65dec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da65dec)
+
+## 15.0.0
+- [major] Updated dependencies [7545979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7545979)
+  - @atlaskit/emoji@40.0.0
+  - @atlaskit/media-card@33.0.0
+  - @atlaskit/editor-json-transformer@4.0.8
+  - @atlaskit/editor-test-helpers@6.0.6
+  - @atlaskit/media-core@23.1.0
+
+## 14.0.14
+- [patch] ED-5101, align z-index of all floating things inside editor. [52ad431](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/52ad431)
+- [none] Updated dependencies [52ad431](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/52ad431)
+
+## 14.0.13
+- [patch] Update Page Layout sizing to be more compact, fix quick-insert icon, fix issue with Popup not centering toolbar in certain situations [1effb83](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1effb83)
+
 ## 14.0.12
 - [patch] ED-5172 pressing enter after media single in list no longer deletes list [74824f8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/74824f8)
 

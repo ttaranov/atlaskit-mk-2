@@ -1,5 +1,21 @@
 # @atlaskit/conversation
 
+## 9.3.2
+- [patch] Updated dependencies [7545979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7545979)
+  - @atlaskit/editor-common@15.0.0
+  - @atlaskit/editor-core@79.0.0
+  - @atlaskit/renderer@21.0.0
+  - @atlaskit/comment@6.0.12
+  - @atlaskit/reactions@13.0.9
+  - @atlaskit/util-data-test@10.0.8
+
+## 9.3.1
+- [patch] Updated dependencies [90ba6bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/90ba6bd)
+  - @atlaskit/analytics-listeners@4.0.0
+
+## 9.3.0
+- [minor] Add analytics track events to Conversation component [2d6ab8d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d6ab8d)
+
 ## 9.2.1
 - [patch] Updated dependencies [911a570](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/911a570)
   - @atlaskit/renderer@20.1.1

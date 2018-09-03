@@ -1,5 +1,17 @@
 # @atlaskit/navigation-next
 
+## 3.7.1
+- [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
+
+## 3.7.0
+- [minor] Align styles and behaviours with updated designs [170fda7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/170fda7)
+
+## 3.6.6
+- [patch] Updated dependencies [90ba6bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/90ba6bd)
+  - @atlaskit/global-navigation@4.2.2
+  - @atlaskit/analytics-namespaced-context@2.1.2
+  - @atlaskit/analytics-listeners@4.0.0
+
 ## 3.6.5
 - [patch] Update navigation item analytics to gracefully handle invalid or missing ID prop [c3e29af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c3e29af)
 
