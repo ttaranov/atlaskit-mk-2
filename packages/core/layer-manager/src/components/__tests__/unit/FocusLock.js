@@ -4,7 +4,6 @@ import ReactDOM from 'react-dom';
 import { mount } from 'enzyme';
 import { FocusLock } from '../../..';
 
-const tabIndex = document.acitveElement && document.activeElement.tabIndex;
 const textContent = elem => (elem ? elem.textContent : '');
 
 const documentBody = fn => {
@@ -89,7 +88,8 @@ it('should focus on inner lock', () => {
       </FocusLock>
     </FocusLock>,
   );
-  expect(tabIndex()).toBe(1);
+  const { activeElement } = document;
+  expect(activeElement && activeElement.tabIndex).toBe(1);
 });
 
 it('should focus on last enabled inner lock', () => {
@@ -108,7 +108,8 @@ it('should focus on last enabled inner lock', () => {
       </div>
     </FocusLock>,
   );
-  expect(tabIndex()).toBe(1);
+  const { activeElement } = document;
+  expect(activeElement && activeElement.tabIndex).toBe(1);
 });
 
 it('should work through Portals', () => {
@@ -185,7 +186,8 @@ it('should stay focused in inner lock when disabled', () => {
   );
   wrapper.find('#button-2').simulate('click');
   return nextTick(() => {
-    expect(textContent(document.activeElement.nextElementSibling)).toBe(
+    const { activeElement } = document;
+    expect(textContent(activeElement && activeElement.nextElementSibling)).toBe(
       'Button 2 unlocked',
     );
   });
