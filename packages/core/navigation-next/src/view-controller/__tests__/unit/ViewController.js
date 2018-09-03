@@ -121,19 +121,30 @@ describe('NavigationNext View Controller', () => {
       expect(view.getItems).toHaveBeenCalled();
     });
 
-    it('should add view as incoming when setView is called if view id with `getItems` is NOT a promise', () => {
+    it('should add view as incoming when setView is called if view id with `getItems` promise was NOT solved', () => {
       const viewController = new ViewController({
         initialPeekViewId: 'view-id',
         isDebugEnabled: true,
       });
-
-      viewController.addView({ ...view, getItems: () => {} });
+      viewController.addView(view);
       viewController.setView('view-id');
 
       expect(viewController.state.incomingView).toMatchObject({
         id: view.id,
         type: view.type,
       });
+    });
+
+    it('should NOT add view as incoming when setView is called if view id with `getItems` is returning an empty list', () => {
+      const viewController = new ViewController({
+        initialPeekViewId: 'view-id',
+        isDebugEnabled: true,
+      });
+
+      viewController.addView({ ...view, getItems: () => [] });
+      viewController.setView('view-id');
+
+      expect(viewController.state.incomingView).toBe(null);
     });
 
     it('should add view as active when setView is called if view id with `getItems` promise and solved', async () => {
