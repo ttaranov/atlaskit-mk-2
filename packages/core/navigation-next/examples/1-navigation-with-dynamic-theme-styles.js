@@ -245,8 +245,10 @@ const Content = makeTestComponent(
 );
 
 const customThemeMode = modeGenerator({
-  text: colors.DN10,
-  background: colors.DN800,
+  product: {
+    text: colors.N0,
+    background: colors.G500,
+  },
 });
 
 export default () => (

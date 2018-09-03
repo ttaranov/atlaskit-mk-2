@@ -1,19 +1,8 @@
 // @flow
 
 import { colors, gridSize } from '@atlaskit/theme';
-
-import type { ThemedGlobalNavigationComponentStyles } from '../../theme/types';
 import type { GlobalItemPresentationProps } from './types';
-
-/**
- * We can't have semi-transparent background colors for items so I'm hard-coding
- * an opaque hex value here, where the designs specify them as an RGBA.
- */
-const lightActiveBackground = '#08367C'; // N80A
-const darkActiveBackground = '#202B3D';
-const darkHoverBackground = '#253247';
-const settingsActiveBackground = '#374864'; // rgba(255, 255, 255, 0.08)
-const settingsHoverBackground = '#0B2043'; // N700A
+import type { ModeColors } from '../../theme/types';
 
 const baseStyles = {
   itemBase: {
@@ -65,61 +54,23 @@ const sizeStyles = {
   },
 };
 
-const light = ({ isActive, isHover, size }) => ({
+export default ({ product }: ModeColors) => ({
+  isActive,
+  isHover,
+  size = 'large',
+}: GlobalItemPresentationProps) => ({
   itemBase: {
     ...baseStyles.itemBase,
     ...sizeStyles[size].itemBase,
     backgroundColor: (() => {
-      if (isActive || isHover) return lightActiveBackground;
-      return colors.B500;
+      if (isHover) return product.background.hover;
+      if (isActive) return product.background.active;
+      return product.background.default;
     })(),
-    color: colors.B50,
+    color: product.text.default,
   },
   badgeWrapper: {
     ...baseStyles.badgeWrapper,
     ...sizeStyles[size].badgeWrapper,
   },
 });
-
-const dark = ({ isActive, isHover, size }) => ({
-  itemBase: {
-    ...baseStyles.itemBase,
-    ...sizeStyles[size].itemBase,
-    backgroundColor: (() => {
-      if (isActive) return darkActiveBackground;
-      if (isHover) return darkHoverBackground;
-      return colors.DN0;
-    })(),
-    color: colors.DN400,
-  },
-  badgeWrapper: {
-    ...baseStyles.badgeWrapper,
-    ...sizeStyles[size].badgeWrapper,
-  },
-});
-
-const settings = ({ isActive, isHover, size }) => ({
-  itemBase: {
-    ...baseStyles.itemBase,
-    ...sizeStyles[size].itemBase,
-    backgroundColor: (() => {
-      if (isActive) return settingsActiveBackground;
-      if (isHover) return settingsHoverBackground;
-      return colors.N800;
-    })(),
-    color: colors.N0,
-  },
-  badgeWrapper: {
-    ...baseStyles.badgeWrapper,
-    ...sizeStyles[size].badgeWrapper,
-  },
-});
-
-const theme: ThemedGlobalNavigationComponentStyles<
-  GlobalItemPresentationProps,
-> = {
-  dark,
-  light,
-  settings,
-};
-export default theme;

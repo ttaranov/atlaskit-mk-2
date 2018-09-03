@@ -25,13 +25,11 @@ type ContentNavigationComponentTheme<
 export type ThemedGlobalNavigationComponentStyles<Props> = {
   light: GlobalNavigationComponentTheme<Props>,
   dark: GlobalNavigationComponentTheme<Props>,
-  settings: GlobalNavigationComponentTheme<Props>,
 };
 
 export type ThemedContentNavigationComponentStyles<Props> = {
   light: ContentNavigationComponentTheme<Props>,
   dark: ContentNavigationComponentTheme<Props>,
-  settings: ContentNavigationComponentTheme<Props>,
 };
 
 // This is the shape of a theme 'mode', e.g. light, dark and settings modes
@@ -60,3 +58,20 @@ export type StyleReducer = (
   Styles: ObjectType,
   State?: ObjectType,
 ) => ObjectType;
+
+export type ContextColors = {
+  background: {
+    default: string,
+    hover: string,
+    active: string,
+    selected: string,
+  },
+  text: {
+    default: string,
+    alternate: string,
+  },
+};
+
+export type ModeColors = {
+  product: ContextColors,
+};

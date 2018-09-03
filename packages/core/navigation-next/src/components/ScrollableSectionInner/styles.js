@@ -1,9 +1,7 @@
 // @flow
 
 import { colors, gridSize } from '@atlaskit/theme';
-
-import contentNavThemes from '../ContentNavigation/styles';
-import type { ThemedContentNavigationComponentStyles } from '../../theme/types';
+import type { ModeColors } from '../../theme/types';
 
 const scrollHintHeight = 2;
 const scrollHintSpacing = gridSize() * 2;
@@ -54,7 +52,7 @@ const baseStyles = {
   },
 };
 
-const light = () => ({
+export default ({ product }: ModeColors) => () => ({
   container: {
     wrapper: {
       ...baseStyles.wrapper,
@@ -67,7 +65,7 @@ const light = () => ({
       ...baseStyles.inner,
       '&::before': {
         ...baseStyles.inner['&::before'],
-        backgroundColor: contentNavThemes.light().container.backgroundColor,
+        backgroundColor: colors.N20,
       },
     },
   },
@@ -76,92 +74,15 @@ const light = () => ({
       ...baseStyles.wrapper,
       '&::before': {
         ...baseStyles.wrapper['&::before'],
-        backgroundColor: colors.N80A,
+        backgroundColor: product.background.selected,
       },
     },
     inner: {
       ...baseStyles.inner,
       '&::before': {
         ...baseStyles.inner['&::before'],
-        backgroundColor: contentNavThemes.light().product.backgroundColor,
+        backgroundColor: product.background.default,
       },
     },
   },
 });
-
-const dark = () => ({
-  container: {
-    wrapper: {
-      ...baseStyles.wrapper,
-      '&::before': {
-        ...baseStyles.wrapper['&::before'],
-        backgroundColor: colors.DN50,
-      },
-    },
-    inner: {
-      ...baseStyles.inner,
-      '&::before': {
-        ...baseStyles.inner['&::before'],
-        backgroundColor: contentNavThemes.dark().container.backgroundColor,
-      },
-    },
-  },
-  product: {
-    wrapper: {
-      ...baseStyles.wrapper,
-      '&::before': {
-        ...baseStyles.wrapper['&::before'],
-        backgroundColor: colors.DN50,
-      },
-    },
-    inner: {
-      ...baseStyles.inner,
-      '&::before': {
-        ...baseStyles.inner['&::before'],
-        backgroundColor: contentNavThemes.dark().product.backgroundColor,
-      },
-    },
-  },
-});
-
-const settings = () => ({
-  container: {
-    wrapper: {
-      ...baseStyles.wrapper,
-      '&::before': {
-        ...baseStyles.wrapper['&::before'],
-        backgroundColor: colors.N900,
-      },
-    },
-    inner: {
-      ...baseStyles.inner,
-      '&::before': {
-        ...baseStyles.inner['&::before'],
-        backgroundColor: contentNavThemes.settings().container.backgroundColor,
-      },
-    },
-  },
-  product: {
-    wrapper: {
-      ...baseStyles.wrapper,
-      '&::before': {
-        ...baseStyles.wrapper['&::before'],
-        backgroundColor: colors.N900,
-      },
-    },
-    inner: {
-      ...baseStyles.inner,
-      '&::before': {
-        ...baseStyles.inner['&::before'],
-        backgroundColor: contentNavThemes.settings().product.backgroundColor,
-      },
-    },
-  },
-});
-
-const themes: ThemedContentNavigationComponentStyles<void> = {
-  dark,
-  light,
-  settings,
-};
-export default themes;

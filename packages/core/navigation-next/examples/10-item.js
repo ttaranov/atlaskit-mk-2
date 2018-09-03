@@ -24,12 +24,11 @@ import {
   ItemAvatar,
   light,
   dark,
-  settings,
   SkeletonContainerHeader,
   SkeletonItem,
 } from '../src';
 
-const themeModes = { light, dark, settings };
+const themeModes = { light, dark };
 
 /**
  * Helper components
@@ -259,20 +258,6 @@ const variations: Array<VariationCategory> = [
         themeMode: 'dark',
         themeContext: 'product',
       },
-      {
-        before: ConfiguredAvatar,
-        text: 'Settings mode, container context',
-        subText: 'Sub text',
-        themeMode: 'settings',
-        themeContext: 'container',
-      },
-      {
-        before: ConfiguredAvatar,
-        text: 'Settings mode, product context',
-        subText: 'Sub text',
-        themeMode: 'settings',
-        themeContext: 'product',
-      },
     ],
   },
   {
@@ -401,17 +386,6 @@ const variations: Array<VariationCategory> = [
         themeMode: 'dark',
         themeContext: 'container',
       },
-      {
-        key: 'settings-container-skeleton',
-        themeMode: 'settings',
-        themeContext: 'container',
-      },
-      {
-        hasBefore: true,
-        key: 'settings-container-skeleton-with-icon',
-        themeMode: 'settings',
-        themeContext: 'container',
-      },
     ],
   },
   {
@@ -463,17 +437,6 @@ const variations: Array<VariationCategory> = [
         hasBefore: true,
         key: 'dark-container-skeleton-with-icon',
         themeMode: 'dark',
-        themeContext: 'container',
-      },
-      {
-        key: 'settings-container-skeleton',
-        themeMode: 'settings',
-        themeContext: 'container',
-      },
-      {
-        hasBefore: true,
-        key: 'settings-container-skeleton-with-icon',
-        themeMode: 'settings',
         themeContext: 'container',
       },
     ],

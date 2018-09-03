@@ -16,20 +16,19 @@ import {
   SkeletonItem,
   light,
   dark,
-  settings,
   ContainerHeader,
   ItemAvatar,
   Item,
 } from '../src';
 
-const themeModes = { light, dark, settings };
+const themeModes = { light, dark };
 
 const GlobalNavigation = () => (
   <GlobalNav primaryItems={[]} secondaryItems={[]} />
 );
 
 type State = {
-  themeMode: 'light' | 'dark' | 'settings',
+  themeMode: 'light' | 'dark',
   shouldShowContainer: boolean,
   shouldRenderIcons: boolean,
   shouldRenderSkeleton: boolean,
@@ -186,7 +185,6 @@ export default class Example extends Component<{}, State> {
                 <select onChange={this.handleThemeModeChange} value={themeMode}>
                   <option value="light">Light mode</option>
                   <option value="dark">Dark mode</option>
-                  <option value="settings">Settings mode</option>
                 </select>
               </p>
             </div>

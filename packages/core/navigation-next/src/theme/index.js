@@ -1,7 +1,7 @@
 // @flow
 
 // In-built theme modes
-export { dark, light, settings } from './modes';
+export { dark, light } from './modes';
 
 // Theme mode generator
 export { default as modeGenerator } from './modeGenerator';

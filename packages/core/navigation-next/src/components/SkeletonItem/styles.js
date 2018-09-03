@@ -1,8 +1,7 @@
 // @flow
 
 import { colors, gridSize as gridSizeFn } from '@atlaskit/theme';
-
-import type { ThemedContentNavigationComponentStyles } from '../../theme/types';
+import type { ModeColors } from '../../theme/types';
 
 const gridSize = gridSizeFn();
 
@@ -14,7 +13,7 @@ const baseStyles = {
     height: `${gridSize * 5}`,
     paddingLeft: `${gridSize * 1.5}px`,
     paddingRight: `${gridSize * 1.5}px`,
-    opacity: 0.15,
+    opacity: 0.5,
   },
   before: {
     backgroundColor: 'red',
@@ -32,86 +31,27 @@ const baseStyles = {
 };
 
 // Light theme
-const light = () => ({
+export default ({ product }: ModeColors) => () => ({
   container: {
     wrapper: baseStyles.wrapper,
     before: {
       ...baseStyles.before,
-      backgroundColor: colors.N500,
+      backgroundColor: colors.N40,
     },
     content: {
       ...baseStyles.content,
-      backgroundColor: colors.N500,
+      backgroundColor: colors.N40,
     },
   },
   product: {
     wrapper: baseStyles.wrapper,
     before: {
       ...baseStyles.before,
-      backgroundColor: colors.B50,
+      backgroundColor: product.background.selected,
     },
     content: {
       ...baseStyles.content,
-      backgroundColor: colors.B50,
+      backgroundColor: product.background.selected,
     },
   },
 });
-
-// Dark theme
-const dark = () => ({
-  container: {
-    wrapper: baseStyles.wrapper,
-    before: {
-      ...baseStyles.before,
-      backgroundColor: colors.DN400,
-    },
-    content: {
-      ...baseStyles.content,
-      backgroundColor: colors.DN400,
-    },
-  },
-  product: {
-    wrapper: baseStyles.wrapper,
-    before: {
-      ...baseStyles.before,
-      backgroundColor: colors.DN400,
-    },
-    content: {
-      ...baseStyles.content,
-      backgroundColor: colors.DN400,
-    },
-  },
-});
-
-// Settings theme
-const settings = () => ({
-  container: {
-    wrapper: baseStyles.wrapper,
-    before: {
-      ...baseStyles.before,
-      backgroundColor: colors.N0,
-    },
-    content: {
-      ...baseStyles.content,
-      backgroundColor: colors.N0,
-    },
-  },
-  product: {
-    wrapper: baseStyles.wrapper,
-    before: {
-      ...baseStyles.before,
-      backgroundColor: colors.N0,
-    },
-    content: {
-      ...baseStyles.content,
-      backgroundColor: colors.N0,
-    },
-  },
-});
-
-const themes: ThemedContentNavigationComponentStyles<void> = {
-  dark,
-  light,
-  settings,
-};
-export default themes;

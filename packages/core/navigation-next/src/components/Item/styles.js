@@ -1,9 +1,10 @@
 // @flow
 
+import chromatism from 'chromatism';
 import { colors, fontSize, gridSize as gridSizeFn } from '@atlaskit/theme';
 
-import type { ThemedContentNavigationComponentStyles } from '../../theme/types';
 import type { ItemPresentationProps } from './types';
+import type { ModeColors } from '../../theme/types';
 
 const gridSize = gridSizeFn();
 
@@ -16,16 +17,6 @@ const gridSize = gridSizeFn();
  *     - subTextWrapper
  *   - afterWrapper
  */
-
-/**
- * We can't have semi-transparent background colors for items so I'm hard-coding
- * an opaque hex value here, where the designs specify them as an RGBA.
- */
-const lightRootSelectedBackground = '#083D8D'; // N50A
-const lightRootHoverBackground = '#0A357D'; // N80A
-const darkActiveSelectedBackground = '#202B3D';
-const darkHoverBackground = '#253247';
-const settingsActiveBackground = '#374864'; // rgba(255, 255, 255, 0.08)
 
 // These are the styles which are consistent regardless of theme or spacing
 const baseStyles = {
@@ -116,8 +107,18 @@ const layoutStyles = {
   },
 };
 
+const getItemBackgroundColor = (
+  background,
+  { isActive, isSelected, isHover },
+) => {
+  if (isActive) return background.active;
+  if (isSelected) return background.selected;
+  if (isHover) return background.hover;
+  return background.default;
+};
+
 // Light theme
-const light = ({
+export default ({ product }: ModeColors) => ({
   isActive,
   isHover,
   isSelected,
@@ -127,11 +128,19 @@ const light = ({
     itemBase: {
       ...baseStyles.itemBase,
       ...layoutStyles[spacing].itemBase,
-      backgroundColor: (() => {
-        if (isActive) return colors.B50;
-        if (isSelected || isHover) return colors.N30;
-        return colors.N20;
-      })(),
+      backgroundColor: getItemBackgroundColor(
+        {
+          default: colors.N20,
+          active: colors.B50,
+          hover: colors.N30,
+          selected: colors.N30,
+        },
+        {
+          isActive,
+          isHover,
+          isSelected,
+        },
+      ),
     },
     beforeWrapper: {
       ...baseStyles.beforeWrapper,
@@ -157,26 +166,26 @@ const light = ({
     itemBase: {
       ...baseStyles.itemBase,
       ...layoutStyles[spacing].itemBase,
-      backgroundColor: (() => {
-        if (isActive) return colors.B200;
-        if (isSelected) return lightRootSelectedBackground;
-        if (isHover) return lightRootHoverBackground;
-        return colors.B500;
-      })(),
+      backgroundColor: getItemBackgroundColor(product.background, {
+        isActive,
+        isHover,
+        isSelected,
+      }),
     },
     beforeWrapper: {
       ...baseStyles.beforeWrapper,
       ...layoutStyles[spacing].beforeWrapper,
+      color: product.text.default,
     },
     contentWrapper: baseStyles.contentWrapper,
     textWrapper: {
       ...baseStyles.textWrapper,
-      color: colors.B50,
+      color: product.text.default,
     },
     subTextWrapper: {
       ...baseStyles.subTextWrapper,
       ...layoutStyles[spacing].subTextWrapper,
-      color: colors.B75,
+      color: product.text.alternate,
     },
     afterWrapper: {
       ...baseStyles.afterWrapper,
@@ -184,157 +193,3 @@ const light = ({
     },
   },
 });
-
-const darkContainerTextColor = ({ isActive, isSelected }) => {
-  if (isActive) return colors.B100;
-  if (isSelected) return colors.DN900;
-  return colors.DN400;
-};
-
-// Dark theme
-const dark = ({
-  isActive,
-  isHover,
-  isSelected,
-  spacing,
-}: ItemPresentationProps) => ({
-  container: {
-    itemBase: {
-      ...baseStyles.itemBase,
-      ...layoutStyles[spacing].itemBase,
-      backgroundColor: (() => {
-        if (isActive) return darkActiveSelectedBackground;
-        if (isSelected) return darkActiveSelectedBackground;
-        if (isHover) return darkHoverBackground;
-        return colors.DN20;
-      })(),
-    },
-    beforeWrapper: {
-      ...baseStyles.beforeWrapper,
-      ...layoutStyles[spacing].beforeWrapper,
-      color: darkContainerTextColor({ isActive, isSelected }),
-    },
-    contentWrapper: baseStyles.contentWrapper,
-    textWrapper: {
-      ...baseStyles.textWrapper,
-      color: darkContainerTextColor({ isActive, isSelected }),
-    },
-    subTextWrapper: {
-      ...baseStyles.subTextWrapper,
-      ...layoutStyles[spacing].subTextWrapper,
-      color: colors.DN100,
-    },
-    afterWrapper: {
-      ...baseStyles.afterWrapper,
-      ...layoutStyles[spacing].afterWrapper,
-    },
-  },
-  product: {
-    itemBase: {
-      ...baseStyles.itemBase,
-      ...layoutStyles[spacing].itemBase,
-      backgroundColor: (() => {
-        if (isActive) return darkActiveSelectedBackground;
-        if (isSelected) return darkActiveSelectedBackground;
-        if (isHover) return darkHoverBackground;
-        return colors.DN0;
-      })(),
-    },
-    beforeWrapper: {
-      ...baseStyles.beforeWrapper,
-      ...layoutStyles[spacing].beforeWrapper,
-    },
-    contentWrapper: baseStyles.contentWrapper,
-    textWrapper: {
-      ...baseStyles.textWrapper,
-      color: (() => {
-        if (isActive) return colors.B100;
-        if (isSelected) return colors.DN900;
-        return colors.DN400;
-      })(),
-    },
-    subTextWrapper: {
-      ...baseStyles.subTextWrapper,
-      ...layoutStyles[spacing].subTextWrapper,
-      color: colors.DN100,
-    },
-    afterWrapper: {
-      ...baseStyles.afterWrapper,
-      ...layoutStyles[spacing].afterWrapper,
-    },
-  },
-});
-
-// Settings theme
-const settings = ({
-  isActive,
-  isHover,
-  isSelected,
-  spacing,
-}: ItemPresentationProps) => ({
-  container: {
-    itemBase: {
-      ...baseStyles.itemBase,
-      ...layoutStyles[spacing].itemBase,
-      backgroundColor: (() => {
-        if (isActive) return settingsActiveBackground;
-        if (isSelected || isHover) return colors.N700A;
-        return colors.N700;
-      })(),
-    },
-    beforeWrapper: {
-      ...baseStyles.beforeWrapper,
-      ...layoutStyles[spacing].beforeWrapper,
-    },
-    contentWrapper: baseStyles.contentWrapper,
-    textWrapper: {
-      ...baseStyles.textWrapper,
-      color: isActive ? colors.B100 : colors.N0,
-    },
-    subTextWrapper: {
-      ...baseStyles.subTextWrapper,
-      ...layoutStyles[spacing].subTextWrapper,
-      color: colors.N70,
-    },
-    afterWrapper: {
-      ...baseStyles.afterWrapper,
-      ...layoutStyles[spacing].afterWrapper,
-    },
-  },
-  product: {
-    itemBase: {
-      ...baseStyles.itemBase,
-      ...layoutStyles[spacing].itemBase,
-      backgroundColor: (() => {
-        if (isActive) return settingsActiveBackground;
-        if (isSelected || isHover) return colors.N700A;
-        return colors.N800;
-      })(),
-    },
-    beforeWrapper: {
-      ...baseStyles.beforeWrapper,
-      ...layoutStyles[spacing].beforeWrapper,
-    },
-    contentWrapper: baseStyles.contentWrapper,
-    textWrapper: {
-      ...baseStyles.textWrapper,
-      color: isActive ? colors.B100 : colors.N0,
-    },
-    subTextWrapper: {
-      ...baseStyles.subTextWrapper,
-      ...layoutStyles[spacing].subTextWrapper,
-      color: colors.N70,
-    },
-    afterWrapper: {
-      ...baseStyles.afterWrapper,
-      ...layoutStyles[spacing].afterWrapper,
-    },
-  },
-});
-
-const themes: ThemedContentNavigationComponentStyles<ItemPresentationProps> = {
-  dark,
-  light,
-  settings,
-};
-export default themes;
