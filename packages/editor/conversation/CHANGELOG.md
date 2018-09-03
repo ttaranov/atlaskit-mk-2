@@ -1,5 +1,8 @@
 # @atlaskit/conversation
 
+## 9.3.3
+- [patch] Add module mainField to packagejson to get codesplitting to work in BBCloud [f8c92b0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f8c92b0)
+
 ## 9.3.2
 - [patch] Updated dependencies [7545979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7545979)
   - @atlaskit/editor-common@15.0.0
