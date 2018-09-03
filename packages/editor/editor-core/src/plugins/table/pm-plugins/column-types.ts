@@ -1,4 +1,3 @@
-import * as getTime from 'date-fns/get_time';
 import {
   EditorState,
   Plugin,
@@ -349,7 +348,13 @@ export const setDateIntoClickedCell = (iso: string): Command => (
 ): boolean => {
   const pluginState = pluginKey.getState(state);
   const { tr, schema } = state;
-  const dateNode = schema.nodes.date.create({ timestamp: getTime(iso) });
+  const now = iso.split('-');
+  const timestamp = Date.UTC(
+    Number(now[0]),
+    Number(now[1]) - 1,
+    Number(now[2]),
+  );
+  const dateNode = schema.nodes.date.create({ timestamp });
 
   dispatch(
     setCellContent(dateNode, pluginState.clickedCell)(tr).setMeta(pluginKey, {

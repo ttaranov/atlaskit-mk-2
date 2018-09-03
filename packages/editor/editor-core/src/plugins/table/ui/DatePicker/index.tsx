@@ -5,11 +5,10 @@ import {
   Popup,
   timestampToUTCDate,
   timestampToIsoFormat,
+  akEditorFloatingOverlapPanelZIndex,
 } from '@atlaskit/editor-common';
 import { findDomRefAtPos } from 'prosemirror-utils';
 import Calendar from '@atlaskit/calendar';
-import * as getTime from 'date-fns/get_time';
-import * as format from 'date-fns/format';
 import { akColorN60A, akBorderRadius } from '@atlaskit/util-shared-styles';
 import withOuterListeners from '../../../../ui/with-outer-listeners';
 
@@ -55,13 +54,15 @@ export default class DatePicker extends React.Component<Props, State> {
         this.resetDate();
         return;
       }
-      const { day, month, year } = timestampToUTCDate(dateNode.attrs.timestamp);
-      this.setState({
-        selected: [timestampToIsoFormat(dateNode.attrs.timestamp)],
+      const { timestamp } = dateNode.attrs;
+      const { day, month, year } = timestampToUTCDate(timestamp);
+
+      this.state = {
+        selected: [timestampToIsoFormat(timestamp)],
         day,
         month,
         year,
-      });
+      };
     }
   }
 
@@ -89,6 +90,7 @@ export default class DatePicker extends React.Component<Props, State> {
         offset={[0, 2]}
         handleClickOutside={onClickOutside}
         handleEscapeKeydown={onClickOutside}
+        zIndex={akEditorFloatingOverlapPanelZIndex}
       >
         <Calendar
           onChange={this.handleChange}
@@ -109,8 +111,12 @@ export default class DatePicker extends React.Component<Props, State> {
   };
 
   private resetDate = () => {
-    const timestamp = getTime(format(new Date(), 'YYYY-MM-DD'));
-    const { day, month, year } = timestampToUTCDate(timestamp);
+    const now = new Date();
+    const day = now.getDate();
+    const month = now.getMonth() + 1;
+    const year = now.getFullYear();
+    const timestamp = Date.UTC(year, month - 1, day);
+
     this.setState({
       selected: [timestampToIsoFormat(timestamp)],
       day,
