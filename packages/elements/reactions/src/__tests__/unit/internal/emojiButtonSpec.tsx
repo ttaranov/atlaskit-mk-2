@@ -9,10 +9,8 @@ import {
 import * as React from 'react';
 import { waitUntil } from '@atlaskit/util-common-test';
 import { mount, shallow } from 'enzyme';
-
-import { hasSelector } from '../_test-utils';
 import EmojiButton from '../../../internal/emoji-button';
-import { emoji } from '@atlaskit/util-data-test';
+import { emoji, hasSelector } from '@atlaskit/util-data-test';
 
 const { getEmojiResourcePromise, newEmojiRepository } = emoji.testData;
 const emojiRepository = newEmojiRepository();

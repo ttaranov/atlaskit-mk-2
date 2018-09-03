@@ -24,7 +24,7 @@ export default md`
   Import the component in your React app as follows:
 
   ~~~js
-  import EmojiResource, { EmojiTypeAhead } from '@atlaskit/emoji';
+  import EmojiTypeAhead, { EmojiResource } from '@atlaskit/emoji';
   const emojiProvider = new EmojiResource({
     providers: [
       {

@@ -20,6 +20,5 @@ export const getToneEmoji = (
   provider.findByShortName(toneEmojiShortName);
 
 export default {
-  byShortName,
   toneEmoji,
 };
