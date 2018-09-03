@@ -119,7 +119,7 @@ export default class MediaImageLoader {
         },
       };
 
-      return fetch(new Request(url, options)).then(response => {
+      return fetch(url, options).then(response => {
         if (response.status === 403 && retryOnAuthError) {
           // retry once if 403
           return this.tokenManager

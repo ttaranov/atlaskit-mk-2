@@ -22,7 +22,7 @@ const requestService = <T>(baseUrl: string, path: string, opts?: {}) => {
   const options = opts;
 
   return new Promise<T>((resolve, reject) => {
-    fetch(new Request(url, options))
+    fetch(url, options)
       .then(response => {
         if (response.ok) {
           resolve(response.json());

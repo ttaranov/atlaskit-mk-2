@@ -373,6 +373,7 @@ import PresenceBusyIcon from '../glyph/presence-busy';
 import PresenceUnavailableIcon from '../glyph/presence-unavailable';
 import QuestionCircleIcon from '../glyph/question-circle';
 import QuestionIcon from '../glyph/question';
+import QuestionsIcon from '../glyph/questions';
 import QueuesIcon from '../glyph/queues';
 import QuoteIcon from '../glyph/quote';
 import RadioIcon from '../glyph/radio';
@@ -395,6 +396,7 @@ import SignInIcon from '../glyph/sign-in';
 import SignOutIcon from '../glyph/sign-out';
 import StarFilledIcon from '../glyph/star-filled';
 import StarLargeIcon from '../glyph/star-large';
+import StarOutlineIcon from '../glyph/star-outline';
 import StarIcon from '../glyph/star';
 import StatuspageIcon from '../glyph/statuspage';
 import StrideIcon from '../glyph/stride';
@@ -2624,6 +2626,12 @@ export default {
     componentName: 'QuestionIcon',
     package: '@atlaskit/icon/glyph/question',
   },
+  questions: {
+    keywords: ['questions'],
+    component: QuestionsIcon,
+    componentName: 'QuestionsIcon',
+    package: '@atlaskit/icon/glyph/questions',
+  },
   queues: {
     keywords: ['queues'],
     component: QueuesIcon,
@@ -2755,6 +2763,12 @@ export default {
     component: StarLargeIcon,
     componentName: 'StarLargeIcon',
     package: '@atlaskit/icon/glyph/star-large',
+  },
+  'star-outline': {
+    keywords: ['star-outline', 'staroutline'],
+    component: StarOutlineIcon,
+    componentName: 'StarOutlineIcon',
+    package: '@atlaskit/icon/glyph/star-outline',
   },
   star: {
     keywords: ['star'],

@@ -4,6 +4,7 @@ import { Plugin, EditorState } from 'prosemirror-state';
 import { analyticsService } from '../../../analytics';
 import { createInputRule } from '../../../utils/input-rules';
 import { Match, LinkMatcher, normalizeUrl } from '../utils';
+import { queueCards } from '../../card/pm-plugins/actions';
 
 export function createLinkInputRule(
   regexp: RegExp,
@@ -24,13 +25,21 @@ export function createLinkInputRule(
         'atlassian.editor.format.hyperlink.autoformatting',
       );
 
-      return state.tr
+      const tr = state.tr
         .addMark(
           start - (link.input!.length - link.lastIndex),
           end - (link.input!.length - link.lastIndex),
           markType,
         )
         .insertText(' ');
+
+      return queueCards([
+        {
+          url: link.url,
+          pos: start - (link.input!.length - link.lastIndex),
+          appearance: 'inline',
+        },
+      ])(tr);
     },
   );
 }
@@ -42,7 +51,7 @@ export function createInputRulePlugin(schema: Schema): Plugin | undefined {
 
   const urlWithASpaceRule = createLinkInputRule(
     new LinkMatcher() as RegExp,
-    match => (match[3] ? match[1] : `http://${match[1]}`),
+    match => (match[3] ? match[1] : `https?://${match[1]}`),
   );
 
   // [something](link) should convert to a hyperlink

@@ -5,6 +5,7 @@ import {
   akColorN30,
   akColorN50,
 } from '@atlaskit/util-shared-styles';
+import { fontSize } from '@atlaskit/theme';
 
 const BlockNode = styled.div`
   align-items: center;
@@ -14,7 +15,7 @@ const BlockNode = styled.div`
   box-sizing: border-box;
   cursor: default;
   display: block;
-  font-size: 13px;
+  font-size: ${fontSize}px;
   margin: 10px 0;
   min-height: 24px;
   padding: 10px;

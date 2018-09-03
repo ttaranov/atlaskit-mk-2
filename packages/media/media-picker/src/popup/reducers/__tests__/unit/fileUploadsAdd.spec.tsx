@@ -5,12 +5,16 @@ import { fileUploadsStart } from '../../../actions/fileUploadsStart';
 
 describe('fileUploadsAdd() reducer', () => {
   const nowDate = Date.now();
+  const upfrontId = Promise.resolve('1');
+  const occurrenceKey = 'key';
   const file1 = {
     name: 'some-file1.ext',
     id: 'some-id1',
     type: 'image/some',
     creationDate: nowDate,
     size: 42,
+    upfrontId,
+    occurrenceKey,
   };
   const file2 = {
     name: 'some-file2.ext',
@@ -18,6 +22,8 @@ describe('fileUploadsAdd() reducer', () => {
     type: 'image/some',
     creationDate: nowDate,
     size: 42,
+    upfrontId,
+    occurrenceKey,
   };
 
   it('returns same state if action has different type', () => {
@@ -42,6 +48,8 @@ describe('fileUploadsAdd() reducer', () => {
           name: 'some-file1.ext',
           mimeType: 'image/some',
           size: 42,
+          upfrontId,
+          occurrenceKey,
         },
         dataURI: '',
       },
@@ -77,6 +85,8 @@ describe('fileUploadsAdd() reducer', () => {
       parentId: '',
       size: 42,
       serviceName: 'upload',
+      upfrontId,
+      occurrenceKey,
     });
   });
 

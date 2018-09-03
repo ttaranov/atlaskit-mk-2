@@ -50,15 +50,15 @@ describe('MediaImageLoader', () => {
           const token = defaultMediaApiToken();
           const calls = fetchMock.calls('media-emoji');
           expect(calls.length, 'One call').to.equal(1);
-          const headers = calls[0][0].headers;
-          expect(headers.get('Authorization'), 'Authorization header').to.equal(
+          const headers = calls[0][1].headers;
+          expect(headers['Authorization'], 'Authorization header').to.equal(
             `Bearer ${token.jwt}`,
           );
-          expect(headers.get('X-Client-Id'), 'X-Client-Id header').to.equal(
+          expect(headers['X-Client-Id'], 'X-Client-Id header').to.equal(
             token.clientId,
           );
           expect(
-            headers.get('Accept').indexOf('image/'),
+            headers['Accept'].indexOf('image/'),
             'Accept header to start with image/',
           ).to.equal(0);
         });
@@ -220,7 +220,7 @@ describe('MediaImageLoader', () => {
           matcher: `begin:${mediaEmojiImagePath}`,
           response: 403,
           name: 'media-emoji-403',
-          times: 1,
+          repeat: 1,
         })
         .mock({
           matcher: `begin:${mediaEmojiImagePath}`,

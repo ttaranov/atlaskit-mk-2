@@ -1,5 +1,11 @@
 # @atlaskit/form
 
+## 4.0.1
+- [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
+
+## 4.0.0
+- [major] Removed required prop, consolidated the logic into the isRequired prop.  [d8d8107](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d8d8107)
+
 ## 3.1.8
 - [patch] Fix Form submit handlers being called when no onSubmit prop is passed [1086a6b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1086a6b)
 

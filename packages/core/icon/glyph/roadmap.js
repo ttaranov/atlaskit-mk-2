@@ -19,4 +19,5 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var RoadmapIcon = function RoadmapIcon(props) {
   return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path d="M6 2h10a3 3 0 0 1 0 6H6a3 3 0 1 1 0-6zm0 2a1 1 0 1 0 0 2h10a1 1 0 0 0 0-2H6zm4 5h8a3 3 0 0 1 0 6h-8a3 3 0 0 1 0-6zm0 2a1 1 0 0 0 0 2h8a1 1 0 0 0 0-2h-8zm-4 5h6a3 3 0 0 1 0 6H6a3 3 0 0 1 0-6zm0 2a1 1 0 0 0 0 2h6a1 1 0 0 0 0-2H6z" fill="currentColor" fill-rule="evenodd"/></svg>' }, props));
 };
+RoadmapIcon.displayName = 'RoadmapIcon';
 exports.default = RoadmapIcon;

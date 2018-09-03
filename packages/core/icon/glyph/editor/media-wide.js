@@ -19,4 +19,5 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var EditorMediaWideIcon = function EditorMediaWideIcon(props) {
   return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path d="M7 5h10a1 1 0 0 1 0 2H7a1 1 0 1 1 0-2zm0 12h10a1 1 0 0 1 0 2H7a1 1 0 0 1 0-2zM4 9h16a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1z" fill="currentColor" fill-rule="evenodd"/></svg>' }, props));
 };
+EditorMediaWideIcon.displayName = 'EditorMediaWideIcon';
 exports.default = EditorMediaWideIcon;

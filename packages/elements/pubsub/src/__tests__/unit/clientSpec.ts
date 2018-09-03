@@ -49,14 +49,12 @@ describe('Client', () => {
   describe('#join', () => {
     it('should call remote with channels', () => {
       return client.join(['ari:cloud:platform::site/666']).then(() => {
-        const lastCall = (fetchMock.lastCall(
-          `${baseUrl}/subscribe`,
-        ) as any) as [Request, undefined];
+        const lastCall = fetchMock.lastCall(`${baseUrl}/subscribe`);
         expect(lastCall).toBeDefined();
 
-        return lastCall[0].json().then(body => {
-          expect(body.channels[0]).toEqual('ari:cloud:platform::site/666');
-        });
+        const options: RequestInit = lastCall[1];
+        const body = JSON.parse(options.body);
+        expect(body.channels[0]).toEqual('ari:cloud:platform::site/666');
       });
     });
 
@@ -81,17 +79,16 @@ describe('Client', () => {
       return client.join(['ari:cloud:platform::site/668']).then(() => {
         expect(protocol.subscribe).toHaveBeenCalledTimes(1);
 
-        const lastCall = (fetchMock.lastCall(
-          `${baseUrl}/subscribe`,
-        ) as any) as [Request, undefined];
+        const lastCall = fetchMock.lastCall(`${baseUrl}/subscribe`);
         expect(lastCall).toBeDefined();
 
-        return lastCall[0].json().then(body => {
-          expect(body.channels.length).toEqual(3);
-          expect(body.channels[0]).toEqual('ari:cloud:platform::site/666');
-          expect(body.channels[1]).toEqual('ari:cloud:platform::site/667');
-          expect(body.channels[2]).toEqual('ari:cloud:platform::site/668');
-        });
+        const options: RequestInit = lastCall[1];
+        const body = JSON.parse(options.body);
+
+        expect(body.channels.length).toEqual(3);
+        expect(body.channels[0]).toEqual('ari:cloud:platform::site/666');
+        expect(body.channels[1]).toEqual('ari:cloud:platform::site/667');
+        expect(body.channels[2]).toEqual('ari:cloud:platform::site/668');
       });
     });
 
@@ -125,15 +122,14 @@ describe('Client', () => {
         .join(['ari:cloud:platform::site/333', 'ari:cloud:platform::site/666'])
         .then(() => client.leave(['ari:cloud:platform::site/666']))
         .then(() => {
-          const lastCall = (fetchMock.lastCall(
-            `${baseUrl}/subscribe`,
-          ) as any) as [Request, undefined];
+          const lastCall = fetchMock.lastCall(`${baseUrl}/subscribe`);
           expect(lastCall).toBeDefined();
 
-          return lastCall[0].json().then(body => {
-            expect(body.channels.length).toEqual(1);
-            expect(body.channels[0]).toEqual('ari:cloud:platform::site/333');
-          });
+          const options: RequestInit = lastCall[1];
+          const body = JSON.parse(options.body);
+
+          expect(body.channels.length).toEqual(1);
+          expect(body.channels[0]).toEqual('ari:cloud:platform::site/333');
         });
     });
 
@@ -250,12 +246,14 @@ describe('Client', () => {
             if (iteration > MAX_RETRY) {
               expect(protocol.subscribe).toHaveBeenCalledTimes(MAX_RETRY);
               done();
+            } else {
+              handler(EventType.ACCESS_DENIED, {})
+                .then(() => {
+                  expect(protocol.subscribe).toHaveBeenCalledTimes(iteration);
+                  callAccessDeniedHandler(++iteration);
+                })
+                .catch(done.fail);
             }
-
-            handler(EventType.ACCESS_DENIED, {}).then(() => {
-              expect(protocol.subscribe).toHaveBeenCalledTimes(iteration);
-              callAccessDeniedHandler(++iteration);
-            });
 
             jest.runTimersToTime(RETRY_STEP_IN_MILLISECONDS ** iteration);
           }

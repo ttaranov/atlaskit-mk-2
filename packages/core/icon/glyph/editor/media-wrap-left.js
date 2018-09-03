@@ -19,4 +19,5 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var EditorMediaWrapLeftIcon = function EditorMediaWrapLeftIcon(props) {
   return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path d="M6 17h12a1 1 0 0 1 0 2H6a1 1 0 0 1 0-2zm8-8h4a1 1 0 0 1 0 2h-4a1 1 0 0 1 0-2zm0 4h4a1 1 0 0 1 0 2h-4a1 1 0 0 1 0-2zM6 9h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1v-4a1 1 0 0 1 1-1zm0-4h12a1 1 0 0 1 0 2H6a1 1 0 1 1 0-2z" fill="currentColor" fill-rule="evenodd"/></svg>' }, props));
 };
+EditorMediaWrapLeftIcon.displayName = 'EditorMediaWrapLeftIcon';
 exports.default = EditorMediaWrapLeftIcon;

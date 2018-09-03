@@ -36,6 +36,7 @@ import {
 import showPopup from './showPopup';
 import hidePopup from './hidePopup';
 import startApp from './startApp';
+import setUpfrontIdDeferred from './setUpfrontIdDeferred';
 
 const reducers = combineReducers([
   fileClick,
@@ -72,6 +73,7 @@ const reducers = combineReducers([
   showPopup,
   hidePopup,
   startApp,
+  setUpfrontIdDeferred,
 ]);
 
 function combineReducers(reducers: any) {

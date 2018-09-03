@@ -35,11 +35,13 @@ export interface FilmstripState {
   offset: number;
 }
 
-const getIdentifierKey = (identifier: Identifier): string => {
+const getIdentifierKey = (identifier: Identifier, index: number): string => {
   if (isUrlPreviewIdentifier(identifier)) {
     return identifier.url;
-  } else {
+  } else if (typeof identifier.id === 'string') {
     return identifier.id;
+  } else {
+    return `${index}`;
   }
 };
 
@@ -55,10 +57,10 @@ export class Filmstrip extends Component<FilmstripProps, FilmstripState> {
 
   private renderCards() {
     const { items, context } = this.props;
-    const cards = items.map(item => {
+    const cards = items.map((item, index) => {
       return (
         <Card
-          key={getIdentifierKey(item.identifier)}
+          key={getIdentifierKey(item.identifier, index)}
           context={context}
           {...item}
         />

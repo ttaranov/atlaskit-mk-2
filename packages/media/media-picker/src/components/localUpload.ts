@@ -14,9 +14,11 @@ import {
 } from '../domain/uploadEvent';
 import { UploadComponent } from './component';
 import { UploadParams } from '../domain/config';
+import { defaultUploadParams } from '../domain/uploadParams';
 
 export interface LocalUploadConfig {
   uploadParams: UploadParams;
+  tenantUploadParams?: UploadParams;
 }
 
 export class LocalUploadComponent<
@@ -28,11 +30,17 @@ export class LocalUploadComponent<
 
   constructor(context: Context, config: LocalUploadConfig) {
     super();
+    const uploadParams = { ...defaultUploadParams, ...config.uploadParams };
+    const tenantUploadParams = {
+      ...defaultUploadParams,
+      ...config.tenantUploadParams,
+    };
 
     this.context = context;
     this.uploadService = UploadServiceFactory.create(
       this.context,
-      config.uploadParams || { collection: '' },
+      tenantUploadParams,
+      uploadParams,
     );
     this.config = config;
     this.uploadService.on('files-added', this.onFilesAdded);

@@ -20,52 +20,56 @@ ${code`
   Example firing an analytics-next event:
 
 ${code`
-  import * as React from 'react';
-  import { withAnalyticsEvents, AnalyticsListener } from '@atlaskit/analytics-next';
-  import { GasPayload } from '@atlaskit/analytics-gas-types';
-  import { FabricElementsAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
+import * as React from 'react';
+import { withAnalyticsEvents, createAndFireEvent, AnalyticsListener } from '@atlaskit/analytics-next';
+import { FabricElementsAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
+import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
 
-  export type Props = {
-    onClick: e => void,
-  };
+export type Props = WithAnalyticsEventProps & {
+  onClick: (e) => void;
+};
 
-  export const DummyComponent: React.StatelessComponent<Props> = (
-    props: Props,
-  ) => (
-    <div id="dummy" onClick={props.onClick}>
-      Test
-    </div>
-  );
-  DummyComponent.displayName = 'DummyComponent';
+class DummyComponent extends React.Component<Props> {
+  static displayName = 'DummyComponent';
 
-  export const DummyComponentWithAnalytics = withAnalyticsEvents({
-    onClick: (createEvent, props) => {
-      const event: GasPayload = {
-        action: 'someAction',
-        actionSubject: 'someComponent',
-        eventType: 'ui',
-        source: 'unknown',
-      };
-      createEvent(event).fire('fabricElements');
-    },
-  })(DummyComponent);
+  render() {
+    return (
+      <div id="dummy" onClick={this.props.onClick}>
+        Test
+      </div>
+    );
+  }
+}
 
-  const listenerHandler = (event, context) => {
-    console.log('event: ', event, ' context: ', context);
-  };
+export const DummyComponentWithAnalytics = withAnalyticsEvents({
+  onClick: createAndFireEvent('fabric-elements')({
+      action: 'someAction',
+      actionSubject: 'someComponent',
+      eventType: 'ui',
+      source: 'unknown',
+    })
+})(DummyComponent);
 
-  // Pass the analyticsWebClient instance created by the Product
-  ReactDOM.render(
-    <div>      
-      <AnalyticsListener onEvent={listenerHandler} channel="fabricElements">
-        <div>
-          <FabricElementsAnalyticsContext data={{ greeting: 'hello' }}>
-            <DummyComponentWithAnalytics onClick={myOnClickHandler} />
-          </FabricElementsAnalyticsContext>
-        </div>
-      </AnalyticsListener>
-    </div>,
-    container,
-  );
+const listenerHandler = (event, context) => {
+  console.log('event: ', event, ' context: ', context);
+};
+
+const myOnClickHandler = (e): void => {
+  console.log('component clicked');
+}
+
+// Pass the analyticsWebClient instance created by the Product
+ReactDOM.render(
+  <div>
+    <AnalyticsListener onEvent={listenerHandler} channel="fabricElements">
+      <div>
+        <FabricElementsAnalyticsContext data={{ greeting: 'hello' }}>
+          <DummyComponentWithAnalytics onClick={myOnClickHandler} />
+        </FabricElementsAnalyticsContext>
+      </div>
+    </AnalyticsListener>
+  </div>,
+  container,
+);
 `}
 `;

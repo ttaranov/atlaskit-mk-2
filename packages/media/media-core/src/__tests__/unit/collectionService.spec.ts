@@ -121,30 +121,80 @@ describe('MediaCollectionService', () => {
 
     return response;
   });
+
+  it('should filter empty files', () => {
+    const collectionService: MediaCollectionService = new MediaCollectionService(
+      config,
+    );
+    const response = collectionService
+      .getCollectionItems(collectionName)
+      .then(response => {
+        expect(response).toEqual({
+          items: [
+            {
+              type: 'file',
+              details: {
+                mimeType: 'application/video',
+                id: '0a6f64e4-7330-4dcf-ac65-58ab10677282',
+                occurrenceKey: 'urn:hipchat:message:12413532',
+                name: 'some_video.mp4',
+                size: 34315,
+              },
+            },
+          ],
+          nextInclusiveStartKey: '121',
+        });
+      });
+
+    respond(JSON.stringify(Mocks.collectionWithInvalidItemsResponse));
+
+    return response;
+  });
 });
+
+const fullDetailsFile = {
+  type: 'file',
+  id: '0a6f64e4-7330-4dcf-ac65-58ab10677282',
+  occurrenceKey: 'urn:hipchat:message:12413532',
+  details: {
+    mimeType: 'application/video',
+    name: 'some_video.mp4',
+    size: 34315,
+  },
+  author: {
+    id: '123456:290a88b6-c6f4-4e41-a0ec-e9c75ccf4e92',
+    userName: 'john',
+    displayName: 'John Jackson',
+    active: true,
+  },
+};
+const noSizeFile = {
+  type: 'file',
+  id: '2',
+  occurrenceKey: 'occurrenceKey-2',
+  details: {
+    mimeType: 'application/video',
+    name: 'some_video.mp4',
+    size: 0,
+  },
+};
+const noDetailsFile = {
+  type: 'file',
+  id: '3',
+  occurrenceKey: 'occurrenceKey-3',
+};
 
 class Mocks {
   static collectionItemsResponse = {
     data: {
       nextInclusiveStartKey: '121',
-      contents: [
-        {
-          type: 'file',
-          id: '0a6f64e4-7330-4dcf-ac65-58ab10677282',
-          occurrenceKey: 'urn:hipchat:message:12413532',
-          details: {
-            mimeType: 'application/video',
-            name: 'some_video.mp4',
-            size: 34315,
-          },
-          author: {
-            id: '123456:290a88b6-c6f4-4e41-a0ec-e9c75ccf4e92',
-            userName: 'john',
-            displayName: 'John Jackson',
-            active: true,
-          },
-        },
-      ],
+      contents: [fullDetailsFile],
+    },
+  };
+  static collectionWithInvalidItemsResponse = {
+    data: {
+      nextInclusiveStartKey: '121',
+      contents: [fullDetailsFile, noSizeFile, noDetailsFile],
     },
   };
 }

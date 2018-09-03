@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/conversation",
-  "version": "9.3.1",
+  "version": "9.3.3",
   "config": {
     "access": "public"
   },
@@ -8,6 +8,7 @@
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
   "jsnext:main": "dist/es2015/index.js",
+  "module": "dist/es2015/index.js",
   "types": "dist/es5/index.d.ts",
   "src": "src/index.ts",
   "files": [
@@ -25,11 +26,11 @@
   "dependencies": {
     "@atlaskit/analytics-next": "^3.0.0",
     "@atlaskit/avatar": "^14.0.6",
-    "@atlaskit/comment": "^6.0.11",
-    "@atlaskit/editor-common": "^14.0.11",
-    "@atlaskit/editor-core": "^78.0.0",
-    "@atlaskit/reactions": "^13.0.8",
-    "@atlaskit/renderer": "^20.1.1",
+    "@atlaskit/comment": "^6.0.12",
+    "@atlaskit/editor-common": "^15.0.0",
+    "@atlaskit/editor-core": "^79.0.0",
+    "@atlaskit/reactions": "^13.0.9",
+    "@atlaskit/renderer": "^21.0.0",
     "date-fns": "^1.29.0",
     "prop-types": "^15.5.10",
     "react": "^16.4.0",
@@ -40,9 +41,9 @@
   },
   "devDependencies": {
     "@atlaskit/analytics-listeners": "^4.0.0",
-    "@atlaskit/docs": "^5.0.2",
+    "@atlaskit/docs": "^5.0.7",
     "@atlaskit/single-select": "^6.0.3",
-    "@atlaskit/util-data-test": "^10.0.7",
+    "@atlaskit/util-data-test": "^10.0.8",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   }
 }

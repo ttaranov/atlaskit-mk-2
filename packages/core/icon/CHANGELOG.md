@@ -1,5 +1,17 @@
 # @atlaskit/icon
 
+## 13.8.0
+- [minor] Add the questions icon [ad96a89](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ad96a89)
+
+## 13.7.0
+- [minor] Add and edit star icons [55e3ec7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/55e3ec7)
+
+## 13.6.1
+- [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
+
+## 13.6.0
+- [minor] Add static displayName prop to all icons. This results in accurate display names even after minifying and uglifying the icon variable names. [a75db9d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a75db9d)
+
 ## 13.5.0
 - [minor] Add the new child-issues icon [8d3f8dd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8d3f8dd)
 

@@ -19,4 +19,5 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var JiraBlockerIcon = function JiraBlockerIcon(props) {
   return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><g fill="currentColor"><path d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10zm0 2a7 7 0 1 1 0-14 7 7 0 0 1 0 14z"/><path d="M8 17.414L17.414 8 16 6.586 6.586 16z"/></g></svg>' }, props));
 };
+JiraBlockerIcon.displayName = 'JiraBlockerIcon';
 exports.default = JiraBlockerIcon;

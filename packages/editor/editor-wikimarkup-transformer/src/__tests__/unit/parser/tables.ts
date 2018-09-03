@@ -17,6 +17,7 @@ still going
 yeah good luck closing this`,
     ],
     ['should be able to parse macros in table', `|{panel}123{panel}|`],
+    ['should not render trailing space into a new cell', '|cell 1|cell 2|   '],
   ];
 
   for (const [testCaseDescription, markup] of testCases) {

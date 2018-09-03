@@ -10,12 +10,12 @@ Object {
             Object {
               "attrs": Object {
                 "__confluenceMetadata": null,
-                "href": "https://www.atlassian.com",
+                "href": "https://www.google.com",
               },
               "type": "link",
             },
           ],
-          "text": "https://www.atlassian.com",
+          "text": "https://www.google.com",
           "type": "text",
         },
         Object {
@@ -36,12 +36,12 @@ Object {
                     Object {
                       "attrs": Object {
                         "__confluenceMetadata": null,
-                        "href": "https://www.atlassian.com",
+                        "href": "https://www.google.com",
                       },
                       "type": "link",
                     },
                   ],
-                  "text": "https://www.atlassian.com",
+                  "text": "https://www.google.com",
                   "type": "text",
                 },
                 Object {
@@ -75,12 +75,12 @@ Object {
             Object {
               "attrs": Object {
                 "__confluenceMetadata": null,
-                "href": "https://www.atlassian.com",
+                "href": "https://www.google.com",
               },
               "type": "link",
             },
           ],
-          "text": "https://www.atlassian.com",
+          "text": "https://www.google.com",
           "type": "text",
         },
         Object {
@@ -101,12 +101,12 @@ Object {
                     Object {
                       "attrs": Object {
                         "__confluenceMetadata": null,
-                        "href": "https://www.atlassian.com",
+                        "href": "https://www.google.com",
                       },
                       "type": "link",
                     },
                   ],
-                  "text": "https://www.atlassian.com",
+                  "text": "https://www.google.com",
                   "type": "text",
                 },
                 Object {

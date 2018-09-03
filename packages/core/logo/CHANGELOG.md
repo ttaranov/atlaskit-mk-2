@@ -1,5 +1,8 @@
 # @atlaskit/logo
 
+## 9.1.0
+- [minor] Update product logos alignment issues [6bbf9a9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6bbf9a9)
+
 ## 9.0.4
 - [patch] Updated dependencies [f9c0cdb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9c0cdb)
   - @atlaskit/code@8.0.0
