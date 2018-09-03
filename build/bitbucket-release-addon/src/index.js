@@ -1,6 +1,6 @@
 import queryString from 'query-string';
 import parseChangesetCommit from '@atlaskit/build-releases/changeset/parseChangesetCommit';
-import flattenChangesets from '@atlaskit/build-releases/changeset/flattenChangesets';
+import flattenChangesets from '@atlaskit/build-releases/version/flattenChangesets';
 
 import getCommits from './get-commits';
 
