@@ -1,6 +1,6 @@
 import { style } from 'typestyle';
 import { borderRadius, colors } from '@atlaskit/theme';
-import { emojiSprite, placeholder, emojiNode } from '../common/styles';
+import { emojiSprite, placeholder, emojiNode } from '@atlaskit/emoji';
 
 import { emojiPickerHeight, emojiPickerWidth } from '../constants';
 
@@ -241,6 +241,8 @@ export const emojiItem = style({
     [`&>.${placeholder}`]: {
       padding: '0',
       margin: '7px',
+      maxWidth: '24px',
+      minWidth: '24px',
     },
   },
 });

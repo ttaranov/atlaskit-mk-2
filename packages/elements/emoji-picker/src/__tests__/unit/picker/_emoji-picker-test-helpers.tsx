@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { mount, ReactWrapper } from 'enzyme';
-import { getEmojiResourcePromise, newEmojiRepository } from '../../_test-data';
+import { getEmojiResourcePromise, newEmojiRepository } from '../_test-data';
 import EmojiPicker, { Props } from '../../../picker/EmojiPicker';
 import EmojiPickerComponent from '../../../picker/EmojiPickerComponent';
 import { waitUntil } from '@atlaskit/util-common-test';
@@ -13,11 +13,11 @@ import { Emoji, EmojiDescription, EmojiPreview } from '@atlaskit/emoji';
 import EmojiPickerCategoryHeading from '../../../picker/EmojiPickerCategoryHeading';
 import EmojiPickerList from '../../../picker/EmojiPickerList';
 import EmojiPickerListSearch from '../../../picker/EmojiPickerListSearch';
-import { hasSelector } from '../../_emoji-selectors';
 import EmojiDeletePreview from '../../../common/EmojiDeletePreview';
 import EmojiErrorMessage from '../../../common/EmojiErrorMessage';
 import EmojiUploadPreview from '../../../common/EmojiUploadPreview';
-import { CategoryDescriptionMap } from '../../../types';
+import { CategoryDescriptionMap, CategoryGroupKey } from '../../../types';
+import { hasSelector } from '@atlaskit/util-data-test';
 
 export function setupPickerWithoutToneSelector(): Promise<
   ReactWrapper<any, any>
@@ -59,10 +59,9 @@ export const findEmoji = list => list.find(Emoji);
  * @param list child EmojiPickerList
  */
 export const emojisVisible = (picker, list) => hasSelector(picker, Emoji, list);
-// @ts-ignore
 const nodeIsCategory = (category: CategoryGroupKey, n) =>
   n.is(EmojiPickerCategoryHeading) && n.prop('id') === category;
-// @ts-ignore
+
 export const findCategoryHeading = (category: CategoryGroupKey, component) =>
   component
     .find(EmojiPickerCategoryHeading)
@@ -107,7 +106,7 @@ export const emojiRowsVisibleInCategory = (
     return false;
   });
 };
-// @ts-ignore
+
 const getCategoryButton = (category: CategoryGroupKey, picker) => {
   const categorySelector = picker.find(CategorySelector);
   return categorySelector.findWhere(
@@ -117,12 +116,11 @@ const getCategoryButton = (category: CategoryGroupKey, picker) => {
         CategoryDescriptionMap[category]!.name.toLocaleLowerCase(),
   );
 };
-// @ts-ignore
+
 export const categoryVisible = (category: CategoryGroupKey, component) =>
   findCategoryHeading(category, component).length > 0;
 
 export const showCategory = (
-  // @ts-ignore
   category: CategoryGroupKey,
   component,
   categoryTitle?: string,
@@ -143,7 +141,6 @@ export const showCategory = (
 
 export const findEmojiInCategory = (
   emojis,
-  // @ts-ignore
   categoryId: CategoryGroupKey,
 ): EmojiDescription | undefined => {
   const upperCategoryId = categoryId.toLocaleUpperCase();

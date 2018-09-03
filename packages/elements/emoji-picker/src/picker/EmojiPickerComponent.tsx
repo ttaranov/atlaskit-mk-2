@@ -23,11 +23,14 @@ import {
   CategoryId,
   SearchSort,
   OnEmojiProviderChange,
-  supportsUploadFeature,
   EmojiProvider,
   getEmojiVariation,
 } from '@atlaskit/emoji';
-import { containsEmojiId, isPromise } from '../type-helpers';
+import {
+  containsEmojiId,
+  isPromise,
+  supportsUploadFeature,
+} from '../type-helpers';
 import { getToneEmoji } from '../util/filters';
 import { EmojiContext } from '../common/internal-types';
 import { createRecordSelectionDefault } from '../common/RecordSelectionDefault';

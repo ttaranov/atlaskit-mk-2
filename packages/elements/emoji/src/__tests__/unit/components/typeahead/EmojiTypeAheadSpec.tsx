@@ -13,11 +13,11 @@ import {
   standardBoomEmoji,
 } from '../../_test-data';
 import {
-  hasSelector,
   getEmojiTypeAheadItemById,
   getSelectedEmojiTypeAheadItem,
   isEmojiTypeAheadItemSelected,
 } from '../../_emoji-selectors';
+import { hasSelector } from '@atlaskit/util-data-test';
 
 import { defaultListLimit } from '../../../../constants';
 import EmojiTypeAhead, {

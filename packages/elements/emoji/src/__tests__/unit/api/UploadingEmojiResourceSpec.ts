@@ -12,7 +12,6 @@ import SiteEmojiResource from '../../../api/media/SiteEmojiResource';
 import EmojiResource, {
   EmojiProvider,
   EmojiResourceConfig,
-  supportsUploadFeature,
   UploadingEmojiProvider,
 } from '../../../api/EmojiResource';
 
@@ -26,6 +25,7 @@ import {
 } from '../_test-data';
 
 import { alwaysPromise } from '../_test-util';
+import { supportsUploadFeature } from '../../../type-helpers';
 
 // used to access window.localStorage in tests below
 declare var global: any;

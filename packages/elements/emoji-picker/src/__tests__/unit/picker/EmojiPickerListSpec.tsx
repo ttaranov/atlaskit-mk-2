@@ -1,4 +1,4 @@
-import { mount, ReactWrapper } from 'enzyme';
+import { mount } from 'enzyme';
 import * as React from 'react';
 import { expect } from 'chai';
 
@@ -13,10 +13,8 @@ import {
   emojis as allEmojis,
   onRowsRenderedArgs,
   atlassianEmojis,
-} from '../../_test-data';
-import { EmojiDescription } from '../../../types';
-import { deleteEmojiLabel } from '../../../constants';
-import { CachingEmoji, CachingEmojiProps } from '../../../common/CachingEmoji';
+} from '../_test-data';
+import { CachingEmoji, EmojiDescription } from '@atlaskit/emoji';
 import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
 
 const emojis = [imageEmoji];
@@ -76,10 +74,7 @@ describe('<EmojiPickerList />', () => {
       ];
       const wrapper = mount(<EmojiPickerList emojis={outOfOrderEmojis} />);
 
-      const cachingEmojis: ReactWrapper<
-        CachingEmojiProps,
-        never
-      > = wrapper.find(CachingEmoji);
+      const cachingEmojis = wrapper.find(CachingEmoji);
 
       expect(cachingEmojis).to.have.lengthOf(2);
       expect(cachingEmojis.at(0).prop('emoji').id).to.be.equal(
@@ -108,10 +103,7 @@ describe('<EmojiPickerList />', () => {
         <EmojiPickerList emojis={frequentCategoryEmojis} />,
       );
 
-      const cachingEmojis: ReactWrapper<
-        CachingEmojiProps,
-        never
-      > = wrapper.find(CachingEmoji);
+      const cachingEmojis = wrapper.find(CachingEmoji);
 
       expect(cachingEmojis).to.have.lengthOf(2);
       expect(cachingEmojis.at(0).prop('emoji').id).to.be.equal(
@@ -288,7 +280,7 @@ describe('<EmojiPickerList />', () => {
         .at(0);
       // needs label of "delete-emoji" to prevent selection on click
       expect(
-        deleteButton.find(`[aria-label="${deleteEmojiLabel}"]`),
+        deleteButton.find(`[aria-label="delete-emoji"]`),
       ).to.have.length.greaterThan(1);
     });
 

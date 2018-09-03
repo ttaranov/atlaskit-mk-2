@@ -4,30 +4,28 @@ import {
   getEmojiResourcePromise,
   mediaEmoji,
   standardEmojis,
-} from '../../_test-data';
+} from '../_test-data';
 import { Props } from '../../../picker/EmojiPicker';
 import { mockNonUploadingEmojiResourceFactory } from '@atlaskit/util-data-test';
 
-import EmojiPlaceholder from '../../../common/EmojiPlaceholder';
 import CategorySelector, {
   sortCategories,
 } from '../../../picker/CategorySelector';
-import { CategoryDescriptionMap } from '../../../picker/categories';
-import Emoji from '../../../common/Emoji';
-import EmojiButton from '../../../common/EmojiButton';
+import { CategoryDescriptionMap } from '../../../types';
 import EmojiPickerFooter from '../../../picker/EmojiPickerFooter';
 import EmojiPickerList from '../../../picker/EmojiPickerList';
 import {
   EmojiDescription,
   OptionalEmojiDescription,
   EmojiRepository,
+  Emoji,
+  EmojiPlaceholder,
 } from '@atlaskit/emoji';
 import {
   customCategory,
   customTitle,
   defaultCategories,
   frequentCategory,
-  selectedToneStorageKey,
   analyticsEmojiPrefix,
 } from '../../../constants';
 import * as helper from './_emoji-picker-test-helpers';
@@ -413,7 +411,7 @@ describe('<EmojiPicker />', () => {
       hoverButton.simulate('mousemove');
 
       const footer = component.find(EmojiPickerFooter);
-      const toneEmoji = footer.find(EmojiButton);
+      const toneEmoji = footer.find('button').find(Emoji);
       expect(toneEmoji).toHaveLength(1);
     });
 
@@ -425,7 +423,7 @@ describe('<EmojiPicker />', () => {
       hoverButton.simulate('mousemove');
 
       const footer = component.find(EmojiPickerFooter);
-      const toneEmoji = footer.find(EmojiButton);
+      const toneEmoji = footer.find('button').find(Emoji);
       expect(toneEmoji).toHaveLength(0);
     });
 
@@ -506,7 +504,10 @@ describe('<EmojiPicker />', () => {
       mockGetItem.mockReturnValue(tone);
 
       await waitUntil(() => !!mockSetItem.mock.calls.length);
-      expect(mockSetItem.mock.calls[0]).toEqual([selectedToneStorageKey, tone]);
+      expect(mockSetItem.mock.calls[0]).toEqual([
+        'fabric.emoji.selectedTone',
+        tone,
+      ]);
 
       // First picker should have tone set by default
       const handEmoji1 = await findToneEmojiInNewPicker();

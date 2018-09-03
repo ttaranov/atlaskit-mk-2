@@ -11,7 +11,11 @@ import EmojiButton from '../../../../components/common/EmojiButton';
 import CachingEmoji from '../../../../components/common/CachingEmoji';
 import { EmojiDescriptionWithVariations } from '../../../../types';
 import { imageEmoji, generateSkinVariation } from '../../_test-data';
-import * as helper from './_common-test-helpers';
+import {
+  customEmojiButtonVisible,
+  findCustomEmojiButton,
+  findEmojiPreviewSection,
+} from '@atlaskit/util-data-test';
 
 const baseEmoji = imageEmoji;
 
@@ -165,13 +169,13 @@ describe('<EmojiPreview />', () => {
 
   describe('Add custom emoji', () => {
     const safeFindStartEmojiUpload = async component => {
-      await waitUntil(() => helper.customEmojiButtonVisible(component));
-      return helper.findCustomEmojiButton(component);
+      await waitUntil(() => customEmojiButtonVisible(component));
+      return findCustomEmojiButton(component);
     };
 
     const waitUntilPreviewSectionIsVisible = async component => {
-      await waitUntil(() => helper.findEmojiPreviewSection(component).exists());
-      return helper.findEmojiPreviewSection(component);
+      await waitUntil(() => findEmojiPreviewSection(component).exists());
+      return findEmojiPreviewSection(component);
     };
 
     describe('Upload not supported', () => {
@@ -225,7 +229,7 @@ describe('<EmojiPreview />', () => {
 
         performToneButtonClick(component);
 
-        expect(helper.findCustomEmojiButton(component).length).to.equal(0);
+        expect(findCustomEmojiButton(component).length).to.equal(0);
       });
 
       it('"Add custom emoji" button should appear after Tone is skipped', async () => {
@@ -236,7 +240,7 @@ describe('<EmojiPreview />', () => {
 
         performToneButtonClick(component);
 
-        expect(helper.findCustomEmojiButton(component).length).to.equal(0);
+        expect(findCustomEmojiButton(component).length).to.equal(0);
 
         // this should cancel the Tone selection
         emojiPreviewSection.simulate('mouseleave');

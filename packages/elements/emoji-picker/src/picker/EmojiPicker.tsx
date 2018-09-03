@@ -2,10 +2,11 @@ import * as React from 'react';
 import { ComponentClass } from 'react';
 import * as styles from './styles';
 
-import LoadingEmojiComponent, {
-  Props as LoadingProps,
-  State as LoadingState,
-} from '../common/LoadingEmojiComponent';
+import {
+  LoadingEmojiComponent,
+  LoadingEmojiProps,
+  LoadingEmojiState,
+} from '@atlaskit/emoji';
 import {
   PickerRefHandler,
   Props as ComponentProps,
@@ -20,7 +21,7 @@ const emojiPickerModuleLoader = () =>
 const emojiPickerLoader: () => Promise<ComponentClass<ComponentProps>> = () =>
   emojiPickerModuleLoader().then(module => module.default);
 
-export interface Props extends LoadingProps {
+export interface Props extends LoadingEmojiProps {
   onSelection?: OnEmojiEvent;
   onPickerRef?: PickerRefHandler;
   hideToneSelector?: boolean;
@@ -29,7 +30,7 @@ export interface Props extends LoadingProps {
 
 export class EmojiPickerInternal extends LoadingEmojiComponent<
   Props,
-  LoadingState
+  LoadingEmojiState
 > {
   // state initialised with static component to prevent
   // rerender when the module has already been loaded

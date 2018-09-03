@@ -13,7 +13,7 @@ import CachingEmoji, {
   CachingMediaEmoji,
 } from '../../../../components/common/CachingEmoji';
 import { imageEmoji, loadedMediaEmoji, mediaEmoji } from '../../_test-data';
-import { hasSelector } from '../../_emoji-selectors';
+import { hasSelector } from '@atlaskit/util-data-test';
 
 describe('<CachingEmoji />', () => {
   describe('Non-media emoji', () => {

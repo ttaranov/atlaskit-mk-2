@@ -12,7 +12,7 @@ import {
   siteEmojiFoo,
   mediaEmoji,
   pngDataURL,
-} from '../../_test-data';
+} from '../_test-data';
 
 import { Emoji, EmojiRepository } from '@atlaskit/emoji';
 import EmojiPickerList from '../../../picker/EmojiPickerList';
@@ -24,20 +24,24 @@ import {
   userCustomTitle,
 } from '../../../constants';
 import * as helper from './_emoji-picker-test-helpers';
-import * as commonHelper from '../common/_common-test-helpers';
 import EmojiPickerCategoryHeading from '../../../picker/EmojiPickerCategoryHeading';
 import CrossCircleIcon from '@atlaskit/icon/glyph/cross-circle';
 import EmojiDeletePreview from '../../../common/EmojiDeletePreview';
 import { MockEmojiResource } from '@atlaskit/util-data-test';
 import EmojiErrorMessage from '../../../common/EmojiErrorMessage';
 import EmojiUploadPreview from '../../../common/EmojiUploadPreview';
+import {
+  customEmojiButtonVisible,
+  findCustomEmojiButton,
+  findEmojiPreviewSection,
+} from '@atlaskit/util-data-test';
 
 describe('<UploadingEmojiPicker />', () => {
   let firePrivateAnalyticsEvent;
 
   const safeFindCustomEmojiButton = async component => {
-    await waitUntil(() => commonHelper.customEmojiButtonVisible(component));
-    return commonHelper.findCustomEmojiButton(component);
+    await waitUntil(() => customEmojiButtonVisible(component));
+    return findCustomEmojiButton(component);
   };
 
   const uploadPreviewShown = component => {
@@ -113,16 +117,14 @@ describe('<UploadingEmojiPicker />', () => {
 
       await providerPromise;
       await helper.showCategory(customCategory, component, customTitle);
-      await waitUntil(() => commonHelper.previewVisible(component));
+      await waitUntil(() => helper.previewVisible(component));
 
       // save emoji initially shown in preview
-      let preview = commonHelper.findPreview(component);
+      let preview = helper.findPreview(component);
       expect(preview).toHaveLength(1);
 
       // click add
-      await waitUntil(() =>
-        commonHelper.findEmojiPreviewSection(component).exists(),
-      );
+      await waitUntil(() => findEmojiPreviewSection(component).exists());
       const addEmoji = await safeFindCustomEmojiButton(component);
       addEmoji.simulate('click');
       await waitUntil(() => helper.emojiNameInputVisible(component));
@@ -144,20 +146,16 @@ describe('<UploadingEmojiPicker />', () => {
       const emojiProvider = getNonUploadingEmojiResourcePromise();
       const component = await helper.setupPicker({ emojiProvider });
 
-      await waitUntil(() =>
-        commonHelper.findEmojiPreviewSection(component).exists(),
-      );
+      await waitUntil(() => findEmojiPreviewSection(component).exists());
 
-      const addEmoji = commonHelper.findCustomEmojiButton(component);
+      const addEmoji = findCustomEmojiButton(component);
       expect(addEmoji).toHaveLength(0);
     });
 
     it('UploadingEmojiResource - "without media token" - no upload UI', async () => {
       const component = await helper.setupPicker();
-      await waitUntil(() =>
-        commonHelper.findEmojiPreviewSection(component).exists(),
-      );
-      const addEmoji = commonHelper.findCustomEmojiButton(component);
+      await waitUntil(() => findEmojiPreviewSection(component).exists());
+      const addEmoji = findCustomEmojiButton(component);
       expect(addEmoji).toHaveLength(0);
     });
 
@@ -165,9 +163,7 @@ describe('<UploadingEmojiPicker />', () => {
       const emojiProvider = getEmojiResourcePromise({ uploadSupported: true });
       const component = await helper.setupPicker({ emojiProvider });
       await helper.showCategory(customCategory, component, customTitle);
-      await waitUntil(() =>
-        commonHelper.findEmojiPreviewSection(component).exists(),
-      );
+      await waitUntil(() => findEmojiPreviewSection(component).exists());
 
       const addEmoji = await safeFindCustomEmojiButton(component);
       expect(addEmoji.length).toEqual(1);
@@ -186,9 +182,7 @@ describe('<UploadingEmojiPicker />', () => {
       await helper.showCategory(customCategory, component, customTitle);
 
       // click add
-      await waitUntil(() =>
-        commonHelper.findEmojiPreviewSection(component).exists(),
-      );
+      await waitUntil(() => findEmojiPreviewSection(component).exists());
       const addEmoji = await safeFindCustomEmojiButton(component);
       addEmoji.simulate('click');
       await waitUntil(() => helper.emojiNameInputVisible(component));
@@ -235,10 +229,10 @@ describe('<UploadingEmojiPicker />', () => {
       expect(shortName).toEqual(':cheese_burger:');
       expect(fallback).toEqual(':cheese_burger:');
 
-      await waitUntil(() => commonHelper.previewVisible(component));
+      await waitUntil(() => helper.previewVisible(component));
 
       // preview is back with new emoji shown by default
-      const preview = commonHelper.findPreview(component);
+      const preview = helper.findPreview(component);
       expect(preview).toHaveLength(1);
 
       // "add custom emoji" button should appear
@@ -279,9 +273,7 @@ describe('<UploadingEmojiPicker />', () => {
       await helper.showCategory(customCategory, component, customTitle);
 
       // click add
-      await waitUntil(() =>
-        commonHelper.findEmojiPreviewSection(component).exists(),
-      );
+      await waitUntil(() => findEmojiPreviewSection(component).exists());
       const addEmoji = await safeFindCustomEmojiButton(component);
       addEmoji.simulate('click');
       await waitUntil(() => helper.emojiNameInputVisible(component));
@@ -289,7 +281,7 @@ describe('<UploadingEmojiPicker />', () => {
       typeEmojiName(component);
 
       chooseFile(component, createPngFile());
-      expect(component.find('FileChooser')).toHaveLength(1);
+      expect(component.find(FileChooser)).toHaveLength(1);
 
       await waitUntil(() => helper.errorMessageVisible(component));
 
@@ -313,9 +305,7 @@ describe('<UploadingEmojiPicker />', () => {
       await helper.showCategory(customCategory, component, customTitle);
 
       // click add
-      await waitUntil(() =>
-        commonHelper.findEmojiPreviewSection(component).exists(),
-      );
+      await waitUntil(() => findEmojiPreviewSection(component).exists());
       const addEmoji = await safeFindCustomEmojiButton(component);
       addEmoji.simulate('click');
       await waitUntil(() => helper.emojiNameInputVisible(component));
@@ -324,7 +314,7 @@ describe('<UploadingEmojiPicker />', () => {
       typeEmojiName(component);
 
       chooseFile(component, createPngFile());
-      expect(component.find('FileChooser')).toHaveLength(1);
+      expect(component.find(FileChooser)).toHaveLength(1);
 
       await waitUntil(() => helper.errorMessageVisible(component));
 
@@ -358,9 +348,7 @@ describe('<UploadingEmojiPicker />', () => {
         () => !helper.emojisVisible(component, component.find(EmojiPickerList)),
       );
 
-      await waitUntil(() =>
-        commonHelper.findEmojiPreviewSection(component).exists(),
-      );
+      await waitUntil(() => findEmojiPreviewSection(component).exists());
       const addEmoji = await safeFindCustomEmojiButton(component);
 
       // click add
@@ -410,10 +398,10 @@ describe('<UploadingEmojiPicker />', () => {
       expect(shortName).toEqual(':cheese_burger:');
       expect(fallback).toEqual(':cheese_burger:');
 
-      await waitUntil(() => commonHelper.previewVisible(component));
+      await waitUntil(() => helper.previewVisible(component));
 
       // preview is back with new emoji shown by default
-      const preview = commonHelper.findPreview(component);
+      const preview = helper.findPreview(component);
       expect(preview).toHaveLength(1);
 
       // "add custom emoji" button should appear
@@ -432,16 +420,14 @@ describe('<UploadingEmojiPicker />', () => {
       const provider = await emojiProvider;
       await helper.showCategory(customCategory, component, customTitle);
 
-      await waitUntil(() => commonHelper.previewVisible(component));
+      await waitUntil(() => helper.previewVisible(component));
 
       // save emoji initially shown in preview
-      let preview = commonHelper.findPreview(component);
+      let preview = helper.findPreview(component);
       expect(preview).toHaveLength(1);
 
       // click add
-      await waitUntil(() =>
-        commonHelper.findEmojiPreviewSection(component).exists(),
-      );
+      await waitUntil(() => findEmojiPreviewSection(component).exists());
       const addEmoji = await safeFindCustomEmojiButton(component);
       addEmoji.simulate('click');
       await waitUntil(() => helper.emojiNameInputVisible(component));
@@ -459,10 +445,10 @@ describe('<UploadingEmojiPicker />', () => {
       // cancel
       const cancelLink = helper.findCancelLink(component);
       cancelLink.simulate('click');
-      await waitUntil(() => commonHelper.previewVisible(component));
+      await waitUntil(() => helper.previewVisible(component));
 
       // preview is back with previous emoji shown by default
-      preview = commonHelper.findPreview(component);
+      preview = helper.findPreview(component);
       expect(preview).toHaveLength(1);
 
       // "add custom emoji" button should appear
@@ -502,16 +488,14 @@ describe('<UploadingEmojiPicker />', () => {
 
       const provider = await emojiProvider;
       await helper.showCategory(customCategory, component, customTitle);
-      await waitUntil(() => commonHelper.previewVisible(component));
+      await waitUntil(() => helper.previewVisible(component));
 
       // save emoji initially shown in preview
-      let preview = commonHelper.findPreview(component);
+      let preview = helper.findPreview(component);
       expect(preview).toHaveLength(1);
 
       // click add
-      await waitUntil(() =>
-        commonHelper.findEmojiPreviewSection(component).exists(),
-      );
+      await waitUntil(() => findEmojiPreviewSection(component).exists());
       const addEmoji = await safeFindCustomEmojiButton(component);
       addEmoji.simulate('click');
       await waitUntil(() => helper.emojiNameInputVisible(component));
@@ -554,7 +538,7 @@ describe('<UploadingEmojiPicker />', () => {
       cancelLink.simulate('click');
 
       // wait for preview to return
-      await waitUntil(() => commonHelper.previewVisible(component));
+      await waitUntil(() => helper.previewVisible(component));
 
       // preview is back with previous emoji shown by default
       // "add custom emoji" button should appear

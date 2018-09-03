@@ -12,6 +12,13 @@ export {
 } from './emoji/MockEmojiResource';
 
 export {
+  hasSelector,
+  findCustomEmojiButton,
+  findEmojiPreviewSection,
+  customEmojiButtonVisible,
+} from './emoji/test-helpers';
+
+export {
   MockTaskDecisionResource,
   MockTaskDecisionResourceConfig,
 } from './task-decision/MockTaskDecisionResource';

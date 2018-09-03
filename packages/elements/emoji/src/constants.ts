@@ -7,6 +7,10 @@ export const customType = 'SITE';
 export const dataURLPrefix = 'data:';
 export const deleteEmojiLabel = 'delete-emoji';
 
+export const emojiSprite = 'emoji-common-emoji-sprite';
+export const emojiNode = 'emoji-common-node';
+export const placeholder = 'emoji-common-placeholder';
+
 /**
  * A constant used in sorting/ordering to represent a number 'obviously much bigger than any item in the set being handled'.
  * This is used instead of Number.MAX_VALUE since subtraction of MAX_VALUE from itself occassionaly doesn't equal zero exactly :-(

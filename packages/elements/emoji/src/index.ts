@@ -4,7 +4,10 @@ import EmojiPlaceholder from './components/common/EmojiPlaceholder';
 import CachingEmoji from './components/common/CachingEmoji';
 import ResourcedEmoji from './components/common/ResourcedEmoji';
 import EmojiPreview from './components/common/EmojiPreview';
-import LoadingEmojiComponent from './components/common/LoadingEmojiComponent';
+import LoadingEmojiComponent, {
+  Props as LoadingEmojiProps,
+  State as LoadingEmojiState,
+} from './components/common/LoadingEmojiComponent';
 import EmojiTypeAhead from './components/typeahead/EmojiTypeAhead';
 import EmojiResource, {
   EmojiProvider,
@@ -19,12 +22,15 @@ import {
   toOptionalEmojiId,
   supportsUploadFeature,
 } from './type-helpers';
-import {
+export {
   customCategory,
   defaultEmojiHeight,
   frequentCategory,
   analyticsEmojiPrefix,
   defaultCategories,
+  emojiNode,
+  emojiSprite,
+  placeholder,
 } from './constants';
 
 export {
@@ -42,19 +48,15 @@ export {
   denormaliseEmojiServiceResponse,
   toEmojiId,
   toOptionalEmojiId,
-  supportsUploadFeature,
   // interfaces
   EmojiProvider,
   UploadingEmojiProvider,
-  defaultEmojiHeight,
-  customCategory,
-  frequentCategory,
-  analyticsEmojiPrefix,
-  defaultCategories,
   // common components for picker
   CachingEmoji,
   EmojiPreview,
   LoadingEmojiComponent,
+  LoadingEmojiProps,
+  LoadingEmojiState,
   getEmojiVariation,
 };
 
