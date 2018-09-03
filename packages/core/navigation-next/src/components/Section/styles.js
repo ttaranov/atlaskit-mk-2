@@ -44,6 +44,7 @@ const getBaseStyles = ({ alwaysShowScrollHint }) => ({
     height: '100%',
     justifyContent: 'flex-start',
     overflowY: 'auto',
+    paddingTop: 2,
     position: 'relative',
 
     '&::before': {
