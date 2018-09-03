@@ -84,7 +84,7 @@ const ExpandToggleButton = () => (
     {navigationUIController => (
       <button onClick={navigationUIController.toggleCollapse}>
         {navigationUIController.state.isCollapsed ? 'Expand' : 'Collapse'}{' '}
-        product navigation
+        content navigation
       </button>
     )}
   </UIControllerSubscriber>

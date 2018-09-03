@@ -24,7 +24,7 @@ const MyProductNavigation = () => (
     <Section>
       {({ className }) => (
         <div className={className}>
-          <div css={{ padding: '8px 0' }}>
+          <div css={{ padding: '8px 12px' }}>
             <AtlassianWordmark />
           </div>
         </div>
