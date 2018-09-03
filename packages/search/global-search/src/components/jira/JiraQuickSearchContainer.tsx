@@ -25,6 +25,7 @@ import {
   JiraObjectResult,
   Result,
   ResultsWithTiming,
+  GenericResultMap,
 } from '../../model/Result';
 
 const contentTypeToSection = {
@@ -109,7 +110,7 @@ export class JiraQuickSearchContainer extends React.Component<
             }
             return acc;
           },
-          {},
+          {} as GenericResultMap,
         ),
       );
     return handlePromiseError(jiraRecentItemsPromise, {
