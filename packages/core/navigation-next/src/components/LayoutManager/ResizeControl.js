@@ -7,7 +7,7 @@ import {
   type WithAnalyticsEventsProps,
 } from '@atlaskit/analytics-next';
 import { colors } from '@atlaskit/theme';
-import ChevronLeft from '@atlaskit/icon/glyph/chevron-left-large';
+import ChevronLeft from '@atlaskit/icon/glyph/chevron-left';
 import MenuIcon from '@atlaskit/icon/glyph/menu';
 import Tooltip from '@atlaskit/tooltip';
 
