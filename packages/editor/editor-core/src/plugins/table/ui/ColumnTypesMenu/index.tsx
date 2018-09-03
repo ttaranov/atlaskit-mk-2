@@ -210,6 +210,13 @@ export default class ColumnTypesMenu extends Component<Props> {
             );
           }
         }
+        // try to keep number content for "number" and "currency" columns
+        else if (
+          (item.value.name === 'number' || item.value.name === 'currency') &&
+          `${parseInt(cell.node.textContent, 10)}` === cell.node.textContent
+        ) {
+          newCell = cell.node;
+        }
         // otherwise clear the content
         else {
           newCell = cell.node.type.create(

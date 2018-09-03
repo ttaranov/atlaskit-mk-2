@@ -113,78 +113,79 @@ export const createColumnTypesPlugin = (
       },
     },
 
-    appendTransaction: (
-      transactions: Transaction[],
-      oldState: EditorState,
-      newState: EditorState,
-    ) => {
-      const table = findTable(newState.selection);
-      if (
-        table &&
-        transactions.some(transaction => transaction.docChanged) &&
-        !transactions.some(transaction => transaction.getMeta(pluginKey))
-      ) {
-        const map = TableMap.get(table.node);
-        const { pos: start } = findTable(newState.selection)!;
-        const { tr } = newState;
-        const { paragraph } = newState.schema.nodes;
-        let updated = false;
+    // appendTransaction: (
+    //   transactions: Transaction[],
+    //   oldState: EditorState,
+    //   newState: EditorState,
+    // ) => {
+    //   const table = findTable(newState.selection);
+    //   if (
+    //     table &&
+    //     transactions.some(transaction => transaction.docChanged) &&
+    //     !transactions.some(transaction => transaction.getMeta(pluginKey))
+    //   ) {
+    //     const map = TableMap.get(table.node);
+    //     const { pos } = findTable(newState.selection)!;
+    //     const { tr } = newState;
+    //     const { paragraph, tableHeader } = newState.schema.nodes;
+    //     let updated = false;
 
-        for (let i = 0; i < table.node.childCount; i++) {
-          const row = table.node.child(i);
-          row.forEach((cell, _, j) => {
-            if (
-              !(
-                cell.attrs.cellType === 'number' ||
-                cell.attrs.cellType === 'currency'
-              )
-            ) {
-              return;
-            }
+    //     for (let i = 0; i < table.node.childCount; i++) {
+    //       const row = table.node.child(i);
 
-            const from = tr.mapping.map(start + map.map[i * map.width + j]);
-            const oldContent = cell.textContent;
-            const num = makeNumber(
-              oldContent,
-              cell.attrs.cellType === 'currency',
-            );
+    //       for (let j = row.childCount - 1; j >= 0; j--){
+    //         const cell = row.child(j);
+    //         const { cellType } = cell.attrs;
+    //         if (cell.type === tableHeader || (cellType !== 'number' && cellType !== 'currency')) {
+    //           continue;
+    //         }
 
-            if (oldContent.endsWith('.')) {
-              return;
-            }
+    //         const from = tr.mapping.map(pos + map.map[i * map.width + j]);
+    //         const oldContent = cell.textContent;
+    //         const num = makeNumber(oldContent, cellType === 'currency');
 
-            if (num) {
-              const numString = num.toLocaleString();
+    //         if (oldContent.endsWith('.')) {
+    //           continue;
+    //         }
 
-              if (
-                (num && numString !== cell.textContent) ||
-                !oldContent.endsWith('.')
-              ) {
-                const sel = tr.selection;
-                tr.replaceWith(
-                  from + 1,
-                  from + cell.nodeSize,
-                  paragraph.create({}, newState.schema.text(numString)),
-                );
+    //         if (num) {
+    //           const numString = num.toLocaleString();
 
-                if (sel.from > from && sel.from < from + cell.nodeSize) {
-                  const diff = oldContent.length - numString.length;
-                  tr.setSelection(
-                    new TextSelection(tr.doc.resolve(sel.to - diff)),
-                  );
-                }
+    //           if (
+    //             (num && numString !== cell.textContent) ||
+    //             !oldContent.endsWith('.')
+    //           ) {
+    //             const sel = tr.selection;
+    //             const newCell = cell.type.create(
+    //               cell.attrs,
+    //               paragraph.create({}, newState.schema.text(numString)),
+    //             );
 
-                updated = true;
-              }
-            }
-          });
-        }
+    //             tr.replaceWith(
+    //               from,
+    //               from + cell.nodeSize,
+    //               newCell,
+    //             );
 
-        if (updated) {
-          return tr;
-        }
-      }
-    },
+    //             if (sel.from > from && sel.from < from + cell.nodeSize) {
+    //               const diff = oldContent.length - numString.length;
+    //               tr.setSelection(
+    //                 new TextSelection(tr.doc.resolve(sel.to - diff)),
+    //               );
+    //             }
+
+    //             updated = true;
+    //           }
+    //         }
+    //       }
+
+    //     }
+
+    //     if (updated) {
+    //       return tr;
+    //     }
+    //   }
+    // },
   });
 
 export const getPluginState = (state: EditorState) => {
