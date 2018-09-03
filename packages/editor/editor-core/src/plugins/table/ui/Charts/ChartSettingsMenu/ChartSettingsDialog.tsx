@@ -29,36 +29,7 @@ export interface DialogProps {
 
 export class ChartSettingsDialog extends React.Component<DialogProps> {
   renderSetting(setting: ChartSetting) {
-    if (setting.input === 'column-select') {
-      return (
-        <div>
-          <h6>{setting.title}</h6>
-          <Select
-            isSearchable={false}
-            options={this.props.columns.map((colname, idx) => {
-              return { label: colname, value: idx };
-            })}
-            value={{
-              label: this.props.columns[
-                this.props.currentSettings[setting.name]
-              ],
-              value: this.props.currentSettings[setting.name],
-            }}
-            onChange={event => {
-              this.props.onChange(setting.name, event.value);
-
-              // refresh chart title if we changed the source column
-              if (
-                setting.name === 'values' &&
-                this.props.currentSettings['title']
-              ) {
-                this.props.onChange('title', this.props.columns[event.value]);
-              }
-            }}
-          />
-        </div>
-      );
-    } else if (setting.input === 'checkbox') {
+    if (setting.input === 'checkbox') {
       return (
         <div>
           <Checkbox

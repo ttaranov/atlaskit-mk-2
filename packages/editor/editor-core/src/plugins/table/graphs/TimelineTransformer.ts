@@ -40,6 +40,7 @@ export default class TimelineTransformer implements GraphTransformer {
               .timestamp,
           ),
           end:
+            typeof this.dataSourceColumns[1] !== 'undefined' &&
             row.child(this.dataSourceColumns[1]).firstChild &&
             row.child(this.dataSourceColumns[1]).firstChild!.firstChild
               ? Number(

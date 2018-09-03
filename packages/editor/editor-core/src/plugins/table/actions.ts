@@ -738,21 +738,84 @@ export const selectRow = (row: number): Command => (
   return true;
 };
 
+const getColumnsByType = (table, columnType) => {
+  const columns: number[] = [];
+  const row = table.node.child(0);
+  for (let i = 0; i < row.childCount; i++) {
+    const cell = row.child(i);
+    if (cell.attrs.cellType === columnType) {
+      columns.push(i);
+    }
+  }
+  return columns;
+};
+
 export const setViewMode = (viewMode: string): Command => (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ): boolean => {
-  const tableNode = findTable(state.selection);
-  if (!tableNode) {
+  const table = findTable(state.selection);
+  let { tr } = state;
+  if (!table) {
     return false;
   }
 
-  dispatch(
-    state.tr.setNodeMarkup(tableNode.pos, undefined, {
-      ...tableNode.node.attrs,
-      viewMode,
-    }),
-  );
+  const { viewModeSettings } = table.node.attrs;
+
+  if (viewMode === 'donut' || viewMode === 'barchart') {
+    let columnIndex;
+    // take existing column index from node if it exists
+    if (typeof viewModeSettings.values !== 'undefined') {
+      columnIndex = viewModeSettings.values;
+    }
+    // find the first number column in the table
+    else {
+      columnIndex = getColumnsByType(table, 'number')[0];
+    }
+    const attrs = Object.assign(
+      {},
+      table.node.attrs,
+      { viewMode },
+      {
+        viewModeSettings: {
+          ...viewModeSettings,
+          values: columnIndex,
+          title: table.node.child(0).child(columnIndex).textContent,
+        },
+      },
+    );
+    tr = tr.setNodeMarkup(table.pos, undefined, attrs);
+  } else if (viewMode === 'timeline') {
+    const indexes = getColumnsByType(table, 'date');
+    const start = indexes[0];
+    const end = indexes[1];
+    const gridlines =
+      typeof viewModeSettings.gridlines !== 'undefined'
+        ? viewModeSettings.gridlines
+        : true;
+    const attrs = Object.assign(
+      {},
+      table.node.attrs,
+      { viewMode },
+      {
+        viewModeSettings: {
+          ...viewModeSettings,
+          start,
+          end,
+          gridlines,
+        },
+      },
+    );
+    tr = tr.setNodeMarkup(table.pos, undefined, attrs);
+  } else {
+    tr = tr.setNodeMarkup(
+      table.pos,
+      undefined,
+      Object.assign({}, table.node.attrs, { viewMode }),
+    );
+  }
+
+  dispatch(tr);
 
   return true;
 };
@@ -767,14 +830,20 @@ export const setViewSetting = (viewMode, settings): Command => (
   }
 
   const { viewModeSettings } = tableNode.node.attrs;
+  const attrs = {
+    ...tableNode.node.attrs,
+    viewModeSettings: { ...viewModeSettings, ...settings },
+  };
+
+  const newCell = tableNode.node.type.create(attrs, tableNode.node.content);
 
   dispatch(
-    state.tr.setNodeMarkup(tableNode.pos, undefined, {
-      ...tableNode.node.attrs,
-      viewModeSettings: { ...viewModeSettings, ...settings },
-    }),
+    state.tr.replaceWith(
+      tableNode.pos,
+      tableNode.pos + tableNode.node.nodeSize,
+      newCell,
+    ),
   );
-
   return true;
 };
 

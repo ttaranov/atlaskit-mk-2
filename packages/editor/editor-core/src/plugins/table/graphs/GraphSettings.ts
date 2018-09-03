@@ -2,20 +2,6 @@ import { ChartSettings } from '.';
 
 export const TimelineSettings: ChartSettings = [
   {
-    name: 'start',
-    title: 'Start date',
-    for: 'transformer',
-    input: 'column-select',
-    dataIdx: 0,
-  },
-  {
-    name: 'end',
-    title: 'End date',
-    for: 'transformer',
-    input: 'column-select',
-    dataIdx: 1,
-  },
-  {
     name: 'gridlines',
     title: 'Show grid lines',
     for: 'component',
@@ -31,14 +17,6 @@ export const TimelineSettings: ChartSettings = [
 
 export const DonutSettings: ChartSettings = [
   {
-    name: 'values',
-    title: 'Values',
-    for: 'transformer',
-    input: 'column-select',
-    dataIdx: 0,
-  },
-
-  {
     name: 'legendAlignment',
     title: 'Legend alignment',
     for: 'component',
@@ -48,7 +26,6 @@ export const DonutSettings: ChartSettings = [
       { label: 'Right', value: 'right' },
     ],
   },
-
   {
     name: 'title',
     title: 'Show title',
