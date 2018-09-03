@@ -88,7 +88,7 @@ it('should focus on inner lock', () => {
       </FocusLock>
     </FocusLock>,
   );
-  expect(textContent(document.activeElement)).toBe('Button 2');
+  expect(document.activeElement.tabIndex).toBe(1);
 });
 
 it('should focus on last enabled inner lock', () => {
@@ -107,7 +107,7 @@ it('should focus on last enabled inner lock', () => {
       </div>
     </FocusLock>,
   );
-  expect(textContent(document.activeElement)).toBe('Button 2');
+  expect(document.activeElement.tabIndex).toBe(1);
 });
 
 it('should work through Portals', () => {
@@ -183,9 +183,11 @@ it('should stay focused in inner lock when disabled', () => {
     </FocusLock>,
   );
   wrapper.find('#button-2').simulate('click');
-  return nextTick(() =>
-    expect(textContent(document.activeElement)).toBe('Button 2 unlocked'),
-  );
+  return nextTick(() => {
+    expect(textContent(document.activeElement.nextElementSibling)).toBe(
+      'Button 2 unlocked',
+    );
+  });
 });
 
 it('should focus on previous lock after state change', () => {
