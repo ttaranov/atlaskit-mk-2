@@ -9,7 +9,7 @@
   `packages/core/navigation-next/src/__tests__/integration/navigation.js`
 */
 
-import React from 'react';
+import React, { Component } from 'react';
 import Avatar from '@atlaskit/avatar';
 import AddIcon from '@atlaskit/icon/glyph/add';
 import BacklogIcon from '@atlaskit/icon/glyph/backlog';
@@ -18,61 +18,39 @@ import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import FolderIcon from '@atlaskit/icon/glyph/folder';
 import GraphLineIcon from '@atlaskit/icon/glyph/graph-line';
 import IssuesIcon from '@atlaskit/icon/glyph/issues';
-import JiraIcon from '@atlaskit/icon/glyph/jira';
+import ShortcutIcon from '@atlaskit/icon/glyph/shortcut';
 import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import SearchIcon from '@atlaskit/icon/glyph/search';
-import { JiraWordmark } from '@atlaskit/logo';
+import { JiraIcon, JiraWordmark } from '@atlaskit/logo';
+import { ToggleStateless } from '@atlaskit/toggle';
+import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import {
   ContainerHeader,
   GlobalNav,
   GroupHeading,
-  Item,
+  Item as ItemComponent,
   ItemAvatar,
   LayoutManager,
   NavigationProvider,
   Section,
   Separator,
-  UIControllerSubscriber,
 } from '../src';
 
-function makeTestItem(key) {
-  return ({ children, className }: *) => (
-    <div data-webdriver-test-key={key} className={className}>
-      {children}
-    </div>
-  );
-}
+const gridSize = gridSizeFn();
+
+const Item = ({ testKey, ...props }: { testKey?: string }) => {
+  const item = <ItemComponent {...props} />;
+  return testKey ? <div data-webdriver-test-key={testKey}>{item}</div> : item;
+};
 
 /**
- * Data
+ * Global navigation
  */
 const globalNavPrimaryItems = [
   {
     key: 'jira',
-    component: ({ className, children }: *) => (
-      <UIControllerSubscriber>
-        {navigationUIController => {
-          function onClick() {
-            if (navigationUIController.state.isCollapsed) {
-              navigationUIController.expand();
-            }
-            navigationUIController.togglePeek();
-          }
-          return (
-            <button
-              className={className}
-              onClick={onClick}
-              onMouseEnter={navigationUIController.peekHint}
-              onMouseLeave={navigationUIController.unPeekHint}
-            >
-              {children}
-            </button>
-          );
-        }}
-      </UIControllerSubscriber>
-    ),
-    icon: JiraIcon,
+    icon: () => <JiraIcon size="medium" />,
     label: 'Jira',
   },
   { key: 'search', icon: SearchIcon, label: 'Search' },
@@ -95,163 +73,151 @@ const globalNavSecondaryItems = [
   },
 ];
 
-const productNavSections = [
-  {
-    key: 'header',
-    isRootLevel: true,
-    items: [
-      {
-        type: () => (
+const GlobalNavigation = () => (
+  <div data-webkit-test-key="global-navigation">
+    <GlobalNav
+      primaryItems={globalNavPrimaryItems}
+      secondaryItems={globalNavSecondaryItems}
+    />
+  </div>
+);
+
+/**
+ * Content navigation
+ */
+const ProductNavigation = () => (
+  <div data-webkit-test-key="product-navigation">
+    <Section>
+      {({ css }) => (
+        <div css={{ ...css, paddingTop: gridSize * 2.5 }}>
           <div
             data-webdriver-test-key="product-header"
-            css={{ padding: '12px 0' }}
+            css={{
+              lineHeight: 0,
+              paddingBottom: gridSize * 3.5,
+              paddingLeft: gridSize * 1.5,
+              paddingTop: gridSize,
+            }}
           >
             <JiraWordmark />
           </div>
-        ),
-        key: 'jira-wordmark',
-      },
-    ],
-  },
-  {
-    key: 'menu',
-    isRootLevel: true,
-    items: [
-      {
-        before: DashboardIcon,
-        component: makeTestItem('product-item-dashboards'),
-        key: 'dashboards',
-        text: 'Dashboards',
-        type: Item,
-      },
-      {
-        before: FolderIcon,
-        component: makeTestItem('product-item-projects'),
-        key: 'projects',
-        text: 'Projects',
-        type: Item,
-      },
-      {
-        before: IssuesIcon,
-        component: makeTestItem('product-item-issues'),
-        key: 'issues',
-        text: 'Issues',
-        type: Item,
-      },
-    ],
-  },
-];
-
-const containerNavSections = [
-  {
-    key: 'header',
-    isRootLevel: true,
-    items: [
-      {
-        type: ContainerHeader,
-        component: makeTestItem('container-header'),
-        key: 'project-switcher',
-        before: itemState => (
-          <ItemAvatar itemState={itemState} appearance="square" />
-        ),
-        text: 'My software project',
-        subText: 'Software project',
-      },
-    ],
-  },
-  {
-    key: 'menu',
-    isRootLevel: true,
-    items: [
-      {
-        children: 'Group heading',
-        key: 'title',
-        type: GroupHeading,
-      },
-      {
-        before: BacklogIcon,
-        component: makeTestItem('container-item-backlog'),
-        isSelected: true,
-        key: 'backlog',
-        text: 'Backlog',
-        type: Item,
-      },
-      {
-        before: BoardIcon,
-        component: makeTestItem('container-item-sprints'),
-        key: 'sprints',
-        text: 'Active sprints',
-        type: Item,
-      },
-      {
-        before: GraphLineIcon,
-        component: makeTestItem('container-item-reports'),
-        key: 'reports',
-        text: 'Reports',
-        type: Item,
-      },
-      {
-        key: 'separator',
-        type: Separator,
-      },
-    ],
-  },
-];
-
-// ==============================
-// Render components
-// ==============================
-
-function makeTestComponent(key, element) {
-  return () => <div data-webdriver-test-key={key}>{element}</div>;
-}
-
-const GlobalNavigation = makeTestComponent(
-  'global-navigation',
-  <GlobalNav
-    primaryItems={globalNavPrimaryItems}
-    secondaryItems={globalNavSecondaryItems}
-  />,
-);
-
-const RenderSection = ({ section }: *) => (
-  <div css={{ paddingTop: '16px' }}>
-    {section.map(({ key, isRootLevel, items }) => (
-      <Section key={key}>
-        {({ css }) => (
-          <div
-            css={{ ...css, ...(isRootLevel ? { padding: '0 16px' } : null) }}
-          >
-            {items.map(({ type: Component, ...props }: any) => (
-              <Component {...props} />
-            ))}
-          </div>
-        )}
-      </Section>
-    ))}
+        </div>
+      )}
+    </Section>
+    <Section>
+      {({ css }) => (
+        <div css={{ ...css, paddingBottom: 12 }}>
+          <Item
+            before={DashboardIcon}
+            text="Dashboards"
+            testKey="product-item-dashboards"
+          />
+          <Item
+            before={FolderIcon}
+            text="Projects"
+            testKey="product-item-projects"
+          />
+          <Item
+            before={IssuesIcon}
+            text="Issues"
+            testKey="product-item-issues"
+          />
+        </div>
+      )}
+    </Section>
   </div>
 );
-const ProductNavigation = makeTestComponent(
-  'product-navigation',
-  <RenderSection section={productNavSections} />,
-);
-const ContainerNavigation = makeTestComponent(
-  'container-navigation',
-  <RenderSection section={containerNavSections} />,
-);
-const Content = makeTestComponent(
-  'content',
-  <div style={{ padding: 30 }}>Page content</div>,
+
+const ContainerNavigation = () => (
+  <div data-webkit-test-key="container-navigation">
+    <Section>
+      {({ css }) => (
+        <div
+          data-webdriver-test-key="container-header"
+          css={{
+            ...css,
+            paddingTop: gridSize * 2.5,
+            paddingBottom: gridSize * 2.5,
+          }}
+        >
+          <ContainerHeader
+            before={itemState => (
+              <ItemAvatar
+                itemState={itemState}
+                appearance="square"
+                size="large"
+              />
+            )}
+            text="My software project"
+            subText="Software project"
+          />
+        </div>
+      )}
+    </Section>
+    <Section>
+      {({ css }) => (
+        <div css={{ ...css, paddingBottom: 12 }}>
+          <Item
+            before={BacklogIcon}
+            text="Backlog"
+            isSelected
+            testKey="container-item-backlog"
+          />
+          <Item
+            before={BoardIcon}
+            text="Active sprints"
+            testKey="container-item-sprints"
+          />
+          <Item
+            before={GraphLineIcon}
+            text="Reports"
+            testKey="container-item-reports"
+          />
+          <Separator />
+          <GroupHeading>Shortcuts</GroupHeading>
+          <Item before={ShortcutIcon} text="Project space" />
+          <Item before={ShortcutIcon} text="Project repo" />
+        </div>
+      )}
+    </Section>
+  </div>
 );
 
-export default () => (
-  <NavigationProvider>
-    <LayoutManager
-      globalNavigation={GlobalNavigation}
-      productNavigation={ProductNavigation}
-      containerNavigation={ContainerNavigation}
-    >
-      <Content />
-    </LayoutManager>
-  </NavigationProvider>
-);
+type State = { shouldDisplayContainerNav: boolean };
+export default class Example extends Component<{}, State> {
+  state = {
+    shouldDisplayContainerNav: true,
+  };
+
+  toggleContainerNav = () => {
+    this.setState(state => ({
+      shouldDisplayContainerNav: !state.shouldDisplayContainerNav,
+    }));
+  };
+
+  render() {
+    const { shouldDisplayContainerNav } = this.state;
+    return (
+      <NavigationProvider>
+        <LayoutManager
+          globalNavigation={GlobalNavigation}
+          productNavigation={ProductNavigation}
+          containerNavigation={
+            shouldDisplayContainerNav ? ContainerNavigation : null
+          }
+        >
+          <div
+            data-webkit-test-key="content"
+            style={{ padding: `${gridSize * 4}px ${gridSize * 5}px` }}
+          >
+            <ToggleStateless
+              isChecked={shouldDisplayContainerNav}
+              onChange={this.toggleContainerNav}
+            />{' '}
+            Display container navigation layer
+          </div>
+        </LayoutManager>
+      </NavigationProvider>
+    );
+  }
+}
