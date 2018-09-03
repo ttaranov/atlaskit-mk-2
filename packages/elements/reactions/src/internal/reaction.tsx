@@ -12,7 +12,7 @@ import Counter from './counter';
 import FlashAnimation from './flash-animation';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
-import { elementsCreateAndFire } from '../analytics';
+import { createAndFireEventInElementsChannel } from '../analytics';
 
 const akBorderRadius = borderRadius();
 const akColorN30A = colors.N30A;
@@ -102,7 +102,7 @@ export class ReactionComponent extends PureComponent<
       const duration = this.hoverStart
         ? Date.now() - this.hoverStart
         : undefined;
-      elementsCreateAndFire({
+      createAndFireEventInElementsChannel({
         action: 'hovered',
         actionSubject: 'existingReaction',
         eventType: 'ui',
@@ -154,7 +154,7 @@ export class ReactionComponent extends PureComponent<
       const { reaction, createAnalyticsEvent } = this.props;
       if (createAnalyticsEvent) {
         const { reacted, emojiId, containerAri, ari } = reaction;
-        elementsCreateAndFire({
+        createAndFireEventInElementsChannel({
           action: 'clicked',
           actionSubject: 'existingReaction',
           eventType: 'ui',

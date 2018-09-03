@@ -14,7 +14,7 @@ import {
 import { sortByRelevance, sortByPreviousPosition } from './internal/helpers';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
-import { elementsCreateAndFire } from './analytics';
+import { createAndFireEventInElementsChannel } from './analytics';
 import { FabricElementsAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
 export interface OnEmoji {
@@ -140,7 +140,7 @@ export class Reactions extends Component<
     if (this.renderTime) {
       const { createAnalyticsEvent, containerAri, ari } = this.props;
       if (createAnalyticsEvent) {
-        elementsCreateAndFire({
+        createAndFireEventInElementsChannel({
           action: 'rendered',
           actionSubject: 'reactionView',
           eventType: 'ops',
@@ -175,7 +175,7 @@ export class Reactions extends Component<
     if (createAnalyticsEvent) {
       const { containerAri, ari } = this.props;
       const duration = this.openTime ? Date.now() - this.openTime : undefined;
-      elementsCreateAndFire({
+      createAndFireEventInElementsChannel({
         action: 'clicked',
         actionSubject: 'reactionPicker',
         actionSubjectID: 'emoji',
@@ -210,7 +210,7 @@ export class Reactions extends Component<
     if (createAnalyticsEvent) {
       const { containerAri, ari } = this.props;
       const { reactions } = this.state;
-      elementsCreateAndFire({
+      createAndFireEventInElementsChannel({
         action: 'clicked',
         actionSubject: 'reactionPickerButton',
         eventType: 'ui',
@@ -228,7 +228,7 @@ export class Reactions extends Component<
     if (createAnalyticsEvent) {
       const { containerAri, ari } = this.props;
       const duration = this.openTime ? Date.now() - this.openTime : undefined;
-      elementsCreateAndFire({
+      createAndFireEventInElementsChannel({
         action: 'cancelled',
         actionSubject: 'reactionPicker',
         eventType: 'ui',
@@ -247,7 +247,7 @@ export class Reactions extends Component<
     if (createAnalyticsEvent) {
       const { containerAri, ari } = this.props;
       const duration = this.openTime ? Date.now() - this.openTime : undefined;
-      elementsCreateAndFire({
+      createAndFireEventInElementsChannel({
         action: 'clicked',
         actionSubjectID: 'more',
         actionSubject: 'reactionPicker',
