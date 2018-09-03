@@ -99,3 +99,5 @@ export { inlineCard, InlineCardDefinition } from './inline-card';
 export { blockCard, CardAttributes, BlockCardDefinition } from './block-card';
 export { unsupportedBlock } from './unsupported-block';
 export { unsupportedInline } from './unsupported-inline';
+export { slider } from './slider';
+export { checkbox } from './checkbox';

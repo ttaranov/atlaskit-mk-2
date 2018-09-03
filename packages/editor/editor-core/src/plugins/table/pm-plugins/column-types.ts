@@ -26,6 +26,7 @@ import { PortalProviderAPI } from '../../../ui/PortalProvider';
 import { Command } from '../../../types';
 import { pluginKey as tablePluginKey } from './main';
 import TableHeaderView from '../nodeviews/tableHeader';
+import { sliderNodeViewFactory } from '../nodeviews/slider';
 
 export const pluginKey = new PluginKey('tableColumnTypesPlugin');
 
@@ -100,8 +101,34 @@ export const createColumnTypesPlugin = (
       },
 
       nodeViews: {
-        // slider: nodeViewFactory(providerFactory, { slider: sliderNodeView }),
+        slider: sliderNodeViewFactory(portalProviderAPI),
+        checkbox: (node, view, getPos: () => number) => {
+          const dom = document.createElement('input');
+          dom.type = 'checkbox';
+          dom.checked = node.attrs.checked;
 
+          dom.onclick = e => {
+            const pos = getPos();
+
+            view.dispatch(
+              view.state.tr.setNodeMarkup(
+                pos,
+                node.type,
+                {
+                  ...node.attrs,
+                  checked: !node.attrs.checked,
+                },
+                node.marks,
+              ),
+            );
+          };
+          return {
+            dom,
+            stopEvent: () => {
+              return true;
+            },
+          };
+        },
         tableHeader: (node: PMNode, view: EditorView, getPos: () => number) => {
           return new TableHeaderView({
             node,

@@ -60,6 +60,8 @@ import {
   blockCard,
   unsupportedBlock,
   unsupportedInline,
+  slider,
+  checkbox,
 } from './nodes';
 
 function addItems(

@@ -7,7 +7,10 @@ import {
   tableCell,
   tableHeader,
   tableRow,
+  slider,
+  checkbox,
 } from '@atlaskit/editor-common';
+console.log({ slider, checkbox });
 import { EditorPlugin } from '../../types';
 import { PluginConfig } from './types';
 import { createPlugin, pluginKey } from './pm-plugins/main';
@@ -38,6 +41,8 @@ const tablesPlugin = (options?: PluginConfig | boolean): EditorPlugin => ({
       { name: 'tableHeader', node: tableHeader },
       { name: 'tableRow', node: tableRow },
       { name: 'tableCell', node: tableCell },
+      { name: 'slider', node: slider },
+      { name: 'checkbox', node: checkbox },
     ];
   },
 

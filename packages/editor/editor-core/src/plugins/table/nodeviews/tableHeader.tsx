@@ -26,9 +26,7 @@ export interface Props {
 export default class TableHeaderView extends ReactNodeView implements NodeView {
   constructor(props: Props) {
     super(props.node, props.view, props.getPos, props.portalProviderAPI, props);
-    this.view = props.view;
   }
-  view: EditorView;
 
   createDomRef() {
     return document.createElement('th');

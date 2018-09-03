@@ -145,8 +145,16 @@ export default class ReactNodeView implements NodeView {
    * @param node The Prosemirror Node from which to source the attributes
    */
   setDomAttrs(node: PMNode, element: HTMLElement) {
-    Object.keys(node.attrs || {}).forEach(attr => {
-      element.setAttribute(attr, node.attrs[attr]);
+    let attrs = node.attrs || {};
+    const toDOM = node.type.spec.toDOM;
+    if (toDOM) {
+      const spec = toDOM(node);
+      if (Array.isArray(spec) && spec.length > 2) {
+        attrs = spec[1];
+      }
+    }
+    Object.keys(attrs).forEach(attr => {
+      element.setAttribute(attr, attrs[attr]);
     });
   }
 
