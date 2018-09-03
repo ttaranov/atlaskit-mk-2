@@ -13,12 +13,12 @@ export const startCloudAccountOAuthFlow = (
   action: StartAuthAction,
 ) => {
   if (action.type === START_AUTH) {
-    const { redirectUrl, userAuthProvider } = store.getState();
+    const { redirectUrl, userContext } = store.getState();
     const { serviceName } = action;
 
     cloudService
       .startAuth(redirectUrl, serviceName)
-      .then(() => userAuthProvider())
+      .then(() => userContext.config.authProvider())
       .then(auth => fetcher.getServiceList(auth))
       .then(accounts => {
         store.dispatch(updateServiceList(accounts));

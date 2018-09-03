@@ -26,8 +26,10 @@ describe('editRemoteImage', () => {
         originalFile: file,
       },
     });
-    const { userAuthProvider } = store.getState();
-    userAuthProvider.mockReturnValue(Promise.resolve(auth));
+    const { userContext } = store.getState();
+    (userContext.config.authProvider as jest.Mock<any>).mockReturnValue(
+      Promise.resolve(auth),
+    );
 
     return { fetcher, store };
   };

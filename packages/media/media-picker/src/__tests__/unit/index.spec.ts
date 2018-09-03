@@ -7,6 +7,7 @@ import {
   Popup,
 } from '../..';
 import { AuthProvider, ContextFactory } from '@atlaskit/media-core';
+import { PopupConfig } from '../../components/popup';
 
 /**
  * These specs should describe the public API.
@@ -152,7 +153,7 @@ describe('MediaPicker', () => {
   });
 
   describe('popup', () => {
-    const popupConfig = { ...config, container, userAuthProvider };
+    const popupConfig: PopupConfig = { ...config, container };
 
     it('should be instance of MediaPickerPopup given options', () => {
       const popup = MediaPicker('popup', context, popupConfig);
