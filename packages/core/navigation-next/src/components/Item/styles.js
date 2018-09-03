@@ -1,6 +1,5 @@
 // @flow
 
-import chromatism from 'chromatism';
 import { colors, fontSize, gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import type { ItemPresentationProps } from './types';
