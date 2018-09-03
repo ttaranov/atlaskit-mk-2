@@ -325,10 +325,13 @@ export const tableStyles = css`
         flex: 1;
       }
       .ProseMirror-tableHeader-button-container {
-        background: ${akColorN20A};
         height: 24px;
         width: 24px;
         border-radius: ${akBorderRadius};
+        opacity: 0.5;
+        &:hover {
+          opacity: 1;
+        }
       }
 
       td[celltype='date'],

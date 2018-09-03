@@ -11,13 +11,15 @@ import {
 } from 'prosemirror-utils';
 import { EditorView, DecorationSet } from 'prosemirror-view';
 import { browser } from '@atlaskit/editor-common';
+import { forEachCellInRow } from 'prosemirror-utils';
 import { PluginConfig, TablePluginState } from '../types';
 import {
   isElementInTableCell,
   setNodeSelection,
   isLastItemMediaGroup,
   closestElement,
-} from '../../../utils/';
+} from '../../../utils';
+import { calculateSummary, maybeCreateText } from '../utils';
 import { Dispatch } from '../../../event-dispatcher';
 import TableNodeView from '../nodeviews/table';
 import { EventDispatcher } from '../../../event-dispatcher';
@@ -281,6 +283,52 @@ export const createPlugin = (
           return true;
         },
       },
+    },
+    // update summary cells on each table modification
+    appendTransaction: (
+      transactions: Transaction[],
+      oldState: EditorState,
+      newState: EditorState,
+    ) => {
+      const table = findTable(newState.selection);
+      if (
+        table &&
+        table.node.attrs.isSummaryRowEnabled &&
+        transactions.some(transaction => transaction.docChanged) &&
+        // ignore the transaction that enables summary row (otherwise it goes into infinite loop)
+        !transactions.some(transaction => {
+          const meta = transaction.getMeta(pluginKey);
+          return meta && meta.addedSummaryRow;
+        }) &&
+        // TODO: Need to find a better way to stop infinite loop
+        !transactions.every(transaction =>
+          transaction.getMeta('appendedTransaction'),
+        )
+      ) {
+        const summary = calculateSummary(table.node);
+
+        let { tr } = newState;
+        let index = summary.length - 1;
+        const createContent = maybeCreateText(newState.schema);
+
+        forEachCellInRow(table.node.childCount - 1, (cell, tr) => {
+          const ret = summary[index--].value;
+          const content = createContent(
+            // Handle average
+            ret && ret.value ? ret.value / ret.count : ret,
+          );
+          const paragraph = cell.node.child(0);
+          return content
+            ? tr.replaceWith(
+                cell.start,
+                cell.start + paragraph.nodeSize - 1,
+                content,
+              )
+            : tr;
+        })(tr);
+
+        return tr;
+      }
     },
   });
 
