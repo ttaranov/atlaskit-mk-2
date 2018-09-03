@@ -165,7 +165,11 @@ export class ExampleEditor extends React.Component<Props, State> {
             }}
             UNSAFE_mediaSingle_grid={true}
             {...providers}
-            media={{ provider: mediaProvider, allowMediaSingle: true }}
+            media={{
+              provider: mediaProvider,
+              allowMediaSingle: true,
+              UNSAFE_allowMediaSingleResizing: true,
+            }}
             placeholder="Write something..."
             shouldFocus={false}
             disabled={this.state.disabled}
