@@ -9,16 +9,13 @@ export type AnalyticsWebClient = {
 
 export type ListenerProps = {
   children?: React.ReactNode;
-  client: Promise<AnalyticsWebClient>;
+  client?: AnalyticsWebClient;
   logger: Logger;
 };
 
-export type EventNextType = {
-  payload: {
-    action: string;
-    [key: string]: any;
-  };
-  context: Array<{}>;
-};
-
-export type ListenerFunction = (event: EventNextType) => void;
+export enum FabricChannel {
+  atlaskit = 'atlaskit',
+  elements = 'fabric-elements',
+  navigation = 'navigation',
+  editor = 'editor',
+}

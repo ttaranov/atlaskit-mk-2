@@ -10,20 +10,21 @@ import GraphLineIcon from '@atlaskit/icon/glyph/graph-line';
 import FolderIcon from '@atlaskit/icon/glyph/folder';
 import IssuesIcon from '@atlaskit/icon/glyph/issues';
 import ShipIcon from '@atlaskit/icon/glyph/ship';
+import Spinner from '@atlaskit/spinner';
 import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
-import {
-  ContainerHeader,
-  Item as BaseItem,
-  ItemPrimitive,
-  Section as SectionComponent,
-  Separator,
-  Group as GroupComponent,
-  GroupHeading as GroupHeadingComponent,
-  Switcher,
-  withNavigationUI,
-  withNavigationViewController,
-} from '..';
+import { navigationItemClicked } from '../common/analytics';
+import ContainerHeader from '../components/ContainerHeader';
+import BaseItem from '../components/Item';
+import ItemPrimitive from '../components/Item/primitives';
+import SectionComponent from '../components/Section';
+import Separator from '../components/Separator';
+import GroupComponent from '../components/Group';
+import GroupHeadingComponent from '../components/GroupHeading';
+import Switcher from '../components/Switcher';
+import { withNavigationUI } from '../ui-controller';
+import { withNavigationViewController } from '../view-controller';
+
 import type {
   GoToItemProps,
   GroupProps,
@@ -56,12 +57,21 @@ const GoToItemBase = ({
   goTo,
   navigationUIController,
   navigationViewController,
+  spinnerDelay = 200,
   ...rest
 }: GoToItemProps) => {
   let after;
   if (typeof afterProp === 'undefined') {
-    after = ({ isActive, isHover }: *) =>
-      isActive || isHover ? <ArrowRightIcon size="small" /> : null;
+    after = ({ isActive, isHover }: *) => {
+      const { incomingView } = navigationViewController.state;
+      if (incomingView && incomingView.id === goTo) {
+        return <Spinner delay={spinnerDelay} invertColor size="small" />;
+      }
+      if (isActive || isHover) {
+        return <ArrowRightIcon size="small" />;
+      }
+      return null;
+    };
   }
 
   const props = { ...rest, after };
@@ -106,14 +116,16 @@ const backItemPrimitiveStyles = styles => ({
   itemBase: { ...styles.itemBase, cursor: 'default' },
 });
 
-const BackItem = ({ goTo, href, subText, text = 'Back' }: *) => (
-  <div css={{ display: 'flex', marginBottom: '8px' }}>
+const BackItem = ({ goTo, href, subText, id, index, text = 'Back' }: *) => (
+  <div css={{ display: 'flex' }}>
     <div css={{ flexShrink: 0 }}>
       <GoToItem
         after={null}
         goTo={goTo}
         href={href}
         text={<ArrowLeftIcon size="small" />}
+        id={id}
+        index={index}
       />
     </div>
     <div css={{ flexGrow: 1 }}>
@@ -132,7 +144,7 @@ const GroupHeading = ({ text, ...props }: GroupHeadingProps) => (
   <GroupHeadingComponent {...props}>{text}</GroupHeadingComponent>
 );
 
-const Debug = props => (
+const Debug = (props: *) => (
   <pre
     css={{
       backgroundColor: 'rgba(0, 0, 0, 0.1)',
@@ -155,9 +167,10 @@ const Group = ({
   hasSeparator,
   heading,
   items,
+  id,
 }: GroupProps) =>
   items.length ? (
-    <GroupComponent heading={heading} hasSeparator={hasSeparator}>
+    <GroupComponent heading={heading} hasSeparator={hasSeparator} id={id}>
       <ItemsRenderer items={items} customComponents={customComponents} />
     </GroupComponent>
   ) : null;
@@ -172,8 +185,8 @@ const Section = ({
 }: SectionProps) =>
   items.length ? (
     <SectionComponent id={id} key={nestedGroupKey} parentId={parentId}>
-      {({ css }) => (
-        <div css={{ ...css }}>
+      {({ className }) => (
+        <div className={className}>
           <ItemsRenderer items={items} customComponents={customComponents} />
         </div>
       )}
@@ -196,37 +209,30 @@ const groupComponents = {
   Section,
 };
 
-const components = { ...itemComponents, ...groupComponents };
+// Exported for testing purposes only.
+export const components = { ...itemComponents, ...groupComponents };
 
 /**
  * RENDERER
  */
-export const ItemsRenderer = ({
-  customComponents = {},
-  items,
-}: ItemsRendererProps) =>
-  items.map(({ type, ...props }) => {
+const ItemsRenderer = ({ customComponents = {}, items }: ItemsRendererProps) =>
+  items.map(({ type, ...props }, index) => {
     const key =
       typeof props.nestedGroupKey === 'string'
         ? props.nestedGroupKey
         : props.id;
 
-    if (groupComponents[type]) {
-      const G = groupComponents[type];
-      return <G key={key} {...props} customComponents={customComponents} />;
-    }
-
-    if (itemComponents[type]) {
-      const I = itemComponents[type];
-      return <I key={key} {...props} />;
-    }
-
-    if (customComponents[type]) {
-      const C = customComponents[type];
+    // If they've provided a component as the type
+    if (typeof type === 'function') {
+      const CustomComponent = navigationItemClicked(
+        type,
+        type.displayName || 'inlineCustomComponent',
+      );
       return (
-        <C
+        <CustomComponent
           key={key}
           {...props}
+          index={index}
           // We pass our in-built components through to custom components so
           // they can wrap/render them if they want to.
           components={components}
@@ -235,5 +241,43 @@ export const ItemsRenderer = ({
       );
     }
 
+    if (typeof type === 'string') {
+      // If they've provided a type which matches one of our in-built group
+      // components
+      if (groupComponents[type]) {
+        const G = groupComponents[type];
+        return <G key={key} {...props} customComponents={customComponents} />;
+      }
+
+      // If they've provided a type which matches one of our in-built item
+      // components.
+      if (itemComponents[type]) {
+        const I = itemComponents[type];
+        return <I key={key} {...props} index={index} />;
+      }
+
+      // If they've provided a type which matches one of their defined custom
+      // components.
+      if (customComponents[type]) {
+        const CustomComponent = navigationItemClicked(
+          customComponents[type],
+          type,
+        );
+        return (
+          <CustomComponent
+            key={key}
+            {...props}
+            index={index}
+            // We pass our in-built components through to custom components so
+            // they can wrap/render them if they want to.
+            components={components}
+            customComponents={customComponents}
+          />
+        );
+      }
+    }
+
     return <Debug key={key} type={type} {...props} />;
   });
+
+export default ItemsRenderer;

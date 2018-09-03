@@ -1,12 +1,12 @@
 import { Observable } from 'rxjs';
 import { Context, ContextConfig } from '@atlaskit/media-core';
 
-const defaultContextConfig = {
-  serviceHost: 'some-service-host',
+const defaultContextConfig: ContextConfig = {
   authProvider: () =>
     Promise.resolve({
       clientId: 'some-client-id',
       token: 'some-token',
+      baseUrl: 'some-service-host',
     }),
 };
 export const fakeContext = (

@@ -52,8 +52,8 @@ end to end. If you have any questions/problems, feel free to contact James Kyle
 or Luke Batchelor.
 
 A more in-depth view of how we want to work with other teams and open source
-contributions can be found at
-[atlaskit.atlassian.com/docs/guides/contributing](atlaskit.atlassian.com/docs/guides/contributing).
+contributions can be found on the
+[website](https://atlaskit.atlassian.com/docs/guides/contributing).
 
 That all being said, let's dive into it:
 
@@ -93,6 +93,13 @@ bolt install
 This will take a minute or two the first time, but every subsequent run should
 only take about a second.
 
+#### Linux / Mac / Windows
+
+The main `bolt` / `bolt install` commands work on all platforms. However, custom commands may not work in a Windows environment (i.e. `bolt start`). For now, if you're running Windows, you'll have to do the following:
+
+1. Run `bolt` / `bolt install` from `cmd.exe`. It doesn't work in WSL.
+2. Run any custom commands from WSL. We haven't made our custom scripts cross-platform yet.
+
 #### In case you use IntelliJ IDEA or WebStorm
 
 After running `bolt install` you will most likely experiencing issues with IDE indexing taking forever. VS Code does not have this problem. If you do not want to change the IDE you use, do the following: 
@@ -115,7 +122,7 @@ IntelliJ and WebStorm don't handle it properly. There are tickets raised in YouT
 
 ## Exploring the Project
 
-See the [directory structure docs](http://atlaskit.atlassian.com/docs/guides/directory-structure) for
+See the [directory structure docs](https://atlaskit.atlassian.com/docs/guides/directory-structure) for
 more information.
 
 ## Writing new code
@@ -281,7 +288,7 @@ atlastart flag,tooltip
  ```
  - webdriver tests
  ```sh
-  yarn run test:webriver
+  yarn run test:webdriver
  ```
 
 Please refer to [testing in atlaskit][testing] for more information about testing.

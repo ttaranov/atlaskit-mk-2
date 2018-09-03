@@ -1,11 +1,8 @@
 import * as React from 'react';
-import { mount } from 'enzyme';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
-import {
-  DummyComponentWithAnalytics,
-  ELEMENTS_CHANNEL,
-} from '../examples/helpers';
-import { FabricElementsAnalyticsContext } from '../src/AnalyticsContextWithNamespace';
+import { FabricChannel } from '@atlaskit/analytics-listeners';
+import { createDummyComponentWithAnalytics } from '../examples/helpers';
+import { FabricElementsAnalyticsContext } from '../src';
 
 const myOnClickHandler = () => {};
 
@@ -13,12 +10,19 @@ const listenerHandler = (event, context) => {
   console.log('listenerHandler, event: ', event, ' context: ', context);
 };
 
+const ElementsComponentWithAnalytics = createDummyComponentWithAnalytics(
+  FabricChannel.elements,
+);
+
 export default function Example() {
   return (
-    <AnalyticsListener onEvent={listenerHandler} channel={ELEMENTS_CHANNEL}>
+    <AnalyticsListener
+      onEvent={listenerHandler}
+      channel={FabricChannel.elements}
+    >
       <div>
         <FabricElementsAnalyticsContext data={{ greeting: 'hello' }}>
-          <DummyComponentWithAnalytics onClick={myOnClickHandler} />
+          <ElementsComponentWithAnalytics onClick={myOnClickHandler} />
         </FabricElementsAnalyticsContext>
       </div>
     </AnalyticsListener>

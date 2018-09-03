@@ -6,13 +6,13 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title><%= htmlWebpackPlugin.options.title %></title>
     <!-- Polyfills -->
-    <script src="https://cdn.polyfill.io/v2/polyfill.js?features=es6,Array.prototype.includes,fetch"></script>
+    <script src="https://cdn.polyfill.io/v2/polyfill.js?features=Object.values,es6,Array.prototype.includes,fetch"></script>
     <script>
       // Allow to use react devtools inside the examples
       window.__REACT_DEVTOOLS_GLOBAL_HOOK__ = window.parent.__REACT_DEVTOOLS_GLOBAL_HOOK__;
     </script>
   </head>
   <body>
-    <div id="examples"></div>
+    <div id="examples" style="height: 100%;"></div>
   </body>
 </html>

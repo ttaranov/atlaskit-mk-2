@@ -152,6 +152,7 @@ export const baseTests = [
       clickSelector: 'button[aria-haspopup="true"]',
       menuItemText: `Heading ${level}`,
       nodeSelector: `h${level}`,
+      tagName: `h${level}`,
       content: 'text',
       appearance: ['full-page', 'comment'],
     };
@@ -249,3 +250,9 @@ export const imageSnapshotFolder = require('path').resolve(
   __dirname,
   `__image_snapshots__`,
 );
+
+export const snapshot = async page => {
+  const image = await page.screenshot();
+  // @ts-ignore
+  expect(image).toMatchProdImageSnapshot();
+};

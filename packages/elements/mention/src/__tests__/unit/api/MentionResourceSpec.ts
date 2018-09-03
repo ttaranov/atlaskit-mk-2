@@ -8,6 +8,7 @@ import { MentionDescription } from '../../../types';
 import MentionResource, {
   HttpError,
   MentionResourceConfig,
+  MentionStats,
 } from '../../../api/MentionResource';
 import {
   resultC,
@@ -30,7 +31,7 @@ const options = (
   omitCredentials,
 });
 
-const getSecurityHeader = call => call[0].headers.get(defaultSecurityHeader);
+const getSecurityHeader = call => call[1].headers.get(defaultSecurityHeader);
 
 const defaultSecurityCode = '10804';
 
@@ -64,6 +65,7 @@ const FULL_CONTEXT = {
   containerId: 'someContainerId',
   objectId: 'someObjectId',
   childObjectId: 'someChildObjectId',
+  sessionId: 'someSessionId',
 };
 
 describe('MentionResource', () => {
@@ -84,6 +86,11 @@ describe('MentionResource', () => {
           },
         })
         .mock(/\/mentions\/search\?.*query=c(&|$)/, {
+          body: {
+            mentions: resultC,
+          },
+        })
+        .mock(/\/mentions\/bootstrap$/, {
           body: {
             mentions: resultC,
           },
@@ -134,16 +141,15 @@ describe('MentionResource', () => {
       resource.subscribe('test1', mentions => {
         expect(mentions).toHaveLength(resultCraig.length);
 
-        // note: should use fetchMock.lastOptions() but it does not work
-        const requestData = fetchMock.lastUrl();
         const queryParams = queryString.parse(
-          queryString.extract(requestData.url),
+          queryString.extract(fetchMock.lastUrl()),
         );
 
         expect(queryParams.containerId).toBe('someContainerId');
         expect(queryParams.objectId).toBe('someObjectId');
         expect(queryParams.childObjectId).toBe('someChildObjectId');
-        expect(requestData.credentials).toEqual('include');
+        expect(queryParams.sessionId).toBe('someSessionId');
+        expect(fetchMock.lastOptions().credentials).toEqual('include');
         done();
       });
       resource.filter('craig', FULL_CONTEXT);
@@ -159,7 +165,7 @@ describe('MentionResource', () => {
         expect(mentions).toHaveLength(resultCraig.length);
 
         const queryParams = queryString.parse(
-          queryString.extract(fetchMock.lastUrl().url),
+          queryString.extract(fetchMock.lastUrl()),
         );
         // default containerId from config should be used
         expect(queryParams.containerId).toBe('defaultContainerId');
@@ -183,8 +189,7 @@ describe('MentionResource', () => {
       const resource = new MentionResource(apiConfigWithoutCredentials);
       resource.subscribe('test3', mentions => {
         expect(mentions).toHaveLength(0);
-
-        const requestData = fetchMock.lastUrl();
+        const requestData = fetchMock.lastOptions();
         expect(requestData.credentials).toEqual('omit');
         done();
       });
@@ -208,33 +213,78 @@ describe('MentionResource', () => {
   });
 
   describe('#filter', () => {
-    it('should add weight based on response order', done => {
+    it('should add weight based on response order - bootstrap', done => {
       const resource = new MentionResource(apiConfig);
-      resource.subscribe('test1', mentions => {
-        for (let i = 0; i < mentions.length; i++) {
-          expect(mentions[i].weight).toBe(i);
-        }
+      resource.subscribe(
+        'test1',
+        (mentions, query: string, stats?: MentionStats) => {
+          for (let i = 0; i < mentions.length; i++) {
+            expect(mentions[i].weight).toBe(i);
+          }
+          expect(stats).toBeDefined();
+          expect(stats!.duration).toBeGreaterThan(0);
+          expect(stats!.remoteSearch).toBeTruthy();
+          done();
+        },
+      );
+      resource.filter('');
+    });
 
-        done();
-      });
+    it.skip('should add weight based on response order', done => {
+      const resource = new MentionResource(apiConfig);
+      resource.subscribe(
+        'test1',
+        (mentions, query: string, stats?: MentionStats) => {
+          for (let i = 0; i < mentions.length; i++) {
+            expect(mentions[i].weight).toBe(i);
+          }
+          expect(stats).toBeDefined();
+          expect(stats!.duration).toBeGreaterThan(0);
+          expect(stats!.remoteSearch).toBeTruthy();
+          done();
+        },
+      );
       resource.filter('c');
     });
 
     it('in order responses', done => {
       const resource = new MentionResource(apiConfig);
-      const results: MentionDescription[][] = [];
-      const expected = [resultC, [], resultCraig];
-      resource.subscribe('test1', mentions => {
-        results.push(mentions);
-        // 1st: remote search for 'c'
-        // 2nd: local index for 'craig'  => no results
-        // 3rd: remote search for 'craig'
+      let sequence = 0;
 
-        if (results.length === 3) {
-          checkOrder(expected, results);
-          done();
-        }
-      });
+      resource.subscribe(
+        'test1',
+        (mentions, query: string, stats?: MentionStats) => {
+          sequence++;
+
+          expect(stats).toBeDefined();
+
+          // 1st: remote search for 'c'
+          // 2nd: local index for 'craig'  => no results
+          // 3rd: remote search for 'craig'
+
+          if (sequence === 1) {
+            expect(query).toBe('c');
+            expect(mentions).toBe(resultC);
+            expect(stats!.duration).toBeGreaterThan(0);
+            expect(stats!.remoteSearch).toBeTruthy();
+          }
+
+          if (sequence === 2) {
+            expect(query).toBe('craig');
+            expect(mentions).toBe([]);
+            expect(stats!.duration).toBeGreaterThan(0);
+            expect(stats!.remoteSearch).toBeFalsy();
+          }
+
+          if (sequence === 3) {
+            expect(query).toBe('craig');
+            expect(mentions).toMatchObject(resultCraig);
+            expect(stats!.duration).toBeGreaterThan(0);
+            expect(stats!.remoteSearch).toBeTruthy();
+            done();
+          }
+        },
+      );
       resource.filter('c');
       setTimeout(() => {
         resource.filter('craig');
@@ -252,7 +302,7 @@ describe('MentionResource', () => {
           checkOrder(expected, results);
 
           const queryParams = queryString.parse(
-            queryString.extract(fetchMock.lastUrl().url),
+            queryString.extract(fetchMock.lastUrl()),
           );
           expect(queryParams.containerId).toBe('someContainerId');
           expect(queryParams.objectId).toBe('someObjectId');
@@ -340,19 +390,23 @@ describe('MentionResource', () => {
   describe('#filter auth issues', () => {
     it('401 error once retry', done => {
       const authUrl = 'https://authbogus/';
-      const matcher = {
-        name: 'authonce',
-        matcher: `begin:${authUrl}`,
-      };
+      const matcher = `begin:${authUrl}`;
 
-      fetchMock.mock({ ...matcher, response: 401, times: 1 }).mock({
-        ...matcher,
+      fetchMock.get({
+        name: 'authonce',
+        matcher,
+        response: 401,
+        repeat: 1,
+      });
+      fetchMock.get({
+        name: 'authonce2',
+        matcher,
         response: {
           body: {
             mentions: resultCraig,
           },
         },
-        times: 1,
+        repeat: 1,
       });
 
       const refreshedSecurityProvider = jest.fn();
@@ -371,10 +425,12 @@ describe('MentionResource', () => {
         () => {
           try {
             expect(refreshedSecurityProvider).toHaveBeenCalledTimes(1);
-            const calls = fetchMock.calls(matcher.name);
-            expect(calls).toHaveLength(2);
-            expect(getSecurityHeader(calls[0])).toEqual(defaultSecurityCode);
-            expect(getSecurityHeader(calls[1])).toEqual('666');
+            const firstCall = fetchMock.calls('authonce');
+            expect(getSecurityHeader(firstCall[0])).toEqual(
+              defaultSecurityCode,
+            );
+            const secondCall = fetchMock.calls('authonce2');
+            expect(getSecurityHeader(secondCall[1])).toEqual('666');
             done();
           } catch (ex) {
             done(ex);
@@ -416,15 +472,14 @@ describe('MentionResource', () => {
         (err: Error) => {
           try {
             expect(refreshedSecurityProvider).toHaveBeenCalledTimes(1);
-            expect(err).toBeInstanceOf(HttpError);
-            expect((<HttpError>err).statusCode).toEqual(401);
+            expect((err as any).code).toEqual(401);
             const calls = fetchMock.calls(matcher.name);
             expect(calls).toHaveLength(2);
             expect(getSecurityHeader(calls[0])).toEqual(defaultSecurityCode);
             expect(getSecurityHeader(calls[1])).toEqual('666');
             done();
           } catch (ex) {
-            done(ex);
+            done.fail(ex);
           }
         },
       );
@@ -480,11 +535,12 @@ describe('MentionResource', () => {
         )
         .then(() => {
           const queryParams = queryString.parse(
-            queryString.extract(fetchMock.lastUrl().url),
+            queryString.extract(fetchMock.lastUrl()),
           );
           expect(queryParams.containerId).toBe('someContainerId');
           expect(queryParams.objectId).toBe('someObjectId');
           expect(queryParams.childObjectId).toBe('someChildObjectId');
+          expect(queryParams.sessionId).toBe('someSessionId');
           expect(fetchMock.called('record')).toBe(true);
           done();
         });

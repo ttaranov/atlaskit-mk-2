@@ -9,7 +9,8 @@ import { createCollection } from './collection';
 import { CollectionItem, createCollectionItem } from './collection-item';
 import { createUpload, Upload } from './upload';
 import { Chunk } from './chunk';
-import { defaultServiceHost } from '../..';
+import { defaultBaseUrl } from '../../contextProvider';
+import { MockUserCollection } from '../media-mock';
 
 export * from './collection';
 export * from './collection-item';
@@ -17,11 +18,13 @@ export * from './collection-item';
 export const tenantAuth: ClientBasedAuth = {
   clientId: uuid.v4(),
   token: 'some-tenant-token',
+  baseUrl: defaultBaseUrl,
 };
 
 export const userAuth: ClientBasedAuth = {
   clientId: uuid.v4(),
   token: 'some-user-token',
+  baseUrl: defaultBaseUrl,
 };
 
 export const userAuthProvider = () => Promise.resolve(userAuth);
@@ -45,27 +48,43 @@ export function createDatabase(): Database<DatabaseSchema> {
   return database;
 }
 
-export function generateUserData(): void {
+export function generateUserData(
+  collectionData: MockUserCollection | undefined,
+): void {
   const mediaStore = new MediaStore({
-    serviceHost: defaultServiceHost,
     authProvider: userAuthProvider,
   });
 
-  const image = mapDataUriToBlob(fakeImage);
-  mediaStore.createCollection('recents');
+  const collection = 'recents';
+  mediaStore.createCollection(collection);
 
-  for (let i = 0; i < 10; i++) {
-    mediaStore.createFileFromBinary(image, {
-      name: getFakeFileName(),
-      collection: 'recents',
-      occurrenceKey: uuid.v4(),
+  if (collectionData) {
+    Object.keys(collectionData).forEach(filename => {
+      const dataUri = collectionData[filename];
+      const image = mapDataUriToBlob(dataUri);
+
+      mediaStore.createFileFromBinary(image, {
+        name: filename,
+        collection,
+        occurrenceKey: uuid.v4(),
+      });
     });
+  } else {
+    // just insert 10 random files with the same image
+    const image = mapDataUriToBlob(fakeImage);
+
+    for (let i = 0; i < 10; i++) {
+      mediaStore.createFileFromBinary(image, {
+        name: getFakeFileName(),
+        collection,
+        occurrenceKey: uuid.v4(),
+      });
+    }
   }
 }
 
 export function generateTenantData(): void {
   const mediaStore = new MediaStore({
-    serviceHost: defaultServiceHost,
     authProvider: tenantAuthProvider,
   });
 

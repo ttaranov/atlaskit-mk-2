@@ -8,7 +8,7 @@ import { AnalyticsType, ResultType, PersonResult } from '../../model/Result';
 
 function searchApiWillReturn(state: SearchResult[] | GraphqlResponse) {
   const response = Array.isArray(state)
-    ? { data: { AccountCentricUserSearch: state } }
+    ? { data: { UserSearch: state } }
     : state;
 
   const opts = {
@@ -46,7 +46,7 @@ describe('PeopleSearchClient', () => {
 
       const call = fetchMock.calls('people')[0];
       // @ts-ignore
-      const body = JSON.parse(call[0]._bodyText);
+      const body = JSON.parse(call[1].body);
 
       expect(body.variables.cloudId).toEqual('123');
       expect(body.variables.displayName).toEqual('query');
@@ -79,7 +79,7 @@ describe('PeopleSearchClient', () => {
       expect(item.analyticsType).toEqual(AnalyticsType.ResultPerson);
     });
 
-    it('should throw when data.AccountCentricUserSearch is not defined', async () => {
+    it('should throw when data.UserSearch is not defined', async () => {
       searchApiWillReturn({
         data: 'foo',
       } as GraphqlResponse);
@@ -118,7 +118,7 @@ describe('PeopleSearchClient', () => {
 
       const call = fetchMock.calls('people')[0];
       // @ts-ignore
-      const body = JSON.parse(call[0]._bodyText);
+      const body = JSON.parse(call[1].body);
 
       expect(body.variables.cloudId).toEqual('123');
     });

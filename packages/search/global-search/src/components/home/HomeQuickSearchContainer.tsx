@@ -26,6 +26,7 @@ export interface State {
   searchSessionId: string;
   isLoading: boolean;
   isError: boolean;
+  keepPreQueryState: boolean;
   recentlyViewedItems: Result[];
   recentResults: Result[];
   jiraResults: Result[];
@@ -43,6 +44,7 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
     this.state = {
       isLoading: false,
       isError: false,
+      keepPreQueryState: true,
       latestSearchQuery: '',
       searchSessionId: uuid(), // unique id for search attribution
       recentlyViewedItems: [],
@@ -61,7 +63,9 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
     if (query.length === 0) {
       // reset search results so that internal state between query and results stays consistent
       this.setState({
+        isLoading: false,
         isError: false,
+        keepPreQueryState: true,
         recentResults: [],
         jiraResults: [],
         confluenceResults: [],
@@ -92,12 +96,12 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
 
     if (this.state.latestSearchQuery === query) {
       this.setState({
-        jiraResults: results.get(Scope.JiraIssue) || [],
-        confluenceResults: results.get(Scope.ConfluencePageBlog) || [],
+        jiraResults: results.results.get(Scope.JiraIssue) || [],
+        confluenceResults: results.results.get(Scope.ConfluencePageBlog) || [],
       });
     }
 
-    return results;
+    return results.results;
   }
 
   async searchPeople(query: string): Promise<Result[]> {
@@ -173,6 +177,7 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
       } finally {
         this.setState({
           isLoading: false,
+          keepPreQueryState: false,
         });
       }
     })();
@@ -194,6 +199,7 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
       latestSearchQuery,
       isLoading,
       isError,
+      keepPreQueryState,
       recentlyViewedItems,
       recentResults,
       jiraResults,
@@ -212,7 +218,9 @@ export class HomeQuickSearchContainer extends React.Component<Props, State> {
       >
         <HomeSearchResults
           query={latestSearchQuery}
+          isLoading={isLoading}
           isError={isError}
+          keepPreQueryState={keepPreQueryState}
           retrySearch={this.retrySearch}
           recentlyViewedItems={recentlyViewedItems}
           recentResults={recentResults}

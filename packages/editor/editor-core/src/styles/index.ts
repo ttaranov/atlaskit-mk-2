@@ -1,4 +1,3 @@
-import { fontSize } from '@atlaskit/theme';
 import {
   akCodeFontFamily,
   akColorB100,
@@ -12,7 +11,6 @@ import {
   akColorN500,
   akColorN700,
   akColorN900,
-  akZIndexLayer,
 } from '@atlaskit/util-shared-styles';
 
 export const akEditorCodeFontFamily = akCodeFontFamily;
@@ -29,12 +27,7 @@ export const akEditorPrimaryButton = akColorB400;
 export const akEditorCodeBackground = akColorN20;
 export const akEditorCodeBlockPadding = '12px';
 export const akEditorCodeInlinePadding = '2px 4px';
-export const akEditorFloatingPanelZIndex = akZIndexLayer;
 export const akEditorMentionSelected = akColorN100;
 export const akEditorRuleBackground = akColorN30;
 export const akEditorRuleBorderRadius = '1px';
-export const defaultEditorFontStyles = `
-  font-size: ${fontSize()}px;
-  font-weight: normal;
-`;
 export const akEditorToolbarKeylineHeight = 2;

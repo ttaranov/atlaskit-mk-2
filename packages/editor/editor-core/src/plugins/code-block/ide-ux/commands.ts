@@ -18,13 +18,15 @@ export function indent(state: EditorState, dispatch) {
         indentToken.size,
     );
     tr.insertText(indentToAdd, tr.mapping.map(start + offset, -1));
-    tr.setSelection(
-      TextSelection.create(
-        tr.doc,
-        tr.mapping.map(selection.from, -1),
-        tr.selection.to,
-      ),
-    );
+    if (!selection.empty) {
+      tr.setSelection(
+        TextSelection.create(
+          tr.doc,
+          tr.mapping.map(selection.from, -1),
+          tr.selection.to,
+        ),
+      );
+    }
   });
   dispatch(tr);
   analyticsService.trackEvent(`atlassian.editor.codeblock.indent`);

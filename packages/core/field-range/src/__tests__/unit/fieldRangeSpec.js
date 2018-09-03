@@ -4,19 +4,6 @@ import React from 'react';
 import { mount } from 'enzyme';
 import FieldRange from '../../FieldRange';
 
-// We need to simulate a real event on the DOM element due IE compatibility
-const simulateValueChange = (range, value) => {
-  const input = range.find('input');
-  const inputElement: ?HTMLInputElement = (input
-    .find('input')
-    .getDOMNode(): any);
-  if (inputElement) {
-    inputElement.value = `${value}`;
-    inputElement.dispatchEvent(new Event('input', { detail: { value } }));
-    range.update();
-  }
-};
-
 describe('FieldRange', () => {
   describe('with default props', () => {
     let fieldRange;
@@ -72,15 +59,8 @@ describe('FieldRange', () => {
     });
 
     it('should call spy when value is changed', () => {
-      simulateValueChange(fieldRange, 15);
+      fieldRange.find('input').simulate('change');
       expect(onChangeSpy).toHaveBeenCalledTimes(1);
-      expect(onChangeSpy).toHaveBeenCalledWith(15);
-    });
-
-    it('should change input value when value is changed', () => {
-      simulateValueChange(fieldRange, 15);
-      const input = fieldRange.find('input');
-      expect(input.props().value).toBe('15');
     });
 
     it('should change input value when prop is changed', () => {

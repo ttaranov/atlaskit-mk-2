@@ -13,12 +13,11 @@ export async function constructAuthTokenUrl(
   context: Context,
   collectionName?: string,
 ): Promise<string> {
-  const host = context.config.serviceHost;
   const auth = await context.config.authProvider({ collectionName });
 
   if (isClientBasedAuth(auth)) {
     return buildClientBasedUrl(
-      host,
+      auth.baseUrl,
       url,
       auth.token,
       auth.clientId,
@@ -26,7 +25,7 @@ export async function constructAuthTokenUrl(
     );
   } else {
     return buildIssuerBasedUrl(
-      host,
+      auth.baseUrl,
       url,
       auth.token,
       auth.asapIssuer,

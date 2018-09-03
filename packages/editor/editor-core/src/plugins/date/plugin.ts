@@ -34,7 +34,7 @@ const createPlugin: PMPluginFactory = ({ dispatch, portalProviderAPI }) =>
         if (tr.docChanged && state.showDatePickerAt) {
           const { pos, deleted } = tr.mapping.mapResult(state.showDatePickerAt);
           const newState = {
-            showDatePickerAt: deleted ? undefined : pos,
+            showDatePickerAt: deleted ? null : pos,
           };
 
           if (newState.showDatePickerAt !== state.showDatePickerAt) {

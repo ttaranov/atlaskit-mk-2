@@ -1,10 +1,7 @@
 import * as React from 'react';
-import styled from 'styled-components';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
 import {
-  akBorderRadius,
-  akGridSizeUnitless,
   akColorG50,
   akColorP50,
   akColorB50,
@@ -52,25 +49,6 @@ const panelIcons = {
   error: ErrorIcon,
 };
 
-// tslint:disable-next-line:variable-name
-const Wrapper = styled.div`
-  border-radius: ${akBorderRadius};
-  padding: ${akGridSizeUnitless}px;
-  min-height: 26px;
-`;
-
-// tslint:disable-next-line:variable-name
-const ContentWrapper = styled.div`
-  margin-left: ${akGridSizeUnitless * 4}px;
-`;
-
-// tslint:disable-next-line:variable-name
-const IconWrapper = styled.span`
-  height: 24px;
-  width: 24px;
-  position: absolute;
-`;
-
 export interface Props {
   children?: React.ReactNode;
   view: EditorView;
@@ -92,12 +70,18 @@ class PanelComponent extends React.Component<PanelComponentProps> {
     const Icon = panelIcons[panelType];
 
     return (
-      <Wrapper style={{ background: panelColor[panelType] }}>
-        <IconWrapper style={{ color: iconColor[panelType] }}>
+      <div
+        style={{ background: panelColor[panelType] }}
+        className="ak-editor-panel"
+      >
+        <span
+          style={{ color: iconColor[panelType] }}
+          className="ak-editor-panel__icon"
+        >
           <Icon label={`Panel ${panelType}`} />
-        </IconWrapper>
-        <ContentWrapper innerRef={forwardRef} />
-      </Wrapper>
+        </span>
+        <div className="ak-editor-panel__content" ref={forwardRef as any} />
+      </div>
     );
   }
 }

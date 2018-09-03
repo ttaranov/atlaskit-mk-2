@@ -14,12 +14,17 @@ const isReachable = require('is-reachable');
 */
 
 const JEST_WAIT_FOR_INPUT_TIMEOUT = 1000;
-
+/* 
+ * maxWorkers set to 4 when using browserstack and 1 when running locally. 
+ * By default the tests are running headlessly, set HEADLESS=false if you want to run them directly on real browsers.
+ * if WATCH= true, by default, it will start chrome.
+ *  */
+const maxWorkers =
+  process.env.TEST_ENV === 'browserstack' ? '--maxWorkers=4' : '--maxWorkers=1';
+const watch = process.env.WATCH ? '--watch' : '';
 function runTests() {
   return new Promise((resolve, reject) => {
-    /* maxWorkers set to 4 will create 4 threads */
-    let cmd = `INTEGRATION_TESTS=true jest --maxWorkers=4`;
-
+    let cmd = `INTEGRATION_TESTS=true jest ${maxWorkers} ${watch}`;
     const tests = child.spawn(cmd, process.argv.slice(2), {
       stdio: 'inherit',
       shell: true,
@@ -40,7 +45,11 @@ function runTests() {
 
 async function main() {
   const serverAlreadyRunning = await isReachable('http://localhost:9000');
-  if (!serverAlreadyRunning) {
+  // For testing the website package, there is no need to start the webpack server
+  if (
+    !serverAlreadyRunning &&
+    process.argv.slice(2).indexOf('website') === -1
+  ) {
     await webpack.startDevServer();
   }
   process.env.TEST_ENV === 'browserstack'
@@ -50,8 +59,11 @@ async function main() {
   const { code, signal } = await runTests();
 
   console.log(`Exiting tests with exit code: ${code} and signal: ${signal}`);
-
-  if (!serverAlreadyRunning) {
+  // For testing the website package, there is no need to stop the webpack server
+  if (
+    !serverAlreadyRunning &&
+    process.argv.slice(2).indexOf('website') === -1
+  ) {
     webpack.stopDevServer();
   }
   process.env.TEST_ENV === 'browserstack'

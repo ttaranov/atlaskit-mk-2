@@ -39,15 +39,7 @@ const months = [
   'Nov',
   'Dec',
 ];
-const week_days = [
-  'Sun',
-  'Mon',
-  'Tue',
-  'Wed',
-  'Thu',
-  'Fri',
-  'Sat',
-];
+const week_days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 // example: "23 Jan 2018"
 export const timestampToString = (

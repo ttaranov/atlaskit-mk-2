@@ -7,7 +7,9 @@ import { MediaFile } from '../../src/mediaviewer';
 const clientId = 'some-client';
 const token = 'some-token';
 const collectionName = 'some-collection';
-const authProvider: AuthProvider = () => Promise.resolve({ clientId, token });
+const baseUrl = 'some-base-url';
+const authProvider: AuthProvider = () =>
+  Promise.resolve({ clientId, token, baseUrl });
 
 describe('fetchToken', () => {
   const authQueryString = `client=${clientId}&collection=${collectionName}&token=${token}`;

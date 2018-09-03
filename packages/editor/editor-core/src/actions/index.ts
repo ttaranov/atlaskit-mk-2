@@ -4,7 +4,7 @@ import { EditorView } from 'prosemirror-view';
 import { Transformer } from '@atlaskit/editor-common';
 import {
   getEditorValueWithMedia,
-  insertFileFromDataUrl,
+  insertFileFromDataUrl as insertFileFromUrl,
   preprocessDoc,
   toJSON,
   processRawValue,
@@ -17,7 +17,18 @@ export type ContextUpdateHandler = (
   eventDispatcher: EventDispatcher,
 ) => void;
 
-export default class EditorActions {
+export interface EditorActionsOptions {
+  focus(): boolean;
+  blur(): boolean;
+  clear(): boolean;
+  getValue(): Promise<any | undefined>;
+  replaceDocument(rawValue: any): boolean;
+  replaceSelection(rawValue: Node | Object | string): boolean;
+  appendText(text: string): boolean;
+  insertFileFromDataUrl(url: string, filename: string): boolean;
+}
+
+export default class EditorActions implements EditorActionsOptions {
   private editorView?: EditorView;
   private contentTransformer?: Transformer<any>;
   private eventDispatcher?: EventDispatcher;
@@ -203,7 +214,7 @@ export default class EditorActions {
     if (!this.editorView) {
       return false;
     }
-    insertFileFromDataUrl(this.editorView.state, url, filename);
+    insertFileFromUrl(this.editorView.state, url, filename);
     return true;
   }
 }

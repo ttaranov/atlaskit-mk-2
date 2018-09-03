@@ -108,7 +108,7 @@ describe('TokenManager', () => {
             body: expectedToken1,
           },
           name: 'token-read-1',
-          times: 1,
+          repeat: 1,
         })
         .mock({
           matcher: tokenReadUrl,

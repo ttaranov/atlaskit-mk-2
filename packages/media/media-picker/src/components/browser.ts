@@ -1,6 +1,5 @@
 import { LocalUploadComponent, LocalUploadConfig } from './localUpload';
 import { Context } from '@atlaskit/media-core';
-import { OldUploadServiceImpl } from '../service/uploadService';
 
 export interface BrowserConfig extends LocalUploadConfig {
   readonly multiple?: boolean;
@@ -43,19 +42,11 @@ export class Browser extends LocalUploadComponent {
   }
 
   private addEvents() {
-    if (this.config.useNewUploadService) {
-      this.browseElement.addEventListener('change', this.onFilePicked);
-    } else {
-      (this.uploadService as OldUploadServiceImpl).addBrowse(
-        this.browseElement,
-      );
-    }
+    this.browseElement.addEventListener('change', this.onFilePicked);
   }
 
   private removeEvents() {
-    if (this.config.useNewUploadService) {
-      this.browseElement.removeEventListener('change', this.onFilePicked);
-    }
+    this.browseElement.removeEventListener('change', this.onFilePicked);
   }
 
   private onFilePicked = () => {

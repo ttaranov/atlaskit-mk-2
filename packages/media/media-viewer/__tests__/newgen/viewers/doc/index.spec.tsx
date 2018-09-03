@@ -47,11 +47,7 @@ describe('DocViewer', () => {
     const { el } = createFixture(fetchPromise, item);
     await (el as any).instance()['init']();
 
-    expect(el.state()).toMatchObject({
-      src: {
-        status: 'SUCCESSFUL',
-      },
-    });
+    expect(el.state().src.status).toEqual('SUCCESSFUL');
   });
 
   it('shows an indicator while loading', async () => {
@@ -90,12 +86,9 @@ describe('DocViewer', () => {
 
     await (el as any).instance()['init']();
 
-    expect(el.state()).toMatchObject({
-      src: {
-        status: 'FAILED',
-        err: createError('noPDFArtifactsFound'),
-      },
-    });
+    const { src } = el.state();
+    expect(src.status).toEqual('FAILED');
+    expect(src.err).toEqual(createError('noPDFArtifactsFound'));
 
     const errorMessage = el.find(ErrorMessage);
     expect(errorMessage).toHaveLength(1);

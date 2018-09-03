@@ -1,24 +1,29 @@
 import * as React from 'react';
-import { withAnalyticsEvents } from '@atlaskit/analytics-next';
-import { GasPayload } from '@atlaskit/analytics-gas-types';
-import Button from '@atlaskit/button';
+import {
+  withAnalyticsEvents,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
+import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
 
-export type Props = {
+export type Props = WithAnalyticsEventProps & {
   text?: string;
   onClick: (e) => void;
 };
 
-export const ELEMENTS_CHANNEL = 'fabricElements';
+class DummyComponent extends React.Component<Props> {
+  render() {
+    const { onClick, text } = this.props;
+    return (
+      <div id="dummy" onClick={onClick} style={{ paddingBottom: 12 }}>
+        <button>{text || 'Test'}</button>
+      </div>
+    );
+  }
+}
 
-export const DummyComponent: React.StatelessComponent<Props> = props => (
-  <div id="dummy" onClick={props.onClick} style={{ paddingBottom: 12 }}>
-    <Button appearance="help">{props.text ? props.text : 'Test'}</Button>
-  </div>
-);
-
-export const DummyComponentWithAnalytics = withAnalyticsEvents({
-  onClick: (createEvent, props) => {
-    const event: GasPayload = {
+export const createDummyComponentWithAnalytics = channel =>
+  withAnalyticsEvents({
+    onClick: createAndFireEvent(channel)({
       action: 'someAction',
       actionSubject: 'someComponent',
       eventType: 'ui',
@@ -29,7 +34,5 @@ export const DummyComponentWithAnalytics = withAnalyticsEvents({
         componentName: 'foo',
         foo: 'bar',
       },
-    };
-    createEvent(event).fire(ELEMENTS_CHANNEL);
-  },
-})(DummyComponent);
+    }),
+  })(DummyComponent);

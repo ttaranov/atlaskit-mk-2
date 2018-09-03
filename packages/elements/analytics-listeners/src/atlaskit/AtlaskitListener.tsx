@@ -2,21 +2,19 @@ import * as React from 'react';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 
 import { sendEvent } from '../analytics-web-client-wrapper';
-import { ListenerProps, ListenerFunction } from '../types';
-
+import { ListenerProps, FabricChannel } from '../types';
+import { UIAnalyticsEventHandlerSignature } from '@atlaskit/analytics-next-types';
 import processEvent from './process-event';
 
-const ATLASKIT_CHANNEL = 'atlaskit';
-
 export default class AtlaskitListener extends React.Component<ListenerProps> {
-  listenerHandler: ListenerFunction = event => {
+  listenerHandler: UIAnalyticsEventHandlerSignature = event => {
     const { client, logger } = this.props;
     logger.debug('Received Atlaskit event', event);
     const payload = processEvent(event, logger);
     logger.debug('Processed Atlaskit event', payload);
 
     if (payload) {
-      sendEvent(client, logger)(payload);
+      sendEvent(logger, client)(payload);
     }
   };
 
@@ -24,7 +22,7 @@ export default class AtlaskitListener extends React.Component<ListenerProps> {
     return (
       <AnalyticsListener
         onEvent={this.listenerHandler}
-        channel={ATLASKIT_CHANNEL}
+        channel={FabricChannel.atlaskit}
       >
         {this.props.children}
       </AnalyticsListener>

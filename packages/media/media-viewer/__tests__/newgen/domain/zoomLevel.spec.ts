@@ -1,43 +1,112 @@
 import { ZoomLevel } from '../../../src/newgen/domain/zoomLevel';
+import * as jsc from 'jsverify';
+
+const scaleGenerator = () =>
+  jsc.oneof(
+    [jsc.number(0.1, 2.0), jsc.constant(1)], // guarantees that 1 will be checked
+  );
 
 describe('ZoomLevel', () => {
-  it('begins with a zoom level of 1 or 100%', () => {
-    const zoomLevel = new ZoomLevel();
-    expect(zoomLevel.value).toEqual(1);
-    expect(zoomLevel.asPercentage).toEqual('100 %');
-  });
+  jsc.property(
+    'selects the initialValue if no value is selected',
+    scaleGenerator(),
+    scale => {
+      const zoomLevel = new ZoomLevel(scale);
+      return zoomLevel.value == scale;
+    },
+  );
 
-  it('increases the zoom level when zooming in', () => {
-    const zoomLevel = new ZoomLevel();
-    expect(zoomLevel.zoomIn().value).toBeGreaterThan(zoomLevel.value);
-  });
+  jsc.property(
+    'the zoomLevel of 100% does always exist exactly once',
+    scaleGenerator(),
+    scale => {
+      const zoomLevel = new ZoomLevel(scale);
+      return zoomLevel.zoomLevels.filter(i => i === 1).length === 1;
+    },
+  );
 
-  it('decreases the zoom level when zooming out', () => {
-    const zoomLevel = new ZoomLevel();
-    expect(zoomLevel.zoomOut().value).toBeLessThan(zoomLevel.value);
-  });
+  jsc.property(
+    'zooming in maintains the initialValue',
+    scaleGenerator(),
+    scale => {
+      const original = new ZoomLevel(scale);
+      const zoomed = original.zoomIn();
+      return original.initialValue === zoomed.initialValue;
+    },
+  );
 
-  it('will not decrease the zoom level when the minimum is reached', () => {
-    const zoomLevel = new ZoomLevel(ZoomLevel.MIN);
-    expect(zoomLevel.zoomOut().value).toEqual(zoomLevel.value);
-  });
+  jsc.property(
+    'zooming out maintains the initialValue',
+    scaleGenerator(),
+    scale => {
+      const original = new ZoomLevel(scale);
+      const zoomed = original.zoomOut();
+      return original.initialValue === zoomed.initialValue;
+    },
+  );
 
-  it('will not increase the zoom level when the maximum is reached', () => {
-    const zoomLevel = new ZoomLevel(ZoomLevel.MAX);
-    expect(zoomLevel.zoomIn().value).toEqual(zoomLevel.value);
-  });
+  jsc.property(
+    'increases the zoom level when zooming in',
+    scaleGenerator(),
+    scale => {
+      const zoomLevel = new ZoomLevel(scale);
+      return zoomLevel.zoomIn().value > zoomLevel.value;
+    },
+  );
 
-  it('will report if zooming out is possible', () => {
-    const zoomLevelDefault = new ZoomLevel();
-    const zoomLevelMin = new ZoomLevel(ZoomLevel.MIN);
-    expect(zoomLevelDefault.canZoomOut).toEqual(true);
-    expect(zoomLevelMin.canZoomOut).toEqual(false);
-  });
+  jsc.property(
+    'decreases the zoom level when zooming out',
+    scaleGenerator(),
+    scale => {
+      const zoomLevel = new ZoomLevel(scale);
+      return zoomLevel.zoomOut().value < zoomLevel.value;
+    },
+  );
 
-  it('will report if zooming in is possible', () => {
-    const zoomLevelDefault = new ZoomLevel();
-    const zoomLevelMax = new ZoomLevel(ZoomLevel.MAX);
-    expect(zoomLevelDefault.canZoomIn).toEqual(true);
-    expect(zoomLevelMax.canZoomIn).toEqual(false);
-  });
+  jsc.property(
+    'will not increase the zoom level when the maximum is reached',
+    scaleGenerator(),
+    scale => {
+      const zoomLevel = new ZoomLevel(scale).fullyZoomIn();
+      return zoomLevel.zoomIn().value === zoomLevel.value;
+    },
+  );
+
+  jsc.property(
+    'will not decrease the zoom level when the minimum is reached',
+    scaleGenerator(),
+    scale => {
+      const zoomLevel = new ZoomLevel(scale).fullyZoomOut();
+      return zoomLevel.zoomOut().value === zoomLevel.value;
+    },
+  );
+
+  jsc.property(
+    'will report if zooming out is possible',
+    scaleGenerator(),
+    scale => {
+      const zoomLevelDefault = new ZoomLevel(scale);
+      const zoomLevelMin = new ZoomLevel(scale).fullyZoomOut();
+      return zoomLevelDefault.canZoomOut && !zoomLevelMin.canZoomOut;
+    },
+  );
+
+  jsc.property(
+    'will report if zooming in is possible',
+    scaleGenerator(),
+    scale => {
+      const zoomLevelDefault = new ZoomLevel(scale);
+      const zoomLevelMax = new ZoomLevel(scale).fullyZoomIn();
+      return zoomLevelDefault.canZoomIn && !zoomLevelMax.canZoomIn;
+    },
+  );
+
+  jsc.property(
+    'the percentage will be returned as an integer string',
+    scaleGenerator(),
+    scale => {
+      const zoomLevel = new ZoomLevel(scale);
+      return !zoomLevel.asPercentage.includes('.');
+    },
+  );
 });

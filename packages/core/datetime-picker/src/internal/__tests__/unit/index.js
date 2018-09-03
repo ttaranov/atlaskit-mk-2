@@ -1,10 +1,12 @@
 // @flow
 
+import moment from 'moment';
 import { mount } from 'enzyme';
 import React from 'react';
 import { parse, format } from 'date-fns';
 import { TimePickerWithoutAnalytics as TimePicker } from '../../../components/TimePicker';
 import { DatePickerWithoutAnalytics as DatePicker } from '../../../components/DatePicker';
+import { DateTimePickerWithoutAnalytics as DateTimePicker } from '../../../components/DateTimePicker';
 
 import {
   ClearIndicator,
@@ -148,4 +150,72 @@ test('TimePicker custom parseInputValue', () => {
   );
   timePickerWrapper.instance().onCreateOption('asdf');
   expect(onChangeSpy).toBeCalledWith(expectedResult);
+});
+
+test('DateTimePicker, default parseValue, does not parse the date time value into the specified timezone', () => {
+  const dateTimePickerWrapper = mount(
+    <DateTimePicker
+      id="datetimepicker-1"
+      value={'2018-05-02T08:00:00.000+0800'}
+    />,
+  );
+  expect(dateTimePickerWrapper.instance().getState().zoneValue).not.toEqual(
+    '+0800',
+  );
+});
+
+test('DatePicker, custom formatDisplayLabel', () => {
+  const dateValue = new Date('08/06/2018').toUTCString();
+  const formatDisplayLabel = (date, dateFormat) => {
+    moment.locale('fr');
+    return moment(date).format(dateFormat);
+  };
+  const expectedResult = 'août/06';
+  const datePickerWrapper = mount(
+    <DatePicker
+      formatDisplayLabel={formatDisplayLabel}
+      dateFormat={'MMMM/DD'}
+      value={dateValue}
+    />,
+  );
+  const label = datePickerWrapper.text();
+  expect(label).toEqual(expectedResult);
+});
+
+test('TimePicker, custom formatDisplayLabel', () => {
+  const timeValue = '12:00';
+  const expectedResult = 'midday';
+  const formatDisplayLabel = time => {
+    if (time === '12:00') return 'midday';
+    return time;
+  };
+  const timePickerWrapper = mount(
+    <TimePicker formatDisplayLabel={formatDisplayLabel} value={timeValue} />,
+  );
+  const label = timePickerWrapper.text();
+
+  expect(label).toEqual(expectedResult);
+});
+
+test('DateTimePicker, custom parseValue', () => {
+  const customParseValue = (dateTimeValue, dateValue, timeValue, zoneValue) => {
+    const parsedValue = moment(dateTimeValue).parseZone();
+    return {
+      dateValue: parsedValue.isValid
+        ? parsedValue.format('YYYY-MM-DD')
+        : dateValue,
+      timeValue: parsedValue.isValid ? parsedValue.format('HH:mm') : timeValue,
+      zoneValue: parsedValue.isValid ? parsedValue.format('ZZ') : zoneValue,
+    };
+  };
+  const dateTimePickerWrapper = mount(
+    <DateTimePicker
+      parseValue={customParseValue}
+      value={'2018-05-02T08:00:00.000+0800'}
+    />,
+  );
+  const dateTimePickerState = dateTimePickerWrapper.instance().getState();
+  expect(dateTimePickerState.dateValue).toEqual('2018-05-02');
+  expect(dateTimePickerState.timeValue).toEqual('08:00');
+  expect(dateTimePickerState.zoneValue).toEqual('+0800');
 });

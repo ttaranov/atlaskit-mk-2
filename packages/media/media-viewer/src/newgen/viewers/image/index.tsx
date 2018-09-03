@@ -22,7 +22,7 @@ export type ImageViewerState = {
 };
 
 const initialState: ImageViewerState = {
-  objectUrl: { status: 'PENDING' },
+  objectUrl: Outcome.pending(),
 };
 
 export class ImageViewer extends React.Component<
@@ -47,21 +47,19 @@ export class ImageViewer extends React.Component<
   }
 
   render() {
-    const { objectUrl } = this.state;
     const { onClose } = this.props;
-    switch (objectUrl.status) {
-      case 'PENDING':
-        return <Spinner />;
-      case 'SUCCESSFUL':
-        return <InteractiveImg src={objectUrl.data} onClose={onClose} />;
-      case 'FAILED':
-        return (
-          <ErrorMessage error={objectUrl.err}>
-            <p>Try downloading the file to view it.</p>
-            {this.renderDownloadButton()}
-          </ErrorMessage>
-        );
-    }
+    return this.state.objectUrl.match({
+      pending: () => <Spinner />,
+      successful: objectUrl => (
+        <InteractiveImg src={objectUrl} onClose={onClose} />
+      ),
+      failed: err => (
+        <ErrorMessage error={err}>
+          <p>Try downloading the file to view it.</p>
+          {this.renderDownloadButton()}
+        </ErrorMessage>
+      ),
+    });
   }
 
   private renderDownloadButton() {
@@ -94,20 +92,16 @@ export class ImageViewer extends React.Component<
         this.cancelImageFetch = () => cancel(REQUEST_CANCELLED);
         const objectUrl = URL.createObjectURL(await response);
         this.setState({
-          objectUrl: {
-            status: 'SUCCESSFUL',
-            data: objectUrl,
-          },
+          objectUrl: Outcome.successful(objectUrl),
         });
       } catch (err) {
         if (err.message === REQUEST_CANCELLED) {
           this.preventRaceCondition();
         } else {
           this.setState({
-            objectUrl: {
-              status: 'FAILED',
-              err: createError('previewFailed', fileItem, err),
-            },
+            objectUrl: Outcome.failed(
+              createError('previewFailed', fileItem, err),
+            ),
           });
         }
       }
@@ -118,11 +112,10 @@ export class ImageViewer extends React.Component<
     if (this.cancelImageFetch) {
       this.cancelImageFetch();
     }
-    const { objectUrl } = this.state;
 
-    if (objectUrl.status === 'SUCCESSFUL') {
-      this.revokeObjectUrl(objectUrl.data);
-    }
+    this.state.objectUrl.whenSuccessful(objectUrl => {
+      this.revokeObjectUrl(objectUrl);
+    });
   }
 
   private needsReset(propsA: ImageViewerProps, propsB: ImageViewerProps) {

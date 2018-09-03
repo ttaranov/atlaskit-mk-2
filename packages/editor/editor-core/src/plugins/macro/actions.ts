@@ -8,13 +8,14 @@ import { getValidNode } from '@atlaskit/editor-common';
 import {
   safeInsert,
   replaceSelectedNode,
-  hasParentNodeOfType,
+  replaceParentNodeOfType,
 } from 'prosemirror-utils';
 
 export const insertMacroFromMacroBrowser = (
   macroProvider: MacroProvider,
   macroNode?: PmNode,
-) => async (view: EditorView): Promise<boolean> => {
+  isEditing?: boolean,
+) => async (state, dispatch): Promise<boolean> => {
   if (!macroProvider) {
     return false;
   }
@@ -24,26 +25,33 @@ export const insertMacroFromMacroBrowser = (
   );
   if (newMacro) {
     const currentLayout = (macroNode && macroNode.attrs.layout) || 'default';
-    const node = resolveMacro(newMacro, view.state, { layout: currentLayout });
+    const node = resolveMacro(newMacro, state, { layout: currentLayout });
+
+    if (!node) {
+      return false;
+    }
+
     const {
       schema: {
         nodes: { bodiedExtension },
       },
-    } = view.state;
-    let { tr } = view.state;
-    if (node && tr.selection instanceof NodeSelection) {
-      // preventing nested bodiedExtensions
-      if (
-        node.type === bodiedExtension &&
-        hasParentNodeOfType(bodiedExtension)(tr.selection)
-      ) {
-        tr = safeInsert(node)(tr);
-      } else {
-        tr = replaceSelectedNode(node)(tr);
-      }
-      view.dispatch(tr.scrollIntoView());
-      return true;
+    } = state;
+    let { tr } = state;
+
+    const nonSelectedBodiedExtension =
+      macroNode!.type === bodiedExtension &&
+      !(tr.selection instanceof NodeSelection);
+
+    if (nonSelectedBodiedExtension && !isEditing) {
+      tr = safeInsert(node)(tr);
+    } else if (nonSelectedBodiedExtension) {
+      tr = replaceParentNodeOfType(bodiedExtension, node)(tr);
+    } else if (tr.selection instanceof NodeSelection) {
+      tr = replaceSelectedNode(node)(tr);
     }
+
+    dispatch(tr.scrollIntoView());
+    return true;
   }
 
   return false;

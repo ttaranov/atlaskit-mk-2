@@ -46,6 +46,7 @@ const InputElement = styled.input`
   cursor: inherit;
   font-family: inherit;
   font-size: ${fontSize}px;
+  min-width: 0;
   outline: none;
   width: 100%;
 

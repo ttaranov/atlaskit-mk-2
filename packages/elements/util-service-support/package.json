@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/util-service-support",
-  "version": "3.0.1",
+  "version": "3.0.3",
   "description": "A library of support classes for integrating React components with REST HTTP services",
   "config": {
     "access": "public"
@@ -24,13 +24,13 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://bitbucket.org/atlassian/atlaskit"
+    "url": "https://bitbucket.org/atlassian/atlaskit-mk-2"
   },
   "devDependencies": {
     "@atlaskit/docs": "^5.0.2",
     "chai": "^4.1.2",
     "es6-promise": "^4.0.5",
-    "fetch-mock": "^5.12.1",
+    "fetch-mock": "^6.5.2",
     "sinon": "^2.2.0",
     "whatwg-fetch": "^2.0.3"
   },

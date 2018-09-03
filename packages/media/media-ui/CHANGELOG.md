@@ -1,5 +1,34 @@
 # @atlaskit/media-ui
 
+## 5.1.2
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/badge@9.1.1
+
+## 5.1.1
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/tooltip@12.0.9
+  - @atlaskit/spinner@9.0.6
+  - @atlaskit/lozenge@6.1.5
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/field-text@7.0.6
+  - @atlaskit/dropdown-menu@6.1.8
+  - @atlaskit/button@9.0.6
+  - @atlaskit/badge@9.1.0
+  - @atlaskit/avatar-group@2.1.1
+  - @atlaskit/avatar@14.0.8
+  - @atlaskit/docs@5.0.6
+
+## 5.1.0
+- [minor] Use Camera class in avatar picker [335ab1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/335ab1e)
+
+## 5.0.4
+
+- [patch] Make avatar group a caret dependency [aa24a6c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aa24a6c)
+- [none] Updated dependencies [c7e484c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c7e484c)
+  - @atlaskit/avatar-group@2.0.6
+  - @atlaskit/docs@5.0.3
+
 ## 5.0.3
 - [patch] Updated dependencies [5b5bd8e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b5bd8e)
   - @atlaskit/avatar-group@2.0.5

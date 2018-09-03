@@ -1,11 +1,12 @@
 {
   "name": "@atlaskit/popper",
-  "version": "0.1.1",
+  "version": "0.2.3",
   "description": "Wrapper for react-popper with common config and some helpers",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
+  "sideEffects": false,
   "files": [
     "dist"
   ],
@@ -19,15 +20,15 @@
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "memoize-one": "^3.0.1",
-    "react-popper": "^1.0.0"
+    "react-popper": "^1.0.2"
   },
   "peerDependencies": {
     "react": "^16.4.0"
   },
   "devDependencies": {
-    "@atlaskit/button": "^9.0.4",
-    "@atlaskit/docs": "^5.0.2",
-    "@atlaskit/theme": "^5.1.2",
+    "@atlaskit/button": "^9.0.8",
+    "@atlaskit/docs": "^5.0.6",
+    "@atlaskit/theme": "^6.0.2",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-lorem-component": "^0.12.2",
     "styled-components": "^3.2.6"

@@ -2,7 +2,8 @@ import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import {
   getDocFromElement,
-  editors,
+  comment,
+  fullpage,
   editable,
   clipboardHelper,
 } from '../_helpers';
@@ -11,7 +12,7 @@ const clipboardInput = '#input';
 const copyAsHTMLButton = '#copy-as-html';
 
 // broken on firefox - https://product-fabric.atlassian.net/browse/ED-4337
-editors.forEach(editor => {
+[comment, fullpage].forEach(editor => {
   BrowserTestCase(
     `Link: paste link and add text, paste link into list for ${
       editor.name
@@ -19,7 +20,7 @@ editors.forEach(editor => {
     { skip: ['edge', 'ie', 'safari'] },
     async client => {
       const sample = await new Page(client);
-      const linkText1 = 'https://www.atlassian.com';
+      const linkText1 = 'https://www.google.com';
       await sample.goto(clipboardHelper);
       await sample.isVisible(clipboardInput);
       await sample.type(

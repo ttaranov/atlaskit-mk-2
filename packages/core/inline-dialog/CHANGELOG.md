@@ -1,5 +1,51 @@
 # @atlaskit/inline-dialog
 
+## 9.0.4
+- [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
+
+## 9.0.2
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/single-select@6.0.4
+  - @atlaskit/select@5.0.9
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/datetime-picker@6.3.2
+  - @atlaskit/button@9.0.6
+  - @atlaskit/docs@5.0.6
+
+## 9.0.1
+- [patch] Added z-index back and fixed onClose [d9a0c62](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d9a0c62)
+- [none] Updated dependencies [d9a0c62](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d9a0c62)
+
+## 9.0.0
+- [major] Inline-dialog now uses @atlaskit/popper, and as such some props are no longer required. The "position" prop now matches the "placements" from react-popper to avoid confusion. [1d9e75a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1d9e75a)
+
+
+
+- [none] Updated dependencies [1d9e75a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1d9e75a)
+  - @atlaskit/datetime-picker@6.3.1
+  - @atlaskit/popper@0.2.0
+- [none] Updated dependencies [a3109d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a3109d3)
+  - @atlaskit/popper@0.2.0
+  - @atlaskit/datetime-picker@6.3.1
+- [none] Updated dependencies [87d45d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87d45d3)
+  - @atlaskit/datetime-picker@6.3.1
+  - @atlaskit/popper@0.2.0
+- [patch] Updated dependencies [a08b0c2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a08b0c2)
+  - @atlaskit/popper@0.2.0
+  - @atlaskit/datetime-picker@6.3.1
+
+## 8.0.4
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/select@5.0.8
+  - @atlaskit/analytics-next@3.0.4
+  - @atlaskit/button@9.0.5
+  - @atlaskit/theme@5.1.3
+  - @atlaskit/layer@5.0.4
+  - @atlaskit/datetime-picker@6.1.1
+  - @atlaskit/icon@13.2.4
+
 ## 8.0.3
 - [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
   - @atlaskit/select@5.0.7

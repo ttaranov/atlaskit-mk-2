@@ -1,5 +1,64 @@
 # @atlaskit/global-search
 
+## 5.5.9
+- [patch] Add experiment exposure event to track which search sessions should be attributed to what search experiment [dfe8371](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dfe8371)
+
+## 5.5.8
+- [patch] Ensure SPA transitions are happening for Confluence pages. [0909b85](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0909b85)
+
+## 5.5.7
+- [patch] Fixes import in relative import in global search. [0147e49](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0147e49)
+
+## 5.5.6
+- [patch] Update response handlers for People search [f2992c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f2992c6)
+
+## 5.5.5
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/quick-search@4.2.7
+  - @atlaskit/navigation@33.1.5
+  - @atlaskit/modal-dialog@6.0.9
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/flag@9.0.5
+  - @atlaskit/field-text-area@4.0.6
+  - @atlaskit/button@9.0.6
+  - @atlaskit/avatar@14.0.8
+  - @atlaskit/docs@5.0.6
+
+## 5.5.4
+- [patch] Use UserSearch instead of AccountCentricUserSearch for People searches. [5731f20](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5731f20)
+
+## 5.5.3
+- [patch] refactor QuickSearchContainer and extract generic component [25bd0e2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/25bd0e2)
+
+## 5.5.2
+- [patch] Adds experiment attribution [742b49d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/742b49d)
+
+## 5.5.1
+- [patch] Fixes duplicate screen event firing on mount [517283a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/517283a)
+
+## 5.5.0
+- [minor] Refactor and analytics fixes, adds support for aggregator [459c7fe](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/459c7fe)
+
+## 5.4.3
+- [patch] fix pre and post query screen events [5976aef](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5976aef)
+
+## 5.4.2
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/quick-search@4.2.6
+  - @atlaskit/navigation@33.1.3
+  - @atlaskit/page@8.0.3
+  - @atlaskit/modal-dialog@6.0.6
+  - @atlaskit/field-text-area@4.0.4
+  - @atlaskit/analytics-next@3.0.4
+  - @atlaskit/flag@9.0.4
+  - @atlaskit/button@9.0.5
+  - @atlaskit/theme@5.1.3
+  - @atlaskit/analytics@4.0.4
+  - @atlaskit/icon@13.2.4
+  - @atlaskit/avatar@14.0.6
+
 ## 5.4.1
 - [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
   - @atlaskit/navigation@33.1.2

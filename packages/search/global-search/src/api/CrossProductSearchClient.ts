@@ -15,6 +15,10 @@ import {
 import * as URI from 'urijs';
 
 export type ConfluenceItemContentType = 'page' | 'blogpost';
+export type CrossProductSearchResults = {
+  results: Map<Scope, Result[]>;
+  experimentId: string;
+};
 
 export enum Scope {
   ConfluencePageBlog = 'confluence.page,blogpost',
@@ -22,6 +26,11 @@ export enum Scope {
   ConfluenceSpace = 'confluence.space',
   JiraIssue = 'jira.issue',
 }
+
+export const EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE: CrossProductSearchResults = {
+  experimentId: '',
+  results: new Map(),
+};
 
 export interface CrossProductSearchResponse {
   scopes: ScopeResult[];
@@ -45,6 +54,7 @@ export interface ConfluenceItem {
   baseUrl: string;
   url: string;
   content?: {
+    id: string;
     type: ConfluenceItemContentType;
   };
   container: {
@@ -52,10 +62,12 @@ export interface ConfluenceItem {
     displayUrl: string;
   };
   space?: {
+    key: string; // currently used as instance-unique ID
     icon: {
       path: string;
     };
   };
+  iconCssClass: string; // icon-file-* for attachments, otherwise not needed
 }
 
 export type SearchItem = ConfluenceItem | JiraItem;
@@ -64,6 +76,7 @@ export interface ScopeResult {
   id: Scope;
   error?: string;
   results: SearchItem[];
+  experimentId?: string;
 }
 
 export interface CrossProductSearchClient {
@@ -71,7 +84,7 @@ export interface CrossProductSearchClient {
     query: string,
     searchSessionId: string,
     scopes: Scope[],
-  ): Promise<Map<Scope, Result[]>>;
+  ): Promise<CrossProductSearchResults>;
 }
 
 export default class CrossProductSearchClientImpl
@@ -91,10 +104,10 @@ export default class CrossProductSearchClientImpl
     query: string,
     searchSessionId: string,
     scopes: Scope[],
-  ): Promise<Map<Scope, Result[]>> {
+  ): Promise<CrossProductSearchResults> {
     const response = await this.makeRequest(query, scopes);
 
-    return this.parseResponse(response, searchSessionId, scopes);
+    return this.parseResponse(response, searchSessionId);
   }
 
   private async makeRequest(
@@ -125,25 +138,39 @@ export default class CrossProductSearchClientImpl
     );
   }
 
+  /**
+   * Converts the raw xpsearch-aggregator response into a CrossProductSearchResults object containing
+   * the results set and the experimentId that generated them.
+   *
+   * @param response
+   * @param searchSessionId
+   * @returns a CrossProductSearchResults object
+   */
   private parseResponse(
     response: CrossProductSearchResponse,
     searchSessionId: string,
-    scopes: Scope[],
-  ): Map<Scope, Result[]> {
+  ): CrossProductSearchResults {
+    let experimentId;
     const results: Map<Scope, Result[]> = response.scopes.reduce(
       (resultsMap, scopeResult) => {
         resultsMap.set(
           scopeResult.id,
           scopeResult.results.map(result =>
-            mapItemToResult(scopeResult.id as Scope, result, searchSessionId),
+            mapItemToResult(
+              scopeResult.id as Scope,
+              result,
+              searchSessionId,
+              scopeResult.experimentId,
+            ),
           ),
         );
+        experimentId = scopeResult.experimentId;
         return resultsMap;
       },
       new Map(),
     );
 
-    return results;
+    return { results, experimentId };
   }
 }
 
@@ -155,6 +182,7 @@ function mapItemToResult(
   scope: Scope,
   item: SearchItem,
   searchSessionId: string,
+  experimentId?: string,
 ): Result {
   switch (scope) {
     case Scope.ConfluencePageBlog:
@@ -162,12 +190,14 @@ function mapItemToResult(
       return mapConfluenceItemToResultObject(
         item as ConfluenceItem,
         searchSessionId,
+        experimentId,
       );
     }
     case Scope.ConfluenceSpace: {
       return mapConfluenceItemToResultSpace(
         item as ConfluenceItem,
         searchSessionId,
+        experimentId,
       );
     }
     case Scope.JiraIssue: {
@@ -184,16 +214,22 @@ function mapItemToResult(
 function mapConfluenceItemToResultObject(
   item: ConfluenceItem,
   searchSessionId: string,
+  experimentId?: string,
 ): ConfluenceObjectResult {
+  const href = new URI(`${item.baseUrl}${item.url}`);
+  href.addQuery('search_id', searchSessionId);
+
   return {
-    resultId: `search-${item.url}`,
+    resultId: item.content!.id, // content always available for pages/blogs/attachments
     name: removeHighlightTags(item.title),
-    href: `${item.baseUrl}${item.url}?search_id=${searchSessionId}`,
+    href: `${href.pathname()}?${href.query()}`,
     containerName: item.container.title,
     analyticsType: AnalyticsType.ResultConfluence,
     contentType: `confluence-${item.content!.type}` as ContentType,
     resultType: ResultType.ConfluenceObjectResult,
     containerId: 'UNAVAILABLE', // TODO
+    iconClass: item.iconCssClass,
+    experimentId: experimentId,
   };
 }
 
@@ -213,17 +249,21 @@ function mapJiraItemToResult(item: JiraItem): JiraObjectResult {
 function mapConfluenceItemToResultSpace(
   spaceItem: ConfluenceItem,
   searchSessionId: string,
+  experimentId?: string,
 ): ContainerResult {
   // add searchSessionId
-  const href = new URI(`${spaceItem.baseUrl}${spaceItem.container.displayUrl}`);
+  const href = new URI(
+    `${spaceItem.baseUrl || ''}${spaceItem.container.displayUrl}`,
+  );
   href.addQuery('search_id', searchSessionId);
 
   return {
-    resultId: `search-${spaceItem.container.displayUrl}`,
+    resultId: `space-${spaceItem.space!.key}`, // space is always defined for space results
     avatarUrl: `${spaceItem.baseUrl}${spaceItem.space!.icon.path}`,
     name: spaceItem.container.title,
-    href: href.toString(),
+    href: `${href.pathname()}?${href.query()}`,
     analyticsType: AnalyticsType.ResultConfluence,
     resultType: ResultType.GenericContainerResult,
+    experimentId: experimentId,
   };
 }

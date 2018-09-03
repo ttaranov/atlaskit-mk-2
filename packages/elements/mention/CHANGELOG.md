@@ -1,5 +1,41 @@
 # @atlaskit/mention
 
+## 15.0.8
+- [patch] FS-2941 Stop using Request object and upgrade fetch-mock [dff332a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dff332a)
+
+## 15.0.7
+- [patch] propagate sessionId to the mentionTypeahead rendered event and service endpoints [0c37666](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c37666)
+
+## 15.0.6
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/util-data-test@10.0.7
+
+## 15.0.5
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/util-data-test@10.0.4
+  - @atlaskit/analytics-next-types@3.0.1
+  - @atlaskit/tooltip@12.0.5
+  - @atlaskit/analytics-next@3.0.4
+  - @atlaskit/lozenge@6.1.4
+  - @atlaskit/analytics@4.0.4
+  - @atlaskit/icon@13.2.4
+  - @atlaskit/avatar@14.0.6
+
+## 15.0.4
+- [patch] FS-2049 add userIds attribute to rendered event [a5d05bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a5d05bc)
+- [none] Updated dependencies [a5d05bc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a5d05bc)
+
+## 15.0.3
+- [patch] fixed TS errors [8eced90](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8eced90)
+- [patch] fixed broken tests and added test for util/analytics [57b9d1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/57b9d1e)
+- [patch] code improvements and tests added [0bc5732](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0bc5732)
+- [patch] added mentionTypeAhead rendered analytics [c536e60](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c536e60)
+- [none] Updated dependencies [8eced90](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8eced90)
+- [none] Updated dependencies [57b9d1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/57b9d1e)
+- [none] Updated dependencies [0bc5732](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0bc5732)
+- [none] Updated dependencies [c536e60](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c536e60)
+
 ## 15.0.2
 - [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
   - @atlaskit/util-data-test@10.0.2

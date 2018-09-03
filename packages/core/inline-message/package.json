@@ -1,12 +1,13 @@
 {
   "name": "@atlaskit/inline-message",
-  "version": "6.0.2",
+  "version": "7.0.4",
   "description": "A React component for displaying a clickable message which triggers an inline dialog",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
   "atlaskit:designLink": "https://atlassian.design/guidelines/product/components/inline-messages",
+  "sideEffects": false,
   "files": [
     "dist"
   ],
@@ -18,20 +19,20 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/button": "^9.0.4",
-    "@atlaskit/icon": "^13.2.2",
-    "@atlaskit/inline-dialog": "^8.0.3",
-    "@atlaskit/theme": "^5.1.2"
+    "@atlaskit/button": "^9.0.8",
+    "@atlaskit/icon": "^13.6.1",
+    "@atlaskit/inline-dialog": "^9.0.4",
+    "@atlaskit/theme": "^6.0.2"
   },
   "peerDependencies": {
     "react": "^16.4.0",
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/build-utils": "^1.11.0",
-    "@atlaskit/docs": "^5.0.2",
+    "@atlaskit/build-utils": "^2.0.0",
+    "@atlaskit/docs": "^5.0.6",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
-    "react-dom": "^16.4.0"
+    "react-dom": "^16.4.2"
   },
   "keywords": [
     "atlaskit",

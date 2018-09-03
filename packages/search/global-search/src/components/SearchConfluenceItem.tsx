@@ -11,6 +11,7 @@ export interface Props {
   icon: JSX.Element;
   text: JSX.Element | string;
   showKeyboardLozenge?: boolean;
+  analyticsData?: object;
 }
 
 export default class SearchConfluenceItem extends React.Component<Props> {
@@ -19,7 +20,13 @@ export default class SearchConfluenceItem extends React.Component<Props> {
   };
 
   render() {
-    const { query, icon, text, showKeyboardLozenge } = this.props;
+    const {
+      query,
+      icon,
+      text,
+      showKeyboardLozenge,
+      analyticsData,
+    } = this.props;
 
     return (
       <AdvancedSearchResult
@@ -30,6 +37,7 @@ export default class SearchConfluenceItem extends React.Component<Props> {
         icon={icon}
         type={AnalyticsType.AdvancedSearchConfluence}
         showKeyboardLozenge={showKeyboardLozenge}
+        analyticsData={analyticsData}
       />
     );
   }

@@ -8,7 +8,7 @@ export class WsConnectionHolder {
   private wsConnection?: WsConnection;
   private activities: Array<WsActivity> = [];
 
-  constructor(private readonly apiUrl: string, private readonly auth: Auth) {}
+  constructor(private readonly auth: Auth) {}
 
   openConnection(activity: WsActivity): void {
     activity.on('Completed', this.onActivityCompleted);
@@ -16,7 +16,6 @@ export class WsConnectionHolder {
 
     if (!this.wsConnection) {
       this.wsConnection = new WsConnection(
-        this.apiUrl,
         this.auth,
         this.onWebSocketDataReceived,
         this.onConnectionLost,

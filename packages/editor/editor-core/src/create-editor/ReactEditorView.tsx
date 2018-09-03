@@ -192,15 +192,20 @@ export default class ReactEditorView<T = {}> extends React.PureComponent<
         state: this.editorState,
         dispatchTransaction: (transaction: Transaction) => {
           transaction.setMeta('isLocal', true);
-          const editorState = this.view!.state.apply(transaction);
-          this.view!.updateState(editorState);
+          if (!this.view) {
+            return;
+          }
+
+          const editorState = this.view.state.apply(transaction);
+          this.view.updateState(editorState);
           if (this.props.editorProps.onChange && transaction.docChanged) {
-            this.props.editorProps.onChange(this.view!);
+            this.props.editorProps.onChange(this.view);
           }
           this.editorState = editorState;
         },
         // Disables the contentEditable attribute of the editor if the editor is disabled
         editable: state => !this.props.editorProps.disabled,
+        attributes: { 'data-gramm': 'false' },
       },
     );
   };

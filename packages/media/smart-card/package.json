@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/smart-card",
-  "version": "7.0.2",
+  "version": "8.1.1",
   "description": "Smart card component",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -17,10 +17,10 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/media-ui": "^5.0.2",
+    "@atlaskit/media-ui": "^5.1.2",
     "@atlassian/outbound-auth-flow-client": "^1.0.4",
     "@types/react": "^16.3.0",
-    "react-lazily-render": "^1.0.1",
+    "react-lazily-render": "^1.1.0",
     "rxjs": "^5.1.0"
   },
   "peerDependencies": {
@@ -31,12 +31,19 @@
     "@atlaskit/docs": "^5.0.2",
     "@atlaskit/field-range": "^5.0.2",
     "@atlaskit/field-text": "^7.0.3",
-    "@atlaskit/form": "^3.1.4",
-    "@atlaskit/inline-message": "^6.0.2",
+    "@atlaskit/form": "^4.0.0",
+    "@atlaskit/inline-message": "^7.0.0",
     "@atlaskit/page": "^8.0.2",
-    "@atlaskit/select": "^5.0.7",
+    "@atlaskit/select": "^5.0.14",
+    "@types/enzyme": "^3.1.6",
+    "@types/fetch-mock": "^6.0.3",
+    "abortcontroller-polyfill": "^1.1.9",
     "brace": "^0.11.1",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "fetch-mock": "^6.5.2",
+    "react": "^16.4.0",
     "react-ace": "^6.1.0",
+    "whatwg-fetch": "^2.0.3",
     "xhr-mock": "^2.4.0"
   }
 }

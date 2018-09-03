@@ -15,6 +15,7 @@ export type UploadableFile = {
 
 export type UploadFileCallbacks = {
   onProgress: (progress: number) => void;
+  onId?: (id: string) => void;
 };
 
 export interface UploadFileResult {
@@ -86,6 +87,14 @@ export const uploadFile = (
       },
     },
   );
+
+  const onId = callbacks && callbacks.onId;
+  if (onId) {
+    deferredEmptyFile.then(emptyFile => {
+      const fileId = emptyFile.data.id;
+      onId(fileId);
+    });
+  }
 
   const fileId = Promise.all([
     deferredUploadId,

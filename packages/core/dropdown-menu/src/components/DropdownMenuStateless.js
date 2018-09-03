@@ -1,6 +1,6 @@
 // @flow
 /* eslint-disable react/no-array-index-key */
-import React, { Component, type Node } from 'react';
+import React, { Component, Fragment, type Node } from 'react';
 import { findDOMNode } from 'react-dom';
 import uuid from 'uuid/v1';
 import {
@@ -34,6 +34,7 @@ type OpenCloseArgs = {
 
 type State = {
   id: string,
+  autoFocusDropdownItems: boolean,
 };
 
 class DropdownMenuStateless extends Component<
@@ -47,6 +48,7 @@ class DropdownMenuStateless extends Component<
   triggerContainer: ?HTMLElement;
 
   sourceOfIsOpen: ?string;
+  dropdownListPositioned: boolean = false;
 
   static defaultProps = {
     appearance: 'default',
@@ -67,6 +69,7 @@ class DropdownMenuStateless extends Component<
 
   state = {
     id: uuid(),
+    autoFocusDropdownItems: false,
   };
 
   componentDidMount = () => {
@@ -252,6 +255,8 @@ class DropdownMenuStateless extends Component<
   isUsingDeprecatedAPI = () => Boolean(this.props.items.length);
 
   handleClick = (event: SyntheticMouseEvent<any>) => {
+    // For any clicks we don't want autofocus
+    this.setState({ autoFocusDropdownItems: false });
     if (this.isUsingDeprecatedAPI()) {
       this.handleClickDeprecated(event);
       return;
@@ -308,6 +313,10 @@ class DropdownMenuStateless extends Component<
   open = (attrs: OpenCloseArgs) => {
     this.sourceOfIsOpen = attrs.source;
     this.props.onOpenChange({ isOpen: true, event: attrs.event });
+    // Dropdown opened via keyboard gets auto focussed
+    this.setState({
+      autoFocusDropdownItems: this.sourceOfIsOpen === 'keydown',
+    });
   };
 
   close = (attrs: OpenCloseArgs) => {
@@ -391,11 +400,36 @@ class DropdownMenuStateless extends Component<
     );
   };
 
+  /** Ensure droplist is positioned before focussing to avoid container scrolling to top */
+  onDroplistPositioned = () => {
+    this.dropdownListPositioned = true;
+    // Trigger render so item focus manager can auto focus for keyboard trigger
+    this.setState({
+      autoFocusDropdownItems: this.sourceOfIsOpen === 'keydown',
+    });
+
+    if (this.props.onPositioned) this.props.onPositioned();
+  };
+
+  /** Render focusManager only after droplist has been positioned when trigger via keyboard */
+  renderDropdownItems = () => {
+    if (this.sourceOfIsOpen === 'keydown' && this.dropdownListPositioned) {
+      return (
+        <DropdownItemFocusManager
+          autoFocus={this.state.autoFocusDropdownItems}
+          close={this.close}
+        >
+          {this.props.children}
+        </DropdownItemFocusManager>
+      );
+    }
+    return <Fragment>{this.props.children}</Fragment>;
+  };
+
   render() {
     const {
       appearance,
       boundariesElement,
-      children,
       isLoading,
       isOpen,
       onOpenChange,
@@ -404,7 +438,6 @@ class DropdownMenuStateless extends Component<
       shouldAllowMultilineItems,
       shouldFitContainer,
       shouldFlip,
-      onPositioned,
     } = this.props;
     const { id } = this.state;
     const isDeprecated = this.isUsingDeprecatedAPI();
@@ -417,7 +450,6 @@ class DropdownMenuStateless extends Component<
       : {
           onKeyDown: this.handleKeyboardInteractionForClosed,
         };
-
     return (
       <DropdownItemSelectionCache>
         <Droplist
@@ -432,7 +464,7 @@ class DropdownMenuStateless extends Component<
           shouldFitContainer={shouldFitContainer}
           shouldFlip={shouldFlip}
           trigger={this.renderTrigger()}
-          onPositioned={onPositioned}
+          onPositioned={this.onDroplistPositioned}
           {...deprecatedProps}
           analyticsContext={{
             componentName: 'dropdownMenu',
@@ -449,12 +481,7 @@ class DropdownMenuStateless extends Component<
               shouldFitContainer={shouldFitContainer}
             >
               <DropdownItemClickManager onItemClicked={this.handleItemClicked}>
-                <DropdownItemFocusManager
-                  autoFocus={this.sourceOfIsOpen === 'keydown'}
-                  close={this.close}
-                >
-                  {children}
-                </DropdownItemFocusManager>
+                {this.renderDropdownItems()}
               </DropdownItemClickManager>
             </WidthConstrainer>
           )}

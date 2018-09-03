@@ -1,102 +1,54 @@
 import * as React from 'react';
-import { Result } from '../../model/Result';
-import SearchError from '../SearchError';
+import { ConfluenceResultsMap } from '../../model/Result';
+import { ScreenCounter } from '../../util/ScreenCounter';
+import { ReferralContextIdentifiers } from '../GlobalQuickSearchWrapper';
 import NoResultsState from './NoResultsState';
-import SearchResultsState from './SearchResultsState';
-import PreQueryState from './PreQueryState';
-import { isEmpty } from '../SearchResultsUtil';
-
-export const MAX_PAGES_BLOGS_ATTACHMENTS = 8;
-export const MAX_SPACES = 3;
-export const MAX_PEOPLE = 3;
-
-export interface ScreenCounter {
-  getCount(): number;
-  increment();
-}
+import SearchResults from '../common/SearchResults';
+import { getConfluenceAdvancedSearchLink } from '../SearchResultsUtil';
+import { FormattedHTMLMessage } from 'react-intl';
+import AdvancedSearchGroup from './AdvancedSearchGroup';
+import {
+  mapRecentResultsToUIGroups,
+  mapSearchResultsToUIGroups,
+} from './ConfluenceSearchResultsMapper';
 
 export interface Props {
   query: string;
   isError: boolean;
   isLoading: boolean;
   retrySearch();
-  recentlyViewedPages: Result[];
-  recentlyViewedSpaces: Result[];
-  recentlyInteractedPeople: Result[];
-  objectResults: Result[];
-  spaceResults: Result[];
-  peopleResults: Result[];
+  recentItems: ConfluenceResultsMap;
+  searchResults: ConfluenceResultsMap;
   keepPreQueryState: boolean;
   searchSessionId: string;
   preQueryScreenCounter?: ScreenCounter;
   postQueryScreenCounter?: ScreenCounter;
+  referralContextIdentifiers?: ReferralContextIdentifiers;
 }
 
 export default class ConfluenceSearchResults extends React.Component<Props> {
   render() {
-    const {
-      query,
-      isError,
-      objectResults,
-      spaceResults,
-      peopleResults,
-      isLoading,
-      recentlyViewedPages,
-      recentlyViewedSpaces,
-      recentlyInteractedPeople,
-      retrySearch,
-      keepPreQueryState,
-      searchSessionId,
-      preQueryScreenCounter,
-      postQueryScreenCounter,
-    } = this.props;
-
-    if (isError) {
-      return <SearchError onRetryClick={retrySearch} />;
-    }
-
-    if (query.length === 0) {
-      if (isLoading) {
-        return null;
-      }
-
-      return (
-        <PreQueryState
-          query={query}
-          recentlyViewedPages={recentlyViewedPages}
-          recentlyViewedSpaces={recentlyViewedSpaces}
-          recentlyInteractedPeople={recentlyInteractedPeople}
-          searchSessionId={searchSessionId}
-          screenCounter={preQueryScreenCounter}
-        />
-      );
-    }
-
-    if ([objectResults, spaceResults, peopleResults].every(isEmpty)) {
-      if (isLoading && keepPreQueryState) {
-        return (
-          <PreQueryState
-            query={query}
-            recentlyViewedPages={recentlyViewedPages}
-            recentlyViewedSpaces={recentlyViewedSpaces}
-            recentlyInteractedPeople={recentlyInteractedPeople}
-            searchSessionId={searchSessionId}
-            screenCounter={preQueryScreenCounter}
-          />
-        );
-      }
-
-      return <NoResultsState query={query} />;
-    }
+    const { recentItems, searchResults, query } = this.props;
 
     return (
-      <SearchResultsState
-        query={query}
-        objectResults={objectResults}
-        spaceResults={spaceResults}
-        peopleResults={peopleResults}
-        searchSessionId={searchSessionId}
-        screenCounter={postQueryScreenCounter}
+      <SearchResults
+        {...this.props}
+        renderNoRecentActivity={() => (
+          <FormattedHTMLMessage
+            id="global-search.no-recent-activity-body"
+            values={{ url: getConfluenceAdvancedSearchLink() }}
+          />
+        )}
+        renderAdvancedSearchGroup={(analyticsData?) => (
+          <AdvancedSearchGroup
+            key="advanced"
+            query={query}
+            analyticsData={analyticsData}
+          />
+        )}
+        getPreQueryGroups={() => mapRecentResultsToUIGroups(recentItems)}
+        getPostQueryGroups={() => mapSearchResultsToUIGroups(searchResults)}
+        renderNoResult={() => <NoResultsState query={query} />}
       />
     );
   }

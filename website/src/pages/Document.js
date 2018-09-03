@@ -31,9 +31,11 @@ export default function Document({
   const Content = Loadable({
     loader: () => found && found.exports(),
     loading: Loading,
-    render(md) {
-      if (md) {
-        return <Markdown>{md}</Markdown>;
+    render(md = {}) {
+      const docDetails: ?{ content?: string, data?: Object } = md.default || {};
+      const { content, data = {} } = docDetails;
+      if (content) {
+        return <Markdown {...data}>{content}</Markdown>;
       }
       return <FourOhFour />;
     },

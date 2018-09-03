@@ -42,6 +42,10 @@ type Props = {
   /** Take control of the click event on the more indicator. This will cancel
    the default dropdown behaviour. */
   onMoreClick?: () => mixed,
+  /** Provide additional props to the MoreButton. Example use cases: altering
+   tab order by providing tabIndex; adding onClick behaviour without losing the
+   default dropdown */
+  showMoreButtonProps?: $Shape<HTMLElement>,
 
   boundariesElement?: 'viewport' | 'window' | 'scrollParent',
 };
@@ -51,6 +55,7 @@ export default class AvatarGroup extends Component<Props> {
     appearance: 'stack',
     avatar: Avatar,
     maxCount: 0,
+    showMoreButtonProps: {},
     size: 'medium',
   };
 
@@ -60,6 +65,7 @@ export default class AvatarGroup extends Component<Props> {
       data,
       borderColor,
       onMoreClick,
+      showMoreButtonProps,
       onAvatarClick,
       size,
       boundariesElement,
@@ -71,6 +77,7 @@ export default class AvatarGroup extends Component<Props> {
     // prepare the button -- we'll use it twice
     const MoreButton = props => (
       <MoreIndicator
+        {...showMoreButtonProps}
         borderColor={borderColor}
         count={total - max}
         isInteractive

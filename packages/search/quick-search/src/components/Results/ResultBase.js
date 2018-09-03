@@ -2,7 +2,7 @@
 import React, { PureComponent, type Component } from 'react';
 import { QS_ANALYTICS_EV_SUBMIT } from '../constants';
 import ResultItem from '../ResultItem/ResultItem';
-import type { AnalyticsData, ResultType as Props } from './types';
+import type { AnalyticsData, ResultType as Props, Context } from './types';
 import { ResultContext, SelectedResultIdContext } from '../context';
 
 const BASE_RESULT_TYPE = 'base';
@@ -18,7 +18,15 @@ export type ResultBaseType = Component<Props> & HasAnalyticsData;
 // this class to ensure consideration of these props.
 // ==========================================================================================
 
-class ResultBase extends PureComponent<Props> implements HasAnalyticsData {
+// context is an optional prop but the component provides a defaultProp. However, flow type still complains
+// when you don't pass it. There doesn't seem to be a better way of declaring optional default props.
+// See: https://github.com/facebook/flow/issues/1660
+type DefaultProps = {
+  context: Context,
+};
+
+class ResultBase extends PureComponent<DefaultProps & Props>
+  implements HasAnalyticsData {
   static defaultProps = {
     isCompact: false,
     isSelected: false,
@@ -29,7 +37,7 @@ class ResultBase extends PureComponent<Props> implements HasAnalyticsData {
       onMouseEnter: () => {},
       onMouseLeave: () => {},
       sendAnalytics: () => {},
-      getIndex: () => {},
+      getIndex: () => null,
     },
     analyticsData: {},
   };

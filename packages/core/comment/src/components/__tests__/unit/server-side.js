@@ -5,14 +5,16 @@
 import { getExamplesFor } from '@atlaskit/build-utils/getExamples';
 import ReactDOMServer from 'react-dom/server';
 
-// AK-5163
-// eslint-disable-next-line
-test.skip('Comment server side rendering', async () => {
+test('Comment server side rendering', async () => {
+  // $FlowFixMe
   (await getExamplesFor('comment')).forEach(examples => {
-    expect(
-      () =>
-        // $StringLitteral
-        ReactDOMServer.renderToString(require(examples.filePath).default), // eslint-disable-line
-    ).not.toThrowError();
+    // Editor example is not SSR, it is on their roadmap. At the moment, there is no need to block comment component.
+    if (!examples.filePath.includes('editor')) {
+      expect(
+        () =>
+          // $StringLitteral
+          ReactDOMServer.renderToString(require(examples.filePath).default), // eslint-disable-line
+      ).not.toThrowError();
+    }
   });
 });

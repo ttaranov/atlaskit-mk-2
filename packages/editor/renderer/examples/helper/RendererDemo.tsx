@@ -23,6 +23,7 @@ import { document } from './story-data';
 import {
   default as Renderer,
   Props as RendererProps,
+  RendererAppearance,
 } from '../../src/ui/Renderer';
 
 import { AkProfileClient, modifyResponse } from '@atlaskit/profilecard';
@@ -168,6 +169,7 @@ export interface DemoRendererProps {
   withExtension?: boolean;
   serializer: 'react' | 'text' | 'email';
   document?: object;
+  appearance?: RendererAppearance;
 }
 
 export interface DemoRendererState {
@@ -288,6 +290,7 @@ export default class RendererDemo extends PureComponent<
         props.portal = this.state.portal;
       }
 
+      props.appearance = this.props.appearance;
       return (
         <div>
           <div style={{ color: '#ccc', marginBottom: '8px' }}>

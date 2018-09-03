@@ -124,7 +124,7 @@ export const enterKeyCommand = (
     if (wrapper && wrapper.type === listItem) {
       /** Check if the wrapper has any visible content */
       const wrapperHasContent = hasVisibleContent(wrapper);
-      if (isEmptyNode(node) || !wrapperHasContent) {
+      if (isEmptyNode(node) && !wrapperHasContent) {
         return outdentList()(state, dispatch);
       } else {
         return splitListItem(listItem)(state, dispatch);
@@ -237,6 +237,10 @@ export function outdentList(): Command {
     if ($from.node(-1).type === listItem) {
       // if we're backspacing at the start of a list item, unindent it
       // take the the range of nodes we might be lifting
+
+      // the predicate is for when you're backspacing a top level list item:
+      // we don't want to go up past the doc node, otherwise the range
+      // to clear will include everything
       let range = $from.blockRange(
         $to,
         node => node.childCount > 0 && node.firstChild!.type === listItem,

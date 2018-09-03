@@ -1,5 +1,100 @@
 # @atlaskit/conversation
 
+## 9.3.2
+- [patch] Updated dependencies [7545979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7545979)
+  - @atlaskit/editor-common@15.0.0
+  - @atlaskit/editor-core@79.0.0
+  - @atlaskit/renderer@21.0.0
+  - @atlaskit/comment@6.0.12
+  - @atlaskit/reactions@13.0.9
+  - @atlaskit/util-data-test@10.0.8
+
+## 9.3.1
+- [patch] Updated dependencies [90ba6bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/90ba6bd)
+  - @atlaskit/analytics-listeners@4.0.0
+
+## 9.3.0
+- [minor] Add analytics track events to Conversation component [2d6ab8d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d6ab8d)
+
+## 9.2.1
+- [patch] Updated dependencies [911a570](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/911a570)
+  - @atlaskit/renderer@20.1.1
+  - @atlaskit/editor-core@78.0.0
+  - @atlaskit/comment@6.0.11
+
+## 9.2.0
+- [minor] Adds option to disable heading ids in renderer, and disable them by default in conversations [efcca1a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/efcca1a)
+
+## 9.1.5
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/renderer@20.0.11
+  - @atlaskit/util-data-test@10.0.7
+  - @atlaskit/editor-common@14.0.11
+  - @atlaskit/reactions@13.0.8
+  - @atlaskit/editor-core@77.1.4
+  - @atlaskit/comment@6.0.8
+
+## 9.1.4
+- [patch] Add next gen analytics to conversation component [dfa100e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dfa100e)
+- [patch] Add nextgen analytics to conversation component [9e2626f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9e2626f)
+- [patch] Updated dependencies [dfa100e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dfa100e)
+  - @atlaskit/analytics-listeners@3.3.1
+
+## 9.1.3
+- [patch] update the dependency of react-dom to 16.4.2 due to vulnerability in previous versions read https://reactjs.org/blog/2018/08/01/react-v-16-4-2.html for details [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+- [none] Updated dependencies [a4bd557](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a4bd557)
+  - @atlaskit/util-data-test@10.0.4
+  - @atlaskit/reactions@13.0.5
+  - @atlaskit/editor-core@77.0.2
+  - @atlaskit/comment@6.0.6
+  - @atlaskit/editor-common@14.0.1
+  - @atlaskit/avatar@14.0.6
+
+## 9.1.2
+
+
+
+
+
+
+- [none] Updated dependencies [597e0bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/597e0bd)
+  - @atlaskit/renderer@20.0.0
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/reactions@13.0.4
+  - @atlaskit/editor-core@77.0.0
+  - @atlaskit/comment@6.0.5
+  - @atlaskit/editor-common@14.0.0
+- [none] Updated dependencies [61df453](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/61df453)
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/editor-common@14.0.0
+  - @atlaskit/reactions@13.0.4
+  - @atlaskit/renderer@20.0.0
+  - @atlaskit/editor-core@77.0.0
+  - @atlaskit/comment@6.0.5
+- [none] Updated dependencies [a95ee92](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a95ee92)
+  - @atlaskit/reactions@13.0.4
+- [none] Updated dependencies [812a39c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/812a39c)
+  - @atlaskit/renderer@20.0.0
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/reactions@13.0.4
+  - @atlaskit/editor-core@77.0.0
+  - @atlaskit/comment@6.0.5
+  - @atlaskit/editor-common@14.0.0
+- [none] Updated dependencies [c8eb097](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8eb097)
+  - @atlaskit/renderer@20.0.0
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/editor-common@14.0.0
+  - @atlaskit/reactions@13.0.4
+  - @atlaskit/editor-core@77.0.0
+  - @atlaskit/comment@6.0.5
+- [patch] Updated dependencies [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+  - @atlaskit/util-data-test@10.0.3
+  - @atlaskit/reactions@13.0.4
+  - @atlaskit/editor-common@14.0.0
+  - @atlaskit/renderer@20.0.0
+  - @atlaskit/editor-core@77.0.0
+  - @atlaskit/comment@6.0.5
+
 ## 9.1.1
 - [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
   - @atlaskit/renderer@19.2.6

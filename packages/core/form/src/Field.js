@@ -26,8 +26,6 @@ type Props = {
   validMessage?: string,
   /** Is the field input valid */
   isInvalid?: boolean | void,
-  /** Set the field component to be required */
-  required?: boolean,
   /** One child which is an input component */
   children?: Node,
   /** One child which is an input component */
@@ -59,7 +57,7 @@ export type FieldState = {
   name?: string,
   isValidated?: boolean,
   isInvalid?: boolean,
-  required?: boolean,
+  isRequired?: boolean,
   /** A string for most inputs but can also be an object or array e.g. Select */
   value?: any,
   label?: string,
@@ -92,7 +90,6 @@ export default class Field extends Component<Props, State> {
   static defaultProps = {
     validators: [],
     isInvalid: undefined,
-    required: false,
     invalidMessage: '',
     validMessage: '',
     helperText: '',
@@ -147,7 +144,7 @@ export default class Field extends Component<Props, State> {
       isInvalid,
       invalidMessage,
       validMessage,
-      required,
+      isRequired,
       helperText,
       validateOnChange,
       validateOnBlur,
@@ -159,7 +156,7 @@ export default class Field extends Component<Props, State> {
       isInvalid,
       invalidMessage,
       validMessage,
-      isRequired: required,
+      isRequired,
       name: childComponent.props.name || name,
       id: childComponent.props.id || id || name,
       label: childComponent.props.label || label,
@@ -261,7 +258,7 @@ export default class Field extends Component<Props, State> {
       isInvalid,
       invalidMessage,
       validMessage,
-      required,
+      isRequired,
       invalidMessages,
       ...rest
     } = this.state.fieldState;
@@ -273,7 +270,7 @@ export default class Field extends Component<Props, State> {
     let validatedFieldState = {};
 
     // Is the field required?
-    if (required && !value) {
+    if (isRequired && !value) {
       invalidCount++;
       invalid = 'This field is required';
     } else if (validators && validators.length) {
@@ -344,7 +341,7 @@ export default class Field extends Component<Props, State> {
       id,
       name,
       isInvalid,
-      required,
+      isRequired,
       label,
       invalidMessage,
     } = this.state.fieldState;
@@ -360,7 +357,7 @@ export default class Field extends Component<Props, State> {
         id,
         name,
         isInvalid,
-        isRequired: required,
+        isRequired,
         label,
         invalidMessage,
         isLabelHidden: true,

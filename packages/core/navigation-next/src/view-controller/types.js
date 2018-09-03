@@ -20,7 +20,7 @@ type ViewItemArgs = {
   route?: string,
   target?: string,
   text?: string,
-  type: string,
+  type: ComponentType<*> | string,
   url?: string,
 };
 
@@ -29,12 +29,12 @@ type ViewGroupArgs = {
   items: ViewData,
   nestedGroupKey?: string,
   parentId?: string,
-  type: string,
+  type: ComponentType<*> | string,
 };
 
 export type ViewData = Array<ViewItemArgs | ViewGroupArgs>;
 export type ViewID = string;
-type ViewLayer = 'product' | 'container';
+export type ViewLayer = 'product' | 'container';
 type GetItemsSignature = () => Promise<ViewData> | ViewData;
 
 export type View = {
@@ -60,27 +60,63 @@ export type ViewControllerProps = {
 };
 
 export type ViewControllerState = {
+  /** The view which is currently being rendered in the navigation. */
   activeView: ?ActiveView,
+  /** The view which will become active once it has loaded. */
   incomingView: ?IncomingView,
+  /** The view which should be rendered on the product navigation layer when the
+   * active view is a 'container' view. @deprecated: The concept of peeking no
+   * longer exists in the UX spec, so this feature will be removed in a future
+   * release. */
   activePeekView: ?ActiveView,
+  /** The view which will become the active peek view once it has loaded.
+   * @deprecated */
   incomingPeekView: ?IncomingView,
 };
 
 export interface ViewControllerInterface {
-  /** Properties */
   state: ViewControllerState;
+
+  /** A map of all navigation views, keyed by their ID. */
   views: { [ViewID]: View };
+
+  /** A map of reducer functions to be run over view items, keyed by the view's
+   * ID. */
   reducers: { [ViewID]: Reducer[] };
+
+  /** The view which will be 'peeked' to. @deprecated */
   initialPeekViewId: ?ViewID;
+
+  /** In debug mode the view controller will log information about the usage of
+   * reducers. */
   isDebugEnabled: boolean;
 
-  /** Methods */
+  /** Register a view. You must provide an `id`, the `type` of view ('product'
+   * or 'container'), and a `getItems` function which should return either an
+   * array of data, or a Promise which will resolve to an array of data. */
   addView: View => void;
+
+  /** Un-register a view. If the view being removed is active it will remain so
+   * until a different view is set. */
   removeView: ViewID => void;
+
+  /** Set the registered view with the given ID as the active view. */
   setView: ViewID => void;
+
+  /** Add a reducer to the view with the given ID. */
   addReducer: (ViewID, Reducer) => void;
+
+  /** Remove a reducer from the view with the given ID. */
   removeReducer: (ViewID, Reducer) => void;
+
+  /** Specify which view should be treated as the initial peek view. */
   setInitialPeekViewId: ViewID => void;
+
+  /** Will re-resolve the active view and re-reduce its data. Accepts an
+   * optional view ID to only re-resolve if the given ID matches the active
+   * view. */
   updateActiveView: (ViewID | void) => void;
-  setIsDebugEnabled: (isDebugEnabled: boolean) => void;
+
+  /** Set whether the view controller is in debug mode. */
+  setIsDebugEnabled: boolean => void;
 }

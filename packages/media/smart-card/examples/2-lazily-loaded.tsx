@@ -8,7 +8,10 @@ export default () => (
       <div
         style={{ height: '3000px', display: 'flex', alignItems: 'flex-start' }}
       />
-      <Card url="https://trello.com/b/8B5zyiSn/test-smart-card-board" />
+      <Card
+        url="https://trello.com/b/8B5zyiSn/test-smart-card-board"
+        appearance="block"
+      />
     </div>
   </Provider>
 );

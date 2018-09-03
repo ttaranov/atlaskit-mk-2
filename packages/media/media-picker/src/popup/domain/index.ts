@@ -20,9 +20,9 @@ export {
 } from './local-upload';
 
 import { ImageCardModel } from '../tools/fetcher/fetcher';
+import { PopupConfig } from '../..';
 
 export interface State {
-  readonly apiUrl: string;
   readonly redirectUrl: string;
   readonly view: View;
   readonly accounts: ServiceAccountWithType[];
@@ -40,7 +40,10 @@ export interface State {
   readonly giphy: GiphyState;
 
   readonly onCancelUpload: CancelUploadHandler;
-  readonly useNewUploadService?: boolean;
+  readonly config: Partial<PopupConfig>;
+  readonly deferredIdUpfronts: {
+    [id: string]: { resolver: (id: string) => void; rejecter: Function };
+  };
 }
 
 export type CancelUploadHandler = (uploadId: string) => void;
@@ -138,9 +141,11 @@ export interface ServiceFolder {
 export interface ServiceFile {
   readonly mimeType: string;
   readonly id: string;
+  readonly upfrontId: Promise<string>;
   readonly name: string;
   readonly size: number;
   readonly date: number;
+  readonly occurrenceKey?: string;
 }
 
 export interface SelectedItem extends ServiceFile {

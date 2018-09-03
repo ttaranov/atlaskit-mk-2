@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/nps",
-  "version": "4.0.2",
+  "version": "4.0.6",
   "description": "React component for displaying an NPS survey dialog",
   "author": "Atlassian Pty Ltd",
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
@@ -8,6 +8,7 @@
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
+  "sideEffects": false,
   "files": [
     "dist"
   ],
@@ -27,17 +28,17 @@
     "styled-components": "^3.2.6"
   },
   "dependencies": {
-    "@atlaskit/button": "^9.0.4",
-    "@atlaskit/checkbox": "^4.0.2",
-    "@atlaskit/dropdown-menu": "^6.1.4",
-    "@atlaskit/field-text-area": "^4.0.3",
-    "@atlaskit/icon": "^13.2.2",
-    "@atlaskit/theme": "^5.1.2"
+    "@atlaskit/button": "^9.0.8",
+    "@atlaskit/checkbox": "^4.0.6",
+    "@atlaskit/dropdown-menu": "^6.1.12",
+    "@atlaskit/field-text-area": "^4.0.9",
+    "@atlaskit/icon": "^13.6.1",
+    "@atlaskit/theme": "^6.0.2"
   },
   "devDependencies": {
-    "@atlaskit/build-utils": "^1.11.0",
-    "@atlaskit/docs": "^5.0.2",
+    "@atlaskit/build-utils": "^2.0.0",
+    "@atlaskit/docs": "^5.0.6",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
-    "react-dom": "^16.4.0"
+    "react-dom": "^16.4.2"
   }
 }

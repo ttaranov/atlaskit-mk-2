@@ -106,7 +106,7 @@ function sendToNative(state) {
 function subscribeForTextFormatChanges(view: EditorView, eventDispatcher: any) {
   let textFormattingPluginState = textFormattingStateKey.getState(view.state);
   bridge.textFormattingPluginState = textFormattingPluginState;
-  eventDispatcher.on(textFormattingStateKey, state => {
+  eventDispatcher.on((textFormattingStateKey as any).key, state => {
     toNativeBridge.updateTextFormat(JSON.stringify(valueOfMarkState(state)));
   });
 }
@@ -145,44 +145,58 @@ function unsubscribeFromListStateChanges(
   eventDispatcher.off((listsStateKey as any).key, listStateUpdated);
 }
 
-function getToken(context?: any) {
-  return createPromise<any>('getAuth', context.collectionName).submit();
-}
-
-function getUploadContext(): Promise<any> {
-  return Promise.resolve(
-    ContextFactory.create({
-      serviceHost: toNativeBridge.getServiceHost(),
-      authProvider: getToken,
-    }),
-  );
+function getToken() {
+  return createPromise<any>('getAuth').submit();
 }
 
 function createMediaProvider() {
-  return {
-    viewContext: getUploadContext(),
-    uploadContext: getUploadContext(),
-    uploadParams: {
-      collection: toNativeBridge.getCollection(),
-    },
-  };
+  return getToken().then(data => {
+    const { baseUrl, clientId, collectionName, token } = data;
+    const createMediaContext = Promise.resolve(
+      ContextFactory.create({
+        authProvider: () =>
+          Promise.resolve({
+            baseUrl,
+            clientId,
+            token,
+          }),
+      }),
+    );
+
+    return {
+      uploadContext: createMediaContext,
+      viewContext: createMediaContext,
+      uploadParams: {
+        collection: collectionName,
+      },
+    };
+  });
 }
 
-export default function mobileEditor() {
+export default function mobileEditor(props) {
   return (
     <EditorWithState
       appearance="mobile"
       mentionProvider={Promise.resolve(new MentionProviderImpl())}
       media={{
         customMediaPicker: new MobilePicker(),
-        provider: Promise.resolve(createMediaProvider()),
+        provider: props.mediaProvider || createMediaProvider(),
+        allowMediaSingle: true,
       }}
-      allowPanel={true}
-      allowCodeBlocks={true}
       allowLists={true}
       onChange={() => {
         toNativeBridge.updateText(bridge.getContent());
       }}
+      allowPanel={true}
+      allowCodeBlocks={true}
+      allowTables={{
+        allowControls: false,
+      }}
+      allowExtension={true}
+      allowTextColor={true}
+      allowDate={true}
+      allowRule={true}
+      allowTasksAndDecisions={true}
     />
   );
 }

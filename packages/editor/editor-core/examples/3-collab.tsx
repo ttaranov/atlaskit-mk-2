@@ -124,7 +124,7 @@ export default class Example extends React.Component<Props, State> {
                 analyticsHandler={analyticsHandler}
                 allowTasksAndDecisions={true}
                 allowCodeBlocks={true}
-                UNSAFE_allowLayouts={true}
+                allowLayouts={true}
                 allowLists={true}
                 allowTextColor={true}
                 allowDate={true}

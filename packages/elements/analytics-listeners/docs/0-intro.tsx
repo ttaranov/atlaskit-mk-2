@@ -8,8 +8,12 @@ export default md`
 
   The following listeners are currently implemented:
 
+  * Fabric Editor
   * Fabric elements
   * Atlaskit (core)
+  * Navigation
+
+  Atlaskit (core) events may result in multiple events being fired for the same action if you have instrumented AK components with your own analytics. In this case we recommend temporarily excluding the atlaskit listener via the 'excludedChannels' prop until we have a fix for this on the backend.
 
   ## Installation
 
@@ -25,37 +29,44 @@ ${code`
 
 ${code`
   import * as React from 'react';
-  import { withAnalyticsEvents } from '@atlaskit/analytics-next';
-  import AtlaskitAnalyticsListener from '@atlaskit/analytics-listeners';
+  import {
+    withAnalyticsEvents,
+    createAndFireEvent,
+  } from '@atlaskit/analytics-next';
+  import FabricAnalyticsListeners from '@atlaskit/analytics-listeners';
+  import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
 
-  import { GasPayload } from '@atlaskit/analytics-gas-types';
-
-  export type Props = {
-    onClick: e => void,
+  export type Props = WithAnalyticsEventProps & {
+    onClick: (e) => void;
   };
 
-  export const DummyComponent: React.StatelessComponent<Props> = (
-    props: Props,
-  ) => (
-    <div id="dummy" onClick={props.onClick}>
-      Test
-    </div>
-  );
-  DummyComponent.displayName = 'DummyComponent';
+  class DummyComponent extends React.Component<Props> {
+    static displayName = 'DummyComponent';
+
+    render() {
+      return (
+        <div id="dummy" onClick={this.props.onClick}>
+          Test
+        </div>
+      );
+    }
+  }
 
   export const DummyComponentWithAnalytics = withAnalyticsEvents({
-    onClick: (createEvent, props) => {
-      const event: GasPayload = {
-        action: 'someAction',
-        actionSubject: 'someComponent',
-        eventType: 'ui',
-        source: 'unknown',
-      };
-      createEvent(event).fire('fabricElements');
-    },
+    onClick: createAndFireEvent('fabric-elements')({
+      action: 'someAction',
+      actionSubject: 'someComponent',
+      eventType: 'ui',
+      source: 'unknown',
+    }),
   })(DummyComponent);
 
+  const myOnClickHandler = (e): void => {
+    console.log('component clicked');
+  };
+
   // Pass the analyticsWebClient instance created by the Product
+  // Refer to type AnalyticsWebClient from @atlaskit/analytics-listeners
   ReactDOM.render(
     <div>
       <FabricAnalyticsListeners client={analyticsWebClient}>

@@ -1,5 +1,60 @@
 # @atlaskit/media-viewer
 
+## 18.0.0
+- [major] Updated dependencies [7545979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7545979)
+  - @atlaskit/media-core@23.1.0
+
+## 17.0.8
+- [patch] Updated dependencies [911a570](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/911a570)
+  - @atlaskit/media-test-helpers@17.0.0
+  - @atlaskit/media-core@23.0.2
+
+## 17.0.7
+- [patch] List datasource takes priority to be consistent with the old behaviour MS-410 [31fafe6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/31fafe6)
+
+## 17.0.6
+- [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
+  - @atlaskit/media-ui@5.1.2
+
+## 17.0.5
+- [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
+  - @atlaskit/theme@6.0.0
+  - @atlaskit/media-ui@5.1.1
+  - @atlaskit/spinner@9.0.6
+  - @atlaskit/modal-dialog@6.0.9
+  - @atlaskit/icon@13.2.5
+  - @atlaskit/field-range@5.0.4
+  - @atlaskit/button@9.0.6
+  - @atlaskit/docs@5.0.6
+
+## 17.0.4
+- [patch] Use Camera class in avatar picker [335ab1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/335ab1e)
+- [patch] Updated dependencies [335ab1e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/335ab1e)
+  - @atlaskit/media-ui@5.1.0
+
+## 17.0.3
+- [patch] Chore: improve the Outcome data type [1feeedb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1feeedb)
+
+## 17.0.2
+- [patch] MSW-885 : add dragging to image viewer [989801b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/989801b)
+
+## 17.0.1
+- [patch] MSW-880: resize fitted images when window resizes [4d1f5b6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4d1f5b6)
+
+## 17.0.0
+- [major] Bumping to latest version of of media-core [5811ed4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5811ed4)
+- [minor] Synchronous property "serviceHost" as part of many Interfaces in media components (like MediaApiConfig) is removed and replaced with asynchronous "baseUrl" as part of Auth object. [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+- [minor] Updated dependencies [d02746f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d02746f)
+  - @atlaskit/media-test-helpers@16.0.0
+  - @atlaskit/media-core@23.0.0
+
+## 16.1.4
+- [patch] Fixes MSW-767 and MSW-895 [8102852](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8102852)
+
+## 16.1.3
+- [patch] Upgrade to webpack 4 [ea8a4bb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ea8a4bb)
+- [none] Updated dependencies [ea8a4bb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ea8a4bb)
+
 ## 16.1.2
 - [patch] Updated dependencies [acd86a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/acd86a1)
   - @atlaskit/media-ui@5.0.2

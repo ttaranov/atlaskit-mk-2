@@ -23,7 +23,7 @@ export const MOCK_USERS: User[] = [
     avatarUrl: 'https://api.adorable.io/avatars/80/awesomeperson.png',
   },
   {
-    id: undefined,
+    id: '',
     name: 'Undefined',
   },
 ];

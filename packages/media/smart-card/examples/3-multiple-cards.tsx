@@ -19,11 +19,11 @@ export default () => (
             </small>
           </p>
           <br />
-          <Card url={URL_A} />
+          <Card url={URL_A} appearance="block" />
           <br />
-          <Card url={URL_A} />
+          <Card url={URL_A} appearance="block" />
           <br />
-          <Card url={URL_A} />
+          <Card url={URL_A} appearance="block" />
         </GridColumn>
       </Grid>
       <br />
@@ -38,11 +38,11 @@ export default () => (
             </small>
           </p>
           <br />
-          <Card url={URL_A} />
+          <Card url={URL_A} appearance="block" />
           <br />
-          <Card url={URL_B} />
+          <Card url={URL_B} appearance="block" />
           <br />
-          <Card url={URL_C} />
+          <Card url={URL_C} appearance="block" />
         </GridColumn>
       </Grid>
       <br />
@@ -56,11 +56,11 @@ export default () => (
             </small>
           </p>
           <br />
-          <Card url="" />
+          <Card url="" appearance="block" />
           <br />
-          <Card url="" />
+          <Card url="" appearance="block" />
           <br />
-          <Card url="" />
+          <Card url="" appearance="block" />
         </GridColumn>
       </Grid>
     </Page>

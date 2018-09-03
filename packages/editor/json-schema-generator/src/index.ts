@@ -1,5 +1,9 @@
 /* tslint:disable:no-bitwise */
 import * as ts from 'typescript';
+import * as fs from 'fs';
+import * as path from 'path';
+import * as prettier from 'prettier';
+import * as mkdirp from 'mkdirp';
 
 import JSONSchemaNode, {
   SchemaNode,
@@ -32,20 +36,23 @@ import {
   isStringType,
   isTypeAliasDeclaration,
   isUnionType,
+  getPmName,
 } from './utils';
 
 export default (
-  file,
+  files,
   flags,
   root = 'doc_node',
   description = 'Schema for Atlassian Document Format.',
 ) => {
-  const files = [file];
-
   const program = ts.createProgram(files, { jsx: ts.JsxEmit.React });
   const checker = program.getTypeChecker();
   const typeIdToDefName: Map<number, string> = new Map();
   const experimentalNodes: Set<number> = new Set();
+  const isSpecMode =
+    flags.mode.toLowerCase() === 'spec' ? () => true : () => false;
+
+  const SKIP_LIST = isSpecMode() ? ['applicationCard_node'] : [];
 
   const jsonSchema = new JSONSchemaNode('draft-04', description, root);
 
@@ -53,10 +60,44 @@ export default (
   program.getSourceFiles().forEach(walk);
 
   waitForTicks()
+    .then(() => mkdirp(flags.outDir))
     .then(() => {
-      jsonSchema.markAsUsed(root);
-      // tslint:disable-next-line:no-console
-      console.log(JSON.stringify(jsonSchema, null, 2));
+      const { outDir, stage } = flags;
+      const resolvedOutDir = path.resolve(outDir);
+      if (!isSpecMode()) {
+        jsonSchema.markAsUsed(root);
+        const outputFileName =
+          // tslint:disable-next-line:triple-equals
+          stage != null ? `stage-${stage}.json` : 'full.json';
+        fs.writeFileSync(
+          path.join(resolvedOutDir, outputFileName),
+          JSON.stringify(jsonSchema, null, 2) + '\n',
+        );
+      } else {
+        prettier.resolveConfig(process.cwd()).then(options => {
+          const exports = [
+            '// DO NOT MODIFY THIS FILE, USE `yarn generate:spec`',
+          ];
+          jsonSchema.definitions.forEach((def, name) => {
+            const fileName = getPmName(name);
+            exports.push(
+              `export { default as ${fileName} } from './${fileName}';`,
+            );
+            fs.writeFileSync(
+              path.join(resolvedOutDir, `${fileName}.ts`),
+              prettier.format(
+                `export default ${JSON.stringify(def.node.toSpec())}`,
+                options,
+              ),
+            );
+          });
+          // Generate index.ts with exports
+          fs.writeFileSync(
+            path.join(resolvedOutDir, 'index.ts'),
+            prettier.format(exports.join('\n'), options),
+          );
+        });
+      }
     })
     .catch(console.error);
 
@@ -83,10 +124,17 @@ export default (
           throw new Error(`Duplicate definition for ${name}`);
         }
         const type = checker.getTypeAtLocation(node);
-        const defNode = getSchemaNodeFromType(type, rest);
-        if (defNode) {
-          jsonSchema.addDefinition(name, defNode);
+
+        if (SKIP_LIST.includes(name)) {
+          jsonSchema.addDefinition(name, new ObjectSchemaNode());
           typeIdToDefName.set((type as any).id, name);
+          jsonSchema.markAsUsed(name);
+        } else {
+          const defNode = getSchemaNodeFromType(type, rest);
+          if (defNode) {
+            jsonSchema.addDefinition(name, defNode);
+            typeIdToDefName.set((type as any).id, name);
+          }
         }
       }
     } else {
@@ -117,12 +165,12 @@ export default (
       return;
     }
 
+    const nodeName = typeIdToDefName.get(typeId)!;
     if (typeIdToDefName.has(typeId)) {
       // Found a $ref
       // TODO: Fix any
-      const nodeName = typeIdToDefName.get(typeId)!;
       jsonSchema.markAsUsed(nodeName);
-      return new RefSchemaNode(`#/definitions/${nodeName}`);
+      return new RefSchemaNode(nodeName);
     } else if (isStringType(type)) {
       return new StringSchemaNode(validators);
     } else if (isBooleanType(type)) {

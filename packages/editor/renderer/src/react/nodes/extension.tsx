@@ -1,7 +1,12 @@
 import * as React from 'react';
-import { RendererContext } from '..';
+import { RendererContext, BreakoutConsumer } from '..';
 import { renderNodes, Serializer } from '../..';
-import { ADNode, ExtensionHandlers } from '@atlaskit/editor-common';
+import {
+  ADNode,
+  ExtensionHandlers,
+  ExtensionLayout,
+} from '@atlaskit/editor-common';
+import { calcExtensionWidth } from '@atlaskit/editor-common';
 
 export interface Props {
   serializer: Serializer<any>;
@@ -11,7 +16,23 @@ export interface Props {
   extensionKey: string;
   text?: string;
   parameters?: any;
+  layout?: ExtensionLayout;
 }
+
+export const renderExtension = (content: any, layout: string) => (
+  <BreakoutConsumer>
+    {containerWidth => (
+      <div
+        className={`Extension-${layout}`}
+        style={{
+          width: calcExtensionWidth(layout, containerWidth),
+        }}
+      >
+        {content}
+      </div>
+    )}
+  </BreakoutConsumer>
+);
 
 const Extension: React.StatelessComponent<Props> = ({
   serializer,
@@ -21,7 +42,7 @@ const Extension: React.StatelessComponent<Props> = ({
   extensionKey,
   text,
   parameters,
-  children,
+  layout = 'default',
 }) => {
   try {
     if (extensionHandlers && extensionHandlers[extensionType]) {
@@ -39,7 +60,7 @@ const Extension: React.StatelessComponent<Props> = ({
       switch (true) {
         case content && React.isValidElement(content):
           // Return the content directly if it's a valid JSX.Element
-          return <div>{content}</div>;
+          return renderExtension(content, layout);
         case !!content:
           // We expect it to be Atlassian Document here
           const nodes = Array.isArray(content) ? content : [content];
@@ -55,9 +76,8 @@ const Extension: React.StatelessComponent<Props> = ({
     /** We don't want this error to block renderer */
     /** We keep rendering the default content */
   }
-
   // Always return default content if anything goes wrong
-  return <div>{text || 'extension'}</div>;
+  return renderExtension(text || 'extension', layout);
 };
 
 export default Extension;

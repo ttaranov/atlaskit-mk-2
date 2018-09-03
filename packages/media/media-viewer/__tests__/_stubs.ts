@@ -100,18 +100,17 @@ export const createContext = (options?: CreateContextOptions) => {
   const defaultOptions = {
     subject: undefined,
     provider: undefined,
-    authPromise: Promise.resolve({
+    authPromise: Promise.resolve<Auth>({
       token: 'some-token',
       clientId: 'some-client-id',
+      baseUrl: 'some-service-host',
     }),
     blobService: undefined,
   };
   const { subject, provider, authPromise, blobService } =
     options || defaultOptions;
-  const serviceHost = 'some-service-host';
   const authProvider = jest.fn(() => authPromise);
-  const contextConfig = {
-    serviceHost,
+  const contextConfig: ContextConfig = {
     authProvider,
   };
   return Stubs.context(

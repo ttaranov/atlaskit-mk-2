@@ -1,14 +1,23 @@
 // For version "3.0.0"
 import * as React from 'react';
 
-// This is not needed for classes UIAnalyticsEvent and AnalyticsEvent,
-// since they are classes (classes are used to create instances) and
-// instances of UIAnalyticsEvent are meant to be created inside analytics-next library itself only.
-// So we need only interfaces to describe an instances created with those Classes.
-
 /*
   UIAnalyticsEvent.js
  */
+export class UIAnalyticsEvent implements UIAnalyticsEventInterface {
+  constructor(payload: UIAnalyticsEventProps);
+
+  context: Array<ObjectType>;
+  handlers?: Array<UIAnalyticsEventHandlerSignature>;
+  hasFired: boolean;
+  payload: AnalyticsEventPayload;
+
+  clone: () => UIAnalyticsEventInterface | null;
+
+  fire(channel?: ChannelIdentifier): void;
+
+  update(updater: AnalyticsEventUpdater): UIAnalyticsEventInterface;
+}
 
 // See remark on classes above
 
@@ -23,7 +32,6 @@ export type ObjectType = { [key: string]: any };
 
 // Basic events
 export type AnalyticsEventPayload = {
-  action: string;
   [key: string]: any;
 };
 
@@ -72,8 +80,13 @@ export interface UIAnalyticsEventInterface {
 /*
   AnalyticsEvent.js
 */
+declare class AnalyticsEvent implements AnalyticsEventInterface {
+  payload: AnalyticsEventPayload;
 
-// See remark on classes above
+  clone: () => AnalyticsEventInterface;
+
+  update(updater: AnalyticsEventUpdater): AnalyticsEventInterface;
+}
 
 /*
   AnalyticsListener.js
