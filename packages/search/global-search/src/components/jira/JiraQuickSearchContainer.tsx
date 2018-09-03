@@ -3,15 +3,30 @@ import { injectIntl, InjectedIntlProps } from 'react-intl';
 import { withAnalytics } from '@atlaskit/analytics';
 import { CreateAnalyticsEventFn } from '../analytics/types';
 import { JiraClient } from '../../api/JiraClient';
+import { PeopleSearchClient } from '../../api/PeopleSearchClient';
 import { LinkComponent } from '../GlobalQuickSearchWrapper';
 import QuickSearchContainer from '../common/QuickSearchContainer';
 import JiraSearchResults from './JiraSearchResults';
+import { sliceResults } from './JiraSearchResultsMapper';
+
 export interface Props {
   createAnalyticsEvent?: CreateAnalyticsEventFn;
   linkComponent?: LinkComponent;
   jiraClient: JiraClient;
+  peopleSearchClient: PeopleSearchClient;
 }
-import { ContentType, JiraObjectResult } from '../../model/Result';
+import {
+  handlePromiseError,
+  JiraEntityTypes,
+  redirectToJiraAdvancedSearch,
+} from '../SearchResultsUtil';
+import {
+  ContentType,
+  JiraObjectResult,
+  Result,
+  ResultsWithTiming,
+  GenericResultMap,
+} from '../../model/Result';
 
 const contentTypeToSection = {
   [ContentType.JiraIssue]: 'issues',
@@ -20,7 +35,9 @@ const contentTypeToSection = {
   [ContentType.JiraProject]: 'projects',
 };
 
-export interface State {}
+export interface State {
+  selectedAdvancedSearchType: JiraEntityTypes;
+}
 
 /**
  * Container/Stateful Component that handles the data fetching and state handling when the user interacts with Search.
@@ -29,6 +46,15 @@ export class JiraQuickSearchContainer extends React.Component<
   Props & InjectedIntlProps,
   State
 > {
+  state = {
+    selectedAdvancedSearchType: JiraEntityTypes.Issues,
+  };
+
+  handleSearchSubmit = ({ target }) => {
+    const query = target.value;
+    redirectToJiraAdvancedSearch(this.state.selectedAdvancedSearchType, query);
+  };
+
   getSearchResultsComponent = ({
     retrySearch,
     latestSearchQuery,
@@ -49,12 +75,25 @@ export class JiraQuickSearchContainer extends React.Component<
         recentItems={recentItems}
         keepPreQueryState={keepPreQueryState}
         searchSessionId={searchSessionId}
+        onAdvancedSearchChange={entityType =>
+          this.setState({ selectedAdvancedSearchType: entityType })
+        }
       />
     );
   };
-  getRecentItems = (sessionId: string) => {
-    const { jiraClient } = this.props;
-    return jiraClient
+
+  getRecentlyInteractedPeople = (): Promise<Result[]> => {
+    const peoplePromise: Promise<
+      Result[]
+    > = this.props.peopleSearchClient.getRecentPeople();
+    return handlePromiseError<Result[]>(
+      peoplePromise,
+      [] as Result[],
+    ) as Promise<Result[]>;
+  };
+
+  getJiraRecentItems = (sessionId: string) => {
+    const jiraRecentItemsPromise = this.props.jiraClient
       .getRecentItems(sessionId)
       .then(items =>
         items.reduce(
@@ -71,16 +110,43 @@ export class JiraQuickSearchContainer extends React.Component<
             }
             return acc;
           },
-          {},
+          {} as GenericResultMap,
         ),
-      )
-      .then(results => ({ results }));
+      );
+    return handlePromiseError(jiraRecentItemsPromise, {
+      issues: [],
+      boards: [],
+      filters: [],
+      projects: [],
+    });
   };
 
-  getSearchResults = (query: string, sessionId: string, startTime: number) =>
-    Promise.resolve({
-      results: {},
-    });
+  getRecentItems = (sessionId: string): Promise<ResultsWithTiming> => {
+    return Promise.all([
+      this.getJiraRecentItems(sessionId),
+      this.getRecentlyInteractedPeople(),
+    ])
+      .then(([jiraItems, people]) => {
+        return { ...jiraItems, people };
+      })
+      .then(results => ({ results } as ResultsWithTiming));
+  };
+
+  getSearchResults = (
+    query: string,
+    sessionId: string,
+    startTime: number,
+  ): Promise<ResultsWithTiming> => {
+    return this.props.peopleSearchClient.search(query).then(people => ({
+      results: {
+        people,
+        issues: [],
+        boards: [],
+        filters: [],
+        projects: [],
+      },
+    }));
+  };
 
   render() {
     const { linkComponent, createAnalyticsEvent } = this.props;
@@ -91,12 +157,11 @@ export class JiraQuickSearchContainer extends React.Component<
           id: 'global-search.jira.search-placeholder',
         })}
         linkComponent={linkComponent}
-        getDisplayedResults={({ issues, boards, projects, filters }) => {
-          return [issues, ...[boards, projects, filters]];
-        }}
+        getDisplayedResults={sliceResults}
         getSearchResultsComponent={this.getSearchResultsComponent}
         getRecentItems={this.getRecentItems}
         getSearchResults={this.getSearchResults}
+        handleSearchSubmit={this.handleSearchSubmit}
         createAnalyticsEvent={createAnalyticsEvent}
       />
     );
