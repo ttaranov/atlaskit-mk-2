@@ -43,12 +43,15 @@ class LayoutManagerWithViewControllerBase extends Component<
   };
 
   renderSkeleton = () => {
-    const { firstSkeleton } = this.props;
+    const { firstSkeletonToRender } = this.props;
     let Wrapper;
 
-    if (firstSkeleton === 'product' && !this.state.hasInitialised) {
+    if (firstSkeletonToRender === 'product' && !this.state.hasInitialised) {
       Wrapper = ProductNavigationTheme;
-    } else if (firstSkeleton === 'container' && !this.state.hasInitialised) {
+    } else if (
+      firstSkeletonToRender === 'container' &&
+      !this.state.hasInitialised
+    ) {
       Wrapper = ContainerNavigationTheme;
     } else {
       Wrapper = Fragment;
@@ -85,7 +88,7 @@ class LayoutManagerWithViewControllerBase extends Component<
       navigationViewController: {
         state: { activeView },
       },
-      firstSkeleton,
+      firstSkeletonToRender,
     } = this.props;
 
     if (activeView && activeView.type === 'container') {
@@ -94,13 +97,13 @@ class LayoutManagerWithViewControllerBase extends Component<
 
     if (
       !activeView &&
-      firstSkeleton === 'container' &&
+      firstSkeletonToRender === 'container' &&
       !this.state.hasInitialised
     ) {
       return this.renderSkeleton();
     }
 
-    return firstSkeleton !== 'container' ? null : this.renderSkeleton();
+    return firstSkeletonToRender !== 'container' ? null : this.renderSkeleton();
   };
 
   renderGlobalNavigation = () => {
@@ -166,7 +169,7 @@ class LayoutManagerWithViewControllerBase extends Component<
       navigationViewController: {
         state: { activeView },
       },
-      firstSkeleton,
+      firstSkeletonToRender,
     } = this.props;
 
     return (
@@ -178,7 +181,7 @@ class LayoutManagerWithViewControllerBase extends Component<
           containerNavigation={
             (activeView && activeView.type === 'container') ||
             (!activeView &&
-              firstSkeleton === 'container' &&
+              firstSkeletonToRender === 'container' &&
               !this.state.hasInitialised)
               ? this.renderContainerNavigation
               : null

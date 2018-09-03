@@ -40,7 +40,7 @@ describe('LayoutManagerWithViewController', () => {
           <LayoutManagerWithViewController
             customComponents={{ ProjectSwitcher }}
             globalNavigation={DefaultGlobalNavigation}
-            firstSkeleton={'product'}
+            firstSkeletonToRender={'product'}
           >
             <p>
               Children requires to have `NavigationProvider` as a parent Because
@@ -79,7 +79,8 @@ describe('LayoutManagerWithViewController', () => {
   describe('Skeleton management', () => {
     it('should render skeleton using `product` context', () => {
       expect(
-        wrapper.find(LayoutManagerWithViewController).props().firstSkeleton,
+        wrapper.find(LayoutManagerWithViewController).props()
+          .firstSkeletonToRender,
       ).toBe('product');
 
       expect(
@@ -100,7 +101,7 @@ describe('LayoutManagerWithViewController', () => {
             <LayoutManagerWithViewController
               customComponents={{ ProjectSwitcher }}
               globalNavigation={DefaultGlobalNavigation}
-              firstSkeleton={'container'}
+              firstSkeletonToRender={'container'}
             >
               <p>
                 Children requires to have `NavigationProvider` as a parent
@@ -113,7 +114,7 @@ describe('LayoutManagerWithViewController', () => {
 
       expect(
         containerWrapper.find(LayoutManagerWithViewController).props()
-          .firstSkeleton,
+          .firstSkeletonToRender,
       ).toBe('container');
 
       expect(
