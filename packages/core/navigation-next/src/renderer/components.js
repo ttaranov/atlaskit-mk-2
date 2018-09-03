@@ -22,7 +22,7 @@ import SectionHeadingComponent from '../components/SectionHeading';
 import Separator from '../components/Separator';
 import GroupComponent from '../components/Group';
 import GroupHeadingComponent from '../components/GroupHeading';
-import SwitcherComponent from '../components/Switcher';
+import Switcher from '../components/Switcher';
 import { withNavigationUI } from '../ui-controller';
 import { withNavigationViewController } from '../view-controller';
 
@@ -164,13 +164,6 @@ const SectionHeading = ({ text, ...props }: SectionHeadingProps) => (
 const ContainerHeader = (props: *) => (
   <div css={{ paddingBottom: gridSize * 2.5 }}>
     <ContainerHeaderComponent {...props} />
-  </div>
-);
-
-// Switcher
-const Switcher = (props: *) => (
-  <div css={{ paddingBottom: gridSize * 2.5 }}>
-    <SwitcherComponent {...props} />
   </div>
 );
 

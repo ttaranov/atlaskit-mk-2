@@ -21,7 +21,7 @@ export {
   default as ScrollableSectionInner,
 } from './components/ScrollableSectionInner';
 export { default as Section } from './components/Section';
-export { default as SectionHeading } from './components/GroupHeading';
+export { default as SectionHeading } from './components/SectionHeading';
 export { default as Separator } from './components/Separator';
 export {
   default as SkeletonContainerHeader,

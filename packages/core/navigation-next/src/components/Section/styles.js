@@ -27,6 +27,7 @@ const getBaseStyles = ({ alwaysShowScrollHint }) => ({
     width: '100%',
 
     '&::before': {
+      borderRadius: 1,
       content: "''",
       display: 'block',
       flex: 0,
@@ -46,6 +47,7 @@ const getBaseStyles = ({ alwaysShowScrollHint }) => ({
     position: 'relative',
 
     '&::before': {
+      borderRadius: 1,
       content: "''",
       display: alwaysShowScrollHint ? 'none' : 'block',
       flexShrink: 0,
