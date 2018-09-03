@@ -13,18 +13,17 @@ const modifyStyles = defaultStyles => ({
   ...defaultStyles,
   wrapper: {
     ...defaultStyles.wrapper,
-    height: `${gridSize * 7}px`,
+    height: `${gridSize * 6}px`,
     opacity: 0.3,
     paddingLeft: gridSize / 2,
     paddingRight: gridSize / 2,
   },
   before: {
     ...defaultStyles.before,
-    borderRadius: 5,
-    height: gridSize * 4,
-    marginLeft: gridSize * 0.25,
-    marginRight: gridSize * 1.75,
-    width: gridSize * 4,
+    borderRadius: 3,
+    height: gridSize * 5,
+    marginRight: gridSize,
+    width: gridSize * 5,
   },
 });
 

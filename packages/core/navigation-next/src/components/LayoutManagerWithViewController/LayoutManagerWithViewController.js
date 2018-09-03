@@ -20,24 +20,30 @@ import LayerInitialised from './LayerInitialised';
 const gridSize = gridSizeFn();
 
 const skeleton = (
-  <div css={{ padding: `${gridSize * 2}px 0` }}>
+  <Fragment>
     <Section>
-      {({ className }) => (
-        <div className={className}>
+      {({ css }) => (
+        <div
+          css={{
+            ...css,
+            paddingTop: gridSize * 2.5,
+            paddingBottom: gridSize * 2.5,
+          }}
+        >
           <SkeletonContainerHeader hasBefore />
         </div>
       )}
     </Section>
     <Section>
-      {({ className }) => (
-        <div className={className}>
+      {({ css }) => (
+        <div css={css}>
           <SkeletonItem hasBefore />
           <SkeletonItem hasBefore />
           <SkeletonItem hasBefore />
         </div>
       )}
     </Section>
-  </div>
+  </Fragment>
 );
 
 class LayoutManagerWithViewControllerBase extends Component<
