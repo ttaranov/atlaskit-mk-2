@@ -74,7 +74,7 @@ const globalNavSecondaryItems = [
 ];
 
 const GlobalNavigation = () => (
-  <div data-webkit-test-key="global-navigation">
+  <div data-webdriver-test-key="global-navigation">
     <GlobalNav
       primaryItems={globalNavPrimaryItems}
       secondaryItems={globalNavSecondaryItems}
@@ -86,7 +86,7 @@ const GlobalNavigation = () => (
  * Content navigation
  */
 const ProductNavigation = () => (
-  <div data-webkit-test-key="product-navigation">
+  <div data-webdriver-test-key="product-navigation">
     <Section>
       {({ css }) => (
         <div css={{ ...css, paddingTop: gridSize * 2.5 }}>
@@ -129,7 +129,7 @@ const ProductNavigation = () => (
 );
 
 const ContainerNavigation = () => (
-  <div data-webkit-test-key="container-navigation">
+  <div data-webdriver-test-key="container-navigation">
     <Section>
       {({ css }) => (
         <div
@@ -207,7 +207,7 @@ export default class Example extends Component<{}, State> {
           }
         >
           <div
-            data-webkit-test-key="content"
+            data-webdriver-test-key="content"
             style={{ padding: `${gridSize * 4}px ${gridSize * 5}px` }}
           >
             <ToggleStateless
