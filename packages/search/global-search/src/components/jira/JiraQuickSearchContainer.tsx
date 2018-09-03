@@ -35,7 +35,7 @@ const contentTypeToSection = {
 };
 
 export interface State {
-  advancedSearchEntity: JiraEntityTypes;
+  selectedAdvancedSearchType: JiraEntityTypes;
 }
 
 /**
@@ -46,12 +46,12 @@ export class JiraQuickSearchContainer extends React.Component<
   State
 > {
   state = {
-    advancedSearchEntity: JiraEntityTypes.Issues,
+    selectedAdvancedSearchType: JiraEntityTypes.Issues,
   };
 
   handleSearchSubmit = ({ target }) => {
     const query = target.value;
-    redirectToJiraAdvancedSearch(this.state.advancedSearchEntity, query);
+    redirectToJiraAdvancedSearch(this.state.selectedAdvancedSearchType, query);
   };
 
   getSearchResultsComponent = ({
@@ -75,19 +75,20 @@ export class JiraQuickSearchContainer extends React.Component<
         keepPreQueryState={keepPreQueryState}
         searchSessionId={searchSessionId}
         onAdvancedSearchChange={entityType =>
-          this.setState({ advancedSearchEntity: entityType })
+          this.setState({ selectedAdvancedSearchType: entityType })
         }
       />
     );
   };
 
-  getRecentlyInteractedPeople = (): Promise<{ people: Result[] }> => {
+  getRecentlyInteractedPeople = (): Promise<Result[]> => {
     const peoplePromise: Promise<
       Result[]
     > = this.props.peopleSearchClient.getRecentPeople();
-    return handlePromiseError<Result[]>(peoplePromise, []).then(people => ({
-      people,
-    })) as Promise<{ people: Result[] }>;
+    return handlePromiseError<Result[]>(
+      peoplePromise,
+      [] as Result[],
+    ) as Promise<Result[]>;
   };
 
   getJiraRecentItems = (sessionId: string) => {
@@ -125,7 +126,7 @@ export class JiraQuickSearchContainer extends React.Component<
       this.getRecentlyInteractedPeople(),
     ])
       .then(([jiraItems, people]) => {
-        return { ...jiraItems, ...people };
+        return { ...jiraItems, people };
       })
       .then(results => ({ results }));
   };

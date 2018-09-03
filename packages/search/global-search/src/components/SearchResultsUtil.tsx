@@ -38,7 +38,7 @@ export function getJiraAdvancedSearchUrl(
   query?: string,
 ) {
   const getUrl = JIRA_ADVANCED_SEARCH_URLS[entityType];
-  return getUrl(query);
+  return getUrl(query || '');
 }
 
 export function redirectToConfluenceAdvancedSearch(query = '') {
@@ -61,7 +61,7 @@ export function isEmpty<T>(array: Array<T>) {
   return array.length === 0;
 }
 
-export function ObjectValues(object) {
+export function objectValues(object) {
   return Object.keys(object || {}).map(key => object[key]);
 }
 /**

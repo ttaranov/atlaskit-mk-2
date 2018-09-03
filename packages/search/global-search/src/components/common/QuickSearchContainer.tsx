@@ -20,7 +20,10 @@ import {
 } from '../../util/analytics-event-helper';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { CreateAnalyticsEventFn } from '../analytics/types';
-import { ObjectValues } from '../SearchResultsUtil';
+import { objectValues } from '../SearchResultsUtil';
+
+const resultMapToArray = (results: GenericResultMap): Result[][] =>
+  objectValues(results).reduce((acc: Result[][], value) => [...acc, value], []);
 
 export interface SearchResultProps extends State {
   retrySearch: Function;
@@ -64,9 +67,7 @@ export interface State {
  */
 export class QuickSearchContainer extends React.Component<Props, State> {
   static defaultProps = {
-    getDisplayedResults(results: GenericResultMap) {
-      return results;
-    },
+    getDisplayedResults: results => results,
   };
 
   constructor(props) {
@@ -158,11 +159,11 @@ export class QuickSearchContainer extends React.Component<Props, State> {
         ? performanceNow() - requestStartTime
         : 0;
 
+      const resultsArray: Result[][] = resultMapToArray(
+        getDisplayedResults(recentItems),
+      );
       const eventAttributes: ShownAnalyticsAttributes = buildShownEventDetails(
-        ...ObjectValues(getDisplayedResults(recentItems)).reduce(
-          (acc: Result[][], value) => [...acc, value],
-          [],
-        ),
+        ...resultsArray,
       );
 
       firePreQueryShownEvent(
@@ -190,11 +191,11 @@ export class QuickSearchContainer extends React.Component<Props, State> {
 
     const { createAnalyticsEvent, getDisplayedResults } = this.props;
     if (createAnalyticsEvent && getDisplayedResults) {
+      const resultsArray: Result[][] = resultMapToArray(
+        getDisplayedResults(searchResults),
+      );
       const resultsDetails: ShownAnalyticsAttributes = buildShownEventDetails(
-        ...ObjectValues(getDisplayedResults(searchResults)).reduce(
-          (acc: Result[][], value) => [...acc, value],
-          [],
-        ),
+        ...resultsArray,
       );
 
       firePostQueryShownEvent(
