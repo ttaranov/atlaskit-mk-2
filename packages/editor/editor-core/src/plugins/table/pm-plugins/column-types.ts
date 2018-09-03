@@ -226,7 +226,6 @@ export const createCellTypeDecoration = (
   if (!table) {
     return null;
   }
-  const { start } = table;
   const map = TableMap.get(table.node);
   const set: Decoration[] = [];
 
@@ -238,7 +237,7 @@ export const createCellTypeDecoration = (
       if (cell.type === state.schema.nodes.tableHeader) {
         continue;
       }
-      const pos = start + map.map[i * map.width];
+      const pos = table.start + map.map[j + i * map.width];
       let contentEditable = true;
       const classNames: string[] = [];
 
