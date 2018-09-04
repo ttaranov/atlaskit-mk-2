@@ -1,16 +1,23 @@
 import FeatureFlagClient from '../../client';
 
 describe('Feature Flag Client', () => {
+  let analyticsClient;
+  beforeEach(() => {
+    analyticsClient = {
+      sendTrackEvent: jest.fn(),
+    };
+  });
+
   describe('bootstrap', () => {
     test('should throw if no analytics handler is given', () => {
       expect(() => new FeatureFlagClient({} as any)).toThrowError(
-        'Feature Flag Client: Missing analyticsHandler',
+        'Feature Flag Client: Missing analyticsClient',
       );
     });
 
     test('should allow to bootstrap with flags', () => {
       const client = new FeatureFlagClient({
-        analyticsHandler: jest.fn(),
+        analyticsClient,
         flags: {
           'my.flag': false,
         },
@@ -21,7 +28,7 @@ describe('Feature Flag Client', () => {
 
     test('should allow to set flags later', () => {
       const client = new FeatureFlagClient({
-        analyticsHandler: jest.fn(),
+        analyticsClient,
         flags: {
           'my.flag': false,
         },
@@ -55,7 +62,7 @@ describe('Feature Flag Client', () => {
   describe('clear', () => {
     test('should remove all flags', () => {
       const client = new FeatureFlagClient({
-        analyticsHandler: jest.fn(),
+        analyticsClient,
         flags: {
           'my.flag': false,
         },
@@ -71,12 +78,10 @@ describe('Feature Flag Client', () => {
 
   describe('getters', () => {
     let client;
-    let analyticsHandler;
 
     beforeEach(() => {
-      analyticsHandler = jest.fn();
       client = new FeatureFlagClient({
-        analyticsHandler,
+        analyticsClient,
         flags: {
           'my.variation.flag': {
             reason: 'RULE_MATCH',
@@ -134,14 +139,23 @@ describe('Feature Flag Client', () => {
         expect(
           client.getBooleanValue('my.boolean.flag', { default: true }),
         ).toBe(false);
-        expect(analyticsHandler).toHaveBeenCalledTimes(0);
+        expect(analyticsClient.sendTrackEvent).toHaveBeenCalledTimes(0);
       });
 
       test('should fire the exposure event if the flag contains evaluation details (long format / feature flag)', () => {
         expect(
           client.getBooleanValue('my.detailed.boolean.flag', { default: true }),
         ).toBe(false);
-        expect(analyticsHandler).toHaveBeenCalledTimes(1);
+        expect(analyticsClient.sendTrackEvent).toHaveBeenCalledTimes(1);
+        expect(analyticsClient.sendTrackEvent).toHaveBeenCalledWith({
+          action: 'exposed',
+          actionSubject: 'feature',
+          attributes: {
+            reason: 'RULE_MATCH',
+            ruleId: '111-bbbbb-ccc',
+            value: false,
+          },
+        });
       });
 
       test('should not fire the exposure event if trackExposureEvent is false', () => {
@@ -151,7 +165,7 @@ describe('Feature Flag Client', () => {
             trackExposureEvent: false,
           }),
         ).toBe(false);
-        expect(analyticsHandler).toHaveBeenCalledTimes(0);
+        expect(analyticsClient.sendTrackEvent).toHaveBeenCalledTimes(0);
       });
     });
 
@@ -177,7 +191,7 @@ describe('Feature Flag Client', () => {
             oneOf: ['control', 'experiment'],
           }),
         ).toBe('control');
-        expect(analyticsHandler).toHaveBeenCalledTimes(0);
+        expect(analyticsClient.sendTrackEvent).toHaveBeenCalledTimes(0);
       });
 
       test('should return default if flag is boolean, and not fire exposure event', () => {
@@ -187,7 +201,7 @@ describe('Feature Flag Client', () => {
             oneOf: ['control', 'experiment'],
           }),
         ).toBe('control');
-        expect(analyticsHandler).toHaveBeenCalledTimes(0);
+        expect(analyticsClient.sendTrackEvent).toHaveBeenCalledTimes(0);
       });
 
       test('should return default if flag is not listed as oneOf, and not fire exposure event', () => {
@@ -197,7 +211,7 @@ describe('Feature Flag Client', () => {
             oneOf: ['control', 'experiment'],
           }),
         ).toBe('control');
-        expect(analyticsHandler).toHaveBeenCalledTimes(0);
+        expect(analyticsClient.sendTrackEvent).toHaveBeenCalledTimes(0);
       });
 
       test('should return the right value if flag is listed as oneOf, and fire exposure event', () => {
@@ -207,7 +221,16 @@ describe('Feature Flag Client', () => {
             oneOf: ['control', 'experiment'],
           }),
         ).toBe('experiment');
-        expect(analyticsHandler).toHaveBeenCalledTimes(1);
+        expect(analyticsClient.sendTrackEvent).toHaveBeenCalledTimes(1);
+        expect(analyticsClient.sendTrackEvent).toHaveBeenCalledWith({
+          action: 'exposed',
+          actionSubject: 'feature',
+          attributes: {
+            reason: 'RULE_MATCH',
+            ruleId: '111-bbbbb-ccc',
+            value: 'experiment',
+          },
+        });
       });
 
       test('should not fire exposure event if trackExposureEvent is false', () => {
@@ -218,7 +241,7 @@ describe('Feature Flag Client', () => {
             trackExposureEvent: false,
           }),
         ).toBe('experiment');
-        expect(analyticsHandler).toHaveBeenCalledTimes(0);
+        expect(analyticsClient.sendTrackEvent).toHaveBeenCalledTimes(0);
       });
     });
   });

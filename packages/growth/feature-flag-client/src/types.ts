@@ -20,11 +20,14 @@ export type Flags = {
   [flagName: string]: DarkFeature | FeatureFlag;
 };
 
-export type AnalyticsHandler = (flag: FeatureFlag) => void;
-
-export type ClientOptions = {
-  flags?: Flags;
-  analyticsHandler: AnalyticsHandler;
+export type AnalyticsClient = {
+  sendTrackEvent: (
+    event: {
+      action: string;
+      actionSubject: string;
+      attributes: FeatureFlag;
+    },
+  ) => void;
 };
 
 export type ParsedFlag = {

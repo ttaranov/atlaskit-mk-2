@@ -2,8 +2,7 @@ import {
   DarkFeature,
   FeatureFlag,
   Flags,
-  AnalyticsHandler,
-  ClientOptions,
+  AnalyticsClient,
   ParsedFlag,
 } from './types';
 import {
@@ -16,16 +15,15 @@ import {
 
 export default class FeatureFlagClient {
   flags: Readonly<Flags> = {};
-
   trackedFlags: { [flagKey: string]: boolean } = {};
-  analyticsHandler: AnalyticsHandler;
+  analyticsClient: AnalyticsClient;
 
-  constructor(options: ClientOptions) {
-    const { flags, analyticsHandler } = options;
+  constructor(options: { flags?: Flags; analyticsClient: AnalyticsClient }) {
+    const { flags, analyticsClient } = options;
 
-    enforceAttributes(options, ['analyticsHandler'], 'Feature Flag Client');
+    enforceAttributes(options, ['analyticsClient'], 'Feature Flag Client');
 
-    this.analyticsHandler = analyticsHandler;
+    this.analyticsClient = analyticsClient;
     this.setFlags(flags || {});
   }
 
@@ -127,11 +125,14 @@ export default class FeatureFlagClient {
       return;
     }
 
-    const flag = this.flags[flagKey];
-    const parsedFlag = parseFlag(flag);
+    const flag = this.getFlag(flagKey);
 
-    if (parsedFlag && parsedFlag.type === 'feature-flag') {
-      this.analyticsHandler(flag as FeatureFlag);
+    if (flag && flag.type === 'feature-flag') {
+      this.analyticsClient.sendTrackEvent({
+        action: 'exposed',
+        actionSubject: 'feature',
+        attributes: flag.flag as FeatureFlag,
+      });
       this.trackedFlags[flagKey] = true;
     }
   }
