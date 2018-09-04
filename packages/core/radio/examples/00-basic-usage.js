@@ -28,11 +28,8 @@ export default class BasicExample extends PureComponent<void, State> {
   render() {
     return (
       <div>
-        <RadioGroup
-          options={options}
-          label="Pick a color:"
-          onChange={this.onChange}
-        />
+        <p>Pick a color:</p>
+        <RadioGroup options={options} onChange={this.onChange} />
         <div
           style={{
             borderStyle: 'dashed',
