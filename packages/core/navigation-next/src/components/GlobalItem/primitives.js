@@ -1,24 +1,16 @@
 // @flow
 
-import React, {
-  Fragment,
-  Component,
-  type ComponentType,
-  type Element,
-} from 'react';
+import React, { Fragment, Component } from 'react';
 import { css } from 'emotion';
 import Tooltip from '@atlaskit/tooltip';
 
 import { styleReducerNoOp, withGlobalTheme } from '../../theme';
 import type {
-  GlobalItemPrimitiveProps,
   GlobalItemTooltipRenderer,
   GlobalItemPresentationProps,
 } from './types';
 
-class GlobalNavigationItemPrimitive extends Component<
-  GlobalItemPrimitiveProps,
-> {
+class GlobalNavigationItemPrimitive extends Component<*> {
   static defaultProps = {
     isActive: false,
     isHover: false,
@@ -33,6 +25,7 @@ class GlobalNavigationItemPrimitive extends Component<
     presentationProps: GlobalItemPresentationProps,
   ) => {
     const { icon: Icon, badge: Badge, label, tooltip } = this.props;
+    if (!Icon && !Badge) return null;
     return (
       <Fragment>
         {!!Icon && (
