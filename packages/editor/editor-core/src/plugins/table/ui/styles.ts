@@ -403,6 +403,10 @@ export const tableStyles = css`
           margin-top: 4px;
         }
       }
+
+      tr:not(:first-child) th:first-child button {
+        display: none;
+      }
     }
     /* Range Slider */
     .rangeslider {
