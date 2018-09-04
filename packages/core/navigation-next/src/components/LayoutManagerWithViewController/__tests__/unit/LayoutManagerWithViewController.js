@@ -73,6 +73,9 @@ describe('LayoutManagerWithViewController', () => {
     global.localStorage = originalLocalStorage;
 
     onCollapseStart.mockReset();
+    onCollapseEnd.mockReset();
+    onExpandStart.mockReset();
+    onExpandEnd.mockReset();
   });
 
   it('should render global navigation based on using `globalNavigation` as a reference', () => {
