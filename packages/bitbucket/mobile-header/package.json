@@ -22,7 +22,7 @@
   "dependencies": {
     "@atlaskit/button": "^9.0.2",
     "@atlaskit/icon": "^13.1.1",
-    "@atlaskit/theme": "^5.0.0"
+    "@atlaskit/theme": "^6.0.1"
   },
   "peerDependencies": {
     "react": "^16.4.0",
@@ -32,7 +32,7 @@
     "@atlaskit/docs": "^5.0.1",
     "@atlaskit/navigation": "^33.0.2",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
-    "react-dom": "^16.4.0",
+    "react-dom": "^16.4.2",
     "react-test-renderer": "^16.3.0"
   }
 }

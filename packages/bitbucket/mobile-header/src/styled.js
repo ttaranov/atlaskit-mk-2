@@ -4,6 +4,7 @@ import {
   colors,
   gridSize as akGridSize,
   layers as akLayers,
+  themed,
   typography,
 } from '@atlaskit/theme';
 
@@ -40,7 +41,7 @@ export const MobileNavSlider = styled.div`
 
 export const MobilePageHeader = styled.header`
   align-items: center;
-  background-color: ${colors.N20};
+  background-color: ${themed({ light: colors.N20, dark: colors.N300 })};
   display: flex;
   padding: ${gridSize * 1.5}px;
   position: sticky;
