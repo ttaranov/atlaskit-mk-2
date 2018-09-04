@@ -39,6 +39,18 @@ export interface Props {
   targetColumnRef?: HTMLElement;
 }
 
+function getDefaultSummaryTypeFromCellType(type: string) {
+  switch (type) {
+    case 'number':
+    case 'currency':
+      return 'total';
+    case 'mention':
+      return 'people';
+    default:
+      return;
+  }
+}
+
 export default class ColumnTypesMenu extends Component<Props> {
   render() {
     const {
@@ -203,39 +215,46 @@ export default class ColumnTypesMenu extends Component<Props> {
       tr = editorView.state.tr;
       cells = getCellsInColumn(columnIndex)(tr.selection)!;
       cells.forEach(cell => {
+        let newCell;
         if (
           cell.node.type !== tableCell ||
           cell.node.attrs.cellType === 'summary'
         ) {
-          return;
-        }
-        let newCell;
-        // insert node to each cell
-        if (Object.keys(nodemap).indexOf(cellType) !== -1) {
-          if (item.value.name === 'decision') {
-            const node = decisionList.createAndFill() as PmNode;
-            newCell = cell.node.type.create(cell.node.attrs, node);
-          } else {
+          newCell = cell.node.type.create(
+            {
+              ...cell.node.attrs,
+              summaryType: getDefaultSummaryTypeFromCellType(cellType),
+            },
+            paragraph.create({}),
+          );
+        } else {
+          // insert node to each cell
+          if (Object.keys(nodemap).indexOf(cellType) !== -1) {
+            if (item.value.name === 'decision') {
+              const node = decisionList.createAndFill() as PmNode;
+              newCell = cell.node.type.create(cell.node.attrs, node);
+            } else {
+              newCell = cell.node.type.create(
+                cell.node.attrs,
+                paragraph.create({}, nodemap[cellType].createChecked()),
+              );
+            }
+          }
+          // try to keep number content for "number" and "currency" columns
+          else if (
+            (item.value.name === 'number' || item.value.name === 'currency') &&
+            cell.node.child(0).type.name === 'paragraph' &&
+            `${parseInt(cell.node.textContent, 10)}` === cell.node.textContent
+          ) {
+            newCell = cell.node;
+          }
+          // otherwise clear the content
+          else {
             newCell = cell.node.type.create(
               cell.node.attrs,
-              paragraph.create({}, nodemap[cellType].createChecked()),
+              paragraph.createAndFill() as PmNode,
             );
           }
-        }
-        // try to keep number content for "number" and "currency" columns
-        else if (
-          (item.value.name === 'number' || item.value.name === 'currency') &&
-          cell.node.child(0).type.name === 'paragraph' &&
-          `${parseInt(cell.node.textContent, 10)}` === cell.node.textContent
-        ) {
-          newCell = cell.node;
-        }
-        // otherwise clear the content
-        else {
-          newCell = cell.node.type.create(
-            cell.node.attrs,
-            paragraph.createAndFill() as PmNode,
-          );
         }
         tr = tr.replaceWith(
           tr.mapping.map(cell.pos),
