@@ -8,6 +8,7 @@ import { pluginKey, setCellContent } from '../../pm-plugins/column-types';
 export interface Props {
   view: EditorView;
   node: PMNode;
+  getPos: () => number;
 }
 
 export interface State {
@@ -25,8 +26,26 @@ export default class Slider extends React.PureComponent<Props, State> {
     };
   }
 
-  handleChangeStart = () => {
-    // console.log('Change event started')
+  handleChangeStart = event => {
+    const { getPos, view } = this.props;
+    const pluginState = pluginKey.getState(view.state);
+    if (!pluginState.clickedCell) {
+      const pos = getPos() - 2;
+      const clickedCell = view.state.doc.nodeAt(pos);
+      if (clickedCell) {
+        const { state, dispatch } = view;
+        dispatch(
+          state.tr.setMeta(pluginKey, {
+            ...pluginState,
+            clickedCell: {
+              node: clickedCell,
+              pos,
+              start: pos + 1,
+            },
+          }),
+        );
+      }
+    }
   };
 
   handleChange = value => {

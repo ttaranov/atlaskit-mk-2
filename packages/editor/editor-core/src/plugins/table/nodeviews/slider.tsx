@@ -23,7 +23,7 @@ export function sliderNodeViewFactory(portalProviderAPI: PortalProviderAPI) {
       view,
       getPos,
       portalProviderAPI,
-      undefined,
+      { node, view, getPos },
       Slider,
     ).init();
 }
