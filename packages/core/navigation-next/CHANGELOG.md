@@ -1,5 +1,8 @@
 # @atlaskit/navigation-next
 
+## 3.7.3
+- [patch] LayoutManagerWithViewController now will pass Collapse Listeners props to LayoutManager [881ba31](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/881ba31)
+
 ## 3.7.2
 - [patch] Fixing multiple skeleton load states, rendering product and container skeletons [68e49a1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/68e49a1)
 
