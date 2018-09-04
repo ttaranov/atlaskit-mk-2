@@ -5,6 +5,7 @@ import { EditorView } from 'prosemirror-view';
 import { MediaSingle } from '@atlaskit/editor-common';
 import { MediaNodeProps } from './media';
 import { stateKey, MediaPluginState } from '../pm-plugins/main';
+import ResizableMediaSingle from '../ui/ResizableMediaSingle';
 
 const DEFAULT_WIDTH = 250;
 const DEFAULT_HEIGHT = 200;
@@ -13,6 +14,7 @@ export interface MediaSingleNodeProps {
   node: PMNode;
   view: EditorView;
   width: number;
+  isResizable?: boolean;
 }
 
 export interface MediaSingleNodeState {
@@ -116,8 +118,12 @@ export default class MediaSingleNode extends Component<
       }
     }
 
+    const MediaSingleComponent = this.props.isResizable
+      ? ResizableMediaSingle
+      : MediaSingle;
+
     return (
-      <MediaSingle
+      <MediaSingleComponent
         layout={layout}
         width={width}
         height={height}
@@ -136,7 +142,7 @@ export default class MediaSingleNode extends Component<
             onExternalImageLoaded: this.onExternalImageLoaded,
           } as MediaNodeProps,
         )}
-      </MediaSingle>
+      </MediaSingleComponent>
     );
   }
 }

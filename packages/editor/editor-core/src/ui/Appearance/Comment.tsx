@@ -117,6 +117,7 @@ export default class Editor extends React.Component<
   static displayName = 'CommentEditorAppearance';
 
   private appearance: EditorAppearance = 'comment';
+  private containerElement: HTMLElement | undefined;
 
   private handleSave = () => {
     if (this.props.editorView && this.props.onSave) {
@@ -174,7 +175,10 @@ export default class Editor extends React.Component<
             </MainToolbarCustomComponentsSlot>
           </MainToolbar>
           <ClickAreaBlock editorView={editorView}>
-            <ContentArea className="ak-editor-content-area">
+            <ContentArea
+              className="ak-editor-content-area"
+              innerRef={ref => (this.containerElement = ref)}
+            >
               {customContentComponents}
               <PluginSlot
                 editorView={editorView}
@@ -186,6 +190,7 @@ export default class Editor extends React.Component<
                 popupsMountPoint={popupsMountPoint}
                 popupsBoundariesElement={popupsBoundariesElement}
                 popupsScrollableElement={popupsScrollableElement}
+                containerElement={editorDOMElement}
                 disabled={!!disabled}
               />
               {editorDOMElement}
