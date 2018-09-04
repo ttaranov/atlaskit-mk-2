@@ -4,7 +4,6 @@ import {
   PluginKey,
   Transaction,
   Selection,
-  TextSelection,
 } from 'prosemirror-state';
 import { Node as PMNode, Fragment } from 'prosemirror-model';
 import { EditorView, DecorationSet, Decoration } from 'prosemirror-view';
@@ -19,6 +18,7 @@ import {
   PluginConfig,
   TableColumnTypesPluginState as PluginState,
 } from '../types';
+import { ReactNodeView } from '../../../nodeviews';
 
 import { Dispatch } from '../../../event-dispatcher';
 import { EventDispatcher } from '../../../event-dispatcher';
@@ -26,6 +26,8 @@ import { PortalProviderAPI } from '../../../ui/PortalProvider';
 import { Command } from '../../../types';
 import { pluginKey as tablePluginKey } from './main';
 import TableHeaderView from '../nodeviews/tableHeader';
+import CheckboxView from '../nodeviews/checkbox';
+
 import { sliderNodeViewFactory } from '../nodeviews/slider';
 
 export const pluginKey = new PluginKey('tableColumnTypesPlugin');
@@ -103,33 +105,7 @@ export const createColumnTypesPlugin = (
 
       nodeViews: {
         slider: sliderNodeViewFactory(portalProviderAPI),
-        checkbox: (node, view, getPos: () => number) => {
-          const dom = document.createElement('input');
-          dom.type = 'checkbox';
-          dom.checked = node.attrs.checked;
-
-          dom.onclick = e => {
-            const pos = getPos();
-
-            view.dispatch(
-              view.state.tr.setNodeMarkup(
-                pos,
-                node.type,
-                {
-                  ...node.attrs,
-                  checked: !node.attrs.checked,
-                },
-                node.marks,
-              ),
-            );
-          };
-          return {
-            dom,
-            stopEvent: () => {
-              return true;
-            },
-          };
-        },
+        checkbox: ReactNodeView.fromComponent(CheckboxView, portalProviderAPI),
         tableHeader: (node: PMNode, view: EditorView, getPos: () => number) => {
           return new TableHeaderView({
             node,

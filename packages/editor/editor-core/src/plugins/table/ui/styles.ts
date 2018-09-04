@@ -340,6 +340,10 @@ export const tableStyles = css`
       td[celltype='link'],
       td[celltype='checkbox'] {
         cursor: pointer;
+        caret-color: transparent;
+      }
+      td[celltype='checkbox'] {
+        text-align: center;
       }
 
       td[celltype='number'],
