@@ -143,24 +143,22 @@ export const createColumnTypesPlugin = (
         )
       ) {
         const summary = calculateSummary(table.node);
-
         let { tr } = newState;
-        let index = summary.length - 1;
         const createContent = maybeCreateText(newState.schema);
 
         const cells = getCellsInRow(table.node.childCount - 1)(tr.selection)!;
-        cells.forEach((cell, i) => {
-          const ret = summary[index--].value;
+        for (let i = cells.length - 1; i >= 0; i--) {
+          const cell = cells[i];
+          const ret = summary[i].value;
           const content = createContent(
-            // Handle average
             ret && ret.value ? ret.value / ret.count : ret,
           );
-          tr = tr.replaceWith(
-            tr.mapping.map(cell.start),
-            tr.mapping.map(cell.start + cell.node.nodeSize),
-            content,
+          const newCell = cell.node.type.create(
+            cell.node.attrs,
+            newState.schema.nodes.paragraph.create({}, content),
           );
-        });
+          tr = tr.replaceWith(cell.pos, cell.pos + cell.node.nodeSize, newCell);
+        }
 
         return tr;
       }
