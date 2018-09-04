@@ -168,22 +168,27 @@ export default class ColumnTypesMenu extends Component<Props> {
 
     if (columnIndex !== null) {
       const lastRowIndex = table.node.childCount - 1;
-      let rowIndex = 0;
+      let { tr } = editorView.state;
 
-      dispatch(
-        forEachCellInColumn(columnIndex, (cell, tr) => {
-          if (
-            table.node.attrs.isSummaryRowEnabled &&
-            rowIndex === lastRowIndex
-          ) {
-            attrs = { cellType: 'summary' };
-          } else {
-            attrs = { cellType: item.value.name };
-          }
-          rowIndex++;
-          return setCellAttrs(cell, attrs)(tr);
-        })(editorView.state.tr),
-      );
+      // update attrs
+      let cells = getCellsInColumn(columnIndex)(tr.selection)!;
+      cells.forEach((cell, rowIndex) => {
+        if (table.node.attrs.isSummaryRowEnabled && rowIndex === lastRowIndex) {
+          attrs = { cellType: 'summary' };
+        } else {
+          attrs = { cellType: item.value.name };
+        }
+        const newCell = cell.node.type.create(
+          { ...cell.node.attrs, ...attrs },
+          cell.node.content,
+        );
+        tr = tr.replaceWith(
+          tr.mapping.map(cell.pos),
+          tr.mapping.map(cell.pos + cell.node.nodeSize),
+          newCell,
+        );
+      });
+      dispatch(tr);
 
       const nodemap = {
         slider: slider,
@@ -191,13 +196,11 @@ export default class ColumnTypesMenu extends Component<Props> {
         decision: decisionItem,
       };
 
-      let { tr } = editorView.state;
-
       // filldown for node type
       const cellType = item.value.name;
       const { paragraph, decisionList } = editorView.state.schema.nodes;
-
-      const cells = getCellsInColumn(columnIndex)(tr.selection)!;
+      tr = editorView.state.tr;
+      cells = getCellsInColumn(columnIndex)(tr.selection)!;
       cells.forEach(cell => {
         if (
           cell.node.type !== tableCell ||
@@ -239,6 +242,10 @@ export default class ColumnTypesMenu extends Component<Props> {
           newCell,
         );
       });
+      dispatch(tr);
+
+      tr = editorView.state.tr;
+      cells = getCellsInColumn(columnIndex)(tr.selection)!;
       if (cells[1]) {
         const { start } = cells[1];
         const newSelection = Selection.findFrom(
