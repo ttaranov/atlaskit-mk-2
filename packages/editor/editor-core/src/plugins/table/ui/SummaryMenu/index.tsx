@@ -138,7 +138,7 @@ export default class SummaryMenu extends Component<Props, State> {
         break;
     }
 
-    return items.length ? [{ items }] : null;
+    return items.length > 1 ? [{ items }] : null;
   };
 
   private toggleOpen = () => {
