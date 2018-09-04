@@ -122,95 +122,75 @@ const light = ({
   isHover,
   isSelected,
   spacing,
-}: ItemPresentationProps) => ({
-  container: {
-    itemBase: {
-      ...baseStyles.itemBase,
-      ...layoutStyles[spacing].itemBase,
-      backgroundColor: (() => {
-        if (isActive) return colors.B50;
-        if (isSelected || isHover) return colors.N30;
-        return colors.N20;
-      })(),
-    },
-    beforeWrapper: {
-      ...baseStyles.beforeWrapper,
-      ...layoutStyles[spacing].beforeWrapper,
-      color: isSelected ? colors.B400 : colors.N500,
-      fill: (() => {
-        if (isActive) return colors.B50;
-        if (isSelected || isHover) return colors.N30;
-        return colors.N20;
-      })(),
-    },
-    contentWrapper: baseStyles.contentWrapper,
-    textWrapper: {
-      ...baseStyles.textWrapper,
-      color: isSelected ? colors.B400 : colors.N500,
-    },
-    subTextWrapper: {
-      ...baseStyles.subTextWrapper,
-      ...layoutStyles[spacing].subTextWrapper,
-      color: colors.N200,
-    },
-    afterWrapper: {
-      ...baseStyles.afterWrapper,
-      ...layoutStyles[spacing].afterWrapper,
-      fill: (() => {
-        if (isActive) return colors.B50;
-        if (isSelected || isHover) return colors.N30;
-        return colors.N20;
-      })(),
-    },
-  },
-  product: {
-    itemBase: {
-      ...baseStyles.itemBase,
-      ...layoutStyles[spacing].itemBase,
-      backgroundColor: (() => {
-        if (isActive) return colors.B200;
-        if (isSelected) return lightRootSelectedBackground;
-        if (isHover) return lightRootHoverBackground;
-        return colors.B500;
-      })(),
-    },
-    beforeWrapper: {
-      ...baseStyles.beforeWrapper,
-      ...layoutStyles[spacing].beforeWrapper,
-      fill: (() => {
-        if (isActive) return colors.B200;
-        if (isSelected) return lightRootSelectedBackground;
-        if (isHover) return lightRootHoverBackground;
-        return colors.B500;
-      })(),
-    },
-    contentWrapper: baseStyles.contentWrapper,
-    textWrapper: {
-      ...baseStyles.textWrapper,
-      color: colors.B50,
-    },
-    subTextWrapper: {
-      ...baseStyles.subTextWrapper,
-      ...layoutStyles[spacing].subTextWrapper,
-      color: colors.B75,
-    },
-    afterWrapper: {
-      ...baseStyles.afterWrapper,
-      ...layoutStyles[spacing].afterWrapper,
-      fill: (() => {
-        if (isActive) return colors.B200;
-        if (isSelected) return lightRootSelectedBackground;
-        if (isHover) return lightRootHoverBackground;
-        return colors.B500;
-      })(),
-    },
-  },
-});
+}: ItemPresentationProps) => {
+  const containerTextColor = isSelected ? colors.B400 : colors.N500;
+  const containerBackgroundColor = (() => {
+    if (isActive) return colors.B50;
+    if (isSelected || isHover) return colors.N30;
+    return colors.N20;
+  })();
+  const productBackgroundColor = (() => {
+    if (isActive) return colors.B200;
+    if (isSelected) return lightRootSelectedBackground;
+    if (isHover) return lightRootHoverBackground;
+    return colors.B500;
+  })();
 
-const darkContainerTextColor = ({ isActive, isSelected }) => {
-  if (isActive) return colors.B100;
-  if (isSelected) return colors.DN900;
-  return colors.DN400;
+  return {
+    container: {
+      itemBase: {
+        ...baseStyles.itemBase,
+        ...layoutStyles[spacing].itemBase,
+        backgroundColor: containerBackgroundColor,
+        fill: containerBackgroundColor,
+      },
+      beforeWrapper: {
+        ...baseStyles.beforeWrapper,
+        ...layoutStyles[spacing].beforeWrapper,
+        color: containerTextColor,
+      },
+      contentWrapper: baseStyles.contentWrapper,
+      textWrapper: {
+        ...baseStyles.textWrapper,
+        color: containerTextColor,
+      },
+      subTextWrapper: {
+        ...baseStyles.subTextWrapper,
+        ...layoutStyles[spacing].subTextWrapper,
+        color: colors.N200,
+      },
+      afterWrapper: {
+        ...baseStyles.afterWrapper,
+        ...layoutStyles[spacing].afterWrapper,
+      },
+    },
+    product: {
+      itemBase: {
+        ...baseStyles.itemBase,
+        ...layoutStyles[spacing].itemBase,
+        backgroundColor: productBackgroundColor,
+        fill: productBackgroundColor,
+      },
+      beforeWrapper: {
+        ...baseStyles.beforeWrapper,
+        ...layoutStyles[spacing].beforeWrapper,
+      },
+      contentWrapper: baseStyles.contentWrapper,
+      textWrapper: {
+        ...baseStyles.textWrapper,
+        color: colors.B50,
+      },
+      subTextWrapper: {
+        ...baseStyles.subTextWrapper,
+        ...layoutStyles[spacing].subTextWrapper,
+        color: colors.B75,
+      },
+      afterWrapper: {
+        ...baseStyles.afterWrapper,
+        ...layoutStyles[spacing].afterWrapper,
+      },
+    },
+  };
 };
 
 // Dark theme
@@ -219,97 +199,86 @@ const dark = ({
   isHover,
   isSelected,
   spacing,
-}: ItemPresentationProps) => ({
-  container: {
-    itemBase: {
-      ...baseStyles.itemBase,
-      ...layoutStyles[spacing].itemBase,
-      backgroundColor: (() => {
-        if (isActive) return darkActiveSelectedBackground;
-        if (isSelected) return darkActiveSelectedBackground;
-        if (isHover) return darkHoverBackground;
-        return colors.DN20;
-      })(),
+}: ItemPresentationProps) => {
+  const containerTextColor = (() => {
+    if (isActive) return colors.B100;
+    if (isSelected) return colors.DN900;
+    return colors.DN400;
+  })();
+  const containerBackgroundColor = (() => {
+    if (isActive) return darkActiveSelectedBackground;
+    if (isSelected) return darkActiveSelectedBackground;
+    if (isHover) return darkHoverBackground;
+    return colors.DN20;
+  })();
+  const productTextColor = (() => {
+    if (isActive) return colors.B100;
+    if (isSelected) return colors.DN900;
+    return colors.DN400;
+  })();
+  const productBackgroundColor = (() => {
+    if (isActive) return darkActiveSelectedBackground;
+    if (isSelected) return darkActiveSelectedBackground;
+    if (isHover) return darkHoverBackground;
+    return colors.DN0;
+  })();
+
+  return {
+    container: {
+      itemBase: {
+        ...baseStyles.itemBase,
+        ...layoutStyles[spacing].itemBase,
+        backgroundColor: containerBackgroundColor,
+        fill: containerBackgroundColor,
+      },
+      beforeWrapper: {
+        ...baseStyles.beforeWrapper,
+        ...layoutStyles[spacing].beforeWrapper,
+        color: containerTextColor,
+      },
+      contentWrapper: baseStyles.contentWrapper,
+      textWrapper: {
+        ...baseStyles.textWrapper,
+        color: containerTextColor,
+      },
+      subTextWrapper: {
+        ...baseStyles.subTextWrapper,
+        ...layoutStyles[spacing].subTextWrapper,
+        color: colors.DN100,
+      },
+      afterWrapper: {
+        ...baseStyles.afterWrapper,
+        ...layoutStyles[spacing].afterWrapper,
+      },
     },
-    beforeWrapper: {
-      ...baseStyles.beforeWrapper,
-      ...layoutStyles[spacing].beforeWrapper,
-      color: darkContainerTextColor({ isActive, isSelected }),
-      fill: (() => {
-        if (isActive) return darkActiveSelectedBackground;
-        if (isSelected) return darkActiveSelectedBackground;
-        if (isHover) return darkHoverBackground;
-        return colors.DN20;
-      })(),
+    product: {
+      itemBase: {
+        ...baseStyles.itemBase,
+        ...layoutStyles[spacing].itemBase,
+        backgroundColor: productBackgroundColor,
+        fill: productBackgroundColor,
+      },
+      beforeWrapper: {
+        ...baseStyles.beforeWrapper,
+        ...layoutStyles[spacing].beforeWrapper,
+      },
+      contentWrapper: baseStyles.contentWrapper,
+      textWrapper: {
+        ...baseStyles.textWrapper,
+        color: productTextColor,
+      },
+      subTextWrapper: {
+        ...baseStyles.subTextWrapper,
+        ...layoutStyles[spacing].subTextWrapper,
+        color: colors.DN100,
+      },
+      afterWrapper: {
+        ...baseStyles.afterWrapper,
+        ...layoutStyles[spacing].afterWrapper,
+      },
     },
-    contentWrapper: baseStyles.contentWrapper,
-    textWrapper: {
-      ...baseStyles.textWrapper,
-      color: darkContainerTextColor({ isActive, isSelected }),
-    },
-    subTextWrapper: {
-      ...baseStyles.subTextWrapper,
-      ...layoutStyles[spacing].subTextWrapper,
-      color: colors.DN100,
-    },
-    afterWrapper: {
-      ...baseStyles.afterWrapper,
-      ...layoutStyles[spacing].afterWrapper,
-      fill: (() => {
-        if (isActive) return darkActiveSelectedBackground;
-        if (isSelected) return darkActiveSelectedBackground;
-        if (isHover) return darkHoverBackground;
-        return colors.DN20;
-      })(),
-    },
-  },
-  product: {
-    itemBase: {
-      ...baseStyles.itemBase,
-      ...layoutStyles[spacing].itemBase,
-      backgroundColor: (() => {
-        if (isActive) return darkActiveSelectedBackground;
-        if (isSelected) return darkActiveSelectedBackground;
-        if (isHover) return darkHoverBackground;
-        return colors.DN0;
-      })(),
-    },
-    beforeWrapper: {
-      ...baseStyles.beforeWrapper,
-      ...layoutStyles[spacing].beforeWrapper,
-      fill: (() => {
-        if (isActive) return darkActiveSelectedBackground;
-        if (isSelected) return darkActiveSelectedBackground;
-        if (isHover) return darkHoverBackground;
-        return colors.DN0;
-      })(),
-    },
-    contentWrapper: baseStyles.contentWrapper,
-    textWrapper: {
-      ...baseStyles.textWrapper,
-      color: (() => {
-        if (isActive) return colors.B100;
-        if (isSelected) return colors.DN900;
-        return colors.DN400;
-      })(),
-    },
-    subTextWrapper: {
-      ...baseStyles.subTextWrapper,
-      ...layoutStyles[spacing].subTextWrapper,
-      color: colors.DN100,
-    },
-    afterWrapper: {
-      ...baseStyles.afterWrapper,
-      ...layoutStyles[spacing].afterWrapper,
-      fill: (() => {
-        if (isActive) return darkActiveSelectedBackground;
-        if (isSelected) return darkActiveSelectedBackground;
-        if (isHover) return darkHoverBackground;
-        return colors.DN0;
-      })(),
-    },
-  },
-});
+  };
+};
 
 // Settings theme
 const settings = ({
@@ -317,86 +286,75 @@ const settings = ({
   isHover,
   isSelected,
   spacing,
-}: ItemPresentationProps) => ({
-  container: {
-    itemBase: {
-      ...baseStyles.itemBase,
-      ...layoutStyles[spacing].itemBase,
-      backgroundColor: (() => {
-        if (isActive) return settingsActiveBackground;
-        if (isSelected || isHover) return colors.N700A;
-        return colors.N700;
-      })(),
+}: ItemPresentationProps) => {
+  const containerTextColor = isActive ? colors.B100 : colors.N0;
+  const containerBackgroundColor = (() => {
+    if (isActive) return settingsActiveBackground;
+    if (isSelected || isHover) return colors.N700A;
+    return colors.N700;
+  })();
+  const productTextColor = isActive ? colors.B100 : colors.N0;
+  const productBackgroundColor = (() => {
+    if (isActive) return settingsActiveBackground;
+    if (isSelected || isHover) return colors.N700A;
+    return colors.N800;
+  })();
+
+  return {
+    container: {
+      itemBase: {
+        ...baseStyles.itemBase,
+        ...layoutStyles[spacing].itemBase,
+        backgroundColor: containerBackgroundColor,
+        fill: containerBackgroundColor,
+      },
+      beforeWrapper: {
+        ...baseStyles.beforeWrapper,
+        ...layoutStyles[spacing].beforeWrapper,
+      },
+      contentWrapper: baseStyles.contentWrapper,
+      textWrapper: {
+        ...baseStyles.textWrapper,
+        color: containerTextColor,
+      },
+      subTextWrapper: {
+        ...baseStyles.subTextWrapper,
+        ...layoutStyles[spacing].subTextWrapper,
+        color: colors.N70,
+      },
+      afterWrapper: {
+        ...baseStyles.afterWrapper,
+        ...layoutStyles[spacing].afterWrapper,
+      },
     },
-    beforeWrapper: {
-      ...baseStyles.beforeWrapper,
-      ...layoutStyles[spacing].beforeWrapper,
-      fill: (() => {
-        if (isActive) return settingsActiveBackground;
-        if (isSelected || isHover) return colors.N700A;
-        return colors.N700;
-      })(),
+    product: {
+      itemBase: {
+        ...baseStyles.itemBase,
+        ...layoutStyles[spacing].itemBase,
+        backgroundColor: productBackgroundColor,
+        fill: productBackgroundColor,
+      },
+      beforeWrapper: {
+        ...baseStyles.beforeWrapper,
+        ...layoutStyles[spacing].beforeWrapper,
+      },
+      contentWrapper: baseStyles.contentWrapper,
+      textWrapper: {
+        ...baseStyles.textWrapper,
+        color: productTextColor,
+      },
+      subTextWrapper: {
+        ...baseStyles.subTextWrapper,
+        ...layoutStyles[spacing].subTextWrapper,
+        color: colors.N70,
+      },
+      afterWrapper: {
+        ...baseStyles.afterWrapper,
+        ...layoutStyles[spacing].afterWrapper,
+      },
     },
-    contentWrapper: baseStyles.contentWrapper,
-    textWrapper: {
-      ...baseStyles.textWrapper,
-      color: isActive ? colors.B100 : colors.N0,
-    },
-    subTextWrapper: {
-      ...baseStyles.subTextWrapper,
-      ...layoutStyles[spacing].subTextWrapper,
-      color: colors.N70,
-    },
-    afterWrapper: {
-      ...baseStyles.afterWrapper,
-      ...layoutStyles[spacing].afterWrapper,
-      fill: (() => {
-        if (isActive) return settingsActiveBackground;
-        if (isSelected || isHover) return colors.N700A;
-        return colors.N700;
-      })(),
-    },
-  },
-  product: {
-    itemBase: {
-      ...baseStyles.itemBase,
-      ...layoutStyles[spacing].itemBase,
-      backgroundColor: (() => {
-        if (isActive) return settingsActiveBackground;
-        if (isSelected || isHover) return colors.N700A;
-        return colors.N800;
-      })(),
-    },
-    beforeWrapper: {
-      ...baseStyles.beforeWrapper,
-      ...layoutStyles[spacing].beforeWrapper,
-      fill: (() => {
-        if (isActive) return settingsActiveBackground;
-        if (isSelected || isHover) return colors.N700A;
-        return colors.N800;
-      })(),
-    },
-    contentWrapper: baseStyles.contentWrapper,
-    textWrapper: {
-      ...baseStyles.textWrapper,
-      color: isActive ? colors.B100 : colors.N0,
-    },
-    subTextWrapper: {
-      ...baseStyles.subTextWrapper,
-      ...layoutStyles[spacing].subTextWrapper,
-      color: colors.N70,
-    },
-    afterWrapper: {
-      ...baseStyles.afterWrapper,
-      ...layoutStyles[spacing].afterWrapper,
-      fill: (() => {
-        if (isActive) return settingsActiveBackground;
-        if (isSelected || isHover) return colors.N700A;
-        return colors.N800;
-      })(),
-    },
-  },
-});
+  };
+};
 
 const themes: ThemedContentNavigationComponentStyles<ItemPresentationProps> = {
   dark,
