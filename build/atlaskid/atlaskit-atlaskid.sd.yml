@@ -5,10 +5,13 @@ network:
 scaling:
   min: 1
   max: 1
+loadBalancer:
+  type: ALB
+  single: true
 links:
   binary:
     name: docker.atl-paas.net/atlaskit/atlaskid
-    tag: v23
+    tag: v24
     type: docker
   healthcheck:
     uri: /
@@ -16,4 +19,4 @@ links:
     url: 'https://bitbucket.org/atlassian/atlaskit-mk-2/'
 notifications:
   email: lbatchelor@atlassian.com
-organization: Product Fabric†
+organization: Product Fabric
