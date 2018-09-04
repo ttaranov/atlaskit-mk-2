@@ -10,6 +10,7 @@ import ChartTableIcon from '@atlaskit/icon/glyph/editor/chart-table';
 import TimelineIcon from '@atlaskit/icon/glyph/editor/timeline';
 import ChartDonutIcon from '@atlaskit/icon/glyph/editor/chart-donut';
 import GraphBarIcon from '@atlaskit/icon/glyph/graph-bar';
+import { closestElement } from '../../utils';
 
 import { isTimelineAvailable, isNumberChartAvailable } from './ui/Charts/utils';
 import { Command } from '../../types';
@@ -79,7 +80,16 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
 
     return {
       title: 'Table floating controls',
-      getDomRef: () => tableState.tableRef!,
+      getDomRef: () => {
+        if (viewMode === 'table') {
+          return tableState.tableRef;
+        } else {
+          return closestElement(
+            tableState.tableRef!,
+            '.table-parent-container',
+          )!;
+        }
+      },
       nodeType: state.schema.nodes.table,
       items: [
         {
