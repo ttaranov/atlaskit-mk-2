@@ -21,10 +21,25 @@ describe('ADF => WikiMarkup - Media', () => {
     expect(transformer.encode(node)).toMatchSnapshot();
   });
 
-  test('should convert mediaSingle node', () => {
+  test('should convert mediaSingle node with no width and height to thumbnail', () => {
     const node = doc(
       mediaSingle()(
         media({ id: 'file1.txt', type: 'file', collection: 'tmp' })(),
+      ),
+    )(defaultSchema);
+    expect(transformer.encode(node)).toMatchSnapshot();
+  });
+
+  test('should convert mediaSingle node with width and height', () => {
+    const node = doc(
+      mediaSingle()(
+        media({
+          id: 'file1.txt',
+          type: 'file',
+          collection: 'tmp',
+          width: 100,
+          height: 100,
+        })(),
       ),
     )(defaultSchema);
     expect(transformer.encode(node)).toMatchSnapshot();
