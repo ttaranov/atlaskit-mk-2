@@ -285,12 +285,13 @@ export const insertRow = (row: number): Command => (
   const clonePreviousRow =
     (headerRowEnabled && row > 1) || (!headerRowEnabled && row >= 0);
 
-  const tr = addRowAt(row, clonePreviousRow)(state.tr);
+  let tr = addRowAt(row, clonePreviousRow)(state.tr);
 
   const table = findTable(tr.selection)!;
   // move the cursor to the newly created row
   const pos = TableMap.get(table.node).positionAt(row, 0, table.node);
-  dispatch(tr.setSelection(Selection.near(tr.doc.resolve(table.start + pos))));
+  tr = tr.setSelection(Selection.near(tr.doc.resolve(table.start + pos)));
+  dispatch(ensureCellTypes(row, state.schema)(tr));
   analyticsService.trackEvent('atlassian.editor.format.table.row.button');
   return true;
 };
@@ -883,24 +884,22 @@ export const ensureCellTypes = (rowIndex: number, schema: Schema) => (
     const cell = newCells[i];
     const { cellType } = cells![i].node.attrs;
 
-    tr = tr.setNodeMarkup(
-      cell.pos - 1,
-      cell.node.type,
-      Object.assign({}, cell.node.attrs, {
-        cellType,
-      }),
-    );
-
     // apply filldown
     if (Object.keys(nodemap).indexOf(cells![i].node.attrs.cellType) !== -1) {
-      let node;
+      let newCell;
       if (cellType === 'decision') {
-        node = schema.nodes.decisionList.createAndFill();
+        newCell = cell.node.type.create(
+          { ...cell.node.attrs, cellType },
+          schema.nodes.decisionList.createAndFill() as PMNode,
+        );
       } else {
-        node = nodemap[cellType].createChecked();
+        newCell = cell.node.type.create(
+          { ...cell.node.attrs, cellType },
+          schema.nodes.paragraph.create({}, nodemap[cellType].createChecked()),
+        );
       }
 
-      tr = tr.insert(cell.pos + 1, node);
+      tr = tr.replaceWith(cell.pos, cell.pos + cell.node.nodeSize, newCell);
     }
   }
 
