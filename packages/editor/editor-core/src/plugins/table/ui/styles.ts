@@ -343,7 +343,6 @@ export const tableStyles = css`
         cursor: pointer;
         caret-color: transparent;
       }
-      td[celltype='emoji'],
       td[celltype='checkbox'] {
         text-align: center;
       }
