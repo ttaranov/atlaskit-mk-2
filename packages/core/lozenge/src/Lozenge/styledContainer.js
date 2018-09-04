@@ -15,14 +15,11 @@ export default styled.span`
   border-radius: ${akBorderRadius};
   box-sizing: border-box;
 
-  display: inline-flex;
+  display: inline-block;
   font-size: 11px;
   font-weight: 700;
   line-height: 1;
-  max-width: ${props =>
-    typeof props.maxWidth === 'number'
-      ? `${props.maxWidth}px`
-      : props.maxWidth};
+  max-width: 100%;
   padding: 2px ${HORIZONTAL_SPACING} 3px ${HORIZONTAL_SPACING};
   text-transform: uppercase;
   vertical-align: baseline;
