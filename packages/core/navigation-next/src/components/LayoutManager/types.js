@@ -21,7 +21,7 @@ export type CollapseListeners = {
   onCollapseEnd?: CollapseListener,
 };
 
-export type ConnectedLayoutManagerProps = {
+export type ConnectedLayoutManagerProps = CollapseListeners & {
   /** Your page content. */
   children: Node,
   /** A component which will render the container navigation layer. */
@@ -32,8 +32,6 @@ export type ConnectedLayoutManagerProps = {
   productNavigation: ComponentType<{}>,
   /** Displayed when the user's mouse is over the collapse/expand toggle. */
   collapseToggleTooltipContent?: CollapseToggleTooltipContent,
-  /** Listeners for collapsing and expanding navigation bar. */
-  ...CollapseListeners,
 };
 
 export type LayoutManagerProps = ConnectedLayoutManagerProps & {

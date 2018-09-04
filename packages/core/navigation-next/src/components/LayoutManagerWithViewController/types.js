@@ -9,14 +9,13 @@ import type { CollapseListeners } from '../LayoutManager/types';
 
 import type { ViewControllerState } from '../../view-controller/types';
 
-export type LayoutManagerWithViewControllerProps = {
+export type LayoutManagerWithViewControllerProps = CollapseListeners & {
   children: Node,
   customComponents: { [string]: ComponentType<*> },
   globalNavigation: ComponentType<{}>,
   navigationUIController: UIController,
   navigationViewController: ViewController,
   firstSkeletonToRender?: 'product' | 'container',
-  ...CollapseListeners,
 };
 
 export type LayoutManagerWithViewControllerState = {
