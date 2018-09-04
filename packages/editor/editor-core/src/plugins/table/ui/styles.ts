@@ -346,6 +346,9 @@ export const tableStyles = css`
       td[celltype='checkbox'] {
         text-align: center;
       }
+      td[celltype='emoji'],
+        text-align: right;
+      }
 
       td[celltype='number'],
       td[celltype='currency'] {
