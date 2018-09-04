@@ -11,14 +11,17 @@ import { TableMap } from 'prosemirror-tables';
 import {
   findTable,
   isCellSelection,
+  forEachCellInRow,
   findParentNodeOfTypeClosestToPos,
 } from 'prosemirror-utils';
+
 import {
   Cell,
   PluginConfig,
   TableColumnTypesPluginState as PluginState,
 } from '../types';
 import { ReactNodeView } from '../../../nodeviews';
+import { calculateSummary, maybeCreateText } from '../utils';
 
 import { Dispatch } from '../../../event-dispatcher';
 import { EventDispatcher } from '../../../event-dispatcher';
@@ -117,79 +120,52 @@ export const createColumnTypesPlugin = (
       },
     },
 
-    // appendTransaction: (
-    //   transactions: Transaction[],
-    //   oldState: EditorState,
-    //   newState: EditorState,
-    // ) => {
-    //   const table = findTable(newState.selection);
-    //   if (
-    //     table &&
-    //     transactions.some(transaction => transaction.docChanged) &&
-    //     !transactions.some(transaction => transaction.getMeta(pluginKey))
-    //   ) {
-    //     const map = TableMap.get(table.node);
-    //     const { pos } = findTable(newState.selection)!;
-    //     const { tr } = newState;
-    //     const { paragraph, tableHeader } = newState.schema.nodes;
-    //     let updated = false;
+    // update summary cells on each table modification
+    appendTransaction: (
+      transactions: Transaction[],
+      oldState: EditorState,
+      newState: EditorState,
+    ) => {
+      const table = findTable(newState.selection);
+      if (
+        table &&
+        table.node.attrs.isSummaryRowEnabled &&
+        transactions.some(transaction => transaction.docChanged) &&
+        // ignore the transaction that enables summary row (otherwise it goes into infinite loop)
+        !transactions.some(transaction => {
+          const meta = transaction.getMeta(pluginKey);
+          return meta && meta.addedSummaryRow;
+        }) &&
+        // TODO: Need to find a better way to stop infinite loop
+        !transactions.every(transaction =>
+          transaction.getMeta('appendedTransaction'),
+        )
+      ) {
+        const summary = calculateSummary(table.node);
 
-    //     for (let i = 0; i < table.node.childCount; i++) {
-    //       const row = table.node.child(i);
+        let { tr } = newState;
+        let index = summary.length - 1;
+        const createContent = maybeCreateText(newState.schema);
 
-    //       for (let j = row.childCount - 1; j >= 0; j--){
-    //         const cell = row.child(j);
-    //         const { cellType } = cell.attrs;
-    //         if (cell.type === tableHeader || (cellType !== 'number' && cellType !== 'currency')) {
-    //           continue;
-    //         }
+        forEachCellInRow(table.node.childCount - 1, (cell, tr) => {
+          const ret = summary[index--].value;
+          const content = createContent(
+            // Handle average
+            ret && ret.value ? ret.value / ret.count : ret,
+          );
+          const paragraph = cell.node.child(0);
+          return content
+            ? tr.replaceWith(
+                cell.start,
+                cell.start + paragraph.nodeSize - 1,
+                content,
+              )
+            : tr;
+        })(tr);
 
-    //         const from = tr.mapping.map(pos + map.map[i * map.width + j]);
-    //         const oldContent = cell.textContent;
-    //         const num = makeNumber(oldContent, cellType === 'currency');
-
-    //         if (oldContent.endsWith('.')) {
-    //           continue;
-    //         }
-
-    //         if (num) {
-    //           const numString = num.toLocaleString();
-
-    //           if (
-    //             (num && numString !== cell.textContent) ||
-    //             !oldContent.endsWith('.')
-    //           ) {
-    //             const sel = tr.selection;
-    //             const newCell = cell.type.create(
-    //               cell.attrs,
-    //               paragraph.create({}, newState.schema.text(numString)),
-    //             );
-
-    //             tr.replaceWith(
-    //               from,
-    //               from + cell.nodeSize,
-    //               newCell,
-    //             );
-
-    //             if (sel.from > from && sel.from < from + cell.nodeSize) {
-    //               const diff = oldContent.length - numString.length;
-    //               tr.setSelection(
-    //                 new TextSelection(tr.doc.resolve(sel.to - diff)),
-    //               );
-    //             }
-
-    //             updated = true;
-    //           }
-    //         }
-    //       }
-
-    //     }
-
-    //     if (updated) {
-    //       return tr;
-    //     }
-    //   }
-    // },
+        return tr;
+      }
+    },
   });
 
 export const getPluginState = (state: EditorState) => {

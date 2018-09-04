@@ -15,13 +15,14 @@ import {
 } from '@atlaskit/editor-common';
 
 import EditorTextStyleIcon from '@atlaskit/icon/glyph/editor/text-style';
-import EditorTextColorIcon from '@atlaskit/icon/glyph/editor/text-color';
-import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import EditorMentionIcon from '@atlaskit/icon/glyph/editor/mention';
 import EditorTaskIcon from '@atlaskit/icon/glyph/editor/task';
 import EditorEmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
-import EditorHorizontalRuleIcon from '@atlaskit/icon/glyph/editor/horizontal-rule';
 import DecisionIcon from '@atlaskit/icon/glyph/editor/decision';
+import Date from '../../icons/Date';
+import Number from '../../icons/Number';
+import Slider from '../../icons/Slider';
+import Currency from '../../icons/Currency';
 
 import DropdownMenu from '../../../../ui/DropdownMenu';
 import withOuterListeners from '../../../../ui/with-outer-listeners';
@@ -102,19 +103,19 @@ export default class ColumnTypesMenu extends Component<Props> {
     items.push({
       content: 'Number',
       value: { name: 'number' },
-      elemBefore: <EditorTextColorIcon label="Number" />,
+      elemBefore: <Number label="Number" />,
     });
 
     items.push({
       content: 'Currency',
       value: { name: 'currency' },
-      elemBefore: <EditorTextColorIcon label="Currency" />,
+      elemBefore: <Currency label="Currency" />,
     });
 
     items.push({
       content: 'Date',
       value: { name: 'date' },
-      elemBefore: <CalendarIcon label="Date" />,
+      elemBefore: <Date label="Date" />,
     });
 
     items.push({
@@ -132,7 +133,7 @@ export default class ColumnTypesMenu extends Component<Props> {
     items.push({
       content: 'Slider',
       value: { name: 'slider' },
-      elemBefore: <EditorHorizontalRuleIcon label="Slider" />,
+      elemBefore: <Slider label="Slider" />,
     });
 
     items.push({

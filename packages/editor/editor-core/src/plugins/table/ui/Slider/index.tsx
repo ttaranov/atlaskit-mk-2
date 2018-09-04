@@ -65,6 +65,7 @@ export default class Slider extends React.PureComponent<Props, State> {
           onChange={this.handleChange}
           onChangeComplete={this.handleChangeComplete}
         />
+        <div className="slider__value">{value.toFixed(1)}</div>
       </div>
     );
   }

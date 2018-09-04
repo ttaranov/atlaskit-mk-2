@@ -4,17 +4,18 @@ import { EditorView, NodeView } from 'prosemirror-view';
 import Button from '@atlaskit/button';
 import ReactNodeView from '../../../nodeviews/ReactNodeView';
 import { PortalProviderAPI } from '../../../ui/PortalProvider';
+import { pluginKey } from '../pm-plugins/column-types';
+import { closestElement } from '../../../utils/';
 
 import EditorTextStyleIcon from '@atlaskit/icon/glyph/editor/text-style';
-import EditorTextColorIcon from '@atlaskit/icon/glyph/editor/text-color';
-import CalendarIcon from '@atlaskit/icon/glyph/calendar';
 import EditorMentionIcon from '@atlaskit/icon/glyph/editor/mention';
 import EditorTaskIcon from '@atlaskit/icon/glyph/editor/task';
 import EditorEmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
-import EditorHorizontalRuleIcon from '@atlaskit/icon/glyph/editor/horizontal-rule';
 import DecisionIcon from '@atlaskit/icon/glyph/editor/decision';
-import { pluginKey } from '../pm-plugins/column-types';
-import { closestElement } from '../../../utils/';
+import Date from '../icons/Date';
+import Number from '../icons/Number';
+import Slider from '../icons/Slider';
+import Currency from '../icons/Currency';
 
 export interface Props {
   node: PmNode;
@@ -45,13 +46,13 @@ export default class TableHeaderView extends ReactNodeView implements NodeView {
         icon = <EditorTextStyleIcon label="Normal text" />;
         break;
       case 'number':
-        icon = <EditorTextColorIcon label="Number" />;
+        icon = <Number label="Number" />;
         break;
       case 'currency':
-        icon = <EditorTextColorIcon label="Currency" />;
+        icon = <Currency label="Currency" />;
         break;
       case 'date':
-        icon = <CalendarIcon label="Date" />;
+        icon = <Date label="Date" />;
         break;
       case 'mention':
         icon = <EditorMentionIcon label="Person" />;
@@ -60,7 +61,7 @@ export default class TableHeaderView extends ReactNodeView implements NodeView {
         icon = <EditorTaskIcon label="Checkbox" />;
         break;
       case 'slider':
-        icon = <EditorHorizontalRuleIcon label="Slider" />;
+        icon = <Slider label="Slider" />;
         break;
       case 'emoji':
         icon = <EditorEmojiIcon label="Emoji" />;

@@ -7,6 +7,7 @@ import {
   akColorB300,
   akColorB75,
   akColorN20,
+  akColorN40,
   akColorN50,
   akColorR50,
   akColorR300,
@@ -371,17 +372,22 @@ export const tableStyles = css`
       td[celltype='summary'] {
         text-align: right;
         padding-right: 20px;
+        line-height: 1;
       }
 
       td[celltype='summary']:before {
         content: attr(summarytype);
         text-transform: uppercase;
         color: ${akColorN80};
+        font-size: 11px;
+        font-weight: 500px;
+        line-height: 1;
       }
     }
     /* Range Slider */
     .rangeslider {
-      margin: 20px 0;
+      flex: 1;
+      margin: 20px 20px 20px 0;
       position: relative;
       background: #e6e6e6;
       -ms-touch-action: none;
@@ -390,15 +396,11 @@ export const tableStyles = css`
     .rangeslider,
     .rangeslider .rangeslider__fill {
       display: block;
-      box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
     }
     .rangeslider .rangeslider__handle {
-      background: #fff;
-      border: 1px solid #ccc;
       cursor: pointer;
       display: inline-block;
       position: absolute;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), 0 -1px 3px rgba(0, 0, 0, 0.4);
     }
     .rangeslider .rangeslider__handle .rangeslider__active {
       opacity: 1;
@@ -429,14 +431,10 @@ export const tableStyles = css`
       width: 0;
       height: 0;
     }
-    .rangeslider-horizontal {
-      height: 12px;
-      border-radius: 10px;
-    }
     .rangeslider-horizontal .rangeslider__fill {
       height: 100%;
-      background-color: #7cb342;
-      border-radius: 10px;
+      background-color: ${akColorG300};
+      border-radius: 3px;
       top: 0;
     }
     .rangeslider-horizontal .rangeslider__handle {
@@ -445,18 +443,6 @@ export const tableStyles = css`
       border-radius: 30px;
       top: 50%;
       transform: translate3d(-50%, -50%, 0);
-    }
-    .rangeslider-horizontal .rangeslider__handle:after {
-      content: ' ';
-      position: absolute;
-      width: 16px;
-      height: 16px;
-      top: 6px;
-      left: 6px;
-      border-radius: 50%;
-      background-color: #dadada;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) inset,
-        0 -1px 3px rgba(0, 0, 0, 0.4) inset;
     }
     .rangeslider-horizontal .rangeslider__handle-tooltip {
       top: -55px;
@@ -548,39 +534,52 @@ export const tableStyles = css`
       top: 10px;
       transform: translate3d(-50%, 0, 0);
     }
-    .slider {
-      height: 0px;
-    }
     ul.rangeslider__labels {
       margin: 0;
     }
     .rangeslider-horizontal {
-      margin: 10px 0 0 0;
       height: 4px;
+      border-radius: 3px;
+      background: ${akColorN40};
     }
     .rangeslider-horizontal .rangeslider__handle {
-      width: 20px;
-      height: 20px;
+      width: 14px;
+      height: 14px;
+      background: ${akColorG300};
       outline: none;
-    }
-    .rangeslider-horizontal .rangeslider__handle:after {
-      width: 12px;
-      height: 12px;
-      top: 3px;
-      left: 3px;
     }
     .rangeslider .rangeslider__handle-tooltip {
       display: none;
     }
+
+    .slider {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      height: 17px;
+    }
+    .slider__value {
+      padding: 0 4px;
+      background: ${akColorN20};
+      color: ${akColorG300};
+      border-radius: ${akBorderRadius};
+      min-width: 32px;
+      text-align: center;
+    }
     /* Range Slider End */
 
-    .danger .rangeslider__fill {
-      background-color: ${akColorG300};
-    }
-    .danger .rangeslider__fill {
-      background-color: red;
-      td[celltype='checkbox'] {
-        width: 60px;
+    .danger {
+      .rangeslider__fill {
+        background-color: ${akColorR300};
+        td[celltype='checkbox'] {
+          width: 60px;
+        }
+      }
+      .rangeslider__handle {
+        background: ${akColorR300};
+      }
+      .slider__value {
+        color: ${akColorR300};
       }
     }
   }
