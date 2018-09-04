@@ -62,13 +62,13 @@ export type StyleReducer = (
 export type ContextColors = {
   background: {
     default: string,
-    hover: string,
-    active: string,
-    selected: string,
+    accent1: string,
+    accent2: string,
+    accent3: string,
   },
   text: {
     default: string,
-    alternate: string,
+    accent1: string,
   },
 };
 

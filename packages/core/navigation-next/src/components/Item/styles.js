@@ -110,9 +110,9 @@ const getItemBackgroundColor = (
   background,
   { isActive, isSelected, isHover },
 ) => {
-  if (isActive) return background.active;
-  if (isSelected) return background.selected;
-  if (isHover) return background.hover;
+  if (isActive) return background.accent3;
+  if (isSelected) return background.accent2;
+  if (isHover) return background.accent1;
   return background.default;
 };
 
@@ -130,9 +130,9 @@ export default ({ product }: ModeColors) => ({
       backgroundColor: getItemBackgroundColor(
         {
           default: colors.N20,
-          active: colors.B50,
-          hover: colors.N30,
-          selected: colors.N30,
+          accent1: colors.N30,
+          accent2: colors.N30,
+          accent3: colors.B50,
         },
         {
           isActive,
@@ -159,6 +159,7 @@ export default ({ product }: ModeColors) => ({
     afterWrapper: {
       ...baseStyles.afterWrapper,
       ...layoutStyles[spacing].afterWrapper,
+      color: colors.N500,
     },
   },
   product: {
@@ -184,11 +185,12 @@ export default ({ product }: ModeColors) => ({
     subTextWrapper: {
       ...baseStyles.subTextWrapper,
       ...layoutStyles[spacing].subTextWrapper,
-      color: product.text.alternate,
+      color: product.text.accent1,
     },
     afterWrapper: {
       ...baseStyles.afterWrapper,
       ...layoutStyles[spacing].afterWrapper,
+      color: product.text.default,
     },
   },
 });

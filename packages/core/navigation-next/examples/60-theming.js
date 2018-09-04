@@ -3,15 +3,16 @@
 import React, { type ComponentType } from 'react';
 import { ThemeProvider } from 'emotion-theming';
 import BoardIcon from '@atlaskit/icon/glyph/board';
+import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
 
 import {
   GroupHeading,
   Item,
   light,
   dark,
+  settings,
   SkeletonContainerHeader,
   SkeletonItem,
-  // modeGenerator,
   Separator,
   modeGenerator,
 } from '../src';
@@ -47,7 +48,7 @@ const ThemedComponents = ({ themeContext, themeMode }: any) => (
       <GroupHeading>Skeletons & items</GroupHeading>
       <SkeletonContainerHeader />
       <SkeletonItem />
-      <Item text="Item one" subText="Sub text" />
+      <Item text="Item one" subText="Sub text" after={ArrowRightIcon} />
       <Item text="Item two selected" subText="Sub text" isSelected />
       <Separator />
       <GroupHeading>States</GroupHeading>
@@ -76,6 +77,12 @@ const variations: Array<VariationCategory> = [
     title: 'Product "dark"',
     themeContext: 'product',
     themeMode: dark,
+  },
+  {
+    itemComponent: ThemedComponents,
+    title: 'Product "settings"',
+    themeContext: 'product',
+    themeMode: settings,
   },
   {
     itemComponent: ThemedComponents,
@@ -128,14 +135,6 @@ const variations: Array<VariationCategory> = [
   {
     itemComponent: ThemedComponents,
     title: 'Product regular',
-    themeContext: 'product',
-    themeMode: modeGenerator({
-      product: { text: '#FFFFFF', background: '#4C82CD' },
-    }),
-  },
-  {
-    itemComponent: ThemedComponents,
-    title: 'Product regular 2',
     themeContext: 'product',
     themeMode: modeGenerator({
       product: { text: '#FFFFFF', background: '#5548b1' },

@@ -17,3 +17,10 @@ export const dark = modeGenerator({
     background: colors.DN0,
   },
 });
+
+export const settings = modeGenerator({
+  product: {
+    text: colors.N0,
+    background: colors.N800,
+  },
+});

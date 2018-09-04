@@ -24,11 +24,12 @@ import {
   ItemAvatar,
   light,
   dark,
+  settings,
   SkeletonContainerHeader,
   SkeletonItem,
 } from '../src';
 
-const themeModes = { light, dark };
+const themeModes = { light, dark, settings };
 
 /**
  * Helper components
@@ -258,6 +259,20 @@ const variations: Array<VariationCategory> = [
         themeMode: 'dark',
         themeContext: 'product',
       },
+      {
+        before: ConfiguredAvatar,
+        text: 'Settings mode, container context',
+        subText: 'Sub text',
+        themeMode: 'settings',
+        themeContext: 'container',
+      },
+      {
+        before: ConfiguredAvatar,
+        text: 'Settings mode, product context',
+        subText: 'Sub text',
+        themeMode: 'settings',
+        themeContext: 'product',
+      },
     ],
   },
   {
@@ -351,7 +366,7 @@ const variations: Array<VariationCategory> = [
         <SkeletonItem {...props} />
       </ThemeProvider>
     ),
-    title: 'Skeleton',
+    title: 'Skeleton item',
     items: [
       {
         key: 'light-container-skeleton',
@@ -384,6 +399,17 @@ const variations: Array<VariationCategory> = [
         hasBefore: true,
         key: 'dark-container-skeleton-with-icon',
         themeMode: 'dark',
+        themeContext: 'container',
+      },
+      {
+        key: 'settings-container-skeleton',
+        themeMode: 'settings',
+        themeContext: 'container',
+      },
+      {
+        hasBefore: true,
+        key: 'settings-container-skeleton-with-icon',
+        themeMode: 'settings',
         themeContext: 'container',
       },
     ],
@@ -404,7 +430,7 @@ const variations: Array<VariationCategory> = [
         <SkeletonContainerHeader {...props} />
       </ThemeProvider>
     ),
-    title: 'Skeleton',
+    title: 'Skeleton header',
     items: [
       {
         key: 'light-container-skeleton',
@@ -437,6 +463,17 @@ const variations: Array<VariationCategory> = [
         hasBefore: true,
         key: 'dark-container-skeleton-with-icon',
         themeMode: 'dark',
+        themeContext: 'container',
+      },
+      {
+        key: 'settings-container-skeleton',
+        themeMode: 'settings',
+        themeContext: 'container',
+      },
+      {
+        hasBefore: true,
+        key: 'settings-container-skeleton-with-icon',
+        themeMode: 'settings',
         themeContext: 'container',
       },
     ],

@@ -26,42 +26,42 @@ const colorMatrix = [
   {
     // Dark
     when: ({ l }) => l < 20,
-    hover: { s: 0, l: 16 },
-    active: { s: 0, l: 8 },
-    selected: { s: 0, l: 12 },
+    accent1: { s: 0, l: 16 }, // hover
+    accent2: { s: 0, l: 12 }, // selected
+    accent3: { s: 0, l: 8 }, //  // active
   },
   {
     // bright and saturated
     when: ({ s, l }) => s > 65 && l > 30,
-    hover: { s: -16, l: 12 },
-    active: { s: -16, l: 8 },
-    selected: { s: 0, l: -8 },
+    accent1: { s: -16, l: 12 }, // hover
+    accent2: { s: 0, l: -8 }, // selected
+    accent3: { s: -16, l: 8 }, // active
   },
   {
     // bright and dull
     when: ({ s, l }) => s <= 20 && l > 90,
-    hover: { s: 0, l: -2 },
-    active: { s: 0, l: -4 },
-    selected: { s: 0, l: -6 },
+    accent1: { s: 0, l: -2 }, // hover
+    accent2: { s: 0, l: -6 }, // selected
+    accent3: { s: 0, l: -4 }, // active
   },
   {
     // pastel
     when: ({ s, l }) => s > 20 && s < 50 && l > 50,
-    hover: { s: 24, l: 2 },
-    active: { s: 8, l: -4 },
-    selected: { s: 8, l: -12 },
+    accent1: { s: 24, l: 2 }, // hover
+    accent2: { s: 8, l: -12 }, // selected
+    accent3: { s: 8, l: -4 }, // active
   },
   {
     // dull
     when: ({ s, l }) => s <= 20 && l <= 90,
-    hover: { s: 0, l: 4 },
-    active: { s: 0, l: -4 },
-    selected: { s: 0, l: -8 },
+    accent1: { s: 0, l: 4 }, // hover
+    accent2: { s: 0, l: -8 }, // selected
+    accent3: { s: 0, l: -4 }, // active
   },
 ];
 
 const getStatesBackground = (parts, modifier) =>
-  ['hover', 'active', 'selected'].reduce((acc, k) => {
+  ['accent1', 'accent3', 'accent2'].reduce((acc, k) => {
     acc[k] = chromatism.convert({
       ...parts,
       s: parts.s + modifier[k].s,
@@ -73,14 +73,14 @@ const getStatesBackground = (parts, modifier) =>
 const getContextColors = ({ background, text }): ContextColors => {
   const bgParts = chromatism.convert(background).hsl;
   const vs = bgParts.l < 30 && bgParts.s < 50 ? -1 : 1;
-  const alternateTextColor = chromatism.brightness(
+  const textAccent1 = chromatism.brightness(
     1 + vs * 6,
     chromatism.fade(4, background, text).hex[2],
   ).hex;
   const colorMod = colorMatrix.find(cm => cm.when(bgParts)) || {
-    hover: { s: 0, l: 8 },
-    active: { s: 0, l: 4 },
-    selected: { s: 8, l: -6 },
+    accent1: { s: 0, l: 8 }, // hover
+    accent2: { s: 8, l: -6 }, // selected
+    accent3: { s: 0, l: 4 }, // active
   };
 
   return {
@@ -88,7 +88,7 @@ const getContextColors = ({ background, text }): ContextColors => {
       default: background,
       ...getStatesBackground(bgParts, colorMod),
     },
-    text: { default: text, alternate: alternateTextColor },
+    text: { default: text, accent1: textAccent1 },
   };
 };
 

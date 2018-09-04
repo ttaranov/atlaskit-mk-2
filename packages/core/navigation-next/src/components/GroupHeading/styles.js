@@ -37,6 +37,6 @@ export default ({ product }: ModeColors) => () => ({
   },
   product: {
     ...baseStyles,
-    headingBase: { ...baseStyles.headingBase, color: product.text.alternate },
+    headingBase: { ...baseStyles.headingBase, color: product.text.accent1 },
   },
 });

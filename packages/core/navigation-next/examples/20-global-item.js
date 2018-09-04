@@ -9,9 +9,9 @@ import JiraIcon from '@atlaskit/icon/glyph/jira';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
 
-import { GlobalItem, GlobalItemPrimitive, light, dark } from '../src';
+import { GlobalItem, GlobalItemPrimitive, light, dark, settings } from '../src';
 
-const themeModes = { light, dark };
+const themeModes = { light, dark, settings };
 
 const ConfiguredBadge = () => (
   <Badge appearance="important" max={9} value={3} />
@@ -124,6 +124,14 @@ const variations: Array<VariationCategory> = [
         size: 'small',
         themeContext: 'expanded',
         themeMode: 'dark',
+      },
+      {
+        badge: ConfiguredBadge,
+        description: 'Settings mode, expanded context',
+        icon: TrayIcon,
+        size: 'small',
+        themeContext: 'expanded',
+        themeMode: 'settings',
       },
     ],
   },

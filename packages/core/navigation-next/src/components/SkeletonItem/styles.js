@@ -47,11 +47,11 @@ export default ({ product }: ModeColors) => () => ({
     wrapper: baseStyles.wrapper,
     before: {
       ...baseStyles.before,
-      backgroundColor: product.background.selected,
+      backgroundColor: product.background.accent2,
     },
     content: {
       ...baseStyles.content,
-      backgroundColor: product.background.selected,
+      backgroundColor: product.background.accent2,
     },
   },
 });
