@@ -39,3 +39,9 @@ export const CardsWrapper = styled.div`
     margin: 10px;
   }
 `;
+
+export const Header = styled.div`
+  button {
+    margin: 5px;
+  }
+`;

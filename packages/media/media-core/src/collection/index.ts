@@ -6,7 +6,7 @@ import {
   MediaFile,
 } from '@atlaskit/media-store';
 import { Observable } from 'rxjs/Observable';
-import { Observer } from 'rxjs/Observer';
+import { ReplaySubject } from 'rxjs/ReplaySubject';
 import { FileItem, FileDetails, LinkItem, LinkDetails } from '../item';
 import { FileState, mapMediaFileToFileState } from '../fileState';
 import { FileStreamCache, fileStreamsCache } from '../context/fileStreamCache';
@@ -36,12 +36,18 @@ export interface MediaCollection {
   items: Array<MediaCollectionItem>;
 }
 
-export class CollectionFetcher {
-  // private recentItemsCache: string[];
+export type CollectionCache = {
+  [collectionName: string]: {
+    ids: string[];
+    subject: ReplaySubject<string[]>;
+    nextInclusiveStartKey?: string;
+  };
+};
 
-  constructor(readonly mediaStore: MediaStore) {
-    // this.recentItemsCache = [];
-  }
+const cache: CollectionCache = {};
+
+export class CollectionFetcher {
+  constructor(readonly mediaStore: MediaStore) {}
 
   private createFileStateObserver(
     id: string,
@@ -80,26 +86,60 @@ export class CollectionFetcher {
     collectionName: string,
     params?: MediaStoreGetCollectionItemsParams,
   ): Observable<string[]> {
-    const observable = Observable.create(
-      async (observer: Observer<string[]>) => {
-        // if (this.recentItemsCache.length) {
-        //   setTimeout(() => {
-        //     observer.next(this.recentItemsCache);
-        //   }, 1);
-        // }
+    const collection = cache[collectionName];
+    const subject = collection
+      ? collection.subject
+      : new ReplaySubject<string[]>(1);
 
-        const items = await this.mediaStore.getCollectionItems(collectionName, {
-          ...params,
-          details: 'full',
-        });
-        this.populateCache(items.data.contents);
-        const ids = items.data.contents.map(item => item.id);
+    this.mediaStore
+      .getCollectionItems(collectionName, {
+        ...params,
+        details: 'full',
+      })
+      .then(items => {
+        const { contents, nextInclusiveStartKey } = items.data;
+        this.populateCache(contents);
+        const ids = contents.map(item => item.id);
 
-        observer.next(ids);
-      },
-    ).publishReplay(1);
+        cache[collectionName] = {
+          ids,
+          nextInclusiveStartKey, // TODO: only set nextInclusiveStartKey if it was undefined
+          subject,
+        };
 
-    observable.connect();
-    return observable;
+        subject.next(ids);
+      });
+
+    return subject;
+  }
+
+  // TODO: check if we are already loading the next page for the given collectionName
+  async loadNextPage(collectionName: string) {
+    const collection = cache[collectionName];
+    if (!collection) {
+      return;
+    }
+
+    const {
+      nextInclusiveStartKey: inclusiveStartKey,
+      ids: currentIds,
+      subject,
+    } = cache[collectionName];
+    const items = await this.mediaStore.getCollectionItems(collectionName, {
+      inclusiveStartKey,
+      details: 'full',
+    });
+    const { contents, nextInclusiveStartKey } = items.data;
+    this.populateCache(contents);
+    const newIds = contents.map(item => item.id);
+    const ids = [...currentIds, ...newIds];
+
+    subject.next(ids);
+
+    cache[collectionName] = {
+      ids,
+      nextInclusiveStartKey,
+      subject,
+    };
   }
 }

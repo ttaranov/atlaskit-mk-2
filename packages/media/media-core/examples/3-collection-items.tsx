@@ -4,10 +4,10 @@ import { createUserContext } from '@atlaskit/media-test-helpers';
 import { Subscription } from 'rxjs/Subscription';
 import { Card, FileIdentifier } from '@atlaskit/media-card';
 import Button from '@atlaskit/button';
-import { CardsWrapper } from '../example-helpers/styled';
+import { CardsWrapper, Header } from '../example-helpers/styled';
 
 const context = createUserContext();
-
+const collectionName = 'recents';
 export interface ExampleState {
   fileIds: string[];
 }
@@ -20,14 +20,7 @@ class Example extends Component<{}, ExampleState> {
   };
 
   componentDidMount() {
-    this.subscription = context.collection.getItems('recents').subscribe({
-      next: fileIds => {
-        console.log(fileIds);
-        this.setState({
-          fileIds,
-        });
-      },
-    });
+    this.getItems();
   }
 
   componentWillUnmount() {
@@ -42,7 +35,7 @@ class Example extends Component<{}, ExampleState> {
       const identifier: FileIdentifier = {
         id,
         mediaItemType: 'file',
-        collectionName: 'recents',
+        collectionName,
       };
 
       return (
@@ -51,8 +44,8 @@ class Example extends Component<{}, ExampleState> {
           identifier={identifier}
           context={context}
           dimensions={{
-            width: 200,
-            height: 150,
+            width: 100,
+            height: 50,
           }}
         />
       );
@@ -66,17 +59,38 @@ class Example extends Component<{}, ExampleState> {
     );
   }
 
+  getItems = () => {
+    this.subscription = context.collection.getItems(collectionName).subscribe({
+      next: fileIds => {
+        this.setState({
+          fileIds,
+        });
+      },
+    });
+  };
+
   fetchNextPage = () => {
-    console.log('fetchNextPage');
+    context.collection.loadNextPage(collectionName);
+  };
+
+  getFirstPage = () => {
+    // We are intentionally creating a new subscription to simulate "new items" case
+    context.collection.getItems(collectionName).subscribe();
   };
 
   renderHeader = () => {
+    const { fileIds } = this.state;
+
     return (
-      <div>
+      <Header>
         <Button appearance="primary" onClick={this.fetchNextPage}>
           Fetch next page
         </Button>
-      </div>
+        <Button appearance="primary" onClick={this.getFirstPage}>
+          Get first page
+        </Button>
+        Items ({fileIds.length})
+      </Header>
     );
   };
 

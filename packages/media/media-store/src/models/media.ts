@@ -25,7 +25,7 @@ export type MediaCollection = {
 
 export type MediaCollectionItems = {
   readonly contents: MediaCollectionItem[];
-  readonly nextInclusiveStartKey: string | null;
+  readonly nextInclusiveStartKey?: string;
 };
 
 export type MediaCollectionItem = {
