@@ -1,5 +1,8 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 2.0.15
+- [patch] should parse empty wiki [03f0b1b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03f0b1b)
+
 ## 2.0.14
 - [patch] Fix color error [2b513c5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2b513c5)
 
