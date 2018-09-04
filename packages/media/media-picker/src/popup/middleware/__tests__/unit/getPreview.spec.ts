@@ -8,12 +8,14 @@ describe('getPreviewMiddleware', () => {
     clientId: 'some-client-id',
     token: 'some-token',
   };
+  const upfrontId = Promise.resolve('1');
   const file = {
     id: 'some-file-id',
     name: 'some-file-name',
     type: 'some-file-type',
     creationDate: Date.now(),
     size: 12345,
+    upfrontId,
   };
   const collection = 'some-collection';
   const uploadId = 'some-upload-id';
@@ -22,8 +24,10 @@ describe('getPreviewMiddleware', () => {
   };
   const setup = () => {
     const store = mockStore();
-    const { userAuthProvider } = store.getState();
-    userAuthProvider.mockImplementation(() => Promise.resolve(auth));
+    const { userContext } = store.getState();
+    (userContext.config.authProvider as jest.Mock<any>).mockReturnValue(
+      Promise.resolve(auth),
+    );
 
     const fetcher = mockFetcher();
     fetcher.getPreview.mockImplementation(() => Promise.resolve(preview));

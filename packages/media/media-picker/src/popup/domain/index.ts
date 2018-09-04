@@ -1,4 +1,4 @@
-import { Auth, AuthProvider, Context } from '@atlaskit/media-core';
+import { Auth, Context } from '@atlaskit/media-core';
 
 import { UploadParams } from '../../domain/config';
 import { LocalUploads } from './local-upload';
@@ -34,13 +34,16 @@ export interface State {
   readonly remoteUploads: RemoteUploads;
   readonly isCancelling: boolean;
   readonly isUploading: boolean;
-  readonly userAuthProvider: AuthProvider;
-  readonly context: Context;
+  readonly tenantContext: Context;
+  readonly userContext: Context;
   readonly lastUploadIndex: number;
   readonly giphy: GiphyState;
 
   readonly onCancelUpload: CancelUploadHandler;
   readonly config: Partial<PopupConfig>;
+  readonly deferredIdUpfronts: {
+    [id: string]: { resolver: (id: string) => void; rejecter: Function };
+  };
 }
 
 export type CancelUploadHandler = (uploadId: string) => void;
@@ -138,9 +141,11 @@ export interface ServiceFolder {
 export interface ServiceFile {
   readonly mimeType: string;
   readonly id: string;
+  readonly upfrontId: Promise<string>;
   readonly name: string;
   readonly size: number;
   readonly date: number;
+  readonly occurrenceKey?: string;
 }
 
 export interface SelectedItem extends ServiceFile {

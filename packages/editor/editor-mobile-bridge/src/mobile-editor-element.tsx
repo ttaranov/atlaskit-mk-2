@@ -145,42 +145,42 @@ function unsubscribeFromListStateChanges(
   eventDispatcher.off((listsStateKey as any).key, listStateUpdated);
 }
 
-function getToken(context?: any) {
-  return createPromise<any>('getAuth', context.collectionName).submit();
-}
-
-function getUploadContext(): Promise<any> {
-  // TODO Make sure getToken returns baseUrl and revert that back to just getToken
-  const authProviderWithBaseUrl = (context?: any) =>
-    getToken(context).then(auth => {
-      auth.baseUrl = toNativeBridge.getServiceHost();
-      return auth;
-    });
-  return Promise.resolve(
-    ContextFactory.create({
-      authProvider: authProviderWithBaseUrl,
-    }),
-  );
+function getToken() {
+  return createPromise<any>('getAuth').submit();
 }
 
 function createMediaProvider() {
-  return {
-    viewContext: getUploadContext(),
-    uploadContext: getUploadContext(),
-    uploadParams: {
-      collection: toNativeBridge.getCollection(),
-    },
-  };
+  return getToken().then(data => {
+    const { baseUrl, clientId, collectionName, token } = data;
+    const createMediaContext = Promise.resolve(
+      ContextFactory.create({
+        authProvider: () =>
+          Promise.resolve({
+            baseUrl,
+            clientId,
+            token,
+          }),
+      }),
+    );
+
+    return {
+      uploadContext: createMediaContext,
+      viewContext: createMediaContext,
+      uploadParams: {
+        collection: collectionName,
+      },
+    };
+  });
 }
 
-export default function mobileEditor() {
+export default function mobileEditor(props) {
   return (
     <EditorWithState
       appearance="mobile"
       mentionProvider={Promise.resolve(new MentionProviderImpl())}
       media={{
         customMediaPicker: new MobilePicker(),
-        provider: Promise.resolve(createMediaProvider()),
+        provider: props.mediaProvider || createMediaProvider(),
         allowMediaSingle: true,
       }}
       allowLists={true}

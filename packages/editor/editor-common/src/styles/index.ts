@@ -6,7 +6,12 @@ export {
   tableMarginBottom,
   tableMarginSides,
   calcTableWidth,
-} from './table';
+} from './shared/table';
 
-export { columnLayoutSharedStyle } from './column-layout';
-export { mediaSingleSharedStyle } from './media-single';
+export { columnLayoutSharedStyle } from './shared/column-layout';
+export { mediaSingleSharedStyle } from './shared/media-single';
+export { blockquoteSharedStyles } from './shared/blockquote';
+export { headingsSharedStyles } from './shared/headings';
+export { panelSharedStyles } from './shared/panel';
+export { ruleSharedStyles } from './shared/rule';
+export { paragraphSharedStyles } from './shared/paragraph';

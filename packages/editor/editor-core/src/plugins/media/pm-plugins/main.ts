@@ -97,7 +97,7 @@ export class MediaPluginState {
   ) {
     this.reactContext = reactContext;
     this.options = options;
-    this.editorAppearance = editorAppearance;
+    this.editorAppearance = editorAppearance!;
     this.waitForMediaUpload =
       options.waitForMediaUpload === undefined
         ? true
@@ -614,10 +614,11 @@ export class MediaPluginState {
       } else {
         if (context.config.userAuthProvider) {
           pickers.push(
-            (this.popupPicker = new Picker('popup', pickerFacadeConfig, {
-              userAuthProvider: context.config.userAuthProvider,
-              ...defaultPickerConfig,
-            })),
+            (this.popupPicker = new Picker(
+              'popup',
+              pickerFacadeConfig,
+              defaultPickerConfig,
+            )),
           );
         } else {
           pickers.push(

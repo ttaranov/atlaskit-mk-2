@@ -15,8 +15,6 @@ import Tree, {
 } from '../src/';
 import { complexTree } from '../mockdata/complexTree';
 
-const PADDING_PER_LEVEL = 35;
-
 const Container = styled.div`
   display: flex;
 `;
@@ -64,19 +62,18 @@ export default class DragDropTree extends Component<void, State> {
 
   renderItem = ({
     item,
-    depth,
     onExpand,
     onCollapse,
     provided,
     snapshot,
   }: RenderItemParams) => {
     return (
-      <div key={item.id} style={{ paddingLeft: depth * PADDING_PER_LEVEL }}>
+      <div ref={provided.innerRef} {...provided.draggableProps}>
         <AkNavigationItem
           isDragging={snapshot.isDragging}
           text={item.data ? item.data.title : ''}
           icon={DragDropTree.getIcon(item, onExpand, onCollapse)}
-          dnd={provided}
+          dnd={{ dragHandleProps: provided.dragHandleProps }}
         />
       </div>
     );

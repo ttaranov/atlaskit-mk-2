@@ -8,7 +8,6 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import { style } from 'typestyle';
 import { isLeftClick } from './helpers';
-import { analyticsService } from '../analytics';
 
 const emojiButtonStyle = style({
   outline: 'none',
@@ -37,8 +36,6 @@ export default class EmojiButton extends PureComponent<Props, {}> {
   private handleMouseDown = event => {
     event.preventDefault();
     if (this.props.onClick && isLeftClick(event)) {
-      const emojiId = this.props.emojiId.id ? this.props.emojiId.id : '';
-      analyticsService.trackEvent('reactions.emoji.click', { emojiId });
       this.props.onClick(this.props.emojiId, undefined, event);
     }
   };

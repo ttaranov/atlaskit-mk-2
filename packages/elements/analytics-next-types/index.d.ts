@@ -32,7 +32,6 @@ export type ObjectType = { [key: string]: any };
 
 // Basic events
 export type AnalyticsEventPayload = {
-  action: string;
   [key: string]: any;
 };
 

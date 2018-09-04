@@ -1,5 +1,13 @@
 # @atlaskit/global-navigation
 
+## 4.3.1
+- [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
+
+## 4.3.0
+- [minor] Add UI analytics event for dismissing global navigation drawers [e7d5eac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7d5eac)
+- [patch] Updated dependencies [501378a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/501378a)
+  - @atlaskit/drawer@2.0.0
+
 ## 4.2.2
 - [patch] Updated dependencies [90ba6bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/90ba6bd)
   - @atlaskit/navigation-next@3.6.6

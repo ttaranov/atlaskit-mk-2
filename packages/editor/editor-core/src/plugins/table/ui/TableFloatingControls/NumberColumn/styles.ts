@@ -6,6 +6,7 @@ import {
   akEditorTableNumberColumnWidth,
   akEditorTableBorder,
   akEditorTableToolbarSize,
+  akEditorUnitZIndex,
 } from '@atlaskit/editor-common';
 import {
   tableToolbarColor,
@@ -74,7 +75,7 @@ export const StyledNumberedRow: ComponentClass<HTMLAttributes<{}>> = styled.div`
 
     background-color: ${tableToolbarSelectedColor};
     position: relative;
-    z-index: 1;
+    z-index: ${akEditorUnitZIndex};
 
     color: ${akColorN0};
   }
@@ -84,6 +85,6 @@ export const StyledNumberedRow: ComponentClass<HTMLAttributes<{}>> = styled.div`
     border: 1px solid ${tableBorderDeleteColor};
     color: ${akColorR500};
     position: relative;
-    z-index: 1;
+    z-index: ${akEditorUnitZIndex};
   }
 `;

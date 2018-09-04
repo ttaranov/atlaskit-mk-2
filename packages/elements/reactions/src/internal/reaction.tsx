@@ -6,11 +6,13 @@ import { PureComponent, SyntheticEvent } from 'react';
 import { style } from 'typestyle';
 import { ReactionSummary } from '../reactions-resource';
 import { isLeftClick } from './helpers';
-import { analyticsService } from '../analytics';
 import ReactionTooltip from './reaction-tooltip';
 import { isPromise } from './helpers';
 import Counter from './counter';
 import FlashAnimation from './flash-animation';
+import { withAnalyticsEvents } from '@atlaskit/analytics-next';
+import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
+import { createAndFireEventInElementsChannel } from '../analytics';
 
 const akBorderRadius = borderRadius();
 const akColorN30A = colors.N30A;
@@ -69,9 +71,13 @@ export interface State {
   emojiName?: string;
 }
 
-export default class Reaction extends PureComponent<Props, State> {
+export class ReactionComponent extends PureComponent<
+  Props & WithAnalyticsEventProps,
+  State
+> {
   private flashRef: FlashAnimation;
   private mounted: boolean;
+  private hoverStart: number | undefined;
 
   static defaultProps = {
     flash: false,
@@ -87,8 +93,25 @@ export default class Reaction extends PureComponent<Props, State> {
   }
 
   componentDidUpdate({ reaction: prevReaction }) {
-    if (!prevReaction.reacted && this.props.reaction.reacted) {
+    const { reaction, createAnalyticsEvent } = this.props;
+    if (!prevReaction.reacted && reaction.reacted) {
       this.flash();
+    }
+    if (!prevReaction.users && reaction.users && createAnalyticsEvent) {
+      const { containerAri, ari } = reaction;
+      const duration = this.hoverStart
+        ? Date.now() - this.hoverStart
+        : undefined;
+      createAndFireEventInElementsChannel({
+        action: 'hovered',
+        actionSubject: 'existingReaction',
+        eventType: 'ui',
+        attributes: {
+          containerAri,
+          ari,
+          duration,
+        },
+      })(createAnalyticsEvent);
     }
   }
 
@@ -128,8 +151,21 @@ export default class Reaction extends PureComponent<Props, State> {
   private handleMouseDown = event => {
     event.preventDefault();
     if (this.props.onClick && isLeftClick(event)) {
-      const { reaction } = this.props;
-      analyticsService.trackEvent('reactions.reaction.click', reaction as {});
+      const { reaction, createAnalyticsEvent } = this.props;
+      if (createAnalyticsEvent) {
+        const { reacted, emojiId, containerAri, ari } = reaction;
+        createAndFireEventInElementsChannel({
+          action: 'clicked',
+          actionSubject: 'existingReaction',
+          eventType: 'ui',
+          attributes: {
+            added: !reacted,
+            emojiId,
+            containerAri,
+            ari,
+          },
+        })(createAnalyticsEvent);
+      }
 
       this.props.onClick(this.props.reaction.emojiId, event);
     }
@@ -138,10 +174,11 @@ export default class Reaction extends PureComponent<Props, State> {
   private handleMouseOver = event => {
     event.preventDefault();
     const { onMouseOver, reaction } = this.props;
+    if (!reaction.users || !reaction.users.length) {
+      this.hoverStart = Date.now();
+    }
     if (onMouseOver) {
-      if (!reaction.users || !reaction.users.length) {
-        onMouseOver(this.props.reaction, event);
-      }
+      onMouseOver(this.props.reaction, event);
     }
   };
 
@@ -189,3 +226,5 @@ export default class Reaction extends PureComponent<Props, State> {
     );
   }
 }
+
+export default withAnalyticsEvents()(ReactionComponent);

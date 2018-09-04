@@ -1,8 +1,31 @@
 import { State } from './domain';
 
-const state: State = {
-  redirectUrl: '',
-  userAuthProvider: () => Promise.reject('User AuthProvider not provided.'),
+// Hardcoded list of keys we want to fill in default state. These are the fields that are not filled,
+// and needs to be provided when final state is constructed:
+// 'context' | 'userContext' | 'redirectUrl' | 'config'
+export type DefaultStateKeys =
+  | 'uploads'
+  | 'remoteUploads'
+  | 'recents'
+  | 'tenant'
+  | 'view'
+  | 'accounts'
+  | 'selectedItems'
+  | 'isUploading'
+  | 'isCancelling'
+  | 'lastUploadIndex'
+  | 'giphy'
+  | 'onCancelUpload'
+  | 'deferredIdUpfronts';
+
+// TODO when AK moves to Typescript 3 please replace above hardcoded list with this:
+// export type DefaultStateKeys = Exclude<
+//   keyof State,
+//   'context' | 'userContext' | 'redirectUrl' | 'config'
+// >;
+
+export type DefaultState = Pick<State, DefaultStateKeys>;
+const defaultState: DefaultState = {
   uploads: {},
   remoteUploads: {},
   recents: {
@@ -42,8 +65,7 @@ const state: State = {
   onCancelUpload: () => {
     throw new Error('onCancelUpload has not been set yet.');
   },
-  context: {} as any, // TODO: fix this
-  config: {},
+  deferredIdUpfronts: {},
 };
 
-export default state;
+export default defaultState;

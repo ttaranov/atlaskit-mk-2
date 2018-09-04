@@ -12,6 +12,7 @@ import {
   BinaryUploader as MpBinary,
   Browser as MpBrowser,
   Dropzone as MpDropzone,
+  UploadParams,
   PopupConfig,
 } from '../..';
 
@@ -51,7 +52,8 @@ import { MediaPickerPopupWrapper, SidebarWrapper, ViewWrapper } from './styled';
 export interface AppStateProps {
   readonly selectedServiceName: ServiceName;
   readonly isVisible: boolean;
-  readonly context: Context;
+  readonly tenantContext: Context;
+  readonly userContext: Context;
   readonly config?: Partial<PopupConfig>;
 }
 
@@ -76,6 +78,7 @@ export interface AppProxyReactContext {
 
 export interface AppOwnProps {
   store: Store<State>;
+  tenantUploadParams: UploadParams;
   proxyReactContext?: AppProxyReactContext;
 }
 
@@ -89,7 +92,6 @@ export class App extends Component<AppProps, AppState> {
   private readonly mpBrowser: MpBrowser;
   private readonly mpDropzone: MpDropzone;
   private readonly mpBinary: MpBinary;
-  private readonly mpContext: Context;
 
   constructor(props: AppProps) {
     super(props);
@@ -101,31 +103,27 @@ export class App extends Component<AppProps, AppState> {
       onUploadProcessing,
       onUploadEnd,
       onUploadError,
-      context,
+      tenantContext,
+      userContext,
+      tenantUploadParams,
     } = props;
 
-    const { userAuthProvider } = context.config;
-
-    if (!userAuthProvider) {
-      throw new Error('userAuthProvider must be provided in the context');
-    }
     this.state = {
       isDropzoneActive: false,
     };
 
-    const defaultConfig = {
-      uploadParams: {
-        collection: RECENTS_COLLECTION,
-      },
-    };
-
-    // We can't just use the given context since the Cards in the recents view needs a different authProvider
-    this.mpContext = ContextFactory.create({
-      authProvider: userAuthProvider,
+    // Context that has both auth providers defined explicitly using to provided contexts.
+    // Each of the local components using this context will upload first to user's recents
+    // and then copy to a tenant's collection.
+    const context = ContextFactory.create({
+      authProvider: tenantContext.config.authProvider,
+      userAuthProvider: userContext.config.authProvider,
+      cacheSize: tenantContext.config.cacheSize,
     });
 
-    this.mpBrowser = MediaPicker('browser', this.mpContext, {
-      ...defaultConfig,
+    this.mpBrowser = MediaPicker('browser', context, {
+      uploadParams: tenantUploadParams,
+      shouldCopyFileToRecents: false,
       multiple: true,
     });
     this.mpBrowser.on('uploads-start', onUploadsStart);
@@ -135,8 +133,9 @@ export class App extends Component<AppProps, AppState> {
     this.mpBrowser.on('upload-end', onUploadEnd);
     this.mpBrowser.on('upload-error', onUploadError);
 
-    this.mpDropzone = MediaPicker('dropzone', this.mpContext, {
-      ...defaultConfig,
+    this.mpDropzone = MediaPicker('dropzone', context, {
+      uploadParams: tenantUploadParams,
+      shouldCopyFileToRecents: false,
       headless: true,
     });
     this.mpDropzone.on('drag-enter', () => this.setDropzoneActive(true));
@@ -148,8 +147,9 @@ export class App extends Component<AppProps, AppState> {
     this.mpDropzone.on('upload-end', onUploadEnd);
     this.mpDropzone.on('upload-error', onUploadError);
 
-    this.mpBinary = MediaPicker('binary', this.mpContext, {
-      ...defaultConfig,
+    this.mpBinary = MediaPicker('binary', context, {
+      uploadParams: tenantUploadParams,
+      shouldCopyFileToRecents: false,
     });
     this.mpBinary.on('uploads-start', onUploadsStart);
     this.mpBinary.on('upload-preview-update', onUploadPreviewUpdate);
@@ -218,10 +218,12 @@ export class App extends Component<AppProps, AppState> {
 
   private renderCurrentView(selectedServiceName: ServiceName): JSX.Element {
     if (selectedServiceName === 'upload') {
+      // We need to create a new context since Cards in recents view need user auth
+      const { userContext } = this.props;
       return (
         <UploadView
           mpBrowser={this.mpBrowser}
-          context={this.mpContext}
+          context={userContext}
           recentsCollection={RECENTS_COLLECTION}
         />
       );
@@ -239,11 +241,17 @@ export class App extends Component<AppProps, AppState> {
   };
 }
 
-const mapStateToProps = ({ view, context, config }: State): AppStateProps => ({
+const mapStateToProps = ({
+  view,
+  tenantContext,
+  userContext,
+  config,
+}: State): AppStateProps => ({
   selectedServiceName: view.service.name,
   isVisible: view.isVisible,
   config,
-  context,
+  tenantContext,
+  userContext,
 });
 
 const mapDispatchToProps = (dispatch: Dispatch<State>): AppDispatchProps => ({

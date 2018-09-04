@@ -86,7 +86,15 @@ const kitkatTeam = [
   'vpetrychuk',
   'bgryta',
 ];
-const growthTeam = ['llemos'];
+const growthTeam = [
+  'hchehab',
+  'jcanoatlas',
+  'kanishkpurohit',
+  'anthonyrussell',
+  'wiwong',
+  'leandro_lemos',
+  'rob_sangster',
+];
 const navigationTeam = ['wmendesneto'];
 const usersAllowedToApprove = [].concat(
   atlaskitTeam,

@@ -1,3 +1,5 @@
+jest.mock('@atlaskit/media-store');
+import { MediaStore } from '@atlaskit/media-store';
 import { mockStore, mockFetcher } from '../../../mocks';
 import { sendUploadEvent } from '../../../actions/sendUploadEvent';
 import finalizeUploadMiddleware, { finalizeUpload } from '../../finalizeUpload';
@@ -6,19 +8,21 @@ import {
   FinalizeUploadAction,
   FINALIZE_UPLOAD,
 } from '../../../actions/finalizeUpload';
-import { Tenant } from '../../../domain';
+import { Tenant, State } from '../../../domain';
 
 describe('finalizeUploadMiddleware', () => {
   const auth = {
     clientId: 'some-client-id',
     token: 'some-token',
   };
+  const upfrontId = Promise.resolve('1');
   const file = {
     id: 'some-file-id',
     name: 'some-file-name',
     type: 'some-file-type',
     creationDate: Date.now(),
     size: 12345,
+    upfrontId,
   };
   const copiedFile = {
     ...file,
@@ -38,13 +42,20 @@ describe('finalizeUploadMiddleware', () => {
     },
     uploadParams: {},
   };
-  const setup = (uploadParams: UploadParams = {}) => {
-    const store = mockStore();
-    const { userAuthProvider } = store.getState();
-    userAuthProvider.mockImplementation(() => Promise.resolve(auth));
+  const setup = (
+    uploadParams: UploadParams = {},
+    state: Partial<State> = {},
+  ) => {
+    const store = mockStore(state);
+    const { userContext } = store.getState();
+    (userContext.config.authProvider as jest.Mock<any>).mockReturnValue(
+      Promise.resolve(auth),
+    );
 
     const fetcher = mockFetcher();
-    fetcher.copyFile.mockImplementation(() => Promise.resolve(copiedFile));
+    (MediaStore as any).mockImplementation(() => ({
+      copyFileWithToken: () => Promise.resolve({ data: copiedFile }),
+    }));
     fetcher.pollFile.mockImplementation(() => Promise.resolve(copiedFile));
 
     return {
@@ -125,7 +136,9 @@ describe('finalizeUploadMiddleware', () => {
       message: 'some-error-message',
     };
 
-    fetcher.copyFile.mockImplementation(() => Promise.reject(error));
+    (MediaStore as any).mockImplementation(() => ({
+      copyFileWithToken: () => Promise.reject(error),
+    }));
 
     return finalizeUpload(fetcher, store, action).then(action => {
       expect(store.dispatch).toBeCalledWith(
@@ -143,6 +156,24 @@ describe('finalizeUploadMiddleware', () => {
           uploadId,
         }),
       );
+    });
+  });
+
+  it('Should resolve deferred id when the source id is on the store', () => {
+    const resolver = jest.fn();
+    const rejecter = jest.fn();
+    const { fetcher, store, action } = setup(undefined, {
+      deferredIdUpfronts: {
+        'some-file-id': {
+          resolver,
+          rejecter,
+        },
+      },
+    });
+
+    return finalizeUpload(fetcher, store, action).then(action => {
+      expect(resolver).toHaveBeenCalledTimes(1);
+      expect(resolver).toBeCalledWith('some-copied-file-id');
     });
   });
 });

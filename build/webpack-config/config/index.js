@@ -9,6 +9,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer')
 const HappyPack = require('happypack');
 
 const { createDefaultGlob } = require('./utils');
+const statsOptions = require('./statsOptions');
 
 module.exports = function createWebpackConfig(
   {
@@ -30,6 +31,7 @@ module.exports = function createWebpackConfig(
   const isProduction = mode === 'production';
 
   return {
+    stats: statsOptions,
     mode,
     performance: {
       // performance hints are used to warn you about large bundles but come at their own perf cost
@@ -216,17 +218,16 @@ function getPlugins(
     }),
   ];
 
-  if (report) {
-    plugins.push(
-      new BundleAnalyzerPlugin({
-        analyzerMode: 'static',
-        statsOptions: { source: false },
-        generateStatsFile: true,
-        openAnalyzer: true,
-        logLevel: 'error',
-      }),
-    );
-  }
+  plugins.push(
+    new BundleAnalyzerPlugin({
+      analyzerMode: report ? 'static' : 'disabled',
+      generateStatsFile: true,
+      openAnalyzer: report,
+      logLevel: 'error',
+      statsOptions: statsOptions,
+      defaultSizes: 'gzip',
+    }),
+  );
 
   return plugins;
 }

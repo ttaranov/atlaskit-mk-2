@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-viewer",
-  "version": "17.0.8",
+  "version": "18.0.1",
   "description": "MediaViewer is Atlassian's powerful solution for viewing files on the web. It's both powerful and extendable yet easy-to-integrate",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -34,7 +34,7 @@
     "tslib": "^1.8.0"
   },
   "peerDependencies": {
-    "@atlaskit/media-core": "^23.0.2",
+    "@atlaskit/media-core": "^23.1.0",
     "jquery": "^3.2.1",
     "react": "^16.4.0",
     "rxjs": "^5.1.0",
@@ -42,8 +42,8 @@
   },
   "devDependencies": {
     "@atlaskit/button": "^9.0.6",
-    "@atlaskit/docs": "^5.0.6",
-    "@atlaskit/media-core": "^23.0.2",
+    "@atlaskit/docs": "^5.0.7",
+    "@atlaskit/media-core": "^23.1.0",
     "@atlaskit/media-test-helpers": "^17.0.0",
     "@atlaskit/modal-dialog": "^6.0.9",
     "@types/enzyme": "^3.1.6",

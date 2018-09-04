@@ -1,4 +1,4 @@
-import { Context } from '@atlaskit/media-core';
+import { Context, ContextFactory } from '@atlaskit/media-core';
 import { Store } from 'redux';
 import * as React from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
@@ -21,12 +21,10 @@ import { UploadEventPayloadMap } from '../domain/uploadEvent';
 
 export interface PopupConfig {
   readonly container?: HTMLElement;
-  readonly uploadParams: UploadParams;
+  readonly uploadParams: UploadParams; // Tenant upload params
   readonly proxyReactContext?: AppProxyReactContext;
   readonly singleSelect?: boolean;
 }
-
-export const USER_RECENTS_COLLECTION = 'recents';
 
 export interface PopupConstructor {
   new (context: Context, config: PopupConfig): Popup;
@@ -44,14 +42,14 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
   implements PopupUploadEventEmitter {
   private readonly container: HTMLElement;
   private readonly store: Store<State>;
-  private uploadParams: UploadParams;
+  private tenantUploadParams: UploadParams;
   private proxyReactContext?: AppProxyReactContext;
 
   constructor(
-    readonly context: Context,
+    readonly tenantContext: Context,
     {
       container = document.body,
-      uploadParams,
+      uploadParams, // tenant
       proxyReactContext,
       singleSelect,
     }: PopupConfig,
@@ -59,11 +57,22 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
     super();
     this.proxyReactContext = proxyReactContext;
 
-    this.store = createStore(this, context, {
+    const { userAuthProvider, cacheSize } = tenantContext.config;
+    if (!userAuthProvider) {
+      throw new Error(
+        'When using Popup media picker userAuthProvider must be provided in the context',
+      );
+    }
+
+    const userContext = ContextFactory.create({
+      cacheSize,
+      authProvider: userAuthProvider,
+    });
+    this.store = createStore(this, tenantContext, userContext, {
       singleSelect,
     });
 
-    this.uploadParams = {
+    this.tenantUploadParams = {
       ...defaultUploadParams,
       ...uploadParams,
     };
@@ -75,15 +84,15 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
   }
 
   public show(): Promise<void> {
-    return this.context.config
+    return this.tenantContext.config
       .authProvider({
-        collectionName: this.uploadParams.collection,
+        collectionName: this.tenantUploadParams.collection,
       })
       .then(auth => {
         this.store.dispatch(
           setTenant({
             auth,
-            uploadParams: this.uploadParams,
+            uploadParams: this.tenantUploadParams,
           }),
         );
 
@@ -91,7 +100,6 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
         this.store.dispatch(getFilesInRecents());
         // TODO [MSW-466]: Fetch remote accounts only when needed
         this.store.dispatch(getConnectedRemoteAccounts());
-
         this.store.dispatch(showPopup());
       });
   }
@@ -115,7 +123,7 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
   }
 
   public setUploadParams(uploadParams: UploadParams): void {
-    this.uploadParams = {
+    this.tenantUploadParams = {
       ...defaultUploadParams,
       ...uploadParams,
     };
@@ -128,7 +136,11 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
   private renderPopup(): HTMLElement {
     const container = document.createElement('div');
     render(
-      <App store={this.store} proxyReactContext={this.proxyReactContext} />,
+      <App
+        store={this.store}
+        proxyReactContext={this.proxyReactContext}
+        tenantUploadParams={this.tenantUploadParams}
+      />,
       container,
     );
     return container;

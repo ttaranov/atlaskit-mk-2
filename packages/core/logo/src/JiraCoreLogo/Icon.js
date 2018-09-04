@@ -11,7 +11,7 @@ const svg = (iconGradientStart: string, iconGradientStop: string) => {
   return `<canvas height="32" width="32" aria-hidden="true"></canvas>
   <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true">
     <defs>
-      <linearGradient x1="17.1933086%" y1="20.0326493%" x2="88.2434944%" y2="53.9179104%" id="${id}">
+      <linearGradient x1="26.51%" y1="20.831%" y2="63.912%" id="${id}">
         <stop stop-color="${iconGradientStart}" ${
     iconGradientStart === 'inherit' ? 'stop-opacity="0.4"' : ''
   } offset="17%"></stop>
@@ -19,8 +19,8 @@ const svg = (iconGradientStart: string, iconGradientStop: string) => {
       </linearGradient>
     </defs>
     <g stroke="none" stroke-width="1" fill-rule="nonzero">
-      <path d="M18.2102727,20.1745455 C18.2102727,24.4964247 21.8014375,28 26.2313636,28 L26.2313636,28 L26.2313636,12.4072727 L18.2102727,17.7672727 L18.2102727,20.1745455 Z" fill="url(#${id})"></path>
-      <path d="M26.2313636,12.4072727 L26.2313636,5.16727273 C26.2305706,4.73654063 25.9859584,4.34146943 25.5955373,4.14035499 C25.2051163,3.93924054 24.7327587,3.96498483 24.3677273,4.20727273 L5.75,16.6072727 C8.24141839,20.1791399 13.2284911,21.1053472 16.8908182,18.6763636 L26.2313636,12.4072727 Z" fill="currentColor"></path>
+      <path d="M15.52,20.5269517 C15.52,25.2103264 19.3166253,29.0069517 24,29.0069517 L24,12.11 L15.52,17.9183271 L15.52,20.5269517 Z" fill="url(#${id})"></path>
+      <path d="M23.9969697,12.1078788 L23.9969697,4.26454545 C23.9961315,3.79791901 23.7375983,3.36992522 23.3249582,3.15205124 C22.912318,2.93417725 22.4130783,2.9620669 22.0272727,3.22454545 L2.35,16.6578788 C4.98320643,20.5274016 10.2540962,21.5307928 14.1248485,18.8993939 L23.9969697,12.1078788 Z" fill="currentColor"></path>
     </g>
   </svg>`;
 };

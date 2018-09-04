@@ -188,7 +188,6 @@ describe('Media PickerFacade', () => {
           pickerType,
           getPickerFacadeConfig(stateManager),
           {
-            userAuthProvider,
             uploadParams: { collection: '' },
           },
         );
@@ -472,27 +471,6 @@ describe('Media PickerFacade', () => {
           expect(spy).toHaveBeenCalledWith({
             id: testTemporaryFileId,
             status: 'cancelled',
-          });
-        });
-      }
-
-      if (pickerType === 'clipboard') {
-        it('should update the filename and append timestamp', () => {
-          const file = {
-            id: testFileId,
-            name: 'image.png',
-            size: Math.round(Math.random() * 1047552),
-            type: 'image/png',
-            creationDate: Date.UTC(0, 1),
-          };
-
-          triggerPreviewUpdate({ file });
-          triggerEnd();
-          expect(stateManager.getState(testTemporaryFileId)).toMatchObject({
-            status: 'ready',
-            fileName: 'image-19000201-000000.png',
-            preview: true,
-            thumbnail: { src: '' },
           });
         });
       }

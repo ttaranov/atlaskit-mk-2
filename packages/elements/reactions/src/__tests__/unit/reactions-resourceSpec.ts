@@ -266,14 +266,11 @@ describe('@atlaskit/reactions/reactions-provider', () => {
           const lastCall = fetchMock.lastCall('add');
           expect(lastCall).not.toEqual(undefined);
 
-          return lastCall[0].json().then(body => {
-            expect(body.containerAri).toEqual(containerAri);
-            expect(body.ari).toEqual(ari);
-            expect(body.emojiId).toEqual(emojiId);
-            expect(body.objectCreationTimestamp).toEqual(
-              objectCreationTimestamp,
-            );
-          });
+          const body = JSON.parse(lastCall[1].body);
+          expect(body.containerAri).toEqual(containerAri);
+          expect(body.ari).toEqual(ari);
+          expect(body.emojiId).toEqual(emojiId);
+          expect(body.objectCreationTimestamp).toEqual(objectCreationTimestamp);
         });
     });
 
@@ -743,6 +740,7 @@ describe('@atlaskit/reactions/reactions-provider', () => {
 
     it('should not override optimistic delete (last reaction)', done => {
       fetchMock.mock({
+        name: 'get-reactions',
         options: {
           method: 'GET',
         },
@@ -753,6 +751,7 @@ describe('@atlaskit/reactions/reactions-provider', () => {
       });
 
       fetchMock.mock({
+        name: 'remove-reaction',
         options: {
           method: 'DELETE',
         },

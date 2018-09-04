@@ -2,16 +2,18 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { withAnalytics } from '@atlaskit/analytics';
 import { EditorView } from 'prosemirror-view';
-import { ProviderFactory, Transformer } from '@atlaskit/editor-common';
+import {
+  ProviderFactory,
+  Transformer,
+  BaseTheme,
+} from '@atlaskit/editor-common';
 import { getUiComponent } from './create-editor';
 import EditorActions from './actions';
-import { EditorProps } from './types';
+import { EditorProps } from './types/editor-props';
 import { ReactEditorView } from './create-editor';
 import { EventDispatcher } from './event-dispatcher';
 import EditorContext from './ui/EditorContext';
 import { PortalProvider, PortalRenderer } from './ui/PortalProvider';
-import IntlMessageProvider from './ui/IntlMessageProvider';
-import messages from './i18n/messages';
 
 export * from './types';
 
@@ -185,7 +187,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
   };
 
   render() {
-    const Component = getUiComponent(this.props.appearance);
+    const Component = getUiComponent(this.props.appearance!);
 
     const overriddenEditorProps = {
       ...this.props,
@@ -194,17 +196,17 @@ export default class Editor extends React.Component<EditorProps, {}> {
 
     return (
       <EditorContext editorActions={this.editorActions}>
-        <IntlMessageProvider messages={messages}>
-          <PortalProvider
-            render={portalProviderAPI => (
-              <>
-                <ReactEditorView
-                  editorProps={overriddenEditorProps}
-                  portalProviderAPI={portalProviderAPI}
-                  providerFactory={this.providerFactory}
-                  onEditorCreated={this.onEditorCreated}
-                  onEditorDestroyed={this.onEditorDestroyed}
-                  render={({ editor, view, eventDispatcher, config }) => (
+        <PortalProvider
+          render={portalProviderAPI => (
+            <>
+              <ReactEditorView
+                editorProps={overriddenEditorProps}
+                portalProviderAPI={portalProviderAPI}
+                providerFactory={this.providerFactory}
+                onEditorCreated={this.onEditorCreated}
+                onEditorDestroyed={this.onEditorDestroyed}
+                render={({ editor, view, eventDispatcher, config }) => (
+                  <BaseTheme>
                     <Component
                       disabled={this.props.disabled}
                       editorActions={this.editorActions}
@@ -235,13 +237,13 @@ export default class Editor extends React.Component<EditorProps, {}> {
                       addonToolbarComponents={this.props.addonToolbarComponents}
                       collabEdit={this.props.collabEdit}
                     />
-                  )}
-                />
-                <PortalRenderer portalProviderAPI={portalProviderAPI} />
-              </>
-            )}
-          />
-        </IntlMessageProvider>
+                  </BaseTheme>
+                )}
+              />
+              <PortalRenderer portalProviderAPI={portalProviderAPI} />
+            </>
+          )}
+        />
       </EditorContext>
     );
   }

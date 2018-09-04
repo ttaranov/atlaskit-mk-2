@@ -52,6 +52,10 @@ describe('ItemStateManager', () => {
     };
   });
 
+  afterEach(() => {
+    fetchMock.restore();
+  });
+
   it('should subscribe to PubSub event if PubSubClient provided', () => {
     // tslint:disable-next-line:no-unused-expression
     new ItemStateManager({ url: '', pubSubClient: mockPubSubClient });
@@ -116,6 +120,7 @@ describe('ItemStateManager', () => {
         })
         .mock({
           matcher: 'end:tasks/state',
+          name: 'get-state',
           response: [serviceTask(objectKey)],
         });
 
@@ -155,6 +160,7 @@ describe('ItemStateManager', () => {
         })
         .mock({
           matcher: 'end:tasks/state',
+          name: 'get-state',
           response: [serviceTask(objectKey)],
         });
 
@@ -194,6 +200,7 @@ describe('ItemStateManager', () => {
         })
         .mock({
           matcher: 'end:tasks/state',
+          name: 'get-state',
           response: [serviceTask(objectKey)],
         });
 
@@ -232,6 +239,7 @@ describe('ItemStateManager', () => {
         })
         .mock({
           matcher: 'end:tasks/state',
+          name: 'get-state',
           response: [serviceTask(objectKey)],
         });
 
@@ -254,17 +262,18 @@ describe('ItemStateManager', () => {
   });
 
   describe('#onReconnect', () => {
-    it('should refresh all cached tasks state', done => {
+    it('should refresh all cached tasks state', () => {
       fetchMock
         .mock({
           matcher: 'end:tasks',
           method: 'PUT',
           name: 'set-task',
-          response: serviceTask(objectKey, 'DONE'),
+          response: serviceTask(objectKey, 'TODO'),
         })
         .mock({
           matcher: 'end:tasks/state',
-          response: [serviceTask(objectKey)],
+          name: 'get-state',
+          response: [serviceTask(objectKey, 'DONE')],
         });
 
       const itemStateManager = new ItemStateManager({
@@ -272,17 +281,18 @@ describe('ItemStateManager', () => {
         pubSubClient: mockPubSubClient,
       });
 
-      itemStateManager.toggleTask(objectKey, 'TODO').then(() => {
-        expect(fetchMock.calls('end:tasks/state').length).toBe(1);
+      itemStateManager.toggleTask(objectKey, 'TODO');
+
+      jest.runAllTimers();
+
+      return Promise.resolve(() => {
+        expect(fetchMock.calls('get-state').length).toBe(1);
 
         itemStateManager.onReconnect();
         jest.runAllTimers();
 
-        expect(fetchMock.calls('end:tasks/state').length).toBe(2);
-        done();
+        expect(fetchMock.calls('get-state').length).toBe(2);
       });
-
-      jest.runAllTimers();
     });
   });
 });
