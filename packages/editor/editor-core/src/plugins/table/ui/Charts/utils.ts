@@ -89,21 +89,12 @@ export const MONTHS = [
 
 export const isTimelineAvailable = (state: EditorState) => {
   const { tableNode } = pluginKey.getState(state);
-  const { tableCell, date } = state.schema.nodes;
 
-  for (let rowIndex = 0; rowIndex < tableNode.childCount; rowIndex++) {
-    const row = tableNode.child(rowIndex);
-
-    for (let columnIndex = 0; columnIndex < row.childCount; columnIndex++) {
-      // TODO: take column index from chart settings (or check if its a date columnt type)
-      const cell = row.child(columnIndex);
-      if (cell.type !== tableCell) {
-        continue;
-      }
-      const node = cell.firstChild.firstChild;
-      if (node && node.type === date) {
-        return true;
-      }
+  const firstRow = tableNode.child(0);
+  for (let columnIndex = 0; columnIndex < firstRow.childCount; columnIndex++) {
+    const cell = firstRow.child(columnIndex);
+    if (cell.attrs.cellType === 'date') {
+      return true;
     }
   }
 
@@ -112,21 +103,12 @@ export const isTimelineAvailable = (state: EditorState) => {
 
 export const isNumberChartAvailable = (state: EditorState) => {
   const { tableNode } = pluginKey.getState(state);
-  const { tableCell } = state.schema.nodes;
 
-  for (let rowIndex = 0; rowIndex < tableNode.childCount; rowIndex++) {
-    const row = tableNode.child(rowIndex);
-
-    for (let columnIndex = 0; columnIndex < row.childCount; columnIndex++) {
-      const cell = row.child(columnIndex);
-      if (cell.type !== tableCell) {
-        continue;
-      }
-
-      const node = cell.firstChild.firstChild;
-      if (node && node.isText && /^\d+$/.test(node.textContent)) {
-        return true;
-      }
+  const firstRow = tableNode.child(0);
+  for (let columnIndex = 0; columnIndex < firstRow.childCount; columnIndex++) {
+    const cell = firstRow.child(columnIndex);
+    if (cell.attrs.cellType === 'number') {
+      return true;
     }
   }
 
