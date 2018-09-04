@@ -125,6 +125,7 @@ export const calculateSummary = (table: PmNode) => {
       } else if (cellType === 'slider') {
         let firstChild = cell.child(0).child(0);
         let cellNumber = parseFloat(firstChild.attrs.value) || 0;
+        // debugger;
         colValue = numberOps[operators[j]](colValue, cellNumber);
         colSummary.summaryType = 'total';
       } else if (cellType === 'text' || cellType === 'date') {
