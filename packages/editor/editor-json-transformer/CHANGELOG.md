@@ -1,5 +1,8 @@
 # @atlaskit/editor-json-transformer
 
+## 4.0.9
+- [patch] ED-5270 Headings now always have a content attribute, even if empty [87a7506](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87a7506)
+
 ## 4.0.8
 - [patch] Updated dependencies [7545979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7545979)
   - @atlaskit/editor-common@15.0.0
