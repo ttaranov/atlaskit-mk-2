@@ -1,13 +1,11 @@
 // @flow
 import React, { Component } from 'react';
 import { AtlaskitThemeProvider } from '@atlaskit/theme';
-import Button from '@atlaskit/button';
 import { RadioGroup } from '../src';
 
 const options = [
-  { value: 'one', name: 'numbers', label: 'One' },
-  { value: 'two', name: 'numbers', label: 'Two' },
-  { value: 'three', name: 'numbers', label: 'Three' },
+  { value: 'light', name: 'numbers', label: 'Light Mode' },
+  { value: 'dark', name: 'numbers', label: 'Dark Mode' },
 ];
 
 export default class ThemedRadio extends Component<
@@ -15,21 +13,23 @@ export default class ThemedRadio extends Component<
   { themeMode: 'light' | 'dark' },
 > {
   state = {
-    themeMode: 'light',
+    themeMode: 'dark',
   };
 
-  switchTheme = () => {
-    const { themeMode } = this.state;
+  switchTheme = ({ currentTarget: { value } }: SyntheticEvent<*>) => {
     this.setState({
-      themeMode: themeMode === 'light' ? 'dark' : 'light',
+      themeMode: value,
     });
   };
   render() {
     const { themeMode } = this.state;
     return (
       <AtlaskitThemeProvider mode={themeMode}>
-        <RadioGroup options={options} onChange={() => {}} />
-        <Button onClick={this.switchTheme}> Switch Theme {themeMode} </Button>
+        <RadioGroup
+          defaultCheckedValue={this.state.themeMode}
+          options={options}
+          onChange={this.switchTheme}
+        />
       </AtlaskitThemeProvider>
     );
   }
