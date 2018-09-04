@@ -4,7 +4,7 @@ import Tooltip from '@atlaskit/tooltip';
 import { mount } from 'enzyme';
 import { Reactions, OnEmoji } from '../..';
 import { sortByRelevance } from '../../internal/helpers';
-import Reaction from '../../internal/reaction';
+import Reaction, { ReactionComponent } from '../../internal/reaction';
 import ReactionPicker from '../../reaction-picker';
 import MockReactionsProvider, {
   reactionsProvider,
@@ -13,6 +13,8 @@ import { smileyId, flagBlackId, thumbsdownId, thumbsupId } from './_test-data';
 import { ObjectReactionKey, ReactionStatus } from '../../reactions-resource';
 import { emoji } from '@atlaskit/util-data-test';
 import { EmojiProvider } from '@atlaskit/emoji';
+import { AnalyticsListener } from '@atlaskit/analytics-next';
+import Trigger from '../../internal/trigger';
 
 const { getEmojiResourcePromise } = emoji.testData;
 
@@ -28,6 +30,7 @@ describe('@atlaskit/reactions/reactions', () => {
         reactionsProvider={reactionsProvider}
         emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}
         onReactionClick={onClick}
+        allowAllEmojis={true}
       />
     );
   };
@@ -185,15 +188,18 @@ describe('@atlaskit/reactions/reactions', () => {
         reactions.update();
 
         const reactedReaction = reactions
-          .find(Reaction)
+          .find(ReactionComponent)
           .filterWhere(
             reaction => reaction.prop('reaction').emojiId === thumbsupId.id!,
           )
-          .instance() as Reaction;
+          .instance() as ReactionComponent;
 
         const reactionFlash = jest.spyOn(reactedReaction, 'flash');
 
-        reactions.find(ReactionPicker).prop('onSelection')(thumbsupId.id!);
+        reactions.find(ReactionPicker).prop('onSelection')(
+          thumbsupId.id!,
+          'quickSelector',
+        );
 
         expect(reactionFlash).toHaveBeenCalledTimes(1);
       });
@@ -235,5 +241,211 @@ describe('@atlaskit/reactions/reactions', () => {
       .first()
       .children();
     expect(container.last().find(ReactionPicker)).toHaveLength(1);
+  });
+
+  describe('with analytics', () => {
+    const onEvent = jest.fn();
+    let component;
+
+    beforeEach(() => {
+      component = mount(
+        <AnalyticsListener channel="fabric-elements" onEvent={onEvent}>
+          {renderReactions()}
+        </AnalyticsListener>,
+      );
+    });
+
+    afterEach(() => {
+      onEvent.mockClear();
+    });
+
+    it('should trigger render ', () => {
+      expect(onEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          payload: expect.objectContaining({
+            action: 'rendered',
+            actionSubject: 'reactionView',
+            eventType: 'ops',
+            attributes: {
+              duration: expect.any(Number),
+              containerAri,
+              ari: demoAri,
+            },
+          }),
+        }),
+        'fabric-elements',
+      );
+    });
+
+    describe('with ReactionPicker open', () => {
+      beforeEach(() => {
+        component.find(Trigger).simulate('click');
+      });
+
+      it('should trigger clicked for Reaction Picker Button', () => {
+        expect(onEvent).toHaveBeenCalledWith(
+          expect.objectContaining({
+            payload: expect.objectContaining({
+              action: 'clicked',
+              actionSubject: 'reactionPickerButton',
+              eventType: 'ui',
+              attributes: {
+                reactionEmojiCount: 4,
+                containerAri,
+                ari: demoAri,
+              },
+            }),
+          }),
+          'fabric-elements',
+        );
+      });
+
+      it('should trigger cancelled for ReactionPicker', () => {
+        component.find(ReactionPicker).prop('onCancel')();
+
+        expect(onEvent).toHaveBeenCalledWith(
+          expect.objectContaining({
+            payload: expect.objectContaining({
+              action: 'cancelled',
+              actionSubject: 'reactionPicker',
+              eventType: 'ui',
+              attributes: {
+                duration: expect.any(Number),
+                containerAri,
+                ari: demoAri,
+              },
+            }),
+          }),
+          'fabric-elements',
+        );
+      });
+
+      it('should trigger clicked for new emoji', () => {
+        component.find(ReactionPicker).prop('onSelection')(
+          'emoji-1',
+          'quickSelector',
+        );
+
+        expect(onEvent).toHaveBeenCalledWith(
+          expect.objectContaining({
+            payload: expect.objectContaining({
+              action: 'clicked',
+              actionSubject: 'reactionPicker',
+              actionSubjectID: 'emoji',
+              eventType: 'ui',
+              attributes: {
+                duration: expect.any(Number),
+                emojiId: 'emoji-1',
+                previousState: 'new',
+                source: 'quickSelector',
+                containerAri,
+                ari: demoAri,
+              },
+            }),
+          }),
+          'fabric-elements',
+        );
+      });
+
+      it('should trigger clicked for existing emoji', () => {
+        component.find(ReactionPicker).prop('onSelection')(
+          '1f60d',
+          'quickSelector',
+        );
+
+        expect(onEvent).toHaveBeenCalledWith(
+          expect.objectContaining({
+            payload: expect.objectContaining({
+              action: 'clicked',
+              actionSubject: 'reactionPicker',
+              actionSubjectID: 'emoji',
+              eventType: 'ui',
+              attributes: {
+                duration: expect.any(Number),
+                emojiId: '1f60d',
+                previousState: 'existingNotReacted',
+                source: 'quickSelector',
+                containerAri,
+                ari: demoAri,
+              },
+            }),
+          }),
+          'fabric-elements',
+        );
+      });
+
+      it('should trigger clicked for existing reacted emoji', () => {
+        component.find(ReactionPicker).prop('onSelection')(
+          '1f525',
+          'quickSelector',
+        );
+
+        expect(onEvent).toHaveBeenCalledWith(
+          expect.objectContaining({
+            payload: expect.objectContaining({
+              action: 'clicked',
+              actionSubject: 'reactionPicker',
+              actionSubjectID: 'emoji',
+              eventType: 'ui',
+              attributes: {
+                duration: expect.any(Number),
+                emojiId: '1f525',
+                previousState: 'existingReacted',
+                source: 'quickSelector',
+                containerAri,
+                ari: demoAri,
+              },
+            }),
+          }),
+          'fabric-elements',
+        );
+      });
+
+      it('should trigger clicked from emojiPicker', () => {
+        component.find(ReactionPicker).prop('onMore')();
+
+        expect(onEvent).toHaveBeenCalledWith(
+          expect.objectContaining({
+            payload: expect.objectContaining({
+              action: 'clicked',
+              actionSubject: 'reactionPicker',
+              actionSubjectID: 'more',
+              eventType: 'ui',
+              attributes: {
+                duration: expect.any(Number),
+                containerAri,
+                ari: demoAri,
+              },
+            }),
+          }),
+          'fabric-elements',
+        );
+
+        component.find(ReactionPicker).prop('onSelection')(
+          '1f525',
+          'emojiPicker',
+        );
+
+        expect(onEvent).toHaveBeenCalledWith(
+          expect.objectContaining({
+            payload: expect.objectContaining({
+              action: 'clicked',
+              actionSubject: 'reactionPicker',
+              actionSubjectID: 'emoji',
+              eventType: 'ui',
+              attributes: {
+                duration: expect.any(Number),
+                emojiId: '1f525',
+                previousState: 'existingReacted',
+                source: 'emojiPicker',
+                containerAri,
+                ari: demoAri,
+              },
+            }),
+          }),
+          'fabric-elements',
+        );
+      });
+    });
   });
 });

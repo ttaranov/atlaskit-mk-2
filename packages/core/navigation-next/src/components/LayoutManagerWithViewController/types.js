@@ -13,6 +13,7 @@ export type LayoutManagerWithViewControllerProps = {
   globalNavigation: ComponentType<{}>,
   navigationUIController: UIController,
   navigationViewController: ViewController,
+  firstSkeletonToRender?: 'product' | 'container',
 };
 
 export type LayoutManagerWithViewControllerState = {

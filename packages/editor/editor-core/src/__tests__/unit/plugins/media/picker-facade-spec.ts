@@ -188,7 +188,6 @@ describe('Media PickerFacade', () => {
           pickerType,
           getPickerFacadeConfig(stateManager),
           {
-            userAuthProvider,
             uploadParams: { collection: '' },
           },
         );

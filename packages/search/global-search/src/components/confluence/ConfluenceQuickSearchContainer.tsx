@@ -8,7 +8,7 @@ import {
   EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE,
   Scope,
 } from '../../api/CrossProductSearchClient';
-import { Result, ConfluenceResultsMap } from '../../model/Result';
+import { Result } from '../../model/Result';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
 import ConfluenceSearchResults from './ConfluenceSearchResults';
 import { SearchScreenCounter, ScreenCounter } from '../../util/ScreenCounter';
@@ -254,12 +254,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         getSearchResults={this.getSearchResults}
         handleSearchSubmit={this.handleSearchSubmit}
         isSendSearchTermsEnabled={isSendSearchTermsEnabled}
-        getDisplayedResults={result => {
-          const slicedResults = sliceResults(result as ConfluenceResultsMap);
-          return Object.keys(slicedResults)
-            .map(key => slicedResults[key])
-            .reduce((acc: Result[][], value) => [...acc, value], []);
-        }}
+        getDisplayedResults={sliceResults}
       />
     );
   }

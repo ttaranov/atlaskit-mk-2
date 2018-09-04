@@ -1,12 +1,10 @@
-import { AuthProvider, Context } from '@atlaskit/media-core';
+import { Context } from '@atlaskit/media-core';
 
 import { LocalUploadComponent, LocalUploadConfig } from './localUpload';
 import { whenDomReady } from '../util/documentReady';
 import { appendTimestamp } from '../util/appendTimestamp';
 
-export interface ClipboardConfig extends LocalUploadConfig {
-  readonly userAuthProvider?: AuthProvider;
-}
+export interface ClipboardConfig extends LocalUploadConfig {}
 
 export interface ClipboardConstructor {
   new (context: Context, clipboardConfig: ClipboardConfig): Clipboard;

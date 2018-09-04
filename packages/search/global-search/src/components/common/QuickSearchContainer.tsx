@@ -20,6 +20,10 @@ import {
 } from '../../util/analytics-event-helper';
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { CreateAnalyticsEventFn } from '../analytics/types';
+import { objectValues } from '../SearchResultsUtil';
+
+const resultMapToArray = (results: GenericResultMap): Result[][] =>
+  objectValues(results).reduce((acc: Result[][], value) => [...acc, value], []);
 
 export interface SearchResultProps extends State {
   retrySearch: Function;
@@ -41,7 +45,7 @@ export interface Props {
    * for example in jira we pass (issues, boards, filters and projects but we display only 2 groups issues and others combined)
    * @param results
    */
-  getDisplayedResults?(results: GenericResultMap): Result[][];
+  getDisplayedResults?(results: GenericResultMap): GenericResultMap;
   createAnalyticsEvent?: CreateAnalyticsEventFn;
   handleSearchSubmit?({ target: string }): void;
   isSendSearchTermsEnabled?: boolean;
@@ -63,9 +67,7 @@ export interface State {
  */
 export class QuickSearchContainer extends React.Component<Props, State> {
   static defaultProps = {
-    getDisplayedResults(results: GenericResultMap) {
-      return Object.keys(results).map(key => results[key]);
-    },
+    getDisplayedResults: results => results,
   };
 
   constructor(props) {
@@ -157,8 +159,11 @@ export class QuickSearchContainer extends React.Component<Props, State> {
         ? performanceNow() - requestStartTime
         : 0;
 
+      const resultsArray: Result[][] = resultMapToArray(
+        getDisplayedResults(recentItems),
+      );
       const eventAttributes: ShownAnalyticsAttributes = buildShownEventDetails(
-        ...getDisplayedResults(recentItems),
+        ...resultsArray,
       );
 
       firePreQueryShownEvent(
@@ -186,8 +191,11 @@ export class QuickSearchContainer extends React.Component<Props, State> {
 
     const { createAnalyticsEvent, getDisplayedResults } = this.props;
     if (createAnalyticsEvent && getDisplayedResults) {
+      const resultsArray: Result[][] = resultMapToArray(
+        getDisplayedResults(searchResults),
+      );
       const resultsDetails: ShownAnalyticsAttributes = buildShownEventDetails(
-        ...getDisplayedResults(searchResults),
+        ...resultsArray,
       );
 
       firePostQueryShownEvent(
