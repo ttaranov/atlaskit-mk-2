@@ -13,7 +13,7 @@ import {
 } from '../model/Result';
 
 const RECENT_ITEMS_PATH: string = '/rest/internal/2/productsearch/recent';
-const SEARCH_PATH: string = 'rest/quicknav/1/search';
+const SEARCH_PATH: string = 'rest/quicknavjira/1/search';
 
 const flatMap = (arr: [][]) =>
   arr.reduce((arr, result) => [...arr, ...result], []);
@@ -34,7 +34,7 @@ export const DEFAULT_RECENT_ITEMS_COUNT: RecentItemsCounts = {
 
 export type Avatar = {
   url: string;
-  css: string;
+  css?: string;
 };
 
 export interface JiraSearchResponse {
@@ -91,7 +91,7 @@ export interface JiraClient {
    * @param searchSessionId string unique for every session id
    * @returns a promise which resolve to search results
    */
-  search(query: string, searchSessionId: string): Promise<GenericResultMap[]>;
+  search(query: string, searchSessionId: string): Promise<GenericResultMap>;
 }
 
 enum JiraResponseGroup {
@@ -233,28 +233,53 @@ export default class JiraClientImpl implements JiraClient {
   private jiraScopesToResults(scopes: Scope[]): GenericResultMap {
     return flatMap(scopes
       .filter(scope => !scope.error && scope.results && scope.results.length)
-      .map(this.scopeToEntryArray) as [][]).reduce((acc, entry) => {
+      .map(this.scopeToResult) as [][]).reduce((acc, entry) => {
       const key = Object.keys(entry)[0];
       const value = entry[key];
       return Object.assign({}, acc, { [key]: (acc[key] || []).concat(value) });
     }, {});
   }
 
-  private scopeToEntryArray(scope: Scope): { [k: string]: Result }[] {
+  private scopeToResult(scope: Scope): { [k: string]: Result }[] {
     return (scope.results as Entry[]).map(({ id, name, url, attributes }) => ({
       [attributes['@type']]: {
         resultId: id,
         name: name,
         href: url,
         resultType: ResultType.JiraObjectResult,
-        containerId: attributes && attributes.containerId,
+        containerId: attributes.containerId,
         analyticsType: AnalyticsType.ResultJira,
-        objectKey: attributes && attributes.key,
-        containerName: attributes && attributes.containerName,
-        avatarUrl: attributes && attributes.avatar && attributes.avatar.url,
+        ...extractSpecificAttributes(attributes),
+        avatarUrl: attributes.avatar && attributes.avatar.url,
         contentType: JiraTypeToContentType[attributes['@type']],
         experimentId: scope.experimentId,
-      } as Result,
+      },
     }));
   }
 }
+
+const extractSpecificAttributes = (attributes: Attributes) => {
+  const type = attributes['@type'];
+  switch (type) {
+    case 'issue':
+      return {
+        objectKey: attributes.key,
+        containerName: attributes.issueTypeName,
+      };
+    case 'board':
+      return {
+        objectKey: 'Board',
+        containerName: attributes.containerName,
+      };
+    case 'filter':
+      return {
+        objectKey: 'Filter',
+        containerName: attributes.ownerName,
+      };
+    case 'project':
+      return {
+        containerName: attributes.projectType,
+      };
+  }
+  return null;
+};

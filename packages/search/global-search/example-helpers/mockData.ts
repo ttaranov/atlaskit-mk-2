@@ -9,7 +9,7 @@ import {
 } from '../src/api/CrossProductSearchClient';
 
 import * as uuid from 'uuid/v4';
-
+import { Entry, Scope as JiraScope } from '../src/api/JiraClient';
 const DUMMY_BASE_URL = 'http://localhost';
 
 function pickRandom(array: Array<any>) {
@@ -383,6 +383,124 @@ function generateRandomQuickNavItem(className: string) {
     spaceName: getMockCompanyName(),
     id: uuid(),
   };
+}
+
+function getIssueTypeId(name) {
+  const issueTypeMap = {
+    task: 10001,
+    story: 10002,
+    bug: 10003,
+    epic: 10004,
+  };
+  return issueTypeMap[name];
+}
+
+const getIssueAvatar = issueType =>
+  `https://product-fabric.atlassian.net/images/icons/issuetypes/${issueType}.svg`;
+const getIssueUrl = key => `https://product-fabric.atlassian.net/browse/${key}`;
+const getProjectUrl = porjectKey =>
+  `https://product-fabric.atlassian.net/browse/${porjectKey}`;
+const getFilterUrl = () =>
+  `https://product-fabric.atlassian.net/browse/filter=${Math.floor(
+    (Math.random() * -10) % 5,
+  )}`;
+
+function generateRandomJiraIssue(): Entry {
+  const issueTypeName = pickRandom(['task', 'story', 'bug', 'epic']);
+  const key = randomIssueKey();
+  return {
+    id: uuid(),
+    name: getMockCatchPhrase(),
+    url: getIssueUrl(key),
+    attributes: {
+      '@type': 'issue',
+      containerId: uuid(),
+      key,
+      issueTypeName,
+      issueTypeId: getIssueTypeId(issueTypeName),
+      avatar: {
+        url: getIssueAvatar(issueTypeName),
+      },
+    },
+  };
+}
+
+function generateRandomJiraProject(): Entry {
+  const key = getMockAbbreviation();
+  return {
+    id: uuid(),
+    name: getMockCatchPhrase(),
+    url: getProjectUrl(key),
+    attributes: {
+      '@type': 'project',
+      projectType: pickRandom(['Software Project', 'core', 'servicedesk']),
+      avatar: {
+        url: randomSpaceIconUrl(),
+      },
+    },
+  };
+}
+
+function generateRandomJiraBoard(): Entry {
+  const key = getMockAbbreviation();
+  return {
+    id: uuid(),
+    name: getMockCatchPhrase(),
+    url: getProjectUrl(key),
+    attributes: {
+      '@type': 'board',
+      containerId: uuid(),
+      containerName: key,
+      avatar: {
+        url: randomSpaceIconUrl(),
+      },
+    },
+  };
+}
+
+function generateRandomJiraFilter(): Entry {
+  return {
+    id: uuid(),
+    name: getMockCatchPhrase(),
+    url: getFilterUrl(),
+    attributes: {
+      '@type': 'filter',
+      ownerId: uuid(),
+      ownerName: getMockLastName(),
+      avatar: {
+        url: randomSpaceIconUrl(),
+      },
+    },
+  };
+}
+
+export function generateJiraScope(
+  type: string,
+  generator: Function,
+  query,
+): JiraScope {
+  return {
+    id: type,
+    experimentId: uuid(),
+    results: generateRandomElements<Entry>(() => generator()).filter(item =>
+      item.name.toLowerCase().includes(query.toLowerCase()),
+    ),
+  };
+}
+
+export function mockJiraSearchData(n: number = 50) {
+  const map = {
+    issues: generateRandomJiraIssue,
+    boards: generateRandomJiraBoard,
+    projects: generateRandomJiraProject,
+    filters: generateRandomJiraFilter,
+  };
+
+  return (query: string) => ({
+    scopes: Object.keys(map)
+      .map(key => generateJiraScope(key, map[key], query))
+      .reduce((scopes, scope) => [...scopes, scope], []),
+  });
 }
 
 export function makeQuickNavSearchData(n: number = 50) {

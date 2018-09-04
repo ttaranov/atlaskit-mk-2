@@ -7,6 +7,7 @@ import {
   makeConfluenceRecentPagesData,
   makeConfluenceRecentSpacesData,
   makeQuickNavSearchData,
+  mockJiraSearchData,
 } from './mockData';
 import { JiraRecentResponse } from './jiraRecentResponseData';
 
@@ -31,6 +32,7 @@ const confluenceRecentSpacesResponse = makeConfluenceRecentSpacesData();
 const queryMockSearch = makeCrossProductSearchData();
 const queryMockQuickNav = makeQuickNavSearchData();
 const queryPeopleSearch = makePeopleSearchData();
+const queryJiraSearch = mockJiraSearchData();
 
 function delay<T>(millis: number, value?: T): Promise<T> {
   return new Promise(resolve => setTimeout(() => resolve(value), millis));
@@ -80,10 +82,21 @@ function mockPeopleApi() {
   });
 }
 
-function mockJiraApi() {
+function mockJiraRecentApi() {
   fetchMock.get(
     new RegExp('/rest/internal/2/productsearch/recent?'),
     async request => delay(500, JiraRecentResponse),
+  );
+}
+
+function mockJiraSearchApi() {
+  fetchMock.get(
+    new RegExp('rest/quicknavjira/1/search'),
+    async (request: Request) => {
+      const query = request.url.split('query=')[1];
+      const results = queryJiraSearch(query);
+      return delay(500, results);
+    },
   );
 }
 
@@ -93,7 +106,8 @@ export function setupMocks(config: MocksConfig = DEFAULT_MOCKS_CONFIG) {
   mockPeopleApi();
   mockConfluenceRecentApi();
   mockQuickNavApi(config.quickNavDelay);
-  mockJiraApi();
+  mockJiraRecentApi();
+  mockJiraSearchApi();
 }
 
 export function teardownMocks() {
