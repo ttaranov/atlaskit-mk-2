@@ -3,9 +3,12 @@ import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
 import { Node as PMNode } from 'prosemirror-model';
 import { findDomRefAtPos, findTable } from 'prosemirror-utils';
-import { Popup } from '@atlaskit/editor-common';
 import DropdownMenu from '../../../../ui/DropdownMenu';
 import withOuterListeners from '../../../../ui/with-outer-listeners';
+import {
+  Popup,
+  akEditorFloatingOverlapPanelZIndex,
+} from '@atlaskit/editor-common';
 
 const findIndexOf = (targetRef: HTMLElement): number | null => {
   const nodes = Array.prototype.slice.call(targetRef.parentNode!.childNodes);
@@ -71,6 +74,7 @@ export default class SummaryMenu extends Component<Props, State> {
         offset={[0, -6]}
         handleClickOutside={onClickOutside}
         handleEscapeKeydown={onClickOutside}
+        zIndex={akEditorFloatingOverlapPanelZIndex}
       >
         <DropdownMenu
           items={items}
@@ -126,9 +130,11 @@ export default class SummaryMenu extends Component<Props, State> {
         break;
       case 'mention':
       case 'emoji':
-      case 'checkbox':
       case 'decision':
         items.push({ content: 'Total', value: { name: 'total' } });
+        break;
+      case 'checkbox':
+        items.push({ content: 'Remaining', value: { name: 'remaining' } });
         break;
     }
 
@@ -146,13 +152,15 @@ export default class SummaryMenu extends Component<Props, State> {
     const { editorView, clickedCell } = this.props;
     const { state, dispatch } = editorView;
     if (clickedCell) {
+      const newCell = clickedCell.node.type.create(
+        { ...clickedCell.node.attrs, summaryType: item.value.name },
+        clickedCell.node.content,
+      );
       dispatch(
-        state.tr.setNodeMarkup(
-          clickedCell.pos - 1,
-          clickedCell.node.type,
-          Object.assign({}, clickedCell.node.attrs, {
-            summaryType: item.value.name,
-          }),
+        state.tr.replaceWith(
+          clickedCell.pos,
+          clickedCell.pos + clickedCell.node.nodeSize,
+          newCell,
         ),
       );
     }

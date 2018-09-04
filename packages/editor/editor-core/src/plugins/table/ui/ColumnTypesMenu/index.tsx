@@ -3,12 +3,7 @@ import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
 import { Node as PmNode } from 'prosemirror-model';
 import { Selection } from 'prosemirror-state';
-import {
-  forEachCellInColumn,
-  setCellAttrs,
-  getCellsInColumn,
-  findTable,
-} from 'prosemirror-utils';
+import { getCellsInColumn, findTable } from 'prosemirror-utils';
 import {
   Popup,
   akEditorFloatingOverlapPanelZIndex,
@@ -43,9 +38,13 @@ function getDefaultSummaryTypeFromCellType(type: string) {
   switch (type) {
     case 'number':
     case 'currency':
+    case 'slider':
       return 'total';
     case 'mention':
       return 'people';
+    case 'checkbox':
+    case 'decision':
+      return 'remaining';
     default:
       return;
   }
