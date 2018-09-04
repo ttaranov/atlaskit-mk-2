@@ -396,6 +396,11 @@ export const tableStyles = css`
           }
         }
       }
+      td[summarytype='count'] {
+        p {
+          margin-top: 4px;
+        }
+      }
     }
     /* Range Slider */
     .rangeslider {
