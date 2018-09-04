@@ -29,7 +29,10 @@ export default class NumberTransformer implements GraphTransformer {
     this.node.forEach((row, _, rowIdx) => {
       const displayRowNumber = haveHeaderRow ? rowIdx : rowIdx + 1;
 
-      if (rowIdx === this.node.childCount - 1) {
+      if (
+        this.node.attrs.isSummaryRowEnabled &&
+        rowIdx === this.node.childCount - 1
+      ) {
         return;
       }
 
