@@ -8,6 +8,7 @@ import { LinkComponent } from '../GlobalQuickSearchWrapper';
 import QuickSearchContainer from '../common/QuickSearchContainer';
 import JiraSearchResults from './JiraSearchResults';
 import { sliceResults } from './JiraSearchResultsMapper';
+import performanceNow from '../../util/performance-now';
 
 export interface Props {
   createAnalyticsEvent?: CreateAnalyticsEventFn;
@@ -137,18 +138,35 @@ export class JiraQuickSearchContainer extends React.Component<
     sessionId: string,
     startTime: number,
   ): Promise<ResultsWithTiming> => {
+    const jiraSearchPromise = this.props.jiraClient.search(sessionId, query);
+    const poeplePromise = this.props.peopleSearchClient.search(query);
+
+    const mapPromiseToPerformanceTime = p =>
+      p.then(() => performanceNow() - startTime);
+
+    const timingPromise = [jiraSearchPromise, poeplePromise].map(
+      mapPromiseToPerformanceTime,
+    );
+
     return Promise.all([
-      this.props.peopleSearchClient.search(query),
-      this.props.jiraClient.search(sessionId, query),
-    ]).then(([people, jiraResults]) => ({
-      results: {
-        people,
-        issues: jiraResults.issue || [],
-        boards: jiraResults.board || [],
-        filters: jiraResults.filter || [],
-        projects: jiraResults.project || [],
-      },
-    }));
+      poeplePromise,
+      jiraSearchPromise,
+      ...timingPromise,
+    ]).then(
+      ([people, jiraResults, jiraSearchElapsedMs, peopleSearchElapsedMs]) => ({
+        results: {
+          people,
+          issues: jiraResults.issue || [],
+          boards: jiraResults.board || [],
+          filters: jiraResults.filter || [],
+          projects: jiraResults.project || [],
+        },
+        timings: {
+          jiraSearchElapsedMs,
+          peopleSearchElapsedMs,
+        },
+      }),
+    );
   };
 
   render() {

@@ -433,7 +433,11 @@ function generateRandomJiraProject(): Entry {
     url: getProjectUrl(key),
     attributes: {
       '@type': 'project',
-      projectType: pickRandom(['Software Project', 'core', 'servicedesk']),
+      projectType: pickRandom([
+        'Software project',
+        'Core projects',
+        'Servicedesk project',
+      ]),
       avatar: {
         url: randomSpaceIconUrl(),
       },

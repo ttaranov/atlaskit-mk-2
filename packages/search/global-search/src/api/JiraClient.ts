@@ -15,8 +15,7 @@ import {
 const RECENT_ITEMS_PATH: string = '/rest/internal/2/productsearch/recent';
 const SEARCH_PATH: string = 'rest/quicknavjira/1/search';
 
-const flatMap = (arr: [][]) =>
-  arr.reduce((arr, result) => [...arr, ...result], []);
+const flatMap = arr => arr.reduce((arr, result) => [...arr, ...result], []);
 
 export type RecentItemsCounts = {
   issues?: number;
@@ -231,9 +230,11 @@ export default class JiraClientImpl implements JiraClient {
   }
 
   private jiraScopesToResults(scopes: Scope[]): GenericResultMap {
-    return flatMap(scopes
-      .filter(scope => !scope.error && scope.results && scope.results.length)
-      .map(this.scopeToResult) as [][]).reduce((acc, entry) => {
+    return flatMap(
+      scopes
+        .filter(scope => !scope.error && scope.results && scope.results.length)
+        .map(this.scopeToResult),
+    ).reduce((acc, entry) => {
       const key = Object.keys(entry)[0];
       const value = entry[key];
       return Object.assign({}, acc, { [key]: (acc[key] || []).concat(value) });
