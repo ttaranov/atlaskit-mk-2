@@ -29,7 +29,7 @@ const modifyStyles = defaultStyles => ({
   },
   textWrapper: {
     ...defaultStyles.textWrapper,
-    fontWeight: 500,
+    fontWeight: 600,
   },
 });
 

@@ -123,7 +123,7 @@ const patchBackItemStyles = styles => ({
   ...styles,
   textWrapper: {
     ...styles.textWrapper,
-    fontWeight: 500,
+    fontWeight: 600,
   },
 });
 const BackItem = ({ before: beforeProp, text, ...props }: ItemProps) => {
