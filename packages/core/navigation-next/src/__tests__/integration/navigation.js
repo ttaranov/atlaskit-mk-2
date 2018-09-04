@@ -31,7 +31,7 @@ BrowserTestCase(
     const globalNav = getByKey('global-navigation');
     await page.goto(exampleURL);
 
-    expect(await page.isVisible(`${globalNav} [aria-label="Altassian"]`)).toBe(
+    expect(await page.isVisible(`${globalNav} [aria-label="Atlassian"]`)).toBe(
       true,
     );
     expect(await page.isVisible(`${globalNav} [aria-label="Search"]`)).toBe(
