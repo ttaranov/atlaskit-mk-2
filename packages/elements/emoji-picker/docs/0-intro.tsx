@@ -26,7 +26,7 @@ export default md`
 
   ~~~js
   import EmojiPicker from '@atlaskit/emoji-picker';
-  import EmojiResource from '@atlaskit/emoji';
+  import { EmojiResource } from '@atlaskit/emoji';
   const emojiProvider = new EmojiResource({
     providers: [
       {
