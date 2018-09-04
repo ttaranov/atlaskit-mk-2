@@ -346,7 +346,7 @@ export const tableStyles = css`
       td[celltype='checkbox'] {
         text-align: center;
       }
-      td[celltype='emoji'],
+      td[celltype='emoji'] {
         text-align: right;
       }
 
