@@ -33,31 +33,33 @@ type GetTransitionStylesArgs = {
 };
 
 export default ({ state, traversalDirection }: GetTransitionStylesArgs) => {
-  if (['entering', 'exiting'].includes(state) && traversalDirection) {
-    if (state === 'exiting') {
-      const animationName =
-        traversalDirection === 'down' ? exitAnimationDown : exitAnimationUp;
-      return {
-        animationName,
-        animationDuration: transitionDuration,
-        animationFillMode: 'forwards',
-        animationTimingFunction: transitionTimingFunction,
-      };
-    }
+  if (!['entering', 'exiting'].includes(state) || !traversalDirection) {
+    return {};
+  }
 
-    if (state === 'entering') {
-      const animationName =
-        traversalDirection === 'down' ? enterAnimationDown : enterAnimationUp;
-      return {
-        animationName,
-        animationDuration: transitionDuration,
-        animationFillMode: 'forwards',
-        animationTimingFunction: transitionTimingFunction,
-        position: 'absolute',
-        width: '100%',
-        zIndex: 1,
-      };
-    }
+  if (state === 'exiting') {
+    const animationName =
+      traversalDirection === 'down' ? exitAnimationDown : exitAnimationUp;
+    return {
+      animationName,
+      animationDuration: transitionDuration,
+      animationFillMode: 'forwards',
+      animationTimingFunction: transitionTimingFunction,
+    };
+  }
+
+  if (state === 'entering') {
+    const animationName =
+      traversalDirection === 'down' ? enterAnimationDown : enterAnimationUp;
+    return {
+      animationName,
+      animationDuration: transitionDuration,
+      animationFillMode: 'forwards',
+      animationTimingFunction: transitionTimingFunction,
+      position: 'absolute',
+      width: '100%',
+      zIndex: 1,
+    };
   }
 
   return {};

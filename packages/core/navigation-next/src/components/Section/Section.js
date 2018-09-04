@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent } from 'react';
+import React, { PureComponent, type Node } from 'react';
 import { TransitionGroup, Transition } from 'react-transition-group';
 import { css as parseJss } from 'emotion';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
@@ -9,11 +9,12 @@ import { transitionDurationMs } from '../../common/constants';
 import getAnimationStyles from './getAnimationStyles';
 import type { SectionProps, SectionState } from './types';
 
-const StaticWrapper = props => (
+/** The below components are exported for testing purposes only. */
+type StyledComponentProps = { children: Node };
+export const StaticTransitionGroup = (props: StyledComponentProps) => (
   <div className={parseJss({ position: 'relative' })} {...props} />
 );
-
-const GrowingWrapper = props => (
+export const ScrollableTransitionGroup = (props: StyledComponentProps) => (
   <div
     className={parseJss({
       position: 'relative',
@@ -22,6 +23,15 @@ const GrowingWrapper = props => (
     })}
     {...props}
   />
+);
+export const ScrollableWrapper = (props: StyledComponentProps) => (
+  <div {...props} />
+);
+export const ScrollableInner = (props: StyledComponentProps) => (
+  <div {...props} />
+);
+export const StaticWrapper = (props: StyledComponentProps) => (
+  <div {...props} />
 );
 
 export default class Section extends PureComponent<SectionProps, SectionState> {
@@ -54,7 +64,11 @@ export default class Section extends PureComponent<SectionProps, SectionState> {
     );
 
     return (
-      <TransitionGroup component={shouldGrow ? GrowingWrapper : StaticWrapper}>
+      <TransitionGroup
+        component={
+          shouldGrow ? ScrollableTransitionGroup : StaticTransitionGroup
+        }
+      >
         <Transition key={id} timeout={transitionDurationMs}>
           {state => {
             const { traversalDirection } = this.state;
@@ -62,12 +76,12 @@ export default class Section extends PureComponent<SectionProps, SectionState> {
               state,
               traversalDirection,
             });
-            const className = parseJss(styles.children);
 
             // We provide both the styles object and the computed className.
             // This allows consumers to patch the styles if they want to, or
             // simply apply the className if they're not using a JSS parser like
             // emotion.
+            const className = parseJss(styles.children);
             const resolvedChildren = children({
               className,
               css: styles.children,
@@ -81,20 +95,20 @@ export default class Section extends PureComponent<SectionProps, SectionState> {
                 }}
               >
                 {shouldGrow ? (
-                  <div
+                  <ScrollableWrapper
                     className={parseJss({
                       ...styles.wrapper,
                       ...animationStyles,
                     })}
                   >
-                    <div className={parseJss(styles.inner)}>
+                    <ScrollableInner className={parseJss(styles.inner)}>
                       {resolvedChildren}
-                    </div>
-                  </div>
+                    </ScrollableInner>
+                  </ScrollableWrapper>
                 ) : (
-                  <div className={parseJss(animationStyles)}>
+                  <StaticWrapper className={parseJss(animationStyles)}>
                     {resolvedChildren}
-                  </div>
+                  </StaticWrapper>
                 )}
               </NavigationAnalyticsContext>
             );
