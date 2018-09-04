@@ -1,9 +1,6 @@
 import * as React from 'react';
 import { Component, ReactNode } from 'react';
-import {
-  IntlProvider,
-  // addLocaleData
-} from 'react-intl';
+import { IntlProvider } from 'react-intl';
 import { getMessagesForLocale } from '@atlaskit/media-ui';
 import Select from '@atlaskit/select';
 import { LocaleSelectorWrapper } from './styled';
@@ -16,11 +13,6 @@ export interface I18NWrapperState {
 export interface I18NWrapperProps {
   initialLocale?: string;
 }
-
-// addLocaleData({
-//   locale: 'es',
-//   fields: getMessagesForLocale('es'),
-// })
 
 const selectOptions = [
   { label: 'English', value: 'en' },

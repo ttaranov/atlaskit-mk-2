@@ -2,8 +2,7 @@ import * as React from 'react';
 import { Component } from 'react';
 import {
   createStorybookContext,
-  // genericFileId,
-  errorFileId,
+  genericFileId,
   I18NWrapper,
 } from '@atlaskit/media-test-helpers';
 import Toggle from '@atlaskit/toggle';
@@ -30,8 +29,7 @@ export interface EditableCardState {
 
 class EditableCard extends Component<{}, EditableCardState> {
   state: EditableCardState = {
-    identifier: errorFileId,
-    // identifier: genericFileId,
+    identifier: genericFileId,
     dimensions: { width: '100%', height: '50%' },
     parentDimensions: { height: 300, width: 500 },
     isWidthPercentage: true,
