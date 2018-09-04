@@ -384,6 +384,18 @@ export const tableStyles = css`
         font-weight: 500px;
         line-height: 1;
       }
+      td[summarytype='people'] {
+        text-align: left;
+        p {
+          margin-top: 4px;
+          position: relative;
+          text-align: right;
+          > span {
+            position: absolute;
+            left: 0;
+          }
+        }
+      }
     }
     /* Range Slider */
     .rangeslider {

@@ -45,6 +45,8 @@ function getDefaultSummaryTypeFromCellType(type: string) {
     case 'checkbox':
     case 'decision':
       return 'remaining';
+    case 'emoji':
+      return 'count';
     default:
       return;
   }

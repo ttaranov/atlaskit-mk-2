@@ -11,7 +11,6 @@ import { TableMap } from 'prosemirror-tables';
 import {
   findTable,
   isCellSelection,
-  forEachCellInRow,
   findParentNodeOfTypeClosestToPos,
   getCellsInRow,
 } from 'prosemirror-utils';
@@ -22,7 +21,7 @@ import {
   TableColumnTypesPluginState as PluginState,
 } from '../types';
 import { ReactNodeView } from '../../../nodeviews';
-import { calculateSummary, maybeCreateText } from '../utils';
+import { calculateSummary, renderSummary } from '../utils';
 
 import { Dispatch } from '../../../event-dispatcher';
 import { EventDispatcher } from '../../../event-dispatcher';
@@ -142,20 +141,16 @@ export const createColumnTypesPlugin = (
           transaction.getMeta('appendedTransaction'),
         )
       ) {
-        const summary = calculateSummary(table.node);
+        const summaryArr = calculateSummary(table.node);
         let { tr } = newState;
-        const createContent = maybeCreateText(newState.schema);
 
         const cells = getCellsInRow(table.node.childCount - 1)(tr.selection)!;
         for (let i = cells.length - 1; i >= 0; i--) {
           const cell = cells[i];
-          const ret = summary[i].value;
-          const content = createContent(
-            ret && ret.value ? ret.value / ret.count : ret,
-          );
+          const summary = summaryArr[i];
           const newCell = cell.node.type.create(
             cell.node.attrs,
-            newState.schema.nodes.paragraph.create({}, content),
+            renderSummary(newState.schema)(summary),
           );
           tr = tr.replaceWith(cell.pos, cell.pos + cell.node.nodeSize, newCell);
         }

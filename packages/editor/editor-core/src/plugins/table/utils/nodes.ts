@@ -79,15 +79,6 @@ export const toFixed = value => {
 };
 
 export const maybeCreateText = schema => value => {
-  if (value instanceof Object) {
-    let str = '';
-    for (var key in value) {
-      if (key.indexOf('circle') !== -1) str += '🔴';
-      else if (key.indexOf('check') !== -1) str += '✅';
-      str += ' ' + value[key] + '\n';
-    }
-    return schema.text(`${toFixed(str)}`);
-  }
   return value !== null && value !== ''
     ? schema.text(`${toFixed(value)}`)
     : undefined;
@@ -131,19 +122,6 @@ export const calculateSummary = (table: PmNode) => {
         let cellNumber = parseFloat(cell.textContent) || 0;
         colValue = numberOps[operators[j]](colValue, cellNumber);
         colSummary.summaryType = 'total';
-      } else if (cellType === 'emoji') {
-        colValue = colValue || {};
-        if (
-          cell.child(0).type.name === 'paragraph' &&
-          cell.child(0).childCount > 0
-        ) {
-          let childNode = cell.child(0).child(0);
-          if (childNode.type.name === 'emoji') {
-            let count = colValue[childNode.attrs.shortName] || 0;
-            colValue[childNode.attrs.shortName] = count + 1;
-          }
-        }
-        colSummary.summaryType = 'total';
       } else if (cellType === 'slider') {
         let firstChild = cell.child(0).child(0);
         let cellNumber = parseFloat(firstChild.attrs.value) || 0;
@@ -152,16 +130,22 @@ export const calculateSummary = (table: PmNode) => {
       } else if (cellType === 'text' || cellType === 'date') {
         colValue = '';
         colSummary.summaryType = '';
-      } else if (cellType === 'mention') {
-        let mentionCount = 0;
+      } else if (cellType === 'mention' || cellType === 'emoji') {
         if (
           cell.child(0).type.name === 'paragraph' &&
-          cell.child(0).childCount > 0
+          cell.child(0).childCount > 0 &&
+          (cell.child(0).child(0).type.name === 'mention' ||
+            cell.child(0).child(0).type.name === 'emoji')
         ) {
-          mentionCount = 1;
+          const node = cell.child(0).child(0);
+          colValue = colValue
+            ? colValue.set(node.attrs.id, {
+                node,
+                count: (colValue.get(node.attrs.id) || { count: 0 }).count + 1,
+              })
+            : new Map([[node.attrs.id, { node, count: 1 }]]);
         }
-        colValue = colValue ? colValue + mentionCount : mentionCount;
-        colSummary.summaryType = 'people';
+        colSummary.summaryType = cellType === 'mention' ? 'people' : 'count';
       } else if (cellType === 'checkbox' || cellType === 'decision') {
         let count = 0;
         if (
@@ -187,4 +171,35 @@ export const calculateSummary = (table: PmNode) => {
     }
   }
   return summary;
+};
+
+interface MappableSummary {
+  summaryType: string;
+  value: Map<string, { node: PmNode; count: number }>;
+}
+
+function isMappableSummary(summary): summary is MappableSummary {
+  return summary.summaryType === 'people' || summary.summaryType === 'count';
+}
+
+export const renderSummary = schema => summary => {
+  const { value } = summary;
+  const { paragraph } = schema.nodes;
+  const createContent = maybeCreateText(schema);
+  let content;
+
+  if (isMappableSummary(summary)) {
+    const values = summary.value ? Array.from(summary.value.values()) : [];
+    content = values.length
+      ? values.map(x =>
+          paragraph.createChecked({}, [x.node, schema.text(` ${x.count}`)]),
+        )
+      : paragraph.create();
+  } else {
+    // Handle average
+    value && value.value ? value.value / value.count : value;
+    content = paragraph.createChecked({}, createContent(value));
+  }
+
+  return content;
 };

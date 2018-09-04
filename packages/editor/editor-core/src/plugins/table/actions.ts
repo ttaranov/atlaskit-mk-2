@@ -47,6 +47,7 @@ import {
   isIsolating,
   maybeCreateText,
   calculateSummary,
+  renderSummary,
 } from './utils';
 import { Command } from '../../types';
 import { analyticsService } from '../../analytics';
@@ -924,13 +925,11 @@ export const toggleSummaryRow: Command = (
   }
 
   const rowCount = table.node.childCount;
-  const { tableRow, tableCell, paragraph } = state.schema.nodes;
-  const createContent = maybeCreateText(state.schema);
-
+  const { tableRow, tableCell } = state.schema.nodes;
   const cells = calculateSummary(table.node).map(summary =>
     tableCell.createChecked(
       { cellType: 'summary', summaryType: summary.summaryType },
-      paragraph.createChecked({}, createContent(summary.value)),
+      renderSummary(state.schema)(summary),
     ),
   );
 
