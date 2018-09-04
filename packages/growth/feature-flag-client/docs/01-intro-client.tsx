@@ -21,36 +21,43 @@ export default md`
   import FrontendFeatureFlagClient from '@atlaskit/feature-flag-client';
 
   const client = new FrontendFeatureFlagClient({
-    triggerAnalytics: myAnalyticsHandler,
+    analyticsClient: myAnalyticsClient,
     flags: {
-      'experiment.boolean.false': false,
-      'experiment.boolean.true': true,
-      'experiment.string.control': 'control',
-      'experiment.pojo.valid': {
-        targetingRuleKey: 'eval.experiment',
-        variantValue: 'variation-1',
-        hasExtraContent: true,
+      'my.experiment': {
+        reason: 'RULE_MATCH',
+        ruleId: '111-bbbbb-ccc',
+        value: 'experiment',
+      },
+      'my.detailed.boolean.flag': {
+        reason: 'RULE_MATCH',
+        ruleId: '111-bbbbb-ccc',
+        value: false,
       },
     },
-    uninitialisedFlagsEventName: 'something.went.wrong',
   });
 
-  if (client.getVariantValue('experiment.boolean.false')) {
-    // skip this
-  } else {
-    // runs this
-  }
+  // flag set, returns real value
+  client.getBooleanValue('my.detailed.boolean.flag', { default: true }); // > false
 
-  if (client.getVariantValue('experiment.boolean.true')) {
-    // run this
-  }
+  // flag set, returns real value
+  client.getVariantValue('my.experiment', {
+    default: 'control',
+    oneOf: ['control', 'experiment'],
+  }); // > experiment
 
-  if (client.getVariantValue('experiment.string.control') === 'control') {
-    // run this
-  }
+  // flag unset, returns default value
+  client.getBooleanValue('my.unlisted.boolean.flag', { default: false }); // > false
 
-  if (client.getVariantValue('experiment.pojo.valid') === 'variation-1') {
-    // run this
-  }
+  // flag value doesn't match expected, returns default
+  client.getVariantValue('my.experiment', {
+    default: 'control',
+    oneOf: ['control', 'variant-a'],
+  }); // > control
+
+  // do not send exposure event (trackExposureEvent: false)
+  client.getBooleanValue('my.detailed.boolean.flag', {
+    default: true,
+    trackExposureEvent: false,
+  });
   ~~~
 `;
