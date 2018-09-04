@@ -1,5 +1,8 @@
 # @atlaskit/reactions
 
+## 13.1.0
+- [minor] FS-2830 add new analytics to @atlaskit/reactions [e432c15](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e432c15)
+
 ## 13.0.11
 - [patch] FS-2941 Stop using Request object and upgrade fetch-mock [dff332a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dff332a)
 
