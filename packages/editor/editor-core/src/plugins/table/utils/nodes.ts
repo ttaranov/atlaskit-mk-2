@@ -125,7 +125,6 @@ export const calculateSummary = (table: PmNode) => {
       } else if (cellType === 'slider') {
         let firstChild = cell.child(0).child(0);
         let cellNumber = parseFloat(firstChild.attrs.value) || 0;
-        // debugger;
         colValue = numberOps[operators[j]](colValue, cellNumber);
         colSummary.summaryType = 'total';
       } else if (cellType === 'text' || cellType === 'date') {
@@ -198,7 +197,8 @@ export const renderSummary = schema => summary => {
       : paragraph.create();
   } else {
     // Handle average
-    const ret = value && value.value ? value.value / value.count : value;
+    const ret =
+      value && value.value != null ? value.value / value.count : value;
     content = paragraph.createChecked({}, createContent(ret));
   }
 
