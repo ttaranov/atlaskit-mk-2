@@ -54,7 +54,8 @@ export const createColumnTypesPlugin = (
     key: pluginKey,
 
     props: {
-      decorations: (state: EditorState) => createCellTypeDecoration(state),
+      // this breakes chart property checkboxes
+      // decorations: (state: EditorState) => createCellTypeDecoration(state),
 
       handleDOMEvents: {
         click(view: EditorView, event: MouseEvent) {
