@@ -6,6 +6,7 @@ export const gridStyles = css`
   .gridParent {
     width: 100%;
     transform: scale(1);
+    /*margin: 12px 20px 20px;*/
   }
 
   .gridContainer {
