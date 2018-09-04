@@ -5,6 +5,8 @@ import type { WithAnalyticsEventsProps } from '@atlaskit/analytics-next';
 
 import { UIController, ViewController } from '../../';
 
+import type { CollapseListeners } from '../LayoutManager/types';
+
 import type { ViewControllerState } from '../../view-controller/types';
 
 export type LayoutManagerWithViewControllerProps = {
@@ -14,6 +16,7 @@ export type LayoutManagerWithViewControllerProps = {
   navigationUIController: UIController,
   navigationViewController: ViewController,
   firstSkeletonToRender?: 'product' | 'container',
+  ...CollapseListeners,
 };
 
 export type LayoutManagerWithViewControllerState = {

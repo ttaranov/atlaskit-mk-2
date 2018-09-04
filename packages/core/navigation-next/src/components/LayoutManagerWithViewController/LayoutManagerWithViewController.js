@@ -170,6 +170,10 @@ class LayoutManagerWithViewControllerBase extends Component<
         state: { activeView },
       },
       firstSkeletonToRender,
+      onExpandStart,
+      onExpandEnd,
+      onCollapseStart,
+      onCollapseEnd,
     } = this.props;
 
     return (
@@ -187,6 +191,10 @@ class LayoutManagerWithViewControllerBase extends Component<
               : null
           }
           productNavigation={this.renderProductNavigation}
+          onExpandStart={onExpandStart}
+          onExpandEnd={onExpandEnd}
+          onCollapseStart={onCollapseStart}
+          onCollapseEnd={onCollapseEnd}
         >
           {children}
         </LayoutManager>
