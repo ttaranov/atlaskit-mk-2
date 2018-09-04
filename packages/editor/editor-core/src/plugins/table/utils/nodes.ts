@@ -197,8 +197,8 @@ export const renderSummary = schema => summary => {
       : paragraph.create();
   } else {
     // Handle average
-    value && value.value ? value.value / value.count : value;
-    content = paragraph.createChecked({}, createContent(value));
+    const ret = value && value.value ? value.value / value.count : value;
+    content = paragraph.createChecked({}, createContent(ret));
   }
 
   return content;
