@@ -404,7 +404,7 @@ export const tableStyles = css`
         }
       }
 
-      tr:not(:first-child) th:first-child button {
+      tr:not(:first-child) th .ProseMirror-tableHeader-button-container {
         display: none;
       }
     }
