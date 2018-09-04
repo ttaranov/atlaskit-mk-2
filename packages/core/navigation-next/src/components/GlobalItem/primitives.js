@@ -14,6 +14,7 @@ class GlobalNavigationItemPrimitive extends Component<*> {
   static defaultProps = {
     isActive: false,
     isHover: false,
+    isSelected: false,
     size: 'large',
     styles: styleReducerNoOp,
   };
@@ -46,6 +47,7 @@ class GlobalNavigationItemPrimitive extends Component<*> {
     const {
       isActive,
       isHover,
+      isSelected,
       size,
       styles: styleReducer,
       theme,
@@ -58,7 +60,7 @@ class GlobalNavigationItemPrimitive extends Component<*> {
     } = this.props;
 
     const { mode } = theme;
-    const presentationProps = { isActive, isHover, size };
+    const presentationProps = { isActive, isHover, isSelected, size };
     const defaultStyles = mode.globalItem(presentationProps);
     const styles = styleReducer(defaultStyles, presentationProps);
     this.CachedCustomComponent = this.CachedCustomComponent || CustomComponent;
