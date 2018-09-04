@@ -23,13 +23,13 @@ export interface State {
 }
 
 export default class CollapsedEditor extends React.Component<Props, State> {
-  editorCore: any;
-  state = { editorModules: undefined } as State;
+  static editorModules: any;
+  state = { editorModules: CollapsedEditor.editorModules } as State;
 
   componentDidMount() {
     import(/* webpackChunkName:"@atlaskit-internal_editor-core-async" */ '../../').then(
       modules => {
-        this.editorCore = modules;
+        CollapsedEditor.editorModules = modules;
         this.setState({ editorModules: modules });
       },
     );
