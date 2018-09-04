@@ -17,6 +17,8 @@ ${(
 )}
   ### Usage
 
+  #### With Radio Group
+
   Provides a standard way to select a single option from a list.
 
   ${code`
@@ -27,7 +29,7 @@ ${(
   handles the selection of items for you.
 
   It accepts a list of options that pass the properties on to a
-  Radio component to render. 
+  Radio component to render.
 
   ${(
     <Example
@@ -37,13 +39,30 @@ ${(
     />
   )}
 
+  #### defaultCheckedValue
+  RadioGroup component also exposes a defaultCheckedValue prop that allows you to specify the initially checked Radio instantiated within your RadioGroup instance.
+
+  ${(
+    <Example
+      Component={require('../examples/04-default-checked-value').default}
+      title="defaultCheckedValue prop"
+      source={require('!!raw-loader!../examples/04-default-checked-value')}
+    />
+  )}
+
+  ### checkedValue
+  allows you to override the internally stored checkedValue in state, with the passed in checkedValue prop.
+
   ${(
     <Example
       Component={require('../examples/01-controlled-example').default}
-      title="Stateless Checkbox"
+      title="checkedValue prop"
       source={require('!!raw-loader!../examples/01-controlled-example')}
     />
   )}
+
+  ### With @atlaskit/form
+  @atlaskit/radio is designed to play well with @atlaskit/form.
 
   ${(
     <Example
