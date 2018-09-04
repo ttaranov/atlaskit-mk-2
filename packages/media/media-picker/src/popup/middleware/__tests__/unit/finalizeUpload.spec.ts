@@ -47,8 +47,10 @@ describe('finalizeUploadMiddleware', () => {
     state: Partial<State> = {},
   ) => {
     const store = mockStore(state);
-    const { userAuthProvider } = store.getState();
-    userAuthProvider.mockImplementation(() => Promise.resolve(auth));
+    const { userContext } = store.getState();
+    (userContext.config.authProvider as jest.Mock<any>).mockReturnValue(
+      Promise.resolve(auth),
+    );
 
     const fetcher = mockFetcher();
     (MediaStore as any).mockImplementation(() => ({

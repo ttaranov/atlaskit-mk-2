@@ -24,11 +24,8 @@ const loadIssueCollector: () => Promise<ShowIssueCollectorFn> = (function() {
     if (!showIssueCollector) {
       showIssueCollector = new Promise(resolve => {
         window.ATL_JQ_PAGE_PROPS = {
-          ...window.ATL_JQ_PAGE_PROPS,
-          [COLLECTOR_ID]: {
-            triggerFunction(showIssueCollector: ShowIssueCollectorFn) {
-              resolve(showIssueCollector);
-            },
+          triggerFunction(showIssueCollector: ShowIssueCollectorFn) {
+            resolve(showIssueCollector);
           },
         };
         jQuery.ajax({

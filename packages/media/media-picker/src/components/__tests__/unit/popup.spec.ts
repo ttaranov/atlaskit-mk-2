@@ -35,11 +35,10 @@ describe('MediaPickerPopup', () => {
 
       const expectedUploadParams: UploadParams = {
         collection: '',
-        copyFileToRecents: true,
       };
-      expect((mediaPicker as any)['uploadParams'] as UploadParams).toEqual(
-        expectedUploadParams,
-      );
+      expect((mediaPicker as any)[
+        'tenantUploadParams'
+      ] as UploadParams).toEqual(expectedUploadParams);
     });
 
     it('merges uploadParams with the defaults when they are supplied', () => {
@@ -51,9 +50,10 @@ describe('MediaPickerPopup', () => {
         uploadParams: newUploadParams,
       });
 
-      expect((mediaPicker as any)['uploadParams'] as UploadParams).toEqual({
+      expect((mediaPicker as any)[
+        'tenantUploadParams'
+      ] as UploadParams).toEqual({
         collection: 'hello-world',
-        copyFileToRecents: true,
       });
     });
   });
@@ -67,7 +67,7 @@ describe('MediaPickerPopup', () => {
       mediaPicker.setUploadParams(newUploadParams);
 
       expect(
-        ((mediaPicker as any)['uploadParams'] as UploadParams).collection,
+        ((mediaPicker as any)['tenantUploadParams'] as UploadParams).collection,
       ).toEqual(collection);
     });
   });
@@ -101,7 +101,6 @@ describe('MediaPickerPopup', () => {
         store: mediaPicker.store,
         tenantUploadParams: {
           collection: '',
-          copyFileToRecents: true,
         },
       });
     });

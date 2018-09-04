@@ -77,10 +77,10 @@ describe('JiraAdvancedSearch', () => {
     const items = dropDownMenu.find(DropdownItem);
     expect(items.length).toBe(4);
     expect(items.map(item => item.key())).toMatchObject([
-      'issues',
+      'people',
       'projects',
-      'boards',
       'filters',
+      'boards',
     ]);
   });
 
@@ -102,8 +102,10 @@ describe('JiraAdvancedSearch', () => {
 
     const dropDownMenu = shallow(advancedSearchResult.props()
       .text as JSX.Element).find(DropdownMenu);
+
     const projectsItem = dropDownMenu.findWhere(
-      item => item.is(DropdownItem) && item.key() === 'projects',
+      item =>
+        item.is(DropdownItem) && item.key().toLocaleLowerCase() === 'projects',
     );
 
     projectsItem.props().onClick();

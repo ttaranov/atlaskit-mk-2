@@ -74,12 +74,22 @@ const ProductNavigationPrimitive = withContentTheme(
 
 type ProductNavigationProps = { children: Node };
 
-export const ProductNavigation = (props: ProductNavigationProps) => (
+type BaseNavigationTheme = {
+  children: Node,
+};
+
+export const ProductNavigationTheme = ({ children }: BaseNavigationTheme) => (
   <ThemeProvider
     theme={oldTheme => ({ mode: light, ...oldTheme, context: 'product' })}
   >
-    <ProductNavigationPrimitive {...props} />
+    {children}
   </ThemeProvider>
+);
+
+export const ProductNavigation = (props: ProductNavigationProps) => (
+  <ProductNavigationTheme>
+    <ProductNavigationPrimitive {...props} />
+  </ProductNavigationTheme>
 );
 
 const slideIn = keyframes`
@@ -142,10 +152,16 @@ type ContainerNavigationProps = {
   isPeeking: boolean,
 };
 
-export const ContainerNavigation = (props: ContainerNavigationProps) => (
+export const ContainerNavigationTheme = ({ children }: BaseNavigationTheme) => (
   <ThemeProvider theme={{ mode: light, context: 'container' }}>
-    <ContainerNavigationPrimitive {...props} />
+    {children}
   </ThemeProvider>
+);
+
+export const ContainerNavigation = (props: ContainerNavigationProps) => (
+  <ContainerNavigationTheme>
+    <ContainerNavigationPrimitive {...props} />
+  </ContainerNavigationTheme>
 );
 
 /**
