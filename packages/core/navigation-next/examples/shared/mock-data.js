@@ -10,23 +10,6 @@ import LinkIcon from '@atlaskit/icon/glyph/link';
 import { JiraWordmark as JiraWordmarkLogo } from '@atlaskit/logo';
 import { Link, Route } from 'react-router-dom';
 
-const FooterItem = () => (
-  <div
-    css={{
-      alignItems: 'center',
-      display: 'flex',
-      flexDirection: 'column',
-      padding: '16px 0',
-    }}
-  >
-    <span role="img" aria-label="sparkle" css={{ fontSize: 30 }}>
-      ✨
-    </span>
-    <div css={{ fontWeight: 500 }}>{`You're in an independent project.`}</div>
-    <div>Give feedback &bull; Learn more</div>
-  </div>
-);
-
 export const LinkItem = ({ components: C, to, ...props }: *) => {
   return (
     <Route
@@ -282,11 +265,6 @@ const containerProject = [
       },
     ],
     type: 'MenuSection',
-  },
-  {
-    type: 'Section',
-    items: [{ type: FooterItem, id: 'footer' }],
-    id: 'container/proejct/index:footer',
   },
 ];
 
