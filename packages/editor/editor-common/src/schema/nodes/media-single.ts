@@ -21,6 +21,12 @@ export interface MediaSingleDefinition {
   attrs?: MediaSingleAttributes;
 }
 export interface MediaSingleAttributes {
+  /**
+   * @minimum 1
+   * @maximum 12
+   * @stage 0
+   */
+  columns?: number;
   layout: Layout;
 }
 
