@@ -29,6 +29,10 @@ export default class NumberTransformer implements GraphTransformer {
     this.node.forEach((row, _, rowIdx) => {
       const displayRowNumber = haveHeaderRow ? rowIdx : rowIdx + 1;
 
+      if (rowIdx === this.node.childCount - 1) {
+        return;
+      }
+
       if (haveHeaderRow && rowIdx === 0) {
         // take titles from each column if we have heading row
         row.forEach((col, _, colIdx) => {
