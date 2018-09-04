@@ -123,9 +123,15 @@ export const calculateSummary = (table: PmNode) => {
         colValue = numberOps[operators[j]](colValue, cellNumber);
         colSummary.summaryType = 'total';
       } else if (cellType === 'slider') {
-        let firstChild = cell.child(0).child(0);
-        let cellNumber = parseFloat(firstChild.attrs.value) || 0;
-        colValue = numberOps[operators[j]](colValue, cellNumber);
+        if (
+          cell.child(0).type.name === 'paragraph' &&
+          cell.child(0).childCount > 0 &&
+          cell.child(0).child(0).type.name === 'slider'
+        ) {
+          let firstChild = cell.child(0).child(0);
+          let cellNumber = parseFloat(firstChild.attrs.value) || 0;
+          colValue = numberOps[operators[j]](colValue, cellNumber);
+        }
         colSummary.summaryType = 'total';
       } else if (cellType === 'text' || cellType === 'date') {
         colValue = '';
