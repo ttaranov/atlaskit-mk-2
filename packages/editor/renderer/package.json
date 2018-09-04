@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/renderer",
-  "version": "21.0.4",
+  "version": "21.0.5",
   "description": "Renderer component",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -46,6 +46,10 @@
     "@atlaskit/util-data-test": "^10.0.8",
     "@atlaskit/visual-regression": "^0.0.1",
     "@types/prosemirror-model": "^1.0.0",
-    "react-live-clock": "^2.0.2"
+    "chai": "^4.1.2",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "react": "^16.4.0",
+    "react-live-clock": "^2.0.2",
+    "sinon": "^2.2.0"
   }
 }

@@ -14,7 +14,7 @@ import {
   storyMediaProviderFactory,
 } from '@atlaskit/editor-test-helpers';
 
-import { mediaMock } from '@atlaskit/media-test-helpers';
+import mediaMock from './media-mock';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 
 const rejectedPromise = Promise.reject(

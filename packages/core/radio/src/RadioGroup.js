@@ -1,75 +1,77 @@
 // @flow
-import React, { Component } from 'react';
-import AkFieldRadioGroup from './RadioGroupStateless';
-import type { RadioGroupPropTypes, ItemsPropTypeSmart } from './types';
+import React, { Component, Fragment, type Element } from 'react';
+import Radio from './Radio';
+import type { OptionsPropType, OptionPropType } from './types';
+/* eslint-disable react/no-array-index-key */
 
-const defaultItems = [];
-
-type State = {
-  selectedValue: number | string | null,
+export type RadioGroupProps = {
+  checkedValue?: string | number | null,
+  defaultCheckedValue?: string | number | null,
+  isRequired?: boolean,
+  options: OptionsPropType,
+  onInvalid?: (event: SyntheticEvent<*>) => void,
+  onChange: (event: SyntheticEvent<*>) => void,
 };
 
-type DefaultPropsTypes = {
-  isRequired: boolean,
-  items: ItemsPropTypeSmart,
-  onRadioChange: (SyntheticEvent<*>) => mixed,
-};
-export default class FieldRadioGroup extends Component<
-  RadioGroupPropTypes,
-  State,
-> {
-  static defaultProps: DefaultPropsTypes = {
-    isRequired: false,
-    items: defaultItems,
-    onRadioChange: () => {},
+type RadioElementArray = Array<Element<typeof Radio>>;
+
+type State = { checkedValue?: string | number | null };
+
+export default class RadioGroup extends Component<RadioGroupProps, State> {
+  static defaultProps = {
+    onChange: () => {},
+    options: [],
   };
 
-  constructor() {
-    super();
+  constructor(props: RadioGroupProps) {
+    super(props);
     this.state = {
-      selectedValue: null, // Overrides default once user selects a value.
+      checkedValue:
+        this.props.checkedValue !== undefined
+          ? this.props.checkedValue
+          : this.props.defaultCheckedValue,
     };
   }
 
-  getItems = (): any => {
-    // If there is a user-selected value, then select that item
-    if (this.props.items) {
-      if (this.state.selectedValue) {
-        return this.props.items.map(
-          item =>
-            item.value === this.state.selectedValue
-              ? { ...item, ...{ isSelected: true } }
-              : item,
-        );
-      }
-
-      // Otherwise, look for a defaultSelected item and select that item
-      const hasDefaultSelected: boolean = this.props.items.some(
-        item => item.defaultSelected,
-      );
-      if (hasDefaultSelected && this.props.items) {
-        return this.props.items.map(
-          item =>
-            item.defaultSelected ? { ...item, ...{ isSelected: true } } : item,
-        );
-      }
-    }
-    return this.props.items;
+  getProp = (key: string) => {
+    return this.props[key] ? this.props[key] : this.state[key];
   };
 
-  changeHandler = (event: any) => {
-    this.props.onRadioChange(event);
-    this.setState({ selectedValue: event.target.value });
+  onChange = (event: SyntheticEvent<*>) => {
+    this.setState({
+      checkedValue: event.currentTarget.value,
+    });
+    if (typeof this.props.onChange === 'function') {
+      this.props.onChange(event);
+    }
+  };
+
+  buildOptions = () => {
+    const { options, isRequired, onInvalid } = this.props;
+    const checkedValue = this.getProp('checkedValue');
+    if (!options.length) return null;
+
+    return (options.map((option: OptionPropType, index: number) => {
+      let optionProps = { ...option };
+      if (checkedValue !== null && option.value === checkedValue) {
+        optionProps = { ...option, isChecked: true };
+      }
+      return (
+        <Radio
+          key={index}
+          onChange={this.onChange}
+          {...optionProps}
+          onInvalid={onInvalid}
+          isRequired={isRequired}
+        >
+          {option.label}
+        </Radio>
+      );
+    }): RadioElementArray);
   };
 
   render() {
-    return (
-      <AkFieldRadioGroup
-        label={this.props.label}
-        onRadioChange={this.changeHandler}
-        isRequired={this.props.isRequired}
-        items={this.getItems()}
-      />
-    );
+    const options = this.buildOptions();
+    return <Fragment>{options}</Fragment>;
   }
 }

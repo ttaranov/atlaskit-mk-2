@@ -69,10 +69,11 @@ describe('TaskDecisionResource', () => {
 
         const calls = fetchMock.calls('decision');
         expect(calls.length).toBe(1);
-        const call = calls[0][0];
-        expect(call.url).toEqual(`${url}decisions/query`);
-        expect(call.method).toEqual('POST');
-        const body = JSON.parse(call._bodyText);
+        const lastCallUrl = calls[0][0];
+        const options = calls[0][1];
+        expect(lastCallUrl).toEqual(`${url}decisions/query`);
+        expect(options.method).toEqual('POST');
+        const body = JSON.parse(options.body);
         expect(body.containerAri).toEqual('container1');
         expect(body.limit).toEqual(10);
         expect(body.cursor).toEqual('cursor1');
@@ -138,10 +139,10 @@ describe('TaskDecisionResource', () => {
 
         const calls = fetchMock.calls('task');
         expect(calls.length).toBe(1);
-        const call = calls[0][0];
-        expect(call.url).toEqual(`${url}tasks/query`);
-        expect(call.method).toEqual('POST');
-        const body = JSON.parse(call._bodyText);
+        const call = calls[0];
+        expect(call[0]).toEqual(`${url}tasks/query`);
+        expect(call[1].method).toEqual('POST');
+        const body = JSON.parse(call[1].body);
         expect(body.containerAri).toEqual('container1');
         expect(body.limit).toEqual(10);
         expect(body.cursor).toEqual('cursor1');
@@ -207,10 +208,10 @@ describe('TaskDecisionResource', () => {
 
         const calls = fetchMock.calls('items');
         expect(calls.length).toBe(1);
-        const call = calls[0][0];
-        expect(call.url).toEqual(`${url}elements/query`);
-        expect(call.method).toEqual('POST');
-        const body = JSON.parse(call._bodyText);
+        const call = calls[0];
+        expect(call[0]).toEqual(`${url}elements/query`);
+        expect(call[1].method).toEqual('POST');
+        const body = JSON.parse(call[1].body);
         expect(body.containerAri).toEqual('container1');
         expect(body.limit).toEqual(10);
         expect(body.cursor).toEqual('cursor1');
@@ -269,8 +270,8 @@ describe('TaskDecisionResource', () => {
 
         const calls = fetchMock.calls('items');
         expect(calls.length).toBe(1);
-        const call = calls[0][0];
-        const body = JSON.parse(call._bodyText);
+        const call = calls[0];
+        const body = JSON.parse(call[1].body);
         expect(body.sortCriteria).toEqual('CREATION_DATE');
       });
     });
@@ -298,8 +299,8 @@ describe('TaskDecisionResource', () => {
 
         const calls = fetchMock.calls('items');
         expect(calls.length).toBe(1);
-        const call = calls[0][0];
-        const body = JSON.parse(call._bodyText);
+        const call = calls[0];
+        const body = JSON.parse(call[1].body);
         expect(body.sortCriteria).toEqual('LAST_UPDATE_DATE');
       });
     });
@@ -504,8 +505,8 @@ describe('TaskDecisionResource', () => {
           matcher: 'end:tasks',
           method: 'PUT',
           name: 'set-task',
-          response: req => {
-            const body = JSON.parse(req._bodyInit);
+          response: (url, options) => {
+            const body = JSON.parse(options.body);
             const { localId } = body;
 
             if (localId === '1') {

@@ -18,7 +18,7 @@ const header = (code: string | number): SecurityOptions => ({
   },
 });
 
-const getSecurityHeader = call => call[0].headers.get(defaultSecurityHeader);
+const getSecurityHeader = call => call[1].headers.get(defaultSecurityHeader);
 
 const defaultSecurityCode = '10804';
 const defaultAltScaleParam = 'altScale=XHDPI';
@@ -132,21 +132,20 @@ describe('EmojiLoader', () => {
         refreshedSecurityProvider,
       };
 
-      const provider401Matcher = {
-        name: 'authonce',
-        matcher: `begin:${provider1.url}`,
-      };
+      const matcher = `begin:${provider1.url}`;
 
       fetchMock
         .mock({
-          ...provider401Matcher,
+          name: 'auth',
+          matcher,
           response: 401,
-          times: 1,
+          repeat: 1,
         })
         .mock({
-          ...provider401Matcher,
+          name: 'auth2',
+          matcher,
           response: fetchResponse(providerData1),
-          times: 1,
+          repeat: 1,
         });
 
       const resource = new EmojiLoader(provider401);
@@ -155,12 +154,16 @@ describe('EmojiLoader', () => {
           refreshedSecurityProvider.callCount,
           'refreshedSecurityProvider called once',
         ).to.equal(1);
-        const calls = fetchMock.calls(provider401Matcher.name);
-        expect(calls.length, 'number of calls to fetch').to.equal(2);
-        expect(getSecurityHeader(calls[0]), 'first call').to.equal(
+        const firstCall = fetchMock.lastCall('auth');
+        // tslint:disable-next-line
+        expect(firstCall).to.not.be.undefined;
+        expect(getSecurityHeader(firstCall), 'first call').to.equal(
           defaultSecurityCode,
         );
-        expect(getSecurityHeader(calls[1]), 'forced refresh call').to.equal(
+        const secondCall = fetchMock.lastCall('auth2');
+        // tslint:disable-next-line
+        expect(secondCall).to.not.be.undefined;
+        expect(getSecurityHeader(secondCall), 'forced refresh call').to.equal(
           '666',
         );
 
