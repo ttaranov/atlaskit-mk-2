@@ -7,21 +7,18 @@ const pkgJson = require('../../../package.json');
 
 let mounted = 0;
 
-const getApdex = location => {
-  if (
-    !window ||
-    !window.performance ||
-    !window.performance.timing ||
-    !window.performance.timing.domContentLoadedEventEnd ||
-    !window.performance.timing.navigationStart
-  ) {
+const getPageLoadNumber = () => {
+  if (!window || !window.performance || !window.performance.getEntriesByType) {
     return null;
   }
 
-  let timing =
-    window.performance.timing.domContentLoadedEventEnd -
-    window.performance.timing.navigationStart;
+  let navigationEntries = window.performance.getEntriesByType('navigation');
+  if (navigationEntries.length !== 1) return null;
 
+  return Math.round(navigationEntries[0].domComplete);
+};
+
+export const sendApdex = (location, timing) => {
   let apdex = 0;
   if (timing < 1000) apdex = 100;
   else if (timing < 4000) apdex = 50;
@@ -46,6 +43,12 @@ const getApdex = location => {
   request.send();
 };
 
+const sendInitialApdex = location => {
+  const timing = getPageLoadNumber();
+  if (!timing) return null;
+  sendApdex(location, timing);
+};
+
 class GoogleAnalyticsListener extends Component {
   static propTypes = {
     children: PropTypes.node,
@@ -61,7 +64,7 @@ class GoogleAnalyticsListener extends Component {
     window.addEventListener(
       'load',
       () => {
-        getApdex(this.props.location);
+        sendInitialApdex(this.props.location);
       },
       { once: true },
     );

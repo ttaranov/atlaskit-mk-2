@@ -2,7 +2,7 @@
 
 import React, { Component, type Node } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link } from '../../components/WrappedLink';
 import { Helmet } from 'react-helmet';
 import { gridSize, colors, math } from '@atlaskit/theme';
 import Button from '@atlaskit/button';
