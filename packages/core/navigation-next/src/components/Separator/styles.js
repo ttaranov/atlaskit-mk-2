@@ -15,5 +15,5 @@ const baseStyles = {
 
 export default ({ product }: ModeColors) => () => ({
   container: { ...baseStyles, backgroundColor: colors.N30A },
-  product: { ...baseStyles, backgroundColor: product.background.accent2 },
+  product: { ...baseStyles, backgroundColor: product.background.static },
 });

@@ -110,9 +110,9 @@ const getItemBackgroundColor = (
   background,
   { isActive, isSelected, isHover },
 ) => {
-  if (isActive) return background.accent3;
-  if (isSelected) return background.accent2;
-  if (isHover) return background.accent1;
+  if (isActive) return background.interact;
+  if (isSelected) return background.static;
+  if (isHover) return background.hint;
   return background.default;
 };
 
@@ -130,9 +130,9 @@ export default ({ product }: ModeColors) => ({
       backgroundColor: getItemBackgroundColor(
         {
           default: colors.N20,
-          accent1: colors.N30,
-          accent2: colors.N30,
-          accent3: colors.B50,
+          hint: colors.N30,
+          interact: colors.B50,
+          static: colors.N30,
         },
         {
           isActive,
@@ -185,7 +185,7 @@ export default ({ product }: ModeColors) => ({
     subTextWrapper: {
       ...baseStyles.subTextWrapper,
       ...layoutStyles[spacing].subTextWrapper,
-      color: product.text.accent1,
+      color: product.text.subtle,
     },
     afterWrapper: {
       ...baseStyles.afterWrapper,

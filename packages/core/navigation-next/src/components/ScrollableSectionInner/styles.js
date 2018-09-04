@@ -74,7 +74,7 @@ export default ({ product }: ModeColors) => () => ({
       ...baseStyles.wrapper,
       '&::before': {
         ...baseStyles.wrapper['&::before'],
-        backgroundColor: product.background.accent2,
+        backgroundColor: product.background.static,
       },
     },
     inner: {

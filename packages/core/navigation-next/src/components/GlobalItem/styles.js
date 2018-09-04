@@ -63,8 +63,8 @@ export default ({ product }: ModeColors) => ({
     ...baseStyles.itemBase,
     ...sizeStyles[size].itemBase,
     backgroundColor: (() => {
-      if (isHover) return product.background.accent1;
-      if (isActive) return product.background.accent3;
+      if (isHover) return product.background.hint;
+      if (isActive) return product.background.interact;
       return product.background.default;
     })(),
     color: product.text.default,

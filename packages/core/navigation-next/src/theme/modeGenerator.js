@@ -25,43 +25,43 @@ type Args = {
 const colorMatrix = [
   {
     // Dark
-    when: ({ l }) => l < 20,
-    accent1: { s: 0, l: 16 }, // hover
-    accent2: { s: 0, l: 12 }, // selected
-    accent3: { s: 0, l: 8 }, //  // active
+    when: ({ l }) => l <= 20,
+    hint: { s: 0, l: 16 },
+    interact: { s: -4, l: 8 },
+    static: { s: -8, l: 12 },
   },
   {
     // bright and saturated
     when: ({ s, l }) => s > 65 && l > 30,
-    accent1: { s: -16, l: 12 }, // hover
-    accent2: { s: 0, l: -8 }, // selected
-    accent3: { s: -16, l: 8 }, // active
+    hint: { s: -16, l: 12 },
+    interact: { s: -16, l: 8 },
+    static: { s: 0, l: -8 },
   },
   {
     // bright and dull
     when: ({ s, l }) => s <= 20 && l > 90,
-    accent1: { s: 0, l: -2 }, // hover
-    accent2: { s: 0, l: -6 }, // selected
-    accent3: { s: 0, l: -4 }, // active
+    hint: { s: 0, l: -2 },
+    interact: { s: 0, l: -4 },
+    static: { s: 0, l: -6 },
   },
   {
     // pastel
     when: ({ s, l }) => s > 20 && s < 50 && l > 50,
-    accent1: { s: 24, l: 2 }, // hover
-    accent2: { s: 8, l: -12 }, // selected
-    accent3: { s: 8, l: -4 }, // active
+    hint: { s: 24, l: 2 },
+    interact: { s: 8, l: -4 },
+    static: { s: 8, l: -12 },
   },
   {
     // dull
     when: ({ s, l }) => s <= 20 && l <= 90,
-    accent1: { s: 0, l: 4 }, // hover
-    accent2: { s: 0, l: -8 }, // selected
-    accent3: { s: 0, l: -4 }, // active
+    hint: { s: 0, l: 4 },
+    interact: { s: 0, l: -4 },
+    static: { s: 0, l: -8 },
   },
 ];
 
 const getStatesBackground = (parts, modifier) =>
-  ['accent1', 'accent3', 'accent2'].reduce((acc, k) => {
+  ['hint', 'interact', 'static'].reduce((acc, k) => {
     acc[k] = chromatism.convert({
       ...parts,
       s: parts.s + modifier[k].s,
@@ -73,14 +73,14 @@ const getStatesBackground = (parts, modifier) =>
 const getContextColors = ({ background, text }): ContextColors => {
   const bgParts = chromatism.convert(background).hsl;
   const vs = bgParts.l < 30 && bgParts.s < 50 ? -1 : 1;
-  const textAccent1 = chromatism.brightness(
+  const textSubtle = chromatism.brightness(
     1 + vs * 6,
     chromatism.fade(4, background, text).hex[2],
   ).hex;
   const colorMod = colorMatrix.find(cm => cm.when(bgParts)) || {
-    accent1: { s: 0, l: 8 }, // hover
-    accent2: { s: 8, l: -6 }, // selected
-    accent3: { s: 0, l: 4 }, // active
+    hint: { s: 0, l: 8 },
+    interact: { s: 0, l: 4 },
+    static: { s: 8, l: -6 },
   };
 
   return {
@@ -88,7 +88,7 @@ const getContextColors = ({ background, text }): ContextColors => {
       default: background,
       ...getStatesBackground(bgParts, colorMod),
     },
-    text: { default: text, accent1: textAccent1 },
+    text: { default: text, subtle: textSubtle },
   };
 };
 
