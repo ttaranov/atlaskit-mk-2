@@ -22,3 +22,20 @@ export const FileWrapper = styled.div`
   background-color: ${({ status }: FilesWrapperProps) =>
     statusColorMap[status]};
 `;
+
+export const CardsWrapper = styled.div`
+  width: 900px;
+  padding: 10px;
+  border-right: 1px solid #ccc;
+
+  h1 {
+    text-align: center;
+    border-bottom: 1px solid #ccc;
+  }
+
+  > div {
+    width: auto;
+    display: inline-block;
+    margin: 10px;
+  }
+`;
