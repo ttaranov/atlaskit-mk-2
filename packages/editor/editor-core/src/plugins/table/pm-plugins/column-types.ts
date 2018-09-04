@@ -13,6 +13,7 @@ import {
   isCellSelection,
   forEachCellInRow,
   findParentNodeOfTypeClosestToPos,
+  getCellsInRow,
 } from 'prosemirror-utils';
 
 import {
@@ -147,21 +148,19 @@ export const createColumnTypesPlugin = (
         let index = summary.length - 1;
         const createContent = maybeCreateText(newState.schema);
 
-        forEachCellInRow(table.node.childCount - 1, (cell, tr) => {
+        const cells = getCellsInRow(table.node.childCount - 1)(tr.selection)!;
+        cells.forEach((cell, i) => {
           const ret = summary[index--].value;
           const content = createContent(
             // Handle average
             ret && ret.value ? ret.value / ret.count : ret,
           );
-          const paragraph = cell.node.child(0);
-          return content
-            ? tr.replaceWith(
-                cell.start,
-                cell.start + paragraph.nodeSize - 1,
-                content,
-              )
-            : tr;
-        })(tr);
+          tr = tr.replaceWith(
+            tr.mapping.map(cell.start),
+            tr.mapping.map(cell.start + cell.node.nodeSize),
+            content,
+          );
+        });
 
         return tr;
       }
