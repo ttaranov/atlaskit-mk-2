@@ -27,53 +27,58 @@ process.env.TEST_ENV === 'browserstack'
   ? (clients = setBrowserStackClients())
   : (clients = setLocalClients());
 
-function BrowserTestCase(...args /*:Array<any> */) {
-  const testcase = args.shift();
-  const tester = args.pop();
-  const skipForBrowser = args.length > 0 ? args.shift() : null;
+beforeAll(async () => {
+  await Promise.all(
+    clients.map(async client => {
+      if (client) {
+        const browserName /*: string */ =
+          client.driver.desiredCapabilities.browserName;
 
-  describe(testcase, () => {
-    beforeAll(async function() {
-      for (let client of clients) {
-        if (client) {
-          const browserName /*: string */ =
-            client.driver.desiredCapabilities.browserName;
-
-          if (skipForBrowser && skipForBrowser[browserName]) {
-            if (client.isReady) {
-              client.isReady = false;
-              await client.driver.end();
-            }
-            continue;
+        if (skipForBrowser && skipForBrowser[browserName]) {
+          if (client.isReady) {
+            client.isReady = false;
           }
-          if (client.isReady) continue;
+        }
+
+        if (!client.isReady) {
           client.isReady = true;
           await client.driver.init();
         }
       }
-    });
-
-    for (let client of clients) {
-      if (client) {
-        testRun(testcase, tester, client.driver, skipForBrowser);
-      }
-    }
-  });
-}
+    }),
+  );
+});
 
 afterAll(async function() {
-  for (let client of clients) {
-    if (client) {
-      client.isReady = false;
-      await client.driver.end();
-    }
-  }
+  await Promise.all(
+    clients.map(async client => {
+      if (client) {
+        client.isReady = false;
+        await client.driver.end();
+      }
+    }),
+  );
 });
+
+function BrowserTestCase(...args /*:Array<any> */) {
+  const testcase = args.shift();
+  const tester = args.pop();
+  const skipForBrowser = args.length > 0 ? args.shift() : null;
+  // $FlowFixMe - bound to return undefined
+  describe(testcase, async () => {
+    await Promise.all(
+      clients.map(async client => {
+        if (client) {
+          testRun(testcase, tester, client.driver, skipForBrowser);
+        }
+      }),
+    );
+  });
+}
 
 /*::
 type Tester<Object> = (opts: Object, done?: () => void) => ?Promise<mixed>;
 */
-
 function testRun(
   testCase /*: {name:string, skip?:boolean ,only?:boolean}*/,
   tester /*: Tester<Object>*/,

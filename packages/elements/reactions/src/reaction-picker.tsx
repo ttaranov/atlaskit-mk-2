@@ -8,7 +8,6 @@ import * as ReactDOM from 'react-dom';
 import { style } from 'typestyle';
 import Selector from './internal/selector';
 import Trigger from './internal/trigger';
-import { analyticsService } from './analytics';
 
 const akBorderRadius = borderRadius();
 const akColorN0 = colors.N0;
@@ -17,12 +16,18 @@ const akColorN60A = colors.N60A;
 
 export interface Props {
   emojiProvider: Promise<EmojiProvider>;
-  onSelection: Function;
+  onSelection: (
+    emojiId: string,
+    source: 'quickSelector' | 'emojiPicker',
+  ) => void;
   miniMode?: boolean;
   boundariesElement?: string;
   className?: string;
   allowAllEmojis?: boolean;
   disabled?: boolean;
+  onOpen?: () => void;
+  onCancel?: () => void;
+  onMore?: () => void;
 }
 
 export interface State {
@@ -86,12 +91,14 @@ export default class ReactionPicker extends PureComponent<Props, State> {
 
     const domNode = ReactDOM.findDOMNode(this);
     if (!domNode || (e.target instanceof Node && !domNode.contains(e.target))) {
+      if (this.props.onCancel) {
+        this.props.onCancel();
+      }
       this.close();
     }
   };
 
-  private close() {
-    analyticsService.trackEvent('reactions.picker.close');
+  private close(emojiId?: string) {
     this.setState({
       isOpen: false,
       showFullPicker: false,
@@ -100,8 +107,10 @@ export default class ReactionPicker extends PureComponent<Props, State> {
 
   private showFullPicker = e => {
     e.preventDefault();
-    analyticsService.trackEvent('reactions.picker.show');
-
+    const { onMore } = this.props;
+    if (onMore) {
+      onMore();
+    }
     this.setState({
       isOpen: true,
       showFullPicker: true,
@@ -142,15 +151,17 @@ export default class ReactionPicker extends PureComponent<Props, State> {
   private onEmojiSelected = emoji => {
     const { onSelection } = this.props;
 
-    analyticsService.trackEvent('reactions.picker.emoji.selected', {
-      emojiId: emoji.id,
-    });
-    onSelection(emoji.id);
-    this.close();
+    onSelection(
+      emoji.id,
+      this.state.showFullPicker ? 'emojiPicker' : 'quickSelector',
+    );
+    this.close(emoji.id);
   };
 
   private onTriggerClick = () => {
-    analyticsService.trackEvent('reactions.picker.trigger.click');
+    if (this.props.onOpen) {
+      this.props.onOpen();
+    }
     this.setState({
       isOpen: !this.state.isOpen,
       showFullPicker: false,

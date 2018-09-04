@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 15.0.3
+- [patch] Fix import error from css-color-names [ce50449](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce50449)
+
 ## 15.0.2
 - [patch] ED-3919: Fix typography and other styles, align styles between editor and renderer [d0f9293](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d0f9293)
 

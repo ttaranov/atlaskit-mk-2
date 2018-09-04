@@ -79,7 +79,7 @@ describe('handleCloudFetchingEvent', () => {
       'some-upload-id': { tenant },
     };
 
-    store.getState.mockReturnValue({
+    (store.getState as jest.Mock<any>).mockReturnValue({
       client,
       remoteUploads,
       deferredIdUpfronts,
