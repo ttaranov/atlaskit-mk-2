@@ -36,12 +36,12 @@ export default class NumberTransformer implements GraphTransformer {
         });
       } else {
         // otherwise, it's just data
-        let title = `Row ${displayRowNumber}`;
+        // let title = `Row ${displayRowNumber}`;
 
-        if (haveHeaderColumn) {
-          // take the title from the first column
-          title = row.child(0).textContent;
-        }
+        // if (haveHeaderColumn) {
+        // take the title from the first column
+        let title = row.child(0).textContent;
+        // }
 
         entries.push({
           title,
