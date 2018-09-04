@@ -8,7 +8,7 @@ scaling:
 links:
   binary:
     name: docker.atl-paas.net/atlaskit/atlaskid
-    tag: v22
+    tag: v23
     type: docker
   healthcheck:
     uri: /
@@ -16,4 +16,4 @@ links:
     url: 'https://bitbucket.org/atlassian/atlaskit-mk-2/'
 notifications:
   email: lbatchelor@atlassian.com
-organization: Product Fabric
+organization: Product Fabric†

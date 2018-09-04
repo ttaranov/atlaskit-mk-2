@@ -10,17 +10,22 @@ import DropdownMenu, {
 } from '@atlaskit/dropdown-menu';
 import AdvancedSearchResult from '../AdvancedSearchResult';
 import { AnalyticsType } from '../../model/Result';
-import { getJiraAdvancedSearchUrl } from '../SearchResultsUtil';
+import {
+  getJiraAdvancedSearchUrl,
+  JiraEntityTypes,
+  ADVANCED_JIRA_SEARCH_RESULT_ID,
+} from '../SearchResultsUtil';
 
 export interface Props {
   query: string;
+  onAdvancedSearchChange?(entity: JiraEntityTypes): void;
   showKeyboardLozenge?: boolean;
   showSearchIcon?: boolean;
   analyticsData?: object;
 }
 
 export interface State {
-  selectedItem: string;
+  selectedItem: JiraEntityTypes;
 }
 
 const TextContainer = styled.div`
@@ -38,15 +43,23 @@ const StyledButton = styled(Button)`
   margin-right: ${math.divide(gridSize, 4)}px;
 `;
 
-const itemI18nKeySuffix = ['issues', 'projects', 'boards', 'filters'];
+const itemI18nKeySuffix = [
+  JiraEntityTypes.Issues,
+  JiraEntityTypes.People,
+  JiraEntityTypes.Projects,
+  JiraEntityTypes.Filters,
+  JiraEntityTypes.Boards,
+];
 
 const getI18nItemName = i18nKeySuffix => (
-  <FormattedMessage id={`global-search.jira.no-results.${i18nKeySuffix}`} />
+  <FormattedMessage
+    id={`global-search.jira.advanced-search-${i18nKeySuffix}`}
+  />
 );
 
 export default class JiraAdvancedSearch extends React.Component<Props> {
   state = {
-    selectedItem: 'issues',
+    selectedItem: JiraEntityTypes.Issues,
   };
 
   allowNavigationOnClick = false;
@@ -56,16 +69,18 @@ export default class JiraAdvancedSearch extends React.Component<Props> {
   };
 
   renderDropdownItems = () =>
-    itemI18nKeySuffix.map(item => (
-      <DropdownItem
-        onClick={() => {
-          this.setState({ selectedItem: item });
-        }}
-        key={item}
-      >
-        {getI18nItemName(item)}
-      </DropdownItem>
-    ));
+    itemI18nKeySuffix
+      .filter(item => item !== this.state.selectedItem)
+      .map(item => (
+        <DropdownItem
+          onClick={() => {
+            this.setState({ selectedItem: item });
+          }}
+          key={item}
+        >
+          {getI18nItemName(item)}
+        </DropdownItem>
+      ));
 
   render() {
     const {
@@ -78,7 +93,7 @@ export default class JiraAdvancedSearch extends React.Component<Props> {
       <AdvancedSearchResult
         href={getJiraAdvancedSearchUrl(this.state.selectedItem, query)}
         key="search_jira"
-        resultId="advanced-jira-search"
+        resultId={ADVANCED_JIRA_SEARCH_RESULT_ID}
         text={
           <Container
             onClick={e => {

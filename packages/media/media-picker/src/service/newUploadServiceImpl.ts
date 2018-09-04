@@ -19,9 +19,9 @@ import {
   MediaFile as MediaStoreMediaFile,
 } from '@atlaskit/media-store';
 import { EventEmitter2 } from 'eventemitter2';
-import { defaultUploadParams } from '../domain/uploadParams';
 import { MediaFile, PublicMediaFile } from '../domain/file';
 
+import { RECENTS_COLLECTION } from '../popup/config';
 import { mapAuthToSourceFileOwner } from '../popup/domain/source-file';
 import { getPreviewFromBlob } from '../util/getPreviewFromBlob';
 import { getPreviewFromVideo } from '../util/getPreviewFromVideo';
@@ -33,7 +33,7 @@ import {
   UploadService,
   UploadServiceEventListener,
   UploadServiceEventPayloadTypes,
-} from './uploadServiceFactory';
+} from './types';
 import { Observable } from 'rxjs/Observable';
 
 export interface CancellableFileUpload {
@@ -46,15 +46,13 @@ export class NewUploadServiceImpl implements UploadService {
   private readonly userMediaStore?: MediaStore;
   private readonly tenantMediaStore: MediaStore;
   private readonly userContext?: Context;
-  private userUploadParams: UploadParams;
-  private tenantUploadParams: UploadParams;
   private readonly emitter: EventEmitter2;
   private cancellableFilesUploads: { [key: string]: CancellableFileUpload };
 
   constructor(
     private readonly tenantContext: Context,
-    tenantUploadParams: UploadParams,
-    userUploadParams?: UploadParams,
+    private tenantUploadParams: UploadParams,
+    private readonly shouldCopyFileToRecents: boolean,
   ) {
     this.emitter = new EventEmitter2();
     this.cancellableFilesUploads = {};
@@ -67,6 +65,7 @@ export class NewUploadServiceImpl implements UploadService {
       authProvider: tenantAuthProvider,
     });
 
+    // TODO Would be nice to have two contexts: tenant and user ones
     if (userAuthProvider) {
       this.userMediaStore = new MediaStore({
         authProvider: userAuthProvider,
@@ -78,18 +77,12 @@ export class NewUploadServiceImpl implements UploadService {
         authProvider: userAuthProvider,
       });
     }
-
-    this.tenantUploadParams = tenantUploadParams;
-
-    this.setUploadParams(userUploadParams);
   }
 
-  setUploadParams(uploadParams?: UploadParams): void {
-    this.userUploadParams = {
-      ...defaultUploadParams,
-      ...uploadParams,
-    };
+  setUploadParams(uploadParams: UploadParams): void {
+    this.tenantUploadParams = uploadParams;
   }
+
   // Used for testing
   private createUploadController(): UploadController {
     return new UploadController();
@@ -131,15 +124,18 @@ export class NewUploadServiceImpl implements UploadService {
     const creationDate = Date.now();
     const cancellableFileUploads: CancellableFileUpload[] = files.map(file => {
       const id = uuid.v4();
+      const { userContext, tenantContext, shouldCopyFileToRecents } = this;
       const uploadableFile: UploadableFile = {
-        collection: this.userUploadParams.collection,
+        collection: shouldCopyFileToRecents
+          ? this.tenantUploadParams.collection
+          : RECENTS_COLLECTION,
         content: file,
         name: file.name,
         mimeType: file.type,
       };
-      const { userContext, tenantContext, shouldCopyFileToRecents } = this;
-      const controller = this.createUploadController();
       const context = shouldCopyFileToRecents ? tenantContext : userContext;
+
+      const controller = this.createUploadController();
       let observable: Observable<FileState> | undefined;
 
       if (context) {
@@ -278,9 +274,8 @@ export class NewUploadServiceImpl implements UploadService {
     fileId: string,
   ) => {
     const { mediaFile } = cancellableFileUpload;
-    const { collection } = this.userUploadParams;
 
-    this.copyFileToUsersCollection(fileId, collection).catch(console.log); // We intentionally swallow these errors
+    this.copyFileToUsersCollection(fileId).catch(console.log); // We intentionally swallow these errors
 
     const publicMediaFile: PublicMediaFile = {
       ...mediaFile,
@@ -346,23 +341,20 @@ export class NewUploadServiceImpl implements UploadService {
     });
   };
 
-  get shouldCopyFileToRecents(): boolean {
-    const { copyFileToRecents } = this.userUploadParams;
-
-    return Boolean(copyFileToRecents);
-  }
-
   // This method copies the file from the "tenant collection" to the "user collection" (recents).
   // that means we need "tenant auth" as input and "user auth" as output
   private copyFileToUsersCollection(
     sourceFileId: string,
-    sourceCollection?: string,
   ): Promise<MediaStoreResponse<MediaStoreMediaFile> | void> {
-    const { shouldCopyFileToRecents, userMediaStore } = this;
-
+    const {
+      shouldCopyFileToRecents,
+      userMediaStore,
+      tenantUploadParams,
+    } = this;
     if (!shouldCopyFileToRecents || !userMediaStore) {
       return Promise.resolve();
     }
+    const { collection: sourceCollection } = tenantUploadParams;
     return this.tenantContext.config
       .authProvider({ collectionName: sourceCollection })
       .then(auth => {
@@ -376,7 +368,7 @@ export class NewUploadServiceImpl implements UploadService {
           },
         };
         const params: MediaStoreCopyFileWithTokenParams = {
-          collection: 'recents',
+          collection: RECENTS_COLLECTION,
         };
 
         return userMediaStore.copyFileWithToken(body, params);
