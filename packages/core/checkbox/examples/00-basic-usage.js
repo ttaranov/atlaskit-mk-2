@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import Checkbox from '../src';
+import Checkbox from '../src/Checkbox';
 
 type State = {
   onChangeResult: string,
@@ -12,11 +12,10 @@ const BasicUsageExample = class extends PureComponent<void, State> {
   };
 
   onChange = (event: any) => {
-    console.log(event.currentTarget);
     this.setState({
       onChangeResult: `onChange called with value: ${
-        event.currentTarget.value
-      } isChecked: ${event.currentTarget.checked}`,
+        event.target.value
+      } isChecked: ${event.target.checked}`,
     });
   };
 

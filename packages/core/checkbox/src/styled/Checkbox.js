@@ -93,7 +93,6 @@ const getTickColor = props => {
 
 const getBoxColor = props => {
   const { isChecked, isDisabled, isActive, isHovered, ...rest } = props;
-
   // set the default
   let color = themed({ light: colors.N10, dark: colors.DN10 });
 
@@ -124,9 +123,4 @@ export const IconWrapper = styled.span`
     transition: stroke 0.2s ease-in-out;
     ${getBorderColor};
   }
-`;
-
-export const Wrapper = styled.div`
-  display: flex;
-  align-items: center;
 `;

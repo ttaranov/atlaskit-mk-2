@@ -40,8 +40,8 @@ export default class ButtonAppearance extends Component<*, *> {
         <Checkbox
           value="showLoading"
           label="Show Loading State"
-          onChange={({ isChecked }) =>
-            this.setState({ showLoadingState: isChecked })
+          onChange={({ target }) =>
+            this.setState({ showLoadingState: target.checked })
           }
           name="show-loading"
         />

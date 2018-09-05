@@ -1,63 +1,17 @@
 // @flow
 
 import React, { Component } from 'react';
-import { CheckboxIcon as CheckboxIconGlyph } from '@atlaskit/icon/glyph/checkbox';
+import Icon from '@atlaskit/icon/glyph/checkbox';
 import CheckboxIndeterminateIcon from '@atlaskit/icon/glyph/checkbox-indeterminate';
-import { ThemeProvider } from 'styled-components';
 import { IconWrapper } from './styled/Checkbox';
+import { type CheckboxIconProps } from './types';
 
-type Props = {
-  /** Primary color */
-  primaryColor?: 'inherit',
-  /** Secondary color */
-  secondaryColor?: 'inherit',
-  /** Sets the checkbox icon hovered state */
-  isHovered?: boolean,
-  /** Sets the checkbox icon active state. */
-  isActive?: boolean,
-  /** Sets whether the checkbox is indeterminate. This only affects the
-   style and does not modify the isChecked property. */
-  isIndeterminate?: boolean,
-  /** Sets whether the checkbox is disabled. */
-  isDisabled?: boolean,
-  /** Sets whether the checkbox is checked or unchecked. */
-  isChecked: boolean,
-  /** Sets whether the checkbox is disabled. */
-  isDisabled?: boolean,
-  /** Sets the checkbox focus */
-  isFocused?: boolean,
-  /** Sets the checkbox as invalid */
-  isInvalid?: boolean,
-};
-
-export default class CheckboxIcon extends Component<Props, void> {
-  renderCheckboxIcon() {
-    const {
-      isIndeterminate,
-      isHovered,
-      isActive,
-      primaryColor,
-      secondaryColor,
-    } = this.props;
-
-    return isIndeterminate ? (
-      <CheckboxIndeterminateIcon
-        primaryColor={primaryColor}
-        secondaryColor={secondaryColor}
-        isHovered={isHovered}
-        isActive={isActive}
-        label=""
-      />
-    ) : (
-      <CheckboxIconGlyph
-        primaryColor={primaryColor}
-        secondaryColor={secondaryColor}
-        isHovered={isHovered}
-        isActive={isActive}
-        label=""
-      />
-    );
-  }
+export default class CheckboxIcon extends Component<CheckboxIconProps, void> {
+  static defaultProps = {
+    primaryColor: 'inherit',
+    secondaryColor: 'inherit',
+    isIndeterminate: false,
+  };
 
   render() {
     const {
@@ -67,10 +21,10 @@ export default class CheckboxIcon extends Component<Props, void> {
       isActive,
       isFocused,
       isHovered,
+      isIndeterminate,
       primaryColor,
       secondaryColor,
     } = this.props;
-
     return (
       <IconWrapper
         isChecked={isChecked}
@@ -89,7 +43,7 @@ export default class CheckboxIcon extends Component<Props, void> {
             label=""
           />
         ) : (
-          <CheckboxIconGlyph
+          <Icon
             primaryColor={primaryColor}
             secondaryColor={secondaryColor}
             isHovered={isHovered}

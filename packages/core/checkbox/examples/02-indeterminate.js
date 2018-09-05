@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import Checkbox from '../src';
+import Checkbox from '../src/Checkbox';
 
 type CheckedItems = { [value: string]: boolean };
 type State = {
@@ -34,7 +34,6 @@ export default class IndeterminateExample extends PureComponent<void, State> {
   };
 
   onChange = (event: any) => {
-    console.log(event);
     const { checkedItems } = this.state;
     const itemValue = event.target.value;
 

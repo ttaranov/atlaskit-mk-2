@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
 import Form, { Field } from '@atlaskit/form';
-import Checkbox, { CheckboxGroup } from '@atlaskit/checkbox';
+import Checkbox from '@atlaskit/checkbox';
 import Modal, { ModalFooter } from '@atlaskit/modal-dialog';
 import { FieldTextAreaStateless } from '@atlaskit/field-text-area';
 import type { FormFields } from '../types';
@@ -99,27 +99,25 @@ export default class FeedbackForm extends React.Component<Props, FormFields> {
               </Field>
 
               <Field>
-                <CheckboxGroup>
-                  <Checkbox
-                    value="true"
-                    name="can-be-contacted"
-                    label="Atlassian can contact me about this feedback"
-                    onChange={checkbox =>
-                      this.setState({ canBeContacted: checkbox.isChecked })
-                    }
-                  />
+                <Checkbox
+                  value="true"
+                  name="can-be-contacted"
+                  label="Atlassian can contact me about this feedback"
+                  onChange={event =>
+                    this.setState({ canBeContacted: event.target.checked })
+                  }
+                />
 
-                  <Checkbox
-                    value="true"
-                    name="enroll-in-research-group"
-                    label="I'd like to participate in product research"
-                    onChange={checkbox =>
-                      this.setState({
-                        enrollInResearchGroup: checkbox.isChecked,
-                      })
-                    }
-                  />
-                </CheckboxGroup>
+                <Checkbox
+                  value="true"
+                  name="enroll-in-research-group"
+                  label="I'd like to participate in product research"
+                  onChange={event =>
+                    this.setState({
+                      enrollInResearchGroup: event.target.checked,
+                    })
+                  }
+                />
               </Field>
             </Fragment>
           ) : (

@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import Checkbox from '../src';
+import Checkbox from '../src/Checkbox';
 
 type State = {
   isChecked: boolean,
@@ -13,11 +13,10 @@ export default class ControlledExample extends PureComponent<void, State> {
     onChangeResult: 'Check & Uncheck to trigger onChange',
   };
   onChange = (event: any) => {
-    console.log(event);
     this.setState({
       isChecked: !this.state.isChecked,
-      onChangeResult: `onChange Event with currentTarget.checked: ${
-        event.currentTarget.checked
+      onChangeResult: `onChange Event with target.checked: ${
+        event.target.checked
       }`,
     });
   };
