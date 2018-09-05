@@ -5,7 +5,6 @@ import Avatar from '@atlaskit/avatar';
 import ResultBase from './ResultBase';
 
 import type { PersonResultType as Props } from './types';
-import withOpenInNewTab from './withOpenInNewTab';
 
 const PERSON_RESULT_TYPE = 'person';
 
@@ -13,7 +12,7 @@ const PERSON_RESULT_TYPE = 'person';
 // If adding a prop or feature that may be useful to all result types,
 // add it to ResultBase instead
 // ===================================================================
-export class PersonResult extends PureComponent<Props> {
+export default class PersonResult extends PureComponent<Props> {
   static defaultProps = {
     isCompact: false,
     isSelected: false,
@@ -55,5 +54,3 @@ export class PersonResult extends PureComponent<Props> {
     );
   }
 }
-
-export default withOpenInNewTab(PersonResult);

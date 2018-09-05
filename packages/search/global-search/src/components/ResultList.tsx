@@ -3,6 +3,7 @@ import {
   ObjectResult as ObjectResultComponent,
   PersonResult as PersonResultComponent,
   ContainerResult as ContainerResultComponent,
+  withOpenInNewTab,
 } from '@atlaskit/quick-search';
 import {
   Result,
@@ -20,6 +21,7 @@ export interface Props {
   analyticsData?: {};
 }
 
+const PersonResultComponentInNewTab = withOpenInNewTab(PersonResultComponent);
 export default class ResultList extends React.Component<Props> {
   render() {
     const { results, sectionIndex } = this.props;
@@ -91,7 +93,7 @@ export default class ResultList extends React.Component<Props> {
           const personResult = result as PersonResult;
 
           return (
-            <PersonResultComponent
+            <PersonResultComponentInNewTab
               key={personResult.resultId}
               resultId={personResult.resultId}
               name={personResult.name}

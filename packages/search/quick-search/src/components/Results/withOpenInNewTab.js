@@ -6,12 +6,18 @@ type LinkProps = {
   href: string,
   children: React.ReactNode,
   className: string,
+  tabIndex: string | nuill,
 };
 
 const getLinkComponent = LinkComponent => (props: LinkProps) => {
-  const { className, href, children } = props;
+  const { className, href, children, tabIndex } = props;
   return (
-    <span onClick={() => window.open(href, '_blank')} className={className}>
+    <span
+      role="link"
+      onClick={() => window.open(href, '_blank')}
+      tabIndex={tabIndex}
+      className={className}
+    >
       {LinkComponent ? <LinkComponent {...props} /> : children}
     </span>
   );
