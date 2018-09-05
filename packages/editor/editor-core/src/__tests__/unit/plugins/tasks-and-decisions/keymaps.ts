@@ -529,6 +529,32 @@ describe('tasks and decisions - keymaps', () => {
           compareSelection(editorFactory, expectedDoc, editorView);
         });
       });
+
+      describe(`TAB ${name}Item`, () => {
+        it('TAB should not affect document', () => {
+          const testDoc = doc(
+            list(listProps)(item(itemProps)('Hello{<>} World')),
+          );
+
+          const { editorView } = editorFactory(testDoc);
+
+          sendKeyToPm(editorView, 'Tab');
+          expect(editorView.state.doc).toEqualDocument(testDoc);
+          compareSelection(editorFactory, testDoc, editorView);
+        });
+
+        it('Shift-TAB should not affect document', () => {
+          const testDoc = doc(
+            list(listProps)(item(itemProps)('Hello{<>} World')),
+          );
+
+          const { editorView } = editorFactory(testDoc);
+
+          sendKeyToPm(editorView, 'Shift-Tab');
+          expect(editorView.state.doc).toEqualDocument(testDoc);
+          compareSelection(editorFactory, testDoc, editorView);
+        });
+      });
     });
   });
 });
