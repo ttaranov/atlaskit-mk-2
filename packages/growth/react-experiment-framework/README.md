@@ -84,37 +84,3 @@ export default asExperiment({
     Spinner,
 );
 ```
-
-This creates ExperimentSwitch components in your React app, that are context consumers provided by the ExperimentController.
-
-## Publishing NPM Package
-
-You may build and publish a new package after changes have been merged into master.
-
-Run the [React Experiment Framework Deployment](https://deployment-bamboo.internal.atlassian.com/browse/PGT-REXFD) Bamboo build manually.
-
-By default, this will automatically release a new patch version of the package. If you wish to release a new major or minor version, see below.
-
-The build is managed by this [React Experiment Framework Deployment Plan Template](https://deployment-bamboo.internal.atlassian.com/browse/PGT-REXFDT). The script for this can be found in this repo under `templates/`.
-
-### What kind of release is best for my change?
-* **Major Release** - Suitable for breaking changes
-* **Minor Release** - Suitable for API / consumption changes that maintain backwards compatibility
-* **Patch Release** - Suitable when only internal workings are changed with no difference for consumers
-
-### Publishing a new Major or Minor Release
-
-If your changes are too significant to be considered a patch release, you may choose to release a new major or minor version. In order to do this, the version declared in package.json must be incremented.
-
-These commands will increment the version number accordingly and commit the change.
-
-```bash
-$ npm version premajor
-$ npm version preminor
-```
-
-e.g. if the current version is "1.0.5", and you run `premajor`, then the new version will become "2.0.0-0". Then, after merging into master and running the bamboo build, it will be released as "2.0.0".
-
-### Who do I talk to? ###
-* @mpuckeridge
-* Growth Engineering room
