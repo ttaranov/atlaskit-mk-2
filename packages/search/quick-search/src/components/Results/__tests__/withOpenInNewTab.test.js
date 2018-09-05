@@ -62,7 +62,7 @@ describe('withOpenInNewTab', () => {
 
   it('should support custom link component', () => {
     const spy = jest.fn();
-    const MyLinkComponent = props => (
+    const MyLinkComponent = (props: { children: Object }) => (
       <span role="link" tabIndex="0" onClick={e => spy(props, e)}>
         {props.children}
       </span>
