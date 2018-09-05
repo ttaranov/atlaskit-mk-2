@@ -1,5 +1,12 @@
 # @atlaskit/onboarding
 
+## 6.0.0
+- [major] Add SpotlightTransition and require it wraps Spotlight to get both transitions and conditional rendering with proper transitions on unmount. [d9d2f0d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d9d2f0d)
+- [patch] Upgrades Spotlight component to use @atlaskit/portal package [89be4f1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/89be4f1)
+- [none] Updated dependencies [89be4f1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/89be4f1)
+  - @atlaskit/portal@0.0.8
+  - @atlaskit/layer-manager@5.0.11
+
 ## 5.1.9
 - [patch] Updated dependencies [9c66d4d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9c66d4d)
   - @atlaskit/layer-manager@5.0.10

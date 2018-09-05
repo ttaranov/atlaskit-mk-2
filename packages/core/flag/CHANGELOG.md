@@ -1,5 +1,11 @@
 # @atlaskit/flag
 
+## 9.0.9
+- [patch] Updated dependencies [d9d2f0d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d9d2f0d)
+- [none] Updated dependencies [89be4f1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/89be4f1)
+  - @atlaskit/portal@0.0.8
+  - @atlaskit/layer-manager@5.0.11
+
 ## 9.0.8
 - [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
 
