@@ -10,6 +10,7 @@ import {
   Spotlight,
   SpotlightManager,
   SpotlightTarget,
+  SpotlightTransition,
 } from '@atlaskit/onboarding';
 import Tooltip from '@atlaskit/tooltip';
 
@@ -67,16 +68,18 @@ class ThreeStepSpotlight extends React.Component<
           <SpotlightTarget name="2">{stepTwo}</SpotlightTarget>
           <SpotlightTarget name="3">{stepThree}</SpotlightTarget>
         </div>
-        {open && (
-          <Spotlight
-            actions={[
-              { onClick: this.next, text: step === 3 ? 'Close' : 'Next' },
-            ]}
-            heading={`Here is step ${step} of 3`}
-            key={`${step}`}
-            target={`${step}`}
-          />
-        )}
+        <SpotlightTransition>
+          {open && (
+            <Spotlight
+              actions={[
+                { onClick: this.next, text: step === 3 ? 'Close' : 'Next' },
+              ]}
+              heading={`Here is step ${step} of 3`}
+              key={`${step}`}
+              target={`${step}`}
+            />
+          )}
+        </SpotlightTransition>
       </SpotlightManager>
     );
   }

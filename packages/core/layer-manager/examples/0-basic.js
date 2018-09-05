@@ -7,6 +7,7 @@ import {
   Spotlight,
   SpotlightManager,
   SpotlightTarget,
+  SpotlightTransition,
 } from '@atlaskit/onboarding';
 
 // NOTE: @atlaskit/layer-manager is provided by the website
@@ -78,21 +79,23 @@ export default class Example extends Component<Props, State> {
           </Modal>
         )}
 
-        {spotlightIsVisible && (
-          <Spotlight
-            actions={[{ onClick: this.toggleSpotlight, text: 'Close' }]}
-            dialogPlacement="bottom left"
-            heading="Hello World!"
-            key="button"
-            target="button"
-            targetBgColor="white"
-            targetRadius={4}
-          >
-            Cupcake ipsum dolor sit amet. Cheesecake fruitcake brownie donut
-            dragée cotton candy. Sesame snaps gingerbread brownie caramels
-            liquorice pie bonbon cake gummies.
-          </Spotlight>
-        )}
+        <SpotlightTransition>
+          {spotlightIsVisible && (
+            <Spotlight
+              actions={[{ onClick: this.toggleSpotlight, text: 'Close' }]}
+              dialogPlacement="bottom left"
+              heading="Hello World!"
+              key="button"
+              target="button"
+              targetBgColor="white"
+              targetRadius={4}
+            >
+              Cupcake ipsum dolor sit amet. Cheesecake fruitcake brownie donut
+              dragée cotton candy. Sesame snaps gingerbread brownie caramels
+              liquorice pie bonbon cake gummies.
+            </Spotlight>
+          )}
+        </SpotlightTransition>
       </SpotlightManager>
     );
   }
