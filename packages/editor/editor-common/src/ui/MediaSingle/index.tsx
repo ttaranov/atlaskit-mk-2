@@ -11,6 +11,14 @@ export interface Props {
   containerWidth?: number;
   isLoading?: boolean;
   className?: string;
+  columns?: number;
+}
+
+export function calcMediaSingleWidth(
+  columns: number,
+  containerWidth: number,
+): number {
+  return (containerWidth > 680 ? 680 : containerWidth) / 12 * columns;
 }
 
 export default function MediaSingle({
@@ -21,12 +29,17 @@ export default function MediaSingle({
   containerWidth = width,
   isLoading = false,
   className,
+  columns,
 }: Props) {
+  const mediaWidth = columns
+    ? calcMediaSingleWidth(columns, containerWidth)
+    : width;
+  console.log('have media width', mediaWidth, 'with cols', columns);
   return (
     <Wrapper
       layout={layout}
-      width={width}
-      height={height}
+      width={mediaWidth}
+      height={columns ? height / (width / mediaWidth) : height}
       containerWidth={containerWidth}
       className={classnames('media-single', layout, className, {
         'is-loading': isLoading,

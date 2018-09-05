@@ -22,39 +22,7 @@ export const exampleDocument = {
       content: [
         {
           type: 'text',
-          text: '1 Column',
-        },
-      ],
-    },
-    {
-      type: 'mediaSingle',
-      attrs: {
-        layout: 'center',
-        columns: 1,
-      },
-      content: [
-        {
-          type: 'media',
-          attrs: {
-            id: '6c6ae2d7-6c8c-4d9b-adfb-ac5698553585',
-            type: 'file',
-            collection: 'MediaServicesSample',
-            width: '980',
-            height: '463',
-          },
-        },
-      ],
-    },
-    {
-      type: 'heading',
-      attrs: {
-        level: 3,
-      },
-      content: [
-        {
-          type: 'text',
           text: '2 Columns',
-          columns: 2,
         },
       ],
     },
@@ -62,6 +30,7 @@ export const exampleDocument = {
       type: 'mediaSingle',
       attrs: {
         layout: 'center',
+        columnSpan: 2,
       },
       content: [
         {
@@ -84,7 +53,7 @@ export const exampleDocument = {
       content: [
         {
           type: 'text',
-          text: '3 Columns',
+          text: '4 Columns',
         },
       ],
     },
@@ -92,7 +61,7 @@ export const exampleDocument = {
       type: 'mediaSingle',
       attrs: {
         layout: 'center',
-        columns: 3,
+        columnSpan: 4,
       },
       content: [
         {
@@ -123,7 +92,38 @@ export const exampleDocument = {
       type: 'mediaSingle',
       attrs: {
         layout: 'center',
-        columns: 6,
+        columnSpan: 6,
+      },
+      content: [
+        {
+          type: 'media',
+          attrs: {
+            id: '6c6ae2d7-6c8c-4d9b-adfb-ac5698553585',
+            type: 'file',
+            collection: 'MediaServicesSample',
+            width: '980',
+            height: '463',
+          },
+        },
+      ],
+    },
+    {
+      type: 'heading',
+      attrs: {
+        level: 3,
+      },
+      content: [
+        {
+          type: 'text',
+          text: '8 Columns',
+        },
+      ],
+    },
+    {
+      type: 'mediaSingle',
+      attrs: {
+        layout: 'center',
+        columnSpan: 8,
       },
       content: [
         {
@@ -154,7 +154,7 @@ export const exampleDocument = {
       type: 'mediaSingle',
       attrs: {
         layout: 'center',
-        columns: 12,
+        columnSpan: 12,
       },
       content: [
         {

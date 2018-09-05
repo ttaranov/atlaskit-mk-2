@@ -16,38 +16,13 @@ import { name, version } from '../package.json';
 import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
 import { extensionHandlers } from '../example-helpers/extension-handlers';
 import { DevTools } from '../example-helpers/DevTools';
+import { exampleDocument } from '../example-helpers/grid-document';
 
 const SAVE_ACTION = () => console.log('Save');
 const CANCEL_ACTION = () => console.log('Cancel');
 const EXPAND_ACTION = () => console.log('Expand');
 
 const analyticsHandler = (actionName, props) => console.log(actionName, props);
-const exampleDocument = {
-  version: 1,
-  type: 'doc',
-  content: [
-    {
-      type: 'paragraph',
-      content: [
-        { type: 'text', text: 'Some example document with emojis ' },
-        {
-          type: 'emoji',
-          attrs: {
-            shortName: ':catchemall:',
-            id: 'atlassian-catchemall',
-            text: ':catchemall:',
-          },
-        },
-        { type: 'text', text: ' and mentions ' },
-        {
-          type: 'mention',
-          attrs: { id: '0', text: '@Carolyn', accessLevel: '' },
-        },
-        { type: 'text', text: '. ' },
-      ],
-    },
-  ],
-};
 
 export type Props = {};
 export type State = {
@@ -125,7 +100,10 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                     activityProvider={activityProvider}
                     mentionProvider={mentionProvider}
                     emojiProvider={emojiProvider}
-                    mediaProvider={mediaProvider}
+                    media={{
+                      provider: mediaProvider,
+                      allowMediaSingle: true,
+                    }}
                     taskDecisionProvider={taskDecisionProvider}
                     contextIdentifierProvider={contextIdentifierProvider}
                     UNSAFE_mediaSingle_grid={true}

@@ -23,14 +23,14 @@ export interface MediaSingleDefinition {
 export interface MediaSingleAttributes {
   /**
    * @minimum 1
-   * @maximum 12
    * @stage 0
    */
-  columns?: number;
+  columnSpan?: number;
   layout: Layout;
 }
 
 export const defaultAttrs = {
+  columnSpan: { default: null },
   layout: { default: 'center' },
 };
 

@@ -49,7 +49,7 @@ const gridPlugin: EditorPlugin = {
     );
 
     return (
-      <div className="gridParent">
+      <div className={`gridParent gridParent-${appearance}`}>
         <div
           className="gridContainer"
           style={{
