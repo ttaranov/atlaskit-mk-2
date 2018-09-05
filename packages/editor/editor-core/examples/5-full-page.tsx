@@ -130,7 +130,33 @@ export class ExampleEditor extends React.Component<Props, State> {
       <Wrapper>
         <Content>
           <Editor
-            defaultValue={this.props.defaultValue}
+            defaultValue={{
+              type: 'doc',
+              content: [
+                {
+                  type: 'mediaSingle',
+                  attrs: { layout: 'center' },
+                  content: [
+                    {
+                      type: 'media',
+                      attrs: {
+                        id: 'a4b2aedd-37b0-44dd-b5f2-3ebed445f6f0',
+                        type: 'file',
+                        collection: 'MediaServicesSample',
+                        occurrenceKey: null,
+                        url: null,
+                        __fileName: 'fb.jpeg',
+                        __fileSize: 9788,
+                        __fileMimeType: 'image/jpeg',
+                        __displayType: null,
+                        __key: 'temporary:4a682eba-4e9e-40f8-95a6-cba7b20354da',
+                      },
+                    },
+                  ],
+                },
+                { type: 'paragraph' },
+              ],
+            }}
             appearance="full-page"
             analyticsHandler={analyticsHandler}
             quickInsert={{ provider: Promise.resolve(quickInsertProvider) }}

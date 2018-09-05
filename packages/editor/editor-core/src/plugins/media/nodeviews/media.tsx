@@ -21,6 +21,7 @@ export interface MediaNodeProps extends ReactNodeProps {
   cardDimensions: CardDimensions;
   isMediaSingle?: boolean;
   progress?: number;
+  hideProgress: boolean;
   onExternalImageLoaded?: (
     dimensions: { width: number; height: number },
   ) => void;
@@ -72,7 +73,8 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
       !width &&
       this.pluginState.editorAppearance !== 'message' &&
       isMediaSingle &&
-      type !== 'external'
+      type !== 'external' &&
+      !this.props.hideProgress
     ) {
       return (
         <ProgressLoader

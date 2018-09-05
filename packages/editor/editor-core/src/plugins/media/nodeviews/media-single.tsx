@@ -101,6 +101,7 @@ export default class MediaSingleNode extends Component<
   render() {
     const { layout } = this.props.node.attrs;
     const { progress } = this.state;
+    let hideProgress = false;
 
     let { width, height, type } = this.child.props.node.attrs;
 
@@ -114,6 +115,17 @@ export default class MediaSingleNode extends Component<
       if (height === null) {
         height = stateHeight || DEFAULT_HEIGHT;
       }
+    }
+
+    const getMediaState = this.mediaPluginState.getMediaNodeStateStatus(
+      this.child.props.node.attrs.__key,
+    );
+
+    if (width === null && getMediaState === 'ready') {
+      width = DEFAULT_WIDTH;
+      height = DEFAULT_HEIGHT;
+      debugger;
+      hideProgress = true;
     }
 
     return (
@@ -131,6 +143,7 @@ export default class MediaSingleNode extends Component<
               width: '100%',
               height: '100%',
             },
+            hideProgress,
             isMediaSingle: true,
             progress,
             onExternalImageLoaded: this.onExternalImageLoaded,
