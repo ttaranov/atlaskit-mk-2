@@ -1,12 +1,12 @@
 // @flow
-import React, { ReactNode } from 'react';
+import React, { type Node as ReactNode, type ComponentType } from 'react';
 import { ResultContext } from '../context';
 
 type LinkProps = {
   href: string,
   children: ReactNode,
   className: string,
-  tabIndex: string | nuill,
+  tabIndex: string | null,
 };
 
 const getLinkComponent = LinkComponent => (props: LinkProps) => {
@@ -23,8 +23,8 @@ const getLinkComponent = LinkComponent => (props: LinkProps) => {
   );
 };
 
-const withOpenInNewTab = (WrappedComponent: ReactNode) =>
-  class extends React.Component {
+const withOpenInNewTab = (WrappedComponent: ComponentType<*>) =>
+  class extends React.Component<{}> {
     render() {
       const props = this.props;
       return (
