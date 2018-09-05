@@ -123,7 +123,7 @@ const light = ({
   isSelected,
   spacing,
 }: ItemPresentationProps) => {
-  const containerTextColor = isSelected ? colors.B400 : colors.N500;
+  const containerTextColor = isSelected || isActive ? colors.B400 : colors.N500;
   const containerBackgroundColor = (() => {
     if (isActive) return colors.B50;
     if (isSelected || isHover) return colors.N30;

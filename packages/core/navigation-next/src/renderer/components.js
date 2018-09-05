@@ -119,13 +119,6 @@ const Item = ({ before: beforeProp, icon, ...rest }: ItemProps) => {
 };
 
 // BackItem
-const patchBackItemStyles = styles => ({
-  ...styles,
-  textWrapper: {
-    ...styles.textWrapper,
-    fontWeight: 600,
-  },
-});
 const BackItem = ({ before: beforeProp, text, ...props }: ItemProps) => {
   let before = beforeProp;
   if (!before) {
@@ -139,13 +132,7 @@ const BackItem = ({ before: beforeProp, text, ...props }: ItemProps) => {
 
   return (
     <div css={{ paddingBottom: gridSize * 2 }}>
-      <Item
-        {...props}
-        after={null}
-        before={before}
-        text={text || 'Back'}
-        styles={patchBackItemStyles}
-      />
+      <Item {...props} after={null} before={before} text={text || 'Back'} />
     </div>
   );
 };
