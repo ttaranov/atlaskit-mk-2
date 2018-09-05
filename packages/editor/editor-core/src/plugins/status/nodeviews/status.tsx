@@ -83,6 +83,12 @@ export class StatusComponent extends React.Component<StatusComponentProps> {
     const { panelType, appearance, forwardRef } = this.props;
     const Icon = panelIcons[panelType];
     const appearance_ = appearances[panelType];
+    console.log(
+      '# StatusComponent.render() - panelType: ',
+      panelType,
+      ' appearance: ',
+      appearance,
+    );
     return (
       <Lozenge
         appearance={appearance_}

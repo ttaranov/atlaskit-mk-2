@@ -23,8 +23,9 @@ const statusPlugin: EditorPlugin = {
         action(insert, state) {
           return insert(
             state.schema.nodes.status.createChecked(
-              { panelType: 'warning' },
-              state.schema.nodes.paragraph.createChecked(),
+              { panelType: 'warning', appearance: 'inprogress' },
+              state.schema.text('WTF'),
+              //state.schema.nodes.text.createChecked({ text: 'Hello' }),
             ),
           );
         },

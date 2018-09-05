@@ -4,7 +4,11 @@ import {
   findParentDomRefOfType,
   findParentNodeOfType,
 } from 'prosemirror-utils';
-import { statusNodeView } from '../nodeviews/status';
+import {
+  StatusComponent as StatusComponentNodeView,
+  statusNodeView,
+} from '../nodeviews/status';
+import { ReactNodeView } from '../../../nodeviews';
 
 export type StatusState = {
   element?: HTMLElement;
@@ -101,6 +105,11 @@ export const createPlugin = ({
     },
     props: {
       nodeViews: {
+        // status: ReactNodeView.fromComponent(
+        //   StatusComponentNodeView,
+        //   portalProviderAPI,
+        //   { providerFactory },
+        // ),
         status: statusNodeView(portalProviderAPI),
       },
       handleDOMEvents: {

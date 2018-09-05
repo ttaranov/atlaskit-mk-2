@@ -31,20 +31,21 @@ export type PanelType =
   | 'error'
   | 'success';
 
-export interface PanelAttributes {
+export interface StatusAttributes {
   panelType: PanelType;
+  appearance: StatusAppearance;
 }
 
 /**
  * @name panel_node
  */
-export interface PanelDefinition {
-  type: 'panel';
-  attrs: PanelAttributes;
+export interface StatusDefinition {
+  type: 'status';
+  attrs: StatusAttributes;
   /**
    * @minItems 1
    */
-  content: Array<Paragraph | Heading | OrderedList | BulletList>;
+  content: Array<Text>;
 }
 
 const panelIcons = {
@@ -73,7 +74,7 @@ export interface DOMAttributes {
 
 export const status: NodeSpec = {
   group: 'block',
-  content: '(paragraph)+',
+  content: 'text*',
   // inline: true,
   // group: 'inline',
   // selectable: true,

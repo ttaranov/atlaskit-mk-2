@@ -2,6 +2,7 @@ import { NodeSpec } from 'prosemirror-model';
 
 // Nodes
 import { PanelDefinition as Panel } from './panel';
+import { StatusDefinition as Status } from './status';
 import { ParagraphDefinition as Paragraph } from './paragraph';
 import { BlockQuoteDefinition as Blockquote } from './blockquote';
 import { OrderedListDefinition as OrderedList } from './ordered-list';
@@ -45,6 +46,7 @@ import { ActionDefinition as Action } from '../marks/action';
  */
 export type TopLevel = Array<
   | Panel
+  | Status
   | Paragraph
   | Blockquote
   | OrderedList
@@ -69,6 +71,7 @@ export type TopLevel = Array<
  */
 export type TableCellContent = Array<
   | Panel
+  | Status
   | Paragraph
   | Blockquote
   | OrderedList
@@ -92,6 +95,7 @@ export type TableCellContent = Array<
  */
 export type ExtensionContent = Array<
   | Panel
+  | Status
   | Paragraph
   | Blockquote
   | OrderedList
