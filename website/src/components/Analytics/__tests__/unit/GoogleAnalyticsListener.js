@@ -8,6 +8,14 @@ import cases from 'jest-in-case';
 
 jest.mock('react-ga');
 
+const getFakeGetEntries = data => {
+  const getEntriesByType = type => {
+    if (type !== 'navigation') return [];
+    return data;
+  };
+  return getEntriesByType;
+};
+
 cases(
   'add(augend, addend)',
   ({ performance, expectedCallSignature }) => {
@@ -31,10 +39,7 @@ cases(
     {
       name: 'apdex 100',
       performance: {
-        timing: {
-          domContentLoadedEventEnd: 1000,
-          navigationStart: 500,
-        },
+        getEntriesByType: getFakeGetEntries([{ domComplete: 500 }]),
       },
       expectedCallSignature: {
         category: 'Performance',
@@ -47,10 +52,7 @@ cases(
     {
       name: 'apdex 50',
       performance: {
-        timing: {
-          domContentLoadedEventEnd: 1600,
-          navigationStart: 500,
-        },
+        getEntriesByType: getFakeGetEntries([{ domComplete: 1100 }]),
       },
       expectedCallSignature: {
         category: 'Performance',
@@ -63,10 +65,7 @@ cases(
     {
       name: 'apdex 0',
       performance: {
-        timing: {
-          domContentLoadedEventEnd: 5000,
-          navigationStart: 500,
-        },
+        getEntriesByType: getFakeGetEntries([{ domComplete: 4500 }]),
       },
       expectedCallSignature: {
         category: 'Performance',
