@@ -24,14 +24,32 @@ export default md`
     analyticsClient: myAnalyticsClient,
     flags: {
       'my.experiment': {
-        reason: 'RULE_MATCH',
-        ruleId: '111-bbbbb-ccc',
         value: 'experiment',
+        trackEvents: true,
+        explanation: {
+          reason: 'RULE_MATCH',
+          ruleUUID: '111-bbbbb-ccc',
+        },
+      },
+      'my.boolean.flag': false,
+      'my.json.flag': {
+        value: {
+          nav: 'blue',
+          footer: 'black',
+        },
+        trackEvents: false,
+        explanation: {
+          reason: 'RULE_MATCH',
+          ruleUUID: '111-bbbbb-ccc',
+        },
       },
       'my.detailed.boolean.flag': {
-        reason: 'RULE_MATCH',
-        ruleId: '111-bbbbb-ccc',
         value: false,
+        trackEvents: true,
+        explanation: {
+          reason: 'RULE_MATCH',
+          ruleUUID: '111-bbbbb-ccc',
+        },
       },
     },
   });
@@ -59,5 +77,7 @@ export default md`
     default: true,
     trackExposureEvent: false,
   });
+
+  client.getJSONFlag('my.json.flag'); // > { nav: 'blue', footer: 'black' }
   ~~~
 `;

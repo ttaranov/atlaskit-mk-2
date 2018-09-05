@@ -24,7 +24,7 @@ export const enforceAttributes = (obj, attributes, identifier?) => {
   const title = identifier ? `${identifier}: ` : '';
   attributes.forEach(attribute => {
     if (!obj.hasOwnProperty(attribute) && obj[attribute] !== null) {
-      throw `${title}Missing ${attribute}`;
+      throw new Error(`${title}Missing ${attribute}`);
     }
   });
 };

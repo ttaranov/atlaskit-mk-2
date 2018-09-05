@@ -49,7 +49,7 @@ export default class TrackedFlag implements Flag {
     return this.value as string;
   }
 
-  getJSONFlag(): object {
+  getJSONValue(): object {
     if (!isObject(this.value)) {
       return {};
     }

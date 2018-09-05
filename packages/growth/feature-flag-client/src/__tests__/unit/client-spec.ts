@@ -306,14 +306,14 @@ describe('Feature Flag Client', () => {
       });
     });
 
-    describe('getJSONFlag', () => {
+    describe('getJSONValue', () => {
       test('should return empty object if flag is not set, and not fire exposure event', () => {
-        expect(client.getJSONFlag('my.empty.json.flag')).toEqual({});
+        expect(client.getJSONValue('my.empty.json.flag')).toEqual({});
         expect(analyticsClient.sendTrackEvent).toHaveBeenCalledTimes(0);
       });
 
       test('should return the object if flag is set', () => {
-        expect(client.getJSONFlag('my.json.flag')).toEqual({
+        expect(client.getJSONValue('my.json.flag')).toEqual({
           nav: 'blue',
           footer: 'black',
         });

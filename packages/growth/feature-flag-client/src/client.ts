@@ -100,14 +100,14 @@ export default class FeatureFlagClient {
     return flag.getVariantValue(getterOptions) as string;
   }
 
-  getJSONFlag(flagKey: string): object {
+  getJSONValue(flagKey: string): object {
     const flag = this.getFlag(flagKey);
 
     if (!flag) {
       return {};
     }
 
-    return flag.getJSONFlag();
+    return flag.getJSONValue();
   }
 
   trackExposure = (flagKey: string, flag: FeatureFlag) => {

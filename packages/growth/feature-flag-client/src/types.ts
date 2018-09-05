@@ -9,6 +9,8 @@ export type RuleId = string;
 
 export type DarkFeature = boolean;
 
+export type JSONFlag = object;
+
 export type FeatureFlag = {
   trackEvents: boolean;
   value: boolean | string | object;
@@ -19,7 +21,7 @@ export type FeatureFlag = {
   [key: string]: any;
 };
 
-export type AnyFlag = DarkFeature | FeatureFlag;
+export type AnyFlag = DarkFeature | FeatureFlag | JSONFlag;
 
 export type Flags = {
   [flagName: string]: AnyFlag;
@@ -58,5 +60,5 @@ export interface Flag {
     trackExposureEvent?: boolean;
   }): string;
 
-  getJSONFlag(): object;
+  getJSONValue(): object;
 }

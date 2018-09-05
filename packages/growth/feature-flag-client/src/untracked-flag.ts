@@ -1,10 +1,10 @@
 import { Flag, DarkFeature } from './types';
 
-import { isBoolean } from './lib';
+import { isBoolean, isObject } from './lib';
 
 export default class UntrackedFlag implements Flag {
   flagKey: string;
-  value: string | boolean;
+  value: string | boolean | object;
 
   constructor(flagKey: string, flag: DarkFeature) {
     this.flagKey = flagKey;
@@ -34,7 +34,11 @@ export default class UntrackedFlag implements Flag {
     return this.value as string;
   }
 
-  getJSONFlag() {
-    return {};
+  getJSONValue(): object {
+    if (!isObject(this.value)) {
+      return {};
+    }
+
+    return this.value as object;
   }
 }
