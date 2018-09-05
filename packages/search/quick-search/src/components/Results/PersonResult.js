@@ -12,6 +12,7 @@ const PERSON_RESULT_TYPE = 'person';
 // If adding a prop or feature that may be useful to all result types,
 // add it to ResultBase instead
 // ===================================================================
+
 export default class PersonResult extends PureComponent<Props> {
   static defaultProps = {
     isCompact: false,

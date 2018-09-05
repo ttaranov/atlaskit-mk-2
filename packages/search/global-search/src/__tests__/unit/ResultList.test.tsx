@@ -2,7 +2,6 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import {
   ObjectResult as ObjectResultComponent,
-  PersonResult as PersonResultComponent,
   ContainerResult as ContainerResultComponent,
 } from '@atlaskit/quick-search';
 import Objects24Object24PageIcon from '@atlaskit/icon/glyph/objects/24/object-24-page';
@@ -73,7 +72,10 @@ it('should pass the correct properties to PersonResult for people results', () =
     analyticsData: DUMMY_ANALYTICS_DATA,
   });
 
-  expect(wrapper.find(PersonResultComponent).props()).toMatchObject({
+  const peopleResult = wrapper.find('[resultId="resultId"]');
+  expect(peopleResult.length).toBe(1);
+  expect(peopleResult.key()).toBe('resultId');
+  expect(peopleResult.props()).toMatchObject({
     href: 'href',
     resultId: 'resultId',
     type: 'result-person',
