@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 79.0.8
+- [patch] Save async loaded modules on static field to save a rerender [5b3f37f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b3f37f)
+
 ## 79.0.7
 - [patch] Updated dependencies [d5a043a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5a043a)
   - @atlaskit/icon@13.8.1
