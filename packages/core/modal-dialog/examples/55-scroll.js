@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Lorem from 'react-lorem-component';
 import Button from '@atlaskit/button';
 import FieldRadioGroup from '@atlaskit/field-radio-group';
-import Modal from '../src';
+import Modal, { ModalTransition } from '../src';
 
 const TallContainer = styled.div`
   height: 2000px;
@@ -66,21 +66,23 @@ export default class ExampleScroll extends PureComponent<{}, State> {
           onRadioChange={this.onScrollBehaviorChange}
         />
         <Button onClick={this.open}>Open Modal</Button>
-        {isOpen && (
-          <Modal
-            actions={actions}
-            onClose={this.close}
-            heading="Modal Title"
-            scrollBehavior={scrollBehavior}
-          >
-            <Lorem count={10} />
-            <div
-              ref={r => {
-                this.bottomRef = r;
-              }}
-            />
-          </Modal>
-        )}
+        <ModalTransition>
+          {isOpen && (
+            <Modal
+              actions={actions}
+              onClose={this.close}
+              heading="Modal Title"
+              scrollBehavior={scrollBehavior}
+            >
+              <Lorem count={10} />
+              <div
+                ref={r => {
+                  this.bottomRef = r;
+                }}
+              />
+            </Modal>
+          )}
+        </ModalTransition>
       </TallContainer>
     );
   }

@@ -5,7 +5,7 @@ import Button from '@atlaskit/button';
 import EmojiIcon from '@atlaskit/icon/glyph/emoji';
 import Flag, { FlagGroup } from '@atlaskit/flag';
 import InlineDialog from '@atlaskit/inline-dialog';
-import ModalDialog from '@atlaskit/modal-dialog';
+import ModalDialog, { ModalTransition } from '@atlaskit/modal-dialog';
 import {
   Spotlight,
   SpotlightManager,
@@ -175,15 +175,17 @@ class App extends React.Component<{}, State> {
     const nextId = modals.length + 1;
     return (
       <React.Fragment>
-        {modals.map(id => (
-          <Modal
-            key={id}
-            onOpen={() => this.setState({ modals: [...modals, nextId] })}
-            onClose={() =>
-              this.setState({ modals: modals.filter(i => i !== id) })
-            }
-          />
-        ))}
+        <ModalTransition>
+          {modals.map(id => (
+            <Modal
+              key={id}
+              onOpen={() => this.setState({ modals: [...modals, nextId] })}
+              onClose={() =>
+                this.setState({ modals: modals.filter(i => i !== id) })
+              }
+            />
+          ))}
+        </ModalTransition>
         <p>
           This example shows off all components that rely on portalling and
           layering to appear in the expected order.

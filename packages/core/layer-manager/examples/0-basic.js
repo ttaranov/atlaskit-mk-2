@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import Tooltip from '@atlaskit/tooltip';
-import Modal from '@atlaskit/modal-dialog';
+import Modal, { ModalTransition } from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
 import {
   Spotlight,
@@ -64,20 +64,22 @@ export default class Example extends Component<Props, State> {
           <Button onClick={this.toggleSpotlight}>Spotlight</Button>
         </SpotlightTarget>
 
-        {modalIsVisible && (
-          <Modal
-            actions={[{ onClick: this.toggleModal, text: 'Close' }]}
-            autoFocus
-            heading="Hello World!"
-            onClose={this.toggleModal}
-          >
-            <p>
-              Cupcake ipsum dolor sit amet. Cheesecake fruitcake brownie donut
-              dragée cotton candy. Sesame snaps gingerbread brownie caramels
-              liquorice pie bonbon cake gummies.
-            </p>
-          </Modal>
-        )}
+        <ModalTransition>
+          {modalIsVisible && (
+            <Modal
+              actions={[{ onClick: this.toggleModal, text: 'Close' }]}
+              autoFocus
+              heading="Hello World!"
+              onClose={this.toggleModal}
+            >
+              <p>
+                Cupcake ipsum dolor sit amet. Cheesecake fruitcake brownie donut
+                dragée cotton candy. Sesame snaps gingerbread brownie caramels
+                liquorice pie bonbon cake gummies.
+              </p>
+            </Modal>
+          )}
+        </ModalTransition>
 
         <SpotlightTransition>
           {spotlightIsVisible && (

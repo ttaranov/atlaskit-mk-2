@@ -24,6 +24,7 @@
     "@atlaskit/button": "^9.0.8",
     "@atlaskit/icon": "^13.6.1",
     "@atlaskit/layer-manager": "^5.0.9",
+    "@atlaskit/portal": "^0.0.7",
     "@atlaskit/theme": "^6.0.2",
     "prop-types": "^15.5.10",
     "raf-schd": "^2.1.0",
