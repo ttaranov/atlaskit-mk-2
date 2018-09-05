@@ -1,8 +1,9 @@
 import * as React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
 import {
   ObjectResult as ObjectResultComponent,
   ContainerResult as ContainerResultComponent,
+  PersonResult as PersonResultComponent,
 } from '@atlaskit/quick-search';
 import Objects24Object24PageIcon from '@atlaskit/icon/glyph/objects/24/object-24-page';
 import ResultList, { Props } from '../../components/ResultList';
@@ -136,5 +137,47 @@ it('should pass the correct properties to ContainerResult for Confluence spaces'
     avatarUrl: 'avatarUrl',
     name: 'name',
     analyticsData: expect.objectContaining(DUMMY_ANALYTICS_DATA),
+  });
+});
+
+describe('Open person result in new tab', () => {
+  const mountElemnt = (partialProps: Partial<Props>) => {
+    const props: Props = {
+      results: [],
+      sectionIndex: 0,
+      ...partialProps,
+    };
+
+    return mount(<ResultList {...props} />);
+  };
+  let windowOpenSpy;
+  beforeEach(() => {
+    windowOpenSpy = jest.spyOn(window, 'open');
+  });
+
+  afterEach(() => {
+    windowOpenSpy.mockRestore();
+  });
+
+  it('should open people result in new tab', () => {
+    const windowOpenSpy = jest.spyOn(window, 'open');
+    const peopleResults: PersonResult[] = [
+      makePersonResult({
+        resultId: 'person-resultId',
+        analyticsType: AnalyticsType.ResultPerson,
+        href: 'http://www.example.com/',
+      }),
+    ];
+
+    const wrapper = mountElemnt({
+      results: peopleResults,
+      analyticsData: DUMMY_ANALYTICS_DATA,
+    });
+
+    const peopleResultComponent = wrapper.find(PersonResultComponent);
+    peopleResultComponent.simulate('click');
+
+    expect(windowOpenSpy).toHaveBeenCalledTimes(1);
+    expect(windowOpenSpy).toBeCalledWith('http://www.example.com/', '_blank');
   });
 });
