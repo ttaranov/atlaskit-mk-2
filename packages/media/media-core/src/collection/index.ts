@@ -40,6 +40,7 @@ export type CollectionCache = {
   [collectionName: string]: {
     ids: string[];
     subject: ReplaySubject<string[]>;
+    isLoadingNextPage: boolean;
     nextInclusiveStartKey?: string;
   };
 };
@@ -86,10 +87,15 @@ export class CollectionFetcher {
     collectionName: string,
     params?: MediaStoreGetCollectionItemsParams,
   ): Observable<string[]> {
+    if (!cache[collectionName]) {
+      cache[collectionName] = {
+        ids: [],
+        subject: new ReplaySubject<string[]>(1),
+        isLoadingNextPage: false,
+      };
+    }
     const collection = cache[collectionName];
-    const subject = collection
-      ? collection.subject
-      : new ReplaySubject<string[]>(1);
+    const subject = collection.subject;
 
     this.mediaStore
       .getCollectionItems(collectionName, {
@@ -101,11 +107,12 @@ export class CollectionFetcher {
         this.populateCache(contents);
         const ids = contents.map(item => item.id);
 
-        cache[collectionName] = {
-          ids,
-          nextInclusiveStartKey, // TODO: only set nextInclusiveStartKey if it was undefined
-          subject,
-        };
+        collection.ids = ids;
+
+        // We only want to asign nextInclusiveStartKey the first time
+        if (!collection.nextInclusiveStartKey) {
+          collection.nextInclusiveStartKey = nextInclusiveStartKey;
+        }
 
         subject.next(ids);
       });
@@ -119,6 +126,8 @@ export class CollectionFetcher {
     if (!collection) {
       return;
     }
+
+    collection.isLoadingNextPage = true;
 
     const {
       nextInclusiveStartKey: inclusiveStartKey,
@@ -140,6 +149,7 @@ export class CollectionFetcher {
       ids,
       nextInclusiveStartKey,
       subject,
+      isLoadingNextPage: false,
     };
   }
 }

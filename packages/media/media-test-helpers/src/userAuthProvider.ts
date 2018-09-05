@@ -1,4 +1,3 @@
-// TODO [MSW-387]: Add typings
 import { ClientBasedAuth, Context, ContextFactory } from '@atlaskit/media-core';
 
 export const userAuthProviderBaseURL = 'https://dt-api.dev.atl-paas.net';
