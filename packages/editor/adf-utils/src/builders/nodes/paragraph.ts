@@ -19,6 +19,7 @@ import {
   ParagraphDefinition,
   Inline,
   InlineCardDefinition,
+  StatusDefinition,
 } from '@atlaskit/editor-common';
 import { createTextNodes } from '../utils/create-text-nodes';
 
@@ -50,4 +51,5 @@ export {
   ParagraphDefinition,
   Inline,
   InlineCardDefinition,
+  StatusDefinition,
 };

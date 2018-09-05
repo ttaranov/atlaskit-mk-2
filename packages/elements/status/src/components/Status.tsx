@@ -23,7 +23,7 @@ export interface Props {
 export function Status(props: Props) {
   const { text, color } = props;
 
-  if (text.trim().length == 0) {
+  if (text.trim().length === 0) {
     return null;
   }
 
