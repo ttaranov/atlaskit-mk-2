@@ -1,16 +1,16 @@
-import { FeatureFlagType, Flag } from './types';
+import { FeatureFlag, Flag } from './types';
 import { isBoolean, isObject, isOneOf } from './lib';
 
 export default class TrackedFlag implements Flag {
   flagKey: string;
-  flag: FeatureFlagType;
+  flag: FeatureFlag;
   value: string | boolean | object;
-  trackExposure: (flagKey: string, flag: FeatureFlagType) => void;
+  trackExposure: (flagKey: string, flag: FeatureFlag) => void;
 
   constructor(
     flagKey: string,
-    flag: FeatureFlagType,
-    trackExposure: (flagKey: string, flag: FeatureFlagType) => void,
+    flag: FeatureFlag,
+    trackExposure: (flagKey: string, flag: FeatureFlag) => void,
   ) {
     this.flagKey = flagKey;
     this.value = flag.value;

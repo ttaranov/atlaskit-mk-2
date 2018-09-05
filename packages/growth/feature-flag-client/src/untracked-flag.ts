@@ -1,4 +1,4 @@
-import { Flag, DarkFeatureType } from './types';
+import { Flag, DarkFeature } from './types';
 
 import { isBoolean } from './lib';
 
@@ -6,7 +6,7 @@ export default class UntrackedFlag implements Flag {
   flagKey: string;
   value: string | boolean;
 
-  constructor(flagKey: string, flag: DarkFeatureType) {
+  constructor(flagKey: string, flag: DarkFeature) {
     this.flagKey = flagKey;
     this.value = flag;
   }

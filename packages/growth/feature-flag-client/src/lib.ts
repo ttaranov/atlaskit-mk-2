@@ -1,4 +1,4 @@
-import { FeatureFlagType, AnyFlag } from './types';
+import { FeatureFlag, AnyFlag } from './types';
 
 export const isType = (value: any, type: string): boolean => {
   return value !== null && typeof value === type;
@@ -10,8 +10,8 @@ export const isBoolean = value => isType(value, 'boolean');
 export const isFeatureFlag = (flag: AnyFlag): boolean => {
   return (
     isObject(flag) &&
-    'value' in (flag as FeatureFlagType) &&
-    'explanation' in (flag as FeatureFlagType)
+    'value' in (flag as FeatureFlag) &&
+    'explanation' in (flag as FeatureFlag)
   );
 };
 
