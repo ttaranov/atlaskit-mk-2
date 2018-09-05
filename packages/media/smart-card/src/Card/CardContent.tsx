@@ -21,12 +21,11 @@ export class CardContent extends React.Component<CardContentProps> {
     return data.url;
   }
 
-  // TODO: do we need to extract values differently per view?
   get collapsedIcon() {
     const { state } = this.props;
     const data = state.data || {};
-    if (data.generator && data.generator.icon) {
-      return data.generator.icon;
+    if (data.generator && data.generator.icon && data.generator.icon.url) {
+      return data.generator.icon.url;
     } else {
       return undefined;
     }

@@ -2,10 +2,10 @@ import * as React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import { Field } from '@atlaskit/form';
 import Select from '@atlaskit/select';
-import TextField from '@atlaskit/field-text';
+import { FieldTextStateless } from '@atlaskit/field-text';
 import { Provider, Card } from '../src';
 import { CardAppearance } from '../src/Card/CardContent';
-import '../mocks';
+// import '../mocks';
 
 const params =
   typeof URLSearchParams !== 'undefined'
@@ -35,7 +35,8 @@ class Example extends React.Component<ExampleProps, ExampleState> {
   };
 
   setPredefinedUrl(url: string) {
-    return () => {
+    return (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
       this.setState({ url });
     };
   }
@@ -98,7 +99,7 @@ class Example extends React.Component<ExampleProps, ExampleState> {
                   onChange={this.handleAppearanceChange}
                 />
               </Field>
-              <TextField
+              <FieldTextStateless
                 autoFocus={true}
                 label="URL"
                 shouldFitContainer={true}

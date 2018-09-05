@@ -5,7 +5,7 @@ import {
   renderCardWithData,
   renderCardWithURL,
 } from './render';
-export { CardAppearance };
+export { CardAppearance, CardProps };
 
 export const Card = (props: CardProps) =>
   isCardWithData(props) ? renderCardWithData(props) : renderCardWithURL(props);

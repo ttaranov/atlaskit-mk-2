@@ -18,8 +18,10 @@ const serviceAuth = {
 
 const generator = {
   name: 'Google Drive',
-  icon:
-    'https://ssl.gstatic.com/docs/doclist/images/infinite_arrow_favicon_5.ico',
+  icon: {
+    url:
+      'https://ssl.gstatic.com/docs/doclist/images/infinite_arrow_favicon_5.ico',
+  },
 };
 
 const resolvedBody = {
