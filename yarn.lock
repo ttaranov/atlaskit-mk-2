@@ -8241,7 +8241,7 @@ json-parse-better-errors@^1.0.0, json-parse-better-errors@^1.0.1, json-parse-bet
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/json-parse-better-errors/-/json-parse-better-errors-1.0.2.tgz#bb867cfb3450e69107c131d1c514bab3dc8bcaa9"
 
-json-schema-diff-validator@0.1.2:
+json-schema-diff-validator@^0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/json-schema-diff-validator/-/json-schema-diff-validator-0.1.2.tgz#246041667cf9f48154495a851540042f8bf0e621"
   dependencies:

@@ -10,7 +10,7 @@ export interface StatusDefinition {
      * @minLength 1
      */
     text: string;
-    color: string;
+    color: 'neutral' | 'purple' | 'blue' | 'red' | 'yellow' | 'green';
     localId: string;
   };
 }

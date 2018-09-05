@@ -26,6 +26,7 @@
     "@atlaskit/media-filmstrip": "^12.0.0",
     "@atlaskit/mention": "^15.0.6",
     "@atlaskit/smart-card": "^8.0.1",
+    "@atlaskit/status": "^0.0.0",
     "@atlaskit/task-decision": "^8.1.7",
     "@atlaskit/theme": "^6.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",

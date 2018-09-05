@@ -11,6 +11,7 @@ import CodeBlock from './codeBlock';
 import DecisionItem, { Props as DecisionItemProps } from './decisionItem';
 import DecisionList from './decisionList';
 import Date from './date';
+import Status from './status';
 import Doc from './doc';
 import Emoji from './emoji';
 import Extension, { Props as ExtensionProps } from './extension';
@@ -74,6 +75,7 @@ export const nodeToReact = {
   paragraph: Paragraph,
   placeholder: Placeholder,
   rule: Rule,
+  status: Status,
   taskItem: TaskItem,
   taskList: TaskList,
   table: Table,
@@ -260,6 +262,7 @@ export {
   Paragraph,
   Placeholder,
   Rule,
+  Status,
   TaskItem,
   TaskList,
   Table,

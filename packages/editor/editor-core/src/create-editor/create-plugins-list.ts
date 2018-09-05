@@ -41,6 +41,7 @@ import {
   inlineActionPlugin,
   cardPlugin,
   floatingToolbarPlugin,
+  statusPlugin,
 } from '../plugins';
 
 /**
@@ -186,6 +187,10 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.UNSAFE_cards) {
     plugins.push(cardPlugin);
+  }
+
+  if (props.allowStatus) {
+    plugins.push(statusPlugin);
   }
 
   // UI only plugins
