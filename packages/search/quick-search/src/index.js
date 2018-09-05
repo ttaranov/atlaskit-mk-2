@@ -29,7 +29,7 @@ export {
 export { default as ObjectResult } from './components/Results/ObjectResult';
 export { default as PersonResult } from './components/Results/PersonResult';
 export {
-  default as withOpenNewTab,
+  default as withOpenInNewTab,
 } from './components/Results/withOpenInNewTab';
 export {
   default as ContainerResult,
