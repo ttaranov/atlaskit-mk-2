@@ -3,6 +3,13 @@ import modeGenerator from '../../modeGenerator';
 
 const modeArgs = { background: '#DEEBFF', text: '#0065FF' };
 
+const commonArgs = {
+  isActive: false,
+  isSelected: false,
+  isHover: false,
+  size: 'small',
+};
+
 describe('NavigationNext theme: Mode generator', () => {
   let customThemeMode;
 
@@ -12,62 +19,40 @@ describe('NavigationNext theme: Mode generator', () => {
 
   describe('Global item styles', () => {
     it('should add the default background color into the items styles if element has no active states', () => {
-      const args = {
-        isActive: false,
-        isSelected: false,
-        isHover: false,
-        size: 'small',
-      };
-      expect(customThemeMode.globalItem(args).itemBase).toMatchObject({
+      expect(customThemeMode.globalItem(commonArgs).itemBase).toMatchObject({
         backgroundColor: '#DEEBFF',
+        fill: '#DEEBFF',
       });
     });
 
     it('should add the active background into the base item styles if element state is `:active`', () => {
-      const args = {
-        isActive: true,
-        isSelected: false,
-        isHover: false,
-        size: 'small',
-      };
+      const args = { ...commonArgs, isActive: true };
       expect(customThemeMode.globalItem(args).itemBase).toMatchObject({
         backgroundColor: '#ffffff',
+        fill: '#ffffff',
       });
     });
 
     it('should add the active background into the base item styles if element state is `:hover`', () => {
-      const args = {
-        isActive: false,
-        isSelected: false,
-        isHover: true,
-        size: 'small',
-      };
+      const args = { ...commonArgs, isHover: true };
       expect(customThemeMode.globalItem(args).itemBase).toMatchObject({
         backgroundColor: '#abccff',
+        fill: '#abccff',
       });
     });
 
     it('should add the active background into the base item styles if element state is `:select`', () => {
-      const args = {
-        isActive: false,
-        isSelected: true,
-        isHover: false,
-        size: 'small',
-      };
+      const args = { ...commonArgs, isSelected: true };
       expect(customThemeMode.globalItem(args).itemBase).toMatchObject({
         backgroundColor: '#78adff',
+        fill: '#78adff',
       });
     });
   });
 
   describe('Item styles', () => {
     it('should add the default background color into the items styles if element has no active states', () => {
-      const args = {
-        isActive: false,
-        isSelected: false,
-        isHover: false,
-        spacing: 'default',
-      };
+      const args = { ...commonArgs, spacing: 'default' };
       expect(customThemeMode.item(args).container.itemBase).toMatchObject({
         backgroundColor: '#DEEBFF',
       });
@@ -78,12 +63,7 @@ describe('NavigationNext theme: Mode generator', () => {
     });
 
     it('should add the active background into the base item styles if element state is `:active`', () => {
-      const args = {
-        isActive: true,
-        isSelected: false,
-        isHover: false,
-        spacing: 'default',
-      };
+      const args = { ...commonArgs, isActive: true, spacing: 'default' };
       expect(customThemeMode.item(args).container.itemBase).toMatchObject({
         backgroundColor: '#ffffff',
       });
@@ -93,12 +73,7 @@ describe('NavigationNext theme: Mode generator', () => {
     });
 
     it('should add the active background into the base item styles if element state is `:hover`', () => {
-      const args = {
-        isActive: false,
-        isSelected: false,
-        isHover: true,
-        spacing: 'default',
-      };
+      const args = { ...commonArgs, isHover: true, spacing: 'default' };
 
       expect(customThemeMode.item(args).container.itemBase).toMatchObject({
         backgroundColor: '#abccff',
@@ -109,12 +84,7 @@ describe('NavigationNext theme: Mode generator', () => {
     });
 
     it('should add the active text color into the items styles if element state is `:hover`', () => {
-      const args = {
-        isActive: false,
-        isSelected: false,
-        isHover: true,
-        spacing: 'default',
-      };
+      const args = { ...commonArgs, isHover: true, spacing: 'default' };
       expect(customThemeMode.item(args).container.textWrapper).toMatchObject({
         color: '#0065FF',
       });

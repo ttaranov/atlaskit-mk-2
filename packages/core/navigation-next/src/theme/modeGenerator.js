@@ -30,12 +30,14 @@ export default ({ background, text }: Args): Mode => {
     globalItem: args => {
       const styles = light.globalItem(args);
 
+      const backgroundColor = getBackgroundColorByState(args);
       return {
         ...styles,
         itemBase: {
           ...styles.itemBase,
-          backgroundColor: getBackgroundColorByState(args),
+          backgroundColor,
           color: text,
+          fill: backgroundColor,
         },
       };
     },
