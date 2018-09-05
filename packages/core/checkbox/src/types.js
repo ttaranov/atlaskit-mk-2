@@ -7,30 +7,30 @@ export type ComponentType = Component<*, *>;
 export type ElementType = Element<*>;
 
 export type CheckboxIconProps = {
-  /** Primary color */
-  primaryColor?: any,
-  /** Secondary color */
-  secondaryColor?: any,
-  /** Sets the checkbox icon hovered state */
-  isHovered?: boolean,
   /** Sets the checkbox icon active state. */
   isActive?: boolean,
-  /** Sets whether the checkbox is indeterminate. This only affects the
-   style and does not modify the isChecked property. */
-  isIndeterminate?: boolean,
-  /** Sets whether the checkbox is disabled. */
-  isDisabled?: boolean,
   /** Sets whether the checkbox is checked or unchecked. */
   isChecked: boolean,
   /** Sets whether the checkbox is disabled. */
   isDisabled?: boolean,
   /** Sets the checkbox focus */
   isFocused?: boolean,
+  /** Sets whether the checkbox is indeterminate. This only affects the
+   style and does not modify the isChecked property. */
+  isIndeterminate?: boolean,
   /** Sets the checkbox as invalid */
   isInvalid?: boolean,
+  /** Sets the checkbox icon hovered state */
+  isHovered?: boolean,
+  /** Primary color */
+  primaryColor?: any,
+  /** Secondary color */
+  secondaryColor?: any,
 };
 
 export type CheckboxInputProps = CheckboxIconProps & {
+  /** Callback to receive a reference.  */
+  inputRef: (input: ?HTMLInputElement) => mixed,
   /** The name of the submitted field in a checkbox. */
   name: string,
   /** Function that is called whenever the state of the checkbox changes. */
@@ -38,7 +38,6 @@ export type CheckboxInputProps = CheckboxIconProps & {
   /** The value to be used in the checkbox input. This is the value that will
    be returned on form submission. */
   value: number | string,
-  inputRef: (input: ?HTMLInputElement) => mixed,
 };
 
 export type CheckboxProps = {
