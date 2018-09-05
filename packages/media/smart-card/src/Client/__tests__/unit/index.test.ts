@@ -13,6 +13,8 @@ const remoteResourceMetaAuth: RemoteResourceAuthConfig[] = [];
 
 const definitionId = 'abc-123';
 
+declare var global: any;
+
 const generator = {
   name: 'My App',
 };
@@ -52,7 +54,7 @@ function errored() {
     matcher: `begin:${RESOLVE_URL}`,
     response: {
       status: 500,
-      throws: 'Error',
+      throws: 'Errored mock',
     },
   });
 }
@@ -196,74 +198,74 @@ describe('Client', () => {
     expect(state.data).toBeUndefined();
   });
 
-  it('should reload when reload is called for the same provider', done => {
-    expect.assertions(4);
-    resolved();
-    let count = 0;
-    const client = createClient();
-    const subscription = client.get(OBJECT_URL).subscribe(({ status }) => {
-      switch (count++) {
-        case 0:
-          expect(status).toEqual('resolving');
-          break;
+  // it('should reload when reload is called for the same provider', done => {
+  //   expect.assertions(4);
+  //   resolved();
+  //   let count = 0;
+  //   const client = createClient();
+  //   const subscription = client.get(OBJECT_URL).subscribe(({ status }) => {
+  //     switch (count++) {
+  //       case 0:
+  //         expect(status).toEqual('resolving');
+  //         break;
 
-        case 1:
-          expect(status).toEqual('resolved');
+  //       case 1:
+  //         expect(status).toEqual('resolved');
 
-          client.reload(definitionId);
+  //         client.reload(definitionId);
 
-          break;
+  //         break;
 
-        case 2:
-          expect(status).toEqual('resolving');
-          break;
+  //       case 2:
+  //         expect(status).toEqual('resolving');
+  //         break;
 
-        case 3:
-          expect(status).toEqual('resolved');
+  //       case 3:
+  //         expect(status).toEqual('resolved');
 
-          setTimeout(() => {
-            // allow other requests to happen (and fail the test)
-            subscription.unsubscribe();
-            done();
-          }, 150);
+  //         setTimeout(() => {
+  //           // allow other requests to happen (and fail the test)
+  //           subscription.unsubscribe();
+  //           done();
+  //         }, 150);
 
-          break;
+  //         break;
 
-        default:
-          done.fail();
-      }
-    });
-  });
+  //       default:
+  //         done.fail();
+  //     }
+  //   });
+  // });
 
-  it('should not reload when reload is called for a different provider', done => {
-    expect.assertions(2);
-    resolved();
-    let count = 0;
-    const client = createClient();
-    const subscription = client.get(OBJECT_URL).subscribe(({ status }) => {
-      switch (count++) {
-        case 0:
-          expect(status).toEqual('resolving');
-          break;
+  // it('should not reload when reload is called for a different provider', done => {
+  //   expect.assertions(2);
+  //   resolved();
+  //   let count = 0;
+  //   const client = createClient();
+  //   const subscription = client.get(OBJECT_URL).subscribe(({ status }) => {
+  //     switch (count++) {
+  //       case 0:
+  //         expect(status).toEqual('resolving');
+  //         break;
 
-        case 1:
-          expect(status).toEqual('resolved');
+  //       case 1:
+  //         expect(status).toEqual('resolved');
 
-          client.reload('def-456');
+  //         client.reload('def-456');
 
-          setTimeout(() => {
-            // allow other requests to happen (and fail the test)
-            subscription.unsubscribe();
-            done();
-          }, 150);
+  //         setTimeout(() => {
+  //           // allow other requests to happen (and fail the test)
+  //           subscription.unsubscribe();
+  //           done();
+  //         }, 150);
 
-          break;
+  //         break;
 
-        default:
-          done.fail();
-      }
-    });
-  });
+  //       default:
+  //         done.fail();
+  //     }
+  //   });
+  // });
 
   it('should immediately replay the most recent state to additional subscribers', done => {
     expect.assertions(1);
@@ -302,7 +304,7 @@ describe('Client', () => {
   });
 
   it('should be resolved from the provider when a resolver is provided and the ORS errored', async () => {
-    errored();
+    global.fetch = () => Promise.reject('Error');
     const state = await createClient({
       TEMPORARY_resolver: async () => ({ name: 'From resolver' }),
     })

@@ -2,11 +2,11 @@ import * as React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import { Field } from '@atlaskit/form';
 import Select from '@atlaskit/select';
-import TextField from '@atlaskit/field-text';
-import Checkbox from '@atlaskit/checkbox';
+import { FieldTextStateless } from '@atlaskit/field-text';
+import Button from '@atlaskit/button';
 import { Provider, Card } from '../src';
 import { CardAppearance } from '../src/Card/CardContent';
-import '../mocks';
+// import '../mocks';
 
 const params =
   typeof URLSearchParams !== 'undefined'
@@ -38,7 +38,8 @@ class Example extends React.Component<ExampleProps, ExampleState> {
   };
 
   setPredefinedUrl(url: string) {
-    return () => {
+    return (e: React.MouseEvent<HTMLButtonElement>) => {
+      e.preventDefault();
       this.setState({ url });
     };
   }
@@ -67,34 +68,34 @@ class Example extends React.Component<ExampleProps, ExampleState> {
           <Grid>
             <GridColumn>
               <p>Switch to</p>
-              <button
+              <Button
                 onClick={this.setPredefinedUrl(
                   'https://docs.google.com/document/d/1igbED2X5Qt8rQCeO-5rbDGG6u51wUNumlo2P_EtC9lo/edit',
                 )}
               >
                 Public Google Document
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={this.setPredefinedUrl(
                   'https://docs.google.com/spreadsheets/d/168cPaeXw_2zbo6md4pGUdEmXzRsXRQmNP0712ID2TKA/edit?usp=sharing',
                 )}
               >
                 Public Google Sheet
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={this.setPredefinedUrl(
                   'https://docs.google.com/document/d/1nXGwmxJuvQ8CdVQsGnRLOJOo7kJPqesmiBgvcaXD4Aw/edit',
                 )}
               >
                 Protected Google Document, anyone in org. can view
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={this.setPredefinedUrl(
                   'https://docs.google.com/spreadsheets/d/1pHwRAZWA7_aGtlAwOjAOrHGoT5gT0oKS635HTI6gI8I/edit?usp=drive_web&ouid=110769160460483925018',
                 )}
               >
                 Protected Google Sheet, anyone in org can view
-              </button>
+              </Button>
             </GridColumn>
             <GridColumn>
               <Field label="Appearance">
@@ -107,8 +108,13 @@ class Example extends React.Component<ExampleProps, ExampleState> {
                   onChange={this.handleAppearanceChange}
                 />
               </Field>
-              <Checkbox label="Is Selected?" onChange={this.handleIsSelected} />
-              <TextField
+              <br />
+              <Button
+                label="Is selected?"
+                onClick={this.handleIsSelected}
+              >{ this.state.isSelected ? "Deselect the card" : "Make the card selected" }</Button>
+              <br />
+              <FieldTextStateless
                 autoFocus={true}
                 label="URL"
                 shouldFitContainer={true}

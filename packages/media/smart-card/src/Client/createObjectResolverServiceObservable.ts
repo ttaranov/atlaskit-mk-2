@@ -1,14 +1,10 @@
 import { empty } from 'rxjs/observable/empty';
 import { of } from 'rxjs/observable/of';
-import { Subject } from 'rxjs/Subject';
-import { Command, ObjectState, AuthService, ObjectStatus } from './types';
+import { merge } from 'rxjs/observable/merge';
+import { ObjectState, AuthService, ObjectStatus } from './types';
 import fetch$ from './fetch';
-import { mergeMap } from 'rxjs/operators/mergeMap';
 import { map } from 'rxjs/operators/map';
-import { catchError } from 'rxjs/operators/catchError';
-import { startWith } from 'rxjs/operators/startWith';
-import { filter } from 'rxjs/operators/filter';
-import { tap } from 'rxjs/operators/tap';
+import { onErrorResumeNext } from 'rxjs/operators/onErrorResumeNext';
 import { refCount } from 'rxjs/operators/refCount';
 import { publishReplay } from 'rxjs/operators/publishReplay';
 
@@ -55,7 +51,7 @@ function statusByAccess(
   };
 }
 
-const responseToStateMapper = (definitionId: string | undefined) => (
+const responseToStateMapper = (definitionId?: string) => (
   json: ResolveResponse,
 ): ObjectState => {
   if (json.meta.visibility === 'not_found') {
@@ -75,46 +71,29 @@ const responseToStateMapper = (definitionId: string | undefined) => (
   }
 };
 
-const runFetch = (
-  serviceUrl: string,
-  objectUrl: string,
-): Observable<ResolveResponse> =>
-  fetch$<ResolveResponse>('post', `${serviceUrl}/resolve`, {
-    resourceUrl: encodeURI(objectUrl),
-  });
-
 export type Options = {
   serviceUrl: string;
   objectUrl: string;
-  $commands: Subject<Command>;
+  definitionId?: string;
 };
 
-export function createObjectResolverServiceObservable(options: Options) {
-  const { serviceUrl, objectUrl, $commands } = options;
+export function createObjectResolverServiceObservable(
+  options: Options,
+): Observable<ObjectState> {
+  const { serviceUrl, objectUrl, definitionId } = options;
 
-  let definitionId: string | undefined;
-
-  return $commands.pipe(
-    startWith({ type: 'init' } as Command),
-    filter(
-      cmd =>
-        cmd.type === 'init' ||
-        (cmd.type === 'reload' && cmd.provider === definitionId),
-    ),
-    mergeMap(_ =>
-      runFetch(serviceUrl, objectUrl).pipe(
-        map(responseToStateMapper(definitionId)),
-        tap(mapped => (definitionId = mapped.definitionId)),
-        startWith({ status: 'resolving', services: [] } as ObjectState),
+  return merge(
+    of({ status: 'resolving', services: [] } as ObjectState),
+    fetch$<ResolveResponse>('post', `${serviceUrl}/resolve`, {
+      resourceUrl: encodeURI(objectUrl),
+    }).pipe(
+      map(responseToStateMapper(definitionId)),
+      onErrorResumeNext(
+        of({
+          status: 'errored',
+          services: [],
+        } as ObjectState),
       ),
     ),
-    catchError(() =>
-      of<ObjectState>({
-        status: 'errored',
-        services: [],
-      }),
-    ),
-    publishReplay(1),
-    refCount(),
-  );
+  ).pipe(publishReplay(1), refCount());
 }
