@@ -32,6 +32,7 @@ const nodes = [
   'emoji',
   'taskList',
   'taskItem',
+  'status',
   'date',
   'placeholder',
   'decisionList',
