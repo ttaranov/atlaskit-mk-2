@@ -116,6 +116,13 @@ const mockLastNames = [
   'Osinski',
 ];
 
+const jiraTypeGenerator = {
+  issues: generateRandomJiraIssue,
+  boards: generateRandomJiraBoard,
+  projects: generateRandomJiraProject,
+  filters: generateRandomJiraFilter,
+};
+
 const getMockCompanyName = () => pickRandom(mockCompanyNames);
 const getMockCatchPhrase = () => pickRandom(mockCatchPhrases);
 const getMockAbbreviation = () => pickRandom(mockAbbreviations);
@@ -478,31 +485,39 @@ function generateRandomJiraFilter(): Entry {
   };
 }
 
-export function generateJiraScope(
-  type: string,
-  generator: Function,
-  query,
-): JiraScope {
+export function generateJiraScope(type: string, n: number, query?): JiraScope {
+  const results = generateRandomElements<Entry>(
+    () => jiraTypeGenerator[type](),
+    n,
+  );
   return {
     id: type,
     experimentId: uuid(),
-    results: generateRandomElements<Entry>(() => generator()).filter(item =>
-      item.name.toLowerCase().includes(query.toLowerCase()),
-    ),
+    results: query
+      ? results.filter(item =>
+          item.name.toLowerCase().includes(query.toLowerCase()),
+        )
+      : results,
   };
 }
 
-export function mockJiraSearchData(n: number = 50) {
-  const map = {
-    issues: generateRandomJiraIssue,
-    boards: generateRandomJiraBoard,
-    projects: generateRandomJiraProject,
-    filters: generateRandomJiraFilter,
+export function generateJiraScopeWithError(
+  type: string,
+  n: number,
+  errorMessage: string,
+  query?,
+): JiraScope {
+  const scope = generateJiraScope(type, n, query);
+  scope.error = {
+    message: errorMessage,
   };
+  return scope;
+}
 
+export function mockJiraSearchData(n: number = 50) {
   return (query: string) => ({
-    scopes: Object.keys(map)
-      .map(key => generateJiraScope(key, map[key], query))
+    scopes: Object.keys(jiraTypeGenerator)
+      .map(key => generateJiraScope(key, n, query))
       .reduce((scopes, scope) => [...scopes, scope], []),
   });
 }

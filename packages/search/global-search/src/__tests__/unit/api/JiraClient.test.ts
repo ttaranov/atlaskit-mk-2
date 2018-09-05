@@ -5,7 +5,11 @@ import {
   JiraRecentResponse,
   TransformedResponse,
 } from '../../../../example-helpers/jiraRecentResponseData';
-import { mockJiraSearchData } from '../../../../example-helpers/mockData';
+import {
+  mockJiraSearchData,
+  generateJiraScopeWithError,
+  generateJiraScope,
+} from '../../../../example-helpers/mockData';
 
 const url = 'https://www.example.jira.dev.com/';
 const cloudId = 'cloudId';
@@ -117,32 +121,45 @@ describe('JiraClient', () => {
     });
 
     it('should remove scopes with error', async () => {
-      const data = mockJiraSearchData()('man');
-      data.scopes[0].error = {
-        message: 'something wrong with issue search',
-      };
-      requestSpy.mockReturnValue(Promise.resolve(data));
+      const scopes = [
+        generateJiraScopeWithError(
+          'issues',
+          8,
+          'something wrong with issue search',
+        ),
+        generateJiraScope('boards', 3),
+        generateJiraScope('projects', 4),
+        generateJiraScope('filters', 2),
+      ];
+
+      requestSpy.mockReturnValue(Promise.resolve({ scopes }));
 
       const result = await jiraClient.search('session-12', 'man');
 
       expect(requestSpy).toHaveBeenCalledTimes(1);
       expect(result.issue).toBe(undefined);
-      expect(result.project.length).toBeGreaterThan(0);
-      expect(result.board.length).toBeGreaterThan(0);
-      expect(result.filter.length).toBeGreaterThan(0);
+      expect(result.project).toHaveProperty('length', 4);
+      expect(result.board).toHaveProperty('length', 3);
+      expect(result.filter).toHaveProperty('length', 2);
     });
 
     it('should return transformed data successfully', async () => {
-      const data = mockJiraSearchData()('man');
-      requestSpy.mockReturnValue(Promise.resolve(data));
+      const scopes = [
+        generateJiraScope('issues', 8),
+        generateJiraScope('boards', 3),
+        generateJiraScope('projects', 4),
+        generateJiraScope('filters', 2),
+      ];
+
+      requestSpy.mockReturnValue(Promise.resolve({ scopes }));
 
       const result = await jiraClient.search('session-12', 'man');
 
       expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(result.issue.length).toBeGreaterThan(0);
-      expect(result.project.length).toBeGreaterThan(0);
-      expect(result.board.length).toBeGreaterThan(0);
-      expect(result.filter.length).toBeGreaterThan(0);
+      expect(result.issue).toHaveProperty('length', 8);
+      expect(result.project).toHaveProperty('length', 4);
+      expect(result.board).toHaveProperty('length', 3);
+      expect(result.filter).toHaveProperty('length', 2);
     });
   });
 });
