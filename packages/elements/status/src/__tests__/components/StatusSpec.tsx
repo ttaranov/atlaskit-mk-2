@@ -37,6 +37,7 @@ describe('Status', () => {
   });
 
   it('should use default color if color is unknown', () => {
+    // @ts-ignore: passing an invalid color
     const component = shallow(<Status text="In progress" color="unknown" />);
 
     expect(component.find(Lozenge).prop('appearance')).toBe('default');
