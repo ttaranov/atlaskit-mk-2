@@ -67,12 +67,15 @@ class GlobalNavigationItemPrimitive extends Component<*> {
 
     if (CustomComponent) {
       const CachedCustomComponent = this.CachedCustomComponent;
+      console.log(this.props);
       return (
         <RenderTooltip tooltip={tooltip}>
           <CachedCustomComponent
             {...rest}
             className={css({ '&&': styles.itemBase })}
-          />
+          >
+            {this.renderIconAndBadge(styles.badgeWrapper, presentationProps)}
+          </CachedCustomComponent>
         </RenderTooltip>
       );
     }
