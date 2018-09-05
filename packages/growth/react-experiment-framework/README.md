@@ -1,6 +1,6 @@
 # README #
 
-## What is this repository for? ##
+## What is this package for? ##
 
 A set of React components that facilitate experimentation in product, by allowing React
 components to be swapped dynamically at run-time.
