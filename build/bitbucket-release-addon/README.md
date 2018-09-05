@@ -38,7 +38,7 @@ The addon can be used in any repo that has changeset commits. A simple way to ge
 
 First you'll need to expose your local server to the internet. For this, run:
 
-```
+```sh
 yarn ngrok http 8080 -host-header="localhost:8080"
 ```
 
@@ -52,6 +52,14 @@ To do this, simply open the repo and paste this snippet into your console:
 
 ```js
 JSON.parse($('[data-current-repo]')[0].getAttribute('data-current-repo')).uuid
+```
+
+> **Note** This trick wont work on any pages that have been moved to the new UI. You can use an older page (most settings pages)
+> or you can `curl` the Bitbucket API.
+
+```bash
+curl -s "https://api.bitbucket.org/2.0/repositories/atlassian-marketplace/marketplace-frontend" | jq '.uuid'
+# Note, you'll need an app password if your repo is private
 ```
 
 Now put this value into the `atlassian-connect.json` field for "conditions". This prevents your addon from accidentally showing in other repos that might not be expecting it.
@@ -111,6 +119,7 @@ Before deploying **double** check the following:
 
 * Your baseUrl is set back to https://app.netlify.com/sites/ak-mk-2-releases-addon/overview in `dist/atlassian-connect.json`
 * Your uuid is set back to the uuid of ak-mk-2 (`{6380b4e9-6ac5-4dd4-a8e0-65f09cabe4c8}`)
+  * And also the atlassian/marketplace-frontend repo now (`{5e4d9c6e-5761-4c81-91b8-1e111f014b64}`)
 * Make sure the uuid has the brackets around it!
 * Seriously, double check that you haven't removed the conditions field. This will be catastrophically embarressing if we miss it
 

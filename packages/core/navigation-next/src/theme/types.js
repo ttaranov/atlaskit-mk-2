@@ -20,22 +20,7 @@ type ContentNavigationComponentTheme<
   Props: {} | void,
 > = Props => ContentNavigationComponentThemeObject;
 
-// Every component which responds to theming should export a
-// ThemedGlobalNavigationComponentStyles or ThemedContentNavigationComponentStyles object from
-// /styles.js
-export type ThemedGlobalNavigationComponentStyles<Props> = {
-  light: GlobalNavigationComponentTheme<Props>,
-  dark: GlobalNavigationComponentTheme<Props>,
-  settings: GlobalNavigationComponentTheme<Props>,
-};
-
-export type ThemedContentNavigationComponentStyles<Props> = {
-  light: ContentNavigationComponentTheme<Props>,
-  dark: ContentNavigationComponentTheme<Props>,
-  settings: ContentNavigationComponentTheme<Props>,
-};
-
-// This is the shape of a theme 'mode', e.g. light, dark and settings modes
+// This is the shape of a theme 'mode', e.g. light, dark, settings or custom
 export type Mode = {
   globalItem: GlobalNavigationComponentTheme<GlobalItemPresentationProps>,
   globalNav: GlobalNavigationComponentTheme<void>,
@@ -57,8 +42,40 @@ export type GlobalTheme = {
   mode: Mode,
 };
 
-// export type StyleReducer<State> = (ObjectType, State) => ObjectType;
 export type StyleReducer = (
   Styles: ObjectType,
   State?: ObjectType,
 ) => ObjectType;
+
+export type ContextColors = {
+  background: {
+    /**
+     * Color provided to the mode generator */
+    default: string,
+    /**
+     * Generated color, usually brighter
+     * Used as nav item hover background */
+    hint: string,
+    /**
+     * Generated color, gentle variation over default
+     * Used as nav item active background */
+    interact: string,
+    /**
+     * Generated color, either lighter or darker of default
+     * Used as nav item selected background, separator background, ... */
+    static: string,
+  },
+  text: {
+    /**
+     * Color provided to the mode generator */
+    default: string,
+    /**
+     * Generated color, slighly faded out
+     * Used as nav item sub text color and group headings color */
+    subtle: string,
+  },
+};
+
+export type ModeColors = {
+  product: ContextColors,
+};

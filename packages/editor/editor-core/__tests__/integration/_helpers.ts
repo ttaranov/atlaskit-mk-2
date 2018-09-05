@@ -66,7 +66,8 @@ export const insertMedia = async (browser, indexes = [-1]) => {
     const selector =
       index === -1 ? 'last-of-type' : `nth-of-type(${index + 1})`;
     const mediaItem = `.e2e-recent-upload-card:${selector} div div`; /* div div selector required for Safari */
-    await browser.waitForSelector(mediaItem);
+    // give media-picker some seconds to initialise
+    await browser.waitFor(mediaItem, 3000);
     await browser.click(mediaItem);
   }
 

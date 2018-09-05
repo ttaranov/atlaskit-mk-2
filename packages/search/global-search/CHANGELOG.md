@@ -1,5 +1,11 @@
 # @atlaskit/global-search
 
+## 5.5.10
+- [patch] Updated dependencies [d5a043a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5a043a)
+  - @atlaskit/icon@13.8.1
+  - @atlaskit/flag@9.0.10
+  - @atlaskit/modal-dialog@7.0.0
+
 ## 5.5.9
 - [patch] Add experiment exposure event to track which search sessions should be attributed to what search experiment [dfe8371](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dfe8371)
 

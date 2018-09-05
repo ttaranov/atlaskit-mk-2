@@ -1,5 +1,9 @@
 # @atlaskit/modal-dialog
 
+## 7.0.0
+- [patch] Updates dependency on portal [b46385f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b46385f)
+- [major] Changes the pattern for using dialogs. Adds ModalTransition component to @atlaskit/modal-dialog. See the [migration guide](http://atlaskit.atlassian.com/packages/core/modal-dialog/docs/migration) for more information. [d5a043a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5a043a)
+
 ## 6.0.12
 - [patch] Bump react-focus-lock to fix issues with selecting text in Safari. [62dc9fc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/62dc9fc)
 

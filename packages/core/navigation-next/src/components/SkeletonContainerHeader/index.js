@@ -14,7 +14,6 @@ const modifyStyles = defaultStyles => ({
   wrapper: {
     ...defaultStyles.wrapper,
     height: `${gridSize * 6}px`,
-    opacity: 0.3,
     paddingLeft: gridSize / 2,
     paddingRight: gridSize / 2,
   },

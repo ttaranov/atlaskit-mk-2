@@ -2,8 +2,7 @@
 
 import { colors, gridSize as gridSizeFn } from '@atlaskit/theme';
 
-import contentNavThemes from '../ContentNavigation/styles';
-import type { ThemedContentNavigationComponentStyles } from '../../theme/types';
+import type { ModeColors } from '../../theme/types';
 import type { SectionPresentationProps } from './types';
 
 const gridSize = gridSizeFn();
@@ -19,7 +18,7 @@ const isWebkit =
   window.navigator.userAgent.indexOf('AppleWebKit') >= 0;
 const scrollBarSize = isGecko || isWebkit ? 0 : 30;
 
-const getBaseStyles = ({ alwaysShowScrollHint }) => ({
+const getBaseStyles = ({ alwaysShowScrollHint }: SectionPresentationProps) => ({
   wrapper: {
     height: '100%',
     overflow: 'hidden',
@@ -69,7 +68,9 @@ const getBaseStyles = ({ alwaysShowScrollHint }) => ({
   },
 });
 
-const light = props => {
+export default ({ product }: ModeColors) => (
+  props: SectionPresentationProps,
+) => {
   const baseStyles = getBaseStyles(props);
   return {
     container: {
@@ -85,7 +86,7 @@ const light = props => {
         ...baseStyles.inner,
         '&::before': {
           ...baseStyles.inner['&::before'],
-          backgroundColor: contentNavThemes.light().container.backgroundColor,
+          backgroundColor: colors.N20,
         },
       },
     },
@@ -95,106 +96,16 @@ const light = props => {
         ...baseStyles.wrapper,
         '&::before': {
           ...baseStyles.wrapper['&::before'],
-          backgroundColor: colors.N80A,
+          backgroundColor: product.background.static,
         },
       },
       inner: {
         ...baseStyles.inner,
         '&::before': {
           ...baseStyles.inner['&::before'],
-          backgroundColor: contentNavThemes.light().product.backgroundColor,
+          backgroundColor: product.background.default,
         },
       },
     },
   };
 };
-
-const dark = props => {
-  const baseStyles = getBaseStyles(props);
-  return {
-    container: {
-      ...baseStyles,
-      wrapper: {
-        ...baseStyles.wrapper,
-        '&::before': {
-          ...baseStyles.wrapper['&::before'],
-          backgroundColor: colors.DN50,
-        },
-      },
-      inner: {
-        ...baseStyles.inner,
-        '&::before': {
-          ...baseStyles.inner['&::before'],
-          backgroundColor: contentNavThemes.dark().container.backgroundColor,
-        },
-      },
-    },
-    product: {
-      ...baseStyles,
-      wrapper: {
-        ...baseStyles.wrapper,
-        '&::before': {
-          ...baseStyles.wrapper['&::before'],
-          backgroundColor: colors.DN50,
-        },
-      },
-      inner: {
-        ...baseStyles.inner,
-        '&::before': {
-          ...baseStyles.inner['&::before'],
-          backgroundColor: contentNavThemes.dark().product.backgroundColor,
-        },
-      },
-    },
-  };
-};
-
-const settings = props => {
-  const baseStyles = getBaseStyles(props);
-  return {
-    container: {
-      ...baseStyles,
-      wrapper: {
-        ...baseStyles.wrapper,
-        '&::before': {
-          ...baseStyles.wrapper['&::before'],
-          backgroundColor: colors.N900,
-        },
-      },
-      inner: {
-        ...baseStyles.inner,
-        '&::before': {
-          ...baseStyles.inner['&::before'],
-          backgroundColor: contentNavThemes.settings().container
-            .backgroundColor,
-        },
-      },
-    },
-    product: {
-      ...baseStyles,
-      wrapper: {
-        ...baseStyles.wrapper,
-        '&::before': {
-          ...baseStyles.wrapper['&::before'],
-          backgroundColor: colors.N900,
-        },
-      },
-      inner: {
-        ...baseStyles.inner,
-        '&::before': {
-          ...baseStyles.inner['&::before'],
-          backgroundColor: contentNavThemes.settings().product.backgroundColor,
-        },
-      },
-    },
-  };
-};
-
-const themes: ThemedContentNavigationComponentStyles<
-  SectionPresentationProps,
-> = {
-  dark,
-  light,
-  settings,
-};
-export default themes;

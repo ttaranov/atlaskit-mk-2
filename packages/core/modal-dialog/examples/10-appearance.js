@@ -2,7 +2,7 @@
 import React, { PureComponent } from 'react';
 import Lorem from 'react-lorem-component';
 import Button, { ButtonGroup } from '@atlaskit/button';
-import Modal from '../src';
+import Modal, { ModalTransition } from '../src';
 
 const appearances = ['warning', 'danger'];
 
@@ -12,7 +12,7 @@ export default class ExampleAppearance extends PureComponent<
 > {
   state = { isOpen: null };
   open = (isOpen: string) => this.setState({ isOpen });
-  close = (isOpen: string) => this.setState({ isOpen });
+  close = () => this.setState({ isOpen: null });
   secondaryAction = ({ target }: Object) => console.log(target.innerText);
 
   render() {
@@ -32,17 +32,19 @@ export default class ExampleAppearance extends PureComponent<
           ))}
         </ButtonGroup>
 
-        {appearances.filter(a => a === isOpen).map(name => (
-          <Modal
-            key="active-modal"
-            actions={actions}
-            appearance={name}
-            onClose={this.close}
-            heading={`Modal: ${name}`}
-          >
-            <Lorem count={2} />
-          </Modal>
-        ))}
+        <ModalTransition>
+          {appearances.filter(a => a === isOpen).map(name => (
+            <Modal
+              key="active-modal"
+              actions={actions}
+              appearance={name}
+              onClose={this.close}
+              heading={`Modal: ${name}`}
+            >
+              <Lorem count={2} />
+            </Modal>
+          ))}
+        </ModalTransition>
       </div>
     );
   }

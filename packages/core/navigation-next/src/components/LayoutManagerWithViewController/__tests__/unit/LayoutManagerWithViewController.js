@@ -13,6 +13,11 @@ describe('LayoutManagerWithViewController', () => {
   let wrapper;
   let originalLocalStorage;
 
+  let onCollapseStart;
+  let onCollapseEnd;
+  let onExpandStart;
+  let onExpandEnd;
+
   beforeEach(() => {
     originalLocalStorage = global.localStorage;
 
@@ -27,6 +32,11 @@ describe('LayoutManagerWithViewController', () => {
     jest.spyOn(global.localStorage, 'setItem');
     jest.spyOn(global.localStorage, 'getItem');
 
+    onCollapseStart = jest.fn();
+    onCollapseEnd = jest.fn();
+    onExpandStart = jest.fn();
+    onExpandEnd = jest.fn();
+
     wrapper = mount(
       <HashRouter>
         <NavigationProvider
@@ -36,6 +46,10 @@ describe('LayoutManagerWithViewController', () => {
           <LayoutManagerWithViewController
             globalNavigation={GlobalNavigationComponent}
             firstSkeletonToRender={'product'}
+            onCollapseStart={onCollapseStart}
+            onCollapseEnd={onCollapseEnd}
+            onExpandStart={onExpandStart}
+            onExpandEnd={onExpandEnd}
           >
             <p>
               Children requires to have `NavigationProvider` as a parent Because
@@ -52,6 +66,11 @@ describe('LayoutManagerWithViewController', () => {
     global.localStorage.getItem.mockRestore();
 
     global.localStorage = originalLocalStorage;
+
+    onCollapseStart.mockReset();
+    onCollapseEnd.mockReset();
+    onExpandStart.mockReset();
+    onExpandEnd.mockReset();
   });
 
   it('should render global navigation based on using `globalNavigation` as a reference', () => {
@@ -117,6 +136,22 @@ describe('LayoutManagerWithViewController', () => {
           .first()
           .props().theme.context,
       ).toBe('container');
+    });
+  });
+
+  describe('Passing Props to LayerManager', () => {
+    it('should pass Collapse Listeners props', () => {
+      const layoutManager = wrapper.find('LayoutManager');
+
+      onCollapseStart(200);
+      onCollapseEnd(0);
+      onExpandStart(0);
+      onExpandEnd(200);
+
+      expect(layoutManager.props().onCollapseStart).toBeCalledWith(200);
+      expect(layoutManager.props().onCollapseEnd).toBeCalledWith(0);
+      expect(layoutManager.props().onExpandStart).toBeCalledWith(0);
+      expect(layoutManager.props().onExpandEnd).toBeCalledWith(200);
     });
   });
 });
