@@ -1,17 +1,13 @@
-import {
-  DarkFeature,
-  FeatureFlag,
-  Flags,
-  AnalyticsClient,
-  ParsedFlag,
-} from './types';
+import { FeatureFlag, Flags, AnalyticsClient, DarkFeature } from './types';
 import {
   isObject,
-  isBoolean,
-  isOneOf,
   enforceAttributes,
-  parseFlag,
+  isFeatureFlag,
+  isDarkFeature,
 } from './lib';
+
+import TrackedFlag from './tracked-flag';
+import UntrackedFlag from './untracked-flag';
 
 export default class FeatureFlagClient {
   flags: Readonly<Flags> = {};
@@ -38,10 +34,18 @@ export default class FeatureFlagClient {
     };
   }
 
-  getFlag(flagKey: string): ParsedFlag | null {
+  getFlag(flagKey: string): TrackedFlag | UntrackedFlag | null {
     const flag = this.flags[flagKey];
 
-    return parseFlag(flag);
+    if (isFeatureFlag(flag)) {
+      return new TrackedFlag(flagKey, flag as FeatureFlag, this.trackExposure);
+    }
+
+    if (isDarkFeature(flag)) {
+      return new UntrackedFlag(flagKey, flag as DarkFeature);
+    }
+
+    return null;
   }
 
   clear() {
@@ -50,7 +54,7 @@ export default class FeatureFlagClient {
   }
 
   getBooleanValue(
-    flagKey,
+    flagKey: string,
     options: {
       default: boolean;
       trackExposureEvent?: boolean;
@@ -65,33 +69,21 @@ export default class FeatureFlagClient {
 
     const flag = this.getFlag(flagKey);
 
-    if (!flag || !isBoolean(flag.value)) {
-      return getterOptions.default;
+    if (!flag) {
+      return options.default;
     }
 
-    if (flag.type === 'dark-feature') {
-      return flag.value as DarkFeature;
-    }
-
-    if (flag.type === 'feature-flag') {
-      if (getterOptions.trackExposureEvent) {
-        this.trackExposure(flagKey);
-      }
-
-      return flag.value as boolean;
-    }
-
-    return getterOptions.default;
+    return flag.getBooleanValue(getterOptions);
   }
 
   getVariantValue(
-    flagKey,
+    flagKey: string,
     options: {
       default: string;
       oneOf: string[];
       trackExposureEvent?: boolean;
     },
-  ) {
+  ): string {
     enforceAttributes(options, ['default', 'oneOf'], 'getVariantValue');
 
     const getterOptions = {
@@ -101,39 +93,38 @@ export default class FeatureFlagClient {
 
     const flag = this.getFlag(flagKey);
 
-    if (!flag || isBoolean(flag.value)) {
-      return getterOptions.default;
+    if (!flag) {
+      return options.default;
     }
 
-    if (flag.type === 'feature-flag') {
-      if (!isOneOf(flag.value as string, getterOptions.oneOf)) {
-        return options.default;
-      }
-
-      if (getterOptions.trackExposureEvent) {
-        this.trackExposure(flagKey);
-      }
-
-      return flag.value;
-    }
-
-    return getterOptions.default;
+    return flag.getVariantValue(getterOptions) as string;
   }
 
-  trackExposure(flagKey: string) {
-    if (this.trackedFlags[flagKey]) {
+  getJSONFlag(flagKey: string): object {
+    const flag = this.getFlag(flagKey);
+
+    if (!flag) {
+      return {};
+    }
+
+    return flag.getJSONFlag();
+  }
+
+  trackExposure = (flagKey: string, flag: FeatureFlag) => {
+    if (this.trackedFlags[flagKey] || !flag) {
       return;
     }
 
-    const flag = this.getFlag(flagKey);
+    this.analyticsClient.sendTrackEvent({
+      action: 'exposed',
+      actionSubject: 'feature',
+      attributes: {
+        reason: flag.explanation.reason,
+        ruleUUID: flag.explanation.ruleUUID,
+        value: flag.value,
+      },
+    });
 
-    if (flag && flag.type === 'feature-flag') {
-      this.analyticsClient.sendTrackEvent({
-        action: 'exposed',
-        actionSubject: 'feature',
-        attributes: flag.flag as FeatureFlag,
-      });
-      this.trackedFlags[flagKey] = true;
-    }
-  }
+    this.trackedFlags[flagKey] = true;
+  };
 }

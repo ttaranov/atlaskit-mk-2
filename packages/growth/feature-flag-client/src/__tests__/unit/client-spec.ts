@@ -40,9 +40,12 @@ describe('Feature Flag Client', () => {
 
       client.setFlags({
         'my.second.flag': {
-          reason: 'RULE_MATCH',
-          ruleId: '111-bbbbb-ccc',
           value: 'experiment',
+          trackEvents: true,
+          explanation: {
+            reason: 'RULE_MATCH',
+            ruleUUID: '111-bbbbb-ccc',
+          },
         },
       });
 
@@ -84,25 +87,64 @@ describe('Feature Flag Client', () => {
         analyticsClient,
         flags: {
           'my.variation.flag': {
-            reason: 'RULE_MATCH',
-            ruleId: '111-bbbbb-ccc',
             value: 'experiment',
+            trackEvents: true,
+            explanation: {
+              reason: 'RULE_MATCH',
+              ruleUUID: '111-bbbbb-ccc',
+            },
           },
           'my.variation.a': {
-            reason: 'RULE_MATCH',
-            ruleId: '111-bbbbb-ccc',
             value: 'variation-a',
+            trackEvents: true,
+            explanation: {
+              reason: 'RULE_MATCH',
+              ruleUUID: '111-bbbbb-ccc',
+            },
           },
           'my.experiment': {
-            reason: 'RULE_MATCH',
-            ruleId: '111-bbbbb-ccc',
             value: 'experiment',
+            trackEvents: true,
+            explanation: {
+              reason: 'RULE_MATCH',
+              ruleUUID: '111-bbbbb-ccc',
+            },
           },
           'my.boolean.flag': false,
           'my.detailed.boolean.flag': {
-            reason: 'RULE_MATCH',
-            ruleId: '111-bbbbb-ccc',
             value: false,
+            trackEvents: true,
+            explanation: {
+              reason: 'RULE_MATCH',
+              ruleUUID: '111-bbbbb-ccc',
+            },
+          },
+          'my.untracked.boolean.flag': {
+            value: false,
+            trackEvents: false,
+            explanation: {
+              reason: 'RULE_MATCH',
+              ruleUUID: '111-bbbbb-ccc',
+            },
+          },
+          'my.untracked.variant.flag': {
+            value: 'variant-1',
+            trackEvents: false,
+            explanation: {
+              reason: 'RULE_MATCH',
+              ruleUUID: '111-bbbbb-ccc',
+            },
+          },
+          'my.json.flag': {
+            value: {
+              nav: 'blue',
+              footer: 'black',
+            },
+            trackEvents: false,
+            explanation: {
+              reason: 'RULE_MATCH',
+              ruleUUID: '111-bbbbb-ccc',
+            },
           },
         },
       });
@@ -152,10 +194,19 @@ describe('Feature Flag Client', () => {
           actionSubject: 'feature',
           attributes: {
             reason: 'RULE_MATCH',
-            ruleId: '111-bbbbb-ccc',
+            ruleUUID: '111-bbbbb-ccc',
             value: false,
           },
         });
+      });
+
+      test('should not fire the exposure event if the flag is marked with trackEvents=false', () => {
+        expect(
+          client.getBooleanValue('my.untracked.boolean.flag', {
+            default: true,
+          }),
+        ).toBe(false);
+        expect(analyticsClient.sendTrackEvent).toHaveBeenCalledTimes(0);
       });
 
       test('should not fire the exposure event if trackExposureEvent is false', () => {
@@ -227,10 +278,20 @@ describe('Feature Flag Client', () => {
           actionSubject: 'feature',
           attributes: {
             reason: 'RULE_MATCH',
-            ruleId: '111-bbbbb-ccc',
+            ruleUUID: '111-bbbbb-ccc',
             value: 'experiment',
           },
         });
+      });
+
+      test('should not fire the exposure event if the flag is marked with trackEvents=false', () => {
+        expect(
+          client.getVariantValue('my.untracked.variant.flag', {
+            default: 'variant-2',
+            oneOf: ['variant-0', 'variant-1', 'variant-2'],
+          }),
+        ).toBe('variant-1');
+        expect(analyticsClient.sendTrackEvent).toHaveBeenCalledTimes(0);
       });
 
       test('should not fire exposure event if trackExposureEvent is false', () => {
@@ -241,6 +302,21 @@ describe('Feature Flag Client', () => {
             trackExposureEvent: false,
           }),
         ).toBe('experiment');
+        expect(analyticsClient.sendTrackEvent).toHaveBeenCalledTimes(0);
+      });
+    });
+
+    describe('getJSONFlag', () => {
+      test('should return empty object if flag is not set, and not fire exposure event', () => {
+        expect(client.getJSONFlag('my.empty.json.flag')).toEqual({});
+        expect(analyticsClient.sendTrackEvent).toHaveBeenCalledTimes(0);
+      });
+
+      test('should return the object if flag is set', () => {
+        expect(client.getJSONFlag('my.json.flag')).toEqual({
+          nav: 'blue',
+          footer: 'black',
+        });
         expect(analyticsClient.sendTrackEvent).toHaveBeenCalledTimes(0);
       });
     });

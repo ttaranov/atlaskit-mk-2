@@ -10,28 +10,53 @@ export type RuleId = string;
 export type DarkFeature = boolean;
 
 export type FeatureFlag = {
-  reason: Reason;
-  ruleId?: RuleId;
+  trackEvents: boolean;
   value: boolean | string | object;
+  explanation: {
+    reason: Reason;
+    ruleUUID?: RuleId;
+  };
   [key: string]: any;
 };
 
+export type AnyFlag = DarkFeature | FeatureFlag;
+
 export type Flags = {
-  [flagName: string]: DarkFeature | FeatureFlag;
+  [flagName: string]: AnyFlag;
+};
+
+export type ExposureEvent = {
+  action: string;
+  actionSubject: string;
+  attributes: {
+    reason: Reason;
+    ruleUUID?: RuleId;
+    value: boolean | string | object;
+  };
 };
 
 export type AnalyticsClient = {
-  sendTrackEvent: (
-    event: {
-      action: string;
-      actionSubject: string;
-      attributes: FeatureFlag;
-    },
-  ) => void;
+  sendTrackEvent: (event: ExposureEvent) => void;
 };
 
-export type ParsedFlag = {
-  type: 'feature-flag' | 'dark-feature';
-  value: boolean | string;
-  flag: DarkFeature | FeatureFlag;
-};
+export interface FlagConstructor {
+  new (
+    flagKey: string,
+    flag: AnyFlag,
+    trackExposure: (flagKey: string, flag: FeatureFlag) => void,
+  ): Flag;
+}
+export interface Flag {
+  getBooleanValue(options: {
+    default: boolean;
+    trackExposureEvent?: boolean;
+  }): boolean;
+
+  getVariantValue(options: {
+    default: string;
+    oneOf: string[];
+    trackExposureEvent?: boolean;
+  }): string;
+
+  getJSONFlag(): object;
+}
