@@ -21,6 +21,7 @@ import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
 import { extensionHandlers } from '../example-helpers/extension-handlers';
 import quickInsertProviderFactory from '../example-helpers/quick-insert-provider';
 import { DevTools } from '../example-helpers/DevTools';
+import { exampleDocument } from '../example-helpers/grid-document';
 
 export const TitleInput: any = styled.input`
   border: none;
@@ -213,7 +214,7 @@ export default function Example({ defaultValue }) {
     <EditorContext>
       <div style={{ height: '100%' }}>
         <DevTools />
-        <ExampleEditor defaultValue={defaultValue} />
+        <ExampleEditor defaultValue={defaultValue || exampleDocument} />
       </div>
     </EditorContext>
   );
