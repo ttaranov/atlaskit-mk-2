@@ -1,5 +1,12 @@
 # @atlaskit/select
 
+## 5.0.17
+- [patch] Updated dependencies [d5a043a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5a043a)
+  - @atlaskit/form@4.0.3
+  - @atlaskit/icon@13.8.1
+  - @atlaskit/tooltip@12.0.14
+  - @atlaskit/modal-dialog@7.0.0
+
 ## 5.0.16
 - [patch] Updated dependencies [9c66d4d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9c66d4d)
   - @atlaskit/form@4.0.2
