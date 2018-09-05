@@ -18,8 +18,16 @@ const defaultPersonResultProps = {
   name: 'personName',
   presenceMessage: 'message',
   href: 'http://www.example.com/',
+  mentionPrefix: 'prefix',
+  presenceState: 'online',
+  isCompact: false,
+  isSelected: false,
+  onClick: jest.fn(),
+  type: 'person',
 };
+
 const renderWithContext = (contextOverrides = {}) => {
+  //$FlowFixMe
   const PersonResulWithOpenInNewTab = withOpenInNewTab(PersonResult);
   return mount(
     <ResultContext.Provider
