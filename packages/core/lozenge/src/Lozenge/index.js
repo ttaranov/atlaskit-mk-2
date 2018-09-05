@@ -42,8 +42,10 @@ export default class Lozenge extends PureComponent<Props> {
         theme={isBold ? boldStyles : defaultStyles}
       >
         {styleProps => (
-          <Container {...styleProps} maxWidth={maxWidth} isBold={isBold}>
-            <Content>{children}</Content>
+          <Container {...styleProps}>
+            <Content {...styleProps} maxWidth={maxWidth}>
+              {children}
+            </Content>
           </Container>
         )}
       </Appearance>
