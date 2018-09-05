@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 19.0.0
+- [major] remove jquery dep and mediaviewer classic support [02dee16](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/02dee16)
+
 ## 18.0.2
 - [patch] Updated dependencies [d5a043a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5a043a)
   - @atlaskit/icon@13.8.1
