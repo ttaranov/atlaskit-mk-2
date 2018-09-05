@@ -1,5 +1,8 @@
 # @atlaskit/navigation-next
 
+## 3.7.4
+- [patch] Adjust navigation items background colours theming [da7b64d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da7b64d)
+
 ## 3.7.3
 - [patch] LayoutManagerWithViewController now will pass Collapse Listeners props to LayoutManager [881ba31](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/881ba31)
 
