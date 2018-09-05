@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react';
 import Select from '@atlaskit/select';
 import FieldText from '@atlaskit/field-text';
 import Toggle from '@atlaskit/toggle';
-import Checkbox, { CheckboxStateless, CheckboxGroup } from '@atlaskit/checkbox';
+import Checkbox from '@atlaskit/checkbox';
 import Button from '@atlaskit/button';
 import isEmail from 'validator/lib/isEmail';
 import Calendar from '@atlaskit/calendar';
@@ -218,27 +218,23 @@ export default class FieldsExample extends PureComponent<void, State> {
               validateOnChange
               validators={[<Validator {...validatorProps} />]}
             >
-              <CheckboxGroup>
-                <Checkbox label="Lime" name="checkbox" value="lime" />
-              </CheckboxGroup>
+              <Checkbox label="Lime" name="checkbox" value="lime" />
             </Field>
 
             <Field
-              label="Checkbox Stateless"
+              label="Controlled Checkbox"
               helperText=""
               {...fieldProps}
               validateOnChange
               validators={[<Validator {...validatorProps} />]}
             >
-              <CheckboxGroup>
-                <CheckboxStateless
-                  label="Lime - Stateless 2"
-                  name="checkbox-stateless-2"
-                  value="lime"
-                  isChecked={this.state.checkboxChecked}
-                  onChange={this.checkboxStatelessOnChange}
-                />
-              </CheckboxGroup>
+              <Checkbox
+                label="Lime - Stateless 2"
+                name="checkbox-stateless-2"
+                value="lime"
+                isChecked={this.state.checkboxChecked}
+                onChange={this.checkboxStatelessOnChange}
+              />
             </Field>
 
             <Field

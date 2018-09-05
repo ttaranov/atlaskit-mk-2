@@ -6,40 +6,13 @@ import {
   withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
-import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
-import CheckboxIndeterminateIcon from '@atlaskit/icon/glyph/checkbox-indeterminate';
+import CheckboxIcon from './CheckboxIcon';
 import {
   name as packageName,
   version as packageVersion,
 } from '../package.json';
-import { HiddenCheckbox, IconWrapper, Label, Wrapper } from './styled/Checkbox';
-
-type Props = {|
-  /** Sets whether the checkbox is checked or unchecked. */
-  isChecked: boolean,
-  /** Sets whether the checkbox is indeterminate. This only affects the
-   style and does not modify the isChecked property. */
-  isIndeterminate?: boolean,
-  /** Sets whether the checkbox is disabled. */
-  isDisabled?: boolean,
-  /** Sets whether the checkbox should take up the full width of the parent. */
-  isFullWidth?: boolean,
-  /** The label to be displayed to the right of the checkbox. The label is part
-   of the clickable element to select the checkbox. */
-  label: string,
-  /** The name of the submitted field in a checkbox. */
-  name: string,
-  /** Marks the field as invalid. Changes style of unchecked component. */
-  isInvalid?: boolean,
-  /** Function that is called whenever the state of the checkbox changes. It will
-  be called with an object containing the react synthetic event as well as the
-  state the checkbox will naturally be set to. The stateless version does not
-  automatically update whether the checkbox is checked. */
-  onChange: (event: SyntheticEvent<HTMLInputElement>) => mixed,
-  /** The value to be used in the checkbox input. This is the value that will
-   be returned on form submission. */
-  value: number | string,
-|};
+import { HiddenCheckbox } from './styled/Checkbox';
+import { type CheckboxInputProps } from './types';
 
 type State = {|
   isActive: boolean,
@@ -48,10 +21,10 @@ type State = {|
   mouseIsDown: boolean,
 |};
 
-const emptyTheme = {};
-
-class CheckboxInput extends Component<Props, State> {
-  props: Props; // eslint-disable-line react/sort-comp
+class CheckboxInput extends Component<CheckboxInputProps, State> {
+  static defaultProps = {
+    isIndeterminate: false,
+  };
   state: State = {
     isActive: false,
     isFocused: false,
@@ -63,15 +36,17 @@ class CheckboxInput extends Component<Props, State> {
 
   componentDidMount() {
     const { isIndeterminate } = this.props;
-
     // there is no HTML attribute for indeterminate, and thus no prop equivalent.
     // it must be set via the ref.
     if (this.checkbox) {
       this.checkbox.indeterminate = !!isIndeterminate;
+      if (this.props.inputRef) {
+        this.props.inputRef(this.checkbox);
+      }
     }
   }
 
-  componentDidUpdate(prevProps: Props) {
+  componentDidUpdate(prevProps: CheckboxInputProps) {
     const { isIndeterminate } = this.props;
 
     if (prevProps.isIndeterminate !== isIndeterminate && this.checkbox) {
@@ -112,38 +87,15 @@ class CheckboxInput extends Component<Props, State> {
     }
   };
 
-  renderCheckboxIcon() {
-    const { isIndeterminate } = this.props;
-
-    return isIndeterminate ? (
-      <CheckboxIndeterminateIcon
-        primaryColor="inherit"
-        secondaryColor="inherit"
-        isHovered={this.state.isHovered}
-        isActive={this.state.isActive}
-        label=""
-      />
-    ) : (
-      <CheckboxIcon
-        primaryColor="inherit"
-        secondaryColor="inherit"
-        isHovered={this.state.isHovered}
-        isActive={this.state.isActive}
-        label=""
-      />
-    );
-  }
-
   render() {
     const {
       isChecked,
       isDisabled,
-      isFullWidth,
       isInvalid,
-      label,
       name,
       onChange,
       value,
+      isIndeterminate,
     } = this.props;
     const { isFocused, isActive, isHovered } = this.state;
 
@@ -168,18 +120,25 @@ class CheckboxInput extends Component<Props, State> {
           name={name}
           innerRef={r => (this.checkbox = r)} // eslint-disable-line
         />
-        <Wrapper>
-          <IconWrapper
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+          }}
+        >
+          <CheckboxIcon
             isChecked={isChecked}
             isDisabled={isDisabled}
             isFocused={isFocused}
             isActive={isActive}
             isHovered={isHovered}
             isInvalid={isInvalid}
-          >
-            {this.renderCheckboxIcon()}
-          </IconWrapper>
-        </Wrapper>
+            isIndeterminate={isIndeterminate}
+            primaryColor="inherit"
+            secondaryColor="inherit"
+            label=""
+          />
+        </div>
       </span>
     );
   }

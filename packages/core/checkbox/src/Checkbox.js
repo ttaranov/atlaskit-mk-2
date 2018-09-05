@@ -1,59 +1,10 @@
 // @flow
 
 import React, { Component } from 'react';
-import {
-  withAnalyticsEvents,
-  withAnalyticsContext,
-  createAndFireEvent,
-} from '@atlaskit/analytics-next';
-import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
-import CheckboxIndeterminateIcon from '@atlaskit/icon/glyph/checkbox-indeterminate';
 import { ThemeProvider } from 'styled-components';
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../package.json';
-import { HiddenCheckbox, IconWrapper, Label, Wrapper } from './styled/Checkbox';
-import pick from 'lodash.pick';
-
-type Props = {|
-  /** Sets whether the checkbox begins checked. */
-  defaultChecked?: boolean,
-  /** Associated form id  */
-  form?: boolean,
-  /** id assigned to input */
-  id?: boolean,
-  /** Sets whether the checkbox is checked or unchecked. */
-  isChecked: boolean,
-  /** Sets whether the checkbox is disabled. */
-  isDisabled?: boolean,
-  /** Sets whether the checkbox should take up the full width of the parent. */
-  isFullWidth?: boolean,
-  /** Sets whether the checkbox is indeterminate. This only affects the
-   style and does not modify the isChecked property. */
-  isIndeterminate?: boolean,
-  /** Marks the field as invalid. Changes style of unchecked component. */
-  isInvalid?: boolean,
-  /** Marks the field as invalid. Changes style of unchecked component. */
-  isRequired?: boolean,
-  /** The label to be displayed to the right of the checkbox. The label is part
-   of the clickable element to select the checkbox. */
-  label: string,
-  /** The name of the submitted field in a checkbox. */
-  name: string,
-  /** Function that is called whenever the state of the checkbox changes. It will
-  be called with an object containing the react synthetic event as well as the
-  new state of the checkbox. */
-  onChange?: ({
-    event: SyntheticEvent<any>,
-    isChecked: boolean,
-    name: string,
-    value: number | string,
-  }) => mixed,
-
-  /** The value to be used in the checkbox input. This is the value that will be returned on form submission. */
-  value: number | string,
-|};
+import { Label } from './styled/Checkbox';
+import CheckboxInput from './CheckboxInput';
+import { type CheckboxProps } from './types';
 
 type State = {|
   isActive: boolean,
@@ -65,21 +16,28 @@ type State = {|
 
 const emptyTheme = {};
 
-class Checkbox extends Component<Props, State> {
-  props: Props; // eslint-disable-line react/sort-comp
+export default class Checkbox extends Component<CheckboxProps, State> {
+  static defaultProps = {
+    isDisabled: false,
+    isInvalid: false,
+    defaultChecked: false,
+  };
+
   state: State = {
     isActive: false,
     isFocused: false,
     isHovered: false,
     mouseIsDown: false,
-    isChecked: !!this.props.initiallyChecked,
+    isChecked:
+      this.props.isChecked !== undefined
+        ? this.props.isChecked
+        : this.props.defaultChecked,
   };
   checkbox: ?HTMLInputElement;
   actionKeys = [' '];
 
   componentDidMount() {
     const { isIndeterminate } = this.props;
-
     // there is no HTML attribute for indeterminate, and thus no prop equivalent.
     // it must be set via the ref.
     if (this.checkbox) {
@@ -87,7 +45,7 @@ class Checkbox extends Component<Props, State> {
     }
   }
 
-  componentDidUpdate(prevProps: Props) {
+  componentDidUpdate(prevProps: CheckboxProps) {
     const { isIndeterminate } = this.props;
 
     if (prevProps.isIndeterminate !== isIndeterminate && this.checkbox) {
@@ -99,13 +57,16 @@ class Checkbox extends Component<Props, State> {
     return this.props[key] ? this.props[key] : this.state[key];
   };
 
-  onChange = (event: SyntheticEvent<HTMLInputElement>) => {
-    const { isDisabled, onChange, name, value } = this.props;
-    if (isDisabled) return null;
-    const isChecked = event.currentTarget.checked;
-    return this.setState({ isChecked }, () => {
-      if (onChange) onChange({ event, isChecked, name, value });
-    });
+  onChange = (event: SyntheticInputEvent<HTMLInputElement>) => {
+    if (this.props.isDisabled) return null;
+    event.persist();
+    if (event.target.checked !== undefined) {
+      this.setState({ isChecked: event.target.checked });
+    }
+    if (this.props.onChange) {
+      this.props.onChange(event);
+    }
+    return true;
   };
 
   // expose blur/focus to consumers via ref
@@ -141,44 +102,24 @@ class Checkbox extends Component<Props, State> {
     }
   };
 
-  renderCheckboxIcon() {
-    const { isIndeterminate } = this.props;
-
-    return isIndeterminate ? (
-      <CheckboxIndeterminateIcon
-        primaryColor="inherit"
-        secondaryColor="inherit"
-        isHovered={this.state.isHovered}
-        isActive={this.state.isActive}
-        label=""
-      />
-    ) : (
-      <CheckboxIcon
-        primaryColor="inherit"
-        secondaryColor="inherit"
-        isHovered={this.state.isHovered}
-        isActive={this.state.isActive}
-        label=""
-      />
-    );
-  }
-
   render() {
     const {
-      isChecked,
       isDisabled,
       isFullWidth,
       isInvalid,
       label,
       name,
-      onChange,
       value,
+      isIndeterminate,
+      ...props
     } = this.props;
+    const isChecked = this.getProp('isChecked');
     const { isFocused, isActive, isHovered } = this.state;
 
     return (
       <ThemeProvider theme={emptyTheme}>
         <Label
+          {...props}
           isDisabled={isDisabled}
           isFullWidth={isFullWidth}
           onMouseDown={this.onMouseDown}
@@ -186,56 +127,26 @@ class Checkbox extends Component<Props, State> {
           onMouseLeave={this.onMouseLeave}
           onMouseUp={this.onMouseUp}
         >
-          <HiddenCheckbox
-            disabled={isDisabled}
-            checked={isChecked}
-            onChange={onChange}
+          <CheckboxInput
+            isChecked={isChecked}
+            isDisabled={isDisabled}
+            isFocused={isFocused}
+            isActive={isActive}
+            isHovered={isHovered}
+            isInvalid={isInvalid}
+            isIndeterminate={isIndeterminate}
+            onChange={this.onChange}
             onBlur={this.onBlur}
             onFocus={this.onFocus}
             onKeyUp={this.onKeyUp}
             onKeyDown={this.onKeyDown}
-            type="checkbox"
             value={value}
             name={name}
-            innerRef={r => (this.checkbox = r)} // eslint-disable-line
+            inputRef={r => (this.checkbox = r)} // eslint-disable-line
           />
-          <Wrapper>
-            <IconWrapper
-              isChecked={isChecked}
-              isDisabled={isDisabled}
-              isFocused={isFocused}
-              isActive={isActive}
-              isHovered={isHovered}
-              isInvalid={isInvalid}
-            >
-              {this.renderCheckboxIcon()}
-            </IconWrapper>
-            <span>{label}</span>
-          </Wrapper>
+          {label}
         </Label>
       </ThemeProvider>
     );
   }
 }
-
-export { Checkbox as CheckboxWithoutAnalytics };
-const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
-
-export default withAnalyticsContext({
-  componentName: 'checkbox',
-  packageName,
-  packageVersion,
-})(
-  withAnalyticsEvents({
-    onChange: createAndFireEventOnAtlaskit({
-      action: 'changed',
-      actionSubject: 'checkbox',
-
-      attributes: {
-        componentName: 'checkbox',
-        packageName,
-        packageVersion,
-      },
-    }),
-  })(Checkbox),
-);

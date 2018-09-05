@@ -1,7 +1,7 @@
 // @flow
 import React, { PureComponent } from 'react';
 import Button from '@atlaskit/button';
-import Checkbox from '../src';
+import Checkbox from '../src/Checkbox';
 
 const formTestUrl = '//httpbin.org/get';
 
