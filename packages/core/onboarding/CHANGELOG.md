@@ -1,5 +1,10 @@
 # @atlaskit/onboarding
 
+## 5.1.9
+- [patch] Updated dependencies [9c66d4d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9c66d4d)
+  - @atlaskit/layer-manager@5.0.10
+  - @atlaskit/webdriver-runner@0.1.0
+
 ## 5.1.8
 - [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
 

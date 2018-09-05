@@ -1,5 +1,10 @@
 # @atlaskit/layer-manager
 
+## 5.0.10
+- [patch] Updated dependencies [9c66d4d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9c66d4d)
+  - @atlaskit/onboarding@5.1.9
+  - @atlaskit/webdriver-runner@0.1.0
+
 ## 5.0.9
 - [patch] Bump react-focus-lock to fix issues with selecting text in Safari. [62dc9fc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/62dc9fc)
 

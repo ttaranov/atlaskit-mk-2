@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-picker",
-  "version": "15.0.0",
+  "version": "15.0.1",
   "description": "Library for handling file uploads",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -62,7 +62,7 @@
     "@atlaskit/media-core": "^23.1.0",
     "@atlaskit/media-test-helpers": "^17.0.0",
     "@atlaskit/toggle": "^5.0.5",
-    "@atlaskit/webdriver-runner": "^0.0.3",
+    "@atlaskit/webdriver-runner": "^0.1.0",
     "@types/dateformat": "^1.0.1",
     "@types/enzyme": "^3.1.6",
     "@types/eventemitter2": "^4.1.0",

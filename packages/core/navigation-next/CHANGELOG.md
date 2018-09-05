@@ -1,5 +1,10 @@
 # @atlaskit/navigation-next
 
+## 3.7.5
+- [patch] Updated dependencies [9c66d4d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9c66d4d)
+  - @atlaskit/select@5.0.16
+  - @atlaskit/webdriver-runner@0.1.0
+
 ## 3.7.4
 - [patch] Adjust navigation items background colours theming [da7b64d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/da7b64d)
 
