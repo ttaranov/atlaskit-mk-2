@@ -2,8 +2,10 @@ import { Emoji, EmojiDescription, toEmojiId } from '@atlaskit/emoji';
 import * as React from 'react';
 import { waitUntil } from '@atlaskit/util-common-test';
 import { mount } from 'enzyme';
-import { hasSelector } from '../_test-utils';
-import Reaction, { ReactionOnClick } from '../../../internal/reaction';
+import Reaction, {
+  ReactionOnClick,
+  ReactionComponent,
+} from '../../../internal/reaction';
 import FlashAnimation from '../../../internal/flash-animation';
 import { emoji, hasSelector } from '@atlaskit/util-data-test';
 import { EmojiProvider } from '@atlaskit/emoji';
