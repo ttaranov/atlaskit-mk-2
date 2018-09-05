@@ -27,10 +27,6 @@ export interface MediaCollectionLinkItem extends LinkItem {
   details: MediaCollectionLinkItemDetails;
 }
 
-// export type MediaCollectionItem =
-//   | MediaCollectionFileItem
-//   | MediaCollectionLinkItem;
-
 export interface MediaCollection {
   id: string;
   items: Array<MediaCollectionItem>;
@@ -38,8 +34,8 @@ export interface MediaCollection {
 
 export type CollectionCache = {
   [collectionName: string]: {
-    ids: string[];
-    subject: ReplaySubject<string[]>;
+    items: MediaCollectionItem[];
+    subject: ReplaySubject<MediaCollectionItem[]>;
     isLoadingNextPage: boolean;
     nextInclusiveStartKey?: string;
   };
@@ -86,11 +82,11 @@ export class CollectionFetcher {
   getItems(
     collectionName: string,
     params?: MediaStoreGetCollectionItemsParams,
-  ): Observable<string[]> {
+  ): Observable<MediaCollectionItem[]> {
     if (!cache[collectionName]) {
       cache[collectionName] = {
-        ids: [],
-        subject: new ReplaySubject<string[]>(1),
+        items: [],
+        subject: new ReplaySubject<MediaCollectionItem[]>(1),
         isLoadingNextPage: false,
       };
     }
@@ -105,22 +101,22 @@ export class CollectionFetcher {
       .then(items => {
         const { contents, nextInclusiveStartKey } = items.data;
         this.populateCache(contents);
-        const ids = contents.map(item => item.id);
 
-        collection.ids = ids;
+        collection.items = items.data.contents;
 
         // We only want to asign nextInclusiveStartKey the first time
         if (!collection.nextInclusiveStartKey) {
           collection.nextInclusiveStartKey = nextInclusiveStartKey;
         }
 
-        subject.next(ids);
+        subject.next(collection.items);
       });
 
     return subject;
   }
 
   // TODO: check if we are already loading the next page for the given collectionName
+  // TODO: we need to maintain at least the same limit (pageSize) we used previously
   async loadNextPage(collectionName: string) {
     const collection = cache[collectionName];
     if (!collection) {
@@ -131,22 +127,22 @@ export class CollectionFetcher {
 
     const {
       nextInclusiveStartKey: inclusiveStartKey,
-      ids: currentIds,
+      items: currentItems,
       subject,
     } = cache[collectionName];
-    const items = await this.mediaStore.getCollectionItems(collectionName, {
+    const response = await this.mediaStore.getCollectionItems(collectionName, {
       inclusiveStartKey,
       details: 'full',
     });
-    const { contents, nextInclusiveStartKey } = items.data;
+    const { contents, nextInclusiveStartKey } = response.data;
     this.populateCache(contents);
-    const newIds = contents.map(item => item.id);
-    const ids = [...currentIds, ...newIds];
+    const newItems = response.data.contents;
+    const items = [...currentItems, ...newItems];
 
-    subject.next(ids);
+    subject.next(items);
 
     cache[collectionName] = {
-      ids,
+      items,
       nextInclusiveStartKey,
       subject,
       isLoadingNextPage: false,

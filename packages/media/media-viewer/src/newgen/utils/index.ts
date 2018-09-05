@@ -1,8 +1,5 @@
-import {
-  Context,
-  isClientBasedAuth,
-  MediaCollectionItem,
-} from '@atlaskit/media-core';
+import { Context, isClientBasedAuth } from '@atlaskit/media-core';
+import { MediaCollectionItem } from '@atlaskit/media-store';
 import { stringify } from 'query-string';
 import { Identifier } from '../domain';
 
@@ -64,9 +61,9 @@ export const toIdentifier = (
   collectionName: string,
 ): Identifier => {
   return {
-    id: item.details.id,
+    id: item.id,
     type: item.type,
-    occurrenceKey: item.details.occurrenceKey,
+    occurrenceKey: item.occurrenceKey,
     collectionName,
   };
 };

@@ -1,10 +1,10 @@
 import * as React from 'react';
 import {
   Context,
-  MediaCollectionItem,
   MediaCollectionProvider,
   isError,
 } from '@atlaskit/media-core';
+import { MediaCollectionItem } from '@atlaskit/media-store';
 import { Outcome, Identifier, MediaViewerFeatureFlags } from './domain';
 import { ErrorMessage, createError, MediaViewerError } from './error';
 import { List } from './list';
@@ -89,28 +89,15 @@ export class Collection extends React.Component<Props, State> {
     );
     const collectionFileItemFilter = (item: MediaCollectionItem) =>
       item.type === 'file';
-    this.subscription = this.provider.observable().subscribe({
-      next: collection => {
-        if (isError(collection)) {
+    this.subscription = context.collection
+      .getItems(collectionName, { limit: pageSize })
+      .subscribe({
+        next: items => {
           this.setState({
-            items: Outcome.failed(
-              createError('metadataFailed', undefined, collection),
-            ),
+            items: Outcome.successful(items),
           });
-        } else {
-          this.setState({
-            items: Outcome.successful(
-              collection.items.filter(collectionFileItemFilter),
-            ),
-          });
-          if (defaultSelectedItem && this.shouldLoadNext(defaultSelectedItem)) {
-            if (this.provider) {
-              this.provider.loadNextPage();
-            }
-          }
-        }
-      },
-    });
+        },
+      });
   }
 
   private release() {
@@ -128,7 +115,8 @@ export class Collection extends React.Component<Props, State> {
 
   private onNavigationChange = (item: Identifier) => {
     if (this.shouldLoadNext(item) && this.provider) {
-      this.provider.loadNextPage();
+      const { context, collectionName } = this.props;
+      context.collection.loadNextPage(collectionName);
     }
   };
 
@@ -145,8 +133,8 @@ export class Collection extends React.Component<Props, State> {
   private isLastItem(selectedItem: Identifier, items: MediaCollectionItem[]) {
     const lastItem = items[items.length - 1];
     const isLastItem =
-      selectedItem.id === lastItem.details.id &&
-      selectedItem.occurrenceKey === lastItem.details.occurrenceKey;
+      selectedItem.id === lastItem.id &&
+      selectedItem.occurrenceKey === lastItem.occurrenceKey;
     return isLastItem;
   }
 }
