@@ -10,6 +10,7 @@ import {
   ContentType,
   Result,
   GenericResultMap,
+  JiraResultsMap,
 } from '../model/Result';
 
 const RECENT_ITEMS_PATH: string = '/rest/internal/2/productsearch/recent';
@@ -229,16 +230,22 @@ export default class JiraClientImpl implements JiraClient {
     };
   }
 
-  private jiraScopesToResults(scopes: Scope[]): GenericResultMap {
-    return flatMap(
+  private jiraScopesToResults(scopes: Scope[]): JiraResultsMap {
+    const { issue, project, filter, board } = flatMap(
       scopes
-        .filter(scope => !scope.error && scope.results && scope.results.length)
-        .map(this.scopeToResult),
+        .filter(scope => !scope.error && scope.results && scope.results.length) // filter out error scopes
+        .map(this.scopeToResult), // map scope to array of results => scope => [{issue: issueResult}, {issue: issueResult}]
     ).reduce((acc, entry) => {
       const key = Object.keys(entry)[0];
       const value = entry[key];
       return Object.assign({}, acc, { [key]: (acc[key] || []).concat(value) });
     }, {});
+    return {
+      issues: issue,
+      boards: board,
+      filters: filter,
+      projects: project,
+    };
   }
 
   private scopeToResult(scope: Scope): { [k: string]: Result }[] {

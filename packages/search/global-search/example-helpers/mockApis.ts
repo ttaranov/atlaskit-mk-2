@@ -97,14 +97,11 @@ function mockJiraRecentApi() {
 }
 
 function mockJiraSearchApi() {
-  fetchMock.get(
-    new RegExp('rest/quicknavjira/1/search'),
-    async (request: Request) => {
-      const query = request.url.split('query=')[1];
-      const results = queryJiraSearch(query);
-      return delay(500, results);
-    },
-  );
+  fetchMock.get(new RegExp('rest/quicknavjira/1/search'), async url => {
+    const query = url.split('query=')[1];
+    const results = queryJiraSearch(query);
+    return delay(500, results);
+  });
 }
 
 export function setupMocks(config: MocksConfig = DEFAULT_MOCKS_CONFIG) {

@@ -156,10 +156,7 @@ export class JiraQuickSearchContainer extends React.Component<
       ([people, jiraResults, jiraSearchElapsedMs, peopleSearchElapsedMs]) => ({
         results: {
           people,
-          issues: jiraResults.issue || [],
-          boards: jiraResults.board || [],
-          filters: jiraResults.filter || [],
-          projects: jiraResults.project || [],
+          ...jiraResults,
         },
         timings: {
           jiraSearchElapsedMs,

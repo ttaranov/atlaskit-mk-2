@@ -6,7 +6,6 @@ import {
   TransformedResponse,
 } from '../../../../example-helpers/jiraRecentResponseData';
 import {
-  mockJiraSearchData,
   generateJiraScopeWithError,
   generateJiraScope,
 } from '../../../../example-helpers/mockData';
@@ -137,10 +136,10 @@ describe('JiraClient', () => {
       const result = await jiraClient.search('session-12', 'man');
 
       expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(result.issue).toBe(undefined);
-      expect(result.project).toHaveProperty('length', 4);
-      expect(result.board).toHaveProperty('length', 3);
-      expect(result.filter).toHaveProperty('length', 2);
+      expect(result.issues).toBe(undefined);
+      expect(result.projects).toHaveProperty('length', 4);
+      expect(result.boards).toHaveProperty('length', 3);
+      expect(result.filters).toHaveProperty('length', 2);
     });
 
     it('should return transformed data successfully', async () => {
@@ -156,10 +155,10 @@ describe('JiraClient', () => {
       const result = await jiraClient.search('session-12', 'man');
 
       expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(result.issue).toHaveProperty('length', 8);
-      expect(result.project).toHaveProperty('length', 4);
-      expect(result.board).toHaveProperty('length', 3);
-      expect(result.filter).toHaveProperty('length', 2);
+      expect(result.issues).toHaveProperty('length', 8);
+      expect(result.projects).toHaveProperty('length', 4);
+      expect(result.boards).toHaveProperty('length', 3);
+      expect(result.filters).toHaveProperty('length', 2);
     });
   });
 });
