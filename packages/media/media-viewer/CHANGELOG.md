@@ -1,5 +1,10 @@
 # @atlaskit/media-viewer
 
+## 18.0.2
+- [patch] Updated dependencies [d5a043a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5a043a)
+  - @atlaskit/icon@13.8.1
+  - @atlaskit/modal-dialog@7.0.0
+
 ## 18.0.1
 - [patch] Fix feedback button in MVNG [44bfc3a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/44bfc3a)
 

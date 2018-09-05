@@ -601,7 +601,7 @@ export const getValidNode = (
         if (content) {
           return {
             type,
-            content,
+            content: wrapInlineNodes(content),
           };
         }
         break;
@@ -739,7 +739,7 @@ export const getValidNode = (
 
           return {
             type,
-            content,
+            content: wrapInlineNodes(content),
             attrs: attrs ? cellAttrs : undefined,
           };
         }

@@ -1,5 +1,22 @@
 # @atlaskit/editor-core
 
+## 79.0.7
+- [patch] Updated dependencies [d5a043a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5a043a)
+  - @atlaskit/icon@13.8.1
+  - @atlaskit/layer-manager@5.0.12
+  - @atlaskit/select@5.0.17
+  - @atlaskit/media-picker@15.0.2
+  - @atlaskit/tooltip@12.0.14
+  - @atlaskit/modal-dialog@7.0.0
+
+## 79.0.6
+- [patch] Updated dependencies [9c66d4d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9c66d4d)
+  - @atlaskit/layer-manager@5.0.10
+  - @atlaskit/select@5.0.16
+  - @atlaskit/editor-common@15.0.5
+  - @atlaskit/media-picker@15.0.1
+  - @atlaskit/webdriver-runner@0.1.0
+
 ## 79.0.5
 - [patch] "userAuthProvider" property removed from all the media-picker configs; Optional "shouldCopyFileToRecents" property added to all media-picker configs; "tenantUploadParams" is removed since "uploadParams" is already a tenant one; "copyFileToRecents" is removed from UploadParams; [048f488](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/048f488)
 

@@ -99,6 +99,10 @@ export default class Page {
     return this.browser.keys(value);
   }
 
+  debug() {
+    return this.browser.debug();
+  }
+
   // Get
   getProperty(selector, cssProperty) {
     return this.browser.getCssProperty(selector, cssProperty);

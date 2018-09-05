@@ -366,7 +366,7 @@ const variations: Array<VariationCategory> = [
         <SkeletonItem {...props} />
       </ThemeProvider>
     ),
-    title: 'Skeleton',
+    title: 'Skeleton item',
     items: [
       {
         key: 'light-container-skeleton',
@@ -430,7 +430,7 @@ const variations: Array<VariationCategory> = [
         <SkeletonContainerHeader {...props} />
       </ThemeProvider>
     ),
-    title: 'Skeleton',
+    title: 'Skeleton header',
     items: [
       {
         key: 'light-container-skeleton',

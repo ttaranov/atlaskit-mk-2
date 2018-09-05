@@ -3,142 +3,108 @@
 // TODO: @atlassian/navigation package is the only other package that uses chromatism (currently).
 // We should update to chromatism@3.0.0 once @atlassian/navigation package is deprecated.
 import chromatism from 'chromatism';
-import { colors } from '@atlaskit/theme';
 
-import { light } from './modes';
-import type { ItemPresentationProps } from '../components/Item/types';
-import type { Mode } from './types';
+import globalItemStyles from '../components/GlobalItem/styles';
+import globalNavStyles from '../components/GlobalNav/styles';
+import contentNavStyles from '../components/ContentNavigation/styles';
+import itemStyles from '../components/Item/styles';
+import headingStyles from '../components/GroupHeading/styles';
+import separatorStyles from '../components/Separator/styles';
+import scrollHintStyles from '../components/ScrollableSectionInner/styles';
+import skeletonItemStyles from '../components/SkeletonItem/styles';
+
+import type { Mode, ContextColors } from './types';
 
 type Args = {
-  background: string,
-  text: string,
+  product: {
+    background: string,
+    text: string,
+  },
 };
 
-export default ({ background, text }: Args): Mode => {
-  const backgroundColorActive = chromatism.brightness(10, background).hex;
-  const backgroundColorSelected = chromatism.brightness(-20, background).hex;
-  const backgroundColorHover = chromatism.brightness(-10, background).hex;
+const colorMatrix = [
+  {
+    // Dark
+    when: ({ l }) => l <= 20,
+    hint: { s: 0, l: 16 },
+    interact: { s: -4, l: 8 },
+    static: { s: -8, l: 12 },
+  },
+  {
+    // bright and saturated
+    when: ({ s, l }) => s > 65 && l > 30,
+    hint: { s: -16, l: 12 },
+    interact: { s: -16, l: 8 },
+    static: { s: 0, l: -8 },
+  },
+  {
+    // bright and dull
+    when: ({ s, l }) => s <= 20 && l > 90,
+    hint: { s: 0, l: -2 },
+    interact: { s: 0, l: -4 },
+    static: { s: 0, l: -6 },
+  },
+  {
+    // pastel
+    when: ({ s, l }) => s > 20 && s < 50 && l > 50,
+    hint: { s: 24, l: 2 },
+    interact: { s: 8, l: -4 },
+    static: { s: 8, l: -12 },
+  },
+  {
+    // dull
+    when: ({ s, l }) => s <= 20 && l <= 90,
+    hint: { s: 0, l: 4 },
+    interact: { s: 0, l: -4 },
+    static: { s: 0, l: -8 },
+  },
+];
 
-  const getBackgroundColorByState = ({ isActive, isSelected, isHover }) => {
-    if (isActive) return backgroundColorActive;
-    if (isSelected) return backgroundColorSelected;
-    if (isHover) return backgroundColorHover;
-    return background;
+const getStatesBackground = (parts, modifier) =>
+  ['hint', 'interact', 'static'].reduce((acc, k) => {
+    acc[k] = chromatism.convert({
+      ...parts,
+      s: parts.s + modifier[k].s,
+      l: parts.l + modifier[k].l,
+    }).hex;
+    return acc;
+  }, {});
+
+const getContextColors = ({ background, text }): ContextColors => {
+  const bgParts = chromatism.convert(background).hsl;
+  const vs = bgParts.l < 30 && bgParts.s < 50 ? -1 : 1;
+  const textSubtle = chromatism.brightness(
+    1 + vs * 6,
+    chromatism.fade(4, background, text).hex[2],
+  ).hex;
+  const colorMod = colorMatrix.find(cm => cm.when(bgParts)) || {
+    hint: { s: 0, l: 8 },
+    interact: { s: 0, l: 4 },
+    static: { s: 8, l: -6 },
   };
 
   return {
-    globalItem: args => {
-      const styles = light.globalItem(args);
+    background: {
+      default: background,
+      ...getStatesBackground(bgParts, colorMod),
+    },
+    text: { default: text, subtle: textSubtle },
+  };
+};
 
-      return {
-        ...styles,
-        itemBase: {
-          ...styles.itemBase,
-          backgroundColor: getBackgroundColorByState(args),
-          color: text,
-        },
-      };
-    },
-    globalNav: () => {
-      const styles = light.globalNav();
-      return {
-        ...styles,
-        backgroundColor: background,
-        color: text,
-      };
-    },
-    contentNav: () => {
-      const { container, product } = light.contentNav();
-      return {
-        container: {
-          ...container,
-          backgroundColor: background,
-          color: text,
-        },
-        product: {
-          ...product,
-          backgroundColor: background,
-          color: text,
-        },
-      };
-    },
-    heading: () => {
-      const { product } = light.heading();
-      const productStyles = {
-        ...product,
-        titleBase: {
-          ...product.titleBase,
-          color: chromatism.brightness(20, text).hex,
-        },
-      };
-      return { container: productStyles, product: productStyles };
-    },
-    item: ({
-      isActive,
-      isHover,
-      isSelected,
-      spacing,
-    }: ItemPresentationProps) => {
-      const { product } = light.item({
-        isActive,
-        isHover,
-        isSelected,
-        spacing,
-      });
-      const productStyles = {
-        ...product,
-        itemBase: {
-          ...product.itemBase,
-          backgroundColor: getBackgroundColorByState({
-            isActive,
-            isHover,
-            isSelected,
-          }),
-        },
-        textWrapper: {
-          ...product.textWrapper,
-          color: text,
-        },
-        subTextWrapper: {
-          ...product.subTextWrapper,
-          color: chromatism.brightness(20, text).hex,
-        },
-      };
-      return { container: productStyles, product: productStyles };
-    },
-    scrollHint: () => {
-      const { product } = light.scrollHint();
-      const productStyles = {
-        ...product,
-        wrapper: {
-          ...product.wrapper,
-          '&::before': {
-            ...product.wrapper['&::before'],
-            backgroundColor: colors.N80A,
-          },
-        },
-        inner: {
-          ...product.inner,
-          '&::before': {
-            ...product.inner['&::before'],
-            backgroundColor: background,
-          },
-        },
-      };
-      return { container: productStyles, product: productStyles };
-    },
-    separator: () => {
-      const { product } = light.separator();
-      const productStyles = { ...product, backgroundColor: colors.N80A };
-      return { container: productStyles, product: productStyles };
-    },
-    skeletonItem: () => {
-      const { product } = light.skeletonItem();
-      const productStyles = {
-        ...product,
-        backgroundColor: chromatism.brightness(20, background).hex,
-      };
-      return { container: productStyles, product: productStyles };
-    },
+export default ({ product }: Args): Mode => {
+  const modeColors = {
+    product: getContextColors(product),
+  };
+
+  return {
+    globalItem: globalItemStyles(modeColors),
+    globalNav: globalNavStyles(modeColors),
+    contentNav: contentNavStyles(modeColors),
+    heading: headingStyles(modeColors),
+    item: itemStyles(modeColors),
+    scrollHint: scrollHintStyles(modeColors),
+    separator: separatorStyles(modeColors),
+    skeletonItem: skeletonItemStyles(modeColors),
   };
 };

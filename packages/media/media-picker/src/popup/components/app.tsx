@@ -4,7 +4,7 @@ import { Dispatch, Store } from 'redux';
 import { connect, Provider } from 'react-redux';
 
 import { Context, ContextFactory } from '@atlaskit/media-core';
-import ModalDialog from '@atlaskit/modal-dialog';
+import ModalDialog, { ModalTransition } from '@atlaskit/modal-dialog';
 
 import { ServiceName, State } from '../domain';
 
@@ -191,28 +191,28 @@ export class App extends Component<AppProps, AppState> {
     } = this.props;
     const { isDropzoneActive } = this.state;
 
-    if (!isVisible) {
-      return null;
-    }
-
     return (
-      <Provider store={store}>
-        <ModalDialog onClose={onClose} width="x-large" isChromeless={true}>
-          <PassContext store={store} proxyReactContext={proxyReactContext}>
-            <MediaPickerPopupWrapper>
-              <SidebarWrapper>
-                <Sidebar />
-              </SidebarWrapper>
-              <ViewWrapper>
-                {this.renderCurrentView(selectedServiceName)}
-                <Footer />
-              </ViewWrapper>
-              <Dropzone isActive={isDropzoneActive} />
-              <MainEditorView binaryUploader={this.mpBinary} />
-            </MediaPickerPopupWrapper>
-          </PassContext>
-        </ModalDialog>
-      </Provider>
+      <ModalTransition>
+        {isVisible && (
+          <Provider store={store}>
+            <ModalDialog onClose={onClose} width="x-large" isChromeless={true}>
+              <PassContext store={store} proxyReactContext={proxyReactContext}>
+                <MediaPickerPopupWrapper>
+                  <SidebarWrapper>
+                    <Sidebar />
+                  </SidebarWrapper>
+                  <ViewWrapper>
+                    {this.renderCurrentView(selectedServiceName)}
+                    <Footer />
+                  </ViewWrapper>
+                  <Dropzone isActive={isDropzoneActive} />
+                  <MainEditorView binaryUploader={this.mpBinary} />
+                </MediaPickerPopupWrapper>
+              </PassContext>
+            </ModalDialog>
+          </Provider>
+        )}
+      </ModalTransition>
     );
   }
 

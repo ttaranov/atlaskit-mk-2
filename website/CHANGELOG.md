@@ -1,5 +1,18 @@
 # @atlaskit/website
 
+## 4.1.5
+- [patch] Updated dependencies [d5a043a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5a043a)
+  - @atlaskit/icon@13.8.1
+  - @atlaskit/layer-manager@5.0.12
+  - @atlaskit/flag@9.0.10
+  - @atlaskit/tooltip@12.0.14
+  - @atlaskit/modal-dialog@7.0.0
+
+## 4.1.4
+- [patch] Updated dependencies [9c66d4d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9c66d4d)
+  - @atlaskit/layer-manager@5.0.10
+  - @atlaskit/webdriver-runner@0.1.0
+
 ## 4.1.3
 - [patch] Updated dependencies [7545979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7545979)
   - @atlaskit/media-card@33.0.0
