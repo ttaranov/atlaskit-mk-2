@@ -67,7 +67,6 @@ class GlobalNavigationItemPrimitive extends Component<*> {
 
     if (CustomComponent) {
       const CachedCustomComponent = this.CachedCustomComponent;
-      console.log(this.props);
       return (
         <RenderTooltip tooltip={tooltip}>
           <CachedCustomComponent
