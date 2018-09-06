@@ -1,6 +1,6 @@
 // @flow
 
-import { mount, shallow } from 'enzyme';
+import { mount } from 'enzyme';
 import React from 'react';
 import GlobalNavigationItemPrimitive from '../../primitives';
 
