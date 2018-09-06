@@ -9,6 +9,7 @@ const MyGlobalNavigation = () => (
   <GlobalNavigation
     productIcon={() => <JiraIcon size="medium" />}
     onProductClick={() => {}}
+    productTooltip="Jira"
   />
 );
 

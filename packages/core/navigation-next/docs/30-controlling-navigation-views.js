@@ -58,22 +58,19 @@ const componentView = (
 // JSON representation
 const jsonView = [
   {
-    type: 'Section',
+    type: 'HeaderSection',
     id: 'header',
     items: [
       {
-        type: () => (
-          <div css={{ padding: '16px 0' }}>
-            <JiraWordmark />
-          </div>
-        ),
+        type: 'Wordmark',
+        wordmark: JiraWordmark,
         id: 'jira-wordmark',
       },
     ],
   },
   {
-    type: 'Section',
-    id: 'header',
+    type: 'MenuSection',
+    id: 'menu',
     items: [
       {
         type: 'Item',
@@ -102,8 +99,8 @@ In this model a view is represented as an array of items. Each item in this arra
 
 A few things to note:
 
-* Some \`type\`s are built into the package (such as, 'Item' and 'Section') and these types can be provided as a string. In the above example the Jira wordmark component isn't built into \`navigation-next\`, so we have to provide a component as the type.
-* A view is expected to be an array of Sections. Sections should not be nested.
+* Some \`type\`s are built into the package (such as, 'Item' and 'HeaderSection') and these types can be provided as a string. In the above example the Jira wordmark component isn't built into \`navigation-next\`, so we have to provide a component as the type.
+* A view is expected to be an array of Sections. Sections should not be nested. As well as the generic \`Section\` component, the renderer includes two pre-configured Section components - \`HeaderSection\` and \`MenuSection\` - which we recommend using to get the correct spacing and scrolling behaviour in your navigation.
 * You can find a complete [list of the in-built item types here](/packages/core/navigation-next/docs/state-controllers#built-in-view-item-types).
 
 ${<H>A smart LayoutManager</H>}
@@ -172,7 +169,7 @@ ${(
 
 ${<H>Transitioning between views</H>}
 
-Let's add a Project issues view to our navigation. Now when we click on the 'Issues and filters' item the view will update. Clicking the 'Back' item will take us back again.
+Let's add a Project issues view to our navigation. Now when we click on the 'Issues and filters' item the view will update. Clicking the 'Back to Jira' item will take us back again.
 
 ${(
     <IframeExample
@@ -196,16 +193,16 @@ ${code`{
   type: 'Item',
 },`}
 
-This renders a special Item which will call \`navigationViewController.setView('product/issues')\` when it's clicked. The 'Back' item in the product issues view works the same way.
+This renders a special Item which will call \`navigationViewController.setView('product/issues')\` when it's clicked. The 'Back to Jira' item in the product issues view works the same way.
 
 #### 2. Linking nested Sections
 
-To get a nested navigation animation we need to add some information to our Sections. Our menu sections now looks like this:
+To get a nested navigation animation we need to add some information to our \`MenuSection\`s. They now look like this:
 
 ${code`// 'product/home' menu section
 {
   items: [/* ... */],
-  type: 'Section',
+  type: 'MenuSection',
   id: 'product/home:menu',
 + parentId: null,
 + nestedGroupKey: 'menu',
@@ -214,7 +211,7 @@ ${code`// 'product/home' menu section
 // 'product/issues' menu section
 {
   items: [/* ... */],
-  type: 'Section',
+  type: 'MenuSection',
   id: 'product/issues:menu',
   parentId: 'product/home:menu',
   nestedGroupKey: 'menu',
@@ -311,8 +308,8 @@ ${code`class App extends Component {
 const AppWithNavigationViewController = withNavigationViewController(App);
 
 export default () => (
-  /* Note: in this example we're using HashRouter from react-router, but you can
-  use any routing solution you wish. */
+  /* Note: in this example we're using HashRouter from react-router, but you
+  can use any routing solution you wish. */
 + <HashRouter>
     <NavigationProvider>
       <AppWithNavigationViewController />
@@ -436,8 +433,8 @@ ${(
     >
       Recommended uses for this feature are pretty much limited to experiments
       and legacy (non-React) integrations. If {`you're`} trying to create a
-      stateful view, either control the state externally and pass props to the{' '}
-      <code>getItems</code> function, or use a custom item in the view which
+      stateful view, either control the state externally and pass arguments to
+      the <code>getItems</code> function, or use a custom item in the view which
       manages some internal state.
     </SectionMessage>
   )}

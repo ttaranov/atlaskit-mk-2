@@ -1,10 +1,12 @@
 // @flow
 
-import { colors, gridSize } from '@atlaskit/theme';
+import { colors, gridSize as gridSizeFn } from '@atlaskit/theme';
 import type { ModeColors } from '../../theme/types';
 
+const gridSize = gridSizeFn();
+
 const scrollHintHeight = 2;
-const scrollHintSpacing = gridSize() * 2;
+const scrollHintSpacing = gridSize * 2;
 
 const isGecko =
   typeof window !== 'undefined' &&
@@ -12,13 +14,14 @@ const isGecko =
 const isWebkit =
   typeof window !== 'undefined' &&
   window.navigator.userAgent.indexOf('AppleWebKit') >= 0;
-const scrollBarSize = isGecko || isWebkit ? 15 : 30;
+const scrollBarSize = isGecko || isWebkit ? 0 : 30;
 
 const baseStyles = {
   wrapper: {
-    flex: '1 1 100%',
+    height: '100%',
     overflow: 'hidden',
     position: 'relative',
+    width: '100%',
 
     '&::before': {
       content: "''",
@@ -33,6 +36,7 @@ const baseStyles = {
     },
   },
   inner: {
+    flexBasis: '100%',
     height: '100%',
     justifyContent: 'flex-start',
     overflowY: 'auto',
@@ -50,10 +54,18 @@ const baseStyles = {
       zIndex: 2,
     },
   },
+  // These styles are passed to the children function for the consumer to
+  // apply
+  children: {
+    boxSizing: 'border-box',
+    paddingLeft: `${gridSize * 2}px`,
+    paddingRight: `${gridSize * 2}px`,
+  },
 };
 
 export default ({ product }: ModeColors) => () => ({
   container: {
+    ...baseStyles,
     wrapper: {
       ...baseStyles.wrapper,
       '&::before': {
@@ -70,6 +82,7 @@ export default ({ product }: ModeColors) => () => ({
     },
   },
   product: {
+    ...baseStyles,
     wrapper: {
       ...baseStyles.wrapper,
       '&::before': {

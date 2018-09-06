@@ -11,6 +11,7 @@ import itemStyles from '../components/Item/styles';
 import headingStyles from '../components/GroupHeading/styles';
 import separatorStyles from '../components/Separator/styles';
 import scrollHintStyles from '../components/ScrollableSectionInner/styles';
+import sectionStyles from '../components/Section/styles';
 import skeletonItemStyles from '../components/SkeletonItem/styles';
 
 import type { Mode, ContextColors } from './types';
@@ -104,6 +105,7 @@ export default ({ product }: Args): Mode => {
     heading: headingStyles(modeColors),
     item: itemStyles(modeColors),
     scrollHint: scrollHintStyles(modeColors),
+    section: sectionStyles(modeColors),
     separator: separatorStyles(modeColors),
     skeletonItem: skeletonItemStyles(modeColors),
   };
