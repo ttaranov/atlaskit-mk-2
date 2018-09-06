@@ -1,5 +1,23 @@
 # @atlaskit/onboarding
 
+## 6.0.1
+- [patch] Updated dependencies [d5a043a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5a043a)
+  - @atlaskit/icon@13.8.1
+  - @atlaskit/layer-manager@5.0.12
+  - @atlaskit/modal-dialog@7.0.0
+
+## 6.0.0
+- [major] Add SpotlightTransition and require it wraps Spotlight to get both transitions and conditional rendering with proper transitions on unmount. [d9d2f0d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d9d2f0d)
+- [patch] Upgrades Spotlight component to use @atlaskit/portal package [89be4f1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/89be4f1)
+- [none] Updated dependencies [89be4f1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/89be4f1)
+  - @atlaskit/portal@0.0.8
+  - @atlaskit/layer-manager@5.0.11
+
+## 5.1.9
+- [patch] Updated dependencies [9c66d4d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9c66d4d)
+  - @atlaskit/layer-manager@5.0.10
+  - @atlaskit/webdriver-runner@0.1.0
+
 ## 5.1.8
 - [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
 

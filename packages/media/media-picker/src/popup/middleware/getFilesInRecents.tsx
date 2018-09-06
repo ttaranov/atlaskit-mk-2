@@ -12,9 +12,9 @@ import { isGetFilesInRecentsAction } from '../actions/getFilesInRecents';
 export const getFilesInRecents = (fetcher: Fetcher) => (
   store: Store<State>,
 ) => (next: Dispatch<Action>) => (action: Action) => {
-  const { userAuthProvider } = store.getState();
+  const { userContext } = store.getState();
   if (isGetFilesInRecentsAction(action)) {
-    requestRecentFiles(fetcher, userAuthProvider, store);
+    requestRecentFiles(fetcher, userContext.config.authProvider, store);
   }
 
   return next(action);

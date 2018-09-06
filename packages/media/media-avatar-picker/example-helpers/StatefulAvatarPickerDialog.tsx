@@ -3,6 +3,7 @@
 import * as React from 'react';
 import styled from 'styled-components';
 import Button from '@atlaskit/button';
+import { ModalTransition } from '@atlaskit/modal-dialog';
 import { Avatar, AvatarPickerDialog, AvatarPickerDialogProps } from '../src';
 import { generateAvatars } from '../example-helpers';
 
@@ -70,29 +71,29 @@ export default class StatefulAvatarPickerDialog extends React.Component<
 
   renderPicker() {
     const { isOpen, isLoading } = this.state;
-    if (!isOpen) {
-      return null;
-    }
-
     return (
-      <AvatarPickerDialog
-        avatars={avatars}
-        onAvatarPicked={selectedAvatar => {
-          console.log('onAvatarPicked:', selectedAvatar);
-          this.save(selectedAvatar.dataURI);
-        }}
-        onImagePicked={(selectedImage, crop) => {
-          console.log('onImagePicked:', selectedImage, crop);
-        }}
-        onImagePickedDataURI={exportedImg => {
-          console.log('onImagePickedDataURI: ', { dataURI: exportedImg });
-          this.save(exportedImg);
-        }}
-        onCancel={this.closePicker}
-        isLoading={isLoading}
-        predefinedAvatarsText="Default icons"
-        {...this.props}
-      />
+      <ModalTransition>
+        {isOpen && (
+          <AvatarPickerDialog
+            avatars={avatars}
+            onAvatarPicked={selectedAvatar => {
+              console.log('onAvatarPicked:', selectedAvatar);
+              this.save(selectedAvatar.dataURI);
+            }}
+            onImagePicked={(selectedImage, crop) => {
+              console.log('onImagePicked:', selectedImage, crop);
+            }}
+            onImagePickedDataURI={exportedImg => {
+              console.log('onImagePickedDataURI: ', { dataURI: exportedImg });
+              this.save(exportedImg);
+            }}
+            onCancel={this.closePicker}
+            isLoading={isLoading}
+            predefinedAvatarsText="Default icons"
+            {...this.props}
+          />
+        )}
+      </ModalTransition>
     );
   }
 

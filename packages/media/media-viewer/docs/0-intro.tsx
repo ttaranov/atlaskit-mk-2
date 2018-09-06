@@ -17,7 +17,6 @@ export default md`
     createStorybookContext,
     defaultCollectionName,
   } from '@atlaskit/media-test-helpers';
-  import MediaViewerConstructor from '@atlassian/mediaviewer/lib/mediaviewer.all';
 
   const context = createStorybookContext();
   const selectedItem = {
@@ -32,7 +31,6 @@ export default md`
   const dataSource = {
     collectionName: defaultCollectionName,
   };
-  const basePath = 'dist/lib/';
 
   export default () => (
     <MediaViewer
@@ -41,8 +39,6 @@ export default md`
       selectedItem={selectedItem}
       dataSource={dataSource}
       collectionName={defaultCollectionName}
-      MediaViewer={MediaViewerConstructor}
-      basePath={basePath}
     />
   );
   ~~~
@@ -55,7 +51,6 @@ export default md`
     createStorybookContext,
     defaultCollectionName,
   } from '@atlaskit/media-test-helpers';
-  import MediaViewerConstructor from '@atlassian/mediaviewer/lib/mediaviewer.all';
 
   const context = createStorybookContext();
 
@@ -82,7 +77,6 @@ export default md`
   const dataSource = {
     list: items,
   };
-  const basePath = 'dist/lib/';
 
   export default () => (
     <MediaViewer
@@ -90,8 +84,6 @@ export default md`
       selectedItem={selectedItem}
       dataSource={dataSource}
       collectionName={defaultCollectionName}
-      MediaViewer={MediaViewerConstructor}
-      basePath={basePath}
     />
   );
   ~~~

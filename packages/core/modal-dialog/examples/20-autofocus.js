@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import Button, { ButtonGroup } from '@atlaskit/button';
-import ModalDialog from '../src';
+import ModalDialog, { ModalTransition } from '../src';
 
 const H4 = styled.h4`
   margin-bottom: 0.66em;
@@ -16,7 +16,7 @@ export default class ModalDemo extends Component<
   state = { isOpen: null };
   focusTarget: HTMLElement | null;
   open = (isOpen: string) => this.setState({ isOpen });
-  close = (isOpen: string) => this.setState({ isOpen });
+  close = () => this.setState({ isOpen: null });
   secondaryAction = ({ target }: Object) => console.log(target.innerText);
   render() {
     const { isOpen } = this.state;
@@ -52,39 +52,45 @@ export default class ModalDemo extends Component<
           its evaluated at the right time and ensures a node is returned.
         </p>
 
-        {isOpen === 'root' && (
-          <StubDialog autoFocus heading="Boolean on dialog">
-            <p>The first {'"tabbable"'} element will be focused.</p>
-            <button>I am focused!</button>
-            <button>I am NOT focused</button>
-          </StubDialog>
-        )}
-        {isOpen === 'autoFocus' && (
-          <StubDialog heading="input has autoFocus">
-            <p>The textbox should be focused</p>
-            <input autoFocus type="text" />
-          </StubDialog>
-        )}
-        {isOpen === 'ref' && (
-          <StubDialog
-            autoFocus={() => this.focusTarget}
-            heading="Function returns a ref"
-          >
-            <p>
-              The second button sets a reference to itself on the class and
-              passes that node to the modal, which calls the focus method on it
-              once mounted.
-            </p>
-            <button>I am NOT focused</button>
-            <button
-              ref={r => {
-                this.focusTarget = r;
-              }}
+        <ModalTransition>
+          {isOpen === 'root' && (
+            <StubDialog autoFocus heading="Boolean on dialog">
+              <p>The first {'"tabbable"'} element will be focused.</p>
+              <button>I am focused!</button>
+              <button>I am NOT focused</button>
+            </StubDialog>
+          )}
+        </ModalTransition>
+        <ModalTransition>
+          {isOpen === 'autoFocus' && (
+            <StubDialog heading="input has autoFocus">
+              <p>The textbox should be focused</p>
+              <input autoFocus type="text" />
+            </StubDialog>
+          )}
+        </ModalTransition>
+        <ModalTransition>
+          {isOpen === 'ref' && (
+            <StubDialog
+              autoFocus={() => this.focusTarget}
+              heading="Function returns a ref"
             >
-              I am focused!
-            </button>
-          </StubDialog>
-        )}
+              <p>
+                The second button sets a reference to itself on the class and
+                passes that node to the modal, which calls the focus method on
+                it once mounted.
+              </p>
+              <button>I am NOT focused</button>
+              <button
+                ref={r => {
+                  this.focusTarget = r;
+                }}
+              >
+                I am focused!
+              </button>
+            </StubDialog>
+          )}
+        </ModalTransition>
       </div>
     );
   }

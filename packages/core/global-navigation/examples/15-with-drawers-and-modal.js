@@ -3,7 +3,7 @@
 import React, { Fragment, Component } from 'react';
 
 import EmojiAtlassianIcon from '@atlaskit/icon/glyph/emoji/atlassian';
-import Modal from '@atlaskit/modal-dialog';
+import Modal, { ModalTransition } from '@atlaskit/modal-dialog';
 import Lorem from 'react-lorem-component';
 import { LayoutManager, NavigationProvider } from '@atlaskit/navigation-next';
 
@@ -146,15 +146,17 @@ class GlobalNavWithDrawers extends Component<Props, State> {
           onNotificationDrawerOpen={this.resetNotificationCount}
           notificationCount={this.state.notificationCount}
         />
-        {this.state.isCreateModalOpen && (
-          <Modal
-            actions={actions}
-            onClose={this.closeCreateModal}
-            heading="Modal Title"
-          >
-            <Lorem count={2} />
-          </Modal>
-        )}
+        <ModalTransition>
+          {this.state.isCreateModalOpen && (
+            <Modal
+              actions={actions}
+              onClose={this.closeCreateModal}
+              heading="Modal Title"
+            >
+              <Lorem count={2} />
+            </Modal>
+          )}
+        </ModalTransition>
       </Fragment>
     );
   }

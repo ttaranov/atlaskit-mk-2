@@ -1,4 +1,4 @@
-import { AuthProvider, Context } from '@atlaskit/media-core';
+import { Context } from '@atlaskit/media-core';
 
 import { LocalUploadComponent, LocalUploadConfig } from '../localUpload';
 import { whenDomReady } from '../../util/documentReady';
@@ -6,7 +6,6 @@ import dropzoneUI from './dropzoneUI';
 import { UploadEventPayloadMap } from '../..';
 
 export interface DropzoneConfig extends LocalUploadConfig {
-  userAuthProvider?: AuthProvider;
   container?: HTMLElement;
   headless?: boolean;
 }
@@ -19,10 +18,14 @@ export interface DropzoneDragEnterEventPayload {
   length: number;
 }
 
+export interface DropzoneDragLeaveEventPayload {
+  length: number;
+}
+
 export type DropzoneUploadEventPayloadMap = UploadEventPayloadMap & {
   readonly drop: undefined;
   readonly 'drag-enter': DropzoneDragEnterEventPayload;
-  readonly 'drag-leave': undefined;
+  readonly 'drag-leave': DropzoneDragLeaveEventPayload;
 };
 
 const toArray = (arr: any) => [].slice.call(arr, 0);
@@ -121,7 +124,12 @@ export class Dropzone extends LocalUploadComponent<
     if (this.instance) {
       e.preventDefault();
       this.instance.classList.remove('active');
-      this.emitDragLeave();
+      let length = 0;
+      if (Dropzone.dragContainsFiles(e)) {
+        const dataTransfer = e.dataTransfer;
+        length = this.getDraggedItemsLength(dataTransfer);
+      }
+      this.emitDragLeave({ length });
     }
   };
 
@@ -143,8 +151,10 @@ export class Dropzone extends LocalUploadComponent<
 
     if (instance && Dropzone.dragContainsFiles(e)) {
       instance.classList.remove('active');
+      const dataTransfer = e.dataTransfer;
+      const length = this.getDraggedItemsLength(dataTransfer);
       this.emit('drop', undefined);
-      this.emitDragLeave();
+      this.emitDragLeave({ length });
     }
   };
 
@@ -155,7 +165,7 @@ export class Dropzone extends LocalUploadComponent<
     }
   }
 
-  private emitDragLeave(): void {
+  private emitDragLeave(payload: DropzoneDragLeaveEventPayload): void {
     if (this.uiActive) {
       this.uiActive = false;
       /*
@@ -164,7 +174,7 @@ export class Dropzone extends LocalUploadComponent<
        */
       window.setTimeout(() => {
         if (!this.uiActive) {
-          this.emit('drag-leave', undefined);
+          this.emit('drag-leave', payload);
         }
       }, 50);
     }

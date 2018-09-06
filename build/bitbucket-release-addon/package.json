@@ -5,8 +5,7 @@
   "description": "Bitbucket addon for displaying releases section in PRs",
   "scripts": {
     "dev": "webpack-dev-server --content-base dist/",
-    "build": "webpack -p",
-    "deploy": "yarn build && netlify deploy"
+    "build": "webpack --mode production"
   },
   "author": "Luke Batchelor",
   "license": "Apache-2.0",

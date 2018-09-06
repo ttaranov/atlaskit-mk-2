@@ -12,7 +12,10 @@ import { emoji } from '@atlaskit/util-data-test';
 const { getEmojiResourcePromise } = emoji.testData;
 
 describe('@atlaskit/reactions/reaction-picker', () => {
-  const renderPicker = (onSelection: Function = () => {}, disabled = false) => {
+  const renderPicker = (
+    onSelection: () => void = () => {},
+    disabled = false,
+  ) => {
     return (
       <ReactionPicker
         emojiProvider={getEmojiResourcePromise() as Promise<EmojiProvider>}

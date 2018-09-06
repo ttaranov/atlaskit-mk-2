@@ -38,8 +38,9 @@ export function finalizeUpload(
     occurrenceKey,
   }: FinalizeUploadAction,
 ): Promise<SendUploadEventAction> {
-  const { userAuthProvider } = store.getState();
-  return userAuthProvider()
+  const { userContext } = store.getState();
+  return userContext.config
+    .authProvider()
     .then(mapAuthToSourceFileOwner)
     .then(owner => {
       const sourceFile = {

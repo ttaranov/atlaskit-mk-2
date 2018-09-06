@@ -1,4 +1,4 @@
-import { Auth, AuthProvider, Context } from '@atlaskit/media-core';
+import { Auth, Context } from '@atlaskit/media-core';
 
 import { UploadParams } from '../../domain/config';
 import { LocalUploads } from './local-upload';
@@ -34,8 +34,8 @@ export interface State {
   readonly remoteUploads: RemoteUploads;
   readonly isCancelling: boolean;
   readonly isUploading: boolean;
-  readonly userAuthProvider: AuthProvider;
-  readonly context: Context;
+  readonly tenantContext: Context;
+  readonly userContext: Context;
   readonly lastUploadIndex: number;
   readonly giphy: GiphyState;
 
@@ -60,6 +60,7 @@ export interface Recents {
 
 export type RemoteUpload = {
   readonly tenant: Tenant;
+  readonly timeStarted: number;
 };
 
 export type RemoteUploads = { [uploadId: string]: RemoteUpload };

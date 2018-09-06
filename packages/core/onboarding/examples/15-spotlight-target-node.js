@@ -3,7 +3,7 @@ import React, { Component, type ElementRef } from 'react';
 import { Transition } from 'react-transition-group';
 import Lorem from 'react-lorem-component';
 
-import { Spotlight, SpotlightManager } from '../src';
+import { Spotlight, SpotlightManager, SpotlightTransition } from '../src';
 import { Highlight } from './styled';
 
 type State = {
@@ -87,21 +87,23 @@ export default class SpotlightNodeExample extends Component<Object, State> {
             );
           }}
         </Transition>
-        {spotlightIsVisible && this.drawer ? (
-          <Spotlight
-            actions={[
-              {
-                onClick: this.hideSpotlight,
-                text: 'Done',
-              },
-            ]}
-            dialogPlacement="right center"
-            heading="Waits for node availability"
-            targetNode={this.drawer}
-          >
-            <Lorem count={1} />
-          </Spotlight>
-        ) : null}
+        <SpotlightTransition>
+          {spotlightIsVisible && this.drawer ? (
+            <Spotlight
+              actions={[
+                {
+                  onClick: this.hideSpotlight,
+                  text: 'Done',
+                },
+              ]}
+              dialogPlacement="right middle"
+              heading="Waits for node availability"
+              targetNode={this.drawer}
+            >
+              <Lorem count={1} />
+            </Spotlight>
+          ) : null}
+        </SpotlightTransition>
       </SpotlightManager>
     );
   }
