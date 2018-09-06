@@ -1,5 +1,8 @@
 # @atlaskit/lozenge
 
+## 6.1.8
+- [patch] AK-5321 Lozenge with maxWidth should be constrained by container width [969233e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/969233e)
+
 ## 6.1.7
 - [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
 

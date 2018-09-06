@@ -48,6 +48,7 @@ export default class PreQueryState extends React.Component<Props> {
 
     return (
       <ResultGroupsComponent
+        key="prequery-results-groups"
         type={ResultGroupType.PreQuery}
         renderAdvancedSearch={renderAdvancedSearchGroup}
         resultsGroups={resultsGroups}

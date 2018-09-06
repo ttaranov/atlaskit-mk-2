@@ -1,4 +1,5 @@
 import { FileReference } from '../domain';
+import { Action } from 'redux';
 
 export const EDITOR_SHOW_IMAGE = 'EDITOR_SHOW_IMAGE';
 
@@ -6,6 +7,12 @@ export interface EditorShowImageAction {
   readonly type: 'EDITOR_SHOW_IMAGE';
   readonly imageUrl: string;
   readonly originalFile?: FileReference;
+}
+
+export function isEditorShowImageAction(
+  action: Action,
+): action is EditorShowImageAction {
+  return action.type === EDITOR_SHOW_IMAGE;
 }
 
 export function editorShowImage(

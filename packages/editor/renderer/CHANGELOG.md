@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 21.0.5
+- [patch] move tests and add dev dependencies to help test  [177a858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/177a858)
+
 ## 21.0.4
 - [patch] Unique heading IDs [d312d25](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d312d25)
 

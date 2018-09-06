@@ -1,5 +1,13 @@
 # @atlaskit/icon
 
+## 13.8.1
+- [patch] Updated dependencies [d5a043a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5a043a)
+  - @atlaskit/tooltip@12.0.14
+  - @atlaskit/modal-dialog@7.0.0
+
+## 13.8.0
+- [minor] Add the questions icon [ad96a89](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ad96a89)
+
 ## 13.7.0
 - [minor] Add and edit star icons [55e3ec7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/55e3ec7)
 

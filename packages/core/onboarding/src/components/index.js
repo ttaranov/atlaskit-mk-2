@@ -5,6 +5,7 @@ import Spotlight from './Spotlight';
 import SpotlightManager from './SpotlightManager';
 import SpotlightRegistry from './SpotlightRegistry';
 import SpotlightTarget from './SpotlightTarget';
+import SpotlightTransition from './SpotlightTransition';
 
 export {
   Modal,
@@ -12,4 +13,5 @@ export {
   SpotlightManager,
   SpotlightRegistry,
   SpotlightTarget,
+  SpotlightTransition,
 };

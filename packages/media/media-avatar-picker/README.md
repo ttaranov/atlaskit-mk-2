@@ -95,19 +95,28 @@ _(optional)_ This property allows the consumer to display an error message. This
 
 ### Usage Example
 
+Below is an example of rendering an \`AvatarPickerDialog\`. The dialog should be wrapped in a \`ModalTransition\` component so it fades out when closed.
+
 ~~~
-import {AvatarPickerDialog, Avatar} from '@atlaskit/media-avatar-picker';
+import { AvatarPickerDialog, Avatar } from '@atlaskit/media-avatar-picker';
+import { ModalTransition } from '@atlaskit/modal-dialog';
 
-const avatars: Array<Avatar> = [{ dataURI:'some-data-uri' }];
+const avatars: Array<Avatar> = [{ dataURI: 'some-data-uri' }];
 
-<AvatarPickerDialog
-  avatars={avatars}
-  onImagePicked={(selectedImage, crop) => {
-    console.log(selectedImage.size, crop.x, crop.y, crop.size);
-  }}
-  onAvatarPicked={selectedAvatar =>
-    console.log(selectedAvatar.dataURI)
-  }
-  onCancel={() => /* we need to close the dialog... */}
-/>
+const App = ({ isOpen }) => (
+  <ModalTransition>
+    {isOpen && (
+      <AvatarPickerDialog
+        avatars={avatars}
+        onImagePicked={(selectedImage, crop) => {
+          console.log(selectedImage.size, crop.x, crop.y, crop.size);
+        }}
+        onAvatarPicked={selectedAvatar =>
+          console.log(selectedAvatar.dataURI)
+        }
+        onCancel={() => /* we need to close the dialog... */}
+      />
+    )}
+  </ModalTransition>
+);
 ~~~

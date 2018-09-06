@@ -65,8 +65,8 @@ export default class IosBridge implements NativeBridge {
   }
 
   updateBlockState(currentBlockType: string) {
-    if (window.webkit && window.webkit.messageHandlers.textFormatBridge) {
-      window.webkit.messageHandlers.textFormatBridge.postMessage({
+    if (window.webkit && window.webkit.messageHandlers.blockFormatBridge) {
+      window.webkit.messageHandlers.blockFormatBridge.postMessage({
         name: 'updateBlockState',
         states: currentBlockType,
       });

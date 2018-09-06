@@ -17,7 +17,7 @@ export function colorMacro(
   const content = parseString(rawContent, schema, ignoreTokenTypes);
   const decoratedContent = content.map(n => {
     const mark = schema.marks.textColor.create({
-      color: getEditorColor(attrs),
+      color: getEditorColor(attrs) || '#000000',
     });
 
     if (n.type.name === 'text' && !hasColorMark(n)) {

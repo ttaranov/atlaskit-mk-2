@@ -1,5 +1,17 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 2.0.17
+- [patch] Convert to same cell types [9571a76](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9571a76)
+
+## 2.0.16
+- [patch] keep width and height when transform back to wiki attachment [4acc88a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4acc88a)
+
+## 2.0.15
+- [patch] should parse empty wiki [03f0b1b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03f0b1b)
+
+## 2.0.14
+- [patch] Fix color error [2b513c5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2b513c5)
+
 ## 2.0.13
 - [patch] Keep title of code block [95f9654](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/95f9654)
 

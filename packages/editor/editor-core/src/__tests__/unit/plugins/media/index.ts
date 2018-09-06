@@ -1532,13 +1532,13 @@ describe('Media plugin', () => {
       const event = document.createEvent('Event') as any;
       event.initEvent(eventName, true, true);
       event.preventDefault = () => {};
-      if (eventName === 'dragover') {
-        event.dataTransfer = {
-          types: [type || 'Files'],
-          files: [],
-          effectAllowed: 'move',
-        };
-      }
+
+      event.dataTransfer = {
+        types: [type || 'Files'],
+        files: [],
+        effectAllowed: 'move',
+      };
+
       return event;
     };
 
