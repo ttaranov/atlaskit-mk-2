@@ -12,13 +12,20 @@ export interface Props {
   isLoading?: boolean;
   className?: string;
   columns?: number;
+  gridSize: number;
 }
 
 export function calcMediaSingleWidth(
   columns: number,
   containerWidth: number,
+  gridSize: number,
 ): number {
-  return (containerWidth > 680 ? 680 : containerWidth) / 12 * columns;
+  const fullPagePadding = 32 * 2;
+  const innerWidthOfContainer = containerWidth - fullPagePadding;
+  return (
+    (containerWidth > 680 ? 680 : innerWidthOfContainer) / gridSize * columns -
+    24
+  );
 }
 
 export default function MediaSingle({
@@ -30,11 +37,19 @@ export default function MediaSingle({
   isLoading = false,
   className,
   columns,
+  gridSize,
 }: Props) {
   const mediaWidth = columns
-    ? calcMediaSingleWidth(columns, containerWidth)
+    ? calcMediaSingleWidth(columns, containerWidth, gridSize)
     : width;
-  console.log('have media width', mediaWidth, 'with cols', columns);
+  console.log(
+    'have media width',
+    mediaWidth,
+    'with cols',
+    columns,
+    'containterWidth',
+    containerWidth,
+  );
   return (
     <Wrapper
       layout={layout}

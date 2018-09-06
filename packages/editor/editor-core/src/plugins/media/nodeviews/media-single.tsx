@@ -7,6 +7,7 @@ import { MediaNodeProps } from './media';
 import { stateKey, MediaPluginState } from '../pm-plugins/main';
 import ResizableMediaSingle from '../ui/ResizableMediaSingle';
 import { stateKey as gridPluginKey } from '../../../plugins/grid';
+import { hasParentNodeOfType } from 'prosemirror-utils';
 
 const DEFAULT_WIDTH = 250;
 const DEFAULT_HEIGHT = 200;
@@ -75,6 +76,7 @@ export default class MediaSingleNode extends Component<
       layout === 'full-width' ||
       this.state.progress !== nextState.progress ||
       node !== nextProps.node ||
+      nextProps.width !== this.props.width ||
       width !== nextWidth
     );
   }
@@ -124,6 +126,8 @@ export default class MediaSingleNode extends Component<
       ? ResizableMediaSingle
       : MediaSingle;
 
+    const { layoutColumn } = this.props.view.state.schema.nodes;
+
     return (
       <MediaSingleComponent
         layout={layout}
@@ -131,6 +135,9 @@ export default class MediaSingleNode extends Component<
         height={height}
         columns={columns}
         containerWidth={this.props.width}
+        gridSize={
+          /*hasParentNodeOfType(layoutColumn)(this.props.view.state.selection) ? 6 :*/ 12
+        }
         isLoading={!width}
       >
         {React.cloneElement(

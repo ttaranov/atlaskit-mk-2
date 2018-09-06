@@ -101,6 +101,10 @@ const Wrapper: React.ComponentClass<
 > = styled.div`
   ${MediaSingleDimensionHelper};
   position: relative;
+  div[data-layout-column='true'] & {
+    padding-right: 12px;
+  }
+
   & > div {
     position: absolute;
     height: 100%;
