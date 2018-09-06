@@ -27,9 +27,7 @@ export function Status(props: Props) {
     return null;
   }
 
-  const appearance = colorToLozengeAppearanceMap[color]
-    ? colorToLozengeAppearanceMap[color]
-    : DEFAULT_APPEARANCE;
+  const appearance = colorToLozengeAppearanceMap[color] || DEFAULT_APPEARANCE;
 
   return (
     <Lozenge appearance={appearance} maxWidth={MAX_WIDTH}>
