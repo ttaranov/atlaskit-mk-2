@@ -343,7 +343,7 @@
                   "content": [
                     {
                       "type": "text",
-                      "text": "Header content 2"
+                      "text": "Example image in table cell"
                     }
                   ]
                 }
@@ -488,11 +488,17 @@
               "type": "tableCell",
               "content": [
                 {
-                  "type": "paragraph",
+                  "type": "mediaSingle",
+                  "attrs": {
+                    "layout": "center"
+                  },
                   "content": [
                     {
-                      "type": "text",
-                      "text": "Body content 2"
+                      "type": "media",
+                      "attrs": {
+                        "type": "external",
+                        "url": "https://atlassian.design/uploads/guidelines/marketing/logo-files/Atlassian-horizontal-blue@2x-rgb.png"
+                      }
                     }
                   ]
                 }
