@@ -1,7 +1,7 @@
 // @flow
-import React from 'react';
-import { colors, Theme, type ThemeDefinition } from '@atlaskit/theme';
-import { type Appearances } from './index';
+
+import { colors } from '@atlaskit/theme';
+
 /* Note:
  Lozenge does not support dark mode at the moment,
  it will be implemented later.
@@ -43,42 +43,47 @@ export const boldTextColor = {
   success: { light: colors.N0, dark: colors.N0 },
 };
 
-const DefaultTheme = ({
-  children,
-  values,
-}: ThemeDefinition<{
-  lozenge: ({
-    appearance: Appearances,
+export type ThemeAppearance =
+  | 'default'
+  | 'inprogress'
+  | 'moved'
+  | 'new'
+  | 'removed'
+  | 'success'
+  | {};
+
+export type ThemeProps = {
+  badge?: ({
+    appearance: ThemeAppearance,
     isBold: boolean,
     maxWidth: number | string,
   }) => {
-    backgroundColor: string,
-    color: string,
-    maxWidth: string,
+    backgroundColor?: string,
+    color?: string,
   },
-}>) => (
-  <Theme
-    values={{
-      ...values,
-      lozenge: ({ appearance, isBold, maxWidth }) => ({
-        ...(typeof appearance === 'object'
-          ? appearance
-          : {
-              backgroundColor: (isBold
-                ? boldBackgroundColor[appearance]
-                : backgroundColor[appearance]
-              ).light,
-              color: (isBold
-                ? boldTextColor[appearance]
-                : textColor[appearance]
-              ).light,
-            }),
-        maxWidth: maxWidth === 'number' ? `${maxWidth}px` : maxWidth,
-      }),
-    }}
-  >
-    {children}
-  </Theme>
-);
+  mode?: 'light' | 'dark',
+};
 
-export default DefaultTheme;
+export function theme(props: ThemeProps): ThemeProps {
+  const mode = props.mode || 'light';
+  return {
+    badge: ({ appearance, isBold, maxWidth }) => ({
+      ...(typeof appearance === 'object'
+        ? appearance
+        : {
+            backgroundColor: (isBold
+              ? boldBackgroundColor[appearance]
+              : backgroundColor[appearance]
+            ).light,
+            color: (isBold ? boldTextColor[appearance] : textColor[appearance])
+              .light,
+          }),
+      maxWidth: maxWidth === 'number' ? `${maxWidth}px` : maxWidth,
+      ...(props.lozenge
+        ? props.lozenge({ appearance, isBold, maxWidth })
+        : null),
+    }),
+    mode,
+    ...props,
+  };
+}
