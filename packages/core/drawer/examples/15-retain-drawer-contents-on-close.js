@@ -6,11 +6,22 @@ import Drawer from '../src';
 
 type State = {
   isDrawerOpen: boolean,
+  randomNumber: number,
 };
 export default class DrawersExample extends Component<{}, State> {
   state = {
     isDrawerOpen: false,
+    randomNumber: 0,
   };
+
+  ref = null;
+
+  componentDidReceiveProps() {
+    console.log('test');
+    if (this.ref && !this.ref.getAttribute('data-randomNumber')) {
+      this.ref.setAttribute('data-randomNumber', Math.random());
+    }
+  }
 
   openDrawer = () =>
     this.setState({
@@ -23,15 +34,23 @@ export default class DrawersExample extends Component<{}, State> {
     });
 
   render() {
-    console.log(this.state.isDrawerOpen);
+    console.log(this.ref);
     return (
       <Fragment>
         <Drawer
           onClose={this.closeDrawer}
           isOpen={this.state.isDrawerOpen}
+          unmountOnExit={false}
           width="wide"
         >
-          <code>Drawer contents</code>
+          <code
+            ref={ref => {
+              this.ref = ref;
+            }}
+          >
+            Random string generated on mount:
+            {this.ref && this.ref.getAttribute('data-randomNumber')}
+          </code>
         </Drawer>
         <Button type="button" onClick={this.openDrawer}>
           Open drawer
