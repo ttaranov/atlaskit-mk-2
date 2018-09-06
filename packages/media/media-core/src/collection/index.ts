@@ -41,6 +41,23 @@ export type CollectionCache = {
   };
 };
 
+const mergeItems = (
+  firstPageItems: MediaCollectionItem[],
+  currentItems: MediaCollectionItem[],
+): MediaCollectionItem[] => {
+  let reachedFirst = false;
+  const firstId = currentItems[0] ? currentItems[0].id : '';
+  const newItems = firstPageItems.filter(item => {
+    if (reachedFirst) {
+      return false;
+    }
+    reachedFirst = firstId === item.id;
+    return !reachedFirst;
+  });
+
+  return [...newItems, ...currentItems];
+};
+
 const cache: CollectionCache = {};
 
 export class CollectionFetcher {
@@ -102,7 +119,7 @@ export class CollectionFetcher {
         const { contents, nextInclusiveStartKey } = items.data;
         this.populateCache(contents);
 
-        collection.items = items.data.contents;
+        collection.items = mergeItems(items.data.contents, collection.items);
 
         // We only want to asign nextInclusiveStartKey the first time
         if (!collection.nextInclusiveStartKey) {
@@ -119,7 +136,9 @@ export class CollectionFetcher {
   // TODO: we need to maintain at least the same limit (pageSize) we used previously
   async loadNextPage(collectionName: string) {
     const collection = cache[collectionName];
-    if (!collection) {
+    const isLoading = collection ? collection.isLoadingNextPage : false;
+
+    if (!collection || isLoading) {
       return;
     }
 
