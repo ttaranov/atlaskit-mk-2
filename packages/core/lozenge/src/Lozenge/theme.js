@@ -70,7 +70,15 @@ export function theme(props: ThemeProps): ThemeProps {
   return {
     lozenge: ({ appearance, isBold, maxWidth }) => ({
       ...(typeof appearance === 'object'
-        ? appearance
+        ? {
+            ...appearance,
+
+            // TODO remove this in a breaking change.
+            //
+            // We renamed color to textColor to be consistent, but did
+            // this to remain backward compatible.
+            textColor: appearance.color || appearance.textColor,
+          }
         : {
             backgroundColor: (isBold
               ? boldBackgroundColor[appearance]
