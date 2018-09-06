@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-picker",
-  "version": "15.0.2",
+  "version": "15.1.0",
   "description": "Library for handling file uploads",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",

@@ -1,5 +1,8 @@
 # @atlaskit/media-picker
 
+## 15.1.0
+- [minor] Instrument media-picker with analytics [d5f093b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5f093b)
+
 ## 15.0.2
 - [patch] Updated dependencies [d5a043a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5a043a)
   - @atlaskit/icon@13.8.1
