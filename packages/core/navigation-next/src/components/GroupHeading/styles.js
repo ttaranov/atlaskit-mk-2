@@ -31,7 +31,12 @@ const baseStyles = {
   },
 };
 
-export default ({ product }: ModeColors) => () => ({
+type GroupHeadingModeColors = {
+  product: any,
+  container: any,
+};
+
+export default ({ product }: ModeColors) => (): GroupHeadingModeColors => ({
   container: {
     ...baseStyles,
     headingBase: { ...baseStyles.headingBase, color: colors.N200 },
