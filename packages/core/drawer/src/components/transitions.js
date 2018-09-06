@@ -31,14 +31,15 @@ type HandlerProps = {
   },
 };
 
+const defaultTransitionProps = {
+  appear: true,
+  mountOnEnter: true,
+  unmountOnExit: true,
+};
 class TransitionHandler extends Component<TransitionProps & HandlerProps> {
   static defaultProps = {
     component: 'div',
-    transitionProps: {
-      appear: true,
-      mountOnEnter: true,
-      unmountOnExit: true,
-    },
+    transitionProps: defaultTransitionProps,
   };
   render() {
     const {
@@ -49,6 +50,7 @@ class TransitionHandler extends Component<TransitionProps & HandlerProps> {
       transitionProps,
       ...props
     } = this.props;
+    console.log(transitionProps.unmountOnExit, 'unmountOnExit');
     const timeout = { enter: 0, exit: transitionDurationMs };
 
     return (
@@ -82,16 +84,26 @@ export const Fade = ({ onExited, ...props }: TransitionProps) => (
   />
 );
 
-export const Slide = ({ onExited, ...props }: TransitionProps) => (
-  <TransitionHandler
-    defaultStyles={{
-      transition: `transform ${transitionDurationMs}ms ${transitionTimingFunction}`,
-      transform: 'translate3d(-100%,0,0)',
-    }}
-    transitionStyles={{
-      entered: { transform: 'translate3d(0,0,0)' },
-      exited: { transform: 'translate3d(-100%,0,0)' },
-    }}
-    {...props}
-  />
-);
+export const Slide = ({
+  onExited,
+  unmountOnExit,
+  transitionProps,
+  ...props
+}: TransitionProps) =>
+  console.log(unmountOnExit) || (
+    <TransitionHandler
+      defaultStyles={{
+        transition: `transform ${transitionDurationMs}ms ${transitionTimingFunction}`,
+        transform: 'translate3d(-100%,0,0)',
+      }}
+      transitionStyles={{
+        entered: { transform: 'translate3d(0,0,0)' },
+        exited: { transform: 'translate3d(-100%,0,0)' },
+      }}
+      transitionProps={{
+        ...defaultTransitionProps,
+        ...{ unmountOnExit },
+      }}
+      {...props}
+    />
+  );
