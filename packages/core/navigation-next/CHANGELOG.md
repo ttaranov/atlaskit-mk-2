@@ -1,5 +1,8 @@
 # @atlaskit/navigation-next
 
+## 3.7.6
+- [patch] Changes the way GlobalNavigationItemPrimitive is rendered. The earlier way of rendering was causing the items to mount and remount on every render [b18d920](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b18d920)
+
 ## 3.7.5
 - [patch] Updated dependencies [9c66d4d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9c66d4d)
   - @atlaskit/select@5.0.16
