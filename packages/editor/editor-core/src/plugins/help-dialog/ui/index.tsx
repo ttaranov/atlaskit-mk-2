@@ -3,7 +3,7 @@ import { Schema } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { browser } from '@atlaskit/editor-common';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
-import Modal from '@atlaskit/modal-dialog';
+import Modal, { ModalTransition } from '@atlaskit/modal-dialog';
 import {
   Header,
   Footer,
@@ -350,74 +350,76 @@ export default class HelpDialog extends React.Component<Props, any> {
   }
 
   render() {
-    if (!this.props.isVisible) {
-      return null;
-    }
-
     return (
-      <AkModalDialog
-        width="large"
-        onClose={this.closeDialog}
-        header={ModalHeader}
-        footer={ModalFooter}
-      >
-        <ContentWrapper>
-          <Line />
-          <Content>
-            <ColumnLeft>
-              <Title>Keyboard Shortcuts</Title>
-              <div>
-                {this.formatting
-                  .filter(form => {
-                    const keymap = form.keymap && form.keymap(this.props);
-                    return keymap && keymap[browser.mac ? 'mac' : 'windows'];
-                  })
-                  .map(form => (
-                    <Row key={`textFormatting-${form.name}`}>
-                      <span>{form.name}</span>
-                      {getComponentFromKeymap(
-                        form.keymap!({ appearance: this.props.appearance }),
-                      )}
-                    </Row>
-                  ))}
+      <ModalTransition>
+        {this.props.isVisible ? (
+          <AkModalDialog
+            width="large"
+            onClose={this.closeDialog}
+            header={ModalHeader}
+            footer={ModalFooter}
+          >
+            <ContentWrapper>
+              <Line />
+              <Content>
+                <ColumnLeft>
+                  <Title>Keyboard Shortcuts</Title>
+                  <div>
+                    {this.formatting
+                      .filter(form => {
+                        const keymap = form.keymap && form.keymap(this.props);
+                        return (
+                          keymap && keymap[browser.mac ? 'mac' : 'windows']
+                        );
+                      })
+                      .map(form => (
+                        <Row key={`textFormatting-${form.name}`}>
+                          <span>{form.name}</span>
+                          {getComponentFromKeymap(
+                            form.keymap!({ appearance: this.props.appearance }),
+                          )}
+                        </Row>
+                      ))}
 
-                {this.formatting
-                  .filter(
-                    form =>
-                      shortcutNamesWithoutKeymap.indexOf(form.name) !== -1,
-                  )
-                  .filter(form => form.autoFormatting)
-                  .map(form => (
-                    <Row key={`autoFormatting-${form.name}`}>
-                      <span>{form.name}</span>
-                      {form.autoFormatting!()}
-                    </Row>
-                  ))}
-              </div>
-            </ColumnLeft>
-            <Line />
-            <ColumnRight>
-              <Title>Markdown</Title>
-              <div>
-                {this.formatting
-                  .filter(
-                    form =>
-                      shortcutNamesWithoutKeymap.indexOf(form.name) === -1,
-                  )
-                  .map(
-                    form =>
-                      form.autoFormatting && (
+                    {this.formatting
+                      .filter(
+                        form =>
+                          shortcutNamesWithoutKeymap.indexOf(form.name) !== -1,
+                      )
+                      .filter(form => form.autoFormatting)
+                      .map(form => (
                         <Row key={`autoFormatting-${form.name}`}>
                           <span>{form.name}</span>
-                          {form.autoFormatting()}
+                          {form.autoFormatting!()}
                         </Row>
-                      ),
-                  )}
-              </div>
-            </ColumnRight>
-          </Content>
-        </ContentWrapper>
-      </AkModalDialog>
+                      ))}
+                  </div>
+                </ColumnLeft>
+                <Line />
+                <ColumnRight>
+                  <Title>Markdown</Title>
+                  <div>
+                    {this.formatting
+                      .filter(
+                        form =>
+                          shortcutNamesWithoutKeymap.indexOf(form.name) === -1,
+                      )
+                      .map(
+                        form =>
+                          form.autoFormatting && (
+                            <Row key={`autoFormatting-${form.name}`}>
+                              <span>{form.name}</span>
+                              {form.autoFormatting()}
+                            </Row>
+                          ),
+                      )}
+                  </div>
+                </ColumnRight>
+              </Content>
+            </ContentWrapper>
+          </AkModalDialog>
+        ) : null}
+      </ModalTransition>
     );
   }
 }

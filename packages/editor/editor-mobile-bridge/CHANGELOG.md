@@ -1,5 +1,8 @@
 # @atlaskit/editor-mobile-bridge
 
+## 3.0.7
+- [patch] Sending block formatting changes separately [96c9414](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/96c9414)
+
 ## 3.0.6
 - [patch] Making the media resolution aysnc [c6bacea](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c6bacea)
 

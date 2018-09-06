@@ -2,8 +2,9 @@
 
 import { colors } from '@atlaskit/theme';
 
-import type { ThemedContentNavigationComponentStyles } from '../../theme/types';
 import { CONTENT_NAV_WIDTH } from '../../common/constants';
+
+import type { ModeColors } from '../../theme/types';
 
 const baseStyles = {
   boxSizing: 'border-box',
@@ -19,7 +20,7 @@ const baseStyles = {
   zIndex: 0,
 };
 
-const light = () => ({
+export default ({ product }: ModeColors) => () => ({
   container: {
     ...baseStyles,
     backgroundColor: colors.N20,
@@ -27,39 +28,7 @@ const light = () => ({
   },
   product: {
     ...baseStyles,
-    backgroundColor: colors.B500,
-    color: colors.B50,
+    backgroundColor: product.background.default,
+    color: product.text.default,
   },
 });
-const dark = () => ({
-  container: {
-    ...baseStyles,
-    backgroundColor: colors.DN20,
-    color: colors.DN400,
-  },
-  product: {
-    ...baseStyles,
-    backgroundColor: colors.DN0,
-    color: colors.DN400,
-  },
-});
-const settings = () => ({
-  container: {
-    ...baseStyles,
-    backgroundColor: colors.N700,
-    color: colors.N0,
-  },
-  product: {
-    ...baseStyles,
-    backgroundColor: colors.N800,
-    color: colors.N0,
-  },
-});
-
-const themes: ThemedContentNavigationComponentStyles<void> = {
-  dark,
-  light,
-  settings,
-};
-
-export default themes;

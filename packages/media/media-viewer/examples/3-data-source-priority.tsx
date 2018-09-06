@@ -10,9 +10,7 @@ export default class Example extends React.Component<{}, {}> {
   render() {
     return (
       <MediaViewer
-        featureFlags={{ nextGen: true, customVideoPlayer: true }}
-        MediaViewer={null as any}
-        basePath={null as any}
+        featureFlags={{ customVideoPlayer: true }}
         context={context}
         selectedItem={selectedItem}
         dataSource={{

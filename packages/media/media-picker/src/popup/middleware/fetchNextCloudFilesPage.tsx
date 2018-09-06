@@ -37,6 +37,7 @@ export const fetchNextCloudFilesPageMiddleware = (fetcher: Fetcher) => (
             accountId,
             path,
             items.concat(folder.items),
+            serviceName,
             cursor,
             folder.cursor,
           ),

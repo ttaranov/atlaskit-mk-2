@@ -1,8 +1,7 @@
 // @flow
 
 import { colors, gridSize } from '@atlaskit/theme';
-
-import type { ThemedContentNavigationComponentStyles } from '../../theme/types';
+import type { ModeColors } from '../../theme/types';
 
 const fontSize = 11;
 
@@ -31,42 +30,13 @@ const baseStyles = {
   },
 };
 
-const light = () => ({
+export default ({ product }: ModeColors) => () => ({
   container: {
     ...baseStyles,
     headingBase: { ...baseStyles.headingBase, color: colors.N200 },
   },
   product: {
     ...baseStyles,
-    headingBase: { ...baseStyles.headingBase, color: colors.B75 },
+    headingBase: { ...baseStyles.headingBase, color: product.text.subtle },
   },
 });
-
-const dark = () => ({
-  container: {
-    ...baseStyles,
-    headingBase: { ...baseStyles.headingBase, color: colors.DN100 },
-  },
-  product: {
-    ...baseStyles,
-    headingBase: { ...baseStyles.headingBase, color: colors.DN100 },
-  },
-});
-
-const settings = () => ({
-  container: {
-    ...baseStyles,
-    headingBase: { ...baseStyles.headingBase, color: colors.N70 },
-  },
-  product: {
-    ...baseStyles,
-    headingBase: { ...baseStyles.headingBase, color: colors.N70 },
-  },
-});
-
-const themes: ThemedContentNavigationComponentStyles<void> = {
-  dark,
-  light,
-  settings,
-};
-export default themes;

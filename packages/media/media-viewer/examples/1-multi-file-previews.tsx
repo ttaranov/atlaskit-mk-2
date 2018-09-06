@@ -187,9 +187,6 @@ export default class Example extends React.Component<{}, State> {
 
         {this.state.selected && (
           <MediaViewer
-            featureFlags={{ nextGen: true }}
-            MediaViewer={null as any}
-            basePath={null as any}
             context={context}
             selectedItem={this.state.selected.identifier}
             dataSource={this.state.selected.dataSource}

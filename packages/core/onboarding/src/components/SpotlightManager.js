@@ -27,7 +27,7 @@ export default class SpotlightManager extends PureComponent<Props> {
   };
 
   render() {
-    const { children, component: Tag } = this.props;
+    const { blanketIsTinted, children, component: Tag } = this.props;
 
     return (
       <Provider inject={[registry]}>
@@ -37,11 +37,14 @@ export default class SpotlightManager extends PureComponent<Props> {
             return (
               <Tag>
                 {children}
-                <Fade
-                  in={dialogIsVisible}
-                  component={Blanket}
-                  isTinted={this.props.blanketIsTinted}
-                />
+                <Fade in={dialogIsVisible}>
+                  {animationStyles => (
+                    <Blanket
+                      style={animationStyles}
+                      isTinted={blanketIsTinted}
+                    />
+                  )}
+                </Fade>
                 {dialogIsVisible && <ScrollLock />}
               </Tag>
             );

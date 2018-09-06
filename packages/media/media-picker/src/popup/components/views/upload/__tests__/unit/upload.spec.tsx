@@ -1,5 +1,6 @@
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import * as React from 'react';
+import { Provider } from 'react-redux';
 import Spinner from '@atlaskit/spinner';
 import { FlagGroup } from '@atlaskit/flag';
 import { FileDetails } from '@atlaskit/media-core';
@@ -32,25 +33,31 @@ import { editRemoteImage } from '../../../../../actions/editRemoteImage';
 import { Dropzone } from '../../dropzone';
 
 import { SpinnerWrapper, Wrapper } from '../../styled';
+import { LocalBrowserButton } from '../../../../views/upload/uploadButton';
+import { Browser } from '../../../../../../components/browser';
 
 const ConnectedUploadViewWithStore = getComponentClassWithStore(
   ConnectedUploadView,
 );
 
-const createConnectedComponent = (
-  state: State,
-  enzymeMethod: Function = shallow,
-) => {
+const createConnectedComponent = (state: State, reactContext: {} = {}) => {
   const context = fakeContext();
   const store = mockStore(state);
   const dispatch = store.dispatch;
-  const root = enzymeMethod(
-    <ConnectedUploadViewWithStore
-      store={store}
-      mpBrowser={{} as any}
-      context={context}
-      recentsCollection="some-collection-name"
-    />,
+  const root = mount(
+    <Provider store={store}>
+      <ConnectedUploadViewWithStore
+        mpBrowser={new Browser(context) as any}
+        context={context}
+        recentsCollection="some-collection-name"
+      />
+    </Provider>,
+    {
+      context: reactContext,
+      childContextTypes: {
+        getAtlaskitAnalyticsEventHandlers() {},
+      },
+    },
   );
   const component = root.find(StatelessUploadView);
   return { component, dispatch, root };
@@ -62,12 +69,14 @@ describe('<StatelessUploadView />', () => {
     recentItems: CollectionItem[] = [],
     mockStateOverride: Partial<State> = {},
   ) => {
-    const context = fakeContext();
-
-    const { selectedItems, uploads } = {
+    const state: State = {
       ...mockState,
       ...mockStateOverride,
     } as State;
+    const context = fakeContext();
+    const store = mockStore(state);
+
+    const { selectedItems, uploads } = state;
 
     const recents = {
       items: recentItems,
@@ -76,31 +85,33 @@ describe('<StatelessUploadView />', () => {
     const setUpfrontIdDeferred = jest.fn();
 
     return (
-      <StatelessUploadView
-        mpBrowser={{} as any}
-        context={context}
-        recentsCollection="some-collection-name"
-        isLoading={isLoading}
-        recents={recents}
-        uploads={uploads}
-        selectedItems={selectedItems}
-        onFileClick={() => {}}
-        onEditorShowImage={() => {}}
-        onEditRemoteImage={() => {}}
-        setUpfrontIdDeferred={setUpfrontIdDeferred}
-      />
+      <Provider store={store}>
+        <StatelessUploadView
+          mpBrowser={{} as any}
+          context={context}
+          recentsCollection="some-collection-name"
+          isLoading={isLoading}
+          recents={recents}
+          uploads={uploads}
+          selectedItems={selectedItems}
+          onFileClick={() => {}}
+          onEditorShowImage={() => {}}
+          onEditRemoteImage={() => {}}
+          setUpfrontIdDeferred={setUpfrontIdDeferred}
+        />
+      </Provider>
     );
   };
 
   it('should render the loading state when "isLoading" is true', () => {
-    const component = shallow(getUploadViewElement(true));
+    const component = mount(getUploadViewElement(true));
 
     expect(component.find(SpinnerWrapper)).toHaveLength(1);
     expect(component.find(Spinner)).toHaveLength(1);
   });
 
   it('should render the empty state when there are NO recent items and NO local uploads inflight', () => {
-    const component = shallow(getUploadViewElement(false));
+    const component = mount(getUploadViewElement(false));
 
     expect(component.find(Wrapper)).toHaveLength(1);
     expect(component.find(Dropzone)).toHaveLength(1);
@@ -108,16 +119,20 @@ describe('<StatelessUploadView />', () => {
   });
 
   it('should render cards and dropzone when there are recent items', () => {
-    const recentItem = {
+    const createRecentItem = (occurrenceKey: string) => ({
       type: 'file',
       id: 'some-file-id',
       insertedAt: 0,
-      occurrenceKey: 'some-occurrence-key',
+      occurrenceKey: `some-occurrence-key${occurrenceKey}`,
       details: { name: 'some-file-name', size: 1000 },
-    };
-    const recentItems = [recentItem, recentItem, recentItem];
+    });
+    const recentItems = [
+      createRecentItem('1'),
+      createRecentItem('2'),
+      createRecentItem('3'),
+    ];
 
-    const component = shallow(getUploadViewElement(false, recentItems));
+    const component = mount(getUploadViewElement(false, recentItems));
 
     expect(component.find(Wrapper)).toHaveLength(1);
     expect(component.find(Dropzone)).toHaveLength(1);
@@ -139,6 +154,7 @@ describe('<StatelessUploadView />', () => {
             },
           },
           progress: 10,
+          timeStarted: 0,
         } as LocalUpload,
       },
       selectedItems: [
@@ -155,9 +171,7 @@ describe('<StatelessUploadView />', () => {
       mediaType: 'image',
       mimeType: 'image/jpeg',
     };
-    const component = shallow(
-      getUploadViewElement(false, [], mockStateOverride),
-    );
+    const component = mount(getUploadViewElement(false, [], mockStateOverride));
     expect(component.find(CardView)).toHaveLength(1);
     expect(component.find(CardView).props().metadata).toEqual(expectedMetadata);
     expect(component.find(CardView).props().status).toEqual('uploading');
@@ -184,16 +198,14 @@ describe('<StatelessUploadView />', () => {
         uploadId2: {
           file: {
             metadata: {
-              id: 'id1',
+              id: 'id2',
               mimeType: 'application/pdf',
             },
           },
         } as LocalUpload,
       },
     };
-    const component = shallow(
-      getUploadViewElement(false, [], mockStateOverride),
-    );
+    const component = mount(getUploadViewElement(false, [], mockStateOverride));
     expect(component.find(CardView)).toHaveLength(2);
     expect(
       component
@@ -268,6 +280,7 @@ describe('<UploadView />', () => {
             uploadParams: {},
           },
           progress: 0,
+          timeStarted: 0,
         },
       },
     };
@@ -330,10 +343,10 @@ describe('<UploadView />', () => {
   });
 
   it('should display a flag if WebGL is not available', () => {
-    const { component, root } = createConnectedComponent(state, mount);
-    const mockAnnotationClick = component
-      .instance()
-      .onAnnotateActionClick(() => {});
+    const { component, root } = createConnectedComponent(state);
+    const mockAnnotationClick = (component.instance() as StatelessUploadView).onAnnotateActionClick(
+      () => {},
+    );
 
     root.update();
 
@@ -347,8 +360,8 @@ describe('<UploadView />', () => {
     expect(isWebGLAvailable).toHaveBeenCalled();
   });
 
-  it('should render annotate card action with annotate icon', () => {
-    const { component } = createConnectedComponent(state, mount);
+  it('should render annotate card action with annotate icon', async () => {
+    const { component } = createConnectedComponent(state);
     expect(
       component
         .find(CardView)
@@ -364,18 +377,33 @@ describe('<UploadView />', () => {
   });
 
   it('should set deferred upfront id when clicking on a card', () => {
-    const { component, dispatch } = createConnectedComponent(state, mount);
+    const { component, dispatch } = createConnectedComponent(state);
 
-    component
-      .find('Card')
+    const props = component
+      .find(Card)
       .first()
-      .props()
-      .onClick({ mediaItemDetails: { id: 'some-id' } });
+      .props();
+    if (props.onClick) {
+      props.onClick({ mediaItemDetails: { id: 'some-id' } } as any);
+    } else {
+      fail('onClick property is missing in props');
+    }
     expect(dispatch.mock.calls[0][0]).toEqual({
       id: 'some-id',
       type: 'SET_UPFRONT_ID_DEFERRED',
       resolver: expect.anything(),
       rejecter: expect.anything(),
     });
+  });
+
+  it('should fire an analytics event when given a react context', () => {
+    const aHandler = jest.fn();
+
+    const { component } = createConnectedComponent(state, {
+      getAtlaskitAnalyticsEventHandlers: () => [aHandler],
+    });
+
+    component.find(LocalBrowserButton).simulate('click');
+    expect(aHandler).toBeCalled();
   });
 });

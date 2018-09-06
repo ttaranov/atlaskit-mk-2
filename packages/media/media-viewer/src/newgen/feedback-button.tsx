@@ -1,5 +1,5 @@
+declare var window: any;
 import * as React from 'react';
-import * as jQuery from 'jquery';
 import FeedbackIcon from '@atlaskit/icon/glyph/feedback';
 import Button from '@atlaskit/button';
 import { FeedbackWrapper } from './styled';
@@ -28,7 +28,7 @@ const loadIssueCollector: () => Promise<ShowIssueCollectorFn> = (function() {
             resolve(showIssueCollector);
           },
         };
-        jQuery.ajax({
+        window.jQuery.ajax({
           url: ISSUE_COLLECTOR_URL,
           type: 'get',
           cache: true,
@@ -42,6 +42,10 @@ const loadIssueCollector: () => Promise<ShowIssueCollectorFn> = (function() {
 
 export class FeedbackButton extends React.Component<{}, {}> {
   render() {
+    const isJQueryAvailable = typeof window.jQuery !== 'undefined';
+    if (!isJQueryAvailable) {
+      return null;
+    }
     return (
       <FeedbackWrapper>
         <Button
