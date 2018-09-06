@@ -1,5 +1,8 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 2.0.18
+- [patch] Convert to mediaSingle with width and height [5b1d869](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b1d869)
+
 ## 2.0.17
 - [patch] Convert to same cell types [9571a76](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9571a76)
 
