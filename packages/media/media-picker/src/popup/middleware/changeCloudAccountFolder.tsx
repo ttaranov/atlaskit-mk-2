@@ -33,6 +33,7 @@ export const changeCloudAccountFolderMiddleware = (fetcher: Fetcher) => (
             accountId,
             path,
             folder.items,
+            serviceName,
             undefined,
             folder.cursor,
           ),

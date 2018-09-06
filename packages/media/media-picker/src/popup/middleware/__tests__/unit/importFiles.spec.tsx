@@ -146,6 +146,7 @@ describe('importFiles middleware', () => {
         tenant,
         index,
         progress: null,
+        timeStarted: 0,
       };
     };
 
