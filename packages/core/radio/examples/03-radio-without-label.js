@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import { RadioInput } from '../src';
+import { Radio } from '../src';
 
 type State = {
   isActive: boolean,
@@ -30,22 +30,14 @@ export default class RadioInputExample extends Component<*, State> {
       isFocused: true,
     });
   };
-  onChange = (event: SyntheticEvent<*>) => {
-    console.log('onChange()', event.currentTarget.value);
+  onChange = () => {
     this.setState({
-      checkedValue: event.currentTarget.value,
-    });
-  };
-  onClick = (event: SyntheticEvent<*>) => {
-    console.log('onClick', event);
-    this.setState({
-      isChecked: true,
+      isChecked: !this.state.isChecked,
     });
   };
   render() {
-    console.log(this.state.isChecked);
     return (
-      <RadioInput
+      <Radio
         isChecked={this.state.isChecked}
         isActive
         isHovered
