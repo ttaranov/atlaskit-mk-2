@@ -1,12 +1,8 @@
 import * as React from 'react';
-import {
-  Context,
-  MediaCollectionProvider,
-  isError,
-} from '@atlaskit/media-core';
+import { Context } from '@atlaskit/media-core';
 import { MediaCollectionItem } from '@atlaskit/media-store';
 import { Outcome, Identifier, MediaViewerFeatureFlags } from './domain';
-import { ErrorMessage, createError, MediaViewerError } from './error';
+import { ErrorMessage, MediaViewerError } from './error';
 import { List } from './list';
 import { Subscription } from 'rxjs';
 import { toIdentifier } from './utils';
@@ -32,7 +28,6 @@ export class Collection extends React.Component<Props, State> {
   state: State = initialState;
 
   private subscription?: Subscription;
-  private provider?: MediaCollectionProvider;
 
   componentWillUpdate(nextProps: Props) {
     if (this.needsReset(this.props, nextProps)) {
@@ -82,13 +77,7 @@ export class Collection extends React.Component<Props, State> {
 
   private init(props: Props) {
     this.setState(initialState);
-    const { collectionName, context, defaultSelectedItem, pageSize } = props;
-    this.provider = context.getMediaCollectionProvider(
-      collectionName,
-      pageSize,
-    );
-    const collectionFileItemFilter = (item: MediaCollectionItem) =>
-      item.type === 'file';
+    const { collectionName, context, pageSize } = props;
     this.subscription = context.collection
       .getItems(collectionName, { limit: pageSize })
       .subscribe({
@@ -114,7 +103,7 @@ export class Collection extends React.Component<Props, State> {
   }
 
   private onNavigationChange = (item: Identifier) => {
-    if (this.shouldLoadNext(item) && this.provider) {
+    if (this.shouldLoadNext(item)) {
       const { context, collectionName } = this.props;
       context.collection.loadNextPage(collectionName);
     }

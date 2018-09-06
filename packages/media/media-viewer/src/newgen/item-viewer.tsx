@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Context, FileItem } from '@atlaskit/media-core';
+import { Context, FileItem, ProcessedFileState } from '@atlaskit/media-core';
 import { Outcome, Identifier, MediaViewerFeatureFlags } from './domain';
 import { ImageViewer } from './viewers/image';
 import { VideoViewer } from './viewers/video';
@@ -115,29 +115,37 @@ export class ItemViewer extends React.Component<Props, State> {
   private init(props: Props) {
     this.setState(initialState);
     const { context, identifier } = props;
-    const provider = context.getMediaItemProvider(
-      identifier.id,
-      identifier.type,
-      identifier.collectionName,
-    );
-
-    this.subscription = provider.observable().subscribe({
-      next: mediaItem => {
-        if (mediaItem.type === 'link') {
+    const { id, collectionName } = identifier;
+    this.subscription = context.getFile(id, { collectionName }).subscribe({
+      next: state => {
+        const { status } = state;
+        if (status === 'error') {
           this.setState({
-            item: Outcome.failed(createError('linksNotSupported')),
+            item: Outcome.failed(createError('previewFailed')),
           });
-        } else {
-          const { processingStatus } = mediaItem.details;
-          if (processingStatus === 'failed') {
-            this.setState({
-              item: Outcome.failed(createError('previewFailed', mediaItem)),
-            });
-          } else if (processingStatus === 'succeeded') {
-            this.setState({
-              item: Outcome.successful(mediaItem),
-            });
-          }
+        } else if (status === 'processed') {
+          // TODO: we should handle processing too
+          const {
+            id,
+            mediaType,
+            name,
+            mimeType,
+            size,
+          } = state as ProcessedFileState;
+          const mediaItem: FileItem = {
+            type: 'file',
+            details: {
+              id,
+              mediaType,
+              name,
+              mimeType,
+              size,
+            },
+          };
+
+          this.setState({
+            item: Outcome.successful(mediaItem),
+          });
         }
       },
       error: err => {

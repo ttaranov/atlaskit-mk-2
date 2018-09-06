@@ -82,8 +82,8 @@ export class CollectionFetcher {
     return fileStream;
   }
 
-  private populateCache(items: MediaCollectionItem[]) {
-    const keyOptions = { collectionName: 'recents' };
+  private populateCache(items: MediaCollectionItem[], collectionName: string) {
+    const keyOptions = { collectionName };
 
     items.forEach(item => {
       const key = FileStreamCache.createKey(item.id, keyOptions);
@@ -117,7 +117,7 @@ export class CollectionFetcher {
       })
       .then(items => {
         const { contents, nextInclusiveStartKey } = items.data;
-        this.populateCache(contents);
+        this.populateCache(contents, collectionName);
 
         collection.items = mergeItems(items.data.contents, collection.items);
 

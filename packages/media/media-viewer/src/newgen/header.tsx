@@ -1,5 +1,10 @@
 import * as React from 'react';
-import { Context, FileItem, MediaType } from '@atlaskit/media-core';
+import {
+  Context,
+  FileItem,
+  MediaType,
+  ProcessedFileState,
+} from '@atlaskit/media-core';
 import Button from '@atlaskit/button';
 import DownloadIcon from '@atlaskit/icon/glyph/download';
 import { Subscription } from 'rxjs';
@@ -59,21 +64,32 @@ export default class Header extends React.Component<Props, State> {
   private init(props: Props) {
     this.setState(initialState, () => {
       const { context, identifier } = props;
-      const provider = context.getMediaItemProvider(
-        identifier.id,
-        identifier.type,
-        identifier.collectionName,
-      );
+      const { id, collectionName } = identifier;
+      this.subscription = context.getFile(id, { collectionName }).subscribe({
+        next: state => {
+          const { status } = state;
+          if (status === 'processed') {
+            // TODO: we should handle processing too
+            const {
+              id,
+              mediaType,
+              name,
+              mimeType,
+              size,
+            } = state as ProcessedFileState;
+            const mediaItem: FileItem = {
+              type: 'file',
+              details: {
+                id,
+                mediaType,
+                name,
+                mimeType,
+                size,
+              },
+            };
 
-      this.subscription = provider.observable().subscribe({
-        next: mediaItem => {
-          if (mediaItem.type === 'file') {
             this.setState({
               item: Outcome.successful(mediaItem),
-            });
-          } else if (mediaItem.type === 'link') {
-            this.setState({
-              item: Outcome.failed(createError('linksNotSupported')),
             });
           }
         },
