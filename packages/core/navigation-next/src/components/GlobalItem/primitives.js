@@ -10,6 +10,15 @@ import type {
   GlobalItemPresentationProps,
 } from './types';
 
+const TooltipRenderer = ({ tooltip, children }: GlobalItemTooltipRenderer) =>
+  tooltip ? (
+    <Tooltip delay={0} content={tooltip} position="right" hideTooltipOnClick>
+      {children}
+    </Tooltip>
+  ) : (
+    children
+  );
+
 class GlobalNavigationItemPrimitive extends Component<*> {
   static defaultProps = {
     isActive: false,
@@ -106,14 +115,5 @@ class GlobalNavigationItemPrimitive extends Component<*> {
     return <TooltipRenderer tooltip={tooltip}>{itemBase}</TooltipRenderer>;
   }
 }
-
-const TooltipRenderer = ({ tooltip, children }: GlobalItemTooltipRenderer) =>
-  tooltip ? (
-    <Tooltip delay={0} content={tooltip} position="right" hideTooltipOnClick>
-      {children}
-    </Tooltip>
-  ) : (
-    children
-  );
 
 export default withGlobalTheme(GlobalNavigationItemPrimitive);
