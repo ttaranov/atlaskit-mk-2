@@ -53,13 +53,14 @@ export type ThemeAppearance =
   | {};
 
 export type ThemeProps = {
-  badge?: ({
+  lozenge?: ({
     appearance: ThemeAppearance,
     isBold: boolean,
     maxWidth: number | string,
   }) => {
     backgroundColor?: string,
     color?: string,
+    maxWidth?: number | string,
   },
   mode?: 'light' | 'dark',
 };
@@ -67,7 +68,7 @@ export type ThemeProps = {
 export function theme(props: ThemeProps): ThemeProps {
   const mode = props.mode || 'light';
   return {
-    badge: ({ appearance, isBold, maxWidth }) => ({
+    lozenge: ({ appearance, isBold, maxWidth }) => ({
       ...(typeof appearance === 'object'
         ? appearance
         : {
@@ -75,10 +76,12 @@ export function theme(props: ThemeProps): ThemeProps {
               ? boldBackgroundColor[appearance]
               : backgroundColor[appearance]
             ).light,
-            color: (isBold ? boldTextColor[appearance] : textColor[appearance])
-              .light,
+            textColor: (isBold
+              ? boldTextColor[appearance]
+              : textColor[appearance]
+            ).light,
           }),
-      maxWidth: maxWidth === 'number' ? `${maxWidth}px` : maxWidth,
+      maxWidth,
       ...(props.lozenge
         ? props.lozenge({ appearance, isBold, maxWidth })
         : null),

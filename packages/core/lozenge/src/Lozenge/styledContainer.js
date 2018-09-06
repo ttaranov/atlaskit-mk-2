@@ -5,7 +5,7 @@ import { akBorderRadius } from '@atlaskit/util-shared-styles';
 export default styled.span`
   ${props => `
     background-color: ${props.backgroundColor};
-    color: ${props.color};
+    color: ${props.textColor};
   `};
   border-radius: ${akBorderRadius};
   box-sizing: border-box;
@@ -14,7 +14,10 @@ export default styled.span`
   font-size: 11px;
   font-weight: 700;
   line-height: 1;
-  max-width: ${props => props.maxWidth};
+  max-width: ${props =>
+    typeof props.maxWidth === 'number'
+      ? `${props.maxWidth}px`
+      : props.maxWidth};
   padding: 2px 0 3px 0;
   text-transform: uppercase;
   vertical-align: baseline;
