@@ -82,7 +82,6 @@ export default class GlobalNavigation
       const capitalisedDrawerName = this.getCapitalisedDrawerName(drawer);
 
       if (
-        // TODO: Shouldn't this check for undefined?
         props[
           `on${capitalisedDrawerName.substr(
             0,

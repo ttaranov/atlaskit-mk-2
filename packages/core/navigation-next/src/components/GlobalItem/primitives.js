@@ -63,60 +63,53 @@ class GlobalNavigationItemPrimitive extends Component<*> {
     const presentationProps = { isActive, isHover, isSelected, size };
     const defaultStyles = mode.globalItem(presentationProps);
     const styles = styleReducer(defaultStyles, presentationProps);
-    this.CachedCustomComponent = this.CachedCustomComponent || CustomComponent;
+    let itemBase;
 
     if (CustomComponent) {
+      this.CachedCustomComponent =
+        this.CachedCustomComponent || CustomComponent;
       const CachedCustomComponent = this.CachedCustomComponent;
-      return (
-        <RenderTooltip tooltip={tooltip}>
-          <CachedCustomComponent
-            {...rest}
-            className={css({ '&&': styles.itemBase })}
-          >
-            {this.renderIconAndBadge(styles.badgeWrapper, presentationProps)}
-          </CachedCustomComponent>
-        </RenderTooltip>
-      );
-    }
 
-    if (href) {
-      return (
-        <RenderTooltip tooltip={tooltip}>
-          <a
-            href={href}
-            onClick={onClick}
-            target={target}
-            className={css({ '&&': styles.itemBase })}
-          >
-            {this.renderIconAndBadge(styles.badgeWrapper, presentationProps)}
-          </a>
-        </RenderTooltip>
+      itemBase = (
+        <CachedCustomComponent
+          {...rest}
+          className={css({ '&&': styles.itemBase })}
+        >
+          {this.renderIconAndBadge(styles.badgeWrapper, presentationProps)}
+        </CachedCustomComponent>
       );
-    }
-
-    if (onClick) {
-      return (
-        <RenderTooltip tooltip={tooltip}>
-          <button onClick={onClick} className={css({ '&&': styles.itemBase })}>
-            {this.renderIconAndBadge(styles.badgeWrapper, presentationProps)}
-          </button>
-        </RenderTooltip>
+    } else if (href) {
+      itemBase = (
+        <a
+          href={href}
+          onClick={onClick}
+          target={target}
+          className={css({ '&&': styles.itemBase })}
+        >
+          {this.renderIconAndBadge(styles.badgeWrapper, presentationProps)}
+        </a>
       );
-    }
-
-    return (
-      <RenderTooltip tooltip={tooltip}>
+    } else if (onClick) {
+      itemBase = (
+        <button onClick={onClick} className={css({ '&&': styles.itemBase })}>
+          {this.renderIconAndBadge(styles.badgeWrapper, presentationProps)}
+        </button>
+      );
+    } else {
+      itemBase = (
         <span className={css({ '&&': styles.itemBase })} {...rest}>
           {this.renderIconAndBadge(styles.badgeWrapper, presentationProps)}
         </span>
-      </RenderTooltip>
-    );
+      );
+    }
+
+    return <TooltipRenderer tooltip={tooltip}>{itemBase}</TooltipRenderer>;
   }
 }
 
-const RenderTooltip = ({ tooltip, children }: GlobalItemTooltipRenderer) =>
+const TooltipRenderer = ({ tooltip, children }: GlobalItemTooltipRenderer) =>
   tooltip ? (
-    <Tooltip content={tooltip} position="right" hideTooltipOnClick>
+    <Tooltip delay={0} content={tooltip} position="right" hideTooltipOnClick>
       {children}
     </Tooltip>
   ) : (
