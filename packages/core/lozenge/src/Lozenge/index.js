@@ -4,7 +4,7 @@ import { Theme } from '@atlaskit/theme';
 import React, { PureComponent, type Node } from 'react';
 import Container from './styledContainer';
 import Content from './styledContent';
-import { theme, type ThemeAppearance, type ThemeProps } from './theme';
+import { theme, type ThemeAppearance, type ThemeProps } from '../theme';
 
 type Props = {
   /** The appearance type. */
