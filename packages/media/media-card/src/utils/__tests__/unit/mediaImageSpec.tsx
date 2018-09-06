@@ -9,7 +9,7 @@ describe('MediaImage', () => {
 
   // TODO: test fails on pipeline, find way of wait until img is loaded properly
   it.skip('Fires onError method when URI dont work', done => {
-    const onError = function(ev) {
+    const onError = function(ev: any) {
       expect(ev).toBeInstanceOf(Event);
       expect(this).toBeInstanceOf(HTMLElement);
       done();

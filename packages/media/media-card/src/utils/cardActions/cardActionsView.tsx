@@ -77,5 +77,5 @@ function actionWithIcon(action: CardAction): boolean {
 }
 
 function actionNotEqualTo(otherAction?: CardAction) {
-  return action => action !== otherAction;
+  return (action: any) => action !== otherAction;
 }

@@ -130,7 +130,7 @@ export class ActionsView extends React.Component<
     };
   }
 
-  handleOtherAction = ({ item }) => {
+  handleOtherAction = ({ item }: any) => {
     const { onActionClick } = this.props;
     const action: ActionsViewAction = item.action;
     if (onActionClick && action) {
@@ -141,11 +141,11 @@ export class ActionsView extends React.Component<
     }
   };
 
-  handleMeatballsClick(event) {
+  handleMeatballsClick(event: any) {
     event.stopPropagation();
   }
 
-  handleTryAgain = event => {
+  handleTryAgain = (event: any) => {
     event.stopPropagation();
     this.setState({
       failureMessage: null,
