@@ -67,6 +67,8 @@ export class ItemViewer extends React.Component<Props, State> {
         };
         switch (itemUnwrapped.details.mediaType) {
           case 'image':
+            // TODO: ImageViewer can use state.preview until the original file loads
+            // We can finally do the blur effect ;)
             return <ImageViewer {...viewerProps} />;
           case 'audio':
             return <AudioViewer {...viewerProps} />;

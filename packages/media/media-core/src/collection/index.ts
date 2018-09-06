@@ -132,7 +132,6 @@ export class CollectionFetcher {
     return subject;
   }
 
-  // TODO: check if we are already loading the next page for the given collectionName
   // TODO: we need to maintain at least the same limit (pageSize) we used previously
   async loadNextPage(collectionName: string) {
     const collection = cache[collectionName];
