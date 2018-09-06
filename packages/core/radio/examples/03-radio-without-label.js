@@ -3,14 +3,29 @@ import React, { Component } from 'react';
 import { Radio } from '../src';
 
 type State = {
+  items: Array<*>,
   isActive: boolean,
   isChecked: boolean,
   isFocused: boolean,
   isMouseDown: boolean,
   checkedValue: string,
 };
+
+const items: Array<{
+  isChecked?: boolean,
+  value: string,
+  name: string,
+  id: number,
+}> = [
+  { value: 'blue', name: 'colors', isChecked: true, id: 1 },
+  { value: 'red', name: 'colors', id: 2 },
+  { value: 'purple', name: 'colors', id: 3 },
+  { value: 'grey', name: 'colors', id: 4 },
+];
+
 export default class RadioInputExample extends Component<*, State> {
   state = {
+    items: (items.slice(): Array<*>),
     checkedValue: '',
     isActive: false,
     isChecked: false,
@@ -30,24 +45,44 @@ export default class RadioInputExample extends Component<*, State> {
       isFocused: true,
     });
   };
-  onChange = () => {
+  onChange = ({ currentTarget: { value } }: SyntheticEvent<*>) => {
+    const newItems = this.state.items.slice().map(item => {
+      if (item.value === value)
+        return {
+          ...item,
+          isChecked: true,
+        };
+      return {
+        ...item,
+        isChecked: false,
+      };
+    });
     this.setState({
-      isChecked: !this.state.isChecked,
+      items: newItems,
     });
   };
   render() {
     return (
-      <Radio
-        isChecked={this.state.isChecked}
-        isActive
-        isHovered
-        isFocused
-        onBlur={this.onBlur}
-        onFocus={this.onFocus}
-        onChange={this.onChange}
-        name="radio-1"
-        value={'radio-1'}
-      />
+      <table>
+        {this.state.items.map(item => (
+          <tr>
+            <td>
+              <Radio
+                key={`${item.value}${item.name}${item.id}`}
+                isChecked={item.isChecked}
+                onBlur={this.onBlur}
+                onFocus={this.onFocus}
+                onChange={this.onChange}
+                name={item.name}
+                value={item.value}
+              />
+            </td>
+            <td>
+              <p>{item.value}</p>
+            </td>
+          </tr>
+        ))}
+      </table>
     );
   }
 }
