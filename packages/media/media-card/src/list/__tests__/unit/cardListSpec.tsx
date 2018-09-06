@@ -89,7 +89,7 @@ describe('CardList', () => {
   const contextWithDefaultCollection = fakeContext({
     getMediaCollectionProvider: {
       observable() {
-        return Observable.create(observer => {
+        return Observable.create((observer: any) => {
           observer.next(collection);
         });
       },
@@ -197,7 +197,7 @@ describe('CardList', () => {
     const context = fakeContext({
       getMediaCollectionProvider: {
         observable() {
-          return Observable.create(observer => {
+          return Observable.create((observer: any) => {
             observer.next(collection);
           });
         },
@@ -239,14 +239,14 @@ describe('CardList', () => {
     const context = fakeContext({
       getMediaCollectionProvider: {
         observable() {
-          return Observable.create(observer => {
+          return Observable.create((observer: any) => {
             observer.next(collection);
           });
         },
       },
       getMediaItemProvider: {
         observable() {
-          return Observable.create(observer => {
+          return Observable.create((observer: any) => {
             observer.next(newItemDetails);
           });
         },

@@ -24,7 +24,7 @@ interface CardSwitcherState {
 }
 
 class CardSwitcher extends Component<CardSwitcherProps, CardSwitcherState> {
-  constructor(props) {
+  constructor(props: CardSwitcherProps) {
     super(props);
     this.state = { collectionName: this.collections[0] };
   }

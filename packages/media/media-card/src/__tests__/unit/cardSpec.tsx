@@ -12,7 +12,6 @@ import {
   UrlPreviewIdentifier,
   FileIdentifier,
   LinkIdentifier,
-  CardEvent,
   CardView,
 } from '../../../src';
 import { LazyContent } from '../../../src/utils/lazyContent';
@@ -197,7 +196,7 @@ describe('Card', () => {
 
   it('should pass onMouseEnter to CardView', () => {
     const context = fakeContext() as any;
-    const hoverHandler = (result: CardEvent) => {};
+    const hoverHandler = () => {};
     const card = shallow(
       <Card
         context={context}
@@ -211,7 +210,7 @@ describe('Card', () => {
 
   it('should use lazy load by default', () => {
     const context = fakeContext() as any;
-    const hoverHandler = (result: CardEvent) => {};
+    const hoverHandler = () => {};
     const card = shallow(
       <Card
         context={context}
@@ -224,7 +223,7 @@ describe('Card', () => {
 
   it('should not use lazy load when "isLazy" is false', () => {
     const context = fakeContext() as any;
-    const hoverHandler = (result: CardEvent) => {};
+    const hoverHandler = () => {};
     const card = shallow(
       <Card
         isLazy={false}
