@@ -3,7 +3,10 @@ import { Subscription } from 'rxjs/Subscription';
 import { isError } from '@atlaskit/media-core';
 import Button from '@atlaskit/button';
 import AkSpinner from '@atlaskit/spinner';
-import { createStorybookContext } from '@atlaskit/media-test-helpers';
+import {
+  createStorybookContext,
+  createUserContext,
+} from '@atlaskit/media-test-helpers';
 import { ButtonList, Container, Group } from '../example-helpers/styled';
 import {
   docIdentifier,
@@ -13,14 +16,16 @@ import {
   videoHorizontalFileItem,
   videoIdentifier,
   wideImageIdentifier,
-  defaultCollectionName,
+  // defaultCollectionName,
 } from '../example-helpers';
 import { MediaViewer } from '../src';
 import { videoFileId } from '@atlaskit/media-test-helpers';
 import { MediaViewerItem } from '../src';
 import { MediaViewerDataSource } from '..';
 
-const context = createStorybookContext();
+// const context = createStorybookContext();
+const context = createUserContext();
+const defaultCollectionName = 'recents';
 
 export type State = {
   selected?: {

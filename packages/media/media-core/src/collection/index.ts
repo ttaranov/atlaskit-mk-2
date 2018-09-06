@@ -133,7 +133,10 @@ export class CollectionFetcher {
   }
 
   // TODO: we need to maintain at least the same limit (pageSize) we used previously
-  async loadNextPage(collectionName: string) {
+  async loadNextPage(
+    collectionName: string,
+    params?: MediaStoreGetCollectionItemsParams,
+  ) {
     const collection = cache[collectionName];
     const isLoading = collection ? collection.isLoadingNextPage : false;
 
@@ -149,11 +152,12 @@ export class CollectionFetcher {
       subject,
     } = cache[collectionName];
     const response = await this.mediaStore.getCollectionItems(collectionName, {
+      ...params,
       inclusiveStartKey,
       details: 'full',
     });
     const { contents, nextInclusiveStartKey } = response.data;
-    this.populateCache(contents);
+    this.populateCache(contents, collectionName);
     const newItems = response.data.contents;
     const items = [...currentItems, ...newItems];
 

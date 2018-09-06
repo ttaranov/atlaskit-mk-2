@@ -1,17 +1,27 @@
 import * as React from 'react';
-import { Card, CardEvent, FileIdentifier } from '@atlaskit/media-card';
+import {
+  Card,
+  CardList,
+  CardEvent,
+  FileIdentifier,
+} from '@atlaskit/media-card';
 import {
   createStorybookContext,
   defaultCollectionName,
 } from '@atlaskit/media-test-helpers';
 import { Container } from '../example-helpers/styled';
-import { imageItem } from '../example-helpers';
+import { imageItem, smallImageItem, archiveItem } from '../example-helpers';
 import { MediaViewer, MediaViewerItem } from '../src';
 import { FileDetails } from '@atlaskit/media-core';
 
 const context = createStorybookContext();
-const identifier: FileIdentifier = {
+const imageIdentifier: FileIdentifier = {
   id: imageItem.id,
+  mediaItemType: 'file',
+  collectionName: defaultCollectionName,
+};
+const smallImageIdentifier: FileIdentifier = {
+  id: smallImageItem.id,
   mediaItemType: 'file',
   collectionName: defaultCollectionName,
 };
@@ -47,11 +57,23 @@ export default class Example extends React.Component<{}, State> {
 
     return (
       <Container>
-        <Card
-          context={context}
-          identifier={identifier}
-          onClick={this.onCardClick}
-        />
+        <div>
+          <h1>Card</h1>
+          <Card
+            context={context}
+            identifier={imageIdentifier}
+            onClick={this.onCardClick}
+          />
+          <Card
+            context={context}
+            identifier={smallImageIdentifier}
+            onClick={this.onCardClick}
+          />
+        </div>
+        <div>
+          <h1>CardList</h1>
+          <CardList context={context} collectionName={defaultCollectionName} />
+        </div>
         {selectedItem && (
           <MediaViewer
             featureFlags={{ nextGen: true, customVideoPlayer: true }}
@@ -59,7 +81,7 @@ export default class Example extends React.Component<{}, State> {
             basePath={null as any}
             context={context}
             selectedItem={selectedItem}
-            dataSource={{ list: [selectedItem] }}
+            dataSource={{ list: [selectedItem, smallImageItem, archiveItem] }}
             collectionName={defaultCollectionName}
             onClose={this.onClose}
           />

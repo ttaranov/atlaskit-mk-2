@@ -82,6 +82,7 @@ export class Collection extends React.Component<Props, State> {
       .getItems(collectionName, { limit: pageSize })
       .subscribe({
         next: items => {
+          console.log('collection', items);
           this.setState({
             items: Outcome.successful(items),
           });
@@ -104,8 +105,9 @@ export class Collection extends React.Component<Props, State> {
 
   private onNavigationChange = (item: Identifier) => {
     if (this.shouldLoadNext(item)) {
-      const { context, collectionName } = this.props;
-      context.collection.loadNextPage(collectionName);
+      const { context, collectionName, pageSize } = this.props;
+
+      context.collection.loadNextPage(collectionName, { limit: pageSize });
     }
   };
 
