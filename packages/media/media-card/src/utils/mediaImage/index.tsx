@@ -79,10 +79,10 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
   }
 
   onImageLoad(component: any) {
-    return function() {
+    return function(this: any) {
       component.setState({
-        imgWidth: (this as any).width,
-        imgHeight: (this as any).height,
+        imgWidth: this.width,
+        imgHeight: this.height,
       });
     };
   }
