@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 79.0.9
+- [patch] Fixes toolbar config resolution when node is an atom or a leaf. ED-5301 [e937aa0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e937aa0)
+
 ## 79.0.8
 - [patch] Save async loaded modules on static field to save a rerender [5b3f37f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b3f37f)
 
