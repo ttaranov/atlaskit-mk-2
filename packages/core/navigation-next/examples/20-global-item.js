@@ -1,7 +1,6 @@
 // @flow
 
 import React, { type ComponentType } from 'react';
-import { ThemeProvider } from 'emotion-theming';
 import Avatar from '@atlaskit/avatar';
 import Badge from '@atlaskit/badge';
 import AddIcon from '@atlaskit/icon/glyph/add';
@@ -9,7 +8,14 @@ import JiraIcon from '@atlaskit/icon/glyph/jira';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
 
-import { GlobalItem, GlobalItemPrimitive, light, dark, settings } from '../src';
+import {
+  GlobalItem,
+  GlobalItemPrimitive,
+  light,
+  dark,
+  settings,
+  ThemeProvider,
+} from '../src';
 
 const themeModes = { light, dark, settings };
 

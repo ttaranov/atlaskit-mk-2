@@ -2,7 +2,6 @@
 
 import React, { Fragment, type Node } from 'react';
 import { keyframes } from 'emotion';
-import { ThemeProvider } from 'emotion-theming';
 import { Transition } from 'react-transition-group';
 import { colors } from '@atlaskit/theme';
 
@@ -12,7 +11,12 @@ import {
   transitionTimingFunction,
 } from '../../common/constants';
 import { Shadow } from '../../common/primitives';
-import { light, withContentTheme, type ProductTheme } from '../../theme';
+import {
+  light,
+  withContentTheme,
+  ThemeProvider,
+  type ProductTheme,
+} from '../../theme';
 
 const animationFade = state => {
   const defaultStyle = {

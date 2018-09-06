@@ -1,7 +1,6 @@
 // @flow
 
 import React from 'react';
-import { ThemeProvider } from 'emotion-theming';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left-circle';
 import BacklogIcon from '@atlaskit/icon/glyph/backlog';
 import BoardIcon from '@atlaskit/icon/glyph/board';
@@ -25,6 +24,7 @@ import {
   Section,
   SectionHeading,
   Separator,
+  ThemeProvider,
 } from '../src';
 
 const FakeContentNav = ({ isContainer = false, ...props }: any) => (
