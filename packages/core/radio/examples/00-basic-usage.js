@@ -30,18 +30,6 @@ export default class BasicExample extends PureComponent<void, State> {
       <div>
         <p>Pick a color:</p>
         <RadioGroup options={options} onChange={this.onChange} />
-        <div
-          style={{
-            borderStyle: 'dashed',
-            borderWidth: '1px',
-            borderColor: '#ccc',
-            padding: '0.5em',
-            color: '#ccc',
-            margin: '0.5em',
-          }}
-        >
-          {this.state.onChangeResult}
-        </div>
       </div>
     );
   }

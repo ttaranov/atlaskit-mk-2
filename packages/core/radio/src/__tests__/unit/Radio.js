@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
-import Radio from '../../Radio';
+import { RadioWithoutAnalytics as Radio } from '../../Radio';
 import { name } from '../../../package.json';
 
 describe(name, () => {
@@ -22,14 +22,14 @@ describe(name, () => {
 
       it('should render an input and the content', () => {
         const content = 'content';
-        const wrapper = mount(<Radio onChange={() => {}}>{content}</Radio>);
+        const wrapper = mount(<Radio onChange={() => {}} label={content} />);
         expect(wrapper.find('input').length).toBe(1);
         expect(wrapper.text()).toBe(content);
       });
 
       it('should render content with markup correctly', () => {
         const content = <div>content</div>;
-        const wrapper = mount(<Radio onChange={() => {}}>{content}</Radio>);
+        const wrapper = mount(<Radio onChange={() => {}} label={content} />);
         expect(wrapper.find('input').length).toBe(1);
         expect(wrapper.contains(content)).toBe(true);
       });
