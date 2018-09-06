@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 79.0.11
+- [patch] Renamed labelling of horizontal rule to divider [ef248cc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef248cc)
+
 ## 79.0.10
 - [patch] Fixes changing a tables position in collab mode which throws an error as it loses its dom reference. ED-5305 [b64e86e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b64e86e)
 
