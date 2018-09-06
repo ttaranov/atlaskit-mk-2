@@ -18,8 +18,10 @@ export default function Example() {
           <Lozenge appearance={{ backgroundColor: 'green' }}>Success</Lozenge>
         </p>
         <p>
-          appearance: {`{ backgroundColor: 'yellow', color: 'blue' }`}{' '}
-          <Lozenge appearance={{ backgroundColor: 'yellow', color: 'blue' }}>
+          appearance: {`{ backgroundColor: 'yellow', textColor: 'blue' }`}{' '}
+          <Lozenge
+            appearance={{ backgroundColor: 'yellow', textColor: 'blue' }}
+          >
             Custom
           </Lozenge>
         </p>

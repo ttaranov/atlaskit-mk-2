@@ -59,8 +59,8 @@ export type ThemeProps = {
     maxWidth: number | string,
   }) => {
     backgroundColor?: string,
-    color?: string,
     maxWidth?: number | string,
+    textColor?: string,
   },
   mode?: 'light' | 'dark',
 };
@@ -69,22 +69,13 @@ export function theme(props: ThemeProps): ThemeProps {
   const mode = props.mode || 'light';
   return {
     lozenge: ({ appearance, isBold, maxWidth }) => {
-      const mergedAppearance = {
-        backgroundColor: (isBold ? boldBackgroundColor : backgroundColor)
-          .default.light,
-        textColor: (isBold ? boldTextColor : textColor).default.light,
-        ...appearance,
-      };
       return {
         ...(typeof appearance === 'object'
           ? {
-              ...mergedAppearance,
-
-              // TODO remove this in a breaking change.
-              //
-              // We renamed color to textColor to be consistent, but did
-              // this to remain backward compatible.
-              textColor: mergedAppearance.color || mergedAppearance.textColor,
+              backgroundColor: (isBold ? boldBackgroundColor : backgroundColor)
+                .default.light,
+              textColor: (isBold ? boldTextColor : textColor).default.light,
+              ...appearance,
             }
           : {
               backgroundColor: (isBold
