@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/react-experiment-framework",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Experimentation React components",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
