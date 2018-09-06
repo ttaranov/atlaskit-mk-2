@@ -18,7 +18,7 @@ const getPageLoadNumber = () => {
   return Math.round(navigationEntries[0].domComplete);
 };
 
-export const sendApdex = (location, timing) => {
+export const sendApdex = (location, timing, isInitial = false) => {
   let apdex = 0;
   if (timing < 1000) apdex = 100;
   else if (timing < 4000) apdex = 50;
@@ -38,6 +38,7 @@ export const sendApdex = (location, timing) => {
     apdex: apdex,
     loadTimeInMs: timing,
     path: location.pathname,
+    isInitial,
   };
   request.addEvent(`atlaskit.website.performance`, attributes);
   request.send();
@@ -46,7 +47,7 @@ export const sendApdex = (location, timing) => {
 const sendInitialApdex = location => {
   const timing = getPageLoadNumber();
   if (!timing) return null;
-  sendApdex(location, timing);
+  sendApdex(location, timing, true);
 };
 
 class GoogleAnalyticsListener extends Component {
