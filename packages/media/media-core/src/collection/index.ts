@@ -45,6 +45,20 @@ export type CollectionCache = {
   };
 };
 
+const mergeIds = (firstPageIds: string[], currentIds: string[]): string[] => {
+  let reachedFirst = false;
+  const firstId = currentIds[0];
+  const newIds = firstPageIds.filter(id => {
+    if (reachedFirst) {
+      return false;
+    }
+    reachedFirst = firstId === id;
+    return !reachedFirst;
+  });
+
+  return [...newIds, ...currentIds];
+};
+
 const cache: CollectionCache = {};
 
 export class CollectionFetcher {
@@ -105,25 +119,26 @@ export class CollectionFetcher {
       .then(items => {
         const { contents, nextInclusiveStartKey } = items.data;
         this.populateCache(contents);
-        const ids = contents.map(item => item.id);
+        const newIds = contents.map(item => item.id);
 
-        collection.ids = ids;
+        collection.ids = mergeIds(newIds, collection.ids);
 
         // We only want to asign nextInclusiveStartKey the first time
         if (!collection.nextInclusiveStartKey) {
           collection.nextInclusiveStartKey = nextInclusiveStartKey;
         }
 
-        subject.next(ids);
+        subject.next(collection.ids);
       });
 
     return subject;
   }
 
-  // TODO: check if we are already loading the next page for the given collectionName
   async loadNextPage(collectionName: string) {
     const collection = cache[collectionName];
-    if (!collection) {
+    const isLoading = collection ? collection.isLoadingNextPage : false;
+
+    if (!collection || isLoading) {
       return;
     }
 
