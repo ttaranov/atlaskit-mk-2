@@ -147,7 +147,7 @@ describe('PeopleSearchClient', () => {
       expect(item.avatarUrl).toEqual('avatarUrl');
       expect(item.name).toEqual('fullName');
       expect(item.href).toEqual('/people/123');
-      expect(item.analyticsType).toEqual(AnalyticsType.ResultPerson);
+      expect(item.analyticsType).toEqual(AnalyticsType.RecentPerson);
     });
 
     it('should return empty array when data.Collaborators is not defined', async () => {

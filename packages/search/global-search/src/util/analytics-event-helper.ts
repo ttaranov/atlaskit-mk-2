@@ -61,10 +61,14 @@ export function firePreQueryShownEvent(
 }
 
 export function fireExperimentExposureEvent(
-  experimentId: string,
+  experimentData: string | object,
   searchSessionId: string,
   createAnalyticsEvent: CreateAnalyticsEventFn,
 ) {
+  const experimentDetails =
+    typeof experimentData === 'object'
+      ? { abTest: experimentData }
+      : { experimentId: experimentData };
   fireGasEvent(
     createAnalyticsEvent,
     'exposed',
@@ -73,7 +77,7 @@ export function fireExperimentExposureEvent(
     'operational',
     {
       searchSessionId,
-      experimentId,
+      ...experimentDetails,
     },
   );
 }
