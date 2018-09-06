@@ -63,7 +63,19 @@ const baseStyles = {
   },
 };
 
-export default ({ product }: ModeColors) => () => ({
+type ScrollableSectionInnerContent = {
+  wrapper: any,
+  inner: any,
+};
+
+type ScrollableSectionInnerModeColors = {
+  container: ScrollableSectionInnerContent,
+  product: ScrollableSectionInnerContent,
+};
+
+export default ({
+  product,
+}: ModeColors) => (): ScrollableSectionInnerModeColors => ({
   container: {
     ...baseStyles,
     wrapper: {
