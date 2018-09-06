@@ -1,18 +1,23 @@
 import { Schema } from 'prosemirror-model';
-import getMediaNodeView from '../nodes/media';
+import getMediaSingleNodeView from '../nodes/mediaSingle';
 import { Token } from './';
+import { parseAttrs } from '../utils/attrs';
 
 // [!image.jpg!|https://www.atlassian.com]
-const ATTACHMENT_REGEXP = /^\!([\(\)\w. -]+)\|?[\w=,. ]*\!/;
+const MEDIA_REGEXP = /^\!([\(\)\w. -]+)\|?([\w=,. ]*)\!/;
 
-export function attachment(input: string, schema: Schema): Token {
-  const match = input.match(ATTACHMENT_REGEXP);
+export function media(input: string, schema: Schema): Token {
+  const match = input.match(MEDIA_REGEXP);
 
   if (!match) {
     return fallback(input);
   }
 
-  const node = getMediaNodeView(schema, match[1]);
+  const node = getMediaSingleNodeView(
+    schema,
+    match[1],
+    parseAttrs(match[2], ','),
+  );
 
   return {
     type: 'pmnode',
