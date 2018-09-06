@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react';
 import Select from '@atlaskit/select';
 import FieldText from '@atlaskit/field-text';
 import Toggle from '@atlaskit/toggle';
-import Checkbox from '@atlaskit/checkbox';
+import { Checkbox } from '@atlaskit/checkbox';
 import Button from '@atlaskit/button';
 import isEmail from 'validator/lib/isEmail';
 import Calendar from '@atlaskit/calendar';

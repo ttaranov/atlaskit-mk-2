@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import Select from '@atlaskit/select';
 import Form, { Field } from '@atlaskit/form';
-import Checkbox from '@atlaskit/checkbox';
+import { Checkbox } from '@atlaskit/checkbox';
 import Modal, { ModalFooter } from '@atlaskit/modal-dialog';
 import { FieldTextAreaStateless } from '@atlaskit/field-text-area';
 import type { FormFields } from '../types';

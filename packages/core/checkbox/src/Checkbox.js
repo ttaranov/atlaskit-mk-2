@@ -1,9 +1,19 @@
 // @flow
 
 import React, { Component } from 'react';
+import {
+  withAnalyticsEvents,
+  withAnalyticsContext,
+  createAndFireEvent,
+} from '@atlaskit/analytics-next';
 import { ThemeProvider } from 'styled-components';
-import { Label } from './styled/Checkbox';
-import CheckboxInput from './CheckboxInput';
+import CheckboxIcon from './CheckboxIcon';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
+import { HiddenCheckbox, Label } from './styled/Checkbox';
 import { type CheckboxProps } from './types';
 
 type State = {|
@@ -16,13 +26,13 @@ type State = {|
 
 const emptyTheme = {};
 
-export default class Checkbox extends Component<CheckboxProps, State> {
+class Checkbox extends Component<CheckboxProps, State> {
   static defaultProps = {
     isDisabled: false,
     isInvalid: false,
     defaultChecked: false,
+    isIndeterminate: false,
   };
-
   state: State = {
     isActive: false,
     isFocused: false,
@@ -42,6 +52,9 @@ export default class Checkbox extends Component<CheckboxProps, State> {
     // it must be set via the ref.
     if (this.checkbox) {
       this.checkbox.indeterminate = !!isIndeterminate;
+      if (this.props.inputRef) {
+        this.props.inputRef(this.checkbox);
+      }
     }
   }
 
@@ -107,10 +120,10 @@ export default class Checkbox extends Component<CheckboxProps, State> {
       isDisabled,
       isFullWidth,
       isInvalid,
-      label,
       name,
       value,
       isIndeterminate,
+      label,
       ...props
     } = this.props;
     const isChecked = this.getProp('isChecked');
@@ -127,26 +140,71 @@ export default class Checkbox extends Component<CheckboxProps, State> {
           onMouseLeave={this.onMouseLeave}
           onMouseUp={this.onMouseUp}
         >
-          <CheckboxInput
-            isChecked={isChecked}
-            isDisabled={isDisabled}
-            isFocused={isFocused}
-            isActive={isActive}
-            isHovered={isHovered}
-            isInvalid={isInvalid}
-            isIndeterminate={isIndeterminate}
-            onChange={this.onChange}
-            onBlur={this.onBlur}
-            onFocus={this.onFocus}
-            onKeyUp={this.onKeyUp}
-            onKeyDown={this.onKeyDown}
-            value={value}
-            name={name}
-            inputRef={r => (this.checkbox = r)} // eslint-disable-line
-          />
+          <span
+            style={{
+              flexShrink: 0,
+              display: 'inline-block',
+              position: 'relative',
+            }}
+          >
+            <HiddenCheckbox
+              disabled={isDisabled}
+              checked={isChecked}
+              onChange={this.onChange}
+              onBlur={this.onBlur}
+              onFocus={this.onFocus}
+              onKeyUp={this.onKeyUp}
+              onKeyDown={this.onKeyDown}
+              type="checkbox"
+              value={value}
+              name={name}
+              innerRef={r => (this.checkbox = r)} // eslint-disable-line
+            />
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+              }}
+            >
+              <CheckboxIcon
+                isChecked={isChecked}
+                isDisabled={isDisabled}
+                isFocused={isFocused}
+                isActive={isActive}
+                isHovered={isHovered}
+                isInvalid={isInvalid}
+                isIndeterminate={isIndeterminate}
+                primaryColor="inherit"
+                secondaryColor="inherit"
+                label=""
+              />
+            </div>
+          </span>
           {label}
         </Label>
       </ThemeProvider>
     );
   }
 }
+
+export { Checkbox as CheckboxWithoutAnalytics };
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+
+export default withAnalyticsContext({
+  componentName: 'checkbox',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onChange: createAndFireEventOnAtlaskit({
+      action: 'changed',
+      actionSubject: 'checkbox',
+
+      attributes: {
+        componentName: 'checkbox',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(Checkbox),
+);

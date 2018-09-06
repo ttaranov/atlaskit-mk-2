@@ -11,7 +11,7 @@ import Page from '@atlaskit/page';
 import Tooltip from '@atlaskit/tooltip';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import { FieldTextStateless } from '@atlaskit/field-text';
-import Checkbox from '@atlaskit/checkbox';
+import { Checkbox } from '@atlaskit/checkbox';
 import { AkSearch } from '@atlaskit/quick-search';
 
 import Navigation, {

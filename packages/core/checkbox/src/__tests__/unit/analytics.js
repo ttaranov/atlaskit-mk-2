@@ -8,7 +8,7 @@ import {
   name as packageName,
   version as packageVersion,
 } from '../../../package.json';
-import '../../../src/CheckboxInput';
+import '../../../src/Checkbox';
 
 // This is a global mock for this file that will mock all components wrapped with analytics
 // and replace them with an empty SFC that returns null. This includes components imported
@@ -19,10 +19,10 @@ jest.mock('@atlaskit/analytics-next', () => ({
   createAndFireEvent: jest.fn(() => jest.fn(args => args)),
 }));
 
-describe('CheckboxInput', () => {
+describe('checkbox', () => {
   it('should be wrapped with analytics context', () => {
     expect(withAnalyticsContext).toHaveBeenCalledWith({
-      componentName: 'checkboxInput',
+      componentName: 'checkbox',
       packageName,
       packageVersion,
     });
@@ -33,9 +33,9 @@ describe('CheckboxInput', () => {
     expect(withAnalyticsEvents).toHaveBeenLastCalledWith({
       onChange: {
         action: 'changed',
-        actionSubject: 'checkboxInput',
+        actionSubject: 'checkbox',
         attributes: {
-          componentName: 'checkboxInput',
+          componentName: 'checkbox',
           packageName,
           packageVersion,
         },

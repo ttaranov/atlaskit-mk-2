@@ -1,6 +1,6 @@
 // @flow
 import React, { Component, Fragment } from 'react';
-import Checkbox from '@atlaskit/checkbox';
+import { Checkbox } from '@atlaskit/checkbox';
 import Button from '../src';
 
 const appearances = [

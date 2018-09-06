@@ -1,5 +1,4 @@
 // @flow
 
-export { default } from './Checkbox';
-export { default as CheckboxInput } from './CheckboxInput';
+export { default as Checkbox } from './Checkbox';
 export { default as CheckboxIcon } from './CheckboxIcon';

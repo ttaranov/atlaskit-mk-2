@@ -5,8 +5,8 @@ import { mount } from 'enzyme';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
 import CheckboxIndeterminateIcon from '@atlaskit/icon/glyph/checkbox-indeterminate';
 
-import CheckboxWithAnalytics from '../../CheckboxInput';
-import Checkbox, { CheckboxInput } from '../../';
+import CheckboxWithAnalytics from '../../Checkbox';
+import { Checkbox } from '../../';
 import { HiddenCheckbox } from '../../styled/Checkbox';
 import { name } from '../../../package.json';
 
@@ -37,7 +37,7 @@ describe(name, () => {
     });
     it('should show indeterminate icon when indeterminate', () => {
       const cb = mount(
-        <CheckboxInput
+        <Checkbox
           onChange={() => {}}
           name="stub"
           value="stub value"
@@ -85,6 +85,7 @@ describe(name, () => {
       );
       expect(spy).toHaveBeenCalled();
       const [instance] = spy.mock.calls[0];
+      //$FlowFixMe
       expect(instance).toBeInstanceOf(Checkbox);
     });
   });
