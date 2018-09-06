@@ -75,8 +75,11 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
   if (extensionState && extensionState.element) {
     return {
       title: 'Extension floating controls',
-      getDomRef: () => extensionState.element,
-      nodeType: state.schema.nodes.panel,
+      getDomRef: () => extensionState.element!.parentElement || undefined,
+      nodeType: [
+        state.schema.nodes.extension,
+        state.schema.nodes.inlineExtension,
+      ],
       items: [
         {
           type: 'button',
