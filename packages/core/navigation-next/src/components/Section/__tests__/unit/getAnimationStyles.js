@@ -1,5 +1,5 @@
 // @flow
-import { getSectionWrapperStyles } from '../../styles';
+import getAnimationStyles from '../../getAnimationStyles';
 
 const commonTransitionalEnteringStyles = {
   state: 'entering',
@@ -11,34 +11,30 @@ const commonTransitionalExitingStyles = {
   traversalDirection: 'up',
 };
 
-describe('Navigation Next: Section styles', () => {
+describe('Navigation Next: getAnimationStyles', () => {
   it('should return the base styles if is state or traversal direction is NOT valid', () => {
     expect(
-      getSectionWrapperStyles({ state: 'entered', traversalDirection: 'up' }),
-    ).toMatchObject({
-      boxSizing: 'border-box',
-    });
+      getAnimationStyles({ state: 'entered', traversalDirection: 'up' }),
+    ).toMatchObject({});
 
     expect(
-      getSectionWrapperStyles({ state: 'entering', traversalDirection: null }),
-    ).toMatchObject({
-      boxSizing: 'border-box',
-    });
+      getAnimationStyles({ state: 'entering', traversalDirection: null }),
+    ).toMatchObject({});
   });
 
   describe('When state is `entering`', () => {
     it('should add different animations based on traversal direction', () => {
-      const down = getSectionWrapperStyles({
+      const down = getAnimationStyles({
         ...commonTransitionalEnteringStyles,
         traversalDirection: 'down',
       });
-      const up = getSectionWrapperStyles(commonTransitionalEnteringStyles);
+      const up = getAnimationStyles(commonTransitionalEnteringStyles);
       expect(up.animationName !== down.animationName).toBe(true);
     });
 
     it('should add the specific styles for the animation', () => {
       expect(
-        getSectionWrapperStyles(commonTransitionalEnteringStyles),
+        getAnimationStyles(commonTransitionalEnteringStyles),
       ).toMatchObject({
         position: 'absolute',
         width: '100%',
@@ -48,11 +44,11 @@ describe('Navigation Next: Section styles', () => {
 
   describe('When state is `exiting`', () => {
     it('should add different animations based on traversal direction', () => {
-      const down = getSectionWrapperStyles({
+      const down = getAnimationStyles({
         ...commonTransitionalExitingStyles,
         traversalDirection: 'down',
       });
-      const up = getSectionWrapperStyles(commonTransitionalExitingStyles);
+      const up = getAnimationStyles(commonTransitionalExitingStyles);
       expect(up.animationName !== down.animationName).toBe(true);
     });
   });

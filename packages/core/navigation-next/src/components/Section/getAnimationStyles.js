@@ -32,7 +32,10 @@ type GetTransitionStylesArgs = {
   traversalDirection: 'up' | 'down' | null,
 };
 
-export default ({ state, traversalDirection }: GetTransitionStylesArgs) => {
+export default ({
+  state,
+  traversalDirection,
+}: GetTransitionStylesArgs): { animationName?: string } => {
   if (!['entering', 'exiting'].includes(state) || !traversalDirection) {
     return {};
   }
