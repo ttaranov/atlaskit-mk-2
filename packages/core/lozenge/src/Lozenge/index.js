@@ -4,20 +4,11 @@ import { Theme } from '@atlaskit/theme';
 import React, { PureComponent, type Node } from 'react';
 import Container from './styledContainer';
 import Content from './styledContent';
-import { theme } from './theme';
-
-export type Appearances =
-  | 'default'
-  | 'success'
-  | 'removed'
-  | 'inprogress'
-  | 'new'
-  | 'moved'
-  | {};
+import { theme, type ThemeAppearance, type ThemeProps } from './theme';
 
 type Props = {
   /** The appearance type. */
-  appearance: Appearances,
+  appearance: ThemeAppearance,
 
   /** Elements to be rendered inside the lozenge. This should ideally be just a word or two. */
   children?: Node,
@@ -44,11 +35,14 @@ export default class Lozenge extends PureComponent<Props> {
     const { props } = this;
     return (
       <Theme values={props.theme}>
-        {({ lozenge }) => (
-          <Container {...lozenge(props)}>
-            <Content>{props.children}</Content>
-          </Container>
-        )}
+        {({ lozenge }) => {
+          const themeProps = lozenge(props);
+          return (
+            <Container {...themeProps}>
+              <Content {...themeProps}>{props.children}</Content>
+            </Container>
+          );
+        }}
       </Theme>
     );
   }
