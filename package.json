@@ -94,6 +94,7 @@
   },
   "devDependencies": {
     "@types/chai": "^4.0.4",
+    "@types/classnames": "^2.2.6",
     "@types/enzyme": "^3.1.6",
     "@types/fetch-mock": "^6.0.3",
     "@types/jest": "^20.0.8",

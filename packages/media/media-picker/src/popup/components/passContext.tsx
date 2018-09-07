@@ -1,8 +1,8 @@
 import { Component } from 'react';
-import * as PropTypes from 'prop-types';
 import { AppProxyReactContext } from './app';
 import { Store } from 'redux';
 import { State } from '../domain';
+import { UIAnalyticsEventHandlerSignature } from '@atlaskit/analytics-next-types';
 
 export interface PassContextProps {
   store: Store<State>;
@@ -12,13 +12,13 @@ export default class PassContext extends Component<PassContextProps, any> {
   // We need to manually specify all the child contexts
   static childContextTypes = {
     store() {},
-    getAtlaskitAnalyticsEventHandlers: PropTypes.func,
+    getAtlaskitAnalyticsEventHandlers() {},
   };
 
   getChildContext() {
     const { store, proxyReactContext } = this.props;
 
-    const getAtlaskitAnalyticsEventHandlers =
+    const getAtlaskitAnalyticsEventHandlers: UIAnalyticsEventHandlerSignature =
       proxyReactContext && proxyReactContext.getAtlaskitAnalyticsEventHandlers
         ? proxyReactContext.getAtlaskitAnalyticsEventHandlers
         : () => [];

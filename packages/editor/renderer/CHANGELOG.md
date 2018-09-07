@@ -1,5 +1,10 @@
 # @atlaskit/renderer
 
+## 21.0.6
+- [patch] MediaSingle image now has 100% max-width in table cells [9e5ae81](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9e5ae81)
+- [patch] Updated dependencies [9e5ae81](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9e5ae81)
+  - @atlaskit/editor-common@15.0.6
+
 ## 21.0.5
 - [patch] move tests and add dev dependencies to help test  [177a858](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/177a858)
 

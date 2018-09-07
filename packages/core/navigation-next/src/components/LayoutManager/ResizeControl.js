@@ -7,7 +7,7 @@ import {
   type WithAnalyticsEventsProps,
 } from '@atlaskit/analytics-next';
 import { colors } from '@atlaskit/theme';
-import ChevronLeft from '@atlaskit/icon/glyph/chevron-left-large';
+import ChevronLeft from '@atlaskit/icon/glyph/chevron-left';
 import MenuIcon from '@atlaskit/icon/glyph/menu';
 import Tooltip from '@atlaskit/tooltip';
 
@@ -72,7 +72,7 @@ const Button = ({
       outline: 0,
       padding: 0,
       position: 'absolute',
-      top: 28,
+      top: 32,
       transition: `
         background-color 100ms linear,
         color 100ms linear,

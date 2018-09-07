@@ -1,3 +1,4 @@
+import { Action } from 'redux';
 import { WsUploadEvents } from '../tools/websocket/upload/wsUploadEvents';
 import { MediaFile } from '../../domain/file';
 
@@ -10,6 +11,12 @@ export interface HandleCloudFetchingEventAction<
   readonly file: MediaFile;
   readonly event: T;
   readonly payload: WsUploadEvents[T];
+}
+
+export function isHandleCloudFetchingEventAction<
+  T extends keyof WsUploadEvents
+>(action: Action): action is HandleCloudFetchingEventAction<T> {
+  return action.type === HANDLE_CLOUD_FETCHING_EVENT;
 }
 
 export function handleCloudFetchingEvent<T extends keyof WsUploadEvents>(

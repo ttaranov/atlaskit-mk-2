@@ -3,7 +3,6 @@ import WikiMarkupTransformer from '../../../index';
 describe('JIRA wiki markup - Images and attachments', () => {
   const testCases: Array<[string, string]> = [
     ['should find images in the text', '!image.png!'],
-    ['should find attachments in the text', '!file.txt!'],
     [
       'should find absolute URL images and convert it to link',
       '!http://www.host.com/image.gif!',

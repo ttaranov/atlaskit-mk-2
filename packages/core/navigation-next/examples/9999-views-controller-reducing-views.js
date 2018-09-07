@@ -4,7 +4,6 @@
 import React, { Component } from 'react';
 import { HashRouter, Link, Route, Switch } from 'react-router-dom';
 import GlobalNavigation from '@atlaskit/global-navigation';
-import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import BacklogIcon from '@atlaskit/icon/glyph/backlog';
 import BoardIcon from '@atlaskit/icon/glyph/board';
 import ComponentIcon from '@atlaskit/icon/glyph/component';
@@ -56,21 +55,18 @@ const productHomeView = {
   type: 'product',
   getItems: () => [
     {
-      type: 'Section',
+      type: 'HeaderSection',
       id: 'product/home:header',
       items: [
         {
-          type: () => (
-            <div css={{ padding: '16px 0' }}>
-              <JiraWordmark />
-            </div>
-          ),
+          type: 'Wordmark',
+          wordmark: JiraWordmark,
           id: 'jira-wordmark',
         },
       ],
     },
     {
-      type: 'Section',
+      type: 'MenuSection',
       nestedGroupKey: 'menu',
       id: 'product/home:menu',
       parentId: null,
@@ -82,12 +78,7 @@ const productHomeView = {
           text: 'Dashboards',
           to: '/',
         },
-        {
-          type: 'Item',
-          id: 'projects',
-          before: FolderIcon,
-          text: 'Projects',
-        },
+        { type: 'Item', id: 'projects', before: FolderIcon, text: 'Projects' },
         {
           type: 'Item',
           id: 'issues-and-filters',
@@ -115,38 +106,39 @@ const productIssuesView = {
         () =>
           resolve([
             {
-              type: 'Section',
+              type: 'HeaderSection',
               id: 'product/issues:header',
               items: [
                 {
-                  type: () => (
-                    <div css={{ padding: '16px 0' }}>
-                      <JiraWordmark />
-                    </div>
-                  ),
+                  type: 'Wordmark',
+                  wordmark: JiraWordmark,
                   id: 'jira-wordmark',
                 },
                 {
-                  type: 'Item',
+                  type: 'BackItem',
                   id: 'back-item',
-                  after: null,
-                  before: ArrowLeftIcon,
                   goTo: 'product/home',
-                  text: 'Back',
+                  text: 'Back to Jira',
                 },
               ],
             },
             {
-              type: 'Section',
+              type: 'MenuSection',
               nestedGroupKey: 'menu',
               id: 'product/issues:menu',
               parentId: 'product/home:menu',
+              alwaysShowScrollHint: true,
               items: [
                 {
+                  type: 'SectionHeading',
+                  text: 'Issues and filters',
+                  id: 'issues-and-filters-heading',
+                },
+                {
                   type: LinkItem,
+                  id: 'search-issues',
                   text: 'Search issues',
                   to: '/issues',
-                  id: 'search-issues',
                 },
                 { type: 'GroupHeading', id: 'other-heading', text: 'Other' },
                 { type: 'Item', text: 'My open issues', id: 'my-open-issues' },
@@ -193,13 +185,17 @@ const projectHomeView = {
   type: 'container',
   getItems: () => [
     {
-      type: 'Section',
+      type: 'HeaderSection',
       id: 'project/home:header',
       items: [
         {
           type: 'ContainerHeader',
           before: itemState => (
-            <ItemAvatar itemState={itemState} appearance="square" />
+            <ItemAvatar
+              itemState={itemState}
+              appearance="square"
+              size="large"
+            />
           ),
           text: 'My project',
           subText: 'Project description',
@@ -208,7 +204,7 @@ const projectHomeView = {
       ],
     },
     {
-      type: 'Section',
+      type: 'MenuSection',
       nestedGroupKey: 'menu',
       id: 'project/home:menu',
       parentId: null,

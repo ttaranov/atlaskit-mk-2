@@ -10,7 +10,7 @@ const urlOnBoarding = getExampleUrl(
   'spotlight-autoscroll',
 );
 const OnBoardingDefault = '#examples p:nth-child(3) > button';
-const OnBoardingMenuTitle = 'span h4';
+const OnBoardingMenuTitle = 'div h4';
 
 BrowserTestCase(
   'AK-4279 - Clicking on show should display the onboarding and no errors',
