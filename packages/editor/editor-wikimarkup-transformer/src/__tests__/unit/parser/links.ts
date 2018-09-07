@@ -18,7 +18,6 @@ describe('JIRA wiki markup - Links', () => {
       'should ignore file links',
       'This is a local file [file:///c:/temp/foo.txt] link',
     ],
-    ['should ignore anchor-links starting with ^', 'This is an [^anchor] link'],
     ['should ignore anchor-links starting with #', 'This is an [#anchor] link'],
     ['should ignore anchors', 'Anchor {anchor:anchorname} here'],
     [

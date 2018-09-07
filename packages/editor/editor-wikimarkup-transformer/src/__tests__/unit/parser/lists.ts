@@ -49,6 +49,17 @@ describe('JIRA wiki markup - Lists', () => {
       // tslint:disable-next-line:max-line-length
       "Steps to reproduce:\r\n* Type something\r\n* Type @\r\n* Type few letters\r\n* mention mark disappears \r\n\r\nExpected:\r\n* Mention mark doesn't disappear",
     ],
+    [
+      'should break out the media group',
+      `* This is a media group [^file.pdf] and text after it`,
+    ],
+    [
+      'should break out the media group even in nested list',
+      `* nested
+** media group [^file.pdf] here
+** nice nice
+* all good`,
+    ],
   ];
 
   for (const [testCaseDescription, markup] of testCases) {
