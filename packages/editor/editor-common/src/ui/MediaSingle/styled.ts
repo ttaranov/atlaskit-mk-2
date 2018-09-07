@@ -34,12 +34,14 @@ function calcWidth(
         ? 'calc(50% - 12px)'
         : `${width}px`;
     case 'wide':
-      return `${Math.min(akEditorWideLayoutWidth, width)}px`;
+      return `${Math.min(akEditorWideLayoutWidth - 12 * 2, width)}px`;
     case 'full-width':
       return `${Math.min(width, containerWidth || 0) -
         akEditorBreakoutPadding}px`;
     default:
-      return width > akEditorFullPageMaxWidth ? '100%' : `${width}px`;
+      return width > akEditorFullPageMaxWidth - 12 * 2
+        ? `${akEditorFullPageMaxWidth - 12 * 2}px`
+        : `${width}px`;
   }
 }
 
