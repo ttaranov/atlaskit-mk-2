@@ -1,5 +1,11 @@
 # @atlaskit/media-viewer
 
+## 19.0.1
+- [patch] Update TS to 3.0 [f68d367](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f68d367)
+- [none] Updated dependencies [f68d367](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f68d367)
+  - @atlaskit/media-test-helpers@17.0.2
+  - @atlaskit/media-core@23.1.1
+
 ## 19.0.0
 - [major] remove jquery dep and mediaviewer classic support [02dee16](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/02dee16)
 
