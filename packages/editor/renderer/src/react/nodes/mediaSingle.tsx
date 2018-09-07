@@ -31,7 +31,7 @@ const ExtendedUIMediaSingle = styled(UIMediaSingle)`
 `;
 
 export default class MediaSingle extends Component<
-  { layout: MediaSingleLayout } & React.Props<any>,
+  { layout: MediaSingleLayout; columnSpan: number } & React.Props<any>,
   State
 > {
   constructor(props) {
@@ -84,6 +84,8 @@ export default class MediaSingle extends Component<
             width={width}
             height={height}
             containerWidth={containerWidth}
+            gridSize={12}
+            columns={props.columnSpan}
           >
             {media}
           </ExtendedUIMediaSingle>

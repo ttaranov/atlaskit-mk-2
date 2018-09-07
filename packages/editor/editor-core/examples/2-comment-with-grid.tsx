@@ -104,6 +104,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                       provider: mediaProvider,
                       allowMediaSingle: true,
                     }}
+                    allowLayouts={true}
                     taskDecisionProvider={taskDecisionProvider}
                     contextIdentifierProvider={contextIdentifierProvider}
                     UNSAFE_mediaSingle_grid={true}
