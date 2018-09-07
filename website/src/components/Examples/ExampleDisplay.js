@@ -1,6 +1,6 @@
 // @flow
 import React, { type ComponentType, type ElementRef, Component } from 'react';
-// we explicityl do not want to use our wrapped loadable here, as the modal being loaded should
+// we explicitly do not want to use our wrapped loadable here, as the modal being loaded should
 // be handled by the iframe sendApdex
 import Loadable from 'react-loadable';
 import Loading from '../Loading';

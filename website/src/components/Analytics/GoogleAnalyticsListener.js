@@ -55,7 +55,6 @@ export const sendInitialApdex = location => {
 
 type Props = {
   children: Node,
-  gaId: string,
   location: Object,
 };
 

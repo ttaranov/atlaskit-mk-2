@@ -21,7 +21,7 @@ import { isModuleNotFoundError } from '../../utils/errors';
 import * as fs from '../../utils/fs';
 import type { RouterMatch } from '../../types';
 
-import { Logs } from '../../components/ChangeLog';
+import type { Logs } from '../../components/ChangeLog';
 import fetchPackageData from './utils/fsOperations';
 
 export const Title = styled.div`
