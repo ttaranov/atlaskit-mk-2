@@ -11,6 +11,8 @@ export const paragraphSharedStyles = css`
     margin-top: ${blockNodesVerticalMargin};
     margin-bottom: 0;
     letter-spacing: -0.005em;
+    margin-left: 12px;
+    margin-right: 12px;
 
     &:first-child {
       margin-top: 0;

@@ -12,13 +12,15 @@ export const layoutStyles = css`
   .ProseMirror {
     ${columnLayoutSharedStyle} [data-layout-type] {
       position: relative;
-      width: calc(100% + 26px);
+      /*width: calc(100% + 26px);*/
       /* left-padding (12px) + layout-column-border (1px) */
-      left: -13px;
+      /*left: -13px;*/
 
       /* Inner cursor located 26px from left */
       & > * {
-        padding: ${akGridSizeUnitless * 1.5}px;
+        padding-top: ${akGridSizeUnitless * 1.5}px;
+        padding-bottom: ${akGridSizeUnitless * 1.5}px;
+        
         margin-top: ${akGridSizeUnitless - 1}px;
         flex: 1;
         min-width: 0;
@@ -26,7 +28,7 @@ export const layoutStyles = css`
         border-radius: 5px;
       }
       & > * + * {
-        margin-left: ${akGridSizeUnitless - 2}px;
+        /*margin-left: ${akGridSizeUnitless - 2}px;*/
       }
 
       /**
