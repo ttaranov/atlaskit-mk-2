@@ -17,22 +17,10 @@ const setBrowserStackClients = require('./utils/setupClients')
 const setLocalClients = require('./utils/setupClients').setLocalClients;
 let clients /*: Array<?Object>*/ = [];
 let skipForBrowser /*:?Object */ = {};
-let allTests = {};
 
 process.env.TEST_ENV === 'browserstack'
   ? (clients = setBrowserStackClients())
   : (clients = setLocalClients());
-
-afterAll(async function() {
-  await Promise.all(
-    clients.map(async client => {
-      if (client) {
-        client.isReady = false;
-        await client.driver.end();
-      }
-    }),
-  );
-});
 
 afterAll(async function() {
   await Promise.all(
@@ -53,7 +41,7 @@ function BrowserTestCase(...args /*:Array<any> */) {
     const unskippedTests = [];
 
     for (const client of clients) {
-      let s;
+      let started;
       // set up client
       const launchClient = async () => {
         if (client) {
@@ -75,10 +63,10 @@ function BrowserTestCase(...args /*:Array<any> */) {
 
       const clientLauncher = {
         get start() {
-          if (!s) {
-            s = launchClient();
+          if (!started) {
+            started = launchClient();
           }
-          return s;
+          return started;
         },
       };
 
@@ -119,7 +107,7 @@ type Tester<Object> = (opts: Object, done?: () => void) => ?Promise<mixed>;
 */
 function testRun(
   testCase /*: {name:string, skip?:boolean ,only?:boolean}*/,
-  tester,
+  tester /*: Tester*/,
 ) {
   let testFn;
   if (testCase.only) {
