@@ -1,74 +1,78 @@
 import { MediaCollectionItem } from '@atlaskit/media-store';
 import { nextTick } from '@atlaskit/media-test-helpers';
-import { CollectionFetcher, collectionCache } from '../../collection';
+import {
+  CollectionFetcher,
+  collectionCache,
+  mergeItems,
+} from '../../collection';
 import { fileStreamsCache } from '../../context/fileStreamCache';
 
-describe('CollectionFetcher', () => {
-  const setup = () => {
-    const firstItem: MediaCollectionItem = {
-      id: '1',
-      details: {
-        artifacts: {},
-        mediaType: 'image',
-        mimeType: 'png',
-        name: 'foo',
-        processingStatus: 'processing',
-        size: 1,
-      },
-      insertedAt: 1,
-      occurrenceKey: '12',
-      type: 'file',
-    };
-    const secondItem: MediaCollectionItem = {
-      id: '2',
-      details: {
-        artifacts: {},
-        mediaType: 'image',
-        mimeType: 'png',
-        name: 'bar',
-        processingStatus: 'processed',
-        size: 1,
-      },
-      insertedAt: 1,
-      occurrenceKey: '123',
-      type: 'file',
-    };
-    const newItem: MediaCollectionItem = {
-      id: '0',
-      details: {
-        artifacts: {},
-        mediaType: 'image',
-        mimeType: 'png',
-        name: 'bar',
-        processingStatus: 'processing',
-        size: 1,
-      },
-      insertedAt: 1,
-      occurrenceKey: '1234',
-      type: 'file',
-    };
-    const contents: MediaCollectionItem[] = [firstItem, secondItem];
-    const getCollectionItems = jest.fn().mockReturnValue(
-      Promise.resolve({
-        data: {
-          contents,
-          nextInclusiveStartKey: 'first-key',
-        },
-      }),
-    );
-    const mediaStore: any = {
-      getCollectionItems,
-    };
-    const collectionFetcher = new CollectionFetcher(mediaStore);
-
-    return {
-      collectionFetcher,
-      getCollectionItems,
-      contents,
-      newItem,
-    };
+const setup = () => {
+  const firstItem: MediaCollectionItem = {
+    id: '1',
+    details: {
+      artifacts: {},
+      mediaType: 'image',
+      mimeType: 'png',
+      name: 'foo',
+      processingStatus: 'processing',
+      size: 1,
+    },
+    insertedAt: 1,
+    occurrenceKey: '12',
+    type: 'file',
   };
+  const secondItem: MediaCollectionItem = {
+    id: '2',
+    details: {
+      artifacts: {},
+      mediaType: 'image',
+      mimeType: 'png',
+      name: 'bar',
+      processingStatus: 'processed',
+      size: 1,
+    },
+    insertedAt: 1,
+    occurrenceKey: '123',
+    type: 'file',
+  };
+  const newItem: MediaCollectionItem = {
+    id: '0',
+    details: {
+      artifacts: {},
+      mediaType: 'image',
+      mimeType: 'png',
+      name: 'bar',
+      processingStatus: 'processing',
+      size: 1,
+    },
+    insertedAt: 1,
+    occurrenceKey: '1234',
+    type: 'file',
+  };
+  const contents: MediaCollectionItem[] = [firstItem, secondItem];
+  const getCollectionItems = jest.fn().mockReturnValue(
+    Promise.resolve({
+      data: {
+        contents,
+        nextInclusiveStartKey: 'first-key',
+      },
+    }),
+  );
+  const mediaStore: any = {
+    getCollectionItems,
+  };
+  const collectionFetcher = new CollectionFetcher(mediaStore);
 
+  return {
+    collectionFetcher,
+    getCollectionItems,
+    contents,
+    newItem,
+  };
+};
+
+describe('CollectionFetcher', () => {
   beforeEach(() => {
     fileStreamsCache.removeAll();
     delete collectionCache.recents;
@@ -254,6 +258,28 @@ describe('CollectionFetcher', () => {
       await collectionFetcher.loadNextPage('recents');
     });
   });
+});
 
-  describe('mergeItems()', () => {});
+describe('mergeItems()', () => {
+  it('should prepend new items to existing ones', () => {
+    const { contents, newItem } = setup();
+
+    expect(mergeItems([newItem, ...contents], contents)).toEqual([
+      newItem,
+      ...contents,
+    ]);
+    expect(mergeItems([newItem], contents)).toEqual([newItem, ...contents]);
+  });
+
+  it('should add all new items when existing ones are empty', () => {
+    const { contents } = setup();
+
+    expect(mergeItems(contents, [])).toEqual(contents);
+  });
+
+  it('should keep existing items', () => {
+    const { contents } = setup();
+
+    expect(mergeItems(contents, contents)).toEqual(contents);
+  });
 });
