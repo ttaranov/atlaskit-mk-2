@@ -25,7 +25,6 @@ process.env.TEST_ENV === 'browserstack'
 afterAll(async function() {
   await Promise.all(
     clients.map(async client => {
-      if (client.isReady) return;
       client.isReady = false;
       await client.driver.end();
     }),
