@@ -75,7 +75,6 @@ export default class Example extends Component<{}, ExampleState> {
                 <ExpandToggleButton />
               </div>
             </LayoutManager>
-            {/* <UIStateListener onCollapse={this.openChangeboarding} /> */}
             {isChangeboardingOpen &&
               this.spotlightTargetNode && (
                 <Spotlight
