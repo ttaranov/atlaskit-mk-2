@@ -67,19 +67,16 @@ export class CollectionFetcher {
     id: string,
     details: MediaCollectionItemFullDetails,
   ): Observable<FileState> {
-    const fileStream = new Observable<FileState>(observer => {
-      const mediaFile: MediaFile = {
-        id,
-        ...details,
-      };
-      const fileState = mapMediaFileToFileState({ data: mediaFile });
+    const subject = new ReplaySubject<FileState>(1);
+    const mediaFile: MediaFile = {
+      id,
+      ...details,
+    };
+    const fileState = mapMediaFileToFileState({ data: mediaFile });
 
-      observer.next(fileState);
-    }).publishReplay(1);
+    subject.next(fileState);
 
-    fileStream.connect();
-
-    return fileStream;
+    return subject;
   }
 
   private populateCache(items: MediaCollectionItem[], collectionName: string) {

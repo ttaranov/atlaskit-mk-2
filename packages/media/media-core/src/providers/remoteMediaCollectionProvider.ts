@@ -1,19 +1,14 @@
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { publishReplay } from 'rxjs/operators/publishReplay';
-
-import { MediaCollection, MediaCollectionItem } from '../collection';
+import { AxiosError } from 'axios';
 import {
   CollectionService,
   SortDirection,
 } from '../services/collectionService';
 import { MediaCollectionProvider } from './mediaCollectionProvider';
-import { AxiosError } from 'axios';
 import { CollectionNotFoundError } from '../index';
-
-export type MediaCollectionItemPredicate = (
-  item: MediaCollectionItem,
-) => boolean;
+import { MediaCollection, MediaCollectionItem } from './types';
 
 export class RemoteMediaCollectionProvider implements MediaCollectionProvider {
   private readonly subject = new Subject<MediaCollection | Error>();

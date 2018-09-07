@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs/Observable';
-import { MediaCollection } from '../collection';
+import { MediaCollection } from './types';
 
 export interface MediaCollectionProvider {
   observable(): Observable<MediaCollection | Error>;
