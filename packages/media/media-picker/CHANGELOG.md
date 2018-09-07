@@ -1,5 +1,8 @@
 # @atlaskit/media-picker
 
+## 15.1.1
+- [patch] Fix app not dispatching dropzone actions [34f69df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/34f69df)
+
 ## 15.1.0
 - [minor] Instrument media-picker with analytics [d5f093b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5f093b)
 
