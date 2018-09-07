@@ -1,5 +1,8 @@
 # @atlaskit/radio
 
+## 0.2.0
+- [minor] Removed radioInput component, replaced Radio children prop with optional label prop to enable the use case facilitated by RadioInput. Added aria-label prop to Radio for accessibility. Wrapped Radio component in Analytics. [866a29b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/866a29b)
+
 ## 0.1.0
 - [minor] Dev release of @atlaskit/radio [2b37611](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2b37611)
 
