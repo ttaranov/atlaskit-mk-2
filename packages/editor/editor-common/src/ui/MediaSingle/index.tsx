@@ -55,6 +55,7 @@ export default function MediaSingle({
       layout={layout}
       width={mediaWidth}
       height={columns ? height / (width / mediaWidth) : height}
+      columnSpan={columns}
       containerWidth={containerWidth}
       className={classnames('media-single', layout, className, {
         'is-loading': isLoading,
