@@ -52,7 +52,7 @@ export function ensureBlocks(
     (fragment.firstChild.type === schema.nodes.bulletList ||
       fragment.firstChild.type === schema.nodes.orderedList)
   ) {
-    blockNodes.push(schema.nodes.paragraph.createAndFill()!);
+    blockNodes.push(schema.nodes.paragraph.createAndFill() as PMNode);
   }
 
   fragment.forEach(child => {

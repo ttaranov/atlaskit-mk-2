@@ -1,6 +1,3 @@
-// @ts-ignore
-import { TextDefinition } from '@atlaskit/editor-common';
-
 import {
   TextColorDefinition,
   TextColorAttributes,
