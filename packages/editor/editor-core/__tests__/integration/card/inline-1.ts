@@ -9,6 +9,7 @@ import {
   clipboardInput,
 } from '../_helpers';
 
+// --adding comments for testing
 [fullpage].forEach(editor => {
   BrowserTestCase(
     `pasting an link converts to inline card`,
