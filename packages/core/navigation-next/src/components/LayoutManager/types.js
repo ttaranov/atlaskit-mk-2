@@ -1,6 +1,6 @@
 // @flow
 
-import type { ComponentType, Node } from 'react';
+import type { ComponentType, ElementRef, Node } from 'react';
 
 import UIController from '../../ui-controller/UIController';
 
@@ -21,6 +21,14 @@ export type CollapseListeners = {
   onCollapseEnd?: CollapseListener,
 };
 
+type NonStringRef<T> = {
+  current: ElementRef<T>,
+};
+
+type Refs = {
+  expandCollapseAffordance: NonStringRef<'button'> | null,
+};
+
 export type ConnectedLayoutManagerProps = CollapseListeners & {
   /** Your page content. */
   children: Node,
@@ -32,6 +40,9 @@ export type ConnectedLayoutManagerProps = CollapseListeners & {
   productNavigation: ComponentType<{}>,
   /** Displayed when the user's mouse is over the collapse/expand toggle. */
   collapseToggleTooltipContent?: CollapseToggleTooltipContent,
+  /** A function to access the refs of some elements within the LayoutManager
+   * component. */
+  getRefs?: Refs => void,
 };
 
 export type LayoutManagerProps = ConnectedLayoutManagerProps & {

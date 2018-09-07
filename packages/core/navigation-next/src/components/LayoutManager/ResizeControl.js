@@ -1,6 +1,6 @@
 // @flow
 
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent, Fragment, type Node, type Ref } from 'react';
 import raf from 'raf-schd';
 import {
   withAnalyticsEvents,
@@ -50,15 +50,24 @@ const GrabArea = ({ showHandle, isBold, ...props }: *) => (
     />
   </div>
 );
+type ButtonProps = {
+  children: Node,
+  hasHighlight: boolean,
+  innerRef: Ref<'button'>,
+  isOffset: boolean,
+  isVisible: boolean,
+};
 const Button = ({
   children,
   hasHighlight,
+  innerRef,
   isOffset,
   isVisible,
   ...props
-}: *) => (
+}: ButtonProps) => (
   <button
     type="button"
+    ref={innerRef}
     css={{
       background: 0,
       backgroundColor: 'white',
@@ -148,9 +157,10 @@ function makeTooltipNode({ text, char }: { text: string, char: string }) {
 
 type Props = WithAnalyticsEventsProps & {
   children: State => any,
-  mutationRefs: Array<{ ref: HTMLElement, property: string }>,
   collapseToggleTooltipContent: CollapseToggleTooltipContent,
+  expandCollapseAffordanceRef: Ref<'button'>,
   mouseIsOverNavigation: boolean,
+  mutationRefs: Array<{ ref: HTMLElement, property: string }>,
   navigation: Object,
 };
 type State = {
@@ -342,9 +352,10 @@ class ResizeControl extends PureComponent<Props, State> {
     } = this.state;
     const {
       children,
+      collapseToggleTooltipContent,
+      expandCollapseAffordanceRef,
       mouseIsOverNavigation,
       navigation,
-      collapseToggleTooltipContent,
     } = this.props;
     const { isCollapsed } = navigation.state;
 
@@ -361,6 +372,7 @@ class ResizeControl extends PureComponent<Props, State> {
         // maintain styles when user is dragging
         isVisible={isCollapsed || mouseIsDown || mouseIsOverNavigation}
         hasHighlight={mouseIsDown || mouseIsOverGrabArea}
+        innerRef={expandCollapseAffordanceRef}
       >
         <ButtonIcon />
       </Button>

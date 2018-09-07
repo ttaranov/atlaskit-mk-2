@@ -49,6 +49,7 @@
     "@atlaskit/global-navigation": "^4.3.3",
     "@atlaskit/logo": "^9.0.2",
     "@atlaskit/lozenge": "^6.1.7",
+    "@atlaskit/onboarding": "^6.0.1",
     "@atlaskit/section-message": "^1.0.7",
     "@atlaskit/toggle": "^5.0.8",
     "@atlaskit/webdriver-runner": "^0.1.0",
