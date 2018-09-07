@@ -237,19 +237,6 @@ export function fireSelectedSearchResult(
   );
 }
 
-/**
- * checks if advanced link is clicked on no result screen
- * @param eventData
- */
-const checkOnNoResultScreen = eventData => {
-  const index = eventData.index || 0;
-  const sectionIndex = eventData.sectionIndex || 0;
-  const resultCount = eventData.resultCount || 0;
-  // no result screen if results count is 2 (2 advanced confluence search and advanced people search)
-  // or when index = 0 and section index is 1 => empty first section
-  return +!index === 0 && (+sectionIndex === 1 || +resultCount === 2);
-};
-
 export function fireSelectedAdvancedSearch(
   eventData: AdvancedSearchSelectedEvent,
   searchSessionId: string,
@@ -270,7 +257,7 @@ export function fireSelectedAdvancedSearch(
       queryId: null,
       isLoading: eventData.isLoading,
       ...getQueryAttributes(query),
-      wasOnNoResultsScreen: checkOnNoResultScreen(eventData),
+      wasOnNoResultsScreen: eventData.wasOnNoResultsScreen || false,
       ...transformSearchResultEventData(eventData),
     },
   );
