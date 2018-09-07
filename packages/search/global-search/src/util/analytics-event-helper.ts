@@ -198,12 +198,12 @@ export interface KeyboardControlEvent extends SearchResultEvent {
 export interface SelectedSearchResultEvent extends SearchResultEvent {
   method: string;
   newTab: boolean;
-}
-
-export interface AdvancedSearchSelectedEvent extends SelectedSearchResultEvent {
   query: string;
   queryVersion: number;
   queryId: null | string;
+}
+
+export interface AdvancedSearchSelectedEvent extends SelectedSearchResultEvent {
   wasOnNoResultsScreen: boolean;
   trigger?: string;
   isLoading: boolean;
@@ -221,7 +221,7 @@ export function fireSelectedSearchResult(
   searchSessionId: string,
   createAnalyticsEvent?: CreateAnalyticsEventFn,
 ) {
-  const { method, newTab } = eventData;
+  const { method, newTab, query, queryVersion } = eventData;
   fireGasEvent(
     createAnalyticsEvent,
     'selected',
@@ -229,6 +229,9 @@ export function fireSelectedSearchResult(
     'searchResult',
     'track',
     {
+      queryVersion,
+      queryId: null,
+      ...getQueryAttributes(query),
       trigger: method,
       searchSessionId: searchSessionId,
       newTab,
