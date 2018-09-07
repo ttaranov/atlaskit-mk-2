@@ -10,7 +10,6 @@ import {
 } from '../../api/CrossProductSearchClient';
 import { Result } from '../../model/Result';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
-import ConfluenceSearchResults from './ConfluenceSearchResults';
 import { SearchScreenCounter, ScreenCounter } from '../../util/ScreenCounter';
 import {
   LinkComponent,
@@ -24,6 +23,15 @@ import { CreateAnalyticsEventFn } from '../analytics/types';
 import performanceNow from '../../util/performance-now';
 import QuickSearchContainer from '../common/QuickSearchContainer';
 import { sliceResults } from './ConfluenceSearchResultsMapper';
+import NoResultsState from './NoResultsState';
+import SearchResultsComponent from '../common/SearchResults';
+import { getConfluenceAdvancedSearchLink } from '../SearchResultsUtil';
+import { FormattedHTMLMessage } from 'react-intl';
+import AdvancedSearchGroup from './AdvancedSearchGroup';
+import {
+  mapRecentResultsToUIGroups,
+  mapSearchResultsToUIGroups,
+} from './ConfluenceSearchResultsMapper';
 
 export interface Props {
   crossProductSearchClient: CrossProductSearchClient;
@@ -227,17 +235,31 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     searchSessionId,
   }) => {
     return (
-      <ConfluenceSearchResults
-        retrySearch={retrySearch}
+      <SearchResultsComponent
         query={latestSearchQuery}
         isError={isError}
-        searchResults={searchResults}
-        recentItems={recentItems}
         isLoading={isLoading}
+        retrySearch={retrySearch}
         keepPreQueryState={keepPreQueryState}
         searchSessionId={searchSessionId}
-        referralContextIdentifiers={this.props.referralContextIdentifiers}
-        {...this.screenCounters}
+        preQueryScreenCounter={this.screenCounters.preQueryScreenCounter}
+        postQueryScreenCounter={this.screenCounters.postQueryScreenCounter}
+        renderNoRecentActivity={() => (
+          <FormattedHTMLMessage
+            id="global-search.no-recent-activity-body"
+            values={{ url: getConfluenceAdvancedSearchLink() }}
+          />
+        )}
+        renderAdvancedSearchGroup={(analyticsData?) => (
+          <AdvancedSearchGroup
+            key="advanced"
+            query={latestSearchQuery}
+            analyticsData={analyticsData}
+          />
+        )}
+        getPreQueryGroups={() => mapRecentResultsToUIGroups(recentItems)}
+        getPostQueryGroups={() => mapSearchResultsToUIGroups(searchResults)}
+        renderNoResult={() => <NoResultsState query={latestSearchQuery} />}
       />
     );
   };
