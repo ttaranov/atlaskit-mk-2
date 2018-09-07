@@ -53,6 +53,7 @@ export default class ExampleDisplay extends Component<Props> {
     });
     this.Example = () => (
       <iframe
+        id="ak-example"
         ref={this.getIframeRef}
         title="example"
         style={{

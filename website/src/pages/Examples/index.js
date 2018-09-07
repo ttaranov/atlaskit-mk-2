@@ -112,7 +112,23 @@ function ExampleSelector(props) {
 }
 
 class ExampleNavigation extends Component {
-  state = {};
+  state = { rtlEnabled: false };
+
+  onRtlToggle = () => {
+    const exampleIframe = document.getElementById('ak-example');
+    if (!exampleIframe) return;
+
+    const exampleBody = exampleIframe.contentWindow.document.body;
+    if (exampleIframe) {
+      const isRtl = exampleBody.getAttribute('dir') === 'rtl';
+
+      this.setState(state => ({ rtlEnabled: !state.rtlEnabled }));
+      if (!isRtl) {
+        return exampleBody.setAttribute('dir', 'rtl');
+      }
+      return exampleBody.removeAttribute('dir');
+    }
+  };
   render() {
     const {
       onExampleSelected,
@@ -188,6 +204,16 @@ class ExampleNavigation extends Component {
             <NavButton isSelected={codeIsVisible} onClick={onCodeToggle}>
               <CodeIcon label="Show source" />
             </NavButton>
+          </Tooltip>
+          <Tooltip content="Toggle rtl" position="bottom">
+            <Button
+              onClick={this.onRtlToggle}
+              isSelected={this.state.rtlEnabled}
+              ariaLabel={this.state.rtlEnabled ? 'swap to rtl' : 'swap to ltr'}
+              appearance="subtle"
+            >
+              RTL
+            </Button>
           </Tooltip>
           <Tooltip content="Isolated View" position="bottom">
             <Button

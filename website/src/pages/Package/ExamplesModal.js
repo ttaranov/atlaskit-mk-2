@@ -196,6 +196,8 @@ const ModalHeaderComp = ({
   groupId,
   pkgJSON,
   displayCode,
+  rtlEnabled,
+  onRtlToggle,
   exampleId,
   loaderUrl,
   onCodeToggle,
@@ -234,6 +236,16 @@ const ModalHeaderComp = ({
         >
           Source
         </Button>
+        <Tooltip content="Toggle rtl" position="bottom">
+          <Button
+            onClick={onRtlToggle}
+            isSelected={rtlEnabled}
+            ariaLabel={rtlEnabled ? 'swap to rtl' : 'swap to ltr'}
+            appearance="subtle"
+          >
+            RTL
+          </Button>
+        </Tooltip>
         <Tooltip content="Fullscreen" position="bottom">
           <Button
             appearance="subtle"
@@ -268,6 +280,7 @@ export default class ExamplesModal extends Component<Props, State> {
     displayCode: false,
     flags: {},
     loadingSandbox: false,
+    rtlEnabled: false,
   };
 
   getChildContext() {
@@ -305,6 +318,22 @@ export default class ExamplesModal extends Component<Props, State> {
   onCodeToggle = () =>
     this.setState(state => ({ displayCode: !state.displayCode }));
 
+  onRtlToggle = () => {
+    const exampleIframe = document.getElementById('ak-example');
+    if (!exampleIframe) return;
+
+    const exampleBody = exampleIframe.contentWindow.document.body;
+    if (exampleIframe) {
+      const isRtl = exampleBody.getAttribute('dir') === 'rtl';
+
+      this.setState(state => ({ rtlEnabled: !state.rtlEnabled }));
+      if (!isRtl) {
+        return exampleBody.setAttribute('dir', 'rtl');
+      }
+      return exampleBody.removeAttribute('dir');
+    }
+  };
+
   close = (event?: Event) => {
     if (event) event.stopPropagation();
 
@@ -338,7 +367,7 @@ export default class ExamplesModal extends Component<Props, State> {
       example = fs.getById(fs.getFiles(examples.children), exampleId);
     }
 
-    const { displayCode } = this.state;
+    const { displayCode, rtlEnabled } = this.state;
     const pkgJSON = getConfig(groupId, packageId).config;
     const loaderUrl = getLoaderUrl(
       groupId,
@@ -366,6 +395,8 @@ export default class ExamplesModal extends Component<Props, State> {
             loaderUrl={loaderUrl}
             onCodeToggle={this.onCodeToggle}
             close={this.close}
+            rtlEnabled={rtlEnabled}
+            onRtlToggle={this.onRtlToggle}
           />
         )}
         height="100%"
