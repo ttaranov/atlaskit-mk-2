@@ -1,5 +1,8 @@
 # @atlaskit/navigation-next
 
+## 3.8.1
+- [patch] add styled-components as a peer dep [ce45300](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce45300)
+
 ## 3.8.0
 - [minor] Add MenuSection, HeaderSection, Wordmark, and BackItem convenience types to the renderer. Lots of design alignment and polishing across all of the components. [742a8f3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/742a8f3)
 
