@@ -27,10 +27,6 @@ export interface MediaCollectionLinkItem extends LinkItem {
   details: MediaCollectionLinkItemDetails;
 }
 
-// export type MediaCollectionItem =
-//   | MediaCollectionFileItem
-//   | MediaCollectionLinkItem;
-
 export interface MediaCollection {
   id: string;
   items: Array<MediaCollectionItem>;
@@ -38,25 +34,28 @@ export interface MediaCollection {
 
 export type CollectionCache = {
   [collectionName: string]: {
-    ids: string[];
-    subject: ReplaySubject<string[]>;
+    items: MediaCollectionItem[];
+    subject: ReplaySubject<MediaCollectionItem[]>;
     isLoadingNextPage: boolean;
     nextInclusiveStartKey?: string;
   };
 };
 
-const mergeIds = (firstPageIds: string[], currentIds: string[]): string[] => {
+const mergeItems = (
+  firstPageItems: MediaCollectionItem[],
+  currentItems: MediaCollectionItem[],
+): MediaCollectionItem[] => {
   let reachedFirst = false;
-  const firstId = currentIds[0];
-  const newIds = firstPageIds.filter(id => {
+  const firstId = currentItems[0] ? currentItems[0].id : '';
+  const newItems = firstPageItems.filter(item => {
     if (reachedFirst) {
       return false;
     }
-    reachedFirst = firstId === id;
+    reachedFirst = firstId === item.id;
     return !reachedFirst;
   });
 
-  return [...newIds, ...currentIds];
+  return [...newItems, ...currentItems];
 };
 
 const cache: CollectionCache = {};
@@ -83,8 +82,8 @@ export class CollectionFetcher {
     return fileStream;
   }
 
-  private populateCache(items: MediaCollectionItem[]) {
-    const keyOptions = { collectionName: 'recents' };
+  private populateCache(items: MediaCollectionItem[], collectionName: string) {
+    const keyOptions = { collectionName };
 
     items.forEach(item => {
       const key = FileStreamCache.createKey(item.id, keyOptions);
@@ -100,11 +99,11 @@ export class CollectionFetcher {
   getItems(
     collectionName: string,
     params?: MediaStoreGetCollectionItemsParams,
-  ): Observable<string[]> {
+  ): Observable<MediaCollectionItem[]> {
     if (!cache[collectionName]) {
       cache[collectionName] = {
-        ids: [],
-        subject: new ReplaySubject<string[]>(1),
+        items: [],
+        subject: new ReplaySubject<MediaCollectionItem[]>(1),
         isLoadingNextPage: false,
       };
     }
@@ -118,23 +117,26 @@ export class CollectionFetcher {
       })
       .then(items => {
         const { contents, nextInclusiveStartKey } = items.data;
-        this.populateCache(contents);
-        const newIds = contents.map(item => item.id);
+        this.populateCache(contents, collectionName);
 
-        collection.ids = mergeIds(newIds, collection.ids);
+        collection.items = mergeItems(items.data.contents, collection.items);
 
         // We only want to asign nextInclusiveStartKey the first time
         if (!collection.nextInclusiveStartKey) {
           collection.nextInclusiveStartKey = nextInclusiveStartKey;
         }
 
-        subject.next(collection.ids);
+        subject.next(collection.items);
       });
 
     return subject;
   }
 
-  async loadNextPage(collectionName: string) {
+  // TODO: we need to maintain at least the same limit (pageSize) we used previously
+  async loadNextPage(
+    collectionName: string,
+    params?: MediaStoreGetCollectionItemsParams,
+  ) {
     const collection = cache[collectionName];
     const isLoading = collection ? collection.isLoadingNextPage : false;
 
@@ -146,22 +148,23 @@ export class CollectionFetcher {
 
     const {
       nextInclusiveStartKey: inclusiveStartKey,
-      ids: currentIds,
+      items: currentItems,
       subject,
     } = cache[collectionName];
-    const items = await this.mediaStore.getCollectionItems(collectionName, {
+    const response = await this.mediaStore.getCollectionItems(collectionName, {
+      ...params,
       inclusiveStartKey,
       details: 'full',
     });
-    const { contents, nextInclusiveStartKey } = items.data;
-    this.populateCache(contents);
-    const newIds = contents.map(item => item.id);
-    const ids = [...currentIds, ...newIds];
+    const { contents, nextInclusiveStartKey } = response.data;
+    this.populateCache(contents, collectionName);
+    const newItems = response.data.contents;
+    const items = [...currentItems, ...newItems];
 
-    subject.next(ids);
+    subject.next(items);
 
     cache[collectionName] = {
-      ids,
+      items,
       nextInclusiveStartKey,
       subject,
       isLoadingNextPage: false,

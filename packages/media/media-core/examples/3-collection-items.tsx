@@ -61,7 +61,9 @@ class Example extends Component<{}, ExampleState> {
 
   getItems = () => {
     this.subscription = context.collection.getItems(collectionName).subscribe({
-      next: fileIds => {
+      next: items => {
+        const fileIds = items.map(item => item.id);
+
         this.setState({
           fileIds,
         });
