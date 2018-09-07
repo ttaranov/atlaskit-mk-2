@@ -91,7 +91,9 @@ export default class PopupSelect extends PureComponent<Props, State> {
   };
   componentDidMount() {
     this.mergePopperProps();
-    document.addEventListener('click', this.handleClick);
+
+    if (typeof window === 'undefined') return;
+    window.addEventListener('click', this.handleClick, true);
   }
   // TODO work around this before react@17
   // eslint-disable-next-line camelcase
@@ -101,7 +103,8 @@ export default class PopupSelect extends PureComponent<Props, State> {
     }
   }
   componentWillUnmount() {
-    document.removeEventListener('click', this.handleClick);
+    if (typeof window === 'undefined') return;
+    window.removeEventListener('click', this.handleClick);
   }
 
   // Event Handlers
@@ -116,16 +119,14 @@ export default class PopupSelect extends PureComponent<Props, State> {
     }
   };
   handleClick = ({ target }: MouseEvent) => {
-    const { closeMenuOnSelect } = this.props;
     const { isOpen } = this.state;
-
     // appease flow
     if (!(target instanceof Element)) return;
 
     // NOTE: Why not use the <Blanket /> component to close?
     // We don't want to interupt the user's flow. Taking this approach allows
     // user to click "through" to other elements and close the popout.
-    if (isOpen && !this.menuRef.contains(target) && closeMenuOnSelect) {
+    if (isOpen && !this.menuRef.contains(target)) {
       this.close();
     }
 
@@ -150,6 +151,8 @@ export default class PopupSelect extends PureComponent<Props, State> {
 
     this.setState({ isOpen: true }, this.initialiseFocusTrap);
     this.selectRef.select.focusOption('first'); // HACK
+
+    if (typeof window === 'undefined') return;
     window.addEventListener('keydown', this.handleKeyDown);
   };
   initialiseFocusTrap = () => {
@@ -170,6 +173,8 @@ export default class PopupSelect extends PureComponent<Props, State> {
 
     this.setState({ isOpen: false });
     this.focusTrap.deactivate();
+
+    if (typeof window === 'undefined') return;
     window.removeEventListener('keydown', this.handleKeyDown);
   };
 
