@@ -50,7 +50,6 @@ class TransitionHandler extends Component<TransitionProps & HandlerProps> {
       transitionProps,
       ...props
     } = this.props;
-    console.log(transitionProps.unmountOnExit, 'unmountOnExit');
     const timeout = { enter: 0, exit: transitionDurationMs };
 
     return (
@@ -89,21 +88,20 @@ export const Slide = ({
   unmountOnExit,
   transitionProps,
   ...props
-}: TransitionProps) =>
-  console.log(unmountOnExit) || (
-    <TransitionHandler
-      defaultStyles={{
-        transition: `transform ${transitionDurationMs}ms ${transitionTimingFunction}`,
-        transform: 'translate3d(-100%,0,0)',
-      }}
-      transitionStyles={{
-        entered: { transform: 'translate3d(0,0,0)' },
-        exited: { transform: 'translate3d(-100%,0,0)' },
-      }}
-      transitionProps={{
-        ...defaultTransitionProps,
-        ...{ unmountOnExit },
-      }}
-      {...props}
-    />
-  );
+}: TransitionProps) => (
+  <TransitionHandler
+    defaultStyles={{
+      transition: `transform ${transitionDurationMs}ms ${transitionTimingFunction}`,
+      transform: 'translate3d(-100%,0,0)',
+    }}
+    transitionStyles={{
+      entered: { transform: 'translate3d(0,0,0)' },
+      exited: { transform: 'translate3d(-100%,0,0)' },
+    }}
+    transitionProps={{
+      ...defaultTransitionProps,
+      ...{ unmountOnExit },
+    }}
+    {...props}
+  />
+);

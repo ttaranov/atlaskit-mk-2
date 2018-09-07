@@ -16,10 +16,9 @@ export default class DrawersExample extends Component<{}, State> {
 
   ref = null;
 
-  componentDidReceiveProps() {
-    console.log('test');
-    if (this.ref && !this.ref.getAttribute('data-randomNumber')) {
-      this.ref.setAttribute('data-randomNumber', Math.random());
+  componentDidUpdate() {
+    if (!this.ref.dataset.timestamp) {
+      this.ref.dataset.timestamp = Math.random();
     }
   }
 
@@ -34,13 +33,11 @@ export default class DrawersExample extends Component<{}, State> {
     });
 
   render() {
-    console.log(this.ref);
     return (
       <Fragment>
         <Drawer
           onClose={this.closeDrawer}
           isOpen={this.state.isDrawerOpen}
-          unmountOnExit={false}
           width="wide"
         >
           <code
@@ -48,8 +45,8 @@ export default class DrawersExample extends Component<{}, State> {
               this.ref = ref;
             }}
           >
-            Random string generated on mount:
-            {this.ref && this.ref.getAttribute('data-randomNumber')}
+            Timestamp of mount:{' '}
+            {(this.ref && this.ref.dataset.timestamp) || Math.random()}
           </code>
         </Drawer>
         <Button type="button" onClick={this.openDrawer}>
