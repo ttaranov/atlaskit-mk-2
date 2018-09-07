@@ -74,29 +74,6 @@ class Boundary extends Component {
   }
 }
 
-function checkMarkAndSendAnalytics(a) {
-  // We mark before doing anything because speed matters here
-  performance.mark(`loaded-${a.location.pathname}`);
-  const location = a.location.pathname;
-  let match = performance.getEntriesByName(`navigate-${location}`, 'mark');
-
-  if (match.length === 1) {
-    performance.measure(
-      'analytics-measure',
-      `navigate-${location}`,
-      `loaded-${location}`,
-    );
-  }
-
-  let entries = performance.getEntriesByType('measure');
-  if (entries.length === 1 && entries[0].duration) {
-    sendApdex(location, Math.round(entries[0].duration));
-  }
-  performance.clearMarks();
-  performance.clearMeasures();
-  return null;
-}
-
 export default function App() {
   return (
     <BrowserRouter>
@@ -193,10 +170,6 @@ export default function App() {
             </LayerManager>
           </Route>
         </Switch>
-        {/*
-          This route does nothing but post analytics events. It will be run on every page change.
-        */}
-        <Route path="*" render={checkMarkAndSendAnalytics} />
       </AnalyticsListeners>
     </BrowserRouter>
   );

@@ -1,7 +1,7 @@
 // @flow
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import Loadable from 'react-loadable';
+import Loadable from '../components/WrappedLoader';
 import type { RouterMatch } from '../types';
 import * as fs from '../utils/fs';
 import Page from '../components/Page';
