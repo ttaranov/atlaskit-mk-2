@@ -1,11 +1,6 @@
 // @flow
 import styled from 'styled-components';
-import {
-  akBorderRadius,
-  akGridSizeUnitless,
-} from '@atlaskit/util-shared-styles';
-
-const HORIZONTAL_SPACING = `${akGridSizeUnitless / 2}px`;
+import { akBorderRadius } from '@atlaskit/util-shared-styles';
 
 export default styled.span`
   ${props => `
@@ -15,16 +10,12 @@ export default styled.span`
   border-radius: ${akBorderRadius};
   box-sizing: border-box;
 
-  display: inline-flex;
+  display: inline-block;
   font-size: 11px;
   font-weight: 700;
   line-height: 1;
-  max-width: ${props =>
-    typeof props.maxWidth === 'number'
-      ? `${props.maxWidth}px`
-      : props.maxWidth};
-  padding: 2px ${HORIZONTAL_SPACING} 3px ${HORIZONTAL_SPACING};
+  padding: 2px 0 3px 0;
   text-transform: uppercase;
   vertical-align: baseline;
-  white-space: nowrap;
+  max-width: 100%;
 `;

@@ -41,8 +41,12 @@ export class TableBuilder implements Builder {
    * @param {AddCellArgs[]} cells
    */
   add(cells: AddCellArgs[]) {
+    if (!cells.length) {
+      return;
+    }
     // Iterate the cells and create TH/TD based on the delimeter
     let index = 0;
+    const cellType = getType(cells[0].style);
 
     for (const cell of cells) {
       const { style, content } = cell;
@@ -59,8 +63,7 @@ export class TableBuilder implements Builder {
         }
       }
 
-      const type = getType(style!);
-      const newCell = { type, content };
+      const newCell = { type: cellType, content };
       this.lastCell = newCell;
       this.lastRow.cells.push(newCell);
 

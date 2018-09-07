@@ -8,10 +8,6 @@ export const gridStyles = css`
     transform: scale(1);
   }
 
-  .gridParent-comment {
-    margin: 12px 20px 20px;
-  }
-
   .gridContainer {
     position: fixed;
     height: 100vh;

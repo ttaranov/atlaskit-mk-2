@@ -2,7 +2,12 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import { Spotlight, SpotlightManager, SpotlightTarget } from '../src';
+import {
+  Spotlight,
+  SpotlightManager,
+  SpotlightTarget,
+  SpotlightTransition,
+} from '../src';
 
 type State = {
   active: boolean,
@@ -42,24 +47,26 @@ export default class SpotlightRelativeTarget extends Component<Object, State> {
           </SpotlightTarget>
         </div>
 
-        {active && (
-          <Spotlight
-            actions={[
-              {
-                onClick: () => this.setState({ active: false }),
-                text: 'Got it!',
-              },
-            ]}
-            dialogPlacement="bottom left"
-            heading="Combination positioning"
-            key="box"
-            target="box"
-            targetRadius={3}
-          >
-            The spotlight is shown in the correct place despite the target being
-            relatively positioned, transformed, and offset by margin.
-          </Spotlight>
-        )}
+        <SpotlightTransition>
+          {active && (
+            <Spotlight
+              actions={[
+                {
+                  onClick: () => this.setState({ active: false }),
+                  text: 'Got it!',
+                },
+              ]}
+              dialogPlacement="bottom left"
+              heading="Combination positioning"
+              key="box"
+              target="box"
+              targetRadius={3}
+            >
+              The spotlight is shown in the correct place despite the target
+              being relatively positioned, transformed, and offset by margin.
+            </Spotlight>
+          )}
+        </SpotlightTransition>
       </SpotlightManager>
     );
   }

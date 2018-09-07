@@ -34,7 +34,9 @@ function calcWidth(
         ? 'calc(50% - 12px)'
         : `${width}px`;
     case 'wide':
-      return `${Math.min(akEditorWideLayoutWidth - 12 * 2, width)}px`;
+      return width > akEditorFullPageMaxWidth
+        ? '100%'
+        : `${Math.min(akEditorWideLayoutWidth - 12 * 2, width)}px`;
     case 'full-width':
       return `${Math.min(width, containerWidth || 0) -
         akEditorBreakoutPadding}px`;
@@ -71,6 +73,7 @@ function calcMargin(layout: MediaSingleLayout): string {
       return '24px auto';
   }
 }
+
 export interface WrapperProps {
   layout: MediaSingleLayout;
   width: number;
@@ -90,8 +93,8 @@ const MediaSingleDimensionHelper = ({
   containerWidth = 0,
   columnSpan = 0,
 }: WrapperProps) => css`
-  width: ${calcWidth(layout, width, containerWidth, columnSpan)};
   max-width: ${calcMaxWidth(layout, width, containerWidth)};
+  width: ${calcWidth(layout, width, containerWidth, columnSpan)};
   float: ${float(layout)};
   margin: ${calcMargin(layout)};
 
@@ -99,6 +102,10 @@ const MediaSingleDimensionHelper = ({
     content: '';
     display: block;
     padding-bottom: ${height / width * 100}%;
+  }
+
+  tr & {
+    max-width: 100%;
   }
 `;
 

@@ -92,6 +92,10 @@ const ContentArea = styled(ContentStyles)`
     margin: 12px 20px 20px;
   }
 
+  .gridParent {
+    margin: 0 20px 20px;
+  }
+
   padding: ${TableControlsPadding}px;
 
   ${tableCommentEditorStyles};
@@ -190,7 +194,7 @@ export default class Editor extends React.Component<
                 popupsMountPoint={popupsMountPoint}
                 popupsBoundariesElement={popupsBoundariesElement}
                 popupsScrollableElement={popupsScrollableElement}
-                containerElement={editorDOMElement}
+                containerElement={this.containerElement}
                 disabled={!!disabled}
               />
               {editorDOMElement}

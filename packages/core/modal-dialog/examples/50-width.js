@@ -5,7 +5,7 @@ import Lorem from 'react-lorem-component';
 import Button, { ButtonGroup } from '@atlaskit/button';
 
 import { WIDTH_ENUM } from '../src/shared-variables';
-import ModalDialog from '../src';
+import ModalDialog, { ModalTransition } from '../src';
 
 const units = [420, '42%', '42em'];
 const sizes = WIDTH_ENUM.values;
@@ -39,18 +39,20 @@ export default class ModalDemo extends Component<{}, { isOpen: any }> {
           <H4>Units</H4>
           <ButtonGroup>{units.map(btn)}</ButtonGroup>
 
-          {allWidths.filter(w => w === isOpen).map(name => (
-            <ModalDialog
-              actions={actions}
-              key={name}
-              onClose={this.close}
-              heading={`Modal: ${String(name)}`}
-              width={name}
-              {...this.props}
-            >
-              <Lorem count="1" />
-            </ModalDialog>
-          ))}
+          <ModalTransition>
+            {allWidths.filter(w => w === isOpen).map(name => (
+              <ModalDialog
+                actions={actions}
+                key={name}
+                onClose={this.close}
+                heading={`Modal: ${String(name)}`}
+                width={name}
+                {...this.props}
+              >
+                <Lorem count="1" />
+              </ModalDialog>
+            ))}
+          </ModalTransition>
         </div>
       </ThemeProvider>
     );

@@ -4,12 +4,20 @@ import * as React from 'react';
 
 import { Editor, EditorContext, CollapsedEditor } from '@atlaskit/editor-core';
 import ToolsDrawer from '../example-helpers/ToolsDrawer';
+import { storyMediaProviderFactory } from '@atlaskit/editor-test-helpers';
 
 const SAVE_ACTION = () => console.log('Save');
 const CANCEL_ACTION = () => console.log('Cancel');
 const EXPAND_ACTION = () => console.log('Expand');
 
 const analyticsHandler = (actionName, props) => console.log(actionName, props);
+
+const mediaProvider = storyMediaProviderFactory({
+  useMediaPickerAuthProvider: true,
+  includeUploadContext: true,
+  includeUserAuthProvider: true,
+  collectionName: 'test',
+});
 
 export type Props = {};
 export type State = {
@@ -75,6 +83,7 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
                       stickToolbarToBottom: true,
                     }}
                     allowDate={true}
+                    media={{ provider: mediaProvider, allowMediaSingle: true }}
                     disabled={disabled}
                     mentionProvider={mentionProvider}
                     onChange={onChange}
