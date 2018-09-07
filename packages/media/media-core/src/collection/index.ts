@@ -32,16 +32,17 @@ export interface MediaCollection {
   items: Array<MediaCollectionItem>;
 }
 
+export interface CollectionCacheEntry {
+  items: MediaCollectionItem[];
+  subject: ReplaySubject<MediaCollectionItem[]>;
+  isLoadingNextPage: boolean;
+  nextInclusiveStartKey?: string;
+}
 export type CollectionCache = {
-  [collectionName: string]: {
-    items: MediaCollectionItem[];
-    subject: ReplaySubject<MediaCollectionItem[]>;
-    isLoadingNextPage: boolean;
-    nextInclusiveStartKey?: string;
-  };
+  [collectionName: string]: CollectionCacheEntry;
 };
 
-const mergeItems = (
+export const mergeItems = (
   firstPageItems: MediaCollectionItem[],
   currentItems: MediaCollectionItem[],
 ): MediaCollectionItem[] => {
@@ -58,7 +59,13 @@ const mergeItems = (
   return [...newItems, ...currentItems];
 };
 
-const cache: CollectionCache = {};
+export const collectionCache: CollectionCache = {};
+
+const createCacheEntry = (): CollectionCacheEntry => ({
+  items: [],
+  subject: new ReplaySubject<MediaCollectionItem[]>(1),
+  isLoadingNextPage: false,
+});
 
 export class CollectionFetcher {
   constructor(readonly mediaStore: MediaStore) {}
@@ -97,14 +104,10 @@ export class CollectionFetcher {
     collectionName: string,
     params?: MediaStoreGetCollectionItemsParams,
   ): Observable<MediaCollectionItem[]> {
-    if (!cache[collectionName]) {
-      cache[collectionName] = {
-        items: [],
-        subject: new ReplaySubject<MediaCollectionItem[]>(1),
-        isLoadingNextPage: false,
-      };
+    if (!collectionCache[collectionName]) {
+      collectionCache[collectionName] = createCacheEntry();
     }
-    const collection = cache[collectionName];
+    const collection = collectionCache[collectionName];
     const subject = collection.subject;
 
     this.mediaStore
@@ -115,7 +118,6 @@ export class CollectionFetcher {
       .then(items => {
         const { contents, nextInclusiveStartKey } = items.data;
         this.populateCache(contents, collectionName);
-
         collection.items = mergeItems(items.data.contents, collection.items);
 
         // We only want to asign nextInclusiveStartKey the first time
@@ -129,12 +131,11 @@ export class CollectionFetcher {
     return subject;
   }
 
-  // TODO: we need to maintain at least the same limit (pageSize) we used previously
   async loadNextPage(
     collectionName: string,
     params?: MediaStoreGetCollectionItemsParams,
   ) {
-    const collection = cache[collectionName];
+    const collection = collectionCache[collectionName];
     const isLoading = collection ? collection.isLoadingNextPage : false;
 
     if (!collection || isLoading) {
@@ -147,7 +148,7 @@ export class CollectionFetcher {
       nextInclusiveStartKey: inclusiveStartKey,
       items: currentItems,
       subject,
-    } = cache[collectionName];
+    } = collectionCache[collectionName];
     const response = await this.mediaStore.getCollectionItems(collectionName, {
       ...params,
       inclusiveStartKey,
@@ -160,7 +161,7 @@ export class CollectionFetcher {
 
     subject.next(items);
 
-    cache[collectionName] = {
+    collectionCache[collectionName] = {
       items,
       nextInclusiveStartKey,
       subject,
