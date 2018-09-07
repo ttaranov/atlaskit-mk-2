@@ -34,6 +34,7 @@ class ItemPrimitive extends PureComponent<ItemProps> {
       styles: styleReducer,
       isActive,
       innerRef,
+      isDragging,
       isHover,
       isSelected,
       spacing,
@@ -47,7 +48,13 @@ class ItemPrimitive extends PureComponent<ItemProps> {
     } = this.props;
 
     const { mode, context } = theme;
-    const presentationProps = { isActive, isHover, isSelected, spacing };
+    const presentationProps = {
+      isActive,
+      isDragging,
+      isHover,
+      isSelected,
+      spacing,
+    };
     const defaultStyles = mode.item(presentationProps)[context];
     const styles = styleReducer(defaultStyles, presentationProps, theme);
 

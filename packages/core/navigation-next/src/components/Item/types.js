@@ -10,6 +10,8 @@ type Spacing = 'compact' | 'default';
 export type ItemPresentationProps = {
   /** Whether the Item is currently in the 'active' interaction state. */
   isActive: boolean,
+  /** Whether the Item is part of a SortableSection, and is being dragged. */
+  isDragging: boolean,
   /** Whether the Item is currently in the 'hover' interaction state. */
   isHover: boolean,
   /** Whether the Item should display as being selected. */

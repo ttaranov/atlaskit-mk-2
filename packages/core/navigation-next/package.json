@@ -31,6 +31,7 @@
     "emotion-theming": "^9.0.0",
     "prop-types": "^15.5.10",
     "raf-schd": "^2.1.0",
+    "react-beautiful-dnd": "^9.0.0",
     "react-transition-group": "^2.2.1",
     "unstated": "^1.2.0"
   },

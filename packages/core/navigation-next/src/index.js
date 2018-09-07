@@ -14,6 +14,8 @@ export { default as ItemPrimitive } from './components/Item/primitives';
 export { default as ItemAvatar } from './components/ItemAvatar';
 export { default as PeekToggleItem } from './components/PeekToggleItem';
 export { default as LayoutManager } from './components/LayoutManager';
+export { default as SortableSection } from './components/SortableSection';
+export { default as SortableItem } from './components/SortableItem';
 export {
   default as LayoutManagerWithViewController,
 } from './components/LayoutManagerWithViewController';
