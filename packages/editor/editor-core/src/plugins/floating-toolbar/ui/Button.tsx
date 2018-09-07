@@ -42,6 +42,7 @@ export interface Props {
   selected?: boolean;
   disabled?: boolean;
   appearance?: ButtonAppearance;
+  spacing?: 'compact' | 'default';
 }
 
 export default ({
@@ -53,6 +54,7 @@ export default ({
   selected,
   disabled,
   appearance = 'subtle',
+  spacing = 'compact',
 }: Props) => {
   return (
     <Tooltip content={title} hideTooltipOnClick={true} position="top">
@@ -60,7 +62,7 @@ export default ({
         <div onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
           <Button
             ariaLabel={title}
-            spacing="compact"
+            spacing={spacing}
             appearance={appearance}
             ariaHaspopup={true}
             iconBefore={icon}

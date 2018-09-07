@@ -9,6 +9,7 @@ import { compareArrays } from '../utils';
 
 import Button from './Button';
 import Dropdown from './Dropdown';
+import Select, { SelectOption } from './Select';
 import Separator from './Separator';
 
 const akGridSize = gridSize();
@@ -18,10 +19,12 @@ const ToolbarContainer = styled.div`
   border-radius: ${borderRadius()}px;
   box-shadow: 0 0 1px rgba(9, 30, 66, 0.31),
     0 4px 8px -2px rgba(9, 30, 66, 0.25);
-  padding: ${akGridSize / 2}px ${akGridSize}px;
+  padding: ${akGridSize / 2}px;
+  padding-right: ${akGridSize}px;
   display: flex;
   line-height: 1;
   box-sizing: border-box;
+  align-items: center;
 `;
 
 export interface Props {
@@ -31,6 +34,12 @@ export interface Props {
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
 }
+
+const AlignItemsCenter = styled.div`
+  & > div {
+    align-items: center;
+  }
+`;
 
 export default class Toolbar extends Component<Props> {
   render() {
@@ -47,46 +56,68 @@ export default class Toolbar extends Component<Props> {
 
     return (
       <ToolbarContainer aria-label="Floating Toolbar">
-        <ButtonGroup>
-          {items.filter(item => !item.hidden).map((item, idx) => {
-            switch (item.type) {
-              case 'button':
-                const ButtonIcon = item.icon;
-                return (
-                  <Button
-                    key={idx}
-                    title={item.title}
-                    icon={<ButtonIcon label={item.title} />}
-                    appearance={item.appearance}
-                    onClick={() => dispatchCommand(item.onClick)}
-                    onMouseEnter={() => dispatchCommand(item.onMouseEnter)}
-                    onMouseLeave={() => dispatchCommand(item.onMouseLeave)}
-                    selected={item.selected}
-                    disabled={item.disabled}
-                  />
-                );
+        <AlignItemsCenter>
+          <ButtonGroup>
+            {items.filter(item => !item.hidden).map((item, idx) => {
+              switch (item.type) {
+                case 'button':
+                  const ButtonIcon = item.icon;
+                  return (
+                    <Button
+                      key={idx}
+                      title={item.title}
+                      icon={<ButtonIcon label={item.title} />}
+                      spacing={item.spacing}
+                      appearance={item.appearance}
+                      onClick={() => dispatchCommand(item.onClick)}
+                      onMouseEnter={() => dispatchCommand(item.onMouseEnter)}
+                      onMouseLeave={() => dispatchCommand(item.onMouseLeave)}
+                      selected={item.selected}
+                      disabled={item.disabled}
+                    />
+                  );
 
-              case 'dropdown':
-                const DropdownIcon = item.icon;
-                return (
-                  <Dropdown
-                    key={idx}
-                    title={item.title}
-                    icon={<DropdownIcon label={item.title} />}
-                    dispatchCommand={dispatchCommand}
-                    options={item.options}
-                    hideExpandIcon={item.hideExpandIcon}
-                    mountPoint={popupsMountPoint}
-                    boundariesElement={popupsBoundariesElement}
-                    scrollableElement={popupsScrollableElement}
-                  />
-                );
+                case 'dropdown':
+                  const DropdownIcon = item.icon;
+                  return (
+                    <Dropdown
+                      key={idx}
+                      title={item.title}
+                      icon={<DropdownIcon label={item.title} />}
+                      dispatchCommand={dispatchCommand}
+                      options={item.options}
+                      hideExpandIcon={item.hideExpandIcon}
+                      mountPoint={popupsMountPoint}
+                      boundariesElement={popupsBoundariesElement}
+                      scrollableElement={popupsScrollableElement}
+                    />
+                  );
 
-              case 'separator':
-                return <Separator key={idx} />;
-            }
-          })}
-        </ButtonGroup>
+                case 'select':
+                  return (
+                    <Select
+                      key={idx}
+                      title={item.title}
+                      dispatchCommand={dispatchCommand}
+                      options={item.options}
+                      hideExpandIcon={item.hideExpandIcon}
+                      mountPoint={popupsMountPoint}
+                      boundariesElement={popupsBoundariesElement}
+                      scrollableElement={popupsScrollableElement}
+                      defaultValue={item.defaultValue}
+                      placeholder={item.placeholder}
+                      onChange={(selected: SelectOption) =>
+                        dispatchCommand(item.onChange(selected))
+                      }
+                    />
+                  );
+
+                case 'separator':
+                  return <Separator key={idx} />;
+              }
+            })}
+          </ButtonGroup>
+        </AlignItemsCenter>
       </ToolbarContainer>
     );
   }

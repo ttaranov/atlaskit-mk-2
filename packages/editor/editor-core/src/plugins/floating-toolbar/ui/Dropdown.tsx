@@ -17,7 +17,7 @@ export interface RenderOptionsPropsT<T> {
 
 export interface DropdownOptionT<T> {
   title: string;
-  onClick: T;
+  onClick?: T;
   selected?: boolean;
   disabled?: boolean;
   hidden?: boolean;
