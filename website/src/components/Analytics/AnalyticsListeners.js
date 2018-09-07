@@ -3,7 +3,6 @@ import React from 'react';
 import FabricAnalyticsListeners from '@atlaskit/analytics-listeners';
 import FeatureFlag from '../FeatureFlag';
 import GoogleAnalyticsListener from './GoogleAnalyticsListener';
-import { GOOGLE_ANALYTICS_ID } from '../../constants';
 
 // AK-4967 - replace with real implementation from analytics-web-client
 const mockAnalyticsClient = {
@@ -15,7 +14,7 @@ const mockAnalyticsClient = {
 
 const AnalyticsListeners = ({ children }) => {
   return (
-    <GoogleAnalyticsListener gaId={GOOGLE_ANALYTICS_ID}>
+    <GoogleAnalyticsListener>
       <FeatureFlag name="send-analytics-to-pipeline">
         {yes =>
           yes ? (

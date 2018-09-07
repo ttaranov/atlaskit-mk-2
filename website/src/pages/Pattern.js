@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import Loadable from 'react-loadable';
+import Loadable from '../components/WrappedLoader';
 import * as fs from '../utils/fs';
 import type { RouterMatch } from '../types';
 import Page from '../components/Page';
