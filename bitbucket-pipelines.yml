@@ -29,6 +29,10 @@ pipelines:
             # We push the bumped packages to master now as it's much better to fail whilst BB is
             # ahead of npm, than the other way round.
             - git push
+            # We run the build:pkg script again, because the versions in our package.jsons may have changed
+            # after the bump. We've kept it running in both places, just to limit the scope of this change
+            # so that we don't break anything that was working previously
+            - yarn build:pkg
             # Release all unreleased packages
             - node ./build/releases/bin/build-releases.js publish --public
             - git push --tags # push only the tags

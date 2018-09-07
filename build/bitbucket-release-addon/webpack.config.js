@@ -10,31 +10,29 @@ module.exports = {
     filename: 'index.js',
   },
   module: {
-    loaders: [
+    rules: [
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              babelrc: false,
-              presets: ['es2015'],
-            },
+        use: {
+          loader: 'babel-loader',
+          options: {
+            babelrc: false,
+            presets: ['env'],
           },
-        ],
+        },
       },
       {
+        // We need an explicit override to make us babelify the build-releases code (since we wont
+        // have a dist/)
         test: /node_modules\/@atlaskit\/build-releases/,
-        use: [
-          {
-            loader: 'babel-loader',
-            options: {
-              babelrc: false,
-              presets: ['es2015'],
-            },
+        use: {
+          loader: 'babel-loader',
+          options: {
+            babelrc: false,
+            presets: ['env'],
           },
-        ],
+        },
       },
     ],
   },

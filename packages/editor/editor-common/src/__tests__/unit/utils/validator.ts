@@ -1335,6 +1335,34 @@ describe('Renderer - Validator', () => {
       });
     });
 
+    describe('listItem', () => {
+      it('should handle invalid child nodes without crashing', () => {
+        const itemContent = [
+          {
+            type: 'paragraph',
+            content: [
+              {
+                type: 'text',
+                text: '[confluenceUnsupportedBlock]',
+              },
+            ],
+          },
+        ];
+
+        const { content } = getValidNode({
+          type: 'listItem',
+          content: [
+            {
+              type: 'confluenceUnsupportedBlock',
+              attrs: {},
+            },
+          ],
+        });
+
+        expect(content).to.deep.equal(itemContent);
+      });
+    });
+
     ['tableCell', 'tableHeader'].forEach(nodeName => {
       describe(nodeName, () => {
         const cellAttrs = {

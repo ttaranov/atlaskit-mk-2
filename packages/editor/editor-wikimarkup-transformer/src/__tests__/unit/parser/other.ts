@@ -14,6 +14,7 @@ foo`,
 
 bar`,
     ],
+    ['should be ok with empty line wiki', '\n'],
   ];
 
   for (const [testCaseDescription, markup] of testCases) {

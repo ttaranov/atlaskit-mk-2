@@ -60,6 +60,7 @@ export interface Recents {
 
 export type RemoteUpload = {
   readonly tenant: Tenant;
+  readonly timeStarted: number;
 };
 
 export type RemoteUploads = { [uploadId: string]: RemoteUpload };

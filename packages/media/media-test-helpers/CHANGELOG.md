@@ -1,5 +1,8 @@
 # @atlaskit/media-test-helpers
 
+## 17.0.1
+- [patch] fix media-test-helpers dist [20756c3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/20756c3)
+
 ## 17.0.0
 - [major] Remove new upload service feature flag (useNewUploadService). Now new upload service will be used by default. [911a570](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/911a570)
 - [none] Updated dependencies [911a570](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/911a570)

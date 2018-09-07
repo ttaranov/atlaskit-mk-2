@@ -1,5 +1,16 @@
 # @atlaskit/editor-common
 
+## 15.0.6
+- [patch] MediaSingle image now has 100% max-width in table cells [9e5ae81](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9e5ae81)
+- [patch] Updated dependencies [9e5ae81](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9e5ae81)
+
+## 15.0.5
+- [patch] Updated dependencies [9c66d4d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9c66d4d)
+  - @atlaskit/webdriver-runner@0.1.0
+
+## 15.0.4
+- [patch] Wrap listItems and tableCell inline nodes with a block node to avoid renderer exceptions. ED-5283 [46eca8f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/46eca8f)
+
 ## 15.0.3
 - [patch] Fix import error from css-color-names [ce50449](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce50449)
 

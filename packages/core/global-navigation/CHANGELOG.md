@@ -1,5 +1,14 @@
 # @atlaskit/global-navigation
 
+## 4.3.3
+- [patch] Bumping dependency on navigation-next. [d591e69](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d591e69)
+
+## 4.3.2
+- [patch] Updated dependencies [d5a043a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5a043a)
+  - @atlaskit/icon@13.8.1
+  - @atlaskit/onboarding@6.0.1
+  - @atlaskit/modal-dialog@7.0.0
+
 ## 4.3.1
 - [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
 

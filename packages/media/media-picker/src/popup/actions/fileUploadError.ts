@@ -11,7 +11,7 @@ export const FILE_UPLOAD_ERROR = 'FILE_UPLOAD_ERROR';
 
 export interface FileUploadErrorAction extends Action {
   readonly type: 'FILE_UPLOAD_ERROR';
-  readonly file?: MediaFile;
+  readonly file: MediaFile;
   readonly error: MediaError;
   readonly originalEvent: UploadErrorEvent;
 }

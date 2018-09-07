@@ -2,7 +2,12 @@
 import React, { Component } from 'react';
 import Lorem from 'react-lorem-component';
 
-import { Spotlight, SpotlightManager, SpotlightTarget } from '../src';
+import {
+  Spotlight,
+  SpotlightManager,
+  SpotlightTarget,
+  SpotlightTransition,
+} from '../src';
 import { HighlightGroup, Highlight } from './styled';
 
 type State = {
@@ -79,7 +84,9 @@ export default class SpotlightBasicExample extends Component<Object, State> {
 
         <button onClick={this.start}>Start</button>
 
-        {this.renderActiveSpotlight()}
+        <SpotlightTransition>
+          {this.renderActiveSpotlight()}
+        </SpotlightTransition>
       </SpotlightManager>
     );
   }

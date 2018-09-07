@@ -24,7 +24,7 @@ const DummyContent: React.ComponentClass<React.HTMLAttributes<{}>> = styled.div`
 const context = createStorybookContext();
 
 class Example extends React.Component<{}, {}> {
-  handleMount = el => {
+  handleMount = (el: any) => {
     if (el) {
       const parent = scrollParent(el);
       parent.scrollTo(0, 9999);
