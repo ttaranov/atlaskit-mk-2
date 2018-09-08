@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 79.0.13
+- [patch] ED-5165, fixing issue with inline code autoformatting removing other formattings in line. [9a7f8b2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9a7f8b2)
+
 ## 79.0.12
 - [patch] Update TS to 3.0 [f68d367](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f68d367)
 - [none] Updated dependencies [f68d367](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f68d367)
