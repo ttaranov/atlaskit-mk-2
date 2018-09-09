@@ -23,26 +23,26 @@ export type CollapseListeners = {
 
 type NonStringRef<T> = {
   current: ElementRef<T>,
-};
+} | null;
 
-type Refs = {
-  expandCollapseAffordance: NonStringRef<'button'> | null,
-};
+export type GetRefs = ({
+  expandCollapseAffordance: NonStringRef<'button'>,
+}) => void;
 
 export type ConnectedLayoutManagerProps = CollapseListeners & {
   /** Your page content. */
   children: Node,
   /** A component which will render the container navigation layer. */
   containerNavigation: ?ComponentType<{}>,
+  /** A function to access the refs of some elements within the LayoutManager
+   * component. */
+  getRefs?: GetRefs,
   /** A component which will render the global navigation bar. */
   globalNavigation: ComponentType<{}>,
   /** A component which will render the product navigation layer. */
   productNavigation: ComponentType<{}>,
   /** Displayed when the user's mouse is over the collapse/expand toggle. */
   collapseToggleTooltipContent?: CollapseToggleTooltipContent,
-  /** A function to access the refs of some elements within the LayoutManager
-   * component. */
-  getRefs?: Refs => void,
 };
 
 export type LayoutManagerProps = ConnectedLayoutManagerProps & {

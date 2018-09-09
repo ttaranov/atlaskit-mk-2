@@ -176,6 +176,7 @@ class LayoutManagerWithViewControllerBase extends Component<
       onExpandEnd,
       onCollapseStart,
       onCollapseEnd,
+      getRefs,
     } = this.props;
 
     return (
@@ -197,6 +198,7 @@ class LayoutManagerWithViewControllerBase extends Component<
           onExpandEnd={onExpandEnd}
           onCollapseStart={onCollapseStart}
           onCollapseEnd={onCollapseEnd}
+          getRefs={getRefs}
         >
           {children}
         </LayoutManager>

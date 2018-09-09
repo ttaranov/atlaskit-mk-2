@@ -8,7 +8,7 @@ import ChevronRight from '@atlaskit/icon/glyph/chevron-right';
 
 import {
   GlobalNav,
-  LayoutManager,
+  LayoutManagerWithViewController,
   NavigationProvider,
   UIControllerSubscriber,
   UIController,
@@ -18,8 +18,6 @@ import {
 const GlobalNavigation = () => (
   <GlobalNav primaryItems={[]} secondaryItems={[]} />
 );
-
-const ProductNavigation = () => null;
 
 const ExpandToggleButton = () => (
   <UIControllerSubscriber>
@@ -73,17 +71,15 @@ class Example extends Component<ExampleProps, ExampleState> {
 
     return (
       <Fragment>
-        <LayoutManager
+        <LayoutManagerWithViewController
           globalNavigation={GlobalNavigation}
-          productNavigation={ProductNavigation}
-          containerNavigation={null}
           onCollapseEnd={this.openChangeboarding}
           getRefs={this.getCollapseAffordanceRef}
         >
           <div css={{ padding: '32px 40px' }}>
             <ExpandToggleButton />
           </div>
-        </LayoutManager>
+        </LayoutManagerWithViewController>
         {isChangeboardingOpen &&
           spotlightTargetNode && (
             <Spotlight
