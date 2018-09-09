@@ -5,9 +5,9 @@ import { colors } from '@atlaskit/theme';
 import ChevD from '@atlaskit/icon/glyph/chevron-down';
 import {
   ContainerHeader,
-  GroupHeading,
   Item,
   ItemAvatar,
+  SectionHeading,
   Switcher,
 } from '../../../src';
 
@@ -124,7 +124,7 @@ export default class extends React.Component<*, State> {
           target={this.target(selected)}
           value={selected}
         />
-        <GroupHeading>Section title</GroupHeading>
+        <SectionHeading>Section heading</SectionHeading>
         {items.map(p => <Item key={p.text} {...p} />)}
       </Wrapper>
     );
