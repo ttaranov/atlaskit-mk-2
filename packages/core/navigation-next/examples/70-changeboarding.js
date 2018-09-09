@@ -11,6 +11,8 @@ import {
   LayoutManager,
   NavigationProvider,
   UIControllerSubscriber,
+  UIController,
+  withNavigationUI,
 } from '../src';
 
 const GlobalNavigation = () => (
@@ -39,14 +41,18 @@ const ExpandToggleButton = () => (
   </UIControllerSubscriber>
 );
 
+type ExampleProps = {
+  navigationUIController: UIController,
+};
 type ExampleState = {
   isChangeboardingOpen: boolean,
+  spotlightTargetNode: ?HTMLElement,
 };
-export default class Example extends Component<{}, ExampleState> {
+class Example extends Component<ExampleProps, ExampleState> {
   state = {
-    isChangeboardingOpen: false,
+    isChangeboardingOpen: this.props.navigationUIController.state.isCollapsed,
+    spotlightTargetNode: null,
   };
-  spotlightTargetNode: ?HTMLElement;
   openChangeboarding = () => {
     this.setState({ isChangeboardingOpen: true });
   };
@@ -54,44 +60,52 @@ export default class Example extends Component<{}, ExampleState> {
     this.setState({ isChangeboardingOpen: false });
   };
   getCollapseAffordanceRef = ({ expandCollapseAffordance }: *) => {
-    this.spotlightTargetNode =
-      expandCollapseAffordance && expandCollapseAffordance.current;
+    if (
+      expandCollapseAffordance &&
+      expandCollapseAffordance.current &&
+      expandCollapseAffordance.current !== this.state.spotlightTargetNode
+    ) {
+      this.setState({ spotlightTargetNode: expandCollapseAffordance.current });
+    }
   };
   render() {
-    const { isChangeboardingOpen } = this.state;
+    const { isChangeboardingOpen, spotlightTargetNode } = this.state;
 
     return (
-      <NavigationProvider>
-        <SpotlightManager>
-          <Fragment>
-            <LayoutManager
-              globalNavigation={GlobalNavigation}
-              productNavigation={ProductNavigation}
-              containerNavigation={null}
-              onCollapseEnd={this.openChangeboarding}
-              getRefs={this.getCollapseAffordanceRef}
+      <Fragment>
+        <LayoutManager
+          globalNavigation={GlobalNavigation}
+          productNavigation={ProductNavigation}
+          containerNavigation={null}
+          onCollapseEnd={this.openChangeboarding}
+          getRefs={this.getCollapseAffordanceRef}
+        >
+          <div css={{ padding: '32px 40px' }}>
+            <ExpandToggleButton />
+          </div>
+        </LayoutManager>
+        {isChangeboardingOpen &&
+          spotlightTargetNode && (
+            <Spotlight
+              actions={[{ onClick: this.closeChangeboarding, text: 'Close' }]}
+              dialogPlacement="right bottom"
+              heading="We've got a new collapse state"
+              targetNode={spotlightTargetNode}
+              targetRadius={16}
             >
-              <div css={{ padding: '32px 40px' }}>
-                <ExpandToggleButton />
-              </div>
-            </LayoutManager>
-            {isChangeboardingOpen &&
-              this.spotlightTargetNode && (
-                <Spotlight
-                  actions={[
-                    { onClick: this.closeChangeboarding, text: 'Close' },
-                  ]}
-                  dialogPlacement="right bottom"
-                  heading="We've got a new collapse state"
-                  targetNode={this.spotlightTargetNode}
-                  targetRadius={16}
-                >
-                  <div>Awww yeah.</div>
-                </Spotlight>
-              )}
-          </Fragment>
-        </SpotlightManager>
-      </NavigationProvider>
+              <div>Awww yeah.</div>
+            </Spotlight>
+          )}
+      </Fragment>
     );
   }
 }
+const ExampleWithNavigationUI = withNavigationUI(Example);
+
+export default () => (
+  <NavigationProvider>
+    <SpotlightManager>
+      <ExampleWithNavigationUI />
+    </SpotlightManager>
+  </NavigationProvider>
+);

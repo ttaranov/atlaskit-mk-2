@@ -59,7 +59,15 @@ export default class LayoutManager extends Component<
     expandCollapseAffordance: React.createRef(),
   };
 
+  componentDidMount() {
+    this.publishRefs();
+  }
+
   componentDidUpdate() {
+    this.publishRefs();
+  }
+
+  publishRefs() {
     const { getRefs } = this.props;
     if (typeof getRefs === 'function') {
       getRefs(this.nodeRefs);
