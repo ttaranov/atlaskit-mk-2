@@ -101,6 +101,7 @@ export default class ResultList extends React.Component<Props> {
               mentionName={personResult.mentionName}
               presenceMessage={personResult.presenceMessage}
               analyticsData={analyticsData}
+              target="_blank"
             />
           );
         }

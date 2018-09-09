@@ -1,5 +1,23 @@
 # @atlaskit/editor-core
 
+## 79.0.13
+- [patch] ED-5165, fixing issue with inline code autoformatting removing other formattings in line. [9a7f8b2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9a7f8b2)
+
+## 79.0.12
+- [patch] Update TS to 3.0 [f68d367](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f68d367)
+- [none] Updated dependencies [f68d367](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f68d367)
+  - @atlaskit/media-test-helpers@17.0.2
+  - @atlaskit/media-picker@15.1.2
+  - @atlaskit/media-filmstrip@12.0.1
+  - @atlaskit/media-core@23.1.1
+  - @atlaskit/emoji@40.0.2
+  - @atlaskit/mention@15.0.9
+  - @atlaskit/editor-json-transformer@4.0.10
+  - @atlaskit/editor-common@15.0.7
+  - @atlaskit/media-card@33.0.2
+  - @atlaskit/renderer@21.0.7
+  - @atlaskit/editor-test-helpers@6.0.8
+
 ## 79.0.11
 - [patch] Renamed labelling of horizontal rule to divider [ef248cc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef248cc)
 

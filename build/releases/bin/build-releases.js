@@ -8,7 +8,7 @@ const args = process.argv.slice(2);
 const VALID_COMMANDS = ['changeset', 'version', 'publish'];
 if (args.length < 1) {
   console.error('Expected a command to run');
-  console.error('`bolt-version [changeset|version|publish]`');
+  console.error('`build-releases [changeset|version|publish]`');
   process.exit(1);
 }
 

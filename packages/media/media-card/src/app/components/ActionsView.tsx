@@ -46,7 +46,7 @@ export class ActionsView extends React.Component<
   ActionsViewProps,
   ActionsViewState
 > {
-  mounted: boolean;
+  mounted?: boolean;
 
   state: ActionsViewState = {
     actionInProgress: null,
