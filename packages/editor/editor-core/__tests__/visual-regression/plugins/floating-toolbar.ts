@@ -2,7 +2,15 @@ import {
   removeOldProdSnapshots,
   getExampleUrl,
 } from '@atlaskit/visual-regression/helper';
-import { imageSnapshotFolder } from '../_utils';
+import {
+  imageSnapshotFolder,
+  initEditor,
+  insertTable,
+  getSelectorForTableCell,
+  insertMenuSelector,
+  selectByTextAndClick,
+  snapshot,
+} from '../_utils';
 
 describe('Snapshot Test: Floating toolbar', () => {
   beforeAll(async () => {
@@ -71,6 +79,56 @@ describe('Snapshot Test: Floating toolbar', () => {
 
     it('should render custom component', async () => {
       await page.click(`button[aria-label="Yellow dropdown"]`);
+    });
+  });
+});
+
+describe('Floating toolbar: Toolbar resolution', () => {
+  beforeAll(async () => {
+    removeOldProdSnapshots(imageSnapshotFolder);
+  });
+
+  let page;
+  beforeAll(async () => {
+    // @ts-ignore
+    page = global.page;
+    await initEditor(page, 'full-page');
+    await insertTable(page);
+  });
+
+  afterEach(async () => {
+    const image = await page.screenshot();
+    // @ts-ignore
+    expect(image).toMatchProdImageSnapshot();
+  });
+
+  describe('Atom Nodes', () => {
+    it('should render the table toolbar', async () => {
+      const endCellSelector = getSelectorForTableCell({ row: 2, cell: 3 });
+      await page.click(endCellSelector);
+    });
+
+    it('should render the block extension toolbar', async () => {
+      const endCellSelector = getSelectorForTableCell({ row: 2, cell: 3 });
+      await page.click(insertMenuSelector);
+      await selectByTextAndClick({
+        page,
+        tagName: 'span',
+        text: 'Block macro (EH)',
+      });
+      await page.click(`${endCellSelector} > .extensionView-content-wrap`);
+    });
+
+    it('should render the inline extension toolbar', async () => {
+      const endCellSelector = getSelectorForTableCell({ row: 2, cell: 2 });
+      await page.click(endCellSelector);
+      await page.click(insertMenuSelector);
+      await selectByTextAndClick({
+        page,
+        tagName: 'span',
+        text: 'Inline macro (EH)',
+      });
+      await page.click(`${endCellSelector} > p`);
     });
   });
 });

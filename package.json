@@ -81,7 +81,7 @@
     "build:bundle-analysis": "               node ./build/ci-scripts/run.bundle.analysis"
   },
   "bolt": {
-    "version": "^0.18.3 || ^0.19.2 || ^0.20.6",
+    "version": "^0.19.2 || ^0.20.6 || ^0.21.1",
     "workspaces": [
       "build/*",
       "packages/*/*",
@@ -94,6 +94,7 @@
   },
   "devDependencies": {
     "@types/chai": "^4.0.4",
+    "@types/classnames": "^2.2.6",
     "@types/enzyme": "^3.1.6",
     "@types/fetch-mock": "^6.0.3",
     "@types/jest": "^20.0.8",
@@ -212,7 +213,7 @@
     "tslint-config-prettier": "^1.6.0",
     "tslint-react": "^3.2.0",
     "tty-table": "^2.6.8",
-    "typescript": "~2.6.2",
+    "typescript": "~3.0.3",
     "uid": "^0.0.2",
     "url-loader": "^1.0.1",
     "validator": "^9.4.1",
@@ -268,7 +269,7 @@
     "babel-traverse": "^6.26.0",
     "babylon": "^6.18.0",
     "bitbucket-build-status": "^1.0.3",
-    "bolt": "^0.20.6",
+    "bolt": "^0.21.1",
     "bolt-webpack-analyzer": "^0.0.1",
     "boxen": "^1.3.0",
     "brace": "^0.11.1",

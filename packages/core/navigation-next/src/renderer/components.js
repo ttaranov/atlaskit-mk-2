@@ -1,7 +1,8 @@
 // @flow
 
 import React from 'react';
-import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
+import ArrowLeftCircleIcon from '@atlaskit/icon/glyph/arrow-left-circle';
+import ArrowRightCircleIcon from '@atlaskit/icon/glyph/arrow-right-circle';
 import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
 import BacklogIcon from '@atlaskit/icon/glyph/backlog';
 import BoardIcon from '@atlaskit/icon/glyph/board';
@@ -14,10 +15,10 @@ import Spinner from '@atlaskit/spinner';
 import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import { navigationItemClicked } from '../common/analytics';
-import ContainerHeader from '../components/ContainerHeader';
+import ContainerHeaderComponent from '../components/ContainerHeader';
 import BaseItem from '../components/Item';
-import ItemPrimitive from '../components/Item/primitives';
 import SectionComponent from '../components/Section';
+import SectionHeadingComponent from '../components/SectionHeading';
 import Separator from '../components/Separator';
 import GroupComponent from '../components/Group';
 import GroupHeadingComponent from '../components/GroupHeading';
@@ -28,10 +29,12 @@ import { withNavigationViewController } from '../view-controller';
 import type {
   GoToItemProps,
   GroupProps,
+  GroupHeadingProps,
   ItemProps,
   ItemsRendererProps,
+  SectionHeadingProps,
   SectionProps,
-  GroupHeadingProps,
+  WordmarkProps,
 } from './types';
 
 const iconMap = {
@@ -68,7 +71,12 @@ const GoToItemBase = ({
         return <Spinner delay={spinnerDelay} invertColor size="small" />;
       }
       if (isActive || isHover) {
-        return <ArrowRightIcon size="small" />;
+        return (
+          <ArrowRightCircleIcon
+            primaryColor="currentColor"
+            secondaryColor="inherit"
+          />
+        );
       }
       return null;
     };
@@ -111,37 +119,57 @@ const Item = ({ before: beforeProp, icon, ...rest }: ItemProps) => {
 };
 
 // BackItem
-const backItemPrimitiveStyles = styles => ({
-  ...styles,
-  itemBase: { ...styles.itemBase, cursor: 'default' },
-});
+const BackItem = ({ before: beforeProp, text, ...props }: ItemProps) => {
+  let before = beforeProp;
+  if (!before) {
+    before = () => (
+      <ArrowLeftCircleIcon
+        primaryColor="currentColor"
+        secondaryColor="inherit"
+      />
+    );
+  }
 
-const BackItem = ({ goTo, href, subText, id, index, text = 'Back' }: *) => (
-  <div css={{ display: 'flex' }}>
-    <div css={{ flexShrink: 0 }}>
-      <GoToItem
-        after={null}
-        goTo={goTo}
-        href={href}
-        text={<ArrowLeftIcon size="small" />}
-        id={id}
-        index={index}
-      />
+  return (
+    <div css={{ paddingBottom: gridSize * 2 }}>
+      <Item {...props} after={null} before={before} text={text || 'Back'} />
     </div>
-    <div css={{ flexGrow: 1 }}>
-      <ItemPrimitive
-        spacing="compact"
-        styles={backItemPrimitiveStyles}
-        subText={subText}
-        text={text}
-      />
-    </div>
-  </div>
-);
+  );
+};
 
 // Title
 const GroupHeading = ({ text, ...props }: GroupHeadingProps) => (
   <GroupHeadingComponent {...props}>{text}</GroupHeadingComponent>
+);
+
+// SectionHeading
+const SectionHeading = ({ text, ...props }: SectionHeadingProps) => (
+  <SectionHeadingComponent {...props}>{text}</SectionHeadingComponent>
+);
+
+// ContainerHeader
+const ContainerHeader = (props: *) => (
+  // -2px here to account for the extra space at the top of a MenuSection for
+  // the scroll hint.
+  <div css={{ paddingBottom: gridSize * 2.5 - 2 }}>
+    <ContainerHeaderComponent {...props} />
+  </div>
+);
+
+// Wordmark
+const Wordmark = ({ wordmark: WordmarkLogo }: WordmarkProps) => (
+  <div
+    css={{
+      lineHeight: 0,
+      // -2px here to account for the extra space at the top of a MenuSection
+      // for the scroll hint.
+      paddingBottom: gridSize * 3.5 - 2,
+      paddingLeft: gridSize * 2,
+      paddingTop: gridSize,
+    }}
+  >
+    <WordmarkLogo />
+  </div>
 );
 
 const Debug = (props: *) => (
@@ -177,14 +205,22 @@ const Group = ({
 
 // Section
 const Section = ({
+  alwaysShowScrollHint = false,
   customComponents,
   id,
   items,
   nestedGroupKey,
   parentId,
+  shouldGrow,
 }: SectionProps) =>
   items.length ? (
-    <SectionComponent id={id} key={nestedGroupKey} parentId={parentId}>
+    <SectionComponent
+      alwaysShowScrollHint={alwaysShowScrollHint}
+      id={id}
+      key={nestedGroupKey}
+      parentId={parentId}
+      shouldGrow={shouldGrow}
+    >
       {({ className }) => (
         <div className={className}>
           <ItemsRenderer items={items} customComponents={customComponents} />
@@ -193,19 +229,73 @@ const Section = ({
     </SectionComponent>
   ) : null;
 
+const HeaderSection = ({
+  customComponents,
+  id,
+  items,
+  nestedGroupKey,
+  parentId,
+}: SectionProps) =>
+  items.length ? (
+    <SectionComponent id={id} key={nestedGroupKey} parentId={parentId}>
+      {({ css }) => (
+        <div
+          css={{
+            ...css,
+            paddingTop: gridSize * 2.5,
+          }}
+        >
+          <ItemsRenderer items={items} customComponents={customComponents} />
+        </div>
+      )}
+    </SectionComponent>
+  ) : null;
+
+const MenuSection = ({
+  alwaysShowScrollHint = false,
+  customComponents,
+  id,
+  items,
+  nestedGroupKey,
+  parentId,
+}: SectionProps) => (
+  <SectionComponent
+    alwaysShowScrollHint={alwaysShowScrollHint}
+    id={id}
+    key={nestedGroupKey}
+    parentId={parentId}
+    shouldGrow
+  >
+    {({ css }) => (
+      <div
+        css={{
+          ...css,
+          paddingBottom: gridSize * 1.5,
+        }}
+      >
+        <ItemsRenderer items={items} customComponents={customComponents} />
+      </div>
+    )}
+  </SectionComponent>
+);
+
 const itemComponents = {
+  BackItem,
   ContainerHeader,
   Debug,
   GoToItem,
-  Item,
-  BackItem,
-  Separator,
   GroupHeading,
+  Item,
+  SectionHeading,
+  Separator,
   Switcher,
+  Wordmark,
 };
 
 const groupComponents = {
   Group,
+  HeaderSection,
+  MenuSection,
   Section,
 };
 

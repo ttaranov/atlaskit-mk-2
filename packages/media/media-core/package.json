@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-core",
-  "version": "23.1.0",
+  "version": "23.1.1",
   "description": "It holds shared code between MediaComponents like models, providers, interfaces and utilities",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -33,7 +33,7 @@
   "devDependencies": {
     "@atlaskit/button": "^9.0.4",
     "@atlaskit/docs": "^5.0.7",
-    "@atlaskit/media-test-helpers": "^17.0.0",
+    "@atlaskit/media-test-helpers": "^17.0.2",
     "rxjs": "^5.1.0",
     "sinon": "^2.2.0",
     "styled-components": "^3.2.6"

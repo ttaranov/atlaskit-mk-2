@@ -5,13 +5,9 @@ import { mount } from 'enzyme';
 import { HashRouter } from 'react-router-dom';
 
 import LayoutManagerWithViewController from '../../LayoutManagerWithViewController';
-
-import {
-  DefaultGlobalNavigation,
-  ProjectSwitcher,
-} from '../../../../../examples/shared/components';
-
 import { NavigationProvider } from '../../../../index';
+
+const GlobalNavigationComponent = () => null;
 
 describe('LayoutManagerWithViewController', () => {
   let wrapper;
@@ -48,8 +44,7 @@ describe('LayoutManagerWithViewController', () => {
           isDebugEnabled={false}
         >
           <LayoutManagerWithViewController
-            customComponents={{ ProjectSwitcher }}
-            globalNavigation={DefaultGlobalNavigation}
+            globalNavigation={GlobalNavigationComponent}
             firstSkeletonToRender={'product'}
             onCollapseStart={onCollapseStart}
             onCollapseEnd={onCollapseEnd}
@@ -79,7 +74,7 @@ describe('LayoutManagerWithViewController', () => {
   });
 
   it('should render global navigation based on using `globalNavigation` as a reference', () => {
-    expect(wrapper.find(DefaultGlobalNavigation).length).toBe(1);
+    expect(wrapper.find(GlobalNavigationComponent).length).toBe(1);
   });
 
   describe('LayerInitialised', () => {
@@ -118,8 +113,7 @@ describe('LayoutManagerWithViewController', () => {
             isDebugEnabled={false}
           >
             <LayoutManagerWithViewController
-              customComponents={{ ProjectSwitcher }}
-              globalNavigation={DefaultGlobalNavigation}
+              globalNavigation={GlobalNavigationComponent}
               firstSkeletonToRender={'container'}
             >
               <p>

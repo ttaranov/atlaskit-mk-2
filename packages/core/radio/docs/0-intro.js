@@ -88,13 +88,6 @@ ${(
 
   ${(
     <Props
-      props={require('!!extract-react-types-loader!../src/RadioInput')}
-      heading="RadioInput Props"
-    />
-  )}
-
-  ${(
-    <Props
       props={require('!!extract-react-types-loader!../src/RadioIcon')}
       heading="RadioIcon Props"
     />

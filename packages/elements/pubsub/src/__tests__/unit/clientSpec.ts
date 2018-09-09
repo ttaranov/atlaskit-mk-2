@@ -53,7 +53,7 @@ describe('Client', () => {
         expect(lastCall).toBeDefined();
 
         const options: RequestInit = lastCall[1];
-        const body = JSON.parse(options.body);
+        const body = JSON.parse(options.body as string);
         expect(body.channels[0]).toEqual('ari:cloud:platform::site/666');
       });
     });
@@ -83,7 +83,7 @@ describe('Client', () => {
         expect(lastCall).toBeDefined();
 
         const options: RequestInit = lastCall[1];
-        const body = JSON.parse(options.body);
+        const body = JSON.parse(options.body as string);
 
         expect(body.channels.length).toEqual(3);
         expect(body.channels[0]).toEqual('ari:cloud:platform::site/666');
@@ -126,7 +126,7 @@ describe('Client', () => {
           expect(lastCall).toBeDefined();
 
           const options: RequestInit = lastCall[1];
-          const body = JSON.parse(options.body);
+          const body = JSON.parse(options.body as string);
 
           expect(body.channels.length).toEqual(1);
           expect(body.channels[0]).toEqual('ari:cloud:platform::site/333');

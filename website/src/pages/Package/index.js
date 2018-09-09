@@ -2,7 +2,8 @@
 
 import React, { Component, type Node } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link } from '../../components/WrappedLink';
+import Loadable from '../../components/WrappedLoader';
 import { Helmet } from 'react-helmet';
 import { gridSize, colors, math } from '@atlaskit/theme';
 import Button from '@atlaskit/button';
@@ -16,13 +17,12 @@ import FourOhFour from '../FourOhFour';
 import MetaData from './MetaData';
 import LatestChangelog from './LatestChangelog';
 
-import { divvyChangelog } from '../../utils/changelog';
 import { isModuleNotFoundError } from '../../utils/errors';
 import * as fs from '../../utils/fs';
 import type { RouterMatch } from '../../types';
 
-import { packages } from '../../site';
 import type { Logs } from '../../components/ChangeLog';
+import fetchPackageData from './utils/fsOperations';
 
 export const Title = styled.div`
   display: flex;
@@ -60,12 +60,8 @@ export const Sep = styled.hr`
   }
 `;
 
-type NoDocsProps = {
-  name: string,
-};
-
-export const NoDocs = (props: NoDocsProps) => {
-  return <div>Component "{props.name}" doesn't have any docs.</div>;
+export const NoDocs = props => {
+  return <div>Component "{props.name}" doesn't have any documentation.</div>;
 };
 
 type PackageProps = {
@@ -80,14 +76,6 @@ type PackageState = {
   pkg: Object | null,
 };
 
-function getPkg(packages, groupId, pkgId) {
-  const groups = fs.getDirectories(packages.children);
-  const group = fs.getById(groups, groupId);
-  const pkgs = fs.getDirectories(group.children);
-  const pkg = fs.getById(pkgs, pkgId);
-  return pkg;
-}
-
 const initialState = {
   changelog: [],
   doc: null,
@@ -96,128 +84,82 @@ const initialState = {
   pkg: null,
 };
 
-export default class Package extends Component<PackageProps, PackageState> {
-  state = initialState;
-  props: PackageProps;
+function getExamplesPaths(groupId, pkgId, examples) {
+  if (!examples || !examples.length) return {};
 
-  componentDidMount() {
-    this.loadDoc();
-  }
+  const regex = /^[a-zA-Z0-9]/; // begins with letter or number, avoid "special" files
+  const filtered = examples.map(a => a.id).filter(id => id.match(regex));
+  const res = filtered[0];
 
-  componentWillReceiveProps({
-    match: {
-      params: { groupId, pkgId },
-    },
-  }: PackageProps) {
-    if (
-      groupId === this.props.match.params.groupId &&
-      pkgId === this.props.match.params.pkgId
-    ) {
-      return;
-    }
+  if (!res) return {};
 
-    this.loadDoc();
-  }
-
-  loadDoc() {
-    this.setState(initialState, () => {
-      const { groupId, pkgId } = this.props.match.params;
-      try {
-        const pkg = getPkg(packages, groupId, pkgId);
-        const dirs = fs.getDirectories(pkg.children);
-        const files = fs.getFiles(pkg.children);
-
-        const json = fs.getById(files, 'package.json');
-        const changelog = fs.maybeGetById(files, 'CHANGELOG.md');
-        const docs = fs.maybeGetById(dirs, 'docs');
-        const examples = fs.maybeGetById(dirs, 'examples');
-
-        let doc;
-        if (docs) {
-          doc = fs.find(docs, () => {
-            return true;
-          });
-        }
-
-        Promise.all([
-          json.exports(),
-          doc && doc.exports().then(mod => mod.default),
-          changelog &&
-            changelog.contents().then(changelog => divvyChangelog(changelog)),
-        ])
-          .then(([pkg, doc, changelog]) => {
-            this.setState({
-              pkg,
-              doc,
-              examples: examples && examples.children,
-              changelog: changelog || [],
-            });
-          })
-          .catch(err => {
-            if (isModuleNotFoundError(err, pkgId)) {
-              this.setState({ missing: true });
-            } else {
-              throw err;
-            }
-          });
-      } catch (err) {
-        if (isModuleNotFoundError(err, pkgId)) {
-          this.setState({ missing: true });
-        } else {
-          throw err;
-        }
-      }
-    });
-  }
-
-  getExamplesPath = (inModal?: boolean) => {
-    const { groupId, pkgId } = this.props.match.params;
-    const { examples } = this.state;
-
-    if (!examples || !examples.length) return null;
-
-    const regex = /^[a-zA-Z0-9]/; // begins with letter or number, avoid "special" files
-    const filtered = examples.map(a => a.id).filter(id => id.match(regex));
-    const res = filtered[0];
-
-    if (!res) return null;
-
-    return inModal
-      ? `/packages/${groupId}/${pkgId}/example/${fs.normalize(res)}`
-      : `/examples/${groupId}/${pkgId}/${fs.normalize(res)}`;
+  return {
+    examplePath: `/examples/${groupId}/${pkgId}/${fs.normalize(res)}`,
+    exampleModalPath: `/packages/${groupId}/${pkgId}/example/${fs.normalize(
+      res,
+    )}`,
   };
+}
 
+export default function LoadData({ match }) {
+  const { groupId, pkgId } = match.params;
+
+  const Content = Loadable({
+    loading: () => (
+      <Page>
+        <Loading />
+      </Page>
+    ),
+    loader: () =>
+      fetchPackageData(groupId, pkgId).catch(
+        error => console.log(error) || { error },
+      ),
+    render: props =>
+      props.missing || props.error ? (
+        <FourOhFour />
+      ) : (
+        <Package
+          {...props}
+          pkgId={pkgId}
+          groupId={groupId}
+          urlIsExactMatch={match.isExact}
+        />
+      ),
+  });
+
+  return <Content />;
+}
+
+class Package extends Component<*, *> {
   render() {
-    const { isExact: urlIsExactMatch } = this.props.match;
-    const { groupId, pkgId } = this.props.match.params;
-    const { pkg, doc, changelog, missing } = this.state;
+    const {
+      urlIsExactMatch,
+      groupId,
+      pkgId,
+      pkg,
+      doc,
+      changelog,
+      examples,
+    } = this.props;
+    const { examplePath, exampleModalPath } = getExamplesPaths(
+      groupId,
+      pkgId,
+      examples,
+    );
 
-    if (missing) {
-      return <FourOhFour />;
-    }
-
-    if (!pkg) {
-      return (
-        <Page>
-          <Loading />
-        </Page>
-      );
-    }
-
-    const examplePath = this.getExamplesPath();
-    const exampleModalPath = this.getExamplesPath(true);
+    const title = fs.titleize(pkgId);
 
     return (
       <Page>
         {urlIsExactMatch && (
           <Helmet>
             <title>
-              {fs.titleize(pkgId)} package - {BASE_TITLE}
+              {title} package - {BASE_TITLE}
             </title>
           </Helmet>
         )}
         <Title>
-          <h1>{fs.titleize(pkgId)}</h1>
+          <h1>{title}</h1>
           {examplePath && (
             <ButtonGroup>
               <Button

@@ -1,3 +1,4 @@
+import { Node as PMNode } from 'prosemirror-model';
 import { emoji as emojiData } from '@atlaskit/util-data-test';
 import { emoji as emojiNode, ProviderFactory } from '@atlaskit/editor-common';
 import {
@@ -346,7 +347,9 @@ describe('emojis', () => {
         id: '1234',
       });
 
-      expect(editorView.state.doc.nodeAt(1)!.type.spec).toEqual(emojiNode);
+      expect((editorView.state.doc.nodeAt(1) as PMNode).type.spec).toEqual(
+        emojiNode,
+      );
       editorView.destroy();
     });
 
@@ -419,7 +422,9 @@ describe('emojis', () => {
         doc(blockquote(p('Hello ', emoji(grinEmojiId)(), ' '))),
       );
 
-      expect(editorView.state.doc.nodeAt(8)!.type.spec).toEqual(emojiNode);
+      expect((editorView.state.doc.nodeAt(8) as PMNode).type.spec).toEqual(
+        emojiNode,
+      );
       expect(editorView.state.doc.nodeAt(10)).toBe(null);
       editorView.destroy();
     });

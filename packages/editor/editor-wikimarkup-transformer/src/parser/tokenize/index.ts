@@ -1,5 +1,5 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
-import { attachment } from './attachment';
+import { media } from './media';
 import { blockquote } from './blockquote';
 import { citation } from './citation';
 import { deleted } from './deleted';
@@ -33,7 +33,7 @@ export enum TokenType {
   STRING = 'STRING',
   LINK_FORMAT = 'LINK_FORMAT',
   LINK_TEXT = 'LINK_TEXT',
-  ATTACHMENT = 'ATTACHMENT',
+  MEDIA = 'MEDIA',
   HEADING = 'HEADING',
   LIST = 'LIST',
   TABLE = 'TABLE',
@@ -88,7 +88,7 @@ const tokenToTokenParserMapping: {
   [TokenType.LINK_FORMAT]: linkFormat,
   [TokenType.LINK_TEXT]: linkText,
   [TokenType.HEADING]: heading,
-  [TokenType.ATTACHMENT]: attachment,
+  [TokenType.MEDIA]: media,
   [TokenType.LIST]: list,
   [TokenType.QUOTE]: blockquote,
   [TokenType.TABLE]: table,

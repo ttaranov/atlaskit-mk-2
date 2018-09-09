@@ -1,4 +1,5 @@
 import { EditorState, Selection, TextSelection } from 'prosemirror-state';
+import { Node as PMNode } from 'prosemirror-model';
 import { findWrapping } from 'prosemirror-transform';
 import { Command } from '../../../types';
 import {
@@ -113,7 +114,7 @@ function insertCodeBlock(): Command {
     const { $to } = state.selection;
     const { codeBlock } = state.schema.nodes;
     const moveSel = $to.node($to.depth).textContent ? 1 : 0;
-    tr.replaceRangeWith($to.pos, $to.pos, codeBlock.createAndFill()!);
+    tr.replaceRangeWith($to.pos, $to.pos, codeBlock.createAndFill() as PMNode);
     tr.setSelection(
       Selection.near(tr.doc.resolve(state.selection.to + moveSel)),
     );

@@ -244,7 +244,7 @@ Object {
     },
     Object {
       "attrs": Object {
-        "layout": "wide",
+        "layout": "center",
       },
       "content": Array [
         Object {
@@ -255,12 +255,12 @@ Object {
             "__fileSize": null,
             "__key": null,
             "collection": "",
-            "height": null,
+            "height": 183,
             "id": "image.jpg",
             "occurrenceKey": null,
             "type": "file",
             "url": null,
-            "width": null,
+            "width": 200,
           },
           "type": "media",
         },

@@ -182,23 +182,23 @@ export class App extends Component<AppProps, AppState> {
     });
   }
 
-  onDragLeave(payload: DropzoneDragLeaveEventPayload): void {
+  onDragLeave = (payload: DropzoneDragLeaveEventPayload): void => {
     const { onDropzoneDragOut } = this.props;
     onDropzoneDragOut(payload.length);
     this.setDropzoneActive(false);
-  }
+  };
 
-  onDragEnter(payload: DropzoneDragEnterEventPayload): void {
+  onDragEnter = (payload: DropzoneDragEnterEventPayload): void => {
     const { onDropzoneDragIn } = this.props;
     onDropzoneDragIn(payload.length);
     this.setDropzoneActive(true);
-  }
+  };
 
-  onDrop(payload: UploadsStartEventPayload): void {
+  onDrop = (payload: UploadsStartEventPayload): void => {
     const { onDropzoneDropIn, onUploadsStart } = this.props;
     onDropzoneDropIn(payload.files.length);
     onUploadsStart(payload);
-  }
+  };
 
   componentWillReceiveProps({ isVisible }: Readonly<AppProps>): void {
     if (isVisible !== this.props.isVisible) {
