@@ -41,8 +41,12 @@ export type View = {
   id: ViewID,
   type: ViewLayer,
   getItems: GetItemsSignature,
+  /** Any data here is added to navigation context under the attributes key.
+   * Allowing extra attributes to be sent for analytics events. */
+  getAnalyticsAttributes?: (items: ViewData) => {},
 };
 type ActiveView = {
+  analyticsAttributes?: {} | void,
   id: ViewID,
   type: ViewLayer,
   data: ViewData,
@@ -55,8 +59,8 @@ type IncomingView = {
 export type Reducer = ViewData => ViewData;
 
 export type ViewControllerProps = {
-  initialPeekViewId: ?ViewID,
-  isDebugEnabled: boolean,
+  initialPeekViewId?: ?ViewID,
+  isDebugEnabled?: boolean,
 };
 
 export type ViewControllerState = {

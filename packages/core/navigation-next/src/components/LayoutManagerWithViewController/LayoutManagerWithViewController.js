@@ -185,6 +185,7 @@ class LayoutManagerWithViewControllerBase extends Component<
           attributes: {
             navigationLayer: activeView && activeView.type,
             view: activeView && activeView.id,
+            ...(activeView && activeView.analyticsAttributes),
           },
         }}
       >
