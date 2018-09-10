@@ -238,10 +238,6 @@ export default class GlobalNavigation
             const shouldUnmountOnExit = this.props[
               `should${capitalisedDrawerName}UnmountOnExit`
             ];
-            console.log(
-              shouldUnmountOnExit,
-              `should${capitalisedDrawerName}UnmountOnExit`,
-            );
 
             if (!DrawerContents) {
               return null;

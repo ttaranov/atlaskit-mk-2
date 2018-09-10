@@ -112,7 +112,6 @@ class GlobalNavWithDrawers extends Component<Props, State> {
     ];
 
     const { isCreateDrawerEnabled, unmountOnExit } = this.props;
-    console.log(unmountOnExit, 'props');
 
     return (
       <Fragment>
@@ -198,7 +197,6 @@ export default class extends Component<{||}, NavState> {
   };
 
   render() {
-    console.log(this.state.unmountOnExit, 'state');
     return (
       <NavigationProvider>
         <LayoutManager
