@@ -1,5 +1,9 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import {
+  injectIntl,
+  InjectedIntlProps,
+  FormattedHTMLMessage,
+} from 'react-intl';
 import { withAnalytics, FireAnalyticsEvent } from '@atlaskit/analytics';
 import { ConfluenceClient } from '../../api/ConfluenceClient';
 import {
@@ -26,7 +30,6 @@ import { sliceResults } from './ConfluenceSearchResultsMapper';
 import NoResultsState from './NoResultsState';
 import SearchResultsComponent from '../common/SearchResults';
 import { getConfluenceAdvancedSearchLink } from '../SearchResultsUtil';
-import { FormattedHTMLMessage } from 'react-intl';
 import AdvancedSearchGroup from './AdvancedSearchGroup';
 import {
   mapRecentResultsToUIGroups,
