@@ -28,6 +28,11 @@ const defaultImageOptions: MediaStoreGetFileImageParams = {
   mode: 'crop',
 };
 
+const defaultGetCollectionItems: MediaStoreGetCollectionItemsParams = {
+  limit: 30,
+  sortDirection: 'desc',
+};
+
 const extendImageParams = (
   params?: MediaStoreGetFileImageParams,
 ): MediaStoreGetFileImageParams => {
@@ -64,11 +69,14 @@ export class MediaStore {
 
   getCollectionItems(
     collectionName: string,
-    params: MediaStoreGetCollectionItemsPrams,
+    params?: MediaStoreGetCollectionItemsParams,
   ): Promise<MediaStoreResponse<MediaCollectionItems>> {
     return this.request(`/collection/${collectionName}/items`, {
       authContext: { collectionName },
-      params,
+      params: {
+        ...defaultGetCollectionItems,
+        ...params,
+      },
       headers: {
         Accept: 'application/json',
       },
@@ -300,9 +308,8 @@ export type MediaStoreGetFileImageParams = {
   readonly 'max-age'?: number;
 };
 
-export type MediaStoreGetCollectionItemsPrams = {
-  readonly limit: number;
-
+export type MediaStoreGetCollectionItemsParams = {
+  readonly limit?: number;
   readonly inclusiveStartKey?: string;
   readonly sortDirection?: 'asc' | 'desc';
   readonly details?: 'minimal' | 'full';

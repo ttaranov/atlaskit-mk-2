@@ -47,6 +47,7 @@ describe('Snapshot Test: table', () => {
       });
 
       beforeEach(async () => {
+        await page.setViewport({ width: 1920, height: 1080 });
         await clearEditor(page);
         await insertTable(page);
       });
@@ -59,7 +60,6 @@ describe('Snapshot Test: table', () => {
               .replace(/^\w/, c => c.toUpperCase());
             const buttonSelector = `div[aria-label="Table floating controls"] span[aria-label="${layoutName}"]`;
             // Make the images large enough so there is noticable difference between the table layouts.
-            await page.setViewport({ width: 1920, height: 1080 });
             await page.click(buttonSelector);
             await page.waitForSelector(
               `.ProseMirror table[data-layout="${layout}"]`,
@@ -162,6 +162,24 @@ describe('Snapshot Test: table', () => {
             await clickInContextMenu(page, 'Merge cells');
             await snapshot(page);
             await clickInContextMenu(page, 'Split cell');
+            await snapshot(page);
+          });
+        });
+
+        describe('Cell background', () => {
+          beforeEach(async () => {
+            await page.setViewport({ width: 790, height: 620 });
+          });
+
+          it('shows the submenu on the right', async () => {
+            await page.click('tr:nth-child(1) > th:nth-child(1)');
+            await clickInContextMenu(page, 'Cell background');
+            await snapshot(page);
+          });
+
+          it('Submenu shows on the left if there is no available space', async () => {
+            await page.click('tr:nth-child(1) > th:nth-child(3)');
+            await clickInContextMenu(page, 'Cell background');
             await snapshot(page);
           });
         });

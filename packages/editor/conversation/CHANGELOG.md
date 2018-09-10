@@ -1,5 +1,14 @@
 # @atlaskit/conversation
 
+## 9.3.4
+- [patch] Updated dependencies [6e1d642](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e1d642)
+  - @atlaskit/editor-common@16.0.0
+  - @atlaskit/editor-core@80.0.0
+  - @atlaskit/renderer@22.0.0
+  - @atlaskit/comment@6.0.14
+  - @atlaskit/reactions@13.1.1
+  - @atlaskit/util-data-test@10.0.9
+
 ## 9.3.3
 - [patch] Add module mainField to packagejson to get codesplitting to work in BBCloud [f8c92b0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f8c92b0)
 

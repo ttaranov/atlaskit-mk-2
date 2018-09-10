@@ -7,6 +7,7 @@ import { EMOJIS } from './emoji';
  */
 const keywordTokenMap = {
   '[~': TokenType.MENTION,
+  '[^': TokenType.FLIE_LINK,
   '[': TokenType.LINK_FORMAT,
   http: TokenType.LINK_TEXT,
   irc: TokenType.LINK_TEXT,

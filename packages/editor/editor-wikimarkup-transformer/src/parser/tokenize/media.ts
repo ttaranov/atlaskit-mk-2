@@ -4,7 +4,7 @@ import { Token } from './';
 import { parseAttrs } from '../utils/attrs';
 
 // [!image.jpg!|https://www.atlassian.com]
-const MEDIA_REGEXP = /^\!([\(\)\w. -]+)\|?([\w=,. ]*)\!/;
+const MEDIA_REGEXP = /^\!([\(\)\w. -]+)(\|[\w=,. ]*)?\!/;
 
 export function media(input: string, schema: Schema): Token {
   const match = input.match(MEDIA_REGEXP);
@@ -13,10 +13,12 @@ export function media(input: string, schema: Schema): Token {
     return fallback(input);
   }
 
+  const rawAttrs = match[2] ? match[2].slice(1) : '';
+
   const node = getMediaSingleNodeView(
     schema,
     match[1],
-    parseAttrs(match[2], ','),
+    parseAttrs(rawAttrs, ','),
   );
 
   return {
