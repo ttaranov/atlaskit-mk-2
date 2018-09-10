@@ -34,4 +34,6 @@ export default (
       },
     ];
   }
+
+  return undefined;
 };

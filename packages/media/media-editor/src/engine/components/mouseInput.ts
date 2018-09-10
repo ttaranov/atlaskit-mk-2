@@ -35,7 +35,7 @@ export class DefaultMouseInput implements MouseInput {
   private readonly getPosition: PositionCalculator;
   private isDragging: boolean;
   private isCapturingInput: boolean;
-  private initialPosition: ScreenPoint;
+  private initialPosition?: ScreenPoint;
 
   constructor(
     private readonly inputArea: HTMLElement,
@@ -75,7 +75,7 @@ export class DefaultMouseInput implements MouseInput {
   private mouseMove(event: MouseEvent): void {
     if (this.isCapturingInput) {
       if (!this.isDragging) {
-        this.dragStart.emit(this.initialPosition);
+        this.dragStart.emit(this.initialPosition!);
         this.isDragging = true;
       }
 
@@ -92,7 +92,7 @@ export class DefaultMouseInput implements MouseInput {
         this.dragEnd.emit(this.getPosition(event));
         this.isDragging = false;
       } else {
-        this.click.emit(this.initialPosition);
+        this.click.emit(this.initialPosition!);
       }
     }
   }

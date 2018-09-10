@@ -206,7 +206,7 @@ export class FolderViewer extends Component<FolderViewerProps, {}> {
     );
   };
 
-  private renderFileCreateDateAndSize = ({ date, size }) => {
+  private renderFileCreateDateAndSize = ({ date, size }: any) => {
     return (
       <FileMetadataGroup>
         <FileCreateDate>{getDateString(date)}</FileCreateDate>

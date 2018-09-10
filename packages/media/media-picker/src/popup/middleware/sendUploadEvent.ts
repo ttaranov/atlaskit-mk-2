@@ -10,7 +10,7 @@ import {
 import { handleError } from '../../util/handleError';
 
 export default function(eventEmitter: PopupUploadEventEmitter): Middleware {
-  return store => (next: Dispatch<State>) => action => {
+  return _ => (next: Dispatch<State>) => action => {
     if (isSendUploadEventAction(action)) {
       const { event, uploadId } = action.payload;
 

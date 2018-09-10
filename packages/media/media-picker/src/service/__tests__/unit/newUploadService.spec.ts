@@ -320,7 +320,7 @@ describe('UploadService', () => {
       };
       const mediaItemProvider: MediaItemProvider = {
         observable: () =>
-          Observable.create(observer => {
+          Observable.create((observer: any) => {
             observer.next(pendingFileItem);
             expect(fileConvertedCallback).not.toHaveBeenCalled();
             observer.next(succeededFileItem);
@@ -379,7 +379,7 @@ describe('UploadService', () => {
       });
 
       jest.spyOn(context, 'uploadFile').mockReturnValue({
-        subscribe(subscription) {
+        subscribe(subscription: any) {
           subscription.next({
             status: 'uploading',
             id: 'public-file-id',
@@ -419,7 +419,7 @@ describe('UploadService', () => {
       uploadService.on('file-upload-error', fileUploadErrorCallback);
 
       jest.spyOn(context, 'uploadFile').mockReturnValue({
-        subscribe(subscription) {
+        subscribe(subscription: any) {
           // setTimeout(() => {
           subscription.error('Some reason');
           // }, 10)
@@ -533,7 +533,7 @@ describe('UploadService', () => {
       );
       const mediaItemProvider: MediaItemProvider = {
         observable: () =>
-          Observable.create(observer => {
+          Observable.create((observer: any) => {
             // We have to wait 1 cycle otherwise :next callback called synchronously
             setImmediate(() => {
               // It's not required, but I like "natural" feel of this call
@@ -599,7 +599,7 @@ describe('UploadService', () => {
 
       const mediaItemProvider: MediaItemProvider = {
         observable: () =>
-          Observable.create(observer => {
+          Observable.create((observer: any) => {
             setImmediate(() => {
               observer.next(succeededFileItem);
               expect(
@@ -635,7 +635,7 @@ describe('UploadService', () => {
 
       return new Promise(resolve => {
         jest.spyOn(context, 'uploadFile').mockReturnValue({
-          subscribe(subscription) {
+          subscribe(subscription: any) {
             subscription.error();
             expect(
               Object.keys((uploadService as any).cancellableFilesUploads),

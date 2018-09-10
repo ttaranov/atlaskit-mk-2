@@ -5,7 +5,7 @@ import { fileUploadsStart } from '../../../actions/fileUploadsStart';
 
 describe('fileUploadsAdd() reducer', () => {
   const MOCK_TIMESTAMP = Date.now();
-  let dateNowSpy;
+  let dateNowSpy: any;
 
   beforeAll(() => {
     // Lock Time

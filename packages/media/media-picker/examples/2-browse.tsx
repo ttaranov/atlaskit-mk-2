@@ -21,7 +21,7 @@ export interface BrowserWrapperState {
 }
 
 class BrowserWrapper extends Component<{}, BrowserWrapperState> {
-  dropzoneContainer: HTMLDivElement;
+  dropzoneContainer?: HTMLDivElement;
 
   state: BrowserWrapperState = {
     authEnvironment: 'client',
@@ -61,7 +61,7 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
     }
   };
 
-  onCollectionChange = e => {
+  onCollectionChange = (e: any) => {
     const { innerText: collectionName } = e.target;
     const { fileBrowser } = this.state;
     if (!fileBrowser) {
@@ -75,7 +75,7 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
     });
   };
 
-  onAuthTypeChange = e => {
+  onAuthTypeChange = (e: any) => {
     const { innerText: authEnvironment } = e.target;
 
     this.setState({ authEnvironment });

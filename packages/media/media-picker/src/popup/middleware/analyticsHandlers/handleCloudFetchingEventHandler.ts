@@ -12,7 +12,7 @@ const commonPayload = {
   actionSubjectId: 'cloudMedia',
 };
 
-const fileAttributes = file => ({
+const fileAttributes = (file: any) => ({
   fileSize: file.size,
   fileMimetype: file.type,
   fileSource: 'mediapicker',
@@ -75,4 +75,6 @@ export default (
       return [];
     }
   }
+
+  return undefined;
 };

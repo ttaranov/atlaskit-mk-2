@@ -328,7 +328,7 @@ describe('importFiles middleware', () => {
             call[0].type === 'FINALIZE_UPLOAD';
 
           expect(
-            store.dispatch.mock.calls.filter(isFinalizeUploadCall),
+            store.dispatch.mock.calls.filter(isFinalizeUploadCall as any),
           ).toHaveLength(localUploadsFinalizedNum + recentFinalizedNum);
 
           expect(store.dispatch).toBeCalledWith(

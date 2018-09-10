@@ -67,16 +67,16 @@ export class MediaEditor extends React.Component<MediaEditorProps, {}> {
   private isUnmounted: boolean;
 
   // DOM elements that we need to create the engine
-  private outputArea: HTMLDivElement;
-  private canvas: HTMLCanvasElement;
-  private supplementaryCanvas: HTMLCanvasElement;
-  private hiddenTextArea: HTMLTextAreaElement;
-  private hiddenTextHelperDiv: HTMLDivElement;
+  private outputArea?: HTMLDivElement;
+  private canvas?: HTMLCanvasElement;
+  private supplementaryCanvas?: HTMLCanvasElement;
+  private hiddenTextArea?: HTMLTextAreaElement;
+  private hiddenTextHelperDiv?: HTMLDivElement;
 
   // Engine and its components
-  private drawingArea: DefaultDrawingArea;
-  private toolbar: DefaultToolbar;
-  private engine: Engine;
+  private drawingArea?: DefaultDrawingArea;
+  private toolbar?: DefaultToolbar;
+  private engine?: Engine;
 
   constructor(props: MediaEditorProps) {
     super(props);
@@ -103,7 +103,7 @@ export class MediaEditor extends React.Component<MediaEditorProps, {}> {
       !dimensionsSame(currProps.dimensions, prevProps.dimensions) ||
       currProps.screenScaleFactor !== prevProps.screenScaleFactor
     ) {
-      this.drawingArea.setSize(MediaEditor.toOutputSize(currProps));
+      this.drawingArea!.setSize(MediaEditor.toOutputSize(currProps));
     }
 
     if (
@@ -124,16 +124,16 @@ export class MediaEditor extends React.Component<MediaEditorProps, {}> {
       addShadow: prevAddShadow,
     } = prevProps.shapeParameters;
     if (!colorSame(currColor, prevColor)) {
-      this.toolbar.setColor(currColor);
+      this.toolbar!.setColor(currColor);
     }
     if (currLineWidth !== prevLineWidth) {
-      this.toolbar.setLineWidth(currLineWidth);
+      this.toolbar!.setLineWidth(currLineWidth);
     }
     if (currAddShadow !== prevAddShadow) {
-      this.toolbar.setAddShadow(currAddShadow);
+      this.toolbar!.setAddShadow(currAddShadow);
     }
     if (currProps.tool !== prevProps.tool) {
-      this.toolbar.setTool(currProps.tool);
+      this.toolbar!.setTool(currProps.tool);
     }
   }
 
@@ -142,19 +142,19 @@ export class MediaEditor extends React.Component<MediaEditorProps, {}> {
     this.unloadEngine();
   }
 
-  private handleOutputAreaInnerRef = outputArea => {
+  private handleOutputAreaInnerRef = (outputArea: any) => {
     this.outputArea = outputArea;
   };
-  private handleSupplementaryCanvasInnerRef = canvas => {
+  private handleSupplementaryCanvasInnerRef = (canvas: any) => {
     this.supplementaryCanvas = canvas;
   };
-  private handleHiddenTextAreaInnerRef = textArea => {
+  private handleHiddenTextAreaInnerRef = (textArea: any) => {
     this.hiddenTextArea = textArea;
   };
-  private handleHiddenTextHelperDivInnerRef = div => {
+  private handleHiddenTextHelperDivInnerRef = (div: any) => {
     this.hiddenTextHelperDiv = div;
   };
-  private handleDrawingCanvasInnerRef = canvas => {
+  private handleDrawingCanvasInnerRef = (canvas: any) => {
     this.canvas = canvas;
   };
 
@@ -196,7 +196,7 @@ export class MediaEditor extends React.Component<MediaEditorProps, {}> {
 
     DefaultImageProvider.create(
       () => urlImageLoader(imageUrl),
-      this.supplementaryCanvas,
+      this.supplementaryCanvas!,
     )
       .then(imageProvider => {
         // We must not create the engine if the component was unmounted or if the image was changed
@@ -208,29 +208,29 @@ export class MediaEditor extends React.Component<MediaEditorProps, {}> {
         const outputSize = MediaEditor.toOutputSize(this.props);
         const { backgroundColor } = this.props;
         this.drawingArea = new DefaultDrawingArea(
-          this.canvas,
+          this.canvas!,
           outputSize,
           backgroundColor,
         );
 
-        const mouseInput = new DefaultMouseInput(this.outputArea);
+        const mouseInput = new DefaultMouseInput(this.outputArea!);
         this.toolbar = new DefaultToolbar(params =>
           this.props.onShapeParametersChanged(params),
         );
         const keyboardInput = new DefaultKeyboardInput(
-          this.hiddenTextArea,
-          this.supplementaryCanvas,
-          this.hiddenTextHelperDiv,
+          this.hiddenTextArea!,
+          this.supplementaryCanvas!,
+          this.hiddenTextHelperDiv!,
         );
         const imageReceiver = new DefaultImageReceiver(
-          this.supplementaryCanvas,
+          this.supplementaryCanvas!,
         );
-        const shapeDeleter = new DefaultShapeDeleter(this.hiddenTextArea);
+        const shapeDeleter = new DefaultShapeDeleter(this.hiddenTextArea!);
 
         // Creating the engine
         const { shapeParameters, tool: initialTool } = this.props;
         const textDirection =
-          (window.getComputedStyle(this.outputArea)
+          (window.getComputedStyle(this.outputArea!)
             .direction as TextDirection) || defaultTextDirection;
 
         const config = {
@@ -253,7 +253,7 @@ export class MediaEditor extends React.Component<MediaEditorProps, {}> {
 
         this.engine = new Engine(config);
         const loadParameters = {
-          imageGetter: (format?: string) => this.engine.getBase64Image(format),
+          imageGetter: (format?: string) => this.engine!.getBase64Image(format),
         };
 
         this.props.onLoad(imageUrl, loadParameters);

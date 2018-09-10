@@ -5,8 +5,8 @@ import { FragmentPosition } from './bitmapFragment';
 
 // Now this class supports only one image
 export class BitmapProvider implements Core.BitmapProviderInterop {
-  private bitmap: Bitmap | null;
-  private fragmentPosition: FragmentPosition;
+  private bitmap?: Bitmap | null;
+  private fragmentPosition?: FragmentPosition;
 
   constructor(
     private imageProvider: ImageProvider,
@@ -50,22 +50,19 @@ export class BitmapProvider implements Core.BitmapProviderInterop {
   }
 
   // Gets the bitmap dimensions
-  getBitmapWidth(bitmapIndex: number): number {
+  getBitmapWidth(): number {
     return this.bitmap ? this.bitmap.size.width : 0;
   }
 
-  getBitmapHeight(bitmapIndex: number): number {
+  getBitmapHeight(): number {
     return this.bitmap ? this.bitmap.size.height : 0;
   }
 
-  getNumberOfFragments(bitmapIndex: number): number {
+  getNumberOfFragments(): number {
     return this.bitmap ? this.bitmap.numberOfFragments : 0;
   }
 
-  queryFragmentCoordinates(
-    bitmapIndex: number,
-    fragmentIndex: number,
-  ): boolean {
+  queryFragmentCoordinates(fragmentIndex: number): boolean {
     if (!this.bitmap) {
       return false;
     }
@@ -90,38 +87,38 @@ export class BitmapProvider implements Core.BitmapProviderInterop {
   }
 
   getX(): number {
-    return this.fragmentPosition.x;
+    return this.fragmentPosition!.x;
   }
 
   getY(): number {
-    return this.fragmentPosition.y;
+    return this.fragmentPosition!.y;
   }
 
   getWidth(): number {
-    return this.fragmentPosition.width;
+    return this.fragmentPosition!.width;
   }
 
   getHeight(): number {
-    return this.fragmentPosition.height;
+    return this.fragmentPosition!.height;
   }
 
   getUTopLeft(): number {
-    return this.fragmentPosition.uTopLeft;
+    return this.fragmentPosition!.uTopLeft;
   }
 
   getVTopLeft(): number {
-    return this.fragmentPosition.vTopLeft;
+    return this.fragmentPosition!.vTopLeft;
   }
 
   getUBottomRight(): number {
-    return this.fragmentPosition.uBottomRight;
+    return this.fragmentPosition!.uBottomRight;
   }
 
   getVBottomRight(): number {
-    return this.fragmentPosition.vBottomRight;
+    return this.fragmentPosition!.vBottomRight;
   }
 
-  bind(bitmapIndex: number, fragmentIndex: number): boolean {
+  bind(fragmentIndex: number): boolean {
     if (!this.bitmap) {
       return false;
     }

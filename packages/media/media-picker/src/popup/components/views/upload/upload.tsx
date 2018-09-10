@@ -309,7 +309,7 @@ export class StatelessUploadView extends Component<
 
       const actions: CardAction[] = [];
       if (this.state.imageIds.indexOf(id) > -1) {
-        actions.push(createEditCardAction(editHandler));
+        actions.push(createEditCardAction(editHandler as any));
       }
 
       return {

@@ -28,4 +28,6 @@ export default (action: Action): Payload[] | undefined => {
       ];
     }
   }
+
+  return undefined;
 };

@@ -25,15 +25,15 @@ export type UploadServiceEventListener<
 export const MAX_FILE_SIZE_FOR_PREVIEW = 10e6; // 10 MB
 
 export interface UploadService {
-  setUploadParams(uploadParams: UploadParams);
-  addFiles(files: File[]);
-  cancel(id?: string);
+  setUploadParams(uploadParams: UploadParams): any;
+  addFiles(files: File[]): any;
+  cancel(id?: string): any;
   on<E extends keyof UploadServiceEventPayloadTypes>(
     event: E,
     listener: UploadServiceEventListener<E>,
-  );
+  ): any;
   off<E extends keyof UploadServiceEventPayloadTypes>(
     event: E,
     listener: UploadServiceEventListener<E>,
-  );
+  ): any;
 }

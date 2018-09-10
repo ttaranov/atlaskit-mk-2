@@ -9,7 +9,7 @@ export class MockFile implements File {
   readonly webkitRelativePath: string;
   msClose(): void {}
   msDetachStream(): any {}
-  slice(start?: number, end?: number, contentType?: string): Blob {
+  slice(): Blob {
     throw new Error('not implemented');
   }
   constructor(
@@ -50,16 +50,16 @@ export class MockDataTransfer implements DataTransfer {
     this.files = files as any;
   }
 
-  clearData(format?: string): boolean {
+  clearData(): boolean {
     return false;
   }
-  getData(format: string): string {
+  getData(): string {
     return '';
   }
-  setData(format: string, data: string): boolean {
+  setData(): boolean {
     return false;
   }
-  setDragImage(image: Element, x: number, y: number): void {}
+  setDragImage(): void {}
 }
 
 // this isn't implemented by JSDOM, and JSDOM .dispatchEvent() requires that event is an instanceof event,
@@ -79,27 +79,10 @@ export class MockDragEvent extends MouseEvent implements DragEvent {
     super(event);
     this.dataTransfer = new MockDataTransfer(MockFileList.fromArray(files));
   }
-  initDragEvent(
-    typeArg: string,
-    canBubbleArg: boolean,
-    cancelableArg: boolean,
-    viewArg: Window,
-    detailArg: number,
-    screenXArg: number,
-    screenYArg: number,
-    clientXArg: number,
-    clientYArg: number,
-    ctrlKeyArg: boolean,
-    altKeyArg: boolean,
-    shiftKeyArg: boolean,
-    metaKeyArg: boolean,
-    buttonArg: number,
-    relatedTargetArg: EventTarget,
-    dataTransferArg: DataTransfer,
-  ): void {
+  initDragEvent(): void {
     // noop
   }
-  msConvertURL(file: File, targetType: string, targetURL?: string): void {
+  msConvertURL(): void {
     // noop
   }
 }

@@ -18,7 +18,7 @@ import {
 } from '../actions/sendUploadEvent';
 
 export default function(fetcher: Fetcher): Middleware {
-  return <State>(store) => (next: Dispatch<State>) => action => {
+  return <State>(store: any) => (next: Dispatch<State>) => action => {
     if (isFinalizeUploadAction(action)) {
       finalizeUpload(fetcher, store, action);
     }

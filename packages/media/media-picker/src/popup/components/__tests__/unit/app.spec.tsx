@@ -121,7 +121,7 @@ describe('App', () => {
         {...handlers}
       />
     );
-    const wrapper = shallow(element);
+    const wrapper: any = shallow(element);
     const spy = jest.spyOn(wrapper.instance()['mpDropzone'], 'activate');
 
     wrapper.setProps({ isVisible: true });
@@ -142,7 +142,7 @@ describe('App', () => {
         {...handlers}
       />
     );
-    const wrapper = shallow(element);
+    const wrapper: any = shallow(element);
     const spy = jest.spyOn(wrapper.instance()['mpDropzone'], 'deactivate');
 
     wrapper.setProps({ isVisible: false });
@@ -163,7 +163,7 @@ describe('App', () => {
         {...handlers}
       />
     );
-    const wrapper = shallow(element);
+    const wrapper: any = shallow(element);
     const spy = jest.spyOn(wrapper.instance()['mpDropzone'], 'deactivate');
 
     wrapper.unmount();
@@ -223,7 +223,7 @@ describe('Connected App', () => {
   it('should fire an analytics events when provided with a react context via a store', () => {
     const handler = jest.fn();
     const store: Store<State> = createStore<State>(
-      (state, action) => state,
+      state => state,
       mockStore({
         view: {
           isVisible: true,

@@ -237,19 +237,19 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     }
   };
 
-  onCollectionChange = e => {
+  onCollectionChange = (e: any) => {
     const { innerText: collectionName } = e.target;
 
     this.setState({ collectionName });
   };
 
-  onAuthTypeChange = e => {
+  onAuthTypeChange = (e: any) => {
     const { innerText: authEnvironment } = e.target;
 
     this.setState({ authEnvironment }, this.createPopup);
   };
 
-  renderSerializedEvent(eventName, data, key) {
+  renderSerializedEvent(eventName: any, data: any, key: any) {
     const serializedEvent = JSON.stringify(data, undefined, 2);
 
     return (
@@ -325,7 +325,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     this.setState({ inflightUploads: {} });
   };
 
-  onEvent = event => {
+  onEvent = (event: any) => {
     console.log(event);
   };
 
@@ -475,7 +475,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
   }
 }
 
-const onEvent = event => {
+const onEvent = (event: any) => {
   console.log('Example', event);
 };
 
