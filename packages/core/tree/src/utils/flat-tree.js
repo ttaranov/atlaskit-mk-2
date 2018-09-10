@@ -1,5 +1,5 @@
 //@flow
-import type { Path, FlattenedTree } from '../types';
+import type { Path, FlattenedTree, ItemId, FlattenedItem } from '../types';
 
 import {
   isTopOfSubtree,
@@ -147,3 +147,8 @@ const calculateFinalLevel = (
   // Automatic disambiguation based on the initial level
   return sourceLevel <= lowerLevel ? lowerLevel : upperLevel;
 };
+
+export const getItemById = (
+  flattenedTree: FlattenedTree,
+  id: ItemId,
+): ?FlattenedItem => flattenedTree.find(item => item.item.id === id);

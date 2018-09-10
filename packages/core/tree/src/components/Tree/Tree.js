@@ -19,7 +19,8 @@ import { flattenTree } from '../../utils/tree';
 import type { FlattenedItem, ItemId, Path } from '../../types';
 import TreeItem from '../TreeItem';
 import { type DragActionType } from '../TreeItem/TreeItem-types';
-import { getDestinationPath } from '../../utils/flat-tree';
+import { getDestinationPath, getItemById } from '../../utils/flat-tree';
+import DelayedFunction from '../../utils/delayed-function';
 
 export default class Tree extends Component<Props, State> {
   static defaultProps = {
@@ -46,6 +47,8 @@ export default class Tree extends Component<Props, State> {
   // HTMLElement of the container element
   containerElement: ?HTMLElement;
 
+  combineTimer = new DelayedFunction(500);
+
   static getDerivedStateFromProps(props: Props, state: State) {
     return {
       ...state,
@@ -54,6 +57,7 @@ export default class Tree extends Component<Props, State> {
   }
 
   onDragStart = (result: DragStart) => {
+    console.log('>> onDragStart', result);
     this.dragState = {
       draggedItemId: result.draggableId,
       source: result.source,
@@ -62,8 +66,19 @@ export default class Tree extends Component<Props, State> {
   };
 
   onDragUpdate = (update: DragUpdate) => {
+    const { onExpand } = this.props;
+    const { flattenedTree } = this.state;
     if (!this.dragState) {
       return;
+    }
+
+    this.combineTimer.stop();
+    if (update.combine) {
+      const { draggableId } = update.combine;
+      const item: ?FlattenedItem = getItemById(flattenedTree, draggableId);
+      if (item && this.isExpandable(item)) {
+        this.combineTimer.start(() => onExpand(draggableId, item.path));
+      }
     }
     this.dragState = {
       ...this.dragState,
@@ -74,6 +89,7 @@ export default class Tree extends Component<Props, State> {
   onDragEnd = (result: DropResult) => {
     const { onDragEnd, tree } = this.props;
     const { flattenedTree } = this.state;
+    this.combineTimer.stop();
     const finalDragState: DragState = {
       ...this.dragState,
       source: result.source,
@@ -128,6 +144,9 @@ export default class Tree extends Component<Props, State> {
 
   isDraggable = (item: FlattenedItem): boolean =>
     this.props.isDragEnabled && !item.item.isExpanded;
+
+  isExpandable = (item: FlattenedItem): boolean =>
+    !!item.item.hasChildren && !item.item.isExpanded;
 
   getDroppedLevel = (): ?number => {
     const { offsetPerLevel } = this.props;
@@ -208,7 +227,7 @@ export default class Tree extends Component<Props, State> {
         onDragEnd={this.onDragEnd}
         onDragUpdate={this.onDragUpdate}
       >
-        <Droppable droppableId="list">
+        <Droppable droppableId="list" isCombineEnabled>
           {(provided: DroppableProvided) => {
             const finalProvided: DroppableProvided = this.patchDroppableProvided(
               provided,
