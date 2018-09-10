@@ -1,7 +1,6 @@
 // @flow
 
 import React, { Component, Fragment, type ElementRef } from 'react';
-import { ThemeProvider } from 'emotion-theming';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
 import {
@@ -9,7 +8,7 @@ import {
   version as packageVersion,
 } from '../../../package.json';
 import { Shadow } from '../../common/primitives';
-import { light } from '../../theme';
+import { light, ThemeProvider } from '../../theme';
 import ContentNavigation from '../ContentNavigation';
 import ResizeTransition, {
   isTransitioning,
