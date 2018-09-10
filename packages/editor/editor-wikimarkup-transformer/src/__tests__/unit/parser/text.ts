@@ -23,6 +23,8 @@ describe('JIRA wiki markup - Text', () => {
 ----
 This is a text`,
     ],
+    ['leading thriple dashes is not list', `--- This is not a list`],
+    ['leading double dashes is not list', `-- This is not a list`],
   ];
 
   for (const [testCaseDescription, markup] of testCases) {
