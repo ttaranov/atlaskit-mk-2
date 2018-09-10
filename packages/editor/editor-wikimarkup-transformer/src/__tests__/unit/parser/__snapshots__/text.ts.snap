@@ -17,7 +17,7 @@ Object {
 }
 `;
 
-exports[`JIRA wiki markup - Text leading thriple dashes is not list 1`] = `
+exports[`JIRA wiki markup - Text leading triple dashes is not list 1`] = `
 Object {
   "content": Array [
     Object {
