@@ -435,23 +435,6 @@ describe('analyticsProcessing middleware', () => {
         uploadId: 'upid1',
       }),
       makePayloadForOperationalFileUpload(testFile1, 'cloudMedia'),
-      {
-        remoteUploads: {
-          upid1: {
-            tenant: {
-              auth: {
-                baseUrl: '',
-                clientId: '',
-                token: '',
-              },
-              uploadParams: {
-                collection: '',
-              },
-            },
-            timeStarted: 0,
-          },
-        },
-      },
     );
   });
 
