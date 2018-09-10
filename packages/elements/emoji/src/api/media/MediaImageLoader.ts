@@ -141,7 +141,8 @@ export default class MediaImageLoader {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
 
-      reader.addEventListener('load', () => resolve(reader.result));
+      // TODO: [ts30] Add proper handling for null and ArrayBuffer
+      reader.addEventListener('load', () => resolve(reader.result as string));
       reader.addEventListener('error', () => reject(reader.error));
 
       reader.readAsDataURL(blob);

@@ -18,6 +18,7 @@ export default class StatelessExample extends Component<void, State> {
   };
 
   setValue = (e: any) => {
+    console.log(e.target.value);
     this.setState({
       checkedValue: e.target.value,
     });

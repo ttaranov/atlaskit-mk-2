@@ -57,7 +57,7 @@ export function list(input: string, schema: Schema): Token {
       preStyle = style;
       // If it's top level and doesn't match, create a new list
       if (type !== builder.type && style.length === 1) {
-        output.push(builder.buildPMNode());
+        output.push(...builder.buildPMNode());
         builder = new ListBuilder(schema, style);
       }
 
@@ -109,7 +109,7 @@ export function list(input: string, schema: Schema): Token {
     ]);
   }
   if (builder) {
-    output.push(builder.buildPMNode());
+    output.push(...builder.buildPMNode());
   }
 
   return {

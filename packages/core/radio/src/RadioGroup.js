@@ -58,14 +58,12 @@ export default class RadioGroup extends Component<RadioGroupProps, State> {
       }
       return (
         <Radio
+          {...optionProps}
           key={index}
           onChange={this.onChange}
-          {...optionProps}
           onInvalid={onInvalid}
           isRequired={isRequired}
-        >
-          {option.label}
-        </Radio>
+        />
       );
     }): RadioElementArray);
   };

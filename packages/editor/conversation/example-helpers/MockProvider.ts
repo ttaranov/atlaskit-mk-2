@@ -162,10 +162,9 @@ export class MockProvider extends AbstractConversationResource {
     doc: any,
     localId: string = <string>uuid.generate(),
   ): Comment {
-    //@ts-ignore
     return {
       commentAri: `abc:cloud:platform::comment/${localId}`,
-      createdBy: this.config.user,
+      createdBy: this.config.user!,
       createdAt: Date.now(),
       commentId: <string>uuid.generate(),
       document: {

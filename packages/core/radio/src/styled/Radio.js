@@ -110,7 +110,7 @@ const getCircleColor = props => {
   return color(rest);
 };
 
-export const LabelText = styled.span`
+export const LabelText = styled.div`
   padding: 2px 0;
 `;
 

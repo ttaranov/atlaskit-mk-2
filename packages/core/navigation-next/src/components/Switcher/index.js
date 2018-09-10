@@ -1,16 +1,12 @@
 // @flow
 
-import React, {
-  cloneElement,
-  Component,
-  type ComponentType,
-  type Element,
-} from 'react';
+import React, { cloneElement, Component } from 'react';
 import { components, PopupSelect } from '@atlaskit/select';
 import { colors, gridSize as gridSizeFn } from '@atlaskit/theme';
 import AddIcon from '@atlaskit/icon/glyph/add';
 
 import Option from './Option';
+import type { SwitcherProps, SwitcherState } from './types';
 
 const gridSize = gridSizeFn();
 
@@ -79,21 +75,7 @@ const Footer = ({ text, onClick }: *) => (
 // Class
 // ==============================
 
-type Props = {
-  /* The action and text representing a create button as the footer */
-  create?: { onClick: (*) => void, text: string },
-  /* Replaceable components */
-  components: { [key: string]: ComponentType<*> },
-  /* The options presented in the select menu */
-  options: Array<Object>,
-  /* The target element, which invokes the select menu */
-  target: Element<*>,
-};
-type State = {
-  isOpen: boolean,
-};
-
-export default class Switcher extends Component<Props, State> {
+export default class Switcher extends Component<SwitcherProps, SwitcherState> {
   state = { isOpen: false };
   static defaultProps = {
     components: { Control, Option },

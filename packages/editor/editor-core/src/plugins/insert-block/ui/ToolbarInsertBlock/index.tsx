@@ -399,11 +399,11 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       this.props.editorView.state.schema.nodes.rule
     ) {
       items.push({
-        content: 'Horizontal Rule',
+        content: 'Divider',
         value: { name: 'horizontalrule' },
-        tooltipDescription: 'Insert horizontal rule',
+        tooltipDescription: 'Insert divider',
         tooltipPosition: 'right',
-        elemBefore: <HorizontalRuleIcon label="Insert horizontal rule" />,
+        elemBefore: <HorizontalRuleIcon label="Insert divider" />,
       });
     }
 

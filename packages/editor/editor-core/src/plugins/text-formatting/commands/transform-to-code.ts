@@ -47,10 +47,12 @@ export function transformToCodeAction(
       );
     } else if (node.type === text) {
       if (node.text) {
+        const start = pos > from ? pos : from;
+        const text = node.text.substr(start - 1);
         let match: RegExpExecArray | null;
-        while ((match = FIND_SMART_CHAR.exec(node.text))) {
+        while ((match = FIND_SMART_CHAR.exec(text))) {
           const { 0: smartChar, index: offset } = match;
-          const replacePos = tr.mapping.map(pos + offset);
+          const replacePos = tr.mapping.map(start + offset);
           const replacementText = schema.text(SMART_TO_ASCII[smartChar]);
           tr.replaceWith(
             replacePos,
