@@ -1,5 +1,8 @@
 # @atlaskit/navigation-next
 
+## 3.9.0
+- [minor] LayoutManager and LayoutManagerWithViewController accept a getRefs prop which exposes a ref to the expand/collapse button node. The intended use-case is for creating a changeboarding experience for the new collapsed state. [51cd072](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51cd072)
+
 ## 3.8.1
 - [patch] add styled-components as a peer dep [ce45300](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce45300)
 
