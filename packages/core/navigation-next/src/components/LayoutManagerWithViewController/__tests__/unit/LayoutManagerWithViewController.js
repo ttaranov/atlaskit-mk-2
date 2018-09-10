@@ -17,6 +17,7 @@ describe('LayoutManagerWithViewController', () => {
   let onCollapseEnd;
   let onExpandStart;
   let onExpandEnd;
+  let getRefs;
 
   beforeEach(() => {
     originalLocalStorage = global.localStorage;
@@ -36,6 +37,7 @@ describe('LayoutManagerWithViewController', () => {
     onCollapseEnd = jest.fn();
     onExpandStart = jest.fn();
     onExpandEnd = jest.fn();
+    getRefs = jest.fn();
 
     wrapper = mount(
       <HashRouter>
@@ -50,6 +52,7 @@ describe('LayoutManagerWithViewController', () => {
             onCollapseEnd={onCollapseEnd}
             onExpandStart={onExpandStart}
             onExpandEnd={onExpandEnd}
+            getRefs={getRefs}
           >
             <p>
               Children requires to have `NavigationProvider` as a parent Because
@@ -71,6 +74,7 @@ describe('LayoutManagerWithViewController', () => {
     onCollapseEnd.mockReset();
     onExpandStart.mockReset();
     onExpandEnd.mockReset();
+    getRefs.mockReset();
   });
 
   it('should render global navigation based on using `globalNavigation` as a reference', () => {
@@ -139,8 +143,8 @@ describe('LayoutManagerWithViewController', () => {
     });
   });
 
-  describe('Passing Props to LayerManager', () => {
-    it('should pass Collapse Listeners props', () => {
+  describe('Passing props to LayoutManager', () => {
+    it('should pass expand/collapse listeners and getRefs', () => {
       const layoutManager = wrapper.find('LayoutManager');
 
       onCollapseStart(200);
@@ -152,6 +156,7 @@ describe('LayoutManagerWithViewController', () => {
       expect(layoutManager.props().onCollapseEnd).toBeCalledWith(0);
       expect(layoutManager.props().onExpandStart).toBeCalledWith(0);
       expect(layoutManager.props().onExpandEnd).toBeCalledWith(200);
+      expect(layoutManager.props().getRefs).toHaveBeenCalled();
     });
   });
 });
