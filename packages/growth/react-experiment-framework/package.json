@@ -1,0 +1,28 @@
+{
+  "name": "@atlaskit/react-experiment-framework",
+  "version": "0.1.0",
+  "description": "Experimentation React components",
+  "license": "Apache-2.0",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "atlaskit:src": "src/index.js",
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    "Growth team",
+    "mpuckeridge",
+    "milavsky"
+  ],
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
+  "peerDependencies": {
+    "react": "^16.4.0",
+    "react-dom": "^16.4.2"
+  },
+  "devDependencies": {
+    "@atlaskit/docs": "^5.0.7",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "enzyme-adapter-react-16": "https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.7.tgz"
+  }
+}

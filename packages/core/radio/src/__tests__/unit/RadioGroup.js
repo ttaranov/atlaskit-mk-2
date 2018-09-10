@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import { mount, shallow } from 'enzyme';
 
-import Radio from '../../Radio';
+import { RadioWithoutAnalytics as Radio } from '../../Radio';
 import RadioGroup from '../../RadioGroup';
 import { name } from '../../../package.json';
 import type { OptionPropType } from '../../types';
@@ -58,7 +58,7 @@ describe(name, () => {
             const option: OptionPropType = sampleOptions[i];
             expect(radio.prop('name')).toBe(option.name);
             expect(radio.prop('value')).toBe(option.value);
-            expect(radio.prop('children')).toBe(option.label);
+            expect(radio.prop('label')).toBe(option.label);
             expect(radio.prop('isDisabled')).toBe(!!option.isDisabled);
             expect(radio.prop('isChecked')).toBe(!!option.isChecked);
           }

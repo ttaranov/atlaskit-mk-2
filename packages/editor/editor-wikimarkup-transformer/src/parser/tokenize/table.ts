@@ -6,7 +6,7 @@ import { isNextLineEmpty, normalizePMNodes } from '../utils/normalize';
 import { Token, TokenType } from './';
 import { parseNewlineOnly } from './whitespace';
 
-const TABLE_REGEXP = /^\s*[|]+(.*)/;
+const TABLE_REGEXP = /^\s*[|]+([^|\n]*)/;
 const NEWLINE = /\r?\n/;
 
 export function table(input: string, schema: Schema): Token {

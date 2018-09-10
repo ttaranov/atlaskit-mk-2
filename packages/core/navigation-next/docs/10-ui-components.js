@@ -176,8 +176,7 @@ Separates a group of items. This component takes no props.
 
 ${<Hr />}
 
-<a name="Switcher"></a>
-# Switcher
+${<H>Switcher</H>}
 
 The Switcher component should be used within container navigation for switching projects or boards.
 

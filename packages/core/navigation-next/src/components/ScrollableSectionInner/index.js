@@ -1,5 +1,10 @@
 // @flow
 
+/**
+ * @deprecated: This component is deprecated and will be removed in a future
+ * release. Use the shouldGrow prop on a Section to achieve this functionality.
+ */
+
 import React, { Component } from 'react';
 
 import { styleReducerNoOp, withContentTheme } from '../../theme';

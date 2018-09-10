@@ -4,7 +4,6 @@
 import React, { Component } from 'react';
 import { HashRouter, Link, Route, Switch } from 'react-router-dom';
 import GlobalNavigation from '@atlaskit/global-navigation';
-import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import FolderIcon from '@atlaskit/icon/glyph/folder';
 import IssueIcon from '@atlaskit/icon/glyph/issue';
@@ -47,21 +46,18 @@ const productHomeView = {
   type: 'product',
   getItems: () => [
     {
-      type: 'Section',
+      type: 'HeaderSection',
       id: 'product/home:header',
       items: [
         {
-          type: () => (
-            <div css={{ padding: '16px 0' }}>
-              <JiraWordmark />
-            </div>
-          ),
+          type: 'Wordmark',
+          wordmark: JiraWordmark,
           id: 'jira-wordmark',
         },
       ],
     },
     {
-      type: 'Section',
+      type: 'MenuSection',
       nestedGroupKey: 'menu',
       id: 'product/home:menu',
       parentId: null,
@@ -97,33 +93,40 @@ const productIssuesView = {
   type: 'product',
   getItems: () => [
     {
-      type: 'Section',
+      type: 'HeaderSection',
       id: 'product/issues:header',
       items: [
         {
-          type: () => (
-            <div css={{ padding: '16px 0' }}>
-              <JiraWordmark />
-            </div>
-          ),
+          type: 'Wordmark',
+          wordmark: JiraWordmark,
           id: 'jira-wordmark',
         },
         {
           type: 'BackItem',
           id: 'back-item',
-          after: null,
-          before: ArrowLeftIcon,
           goTo: 'product/home',
-          text: 'Back',
+          text: 'Back to Jira',
         },
       ],
     },
     {
-      type: 'Section',
+      type: 'MenuSection',
       nestedGroupKey: 'menu',
       id: 'product/issues:menu',
       parentId: 'product/home:menu',
+      alwaysShowScrollHint: true,
       items: [
+        {
+          type: 'SectionHeading',
+          text: 'Issues and filters',
+          id: 'issues-and-filters-heading',
+        },
+        {
+          type: LinkItem,
+          id: 'search-issues',
+          text: 'Search issues',
+          to: '/issues',
+        },
         { type: 'GroupHeading', id: 'other-heading', text: 'Other' },
         { type: 'Item', text: 'My open issues', id: 'my-open-issues' },
         { type: 'Item', text: 'Reported by me', id: 'reported-by-me' },

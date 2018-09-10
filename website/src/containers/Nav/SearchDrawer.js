@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../../components/WrappedLink';
 import { toClass } from 'recompose';
 import {
   AkSearchDrawer,

@@ -1,12 +1,4 @@
-// @ts-ignore
-// @ts-ignore: unused variable
-import styled, { ThemedOuterStyledProps } from 'styled-components';
-import {
-  // @ts-ignore: unused variable
-  HTMLAttributes,
-  // @ts-ignore: unused variable
-  ComponentClass,
-} from 'react';
+import styled from 'styled-components';
 import { akColorN50A } from '@atlaskit/util-shared-styles';
 
 export interface MutableCardContainerProps {

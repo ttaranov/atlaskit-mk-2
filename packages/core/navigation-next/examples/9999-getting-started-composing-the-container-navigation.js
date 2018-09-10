@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import GlobalNavigation from '@atlaskit/global-navigation';
 import ShortcutIcon from '@atlaskit/icon/glyph/shortcut';
 import { AtlassianIcon, AtlassianWordmark } from '@atlaskit/logo';
@@ -23,11 +23,18 @@ const MyGlobalNavigation = () => (
 );
 
 const MyProductNavigation = () => (
-  <div css={{ padding: '16px 0' }}>
+  <Fragment>
     <Section>
       {({ className }) => (
         <div className={className}>
-          <div css={{ padding: '8px 0' }}>
+          <div
+            css={{
+              lineHeight: 0,
+              paddingBottom: 28,
+              paddingLeft: 12,
+              paddingTop: 28,
+            }}
+          >
             <AtlassianWordmark />
           </div>
         </div>
@@ -45,17 +52,21 @@ const MyProductNavigation = () => (
         </div>
       )}
     </Section>
-  </div>
+  </Fragment>
 );
 
 const MyContainerNavigation = () => (
-  <div css={{ padding: '16px 0' }}>
+  <Fragment>
     <Section>
-      {({ className }) => (
-        <div className={className}>
+      {({ css }) => (
+        <div css={{ ...css, paddingTop: 20, paddingBottom: 20 }}>
           <ContainerHeader
             before={itemState => (
-              <ItemAvatar itemState={itemState} appearance="square" />
+              <ItemAvatar
+                itemState={itemState}
+                appearance="square"
+                size="large"
+              />
             )}
             text="Container name"
             subText="Container description"
@@ -75,7 +86,7 @@ const MyContainerNavigation = () => (
         </div>
       )}
     </Section>
-  </div>
+  </Fragment>
 );
 
 export default () => (
@@ -85,7 +96,7 @@ export default () => (
       productNavigation={MyProductNavigation}
       containerNavigation={MyContainerNavigation}
     >
-      <div>Page content goes here.</div>
+      <div css={{ padding: '32px 40px' }}>Page content goes here.</div>
     </LayoutManager>
   </NavigationProvider>
 );

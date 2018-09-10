@@ -1,10 +1,10 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
 
-export default function getMediaNodeView(
+export default function getMediaGroupNodeView(
   schema: Schema,
   filename: string,
 ): PMNode {
-  const { media, mediaSingle } = schema.nodes;
+  const { media, mediaGroup } = schema.nodes;
 
   const mediaNode = media.createChecked({
     id: filename,
@@ -12,5 +12,5 @@ export default function getMediaNodeView(
     collection: '',
   });
 
-  return mediaSingle.createChecked({ layout: 'wide' }, mediaNode);
+  return mediaGroup.createChecked({}, mediaNode);
 }

@@ -1,18 +1,18 @@
 import { Schema } from 'prosemirror-model';
-import getMediaNodeView from '../nodes/media';
+import getMediaGroupNodeView from '../nodes/mediaGroup';
 import { Token } from './';
 
-// [!image.jpg!|https://www.atlassian.com]
-const ATTACHMENT_REGEXP = /^\!([\(\)\w. -]+)\|?[\w=,. ]*\!/;
+// [^attachment.pdf]
+const FILE_LINK_REGEXP = /^\[\^([\(\)\w. -]+)\]/;
 
-export function attachment(input: string, schema: Schema): Token {
-  const match = input.match(ATTACHMENT_REGEXP);
+export function fileLink(input: string, schema: Schema): Token {
+  const match = input.match(FILE_LINK_REGEXP);
 
   if (!match) {
     return fallback(input);
   }
 
-  const node = getMediaNodeView(schema, match[1]);
+  const node = getMediaGroupNodeView(schema, match[1]);
 
   return {
     type: 'pmnode',
