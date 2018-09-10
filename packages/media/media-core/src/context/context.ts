@@ -13,7 +13,7 @@ import {
   UploadController,
   MediaStoreGetFileImageParams,
 } from '@atlaskit/media-store';
-
+import { CollectionFetcher } from '../collection';
 import {
   MediaItemProvider,
   MediaCollectionProvider,
@@ -82,6 +82,7 @@ export interface Context {
 
   getImage(id: string, params?: MediaStoreGetFileImageParams): Promise<Blob>;
 
+  readonly collection: CollectionFetcher;
   readonly config: ContextConfig;
 }
 
@@ -100,6 +101,7 @@ class ContextImpl implements Context {
   private readonly fileItemCache: LRUCache<string, FileItem>;
   private readonly localPreviewCache: LRUCache<string, string>;
   private readonly mediaStore: MediaStore;
+  readonly collection: CollectionFetcher;
 
   constructor(readonly config: ContextConfig) {
     this.fileItemCache = new LRUCache(config.cacheSize || DEFAULT_CACHE_SIZE);
@@ -107,6 +109,7 @@ class ContextImpl implements Context {
     this.mediaStore = new MediaStore({
       authProvider: config.authProvider,
     });
+    this.collection = new CollectionFetcher(this.mediaStore);
   }
 
   getFile(id: string, options?: GetFileOptions): Observable<FileState> {

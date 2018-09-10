@@ -1,4 +1,4 @@
-import { FileItem, FileDetails, LinkItem, LinkDetails } from './item';
+import { FileItem, FileDetails, LinkItem, LinkDetails } from '../item';
 
 export interface MediaCollectionFileItemDetails extends FileDetails {
   occurrenceKey: string;
@@ -24,3 +24,7 @@ export interface MediaCollection {
   id: string;
   items: Array<MediaCollectionItem>;
 }
+
+export type MediaCollectionItemPredicate = (
+  item: MediaCollectionItem,
+) => boolean;
