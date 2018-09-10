@@ -21,7 +21,7 @@ type State = {|
   isChecked: boolean,
   isFocused: boolean,
   isHovered: boolean,
-  mouseIsDown: boolean,
+  isMouseDown: boolean,
 |};
 
 const emptyTheme = {};
@@ -37,7 +37,7 @@ class Checkbox extends Component<CheckboxProps, State> {
     isActive: false,
     isFocused: false,
     isHovered: false,
-    mouseIsDown: false,
+    isMouseDown: false,
     isChecked:
       this.props.isChecked !== undefined
         ? this.props.isChecked
@@ -95,14 +95,14 @@ class Checkbox extends Component<CheckboxProps, State> {
       // onBlur is called after onMouseDown if the checkbox was focused, however
       // in this case on blur is called immediately after, and we need to check
       // whether the mouse is down.
-      isActive: this.state.mouseIsDown && this.state.isActive,
+      isActive: this.state.isMouseDown && this.state.isActive,
       isFocused: false,
     });
   onFocus = () => this.setState({ isFocused: true });
   onMouseLeave = () => this.setState({ isActive: false, isHovered: false });
   onMouseEnter = () => this.setState({ isHovered: true });
-  onMouseUp = () => this.setState({ isActive: false, mouseIsDown: false });
-  onMouseDown = () => this.setState({ isActive: true, mouseIsDown: true });
+  onMouseUp = () => this.setState({ isActive: false, isMouseDown: false });
+  onMouseDown = () => this.setState({ isActive: true, isMouseDown: true });
 
   onKeyDown = (event: KeyboardEvent) => {
     if (this.actionKeys.includes(event.key)) {
