@@ -1,5 +1,11 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 2.0.20
+- [patch] Convert file link to media group [d9331e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d9331e6)
+
+## 2.0.19
+- [patch] Updated transformation of productivity emoji [83cdd9f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/83cdd9f)
+
 ## 2.0.18
 - [patch] Convert to mediaSingle with width and height [5b1d869](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b1d869)
 

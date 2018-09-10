@@ -110,9 +110,9 @@ Object {
         },
         Object {
           "attrs": Object {
-            "id": "1f49b",
-            "shortName": ":yellow_heart:",
-            "text": "💛",
+            "id": "atlassian-yellow_star",
+            "shortName": ":yellow_star:",
+            "text": ":yellow_star:",
           },
           "type": "emoji",
         },
@@ -175,9 +175,9 @@ Object {
         },
         Object {
           "attrs": Object {
-            "id": "1f49b",
-            "shortName": ":yellow_heart:",
-            "text": "💛",
+            "id": "atlassian-yellow_star",
+            "shortName": ":yellow_star:",
+            "text": ":yellow_star:",
           },
           "type": "emoji",
         },

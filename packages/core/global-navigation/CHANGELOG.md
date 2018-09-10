@@ -1,5 +1,8 @@
 # @atlaskit/global-navigation
 
+## 4.3.4
+- [patch] bump dep on navigation-next [4af6c6a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4af6c6a)
+
 ## 4.3.3
 - [patch] Bumping dependency on navigation-next. [d591e69](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d591e69)
 
