@@ -497,6 +497,22 @@ export const document = {
       ],
     },
     {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'Showing a status: ',
+        },
+        {
+          type: 'status',
+          attrs: {
+            text: 'In progress',
+            color: 'blue',
+          },
+        },
+      ],
+    },
+    {
       type: 'heading',
       attrs: { level: 1 },
       content: [
