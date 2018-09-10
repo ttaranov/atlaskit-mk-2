@@ -44,9 +44,9 @@ ${(
 
   ${(
     <Example
-      Component={require('../examples/04-default-checked-value').default}
+      Component={require('../examples/03-default-checked-value').default}
       title="defaultCheckedValue prop"
-      source={require('!!raw-loader!../examples/04-default-checked-value')}
+      source={require('!!raw-loader!../examples/03-default-checked-value')}
     />
   )}
 
