@@ -33,8 +33,9 @@ export const DEFAULT_RECENT_ITEMS_COUNT: RecentItemsCounts = {
 };
 
 export type Avatar = {
-  url: string;
+  url?: string;
   css?: string;
+  urls?: object;
 };
 
 export interface JiraSearchResponse {
@@ -46,8 +47,14 @@ export interface Scope {
   experimentId: string;
   results?: Entry[];
   error?: Error;
+  abTest?: ABTest;
 }
 
+export interface ABTest {
+  experimentId?: string;
+  controlId?: string;
+  abTestId?: string;
+}
 export interface Entry {
   id: string;
   name: string;
@@ -248,6 +255,10 @@ export default class JiraClientImpl implements JiraClient {
     };
   }
 
+  private getAvatarUrl({ url = '', urls = {} } = {}) {
+    return url ? url : urls[Object.keys(urls)[0]];
+  }
+
   private scopeToResult(scope: Scope): { [k: string]: Result }[] {
     return (scope.results as Entry[]).map(({ id, name, url, attributes }) => ({
       [attributes['@type']]: {
@@ -258,9 +269,10 @@ export default class JiraClientImpl implements JiraClient {
         containerId: attributes.containerId,
         analyticsType: AnalyticsType.ResultJira,
         ...extractSpecificAttributes(attributes),
-        avatarUrl: attributes.avatar && attributes.avatar.url,
+        avatarUrl: attributes.avatar && this.getAvatarUrl(attributes.avatar),
         contentType: JiraTypeToContentType[attributes['@type']],
         experimentId: scope.experimentId,
+        abTest: scope.abTest,
       },
     }));
   }
