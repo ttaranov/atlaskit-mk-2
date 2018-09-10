@@ -2,7 +2,6 @@
 
 import React, { Component, Fragment } from 'react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
-import { colors, gridSize } from '@atlaskit/theme';
 
 import type { SortableSectionProps } from './types';
 import { Group, SortableItem, Section } from '../../';
@@ -19,7 +18,7 @@ export default class SortableSection extends Component<SortableSectionProps> {
   };
 
   onDragEnd = result => {
-    document.body.style.pointerEvents = 'initial';
+    document.body.style.pointerEvents = null;
     const { destination, source, draggableId } = result;
     const { groups } = this.props;
 
@@ -106,12 +105,17 @@ export default class SortableSection extends Component<SortableSectionProps> {
                                   const draggableProps = {
                                     ...draggableProvided.draggableProps,
                                     ...draggableProvided.dragHandleProps,
-                                    innerRef: draggableProvided.innerRef,
                                   };
+
+                                  // disable onClick if the intention was drag
+                                  item.onClick = draggableSnapshot.isDragging
+                                    ? null
+                                    : item.onClick;
 
                                   return (
                                     <SortableItem
                                       draggableProps={draggableProps}
+                                      innerRef={draggableProvided.innerRef}
                                       isDragging={draggableSnapshot.isDragging}
                                       {...item}
                                     />

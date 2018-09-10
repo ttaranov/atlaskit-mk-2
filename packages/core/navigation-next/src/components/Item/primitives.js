@@ -12,14 +12,20 @@ type SwitchProps = {
   as: ElementType,
   innerRef: Ref<*>,
 };
-const ComponentSwitch = ({ as, innerRef, ...rest }: SwitchProps) => {
-  const props = isString(as) ? rest : { innerRef, ...rest };
+const ComponentSwitch = ({
+  as,
+  draggableProps,
+  innerRef,
+  ...rest
+}: SwitchProps) => {
+  const props = isString(as) ? rest : { innerRef, draggableProps, ...rest };
   const ElementOrComponent = as;
-  return <ElementOrComponent ref={innerRef} {...props} />;
+  return <ElementOrComponent ref={innerRef} {...draggableProps} {...props} />;
 };
 
 class ItemPrimitive extends PureComponent<ItemProps> {
   static defaultProps = {
+    draggableProps: {},
     isActive: false,
     isHover: false,
     isSelected: false,
@@ -35,6 +41,7 @@ class ItemPrimitive extends PureComponent<ItemProps> {
       isActive,
       innerRef,
       isDragging,
+      draggableProps,
       isHover,
       isSelected,
       spacing,
@@ -61,17 +68,17 @@ class ItemPrimitive extends PureComponent<ItemProps> {
     // base element switch
 
     let itemComponent = 'div';
-    let itemProps = { innerRef };
+    let itemProps = { draggableProps, innerRef };
 
     if (CustomComponent) {
       itemComponent = CustomComponent;
       itemProps = this.props;
     } else if (href) {
       itemComponent = 'a';
-      itemProps = { href, onClick, target, innerRef };
+      itemProps = { href, onClick, target, draggableProps, innerRef };
     } else if (onClick) {
       itemComponent = 'button';
-      itemProps = { onClick, innerRef };
+      itemProps = { onClick, draggableProps, innerRef };
     }
 
     return (
