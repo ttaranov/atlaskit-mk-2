@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import { AtlassianIcon } from '@atlaskit/logo';
 import Lorem from 'react-lorem-component';
 import Page from '@atlaskit/page';
 import Navigation, { AkContainerTitle } from '../../../src';
@@ -26,7 +26,7 @@ const PageNavigation = ({ title, currentPath }: Props) => (
             text="AtlasCat"
           />
         )}
-        globalPrimaryIcon={<AtlassianIcon label="Home" size="medium" />}
+        globalPrimaryIcon={<AtlassianIcon label="Home" size="small" />}
         globalPrimaryItemHref="/iframe.html"
         linkComponent={RouterLinkComponent}
       >

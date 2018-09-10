@@ -5,6 +5,12 @@ dist
 packages/core/icon/es5
 packages/core/icon/glyph
 packages/core/icon/utils
+packages/core/icon-object/es5
+packages/core/icon-object/glyph
+packages/core/icon-object/utils
+packages/core/icon-file-type/es5
+packages/core/icon-file-type/glyph
+packages/core/icon-file-type/utils
 packages/core/layer/popper
 packages/media/media-editor/src/engine/core/binaries/mediaEditor.js
 packages/bitbucket/codemod-util-shared-styles-to-theme/__fixtures__

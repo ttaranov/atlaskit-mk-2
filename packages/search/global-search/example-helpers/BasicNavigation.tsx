@@ -5,7 +5,7 @@ import Navigation, {
   presetThemes,
 } from '@atlaskit/navigation';
 import ArrowleftIcon from '@atlaskit/icon/glyph/arrow-left';
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import { AtlassianIcon } from '@atlaskit/logo';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import Avatar from '@atlaskit/avatar';

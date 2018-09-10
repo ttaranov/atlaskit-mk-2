@@ -1,9 +1,9 @@
 // @flow
 import React, { type Node } from 'react';
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import { AtlassianIcon } from '@atlaskit/logo';
 import Button from '../src';
 
-const Icon = <AtlassianIcon label="Test icon" />;
+const Icon = <AtlassianIcon label="Test icon" size="small" />;
 
 const ButtonWrapper = ({
   inline = true,

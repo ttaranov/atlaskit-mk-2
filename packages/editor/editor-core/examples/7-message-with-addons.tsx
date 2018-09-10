@@ -7,7 +7,7 @@ import ToolsDrawer from '../example-helpers/ToolsDrawer';
 import { Addon, AddonConfiguration } from '../src/ui/Addon';
 import DocumentIcon from '@atlaskit/icon/glyph/document';
 import QuestionIcon from '@atlaskit/icon/glyph/editor/help';
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import { AtlassianIcon } from '@atlaskit/logo';
 import styled from 'styled-components';
 
 // tslint:disable-next-line:no-console
