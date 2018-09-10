@@ -24,7 +24,7 @@ process.env.TEST_ENV === 'browserstack'
 
 afterAll(function() {
   clients.forEach(async client => {
-    if (client.isReady) {
+    if (client && client.isReady) {
       client.isReady = false;
       await client.driver.end();
     }
@@ -36,7 +36,7 @@ function BrowserTestCase(...args /*:Array<any> */) {
   const tester = args.pop();
   const skipForBrowser = args.length > 0 ? args.shift() : null;
   const testCase = process.env.TEST_CASE ? process.env.TEST_CASE : testcase;
-  describe(testcase, async () => {
+  describe(testcase, () => {
     const unskippedTests = [];
 
     for (const client of clients) {
@@ -94,18 +94,19 @@ function BrowserTestCase(...args /*:Array<any> */) {
       }
     }
 
-    testRun(testcase, async () => {
+    testRun(testcase, async (...args) => {
       await Promise.all(unskippedTests.map(f => f(tester, ...args)));
     });
   });
 }
 
 /*::
-type Tester<Object> = (opts: Object, done?: () => void) => ?Promise<mixed>;
+type Tester<Object> = (opts?: Object, done?: () => void) => ?Promise<mixed>;
 */
+
 function testRun(
   testCase /*: {name:string, skip?:boolean ,only?:boolean}*/,
-  tester /*: Tester*/,
+  tester /*: Tester<Object>*/,
 ) {
   let testFn;
   if (testCase.only) {

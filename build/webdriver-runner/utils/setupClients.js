@@ -9,7 +9,7 @@ const commit = process.env.BITBUCKET_COMMIT
     ? process.env.USER + uniqIdentifierStamp
     : uniqIdentifierStamp;
 
-function setBrowserStackClients() {
+function setBrowserStackClients() /*: Array<?Object>*/ {
   const launchers = {
     chrome: {
       os: 'Windows',
@@ -78,7 +78,7 @@ function setBrowserStackClients() {
   return clis;
 }
 
-function setLocalClients() {
+function setLocalClients() /*: Array<?Object>*/ {
   const isHeadless = process.env.HEADLESS !== 'false';
   const launchers = {
     chrome: {
