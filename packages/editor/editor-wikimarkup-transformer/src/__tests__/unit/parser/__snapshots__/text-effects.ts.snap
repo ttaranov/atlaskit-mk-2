@@ -539,9 +539,6 @@ Object {
             Object {
               "type": "code",
             },
-            Object {
-              "type": "strong",
-            },
           ],
           "text": "monospace",
           "type": "text",
