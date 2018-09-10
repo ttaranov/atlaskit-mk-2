@@ -22,17 +22,13 @@ process.env.TEST_ENV === 'browserstack'
   ? (clients = setBrowserStackClients())
   : (clients = setLocalClients());
 
-afterAll(async function() {
-  console.log(
-    await Promise.all(
-      clients.map(async client => {
-        if (client.isReady) {
-          client.isReady = false;
-          return client.driver.end();
-        }
-      }),
-    ),
-  );
+afterAll(function() {
+  clients.forEach(async client => {
+    if (client.isReady) {
+      client.isReady = false;
+      await client.driver.end();
+    }
+  });
 });
 
 function BrowserTestCase(...args /*:Array<any> */) {
@@ -54,9 +50,8 @@ function BrowserTestCase(...args /*:Array<any> */) {
           if (skipForBrowser && skipForBrowser[browserName]) {
             if (client.isReady) {
               client.isReady = false;
-              await client.driver.end();
+              return client.driver.end();
             }
-            return;
           }
           if (client.isReady) return;
           client.isReady = true;
