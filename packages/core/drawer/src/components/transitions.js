@@ -14,6 +14,7 @@ type TransitionProps = {
   children?: Node,
   component?: ComponentType<*> | string,
   onExited?: any => void,
+  shouldUnmountOnExit?: boolean,
   in: boolean,
 };
 type HandlerProps = {
@@ -85,7 +86,7 @@ export const Fade = ({ onExited, ...props }: TransitionProps) => (
 
 export const Slide = ({
   onExited,
-  unmountOnExit,
+  shouldUnmountOnExit,
   transitionProps,
   ...props
 }: TransitionProps) => (
@@ -100,7 +101,7 @@ export const Slide = ({
     }}
     transitionProps={{
       ...defaultTransitionProps,
-      ...{ unmountOnExit },
+      ...{ unmountOnExit: shouldUnmountOnExit },
     }}
     {...props}
   />

@@ -1,26 +1,18 @@
 // @flow
 
-import React, { Fragment, Component } from 'react';
+import React, { Component } from 'react';
 import Button from '@atlaskit/button';
 import Drawer from '../src';
 
 type State = {
   isDrawerOpen: boolean,
-  randomNumber: number,
+  shouldUnmountOnExit: boolean,
 };
 export default class DrawersExample extends Component<{}, State> {
   state = {
     isDrawerOpen: false,
-    randomNumber: 0,
+    shouldUnmountOnExit: true,
   };
-
-  ref = null;
-
-  componentDidUpdate() {
-    if (!this.ref.dataset.timestamp) {
-      this.ref.dataset.timestamp = Math.random();
-    }
-  }
 
   openDrawer = () =>
     this.setState({
@@ -32,27 +24,42 @@ export default class DrawersExample extends Component<{}, State> {
       isDrawerOpen: false,
     });
 
+  toggleUnmountBehaviour = () => {
+    this.setState(({ shouldUnmountOnExit: shouldUnmountOnExitValue }) => ({
+      shouldUnmountOnExit: !shouldUnmountOnExitValue,
+    }));
+  };
+
   render() {
     return (
-      <Fragment>
+      <div css={{ padding: '2rem' }}>
         <Drawer
           onClose={this.closeDrawer}
           isOpen={this.state.isDrawerOpen}
           width="wide"
+          shouldUnmountOnExit={this.state.shouldUnmountOnExit}
         >
-          <code
-            ref={ref => {
-              this.ref = ref;
-            }}
-          >
-            Timestamp of mount:{' '}
-            {(this.ref && this.ref.dataset.timestamp) || Math.random()}
-          </code>
+          <label htmlFor="textbox" css={{ display: 'block' }}>
+            Type something in the textarea below and see if it is retained
+          </label>
+          <textarea input="textbox" type="text" rows="50" cols="50" />
         </Drawer>
         <Button type="button" onClick={this.openDrawer}>
           Open drawer
         </Button>
-      </Fragment>
+        <div css={{ marginTop: '2rem' }}>
+          <label htmlFor="checkbox">
+            <input
+              id="checkbox"
+              type="checkbox"
+              value={this.state.shouldUnmountOnExit}
+              onChange={this.toggleUnmountBehaviour}
+            />
+            {`${this.state.shouldUnmountOnExit ? 'Enable' : 'Disable'}`}{' '}
+            remounting of drawer contents on exit
+          </label>
+        </div>
+      </div>
     );
   }
 }
