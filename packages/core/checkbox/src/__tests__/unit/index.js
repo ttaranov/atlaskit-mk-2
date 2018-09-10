@@ -4,10 +4,7 @@ import React from 'react';
 import { mount } from 'enzyme';
 import CheckboxIcon from '@atlaskit/icon/glyph/checkbox';
 import CheckboxIndeterminateIcon from '@atlaskit/icon/glyph/checkbox-indeterminate';
-
 import Checkbox from '../../Checkbox';
-
-import { HiddenCheckbox } from '../../styled/Checkbox';
 import { name } from '../../../package.json';
 
 describe(name, () => {
