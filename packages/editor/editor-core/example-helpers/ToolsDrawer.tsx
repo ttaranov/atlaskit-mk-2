@@ -152,7 +152,7 @@ export default class ToolsDrawer extends React.Component<Props & any, State> {
   }
 
   private switchProvider = (providerType, providerName) => {
-    this.setState({ [providerType]: providerName });
+    this.setState({ [providerType]: providerName } as any);
   };
 
   private reloadEditor = () => {

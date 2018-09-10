@@ -1,6 +1,6 @@
 // @flow
 
-import type { ComponentType } from 'react';
+import type { ComponentType, Node } from 'react';
 
 import { UIController, ViewController } from '../';
 import type { ViewData } from '../../src/view-controller/types';
@@ -9,12 +9,13 @@ import type { ViewData } from '../../src/view-controller/types';
  * Components
  */
 export type ItemProps = {
-  after?: ComponentType<*>,
+  after?: ?ComponentType<*>,
   before?: ComponentType<*>,
   href?: string,
   icon?: string,
   id: string,
   goTo?: string,
+  text: Node,
 };
 
 export type GoToItemProps = {
@@ -27,6 +28,10 @@ export type GoToItemProps = {
 };
 
 export type GroupHeadingProps = {
+  text: string,
+};
+
+export type SectionHeadingProps = {
   text: string,
 };
 
@@ -44,11 +49,17 @@ export type GroupProps = SharedGroupTypeProps & {
 };
 
 export type SectionProps = SharedGroupTypeProps & {
+  alwaysShowScrollHint: boolean,
   nestedGroupKey: string,
   parentId: string | null,
+  shouldGrow: boolean,
 };
 
 export type ItemsRendererProps = {
   customComponents?: CustomComponents,
   items: ViewData,
+};
+
+export type WordmarkProps = {
+  wordmark: ComponentType<{}>,
 };

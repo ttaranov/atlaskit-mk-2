@@ -5,12 +5,12 @@ export type BreakpointSizeValue = 'small' | 'medium' | 'large' | 'xlarge';
 
 export const breakpointSize = (
   width: CardDimensionValue,
-  sizes = cardBreakpointSizes,
+  sizes: any = cardBreakpointSizes,
 ): BreakpointSizeValue => {
   const value = parseInt(`${width}`, 10); // Normalize value
   const keys = Object.keys(sizes);
   const defaultValue = keys[0];
-  let breakpoint;
+  let breakpoint: any;
 
   keys.forEach(label => {
     if (value < sizes[label] && !breakpoint) {

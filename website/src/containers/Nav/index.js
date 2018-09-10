@@ -3,7 +3,8 @@
 import React, { Component } from 'react';
 import { toClass } from 'recompose';
 import styled from 'styled-components';
-import { Link, Switch, Route } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
+import { Link } from '../../components/WrappedLink';
 import Navigation, {
   AkContainerTitle,
   presetThemes,

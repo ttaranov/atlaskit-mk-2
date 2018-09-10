@@ -1,77 +1,111 @@
 // @flow
 
-import { keyframes } from 'emotion';
-import { gridSize as gridSizeFn } from '@atlaskit/theme';
+import { colors, gridSize as gridSizeFn } from '@atlaskit/theme';
 
-import {
-  transitionDuration,
-  transitionTimingFunction,
-} from '../../common/constants';
+import type { ModeColors } from '../../theme/types';
+import type { SectionPresentationProps } from './types';
 
 const gridSize = gridSizeFn();
 
-const baseStyles = {
-  boxSizing: 'border-box',
-  paddingLeft: `${gridSize * 2}px`,
-  paddingRight: `${gridSize * 2}px`,
-};
+const scrollHintHeight = 2;
+const scrollHintSpacing = gridSize * 2;
 
-const enterAnimationDown = keyframes`
-  from { transform: translateX(100%); }
-  to { transform: translateX(0%); }
-`;
+const isGecko =
+  typeof window !== 'undefined' &&
+  window.navigator.userAgent.indexOf('Gecko') >= 0;
+const isWebkit =
+  typeof window !== 'undefined' &&
+  window.navigator.userAgent.indexOf('AppleWebKit') >= 0;
+const scrollBarSize = isGecko || isWebkit ? 0 : 30;
 
-const enterAnimationUp = keyframes`
-  from { transform: translateX(-100%); }
-  to { transform: translateX(0%); }
-`;
+const getBaseStyles = ({ alwaysShowScrollHint }: SectionPresentationProps) => ({
+  wrapper: {
+    height: '100%',
+    overflow: 'hidden',
+    position: 'relative',
+    width: '100%',
 
-const exitAnimationDown = keyframes`
-  from { transform: translateX(0); }
-  to { transform: translateX(-100%); }
-`;
+    '&::before': {
+      borderRadius: 1,
+      content: "''",
+      display: 'block',
+      flex: 0,
+      height: `${scrollHintHeight}px`,
+      left: `${scrollHintSpacing}px`,
+      position: 'absolute',
+      right: `${scrollHintSpacing + scrollBarSize}px`,
+      top: 0,
+      zIndex: 1,
+    },
+  },
+  inner: {
+    flexBasis: '100%',
+    height: '100%',
+    justifyContent: 'flex-start',
+    overflowY: 'auto',
+    paddingTop: 2,
+    position: 'relative',
 
-const exitAnimationUp = keyframes`
-  from { transform: translateX(0); }
-  to { transform: translateX(100%); }
-`;
+    '&::before': {
+      borderRadius: 1,
+      content: "''",
+      display: alwaysShowScrollHint ? 'none' : 'block',
+      flexShrink: 0,
+      height: `${scrollHintHeight}px`,
+      left: `${scrollHintSpacing}px`,
+      position: 'absolute',
+      right: `${scrollHintSpacing}px`,
+      top: 0,
+      zIndex: 2,
+    },
+  },
+  // These styles are passed to the children function for the consumer to
+  // apply
+  children: {
+    boxSizing: 'border-box',
+    paddingLeft: `${gridSize * 2}px`,
+    paddingRight: `${gridSize * 2}px`,
+  },
+});
 
-type GetTransitionStylesArgs = {
-  state: 'entering' | 'entered' | 'exiting' | 'exited',
-  traversalDirection: 'up' | 'down' | null,
-};
-
-export const getSectionWrapperStyles = ({
-  state,
-  traversalDirection,
-}: GetTransitionStylesArgs) => {
-  if (['entering', 'exiting'].includes(state) && traversalDirection) {
-    if (state === 'exiting') {
-      const animationName =
-        traversalDirection === 'down' ? exitAnimationDown : exitAnimationUp;
-      return {
-        ...baseStyles,
-        animationName,
-        animationDuration: transitionDuration,
-        animationFillMode: 'forwards',
-        animationTimingFunction: transitionTimingFunction,
-      };
-    }
-
-    if (state === 'entering') {
-      const animationName =
-        traversalDirection === 'down' ? enterAnimationDown : enterAnimationUp;
-      return {
-        ...baseStyles,
-        animationName,
-        animationDuration: transitionDuration,
-        animationFillMode: 'forwards',
-        animationTimingFunction: transitionTimingFunction,
-        position: 'absolute',
-        width: '100%',
-      };
-    }
-  }
-
-  return baseStyles;
+export default ({ product }: ModeColors) => (
+  props: SectionPresentationProps,
+) => {
+  const baseStyles = getBaseStyles(props);
+  return {
+    container: {
+      ...baseStyles,
+      wrapper: {
+        ...baseStyles.wrapper,
+        '&::before': {
+          ...baseStyles.wrapper['&::before'],
+          backgroundColor: colors.N30A,
+        },
+      },
+      inner: {
+        ...baseStyles.inner,
+        '&::before': {
+          ...baseStyles.inner['&::before'],
+          backgroundColor: colors.N20,
+        },
+      },
+    },
+    product: {
+      ...baseStyles,
+      wrapper: {
+        ...baseStyles.wrapper,
+        '&::before': {
+          ...baseStyles.wrapper['&::before'],
+          backgroundColor: product.background.static,
+        },
+      },
+      inner: {
+        ...baseStyles.inner,
+        '&::before': {
+          ...baseStyles.inner['&::before'],
+          backgroundColor: product.background.default,
+        },
+      },
+    },
+  };
 };

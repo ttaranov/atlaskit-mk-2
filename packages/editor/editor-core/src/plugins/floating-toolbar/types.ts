@@ -35,7 +35,7 @@ export type FloatingToolbarItem<T> =
 export interface FloatingToolbarConfig {
   title: string;
   getDomRef: (view: EditorView) => HTMLElement | undefined;
-  nodeType: NodeType;
+  nodeType: NodeType | NodeType[];
   items: Array<FloatingToolbarItem<Command>>;
 }
 

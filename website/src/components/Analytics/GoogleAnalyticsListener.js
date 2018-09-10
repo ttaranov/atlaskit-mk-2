@@ -1,27 +1,27 @@
-import React, { Component } from 'react';
+// @flow
+import React, { Component, type Node } from 'react';
 import ReactGA from 'react-ga';
 import { withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
-const getAtlassianAnalyticsClient = require('./AtlassianAnalytics');
-const pkgJson = require('../../../package.json');
+import getAtlassianAnalyticsClient from './AtlassianAnalytics';
+import pkgJson from '../../../package.json';
+import { GOOGLE_ANALYTICS_ID } from '../../constants';
 
 let mounted = 0;
 
-const getApdex = location => {
-  if (
-    !window ||
-    !window.performance ||
-    !window.performance.timing ||
-    !window.performance.timing.domContentLoadedEventEnd ||
-    !window.performance.timing.navigationStart
-  ) {
+const getPageLoadNumber = () => {
+  if (!window || !window.performance || !window.performance.getEntriesByType) {
     return null;
   }
 
-  let timing =
-    window.performance.timing.domContentLoadedEventEnd -
-    window.performance.timing.navigationStart;
+  let navigationEntries = window.performance.getEntriesByType('navigation');
+  if (navigationEntries.length !== 1) return null;
 
+  return Math.round(navigationEntries[0].domComplete);
+};
+
+export const initializeGA = () => ReactGA.initialize(GOOGLE_ANALYTICS_ID);
+
+export const sendApdex = (location, timing, isInitial = false) => {
   let apdex = 0;
   if (timing < 1000) apdex = 100;
   else if (timing < 4000) apdex = 50;
@@ -40,28 +40,35 @@ const getApdex = location => {
   const attributes = {
     apdex: apdex,
     loadTimeInMs: timing,
-    path: location.pathname,
+    path: location,
+    isInitial,
   };
   request.addEvent(`atlaskit.website.performance`, attributes);
   request.send();
 };
 
-class GoogleAnalyticsListener extends Component {
-  static propTypes = {
-    children: PropTypes.node,
-    gaId: PropTypes.string,
-    location: PropTypes.object,
-  };
+export const sendInitialApdex = location => {
+  const timing = getPageLoadNumber();
+  if (!timing) return null;
+  sendApdex(location, timing, true);
+};
+
+type Props = {
+  children: Node,
+  location: Object,
+};
+
+class GoogleAnalyticsListener extends Component<Props> {
   constructor(props) {
     super(props);
-    ReactGA.initialize(props.gaId);
+    ReactGA.initialize(GOOGLE_ANALYTICS_ID);
   }
 
   componentDidMount() {
     window.addEventListener(
       'load',
       () => {
-        getApdex(this.props.location);
+        sendInitialApdex(this.props.location.pathname);
       },
       { once: true },
     );
@@ -72,7 +79,7 @@ class GoogleAnalyticsListener extends Component {
         'There is more than one GoogleAnalyticsListener on the page, this could cause errors',
       );
     }
-    ReactGA.pageview(this.props.location.pathname);
+    initializeGA();
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.gaId !== this.props.gaId) {
@@ -86,8 +93,7 @@ class GoogleAnalyticsListener extends Component {
     mounted--;
   }
   render() {
-    const { children } = this.props;
-    return children;
+    return this.props.children;
   }
 }
 

@@ -20,11 +20,12 @@ export interface ResponseData {
   body?: any;
 }
 
-export class MockContextItem {
+export interface MockContextItem {
   auth: ClientBasedAuth;
   collection: Array<MediaCollectionFile>;
   collectionName: string;
 }
+
 export class MockContext {
   userContext: MockContextItem = {
     auth: {
