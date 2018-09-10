@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React, { PureComponent } from 'react';
 import ArrowLeftCircleIcon from '@atlaskit/icon/glyph/arrow-left-circle';
 import ArrowRightCircleIcon from '@atlaskit/icon/glyph/arrow-right-circle';
 import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
@@ -305,53 +305,21 @@ export const components = { ...itemComponents, ...groupComponents };
 /**
  * RENDERER
  */
-const ItemsRenderer = ({ customComponents = {}, items }: ItemsRendererProps) =>
-  items.map(({ type, ...props }, index) => {
-    const key =
-      typeof props.nestedGroupKey === 'string'
-        ? props.nestedGroupKey
-        : props.id;
+class ItemsRenderer extends PureComponent<ItemsRendererProps> {
+  render() {
+    const { customComponents = {}, items } = this.props;
 
-    // If they've provided a component as the type
-    if (typeof type === 'function') {
-      const CustomComponent = navigationItemClicked(
-        type,
-        type.displayName || 'inlineCustomComponent',
-      );
-      return (
-        <CustomComponent
-          key={key}
-          {...props}
-          index={index}
-          // We pass our in-built components through to custom components so
-          // they can wrap/render them if they want to.
-          components={components}
-          customComponents={customComponents}
-        />
-      );
-    }
+    return items.map(({ type, ...props }, index) => {
+      const key =
+        typeof props.nestedGroupKey === 'string'
+          ? props.nestedGroupKey
+          : props.id;
 
-    if (typeof type === 'string') {
-      // If they've provided a type which matches one of our in-built group
-      // components
-      if (groupComponents[type]) {
-        const G = groupComponents[type];
-        return <G key={key} {...props} customComponents={customComponents} />;
-      }
-
-      // If they've provided a type which matches one of our in-built item
-      // components.
-      if (itemComponents[type]) {
-        const I = itemComponents[type];
-        return <I key={key} {...props} index={index} />;
-      }
-
-      // If they've provided a type which matches one of their defined custom
-      // components.
-      if (customComponents[type]) {
+      // If they've provided a component as the type
+      if (typeof type === 'function') {
         const CustomComponent = navigationItemClicked(
-          customComponents[type],
           type,
+          type.displayName || 'inlineCustomComponent',
         );
         return (
           <CustomComponent
@@ -365,9 +333,46 @@ const ItemsRenderer = ({ customComponents = {}, items }: ItemsRendererProps) =>
           />
         );
       }
-    }
 
-    return <Debug key={key} type={type} {...props} />;
-  });
+      if (typeof type === 'string') {
+        // If they've provided a type which matches one of our in-built group
+        // components
+        if (groupComponents[type]) {
+          const G = groupComponents[type];
+          return <G key={key} {...props} customComponents={customComponents} />;
+        }
+
+        // If they've provided a type which matches one of our in-built item
+        // components.
+        if (itemComponents[type]) {
+          const I = itemComponents[type];
+          return <I key={key} {...props} index={index} />;
+        }
+
+        // If they've provided a type which matches one of their defined custom
+        // components.
+        if (customComponents[type]) {
+          const CustomComponent = navigationItemClicked(
+            customComponents[type],
+            type,
+          );
+          return (
+            <CustomComponent
+              key={key}
+              {...props}
+              index={index}
+              // We pass our in-built components through to custom components so
+              // they can wrap/render them if they want to.
+              components={components}
+              customComponents={customComponents}
+            />
+          );
+        }
+      }
+
+      return <Debug key={key} type={type} {...props} />;
+    });
+  }
+}
 
 export default ItemsRenderer;
