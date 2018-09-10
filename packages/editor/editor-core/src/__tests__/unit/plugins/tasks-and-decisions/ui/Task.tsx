@@ -6,6 +6,7 @@ import { ProviderFactory } from '@atlaskit/editor-common';
 import Task from '../../../../../plugins/tasks-and-decisions/ui/Task';
 // avoid polluting test logs with error message in console
 // please ensure you fix it if you expect console.error to be thrown
+// tslint:disable-next-line:no-console
 let consoleError = console.error;
 
 const taskDecisionProvider = Promise.resolve(
@@ -21,11 +22,13 @@ describe('@atlaskit/editor-core/ui/Task', () => {
 
   beforeEach(() => {
     providerFactory = new ProviderFactory();
+    // tslint:disable-next-line:no-console
     console.error = jest.fn();
   });
 
   afterEach(() => {
     providerFactory.destroy();
+    // tslint:disable-next-line:no-console
     console.error = consoleError;
   });
 
