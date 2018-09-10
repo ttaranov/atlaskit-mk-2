@@ -24,7 +24,7 @@ describe('MediaLocalUpload', () => {
       shouldCopyFileToRecents: options.shouldCopyFileToRecents,
     };
     const localUpload = new LocalUploadComponent(context, config);
-    const uploadService = localUpload['uploadService'];
+    const uploadService: any = localUpload['uploadService'];
     const emitUploadServiceEvent = uploadService['emit'];
     const emitter = localUpload['emitter'];
 

@@ -38,9 +38,9 @@ const maxColorChannel = 255;
 export class Engine {
   private resourceManager = new ResourceManager();
 
-  private module: Core.NativeModule;
-  private ve: Core.VeEngine;
-  private bitmapExporter: BitmapExporter;
+  private module?: Core.NativeModule;
+  private ve?: Core.VeEngine;
+  private bitmapExporter?: BitmapExporter;
 
   constructor(private config: EngineConfig) {
     try {
@@ -59,10 +59,10 @@ export class Engine {
 
   getBase64Image(format?: string): ExportedImage {
     try {
-      if (!this.ve.exportImage()) {
-        return { isExported: false, error: this.ve.failureReason };
+      if (!this.ve!.exportImage()) {
+        return { isExported: false, error: this.ve!.failureReason };
       } else {
-        const image = this.bitmapExporter.getBase64Image(
+        const image = this.bitmapExporter!.getBase64Image(
           format || defaultFormat,
         );
         return { isExported: true, content: image };
@@ -172,13 +172,13 @@ export class Engine {
       );
     });
     const gl = contextHolder.gl;
-    this.module.setContext(gl);
+    this.module!.setContext(gl);
 
     const bitmapProvider = new BitmapProvider(this.config.imageProvider, gl);
     this.resourceManager.add(bitmapProvider);
-    this.module.bitmapProvider = bitmapProvider;
+    this.module!.bitmapProvider = bitmapProvider;
 
-    this.module.handleShapeParametersChanged = (
+    this.module!.handleShapeParametersChanged = (
       red: number,
       green: number,
       blue: number,
@@ -192,10 +192,10 @@ export class Engine {
       });
     };
 
-    this.module.handleTextInputStarted = () => {
+    this.module!.handleTextInputStarted = () => {
       keyboardInput.startInput();
     };
-    this.module.handleTextInputEnded = () => {
+    this.module!.handleTextInputEnded = () => {
       keyboardInput.endInput();
     };
 
@@ -206,22 +206,22 @@ export class Engine {
       ...(keyboardInput as any),
     });
     this.resourceManager.add(typesetter);
-    this.module.browserTypesetter = typesetter;
+    this.module!.browserTypesetter = typesetter;
 
     const timerFactory = new TimerFactory(id => this.passTimerTick(id));
     this.resourceManager.add(timerFactory);
-    this.module.timerFactory = timerFactory;
+    this.module!.timerFactory = timerFactory;
 
     this.bitmapExporter = new BitmapExporter(
       imageReceiver.supplementaryCanvas,
-      this.module,
+      this.module!,
     );
-    this.module.bitmapExporter = this.bitmapExporter;
+    this.module!.bitmapExporter = this.bitmapExporter;
 
-    this.module.handleScrollChanged = () => {};
-    this.module.handleUndoRedoStateChanged = () => {};
+    this.module!.handleScrollChanged = () => {};
+    this.module!.handleUndoRedoStateChanged = () => {};
 
-    this.module.handleDeleteShapeStateChanged = (canDelete: boolean) => {
+    this.module!.handleDeleteShapeStateChanged = (canDelete: boolean) => {
       if (canDelete) {
         shapeDeleter.deleteEnabled();
       } else {
@@ -249,14 +249,14 @@ export class Engine {
       baseTextDirection: this.toTextDirection(this.config.textDirection),
     };
 
-    this.ve = new this.module.VeEngine();
+    this.ve = new this.module!.VeEngine();
     this.resourceManager.addCustom(() => {
-      this.ve.delete();
+      this.ve!.delete();
     });
 
-    if (!this.ve.create(initialParameters)) {
+    if (!this.ve!.create(initialParameters)) {
       throw new Error(
-        `The engine was not created. Error: ${this.ve.failureReason}`,
+        `The engine was not created. Error: ${this.ve!.failureReason}`,
       );
     }
 
@@ -267,10 +267,10 @@ export class Engine {
     description: string,
     method: (ve: Core.VeEngine) => boolean,
   ): void {
-    if (!method(this.ve)) {
+    if (!method(this.ve!)) {
       this.config.onCoreError(
         `Could not perform '${description}'. Reason: '${
-          this.ve.failureReason
+          this.ve!.failureReason
         }'`,
       );
     }
@@ -285,7 +285,7 @@ export class Engine {
       Oval,
       Rectangle,
       Text,
-    } = this.module.VeTool;
+    } = this.module!.VeTool;
 
     const nativeTools = {
       arrow: Arrow,
@@ -311,7 +311,7 @@ export class Engine {
       MoveCursorRight,
       MoveCursorUp,
       MoveCursorDown,
-    } = this.module.VeTextInputCommand;
+    } = this.module!.VeTextInputCommand;
 
     const commands = {
       complete: CompleteInput,
@@ -328,7 +328,7 @@ export class Engine {
   }
 
   private toTextDirection(direction: TextDirection): Core.VeTextDirection {
-    const { RightToLeft, LeftToRight } = this.module.VeTextDirection;
+    const { RightToLeft, LeftToRight } = this.module!.VeTextDirection;
     return direction === 'rtl' ? RightToLeft : LeftToRight;
   }
 

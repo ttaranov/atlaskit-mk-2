@@ -36,7 +36,7 @@ interface StoredFragment {
 // exactly in line height.
 export class Typeset implements Core.TypesetInterop {
   private isContextLost: boolean = false;
-  private fontMetrics: FontMetrics;
+  private fontMetrics?: FontMetrics;
 
   // We store paragraphs of text and update them when necessary.
   // Fragments are owned by paragraphs, paragraphs are responsible for their lifetime,
@@ -82,7 +82,7 @@ export class Typeset implements Core.TypesetInterop {
       return false;
     }
 
-    this.fontMetrics = this.config.fontInfo.getFontMetrics(fontSize);
+    this.fontMetrics! = this.config.fontInfo.getFontMetrics(fontSize);
 
     return (
       this.updateParagraphs(text, direction as TextDirection, fontSize) &&
@@ -131,11 +131,11 @@ export class Typeset implements Core.TypesetInterop {
   }
 
   getLineHeight(): number {
-    return this.fontMetrics.lineHeight;
+    return this.fontMetrics!.lineHeight;
   }
 
   getDescent(): number {
-    return this.fontMetrics.descent;
+    return this.fontMetrics!.descent;
   }
 
   private destroy() {
@@ -204,7 +204,7 @@ export class Typeset implements Core.TypesetInterop {
     // For fragments we will record each fragment and the y coordinate of the line
     // (currently one paragraph contains only one line).
     this.fragments = []; // we don't own fragments (paragraphs do), so we don't need to delete textures explicitly
-    const { lineHeight } = this.fontMetrics;
+    const { lineHeight } = this.fontMetrics!;
 
     this.paragraphs.forEach((par, parIndex) => {
       const yline = -parIndex * lineHeight;
@@ -235,7 +235,7 @@ export class Typeset implements Core.TypesetInterop {
     const heapBase = this.config.module.HEAP32.buffer;
     const array = new Int32Array(heapBase, cursorArray, count);
     let index = 0;
-    const { lineHeight } = this.fontMetrics;
+    const { lineHeight } = this.fontMetrics!;
 
     this.paragraphs.forEach((par, parIndex) => {
       const yline = Math.round(-parIndex * lineHeight);

@@ -35,11 +35,11 @@ export class Clipboard extends LocalUploadComponent {
     await whenDomReady;
 
     this.deactivate();
-    document.addEventListener('paste', this.pasteHandler, false);
+    document.addEventListener('paste', this.pasteHandler as any, false);
   }
 
   public deactivate(): void {
-    document.removeEventListener('paste', this.pasteHandler);
+    document.removeEventListener('paste', this.pasteHandler as any);
   }
 
   private pasteHandler = (event: ClipboardEvent): void => {

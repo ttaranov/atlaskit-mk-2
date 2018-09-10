@@ -1,5 +1,5 @@
 export class Signal<SignalData> {
-  private handler: ((data: SignalData) => void) | null;
+  private handler?: ((data: SignalData) => void) | null;
 
   // Call this method to emit event
   emit(data: SignalData) {

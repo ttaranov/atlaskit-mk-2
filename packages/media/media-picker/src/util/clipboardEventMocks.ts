@@ -20,6 +20,8 @@ export class MockFile implements File {
   ) {
     this.type = options.type;
     this.name = options.name;
+    this.size = 0;
+    this.webkitRelativePath = '';
   }
 }
 
@@ -48,6 +50,10 @@ export class MockDataTransfer implements DataTransfer {
 
   constructor(files?: FileList) {
     this.files = files as any;
+    this.dropEffect = '';
+    this.effectAllowed = '';
+    this.items = [] as any;
+    this.types = [];
   }
 
   clearData(): boolean {
