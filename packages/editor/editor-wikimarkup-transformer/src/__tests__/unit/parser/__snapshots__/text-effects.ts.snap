@@ -490,6 +490,32 @@ Object {
 }
 `;
 
+exports[`JIRA wiki markup - Text effects should render content inside code mark as plain text 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "text": "This is a ",
+          "type": "text",
+        },
+        Object {
+          "marks": Array [
+            Object {
+              "type": "code",
+            },
+          ],
+          "text": "monospace *bold* thingy",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
 exports[`JIRA wiki markup - Text effects should use code mark first if it's the inner mark 1`] = `
 Object {
   "content": Array [
@@ -524,53 +550,6 @@ Object {
           "marks": Array [
             Object {
               "type": "strong",
-            },
-          ],
-          "text": " thingy",
-          "type": "text",
-        },
-      ],
-      "type": "paragraph",
-    },
-  ],
-  "type": "doc",
-}
-`;
-
-exports[`JIRA wiki markup - Text effects should use code mark first if it's the outer mark 1`] = `
-Object {
-  "content": Array [
-    Object {
-      "content": Array [
-        Object {
-          "text": "This is a ",
-          "type": "text",
-        },
-        Object {
-          "marks": Array [
-            Object {
-              "type": "code",
-            },
-          ],
-          "text": "monospace ",
-          "type": "text",
-        },
-        Object {
-          "marks": Array [
-            Object {
-              "type": "strong",
-            },
-            Object {
-              "type": "code",
-            },
-          ],
-          "text": "bold",
-          "type": "text",
-        },
-        Object {
-          "marks": Array [
-            Object {
-              "type": "code",
             },
           ],
           "text": " thingy",

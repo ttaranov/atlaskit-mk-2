@@ -1,6 +1,5 @@
 import { Schema } from 'prosemirror-model';
-import { parseString } from '../text';
-import { Token, TokenType } from './';
+import { Token } from './';
 import { parseNewlineOnly } from './whitespace';
 
 const processState = {
@@ -13,16 +12,6 @@ export function monospace(input: string, schema: Schema): Token {
   let index = 0;
   let state = processState.START;
   let buffer = '';
-
-  /**
-   * The following token types will be ignored in parsing
-   * the content
-   */
-  const ignoreTokenTypes = [
-    TokenType.DOUBLE_DASH_SYMBOL,
-    TokenType.TRIPLE_DASH_SYMBOL,
-    TokenType.QUADRUPLE_DASH_SYMBOL,
-  ];
 
   while (index < input.length) {
     const char = input.charAt(index);
@@ -61,19 +50,12 @@ export function monospace(input: string, schema: Schema): Token {
             length: 4,
           };
         }
-
-        const rawContent = parseString(buffer, schema, ignoreTokenTypes);
-        const decoratedContent = rawContent.map(n => {
-          const mark = schema.marks.code.create();
-          if (n.type.name === 'text') {
-            return n.mark([...n.marks, mark]);
-          }
-          return n;
-        });
+        const codeMark = schema.marks.code.create();
+        const textNode = schema.text(buffer, [codeMark]);
 
         return {
           type: 'pmnode',
-          nodes: decoratedContent,
+          nodes: [textNode],
           length: buffer.length + 4,
         };
       }
