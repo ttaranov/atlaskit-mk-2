@@ -1,5 +1,9 @@
 # @atlaskit/feature-flag-client
 
+## 0.0.4
+- [patch] Updated dependencies [6e1d642](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e1d642)
+  - @atlaskit/renderer@22.0.0
+
 ## 0.0.3
 - [patch] Updated dependencies [7545979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7545979)
   - @atlaskit/renderer@21.0.0
