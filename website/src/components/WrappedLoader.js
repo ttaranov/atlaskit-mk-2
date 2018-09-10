@@ -3,6 +3,10 @@ import React, { Component } from 'react';
 import { sendApdex } from './Analytics/GoogleAnalyticsListener';
 
 function checkMarkAndSendAnalytics() {
+  if (!performance.mark) {
+    return null;
+  }
+
   // We mark before doing anything because speed matters here
   performance.mark('loaded');
   let [navigate, loaded] = performance
