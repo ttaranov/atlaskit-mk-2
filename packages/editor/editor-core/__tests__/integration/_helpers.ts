@@ -72,7 +72,7 @@ export const insertMedia = async (browser, indexes = [-1]) => {
   }
 
   // insert it from the picker dialog
-  await browser.waitForSelector(insertMediaButton);
+  await browser.waitForSelector(insertMediaButton, 15000);
   await browser.click(insertMediaButton);
 
   // after clicking Insert media, the media plugin needs to upload the file,
