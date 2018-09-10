@@ -1,5 +1,6 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
 import { media } from './media';
+import { fileLink } from './file-link';
 import { blockquote } from './blockquote';
 import { citation } from './citation';
 import { deleted } from './deleted';
@@ -34,6 +35,7 @@ export enum TokenType {
   LINK_FORMAT = 'LINK_FORMAT',
   LINK_TEXT = 'LINK_TEXT',
   MEDIA = 'MEDIA',
+  FLIE_LINK = 'FILE_LINK',
   HEADING = 'HEADING',
   LIST = 'LIST',
   TABLE = 'TABLE',
@@ -89,6 +91,7 @@ const tokenToTokenParserMapping: {
   [TokenType.LINK_TEXT]: linkText,
   [TokenType.HEADING]: heading,
   [TokenType.MEDIA]: media,
+  [TokenType.FLIE_LINK]: fileLink,
   [TokenType.LIST]: list,
   [TokenType.QUOTE]: blockquote,
   [TokenType.TABLE]: table,
