@@ -1,5 +1,28 @@
 # @atlaskit/editor-core
 
+## 80.1.0
+- [minor] Add analytics events for pasting from different sources [486963b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/486963b)
+
+## 80.0.1
+- [patch]  Handle the fact that remoteUploadId may not exist and not break cloud uploads [c2317af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c2317af)
+
+## 80.0.0
+- [major] Updated dependencies [6e1d642](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e1d642)
+  - @atlaskit/editor-common@16.0.0
+  - @atlaskit/renderer@22.0.0
+  - @atlaskit/emoji@41.0.0
+  - @atlaskit/media-card@34.0.0
+  - @atlaskit/media-filmstrip@13.0.0
+  - @atlaskit/media-picker@16.0.0
+  - @atlaskit/editor-bitbucket-transformer@4.0.10
+  - @atlaskit/editor-json-transformer@4.0.11
+  - @atlaskit/editor-markdown-transformer@2.0.9
+  - @atlaskit/editor-test-helpers@6.0.9
+  - @atlaskit/task-decision@8.1.9
+  - @atlaskit/util-data-test@10.0.9
+  - @atlaskit/media-core@23.2.0
+  - @atlaskit/media-test-helpers@17.1.0
+
 ## 79.0.14
 - [patch] Show cell background menu on the left if no available space remains. ED-5155 [ef1c98d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef1c98d)
 
