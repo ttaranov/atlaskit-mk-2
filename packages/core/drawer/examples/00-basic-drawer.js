@@ -23,7 +23,6 @@ export default class DrawersExample extends Component<{}, State> {
     });
 
   render() {
-    console.log(this.state.isDrawerOpen);
     return (
       <div css={{ padding: '2rem' }}>
         <Drawer

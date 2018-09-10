@@ -80,7 +80,6 @@ export class DrawerBase extends Component<DrawerProps> {
     trigger: CloseTrigger,
   ) => {
     const { createAnalyticsEvent, onClose } = this.props;
-    console.log('handleClose');
 
     const analyticsEvent = createAndFireOnClick(createAnalyticsEvent, trigger);
 
