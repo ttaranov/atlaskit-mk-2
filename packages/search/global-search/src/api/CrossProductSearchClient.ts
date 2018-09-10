@@ -17,7 +17,8 @@ import * as URI from 'urijs';
 export type ConfluenceItemContentType = 'page' | 'blogpost';
 export type CrossProductSearchResults = {
   results: Map<Scope, Result[]>;
-  experimentId: string;
+  experimentId?: string;
+  abTest?: ABTest;
 };
 
 export enum Scope {
@@ -72,11 +73,18 @@ export interface ConfluenceItem {
 
 export type SearchItem = ConfluenceItem | JiraItem;
 
+export interface ABTest {
+  abTestId?: string;
+  controlId?: string;
+  experimentId?: string;
+}
+
 export interface ScopeResult {
   id: Scope;
   error?: string;
   results: SearchItem[];
   experimentId?: string;
+  abTest?: ABTest;
 }
 
 export interface CrossProductSearchClient {
@@ -151,6 +159,7 @@ export default class CrossProductSearchClientImpl
     searchSessionId: string,
   ): CrossProductSearchResults {
     let experimentId;
+    let abTest;
     const results: Map<Scope, Result[]> = response.scopes.reduce(
       (resultsMap, scopeResult) => {
         resultsMap.set(
@@ -165,12 +174,13 @@ export default class CrossProductSearchClientImpl
           ),
         );
         experimentId = scopeResult.experimentId;
+        abTest = scopeResult.abTest;
         return resultsMap;
       },
       new Map(),
     );
 
-    return { results, experimentId };
+    return { results, experimentId, abTest };
   }
 }
 
