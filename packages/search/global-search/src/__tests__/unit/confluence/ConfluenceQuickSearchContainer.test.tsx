@@ -18,7 +18,7 @@ import {
   makePersonResult,
   makeConfluenceContainerResult,
 } from '../_test-util';
-import ConfluenceSearchResults from '../../../components/confluence/ConfluenceSearchResults';
+import SearchResultsComponent from '../../../components/common/SearchResults';
 import { SearchScreenCounter } from '../../../util/ScreenCounter';
 
 const sessionId = 'sessionId';
@@ -156,22 +156,14 @@ describe('ConfluenceQuickSearchContainer', () => {
         searchSessionId: sessionId,
       },
     );
+
     const { type = '', props = {} } =
       (searchResultsComponent as React.ReactElement<Props>) || {};
-    expect(type).toBe(ConfluenceSearchResults);
+    expect(type).toBe(SearchResultsComponent);
     expect(props).toMatchObject({
       query: 'query',
       isError: false,
-      searchResults: {
-        objects: [],
-        spaces: spaceResults,
-      },
       isLoading: false,
-      recentItems: {
-        objects: [],
-        spaces: [],
-        people: recentlyInteractedPeople,
-      },
       keepPreQueryState: false,
       searchSessionId: 'sessionId',
       preQueryScreenCounter: expect.any(SearchScreenCounter),

@@ -242,8 +242,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         retrySearch={retrySearch}
         keepPreQueryState={keepPreQueryState}
         searchSessionId={searchSessionId}
-        preQueryScreenCounter={this.screenCounters.preQueryScreenCounter}
-        postQueryScreenCounter={this.screenCounters.postQueryScreenCounter}
+        {...this.screenCounters}
         renderNoRecentActivity={() => (
           <FormattedHTMLMessage
             id="global-search.no-recent-activity-body"
