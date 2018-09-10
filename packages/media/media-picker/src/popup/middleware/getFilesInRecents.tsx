@@ -1,4 +1,3 @@
-import { AuthProvider } from '@atlaskit/media-core';
 import { Action, Dispatch, Store } from 'redux';
 
 import { Fetcher } from '../tools/fetcher/fetcher';
@@ -8,31 +7,35 @@ import {
 } from '../actions';
 import { State } from '../domain';
 import { isGetFilesInRecentsAction } from '../actions/getFilesInRecents';
+import { RECENTS_COLLECTION } from '../config';
 
 export const getFilesInRecents = (fetcher: Fetcher) => (
   store: Store<State>,
 ) => (next: Dispatch<Action>) => (action: Action) => {
-  const { userContext } = store.getState();
   if (isGetFilesInRecentsAction(action)) {
-    requestRecentFiles(fetcher, userContext.config.authProvider, store);
+    requestRecentFiles(store);
   }
 
   return next(action);
 };
 
-export const requestRecentFiles = (
-  fetcher: Fetcher,
-  userAuthProvider: AuthProvider,
-  store: Store<State>,
-): Promise<void> => {
-  return userAuthProvider()
-    .then(auth => fetcher.getRecentFiles(auth, 30, 'desc'))
-    .then(({ contents, nextInclusiveStartKey }) => {
+export const requestRecentFiles = (store: Store<State>): void => {
+  const { userContext } = store.getState();
+
+  userContext.collection.getItems(RECENTS_COLLECTION).subscribe({
+    next(items) {
+      // TODO: ghost files handling
+      // This prevents showing "ghost" files in recents
+      // contents: data.contents.filter(
+      //   item => item.details.size && item.details.size > 0,
+      // ),
       store.dispatch(
-        getFilesInRecentsFullfilled(contents, nextInclusiveStartKey),
+        // TODO: we can remove the nextKey completelly
+        getFilesInRecentsFullfilled(items, ''),
       );
-    })
-    .catch(() => {
+    },
+    error() {
       store.dispatch(getFilesInRecentsFailed());
-    });
+    },
+  });
 };

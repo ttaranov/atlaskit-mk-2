@@ -1,5 +1,5 @@
 import { Action } from 'redux';
-import { CollectionItem } from '../domain';
+import { MediaCollectionItem } from '@atlaskit/media-store';
 
 export const GET_FILES_IN_RECENTS = 'GET_FILES_IN_RECENTS';
 
@@ -24,7 +24,7 @@ export const GET_FILES_IN_RECENTS_FULLFILLED =
 
 export interface GetFilesInRecentsFullfilledAction {
   readonly type: 'GET_FILES_IN_RECENTS_FULLFILLED';
-  readonly items: CollectionItem[];
+  readonly items: MediaCollectionItem[];
   readonly nextKey: string;
 }
 
@@ -35,7 +35,7 @@ export const isGetFilesInRecentsFullfilledAction = (
 };
 
 export function getFilesInRecentsFullfilled(
-  items: CollectionItem[],
+  items: MediaCollectionItem[],
   nextKey: string,
 ): GetFilesInRecentsFullfilledAction {
   return {

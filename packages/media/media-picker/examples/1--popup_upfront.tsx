@@ -142,7 +142,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
           <div>Uploading files: {length}</div>
         </PopupHeader>
         {this.renderCards()}
-        {this.renderCardList()}
+        {/* {this.renderCardList()} */}
       </PopupContainer>
     );
   }

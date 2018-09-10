@@ -1,5 +1,5 @@
 import { Auth, Context } from '@atlaskit/media-core';
-
+import { MediaCollectionItem } from '@atlaskit/media-store';
 import { UploadParams } from '../../domain/config';
 import { LocalUploads } from './local-upload';
 
@@ -55,7 +55,7 @@ export interface GiphyState {
 
 export interface Recents {
   readonly nextKey: string;
-  readonly items: CollectionItem[];
+  readonly items: MediaCollectionItem[];
 }
 
 export type RemoteUpload = {
@@ -176,17 +176,4 @@ export type Path = Array<FolderReference>;
 export interface FileReference {
   readonly id: string;
   readonly name: string;
-}
-
-export interface CollectionItem {
-  readonly type: string;
-  readonly id: string;
-  readonly insertedAt: number;
-  readonly occurrenceKey: string;
-  readonly details: CollectionItemDetails;
-}
-
-export interface CollectionItemDetails {
-  readonly name?: string;
-  readonly size?: number;
 }
