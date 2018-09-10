@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 79.0.14
+- [patch] Show cell background menu on the left if no available space remains. ED-5155 [ef1c98d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef1c98d)
+
 ## 79.0.13
 - [patch] ED-5165, fixing issue with inline code autoformatting removing other formattings in line. [9a7f8b2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9a7f8b2)
 
