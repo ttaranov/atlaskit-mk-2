@@ -1,8 +1,8 @@
 import { Action } from 'redux';
 import { isEditorCloseAction } from '../../actions/editorClose';
-import { Payload, buttonClickPayload } from '.';
+import { buttonClickPayload, HandlerResult } from '.';
 
-export default (action: Action): Payload[] | undefined => {
+export default (action: Action): HandlerResult => {
   if (isEditorCloseAction(action)) {
     return [
       {
@@ -11,6 +11,4 @@ export default (action: Action): Payload[] | undefined => {
       },
     ];
   }
-
-  return undefined;
 };

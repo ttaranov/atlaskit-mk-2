@@ -284,8 +284,8 @@ export class StatelessUploadView extends Component<
       }
     };
     const onLoadingChange = this.onCardLoadingChanged;
-    const editHandler = (mediaItem: MediaItem) => {
-      if (mediaItem.type === 'file') {
+    const editHandler: CardEventHandler = (mediaItem?: MediaItem) => {
+      if (mediaItem && mediaItem.type === 'file') {
         const { id, name } = mediaItem.details;
 
         if (isWebGLAvailable()) {
@@ -309,7 +309,7 @@ export class StatelessUploadView extends Component<
 
       const actions: CardAction[] = [];
       if (this.state.imageIds.indexOf(id) > -1) {
-        actions.push(createEditCardAction(editHandler as any));
+        actions.push(createEditCardAction(editHandler));
       }
 
       return {

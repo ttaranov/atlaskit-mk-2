@@ -24,6 +24,7 @@ import { Action, MiddlewareAPI } from 'redux';
 import { State } from '../../domain';
 export type BasePayload = GasCorePayload | GasScreenEventPayload;
 export type Payload = { action?: string } & BasePayload;
+export type HandlerResult = Payload[] | void;
 export const buttonClickPayload: GasCorePayload & { action: string } = {
   action: 'clicked',
   actionSubject: 'button',
@@ -46,6 +47,4 @@ export default [
   searchGiphyHandler,
   editorShowImageHandler,
   showPopupHandler,
-] as Array<
-  (action: Action, store: MiddlewareAPI<State>) => Payload[] | undefined
->;
+] as Array<(action: Action, store: MiddlewareAPI<State>) => HandlerResult>;

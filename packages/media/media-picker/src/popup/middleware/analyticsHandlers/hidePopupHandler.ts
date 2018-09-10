@@ -1,12 +1,9 @@
 import { Action, MiddlewareAPI } from 'redux';
 import { State } from '../../domain';
 import { isHidePopupAction } from '../../actions/hidePopup';
-import { Payload, buttonClickPayload } from '.';
+import { buttonClickPayload, HandlerResult } from '.';
 
-export default (
-  action: Action,
-  store: MiddlewareAPI<State>,
-): Payload[] | undefined => {
+export default (action: Action, store: MiddlewareAPI<State>): HandlerResult => {
   if (isHidePopupAction(action)) {
     return [
       {
@@ -21,6 +18,4 @@ export default (
       },
     ];
   }
-
-  return undefined;
 };

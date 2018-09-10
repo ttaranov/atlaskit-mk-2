@@ -24,13 +24,11 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
   browserComponents: Browser[];
   dropzoneContainer?: HTMLDivElement;
 
-  constructor(props: any) {
-    super(props);
-
+  constructor() {
+    super({});
     this.state = {
       previewsData: [],
     };
-
     this.browserComponents = (Array(5) as any).fill().map(this.createBrowse);
   }
 
@@ -55,7 +53,7 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
     return fileBrowser;
   };
 
-  onOpen = (fileBrowser: any) => () => {
+  onOpen = (fileBrowser: Browser) => () => {
     fileBrowser.browse();
   };
 

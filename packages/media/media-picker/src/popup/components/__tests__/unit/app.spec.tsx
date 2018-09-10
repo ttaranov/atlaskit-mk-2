@@ -121,8 +121,9 @@ describe('App', () => {
         {...handlers}
       />
     );
-    const wrapper: any = shallow(element);
-    const spy = jest.spyOn(wrapper.instance()['mpDropzone'], 'activate');
+    const wrapper = shallow(element);
+    const instance = wrapper.instance() as App;
+    const spy = jest.spyOn(instance['mpDropzone'], 'activate');
 
     wrapper.setProps({ isVisible: true });
 
@@ -142,8 +143,9 @@ describe('App', () => {
         {...handlers}
       />
     );
-    const wrapper: any = shallow(element);
-    const spy = jest.spyOn(wrapper.instance()['mpDropzone'], 'deactivate');
+    const wrapper = shallow(element);
+    const instance = wrapper.instance() as App;
+    const spy = jest.spyOn(instance['mpDropzone'], 'deactivate');
 
     wrapper.setProps({ isVisible: false });
 
@@ -163,8 +165,9 @@ describe('App', () => {
         {...handlers}
       />
     );
-    const wrapper: any = shallow(element);
-    const spy = jest.spyOn(wrapper.instance()['mpDropzone'], 'deactivate');
+    const wrapper = shallow(element);
+    const instance = wrapper.instance() as App;
+    const spy = jest.spyOn(instance['mpDropzone'], 'deactivate');
 
     wrapper.unmount();
 

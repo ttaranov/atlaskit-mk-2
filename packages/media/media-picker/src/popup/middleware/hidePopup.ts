@@ -1,4 +1,4 @@
-import { Action, Dispatch, Store } from 'redux';
+import { Store, Action, Dispatch } from 'redux';
 import { isHidePopupAction } from '../actions/hidePopup';
 import { State } from '../domain';
 import { PopupUploadEventEmitter } from '../../components/popup';

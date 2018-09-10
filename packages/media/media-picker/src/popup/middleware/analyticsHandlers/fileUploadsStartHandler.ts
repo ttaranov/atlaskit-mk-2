@@ -1,10 +1,10 @@
 import { Action } from 'redux';
 import { OPERATIONAL_EVENT_TYPE } from '@atlaskit/analytics-gas-types';
 import { isFileUploadsStartAction } from '../../actions/fileUploadsStart';
-import { Payload } from '.';
+import { HandlerResult, Payload } from '.';
 import { MediaFile } from '../../../domain/file';
 
-export default (action: Action): Payload[] | undefined => {
+export default (action: Action): HandlerResult => {
   if (isFileUploadsStartAction(action)) {
     return action.files.map(
       (file: MediaFile) =>
@@ -24,6 +24,4 @@ export default (action: Action): Payload[] | undefined => {
         },
     );
   }
-
-  return undefined;
 };

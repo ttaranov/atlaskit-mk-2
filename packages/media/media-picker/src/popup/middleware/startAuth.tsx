@@ -23,8 +23,8 @@ export const startCloudAccountOAuthFlow = (
       .then(accounts => {
         store.dispatch(updateServiceList(accounts));
 
-        const selectedAccount = (accounts as any).find(
-          (account: any) => account.type === serviceName,
+        const selectedAccount = accounts.find(
+          account => account.type === serviceName,
         );
         if (selectedAccount) {
           store.dispatch(changeAccount(serviceName, selectedAccount.id));

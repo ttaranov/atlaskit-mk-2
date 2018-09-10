@@ -1,9 +1,9 @@
 import { Action } from 'redux';
 import { isFileListUpdateAction } from '../../actions/fileListUpdate';
 import { SCREEN_EVENT_TYPE } from '@atlaskit/analytics-gas-types';
-import { Payload } from '.';
+import { HandlerResult } from '.';
 
-export default (action: Action): Payload[] | undefined => {
+export default (action: Action): HandlerResult => {
   if (isFileListUpdateAction(action)) {
     return [
       {
@@ -15,6 +15,4 @@ export default (action: Action): Payload[] | undefined => {
       },
     ];
   }
-
-  return undefined;
 };
