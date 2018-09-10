@@ -185,8 +185,8 @@ export default class Page {
   }
 
   // Wait
-  waitForSelector(selector) {
-    return this.browser.waitForExist(selector, WAIT_TIMEOUT);
+  waitForSelector(selector, options = {}) {
+    return this.browser.waitForExist(selector, options.timeout || WAIT_TIMEOUT);
   }
 
   waitFor(selector, ms, reverse) {

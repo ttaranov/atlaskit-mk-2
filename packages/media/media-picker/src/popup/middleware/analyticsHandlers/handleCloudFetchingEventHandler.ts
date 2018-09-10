@@ -26,9 +26,10 @@ export default (
 ): Payload[] | undefined => {
   if (isHandleCloudFetchingEventAction(action)) {
     const { event, payload, file } = action;
-    const timeStarted = store.getState().remoteUploads[payload.uploadId]
-      .timeStarted;
-
+    const remoteUpload = store.getState().remoteUploads[payload.uploadId];
+    const { timeStarted } = remoteUpload || { timeStarted: undefined };
+    const uploadDurationMsec =
+      timeStarted !== undefined ? Date.now() - timeStarted : -1;
     if (event === 'RemoteUploadStart') {
       return [
         {
@@ -49,8 +50,7 @@ export default (
           attributes: {
             fileAttributes: fileAttributes(file),
             status: 'success',
-            uploadDurationMsec:
-              timeStarted !== undefined ? Date.now() - timeStarted : -1,
+            uploadDurationMsec,
           },
           eventType: TRACK_EVENT_TYPE,
           source,
@@ -64,8 +64,7 @@ export default (
           attributes: {
             fileAttributes: fileAttributes(file),
             status: 'fail',
-            uploadDurationMsec:
-              timeStarted !== undefined ? Date.now() - timeStarted : -1,
+            uploadDurationMsec,
           },
           eventType: TRACK_EVENT_TYPE,
           source,

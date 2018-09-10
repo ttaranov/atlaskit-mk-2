@@ -4,8 +4,10 @@ import React from 'react';
 const Link = ({ onClick, ...rest }) => (
   <BaseLink
     onClick={e => {
-      performance.clearMarks();
-      performance.mark(`navigate-${rest.to}`);
+      if (performance.mark) {
+        performance.clearMarks();
+        performance.mark(`navigate-${rest.to}`);
+      }
       if (onClick) onClick(e);
     }}
     {...rest}
