@@ -199,9 +199,6 @@ describe('ConfluenceQuickSearchContainer', () => {
       });
     });
 
-    // retrySearch();
-    // getPreQueryGroups: () => ResultsGroup[];
-    // getPostQueryGroups: () => ResultsGroup[];
     it('should renderNoResult component', () => {
       const { renderNoResult } = getProps();
       const noResultState = renderNoResult();
