@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 80.1.0
+- [minor] Add analytics events for pasting from different sources [486963b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/486963b)
+
 ## 80.0.1
 - [patch]  Handle the fact that remoteUploadId may not exist and not break cloud uploads [c2317af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c2317af)
 
