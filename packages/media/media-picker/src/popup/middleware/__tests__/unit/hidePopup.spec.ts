@@ -1,25 +1,26 @@
 import hidePopupMiddleware from '../../hidePopup';
-import { mockPopupUploadEventEmitter } from '../../../mocks';
+import { mockPopupUploadEventEmitter, mockStore } from '../../../mocks';
 import { hidePopup, HIDE_POPUP } from '../../../actions/hidePopup';
 
 describe('hidePopupMiddleware', () => {
   const setup = () => ({
     eventEmitter: mockPopupUploadEventEmitter(),
+    store: mockStore(),
     next: jest.fn(),
   });
 
   it(`should emit closed event given ${HIDE_POPUP} action`, () => {
-    const { eventEmitter, next } = setup();
+    const { eventEmitter, store, next } = setup();
 
-    hidePopupMiddleware(eventEmitter)()(next)(hidePopup());
+    hidePopupMiddleware(eventEmitter)(store)(next)(hidePopup());
 
     expect(eventEmitter.emitClosed).toHaveBeenCalledTimes(1);
   });
 
   it('should do nothing given other action', () => {
-    const { eventEmitter, next } = setup();
+    const { eventEmitter, store, next } = setup();
 
-    hidePopupMiddleware(eventEmitter)()(next)({ type: 'OTHER' });
+    hidePopupMiddleware(eventEmitter)(store)(next)({ type: 'OTHER' });
 
     expect(eventEmitter.emitClosed).not.toBeCalled();
   });
