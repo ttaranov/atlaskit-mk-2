@@ -1,20 +1,29 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import {
+  injectIntl,
+  InjectedIntlProps,
+  FormattedHTMLMessage,
+} from 'react-intl';
+import styled from 'styled-components';
+import { colors, gridSize } from '@atlaskit/theme';
 import { withAnalytics } from '@atlaskit/analytics';
 import { CreateAnalyticsEventFn } from '../analytics/types';
+import { SearchScreenCounter, ScreenCounter } from '../../util/ScreenCounter';
 import { JiraClient } from '../../api/JiraClient';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
-import { LinkComponent } from '../GlobalQuickSearchWrapper';
+import {
+  LinkComponent,
+  ReferralContextIdentifiers,
+} from '../GlobalQuickSearchWrapper';
 import QuickSearchContainer from '../common/QuickSearchContainer';
-import JiraSearchResults from './JiraSearchResults';
 import { sliceResults } from './JiraSearchResultsMapper';
-
-export interface Props {
-  createAnalyticsEvent?: CreateAnalyticsEventFn;
-  linkComponent?: LinkComponent;
-  jiraClient: JiraClient;
-  peopleSearchClient: PeopleSearchClient;
-}
+import SearchResultsComponent from '../common/SearchResults';
+import NoResultsState from './NoResultsState';
+import JiraAdvancedSearch from './JiraAdvancedSearch';
+import {
+  mapRecentResultsToUIGroups,
+  mapSearchResultsToUIGroups,
+} from './JiraSearchResultsMapper';
 import {
   handlePromiseError,
   JiraEntityTypes,
@@ -26,7 +35,28 @@ import {
   Result,
   ResultsWithTiming,
   GenericResultMap,
+  JiraResultsMap,
 } from '../../model/Result';
+
+const StickyFooter = styled.div`
+  position: sticky;
+  bottom: 0;
+  background: white;
+  border-top: 1px solid ${colors.N40};
+  padding: ${gridSize()}px 0;
+`;
+
+const AdvancedSearchContainer = styled.div`
+  margin-top: ${4 * gridSize()}px;
+`;
+
+export interface Props {
+  createAnalyticsEvent?: CreateAnalyticsEventFn;
+  linkComponent?: LinkComponent;
+  referralContextIdentifiers?: ReferralContextIdentifiers;
+  jiraClient: JiraClient;
+  peopleSearchClient: PeopleSearchClient;
+}
 
 const contentTypeToSection = {
   [ContentType.JiraIssue]: 'issues',
@@ -50,6 +80,21 @@ export class JiraQuickSearchContainer extends React.Component<
     selectedAdvancedSearchType: JiraEntityTypes.Issues,
   };
 
+  screenCounters: {
+    preQueryScreenCounter: ScreenCounter;
+    postQueryScreenCounter: ScreenCounter;
+  };
+
+  constructor(props) {
+    super(props);
+    const preQueryScreenCounter = new SearchScreenCounter();
+    const postQueryScreenCounter = new SearchScreenCounter();
+    this.screenCounters = {
+      preQueryScreenCounter,
+      postQueryScreenCounter,
+    };
+  }
+
   handleSearchSubmit = ({ target }) => {
     const query = target.value;
     redirectToJiraAdvancedSearch(this.state.selectedAdvancedSearchType, query);
@@ -65,19 +110,44 @@ export class JiraQuickSearchContainer extends React.Component<
     keepPreQueryState,
     searchSessionId,
   }) => {
+    const query = latestSearchQuery;
+    const onAdvancedSearchChange = entityType =>
+      this.setState({ selectedAdvancedSearchType: entityType });
+
     return (
-      <JiraSearchResults
-        retrySearch={retrySearch}
-        query={latestSearchQuery}
+      <SearchResultsComponent
+        query={query}
         isError={isError}
-        searchResults={searchResults}
         isLoading={isLoading}
-        recentItems={recentItems}
+        retrySearch={retrySearch}
         keepPreQueryState={keepPreQueryState}
         searchSessionId={searchSessionId}
-        onAdvancedSearchChange={entityType =>
-          this.setState({ selectedAdvancedSearchType: entityType })
+        {...this.screenCounters}
+        referralContextIdentifiers={this.props.referralContextIdentifiers}
+        renderNoRecentActivity={() => (
+          <>
+            <FormattedHTMLMessage id="global-search.jira.no-recent-activity-body" />
+            <AdvancedSearchContainer>
+              <JiraAdvancedSearch query={query} />
+            </AdvancedSearchContainer>
+          </>
+        )}
+        renderAdvancedSearchGroup={(analyticsData?) => (
+          <StickyFooter>
+            <JiraAdvancedSearch
+              analyticsData={analyticsData}
+              query={query}
+              showKeyboardLozenge
+              showSearchIcon
+              onAdvancedSearchChange={onAdvancedSearchChange}
+            />
+          </StickyFooter>
+        )}
+        getPreQueryGroups={() => mapRecentResultsToUIGroups(recentItems)}
+        getPostQueryGroups={() =>
+          mapSearchResultsToUIGroups(searchResults as JiraResultsMap)
         }
+        renderNoResult={() => <NoResultsState query={query} />}
       />
     );
   };
