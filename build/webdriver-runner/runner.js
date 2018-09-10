@@ -12,14 +12,9 @@
 
 // increase this time out to handle queuing on browserstack
 jasmine.DEFAULT_TIMEOUT_INTERVAL = 1200e3;
-
-const webdriverio = require('webdriverio');
-const uniqIdentifierStamp = process.env.LOCAL_IDENTIFIER || '';
-const commit = process.env.BITBUCKET_COMMIT
-  ? process.env.BITBUCKET_COMMIT + uniqIdentifierStamp
-  : process.env.USER
-    ? process.env.USER + uniqIdentifierStamp
-    : uniqIdentifierStamp;
+const setBrowserStackClients = require('./utils/setupClients')
+  .setBrowserStackClients;
+const setLocalClients = require('./utils/setupClients').setLocalClients;
 let clients /*: Array<?Object>*/ = [];
 let skipForBrowser /*:?Object */ = {};
 
@@ -27,192 +22,108 @@ process.env.TEST_ENV === 'browserstack'
   ? (clients = setBrowserStackClients())
   : (clients = setLocalClients());
 
-beforeAll(async () => {
-  await Promise.all(
-    clients.map(async client => {
-      if (client) {
-        const browserName /*: string */ =
-          client.driver.desiredCapabilities.browserName;
-
-        if (skipForBrowser && skipForBrowser[browserName]) {
-          if (client.isReady) {
-            client.isReady = false;
-          }
-        }
-
-        if (!client.isReady) {
-          client.isReady = true;
-          await client.driver.init();
-        }
-      }
-    }),
-  );
-});
-
-afterAll(async function() {
-  await Promise.all(
-    clients.map(async client => {
-      if (client) {
-        client.isReady = false;
-        await client.driver.end();
-      }
-    }),
-  );
+afterAll(function() {
+  clients.forEach(async client => {
+    if (client && client.isReady) {
+      client.isReady = false;
+      await client.driver.end();
+    }
+  });
 });
 
 function BrowserTestCase(...args /*:Array<any> */) {
   const testcase = args.shift();
   const tester = args.pop();
   const skipForBrowser = args.length > 0 ? args.shift() : null;
-  // $FlowFixMe - bound to return undefined
-  describe(testcase, async () => {
-    await Promise.all(
-      clients.map(async client => {
+  const testCase = process.env.TEST_CASE ? process.env.TEST_CASE : testcase;
+  describe(testcase, () => {
+    const unskippedTests = [];
+
+    for (const client of clients) {
+      let started;
+      // set up client
+      const launchClient = async () => {
         if (client) {
-          testRun(testcase, tester, client.driver, skipForBrowser);
+          const browserName /*: string */ =
+            client.driver.desiredCapabilities.browserName;
+
+          if (skipForBrowser && skipForBrowser[browserName]) {
+            if (client.isReady) {
+              client.isReady = false;
+              return client.driver.end();
+            }
+          }
+          if (client.isReady) return;
+          client.isReady = true;
+          await client.driver.init();
         }
-      }),
-    );
+      };
+
+      const clientLauncher = {
+        get start() {
+          if (!started) {
+            started = launchClient();
+          }
+          return started;
+        },
+      };
+
+      if (client) {
+        let skipBrowser;
+        const browserName = client.driver.desiredCapabilities.browserName;
+        if (skipForBrowser) {
+          skipForBrowser.skip.forEach(browser => {
+            if (browser.match(browserName)) {
+              skipBrowser = true;
+            }
+          });
+        }
+
+        // add tests into only if the test is not skipped for the current browser
+        if (!skipBrowser) {
+          unskippedTests.push(async (fn, ...args) => {
+            client.driver.desiredCapabilities.name = testcase;
+            await clientLauncher.start;
+            try {
+              await fn(client.driver);
+            } catch (err) {
+              throw err;
+            }
+          });
+        }
+      }
+    }
+
+    testRun(testcase, async (...args) => {
+      await Promise.all(unskippedTests.map(f => f(tester, ...args)));
+    });
   });
 }
 
 /*::
-type Tester<Object> = (opts: Object, done?: () => void) => ?Promise<mixed>;
+type Tester<Object> = (opts?: Object, done?: () => void) => ?Promise<mixed>;
 */
+
 function testRun(
   testCase /*: {name:string, skip?:boolean ,only?:boolean}*/,
   tester /*: Tester<Object>*/,
-  client /*: Object*/,
-  skipBrowser /*: ?{skip:Array<string>}*/,
 ) {
   let testFn;
-  let skipForBrowser;
-  const browserName = client.desiredCapabilities.browserName;
-  client.desiredCapabilities.name = testCase;
-
-  if (skipBrowser) {
-    skipBrowser.skip.forEach(browser => {
-      if (browser.match(browserName)) {
-        skipForBrowser = true;
-      }
-    });
-  }
-
   if (testCase.only) {
     testFn = test.only;
   } else if (testCase.skip) {
     testFn = test.skip;
-  } else if (skipForBrowser) {
-    testFn = test.skip;
-    client.end();
   } else {
     testFn = test;
   }
 
   let callback;
-  if (client && tester && tester.length > 1) {
-    callback = done => tester(client, done);
+  if (tester && tester.length > 1) {
+    callback = done => tester(done);
   } else {
-    callback = () => tester(client);
+    callback = () => tester();
   }
-  testFn(browserName, callback);
-}
-
-function setLocalClients() {
-  const isHeadless = process.env.HEADLESS !== 'false';
-  const launchers = {
-    chrome: {
-      browserName: 'chrome',
-      chromeOptions: isHeadless
-        ? { args: ['--headless', '--disable-gpu'] }
-        : { args: [] },
-    },
-    firefox: {
-      browserName: 'firefox',
-      'moz:firefoxOptions': isHeadless ? { args: ['-headless'] } : { args: [] },
-    },
-  };
-
-  // Keep only chrome for watch mode
-  if (process.env.WATCH === 'true') {
-    delete launchers.firefox;
-  }
-
-  const browserOption = [];
-  for (const key of Object.keys(launchers)) {
-    const option = { desiredCapabilities: launchers[key] };
-    browserOption.push({ driver: webdriverio.remote(option) });
-  }
-  return browserOption;
-}
-
-function setBrowserStackClients() {
-  const launchers = {
-    chrome: {
-      os: 'Windows',
-      os_version: '10',
-      browserName: 'Chrome',
-      browser_version: '67.0',
-      resolution: '1440x900',
-    },
-    firefox: {
-      os: 'Windows',
-      os_version: '10',
-      browserName: 'firefox',
-      browser_version: '61.0',
-      resolution: '1440x900',
-    },
-    ie: {
-      os: 'Windows',
-      os_version: '10',
-      browserName: 'ie',
-      browser_version: '11',
-      resolution: '1440x900',
-    },
-    safari: {
-      os: 'OS X',
-      os_version: 'Sierra',
-      browserName: 'safari',
-      browser_version: '10.1',
-      resolution: '1920x1080',
-    },
-    edge: {
-      os: 'Windows',
-      os_version: '10',
-      browserName: 'edge',
-      browser_version: '16',
-      resolution: '1440x900',
-    },
-  };
-
-  let clis = [];
-  if (!process.env.BITBUCKET_BRANCH && process.env.USER) {
-    process.env.BITBUCKET_BRANCH = process.env.USER + '_local_run';
-  }
-
-  Object.keys(launchers).forEach(key => {
-    const option = {
-      desiredCapabilities: {
-        os: launchers[key].os,
-        os_version: launchers[key].os_version,
-        browserName: launchers[key].browserName,
-        browser_version: launchers[key].browser_version,
-        project: 'Atlaskit MK-2 Webdriver Tests',
-        build: process.env.BITBUCKET_BRANCH,
-        'browserstack.local': true,
-        'browserstack.debug': true,
-        'browserstack.idleTimeout': 300,
-        'browserstack.localIdentifier': commit,
-      },
-      host: 'hub.browserstack.com',
-      port: 80,
-      user: process.env.BROWSERSTACK_USERNAME,
-      key: process.env.BROWSERSTACK_KEY,
-    };
-    let driver = webdriverio.remote(option);
-    clis.push({ driver: driver, isReady: false });
-  });
-  return clis;
+  testFn('', callback);
 }
 
 module.exports = { BrowserTestCase };
