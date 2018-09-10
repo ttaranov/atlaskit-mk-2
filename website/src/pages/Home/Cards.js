@@ -1,7 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import styled, { keyframes, css } from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link } from '../../components/WrappedLink';
 import { gridSize, colors, math } from '@atlaskit/theme';
 import debounce from 'lodash.debounce';
 

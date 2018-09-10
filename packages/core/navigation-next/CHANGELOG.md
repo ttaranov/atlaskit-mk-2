@@ -1,5 +1,17 @@
 # @atlaskit/navigation-next
 
+## 3.9.0
+- [minor] LayoutManager and LayoutManagerWithViewController accept a getRefs prop which exposes a ref to the expand/collapse button node. The intended use-case is for creating a changeboarding experience for the new collapsed state. [51cd072](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51cd072)
+
+## 3.8.1
+- [patch] add styled-components as a peer dep [ce45300](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ce45300)
+
+## 3.8.0
+- [minor] Add MenuSection, HeaderSection, Wordmark, and BackItem convenience types to the renderer. Lots of design alignment and polishing across all of the components. [742a8f3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/742a8f3)
+
+## 3.7.6
+- [patch] Changes the way GlobalNavigationItemPrimitive is rendered. The earlier way of rendering was causing the items to mount and remount on every render [b18d920](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b18d920)
+
 ## 3.7.5
 - [patch] Updated dependencies [9c66d4d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9c66d4d)
   - @atlaskit/select@5.0.16

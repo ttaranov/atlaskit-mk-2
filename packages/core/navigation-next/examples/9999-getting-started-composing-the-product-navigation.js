@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import GlobalNavigation from '@atlaskit/global-navigation';
 import { AtlassianIcon, AtlassianWordmark } from '@atlaskit/logo';
 import {
@@ -20,11 +20,18 @@ const MyGlobalNavigation = () => (
 );
 
 const MyProductNavigation = () => (
-  <div css={{ padding: '16px 0' }}>
+  <Fragment>
     <Section>
       {({ className }) => (
         <div className={className}>
-          <div css={{ padding: '8px 0' }}>
+          <div
+            css={{
+              lineHeight: 0,
+              paddingBottom: 28,
+              paddingLeft: 12,
+              paddingTop: 28,
+            }}
+          >
             <AtlassianWordmark />
           </div>
         </div>
@@ -42,7 +49,7 @@ const MyProductNavigation = () => (
         </div>
       )}
     </Section>
-  </div>
+  </Fragment>
 );
 
 export default () => (
@@ -52,7 +59,7 @@ export default () => (
       productNavigation={MyProductNavigation}
       containerNavigation={null}
     >
-      <div>Page content goes here.</div>
+      <div css={{ padding: '32px 40px' }}>Page content goes here.</div>
     </LayoutManager>
   </NavigationProvider>
 );

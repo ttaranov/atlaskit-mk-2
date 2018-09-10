@@ -77,9 +77,9 @@ export interface AppCardAction {
 }
 
 export interface AppCardActionCallbackHandlers {
-  progress();
-  success(message?: string);
-  failure(message?: string, tryAgain?: boolean, tryAgainLinkText?: string);
+  progress(): any;
+  success(message?: string): any;
+  failure(message?: string, tryAgain?: boolean, tryAgainLinkText?: string): any;
 }
 
 export type OnActionClickCallback = (

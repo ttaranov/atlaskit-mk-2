@@ -1,6 +1,19 @@
 // @flow
 import React, { Component } from 'react';
-import RadioInput from './RadioInput';
+
+import {
+  createAndFireEvent,
+  withAnalyticsContext,
+  withAnalyticsEvents,
+} from '@atlaskit/analytics-next';
+
+import {
+  name as packageName,
+  version as packageVersion,
+} from '../package.json';
+
+import RadioIcon from './RadioIcon';
+import { RadioInputWrapper, HiddenInput } from './styled/RadioInput';
 import { Label, LabelText } from './styled/Radio';
 import type { RadioProps } from './types';
 
@@ -11,7 +24,7 @@ type State = {
   isMouseDown: boolean,
 };
 
-export default class Radio extends Component<RadioProps, State> {
+class Radio extends Component<RadioProps, State> {
   static defaultProps = {
     isDisabled: false,
     isInvalid: false,
@@ -25,7 +38,7 @@ export default class Radio extends Component<RadioProps, State> {
     isMouseDown: false,
   };
 
-  onBlur = () => {
+  onBlur = (event: SyntheticInputEvent<*>) => {
     this.setState({
       // onBlur is called after onMouseDown if the checkbox was focused, however
       // in this case on blur is called immediately after, and we need to check
@@ -33,22 +46,50 @@ export default class Radio extends Component<RadioProps, State> {
       isActive: this.state.isMouseDown && this.state.isActive,
       isFocused: false,
     });
+    if (this.props.onBlur) {
+      this.props.onBlur(event);
+    }
   };
-  onFocus = () => {
+  onFocus = (event: SyntheticInputEvent<*>) => {
     this.setState({ isFocused: true });
+    if (this.props.onFocus) {
+      this.props.onFocus(event);
+    }
   };
-  onMouseLeave = () => this.setState({ isActive: false, isHovered: false });
-  onMouseEnter = () => this.setState({ isHovered: true });
-  onMouseUp = () => this.setState({ isActive: false, isMouseDown: false });
-  onMouseDown = () => this.setState({ isActive: true, isMouseDown: true });
+  onMouseLeave = (event: SyntheticInputEvent<*>) => {
+    this.setState({ isActive: false, isHovered: false });
+    if (this.props.onMouseLeave) {
+      this.props.onMouseLeave(event);
+    }
+  };
+  onMouseEnter = (event: SyntheticInputEvent<*>) => {
+    this.setState({ isHovered: true });
+    if (this.props.onMouseEnter) {
+      this.props.onMouseEnter(event);
+    }
+  };
+  onMouseUp = (event: SyntheticInputEvent<*>) => {
+    this.setState({ isActive: false, isMouseDown: false });
+    if (this.props.onMouseUp) {
+      this.props.onMouseUp(event);
+    }
+  };
+
+  onMouseDown = (event: SyntheticInputEvent<*>) => {
+    this.setState({ isActive: true, isMouseDown: true });
+    if (this.props.onMouseDown) {
+      this.props.onMouseDown(event);
+    }
+  };
 
   render() {
     const {
-      children,
+      ariaLabel,
       isDisabled,
       isRequired,
       isInvalid,
       isChecked,
+      label,
       name,
       onChange,
       onInvalid,
@@ -66,23 +107,52 @@ export default class Radio extends Component<RadioProps, State> {
         onMouseLeave={this.onMouseLeave}
         onMouseUp={this.onMouseUp}
       >
-        <RadioInput
-          isChecked={isChecked}
-          isDisabled={isDisabled}
-          isFocused={isFocused}
-          isHovered={isHovered}
-          isInvalid={isInvalid}
-          isRequired={isRequired}
-          isActive={isActive}
-          onChange={onChange}
-          onInvalid={onInvalid}
-          onBlur={this.onBlur}
-          onFocus={this.onFocus}
-          name={name}
-          value={value}
-        />
-        <LabelText>{children}</LabelText>
+        <RadioInputWrapper>
+          <HiddenInput
+            aria-label={ariaLabel}
+            checked={isChecked}
+            disabled={isDisabled}
+            name={name}
+            onChange={onChange}
+            onBlur={this.onBlur}
+            onInvalid={onInvalid}
+            onFocus={this.onFocus}
+            required={isRequired}
+            type="radio"
+            value={value}
+          />
+          <RadioIcon
+            isActive={isActive}
+            isChecked={isChecked}
+            isDisabled={isDisabled}
+            isFocused={isFocused}
+            isHovered={isHovered}
+            isInvalid={isInvalid}
+          />
+        </RadioInputWrapper>
+        {label ? <LabelText>{label}</LabelText> : null}
       </Label>
     );
   }
 }
+
+const createAndFireEventOnAtlaskit = createAndFireEvent('atlaskit');
+export { Radio as RadioWithoutAnalytics };
+
+export default withAnalyticsContext({
+  componentName: 'radio',
+  packageName,
+  packageVersion,
+})(
+  withAnalyticsEvents({
+    onChange: createAndFireEventOnAtlaskit({
+      action: 'isChecked',
+      actionSubject: 'radio',
+      attributes: {
+        componentName: 'radio',
+        packageName,
+        packageVersion,
+      },
+    }),
+  })(Radio),
+);

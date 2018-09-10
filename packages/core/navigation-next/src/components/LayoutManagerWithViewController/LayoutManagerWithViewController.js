@@ -59,26 +59,30 @@ class LayoutManagerWithViewControllerBase extends Component<
 
     return (
       <Wrapper>
-        <div css={{ padding: `${gridSize * 2}px 0` }}>
-          <Section>
-            {({ className }) => (
-              <div className={className}>
-                <SkeletonContainerHeader hasBefore />
-              </div>
-            )}
-          </Section>
-          <Section>
-            {({ className }) => (
-              <div className={className}>
-                <SkeletonItem hasBefore />
-                <SkeletonItem hasBefore />
-                <SkeletonItem hasBefore />
-                <SkeletonItem hasBefore />
-                <SkeletonItem hasBefore />
-              </div>
-            )}
-          </Section>
-        </div>
+        <Section>
+          {({ css }) => (
+            <div
+              css={{
+                ...css,
+                paddingTop: gridSize * 2.5,
+                paddingBottom: gridSize * 2.5,
+              }}
+            >
+              <SkeletonContainerHeader hasBefore />
+            </div>
+          )}
+        </Section>
+        <Section>
+          {({ className }) => (
+            <div className={className}>
+              <SkeletonItem hasBefore />
+              <SkeletonItem hasBefore />
+              <SkeletonItem hasBefore />
+              <SkeletonItem hasBefore />
+              <SkeletonItem hasBefore />
+            </div>
+          )}
+        </Section>
       </Wrapper>
     );
   };
@@ -157,9 +161,7 @@ class LayoutManagerWithViewControllerBase extends Component<
   renderView(view) {
     const { customComponents } = this.props;
     return (
-      <div css={{ padding: `${gridSize * 2}px 0` }}>
-        <ViewRenderer customComponents={customComponents} items={view.data} />
-      </div>
+      <ViewRenderer customComponents={customComponents} items={view.data} />
     );
   }
 
@@ -174,6 +176,7 @@ class LayoutManagerWithViewControllerBase extends Component<
       onExpandEnd,
       onCollapseStart,
       onCollapseEnd,
+      getRefs,
     } = this.props;
 
     return (
@@ -195,6 +198,7 @@ class LayoutManagerWithViewControllerBase extends Component<
           onExpandEnd={onExpandEnd}
           onCollapseStart={onCollapseStart}
           onCollapseEnd={onCollapseEnd}
+          getRefs={getRefs}
         >
           {children}
         </LayoutManager>
