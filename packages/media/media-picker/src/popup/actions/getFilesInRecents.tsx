@@ -25,7 +25,6 @@ export const GET_FILES_IN_RECENTS_FULLFILLED =
 export interface GetFilesInRecentsFullfilledAction {
   readonly type: 'GET_FILES_IN_RECENTS_FULLFILLED';
   readonly items: MediaCollectionItem[];
-  readonly nextKey: string;
 }
 
 export const isGetFilesInRecentsFullfilledAction = (
@@ -36,12 +35,10 @@ export const isGetFilesInRecentsFullfilledAction = (
 
 export function getFilesInRecentsFullfilled(
   items: MediaCollectionItem[],
-  nextKey: string,
 ): GetFilesInRecentsFullfilledAction {
   return {
     type: GET_FILES_IN_RECENTS_FULLFILLED,
     items,
-    nextKey,
   };
 }
 

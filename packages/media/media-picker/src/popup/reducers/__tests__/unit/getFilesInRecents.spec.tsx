@@ -13,7 +13,6 @@ describe('getFilesInRecents', () => {
 
     expect(recents).toEqual({
       items: [],
-      nextKey: '',
     });
     expect(view).toEqual(
       expect.objectContaining({
@@ -28,13 +27,11 @@ describe('getFilesInRecents', () => {
     const action = {
       type: 'GET_FILES_IN_RECENTS_FULLFILLED',
       items: [1, 2],
-      nextKey: 'abc',
     };
     const { recents, view } = getRecentFilesFullfilled(state, action);
 
     expect(recents).toEqual({
       items: [1, 2],
-      nextKey: 'abc',
     });
     expect(view).toEqual(
       expect.objectContaining({

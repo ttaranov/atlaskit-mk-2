@@ -80,7 +80,6 @@ describe('<StatelessUploadView />', () => {
 
     const recents = {
       items: recentItems,
-      nextKey: '',
     };
     const setUpfrontIdDeferred = jest.fn();
 

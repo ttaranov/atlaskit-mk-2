@@ -24,15 +24,11 @@ export const requestRecentFiles = (store: Store<State>): void => {
 
   userContext.collection.getItems(RECENTS_COLLECTION).subscribe({
     next(items) {
-      // TODO: ghost files handling
       // This prevents showing "ghost" files in recents
-      // contents: data.contents.filter(
-      //   item => item.details.size && item.details.size > 0,
-      // ),
-      store.dispatch(
-        // TODO: we can remove the nextKey completelly
-        getFilesInRecentsFullfilled(items, ''),
+      const contents = items.filter(
+        item => item.details.size && item.details.size > 0,
       );
+      store.dispatch(getFilesInRecentsFullfilled(contents));
     },
     error() {
       store.dispatch(getFilesInRecentsFailed());
