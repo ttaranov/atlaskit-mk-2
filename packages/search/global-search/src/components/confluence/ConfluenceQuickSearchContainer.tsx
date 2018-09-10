@@ -243,6 +243,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         keepPreQueryState={keepPreQueryState}
         searchSessionId={searchSessionId}
         {...this.screenCounters}
+        referralContextIdentifiers={this.props.referralContextIdentifiers}
         renderNoRecentActivity={() => (
           <FormattedHTMLMessage
             id="global-search.no-recent-activity-body"
