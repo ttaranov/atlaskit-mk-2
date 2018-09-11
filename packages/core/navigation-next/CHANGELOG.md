@@ -1,5 +1,8 @@
 # @atlaskit/navigation-next
 
+## 3.10.1
+- [patch] Resolves nav item pseudo-state locking issue [2a4693c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2a4693c)
+
 ## 3.10.0
 - [minor] Export ThemeProvider from the package. [978e055](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/978e055)
 
