@@ -1,36 +1,21 @@
 // @flow
 
-import React, { PureComponent, type ComponentType } from 'react';
+import React, { PureComponent, type ElementType, type Ref } from 'react';
 import { css } from 'emotion';
 
 import { styleReducerNoOp, withContentTheme } from '../../theme';
-import type { ItemProps, ItemRenderComponentProps } from './types';
+import type { ItemProps } from './types';
 
-const getItemBase = (
-  itemProps: ItemProps,
-): ComponentType<ItemRenderComponentProps> => {
-  const { component: CustomComponent, href, onClick, target } = itemProps;
+const isString = x => typeof x === 'string';
 
-  let ItemBase;
-
-  if (CustomComponent) {
-    // The custom component gets passed all of the item's props
-    ItemBase = props => <CustomComponent {...itemProps} {...props} />;
-  } else if (href) {
-    // We have to specifically destructure children here or else eslint
-    // complains about the <a> not having content
-    ItemBase = ({ children, ...props }: ItemRenderComponentProps) => (
-      <a href={href} onClick={onClick} target={target} {...props}>
-        {children}
-      </a>
-    );
-  } else if (onClick) {
-    ItemBase = props => <button {...props} onClick={onClick} />;
-  } else {
-    ItemBase = props => <span {...props} />;
-  }
-
-  return ItemBase;
+type SwitchProps = {
+  as: ElementType,
+  innerRef: Ref<*>,
+};
+const ComponentSwitch = ({ as, innerRef, ...rest }: SwitchProps) => {
+  const props = isString(as) ? rest : { innerRef, ...rest };
+  const ElementOrComponent = as;
+  return <ElementOrComponent ref={innerRef} {...props} />;
 };
 
 class ItemPrimitive extends PureComponent<ItemProps> {
@@ -42,42 +27,51 @@ class ItemPrimitive extends PureComponent<ItemProps> {
     styles: styleReducerNoOp,
     text: '',
   };
-
-  ItemBase: ComponentType<ItemRenderComponentProps> = getItemBase(this.props);
-
-  componentWillReceiveProps(nextProps: ItemProps) {
-    if (
-      nextProps.component !== this.props.component ||
-      nextProps.href !== this.props.href ||
-      nextProps.onClick !== this.props.onClick ||
-      nextProps.target !== this.props.target
-    ) {
-      this.ItemBase = getItemBase(nextProps);
-    }
-  }
-
   render() {
-    const { ItemBase } = this;
     const {
       after: After,
       before: Before,
       styles: styleReducer,
       isActive,
+      innerRef,
       isHover,
       isSelected,
       spacing,
       subText,
       text,
       theme,
+      component: CustomComponent,
+      href,
+      onClick,
+      target,
     } = this.props;
 
     const { mode, context } = theme;
     const presentationProps = { isActive, isHover, isSelected, spacing };
     const defaultStyles = mode.item(presentationProps)[context];
-    const styles = styleReducer(defaultStyles, presentationProps);
+    const styles = styleReducer(defaultStyles, presentationProps, theme);
+
+    // base element switch
+
+    let itemComponent = 'div';
+    let itemProps = { innerRef };
+
+    if (CustomComponent) {
+      itemComponent = CustomComponent;
+      itemProps = this.props;
+    } else if (href) {
+      itemComponent = 'a';
+      itemProps = { href, onClick, target, innerRef };
+    } else if (onClick) {
+      itemProps = { onClick, role: 'button', innerRef };
+    }
 
     return (
-      <ItemBase className={css({ '&&': styles.itemBase })}>
+      <ComponentSwitch
+        as={itemComponent}
+        className={css({ '&&': styles.itemBase })}
+        {...itemProps}
+      >
         {!!Before && (
           <div css={styles.beforeWrapper}>
             <Before {...presentationProps} />
@@ -92,7 +86,7 @@ class ItemPrimitive extends PureComponent<ItemProps> {
             <After {...presentationProps} />
           </div>
         )}
-      </ItemBase>
+      </ComponentSwitch>
     );
   }
 }
