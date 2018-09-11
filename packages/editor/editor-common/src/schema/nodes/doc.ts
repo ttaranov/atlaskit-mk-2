@@ -2,6 +2,7 @@ import { NodeSpec } from 'prosemirror-model';
 
 // Nodes
 import { PanelDefinition as Panel } from './panel';
+import { StatusDefinition as Status } from './status';
 import { ParagraphDefinition as Paragraph } from './paragraph';
 import { BlockQuoteDefinition as Blockquote } from './blockquote';
 import { OrderedListDefinition as OrderedList } from './ordered-list';

@@ -4,7 +4,7 @@ import { akBorderRadius } from '@atlaskit/util-shared-styles';
 
 export default styled.span`
   ${props => `
-    background-color: ${props.backgroundColor};
+    background-color: ${props.inlineEditing ? 'yellow' : props.backgroundColor};
     color: ${props.textColor};
   `};
   border-radius: ${akBorderRadius};

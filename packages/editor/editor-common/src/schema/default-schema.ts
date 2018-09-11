@@ -36,6 +36,7 @@ export const defaultSchema: Schema = createSchema({
     'decisionItem',
     'taskList',
     'taskItem',
+    'status',
     'unknownBlock',
     'date',
     'status',

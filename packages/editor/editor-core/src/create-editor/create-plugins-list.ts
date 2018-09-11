@@ -33,6 +33,7 @@ import {
   tasksAndDecisionsPlugin,
   textColorPlugin,
   textFormattingPlugin,
+  inlineStatusPlugin,
   unsupportedContentPlugin,
   widthPlugin,
   typeAheadPlugin,
@@ -151,6 +152,10 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
 
   if (props.allowPanel) {
     plugins.push(panelPlugin);
+  }
+
+  if (props.allowStatus) {
+    plugins.push(inlineStatusPlugin);
   }
 
   if (props.allowExtension) {

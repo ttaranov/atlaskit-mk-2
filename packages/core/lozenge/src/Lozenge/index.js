@@ -21,6 +21,9 @@ type Props = {
 
   /** The theme the component should use. */
   theme: ThemeProps => ThemeProps,
+
+  forwardRef: ref => void,
+  inlineEditing?: boolean,
 };
 
 export default class Lozenge extends PureComponent<Props> {
@@ -39,7 +42,7 @@ export default class Lozenge extends PureComponent<Props> {
           const themeProps = lozenge(props);
           return (
             <Container {...themeProps}>
-              <Content {...themeProps}>{props.children}</Content>
+              <Content inlineEditing={inlineEditing} innerRef={forwardRef} {...themeProps}>{props.children}</Content>
             </Container>
           );
         }}

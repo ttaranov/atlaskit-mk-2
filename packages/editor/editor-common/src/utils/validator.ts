@@ -696,6 +696,16 @@ export const getValidNode = (
           },
         };
       }
+      case 'status': {
+        return {
+          type,
+          content,
+          attrs: {
+            localId: (attrs && attrs.localId) || uuid(),
+            appearance: (attrs && attrs.appearance) || 'default',
+          },
+        };
+      }
       case 'table': {
         if (
           Array.isArray(content) &&
