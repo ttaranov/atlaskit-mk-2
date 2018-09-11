@@ -78,7 +78,7 @@ export class Card extends Component<CardProps, CardState> {
     if (
       currentContext !== nextContext ||
       !deepEqual(currentIdentifier, nextIdenfifier) ||
-      !deepEqual(currentDimensions, nextDimensions)
+      this.shouldRefetchDueToNewDimensions(currentDimensions, nextDimensions)
     ) {
       this.subscribe(nextIdenfifier, nextContext, nextDimensions);
     }
@@ -88,6 +88,24 @@ export class Card extends Component<CardProps, CardState> {
     this.unsubscribe();
     this.releaseDataURI();
   }
+
+  private shouldRefetchDueToNewDimensions = (
+    current?: CardDimensions,
+    _new?: CardDimensions,
+  ) => {
+    if (!current || !_new) {
+      return true;
+    }
+    if (typeof current.height !== 'number' || typeof _new.height !== 'number') {
+      return true;
+    }
+    if (typeof current.width !== 'number' || typeof _new.width !== 'number') {
+      return true;
+    }
+    const newIsHigher = current.height < _new.height;
+    const newIsWider = current.width < _new.width;
+    return newIsHigher || newIsWider;
+  };
 
   releaseDataURI = () => {
     const { dataURI } = this.state;
