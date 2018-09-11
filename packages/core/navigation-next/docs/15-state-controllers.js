@@ -123,6 +123,10 @@ ${code`interface ViewControllerInterface {
       type: 'container' | 'product',
       /** An array of items. */
       data: [],
+      /** Any extra analytics attributes that have been added via \`getAnalyticsAttributes\`.
+       * These will be added to the payload of analytics events fired within navigation-next
+       */
+      analyticsAttributes?: {} | void,
     } | null,
 
     /** The view which will become active once it has loaded. */
@@ -145,7 +149,7 @@ ${code`interface ViewControllerInterface {
       /** An array of items. */
       data: [],
     } | null,
-  
+
     /** The view which will become the active peek view once it has loaded.
      * @deprecated */
     incomingPeekView: {
@@ -168,6 +172,11 @@ ${code`interface ViewControllerInterface {
     /** A function which should return an array of items, or a Promise which
      * will resolve to an array of items. */
     getItems: () => Promise<[]> | [],
+    /** A function which is passed the items of the active view and should return
+     * an object with extra attributes to be sent for analytics events.
+     * Any data here is added to navigation context under the attributes key.
+     */
+    getAnalyticsAttributes?: (items: ViewData) => {},
   }) => void;
 
   /** Un-register a view. If the view being removed is active it will remain so
@@ -252,7 +261,7 @@ Every item in a view must have a \`type\` property. This can be a component, but
 
 For the most part these built-in types take exactly the same props as their component counterparts, however there are a few differences:
 
-* All items must have an \`id\` property. This ID is used as the React \`key\`, and should be unique within the view so that reducers can accurately select individual items by ID.
+* All items must have an \`id\` property. This ID is used as the React \`key\`, and should be unique within the view so that reducers can accurately select individual items by ID. It is also used to uniquely identify the item for analytics click events.
 * Rather than passing a \`children\` prop to \`'Group'\` and \`'Section'\` types, you should specify their descendants as an array with the \`items\` property. Any item with an \`items\` property will be walked by reducers.
 * The \`'Item'\` type accepts a special \`goTo\` property, which should be a view ID. When an \`'Item'\` with a \`goTo\` is clicked, that view will be activated. It will also render a right-arrow icon when hovered, or a loading spinner when its \`goTo\` property matches the incoming view ID.
 * The \`'GroupHeading'\` and \`'SectionHeading'\` types accept a \`text\` property instead of \`children\`.

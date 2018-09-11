@@ -10,6 +10,9 @@ import LinkIcon from '@atlaskit/icon/glyph/link';
 import { JiraWordmark as JiraWordmarkLogo } from '@atlaskit/logo';
 import { Link, Route } from 'react-router-dom';
 
+import { viewReducerUtils } from '../../src';
+import type { ViewData } from '../../src/view-controller/types';
+
 export const LinkItem = ({ components: C, to, ...props }: *) => {
   return (
     <Route
@@ -51,6 +54,17 @@ export const globalNavSecondaryItems = [
     id: 'profile',
   },
 ];
+
+const getViewAnalyticsAttributes = (items: ViewData) => {
+  const flattenedItems = viewReducerUtils.flattenItems(items);
+
+  return {
+    standardItemCount: flattenedItems.filter(i => i.type === 'Item').length,
+    groupCount: flattenedItems.filter(i => i.type === 'Group').length,
+    sectionCount: flattenedItems.filter(i => i.type === 'Section').length,
+    linkCount: flattenedItems.filter(i => i.type === LinkItem).length,
+  };
+};
 
 /** Product root views */
 const rootIndex = [
@@ -150,8 +164,18 @@ const rootIssues = [
 ];
 
 export const rootViews = [
-  { id: 'root/index', getItems: () => rootIndex, type: 'product' },
-  { id: 'root/issues', getItems: () => rootIssues, type: 'product' },
+  {
+    id: 'root/index',
+    getItems: () => rootIndex,
+    type: 'product',
+    getAnalyticsAttributes: getViewAnalyticsAttributes,
+  },
+  {
+    id: 'root/issues',
+    getItems: () => rootIssues,
+    type: 'product',
+    getAnalyticsAttributes: getViewAnalyticsAttributes,
+  },
 ];
 
 const ProjectSwitcherItem = {
@@ -320,10 +344,12 @@ export const containerViews = [
     id: 'container/project/index',
     getItems: () => containerProject,
     type: 'container',
+    getAnalyticsAttributes: getViewAnalyticsAttributes,
   },
   {
     id: 'container/project/issues',
     getItems: () => containerProjectIssues,
     type: 'container',
+    getAnalyticsAttributes: getViewAnalyticsAttributes,
   },
 ];

@@ -40,7 +40,9 @@ export default class ViewController extends Container<ViewControllerState>
     isDebugEnabled,
   }: ViewControllerProps = defaultProps) {
     super();
-    this.isDebugEnabled = isDebugEnabled;
+    if (typeof isDebugEnabled !== 'undefined') {
+      this.isDebugEnabled = isDebugEnabled;
+    }
     if (initialPeekViewId) {
       this.setInitialPeekViewId(initialPeekViewId);
     }
@@ -90,11 +92,17 @@ export default class ViewController extends Container<ViewControllerState>
     initialData: ViewData,
   ) => {
     const { active, incoming } = stateKeys;
-    const { id, type } = view;
+    const { id, type, getAnalyticsAttributes } = view;
     const reducers = this.reducers[id] || [];
     const data = reducers.reduce((d, reducer) => reducer(d), initialData);
+    const analyticsAttributes = getAnalyticsAttributes
+      ? getAnalyticsAttributes(data)
+      : undefined;
 
-    this.setState({ [active]: { id, type, data }, [incoming]: null });
+    this.setState({
+      [active]: { id, type, data, analyticsAttributes },
+      [incoming]: null,
+    });
   };
 
   /**
