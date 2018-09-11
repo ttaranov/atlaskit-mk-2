@@ -12,6 +12,7 @@ import {
   Auth,
   fileStreamsCache,
   FileState,
+  MediaItem,
 } from '@atlaskit/media-core';
 import { fakeContext, nextTick } from '@atlaskit/media-test-helpers';
 import { Observable } from 'rxjs/Observable';
@@ -20,7 +21,6 @@ import { NewUploadServiceImpl } from '../../newUploadServiceImpl';
 import { MediaFile, UploadParams } from '../../..';
 import * as getPreviewModule from '../../../util/getPreviewFromBlob';
 import * as getPreviewFromVideo from '../../../util/getPreviewFromVideo';
-import { MediaItem } from '../../../../../media-core/src';
 
 const fileStreamCacheSpy = jest.spyOn(fileStreamsCache, 'set');
 

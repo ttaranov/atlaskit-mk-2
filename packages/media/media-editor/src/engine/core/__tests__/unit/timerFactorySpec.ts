@@ -9,7 +9,7 @@ describe('MediaEditor TimerFactory', () => {
 
   // When a new timer is started, its callback is placed to timerCallbacks.
   // Timer handles start from 1 because a handle can not be 0.
-  const timerStarter = (callback: TimerCallback, interval: number) => {
+  const timerStarter = (callback: TimerCallback) => {
     const handle = ++lastHandle;
 
     expect(handle).not.toBe(0);

@@ -11,11 +11,8 @@ const red = { red: 255, green: 0, blue: 0 };
 const fixedDimensions = { width: 600, height: 480 };
 const shapeParameters = { color: red, lineWidth: 10, addShadow: true };
 
-let loadParameters: LoadParameters;
-
 const onLoad = (imageUrl: string, parameters: LoadParameters) => {
   console.log('load', imageUrl, parameters);
-  loadParameters = parameters;
 };
 const onError = (imageUrl: string, error: Error) => {
   console.log('error', imageUrl, error.message, error);
