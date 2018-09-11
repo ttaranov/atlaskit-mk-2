@@ -9,6 +9,7 @@ import {
   generateJiraScopeWithError,
   generateJiraScope,
 } from '../../../../example-helpers/mockData';
+import { ABTest } from '../../../model/Result';
 
 const url = 'https://www.example.jira.dev.com/';
 const cloudId = 'cloudId';
@@ -175,7 +176,7 @@ describe('JiraClient', () => {
       expect(results.issues).toHaveProperty('length', 8);
       expect(results.boards).toHaveProperty('length', 3);
 
-      expect(abTest).toMatchObject(boardsScope.abTest);
+      expect(abTest).toMatchObject(boardsScope.abTest as ABTest);
     });
   });
 });
