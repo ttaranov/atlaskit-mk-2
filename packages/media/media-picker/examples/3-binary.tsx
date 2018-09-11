@@ -9,8 +9,8 @@ import { MediaPicker, BinaryUploader, BinaryConfig } from '../src';
 import { ContextFactory } from '@atlaskit/media-core';
 
 class BinaryWrapper extends Component<{}> {
-  binary: BinaryUploader;
-  dropzoneContainer: HTMLDivElement;
+  binary?: BinaryUploader;
+  dropzoneContainer?: HTMLDivElement;
 
   componentDidMount() {
     this.createBinary();

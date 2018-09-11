@@ -28,8 +28,8 @@ export interface ClipboardWrapperState {
 }
 
 class ClipboardWrapper extends Component<{}, ClipboardWrapperState> {
-  clipboard: Clipboard;
-  dropzoneContainer: HTMLDivElement;
+  clipboard?: Clipboard;
+  dropzoneContainer?: HTMLDivElement;
 
   state: ClipboardWrapperState = {
     isConnectedToUsersCollection: true,
@@ -117,7 +117,9 @@ class ClipboardWrapper extends Component<{}, ClipboardWrapperState> {
 
   onActiveChange = () => {
     const { clipboard } = this;
-
+    if (!clipboard) {
+      return;
+    }
     this.setState({ isActive: !this.state.isActive }, () => {
       const { isActive } = this.state;
       isActive ? clipboard.activate() : clipboard.deactivate();

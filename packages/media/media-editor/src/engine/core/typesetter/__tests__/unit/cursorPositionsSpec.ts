@@ -285,6 +285,8 @@ describe('MediaEditor cursor positions', () => {
         if (callCount === 5) {
           return { left: 10, right: 60 };
         }
+
+        return {};
       });
 
       putInternalPositions(
@@ -320,6 +322,7 @@ describe('MediaEditor cursor positions', () => {
         if (callCount === 5) {
           return { left: 10, right: 60 };
         }
+        return {};
       });
 
       putInternalPositions(

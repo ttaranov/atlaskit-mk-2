@@ -1,12 +1,8 @@
-import { Action, MiddlewareAPI } from 'redux';
-import { State } from '../../domain';
+import { Action } from 'redux';
 import { isEditorCloseAction } from '../../actions/editorClose';
-import { Payload, buttonClickPayload } from '.';
+import { buttonClickPayload, HandlerResult } from '.';
 
-export default (
-  action: Action,
-  store: MiddlewareAPI<State>,
-): Payload[] | undefined => {
+export default (action: Action): HandlerResult => {
   if (isEditorCloseAction(action)) {
     return [
       {

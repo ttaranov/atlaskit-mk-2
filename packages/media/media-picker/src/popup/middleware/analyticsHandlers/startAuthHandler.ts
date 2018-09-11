@@ -1,8 +1,8 @@
 import { Action } from 'redux';
 import { isStartAuthAction } from '../../actions/startAuth';
-import { Payload, buttonClickPayload } from '.';
+import { buttonClickPayload, HandlerResult } from '.';
 
-export default (action: Action): Payload[] | undefined => {
+export default (action: Action): HandlerResult => {
   if (isStartAuthAction(action)) {
     return [
       {

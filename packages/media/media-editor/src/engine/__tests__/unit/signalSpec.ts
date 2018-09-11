@@ -28,7 +28,7 @@ describe('MediaEditor Signal', () => {
 
   it('should not call handler after reset', () => {
     const signal = new Signal<SignalData>();
-    signal.listen(data => {
+    signal.listen(() => {
       throw new Error('This handler must not be called');
     });
     signal.reset();
@@ -37,7 +37,7 @@ describe('MediaEditor Signal', () => {
 
   it('should call second handler after listen twice', done => {
     const signal = new Signal<SignalData>();
-    signal.listen(data => {
+    signal.listen(() => {
       throw new Error('This handler must not be called');
     });
     signal.listen(data => {

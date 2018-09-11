@@ -34,7 +34,7 @@ export class Dropzone extends LocalUploadComponent<
   DropzoneUploadEventPayloadMap
 > {
   private container: HTMLElement;
-  private instance: HTMLElement;
+  private instance?: HTMLElement;
   private headless: boolean;
   private uiActive: boolean;
 

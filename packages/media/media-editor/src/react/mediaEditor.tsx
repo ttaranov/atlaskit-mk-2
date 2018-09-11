@@ -67,16 +67,16 @@ export class MediaEditor extends React.Component<MediaEditorProps, {}> {
   private isUnmounted: boolean;
 
   // DOM elements that we need to create the engine
-  private outputArea: HTMLDivElement;
-  private canvas: HTMLCanvasElement;
-  private supplementaryCanvas: HTMLCanvasElement;
-  private hiddenTextArea: HTMLTextAreaElement;
-  private hiddenTextHelperDiv: HTMLDivElement;
+  private outputArea!: HTMLDivElement;
+  private canvas!: HTMLCanvasElement;
+  private supplementaryCanvas!: HTMLCanvasElement;
+  private hiddenTextArea!: HTMLTextAreaElement;
+  private hiddenTextHelperDiv!: HTMLDivElement;
 
   // Engine and its components
-  private drawingArea: DefaultDrawingArea;
-  private toolbar: DefaultToolbar;
-  private engine: Engine;
+  private drawingArea?: DefaultDrawingArea;
+  private toolbar?: DefaultToolbar;
+  private engine?: Engine;
 
   constructor(props: MediaEditorProps) {
     super(props);
@@ -100,8 +100,9 @@ export class MediaEditor extends React.Component<MediaEditorProps, {}> {
     }
 
     if (
-      !dimensionsSame(currProps.dimensions, prevProps.dimensions) ||
-      currProps.screenScaleFactor !== prevProps.screenScaleFactor
+      this.drawingArea &&
+      (!dimensionsSame(currProps.dimensions, prevProps.dimensions) ||
+        currProps.screenScaleFactor !== prevProps.screenScaleFactor)
     ) {
       this.drawingArea.setSize(MediaEditor.toOutputSize(currProps));
     }
@@ -123,17 +124,19 @@ export class MediaEditor extends React.Component<MediaEditorProps, {}> {
       lineWidth: prevLineWidth,
       addShadow: prevAddShadow,
     } = prevProps.shapeParameters;
-    if (!colorSame(currColor, prevColor)) {
-      this.toolbar.setColor(currColor);
-    }
-    if (currLineWidth !== prevLineWidth) {
-      this.toolbar.setLineWidth(currLineWidth);
-    }
-    if (currAddShadow !== prevAddShadow) {
-      this.toolbar.setAddShadow(currAddShadow);
-    }
-    if (currProps.tool !== prevProps.tool) {
-      this.toolbar.setTool(currProps.tool);
+    if (this.toolbar) {
+      if (!colorSame(currColor, prevColor)) {
+        this.toolbar.setColor(currColor);
+      }
+      if (currLineWidth !== prevLineWidth) {
+        this.toolbar.setLineWidth(currLineWidth);
+      }
+      if (currAddShadow !== prevAddShadow) {
+        this.toolbar.setAddShadow(currAddShadow);
+      }
+      if (currProps.tool !== prevProps.tool) {
+        this.toolbar.setTool(currProps.tool);
+      }
     }
   }
 
@@ -142,19 +145,19 @@ export class MediaEditor extends React.Component<MediaEditorProps, {}> {
     this.unloadEngine();
   }
 
-  private handleOutputAreaInnerRef = outputArea => {
+  private handleOutputAreaInnerRef = (outputArea: HTMLDivElement) => {
     this.outputArea = outputArea;
   };
-  private handleSupplementaryCanvasInnerRef = canvas => {
+  private handleSupplementaryCanvasInnerRef = (canvas: HTMLCanvasElement) => {
     this.supplementaryCanvas = canvas;
   };
-  private handleHiddenTextAreaInnerRef = textArea => {
+  private handleHiddenTextAreaInnerRef = (textArea: HTMLTextAreaElement) => {
     this.hiddenTextArea = textArea;
   };
-  private handleHiddenTextHelperDivInnerRef = div => {
+  private handleHiddenTextHelperDivInnerRef = (div: HTMLDivElement) => {
     this.hiddenTextHelperDiv = div;
   };
-  private handleDrawingCanvasInnerRef = canvas => {
+  private handleDrawingCanvasInnerRef = (canvas: HTMLCanvasElement) => {
     this.canvas = canvas;
   };
 
@@ -253,7 +256,7 @@ export class MediaEditor extends React.Component<MediaEditorProps, {}> {
 
         this.engine = new Engine(config);
         const loadParameters = {
-          imageGetter: (format?: string) => this.engine.getBase64Image(format),
+          imageGetter: (format?: string) => this.engine!.getBase64Image(format),
         };
 
         this.props.onLoad(imageUrl, loadParameters);
