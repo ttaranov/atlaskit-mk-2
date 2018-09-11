@@ -12,6 +12,7 @@ export interface CardContentProps {
   state: ObjectState;
   reload: () => void;
   onClick?: () => void;
+  isSelected?: boolean;
 }
 
 export class CardContent extends React.Component<CardContentProps> {
@@ -150,11 +151,12 @@ export class CardContent extends React.Component<CardContentProps> {
   }
 
   renderInlineResolvedState() {
-    const { state } = this.props;
+    const { state, isSelected } = this.props;
     const props = extractInlinePropsFromJSONLD(state.data || {});
     return (
       <InlineCard.ResolvedView
         {...props}
+        isSelected={isSelected}
         onClick={this.url && this.handleFrameClick}
       />
     );
