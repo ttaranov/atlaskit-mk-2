@@ -268,7 +268,7 @@ baseTests.forEach(test => {
   }
 });
 
-export const imageSnapshotFolder = `${process.cwd()}/__image_snapshots__`;
+export const imageSnapshotFolder = `./__image_snapshots__`;
 
 export const snapshot = async page => {
   const image = await page.screenshot();
