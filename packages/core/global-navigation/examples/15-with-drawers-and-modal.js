@@ -173,7 +173,7 @@ class GlobalNavWithDrawers extends Component<Props, State> {
 
 type NavState = {
   isCreateDrawerEnabled: boolean,
-  unmountOnExit: boolean,
+  shouldUnmountOnExit: boolean,
 };
 
 // Need two componentss because both have state
@@ -181,7 +181,7 @@ type NavState = {
 export default class extends Component<{||}, NavState> {
   state = {
     isCreateDrawerEnabled: true,
-    unmountOnExit: true,
+    shouldUnmountOnExit: true,
   };
 
   toggleCreateDrawer = () => {
@@ -191,8 +191,8 @@ export default class extends Component<{||}, NavState> {
   };
 
   toggleUnmountBehaviour = () => {
-    this.setState(({ unmountOnExit: unmountOnExitValue }) => ({
-      unmountOnExit: !unmountOnExitValue,
+    this.setState(({ shouldUnmountOnExit: unmountOnExitValue }) => ({
+      shouldUnmountOnExit: !unmountOnExitValue,
     }));
   };
 
@@ -204,7 +204,7 @@ export default class extends Component<{||}, NavState> {
             <GlobalNavWithDrawers
               {...props}
               isCreateDrawerEnabled={this.state.isCreateDrawerEnabled}
-              unmountOnExit={this.state.unmountOnExit}
+              unmountOnExit={this.state.shouldUnmountOnExit}
             />
           )}
           productNavigation={() => null}
@@ -217,17 +217,24 @@ export default class extends Component<{||}, NavState> {
                 ? 'Create Drawer'
                 : 'Create Modal'
             }`}</button>
+
             <div css={{ marginTop: '2rem' }}>
               <label htmlFor="checkbox">
                 <input
                   id="checkbox"
                   type="checkbox"
-                  value={this.state.unmountOnExit}
+                  value={this.state.shouldUnmountOnExit}
                   onChange={this.toggleUnmountBehaviour}
                 />
-                {`${this.state.unmountOnExit ? 'Enable' : 'Disable'}`}{' '}
-                remounting of drawer contents on exit
+                Toggle remounting of drawer contents on exit
               </label>
+              <div css={{ display: 'block', paddingTop: '1rem' }}>
+                Contents of the drawer will be{' '}
+                <strong>{`${
+                  this.state.shouldUnmountOnExit ? 'discarded' : 'retained'
+                }`}</strong>{' '}
+                on closing the drawer
+              </div>
             </div>
           </Fragment>
         </LayoutManager>

@@ -20,7 +20,7 @@ export type DrawerProps = BaseProps &
     ) => void,
     onKeyDown?: (SyntheticKeyboardEvent<*>) => void,
     isOpen: boolean,
-    unmountOnExit?: boolean,
+    shouldUnmountOnExit?: boolean,
   };
 
 export type CloseTrigger = 'backButton' | 'blanket' | 'escKey';

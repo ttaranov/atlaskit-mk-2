@@ -55,9 +55,15 @@ export default class DrawersExample extends Component<{}, State> {
               value={this.state.shouldUnmountOnExit}
               onChange={this.toggleUnmountBehaviour}
             />
-            {`${this.state.shouldUnmountOnExit ? 'Enable' : 'Disable'}`}{' '}
-            remounting of drawer contents on exit
+            Toggle remounting of drawer contents on exit
           </label>
+          <div css={{ display: 'block', paddingTop: '1rem' }}>
+            Contents of the drawer will be{' '}
+            <strong>{`${
+              this.state.shouldUnmountOnExit ? 'discarded' : 'retained'
+            }`}</strong>{' '}
+            on closing the drawer
+          </div>
         </div>
       </div>
     );

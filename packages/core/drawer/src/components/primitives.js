@@ -21,11 +21,11 @@ const widths = {
 
 const Wrapper = ({
   width = 'narrow',
-  unmountOnExit,
+  shouldUnmountOnExit,
   ...props
 }: {
   children?: Node,
-  unmountOnExit?: boolean,
+  shouldUnmountOnExit?: boolean,
   width: $PropertyType<DrawerPrimitiveProps, 'width'>,
 }) => {
   return (
