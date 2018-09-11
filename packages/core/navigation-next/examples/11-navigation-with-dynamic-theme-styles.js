@@ -1,6 +1,6 @@
 // @flow
 
-import React from 'react';
+import React, { type Node } from 'react';
 import Avatar from '@atlaskit/avatar';
 import AddIcon from '@atlaskit/icon/glyph/add';
 import BacklogIcon from '@atlaskit/icon/glyph/backlog';
@@ -65,7 +65,7 @@ const globalNavPrimaryItems = [
         }}
       </UIControllerSubscriber>
     ),
-    icon: JiraIcon,
+    icon: () => <JiraIcon label="Jira" />,
     label: 'Jira',
   },
   { key: 'search', icon: SearchIcon, label: 'Search' },

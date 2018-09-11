@@ -29,7 +29,13 @@ export const LinkItem = ({ components: C, to, ...props }: *) => {
 };
 
 export const globalNavPrimaryItems = [
-  { id: 'jira', icon: JiraIcon, label: 'Jira', to: '/', component: Link },
+  {
+    id: 'jira',
+    icon: () => <JiraIcon label="Jira" />,
+    label: 'Jira',
+    to: '/',
+    component: Link,
+  },
   { id: 'search', icon: SearchIcon },
   { id: 'create', icon: AddIcon },
 ];

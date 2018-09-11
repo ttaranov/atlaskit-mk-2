@@ -11,7 +11,7 @@ import GraphLineIcon from '@atlaskit/icon/glyph/graph-line';
 import IssuesIcon from '@atlaskit/icon/glyph/issues';
 import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import SearchIcon from '@atlaskit/icon/glyph/search';
-import { JiraIcon, JiraWordmark } from '@atlaskit/logo';
+import { JiraSoftwareIcon, JiraSoftwareWordmark } from '@atlaskit/logo';
 
 import {
   ContainerHeader,
@@ -55,7 +55,7 @@ const globalNavPrimaryItems = [
         }}
       </UIControllerSubscriber>
     ),
-    icon: JiraIcon,
+    icon: () => <JiraSoftwareIcon label="Jira" />,
     label: 'Jira',
   },
   { key: 'search', icon: SearchIcon },
@@ -86,7 +86,7 @@ const productRootNavSections = [
       {
         type: () => (
           <div css={{ padding: '12px 0' }}>
-            <JiraWordmark />
+            <JiraSoftwareWordmark />
           </div>
         ),
         key: 'jira-wordmark',
