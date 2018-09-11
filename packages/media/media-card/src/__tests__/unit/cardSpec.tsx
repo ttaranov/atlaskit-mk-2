@@ -13,6 +13,7 @@ import {
   FileIdentifier,
   LinkIdentifier,
   CardView,
+  CardDimensions,
 } from '../../../src';
 import { LazyContent } from '../../../src/utils/lazyContent';
 import { getDataURIFromFileState } from '../../../src/utils/getDataURIFromFileState';
@@ -171,6 +172,26 @@ describe('Card', () => {
     );
 
     expect(component.find(CardView)).toHaveLength(1);
+  });
+
+  it('should create a new subscription when the dimensions change', async () => {
+    const newDimensions: CardDimensions = {
+      width: 2000,
+      height: 1000,
+    };
+    const context = createContextWithGetFile();
+    const { component } = setup(context, { identifier: fileIdentifier });
+    component.setProps({ context, dimensions: newDimensions });
+
+    await nextTick();
+    expect(context.getImage).toHaveBeenCalledTimes(2);
+    expect(context.getImage).toHaveBeenLastCalledWith('some-random-id', {
+      allowAnimated: true,
+      collection: 'some-collection-name',
+      height: 1000,
+      mode: 'crop',
+      width: 2000,
+    });
   });
 
   it('should fire onClick when passed in as a prop and CardView fires onClick', () => {
