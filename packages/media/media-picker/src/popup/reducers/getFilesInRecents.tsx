@@ -17,11 +17,7 @@ export const getRecentFilesStarted = (state: State, action: Action): State => {
           accountId: '',
         },
         path: [],
-        isLoading: true,
         hasError: false,
-      },
-      recents: {
-        items: [],
       },
     };
   } else {

@@ -1,6 +1,5 @@
 import { Action, Dispatch, Store } from 'redux';
-
-import { Fetcher } from '../tools/fetcher/fetcher';
+import { Subscription } from 'rxjs/Subscription';
 import {
   getFilesInRecentsFullfilled,
   getFilesInRecentsFailed,
@@ -9,9 +8,11 @@ import { State } from '../domain';
 import { isGetFilesInRecentsAction } from '../actions/getFilesInRecents';
 import { RECENTS_COLLECTION } from '../config';
 
-export const getFilesInRecents = (fetcher: Fetcher) => (
-  store: Store<State>,
-) => (next: Dispatch<Action>) => (action: Action) => {
+let subscription: Subscription | undefined;
+
+export const getFilesInRecents = () => (store: Store<State>) => (
+  next: Dispatch<Action>,
+) => (action: Action) => {
   if (isGetFilesInRecentsAction(action)) {
     requestRecentFiles(store);
   }
@@ -22,7 +23,11 @@ export const getFilesInRecents = (fetcher: Fetcher) => (
 export const requestRecentFiles = (store: Store<State>): void => {
   const { userContext } = store.getState();
 
-  userContext.collection.getItems(RECENTS_COLLECTION).subscribe({
+  if (subscription) {
+    subscription.unsubscribe();
+  }
+
+  subscription = userContext.collection.getItems(RECENTS_COLLECTION).subscribe({
     next(items) {
       // This prevents showing "ghost" files in recents
       const contents = items.filter(

@@ -1,4 +1,4 @@
-import { mockStore, mockFetcher, mockAuthProvider } from '../../../mocks';
+import { mockStore, mockFetcher } from '../../../mocks';
 import {
   getFilesInRecentsFullfilled,
   getFilesInRecentsFailed,
@@ -14,7 +14,7 @@ describe('getFilesInRecents middleware', () => {
       const next = jest.fn();
 
       const unknownAction = { type: 'UNKNOWN' };
-      getFilesInRecents(fetcher)(store)(next)(unknownAction);
+      getFilesInRecents()(store)(next)(unknownAction);
 
       expect(fetcher.getRecentFiles).toHaveBeenCalledTimes(0);
       expect(store.dispatch).toHaveBeenCalledTimes(0);
@@ -28,9 +28,8 @@ describe('getFilesInRecents middleware', () => {
     it('should dispatch GET_FILES_IN_RECENTS_FAILED when userAuthProvider() rejects', async () => {
       const fetcher = mockFetcher();
       const store = mockStore();
-      const userAuthProvider = () => Promise.reject('some-error');
 
-      await requestRecentFiles(fetcher, userAuthProvider as any, store);
+      await requestRecentFiles(store);
       expect(fetcher.getRecentFiles).toHaveBeenCalledTimes(0);
       expect(store.dispatch).toHaveBeenCalledTimes(1);
       expect(store.dispatch).toHaveBeenCalledWith(getFilesInRecentsFailed());
@@ -42,7 +41,7 @@ describe('getFilesInRecents middleware', () => {
 
       fetcher.getRecentFiles.mockReturnValue(Promise.reject('some-error'));
 
-      await requestRecentFiles(fetcher, mockAuthProvider, store);
+      await requestRecentFiles(store);
       expect(fetcher.getRecentFiles).toHaveBeenCalledTimes(1);
       expect(store.dispatch).toHaveBeenCalledTimes(1);
       expect(store.dispatch).toHaveBeenCalledWith(getFilesInRecentsFailed());
@@ -58,11 +57,11 @@ describe('getFilesInRecents middleware', () => {
       };
       fetcher.getRecentFiles.mockReturnValue(Promise.resolve(fetcherResult));
 
-      await requestRecentFiles(fetcher, mockAuthProvider, store);
+      await requestRecentFiles(store);
       expect(fetcher.getRecentFiles).toHaveBeenCalledTimes(1);
       expect(store.dispatch).toHaveBeenCalledTimes(1);
       expect(store.dispatch).toHaveBeenCalledWith(
-        getFilesInRecentsFullfilled([], 'some-start-key'),
+        getFilesInRecentsFullfilled([]),
       );
     });
   });
