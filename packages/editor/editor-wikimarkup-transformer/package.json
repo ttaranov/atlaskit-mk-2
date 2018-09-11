@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-wikimarkup-transformer",
-  "version": "2.0.22",
+  "version": "2.0.23",
   "description": "Wiki markup transformer for JIRA and Confluence",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
