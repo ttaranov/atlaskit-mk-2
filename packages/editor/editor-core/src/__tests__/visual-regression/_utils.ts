@@ -268,12 +268,7 @@ baseTests.forEach(test => {
   }
 });
 
-// @ts-ignore
-export const imageSnapshotFolder = require('path').resolve(
-  // @ts-ignore
-  __dirname,
-  `__image_snapshots__`,
-);
+export const imageSnapshotFolder = `${process.cwd()}/__image_snapshots__`;
 
 export const snapshot = async page => {
   const image = await page.screenshot();

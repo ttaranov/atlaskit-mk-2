@@ -1,9 +1,9 @@
-import { pluginKey } from '../../../src/plugins/card/pm-plugins/main';
-import cardPlugin from '../../../src/plugins/card';
+import { pluginKey } from '../../../../plugins/card/pm-plugins/main';
+import cardPlugin from '../../../../plugins/card';
 import {
   setProvider,
   queueCards,
-} from '../../../src/plugins/card/pm-plugins/actions';
+} from '../../../../plugins/card/pm-plugins/actions';
 
 import {
   doc,
