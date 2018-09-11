@@ -5,8 +5,8 @@ import NoResultsImage from '../assets/NoResultsImage';
 
 const NoResultsWrapper = styled.div`
   text-align: center;
-  margin-top: ${math.multiply(gridSize, 4)}px;
-  margin-bottom: ${math.multiply(gridSize, 4)}px;
+  margin-top: ${math.multiply(gridSize, 15)}px;
+  margin-bottom: 0;
 `;
 
 export interface Props {

@@ -5,8 +5,8 @@ import { AnalyticsType } from '../model/Result';
 
 export interface Props {
   query: string;
-  icon: JSX.Element;
   text: JSX.Element | string;
+  icon?: JSX.Element;
   analyticsData?: object;
 }
 
