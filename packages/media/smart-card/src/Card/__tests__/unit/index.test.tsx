@@ -170,6 +170,31 @@ describe('Card', () => {
     expect(wrapper.find(BlockCard.ResolvedView)).toHaveLength(1);
   });
 
+  it('should be able to be selected when inline and resolved', async () => {
+    const client = createClient();
+    const wrapper = mount(
+      <Card
+        appearance="inline"
+        isSelected={true}
+        client={client}
+        url="https://www.atlassian.com/"
+      />,
+    );
+
+    // wait for the data to be loaded
+    await client
+      .get('https://www.atlassian.com/')
+      .pipe(takeWhile(isNotResolved))
+      .toPromise();
+
+    wrapper.update();
+    expect(wrapper.find(InlineCard.ResolvedView).props()).toEqual(
+      expect.objectContaining({
+        isSelected: true,
+      }),
+    );
+  });
+
   it('should reload the object state when the url changes', async () => {
     const client = createClient();
     const wrapper = mount(
