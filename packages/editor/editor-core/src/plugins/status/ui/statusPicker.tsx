@@ -13,6 +13,7 @@ export interface Props {
   element: HTMLElement | null;
   closeStatusPicker: () => void;
   onSelect: (status: StatusType) => void;
+  onTextChanged: (status: StatusType) => void;
 }
 
 export interface State {
@@ -41,7 +42,7 @@ export default class StatusPicker extends React.Component<Props, State> {
   }
 
   render() {
-    const { element, closeStatusPicker, onSelect } = this.props;
+    const { element, closeStatusPicker, onSelect, onTextChanged } = this.props;
 
     return (
       <PopupWithListeners
@@ -55,10 +56,20 @@ export default class StatusPicker extends React.Component<Props, State> {
         <PickerContainer>
           <AkStatusPicker
             selectedColor={this.state.color}
+            text={this.state.text}
             onColorClick={color => {
+              this.setState({ color });
+
               onSelect({
                 text: this.state.text,
                 color,
+              });
+            }}
+            onTextChanged={value => {
+              this.setState({ text: value });
+              onTextChanged({
+                text: value,
+                color: this.state.color,
               });
             }}
           />

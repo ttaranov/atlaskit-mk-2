@@ -46,7 +46,7 @@ export const insertStatus = (status?: StatusType) => (
           localId,
         })
         .setSelection(Selection.near(tr.doc.resolve(showStatusPickerAt + 2)))
-        .setMeta(pluginKey, { showStatusPickerAt: null })
+        .setMeta(pluginKey, { showStatusPickerAt: showStatusPickerAt })
         .scrollIntoView(),
     );
     return true;
