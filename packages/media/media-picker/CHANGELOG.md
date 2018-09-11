@@ -1,5 +1,8 @@
 # @atlaskit/media-picker
 
+## 16.0.2
+- [patch] Use stricter tsconfig [3e3a10d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3e3a10d)
+
 ## 16.0.1
 - [patch]  Handle the fact that remoteUploadId may not exist and not break cloud uploads [c2317af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c2317af)
 
