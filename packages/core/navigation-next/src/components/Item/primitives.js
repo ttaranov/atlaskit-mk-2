@@ -63,7 +63,8 @@ class ItemPrimitive extends PureComponent<ItemProps> {
       itemComponent = 'a';
       itemProps = { href, onClick, target, innerRef };
     } else if (onClick) {
-      itemProps = { onClick, role: 'button', innerRef };
+      itemComponent = 'button';
+      itemProps = { onClick, innerRef };
     }
 
     return (
