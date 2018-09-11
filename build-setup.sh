@@ -33,3 +33,8 @@ npm set //registry.yarnpkg.com/:_authToken=$NPM_TOKEN
 export FORCE_COLOR=1
 yarn config set color always
 
+echo -e "\e[32m  Yarn config list"
+yarn config list
+
+echo -e "\e[32m  NPM config list"
+npm config list
