@@ -5559,9 +5559,9 @@ extglob@^2.0.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
-extract-react-types@^0.14.2:
-  version "0.14.2"
-  resolved "https://registry.yarnpkg.com/extract-react-types/-/extract-react-types-0.14.2.tgz#876b4cc2cc2ca782b1e29b7b99caafe4653907dd"
+extract-react-types@^0.14.3:
+  version "0.14.3"
+  resolved "https://registry.yarnpkg.com/extract-react-types/-/extract-react-types-0.14.3.tgz#6485fd2c2ed442d5e6d77681ecd0fa1326aa8a79"
   dependencies:
     "@babel/core" "7.0.0-beta.56"
     "@babel/types" "^7.0.0-beta.56"
@@ -8516,13 +8516,9 @@ kind-of@^6.0.0, kind-of@^6.0.2:
   version "6.0.2"
   resolved "https://registry.yarnpkg.com/kind-of/-/kind-of-6.0.2.tgz#01146b36a6218e64e58f3a8d66de5d7fc6f6d051"
 
-kind2string@^0.3.0:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/kind2string/-/kind2string-0.3.1.tgz#38afce91ffadf475f3fea31bcf6cd739c2bb12ca"
-
-kind2string@^0.4.1:
-  version "0.4.1"
-  resolved "https://registry.yarnpkg.com/kind2string/-/kind2string-0.4.1.tgz#5d1e2d608ab1d72c5d81f9646b848b4e6ba01108"
+kind2string@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/kind2string/-/kind2string-0.5.0.tgz#663a72ee0a12592916adecd27ceb43b85bc5465a"
 
 klaw@^1.0.0:
   version "1.3.1"
@@ -11425,12 +11421,12 @@ pretty-format@^21.2.1:
     ansi-regex "^3.0.0"
     ansi-styles "^3.2.0"
 
-pretty-proptypes@^0.3.0:
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/pretty-proptypes/-/pretty-proptypes-0.3.0.tgz#d05156733303c808dbde6aec019bb9e9e4b14664"
+pretty-proptypes@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/pretty-proptypes/-/pretty-proptypes-0.4.0.tgz#f628879ddeee73d7829f8776d74935187766c5e2"
   dependencies:
     emotion "^9.1.1"
-    kind2string "^0.4.1"
+    kind2string "^0.5.0"
     react-markings "^1.2.0"
 
 prettyjson@^1.1.2:

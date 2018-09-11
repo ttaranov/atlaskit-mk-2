@@ -1,8 +1,7 @@
 // @flow
 
 import React from 'react';
-import { Prop } from 'pretty-proptypes'; // TODO export this from @atlaskit/docs
-import { Example, md, Props } from '@atlaskit/docs';
+import { Example, md, Props, Prop } from '@atlaskit/docs';
 
 import { Contents, ContentsProvider, H, Hr } from './shared';
 
