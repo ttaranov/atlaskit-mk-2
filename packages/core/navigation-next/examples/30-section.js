@@ -5,7 +5,7 @@ import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
 import { colors } from '@atlaskit/theme';
 
-import { GroupHeading, Item, Section, Separator } from '../src';
+import { Item, Section, SectionHeading, Separator } from '../src';
 
 const Container = props => (
   <div
@@ -82,9 +82,9 @@ class NestedSection extends Component<{}, { activeLevel: number }> {
     return (
       <NestedSectionWrapper>
         <Section key="nested-section" {...sectionProps}>
-          {({ css }) => (
-            <div css={{ ...css, padding: '16px' }}>
-              <Item text={title} />
+          {({ className }) => (
+            <div className={className}>
+              <SectionHeading>{title}</SectionHeading>
               {items.map(({ goTo, ...itemProps }) => (
                 <Item
                   key={itemProps.text}
@@ -126,12 +126,12 @@ export default () => (
       <NestedSection />
     </VariationWrapper>
     <VariationWrapper>
-      <h3>Scroll hint section</h3>
+      <h3>Scrollable section</h3>
       <ScrollableSectionWrapper>
-        <Section key="scroll-hint-section" shouldGrow>
+        <Section key="scrollable-section" shouldGrow>
           {({ css }) => (
             <div css={css}>
-              <GroupHeading>Section title</GroupHeading>
+              <SectionHeading>Section heading</SectionHeading>
               {scrollingItems.map(itemProps => (
                 <Item key={itemProps.text} {...itemProps} />
               ))}

@@ -169,6 +169,19 @@ ${(
 
 ${<Hr />}
 
+${<H>SectionHeading</H>}
+
+The SectionHeading is meant to be used at the top of a nested menu section. There should only be one of these used per view, as opposed to GroupHeadings.
+
+${(
+    <Props
+      heading="SectionHeading props"
+      props={require('!!extract-react-types-loader!../src/components/SectionHeading')}
+    />
+  )}
+
+${<Hr />}
+
 ${<H>Separator</H>}
 
 Separates a group of items. This component takes no props.
