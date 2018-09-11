@@ -32,7 +32,7 @@ npm set //registry.yarnpkg.com/:_authToken=$NPM_TOKEN
 
 echo -e "\e[32m  Setting Yarn registry and token"
 yarn config set _authToken $NPM_TOKEN
-yarn config set registry //registry.npmjs.org/
+yarn config set registry https://registry.npmjs.org/
 
 # Forces `chalk` to display colored output in pipelines
 export FORCE_COLOR=1
