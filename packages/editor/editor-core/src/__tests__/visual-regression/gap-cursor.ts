@@ -1,12 +1,11 @@
 import { removeOldProdSnapshots } from '@atlaskit/visual-regression/helper';
 
-import { imageSnapshotFolder, initEditor, clearEditor } from './_utils';
-
-const snapshot = async page => {
-  const image = await page.screenshot();
-  // @ts-ignore
-  expect(image).toMatchProdImageSnapshot();
-};
+import {
+  imageSnapshotFolder,
+  initEditor,
+  clearEditor,
+  snapshot,
+} from './_utils';
 
 describe('Snapshot Test: Gap cursor', () => {
   let page;
@@ -16,14 +15,9 @@ describe('Snapshot Test: Gap cursor', () => {
     // @ts-ignore
     page = global.page;
     await initEditor(page, 'full-page');
-    await page.addStyleTag({
-      content:
-        '.ProseMirror-gapcursor span::after { animation: none !important; }',
-    });
   });
 
   beforeEach(async () => {
-    await page.setViewport({ width: 1920, height: 1080 });
     await clearEditor(page);
   });
 
@@ -45,6 +39,9 @@ describe('Snapshot Test: Gap cursor', () => {
           await page.keyboard.down(`ArrowDown`);
           await page.keyboard.down(`ArrowDown`);
           await page.keyboard.down(`ArrowDown`);
+        }
+        if (node === 'columns' && side === 'Right') {
+          await page.keyboard.down(`ArrowRight`);
         }
         await page.keyboard.down(`Arrow${side}`);
         await page.waitForSelector('.ProseMirror-gapcursor');

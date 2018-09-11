@@ -287,8 +287,10 @@ export default class ToolsDrawer extends React.Component<Props & any, State> {
                 </ButtonGroup>
               </div>
             </div>
-            <legend>JSON output:</legend>
-            <pre>{jsonDocument}</pre>
+            <div className="json-output">
+              <legend>JSON output:</legend>
+              <pre>{jsonDocument}</pre>
+            </div>
           </Content>
         </AnalyticsListener>
       </AnalyticsListener>

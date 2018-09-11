@@ -155,7 +155,7 @@ export default class Editor extends React.Component<
 
     return (
       <WithFlash animate={maxContentSizeReached}>
-        <CommentEditor maxHeight={maxHeight}>
+        <CommentEditor maxHeight={maxHeight} className="akEditor">
           <MainToolbar>
             <Toolbar
               editorView={editorView!}

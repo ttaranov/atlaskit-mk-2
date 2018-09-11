@@ -1,17 +1,11 @@
 import { removeOldProdSnapshots } from '@atlaskit/visual-regression/helper';
 
-import { imageSnapshotFolder, initEditor } from '../_utils';
+import { imageSnapshotFolder, initEditor, snapshot } from '../_utils';
 import {
   setupMediaMocksProviders,
   insertMedia,
   editable,
 } from '../../integration/_helpers';
-
-const snapshot = async page => {
-  const image = await page.screenshot();
-  // @ts-ignore
-  expect(image).toMatchProdImageSnapshot();
-};
 
 describe('Snapshot Test: Media', () => {
   beforeAll(async () => {
@@ -24,7 +18,6 @@ describe('Snapshot Test: Media', () => {
       beforeEach(async () => {
         // @ts-ignore
         page = global.page;
-        await page.setViewport({ width: 1920, height: 1080 });
         await initEditor(page, editor);
         await setupMediaMocksProviders(page);
 

@@ -5,6 +5,7 @@ import {
   initEditor,
   clearEditor,
   selectByTextAndClick,
+  snapshot,
 } from './_utils';
 
 describe('Snapshot Test: ProseMirror nodes and marks', () => {
@@ -28,9 +29,7 @@ describe('Snapshot Test: ProseMirror nodes and marks', () => {
       });
 
       afterEach(async () => {
-        const image = await page.screenshot();
-        // @ts-ignore
-        expect(image).toMatchProdImageSnapshot();
+        await snapshot(page);
       });
 
       tests.forEach(test => {
