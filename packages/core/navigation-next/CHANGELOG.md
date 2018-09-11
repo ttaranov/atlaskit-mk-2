@@ -1,5 +1,8 @@
 # @atlaskit/navigation-next
 
+## 3.11.1
+- [patch] hotfix: return nav item on click element to button [23fa988](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23fa988)
+
 ## 3.11.0
 - [minor] Add a `getAnalyticsAttributes` prop to the `addView` function of ViewController that enables passing extra analytics attributes to analytics events fired within navigation when the specified view is active. [56452d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/56452d3)
 - [patch] Add missing navigationLayer attribute to productNavigation expanded/collapsed. [1ffd2ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1ffd2ca)
