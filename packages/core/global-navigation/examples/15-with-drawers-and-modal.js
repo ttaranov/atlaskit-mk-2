@@ -192,14 +192,14 @@ export default class extends Component<{||}, NavState> {
           productNavigation={() => null}
           containerNavigation={() => null}
         >
-          <Fragment>
+          <div css={{ padding: '32px 40px' }}>
             <div>Page content</div>
             <button onClick={this.toggleCreateDrawer}>{`Enable ${
               this.state.isCreateDrawerEnabled
                 ? 'Create Drawer'
                 : 'Create Modal'
             }`}</button>
-          </Fragment>
+          </div>
         </LayoutManager>
       </NavigationProvider>
     );

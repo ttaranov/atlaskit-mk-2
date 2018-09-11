@@ -17,55 +17,106 @@ export type NavigationStateShape = InitialNavigationStateShape & {
 };
 
 export type GlobalNavDrawerProps = {
+  /** Whether the create drawer is open */
   isCreateDrawerOpen?: boolean,
+  /** The contents of the create drawer */
   createDrawerContents?: ComponentType<*>,
+  /** A callback function which will be fired when the create drawer is opened
+   * */
   onCreateDrawerOpen?: () => void,
+  /** A callback function which will be fired when the create drawer is closed
+   * */
   onCreateDrawerClose?: () => void,
 
+  /** Whether the search drawer is open */
   isSearchDrawerOpen?: boolean,
+  /** The contents of the search drawer */
   searchDrawerContents?: ComponentType<*>,
+  /** A callback function which will be called when the search drawer is opened
+   * */
   onSearchDrawerOpen?: () => void,
+  /** A callback function which will be called when the search drawer is closed
+   * */
   onSearchDrawerClose?: () => void,
 
+  /** Whether the notifications drawer is open */
   isNotificationDrawerOpen?: boolean,
+  /** The contents of the notifications drawer */
   notificationDrawerContents?: ComponentType<*>,
+  /** A callback function which will be called when the notifications drawer is
+   * opened */
   onNotificationDrawerOpen?: () => void,
+  /** A callback function which will be called when the notifications drawer is
+   * closed */
   onNotificationDrawerClose?: () => void,
 
+  /** Whether the starred drawer is open */
   isStarredDrawerOpen?: boolean,
+  /** The contents of the starred drawer */
   starredDrawerContents?: ComponentType<*>,
+  /** A callback function which will be called when the starred drawer is opened
+   * */
   onStarredDrawerOpen?: () => void,
+  /** A callback function which will be called when the starred drawer is closed
+   * */
   onStarredDrawerClose?: () => void,
 };
 
 export type GlobalNavigationProps = {
+  /** The product logo. Expected to be an Atlaskit Logo component. */
   productIcon?: ComponentType<{}>,
+  /** A callback function which will be called when the product logo item is
+   * clicked. */
   onProductClick?: () => void,
+  /** The text to display in the tooltip for the product logo item. */
   productTooltip?: string,
+  /** An href attribute for the product logo item. */
   productHref?: string,
 
+  /** A callback function which will be called when the create item is clicked.
+   * */
   onCreateClick?: ?() => void,
+  /** The text to display in the tooltip for the create item. */
   createTooltip?: string,
 
+  /** A callback function which will be called when the starred item is clicked.
+   * */
   onStarredClick?: ?() => void,
+  /** The text to display in the tooltip for the starred item. */
   starredTooltip?: string,
 
+  /** A callback function which will be called when the search item is clicked.
+   * */
   onSearchClick?: ?() => void,
+  /** The text to display in the tooltip for the search item. */
   searchTooltip?: string,
 
+  /** The component to render the app switcher. */
   appSwitcherComponent?: ComponentType<*>, // AppSwitcher component
+  /** The text to display in the tooltip for the app switcher item. */
   appSwitcherTooltip?: string,
 
+  /** The text to display in the tooltip for the help item. */
   helpTooltip?: string,
-  helpItems?: ComponentType<{}>, // GlobalNavigation will render DropdownItemGroup with the correct trigger
+  /** A component to render into the help menu dropdown. */
+  helpItems?: ComponentType<{}>,
 
+  /** The text to display in the tooltip for the profile item. */
   profileTooltip?: string,
-  profileItems?: ComponentType<{}>, // GlobalNavigation will render DropdownItemGroup with the correct trigger
+  /** A component to render into the profile menu dropdown. */
+  profileItems?: ComponentType<{}>,
+  /** The URL of the avatar image to render in the profile item. */
   profileIconUrl?: string,
-  loginHref?: string, // Login url to redirect anonymous users to login page.
+  /** The URL to redirect anonymous users to. */
+  loginHref?: string,
 
+  /** A callback function which will be called when the starred item is clicked.
+   * */
   onNotificationClick?: ?() => void,
+  /** The number of unread notifications. Will render as a badge above the
+   * notifications item. */
   notificationCount?: number,
+  /** The text to display in the tooltip for the notifications item. */
   notificationTooltip?: string,
 } & GlobalNavDrawerProps;
 

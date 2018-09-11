@@ -33,7 +33,7 @@ export default () => (
       productNavigation={() => null}
       containerNavigation={() => null}
     >
-      Page content
+      <div css={{ padding: '32px 40px' }}>Page content</div>
     </LayoutManager>
   </NavigationProvider>
 );
