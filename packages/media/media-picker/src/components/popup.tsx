@@ -69,6 +69,7 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
       authProvider: userAuthProvider,
     });
     this.store = createStore(this, tenantContext, userContext, {
+      proxyReactContext,
       singleSelect,
     });
 

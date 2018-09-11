@@ -14,7 +14,7 @@ export interface Props {
 export default class NoResultsState extends React.Component<Props> {
   render() {
     const { query } = this.props;
-
+    const analyticsData = { resultsCount: 0, wasOnNoResultsScreen: true };
     return [
       <NoResults
         key="no-results"
@@ -24,6 +24,7 @@ export default class NoResultsState extends React.Component<Props> {
       <ResultItemGroup title="" key="advanced-search">
         <SearchConfluenceItem
           query={query}
+          analyticsData={analyticsData}
           text={
             <FormattedMessage id="global-search.confluence.advanced-search-filters" />
           }
@@ -32,6 +33,7 @@ export default class NoResultsState extends React.Component<Props> {
         />
         <SearchPeopleItem
           query={query}
+          analyticsData={analyticsData}
           text={<FormattedMessage id="global-search.people.advanced-search" />}
           icon={
             <Icon glyph={PeopleIconGlyph} size="medium" label="Search people" />

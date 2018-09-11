@@ -1,56 +1,20 @@
 // @flow
 
-import React, { PureComponent, Fragment } from 'react';
-import { TransitionGroup, Transition } from 'react-transition-group';
-import { css as parseJss } from 'emotion';
-import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
+import React, { Component } from 'react';
 
-import { transitionDurationMs } from '../../common/constants';
-import { getSectionWrapperStyles } from './styles';
-import type { SectionProps, SectionState } from './types';
+import { styleReducerNoOp, withContentTheme } from '../../theme';
+import SectionBase from './Section';
+import type { ConnectedSectionProps } from './types';
 
-export default class Section extends PureComponent<SectionProps, SectionState> {
-  state = {
-    traversalDirection: null,
+const SectionWithTheme = withContentTheme(SectionBase);
+
+export default class Section extends Component<ConnectedSectionProps> {
+  static defaultProps = {
+    alwaysShowScrollHint: false,
+    shouldGrow: false,
+    styles: styleReducerNoOp,
   };
-
-  componentWillReceiveProps(nextProps: SectionProps) {
-    if (nextProps.parentId && nextProps.parentId === this.props.id) {
-      this.setState({ traversalDirection: 'down' });
-    }
-    if (this.props.parentId && this.props.parentId === nextProps.id) {
-      this.setState({ traversalDirection: 'up' });
-    }
-  }
-
   render() {
-    const { id, children } = this.props;
-
-    return (
-      <TransitionGroup component={Fragment}>
-        <Transition key={id} timeout={transitionDurationMs}>
-          {state => {
-            const { traversalDirection } = this.state;
-            const css = getSectionWrapperStyles({ state, traversalDirection });
-            const className = parseJss(css);
-
-            // We provide both the styles object and the computed className.
-            // This allows consumers to patch the styles if they want to, or
-            // simply apply the className if they're not using a JSS parser like
-            // emotion.
-            return (
-              <NavigationAnalyticsContext
-                data={{
-                  attributes: { viewSection: id },
-                  componentName: 'Section',
-                }}
-              >
-                {children({ className, css })}
-              </NavigationAnalyticsContext>
-            );
-          }}
-        </Transition>
-      </TransitionGroup>
-    );
+    return <SectionWithTheme {...this.props} />;
   }
 }

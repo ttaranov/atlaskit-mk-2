@@ -6,7 +6,7 @@ import {
   UIAnalyticsEvent,
 } from '@atlaskit/analytics-next';
 import Button from '@atlaskit/button';
-import Modal from '@atlaskit/modal-dialog';
+import Modal, { ModalTransition } from '@atlaskit/modal-dialog';
 import LayerManager from '../src';
 
 type State = {
@@ -48,17 +48,19 @@ export default class extends Component<{}, State> {
             <AnalyticsContext data={{ isDecorated: true }}>
               <p>
                 <button onClick={this.openModal}>Open modal</button>
-                {this.state.isModalOpen && (
-                  <Modal
-                    actions={[{ text: 'OK', onClick: this.closeModal }]}
-                    onClose={this.closeModal}
-                    heading="Modal"
-                  >
-                    <Button analyticsContext={{ name: 'buttonInsidePortal' }}>
-                      Click me to fire an event
-                    </Button>
-                  </Modal>
-                )}
+                <ModalTransition>
+                  {this.state.isModalOpen && (
+                    <Modal
+                      actions={[{ text: 'OK', onClick: this.closeModal }]}
+                      onClose={this.closeModal}
+                      heading="Modal"
+                    >
+                      <Button analyticsContext={{ name: 'buttonInsidePortal' }}>
+                        Click me to fire an event
+                      </Button>
+                    </Modal>
+                  )}
+                </ModalTransition>
               </p>
             </AnalyticsContext>
           </div>

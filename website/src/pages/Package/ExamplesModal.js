@@ -2,7 +2,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
-import { Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
+import { Link } from '../../components/WrappedLink';
 import { Helmet } from 'react-helmet';
 
 import CodeIcon from '@atlaskit/icon/glyph/code';

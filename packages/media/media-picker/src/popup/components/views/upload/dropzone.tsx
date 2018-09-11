@@ -1,8 +1,7 @@
 'use strict';
 import * as React from 'react';
 import { Component } from 'react';
-import Button from '@atlaskit/button';
-
+import LocalBrowserButton from './uploadButton';
 import { filesIcon } from '../../../../icons';
 import { Browser } from '../../../../components/browser';
 import {
@@ -21,7 +20,7 @@ export interface DropzoneProps {
 
 export class Dropzone extends Component<DropzoneProps> {
   render() {
-    const { isEmpty } = this.props;
+    const { isEmpty, mpBrowser } = this.props;
     return (
       <DropzoneContainer isEmpty={isEmpty}>
         <DropzoneContentWrapper>
@@ -29,24 +28,11 @@ export class Dropzone extends Component<DropzoneProps> {
           <TextWrapper>
             <DropzoneText>Drag and drop your files anywhere or</DropzoneText>
             <ButtonWrapper>
-              <Button
-                className="e2e-upload-button"
-                appearance="default"
-                onClick={this.clickUpload}
-                isDisabled={!this.props.mpBrowser}
-              >
-                Upload a file
-              </Button>
+              <LocalBrowserButton mpBrowser={mpBrowser} />
             </ButtonWrapper>
           </TextWrapper>
         </DropzoneContentWrapper>
       </DropzoneContainer>
     );
   }
-
-  private clickUpload = () => {
-    if (this.props.mpBrowser) {
-      this.props.mpBrowser.browse();
-    }
-  };
 }

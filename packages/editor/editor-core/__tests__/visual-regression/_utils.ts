@@ -46,6 +46,30 @@ export const clearEditor = async page => {
   });
 };
 
+export const insertTable = async page => {
+  await page.click('span[aria-label="Insert table"]');
+  await page.waitForSelector('table td p');
+};
+
+type CellSelectorOpts = {
+  row: number;
+  cell?: number;
+  cellType?: 'td' | 'th';
+};
+
+export const getSelectorForTableCell = ({
+  row,
+  cell,
+  cellType = 'td',
+}: CellSelectorOpts) => {
+  const rowSelector = `table tr:nth-child(${row})`;
+  if (!cell) {
+    return rowSelector;
+  }
+
+  return `${rowSelector} > ${cellType}:nth-child(${cell})`;
+};
+
 export const insertMenuSelector =
   'span[aria-label="Open or close insert block dropdown"]';
 export const advanceFormattingMenuSelector =

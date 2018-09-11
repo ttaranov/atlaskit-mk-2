@@ -492,12 +492,16 @@ export function generateJiraScope(type: string, n: number, query?): JiraScope {
   );
   return {
     id: type,
-    experimentId: uuid(),
     results: query
       ? results.filter(item =>
           item.name.toLowerCase().includes(query.toLowerCase()),
         )
       : results,
+    abTest: {
+      experimentId: uuid(),
+      controlId: uuid(),
+      abTestId: uuid(),
+    },
   };
 }
 

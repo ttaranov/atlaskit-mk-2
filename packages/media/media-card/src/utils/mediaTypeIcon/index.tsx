@@ -7,7 +7,7 @@ import DocIcon from '@atlaskit/icon/glyph/document';
 import UnknownIcon from '@atlaskit/icon/glyph/page';
 import { IconWrapper } from './styled';
 
-const icons = {
+const icons: any = {
   image: ImageIcon,
   audio: AudioIcon,
   video: VideoIcon,

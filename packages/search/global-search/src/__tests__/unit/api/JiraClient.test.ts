@@ -133,13 +133,13 @@ describe('JiraClient', () => {
 
       requestSpy.mockReturnValue(Promise.resolve({ scopes }));
 
-      const result = await jiraClient.search('session-12', 'man');
+      const { results } = await jiraClient.search('session-12', 'man');
 
       expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(result.issues).toBe(undefined);
-      expect(result.projects).toHaveProperty('length', 4);
-      expect(result.boards).toHaveProperty('length', 3);
-      expect(result.filters).toHaveProperty('length', 2);
+      expect(results.issues).toBe(undefined);
+      expect(results.projects).toHaveProperty('length', 4);
+      expect(results.boards).toHaveProperty('length', 3);
+      expect(results.filters).toHaveProperty('length', 2);
     });
 
     it('should return transformed data successfully', async () => {
@@ -152,13 +152,30 @@ describe('JiraClient', () => {
 
       requestSpy.mockReturnValue(Promise.resolve({ scopes }));
 
-      const result = await jiraClient.search('session-12', 'man');
+      const { results } = await jiraClient.search('session-12', 'man');
 
       expect(requestSpy).toHaveBeenCalledTimes(1);
-      expect(result.issues).toHaveProperty('length', 8);
-      expect(result.projects).toHaveProperty('length', 4);
-      expect(result.boards).toHaveProperty('length', 3);
-      expect(result.filters).toHaveProperty('length', 2);
+      expect(results.issues).toHaveProperty('length', 8);
+      expect(results.projects).toHaveProperty('length', 4);
+      expect(results.boards).toHaveProperty('length', 3);
+      expect(results.filters).toHaveProperty('length', 2);
+    });
+
+    it('should include abTest', async () => {
+      const issuesScope = generateJiraScope('issues', 8);
+      issuesScope.abTest = undefined;
+      const boardsScope = generateJiraScope('boards', 3);
+      const scopes = [issuesScope, boardsScope];
+
+      requestSpy.mockReturnValue(Promise.resolve({ scopes }));
+
+      const { abTest, results } = await jiraClient.search('session-12', 'man');
+
+      expect(requestSpy).toHaveBeenCalledTimes(1);
+      expect(results.issues).toHaveProperty('length', 8);
+      expect(results.boards).toHaveProperty('length', 3);
+
+      expect(abTest).toMatchObject(boardsScope.abTest);
     });
   });
 });

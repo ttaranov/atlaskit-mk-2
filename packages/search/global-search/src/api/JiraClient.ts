@@ -9,8 +9,9 @@ import {
   JiraObjectResult,
   ContentType,
   Result,
-  GenericResultMap,
-  JiraResultsMap,
+  ABTest,
+  JiraResultsMapWithABTest,
+  ResultsWithTiming,
 } from '../model/Result';
 
 const RECENT_ITEMS_PATH: string = '/rest/internal/2/productsearch/recent';
@@ -44,17 +45,12 @@ export interface JiraSearchResponse {
 
 export interface Scope {
   id: string;
-  experimentId: string;
+  experimentId?: string;
   results?: Entry[];
   error?: Error;
   abTest?: ABTest;
 }
 
-export interface ABTest {
-  experimentId?: string;
-  controlId?: string;
-  abTestId?: string;
-}
 export interface Entry {
   id: string;
   name: string;
@@ -98,7 +94,7 @@ export interface JiraClient {
    * @param searchSessionId string unique for every session id
    * @returns a promise which resolve to search results
    */
-  search(query: string, searchSessionId: string): Promise<GenericResultMap>;
+  search(query: string, searchSessionId: string): Promise<ResultsWithTiming>;
 }
 
 enum JiraResponseGroup {
@@ -186,7 +182,7 @@ export default class JiraClientImpl implements JiraClient {
   public async search(
     searchSessionId: string,
     query: string,
-  ): Promise<GenericResultMap> {
+  ): Promise<ResultsWithTiming> {
     const options: RequestServiceOptions = {
       path: SEARCH_PATH,
       queryParams: {
@@ -237,7 +233,7 @@ export default class JiraClientImpl implements JiraClient {
     };
   }
 
-  private jiraScopesToResults(scopes: Scope[]): JiraResultsMap {
+  private jiraScopesToResults(scopes: Scope[]): JiraResultsMapWithABTest {
     const { issue, project, filter, board } = flatMap(
       scopes
         .filter(scope => !scope.error && scope.results && scope.results.length) // filter out error scopes
@@ -248,15 +244,14 @@ export default class JiraClientImpl implements JiraClient {
       return Object.assign({}, acc, { [key]: (acc[key] || []).concat(value) });
     }, {});
     return {
-      issues: issue,
-      boards: board,
-      filters: filter,
-      projects: project,
+      results: {
+        issues: issue,
+        boards: board,
+        filters: filter,
+        projects: project,
+      },
+      abTest: extractABTestAttributes(scopes),
     };
-  }
-
-  private getAvatarUrl({ url = '', urls = {} } = {}) {
-    return url ? url : urls[Object.keys(urls)[0]];
   }
 
   private scopeToResult(scope: Scope): { [k: string]: Result }[] {
@@ -269,10 +264,9 @@ export default class JiraClientImpl implements JiraClient {
         containerId: attributes.containerId,
         analyticsType: AnalyticsType.ResultJira,
         ...extractSpecificAttributes(attributes),
-        avatarUrl: attributes.avatar && this.getAvatarUrl(attributes.avatar),
+        avatarUrl: attributes.avatar && extractAvatarUrl(attributes.avatar),
         contentType: JiraTypeToContentType[attributes['@type']],
         experimentId: scope.experimentId,
-        abTest: scope.abTest,
       },
     }));
   }
@@ -302,4 +296,13 @@ const extractSpecificAttributes = (attributes: Attributes) => {
       };
   }
   return null;
+};
+
+const extractAvatarUrl = ({ url = '', urls = {} } = {}) => {
+  return url ? url : urls[Object.keys(urls)[0]];
+};
+
+const extractABTestAttributes = (scopes: Scope[]): ABTest | undefined => {
+  const scopeWithABTest = scopes.find(({ abTest }) => !!abTest);
+  return scopeWithABTest && scopeWithABTest.abTest;
 };

@@ -115,7 +115,11 @@ export class GlobalQuickSearch extends React.Component<Props, State> {
       );
     } else {
       fireSelectedSearchResult(
-        eventData,
+        {
+          ...eventData,
+          query: this.state.query,
+          queryVersion: this.queryVersion,
+        },
         searchSessionId,
         createAnalyticsEvent,
       );

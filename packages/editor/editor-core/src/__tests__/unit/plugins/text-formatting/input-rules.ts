@@ -468,6 +468,17 @@ describe('text-formatting input rules', () => {
         doc(p(code('hello @helga, there?'))),
       );
     });
+
+    it('should not cleanup other formatting in line before code mark', () => {
+      const { editorView, sel } = editor(
+        doc(p('testing – testing → testing ', '`', strong('code{<>}'))),
+      );
+      insertText(editorView, '`', sel);
+
+      expect(editorView.state.doc).toEqualDocument(
+        doc(p('testing – testing → testing ', code('code'))),
+      );
+    });
   });
 
   describe('nested rules', () => {

@@ -1,5 +1,6 @@
 // @flow
-export { default } from './components/Modal';
+export { default } from './components/ModalWrapper';
+export { default as ModalTransition } from './components/ModalTransition';
 export {
   Body as ModalBody,
   Header as ModalHeader,

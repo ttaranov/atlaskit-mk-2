@@ -49,7 +49,8 @@ export type RadioInputProps = RadioIconProps & {
 };
 
 export type RadioProps = {
-  children?: Node,
+  /** the aria-label attribute associated with the radio element */
+  ariaLabel?: string,
   /** Field disabled */
   isDisabled?: boolean,
   /** Field invalid */
@@ -60,10 +61,18 @@ export type RadioProps = {
   isInvalid?: boolean,
   /** Set the field as checked */
   isChecked?: boolean,
+  /** The label value for the input rendered to the dom */
+  label?: Node,
   /** Field name */
   name?: string,
   /** onChange event handler, passed into the props of each Radio Component instantiated within RadioGroup */
   onChange: (SyntheticEvent<*>) => void,
+  onBlur?: (SyntheticInputEvent<*>) => void,
+  onFocus?: (SyntheticInputEvent<*>) => void,
+  onMouseDown?: (SyntheticInputEvent<*>) => void,
+  onMouseUp?: (SyntheticInputEvent<*>) => void,
+  onMouseEnter?: (SyntheticInputEvent<*>) => void,
+  onMouseLeave?: (SyntheticInputEvent<*>) => void,
   /** onInvalid event handler, passed into the props of each Radio Component instantiated within RadioGroup */
   onInvalid?: (SyntheticEvent<*>) => void,
   /** Field value */

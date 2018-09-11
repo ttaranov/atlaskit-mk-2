@@ -277,11 +277,9 @@ describe('ActionsView', () => {
     const event = {
       stopPropagation: jest.fn(),
     };
-    const onActionClickSpy = jest
-      .fn()
-      .mockImplementation((action, handlers) => {
-        handlers.progress();
-      });
+    const onActionClickSpy = jest.fn().mockImplementation((_, handlers) => {
+      handlers.progress();
+    });
     const createCallbackHandlersSpy = jest.spyOn(
       ActionsView.prototype,
       'createCallbackHandlers',
@@ -337,11 +335,9 @@ describe('ActionsView', () => {
     const event = {
       stopPropagation: jest.fn(),
     };
-    const onActionClickSpy = jest
-      .fn()
-      .mockImplementation((action, handlers) => {
-        handlers.success('some success');
-      });
+    const onActionClickSpy = jest.fn().mockImplementation((_, handlers) => {
+      handlers.success('some success');
+    });
     const createCallbackHandlersSpy = jest.spyOn(
       ActionsView.prototype,
       'createCallbackHandlers',
@@ -395,11 +391,9 @@ describe('ActionsView', () => {
   });
 
   it('should update state on failure handler execution', () => {
-    const onActionClickSpy = jest
-      .fn()
-      .mockImplementation((action, handlers) => {
-        handlers.failure('some failure', true, 'test try again');
-      });
+    const onActionClickSpy = jest.fn().mockImplementation((_, handlers) => {
+      handlers.failure('some failure', true, 'test try again');
+    });
     const createCallbackHandlersSpy = jest.spyOn(
       ActionsView.prototype,
       'createCallbackHandlers',

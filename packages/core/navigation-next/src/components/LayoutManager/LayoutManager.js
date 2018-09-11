@@ -55,6 +55,25 @@ export default class LayoutManager extends Component<
     collapseToggleTooltipContent: defaultTooltipContent,
   };
 
+  nodeRefs = {
+    expandCollapseAffordance: React.createRef(),
+  };
+
+  componentDidMount() {
+    this.publishRefs();
+  }
+
+  componentDidUpdate() {
+    this.publishRefs();
+  }
+
+  publishRefs() {
+    const { getRefs } = this.props;
+    if (typeof getRefs === 'function') {
+      getRefs(this.nodeRefs);
+    }
+  }
+
   getNavRef = (ref: ElementRef<*>) => {
     this.productNavRef = ref;
   };
@@ -177,16 +196,19 @@ export default class LayoutManager extends Component<
                 onMouseLeave={this.mouseLeave}
               >
                 <ResizeControl
-                  navigation={navigationUIController}
-                  mouseIsOverNavigation={this.state.mouseIsOverNavigation}
                   collapseToggleTooltipContent={
                     // $FlowFixMe
                     this.props.collapseToggleTooltipContent
                   }
+                  expandCollapseAffordanceRef={
+                    this.nodeRefs.expandCollapseAffordance
+                  }
+                  mouseIsOverNavigation={this.state.mouseIsOverNavigation}
                   mutationRefs={[
                     { ref: this.pageRef, property: 'padding-left' },
                     { ref: this.productNavRef, property: 'width' },
                   ]}
+                  navigation={navigationUIController}
                 >
                   {({ isDragging, width }) => (
                     <ContainerNavigationMask>

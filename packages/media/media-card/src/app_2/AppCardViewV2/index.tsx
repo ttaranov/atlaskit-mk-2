@@ -84,7 +84,7 @@ function getUsers(oldViewModel: OldViewModel) {
   if (!oldViewModel.details) {
     return undefined;
   }
-  return oldViewModel.details.reduce((users, oldDetail) => {
+  return oldViewModel.details.reduce((users: any, oldDetail) => {
     if (oldDetail.users) {
       return [...users, ...oldDetail.users.map(convertUser)];
     } else {
@@ -117,17 +117,13 @@ function getActions(
     return {
       id: v4(),
       text: oldAction.title,
-      handler: actionCallbackHandlers => {
+      handler: (actionCallbackHandlers: any) => {
         if (onActionClick) {
           onActionClick(oldAction, {
             progress: actionCallbackHandlers.pending,
             success: (message?: string) =>
               actionCallbackHandlers.success(message),
-            failure: (
-              message?: string,
-              tryAgain?: boolean,
-              tryAgainLinkText?: string,
-            ) => actionCallbackHandlers.failure(),
+            failure: () => actionCallbackHandlers.failure(),
           });
         }
       },

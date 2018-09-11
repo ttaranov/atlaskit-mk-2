@@ -1,31 +1,32 @@
 // @flow
 
 import React from 'react';
-import { gridSize } from '@atlaskit/theme';
+import { gridSize as gridSizeFn } from '@atlaskit/theme';
+
+const gridSize = gridSizeFn();
 
 const listBaseStyles = {
   alignItems: 'center',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
-  paddingTop: `${gridSize()}px`,
-  width: `${gridSize() * 5}px`,
+  width: gridSize * 5,
 };
 
 export const PrimaryItemsList = (props: *) => (
-  <div
-    css={{ ...listBaseStyles, paddingBottom: `${gridSize() * 2}px` }}
-    {...props}
-  />
+  <div css={{ ...listBaseStyles, paddingBottom: gridSize * 2 }} {...props} />
 );
 
 export const FirstPrimaryItemWrapper = (props: *) => (
-  <div css={{ paddingBottom: `${gridSize() * 2}px` }} {...props} />
+  <div css={{ paddingBottom: gridSize }} {...props} />
 );
 
 export const SecondaryItemsList = (props: *) => (
   <div
-    css={{ ...listBaseStyles, paddingBottom: `${gridSize()}px` }}
+    css={{
+      ...listBaseStyles,
+      paddingTop: gridSize,
+    }}
     {...props}
   />
 );
