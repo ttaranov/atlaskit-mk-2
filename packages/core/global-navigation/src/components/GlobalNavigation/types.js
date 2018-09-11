@@ -27,6 +27,7 @@ export type GlobalNavDrawerProps = {
   /** A callback function which will be fired when the create drawer is closed
    * */
   onCreateDrawerClose?: () => void,
+  shouldCreateDrawerUnmountOnExit?: boolean,
 
   /** Whether the search drawer is open */
   isSearchDrawerOpen?: boolean,
@@ -38,6 +39,7 @@ export type GlobalNavDrawerProps = {
   /** A callback function which will be called when the search drawer is closed
    * */
   onSearchDrawerClose?: () => void,
+  shouldSearchDrawerUnmountOnExit?: boolean,
 
   /** Whether the notifications drawer is open */
   isNotificationDrawerOpen?: boolean,
@@ -49,6 +51,7 @@ export type GlobalNavDrawerProps = {
   /** A callback function which will be called when the notifications drawer is
    * closed */
   onNotificationDrawerClose?: () => void,
+  shouldNotificationDrawerUnmountOnExit?: boolean,
 
   /** Whether the starred drawer is open */
   isStarredDrawerOpen?: boolean,
@@ -60,6 +63,7 @@ export type GlobalNavDrawerProps = {
   /** A callback function which will be called when the starred drawer is closed
    * */
   onStarredDrawerClose?: () => void,
+  shouldStarredDrawerUnmountOnExit?: boolean,
 };
 
 export type GlobalNavigationProps = {
