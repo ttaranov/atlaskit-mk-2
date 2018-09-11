@@ -1,5 +1,8 @@
 # @atlaskit/navigation-next
 
+## 3.10.0
+- [minor] Export ThemeProvider from the package. [978e055](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/978e055)
+
 ## 3.9.1
 - [patch] Fix navigation-next items being re-created at every render [6e8270d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e8270d)
 
