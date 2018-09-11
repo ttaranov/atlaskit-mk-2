@@ -1,0 +1,130 @@
+import { Node as PMNode, Schema } from 'prosemirror-model';
+import { parseString } from '../text';
+import { Token, TokenType } from './';
+import { macro } from './macro';
+import { parseNewlineOnly, parseWhitespaceAndNewLine } from './whitespace';
+
+export interface FormatterOption {
+  /** The opening symbol */
+  opening: string;
+  /** The closing symbol */
+  closing: string;
+  /** TokenType to be ignored when parsing the raw content */
+  ignoreTokenTypes?: TokenType[];
+  /** This function will be called for each content under the formatter */
+  contentDecorator: (pmNode: PMNode) => PMNode;
+}
+
+const processState = {
+  START: 0,
+  BUFFER: 1,
+  END: 2,
+  INLINE_MACRO: 3,
+};
+
+export function commonFormatter(
+  input: string,
+  schema: Schema,
+  opt: FormatterOption,
+): Token {
+  let index = 0;
+  let state = processState.START;
+  let buffer = '';
+
+  /**
+   * The following token types will be ignored in parsing
+   * the content of a strong mark
+   */
+  const ignoreTokenTypes = opt.ignoreTokenTypes || [];
+
+  while (index < input.length) {
+    const char = input.charAt(index);
+    const secChar = input.charAt(index + 1);
+    const twoChar = input.substr(index, 2);
+
+    switch (state) {
+      case processState.START: {
+        if (char !== opt.opening || secChar === ' ') {
+          // this is not a valid formatter mark
+          return fallback(input);
+        }
+        state = processState.BUFFER;
+        break;
+      }
+      case processState.BUFFER: {
+        // the linebreak would break the strong marks
+        const length = parseNewlineOnly(input.substring(index));
+        if (length) {
+          return fallback(input);
+        }
+        if (char === opt.closing) {
+          state = processState.END;
+          continue;
+        } else if (twoChar === '{{') {
+          // this is a monospace
+          buffer += twoChar;
+          index += 2;
+          continue;
+        } else if (char === '{') {
+          state = processState.INLINE_MACRO;
+          continue;
+        } else {
+          buffer += char;
+        }
+        break;
+      }
+      case processState.END: {
+        index++;
+        // empty formatter mark is treated as normal text
+        if (buffer.length === 0) {
+          return fallback(input);
+        }
+
+        /**
+         * If the closing symbol has an empty space before it,
+         * it's not a valid formatter
+         * If the closing symbol is not at the end of the line and
+         * has not a following space, it's not a valid formatter
+         */
+        if (index < input.length) {
+          const length = parseWhitespaceAndNewLine(input.substring(index));
+          if (buffer.endsWith(' ') || length === 0) {
+            return fallback(input);
+          }
+        }
+
+        const rawContent = parseString(buffer, schema, ignoreTokenTypes);
+        const decoratedContent = rawContent.map(opt.contentDecorator);
+
+        return {
+          type: 'pmnode',
+          nodes: decoratedContent,
+          length: index,
+        };
+      }
+      case processState.INLINE_MACRO: {
+        const token = macro(input.substr(index), schema);
+        if (token.type === 'text') {
+          buffer += token.text;
+          index += token.length;
+          state = processState.BUFFER;
+          continue;
+        } else {
+          // No macro are accepted in formater
+          return fallback(input);
+        }
+      }
+      default:
+    }
+    index++;
+  }
+  return fallback(input);
+}
+
+function fallback(input: string): Token {
+  return {
+    type: 'text',
+    text: input.substr(0, 1),
+    length: 1,
+  };
+}
