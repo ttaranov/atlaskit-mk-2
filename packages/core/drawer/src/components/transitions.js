@@ -14,6 +14,7 @@ type TransitionProps = {
   children?: Node,
   component?: ComponentType<*> | string,
   onExited?: any => void,
+  shouldUnmountOnExit?: boolean,
   in: boolean,
 };
 type HandlerProps = {
@@ -31,14 +32,15 @@ type HandlerProps = {
   },
 };
 
+const defaultTransitionProps = {
+  appear: true,
+  mountOnEnter: true,
+  unmountOnExit: true,
+};
 class TransitionHandler extends Component<TransitionProps & HandlerProps> {
   static defaultProps = {
     component: 'div',
-    transitionProps: {
-      appear: true,
-      mountOnEnter: true,
-      unmountOnExit: true,
-    },
+    transitionProps: defaultTransitionProps,
   };
   render() {
     const {
@@ -82,7 +84,11 @@ export const Fade = ({ onExited, ...props }: TransitionProps) => (
   />
 );
 
-export const Slide = ({ onExited, ...props }: TransitionProps) => (
+export const Slide = ({
+  onExited,
+  shouldUnmountOnExit = true,
+  ...props
+}: TransitionProps) => (
   <TransitionHandler
     defaultStyles={{
       transition: `transform ${transitionDurationMs}ms ${transitionTimingFunction}`,
@@ -91,6 +97,10 @@ export const Slide = ({ onExited, ...props }: TransitionProps) => (
     transitionStyles={{
       entered: { transform: 'translate3d(0,0,0)' },
       exited: { transform: 'translate3d(-100%,0,0)' },
+    }}
+    transitionProps={{
+      ...defaultTransitionProps,
+      ...{ unmountOnExit: shouldUnmountOnExit },
     }}
     {...props}
   />
