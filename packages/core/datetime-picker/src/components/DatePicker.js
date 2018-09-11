@@ -21,8 +21,9 @@ import {
 
 import {
   ClearIndicator,
-  DropdownIndicator,
   defaultDateFormat,
+  DropdownIndicator,
+  padToTwo,
 } from '../internal';
 import FixedLayer from '../internal/FixedLayer';
 import type { Event } from '../types';
@@ -167,12 +168,22 @@ class DatePicker extends Component<Props, State> {
     spacing: 'default',
   };
 
-  state = {
-    isOpen: this.props.defaultIsOpen,
-    value: this.props.defaultValue,
-    view: this.props.value || this.props.defaultValue,
-    selectedValue: this.props.value || this.props.defaultValue,
-  };
+  constructor(props: any) {
+    super(props);
+    const now = new Date();
+    const thisDay = now.getDate();
+    const thisMonth = now.getMonth() + 1;
+    const thisYear = now.getFullYear();
+    this.state = {
+      isOpen: this.props.defaultIsOpen,
+      selectedValue: this.props.value || this.props.defaultValue,
+      value: this.props.defaultValue,
+      view:
+        this.props.value ||
+        this.props.defaultValue ||
+        `${thisYear}-${padToTwo(thisMonth)}-${padToTwo(thisDay)}`,
+    };
+  }
 
   // All state needs to be accessed via this function so that the state is mapped from props
   // correctly to allow controlled/uncontrolled usage.
@@ -254,10 +265,7 @@ class DatePicker extends Component<Props, State> {
       this.triggerChange('');
 
       // Dates may be disabled
-    } else if (
-      !this.isDateDisabled(view) &&
-      (key === 'Enter' || key === 'Tab')
-    ) {
+    } else if (!this.isDateDisabled(view) && key === 'Enter') {
       this.triggerChange(view);
       this.setState({ isOpen: false, selectedValue: view });
     }
