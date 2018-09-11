@@ -1,6 +1,6 @@
 // @flow
 
-import type { ComponentType, Node } from 'react';
+import type { ComponentType, Node, Ref } from 'react';
 
 import type { StyleReducer, ProductTheme } from '../../theme/types';
 import type { InteractionState } from '../InteractionStateManager/types';
@@ -45,6 +45,8 @@ export type ConnectedItemProps = {
    *  Used for analytics purposes.
    */
   index?: number,
+  /* React ref to the outer-most wrapping element */
+  innerRef?: Ref<*>,
   /** Whether this Item should display as being selected. */
   isSelected: boolean,
   /** A handler which will be called when the Item is clicked. */
