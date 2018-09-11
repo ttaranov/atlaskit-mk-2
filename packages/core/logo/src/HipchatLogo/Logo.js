@@ -26,7 +26,7 @@ const svg = (iconGradientStart: string, iconGradientStop: string) => {
 };
 
 export default class HipchatLogo extends Component<Props> {
-  static defaultProps = DefaultProps;
+  static defaultProps = { ...DefaultProps, label: 'Hipchat Logo' };
 
   render() {
     const { label, iconGradientStart, iconGradientStop } = this.props;

@@ -12,7 +12,7 @@ export type Props = {
    * rendering issues in some browsers such as Safari. */
   iconGradientStop?: string,
   /** Accessible text to be used for screen readers */
-  label?: string,
+  label: string,
 };
 
 export const DefaultProps = {

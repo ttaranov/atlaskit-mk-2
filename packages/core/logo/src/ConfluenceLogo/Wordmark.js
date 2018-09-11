@@ -13,7 +13,7 @@ const svg = `<canvas height="32" width="126" aria-hidden="true"></canvas>
 </svg>`;
 
 export default class ConfluenceWordmark extends Component<Props> {
-  static defaultProps = DefaultProps;
+  static defaultProps = { ...DefaultProps, label: 'Confluence Wordmark' };
 
   render() {
     const { label } = this.props;

@@ -32,7 +32,7 @@ const svg = (iconGradientStart: string, iconGradientStop: string) => {
 };
 
 export default class ConfluenceIcon extends Component<Props> {
-  static defaultProps = DefaultProps;
+  static defaultProps = { ...DefaultProps, label: 'Confluence Icon' };
 
   render() {
     const { label, iconGradientStart, iconGradientStop } = this.props;

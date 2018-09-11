@@ -27,7 +27,7 @@ const svg = (iconGradientStart: string, iconGradientStop: string) => {
 };
 
 export default class StrideLogo extends Component<Props> {
-  static defaultProps = DefaultProps;
+  static defaultProps = { ...DefaultProps, label: 'Stride Logo' };
 
   render() {
     const { label, iconGradientStart, iconGradientStop } = this.props;

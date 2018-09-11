@@ -26,7 +26,7 @@ const svg = (iconGradientStart: string, iconGradientStop: string) => {
 };
 
 export default class JiraServiceDeskIcon extends Component<Props> {
-  static defaultProps = DefaultProps;
+  static defaultProps = { ...DefaultProps, label: 'Jira Service Desk Icon' };
 
   render() {
     const { label, iconGradientStart, iconGradientStop } = this.props;

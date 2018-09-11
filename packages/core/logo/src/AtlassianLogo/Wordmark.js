@@ -21,7 +21,7 @@ const svg = `<canvas height="32" width="158" aria-hidden="true"></canvas>
 </svg>`;
 
 export default class AtlassianWordmark extends Component<Props> {
-  static defaultProps = DefaultProps;
+  static defaultProps = { ...DefaultProps, label: 'Atlassian Wordmark' };
 
   render() {
     const { label } = this.props;

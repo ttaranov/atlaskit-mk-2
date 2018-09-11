@@ -13,7 +13,7 @@ const svg = `<canvas height="32" width="65" aria-hidden="true"></canvas>
 </svg>`;
 
 export default class StrideWordmark extends Component<Props> {
-  static defaultProps = DefaultProps;
+  static defaultProps = { ...DefaultProps, label: 'Stride Wordmark' };
 
   render() {
     const { label } = this.props;
