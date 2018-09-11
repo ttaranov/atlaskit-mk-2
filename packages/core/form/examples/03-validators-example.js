@@ -146,6 +146,7 @@ export default class ValidatorsExample extends PureComponent<void, State> {
 
   validateClickHandler = () => {
     this.formRef.validate();
+    console.log(this.formRef);
   };
 
   onStatelessChangeHandler = (event: SyntheticInputEvent<HTMLInputElement>) => {
@@ -180,6 +181,7 @@ export default class ValidatorsExample extends PureComponent<void, State> {
             <Field
               label="Name a mojito ingredient"
               helperText="With validateOnChange enabled validators are called onChange"
+              isRequired
               validators={[
                 <Validator
                   func={isMojitoIngredientValue}
@@ -246,13 +248,7 @@ export default class ValidatorsExample extends PureComponent<void, State> {
               label="Name"
               validateOnChange
               description="validateOnChange using stateless component"
-              validators={[
-                <Validator
-                  func={value => value.trim && !!value.trim()}
-                  invalid="This can't be empty"
-                  valid="Thanks!"
-                />,
-              ]}
+              isRequired
             >
               <FieldText
                 name="title"

@@ -63,7 +63,7 @@ export type FieldState = {
   label?: string,
   invalidMessage?: string,
   validMessage?: string,
-  validate?: () => mixed,
+  validate?: () => FieldState,
   helperText?: string,
   validateOnChange?: boolean,
   validateOnBlur?: boolean,
@@ -254,6 +254,7 @@ export default class Field extends Component<Props, State> {
    */
   validate = (): FieldState => {
     const { validators, value } = this.state.fieldState;
+    //const value = this.state.fieldState || '';
     const {
       isInvalid,
       invalidMessage,
@@ -269,8 +270,8 @@ export default class Field extends Component<Props, State> {
     let invalidCount = 0;
     let validatedFieldState = {};
 
-    // Is the field required?
-    if (isRequired && !value) {
+    // Is the field required? $FlowFixMe - flow should not complain about this
+    if ((isRequired && !value) || !value.trim().length) {
       invalidCount++;
       invalid = 'This field is required';
     } else if (validators && validators.length) {
