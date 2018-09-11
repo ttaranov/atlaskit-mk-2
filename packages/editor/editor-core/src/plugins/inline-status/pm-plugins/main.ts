@@ -4,11 +4,7 @@ import {
   findParentDomRefOfType,
   findParentNodeOfType,
 } from 'prosemirror-utils';
-import {
-  StatusComponent as StatusComponentNodeView,
-  statusNodeView,
-} from '../nodeviews/status';
-import { ReactNodeView } from '../../../nodeviews';
+import { inlineStatusNodeView } from '../nodeviews/inline-status';
 
 export type StatusState = {
   element?: HTMLElement;
@@ -63,7 +59,7 @@ export const createPlugin = ({
       apply(tr, pluginState: StatusState, oldState, newState) {
         const nextPluginState = tr.getMeta(pluginKey);
         const parentStatusNode = findParentNodeOfType(
-          oldState.schema.nodes.status,
+          oldState.schema.nodes.inlineStatus,
         )(oldState.tr.selection);
         //   if (parentStatusNode && nextPluginState) {
         //     const newPluginState = {
@@ -88,15 +84,15 @@ export const createPlugin = ({
             state: {
               selection,
               schema: {
-                nodes: { status },
+                nodes: { inlineStatus },
               },
             },
           } = view;
           //console.log(getPluginState(view.state))
           const pluginState = getPluginState(view.state);
-          const parent = findParentNodeOfType(status)(selection);
+          const parent = findParentNodeOfType(inlineStatus)(selection);
           const parentDOM = findParentDomRefOfType(
-            status,
+            inlineStatus,
             view.domAtPos.bind(view),
           )(selection);
 
@@ -119,7 +115,7 @@ export const createPlugin = ({
     },
     props: {
       nodeViews: {
-        status: statusNodeView(portalProviderAPI),
+        inlineStatus: inlineStatusNodeView(portalProviderAPI),
       },
       handleDOMEvents: {
         blur(view: EditorView, event) {

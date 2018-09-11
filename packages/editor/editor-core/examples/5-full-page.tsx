@@ -153,6 +153,7 @@ export class ExampleEditor extends React.Component<Props, State> {
             allowUnsupportedContent={true}
             allowPanel={true}
             allowStatus={true}
+            allowInlineStatus={true}
             allowExtension={{
               allowBreakout: true,
             }}
@@ -164,7 +165,6 @@ export class ExampleEditor extends React.Component<Props, State> {
             UNSAFE_cards={{
               provider: Promise.resolve(cardProvider),
             }}
-            allowStatus={true}
             {...providers}
             media={{ provider: mediaProvider, allowMediaSingle: true }}
             placeholder="Write something..."

@@ -11,7 +11,7 @@ export const removePanel = (): Command => (state, dispatch) => {
     tr,
   } = state;
   analyticsService.trackEvent(`atlassian.editor.format.panel.delete.button`);
-  dispatch(removeParentNodeOfType(nodes.status)(tr));
+  dispatch(removeParentNodeOfType(nodes.inlineStatus)(tr));
   return true;
 };
 
@@ -26,6 +26,6 @@ export const changePanelType = (panelType: PanelType): Command => (
   analyticsService.trackEvent(
     `atlassian.editor.format.panel.${panelType}.button`,
   );
-  dispatch(setParentNodeMarkup(nodes.status, null, { panelType })(tr));
+  dispatch(setParentNodeMarkup(nodes.inlineStatus, null, { panelType })(tr));
   return true;
 };

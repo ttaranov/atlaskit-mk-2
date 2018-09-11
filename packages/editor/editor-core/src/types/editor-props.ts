@@ -120,7 +120,7 @@ export interface EditorProps {
   // You will most likely need backend ADF storage for this feature.
   allowPanel?: boolean;
 
-  allowStatus?: boolean;
+  allowInlineStatus?: boolean;
 
   // Enable extensions. Extensions let products and the ecosystem extend ADF and render their own things.
   // Similar to macros in Confluence. You will most likely need backend ADF storage for this feature.

@@ -696,7 +696,7 @@ export const getValidNode = (
           },
         };
       }
-      case 'status': {
+      case 'inlineStatus': {
         return {
           type,
           content,

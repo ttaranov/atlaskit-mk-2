@@ -14,9 +14,9 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
   if (panelState && panelState.toolbarVisible && panelState.element) {
     const { activePanelType } = panelState;
     return {
-      title: 'Status',
+      title: 'InlineStatus',
       getDomRef: () => panelState.element,
-      nodeType: state.schema.nodes.status,
+      nodeType: state.schema.nodes.inlineStatus,
       items: [
         {
           type: 'button',

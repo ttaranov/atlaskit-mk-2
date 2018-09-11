@@ -83,7 +83,7 @@ export { decisionList, DecisionListDefinition } from './decision-list';
 export { decisionItem, DecisionItemDefinition } from './decision-item';
 export { taskList, TaskListDefinition } from './task-list';
 export { taskItem, TaskItemDefinition } from './task-item';
-export { StatusAppearance, status } from './status';
+export { InlineStatusAppearance, inlineStatus } from './inline-status';
 export { extension, ExtensionDefinition } from './extension';
 export { inlineExtension, InlineExtensionDefinition } from './inline-extension';
 export {

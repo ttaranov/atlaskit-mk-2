@@ -33,6 +33,7 @@ const nodes = [
   'taskList',
   'taskItem',
   'status',
+  'inlineStatus',
   'date',
   'placeholder',
   'decisionList',

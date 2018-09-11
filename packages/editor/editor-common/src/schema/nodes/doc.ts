@@ -25,7 +25,7 @@ import { HardBreakDefinition as HardBreak } from './hard-break';
 import { MentionDefinition as Mention } from './mention';
 import { EmojiDefinition as Emoji } from './emoji';
 import { DateDefinition as Date } from './date';
-import { StatusDefinition as Status } from './status';
+import { InlineStatusDefinition as InlineStatus } from './inline-status';
 import { PlaceholderDefinition as Placeholder } from './placeholder';
 import { InlineCardDefinition as InlineCard } from './inline-card';
 import { BlockCardDefinition as BlockCard } from './block-card';
@@ -47,6 +47,7 @@ import { ActionDefinition as Action } from '../marks/action';
  */
 export type TopLevel = Array<
   | Panel
+  | InlineStatus
   | Paragraph
   | Blockquote
   | OrderedList
@@ -71,6 +72,7 @@ export type TopLevel = Array<
  */
 export type TableCellContent = Array<
   | Panel
+  | InlineStatus
   | Paragraph
   | Blockquote
   | OrderedList
@@ -94,6 +96,7 @@ export type TableCellContent = Array<
  */
 export type ExtensionContent = Array<
   | Panel
+  | InlineStatus
   | Paragraph
   | Blockquote
   | OrderedList

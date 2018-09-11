@@ -58,7 +58,7 @@ export interface Props {
   node: PMNode;
 }
 
-export type StatusComponentProps = {
+export type InlineStatusComponentProps = {
   panelType: string;
   inlineEditing?: boolean;
   appearance?: string;
@@ -74,7 +74,9 @@ const appearances = {
   note: 'new',
 };
 
-export class StatusComponent extends React.Component<StatusComponentProps> {
+export class InlineStatusComponent extends React.Component<
+  InlineStatusComponentProps
+> {
   shouldComponentUpdate(nextProps) {
     return (
       this.props.panelType !== nextProps.panelType ||
@@ -87,6 +89,7 @@ export class StatusComponent extends React.Component<StatusComponentProps> {
     const { panelType, appearance, forwardRef } = this.props;
     const Icon = panelIcons[panelType];
     const appearance_ = appearances[panelType];
+    console.log('# InlineStatusComponent.render ...');
     return (
       <WithPluginState
         plugins={{
@@ -108,7 +111,7 @@ export class StatusComponent extends React.Component<StatusComponentProps> {
   }
 }
 
-class Status extends ReactNodeView {
+class InlineStatus extends ReactNodeView {
   createDomRef() {
     const domRef = document.createElement('span');
     domRef.setAttribute('data-panel-type', this.node.attrs.panelType);
@@ -125,7 +128,10 @@ class Status extends ReactNodeView {
   render(props, forwardRef) {
     const { panelType } = this.node.attrs;
     //const pluginState = pluginKey.getState(this.view.state);
-    return <StatusComponent panelType={panelType} forwardRef={forwardRef} />;
+    console.log('# InlineStatus.render ...');
+    return (
+      <InlineStatusComponent panelType={panelType} forwardRef={forwardRef} />
+    );
   }
 
   update(node, decorations) {
@@ -138,10 +144,10 @@ class Status extends ReactNodeView {
   }
 }
 
-export const statusNodeView = (portalProviderAPI: PortalProviderAPI) => (
+export const inlineStatusNodeView = (portalProviderAPI: PortalProviderAPI) => (
   node: any,
   view: any,
   getPos: () => number,
 ): NodeView => {
-  return new Status(node, view, getPos, portalProviderAPI).init();
+  return new InlineStatus(node, view, getPos, portalProviderAPI).init();
 };

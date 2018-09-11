@@ -42,7 +42,13 @@ export default class Lozenge extends PureComponent<Props> {
           const themeProps = lozenge(props);
           return (
             <Container {...themeProps}>
-              <Content inlineEditing={inlineEditing} innerRef={forwardRef} {...themeProps}>{props.children}</Content>
+              <Content
+                inlineEditing={props.inlineEditing}
+                innerRef={props.forwardRef}
+                {...themeProps}
+              >
+                {props.children}
+              </Content>
             </Container>
           );
         }}
