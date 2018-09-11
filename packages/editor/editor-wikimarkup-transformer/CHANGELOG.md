@@ -1,5 +1,8 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 2.0.22
+- [patch] Sometimes the leading dashes is not list [7cf3406](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7cf3406)
+
 ## 2.0.21
 - [patch] Updated dependencies [6e1d642](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e1d642)
   - @atlaskit/editor-common@16.0.0
