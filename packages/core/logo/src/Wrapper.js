@@ -1,8 +1,9 @@
 // @flow
+import React from 'react';
 import styled, { css } from 'styled-components';
-import { sizes } from './constants';
+import { sizes, type WrapperProps } from './constants';
 
-const Wrapper = styled.span`
+const Span = styled.span`
   color: ${p => p.iconColor};
   display: inline-block;
   fill: ${p => p.textColor};
@@ -37,5 +38,26 @@ const Wrapper = styled.span`
       }
     `};
 `;
+
+const Wrapper = ({
+  label,
+  iconGradientStart,
+  iconGradientStop,
+  svg,
+  ...rest
+}: WrapperProps) => (
+  <Span
+    // We want to not add the aria-label if it does not exist for consistency
+    // eslint-disable-next-line
+    aria-label={label ? label : undefined}
+    dangerouslySetInnerHTML={{
+      __html:
+        typeof svg === 'function'
+          ? svg(String(iconGradientStart), String(iconGradientStop))
+          : svg,
+    }}
+    {...rest}
+  />
+);
 
 export default Wrapper;

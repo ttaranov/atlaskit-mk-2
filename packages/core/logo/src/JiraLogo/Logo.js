@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import uuid from 'uuid';
 
 import { type Props, DefaultProps } from '../constants';
-import Wrapper from '../styledWrapper';
+import Wrapper from '../Wrapper';
 
 const svg = (iconGradientStart: string, iconGradientStop: string) => {
   const id = uuid();
@@ -28,18 +28,9 @@ const svg = (iconGradientStart: string, iconGradientStop: string) => {
 };
 
 export default class JiraLogo extends Component<Props> {
-  static defaultProps = { ...DefaultProps, label: 'Jira Logo' };
+  static defaultProps = DefaultProps;
 
   render() {
-    const { label, iconGradientStart, iconGradientStop } = this.props;
-    return (
-      <Wrapper
-        aria-label={label}
-        dangerouslySetInnerHTML={{
-          __html: svg(String(iconGradientStart), String(iconGradientStop)),
-        }}
-        {...this.props}
-      />
-    );
+    return <Wrapper {...this.props} svg={svg} />;
   }
 }

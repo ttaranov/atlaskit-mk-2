@@ -3,7 +3,7 @@
 import React, { Component } from 'react';
 
 import { type Props, DefaultProps } from '../constants';
-import Wrapper from '../styledWrapper';
+import Wrapper from '../Wrapper';
 
 const svg = `<canvas height="32" width="185" aria-hidden="true"></canvas>
 <svg viewBox="0 0 185 32" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true">
@@ -13,19 +13,9 @@ const svg = `<canvas height="32" width="185" aria-hidden="true"></canvas>
 </svg>`;
 
 export default class JiraServiceDeskWordmark extends Component<Props> {
-  static defaultProps = {
-    ...DefaultProps,
-    label: 'Jira Service Desk Wordmark',
-  };
+  static defaultProps = DefaultProps;
 
   render() {
-    const { label } = this.props;
-    return (
-      <Wrapper
-        aria-label={label}
-        dangerouslySetInnerHTML={{ __html: svg }}
-        {...this.props}
-      />
-    );
+    return <Wrapper {...this.props} svg={svg} />;
   }
 }
