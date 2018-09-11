@@ -87,7 +87,6 @@ export const Fade = ({ onExited, ...props }: TransitionProps) => (
 export const Slide = ({
   onExited,
   shouldUnmountOnExit,
-  transitionProps,
   ...props
 }: TransitionProps) => (
   <TransitionHandler
