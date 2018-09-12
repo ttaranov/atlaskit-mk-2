@@ -28,10 +28,6 @@ export class ExpandedFrame extends React.Component<ExpandedFrameProps> {
     return !isPlaceholder && (Boolean(href) || Boolean(onClick));
   }
 
-  get isSelected() {
-    return this.props.isSelected;
-  }
-
   handleClick = (event: MouseEvent<HTMLElement>) => {
     const { onClick } = this.props;
     if (onClick) {
@@ -62,8 +58,8 @@ export class ExpandedFrame extends React.Component<ExpandedFrameProps> {
   }
 
   render() {
-    const { isInteractive, isSelected } = this;
-    const { isPlaceholder, href, minWidth, maxWidth } = this.props;
+    const { isInteractive } = this;
+    const { isPlaceholder, isSelected, href, minWidth, maxWidth } = this.props;
     if (!isPlaceholder && href) {
       return (
         <LinkWrapper
