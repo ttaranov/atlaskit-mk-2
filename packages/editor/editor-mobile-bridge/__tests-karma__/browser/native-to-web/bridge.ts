@@ -4,7 +4,6 @@ import mobileEditor from '../../../src/mobile-editor-element';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import { mountEditor } from './utils';
-import { TextSelection } from 'prosemirror-state';
 
 declare var bridge;
 
