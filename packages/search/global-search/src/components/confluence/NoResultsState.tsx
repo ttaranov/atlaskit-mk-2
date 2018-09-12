@@ -20,34 +20,38 @@ export default class NoResultsState extends React.Component<Props> {
   render() {
     const { query } = this.props;
     const analyticsData = { resultsCount: 0, wasOnNoResultsScreen: true };
-    return [
-      <NoResults
-        key="no-results"
-        title={<FormattedMessage id="global-search.no-results-title" />}
-        body={<FormattedMessage id="global-search.no-results-body" />}
-      />,
-      <ResultItemGroup title="" key="advanced-search">
-        <Container>
-          <SearchConfluenceItem
-            analyticsData={analyticsData}
-            query={query}
-            text={
-              <Button appearance="primary">
-                <FormattedMessage id="global-search.confluence.advanced-search-filters" />
-              </Button>
-            }
-          />
-          <SearchPeopleItem
-            analyticsData={analyticsData}
-            query={query}
-            text={
-              <Button appearance="default">
-                <FormattedMessage id="global-search.people.advanced-search" />
-              </Button>
-            }
-          />
-        </Container>
-      </ResultItemGroup>,
-    ];
+    return (
+      <>
+        <NoResults
+          key="no-results"
+          title={<FormattedMessage id="global-search.no-results-title" />}
+          body={<FormattedMessage id="global-search.no-results-body" />}
+        />
+        <ResultItemGroup title="" key="advanced-search">
+          <Container>
+            <SearchConfluenceItem
+              analyticsData={analyticsData}
+              isCompact
+              query={query}
+              text={
+                <Button appearance="primary" shouldFitContainer={true}>
+                  <FormattedMessage id="global-search.confluence.advanced-search-filters" />
+                </Button>
+              }
+            />
+            <SearchPeopleItem
+              analyticsData={analyticsData}
+              isCompact
+              query={query}
+              text={
+                <Button appearance="default" shouldFitContainer>
+                  <FormattedMessage id="global-search.people.advanced-search" />
+                </Button>
+              }
+            />
+          </Container>
+        </ResultItemGroup>
+      </>
+    );
   }
 }

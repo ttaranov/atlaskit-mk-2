@@ -12,6 +12,7 @@ export interface Props {
   icon?: JSX.Element;
   showKeyboardLozenge?: boolean;
   analyticsData?: object;
+  isCompact?: boolean;
 }
 
 export default class SearchConfluenceItem extends React.Component<Props> {
@@ -26,6 +27,7 @@ export default class SearchConfluenceItem extends React.Component<Props> {
       text,
       showKeyboardLozenge,
       analyticsData,
+      isCompact,
     } = this.props;
 
     return (
@@ -38,6 +40,7 @@ export default class SearchConfluenceItem extends React.Component<Props> {
         type={AnalyticsType.AdvancedSearchConfluence}
         showKeyboardLozenge={showKeyboardLozenge}
         analyticsData={analyticsData}
+        isCompact={isCompact}
       />
     );
   }

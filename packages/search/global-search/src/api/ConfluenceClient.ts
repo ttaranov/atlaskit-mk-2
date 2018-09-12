@@ -30,7 +30,11 @@ type ValidQuickNavResultClassName =
 export interface ConfluenceClient {
   getRecentItems(searchSessionId: string): Promise<Result[]>;
   getRecentSpaces(searchSessionId: string): Promise<Result[]>;
-  searchQuickNav(query: string, searchSessionId: string): Promise<Result[]>;
+  searchQuickNav(
+    query: string,
+    searchSessionId: string,
+    searchReferrerId?: object,
+  ): Promise<Result[]>;
 }
 
 export type ConfluenceContentType = 'blogpost' | 'page';
@@ -82,6 +86,7 @@ export default class ConfluenceClientImpl implements ConfluenceClient {
   public async searchQuickNav(
     query: string,
     searchSessionId: string,
+    searchQuickNav?: object,
   ): Promise<Result[]> {
     const quickNavResponse = await this.createQuickNavRequestPromise(query);
 
