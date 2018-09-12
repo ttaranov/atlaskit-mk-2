@@ -29,7 +29,6 @@ import { UploadParams } from '..';
 import { SmartMediaProgress } from '../domain/progress';
 import { MediaErrorName } from '../domain/error';
 import {
-  MAX_FILE_SIZE_FOR_PREVIEW,
   UploadService,
   UploadServiceEventListener,
   UploadServiceEventPayloadTypes,
@@ -239,9 +238,8 @@ export class NewUploadServiceImpl implements UploadService {
   private emitPreviews(cancellableFileUploads: CancellableFileUpload[]) {
     cancellableFileUploads.forEach(cancellableFileUpload => {
       const { file, mediaFile } = cancellableFileUpload;
-      const { size } = file;
       const mediaType = this.getMediaTypeFromFile(file);
-      if (size < MAX_FILE_SIZE_FOR_PREVIEW && mediaType === 'image') {
+      if (mediaType === 'image') {
         getPreviewFromBlob(file, mediaType).then(preview => {
           this.emit('file-preview-update', {
             file: mediaFile,
