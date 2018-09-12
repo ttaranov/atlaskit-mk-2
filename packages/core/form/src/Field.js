@@ -270,8 +270,8 @@ export default class Field extends Component<Props, State> {
     let invalidCount = 0;
     let validatedFieldState = {};
 
-    // Is the field required? $FlowFixMe - flow should not complain about this
-    if ((isRequired && !value) || !value.trim().length) {
+    // Is the field required?
+    if ((isRequired && !value) || !String(value).trim().length) {
       invalidCount++;
       invalid = 'This field is required';
     } else if (validators && validators.length) {
