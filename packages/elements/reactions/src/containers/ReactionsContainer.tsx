@@ -1,5 +1,6 @@
-import * as React from 'react';
+import { FabricElementsAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 import { EmojiProvider } from '@atlaskit/emoji';
+import * as React from 'react';
 import { Reactions } from '../components/Reactions';
 import { ReactionConsumer } from '../reaction-store/ReactionConsumer';
 import { ReactionStatus } from '../types/ReactionStatus';
@@ -13,13 +14,18 @@ export type Props = {
 };
 
 export default class ReactionsContainer extends React.PureComponent<Props> {
-  private renderChild = props => (
-    <Reactions
-      key={`${this.props.containerAri}|${this.props.ari}`}
-      {...this.props}
-      {...props}
-    />
-  );
+  private renderChild = props => {
+    const { containerAri, ari } = this.props;
+    return (
+      <FabricElementsAnalyticsContext data={{ containerAri, ari }}>
+        <Reactions
+          key={`${this.props.containerAri}|${this.props.ari}`}
+          {...this.props}
+          {...props}
+        />
+      </FabricElementsAnalyticsContext>
+    );
+  };
 
   private stateMapper = state => {
     const { containerAri, ari } = this.props;

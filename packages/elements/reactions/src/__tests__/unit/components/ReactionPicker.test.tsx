@@ -3,10 +3,10 @@ import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
 import { emoji } from '@atlaskit/util-data-test';
 import { mount, shallow } from 'enzyme';
 import * as React from 'react';
-import { EmojiButton } from '../../../components/emoji-button';
+import { EmojiButton } from '../../../components/EmojiButton';
 import { ReactionPicker } from '../../../components/ReactionPicker';
-import { Selector } from '../../../components/selector';
-import { Trigger } from '../../../components/trigger';
+import { Selector } from '../../../components/Selector';
+import { Trigger } from '../../../components/Trigger';
 
 const { getEmojiResourcePromise } = emoji.testData;
 

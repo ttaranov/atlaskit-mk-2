@@ -1,6 +1,6 @@
 import { mount } from 'enzyme';
 import * as React from 'react';
-import { Props, ShowMore } from '../../../components/show-more';
+import { Props, ShowMore } from '../../../components/ShowMore';
 
 describe('ShowMore', () => {
   const renderShowMore = (props: Props) => <ShowMore {...props} />;

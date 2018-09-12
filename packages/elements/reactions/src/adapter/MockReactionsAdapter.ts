@@ -1,5 +1,5 @@
 import { EmojiId } from '@atlaskit/emoji';
-import { defaultReactionsByShortName } from '../components/selector';
+import { defaultReactionsByShortName } from '../components/Selector';
 import { Reactions } from '../types/Reactions';
 import { ReactionSummary } from '../types/ReactionSummary';
 import { ReactionAdapter } from './ReactionAdapter';

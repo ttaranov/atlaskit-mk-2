@@ -1,2 +1,2 @@
-export { default as ConnectedReactionPicker } from './ConnectedReactionPicker';
-export { default as ConnectedReactionsView } from './ConnectedReactionsView';
+export { default as ConnectedReactionPicker } from './ReactionsPickerContainer';
+export { default as ConnectedReactionsView } from './ReactionsContainer';

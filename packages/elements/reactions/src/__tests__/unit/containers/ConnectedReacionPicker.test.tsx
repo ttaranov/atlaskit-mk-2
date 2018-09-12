@@ -1,6 +1,6 @@
 import { EmojiProvider } from '@atlaskit/emoji';
 import * as React from 'react';
-import ReactionPickerContainer from '../../../containers/ConnectedReactionPicker';
+import ReactionPickerContainer from '../../../containers/ReactionsPickerContainer';
 import { ReactionConsumer } from '../../../reaction-store/ReactionConsumer';
 import { shallow } from 'enzyme';
 

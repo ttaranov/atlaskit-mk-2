@@ -1,12 +1,18 @@
 import { AnalyticsListener } from '@atlaskit/analytics-next';
-import { Emoji, EmojiDescription, EmojiProvider, toEmojiId } from '@atlaskit/emoji';
+import {
+  Emoji,
+  EmojiDescription,
+  EmojiProvider,
+  toEmojiId,
+} from '@atlaskit/emoji';
 import { waitUntil } from '@atlaskit/util-common-test';
 import { emoji } from '@atlaskit/util-data-test';
 import { mount } from 'enzyme';
 import * as React from 'react';
-import { FlashAnimation } from '../../../components/flash-animation';
-import { ReactionOnClick } from '../../../components/reaction';
-import { ReactionTooltip } from '../../../components/reaction-tooltip';
+import { FlashAnimation } from '../../../components/FlashAnimation';
+import { Reaction, ReactionOnClick } from '../../../components/Reaction';
+import { ReactionTooltip } from '../../../components/ReactionTooltip';
+import { ReactionSummary, User } from '../../../types';
 import { hasSelector } from '../_test-utils';
 
 const { getEmojiResourcePromise, newEmojiRepository } = emoji.testData;
@@ -127,8 +133,8 @@ describe('@atlaskit/reactions/reaction', () => {
             attributes: {
               added: true,
               emojiId: toEmojiId(grinning).id!,
-              containerAri,
-              ari,
+              packageName: '@atlaskit/reactions',
+              packageVersion: expect.any(String),
             },
           }),
         }),
@@ -166,8 +172,8 @@ describe('@atlaskit/reactions/reaction', () => {
             eventType: 'ui',
             attributes: {
               duration: expect.any(Number),
-              containerAri,
-              ari,
+              packageName: '@atlaskit/reactions',
+              packageVersion: expect.any(String),
             },
           }),
         }),

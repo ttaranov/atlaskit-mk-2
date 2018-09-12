@@ -5,7 +5,7 @@ import {
   FlashAnimation,
   Props,
   flashStyle,
-} from '../../../components/flash-animation';
+} from '../../../components/FlashAnimation';
 
 jest.useFakeTimers();
 

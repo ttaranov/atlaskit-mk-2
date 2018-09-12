@@ -1,7 +1,7 @@
-import * as React from 'react';
-import { style, keyframes } from 'typestyle';
-import * as cx from 'classnames';
 import { colors } from '@atlaskit/theme';
+import * as cx from 'classnames';
+import * as React from 'react';
+import { keyframes, style } from 'typestyle';
 
 export type Props = {
   children: React.ReactNode | React.ReactNode[];
@@ -38,7 +38,6 @@ export const flashStyle = style({
 /**
  * Flash animation background component. See Reaction component for usage.
  */
-
 export const FlashAnimation = (props: Props) => (
   <div
     className={cx(containerStyle, props.className, {

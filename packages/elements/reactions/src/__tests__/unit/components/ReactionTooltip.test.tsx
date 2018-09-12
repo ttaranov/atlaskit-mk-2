@@ -1,7 +1,7 @@
 import Tooltip from '@atlaskit/tooltip';
 import { mount } from 'enzyme';
 import * as React from 'react';
-import { ReactionTooltip } from '../../../components/reaction-tooltip';
+import { ReactionTooltip } from '../../../components/ReactionTooltip';
 import { ReactionSummary } from '../../../types/ReactionSummary';
 
 describe('ReactionTooltip', () => {

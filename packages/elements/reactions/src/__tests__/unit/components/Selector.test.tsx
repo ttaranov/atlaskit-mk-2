@@ -3,13 +3,13 @@ import EditorMoreIcon from '@atlaskit/icon/glyph/editor/more';
 import { emoji } from '@atlaskit/util-data-test';
 import { mount, shallow } from 'enzyme';
 import * as React from 'react';
-import { EmojiButton } from '../../../components/emoji-button';
+import { EmojiButton } from '../../../components/EmojiButton';
 import {
   defaultReactions,
   isDefaultReaction,
   revealStyle,
   Selector,
-} from '../../../components/selector';
+} from '../../../components/Selector';
 
 const { getEmojiResourcePromise } = emoji.testData;
 

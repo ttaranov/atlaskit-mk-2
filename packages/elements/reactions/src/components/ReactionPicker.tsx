@@ -6,8 +6,8 @@ import * as React from 'react';
 import { PureComponent } from 'react';
 import * as ReactDOM from 'react-dom';
 import { style } from 'typestyle';
-import { Selector } from './selector';
-import { Trigger } from './trigger';
+import { Selector } from './Selector';
+import { Trigger } from './Trigger';
 
 const akBorderRadius = borderRadius();
 const akColorN0 = colors.N0;
@@ -114,22 +114,6 @@ export class ReactionPicker extends PureComponent<Props, State> {
     this.setState({
       isOpen: true,
       showFullPicker: true,
-    });
-  };
-
-  private onEmojiSelected = emoji => {
-    const { onSelection } = this.props;
-
-    if (onSelection) {
-      onSelection(emoji.id);
-    }
-    this.close();
-  };
-
-  private onTriggerClick = () => {
-    this.setState({
-      isOpen: !this.state.isOpen,
-      showFullPicker: false,
     });
   };
 

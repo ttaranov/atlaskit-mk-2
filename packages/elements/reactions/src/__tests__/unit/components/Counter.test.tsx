@@ -8,7 +8,7 @@ import {
   Props,
   slideDownStyle,
   slideUpStyle,
-} from '../../../components/counter';
+} from '../../../components/Counter';
 
 jest.useFakeTimers();
 

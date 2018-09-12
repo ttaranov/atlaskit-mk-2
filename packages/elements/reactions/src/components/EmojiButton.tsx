@@ -1,4 +1,9 @@
-import { EmojiId, EmojiProvider, OnEmojiEvent, ResourcedEmoji } from '@atlaskit/emoji';
+import {
+  EmojiId,
+  EmojiProvider,
+  OnEmojiEvent,
+  ResourcedEmoji,
+} from '@atlaskit/emoji';
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { style } from 'typestyle';

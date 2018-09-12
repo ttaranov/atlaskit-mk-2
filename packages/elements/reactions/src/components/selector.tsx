@@ -9,8 +9,8 @@ import * as cx from 'classnames';
 import * as React from 'react';
 import { PureComponent, SyntheticEvent } from 'react';
 import { keyframes, style } from 'typestyle';
-import { EmojiButton } from './emoji-button';
-import { ShowMore } from './show-more';
+import { EmojiButton } from './EmojiButton';
+import { ShowMore } from './ShowMore';
 import { equalEmojiId } from './utils';
 
 export interface Props {
