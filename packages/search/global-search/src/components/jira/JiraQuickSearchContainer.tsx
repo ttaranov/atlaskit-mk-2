@@ -5,8 +5,9 @@ import {
   FormattedHTMLMessage,
 } from 'react-intl';
 import styled from 'styled-components';
-import { colors, gridSize } from '@atlaskit/theme';
+import { gridSize } from '@atlaskit/theme';
 import { withAnalytics } from '@atlaskit/analytics';
+import StickyFooter from '../common/StickyFooter';
 import { CreateAnalyticsEventFn } from '../analytics/types';
 import { SearchScreenCounter, ScreenCounter } from '../../util/ScreenCounter';
 import { JiraClient } from '../../api/JiraClient';
@@ -37,14 +38,6 @@ import {
   GenericResultMap,
   JiraResultsMap,
 } from '../../model/Result';
-
-const StickyFooter = styled.div`
-  position: sticky;
-  bottom: 0;
-  background: white;
-  border-top: 1px solid ${colors.N40};
-  padding: ${gridSize()}px 0;
-`;
 
 const AdvancedSearchContainer = styled.div`
   margin-top: ${4 * gridSize()}px;
@@ -80,25 +73,18 @@ export class JiraQuickSearchContainer extends React.Component<
     selectedAdvancedSearchType: JiraEntityTypes.Issues,
   };
 
-  screenCounters: {
-    preQueryScreenCounter: ScreenCounter;
-    postQueryScreenCounter: ScreenCounter;
+  screenCounters = {
+    preQueryScreenCounter: new SearchScreenCounter() as ScreenCounter,
+    postQueryScreenCounter: new SearchScreenCounter() as ScreenCounter,
   };
-
-  constructor(props) {
-    super(props);
-    const preQueryScreenCounter = new SearchScreenCounter();
-    const postQueryScreenCounter = new SearchScreenCounter();
-    this.screenCounters = {
-      preQueryScreenCounter,
-      postQueryScreenCounter,
-    };
-  }
 
   handleSearchSubmit = ({ target }) => {
     const query = target.value;
     redirectToJiraAdvancedSearch(this.state.selectedAdvancedSearchType, query);
   };
+
+  onAdvancedSearchChange = entityType =>
+    this.setState({ selectedAdvancedSearchType: entityType });
 
   getSearchResultsComponent = ({
     retrySearch,
@@ -111,9 +97,6 @@ export class JiraQuickSearchContainer extends React.Component<
     searchSessionId,
   }) => {
     const query = latestSearchQuery;
-    const onAdvancedSearchChange = entityType =>
-      this.setState({ selectedAdvancedSearchType: entityType });
-
     return (
       <SearchResultsComponent
         query={query}
@@ -128,7 +111,10 @@ export class JiraQuickSearchContainer extends React.Component<
           <>
             <FormattedHTMLMessage id="global-search.jira.no-recent-activity-body" />
             <AdvancedSearchContainer>
-              <JiraAdvancedSearch query={query} />
+              <JiraAdvancedSearch
+                query={query}
+                analyticsData={{ resultsCount: 0, wasOnNoResultsScreen: true }}
+              />
             </AdvancedSearchContainer>
           </>
         )}
@@ -139,7 +125,7 @@ export class JiraQuickSearchContainer extends React.Component<
               query={query}
               showKeyboardLozenge
               showSearchIcon
-              onAdvancedSearchChange={onAdvancedSearchChange}
+              onAdvancedSearchChange={this.onAdvancedSearchChange}
             />
           </StickyFooter>
         )}

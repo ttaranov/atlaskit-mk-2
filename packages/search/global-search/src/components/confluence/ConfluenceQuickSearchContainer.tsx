@@ -54,20 +54,10 @@ export interface Props {
 export class ConfluenceQuickSearchContainer extends React.Component<
   Props & InjectedIntlProps
 > {
-  screenCounters: {
-    preQueryScreenCounter: ScreenCounter;
-    postQueryScreenCounter: ScreenCounter;
+  screenCounters = {
+    preQueryScreenCounter: new SearchScreenCounter() as ScreenCounter,
+    postQueryScreenCounter: new SearchScreenCounter() as ScreenCounter,
   };
-
-  constructor(props) {
-    super(props);
-    const preQueryScreenCounter = new SearchScreenCounter();
-    const postQueryScreenCounter = new SearchScreenCounter();
-    this.screenCounters = {
-      preQueryScreenCounter,
-      postQueryScreenCounter,
-    };
-  }
 
   handleSearchSubmit = ({ target }) => {
     const query = target.value;
