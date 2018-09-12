@@ -10,7 +10,7 @@ import { ImageResizeMode, MediaType } from '@atlaskit/media-core';
 import {
   ActionsWrapper,
   Blanket,
-  Image,
+  PreviewImage,
   PreviewButtomTextRow,
   PreviewMediaName,
   PreviewProgressBar,
@@ -59,6 +59,9 @@ export interface CardViewControlledProps extends CommonProps {
   readonly actionButtons?: Array<ActionButton>;
 }
 
+/**
+ * Very dumb view component that has almost zero domain knowledge and complete zero state
+ */
 export class CardViewControlled extends React.Component<
   CardViewControlledProps
 > {
@@ -191,12 +194,19 @@ export class CardViewControlled extends React.Component<
     return null;
   }
 
+  private renderImage() {
+    const { dataURI } = this.props;
+
+    // TODO here we can if/else into preview vs grid image display
+    return <PreviewImage src={dataURI} />;
+  }
+
   render() {
-    const { dimensions, dataURI, selected = false } = this.props;
+    const { dimensions, selected = false } = this.props;
 
     return (
       <Wrapper dimensions={dimensions} selected={selected}>
-        <Image src={dataURI} />
+        {this.renderImage()}
         {this.renderBlanket()}
         {this.renderTopButtons()}
         {this.renderPreviewMediaName()}
@@ -206,8 +216,16 @@ export class CardViewControlled extends React.Component<
   }
 }
 
+/**
+ * Smarter component that has some internal state like "isHover"
+ */
 export default class extends React.Component<CardViewProps> {
   render() {
+    // TODO here we assemble all the public/client props into values for props like
+    // readonly withMetadata?: boolean;
+    //   readonly withBlanket?: boolean;
+    //   readonly withCancelButton?: boolean;
+    //   readonly withProcessing?: boolean;
     return <CardViewControlled withMetadata={true} />;
   }
 }

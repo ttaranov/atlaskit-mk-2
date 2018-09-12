@@ -27,7 +27,7 @@ const getSelectedBorder = (selected: boolean) =>
   `
     : '';
 
-export const Image: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
+export const PreviewImage: ComponentClass<ImgHTMLAttributes<{}>> = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
