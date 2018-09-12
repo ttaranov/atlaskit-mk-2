@@ -16,7 +16,7 @@ export type FeatureFlag = {
   value: boolean | string | object;
   explanation: {
     reason: Reason;
-    ruleUUID?: RuleId;
+    ruleId?: RuleId;
   };
   [key: string]: any;
 };
@@ -32,7 +32,7 @@ export type ExposureEvent = {
   actionSubject: string;
   attributes: {
     reason: Reason;
-    ruleUUID?: RuleId;
+    ruleId?: RuleId;
     value: boolean | string | object;
   };
 };

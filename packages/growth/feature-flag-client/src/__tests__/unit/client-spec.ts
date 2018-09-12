@@ -44,7 +44,7 @@ describe('Feature Flag Client', () => {
           trackEvents: true,
           explanation: {
             reason: 'RULE_MATCH',
-            ruleUUID: '111-bbbbb-ccc',
+            ruleId: '111-bbbbb-ccc',
           },
         },
       });
@@ -91,7 +91,7 @@ describe('Feature Flag Client', () => {
             trackEvents: true,
             explanation: {
               reason: 'RULE_MATCH',
-              ruleUUID: '111-bbbbb-ccc',
+              ruleId: '111-bbbbb-ccc',
             },
           },
           'my.variation.a': {
@@ -99,7 +99,7 @@ describe('Feature Flag Client', () => {
             trackEvents: true,
             explanation: {
               reason: 'RULE_MATCH',
-              ruleUUID: '111-bbbbb-ccc',
+              ruleId: '111-bbbbb-ccc',
             },
           },
           'my.experiment': {
@@ -107,7 +107,7 @@ describe('Feature Flag Client', () => {
             trackEvents: true,
             explanation: {
               reason: 'RULE_MATCH',
-              ruleUUID: '111-bbbbb-ccc',
+              ruleId: '111-bbbbb-ccc',
             },
           },
           'my.boolean.flag': false,
@@ -116,7 +116,7 @@ describe('Feature Flag Client', () => {
             trackEvents: true,
             explanation: {
               reason: 'RULE_MATCH',
-              ruleUUID: '111-bbbbb-ccc',
+              ruleId: '111-bbbbb-ccc',
             },
           },
           'my.untracked.boolean.flag': {
@@ -124,7 +124,7 @@ describe('Feature Flag Client', () => {
             trackEvents: false,
             explanation: {
               reason: 'RULE_MATCH',
-              ruleUUID: '111-bbbbb-ccc',
+              ruleId: '111-bbbbb-ccc',
             },
           },
           'my.untracked.variant.flag': {
@@ -132,7 +132,7 @@ describe('Feature Flag Client', () => {
             trackEvents: false,
             explanation: {
               reason: 'RULE_MATCH',
-              ruleUUID: '111-bbbbb-ccc',
+              ruleId: '111-bbbbb-ccc',
             },
           },
           'my.json.flag': {
@@ -143,7 +143,7 @@ describe('Feature Flag Client', () => {
             trackEvents: false,
             explanation: {
               reason: 'RULE_MATCH',
-              ruleUUID: '111-bbbbb-ccc',
+              ruleId: '111-bbbbb-ccc',
             },
           },
         },
@@ -194,7 +194,7 @@ describe('Feature Flag Client', () => {
           actionSubject: 'feature',
           attributes: {
             reason: 'RULE_MATCH',
-            ruleUUID: '111-bbbbb-ccc',
+            ruleId: '111-bbbbb-ccc',
             value: false,
           },
         });
@@ -278,7 +278,7 @@ describe('Feature Flag Client', () => {
           actionSubject: 'feature',
           attributes: {
             reason: 'RULE_MATCH',
-            ruleUUID: '111-bbbbb-ccc',
+            ruleId: '111-bbbbb-ccc',
             value: 'experiment',
           },
         });

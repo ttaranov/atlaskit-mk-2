@@ -1,23 +1,16 @@
-import { md } from '@atlaskit/docs';
+import React from 'react';
+import { code, md, Example } from '@atlaskit/docs';
 
 export default md`
   # Feature flag client
 
-  This provides a client for evaluating feature flag and firing exposure events.
+  This client makes it easy to work with feature flags and dark features.
+  By using it, exposure events will be fired automatically allowing analysis of important metrics out of the box.
 
-  ## Installation
+  ## Usage
 
-  ~~~js
-  npm install @atlaskit/feature-flag-client
-  # or
-  yarn add @atlaskit/feature-flag-client
-  ~~~
-
-  ## Using the client
-
-  Use the component in your React app as follows:
-
-  ~~~js
+  ### Bootstrap
+  ${code`
   import FrontendFeatureFlagClient from '@atlaskit/feature-flag-client';
 
   const client = new FrontendFeatureFlagClient({
@@ -28,7 +21,7 @@ export default md`
         trackEvents: true,
         explanation: {
           reason: 'RULE_MATCH',
-          ruleUUID: '111-bbbbb-ccc',
+          ruleId: '111-bbbbb-ccc',
         },
       },
       'my.boolean.flag': false,
@@ -40,7 +33,7 @@ export default md`
         trackEvents: false,
         explanation: {
           reason: 'RULE_MATCH',
-          ruleUUID: '111-bbbbb-ccc',
+          ruleId: '111-bbbbb-ccc',
         },
       },
       'my.detailed.boolean.flag': {
@@ -48,12 +41,15 @@ export default md`
         trackEvents: true,
         explanation: {
           reason: 'RULE_MATCH',
-          ruleUUID: '111-bbbbb-ccc',
+          ruleId: '111-bbbbb-ccc',
         },
       },
     },
   });
+  `}
 
+  ### Retrieving values
+  ${code`
   // flag set, returns real value
   client.getBooleanValue('my.detailed.boolean.flag', { default: true }); // > false
 
@@ -72,12 +68,53 @@ export default md`
     oneOf: ['control', 'variant-a'],
   }); // > control
 
-  // do not send exposure event (trackExposureEvent: false)
+  client.getJSONFlag('my.json.flag'); // > { nav: 'blue', footer: 'black' }
+  `}
+
+  ### Setting flags asynchronously?
+  If you load your flags after the app bootstrap, you set the to the client through the 'setFlags' method.
+
+  ${code`
+  client.setFlags({
+    'my.async.boolean.flag': {
+      value: false,
+      trackEvents: true,
+      explanation: {
+        reason: 'RULE_MATCH',
+        ruleId: '333-bbbbb-ccc',
+      },
+    }
+  });
+  `}
+
+
+  ### How to avoid firing the exposure event?
+  You can skip the exposure event by setting 'trackExposureEvent' to 'false'
+
+  ${code`
   client.getBooleanValue('my.detailed.boolean.flag', {
     default: true,
     trackExposureEvent: false,
   });
+  `}
 
-  client.getJSONFlag('my.json.flag'); // > { nav: 'blue', footer: 'black' }
-  ~~~
+  ### How to fire the exposure event manually?
+
+  ${code`
+  client.trackExposure('my.detailed.boolean.flag', {
+    value: true,
+    explanation: {
+      reason: 'RULE_MATCH',
+      ruleId: 'aaaa-vbbbb-ccccc'
+    }
+  });
+  `}
+
+  ${(
+    <Example
+      Component={require('../examples/00-basic-usage').default}
+      title="Example"
+      source={require('!!raw-loader!../examples/00-basic-usage')}
+    />
+  )}
 `;

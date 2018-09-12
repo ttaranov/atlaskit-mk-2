@@ -120,7 +120,7 @@ export default class FeatureFlagClient {
       actionSubject: 'feature',
       attributes: {
         reason: flag.explanation.reason,
-        ruleUUID: flag.explanation.ruleUUID,
+        ruleId: flag.explanation.ruleId,
         value: flag.value,
       },
     });
