@@ -5,8 +5,9 @@ import {
 } from '@atlaskit/media-core';
 
 export interface ExternalIdentifier {
-  dataURI: string;
-  name?: string;
+  readonly mediaItemType: 'external';
+  readonly dataURI: string;
+  readonly name?: string;
 }
 
 export type Identifier =
