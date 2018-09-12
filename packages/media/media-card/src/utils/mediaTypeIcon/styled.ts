@@ -9,7 +9,7 @@ import {
   akColorB300,
 } from '@atlaskit/util-shared-styles';
 
-const colors = {
+const colors: any = {
   image: akColorY200,
   audio: akColorP200,
   video: '#ff7143',

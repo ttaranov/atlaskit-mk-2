@@ -237,19 +237,22 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     }
   };
 
-  onCollectionChange = e => {
-    const { innerText: collectionName } = e.target;
+  onCollectionChange = (e: React.SyntheticEvent<HTMLElement>) => {
+    const { innerText: collectionName } = e.currentTarget;
 
     this.setState({ collectionName });
   };
 
-  onAuthTypeChange = e => {
-    const { innerText: authEnvironment } = e.target;
+  onAuthTypeChange = (e: React.SyntheticEvent<HTMLElement>) => {
+    const { innerText: authEnvironment } = e.currentTarget;
 
-    this.setState({ authEnvironment }, this.createPopup);
+    this.setState(
+      { authEnvironment: authEnvironment as AuthEnvironment },
+      this.createPopup,
+    );
   };
 
-  renderSerializedEvent(eventName, data, key) {
+  renderSerializedEvent(eventName: string, data: any, key: number) {
     const serializedEvent = JSON.stringify(data, undefined, 2);
 
     return (
@@ -282,7 +285,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
 
         const imageUrl = data.preview.src.toString();
         // We don't want to print the original image src because it freezes the browser
-        const newData = {
+        const newData: UploadPreviewUpdateEventPayload = {
           ...data,
           preview: { ...data.preview, src: `src length: ${imageUrl.length}` },
         };
@@ -325,7 +328,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     this.setState({ inflightUploads: {} });
   };
 
-  onEvent = event => {
+  onEvent = (event: any) => {
     console.log(event);
   };
 
@@ -475,7 +478,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
   }
 }
 
-const onEvent = event => {
+const onEvent = (event: any) => {
   console.log('Example', event);
 };
 

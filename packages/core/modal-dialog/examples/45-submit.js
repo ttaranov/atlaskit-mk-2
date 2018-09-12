@@ -6,7 +6,7 @@ import Field from '@atlaskit/field-text';
 import Checkbox from '@atlaskit/checkbox';
 import RadioGroup, { AkRadio } from '@atlaskit/field-radio-group';
 
-import ModalDialog, { ModalFooter } from '../src';
+import ModalDialog, { ModalFooter, ModalTransition } from '../src';
 
 const FORM = 'test-form';
 const FRAME = 'submit-frame';
@@ -50,40 +50,45 @@ export default class SubmitDemo extends Component<{}, { hasData: boolean }> {
     return (
       <ThemeProvider theme={{}}>
         <div>
-          <ModalDialog footer={footer} heading="Submit demo" onClose={NOOP}>
-            <form
-              action="https://httpbin.org/post"
-              id={FORM}
-              method="post"
-              target={FRAME}
-            >
-              <p>Enter some text then submit the form to see the response.</p>
-              <Field
-                label="Name"
-                name="my-name"
-                placeholder="Your name"
-                value=""
-              />
-              <Field
-                label="Email"
-                name="my-email"
-                placeholder="gbelson@hooli.com"
-                value=""
-              />
-              <Checkbox name="checkbox" value="example" label="Checkbox" />
-              <RadioGroup label="Basic Radio Group Example" items={radioItems}>
-                <AkRadio
-                  name="standalone"
-                  value="singleButton"
-                  onChange={e =>
-                    console.log('standalone change', e.target.value)
-                  }
+          <ModalTransition>
+            <ModalDialog footer={footer} heading="Submit demo" onClose={NOOP}>
+              <form
+                action="https://httpbin.org/post"
+                id={FORM}
+                method="post"
+                target={FRAME}
+              >
+                <p>Enter some text then submit the form to see the response.</p>
+                <Field
+                  label="Name"
+                  name="my-name"
+                  placeholder="Your name"
+                  value=""
+                />
+                <Field
+                  label="Email"
+                  name="my-email"
+                  placeholder="gbelson@hooli.com"
+                  value=""
+                />
+                <Checkbox name="checkbox" value="example" label="Checkbox" />
+                <RadioGroup
+                  label="Basic Radio Group Example"
+                  items={radioItems}
                 >
-                  Radio button
-                </AkRadio>
-              </RadioGroup>
-            </form>
-          </ModalDialog>
+                  <AkRadio
+                    name="standalone"
+                    value="singleButton"
+                    onChange={e =>
+                      console.log('standalone change', e.target.value)
+                    }
+                  >
+                    Radio button
+                  </AkRadio>
+                </RadioGroup>
+              </form>
+            </ModalDialog>
+          </ModalTransition>
 
           <Iframe
             hasData={hasData}

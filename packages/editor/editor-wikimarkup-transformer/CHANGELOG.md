@@ -1,5 +1,38 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 2.0.23
+- [patch] should convert content inside monospace as plain text [f5e9f01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f5e9f01)
+
+## 2.0.22
+- [patch] Sometimes the leading dashes is not list [7cf3406](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7cf3406)
+
+## 2.0.21
+- [patch] Updated dependencies [6e1d642](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e1d642)
+  - @atlaskit/editor-common@16.0.0
+  - @atlaskit/editor-core@80.0.0
+  - @atlaskit/renderer@22.0.0
+  - @atlaskit/editor-json-transformer@4.0.11
+  - @atlaskit/editor-test-helpers@6.0.9
+  - @atlaskit/util-data-test@10.0.9
+
+## 2.0.20
+- [patch] Convert file link to media group [d9331e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d9331e6)
+
+## 2.0.19
+- [patch] Updated transformation of productivity emoji [83cdd9f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/83cdd9f)
+
+## 2.0.18
+- [patch] Convert to mediaSingle with width and height [5b1d869](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5b1d869)
+
+## 2.0.17
+- [patch] Convert to same cell types [9571a76](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9571a76)
+
+## 2.0.16
+- [patch] keep width and height when transform back to wiki attachment [4acc88a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4acc88a)
+
+## 2.0.15
+- [patch] should parse empty wiki [03f0b1b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03f0b1b)
+
 ## 2.0.14
 - [patch] Fix color error [2b513c5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2b513c5)
 

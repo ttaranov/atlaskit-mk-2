@@ -112,7 +112,7 @@ describe('finalizeUploadMiddleware', () => {
   it('should send upload processing event with metadata', () => {
     const { fetcher, store, action } = setup();
 
-    return finalizeUpload(fetcher, store, action).then(action => {
+    return finalizeUpload(fetcher, store, action).then(() => {
       expect(store.dispatch).toBeCalledWith(
         sendUploadEvent({
           event: {
@@ -140,7 +140,7 @@ describe('finalizeUploadMiddleware', () => {
       copyFileWithToken: () => Promise.reject(error),
     }));
 
-    return finalizeUpload(fetcher, store, action).then(action => {
+    return finalizeUpload(fetcher, store, action).then(() => {
       expect(store.dispatch).toBeCalledWith(
         sendUploadEvent({
           event: {
@@ -171,7 +171,7 @@ describe('finalizeUploadMiddleware', () => {
       },
     });
 
-    return finalizeUpload(fetcher, store, action).then(action => {
+    return finalizeUpload(fetcher, store, action).then(() => {
       expect(resolver).toHaveBeenCalledTimes(1);
       expect(resolver).toBeCalledWith('some-copied-file-id');
     });

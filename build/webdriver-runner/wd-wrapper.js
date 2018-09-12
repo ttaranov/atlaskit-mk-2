@@ -99,6 +99,10 @@ export default class Page {
     return this.browser.keys(value);
   }
 
+  debug() {
+    return this.browser.debug();
+  }
+
   // Get
   getProperty(selector, cssProperty) {
     return this.browser.getCssProperty(selector, cssProperty);
@@ -181,8 +185,8 @@ export default class Page {
   }
 
   // Wait
-  waitForSelector(selector) {
-    return this.browser.waitForExist(selector, WAIT_TIMEOUT);
+  waitForSelector(selector, options = {}) {
+    return this.browser.waitForExist(selector, options.timeout || WAIT_TIMEOUT);
   }
 
   waitFor(selector, ms, reverse) {

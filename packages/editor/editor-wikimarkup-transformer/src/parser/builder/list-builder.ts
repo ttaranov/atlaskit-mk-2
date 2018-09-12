@@ -1,5 +1,12 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
-import { AddArgs, Builder, List, ListItem, ListType } from '../../interfaces';
+import { AddArgs, List, ListItem, ListType } from '../../interfaces';
+
+const supportedContentType = [
+  'paragraph',
+  'orderedList',
+  'bulletList',
+  'mediaSingle',
+];
 
 /**
  * Return the type of a list from the bullets
@@ -8,7 +15,7 @@ export function getType(bullets: string): ListType {
   return /#$/.test(bullets) ? 'orderedList' : 'bulletList';
 }
 
-export class ListBuilder implements Builder {
+export class ListBuilder {
   private schema: Schema;
   private root: List;
   private lastDepth: number;
@@ -65,10 +72,10 @@ export class ListBuilder implements Builder {
 
   /**
    * Compile a prosemirror node from the root list
-   * @returns {PMNode}
+   * @returns {PMNode[]}
    */
-  buildPMNode() {
-    return this.buildListNode(this.root);
+  buildPMNode(): PMNode[] {
+    return this.parseList(this.root);
   }
 
   /**
@@ -76,28 +83,89 @@ export class ListBuilder implements Builder {
    * @param {List} list
    * @returns {PMNode}
    */
-  private buildListNode = (list: List): PMNode => {
+  private parseList = (list: List): PMNode[] => {
     const listNode = this.schema.nodes[list.type];
+    const output: PMNode[] = [];
+    let listItemsBuffer: PMNode[] = [];
 
-    return listNode.createChecked(
-      {},
-      list.children.map(this.buildListItemNode),
-    );
+    for (let i = 0; i < list.children.length; i++) {
+      const parsedContent = this.parseListItem(list.children[i]);
+
+      for (let j = 0; j < parsedContent.length; j++) {
+        const parsedNode = parsedContent[j];
+        if (parsedNode.type.name === 'listItem') {
+          listItemsBuffer.push(parsedNode);
+          continue;
+        }
+        /**
+         * If the node is not a listItem, then we need to
+         * wrap exisintg list and break out
+         */
+        if (listItemsBuffer.length) {
+          const list = listNode.createChecked({}, listItemsBuffer);
+          output.push(list);
+        }
+        output.push(parsedNode); // This is the break out node
+        listItemsBuffer = [];
+      }
+    }
+
+    if (listItemsBuffer.length) {
+      const list = listNode.createChecked({}, listItemsBuffer);
+      output.push(list);
+    }
+
+    return output;
   };
 
   /**
    * Build prosemirror listItem node
+   * This function would possibly return non listItem nodes
+   * which we need to break out later
    * @param {ListItem} item
    */
-  private buildListItemNode = (item: ListItem): PMNode => {
-    const { listItem } = this.schema.nodes;
-    const content: PMNode[] = [];
+  private parseListItem = (item: ListItem): PMNode[] => {
+    const output: PMNode[] = [];
 
-    if (item.content && item.content.length > 0) {
-      content.push(...item.content);
+    if (!item.content) {
+      item.content = [];
     }
-    content.push(...item.children.map(this.buildListNode));
 
+    // Parse nested list
+    const parsedChildren = item.children.reduce(
+      (result: PMNode[], list: List) => {
+        const parsedList = this.parseList(list);
+        result.push(...parsedList);
+        return result;
+      },
+      [],
+    );
+    // Append children to the content
+    item.content.push(...parsedChildren);
+
+    let contentBuffer: PMNode[] = [];
+    for (let i = 0; i < item.content.length; i++) {
+      const pmNode = item.content[i];
+      if (supportedContentType.indexOf(pmNode.type.name) === -1) {
+        const listItem = this.createListItem(contentBuffer, this.schema);
+        output.push(listItem);
+        output.push(pmNode);
+
+        contentBuffer = [];
+        continue;
+      }
+      contentBuffer.push(pmNode);
+    }
+
+    if (contentBuffer.length) {
+      const listItem = this.createListItem(contentBuffer, this.schema);
+      output.push(listItem);
+    }
+
+    return output;
+  };
+
+  private createListItem(content: PMNode[], schema: Schema): PMNode {
     if (
       content.length === 0 ||
       ['paragraph', 'mediaSingle'].indexOf(content[0].type.name) === -1
@@ -109,8 +177,8 @@ export class ListBuilder implements Builder {
       content.unshift(this.schema.nodes.paragraph.createChecked());
     }
 
-    return listItem.createChecked({}, content);
-  };
+    return schema.nodes.listItem.createChecked({}, content);
+  }
 
   /**
    * Add an item at the same level as the current list item

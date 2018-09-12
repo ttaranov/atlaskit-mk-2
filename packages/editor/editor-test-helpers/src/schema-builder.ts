@@ -376,6 +376,11 @@ export const bodiedExtension = (attrs: {
 }) => nodeFactory(sampleSchema.nodes.bodiedExtension, attrs);
 export const date = (attrs: { timestamp: string | number }) =>
   nodeFactory(sampleSchema.nodes.date, attrs)();
+export const status = (attrs: {
+  text: string;
+  color: string;
+  localId: string;
+}) => nodeFactory(sampleSchema.nodes.status, attrs)();
 export const mediaSingle = (
   attrs: MediaSingleAttributes = { layout: 'center' },
 ) => nodeFactory(sampleSchema.nodes.mediaSingle, attrs);

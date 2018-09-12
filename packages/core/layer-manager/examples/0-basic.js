@@ -1,12 +1,13 @@
 // @flow
 import React, { Component } from 'react';
 import Tooltip from '@atlaskit/tooltip';
-import Modal from '@atlaskit/modal-dialog';
+import Modal, { ModalTransition } from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
 import {
   Spotlight,
   SpotlightManager,
   SpotlightTarget,
+  SpotlightTransition,
 } from '@atlaskit/onboarding';
 
 // NOTE: @atlaskit/layer-manager is provided by the website
@@ -63,36 +64,40 @@ export default class Example extends Component<Props, State> {
           <Button onClick={this.toggleSpotlight}>Spotlight</Button>
         </SpotlightTarget>
 
-        {modalIsVisible && (
-          <Modal
-            actions={[{ onClick: this.toggleModal, text: 'Close' }]}
-            autoFocus
-            heading="Hello World!"
-            onClose={this.toggleModal}
-          >
-            <p>
+        <ModalTransition>
+          {modalIsVisible && (
+            <Modal
+              actions={[{ onClick: this.toggleModal, text: 'Close' }]}
+              autoFocus
+              heading="Hello World!"
+              onClose={this.toggleModal}
+            >
+              <p>
+                Cupcake ipsum dolor sit amet. Cheesecake fruitcake brownie donut
+                dragée cotton candy. Sesame snaps gingerbread brownie caramels
+                liquorice pie bonbon cake gummies.
+              </p>
+            </Modal>
+          )}
+        </ModalTransition>
+
+        <SpotlightTransition>
+          {spotlightIsVisible && (
+            <Spotlight
+              actions={[{ onClick: this.toggleSpotlight, text: 'Close' }]}
+              dialogPlacement="bottom left"
+              heading="Hello World!"
+              key="button"
+              target="button"
+              targetBgColor="white"
+              targetRadius={4}
+            >
               Cupcake ipsum dolor sit amet. Cheesecake fruitcake brownie donut
               dragée cotton candy. Sesame snaps gingerbread brownie caramels
               liquorice pie bonbon cake gummies.
-            </p>
-          </Modal>
-        )}
-
-        {spotlightIsVisible && (
-          <Spotlight
-            actions={[{ onClick: this.toggleSpotlight, text: 'Close' }]}
-            dialogPlacement="bottom left"
-            heading="Hello World!"
-            key="button"
-            target="button"
-            targetBgColor="white"
-            targetRadius={4}
-          >
-            Cupcake ipsum dolor sit amet. Cheesecake fruitcake brownie donut
-            dragée cotton candy. Sesame snaps gingerbread brownie caramels
-            liquorice pie bonbon cake gummies.
-          </Spotlight>
-        )}
+            </Spotlight>
+          )}
+        </SpotlightTransition>
       </SpotlightManager>
     );
   }

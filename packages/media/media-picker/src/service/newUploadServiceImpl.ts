@@ -275,7 +275,9 @@ export class NewUploadServiceImpl implements UploadService {
   ) => {
     const { mediaFile } = cancellableFileUpload;
 
-    this.copyFileToUsersCollection(fileId).catch(console.log); // We intentionally swallow these errors
+    this.copyFileToUsersCollection(fileId)
+      // tslint:disable-next-line:no-console
+      .catch(console.log); // We intentionally swallow these errors
 
     const publicMediaFile: PublicMediaFile = {
       ...mediaFile,

@@ -43,7 +43,7 @@ describe('JIRA wiki markup - Text effects', () => {
 another one is here and it should* not be applied`,
     ],
     [
-      "should use code mark first if it's the outer mark",
+      'should render content inside code mark as plain text',
       'This is a {{monospace *bold* thingy}}',
     ],
     [

@@ -278,6 +278,10 @@ export default class GlobalNavigation
               drawer === 'notification'
                 ? notificationDrawerContents
                 : this.props[`${drawer}DrawerContents`];
+            // const DrawerContents = this.props[`${drawer}DrawerContents`];
+            const shouldUnmountOnExit = this.props[
+              `should${capitalisedDrawerName}UnmountOnExit`
+            ];
 
             if (!DrawerContents) {
               return null;
@@ -288,6 +292,7 @@ export default class GlobalNavigation
                 key={drawer}
                 isOpen={this.state[`is${capitalisedDrawerName}Open`]}
                 onClose={this.closeDrawer(drawer)}
+                shouldUnmountOnExit={shouldUnmountOnExit}
                 width="wide"
               >
                 <ViewTracker name={analyticsNameMap[drawer]} />

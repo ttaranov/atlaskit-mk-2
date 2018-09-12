@@ -44,8 +44,8 @@ export interface EditorViewState {
 }
 
 export class EditorView extends Component<EditorViewProps, EditorViewState> {
-  private loadParameters: LoadParameters;
-  private rootDiv: HTMLDivElement;
+  private loadParameters?: LoadParameters;
+  private rootDiv?: HTMLDivElement;
 
   constructor(props: EditorViewProps) {
     super(props);
@@ -59,6 +59,9 @@ export class EditorView extends Component<EditorViewProps, EditorViewState> {
   }
 
   componentDidMount() {
+    if (!this.rootDiv) {
+      return;
+    }
     const rect = this.rootDiv.getBoundingClientRect();
     const dimensions = {
       width: rect.width || DEFAULT_WIDTH,
@@ -87,7 +90,7 @@ export class EditorView extends Component<EditorViewProps, EditorViewState> {
   }
 
   renderEditor(): JSX.Element {
-    const onError = (url: string, error: Error) => this.onError(error);
+    const onError = () => this.onError();
     const onShapeParametersChanged = ({
       color,
       lineWidth,
@@ -134,15 +137,18 @@ export class EditorView extends Component<EditorViewProps, EditorViewState> {
     );
   }
 
-  private onLoad = (url: string, loadParameters: LoadParameters): void => {
+  private onLoad = (_: string, loadParameters: LoadParameters): void => {
     this.loadParameters = loadParameters;
   };
 
-  private onError = (error: Error): void => {
+  private onError = (): void => {
     this.props.onError(couldNotLoadEditor);
   };
 
   private onSave = (): void => {
+    if (!this.loadParameters) {
+      return;
+    }
     const { imageGetter } = this.loadParameters;
     const image = imageGetter();
 

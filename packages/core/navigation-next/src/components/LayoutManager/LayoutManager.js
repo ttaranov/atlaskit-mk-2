@@ -1,7 +1,6 @@
 // @flow
 
 import React, { Component, Fragment, type ElementRef } from 'react';
-import { ThemeProvider } from 'emotion-theming';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
 import {
@@ -9,7 +8,7 @@ import {
   version as packageVersion,
 } from '../../../package.json';
 import { Shadow } from '../../common/primitives';
-import { light } from '../../theme';
+import { light, ThemeProvider } from '../../theme';
 import ContentNavigation from '../ContentNavigation';
 import ResizeTransition, {
   isTransitioning,
@@ -54,6 +53,25 @@ export default class LayoutManager extends Component<
   static defaultProps = {
     collapseToggleTooltipContent: defaultTooltipContent,
   };
+
+  nodeRefs = {
+    expandCollapseAffordance: React.createRef(),
+  };
+
+  componentDidMount() {
+    this.publishRefs();
+  }
+
+  componentDidUpdate() {
+    this.publishRefs();
+  }
+
+  publishRefs() {
+    const { getRefs } = this.props;
+    if (typeof getRefs === 'function') {
+      getRefs(this.nodeRefs);
+    }
+  }
 
   getNavRef = (ref: ElementRef<*>) => {
     this.productNavRef = ref;
@@ -177,16 +195,19 @@ export default class LayoutManager extends Component<
                 onMouseLeave={this.mouseLeave}
               >
                 <ResizeControl
-                  navigation={navigationUIController}
-                  mouseIsOverNavigation={this.state.mouseIsOverNavigation}
                   collapseToggleTooltipContent={
                     // $FlowFixMe
                     this.props.collapseToggleTooltipContent
                   }
+                  expandCollapseAffordanceRef={
+                    this.nodeRefs.expandCollapseAffordance
+                  }
+                  mouseIsOverNavigation={this.state.mouseIsOverNavigation}
                   mutationRefs={[
                     { ref: this.pageRef, property: 'padding-left' },
                     { ref: this.productNavRef, property: 'width' },
                   ]}
+                  navigation={navigationUIController}
                 >
                   {({ isDragging, width }) => (
                     <ContainerNavigationMask>

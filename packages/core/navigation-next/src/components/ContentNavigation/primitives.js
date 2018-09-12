@@ -1,8 +1,7 @@
 // @flow
 
-import React, { type Node } from 'react';
+import React, { Fragment, type Node } from 'react';
 import { keyframes } from 'emotion';
-import { ThemeProvider } from 'emotion-theming';
 import { Transition } from 'react-transition-group';
 import { colors } from '@atlaskit/theme';
 
@@ -12,7 +11,12 @@ import {
   transitionTimingFunction,
 } from '../../common/constants';
 import { Shadow } from '../../common/primitives';
-import { light, withContentTheme, type ProductTheme } from '../../theme';
+import {
+  light,
+  withContentTheme,
+  ThemeProvider,
+  type ProductTheme,
+} from '../../theme';
 
 const animationFade = state => {
   const defaultStyle = {
@@ -40,6 +44,8 @@ const ScrollProvider = (props: any) => (
   <div
     css={{
       boxSizing: 'border-box',
+      display: 'flex',
+      flexDirection: 'column',
       height: '100%',
       overflowX: 'hidden',
       overflowY: 'auto',
@@ -80,7 +86,7 @@ export const ProductNavigationTheme = ({ children }: BaseNavigationTheme) => (
   <ThemeProvider
     theme={oldTheme => ({ mode: light, ...oldTheme, context: 'product' })}
   >
-    {children}
+    <Fragment>{children}</Fragment>
   </ThemeProvider>
 );
 
@@ -152,7 +158,7 @@ type ContainerNavigationProps = {
 
 export const ContainerNavigationTheme = ({ children }: BaseNavigationTheme) => (
   <ThemeProvider theme={{ mode: light, context: 'container' }}>
-    {children}
+    <Fragment>{children}</Fragment>
   </ThemeProvider>
 );
 

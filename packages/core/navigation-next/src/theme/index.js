@@ -18,3 +18,6 @@ export {
 
 // Types
 export { GlobalTheme, ProductTheme } from './types';
+
+// Theme context provider
+export { ThemeProvider } from 'emotion-theming';

@@ -3,7 +3,7 @@
 import React, { Fragment, Component } from 'react';
 
 import EmojiAtlassianIcon from '@atlaskit/icon/glyph/emoji/atlassian';
-import Modal from '@atlaskit/modal-dialog';
+import Modal, { ModalTransition } from '@atlaskit/modal-dialog';
 import Lorem from 'react-lorem-component';
 import { LayoutManager, NavigationProvider } from '@atlaskit/navigation-next';
 
@@ -25,6 +25,10 @@ const DrawerContent = ({
       {drawerTitle}
     </h1>
     <div>{drawerBody}</div>
+    <label htmlFor="textbox" css={{ display: 'block' }}>
+      Type something in the textarea below and see if it is retained
+    </label>
+    <textarea input="textbox" type="text" rows="50" cols="50" />
   </div>
 );
 
@@ -36,6 +40,7 @@ type State = {
 
 type Props = {
   isCreateDrawerEnabled: boolean,
+  unmountOnExit: boolean,
 };
 
 class GlobalNavWithDrawers extends Component<Props, State> {
@@ -106,7 +111,7 @@ class GlobalNavWithDrawers extends Component<Props, State> {
       { text: 'Secondary Action', onClick: this.secondaryAction },
     ];
 
-    const { isCreateDrawerEnabled } = this.props;
+    const { isCreateDrawerEnabled, unmountOnExit } = this.props;
 
     return (
       <Fragment>
@@ -119,6 +124,7 @@ class GlobalNavWithDrawers extends Component<Props, State> {
               drawerBody="You can toggle between a search drawer and the search modal"
             />
           )}
+          shouldCreateDrawerUnmountOnExit={unmountOnExit}
           onProductClick={() => console.log('product clicked')}
           onSearchClick={this.openSearchDrawer}
           searchTooltip="Search (\)"
@@ -130,6 +136,7 @@ class GlobalNavWithDrawers extends Component<Props, State> {
             />
           )}
           onSearchDrawerClose={this.closeSearchDrawer}
+          shouldSearchDrawerUnmountOnExit={unmountOnExit}
           starredDrawerContents={() => (
             <DrawerContent
               drawerTitle="Starred Drawer"
@@ -137,6 +144,7 @@ class GlobalNavWithDrawers extends Component<Props, State> {
             />
           )}
           onStarredDrawerOpen={this.updateNotifications}
+          shouldStarredDrawerUnmountOnExit={unmountOnExit}
           notificationDrawerContents={() => (
             <DrawerContent
               drawerTitle="Notification Drawer"
@@ -145,16 +153,19 @@ class GlobalNavWithDrawers extends Component<Props, State> {
           )}
           onNotificationDrawerOpen={this.resetNotificationCount}
           notificationCount={this.state.notificationCount}
+          shouldNotificationDrawerUnmountOnExit={unmountOnExit}
         />
-        {this.state.isCreateModalOpen && (
-          <Modal
-            actions={actions}
-            onClose={this.closeCreateModal}
-            heading="Modal Title"
-          >
-            <Lorem count={2} />
-          </Modal>
-        )}
+        <ModalTransition>
+          {this.state.isCreateModalOpen && (
+            <Modal
+              actions={actions}
+              onClose={this.closeCreateModal}
+              heading="Modal Title"
+            >
+              <Lorem count={2} />
+            </Modal>
+          )}
+        </ModalTransition>
       </Fragment>
     );
   }
@@ -162,6 +173,7 @@ class GlobalNavWithDrawers extends Component<Props, State> {
 
 type NavState = {
   isCreateDrawerEnabled: boolean,
+  shouldUnmountOnExit: boolean,
 };
 
 // Need two componentss because both have state
@@ -169,11 +181,18 @@ type NavState = {
 export default class extends Component<{||}, NavState> {
   state = {
     isCreateDrawerEnabled: true,
+    shouldUnmountOnExit: true,
   };
 
   toggleCreateDrawer = () => {
     this.setState(prevState => ({
       isCreateDrawerEnabled: !prevState.isCreateDrawerEnabled,
+    }));
+  };
+
+  toggleUnmountBehaviour = () => {
+    this.setState(({ shouldUnmountOnExit: unmountOnExitValue }) => ({
+      shouldUnmountOnExit: !unmountOnExitValue,
     }));
   };
 
@@ -185,6 +204,7 @@ export default class extends Component<{||}, NavState> {
             <GlobalNavWithDrawers
               {...props}
               isCreateDrawerEnabled={this.state.isCreateDrawerEnabled}
+              unmountOnExit={this.state.shouldUnmountOnExit}
             />
           )}
           productNavigation={() => null}
@@ -197,6 +217,25 @@ export default class extends Component<{||}, NavState> {
                 ? 'Create Drawer'
                 : 'Create Modal'
             }`}</button>
+
+            <div css={{ marginTop: '2rem' }}>
+              <label htmlFor="checkbox">
+                <input
+                  id="checkbox"
+                  type="checkbox"
+                  value={this.state.shouldUnmountOnExit}
+                  onChange={this.toggleUnmountBehaviour}
+                />
+                Toggle remounting of drawer contents on exit
+              </label>
+              <div css={{ display: 'block', paddingTop: '1rem' }}>
+                Contents of the drawer will be{' '}
+                <strong>{`${
+                  this.state.shouldUnmountOnExit ? 'discarded' : 'retained'
+                }`}</strong>{' '}
+                on closing the drawer
+              </div>
+            </div>
           </Fragment>
         </LayoutManager>
       </NavigationProvider>

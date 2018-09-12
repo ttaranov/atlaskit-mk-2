@@ -31,7 +31,7 @@ export function normalizePMNodes(nodes: PMNode[], schema: Schema): PMNode[] {
       ...createParagraphNodeFromInlineNodes(trimedInlineNodes, schema),
     );
   }
-  if (nodes.length === 0) {
+  if (output.length === 0) {
     return [createEmptyParagraphNode(schema)];
   }
   return output;

@@ -63,7 +63,7 @@ export function editRemoteImage(
         store.dispatch(editorShowImage(base64image));
       }
     })
-    .catch(error => {
+    .catch(() => {
       if (continueRenderingEditor(item.id, store)) {
         const retryHandler = () => {
           store.dispatch(action);

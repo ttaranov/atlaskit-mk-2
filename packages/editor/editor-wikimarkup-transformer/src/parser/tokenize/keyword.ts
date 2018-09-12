@@ -7,10 +7,11 @@ import { EMOJIS } from './emoji';
  */
 const keywordTokenMap = {
   '[~': TokenType.MENTION,
+  '[^': TokenType.FLIE_LINK,
   '[': TokenType.LINK_FORMAT,
   http: TokenType.LINK_TEXT,
   irc: TokenType.LINK_TEXT,
-  '!': TokenType.ATTACHMENT,
+  '!': TokenType.MEDIA,
   '----': TokenType.QUADRUPLE_DASH_SYMBOL,
   '---': TokenType.TRIPLE_DASH_SYMBOL,
   '--': TokenType.DOUBLE_DASH_SYMBOL,
@@ -73,7 +74,15 @@ const leadingKeywordTokenMap = [
   },
   {
     type: TokenType.RULER,
-    regex: /^-{4}/,
+    regex: /^-{4}\s/,
+  },
+  {
+    type: TokenType.TRIPLE_DASH_SYMBOL,
+    regex: /^-{3}\s/,
+  },
+  {
+    type: TokenType.DOUBLE_DASH_SYMBOL,
+    regex: /^-{2}\s/,
   },
   {
     type: TokenType.LIST,

@@ -11,9 +11,12 @@ import {
   Context,
   Auth,
   fileStreamsCache,
+  FileState,
+  MediaItem,
 } from '@atlaskit/media-core';
 import { fakeContext, nextTick } from '@atlaskit/media-test-helpers';
 import { Observable } from 'rxjs/Observable';
+import { Subscriber } from 'rxjs';
 import { NewUploadServiceImpl } from '../../newUploadServiceImpl';
 import { MediaFile, UploadParams } from '../../..';
 import * as getPreviewModule from '../../../util/getPreviewFromBlob';
@@ -320,7 +323,7 @@ describe('UploadService', () => {
       };
       const mediaItemProvider: MediaItemProvider = {
         observable: () =>
-          Observable.create(observer => {
+          Observable.create((observer: Subscriber<MediaItem>) => {
             observer.next(pendingFileItem);
             expect(fileConvertedCallback).not.toHaveBeenCalled();
             observer.next(succeededFileItem);
@@ -379,11 +382,15 @@ describe('UploadService', () => {
       });
 
       jest.spyOn(context, 'uploadFile').mockReturnValue({
-        subscribe(subscription) {
+        subscribe(subscription: Subscriber<FileState>) {
           subscription.next({
             status: 'uploading',
             id: 'public-file-id',
+            name: 'some-file-name',
+            size: 100,
             progress: 0.42,
+            mediaType: 'image',
+            mimeType: 'image/png',
           });
         },
       });
@@ -419,7 +426,7 @@ describe('UploadService', () => {
       uploadService.on('file-upload-error', fileUploadErrorCallback);
 
       jest.spyOn(context, 'uploadFile').mockReturnValue({
-        subscribe(subscription) {
+        subscribe(subscription: Subscriber<FileState>) {
           // setTimeout(() => {
           subscription.error('Some reason');
           // }, 10)
@@ -533,7 +540,7 @@ describe('UploadService', () => {
       );
       const mediaItemProvider: MediaItemProvider = {
         observable: () =>
-          Observable.create(observer => {
+          Observable.create((observer: Subscriber<MediaItem>) => {
             // We have to wait 1 cycle otherwise :next callback called synchronously
             setImmediate(() => {
               // It's not required, but I like "natural" feel of this call
@@ -599,7 +606,7 @@ describe('UploadService', () => {
 
       const mediaItemProvider: MediaItemProvider = {
         observable: () =>
-          Observable.create(observer => {
+          Observable.create((observer: Subscriber<MediaItem>) => {
             setImmediate(() => {
               observer.next(succeededFileItem);
               expect(
@@ -635,7 +642,7 @@ describe('UploadService', () => {
 
       return new Promise(resolve => {
         jest.spyOn(context, 'uploadFile').mockReturnValue({
-          subscribe(subscription) {
+          subscribe(subscription: Subscriber<FileState>) {
             subscription.error();
             expect(
               Object.keys((uploadService as any).cancellableFilesUploads),

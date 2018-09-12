@@ -1,3 +1,4 @@
+import { Action } from 'redux';
 import { FileReference } from '../domain';
 
 export const EDIT_REMOTE_IMAGE = 'EDIT_REMOTE_IMAGE';
@@ -6,6 +7,12 @@ export interface EditRemoteImageAction {
   readonly type: 'EDIT_REMOTE_IMAGE';
   readonly item: FileReference;
   readonly collectionName: string;
+}
+
+export function isEditRemoteImageAction(
+  action: Action,
+): action is EditRemoteImageAction {
+  return action.type === EDIT_REMOTE_IMAGE;
 }
 
 export function editRemoteImage(

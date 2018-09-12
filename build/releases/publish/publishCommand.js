@@ -14,7 +14,9 @@ async function run(opts) {
   const publishOpts = {};
   // if not public, we wont pass the access, and it works as normal
   if (opts.publicFlag) publishOpts.access = 'public';
-  const response = await bolt.publish(publishOpts);
+  // Note: we use publishPackages, not publish here as publishPackages returns a list of published
+  // and unpublished packages, publish does not (as of bolt 0.21.0)
+  const response = await bolt.publishPackages(publishOpts);
 
   const successful = response.filter(p => p.published);
   const unsuccessful = response.filter(p => !p.published);

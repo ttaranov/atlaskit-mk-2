@@ -21,6 +21,7 @@ export {
   default as ScrollableSectionInner,
 } from './components/ScrollableSectionInner';
 export { default as Section } from './components/Section';
+export { default as SectionHeading } from './components/SectionHeading';
 export { default as Separator } from './components/Separator';
 export {
   default as SkeletonContainerHeader,
@@ -46,7 +47,7 @@ export {
 export { default as ViewRenderer } from './renderer';
 
 /** Theme */
-export { dark, light, settings, modeGenerator } from './theme';
+export { dark, light, settings, modeGenerator, ThemeProvider } from './theme';
 
 /** Types */
 export { GlobalItemProps } from './components/GlobalItem/types';

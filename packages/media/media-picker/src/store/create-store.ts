@@ -29,6 +29,7 @@ import searchGiphy from '../popup/middleware/searchGiphy';
 import hidePopupMiddleware from '../popup/middleware/hidePopup';
 import sendUploadEventMiddleware from '../popup/middleware/sendUploadEvent';
 import { PopupConfig, PopupUploadEventEmitter } from '../components/popup';
+import analyticsProcessing from '../popup/middleware/analyticsProcessing';
 
 export default (
   eventEmitter: PopupUploadEventEmitter,
@@ -54,7 +55,8 @@ export default (
     partialState,
     composeWithDevTools(
       applyMiddleware(
-        startAppMiddleware(eventEmitter) as Middleware,
+        analyticsProcessing as Middleware,
+        startAppMiddleware() as Middleware,
         getFilesInRecents(fetcher) as Middleware,
         changeService as Middleware,
         changeAccount as Middleware,

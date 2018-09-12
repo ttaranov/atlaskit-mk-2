@@ -8,7 +8,7 @@ import { CollectionServiceStub } from '../../../../test-helpers/collection-servi
 import { RemoteMediaCollectionProviderFactory } from '../../remoteMediaCollectionProviderFactory';
 import { Subscription } from 'rxjs/Subscription';
 import { isError } from '../../../error';
-import { MediaCollection } from '../../../collection';
+import { MediaCollection } from '../../../providers/types';
 import { RemoteMediaCollectionProvider } from '../../remoteMediaCollectionProvider';
 import { CollectionNotFoundError } from '../../..';
 

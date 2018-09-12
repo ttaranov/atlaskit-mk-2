@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, mount } from 'enzyme';
+import { Store } from 'react-redux';
 
+import { State } from '../../../domain';
 import ConnectedApp, { App, AppDispatchProps } from '../../app';
 import UploadView from '../../views/upload/upload';
 import Browser from '../../views/browser/browser';
@@ -10,18 +12,22 @@ import { AuthProvider, ContextFactory } from '@atlaskit/media-core';
 import { UploadParams } from '../../../../domain/config';
 
 const tenantUploadParams: UploadParams = {};
+import LayerManager from '@atlaskit/layer-manager';
+import { LocalBrowserButton } from '../../views/upload/uploadButton';
+import { createStore, applyMiddleware, Middleware } from 'redux';
+import analyticsProcessing from '../../../middleware/analyticsProcessing';
+
+const baseUrl = 'some-api-url';
+const clientId = 'some-client-id';
+const token = 'some-token';
+const userAuthProvider: AuthProvider = () =>
+  Promise.resolve({
+    clientId,
+    token,
+    baseUrl,
+  });
 
 describe('App', () => {
-  const baseUrl = 'some-api-url';
-  const clientId = 'some-client-id';
-  const token = 'some-token';
-  const userAuthProvider: AuthProvider = () =>
-    Promise.resolve({
-      clientId,
-      token,
-      baseUrl,
-    });
-
   const setup = () => {
     const context = ContextFactory.create({
       authProvider: userAuthProvider,
@@ -40,6 +46,9 @@ describe('App', () => {
         onUploadProcessing: jest.fn(),
         onUploadEnd: jest.fn(),
         onUploadError: jest.fn(),
+        onDropzoneDragIn: jest.fn(),
+        onDropzoneDragOut: jest.fn(),
+        onDropzoneDropIn: jest.fn(),
       } as AppDispatchProps,
       context,
       userContext,
@@ -113,7 +122,8 @@ describe('App', () => {
       />
     );
     const wrapper = shallow(element);
-    const spy = jest.spyOn(wrapper.instance()['mpDropzone'], 'activate');
+    const instance = wrapper.instance() as App;
+    const spy = jest.spyOn(instance['mpDropzone'], 'activate');
 
     wrapper.setProps({ isVisible: true });
 
@@ -134,7 +144,8 @@ describe('App', () => {
       />
     );
     const wrapper = shallow(element);
-    const spy = jest.spyOn(wrapper.instance()['mpDropzone'], 'deactivate');
+    const instance = wrapper.instance() as App;
+    const spy = jest.spyOn(instance['mpDropzone'], 'deactivate');
 
     wrapper.setProps({ isVisible: false });
 
@@ -155,7 +166,8 @@ describe('App', () => {
       />
     );
     const wrapper = shallow(element);
-    const spy = jest.spyOn(wrapper.instance()['mpDropzone'], 'deactivate');
+    const instance = wrapper.instance() as App;
+    const spy = jest.spyOn(instance['mpDropzone'], 'deactivate');
 
     wrapper.unmount();
 
@@ -208,6 +220,55 @@ describe('Connected App', () => {
           },
         ],
       }),
+    );
+  });
+
+  it('should fire an analytics events when provided with a react context via a store', () => {
+    const handler = jest.fn();
+    const store: Store<State> = createStore<State>(
+      state => state,
+      mockStore({
+        view: {
+          isVisible: true,
+          items: [],
+          isLoading: false,
+          hasError: false,
+          path: [],
+          service: {
+            accountId: 'some-view-service-account-id',
+            name: 'upload',
+          },
+          isUploading: false,
+          isCancelling: false,
+        },
+        config: {
+          proxyReactContext: {
+            getAtlaskitAnalyticsEventHandlers: () => [handler],
+          },
+        },
+      }).getState(),
+      applyMiddleware(analyticsProcessing as Middleware),
+    );
+    const ConnectedAppWithStore = getComponentClassWithStore(ConnectedApp);
+    const component = mount(
+      <LayerManager>
+        <ConnectedAppWithStore store={store} tenantUploadParams={{}} />
+      </LayerManager>,
+    );
+    component.find(LocalBrowserButton).simulate('click');
+    expect(handler).toBeCalledWith(
+      expect.objectContaining({
+        payload: {
+          attributes: {
+            componentName: 'mediaPicker',
+            componentVersion: expect.any(String),
+            packageName: '@atlaskit/media-picker',
+          },
+          eventType: 'screen',
+          name: 'localFileBrowserModal',
+        },
+      }),
+      'media',
     );
   });
 });

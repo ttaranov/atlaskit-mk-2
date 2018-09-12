@@ -35,7 +35,7 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
     className: '',
   };
 
-  constructor(props) {
+  constructor(props: MediaImageProps) {
     super(props);
 
     this.state = {
@@ -46,7 +46,7 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
     };
   }
 
-  private img;
+  private img: any;
 
   // TODO FIL-4060 we need to check whether the dataURI changes in componentWillReceiveProps()
   // and if it does recalculate the image height and width
@@ -78,8 +78,8 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
     this.img.onload = null;
   }
 
-  onImageLoad(component) {
-    return function() {
+  onImageLoad(component: any) {
+    return function(this: any) {
       component.setState({
         imgWidth: this.width,
         imgHeight: this.height,

@@ -5,17 +5,19 @@ import { mount } from 'enzyme';
 import { HashRouter } from 'react-router-dom';
 
 import LayoutManagerWithViewController from '../../LayoutManagerWithViewController';
-
-import {
-  DefaultGlobalNavigation,
-  ProjectSwitcher,
-} from '../../../../../examples/shared/components';
-
 import { NavigationProvider } from '../../../../index';
+
+const GlobalNavigationComponent = () => null;
 
 describe('LayoutManagerWithViewController', () => {
   let wrapper;
   let originalLocalStorage;
+
+  let onCollapseStart;
+  let onCollapseEnd;
+  let onExpandStart;
+  let onExpandEnd;
+  let getRefs;
 
   beforeEach(() => {
     originalLocalStorage = global.localStorage;
@@ -31,6 +33,12 @@ describe('LayoutManagerWithViewController', () => {
     jest.spyOn(global.localStorage, 'setItem');
     jest.spyOn(global.localStorage, 'getItem');
 
+    onCollapseStart = jest.fn();
+    onCollapseEnd = jest.fn();
+    onExpandStart = jest.fn();
+    onExpandEnd = jest.fn();
+    getRefs = jest.fn();
+
     wrapper = mount(
       <HashRouter>
         <NavigationProvider
@@ -38,9 +46,13 @@ describe('LayoutManagerWithViewController', () => {
           isDebugEnabled={false}
         >
           <LayoutManagerWithViewController
-            customComponents={{ ProjectSwitcher }}
-            globalNavigation={DefaultGlobalNavigation}
+            globalNavigation={GlobalNavigationComponent}
             firstSkeletonToRender={'product'}
+            onCollapseStart={onCollapseStart}
+            onCollapseEnd={onCollapseEnd}
+            onExpandStart={onExpandStart}
+            onExpandEnd={onExpandEnd}
+            getRefs={getRefs}
           >
             <p>
               Children requires to have `NavigationProvider` as a parent Because
@@ -57,10 +69,16 @@ describe('LayoutManagerWithViewController', () => {
     global.localStorage.getItem.mockRestore();
 
     global.localStorage = originalLocalStorage;
+
+    onCollapseStart.mockReset();
+    onCollapseEnd.mockReset();
+    onExpandStart.mockReset();
+    onExpandEnd.mockReset();
+    getRefs.mockReset();
   });
 
   it('should render global navigation based on using `globalNavigation` as a reference', () => {
-    expect(wrapper.find(DefaultGlobalNavigation).length).toBe(1);
+    expect(wrapper.find(GlobalNavigationComponent).length).toBe(1);
   });
 
   describe('LayerInitialised', () => {
@@ -99,8 +117,7 @@ describe('LayoutManagerWithViewController', () => {
             isDebugEnabled={false}
           >
             <LayoutManagerWithViewController
-              customComponents={{ ProjectSwitcher }}
-              globalNavigation={DefaultGlobalNavigation}
+              globalNavigation={GlobalNavigationComponent}
               firstSkeletonToRender={'container'}
             >
               <p>
@@ -123,6 +140,23 @@ describe('LayoutManagerWithViewController', () => {
           .first()
           .props().theme.context,
       ).toBe('container');
+    });
+  });
+
+  describe('Passing props to LayoutManager', () => {
+    it('should pass expand/collapse listeners and getRefs', () => {
+      const layoutManager = wrapper.find('LayoutManager');
+
+      onCollapseStart(200);
+      onCollapseEnd(0);
+      onExpandStart(0);
+      onExpandEnd(200);
+
+      expect(layoutManager.props().onCollapseStart).toBeCalledWith(200);
+      expect(layoutManager.props().onCollapseEnd).toBeCalledWith(0);
+      expect(layoutManager.props().onExpandStart).toBeCalledWith(0);
+      expect(layoutManager.props().onExpandEnd).toBeCalledWith(200);
+      expect(layoutManager.props().getRefs).toHaveBeenCalled();
     });
   });
 });

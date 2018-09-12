@@ -1,11 +1,11 @@
 // @flow
 
-import React, { Component } from 'react';
-import { ThemeProvider } from 'emotion-theming';
+import React, { Component, Fragment } from 'react';
 import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import BacklogIcon from '@atlaskit/icon/glyph/backlog';
 import IssuesIcon from '@atlaskit/icon/glyph/issue';
 import ReportsIcon from '@atlaskit/icon/glyph/graph-line';
+import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import {
   GlobalNav,
@@ -20,8 +20,10 @@ import {
   ContainerHeader,
   ItemAvatar,
   Item,
+  ThemeProvider,
 } from '../src';
 
+const gridSize = gridSizeFn();
 const themeModes = { light, dark, settings };
 
 const GlobalNavigation = () => (
@@ -45,13 +47,23 @@ export default class Example extends Component<{}, State> {
   renderNavigation = () => {
     const { shouldRenderIcons } = this.state;
     return (
-      <div css={{ padding: '16px 0' }}>
+      <Fragment>
         <Section>
           {({ css }) => (
-            <div css={css}>
+            <div
+              css={{
+                ...css,
+                paddingTop: gridSize * 2.5,
+                paddingBottom: gridSize * 2.5,
+              }}
+            >
               <ContainerHeader
                 before={itemState => (
-                  <ItemAvatar itemState={itemState} appearance="square" />
+                  <ItemAvatar
+                    itemState={itemState}
+                    appearance="square"
+                    size="large"
+                  />
                 )}
                 text="Container title"
                 subText="Container description"
@@ -81,17 +93,23 @@ export default class Example extends Component<{}, State> {
             </div>
           )}
         </Section>
-      </div>
+      </Fragment>
     );
   };
 
   renderSkeleton = () => {
     const { shouldRenderIcons } = this.state;
     return (
-      <div css={{ padding: '16px 0' }}>
+      <Fragment>
         <Section>
           {({ css }) => (
-            <div css={css}>
+            <div
+              css={{
+                ...css,
+                paddingTop: gridSize * 2.5,
+                paddingBottom: gridSize * 2.5,
+              }}
+            >
               <SkeletonContainerHeader hasBefore />
             </div>
           )}
@@ -105,7 +123,7 @@ export default class Example extends Component<{}, State> {
             </div>
           )}
         </Section>
-      </div>
+      </Fragment>
     );
   };
 

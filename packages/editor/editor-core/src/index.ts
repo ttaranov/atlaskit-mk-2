@@ -66,3 +66,8 @@ export { EditorPlugin, EditorProps, EditorInstance } from './types';
 export { default as EditorActions } from './actions';
 export { MacroProvider, MacroAttributes, ExtensionType } from './plugins/macro';
 export { CardProvider } from './plugins/card';
+export {
+  PortalProvider,
+  PortalProviderAPI,
+  PortalRenderer,
+} from './ui/PortalProvider';

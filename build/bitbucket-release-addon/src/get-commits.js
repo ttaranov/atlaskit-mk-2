@@ -1,5 +1,3 @@
-import 'whatwg-fetch';
-
 function commitsToValues(response) {
   return response.values;
 }

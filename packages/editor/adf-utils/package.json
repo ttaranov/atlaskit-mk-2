@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/adf-utils",
-  "version": "2.1.3",
+  "version": "2.2.1",
   "description": "Set of utilities to traverse, modify and create ADF documents.",
   "license": "Apache-2.0",
   "atlaskit:src": "src/index.ts",
@@ -28,11 +28,11 @@
     "Stanislav S"
   ],
   "dependencies": {
-    "@atlaskit/editor-common": "^15.0.0"
+    "@atlaskit/editor-common": "^16.1.0"
   },
   "devDependencies": {
     "@atlaskit/docs": "^5.0.7",
-    "@atlaskit/json-schema-generator": "^1.1.0"
+    "@atlaskit/json-schema-generator": "^1.1.1"
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2"
 }
