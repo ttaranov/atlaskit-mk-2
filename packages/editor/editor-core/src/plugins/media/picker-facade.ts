@@ -10,11 +10,9 @@ import {
   BinaryUploader,
   UploadsStartEventPayload,
   UploadPreviewUpdateEventPayload,
-  UploadStatusUpdateEventPayload,
-  UploadProcessingEventPayload,
-  UploadErrorEventPayload,
   UploadEndEventPayload,
   UploadParams,
+  isImagePreview,
 } from '@atlaskit/media-picker';
 import { Context } from '@atlaskit/media-core';
 
@@ -32,6 +30,11 @@ export type PickerFacadeConfig = {
   errorReporter: ErrorReportingHandler;
 };
 
+interface Dimensions {
+  width: number;
+  height: number;
+}
+
 export default class PickerFacade {
   private picker: MediaPickerComponent | CustomMediaPicker;
   private onStartListeners: Array<(states: MediaState[]) => void> = [];
@@ -39,6 +42,7 @@ export default class PickerFacade {
   private errorReporter: ErrorReportingHandler;
   private pickerType: PickerType;
   private stateManager: MediaStateManager;
+  private deferredDimensions: Map<Promise<string>, Function> = new Map();
 
   constructor(
     pickerType: PickerType,
@@ -62,9 +66,6 @@ export default class PickerFacade {
 
     picker.on('uploads-start', this.handleUploadsStart);
     picker.on('upload-preview-update', this.handleUploadPreviewUpdate);
-    picker.on('upload-processing', this.handleUploadProcessing);
-    picker.on('upload-status-update', this.handleUploadStatusUpdate);
-    picker.on('upload-error', this.handleUploadError);
     picker.on('upload-end', this.handleUploadEnd);
 
     if (picker instanceof Dropzone) {
@@ -89,10 +90,7 @@ export default class PickerFacade {
     }
 
     (picker as any).removeAllListeners('uploads-start');
-    (picker as any).removeAllListeners('upload-preview-update');
-    (picker as any).removeAllListeners('upload-status-update');
-    (picker as any).removeAllListeners('upload-processing');
-    (picker as any).removeAllListeners('upload-error');
+    // (picker as any).removeAllListeners('upload-preview-update');
     (picker as any).removeAllListeners('upload-end');
 
     if (picker instanceof Dropzone) {
@@ -114,6 +112,8 @@ export default class PickerFacade {
     } catch (ex) {
       this.errorReporter.captureException(ex);
     }
+
+    this.deferredDimensions.clear();
   }
 
   setUploadParams(params: UploadParams): void {
@@ -207,75 +207,36 @@ export default class PickerFacade {
     this.onDragListeners.push(cb);
   }
 
-  private generateTempId(id: string) {
-    return `temporary:${id}`;
-  }
-
-  private handleUploadsStart = (event: UploadsStartEventPayload) => {
+  private handleUploadsStart = async (event: UploadsStartEventPayload) => {
     const { files } = event;
 
-    const states = files.map(file => {
-      const state = this.stateManager.newState(file, 'uploading');
-      this.stateManager.updateState(state.id, state);
-      return state;
-    });
+    const states = await Promise.all(
+      files.map(async file => {
+        const dimensionsPromise = new Promise<Dimensions>(resolve => {
+          this.deferredDimensions.set(file.upfrontId, resolve);
+        });
+        const [id, dimensions] = await Promise.all([
+          file.upfrontId,
+          dimensionsPromise,
+        ]);
+        return this.stateManager.newState(
+          id,
+          {
+            ...file,
+            dimensions,
+          },
+          'ready',
+        );
+      }),
+    );
 
     this.onStartListeners.forEach(cb => cb.call(cb, states));
   };
 
-  private handleUploadStatusUpdate = (
-    event: UploadStatusUpdateEventPayload,
-  ) => {
-    const { file, progress } = event;
-    const tempId = this.generateTempId(file.id);
-    const currentState = this.stateManager.getState(tempId);
-    const currentStatus = (currentState && currentState.status) || 'unknown';
-
-    this.stateManager.updateState(tempId, {
-      status:
-        currentStatus === 'unknown' || currentStatus === 'preview'
-          ? 'uploading'
-          : currentStatus,
-      progress: progress && progress.portion,
-    });
-  };
-
-  private handleUploadProcessing = (event: UploadProcessingEventPayload) => {
-    const { file } = event;
-    const tempId = this.generateTempId(file.id);
-    this.stateManager.updateState(tempId, {
-      status: 'processing',
-      publicId: file.publicId,
-    });
-  };
-
-  private handleUploadError = ({ error }: UploadErrorEventPayload) => {
-    if (!error || !error.fileId) {
-      const err = new Error(
-        `Media: unknown upload-error received from Media Picker: ${error &&
-          error.name}`,
-      );
-      this.errorReporter.captureException(err);
-      return;
-    }
-
-    const tempId = this.generateTempId(error.fileId);
-    this.stateManager.updateState(tempId, {
-      id: tempId,
-      status: 'error',
-      error: error && { description: error.description, name: error.name },
-    });
-  };
-
-  private handleUploadEnd = (event: UploadEndEventPayload) => {
-    const { file } = event;
-
-    const tempId = this.generateTempId(file.id);
-    this.stateManager.updateState(tempId, {
-      progress: 1,
-      ready: true,
+  private handleUploadEnd = async (event: UploadEndEventPayload) => {
+    const id = await event.file.upfrontId;
+    this.stateManager.updateState(id, {
       status: 'ready',
-      publicId: file.publicId,
     });
   };
 
@@ -283,15 +244,15 @@ export default class PickerFacade {
     event: UploadPreviewUpdateEventPayload,
   ) => {
     const { file, preview } = event;
-    const tempId = this.generateTempId(file.id);
-    const updatedState = {
-      status: 'preview',
-      thumbnail: preview,
-      preview: true,
-      fileName: file.name,
-    } as Partial<MediaState>;
-
-    this.stateManager.updateState(tempId, updatedState);
+    const resolve = this.deferredDimensions.get(file.upfrontId);
+    if (resolve) {
+      if (isImagePreview(preview)) {
+        resolve(preview.dimensions);
+      } else {
+        resolve({ height: undefined, width: undefined });
+      }
+    }
+    this.deferredDimensions.delete(file.upfrontId);
   };
 
   private handleDragEnter = () => {

@@ -44,9 +44,7 @@ import { hasParentNodeOfType } from 'prosemirror-utils';
 export { DefaultMediaStateManager };
 export { MediaState, MediaProvider, MediaStateStatus, MediaStateManager };
 
-// We get `publicId` of `file` in `processing` stage so it's possible to send
-// consumers a ADF with media-ids before ready state
-const MEDIA_RESOLVED_STATES = ['ready', 'error', 'cancelled', 'processing'];
+const MEDIA_RESOLVED_STATES = ['ready', 'error', 'cancelled'];
 
 export type PluginStateChangeSubscriber = (state: MediaPluginState) => any;
 
@@ -295,7 +293,7 @@ export class MediaPluginState {
       isImage(media.fileMimeType),
     );
 
-    let nonImageAttachements = mediaStates.filter(
+    let nonImageAttachments = mediaStates.filter(
       media => !isImage(media.fileMimeType),
     );
 
@@ -303,7 +301,7 @@ export class MediaPluginState {
 
     // in case of gap cursor, selection might be at depth=0
     if (grandParentNode && isNonImagesBanned(grandParentNode)) {
-      nonImageAttachements = [];
+      nonImageAttachments = [];
     }
 
     mediaStates.forEach(mediaState =>
@@ -311,7 +309,7 @@ export class MediaPluginState {
     );
 
     if (this.editorAppearance !== 'message' && mediaSingle) {
-      insertMediaGroupNode(this.view, nonImageAttachements, collection);
+      insertMediaGroupNode(this.view, nonImageAttachments, collection);
       imageAttachments.forEach(mediaState => {
         insertMediaSingleNode(this.view, mediaState, collection);
       });
@@ -463,17 +461,7 @@ export class MediaPluginState {
    * This is called when media node is removed from media group node view
    */
   cancelInFlightUpload(id: string) {
-    const mediaNodeWithPos = this.findMediaNode(id);
-    if (!mediaNodeWithPos) {
-      return;
-    }
-    const status = this.getMediaNodeStateStatus(id);
-
-    switch (status) {
-      case 'uploading':
-      case 'processing':
-        this.pickers.forEach(picker => picker.cancel(id));
-    }
+    this.pickers.forEach(picker => picker.cancel(id));
   }
 
   /**
@@ -742,60 +730,17 @@ export class MediaPluginState {
 
   private handleMediaState = async (state: MediaState) => {
     switch (state.status) {
-      case 'error':
-        this.removeNodeById(state.id);
-        const { uploadErrorHandler } = this.options;
-
-        if (uploadErrorHandler) {
-          uploadErrorHandler(state);
-        }
-        break;
-
-      case 'preview':
-        this.replaceTemporaryNode(state);
-        if (state.ready) {
-          this.stateManager.off(state.id, this.handleMediaState);
-        }
-        break;
-
-      case 'processing':
-        if (state.thumbnail && state.publicId) {
-          const viewContext = await this.mediaProvider.viewContext;
-          // This allows Cards to use local preview while they fetch the remote one
-          viewContext.setLocalPreview(state.publicId, state.thumbnail.src);
-        }
-        if (state.publicId) {
-          this.replaceTemporaryNode(state);
-        }
-        break;
+      // case 'preview':
+      //   break;
 
       case 'ready':
-        if (state.publicId && this.nodeHasNoPublicId(state)) {
-          this.replaceTemporaryNode(state);
-        }
-        if (state.preview) {
-          this.stateManager.off(state.id, this.handleMediaState);
-        }
+        this.stateManager.off(state.id, this.handleMediaState);
         break;
     }
   };
 
   private notifyPluginStateSubscribers = () => {
     this.pluginStateChangeSubscribers.forEach(cb => cb.call(cb, this));
-  };
-
-  nodeHasNoPublicId = (state: MediaState) => {
-    const { id } = state;
-    const mediaNodeWithPos = this.findMediaNode(id);
-    if (!mediaNodeWithPos) {
-      return;
-    }
-    const {
-      node: {
-        attrs: { id: mediaNodeId },
-      },
-    } = mediaNodeWithPos;
-    return mediaNodeId.match(/^temporary:/);
   };
 
   removeNodeById = (id: string) => {
@@ -808,41 +753,6 @@ export class MediaPluginState {
         mediaNodeWithPos.getPos,
       );
     }
-  };
-
-  private replaceTemporaryNode = (state: MediaState) => {
-    const { view } = this;
-    if (!view) {
-      return;
-    }
-    const { id, thumbnail, fileName, fileSize, publicId, fileMimeType } = state;
-    const mediaNodeWithPos = this.findMediaNode(id);
-    if (!mediaNodeWithPos) {
-      return;
-    }
-    const { width, height } = (thumbnail && thumbnail.dimensions) || {
-      width: undefined,
-      height: undefined,
-    };
-    const { getPos, node: mediaNode } = mediaNodeWithPos;
-    const newNode = view.state.schema.nodes.media!.create({
-      ...mediaNode.attrs,
-      id: publicId || id,
-      width,
-      height,
-      __fileName: fileName,
-      __fileSize: fileSize,
-      __fileMimeType: fileMimeType,
-    });
-
-    // replace the old node with a new one
-    const nodePos = getPos();
-    const tr = view.state.tr.replaceWith(
-      nodePos,
-      nodePos + mediaNode.nodeSize,
-      newNode,
-    );
-    view.dispatch(tr.setMeta('addToHistory', false));
   };
 
   removeSelectedMediaNode = (): boolean => {

@@ -40,8 +40,6 @@ export interface MediaBaseAttributes {
   __fileMimeType?: string | null;
   // For JIRA
   __displayType?: DisplayType | null;
-  // For Stride @see ED-4030
-  __key?: string | null;
 }
 
 export interface MediaAttributes extends MediaBaseAttributes {

@@ -67,7 +67,7 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
       onExternalImageLoaded,
       hideProgress = false,
     } = this.props;
-    const { id, type, collection, url, __key, width } = node.attrs;
+    const { id, type, collection, url, width } = node.attrs;
 
     const deleteEventHandler = isMediaSingle ? undefined : this.handleRemove;
     if (
@@ -89,10 +89,9 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
 
     return (
       <UIMedia
-        key={`media-node-${__key}`}
+        key={`media-node-${id}`}
         editorView={view}
         id={id!}
-        tempId={__key!}
         type={type!}
         collection={collection!}
         providers={providerFactory}
