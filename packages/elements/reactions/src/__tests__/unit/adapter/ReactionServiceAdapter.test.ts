@@ -1,6 +1,5 @@
-import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock/src/client';
-
+import 'whatwg-fetch';
 import { ReactionServiceAdapter } from '../../../adapter/ReactionServiceAdapter';
 
 describe('ReactionServiceAdapter', () => {
@@ -38,6 +37,9 @@ describe('ReactionServiceAdapter', () => {
   const deleteReactionResponse = { reactions: [] };
 
   beforeAll(() => {
+    fetchMock.config.Request = Request;
+    fetchMock.config.Response = Response;
+    fetchMock.config.Headers = Headers;
     reactionServiceAdapter = new ReactionServiceAdapter(baseUrl);
     fetchMock.mock({
       method: 'POST',
@@ -85,28 +87,20 @@ describe('ReactionServiceAdapter', () => {
   });
 
   it('should get reactions', () =>
-    reactionServiceAdapter
-      .getReactions(containerAri, aris)
-      .then(response => {
-        expect(response).toMatchObject({
-          'ari-1': [],
-          'ari-2': [],
-        });
-      })
-      .then(() => {
-        const call = fetchMock.lastCall()[0];
-        expect(call.method).toEqual('POST');
-        expect(call.url).toMatch(
-          'http://reactions.atlassian.com/reactions/view',
-        );
-        return call.json();
-      })
-      .then(body => {
-        expect(body).toMatchObject({
-          containerAri,
-          aris,
-        });
-      }));
+    reactionServiceAdapter.getReactions(containerAri, aris).then(response => {
+      expect(response).toMatchObject({
+        'ari-1': [],
+        'ari-2': [],
+      });
+      const call = fetchMock.lastCall();
+      expect(call[0]).toMatch('http://reactions.atlassian.com/reactions/view');
+      expect(call[1].method).toEqual('POST');
+      const body = JSON.parse(call[1].body);
+      expect(body).toMatchObject({
+        containerAri,
+        aris,
+      });
+    }));
 
   it('should get detailed reaction', () =>
     reactionServiceAdapter
@@ -115,11 +109,11 @@ describe('ReactionServiceAdapter', () => {
         expect(response).toMatchObject(getDetailedReactionResponse);
       })
       .then(() => {
-        const call = fetchMock.lastCall()[0];
-        expect(call.method).toEqual('GET');
-        expect(call.url).toMatch(
+        const call = fetchMock.lastCall();
+        expect(call[0]).toMatch(
           'http://reactions.atlassian.com/reactions?reactionId=container-123%7Cari-1%7Csmile',
         );
+        expect(call[1].method).toEqual('GET');
       }));
 
   it('should add reaction', () =>
@@ -129,12 +123,10 @@ describe('ReactionServiceAdapter', () => {
         expect(response).toMatchObject(addReactionResponse.reactions);
       })
       .then(() => {
-        const call = fetchMock.lastCall()[0];
-        expect(call.method).toEqual('POST');
-        expect(call.url).toMatch('http://reactions.atlassian.com/reactions');
-        return call.json();
-      })
-      .then(body => {
+        const call = fetchMock.lastCall();
+        expect(call[0]).toMatch('http://reactions.atlassian.com/reactions');
+        expect(call[1].method).toEqual('POST');
+        const body = JSON.parse(call[1].body);
         expect(body).toMatchObject({
           containerAri,
           ari: aris[0],
@@ -149,10 +141,10 @@ describe('ReactionServiceAdapter', () => {
         expect(response).toMatchObject(deleteReactionResponse.reactions);
       })
       .then(() => {
-        const call = fetchMock.lastCall()[0];
-        expect(call.method).toEqual('DELETE');
-        expect(call.url).toMatch(
+        const call = fetchMock.lastCall();
+        expect(call[0]).toMatch(
           'http://reactions.atlassian.com/reactions?ari=ari-1&emojiId=smile&containerAri=container-123',
         );
+        expect(call[1].method).toEqual('DELETE');
       }));
 });

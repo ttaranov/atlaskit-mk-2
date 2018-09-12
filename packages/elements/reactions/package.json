@@ -23,6 +23,7 @@
     "@atlaskit/layer": "^5.0.4",
     "@atlaskit/theme": "^6.0.0",
     "@atlaskit/tooltip": "^12.0.9",
+    "@atlaskit/util-service-support": "^3.0.3",
     "classnames": "^2.2.5",
     "react-transition-group": "^2.2.1",
     "tslib": "^1.8.0",
