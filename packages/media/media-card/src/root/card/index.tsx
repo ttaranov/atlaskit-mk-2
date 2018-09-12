@@ -24,7 +24,7 @@ import { getDataURIDimension } from '../../utils/getDataURIDimension';
 import { getDataURIFromFileState } from '../../utils/getDataURIFromFileState';
 import { getLinkMetadata, extendMetadata } from '../../utils/metadata';
 import { isUrlPreviewIdentifier } from '../../utils/identifier';
-import { canCompareDimension } from '../../utils/dimensionComparer';
+import { isBigger } from '../../utils/dimensionComparer';
 
 export interface CardProps extends SharedCardProps, CardEventProps {
   readonly context: Context;
@@ -79,7 +79,7 @@ export class Card extends Component<CardProps, CardState> {
     if (
       currentContext !== nextContext ||
       !deepEqual(currentIdentifier, nextIdenfifier) ||
-      this.shouldRefetchDueToNewDimensions(currentDimensions, nextDimensions)
+      isBigger(currentDimensions, nextDimensions)
     ) {
       this.subscribe(nextIdenfifier, nextContext, nextDimensions);
     }
@@ -89,27 +89,6 @@ export class Card extends Component<CardProps, CardState> {
     this.unsubscribe();
     this.releaseDataURI();
   }
-
-  private shouldRefetchDueToNewDimensions = (
-    current?: CardDimensions,
-    next?: CardDimensions,
-  ) => {
-    if (!current || !next) {
-      return true;
-    }
-    if (
-      canCompareDimension(current.width, next.width) &&
-      canCompareDimension(current.height, next.height)
-    ) {
-      const nextIsHigher =
-        parseInt(`${current.width}`, 10) < parseInt(`${next.width}`, 10);
-      const nextIsWider =
-        parseInt(`${current.height}`, 10) < parseInt(`${next.height}`, 10);
-      return nextIsHigher || nextIsWider;
-    } else {
-      return true;
-    }
-  };
 
   releaseDataURI = () => {
     const { dataURI } = this.state;
