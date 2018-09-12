@@ -10,6 +10,7 @@ export interface UnauthorizedViewProps {
   icon?: string;
   onClick?: () => void;
   onAuthorise?: () => void;
+  isSelected?: boolean;
 }
 
 export class UnauthorizedView extends React.Component<UnauthorizedViewProps> {
@@ -23,9 +24,9 @@ export class UnauthorizedView extends React.Component<UnauthorizedViewProps> {
   };
 
   render() {
-    const { url, icon, onClick } = this.props;
+    const { url, icon, onClick, isSelected } = this.props;
     return (
-      <Frame onClick={onClick}>
+      <Frame onClick={onClick} isSelected={isSelected}>
         <IconAndTitleLayout
           icon={<Icon src={icon} />}
           title={truncateUrlForErrorView(url)}

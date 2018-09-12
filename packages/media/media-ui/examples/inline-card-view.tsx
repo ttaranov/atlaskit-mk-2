@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
+import Checkbox from '@atlaskit/checkbox';
 import {
   LinkView,
   ResolvedView,
@@ -24,67 +25,90 @@ const lozenge: Lozenge = {
 };
 const onClick = () => window.open(url);
 
-export default () => (
-  <Page>
-    <Grid>
-      <GridColumn>
-        <h4>Paste link into editor</h4>
-        Labore sunt adipisicing esse magna.
-        <LinkView text={url} onClick={onClick} />
-        <h4>Unauthorised view</h4>
-        Labore sunt adipisicing esse magna.
-        <UnauthorizedView
-          icon={icon}
-          onClick={() => {}}
-          onAuthorise={() => {
-            alert('Does nothing...');
-          }}
-          url={url}
-        />
-        <h4>ResolvingView</h4>
-        Labore sunt adipisicing esse magna.
-        <ResolvingView url={url} onClick={onClick} />
-        Labore sunt adipisicing esse magna.
-        <h4>No Permissions View</h4>
-        Labore sunt adipisicing esse magna.
-        <ForbiddenView
-          url={url}
-          onClick={() => {
-            alert("Clicking me won't fix the permissions...");
-          }}
-          onAuthorise={() => {
-            alert('Okay, what else have we got...');
-          }}
-        />
-        <h4>Errored View</h4>
-        Labore sunt adipisicing esse magna.
-        <ErroredView
-          message="Ooops, something went wrong!"
-          url={url}
-          onClick={() => {}}
-          onRetry={() => {
-            alert('Trying really hard!');
-          }}
-        />
-        Labore sunt adipisicing esse magna.
-        <h4>Resolved view</h4>
-        Labore sunt adipisicing esse magna.
-        <ResolvedView
-          icon={icon}
-          title={title}
-          lozenge={lozenge}
-          onClick={onClick}
-        />
-        <h4>Resolved selecetd view</h4>
-        Labore sunt adipisicing esse magna.
-        <ResolvedView
-          icon={icon}
-          title={title}
-          lozenge={lozenge}
-          isSelected={true}
-          onClick={onClick}
-        />
-      </GridColumn>
-    </Grid>
-  </Page>
-);
+class Example extends React.Component {
+  state = {
+    isSelected: false,
+  };
+
+  handleSelectedClick = () => {
+    this.setState({
+      isSelected: !this.state.isSelected,
+    });
+  };
+
+  render() {
+    return (
+      <Page>
+        <Grid>
+          <GridColumn>
+            <Checkbox
+              label="Is selected?"
+              onChange={this.handleSelectedClick}
+            />
+          </GridColumn>
+        </Grid>
+        <Grid>
+          <GridColumn>
+            <h4>Paste link into editor</h4>
+            Labore sunt adipisicing esse magna.
+            <LinkView text={url} onClick={onClick} />
+            <h4>Unauthorised view</h4>
+            Labore sunt adipisicing esse magna.
+            <UnauthorizedView
+              isSelected={this.state.isSelected}
+              icon={icon}
+              onClick={() => {}}
+              onAuthorise={() => {
+                alert('Does nothing...');
+              }}
+              url={url}
+            />
+            <h4>ResolvingView</h4>
+            Labore sunt adipisicing esse magna.
+            <ResolvingView
+              isSelected={this.state.isSelected}
+              url={url}
+              onClick={onClick}
+            />
+            Labore sunt adipisicing esse magna.
+            <h4>No Permissions View</h4>
+            Labore sunt adipisicing esse magna.
+            <ForbiddenView
+              isSelected={this.state.isSelected}
+              url={url}
+              onClick={() => {
+                alert("Clicking me won't fix the permissions...");
+              }}
+              onAuthorise={() => {
+                alert('Okay, what else have we got...');
+              }}
+            />
+            <h4>Errored View</h4>
+            Labore sunt adipisicing esse magna.
+            <ErroredView
+              isSelected={this.state.isSelected}
+              message="Ooops, something went wrong!"
+              url={url}
+              onClick={() => {}}
+              onRetry={() => {
+                alert('Trying really hard!');
+              }}
+            />
+            Labore sunt adipisicing esse magna.
+            <h4>Resolved view</h4>
+            Labore sunt adipisicing esse magna.
+            <ResolvedView
+              isSelected={this.state.isSelected}
+              icon={icon}
+              title={title}
+              lozenge={lozenge}
+              onClick={onClick}
+            />
+          </GridColumn>
+        </Grid>
+      </Page>
+    );
+  }
+}
+
+export default () => <Example />;

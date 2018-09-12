@@ -11,6 +11,7 @@ export interface ErroredViewProps {
   message: string;
   onClick?: () => void;
   onRetry?: () => void;
+  isSelected?: boolean;
 }
 
 export class ErroredView extends React.Component<ErroredViewProps> {
@@ -24,9 +25,9 @@ export class ErroredView extends React.Component<ErroredViewProps> {
   };
 
   render() {
-    const { url, message, onClick, onRetry } = this.props;
+    const { url, message, onClick, onRetry, isSelected } = this.props;
     return (
-      <Frame onClick={onClick}>
+      <Frame onClick={onClick} isSelected={isSelected}>
         <IconAndTitleLayout
           icon={
             <ErrorIcon label="error" size="medium" primaryColor={colors.R300} />
