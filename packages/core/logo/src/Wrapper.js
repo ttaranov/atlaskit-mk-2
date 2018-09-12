@@ -39,13 +39,7 @@ const Span = styled.span`
     `};
 `;
 
-const Wrapper = ({
-  label,
-  iconGradientStart,
-  iconGradientStop,
-  svg,
-  ...rest
-}: WrapperProps) => (
+const Wrapper = ({ label, svg, ...rest }: WrapperProps) => (
   <Span
     // We want to not add the aria-label if it does not exist for consistency
     // eslint-disable-next-line
@@ -53,7 +47,7 @@ const Wrapper = ({
     dangerouslySetInnerHTML={{
       __html:
         typeof svg === 'function'
-          ? svg(String(iconGradientStart), String(iconGradientStop))
+          ? svg(String(rest.iconGradientStart), String(rest.iconGradientStop))
           : svg,
     }}
     {...rest}
