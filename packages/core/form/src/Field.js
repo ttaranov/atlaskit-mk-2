@@ -254,7 +254,6 @@ export default class Field extends Component<Props, State> {
    */
   validate = (): FieldState => {
     const { validators, value } = this.state.fieldState;
-    //const value = this.state.fieldState || '';
     const {
       isInvalid,
       invalidMessage,
