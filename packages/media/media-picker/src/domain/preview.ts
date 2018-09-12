@@ -1,5 +1,5 @@
 export type NonImagePreview = {
-  readonly src: string;
+  readonly file: Blob;
 };
 export type ImagePreview = NonImagePreview & {
   readonly dimensions: {
