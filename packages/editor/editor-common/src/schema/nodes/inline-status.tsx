@@ -28,6 +28,7 @@ export type PanelType =
 export interface InlineStatusAttributes {
   panelType: PanelType;
   appearance: InlineStatusAppearance;
+  color?: string;
 }
 
 /**
@@ -75,24 +76,29 @@ export const inlineStatus: NodeSpec = {
   attrs: {
     panelType: { default: 'info' },
     appearance: { default: 'default' },
+    color: { default: 'neutral' },
   },
   parseDOM: [
     {
       tag: 'div[data-panel-type]',
-      getAttrs: (dom: HTMLElement) => ({
-        panelType: dom.getAttribute('data-panel-type')!,
-        appearance: dom.getAttribute('data-status-appearance')!,
-      }),
+      getAttrs: (dom: HTMLElement) => {
+        return {
+          panelType: dom.getAttribute('data-panel-type')!,
+          appearance: dom.getAttribute('data-status-appearance')!,
+          color: dom.getAttribute('data-status-color')!,
+        };
+      },
     },
   ],
   toDOM(node: Node) {
     const panelType = node.attrs['panelType'];
     const appearance = node.attrs['appearance'];
+    const color = node.attrs['color'];
     const attrs: DOMAttributes = {
       'data-panel-type': panelType,
       'data-status-appearance': appearance,
+      'data-status-color': color,
     };
-    console.log('# inline-status toDOM()');
     return ['div', attrs, getIconDom(panelType), ['div', {}, 0]];
   },
 };

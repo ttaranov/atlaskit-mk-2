@@ -10,6 +10,8 @@ export type StatusState = {
   element?: HTMLElement;
   activePanelType?: string | undefined;
   toolbarVisible?: boolean | undefined;
+  showDatePickerAt?: number | null;
+  color?: string;
 };
 
 export const availablePanelType = [
@@ -54,22 +56,14 @@ export const createPlugin = ({
           element: null,
           activePanelType: undefined,
           toolbarVisible: false,
+          showDatePickerAt: null,
+          color: 'neutral',
         };
       },
-      apply(tr, pluginState: StatusState, oldState, newState) {
+      apply(tr, pluginState: StatusState) {
         const nextPluginState = tr.getMeta(pluginKey);
-        const parentStatusNode = findParentNodeOfType(
-          oldState.schema.nodes.inlineStatus,
-        )(oldState.tr.selection);
-        //   if (parentStatusNode && nextPluginState) {
-        //     const newPluginState = {
-        //       insideStatus: true,
-        //       ...pluginState
-        //   }
-        //   dispatch(pluginKey,newPluginState);
-        //   return newPluginState;
-        // }
         if (nextPluginState) {
+          console.log('#apply nextPluginState: ', nextPluginState);
           dispatch(pluginKey, nextPluginState);
           return nextPluginState;
         }
@@ -88,7 +82,7 @@ export const createPlugin = ({
               },
             },
           } = view;
-          //console.log(getPluginState(view.state))
+
           const pluginState = getPluginState(view.state);
           const parent = findParentNodeOfType(inlineStatus)(selection);
           const parentDOM = findParentDomRefOfType(
@@ -96,12 +90,20 @@ export const createPlugin = ({
             view.domAtPos.bind(view),
           )(selection);
 
+          const inlineEditing = findParentNodeOfType(
+            view.state.schema.nodes.inlineStatus,
+          )(view.state.tr.selection);
+
           if (parentDOM !== pluginState.element) {
             setPluginState({
               element: parentDOM,
               activePanelType: parent && parent!.node.attrs['panelType'],
+              color: (parent && parent!.node.attrs['color']) || 'neutral',
               toolbarVisible: !!parent,
-              inlineEditing: parentDOM !== undefined,
+              inlineEditing: inlineEditing && parentDOM !== undefined,
+              showDatePickerAt: parent
+                ? view.state.tr.selection.from - 1
+                : null,
             })(view.state, view.dispatch);
             return true;
           }
@@ -125,6 +127,9 @@ export const createPlugin = ({
               toolbarVisible: false,
               element: null,
               activePanelType: undefined,
+              color: 'neutral',
+              showDatePickerAt: null,
+              inlineEditing: false,
             })(view.state, view.dispatch);
             return true;
           }

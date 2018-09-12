@@ -20,6 +20,7 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
       items: [
         {
           type: 'button',
+          appearance: 'subtle',
           icon: InfoIcon,
           onClick: changePanelType('info'),
           selected: activePanelType === 'info',
@@ -53,16 +54,16 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
           selected: activePanelType === 'error',
           title: 'Error',
         },
-        {
-          type: 'separator',
-        },
-        {
-          type: 'button',
-          appearance: 'danger',
-          icon: RemoveIcon,
-          onClick: removePanel(),
-          title: 'Remove table',
-        },
+        // {
+        //   type: 'separator',
+        // },
+        // {
+        //   type: 'button',
+        //   appearance: 'danger',
+        //   icon: RemoveIcon,
+        //   onClick: removePanel(),
+        //   title: 'Remove table',
+        // },
       ],
     };
   }

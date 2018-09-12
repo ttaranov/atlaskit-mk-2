@@ -24,6 +24,7 @@ import { PortalProviderAPI } from '../../../ui/PortalProvider';
 import Lozenge from '@atlaskit/lozenge';
 import { pluginKey } from '../pm-plugins/main';
 import WithPluginState from '../../../ui/WithPluginState';
+import { findParentNodeOfType } from 'prosemirror-utils';
 
 const panelColor = {
   info: akColorB50,
@@ -62,7 +63,9 @@ export type InlineStatusComponentProps = {
   panelType: string;
   inlineEditing?: boolean;
   appearance?: string;
+  color?: string;
   forwardRef: (ref: HTMLElement) => void;
+  view: object;
 };
 
 const appearances = {
@@ -74,35 +77,46 @@ const appearances = {
   note: 'new',
 };
 
+const colorToLozengeAppearanceMap = {
+  neutral: 'default',
+  purple: 'new',
+  blue: 'inprogress',
+  red: 'removed',
+  yellow: 'moved',
+  green: 'success',
+};
+
 export class InlineStatusComponent extends React.Component<
   InlineStatusComponentProps
 > {
   shouldComponentUpdate(nextProps) {
     return (
-      this.props.panelType !== nextProps.panelType ||
-      this.props.appearance !== nextProps.appearance ||
-      this.props.inlineEditing !== nextProps.inlineEditing
+      // this.props.panelType !== nextProps.panelType ||
+      // this.props.appearance !== nextProps.appearance ||
+      this.props.inlineEditing !== nextProps.inlineEditing ||
+      this.props.color !== nextProps.color
     );
   }
 
   render() {
-    const { panelType, appearance, forwardRef } = this.props;
-    const Icon = panelIcons[panelType];
-    const appearance_ = appearances[panelType];
-    console.log('# InlineStatusComponent.render ...');
+    const { forwardRef, color, view } = this.props;
+    const appearance_ = colorToLozengeAppearanceMap[color || 'neutral'];
+    // const inlineEditing = findParentNodeOfType(view.state.schema.nodes.inlineStatus)(view.state.tr.selection)
+
     return (
       <WithPluginState
         plugins={{
           statusState: pluginKey,
         }}
-        render={statusState => {
-          const inlineEditing = statusState.statusState.inlineEditing;
+        render={({ statusState }) => {
+          // console.log('statusState: ', statusState.inlineEditing, inlineEditing)
+
           return (
             <Lozenge
               appearance={appearance_}
               maxWidth={'100%'}
               forwardRef={forwardRef}
-              inlineEditing={inlineEditing}
+              inlineEditing={statusState.inlineEditing}
             />
           );
         }}
@@ -116,6 +130,7 @@ class InlineStatus extends ReactNodeView {
     const domRef = document.createElement('span');
     domRef.setAttribute('data-panel-type', this.node.attrs.panelType);
     domRef.setAttribute('data-status-appearance', this.node.attrs.appearance);
+    domRef.setAttribute('data-status-color', this.node.attrs.color);
     return domRef;
   }
 
@@ -126,11 +141,15 @@ class InlineStatus extends ReactNodeView {
   }
 
   render(props, forwardRef) {
-    const { panelType } = this.node.attrs;
-    //const pluginState = pluginKey.getState(this.view.state);
-    console.log('# InlineStatus.render ...');
+    const { panelType, color } = this.node.attrs;
+    const { view } = this;
     return (
-      <InlineStatusComponent panelType={panelType} forwardRef={forwardRef} />
+      <InlineStatusComponent
+        panelType={panelType}
+        color={color}
+        view={view}
+        forwardRef={forwardRef}
+      />
     );
   }
 
