@@ -11,7 +11,7 @@ export default abstract class SchemaNodeWithValidators<
     super(type);
   }
 
-  mergeValidationInfo(keys: [keyof T], obj: any) {
+  mergeValidationInfo(keys: Array<keyof T>, obj: any) {
     keys.forEach(k => {
       if (this.validators.hasOwnProperty(k)) {
         obj[k] = this.validators[k];
