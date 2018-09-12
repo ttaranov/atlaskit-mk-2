@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 5.5.12
+- [patch] add more analytics attribute (abTest related attributes, query attributes to search result analytics) [317bc68](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/317bc68)
+
 ## 5.5.11
 - [patch] Update TS to 3.0 [f68d367](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f68d367)
 
