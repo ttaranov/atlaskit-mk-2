@@ -239,15 +239,15 @@ export class NewUploadServiceImpl implements UploadService {
     cancellableFileUploads.forEach(cancellableFileUpload => {
       const { file, mediaFile } = cancellableFileUpload;
       const mediaType = this.getMediaTypeFromFile(file);
-      if (mediaType === 'image') {
-        getPreviewFromBlob(file, mediaType).then(preview => {
+      if (mediaType === 'video') {
+        getPreviewFromVideo(file).then(preview => {
           this.emit('file-preview-update', {
             file: mediaFile,
             preview,
           });
         });
-      } else if (mediaType === 'video') {
-        getPreviewFromVideo(file).then(preview => {
+      } else {
+        getPreviewFromBlob(file, mediaType).then(preview => {
           this.emit('file-preview-update', {
             file: mediaFile,
             preview,
