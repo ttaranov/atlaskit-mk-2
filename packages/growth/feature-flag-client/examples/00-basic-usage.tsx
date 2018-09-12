@@ -38,7 +38,7 @@ const client = new FeatureFlagClient({
   },
 });
 
-const JSONFlag = client.getJSONValue('my.json.flag');
+const JSONFlag: any = client.getJSONValue('my.json.flag');
 
 export default () => (
   <div>
