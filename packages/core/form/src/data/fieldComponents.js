@@ -147,7 +147,8 @@ export const fieldComponents: FieldComponentsType = [
     support: NONE,
     changeFunc: 'onChange',
     changeValue: '',
-    supportInfo: 'This component has been deprecated for use in @atlaskit/form',
+    supportInfo:
+      'This component has been deprecated. Use components from @atlaskit/radio instead',
   },
   {
     version: '',
@@ -156,7 +157,8 @@ export const fieldComponents: FieldComponentsType = [
     support: NONE,
     changeFunc: 'onChange',
     changeValue: '',
-    supportInfo: 'This component has been deprecated for use in @atlaskit/form',
+    supportInfo:
+      'This component has been deprecated. Use components from @atlaskit/radio instead',
   },
   {
     version: '',
@@ -165,7 +167,8 @@ export const fieldComponents: FieldComponentsType = [
     support: NONE,
     changeFunc: 'onChange',
     changeValue: '',
-    supportInfo: 'This component has been deprecated for use in @atlaskit/form',
+    supportInfo:
+      'This component has been deprecated. Use components from @atlaskit/radio instead',
   },
   {
     version: '',
