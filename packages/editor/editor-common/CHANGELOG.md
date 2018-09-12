@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 16.1.2
+- [patch] Fix generator to work with TS3 [4040b00](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4040b00)
+
 ## 16.1.1
 - [patch] Fix popup positioning when inside overflow:auto containers [affe5df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/affe5df)
 
