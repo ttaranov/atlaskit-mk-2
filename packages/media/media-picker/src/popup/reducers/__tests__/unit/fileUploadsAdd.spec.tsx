@@ -5,13 +5,12 @@ import { fileUploadsStart } from '../../../actions/fileUploadsStart';
 
 describe('fileUploadsAdd() reducer', () => {
   const MOCK_TIMESTAMP = Date.now();
-  let dateNowSpy;
+  let dateNowSpy: jest.SpyInstance<any>;
 
   beforeAll(() => {
     // Lock Time
-    dateNowSpy = jest
-      .spyOn(Date, 'now')
-      .mockImplementation(() => MOCK_TIMESTAMP);
+    dateNowSpy = jest.spyOn(Date, 'now');
+    dateNowSpy.mockImplementation(() => MOCK_TIMESTAMP);
   });
 
   afterAll(() => {

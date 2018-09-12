@@ -3,7 +3,7 @@ import { DefaultShapeDeleter } from '../../shapeDeleter';
 describe('MediaEditor DefaultShapeDeleter', () => {
   let textArea: HTMLTextAreaElement;
   let shapeDeleter: DefaultShapeDeleter;
-  let signalSpy;
+  let signalSpy: jest.Mock<any>;
 
   beforeEach(() => {
     textArea = document.createElement('textarea');
@@ -77,7 +77,7 @@ describe('MediaEditor DefaultShapeDeleter', () => {
     if (document.createEvent) {
       const event = document.createEvent('Events');
       event.initEvent('keydown', true, true);
-      event['key'] = key;
+      (event as any).key = key;
       return event;
     }
 
@@ -88,12 +88,12 @@ describe('MediaEditor DefaultShapeDeleter', () => {
     if (document.createEvent) {
       const event = document.createEvent('Events');
       event.initEvent('keydown', true, true);
-      event['which'] = which;
+      (event as any).which = which;
       return event;
     }
 
     const initializer: KeyboardEventInit = {};
-    initializer['which'] = which;
+    (initializer as any).which = which;
     return new KeyboardEvent('keydown', initializer);
   };
 });

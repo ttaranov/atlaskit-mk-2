@@ -1,5 +1,9 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import {
+  injectIntl,
+  InjectedIntlProps,
+  FormattedHTMLMessage,
+} from 'react-intl';
 import { withAnalytics, FireAnalyticsEvent } from '@atlaskit/analytics';
 import { ConfluenceClient } from '../../api/ConfluenceClient';
 import {
@@ -10,7 +14,6 @@ import {
 } from '../../api/CrossProductSearchClient';
 import { Result } from '../../model/Result';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
-import ConfluenceSearchResults from './ConfluenceSearchResults';
 import { SearchScreenCounter, ScreenCounter } from '../../util/ScreenCounter';
 import {
   LinkComponent,
@@ -24,6 +27,14 @@ import { CreateAnalyticsEventFn } from '../analytics/types';
 import performanceNow from '../../util/performance-now';
 import QuickSearchContainer from '../common/QuickSearchContainer';
 import { sliceResults } from './ConfluenceSearchResultsMapper';
+import NoResultsState from './NoResultsState';
+import SearchResultsComponent from '../common/SearchResults';
+import { getConfluenceAdvancedSearchLink } from '../SearchResultsUtil';
+import AdvancedSearchGroup from './AdvancedSearchGroup';
+import {
+  mapRecentResultsToUIGroups,
+  mapSearchResultsToUIGroups,
+} from './ConfluenceSearchResultsMapper';
 
 export interface Props {
   crossProductSearchClient: CrossProductSearchClient;
@@ -43,20 +54,10 @@ export interface Props {
 export class ConfluenceQuickSearchContainer extends React.Component<
   Props & InjectedIntlProps
 > {
-  screenCounters: {
-    preQueryScreenCounter: ScreenCounter;
-    postQueryScreenCounter: ScreenCounter;
+  screenCounters = {
+    preQueryScreenCounter: new SearchScreenCounter() as ScreenCounter,
+    postQueryScreenCounter: new SearchScreenCounter() as ScreenCounter,
   };
-
-  constructor(props) {
-    super(props);
-    const preQueryScreenCounter = new SearchScreenCounter();
-    const postQueryScreenCounter = new SearchScreenCounter();
-    this.screenCounters = {
-      preQueryScreenCounter,
-      postQueryScreenCounter,
-    };
-  }
 
   handleSearchSubmit = ({ target }) => {
     const query = target.value;
@@ -227,17 +228,31 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     searchSessionId,
   }) => {
     return (
-      <ConfluenceSearchResults
-        retrySearch={retrySearch}
+      <SearchResultsComponent
         query={latestSearchQuery}
         isError={isError}
-        searchResults={searchResults}
-        recentItems={recentItems}
         isLoading={isLoading}
+        retrySearch={retrySearch}
         keepPreQueryState={keepPreQueryState}
         searchSessionId={searchSessionId}
-        referralContextIdentifiers={this.props.referralContextIdentifiers}
         {...this.screenCounters}
+        referralContextIdentifiers={this.props.referralContextIdentifiers}
+        renderNoRecentActivity={() => (
+          <FormattedHTMLMessage
+            id="global-search.no-recent-activity-body"
+            values={{ url: getConfluenceAdvancedSearchLink() }}
+          />
+        )}
+        renderAdvancedSearchGroup={(analyticsData?) => (
+          <AdvancedSearchGroup
+            key="advanced"
+            query={latestSearchQuery}
+            analyticsData={analyticsData}
+          />
+        )}
+        getPreQueryGroups={() => mapRecentResultsToUIGroups(recentItems)}
+        getPostQueryGroups={() => mapSearchResultsToUIGroups(searchResults)}
+        renderNoResult={() => <NoResultsState query={latestSearchQuery} />}
       />
     );
   };

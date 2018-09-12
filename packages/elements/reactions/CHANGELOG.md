@@ -1,5 +1,10 @@
 # @atlaskit/reactions
 
+## 13.1.1
+- [patch] Updated dependencies [6e1d642](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e1d642)
+  - @atlaskit/emoji@41.0.0
+  - @atlaskit/util-data-test@10.0.9
+
 ## 13.1.0
 - [minor] FS-2830 add new analytics to @atlaskit/reactions [e432c15](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e432c15)
 

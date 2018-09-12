@@ -5,14 +5,15 @@ import {
 import { Action, MiddlewareAPI } from 'redux';
 import { State } from '../../domain';
 import { isHandleCloudFetchingEventAction } from '../../actions/handleCloudFetchingEvent';
-import { Payload } from '.';
+import { HandlerResult } from './index';
+import { MediaFile } from '../../../domain/file';
 
 const commonPayload = {
   actionSubject: 'mediaUpload',
   actionSubjectId: 'cloudMedia',
 };
 
-const fileAttributes = file => ({
+const fileAttributes = (file: MediaFile) => ({
   fileSize: file.size,
   fileMimetype: file.type,
   fileSource: 'mediapicker',
@@ -20,15 +21,13 @@ const fileAttributes = file => ({
 
 const source = 'mediaPickerModal';
 
-export default (
-  action: Action,
-  store: MiddlewareAPI<State>,
-): Payload[] | undefined => {
+export default (action: Action, store: MiddlewareAPI<State>): HandlerResult => {
   if (isHandleCloudFetchingEventAction(action)) {
     const { event, payload, file } = action;
-    const timeStarted = store.getState().remoteUploads[payload.uploadId]
-      .timeStarted;
-
+    const remoteUpload = store.getState().remoteUploads[payload.uploadId];
+    const { timeStarted } = remoteUpload || { timeStarted: undefined };
+    const uploadDurationMsec =
+      timeStarted !== undefined ? Date.now() - timeStarted : -1;
     if (event === 'RemoteUploadStart') {
       return [
         {
@@ -49,8 +48,7 @@ export default (
           attributes: {
             fileAttributes: fileAttributes(file),
             status: 'success',
-            uploadDurationMsec:
-              timeStarted !== undefined ? Date.now() - timeStarted : -1,
+            uploadDurationMsec,
           },
           eventType: TRACK_EVENT_TYPE,
           source,
@@ -64,8 +62,7 @@ export default (
           attributes: {
             fileAttributes: fileAttributes(file),
             status: 'fail',
-            uploadDurationMsec:
-              timeStarted !== undefined ? Date.now() - timeStarted : -1,
+            uploadDurationMsec,
           },
           eventType: TRACK_EVENT_TYPE,
           source,

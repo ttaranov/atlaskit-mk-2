@@ -13,7 +13,6 @@ import JiraIcon from '@atlaskit/icon/glyph/jira';
 import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import { JiraWordmark } from '@atlaskit/logo';
-import { ThemeProvider } from 'emotion-theming';
 import { colors } from '@atlaskit/theme';
 
 import {
@@ -28,6 +27,7 @@ import {
   Separator,
   UIControllerSubscriber,
   modeGenerator,
+  ThemeProvider,
 } from '../src';
 
 function makeTestItem(key) {

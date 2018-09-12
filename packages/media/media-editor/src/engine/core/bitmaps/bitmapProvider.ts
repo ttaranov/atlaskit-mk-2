@@ -3,9 +3,20 @@ import { ImageProvider } from '../../components/imageProvider';
 import { Bitmap } from './bitmap';
 import { FragmentPosition } from './bitmapFragment';
 
+const defaultFragmentPosition = {
+  x: 0,
+  y: 0,
+  width: 0,
+  height: 0,
+  uTopLeft: 0,
+  vTopLeft: 0,
+  uBottomRight: 0,
+  vBottomRight: 0,
+};
+
 // Now this class supports only one image
 export class BitmapProvider implements Core.BitmapProviderInterop {
-  private bitmap: Bitmap | null;
+  private bitmap: Bitmap | null = null;
   private fragmentPosition: FragmentPosition;
 
   constructor(
@@ -13,6 +24,7 @@ export class BitmapProvider implements Core.BitmapProviderInterop {
     private gl: WebGLRenderingContext,
   ) {
     this.createBitmap();
+    this.fragmentPosition = { ...defaultFragmentPosition };
   }
 
   unload(): void {
@@ -50,22 +62,19 @@ export class BitmapProvider implements Core.BitmapProviderInterop {
   }
 
   // Gets the bitmap dimensions
-  getBitmapWidth(bitmapIndex: number): number {
+  getBitmapWidth(): number {
     return this.bitmap ? this.bitmap.size.width : 0;
   }
 
-  getBitmapHeight(bitmapIndex: number): number {
+  getBitmapHeight(): number {
     return this.bitmap ? this.bitmap.size.height : 0;
   }
 
-  getNumberOfFragments(bitmapIndex: number): number {
+  getNumberOfFragments(): number {
     return this.bitmap ? this.bitmap.numberOfFragments : 0;
   }
 
-  queryFragmentCoordinates(
-    bitmapIndex: number,
-    fragmentIndex: number,
-  ): boolean {
+  queryFragmentCoordinates(_: number, fragmentIndex: number): boolean {
     if (!this.bitmap) {
       return false;
     }
@@ -75,16 +84,7 @@ export class BitmapProvider implements Core.BitmapProviderInterop {
       this.fragmentPosition = position;
       return true;
     } else {
-      this.fragmentPosition = {
-        x: 0,
-        y: 0,
-        width: 0,
-        height: 0,
-        uTopLeft: 0,
-        vTopLeft: 0,
-        uBottomRight: 0,
-        vBottomRight: 0,
-      };
+      this.fragmentPosition = { ...defaultFragmentPosition };
       return false;
     }
   }
@@ -121,7 +121,7 @@ export class BitmapProvider implements Core.BitmapProviderInterop {
     return this.fragmentPosition.vBottomRight;
   }
 
-  bind(bitmapIndex: number, fragmentIndex: number): boolean {
+  bind(_: number, fragmentIndex: number): boolean {
     if (!this.bitmap) {
       return false;
     }

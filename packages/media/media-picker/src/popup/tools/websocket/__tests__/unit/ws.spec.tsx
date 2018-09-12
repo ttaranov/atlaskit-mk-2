@@ -70,7 +70,7 @@ describe('Ws', () => {
       webSocketSend = jest.fn<WebSocketSendFunction>();
       webSocketAddListener = jest
         .fn<WebSocketListenerFunction>()
-        .mockImplementation((event: string, callback: Function) => callback());
+        .mockImplementation((_: string, callback: Function) => callback());
       webSocketRemoveListener = jest.fn<WebSocketListenerFunction>();
 
       webSocket = {

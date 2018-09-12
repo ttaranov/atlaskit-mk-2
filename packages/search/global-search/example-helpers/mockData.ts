@@ -323,26 +323,36 @@ export function makeCrossProductSearchData(
       result => result.title.toLowerCase().indexOf(term) > -1,
     );
 
+    const abTest = {
+      experimentId: 'experiment-1',
+      controlId: 'control-id',
+      abTestId: 'abtest-id',
+    };
+
     return {
       scopes: [
         {
           id: Scope.ConfluencePageBlog,
           experimentId: 'experiment-1',
+          abTest,
           results: filteredConfResults,
         },
         {
           id: Scope.ConfluencePageBlogAttachment,
           experimentId: 'experiment-1',
+          abTest,
           results: filteredConfResultsWithAttachments,
         },
         {
           id: Scope.JiraIssue,
           experimentId: 'experiment-1',
+          abTest,
           results: filteredJiraResults,
         },
         {
           id: Scope.ConfluenceSpace,
           experimentId: 'experiment-1',
+          abTest,
           results: filteredSpaceResults,
         },
       ],

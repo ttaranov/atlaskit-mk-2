@@ -41,6 +41,7 @@ function createClient(
 }
 
 describe('Card', () => {
+  // tslint:disable-next-line:no-console
   console.error = jest.fn();
 
   it('should render an error when there is no client provided', async () => {

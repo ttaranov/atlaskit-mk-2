@@ -38,6 +38,7 @@ export interface Props {
   mountPoint?: HTMLElement;
   allowMergeCells?: boolean;
   allowBackgroundColor?: boolean;
+  boundariesElement?: HTMLElement;
   offset?: Array<number>;
 }
 
@@ -50,8 +51,12 @@ export default class ContextualMenu extends Component<Props, State> {
     isSubmenuOpen: false,
   };
 
+  static defaultProps = {
+    boundariesElement: document.body,
+  };
+
   render() {
-    const { isOpen, mountPoint, offset } = this.props;
+    const { isOpen, mountPoint, offset, boundariesElement } = this.props;
     const items = this.createItems();
     if (!items) {
       return null;
@@ -69,6 +74,7 @@ export default class ContextualMenu extends Component<Props, State> {
           onMouseLeave={this.handleItemMouseLeave}
           fitHeight={188}
           fitWidth={contextualMenuDropdownWidth}
+          boundariesElement={boundariesElement}
           offset={offset}
         >
           <div className="ProseMirror-table-contextual-menu-trigger">
@@ -83,6 +89,21 @@ export default class ContextualMenu extends Component<Props, State> {
       </div>
     );
   }
+
+  private handleSubMenuRef = ref => {
+    const { boundariesElement } = this.props;
+
+    if (!(boundariesElement && ref)) {
+      return;
+    }
+
+    const boundariesRect = boundariesElement.getBoundingClientRect();
+    const rect = ref.getBoundingClientRect();
+
+    if (rect.left + rect.width - boundariesRect.left > boundariesRect.width) {
+      ref.style.left = `-${rect.width}px`;
+    }
+  };
 
   private createItems = () => {
     const {
@@ -101,7 +122,7 @@ export default class ContextualMenu extends Component<Props, State> {
           ? state.doc.nodeAt(targetCellPosition)
           : null;
       items.push({
-        content: <div className="hello">{'Cell background'}</div>,
+        content: 'Cell background',
         value: { name: 'background' },
         elemAfter: (
           <div>
@@ -112,7 +133,10 @@ export default class ContextualMenu extends Component<Props, State> {
               }}
             />
             {isSubmenuOpen && (
-              <div className="ProseMirror-table-contextual-submenu">
+              <div
+                className="ProseMirror-table-contextual-submenu"
+                ref={this.handleSubMenuRef}
+              >
                 <ColorPalette
                   palette={tableBackgroundColorPalette}
                   borderColors={tableBackgroundBorderColors}

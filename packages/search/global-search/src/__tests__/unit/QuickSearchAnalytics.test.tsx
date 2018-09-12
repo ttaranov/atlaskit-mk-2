@@ -338,7 +338,11 @@ describe('Quick Search Analytics', () => {
           event,
           getExperimentExposureEvent({
             searchSessionId: expect.any(String),
-            experimentId: 'experiment-1',
+            abTest: {
+              experimentId: 'experiment-1',
+              controlId: 'control-id',
+              abTestId: 'abtest-id',
+            },
           }),
         );
       });

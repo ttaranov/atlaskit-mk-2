@@ -74,15 +74,16 @@ export interface ConfluenceItem {
 export type SearchItem = ConfluenceItem | JiraItem;
 
 export interface ABTest {
-  abTestId?: string;
-  controlId?: string;
-  experimentId?: string;
+  abTestId: string;
+  controlId: string;
+  experimentId: string;
 }
 
 export interface ScopeResult {
   id: Scope;
   error?: string;
   results: SearchItem[];
+  // @deprecated
   experimentId?: string;
   abTest?: ABTest;
 }

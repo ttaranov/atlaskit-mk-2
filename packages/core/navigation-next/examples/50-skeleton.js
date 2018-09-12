@@ -1,7 +1,6 @@
 // @flow
 
 import React, { Component, Fragment } from 'react';
-import { ThemeProvider } from 'emotion-theming';
 import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import BacklogIcon from '@atlaskit/icon/glyph/backlog';
 import IssuesIcon from '@atlaskit/icon/glyph/issue';
@@ -21,6 +20,7 @@ import {
   ContainerHeader,
   ItemAvatar,
   Item,
+  ThemeProvider,
 } from '../src';
 
 const gridSize = gridSizeFn();

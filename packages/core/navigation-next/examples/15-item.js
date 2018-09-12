@@ -1,7 +1,6 @@
 // @flow
 
 import React, { Component, type ComponentType } from 'react';
-import { ThemeProvider } from 'emotion-theming';
 import Badge from '@atlaskit/badge';
 import {
   DropdownItem,
@@ -27,6 +26,7 @@ import {
   settings,
   SkeletonContainerHeader,
   SkeletonItem,
+  ThemeProvider,
 } from '../src';
 
 const themeModes = { light, dark, settings };

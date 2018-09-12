@@ -74,7 +74,15 @@ const leadingKeywordTokenMap = [
   },
   {
     type: TokenType.RULER,
-    regex: /^-{4}/,
+    regex: /^-{4}\s/,
+  },
+  {
+    type: TokenType.TRIPLE_DASH_SYMBOL,
+    regex: /^-{3}\s/,
+  },
+  {
+    type: TokenType.DOUBLE_DASH_SYMBOL,
+    regex: /^-{2}\s/,
   },
   {
     type: TokenType.LIST,

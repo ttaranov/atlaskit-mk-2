@@ -35,6 +35,7 @@ const unsupportedNodes = [
   'layoutColumn',
   'inlineCard',
   'blockCard',
+  'status',
 ];
 
 const unsupportedMarks = [

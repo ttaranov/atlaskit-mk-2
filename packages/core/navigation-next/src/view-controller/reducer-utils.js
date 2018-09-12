@@ -82,10 +82,25 @@ const prependChildren = (prepended: View) => (item: ViewItem) => ({
   items: [...prepended, ...(item.items || [])],
 });
 
+/**
+ * Transformers
+ */
+
+// Flatten navigation items
+const flattenItems = (items: any): any => {
+  const itemProps = [];
+  walkView(() => true)(item => {
+    itemProps.push(item);
+    return item;
+  })(items);
+  return itemProps;
+};
+
 export default {
   appendChildren,
   findId,
   findLegacyId,
+  flattenItems,
   insertAfter,
   insertBefore,
   matchId,
