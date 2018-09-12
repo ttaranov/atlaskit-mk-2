@@ -135,7 +135,9 @@ export default class PeopleSearchClientImpl implements PeopleSearchClient {
       return [];
     }
 
-    return response.data.Collaborators.map(userSearchResultToResult);
+    return response.data.Collaborators.map(record =>
+      userSearchResultToResult(record, AnalyticsType.RecentPerson),
+    );
   }
 
   public async search(query: string): Promise<Result[]> {
@@ -154,7 +156,9 @@ export default class PeopleSearchClientImpl implements PeopleSearchClient {
       throw new Error('PeopleSearchClient: Response data missing');
     }
 
-    return response.data.UserSearch.map(userSearchResultToResult);
+    return response.data.UserSearch.map(record =>
+      userSearchResultToResult(record, AnalyticsType.ResultPerson),
+    );
   }
 }
 
@@ -163,7 +167,10 @@ function makeGraphqlErrorMessage(errors: GraphqlError[]) {
   return `${firstError.category}: ${firstError.message}`;
 }
 
-function userSearchResultToResult(searchResult: SearchResult): PersonResult {
+function userSearchResultToResult(
+  searchResult: SearchResult,
+  analyticsType: AnalyticsType,
+): PersonResult {
   const mention = searchResult.nickname || searchResult.fullName;
 
   return {
@@ -172,7 +179,7 @@ function userSearchResultToResult(searchResult: SearchResult): PersonResult {
     name: searchResult.fullName,
     href: '/people/' + searchResult.id,
     avatarUrl: searchResult.avatarUrl,
-    analyticsType: AnalyticsType.ResultPerson,
+    analyticsType,
     mentionName: mention,
     presenceMessage: searchResult.title,
   };

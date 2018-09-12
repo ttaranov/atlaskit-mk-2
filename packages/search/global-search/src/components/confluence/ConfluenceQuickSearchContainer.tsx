@@ -178,6 +178,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
           peopleElapsedMs,
         },
         experimentId: xpsearchResults.experimentId,
+        abTest: xpsearchResults.abTest,
       }),
     );
   };
