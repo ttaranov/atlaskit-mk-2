@@ -5,6 +5,7 @@ import {
 } from '../../../actions';
 
 import { getFilesInRecents, requestRecentFiles } from '../../getFilesInRecents';
+import { Observable } from 'rxjs/Observable';
 
 describe('getFilesInRecents middleware', () => {
   describe('getFilesInRecents()', () => {
@@ -25,40 +26,38 @@ describe('getFilesInRecents middleware', () => {
   });
 
   describe('requestRecentFiles()', () => {
-    it('should dispatch GET_FILES_IN_RECENTS_FAILED when userAuthProvider() rejects', async () => {
-      const fetcher = mockFetcher();
-      const store = mockStore();
+    it('should dispatch GET_FILES_IN_RECENTS_FAILED when collection.getItems rejects', async () => {
+      const getItems = jest
+        .fn()
+        .mockReturnValue(Observable.create(observer => observer.error()));
+      const store = mockStore({
+        userContext: {
+          collection: {
+            getItems,
+          },
+        },
+      } as any);
 
       await requestRecentFiles(store);
-      expect(fetcher.getRecentFiles).toHaveBeenCalledTimes(0);
-      expect(store.dispatch).toHaveBeenCalledTimes(1);
-      expect(store.dispatch).toHaveBeenCalledWith(getFilesInRecentsFailed());
-    });
 
-    it('should dispatch GET_FILES_IN_RECENTS_FAILED when fetcher#getRecentFiles() rejects', async () => {
-      const fetcher = mockFetcher();
-      const store = mockStore();
-
-      fetcher.getRecentFiles.mockReturnValue(Promise.reject('some-error'));
-
-      await requestRecentFiles(store);
-      expect(fetcher.getRecentFiles).toHaveBeenCalledTimes(1);
+      expect(getItems).toHaveBeenCalledTimes(1);
       expect(store.dispatch).toHaveBeenCalledTimes(1);
       expect(store.dispatch).toHaveBeenCalledWith(getFilesInRecentsFailed());
     });
 
     it('should dispatch GET_FILES_IN_RECENTS_SUCCESS when requests succeed', async () => {
-      const fetcher = mockFetcher();
-      const store = mockStore();
-
-      const fetcherResult = {
-        contents: [],
-        nextInclusiveStartKey: 'some-start-key',
-      };
-      fetcher.getRecentFiles.mockReturnValue(Promise.resolve(fetcherResult));
+      const getItems = jest.fn().mockReturnValue(Observable.of([]));
+      const store = mockStore({
+        userContext: {
+          collection: {
+            getItems,
+          },
+        },
+      } as any);
 
       await requestRecentFiles(store);
-      expect(fetcher.getRecentFiles).toHaveBeenCalledTimes(1);
+
+      expect(getItems).toHaveBeenCalledTimes(1);
       expect(store.dispatch).toHaveBeenCalledTimes(1);
       expect(store.dispatch).toHaveBeenCalledWith(
         getFilesInRecentsFullfilled([]),
