@@ -27,14 +27,14 @@ class Wrapper extends React.Component<Props> {
       default:
         return (
           <LocaleAndMessagesIntlProvider>
-            <NoResults />
+            <NoResults title="" body="" />
           </LocaleAndMessagesIntlProvider>
         );
     }
   }
 }
 
-const WrapperWithNav = withNavigation(Wrapper);
+const WrapperWithNav = withNavigation(Wrapper as any);
 export default class extends React.Component {
   render() {
     return <WrapperWithNav />;
