@@ -11,7 +11,7 @@ import {
 const url = 'https://www.example.jira.dev.com/';
 const cloudId = 'cloudId';
 const SEARCH_PATH: string = '/rest/quicksearch/v2';
-const jiraScopes = ['issue', 'board', 'project', 'filter'];
+const jiraScopes = ['jira.issue', 'jira.board,filter,project'];
 
 describe('Search api', () => {
   let client: CrossProductSearchClient;

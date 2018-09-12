@@ -96,20 +96,41 @@ function mockJiraRecentApi() {
   );
 }
 
-function mockCrossProductSearchApiV2() {
-  fetchMock.get(new RegExp('/rest/quicksearch/v2'), async url => {
-    const query = url.split('query=')[1];
-    const results = queryJiraSearch(query);
-    return delay(500, results);
+function mapRequestScopes(requestScopes, resultScopes) {
+  return requestScopes.map(requestScope => {
+    return requestScope
+      .split('.')[1]
+      .split(',')
+      .map(scope => resultScopes.scopes.find(({ id }) => id.includes(scope)))
+      .filter(scopeResult => !!scopeResult)
+      .reduce(
+        (acc, current) => {
+          if (current.error) {
+            acc.error = current.error;
+          }
+          if (current.abTest) {
+            acc.abTest = current.abTest;
+          }
+          acc.results = [...acc.results, ...current.results];
+          return acc;
+        },
+        {
+          id: requestScope,
+          results: [],
+        },
+      );
   });
+}
 
+function mockCrossProductSearchApiV2() {
   fetchMock.post(
     new RegExp('/rest/quicksearch/v2'),
     (request: Request, options: Options) => {
       const body = JSON.parse(options.body);
       const query = body.query.string;
-      const results = queryJiraSearch(query);
-      return delay(500, results);
+      const requestScops = body.scopes;
+      const scopes = mapRequestScopes(requestScops, queryJiraSearch(query));
+      return delay(500, { scopes });
     },
   );
 }

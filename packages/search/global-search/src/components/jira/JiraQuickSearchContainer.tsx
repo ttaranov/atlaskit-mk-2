@@ -54,7 +54,7 @@ export interface Props {
   peopleSearchClient: PeopleSearchClient;
 }
 
-const JiraScopes = ['issue', 'board', 'filter', 'project'];
+const JiraScopes = ['jira.issue', 'jira.board,filter,project'];
 
 const contentTypeToSection = {
   [ContentType.JiraIssue]: 'issues',
