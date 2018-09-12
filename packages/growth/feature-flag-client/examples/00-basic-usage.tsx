@@ -12,7 +12,6 @@ const client = new FeatureFlagClient({
   flags: {
     'my.experiment': {
       value: 'experiment',
-      trackEvents: true,
       explanation: {
         reason: 'RULE_MATCH',
         ruleId: '111-bbbbb-ccc',
@@ -24,7 +23,6 @@ const client = new FeatureFlagClient({
         nav: 'blue',
         footer: 'black',
       },
-      trackEvents: false,
       explanation: {
         reason: 'RULE_MATCH',
         ruleId: '111-bbbbb-ccc',
@@ -32,7 +30,6 @@ const client = new FeatureFlagClient({
     },
     'my.detailed.boolean.flag': {
       value: false,
-      trackEvents: true,
       explanation: {
         reason: 'RULE_MATCH',
         ruleId: '111-bbbbb-ccc',

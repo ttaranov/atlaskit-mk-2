@@ -26,7 +26,7 @@ export default class TrackedFlag implements Flag {
       return options.default;
     }
 
-    if (options.trackExposureEvent && this.flag.trackEvents) {
+    if (options.trackExposureEvent) {
       this.trackExposure(this.flagKey, this.flag);
     }
 
@@ -41,8 +41,7 @@ export default class TrackedFlag implements Flag {
     if (!isOneOf(this.value as string, options.oneOf)) {
       return options.default;
     }
-
-    if (options.trackExposureEvent && this.flag.trackEvents) {
+    if (options.trackExposureEvent) {
       this.trackExposure(this.flagKey, this.flag);
     }
 

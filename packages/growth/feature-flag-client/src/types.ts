@@ -12,7 +12,6 @@ export type DarkFeature = boolean;
 export type JSONFlag = object;
 
 export type FeatureFlag = {
-  trackEvents: boolean;
   value: boolean | string | object;
   explanation: {
     reason: Reason;

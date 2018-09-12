@@ -18,7 +18,6 @@ export default md`
     flags: {
       'my.experiment': {
         value: 'experiment',
-        trackEvents: true,
         explanation: {
           reason: 'RULE_MATCH',
           ruleId: '111-bbbbb-ccc',
@@ -30,7 +29,6 @@ export default md`
           nav: 'blue',
           footer: 'black',
         },
-        trackEvents: false,
         explanation: {
           reason: 'RULE_MATCH',
           ruleId: '111-bbbbb-ccc',
@@ -38,7 +36,6 @@ export default md`
       },
       'my.detailed.boolean.flag': {
         value: false,
-        trackEvents: true,
         explanation: {
           reason: 'RULE_MATCH',
           ruleId: '111-bbbbb-ccc',
@@ -78,7 +75,6 @@ export default md`
   client.setFlags({
     'my.async.boolean.flag': {
       value: false,
-      trackEvents: true,
       explanation: {
         reason: 'RULE_MATCH',
         ruleId: '333-bbbbb-ccc',
