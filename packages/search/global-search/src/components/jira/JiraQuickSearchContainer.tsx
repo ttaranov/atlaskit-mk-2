@@ -12,7 +12,7 @@ import { CreateAnalyticsEventFn } from '../analytics/types';
 import { SearchScreenCounter, ScreenCounter } from '../../util/ScreenCounter';
 import { JiraClient } from '../../api/JiraClient';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
-import { CrossProductSearchClient } from '../../api/CrossProductSearchClientv2';
+import { CrossProductSearchClient } from '../../api/CrossProductSearchClientV2';
 import {
   LinkComponent,
   ReferralContextIdentifiers,

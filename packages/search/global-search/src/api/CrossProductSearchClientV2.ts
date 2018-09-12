@@ -56,7 +56,10 @@ const extractSpecificAttributes = (attributes: Attributes) => {
 };
 
 const extractAvatarUrl = ({ url = '', urls = {} } = {}) => {
-  return url ? url : urls[Object.keys(urls)[0]];
+  if (url) {
+    return url;
+  }
+  return urls['48x48'] || urls[Object.keys(urls)[0]];
 };
 
 const extractABTestAttributes = (scopes: ScopeResult[]): ABTest | undefined => {
