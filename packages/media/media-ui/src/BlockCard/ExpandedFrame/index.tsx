@@ -18,6 +18,7 @@ export interface ExpandedFrameProps {
   minWidth?: number;
   maxWidth?: number;
   children?: React.ReactNode;
+  isSelected?: boolean;
   onClick?: () => void;
 }
 
@@ -25,6 +26,10 @@ export class ExpandedFrame extends React.Component<ExpandedFrameProps> {
   get isInteractive() {
     const { isPlaceholder, href, onClick } = this.props;
     return !isPlaceholder && (Boolean(href) || Boolean(onClick));
+  }
+
+  get isSelected() {
+    return this.props.isSelected;
   }
 
   handleClick = (event: MouseEvent<HTMLElement>) => {
@@ -57,7 +62,7 @@ export class ExpandedFrame extends React.Component<ExpandedFrameProps> {
   }
 
   render() {
-    const { isInteractive } = this;
+    const { isInteractive, isSelected } = this;
     const { isPlaceholder, href, minWidth, maxWidth } = this.props;
     if (!isPlaceholder && href) {
       return (
@@ -66,6 +71,7 @@ export class ExpandedFrame extends React.Component<ExpandedFrameProps> {
           rel="noopener"
           className={className}
           isInteractive={isInteractive}
+          isSelected={isSelected}
           href={href}
           minWidth={minWidth}
           maxWidth={maxWidth}
@@ -80,6 +86,7 @@ export class ExpandedFrame extends React.Component<ExpandedFrameProps> {
         <Wrapper
           className={className}
           isInteractive={isInteractive}
+          isSelected={isSelected}
           minWidth={minWidth}
           maxWidth={maxWidth}
           onClick={this.handleClick}

@@ -107,11 +107,12 @@ export class CardContent extends React.Component<CardContentProps> {
   }
 
   renderBlockResolvedState() {
-    const { state } = this.props;
+    const { state, isSelected } = this.props;
     const props = extractBlockPropsFromJSONLD(state.data || {});
     return (
       <BlockCard.ResolvedView
         {...props}
+        isSelected={isSelected}
         onClick={this.url && this.handleFrameClick}
       />
     );

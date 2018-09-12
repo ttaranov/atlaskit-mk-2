@@ -7,6 +7,7 @@ import {
   akColorN30,
   akColorB50,
   akColorN300,
+  akColorB100,
   akFontFamily,
 } from '@atlaskit/util-shared-styles';
 import { borderRadius, size, ellipsis } from '../../mixins';
@@ -21,6 +22,7 @@ export interface WrapperProps {
   minWidth?: number;
   maxWidth?: number;
   isInteractive?: boolean;
+  isSelected?: boolean;
 }
 
 function minWidth({ minWidth }: WrapperProps) {
@@ -55,6 +57,21 @@ function interactive({ isInteractive }: WrapperProps) {
   }
 }
 
+function selected({ isSelected }: WrapperProps) {
+  return isSelected
+    ? `&::after {
+        cursor: pointer;
+        box-shadow: 0 0 0 2px ${akColorB100};
+        content: '';
+        outline: none;
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        left: 0;
+      }`
+    : '';
+}
+
 const wrapperStyles = css`
   ${borderRadius} ${minWidth} ${maxWidth} ${interactive} display: inline-flex;
   flex-direction: column;
@@ -66,6 +83,8 @@ const wrapperStyles = css`
   background-color: ${akColorN20};
   line-height: initial;
   transition: background 0.3s;
+  position: relative;
+  ${selected}
 `;
 
 // export interface ContentProps {
