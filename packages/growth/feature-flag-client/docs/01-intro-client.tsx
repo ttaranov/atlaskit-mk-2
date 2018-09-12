@@ -85,12 +85,12 @@ export default md`
 
 
   ### How to avoid firing the exposure event?
-  You can skip the exposure event by setting 'trackExposureEvent' to 'false'
+  You can skip the exposure event by setting 'shouldTrackExposureEvent' to 'false'
 
   ${code`
   client.getBooleanValue('my.detailed.boolean.flag', {
     default: true,
-    trackExposureEvent: false,
+    shouldTrackExposureEvent: false,
   });
   `}
 

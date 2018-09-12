@@ -20,13 +20,13 @@ export default class TrackedFlag implements Flag {
 
   getBooleanValue(options: {
     default: boolean;
-    trackExposureEvent?: boolean;
+    shouldTrackExposureEvent?: boolean;
   }): boolean {
     if (!isBoolean(this.value)) {
       return options.default;
     }
 
-    if (options.trackExposureEvent) {
+    if (options.shouldTrackExposureEvent) {
       this.trackExposure(this.flagKey, this.flag);
     }
 
@@ -36,12 +36,12 @@ export default class TrackedFlag implements Flag {
   getVariantValue(options: {
     default: string;
     oneOf: string[];
-    trackExposureEvent?: boolean;
+    shouldTrackExposureEvent?: boolean;
   }): string {
     if (!isOneOf(this.value as string, options.oneOf)) {
       return options.default;
     }
-    if (options.trackExposureEvent) {
+    if (options.shouldTrackExposureEvent) {
       this.trackExposure(this.flagKey, this.flag);
     }
 

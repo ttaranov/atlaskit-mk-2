@@ -57,13 +57,13 @@ export default class FeatureFlagClient {
     flagKey: string,
     options: {
       default: boolean;
-      trackExposureEvent?: boolean;
+      shouldTrackExposureEvent?: boolean;
     },
   ): boolean {
     enforceAttributes(options, ['default'], 'getBooleanValue');
 
     const getterOptions = {
-      trackExposureEvent: true,
+      shouldTrackExposureEvent: true,
       ...options,
     };
 
@@ -81,13 +81,13 @@ export default class FeatureFlagClient {
     options: {
       default: string;
       oneOf: string[];
-      trackExposureEvent?: boolean;
+      shouldTrackExposureEvent?: boolean;
     },
   ): string {
     enforceAttributes(options, ['default', 'oneOf'], 'getVariantValue');
 
     const getterOptions = {
-      trackExposureEvent: true,
+      shouldTrackExposureEvent: true,
       ...options,
     };
 

@@ -13,7 +13,7 @@ export default class UntrackedFlag implements Flag {
 
   getBooleanValue(options: {
     default: boolean;
-    trackExposureEvent?: boolean;
+    shouldTrackExposureEvent?: boolean;
   }): boolean {
     if (!isBoolean(this.value)) {
       return options.default;
@@ -25,7 +25,7 @@ export default class UntrackedFlag implements Flag {
   getVariantValue(options: {
     default: string;
     oneOf: string[];
-    trackExposureEvent?: boolean;
+    shouldTrackExposureEvent?: boolean;
   }): string {
     if (isBoolean(this.value)) {
       return options.default;

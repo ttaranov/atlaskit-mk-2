@@ -50,13 +50,13 @@ export interface FlagConstructor {
 export interface Flag {
   getBooleanValue(options: {
     default: boolean;
-    trackExposureEvent?: boolean;
+    shouldTrackExposureEvent?: boolean;
   }): boolean;
 
   getVariantValue(options: {
     default: string;
     oneOf: string[];
-    trackExposureEvent?: boolean;
+    shouldTrackExposureEvent?: boolean;
   }): string;
 
   getJSONValue(): object;

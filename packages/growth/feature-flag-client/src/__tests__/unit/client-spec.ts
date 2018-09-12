@@ -192,11 +192,11 @@ describe('Feature Flag Client', () => {
         });
       });
 
-      test('should not fire the exposure event if trackExposureEvent is false', () => {
+      test('should not fire the exposure event if shouldTrackExposureEvent is false', () => {
         expect(
           client.getBooleanValue('my.detailed.boolean.flag', {
             default: true,
-            trackExposureEvent: false,
+            shouldTrackExposureEvent: false,
           }),
         ).toBe(false);
         expect(analyticsClient.sendTrackEvent).toHaveBeenCalledTimes(0);
@@ -267,12 +267,12 @@ describe('Feature Flag Client', () => {
         });
       });
 
-      test('should not fire exposure event if trackExposureEvent is false', () => {
+      test('should not fire exposure event if shouldTrackExposureEvent is false', () => {
         expect(
           client.getVariantValue('my.experiment', {
             default: 'control',
             oneOf: ['control', 'experiment'],
-            trackExposureEvent: false,
+            shouldTrackExposureEvent: false,
           }),
         ).toBe('experiment');
         expect(analyticsClient.sendTrackEvent).toHaveBeenCalledTimes(0);
