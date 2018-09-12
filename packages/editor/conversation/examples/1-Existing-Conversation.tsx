@@ -1,7 +1,10 @@
-import { MockReactionsAdapter, ReactionProvider } from '@atlaskit/reactions';
+import { MockReactionsAdapter, ReactionStore } from '@atlaskit/reactions';
 import * as React from 'react';
 import { MOCK_USERS } from '../example-helpers/MockData';
-import { getDataProviderFactory, MockProvider as ConversationResource } from '../example-helpers/MockProvider';
+import {
+  getDataProviderFactory,
+  MockProvider as ConversationResource,
+} from '../example-helpers/MockProvider';
 import { Conversation } from '../src';
 
 const provider = new ConversationResource({
@@ -34,14 +37,14 @@ export default class ExistingConversation extends React.Component<
     }
 
     return (
-      <ReactionProvider adapter={reactionAdapter}>
+      <ReactionStore adapter={reactionAdapter}>
         <Conversation
           id={conversationId}
           containerId="ari:cloud:platform::conversation/demo"
           provider={provider}
           dataProviders={getDataProviderFactory()}
         />
-      </ReactionProvider>
+      </ReactionStore>
     );
   }
 }
