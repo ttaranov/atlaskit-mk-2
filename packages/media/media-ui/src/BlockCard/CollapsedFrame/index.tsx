@@ -37,10 +37,10 @@ export class CollapsedFrame extends React.Component<CollapsedFrameProps> {
     const isInteractive = Boolean(onClick);
     return (
       <Wrappper
-        isSelected={isSelected}
         minWidth={minWidth}
         maxWidth={maxWidth}
         isInteractive={isInteractive}
+        isSelected={isSelected}
         tabIndex={isInteractive ? 0 : undefined}
         role={isInteractive ? 'button' : undefined}
         onClick={this.handleClick}
