@@ -22,6 +22,7 @@ exports[`LinkWrapper should have hover styles when isInteractive=true 1`] = `
   line-height: initial;
   -webkit-transition: background 0.3s;
   transition: background 0.3s;
+  position: relative;
 }
 
 .c0 border-radius:function borderRadius() {
@@ -67,6 +68,7 @@ exports[`LinkWrapper should not have hover styles when isInteractive=false 1`] =
   line-height: initial;
   -webkit-transition: background 0.3s;
   transition: background 0.3s;
+  position: relative;
 }
 
 .c0 border-radius:function borderRadius() {
@@ -105,6 +107,7 @@ exports[`Wrapper should have hover styles when isInteractive=true 1`] = `
   line-height: initial;
   -webkit-transition: background 0.3s;
   transition: background 0.3s;
+  position: relative;
 }
 
 .c0 border-radius:function borderRadius() {
@@ -145,6 +148,7 @@ exports[`Wrapper should not have hover styles when isInteractive=false 1`] = `
   line-height: initial;
   -webkit-transition: background 0.3s;
   transition: background 0.3s;
+  position: relative;
 }
 
 .c0 border-radius:function borderRadius() {
