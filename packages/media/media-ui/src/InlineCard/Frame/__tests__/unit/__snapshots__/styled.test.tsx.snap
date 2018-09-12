@@ -6,7 +6,7 @@ exports[`Wrapper it should have interactive styles 1`] = `
   line-height: 1.1428571428571428;
   margin: 2px 2px 2px 0;
   padding: 1px 2px 2px 2px;
-  border-radius: 3;
+  border-radius: 3px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -39,7 +39,7 @@ exports[`Wrapper it should have selected styles 1`] = `
   line-height: 1.1428571428571428;
   margin: 2px 2px 2px 0;
   padding: 1px 2px 2px 2px;
-  border-radius: 3;
+  border-radius: 3px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -60,7 +60,7 @@ exports[`Wrapper it should not have interactive or selected styles 1`] = `
   line-height: 1.1428571428571428;
   margin: 2px 2px 2px 0;
   padding: 1px 2px 2px 2px;
-  border-radius: 3;
+  border-radius: 3px;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;

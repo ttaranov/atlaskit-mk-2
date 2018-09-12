@@ -1,5 +1,8 @@
 # @atlaskit/media-ui
 
+## 5.1.3
+- [patch] fix borderRadiusBottom and borderRadius exports [f4fa1ac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f4fa1ac)
+
 ## 5.1.2
 - [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
   - @atlaskit/badge@9.1.1

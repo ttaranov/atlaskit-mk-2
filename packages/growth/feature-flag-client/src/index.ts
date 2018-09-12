@@ -1,1 +1,1 @@
-export { default } from './feature-flag-client';
+export { default } from './client';
