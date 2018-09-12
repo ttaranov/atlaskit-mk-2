@@ -5,7 +5,8 @@ import {
 } from '../../../actions';
 
 import { getFilesInRecents, requestRecentFiles } from '../../getFilesInRecents';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
+import { Observer } from 'rxjs/Observer';
 
 describe('getFilesInRecents middleware', () => {
   describe('getFilesInRecents()', () => {
@@ -29,7 +30,9 @@ describe('getFilesInRecents middleware', () => {
     it('should dispatch GET_FILES_IN_RECENTS_FAILED when collection.getItems rejects', async () => {
       const getItems = jest
         .fn()
-        .mockReturnValue(Observable.create(observer => observer.error()));
+        .mockReturnValue(
+          Observable.create((observer: Observer<any>) => observer.error('')),
+        );
       const store = mockStore({
         userContext: {
           collection: {
@@ -58,6 +61,7 @@ describe('getFilesInRecents middleware', () => {
       await requestRecentFiles(store);
 
       expect(getItems).toHaveBeenCalledTimes(1);
+      expect(getItems).toBeCalledWith('recents');
       expect(store.dispatch).toHaveBeenCalledTimes(1);
       expect(store.dispatch).toHaveBeenCalledWith(
         getFilesInRecentsFullfilled([]),
