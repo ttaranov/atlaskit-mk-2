@@ -19,7 +19,7 @@ const Container = styled.div`
 export default class NoResultsState extends React.Component<Props> {
   render() {
     const { query } = this.props;
-
+    const analyticsData = { resultsCount: 0, wasOnNoResultsScreen: true };
     return [
       <NoResults
         key="no-results"
@@ -29,6 +29,7 @@ export default class NoResultsState extends React.Component<Props> {
       <ResultItemGroup title="" key="advanced-search">
         <Container>
           <SearchConfluenceItem
+            analyticsData={analyticsData}
             query={query}
             text={
               <Button appearance="primary">
@@ -37,6 +38,7 @@ export default class NoResultsState extends React.Component<Props> {
             }
           />
           <SearchPeopleItem
+            analyticsData={analyticsData}
             query={query}
             text={
               <Button appearance="default">
