@@ -29,7 +29,18 @@ npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN
 # For some reason, the npm dist-tag commands are hitting yarnpkg and not npmjs
 npm set //registry.yarnpkg.com/:_authToken=$NPM_TOKEN
 
+
+echo -e "\e[32m  Setting Yarn registry and token"
+yarn config set _authToken $NPM_TOKEN
+yarn config set registry https://registry.npmjs.org/
+
 # Forces `chalk` to display colored output in pipelines
 export FORCE_COLOR=1
 yarn config set color always
 
+
+echo -e "\e[32m  Yarn config list"
+yarn config list
+
+echo -e "\e[32m  NPM config list"
+npm config list

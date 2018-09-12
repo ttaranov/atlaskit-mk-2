@@ -1,7 +1,6 @@
 // @flow
 
 import React, { type ComponentType } from 'react';
-import { ThemeProvider } from 'emotion-theming';
 import BoardIcon from '@atlaskit/icon/glyph/board';
 import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
 
@@ -15,6 +14,7 @@ import {
   SkeletonItem,
   Separator,
   modeGenerator,
+  ThemeProvider,
 } from '../src';
 
 import type { Mode } from '../src/theme/types';

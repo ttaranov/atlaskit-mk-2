@@ -99,6 +99,7 @@ export default (
         });
       }
     })
+    // tslint:disable-next-line:no-console
     .catch(console.error);
 
   function waitForTicks() {

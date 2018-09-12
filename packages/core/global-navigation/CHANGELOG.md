@@ -1,5 +1,8 @@
 # @atlaskit/global-navigation
 
+## 4.4.0
+- [minor] Exposes a new prop shouldUnmountOnExit in @atlaskit/drawer which let's the consumer decide if the contents of the drawer should be retained on unmount. Exposes 4 new props, one for each drawer to let the product decide if the contents of the drawer should be retained on drawerClose [2988998](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2988998)
+
 ## 4.3.4
 - [patch] bump dep on navigation-next [4af6c6a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4af6c6a)
 

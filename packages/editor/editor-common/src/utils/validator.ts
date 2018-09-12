@@ -386,6 +386,15 @@ export const getValidNode = (
         }
         break;
       }
+      case 'status': {
+        if (attrs && attrs.text && attrs.color) {
+          return {
+            type,
+            attrs,
+          };
+        }
+        break;
+      }
       case 'emoji': {
         if (attrs && attrs.shortName) {
           return {

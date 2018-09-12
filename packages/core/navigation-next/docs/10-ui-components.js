@@ -1,8 +1,7 @@
 // @flow
 
 import React from 'react';
-import { Prop } from 'pretty-proptypes'; // TODO export this from @atlaskit/docs
-import { Example, md, Props } from '@atlaskit/docs';
+import { Example, md, Props, Prop } from '@atlaskit/docs';
 
 import { Contents, ContentsProvider, H, Hr } from './shared';
 
@@ -165,6 +164,19 @@ ${(
     <Props
       heading="Section props"
       props={require('!!extract-react-types-loader!../src/components/Section')}
+    />
+  )}
+
+${<Hr />}
+
+${<H>SectionHeading</H>}
+
+The SectionHeading is meant to be used at the top of a nested menu section. There should only be one of these used per view, as opposed to GroupHeadings.
+
+${(
+    <Props
+      heading="SectionHeading props"
+      props={require('!!extract-react-types-loader!../src/components/SectionHeading')}
     />
   )}
 

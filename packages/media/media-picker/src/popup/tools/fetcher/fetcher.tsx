@@ -137,7 +137,7 @@ export class MediaApiFetcher implements Fetcher {
             }, METADATA_POLL_INTERVAL_MS);
           }
         })
-        .catch(error => {
+        .catch(() => {
           // this._handleUploadError('metadata_fetch_fail', JSON.stringify(err));
           reject('metadata_fetch_fail');
         });

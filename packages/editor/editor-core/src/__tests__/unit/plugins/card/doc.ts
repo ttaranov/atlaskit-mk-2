@@ -1,10 +1,10 @@
-import { pluginKey } from '../../../src/plugins/card/pm-plugins/main';
-import cardPlugin from '../../../src/plugins/card';
-import { CardProvider, CardPluginState } from '../../../src/plugins/card/types';
+import { pluginKey } from '../../../../plugins/card/pm-plugins/main';
+import cardPlugin from '../../../../plugins/card';
+import { CardProvider, CardPluginState } from '../../../../plugins/card/types';
 import {
   setProvider,
   queueCards,
-} from '../../../src/plugins/card/pm-plugins/actions';
+} from '../../../../plugins/card/pm-plugins/actions';
 
 import {
   doc,
@@ -16,9 +16,9 @@ import {
 } from '@atlaskit/editor-test-helpers';
 import { EditorView } from 'prosemirror-view';
 
-import { setTextSelection } from '../../../src/utils';
+import { setTextSelection } from '../../../../utils';
 import { Fragment, Slice } from 'prosemirror-model';
-import { queueCardsFromChangedTr } from '../../../src/plugins/card/pm-plugins/doc';
+import { queueCardsFromChangedTr } from '../../../../plugins/card/pm-plugins/doc';
 
 describe('card', () => {
   const editor = (doc: any) => {

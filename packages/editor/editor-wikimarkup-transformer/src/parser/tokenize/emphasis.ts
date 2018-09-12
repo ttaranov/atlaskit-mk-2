@@ -2,6 +2,7 @@ import { Schema } from 'prosemirror-model';
 import { parseString } from '../text';
 import { Token, TokenType } from './';
 import { parseNewlineOnly } from './whitespace';
+import { hasAnyOfMarks } from '../utils/text';
 
 const processState = {
   START: 0,
@@ -67,7 +68,8 @@ export function emphasis(input: string, schema: Schema): Token {
         const rawContent = parseString(buffer, schema, ignoreTokenTypes);
         const decoratedContent = rawContent.map(n => {
           const mark = schema.marks.em.create();
-          if (n.type.name === 'text') {
+          // We don't want to mix `code` mark with others
+          if (n.type.name === 'text' && !hasAnyOfMarks(n, ['em', 'code'])) {
             return n.mark([...n.marks, mark]);
           }
           return n;

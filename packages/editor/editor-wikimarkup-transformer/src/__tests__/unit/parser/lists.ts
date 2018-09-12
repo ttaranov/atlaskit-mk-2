@@ -17,6 +17,12 @@ describe('JIRA wiki markup - Lists', () => {
 - types`,
     ],
     [
+      'should be able to create nested list with -',
+      `- different
+-- bullet
+-- types`,
+    ],
+    [
       'should find ordered lists',
       `# a
 # numbered

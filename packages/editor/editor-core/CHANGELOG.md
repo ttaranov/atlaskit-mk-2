@@ -1,5 +1,14 @@
 # @atlaskit/editor-core
 
+## 80.2.0
+- [minor] FS-2961 Introduce status component and status node in editor [7fe2b0a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7fe2b0a)
+
+## 80.1.0
+- [minor] Add analytics events for pasting from different sources [486963b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/486963b)
+
+## 80.0.1
+- [patch]  Handle the fact that remoteUploadId may not exist and not break cloud uploads [c2317af](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c2317af)
+
 ## 80.0.0
 - [major] Updated dependencies [6e1d642](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e1d642)
   - @atlaskit/editor-common@16.0.0

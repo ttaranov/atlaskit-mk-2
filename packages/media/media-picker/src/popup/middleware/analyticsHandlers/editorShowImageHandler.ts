@@ -1,9 +1,9 @@
 import { Action } from 'redux';
 import { SCREEN_EVENT_TYPE } from '@atlaskit/analytics-gas-types';
 import { isEditorShowImageAction } from '../../actions/editorShowImage';
-import { Payload } from '.';
+import { HandlerResult } from '.';
 
-export default (action: Action): Payload[] | undefined => {
+export default (action: Action): HandlerResult => {
   if (isEditorShowImageAction(action)) {
     return [
       {

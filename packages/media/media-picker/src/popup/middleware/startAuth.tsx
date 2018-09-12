@@ -23,14 +23,14 @@ export const startCloudAccountOAuthFlow = (
       .then(accounts => {
         store.dispatch(updateServiceList(accounts));
 
-        const selectedAccount = (accounts as any).find(
+        const selectedAccount = accounts.find(
           account => account.type === serviceName,
         );
         if (selectedAccount) {
           store.dispatch(changeAccount(serviceName, selectedAccount.id));
         }
       })
-      .catch(error => {
+      .catch(() => {
         // https://jira.atlassian.com/browse/FIL-3247
         // add error handler
       });

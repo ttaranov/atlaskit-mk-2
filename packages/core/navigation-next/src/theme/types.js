@@ -45,6 +45,7 @@ export type GlobalTheme = {
 export type StyleReducer = (
   Styles: ObjectType,
   State?: ObjectType,
+  Theme?: ProductTheme,
 ) => ObjectType;
 
 export type ContextColors = {

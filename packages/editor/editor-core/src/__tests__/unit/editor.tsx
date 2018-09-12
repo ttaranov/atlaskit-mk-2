@@ -1,11 +1,10 @@
-import { name } from '../package.json';
+import { name } from '../../../package.json';
 import { mount } from 'enzyme';
 import * as React from 'react';
-import Editor from '../src/editor';
+import Editor from '../../editor';
 import { EditorView } from 'prosemirror-view';
-import { insertText } from '../../editor-test-helpers/src';
 import Button from '@atlaskit/button';
-import { sendKeyToPm } from '@atlaskit/editor-test-helpers';
+import { insertText, sendKeyToPm } from '@atlaskit/editor-test-helpers';
 
 describe(name, () => {
   describe('Editor', () => {

@@ -48,11 +48,11 @@ describe('MediaPicker', () => {
 
     it('should be able to register listeners to generic upload events', () => {
       const binary = MediaPicker('binary', context, config);
-      binary.on('upload-status-update', payload => {});
-      binary.on('upload-preview-update', payload => {});
-      binary.on('upload-processing', payload => {});
-      binary.on('upload-end', payload => {});
-      binary.on('upload-error', payload => {});
+      binary.on('upload-status-update', () => {});
+      binary.on('upload-preview-update', () => {});
+      binary.on('upload-processing', () => {});
+      binary.on('upload-end', () => {});
+      binary.on('upload-error', () => {});
     });
   });
 
@@ -80,12 +80,12 @@ describe('MediaPicker', () => {
     it('should be able to register listeners to generic upload events', () => {
       const browser = MediaPicker('browser', context, config);
 
-      browser.on('uploads-start', payload => {});
-      browser.on('upload-status-update', payload => {});
-      browser.on('upload-preview-update', payload => {});
-      browser.on('upload-processing', payload => {});
-      browser.on('upload-end', payload => {});
-      browser.on('upload-error', payload => {});
+      browser.on('uploads-start', () => {});
+      browser.on('upload-status-update', () => {});
+      browser.on('upload-preview-update', () => {});
+      browser.on('upload-processing', () => {});
+      browser.on('upload-end', () => {});
+      browser.on('upload-error', () => {});
     });
   });
 
@@ -103,12 +103,12 @@ describe('MediaPicker', () => {
     it('should be able to register listeners to generic upload events', () => {
       const clipboard = MediaPicker('clipboard', context, config);
 
-      clipboard.on('uploads-start', payload => {});
-      clipboard.on('upload-status-update', payload => {});
-      clipboard.on('upload-preview-update', payload => {});
-      clipboard.on('upload-processing', payload => {});
-      clipboard.on('upload-end', payload => {});
-      clipboard.on('upload-error', payload => {});
+      clipboard.on('uploads-start', () => {});
+      clipboard.on('upload-status-update', () => {});
+      clipboard.on('upload-preview-update', () => {});
+      clipboard.on('upload-processing', () => {});
+      clipboard.on('upload-end', () => {});
+      clipboard.on('upload-error', () => {});
     });
   });
 
@@ -135,12 +135,12 @@ describe('MediaPicker', () => {
     it('should be able to register listeners to generic upload events', () => {
       const dropzone = MediaPicker('dropzone', context, config);
 
-      dropzone.on('uploads-start', payload => {});
-      dropzone.on('upload-status-update', payload => {});
-      dropzone.on('upload-preview-update', payload => {});
-      dropzone.on('upload-processing', payload => {});
-      dropzone.on('upload-end', payload => {});
-      dropzone.on('upload-error', payload => {});
+      dropzone.on('uploads-start', () => {});
+      dropzone.on('upload-status-update', () => {});
+      dropzone.on('upload-preview-update', () => {});
+      dropzone.on('upload-processing', () => {});
+      dropzone.on('upload-end', () => {});
+      dropzone.on('upload-error', () => {});
     });
 
     it('consumers should be able to listen for "drop", "drag-enter" and "drag-leave" events', () => {
@@ -168,12 +168,12 @@ describe('MediaPicker', () => {
     it('should be able to register listeners to generic upload events', () => {
       const popup = MediaPicker('popup', context, popupConfig);
 
-      popup.on('uploads-start', payload => {});
-      popup.on('upload-status-update', payload => {});
-      popup.on('upload-preview-update', payload => {});
-      popup.on('upload-processing', payload => {});
-      popup.on('upload-end', payload => {});
-      popup.on('upload-error', payload => {});
+      popup.on('uploads-start', () => {});
+      popup.on('upload-status-update', () => {});
+      popup.on('upload-preview-update', () => {});
+      popup.on('upload-processing', () => {});
+      popup.on('upload-end', () => {});
+      popup.on('upload-error', () => {});
     });
   });
 });

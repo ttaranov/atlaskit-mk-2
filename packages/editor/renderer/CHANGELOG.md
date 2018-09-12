@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 22.1.0
+- [minor] FS-2961 Introduce status component and status node in editor [7fe2b0a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7fe2b0a)
+
 ## 22.0.0
 - [major] Updated dependencies [6e1d642](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e1d642)
   - @atlaskit/editor-common@16.0.0

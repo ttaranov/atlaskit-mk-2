@@ -162,6 +162,49 @@ describe('NavigationNext View Controller', () => {
       });
     });
 
+    it('should add view as active when setView is called if view id with `getItems` is a function rather than a promise', () => {
+      const viewController = new ViewController({
+        initialPeekViewId: 'view-id',
+        isDebugEnabled: true,
+      });
+
+      const items = [{ type: 'Item', id: 'foo' }];
+
+      viewController.addView({ ...view, getItems: () => items });
+      viewController.setView('view-id');
+
+      expect(viewController.state.activeView).toMatchObject({
+        data: items,
+        id: view.id,
+        type: view.type,
+      });
+    });
+
+    it('should provide an analyticsAttributes prop within activeView if a getAnalyticsAttributes prop has been provided when registering a view', () => {
+      const viewController = new ViewController();
+
+      const extraAttributes = { product: 'foo' };
+      const items = [{ type: 'Item', id: 'bar' }];
+
+      const getAnalyticsAttributes = jest.fn(() => extraAttributes);
+
+      viewController.addView({
+        ...view,
+        getItems: () => items,
+        getAnalyticsAttributes,
+      });
+
+      expect(getAnalyticsAttributes).not.toHaveBeenCalled();
+      viewController.setView('view-id');
+      expect(getAnalyticsAttributes).toHaveBeenCalledWith(items);
+      expect(viewController.state.activeView).toMatchObject({
+        analyticsAttributes: extraAttributes,
+        data: items,
+        id: view.id,
+        type: view.type,
+      });
+    });
+
     it('should be able to add and remove views', () => {
       const viewController = new ViewController({
         initialPeekViewId: 'view-id',

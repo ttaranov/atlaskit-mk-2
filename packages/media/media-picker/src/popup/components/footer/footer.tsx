@@ -81,7 +81,7 @@ const mapStateToProps = ({
 const mapDispatchToProps = (
   dispatch: Dispatch<State>,
 ): FooterDispatchProps => ({
-  onInsert: (selectedItems: SelectedItem[]) => dispatch(startImport()),
+  onInsert: () => dispatch(startImport()),
   onCancel: () => dispatch(hidePopup()),
 });
 

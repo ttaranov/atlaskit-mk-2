@@ -1,5 +1,21 @@
 # @atlaskit/navigation-next
 
+## 3.11.1
+- [patch] hotfix: return nav item on click element to button [23fa988](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23fa988)
+
+## 3.11.0
+- [minor] Add a `getAnalyticsAttributes` prop to the `addView` function of ViewController that enables passing extra analytics attributes to analytics events fired within navigation when the specified view is active. [56452d3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/56452d3)
+- [patch] Add missing navigationLayer attribute to productNavigation expanded/collapsed. [1ffd2ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1ffd2ca)
+
+## 3.10.1
+- [patch] Resolves nav item pseudo-state locking issue [2a4693c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2a4693c)
+
+## 3.10.0
+- [minor] Export ThemeProvider from the package. [978e055](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/978e055)
+
+## 3.9.1
+- [patch] Fix navigation-next items being re-created at every render [6e8270d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e8270d)
+
 ## 3.9.0
 - [minor] LayoutManager and LayoutManagerWithViewController accept a getRefs prop which exposes a ref to the expand/collapse button node. The intended use-case is for creating a changeboarding experience for the new collapsed state. [51cd072](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51cd072)
 

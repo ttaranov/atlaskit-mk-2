@@ -1,9 +1,9 @@
 import { SCREEN_EVENT_TYPE } from '@atlaskit/analytics-gas-types';
 import { Action } from 'redux';
-import { Payload } from '.';
+import { HandlerResult } from '.';
 import { isShowPopupAction } from '../../actions/showPopup';
 
-export default (action: Action): Payload[] | undefined => {
+export default (action: Action): HandlerResult => {
   if (isShowPopupAction(action)) {
     return [
       {

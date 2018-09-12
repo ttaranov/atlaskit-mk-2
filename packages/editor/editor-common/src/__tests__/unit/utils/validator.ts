@@ -622,6 +622,44 @@ describe('Renderer - Validator', () => {
       });
     });
 
+    describe('status', () => {
+      it('should pass through attrs', () => {
+        const attributes = {
+          text: 'Done',
+          color: 'green',
+          localId: '666',
+        };
+        const { type, attrs } = getValidNode({
+          type: 'status',
+          attrs: attributes,
+        });
+        expect(type).to.equal('status');
+        expect(attrs).to.deep.equal(attributes);
+      });
+
+      it('should reject status without text', () => {
+        const { type } = getValidNode({
+          type: 'status',
+          attrs: {
+            color: 'neutral',
+            localId: '666',
+          },
+        });
+        expect(type).to.equal('text');
+      });
+
+      it('should reject status without color', () => {
+        const { type } = getValidNode({
+          type: 'status',
+          attrs: {
+            text: 'Done',
+            localId: '666',
+          },
+        });
+        expect(type).to.equal('text');
+      });
+    });
+
     describe('bodiedExtension', () => {
       it('should pass through attrs as extension', () => {
         const extensionAttrs = {

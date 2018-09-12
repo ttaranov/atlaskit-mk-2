@@ -181,7 +181,13 @@ class LayoutManagerWithViewControllerBase extends Component<
 
     return (
       <NavigationAnalyticsContext
-        data={{ attributes: { view: activeView && activeView.id } }}
+        data={{
+          attributes: {
+            navigationLayer: activeView && activeView.type,
+            view: activeView && activeView.id,
+            ...(activeView && activeView.analyticsAttributes),
+          },
+        }}
       >
         <LayoutManager
           globalNavigation={this.renderGlobalNavigation}

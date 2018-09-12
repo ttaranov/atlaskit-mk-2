@@ -94,6 +94,7 @@ export class QuickSearchContainer extends React.Component<Props, State> {
         results,
         timings,
         experimentId,
+        abTest,
       } = await this.props.getSearchResults(
         query,
         this.state.searchSessionId,
@@ -118,9 +119,9 @@ export class QuickSearchContainer extends React.Component<Props, State> {
               this.state.searchSessionId,
               this.state.latestSearchQuery,
             );
-            if (experimentId) {
+            if (experimentId || abTest) {
               this.fireExperimentExposureEvent(
-                experimentId,
+                abTest ? abTest : experimentId,
                 this.state.searchSessionId,
               );
             }
@@ -136,12 +137,12 @@ export class QuickSearchContainer extends React.Component<Props, State> {
     }
   };
 
-  fireExperimentExposureEvent = (experimentId, searchSessionId) => {
+  fireExperimentExposureEvent = (experimentData, searchSessionId) => {
     const { createAnalyticsEvent } = this.props;
 
     if (createAnalyticsEvent) {
       fireExperimentExposureEvent(
-        experimentId,
+        experimentData,
         searchSessionId,
         createAnalyticsEvent,
       );
