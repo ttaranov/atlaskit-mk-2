@@ -1,6 +1,6 @@
 import CrossProductSearchClientImpl, {
   CrossProductSearchClient,
-} from '../../../api/CrossProductSearchClientv2';
+} from '../../../api/CrossProductSearchClientV2';
 import { ABTest } from '../../../api/CrossProductSearchTypesV2';
 import { utils } from '@atlaskit/util-service-support';
 import {
@@ -43,7 +43,7 @@ describe('Search api', () => {
     const body = JSON.parse(requestOptions.requestInit.body);
     expect(body).toMatchObject({
       scopes: jiraScopes,
-      cloudId: expect.any(String),
+      cloudId,
       searchSession: {
         referrerId: referrer,
         sessionId: sessionId,

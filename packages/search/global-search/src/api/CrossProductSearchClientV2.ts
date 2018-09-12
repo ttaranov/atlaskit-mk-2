@@ -18,6 +18,7 @@ import {
   AnalyticsType,
   ContentType,
 } from '../model/Result';
+import * as flattendeep from 'lodash.flattendeep';
 
 const SEARCH_PATH: string = '/rest/quicksearch/v2';
 
@@ -27,8 +28,6 @@ const JiraTypeToContentType = {
   filter: ContentType.JiraFilter,
   project: ContentType.JiraProject,
 };
-
-const flatMap = arr => arr.reduce((arr, result) => [...arr, ...result], []);
 
 const extractSpecificAttributes = (attributes: Attributes) => {
   const type = attributes['@type'];
@@ -84,11 +83,6 @@ export default class CrossProductSearchClientImpl
     this.cloudId = cloudId;
   }
 
-  // Unused, just to mute ts lint
-  public getCloudId() {
-    return this.cloudId;
-  }
-
   /**
    * @param query string to search for
    * @param searchSessionId string unique for every session id
@@ -132,7 +126,7 @@ export default class CrossProductSearchClientImpl
   private jiraScopesToResults(
     scopes: ScopeResult[],
   ): CrossProductSearchResults {
-    const { issue, project, filter, board } = flatMap(
+    const { issue, project, filter, board } = flattendeep(
       scopes
         .filter(scope => !scope.error && scope.results && scope.results.length) // filter out error scopes
         .map(this.scopeToResult), // map scope to array of results => scope => [{issue: issueResult}, {issue: issueResult}]
