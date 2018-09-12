@@ -28,6 +28,7 @@
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
+    "@atlaskit/checkbox": "^4.0.6",
     "@atlaskit/docs": "^5.0.2",
     "@atlaskit/field-range": "^5.0.2",
     "@atlaskit/field-text": "^7.0.3",

@@ -46,6 +46,7 @@ const renderCardWithURL = ({
       placeholder={
         <CardContent
           appearance={appearance}
+          isSelected={isSelected}
           state={{
             status: 'resolving',
             services: [],
