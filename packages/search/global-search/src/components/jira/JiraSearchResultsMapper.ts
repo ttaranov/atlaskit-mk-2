@@ -12,6 +12,19 @@ const MAX_BOARDS = 2;
 const MAX_FILTERS = 2;
 const MAX_PEOPLE = 3;
 
+const scopeLimits = {
+  'jira.issue': MAX_ISSUES,
+  'jira.board,filter,project': MAX_BOARDS + MAX_FILTERS + MAX_PROJECTS,
+  people: MAX_PEOPLE,
+};
+
+const scopeI18n = {
+  'jira.issue': 'global-search.jira.seach-result-issues-heading',
+  'jira.board,filter,project':
+    'global-search.jira.seach-result-containers-heading',
+  people: 'global-search.jira.seach-result-people-heading',
+};
+
 const DEFAULT_JIRA_RESULTS_MAP: GenericResultMap = {
   issues: [] as Result[],
   boards: [],
@@ -67,26 +80,13 @@ export const mapRecentResultsToUIGroups = (
 };
 
 export const mapSearchResultsToUIGroups = (
-  searchResultsObjects: JiraResultsMap,
+  searchResultsObjects: GenericResultMap,
 ): ResultsGroup[] => {
-  const { issuesToDisplay, peopleToDisplay, pseudoContainers } = sliceResults(
-    searchResultsObjects,
-  );
-  return [
-    {
-      items: issuesToDisplay,
-      key: 'issues',
-      titleI18nId: 'global-search.jira.seach-result-issues-heading',
-    },
-    {
-      items: pseudoContainers.reduce((acc, arr) => [...acc, ...arr]),
-      key: 'containers',
-      titleI18nId: 'global-search.jira.seach-result-containers-heading',
-    },
-    {
-      items: peopleToDisplay,
-      key: 'people',
-      titleI18nId: 'global-search.jira.seach-result-people-heading',
-    },
-  ];
+  return Object.keys(scopeLimits)
+    .filter(key => searchResultsObjects[key].length)
+    .map(key => ({
+      items: searchResultsObjects[key].slice(0, scopeLimits[key]),
+      key,
+      titleI18nId: scopeI18n[key],
+    }));
 };

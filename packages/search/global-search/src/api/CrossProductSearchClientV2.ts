@@ -129,29 +129,22 @@ export default class CrossProductSearchClientImpl
   private jiraScopesToResults(
     scopes: ScopeResult[],
   ): CrossProductSearchResults {
-    const { issue, project, filter, board } = flattendeep(
-      scopes
-        .filter(scope => !scope.error && scope.results && scope.results.length) // filter out error scopes
-        .map(this.scopeToResult), // map scope to array of results => scope => [{issue: issueResult}, {issue: issueResult}]
-    ).reduce((acc, entry) => {
-      const key = Object.keys(entry)[0];
-      const value = entry[key];
-      return Object.assign({}, acc, { [key]: (acc[key] || []).concat(value) });
-    }, {});
+    const sections = scopes.map(this.scopeToSection);
+    const abTest = extractABTestAttributes(scopes);
     return {
-      results: {
-        issues: issue,
-        boards: board,
-        filters: filter,
-        projects: project,
-      },
-      abTest: extractABTestAttributes(scopes),
+      results: sections.reduce(
+        (acc, { id, results }) => Object.assign({}, acc, { [id]: results }),
+        {},
+      ),
+      abTest,
     };
   }
 
-  private scopeToResult(scope: ScopeResult): { [k: string]: Result }[] {
-    return (scope.results as Entry[]).map(({ id, name, url, attributes }) => ({
-      [attributes['@type']]: {
+  private scopeToSection(scope: ScopeResult) {
+    return {
+      id: scope.id,
+      abTest: scope.abTest,
+      results: (scope.results || []).map(({ id, name, url, attributes }) => ({
         resultId: id,
         name: name,
         href: url,
@@ -162,7 +155,7 @@ export default class CrossProductSearchClientImpl
         avatarUrl: attributes.avatar && extractAvatarUrl(attributes.avatar),
         contentType: JiraTypeToContentType[attributes['@type']],
         experimentId: scope.experimentId,
-      },
-    }));
+      })),
+    };
   }
 }
