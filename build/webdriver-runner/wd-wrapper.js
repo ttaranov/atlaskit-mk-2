@@ -76,7 +76,7 @@ export default class Page {
   $eval(selector, pageFunction) {
     return this.browser
       .execute(
-        `return (${pageFunction}(document.querySelector("${selector}")))`,
+        `return (${pageFunction})(document.querySelector(\'${selector}\'))`,
       )
       .then(obj => obj.value);
   }

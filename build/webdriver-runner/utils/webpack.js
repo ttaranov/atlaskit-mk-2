@@ -14,6 +14,7 @@ DirectoryWatcher.prototype.createNestedWatcher = function(
   dirPath /*: string */,
 ) {
   if (dirPath.includes('node_modules')) return;
+  if (dirPath.includes('__snapshots__')) return;
   _oldcreateNestedWatcher.call(this, dirPath);
 };
 
@@ -137,7 +138,12 @@ async function startDevServer() {
   return new Promise((resolve, reject) => {
     let hasValidDepGraph = true;
 
-    compiler.plugin('invalid', () => {
+    compiler.plugin('invalid', (...args) => {
+      console.log('Invalid:');
+      console.log(args);
+      console.log('-----------------------------------');
+      console.log();
+
       hasValidDepGraph = false;
       console.log(
         'Something has changed and Webpack needs to invalidate dependencies graph',

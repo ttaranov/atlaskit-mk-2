@@ -218,16 +218,18 @@ function getPlugins(
     }),
   ];
 
-  plugins.push(
-    new BundleAnalyzerPlugin({
-      analyzerMode: report ? 'static' : 'disabled',
-      generateStatsFile: true,
-      openAnalyzer: report,
-      logLevel: 'error',
-      statsOptions: statsOptions,
-      defaultSizes: 'gzip',
-    }),
-  );
+  if (report) {
+    plugins.push(
+      new BundleAnalyzerPlugin({
+        analyzerMode: 'static',
+        generateStatsFile: true,
+        openAnalyzer: true,
+        logLevel: 'error',
+        statsOptions: statsOptions,
+        defaultSizes: 'gzip',
+      }),
+    );
+  }
 
   return plugins;
 }

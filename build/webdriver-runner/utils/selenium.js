@@ -4,7 +4,7 @@ const Selenium = require('selenium-standalone');
 const util = require('util');
 
 /*
-* util module to support 
+* util module to support
 *   a. install chrome-driver / gecko-driver on local selenium-standlone setup
 *   b. start and stop selenium server
 * more about selenium : https://www.seleniumhq.org/docs/
@@ -18,6 +18,7 @@ let child;
 // Add selenium config to override default
 // Update chromedriver to run on Chrome65
 const seleniumConfig = {
+  version: '3.4.0',
   drivers: {
     chrome: {
       version: '2.36',

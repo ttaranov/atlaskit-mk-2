@@ -29,16 +29,25 @@ BrowserTestCase(
     await insertMedia(browser);
 
     // wait for the nodeview to appear
-    await browser.waitForSelector('.media-single');
-    await sleep(200);
+
+    await sleep(500);
+    await browser.waitForSelector('.wrapper .img-wrapper');
 
     // click it so the toolbar appears
     await browser.click('.media-single div div div');
+    await sleep(200);
 
     // change layouts
-    const layoutButton = `[aria-label="Change layout to Full width"]`;
+    const layoutButton = `button [aria-label="Change layout to Full width"]`;
     await browser.waitForSelector(layoutButton);
-    await browser.click(layoutButton);
+
+    // Eval instead of click as sugessted here: http://webdriver.io/api/action/click.html
+    await browser.$eval(
+      layoutButton,
+      `function(elem) {
+        elem.click();
+      }`,
+    );
 
     await browser.waitForSelector(`.media-single.full-width`);
 
