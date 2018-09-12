@@ -195,6 +195,31 @@ describe('Card', () => {
     );
   });
 
+  it('should be able to be selected when block and resolved', async () => {
+    const client = createClient();
+    const wrapper = mount(
+      <Card
+        appearance="block"
+        isSelected={true}
+        client={client}
+        url="https://www.atlassian.com/"
+      />,
+    );
+
+    // wait for the data to be loaded
+    await client
+      .get('https://www.atlassian.com/')
+      .pipe(takeWhile(isNotResolved))
+      .toPromise();
+
+    wrapper.update();
+    expect(wrapper.find(BlockCard.ResolvedView).props()).toEqual(
+      expect.objectContaining({
+        isSelected: true,
+      }),
+    );
+  });
+
   it('should reload the object state when the url changes', async () => {
     const client = createClient();
     const wrapper = mount(
