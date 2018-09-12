@@ -9,10 +9,14 @@ import PeopleSearchClientImpl, {
 } from './PeopleSearchClient';
 import ConfluenceClientImpl, { ConfluenceClient } from './ConfluenceClient';
 import JiraClientImpl, { JiraClient } from './JiraClient';
+import CrossProductSearchClientImplV2, {
+  CrossProductSearchClient as CrossProductSearchClientV2,
+} from './CrossProductSearchClientV2';
 
 export interface SearchClients {
   recentSearchClient: RecentSearchClient;
   crossProductSearchClient: CrossProductSearchClient;
+  crossProductSearchClientV2: CrossProductSearchClientV2;
   peopleSearchClient: PeopleSearchClient;
   confluenceClient: ConfluenceClient;
   jiraClient: JiraClient;
@@ -49,6 +53,10 @@ export default function configureSearchClients(
       cloudId,
     ),
     crossProductSearchClient: new CrossProductSearchClientImpl(
+      config.searchAggregatorServiceUrl,
+      cloudId,
+    ),
+    crossProductSearchClientV2: new CrossProductSearchClientImplV2(
       config.searchAggregatorServiceUrl,
       cloudId,
     ),

@@ -12,6 +12,7 @@ import { CreateAnalyticsEventFn } from '../analytics/types';
 import { SearchScreenCounter, ScreenCounter } from '../../util/ScreenCounter';
 import { JiraClient } from '../../api/JiraClient';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
+import { CrossProductSearchClient } from '../../api/CrossProductSearchClientv2';
 import {
   LinkComponent,
   ReferralContextIdentifiers,
@@ -40,13 +41,6 @@ import {
 } from '../../model/Result';
 import performanceNow from '../../util/performance-now';
 
-export interface Props {
-  createAnalyticsEvent?: CreateAnalyticsEventFn;
-  linkComponent?: LinkComponent;
-  jiraClient: JiraClient;
-  peopleSearchClient: PeopleSearchClient;
-}
-
 const AdvancedSearchContainer = styled.div`
   margin-top: ${4 * gridSize()}px;
 `;
@@ -56,6 +50,7 @@ export interface Props {
   linkComponent?: LinkComponent;
   referralContextIdentifiers?: ReferralContextIdentifiers;
   jiraClient: JiraClient;
+  crossProductSearchClientV2: CrossProductSearchClient;
   peopleSearchClient: PeopleSearchClient;
 }
 
@@ -201,7 +196,10 @@ export class JiraQuickSearchContainer extends React.Component<
     sessionId: string,
     startTime: number,
   ): Promise<ResultsWithTiming> => {
-    const jiraSearchPromise = this.props.jiraClient.search(sessionId, query);
+    const jiraSearchPromise = this.props.crossProductSearchClientV2.search(
+      query,
+      sessionId,
+    );
     const poeplePromise = this.props.peopleSearchClient.search(query);
 
     const mapPromiseToPerformanceTime = p =>

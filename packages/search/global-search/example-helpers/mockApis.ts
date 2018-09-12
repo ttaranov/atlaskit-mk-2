@@ -97,7 +97,7 @@ function mockJiraRecentApi() {
 }
 
 function mockJiraSearchApi() {
-  fetchMock.get(new RegExp('rest/quicknavjira/1/search'), async url => {
+  fetchMock.get(new RegExp('/rest/quicksearch/v2'), async url => {
     const query = url.split('query=')[1];
     const results = queryJiraSearch(query);
     return delay(500, results);

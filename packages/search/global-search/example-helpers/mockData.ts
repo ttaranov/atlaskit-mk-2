@@ -9,7 +9,10 @@ import {
 } from '../src/api/CrossProductSearchClient';
 
 import * as uuid from 'uuid/v4';
-import { Entry, Scope as JiraScope } from '../src/api/JiraClient';
+import {
+  Entry,
+  ScopeResult as JiraScope,
+} from '../src/api/CrossProductSearchTypesV2';
 const DUMMY_BASE_URL = 'http://localhost';
 
 function pickRandom(array: Array<any>) {
