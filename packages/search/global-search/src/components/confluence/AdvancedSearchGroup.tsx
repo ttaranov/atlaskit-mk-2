@@ -3,21 +3,14 @@ import Icon from '@atlaskit/icon';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import { FormattedMessage } from 'react-intl';
 import styled from 'styled-components';
-import { colors, gridSize, math } from '@atlaskit/theme';
+import { gridSize, math } from '@atlaskit/theme';
+import StickyFooter from '../common/StickyFooter';
 import SearchPeopleItem from '../SearchPeopleItem';
 import SearchConfluenceItem from '../SearchConfluenceItem';
 import PeopleIconGlyph from '../../assets/PeopleIconGlyph';
 
 const PeopleSearchWrapper = styled.div`
   margin-top: ${math.multiply(gridSize, 3)}px;
-`;
-
-const StickyFooter = styled.div`
-  position: sticky;
-  bottom: 0;
-  background: white;
-  border-top: 1px solid ${colors.N40};
-  padding: ${gridSize}px 0;
 `;
 
 export interface Props {
