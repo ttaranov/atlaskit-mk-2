@@ -1,13 +1,13 @@
-import { pluginKey } from '../../../src/plugins/card/pm-plugins/main';
-import cardPlugin from '../../../src/plugins/card';
+import { pluginKey } from '../../../../plugins/card/pm-plugins/main';
+import cardPlugin from '../../../../plugins/card';
 import {
   doc,
   createEditor,
   p,
   cardProvider,
 } from '@atlaskit/editor-test-helpers';
-import reduce from '../../../src/plugins/card/pm-plugins/reducers';
-import { CardPluginState } from '../../../src/plugins/card/types';
+import reduce from '../../../../plugins/card/pm-plugins/reducers';
+import { CardPluginState } from '../../../../plugins/card/types';
 
 describe('card', () => {
   const editor = (doc: any) => {

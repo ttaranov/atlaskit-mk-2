@@ -9,7 +9,6 @@ import {
   getSelectorForTableCell,
   insertMenuSelector,
   selectByTextAndClick,
-  snapshot,
 } from '../_utils';
 
 describe('Snapshot Test: Floating toolbar', () => {
