@@ -21,21 +21,25 @@ export type GlobalNavDrawerProps = {
   createDrawerContents?: ComponentType<*>,
   onCreateDrawerOpen?: () => void,
   onCreateDrawerClose?: () => void,
+  shouldCreateDrawerUnmountOnExit?: boolean,
 
   isSearchDrawerOpen?: boolean,
   searchDrawerContents?: ComponentType<*>,
   onSearchDrawerOpen?: () => void,
   onSearchDrawerClose?: () => void,
+  shouldSearchDrawerUnmountOnExit?: boolean,
 
   isNotificationDrawerOpen?: boolean,
   notificationDrawerContents?: ComponentType<*>,
   onNotificationDrawerOpen?: () => void,
   onNotificationDrawerClose?: () => void,
+  shouldNotificationDrawerUnmountOnExit?: boolean,
 
   isStarredDrawerOpen?: boolean,
   starredDrawerContents?: ComponentType<*>,
   onStarredDrawerOpen?: () => void,
   onStarredDrawerClose?: () => void,
+  shouldStarredDrawerUnmountOnExit?: boolean,
 };
 
 export type GlobalNavigationProps = {
