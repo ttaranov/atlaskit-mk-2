@@ -15,7 +15,6 @@ import {
   CardAnalyticsContext,
   CardStatus,
   CardDimensions,
-  CardDimensionValue,
 } from '../..';
 import { Identifier, isPreviewableType } from '../domain';
 import { CardView } from '../cardView';
@@ -25,8 +24,8 @@ import { getDataURIDimension } from '../../utils/getDataURIDimension';
 import { getDataURIFromFileState } from '../../utils/getDataURIFromFileState';
 import { getLinkMetadata, extendMetadata } from '../../utils/metadata';
 import { isUrlPreviewIdentifier } from '../../utils/identifier';
-import { isValidPercentageUnit } from '../../utils/isValidPercentageUnit';
-import { containsPixelUnit } from '../../utils/containsPixelUnit';
+import { canCompareDimension } from '../../utils/dimensionComparer';
+
 export interface CardProps extends SharedCardProps, CardEventProps {
   readonly context: Context;
   readonly identifier: Identifier;
@@ -91,25 +90,6 @@ export class Card extends Component<CardProps, CardState> {
     this.releaseDataURI();
   }
 
-  private canCompareDimension = (
-    current?: CardDimensionValue,
-    next?: CardDimensionValue,
-  ) => {
-    if (!current || !next) {
-      return false;
-    }
-    if (isValidPercentageUnit(current) && isValidPercentageUnit(next)) {
-      return true;
-    }
-    if (containsPixelUnit(`${current}`) && containsPixelUnit(`${next}`)) {
-      return true;
-    }
-    if (!containsPixelUnit(`${current}`) && !containsPixelUnit(`${next}`)) {
-      return true;
-    }
-    return false;
-  };
-
   private shouldRefetchDueToNewDimensions = (
     current?: CardDimensions,
     next?: CardDimensions,
@@ -118,8 +98,8 @@ export class Card extends Component<CardProps, CardState> {
       return true;
     }
     if (
-      this.canCompareDimension(current.width, next.width) &&
-      this.canCompareDimension(current.height, next.height)
+      canCompareDimension(current.width, next.width) &&
+      canCompareDimension(current.height, next.height)
     ) {
       const nextIsHigher =
         parseInt(`${current.width}`, 10) < parseInt(`${next.width}`, 10);
