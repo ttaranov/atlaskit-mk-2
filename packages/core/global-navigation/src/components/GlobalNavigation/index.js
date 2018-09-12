@@ -278,7 +278,6 @@ export default class GlobalNavigation
               drawer === 'notification'
                 ? notificationDrawerContents
                 : this.props[`${drawer}DrawerContents`];
-            // const DrawerContents = this.props[`${drawer}DrawerContents`];
             const shouldUnmountOnExit = this.props[
               `should${capitalisedDrawerName}UnmountOnExit`
             ];
