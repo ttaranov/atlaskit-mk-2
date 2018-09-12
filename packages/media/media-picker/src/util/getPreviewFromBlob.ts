@@ -1,39 +1,35 @@
 import { MediaType } from '@atlaskit/media-core';
+import { getImageInfo } from '@atlaskit/media-ui';
 import { Preview } from '../domain/preview';
 import { fileToBase64 } from '../popup/tools/fileToBase64';
 import { ImagePreview } from '../index';
-import { readSupportedImageMetaData } from '../../../media-ui/src/imageMetaData';
 
 export const getPreviewFromBlob = (
-  file: File,
+  file: Blob,
   mediaType: MediaType,
 ): Promise<Preview> =>
   new Promise((resolve, reject) => {
     fileToBase64(file)
-      .then(src => {
+      .then(async src => {
         if (mediaType === 'image') {
-          readSupportedImageMetaData(src).then(metadata => {
-            let scaleFactor = 1;
-            if (file.name) {
-              // filenames with scale ratio in name take precedence - eg. filename@2x.png
-              const match = file.name.trim().match(/@([0-9]+)x\.[a-z]{3}$/);
-              if (match) {
-                scaleFactor = parseInt(match[1], 10);
-              }
-            } else if (metadata.tags) {
-              // then we use metadata
-              const dpi = metadata.tags.XResolution as number;
-              scaleFactor = dpi / 72;
-            }
+          // we are passing src (optional) since it is needed to get image dimensions,
+          // and we've already got it from fileToBase64 call above. Otherwise getImageInfo
+          // will need to create base64 dataUri from File/Blob to get image dimensions.
+          const metadata = await getImageInfo(file as File, src);
+          if (!metadata) {
+            resolve({ src });
+          } else {
+            const { width, height, scaleFactor, orientation } = metadata;
             resolve({
               src,
               dimensions: {
-                width: metadata.width,
-                height: metadata.height,
+                width,
+                height,
               },
               scaleFactor,
+              orientation,
             } as ImagePreview);
-          });
+          }
         } else {
           resolve({ src });
         }

@@ -14,3 +14,4 @@ export * from './camera';
 export * from './messages';
 export { default as languages } from './i18n/languages';
 export { locales };
+export * from './imageMetaData';
