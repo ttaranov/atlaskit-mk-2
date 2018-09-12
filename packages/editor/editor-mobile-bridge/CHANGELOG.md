@@ -1,5 +1,8 @@
 # @atlaskit/editor-mobile-bridge
 
+## 3.0.9
+- [patch] Fix the tap hightlight and padding [ffd3b8a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ffd3b8a)
+
 ## 3.0.8
 - [patch] Updated dependencies [6e1d642](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e1d642)
   - @atlaskit/editor-core@80.0.0
