@@ -96,12 +96,22 @@ function mockJiraRecentApi() {
   );
 }
 
-function mockJiraSearchApi() {
+function mockCrossProductSearchApiV2() {
   fetchMock.get(new RegExp('/rest/quicksearch/v2'), async url => {
     const query = url.split('query=')[1];
     const results = queryJiraSearch(query);
     return delay(500, results);
   });
+
+  fetchMock.post(
+    new RegExp('/rest/quicksearch/v2'),
+    (request: Request, options: Options) => {
+      const body = JSON.parse(options.body);
+      const query = body.query.string;
+      const results = queryJiraSearch(query);
+      return delay(500, results);
+    },
+  );
 }
 
 export function setupMocks(config: MocksConfig = DEFAULT_MOCKS_CONFIG) {
@@ -111,7 +121,7 @@ export function setupMocks(config: MocksConfig = DEFAULT_MOCKS_CONFIG) {
   mockConfluenceRecentApi();
   mockQuickNavApi(config.quickNavDelay);
   mockJiraRecentApi();
-  mockJiraSearchApi();
+  mockCrossProductSearchApiV2();
 }
 
 export function teardownMocks() {

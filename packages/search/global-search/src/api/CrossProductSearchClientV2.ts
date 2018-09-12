@@ -10,6 +10,7 @@ import {
   Entry,
   Attributes,
   ABTest,
+  SearchQuery,
 } from './CrossProductSearchTypesV2';
 import {
   Result,
@@ -67,8 +68,9 @@ const extractABTestAttributes = (scopes: ScopeResult[]): ABTest | undefined => {
 export interface CrossProductSearchClient {
   search(
     query: string,
+    scopes: string[],
     searchSessionId: string,
-    scopes?: string[],
+    searchReferrerId?: string,
   ): Promise<CrossProductSearchResults>;
 }
 
@@ -94,14 +96,29 @@ export default class CrossProductSearchClientImpl
    */
   public async search(
     query: string,
+    scopes: string[],
     searchSessionId: string,
-    scopes?: string[],
+    searchReferrerId?: string,
   ): Promise<CrossProductSearchResults> {
+    const body: SearchQuery = {
+      scopes,
+      cloudId: this.cloudId,
+      searchSession: {
+        sessionId: searchSessionId,
+        referrerId: searchReferrerId,
+      },
+      query: {
+        string: query,
+      },
+    };
     const options: RequestServiceOptions = {
       path: SEARCH_PATH,
-      queryParams: {
-        search_id: searchSessionId,
-        query,
+      requestInit: {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
       },
     };
     const searchResults = await utils.requestService<SearchResponse>(

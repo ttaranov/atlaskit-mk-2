@@ -54,6 +54,8 @@ export interface Props {
   peopleSearchClient: PeopleSearchClient;
 }
 
+const JiraScopes = ['issue', 'board', 'filter', 'project'];
+
 const contentTypeToSection = {
   [ContentType.JiraIssue]: 'issues',
   [ContentType.JiraBoard]: 'boards',
@@ -198,6 +200,7 @@ export class JiraQuickSearchContainer extends React.Component<
   ): Promise<ResultsWithTiming> => {
     const jiraSearchPromise = this.props.crossProductSearchClientV2.search(
       query,
+      JiraScopes,
       sessionId,
     );
     const poeplePromise = this.props.peopleSearchClient.search(query);

@@ -1,5 +1,20 @@
 import { GenericResultMap } from '../model/Result';
 
+export interface SearchQuery {
+  scopes?: string[];
+  cloudId?: string;
+  searchSession?: SearchQuerySession;
+  query?: SearchQueryQuery;
+}
+export interface SearchQuerySession {
+  referrerId?: string;
+  sessionId?: string;
+}
+export interface SearchQueryQuery {
+  string?: string;
+  limit?: number;
+}
+
 export type CrossProductSearchResults = {
   results: GenericResultMap;
   experimentId?: string;

@@ -29,19 +29,17 @@ export interface GenericResultMap {
   [key: string]: Result[];
 }
 
-export interface ABTest {
-  experimentId?: string;
-  controlId?: string;
-  abTestId?: string;
-}
-
 export type ResultsWithTiming = {
   results: GenericResultMap;
   timings?: {
     [key: string]: number | string;
   };
   experimentId?: string;
-  abTest?: ABTest;
+  abTest?: {
+    experimentId: string;
+    controlId: string;
+    abTestId: string;
+  };
 };
 
 export interface ConfluenceResultsMap extends GenericResultMap {
@@ -55,11 +53,6 @@ export interface JiraResultsMap extends GenericResultMap {
   boards: Result[];
   projects: Result[];
   filters: Result[];
-}
-
-export interface JiraResultsMapWithABTest {
-  results: JiraResultsMap;
-  abTest?: ABTest;
 }
 
 export interface ConfluenceObjectResult extends Result {

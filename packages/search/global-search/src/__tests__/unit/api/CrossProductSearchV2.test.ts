@@ -1,16 +1,17 @@
 import CrossProductSearchClientImpl, {
   CrossProductSearchClient,
 } from '../../../api/CrossProductSearchClientv2';
+import { ABTest } from '../../../api/CrossProductSearchTypesV2';
 import { utils } from '@atlaskit/util-service-support';
 import {
   generateJiraScopeWithError,
   generateJiraScope,
 } from '../../../../example-helpers/mockData';
-import { ABTest } from '../../../model/Result';
 
 const url = 'https://www.example.jira.dev.com/';
 const cloudId = 'cloudId';
 const SEARCH_PATH: string = '/rest/quicksearch/v2';
+const jiraScopes = ['issue', 'board', 'project', 'filter'];
 
 describe('Search api', () => {
   let client: CrossProductSearchClient;
@@ -28,7 +29,8 @@ describe('Search api', () => {
   it('should call correct endpoint with correct params', () => {
     const sessionId = 'session-123123';
     const query = 'manda';
-    client.search(query, sessionId);
+    const referrer = 'ref-23';
+    client.search(query, jiraScopes, sessionId, referrer);
 
     expect(requestSpy).toHaveBeenCalledTimes(1);
 
@@ -37,9 +39,18 @@ describe('Search api', () => {
 
     const requestOptions = requestSpy.mock.calls[0][1];
     expect(requestOptions).toHaveProperty('path', SEARCH_PATH);
-    expect(requestOptions.queryParams).toMatchObject({
-      search_id: sessionId,
-      query,
+    expect(requestOptions).toHaveProperty('requestInit');
+    const body = JSON.parse(requestOptions.requestInit.body);
+    expect(body).toMatchObject({
+      scopes: jiraScopes,
+      cloudId: expect.any(String),
+      searchSession: {
+        referrerId: referrer,
+        sessionId: sessionId,
+      },
+      query: {
+        string: query,
+      },
     });
   });
 
@@ -53,7 +64,7 @@ describe('Search api', () => {
     it('should throw exception', async () => {
       requestSpy.mockImplementation(mockImpl);
       try {
-        await client.search('query', 'sessionId-2');
+        await client.search('query', jiraScopes, 'sessionId-2');
         expect(true).toBe(false); // should never reach this line
       } catch (e) {
         expect(e).not.toBeNull();
@@ -75,7 +86,7 @@ describe('Search api', () => {
 
     requestSpy.mockReturnValue(Promise.resolve({ scopes }));
 
-    const { results } = await client.search('man', 'session-12');
+    const { results } = await client.search('man', jiraScopes, 'session-12');
 
     expect(requestSpy).toHaveBeenCalledTimes(1);
     expect(results.issues).toBe(undefined);
@@ -94,7 +105,7 @@ describe('Search api', () => {
 
     requestSpy.mockReturnValue(Promise.resolve({ scopes }));
 
-    const { results } = await client.search('man', 'session-12');
+    const { results } = await client.search('man', jiraScopes, 'session-12');
 
     expect(requestSpy).toHaveBeenCalledTimes(1);
     expect(results.issues).toHaveProperty('length', 8);
@@ -111,7 +122,11 @@ describe('Search api', () => {
 
     requestSpy.mockReturnValue(Promise.resolve({ scopes }));
 
-    const { abTest, results } = await client.search('man', 'session-12');
+    const { abTest, results } = await client.search(
+      'man',
+      jiraScopes,
+      'session-12',
+    );
 
     expect(requestSpy).toHaveBeenCalledTimes(1);
     expect(results.issues).toHaveProperty('length', 8);

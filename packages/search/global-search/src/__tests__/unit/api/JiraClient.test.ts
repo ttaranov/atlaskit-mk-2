@@ -9,7 +9,6 @@ import {
 const url = 'https://www.example.jira.dev.com/';
 const cloudId = 'cloudId';
 const PATH = '/rest/internal/2/productsearch/recent';
-
 describe('JiraClient', () => {
   let requestSpy;
   let jiraClient;
