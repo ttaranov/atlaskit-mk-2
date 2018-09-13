@@ -7,7 +7,7 @@ export type ContentNavigationProps = {
   isDragging: boolean,
   isPeekHinting: boolean,
   isPeeking: boolean,
-  onOverlayClick?: Event => void,
+  isVisible: boolean,
   product: ComponentType<{}>,
   transitionState: 'entered' | 'entering' | 'exited' | 'exiting',
   width: number,

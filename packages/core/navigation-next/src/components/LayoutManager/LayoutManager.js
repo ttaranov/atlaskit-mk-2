@@ -31,7 +31,10 @@ import {
 } from './primitives';
 import type { LayoutManagerProps } from './types';
 
-import { GLOBAL_NAV_WIDTH } from '../../common/constants';
+import {
+  CONTENT_NAV_WIDTH_COLLAPSED,
+  GLOBAL_NAV_WIDTH,
+} from '../../common/constants';
 
 type RenderContentNavigationArgs = {
   isDragging: boolean,
@@ -170,6 +173,7 @@ export default class LayoutManager extends Component<
       productNavigation,
     } = this.props;
     const {
+      isCollapsed,
       isPeekHinting,
       isPeeking,
       isResizing,
@@ -186,17 +190,30 @@ export default class LayoutManager extends Component<
         disableInteraction={shouldDisableInteraction}
         style={transitionStyle}
       >
-        {isVisible ? (
-          <ContentNavigation
-            container={containerNavigation}
-            isDragging={isDragging}
-            isPeekHinting={isPeekHinting}
-            isPeeking={isPeeking}
-            key="product-nav"
-            onOverlayClick={navigationUIController.unPeek}
-            product={productNavigation}
-            transitionState={transitionState}
-            width={width}
+        <ContentNavigation
+          container={containerNavigation}
+          isDragging={isDragging}
+          isPeekHinting={isPeekHinting}
+          isPeeking={isPeeking}
+          isVisible={isVisible}
+          key="product-nav"
+          product={productNavigation}
+          transitionState={transitionState}
+          width={width}
+        />
+        {isCollapsed ? (
+          <div
+            aria-label="Click to expand the navigation"
+            role="button"
+            onClick={navigationUIController.expand}
+            style={{
+              cursor: 'pointer',
+              height: '100%',
+              position: 'absolute',
+              outline: 0,
+              width: CONTENT_NAV_WIDTH_COLLAPSED,
+            }}
+            tabIndex="0"
           />
         ) : null}
       </ContentNavigationWrapper>
@@ -227,7 +244,7 @@ export default class LayoutManager extends Component<
         }}
       >
         <ResizeTransition
-          from={[0]}
+          from={[CONTENT_NAV_WIDTH_COLLAPSED]}
           in={!isCollapsed}
           properties={['width']}
           to={[productNavWidth]}
