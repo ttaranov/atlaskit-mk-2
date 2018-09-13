@@ -2,7 +2,7 @@ import { canCompareDimension, isBigger } from '../../dimensionComparer';
 
 describe('dimensionComparer', () => {
   describe('canCompareDimension', () => {
-    it('should return true when dimensions can not be compared', () => {
+    it('should return true when dimensions can be compared', () => {
       expect(canCompareDimension('10%', '30%')).toBe(true);
       expect(canCompareDimension(2, 100)).toBe(true);
       expect(canCompareDimension('2px', '100px')).toBe(true);
@@ -12,6 +12,8 @@ describe('dimensionComparer', () => {
       expect(canCompareDimension('10%', 100)).toBe(false);
       expect(canCompareDimension('aa', '12%')).toBe(false);
       expect(canCompareDimension('10%', '12px')).toBe(false);
+      expect(canCompareDimension('10%', undefined)).toBe(false);
+      expect(canCompareDimension(undefined, 100)).toBe(false);
     });
   });
 
