@@ -1,5 +1,8 @@
 # @atlaskit/navigation-next
 
+## 3.11.4
+- [patch] Adds support for closing switcher on create click [057f006](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/057f006)
+
 ## 3.11.3
 - [patch] Enforcing CONTENT_NAV_WIDTH on the components [d9ae0a9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d9ae0a9)
 
