@@ -77,7 +77,9 @@ const Footer = ({ text, onClick }: *) => (
 
 export default class Switcher extends Component<SwitcherProps, SwitcherState> {
   state = { isOpen: false };
+  selectRef = React.createRef();
   static defaultProps = {
+    closeMenuOnCreate: true,
     components: { Control, Option },
   };
   handleOpen = () => {
@@ -86,15 +88,33 @@ export default class Switcher extends Component<SwitcherProps, SwitcherState> {
   handleClose = () => {
     this.setState({ isOpen: false });
   };
+  getFooter = () => {
+    const { closeMenuOnCreate, create } = this.props;
+
+    if (!create) return null;
+
+    let onClick = create.onClick;
+    if (closeMenuOnCreate) {
+      onClick = e => {
+        if (this.selectRef.current) {
+          this.selectRef.current.close();
+        }
+        create.onClick(e);
+      };
+    }
+
+    return <Footer text={create.text} onClick={onClick} />;
+  };
   render() {
     const { create, options, target, ...props } = this.props;
     const { isOpen } = this.state;
 
     return (
       <PopupSelect
+        ref={this.selectRef}
         filterOption={filterOption}
         isOptionSelected={isOptionSelected}
-        footer={create ? <Footer {...create} /> : null}
+        footer={this.getFooter()}
         getOptionValue={getOptionValue}
         onOpen={this.handleOpen}
         onClose={this.handleClose}
