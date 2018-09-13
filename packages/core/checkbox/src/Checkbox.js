@@ -13,7 +13,12 @@ import {
   name as packageName,
   version as packageVersion,
 } from '../package.json';
-import { HiddenCheckbox, Label } from './styled/Checkbox';
+import {
+  HiddenCheckbox,
+  Label,
+  LabelText,
+  CheckboxWrapper,
+} from './styled/Checkbox';
 import { type CheckboxProps } from './types';
 
 type State = {|
@@ -118,12 +123,11 @@ class Checkbox extends Component<CheckboxProps, State> {
   render() {
     const {
       isDisabled,
-      isFullWidth,
       isInvalid,
-      name,
-      value,
       isIndeterminate,
       label,
+      name,
+      value,
       ...props
     } = this.props;
     const isChecked = this.getProp('isChecked');
@@ -134,19 +138,12 @@ class Checkbox extends Component<CheckboxProps, State> {
         <Label
           {...props}
           isDisabled={isDisabled}
-          isFullWidth={isFullWidth}
           onMouseDown={this.onMouseDown}
           onMouseEnter={this.onMouseEnter}
           onMouseLeave={this.onMouseLeave}
           onMouseUp={this.onMouseUp}
         >
-          <span
-            style={{
-              flexShrink: 0,
-              display: 'inline-block',
-              position: 'relative',
-            }}
-          >
+          <CheckboxWrapper>
             <HiddenCheckbox
               disabled={isDisabled}
               checked={isChecked}
@@ -160,27 +157,20 @@ class Checkbox extends Component<CheckboxProps, State> {
               name={name}
               innerRef={r => (this.checkbox = r)} // eslint-disable-line
             />
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-              }}
-            >
-              <CheckboxIcon
-                isChecked={isChecked}
-                isDisabled={isDisabled}
-                isFocused={isFocused}
-                isActive={isActive}
-                isHovered={isHovered}
-                isInvalid={isInvalid}
-                isIndeterminate={isIndeterminate}
-                primaryColor="inherit"
-                secondaryColor="inherit"
-                label=""
-              />
-            </div>
-          </span>
-          {label}
+            <CheckboxIcon
+              isChecked={isChecked}
+              isDisabled={isDisabled}
+              isFocused={isFocused}
+              isActive={isActive}
+              isHovered={isHovered}
+              isInvalid={isInvalid}
+              isIndeterminate={isIndeterminate}
+              primaryColor="inherit"
+              secondaryColor="inherit"
+              label=""
+            />
+          </CheckboxWrapper>
+          <LabelText>{label}</LabelText>
         </Label>
       </ThemeProvider>
     );
