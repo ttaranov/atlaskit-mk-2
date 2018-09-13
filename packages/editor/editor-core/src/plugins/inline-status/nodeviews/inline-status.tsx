@@ -66,6 +66,7 @@ export type InlineStatusComponentProps = {
   color?: string;
   forwardRef: (ref: HTMLElement) => void;
   view: object;
+  getPos: () => number;
 };
 
 const appearances = {
@@ -91,8 +92,6 @@ export class InlineStatusComponent extends React.Component<
 > {
   shouldComponentUpdate(nextProps) {
     return (
-      // this.props.panelType !== nextProps.panelType ||
-      // this.props.appearance !== nextProps.appearance ||
       this.props.inlineEditing !== nextProps.inlineEditing ||
       this.props.color !== nextProps.color
     );
@@ -101,22 +100,26 @@ export class InlineStatusComponent extends React.Component<
   render() {
     const { forwardRef, color, view } = this.props;
     const appearance_ = colorToLozengeAppearanceMap[color || 'neutral'];
-    // const inlineEditing = findParentNodeOfType(view.state.schema.nodes.inlineStatus)(view.state.tr.selection)
-
     return (
       <WithPluginState
         plugins={{
           statusState: pluginKey,
         }}
         render={({ statusState }) => {
-          // console.log('statusState: ', statusState.inlineEditing, inlineEditing)
-
+          const {
+            selection: {
+              $from: { pos },
+            },
+          } = this.props.view.state;
+          const { node } = this.props;
+          const nodePos = this.props.getPos();
+          const isEditing = pos >= nodePos && pos <= nodePos + node.nodeSize;
           return (
             <Lozenge
               appearance={appearance_}
               maxWidth={'100%'}
               forwardRef={forwardRef}
-              inlineEditing={statusState.inlineEditing}
+              inlineEditing={isEditing}
             />
           );
         }}
@@ -126,6 +129,11 @@ export class InlineStatusComponent extends React.Component<
 }
 
 class InlineStatus extends ReactNodeView {
+  constructor({ node, view, getPos, portalProviderAPI }) {
+    super(node, view, getPos, portalProviderAPI);
+    this.getPos = getPos;
+  }
+
   createDomRef() {
     const domRef = document.createElement('span');
     domRef.setAttribute('data-panel-type', this.node.attrs.panelType);
@@ -148,6 +156,8 @@ class InlineStatus extends ReactNodeView {
         panelType={panelType}
         color={color}
         view={view}
+        node={this.node}
+        getPos={this.getPos}
         forwardRef={forwardRef}
       />
     );
@@ -168,5 +178,5 @@ export const inlineStatusNodeView = (portalProviderAPI: PortalProviderAPI) => (
   view: any,
   getPos: () => number,
 ): NodeView => {
-  return new InlineStatus(node, view, getPos, portalProviderAPI).init();
+  return new InlineStatus({ node, view, getPos, portalProviderAPI }).init();
 };
