@@ -1,5 +1,8 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 2.0.25
+- [patch] Fix encoder for missing closing \! [c585e27](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c585e27)
+
 ## 2.0.24
 - [patch] New rules for formatter [50edbb0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/50edbb0)
 
