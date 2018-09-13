@@ -619,7 +619,7 @@ export function makeConfluenceRecentSpacesData(n: number = 15) {
   }, n);
 }
 
-export function mapRequestScopes(requestScopes, resultScopes) {
+export function mapRequestScopes(requestScopes, resultScopes, typeLimits?) {
   return requestScopes.map(requestScope => {
     return requestScope
       .split('.')[1]
@@ -627,14 +627,17 @@ export function mapRequestScopes(requestScopes, resultScopes) {
       .map(scope => resultScopes.scopes.find(({ id }) => id.includes(scope)))
       .filter(scopeResult => !!scopeResult)
       .reduce(
-        (acc, current) => {
+        (acc, current, all) => {
           if (current.error) {
             acc.error = current.error;
           }
           if (current.abTest) {
             acc.abTest = current.abTest;
           }
-          acc.results = [...acc.results, ...current.results];
+          const results = typeLimits
+            ? current.results.slice(0, typeLimits[current.id])
+            : current.results;
+          acc.results = [...acc.results, ...results];
           return acc;
         },
         {

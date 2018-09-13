@@ -104,7 +104,12 @@ function mockCrossProductSearchApiV2() {
       const body = JSON.parse(options.body);
       const query = body.query.string;
       const requestScops = body.scopes;
-      const scopes = mapRequestScopes(requestScops, queryJiraSearch(query));
+      const scopes = mapRequestScopes(requestScops, queryJiraSearch(query), {
+        issues: 8,
+        boards: 2,
+        projects: 2,
+        filters: 2,
+      });
       return delay(500, { scopes });
     },
   );
