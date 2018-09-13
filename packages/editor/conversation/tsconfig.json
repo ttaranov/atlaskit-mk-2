@@ -3,5 +3,12 @@
   "include": [
     "./src/**/*.ts",
     "./src/**/*.tsx"
-  ]
+  ],
+  "compilerOptions": {
+    "paths": {
+      "@atlaskit/analytics-next": [
+        "node_modules/@atlaskit/analytics-next-types"
+      ]
+    }
+  }
 }
