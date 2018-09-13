@@ -16,6 +16,7 @@ import {
   settings,
   ThemeProvider,
 } from '../src';
+import { CONTENT_NAV_WIDTH } from '../src/common/constants';
 
 const themeModes = { light, dark, settings };
 
@@ -196,7 +197,7 @@ const ItemWrapper = props => (
       display: 'flex',
       flexDirection: 'row',
       margin: '4px 0',
-      width: '270px',
+      width: `${CONTENT_NAV_WIDTH}px`,
     }}
     {...props}
   />
