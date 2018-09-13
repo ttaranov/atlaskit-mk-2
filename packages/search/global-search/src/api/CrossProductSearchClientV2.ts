@@ -7,18 +7,11 @@ import {
   SearchResponse,
   CrossProductSearchResults,
   ScopeResult,
-  Entry,
   Attributes,
   ABTest,
   SearchQuery,
 } from './CrossProductSearchTypesV2';
-import {
-  Result,
-  ResultType,
-  AnalyticsType,
-  ContentType,
-} from '../model/Result';
-import * as flattendeep from 'lodash.flattendeep';
+import { ResultType, AnalyticsType, ContentType } from '../model/Result';
 
 const SEARCH_PATH: string = '/rest/quicksearch/v2';
 
@@ -129,7 +122,9 @@ export default class CrossProductSearchClientImpl
   private jiraScopesToResults(
     scopes: ScopeResult[],
   ): CrossProductSearchResults {
-    const sections = scopes.map(this.scopeToSection);
+    const sections = scopes
+      .filter(({ error }) => !error)
+      .map(this.scopeToSection);
     const abTest = extractABTestAttributes(scopes);
     return {
       results: sections.reduce(

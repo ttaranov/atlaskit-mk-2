@@ -6,6 +6,7 @@ import { utils } from '@atlaskit/util-service-support';
 import {
   generateJiraScopeWithError,
   generateJiraScope,
+  mapRequestScopes,
 } from '../../../../example-helpers/mockData';
 
 const url = 'https://www.example.jira.dev.com/';
@@ -84,15 +85,15 @@ describe('Search api', () => {
       generateJiraScope('filters', 2),
     ];
 
-    requestSpy.mockReturnValue(Promise.resolve({ scopes }));
+    requestSpy.mockReturnValue(
+      Promise.resolve({ scopes: mapRequestScopes(jiraScopes, { scopes }) }),
+    );
 
     const { results } = await client.search('man', jiraScopes, 'session-12');
 
     expect(requestSpy).toHaveBeenCalledTimes(1);
-    expect(results.issues).toBe(undefined);
-    expect(results.projects).toHaveProperty('length', 4);
-    expect(results.boards).toHaveProperty('length', 3);
-    expect(results.filters).toHaveProperty('length', 2);
+    expect(results[jiraScopes[0]]).toBe(undefined);
+    expect(results[jiraScopes[1]]).toHaveProperty('length', 9);
   });
 
   it('should return transformed data successfully', async () => {
@@ -103,15 +104,15 @@ describe('Search api', () => {
       generateJiraScope('filters', 2),
     ];
 
-    requestSpy.mockReturnValue(Promise.resolve({ scopes }));
+    requestSpy.mockReturnValue(
+      Promise.resolve({ scopes: mapRequestScopes(jiraScopes, { scopes }) }),
+    );
 
     const { results } = await client.search('man', jiraScopes, 'session-12');
 
     expect(requestSpy).toHaveBeenCalledTimes(1);
-    expect(results.issues).toHaveProperty('length', 8);
-    expect(results.projects).toHaveProperty('length', 4);
-    expect(results.boards).toHaveProperty('length', 3);
-    expect(results.filters).toHaveProperty('length', 2);
+    expect(results[jiraScopes[0]]).toHaveProperty('length', 8);
+    expect(results[jiraScopes[1]]).toHaveProperty('length', 9);
   });
 
   it('should include abTest', async () => {
@@ -120,7 +121,9 @@ describe('Search api', () => {
     const boardsScope = generateJiraScope('boards', 3);
     const scopes = [issuesScope, boardsScope];
 
-    requestSpy.mockReturnValue(Promise.resolve({ scopes }));
+    requestSpy.mockReturnValue(
+      Promise.resolve({ scopes: mapRequestScopes(jiraScopes, { scopes }) }),
+    );
 
     const { abTest, results } = await client.search(
       'man',
@@ -129,8 +132,8 @@ describe('Search api', () => {
     );
 
     expect(requestSpy).toHaveBeenCalledTimes(1);
-    expect(results.issues).toHaveProperty('length', 8);
-    expect(results.boards).toHaveProperty('length', 3);
+    expect(results[jiraScopes[0]]).toHaveProperty('length', 8);
+    expect(results[jiraScopes[1]]).toHaveProperty('length', 3);
 
     expect(abTest).toMatchObject(boardsScope.abTest as ABTest);
   });

@@ -8,6 +8,7 @@ import {
   makeConfluenceRecentSpacesData,
   makeQuickNavSearchData,
   mockJiraSearchData,
+  mapRequestScopes,
 } from './mockData';
 import { JiraRecentResponse } from './jiraRecentResponseData';
 
@@ -94,32 +95,6 @@ function mockJiraRecentApi() {
     new RegExp('/rest/internal/2/productsearch/recent?'),
     async request => delay(500, JiraRecentResponse),
   );
-}
-
-function mapRequestScopes(requestScopes, resultScopes) {
-  return requestScopes.map(requestScope => {
-    return requestScope
-      .split('.')[1]
-      .split(',')
-      .map(scope => resultScopes.scopes.find(({ id }) => id.includes(scope)))
-      .filter(scopeResult => !!scopeResult)
-      .reduce(
-        (acc, current) => {
-          if (current.error) {
-            acc.error = current.error;
-          }
-          if (current.abTest) {
-            acc.abTest = current.abTest;
-          }
-          acc.results = [...acc.results, ...current.results];
-          return acc;
-        },
-        {
-          id: requestScope,
-          results: [],
-        },
-      );
-  });
 }
 
 function mockCrossProductSearchApiV2() {
