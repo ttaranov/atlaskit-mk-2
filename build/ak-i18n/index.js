@@ -35,8 +35,8 @@ async function run() {
     Notes
       ak-i18n extract will look in dist/es2015 by default, this can be overridden using the searchDir flag.
       ak-i18n will extract translation strings into the path/to/package/translations.pot
-      ak-18n can only extract messages from files that **import** react-intl. That means esm/es2015 only.
-      ak-18n can only extract messages that use \`defineMessages\`, \`FormattedMessage\` is not supported.
+      ak-i18n can only extract messages from files that **import** react-intl. That means esm/es2015 only.
+      ak-i18n can only extract messages that use \`defineMessages\`, \`FormattedMessage\` is not supported.
   `,
     {
       flags: {
