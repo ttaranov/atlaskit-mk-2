@@ -20,7 +20,7 @@ const JEST_WAIT_FOR_INPUT_TIMEOUT = 1000;
  * if WATCH= true, by default, it will start chrome.
  *  */
 const maxWorkers =
-  process.env.TEST_ENV === 'browserstack' ? '--maxWorkers=4' : '--maxWorkers=1';
+  process.env.TEST_ENV === 'browserstack' ? '--maxWorkers=5' : '--maxWorkers=1';
 const watch = process.env.WATCH ? '--watch' : '';
 function runTests() {
   return new Promise((resolve, reject) => {

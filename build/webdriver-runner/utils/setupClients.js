@@ -9,6 +9,10 @@ const commit = process.env.BITBUCKET_COMMIT
     ? process.env.USER + uniqIdentifierStamp
     : uniqIdentifierStamp;
 
+if (!process.env.BITBUCKET_BRANCH && process.env.USER) {
+  process.env.BITBUCKET_BRANCH = process.env.USER + '_local_run';
+}
+
 function setBrowserStackClients() /*: Array<?Object>*/ {
   const launchers = {
     chrome: {
@@ -47,19 +51,14 @@ function setBrowserStackClients() /*: Array<?Object>*/ {
       resolution: '1440x900',
     },
   };
-
-  let clis = [];
-  if (!process.env.BITBUCKET_BRANCH && process.env.USER) {
-    process.env.BITBUCKET_BRANCH = process.env.USER + '_local_run';
-  }
-
-  Object.keys(launchers).forEach(key => {
-    const option = {
+  const launchKeys = Object.keys(launchers);
+  const options = launchKeys.map(launchKey => {
+    let option = {
       desiredCapabilities: {
-        os: launchers[key].os,
-        os_version: launchers[key].os_version,
-        browserName: launchers[key].browserName,
-        browser_version: launchers[key].browser_version,
+        os: launchers[launchKey].os,
+        os_version: launchers[launchKey].os_version,
+        browserName: launchers[launchKey].browserName,
+        browser_version: launchers[launchKey].browser_version,
         project: 'Atlaskit MK-2 Webdriver Tests',
         build: process.env.BITBUCKET_BRANCH,
         'browserstack.local': true,
@@ -73,19 +72,17 @@ function setBrowserStackClients() /*: Array<?Object>*/ {
       key: process.env.BROWSERSTACK_KEY,
     };
     let driver = webdriverio.remote(option);
-    clis.push({ driver: driver, isReady: false });
+    return { driver: driver, isReady: false };
   });
-  return clis;
+  return options;
 }
 
-function setLocalClients() /*: Array<?Object>*/ {
-  const isHeadless = process.env.HEADLESS !== 'false';
+function setLocalClients() {
+  const isHeadless = process.env.HEADLESS !== 'true';
   const launchers = {
     chrome: {
       browserName: 'chrome',
-      chromeOptions: isHeadless
-        ? { args: ['--headless', '--disable-gpu'] }
-        : { args: [] },
+      chromeOptions: isHeadless ? { args: ['--headless'] } : { args: [] },
     },
     firefox: {
       browserName: 'firefox',
@@ -98,12 +95,12 @@ function setLocalClients() /*: Array<?Object>*/ {
     delete launchers.firefox;
   }
 
-  const browserOption = [];
-  for (const key of Object.keys(launchers)) {
-    const option = { desiredCapabilities: launchers[key] };
-    browserOption.push({ driver: webdriverio.remote(option) });
-  }
-  return browserOption;
+  const keys = Object.keys(launchers);
+  const options = keys.map(key => {
+    const driver = webdriverio.remote({ desiredCapabilities: launchers[key] });
+    return { driver: driver, isReady: false };
+  });
+  return options;
 }
 
 module.exports = { setLocalClients, setBrowserStackClients };

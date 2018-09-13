@@ -16,15 +16,15 @@ const start = util.promisify(Selenium.start);
 let child;
 
 // Add selenium config to override default
-// Update chromedriver to run on Chrome65
+// Update chromedriver to run on Chrome67
 const seleniumConfig = {
   drivers: {
     chrome: {
-      version: '2.36',
+      version: '2.41',
       arch: process.arch,
     },
     firefox: {
-      version: '0.19.1',
+      version: '0.21.0',
       arch: process.arch,
     },
   },
