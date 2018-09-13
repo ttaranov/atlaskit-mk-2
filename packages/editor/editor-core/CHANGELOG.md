@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 80.4.4
+- [patch] bump media-picker [9411569](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9411569)
+
 ## 80.4.3
 - [patch] Fix the empty progress bar inside tables [1beaf5b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1beaf5b)
 
