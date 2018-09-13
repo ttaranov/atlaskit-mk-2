@@ -1,5 +1,8 @@
 # @atlaskit/media-image
 
+## 34.0.4
+- [patch] Refetch image when the dimensions change [a0475c2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a0475c2)
+
 ## 34.0.3
 - [patch] Revert fix for MS-667 [43e601f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/43e601f)
 
