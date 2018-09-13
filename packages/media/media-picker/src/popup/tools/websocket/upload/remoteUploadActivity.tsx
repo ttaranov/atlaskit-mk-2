@@ -7,6 +7,7 @@ import {
   isRemoteUploadProgressData,
   isRemoteUploadEndData,
   isRemoteUploadErrorData,
+  isNotifyMetadata,
 } from '../wsMessageData';
 
 export type DispatchUploadEvent<T extends keyof WsUploadEvents> = (
@@ -52,6 +53,12 @@ export class RemoteUploadActivity implements WsActivity {
         description: (data.data && data.data.reason) || data.reason,
       });
       this.notifyActivityCompleted();
+    } else if (isNotifyMetadata(data)) {
+      // TODO: investigate about data.uploadId not being present in the ws payload
+      this.dispatchEvent('NotifyMetadata', {
+        uploadId: data.uploadId,
+        metadata: data.metadata,
+      });
     }
   }
 
@@ -92,7 +99,8 @@ export class RemoteUploadActivity implements WsActivity {
       this.uploadId &&
       data.data.uploadId === this.uploadId
     );
-    return shouldProcess || shouldProcessAlt;
+    // const containsMetadata = !!data
+    return shouldProcess || shouldProcessAlt || isNotifyMetadata(data);
   }
 
   private notifyActivityStarted(): void {
