@@ -2,41 +2,39 @@
 const path = require('path');
 const fs = require('fs');
 const meow = require('meow');
-const chalk = require('chalk');
 
-const extractCommand = require('./extract');
+const { errorAndExit } = require('./utils');
 const pushCommand = require('./push');
 const pullCommand = require('./pull');
 
-function errorAndExit(msg) {
-  console.error(chalk.red(msg));
-  process.exit(1);
-}
+const TRANSIFEX_PROJECT_NAME = 'atlaskit';
+const CLI_DEFAULT_USAGE = '$ ak-i18n <command> --resource=name path/to/package';
 
 async function run() {
   const cli = meow(
     `
     Usage
-      $ ak-i18n <command> path/to/package
+      ${CLI_DEFAULT_USAGE}
 
     Options
+      --resource  Transifex resource name
+      --project   Override Transifex project name
+                  [Default: ${TRANSIFEX_PROJECT_NAME}]
       --searchDir Override the default directory that ak-i18n will search in when extracting translation strings (relative to the package you point to)
                   [Default: dist/es2015]
       --cwd       Override the current working directory
                   [Default: process.cwd()]
 
     Examples
-      $ ak-i18n extract packages/search/global-search
-      $ ak-i18n push packages/search/global-search
-      $ ak-i18n pull packages/search/global-search
+      $ ak-i18n push --resource=global-search packages/search/global-search
+      $ ak-i18n pull --resource=media packages/media/media-card
 
-      $ ak-i18n extract packages/core/avatar --searchDir dist/esm
+      $ ak-i18n push --resource=core packages/core/avatar --searchDir dist/esm
 
     Notes
       ak-i18n extract will look in dist/es2015 by default, this can be overridden using the searchDir flag.
-      ak-i18n will extract translation strings into the path/to/package/translations.pot
-      ak-18n can only extract messages from files that **import** react-intl. That means esm/es2015 only.
-      ak-18n can only extract messages that use \`defineMessages\`, \`FormattedMessage\` is not supported.
+      ak-i18n can only extract messages from files that **import** react-intl. That means esm/es2015 only.
+      ak-i18n can only extract messages that use \`defineMessages\`, \`FormattedMessage\` is not supported.
   `,
     {
       flags: {
@@ -48,20 +46,33 @@ async function run() {
           type: 'string',
           default: process.cwd(),
         },
+        project: {
+          type: 'string',
+          default: TRANSIFEX_PROJECT_NAME,
+        },
+        resource: {
+          type: 'string',
+        },
       },
     },
   );
   if (cli.input.length !== 2) {
-    errorAndExit('Usage: $ ak-i18n <command> path/to/package');
+    errorAndExit(`Usage: ${CLI_DEFAULT_USAGE}`);
   }
 
   const [command, packagePath] = cli.input;
-  const { searchDir } = cli.flags;
-  const allowedCommands = ['extract', 'push', 'pull'];
+  const { searchDir, project, resource } = cli.flags;
 
+  if (!resource) {
+    errorAndExit(
+      `Transifex resource name is required!\nUsage: ${CLI_DEFAULT_USAGE}`,
+    );
+  }
+
+  const allowedCommands = ['push', 'pull'];
   if (!allowedCommands.includes(command)) {
     errorAndExit(
-      `Invalid command "${command}".\nMust be one of "extract", "pull" or "push"`,
+      `Invalid command "${command}".\nMust be one of "pull" or "push"`,
     );
   }
 
@@ -70,15 +81,13 @@ async function run() {
     errorAndExit(`Unable to find packagePath ${packagePath}`);
   }
 
-  if (command === 'extract') {
+  if (command === 'push') {
     const dirToSearch = path.join(absPathToPackage, searchDir);
     if (!fs.existsSync(dirToSearch)) {
       errorAndExit(`Unable to find directory "${dirToSearch}".`);
     }
 
-    await extractCommand(absPathToPackage, searchDir);
-  } else if (command === 'push') {
-    await pushCommand(absPathToPackage);
+    await pushCommand(absPathToPackage, searchDir, project, resource);
   } else if (command === 'pull') {
     await pullCommand(absPathToPackage);
   }

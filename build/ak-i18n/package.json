@@ -14,6 +14,7 @@
     "babel-plugin-react-intl-pot": "^0.5.5",
     "chalk": "^2.1.0",
     "globby": "^6.1.0",
-    "meow": "^5.0.0"
+    "meow": "^5.0.0",
+    "transifex": "^1.5.0"
   }
 }
