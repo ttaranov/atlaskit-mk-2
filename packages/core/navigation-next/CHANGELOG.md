@@ -1,5 +1,8 @@
 # @atlaskit/navigation-next
 
+## 3.12.0
+- [minor] Export SkeletonContainerView component [b1acba3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1acba3)
+
 ## 3.11.4
 - [patch] Adds support for closing switcher on create click [057f006](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/057f006)
 
