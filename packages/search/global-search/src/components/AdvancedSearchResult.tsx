@@ -1,8 +1,19 @@
 import * as React from 'react';
 import { ResultBase } from '@atlaskit/quick-search';
+import { defineMessages } from 'react-intl';
 
 import ShiftReturn from '../assets/ShiftReturn';
 import ShiftReturnHighlighted from '../assets/ShiftReturnHighlighted';
+
+// MY_STRING
+const messages = defineMessages({
+  caption: {
+    id: 'umux.dialog.content.written-feedback-field.caption',
+    defaultMessage: 'Tell us why you rate Jira this way?',
+    description: '',
+  },
+});
+console.log(messages);
 
 export interface Props {
   href: string;

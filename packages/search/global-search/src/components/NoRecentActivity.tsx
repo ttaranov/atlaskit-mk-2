@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, defineMessages } from 'react-intl';
 import styled from 'styled-components';
 import { gridSize } from '@atlaskit/theme';
 import { akTypographyMixins } from '@atlaskit/util-shared-styles';
@@ -32,6 +32,16 @@ const Title = styled.h4`
   margin-bottom: ${gridSize() * 2}px;
   margin-top: 0;
 `;
+
+// MY_STRING
+const messages = defineMessages({
+  caption: {
+    id: 'umux.dialog.content.some.other.string',
+    defaultMessage: 'This is another string',
+    description: '',
+  },
+});
+console.log(messages);
 
 export interface Props {
   children: JSX.Element;
