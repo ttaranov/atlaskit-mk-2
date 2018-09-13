@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 80.4.1
+- [patch] Fixing the scroll after setting content on Mobile [0a03e2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0a03e2d)
+
 ## 80.4.0
 - [minor] Add new experimental table resizing, behind flag. ED-4679 [b66227e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b66227e)
 - [none] Updated dependencies [b66227e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b66227e)
