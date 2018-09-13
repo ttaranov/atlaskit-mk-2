@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 80.3.0
+- [minor] Adds ability to load document snapshot from collab service [3708304](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3708304)
+
 ## 80.2.1
 - [patch] Fix popup positioning when inside overflow:auto containers [affe5df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/affe5df)
 
