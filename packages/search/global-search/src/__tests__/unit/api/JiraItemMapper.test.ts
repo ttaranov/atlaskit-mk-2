@@ -117,8 +117,7 @@ describe('mapJiraItemToResult', () => {
       const issue = generateRandomJiraIssue() as JiraItemV2;
       const avatar = issue.attributes.avatar || {};
       avatar.url = undefined;
-      (avatar.urls = { ['32x32']: 'http://32url' }),
-        { ['16x16']: 'http://16url' };
+      avatar.urls = { ['32x32']: 'http://32url', ['16x16']: 'http://16url' };
       const result = mapJiraItemToResult(issue);
       expect(result.avatarUrl).toBe('http://32url');
     });
