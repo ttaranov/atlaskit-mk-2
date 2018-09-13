@@ -17,6 +17,14 @@ async function extractCommand(absPathToPackage, searchDir) {
     (allMessages, nextMessages) => [...allMessages, ...nextMessages],
     [],
   );
+  // Search for duplicate messageIds
+  const duplicateMessageIds = messages
+    .map(m => m.id)
+    .filter((id, idx, arr) => arr.indexOf(id) !== idx);
+  if (duplicateMessageIds.length !== 0) {
+    console.error('Error: duplicate messageIds found', duplicateMessageIds);
+    process.exit(1);
+  }
 
   console.log(`Found ${messages.length} messages...`);
 
@@ -28,10 +36,7 @@ async function extractCommand(absPathToPackage, searchDir) {
 
 function extractMessagesFromFile(file) {
   return new Promise((resolve, reject) => {
-    const babelConfig = {
-      plugins: ['react-intl'],
-      presets: ['@babel/preset-typescript'],
-    };
+    const babelConfig = { plugins: ['react-intl'] };
     babel.transformFile(file, babelConfig, (err, res) => {
       if (err) reject(err);
       else resolve(res.metadata['react-intl'].messages);

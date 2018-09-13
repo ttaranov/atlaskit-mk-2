@@ -20,8 +20,10 @@ async function run() {
       $ ak-i18n <command> path/to/package
 
     Options
-      --searchDir  Override the default directory that ak-i18n will search in when extracting translation strings (relative to the package you point to)
-      --cwd        Override the current working directory
+      --searchDir Override the default directory that ak-i18n will search in when extracting translation strings (relative to the package you point to)
+                  [Default: dist/es2015]
+      --cwd       Override the current working directory
+                  [Default: process.cwd()]
 
     Examples
       $ ak-i18n extract packages/search/global-search
@@ -68,12 +70,12 @@ async function run() {
     errorAndExit(`Unable to find packagePath ${packagePath}`);
   }
 
-  const dirToSearch = path.join(absPathToPackage, searchDir);
-  if (!fs.existsSync(dirToSearch)) {
-    errorAndExit(`Unable to find directory "${dirToSearch}".`);
-  }
-
   if (command === 'extract') {
+    const dirToSearch = path.join(absPathToPackage, searchDir);
+    if (!fs.existsSync(dirToSearch)) {
+      errorAndExit(`Unable to find directory "${dirToSearch}".`);
+    }
+
     await extractCommand(absPathToPackage, searchDir);
   } else if (command === 'push') {
     await pushCommand(absPathToPackage);
