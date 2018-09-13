@@ -51,6 +51,9 @@
       line-height: 1.42857142857143;
       -ms-overflow-style: -ms-autohiding-scrollbar;
       text-decoration-skip: ink;
+
+      /** Fixes the grey hightlight on WebView tap */
+      -webkit-tap-highlight-color: transparent;
     }
 
     p,
@@ -334,11 +337,7 @@
       width: 1px !important;
       white-space: nowrap !important;
     }
-  </style>
-</head>
 
-<body>
-  <style>
     #editor {
       position: absolute;
       top: 0;
@@ -347,10 +346,13 @@
       bottom: 0;
       height: 100%;
       width: 100%;
-      padding: 10px;
+      padding: 20px;
       box-sizing: border-box;
     }
   </style>
+</head>
+
+<body>
   <div id="editor"></div>
 </body>
 

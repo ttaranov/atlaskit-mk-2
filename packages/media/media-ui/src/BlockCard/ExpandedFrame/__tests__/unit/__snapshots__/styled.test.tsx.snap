@@ -2,6 +2,7 @@
 
 exports[`LinkWrapper should have hover styles when isInteractive=true 1`] = `
 .c0 {
+  border-radius: 3px;
   cursor: pointer;
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
@@ -22,10 +23,6 @@ exports[`LinkWrapper should have hover styles when isInteractive=true 1`] = `
   line-height: initial;
   -webkit-transition: background 0.3s;
   transition: background 0.3s;
-}
-
-.c0 border-radius:function borderRadius() {
-  return: 3;
 }
 
 .c0:hover {
@@ -48,6 +45,7 @@ exports[`LinkWrapper should have hover styles when isInteractive=true 1`] = `
 
 exports[`LinkWrapper should not have hover styles when isInteractive=false 1`] = `
 .c0 {
+  border-radius: 3px;
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -69,10 +67,6 @@ exports[`LinkWrapper should not have hover styles when isInteractive=false 1`] =
   transition: background 0.3s;
 }
 
-.c0 border-radius:function borderRadius() {
-  return: 3;
-}
-
 .c0:hover {
   -webkit-text-decoration: none;
   text-decoration: none;
@@ -85,6 +79,7 @@ exports[`LinkWrapper should not have hover styles when isInteractive=false 1`] =
 
 exports[`Wrapper should have hover styles when isInteractive=true 1`] = `
 .c0 {
+  border-radius: 3px;
   cursor: pointer;
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
@@ -107,10 +102,6 @@ exports[`Wrapper should have hover styles when isInteractive=true 1`] = `
   transition: background 0.3s;
 }
 
-.c0 border-radius:function borderRadius() {
-  return: 3;
-}
-
 .c0:hover {
   background-color: #EBECF0;
 }
@@ -126,6 +117,7 @@ exports[`Wrapper should have hover styles when isInteractive=true 1`] = `
 
 exports[`Wrapper should not have hover styles when isInteractive=false 1`] = `
 .c0 {
+  border-radius: 3px;
   display: -webkit-inline-box;
   display: -webkit-inline-flex;
   display: -ms-inline-flexbox;
@@ -145,10 +137,6 @@ exports[`Wrapper should not have hover styles when isInteractive=false 1`] = `
   line-height: initial;
   -webkit-transition: background 0.3s;
   transition: background 0.3s;
-}
-
-.c0 border-radius:function borderRadius() {
-  return: 3;
 }
 
 <div
