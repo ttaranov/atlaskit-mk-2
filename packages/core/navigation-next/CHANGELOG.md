@@ -1,5 +1,8 @@
 # @atlaskit/navigation-next
 
+## 3.12.1
+- [patch] limit page renders [36da70a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36da70a)
+
 ## 3.12.0
 - [minor] Export SkeletonContainerView component [b1acba3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1acba3)
 
