@@ -25,6 +25,7 @@ import JiraAdvancedSearch from './JiraAdvancedSearch';
 import {
   mapRecentResultsToUIGroups,
   mapSearchResultsToUIGroups,
+  JiraScopes,
 } from './JiraSearchResultsMapper';
 import {
   handlePromiseError,
@@ -53,8 +54,6 @@ export interface Props {
   crossProductSearchClientV2: CrossProductSearchClient;
   peopleSearchClient: PeopleSearchClient;
 }
-
-const JiraScopes = ['jira.issue', 'jira.board,filter,project'];
 
 const contentTypeToSection = {
   [ContentType.JiraIssue]: 'issues',

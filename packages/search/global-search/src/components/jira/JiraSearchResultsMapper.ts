@@ -33,6 +33,10 @@ const DEFAULT_JIRA_RESULTS_MAP: GenericResultMap = {
   people: [],
 };
 
+export const JiraScops = Object.keys(scopeLimits).filter(scope =>
+  scope.includes('jira'),
+);
+
 export const sliceResults = (resultsMap: JiraResultsMap) => {
   const { issues, boards, filters, projects, people } = resultsMap
     ? resultsMap
