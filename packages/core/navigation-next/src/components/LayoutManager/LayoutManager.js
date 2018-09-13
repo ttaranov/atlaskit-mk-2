@@ -166,7 +166,7 @@ export default class LayoutManager extends Component<
   };
 
   renderContentNavigation = (args: RenderContentNavigationArgs) => {
-    const { isDragging, transitionState, transitionStyle, width } = args;
+    const { transitionState, transitionStyle } = args;
     const {
       containerNavigation,
       navigationUIController,
@@ -192,14 +192,11 @@ export default class LayoutManager extends Component<
       >
         <ContentNavigation
           container={containerNavigation}
-          isDragging={isDragging}
           isPeekHinting={isPeekHinting}
           isPeeking={isPeeking}
           isVisible={isVisible}
           key="product-nav"
           product={productNavigation}
-          transitionState={transitionState}
-          width={width}
         />
         {isCollapsed ? (
           <div
