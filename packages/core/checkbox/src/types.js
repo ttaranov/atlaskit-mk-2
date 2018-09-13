@@ -28,18 +28,6 @@ export type CheckboxIconProps = {
   secondaryColor?: any,
 };
 
-export type CheckboxInputProps = CheckboxIconProps & {
-  /** Callback to receive a reference.  */
-  inputRef: (input: ?HTMLInputElement) => mixed,
-  /** The name of the submitted field in a checkbox. */
-  name: string,
-  /** Function that is called whenever the state of the checkbox changes. */
-  onChange: (event: SyntheticInputEvent<HTMLInputElement>) => mixed,
-  /** The value to be used in the checkbox input. This is the value that will
-   be returned on form submission. */
-  value: number | string,
-};
-
 export type CheckboxProps = {
   /** Sets whether the checkbox begins checked. */
   defaultChecked: boolean,

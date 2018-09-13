@@ -8,8 +8,8 @@ export default md`
   A checkbox element for use in forms and elsewhere.
 
 ${code`
-import Checkbox, {
-  CheckboxInput,
+import {
+  Checkbox,
   CheckboxIcon
 } from '@atlaskit/checkbox';
 `}
