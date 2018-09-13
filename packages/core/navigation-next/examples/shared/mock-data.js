@@ -31,8 +31,9 @@ export const LinkItem = ({ components: C, to, ...props }: *) => {
 export const globalNavPrimaryItems = [
   {
     id: 'jira',
-    // $FlowFixMe - logo/icon is incompatible with icon/icon
-    icon: JiraIcon,
+    icon: ({ label }: { label: string }) => (
+      <JiraIcon size="medium" label={label} />
+    ),
     label: 'Jira',
     to: '/',
     component: Link,

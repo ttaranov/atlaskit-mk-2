@@ -65,8 +65,9 @@ const globalNavPrimaryItems = [
         }}
       </UIControllerSubscriber>
     ),
-    // $FlowFixMe - logo/icon is incompatible with icon/icon
-    icon: JiraIcon,
+    icon: ({ label }: { label: string }) => (
+      <JiraIcon size="medium" label={label} />
+    ),
     label: 'Jira',
   },
   { key: 'search', icon: SearchIcon, label: 'Search' },
