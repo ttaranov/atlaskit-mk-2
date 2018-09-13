@@ -88,6 +88,7 @@ const SaveAndCancelButtons = props => (
 
 export type Props = {
   defaultValue?: Object;
+  overrideProps?: Object;
 };
 export type State = { disabled: boolean };
 
@@ -126,11 +127,11 @@ export class ExampleEditor extends React.Component<Props, State> {
   }
 
   render() {
+    const { overrideProps = {} } = this.props;
     return (
       <Wrapper>
         <Content>
           <Editor
-            defaultValue={this.props.defaultValue}
             appearance="full-page"
             analyticsHandler={analyticsHandler}
             quickInsert={{ provider: Promise.resolve(quickInsertProvider) }}
@@ -189,6 +190,7 @@ export class ExampleEditor extends React.Component<Props, State> {
             onSave={SAVE_ACTION}
             insertMenuItems={customInsertMenuItems}
             extensionHandlers={extensionHandlers}
+            {...overrideProps}
           />
         </Content>
       </Wrapper>
@@ -204,12 +206,12 @@ export class ExampleEditor extends React.Component<Props, State> {
   };
 }
 
-export default function Example({ defaultValue }) {
+export default function Example(overrideProps = {}) {
   return (
     <EditorContext>
       <div style={{ height: '100%' }}>
         <DevTools />
-        <ExampleEditor defaultValue={defaultValue} />
+        <ExampleEditor overrideProps={overrideProps} />
       </div>
     </EditorContext>
   );

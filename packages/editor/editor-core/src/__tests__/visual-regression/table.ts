@@ -2,6 +2,19 @@ import { removeOldProdSnapshots } from '@atlaskit/visual-regression/helper';
 
 import { imageSnapshotFolder, initEditor, clearEditor } from './_utils';
 
+type CellSelectorOpts = {
+  row: number;
+  cell?: number;
+  cellType?: 'td' | 'th';
+};
+
+type ResizeColumnOpts = {
+  colIdx: number;
+  amount: number;
+  // Useful if a row has a colspan and you need resize a col it spans over.
+  row?: number;
+};
+
 const insertTable = async page => {
   await page.click('span[aria-label="Insert table"]');
   await page.waitForSelector('table td p');
@@ -29,6 +42,47 @@ const clickInContextMenu = async (page, title) => {
   } else {
     throw new Error(`Menu title "${title}" not found`);
   }
+};
+
+const getCellBoundingRect = async (page, selector) => {
+  return await page.evaluate(selector => {
+    const element = document.querySelector(selector);
+    const { x, y, width, height } = element.getBoundingClientRect();
+    return { left: x, top: y, width, height, id: element.id };
+  }, selector);
+};
+
+const resizeColumn = async (
+  page,
+  { colIdx, amount, row = 1 }: ResizeColumnOpts,
+) => {
+  let cell = await getCellBoundingRect(
+    page,
+    getSelectorForCell({ row, cell: colIdx }),
+  );
+
+  const columnEndPosition = cell.left + cell.width;
+
+  // Move to the right edge of the cell.
+  await page.mouse.move(columnEndPosition, cell.top);
+
+  // Resize
+  await page.mouse.down();
+  await page.mouse.move(columnEndPosition + amount, cell.top);
+  await page.mouse.up();
+};
+
+const getSelectorForCell = ({
+  row,
+  cell,
+  cellType = 'td',
+}: CellSelectorOpts) => {
+  const rowSelector = `table tr:nth-child(${row})`;
+  if (!cell) {
+    return rowSelector;
+  }
+
+  return `${rowSelector} > ${cellType}:nth-child(${cell})`;
 };
 
 describe('Snapshot Test: table', () => {
@@ -142,15 +196,19 @@ describe('Snapshot Test: table', () => {
 
         ['row', 'column', 'row+col'].forEach(type => {
           it(`${type} merge and split`, async () => {
-            let firstCellSelector = 'tr:nth-child(1) > th:nth-child(1)';
-            let lastCellSelector = 'tr:nth-child(3) > td:nth-child(1)';
+            let firstCellSelector = getSelectorForCell({
+              row: 1,
+              cell: 1,
+              cellType: 'th',
+            });
+            let lastCellSelector = getSelectorForCell({ row: 3, cell: 1 });
 
             if (type === 'column') {
-              firstCellSelector = 'tr:nth-child(2) > td:nth-child(1)';
-              lastCellSelector = 'tr:nth-child(2) > td:nth-child(3)';
+              firstCellSelector = getSelectorForCell({ row: 2, cell: 1 });
+              lastCellSelector = getSelectorForCell({ row: 2, cell: 3 });
             } else if (type === 'row+col') {
-              firstCellSelector = 'tr:nth-child(2) > td:nth-child(1)';
-              lastCellSelector = 'tr:nth-child(3) > td:nth-child(2)';
+              firstCellSelector = getSelectorForCell({ row: 2, cell: 1 });
+              lastCellSelector = getSelectorForCell({ row: 3, cell: 2 });
             }
 
             await page.click(firstCellSelector);
@@ -246,6 +304,72 @@ describe('Snapshot Test: table', () => {
           });
         }
       });
+    });
+  });
+
+  describe('Re-sizing', () => {
+    let page;
+    beforeEach(async () => {
+      // @ts-ignore
+      page = global.page;
+      await page.setViewport({ width: 1920, height: 1080 });
+      await initEditor(page, 'table-flexi-resizing');
+      // Focus the table
+      await page.click('table tr td');
+    });
+
+    it(`resize a column with content width`, async () => {
+      await snapshot(page);
+      await resizeColumn(page, { colIdx: 2, amount: 123, row: 2 });
+      await snapshot(page);
+      await resizeColumn(page, { colIdx: 2, amount: -100, row: 2 });
+      await snapshot(page);
+    });
+
+    it(`snaps back to layout width after column removal`, async () => {
+      await snapshot(page);
+      await page.click(`.table-column:nth-child(1) button`);
+      await page.click(`span[aria-label="Remove column"]`);
+      await snapshot(page);
+    });
+
+    it('overflow table', async () => {
+      await snapshot(page);
+      await resizeColumn(page, { colIdx: 2, amount: 500, row: 2 });
+      await snapshot(page);
+
+      // Scroll to the end of col we are about to resize
+      // Its in overflow.
+      await page.evaluate(() => {
+        const element = document.querySelector('.table-wrapper') as HTMLElement;
+
+        if (element) {
+          element.scrollTo(element.offsetWidth, 0);
+        }
+      });
+
+      await resizeColumn(page, { colIdx: 2, amount: -550, row: 2 });
+
+      // Scroll back so we can see the result of our resize.
+      await page.evaluate(() => {
+        const element = document.querySelector('.table-wrapper') as HTMLElement;
+
+        if (element) {
+          element.scrollTo(0, 0);
+        }
+      });
+
+      await snapshot(page);
+    });
+
+    // TODO This test can be merged with column adding above once this is the main table re-sizing.
+    it('Add a column', async () => {
+      await snapshot(page);
+      const buttonSelector = `.table-column:nth-child(1) span[aria-label="Add column"]`;
+      await page.hover(`.table-column:nth-child(1)>div`);
+      await page.waitForSelector(buttonSelector);
+      await page.click(buttonSelector);
+      await snapshot(page);
     });
   });
 });

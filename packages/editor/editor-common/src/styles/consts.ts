@@ -60,9 +60,11 @@ export const akEditorTableToolbarDelete = akColorR75;
 export const akEditorTableBorderRadius = '3px';
 export const akEditorTableCellBackgroundOpacity = 0.5;
 export const akEditorFullPageMaxWidth = 680;
+export const akEditorDefaultLayoutWidth = 680;
 export const akEditorWideLayoutWidth = 960;
 export const akEditorTableNumberColumnWidth = 40;
 export const akEditorBreakoutPadding = 96;
+export const akEditorElementMinWidth = 150;
 
 export const editorFontSize = ({ theme }) =>
   theme && theme.baseFont ? theme.baseFont : defaultFontSize();
