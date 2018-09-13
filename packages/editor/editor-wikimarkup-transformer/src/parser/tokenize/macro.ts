@@ -9,7 +9,7 @@ import { Token } from './';
 import { parseAttrs } from '../utils/attrs';
 
 // {panel:bgColor=red}This is a panel{panel}
-const MACRO_REGEXP_OPENING = /{(\w+)(?::([^{]*?))?}/;
+const MACRO_REGEXP_OPENING = /^{(\w+)(?::([^{\n]*))?}/;
 
 export function macro(input: string, schema: Schema): Token {
   const matchOpening = input.match(MACRO_REGEXP_OPENING);

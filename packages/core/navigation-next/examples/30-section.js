@@ -6,6 +6,7 @@ import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
 import { colors } from '@atlaskit/theme';
 
 import { Item, Section, SectionHeading, Separator } from '../src';
+import { CONTENT_NAV_WIDTH } from '../src/common/constants';
 
 const Container = props => (
   <div
@@ -27,7 +28,7 @@ const NestedSectionWrapper = props => (
       marginTop: '8px',
       overflow: 'hidden',
       position: 'relative',
-      width: '270px',
+      width: `${CONTENT_NAV_WIDTH}px`,
     }}
     {...props}
   />
@@ -40,7 +41,7 @@ const ScrollableSectionWrapper = props => (
       flexDirection: 'column',
       height: '300px',
       marginTop: '8px',
-      width: '270px',
+      width: `${CONTENT_NAV_WIDTH}px`,
     }}
     {...props}
   />

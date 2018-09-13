@@ -97,7 +97,7 @@ export default class WebBridgeImpl implements NativeToWebBridge {
 
   setContent(content: string) {
     if (this.editorActions) {
-      this.editorActions.replaceDocument(content);
+      this.editorActions.replaceDocument(content, false);
     }
   }
 

@@ -18,6 +18,8 @@ export interface PluginConfig {
   stickToolbarToBottom?: boolean;
   permittedLayouts?: PermittedLayoutsDescriptor;
   allowControls?: boolean;
+  // This flag can specifiy re-size mode.
+  UNSAFE_allowFlexiColumnResizing?: boolean;
 }
 
 export interface TablePluginState {
@@ -43,4 +45,10 @@ export interface CellRect {
   right: number;
   top: number;
   bottom: number;
+}
+
+export interface ColumnResizingPlugin {
+  handleWidth?: number;
+  cellMinWidth?: number;
+  lastColumnResizable?: boolean;
 }
