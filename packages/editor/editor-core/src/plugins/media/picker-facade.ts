@@ -163,16 +163,16 @@ export default class PickerFacade {
     }
   }
 
-  cancel(tempId: string): void {
+  cancel(id: string): void {
     if (this.picker instanceof Popup) {
-      const state = this.stateManager.getState(tempId);
+      const state = this.stateManager.getState(id);
 
       if (!state || state.status === 'cancelled') {
         return;
       }
 
       try {
-        this.picker.cancel(tempId);
+        this.picker.cancel(id);
       } catch (e) {
         // We're deliberately consuming a known Media Picker exception, as it seems that
         // the picker has problems cancelling uploads before the popup picker has been shown
@@ -186,8 +186,7 @@ export default class PickerFacade {
         }
       }
 
-      this.stateManager.updateState(tempId, {
-        id: tempId,
+      this.stateManager.updateState(id, {
         status: 'cancelled',
       });
     }
@@ -219,14 +218,13 @@ export default class PickerFacade {
           file.upfrontId,
           dimensionsPromise,
         ]);
-        return this.stateManager.newState(
-          id,
-          {
-            ...file,
-            dimensions,
-          },
-          'ready',
-        );
+        return this.stateManager.newState(id, {
+          fileName: file.name,
+          fileSize: file.size,
+          fileMimeType: file.type,
+          dimensions,
+          status: 'ready',
+        });
       }),
     );
 

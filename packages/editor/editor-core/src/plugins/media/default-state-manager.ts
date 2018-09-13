@@ -1,4 +1,4 @@
-import { MediaState, MediaStateManager, MediaStateStatus } from './types';
+import { MediaState, MediaStateManager } from './types';
 import { EventDispatcher } from '../../event-dispatcher';
 
 export default class DefaultMediaStateManager extends EventDispatcher
@@ -9,26 +9,27 @@ export default class DefaultMediaStateManager extends EventDispatcher
     return this.state.get(id);
   }
 
-  newState(id: string, file: any, status: MediaStateStatus) {
-    const getState = this.state.get(id);
-    return {
-      ...getState,
-      id,
-      fileName: file.name,
-      fileSize: file.size,
-      fileMimeType: file.type,
-      dimensions: file.dimensions!,
-      status,
-    };
-  }
-
-  updateState(id: string, newState: Partial<MediaState>) {
+  newState(id: string, newState: Partial<MediaState>) {
     const state = {
       ...(this.state.get(id) || {}),
       ...newState,
+      id,
     } as MediaState;
-
     this.state.set(id, state);
+    return state;
+  }
+
+  updateState(id: string, newState: Partial<MediaState>) {
+    const state = this.newState(id, newState);
     this.emit(id, state);
+    if (state.status === 'ready' || state.status === 'cancelled') {
+      this.state.delete(id);
+    }
+    return state;
+  }
+
+  destroy() {
+    this.state.clear();
+    super.destroy();
   }
 }

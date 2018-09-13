@@ -1,5 +1,5 @@
 import { Context } from '@atlaskit/media-core';
-import { UploadParams, MediaFile } from '@atlaskit/media-picker';
+import { UploadParams } from '@atlaskit/media-picker';
 
 export type MediaStateStatus = 'unknown' | 'ready' | 'cancelled' | 'preview';
 
@@ -8,7 +8,6 @@ export interface MediaState {
   status?: MediaStateStatus;
   fileName?: string;
   fileSize?: number;
-  fileType?: string;
   fileMimeType?: string;
   dimensions?: {
     width: number;
@@ -21,11 +20,11 @@ export interface MediaState {
 }
 
 export interface MediaStateManager {
-  getState(tempId: string): MediaState | undefined;
-  updateState(tempId: string, newState: Partial<MediaState>): void;
-  newState(id: string, file: any, status: MediaStateStatus): MediaState;
-  on(tempId: string, cb: (state: MediaState) => void);
-  off(tempId: string, cb: (state: MediaState) => void): void;
+  getState(id: string): MediaState | undefined;
+  newState(id: string, newState: Partial<MediaState>): MediaState;
+  updateState(id: string, newState: Partial<MediaState>): MediaState;
+  on(id: string, cb: (state: MediaState) => void);
+  off(id: string, cb: (state: MediaState) => void): void;
   destroy(): void;
 }
 

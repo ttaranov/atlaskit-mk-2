@@ -60,30 +60,6 @@ export default class MediaGroupNode extends Component<
     this.mediaNodesIds = this.getMediaNodesIds(this.props.children);
   }
 
-  // shouldComponentUpdate(nextProps, nextState) {
-  //   const children = this.getMediaNodesIds(this.props.children);
-  //   const nextChildren = this.getMediaNodesIds(nextProps.children);
-
-  //   let tempMediaId = this.props.node.firstChild!.attrs.__key;
-  //   const firstItemState = this.mediaPluginState.getMediaNodeState(tempMediaId);
-  //   const hasCustomMediaPicker = !!this.mediaPluginState.getMediaOptions()
-  //     .customMediaPicker;
-
-  //   // Need this for mobile bridge. Re-render if there's no `thumbnail`
-  //   if (hasCustomMediaPicker && firstItemState && !firstItemState.thumbnail) {
-  //     return true;
-  //   }
-
-  //   if (
-  //     children.length === nextChildren.length &&
-  //     tempMediaId === nextProps.node.firstChild!.attrs.__key &&
-  //     this.state.offset === nextState.offset
-  //   ) {
-  //     return false;
-  //   }
-  //   return true;
-  // }
-
   /**
    * Update "mediaNodesIds" and notify media plugin about removed nodes
    */

@@ -55,39 +55,18 @@ export default class MediaSingleNode extends Component<
   }
 
   componentDidMount() {
-    const { __key } = this.child.props.node.attrs;
-    this.mediaPluginState.stateManager.on(__key, this.handleMediaUpdate);
+    const { id } = this.child.props.node.attrs;
+    this.mediaPluginState.stateManager.on(id, this.handleMediaUpdate);
   }
 
   componentWillUnmount() {
-    const { __key } = this.child.props.node.attrs;
-    this.mediaPluginState.stateManager.off(__key, this.handleMediaUpdate);
+    const { id } = this.child.props.node.attrs;
+    this.mediaPluginState.stateManager.off(id, this.handleMediaUpdate);
   }
 
   componentDidUpdate() {
     const { layout } = this.props.node.attrs;
     this.mediaPluginState.updateLayout(layout);
-  }
-
-  shouldComponentUpdate(nextProps: MediaSingleNodeProps, nextState) {
-    const nextChild: ReactElement<MediaNodeProps> = this.getChild(nextProps);
-
-    const { width: mediaWidth } = this.child.props.node.attrs;
-    const { width: nextMediaWidth } = nextChild.props.node.attrs;
-
-    const { node, containerWidth } = this.props;
-    const { layout, width } = node.attrs;
-    const { width: nextWidth } = nextProps.node.attrs;
-
-    return (
-      layout === 'wide' ||
-      layout === 'full-width' ||
-      this.state.progress !== nextState.progress ||
-      node !== nextProps.node ||
-      mediaWidth !== nextMediaWidth ||
-      width !== nextWidth ||
-      containerWidth !== nextProps.containerWidth
-    );
   }
 
   handleMediaUpdate = state => {

@@ -22,11 +22,6 @@ import { ProsemirrorGetPosHandler } from '../../../nodeviews';
 import { EditorAppearance } from '../../../types/editor-props';
 import DropPlaceholder from '../ui/Media/DropPlaceholder';
 import { MediaPluginOptions } from '../media-plugin-options';
-import {
-  insertLinks,
-  URLInfo,
-  detectLinkRangesInSteps,
-} from '../utils/media-links';
 import { insertMediaGroupNode, isNonImagesBanned } from '../utils/media-files';
 import { removeMediaNode, splitMediaGroup } from '../utils/media-common';
 import PickerFacade, { PickerFacadeConfig } from '../picker-facade';
@@ -56,7 +51,6 @@ export interface MediaNodeWithPosHandler {
 export class MediaPluginState {
   public allowsMedia: boolean = false;
   public allowsUploads: boolean = false;
-  public allowsLinks: boolean = false;
   public stateManager: MediaStateManager;
   public ignoreLinks: boolean = false;
   public waitForMediaUpload: boolean = true;
@@ -80,8 +74,6 @@ export class MediaPluginState {
   private clipboardPicker?: PickerFacade;
   private dropzonePicker?: PickerFacade;
   private customPicker?: PickerFacade;
-
-  private linkRanges: Array<URLInfo>;
   public editorAppearance: EditorAppearance;
   private removeOnCloseListener: () => void = () => {};
 
@@ -135,7 +127,6 @@ export class MediaPluginState {
     if (!mediaProvider) {
       this.destroyPickers();
 
-      this.allowsLinks = false;
       this.allowsUploads = false;
       this.allowsMedia = false;
       this.notifyPluginStateSubscribers();
@@ -165,7 +156,6 @@ export class MediaPluginState {
 
       this.destroyPickers();
 
-      this.allowsLinks = false;
       this.allowsUploads = false;
       this.allowsMedia = false;
       this.notifyPluginStateSubscribers();
@@ -187,7 +177,6 @@ export class MediaPluginState {
       this.stateManager = stateManager;
     }
 
-    this.allowsLinks = !!resolvedMediaProvider.linkCreateContext;
     this.allowsUploads = !!resolvedMediaProvider.uploadContext;
     const { view, allowsUploads } = this;
 
@@ -273,14 +262,6 @@ export class MediaPluginState {
     }
   }
 
-  insertFile = (mediaState: MediaState): void => {
-    // tslint:disable-next-line:no-console
-    console.warn(
-      'This API is deprecated. Please use insertFiles(mediaStates: MediaState[]) instead',
-    );
-    this.insertFiles([mediaState]);
-  };
-
   insertFiles = (mediaStates: MediaState[]): void => {
     const { stateManager } = this;
     const { mediaSingle } = this.view.state.schema.nodes;
@@ -341,34 +322,6 @@ export class MediaPluginState {
     if (!view.hasFocus()) {
       view.focus();
     }
-  };
-
-  insertLinks = async () => {
-    const { mediaProvider } = this;
-
-    if (!mediaProvider) {
-      return;
-    }
-
-    const { linkCreateContext } = this.mediaProvider;
-
-    if (!linkCreateContext) {
-      return;
-    }
-
-    let linkCreateContextInstance = await linkCreateContext;
-    if (!linkCreateContextInstance) {
-      return;
-    }
-
-    return insertLinks(
-      this.view,
-      this.stateManager,
-      this.handleMediaState,
-      this.linkRanges,
-      linkCreateContextInstance,
-      this.collectionFromProvider(),
-    );
   };
 
   splitMediaGroup = (): boolean => splitMediaGroup(this.view);
@@ -581,26 +534,6 @@ export class MediaPluginState {
     );
   };
 
-  detectLinkRangesInSteps = (tr: Transaction, oldState: EditorState) => {
-    const { link } = this.view.state.schema.marks;
-    this.linkRanges = [];
-
-    if (this.ignoreLinks) {
-      this.ignoreLinks = false;
-      return this.linkRanges;
-    }
-
-    if (!link || !this.allowsLinks) {
-      return this.linkRanges;
-    }
-
-    this.linkRanges = detectLinkRangesInSteps(
-      tr,
-      link,
-      oldState.selection.$anchor.pos,
-    );
-  };
-
   private destroyPickers = () => {
     const { pickers } = this;
 
@@ -645,23 +578,14 @@ export class MediaPluginState {
           )),
         );
       } else {
-        if (context.config.userAuthProvider) {
-          pickers.push(
-            (this.popupPicker = new Picker(
-              'popup',
-              pickerFacadeConfig,
-              defaultPickerConfig,
-            )),
-          );
-        } else {
-          pickers.push(
-            (this.popupPicker = new Picker(
-              'browser',
-              pickerFacadeConfig,
-              defaultPickerConfig,
-            )),
-          );
-        }
+        pickers.push(
+          (this.popupPicker = new Picker(
+            // Fallback to browser picker for unauthenticated users
+            context.config.userAuthProvider ? 'popup' : 'browser',
+            pickerFacadeConfig,
+            defaultPickerConfig,
+          )),
+        );
 
         pickers.push(
           (this.binaryPicker = new Picker(
@@ -730,9 +654,6 @@ export class MediaPluginState {
 
   private handleMediaState = async (state: MediaState) => {
     switch (state.status) {
-      // case 'preview':
-      //   break;
-
       case 'ready':
         this.stateManager.off(state.id, this.handleMediaState);
         break;
@@ -853,18 +774,7 @@ export const createPlugin = (
         );
       },
       apply(tr, pluginState: MediaPluginState, oldState, newState) {
-        pluginState.detectLinkRangesInSteps(tr, oldState);
-
-        // Ignore creating link cards during link editing
-        const { link } = oldState.schema.marks;
-        const { nodeAfter, nodeBefore, parent } = newState.selection.$from;
-
-        if (
-          (nodeAfter && link.isInSet(nodeAfter.marks)) ||
-          (nodeBefore && link.isInSet(nodeBefore.marks))
-        ) {
-          pluginState.ignoreLinks = true;
-        }
+        const { parent } = newState.selection.$from;
 
         // Update Layout
         const { mediaSingle } = oldState.schema.nodes;
@@ -894,7 +804,6 @@ export const createPlugin = (
       return {
         update: () => {
           pluginState.updateUploadState();
-          pluginState.insertLinks();
           pluginState.updateElement();
         },
       };
@@ -948,12 +857,7 @@ export const createPlugin = (
         return DecorationSet.create(state.doc, dropPlaceholders);
       },
       nodeViews: options.nodeViews,
-      handleTextInput(
-        view: EditorView,
-        from: number,
-        to: number,
-        text: string,
-      ): boolean {
+      handleTextInput(view: EditorView): boolean {
         getMediaPluginState(view.state).splitMediaGroup();
         return false;
       },
