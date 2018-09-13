@@ -2,6 +2,7 @@ import { mockStore, mockFetcher } from '../../../mocks';
 import {
   getFilesInRecentsFullfilled,
   getFilesInRecentsFailed,
+  saveCollectionItemsSubscription,
 } from '../../../actions';
 
 import { getFilesInRecents, requestRecentFiles } from '../../getFilesInRecents';
@@ -44,7 +45,7 @@ describe('getFilesInRecents middleware', () => {
       await requestRecentFiles(store);
 
       expect(getItems).toHaveBeenCalledTimes(1);
-      expect(store.dispatch).toHaveBeenCalledTimes(1);
+      expect(store.dispatch).toHaveBeenCalledTimes(2);
       expect(store.dispatch).toHaveBeenCalledWith(getFilesInRecentsFailed());
     });
 
@@ -62,9 +63,29 @@ describe('getFilesInRecents middleware', () => {
 
       expect(getItems).toHaveBeenCalledTimes(1);
       expect(getItems).toBeCalledWith('recents');
-      expect(store.dispatch).toHaveBeenCalledTimes(1);
+      expect(store.dispatch).toHaveBeenCalledTimes(2);
       expect(store.dispatch).toHaveBeenCalledWith(
         getFilesInRecentsFullfilled([]),
+      );
+    });
+
+    it('should clear previous subscription', async () => {
+      const collectionItemsSubscription = { unsubscribe: jest.fn() };
+      const getItems = jest.fn().mockReturnValue(Observable.of([]));
+      const store = mockStore({
+        userContext: {
+          collection: {
+            getItems,
+          },
+        },
+        collectionItemsSubscription,
+      } as any);
+
+      await requestRecentFiles(store);
+
+      expect(collectionItemsSubscription.unsubscribe).toHaveBeenCalledTimes(1);
+      expect(store.dispatch.mock.calls[1][0]).toEqual(
+        saveCollectionItemsSubscription(expect.anything()),
       );
     });
   });

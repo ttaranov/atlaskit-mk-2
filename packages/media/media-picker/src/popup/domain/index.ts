@@ -1,5 +1,6 @@
 import { Auth, Context } from '@atlaskit/media-core';
 import { MediaCollectionItem } from '@atlaskit/media-store';
+import { Subscription } from 'rxjs/Subscription';
 import { UploadParams } from '../../domain/config';
 import { LocalUploads } from './local-upload';
 
@@ -38,7 +39,7 @@ export interface State {
   readonly userContext: Context;
   readonly lastUploadIndex: number;
   readonly giphy: GiphyState;
-
+  readonly collectionItemsSubscription?: Subscription;
   readonly onCancelUpload: CancelUploadHandler;
   readonly config: Partial<PopupConfig>;
   readonly deferredIdUpfronts: {
