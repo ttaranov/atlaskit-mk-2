@@ -312,52 +312,6 @@ describe('analyticsProcessing middleware', () => {
     );
   });
 
-  it('should process action changeService for upload, fire 2 events', () => {
-    verifyAnalyticsCall(changeService(UPLOAD), {
-      ...buttonClickPayload,
-      actionSubjectId: 'uploadButton',
-      attributes,
-    });
-    verifyAnalyticsCall(changeService(UPLOAD), {
-      name: 'recentFilesBrowserModal',
-      eventType: SCREEN_EVENT_TYPE,
-      attributes,
-    });
-  });
-
-  it('should process action changeService for google, fire 1 event', () => {
-    verifyAnalyticsCall(changeService(GOOGLE), {
-      ...buttonClickPayload,
-      actionSubjectId: 'cloudBrowserButton',
-      attributes: {
-        cloudType: GOOGLE,
-        ...attributes,
-      },
-    });
-  });
-
-  it('should process action changeService for dropbox, fire 1 event', () => {
-    verifyAnalyticsCall(changeService(DROPBOX), {
-      ...buttonClickPayload,
-      actionSubjectId: 'cloudBrowserButton',
-      attributes: {
-        cloudType: DROPBOX,
-        ...attributes,
-      },
-    });
-  });
-
-  it('should process action changeService for giphy, fire 1 event', () => {
-    verifyAnalyticsCall(changeService(GIPHY), {
-      ...buttonClickPayload,
-      actionSubjectId: 'cloudBrowserButton',
-      attributes: {
-        cloudType: GIPHY,
-        ...attributes,
-      },
-    });
-  });
-
   it('should process action editRemoteImage, fire 1 event', () => {
     verifyAnalyticsCall(
       editRemoteImage(
