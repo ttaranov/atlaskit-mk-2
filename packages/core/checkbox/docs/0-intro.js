@@ -5,7 +5,7 @@ import { md, Example, Props, code } from '@atlaskit/docs';
 export default md`
   ### Usage
 
-  A checkbox element for use in forms and elsewhere.
+  A checkbox element primarily for use in forms.
 
 ${code`
 import {
@@ -14,7 +14,7 @@ import {
 } from '@atlaskit/checkbox';
 `}
 
-  The default export Checkbox provides for controlled & uncontrolled usuage and includes label, input & icon.
+  The Checkbox export provides for controlled & uncontrolled usuage and includes the label, input & icon.
   
   ${(
     <Example
