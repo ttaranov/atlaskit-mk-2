@@ -5,7 +5,6 @@ import { Node as PMNode } from 'prosemirror-model';
 import { mediaSingle, media } from '@atlaskit/editor-test-helpers';
 import { defaultSchema } from '@atlaskit/editor-common';
 import {
-  MediaPluginState,
   stateKey as mediaStateKey,
   DefaultMediaStateManager,
 } from '../../../../../../plugins/media/pm-plugins/main';
@@ -35,7 +34,12 @@ describe('nodeviews/mediaSingle', () => {
   })();
 
   beforeEach(() => {
-    pluginState = {} as MediaPluginState;
+    pluginState = {
+      getMediaNodeStateStatus: (id: string) => 'ready',
+      getMediaNodeState: (id: string) => {
+        return { state: 'ready' };
+      },
+    };
     pluginState.stateManager = stateManager;
     jest.spyOn(mediaStateKey, 'getState').mockImplementation(() => pluginState);
   });
