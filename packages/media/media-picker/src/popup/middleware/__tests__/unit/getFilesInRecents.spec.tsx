@@ -6,7 +6,8 @@ import {
 } from '../../../actions';
 
 import { getFilesInRecents, requestRecentFiles } from '../../getFilesInRecents';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
 import { Observer } from 'rxjs/Observer';
 
 describe('getFilesInRecents middleware', () => {
@@ -50,7 +51,7 @@ describe('getFilesInRecents middleware', () => {
     });
 
     it('should dispatch GET_FILES_IN_RECENTS_SUCCESS when requests succeed', async () => {
-      const getItems = jest.fn().mockReturnValue(Observable.of([]));
+      const getItems = jest.fn().mockReturnValue(of([]));
       const store = mockStore({
         userContext: {
           collection: {
@@ -71,7 +72,7 @@ describe('getFilesInRecents middleware', () => {
 
     it('should clear previous subscription', async () => {
       const collectionItemsSubscription = { unsubscribe: jest.fn() };
-      const getItems = jest.fn().mockReturnValue(Observable.of([]));
+      const getItems = jest.fn().mockReturnValue(of([]));
       const store = mockStore({
         userContext: {
           collection: {

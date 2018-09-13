@@ -3,7 +3,7 @@ import * as React from 'react';
 import { Provider } from 'react-redux';
 import Spinner from '@atlaskit/spinner';
 import { FlagGroup } from '@atlaskit/flag';
-import { FileDetails, MediaItemType } from '@atlaskit/media-core';
+import { FileDetails } from '@atlaskit/media-core';
 import { Card, CardView } from '@atlaskit/media-card';
 import { MediaCollectionItem } from '@atlaskit/media-store';
 import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
@@ -237,7 +237,7 @@ describe('<UploadView />', () => {
         ...mockState.recents,
         items: [
           {
-            type: 'some-type',
+            type: 'file',
             id: 'some-id',
             insertedAt: 0,
             occurrenceKey: 'some-occurrence-key',
