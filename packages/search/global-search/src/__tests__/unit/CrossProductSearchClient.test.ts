@@ -1,9 +1,7 @@
 import CrossProductSearchClient, {
   CrossProductSearchResponse,
-  Scope,
-  removeHighlightTags,
-  ConfluenceItem,
 } from '../../api/CrossProductSearchClient';
+import { Scope, ConfluenceItem } from '../../api/types';
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
 import {
@@ -117,16 +115,6 @@ describe('CrossProductSearchClient', () => {
       expect(item.href).toEqual('/wiki/displayUrl?search_id=test_uuid');
       expect(item.analyticsType).toEqual(AnalyticsType.ResultConfluence);
       expect(item.resultType).toEqual(ResultType.GenericContainerResult);
-    });
-
-    it('should parse the highlight tags from the title', () => {
-      let text = removeHighlightTags(
-        '@@@hl@@@new@@@endhl@@@ @@@hl@@@page@@@endhl@@@',
-      );
-      expect(text).toEqual('new page');
-
-      text = removeHighlightTags('no highlight');
-      expect(text).toEqual('no highlight');
     });
   });
 

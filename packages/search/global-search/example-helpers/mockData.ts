@@ -1,12 +1,8 @@
 import { GraphqlResponse, SearchResult } from '../src/api/PeopleSearchClient';
 import { RecentItemsResponse } from '../src/api/RecentSearchClient';
 import { QuickNavResult } from '../src/api/ConfluenceClient';
-import {
-  CrossProductSearchResponse,
-  Scope,
-  ConfluenceItem,
-  JiraItem,
-} from '../src/api/CrossProductSearchClient';
+import { CrossProductSearchResponse } from '../src/api/CrossProductSearchClient';
+import { Scope, ConfluenceItem, JiraItem } from '../src/api/types';
 
 import * as uuid from 'uuid/v4';
 
