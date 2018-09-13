@@ -1,5 +1,8 @@
 # @atlaskit/media-image
 
+## 34.0.2
+- [patch] use new tsconfig for typechecking [09df171](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/09df171)
+
 ## 34.0.1
 - [patch] Media-card now re-fetches the underlaying image when the dimensions prop changes [59fb6a4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59fb6a4)
 
