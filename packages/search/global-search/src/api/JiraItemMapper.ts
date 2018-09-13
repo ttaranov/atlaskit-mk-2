@@ -1,13 +1,13 @@
 import {
   ResultType,
   AnalyticsType,
-  JiraObjectResult,
+  JiraResult,
   ContentType,
 } from '../model/Result';
 
 import { JiraItem, JiraItemV1, JiraItemV2, JiraItemAttributes } from './types';
 
-export const mapJiraItemToResult = (item: JiraItem): JiraObjectResult =>
+export const mapJiraItemToResult = (item: JiraItem): JiraResult =>
   (<JiraItemV2>item).attributes && (<JiraItemV2>item).attributes['@type']
     ? mapJiraItemToResultV2(item as JiraItemV2)
     : mapJiraItemToResultV1(item as JiraItemV1);
@@ -45,14 +45,14 @@ const extractAvatarUrl = ({ url = '', urls = {} } = {}) => {
   return urls['48x48'] || urls[Object.keys(urls)[0]];
 };
 
-const JiraTypeToContentType = {
+const JIRA_TYPE_TO_CONTENT_TYPE = {
   issue: ContentType.JiraIssue,
   board: ContentType.JiraBoard,
   filter: ContentType.JiraFilter,
   project: ContentType.JiraProject,
 };
 
-const mapJiraItemToResultV2 = (item: JiraItemV2): JiraObjectResult => {
+const mapJiraItemToResultV2 = (item: JiraItemV2): JiraResult => {
   const { id, name, url, attributes } = item;
   return {
     resultId: id,
@@ -63,11 +63,11 @@ const mapJiraItemToResultV2 = (item: JiraItemV2): JiraObjectResult => {
     analyticsType: AnalyticsType.ResultJira,
     ...extractSpecificAttributes(attributes),
     avatarUrl: attributes.avatar && extractAvatarUrl(attributes.avatar),
-    contentType: JiraTypeToContentType[attributes['@type']],
+    contentType: JIRA_TYPE_TO_CONTENT_TYPE[attributes['@type']],
   };
 };
 
-const mapJiraItemToResultV1 = (item: JiraItemV1): JiraObjectResult => {
+const mapJiraItemToResultV1 = (item: JiraItemV1): JiraResult => {
   return {
     resultId: item.key,
     avatarUrl: item.fields.issuetype.iconUrl,

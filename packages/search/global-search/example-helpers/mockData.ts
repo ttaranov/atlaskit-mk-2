@@ -329,12 +329,11 @@ export function makeCrossProductSearchData(
     );
 
     const filteredJiraIssueResults = jiraObjects.filter(result => {
-      if ((<JiraItemV1>result).fields && (<JiraItemV1>result).fields.summary) {
-        return (
-          (<JiraItemV1>result).fields.summary.toLowerCase().indexOf(term) > -1
-        );
+      const resultV1 = result as JiraItemV1;
+      if (resultV1.fields && resultV1.fields.summary) {
+        return resultV1.fields.summary.toLowerCase().indexOf(term) > -1;
       }
-      return (<JiraItemV2>result).name.toLocaleLowerCase().indexOf(term) > -1;
+      return (result as JiraItemV2).name.toLocaleLowerCase().indexOf(term) > -1;
     });
 
     const filteredJiraContainerResults = jiraContainers.filter(
