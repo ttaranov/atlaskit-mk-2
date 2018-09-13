@@ -2,18 +2,29 @@ import { GraphqlResponse, SearchResult } from '../src/api/PeopleSearchClient';
 import { RecentItemsResponse } from '../src/api/RecentSearchClient';
 import { QuickNavResult } from '../src/api/ConfluenceClient';
 import { CrossProductSearchResponse } from '../src/api/CrossProductSearchClient';
-import { Scope, ConfluenceItem, JiraItem } from '../src/api/types';
-
+import {
+  Scope,
+  ConfluenceItem,
+  JiraItem,
+  JiraItemV1,
+  JiraItemV2,
+} from '../src/api/types';
+import {
+  generateRandomJiraIssue,
+  generateRandomJiraBoard,
+  generateRandomJiraFilter,
+  generateRandomJiraProject,
+} from './mockJira';
 import * as uuid from 'uuid/v4';
 
 const DUMMY_BASE_URL = 'http://localhost';
 
-function pickRandom(array: Array<any>) {
+export function pickRandom(array: Array<any>) {
   const index = Math.floor(Math.random() * array.length);
   return array[index];
 }
 
-function generateRandomElements<T>(generator: () => T, n: number = 50) {
+export function generateRandomElements<T>(generator: () => T, n: number = 50) {
   const results: T[] = [];
   for (let i = 0; i < n; i++) {
     results.push(generator());
@@ -112,15 +123,15 @@ const mockLastNames = [
   'Osinski',
 ];
 
-const getMockCompanyName = () => pickRandom(mockCompanyNames);
-const getMockCatchPhrase = () => pickRandom(mockCatchPhrases);
-const getMockAbbreviation = () => pickRandom(mockAbbreviations);
-const getMockAvatarUrl = () => pickRandom(mockAvatarUrls);
-const getMockUrl = () => pickRandom(mockUrls);
-const getMockName = () => pickRandom(mockNames);
-const getMockJobTitle = () => pickRandom(mockJobTitles);
-const getMockJobType = () => pickRandom(mockJobTypes);
-const getMockLastName = () => pickRandom(mockLastNames);
+export const getMockCompanyName = () => pickRandom(mockCompanyNames);
+export const getMockCatchPhrase = () => pickRandom(mockCatchPhrases);
+export const getMockAbbreviation = () => pickRandom(mockAbbreviations);
+export const getMockAvatarUrl = () => pickRandom(mockAvatarUrls);
+export const getMockUrl = () => pickRandom(mockUrls);
+export const getMockName = () => pickRandom(mockNames);
+export const getMockJobTitle = () => pickRandom(mockJobTitles);
+export const getMockJobType = () => pickRandom(mockJobTypes);
+export const getMockLastName = () => pickRandom(mockLastNames);
 
 const getDateWithOffset = offset => {
   let time = new Date();
@@ -200,7 +211,8 @@ export function makeCrossProductSearchData(
   const confData: ConfluenceItem[] = [];
   const confSpaceData: ConfluenceItem[] = [];
   const confDataWithAttachments: ConfluenceItem[] = [];
-  const jiraData: JiraItem[] = [];
+  const jiraObjects: JiraItem[] = [];
+  const jiraContainers: JiraItem[] = [];
 
   for (let i = 0; i < n; i++) {
     const url = getMockUrl();
@@ -279,18 +291,34 @@ export function makeCrossProductSearchData(
   }
 
   for (let i = 0; i < n; i++) {
-    jiraData.push({
-      key: randomIssueKey(),
-      fields: {
-        summary: getMockCatchPhrase(),
-        project: {
-          name: getMockCompanyName(),
-        },
-        issuetype: {
-          iconUrl: randomJiraIconUrl(),
-        },
-      },
-    });
+    const issue =
+      i % 2
+        ? {
+            key: randomIssueKey(),
+            fields: {
+              summary: getMockCatchPhrase(),
+              project: {
+                name: getMockCompanyName(),
+              },
+              issuetype: {
+                iconUrl: randomJiraIconUrl(),
+              },
+            },
+          }
+        : generateRandomJiraIssue();
+    jiraObjects.push(issue);
+  }
+
+  for (let i = 0; i < n; i++) {
+    let jiraContainer;
+    if (i % 3) {
+      jiraContainer = generateRandomJiraBoard();
+    } else if (i % 2) {
+      jiraContainer = generateRandomJiraFilter();
+    } else {
+      jiraContainer = generateRandomJiraProject();
+    }
+    jiraContainers.push(jiraContainer);
   }
 
   return (term: string) => {
@@ -300,8 +328,18 @@ export function makeCrossProductSearchData(
       result => result.title.toLowerCase().indexOf(term) > -1,
     );
 
-    const filteredJiraResults = jiraData.filter(
-      result => result.fields.summary.toLowerCase().indexOf(term) > -1,
+    const filteredJiraIssueResults = jiraObjects.filter(result => {
+      if ((<JiraItemV1>result).fields && (<JiraItemV1>result).fields.summary) {
+        return (
+          (<JiraItemV1>result).fields.summary.toLowerCase().indexOf(term) > -1
+        );
+      }
+      return (<JiraItemV2>result).name.toLocaleLowerCase().indexOf(term) > -1;
+    });
+
+    const filteredJiraContainerResults = jiraContainers.filter(
+      result =>
+        (<JiraItemV2>result).name.toLocaleLowerCase().indexOf(term) > -1,
     );
 
     const filteredSpaceResults = confSpaceData.filter(
@@ -336,7 +374,12 @@ export function makeCrossProductSearchData(
           id: Scope.JiraIssue,
           experimentId: 'experiment-1',
           abTest,
-          results: filteredJiraResults,
+          results: filteredJiraIssueResults,
+        },
+        {
+          id: Scope.JiraBoardProjectFilter,
+          abTest,
+          results: filteredJiraContainerResults,
         },
         {
           id: Scope.ConfluenceSpace,

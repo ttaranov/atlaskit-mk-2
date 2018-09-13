@@ -19,10 +19,10 @@ export type RecentItemsCounts = {
 };
 
 export const DEFAULT_RECENT_ITEMS_COUNT: RecentItemsCounts = {
-  issues: 10,
-  boards: 3,
-  projects: 3,
-  filters: 3,
+  issues: 8,
+  boards: 2,
+  projects: 2,
+  filters: 2,
 };
 
 /**
