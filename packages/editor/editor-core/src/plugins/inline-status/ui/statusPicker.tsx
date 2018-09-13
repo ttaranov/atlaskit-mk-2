@@ -40,7 +40,6 @@ export default class StatusPicker extends React.Component<Props, State> {
 
   render() {
     const { element, closeStatusPicker, onSelect } = this.props;
-    console.log('#StatusPicker color: ', this.state.color);
     return (
       <PopupWithListeners
         target={element!}

@@ -40,6 +40,7 @@
     "@atlaskit/item": "^8.0.5",
     "@atlaskit/layer": "^5.0.4",
     "@atlaskit/logo": "^9.0.4",
+    "@atlaskit/lozenge": "^6.2.0",
     "@atlaskit/media-card": "^34.0.0",
     "@atlaskit/media-filmstrip": "^13.0.0",
     "@atlaskit/media-picker": "^16.0.1",

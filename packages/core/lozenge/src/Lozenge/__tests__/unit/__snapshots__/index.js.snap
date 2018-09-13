@@ -19,7 +19,8 @@ exports[`Lozenge appearance property should render correctly with text truncated
 .c1 {
   display: inline-block;
   vertical-align: top;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   box-sizing: border-box;
@@ -58,7 +59,8 @@ exports[`Lozenge maxWidth property should render correctly with number maxWidth 
 .c1 {
   display: inline-block;
   vertical-align: top;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   box-sizing: border-box;
@@ -97,7 +99,8 @@ exports[`Lozenge maxWidth property should render correctly with string maxWidth 
 .c1 {
   display: inline-block;
   vertical-align: top;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   box-sizing: border-box;

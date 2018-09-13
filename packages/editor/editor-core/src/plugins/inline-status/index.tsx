@@ -3,12 +3,11 @@ import InfoIcon from '@atlaskit/icon/glyph/editor/info';
 import { inlineStatus } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { createPlugin, pluginKey, StatusState } from './pm-plugins/main';
-import { getToolbarConfig } from './toolbar';
 import { Selection } from 'prosemirror-state';
 import StatusPicker from './ui/statusPicker';
 import WithPluginState from '../../ui/WithPluginState';
 import { findDomRefAtPos } from 'prosemirror-utils';
-import { setDatePickerAt, closeDatePicker, changeColor } from './actions';
+import { setPickerAt, changeColor } from './actions';
 
 const inlineStatusPlugin: EditorPlugin = {
   nodes() {
@@ -27,12 +26,12 @@ const inlineStatusPlugin: EditorPlugin = {
           statusState: pluginKey,
         }}
         render={({ statusState = {} as StatusState }) => {
-          if (statusState.showDatePickerAt === null) {
+          if (statusState.showPickerAt === null) {
             return null;
           }
 
           const element = findDomRefAtPos(
-            statusState.showDatePickerAt,
+            statusState.showPickerAt,
             editorView.domAtPos.bind(editorView),
           ) as HTMLElement;
 
@@ -40,16 +39,10 @@ const inlineStatusPlugin: EditorPlugin = {
             <StatusPicker
               element={element}
               onSelect={color => {
-                console.log(
-                  '#StatusPicker.onSelect color: ',
-                  color,
-                  ' statusState: ',
-                  statusState,
-                );
                 changeColor(color)(editorView.state, dispatch);
               }}
               closeStatusPicker={() =>
-                setDatePickerAt(null)(editorView.state, dispatch)
+                setPickerAt(null)(editorView.state, dispatch)
               }
             />
           );

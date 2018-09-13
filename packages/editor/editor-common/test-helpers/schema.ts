@@ -46,6 +46,7 @@ export default createSchema({
     'inlineExtension',
     'bodiedExtension',
     'date',
+    'inlineStatus',
     'status',
     'unknownBlock',
     'placeholder',
