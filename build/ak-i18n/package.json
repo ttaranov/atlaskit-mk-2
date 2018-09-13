@@ -1,0 +1,19 @@
+{
+  "name": "@atlaskit/ak-i18n",
+  "version": "0.1.0",
+  "description": "A tool for extracting, pushing and pulling translation strings from react components",
+  "main": "index.js",
+  "bin": {
+    "ak-i18n": "index.js"
+  },
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@babel/core": "^7.0.0",
+    "babel-plugin-react-intl": "^2.4.0",
+    "babel-plugin-react-intl-pot": "^0.5.5",
+    "chalk": "^2.1.0",
+    "globby": "^6.1.0",
+    "meow": "^5.0.0"
+  }
+}
