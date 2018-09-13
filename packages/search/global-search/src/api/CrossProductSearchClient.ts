@@ -113,8 +113,9 @@ export default class CrossProductSearchClientImpl
   ): CrossProductSearchResults {
     let experimentId;
     let abTest;
-    const results: Map<Scope, Result[]> = response.scopes.reduce(
-      (resultsMap, scopeResult) => {
+    const results: Map<Scope, Result[]> = response.scopes
+      .filter(scope => scope.results)
+      .reduce((resultsMap, scopeResult) => {
         resultsMap.set(
           scopeResult.id,
           scopeResult.results.map(result =>
@@ -129,9 +130,7 @@ export default class CrossProductSearchClientImpl
         experimentId = scopeResult.experimentId;
         abTest = scopeResult.abTest;
         return resultsMap;
-      },
-      new Map(),
-    );
+      }, new Map());
 
     return { results, experimentId, abTest };
   }

@@ -12,6 +12,11 @@ import {
   ContainerResult,
   JiraObjectResult,
 } from '../../model/Result';
+import {
+  generateRandomJiraBoard,
+  generateRandomJiraFilter,
+  generateRandomJiraProject,
+} from '../../../example-helpers/mockJira';
 
 function apiWillReturn(state: CrossProductSearchResponse) {
   const opts = {
@@ -157,6 +162,37 @@ describe('CrossProductSearchClient', () => {
       expect(item.objectKey).toEqual('key-1');
       expect(item.analyticsType).toEqual(AnalyticsType.ResultJira);
       expect(item.resultType).toEqual(ResultType.JiraObjectResult);
+    });
+
+    it('should not break with error scopes', async () => {
+      const jiraScopes = [Scope.JiraIssue, Scope.JiraBoardProjectFilter];
+
+      const issueErrorScope = {
+        id: Scope.JiraIssue,
+        error: 'something wrong',
+        results: [],
+      };
+
+      const containerCorrectScope = {
+        id: Scope.JiraBoardProjectFilter,
+        results: [
+          generateRandomJiraBoard(),
+          generateRandomJiraFilter(),
+          generateRandomJiraProject(),
+        ],
+      };
+
+      apiWillReturn({
+        scopes: [issueErrorScope, containerCorrectScope],
+      });
+
+      const result = await searchClient.search(
+        'query',
+        'test_uuid',
+        jiraScopes,
+      );
+      expect(result.results.get(Scope.JiraIssue)).toHaveLength(0);
+      expect(result.results.get(Scope.JiraBoardProjectFilter)).toHaveLength(3);
     });
   });
 
