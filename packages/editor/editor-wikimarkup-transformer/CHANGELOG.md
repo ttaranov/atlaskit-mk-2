@@ -1,5 +1,8 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 2.0.24
+- [patch] New rules for formatter [50edbb0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/50edbb0)
+
 ## 2.0.23
 - [patch] should convert content inside monospace as plain text [f5e9f01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f5e9f01)
 
