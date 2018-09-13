@@ -1,5 +1,8 @@
 # @atlaskit/media-image
 
+## 34.0.3
+- [patch] Revert fix for MS-667 [43e601f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/43e601f)
+
 ## 34.0.2
 - [patch] use new tsconfig for typechecking [09df171](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/09df171)
 
