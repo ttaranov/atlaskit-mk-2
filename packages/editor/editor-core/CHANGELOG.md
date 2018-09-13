@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 80.4.3
+- [patch] Fix the empty progress bar inside tables [1beaf5b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1beaf5b)
+
 ## 80.4.2
 - [patch] Show mediaSingle with default width when no width is defined in ADF [03af1bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03af1bd)
 
