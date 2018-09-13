@@ -405,23 +405,7 @@ Object {
           "type": "text",
         },
         Object {
-          "text": " with a ",
-          "type": "text",
-        },
-        Object {
-          "marks": Array [
-            Object {
-              "attrs": Object {
-                "type": "sub",
-              },
-              "type": "subsup",
-            },
-          ],
-          "text": "^bla*",
-          "type": "text",
-        },
-        Object {
-          "text": "~",
+          "text": " with a ~^ bla*~~",
           "type": "text",
         },
       ],
