@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { ResultItemGroup } from '@atlaskit/quick-search';
-import ConfluenceIcon from '@atlaskit/icon/glyph/confluence';
+import { ConfluenceIcon } from '@atlaskit/logo';
 import PeopleIcon from '@atlaskit/icon/glyph/people';
 import NoResults from '../NoResults';
 import SearchConfluenceItem from '../SearchConfluenceItem';
