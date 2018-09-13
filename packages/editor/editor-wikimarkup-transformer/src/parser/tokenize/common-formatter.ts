@@ -2,6 +2,7 @@ import { Node as PMNode, Schema } from 'prosemirror-model';
 import { parseString } from '../text';
 import { Token, TokenType } from './';
 import { macro } from './macro';
+import { linkFormat } from './link-format';
 import { parseNewlineOnly, parseWhitespaceAndNewLine } from './whitespace';
 
 export interface FormatterOption {
@@ -20,6 +21,7 @@ const processState = {
   BUFFER: 1,
   END: 2,
   INLINE_MACRO: 3,
+  LINK_FORMAT: 4,
 };
 
 export function commonFormatter(
@@ -68,6 +70,9 @@ export function commonFormatter(
         } else if (char === '{') {
           state = processState.INLINE_MACRO;
           continue;
+        } else if (char === '[') {
+          state = processState.LINK_FORMAT;
+          continue;
         } else {
           buffer += char;
         }
@@ -81,16 +86,21 @@ export function commonFormatter(
         }
 
         /**
-         * If the closing symbol has an empty space before it,
-         * it's not a valid formatter
          * If the closing symbol is not at the end of the line and
          * has not a following space, it's not a valid formatter
          */
         if (index < input.length) {
           const length = parseWhitespaceAndNewLine(input.substring(index));
-          if (buffer.endsWith(' ') || length === 0) {
+          if (length === 0) {
             return fallback(input);
           }
+        }
+        /**
+         * If the closing symbol has an empty space before it,
+         * it's not a valid formatter
+         */
+        if (buffer.endsWith(' ')) {
+          return fallback(input);
         }
 
         const rawContent = parseString(buffer, schema, ignoreTokenTypes);
@@ -113,6 +123,26 @@ export function commonFormatter(
           // No macro are accepted in formater
           return fallback(input);
         }
+      }
+      case processState.LINK_FORMAT: {
+        /**
+         * We should "fly over" the link format and we dont want
+         * -awesome [link|https://www.atlass-ian.com] nice
+         * to be a strike through because of the '-' in link
+         */
+        const token = linkFormat(input.substr(index), schema);
+        if (token.type === 'text') {
+          buffer += token.text;
+          index += token.length;
+          state = processState.BUFFER;
+          continue;
+        } else if (token.type === 'pmnode') {
+          buffer += input.substr(index, token.length);
+          index += token.length;
+          state = processState.BUFFER;
+          continue;
+        }
+        return fallback(input);
       }
       default:
     }

@@ -4,7 +4,7 @@ import React from 'react';
 import HomeFilledIcon from '@atlaskit/icon/glyph/home-filled';
 import ComponentIcon from '@atlaskit/icon/glyph/component';
 import OverviewIcon from '@atlaskit/icon/glyph/overview';
-import BitbucketIcon from '@atlaskit/icon/glyph/bitbucket';
+import { BitbucketIcon } from '@atlaskit/logo';
 import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import renderNav from '../utils/renderNav';
 

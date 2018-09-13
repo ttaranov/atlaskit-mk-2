@@ -13,7 +13,7 @@ import NotificationIcon from '@atlaskit/icon/glyph/notification';
 import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import styled from 'styled-components';
 import Tooltip from '@atlaskit/tooltip';
-import JiraIcon from '@atlaskit/icon/glyph/jira';
+import { JiraIcon } from '@atlaskit/logo';
 
 import { AkNavigationItem, AkGlobalItem } from '../../../src';
 import emmaAvatar from '../emma.png';
