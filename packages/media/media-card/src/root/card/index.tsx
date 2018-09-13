@@ -14,7 +14,6 @@ import {
   CardEventProps,
   CardAnalyticsContext,
   CardStatus,
-  CardDimensions,
 } from '../..';
 import { Identifier, isPreviewableType } from '../domain';
 import { CardView } from '../cardView';
@@ -24,7 +23,6 @@ import { getDataURIDimension } from '../../utils/getDataURIDimension';
 import { getDataURIFromFileState } from '../../utils/getDataURIFromFileState';
 import { getLinkMetadata, extendMetadata } from '../../utils/metadata';
 import { isUrlPreviewIdentifier } from '../../utils/identifier';
-import { isBigger } from '../../utils/dimensionComparer';
 
 export interface CardProps extends SharedCardProps, CardEventProps {
   readonly context: Context;
@@ -60,28 +58,23 @@ export class Card extends Component<CardProps, CardState> {
   };
 
   componentDidMount() {
-    const { identifier, context, dimensions } = this.props;
+    const { identifier, context } = this.props;
 
-    this.subscribe(identifier, context, dimensions);
+    this.subscribe(identifier, context);
   }
 
   componentWillReceiveProps(nextProps: CardProps) {
     const {
       context: currentContext,
       identifier: currentIdentifier,
-      dimensions: currentDimensions,
     } = this.props;
-    const {
-      context: nextContext,
-      identifier: nextIdenfifier,
-      dimensions: nextDimensions,
-    } = nextProps;
+    const { context: nextContext, identifier: nextIdenfifier } = nextProps;
+
     if (
       currentContext !== nextContext ||
-      !deepEqual(currentIdentifier, nextIdenfifier) ||
-      isBigger(currentDimensions, nextDimensions)
+      !deepEqual(currentIdentifier, nextIdenfifier)
     ) {
-      this.subscribe(nextIdenfifier, nextContext, nextDimensions);
+      this.subscribe(nextIdenfifier, nextContext);
     }
   }
 
@@ -109,11 +102,7 @@ export class Card extends Component<CardProps, CardState> {
     }
   };
 
-  async subscribe(
-    identifier: Identifier,
-    context: Context,
-    dimensions?: CardDimensions,
-  ) {
+  async subscribe(identifier: Identifier, context: Context) {
     const { isCardVisible } = this.state;
     if (!isCardVisible) {
       return;
@@ -176,7 +165,7 @@ export class Card extends Component<CardProps, CardState> {
               break;
             case 'processed':
               if (metadata.mediaType && isPreviewableType(metadata.mediaType)) {
-                const { appearance, resizeMode } = this.props;
+                const { appearance, dimensions, resizeMode } = this.props;
                 const options = {
                   appearance,
                   dimensions,
@@ -224,9 +213,9 @@ export class Card extends Component<CardProps, CardState> {
 
   // This method is called when card fails and user press 'Retry'
   private onRetry = () => {
-    const { identifier, context, dimensions } = this.props;
+    const { identifier, context } = this.props;
 
-    this.subscribe(identifier, context, dimensions);
+    this.subscribe(identifier, context);
   };
 
   get analyticsContext(): CardAnalyticsContext {
@@ -307,8 +296,8 @@ export class Card extends Component<CardProps, CardState> {
 
   onCardInViewport = () => {
     this.setState({ isCardVisible: true }, () => {
-      const { identifier, context, dimensions } = this.props;
-      this.subscribe(identifier, context, dimensions);
+      const { identifier, context } = this.props;
+      this.subscribe(identifier, context);
     });
   };
 }
