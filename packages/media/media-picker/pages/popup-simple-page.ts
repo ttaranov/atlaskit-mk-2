@@ -16,7 +16,7 @@ export type RecentUploadCard = {
  * @see https://www.seleniumhq.org/docs/06_test_design_considerations.jsp#page-object-design-pattern
  */
 export class PopupSimplePage {
-  constructor(private readonly page: Page) {}
+  constructor(private readonly page: any) {}
 
   async clickUploadButton(): Promise<void> {
     const selector = '.e2e-upload-button';

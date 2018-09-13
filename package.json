@@ -42,7 +42,7 @@
     "lint:tslint:supporting": "              tslint-config-prettier-check ./tslint.supporting.json && tslint -c ./tslint.supporting.json --format stylish 'packages/*/*/+(tests|__tests__|examples|docs|example-helpers)/**/*.(ts|tsx)' 'packages/*/*/src/**/__tests__/**/*.+(ts|tsx)'",
     "typecheck": "                           yarn run typecheck:flow && yarn run typecheck:typescript",
     "typecheck:flow": "                      flow check",
-    "typecheck:typescript": "                bolt workspaces exec --only-fs \"$(node ./build/ci-scripts/get.glob.packages.for.tools.js typescript)\" -- tsc --noEmit --project ./",
+    "typecheck:typescript": "                tsc --noEmit --project ./tsconfig.typecheck.json",
     "website:start": "                       cd website && yarn start",
     "start": "                               yarn run website:start",
     "start:bitbucket": "                     yarn run website:start **/packages/bitbucket/**",
