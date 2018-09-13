@@ -1,5 +1,8 @@
 # @atlaskit/form
 
+## 4.0.4
+- [patch] Form validate now correctly returns fieldState & checks isRequired [87cea82](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87cea82)
+
 ## 4.0.3
 - [patch] Updated dependencies [d5a043a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5a043a)
   - @atlaskit/datetime-picker@6.3.7
