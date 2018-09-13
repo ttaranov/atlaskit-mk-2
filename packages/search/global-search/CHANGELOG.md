@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 5.6.0
+- [minor] Update product icons to come from logo [7b446f0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7b446f0)
+
 ## 5.5.12
 - [patch] add more analytics attribute (abTest related attributes, query attributes to search result analytics) [317bc68](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/317bc68)
 
