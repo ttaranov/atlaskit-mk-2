@@ -13,6 +13,7 @@ import {
   FileIdentifier,
   LinkIdentifier,
   CardView,
+  CardDimensions,
 } from '../../../src';
 import { LazyContent } from '../../../src/utils/lazyContent';
 import { getDataURIFromFileState } from '../../../src/utils/getDataURIFromFileState';

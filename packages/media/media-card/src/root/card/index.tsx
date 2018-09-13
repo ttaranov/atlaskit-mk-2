@@ -14,6 +14,7 @@ import {
   CardEventProps,
   CardAnalyticsContext,
   CardStatus,
+  CardDimensions,
 } from '../..';
 import { Identifier, isPreviewableType } from '../domain';
 import { CardView } from '../cardView';
