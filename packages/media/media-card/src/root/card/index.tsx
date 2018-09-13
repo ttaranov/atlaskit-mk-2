@@ -23,6 +23,7 @@ import { getDataURIDimension } from '../../utils/getDataURIDimension';
 import { getDataURIFromFileState } from '../../utils/getDataURIFromFileState';
 import { getLinkMetadata, extendMetadata } from '../../utils/metadata';
 import { isUrlPreviewIdentifier } from '../../utils/identifier';
+import { isBigger } from '../../utils/dimensionComparer';
 
 export interface CardProps extends SharedCardProps, CardEventProps {
   readonly context: Context;
@@ -67,16 +68,29 @@ export class Card extends Component<CardProps, CardState> {
     const {
       context: currentContext,
       identifier: currentIdentifier,
+      dimensions: currentDimensions,
     } = this.props;
-    const { context: nextContext, identifier: nextIdenfifier } = nextProps;
+    const {
+      context: nextContext,
+      identifier: nextIdenfifier,
+      dimensions: nextDimensions,
+    } = nextProps;
 
     if (
       currentContext !== nextContext ||
-      !deepEqual(currentIdentifier, nextIdenfifier)
+      !deepEqual(currentIdentifier, nextIdenfifier) ||
+      this.shouldRefetchImage(currentDimensions, nextDimensions)
     ) {
       this.subscribe(nextIdenfifier, nextContext);
     }
   }
+
+  shouldRefetchImage = (current?: CardDimensions, next?: CardDimensions) => {
+    if (!current || !next) {
+      return false;
+    }
+    return isBigger(current, next);
+  };
 
   componentWillUnmount() {
     this.unsubscribe();
