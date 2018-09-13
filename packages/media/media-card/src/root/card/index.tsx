@@ -63,7 +63,7 @@ export class Card extends Component<CardProps, CardState> {
     this.subscribe(identifier, context);
   }
 
-  componentWillReceiveProps(nextProps: CardProps) {
+  componentWillReceiveProps(nextProps) {
     const {
       context: currentContext,
       identifier: currentIdentifier,
