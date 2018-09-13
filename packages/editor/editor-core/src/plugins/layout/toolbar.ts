@@ -3,6 +3,8 @@ import { EditorState } from 'prosemirror-state';
 import { findDomRefAtPos } from 'prosemirror-utils';
 import LayoutTwoEqualIcon from '@atlaskit/icon/glyph/editor/layout-two-equal';
 import LayoutThreeEqualIcon from '@atlaskit/icon/glyph/editor/layout-three-equal';
+import WrapLeftIcon from '@atlaskit/icon/glyph/editor/media-wrap-left';
+import WrapRightIcon from '@atlaskit/icon/glyph/editor/media-wrap-right';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import { Command } from '../../../src/types';
 import {
@@ -15,6 +17,8 @@ import { setActiveLayoutType, deleteActiveLayoutNode } from './actions';
 const LAYOUT_TYPES = [
   { type: 'two_equal', text: 'Two columns', icon: LayoutTwoEqualIcon },
   { type: 'three_equal', text: 'Three columns', icon: LayoutThreeEqualIcon },
+  { type: 'float_left', text: 'Float left', icon: WrapLeftIcon },
+  { type: 'float_right', text: 'Float right', icon: WrapRightIcon },
   // { type: two_left_sidebar, text: 'Two columns with left sidebar' }
   // { type: two_right_sidebar, text: 'Two columns with right sidebar' }
   // { type: three_with_siderbars, text: 'Three columns with sidebars' }

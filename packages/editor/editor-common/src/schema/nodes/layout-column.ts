@@ -1,7 +1,7 @@
 import { NodeSpec } from 'prosemirror-model';
 
 export const layoutColumn: NodeSpec = {
-  content: 'block+',
+  content: 'mediaSingle | codeBlock | (paragraph)+',
   isolating: true,
   parseDOM: [
     {

@@ -6,7 +6,7 @@ import {
 
 export type CodeBlockContent = TextDefinition & NoMark;
 
-export const codeBlock = (attrs: CodeBlockDefinition['attrs'] | undefined) => (
+export const codeBlock = (attrs?: CodeBlockDefinition['attrs']) => (
   ...content: Array<CodeBlockContent>
 ): CodeBlockDefinition => ({
   type: 'codeBlock',

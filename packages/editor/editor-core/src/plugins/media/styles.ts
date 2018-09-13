@@ -34,5 +34,10 @@ export const mediaStyles = css`
         margin-right: 0;
       }
     }
+
+    .editor-layout-section .media-single {
+      margin: 0;
+      width: 100%;
+    }
   }
 `;

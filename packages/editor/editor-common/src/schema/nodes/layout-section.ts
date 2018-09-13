@@ -16,10 +16,11 @@ const LAYOUT_TYPES: LayoutSectionLayoutType[] = [
 ];
 
 export const layoutSection: NodeSpec = {
-  content: 'layoutColumn{2,3}',
+  content: 'layoutColumn+',
   isolating: true,
   attrs: {
     layoutType: { default: 'two_equal' as LayoutSectionLayoutType },
+    size: { default: 100 },
   },
   parseDOM: [
     {
@@ -29,18 +30,27 @@ export const layoutSection: NodeSpec = {
     },
     {
       tag: 'div[data-layout-type]',
-      getAttrs(dom: HTMLElement): { layoutType: LayoutSectionLayoutType } {
+      getAttrs(
+        dom: HTMLElement,
+      ): { layoutType: LayoutSectionLayoutType; size: number } {
         const domLayoutType = (
           dom.getAttribute('data-layout-type') || ''
         ).toLowerCase();
         const layoutType =
           LAYOUT_TYPES.find(type => domLayoutType === type) || 'two_equal';
-        return { layoutType };
+        return {
+          layoutType,
+          size: parseInt(dom.getAttribute('data-size') || '', 10) || 100,
+        };
       },
     },
   ],
   toDOM(node) {
-    const attrs = { 'data-layout-type': node.attrs.layoutType };
+    const attrs = {
+      'data-layout-type': node.attrs.layoutType,
+      class: 'editor-layout-section',
+      'data-size': node.attrs.size,
+    };
     return ['div', attrs, 0];
   },
 };

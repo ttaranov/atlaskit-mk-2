@@ -4,7 +4,7 @@ import {
   MediaSingleAttributes,
 } from '@atlaskit/editor-common';
 
-export const mediaSingle = (attrs: MediaSingleAttributes | undefined) => (
+export const mediaSingle = (attrs?: MediaSingleAttributes) => (
   content: MediaDefinition,
 ): MediaSingleDefinition => ({
   type: 'mediaSingle',

@@ -1,4 +1,13 @@
 import styled from 'styled-components';
+import {
+  doc,
+  p,
+  heading,
+  text,
+  mediaSingle,
+  media,
+  codeBlock,
+} from '@atlaskit/adf-utils';
 
 import * as React from 'react';
 import Button, { ButtonGroup } from '@atlaskit/button';
@@ -114,6 +123,173 @@ const mediaProvider = storyMediaProviderFactory({
 
 const quickInsertProvider = quickInsertProviderFactory();
 
+const defaultDoc = doc(
+  p(
+    'Irure ullamco non voluptate cillum laborum minim nulla nostrud ea irure est velit est. Ad amet non cillum irure incididunt est aliquip. Sit quis mollit cupidatat esse ea sunt proident nisi officia. Elit laboris ea velit sint cupidatat veniam sint dolore anim qui occaecat. Amet voluptate eiusmod nostrud velit excepteur mollit consectetur.',
+  ),
+  heading({ level: 2 })(
+    text(
+      'Laboris do veniam sunt incididunt velit anim exercitation proident deserunt pariatur duis mollit esse.',
+    ),
+  ),
+  p(
+    'Nisi aute laborum consequat sit fugiat Lorem. Proident ut ut sunt anim. Aute tempor ullamco cillum mollit ex reprehenderit. Proident fugiat nulla culpa occaecat reprehenderit est. Ea elit ipsum est ex et incididunt veniam sit incididunt pariatur nisi exercitation consequat deserunt.',
+  ),
+
+  {
+    type: 'layoutSection',
+    attrs: {
+      layoutType: 'float_left',
+    },
+    content: [
+      {
+        type: 'layoutColumn',
+        content: [
+          mediaSingle()(
+            media({
+              type: 'file',
+              id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+              collection: 'MediaServicesSample',
+              height: 200,
+              width: 300,
+            }),
+          ),
+        ],
+      },
+      {
+        type: 'layoutColumn',
+        content: [
+          p(
+            'Amet dolore ex non et pariatur aliqua ad quis ullamco excepteur ut sint ex. Laborum sit est fugiat sit commodo reprehenderit ullamco. Qui id magna incididunt cupidatat excepteur. Dolore adipisicing elit aliqua ad ipsum in magna aliqua cillum ea pariatur.',
+          ),
+          p(
+            'Ea ex amet id nulla commodo non non tempor. Laborum amet commodo culpa est Lorem voluptate ut fugiat in exercitation minim. Aute sunt labore esse voluptate aliquip mollit eiusmod ut laboris exercitation ipsum reprehenderit laboris eu. Amet est sunt est aliqua proident consequat laboris dolore aliqua. Dolor sint occaecat dolor ut. Nisi voluptate cupidatat aliquip anim minim eu est elit ut minim nisi dolor exercitation aliqua.',
+          ),
+        ],
+      },
+    ],
+  } as any,
+
+  p(
+    'Nisi aute laborum consequat sit fugiat Lorem. Proident ut ut sunt anim. Aute tempor ullamco cillum mollit ex reprehenderit. Proident fugiat nulla culpa occaecat reprehenderit est. Ea elit ipsum est ex et incididunt veniam sit incididunt pariatur nisi exercitation consequat deserunt.',
+  ),
+
+  {
+    type: 'layoutSection',
+    attrs: {
+      layoutType: 'single',
+      size: 150,
+    },
+    content: [
+      {
+        type: 'layoutColumn',
+        content: [
+          codeBlock()(
+            text(
+              'export const deleteActiveLayoutNode: Command = (state, dispatch) => {\n',
+            ),
+            text(
+              '  const { pos } = pluginKey.getState(state) as LayoutState;\n',
+            ),
+            text('  if (pos !== null) {\n'),
+            text('    const node = state.doc.nodeAt(pos) as Node;\n'),
+            text('    dispatch(state.tr.delete(pos, pos + node.nodeSize));\n'),
+            text('    return true;\n'),
+            text('  }\n'),
+            text('  return false;\n'),
+            text('};'),
+          ),
+        ],
+      },
+    ],
+  } as any,
+  p(
+    'Nisi aute laborum consequat sit fugiat Lorem. Proident ut ut sunt anim. Aute tempor ullamco cillum mollit ex reprehenderit. Proident fugiat nulla culpa occaecat reprehenderit est. Ea elit ipsum est ex et incididunt veniam sit incididunt pariatur nisi exercitation consequat deserunt.',
+  ),
+
+  {
+    type: 'layoutSection',
+    attrs: {
+      layoutType: 'float_left',
+      size: 150,
+    },
+    content: [
+      {
+        type: 'layoutColumn',
+        content: [
+          mediaSingle()(
+            media({
+              type: 'file',
+              id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+              collection: 'MediaServicesSample',
+              height: 200,
+              width: 300,
+            }),
+          ),
+        ],
+      },
+      {
+        type: 'layoutColumn',
+        content: [
+          p(
+            'Amet dolore ex non et pariatur aliqua ad quis ullamco excepteur ut sint ex. Laborum sit est fugiat sit commodo reprehenderit ullamco. Qui id magna incididunt cupidatat excepteur. Dolore adipisicing elit aliqua ad ipsum in magna aliqua cillum ea pariatur.',
+          ),
+          p(
+            'Ea ex amet id nulla commodo non non tempor. Laborum amet commodo culpa est Lorem voluptate ut fugiat in exercitation minim. Aute sunt labore esse voluptate aliquip mollit eiusmod ut laboris exercitation ipsum reprehenderit laboris eu. Amet est sunt est aliqua proident consequat laboris dolore aliqua. Dolor sint occaecat dolor ut. Nisi voluptate cupidatat aliquip anim minim eu est elit ut minim nisi dolor exercitation aliqua.',
+          ),
+          p(
+            'Pariatur excepteur nostrud proident nisi dolore. Est consequat ex magna voluptate elit quis dolore consectetur et incididunt do ullamco. Ipsum aliqua tempor quis id anim laborum. Tempor labore dolor enim nulla nulla laboris tempor ad magna elit irure proident id. Tempor labore occaecat proident qui proident sit laboris ea fugiat dolor voluptate dolore. Aute occaecat magna in aliquip anim aliqua velit officia adipisicing enim minim non id deserunt. Enim ex minim ullamco adipisicing laborum laborum mollit non exercitation consectetur et proident quis.',
+          ),
+        ],
+      },
+    ],
+  } as any,
+  p(
+    'Irure ullamco non voluptate cillum laborum minim nulla nostrud ea irure est velit est. Ad amet non cillum irure incididunt est aliquip. Sit quis mollit cupidatat esse ea sunt proident nisi officia. Elit laboris ea velit sint cupidatat veniam sint dolore anim qui occaecat. Amet voluptate eiusmod nostrud velit excepteur mollit consectetur.',
+  ),
+  heading({ level: 2 })(
+    text(
+      'Laboris do veniam sunt incididunt velit anim exercitation proident deserunt pariatur duis mollit esse.',
+    ),
+  ),
+  p(
+    'Nisi aute laborum consequat sit fugiat Lorem. Proident ut ut sunt anim. Aute tempor ullamco cillum mollit ex reprehenderit. Proident fugiat nulla culpa occaecat reprehenderit est. Ea elit ipsum est ex et incididunt veniam sit incididunt pariatur nisi exercitation consequat deserunt.',
+  ),
+  {
+    type: 'layoutSection',
+    attrs: {
+      layoutType: 'three_equal',
+      size: 150,
+    },
+    content: [
+      {
+        type: 'layoutColumn',
+        content: [
+          p(
+            'Amet dolore ex non et pariatur aliqua ad quis ullamco excepteur ut sint ex. Laborum sit est fugiat sit commodo reprehenderit ullamco. Qui id magna incididunt cupidatat excepteur. Dolore adipisicing elit aliqua ad ipsum in magna aliqua cillum ea pariatur.',
+          ),
+        ],
+      },
+      {
+        type: 'layoutColumn',
+        content: [
+          p(
+            'Pariatur excepteur nostrud proident nisi dolore. Est consequat ex magna voluptate elit quis dolore consectetur et incididunt do ullamco. Ipsum aliqua tempor quis id anim laborum. Tempor labore dolor enim nulla nulla laboris tempor ad magna elit irure proident id. Tempor labore occaecat proident qui proident sit laboris ea fugiat dolor voluptate dolore. Aute occaecat magna in aliquip anim aliqua velit officia adipisicing enim minim non id deserunt. Enim ex minim ullamco adipisicing laborum laborum mollit non exercitation consectetur et proident quis.',
+          ),
+        ],
+      },
+      {
+        type: 'layoutColumn',
+        content: [
+          p(
+            'Ea ex amet id nulla commodo non non tempor. Laborum amet commodo culpa est Lorem voluptate ut fugiat in exercitation minim. Aute sunt labore esse voluptate aliquip mollit eiusmod ut laboris exercitation ipsum reprehenderit laboris eu. Amet est sunt est aliqua proident consequat laboris dolore aliqua. Dolor sint occaecat dolor ut. Nisi voluptate cupidatat aliquip anim minim eu est elit ut minim nisi dolor exercitation aliqua.',
+          ),
+        ],
+      },
+    ],
+  } as any,
+);
+
 export class ExampleEditor extends React.Component<Props, State> {
   state: State = { disabled: true };
 
@@ -132,6 +308,7 @@ export class ExampleEditor extends React.Component<Props, State> {
       <Wrapper>
         <Content>
           <Editor
+            defaultValue={defaultDoc}
             appearance="full-page"
             analyticsHandler={analyticsHandler}
             quickInsert={{ provider: Promise.resolve(quickInsertProvider) }}
@@ -207,11 +384,15 @@ export class ExampleEditor extends React.Component<Props, State> {
 }
 
 export default function Example(overrideProps = {}) {
+  console.log(defaultDoc);
   return (
     <EditorContext>
       <div style={{ height: '100%' }}>
         <DevTools />
-        <ExampleEditor overrideProps={overrideProps} />
+        <ExampleEditor
+          overrideProps={overrideProps}
+          defaultValue={defaultDoc}
+        />
       </div>
     </EditorContext>
   );
