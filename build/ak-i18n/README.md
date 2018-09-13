@@ -1,6 +1,6 @@
 ## ak-i18n
 
-This is a tool for extract, pulling and pushing i18n translation strings from React components.
+This is a tool for extracting, pulling and pushing i18n translation strings from React components.
 
 It works using the [babel-plugin-react-intl](https://github.com/yahoo/babel-plugin-react-intl) and [babel-plugin-react-intl-pot](https://www.npmjs.com/package/babel-plugin-react-intl-pot) to create `translation.pot` files for a package.
 
