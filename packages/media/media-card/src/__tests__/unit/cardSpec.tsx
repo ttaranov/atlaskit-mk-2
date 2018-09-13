@@ -145,8 +145,8 @@ describe('Card', () => {
 
     const { id, collectionName } = fileIdentifier;
     await nextTick();
-    expect(secondContext.getFileState).toHaveBeenCalledTimes(1);
-    expect(secondContext.getFileState).toBeCalledWith(id, { collectionName });
+    expect(secondContext.getFile).toHaveBeenCalledTimes(1);
+    expect(secondContext.getFile).toBeCalledWith(id, { collectionName });
     expect(component.find(CardView)).toHaveLength(1);
   });
 
@@ -162,7 +162,7 @@ describe('Card', () => {
 
     const { id, mediaItemType, collectionName } = secondIdentifier;
     await nextTick();
-    expect(context.getFileState).toHaveBeenCalledTimes(1);
+    expect(context.getFile).toHaveBeenCalledTimes(1);
     expect(context.getMediaItemProvider).toHaveBeenCalledTimes(1);
     expect(context.getMediaItemProvider).toBeCalledWith(
       id,
