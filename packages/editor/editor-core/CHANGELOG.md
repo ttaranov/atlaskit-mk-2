@@ -1,5 +1,14 @@
 # @atlaskit/editor-core
 
+## 80.3.1
+- [patch] Fixes remapping a table cell pos on collab modes changes and ensure its an element node. ED-5305 [dacbc18](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dacbc18)
+
+## 80.3.0
+- [minor] Adds ability to load document snapshot from collab service [3708304](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3708304)
+
+## 80.2.1
+- [patch] Fix popup positioning when inside overflow:auto containers [affe5df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/affe5df)
+
 ## 80.2.0
 - [minor] FS-2961 Introduce status component and status node in editor [7fe2b0a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7fe2b0a)
 

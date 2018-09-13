@@ -247,7 +247,7 @@ describe('table action handlers', () => {
     });
   });
   describe('#handleDocChanged', () => {
-    it('should return a new state with updated tableNode and targetCellPosition props and reset selection', () => {
+    it('should return a new state with updated tableNode prop and reset selection', () => {
       const pluginState = {
         ...defaultPluginState,
         dangerColumns: [1, 2, 3],
@@ -263,13 +263,11 @@ describe('table action handlers', () => {
       const newState = handleDocChanged(editorView.state)(
         pluginState,
         dispatch,
-        editorView.state.tr,
       );
       expect(newState).toEqual({
         ...pluginState,
         ...defaultTableSelection,
         tableNode: editorView.state.doc.firstChild,
-        targetCellPosition: 2,
       });
     });
   });

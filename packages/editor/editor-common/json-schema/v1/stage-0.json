@@ -1492,49 +1492,6 @@
       ],
       "additionalProperties": false
     },
-    "status_node": {
-      "type": "object",
-      "properties": {
-        "type": {
-          "enum": [
-            "status"
-          ]
-        },
-        "attrs": {
-          "type": "object",
-          "properties": {
-            "text": {
-              "type": "string",
-              "minLength": 1
-            },
-            "color": {
-              "enum": [
-                "neutral",
-                "purple",
-                "blue",
-                "red",
-                "yellow",
-                "green"
-              ]
-            },
-            "localId": {
-              "type": "string"
-            }
-          },
-          "required": [
-            "text",
-            "color",
-            "localId"
-          ],
-          "additionalProperties": false
-        }
-      },
-      "required": [
-        "type",
-        "attrs"
-      ],
-      "additionalProperties": false
-    },
     "placeholder_node": {
       "type": "object",
       "properties": {
@@ -1636,6 +1593,49 @@
               "additionalProperties": false
             }
           ]
+        }
+      },
+      "required": [
+        "type",
+        "attrs"
+      ],
+      "additionalProperties": false
+    },
+    "status_node": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "status"
+          ]
+        },
+        "attrs": {
+          "type": "object",
+          "properties": {
+            "text": {
+              "type": "string",
+              "minLength": 1
+            },
+            "color": {
+              "enum": [
+                "neutral",
+                "purple",
+                "blue",
+                "red",
+                "yellow",
+                "green"
+              ]
+            },
+            "localId": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "text",
+            "color",
+            "localId"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [
@@ -2018,13 +2018,13 @@
           "$ref": "#/definitions/inlineCard_node"
         },
         {
+          "$ref": "#/definitions/status_node"
+        },
+        {
           "$ref": "#/definitions/formatted_text_inline_node"
         },
         {
           "$ref": "#/definitions/code_inline_node"
-        },
-        {
-          "$ref": "#/definitions/status_node"
         }
       ]
     },

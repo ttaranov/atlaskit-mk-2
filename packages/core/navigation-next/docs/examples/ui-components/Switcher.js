@@ -11,13 +11,15 @@ import {
   Switcher,
 } from '../../../src';
 
+import { CONTENT_NAV_WIDTH } from '../../../src/common/constants';
+
 const Wrapper = (props: *) => (
   <div
     css={{
       backgroundColor: colors.N20,
       boxSizing: 'border-box',
       padding: '16px',
-      width: '270px ',
+      width: `${CONTENT_NAV_WIDTH}px`,
     }}
     {...props}
   />

@@ -13,6 +13,8 @@ import {
   CollabEditOptions,
 } from './types';
 
+import { replaceDocument } from './utils';
+
 export const handleInit = (
   initData: InitData,
   view: EditorView,
@@ -20,32 +22,10 @@ export const handleInit = (
 ) => {
   const { doc, json, version } = initData;
   if (doc) {
-    const {
-      state,
-      state: { schema, tr },
-    } = view;
-    const content = (doc.content || []).map(child =>
-      schema.nodeFromJSON(child),
-    );
-
-    if (content.length) {
-      tr.setMeta('addToHistory', false);
-      tr.replaceWith(0, state.doc.nodeSize - 2, content);
-      tr.setSelection(Selection.atStart(tr.doc));
-      tr.scrollIntoView();
-      let newState = state.apply(tr);
-
-      if (typeof version !== undefined) {
-        const collabState = { version, unconfirmed: [] };
-        const { tr } = newState;
-
-        if (options && options.useNativePlugin) {
-          newState = newState.apply(tr.setMeta('collab$', collabState));
-        }
-      }
-
-      view.updateState(newState);
-    }
+    const { state } = view;
+    const tr = replaceDocument(doc, state, version, options);
+    const newState = state.apply(tr);
+    view.updateState(newState);
   } else if (json) {
     applyRemoteSteps(json, undefined, view);
   }
