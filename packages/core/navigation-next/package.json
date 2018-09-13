@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/navigation-next",
-  "version": "3.12.1",
+  "version": "3.12.2",
   "description": "The Atlassian navigation component.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -47,7 +47,7 @@
     "@atlaskit/docs": "^5.0.6",
     "@atlaskit/dropdown-menu": "^6.1.12",
     "@atlaskit/field-base": "^11.0.7",
-    "@atlaskit/global-navigation": "^4.4.1",
+    "@atlaskit/global-navigation": "^4.4.2",
     "@atlaskit/logo": "^9.0.2",
     "@atlaskit/lozenge": "^6.1.7",
     "@atlaskit/onboarding": "^6.0.1",
