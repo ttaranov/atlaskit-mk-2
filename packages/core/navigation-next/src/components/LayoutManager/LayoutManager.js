@@ -1,6 +1,13 @@
 // @flow
 
-import React, { Component, Fragment, type ElementRef } from 'react';
+import React, {
+  Component,
+  Fragment,
+  PureComponent,
+  type ElementRef,
+  type Ref,
+  type Node,
+} from 'react';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
 import {
@@ -42,6 +49,50 @@ function defaultTooltipContent(isCollapsed: boolean) {
     : { text: 'Collapse', char: '[' };
 }
 
+type PageProps = {
+  children: Node,
+  innerRef: Ref<'div'>,
+  isResizing: boolean,
+  isCollapsed: boolean,
+  productNavWidth: number,
+};
+
+// eslint-disable-next-line
+class PageInner extends PureComponent<{ children: Node }> {
+  render() {
+    return this.props.children;
+  }
+}
+
+// eslint-disable-next-line
+class Page extends PureComponent<PageProps> {
+  render() {
+    const { innerRef, isResizing, isCollapsed, productNavWidth } = this.props;
+    return (
+      <ResizeTransition
+        from={[0]}
+        in={!isCollapsed}
+        productNavWidth={productNavWidth}
+        properties={['paddingLeft']}
+        to={[productNavWidth]}
+        userIsDragging={isResizing}
+      >
+        {({ transitionStyle, transitionState }) => (
+          <PageWrapper
+            disableInteraction={isResizing || isTransitioning(transitionState)}
+            innerRef={innerRef}
+            offset={GLOBAL_NAV_WIDTH}
+            style={transitionStyle}
+          >
+            <PageInner>{this.props.children}</PageInner>
+          </PageWrapper>
+        )}
+      </ResizeTransition>
+    );
+  }
+}
+
+// eslint-disable-next-line
 export default class LayoutManager extends Component<
   LayoutManagerProps,
   State,
@@ -229,40 +280,25 @@ export default class LayoutManager extends Component<
     );
   };
 
-  renderPage = () => {
+  render() {
+    const { navigationUIController } = this.props;
     const {
       isResizing,
       isCollapsed,
       productNavWidth,
-    } = this.props.navigationUIController.state;
-    return (
-      <ResizeTransition
-        from={[0]}
-        in={!isCollapsed}
-        productNavWidth={productNavWidth}
-        properties={['paddingLeft']}
-        to={[productNavWidth]}
-        userIsDragging={isResizing}
-      >
-        {({ transitionStyle, transitionState }) => (
-          <PageWrapper
-            disableInteraction={isResizing || isTransitioning(transitionState)}
-            innerRef={this.getPageRef}
-            offset={GLOBAL_NAV_WIDTH}
-            style={transitionStyle}
-          >
-            {this.props.children}
-          </PageWrapper>
-        )}
-      </ResizeTransition>
-    );
-  };
+    } = navigationUIController.state;
 
-  render() {
     return (
       <LayoutContainer>
         {this.renderNavigation()}
-        {this.renderPage()}
+        <Page
+          innerRef={this.getPageRef}
+          isResizing={isResizing}
+          isCollapsed={isCollapsed}
+          productNavWidth={productNavWidth}
+        >
+          {this.props.children}
+        </Page>
       </LayoutContainer>
     );
   }
