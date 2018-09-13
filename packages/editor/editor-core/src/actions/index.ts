@@ -138,7 +138,7 @@ export default class EditorActions implements EditorActionsOptions {
     });
   }
 
-  replaceDocument(rawValue: any): boolean {
+  replaceDocument(rawValue: any, shouldScrollToBottom = true): boolean {
     if (!this.editorView || rawValue === undefined || rawValue === null) {
       return false;
     }
@@ -156,10 +156,12 @@ export default class EditorActions implements EditorActionsOptions {
       return false;
     }
 
-    const tr = state.tr
-      // In case of replacing a whole document, we only need a content of a top level node e.g. document.
-      .replaceWith(0, state.doc.nodeSize - 2, content.content)
-      .scrollIntoView();
+    // In case of replacing a whole document, we only need a content of a top level node e.g. document.
+    let tr = state.tr.replaceWith(0, state.doc.nodeSize - 2, content.content);
+
+    if (shouldScrollToBottom) {
+      tr = tr.scrollIntoView();
+    }
 
     this.editorView.dispatch(tr);
 
