@@ -1,5 +1,9 @@
 # @atlaskit/editor-core
 
+## 80.4.0
+- [minor] Add new experimental table resizing, behind flag. ED-4679 [b66227e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b66227e)
+- [none] Updated dependencies [b66227e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b66227e)
+
 ## 80.3.1
 - [patch] Fixes remapping a table cell pos on collab modes changes and ensure its an element node. ED-5305 [dacbc18](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dacbc18)
 
