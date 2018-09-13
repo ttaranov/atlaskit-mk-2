@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 80.3.1
+- [patch] Fixes remapping a table cell pos on collab modes changes and ensure its an element node. ED-5305 [dacbc18](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dacbc18)
+
 ## 80.3.0
 - [minor] Adds ability to load document snapshot from collab service [3708304](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3708304)
 
