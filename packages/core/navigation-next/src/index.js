@@ -27,6 +27,9 @@ export {
   default as SkeletonContainerHeader,
 } from './components/SkeletonContainerHeader';
 export { default as SkeletonItem } from './components/SkeletonItem';
+export {
+  default as SkeletonContainerView,
+} from './components/SkeletonContainerView';
 export { default as Switcher } from './components/Switcher';
 
 /** State */

@@ -12,8 +12,7 @@ import {
   LayoutManager,
   NavigationProvider,
   Section,
-  SkeletonContainerHeader,
-  SkeletonItem,
+  SkeletonContainerView,
   light,
   dark,
   settings,
@@ -33,19 +32,16 @@ const GlobalNavigation = () => (
 type State = {
   themeMode: 'light' | 'dark' | 'settings',
   shouldShowContainer: boolean,
-  shouldRenderIcons: boolean,
   shouldRenderSkeleton: boolean,
 };
 export default class Example extends Component<{}, State> {
   state = {
     themeMode: 'light',
     shouldShowContainer: true,
-    shouldRenderIcons: false,
     shouldRenderSkeleton: true,
   };
 
   renderNavigation = () => {
-    const { shouldRenderIcons } = this.state;
     return (
       <Fragment>
         <Section>
@@ -74,22 +70,10 @@ export default class Example extends Component<{}, State> {
         <Section>
           {({ css }) => (
             <div css={css}>
-              <Item
-                before={shouldRenderIcons ? DashboardIcon : undefined}
-                text="Dashboards"
-              />
-              <Item
-                before={shouldRenderIcons ? BacklogIcon : undefined}
-                text="Backlog"
-              />
-              <Item
-                before={shouldRenderIcons ? IssuesIcon : undefined}
-                text="Issues and filters"
-              />
-              <Item
-                before={shouldRenderIcons ? ReportsIcon : undefined}
-                text="Reports"
-              />
+              <Item before={DashboardIcon} text="Dashboards" />
+              <Item before={BacklogIcon} text="Backlog" />
+              <Item before={IssuesIcon} text="Issues and filters" />
+              <Item before={ReportsIcon} text="Reports" />
             </div>
           )}
         </Section>
@@ -98,33 +82,7 @@ export default class Example extends Component<{}, State> {
   };
 
   renderSkeleton = () => {
-    const { shouldRenderIcons } = this.state;
-    return (
-      <Fragment>
-        <Section>
-          {({ css }) => (
-            <div
-              css={{
-                ...css,
-                paddingTop: gridSize * 2.5,
-                paddingBottom: gridSize * 2.5,
-              }}
-            >
-              <SkeletonContainerHeader hasBefore />
-            </div>
-          )}
-        </Section>
-        <Section>
-          {({ css }) => (
-            <div css={css}>
-              <SkeletonItem hasBefore={shouldRenderIcons} />
-              <SkeletonItem hasBefore={shouldRenderIcons} />
-              <SkeletonItem hasBefore={shouldRenderIcons} />
-            </div>
-          )}
-        </Section>
-      </Fragment>
-    );
+    return <SkeletonContainerView />;
   };
 
   handleThemeModeChange = ({ target: { value: themeMode } }: any) => {
@@ -139,17 +97,8 @@ export default class Example extends Component<{}, State> {
     this.setState({ shouldRenderSkeleton: !this.state.shouldRenderSkeleton });
   };
 
-  handleRenderIconsChange = () => {
-    this.setState({ shouldRenderIcons: !this.state.shouldRenderIcons });
-  };
-
   render() {
-    const {
-      shouldRenderIcons,
-      shouldRenderSkeleton,
-      shouldShowContainer,
-      themeMode,
-    } = this.state;
+    const { shouldRenderSkeleton, shouldShowContainer, themeMode } = this.state;
     const renderer = shouldRenderSkeleton
       ? this.renderSkeleton
       : this.renderNavigation;
@@ -166,7 +115,7 @@ export default class Example extends Component<{}, State> {
             productNavigation={renderer}
             containerNavigation={shouldShowContainer ? renderer : null}
           >
-            <div css={{ padding: 30 }}>
+            <div css={{ padding: '32px 40px' }}>
               <p>
                 <label htmlFor="should-render-skeleton-toggle">
                   <input
@@ -187,17 +136,6 @@ export default class Example extends Component<{}, State> {
                     type="checkbox"
                   />{' '}
                   Show container navigation
-                </label>
-              </p>
-              <p>
-                <label htmlFor="should-render-icons-toggle">
-                  <input
-                    checked={shouldRenderIcons}
-                    id="should-render-icons-toggle"
-                    onChange={this.handleRenderIconsChange}
-                    type="checkbox"
-                  />{' '}
-                  Render icons
                 </label>
               </p>
               <p>
