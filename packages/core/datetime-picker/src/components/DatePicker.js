@@ -265,9 +265,15 @@ class DatePicker extends Component<Props, State> {
       this.triggerChange('');
 
       // Dates may be disabled
-    } else if (!this.isDateDisabled(view) && key === 'Enter') {
-      this.triggerChange(view);
-      this.setState({ isOpen: false, selectedValue: view });
+    } else if (!this.isDateDisabled(view)) {
+      if (key === 'Enter') {
+        this.triggerChange(view);
+        this.setState({ isOpen: false, selectedValue: view });
+      }
+
+      if (key === 'Tab') {
+        this.setState({ isOpen: false });
+      }
     }
   };
 
