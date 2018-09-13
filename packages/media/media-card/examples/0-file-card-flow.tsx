@@ -37,18 +37,18 @@ export interface ComponentState {
 }
 
 const fileIds = [
-  genericFileId.id,
-  audioFileId.id,
-  audioNoCoverFileId.id,
-  videoFileId.id,
-  gifFileId.id,
+  // genericFileId.id,
+  // audioFileId.id,
+  // audioNoCoverFileId.id,
+  // videoFileId.id,
+  // gifFileId.id,
   videoProcessingFailedId.id,
-  docFileId.id,
-  largePdfFileId.id,
-  archiveFileId.id,
-  unknownFileId.id,
-  errorFileId.id,
-  noMetadataFileId.id,
+  // docFileId.id,
+  // largePdfFileId.id,
+  // archiveFileId.id,
+  // unknownFileId.id,
+  // errorFileId.id,
+  // noMetadataFileId.id,
 ];
 class Example extends Component<ComponentProps, ComponentState> {
   uploadController?: UploadController;

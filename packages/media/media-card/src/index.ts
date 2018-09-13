@@ -28,7 +28,8 @@ export type CardStatus =
   | 'loading'
   | 'processing'
   | 'complete'
-  | 'error';
+  | 'error'
+  | 'failed';
 
 export type CardAppearance =
   | 'auto'

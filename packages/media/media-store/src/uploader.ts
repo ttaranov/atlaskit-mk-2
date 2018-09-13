@@ -54,14 +54,21 @@ const createProcessingFunction = (
   };
 };
 
-export const uploadFile = (
+const uploadFileWithConfig = (
   file: UploadableFile,
   config: MediaApiConfig,
   callbacks?: UploadFileCallbacks,
 ): UploadFileResult => {
+  return uploadFile(file, new MediaStore(config), callbacks);
+};
+
+const uploadFileWithStore = (
+  file: UploadableFile,
+  store: MediaStore,
+  callbacks?: UploadFileCallbacks,
+): UploadFileResult => {
   const { content, collection, name, mimeType } = file;
   const occurrenceKey = uuid.v4();
-  const store = new MediaStore(config);
   const deferredUploadId = store
     .createUpload()
     .then(response => response.data[0].id);
@@ -116,6 +123,24 @@ export const uploadFile = (
   });
 
   return { deferredFileId: fileId, cancel };
+};
+
+const isMediaApiConfig = (
+  storeOrConfig: MediaApiConfig | MediaStore,
+): storeOrConfig is MediaApiConfig => {
+  return !!(storeOrConfig as MediaApiConfig).authProvider;
+};
+
+export const uploadFile = (
+  file: UploadableFile,
+  storeOrConfig: MediaApiConfig | MediaStore,
+  callbacks?: UploadFileCallbacks,
+): UploadFileResult => {
+  if (isMediaApiConfig(storeOrConfig)) {
+    return uploadFileWithConfig(file, storeOrConfig, callbacks);
+  } else {
+    return uploadFileWithStore(file, storeOrConfig, callbacks);
+  }
 };
 
 const hashedChunks = (chunks: Chunk[]) => chunks.map(chunk => chunk.hash);

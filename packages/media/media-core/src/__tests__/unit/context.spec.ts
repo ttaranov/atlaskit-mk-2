@@ -21,7 +21,7 @@ const authProvider: AuthProvider = () =>
     baseUrl: 'some-base-url',
   });
 
-const createFakeContext = () => {
+const createContext = () => {
   return ContextFactory.create({
     authProvider,
   });
@@ -41,7 +41,7 @@ describe('Context', () => {
     it('should return different mediaItemProviders for different fileIds', () => {
       const fileId = 'some-id';
       const fileId2 = 'some-other-id';
-      const context = createFakeContext();
+      const context = createContext();
       const mediaItemProvider = context.getMediaItemProvider(fileId, 'file');
       expect(mediaItemProvider).not.toBe(
         context.getMediaItemProvider(fileId2, 'file'),
@@ -60,7 +60,7 @@ describe('Context', () => {
         },
       };
 
-      const context = createFakeContext();
+      const context = createContext();
       const provider = context.getMediaItemProvider(
         'some-id',
         'link',
@@ -91,7 +91,7 @@ describe('Context', () => {
         },
       };
 
-      const context = createFakeContext();
+      const context = createContext();
       const provider = context.getMediaItemProvider(
         'some-id',
         'link',
@@ -138,7 +138,7 @@ describe('Context', () => {
           },
         }));
 
-      const context = createFakeContext();
+      const context = createContext();
       const provider = context.getMediaItemProvider(
         'some-id',
         'link',
@@ -183,7 +183,7 @@ describe('Context', () => {
 
       fromPool.mockClear();
 
-      const context = createFakeContext();
+      const context = createContext();
       const provider = context.getMediaItemProvider(
         'some-id',
         'link',
@@ -209,7 +209,7 @@ describe('Context', () => {
 
   describe('local preview', () => {
     it('should get the local preview after being asigned', () => {
-      const context = createFakeContext();
+      const context = createContext();
 
       expect(context.getLocalPreview('123')).toBeUndefined();
       context.setLocalPreview('123', 'some-preview');
@@ -222,7 +222,7 @@ describe('Context', () => {
   describe('.getFile()', () => {
     it('should fetch the file if it doesnt exist locally', () => {
       return new Promise(resolve => {
-        const context = createFakeContext();
+        const context = createContext();
         const getFile = jest.fn().mockReturnValue({
           data: {
             processingStatus: 'succeeded',
@@ -260,7 +260,7 @@ describe('Context', () => {
       jest.useFakeTimers();
 
       return new Promise(resolve => {
-        const context = createFakeContext();
+        const context = createContext();
         let getFileCalledTimes = 0;
         const getFile = jest.fn().mockImplementation(() => {
           getFileCalledTimes++;
@@ -297,7 +297,7 @@ describe('Context', () => {
     });
 
     it('should pass options down', () => {
-      const context = createFakeContext();
+      const context = createContext();
 
       context.getFile('1', {
         collectionName: 'my-collection',
@@ -311,7 +311,7 @@ describe('Context', () => {
     });
 
     it('should return local file state while file is still uploading', () => {
-      const context = createFakeContext();
+      const context = createContext();
       const deferredFileId = new Promise(_ => {
         // we don't want to resolve this to simulate the file is uploading
       });
@@ -354,7 +354,7 @@ describe('Context', () => {
     });
 
     it('should return file state regardless of the state', () => {
-      const context = createFakeContext();
+      const context = createContext();
       const getFile = jest.fn().mockReturnValue({
         data: {
           processingStatus: 'succeeded',
@@ -398,7 +398,7 @@ describe('Context', () => {
 
   describe('.uploadFile()', () => {
     it('should call media-store uploadFile with given arguments', () => {
-      const context = createFakeContext();
+      const context = createContext();
       const file: UploadableFile = {} as any;
       uploadFileMock.mockImplementation((_, __, callbacks) => {
         callbacks.onProgress(0.1);
@@ -419,7 +419,7 @@ describe('Context', () => {
     });
 
     it('should call subscription error when upload is cancelled', () => {
-      const context = createFakeContext();
+      const context = createContext();
       const getFile = jest.fn().mockReturnValue({
         data: {
           processingStatus: 'succeeded',
@@ -468,7 +468,7 @@ describe('Context', () => {
     });
 
     it('should emit file preview when file is a Blob', () => {
-      const context = createFakeContext();
+      const context = createContext();
       const getFile = jest.fn().mockReturnValue({
         data: {
           processingStatus: 'succeeded',
@@ -505,7 +505,7 @@ describe('Context', () => {
       });
     });
     it('should pass right mimeType when file is a Blob', () => {
-      const context = createFakeContext();
+      const context = createContext();
       const getFile = jest.fn().mockReturnValue({
         data: {
           processingStatus: 'succeeded',

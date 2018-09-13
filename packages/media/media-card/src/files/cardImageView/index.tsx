@@ -58,10 +58,14 @@ export class FileCardImageView extends Component<FileCardImageViewProps, {}> {
   }
 
   private getCardContents = (): Array<JSX.Element> | JSX.Element => {
-    const { error, status } = this.props;
+    const { status } = this.props;
 
-    if (error) {
+    if (status === 'error') {
       return this.getErrorContents();
+    }
+
+    if (status === 'failed') {
+      return this.getFailedContents();
     }
 
     if (status === 'uploading') {
@@ -90,6 +94,23 @@ export class FileCardImageView extends Component<FileCardImageViewProps, {}> {
           mediaType={mediaType}
           error={error}
           onRetry={onRetry}
+          actions={actions}
+          subtitle={fileSize}
+        />
+      </>
+    );
+  };
+
+  private getFailedContents = () => {
+    const { mediaName, mediaType, actions, fileSize } = this.props;
+
+    return (
+      <>
+        <div className="wrapper" />
+        <CardOverlay
+          persistent={true}
+          mediaName={mediaName}
+          mediaType={mediaType}
           actions={actions}
           subtitle={fileSize}
         />

@@ -8,14 +8,16 @@ import {
   FileDetails,
 } from '@atlaskit/media-core';
 import { AnalyticsContext } from '@atlaskit/analytics-next';
+import DownloadIcon from '@atlaskit/icon/glyph/download';
 import { Subscription } from 'rxjs';
 import {
   SharedCardProps,
   CardEventProps,
   CardAnalyticsContext,
   CardStatus,
+  CardAction,
 } from '../..';
-import { Identifier, isPreviewableType } from '../domain';
+import { FileIdentifier, Identifier, isPreviewableType } from '../domain';
 import { CardView } from '../cardView';
 import { LazyContent } from '../../utils/lazyContent';
 import { getBaseAnalyticsContext } from '../../utils/analyticsUtils';
@@ -191,6 +193,9 @@ export class Card extends Component<CardProps, CardState> {
               }
               this.notifyStateChange({ status: 'complete', metadata });
               break;
+            case 'failed':
+              this.notifyStateChange({ status: 'failed', metadata });
+              break;
             case 'error':
               this.notifyStateChange({ status: 'error' });
           }
@@ -218,6 +223,10 @@ export class Card extends Component<CardProps, CardState> {
     this.subscribe(identifier, context);
   };
 
+  private isFile(identifier: Identifier): identifier is FileIdentifier {
+    return identifier.mediaItemType === 'file';
+  }
+
   get analyticsContext(): CardAnalyticsContext {
     const { identifier } = this.props;
     const id = isUrlPreviewIdentifier(identifier)
@@ -232,11 +241,7 @@ export class Card extends Component<CardProps, CardState> {
     const { status, metadata } = this.state;
     const { identifier } = this.props;
 
-    if (
-      status === 'complete' &&
-      identifier.mediaItemType === 'file' &&
-      metadata
-    ) {
+    if (status === 'complete' && this.isFile(identifier) && metadata) {
       if (!(metadata as FileDetails).size) {
         return 'processing';
       }
@@ -245,13 +250,34 @@ export class Card extends Component<CardProps, CardState> {
     return status;
   }
 
+  get actions(): CardAction[] {
+    const { actions = [], identifier } = this.props;
+    const { status } = this.state;
+    if (this.isFile(identifier) && status === 'failed') {
+      actions.push({
+        label: 'Download',
+        icon: <DownloadIcon label="Download" />,
+        handler: () => {
+          if (typeof identifier.id === 'string') {
+            this.props.context.file.downloadBinary(identifier.id);
+          } else {
+            identifier.id.then(id =>
+              this.props.context.file.downloadBinary(id),
+            );
+          }
+        },
+      });
+    }
+
+    return actions;
+  }
+
   render() {
     const {
       isLazy,
       appearance,
       resizeMode,
       dimensions,
-      actions,
       selectable,
       selected,
       onClick,
@@ -261,7 +287,7 @@ export class Card extends Component<CardProps, CardState> {
       identifier,
     } = this.props;
     const { progress, metadata, dataURI } = this.state;
-    const { analyticsContext, onRetry, status } = this;
+    const { analyticsContext, onRetry, status, actions } = this;
     const card = (
       <AnalyticsContext data={analyticsContext}>
         <CardView
