@@ -69,7 +69,7 @@ const mapJiraItemToResultV2 = (item: JiraItemV2): JiraObjectResult => {
 
 const mapJiraItemToResultV1 = (item: JiraItemV1): JiraObjectResult => {
   return {
-    resultId: `search- + ${item.key}`,
+    resultId: item.key,
     avatarUrl: item.fields.issuetype.iconUrl,
     name: item.fields.summary,
     href: `/browse/${item.key}`,

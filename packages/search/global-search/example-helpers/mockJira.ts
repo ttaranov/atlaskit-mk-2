@@ -33,8 +33,10 @@ const getFilterUrl = () =>
 const randomIconUrl = () =>
   `https://placeimg.com/64/64/arch?bustCache=${Math.random()}`;
 
+const getRandomIssueType = () => pickRandom(['task', 'story', 'bug', 'epic']);
+
 export const generateRandomJiraIssue = (): JiraItem => {
-  const issueTypeName = pickRandom(['task', 'story', 'bug', 'epic']);
+  const issueTypeName = getRandomIssueType();
   const key = randomIssueKey();
   return {
     id: uuid(),
@@ -105,3 +107,16 @@ export const generateRandomJiraFilter = (): JiraItem => {
     },
   };
 };
+
+export const generateRandomIssueV1 = (): JiraItem => ({
+  key: randomIssueKey(),
+  fields: {
+    summary: getMockCatchPhrase(),
+    project: {
+      name: getMockAbbreviation(),
+    },
+    issuetype: {
+      iconUrl: getIssueAvatar(getRandomIssueType()),
+    },
+  },
+});
