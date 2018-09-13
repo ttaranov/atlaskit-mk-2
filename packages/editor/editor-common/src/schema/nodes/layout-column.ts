@@ -1,7 +1,7 @@
 import { NodeSpec } from 'prosemirror-model';
 
 export const layoutColumn: NodeSpec = {
-  content: 'mediaSingle | codeBlock | (paragraph)+',
+  content: 'paragraph | mediaSingle | codeBlock | (paragraph)+',
   isolating: true,
   parseDOM: [
     {
@@ -13,8 +13,12 @@ export const layoutColumn: NodeSpec = {
       tag: 'div[data-layout-column]',
     },
   ],
-  toDOM() {
-    const attrs = { 'data-layout-column': 'true' };
+
+  toDOM(node) {
+    const attrs = {
+      'data-layout-column': 'true',
+    };
+
     return ['div', attrs, 0];
   },
 };

@@ -17,7 +17,20 @@ export const setActiveLayoutType = (layoutType: string): Command => (
 ) => {
   const { pos } = pluginKey.getState(state) as LayoutState;
   if (pos !== null) {
-    dispatch(state.tr.setNodeMarkup(pos, undefined, { layoutType }));
+    const resolvedPos = state.doc.resolve(pos);
+    const { attrs } = resolvedPos.nodeAfter || { attrs: {} };
+    dispatch(state.tr.setNodeMarkup(pos, undefined, { ...attrs, layoutType }));
+    return true;
+  }
+  return false;
+};
+
+export const setSizeTo = (size: number): Command => (state, dispatch) => {
+  const { pos } = pluginKey.getState(state) as LayoutState;
+  if (pos !== null) {
+    const resolvedPos = state.doc.resolve(pos);
+    const { attrs } = resolvedPos.nodeAfter || { attrs: {} };
+    dispatch(state.tr.setNodeMarkup(pos, undefined, { ...attrs, size }));
     return true;
   }
   return false;

@@ -6,6 +6,16 @@ const columnLayoutSharedStyle = css`
   [data-layout-type] {
     display: flex;
     flex-direction: row;
+
+    &:after {
+      content: ' ';
+      display: table;
+    }
+
+    &:after {
+      clear: both;
+    }
+
     & > * {
       flex: 1;
     }
