@@ -1,3 +1,5 @@
+import { WsMetadata } from '../wsMessageData';
+
 export interface RemoteUploadStartPayload {
   uploadId: string;
 }
@@ -18,10 +20,16 @@ export interface RemoteUploadFailPayload {
   description: string;
 }
 
+export interface NotifyMetadataPayload {
+  uploadId: string;
+  metadata: WsMetadata;
+}
+
 export interface WsUploadEvents {
   RemoteUploadStart: RemoteUploadStartPayload;
   RemoteUploadProgress: RemoteUploadProgressPayload;
   RemoteUploadEnd: RemoteUploadEndPayload;
+  NotifyMetadata: NotifyMetadataPayload;
   RemoteUploadFail: RemoteUploadFailPayload;
 }
 

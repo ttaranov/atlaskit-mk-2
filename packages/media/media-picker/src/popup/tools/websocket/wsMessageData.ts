@@ -17,6 +17,7 @@ export interface WsUploadMessageData {
     | 'RemoteUploadStart'
     | 'RemoteUploadProgress'
     | 'RemoteUploadEnd'
+    | 'NotifyMetadata'
     | 'Error';
   uploadId: string;
   // Alternative backend schema for error activities
@@ -54,6 +55,24 @@ export interface WsRemoteUploadEndData extends WsUploadMessageData {
   fileId: string;
 }
 
+export type FetchFileArtifactMetadata = {
+  url?: string;
+  width?: number;
+  height?: number;
+  size?: number;
+};
+
+export interface WsMetadata {
+  pending: boolean;
+  preview?: FetchFileArtifactMetadata;
+  original?: FetchFileArtifactMetadata;
+}
+
+export interface WsNotifyMetadata extends WsUploadMessageData {
+  type: 'NotifyMetadata';
+  metadata: WsMetadata;
+}
+
 export type WsMessageData = WsUploadMessageData | WsErrorData;
 
 export const isRemoteUploadStartData = (
@@ -82,6 +101,12 @@ export const isRemoteUploadErrorData = (
   data: WsUploadMessageData,
 ): data is WsRemoteUploadFailData => {
   return isErrorData(data) && data.error === 'RemoteUploadFail';
+};
+
+export const isNotifyMetadata = (
+  data: WsUploadMessageData,
+): data is WsNotifyMetadata => {
+  return data.type === 'NotifyMetadata';
 };
 
 export const isServerError = (
