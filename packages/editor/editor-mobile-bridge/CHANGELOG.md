@@ -1,5 +1,8 @@
 # @atlaskit/editor-mobile-bridge
 
+## 3.0.11
+- [patch] Fixing the android bridge change [6d5e0a9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d5e0a9)
+
 ## 3.0.10
 - [patch] Fixing the scroll after setting content on Mobile [0a03e2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0a03e2d)
 
