@@ -8,7 +8,6 @@ const insertMenu = '[aria-label="Open or close insert block dropdown"]';
 const dateMenu = 'span=Date';
 const calendar = '[aria-label="calendar"]';
 const dateView = 'span.dateView-content-wrap';
-const popup = '[aria-label="Popup"]';
 
 // https://product-fabric.atlassian.net/browse/ED-4531
 BrowserTestCase(

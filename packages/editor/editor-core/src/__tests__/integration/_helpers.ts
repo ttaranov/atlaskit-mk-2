@@ -55,7 +55,7 @@ export const setupMediaMocksProviders = async browser => {
   await browser.click('.reloadEditorButton');
 };
 
-export const insertMedia = async (browser, filenames) => {
+export const insertMedia = async (browser, ...filenames) => {
   const openMediaPopup = '[aria-label="Insert files and images"]';
   const insertMediaButton = '.e2e-insert-button';
 
