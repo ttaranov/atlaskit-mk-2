@@ -269,7 +269,7 @@ export class Card extends Component<CardProps, CardState> {
     const { actions = [], identifier } = this.props;
     const { status } = this.state;
     if (this.isFile(identifier) && status === 'failed') {
-      actions.push({
+      actions.unshift({
         label: 'Download',
         icon: <DownloadIcon label="Download" />,
         handler: async () =>

@@ -17,9 +17,8 @@ import {
   noMetadataFileId,
   createUploadContext,
 } from '@atlaskit/media-test-helpers';
-import AddonIcon from '@atlaskit/icon/glyph/addon';
 import Button from '@atlaskit/button';
-import { Card, CardAction, FileIdentifier, OnLoadingChangeState } from '../src';
+import { Card, FileIdentifier, OnLoadingChangeState } from '../src';
 import { UploadController, FileState } from '@atlaskit/media-core';
 import { Observable } from 'rxjs';
 import {
@@ -67,13 +66,6 @@ class Example extends Component<ComponentProps, ComponentState> {
         mediaItemType: 'file',
         collectionName: defaultCollectionName,
       };
-      const fakeAction: CardAction = {
-        label: 'blah',
-        icon: <AddonIcon label={'blah'} />,
-        handler: () => {
-          console.log('blah');
-        },
-      };
       return (
         <CardWrapper key={id}>
           <div>
@@ -81,7 +73,6 @@ class Example extends Component<ComponentProps, ComponentState> {
               context={context}
               identifier={identifier}
               onLoadingChange={this.updateCardState(id)}
-              actions={[fakeAction]}
             />
           </div>
           {this.renderCardState(state)}
