@@ -27,9 +27,15 @@ describe(name, () => {
     it('should call onchange on change', () => {
       const myMock = jest.fn();
       const cb = mountCheckbox({ isChecked: false, onChange: myMock });
-      cb.find(Checkbox).simulate('change', { target: { checked: true } });
+      cb.find('input').simulate('change', { target: { checked: true } });
       expect(cb.find('Checkbox').prop('isChecked')).toBe(false);
       expect(myMock.mock.calls.length).toBe(1);
+    });
+    it('should call onchange once', () => {
+      const spy = jest.fn();
+      const cb = mount(<Checkbox onChange={spy} />);
+      cb.find('input').simulate('change');
+      expect(spy).toHaveBeenCalledTimes(1);
     });
     it('should show indeterminate icon when indeterminate', () => {
       const cb = mount(
