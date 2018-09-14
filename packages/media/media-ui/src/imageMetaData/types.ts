@@ -11,7 +11,6 @@ export type ImageMetaData = {
 
 export type ImageInfo = {
   scaleFactor: number;
-  orientation: number;
   width: number;
   height: number;
 };
@@ -19,14 +18,15 @@ export type ImageInfo = {
 export enum ImageType {
   JPEG = 'image/jpeg',
   PNG = 'image/png',
-};
+}
 
 export enum SupportedImageMetaTag {
   XResolution = 'XResolution',
   YResolution = 'YResolution',
   Orientation = 'Orientation',
-};
+}
 
+// https://www.impulseadventure.com/photo/exif-orientation.html
 export const OrientationTransforms: { [key: number]: string } = {
   1: '',
   2: 'rotateY(180deg)',

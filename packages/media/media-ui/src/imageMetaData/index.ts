@@ -1,6 +1,6 @@
 import * as EXIF from 'exif-js';
 import * as pngChunksExtract from 'png-chunks-extract';
-import { fileToDataURI } from '../../../media-avatar-picker/src/util';
+import { fileToDataURICached } from '../util';
 import {
   ImageInfo,
   ImageMetaData,
@@ -18,43 +18,29 @@ const DPI_WEB_BASELINE = 72;
 export { OrientationTransforms } from './types';
 
 /**
- * return image dimensions plus scaleFactor and orientation metadata (only supports JPEG + PNG)
+ * return image dimensions plus scaleFactor metadata (only supports JPEG + PNG)
  * @param file - the image file
- * @param src - optional, though a base64Uri is required to get image dimensions and parse Exif tags, if its passed it won't be created
  */
-export async function getImageInfo(
-  file: File,
-  src?: string,
-): Promise<ImageInfo | null> {
-  return readImageMetaData(file, src).then((metadata: ImageMetaData | null) => {
-    if (!metadata) {
-      return null;
-    }
-    const { width, height, tags } = metadata;
-    // scaleFactor: default to 1
-    let scaleFactor = 1;
-    // orientation: default to 1
-    let orientation = 1;
-    let scaleFactorFromFilename = getScaleFactorFromFile(file);
-    if (scaleFactorFromFilename) {
-      // override with filename convention (eg. filename@2x.png)
-      scaleFactor = scaleFactorFromFilename;
-    } else if (tags) {
-      scaleFactor =
-        getMetaTagNumericValue(tags, XResolution, DPI_WEB_BASELINE) /
-        DPI_WEB_BASELINE;
-    }
-    if (tags) {
-      // take orientation from file
-      orientation = getMetaTagNumericValue(tags, Orientation, 1);
-    }
-    return {
-      scaleFactor,
-      orientation,
-      width,
-      height,
-    };
-  });
+export async function getImageInfo(file: File): Promise<ImageInfo | null> {
+  const metadata = await readImageMetaData(file);
+  if (!metadata) {
+    return null;
+  }
+  const { width, height, tags } = metadata;
+  let scaleFactor = 1;
+  let scaleFactorFromFilename = getScaleFactorFromFile(file);
+  if (scaleFactorFromFilename !== null) {
+    scaleFactor = scaleFactorFromFilename;
+  } else if (tags) {
+    scaleFactor =
+      getMetaTagNumericValue(tags, XResolution, DPI_WEB_BASELINE) /
+      DPI_WEB_BASELINE;
+  }
+  return {
+    scaleFactor,
+    width,
+    height,
+  };
 }
 
 /**
@@ -82,7 +68,10 @@ export function getMetaTagNumericValue(
   defaultValue: number,
 ): number {
   try {
-    return parseFloat(tags[key]);
+    const num = parseFloat(tags[key]);
+    if (!isNaN(num)) {
+      return num;
+    }
   } catch (e) {
     //
   }
@@ -93,7 +82,7 @@ export function getMetaTagNumericValue(
  * get the DPI info from the file, if it uses a filename convention then that has precedence over metatags
  * @param file - the image file
  */
-export function getScaleFactorFromFile(file: File): number {
+export function getScaleFactorFromFile(file: File): number | null {
   try {
     // filenames with scale ratio in name take precedence - eg. filename@2x.png
     const match = file.name.trim().match(/@([0-9]+)x\.[a-z]{3}$/);
@@ -103,25 +92,17 @@ export function getScaleFactorFromFile(file: File): number {
   } catch (e) {
     // parse problem? unit tests should check this
   }
-  return 0;
+  return null;
 }
 
 /**
  * return image dimensions plus any available metatags (only supports JPEG + PNG)
  * @param file - the image file
- * @param src - optional, though a base64Uri is required to get image dimensions and parse Exif tags, if its passed it won't be created
  */
 export async function readImageMetaData(
   file: File,
-  src?: string,
 ): Promise<ImageMetaData | null> {
-  // this method returns dimensions, and metadata.
-  // loading an image is required to give dimensions, but also by the JPG Exif parsing method below.
-  if (!src) {
-    // we need src as we want to load an image to get dimensions, but also give to Exif parsing if required
-    src = await fileToDataURI(file);
-  }
-
+  const src = await fileToDataURICached(file);
   const type = file.type;
   let img;
   try {
@@ -137,15 +118,11 @@ export async function readImageMetaData(
     tags: null,
   };
   if (type === ImageType.PNG) {
-    return readPNGXMPMetaData(file).then(xmpMetaData => {
-      data.tags = parseXMPMetaData(xmpMetaData);
-      return data;
-    });
+    const xmpMetaData = await readPNGXMPMetaData(file);
+    data.tags = parseXMPMetaData(xmpMetaData);
   } else if (file.type === ImageType.JPEG) {
-    return readJPEGExifMetaData(img).then(tags => {
-      data.tags = tags;
-      return data;
-    });
+    const tags = await readJPEGExifMetaData(img);
+    data.tags = tags;
   }
   return data;
 }
@@ -153,11 +130,9 @@ export async function readImageMetaData(
 /**
  * return image metatags (only supports JPEG + PNG)
  * @param file - the image file
- * @param src - optional, though a base64Uri is required to get image dimensions and parse Exif tags, if its passed it won't be created
  */
 export async function readImageMetaTags(
   file: File,
-  src?: string,
 ): Promise<ImageMetaDataTags | null> {
   const type = file.type;
   if (type === ImageType.PNG) {
@@ -166,9 +141,7 @@ export async function readImageMetaTags(
     });
   } else if (file.type === ImageType.JPEG) {
     try {
-      if (!src) {
-        src = await fileToDataURI(file);
-      }
+      const src = await fileToDataURICached(file);
       const img = await loadImage(src);
       return readJPEGExifMetaData(img);
     } catch (e) {
@@ -239,7 +212,8 @@ export function fileToArrayBuffer(file: File): Promise<Uint8Array> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.addEventListener('loadend', () => {
-      resolve(new Uint8Array(reader.result as ArrayBuffer));
+      const array = new Uint8Array(reader.result as ArrayBuffer);
+      resolve(array);
     });
     reader.addEventListener('error', reject);
     reader.readAsArrayBuffer(file);

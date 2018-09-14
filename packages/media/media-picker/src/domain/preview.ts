@@ -7,7 +7,6 @@ export type ImagePreview = NonImagePreview & {
     readonly height: number;
   };
   readonly scaleFactor: number;
-  readonly orientation: number;
 };
 export type Preview = NonImagePreview | ImagePreview;
 export const isImagePreview = (preview: Preview): preview is ImagePreview =>
