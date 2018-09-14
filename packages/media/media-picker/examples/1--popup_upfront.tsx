@@ -34,9 +34,9 @@ const popup = MediaPicker('popup', context, {
 });
 
 popup.on('upload-preview-update', (event: UploadPreviewUpdateEventPayload) => {
-  const { file } = event;
+  const { file, preview } = event;
 
-  console.log('upload-preview-update', file);
+  console.log('upload-preview-update', file, preview);
 });
 
 popup.show();

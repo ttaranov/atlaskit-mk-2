@@ -13,7 +13,7 @@ export default function(eventEmitter: PopupUploadEventEmitter): Middleware {
   return () => (next: Dispatch<State>) => action => {
     if (isSendUploadEventAction(action)) {
       const { event, uploadId } = action.payload;
-      console.log('middleware', action);
+
       switch (event.name) {
         case 'upload-status-update': {
           const file = copyMediaFileForUpload(event.data.file, uploadId);
@@ -22,7 +22,6 @@ export default function(eventEmitter: PopupUploadEventEmitter): Middleware {
         }
         case 'upload-preview-update': {
           const { preview } = event.data;
-          console.log('middleware upload-preview-update', preview);
           const file = copyMediaFileForUpload(event.data.file, uploadId);
           eventEmitter.emitUploadPreviewUpdate(file, preview);
           break;

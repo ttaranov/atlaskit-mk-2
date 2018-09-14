@@ -201,11 +201,9 @@ export const importFilesFromRemoteService = (
     // We asociate the temporary file.id with the uploadId
     store.dispatch(setUpfrontIdDeferred(uploadId, resolver, rejecter));
   }
-  // console.log('new RemoteUploadActivity', uploadId)
   const uploadActivity = new RemoteUploadActivity(
     uploadId,
     (event, payload) => {
-      // console.log('activity dispatch', event, payload)
       // TODO figure out the difference between this uploadId and the last MSW-405
       const { uploadId: newUploadId } = payload;
       const newFile: MediaFile = {
@@ -221,20 +219,21 @@ export const importFilesFromRemoteService = (
             width: metadata.width,
             height: metadata.height,
           },
-          src: '',
+          src: metadata.url!,
         };
-        // console.log(uploadId, newUploadId, preview)
-        sendUploadEvent({
-          event: {
-            name: 'upload-preview-update',
-            data: {
-              file,
-              // file: newFile,
-              preview,
+        store.dispatch(
+          sendUploadEvent({
+            event: {
+              name: 'upload-preview-update',
+              data: {
+                file,
+                // file: newFile,
+                preview,
+              },
             },
-          },
-          uploadId,
-        });
+            uploadId,
+          }),
+        );
       }
 
       store.dispatch(handleCloudFetchingEvent(newFile, event, payload));
