@@ -36,10 +36,6 @@ export type ExposureEvent = {
   };
 };
 
-export type AnalyticsClient = {
-  sendTrackEvent: (event: ExposureEvent) => void;
-};
-
 export interface FlagConstructor {
   new (
     flagKey: string,
