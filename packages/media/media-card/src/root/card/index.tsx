@@ -268,15 +268,8 @@ export class Card extends Component<CardProps, CardState> {
       actions.push({
         label: 'Download',
         icon: <DownloadIcon label="Download" />,
-        handler: () => {
-          if (typeof identifier.id === 'string') {
-            this.props.context.file.downloadBinary(identifier.id);
-          } else {
-            identifier.id.then(id =>
-              this.props.context.file.downloadBinary(id),
-            );
-          }
-        },
+        handler: async () =>
+          this.props.context.file.downloadBinary(await identifier.id),
       });
     }
 
