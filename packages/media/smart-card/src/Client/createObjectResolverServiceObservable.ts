@@ -1,21 +1,14 @@
 import { Observable } from 'rxjs/Rx';
 import { of } from 'rxjs/observable/of';
 import { merge } from 'rxjs/observable/merge';
-import { Subject } from 'rxjs/Subject';
-import { Command, ObjectState, AuthService, ObjectStatus } from './types';
+import { ObjectState, AuthService, ObjectStatus } from './types';
 import fetch$ from './fetch';
 import {
-  startWith,
-  filter,
-  flatMap,
   map,
-  tap,
   publishReplay,
   refCount,
-  catchError,
   onErrorResumeNext,
 } from 'rxjs/operators';
-import { delay } from 'rxjs/operators/delay';
 
 export type RemoteResourceAuthConfig = {
   key: string;
