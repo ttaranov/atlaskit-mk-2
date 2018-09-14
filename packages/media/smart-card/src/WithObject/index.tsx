@@ -42,20 +42,18 @@ class InnerWithObject extends React.Component<
 
   subscribe() {
     const { client, url } = this.props;
-    const subscription = client.get(url).subscribe(state =>
-      this.setState({
-        state,
-      }),
-    );
-
-    this.subscription = subscription;
+    this.subscription = client
+      .get(url)
+      .subscribe(state => this.setState({ state }));
   }
 
   reload = () => {
     const { client } = this.props;
     const { state } = this.state;
     if (state && state.definitionId) {
-      client.reload(state.definitionId);
+      this.subscription = client
+        .get(this.props.url, state.definitionId)
+        .subscribe(state => this.setState({ state }));
     }
   };
 
