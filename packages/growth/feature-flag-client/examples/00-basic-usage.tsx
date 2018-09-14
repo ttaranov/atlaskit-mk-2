@@ -1,14 +1,12 @@
 import * as React from 'react';
 import FeatureFlagClient from '../src/index';
 
-const myAnalyticsClient = {
-  sendTrackEvent(event) {
-    console.log('Sending exposure event', event);
-  },
+const myAnalyticsHandler = event => {
+  console.log('Sending exposure event', event);
 };
 
 const client = new FeatureFlagClient({
-  analyticsClient: myAnalyticsClient,
+  analyticsHandler: myAnalyticsHandler,
   flags: {
     'my.experiment': {
       value: 'experiment',
