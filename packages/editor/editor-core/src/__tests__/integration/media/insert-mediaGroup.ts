@@ -10,7 +10,7 @@ import {
 } from '../_helpers';
 import { sleep } from '@atlaskit/editor-test-helpers';
 
-[comment, message].forEach(editor => {
+[comment].forEach(editor => {
   BrowserTestCase(
     `Inserts a media group on ${editor.name}`,
     { skip: ['edge', 'ie', 'safari'] },

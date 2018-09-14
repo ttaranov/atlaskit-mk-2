@@ -13,6 +13,7 @@ DirectoryWatcher.prototype.setDirectory = function(
   initial,
   type,
 ) {
+  if (directoryPath.includes('__snapshots__')) return;
   if (!directoryPath.includes('node_modules')) {
     _oldSetDirectory.call(this, directoryPath, exist, initial, type);
   }

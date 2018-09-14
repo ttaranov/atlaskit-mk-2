@@ -20,11 +20,11 @@ let child;
 const seleniumConfig = {
   drivers: {
     chrome: {
-      version: '2.36',
+      version: '2.41',
       arch: process.arch,
     },
     firefox: {
-      version: '0.19.1',
+      version: '0.21.0',
       arch: process.arch,
     },
   },

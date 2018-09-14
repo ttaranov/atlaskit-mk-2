@@ -55,24 +55,29 @@ export const setupMediaMocksProviders = async browser => {
   await browser.click('.reloadEditorButton');
 };
 
-export const insertMedia = async (browser, indexes = [-1]) => {
+export const insertMedia = async (browser, filenames) => {
   const openMediaPopup = '[aria-label="Insert files and images"]';
   const insertMediaButton = '.e2e-insert-button';
 
   await browser.click(openMediaPopup);
 
   // wait for media item, and select it
-  for (const index of indexes) {
-    const selector =
-      index === -1 ? 'last-of-type' : `nth-of-type(${index + 1})`;
-    const mediaItem = `.e2e-recent-upload-card:${selector} div div`; /* div div selector required for Safari */
-    // give media-picker some seconds to initialise
-    await browser.waitFor(mediaItem, 3000);
-    await browser.click(mediaItem);
+  await browser.waitForSelector('.media-card');
+  if (filenames) {
+    for (const filename of filenames) {
+      const selector = `div=${filename}`;
+      await browser.waitFor(selector, 3000);
+      await browser.click(selector);
+    }
+  } else {
+    const selector = 'div=one.svg';
+    await browser.waitFor(selector, 3000);
+    await browser.click(selector);
   }
-
+  // wait for insert button to show up
+  await sleep(mediaInsertDelay);
   // insert it from the picker dialog
-  await browser.waitForSelector(insertMediaButton, 15000);
+  await browser.waitForSelector(insertMediaButton, 2000);
   await browser.click(insertMediaButton);
 
   // after clicking Insert media, the media plugin needs to upload the file,

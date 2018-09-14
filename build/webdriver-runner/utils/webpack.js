@@ -14,6 +14,7 @@ DirectoryWatcher.prototype.createNestedWatcher = function(
   dirPath /*: string */,
 ) {
   if (dirPath.includes('node_modules')) return;
+  if (dirPath.includes('__snapshots__')) return;
   _oldcreateNestedWatcher.call(this, dirPath);
 };
 
@@ -27,7 +28,7 @@ const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const historyApiFallback = require('connect-history-api-fallback');
 
-const createConfig = require('@atlaskit/webpack-config');
+const createConfig = require('@atlaskit/webpack-config/config');
 const {
   print,
   devServerBanner,
@@ -127,8 +128,6 @@ async function startDevServer() {
     quiet: true,
     noInfo: false,
     overlay: false,
-    hot: false,
-
     // disable hot reload for tests - they don't need it for running
     hot: false,
     inline: false,
@@ -137,14 +136,15 @@ async function startDevServer() {
   return new Promise((resolve, reject) => {
     let hasValidDepGraph = true;
 
-    compiler.plugin('invalid', () => {
+    compiler.hooks.invalid.tap('invalid', (...args) => {
       hasValidDepGraph = false;
+
       console.log(
         'Something has changed and Webpack needs to invalidate dependencies graph',
       );
     });
 
-    compiler.plugin('done', () => {
+    compiler.hooks.done.tap('done', () => {
       hasValidDepGraph = true;
       setTimeout(() => {
         if (hasValidDepGraph) {
