@@ -312,9 +312,9 @@
   version "0.6.2"
   resolved "https://registry.yarnpkg.com/@emotion/unitless/-/unitless-0.6.2.tgz#19a39bda906e5ba45f39f6f7f3512b2740ceab29"
 
-"@lbatchelor/netlify-cli@^1.2.2-patched.7":
-  version "1.2.2-patched.7"
-  resolved "https://registry.yarnpkg.com/@lbatchelor/netlify-cli/-/netlify-cli-1.2.2-patched.7.tgz#341485bc63dc6f0aa89b458f324e634ca673f4fd"
+"@lbatchelor/netlify-cli@^1.2.2-patched.8":
+  version "1.2.2-patched.8"
+  resolved "https://registry.yarnpkg.com/@lbatchelor/netlify-cli/-/netlify-cli-1.2.2-patched.8.tgz#946d072730b13d9b1de0d2f4d708090a5ba7b510"
   dependencies:
     "@lbatchelor/netlify" "1.2.0-patched.7"
     chalk "^0.5.1"
