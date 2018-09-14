@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 5.7.1
+- [patch] remove forward slash that breaks jira requests [08d26e0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/08d26e0)
+
 ## 5.7.0
 - [minor] alpha jira quick search [090b5f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/090b5f7)
 
