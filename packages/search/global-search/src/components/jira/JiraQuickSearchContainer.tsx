@@ -33,7 +33,7 @@ import {
 } from '../SearchResultsUtil';
 import {
   ContentType,
-  JiraObjectResult,
+  JiraResult,
   Result,
   ResultsWithTiming,
   GenericResultMap,
@@ -162,13 +162,10 @@ export class JiraQuickSearchContainer extends React.Component<
       .getRecentItems(sessionId)
       .then(items =>
         items.reduce(
-          (
-            acc: { [key: string]: JiraObjectResult[] },
-            item: JiraObjectResult,
-          ) => {
+          (acc: { [key: string]: JiraResult[] }, item: JiraResult) => {
             if (item.contentType) {
               const section = contentTypeToSection[item.contentType];
-              acc[section] = ([] as JiraObjectResult[]).concat(
+              acc[section] = ([] as JiraResult[]).concat(
                 acc[section] || [],
                 item,
               );

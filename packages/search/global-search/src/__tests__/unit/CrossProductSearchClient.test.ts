@@ -10,7 +10,7 @@ import {
   ResultType,
   ContentType,
   ContainerResult,
-  JiraObjectResult,
+  JiraResult,
 } from '../../model/Result';
 import {
   generateRandomJiraBoard,
@@ -154,7 +154,7 @@ describe('CrossProductSearchClient', () => {
       expect(result.results.get(Scope.JiraIssue)).toHaveLength(1);
       expect(result.experimentId).toBe('123');
 
-      const item = result.results.get(Scope.JiraIssue)![0] as JiraObjectResult;
+      const item = result.results.get(Scope.JiraIssue)![0] as JiraResult;
       expect(item.name).toEqual('summary');
       expect(item.avatarUrl).toEqual('iconUrl');
       expect(item.href).toEqual('/browse/key-1');
