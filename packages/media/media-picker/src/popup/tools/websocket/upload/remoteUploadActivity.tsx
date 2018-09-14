@@ -99,7 +99,7 @@ export class RemoteUploadActivity implements WsActivity {
       this.uploadId &&
       data.data.uploadId === this.uploadId
     );
-    // const containsMetadata = !!data
+
     return shouldProcess || shouldProcessAlt || isNotifyMetadata(data);
   }
 
