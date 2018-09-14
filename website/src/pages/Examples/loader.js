@@ -15,6 +15,7 @@ import {
   sendApdex,
   sendInitialApdex,
   initializeGA,
+  observePerformanceMetrics,
 } from '../../components/Analytics/GoogleAnalyticsListener';
 
 const ErrorMessage = styled.div`
@@ -54,14 +55,17 @@ export default class ExamplesIFrame extends Component<{}, State> {
   }
 
   componentDidMount() {
-    const location = window.location.pathname + window.location.search;
-    window.addEventListener(
-      'load',
-      () => {
-        sendInitialApdex(location);
-      },
-      { once: true },
-    );
+    if (window.self === window.top) {
+      const location = window.location.pathname + window.location.search;
+      window.addEventListener(
+        'load',
+        () => {
+          sendInitialApdex(location);
+        },
+        { once: true },
+      );
+      observePerformanceMetrics(location);
+    }
     initializeGA();
   }
 
