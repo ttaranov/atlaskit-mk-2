@@ -12,6 +12,7 @@ import { CreateAnalyticsEventFn } from '../analytics/types';
 import { SearchScreenCounter, ScreenCounter } from '../../util/ScreenCounter';
 import { JiraClient } from '../../api/JiraClient';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
+import { Scope } from '../../api/types';
 import {
   LinkComponent,
   ReferralContextIdentifiers,
@@ -32,12 +33,17 @@ import {
 } from '../SearchResultsUtil';
 import {
   ContentType,
-  JiraObjectResult,
+  JiraResult,
   Result,
   ResultsWithTiming,
   GenericResultMap,
   JiraResultsMap,
 } from '../../model/Result';
+import {
+  CrossProductSearchClient,
+  EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE,
+} from '../../api/CrossProductSearchClient';
+import performanceNow from '../../util/performance-now';
 
 const AdvancedSearchContainer = styled.div`
   margin-top: ${4 * gridSize()}px;
@@ -49,6 +55,7 @@ export interface Props {
   referralContextIdentifiers?: ReferralContextIdentifiers;
   jiraClient: JiraClient;
   peopleSearchClient: PeopleSearchClient;
+  crossProductSearchClient: CrossProductSearchClient;
 }
 
 const contentTypeToSection = {
@@ -57,6 +64,8 @@ const contentTypeToSection = {
   [ContentType.JiraFilter]: 'filters',
   [ContentType.JiraProject]: 'projects',
 };
+
+const scopes = [Scope.JiraIssue, Scope.JiraBoardProjectFilter];
 
 export interface State {
   selectedAdvancedSearchType: JiraEntityTypes;
@@ -153,13 +162,10 @@ export class JiraQuickSearchContainer extends React.Component<
       .getRecentItems(sessionId)
       .then(items =>
         items.reduce(
-          (
-            acc: { [key: string]: JiraObjectResult[] },
-            item: JiraObjectResult,
-          ) => {
+          (acc: { [key: string]: JiraResult[] }, item: JiraResult) => {
             if (item.contentType) {
               const section = contentTypeToSection[item.contentType];
-              acc[section] = ([] as JiraObjectResult[]).concat(
+              acc[section] = ([] as JiraResult[]).concat(
                 acc[section] || [],
                 item,
               );
@@ -168,12 +174,14 @@ export class JiraQuickSearchContainer extends React.Component<
           },
           {} as GenericResultMap,
         ),
-      );
+      )
+      .then(({ issues, boards, projects, filters }) => ({
+        objects: issues,
+        containers: [...boards, ...filters, ...projects],
+      }));
     return handlePromiseError(jiraRecentItemsPromise, {
-      issues: [],
-      boards: [],
-      filters: [],
-      projects: [],
+      objects: [],
+      containers: [],
     });
   };
 
@@ -193,15 +201,45 @@ export class JiraQuickSearchContainer extends React.Component<
     sessionId: string,
     startTime: number,
   ): Promise<ResultsWithTiming> => {
-    return this.props.peopleSearchClient.search(query).then(people => ({
-      results: {
-        people,
-        issues: [],
-        boards: [],
-        filters: [],
-        projects: [],
-      },
-    }));
+    const crossProductSearchPromise = this.props.crossProductSearchClient.search(
+      query,
+      sessionId,
+      scopes,
+    );
+
+    const searchPeoplePromise = this.props.peopleSearchClient.search(query);
+
+    const mapPromiseToPerformanceTime = p =>
+      p.then(() => performanceNow() - startTime);
+
+    const timingPromise = [crossProductSearchPromise, searchPeoplePromise].map(
+      mapPromiseToPerformanceTime,
+    );
+
+    return Promise.all([
+      crossProductSearchPromise,
+      searchPeoplePromise,
+      ...timingPromise,
+    ]).then(
+      ([
+        xpsearchResults = EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE,
+        peopleResults = [],
+        crossProductSearchElapsedMs,
+        peopleElapsedMs,
+      ]) => ({
+        results: {
+          objects: xpsearchResults.results.get(Scope.JiraIssue) || [],
+          containers:
+            xpsearchResults.results.get(Scope.JiraBoardProjectFilter) || [],
+          people: peopleResults,
+        },
+        timings: {
+          crossProductSearchElapsedMs,
+          peopleElapsedMs,
+        },
+        abTest: xpsearchResults.abTest,
+      }),
+    );
   };
 
   render() {

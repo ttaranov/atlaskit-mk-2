@@ -69,7 +69,7 @@ export type ResultsGroup = {
   titleI18nId: string;
 };
 
-export interface JiraObjectResult extends Result {
+export interface JiraResult extends Result {
   objectKey?: string;
   containerName?: string;
   resultType: ResultType.JiraObjectResult;

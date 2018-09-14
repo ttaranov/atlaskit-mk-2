@@ -6,7 +6,7 @@ import {
 import {
   ResultType,
   AnalyticsType,
-  JiraObjectResult,
+  JiraResult,
   ContentType,
 } from '../model/Result';
 
@@ -19,10 +19,10 @@ export type RecentItemsCounts = {
 };
 
 export const DEFAULT_RECENT_ITEMS_COUNT: RecentItemsCounts = {
-  issues: 10,
-  boards: 3,
-  projects: 3,
-  filters: 3,
+  issues: 8,
+  boards: 2,
+  projects: 2,
+  filters: 2,
 };
 
 /**
@@ -37,7 +37,7 @@ export interface JiraClient {
   getRecentItems(
     searchSessionId: string,
     recentItemCounts?: RecentItemsCounts,
-  ): Promise<JiraObjectResult[]>;
+  ): Promise<JiraResult[]>;
 }
 
 enum JiraResponseGroup {
@@ -92,7 +92,7 @@ export default class JiraClientImpl implements JiraClient {
   public async getRecentItems(
     searchSessionId: string,
     recentItemCounts: RecentItemsCounts = DEFAULT_RECENT_ITEMS_COUNT,
-  ): Promise<JiraObjectResult[]> {
+  ): Promise<JiraResult[]> {
     const options: RequestServiceOptions = {
       path: RECENT_ITEMS_PATH,
       queryParams: {
@@ -116,7 +116,7 @@ export default class JiraClientImpl implements JiraClient {
   private recentItemToResultItem(
     item: JiraRecentItem,
     jiraGroup: JiraResponseGroup,
-  ): JiraObjectResult {
+  ): JiraResult {
     return {
       resultType: ResultType.JiraObjectResult,
       resultId: item.id,

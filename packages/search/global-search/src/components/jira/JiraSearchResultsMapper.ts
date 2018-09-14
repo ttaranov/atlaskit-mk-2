@@ -6,36 +6,29 @@ import {
 } from '../../model/Result';
 import { take } from '../SearchResultsUtil';
 
-const MAX_ISSUES = 8;
-const MAX_PROJECTS = 2;
-const MAX_BOARDS = 2;
-const MAX_FILTERS = 2;
+const MAX_OBJECTS = 8;
+const MAX_CONTAINERS = 6;
 const MAX_PEOPLE = 3;
 
 const DEFAULT_JIRA_RESULTS_MAP: GenericResultMap = {
-  issues: [] as Result[],
-  boards: [],
-  filters: [],
-  projects: [],
-  people: [],
+  objects: [] as Result[],
+  containers: [],
 };
 
-export const sliceResults = (resultsMap: JiraResultsMap) => {
-  const { issues, boards, filters, projects, people } = resultsMap
+export const sliceResults = (resultsMap: GenericResultMap) => {
+  const { objects, containers, people } = resultsMap
     ? resultsMap
     : DEFAULT_JIRA_RESULTS_MAP;
 
-  const [issuesToDisplay, peopleToDisplay, ...pseudoContainers] = [
-    { items: issues, count: MAX_ISSUES },
+  const [objectsToDisplay, peopleToDisplay, containersToDisplay] = [
+    { items: objects, count: MAX_OBJECTS },
     { items: people, count: MAX_PEOPLE },
-    { items: boards, count: MAX_BOARDS },
-    { items: filters, count: MAX_FILTERS },
-    { items: projects, count: MAX_PROJECTS },
+    { items: containers, count: MAX_CONTAINERS },
   ].map(({ items, count }) => take(items, count));
 
   return {
-    issuesToDisplay,
-    pseudoContainers,
+    objectsToDisplay,
+    containersToDisplay,
     peopleToDisplay,
   };
 };
@@ -43,18 +36,20 @@ export const sliceResults = (resultsMap: JiraResultsMap) => {
 export const mapRecentResultsToUIGroups = (
   recentlyViewedObjects: JiraResultsMap,
 ): ResultsGroup[] => {
-  const { issuesToDisplay, peopleToDisplay, pseudoContainers } = sliceResults(
-    recentlyViewedObjects,
-  );
+  const {
+    objectsToDisplay,
+    peopleToDisplay,
+    containersToDisplay,
+  } = sliceResults(recentlyViewedObjects);
 
   return [
     {
-      items: issuesToDisplay,
+      items: objectsToDisplay,
       key: 'issues',
       titleI18nId: 'global-search.jira.recent-issues-heading',
     },
     {
-      items: pseudoContainers.reduce((acc, arr) => [...acc, ...arr]),
+      items: containersToDisplay,
       key: 'containers',
       titleI18nId: 'global-search.jira.recent-containers',
     },
@@ -69,17 +64,19 @@ export const mapRecentResultsToUIGroups = (
 export const mapSearchResultsToUIGroups = (
   searchResultsObjects: JiraResultsMap,
 ): ResultsGroup[] => {
-  const { issuesToDisplay, peopleToDisplay, pseudoContainers } = sliceResults(
-    searchResultsObjects,
-  );
+  const {
+    objectsToDisplay,
+    peopleToDisplay,
+    containersToDisplay,
+  } = sliceResults(searchResultsObjects);
   return [
     {
-      items: issuesToDisplay,
+      items: objectsToDisplay,
       key: 'issues',
       titleI18nId: 'global-search.jira.seach-result-issues-heading',
     },
     {
-      items: pseudoContainers.reduce((acc, arr) => [...acc, ...arr]),
+      items: containersToDisplay,
       key: 'containers',
       titleI18nId: 'global-search.jira.seach-result-containers-heading',
     },

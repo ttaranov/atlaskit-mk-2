@@ -1,9 +1,9 @@
 import {
-  Scope,
   CrossProductSearchClient,
   CrossProductSearchResults,
   EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE,
 } from '../../../api/CrossProductSearchClient';
+import { Scope } from '../../../api/types';
 import { Result } from '../../../model/Result';
 import { makeJiraObjectResult } from '../_test-util';
 
