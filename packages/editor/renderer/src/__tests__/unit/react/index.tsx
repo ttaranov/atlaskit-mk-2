@@ -299,4 +299,98 @@ describe('Renderer - ReactSerializer', () => {
       expect(headings.at(3).prop('headingId')).to.equal(undefined);
     });
   });
+
+  describe('Table: Numbered Columns', () => {
+    const tableDoc = {
+      type: 'doc',
+      version: 1,
+      content: [
+        {
+          type: 'table',
+          attrs: {
+            isNumberColumnEnabled: true,
+          },
+          content: [
+            {
+              type: 'tableRow',
+              content: [
+                {
+                  type: 'tableHeader',
+                  content: [
+                    {
+                      type: 'paragraph',
+                      content: [
+                        {
+                          type: 'text',
+                          text: 'Header content 1',
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  type: 'tableHeader',
+                  content: [
+                    {
+                      type: 'paragraph',
+                      content: [
+                        {
+                          type: 'text',
+                          text: 'Header content 2',
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+            {
+              type: 'tableRow',
+              content: [
+                {
+                  type: 'tableCell',
+                  content: [
+                    {
+                      type: 'paragraph',
+                      content: [
+                        {
+                          type: 'text',
+                          text: 'Body content 1',
+                        },
+                      ],
+                    },
+                  ],
+                },
+                {
+                  type: 'tableCell',
+                  content: [
+                    {
+                      type: 'paragraph',
+                      content: [
+                        {
+                          type: 'text',
+                          text: 'Body content 2',
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+
+    it('should add an extra column for numbered rows', () => {
+      const reactSerializer = ReactSerializer.fromSchema(schema, {});
+      const tableFromSchema = schema.nodeFromJSON(tableDoc);
+      const reactDoc = mount(reactSerializer.serializeFragment(
+        tableFromSchema.content,
+      ) as any);
+
+      expect(reactDoc.find('table').prop('data-number-column')).to.equal(true);
+      expect(reactDoc.find('table[data-number-column]').length).to.equal(1);
+    });
+  });
 });
