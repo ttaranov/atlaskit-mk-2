@@ -175,7 +175,7 @@ export class JiraQuickSearchContainer extends React.Component<
           {} as GenericResultMap,
         ),
       )
-      .then(({ issues, boards, projects, filters }) => ({
+      .then(({ issues = [], boards = [], projects = [], filters = [] }) => ({
         objects: issues,
         containers: [...boards, ...filters, ...projects],
       }));
