@@ -29,7 +29,6 @@
     "deep-object-diff": "^1.1.0",
     "emotion": "^9.1.1",
     "emotion-theming": "^9.0.0",
-    "interpolate-range": "^2.1.0",
     "prop-types": "^15.5.10",
     "raf-schd": "^2.1.0",
     "react-transition-group": "^2.2.1",

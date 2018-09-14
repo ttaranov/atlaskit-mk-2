@@ -9,6 +9,7 @@ import React, {
   type Node,
 } from 'react';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
+import { colors } from '@atlaskit/theme';
 
 import {
   name as packageName,
@@ -31,7 +32,10 @@ import {
 } from './primitives';
 import type { LayoutManagerProps } from './types';
 
-import { GLOBAL_NAV_WIDTH } from '../../common/constants';
+import {
+  CONTENT_NAV_WIDTH_COLLAPSED,
+  GLOBAL_NAV_WIDTH,
+} from '../../common/constants';
 
 type RenderContentNavigationArgs = {
   isDragging: boolean,
@@ -163,13 +167,14 @@ export default class LayoutManager extends Component<
   };
 
   renderContentNavigation = (args: RenderContentNavigationArgs) => {
-    const { isDragging, transitionState, transitionStyle, width } = args;
+    const { transitionState, transitionStyle } = args;
     const {
       containerNavigation,
       navigationUIController,
       productNavigation,
     } = this.props;
     const {
+      isCollapsed,
       isPeekHinting,
       isPeeking,
       isResizing,
@@ -186,17 +191,37 @@ export default class LayoutManager extends Component<
         disableInteraction={shouldDisableInteraction}
         style={transitionStyle}
       >
-        {isVisible ? (
-          <ContentNavigation
-            container={containerNavigation}
-            isDragging={isDragging}
-            isPeekHinting={isPeekHinting}
-            isPeeking={isPeeking}
-            key="product-nav"
-            onOverlayClick={navigationUIController.unPeek}
-            product={productNavigation}
-            transitionState={transitionState}
-            width={width}
+        <ContentNavigation
+          container={containerNavigation}
+          isPeekHinting={isPeekHinting}
+          isPeeking={isPeeking}
+          isVisible={isVisible}
+          key="product-nav"
+          product={productNavigation}
+        />
+        {isCollapsed ? (
+          <div
+            aria-label="Click to expand the navigation"
+            role="button"
+            onClick={navigationUIController.expand}
+            css={{
+              cursor: 'pointer',
+              height: '100%',
+              outline: 0,
+              position: 'absolute',
+              transition: 'background-color 100ms',
+              width: CONTENT_NAV_WIDTH_COLLAPSED,
+
+              ':hover': {
+                backgroundColor: containerNavigation
+                  ? colors.N30
+                  : 'rgba(255, 255, 255, 0.08)',
+              },
+              ':active': {
+                backgroundColor: colors.N40A,
+              },
+            }}
+            tabIndex="0"
           />
         ) : null}
       </ContentNavigationWrapper>
@@ -227,7 +252,7 @@ export default class LayoutManager extends Component<
         }}
       >
         <ResizeTransition
-          from={[0]}
+          from={[CONTENT_NAV_WIDTH_COLLAPSED]}
           in={!isCollapsed}
           properties={['width']}
           to={[productNavWidth]}
