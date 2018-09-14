@@ -1,16 +1,23 @@
 // @flow
-import React from 'react';
-import type { Node } from 'react';
-import { colors, themed } from '@atlaskit/theme';
-import { getBorderRadius } from './utils';
+
+import React, { type Node } from 'react';
+import styled from 'styled-components';
+import { colors, Theme } from '@atlaskit/theme';
+import theme from '../theme';
 import type { AppearanceType, SizeType } from '../types';
 
-// if image is loading, we hide the image so it doesn't obscure the gray loading
-// block until the source image is loaded.
-const getBackgroundColor = ({ isLoading }: { isLoading: boolean }) =>
-  isLoading ? themed({ light: colors.N40, dark: colors.DN50 }) : 'transparent';
+const shapeGroupBackgroundColors = { light: colors.N50, dark: colors.DN100 };
+export const ShapeGroup = styled.g`
+  & circle,
+  & rect {
+    fill: ${props => shapeGroupBackgroundColors[props.mode]};
+  }
+  & g {
+    fill: ${colors.background};
+  }
+`;
 
-type SlotArgs = {|
+type SlotProps = {|
   appearance: AppearanceType,
   isLoading: boolean,
   size: SizeType,
@@ -26,42 +33,54 @@ export const Slot = ({
   backgroundImage,
   label,
   role,
-}: SlotArgs) => (
-  <span
-    style={{
-      backgroundColor: getBackgroundColor({ isLoading }),
-      backgroundImage: backgroundImage ? `url(${backgroundImage})` : null,
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
-      backgroundSize: 'cover',
-      borderRadius: getBorderRadius({ appearance, size }),
-      display: 'flex',
-      flex: '1 1 100%',
-      height: '100%',
-      width: '100%',
-    }}
-    role={role}
-    aria-label={label}
-  />
+}: SlotProps) => (
+  <Theme state={{ appearance, isLoading, size }} values={theme}>
+    {({ backgroundColor, borderRadius }) => (
+      <span
+        style={{
+          backgroundColor,
+          backgroundImage: backgroundImage ? `url(${backgroundImage})` : null,
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: 'cover',
+          borderRadius,
+          display: 'flex',
+          flex: '1 1 100%',
+          height: '100%',
+          width: '100%',
+        }}
+        role={role}
+        aria-label={label}
+      />
+    )}
+  </Theme>
 );
 
-type SvgArgs = {
+type SvgProps = {
   appearance: AppearanceType,
   size: SizeType,
   children: Node,
-  // allowing other props to be spread onto svg
 };
 
-export const Svg = ({ appearance, size, children, ...otherProps }: SvgArgs) => (
-  <svg
-    style={{
-      backgroundColor: getBackgroundColor({ isLoading: false }),
-      borderRadius: getBorderRadius({ appearance, size }),
-      height: '100%',
-      width: '100%',
-    }}
-    {...otherProps}
-  >
-    {children}
-  </svg>
+export const Svg = ({
+  appearance,
+  size,
+  children,
+  ...otherProps
+}: SvgProps) => (
+  <Theme state={{ appearance, size, isLoading: false }} values={theme}>
+    {({ backgroundColor, borderRadius }) => (
+      <svg
+        style={{
+          backgroundColor,
+          borderRadius,
+          height: '100%',
+          width: '100%',
+        }}
+        {...otherProps}
+      >
+        {children}
+      </svg>
+    )}
+  </Theme>
 );

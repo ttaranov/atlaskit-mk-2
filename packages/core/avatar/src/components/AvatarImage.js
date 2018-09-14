@@ -1,19 +1,8 @@
 // @flow
-import React, { PureComponent } from 'react';
-import styled from 'styled-components';
-import { colors, themed } from '@atlaskit/theme';
-import { Slot, Svg } from '../styled/AvatarImage';
-import type { AppearanceType, SizeType } from '../types';
 
-const ShapeGroup = styled.g`
-  & circle,
-  & rect {
-    fill: ${themed({ light: colors.N50, dark: colors.DN100 })};
-  }
-  & g {
-    fill: ${colors.background};
-  }
-`;
+import React, { PureComponent } from 'react';
+import { Slot, ShapeGroup, Svg } from '../styled/AvatarImage';
+import type { AppearanceType, SizeType } from '../types';
 
 export function DefaultImage({
   appearance,
