@@ -1,5 +1,8 @@
 # @atlaskit/form
 
+## 4.0.6
+- [patch] Fix isRequired applied to all fields [cb73e27](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cb73e27)
+
 ## 4.0.5
 - [patch] Updated dependencies [80e1925](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80e1925)
   - @atlaskit/button@9.0.9
