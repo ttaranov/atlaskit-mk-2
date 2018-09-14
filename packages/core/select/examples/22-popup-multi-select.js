@@ -42,10 +42,11 @@ class MultiPopupSelectExample extends Component<*, State> {
       valuesString: values.map(v => v.label).join(', '),
     });
   };
-  toggleConfig = () => {
-    this.setState(state => ({
-      controlShouldRenderValue: !state.controlShouldRenderValue,
-    }));
+  toggleConfig = (event: any) => {
+    console.log('toggled');
+    this.setState({
+      controlShouldRenderValue: event.target.checked,
+    });
   };
 
   render() {
@@ -57,7 +58,13 @@ class MultiPopupSelectExample extends Component<*, State> {
     } = this.state;
     return (
       <div>
-        <div
+        <Checkbox
+          value="show value in search"
+          name="toggleValue"
+          onChange={this.toggleConfig}
+          label="show value in search"
+        />
+        <p
           style={{
             display: 'inline-block',
             maxWidth: '250px',
@@ -76,15 +83,7 @@ class MultiPopupSelectExample extends Component<*, State> {
             }
             isMulti
           />
-        </div>
-        <div>
-          <Checkbox
-            value="show value in search"
-            name="toggleValue"
-            onChange={this.toggleConfig}
-            label="show value in search"
-          />
-        </div>
+        </p>
       </div>
     );
   }
