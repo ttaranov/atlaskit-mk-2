@@ -140,7 +140,9 @@ export class Dropzone extends LocalUploadComponent<
 
   private getDropzoneUI(): HTMLElement {
     if (this.headless) {
-      return document.createElement('DIV');
+      const container = document.createElement('DIV');
+      container.classList.add('headless-dropzone');
+      return container;
     } else {
       return dropzoneUI;
     }
