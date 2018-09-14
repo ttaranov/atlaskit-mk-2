@@ -1,13 +1,13 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { CheckboxStateless } from '../src';
+import Checkbox from '../src/Checkbox';
 
 type State = {
   isChecked: boolean,
   onChangeResult: string,
 };
 
-export default class StatelessExample extends PureComponent<void, State> {
+export default class ControlledExample extends PureComponent<void, State> {
   state = {
     isChecked: false,
     onChangeResult: 'Check & Uncheck to trigger onChange',
@@ -15,8 +15,8 @@ export default class StatelessExample extends PureComponent<void, State> {
   onChange = (event: any) => {
     this.setState({
       isChecked: !this.state.isChecked,
-      onChangeResult: `onChange Event with currentTarget.checked: ${
-        event.currentTarget.checked
+      onChangeResult: `onChange Event with target.checked: ${
+        event.target.checked
       }`,
     });
   };
@@ -24,12 +24,12 @@ export default class StatelessExample extends PureComponent<void, State> {
   render() {
     return (
       <div>
-        <CheckboxStateless
+        <Checkbox
           isChecked={this.state.isChecked}
           onChange={this.onChange}
-          label="Stateless Checkbox"
-          value="Stateless Checkbox"
-          name="stateless-checkbox"
+          label="Controlled Checkbox"
+          value="Controlled Checkbox"
+          name="controlled-checkbox"
         />
 
         <div

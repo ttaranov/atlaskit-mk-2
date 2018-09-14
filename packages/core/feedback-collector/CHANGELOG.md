@@ -1,5 +1,13 @@
 # @atlaskit/feedback-collector
 
+## 0.1.4
+- [patch] Updated dependencies [80e1925](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80e1925)
+  - @atlaskit/button@9.0.9
+  - @atlaskit/form@4.0.5
+  - @atlaskit/modal-dialog@7.0.1
+  - @atlaskit/select@5.0.18
+  - @atlaskit/checkbox@5.0.0
+
 ## 0.1.3
 - [patch] Updated dependencies [d5a043a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5a043a)
   - @atlaskit/form@4.0.3

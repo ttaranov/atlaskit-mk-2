@@ -66,7 +66,7 @@ export const h200 = () => css`
 `;
 
 export const h100 = () => css`
-  ${baseHeading(12, 16)} color: ${colors.subtleHeading};
-  font-weight: normal;
+  ${baseHeading(11, 16)} color: ${colors.subtleHeading};
+  font-weight: 700;
   margin-top: ${gridSize() * 2}px;
 `;

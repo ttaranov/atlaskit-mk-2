@@ -10,8 +10,8 @@ import {
   CrossProductSearchClient,
   CrossProductSearchResults,
   EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE,
-  Scope,
 } from '../../api/CrossProductSearchClient';
+import { Scope } from '../../api/types';
 import { Result } from '../../model/Result';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
 import { SearchScreenCounter, ScreenCounter } from '../../util/ScreenCounter';

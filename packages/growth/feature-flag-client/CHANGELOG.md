@@ -1,5 +1,8 @@
 # @atlaskit/feature-flag-client
 
+## 1.0.0
+- [major] Receive analyticsHandler instead of analyticClient [f082105](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f082105)
+
 ## 0.1.0
 - [minor] Implementing new version of the feature flag client [a7dbdbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a7dbdbb)
 

@@ -22,7 +22,7 @@ declare global {
 }
 
 function getBridgeImpl(): NativeBridge {
-  if (window.mentionsBridge) {
+  if (window.navigator.userAgent.match(/Android/)) {
     return new AndroidBridge();
   } else if (window.webkit) {
     return new IosBridge();
