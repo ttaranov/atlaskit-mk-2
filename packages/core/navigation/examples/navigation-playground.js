@@ -11,7 +11,7 @@ import Page from '@atlaskit/page';
 import Tooltip from '@atlaskit/tooltip';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import { FieldTextStateless } from '@atlaskit/field-text';
-import Checkbox from '@atlaskit/checkbox';
+import { Checkbox } from '@atlaskit/checkbox';
 import { AkSearch } from '@atlaskit/quick-search';
 
 import Navigation, {
@@ -254,10 +254,10 @@ class ExampleNav extends Component<void, State> {
   openCustomDrawer = () => this.setState({ openDrawer: 'customDrawer' });
 
   toggleNavCollapse = () => this.setState({ isOpen: !this.state.isOpen });
-  setCompact = (e: { event: SyntheticEvent<any>, isChecked: boolean }) =>
-    this.setState({ compactItems: e.isChecked });
-  setShowIcon = (e: { event: SyntheticEvent<any>, isChecked: boolean }) =>
-    this.setState({ showIcon: e.isChecked });
+  setCompact = (e: SyntheticInputEvent<HTMLInputElement>) =>
+    this.setState({ compactItems: e.target.checked });
+  setShowIcon = (e: SyntheticInputEvent<HTMLInputElement>) =>
+    this.setState({ showIcon: e.target.checked });
 
   handleResize = (pr: { isOpen: boolean, width: number }) => this.setState(pr);
 

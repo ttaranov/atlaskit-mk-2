@@ -1,6 +1,6 @@
 // @flow
 import React, { Component, Fragment } from 'react';
-import Checkbox from '@atlaskit/checkbox';
+import { Checkbox } from '@atlaskit/checkbox';
 import { CheckboxSelect } from '../src';
 
 // data imported for brevity; equal to the options from Single Select example
