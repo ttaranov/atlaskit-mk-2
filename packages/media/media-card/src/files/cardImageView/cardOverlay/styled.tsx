@@ -23,6 +23,7 @@ import {
 
 export interface OverlayProps {
   hasError?: boolean;
+  noHover?: boolean;
 }
 
 export const TickBox: ComponentClass<
@@ -59,8 +60,8 @@ export const Overlay: ComponentClass<
   transition: 0.3s background ${easeOutCubic}, 0.3s border-color;
   padding: 16px;
 
-  ${({ hasError }: OverlayProps) => {
-    if (hasError) {
+  ${({ hasError, noHover }: OverlayProps) => {
+    if (hasError || noHover) {
       return `
         cursor: default;
 
@@ -71,7 +72,7 @@ export const Overlay: ComponentClass<
     }
 
     return '';
-  }} &:hover, &.active {
+  }} &:hover:not(.noHover), &.active {
     .top-row {
       .title {
         color: ${akColorB400};
@@ -90,7 +91,7 @@ export const Overlay: ComponentClass<
   }
 
   &:not(.persistent) {
-    &:not(.error):hover {
+    &:not(.error):not(.noHover):hover {
       background-color: ${rgba(akColorN900, 0.06)};
     }
 

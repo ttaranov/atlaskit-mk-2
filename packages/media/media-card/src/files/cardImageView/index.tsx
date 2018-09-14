@@ -108,6 +108,7 @@ export class FileCardImageView extends Component<FileCardImageViewProps, {}> {
       <>
         <div className="wrapper" />
         <CardOverlay
+          noHover={true}
           persistent={true}
           mediaName={mediaName}
           mediaType={mediaType}
