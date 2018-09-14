@@ -24,7 +24,6 @@
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/theme": "^6.0.2",
     "babel-runtime": "^6.26.0",
     "react-transition-group": "^2.2.1"
   },
@@ -36,7 +35,7 @@
     "@atlaskit/build-utils": "^2.0.0",
     "@atlaskit/button": "^9.0.8",
     "@atlaskit/docs": "^5.0.6",
-    "@atlaskit/util-shared-styles": "^2.10.3",
+    "@atlaskit/theme": "^6.0.3",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.2",
     "sinon": "^2.2.0"
