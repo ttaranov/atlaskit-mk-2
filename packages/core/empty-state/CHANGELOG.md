@@ -1,5 +1,8 @@
 # @atlaskit/empty-state
 
+## 3.0.8
+- [patch] Moved the atlaskit button, spinner, theme and util-shared-styles to dependencies from peer dependdency [a2d1132](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a2d1132)
+
 ## 3.0.7
 - [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
 
