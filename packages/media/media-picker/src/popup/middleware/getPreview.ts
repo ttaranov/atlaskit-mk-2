@@ -17,12 +17,18 @@ export default function(fetcher: Fetcher): Middleware {
   };
 }
 
-export function getPreview(
+export async function getPreview(
   fetcher: Fetcher,
   store: Store<State>,
   { uploadId, file, collection }: GetPreviewAction,
 ): Promise<SendUploadEventAction> {
   const { userContext } = store.getState();
+  // TODO: try to replace fetcher.getPreview with getImageMetadata + getFileImageURL
+  const metadata = await userContext.getImageMetadata(file.id, {
+    collection,
+  });
+
+  console.log('getPreview', metadata);
 
   return userContext.config
     .authProvider()
