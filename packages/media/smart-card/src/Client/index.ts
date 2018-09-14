@@ -1,9 +1,7 @@
 import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
 import { merge } from 'rxjs/observable/merge';
 import { filter } from 'rxjs/operators/filter';
 import {
-  Command,
   ObjectState,
   ObjectStatus,
   AuthService,
