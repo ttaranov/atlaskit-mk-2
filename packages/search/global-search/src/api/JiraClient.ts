@@ -10,7 +10,7 @@ import {
   ContentType,
 } from '../model/Result';
 
-const RECENT_ITEMS_PATH: string = '/rest/internal/2/productsearch/recent';
+const RECENT_ITEMS_PATH: string = 'rest/internal/2/productsearch/recent';
 export type RecentItemsCounts = {
   issues?: number;
   boards?: number;
