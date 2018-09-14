@@ -1,10 +1,10 @@
 {
-  "name": "@atlaskit/ak-i18n",
+  "name": "@atlaskit/i18n-tools",
   "version": "0.1.0",
   "description": "A tool for extracting, pushing and pulling translation strings from react components",
   "main": "index.js",
   "bin": {
-    "ak-i18n": "index.js"
+    "i18n-tools": "index.js"
   },
   "author": "Atlassian Pty Ltd",
   "license": "Apache-2.0",

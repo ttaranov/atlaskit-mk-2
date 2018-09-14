@@ -8,7 +8,8 @@ const pushCommand = require('./push');
 const pullCommand = require('./pull');
 
 const TRANSIFEX_PROJECT_NAME = 'atlaskit';
-const CLI_DEFAULT_USAGE = '$ ak-i18n <command> --resource=name path/to/package';
+const CLI_DEFAULT_USAGE =
+  '$ i18n-tools <command> --resource=name path/to/package';
 
 async function run() {
   const cli = meow(
@@ -20,21 +21,21 @@ async function run() {
       --resource  Transifex resource name
       --project   Override Transifex project name
                   [Default: ${TRANSIFEX_PROJECT_NAME}]
-      --searchDir Override the default directory that ak-i18n will search in when extracting translation strings (relative to the package you point to)
+      --searchDir Override the default directory that i18n-tools will search in when extracting translation strings (relative to the package you point to)
                   [Default: dist/es2015]
       --cwd       Override the current working directory
                   [Default: process.cwd()]
 
     Examples
-      $ ak-i18n push --resource=global-search packages/search/global-search
-      $ ak-i18n pull --resource=media packages/media/media-card
+      $ i18n-tools push --resource=global-search packages/search/global-search
+      $ i18n-tools pull --resource=media packages/media/media-card
 
-      $ ak-i18n push --resource=core packages/core/avatar --searchDir dist/esm
+      $ i18n-tools push --resource=core packages/core/avatar --searchDir dist/esm
 
     Notes
-      ak-i18n extract will look in dist/es2015 by default, this can be overridden using the searchDir flag.
-      ak-i18n can only extract messages from files that **import** react-intl. That means esm/es2015 only.
-      ak-i18n can only extract messages that use \`defineMessages\`, \`FormattedMessage\` is not supported.
+      i18n-tools extract will look in dist/es2015 by default, this can be overridden using the searchDir flag.
+      i18n-tools can only extract messages from files that **import** react-intl. That means esm/es2015 only.
+      i18n-tools can only extract messages that use \`defineMessages\`, \`FormattedMessage\` is not supported.
   `,
     {
       flags: {
