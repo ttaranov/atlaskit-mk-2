@@ -11,7 +11,7 @@ By using it, exposure events will be fired automatically allowing analysis of im
 import FrontendFeatureFlagClient from '@atlaskit/feature-flag-client';
 
 const client = new FrontendFeatureFlagClient({
-  aanalyticsHandler: myAanalyticsHandler,
+  analyticsHandler: myAnalyticsHandler,
   flags: {
     'my.experiment': {
       value: 'experiment',
