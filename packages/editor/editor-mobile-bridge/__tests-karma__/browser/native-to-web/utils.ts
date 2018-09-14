@@ -1,4 +1,4 @@
-import mobileEditor from '../../../src/mobile-editor-element';
+import mobileEditor from '../../../src/editor/mobile-editor-element';
 import { mount } from 'enzyme';
 import {
   storyMediaProviderFactory,
@@ -8,8 +8,7 @@ import {
 export async function mountEditor() {
   const place = document.body.appendChild(document.createElement('div'));
   const mediaProvider = storyMediaProviderFactory({});
-  const provider = await mediaProvider;
-  await provider.uploadContext;
+  await mediaProvider;
   const editor = mount(mobileEditor({ mediaProvider: mediaProvider }), {
     attachTo: place,
   });

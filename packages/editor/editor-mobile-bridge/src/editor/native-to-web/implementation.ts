@@ -23,8 +23,8 @@ import {
 } from '@atlaskit/editor-core';
 import { JSONTransformer } from '@atlaskit/editor-json-transformer';
 import { MentionDescription } from '@atlaskit/mention';
-import { rejectPromise, resolvePromise } from '../cross-platform-promise';
-import { setBlockType } from '../../../editor-core/src/plugins/block-type/commands';
+import { rejectPromise, resolvePromise } from '../../cross-platform-promise';
+import { setBlockType } from '../../../../editor-core/src/plugins/block-type/commands';
 
 export default class WebBridgeImpl implements NativeToWebBridge {
   textFormattingPluginState: TextFormattingState | null = null;
