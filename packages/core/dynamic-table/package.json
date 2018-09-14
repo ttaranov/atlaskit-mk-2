@@ -27,7 +27,6 @@
     "@atlaskit/pagination": "^7.0.6",
     "@atlaskit/spinner": "^9.0.8",
     "@atlaskit/theme": "^6.0.2",
-    "@atlaskit/util-shared-styles": "^2.10.3",
     "prop-types": "^15.5.10",
     "react-beautiful-dnd": "^9.0.0"
   },
