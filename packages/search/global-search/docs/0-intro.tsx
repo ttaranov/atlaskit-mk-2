@@ -1,4 +1,3 @@
-import React from 'react';
 import { md, code } from '@atlaskit/docs';
 
 export default md`

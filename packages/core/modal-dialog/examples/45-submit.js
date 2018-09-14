@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import Button from '@atlaskit/button';
 import Field from '@atlaskit/field-text';
-import Checkbox from '@atlaskit/checkbox';
+import { Checkbox } from '@atlaskit/checkbox';
 import RadioGroup, { AkRadio } from '@atlaskit/field-radio-group';
 
 import ModalDialog, { ModalFooter, ModalTransition } from '../src';

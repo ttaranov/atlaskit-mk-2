@@ -6,7 +6,7 @@ import AddIcon from '@atlaskit/icon/glyph/add';
 import StarIcon from '@atlaskit/icon/glyph/star';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import Button from '@atlaskit/button';
-import ConfluenceIcon from '@atlaskit/icon/glyph/confluence';
+import { ConfluenceIcon } from '@atlaskit/logo';
 import Lorem from 'react-lorem-component';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import SearchIcon from '@atlaskit/icon/glyph/search';

@@ -5,14 +5,10 @@ import Spinner from '@atlaskit/spinner';
 import { FlagGroup } from '@atlaskit/flag';
 import { FileDetails } from '@atlaskit/media-core';
 import { Card, CardView } from '@atlaskit/media-card';
+import { MediaCollectionItem } from '@atlaskit/media-store';
 import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
 import { fakeContext } from '@atlaskit/media-test-helpers';
-import {
-  State,
-  CollectionItem,
-  SelectedItem,
-  LocalUpload,
-} from '../../../../../domain';
+import { State, SelectedItem, LocalUpload } from '../../../../../domain';
 import {
   mockStore,
   mockState,
@@ -66,7 +62,7 @@ const createConnectedComponent = (state: State, reactContext: {} = {}) => {
 describe('<StatelessUploadView />', () => {
   const getUploadViewElement = (
     isLoading: boolean,
-    recentItems: CollectionItem[] = [],
+    recentItems: MediaCollectionItem[] = [],
     mockStateOverride: Partial<State> = {},
   ) => {
     const state: State = {
@@ -80,7 +76,6 @@ describe('<StatelessUploadView />', () => {
 
     const recents = {
       items: recentItems,
-      nextKey: '',
     };
     const setUpfrontIdDeferred = jest.fn();
 
@@ -119,7 +114,7 @@ describe('<StatelessUploadView />', () => {
   });
 
   it('should render cards and dropzone when there are recent items', () => {
-    const createRecentItem = (occurrenceKey: string) => ({
+    const createRecentItem = (occurrenceKey: string): MediaCollectionItem => ({
       type: 'file',
       id: 'some-file-id',
       insertedAt: 0,
@@ -242,7 +237,7 @@ describe('<UploadView />', () => {
         ...mockState.recents,
         items: [
           {
-            type: 'some-type',
+            type: 'file',
             id: 'some-id',
             insertedAt: 0,
             occurrenceKey: 'some-occurrence-key',
@@ -250,7 +245,7 @@ describe('<UploadView />', () => {
               name: 'some-name',
               size: 100,
             },
-          },
+          } as MediaCollectionItem,
         ],
       },
       view: {

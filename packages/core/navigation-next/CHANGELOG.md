@@ -1,5 +1,17 @@
 # @atlaskit/navigation-next
 
+## 3.12.2
+- [patch] fixing HelpIcon active on children :hover [ae95dad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae95dad)
+
+## 3.12.1
+- [patch] limit page renders [36da70a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36da70a)
+
+## 3.12.0
+- [minor] Export SkeletonContainerView component [b1acba3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1acba3)
+
+## 3.11.4
+- [patch] Adds support for closing switcher on create click [057f006](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/057f006)
+
 ## 3.11.3
 - [patch] Enforcing CONTENT_NAV_WIDTH on the components [d9ae0a9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d9ae0a9)
 

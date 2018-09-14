@@ -124,7 +124,7 @@ class Calendar extends Component<Props, State> {
     const thisMonth = now.getMonth() + 1;
     const thisYear = now.getFullYear();
     this.state = {
-      day: this.props.defaultDay,
+      day: this.props.defaultDay || thisDay,
       disabled: this.props.defaultDisabled,
       selected: this.props.defaultSelected,
       month: this.props.defaultMonth || thisMonth,

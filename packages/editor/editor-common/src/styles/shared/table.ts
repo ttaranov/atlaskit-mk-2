@@ -100,7 +100,7 @@ export const calcTableWidth = (
           ? `${targetWidth}px`
           : `${akEditorWideLayoutWidth}px`;
       } else {
-        return '100%';
+        return `${akEditorWideLayoutWidth}px`;
       }
     default:
       return 'inherit';

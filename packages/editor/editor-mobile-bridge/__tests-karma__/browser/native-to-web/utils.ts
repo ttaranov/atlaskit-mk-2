@@ -8,8 +8,8 @@ import {
 export async function mountEditor() {
   const place = document.body.appendChild(document.createElement('div'));
   const mediaProvider = storyMediaProviderFactory({});
-  await mediaProvider;
-  await mediaProvider.uploadContext;
+  const provider = await mediaProvider;
+  await provider.uploadContext;
   const editor = mount(mobileEditor({ mediaProvider: mediaProvider }), {
     attachTo: place,
   });

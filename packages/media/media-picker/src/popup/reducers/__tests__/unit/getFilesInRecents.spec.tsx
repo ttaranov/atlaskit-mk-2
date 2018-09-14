@@ -4,20 +4,30 @@ import {
   getRecentFilesFailed,
 } from '../../getFilesInRecents';
 import { State } from '../../../domain';
+import { GetFilesInRecentsAction } from '../../../actions/getFilesInRecents';
 
 describe('getFilesInRecents', () => {
-  it('should reset recents files when start the fetching', () => {
-    const state = {} as State;
-    const action = { type: 'GET_FILES_IN_RECENTS' };
+  it('should preserve existing items', () => {
+    const state = {
+      recents: {
+        items: [1],
+      },
+    } as any;
+    const action: GetFilesInRecentsAction = {
+      type: 'GET_FILES_IN_RECENTS',
+    };
     const { recents, view } = getRecentFilesStarted(state, action);
 
     expect(recents).toEqual({
-      items: [],
-      nextKey: '',
+      items: [1],
     });
     expect(view).toEqual(
       expect.objectContaining({
-        isLoading: true,
+        service: {
+          name: 'upload',
+          accountId: '',
+        },
+        path: [],
         hasError: false,
       }),
     );
@@ -28,13 +38,11 @@ describe('getFilesInRecents', () => {
     const action = {
       type: 'GET_FILES_IN_RECENTS_FULLFILLED',
       items: [1, 2],
-      nextKey: 'abc',
     };
     const { recents, view } = getRecentFilesFullfilled(state, action);
 
     expect(recents).toEqual({
       items: [1, 2],
-      nextKey: 'abc',
     });
     expect(view).toEqual(
       expect.objectContaining({

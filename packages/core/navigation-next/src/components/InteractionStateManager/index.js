@@ -11,6 +11,7 @@ export default class InteractionStateManager extends Component<
   state = {
     isActive: false,
     isHover: false,
+    isClicked: false,
   };
 
   onMouseDown = (e: Event) => {
@@ -18,15 +19,28 @@ export default class InteractionStateManager extends Component<
     this.setState({ isActive: true });
   };
 
-  onMouseUp = () => this.setState({ isActive: false });
+  onMouseUp = () => {
+    this.setState({ isActive: false });
+  };
 
   onMouseOver = () => {
-    if (!this.state.isHover) {
+    if (!this.state.isHover && !this.state.isClicked) {
       this.setState({ isHover: true });
+    }
+    if (this.state.isClicked) {
+      this.setState({ isHover: false });
     }
   };
 
-  onMouseLeave = () => this.setState({ isActive: false, isHover: false });
+  onClick = () => this.setState({ isClicked: true });
+
+  onMouseLeave = () => {
+    const newStates =
+      !this.state.isActive && !this.state.isHover
+        ? { isActive: false, isHover: false }
+        : { isActive: false, isHover: false, isClicked: false };
+    this.setState(newStates);
+  };
 
   render() {
     return (
@@ -35,6 +49,7 @@ export default class InteractionStateManager extends Component<
         onMouseOver={this.onMouseOver}
         onMouseLeave={this.onMouseLeave}
         onMouseUp={this.onMouseUp}
+        onClick={this.onClick}
         role="presentation"
       >
         {this.props.children(this.state)}

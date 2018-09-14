@@ -3,11 +3,10 @@
 import React from 'react';
 import Avatar from '@atlaskit/avatar';
 import AddIcon from '@atlaskit/icon/glyph/add';
-import JiraIcon from '@atlaskit/icon/glyph/jira';
 import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import LinkIcon from '@atlaskit/icon/glyph/link';
-import { JiraWordmark as JiraWordmarkLogo } from '@atlaskit/logo';
+import { JiraIcon, JiraWordmark as JiraWordmarkLogo } from '@atlaskit/logo';
 import { Link, Route } from 'react-router-dom';
 
 import { viewReducerUtils } from '../../src';
@@ -33,7 +32,15 @@ export const LinkItem = ({ components: C, to, ...props }: *) => {
 };
 
 export const globalNavPrimaryItems = [
-  { id: 'jira', icon: JiraIcon, label: 'Jira', to: '/', component: Link },
+  {
+    id: 'jira',
+    icon: ({ label }: { label: string }) => (
+      <JiraIcon size="medium" label={label} />
+    ),
+    label: 'Jira',
+    to: '/',
+    component: Link,
+  },
   { id: 'search', icon: SearchIcon },
   { id: 'create', icon: AddIcon },
 ];
