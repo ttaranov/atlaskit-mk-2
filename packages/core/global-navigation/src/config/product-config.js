@@ -54,18 +54,19 @@ const generateAvatar = profileIconUrl => {
   }: {
     className: string,
     onClick: () => void,
-  }) => (
-    <span className={className}>
-      <Avatar
-        borderColor="transparent"
-        src={profileIconUrl}
-        isActive={false}
-        isHover={false}
-        size="small"
-        onClick={onClick}
-      />
-    </span>
-  );
+  }) =>
+    console.log({ profileIconUrl }, 'in product-config') || (
+      <span className={className}>
+        <Avatar
+          borderColor="transparent"
+          src={profileIconUrl}
+          isActive={false}
+          isHover={false}
+          size="small"
+          onClick={onClick}
+        />
+      </span>
+    );
   return GeneratedAvatar;
 };
 type OtherConfig = {

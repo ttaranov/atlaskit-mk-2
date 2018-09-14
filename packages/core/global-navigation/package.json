@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "@atlaskit/analytics-listeners": "^4.0.0",
+    "@atlaskit/button": "^9.0.8",
     "@atlaskit/modal-dialog": "^7.0.0",
     "@atlaskit/section-message": "^1.0.7",
     "react-lorem-component": "^0.12.2"
