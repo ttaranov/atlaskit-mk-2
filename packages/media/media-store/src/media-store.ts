@@ -194,6 +194,16 @@ export class MediaStore {
     }).then(mapResponseToBlob);
   };
 
+  getImageMetadata = (
+    id: string,
+    params?: MediaStoreGetFileImageParams,
+  ): Promise<MediaStoreResponse<ImageMetadata>> => {
+    return this.request(`/file/${id}/image/metadata`, {
+      params,
+      authContext: { collectionName: params && params.collection },
+    }).then(mapResponseToJson);
+  };
+
   appendChunksToUpload(
     uploadId: string,
     body: AppendChunksToUploadRequestBody,
@@ -243,6 +253,19 @@ export class MediaStore {
       body,
     });
   }
+}
+
+export type FetchFileArtifactMetadata = {
+  url?: string;
+  width?: number;
+  height?: number;
+  size?: number;
+};
+
+export interface ImageMetadata {
+  pending: boolean;
+  preview?: FetchFileArtifactMetadata;
+  original?: FetchFileArtifactMetadata;
 }
 
 export interface MediaStoreResponse<Data> {

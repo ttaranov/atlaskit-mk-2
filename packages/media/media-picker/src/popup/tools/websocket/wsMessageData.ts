@@ -1,3 +1,5 @@
+import { Preview } from '../../../domain/preview';
+
 export interface WsErrorData {
   type: 'Error';
   error: 'ServerError' | 'RemoteUploadFail' | 'NoUserFound';
@@ -55,6 +57,7 @@ export interface WsRemoteUploadEndData extends WsUploadMessageData {
   fileId: string;
 }
 
+// TODO: use types from media-store
 export type FetchFileArtifactMetadata = {
   url?: string;
   width?: number;
@@ -119,4 +122,27 @@ export const isNoUserFound = (
   data: WsMessageData,
 ): data is WsNoUserFoundData => {
   return isErrorData(data) && data.error === 'NoUserFound';
+};
+
+// TODO: investigate if we can just rely on ws dimensions or should we keep previous logic
+export const getPreviewFromPayload = (payload: WsNotifyMetadata): Preview => {
+  const { metadata } = payload;
+
+  if (!metadata.original) {
+    return {
+      dimensions: {
+        width: 0,
+        height: 0,
+      },
+      src: '',
+    };
+  }
+
+  return {
+    dimensions: {
+      width: metadata.original.width,
+      height: metadata.original.height,
+    },
+    src: metadata.original.url || '',
+  };
 };
