@@ -9,6 +9,7 @@ import React, {
   type Node,
 } from 'react';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
+import { colors } from '@atlaskit/theme';
 
 import {
   name as packageName,
@@ -203,12 +204,22 @@ export default class LayoutManager extends Component<
             aria-label="Click to expand the navigation"
             role="button"
             onClick={navigationUIController.expand}
-            style={{
+            css={{
               cursor: 'pointer',
               height: '100%',
-              position: 'absolute',
               outline: 0,
+              position: 'absolute',
+              transition: 'background-color 100ms',
               width: CONTENT_NAV_WIDTH_COLLAPSED,
+
+              ':hover': {
+                backgroundColor: containerNavigation
+                  ? colors.N30
+                  : 'rgba(255, 255, 255, 0.08)',
+              },
+              ':active': {
+                backgroundColor: colors.N40A,
+              },
             }}
             tabIndex="0"
           />
