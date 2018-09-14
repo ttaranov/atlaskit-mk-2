@@ -72,7 +72,7 @@ export const Overlay: ComponentClass<
     }
 
     return '';
-  }} &:hover:not(.noHover), &.active {
+  }} &:not(.persistent):hover, &.active {
     .top-row {
       .title {
         color: ${akColorB400};
@@ -85,13 +85,21 @@ export const Overlay: ComponentClass<
       }
     }
   }
+  
+  &.noHover:hover {
+   .top-row {
+     .title {
+        color: ${akColorN800};
+     }
+   }
+  }
 
   .file-type-icon {
     display: block;
   }
 
   &:not(.persistent) {
-    &:not(.error):not(.noHover):hover {
+    &:not(.error, .noHover):hover {
       background-color: ${rgba(akColorN900, 0.06)};
     }
 
