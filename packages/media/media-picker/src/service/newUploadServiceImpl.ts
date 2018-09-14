@@ -242,12 +242,14 @@ export class NewUploadServiceImpl implements UploadService {
       const { size } = file;
       const mediaType = this.getMediaTypeFromFile(file);
       if (size < MAX_FILE_SIZE_FOR_PREVIEW && mediaType === 'image') {
-        getPreviewFromBlob(file, mediaType).then(preview => {
-          this.emit('file-preview-update', {
-            file: mediaFile,
-            preview,
-          });
-        });
+        getPreviewFromBlob(file, mediaType, window.devicePixelRatio).then(
+          preview => {
+            this.emit('file-preview-update', {
+              file: mediaFile,
+              preview,
+            });
+          },
+        );
       } else if (mediaType === 'video') {
         getPreviewFromVideo(file).then(preview => {
           this.emit('file-preview-update', {

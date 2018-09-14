@@ -6,6 +6,7 @@ import { ImagePreview } from '../index';
 export const getPreviewFromBlob = (
   file: Blob,
   mediaType: MediaType,
+  devicePixelRatio?: number,
 ): Promise<Preview> =>
   new Promise(async (resolve, reject) => {
     try {
@@ -21,7 +22,7 @@ export const getPreviewFromBlob = (
               width,
               height,
             },
-            scaleFactor,
+            scaleFactor: devicePixelRatio || scaleFactor,
           } as ImagePreview);
         }
       } else {
