@@ -100,7 +100,7 @@ pipelines:
               # If we have changed any packages with webdriver tests, we wait until browserstack has free resources, then run our tests
               - LOCAL_IDENTIFIER=$(date +%s) BS_RETRY=5 BS_BUILD_ALLOWED=3 node build/ci-scripts/run.tool.if.changed.js webdriver -- node build/ci-scripts/wait.for.browserstack.resources.js && yarn test:webdriver:browserstack:changed
             caches:
-              - node       
+              - node
         - step:
             name: Building website
             script:
@@ -110,9 +110,9 @@ pipelines:
               - WEBSITE_ENV=staging yarn build:no-minimize
               - yarn build:copy
               - yarn build:zip
-              - yarn deploy:staging | tee netlify-build.txt
+              - WRITE_PERMALINK_TO_FILE='netlify-link.txt'  yarn deploy:staging # this will write a `link.txt` file to disk
               - echo "Uploading netlify build link to s3 so that we can fetch at the end..."
-              - node ../build/ci-scripts/upload.build.artefact.for.commit.js netlify-build.txt
+              - node ../build/ci-scripts/upload.build.artefact.for.commit.js netlify-link.txt
             caches:
               - node
     - step:
@@ -121,7 +121,7 @@ pipelines:
           - (cd build/utils && yarn install) # needed for npm-run when updating status
           - cd build/ci-scripts
           - yarn install
-          - node download.build.artefact.for.commit.js netlify-build.txt
+          - node download.build.artefact.for.commit.js netlify-link.txt
           - node update.build.status.with.netlify.link.js
 
   custom: # Pipelines that can be scheduled or triggered manually

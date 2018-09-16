@@ -232,7 +232,7 @@
     "@atlassian/outbound-auth-flow-client": "^1.0.4",
     "@babel/core": "^7.0.0",
     "@lbatchelor/netlify": "^1.2.0-patched.7",
-    "@lbatchelor/netlify-cli": "^1.2.2-patched.7",
+    "@lbatchelor/netlify-cli": "^1.2.2-patched.9",
     "@types/bricks.js": "^1.8.0",
     "@types/bytes": "^2.4.33",
     "@types/codemirror": "^0.0.40",
