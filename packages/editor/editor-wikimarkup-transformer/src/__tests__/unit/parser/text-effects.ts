@@ -27,7 +27,7 @@ describe('JIRA wiki markup - Text effects', () => {
     ['should process inserted', 'This is a +inserted+'],
     [
       'should process string with a wrong order of effects',
-      'This is a *strong ^string* with a ~^bla*~~',
+      'This is a *strong ^string* with a ~^ bla*~~',
     ],
     [
       'should convert double baskslash to a hardBreak node',

@@ -983,7 +983,6 @@ describe('table plugin', () => {
                       })(),
                     ),
                     p(''),
-                    p(''),
                   ),
                 ),
               ),
@@ -1151,6 +1150,18 @@ describe('table plugin', () => {
         ),
       );
       expect(getPluginState(view.state).targetCellRef).not.toBeDefined();
+    });
+    it('should update targetCellRef when document changes', () => {
+      const { editorView } = editor(doc(table()(tr(tdCursor, tdEmpty))));
+      const { state, dispatch } = editorView;
+      setEditorFocus(true)(state, dispatch);
+
+      let documentChangeTr = editorView.state.tr.insertText('hello world', 1);
+      // Don't use dispatch to mimic collab provider
+      editorView.updateState(editorView.state.apply(documentChangeTr));
+
+      let pluginState = getPluginState(editorView.state);
+      expect(pluginState.targetCellPosition).toEqual(23);
     });
   });
 });

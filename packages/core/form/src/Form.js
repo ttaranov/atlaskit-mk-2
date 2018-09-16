@@ -222,8 +222,10 @@ export default class Form extends Component<Props, State> {
     fields.isInvalid = false;
     for (let i = 0; i < fields.fieldStates.length; i++) {
       if (fields.fieldStates[i].validate) {
-        fields.fieldStates[i].validate();
-        if (fields.fieldStates[i].isInvalid) {
+        const validatedFieldState: FieldState = fields.fieldStates[
+          i
+        ].validate();
+        if (validatedFieldState.isInvalid) {
           fields.invalidFields.push(fields.fieldStates[i]);
         } else {
           fields.validFields.push(fields.fieldStates[i]);

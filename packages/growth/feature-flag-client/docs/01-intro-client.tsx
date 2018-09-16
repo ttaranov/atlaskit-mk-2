@@ -14,7 +14,7 @@ export default md`
   import FrontendFeatureFlagClient from '@atlaskit/feature-flag-client';
 
   const client = new FrontendFeatureFlagClient({
-    analyticsClient: myAnalyticsClient,
+    analyticsHandler: myAnalyticsHandler,
     flags: {
       'my.experiment': {
         value: 'experiment',

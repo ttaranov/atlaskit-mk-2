@@ -1,5 +1,27 @@
 # @atlaskit/editor-core
 
+## 80.4.5
+- [patch] ED-5017 Toolbar buttons no longer steal focus when tabbing into editor [e656038](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e656038)
+
+## 80.4.4
+- [patch] bump media-picker [9411569](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9411569)
+
+## 80.4.3
+- [patch] Fix the empty progress bar inside tables [1beaf5b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1beaf5b)
+
+## 80.4.2
+- [patch] Show mediaSingle with default width when no width is defined in ADF [03af1bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03af1bd)
+
+## 80.4.1
+- [patch] Fixing the scroll after setting content on Mobile [0a03e2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0a03e2d)
+
+## 80.4.0
+- [minor] Add new experimental table resizing, behind flag. ED-4679 [b66227e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b66227e)
+- [none] Updated dependencies [b66227e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b66227e)
+
+## 80.3.1
+- [patch] Fixes remapping a table cell pos on collab modes changes and ensure its an element node. ED-5305 [dacbc18](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dacbc18)
+
 ## 80.3.0
 - [minor] Adds ability to load document snapshot from collab service [3708304](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3708304)
 

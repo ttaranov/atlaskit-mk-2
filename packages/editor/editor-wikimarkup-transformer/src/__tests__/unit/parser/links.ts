@@ -44,6 +44,10 @@ describe('JIRA wiki markup - Links', () => {
       'should create Media Image and Link from linkable-image',
       'This is a linkable image [!image.jpg!|https://www.atlassian.com]',
     ],
+    [
+      '[CS-240] should know where to end the link',
+      `[Link Title|http://www.google.com] boy I hope this doesn't go all the way to here] that would be bad.`,
+    ],
   ];
 
   for (const [testCaseDescription, markup] of testCases) {

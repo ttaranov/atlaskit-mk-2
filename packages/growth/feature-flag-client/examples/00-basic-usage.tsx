@@ -1,14 +1,12 @@
 import * as React from 'react';
 import FeatureFlagClient from '../src/index';
 
-const myAnalyticsClient = {
-  sendTrackEvent(event) {
-    console.log('Sending exposure event', event);
-  },
+const myAnalyticsHandler = event => {
+  console.log('Sending exposure event', event);
 };
 
 const client = new FeatureFlagClient({
-  analyticsClient: myAnalyticsClient,
+  analyticsHandler: myAnalyticsHandler,
   flags: {
     'my.experiment': {
       value: 'experiment',
@@ -38,7 +36,7 @@ const client = new FeatureFlagClient({
   },
 });
 
-const JSONFlag = client.getJSONValue('my.json.flag');
+const JSONFlag: any = client.getJSONValue('my.json.flag');
 
 export default () => (
   <div>

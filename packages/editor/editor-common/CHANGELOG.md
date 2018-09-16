@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 16.1.3
+- [patch] use new tsconfig for typechecking [09df171](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/09df171)
+
 ## 16.1.2
 - [patch] Fix generator to work with TS3 [4040b00](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4040b00)
 

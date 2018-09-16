@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/modal-dialog",
-  "version": "7.0.0",
+  "version": "7.0.1",
   "description": "A React component that displays content in a layer blocking the interaction with the page.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -21,7 +21,7 @@
   "dependencies": {
     "@atlaskit/analytics-next": "^3.0.6",
     "@atlaskit/blanket": "^7.0.7",
-    "@atlaskit/button": "^9.0.8",
+    "@atlaskit/button": "^9.0.9",
     "@atlaskit/icon": "^13.8.1",
     "@atlaskit/layer-manager": "^5.0.12",
     "@atlaskit/portal": "^0.0.9",
@@ -39,7 +39,7 @@
   "devDependencies": {
     "@atlaskit/avatar": "^14.0.9",
     "@atlaskit/build-utils": "^2.0.0",
-    "@atlaskit/checkbox": "^4.0.6",
+    "@atlaskit/checkbox": "^5.0.0",
     "@atlaskit/docs": "^5.0.6",
     "@atlaskit/field-radio-group": "^4.0.7",
     "@atlaskit/field-text": "^7.0.10",

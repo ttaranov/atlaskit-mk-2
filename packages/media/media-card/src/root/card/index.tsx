@@ -60,9 +60,9 @@ export class Card extends Component<CardProps, CardState> {
   };
 
   componentDidMount() {
-    const { identifier, context, dimensions } = this.props;
+    const { identifier, context } = this.props;
 
-    this.subscribe(identifier, context, dimensions);
+    this.subscribe(identifier, context);
   }
 
   componentWillReceiveProps(nextProps: CardProps) {
@@ -76,14 +76,22 @@ export class Card extends Component<CardProps, CardState> {
       identifier: nextIdenfifier,
       dimensions: nextDimensions,
     } = nextProps;
+
     if (
       currentContext !== nextContext ||
       !deepEqual(currentIdentifier, nextIdenfifier) ||
-      isBigger(currentDimensions, nextDimensions)
+      this.shouldRefetchImage(currentDimensions, nextDimensions)
     ) {
-      this.subscribe(nextIdenfifier, nextContext, nextDimensions);
+      this.subscribe(nextIdenfifier, nextContext);
     }
   }
+
+  shouldRefetchImage = (current?: CardDimensions, next?: CardDimensions) => {
+    if (!current || !next) {
+      return false;
+    }
+    return isBigger(current, next);
+  };
 
   componentWillUnmount() {
     this.unsubscribe();
@@ -109,11 +117,7 @@ export class Card extends Component<CardProps, CardState> {
     }
   };
 
-  async subscribe(
-    identifier: Identifier,
-    context: Context,
-    dimensions?: CardDimensions,
-  ) {
+  async subscribe(identifier: Identifier, context: Context) {
     const { isCardVisible } = this.state;
     if (!isCardVisible) {
       return;
@@ -176,7 +180,7 @@ export class Card extends Component<CardProps, CardState> {
               break;
             case 'processed':
               if (metadata.mediaType && isPreviewableType(metadata.mediaType)) {
-                const { appearance, resizeMode } = this.props;
+                const { appearance, dimensions, resizeMode } = this.props;
                 const options = {
                   appearance,
                   dimensions,
@@ -224,9 +228,9 @@ export class Card extends Component<CardProps, CardState> {
 
   // This method is called when card fails and user press 'Retry'
   private onRetry = () => {
-    const { identifier, context, dimensions } = this.props;
+    const { identifier, context } = this.props;
 
-    this.subscribe(identifier, context, dimensions);
+    this.subscribe(identifier, context);
   };
 
   get analyticsContext(): CardAnalyticsContext {
@@ -307,8 +311,8 @@ export class Card extends Component<CardProps, CardState> {
 
   onCardInViewport = () => {
     this.setState({ isCardVisible: true }, () => {
-      const { identifier, context, dimensions } = this.props;
-      this.subscribe(identifier, context, dimensions);
+      const { identifier, context } = this.props;
+      this.subscribe(identifier, context);
     });
   };
 }

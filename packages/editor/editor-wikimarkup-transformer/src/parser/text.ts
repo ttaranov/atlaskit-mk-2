@@ -1,7 +1,12 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
 import { createTextNode } from './nodes/text';
 import { parseToken, TokenType } from './tokenize';
-import { parseKeyword, parseLeadingKeyword } from './tokenize/keyword';
+import {
+  parseOtherKeyword,
+  parseLeadingKeyword,
+  parseFormatterKeyword,
+  parseMacroKeyword,
+} from './tokenize/keyword';
 import { parseWhitespaceOnly } from './tokenize/whitespace';
 
 const processState = {
@@ -38,7 +43,11 @@ export function parseString(
           continue;
         }
 
-        const match = parseLeadingKeyword(substring) || parseKeyword(substring);
+        const match =
+          parseLeadingKeyword(substring) ||
+          parseFormatterKeyword(substring) ||
+          parseMacroKeyword(substring) ||
+          parseOtherKeyword(substring);
 
         if (match && ignoreTokens.indexOf(match.type) === -1) {
           tokenType = match.type;
@@ -56,7 +65,24 @@ export function parseString(
          * saving plantext into the buffer until it hits
          * a keyword
          */
-        const match = parseKeyword(input.substring(index));
+        const substring = input.substring(index);
+        /**
+         * If the previous char is an empty space, we will parse
+         * format keywords.
+         * If the previous char is '{', we need to skip parse macro
+         * keyword
+         */
+        let match: { type: TokenType } | null = null;
+        if (buffer.endsWith(' ')) {
+          match =
+            parseFormatterKeyword(substring) ||
+            parseMacroKeyword(substring) ||
+            parseOtherKeyword(substring);
+        } else if (buffer.endsWith('{')) {
+          match = parseOtherKeyword(substring);
+        } else {
+          match = parseMacroKeyword(substring) || parseOtherKeyword(substring);
+        }
 
         if (match) {
           tokenType = match.type;
@@ -104,9 +130,12 @@ export function parseString(
           break;
         }
 
+        const substring = input.substring(index);
         const match =
-          parseLeadingKeyword(input.substring(index)) ||
-          parseKeyword(input.substring(index));
+          parseLeadingKeyword(substring) ||
+          parseFormatterKeyword(substring) ||
+          parseMacroKeyword(substring) ||
+          parseOtherKeyword(substring);
 
         if (!match) {
           buffer += '\\';

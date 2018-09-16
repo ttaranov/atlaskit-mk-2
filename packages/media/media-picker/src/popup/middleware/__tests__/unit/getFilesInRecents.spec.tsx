@@ -1,10 +1,14 @@
-import { mockStore, mockFetcher, mockAuthProvider } from '../../../mocks';
+import { mockStore, mockFetcher } from '../../../mocks';
 import {
   getFilesInRecentsFullfilled,
   getFilesInRecentsFailed,
+  saveCollectionItemsSubscription,
 } from '../../../actions';
 
 import { getFilesInRecents, requestRecentFiles } from '../../getFilesInRecents';
+import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
+import { Observer } from 'rxjs/Observer';
 
 describe('getFilesInRecents middleware', () => {
   describe('getFilesInRecents()', () => {
@@ -14,7 +18,7 @@ describe('getFilesInRecents middleware', () => {
       const next = jest.fn();
 
       const unknownAction = { type: 'UNKNOWN' };
-      getFilesInRecents(fetcher)(store)(next)(unknownAction);
+      getFilesInRecents()(store)(next)(unknownAction);
 
       expect(fetcher.getRecentFiles).toHaveBeenCalledTimes(0);
       expect(store.dispatch).toHaveBeenCalledTimes(0);
@@ -25,44 +29,64 @@ describe('getFilesInRecents middleware', () => {
   });
 
   describe('requestRecentFiles()', () => {
-    it('should dispatch GET_FILES_IN_RECENTS_FAILED when userAuthProvider() rejects', async () => {
-      const fetcher = mockFetcher();
-      const store = mockStore();
-      const userAuthProvider = () => Promise.reject('some-error');
+    it('should dispatch GET_FILES_IN_RECENTS_FAILED when collection.getItems rejects', async () => {
+      const getItems = jest
+        .fn()
+        .mockReturnValue(
+          Observable.create((observer: Observer<any>) => observer.error('')),
+        );
+      const store = mockStore({
+        userContext: {
+          collection: {
+            getItems,
+          },
+        },
+      } as any);
 
-      await requestRecentFiles(fetcher, userAuthProvider as any, store);
-      expect(fetcher.getRecentFiles).toHaveBeenCalledTimes(0);
-      expect(store.dispatch).toHaveBeenCalledTimes(1);
-      expect(store.dispatch).toHaveBeenCalledWith(getFilesInRecentsFailed());
-    });
+      await requestRecentFiles(store);
 
-    it('should dispatch GET_FILES_IN_RECENTS_FAILED when fetcher#getRecentFiles() rejects', async () => {
-      const fetcher = mockFetcher();
-      const store = mockStore();
-
-      fetcher.getRecentFiles.mockReturnValue(Promise.reject('some-error'));
-
-      await requestRecentFiles(fetcher, mockAuthProvider, store);
-      expect(fetcher.getRecentFiles).toHaveBeenCalledTimes(1);
-      expect(store.dispatch).toHaveBeenCalledTimes(1);
+      expect(getItems).toHaveBeenCalledTimes(1);
+      expect(store.dispatch).toHaveBeenCalledTimes(2);
       expect(store.dispatch).toHaveBeenCalledWith(getFilesInRecentsFailed());
     });
 
     it('should dispatch GET_FILES_IN_RECENTS_SUCCESS when requests succeed', async () => {
-      const fetcher = mockFetcher();
-      const store = mockStore();
+      const getItems = jest.fn().mockReturnValue(of([]));
+      const store = mockStore({
+        userContext: {
+          collection: {
+            getItems,
+          },
+        },
+      } as any);
 
-      const fetcherResult = {
-        contents: [],
-        nextInclusiveStartKey: 'some-start-key',
-      };
-      fetcher.getRecentFiles.mockReturnValue(Promise.resolve(fetcherResult));
+      await requestRecentFiles(store);
 
-      await requestRecentFiles(fetcher, mockAuthProvider, store);
-      expect(fetcher.getRecentFiles).toHaveBeenCalledTimes(1);
-      expect(store.dispatch).toHaveBeenCalledTimes(1);
+      expect(getItems).toHaveBeenCalledTimes(1);
+      expect(getItems).toBeCalledWith('recents');
+      expect(store.dispatch).toHaveBeenCalledTimes(2);
       expect(store.dispatch).toHaveBeenCalledWith(
-        getFilesInRecentsFullfilled([], 'some-start-key'),
+        getFilesInRecentsFullfilled([]),
+      );
+    });
+
+    it('should clear previous subscription', async () => {
+      const collectionItemsSubscription = { unsubscribe: jest.fn() };
+      const getItems = jest.fn().mockReturnValue(of([]));
+      const store = mockStore({
+        userContext: {
+          collection: {
+            getItems,
+          },
+        },
+        collectionItemsSubscription,
+      } as any);
+
+      await requestRecentFiles(store);
+
+      expect(collectionItemsSubscription.unsubscribe).toHaveBeenCalledTimes(1);
+      expect(store.dispatch.mock.calls[1][0]).toEqual(
+        saveCollectionItemsSubscription(expect.anything()),
       );
     });
   });

@@ -21,10 +21,7 @@ export const canCompareDimension = (
   return false;
 };
 
-export const isBigger = (current?: CardDimensions, next?: CardDimensions) => {
-  if (!current || !next) {
-    return true;
-  }
+export const isBigger = (current: CardDimensions, next: CardDimensions) => {
   if (
     canCompareDimension(current.width, next.width) &&
     canCompareDimension(current.height, next.height)
@@ -35,6 +32,6 @@ export const isBigger = (current?: CardDimensions, next?: CardDimensions) => {
       parseInt(`${current.height}`, 10) < parseInt(`${next.height}`, 10);
     return nextIsHigher || nextIsWider;
   } else {
-    return true;
+    return false;
   }
 };

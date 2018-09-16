@@ -21,7 +21,6 @@ import PackageDocument from '../pages/PackageDocument';
 import ChangelogModal from '../pages/Package/ChangelogModal';
 import ExamplesModal from '../pages/Package/ExamplesModal';
 import AnalyticsListeners from '../components/Analytics/AnalyticsListeners';
-import { sendApdex } from '../components/Analytics/GoogleAnalyticsListener';
 
 import Nav from './Nav';
 

@@ -1,5 +1,8 @@
 # @atlaskit/calendar
 
+## 7.0.8
+- [patch] Fixes bug on next and prev month navigation. [c4770a0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c4770a0)
+
 ## 7.0.7
 - [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
 
