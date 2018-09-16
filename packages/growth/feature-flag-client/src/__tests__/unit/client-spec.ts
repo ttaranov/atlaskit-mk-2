@@ -187,6 +187,7 @@ describe('Feature Flag Client', () => {
             ruleId: '111-bbbbb-ccc',
             value: false,
           },
+          source: '@atlaskit/feature-flag-client',
         });
       });
 
@@ -262,6 +263,7 @@ describe('Feature Flag Client', () => {
             ruleId: '111-bbbbb-ccc',
             value: 'experiment',
           },
+          source: '@atlaskit/feature-flag-client',
         });
       });
 
