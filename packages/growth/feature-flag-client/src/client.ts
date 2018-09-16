@@ -130,6 +130,7 @@ export default class FeatureFlagClient {
         ruleId: flag.explanation.ruleId,
         value: flag.value,
       },
+      source: '@atlaskit/feature-flag-client',
     });
 
     this.trackedFlags[flagKey] = true;

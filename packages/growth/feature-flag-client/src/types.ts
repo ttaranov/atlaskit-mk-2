@@ -34,6 +34,7 @@ export type ExposureEvent = {
     ruleId?: RuleId;
     value: boolean | string | object;
   };
+  source: string;
 };
 
 export interface FlagConstructor {
