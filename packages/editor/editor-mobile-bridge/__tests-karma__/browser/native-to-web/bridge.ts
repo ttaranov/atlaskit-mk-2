@@ -1,6 +1,6 @@
 import * as sinon from 'sinon';
-import { toNativeBridge } from '../../../src/web-to-native';
-import mobileEditor from '../../../src/mobile-editor-element';
+import { toNativeBridge } from '../../../src/editor/web-to-native';
+import mobileEditor from '../../../src/editor/mobile-editor-element';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import { mountEditor } from './utils';
@@ -14,7 +14,6 @@ describe('NativeToWebBridge', () => {
     content: [{ type: 'paragraph', content: [{ type: 'text', text: 'test' }] }],
   };
   let editor;
-
   beforeEach(() => {
     editor = mount(mobileEditor({}));
   });

@@ -5,9 +5,9 @@ import {
   setCounter,
   SubmitPromiseToNative,
 } from '../../cross-platform-promise';
-import { toNativeBridge } from '../../web-to-native';
+import { toNativeBridge } from '../../editor/web-to-native';
 
-jest.mock('../../web-to-native');
+jest.mock('../../editor/web-to-native');
 toNativeBridge.submitPromise = jest.fn();
 
 beforeEach(() => {
