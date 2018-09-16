@@ -79,7 +79,6 @@ class GlobalNavigationItemPrimitive extends Component<*> {
         this.CachedCustomComponent || CustomComponent;
       const CachedCustomComponent = this.CachedCustomComponent;
 
-      console.log(rest);
       itemBase = (
         <CachedCustomComponent
           {...rest}
