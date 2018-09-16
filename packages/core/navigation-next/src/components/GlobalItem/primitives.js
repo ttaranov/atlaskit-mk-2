@@ -80,12 +80,9 @@ class GlobalNavigationItemPrimitive extends Component<*> {
       const CachedCustomComponent = this.CachedCustomComponent;
 
       itemBase = (
-        <CachedCustomComponent
-          {...rest}
-          className={css({ '&&': styles.itemBase })}
-        >
+        <CustomComponent {...rest} className={css({ '&&': styles.itemBase })}>
           {this.renderIconAndBadge(styles.badgeWrapper, presentationProps)}
-        </CachedCustomComponent>
+        </CustomComponent>
       );
     } else if (href) {
       itemBase = (
