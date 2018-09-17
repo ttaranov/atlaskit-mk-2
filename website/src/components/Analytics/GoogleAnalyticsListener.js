@@ -88,7 +88,12 @@ export const observePerformanceMetrics = location => {
       });
     }
   });
-  observer.observe({ entryTypes: ['paint'] });
+
+  // Firefox bug: https://bugzilla.mozilla.org/show_bug.cgi?id=1403027
+  // will be fixed in the next release (FF 63)
+  try {
+    observer.observe({ entryTypes: ['paint'] });
+  } catch (e) {}
 
   // time to interactive, more details: https://goo.gl/OSmrPk
   ttiPolyfill
