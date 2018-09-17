@@ -50,7 +50,7 @@ export default function analytics(name: string) {
 
     const fn = descriptor.value;
     if (typeof fn !== 'function') {
-      throw new SyntaxError('@analytics can only be used on methods.');
+      // throw new SyntaxError('@analytics can only be used on methods.');
     }
 
     // We're decorating a class method

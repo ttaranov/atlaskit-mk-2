@@ -104,18 +104,18 @@ module.exports = function createWebpackConfig(
           loader: require.resolve('gray-matter-loader'),
         },
         {
-          test: /\.js$/,
+          test: /\.[jt]sx?$/,
           exclude: /node_modules/,
-          loader: 'happypack/loader',
+          loader: 'happypack/loader?id=ts',
         },
-        {
-          test: /\.tsx?$/,
-          exclude: /node_modules/,
-          loader: require.resolve('ts-loader'),
-          options: {
-            transpileOnly: true,
-          },
-        },
+        // {
+        //   test: /\.tsx?$/,
+        //   exclude: /node_modules/,
+        //   loader: 'happypack/loader?id=ts',
+        //   // options: {
+        //   //   transpileOnly: true,
+        //   // },
+        // },
 
         {
           test: /\.css$/,
@@ -214,7 +214,32 @@ function getPlugins(
     }),
 
     new HappyPack({
+      id: 'js',
       loaders: ['babel-loader?cacheDirectory=true'],
+    }),
+
+    new HappyPack({
+      id: 'ts',
+      loaders: [
+        {
+          loader: 'babel-loader',
+          options: {
+            cacheDirectory: true,
+            presets: [
+              ['@babel/preset-env', { modules: false }],
+              '@babel/preset-typescript',
+              '@babel/preset-react',
+              '@babel/preset-flow',
+            ],
+            plugins: [
+              ['@babel/plugin-proposal-decorators', { legacy: true }],
+              ['@babel/proposal-class-properties', { loose: true }],
+              '@babel/proposal-object-rest-spread',
+              '@babel/plugin-syntax-dynamic-import',
+            ],
+          }
+        },
+      ],
     }),
   ];
 
