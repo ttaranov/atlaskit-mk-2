@@ -46,6 +46,7 @@ export const fakeContext = (
     getFileState: getFile,
   } as any;
   const defaultContext: Context = {
+    getImageMetadata,
     getImage,
     getFile,
     getBlobService,

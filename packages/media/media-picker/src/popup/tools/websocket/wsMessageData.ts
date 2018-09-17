@@ -111,7 +111,6 @@ export const isNoUserFound = (
   return isErrorData(data) && data.error === 'NoUserFound';
 };
 
-// TODO: investigate if we can just rely on ws dimensions or should we keep previous logic
 // TODO: move this utility into a different file
 export const getPreviewFromPayload = (metadata: ImageMetadata): Preview => {
   if (!metadata.original) {
