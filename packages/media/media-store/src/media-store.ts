@@ -197,7 +197,7 @@ export class MediaStore {
   getImageMetadata = (
     id: string,
     params?: MediaStoreGetFileImageParams,
-  ): Promise<MediaStoreResponse<ImageMetadata>> => {
+  ): Promise<ImageMetadata> => {
     return this.request(`/file/${id}/image/metadata`, {
       params,
       authContext: { collectionName: params && params.collection },
@@ -255,7 +255,7 @@ export class MediaStore {
   }
 }
 
-export type FetchFileArtifactMetadata = {
+export type ImageMetadataArtifact = {
   url?: string;
   width?: number;
   height?: number;
@@ -264,8 +264,8 @@ export type FetchFileArtifactMetadata = {
 
 export interface ImageMetadata {
   pending: boolean;
-  preview?: FetchFileArtifactMetadata;
-  original?: FetchFileArtifactMetadata;
+  preview?: ImageMetadataArtifact;
+  original?: ImageMetadataArtifact;
 }
 
 export interface MediaStoreResponse<Data> {

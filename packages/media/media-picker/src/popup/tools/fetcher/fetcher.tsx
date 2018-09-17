@@ -1,9 +1,6 @@
 import axios from 'axios';
 import * as url from 'url';
 import { Auth, FileDetails } from '@atlaskit/media-core';
-import { Preview } from '../../../domain/preview';
-import { getPreviewFromBlob } from '../../../util/getPreviewFromBlob';
-
 import {
   AuthHeaders,
   Service,
@@ -16,10 +13,6 @@ import {
 import { mapAuthToAuthHeaders } from '../../domain/auth';
 
 const METADATA_POLL_INTERVAL_MS = 2000;
-const NON_IMAGE_PREVIEW_WIDTH = 640;
-const NON_IMAGE_PREVIEW_HEIGHT = 480;
-const MAX_IMAGE_PREVIEW_SIZE = 4096; // This is needed to retrieve the max image dimensions even if the image is smaller/bigger to let Api know that we want the original size.
-
 type Method = 'GET' | 'POST' | 'DELETE';
 
 export interface GiphyImage {
@@ -72,7 +65,6 @@ export interface Fetcher {
     fileId: string,
     collection?: string,
   ): Promise<FileDetails>;
-  getPreview(auth: Auth, fileId: string, collection?: string): Promise<Preview>;
   getImage(auth: Auth, fileId: string, collection?: string): Promise<Blob>;
   getServiceList(auth: Auth): Promise<ServiceAccountWithType[]>;
   unlinkCloudAccount(auth: Auth, accountId: string): Promise<void>;
@@ -141,35 +133,6 @@ export class MediaApiFetcher implements Fetcher {
           // this._handleUploadError('metadata_fetch_fail', JSON.stringify(err));
           reject('metadata_fetch_fail');
         });
-    });
-  }
-
-  getPreview(
-    auth: Auth,
-    fileId: string,
-    collection?: string,
-  ): Promise<Preview> {
-    return this.pollFile(auth, fileId, collection).then(file => {
-      if (file.processingStatus === 'failed') {
-        return Promise.reject('get_preview_failed');
-      }
-      const isImage = file.mediaType === 'image';
-      const width = isImage ? MAX_IMAGE_PREVIEW_SIZE : NON_IMAGE_PREVIEW_WIDTH;
-      const height = isImage
-        ? MAX_IMAGE_PREVIEW_SIZE
-        : NON_IMAGE_PREVIEW_HEIGHT;
-
-      return this.query(
-        `${fileStoreUrl(auth.baseUrl)}/file/${fileId}/image`,
-        'GET',
-        {
-          width,
-          height,
-          collection,
-        },
-        mapAuthToAuthHeaders(auth),
-        'blob',
-      ).then(blob => getPreviewFromBlob(blob, file.mediaType!));
     });
   }
 

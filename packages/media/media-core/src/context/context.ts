@@ -347,7 +347,7 @@ class ContextImpl implements Context {
     id: string,
     params?: MediaStoreGetFileImageParams,
   ): Promise<ImageMetadata> {
-    return (await this.mediaStore.getImageMetadata(id, params)).data;
+    return this.mediaStore.getImageMetadata(id, params);
   }
 
   private get apiConfig(): MediaApiConfig {
