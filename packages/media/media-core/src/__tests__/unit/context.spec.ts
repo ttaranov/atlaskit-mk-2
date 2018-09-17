@@ -220,79 +220,75 @@ describe('Context', () => {
   });
 
   describe('.getFile()', () => {
-    it('should fetch the file if it doesnt exist locally', () => {
-      return new Promise(resolve => {
-        const context = createContext();
-        const getFile = jest.fn().mockReturnValue({
+    it('should fetch the file if it doesnt exist locally', done => {
+      const context = createContext();
+      const getFile = jest.fn().mockReturnValue({
+        data: {
+          processingStatus: 'succeeded',
+          id: '1',
+          name: 'file-one',
+          size: 1,
+          fooo: 'bar',
+        },
+      });
+      (context as any).mediaStore = {
+        getFile,
+      };
+      const observer = context.getFile('1');
+
+      observer.subscribe({
+        next(state) {
+          expect(state).toEqual({
+            id: '1',
+            status: 'processed',
+            name: 'file-one',
+            size: 1,
+            artifacts: undefined,
+          });
+          done();
+        },
+      });
+
+      expect(getFile).toHaveBeenCalledTimes(1);
+      expect(getFile).lastCalledWith('1', { collection: undefined });
+    });
+
+    it('should poll for changes and return the latest file state', done => {
+      jest.useFakeTimers();
+
+      const context = createContext();
+      let getFileCalledTimes = 0;
+      const getFile = jest.fn().mockImplementation(() => {
+        getFileCalledTimes++;
+        const processingStatus =
+          getFileCalledTimes === 2 ? 'succeeded' : 'pending';
+
+        return {
           data: {
-            processingStatus: 'succeeded',
+            processingStatus,
             id: '1',
             name: 'file-one',
             size: 1,
-            fooo: 'bar',
           },
-        });
-        (context as any).mediaStore = {
-          getFile,
         };
-        const observer = context.getFile('1');
-
-        observer.subscribe({
-          next(state) {
-            expect(state).toEqual({
-              id: '1',
-              status: 'processed',
-              name: 'file-one',
-              size: 1,
-              artifacts: undefined,
-            });
-            resolve();
-          },
-        });
-
-        expect(getFile).toHaveBeenCalledTimes(1);
-        expect(getFile).lastCalledWith('1', { collection: undefined });
       });
-    });
+      (context as any).mediaStore = { getFile };
 
-    it('should poll for changes and return the latest file state', () => {
-      jest.useFakeTimers();
+      const observer = context.getFile('123');
+      const next = jest.fn();
 
-      return new Promise(resolve => {
-        const context = createContext();
-        let getFileCalledTimes = 0;
-        const getFile = jest.fn().mockImplementation(() => {
-          getFileCalledTimes++;
-          const processingStatus =
-            getFileCalledTimes === 2 ? 'succeeded' : 'pending';
-
-          return {
-            data: {
-              processingStatus,
-              id: '1',
-              name: 'file-one',
-              size: 1,
-            },
-          };
-        });
-        (context as any).mediaStore = { getFile };
-
-        const observer = context.getFile('123');
-        const next = jest.fn();
-
-        observer.subscribe({
-          next,
-          complete() {
-            expect(getFile).toHaveBeenCalledTimes(2);
-            expect(next).toHaveBeenCalledTimes(2);
-            expect(next.mock.calls[0][0].status).toEqual('processing');
-            expect(next.mock.calls[1][0].status).toEqual('processed');
-            resolve();
-          },
-        });
-
-        setImmediate(jest.runAllTimers);
+      observer.subscribe({
+        next,
+        complete() {
+          expect(getFile).toHaveBeenCalledTimes(2);
+          expect(next).toHaveBeenCalledTimes(2);
+          expect(next.mock.calls[0][0].status).toEqual('processing');
+          expect(next.mock.calls[1][0].status).toEqual('processed');
+          done();
+        },
       });
+
+      setImmediate(jest.runAllTimers);
     });
 
     it('should pass options down', () => {
