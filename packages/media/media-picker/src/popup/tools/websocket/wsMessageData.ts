@@ -1,5 +1,4 @@
 import { ImageMetadata } from '@atlaskit/media-store';
-import { Preview } from '../../../domain/preview';
 
 export interface WsErrorData {
   type: 'Error';
