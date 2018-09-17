@@ -8,7 +8,7 @@ import { shouldDisplayImageThumbnail } from '../utils/shouldDisplayImageThumbnai
 import { getBaseAnalyticsContext } from '../utils/analyticsUtils';
 import { isLinkDetails } from '../utils/isLinkDetails';
 
-import { CardViewOwnProps } from './cardViewInternal';
+import { CardViewOwnProps } from './cardView';
 import {
   CardViewAnalyticsContext,
   AnalyticsLinkAttributes,

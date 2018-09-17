@@ -14,9 +14,9 @@ import {
   CardDimensions,
 } from '../../../src';
 
-import { CardView } from '../../../src/root/cardViewInternal';
+import { CardView } from '../../../src/root/cardView';
 
-import { Card } from '../../../src/root/card/card';
+import { Card } from '../../../src/root/card';
 
 import { LazyContent } from '../../../src/utils/lazyContent';
 import { getDataURIFromFileState } from '../../../src/utils/getDataURIFromFileState';
