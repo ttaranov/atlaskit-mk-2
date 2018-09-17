@@ -1,35 +1,31 @@
 module.exports = {
   presets: [
-    "@babel/preset-env",
-    "@babel/preset-typescript",
+    '@babel/preset-env',
+    '@babel/preset-typescript',
+    '@babel/preset-react',
   ],
   plugins: [
     // "@babel/proposal-export-default-from",
-    ["@babel/plugin-proposal-decorators", { "legacy": true } ],
-    ["@babel/proposal-class-properties", { "loose": true } ],
-    "@babel/proposal-object-rest-spread",
-    "@babel/plugin-syntax-dynamic-import",
+    ['@babel/plugin-proposal-decorators', { legacy: true }],
+    ['@babel/proposal-class-properties', { loose: true }],
+    '@babel/proposal-object-rest-spread',
+    '@babel/plugin-syntax-dynamic-import',
   ],
-  ignore: [
-    "**/*.d.ts",
-    "**/__tests__/",
-  ],
+  ignore: ['**/*.d.ts', '**/__tests__/'],
   env: {
-    "es2015": {
+    es2015: {
       presets: [
-        ["@babel/preset-env", { "modules": false } ],
-        "@babel/preset-typescript",
+        ['@babel/preset-env', { modules: false }],
+        '@babel/preset-typescript',
+        '@babel/preset-react',
       ],
       plugins: [
-        ["@babel/plugin-proposal-decorators", { "legacy": true } ],
-        ["@babel/proposal-class-properties", { "loose": true } ],
-        "@babel/proposal-object-rest-spread",
-        "@babel/plugin-syntax-dynamic-import",
+        ['@babel/plugin-proposal-decorators', { legacy: true }],
+        ['@babel/proposal-class-properties', { loose: true }],
+        '@babel/proposal-object-rest-spread',
+        '@babel/plugin-syntax-dynamic-import',
       ],
-      ignore: [
-        "**/*.d.ts",
-        "**/__tests__/",
-      ],
-    }
-  }
+      ignore: ['**/*.d.ts', '**/__tests__/'],
+    },
+  },
 };
