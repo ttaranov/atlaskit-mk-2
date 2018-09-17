@@ -5,6 +5,7 @@ import { CardLoading } from '../utils/cardLoading';
 import {
   CardViewBase as CardViewBaseType,
   CardViewBaseProps,
+  CardView as CardViewType,
 } from './cardView';
 
 interface AsyncCardViewBase {
@@ -43,7 +44,7 @@ export const CardView = (Loadable as any)({
     import(/* webpackChunkName:"@atlaskit-internal_CardView" */
     './cardView').then(module => module.CardView),
   loading: () => <CardLoading />,
-});
+}) as typeof CardViewType;
 
 export const CardViewWithAnalyticsEvents = (Loadable as any)({
   loader: () =>
