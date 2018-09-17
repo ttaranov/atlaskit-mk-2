@@ -14,6 +14,7 @@ DirectoryWatcher.prototype.createNestedWatcher = function(
   dirPath /*: string */,
 ) {
   if (dirPath.includes('node_modules')) return;
+  if (dirPath.includes('__snapshots__')) return;
   _oldcreateNestedWatcher.call(this, dirPath);
 };
 
