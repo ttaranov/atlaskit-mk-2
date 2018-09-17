@@ -214,7 +214,7 @@ export class MediaStore {
   getImageMetadata = (
     id: string,
     params?: MediaStoreGetFileImageParams,
-  ): Promise<ImageMetadata> => {
+  ): Promise<{ metadata: ImageMetadata }> => {
     return this.request(`/file/${id}/image/metadata`, {
       params,
       authContext: { collectionName: params && params.collection },
