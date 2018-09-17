@@ -94,7 +94,7 @@ export const observePerformanceMetrics = location => {
     observer.observe({ entryTypes: ['paint'] });
   } catch (error) {
     if (
-      error.DOMException !==
+      error.message !==
       'The expression cannot be converted to return the specified type.'
     ) {
       throw error;
