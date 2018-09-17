@@ -5,19 +5,7 @@ import { css } from 'emotion';
 import Tooltip from '@atlaskit/tooltip';
 
 import { styleReducerNoOp, withGlobalTheme } from '../../theme';
-import type {
-  GlobalItemTooltipRenderer,
-  GlobalItemPresentationProps,
-} from './types';
-
-const TooltipRenderer = ({ tooltip, children }: GlobalItemTooltipRenderer) =>
-  tooltip ? (
-    <Tooltip delay={0} content={tooltip} position="right" hideTooltipOnClick>
-      {children}
-    </Tooltip>
-  ) : (
-    children
-  );
+import type { GlobalItemPresentationProps } from './types';
 
 class GlobalNavigationItemPrimitive extends Component<*> {
   static defaultProps = {
@@ -52,7 +40,7 @@ class GlobalNavigationItemPrimitive extends Component<*> {
     );
   };
 
-  render() {
+  renderChildren = () => {
     const {
       isActive,
       isHover,
@@ -75,10 +63,18 @@ class GlobalNavigationItemPrimitive extends Component<*> {
     let itemBase;
 
     if (CustomComponent) {
+      if (typeof CustomComponent !== typeof this.CachedCustomComponent) {
+        this.CachedCustomComponent = CustomComponent;
+      }
+      const CachedCustomComponent = this.CachedCustomComponent;
+
       itemBase = (
-        <CustomComponent {...rest} className={css({ '&&': styles.itemBase })}>
+        <CachedCustomComponent
+          {...rest}
+          className={css({ '&&': styles.itemBase })}
+        >
           {this.renderIconAndBadge(styles.badgeWrapper, presentationProps)}
-        </CustomComponent>
+        </CachedCustomComponent>
       );
     } else if (href) {
       itemBase = (
@@ -105,8 +101,24 @@ class GlobalNavigationItemPrimitive extends Component<*> {
       );
     }
 
-    return <TooltipRenderer tooltip={tooltip}>{itemBase}</TooltipRenderer>;
+    return itemBase;
+  };
+
+  render() {
+    const { isActive, isSelected, tooltip } = this.props;
+    return (
+      <Tooltip
+        delay={0}
+        content={isSelected || isActive ? null : tooltip}
+        position="right"
+        hideTooltipOnClick
+      >
+        {this.renderChildren()}
+      </Tooltip>
+    );
   }
 }
+
+export { GlobalNavigationItemPrimitive as BaseGlobalNavigationItemPrimitive };
 
 export default withGlobalTheme(GlobalNavigationItemPrimitive);
