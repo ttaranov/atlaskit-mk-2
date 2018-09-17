@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 80.4.7
+- [patch] Fixing the mobile appearance height  [b0f6402](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b0f6402)
+
 ## 80.4.6
 - [patch] Adding renderer to the mobile bridge [3b4c276](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3b4c276)
 
