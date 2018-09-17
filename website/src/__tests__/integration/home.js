@@ -7,7 +7,7 @@ import {
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import * as assert from 'assert';
 
-const urlHome = 'https://atlaskit.atlassian.com/';
+const urlHome = 'http://localhost:9000';
 
 const app = '#app';
 const atlaskitLayer = '[spacing="cosy"]';
