@@ -25,7 +25,7 @@ export class CardViewBase extends React.PureComponent<
   };
 
   componentWillMount() {
-    import(/* webpackChunkName:"@atlaskit-internal_card" */
+    import(/* webpackChunkName:"@atlaskit-internal_CardViewBase" */
     './cardView').then(module => module.CardViewBase);
   }
 
