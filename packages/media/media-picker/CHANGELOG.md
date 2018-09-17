@@ -1,5 +1,8 @@
 # @atlaskit/media-picker
 
+## 16.0.5
+- [patch] Introduce media analytics listener [e7d7ab1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7d7ab1)
+
 ## 16.0.4
 - [patch] Add className to headless dropzone [96be52e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/96be52e)
 
