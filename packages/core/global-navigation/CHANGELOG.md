@@ -1,5 +1,8 @@
 # @atlaskit/global-navigation
 
+## 4.4.3
+- [patch] fixing remount component on GlobalItem component [e71825a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e71825a)
+
 ## 4.4.2
 - [patch] fixing HelpIcon active on children :hover [ae95dad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae95dad)
 

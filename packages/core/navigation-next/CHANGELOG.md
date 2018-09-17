@@ -1,5 +1,8 @@
 # @atlaskit/navigation-next
 
+## 3.13.1
+- [patch] fixing remount component on GlobalItem component [e71825a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e71825a)
+
 ## 3.13.0
 - [minor] introduces never-fully-collapsed content navigation [99add85](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/99add85)
 
