@@ -84,7 +84,9 @@ const componentChannels = {
   [FabricChannel.editor]: DummyEditorComponent,
 };
 
-export const createComponentWithAnalytics = (channel: FabricChannel) =>
+export const createComponentWithAnalytics = (
+  channel: FabricChannel,
+): React.ComponentClass<OwnProps> =>
   withAnalyticsEvents({
     onClick: createAndFireEvent(channel)({
       action: 'someAction',
@@ -96,7 +98,7 @@ export const createComponentWithAnalytics = (channel: FabricChannel) =>
 
 export const createComponentWithAttributesWithAnalytics = (
   channel: FabricChannel,
-) =>
+): React.ComponentClass<OwnProps> =>
   withAnalyticsEvents({
     onClick: createAndFireEvent(channel)({
       action: 'someAction',
@@ -115,7 +117,7 @@ export const createComponentWithAttributesWithAnalytics = (
 export const createTaggedComponentWithAnalytics = (
   channel: FabricChannel,
   tag: string,
-) =>
+): React.ComponentClass<OwnProps> =>
   withAnalyticsEvents({
     onClick: createAndFireEvent(channel)({
       action: 'someAction',
@@ -126,7 +128,9 @@ export const createTaggedComponentWithAnalytics = (
     }),
   })(componentChannels[channel]);
 
-export const IncorrectEventType = (channel: FabricChannel) =>
+export const IncorrectEventType = (
+  channel: FabricChannel,
+): React.ComponentClass<OwnProps> =>
   withAnalyticsEvents({
     onClick: createAndFireEvent(channel)({
       action: 'someAction',

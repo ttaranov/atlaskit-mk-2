@@ -5,8 +5,8 @@ import {
 import { Action, MiddlewareAPI } from 'redux';
 import { State } from '../../domain';
 import { isHandleCloudFetchingEventAction } from '../../actions/handleCloudFetchingEvent';
-import { HandlerResult } from './index';
 import { MediaFile } from '../../../domain/file';
+import { source, HandlerResult } from '.';
 
 const commonPayload = {
   actionSubject: 'mediaUpload',
@@ -18,8 +18,6 @@ const fileAttributes = (file: MediaFile) => ({
   fileMimetype: file.type,
   fileSource: 'mediapicker',
 });
-
-const source = 'mediaPickerModal';
 
 export default (action: Action, store: MiddlewareAPI<State>): HandlerResult => {
   if (isHandleCloudFetchingEventAction(action)) {

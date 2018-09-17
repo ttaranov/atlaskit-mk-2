@@ -2,10 +2,6 @@
  * Inspired by analytics-web-react
  */
 
-declare namespace merge {
-
-}
-
 import * as last from 'lodash.last';
 import * as merge from 'lodash.merge';
 
