@@ -69,7 +69,7 @@
     "start:teamwork-ecosystem": "            yarn run website:start **/packages/teamwork-ecosystem/**",
     "changeset": "                           node ./build/releases/bin/build-releases.js changeset",
     "build:editor-common:json-schema": "     cd packages/editor/editor-common && yarn run build:json-schema && echo 'Done.'",
-    "build:editor-mobile-bridge": "          cd packages/editor/editor-mobile-bridge && yarn build:minimize",
+    "build:editor-mobile-bridge": "          echo noop",
     "build:media-editor:copy-binaries": "    cd packages/media/media-editor && cp -r src/engine/core/binaries dist/es5/engine/core && cp -r src/engine/core/binaries dist/es2015/engine/core",
     "build:icon": "                          cd packages/core/icon && yarn build",
     "build:reduced-ui-pack": "               cd packages/css-packs/reduced-ui-pack && yarn build",
