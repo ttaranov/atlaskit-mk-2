@@ -4,6 +4,7 @@ import { LocalUploadComponent } from '../src/components/localUpload';
 import { UploadsStartEventPayload } from '../src';
 import { PreviewsTitle, PreviewsWrapper } from './styled';
 import { PreviewData } from './types';
+import { dataURItoFile, readImageMetaData } from '@atlaskit/media-ui';
 
 export interface PreviewsDataState {
   previewsData: PreviewData[];
@@ -54,10 +55,23 @@ export class UploadPreviews extends React.Component<
 
   private setupMediaPickerEventListeners() {
     const picker = this.props.picker;
+    const { previewsData } = this.state;
 
     picker.on('uploads-start', this.onUploadsStart);
     picker.on('upload-error', data => {
       console.log('upload error:', data);
+    });
+    //import { readImageMetaData, dataURItoFile } from '@atlaskit/media-ui';
+    picker.on('upload-preview-update', async data => {
+      const file = dataURItoFile(data.preview.src);
+      const info = await readImageMetaData(file);
+      if (info) {
+        const currentItem = previewsData[previewsData.length - 1];
+        currentItem.info = info;
+      }
+      this.setState({
+        previewsData: [...previewsData],
+      });
     });
   }
 
@@ -68,6 +82,7 @@ export class UploadPreviews extends React.Component<
         key={`${index}`}
         fileId={previewsData.fileId}
         upfrontId={previewsData.upfrontId}
+        info={previewsData.info}
       />
     ));
   };

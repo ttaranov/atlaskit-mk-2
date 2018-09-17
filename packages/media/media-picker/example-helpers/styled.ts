@@ -53,6 +53,17 @@ export const PreviewImageWrapper: ComponentClass<
   margin-right: 15px;
 `;
 
+export const InfoWrapper: ComponentClass<HTMLAttributes<{}>> = styled.pre`
+  position: absolute;
+  width: 160px;
+  color: black;
+  font-size: 8pt;
+  top: 120px;
+  left: 15px;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+`;
+
 export const DropzoneContainer: ComponentClass<
   HTMLAttributes<{}> & ThemedOuterStyledProps<DropzoneContainerProps, {}>
 > = styled.div`
@@ -85,7 +96,7 @@ export const DropzoneContentWrapper: ComponentClass<
 export const PreviewsWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
   display: flex;
   flex-flow: row wrap;
-  overflow: auto;
+  overflow: visible;
 `;
 
 export const PreviewsTitle: ComponentClass<HTMLAttributes<{}>> = styled.h1`

@@ -10,14 +10,15 @@ export const getPreviewFromBlob = (
 ): Promise<Preview> =>
   new Promise(async (resolve, reject) => {
     try {
+      const src = await fileToDataURICached(file);
       if (mediaType === 'image') {
         const info = await getImageInfo(file as File);
         if (info === null) {
-          const src = await fileToDataURICached(file);
           resolve({ src });
         } else {
           const { width, height, scaleFactor } = info;
           resolve({
+            src,
             dimensions: {
               width,
               height,
@@ -26,7 +27,6 @@ export const getPreviewFromBlob = (
           } as ImagePreview);
         }
       } else {
-        const src = await fileToDataURICached(file);
         resolve({ src });
       }
     } catch (e) {
