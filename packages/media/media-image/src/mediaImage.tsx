@@ -31,14 +31,38 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
   };
 
   componentDidMount() {
-    const { context, width, height, id, collectionName } = this.props;
+    this.subscribe(this.props);
+  }
+
+  componentWillReceiveProps(newProps: MediaImageProps) {
+    const { id, collectionName } = this.props;
+
+    if (newProps.id !== id || newProps.collectionName !== collectionName) {
+      this.subscribe(newProps);
+    }
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+    this.releaseSrc();
+  }
+
+  private releaseSrc = () => {
+    const { src } = this.state;
+    if (src) {
+      URL.revokeObjectURL(src);
+    }
+  };
+
+  private subscribe(props: MediaImageProps) {
+    const { context, width, height, id, collectionName } = props;
 
     this.unsubscribe();
     this.setState({
       isLoading: true,
     });
 
-    context.getFile(id, { collectionName }).subscribe({
+    this.subscription = context.getFile(id, { collectionName }).subscribe({
       next: async state => {
         if (state.status === 'processed') {
           this.unsubscribe();
@@ -59,18 +83,6 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
       },
     });
   }
-
-  componentWillUnmount() {
-    this.unsubscribe();
-    this.releaseSrc();
-  }
-
-  private releaseSrc = () => {
-    const { src } = this.state;
-    if (src) {
-      URL.revokeObjectURL(src);
-    }
-  };
 
   private unsubscribe() {
     if (this.subscription) {
@@ -96,7 +108,7 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
     const { isLoading, src } = this.state;
     const { className } = this.props;
 
-    if (!isLoading) {
+    if (isLoading) {
       return this.placeholder;
     }
 
