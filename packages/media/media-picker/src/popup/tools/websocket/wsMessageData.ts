@@ -1,3 +1,4 @@
+import { ImageMetadata } from '@atlaskit/media-store';
 import { Preview } from '../../../domain/preview';
 
 export interface WsErrorData {
@@ -57,23 +58,9 @@ export interface WsRemoteUploadEndData extends WsUploadMessageData {
   fileId: string;
 }
 
-// TODO: use types from media-store
-export type FetchFileArtifactMetadata = {
-  url?: string;
-  width?: number;
-  height?: number;
-  size?: number;
-};
-
-export interface WsMetadata {
-  pending: boolean;
-  preview?: FetchFileArtifactMetadata;
-  original?: FetchFileArtifactMetadata;
-}
-
 export interface WsNotifyMetadata extends WsUploadMessageData {
   type: 'NotifyMetadata';
-  metadata: WsMetadata;
+  metadata: ImageMetadata;
 }
 
 export type WsMessageData = WsUploadMessageData | WsErrorData;
@@ -125,9 +112,8 @@ export const isNoUserFound = (
 };
 
 // TODO: investigate if we can just rely on ws dimensions or should we keep previous logic
-export const getPreviewFromPayload = (payload: WsNotifyMetadata): Preview => {
-  const { metadata } = payload;
-
+// TODO: move this utility into a different file
+export const getPreviewFromPayload = (metadata: ImageMetadata): Preview => {
   if (!metadata.original) {
     return {
       dimensions: {

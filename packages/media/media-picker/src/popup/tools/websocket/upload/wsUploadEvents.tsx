@@ -1,5 +1,4 @@
-import { WsMetadata } from '../wsMessageData';
-
+import { ImageMetadata } from '@atlaskit/media-store';
 export interface RemoteUploadStartPayload {
   uploadId: string;
 }
@@ -22,7 +21,7 @@ export interface RemoteUploadFailPayload {
 
 export interface NotifyMetadataPayload {
   uploadId: string;
-  metadata: WsMetadata;
+  metadata: ImageMetadata;
 }
 
 export interface WsUploadEvents {

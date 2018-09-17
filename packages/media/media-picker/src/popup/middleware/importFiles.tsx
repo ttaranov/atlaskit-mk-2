@@ -208,7 +208,9 @@ export const importFilesFromRemoteService = (
     uploadId,
     (event, payload) => {
       if (event === 'NotifyMetadata') {
-        const preview = getPreviewFromPayload(payload as WsNotifyMetadata);
+        const preview = getPreviewFromPayload(
+          (payload as WsNotifyMetadata).metadata,
+        );
 
         store.dispatch(
           sendUploadEvent({

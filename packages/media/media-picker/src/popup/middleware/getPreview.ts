@@ -1,50 +1,52 @@
 import { Store, Dispatch, Middleware } from 'redux';
-
-import { Fetcher } from '../tools/fetcher/fetcher';
 import { GetPreviewAction, isGetPreviewAction } from '../actions/getPreview';
 import { State } from '../domain';
-import {
-  sendUploadEvent,
-  SendUploadEventAction,
-} from '../actions/sendUploadEvent';
+import { sendUploadEvent } from '../actions/sendUploadEvent';
+import { getPreviewFromPayload } from '../tools/websocket/wsMessageData';
 
-export default function(fetcher: Fetcher): Middleware {
+export default function(): Middleware {
   return store => (next: Dispatch<State>) => action => {
     if (isGetPreviewAction(action)) {
-      getPreview(fetcher, store as any, action);
+      getPreview(store as any, action);
     }
     return next(action);
   };
 }
 
 export async function getPreview(
-  fetcher: Fetcher,
   store: Store<State>,
   { uploadId, file, collection }: GetPreviewAction,
-): Promise<SendUploadEventAction> {
+) {
   const { userContext } = store.getState();
-  // TODO: try to replace fetcher.getPreview with getImageMetadata + getFileImageURL
-  const metadata = await userContext.getImageMetadata(file.id, {
-    collection,
-  });
+  const subscription = userContext
+    .getFile(file.id, { collectionName: collection })
+    .subscribe({
+      async next(state) {
+        if (state.status !== 'error') {
+          const { mediaType } = state;
+          // We need to wait for the next tick since rxjs might call "next" before returning from "subscribe"
+          setImmediate(() => subscription.unsubscribe());
 
-  console.log('getPreview', metadata);
+          if (mediaType === 'image') {
+            const metadata = await userContext.getImageMetadata(file.id, {
+              collection,
+            });
+            const preview = getPreviewFromPayload(metadata);
 
-  return userContext.config
-    .authProvider()
-    .then(auth => fetcher.getPreview(auth, file.id, collection))
-    .then(preview =>
-      store.dispatch(
-        sendUploadEvent({
-          event: {
-            name: 'upload-preview-update',
-            data: {
-              file,
-              preview,
-            },
-          },
-          uploadId,
-        }),
-      ),
-    );
+            store.dispatch(
+              sendUploadEvent({
+                event: {
+                  name: 'upload-preview-update',
+                  data: {
+                    file,
+                    preview,
+                  },
+                },
+                uploadId,
+              }),
+            );
+          }
+        }
+      },
+    });
 }
