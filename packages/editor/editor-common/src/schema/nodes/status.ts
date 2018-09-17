@@ -2,6 +2,7 @@ import { NodeSpec, Node as PMNode } from 'prosemirror-model';
 
 /**
  * @name status_node
+ * @stage 0
  */
 export interface StatusDefinition {
   type: 'status';

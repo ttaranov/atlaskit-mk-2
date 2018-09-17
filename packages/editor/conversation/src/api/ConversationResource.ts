@@ -56,7 +56,7 @@ export interface ResourceProvider {
     conversationId: string,
     commentId: string,
   ): Promise<Pick<Comment, 'conversationId' | 'commentId'>>;
-  updateUser(user: User): Promise<User>;
+  updateUser(user?: User): Promise<User | undefined>;
 }
 
 const getHighlightedComment = () => {
@@ -170,7 +170,7 @@ export class AbstractConversationResource implements ResourceProvider {
   /**
    * Updates a user in the store. Returns updated user
    */
-  async updateUser(user: User): Promise<User> {
+  async updateUser(user?: User): Promise<User | undefined> {
     return Promise.reject('Not implemented');
   }
 }
@@ -455,7 +455,7 @@ export class ConversationResource extends AbstractConversationResource {
   /**
    * Updates a user in the store. Returns updated user
    */
-  async updateUser(user: User): Promise<User> {
+  async updateUser(user?: User): Promise<User | undefined> {
     const { dispatch } = this;
     dispatch({ type: UPDATE_USER_SUCCESS, payload: { user } });
 

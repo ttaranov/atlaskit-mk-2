@@ -5,7 +5,7 @@ import RecentSearchClient, {
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
 import {
-  JiraObjectResult,
+  JiraResult,
   AnalyticsType,
   ResultType,
   ConfluenceObjectResult,
@@ -50,7 +50,7 @@ describe('RecentSearchClient', () => {
       const items = await searchClient.getRecentItems();
       expect(items).toHaveLength(1);
 
-      const item = items[0] as JiraObjectResult;
+      const item = items[0] as JiraResult;
       expect(item.resultId).toEqual('recent-objectId');
       expect(item.avatarUrl).toEqual('iconUrl');
       expect(item.name).toEqual('name');

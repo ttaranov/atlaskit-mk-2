@@ -48,7 +48,7 @@ export const Wrapper: ComponentClass<
   line-height: ${16 / 14};
   margin: 2px 2px 2px 0;
   padding: 1px 2px 2px 2px;
-  border-radius: ${akBorderRadius};
+  border-radius: ${akBorderRadius()}px;
   user-select: none;
   ${isInteractive} ${isSelected};
 `;

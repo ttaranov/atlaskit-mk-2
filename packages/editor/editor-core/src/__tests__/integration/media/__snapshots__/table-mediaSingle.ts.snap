@@ -92,9 +92,6 @@ Object {
                   ],
                   "type": "mediaSingle",
                 },
-                Object {
-                  "type": "paragraph",
-                },
               ],
               "type": "tableCell",
             },

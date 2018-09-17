@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/logo",
-  "version": "9.1.0",
+  "version": "9.2.0",
   "description": "A React component that highlights status for quick recognition",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",

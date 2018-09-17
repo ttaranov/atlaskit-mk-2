@@ -2,7 +2,7 @@
 // prettier-ignore
 import { css, Styles, StyledComponentClass, InterpolationFunction, ThemeProps } from 'styled-components';
 import { gridSize, fontSize, borderRadius } from '@atlaskit/theme';
-import { relativeSize } from '../consts';
+import { relativeSize, akEditorElementMinWidth } from '../consts';
 
 export const panelSharedStyles = css`
   & .ak-editor-panel {
@@ -10,6 +10,7 @@ export const panelSharedStyles = css`
     margin: ${relativeSize(1.142)}px 0;
     font-size: ${fontSize}px;
     padding: ${gridSize}px;
+    min-width: ${akEditorElementMinWidth}px;
 
     .ak-editor-panel__icon {
       position: absolute;

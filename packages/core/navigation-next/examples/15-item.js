@@ -28,6 +28,7 @@ import {
   SkeletonItem,
   ThemeProvider,
 } from '../src';
+import { CONTENT_NAV_WIDTH } from '../src/common/constants';
 
 const themeModes = { light, dark, settings };
 
@@ -494,7 +495,7 @@ const VariationWrapper = props => (
   <div css={{ margin: '0 24px 24px 0' }} {...props} />
 );
 const ItemWrapper = props => (
-  <div css={{ margin: '4px 0', width: '270px' }} {...props} />
+  <div css={{ margin: '4px 0', width: `${CONTENT_NAV_WIDTH}px` }} {...props} />
 );
 
 export default () => (

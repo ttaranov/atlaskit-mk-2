@@ -1,3 +1,4 @@
+import { EditorState, Selection } from 'prosemirror-state';
 import { Decoration, DecorationSet } from 'prosemirror-view';
 import {
   akColorR400,
@@ -10,6 +11,8 @@ import {
 } from '@atlaskit/util-shared-styles';
 
 import { hexToRgba } from '@atlaskit/editor-common';
+
+import { CollabEditOptions } from './types';
 
 export interface Color {
   solid: string;
@@ -91,4 +94,29 @@ export const createTelepointers = (
   return decorations.concat(
     (Decoration as any).widget(to, cursor, { pointer: { sessionId } }),
   );
+};
+
+export const replaceDocument = (
+  doc: any,
+  state: EditorState,
+  version?: number,
+  options?: CollabEditOptions,
+) => {
+  const { schema, tr } = state;
+
+  const content = (doc.content || []).map(child => schema.nodeFromJSON(child));
+
+  if (content.length) {
+    tr.setMeta('addToHistory', false);
+    tr.replaceWith(0, state.doc.nodeSize - 2, content);
+    tr.setSelection(Selection.atStart(tr.doc));
+    tr.scrollIntoView();
+
+    if (typeof version !== undefined && (options && options.useNativePlugin)) {
+      const collabState = { version, unconfirmed: [] };
+      tr.setMeta('collab$', collabState);
+    }
+  }
+
+  return tr;
 };

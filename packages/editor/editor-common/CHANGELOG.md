@@ -1,5 +1,14 @@
 # @atlaskit/editor-common
 
+## 16.1.3
+- [patch] use new tsconfig for typechecking [09df171](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/09df171)
+
+## 16.1.2
+- [patch] Fix generator to work with TS3 [4040b00](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4040b00)
+
+## 16.1.1
+- [patch] Fix popup positioning when inside overflow:auto containers [affe5df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/affe5df)
+
 ## 16.1.0
 - [minor] FS-2961 Introduce status component and status node in editor [7fe2b0a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7fe2b0a)
 

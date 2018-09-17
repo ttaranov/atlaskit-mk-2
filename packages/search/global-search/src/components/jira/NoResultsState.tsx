@@ -28,7 +28,10 @@ export default class NoResultsState extends React.Component<Props> {
         />
         <ResultItemGroup title="" key="advanced-search">
           <Container>
-            <JiraAdvancedSearch query={query} />
+            <JiraAdvancedSearch
+              query={query}
+              analyticsData={{ resultsCount: 0, wasOnNoResultsScreen: true }}
+            />
           </Container>
         </ResultItemGroup>
       </>

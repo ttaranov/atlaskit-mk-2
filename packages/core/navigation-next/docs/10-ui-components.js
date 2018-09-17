@@ -188,6 +188,24 @@ Separates a group of items. This component takes no props.
 
 ${<Hr />}
 
+${<H>SkeletonContainerView</H>}
+
+Renders a skeleton view. The \`LayoutManagerWithViewController\` will automatically render a skeleton when there is no active view data to display, so you should only need to use this component directly if you're using custom view rendering logic.
+
+This component takes no props.
+
+${(
+    <Example
+      Component={
+        require('./examples/ui-components/SkeletonContainerView').default
+      }
+      title="SkeletonContainerView"
+      source={require('!!raw-loader!./examples/ui-components/SkeletonContainerView')}
+    />
+  )}
+
+${<Hr />}
+
 ${<H>Switcher</H>}
 
 The Switcher component should be used within container navigation for switching projects or boards.

@@ -1,5 +1,11 @@
 # @atlaskit/datetime-picker
 
+## 6.3.9
+- [patch] Fixes bug on next and prev month navigation. [c4770a0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c4770a0)
+
+## 6.3.8
+- [patch] TimePicker not longer throws console error when input cleared [dba1bb0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dba1bb0)
+
 ## 6.3.7
 - [patch] Updated dependencies [d5a043a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5a043a)
   - @atlaskit/icon@13.8.1

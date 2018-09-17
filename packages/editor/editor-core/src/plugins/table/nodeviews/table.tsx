@@ -9,7 +9,7 @@ import { akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
 import { EventDispatcher } from '../../../event-dispatcher';
 import ReactNodeView from '../../../nodeviews/ReactNodeView';
 import { PortalProviderAPI } from '../../../ui/PortalProvider';
-import { parseDOMColumnWidths } from '../utils';
+import { parseDOMColumnWidths, generateColgroup } from '../utils';
 import TableComponent from './TableComponent';
 
 import WithPluginState from '../../../ui/WithPluginState';
@@ -23,6 +23,7 @@ export interface Props {
   cellMinWidth?: number;
   portalProviderAPI: PortalProviderAPI;
   eventDispatcher?: EventDispatcher;
+  UNSAFE_allowFlexiColumnResizing?: boolean;
   getPos: () => number;
 }
 
@@ -34,13 +35,21 @@ const tableAttributes = (node: PmNode) => {
   };
 };
 
-const toDOM = (node: PmNode, props: Props) =>
-  [
+const toDOM = (node: PmNode, props: Props) => {
+  let colgroup: DOMOutputSpec = '';
+
+  if (props.allowColumnResizing) {
+    // @ts-ignore
+    colgroup = ['colgroup', {}].concat(generateColgroup(node));
+  }
+
+  return [
     'table',
     tableAttributes(node),
-    props.allowColumnResizing ? ['colgroup'] : '',
+    colgroup,
     ['tbody', 0],
   ] as DOMOutputSpec;
+};
 
 export default class TableView extends ReactNodeView {
   private table: HTMLElement | undefined;

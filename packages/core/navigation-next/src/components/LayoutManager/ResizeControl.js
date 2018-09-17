@@ -12,7 +12,11 @@ import MenuIcon from '@atlaskit/icon/glyph/menu';
 import Tooltip from '@atlaskit/tooltip';
 
 import { navigationExpandedCollapsed } from '../../common/analytics';
-import { GLOBAL_NAV_WIDTH, CONTENT_NAV_WIDTH } from '../../common/constants';
+import {
+  GLOBAL_NAV_WIDTH,
+  CONTENT_NAV_WIDTH,
+  CONTENT_NAV_WIDTH_COLLAPSED,
+} from '../../common/constants';
 import { Shadow } from '../../common/primitives';
 import PropertyToggle from './PropertyToggle';
 
@@ -54,14 +58,12 @@ type ButtonProps = {
   children: Node,
   hasHighlight: boolean,
   innerRef: Ref<'button'>,
-  isOffset: boolean,
   isVisible: boolean,
 };
 const Button = ({
   children,
   hasHighlight,
   innerRef,
-  isOffset,
   isVisible,
   ...props
 }: ButtonProps) => (
@@ -88,7 +90,7 @@ const Button = ({
         opacity 300ms cubic-bezier(0.2, 0, 0, 1),
         transform 300ms cubic-bezier(0.2, 0, 0, 1)
       `,
-      transform: `translate(${isOffset ? '8px' : '-50%'})`,
+      transform: `translate(-50%)`,
       width: 24,
 
       ':hover': {
@@ -238,10 +240,10 @@ class ResizeControl extends PureComponent<Props, State> {
     // if the product nav is collapsed and the consumer starts dragging it open
     // we must expand it and drag should start from 0.
     if (isCollapsed) {
-      initialWidth = 0;
+      initialWidth = CONTENT_NAV_WIDTH_COLLAPSED;
       didDragOpen = true;
       navigation.manualResizeStart({
-        productNavWidth: 0,
+        productNavWidth: CONTENT_NAV_WIDTH_COLLAPSED,
         isCollapsed: false,
       });
     } else {
@@ -266,10 +268,15 @@ class ResizeControl extends PureComponent<Props, State> {
     }
 
     // allow the product nav to be 75% of the available page width
-    const maxWidth = window.innerWidth / 4 * 3;
-    const adjustedMax = Math.round(maxWidth) - initialWidth - GLOBAL_NAV_WIDTH;
+    const maxWidth = Math.round(window.innerWidth / 4 * 3);
+    const minWidth = CONTENT_NAV_WIDTH_COLLAPSED;
+    const adjustedMax = maxWidth - initialWidth - GLOBAL_NAV_WIDTH;
+    const adjustedMin = minWidth - initialWidth;
 
-    const delta = Math.min(event.pageX - initialX, adjustedMax);
+    const delta = Math.max(
+      Math.min(event.pageX - initialX, adjustedMax),
+      adjustedMin,
+    );
     const width = initialWidth + delta;
 
     // apply updated styles to the applicable DOM nodes
@@ -277,7 +284,7 @@ class ResizeControl extends PureComponent<Props, State> {
 
     // NOTE: hijack the maual resize and force collapse, cancels mouse events
     if (event.screenX < window.screenX) {
-      this.setState({ width: 0 });
+      this.setState({ width: CONTENT_NAV_WIDTH_COLLAPSED });
       this.handleResizeEnd();
     } else {
       // maintain internal width, applied to navigation state on resize end
@@ -368,7 +375,6 @@ class ResizeControl extends PureComponent<Props, State> {
     const button = (
       <Button
         onClick={this.onResizerChevronClick}
-        isOffset={isCollapsed}
         // maintain styles when user is dragging
         isVisible={isCollapsed || mouseIsDown || mouseIsOverNavigation}
         hasHighlight={mouseIsDown || mouseIsOverGrabArea}

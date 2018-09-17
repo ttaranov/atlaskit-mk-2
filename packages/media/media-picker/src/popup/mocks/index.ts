@@ -22,7 +22,6 @@ export const mockState: State = {
   },
   accounts: [],
   recents: {
-    nextKey: 'some-recents-next-key',
     items: [],
   },
   selectedItems: [],

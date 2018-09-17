@@ -1,5 +1,14 @@
 # @atlaskit/feature-flag-client
 
+## 1.0.1
+- [patch] MEP-103: Adding missing source to event shape [0e870d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0e870d8)
+
+## 1.0.0
+- [major] Receive analyticsHandler instead of analyticClient [f082105](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f082105)
+
+## 0.1.0
+- [minor] Implementing new version of the feature flag client [a7dbdbb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a7dbdbb)
+
 ## 0.0.4
 - [patch] Updated dependencies [6e1d642](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e1d642)
   - @atlaskit/renderer@22.0.0

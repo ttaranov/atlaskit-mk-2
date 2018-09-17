@@ -10,7 +10,7 @@ export const media: NodeEncoder = (node: PMNode): string => {
     wikiAttrs.push(`height=${node.attrs.height}`);
   }
   if (wikiAttrs.length) {
-    return `!${node.attrs.id}|${wikiAttrs.join(',')}`;
+    return `!${node.attrs.id}|${wikiAttrs.join(',')}!`;
   }
   // default to thumbnail if no width or height is set
   return `!${node.attrs.id}|thumbnail!`;

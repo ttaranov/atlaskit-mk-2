@@ -1,4 +1,4 @@
-import { EditorState, Transaction } from 'prosemirror-state';
+import { EditorState } from 'prosemirror-state';
 import { findTable, findParentNodeOfType } from 'prosemirror-utils';
 import { DecorationSet } from 'prosemirror-view';
 import { TableMap } from 'prosemirror-tables';
@@ -35,6 +35,12 @@ export const handleSetTargetCellRef = (targetCellRef?: HTMLElement) => (
   pluginState: TablePluginState,
   dispatch: Dispatch,
 ): TablePluginState => {
+  // If our target isn't an element (e.g. text node), we don't want to use it.
+  // Since we need bounding information etc.
+  if (targetCellRef && !(targetCellRef instanceof HTMLTableCellElement)) {
+    targetCellRef = undefined;
+  }
+
   const nextPluginState = {
     ...pluginState,
     targetCellRef,
@@ -122,7 +128,6 @@ export const handleHoverTable = (
 export const handleDocChanged = (state: EditorState) => (
   pluginState: TablePluginState,
   dispatch: Dispatch,
-  tr: Transaction,
 ): TablePluginState => {
   const table = findTable(state.selection);
   const tableNode = table ? table.node : undefined;
@@ -130,16 +135,11 @@ export const handleDocChanged = (state: EditorState) => (
     pluginState.tableNode !== tableNode ||
     pluginState.hoverDecoration !== DecorationSet.empty
   ) {
-    const { tableCell, tableHeader } = state.schema.nodes;
-    const cell = findParentNodeOfType([tableCell, tableHeader])(tr.selection);
-    const targetCellPosition = cell ? cell.pos : undefined;
-
     const nextPluginState = {
       ...pluginState,
       // @see: https://product-fabric.atlassian.net/browse/ED-3796
       ...defaultTableSelection,
       tableNode,
-      targetCellPosition,
     };
     dispatch(pluginKey, nextPluginState);
     return nextPluginState;

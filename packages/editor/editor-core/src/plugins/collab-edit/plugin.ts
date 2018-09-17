@@ -110,6 +110,16 @@ export const createPlugin = (
               .on('data', data => applyRemoteData(data, view, options))
               .on('presence', data => handlePresence(data, view))
               .on('telepointer', data => handleTelePointer(data, view))
+              .on('local-steps', data => {
+                const { steps } = data;
+                const { state } = view;
+
+                const { tr } = state;
+                steps.forEach(step => tr.step(step));
+
+                const newState = state.apply(tr);
+                view.updateState(newState);
+              })
               .on('error', err => {
                 // TODO: Handle errors property (ED-2580)
               })

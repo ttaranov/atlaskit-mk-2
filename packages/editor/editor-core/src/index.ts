@@ -57,6 +57,7 @@ export {
   toggleEm,
   toggleStrong,
 } from './plugins/text-formatting/commands/text-formatting';
+export { EventDispatcher } from './event-dispatcher';
 
 // Used in editor-test-helpers
 export { setTextSelection } from './utils';

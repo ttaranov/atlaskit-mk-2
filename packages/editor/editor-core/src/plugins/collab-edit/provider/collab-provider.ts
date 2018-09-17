@@ -1,5 +1,5 @@
 import { EventEmitter2 } from 'eventemitter2';
-import { getVersion } from 'prosemirror-collab';
+import { getVersion, sendableSteps } from 'prosemirror-collab';
 import { Transaction, EditorState } from 'prosemirror-state';
 import {
   CollabEditProvider,
@@ -77,6 +77,9 @@ export class CollabProvider implements CollabEditProvider {
     }
   }
 
+  private queueTimeout?: number;
+  private pauseQueue: boolean = false;
+
   private queueData(data: StepResponse) {
     logger(`Queuing data for version ${data.version}`);
     const orderedQueue = [...this.queue, data].sort(
@@ -84,9 +87,69 @@ export class CollabProvider implements CollabEditProvider {
     );
 
     this.queue = orderedQueue;
+
+    if (!this.queueTimeout && !this.pauseQueue) {
+      this.queueTimeout = setTimeout(() => {
+        this.catchup();
+      }, 1000);
+    }
+  }
+
+  private async catchup() {
+    this.pauseQueue = true;
+
+    logger(`Too far behind - fetching data from service`);
+
+    const currentVersion = getVersion(this.getState());
+
+    try {
+      const { doc, version, steps } = await this.channel.getSteps(
+        currentVersion,
+      );
+
+      /**
+       * Remove steps from queue where the version is older than
+       * the version we received from service. Keep steps that might be
+       * newer.
+       */
+      this.queue = this.queue.filter(data => data.version > version);
+
+      // We are too far behind - replace the entire document
+      if (doc) {
+        logger(`Replacing document.`);
+        const { userId } = this.config;
+
+        const { steps: localSteps = [] } = sendableSteps(this.getState()) || {};
+
+        // Replace local document and version number
+        this.emit('init', { sid: userId, doc, version });
+
+        // Re-aply local steps
+        if (localSteps.length) {
+          this.emit('local-steps', { steps: localSteps });
+        }
+
+        clearTimeout(this.queueTimeout);
+        this.pauseQueue = false;
+        this.queueTimeout = undefined;
+      } else if (steps) {
+        logger(`Applying the new steps. Version: ${version}`);
+        this.onReceiveData({ steps, version }, true);
+        clearTimeout(this.queueTimeout);
+        this.pauseQueue = false;
+        this.queueTimeout = undefined;
+      }
+    } catch (err) {
+      logger(`Unable to get latest steps: ${err}`);
+    }
   }
 
   private processQeueue() {
+    if (this.pauseQueue) {
+      logger(`Queue is paused. Aborting.`);
+      return;
+    }
+
     logger(`Looking for proccessable data`);
 
     if (this.queue.length === 0) {
@@ -104,7 +167,12 @@ export class CollabProvider implements CollabEditProvider {
     }
   }
 
-  private processRemoteData = (data: StepResponse) => {
+  private processRemoteData = (data: StepResponse, forceApply?: boolean) => {
+    if (this.pauseQueue && !forceApply) {
+      logger(`Queue is paused. Aborting.`);
+      return;
+    }
+
     const { version, steps } = data;
 
     logger(`Processing data. Version: ${version}`);
@@ -117,14 +185,14 @@ export class CollabProvider implements CollabEditProvider {
     this.processQeueue();
   };
 
-  private onReceiveData = (data: StepResponse) => {
+  private onReceiveData = (data: StepResponse, forceApply?: boolean) => {
     const currentVersion = getVersion(this.getState());
     const expectedVersion = currentVersion + data.steps.length;
 
     if (data.version === currentVersion) {
       logger(`Received data we already have. Ignoring.`);
     } else if (data.version === expectedVersion) {
-      this.processRemoteData(data);
+      this.processRemoteData(data, forceApply);
     } else if (data.version > expectedVersion) {
       logger(
         `Version too high. Expected ${expectedVersion} but got ${

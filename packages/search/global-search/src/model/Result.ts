@@ -35,6 +35,11 @@ export type ResultsWithTiming = {
     [key: string]: number | string;
   };
   experimentId?: string;
+  abTest?: {
+    abTestId?: string;
+    controlId?: string;
+    experimentId?: string;
+  };
 };
 
 export interface ConfluenceResultsMap extends GenericResultMap {
@@ -64,7 +69,7 @@ export type ResultsGroup = {
   titleI18nId: string;
 };
 
-export interface JiraObjectResult extends Result {
+export interface JiraResult extends Result {
   objectKey?: string;
   containerName?: string;
   resultType: ResultType.JiraObjectResult;
@@ -99,11 +104,12 @@ export enum ContentType {
 
 export enum AnalyticsType {
   RecentJira = 'recent-jira',
-  RecentConfluence = 'recent-confluence',
   ResultJira = 'result-jira',
+  RecentConfluence = 'recent-confluence',
   ResultConfluence = 'result-confluence',
+  RecentPerson = 'recent-person',
   ResultPerson = 'result-person',
-  AdvancedSearchJira = 'advanced-search-jira',
   AdvancedSearchConfluence = 'advanced-search-confluence',
+  AdvancedSearchJira = 'advanced-search-jira',
   AdvancedSearchPeople = 'advanced-search-people',
 }

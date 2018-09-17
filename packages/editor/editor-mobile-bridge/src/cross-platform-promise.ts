@@ -1,4 +1,4 @@
-import { toNativeBridge } from './web-to-native';
+import { toNativeBridge } from './editor/web-to-native';
 
 const pendingPromises: Map<string, Holder<any>> = new Map<
   string,
