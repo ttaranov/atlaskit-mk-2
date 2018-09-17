@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { EditorView } from 'prosemirror-view';
 import ImageIcon from '@atlaskit/icon/glyph/editor/image';
-import { analyticsDecorator as analytics } from '../../../../analytics';
+import { withAnalytics } from '../../../../analytics';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import { ImageUploadState } from '../../pm-plugins/main';
 
@@ -46,8 +46,8 @@ export default class ToolbarImage extends React.PureComponent<Props, State> {
     });
   };
 
-  @analytics('atlassian.editor.image.button')
-  private handleInsertImage = () => {
-    return this.props.pluginState.handleImageUpload(this.props.editorView);
-  };
+  private handleInsertImage = withAnalytics(
+    'atlassian.editor.image.button',
+    () => this.props.pluginState.handleImageUpload(this.props.editorView),
+  );
 }

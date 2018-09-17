@@ -3,7 +3,7 @@ import { PureComponent } from 'react';
 import { EditorView } from 'prosemirror-view';
 import BoldIcon from '@atlaskit/icon/glyph/editor/bold';
 import ItalicIcon from '@atlaskit/icon/glyph/editor/italic';
-import { analyticsDecorator as analytics } from '../../../../analytics';
+import { withAnalytics } from '../../../../analytics';
 import { toggleBold, toggleItalic, tooltip } from '../../../../keymaps';
 import { TextFormattingState } from '../../pm-plugins/main';
 import ToolbarButton from '../../../../ui/ToolbarButton';
@@ -56,23 +56,27 @@ export default class ToolbarTextFormatting extends PureComponent<Props> {
     );
   }
 
-  @analytics('atlassian.editor.format.strong.button')
-  private handleBoldClick = (): boolean => {
-    const { strongDisabled } = this.props.textFormattingState;
-    if (!strongDisabled) {
-      const { state, dispatch } = this.props.editorView;
-      return toggleStrong()(state, dispatch);
-    }
-    return false;
-  };
+  private handleBoldClick = withAnalytics(
+    'atlassian.editor.format.strong.button',
+    () => {
+      const { strongDisabled } = this.props.textFormattingState;
+      if (!strongDisabled) {
+        const { state, dispatch } = this.props.editorView;
+        return toggleStrong()(state, dispatch);
+      }
+      return false;
+    },
+  );
 
-  @analytics('atlassian.editor.format.em.button')
-  private handleItalicClick = (): boolean => {
-    const { emDisabled } = this.props.textFormattingState;
-    if (!emDisabled) {
-      const { state, dispatch } = this.props.editorView;
-      return toggleEm()(state, dispatch);
-    }
-    return false;
-  };
+  private handleItalicClick = withAnalytics(
+    'atlassian.editor.format.em.button',
+    (): boolean => {
+      const { emDisabled } = this.props.textFormattingState;
+      if (!emDisabled) {
+        const { state, dispatch } = this.props.editorView;
+        return toggleEm()(state, dispatch);
+      }
+      return false;
+    },
+  );
 }

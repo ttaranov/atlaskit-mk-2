@@ -6,5 +6,5 @@ export {
   hermentHandler,
   debugHandler,
 } from './handler';
-export { default as analyticsDecorator } from './decorator';
+export { withAnalytics } from './withAnalytics';
 export { default as trackAndInvoke } from './trackAndInvoke';

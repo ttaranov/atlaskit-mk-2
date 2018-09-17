@@ -4,7 +4,6 @@
     "allowJs": false,
     "alwaysStrict": true,
     "declaration": true,
-    "experimentalDecorators": true,
     "importHelpers": true,
     "jsx": "react",
     "moduleResolution": "node",

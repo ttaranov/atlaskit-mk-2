@@ -25,8 +25,8 @@ import { contextualMenuDropdownWidth } from '../styles';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import DropdownMenu from '../../../../ui/DropdownMenu';
 import {
-  analyticsDecorator,
   analyticsService as analytics,
+  withAnalytics,
 } from '../../../../analytics';
 import ColorPalette from '../../../../ui/ColorPalette';
 
@@ -299,16 +299,18 @@ export default class ContextualMenu extends Component<Props, State> {
     }
   };
 
-  @analyticsDecorator('atlassian.editor.format.table.backgroundColor.button')
-  private setColor = color => {
-    const { targetCellPosition, editorView } = this.props;
-    const { state, dispatch } = editorView;
-    setMultipleCellAttrs({ background: color }, targetCellPosition)(
-      state,
-      dispatch,
-    );
-    this.toggleOpen();
-  };
+  private setColor = withAnalytics(
+    'atlassian.editor.format.table.backgroundColor.button',
+    color => {
+      const { targetCellPosition, editorView } = this.props;
+      const { state, dispatch } = editorView;
+      setMultipleCellAttrs({ background: color }, targetCellPosition)(
+        state,
+        dispatch,
+      );
+      this.toggleOpen();
+    },
+  );
 }
 
 export const getSelectedColumnIndexes = (selectionRect: CellRect): number[] => {

@@ -5,7 +5,7 @@ import BulletListIcon from '@atlaskit/icon/glyph/editor/bullet-list';
 import NumberListIcon from '@atlaskit/icon/glyph/editor/number-list';
 import TaskIcon from '@atlaskit/icon/glyph/editor/task';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
-import { analyticsDecorator as analytics } from '../../../../analytics';
+import { withAnalytics } from '../../../../analytics';
 import {
   toggleBulletList as toggleBulletListKeymap,
   toggleOrderedList as toggleOrderedListKeymap,
@@ -182,31 +182,37 @@ export default class ToolbarLists extends PureComponent<Props, State> {
     }
   }
 
-  @analytics('atlassian.editor.format.list.bullet.button')
-  private handleBulletListClick = () => {
-    if (!this.props.bulletListDisabled) {
-      return toggleBulletList(this.props.editorView);
-    }
-    return false;
-  };
-
-  @analytics('atlassian.editor.format.list.numbered.button')
-  private handleOrderedListClick = () => {
-    if (!this.props.orderedListDisabled) {
-      return toggleOrderedList(this.props.editorView);
-    }
-    return false;
-  };
-
-  @analytics('atlassian.fabric.action.trigger.button')
-  private handleCreateAction = (): boolean => {
-    const { editorView } = this.props;
-    if (!editorView) {
+  private handleBulletListClick = withAnalytics(
+    'atlassian.editor.format.list.bullet.button',
+    () => {
+      if (!this.props.bulletListDisabled) {
+        return toggleBulletList(this.props.editorView);
+      }
       return false;
-    }
-    changeToTaskDecision(editorView, 'taskList');
-    return true;
-  };
+    },
+  );
+
+  private handleOrderedListClick = withAnalytics(
+    'atlassian.editor.format.list.numbered.button',
+    () => {
+      if (!this.props.orderedListDisabled) {
+        return toggleOrderedList(this.props.editorView);
+      }
+      return false;
+    },
+  );
+
+  private handleCreateAction = withAnalytics(
+    'atlassian.fabric.action.trigger.button',
+    (): boolean => {
+      const { editorView } = this.props;
+      if (!editorView) {
+        return false;
+      }
+      changeToTaskDecision(editorView, 'taskList');
+      return true;
+    },
+  );
 
   private onItemActivated = ({ item }) => {
     this.setState({ isDropdownOpen: false });

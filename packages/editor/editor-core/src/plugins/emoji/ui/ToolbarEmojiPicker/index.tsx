@@ -10,7 +10,7 @@ import {
   EmojiProvider,
   EmojiId,
 } from '@atlaskit/emoji';
-import { analyticsDecorator as analytics } from '../../../../analytics';
+import { withAnalytics } from '../../../../analytics';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import { EmojiState } from '../../pm-plugins/main';
 import { OuterContainer } from './styles';
@@ -215,13 +215,15 @@ export default class ToolbarEmojiPicker extends PureComponent<Props, State> {
     );
   }
 
-  @analytics('atlassian.editor.emoji.button')
-  private handleSelectedEmoji = (emojiId: EmojiId): boolean => {
-    if (this.state.isOpen && this.pluginState) {
-      this.pluginState.insertEmoji(emojiId);
-      this.close();
-      return true;
-    }
-    return false;
-  };
+  private handleSelectedEmoji = withAnalytics(
+    'atlassian.editor.emoji.button',
+    (emojiId: EmojiId): boolean => {
+      if (this.state.isOpen && this.pluginState) {
+        this.pluginState.insertEmoji(emojiId);
+        this.close();
+        return true;
+      }
+      return false;
+    },
+  );
 }

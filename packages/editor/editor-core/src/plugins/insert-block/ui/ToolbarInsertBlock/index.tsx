@@ -28,7 +28,7 @@ import { Popup } from '@atlaskit/editor-common';
 import EditorActions from '../../../../actions';
 import {
   analyticsService as analytics,
-  analyticsDecorator,
+  withAnalytics,
 } from '../../../../analytics';
 import {
   toggleTable,
@@ -454,88 +454,108 @@ export default class ToolbarInsertBlock extends React.PureComponent<
     return items;
   };
 
-  @analyticsDecorator('atlassian.editor.format.hyperlink.button')
-  private toggleLinkPanel = (): boolean => {
-    const { editorView } = this.props;
-    showLinkToolbar()(editorView.state, editorView.dispatch);
-    return true;
-  };
+  private toggleLinkPanel = withAnalytics(
+    'atlassian.editor.format.hyperlink.button',
+    (): boolean => {
+      const { editorView } = this.props;
+      showLinkToolbar()(editorView.state, editorView.dispatch);
+      return true;
+    },
+  );
 
-  @analyticsDecorator('atlassian.fabric.mention.picker.trigger.button')
-  private insertMention = (): boolean => {
-    const { insertMentionQuery } = this.props;
-    insertMentionQuery!();
-    return true;
-  };
+  private insertMention = withAnalytics(
+    'atlassian.fabric.mention.picker.trigger.button',
+    (): boolean => {
+      const { insertMentionQuery } = this.props;
+      insertMentionQuery!();
+      return true;
+    },
+  );
 
-  @analyticsDecorator('atlassian.editor.format.table.button')
-  private createTable = (): boolean => {
-    const { editorView } = this.props;
-    createTable(editorView.state, editorView.dispatch);
-    return true;
-  };
+  private createTable = withAnalytics(
+    'atlassian.editor.format.table.button',
+    (): boolean => {
+      const { editorView } = this.props;
+      createTable(editorView.state, editorView.dispatch);
+      return true;
+    },
+  );
 
-  @analyticsDecorator('atlassian.editor.format.date.button')
-  private createDate = (): boolean => {
-    const { editorView } = this.props;
-    insertDate()(editorView.state, editorView.dispatch);
-    openDatePicker(editorView.domAtPos.bind(editorView))(
-      editorView.state,
-      editorView.dispatch,
-    );
-    return true;
-  };
-
-  @analyticsDecorator('atlassian.editor.format.placeholder.button')
-  private createPlaceholderText = (): boolean => {
-    const { editorView } = this.props;
-    showPlaceholderFloatingToolbar(editorView.state, editorView.dispatch);
-    return true;
-  };
-
-  @analyticsDecorator('atlassian.editor.format.layout.button')
-  private insertLayoutColumns = (): boolean => {
-    const { editorView } = this.props;
-    insertLayoutColumns(editorView.state, editorView.dispatch);
-    return true;
-  };
-
-  @analyticsDecorator('atlassian.editor.format.media.button')
-  private openMediaPicker = (): boolean => {
-    const { onShowMediaPicker } = this.props;
-    onShowMediaPicker!();
-    return true;
-  };
-
-  @analyticsDecorator('atlassian.editor.format.decision.button')
-  private insertDecision = (): boolean => {
-    const { editorView } = this.props;
-    if (!editorView) {
-      return false;
-    }
-    changeToTaskDecision(editorView, 'decisionList');
-    return true;
-  };
-
-  @analyticsDecorator('atlassian.editor.format.horizontalrule.button')
-  private insertHorizontalRule = (): boolean => {
-    const { editorView } = this.props;
-    editorView.dispatch(
-      createHorizontalRule(
+  private createDate = withAnalytics(
+    'atlassian.editor.format.date.button',
+    (): boolean => {
+      const { editorView } = this.props;
+      insertDate()(editorView.state, editorView.dispatch);
+      openDatePicker(editorView.domAtPos.bind(editorView))(
         editorView.state,
-        editorView.state.selection.from,
-        editorView.state.selection.to,
-      ),
-    );
-    return true;
-  };
+        editorView.dispatch,
+      );
+      return true;
+    },
+  );
 
-  @analyticsDecorator('atlassian.editor.emoji.button')
-  private handleSelectedEmoji = (emojiId: EmojiId): boolean => {
-    this.props.insertEmoji!(emojiId);
-    this.toggleEmojiPicker();
-    return true;
-  };
+  private createPlaceholderText = withAnalytics(
+    'atlassian.editor.format.placeholder.button',
+    (): boolean => {
+      const { editorView } = this.props;
+      showPlaceholderFloatingToolbar(editorView.state, editorView.dispatch);
+      return true;
+    },
+  );
+
+  private insertLayoutColumns = withAnalytics(
+    'atlassian.editor.format.layout.button',
+    (): boolean => {
+      const { editorView } = this.props;
+      insertLayoutColumns(editorView.state, editorView.dispatch);
+      return true;
+    },
+  );
+
+  private openMediaPicker = withAnalytics(
+    'atlassian.editor.format.media.button',
+    (): boolean => {
+      const { onShowMediaPicker } = this.props;
+      onShowMediaPicker!();
+      return true;
+    },
+  );
+
+  private insertDecision = withAnalytics(
+    'atlassian.editor.format.decision.button',
+    (): boolean => {
+      const { editorView } = this.props;
+      if (!editorView) {
+        return false;
+      }
+      changeToTaskDecision(editorView, 'decisionList');
+      return true;
+    },
+  );
+
+  private insertHorizontalRule = withAnalytics(
+    'atlassian.editor.format.horizontalrule.button',
+    (): boolean => {
+      const { editorView } = this.props;
+      editorView.dispatch(
+        createHorizontalRule(
+          editorView.state,
+          editorView.state.selection.from,
+          editorView.state.selection.to,
+        ),
+      );
+      return true;
+    },
+  );
+
+  private handleSelectedEmoji = withAnalytics(
+    'atlassian.editor.emoji.button',
+    (emojiId: EmojiId): boolean => {
+      this.props.insertEmoji!(emojiId);
+      this.toggleEmojiPicker();
+      return true;
+    },
+  );
 
   private onItemActivated = ({ item }): void => {
     const {

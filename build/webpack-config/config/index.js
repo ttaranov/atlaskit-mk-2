@@ -104,17 +104,9 @@ module.exports = function createWebpackConfig(
           loader: require.resolve('gray-matter-loader'),
         },
         {
-          test: /\.js$/,
+          test: /\.[jt]sx?$/,
           exclude: /node_modules/,
           loader: 'happypack/loader',
-        },
-        {
-          test: /\.tsx?$/,
-          exclude: /node_modules/,
-          loader: require.resolve('ts-loader'),
-          options: {
-            transpileOnly: true,
-          },
         },
 
         {
@@ -214,7 +206,14 @@ function getPlugins(
     }),
 
     new HappyPack({
-      loaders: ['babel-loader?cacheDirectory=true'],
+      loaders: [
+        {
+          loader: 'babel-loader',
+          options: {
+            configFile: require.resolve('../../../.babelrc.js'),
+          },
+        },
+      ],
     }),
   ];
 

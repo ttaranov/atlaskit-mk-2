@@ -3,7 +3,7 @@ import { PureComponent } from 'react';
 import { PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import AttachmentIcon from '@atlaskit/icon/glyph/editor/attachment';
-import { analyticsDecorator as analytics } from '../../../../analytics';
+import { withAnalytics } from '../../../../analytics';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import { MediaPluginState } from '../../pm-plugins/main';
 
@@ -73,9 +73,11 @@ export default class ToolbarMedia extends PureComponent<Props, State> {
     });
   };
 
-  @analytics('atlassian.editor.media.button')
-  private handleClickMediaButton = () => {
-    this.pluginState!.showMediaPicker();
-    return true;
-  };
+  private handleClickMediaButton = withAnalytics(
+    'atlassian.editor.media.button',
+    () => {
+      this.pluginState!.showMediaPicker();
+      return true;
+    },
+  );
 }

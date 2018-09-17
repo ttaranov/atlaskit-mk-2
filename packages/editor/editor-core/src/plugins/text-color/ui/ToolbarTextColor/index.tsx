@@ -1,7 +1,7 @@
 import * as React from 'react';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import TextColourIcon from '@atlaskit/icon/glyph/editor/text-color';
-import { analyticsDecorator as analytics } from '../../../../analytics';
+import { withAnalytics } from '../../../../analytics';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import ColorPalette from '../../../../ui/ColorPalette';
 import Dropdown from '../../../../ui/Dropdown';
@@ -87,15 +87,17 @@ export default class ToolbarTextColor extends React.Component<Props, State> {
     );
   }
 
-  @analytics('atlassian.editor.format.textcolor.button')
-  private changeTextColor = (color, disabled) => {
-    if (!disabled) {
-      this.toggleOpen();
-      return this.props.changeColor(color);
-    }
+  private changeTextColor = withAnalytics(
+    'atlassian.editor.format.textcolor.button',
+    (color, disabled) => {
+      if (!disabled) {
+        this.toggleOpen();
+        return this.props.changeColor(color);
+      }
 
-    return false;
-  };
+      return false;
+    },
+  );
 
   private toggleOpen = () => {
     this.handleOpenChange({ isOpen: !this.state.isOpen });

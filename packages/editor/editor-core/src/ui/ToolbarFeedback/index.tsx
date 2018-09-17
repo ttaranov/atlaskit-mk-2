@@ -5,7 +5,7 @@ import Spinner from '@atlaskit/spinner';
 import { Popup } from '@atlaskit/editor-common';
 import Button, { ButtonGroup } from '@atlaskit/button';
 
-import { analyticsDecorator as analytics } from '../../analytics';
+import { withAnalytics } from '../../analytics';
 import ToolbarButton from '../ToolbarButton';
 import { version as coreVersion } from '../../../package.json';
 import withOuterListeners from '../with-outer-listeners';
@@ -288,57 +288,59 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
     this.setState({ showOptOutOption: !this.state.showOptOutOption });
   };
 
-  @analytics('atlassian.editor.feedback.button')
-  private openFeedbackPopup = (): boolean => {
-    if (typeof this.showJiraCollectorDialogCallback === 'function') {
-      this.showJiraCollectorDialogCallback();
-      return false;
-    }
+  private openFeedbackPopup = withAnalytics(
+    'atlassian.editor.feedback.button',
+    (): boolean => {
+      if (typeof this.showJiraCollectorDialogCallback === 'function') {
+        this.showJiraCollectorDialogCallback();
+        return false;
+      }
 
-    this.setState({
-      jiraIssueCollectorScriptLoading: true,
-      showOptOutOption: false,
-    });
+      this.setState({
+        jiraIssueCollectorScriptLoading: true,
+        showOptOutOption: false,
+      });
 
-    const product = this.props.product || 'n/a';
+      const product = this.props.product || 'n/a';
 
-    // triggerFunction is executed as soon as JIRA issue collector script is loaded
-    window.ATL_JQ_PAGE_PROPS = {
-      triggerFunction: showCollectorDialog => {
-        this.setState({ jiraIssueCollectorScriptLoading: false });
+      // triggerFunction is executed as soon as JIRA issue collector script is loaded
+      window.ATL_JQ_PAGE_PROPS = {
+        triggerFunction: showCollectorDialog => {
+          this.setState({ jiraIssueCollectorScriptLoading: false });
 
-        if (typeof showCollectorDialog === 'function') {
-          // save reference to `showCollectorDialog` for future calls
-          this.showJiraCollectorDialogCallback = showCollectorDialog;
+          if (typeof showCollectorDialog === 'function') {
+            // save reference to `showCollectorDialog` for future calls
+            this.showJiraCollectorDialogCallback = showCollectorDialog;
 
-          // and run it now
-          // next tick is essential due to JIRA issue collector behaviour
-          setTimeout(showCollectorDialog, 0);
-        }
-      },
-      fieldValues: {
-        description: `Please describe the problem you're having or feature you'd like to see:\n\n\n---~---~---~---~---~---~---~---~---~---~---~---~---~---~---\n version: ${
-          this.props.packageName
-        }@${
-          this.props.packageVersion
-        } (${coreVersion})\n product: ${product}\n---~---~---~---~---~---~---~---~---~---~---~---~---~---~---\nBrowser: ${getBrowserInfo(
-          navigator.userAgent,
-        )}\nOS: ${getDeviceInfo(
-          navigator.userAgent,
-          navigator.appVersion,
-        )}\n---~---~---~---~---~---~---~---~---~---~---~---~---~---~---\n\n
+            // and run it now
+            // next tick is essential due to JIRA issue collector behaviour
+            setTimeout(showCollectorDialog, 0);
+          }
+        },
+        fieldValues: {
+          description: `Please describe the problem you're having or feature you'd like to see:\n\n\n---~---~---~---~---~---~---~---~---~---~---~---~---~---~---\n version: ${
+            this.props.packageName
+          }@${
+            this.props.packageVersion
+          } (${coreVersion})\n product: ${product}\n---~---~---~---~---~---~---~---~---~---~---~---~---~---~---\nBrowser: ${getBrowserInfo(
+            navigator.userAgent,
+          )}\nOS: ${getDeviceInfo(
+            navigator.userAgent,
+            navigator.appVersion,
+          )}\n---~---~---~---~---~---~---~---~---~---~---~---~---~---~---\n\n
         `,
-      },
-      environment: {
-        'Editor Package': this.props.packageName,
-        'Editor Version': this.props.packageVersion,
-        'Editor Core Version': coreVersion,
-      },
-    };
+        },
+        environment: {
+          'Editor Package': this.props.packageName,
+          'Editor Version': this.props.packageVersion,
+          'Editor Core Version': coreVersion,
+        },
+      };
 
-    this.loadJiraIssueCollectorScript();
-    return true;
-  };
+      this.loadJiraIssueCollectorScript();
+      return true;
+    },
+  );
 
   private loadJiraIssueCollectorScript = (): void => {
     if (this.hasJquery()) {

@@ -3,7 +3,7 @@ import { PureComponent } from 'react';
 import { PluginKey } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import MentionIcon from '@atlaskit/icon/glyph/editor/mention';
-import { analyticsDecorator as analytics } from '../../../../analytics';
+import { withAnalytics } from '../../../../analytics';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import { MentionsState } from '../../pm-plugins/main';
 
@@ -80,9 +80,11 @@ export default class ToolbarMention extends PureComponent<Props, State> {
     });
   };
 
-  @analytics('atlassian.fabric.mention.picker.trigger.button')
-  private handleInsertMention = (): boolean => {
-    this.pluginState!.insertMentionQuery();
-    return true;
-  };
+  private handleInsertMention = withAnalytics(
+    'atlassian.fabric.mention.picker.trigger.button',
+    (): boolean => {
+      this.pluginState!.insertMentionQuery();
+      return true;
+    },
+  );
 }

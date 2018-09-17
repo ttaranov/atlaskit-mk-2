@@ -1,8 +1,8 @@
-import analytics from '../../../analytics/decorator';
+import { withAnalytics } from '../../../analytics/withAnalytics';
 import { AnalyticsHandler } from '../../../analytics/handler';
 import service from '../../../analytics/service';
 
-describe('analytics decorator', () => {
+describe('analytics withAnalytics', () => {
   let spy: any;
 
   beforeEach(() => {
@@ -17,10 +17,9 @@ describe('analytics decorator', () => {
 
   it('tracks events after class method is called', () => {
     class AnnotatedTestClass {
-      @analytics('test.event')
-      foo() {
+      foo = withAnalytics('test.event', () => {
         return true;
-      }
+      });
     }
 
     const instance = new AnnotatedTestClass();
@@ -37,9 +36,8 @@ describe('analytics decorator', () => {
 
   it('tracks events after bound method (instance property) is called', () => {
     class AnnotatedTestClass2 {
-      @analytics('test.event.foo') foo = () => true;
-
-      @analytics('test.event.bar') bar = () => true;
+      foo = withAnalytics('test.event.foo', () => true);
+      bar = withAnalytics('test.event.bar', () => true);
     }
 
     const instance = new AnnotatedTestClass2();
@@ -56,7 +54,7 @@ describe('analytics decorator', () => {
 
   it('returns unique decorated bound method (property) per instance', () => {
     class AnnotatedTestClassWithBoundMethod {
-      @analytics('test.event.foo') foo = () => true;
+      foo = withAnalytics('test.event.foo', () => true);
     }
 
     const instance1 = new AnnotatedTestClassWithBoundMethod();
@@ -65,30 +63,14 @@ describe('analytics decorator', () => {
     expect(instance1.foo).not.toBe(instance2.foo);
   });
 
-  it('returns property value if decorating a non-function property', () => {
-    const spy = jest.spyOn(console, 'warn');
-    spy.mockImplementation(() => {});
-
-    class AnnotatedTestClassWithPrimitiveValue {
-      @analytics('test.event.foo') foo = 15.15;
-    }
-
-    const instance = new AnnotatedTestClassWithPrimitiveValue();
-
-    expect(spy).toHaveBeenCalled();
-    expect(instance.foo).toEqual(15.15);
-    spy.mockRestore();
-  });
-
   it('can track private methods being called', () => {
     class AnnotatedTestClass3 {
-      @analytics('test.event.foo')
-      foo = () => {
+      foo = withAnalytics('test.event.foo', () => {
         this.bar();
         return true;
-      };
+      });
 
-      @analytics('test.event.bar') private bar = () => true;
+      private bar = withAnalytics('test.event.bar', () => true);
     }
 
     const instance = new AnnotatedTestClass3();
@@ -102,7 +84,7 @@ describe('analytics decorator', () => {
 
   it('should not track event if it returns false', () => {
     class AnnotatedTestClass {
-      @analytics('test.event.foo') foo = () => false;
+      foo = withAnalytics('test.event.foo', () => false);
     }
 
     const instance = new AnnotatedTestClass();
