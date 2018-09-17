@@ -6,6 +6,9 @@ import {
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import Button from '@atlaskit/button';
+import { colors } from '@atlaskit/theme';
+import ChevronLeftLargeIcon from '@atlaskit/icon/glyph/chevron-left-large';
+import ChevronRightLargeIcon from '@atlaskit/icon/glyph/chevron-right-large';
 
 import {
   name as packageName,
@@ -13,7 +16,7 @@ import {
 } from '../../package.json';
 
 import { type i18nShape, defaultI18n } from '../internal/props';
-import { Container, Ellipsis, ButtonActive } from '../styled';
+import { Container, Ellipsis, ButtonActive, StyledButton } from '../styled';
 import pageRange from '../internal/page-range';
 
 const MAX_VISIBLE_PAGES = 7;
@@ -74,15 +77,20 @@ class Pagination extends Component<Props, State> {
     }
     const current = this.getCurrentPage();
 
-    return total === 0 ? null : (
+    if (total === 0) {
+      return null;
+    }
+
+    return (
       <Container>
-        <Button
-          appearance="link"
+        <StyledButton
+          appearance="subtle"
           isDisabled={current === 1}
           onClick={() => this.onPageChange(current - 1)}
+          label={i18n.prev}
         >
-          {i18n.prev}
-        </Button>
+          <ChevronLeftLargeIcon size="medium" />
+        </StyledButton>
 
         {pageRange(MAX_VISIBLE_PAGES, current, total).map(
           (pageNum: '...' | number, i) => {
@@ -92,26 +100,26 @@ class Pagination extends Component<Props, State> {
             return pageNum === '...' ? (
               <Ellipsis key={key}>...</Ellipsis>
             ) : (
-              <Element
-                isDisabled={isDisabled}
+              <Button
+                isSelected={isDisabled}
+                appearance="subtle"
                 key={key}
-                appearance="link"
                 // $FlowFixMe fails to narrow type after ternary
                 onClick={() => this.onPageChange(pageNum)}
               >
                 {pageNum}
-              </Element>
+              </Button>
             );
           },
         )}
-
-        <Button
-          appearance="link"
+        <StyledButton
+          appearance="subtle"
           isDisabled={current === total}
           onClick={() => this.onPageChange(current + 1)}
+          label={i18n.next}
         >
-          {i18n.next}
-        </Button>
+          <ChevronRightLargeIcon size="medium" />
+        </StyledButton>
       </Container>
     );
   }
