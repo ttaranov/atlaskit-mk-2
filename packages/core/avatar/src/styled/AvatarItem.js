@@ -1,9 +1,13 @@
 // @flow
 
 import styled, { css } from 'styled-components';
-import { borderRadius, colors, gridSize, math, themed } from '@atlaskit/theme';
+import { borderRadius, colors, gridSize, math } from '@atlaskit/theme';
 import type { AvatarClickType } from '../types';
 
+const themeBackgroundColors = {
+  light: colors.N0,
+  dark: colors.DN30,
+};
 const activeBackgroundColor = {
   light: colors.B50,
   dark: colors.DN40,
@@ -12,10 +16,10 @@ const hoverBackgroundColor = {
   light: colors.N30,
   dark: colors.DN50,
 };
-const focusBorderColor = themed({
+const focusBorderColor = {
   light: colors.B200,
   dark: colors.B75,
-});
+};
 
 type getBackgroundColorType = {
   backgroundColor?: string,
@@ -37,7 +41,7 @@ export function getBackgroundColor({
 }: getBackgroundColorType) {
   const isInteractive = href || onClick;
 
-  let themedBackgroundColor = backgroundColor || colors.background;
+  let themedBackgroundColor = backgroundColor || themeBackgroundColors[mode];
 
   // Interaction: Hover
   if (isInteractive && (isHover || isSelected)) {
@@ -65,6 +69,7 @@ export function getStyles({
   isActive,
   isDisabled,
   isFocus,
+  mode,
   onClick,
 }: getStylesType) {
   const isInteractive = href || onClick;
@@ -78,7 +83,7 @@ export function getStyles({
   // Interaction: Focus
   if (isInteractive && isFocus && !isActive) {
     outline = 'none';
-    borderColor = focusBorderColor;
+    borderColor = focusBorderColor[mode];
   }
 
   // Disabled

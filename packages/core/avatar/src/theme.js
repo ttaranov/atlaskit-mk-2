@@ -3,7 +3,7 @@
 import { colors, gridSize } from '@atlaskit/theme';
 import { AppearanceType, PresenceType, SizeType } from './types';
 
-const TRANSITION_DURATION = '200ms';
+// const TRANSITION_DURATION = '200ms';
 const gridSizeValue: number = gridSize();
 
 const AVATAR_SIZES: {
@@ -55,17 +55,17 @@ const BORDER_WIDTH: {
   xxlarge: 2,
 };
 
-const EXCESS_INDICATOR_FONT_SIZE: {
-  small: number,
-  medium: number,
-  large: number,
-  xlarge: number,
-} = {
-  small: 10,
-  medium: 11,
-  large: 12,
-  xlarge: 16,
-};
+// const EXCESS_INDICATOR_FONT_SIZE: {
+//   small: number,
+//   medium: number,
+//   large: number,
+//   xlarge: number,
+// } = {
+//   small: 10,
+//   medium: 11,
+//   large: 12,
+//   xlarge: 16,
+// };
 
 const ICON_SIZES: {
   small: number,
@@ -177,6 +177,7 @@ export type ThemeProps = {
   borderRadius: number,
   dimensions: { height: string, width: string },
   presence: { bottom: string, height: string, right: string, width: string },
+  mode: 'light' | 'dark',
   status: { bottom: string, height: string, right: string, width: string },
 };
 
@@ -188,6 +189,7 @@ export default (props: Theme, state: Props): ThemeProps => {
     }),
     borderRadius: getBorderRadius(state),
     dimensions: getDimensions(state),
+    mode: props.mode,
     presence: getPresenceLayout(state),
     status: getStatusLayout(state),
   };
