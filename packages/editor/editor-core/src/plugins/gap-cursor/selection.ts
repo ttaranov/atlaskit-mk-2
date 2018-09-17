@@ -3,7 +3,7 @@ import { Mapping } from 'prosemirror-transform';
 import { Slice, ResolvedPos, Node as PMNode } from 'prosemirror-model';
 import { isIgnored } from './utils';
 
-export const enum Side {
+export enum Side {
   RIGHT,
   LEFT,
 }

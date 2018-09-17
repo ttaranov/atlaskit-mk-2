@@ -47,7 +47,7 @@ export interface Props {
    */
   getDisplayedResults?(results: GenericResultMap): GenericResultMap;
   createAnalyticsEvent?: CreateAnalyticsEventFn;
-  handleSearchSubmit?({ target: string }): void;
+  handleSearchSubmit?(params: { target: string }): void;
   isSendSearchTermsEnabled?: boolean;
   placeholder?: string;
 }

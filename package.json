@@ -14,8 +14,8 @@
     "build:babel:cjs": "                     NODE_ENV=production BABEL_ENV=production:cjs bolt workspaces exec --only-fs \"$(node ./build/ci-scripts/get.glob.packages.for.tools.js babel)\" -- babel src -d dist/cjs",
     "build:babel:esm": "                     NODE_ENV=production BABEL_ENV=production:esm bolt workspaces exec --only-fs \"$(node ./build/ci-scripts/get.glob.packages.for.tools.js babel)\" -- babel src -d dist/esm",
     "build:typescript": "                    run-p build:typescript:es5 build:typescript:es2015",
-    "build:typescript:es5": "                NODE_ENV=production bolt workspaces exec --only-fs \"$(node ./build/ci-scripts/get.glob.packages.for.tools.js typescript)\" -- tsc --project ./build/es5",
-    "build:typescript:es2015": "             NODE_ENV=production bolt workspaces exec --only-fs \"$(node ./build/ci-scripts/get.glob.packages.for.tools.js typescript)\" -- tsc --project ./build/es2015",
+    "build:typescript:es5": "                NODE_ENV=production bolt workspaces exec --only-fs \"$(node ./build/ci-scripts/get.glob.packages.for.tools.js typescript)\" -- babel7 src -d dist/es5 --extensions \".ts,.tsx\" --config-file ../../../.babelrc.js",
+    "build:typescript:es2015": "             NODE_ENV=production BABEL_ENV=es2015 bolt workspaces exec --only-fs \"$(node ./build/ci-scripts/get.glob.packages.for.tools.js typescript)\" -- babel7 src -d dist/es2015 --extensions \".ts,.tsx\" --config-file ../../../.babelrc.js",
     "build:flowtypes": "                     run-p build:flowtypes:esm build:flowtypes:cjs",
     "build:flowtypes:esm": "                 bolt workspaces exec --only-fs \"$(node ./build/ci-scripts/get.glob.packages.for.tools.js babel flow)\" -- flow-copy-source -v -i '**/__tests__/**' src dist/esm",
     "build:flowtypes:cjs": "                 bolt workspaces exec --only-fs \"$(node ./build/ci-scripts/get.glob.packages.for.tools.js babel flow)\" -- flow-copy-source -v -i '**/__tests__/**' src dist/cjs",
@@ -78,7 +78,8 @@
     "build:navigation-next": "               rm -rf packages/core/navigation-next/dist/{cjs,esm} && run-p build:navigation-next:cjs build:navigation-next:esm",
     "build:navigation-next:cjs": "           NODE_ENV=production BABEL_ENV=production:cjs bolt workspaces exec --only \"@atlaskit/navigation-next\" -- babel src -d dist/cjs",
     "build:navigation-next:esm": "           NODE_ENV=production BABEL_ENV=production:esm bolt workspaces exec --only \"@atlaskit/navigation-next\" -- babel src -d dist/esm",
-    "build:bundle-analysis": "               node ./build/ci-scripts/run.bundle.analysis"
+    "build:bundle-analysis": "               node ./build/ci-scripts/run.bundle.analysis",
+    "postinstall": "                         ln -sf ../@babel/cli/bin/babel.js ./node_modules/.bin/babel7"
   },
   "bolt": {
     "version": "^0.20.6 || ^0.21.1 || ^0.22.1",
@@ -93,6 +94,15 @@
     }
   },
   "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/preset-typescript": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/plugin-proposal-export-default-from": "^7.0.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/plugin-proposal-class-properties": "^7.0.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0",
+    "@babel/plugin-proposal-decorators": "^7.0.0",
     "@types/chai": "^4.0.4",
     "@types/classnames": "^2.2.6",
     "@types/enzyme": "^3.1.6",
@@ -471,7 +481,7 @@
   "jest-junit": {
     "output": "test-reports/junit.xml"
   },
-  "browserlist": [
+  "browserslist": [
     "last 1 chrome versions",
     "last 1 edge versions",
     "last 1 firefox versions",
