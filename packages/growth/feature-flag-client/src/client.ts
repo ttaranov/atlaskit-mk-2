@@ -126,6 +126,7 @@ export default class FeatureFlagClient {
       action: 'exposed',
       actionSubject: 'feature',
       attributes: {
+        flagKey,
         reason: flag.explanation.reason,
         ruleId: flag.explanation.ruleId,
         value: flag.value,

@@ -16,11 +16,9 @@
     "Leandro Augusto Lemos"
   ],
   "dependencies": {
-    "lodash.has": "^4.5.2",
     "tslib": "^1.8.0"
   },
   "devDependencies": {
-    "@atlaskit/renderer": "^22.0.0",
     "@atlaskit/docs": "^5.0.7",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   },

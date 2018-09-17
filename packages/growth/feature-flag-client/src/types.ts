@@ -30,6 +30,7 @@ export type ExposureEvent = {
   action: string;
   actionSubject: string;
   attributes: {
+    flagKey: string;
     reason: Reason;
     ruleId?: RuleId;
     value: boolean | string | object;
