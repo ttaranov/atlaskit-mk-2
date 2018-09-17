@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 80.4.6
+- [patch] Adding renderer to the mobile bridge [3b4c276](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3b4c276)
+
 ## 80.4.5
 - [patch] ED-5017 Toolbar buttons no longer steal focus when tabbing into editor [e656038](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e656038)
 
