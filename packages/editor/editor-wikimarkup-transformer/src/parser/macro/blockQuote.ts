@@ -14,7 +14,7 @@ export function blockquoteMacro(
     const empty = emptyBlockquote(schema);
     return [empty];
   }
-  const content = parseString(rawContent, schema, undefined, tokenErrCallback);
+  const content = parseString(rawContent, schema, [], tokenErrCallback);
   const normalizedContent = normalizePMNodes(content, schema);
   return sanitize(normalizedContent, schema);
 }

@@ -6,7 +6,6 @@ import { TokenErrCallback } from './tokenize';
 export default class AbstractTree {
   private schema: Schema;
   private wikiMarkup: string;
-  // private tokenErrCallback: TokenErrCallback | undefined;
 
   constructor(schema: Schema, wikiMarkup: string) {
     this.schema = schema;
