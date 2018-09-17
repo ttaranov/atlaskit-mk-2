@@ -1,5 +1,7 @@
 import * as React from 'react';
-import { Component } from 'react';
+import { Component, ReactNode } from 'react';
+import { Context } from '@atlaskit/media-core';
+import { Subscription } from 'rxjs/Subscription';
 
 export type MediaApiConfig = {
   clientId: string;
@@ -9,28 +11,71 @@ export type MediaApiConfig = {
 
 export interface MediaImageProps {
   id: string;
-  mediaApiConfig: MediaApiConfig;
+  context: Context;
   className?: string;
   width?: number;
   height?: number;
   collectionName?: string;
+  placeholder?: ReactNode;
 }
 
-export interface MediaImageState {}
+export interface MediaImageState {
+  isLoading: boolean;
+  src?: string;
+}
 
 export class MediaImage extends Component<MediaImageProps, MediaImageState> {
-  private get imgSrc(): string {
-    const { id, mediaApiConfig, collectionName } = this.props;
-    const { clientId, token, baseUrl } = mediaApiConfig;
-    const endpoint = `file/${id}/image`;
+  subscription?: Subscription;
+  state: MediaImageState = {
+    isLoading: true,
+  };
 
-    return `${baseUrl}/${endpoint}?collection=${collectionName}&client=${clientId}&token=${token}`;
+  componentDidMount() {
+    const { context, width, height, id, collectionName } = this.props;
+
+    this.unsubscribe();
+    this.setState({
+      isLoading: true,
+    });
+
+    context.getFile(id, { collectionName }).subscribe({
+      next: async state => {
+        if (state.status === 'processed') {
+          this.unsubscribe();
+
+          const blob = await context.getImage(id, {
+            collection: collectionName,
+            height,
+            width,
+          });
+          const src = URL.createObjectURL(blob);
+          this.releaseSrc();
+
+          this.setState({
+            isLoading: false,
+            src,
+          });
+        }
+      },
+    });
   }
 
-  private get hasAuth(): boolean {
-    const { clientId, token, baseUrl } = this.props.mediaApiConfig;
+  componentWillUnmount() {
+    this.unsubscribe();
+    this.releaseSrc();
+  }
 
-    return !!clientId && !!token && !!baseUrl;
+  private releaseSrc = () => {
+    const { src } = this.state;
+    if (src) {
+      URL.revokeObjectURL(src);
+    }
+  };
+
+  private unsubscribe() {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   private get style() {
@@ -42,15 +87,20 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
     };
   }
 
-  render() {
-    const { hasAuth, style, imgSrc } = this;
-    if (!hasAuth) {
-      return null;
-    }
+  private get placeholder() {
+    return this.props.placeholder || null;
+  }
 
+  render() {
+    const { style } = this;
+    const { isLoading, src } = this.state;
     const { className } = this.props;
 
-    return <img src={imgSrc} style={style} className={className} />;
+    if (!isLoading) {
+      return this.placeholder;
+    }
+
+    return <img src={src} style={style} className={className} />;
   }
 }
 

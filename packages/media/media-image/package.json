@@ -1,7 +1,7 @@
 {
   "name": "@atlaskit/media-image",
   "version": "7.0.1",
-  "description": "Atlassian Editor component for JIRA",
+  "description": "Simplest way of rendering an image from the media api",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
   "atlaskit:src": "src/index.ts",
@@ -22,11 +22,14 @@
     "tslib": "^1.8.0"
   },
   "peerDependencies": {
-    "react": "^16.4.0"
+    "@atlaskit/media-core": "^23.0.2",
+    "react": "^16.4.0",
+    "rxjs": "^5.1.0"
   },
   "devDependencies": {
     "@atlaskit/field-text": "^7.0.3",
     "@atlaskit/media-core": "^23.0.2",
-    "@atlaskit/media-test-helpers": "^17.0.0"
+    "@atlaskit/media-test-helpers": "^17.0.0",
+    "rxjs": "^5.1.0"
   }
 }

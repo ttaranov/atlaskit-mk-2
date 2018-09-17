@@ -7,6 +7,7 @@ import {
   defaultParams,
   defaultCollectionName,
   StoryBookAuthProvider,
+  createStorybookContext,
 } from '@atlaskit/media-test-helpers';
 import { MediaImage } from '../src';
 
@@ -20,7 +21,9 @@ export interface ExampleState {
   baseUrl: string;
 }
 
-export default class Example extends Component<ExampleProps, ExampleState> {
+const context = createStorybookContext();
+
+class Example extends Component<ExampleProps, ExampleState> {
   constructor(props) {
     super(props);
 
@@ -141,7 +144,7 @@ export default class Example extends Component<ExampleProps, ExampleState> {
         >
           <MediaImage
             id={imageId}
-            mediaApiConfig={apiConfig}
+            context={context}
             collectionName={collectionName}
             width={300}
           />
@@ -150,3 +153,5 @@ export default class Example extends Component<ExampleProps, ExampleState> {
     );
   }
 }
+
+export default () => <Example />;
