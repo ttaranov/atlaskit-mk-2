@@ -184,8 +184,11 @@ export class MediaStore {
     });
   };
 
-  getFileBinaryURL = async (id: string): Promise<string> => {
-    const auth = await this.config.authProvider();
+  getFileBinaryURL = async (
+    id: string,
+    collectionName?: string,
+  ): Promise<string> => {
+    const auth = await this.config.authProvider({ collectionName });
 
     return createUrl(`${auth.baseUrl}/file/${id}/binary`, {
       params: { dl: true },

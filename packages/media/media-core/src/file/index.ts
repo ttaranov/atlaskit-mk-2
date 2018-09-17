@@ -152,10 +152,14 @@ export class FileFetcher {
     return subject;
   }
 
-  async downloadBinary(id: string, name: string = 'download') {
+  async downloadBinary(
+    id: string,
+    name: string = 'download',
+    collectionName?: string,
+  ) {
     const link = document.createElement('a');
 
-    link.href = await this.mediaStore.getFileBinaryURL(id);
+    link.href = await this.mediaStore.getFileBinaryURL(id, collectionName);
     link.download = name;
     document.body.appendChild(link);
     link.click();

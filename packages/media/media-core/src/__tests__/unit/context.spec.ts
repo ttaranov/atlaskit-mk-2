@@ -11,7 +11,7 @@ import {
 import { ContextFactory } from '../../../src/context/context';
 import { fileStreamsCache } from '../../../src/context/fileStreamCache';
 
-import { uploadFile, MediaApiConfig } from '@atlaskit/media-store';
+import { uploadFile } from '@atlaskit/media-store';
 
 const getOrInsertSpy = jest.spyOn(fileStreamsCache, 'getOrInsert');
 const authProvider: AuthProvider = () =>

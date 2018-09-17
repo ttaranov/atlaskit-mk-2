@@ -273,7 +273,10 @@ export class Card extends Component<CardProps, CardState> {
         label: 'Download',
         icon: <DownloadIcon label="Download" />,
         handler: async () =>
-          this.props.context.file.downloadBinary(await identifier.id),
+          this.props.context.file.downloadBinary(
+            await identifier.id,
+            identifier.collectionName,
+          ),
       });
     }
 
