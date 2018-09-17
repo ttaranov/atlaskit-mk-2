@@ -26,7 +26,7 @@ import { sleep } from '@atlaskit/editor-test-helpers';
       await browser.type(editable, 'some text');
 
       // now we can insert media as necessary
-      await insertMedia(browser, [0, 1]);
+      await insertMedia(browser, ['one.svg', 'two.svg']);
       await sleep(500);
 
       // wait for the nodeview to appear
