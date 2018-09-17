@@ -10,7 +10,7 @@ const listBaseStyles = {
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'space-between',
-  width: gridSize * 5,
+  width: '100%',
 };
 
 export const PrimaryItemsList = (props: *) => (
