@@ -16,7 +16,7 @@ import { CardList, CardListProps, CardListState } from '../..';
 import { InfiniteScroll } from '../../infiniteScroll';
 import { LazyContent } from '../../../utils/lazyContent';
 import { TransitionGroup } from 'react-transition-group';
-import { Card } from '../../../root/card';
+import { default as Card } from '../../../root/card/cardLoader';
 
 describe('CardList', () => {
   const setup = () => {
@@ -264,6 +264,8 @@ describe('CardList', () => {
       { disableLifecycleMethods: true },
     ) as any;
     wrapper.setState({ loading: false, error: undefined, collection });
+
+    debugger;
     wrapper
       .find(Card)
       .first()
