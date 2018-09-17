@@ -1,5 +1,4 @@
 jest.mock('axios');
-// jest.mock('../../../../../util/getPreviewFromBlob');
 
 import axios from 'axios';
 import { Service } from '../../../../domain';

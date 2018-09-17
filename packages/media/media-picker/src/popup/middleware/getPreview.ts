@@ -27,6 +27,7 @@ export async function getPreview(
           // We need to wait for the next tick since rxjs might call "next" before returning from "subscribe"
           setImmediate(() => subscription.unsubscribe());
 
+          // TODO: check if we should still fire 'upload-preview-update' with empty preview
           if (mediaType === 'image') {
             const metadata = await userContext.getImageMetadata(file.id, {
               collection,
