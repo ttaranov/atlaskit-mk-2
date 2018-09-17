@@ -237,7 +237,7 @@ function getPlugins(
               '@babel/proposal-object-rest-spread',
               '@babel/plugin-syntax-dynamic-import',
             ],
-          }
+          },
         },
       ],
     }),
