@@ -2,17 +2,19 @@ import { colors } from '@atlaskit/theme';
 import { Node as PMNode, Schema } from 'prosemirror-model';
 import { parseString } from '../text';
 import { normalizePMNodes } from '../utils/normalize';
+import { TokenErrCallback } from '../tokenize';
 
 export function blockquoteMacro(
   attrs: { [key: string]: string },
   rawContent: string,
   schema: Schema,
+  tokenErrCallback?: TokenErrCallback,
 ): PMNode[] {
   if (!rawContent.length) {
     const empty = emptyBlockquote(schema);
     return [empty];
   }
-  const content = parseString(rawContent, schema);
+  const content = parseString(rawContent, schema, undefined, tokenErrCallback);
   const normalizedContent = normalizePMNodes(content, schema);
   return sanitize(normalizedContent, schema);
 }

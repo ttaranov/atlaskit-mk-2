@@ -3,13 +3,17 @@ import { AddCellArgs } from '../../interfaces';
 import { TableBuilder } from '../builder/table-builder';
 import { parseString } from '../text';
 import { isNextLineEmpty, normalizePMNodes } from '../utils/normalize';
-import { Token, TokenType } from './';
+import { Token, TokenType, TokenErrCallback } from './';
 import { parseNewlineOnly } from './whitespace';
 
 const TABLE_REGEXP = /^\s*[|]+([^|\n]*)/;
 const NEWLINE = /\r?\n/;
 
-export function table(input: string, schema: Schema): Token {
+export function table(
+  input: string,
+  schema: Schema,
+  tokenErrCallback: (err: Error, tokenType: string) => void,
+): Token {
   let index = 0;
   const output: PMNode[] = [];
 
@@ -34,7 +38,9 @@ export function table(input: string, schema: Schema): Token {
     }
 
     if (lineBuffer.length > 0) {
-      builder.add(parseToTableCell(lineBuffer.join('\n'), schema));
+      builder.add(
+        parseToTableCell(lineBuffer.join('\n'), schema, tokenErrCallback),
+      );
       lineBuffer = [];
     }
 
@@ -52,7 +58,9 @@ export function table(input: string, schema: Schema): Token {
   }
 
   if (lineBuffer.length > 0 && builder) {
-    builder.add(parseToTableCell(lineBuffer.join('\n'), schema));
+    builder.add(
+      parseToTableCell(lineBuffer.join('\n'), schema, tokenErrCallback),
+    );
   }
 
   if (builder) {
@@ -66,7 +74,11 @@ export function table(input: string, schema: Schema): Token {
   };
 }
 
-function parseToTableCell(input: string, schema: Schema): AddCellArgs[] {
+function parseToTableCell(
+  input: string,
+  schema: Schema,
+  tokenErrCallback?: TokenErrCallback,
+): AddCellArgs[] {
   /**
    * The following token types will be ignored in parsing
    * the content of a table cell
@@ -107,7 +119,12 @@ function parseToTableCell(input: string, schema: Schema): AddCellArgs[] {
       continue;
     }
 
-    const contentNode = parseString(rawContent, schema, ignoreTokenTypes);
+    const contentNode = parseString(
+      rawContent,
+      schema,
+      ignoreTokenTypes,
+      tokenErrCallback,
+    );
 
     cells.push({ style, content: normalizePMNodes(contentNode, schema) });
   }

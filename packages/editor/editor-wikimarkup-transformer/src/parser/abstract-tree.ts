@@ -1,10 +1,12 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
 import { parseString } from './text';
 import { normalizePMNodes } from './utils/normalize';
+import { TokenErrCallback } from './tokenize';
 
 export default class AbstractTree {
   private schema: Schema;
   private wikiMarkup: string;
+  // private tokenErrCallback: TokenErrCallback | undefined;
 
   constructor(schema: Schema, wikiMarkup: string) {
     this.schema = schema;
@@ -14,8 +16,13 @@ export default class AbstractTree {
   /**
    * Convert reduced macros tree into prosemirror model tree
    */
-  getProseMirrorModel(): PMNode {
-    const content = parseString(this.wikiMarkup, this.schema);
+  getProseMirrorModel(tokenErrCallback?: TokenErrCallback): PMNode {
+    const content = parseString(
+      this.wikiMarkup,
+      this.schema,
+      [],
+      tokenErrCallback,
+    );
 
     return this.schema.nodes.doc.createChecked(
       {},
