@@ -265,7 +265,6 @@ describe('CardList', () => {
     ) as any;
     wrapper.setState({ loading: false, error: undefined, collection });
 
-    debugger;
     wrapper
       .find(Card)
       .first()
