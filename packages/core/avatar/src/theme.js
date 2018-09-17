@@ -176,8 +176,8 @@ export type ThemeProps = {
   backgroundColor: string,
   borderRadius: number,
   dimensions: { height: string, width: string },
-  presence: { bottom: string, height: string, right: string, width: string },
   mode: 'light' | 'dark',
+  presence: { bottom: string, height: string, right: string, width: string },
   status: { bottom: string, height: string, right: string, width: string },
 };
 
@@ -189,8 +189,9 @@ export default (props: Theme, state: Props): ThemeProps => {
     }),
     borderRadius: getBorderRadius(state),
     dimensions: getDimensions(state),
-    mode: props.mode,
+    mode: props.mode || 'light',
     presence: getPresenceLayout(state),
     status: getStatusLayout(state),
+    ...(props.avatar && props.avatar(state)),
   };
 };

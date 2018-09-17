@@ -6,14 +6,21 @@ import { colors, Theme } from '@atlaskit/theme';
 import theme from '../theme';
 import type { AppearanceType, SizeType } from '../types';
 
-const shapeGroupBackgroundColors = { light: colors.N50, dark: colors.DN100 };
+const themeBackgroundColors = {
+  light: colors.N0,
+  dark: colors.DN30,
+};
+const shapeGroupBackgroundColors = {
+  light: colors.N50,
+  dark: colors.DN100,
+};
 export const ShapeGroup = styled.g`
   & circle,
   & rect {
     fill: ${props => shapeGroupBackgroundColors[props.mode]};
   }
   & g {
-    fill: ${colors.background};
+    fill: ${props => themeBackgroundColors[props.mode]};
   }
 `;
 
