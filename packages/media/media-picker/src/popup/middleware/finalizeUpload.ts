@@ -123,6 +123,7 @@ async function copyFile({
         }),
       );
 
+      // TODO [MS-725]: replace by context.getFile
       return fetcher.pollFile(
         tenant.auth,
         publicId,

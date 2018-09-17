@@ -185,7 +185,6 @@ export const importFilesFromRecentFiles = (
   };
 
   store.dispatch(finalizeUpload(file, uploadId, source, tenant));
-  // TODO: Should we keep the old logic for recents?
   store.dispatch(getPreview(uploadId, file, RECENTS_COLLECTION));
 };
 

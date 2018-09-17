@@ -46,20 +46,20 @@ describe('getPreviewMiddleware', () => {
   };
 
   it('should do nothing given unknown action', () => {
-    const { fetcher, store, next } = setup();
+    const { store, next } = setup();
     const action = {
       type: 'UNKNOWN',
     };
 
-    getPreviewMiddleware(fetcher)(store)(next)(action);
+    getPreviewMiddleware()(store)(next)(action);
 
     expect(store.dispatch).not.toBeCalled();
     expect(next).toBeCalledWith(action);
   });
 
   it('should dispatch send upload event action with upload-preview-update event', () => {
-    const { fetcher, store, action } = setup();
-    return getPreview(fetcher, store, action).then(() => {
+    const { store, action } = setup();
+    return getPreview(store, action).then(() => {
       expect(store.dispatch).toBeCalledWith(
         sendUploadEvent({
           event: {
@@ -72,13 +72,6 @@ describe('getPreviewMiddleware', () => {
           uploadId,
         }),
       );
-    });
-  });
-
-  it('should get preview from fetcher', () => {
-    const { fetcher, store, action } = setup();
-    return getPreview(fetcher, store, action).then(() => {
-      expect(fetcher.getPreview).toBeCalledWith(auth, file.id, collection);
     });
   });
 });

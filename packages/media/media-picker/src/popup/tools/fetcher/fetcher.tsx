@@ -103,6 +103,7 @@ export class MediaApiFetcher implements Fetcher {
     });
   }
 
+  // TODO [MS-725]: remove
   pollFile(
     auth: Auth,
     fileId: string,

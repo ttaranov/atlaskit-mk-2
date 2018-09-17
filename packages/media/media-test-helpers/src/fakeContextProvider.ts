@@ -40,7 +40,9 @@ export const fakeContext = (
   const uploadFile = jest.fn();
   const collection = jest.fn() as any;
   const getImage = {} as any;
+  const getImageMetadata = jest.fn();
   const defaultContext: Context = {
+    getImageMetadata,
     getImage,
     getFile,
     getBlobService,
