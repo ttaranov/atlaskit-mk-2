@@ -5,7 +5,7 @@ import type { Node } from 'react';
 export type InteractionState = {
   isActive: boolean,
   isHover: boolean,
-  isClicked: boolean,
+  isSelected: boolean,
 };
 
 export type InteractionStateProps = {

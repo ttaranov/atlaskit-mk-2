@@ -16,7 +16,7 @@ class GlobalNavigationItemPrimitive extends Component<*> {
     styles: styleReducerNoOp,
   };
 
-  CachedCustomComponent = null;
+  CachedCustomComponent = 'div';
 
   renderIconAndBadge = (
     badgeWrapper: {},
