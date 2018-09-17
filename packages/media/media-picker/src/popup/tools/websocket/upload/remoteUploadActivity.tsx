@@ -54,7 +54,6 @@ export class RemoteUploadActivity implements WsActivity {
       });
       this.notifyActivityCompleted();
     } else if (isNotifyMetadata(data)) {
-      // TODO: investigate about data.uploadId not being present in the ws payload
       this.dispatchEvent('NotifyMetadata', {
         uploadId: data.uploadId,
         metadata: data.metadata,
