@@ -16,7 +16,6 @@ import {
   CardStatus,
   CardDimensions,
 } from '../..';
-
 import { Identifier, isPreviewableType } from '../domain';
 import { CardView } from '../cardViewInternal';
 import { LazyContent } from '../../utils/lazyContent';
