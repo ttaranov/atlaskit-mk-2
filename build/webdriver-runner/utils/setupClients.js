@@ -18,13 +18,13 @@ function setBrowserStackClients() /*: Array<?Object>*/ {
       browser_version: '67.0',
       resolution: '1440x900',
     },
-    // firefox: {
-    //   os: 'Windows',
-    //   os_version: '10',
-    //   browserName: 'firefox',
-    //   browser_version: '61.0',
-    //   resolution: '1440x900',
-    // },
+    firefox: {
+      os: 'Windows',
+      os_version: '10',
+      browserName: 'firefox',
+      browser_version: '61.0',
+      resolution: '1440x900',
+    },
     ie: {
       os: 'Windows',
       os_version: '10',
