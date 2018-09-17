@@ -51,7 +51,6 @@ export interface ProcessedFileState {
   artifacts: Object;
   mediaType: MediaType;
   mimeType: string;
-  binaryUrl: string;
   preview?: FilePreview;
 }
 export interface ProcessingFailedState {
@@ -62,7 +61,6 @@ export interface ProcessingFailedState {
   artifacts: Object;
   mediaType: MediaType;
   mimeType: string;
-  binaryUrl: string;
 }
 export interface ErrorFileState {
   status: 'error';
@@ -125,13 +123,7 @@ export const mapMediaFileToFileState = (
         artifacts,
         mediaType,
         mimeType,
-        binaryUrl: `/file/${id}/binary`,
       } as ProcessedFileState;
-    // case 'failed':
-    //   return {
-    //     id,
-    //     status
-    //   } as ErrorFileState;
     case 'failed':
       return {
         id,
@@ -141,7 +133,6 @@ export const mapMediaFileToFileState = (
         artifacts,
         mediaType,
         mimeType,
-        binaryUrl: `/file/${id}/binary`,
       } as ProcessingFailedState;
   }
 };

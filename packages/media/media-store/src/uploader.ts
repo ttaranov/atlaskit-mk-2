@@ -2,7 +2,6 @@ import * as uuid from 'uuid';
 import chunkinator, { Chunk, ChunkinatorFile } from 'chunkinator';
 
 import { MediaStore } from './media-store';
-import { MediaApiConfig } from './models/auth';
 import { createHasher } from './utils/hashing/hasherCreator';
 
 // TODO: Allow to pass multiple files
@@ -54,15 +53,7 @@ const createProcessingFunction = (
   };
 };
 
-const uploadFileWithConfig = (
-  file: UploadableFile,
-  config: MediaApiConfig,
-  callbacks?: UploadFileCallbacks,
-): UploadFileResult => {
-  return uploadFile(file, new MediaStore(config), callbacks);
-};
-
-const uploadFileWithStore = (
+export const uploadFile = (
   file: UploadableFile,
   store: MediaStore,
   callbacks?: UploadFileCallbacks,
@@ -123,24 +114,6 @@ const uploadFileWithStore = (
   });
 
   return { deferredFileId: fileId, cancel };
-};
-
-const isMediaApiConfig = (
-  storeOrConfig: MediaApiConfig | MediaStore,
-): storeOrConfig is MediaApiConfig => {
-  return !!(storeOrConfig as MediaApiConfig).authProvider;
-};
-
-export const uploadFile = (
-  file: UploadableFile,
-  storeOrConfig: MediaApiConfig | MediaStore,
-  callbacks?: UploadFileCallbacks,
-): UploadFileResult => {
-  if (isMediaApiConfig(storeOrConfig)) {
-    return uploadFileWithConfig(file, storeOrConfig, callbacks);
-  } else {
-    return uploadFileWithStore(file, storeOrConfig, callbacks);
-  }
 };
 
 const hashedChunks = (chunks: Chunk[]) => chunks.map(chunk => chunk.hash);
