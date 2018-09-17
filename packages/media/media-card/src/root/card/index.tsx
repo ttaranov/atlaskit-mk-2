@@ -18,14 +18,17 @@ import {
   CardAction,
   CardDimensions,
 } from '../..';
-import { FileIdentifier, Identifier, isPreviewableType } from '../domain';
+import { Identifier, isPreviewableType } from '../domain';
 import { CardView } from '../cardView';
 import { LazyContent } from '../../utils/lazyContent';
 import { getBaseAnalyticsContext } from '../../utils/analyticsUtils';
 import { getDataURIDimension } from '../../utils/getDataURIDimension';
 import { getDataURIFromFileState } from '../../utils/getDataURIFromFileState';
 import { getLinkMetadata, extendMetadata } from '../../utils/metadata';
-import { isUrlPreviewIdentifier } from '../../utils/identifier';
+import {
+  isFileIdentifier,
+  isUrlPreviewIdentifier,
+} from '../../utils/identifier';
 import { isBigger } from '../../utils/dimensionComparer';
 
 export interface CardProps extends SharedCardProps, CardEventProps {
@@ -238,10 +241,6 @@ export class Card extends Component<CardProps, CardState> {
     this.subscribe(identifier, context);
   };
 
-  private isFile(identifier: Identifier): identifier is FileIdentifier {
-    return identifier.mediaItemType === 'file';
-  }
-
   get analyticsContext(): CardAnalyticsContext {
     const { identifier } = this.props;
     const id = isUrlPreviewIdentifier(identifier)
@@ -256,7 +255,7 @@ export class Card extends Component<CardProps, CardState> {
     const { status, metadata } = this.state;
     const { identifier } = this.props;
 
-    if (status === 'complete' && this.isFile(identifier) && metadata) {
+    if (status === 'complete' && isFileIdentifier(identifier) && metadata) {
       if (!(metadata as FileDetails).size) {
         return 'processing';
       }
@@ -268,7 +267,7 @@ export class Card extends Component<CardProps, CardState> {
   get actions(): CardAction[] {
     const { actions = [], identifier } = this.props;
     const { status } = this.state;
-    if (this.isFile(identifier) && status === 'failed') {
+    if (isFileIdentifier(identifier) && status === 'failed') {
       actions.unshift({
         label: 'Download',
         icon: <DownloadIcon label="Download" />,

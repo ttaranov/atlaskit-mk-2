@@ -3,7 +3,12 @@ import { Observable } from 'rxjs';
 import * as React from 'react';
 import { shallow, mount } from 'enzyme';
 import { fakeContext, nextTick } from '@atlaskit/media-test-helpers';
-import { Context, UrlPreview } from '@atlaskit/media-core';
+import {
+  Context,
+  FileState,
+  UrlPreview,
+  FileDetails,
+} from '@atlaskit/media-core';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
 import {
@@ -578,6 +583,34 @@ describe('Card', () => {
     await nextTick();
     component.update();
     expect(component.find(CardView).prop('status')).toEqual('error');
+  });
+
+  it('should render failed card when getFile resolves with status=failed', async () => {
+    const context = fakeContext({
+      getFile: Observable.of({
+        status: 'failed',
+        name: 'some-name',
+        id: 'some-id',
+        mediaType: 'image',
+        mimeType: 'some-mime-type',
+        size: 42,
+      } as FileState),
+    });
+    const { component } = setup(context);
+
+    await nextTick();
+    component.update();
+    const { status: actualStatus, metadata: actualMetadata } = component
+      .find(CardView)
+      .props();
+    expect(actualStatus).toEqual('failed');
+    expect(actualMetadata).toEqual({
+      id: 'some-id',
+      size: 42,
+      name: 'some-name',
+      mimeType: 'some-mime-type',
+      mediaType: 'image',
+    } as FileDetails);
   });
 
   it('should render error card when getFile fails', async () => {
