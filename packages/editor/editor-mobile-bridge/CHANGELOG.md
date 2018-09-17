@@ -1,5 +1,8 @@
 # @atlaskit/editor-mobile-bridge
 
+## 4.0.0
+- [major] Adding renderer to the mobile bridge [3b4c276](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3b4c276)
+
 ## 3.0.11
 - [patch] Fixing the android bridge change [6d5e0a9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d5e0a9)
 

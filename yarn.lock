@@ -417,9 +417,9 @@
   version "0.6.2"
   resolved "https://registry.yarnpkg.com/@emotion/unitless/-/unitless-0.6.2.tgz#19a39bda906e5ba45f39f6f7f3512b2740ceab29"
 
-"@lbatchelor/netlify-cli@^1.2.2-patched.7":
-  version "1.2.2-patched.7"
-  resolved "https://registry.yarnpkg.com/@lbatchelor/netlify-cli/-/netlify-cli-1.2.2-patched.7.tgz#341485bc63dc6f0aa89b458f324e634ca673f4fd"
+"@lbatchelor/netlify-cli@^1.2.2-patched.9":
+  version "1.2.2-patched.9"
+  resolved "https://registry.yarnpkg.com/@lbatchelor/netlify-cli/-/netlify-cli-1.2.2-patched.9.tgz#e2614faa1476fc2c44bef353f54f2b9b4da9fddb"
   dependencies:
     "@lbatchelor/netlify" "1.2.0-patched.7"
     chalk "^0.5.1"
@@ -15058,6 +15058,10 @@ tsutils@^2.27.2, tsutils@^2.8.0:
   resolved "https://registry.yarnpkg.com/tsutils/-/tsutils-2.29.0.tgz#32b488501467acbedd4b85498673a0812aca0b99"
   dependencies:
     tslib "^1.8.1"
+
+tti-polyfill@^0.2.2:
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/tti-polyfill/-/tti-polyfill-0.2.2.tgz#f7bbf71b13afa9edf60c8bb0d0c05f134e1513b9"
 
 tty-browserify@0.0.0:
   version "0.0.0"

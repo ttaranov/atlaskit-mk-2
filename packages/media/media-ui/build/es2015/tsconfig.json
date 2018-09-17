@@ -2,9 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "declaration": true,
-    "outDir": "../../dist/es2015",
-    "target": "es5",
-    "module": "es2015"
+    "outDir": "../../dist/es2015"
   },
   "include": ["../../src/**/*.ts", "../../src/**/*.tsx"],
   "exclude": [

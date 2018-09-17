@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/checkbox",
-  "version": "5.0.0",
+  "version": "5.0.1",
   "description": "Checkbox component for use in forms",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",

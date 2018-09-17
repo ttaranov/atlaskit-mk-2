@@ -1,5 +1,8 @@
 # @atlaskit/select
 
+## 5.0.19
+- [patch] Added a multi-select example for PopupSelect [483a335](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/483a335)
+
 ## 5.0.18
 - [patch] Updated dependencies [80e1925](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80e1925)
   - @atlaskit/button@9.0.9

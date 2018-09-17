@@ -1,5 +1,8 @@
 # @atlaskit/media-picker
 
+## 16.0.4
+- [patch] Add className to headless dropzone [96be52e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/96be52e)
+
 ## 16.0.3
 - [patch] use context.collection.getItems in MediaPicker [1486ca4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1486ca4)
 

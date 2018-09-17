@@ -1,5 +1,8 @@
 # @atlaskit/navigation-next
 
+## 3.13.0
+- [minor] introduces never-fully-collapsed content navigation [99add85](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/99add85)
+
 ## 3.12.2
 - [patch] fixing HelpIcon active on children :hover [ae95dad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae95dad)
 

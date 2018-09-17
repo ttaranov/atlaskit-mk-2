@@ -111,7 +111,7 @@ const getCircleColor = props => {
 };
 
 export const LabelText = styled.div`
-  padding: 2px 0;
+  padding: 2px 4px;
 `;
 
 export const IconWrapper = styled.span`

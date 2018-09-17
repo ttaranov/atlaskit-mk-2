@@ -1,23 +1,21 @@
 import FeatureFlagClient from '../../client';
 
 describe('Feature Flag Client', () => {
-  let analyticsClient;
+  let analyticsHandler;
   beforeEach(() => {
-    analyticsClient = {
-      sendTrackEvent: jest.fn(),
-    };
+    analyticsHandler = jest.fn();
   });
 
   describe('bootstrap', () => {
     test('should throw if no analytics handler is given', () => {
       expect(() => new FeatureFlagClient({} as any)).toThrowError(
-        'Feature Flag Client: Missing analyticsClient',
+        'Feature Flag Client: Missing analyticsHandler',
       );
     });
 
     test('should allow to bootstrap with flags', () => {
       const client = new FeatureFlagClient({
-        analyticsClient,
+        analyticsHandler,
         flags: {
           'my.flag': false,
         },
@@ -28,7 +26,7 @@ describe('Feature Flag Client', () => {
 
     test('should allow to set flags later', () => {
       const client = new FeatureFlagClient({
-        analyticsClient,
+        analyticsHandler,
         flags: {
           'my.flag': false,
         },
@@ -64,7 +62,7 @@ describe('Feature Flag Client', () => {
   describe('clear', () => {
     test('should remove all flags', () => {
       const client = new FeatureFlagClient({
-        analyticsClient,
+        analyticsHandler,
         flags: {
           'my.flag': false,
         },
@@ -83,7 +81,7 @@ describe('Feature Flag Client', () => {
 
     beforeEach(() => {
       client = new FeatureFlagClient({
-        analyticsClient,
+        analyticsHandler,
         flags: {
           'my.variation.flag': {
             value: 'experiment',
@@ -173,22 +171,24 @@ describe('Feature Flag Client', () => {
         expect(
           client.getBooleanValue('my.boolean.flag', { default: true }),
         ).toBe(false);
-        expect(analyticsClient.sendTrackEvent).toHaveBeenCalledTimes(0);
+        expect(analyticsHandler).toHaveBeenCalledTimes(0);
       });
 
       test('should fire the exposure event if the flag contains evaluation details (long format / feature flag)', () => {
         expect(
           client.getBooleanValue('my.detailed.boolean.flag', { default: true }),
         ).toBe(false);
-        expect(analyticsClient.sendTrackEvent).toHaveBeenCalledTimes(1);
-        expect(analyticsClient.sendTrackEvent).toHaveBeenCalledWith({
+        expect(analyticsHandler).toHaveBeenCalledTimes(1);
+        expect(analyticsHandler).toHaveBeenCalledWith({
           action: 'exposed',
           actionSubject: 'feature',
           attributes: {
+            flagKey: 'my.detailed.boolean.flag',
             reason: 'RULE_MATCH',
             ruleId: '111-bbbbb-ccc',
             value: false,
           },
+          source: '@atlaskit/feature-flag-client',
         });
       });
 
@@ -199,7 +199,7 @@ describe('Feature Flag Client', () => {
             shouldTrackExposureEvent: false,
           }),
         ).toBe(false);
-        expect(analyticsClient.sendTrackEvent).toHaveBeenCalledTimes(0);
+        expect(analyticsHandler).toHaveBeenCalledTimes(0);
       });
     });
 
@@ -225,7 +225,7 @@ describe('Feature Flag Client', () => {
             oneOf: ['control', 'experiment'],
           }),
         ).toBe('control');
-        expect(analyticsClient.sendTrackEvent).toHaveBeenCalledTimes(0);
+        expect(analyticsHandler).toHaveBeenCalledTimes(0);
       });
 
       test('should return default if flag is boolean, and not fire exposure event', () => {
@@ -235,7 +235,7 @@ describe('Feature Flag Client', () => {
             oneOf: ['control', 'experiment'],
           }),
         ).toBe('control');
-        expect(analyticsClient.sendTrackEvent).toHaveBeenCalledTimes(0);
+        expect(analyticsHandler).toHaveBeenCalledTimes(0);
       });
 
       test('should return default if flag is not listed as oneOf, and not fire exposure event', () => {
@@ -245,7 +245,7 @@ describe('Feature Flag Client', () => {
             oneOf: ['control', 'experiment'],
           }),
         ).toBe('control');
-        expect(analyticsClient.sendTrackEvent).toHaveBeenCalledTimes(0);
+        expect(analyticsHandler).toHaveBeenCalledTimes(0);
       });
 
       test('should return the right value if flag is listed as oneOf, and fire exposure event', () => {
@@ -255,15 +255,17 @@ describe('Feature Flag Client', () => {
             oneOf: ['control', 'experiment'],
           }),
         ).toBe('experiment');
-        expect(analyticsClient.sendTrackEvent).toHaveBeenCalledTimes(1);
-        expect(analyticsClient.sendTrackEvent).toHaveBeenCalledWith({
+        expect(analyticsHandler).toHaveBeenCalledTimes(1);
+        expect(analyticsHandler).toHaveBeenCalledWith({
           action: 'exposed',
           actionSubject: 'feature',
           attributes: {
+            flagKey: 'my.experiment',
             reason: 'RULE_MATCH',
             ruleId: '111-bbbbb-ccc',
             value: 'experiment',
           },
+          source: '@atlaskit/feature-flag-client',
         });
       });
 
@@ -275,14 +277,14 @@ describe('Feature Flag Client', () => {
             shouldTrackExposureEvent: false,
           }),
         ).toBe('experiment');
-        expect(analyticsClient.sendTrackEvent).toHaveBeenCalledTimes(0);
+        expect(analyticsHandler).toHaveBeenCalledTimes(0);
       });
     });
 
     describe('getJSONValue', () => {
       test('should return empty object if flag is not set, and not fire exposure event', () => {
         expect(client.getJSONValue('my.empty.json.flag')).toEqual({});
-        expect(analyticsClient.sendTrackEvent).toHaveBeenCalledTimes(0);
+        expect(analyticsHandler).toHaveBeenCalledTimes(0);
       });
 
       test('should return the object if flag is set', () => {
@@ -290,7 +292,7 @@ describe('Feature Flag Client', () => {
           nav: 'blue',
           footer: 'black',
         });
-        expect(analyticsClient.sendTrackEvent).toHaveBeenCalledTimes(0);
+        expect(analyticsHandler).toHaveBeenCalledTimes(0);
       });
     });
   });
