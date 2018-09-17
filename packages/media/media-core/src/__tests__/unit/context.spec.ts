@@ -231,9 +231,11 @@ describe('Context', () => {
           fooo: 'bar',
         },
       });
-      (context as any).mediaStore = {
+      const fakeStore = {
         getFile,
       };
+      (context as any).mediaStore = fakeStore;
+      (context.file as any).mediaStore = fakeStore;
       const observer = context.getFile('1');
 
       observer.subscribe({
@@ -272,7 +274,9 @@ describe('Context', () => {
           },
         };
       });
-      (context as any).mediaStore = { getFile };
+      const fakeStore = { getFile };
+      (context as any).mediaStore = fakeStore;
+      (context.file as any).mediaStore = fakeStore;
 
       const observer = context.getFile('123');
       const next = jest.fn();
@@ -392,24 +396,24 @@ describe('Context', () => {
   });
 
   describe('.uploadFile()', () => {
-    it('should call media-store uploadFile with given arguments', () => {
+    it('should call media-store uploadFile with given arguments', done => {
       const context = createContext();
       const file: UploadableFile = {} as any;
       uploadFileMock.mockImplementation((_, __, callbacks) => {
         callbacks.onProgress(0.1);
         return { deferredFileId };
       });
-      return new Promise(resolve => {
-        context.uploadFile(file).subscribe({
-          next() {
-            expect(uploadFile).toHaveBeenCalled();
-            expect(uploadFileMock.mock.calls[0][0]).toBe(file);
-            expect(uploadFileMock.mock.calls[0][1]).toEqual({
-              authProvider,
-            } as MediaApiConfig);
-            resolve();
-          },
-        });
+      const fakeStore = {};
+      (context as any).mediaStore = fakeStore;
+      (context.file as any).mediaStore = fakeStore;
+
+      context.uploadFile(file).subscribe({
+        next() {
+          expect(uploadFile).toHaveBeenCalled();
+          expect(uploadFileMock.mock.calls[0][0]).toBe(file);
+          expect(uploadFileMock.mock.calls[0][1]).toEqual(fakeStore);
+          done();
+        },
       });
     });
 
