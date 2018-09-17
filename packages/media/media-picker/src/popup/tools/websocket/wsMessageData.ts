@@ -110,24 +110,3 @@ export const isNoUserFound = (
 ): data is WsNoUserFoundData => {
   return isErrorData(data) && data.error === 'NoUserFound';
 };
-
-// TODO: move this utility into a different file
-export const getPreviewFromPayload = (metadata: ImageMetadata): Preview => {
-  if (!metadata.original) {
-    return {
-      dimensions: {
-        width: 0,
-        height: 0,
-      },
-      src: '',
-    };
-  }
-
-  return {
-    dimensions: {
-      width: metadata.original.width,
-      height: metadata.original.height,
-    },
-    src: metadata.original.url || '',
-  };
-};

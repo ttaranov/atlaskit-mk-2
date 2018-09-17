@@ -2,7 +2,7 @@ import { Store, Dispatch, Middleware } from 'redux';
 import { GetPreviewAction, isGetPreviewAction } from '../actions/getPreview';
 import { State } from '../domain';
 import { sendUploadEvent } from '../actions/sendUploadEvent';
-import { getPreviewFromPayload } from '../tools/websocket/wsMessageData';
+import { getPreviewFromMetadata } from '../../domain/preview';
 
 export default function(): Middleware {
   return store => (next: Dispatch<State>) => action => {
@@ -31,7 +31,7 @@ export async function getPreview(
             const metadata = await userContext.getImageMetadata(file.id, {
               collection,
             });
-            const preview = getPreviewFromPayload(metadata);
+            const preview = getPreviewFromMetadata(metadata);
 
             store.dispatch(
               sendUploadEvent({

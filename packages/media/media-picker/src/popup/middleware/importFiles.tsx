@@ -20,11 +20,9 @@ import { MediaFile, copyMediaFileForUpload } from '../../domain/file';
 import { PopupUploadEventEmitter } from '../../components/popup';
 import { sendUploadEvent } from '../actions/sendUploadEvent';
 import { setUpfrontIdDeferred } from '../actions/setUpfrontIdDeferred';
-import {
-  WsNotifyMetadata,
-  getPreviewFromPayload,
-} from '../tools/websocket/wsMessageData';
+import { WsNotifyMetadata } from '../tools/websocket/wsMessageData';
 
+import { getPreviewFromMetadata } from '../../domain/preview';
 export interface RemoteFileItem extends SelectedItem {
   accountId: string;
   publicId: string;
@@ -207,7 +205,7 @@ export const importFilesFromRemoteService = (
     uploadId,
     (event, payload) => {
       if (event === 'NotifyMetadata') {
-        const preview = getPreviewFromPayload(
+        const preview = getPreviewFromMetadata(
           (payload as WsNotifyMetadata).metadata,
         );
 

@@ -10,7 +10,11 @@ import {
   MediaCollection,
   MediaCollectionItems,
 } from '../../models/media';
-import { MediaStoreGetFileParams, EmptyFile } from '../../media-store';
+import {
+  MediaStoreGetFileParams,
+  EmptyFile,
+  ImageMetadata,
+} from '../../media-store';
 
 describe('MediaStore', () => {
   const baseUrl = 'http://some-host';
@@ -462,6 +466,29 @@ describe('MediaStore', () => {
         expect(fetchMock.lastUrl()).toEqual(
           `${baseUrl}/file/123/image?allowAnimated=true&client=some-client-id&max-age=3600&mode=full-fit&token=some-token&upscale=true&version=2`,
         );
+      });
+    });
+
+    describe('getImageMetadata()', () => {
+      it('should return image metadata for the given id', async () => {
+        const data: ImageMetadata = {
+          pending: false,
+          original: {
+            height: 10,
+            width: 10,
+            url: 'some-preview',
+          },
+        };
+        fetchMock.mock(`begin:${baseUrl}/file`, {
+          body: data,
+          status: 201,
+        });
+
+        const image = await mediaStore.getImageMetadata('123');
+        expect(fetchMock.lastUrl()).toEqual(
+          `${baseUrl}/file/123/image/metadata?client=some-client-id&token=some-token`,
+        );
+        expect(image).toEqual(data);
       });
     });
   });
