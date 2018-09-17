@@ -19,7 +19,7 @@ import {
   CardView,
   CardViewBase,
   CardViewOwnProps,
-} from '../../../src/root/cardViewInternal';
+} from '../../../src/root/cardView';
 import { LinkCard } from '../../../src/links';
 import { FileCard } from '../../../src/files';
 import { Wrapper } from '../../../src/root/styled';
