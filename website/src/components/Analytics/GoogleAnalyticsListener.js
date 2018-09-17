@@ -88,8 +88,18 @@ export const observePerformanceMetrics = location => {
       });
     }
   });
-  observer.observe({ entryTypes: ['paint'] });
-
+  // TODO: remove this once fixed in Firefox (most likely FF63)
+  // https://ecosystem.atlassian.net/browse/AK-5381
+  try {
+    observer.observe({ entryTypes: ['paint'] });
+  } catch (error) {
+    if (
+      error.message !==
+      'The expression cannot be converted to return the specified type.'
+    ) {
+      throw error;
+    }
+  }
   // time to interactive, more details: https://goo.gl/OSmrPk
   ttiPolyfill
     .getFirstConsistentlyInteractive({ useMutationObserver: false })

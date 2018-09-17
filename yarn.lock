@@ -2757,9 +2757,9 @@ bolt@^0.20.6:
     typeable-promisify "^2.0.1"
     yarn "^1.6.0"
 
-bolt@^0.21.1:
-  version "0.21.2"
-  resolved "https://registry.yarnpkg.com/bolt/-/bolt-0.21.2.tgz#77514caf5885377b8b7ad3d3087b9b70906dcf00"
+bolt@^0.22.1:
+  version "0.22.1"
+  resolved "https://registry.yarnpkg.com/bolt/-/bolt-0.22.1.tgz#4e00fbbd19256c82fefa764cfcc793da6190922a"
   dependencies:
     array-includes "^3.0.3"
     babel-runtime "^6.25.0"
@@ -7530,10 +7530,6 @@ internal-ip@1.2.0:
   resolved "https://registry.yarnpkg.com/internal-ip/-/internal-ip-1.2.0.tgz#ae9fbf93b984878785d50a8de1b356956058cf5c"
   dependencies:
     meow "^3.3.0"
-
-interpolate-range@^2.1.0:
-  version "2.1.0"
-  resolved "https://registry.yarnpkg.com/interpolate-range/-/interpolate-range-2.1.0.tgz#fec3f907a3a075476feb478439ae8d166bc826a5"
 
 interpret@^1.0.0, interpret@^1.0.4, interpret@^1.1.0:
   version "1.1.0"
