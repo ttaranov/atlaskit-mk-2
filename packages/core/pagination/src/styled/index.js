@@ -18,3 +18,7 @@ export const Ellipsis = styled.span`
   text-align: center;
   align-items: center;
 `;
+
+export const StyledButton = styled(Button)`
+  padding: 4px 0;
+`;
