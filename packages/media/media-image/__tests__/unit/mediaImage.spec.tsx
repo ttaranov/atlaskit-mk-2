@@ -9,6 +9,7 @@ describe('<MediaImage />', () => {
     const getFile = jest.fn().mockReturnValue(
       Observable.of({
         status: 'processed',
+        mediaType: 'image',
       }),
     );
     const getImage = jest.fn().mockReturnValue({});
@@ -18,10 +19,12 @@ describe('<MediaImage />', () => {
     };
     const id = '1';
     const loadingPlaceholder = <div>loading</div>;
+    const errorPlaceholder = <div>error</div>;
     const mediaImage = shallow(
       <MediaImage
         id={id}
         loadingPlaceholder={loadingPlaceholder}
+        errorPlaceholder={errorPlaceholder}
         context={context}
         {...props}
       />,
@@ -41,10 +44,12 @@ describe('<MediaImage />', () => {
     expect(mediaImage.find('div').text()).toEqual('loading');
   });
 
-  it('should use given dimensions', async () => {
-    const { mediaImage, getFile, getImage } = setup({
+  it('should get image preview with given options', async () => {
+    const { getFile, getImage } = setup({
       width: 100,
       height: 100,
+      upscale: true,
+      mode: 'full-fit',
     });
 
     expect(getFile).toHaveBeenCalledTimes(1);
@@ -54,24 +59,65 @@ describe('<MediaImage />', () => {
       collection: undefined,
       width: 100,
       height: 100,
+      upscale: true,
+      mode: 'full-fit',
     });
+  });
+
+  it('should use collection name', () => {
+    const { getFile, getImage } = setup({ collectionName: 'test' });
+
+    expect(getFile).lastCalledWith('1', { collectionName: 'test' });
+    expect(getImage).toBeCalledWith('1', {
+      collection: 'test',
+    });
+  });
+
+  it('should render an img tag with the right src', async () => {
+    const { mediaImage, getImage } = setup();
 
     await getImage;
     mediaImage.update();
 
-    expect(mediaImage.find('img').prop('style')).toEqual({
-      width: '100px',
-      height: '100px',
-    });
+    expect(mediaImage.find('img').prop('src')).toEqual(
+      'mock result of URL.createObjectURL()',
+    );
   });
 
-  it('should use collection name', () => {});
+  it('should render error placeholder if request fails', () => {
+    const getFile = jest.fn().mockReturnValue(
+      Observable.create(observer => {
+        observer.error('');
+      }),
+    );
+    const getImage = jest.fn().mockReturnValue({});
+    const context: any = {
+      getFile,
+      getImage,
+    };
+    const { mediaImage } = setup({ context });
 
-  it('should wait until the file has been processed', () => {});
+    mediaImage.update();
 
-  it('should render an img tag with the right src', () => {});
+    expect(mediaImage.find('div').text()).toEqual('error');
+  });
 
-  it('should render error placeholder if request fails', () => {});
+  it('should render error placeholder for non image files', () => {
+    const getFile = jest.fn().mockReturnValue(
+      Observable.of({
+        status: 'processed',
+        mediaType: 'doc',
+      }),
+    );
+    const getImage = jest.fn().mockReturnValue({});
+    const context: any = {
+      getFile,
+      getImage,
+    };
+    const { mediaImage } = setup({ context });
 
-  it('should render error placeholder for non image files', () => {});
+    mediaImage.update();
+
+    expect(mediaImage.find('div').text()).toEqual('error');
+  });
 });
