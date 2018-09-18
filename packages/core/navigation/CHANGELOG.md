@@ -1,5 +1,8 @@
 # @atlaskit/navigation
 
+## 33.1.10
+- [patch] Pulling the shared styles from @atlaskit/theme and removed dependency on util-shraed-styles [7d51a09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d51a09)
+
 ## 33.1.9
 - [patch] Updated dependencies [80e1925](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80e1925)
   - @atlaskit/button@9.0.9

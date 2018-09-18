@@ -1,5 +1,8 @@
 # @atlaskit/form
 
+## 4.0.8
+- [patch] Pulling the shared styles from @atlaskit/theme and removed dependency on util-shraed-styles [7d51a09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d51a09)
+
 ## 4.0.7
 - [patch] Deprecates field-radio-group from form components. Adds @atlaskit/radio to field components [dcdb61b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dcdb61b)
 
