@@ -5,7 +5,8 @@ const ChromiumRevision = require('puppeteer/package.json').puppeteer
 
 const boltQuery = require('bolt-query');
 const path = require('path');
-const babelPolyfill = require.resolve('babel-polyfill');
+// TODO: LB - CHECK
+const babelPolyfill = require.resolve('@babel/polyfill');
 const customEventPolyfill = require.resolve('custom-event-polyfill');
 const entry = require.resolve('./entry');
 const browserFetcher = puppeteer.createBrowserFetcher();
