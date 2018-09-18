@@ -70,8 +70,7 @@ export const insertMedia = async (browser, filenames = ['one.svg']) => {
       await browser.click(selector);
     }
   }
-  // wait for insert button to show up
-  await sleep(mediaInsertDelay);
+  // wait for insert button to show up and
   // insert it from the picker dialog
   await browser.waitForSelector(insertMediaButton, 2000);
   await browser.click(insertMediaButton);
