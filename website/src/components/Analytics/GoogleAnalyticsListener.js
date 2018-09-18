@@ -93,12 +93,7 @@ export const observePerformanceMetrics = location => {
   try {
     observer.observe({ entryTypes: ['paint'] });
   } catch (error) {
-    if (
-      error.message !==
-      'The expression cannot be converted to return the specified type.'
-    ) {
-      throw error;
-    }
+    console.error(error);
   }
   // time to interactive, more details: https://goo.gl/OSmrPk
   ttiPolyfill
