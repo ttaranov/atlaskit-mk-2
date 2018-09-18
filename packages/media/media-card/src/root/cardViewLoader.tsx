@@ -5,7 +5,6 @@ import { CardLoading } from '../utils/cardLoading';
 import {
   CardViewBase as CardViewBaseType,
   CardViewBaseProps,
-  CardView as CardViewType,
 } from './cardView';
 
 interface AsyncCardViewBase {
@@ -26,8 +25,10 @@ export class CardViewBase extends React.PureComponent<
   };
 
   componentWillMount() {
-    import(/* webpackChunkName:"@atlaskit-internal_CardViewBase" */
-    './cardView').then(module => module.CardViewBase);
+    if (!this.state.CardViewBase) {
+      import(/* webpackChunkName:"@atlaskit-internal_CardViewBase" */
+      './cardView').then(module => module.CardViewBase);
+    }
   }
 
   render() {
@@ -39,14 +40,14 @@ export class CardViewBase extends React.PureComponent<
   }
 }
 
-export const CardView = (Loadable as any)({
+export const CardView = Loadable({
   loader: () =>
     import(/* webpackChunkName:"@atlaskit-internal_CardView" */
     './cardView').then(module => module.CardView),
   loading: () => <CardLoading />,
-}) as typeof CardViewType;
+});
 
-export const CardViewWithAnalyticsEvents = (Loadable as any)({
+export const CardViewWithAnalyticsEvents = Loadable({
   loader: () =>
     import(/* webpackChunkName:"@atlaskit-internal_CardViewWithAnalyticsEvents" */
     './cardView').then(module => module.CardViewWithAnalyticsEvents),
