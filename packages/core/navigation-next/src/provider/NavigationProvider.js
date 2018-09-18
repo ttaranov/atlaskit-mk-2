@@ -15,6 +15,7 @@ const DEFAULT_UI_STATE = {
   isCollapsed: false,
   productNavWidth: CONTENT_NAV_WIDTH,
   isResizing: false,
+  isResizeDisabled: false,
 };
 
 function defaultGetCache(): UIControllerShape {
@@ -41,6 +42,7 @@ export default class NavigationProvider extends Component<
     },
     initialPeekViewId: null,
     isDebugEnabled: false,
+    isResizeDisabled: false,
   };
   uiState: UIController;
   viewController: ViewController;
@@ -53,8 +55,12 @@ export default class NavigationProvider extends Component<
       initialPeekViewId,
       initialUIController,
       isDebugEnabled,
+      isResizeDisabled,
     } = props;
-    this.uiState = new UIController(initialUIController, cache);
+    this.uiState = new UIController(
+      { ...initialUIController, isResizeDisabled },
+      cache,
+    );
     this.viewController = new ViewController({
       isDebugEnabled,
       initialPeekViewId,
@@ -62,10 +68,17 @@ export default class NavigationProvider extends Component<
   }
 
   componentDidUpdate(prevProps: NavigationProviderProps) {
-    const { viewController } = this;
-    const { isDebugEnabled } = this.props;
+    const { viewController, uiState } = this;
+    const { isDebugEnabled, isResizeDisabled } = this.props;
     if (isDebugEnabled !== prevProps.isDebugEnabled) {
       viewController.setIsDebugEnabled(!!isDebugEnabled);
+    }
+    if (isResizeDisabled !== prevProps.isResizeDisabled) {
+      if (isResizeDisabled) {
+        uiState.disableResize();
+      } else {
+        uiState.enableResize();
+      }
     }
   }
 

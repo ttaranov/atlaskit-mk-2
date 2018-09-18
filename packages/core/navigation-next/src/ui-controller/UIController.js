@@ -17,6 +17,7 @@ const defaultState = {
   isPeekHinting: false,
   isPeeking: false,
   isResizing: false,
+  isResizeDisabled: false,
   isCollapsed: false,
   productNavWidth: CONTENT_NAV_WIDTH,
 };
@@ -37,17 +38,26 @@ export default class UIController extends Container<UIControllerShape>
   ) {
     super();
 
-    if (!cache) {
-      this.state = Object.assign({}, defaultState, initialState);
-      return;
+    let cachedState = {};
+    if (cache) {
+      const { get, set } = cache;
+      cachedState = get();
+
+      this.getCache = get;
+      this.setCache = set;
     }
 
-    const { get, set } = cache;
-    const cachedState = get();
+    const state = {
+      ...defaultState,
+      ...cachedState,
+      ...initialState,
+    };
 
-    this.getCache = get;
-    this.setCache = set;
-    this.state = Object.assign({}, defaultState, cachedState, initialState);
+    // isResizeDisabled takes precedence over isCollapsed
+    const isCollapsed =
+      initialState && initialState.isResizeDisabled ? false : state.isCollapsed;
+
+    this.state = { ...state, isCollapsed };
   }
 
   storeState = (state: Object) => {
@@ -60,9 +70,15 @@ export default class UIController extends Container<UIControllerShape>
   // ==============================
 
   collapse = () => {
+    if (this.state.isResizeDisabled) {
+      return;
+    }
     this.storeState({ isCollapsed: true });
   };
   expand = () => {
+    if (this.state.isResizeDisabled) {
+      return;
+    }
     this.storeState({ isCollapsed: false });
   };
   toggleCollapse = () => {
@@ -71,6 +87,9 @@ export default class UIController extends Container<UIControllerShape>
   };
 
   manualResizeStart = ({ productNavWidth, isCollapsed }: Resize) => {
+    if (this.state.isResizeDisabled) {
+      return;
+    }
     this.storeState({
       isResizing: true,
       productNavWidth,
@@ -78,11 +97,25 @@ export default class UIController extends Container<UIControllerShape>
     });
   };
   manualResizeEnd = ({ productNavWidth, isCollapsed }: Resize) => {
+    if (this.state.isResizeDisabled) {
+      return;
+    }
     this.storeState({
       isResizing: false,
       productNavWidth,
       isCollapsed,
     });
+  };
+
+  enableResize = () => {
+    // This is a page-level setting not a user preference so we don't cache
+    // this.
+    this.setState({ isResizeDisabled: false });
+  };
+  disableResize = () => {
+    // This is a page-level setting not a user preference so we don't cache
+    // this.
+    this.setState({ isResizeDisabled: true, isCollapsed: false });
   };
 
   peekHint = () => {

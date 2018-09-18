@@ -8,9 +8,10 @@ import UIController from './UIController';
  * UIController
  */
 export type InitialUIControllerShape = {
+  isCollapsed?: boolean,
   isPeekHinting?: boolean,
   isPeeking?: boolean,
-  isCollapsed?: boolean,
+  isResizeDisabled?: boolean,
   productNavWidth?: number,
 };
 
@@ -27,6 +28,8 @@ export type UIControllerShape = {
   isPeeking: boolean,
   /** Whether the navigation is currently being resized. */
   isResizing: boolean,
+  /** Whether expanding, collapsing, and resizing are currently disabled. */
+  isResizeDisabled: boolean,
   /** The width of the content navigation area. */
   productNavWidth: number,
 };
