@@ -5,19 +5,21 @@ import { Consumer, Provider } from '../components/Context';
 
 type Props = {
   children: ((*) => Node) | Node,
+  theme: (*) => *,
   values: (*) => *,
 };
 
 export default class Theme extends Component<Props> {
   static defaultProps = {
-    values: (v: *): * => v,
+    theme: (v: *): * => v,
+    values: null,
   };
   render() {
-    const { children, values } = this.props;
+    const { children, theme, values } = this.props;
     return (
       <Consumer>
-        {theme => {
-          const merged = values(theme);
+        {parent => {
+          const merged = (values || theme)(parent);
           return typeof children === 'function' ? (
             children(merged)
           ) : (

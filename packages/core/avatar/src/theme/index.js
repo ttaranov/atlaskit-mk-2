@@ -111,7 +111,7 @@ function getBorderRadius(props: {
   return borderRadius;
 }
 
-function getDimensions(props: ThemeProps) {
+function getDimensions(props: ThemePropsType) {
   const borderWidth: number = props.includeBorderWidth
     ? BORDER_WIDTH[props.size] * 2
     : 0;
@@ -121,7 +121,7 @@ function getDimensions(props: ThemeProps) {
   return { height, width };
 }
 
-const getPresenceLayout = ({ appearance, size }: ThemeProps) => {
+const getPresenceLayout = ({ appearance, size }: ThemePropsType) => {
   const presencePosition =
     appearance === 'square' ? -(BORDER_WIDTH[size] * 2) : ICON_OFFSET[size];
   const presenceSize = ICON_SIZES[size];
@@ -134,7 +134,7 @@ const getPresenceLayout = ({ appearance, size }: ThemeProps) => {
   };
 };
 
-const getStatusLayout = ({ appearance, size }: ThemeProps) => {
+const getStatusLayout = ({ appearance, size }: ThemePropsType) => {
   const statusPosition =
     appearance === 'square' ? SQUARE_ICON_OFFSET[size] : ICON_OFFSET[size];
   const statusSize = ICON_SIZES[size];
@@ -147,21 +147,18 @@ const getStatusLayout = ({ appearance, size }: ThemeProps) => {
   };
 };
 
-export type ThemeIn = {
-  avatar?: ThemeProps => ThemeOut,
-  mode?: 'light' | 'dark',
+export type ThemeType = {
+  avatar?: ThemeAvatarProps => {
+    backgroundColor: string,
+    borderRadius: number,
+    dimensions: { height: string, width: string },
+    presence: { bottom: string, height: string, right: string, width: string },
+    status: { bottom: string, height: string, right: string, width: string },
+  },
+  mode?: 'dark' | 'light',
 };
 
-export type ThemeOut = {
-  backgroundColor: string,
-  borderRadius: number,
-  dimensions: { height: string, width: string },
-  mode: 'light' | 'dark',
-  presence: { bottom: string, height: string, right: string, width: string },
-  status: { bottom: string, height: string, right: string, width: string },
-};
-
-export type ThemeProps = {
+export type ThemePropsType = {
   appearance: AppearanceType,
   includeBorderWidth: boolean,
   isLoading: boolean,
@@ -169,17 +166,22 @@ export type ThemeProps = {
   size: SizeType,
 };
 
-export function theme(parent: ThemeIn, props: ThemeProps): ThemeOut {
+export function theme(parent: ThemeType): ThemeType {
   return {
-    backgroundColor: getBackgroundColor({
-      isLoading: props.isLoading,
-      mode: parent.mode,
-    }),
-    borderRadius: getBorderRadius(props),
-    dimensions: getDimensions(props),
+    avatar(props) {
+      return {
+        backgroundColor: getBackgroundColor({
+          isLoading: props.isLoading,
+          mode: parent.mode,
+        }),
+        borderRadius: getBorderRadius(props),
+        dimensions: getDimensions(props),
+        presence: getPresenceLayout(props),
+        status: getStatusLayout(props),
+        ...(parent.avatar && parent.avatar(props)),
+      };
+    },
     mode: parent.mode || 'light',
-    presence: getPresenceLayout(props),
-    status: getStatusLayout(props),
-    ...(parent.avatar && parent.avatar(props)),
+    ...parent,
   };
 }

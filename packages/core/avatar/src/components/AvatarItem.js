@@ -18,7 +18,7 @@ import {
 } from '../styled/AvatarItem';
 import { getProps, getStyledAvatarItem } from '../helpers';
 import { withPseudoState } from '../hoc';
-import { themeItem, type ThemeItemIn, type ThemeItemOut } from '../theme/item';
+import { themeItem, type ThemeItemType } from '../theme/item';
 import type { AvatarClickType } from '../types';
 
 /* eslint-disable react/no-unused-prop-types */
@@ -49,7 +49,7 @@ type Props = {
   /** Pass target down to the anchor, if href is provided. */
   target?: '_blank' | '_self' | '_top' | '_parent',
   /** The item's theme. */
-  theme: ThemeItemIn => ThemeItemOut,
+  theme: ThemeItemType => ThemeItemType,
   /** Whether or not overflowing primary and secondary text is truncated */
   enableTextTruncate?: boolean,
 };
@@ -101,7 +101,9 @@ class AvatarItem extends Component<Props> {
 
     return (
       <Theme theme={this.props.theme}>
-        {({ backgroundColor, mode }) => {
+        {({ avatarItem, mode }) => {
+          const { backgroundColor } = avatarItem();
+
           // maintain the illusion of a mask around presence/status
           const borderColor = getBackgroundColor({
             ...this.props,

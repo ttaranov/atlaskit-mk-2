@@ -41,25 +41,32 @@ export const Slot = ({
   label,
   role,
 }: SlotProps) => (
-  <Theme props={{ appearance, isLoading, size }} theme={theme}>
-    {({ backgroundColor, borderRadius }) => (
-      <span
-        style={{
-          backgroundColor,
-          backgroundImage: backgroundImage ? `url(${backgroundImage})` : null,
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'cover',
-          borderRadius,
-          display: 'flex',
-          flex: '1 1 100%',
-          height: '100%',
-          width: '100%',
-        }}
-        role={role}
-        aria-label={label}
-      />
-    )}
+  <Theme theme={theme}>
+    {({ avatar }) => {
+      const { backgroundColor, borderRadius } = avatar({
+        appearance,
+        isLoading,
+        size,
+      });
+      return (
+        <span
+          style={{
+            backgroundColor,
+            backgroundImage: backgroundImage ? `url(${backgroundImage})` : null,
+            backgroundPosition: 'center',
+            backgroundRepeat: 'no-repeat',
+            backgroundSize: 'cover',
+            borderRadius,
+            display: 'flex',
+            flex: '1 1 100%',
+            height: '100%',
+            width: '100%',
+          }}
+          role={role}
+          aria-label={label}
+        />
+      );
+    }}
   </Theme>
 );
 
@@ -75,19 +82,26 @@ export const Svg = ({
   children,
   ...otherProps
 }: SvgProps) => (
-  <Theme props={{ appearance, size, isLoading: false }} theme={theme}>
-    {({ backgroundColor, borderRadius }) => (
-      <svg
-        style={{
-          backgroundColor,
-          borderRadius,
-          height: '100%',
-          width: '100%',
-        }}
-        {...otherProps}
-      >
-        {children}
-      </svg>
-    )}
+  <Theme theme={theme}>
+    {({ avatar }) => {
+      const { backgroundColor, borderRadius } = avatar({
+        appearance,
+        isLoading: false,
+        size,
+      });
+      return (
+        <svg
+          style={{
+            backgroundColor,
+            borderRadius,
+            height: '100%',
+            width: '100%',
+          }}
+          {...otherProps}
+        >
+          {children}
+        </svg>
+      );
+    }}
   </Theme>
 );

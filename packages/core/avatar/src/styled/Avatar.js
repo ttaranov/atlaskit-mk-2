@@ -8,20 +8,23 @@ import { theme } from '../theme';
 import { getInnerStyles } from './utils';
 
 export default (props: { children: Node, stackIndex: ?number }) => (
-  <Theme props={{ ...props, includeBorderWidth: true }} theme={theme}>
-    {({ dimensions }) => (
-      <div
-        style={{
-          display: 'inline-block',
-          position: 'relative',
-          outline: 0,
-          zIndex: props.stackIndex,
-          ...dimensions,
-        }}
-      >
-        {props.children}
-      </div>
-    )}
+  <Theme theme={theme}>
+    {({ avatar }) => {
+      const { dimensions } = avatar({ ...props, includeBorderWidth: true });
+      return (
+        <div
+          style={{
+            display: 'inline-block',
+            position: 'relative',
+            outline: 0,
+            zIndex: props.stackIndex,
+            ...dimensions,
+          }}
+        >
+          {props.children}
+        </div>
+      );
+    }}
   </Theme>
 );
 
@@ -30,32 +33,38 @@ export const Inner = styled.div`
 `;
 
 export const PresenceWrapper = (props: { children: Node }) => (
-  <Theme props={props} theme={theme}>
-    {({ presence }) => (
-      <span
-        style={{
-          pointerEvents: 'none',
-          position: 'absolute',
-          ...presence,
-        }}
-      >
-        {props.children}
-      </span>
-    )}
+  <Theme theme={theme}>
+    {({ avatar }) => {
+      const { presence } = avatar(props);
+      return (
+        <span
+          style={{
+            pointerEvents: 'none',
+            position: 'absolute',
+            ...presence,
+          }}
+        >
+          {props.children}
+        </span>
+      );
+    }}
   </Theme>
 );
 
 export const StatusWrapper = (props: { children: Node }) => (
-  <Theme props={props} theme={theme}>
-    {({ status }) => (
-      <span
-        style={{
-          position: 'absolute',
-          ...status,
-        }}
-      >
-        {props.children}
-      </span>
-    )}
+  <Theme theme={theme}>
+    {({ avatar }) => {
+      const { status } = avatar(props);
+      return (
+        <span
+          style={{
+            position: 'absolute',
+            ...status,
+          }}
+        >
+          {props.children}
+        </span>
+      );
+    }}
   </Theme>
 );
