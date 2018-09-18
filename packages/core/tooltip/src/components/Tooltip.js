@@ -39,9 +39,17 @@ type Props = {
   component: ComponentType<{ innerRef: HTMLElement => void }>,
   /** Time in milliseconds to wait before showing and hiding the tooltip. Defaults to 300. */
   delay: number,
-  /** Hide the tooltip when the element is clicked */
+  /**
+    Hide the tooltip when the click event is triggered. This should be
+    used when tooltip should be hiden if `onClick` react synthetic event
+    is triggered, which happens after `onMouseDown` event
+  */
   hideTooltipOnClick?: boolean,
-  /** Hide the tooltip when the element is clicked */
+  /**
+    Hide the tooltip when the mousedown event is triggered. This should be
+    used when tooltip should be hiden if `onMouseDown` react synthetic event
+    is triggered, which happens before `onClick` event
+  */
   hideTooltipOnMouseDown?: boolean,
   /**
     Where the tooltip should appear relative to the mouse. Only used when the
