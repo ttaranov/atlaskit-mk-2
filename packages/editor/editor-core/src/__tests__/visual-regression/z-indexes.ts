@@ -1,16 +1,15 @@
 import { removeOldProdSnapshots } from '@atlaskit/visual-regression/helper';
 
-import { imageSnapshotFolder, initEditor, clearEditor } from './_utils';
+import {
+  imageSnapshotFolder,
+  initEditor,
+  clearEditor,
+  snapshot,
+} from './_utils';
 
 const insertTable = async page => {
   await page.click('span[aria-label="Insert table"]');
   await page.waitForSelector('table td p');
-};
-
-const snapshot = async page => {
-  const image = await page.screenshot();
-  // @ts-ignore
-  expect(image).toMatchProdImageSnapshot();
 };
 
 const blockFormattingDropdown = 'span[aria-label="Change formatting"]';

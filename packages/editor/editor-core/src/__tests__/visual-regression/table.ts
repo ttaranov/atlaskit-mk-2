@@ -1,6 +1,13 @@
 import { removeOldProdSnapshots } from '@atlaskit/visual-regression/helper';
 
-import { imageSnapshotFolder, initEditor, clearEditor } from './_utils';
+import {
+  imageSnapshotFolder,
+  initEditor,
+  clearEditor,
+  selectByTextAndClick,
+  resetViewport,
+  snapshot,
+} from './_utils';
 
 type CellSelectorOpts = {
   row: number;
@@ -20,12 +27,6 @@ const insertTable = async page => {
   await page.waitForSelector('table td p');
 };
 
-const snapshot = async page => {
-  const image = await page.screenshot();
-  // @ts-ignore
-  expect(image).toMatchProdImageSnapshot();
-};
-
 const selectTableDisplayOption = async (page, optionSelector) => {
   await page.click('span[aria-label="Table display options"]');
   await page.click(optionSelector);
@@ -36,12 +37,7 @@ const clickInContextMenu = async (page, title) => {
     '.ProseMirror-table-contextual-menu-trigger';
   await page.waitForSelector(contextMenuTriggerSelector);
   await page.click(contextMenuTriggerSelector);
-  const menuItems = await page.$x(`//span[contains(text(), '${title}')]`);
-  if (menuItems.length > 0) {
-    await menuItems[0].click();
-  } else {
-    throw new Error(`Menu title "${title}" not found`);
-  }
+  await selectByTextAndClick({ page, tagName: 'span', text: title });
 };
 
 const getCellBoundingRect = async (page, selector) => {
@@ -101,7 +97,7 @@ describe('Snapshot Test: table', () => {
       });
 
       beforeEach(async () => {
-        await page.setViewport({ width: 1920, height: 1080 });
+        await resetViewport(page);
         await clearEditor(page);
         await insertTable(page);
       });
@@ -109,6 +105,7 @@ describe('Snapshot Test: table', () => {
       if (appearance === 'full-page') {
         ['wide', 'full-width'].forEach(layout => {
           it(`${layout} layout`, async () => {
+            await page.setViewport({ width: 1280, height: 1024 });
             const layoutName = layout
               .replace('-', ' ')
               .replace(/^\w/, c => c.toUpperCase());
@@ -122,6 +119,7 @@ describe('Snapshot Test: table', () => {
           });
         });
         it(`remove row buttons in full width layout mode`, async () => {
+          await page.setViewport({ width: 1280, height: 1024 });
           const buttonSelector = `div[aria-label="Table floating controls"] span[aria-label="Full width"]`;
           await page.click(buttonSelector);
           await page.waitForSelector(
@@ -219,24 +217,29 @@ describe('Snapshot Test: table', () => {
             await snapshot(page);
             await clickInContextMenu(page, 'Merge cells');
             await snapshot(page);
+
+            await page.click(firstCellSelector);
             await clickInContextMenu(page, 'Split cell');
             await snapshot(page);
           });
         });
 
         describe('Cell background', () => {
-          beforeEach(async () => {
-            await page.setViewport({ width: 790, height: 620 });
-          });
-
           it('shows the submenu on the right', async () => {
-            await page.click('tr:nth-child(1) > th:nth-child(1)');
+            await page.click(
+              getSelectorForCell({ row: 1, cell: 2, cellType: 'th' }),
+            );
+            await page.click(
+              getSelectorForCell({ row: 1, cell: 1, cellType: 'th' }),
+            );
             await clickInContextMenu(page, 'Cell background');
             await snapshot(page);
           });
 
           it('Submenu shows on the left if there is no available space', async () => {
-            await page.click('tr:nth-child(1) > th:nth-child(3)');
+            await page.click(
+              getSelectorForCell({ row: 1, cell: 3, cellType: 'th' }),
+            );
             await clickInContextMenu(page, 'Cell background');
             await snapshot(page);
           });
@@ -312,8 +315,8 @@ describe('Snapshot Test: table', () => {
     beforeEach(async () => {
       // @ts-ignore
       page = global.page;
-      await page.setViewport({ width: 1920, height: 1080 });
       await initEditor(page, 'table-flexi-resizing');
+      await page.setViewport({ width: 1280, height: 1024 });
       // Focus the table
       await page.click('table tr td');
     });

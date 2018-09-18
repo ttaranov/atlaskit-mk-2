@@ -1,5 +1,8 @@
 # @atlaskit/select
 
+## 6.0.0
+- [major] Bumped react-select dep from 2.0.0-beta.7 to 2.0.0. This includes a breaking change to custom components, the innerRef property is now declared on the root of the props object, as opposed to being part of the innerProps object passed to each component. For a full list of changes in 2.0.0 please see the react-select changelog here. https://github.com/JedWatson/react-select/blob/master/HISTORY.md [4194aa4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4194aa4)
+
 ## 5.0.19
 - [patch] Added a multi-select example for PopupSelect [483a335](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/483a335)
 
