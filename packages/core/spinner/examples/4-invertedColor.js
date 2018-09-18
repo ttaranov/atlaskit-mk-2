@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { akColorB400 } from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 import Spinner from '../src';
 
 export default () => (
@@ -9,7 +9,7 @@ export default () => (
     style={{
       display: 'inline-flex',
       alignItems: 'center',
-      backgroundColor: akColorB400,
+      backgroundColor: colors.B400,
       padding: '10px',
     }}
   >

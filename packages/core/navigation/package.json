@@ -34,7 +34,6 @@
     "@atlaskit/size-detector": "^5.0.6",
     "@atlaskit/theme": "^6.0.2",
     "@atlaskit/tooltip": "^12.0.12",
-    "@atlaskit/util-shared-styles": "^2.10.3",
     "babel-runtime": "^6.26.0",
     "chromatism": "^2.6.0",
     "es6-object-assign": "^1.1.0",

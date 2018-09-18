@@ -11,7 +11,7 @@ import Lorem from 'react-lorem-component';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import Tooltip from '@atlaskit/tooltip';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { gridSize } from '@atlaskit/theme';
 
 import SecondaryActions from './utils/confluence-example/SecondaryActions';
 import Navigation, {
@@ -27,7 +27,7 @@ import Navigation, {
 } from '../src';
 
 const SkeletonItemsWrapper = styled.div`
-  padding-right: ${akGridSizeUnitless * 3}px;
+  padding-right: ${gridSize() * 3}px;
 `;
 
 const BackIcon = (

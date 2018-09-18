@@ -1,9 +1,10 @@
 // @flow
-import { colors, themed, gridSize as akGridSize } from '@atlaskit/theme';
 import {
-  akZIndexBlanket,
-  akZIndexNavigation,
-} from '@atlaskit/util-shared-styles';
+  colors,
+  gridSize as akGridSize,
+  layers,
+  themed,
+} from '@atlaskit/theme';
 
 /**
  * NOTE: changing the width of the Navigation is considered a breaking change
@@ -57,9 +58,9 @@ export const animationTimeUnitless = 200;
 export const animationTime = `${animationTimeUnitless}ms`;
 export const resizeAnimationTime = animationTime;
 export const zIndex = {
-  base: akZIndexNavigation,
+  base: layers.navigation(),
   // needs to sit on top of navigation and the drawer
-  drawer: akZIndexBlanket + 1,
+  drawer: layers.blanket() + 1,
 };
 
 // these are colors that are currently not controllable via theming
