@@ -210,7 +210,18 @@ function getPlugins(
         {
           loader: 'babel-loader',
           options: {
-            configFile: require.resolve('../../../.babelrc.js'),
+            presets: [
+              ['@babel/preset-env', { modules: false }],
+              '@babel/preset-typescript',
+              '@babel/preset-flow',
+              '@babel/preset-react',
+            ],
+            plugins: [
+              ['@babel/plugin-proposal-class-properties'],
+              '@babel/plugin-proposal-object-rest-spread',
+              '@babel/plugin-syntax-dynamic-import',
+            ],
+            ignore: ['**/*.d.ts', '**/__tests__/*'],
           },
         },
       ],
