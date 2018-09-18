@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 80.4.9
+- [patch] Removing underline active in code mark selection [e54422a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e54422a)
+
 ## 80.4.8
 - [patch] Updated dependencies [4194aa4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4194aa4)
   - @atlaskit/logo@9.2.2
