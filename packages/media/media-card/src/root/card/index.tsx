@@ -240,7 +240,7 @@ export class Card extends Component<CardProps, CardState> {
   // we don't want to show complete status for empty files, ideally there should no such file on the media api,
   // but there are some edge cases when using id upfront that can result on that.
   get status(): CardStatus {
-    const { status, metadata } = this.state;
+    const { status, metadata, dataURI } = this.state;
     const { identifier } = this.props;
 
     if (
@@ -248,7 +248,7 @@ export class Card extends Component<CardProps, CardState> {
       identifier.mediaItemType === 'file' &&
       metadata
     ) {
-      if (!(metadata as FileDetails).size) {
+      if (!(metadata as FileDetails).size || !dataURI) {
         return 'processing';
       }
     }
