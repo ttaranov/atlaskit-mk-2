@@ -27,9 +27,9 @@ const DisplayThemeColors = () => (
 );
 
 export default () => (
-  <Theme values={() => ({ backgroundColor: '#333', textColor: '#eee' })}>
+  <Theme theme={() => ({ backgroundColor: '#333', textColor: '#eee' })}>
     <DisplayThemeColors />
-    <Theme values={t => ({ ...t, backgroundColor: 'palevioletred' })}>
+    <Theme theme={t => ({ ...t, backgroundColor: 'palevioletred' })}>
       <DisplayThemeColors />
     </Theme>
   </Theme>

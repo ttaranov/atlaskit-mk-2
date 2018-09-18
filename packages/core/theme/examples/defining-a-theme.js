@@ -5,7 +5,7 @@ import color from 'color';
 import { Theme } from '../src';
 
 export default () => (
-  <Theme values={() => ({ backgroundColor: '#333', textColor: '#eee' })}>
+  <Theme theme={() => ({ backgroundColor: '#333', textColor: '#eee' })}>
     {theme =>
       Object.keys(theme).map(k => (
         <div

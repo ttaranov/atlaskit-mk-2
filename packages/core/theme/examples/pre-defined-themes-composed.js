@@ -11,8 +11,8 @@ const themeDefault = theme => ({
 const themeCustom = theme => ({ ...theme, padding: 10 });
 
 export default () => (
-  <Theme values={themeDefault}>
-    <Theme values={themeCustom}>
+  <Theme theme={themeDefault}>
+    <Theme theme={themeCustom}>
       {theme => <div style={theme}>I am themed.</div>}
     </Theme>
   </Theme>

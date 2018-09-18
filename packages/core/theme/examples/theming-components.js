@@ -56,7 +56,7 @@ class Button extends Component<Props, State> {
   onMouseLeave = () => this.setState({ hover: false });
   render() {
     return (
-      <Theme values={this.props.theme}>
+      <Theme theme={this.props.theme}>
         {theme => {
           const { backgroundColor, textColor: color } = theme.button(
             this.state,
@@ -89,7 +89,7 @@ class Button extends Component<Props, State> {
 export default () => (
   <Fragment>
     <Button>Default</Button>
-    <Theme values={appTheme}>
+    <Theme theme={appTheme}>
       <Button>Context</Button>
       <Button theme={customButtonTheme}>Custom</Button>
     </Theme>
