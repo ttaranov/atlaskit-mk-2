@@ -51,7 +51,6 @@ const formatOptionLabel = (opt: OptionType, { context }) =>
 // put it all together
 const CountrySelect = (props: any) => (
   <Select
-    // components={{ Menu }}
     isClearable={false}
     formatOptionLabel={formatOptionLabel}
     getOptionLabel={getOptionLabel}
