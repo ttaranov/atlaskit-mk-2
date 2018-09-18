@@ -31,6 +31,7 @@ export function loadImage(src: string): Promise<HTMLImageElement> {
 
 /**
  * convert the given UTF8 array buffer to a string
+ * https://ourcodeworld.com/articles/read/164/how-to-convert-an-uint8array-to-string-in-javascript
  * @param array - the array
  */
 export function Utf8ArrayToStr(array: Uint8Array): string {

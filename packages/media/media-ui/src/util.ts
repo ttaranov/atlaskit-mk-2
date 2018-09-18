@@ -33,23 +33,18 @@ export function dataURItoFile(
   try {
     return new File([blob], filename, { type: mimeString });
   } catch (e) {
-    // IE11 and Safari does not support the File constructor.
-    // This util method is only used to convert a dataURI to the File object which will be given back to consumers via the onImageSaved property of AvatarPickerDialog.
-    // Consumers should really only care about the bytes (for upload) which are part of the Blob prototype.
-    // When we cast here to work around IE11 and Safari, we are still giving the byte data back, but just loosing the "lastModified", "lastModifiedData", and "name" properties of File.
-    // These properties should not be required by consumers when receiving the file, only the byte data should be important.
     return blob as File;
   }
 }
 
-export function fileToDataURI(blob: Blob | File): Promise<string> {
-  return new Promise((res, rej) => {
+export function fileToDataURI(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.addEventListener('load', () => {
       // TODO: [ts30] Add proper handling for null and ArrayBuffer
-      res(reader.result as string);
+      resolve(reader.result as string);
     });
-    reader.addEventListener('error', rej);
+    reader.addEventListener('error', reject);
     reader.readAsDataURL(blob);
   });
 }
