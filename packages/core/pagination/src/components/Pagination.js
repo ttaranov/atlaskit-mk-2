@@ -16,7 +16,7 @@ import {
 } from '../../package.json';
 
 import { type i18nShape, defaultI18n } from '../internal/props';
-import { Container, Ellipsis, ButtonActive, StyledButton } from '../styled';
+import { Container, Ellipsis, StyledButton } from '../styled';
 import pageRange from '../internal/page-range';
 
 const MAX_VISIBLE_PAGES = 7;
@@ -52,22 +52,15 @@ class Pagination extends Component<Props, State> {
     current: this.props.defaultValue,
   };
 
-  componentWillReceiveProps(nextProps: Props) {
-    if (this.props.defaultValue !== nextProps.defaultValue) {
-      this.setState({ current: nextProps.defaultValue });
-    }
-  }
-
   getCurrentPage() {
     return this.props.value ? this.props.value : this.state.current;
   }
 
   onPageChange = (page: number) => {
-    if (this.props.value) {
-      this.props.onChange(page);
-    } else {
+    if (!this.props.value) {
       this.setState({ current: page });
     }
+    this.props.onChange(page);
   };
 
   render() {
@@ -86,26 +79,25 @@ class Pagination extends Component<Props, State> {
         <StyledButton
           appearance="subtle"
           isDisabled={current === 1}
+          ariaLabel={i18n.prev}
           onClick={() => this.onPageChange(current - 1)}
-          label={i18n.prev}
         >
           <ChevronLeftLargeIcon size="medium" />
         </StyledButton>
 
         {pageRange(MAX_VISIBLE_PAGES, current, total).map(
           (pageNum: '...' | number, i) => {
-            const isDisabled = pageNum === current;
-            const Element = isDisabled ? ButtonActive : Button;
+            const isSelected = pageNum === current;
             const key = `${pageNum}-${i}`;
             return pageNum === '...' ? (
               <Ellipsis key={key}>...</Ellipsis>
             ) : (
               <Button
-                isSelected={isDisabled}
                 appearance="subtle"
+                isSelected={isSelected}
                 key={key}
                 // $FlowFixMe fails to narrow type after ternary
-                onClick={() => this.onPageChange(pageNum)}
+                onClick={() => !isSelected && this.onPageChange(pageNum)}
               >
                 {pageNum}
               </Button>
@@ -115,8 +107,8 @@ class Pagination extends Component<Props, State> {
         <StyledButton
           appearance="subtle"
           isDisabled={current === total}
+          ariaLabel={i18n.next}
           onClick={() => this.onPageChange(current + 1)}
-          label={i18n.next}
         >
           <ChevronRightLargeIcon size="medium" />
         </StyledButton>
