@@ -107,4 +107,127 @@ describe('NavigationNext UI Controller: UIController', () => {
       isResizing: false,
     });
   });
+
+  describe('Disabling expanding, collapsing, and resizing', () => {
+    describe('Initialising the state', () => {
+      it('should default to false', () => {
+        const uiController = new UIController({}, false);
+        expect(uiController.state.isResizeDisabled).toBe(false);
+      });
+
+      it('should take precedence over the initial isCollapsed value', () => {
+        const uiController = new UIController(
+          { isCollapsed: true, isResizeDisabled: true },
+          false,
+        );
+        expect(uiController.state).toMatchObject({
+          isCollapsed: false,
+          isResizeDisabled: true,
+        });
+      });
+    });
+
+    describe('#disableResize()', () => {
+      it('should set state.isResizeDisabled to true', () => {
+        const uiController = new UIController({}, false);
+        uiController.disableResize();
+        expect(uiController.state.isResizeDisabled).toEqual(true);
+      });
+
+      it('should always set state.isCollapsed to false', () => {
+        const uiController = new UIController({ isCollapsed: true }, false);
+        expect(uiController.state.isCollapsed).toEqual(true);
+        uiController.disableResize();
+        expect(uiController.state.isCollapsed).toEqual(false);
+      });
+    });
+
+    describe('#enableResize()', () => {
+      it('should set state.isResizeDisabled to false', () => {
+        const uiController = new UIController(
+          { isResizeDisabled: true },
+          false,
+        );
+        expect(uiController.state.isResizeDisabled).toEqual(true);
+        uiController.enableResize();
+        expect(uiController.state.isResizeDisabled).toEqual(false);
+      });
+
+      it('should restore the isCollapsed state that was set before .disableResize() was called', () => {
+        const uiController = new UIController({ isCollapsed: true }, false);
+        uiController.disableResize();
+        expect(uiController.state.isCollapsed).toEqual(false);
+        uiController.enableResize();
+        expect(uiController.state.isCollapsed).toEqual(true);
+      });
+
+      it('should restore the isCollapsed state that it was initialised with', () => {
+        const uiController = new UIController(
+          { isCollapsed: true, isResizeDisabled: true },
+          false,
+        );
+        expect(uiController.state.isCollapsed).toEqual(false);
+        uiController.enableResize();
+        expect(uiController.state.isCollapsed).toEqual(true);
+
+        // Initialised from cache
+        const uiControllerWithCache = new UIController(
+          { isResizeDisabled: true },
+          {
+            get: () => ({
+              isCollapsed: true,
+              isPeekHinting: false,
+              isPeeking: false,
+              isResizing: false,
+              productNavWidth: 240,
+            }),
+            set: () => {},
+          },
+        );
+        expect(uiControllerWithCache.state.isCollapsed).toEqual(false);
+        uiControllerWithCache.enableResize();
+        expect(uiControllerWithCache.state.isCollapsed).toEqual(true);
+      });
+    });
+
+    describe('Preventing imperative methods from updating the state', () => {
+      let uiController;
+      let stateSnapshot;
+      beforeEach(() => {
+        uiController = new UIController({ isResizeDisabled: true }, false);
+        stateSnapshot = { ...uiController.state };
+      });
+
+      it('should prevent calls to .collapse() from updating the state', () => {
+        uiController.collapse();
+        expect(uiController.state).toEqual(stateSnapshot);
+      });
+
+      it('should prevent calls to .expand() from updating the state', () => {
+        uiController.expand();
+        expect(uiController.state).toEqual(stateSnapshot);
+      });
+
+      it('should prevent calls to .toggleCollapse() from updating the state', () => {
+        uiController.toggleCollapse();
+        expect(uiController.state).toEqual(stateSnapshot);
+      });
+
+      it('should prevent calls to .manualResizeStart() from updating the state', () => {
+        uiController.manualResizeStart({
+          productNavWidth: 0,
+          isCollapsed: false,
+        });
+        expect(uiController.state).toEqual(stateSnapshot);
+      });
+
+      it('should prevent calls to .manualResizeEnd() from updating the state', () => {
+        uiController.manualResizeEnd({
+          productNavWidth: 0,
+          isCollapsed: false,
+        });
+        expect(uiController.state).toEqual(stateSnapshot);
+      });
+    });
+  });
 });

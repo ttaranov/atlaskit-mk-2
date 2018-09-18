@@ -68,7 +68,8 @@ export default class UIController extends Container<UIControllerShape>
 
   storeState = (state: Object) => {
     this.setState(state);
-    if (this.setCache) this.setCache(this.state);
+    const { isResizeDisabled, ...cachedState } = this.state;
+    if (this.setCache) this.setCache(cachedState);
   };
 
   // ==============================

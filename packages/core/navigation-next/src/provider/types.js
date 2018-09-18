@@ -29,5 +29,5 @@ export type NavigationProviderProps = {
   isDebugEnabled: boolean,
   /** Whether the navigation component can be expanded, collapsed, or resized.
    * */
-  isResizeDisabled: boolean,
+  isResizeDisabled?: boolean,
 };

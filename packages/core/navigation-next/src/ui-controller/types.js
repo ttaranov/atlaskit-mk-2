@@ -15,6 +15,14 @@ export type InitialUIControllerShape = {
   productNavWidth?: number,
 };
 
+export type UIControllerCacheShape = {
+  isCollapsed: boolean,
+  isPeekHinting: boolean,
+  isPeeking: boolean,
+  isResizing: boolean,
+  productNavWidth: number,
+};
+
 export type UIControllerShape = {
   /** Whether the navigation is currently collapsed. */
   isCollapsed: boolean,
@@ -34,9 +42,9 @@ export type UIControllerShape = {
   productNavWidth: number,
 };
 
-export type UIControllerCacheGetter = () => UIControllerShape;
+export type UIControllerCacheGetter = () => UIControllerCacheShape;
 
-export type UIControllerCacheSetter = UIControllerShape => void;
+export type UIControllerCacheSetter = UIControllerCacheShape => void;
 
 export type UIControllerCache = {
   get: UIControllerCacheGetter,
