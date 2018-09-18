@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 80.4.12
+- [patch] reverting table style change [b829ab9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b829ab9)
+
 ## 80.4.11
 - [patch] ED-5335: fix table when it has nested extension that renders another table [21f315b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21f315b)
 
