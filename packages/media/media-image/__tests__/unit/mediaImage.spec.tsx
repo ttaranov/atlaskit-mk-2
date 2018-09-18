@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import MediaImage, { MediaImageProps } from '../../src';
-import { Context } from '@atlaskit/media-core';
 import { Observable } from 'rxjs';
 
 describe('<MediaImage />', () => {
@@ -119,5 +118,16 @@ describe('<MediaImage />', () => {
     mediaImage.update();
 
     expect(mediaImage.find('div').text()).toEqual('error');
+  });
+
+  it('should use className property', async () => {
+    const { mediaImage, getImage } = setup({
+      className: 'some-class',
+    });
+
+    await getImage;
+    mediaImage.update();
+
+    expect(mediaImage.find('img').prop('className')).toEqual('some-class');
   });
 });
