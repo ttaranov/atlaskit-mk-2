@@ -92,9 +92,8 @@ export const observePerformanceMetrics = location => {
   // https://ecosystem.atlassian.net/browse/AK-5381
   try {
     observer.observe({ entryTypes: ['paint'] });
-  } catch (error) {
-    console.error(error);
-  }
+  } catch (error) {}
+
   // time to interactive, more details: https://goo.gl/OSmrPk
   ttiPolyfill
     .getFirstConsistentlyInteractive({ useMutationObserver: false })
