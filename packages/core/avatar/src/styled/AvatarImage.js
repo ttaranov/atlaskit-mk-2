@@ -3,7 +3,7 @@
 import React, { type Node } from 'react';
 import styled from 'styled-components';
 import { colors, Theme } from '@atlaskit/theme';
-import theme from '../theme';
+import { theme } from '../theme';
 import type { AppearanceType, SizeType } from '../types';
 
 const themeBackgroundColors = {
@@ -41,7 +41,7 @@ export const Slot = ({
   label,
   role,
 }: SlotProps) => (
-  <Theme state={{ appearance, isLoading, size }} values={theme}>
+  <Theme props={{ appearance, isLoading, size }} theme={theme}>
     {({ backgroundColor, borderRadius }) => (
       <span
         style={{
@@ -75,7 +75,7 @@ export const Svg = ({
   children,
   ...otherProps
 }: SvgProps) => (
-  <Theme state={{ appearance, size, isLoading: false }} values={theme}>
+  <Theme props={{ appearance, size, isLoading: false }} theme={theme}>
     {({ backgroundColor, borderRadius }) => (
       <svg
         style={{

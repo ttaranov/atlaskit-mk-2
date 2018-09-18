@@ -1,15 +1,15 @@
 // @flow
 
-export type ThemeIn = {
-  mode: 'dark' | 'light',
+export type ThemeItemIn = {
+  mode?: 'dark' | 'light',
 };
 
-export type ThemeOut = {
+export type ThemeItemOut = {
   backgroundColor: 'string',
   mode: 'light' | 'dark',
 };
 
-export default (props: ThemeIn): ThemeOut => {
+export function themeItem(parent: ThemeItemIn): ThemeItemOut {
   return {
     backgroundColor: null,
 
@@ -17,6 +17,6 @@ export default (props: ThemeIn): ThemeOut => {
     // the values here and then passing *those* down. However, the copmlexity
     // involved in the styled-components style functions would need to be
     // refactored first.
-    mode: props.mode || 'light',
+    mode: parent.mode || 'light',
   };
-};
+}

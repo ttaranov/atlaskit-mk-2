@@ -18,7 +18,7 @@ import {
 } from '../styled/AvatarItem';
 import { getProps, getStyledAvatarItem } from '../helpers';
 import { withPseudoState } from '../hoc';
-import theme, { type ThemeIn, type ThemeOut } from '../theme-item';
+import { themeItem, type ThemeItemIn, type ThemeItemOut } from '../theme/item';
 import type { AvatarClickType } from '../types';
 
 /* eslint-disable react/no-unused-prop-types */
@@ -49,7 +49,7 @@ type Props = {
   /** Pass target down to the anchor, if href is provided. */
   target?: '_blank' | '_self' | '_top' | '_parent',
   /** The item's theme. */
-  theme: ThemeIn => ThemeOut,
+  theme: ThemeItemIn => ThemeItemOut,
   /** Whether or not overflowing primary and secondary text is truncated */
   enableTextTruncate?: boolean,
 };
@@ -59,7 +59,7 @@ class AvatarItem extends Component<Props> {
 
   static defaultProps = {
     enableTextTruncate: true,
-    theme,
+    theme: themeItem,
   };
 
   // expose blur/focus to consumers via ref
@@ -100,7 +100,7 @@ class AvatarItem extends Component<Props> {
     const StyledComponent: any = getStyledAvatarItem(this.props);
 
     return (
-      <Theme values={this.props.theme}>
+      <Theme theme={this.props.theme}>
         {({ backgroundColor, mode }) => {
           // maintain the illusion of a mask around presence/status
           const borderColor = getBackgroundColor({

@@ -3,7 +3,7 @@
 import React, { PureComponent } from 'react';
 import { Theme } from '@atlaskit/theme';
 import { Slot, ShapeGroup, Svg } from '../styled/AvatarImage';
-import theme from '../theme';
+import { theme } from '../theme';
 import type { AppearanceType, SizeType } from '../types';
 
 export function DefaultImage({
@@ -18,7 +18,7 @@ export function DefaultImage({
   const rectBounds = 128;
 
   return (
-    <Theme values={theme}>
+    <Theme theme={theme}>
       {({ mode }) => {
         return (
           <Svg
