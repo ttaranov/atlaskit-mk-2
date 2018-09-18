@@ -1,5 +1,8 @@
 # @atlaskit/form
 
+## 4.0.7
+- [patch] Deprecates field-radio-group from form components. Adds @atlaskit/radio to field components [dcdb61b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dcdb61b)
+
 ## 4.0.6
 - [patch] Fix isRequired applied to all fields [cb73e27](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cb73e27)
 
