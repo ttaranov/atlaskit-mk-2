@@ -40,6 +40,7 @@ export default class InteractionStateManager extends Component<
     this.setState(() => ({
       isActive: false,
       isHover: false,
+      isSelected: false,
     }));
   };
 

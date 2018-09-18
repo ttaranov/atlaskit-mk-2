@@ -41,6 +41,8 @@ type Props = {
   delay: number,
   /** Hide the tooltip when the element is clicked */
   hideTooltipOnClick?: boolean,
+  /** Hide the tooltip when the element is clicked */
+  hideTooltipOnMouseDown?: boolean,
   /**
     Where the tooltip should appear relative to the mouse. Only used when the
     `position` prop is set to 'mouse'
@@ -143,6 +145,13 @@ class Tooltip extends Component<Props, State> {
     }
   };
 
+  handleMouseDown = () => {
+    if (this.props.hideTooltipOnMouseDown) {
+      this.cancelPendingSetState();
+      this.setState({ isVisible: false, immediatelyHide: true });
+    }
+  };
+
   handleMouseOver = (e: SyntheticMouseEvent<>) => {
     if (e.target === this.wrapperRef) return;
     this.cancelPendingSetState();
@@ -208,6 +217,7 @@ class Tooltip extends Component<Props, State> {
           onMouseOver={this.handleMouseOver}
           onMouseOut={this.handleMouseLeave}
           onMouseMove={this.handleMouseMove}
+          onMouseDown={this.handleMouseDown}
           ref={wrapperRef => {
             this.wrapperRef = wrapperRef;
           }}

@@ -109,9 +109,10 @@ class GlobalNavigationItemPrimitive extends Component<*> {
     return (
       <Tooltip
         delay={0}
-        content={isSelected || isActive ? null : tooltip}
+        content={isSelected || isActive ? undefined : tooltip}
         position="right"
         hideTooltipOnClick
+        hideTooltipOnMouseDown
       >
         {this.renderChildren()}
       </Tooltip>
