@@ -9,7 +9,7 @@ import { Node as PMNode, Schema, Fragment } from 'prosemirror-model';
 
 import { Serializer } from './serializer';
 
-export { default as ReactSerializer, BreakoutProvider } from './react';
+export { default as ReactSerializer } from './react';
 export { default as TextSerializer } from './text';
 export { default as EmailSerializer } from './email';
 
