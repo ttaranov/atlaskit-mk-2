@@ -31,6 +31,7 @@ export default class UIController extends Container<UIControllerShape>
   implements UIControllerInterface {
   getCache: ?UIControllerCacheGetter;
   setCache: ?UIControllerCacheSetter;
+  isCollapsedStore: boolean | void;
 
   constructor(
     initialState?: InitialUIControllerShape,
@@ -53,9 +54,14 @@ export default class UIController extends Container<UIControllerShape>
       ...initialState,
     };
 
+    let isCollapsed = state.isCollapsed;
+
     // isResizeDisabled takes precedence over isCollapsed
-    const isCollapsed =
-      initialState && initialState.isResizeDisabled ? false : state.isCollapsed;
+    if (initialState && initialState.isResizeDisabled) {
+      // Remember this so that we can reset it if resizing is enabled again.
+      this.isCollapsedStore = isCollapsed;
+      isCollapsed = false;
+    }
 
     this.state = { ...state, isCollapsed };
   }
@@ -108,14 +114,22 @@ export default class UIController extends Container<UIControllerShape>
   };
 
   enableResize = () => {
+    const isCollapsed =
+      typeof this.isCollapsedStore === 'boolean'
+        ? this.isCollapsedStore
+        : this.state.isCollapsed;
+
     // This is a page-level setting not a user preference so we don't cache
     // this.
-    this.setState({ isResizeDisabled: false });
+    this.setState({ isCollapsed, isResizeDisabled: false });
   };
   disableResize = () => {
+    // Remember this so that we can reset it if resizing is enabled again.
+    this.isCollapsedStore = this.state.isCollapsed;
+
     // This is a page-level setting not a user preference so we don't cache
     // this.
-    this.setState({ isResizeDisabled: true, isCollapsed: false });
+    this.setState({ isCollapsed: false, isResizeDisabled: true });
   };
 
   peekHint = () => {
