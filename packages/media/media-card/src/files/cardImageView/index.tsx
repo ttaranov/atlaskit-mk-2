@@ -39,8 +39,8 @@ export class FileCardImageView extends Component<FileCardImageViewProps, {}> {
   };
 
   private isDownloadingOrProcessing() {
-    const { status } = this.props;
-    return status === 'loading' || status === 'processing';
+    const { status, dataURI } = this.props;
+    return status === 'loading' || status === 'processing' || !dataURI;
   }
 
   render() {
