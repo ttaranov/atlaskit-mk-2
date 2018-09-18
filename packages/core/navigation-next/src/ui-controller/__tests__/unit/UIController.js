@@ -2,9 +2,10 @@
 import UIController from '../../UIController';
 
 const initialState = {
+  isCollapsed: true,
   isPeekHinting: true,
   isPeeking: true,
-  isCollapsed: true,
+  isResizeDisabled: false,
   productNavWidth: 100,
 };
 
@@ -25,6 +26,7 @@ describe('NavigationNext UI Controller: UIController', () => {
       isCollapsed: true,
       isPeekHinting: true,
       isPeeking: true,
+      isResizeDisabled: false,
       isResizing: false,
       productNavWidth: 100,
     });
