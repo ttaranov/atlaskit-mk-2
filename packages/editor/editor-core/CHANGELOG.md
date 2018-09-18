@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 80.4.10
+- [patch] Fixes text selection that ends at the start of the next cell. ED-5050 [f5c365d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f5c365d)
+
 ## 80.4.9
 - [patch] Removing underline active in code mark selection [e54422a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e54422a)
 
