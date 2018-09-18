@@ -59,12 +59,12 @@ exports[`reset 1`] = `
 
 exports[`themed reset 1`] = `
 .c0 {
-  background-color: #FFFFFF;
-  color: #091E42;
+  background-color: #000;
+  color: #fff;
 }
 
 .c0 a {
-  color: #0052CC;
+  color: blue;
 }
 
 .c0 a:hover {
@@ -96,23 +96,20 @@ exports[`themed reset 1`] = `
 }
 
 <Theme
-  backgroundColor="#000"
-  linkColor="blue"
   props={Object {}}
-  textColor="#fff"
   theme={[Function]}
 >
   <Reset>
     <styled.div
-      backgroundColor="#FFFFFF"
+      backgroundColor="#000"
       headingColor="#172B4D"
-      linkColor="#0052CC"
+      linkColor="blue"
       linkColorActive="#0747A6"
       linkColorHover="#0065FF"
       linkColorOutline="#4C9AFF"
       subtleHeadingColor="#6B778C"
       subtleTextColor="#6B778C"
-      textColor="#091E42"
+      textColor="#fff"
     >
       <div
         className="c0"
