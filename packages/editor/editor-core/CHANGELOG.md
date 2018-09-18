@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 80.4.11
+- [patch] ED-5335: fix table when it has nested extension that renders another table [21f315b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21f315b)
+
 ## 80.4.10
 - [patch] Fixes text selection that ends at the start of the next cell. ED-5050 [f5c365d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f5c365d)
 
