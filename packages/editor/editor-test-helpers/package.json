@@ -21,7 +21,7 @@
     "@atlaskit/editor-core": "^80.5.3",
     "@atlaskit/media-core": "^23.2.0",
     "@atlaskit/media-test-helpers": "^17.1.0",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "enzyme": "^3.6.0",
     "prosemirror-commands": "^1.0.7",
     "prosemirror-keymap": "^1.0.1",
     "prosemirror-model": "^1.6.1",

@@ -36,7 +36,7 @@
     "@atlaskit/build-utils": "^2.0.0",
     "@atlaskit/button": "^9.0.10",
     "@atlaskit/docs": "^5.0.6",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "enzyme": "^3.6.0",
     "react-dom": "^16.4.2",
     "sinon": "^2.2.0"
   }

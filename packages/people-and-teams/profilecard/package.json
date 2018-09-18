@@ -32,7 +32,7 @@
     "@atlaskit/dynamic-table": "^10.0.9",
     "@atlaskit/util-common-test": "^2.4.2",
     "@atlaskit/util-data-test": "^10.0.7",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "enzyme": "^3.6.0",
     "fetch-mock": "^6.5.2",
     "loader-utils": "^1.1.0",
     "sinon": "^2.2.0",

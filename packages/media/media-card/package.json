@@ -67,7 +67,7 @@
     "@atlaskit/toggle": "^5.0.5",
     "@types/classnames": "^2.2.6",
     "deepcopy": "0.6.3",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "enzyme": "^3.6.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.2",
     "rxjs": "^5.1.0",

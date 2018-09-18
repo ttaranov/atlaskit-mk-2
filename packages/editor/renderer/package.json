@@ -48,7 +48,7 @@
     "@atlaskit/visual-regression": "^0.0.1",
     "@types/prosemirror-model": "^1.0.0",
     "chai": "^4.1.2",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "enzyme": "^3.6.0",
     "react": "^16.4.0",
     "react-live-clock": "^2.0.2",
     "sinon": "^2.2.0"

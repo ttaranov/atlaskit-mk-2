@@ -35,7 +35,7 @@
     "@atlaskit/select": "^6.0.0",
     "@atlaskit/theme": "^6.0.1",
     "@atlaskit/visual-regression": "^0.0.1",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "enzyme": "^3.6.0",
     "react-dom": "^16.4.2"
   }
 }

@@ -33,7 +33,7 @@
     "@atlaskit/navigation-next": "^3.13.2",
     "@atlaskit/section-message": "^1.0.7",
     "axios": "^0.17.1",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "enzyme": "^3.6.0",
     "react-dom": "^16.4.2"
   },
   "peerDependencies": {

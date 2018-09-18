@@ -15,5 +15,8 @@ module.exports = {
       presets: [['@babel/env', { modules: false }]],
       ignore: ['__mocks__', '__tests__', '__fixtures__', 'node_modules'],
     },
+    test: {
+      presets: ['@babel/env'],
+    },
   },
 };

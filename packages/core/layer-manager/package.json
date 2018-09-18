@@ -40,7 +40,7 @@
     "@atlaskit/theme": "^6.0.2",
     "@atlaskit/tooltip": "^12.0.14",
     "@atlaskit/webdriver-runner": "^0.1.0",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "enzyme": "^3.6.0",
     "react-dom": "^16.4.2"
   },
   "keywords": [

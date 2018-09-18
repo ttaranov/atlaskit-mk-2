@@ -38,7 +38,7 @@
     "@atlaskit/docs": "^5.0.2",
     "@atlaskit/media-test-helpers": "^17.0.2",
     "@types/enzyme": "^3.1.6",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "enzyme": "^3.6.0",
     "react": "^16.4.0"
   }
 }

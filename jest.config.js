@@ -36,7 +36,7 @@ const config = {
     // ignore tests under __tests__/vr (we override this if the VISUAL_REGRESSION flag is set)
     '/__tests__\\/visual-regression/',
   ],
-  modulePathIgnorePatterns: ['./node_modules'],
+  modulePathIgnorePatterns: ['node_modules'],
   transformIgnorePatterns: ['\\/node_modules\\/(?!@atlaskit)'],
   resolver: `${__dirname}/resolver.js`,
   transform: {
@@ -50,7 +50,7 @@ const config = {
     },
     __BASEURL__: 'http://localhost:9000',
   },
-  moduleFileExtensions: ['js', 'ts', 'tsx'],
+  moduleFileExtensions: ['js', 'ts', 'tsx', 'json'],
   moduleNameMapper: {
     '\\.(jpg|jpeg|png|gif|svg)$': '<rootDir>/fileMock.js',
   },

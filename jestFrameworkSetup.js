@@ -1,8 +1,8 @@
 /* eslint-disable */
-import 'jest-styled-components';
-import snakeCase from 'snake-case';
-import { toMatchSnapshot } from 'jest-snapshot';
-import { configureToMatchImageSnapshot } from 'jest-image-snapshot';
+require('jest-styled-components');
+const { snakeCase } = require('snake-case');
+const { toMatchSnapshot } = require('jest-snapshot');
+const { configureToMatchImageSnapshot } = require('jest-image-snapshot');
 
 let consoleError;
 let consoleWarn;

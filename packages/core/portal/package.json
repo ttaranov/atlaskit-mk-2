@@ -34,7 +34,7 @@
     "@atlaskit/modal-dialog": "^7.0.0",
     "@atlaskit/onboarding": "^6.0.1",
     "@atlaskit/tooltip": "^12.0.14",
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "enzyme": "^3.6.0",
     "styled-components": "^3.2.6"
   },
   "keywords": [

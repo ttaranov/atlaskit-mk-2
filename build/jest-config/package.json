@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "enzyme-adapter-react-16": "https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.7.tgz",
+    "enzyme-adapter-react-16": "^1.5.0",
     "raf-stub": "^2.0.1"
   },
   "peerDependencies": {
-    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
+    "enzyme": "^3.6.0"
   }
 }
