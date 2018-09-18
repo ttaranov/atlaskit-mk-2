@@ -27,7 +27,7 @@ const tableSharedStyle = css`
     margin-left: 50%;
     transform: translateX(-50%);
   }
-  .table-wrapper > table {
+  .table-container table {
     border-collapse: collapse;
     margin: ${tableMarginTop}px ${tableMarginSides}px ${tableMarginBottom}px;
     border: 1px solid ${akEditorTableBorder};

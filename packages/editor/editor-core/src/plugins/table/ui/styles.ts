@@ -216,7 +216,7 @@ export const tableStyles = css`
 `;
 
 export const tableFullPageEditorStyles = `
-  .ProseMirror .table-wrapper > table {
+  .ProseMirror .table-container table {
     .selectedCell.danger, .hoveredCell.danger {
       border: 1px solid ${tableBorderDeleteColor};
       background: ${tableCellDeleteColor};
@@ -231,7 +231,7 @@ export const tableFullPageEditorStyles = `
 `;
 
 export const tableCommentEditorStyles = `
-  .ProseMirror .table-wrapper > table {
+  .ProseMirror .table-container table {
     margin-left: 0;
     margin-right: 0;
 
