@@ -30,7 +30,8 @@
     "@atlaskit/task-decision": "^8.1.9",
     "@atlaskit/theme": "^6.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
-    "prosemirror-model": "^1.6.1"
+    "prosemirror-model": "^1.6.1",
+    "react-loadable": "^5.1.0"
   },
   "peerDependencies": {
     "@atlaskit/media-core": "^23.2.0",
@@ -47,6 +48,7 @@
     "@atlaskit/util-data-test": "^10.0.9",
     "@atlaskit/visual-regression": "^0.0.1",
     "@types/prosemirror-model": "^1.0.0",
+    "@types/react-loadable": "^5.4.1",
     "chai": "^4.1.2",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react": "^16.4.0",
