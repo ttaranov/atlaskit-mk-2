@@ -49,21 +49,16 @@ export function fileToDataURI(blob: Blob): Promise<string> {
   });
 }
 
-export function fileSizeMb(file: File): number {
-  return file.size / 1024 / 1024;
-}
-
+// store first base64 calc dataURI with File, return cached value to optimise performance
 interface CachedBlob extends Blob {
   __base64Src: string;
 }
 
-export const fileToDataURICached = async (blob: Blob) => {
+export const fileToDataURICached = async (blob: Blob): Promise<string> => {
   const cachedBlob = blob as CachedBlob;
   if (cachedBlob.__base64Src) {
-    console.log('cached!');
     return cachedBlob.__base64Src;
   }
-  console.log('read!');
   const base64Str = await fileToDataURI(blob);
   cachedBlob.__base64Src = base64Str;
   return base64Str;
