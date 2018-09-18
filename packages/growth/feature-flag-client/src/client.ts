@@ -1,4 +1,4 @@
-import { FeatureFlag, Flags, AnalyticsClient, DarkFeature } from './types';
+import { FeatureFlag, Flags, ExposureEvent, DarkFeature } from './types';
 import {
   isObject,
   enforceAttributes,
@@ -12,15 +12,18 @@ import UntrackedFlag from './untracked-flag';
 export default class FeatureFlagClient {
   flags: Readonly<Flags> = {};
   trackedFlags: { [flagKey: string]: boolean } = {};
-  analyticsClient: AnalyticsClient;
+  analyticsHandler: (event: ExposureEvent) => void;
 
-  constructor(options: { flags?: Flags; analyticsClient: AnalyticsClient }) {
-    const { flags, analyticsClient } = options;
+  constructor(options: {
+    flags?: Flags;
+    analyticsHandler: (event: ExposureEvent) => void;
+  }) {
+    const { flags, analyticsHandler } = options;
 
-    enforceAttributes(options, ['analyticsClient'], 'Feature Flag Client');
+    enforceAttributes(options, ['analyticsHandler'], 'Feature Flag Client');
 
-    this.analyticsClient = analyticsClient;
     this.setFlags(flags || {});
+    this.setAnalyticsHandler(analyticsHandler);
   }
 
   setFlags(flags: Flags) {
@@ -32,6 +35,10 @@ export default class FeatureFlagClient {
       ...this.flags,
       ...flags,
     };
+  }
+
+  setAnalyticsHandler(analyticsHandler) {
+    this.analyticsHandler = analyticsHandler;
   }
 
   getFlag(flagKey: string): TrackedFlag | UntrackedFlag | null {
@@ -111,18 +118,20 @@ export default class FeatureFlagClient {
   }
 
   trackExposure = (flagKey: string, flag: FeatureFlag) => {
-    if (this.trackedFlags[flagKey] || !flag) {
+    if (this.trackedFlags[flagKey] || !flag || !this.analyticsHandler) {
       return;
     }
 
-    this.analyticsClient.sendTrackEvent({
+    this.analyticsHandler({
       action: 'exposed',
       actionSubject: 'feature',
       attributes: {
+        flagKey,
         reason: flag.explanation.reason,
         ruleId: flag.explanation.ruleId,
         value: flag.value,
       },
+      source: '@atlaskit/feature-flag-client',
     });
 
     this.trackedFlags[flagKey] = true;

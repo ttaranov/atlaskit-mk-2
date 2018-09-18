@@ -7,14 +7,17 @@ import { Context, UrlPreview } from '@atlaskit/media-core';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
 import {
-  Card,
   CardProps,
   UrlPreviewIdentifier,
   FileIdentifier,
   LinkIdentifier,
-  CardView,
   CardDimensions,
 } from '../../../src';
+
+import { CardView } from '../../../src/root/cardView';
+
+import { Card } from '../../../src/root/card';
+
 import { LazyContent } from '../../../src/utils/lazyContent';
 import { getDataURIFromFileState } from '../../../src/utils/getDataURIFromFileState';
 

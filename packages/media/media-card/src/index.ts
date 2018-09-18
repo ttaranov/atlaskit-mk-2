@@ -10,8 +10,17 @@ import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
 import { CardAction } from './actions';
 
 // the only components we expose to consumers is Card, CardView and CardList
-export * from './root/card';
-export * from './root/cardView';
+export { default as Card } from './root/card/cardLoader';
+export { CardProps, CardState } from './root/card';
+
+export * from './root/cardViewLoader';
+
+export {
+  CardViewOwnProps,
+  CardViewState,
+  CardViewBaseProps,
+} from './root/cardView';
+
 export * from './root/domain';
 export * from './list';
 export * from './actions';

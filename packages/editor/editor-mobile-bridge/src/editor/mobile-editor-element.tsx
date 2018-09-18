@@ -8,42 +8,13 @@ import {
   ListsState,
   listsStateKey,
 } from '@atlaskit/editor-core';
-import { MentionDescription, MentionProvider } from '@atlaskit/mention';
 import { valueOf as valueOfMarkState } from './web-to-native/markState';
 import { valueOf as valueOfListState } from './web-to-native/listState';
 import { toNativeBridge } from './web-to-native';
 import WebBridgeImpl from './native-to-web';
-import { ContextFactory } from '@atlaskit/media-core';
-import { createPromise } from './cross-platform-promise';
 import MobilePicker from './MobileMediaPicker';
-
-/**
- * In order to enable mentions in Editor we must set both properties: allowMentions and mentionProvider.
- * So this type is supposed to be a stub version of mention provider. We don't actually need it.
- */
-export class MentionProviderImpl implements MentionProvider {
-  filter(query?: string): void {}
-
-  recordMentionSelection(mention: MentionDescription): void {}
-
-  shouldHighlightMention(mention: MentionDescription): boolean {
-    return false;
-  }
-
-  isFiltering(query: string): boolean {
-    return false;
-  }
-
-  subscribe(
-    key: string,
-    callback?,
-    errCallback?,
-    infoCallback?,
-    allResultsCallback?,
-  ): void {}
-
-  unsubscribe(key: string): void {}
-}
+import MediaProvider from '../providers/mediaProvider';
+import MentionProvider from '../providers/mentionProvider';
 
 const bridge: WebBridgeImpl = ((window as any).bridge = new WebBridgeImpl());
 
@@ -145,42 +116,14 @@ function unsubscribeFromListStateChanges(
   eventDispatcher.off((listsStateKey as any).key, listStateUpdated);
 }
 
-function getToken() {
-  return createPromise<any>('getAuth').submit();
-}
-
-function createMediaProvider() {
-  return getToken().then(data => {
-    const { baseUrl, clientId, collectionName, token } = data;
-    const createMediaContext = Promise.resolve(
-      ContextFactory.create({
-        authProvider: () =>
-          Promise.resolve({
-            baseUrl,
-            clientId,
-            token,
-          }),
-      }),
-    );
-
-    return {
-      uploadContext: createMediaContext,
-      viewContext: createMediaContext,
-      uploadParams: {
-        collection: collectionName,
-      },
-    };
-  });
-}
-
 export default function mobileEditor(props) {
   return (
     <EditorWithState
       appearance="mobile"
-      mentionProvider={Promise.resolve(new MentionProviderImpl())}
+      mentionProvider={Promise.resolve(new MentionProvider())}
       media={{
         customMediaPicker: new MobilePicker(),
-        provider: props.mediaProvider || createMediaProvider(),
+        provider: props.mediaProvider || MediaProvider,
         allowMediaSingle: true,
       }}
       allowLists={true}

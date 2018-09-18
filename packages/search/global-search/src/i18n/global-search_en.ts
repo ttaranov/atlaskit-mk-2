@@ -22,7 +22,7 @@ export default {
   "global-search.jira.recent-issues-heading": "RECENT ISSUES",
   "global-search.jira.recent-people-heading": "RECENTLY WORKED WITH",
   "global-search.jira.recent-containers": "RECENT BOARDS, FILTERS AND PROJECTS",
-  "global-search.jira.seach-result--issues-heading": "ISSUES",
+  "global-search.jira.seach-result-issues-heading": "ISSUES",
   "global-search.jira.seach-result-containers-heading": "BOARDS, FILTERS AND PROJECTS",
   "global-search.jira.seach-result-people-heading": "PEOPLE",
   "global-search.jira.advanced-search": "Go to Advanced search for",

@@ -84,25 +84,25 @@ export class Popup extends UploadComponent<PopupUploadEventPayloadMap>
     container.appendChild(popup);
   }
 
-  public show(): Promise<void> {
-    return this.tenantContext.config
-      .authProvider({
-        collectionName: this.tenantUploadParams.collection,
-      })
-      .then(auth => {
-        this.store.dispatch(
-          setTenant({
-            auth,
-            uploadParams: this.tenantUploadParams,
-          }),
-        );
+  public async show(): Promise<void> {
+    const { dispatch } = this.store;
+    // TODO [MS-677]: Improve opening time by removing call to authProvider + setTenant
+    const auth = await this.tenantContext.config.authProvider({
+      collectionName: this.tenantUploadParams.collection,
+    });
 
-        this.store.dispatch(resetView());
-        this.store.dispatch(getFilesInRecents());
-        // TODO [MSW-466]: Fetch remote accounts only when needed
-        this.store.dispatch(getConnectedRemoteAccounts());
-        this.store.dispatch(showPopup());
-      });
+    dispatch(
+      setTenant({
+        auth,
+        uploadParams: this.tenantUploadParams,
+      }),
+    );
+
+    dispatch(resetView());
+    dispatch(getFilesInRecents());
+    // TODO [MSW-466]: Fetch remote accounts only when needed
+    dispatch(getConnectedRemoteAccounts());
+    dispatch(showPopup());
   }
 
   public cancel(uniqueIdentifier?: string): void {

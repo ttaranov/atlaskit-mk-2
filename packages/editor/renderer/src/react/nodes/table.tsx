@@ -20,7 +20,7 @@ const Table = props => {
           data-layout={props.layout}
           style={{ width: calcTableWidth(props.layout, containerWidth, false) }}
         >
-          <table>
+          <table data-number-column={props.isNumberColumnEnabled}>
             {colgroup}
             <tbody>{props.children}</tbody>
           </table>

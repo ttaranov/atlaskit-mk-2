@@ -1,21 +1,23 @@
 // @flow
 import React from 'react';
-import { md } from '@atlaskit/docs';
-import SectionMessage from '@atlaskit/section-message';
+import { code, Props, md } from '@atlaskit/docs';
 
-export default md`
+import { IframeExample } from './shared';
+
+export default md`${code`import GlobalNavigation from '@atlaskit/global-navigation';`}
+
 ${(
-  <SectionMessage appearance="warning">
-    <p>
-      <strong>
-        Note: @atlaskit/global-navigation is currently a developer preview.
-      </strong>
-    </p>
-    <p>
-      Please experiment with and test this package, but be aware that the API
-      may change at any time. Use at your own risk, preferrably not in
-      production.
-    </p>
-  </SectionMessage>
+  <IframeExample
+    source={require('!!raw-loader!../examples/00-basic-global-navigation')}
+    title="The GlobalNavigation component"
+    url="/examples.html?groupId=core&packageId=global-navigation&exampleId=basic-global-navigation"
+  />
+)}
+
+${(
+  <Props
+    heading="GlobalNavigation props"
+    props={require('!!extract-react-types-loader!../src/components/GlobalNavigation')}
+  />
 )}
 `;

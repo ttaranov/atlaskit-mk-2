@@ -89,7 +89,7 @@ function mockPeopleApi() {
 
 function mockJiraApi() {
   fetchMock.get(
-    new RegExp('/rest/internal/2/productsearch/recent?'),
+    new RegExp('rest/internal/2/productsearch/recent?'),
     async request => delay(500, JiraRecentResponse),
   );
 }

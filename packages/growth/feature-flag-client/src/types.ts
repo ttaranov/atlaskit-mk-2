@@ -30,14 +30,12 @@ export type ExposureEvent = {
   action: string;
   actionSubject: string;
   attributes: {
+    flagKey: string;
     reason: Reason;
     ruleId?: RuleId;
     value: boolean | string | object;
   };
-};
-
-export type AnalyticsClient = {
-  sendTrackEvent: (event: ExposureEvent) => void;
+  source: string;
 };
 
 export interface FlagConstructor {

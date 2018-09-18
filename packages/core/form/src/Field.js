@@ -254,11 +254,11 @@ export default class Field extends Component<Props, State> {
    */
   validate = (): FieldState => {
     const { validators, value } = this.state.fieldState;
+    const { isRequired } = this.props;
     const {
       isInvalid,
       invalidMessage,
       validMessage,
-      isRequired,
       invalidMessages,
       ...rest
     } = this.state.fieldState;
@@ -270,7 +270,10 @@ export default class Field extends Component<Props, State> {
     let validatedFieldState = {};
 
     // Is the field required?
-    if ((isRequired && !value) || !String(value).trim().length) {
+    if (
+      (isRequired && !value) ||
+      (isRequired && !String(value).trim().length)
+    ) {
       invalidCount++;
       invalid = 'This field is required';
     } else if (validators && validators.length) {

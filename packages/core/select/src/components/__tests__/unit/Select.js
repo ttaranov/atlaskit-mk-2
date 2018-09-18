@@ -19,8 +19,9 @@ test('loading the animated component as default', () => {
 
 test('clicking on dropdown indicator should toggle the menu', () => {
   const atlaskitSelectWrapper = mount(
-    <AtlaskitSelect className="react-select" />,
+    <AtlaskitSelect classNamePrefix="react-select" />,
   );
+  // console.log(atlaskitSelectWrapper.debug());
   // Menu open by default
   expect(atlaskitSelectWrapper.find('Menu').exists()).toBeFalsy();
   atlaskitSelectWrapper

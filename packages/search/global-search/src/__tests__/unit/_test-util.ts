@@ -1,7 +1,7 @@
 import {
   AnalyticsType,
   ResultType,
-  JiraObjectResult,
+  JiraResult,
   ConfluenceObjectResult,
   ContentType,
   ContainerResult,
@@ -18,8 +18,8 @@ function buildMockSearchResultProperties() {
 }
 
 export function makeJiraObjectResult(
-  partial?: Partial<JiraObjectResult>,
-): JiraObjectResult {
+  partial?: Partial<JiraResult>,
+): JiraResult {
   return {
     analyticsType: AnalyticsType.ResultJira,
     resultType: ResultType.JiraObjectResult,

@@ -3,10 +3,8 @@ import { withAnalytics, FireAnalyticsEvent } from '@atlaskit/analytics';
 import * as uuid from 'uuid/v4';
 import GlobalQuickSearch from '../GlobalQuickSearch';
 import { RecentSearchClient } from '../../api/RecentSearchClient';
-import {
-  CrossProductSearchClient,
-  Scope,
-} from '../../api/CrossProductSearchClient';
+import { CrossProductSearchClient } from '../../api/CrossProductSearchClient';
+import { Scope } from '../../api/types';
 import { Result } from '../../model/Result';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
 import HomeSearchResults from './HomeSearchResults';

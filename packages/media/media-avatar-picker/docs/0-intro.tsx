@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { md, Example, Props, code } from '@atlaskit/docs';
+import { md, code } from '@atlaskit/docs';
 
 export default md`
   # @atlaskit/media-avatar-picker
