@@ -27,7 +27,4 @@ export type NavigationProviderProps = {
   /** In debug mode the view controller will log information about the usage of
    * reducers. */
   isDebugEnabled: boolean,
-  /** Whether the navigation component can be expanded, collapsed, or resized.
-   * */
-  isResizeDisabled?: boolean,
 };

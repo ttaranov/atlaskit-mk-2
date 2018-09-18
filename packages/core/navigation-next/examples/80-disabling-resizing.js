@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { Fragment } from 'react';
 import Button from '@atlaskit/button';
 import ChevronLeft from '@atlaskit/icon/glyph/chevron-left';
 import ChevronRight from '@atlaskit/icon/glyph/chevron-right';
@@ -22,52 +22,40 @@ const GlobalNavigation = () => (
 const ProductNavigation = () => null;
 const ContainerNavigation = () => null;
 
-type State = { isResizeDisabled: boolean };
-export default class Example extends Component<{}, State> {
-  state = {
-    isResizeDisabled: true,
-  };
-
-  toggleResizeDisabled = () => {
-    this.setState(state => ({
-      isResizeDisabled: !state.isResizeDisabled,
-    }));
-  };
-
-  render() {
-    const { isResizeDisabled } = this.state;
-    return (
-      <NavigationProvider isResizeDisabled={isResizeDisabled}>
-        <LayoutManager
-          globalNavigation={GlobalNavigation}
-          productNavigation={ProductNavigation}
-          containerNavigation={ContainerNavigation}
-        >
-          <div style={{ padding: `${gridSize * 4}px ${gridSize * 5}px` }}>
-            <p>
-              <ToggleStateless
-                isChecked={!isResizeDisabled}
-                onChange={this.toggleResizeDisabled}
-              />{' '}
-              Allow resizing
-            </p>
-            <p>
-              <UIControllerSubscriber>
-                {({ state: { isCollapsed }, toggleCollapse }) => (
-                  <Button
-                    iconBefore={
-                      isCollapsed ? <ChevronRight /> : <ChevronLeft />
-                    }
-                    onClick={toggleCollapse}
-                  >
-                    {isCollapsed ? 'Expand' : 'Collapse'} the navigation
-                  </Button>
-                )}
-              </UIControllerSubscriber>
-            </p>
-          </div>
-        </LayoutManager>
-      </NavigationProvider>
-    );
-  }
-}
+export default () => (
+  <NavigationProvider initialUIController={{ isResizeDisabled: true }}>
+    <LayoutManager
+      globalNavigation={GlobalNavigation}
+      productNavigation={ProductNavigation}
+      containerNavigation={ContainerNavigation}
+    >
+      <div style={{ padding: `${gridSize * 4}px ${gridSize * 5}px` }}>
+        <p>
+          <UIControllerSubscriber>
+            {({ state: { isResizeDisabled }, enableResize, disableResize }) => (
+              <Fragment>
+                <ToggleStateless
+                  isChecked={!isResizeDisabled}
+                  onChange={isResizeDisabled ? enableResize : disableResize}
+                />{' '}
+                Allow resizing
+              </Fragment>
+            )}
+          </UIControllerSubscriber>
+        </p>
+        <p>
+          <UIControllerSubscriber>
+            {({ state: { isCollapsed }, toggleCollapse }) => (
+              <Button
+                iconBefore={isCollapsed ? <ChevronRight /> : <ChevronLeft />}
+                onClick={toggleCollapse}
+              >
+                {isCollapsed ? 'Expand' : 'Collapse'} the navigation
+              </Button>
+            )}
+          </UIControllerSubscriber>
+        </p>
+      </div>
+    </LayoutManager>
+  </NavigationProvider>
+);
