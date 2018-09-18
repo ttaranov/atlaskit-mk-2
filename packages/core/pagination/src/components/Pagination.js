@@ -6,7 +6,6 @@ import {
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
 import Button from '@atlaskit/button';
-import { colors } from '@atlaskit/theme';
 import ChevronLeftLargeIcon from '@atlaskit/icon/glyph/chevron-left-large';
 import ChevronRightLargeIcon from '@atlaskit/icon/glyph/chevron-right-large';
 
