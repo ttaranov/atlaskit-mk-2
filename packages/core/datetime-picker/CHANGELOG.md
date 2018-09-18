@@ -1,5 +1,9 @@
 # @atlaskit/datetime-picker
 
+## 6.3.10
+- [patch] Updated dependencies [4194aa4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4194aa4)
+  - @atlaskit/select@6.0.0
+
 ## 6.3.9
 - [patch] Fixes bug on next and prev month navigation. [c4770a0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c4770a0)
 

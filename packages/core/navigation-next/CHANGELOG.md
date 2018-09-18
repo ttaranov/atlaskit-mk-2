@@ -1,5 +1,10 @@
 # @atlaskit/navigation-next
 
+## 3.13.2
+- [patch] Updated dependencies [4194aa4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4194aa4)
+  - @atlaskit/logo@9.2.2
+  - @atlaskit/select@6.0.0
+
 ## 3.13.1
 - [patch] fixing remount component on GlobalItem component [e71825a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e71825a)
 

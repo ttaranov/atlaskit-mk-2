@@ -1,5 +1,9 @@
 # @atlaskit/breadcrumbs
 
+## 6.0.9
+- [patch] Updated dependencies [4194aa4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4194aa4)
+  - @atlaskit/select@6.0.0
+
 ## 6.0.8
 - [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
 

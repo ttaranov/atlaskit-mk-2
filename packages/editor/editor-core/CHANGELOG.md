@@ -1,5 +1,11 @@
 # @atlaskit/editor-core
 
+## 80.4.8
+- [patch] Updated dependencies [4194aa4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4194aa4)
+  - @atlaskit/logo@9.2.2
+  - @atlaskit/smart-card@8.1.2
+  - @atlaskit/select@6.0.0
+
 ## 80.4.7
 - [patch] Fixing the mobile appearance height  [b0f6402](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b0f6402)
 

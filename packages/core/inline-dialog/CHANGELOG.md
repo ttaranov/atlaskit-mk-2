@@ -1,5 +1,10 @@
 # @atlaskit/inline-dialog
 
+## 9.0.5
+- [patch] Updated dependencies [4194aa4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4194aa4)
+  - @atlaskit/datetime-picker@6.3.10
+  - @atlaskit/select@6.0.0
+
 ## 9.0.4
 - [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
 
