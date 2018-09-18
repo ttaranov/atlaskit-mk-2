@@ -13,6 +13,10 @@ export const Ellipsis = styled.span`
   align-items: center;
 `;
 
+/**
+ * We need this to style the button with Icon, else it is not properly vertically aligned
+ * with rest of the buttons
+ */
 export const StyledButton = styled(Button)`
   padding: 4px 0;
 `;

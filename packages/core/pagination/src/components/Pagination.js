@@ -77,8 +77,8 @@ class Pagination extends Component<Props, State> {
       <Container>
         <StyledButton
           appearance="subtle"
-          isDisabled={current === 1}
           ariaLabel={i18n.prev}
+          isDisabled={current === 1}
           onClick={() => this.onPageChange(current - 1)}
         >
           <ChevronLeftLargeIcon size="medium" />
@@ -105,8 +105,8 @@ class Pagination extends Component<Props, State> {
         )}
         <StyledButton
           appearance="subtle"
-          isDisabled={current === total}
           ariaLabel={i18n.next}
+          isDisabled={current === total}
           onClick={() => this.onPageChange(current + 1)}
         >
           <ChevronRightLargeIcon size="medium" />
