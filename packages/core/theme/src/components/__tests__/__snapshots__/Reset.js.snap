@@ -98,8 +98,9 @@ exports[`themed reset 1`] = `
 <Theme
   backgroundColor="#000"
   linkColor="blue"
+  props={Object {}}
   textColor="#fff"
-  values={[Function]}
+  theme={[Function]}
 >
   <Reset>
     <styled.div

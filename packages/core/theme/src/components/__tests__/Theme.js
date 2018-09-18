@@ -19,8 +19,8 @@ test('has parent', done => {
   const backgroundColor = '#fff';
   const textColor = '#000';
   mount(
-    <Theme values={t => ({ backgroundColor, ...t })}>
-      <Theme values={t => ({ ...t, textColor })}>
+    <Theme theme={t => ({ backgroundColor, ...t })}>
+      <Theme theme={t => ({ ...t, textColor })}>
         {t => {
           expect(t).toEqual({ backgroundColor, textColor });
           done();
