@@ -4,12 +4,7 @@ import { Theme } from '@atlaskit/theme';
 import React, { PureComponent, type Node } from 'react';
 import Container from './styledContainer';
 import Content from './styledContent';
-import {
-  theme,
-  type ThemeAppearance,
-  type ThemeIn,
-  type ThemeOut,
-} from '../theme';
+import { theme, type ThemeAppearance, type ThemeProps } from '../theme';
 
 type Props = {
   /** The appearance type. */
@@ -25,7 +20,7 @@ type Props = {
   maxWidth: number | string,
 
   /** The theme the component should use. */
-  theme: ThemeIn => ThemeOut,
+  theme: ThemeProps => ThemeProps,
 };
 
 export default class Lozenge extends PureComponent<Props> {
@@ -39,8 +34,9 @@ export default class Lozenge extends PureComponent<Props> {
   render() {
     const { props } = this;
     return (
-      <Theme props={props} theme={props.theme}>
-        {themeProps => {
+      <Theme values={props.theme}>
+        {({ lozenge }) => {
+          const themeProps = lozenge(props);
           return (
             <Container {...themeProps}>
               <Content {...themeProps}>{props.children}</Content>

@@ -4,28 +4,20 @@ import React, { Component, type Node } from 'react';
 import { Consumer, Provider } from '../components/Context';
 
 type Props = {
-  /** A function that returns children or children. If a function, the theme is executecd and resulting values are passed in. If nodes, the theme is executed and passed down via context. */
   children: ((*) => Node) | Node,
-
-  /** Any props that should be passed into the theme function. */
-  props: { [string]: any },
-
-  /** A function that returns the theme values. */
-  theme: (*) => *,
+  values: (*) => *,
 };
 
 export default class Theme extends Component<Props> {
   static defaultProps = {
-    children: () => null,
-    props: {},
-    theme: (v: *): * => v,
+    values: (v: *): * => v,
   };
   render() {
-    const { children, props, theme } = this.props;
+    const { children, values } = this.props;
     return (
       <Consumer>
-        {parent => {
-          const merged = theme(parent, props);
+        {theme => {
+          const merged = values(theme);
           return typeof children === 'function' ? (
             children(merged)
           ) : (

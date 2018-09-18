@@ -10,7 +10,7 @@ const myTheme = () => ({
 });
 
 export default () => (
-  <Theme theme={myTheme}>
+  <Theme values={myTheme}>
     {theme => <div style={theme}>I am themed.</div>}
   </Theme>
 );

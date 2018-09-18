@@ -12,13 +12,7 @@ test('reset', () => {
 test('themed reset', () => {
   expect(
     mount(
-      <Theme
-        theme={() => ({
-          backgroundColor: '#000',
-          linkColor: 'blue',
-          textColor: '#fff',
-        })}
-      >
+      <Theme backgroundColor="#000" textColor="#fff" linkColor="blue">
         <Reset />
       </Theme>,
     ),

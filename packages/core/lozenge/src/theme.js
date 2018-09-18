@@ -7,8 +7,6 @@ import { colors } from '@atlaskit/theme';
  it will be implemented later.
  Hence, color values are the same.
  */
-
-// DEPRECATED export.
 export const backgroundColor = {
   default: { light: colors.N40, dark: colors.N40 },
   inprogress: { light: colors.B50, dark: colors.B50 },
@@ -18,7 +16,6 @@ export const backgroundColor = {
   success: { light: colors.G50, dark: colors.G50 },
 };
 
-// DEPRECATED export.
 export const textColor = {
   default: { light: colors.N500, dark: colors.N500 },
   inprogress: { light: colors.B500, dark: colors.B500 },
@@ -28,7 +25,6 @@ export const textColor = {
   success: { light: colors.G500, dark: colors.G500 },
 };
 
-// DEPRECATED export.
 export const boldBackgroundColor = {
   default: { light: colors.N500, dark: colors.N500 },
   inprogress: { light: colors.B400, dark: colors.B400 },
@@ -38,7 +34,6 @@ export const boldBackgroundColor = {
   success: { light: colors.G400, dark: colors.G400 },
 };
 
-// DEPRECATED export.
 export const boldTextColor = {
   default: { light: colors.N0, dark: colors.N0 },
   inprogress: { light: colors.N0, dark: colors.N0 },
@@ -57,43 +52,48 @@ export type ThemeAppearance =
   | 'success'
   | {};
 
-export type ThemeIn = {
-  lozenge?: ThemeProps => ThemeOut,
-};
-
-export type ThemeOut = {
-  backgroundColor: string,
-  maxWidth: number | string,
-  textColor: string,
-};
-
 export type ThemeProps = {
-  appearance: ThemeAppearance,
-  isBold: boolean,
-  maxWidth: number | string,
+  lozenge?: ({
+    appearance: ThemeAppearance,
+    isBold: boolean,
+    maxWidth: number | string,
+  }) => {
+    backgroundColor?: string,
+    maxWidth?: number | string,
+    textColor?: string,
+  },
+  mode?: 'light' | 'dark',
 };
 
-export function theme(parent: ThemeProps, props: ThemeProps): ThemeProps {
-  const { appearance, isBold, maxWidth } = props;
+export function theme(props: ThemeProps): ThemeProps {
+  const mode = props.mode || 'light';
   return {
-    ...(typeof appearance === 'object'
-      ? {
-          backgroundColor: (isBold ? boldBackgroundColor : backgroundColor)
-            .default.light,
-          textColor: (isBold ? boldTextColor : textColor).default.light,
-          ...appearance,
-        }
-      : {
-          backgroundColor: (isBold
-            ? boldBackgroundColor[appearance]
-            : backgroundColor[appearance]
-          ).light,
-          textColor: (isBold
-            ? boldTextColor[appearance]
-            : textColor[appearance]
-          ).light,
-        }),
-    maxWidth,
-    ...(parent.lozenge && parent.lozenge({ appearance, isBold, maxWidth })),
+    lozenge: ({ appearance, isBold, maxWidth }) => {
+      return {
+        ...(typeof appearance === 'object'
+          ? {
+              backgroundColor: (isBold ? boldBackgroundColor : backgroundColor)
+                .default.light,
+              textColor: (isBold ? boldTextColor : textColor).default.light,
+              ...appearance,
+            }
+          : {
+              backgroundColor: (isBold
+                ? boldBackgroundColor[appearance]
+                : backgroundColor[appearance]
+              ).light,
+              textColor: (isBold
+                ? boldTextColor[appearance]
+                : textColor[appearance]
+              ).light,
+            }),
+        maxWidth,
+        ...(props.lozenge
+          ? props.lozenge({ appearance, isBold, maxWidth })
+          : null),
+      };
+    },
+    mode,
+    ...props,
   };
 }
