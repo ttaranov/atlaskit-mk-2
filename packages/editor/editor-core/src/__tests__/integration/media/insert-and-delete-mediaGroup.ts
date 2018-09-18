@@ -7,7 +7,6 @@ import {
   comment,
   insertMedia,
 } from '../_helpers';
-import { sleep } from '@atlaskit/editor-test-helpers';
 
 [comment, message].forEach(editor => {
   BrowserTestCase(
@@ -26,8 +25,7 @@ import { sleep } from '@atlaskit/editor-test-helpers';
       await browser.type(editable, 'some text');
 
       // now we can insert media as necessary
-      await insertMedia(browser, [0, 1]);
-      await sleep(500);
+      await insertMedia(browser, ['one.svg', 'two.svg']);
 
       // wait for the nodeview to appear
       await browser.waitForSelector('.wrapper .image');

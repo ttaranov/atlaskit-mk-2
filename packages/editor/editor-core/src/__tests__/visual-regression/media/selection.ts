@@ -68,7 +68,7 @@ describe('Snapshot Test: Media', () => {
       await page.click(editable);
 
       // insert 3 media items
-      await insertMedia(page, [0, 1, 2]);
+      await insertMedia(page, ['one.svg', 'two.svg', 'three.svg']);
     });
 
     it('renders selection ring around last media group item (via up)', async () => {
