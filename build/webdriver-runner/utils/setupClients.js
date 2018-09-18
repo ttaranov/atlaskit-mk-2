@@ -53,7 +53,7 @@ function setBrowserStackClients() /*: Array<?Object>*/ {
   };
   const launchKeys = Object.keys(launchers);
   const options = launchKeys.map(launchKey => {
-    let option = {
+    const option = {
       desiredCapabilities: {
         os: launchers[launchKey].os,
         os_version: launchers[launchKey].os_version,
@@ -71,7 +71,7 @@ function setBrowserStackClients() /*: Array<?Object>*/ {
       user: process.env.BROWSERSTACK_USERNAME,
       key: process.env.BROWSERSTACK_KEY,
     };
-    let driver = webdriverio.remote(option);
+    const driver = webdriverio.remote(option);
     return { driver: driver, isReady: false };
   });
   return options;
