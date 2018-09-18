@@ -77,7 +77,7 @@ function setBrowserStackClients() /*: Array<?Object>*/ {
   return options;
 }
 
-function setLocalClients() {
+function setLocalClients() /*: Array<?Object>*/ {
   const isHeadless = process.env.HEADLESS !== 'false';
   const launchers = {
     chrome: {
