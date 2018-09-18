@@ -39,7 +39,7 @@ export const clipboardInput = '#input';
 export const copyAsPlaintextButton = '#copy-as-plaintext';
 export const copyAsHTMLButton = '#copy-as-html';
 
-export const mediaInsertDelay = 500;
+export const mediaInsertDelay = 1000;
 
 const mediaPickerMock = '.mediaPickerMock';
 export const setupMediaMocksProviders = async browser => {
