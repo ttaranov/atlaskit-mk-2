@@ -38,10 +38,18 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
   }
 
   componentWillReceiveProps(newProps: MediaImageProps) {
-    const { id, collectionName } = this.props;
+    const { id, collectionName, width, height } = this.props;
+    const isWidthBigger =
+      newProps.width && width ? newProps.width > width : false;
+    const isHeightBigger =
+      newProps.height && height ? newProps.height > height : false;
+    const areNewDimensionsBigger = isWidthBigger || isHeightBigger;
 
-    // TODO: check dimensions
-    if (newProps.id !== id || newProps.collectionName !== collectionName) {
+    if (
+      newProps.id !== id ||
+      newProps.collectionName !== collectionName ||
+      areNewDimensionsBigger
+    ) {
       this.subscribe(newProps);
     }
   }
