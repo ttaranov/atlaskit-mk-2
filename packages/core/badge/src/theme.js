@@ -2,6 +2,7 @@
 
 import { colors } from '@atlaskit/theme';
 
+// DEPRECATED export.
 export const backgroundColors = {
   added: { light: colors.G50, dark: colors.G50 },
   default: { light: colors.N40, dark: colors.DN70 },
@@ -14,6 +15,7 @@ export const backgroundColors = {
   removed: { light: colors.R50, dark: colors.R50 },
 };
 
+// DEPRECATED export.
 export const textColors = {
   added: { light: colors.G500, dark: colors.G500 },
   default: { light: colors.N800, dark: colors.DN900 },
@@ -32,33 +34,36 @@ export type ThemeAppearance =
   | 'removed'
   | {};
 
-export type ThemeProps = {
-  badge?: ({ appearance: ThemeAppearance }) => {
-    backgroundColor?: string,
-    textColor?: string,
-  },
+export type ThemeIn = {
+  badge?: ThemeProps => ThemeOut,
   mode?: 'light' | 'dark',
 };
 
-export function theme(props: ThemeProps): ThemeProps {
-  const mode = props.mode || 'light';
+export type ThemeOut = {
+  backgroundColor: string,
+  textColor: string,
+};
+
+export type ThemeProps = {
+  appearance: ThemeAppearance,
+};
+
+export function theme(parent: ThemeIn, props: ThemeProps): ThemeOut {
+  const mode = parent.mode || 'light';
+  const { appearance } = props;
   return {
-    badge: ({ appearance }) => ({
-      ...(typeof appearance === 'object'
-        ? {
-            ...{
-              backgroundColor: backgroundColors.default.light,
-              textColor: textColors.default.light,
-            },
-            ...appearance,
-          }
-        : {
-            backgroundColor: backgroundColors[appearance][mode],
-            textColor: textColors[appearance][mode],
-          }),
-      ...(props.badge ? props.badge({ appearance }) : null),
-    }),
-    mode,
-    ...props,
+    ...(typeof appearance === 'object'
+      ? {
+          ...{
+            backgroundColor: backgroundColors.default.light,
+            textColor: textColors.default.light,
+          },
+          ...appearance,
+        }
+      : {
+          backgroundColor: backgroundColors[appearance][mode],
+          textColor: textColors[appearance][mode],
+        }),
+    ...(parent.badge && parent.badge({ appearance })),
   };
 }
