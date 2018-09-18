@@ -68,7 +68,7 @@ describe('Snapshot Test: Media', () => {
       await page.type(editable, 'some text');
 
       // now we can insert media as necessary
-      await insertMedia(page, [0, 1]);
+      await insertMedia(page, ['one.svg', 'two.svg']);
       await page.waitForSelector('.media-card');
 
       // click the *second one* so the toolbar appears
