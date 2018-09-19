@@ -17,6 +17,7 @@ const defaultState = {
   isPeekHinting: false,
   isPeeking: false,
   isResizing: false,
+  isResizeDisabled: false,
   isCollapsed: false,
   productNavWidth: CONTENT_NAV_WIDTH,
 };
@@ -30,6 +31,7 @@ export default class UIController extends Container<UIControllerShape>
   implements UIControllerInterface {
   getCache: ?UIControllerCacheGetter;
   setCache: ?UIControllerCacheSetter;
+  isCollapsedStore: boolean | void;
 
   constructor(
     initialState?: InitialUIControllerShape,
@@ -37,22 +39,37 @@ export default class UIController extends Container<UIControllerShape>
   ) {
     super();
 
-    if (!cache) {
-      this.state = Object.assign({}, defaultState, initialState);
-      return;
+    let cachedState = {};
+    if (cache) {
+      const { get, set } = cache;
+      cachedState = get();
+
+      this.getCache = get;
+      this.setCache = set;
     }
 
-    const { get, set } = cache;
-    const cachedState = get();
+    const state = {
+      ...defaultState,
+      ...cachedState,
+      ...initialState,
+    };
 
-    this.getCache = get;
-    this.setCache = set;
-    this.state = Object.assign({}, defaultState, cachedState, initialState);
+    let isCollapsed = state.isCollapsed;
+
+    // isResizeDisabled takes precedence over isCollapsed
+    if (initialState && initialState.isResizeDisabled) {
+      // Remember this so that we can reset it if resizing is enabled again.
+      this.isCollapsedStore = isCollapsed;
+      isCollapsed = false;
+    }
+
+    this.state = { ...state, isCollapsed };
   }
 
   storeState = (state: Object) => {
     this.setState(state);
-    if (this.setCache) this.setCache(this.state);
+    const { isResizeDisabled, ...cachedState } = this.state;
+    if (this.setCache) this.setCache(cachedState);
   };
 
   // ==============================
@@ -60,9 +77,15 @@ export default class UIController extends Container<UIControllerShape>
   // ==============================
 
   collapse = () => {
+    if (this.state.isResizeDisabled) {
+      return;
+    }
     this.storeState({ isCollapsed: true });
   };
   expand = () => {
+    if (this.state.isResizeDisabled) {
+      return;
+    }
     this.storeState({ isCollapsed: false });
   };
   toggleCollapse = () => {
@@ -71,6 +94,9 @@ export default class UIController extends Container<UIControllerShape>
   };
 
   manualResizeStart = ({ productNavWidth, isCollapsed }: Resize) => {
+    if (this.state.isResizeDisabled) {
+      return;
+    }
     this.storeState({
       isResizing: true,
       productNavWidth,
@@ -78,11 +104,33 @@ export default class UIController extends Container<UIControllerShape>
     });
   };
   manualResizeEnd = ({ productNavWidth, isCollapsed }: Resize) => {
+    if (this.state.isResizeDisabled) {
+      return;
+    }
     this.storeState({
       isResizing: false,
       productNavWidth,
       isCollapsed,
     });
+  };
+
+  enableResize = () => {
+    const isCollapsed =
+      typeof this.isCollapsedStore === 'boolean'
+        ? this.isCollapsedStore
+        : this.state.isCollapsed;
+
+    // This is a page-level setting not a user preference so we don't cache
+    // this.
+    this.setState({ isCollapsed, isResizeDisabled: false });
+  };
+  disableResize = () => {
+    // Remember this so that we can reset it if resizing is enabled again.
+    this.isCollapsedStore = this.state.isCollapsed;
+
+    // This is a page-level setting not a user preference so we don't cache
+    // this.
+    this.setState({ isCollapsed: false, isResizeDisabled: true });
   };
 
   peekHint = () => {
