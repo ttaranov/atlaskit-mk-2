@@ -9,7 +9,7 @@ export function themeItem(parent: ThemeItemType): ThemeItemType {
   return {
     avatarItem() {
       return {
-        backgroundColor: 'transparent',
+        backgroundColor: '',
         ...(parent.avatarItem && parent.avatarItem()),
       };
     },
