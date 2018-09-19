@@ -198,12 +198,12 @@ export class JiraQuickSearchContainer extends React.Component<
 
   getSearchResults = (
     query: string,
-    sessionId: string,
+    searchSessionId: string,
     startTime: number,
   ): Promise<ResultsWithTiming> => {
     const crossProductSearchPromise = this.props.crossProductSearchClient.search(
       query,
-      sessionId,
+      { searchSessionId, ...this.props.referralContextIdentifiers },
       scopes,
     );
 

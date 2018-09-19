@@ -85,7 +85,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
 
     const results = await this.props.crossProductSearchClient.search(
       query,
-      searchSessionId,
+      { searchSessionId, ...this.props.referralContextIdentifiers },
       scopes,
     );
     return results;
