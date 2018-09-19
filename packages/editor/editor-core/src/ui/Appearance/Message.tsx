@@ -110,6 +110,7 @@ export default class Editor extends React.Component<
         <MessageEditor
           onClick={this.focusEditor}
           isMaxContentSizeReached={maxContentSizeReached}
+          className="akEditor"
         >
           <ContentArea maxHeight={maxHeight} isMultiline={isMultilineContent}>
             {customContentComponents}

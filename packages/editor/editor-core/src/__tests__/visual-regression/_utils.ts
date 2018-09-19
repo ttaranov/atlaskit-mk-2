@@ -1,6 +1,13 @@
 import { getExampleUrl } from '@atlaskit/visual-regression/helper';
 import { colorPalette } from '@atlaskit/editor-common';
 
+const DEFAULT_WIDTH = 800;
+const DEFAULT_HEIGHT = 600;
+
+export const resetViewport = async page => {
+  await page.setViewport({ width: DEFAULT_WIDTH, height: DEFAULT_HEIGHT });
+};
+
 export const escapeStr = (str: string) => {
   return `concat('${str.replace(/'/g, `', "'", '`)}', '')`;
 };
@@ -32,10 +39,15 @@ export const initEditor = async (page, appearance: string) => {
     await page.click(placeholder);
   }
 
+  await page.setViewport({ width: DEFAULT_WIDTH, height: DEFAULT_HEIGHT });
   await page.waitForSelector(editor);
   await page.click(editor);
   await page.addStyleTag({
-    content: '.ProseMirror { caret-color: transparent; }',
+    content: `
+      .json-output { display: none; }
+      .ProseMirror { caret-color: transparent; }
+      .ProseMirror-gapcursor span::after { animation-play-state: paused !important; }
+    `,
   });
 };
 
@@ -109,8 +121,8 @@ export const baseTests = [
     appearance: ['full-page'],
   },
   {
-    name: 'Horizontal Rule',
-    menuItemText: 'Horizontal Rule',
+    name: 'Divider',
+    menuItemText: 'Divider',
     clickSelector: insertMenuSelector,
     nodeSelector: 'hr',
     appearance: ['full-page', 'comment'],
@@ -271,7 +283,18 @@ baseTests.forEach(test => {
 export const imageSnapshotFolder = `./__image_snapshots__`;
 
 export const snapshot = async page => {
-  const image = await page.screenshot();
+  const editor = await page.$('.akEditor');
+
+  // Try to take a screenshot of only the editor.
+  // Otherwise take the whole page.
+  let image;
+  if (editor) {
+    image = await editor.screenshot();
+  } else {
+    // TODO remove this.
+    image = await page.screenshot();
+  }
+
   // @ts-ignore
   expect(image).toMatchProdImageSnapshot();
 };

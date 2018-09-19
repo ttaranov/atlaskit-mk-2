@@ -27,6 +27,8 @@ const tableSharedStyle = css`
     margin-left: 50%;
     transform: translateX(-50%);
   }
+  /* avoid applying styles to nested tables (possible via extensions) */
+  .table-container > table,
   .table-wrapper > table {
     border-collapse: collapse;
     margin: ${tableMarginTop}px ${tableMarginSides}px ${tableMarginBottom}px;

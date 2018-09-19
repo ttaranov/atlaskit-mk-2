@@ -201,7 +201,7 @@ export default class Editor extends React.Component<
     const { showKeyline } = this.state;
 
     return (
-      <FullPageEditorWrapper>
+      <FullPageEditorWrapper className="akEditor">
         <MainToolbar showKeyline={showKeyline}>
           <Toolbar
             editorView={editorView!}

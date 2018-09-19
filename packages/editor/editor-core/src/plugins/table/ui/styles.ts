@@ -48,7 +48,7 @@ const isIE11 = browser.ie_version === 11;
 
 export const tableStyles = css`
   .ProseMirror {
-    ${tableSharedStyle} .table-container table {
+    ${tableSharedStyle} .table-wrapper > table {
       table-layout: fixed;
 
       td,
@@ -215,9 +215,10 @@ export const tableStyles = css`
   }
 `;
 
-export const tableFullPageEditorStyles = `
+export const tableFullPageEditorStyles = css`
   .ProseMirror .table-wrapper > table {
-    .selectedCell.danger, .hoveredCell.danger {
+    .selectedCell.danger,
+    .hoveredCell.danger {
       border: 1px solid ${tableBorderDeleteColor};
       background: ${tableCellDeleteColor};
     }
@@ -230,7 +231,7 @@ export const tableFullPageEditorStyles = `
   }
 `;
 
-export const tableCommentEditorStyles = `
+export const tableCommentEditorStyles = css`
   .ProseMirror .table-wrapper > table {
     margin-left: 0;
     margin-right: 0;

@@ -161,6 +161,7 @@ type Props = WithAnalyticsEventsProps & {
   children: State => any,
   collapseToggleTooltipContent: CollapseToggleTooltipContent,
   expandCollapseAffordanceRef: Ref<'button'>,
+  isDisabled: boolean,
   mouseIsOverNavigation: boolean,
   mutationRefs: Array<{ ref: HTMLElement, property: string }>,
   navigation: Object,
@@ -361,12 +362,13 @@ class ResizeControl extends PureComponent<Props, State> {
       children,
       collapseToggleTooltipContent,
       expandCollapseAffordanceRef,
+      isDisabled,
       mouseIsOverNavigation,
       navigation,
     } = this.props;
     const { isCollapsed } = navigation.state;
 
-    const isDisabled = navigation.state.isPeeking;
+    const isResizeDisabled = isDisabled || navigation.state.isPeeking;
 
     // the button shouldn't "flip" until the drag is complete
     const ButtonIcon =
@@ -387,10 +389,10 @@ class ResizeControl extends PureComponent<Props, State> {
     return (
       <Fragment>
         {children(this.state)}
-        {isDisabled ? null : (
-          <Fragment>
-            <Outer>
-              <Shadow isBold={mouseIsDown} />
+        <Outer>
+          <Shadow isBold={mouseIsDown} />
+          {!isResizeDisabled && (
+            <Fragment>
               <GrabArea
                 isBold={mouseIsDown}
                 showHandle={mouseIsDown || mouseIsOverGrabArea}
@@ -413,13 +415,13 @@ class ResizeControl extends PureComponent<Props, State> {
               ) : (
                 button
               )}
-            </Outer>
-            <PropertyToggle
-              isActive={isDragging}
-              styles={{ cursor: 'ew-resize' }}
-            />
-          </Fragment>
-        )}
+            </Fragment>
+          )}
+        </Outer>
+        <PropertyToggle
+          isActive={isDragging}
+          styles={{ cursor: 'ew-resize' }}
+        />
       </Fragment>
     );
   }

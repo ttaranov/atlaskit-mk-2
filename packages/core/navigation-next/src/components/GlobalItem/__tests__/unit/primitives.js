@@ -92,7 +92,7 @@ describe('GlobalNavigationItemPrimitive', () => {
         isSelected
       />,
     );
-    expect(wrapper.find('Tooltip').props().content).toBe(null);
+    expect(wrapper.find('Tooltip').props().content).toBe(undefined);
   });
 
   it('should render a tooltip without text if element is active', () => {
@@ -105,7 +105,7 @@ describe('GlobalNavigationItemPrimitive', () => {
         isActive
       />,
     );
-    expect(wrapper.find('Tooltip').props().content).toBe(null);
+    expect(wrapper.find('Tooltip').props().content).toBe(undefined);
   });
 
   it('should use cached custom component stored in memory if it receives a component', () => {
