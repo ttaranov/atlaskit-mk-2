@@ -15,11 +15,6 @@ export const validWidthModes: MediaSingleLayout[] = [
   'wrap-right',
 ];
 
-// comment editor:
-// 16px margin on all 4 sides (on .ak-editor-content-area)
-// 20px on left-right  (on .ProseMirror)
-// we only care about the .ProseMirror margins
-
 export function calcPxFromColumns(
   columns: number,
   lineLength: number,
@@ -34,11 +29,6 @@ export function calcColumnsFromPx(
   lineLength: number,
   gridSize: number,
 ): number {
-  // const gridWidth =
-  //   appearance === 'full-page'
-  //     ? FULLPAGE_GRID_WIDTH
-  //     : containerWidth - 16 /* (20 - 12) * 2 */;
-
   const maxWidth = lineLength + gutterSize;
   return (width + gutterSize) * gridSize / maxWidth;
 }
@@ -50,9 +40,7 @@ export function calcPxFromPct(pct: number, lineLength: number): number {
 
 export function calcPctFromPx(width: number, lineLength: number): number {
   const maxWidth = lineLength + gutterSize;
-  const res = (width + gutterSize) / maxWidth;
-
-  return res;
+  return (width + gutterSize) / maxWidth;
 }
 
 export const snapToGrid = (gridWidth, width, height, lineLength, gridSize) => {

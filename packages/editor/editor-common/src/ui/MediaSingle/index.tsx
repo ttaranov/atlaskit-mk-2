@@ -28,7 +28,8 @@ export default function MediaSingle({
   className,
 }: Props) {
   if (pctWidth) {
-    const pxWidth = calcPxFromPct(pctWidth / 100, lineLength);
+    let cw = containerWidth - 64; // FIXME: padding around renderer, comment editor is 40px
+    const pxWidth = calcPxFromPct(pctWidth / 100, Math.min(cw, lineLength));
 
     // scale, keeping aspect ratio
     height = height / width * pxWidth;
