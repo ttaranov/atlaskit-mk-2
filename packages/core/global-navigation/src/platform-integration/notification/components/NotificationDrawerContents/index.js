@@ -54,12 +54,12 @@ class NotificationDrawer extends Component<Props, State> {
       event.source.window === this.iframe.contentWindow &&
       event.data === 'readyForUser'
     ) {
-      //this.setState({ hasIframeLoaded: true });
+      this.setState({ hasIframeLoaded: true });
     }
   };
 
   handleIframeLoad = () => {
-    //this.setState({ hasIframeLoaded: true });
+    this.setState({ hasIframeLoaded: true });
   };
 
   storeIFrame = (component: any) => {
