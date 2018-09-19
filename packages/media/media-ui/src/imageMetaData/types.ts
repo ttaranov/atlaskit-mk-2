@@ -26,6 +26,11 @@ export enum SupportedImageMetaTag {
   Orientation = 'Orientation',
 }
 
+export type FileInfo = {
+  file: File;
+  src: string;
+};
+
 // https://www.impulseadventure.com/photo/exif-orientation.html
 export const OrientationTransforms: { [key: number]: string } = {
   1: '',

@@ -22,5 +22,6 @@ export {
   ImageInfo,
   ImageMetaData,
   ImageMetaDataTags,
+  FileInfo,
 } from './imageMetaData';
 export * from './util';

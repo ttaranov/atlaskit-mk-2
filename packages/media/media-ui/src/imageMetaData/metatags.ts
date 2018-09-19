@@ -1,6 +1,7 @@
 import * as EXIF from 'exif-js';
 import * as pngChunksExtract from 'png-chunks-extract';
-import { fileToArrayBuffer, loadImage, Utf8ArrayToStr } from './util';
+import { fileToArrayBuffer, loadImage } from './util';
+import { unpack } from 'utf8-buffer';
 import { fileToDataURICached } from '../util';
 import { ImageMetaDataTags, ImageType, SupportedImageMetaTag } from './types';
 const { XResolution, YResolution } = SupportedImageMetaTag;
@@ -58,7 +59,7 @@ export function readJPEGExifMetaData(img: HTMLImageElement): Promise<any> {
 export function readPNGXMPMetaData(file: File): Promise<string> {
   return fileToArrayBuffer(file).then(buffer => {
     const chunks = pngChunksExtract(buffer);
-    const xmpMetaData = Utf8ArrayToStr(chunks[3].data); //TODO: check pasted undefined data
+    const xmpMetaData = unpack(chunks[3].data);
     return xmpMetaData;
   });
 }

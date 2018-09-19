@@ -14,7 +14,6 @@ import {
   readPNGXMPMetaData,
 } from './metatags';
 
-// use strong types for metadata keys
 const { Orientation, XResolution } = SupportedImageMetaTag;
 
 // http://bonfx.com/why-is-the-web-72-dpi-and-print-300-dpi/
@@ -25,12 +24,9 @@ export {
   ImageInfo,
   ImageMetaData,
   ImageMetaDataTags,
+  FileInfo,
 } from './types';
 
-/**
- * return image dimensions plus scaleFactor metadata (only supports JPEG + PNG)
- * @param file - the image file
- */
 export async function getImageInfo(file: File): Promise<ImageInfo | null> {
   const metadata = await readImageMetaData(file);
   if (!metadata) {
@@ -53,10 +49,6 @@ export async function getImageInfo(file: File): Promise<ImageInfo | null> {
   };
 }
 
-/**
- * parse metatags only and return orientation
- * @param file - the image file (supports JPEG + PNG)
- */
 export function getOrientation(file: File): Promise<number | null> {
   return readImageMetaTags(file).then((tags: ImageMetaDataTags | null) => {
     if (tags) {
@@ -66,12 +58,6 @@ export function getOrientation(file: File): Promise<number | null> {
   });
 }
 
-/**
- * helper to get numeric value from string tag value
- * @param tags - dictionary of tags
- * @param key - the tag name
- * @param defaultValue - the default value if not found/error
- */
 export function getMetaTagNumericValue(
   tags: ImageMetaDataTags,
   key: string,
@@ -88,10 +74,6 @@ export function getMetaTagNumericValue(
   return defaultValue;
 }
 
-/**
- * get the DPI info from the file, if it uses a filename convention then that has precedence over metatags
- * @param file - the image file
- */
 export function getScaleFactorFromFile(file: File): number | null {
   try {
     // filenames with scale ratio in name take precedence - eg. filename@2x.png
@@ -105,10 +87,6 @@ export function getScaleFactorFromFile(file: File): number | null {
   return null;
 }
 
-/**
- * return image dimensions plus any available metatags (only supports JPEG + PNG)
- * @param file - the image file
- */
 export async function readImageMetaData(
   file: File,
 ): Promise<ImageMetaData | null> {

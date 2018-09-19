@@ -1,3 +1,5 @@
+import { FileInfo } from './imageMetaData/types';
+
 export function dataURItoFile(
   dataURI: string,
   filename: string = 'untitled',
@@ -41,7 +43,12 @@ export function fileToDataURI(blob: Blob): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
     reader.addEventListener('load', () => {
-      // TODO: [ts30] Add proper handling for null and ArrayBuffer
+      const result = reader.result;
+      if (typeof result === 'string') {
+        resolve(result);
+      } else if (result === null) {
+        reject();
+      }
       resolve(reader.result as string);
     });
     reader.addEventListener('error', reject);
@@ -49,17 +56,17 @@ export function fileToDataURI(blob: Blob): Promise<string> {
   });
 }
 
-// store first base64 calc dataURI with File, return cached value to optimise performance
-interface CachedBlob extends Blob {
-  __base64Src: string;
-}
-
-export const fileToDataURICached = async (blob: Blob): Promise<string> => {
-  const cachedBlob = blob as CachedBlob;
-  if (cachedBlob.__base64Src) {
-    return cachedBlob.__base64Src;
+export async function getFileInfo(file: File, src?: string): Promise<FileInfo> {
+  if (src) {
+    return {
+      file,
+      src,
+    };
+  } else {
+    const dataUri = await fileToDataURI(file);
+    return {
+      file,
+      src: dataUri,
+    };
   }
-  const base64Str = await fileToDataURI(blob);
-  cachedBlob.__base64Src = base64Str;
-  return base64Str;
-};
+}

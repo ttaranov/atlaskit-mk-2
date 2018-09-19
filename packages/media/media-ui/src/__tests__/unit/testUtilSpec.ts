@@ -1,35 +1,38 @@
-import { dataURItoFile, fileToDataURI, fileToDataURICached } from '../../util';
+import { dataURItoFile, fileToDataURI } from '../../util';
 
-const tinyImageDataUri =
-  'data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==';
+const tinyPngDataURI = 'data:image/png;base64,';
+const tinyBadDataURI = 'very-bad-data';
 
 describe('Image Meta Data Util', () => {
-  const tinyFile = dataURItoFile(tinyImageDataUri);
+  const tinyPngFile = dataURItoFile(tinyPngDataURI);
 
   describe('convert between dataURI and File', () => {
     it('should convert dataURI to File', () => {
-      expect(tinyFile).toBeInstanceOf(File);
+      expect(tinyPngFile).toBeInstanceOf(File);
+    });
+
+    it('should preserve mimeType', () => {
+      expect(tinyPngFile.type).toEqual('image/png');
     });
 
     it('should convert File to dataURI', async () => {
-      const dataURI = await fileToDataURI(tinyFile);
-      expect(dataURI).toEqual(tinyImageDataUri);
+      const dataURI = await fileToDataURI(tinyPngFile);
+      expect(dataURI).toEqual(tinyPngDataURI);
+    });
+
+    it('should do', () => {
+      const file = dataURItoFile(tinyBadDataURI);
+      expect(file).toBeInstanceOf(File);
+    });
+
+    it('should still convert to string invalid File', async () => {
+      const badFile = new File([], 'filename', { type: 'bad/type' });
+      const dataURI = await fileToDataURI(badFile);
+      expect(dataURI).toEqual(tinyBadDataURI);
     });
 
     it('should throw message on empty dataURI', () => {
       expect(() => dataURItoFile('')).toThrowError('dataURI not found');
-    });
-  });
-
-  describe('Caching dataURI src with File', () => {
-    it('should not know dataURI for File by default', () => {
-      expect(tinyFile).not.toHaveProperty('__base64Src');
-    });
-
-    it('should store dataURI with File when first accessed', async () => {
-      const dataURI = await fileToDataURICached(tinyFile);
-      expect(dataURI).toEqual(tinyImageDataUri);
-      expect(tinyFile).toHaveProperty('__base64Src');
     });
   });
 });
