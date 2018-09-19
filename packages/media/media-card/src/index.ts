@@ -16,7 +16,6 @@ export { CardProps, CardState } from './root/card';
 export { CardView } from './root/cardViewLoader';
 
 export {
-  CardViewOwnProps,
   CardViewState,
   CardViewOwnProps as CardViewProps,
 } from './root/cardView';
