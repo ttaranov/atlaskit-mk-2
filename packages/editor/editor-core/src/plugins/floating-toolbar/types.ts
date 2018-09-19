@@ -10,6 +10,17 @@ import { SelectOptions, SelectOption } from './ui/Select';
 export type Icon = React.ComponentType<{ label: string }>;
 export type RenderOptionsProps = RenderOptionsPropsT<Command>;
 
+export type SelectToolbarItem<T> = {
+  type: 'select';
+  title: string;
+  options: SelectOptions<T>;
+  hidden?: boolean;
+  hideExpandIcon?: boolean;
+  defaultValue?: SelectOption;
+  placeholder?: string;
+  onChange: (selected: SelectOption) => T;
+};
+
 export type FloatingToolbarItem<T> =
   | {
       type: 'button';
@@ -32,16 +43,17 @@ export type FloatingToolbarItem<T> =
       hidden?: boolean;
       hideExpandIcon?: boolean;
     }
-  | {
-      type: 'select';
-      title: string;
-      options: SelectOptions<T>;
-      hidden?: boolean;
-      hideExpandIcon?: boolean;
-      defaultValue?: SelectOption;
-      placeholder?: string;
-      onChange: (selected: SelectOption) => T;
-    }
+  | SelectToolbarItem<T>
+  // {
+  //     type: 'select';
+  //     title: string;
+  //     options: SelectOptions<T>;
+  //     hidden?: boolean;
+  //     hideExpandIcon?: boolean;
+  //     defaultValue?: SelectOption;
+  //     placeholder?: string;
+  //     onChange: (selected: SelectOption) => T;
+  //   }
   | { type: 'separator'; hidden?: boolean };
 
 export interface FloatingToolbarConfig {
