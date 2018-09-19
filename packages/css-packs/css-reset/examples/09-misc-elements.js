@@ -1,13 +1,12 @@
 // @flow
 import React from 'react';
-import '../src/index.less';
 
 export default () => (
   <div>
     <h2>{`<time>`}</h2>
     <p>
-      Can you move that meeting on{' '}
-      <time dateTime="2022-01-01 10:00">May 15</time> to the pub?
+      Can you move that meeting on <time dateTime="20220101 10:00">May 15</time>{' '}
+      to the pub?
     </p>
     <h2>
       {`<dfn>`} and {`<abbr>`}

@@ -1,6 +1,7 @@
-const css = require('./utils/evaluate-inner');
+//@flow
+import evaluateInner from './utils/evaluate-inner';
 
-module.exports = css`
+export default evaluateInner`
   .assistive {
     border: 0 !important;
     clip: rect(1px, 1px, 1px, 1px) !important;

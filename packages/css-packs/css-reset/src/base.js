@@ -1,14 +1,10 @@
 // @flow
-const colors = require('@atlaskit/theme/src/colors');
-const typography = require('@atlaskit/theme/src/typography');
-const {
-  gridSize,
-  fontFamily,
-  codeFontFamily,
-} = require('@atlaskit/theme/src/index');
-const css = require('./utils/evaluate-inner');
+import * as colors from '@atlaskit/theme/src/colors';
+import * as typography from '@atlaskit/theme/src/typography';
+import { gridSize, fontFamily, codeFontFamily } from '@atlaskit/theme/src';
+import evaluateInner from './utils/evaluate-inner';
 
-module.exports = css`
+export default evaluateInner`
   body,
   html {
     height: 100%;
@@ -140,7 +136,7 @@ module.exports = css`
   }
 
   blockquote::before,
-  q:before {
+  q::before {
     content: '\\201C';
   }
 
@@ -151,7 +147,7 @@ module.exports = css`
 
   blockquote::before {
     float: left;
-    /* to keep the quotes left of any child elements like blockquote > p*/
+    /* to keep the quotes left of any child elements like blockquote > p */
     margin-left: -1em;
     text-align: right;
     width: 1em;
@@ -163,7 +159,7 @@ module.exports = css`
   }
 
   blockquote > :last-child {
-    display: inline-block; /* so the quotes added via pseudos follow it immediately.*/
+    display: inline-block; /* so the quotes added via pseudos follow it immediately. */
   }
 
   /* Other typographical elements */

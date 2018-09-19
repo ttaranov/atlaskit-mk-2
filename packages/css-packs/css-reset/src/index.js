@@ -1,11 +1,11 @@
 // @flow
-const baseStyles = require('./base');
-const browserFixesStyles = require('./browser-fixes');
-const resetStyles = require('./reset');
-const tableStyles = require('./tables');
-const utilStyles = require('./utils');
+import baseStyles from './base';
+import browserFixesStyles from './browser-fixes';
+import resetStyles from './reset';
+import tableStyles from './tables';
+import utilStyles from './utils';
 
-module.exports = `
+export default `
 ${resetStyles}
 ${baseStyles}
 ${tableStyles}

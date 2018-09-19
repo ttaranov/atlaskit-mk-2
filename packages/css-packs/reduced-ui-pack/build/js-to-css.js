@@ -6,7 +6,7 @@ import makeDir from 'mkdirp';
 import styleSheet from '../src';
 
 const writeFile = promisify(fs.writeFile);
-const DIST = path.join(__dirname, '..', 'dist');
+const DIST = path.join(__dirname, '..', 'src');
 
 async function buildCSSReset() {
   try {

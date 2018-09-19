@@ -1,7 +1,7 @@
 // @flow
-const css = require('./utils/evaluate-inner');
+import evaluateInner from './utils/evaluate-inner';
 
-module.exports = css`
+export default evaluateInner`
   /* IE11 doesn't support <template> elements which shouldn't be displayed */
   template {
     display: none;

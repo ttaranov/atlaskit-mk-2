@@ -2,12 +2,15 @@
 import fs from 'fs';
 import path from 'path';
 import cheerio from 'cheerio'; // eslint-disable-line import/no-extraneous-dependencies
-import { name } from '../../../package.json';
-import expectedSvgIds from '../../internal/iconIds';
+import { name } from '../../../../package.json';
+import expectedSvgIds from '../../../internal/iconIds';
 
-const icons = fs.readFileSync(path.join(__dirname, '../../icons-sprite.svg'), {
-  encoding: 'utf-8',
-});
+const icons = fs.readFileSync(
+  path.join(__dirname, '../../../icons-sprite.svg'),
+  {
+    encoding: 'utf-8',
+  },
+);
 
 describe(name, () => {
   it('icon export should contain expected SVG symbol ids', () => {

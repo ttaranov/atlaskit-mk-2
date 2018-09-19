@@ -14,7 +14,7 @@ export default function evaluateInner(
 
 function interleave(strings, interpolations) {
   const result = [strings[0]];
-  for (let i = 0; i < interpolations.length; i++) {
+  for (let i = 0, len = interpolations.length; i < len; i += 1) {
     result.push(interpolations[i], strings[i + 1]);
   }
 

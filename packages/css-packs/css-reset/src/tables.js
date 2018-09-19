@@ -1,12 +1,12 @@
 //@flow
-const colors = require('@atlaskit/theme/src/colors');
-const { gridSize } = require('@atlaskit/theme/src');
-const { h600 } = require('@atlaskit/theme/src/typography');
-const css = require('./utils/evaluate-inner');
+import * as colors from '@atlaskit/theme/src/colors';
+import { gridSize } from '@atlaskit/theme/src';
+import * as typography from '@atlaskit/theme/src/typography';
+import evaluateInner from './utils/evaluate-inner';
 
-const table_border_width = 2;
+const tableBorderWdth = 2;
 
-module.exports = css`
+export default evaluateInner`
   table {
     border-collapse: collapse;
     width: 100%;
@@ -15,7 +15,7 @@ module.exports = css`
   thead,
   tbody,
   tfoot {
-    border-bottom: ${table_border_width}px solid ${colors.N40};
+    border-bottom: ${tableBorderWdth}px solid ${colors.N40};
   }
 
   td,
@@ -40,7 +40,7 @@ module.exports = css`
   }
 
   caption {
-    ${h600()};
+    ${typography.h600()};
 
     margin-bottom: ${gridSize()}px;
     text-align: left;

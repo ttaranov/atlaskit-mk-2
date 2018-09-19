@@ -1,10 +1,10 @@
 {
   "name": "@atlaskit/css-reset",
   "version": "3.0.1",
-  "description": "ak-css-reset webcomponent",
+  "description": "Base stylesheet for ADG",
   "license": "Apache-2.0",
   "main": "dist/bundle.css",
-  "atlaskit:src": "src/index.less",
+  "atlaskit:src": "src/index.js",
   "atlaskit:designLink": "https://atlassian.design/guidelines/product/overview",
   "files": [
     "dist"
@@ -17,13 +17,15 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "scripts": {
-    "build": "lessc src/index.less dist/bundle.css",
-    "build-css": "babel-node build/js-to-css.js"
+    "build": "babel-node build/js-to-css.js"
   },
   "dependencies": {
     "@atlaskit/theme": "^6.0.3",
     "fbjs": "^1.0.0",
-    "make-dir": "^1.3.0"
+    "mkdirp": "^0.5.1"
+  },
+  "peerDependencies": {
+    "react": "^16.4.0"
   },
   "devDependencies": {
     "@atlaskit/docs": "^5.0.2",
