@@ -27,20 +27,10 @@ export default md`
     />
   )}
 
-  Drawers have three standard sizes available; \`full\`, \`narrow\`, and \`wide\`. You can use drawers with sibling elements with 'z-index' elements without any issue.
-
-  ${(
-    <Example
-      Component={require('../examples/11-sibling-element-with-z-index').default}
-      source={require('!!raw-loader!../examples/11-sibling-element-with-z-index')}
-      title="Sibling element with z-index"
-    />
-  )}
-
-  You can control if the content will be remounted on close passing the \`shouldUnmountOnExit\` prop. So that you can retain the drawer content and use it next time the component is displayed.
+  Drawers have three standard sizes available; \`full\`, \`narrow\`, and \`wide\`, controlling if the content should be remounted on close passing the \`shouldUnmountOnExit\` prop. So that you can retain the drawer content and use it next time the component is displayed.
 
 
-  Default value: \`false\`
+  Default value of \`shouldUnmountOnExit\` prop: \`false\`
 
 
   ${(
