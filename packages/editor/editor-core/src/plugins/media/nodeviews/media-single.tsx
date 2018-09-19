@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component, ReactElement } from 'react';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import { MediaSingle } from '@atlaskit/editor-common';
+import { MediaSingle, akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
 import { MediaNodeProps } from './media';
 import { stateKey, MediaPluginState } from '../pm-plugins/main';
 
@@ -132,15 +132,16 @@ export default class MediaSingleNode extends Component<
       hideProgress = true;
     }
 
+    console.log('have pct width', mediaSingleWidth);
+
     return (
       <MediaSingle
         layout={layout}
         width={width}
         height={height}
         containerWidth={this.props.containerWidth}
-        gridSize={12}
+        lineLength={akEditorFullPageMaxWidth}
         pctWidth={mediaSingleWidth}
-        appearance={'full-page'}
         isLoading={!width}
       >
         {React.cloneElement(
