@@ -58,6 +58,9 @@ export const Reactions = withAnalyticsEvents()(
     static defaultProps = {
       flash: {},
     };
+
+    static displayName = 'Reactions';
+
     private openTime: number | undefined;
     private renderTime: number | undefined;
 

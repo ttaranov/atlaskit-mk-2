@@ -76,15 +76,17 @@ export interface State {
 
 export const Reaction = withAnalyticsEvents()(
   class extends PureComponent<Props & WithAnalyticsEventProps, State> {
-    private mounted: boolean;
-    private hoverStart: number | undefined;
-
     static defaultProps = {
       flash: false,
       className: undefined,
       onMouseOver: undefined,
       flashOnMount: false,
     };
+
+    static displayName = 'Reaction';
+
+    private mounted: boolean;
+    private hoverStart: number | undefined;
 
     constructor(props) {
       super(props);
