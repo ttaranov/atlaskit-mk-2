@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-common",
-  "version": "16.2.0",
+  "version": "16.2.1",
   "description": "A package that contains common classes and components for editor and renderer",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -27,7 +27,7 @@
   "dependencies": {
     "@atlaskit/emoji": "^41.0.0",
     "@atlaskit/icon": "^13.2.4",
-    "@atlaskit/media-card": "^34.0.2",
+    "@atlaskit/media-card": "^35.0.0",
     "@atlaskit/mention": "^15.0.9",
     "@atlaskit/profilecard": "^4.0.8",
     "@atlaskit/size-detector": "^5.0.4",
@@ -45,7 +45,7 @@
     "raf-schd": "^2.1.0"
   },
   "peerDependencies": {
-    "@atlaskit/media-core": "^23.2.0",
+    "@atlaskit/media-core": "^23.2.1",
     "react": "^16.4.0",
     "react-dom": "^16.4.2",
     "styled-components": "^3.2.6"
@@ -54,7 +54,7 @@
     "@atlaskit/editor-json-transformer": "^4.0.11",
     "@atlaskit/editor-test-helpers": "^6.1.0",
     "@atlaskit/json-schema-generator": "^1.1.2",
-    "@atlaskit/media-core": "^23.2.0",
+    "@atlaskit/media-core": "^23.2.1",
     "@atlaskit/webdriver-runner": "^0.1.0",
     "@types/chai": "^4.0.4",
     "@types/prosemirror-state": "^1.0.0",
