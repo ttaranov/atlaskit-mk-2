@@ -39,6 +39,7 @@ export default class ToolbarTextFormatting extends PureComponent<Props> {
             disabled={disabled || strongDisabled}
             title={tooltip(toggleBold)}
             iconBefore={<BoldIcon label="Bold" />}
+            onFocus={e => console.log('bold', e)}
           />
         )}
 
