@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as sinon from 'sinon';
 import { mount } from 'enzyme';
+import FabricAnalyticsListener from '@atlaskit/analytics-listeners';
 import TaskItem from '../../../components/TaskItem';
 import Participants from '../../../components/Participants';
 import { AttributionWrapper, ContentWrapper } from '../../../styled/Item';
@@ -8,6 +9,17 @@ import { Placeholder } from '../../../styled/Placeholder';
 import { getParticipants } from '../_test-data';
 
 describe('<TaskItem/>', () => {
+  let analyticsWebClientMock;
+
+  beforeEach(() => {
+    analyticsWebClientMock = {
+      sendUIEvent: jest.fn(),
+      sendOperationalEvent: jest.fn(),
+      sendTrackEvent: jest.fn(),
+      sendScreenEvent: jest.fn(),
+    };
+  });
+
   it('should render children', () => {
     const component = mount(
       <TaskItem taskId="task-1">
@@ -195,6 +207,44 @@ describe('<TaskItem/>', () => {
       );
       const attributionWrapper = component.find(AttributionWrapper);
       expect(attributionWrapper.length).toEqual(0);
+    });
+  });
+
+  describe('analytics', () => {
+    it('check action fires an event', () => {
+      const component = mount(
+        <FabricAnalyticsListener client={analyticsWebClientMock}>
+          <TaskItem taskId="task-1" appearance="inline" isDone={false} />
+        </FabricAnalyticsListener>,
+      );
+      component.find('input').simulate('change');
+      expect(analyticsWebClientMock.sendUIEvent).toHaveBeenCalledTimes(1);
+      expect(analyticsWebClientMock.sendUIEvent).toHaveBeenCalledWith({
+        action: 'checked',
+        actionSubject: 'action',
+        attributes: {
+          localId: 'task-1',
+        },
+        tags: ['fabricElements'],
+      });
+    });
+
+    it('uncheck action fires an event', () => {
+      const component = mount(
+        <FabricAnalyticsListener client={analyticsWebClientMock}>
+          <TaskItem taskId="task-1" appearance="inline" isDone={true} />
+        </FabricAnalyticsListener>,
+      );
+      component.find('input').simulate('change');
+      expect(analyticsWebClientMock.sendUIEvent).toHaveBeenCalledTimes(1);
+      expect(analyticsWebClientMock.sendUIEvent).toHaveBeenCalledWith({
+        action: 'unchecked',
+        actionSubject: 'action',
+        attributes: {
+          localId: 'task-1',
+        },
+        tags: ['fabricElements'],
+      });
     });
   });
 });

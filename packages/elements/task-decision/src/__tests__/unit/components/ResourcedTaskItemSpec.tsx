@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
-import { AnalyticsListener } from '@atlaskit/analytics';
+import FabricAnalyticsListener from '@atlaskit/analytics-listeners';
 import { waitUntil } from '@atlaskit/util-common-test';
 import ResourcedTaskItem from '../../../components/ResourcedTaskItem';
 import TaskItem from '../../../components/TaskItem';
@@ -12,12 +12,19 @@ import Item from '../../../components/Item';
 describe('<ResourcedTaskItem/>', () => {
   let provider;
   let component;
+  let analyticsWebClientMock;
 
   beforeEach(() => {
     provider = {
       subscribe: jest.fn(),
       unsubscribe: jest.fn(),
       toggleTask: jest.fn(() => Promise.resolve(true)),
+    };
+    analyticsWebClientMock = {
+      sendUIEvent: jest.fn(),
+      sendOperationalEvent: jest.fn(),
+      sendTrackEvent: jest.fn(),
+      sendScreenEvent: jest.fn(),
     };
   });
 
@@ -337,55 +344,59 @@ describe('<ResourcedTaskItem/>', () => {
   });
 
   describe('analytics', () => {
-    it('should fire atlassian.fabric.action.check analytics event when checkbox is checked', () => {
-      const publicSpy = jest.fn();
-      const privateSpy = jest.fn();
+    it('check action fires an event', () => {
       const component = mount(
-        <AnalyticsListener onEvent={publicSpy}>
-          <AnalyticsListener onEvent={privateSpy} matchPrivate={true}>
-            <ResourcedTaskItem
-              taskId="task-1"
-              objectAri="objectAri"
-              containerAri="containerAri"
-            >
-              Hello <b>world</b>
-            </ResourcedTaskItem>
-          </AnalyticsListener>
-        </AnalyticsListener>,
+        <FabricAnalyticsListener client={analyticsWebClientMock}>
+          <ResourcedTaskItem
+            taskId="task-1"
+            objectAri="objectAri"
+            containerAri="containerAri"
+          >
+            Hello <b>world</b>
+          </ResourcedTaskItem>
+        </FabricAnalyticsListener>,
       );
       component.find('input').simulate('change');
-      expect(publicSpy.mock.calls[0][0]).toEqual(
-        'atlassian.fabric.action.check',
-      );
-      expect(privateSpy.mock.calls[0][0]).toEqual(
-        'atlassian.fabric.action.check',
-      );
+      expect(analyticsWebClientMock.sendUIEvent).toHaveBeenCalledTimes(1);
+      expect(analyticsWebClientMock.sendUIEvent).toHaveBeenCalledWith({
+        action: 'checked',
+        actionSubject: 'action',
+        attributes: {
+          localId: 'task-1',
+          objectAri: 'objectAri',
+          containerAri: 'containerAri',
+        },
+        source: 'unknown',
+        tags: ['fabricElements'],
+      });
     });
 
-    it('should fire atlassian.fabric.action.uncheck analytics event when checkbox is unchecked', () => {
-      const publicSpy = jest.fn();
-      const privateSpy = jest.fn();
+    it('uncheck action fires an event', () => {
       const component = mount(
-        <AnalyticsListener onEvent={publicSpy}>
-          <AnalyticsListener onEvent={privateSpy} matchPrivate={true}>
-            <ResourcedTaskItem
-              taskId="task-1"
-              objectAri="objectAri"
-              containerAri="containerAri"
-              isDone={true}
-            >
-              Hello <b>world</b>
-            </ResourcedTaskItem>
-          </AnalyticsListener>
-        </AnalyticsListener>,
+        <FabricAnalyticsListener client={analyticsWebClientMock}>
+          <ResourcedTaskItem
+            taskId="task-1"
+            objectAri="objectAri"
+            containerAri="containerAri"
+            isDone={true}
+          >
+            Hello <b>world</b>
+          </ResourcedTaskItem>
+        </FabricAnalyticsListener>,
       );
       component.find('input').simulate('change');
-      expect(publicSpy.mock.calls[0][0]).toEqual(
-        'atlassian.fabric.action.uncheck',
-      );
-      expect(privateSpy.mock.calls[0][0]).toEqual(
-        'atlassian.fabric.action.uncheck',
-      );
+      expect(analyticsWebClientMock.sendUIEvent).toHaveBeenCalledTimes(1);
+      expect(analyticsWebClientMock.sendUIEvent).toHaveBeenCalledWith({
+        action: 'unchecked',
+        actionSubject: 'action',
+        attributes: {
+          localId: 'task-1',
+          objectAri: 'objectAri',
+          containerAri: 'containerAri',
+        },
+        source: 'unknown',
+        tags: ['fabricElements'],
+      });
     });
   });
 });

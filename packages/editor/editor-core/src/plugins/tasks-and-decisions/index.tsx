@@ -38,12 +38,7 @@ const tasksAndDecisionsPlugin: EditorPlugin = {
       {
         name: 'tasksAndDecisions',
         plugin: ({ schema, props, portalProviderAPI, providerFactory }) => {
-          const { delegateAnalyticsEvent } = props;
-          return createPlugin(
-            portalProviderAPI,
-            { delegateAnalyticsEvent },
-            providerFactory,
-          );
+          return createPlugin(portalProviderAPI, providerFactory);
         },
       },
       {
