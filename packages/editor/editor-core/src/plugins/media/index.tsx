@@ -38,6 +38,7 @@ export interface MediaOptions {
   allowMediaGroup?: boolean;
   customDropzoneContainer?: HTMLElement;
   customMediaPicker?: CustomMediaPicker;
+  UNSAFE_allowMediaSingleResizing?: boolean;
 }
 
 export interface MediaSingleOptions {
@@ -97,19 +98,24 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
                   portalProviderAPI,
                   providerFactory,
                   {
-                    mediaSingle: ({ view, node, ...props }) => (
+                    mediaSingle: ({ view, node, ...mediaSingleProps }) => (
                       <WithPluginState
                         editorView={view}
                         eventDispatcher={eventDispatcher}
                         plugins={{
-                          width: widthPluginKey,
+                          widthState: widthPluginKey,
                         }}
-                        render={({ width }) => (
+                        render={({ widthState }) => (
                           <ReactMediaSingleNode
                             view={view}
                             node={node}
-                            width={width}
-                            {...props}
+                            containerWidth={widthState.width}
+                            lineLength={widthState.lineLength}
+                            isResizable={
+                              options && options.UNSAFE_allowMediaSingleResizing
+                            }
+                            appearance={props.appearance}
+                            {...mediaSingleProps}
                           />
                         )}
                       />

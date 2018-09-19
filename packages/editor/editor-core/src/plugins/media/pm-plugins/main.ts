@@ -491,7 +491,7 @@ export class MediaPluginState {
     this.mediaNodes = this.mediaNodes.filter(({ node }) => oldNode !== node);
   };
 
-  align = (layout: MediaSingleLayout): boolean => {
+  align = (layout: MediaSingleLayout, gridSize: number = 12): boolean => {
     if (!this.selectedMediaNode()) {
       return false;
     }
@@ -502,9 +502,53 @@ export class MediaPluginState {
       tr,
     } = this.view.state;
 
+    const mediaSingleNode = this.view.state.doc.nodeAt(from - 1)!;
+    if (!mediaSingleNode) {
+      return false;
+    }
+
+    let width = mediaSingleNode.attrs.width;
+    const oldLayout: MediaSingleLayout = mediaSingleNode.attrs.layout;
+
+    if (width) {
+      const cols = Math.round(width / 100 * gridSize);
+      let targetCols = cols;
+
+      if (oldLayout === 'wrap-left' || oldLayout === 'wrap-right') {
+        if (
+          layout === 'center' ||
+          layout === 'wide' ||
+          layout === 'full-width'
+        ) {
+          // wrap -> center needs to align to even grid
+          targetCols = Math.floor(targetCols / 2) * 2;
+        }
+      } else if (
+        oldLayout === 'center' ||
+        oldLayout === 'wide' ||
+        oldLayout === 'full-width'
+      ) {
+        if (layout === 'wrap-left' || layout === 'wrap-right') {
+          // cannot resize to full column width, and cannot resize to 1 column
+
+          if (cols <= 1) {
+            targetCols = 2;
+          } else if (cols >= gridSize) {
+            targetCols = 10;
+          }
+        }
+      }
+
+      if (targetCols !== cols) {
+        width = targetCols / gridSize * 100;
+      }
+    }
+
     this.view.dispatch(
       tr.setNodeMarkup(from - 1, schema.nodes.mediaSingle, {
+        ...mediaSingleNode.attrs,
         layout,
+        width,
       }),
     );
     return true;
@@ -955,8 +999,23 @@ export const createPlugin = (
           schema,
           selection: { $anchor },
         } = state;
+
         // When a media is already selected
         if (state.selection instanceof NodeSelection) {
+          const node = state.selection.node;
+
+          if (node.type === schema.nodes.mediaSingle) {
+            const deco = Decoration.node(
+              state.selection.from,
+              state.selection.to,
+              {
+                class: 'mediaSingle-selected',
+              },
+            );
+
+            return DecorationSet.create(state.doc, [deco]);
+          }
+
           return;
         }
 
