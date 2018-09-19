@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 80.4.14
+- [patch] Fixing floating toolbar always showing top left in comments editor. ED-5348 [f36ae3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f36ae3c)
+
 ## 80.4.13
 - [patch] fix styles for nested tables [11267a8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/11267a8)
 
