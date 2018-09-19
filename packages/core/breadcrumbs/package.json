@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/breadcrumbs",
-  "version": "6.0.8",
+  "version": "6.0.9",
   "description": "A component used for navigation, with each item acting as a link",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -34,7 +34,7 @@
     "@atlaskit/build-utils": "^2.0.0",
     "@atlaskit/docs": "^5.0.6",
     "@atlaskit/icon": "^13.6.1",
-    "@atlaskit/select": "^5.0.15",
+    "@atlaskit/select": "^6.0.0",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "jest-in-case": "^1.0.2",
     "react-dom": "^16.4.2",

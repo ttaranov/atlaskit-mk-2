@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/global-search",
-  "version": "5.7.2",
+  "version": "5.7.3",
   "description": "A cross-product search component (batteries included)",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -31,7 +31,6 @@
     "@atlaskit/flag": "^9.0.10",
     "@atlaskit/icon": "^13.8.1",
     "@atlaskit/logo": "^9.2.0",
-    "@atlaskit/modal-dialog": "^7.0.0",
     "@atlaskit/quick-search": "^4.2.7",
     "@atlaskit/theme": "^6.0.0",
     "@atlaskit/util-service-support": "^3.0.1",

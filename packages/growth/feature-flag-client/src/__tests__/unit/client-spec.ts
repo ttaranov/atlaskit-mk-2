@@ -183,6 +183,7 @@ describe('Feature Flag Client', () => {
           action: 'exposed',
           actionSubject: 'feature',
           attributes: {
+            flagKey: 'my.detailed.boolean.flag',
             reason: 'RULE_MATCH',
             ruleId: '111-bbbbb-ccc',
             value: false,
@@ -259,6 +260,7 @@ describe('Feature Flag Client', () => {
           action: 'exposed',
           actionSubject: 'feature',
           attributes: {
+            flagKey: 'my.experiment',
             reason: 'RULE_MATCH',
             ruleId: '111-bbbbb-ccc',
             value: 'experiment',

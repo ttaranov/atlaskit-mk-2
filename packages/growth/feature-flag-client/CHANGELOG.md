@@ -1,5 +1,8 @@
 # @atlaskit/feature-flag-client
 
+## 1.0.2
+- [patch] MEP-103: Including flagKey in the attributes [afd42f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/afd42f7)
+
 ## 1.0.1
 - [patch] MEP-103: Adding missing source to event shape [0e870d8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0e870d8)
 

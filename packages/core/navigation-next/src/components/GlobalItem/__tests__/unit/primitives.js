@@ -1,8 +1,10 @@
 // @flow
 
-import { mount } from 'enzyme';
+import { mount, shallow } from 'enzyme';
 import React from 'react';
-import GlobalNavigationItemPrimitive from '../../primitives';
+import GlobalNavigationItemPrimitive, {
+  BaseGlobalNavigationItemPrimitive,
+} from '../../primitives';
 
 const theme = {
   mode: {
@@ -78,5 +80,48 @@ describe('GlobalNavigationItemPrimitive', () => {
       />,
     );
     expect(wrapper.find('Tooltip').length).toBe(1);
+  });
+
+  it('should render a tooltip without text if element is selected', () => {
+    const wrapper = mount(
+      <GlobalNavigationItemPrimitive
+        component={() => <button id="customComponent" />}
+        styles={styles}
+        theme={theme}
+        tooltip="Test tooltip"
+        isSelected
+      />,
+    );
+    expect(wrapper.find('Tooltip').props().content).toBe(undefined);
+  });
+
+  it('should render a tooltip without text if element is active', () => {
+    const wrapper = mount(
+      <GlobalNavigationItemPrimitive
+        component={() => <button id="customComponent" />}
+        styles={styles}
+        theme={theme}
+        tooltip="Test tooltip"
+        isActive
+      />,
+    );
+    expect(wrapper.find('Tooltip').props().content).toBe(undefined);
+  });
+
+  it('should use cached custom component stored in memory if it receives a component', () => {
+    const MyComponent = () => <button id="customComponent" />;
+    const wrapper = shallow(
+      <BaseGlobalNavigationItemPrimitive
+        component={MyComponent}
+        styles={styles}
+        theme={theme}
+        tooltip="Test tooltip"
+      />,
+    ).instance();
+
+    expect(wrapper.CachedCustomComponent === MyComponent).toBe(true);
+
+    const childrenComponent = wrapper.renderChildren();
+    expect(childrenComponent.type()).toEqual(wrapper.CachedCustomComponent());
   });
 });

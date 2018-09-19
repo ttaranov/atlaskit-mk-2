@@ -1,10 +1,6 @@
 // @flow
 import styled from 'styled-components';
-// import { gridSize, fontSize, colors, themed } from '@atlaskit/theme';
-import {
-  akTypographyMixins,
-  akGridSizeUnitless,
-} from '@atlaskit/util-shared-styles';
+import { gridSize, typography } from '@atlaskit/theme';
 
 /**
  * Provide a styled container for form sections.
@@ -17,9 +13,9 @@ const FormSectionWrapper = styled.div`
  * Provide a styled container for form section title
  */
 const FormSectionTitle = styled.h2`
-  ${akTypographyMixins.h600};
-  line-height: ${akGridSizeUnitless * 4}px;
-  margin-right: ${akGridSizeUnitless * 4}px;
+  ${typography.h600()};
+  line-height: ${gridSize() * 4}px;
+  margin-right: ${gridSize() * 4}px;
   margin-top: 0;
   overflow: hidden;
   text-overflow: ellipsis;

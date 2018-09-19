@@ -1,5 +1,8 @@
 # @atlaskit/lozenge
 
+## 6.2.1
+- [patch] Pulling the shared styles from @atlaskit/theme and removed dependency on util-shraed-styles [7d51a09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d51a09)
+
 ## 6.2.0
 - [minor] Use new theme API. Adds "theme" prop and exports new theme types. [4b36fd6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b36fd6)
 

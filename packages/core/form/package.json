@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/form",
-  "version": "4.0.6",
+  "version": "4.0.9",
   "description": "Form package provides layout & validation for form fields",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -19,8 +19,7 @@
   "repository": "bitbucket:atlaskit/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/icon": "^13.8.1",
-    "@atlaskit/theme": "^6.0.2",
-    "@atlaskit/util-shared-styles": "^2.10.3"
+    "@atlaskit/theme": "^6.0.2"
   },
   "peerDependencies": {
     "react": "^16.4.0",
@@ -28,12 +27,12 @@
   },
   "devDependencies": {
     "@atlaskit/build-utils": "^2.0.0",
-    "@atlaskit/button": "^9.0.9",
+    "@atlaskit/button": "^9.0.10",
     "@atlaskit/calendar": "^7.0.7",
     "@atlaskit/checkbox": "^5.0.0",
-    "@atlaskit/datetime-picker": "^6.3.7",
+    "@atlaskit/datetime-picker": "^6.3.10",
     "@atlaskit/docs": "^5.0.6",
-    "@atlaskit/dropdown-menu": "^6.1.12",
+    "@atlaskit/dropdown-menu": "^6.1.15",
     "@atlaskit/droplist": "^7.0.9",
     "@atlaskit/field-radio-group": "^4.0.7",
     "@atlaskit/field-range": "^5.0.7",
@@ -43,7 +42,7 @@
     "@atlaskit/modal-dialog": "^7.0.1",
     "@atlaskit/multi-select": "^11.0.6",
     "@atlaskit/section-message": "^1.0.7",
-    "@atlaskit/select": "^5.0.18",
+    "@atlaskit/select": "^6.0.0",
     "@atlaskit/single-select": "^6.0.5",
     "@atlaskit/toggle": "^5.0.8",
     "@atlaskit/tooltip": "^12.0.14",

@@ -1,5 +1,32 @@
 # @atlaskit/editor-core
 
+## 80.4.14
+- [patch] Fixing floating toolbar always showing top left in comments editor. ED-5348 [f36ae3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f36ae3c)
+
+## 80.4.13
+- [patch] fix styles for nested tables [11267a8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/11267a8)
+
+## 80.4.12
+- [patch] reverting table style change [b829ab9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b829ab9)
+
+## 80.4.11
+- [patch] ED-5335: fix table when it has nested extension that renders another table [21f315b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21f315b)
+
+## 80.4.10
+- [patch] Fixes text selection that ends at the start of the next cell. ED-5050 [f5c365d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f5c365d)
+
+## 80.4.9
+- [patch] Removing underline active in code mark selection [e54422a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e54422a)
+
+## 80.4.8
+- [patch] Updated dependencies [4194aa4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4194aa4)
+  - @atlaskit/logo@9.2.2
+  - @atlaskit/smart-card@8.1.2
+  - @atlaskit/select@6.0.0
+
+## 80.4.7
+- [patch] Fixing the mobile appearance height  [b0f6402](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b0f6402)
+
 ## 80.4.6
 - [patch] Adding renderer to the mobile bridge [3b4c276](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3b4c276)
 

@@ -80,7 +80,9 @@ const getTextFormattingState = (
   }
   if (underline) {
     state.underlineActive = anyMarkActive(editorState, underline);
-    state.underlineDisabled = !toggleMark(underline)(editorState);
+    state.underlineDisabled = state.codeActive
+      ? true
+      : !toggleMark(underline)(editorState);
   }
   return state;
 };

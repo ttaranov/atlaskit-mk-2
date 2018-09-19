@@ -1,5 +1,8 @@
 # @atlaskit/analytics-listeners
 
+## 4.0.3
+- [patch] Introduce media analytics listener [e7d7ab1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7d7ab1)
+
 ## 4.0.2
 - [patch] Update TS to 3.0 [f68d367](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f68d367)
 

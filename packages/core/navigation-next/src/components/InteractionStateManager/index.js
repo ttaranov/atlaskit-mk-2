@@ -11,35 +11,37 @@ export default class InteractionStateManager extends Component<
   state = {
     isActive: false,
     isHover: false,
-    isClicked: false,
+    isSelected: false,
   };
 
   onMouseDown = (e: Event) => {
     e.preventDefault();
-    this.setState({ isActive: true });
+    this.setState(() => ({ isActive: true }));
   };
 
-  onMouseUp = () => {
-    this.setState({ isActive: false });
+  onMouseUp = (e: Event) => {
+    e.preventDefault();
+    this.setState(state => ({
+      isActive: false,
+      isSelected: state.isActive,
+      isHover: false,
+    }));
   };
 
   onMouseOver = () => {
-    if (!this.state.isHover && !this.state.isClicked) {
-      this.setState({ isHover: true });
-    }
-    if (this.state.isClicked) {
-      this.setState({ isHover: false });
+    if (!this.state.isHover && !this.state.isSelected) {
+      this.setState(() => ({ isHover: true }));
+    } else if (this.state.isSelected && !this.state.isActive) {
+      this.setState(() => ({ isActive: false }));
     }
   };
 
-  onClick = () => this.setState({ isClicked: true });
-
   onMouseLeave = () => {
-    const newStates =
-      !this.state.isActive && !this.state.isHover
-        ? { isActive: false, isHover: false }
-        : { isActive: false, isHover: false, isClicked: false };
-    this.setState(newStates);
+    this.setState(() => ({
+      isActive: false,
+      isHover: false,
+      isSelected: false,
+    }));
   };
 
   render() {
@@ -49,8 +51,14 @@ export default class InteractionStateManager extends Component<
         onMouseOver={this.onMouseOver}
         onMouseLeave={this.onMouseLeave}
         onMouseUp={this.onMouseUp}
-        onClick={this.onClick}
         role="presentation"
+        css={{
+          width: '100%',
+          alignItems: 'center',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+        }}
       >
         {this.props.children(this.state)}
       </div>

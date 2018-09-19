@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 5.7.3
+- [patch] remove ak modal dialog dependency [e66a9d9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e66a9d9)
+
 ## 5.7.2
 - [patch] fix jira response parser [1502daa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1502daa)
 

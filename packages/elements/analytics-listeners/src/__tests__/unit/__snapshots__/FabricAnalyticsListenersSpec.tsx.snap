@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<FabricAnalyticsListeners /> FabricAnalyticsListener should render all listeners 1`] = `
-<NavigationListener
+<MediaAnalyticsListener
   client={
     Object {
       "sendOperationalEvent": [Function],
@@ -16,7 +16,7 @@ exports[`<FabricAnalyticsListeners /> FabricAnalyticsListener should render all 
     }
   }
 >
-  <AtlaskitListener
+  <NavigationListener
     client={
       Object {
         "sendOperationalEvent": [Function],
@@ -31,7 +31,7 @@ exports[`<FabricAnalyticsListeners /> FabricAnalyticsListener should render all 
       }
     }
   >
-    <FabricEditorListener
+    <AtlaskitListener
       client={
         Object {
           "sendOperationalEvent": [Function],
@@ -46,7 +46,7 @@ exports[`<FabricAnalyticsListeners /> FabricAnalyticsListener should render all 
         }
       }
     >
-      <FabricElementsListener
+      <FabricEditorListener
         client={
           Object {
             "sendOperationalEvent": [Function],
@@ -61,11 +61,27 @@ exports[`<FabricAnalyticsListeners /> FabricAnalyticsListener should render all 
           }
         }
       >
-        <div>
-          Child
-        </div>
-      </FabricElementsListener>
-    </FabricEditorListener>
-  </AtlaskitListener>
-</NavigationListener>
+        <FabricElementsListener
+          client={
+            Object {
+              "sendOperationalEvent": [Function],
+              "sendScreenEvent": [Function],
+              "sendTrackEvent": [Function],
+              "sendUIEvent": [Function],
+            }
+          }
+          logger={
+            Logger {
+              "logLevel": 4,
+            }
+          }
+        >
+          <div>
+            Child
+          </div>
+        </FabricElementsListener>
+      </FabricEditorListener>
+    </AtlaskitListener>
+  </NavigationListener>
+</MediaAnalyticsListener>
 `;

@@ -1,10 +1,7 @@
 // @flow
 
 import styled, { css } from 'styled-components';
-import {
-  akTypographyMixins,
-  akGridSizeUnitless,
-} from '@atlaskit/util-shared-styles';
+import { gridSize, typography } from '@atlaskit/theme';
 
 const truncationStyles = css`
   overflow-x: hidden;
@@ -15,24 +12,24 @@ const truncationStyles = css`
 const getTruncation = ({ truncate }) => (truncate ? truncationStyles : null);
 
 export const Outer = styled.div`
-  margin: ${akGridSizeUnitless * 3}px 0 0;
+  margin: ${gridSize() * 3}px 0 0;
 `;
 
 export const StyledTitle = styled.h1`
-  ${akTypographyMixins.h700};
-  ${getTruncation} line-height: ${akGridSizeUnitless * 4}px;
+  ${typography.h700()};
+  ${getTruncation} line-height: ${gridSize() * 4}px;
   margin-top: 0;
 `;
 
 export const BreadcrumbsContainer = styled.div`
-  margin-left: -${akGridSizeUnitless / 2}px;
+  margin-left: -${gridSize() / 2}px;
 `;
 
 export const TitleWrapper = styled.div`
   align-items: flex-start;
   display: flex;
   justify-content: space-between;
-  margin-bottom: ${akGridSizeUnitless * 3}px;
+  margin-bottom: ${gridSize() * 3}px;
 `;
 
 export const TitleContainer = styled.div`
@@ -43,11 +40,11 @@ export const TitleContainer = styled.div`
 
 export const ActionsWrapper = styled.div`
   white-space: nowrap;
-  padding-left: ${akGridSizeUnitless * 4}px;
+  padding-left: ${gridSize() * 4}px;
   min-width: 0%;
   flex-shrink: 0;
 `;
 
 export const BottomBarWrapper = styled.div`
-  margin-bottom: ${akGridSizeUnitless * 2}px;
+  margin-bottom: ${gridSize() * 2}px;
 `;

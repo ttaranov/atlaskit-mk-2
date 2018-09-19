@@ -1,5 +1,10 @@
 # @atlaskit/dropdown-menu
 
+## 6.1.15
+- [patch] Updated dependencies [7d51a09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d51a09)
+  - @atlaskit/button@9.0.10
+  - @atlaskit/lozenge@6.2.1
+
 ## 6.1.14
 - [patch] Updated dependencies [4b36fd6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b36fd6)
   - @atlaskit/lozenge@6.2.0

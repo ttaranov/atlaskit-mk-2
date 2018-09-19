@@ -116,11 +116,15 @@ function helpConfigFactory(items, tooltip, otherConfig = {}) {
   }: {
     className: string,
     onClick: () => void,
-  }) => (
-    <button className={className} onClick={onClick}>
-      <QuestionIcon secondaryColor={'inherit'} />
-    </button>
-  );
+  }) => {
+    return (
+      <div style={{ width: '100%' }}>
+        <button onClick={onClick} className={className}>
+          <QuestionIcon secondaryColor={'inherit'} />
+        </button>
+      </div>
+    );
+  };
 
   return {
     component: generateDropDown(HelpIcon, items),

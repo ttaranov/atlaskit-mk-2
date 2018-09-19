@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Modal from '@atlaskit/modal-dialog';
+import Modal from './ModalWrapper';
 import FieldTextArea from '@atlaskit/field-text-area';
 import sendFeedback from './feedback-client';
 
