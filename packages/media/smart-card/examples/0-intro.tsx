@@ -5,16 +5,16 @@ import Select from '@atlaskit/select';
 import { FieldTextStateless } from '@atlaskit/field-text';
 import { Provider, Card } from '../src';
 import { CardAppearance } from '../src/Card/CardContent';
-// import '../mocks';
+import { mockSingleCardWorkflow } from '../mocks';
+
+mockSingleCardWorkflow();
 
 const params =
   typeof URLSearchParams !== 'undefined'
     ? new URLSearchParams(location.search.slice(1))
     : null;
 const param = params ? params.get('url') : null;
-const defaultURL = param
-  ? param
-  : 'https://drive.google.com/open?id=0B1I77F_P5VV2c3RhcnRlcl9maWxlX2Rhc2hlclYw';
+const defaultURL = param ? param : 'private-happy'; ///'https://drive.google.com/open?id=0B1I77F_P5VV2c3RhcnRlcl9maWxlX2Rhc2hlclYw';
 
 export interface ExampleProps {}
 

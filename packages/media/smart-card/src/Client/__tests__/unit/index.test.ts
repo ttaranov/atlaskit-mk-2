@@ -198,44 +198,44 @@ describe('Client', () => {
     expect(state.data).toBeUndefined();
   });
 
-  // it('should reload when reload is called for the same provider', done => {
-  //   expect.assertions(4);
-  //   resolved();
-  //   let count = 0;
-  //   const client = createClient();
-  //   const subscription = client.get(OBJECT_URL).subscribe(({ status }) => {
-  //     switch (count++) {
-  //       case 0:
-  //         expect(status).toEqual('resolving');
-  //         break;
+  it('should reload when reload is called for the same provider', done => {
+    expect.assertions(4);
+    resolved();
+    let count = 0;
+    const client = createClient();
+    const subscription = client.get(OBJECT_URL).subscribe(({ status }) => {
+      switch (count++) {
+        case 0:
+          expect(status).toEqual('resolving');
+          break;
 
-  //       case 1:
-  //         expect(status).toEqual('resolved');
+        case 1:
+          expect(status).toEqual('resolved');
 
-  //         client.reload(definitionId);
+          client.reload(OBJECT_URL, definitionId);
 
-  //         break;
+          break;
 
-  //       case 2:
-  //         expect(status).toEqual('resolving');
-  //         break;
+        case 2:
+          expect(status).toEqual('resolving');
+          break;
 
-  //       case 3:
-  //         expect(status).toEqual('resolved');
+        case 3:
+          expect(status).toEqual('resolved');
 
-  //         setTimeout(() => {
-  //           // allow other requests to happen (and fail the test)
-  //           subscription.unsubscribe();
-  //           done();
-  //         }, 150);
+          setTimeout(() => {
+            // allow other requests to happen (and fail the test)
+            subscription.unsubscribe();
+            done();
+          }, 150);
 
-  //         break;
+          break;
 
-  //       default:
-  //         done.fail();
-  //     }
-  //   });
-  // });
+        default:
+          done.fail();
+      }
+    });
+  });
 
   // it('should not reload when reload is called for a different provider', done => {
   //   expect.assertions(2);

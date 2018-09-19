@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { Subscription } from 'rxjs/Subscription';
 import Context from '../Context';
 import { Client, ObjectState } from '../Client';
 
@@ -24,8 +23,6 @@ class InnerWithObject extends React.Component<
   InnerWithObjectProps,
   InnerWithObjectState
 > {
-  private subscription?: Subscription;
-
   state: InnerWithObjectState = {
     state: {
       status: 'resolving',
@@ -33,28 +30,13 @@ class InnerWithObject extends React.Component<
     },
   };
 
-  unsubscribe() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-      this.subscription = undefined;
-    }
-  }
-
-  subscribe() {
-    const { client, url } = this.props;
-    this.subscription = client
-      .get(url)
-      .subscribe(state => this.setState({ state }));
-  }
-
   reload = () => {
-    const { client } = this.props;
-    const { state } = this.state;
-    if (state && state.definitionId) {
-      this.subscription = client
-        .get(this.props.url, state.definitionId)
-        .subscribe(state => this.setState({ state }));
-    }
+    const { client, url } = this.props;
+    const {
+      state: { definitionId },
+    } = this.state;
+    console.log('CARD: reload: %s using %s', url, definitionId);
+    client.reload(url, definitionId);
   };
 
   static getDerivedStateFromProps(
@@ -77,22 +59,27 @@ class InnerWithObject extends React.Component<
   }
 
   componentDidMount() {
-    this.subscribe();
+    const { client, url } = this.props;
+    const {
+      state: { definitionId },
+    } = this.state;
+    client
+      .register(url, state => this.setState({ state }))
+      .get(url, definitionId);
   }
 
-  componentDidUpdate(prevProps: InnerWithObjectProps) {
-    if (
-      this.props.client !== prevProps.client ||
-      this.props.url !== prevProps.url
-    ) {
-      this.unsubscribe();
-      this.subscribe();
-    }
-  }
+  // componentDidUpdate(prevProps: InnerWithObjectProps) {
+  //   if (
+  //     this.props.client !== prevProps.client ||
+  //     this.props.url !== prevProps.url
+  //   ) {
+  //     this.subscribe();
+  //   }
+  // }
 
-  componentWillUnmount() {
-    this.unsubscribe();
-  }
+  // componentWillUnmount() {
+  //   this.unsubscribe();
+  // }
 
   render() {
     const { children } = this.props;
