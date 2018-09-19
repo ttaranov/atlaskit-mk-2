@@ -28,16 +28,9 @@ const incomingView = {
   type: 'product',
 };
 
-/**
- * Currently skipping 4 tests here, I have no idea what's happening with these sorry, I'd need more
- * context
- * TODO: JEST-23 Fix these tests
- */
-/* eslint-disable jest/no-disabled-tests */
-
 describe('NavigationNext View Controller', () => {
   afterEach(() => {
-    getItems.mockRestore();
+    getItems.mockClear();
   });
 
   it('should NOT set default values for peekView if initial peek view ID value is null', () => {
@@ -128,7 +121,7 @@ describe('NavigationNext View Controller', () => {
       expect(view.getItems).toHaveBeenCalled();
     });
 
-    it.skip('should add view as incoming when setView is called if view id with `getItems` promise was NOT solved', () => {
+    it('should add view as incoming when setView is called if view id with `getItems` promise was NOT solved', () => {
       const viewController = new ViewController({
         initialPeekViewId: 'view-id',
         isDebugEnabled: true,
@@ -258,7 +251,7 @@ describe('NavigationNext View Controller', () => {
     });
   });
 
-  it.skip('should add incoming view as active view if the added and incoming view matches', () => {
+  it('should add incoming view as active view if the added and incoming view matches', () => {
     const viewController = new ViewController({
       initialPeekViewId: 'view-id',
       isDebugEnabled: true,
@@ -280,7 +273,7 @@ describe('NavigationNext View Controller', () => {
     expect(viewController.state.incomingPeekView).toEqual(incomingView);
   });
 
-  it.skip('should reset the view if a view ID has been provided and it matches the active view', () => {
+  it('should reset the view if a view ID has been provided and it matches the active view', () => {
     const viewController = new ViewController({
       initialPeekViewId: 'view-id',
       isDebugEnabled: true,
@@ -305,7 +298,7 @@ describe('NavigationNext View Controller', () => {
     expect(viewController.state.incomingPeekView).toEqual(incomingView);
   });
 
-  it.skip('should reset the view, active container and product If a view ID has NOT been provided', () => {
+  it('should reset the view, active container and product If a view ID has NOT been provided', () => {
     const viewController = new ViewController({
       initialPeekViewId: 'view-id',
       isDebugEnabled: true,
