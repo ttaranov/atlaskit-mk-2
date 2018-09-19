@@ -18,11 +18,10 @@ export default class NotificationLogClient implements NotificationLogProvider {
     options: RequestServiceOptions = {},
   ): Promise<NotificationCountResponse> {
     const mergedOptions: RequestServiceOptions = {
-      path: 'api/notifications/countUnseenNotifications',
+      path: 'api/2/notifications/count/unseen',
       ...options,
       queryParams: {
         cloudId: this.cloudId,
-        direct: true,
         ...(options.queryParams || {}),
       },
       requestInit: {
