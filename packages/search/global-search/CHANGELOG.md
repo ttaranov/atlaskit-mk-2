@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 5.7.4
+- [patch] dynamic import Modal dialog based on the product [4367651](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4367651)
+
 ## 5.7.3
 - [patch] remove ak modal dialog dependency [e66a9d9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e66a9d9)
 
