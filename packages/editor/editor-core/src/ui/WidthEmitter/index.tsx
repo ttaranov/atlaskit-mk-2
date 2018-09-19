@@ -1,28 +1,22 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
-import SizeDetector from '@atlaskit/size-detector';
 import { pluginKey as widthPluginKey } from '../../plugins/width';
+import { WidthConsumer } from '@atlaskit/editor-common';
 
 export interface Props {
   editorView: EditorView;
 }
 
-export default class WidthDetector extends Component<Props> {
+export default class WidthEmitter extends Component<Props> {
   private width: number;
   private debounce: number | null = null;
 
   render() {
     return (
-      <SizeDetector
-        containerStyle={{
-          height: 0,
-          width: '100%',
-          flex: 'none',
-        }}
-      >
+      <WidthConsumer>
         {({ width }) => this.broadcastWidth(width) || null}
-      </SizeDetector>
+      </WidthConsumer>
     );
   }
 

@@ -1,15 +1,16 @@
 import { name } from '../../../../package.json';
 import { mount } from 'enzyme';
 import * as React from 'react';
-import SizeDetector from '@atlaskit/size-detector';
 import { Plugin } from 'prosemirror-state';
+import SizeDetector from '@atlaskit/size-detector';
 import { createEditor, doc, p } from '@atlaskit/editor-test-helpers';
+import { WidthProvider } from '@atlaskit/editor-common';
 
 import { pluginKey as widthPluginKey } from '../../../plugins/width';
-import WidthDetector from '../../../ui/WidthDetector';
+import WidthEmitter from '../../../ui/WidthEmitter';
 
 describe(name, () => {
-  describe('WidthDetector', () => {
+  describe('WidthBroadcaster', () => {
     beforeEach(() => {
       jest.useFakeTimers();
     });
@@ -38,7 +39,11 @@ describe(name, () => {
         ],
       });
 
-      const wrapper = mount(<WidthDetector editorView={editorView} />);
+      const wrapper = mount(
+        <WidthProvider>
+          <WidthEmitter editorView={editorView} />
+        </WidthProvider>,
+      );
 
       const elm = wrapper.find(SizeDetector).getDOMNode();
       /**
@@ -54,6 +59,8 @@ describe(name, () => {
       const event = new Event('resize');
       window.dispatchEvent(event);
       // This is to trigger `requestAnimationFrame`. It's from `raf-stub` package that we are using inside `SizeDetector`
+      (window.requestAnimationFrame as any).step();
+      // This is to trigger `requestAnimationFrame`. It's from `raf-stub` package that we are using inside `WidthProvider`
       (window.requestAnimationFrame as any).step();
 
       jest.runOnlyPendingTimers();
