@@ -43,14 +43,13 @@ export default class FeedbackDialog extends React.Component<Props> {
     ModalPromise.then(Modal => this.setState({ Modal }));
   }
 
-  render() {
+  renderDialog(Modal: new () => React.Component<any, any>) {
     const actions = [
       { text: 'Submit feedback', onClick: this.submit },
       { text: 'Cancel', onClick: this.props.onClose },
     ];
 
-    const { Modal } = this.state;
-    return Modal ? (
+    return (
       <Modal
         actions={actions}
         width="small"
@@ -73,6 +72,11 @@ export default class FeedbackDialog extends React.Component<Props> {
           onChange={this.handleTextAreaChange}
         />
       </Modal>
-    ) : null;
+    );
+  }
+
+  render() {
+    const { Modal } = this.state;
+    return Modal ? this.renderDialog(Modal) : null;
   }
 }
