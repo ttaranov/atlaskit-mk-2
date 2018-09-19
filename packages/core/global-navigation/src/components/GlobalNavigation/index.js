@@ -12,7 +12,7 @@ import {
 import generateDefaultConfig from '../../config/default-config';
 import generateProductConfig from '../../config/product-config';
 import ViewTracker from '../ViewTracker';
-import { NAVIGATION_CHANNEL } from '../../constants';
+import { fireDrawerDismissedEvents } from './analytics';
 
 import type { GlobalNavItemData, NavItem } from '../../config/types';
 import type { GlobalNavigationProps, DrawerName } from './types';
@@ -169,11 +169,7 @@ export default class GlobalNavigation
         ? this.props[`on${capitalisedDrawerName}Close`]
         : noop;
 
-    analyticsEvent
-      .update({
-        actionSubjectId: analyticsNameMap[drawerName],
-      })
-      .fire(NAVIGATION_CHANNEL);
+    fireDrawerDismissedEvents(drawerName, analyticsEvent, analyticsNameMap);
 
     // Update the state only if it's a controlled drawer.
     // componentDidMount takes care of the uncontrolled drawers
