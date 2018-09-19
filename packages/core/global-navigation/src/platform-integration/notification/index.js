@@ -3,7 +3,8 @@ import React from 'react';
 
 import NotificationBadge from './components/NotificationBadge';
 import NotificationDrawerContents from './components/NotificationDrawerContents';
-// import type { NotificationIntegration } from './types';
+
+export const CONTENT_URL = '/home/notificationsDrawer/iframe.html';
 
 const notificationIntegration = (
   fabricNotificationLogUrl?: string,
@@ -18,13 +19,17 @@ const notificationIntegration = (
     />
   ),
   notificationDrawerContents: () => (
-    <NotificationDrawerContents locale={locale} product={product} />
+    <NotificationDrawerContents
+      externalContentUrl={CONTENT_URL}
+      locale={locale}
+      product={product}
+    />
   ),
   onNotificationDrawerOpen: () => {
     console.log('clear notification badge count here');
   },
   onNotificationDrawerClose: () => {
-    console.log('optional call back to do stuff when the iFrame clsoes');
+    console.log('optional call back to do stuff when the iframe closes');
   },
 });
 
