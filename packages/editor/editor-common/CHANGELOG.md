@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 16.1.6
+- [patch] fix styles for nested tables [11267a8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/11267a8)
+
 ## 16.1.5
 - [patch] reverting table style change [b829ab9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b829ab9)
 
