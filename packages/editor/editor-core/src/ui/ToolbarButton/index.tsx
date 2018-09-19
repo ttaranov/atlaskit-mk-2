@@ -2,6 +2,7 @@ import Tooltip from '@atlaskit/tooltip';
 import * as React from 'react';
 import { PureComponent, ReactElement } from 'react';
 import { AkButton } from './styles';
+import FocusableButtonWrapper from '../FocusableButtonWrapper';
 
 export interface Props {
   className?: string;
@@ -56,7 +57,7 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
         hideTooltipOnClick={true}
         position={position}
       >
-        {button}
+        <FocusableButtonWrapper>{button}</FocusableButtonWrapper>
       </Tooltip>
     ) : (
       button
