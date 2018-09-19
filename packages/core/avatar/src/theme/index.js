@@ -1,18 +1,38 @@
 // @flow
 
 import { colors, gridSize } from '@atlaskit/theme';
-import { AppearanceType, PresenceType, SizeType } from '../types';
+import type { AppearanceType, PresenceType, SizeType } from '../types';
 
-const gridSizeValue: number = gridSize();
+type Dimensions = {
+  height: string,
+  width: string,
+};
 
-const AVATAR_SIZES: {
+type Layout = {
+  // We have to specify all corners as optional because either bottom or top
+  // and left or right could be specified.
+  bottom?: string,
+  left?: string,
+  right?: string,
+  top?: string,
+
+  // Must be specified every time.
+  height: string,
+  width: string,
+};
+
+type Sizes = {
   xsmall: number,
   small: number,
   medium: number,
   large: number,
   xlarge: number,
   xxlarge: number,
-} = {
+};
+
+const gridSizeValue: number = gridSize();
+
+const AVATAR_SIZES: Sizes = {
   xsmall: gridSizeValue * 2,
   small: gridSizeValue * 3,
   medium: gridSizeValue * 4,
@@ -22,14 +42,7 @@ const AVATAR_SIZES: {
 };
 
 // border radius only applies to "square" avatars
-const AVATAR_RADIUS: {
-  xsmall: number,
-  small: number,
-  medium: number,
-  large: number,
-  xlarge: number,
-  xxlarge: number,
-} = {
+const AVATAR_RADIUS: Sizes = {
   xsmall: 2,
   small: 2,
   medium: 3,
@@ -38,14 +51,7 @@ const AVATAR_RADIUS: {
   xxlarge: 12,
 };
 
-const BORDER_WIDTH: {
-  xsmall: number,
-  small: number,
-  medium: number,
-  large: number,
-  xlarge: number,
-  xxlarge: number,
-} = {
+const BORDER_WIDTH: Sizes = {
   xsmall: 2,
   small: 2,
   medium: 2,
@@ -54,43 +60,37 @@ const BORDER_WIDTH: {
   xxlarge: 2,
 };
 
-const ICON_SIZES: {
-  small: number,
-  medium: number,
-  large: number,
-  xlarge: number,
-} = {
+const ICON_SIZES: Sizes = {
+  xsmall: 0,
   small: 12,
   medium: 14,
   large: 15,
   xlarge: 18,
+  xxlarge: 0,
 };
 
-const ICON_OFFSET: {
-  small: number,
-  medium: number,
-  large: number,
-  xlarge: number,
-} = {
+const ICON_OFFSET: Sizes = {
+  xsmall: 0,
   small: 0,
   medium: 0,
   large: 1,
   xlarge: 7,
+  xxlarge: 0,
 };
 
-const SQUARE_ICON_OFFSET: {
-  small: number,
-  medium: number,
-  large: number,
-  xlarge: number,
-} = {
+const SQUARE_ICON_OFFSET: Sizes = {
+  xsmall: 0,
   small: 0,
   medium: 0,
   large: 0,
   xlarge: 1,
+  xxlarge: 0,
 };
 
-function getBackgroundColor(props: { isLoading: boolean, mode: Mode }): string {
+function getBackgroundColor(props: {
+  isLoading: boolean,
+  mode: 'dark' | 'light',
+}): string {
   const backgroundColors = {
     light: colors.N40,
     dark: colors.DN50,
@@ -99,10 +99,10 @@ function getBackgroundColor(props: { isLoading: boolean, mode: Mode }): string {
 }
 
 function getBorderRadius(props: {
-  appearance: Appearance,
+  appearance: AppearanceType,
   includeBorderWidth: boolean,
-  size: Size,
-}) {
+  size: SizeType,
+}): string {
   const borderWidth = props.includeBorderWidth ? BORDER_WIDTH[props.size] : 0;
   const borderRadius =
     props.appearance === 'circle'
@@ -111,7 +111,7 @@ function getBorderRadius(props: {
   return borderRadius;
 }
 
-function getDimensions(props: ThemePropsType) {
+function getDimensions(props: ThemePropsType): Dimensions {
   const borderWidth: number = props.includeBorderWidth
     ? BORDER_WIDTH[props.size] * 2
     : 0;
@@ -121,7 +121,7 @@ function getDimensions(props: ThemePropsType) {
   return { height, width };
 }
 
-const getPresenceLayout = ({ appearance, size }: ThemePropsType) => {
+const getPresenceLayout = ({ appearance, size }: ThemePropsType): Layout => {
   const presencePosition =
     appearance === 'square' ? -(BORDER_WIDTH[size] * 2) : ICON_OFFSET[size];
   const presenceSize = ICON_SIZES[size];
@@ -134,7 +134,7 @@ const getPresenceLayout = ({ appearance, size }: ThemePropsType) => {
   };
 };
 
-const getStatusLayout = ({ appearance, size }: ThemePropsType) => {
+const getStatusLayout = ({ appearance, size }: ThemePropsType): Layout => {
   const statusPosition =
     appearance === 'square' ? SQUARE_ICON_OFFSET[size] : ICON_OFFSET[size];
   const statusSize = ICON_SIZES[size];
@@ -148,12 +148,12 @@ const getStatusLayout = ({ appearance, size }: ThemePropsType) => {
 };
 
 export type ThemeType = {
-  avatar?: ThemeAvatarProps => {
+  avatar?: ThemePropsType => {
     backgroundColor: string,
-    borderRadius: number,
-    dimensions: { height: string, width: string },
-    presence: { bottom: string, height: string, right: string, width: string },
-    status: { bottom: string, height: string, right: string, width: string },
+    borderRadius: string,
+    dimensions: Dimensions,
+    presence: Layout,
+    status: Layout,
   },
   mode?: 'dark' | 'light',
 };
@@ -167,12 +167,13 @@ export type ThemePropsType = {
 };
 
 export function theme(parent: ThemeType): ThemeType {
+  const mode = parent.mode || 'light';
   return {
     avatar(props) {
       return {
         backgroundColor: getBackgroundColor({
           isLoading: props.isLoading,
-          mode: parent.mode,
+          mode,
         }),
         borderRadius: getBorderRadius(props),
         dimensions: getDimensions(props),
@@ -181,7 +182,7 @@ export function theme(parent: ThemeType): ThemeType {
         ...(parent.avatar && parent.avatar(props)),
       };
     },
-    mode: parent.mode || 'light',
+    mode,
     ...parent,
   };
 }

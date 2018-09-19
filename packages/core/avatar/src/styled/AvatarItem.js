@@ -27,6 +27,7 @@ type getBackgroundColorType = {
   isActive?: boolean,
   isHover?: boolean,
   isSelected?: boolean,
+  mode: 'dark' | 'light',
   onClick?: AvatarClickType,
 };
 
@@ -61,6 +62,7 @@ type getStylesType = {|
   isActive?: boolean,
   isDisabled?: boolean,
   isFocus?: boolean,
+  mode: 'dark' | 'light',
   onClick?: AvatarClickType,
 |};
 

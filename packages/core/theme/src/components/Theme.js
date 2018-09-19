@@ -6,13 +6,12 @@ import { Consumer, Provider } from '../components/Context';
 type Props = {
   children: ((*) => Node) | Node,
   theme: (*) => *,
-  values: (*) => *,
+  values?: (*) => *,
 };
 
 export default class Theme extends Component<Props> {
   static defaultProps = {
     theme: (v: *): * => v,
-    values: null,
   };
   render() {
     const { children, theme, values } = this.props;

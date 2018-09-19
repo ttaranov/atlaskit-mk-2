@@ -1,7 +1,7 @@
 // @flow
 
 export type ThemeItemType = {
-  avatarItem?: () => { backgroundColor: string },
+  avatarItem?: () => { backgroundColor?: string },
   mode?: 'dark' | 'light',
 };
 
@@ -9,7 +9,7 @@ export function themeItem(parent: ThemeItemType): ThemeItemType {
   return {
     avatarItem() {
       return {
-        backgroundColor: null,
+        backgroundColor: 'transparent',
         ...(parent.avatarItem && parent.avatarItem()),
       };
     },
