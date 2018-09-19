@@ -3,6 +3,7 @@ import {
   defaultSchema,
   linkToJSON,
   mediaToJSON,
+  mediaSingleToJSON,
   mentionToJSON,
   tableToJSON,
   toJSONTableCell,
@@ -27,6 +28,7 @@ export type JSONDocNode = {
 
 const isCodeBlock = (node: PMNode) => node.type.name === 'codeBlock';
 const isMediaNode = (node: PMNode) => node.type.name === 'media';
+const isMediaSingleNode = (node: PMNode) => node.type.name === 'mediaSingle';
 const isMentionNode = (node: PMNode) => node.type.name === 'mention';
 const isParagraph = (node: PMNode) => node.type.name === 'paragraph';
 const isHeading = (node: PMNode) => node.type.name === 'heading';
@@ -55,6 +57,8 @@ const toJSON = (node: PMNode): JSONNode => {
   const obj: JSONNode = { type: node.type.name };
   if (isMediaNode(node)) {
     obj.attrs = mediaToJSON(node).attrs;
+  } else if (isMediaSingleNode(node)) {
+    obj.attrs = mediaSingleToJSON(node).attrs;
   } else if (isMentionNode(node)) {
     obj.attrs = mentionToJSON(node).attrs;
   } else if (isCodeBlock(node)) {
