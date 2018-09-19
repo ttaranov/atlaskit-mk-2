@@ -9,6 +9,7 @@ import { UploadingView } from '../../utils/uploadingView';
 import { CardContent } from './cardContent';
 import { CardOverlay } from './cardOverlay';
 import { Wrapper } from './styled';
+import { isLoadingImage } from '../../utils/isLoadingImage';
 
 export interface FileCardImageViewProps {
   readonly mediaName?: string;
@@ -39,8 +40,13 @@ export class FileCardImageView extends Component<FileCardImageViewProps, {}> {
   };
 
   private isDownloadingOrProcessing() {
-    const { status, dataURI } = this.props;
-    return status === 'loading' || status === 'processing' || !dataURI;
+    const { status, dataURI, mediaType } = this.props;
+
+    return (
+      status === 'loading' ||
+      status === 'processing' ||
+      isLoadingImage(mediaType, dataURI)
+    );
   }
 
   render() {
