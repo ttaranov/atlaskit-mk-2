@@ -6,10 +6,6 @@ import {
   withAnalyticsContext,
   createAndFireEvent,
 } from '@atlaskit/analytics-next';
-import {
-  name as packageName,
-  version as packageVersion,
-} from '../../package.json';
 import withDeprecationWarnings from './withDeprecationWarnings';
 import getButtonProps from './getButtonProps';
 import CustomComponentProxy from './CustomComponentProxy';
@@ -20,6 +16,11 @@ import IconWrapper from '../styled/IconWrapper';
 import LoadingSpinner from '../styled/LoadingSpinner';
 
 import type { ButtonProps } from '../types';
+
+const {
+  name: packageName,
+  version: packageVersion,
+} = require('../../package.json');
 
 const StyledButton = styled.button`
   ${getButtonStyles};
