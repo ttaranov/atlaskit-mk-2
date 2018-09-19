@@ -1,7 +1,6 @@
-@import '../node_modules/@atlaskit/util-shared-styles/src/grid.less';
-
-
+//@flow
 // Reset
+module.exports = `
 html,
 body,
 p,
@@ -26,3 +25,4 @@ img,
 fieldset {
   border: 0;
 }
+`;

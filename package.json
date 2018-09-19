@@ -78,7 +78,8 @@
     "build:navigation-next": "               rm -rf packages/core/navigation-next/dist/{cjs,esm} && run-p build:navigation-next:cjs build:navigation-next:esm",
     "build:navigation-next:cjs": "           NODE_ENV=production BABEL_ENV=production:cjs bolt workspaces exec --only \"@atlaskit/navigation-next\" -- babel src -d dist/cjs",
     "build:navigation-next:esm": "           NODE_ENV=production BABEL_ENV=production:esm bolt workspaces exec --only \"@atlaskit/navigation-next\" -- babel src -d dist/esm",
-    "build:bundle-analysis": "               node ./build/ci-scripts/run.bundle.analysis"
+    "build:bundle-analysis": "               node ./build/ci-scripts/run.bundle.analysis",
+    "build:css-resets": "                    BABEL_ENV=production:cjs bolt w @atlaskit/css-reset run build-css"
   },
   "bolt": {
     "version": "^0.20.6 || ^0.21.1 || ^0.22.1",
@@ -93,6 +94,7 @@
     }
   },
   "devDependencies": {
+    "@babel/node": "^7.0.0",
     "@types/chai": "^4.0.4",
     "@types/classnames": "^2.2.6",
     "@types/enzyme": "^3.1.6",
@@ -311,6 +313,7 @@
     "es6-object-assign": "^1.1.0",
     "eventemitter2": "^4.1.0",
     "execa": "^0.10.0",
+    "fbjs": "^1.0.0",
     "filesize": "^3.2.1",
     "flow": "^0.2.3",
     "flushable": "^1.0.0",
@@ -350,6 +353,7 @@
     "lodash.sample": "^4.2.1",
     "lodash.set": "^4.3.2",
     "lru-fast": "^0.2.2",
+    "make-dir": "^1.3.0",
     "markdown-it": "^6.0.4",
     "markdown-it-table": "^2.0.4",
     "memoize-one": "^3.0.1",
