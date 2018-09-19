@@ -25,6 +25,7 @@ import { getDataURIFromFileState } from '../../utils/getDataURIFromFileState';
 import { getLinkMetadata, extendMetadata } from '../../utils/metadata';
 import { isUrlPreviewIdentifier } from '../../utils/identifier';
 import { isBigger } from '../../utils/dimensionComparer';
+import { isLoadingImage } from '../../utils/isLoadingImage';
 
 export interface CardProps extends SharedCardProps, CardEventProps {
   readonly context: Context;
@@ -152,9 +153,10 @@ export class Card extends Component<CardProps, CardState> {
             state,
             currentMetadata as FileDetails,
           );
+          let dataURI: string | undefined;
 
           if (!currentDataURI) {
-            const dataURI = await getDataURIFromFileState(state);
+            dataURI = await getDataURIFromFileState(state);
             this.notifyStateChange({ dataURI });
           }
 
@@ -168,11 +170,18 @@ export class Card extends Component<CardProps, CardState> {
               });
               break;
             case 'processing':
-              this.notifyStateChange({
-                progress: 1,
-                status: 'complete',
-                metadata,
-              });
+              if (dataURI) {
+                this.notifyStateChange({
+                  progress: 1,
+                  status: 'complete',
+                  metadata,
+                });
+              } else {
+                this.notifyStateChange({
+                  status: 'processing',
+                  metadata,
+                });
+              }
               break;
             case 'processed':
               if (metadata.mediaType && isPreviewableType(metadata.mediaType)) {
@@ -248,7 +257,8 @@ export class Card extends Component<CardProps, CardState> {
       identifier.mediaItemType === 'file' &&
       metadata
     ) {
-      if (!(metadata as FileDetails).size || !dataURI) {
+      const { size, mediaType } = metadata as FileDetails;
+      if (!size || isLoadingImage(mediaType, dataURI)) {
         return 'processing';
       }
     }
