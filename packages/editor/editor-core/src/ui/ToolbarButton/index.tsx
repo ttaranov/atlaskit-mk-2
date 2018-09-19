@@ -17,6 +17,7 @@ export interface Props {
   theme?: 'dark';
   title?: string;
   titlePosition?: string;
+  onFocus?: (event: Event) => void;
 }
 
 export default class ToolbarButton extends PureComponent<Props, {}> {
@@ -40,6 +41,7 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
         target={this.props.target}
         theme={this.props.theme}
         shouldFitContainer={true}
+        onFocus={this.props.onFocus}
       >
         {this.props.children}
       </AkButton>

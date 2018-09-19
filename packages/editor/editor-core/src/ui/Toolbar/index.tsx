@@ -106,6 +106,7 @@ export class ToolbarInner extends React.Component<ToolbarInnerProps> {
             disabled,
             toolbarSize,
             isToolbarReducedSpacing,
+            onFocus: e => console.log('test', e),
           });
           return element && React.cloneElement(element, props);
         })}
