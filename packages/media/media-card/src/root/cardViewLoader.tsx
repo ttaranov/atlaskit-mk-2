@@ -48,6 +48,8 @@ export const CardView = (Loadable as any)({
   loading: () => <CardLoading />,
 }) as typeof CardViewType;
 
+// export const CardView = CardLoading;
+
 export const CardViewWithAnalyticsEvents = (Loadable as any)({
   loader: () =>
     import(/* webpackChunkName:"@atlaskit-internal_CardViewWithAnalyticsEvents" */

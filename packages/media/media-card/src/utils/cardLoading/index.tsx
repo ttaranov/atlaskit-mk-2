@@ -12,6 +12,7 @@ export interface LoadingCardProps {
 
 export class CardLoading extends Component<LoadingCardProps, {}> {
   render() {
+    const { dimensions } = this.props;
     return <Wrapper>{this.icon}</Wrapper>;
   }
 

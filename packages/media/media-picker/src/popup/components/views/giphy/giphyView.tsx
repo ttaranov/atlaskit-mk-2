@@ -177,7 +177,7 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
         containerWidth: CONTAINER_WIDTH,
         numberOfColumns: NUMBER_OF_COLUMNS,
       });
-
+      console.log(dimensions);
       return (
         <GridCell key={`${i}-metadata.id`} width={dimensions.width}>
           <CardView
@@ -192,7 +192,7 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
         </GridCell>
       );
     });
-
+    console.log(NUMBER_OF_COLUMNS, GAP_SIZE);
     return (
       <BricksLayout
         id="mediapicker-gif-layout"

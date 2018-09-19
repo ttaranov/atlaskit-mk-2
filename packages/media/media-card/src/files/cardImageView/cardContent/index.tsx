@@ -17,6 +17,7 @@ export class CardContent extends PureComponent<CardContentProps, {}> {
   render() {
     const { loading, mediaType, mediaItemType, dataURI, crop } = this.props;
 
+    // return <CardLoading mediaItemType={mediaItemType} />;
     if (loading) {
       return <CardLoading mediaItemType={mediaItemType} />;
     }
