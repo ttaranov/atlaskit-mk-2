@@ -1,11 +1,11 @@
 // @flow
 
 import React, { Fragment, Component } from 'react';
-
-import addParamToUrl from '../../add-param-to-url';
 import styled from 'styled-components';
 import { Event } from 'chrome-trace-event';
 import Spinner from '@atlaskit/spinner';
+
+import addParamToUrl from '../../add-param-to-url';
 
 const ExternalContent = styled.iframe`
   visibility: ${props => (props.hasIframeLoaded ? 'visible' : 'hidden')};

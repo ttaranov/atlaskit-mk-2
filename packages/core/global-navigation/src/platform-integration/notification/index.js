@@ -26,10 +26,10 @@ const notificationIntegration = (
     />
   ),
   onNotificationDrawerOpen: () => {
-    console.log('clear notification badge count here');
+    // clear notification badge count here
   },
   onNotificationDrawerClose: () => {
-    console.log('optional call back to do stuff when the iframe closes');
+    // optional call back to do stuff when the iframe closes
   },
 });
 
