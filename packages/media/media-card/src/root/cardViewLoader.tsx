@@ -1,58 +1,43 @@
 import * as React from 'react';
-import * as Loadable from 'react-loadable';
-
 import { CardLoading } from '../utils/cardLoading';
-import {
-  CardViewBase as CardViewBaseType,
-  CardViewBaseProps,
-  CardView as CardViewType,
-} from './cardView';
+import { CardViewBaseProps, CardView as CardViewType } from './cardView';
 
-interface AsyncCardViewBase {
-  CardViewBase?: typeof CardViewBaseType;
+interface AsyncCardView {
+  CardView?: typeof CardViewType;
 }
 
 /**
  * TODO: MS-699 Remove these loaders when CardView is no longer used externally
  */
 
-export class CardViewBase extends React.PureComponent<
-  CardViewBaseProps & AsyncCardViewBase
+export class CardView extends React.PureComponent<
+  CardViewBaseProps & AsyncCardView
 > {
-  static CardViewBase?: typeof CardViewBaseType;
+  static CardView?: typeof CardViewType;
 
   state = {
-    CardViewBase: CardViewBase.CardViewBase,
+    CardView: CardView.CardView,
   };
 
   componentWillMount() {
-    if (!this.state.CardViewBase) {
-      import(/* webpackChunkName:"@atlaskit-internal_CardViewBase" */
-      './cardView').then(module => module.CardViewBase);
+    if (!this.state.CardView) {
+      import(/* webpackChunkName:"@atlaskit-internal_CardView" */
+      './cardView').then(module => {
+        CardView.CardView = module.CardView;
+        this.setState({ CardView: module.CardView });
+      });
     }
   }
 
   render() {
-    if (!this.state.CardViewBase) {
-      return <CardLoading mediaItemType={this.props.mediaItemType} />;
+    const { dimensions, mediaItemType } = this.props;
+
+    if (!this.state.CardView) {
+      return (
+        <CardLoading dimensions={dimensions} mediaItemType={mediaItemType} />
+      );
     }
 
-    return <this.state.CardViewBase {...this.props} />;
+    return <this.state.CardView {...this.props} />;
   }
 }
-
-export const CardView = (Loadable as any)({
-  loader: () =>
-    import(/* webpackChunkName:"@atlaskit-internal_CardView" */
-    './cardView').then(module => module.CardView),
-  loading: () => <CardLoading />,
-}) as typeof CardViewType;
-
-// export const CardView = CardLoading;
-
-export const CardViewWithAnalyticsEvents = (Loadable as any)({
-  loader: () =>
-    import(/* webpackChunkName:"@atlaskit-internal_CardViewWithAnalyticsEvents" */
-    './cardView').then(module => module.CardViewWithAnalyticsEvents),
-  loading: () => <CardLoading />,
-});

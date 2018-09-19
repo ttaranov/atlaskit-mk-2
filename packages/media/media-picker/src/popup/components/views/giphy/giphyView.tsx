@@ -188,6 +188,7 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
             selectable={true}
             selected={selected}
             onClick={this.createClickHandler(cardModel)}
+            // mediaItemType={1 as any}
           />
         </GridCell>
       );

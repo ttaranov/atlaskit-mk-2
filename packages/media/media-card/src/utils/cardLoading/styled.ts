@@ -1,8 +1,8 @@
 /* tslint:disable:variable-name */
 import styled, { keyframes } from 'styled-components';
-import { HTMLAttributes, ComponentClass } from 'react';
-import { center, size } from '@atlaskit/media-ui';
+import { center } from '@atlaskit/media-ui';
 import { akColorN20 } from '@atlaskit/util-shared-styles';
+import { CardDimensions } from '../..';
 
 export const blinkLoadingAnimation = keyframes`
   0%{
@@ -18,11 +18,21 @@ export const blinkLoadingAnimation = keyframes`
   }
 `;
 
-export const Wrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
-  ${center} ${size()} background: ${akColorN20};
+export interface WrapperProps {
+  dimensions: CardDimensions;
+}
+
+export const Wrapper = styled.div`
+  ${center} background: ${akColorN20};
   color: #cfd4db;
   border-radius: inherit;
-
+ 
+  ${(props: WrapperProps) => {
+    return `
+      width: ${props.dimensions.width};
+      height: ${props.dimensions.height};
+    `;
+  }}
   > span {
     animation: ${blinkLoadingAnimation} 0.8s infinite;
   }
