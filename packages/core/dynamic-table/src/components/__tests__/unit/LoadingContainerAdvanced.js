@@ -607,6 +607,7 @@ describe('LoadingContainerAdvanced', () => {
     });
 
     afterEach(() => {
+      // TODO: JEST-23 these should probably be mockClear's, but it still leaves two failing tests
       attachSpy.mockRestore();
       detachSpy.mockRestore();
       updateSpinnerPositionSpy.mockRestore();

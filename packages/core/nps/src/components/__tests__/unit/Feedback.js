@@ -1,6 +1,6 @@
 //@flow
 import React from 'react';
-import { shallow } from 'enzyme';
+import { shallow, render } from 'enzyme';
 import FieldTextArea from '@atlaskit/field-text-area';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import Feedback, {
@@ -226,13 +226,7 @@ describe('Feedback page', () => {
         }),
       );
       expect(onRatingSelect).not.toHaveBeenCalled();
-      const selectedButton = wrapper.find(Button).findWhere(
-        n =>
-          n
-            .children()
-            .first()
-            .text() === '5',
-      );
+      const selectedButton = wrapper.childAt(5);
       selectedButton.simulate('click');
       expect(onRatingSelect).toHaveBeenCalledWith(5);
     });
