@@ -18,7 +18,7 @@ export { CardView } from './root/cardViewLoader';
 export {
   CardViewOwnProps,
   CardViewState,
-  CardViewBaseProps as CardViewProps,
+  CardViewOwnProps as CardViewProps,
 } from './root/cardView';
 
 export * from './root/domain';

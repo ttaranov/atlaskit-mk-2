@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { CardLoading } from '../utils/cardLoading';
-import { CardViewBaseProps, CardView as CardViewType } from './cardView';
+import { CardViewOwnProps, CardView as CardViewType } from './cardView';
 
 interface AsyncCardView {
   CardView?: typeof CardViewType;
@@ -11,7 +11,7 @@ interface AsyncCardView {
  */
 
 export class CardView extends React.PureComponent<
-  CardViewBaseProps & AsyncCardView
+  CardViewOwnProps & AsyncCardView
 > {
   static CardView?: typeof CardViewType;
 

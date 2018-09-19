@@ -12,25 +12,26 @@ export interface LoadingCardProps {
   dimensions?: CardDimensions;
 }
 
+export const getDimensionsWithDefault = (
+  dimensions: CardDimensions = { width: '100%', height: '100%' },
+): CardDimensions => {
+  return {
+    height:
+      typeof dimensions.height === 'number'
+        ? `${dimensions.height}px`
+        : dimensions.height,
+    width:
+      typeof dimensions.width === 'number'
+        ? `${dimensions.width}px`
+        : dimensions.width,
+  };
+};
+
 export class CardLoading extends Component<LoadingCardProps, {}> {
   render() {
-    // TODO: Move into utility
-    const dimensions = this.props.dimensions || {
-      width: '100%',
-      height: '100%',
-    };
-    const newDimensions = {
-      height:
-        typeof dimensions.height === 'number'
-          ? `${dimensions.height}px`
-          : dimensions.height,
-      width:
-        typeof dimensions.width === 'number'
-          ? `${dimensions.width}px`
-          : dimensions.width,
-    };
+    const dimensions = getDimensionsWithDefault(this.props.dimensions);
 
-    return <Wrapper dimensions={newDimensions}>{this.icon}</Wrapper>;
+    return <Wrapper dimensions={dimensions}>{this.icon}</Wrapper>;
   }
 
   get iconSize() {
