@@ -1,15 +1,14 @@
 import { MediaSingleLayout } from '../../schema';
-import { EditorAppearance } from '../../../../editor-core/src/types';
 
 const handleMargin = 12;
 const gutterSize = handleMargin * 2;
-const FULLPAGE_GRID_WIDTH = 680 + gutterSize;
 
 export const validResizeModes: MediaSingleLayout[] = [
   'center',
   'wide',
   'full-width',
 ];
+
 export const validWidthModes: MediaSingleLayout[] = [
   'center',
   'wrap-left',
@@ -23,107 +22,50 @@ export const validWidthModes: MediaSingleLayout[] = [
 
 export function calcPxFromColumns(
   columns: number,
-  containerWidth: number,
+  lineLength: number,
   gridSize: number,
-  appearance: EditorAppearance,
 ): number {
-  const gridWidth =
-    appearance === 'full-page' ? FULLPAGE_GRID_WIDTH : containerWidth - 16;
-  const maxWidth =
-    appearance === 'full-page'
-      ? Math.min(containerWidth, gridWidth)
-      : gridWidth;
-
+  const maxWidth = lineLength + gutterSize;
   return maxWidth / gridSize * columns - gutterSize;
 }
 
 export function calcColumnsFromPx(
   width: number,
-  containerWidth: number,
+  lineLength: number,
   gridSize: number,
-  appearance: EditorAppearance,
 ): number {
-  const gridWidth =
-    appearance === 'full-page'
-      ? FULLPAGE_GRID_WIDTH
-      : containerWidth - 16 /* (20 - 12) * 2 */;
-  const maxWidth =
-    appearance === 'full-page'
-      ? Math.min(containerWidth, gridWidth)
-      : gridWidth;
+  // const gridWidth =
+  //   appearance === 'full-page'
+  //     ? FULLPAGE_GRID_WIDTH
+  //     : containerWidth - 16 /* (20 - 12) * 2 */;
 
+  const maxWidth = lineLength + gutterSize;
   return (width + gutterSize) * gridSize / maxWidth;
 }
 
-export function calcPxFromPct(
-  pct: number,
-  containerWidth: number,
-  gridSize: number,
-  appearance: EditorAppearance,
-): number {
-  const gridWidth =
-    appearance === 'full-page'
-      ? FULLPAGE_GRID_WIDTH
-      : containerWidth - 16 /* (20 - 12) * 2 */;
-  const maxWidth =
-    appearance === 'full-page'
-      ? Math.min(containerWidth, gridWidth)
-      : gridWidth;
-
+export function calcPxFromPct(pct: number, lineLength: number): number {
+  const maxWidth = lineLength + gutterSize;
   return maxWidth * pct - gutterSize;
 }
 
-export function calcPctFromPx(
-  width: number,
-  containerWidth: number,
-  gridSize: number,
-  appearance: EditorAppearance,
-): number {
-  const gridWidth =
-    appearance === 'full-page'
-      ? FULLPAGE_GRID_WIDTH
-      : containerWidth - 16 /* (20 - 12) * 2 */;
-  const maxWidth =
-    appearance === 'full-page'
-      ? Math.min(containerWidth, gridWidth)
-      : gridWidth;
-
+export function calcPctFromPx(width: number, lineLength: number): number {
+  const maxWidth = lineLength + gutterSize;
   const res = (width + gutterSize) / maxWidth;
 
   return res;
 }
 
-export const snapToGrid = (
-  gridWidth,
-  width,
-  height,
-  gridSize,
-  containerWidth,
-  appearance,
-) => {
-  const pxWidth = calcPxFromPct(
-    gridWidth,
-    containerWidth,
-    gridSize,
-    appearance,
-  );
-  // const columnSpan = Math.round(
-  //   calcColumnsFromPx(pxWidth, containerWidth, gridSize, appearance),
-  // );
-  // const alignedWidth = calcPxFromColumns(
-  //   columnSpan,
-  //   containerWidth,
-  //   gridSize,
-  //   appearance,
-  // );
+export const snapToGrid = (gridWidth, width, height, lineLength, gridSize) => {
+  const pxWidth = calcPxFromPct(gridWidth / 100, lineLength);
 
-  // return {
-  //   height: height / width * alignedWidth,
-  //   width: alignedWidth,
-  // };
+  const columnSpan = Math.round(
+    calcColumnsFromPx(pxWidth, lineLength, gridSize),
+  );
+
+  const alignedWidth = calcPxFromColumns(columnSpan, lineLength, gridSize);
 
   return {
-    height: height / width * pxWidth,
-    width: pxWidth,
+    height: height / width * alignedWidth,
+    width: alignedWidth,
   };
 };

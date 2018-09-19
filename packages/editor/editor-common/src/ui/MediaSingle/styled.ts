@@ -76,7 +76,7 @@ export interface WrapperProps {
   width: number;
   height: number;
   containerWidth?: number;
-  forceWidth: boolean;
+  pctWidth?: number;
   innerRef?: (elem: HTMLElement) => void;
 }
 
@@ -89,11 +89,9 @@ export const MediaSingleDimensionHelper = ({
   height,
   layout,
   containerWidth = 0,
-  forceWidth,
+  pctWidth,
 }: WrapperProps) => css`
-  width: ${forceWidth
-    ? `${width}px`
-    : calcWidth(layout, width, containerWidth)};
+  width: ${pctWidth ? `${width}px` : calcWidth(layout, width, containerWidth)};
   max-width: ${calcMaxWidth(layout, width, containerWidth)};
   float: ${float(layout)};
   margin: ${calcMargin(layout)};

@@ -12,7 +12,7 @@ const DEFAULT_HEIGHT = 200;
 export interface MediaSingleNodeProps {
   node: PMNode;
   view: EditorView;
-  width: number;
+  containerWidth: number;
 }
 
 export interface MediaSingleNodeState {
@@ -59,7 +59,7 @@ export default class MediaSingleNode extends Component<
     this.mediaPluginState.updateLayout(layout);
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps: MediaSingleNodeProps, nextState) {
     const nextChild: ReactElement<MediaNodeProps> = this.getChild(nextProps);
 
     const { width } = this.child.props.node.attrs;
@@ -72,7 +72,9 @@ export default class MediaSingleNode extends Component<
       layout === 'full-width' ||
       this.state.progress !== nextState.progress ||
       node !== nextProps.node ||
-      width !== nextWidth
+      width !== nextWidth ||
+      this.props.node.attrs.width !== nextProps.node.attrs.width ||
+      this.props.containerWidth !== nextProps.containerWidth
     );
   }
 
@@ -102,7 +104,7 @@ export default class MediaSingleNode extends Component<
   }
 
   render() {
-    const { layout } = this.props.node.attrs;
+    const { layout, width: mediaSingleWidth } = this.props.node.attrs;
     const { progress } = this.state;
     let hideProgress = false;
 
@@ -135,7 +137,10 @@ export default class MediaSingleNode extends Component<
         layout={layout}
         width={width}
         height={height}
-        containerWidth={this.props.width}
+        containerWidth={this.props.containerWidth}
+        gridSize={12}
+        pctWidth={mediaSingleWidth}
+        appearance={'full-page'}
         isLoading={!width}
       >
         {React.cloneElement(

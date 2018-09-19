@@ -5,8 +5,9 @@ import {
   MediaSingle as UIMediaSingle,
   MediaSingleLayout,
   WidthConsumer,
+  akEditorFullPageMaxWidth,
 } from '@atlaskit/editor-common';
-import { RendererAppearance } from '../../ui/Renderer';
+import { mapBreakpointToLayoutMaxWidth } from '@atlaskit/editor-common/src/ui/BaseTheme';
 
 export interface Props {
   children: ReactElement<any>;
@@ -35,7 +36,7 @@ export default class MediaSingle extends Component<
   {
     layout: MediaSingleLayout;
     width: number;
-    appearance: RendererAppearance;
+    allowDynamicTextSizing?: boolean;
   } & React.Props<any>,
   State
 > {
@@ -89,14 +90,18 @@ export default class MediaSingle extends Component<
 
     return (
       <WidthConsumer>
-        {({ width: containerWidth }) => (
+        {({ width: containerWidth, breakpoint }) => (
           <ExtendedUIMediaSingle
             layout={props.layout}
             width={width}
             height={height}
             containerWidth={containerWidth}
-            appearance={props.appearance}
-            gridWidth={props.width}
+            lineLength={
+              this.props.allowDynamicTextSizing
+                ? mapBreakpointToLayoutMaxWidth(breakpoint)
+                : akEditorFullPageMaxWidth
+            }
+            pctWidth={props.width}
             gridSize={12}
           >
             {media}
