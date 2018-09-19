@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { Card, ExternalIdentifier } from '../src';
+import { Card, CardView, ExternalIdentifier } from '../src';
 import {
   createStorybookContext,
   wideImage,
@@ -32,6 +32,10 @@ class Example extends Component {
         <div>
           <h1>File identifier</h1>
           <Card context={context} identifier={imageFileId} />
+        </div>
+        <div>
+          <h1>CardView</h1>
+          <CardView status="complete" dataURI={wideImage} />
         </div>
       </div>
     );
