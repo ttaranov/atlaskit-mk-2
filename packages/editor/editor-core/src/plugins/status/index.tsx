@@ -1,18 +1,24 @@
 import * as React from 'react';
-import { status } from '@atlaskit/editor-common';
+import { status, uuid } from '@atlaskit/editor-common';
+import LabelIcon from '@atlaskit/icon/glyph/label';
+import { Color } from '@atlaskit/status';
 import { findDomRefAtPos } from 'prosemirror-utils';
 import { NodeSelection } from 'prosemirror-state';
 import { EditorPlugin } from '../../types';
 import createStatusPlugin, { StatusState, pluginKey } from './plugin';
 import WithPluginState from '../../ui/WithPluginState';
 import StatusPicker from './ui/statusPicker';
-import { setColorPickerAt, insertStatus } from './actions';
-import LabelIcon from '@atlaskit/icon/glyph/label';
+import { setStatusPickerAt, insertStatus } from './actions';
 
 export type StatusType = {
-  color: string;
+  color: Color;
   text: string;
   localId?: string;
+};
+
+const DEFAULT_STATUS: StatusType = {
+  text: 'Default',
+  color: 'neutral',
 };
 
 const statusPlugin: EditorPlugin = {
@@ -56,7 +62,7 @@ const statusPlugin: EditorPlugin = {
                 insertStatus(status)(editorView.state, dispatch)
               }
               closeStatusPicker={() =>
-                setColorPickerAt(null)(editorView.state, dispatch)
+                setStatusPickerAt(null)(editorView.state, dispatch)
               }
             />
           );
@@ -74,8 +80,8 @@ const statusPlugin: EditorPlugin = {
         icon: () => <LabelIcon label="Status" />,
         action(insert, state) {
           const statusNode = state.schema.nodes.status.createChecked({
-            text: 'Default',
-            color: 'neutral',
+            ...DEFAULT_STATUS,
+            localId: uuid.generate(),
           });
 
           const tr = insert(statusNode);

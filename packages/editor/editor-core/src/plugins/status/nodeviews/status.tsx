@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { Status } from '@atlaskit/status';
-import { setColorPickerAt } from '../actions';
+import { setStatusPickerAt } from '../actions';
 
 const StatusContainer = styled.span`
   cursor: pointer;
@@ -32,6 +32,6 @@ export default class StatusNodeView extends React.Component<Props> {
       event.nativeEvent.stopImmediatePropagation();
     }
     const { state, dispatch } = this.props.view;
-    setColorPickerAt(state.selection.from)(state, dispatch);
+    setStatusPickerAt(state.selection.from)(state, dispatch);
   };
 }

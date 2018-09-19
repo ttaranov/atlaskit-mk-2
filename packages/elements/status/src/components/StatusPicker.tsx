@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { PureComponent } from 'react';
+import { PureComponent, FormEvent } from 'react';
 import styled from 'styled-components';
 import ColorPalette from './internal/color-palette';
 import { FieldTextStateless } from '@atlaskit/field-text';
@@ -17,7 +17,7 @@ export interface Props {
 
 export class StatusPicker extends PureComponent<Props, any> {
   render() {
-    const { text, selectedColor, onColorClick, onTextChanged } = this.props;
+    const { text, selectedColor, onColorClick } = this.props;
 
     return (
       <div>
@@ -26,7 +26,7 @@ export class StatusPicker extends PureComponent<Props, any> {
             value={text}
             isLabelHidden={true}
             shouldFitContainer={true}
-            onChange={e => onTextChanged(e.target.value)}
+            onChange={this.onChange}
             autoFocus={true}
           />
         </FieldTextWrapper>
@@ -34,4 +34,9 @@ export class StatusPicker extends PureComponent<Props, any> {
       </div>
     );
   }
+
+  private onChange = (evt: FormEvent<HTMLInputElement>) => {
+    // @ts-ignore
+    this.props.onTextChanged(evt.target.value);
+  };
 }

@@ -36,7 +36,7 @@ describe('Status - NodeView', () => {
   });
 
   it('should call setColorPickerAt on click', () => {
-    const setColorPickerAtSpy = jest.spyOn(Actions, 'setColorPickerAt');
+    const setStatusPickerAtSpy = jest.spyOn(Actions, 'setStatusPickerAt');
     const { editorView: view } = editor(doc(p('Status: {<>}')));
 
     Actions.insertStatus({
@@ -53,6 +53,6 @@ describe('Status - NodeView', () => {
     );
     wrapper.simulate('click');
 
-    expect(setColorPickerAtSpy).toBeCalled();
+    expect(setStatusPickerAtSpy).toBeCalled();
   });
 });

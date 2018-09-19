@@ -55,7 +55,7 @@ export const insertStatus = (status?: StatusType) => (
   return false;
 };
 
-export const setColorPickerAt = (showStatusPickerAt: number | null) => (
+export const setStatusPickerAt = (showStatusPickerAt: number | null) => (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ): boolean => {
