@@ -4,6 +4,7 @@ import { pluginKey } from '../../../../plugins/status/plugin';
 import {
   insertStatus,
   setStatusPickerAt,
+  closeStatusPicker,
 } from '../../../../plugins/status/actions';
 
 describe('status plugin: actions', () => {
@@ -28,7 +29,6 @@ describe('status plugin: actions', () => {
           ),
         ),
       );
-      const dispatchSpy = jest.spyOn(editorView, 'dispatch');
 
       const selectionFrom = editorView.state.selection.from;
       setStatusPickerAt(selectionFrom)(editorView.state, editorView.dispatch);
@@ -69,7 +69,6 @@ describe('status plugin: actions', () => {
           ),
         ),
       );
-      const dispatchSpy = jest.spyOn(editorView, 'dispatch');
 
       const selectionFrom = editorView.state.selection.from;
       setStatusPickerAt(selectionFrom)(editorView.state, editorView.dispatch);
@@ -137,10 +136,71 @@ describe('status plugin: actions', () => {
     it('should set showStatusPickerAt meta', () => {
       const { editorView } = editor(doc(p('Status: {<>}')));
 
-      setStatusPickerAt(123)(editorView.state, editorView.dispatch);
+      const selectionFrom = editorView.state.selection.from;
+      setStatusPickerAt(selectionFrom)(editorView.state, editorView.dispatch);
 
       const pluginState = pluginKey.getState(editorView.state);
-      expect(pluginState.showStatusPickerAt).toEqual(123);
+      expect(pluginState.showStatusPickerAt).toEqual(selectionFrom);
+    });
+  });
+
+  describe('closeStatusPicker', () => {
+    it('should set showStatusPickerAt meta to null', () => {
+      const { editorView } = editor(
+        doc(
+          p(
+            '{<>}',
+            status({
+              text: 'In progress',
+              color: 'blue',
+              localId: '666',
+            }),
+          ),
+        ),
+      );
+
+      const selectionFrom = editorView.state.selection.from;
+      setStatusPickerAt(selectionFrom)(editorView.state, editorView.dispatch);
+
+      insertStatus({
+        color: 'green',
+        text: 'Done',
+        localId: '666',
+      })(editorView.state, editorView.dispatch);
+
+      closeStatusPicker()(editorView);
+
+      const pluginState = pluginKey.getState(editorView.state);
+      expect(pluginState.showStatusPickerAt).toEqual(null);
+    });
+
+    it('should set focus on editor', () => {
+      const { editorView } = editor(
+        doc(
+          p(
+            '{<>}',
+            status({
+              text: 'In progress',
+              color: 'blue',
+              localId: '666',
+            }),
+          ),
+        ),
+      );
+      const focusSpy = jest.spyOn(editorView, 'focus');
+
+      const selectionFrom = editorView.state.selection.from;
+      setStatusPickerAt(selectionFrom)(editorView.state, editorView.dispatch);
+
+      insertStatus({
+        color: 'green',
+        text: 'Done',
+        localId: '666',
+      })(editorView.state, editorView.dispatch);
+
+      closeStatusPicker()(editorView);
+
+      expect(focusSpy).toHaveBeenCalled();
     });
   });
 });

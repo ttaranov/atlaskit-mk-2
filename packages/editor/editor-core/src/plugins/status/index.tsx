@@ -1,25 +1,18 @@
 import * as React from 'react';
 import { status, uuid } from '@atlaskit/editor-common';
 import LabelIcon from '@atlaskit/icon/glyph/label';
-import { Color } from '@atlaskit/status';
 import { findDomRefAtPos } from 'prosemirror-utils';
 import { NodeSelection } from 'prosemirror-state';
 import { EditorPlugin } from '../../types';
 import createStatusPlugin, { StatusState, pluginKey } from './plugin';
 import WithPluginState from '../../ui/WithPluginState';
 import StatusPicker from './ui/statusPicker';
-import { setStatusPickerAt, insertStatus } from './actions';
-
-export type StatusType = {
-  color: Color;
-  text: string;
-  localId?: string;
-};
-
-const DEFAULT_STATUS: StatusType = {
-  text: 'Default',
-  color: 'neutral',
-};
+import {
+  setStatusPickerAt,
+  insertStatus,
+  closeStatusPicker,
+  DEFAULT_STATUS,
+} from './actions';
 
 const statusPlugin: EditorPlugin = {
   nodes() {
@@ -64,6 +57,9 @@ const statusPlugin: EditorPlugin = {
               closeStatusPicker={() =>
                 setStatusPickerAt(null)(editorView.state, dispatch)
               }
+              onEnter={() => {
+                closeStatusPicker()(editorView);
+              }}
             />
           );
         }}

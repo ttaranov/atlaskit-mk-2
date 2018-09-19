@@ -35,7 +35,7 @@ describe('Status - NodeView', () => {
     expect(wrapper.find(Status).prop('localId')).toBe('666');
   });
 
-  it('should call setColorPickerAt on click', () => {
+  it('should call setStatusPickerAt on click', () => {
     const setStatusPickerAtSpy = jest.spyOn(Actions, 'setStatusPickerAt');
     const { editorView: view } = editor(doc(p('Status: {<>}')));
 

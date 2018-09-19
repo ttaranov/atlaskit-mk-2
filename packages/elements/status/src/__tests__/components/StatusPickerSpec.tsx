@@ -13,6 +13,7 @@ describe('StatusPicker', () => {
         text=""
         onColorClick={onColorClick}
         onTextChanged={() => {}}
+        onEnter={() => {}}
       />,
     );
 
@@ -28,6 +29,7 @@ describe('StatusPicker', () => {
         text="In progress"
         onColorClick={() => {}}
         onTextChanged={() => {}}
+        onEnter={() => {}}
       />,
     );
 
@@ -46,6 +48,7 @@ describe('StatusPicker', () => {
         text=""
         onColorClick={onColorClick}
         onTextChanged={() => {}}
+        onEnter={() => {}}
       />,
     );
 
@@ -60,6 +63,7 @@ describe('StatusPicker', () => {
         text=""
         onColorClick={() => {}}
         onTextChanged={onTextChanged}
+        onEnter={() => {}}
       />,
     );
 
@@ -67,5 +71,21 @@ describe('StatusPicker', () => {
       .find(FieldTextStateless)
       .simulate('change', { target: { value: 'Done' } });
     expect(onTextChanged).toHaveBeenCalledWith('Done');
+  });
+
+  it('should call onEnter on enter in text field', () => {
+    const onEnter = jest.fn();
+    const component = shallow(
+      <StatusPicker
+        selectedColor="red"
+        text=""
+        onColorClick={() => {}}
+        onTextChanged={() => {}}
+        onEnter={onEnter}
+      />,
+    );
+
+    component.find(FieldTextStateless).simulate('keypress', { key: 'Enter' });
+    expect(onEnter).toHaveBeenCalled();
   });
 });

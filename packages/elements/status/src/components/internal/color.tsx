@@ -8,21 +8,23 @@ import {
   akColorN900,
 } from '@atlaskit/util-shared-styles';
 import EditorDoneIcon from '@atlaskit/icon/glyph/editor/done';
+import { Color as ColorType } from '../Status';
 
 const Button: ComponentClass<ButtonHTMLAttributes<{}>> = styled.button`
-  height: 26px;
-  width: 26px;
+  height: 24px;
+  width: 24px;
   background: ${akColorN900};
   padding: 0;
   border-radius: 4px;
   border: 1px solid ${akColorN0};
   cursor: pointer;
   display: block;
+  box-sizing: border-box;
 `;
 
 const ButtonWrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
   border: 1px solid transparent;
-  margin: 1px;
+  margin: 0 2px;
   font-size: 0;
   display: flex;
   align-items: center;
@@ -34,11 +36,11 @@ const ButtonWrapper: ComponentClass<HTMLAttributes<{}>> = styled.span`
 `;
 
 export interface ColorProps {
-  value: string;
+  value: ColorType;
   label: string;
   tabIndex?: number;
   isSelected?: boolean;
-  onClick: (value: string) => void;
+  onClick: (value: ColorType) => void;
   backgroundColor: string;
   borderColor: string;
 }
@@ -67,7 +69,7 @@ export default class Color extends PureComponent<ColorProps, any> {
           }}
         >
           {isSelected && (
-            <EditorDoneIcon primaryColor={akColorN0} label="Selected" />
+            <EditorDoneIcon primaryColor={borderColor} label="Selected" />
           )}
         </Button>
       </ButtonWrapper>

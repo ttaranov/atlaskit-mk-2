@@ -10,26 +10,28 @@ import {
   akColorG50,
   akColorN40,
   akColorY75,
-  akColorY300,
-  akColorN500,
-  akColorB500,
-  akColorP500,
-  akColorR500,
-  akColorG500,
+  akColorY400,
+  akColorN400,
+  akColorB400,
+  akColorP400,
+  akColorR400,
+  akColorG400,
 } from '@atlaskit/util-shared-styles';
 import Color from './color';
+import { Color as ColorType } from '../Status';
 
-const palette: [string, string, string, string][] = [
-  ['neutral', 'Grey', akColorN40, akColorN500],
-  ['purple', 'Purple', akColorP50, akColorP500],
-  ['blue', 'Blue', akColorB50, akColorB500],
-  ['red', 'Red', akColorR50, akColorR500],
-  ['yellow', 'Yellow', akColorY75, akColorY300],
-  ['green', 'Green', akColorG50, akColorG500],
+// color value, label, background, borderColor
+const palette: [ColorType, string, string, string][] = [
+  ['neutral', 'Grey', akColorN40, akColorN400],
+  ['purple', 'Purple', akColorP50, akColorP400],
+  ['blue', 'Blue', akColorB50, akColorB400],
+  ['red', 'Red', akColorR50, akColorR400],
+  ['yellow', 'Yellow', akColorY75, akColorY400],
+  ['green', 'Green', akColorG50, akColorG400],
 ];
 
 const ColorPaletteWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
-  padding: 0 ${akGridSize};
+  margin: ${akGridSize} ${akGridSize} 0 ${akGridSize};
   /* Firefox bug fix: https://product-fabric.atlassian.net/browse/ED-1789 */
   display: flex;
   flex-wrap: wrap;
@@ -37,7 +39,7 @@ const ColorPaletteWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
 
 interface ColorPaletteProps {
   selectedColor?: string;
-  onClick: (value: string) => void;
+  onClick: (value: ColorType) => void;
   cols?: number;
   className?: string;
 }

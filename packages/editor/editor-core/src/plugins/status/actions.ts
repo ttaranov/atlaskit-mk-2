@@ -5,34 +5,33 @@ import {
   Selection,
 } from 'prosemirror-state';
 import { pluginKey } from './plugin';
-import { StatusType } from './index';
+// import { StatusType } from './index';
+import { Color as ColorType } from '@atlaskit/status';
+
+export type StatusType = {
+  color: ColorType;
+  text: string;
+  localId?: string;
+};
+
+export const DEFAULT_STATUS: StatusType = {
+  text: 'Default',
+  color: 'neutral',
+};
 
 export const insertStatus = (status?: StatusType) => (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ): boolean => {
   const { schema } = state;
-  let color;
-  let text;
-  let localId;
-  if (status) {
-    color = status.color;
-    text = status.text;
-    localId = status.localId;
-  } else {
-    color = 'neutral';
-    text = 'Default';
-  }
+
+  const statusProps = { ...DEFAULT_STATUS, ...status };
 
   const tr = state.tr;
   const { showStatusPickerAt } = pluginKey.getState(state);
 
   if (!showStatusPickerAt) {
-    const statusNode = schema.nodes.status.createChecked({
-      text,
-      color,
-      localId,
-    });
+    const statusNode = schema.nodes.status.createChecked(statusProps);
     dispatch(tr.replaceSelectionWith(statusNode).scrollIntoView());
     return true;
   }
@@ -40,11 +39,7 @@ export const insertStatus = (status?: StatusType) => (
   if (state.doc.nodeAt(showStatusPickerAt)) {
     dispatch(
       tr
-        .setNodeMarkup(showStatusPickerAt, schema.nodes.status, {
-          color,
-          text,
-          localId,
-        })
+        .setNodeMarkup(showStatusPickerAt, schema.nodes.status, statusProps)
         .setSelection(Selection.near(tr.doc.resolve(showStatusPickerAt + 2)))
         .setMeta(pluginKey, { showStatusPickerAt: showStatusPickerAt })
         .scrollIntoView(),
@@ -61,4 +56,23 @@ export const setStatusPickerAt = (showStatusPickerAt: number | null) => (
 ): boolean => {
   dispatch(state.tr.setMeta(pluginKey, { showStatusPickerAt }));
   return true;
+};
+
+export const closeStatusPicker = () => editorView => {
+  const { state, dispatch } = editorView;
+  const { showStatusPickerAt } = pluginKey.getState(state);
+
+  if (!showStatusPickerAt) {
+    return false;
+  }
+
+  dispatch(
+    state.tr
+      .setMeta(pluginKey, { showStatusPickerAt: null })
+      .setSelection(
+        Selection.near(state.tr.doc.resolve(showStatusPickerAt + 2)),
+      ),
+  );
+
+  editorView.focus();
 };
