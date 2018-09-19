@@ -1,6 +1,10 @@
 import { getExampleUrl } from '@atlaskit/visual-regression/helper';
 import { colorPalette } from '@atlaskit/editor-common';
 
+import { insertMedia as integrationInsertMedia } from '../integration/_helpers';
+
+export { setupMediaMocksProviders, editable } from '../integration/_helpers';
+
 const DEFAULT_WIDTH = 800;
 const DEFAULT_HEIGHT = 600;
 
@@ -291,10 +295,15 @@ export const snapshot = async page => {
   if (editor) {
     image = await editor.screenshot();
   } else {
-    // TODO remove this.
     image = await page.screenshot();
   }
 
   // @ts-ignore
   expect(image).toMatchProdImageSnapshot();
+};
+
+export const insertMedia = async (page, filenames = ['one.svg']) => {
+  // We need to wrap this as the xpath selector used in integration tests
+  // isnt valid in puppeteer
+  await integrationInsertMedia(page, filenames, 'div[aria-label="%s"]');
 };
