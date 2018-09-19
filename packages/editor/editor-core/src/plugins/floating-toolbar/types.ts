@@ -21,40 +21,49 @@ export type SelectToolbarItem<T> = {
   onChange: (selected: SelectOption) => T;
 };
 
+export type ButtonToolbarItem<T> = {
+  type: 'button';
+  title: string;
+  onClick?: T;
+  onMouseEnter?: T;
+  onMouseLeave?: T;
+  icon: Icon;
+  selected?: boolean;
+  disabled?: boolean;
+  spacing?: 'default' | 'compact';
+  hidden?: boolean;
+  appearance?: ButtonAppearance;
+};
+
+export type DropdownToolbarItem<T> = {
+  type: 'dropdown';
+  title: string;
+  icon: Icon;
+  options: DropdownOptions<T>;
+  hidden?: boolean;
+  hideExpandIcon?: boolean;
+};
+
+export type SeparatorToolbarItem<T> = {
+  type: 'separator';
+  hidden?: boolean;
+};
 export type FloatingToolbarItem<T> =
-  | {
-      type: 'button';
-      title: string;
-      onClick?: T;
-      onMouseEnter?: T;
-      onMouseLeave?: T;
-      icon: Icon;
-      selected?: boolean;
-      disabled?: boolean;
-      spacing?: 'default' | 'compact';
-      hidden?: boolean;
-      appearance?: ButtonAppearance;
-    }
-  | {
-      type: 'dropdown';
-      title: string;
-      icon: Icon;
-      options: DropdownOptions<T>;
-      hidden?: boolean;
-      hideExpandIcon?: boolean;
-    }
   | SelectToolbarItem<T>
-  // {
-  //     type: 'select';
-  //     title: string;
-  //     options: SelectOptions<T>;
-  //     hidden?: boolean;
-  //     hideExpandIcon?: boolean;
-  //     defaultValue?: SelectOption;
-  //     placeholder?: string;
-  //     onChange: (selected: SelectOption) => T;
-  //   }
-  | { type: 'separator'; hidden?: boolean };
+  | ButtonToolbarItem<T>
+  | DropdownToolbarItem<T>
+  | SeparatorToolbarItem<T>;
+
+// {
+//     type: 'select';
+//     title: string;
+//     options: SelectOptions<T>;
+//     hidden?: boolean;
+//     hideExpandIcon?: boolean;
+//     defaultValue?: SelectOption;
+//     placeholder?: string;
+//     onChange: (selected: SelectOption) => T;
+//   }
 
 export interface FloatingToolbarConfig {
   title: string;

@@ -14,6 +14,7 @@ import {
 } from '../floating-toolbar/types';
 import { Command } from '../../commands';
 // export const getToolbarConfig = state => {
+// export const getToolbarConfig = state => {
 export const getToolbarConfig: FloatingToolbarHandler = state => {
   const codeBlockState: CodeBlockState | undefined = pluginKey.getState(state);
   if (
