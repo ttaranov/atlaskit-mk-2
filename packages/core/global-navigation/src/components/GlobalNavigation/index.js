@@ -12,7 +12,7 @@ import {
 import generateDefaultConfig from '../../config/default-config';
 import generateProductConfig from '../../config/product-config';
 import ViewTracker from '../ViewTracker';
-import { fireDrawerDismissedEvents } from './analytics';
+import { analyticsIdMap, fireDrawerDismissedEvents } from './analytics';
 
 import type { GlobalNavItemData, NavItem } from '../../config/types';
 import type { GlobalNavigationProps, DrawerName } from './types';
@@ -41,13 +41,6 @@ const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
 });
 
 const noop = () => {};
-
-const analyticsNameMap = {
-  search: 'quickSearchDrawer',
-  notification: 'notificationsDrawer',
-  create: 'createDrawer',
-  starred: 'starDrawer',
-};
 
 type GlobalNavigationState = {
   [any]: boolean, // Need an indexer property to appease flow for is${capitalisedDrawerName}Open
@@ -169,7 +162,7 @@ export default class GlobalNavigation
         ? this.props[`on${capitalisedDrawerName}Close`]
         : noop;
 
-    fireDrawerDismissedEvents(drawerName, analyticsEvent, analyticsNameMap);
+    fireDrawerDismissedEvents(drawerName, analyticsEvent);
 
     // Update the state only if it's a controlled drawer.
     // componentDidMount takes care of the uncontrolled drawers
@@ -247,7 +240,7 @@ export default class GlobalNavigation
                 shouldUnmountOnExit={shouldUnmountOnExit}
                 width="wide"
               >
-                <ViewTracker name={analyticsNameMap[drawer]} />
+                <ViewTracker name={analyticsIdMap[drawer]} />
                 <DrawerContents />
               </Drawer>
             );

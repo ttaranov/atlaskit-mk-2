@@ -4,10 +4,16 @@ import type { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { NAVIGATION_CHANNEL } from '../../constants';
 import type { DrawerName } from './types';
 
+export const analyticsIdMap: { [drawerName: DrawerName]: string } = {
+  search: 'quickSearchDrawer',
+  notification: 'notificationsDrawer',
+  create: 'createDrawer',
+  starred: 'starDrawer',
+};
+
 export const fireDrawerDismissedEvents = (
   drawerName: DrawerName,
   analyticsEvent: UIAnalyticsEvent,
-  analyticsNameMap: { [drawerName: DrawerName]: string },
 ): void => {
   if (
     analyticsEvent.payload.attributes &&
@@ -25,7 +31,7 @@ export const fireDrawerDismissedEvents = (
   }
   analyticsEvent
     .update({
-      actionSubjectId: analyticsNameMap[drawerName],
+      actionSubjectId: analyticsIdMap[drawerName],
     })
     .fire(NAVIGATION_CHANNEL);
 };
