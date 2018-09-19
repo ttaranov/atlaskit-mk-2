@@ -15,9 +15,8 @@ export type CrossProductSearchResults = {
 };
 
 export type SearchSession = {
-  searchSessionId: string;
-  searchReferrerId?: string;
-  [k: string]: any;
+  sessionId: string;
+  referrerId?: string;
 };
 
 export const EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE: CrossProductSearchResults = {
@@ -73,7 +72,7 @@ export default class CrossProductSearchClientImpl
     scopes: Scope[],
   ): Promise<CrossProductSearchResults> {
     const response = await this.makeRequest(query, scopes, searchSession);
-    return this.parseResponse(response, searchSession.searchSessionId);
+    return this.parseResponse(response, searchSession.sessionId);
   }
 
   private async makeRequest(
@@ -86,10 +85,7 @@ export default class CrossProductSearchClientImpl
       cloudId: this.cloudId,
       limit: this.RESULT_LIMIT,
       scopes: scopes,
-      searchSession: {
-        sessionId: searchSession.searchSessionId,
-        referrerId: searchSession.searchReferrerId,
-      },
+      searchSession,
     };
 
     const options: RequestServiceOptions = {

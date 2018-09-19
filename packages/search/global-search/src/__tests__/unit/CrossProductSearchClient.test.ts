@@ -29,8 +29,8 @@ function apiWillReturn(state: CrossProductSearchResponse) {
 }
 
 const searchSession: SearchSession = {
-  searchReferrerId: 'referal-id',
-  searchSessionId: 'test_uuid',
+  referrerId: 'referal-id',
+  sessionId: 'test_uuid',
 };
 
 describe('CrossProductSearchClient', () => {
