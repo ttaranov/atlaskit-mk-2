@@ -197,44 +197,32 @@ describe('Drawer Transitions', () => {
   });
 
   it('should NOT retain Drawer contents by default', () => {
-    const DrawerContent = () => (
-      <div className="wrapper">
-        <code>Drawer contents</code>
-        <input type="text" className="textarea" defaultValue="default value" />
-      </div>
-    );
     const wrapper = mount(
-      <Drawer isOpen={false} width="wide">
-        <DrawerContent />
+      <Drawer isOpen width="wide">
+        <code>Drawer contents</code>
       </Drawer>,
     );
 
-    expect(wrapper.find(DrawerContent).length).toBe(0);
-
-    wrapper.setProps({ isOpen: true });
-    wrapper.update();
-
-    expect(wrapper.find(DrawerContent).length).toBe(1);
+    expect(
+      wrapper
+        .find('Slide')
+        .find('Transition')
+        .props().unmountOnExit,
+    ).toBeTruthy();
   });
 
-  it('should Drawer contents when shouldUnmountOnExit is passed', () => {
-    const DrawerContent = () => (
-      <div className="wrapper">
-        <code>Drawer contents</code>
-        <input type="text" className="textarea" defaultValue="default value" />
-      </div>
-    );
+  it('should retain Drawer contents when shouldUnmountOnExit is passed', () => {
     const wrapper = mount(
-      <Drawer isOpen width="wide" shouldUnmountOnExit>
-        <DrawerContent />
+      <Drawer isOpen width="wide" shouldUnmountOnExit={false}>
+        <code>Drawer contents</code>
       </Drawer>,
     );
 
-    expect(wrapper.find(DrawerContent).length).toBe(1);
-
-    wrapper.setProps({ isOpen: false });
-    wrapper.update();
-
-    expect(wrapper.find(DrawerContent).length).toBe(1);
+    expect(
+      wrapper
+        .find('Slide')
+        .find('Transition')
+        .props().unmountOnExit,
+    ).toBeFalsy();
   });
 });

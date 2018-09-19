@@ -15,6 +15,14 @@ describe('Drawer primitive', () => {
     shouldUnmountOnExit: false,
   };
 
+  beforeEach(() => {
+    jest.useFakeTimers();
+  });
+
+  afterEach(() => {
+    jest.useRealTimers();
+  });
+
   it('should render given icon in large size if exists', () => {
     const props = { ...commonProps, icon: () => <span>Icon</span> };
     const wrapper = mount(
@@ -34,5 +42,37 @@ describe('Drawer primitive', () => {
     );
 
     expect(wrapper.find(ArrowLeft).length).toBe(1);
+  });
+
+  it('should remount the node if receives shouldUnmountOnExit prop', () => {
+    const props = { ...commonProps, shouldUnmountOnExit: true };
+    const wrapper = mount(
+      <DrawerPrimitive {...props}>
+        <DrawerContent />
+      </DrawerPrimitive>,
+    );
+    expect(wrapper.getDOMNode()).not.toBe(null);
+
+    wrapper.setProps({ in: false });
+    jest.runTimersToTime(20000);
+    wrapper.update();
+
+    expect(wrapper.getDOMNode()).toBe(null);
+  });
+
+  it('should NOT remount the node if shouldUnmountOnExit is false', () => {
+    const props = { ...commonProps };
+    const wrapper = mount(
+      <DrawerPrimitive {...props}>
+        <DrawerContent />
+      </DrawerPrimitive>,
+    );
+    expect(wrapper.getDOMNode()).not.toBe(null);
+
+    wrapper.setProps({ in: false });
+    jest.runTimersToTime(20000);
+    wrapper.update();
+
+    expect(wrapper.getDOMNode()).not.toBe(null);
   });
 });
