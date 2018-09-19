@@ -9,11 +9,11 @@ import PluginSlot from '../PluginSlot';
 import Toolbar from '../Toolbar';
 import ContentStyles from '../ContentStyles';
 import { ClickAreaBlock } from '../Addon';
-import WidthEmitter from '../WidthEmitter';
 import { tableFullPageEditorStyles } from '../../plugins/table/ui/styles';
 import { akEditorToolbarKeylineHeight } from '../../styles';
 import rafSchedule from 'raf-schd';
 import { scrollbarStyles } from '../styles';
+import WidthEmitter from '../WidthEmitter';
 
 const GUTTER_PADDING = 32;
 
@@ -245,6 +245,7 @@ export default class Editor extends React.Component<
                     popupsBoundariesElement={popupsBoundariesElement}
                     popupsScrollableElement={popupsScrollableElement}
                     disabled={!!disabled}
+                    containerElement={this.scrollContainer}
                   />
                 }
                 {editorDOMElement}

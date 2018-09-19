@@ -17,6 +17,8 @@ import { ClickAreaBlock } from '../Addon';
 import { tableCommentEditorStyles } from '../../plugins/table/ui/styles';
 import WithFlash from '../WithFlash';
 import { akEditorMenuZIndex } from '@atlaskit/editor-common';
+import WidthEmitter from '../WidthEmitter';
+import { GRID_GUTTER } from '../../plugins/grid';
 
 export interface CommentEditorProps {
   isMaxContentSizeReached?: boolean;
@@ -92,6 +94,12 @@ const ContentArea = styled(ContentStyles)`
     margin: 12px 20px 20px;
   }
 
+  .gridParent {
+    margin-left: ${20 - GRID_GUTTER}px;
+    margin-right: ${20 - GRID_GUTTER}px;
+    width: calc(100% + ${20 - GRID_GUTTER}px);
+  }
+
   padding: ${TableControlsPadding}px;
 
   ${tableCommentEditorStyles};
@@ -117,6 +125,7 @@ export default class Editor extends React.Component<
   static displayName = 'CommentEditorAppearance';
 
   private appearance: EditorAppearance = 'comment';
+  private containerElement: HTMLElement | undefined;
 
   private handleSave = () => {
     if (this.props.editorView && this.props.onSave) {
@@ -174,7 +183,10 @@ export default class Editor extends React.Component<
             </MainToolbarCustomComponentsSlot>
           </MainToolbar>
           <ClickAreaBlock editorView={editorView}>
-            <ContentArea className="ak-editor-content-area editor-popup-ignore-scroll-parent">
+            <ContentArea
+              innerRef={ref => (this.containerElement = ref)}
+              className="ak-editor-content-area editor-popup-ignore-scroll-parent"
+            >
               {customContentComponents}
               <PluginSlot
                 editorView={editorView}
@@ -186,11 +198,13 @@ export default class Editor extends React.Component<
                 popupsMountPoint={popupsMountPoint}
                 popupsBoundariesElement={popupsBoundariesElement}
                 popupsScrollableElement={popupsScrollableElement}
+                containerElement={this.containerElement}
                 disabled={!!disabled}
               />
               {editorDOMElement}
             </ContentArea>
           </ClickAreaBlock>
+          <WidthEmitter editorView={editorView!} />
         </CommentEditor>
         <SecondaryToolbar>
           <ButtonGroup>
