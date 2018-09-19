@@ -2,12 +2,9 @@ import { Action, MiddlewareAPI } from 'redux';
 import { TRACK_EVENT_TYPE } from '@atlaskit/analytics-gas-types';
 import { State } from '../../domain';
 import { isFileUploadErrorAction } from '../../actions/fileUploadError';
-import { Payload } from '.';
+import { HandlerResult, source } from '.';
 
-export default (
-  action: Action,
-  store: MiddlewareAPI<State>,
-): Payload[] | undefined => {
+export default (action: Action, store: MiddlewareAPI<State>): HandlerResult => {
   if (isFileUploadErrorAction(action)) {
     const uploadFile = action.file;
     const currentUploads = store.getState().uploads;
@@ -30,7 +27,7 @@ export default (
             timeStarted !== undefined ? Date.now() - timeStarted : -1,
         },
         eventType: TRACK_EVENT_TYPE,
-        source: 'mediaPickerModal',
+        source,
       },
     ];
   }

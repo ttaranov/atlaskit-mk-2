@@ -1,5 +1,63 @@
 # @atlaskit/editor-core
 
+## 80.4.14
+- [patch] Fixing floating toolbar always showing top left in comments editor. ED-5348 [f36ae3c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f36ae3c)
+
+## 80.4.13
+- [patch] fix styles for nested tables [11267a8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/11267a8)
+
+## 80.4.12
+- [patch] reverting table style change [b829ab9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b829ab9)
+
+## 80.4.11
+- [patch] ED-5335: fix table when it has nested extension that renders another table [21f315b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21f315b)
+
+## 80.4.10
+- [patch] Fixes text selection that ends at the start of the next cell. ED-5050 [f5c365d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f5c365d)
+
+## 80.4.9
+- [patch] Removing underline active in code mark selection [e54422a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e54422a)
+
+## 80.4.8
+- [patch] Updated dependencies [4194aa4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4194aa4)
+  - @atlaskit/logo@9.2.2
+  - @atlaskit/smart-card@8.1.2
+  - @atlaskit/select@6.0.0
+
+## 80.4.7
+- [patch] Fixing the mobile appearance height  [b0f6402](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b0f6402)
+
+## 80.4.6
+- [patch] Adding renderer to the mobile bridge [3b4c276](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3b4c276)
+
+## 80.4.5
+- [patch] ED-5017 Toolbar buttons no longer steal focus when tabbing into editor [e656038](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e656038)
+
+## 80.4.4
+- [patch] bump media-picker [9411569](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9411569)
+
+## 80.4.3
+- [patch] Fix the empty progress bar inside tables [1beaf5b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1beaf5b)
+
+## 80.4.2
+- [patch] Show mediaSingle with default width when no width is defined in ADF [03af1bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/03af1bd)
+
+## 80.4.1
+- [patch] Fixing the scroll after setting content on Mobile [0a03e2d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0a03e2d)
+
+## 80.4.0
+- [minor] Add new experimental table resizing, behind flag. ED-4679 [b66227e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b66227e)
+- [none] Updated dependencies [b66227e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b66227e)
+
+## 80.3.1
+- [patch] Fixes remapping a table cell pos on collab modes changes and ensure its an element node. ED-5305 [dacbc18](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dacbc18)
+
+## 80.3.0
+- [minor] Adds ability to load document snapshot from collab service [3708304](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3708304)
+
+## 80.2.1
+- [patch] Fix popup positioning when inside overflow:auto containers [affe5df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/affe5df)
+
 ## 80.2.0
 - [minor] FS-2961 Introduce status component and status node in editor [7fe2b0a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7fe2b0a)
 

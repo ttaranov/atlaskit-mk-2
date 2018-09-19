@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-picker",
-  "version": "16.0.1",
+  "version": "16.0.5",
   "description": "Library for handling file uploads",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -29,7 +29,7 @@
     "@atlaskit/flag": "^9.0.10",
     "@atlaskit/icon": "^13.8.1",
     "@atlaskit/media-card": "^34.0.0",
-    "@atlaskit/media-editor": "^13.0.0",
+    "@atlaskit/media-editor": "^13.0.1",
     "@atlaskit/media-store": "^6.2.0",
     "@atlaskit/modal-dialog": "^7.0.0",
     "@atlaskit/spinner": "^9.0.5",
@@ -59,6 +59,7 @@
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
+    "@atlaskit/analytics-listeners": "^4.0.3",
     "@atlaskit/docs": "^5.0.7",
     "@atlaskit/layer-manager": "^5.0.6",
     "@atlaskit/media-core": "^23.2.0",

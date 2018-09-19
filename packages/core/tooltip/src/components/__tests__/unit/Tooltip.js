@@ -86,6 +86,17 @@ test('tooltip should be hidden after target click with hideTooltipOnClick set', 
   expect(wrapper.find(StyledTooltip)).toHaveLength(0);
 });
 
+test('tooltip should be hidden after target click with hideTooltipOnMouseDown set', () => {
+  wrapper = mount(
+    <Tooltip content="Tooltip content" hideTooltipOnMouseDown>
+      <Target>foo</Target>
+    </Tooltip>,
+  );
+  simulate(wrapper, Target, 'mouseover');
+  simulate(wrapper, Target, 'mousedown');
+  expect(wrapper.find(StyledTooltip)).toHaveLength(0);
+});
+
 test('tooltip should render whatever is passed to component prop', () => {
   const Popup = () => <div>Hi</div>;
   wrapper = mount(
@@ -260,6 +271,7 @@ test('tooltip should not show when content is null', () => {
     </Tooltip>,
   );
   simulate(wrapper, Target, 'mouseover');
+  expect(wrapper.find('Animation')).toHaveLength(0);
   expect(wrapper.find(StyledTooltip)).toHaveLength(0);
 });
 
@@ -270,6 +282,7 @@ test('tooltip should not show when content is undefined', () => {
     </Tooltip>,
   );
   simulate(wrapper, Target, 'mouseover');
+  expect(wrapper.find('Animation')).toHaveLength(0);
   expect(wrapper.find(StyledTooltip)).toHaveLength(0);
 });
 
@@ -280,5 +293,6 @@ test('tooltip should not show when content is an empty string', () => {
     </Tooltip>,
   );
   simulate(wrapper, Target, 'mouseover');
+  expect(wrapper.find('Animation')).toHaveLength(0);
   expect(wrapper.find(StyledTooltip)).toHaveLength(0);
 });

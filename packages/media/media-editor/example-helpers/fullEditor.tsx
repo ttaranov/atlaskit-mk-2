@@ -11,6 +11,12 @@ import {
   Tool,
   Toolbar,
 } from '../src';
+import { ShapeParametersChangedHandler } from '../src/react/mediaEditor';
+import {
+  ColorChangedHandler,
+  LineWidthChangedHandler,
+  ToolChangedHandler,
+} from '../src/react/toolbar';
 
 export interface FullEditorProps {
   imageUrl: string;
@@ -41,7 +47,7 @@ export class FullEditor extends React.Component<
   FullEditorState
 > {
   private readonly windowResizeListener = () => this.adjustDimensions();
-  private container: HTMLDivElement;
+  private container?: HTMLDivElement;
 
   constructor(props: FullEditorProps) {
     super(props);
@@ -66,11 +72,11 @@ export class FullEditor extends React.Component<
     window.removeEventListener('resize', this.windowResizeListener);
   }
 
-  private handleDivRef = div => {
+  private handleDivRef = (div: HTMLDivElement) => {
     this.container = div;
   };
 
-  private handleShapeParametersChanged = shapeParameters => {
+  private handleShapeParametersChanged: ShapeParametersChangedHandler = shapeParameters => {
     this.setState({
       color: shapeParameters.color,
       lineWidth: shapeParameters.lineWidth,
@@ -78,13 +84,13 @@ export class FullEditor extends React.Component<
     });
   };
 
-  private handleToolbarColorChanged = color => {
+  private handleToolbarColorChanged: ColorChangedHandler = color => {
     this.setState({ color });
   };
-  private handleToolbarLineWidthChanged = lineWidth => {
+  private handleToolbarLineWidthChanged: LineWidthChangedHandler = lineWidth => {
     this.setState({ lineWidth });
   };
-  private handleToolbarToolChanged = tool => {
+  private handleToolbarToolChanged: ToolChangedHandler = tool => {
     this.setState({ tool });
   };
 
@@ -129,8 +135,10 @@ export class FullEditor extends React.Component<
   }
 
   private adjustDimensions(): void {
+    if (!this.container) {
+      return;
+    }
     const rect = this.container.getBoundingClientRect();
-    console.log(this.container);
     const { width, height } = rect;
 
     this.setState({ dimensions: { width, height } });

@@ -116,7 +116,7 @@ export default class RowControls extends Component<Props, any> {
       return null;
     }
 
-    const rows = tbody.getElementsByTagName('tr');
+    const rows = tbody.childNodes as NodeListOf<HTMLTableRowElement>;
     const nodes: any = [];
     let prevRowHeights = 0;
 

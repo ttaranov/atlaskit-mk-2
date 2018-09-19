@@ -1,5 +1,23 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 2.0.27
+- [patch] link format takes higher priority over common formatters [b05205f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b05205f)
+
+## 2.0.26
+- [patch] fix link regex to know where to stop [ee04ad4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ee04ad4)
+
+## 2.0.25
+- [patch] Fix encoder for missing closing \! [c585e27](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c585e27)
+
+## 2.0.24
+- [patch] New rules for formatter [50edbb0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/50edbb0)
+
+## 2.0.23
+- [patch] should convert content inside monospace as plain text [f5e9f01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f5e9f01)
+
+## 2.0.22
+- [patch] Sometimes the leading dashes is not list [7cf3406](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7cf3406)
+
 ## 2.0.21
 - [patch] Updated dependencies [6e1d642](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e1d642)
   - @atlaskit/editor-common@16.0.0

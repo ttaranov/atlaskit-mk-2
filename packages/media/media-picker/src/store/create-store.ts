@@ -56,8 +56,8 @@ export default (
     composeWithDevTools(
       applyMiddleware(
         analyticsProcessing as Middleware,
-        startAppMiddleware(eventEmitter) as Middleware,
-        getFilesInRecents(fetcher) as Middleware,
+        startAppMiddleware() as Middleware,
+        getFilesInRecents() as Middleware,
         changeService as Middleware,
         changeAccount as Middleware,
         changeCloudAccountFolderMiddleware(fetcher) as Middleware,

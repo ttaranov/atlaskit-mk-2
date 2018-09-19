@@ -25,6 +25,9 @@ import {
   paragraphSharedStyles,
   mediaSingleSharedStyle,
   blockNodesVerticalMargin,
+  akEditorTableToolbar,
+  akEditorTableBorder,
+  akEditorTableNumberColumnWidth,
 } from '@atlaskit/editor-common';
 import { RendererAppearance } from './';
 
@@ -195,6 +198,49 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     table {
       margin-left: 0;
       margin-right: 0;
+    }
+
+    table[data-number-column='true'] {
+      counter-reset: row-number;
+
+      /*
+       * Only increment the row number if its a standard cell.
+       * When we have a header row that should count as the 0th row.
+       */
+      tr > td:first-of-type {
+        counter-increment: row-number;
+      }
+
+      /**
+       * Don't show the row increment on header rows.
+       */
+      tr:first-of-type {
+        th:first-of-type::before {
+          content: '';
+        }
+      }
+
+      tr td:first-of-type,
+      tr th:first-of-type {
+        position: relative;
+        padding-left: ${akEditorTableNumberColumnWidth + 10}px;
+      }
+
+      tr td:first-of-type::before,
+      tr th:first-of-type::before {
+        content: counter(row-number);
+        display: table-cell;
+        box-sizing: border-box;
+        text-align: center;
+        background-color: ${akEditorTableToolbar};
+        border-right: 1px solid ${akEditorTableBorder};
+        width: ${akEditorTableNumberColumnWidth}px;
+        height: 100%;
+        padding: 10px;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
     }
   }
 

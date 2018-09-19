@@ -2,15 +2,15 @@ import { TokenType } from './';
 import { EMOJIS } from './emoji';
 
 /**
- * The order of this mapping determind which keyword
- * will be checked first, so it matters.
+ * What's special about these keyword is that it follows following rules.
+ *
+ * "!file.jpg!" = should be converted to special formatting, there is no text before formatting char "!"
+ * "Hello !file.jpg!" = should be converted to special formatting, there is no text before formatting char "!"
+ * "?? hello?? = should not be converted to special formatting, there is a space after the "??" formatting characters
+ * "text_foo_" = should not be converted to special formatting, there is text before formatting char "_"
+ *
  */
-const keywordTokenMap = {
-  '[~': TokenType.MENTION,
-  '[^': TokenType.FLIE_LINK,
-  '[': TokenType.LINK_FORMAT,
-  http: TokenType.LINK_TEXT,
-  irc: TokenType.LINK_TEXT,
+const formatterKeywordTokenMap = {
   '!': TokenType.MEDIA,
   '----': TokenType.QUADRUPLE_DASH_SYMBOL,
   '---': TokenType.TRIPLE_DASH_SYMBOL,
@@ -22,15 +22,57 @@ const keywordTokenMap = {
   '~': TokenType.SUBSCRIPT,
   _: TokenType.EMPHASIS,
   '{{': TokenType.MONOSPACE,
-  '{': TokenType.MACRO,
   '??': TokenType.CITATION,
+};
+
+const macroKeywordTokenMap = {
+  '{': TokenType.MACRO,
+};
+
+/**
+ * The order of this mapping determind which keyword
+ * will be checked first, so it matters.
+ */
+const keywordTokenMap = {
+  '[~': TokenType.MENTION,
+  '[^': TokenType.FLIE_LINK,
+  '[': TokenType.LINK_FORMAT,
+  http: TokenType.LINK_TEXT,
+  irc: TokenType.LINK_TEXT,
   '\\\\': TokenType.HARD_BREAK,
   '\r': TokenType.HARD_BREAK,
   '\n': TokenType.HARD_BREAK,
   '\r\n': TokenType.HARD_BREAK,
 };
 
-export function parseKeyword(input: string) {
+export function parseFormatterKeyword(input: string) {
+  for (const name in formatterKeywordTokenMap) {
+    if (
+      formatterKeywordTokenMap.hasOwnProperty(name) &&
+      input.startsWith(name)
+    ) {
+      return {
+        type: formatterKeywordTokenMap[name],
+      };
+    }
+  }
+
+  return null;
+}
+
+export function parseMacroKeyword(input: string) {
+  for (const name in macroKeywordTokenMap) {
+    if (macroKeywordTokenMap.hasOwnProperty(name) && input.startsWith(name)) {
+      return {
+        type: macroKeywordTokenMap[name],
+      };
+    }
+  }
+
+  return null;
+}
+
+export function parseOtherKeyword(input: string) {
   for (const name in keywordTokenMap) {
     if (keywordTokenMap.hasOwnProperty(name) && input.startsWith(name)) {
       return {
@@ -40,7 +82,8 @@ export function parseKeyword(input: string) {
   }
 
   // Look for a emoji
-  if ([':', '(', ';'].indexOf(input.substr(0, 1)) !== -1) {
+  const char = input.charAt(0);
+  if ([':', '(', ';'].indexOf(char) !== -1) {
     for (const emoji of EMOJIS) {
       for (const text of emoji.markup) {
         if (input.startsWith(text)) {
@@ -74,7 +117,15 @@ const leadingKeywordTokenMap = [
   },
   {
     type: TokenType.RULER,
-    regex: /^-{4}/,
+    regex: /^-{4}\s/,
+  },
+  {
+    type: TokenType.TRIPLE_DASH_SYMBOL,
+    regex: /^-{3}\s/,
+  },
+  {
+    type: TokenType.DOUBLE_DASH_SYMBOL,
+    regex: /^-{2}\s/,
   },
   {
     type: TokenType.LIST,

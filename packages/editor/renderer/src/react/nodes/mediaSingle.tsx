@@ -48,10 +48,29 @@ export default class MediaSingle extends Component<
 
   render() {
     const { props } = this;
+    let hideProgress = false;
 
     const child = React.Children.only(
       React.Children.toArray(props.children)[0],
     );
+
+    let { width, height, type } = child.props;
+
+    if (type === 'external') {
+      const { width: stateWidth, height: stateHeight } = this.state;
+      if (width === null) {
+        width = stateWidth || DEFAULT_WIDTH;
+      }
+      if (height === null) {
+        height = stateHeight || DEFAULT_HEIGHT;
+      }
+    }
+
+    if (width === null) {
+      width = DEFAULT_WIDTH;
+      height = DEFAULT_HEIGHT;
+      hideProgress = true;
+    }
 
     const media = React.cloneElement(child, {
       cardDimensions: {
@@ -60,21 +79,8 @@ export default class MediaSingle extends Component<
       },
       onExternalImageLoaded: this.onExternalImageLoaded,
       disableOverlay: true,
+      hideProgress,
     });
-
-    let { width, height, type } = child.props;
-
-    if (type === 'external') {
-      const { width: stateWidth, height: stateHeight } = this.state;
-
-      if (width === null) {
-        width = stateWidth || DEFAULT_WIDTH;
-      }
-
-      if (height === null) {
-        height = stateHeight || DEFAULT_HEIGHT;
-      }
-    }
 
     return (
       <BreakoutConsumer>

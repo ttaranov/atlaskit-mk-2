@@ -48,8 +48,11 @@
       "./typings/lodash.last.d.ts",
       "./typings/lodash.debounce.d.ts",
       "./typings/lodash.matches.d.ts",
+      "./typings/lodash.merge.d.ts",
       "./typings/deepcopy.d.ts",
       "./typings/scrollparent.d.ts",
-      "./typings/react-dom.d.ts"
+      "./typings/react-dom.d.ts",
+      "./typings/url.d.ts",
+      "./typings/postis.d.ts"
     ]
   }

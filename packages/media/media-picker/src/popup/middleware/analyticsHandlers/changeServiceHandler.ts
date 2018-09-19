@@ -1,9 +1,9 @@
 import { Action } from 'redux';
 import { isChangeServiceAction } from '../../actions/changeService';
-import { Payload, buttonClickPayload } from '.';
+import { buttonClickPayload, HandlerResult } from '.';
 import { SCREEN_EVENT_TYPE } from '@atlaskit/analytics-gas-types';
 
-export default (action: Action): Payload[] | undefined => {
+export default (action: Action): HandlerResult => {
   if (isChangeServiceAction(action)) {
     if (action.serviceName === 'upload') {
       return [

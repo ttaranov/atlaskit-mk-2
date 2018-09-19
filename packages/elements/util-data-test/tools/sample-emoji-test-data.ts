@@ -4,9 +4,7 @@
 // Usage:
 //  curl -s http://localhost:7788/emoji/standard | ./sample-emoji-test-data.ts > test-emoji-standard.json
 
-const stdin = process.stdin;
-const stdout = process.stdout;
-const inputChunks = [];
+const inputChunks: any[] = [];
 
 const reservedEmojis = new Map([
   // :smiley: used to test ascii representations
@@ -49,14 +47,14 @@ function initCountByCategory() {
   return count;
 }
 
-stdin.resume();
-stdin.setEncoding('utf8');
+process.stdin.resume();
+process.stdin.setEncoding('utf8');
 
-stdin.on('data', chunk => {
+process.stdin.on('data', chunk => {
   inputChunks.push(chunk);
 });
 
-stdin.on('end', () => {
+process.stdin.on('end', () => {
   const inputJSON = inputChunks.join('');
   const parsedData = JSON.parse(inputJSON);
 
@@ -81,6 +79,6 @@ stdin.on('end', () => {
   });
 
   const outputJSON = JSON.stringify({ emojis: filteredEmojis, meta }, null, 2);
-  stdout.write(outputJSON);
-  stdout.write('\n');
+  process.stdout.write(outputJSON);
+  process.stdout.write('\n');
 });

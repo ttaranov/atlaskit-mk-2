@@ -2,14 +2,12 @@
 
 import React, { Component, Fragment } from 'react';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
-import { gridSize as gridSizeFn } from '@atlaskit/theme';
+
 import ViewRenderer from '../../renderer';
 import { withNavigationUI } from '../../ui-controller';
 import { withNavigationViewController } from '../../view-controller';
 import LayoutManager from '../LayoutManager';
-import Section from '../Section';
-import SkeletonContainerHeader from '../SkeletonContainerHeader';
-import SkeletonItem from '../SkeletonItem';
+import SkeletonContainerView from '../SkeletonContainerView';
 import type {
   LayoutManagerWithViewControllerProps,
   LayoutManagerWithViewControllerState,
@@ -19,8 +17,6 @@ import {
   ProductNavigationTheme,
   ContainerNavigationTheme,
 } from '../ContentNavigation/primitives';
-
-const gridSize = gridSizeFn();
 
 class LayoutManagerWithViewControllerBase extends Component<
   LayoutManagerWithViewControllerProps,
@@ -59,30 +55,7 @@ class LayoutManagerWithViewControllerBase extends Component<
 
     return (
       <Wrapper>
-        <Section>
-          {({ css }) => (
-            <div
-              css={{
-                ...css,
-                paddingTop: gridSize * 2.5,
-                paddingBottom: gridSize * 2.5,
-              }}
-            >
-              <SkeletonContainerHeader hasBefore />
-            </div>
-          )}
-        </Section>
-        <Section>
-          {({ className }) => (
-            <div className={className}>
-              <SkeletonItem hasBefore />
-              <SkeletonItem hasBefore />
-              <SkeletonItem hasBefore />
-              <SkeletonItem hasBefore />
-              <SkeletonItem hasBefore />
-            </div>
-          )}
-        </Section>
+        <SkeletonContainerView />
       </Wrapper>
     );
   };
@@ -181,7 +154,13 @@ class LayoutManagerWithViewControllerBase extends Component<
 
     return (
       <NavigationAnalyticsContext
-        data={{ attributes: { view: activeView && activeView.id } }}
+        data={{
+          attributes: {
+            navigationLayer: activeView && activeView.type,
+            view: activeView && activeView.id,
+            ...(activeView && activeView.analyticsAttributes),
+          },
+        }}
       >
         <LayoutManager
           globalNavigation={this.renderGlobalNavigation}

@@ -42,12 +42,12 @@ export class Clipboard extends LocalUploadComponent {
     document.removeEventListener('paste', this.pasteHandler);
   }
 
-  private pasteHandler = (event: ClipboardEvent): void => {
+  private pasteHandler = (event: Event): void => {
     /*
       Browser behaviour for getting files from the clipboard is very inconsistent and buggy.
       @see https://extranet.atlassian.com/display/FIL/RFC+099%3A+Clipboard+browser+inconsistency
     */
-    const { clipboardData } = event;
+    const { clipboardData } = event as ClipboardEvent;
 
     if (clipboardData && clipboardData.files) {
       const filesArray = getFilesFromClipboard(clipboardData.files);

@@ -1,9 +1,7 @@
 import CrossProductSearchClient, {
   CrossProductSearchResponse,
-  Scope,
-  removeHighlightTags,
-  ConfluenceItem,
 } from '../../api/CrossProductSearchClient';
+import { Scope, ConfluenceItem } from '../../api/types';
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
 import {
@@ -12,8 +10,13 @@ import {
   ResultType,
   ContentType,
   ContainerResult,
-  JiraObjectResult,
+  JiraResult,
 } from '../../model/Result';
+import {
+  generateRandomJiraBoard,
+  generateRandomJiraFilter,
+  generateRandomJiraProject,
+} from '../../../example-helpers/mockJira';
 
 function apiWillReturn(state: CrossProductSearchResponse) {
   const opts = {
@@ -118,16 +121,6 @@ describe('CrossProductSearchClient', () => {
       expect(item.analyticsType).toEqual(AnalyticsType.ResultConfluence);
       expect(item.resultType).toEqual(ResultType.GenericContainerResult);
     });
-
-    it('should parse the highlight tags from the title', () => {
-      let text = removeHighlightTags(
-        '@@@hl@@@new@@@endhl@@@ @@@hl@@@page@@@endhl@@@',
-      );
-      expect(text).toEqual('new page');
-
-      text = removeHighlightTags('no highlight');
-      expect(text).toEqual('no highlight');
-    });
   });
 
   describe('Jira', () => {
@@ -161,7 +154,7 @@ describe('CrossProductSearchClient', () => {
       expect(result.results.get(Scope.JiraIssue)).toHaveLength(1);
       expect(result.experimentId).toBe('123');
 
-      const item = result.results.get(Scope.JiraIssue)![0] as JiraObjectResult;
+      const item = result.results.get(Scope.JiraIssue)![0] as JiraResult;
       expect(item.name).toEqual('summary');
       expect(item.avatarUrl).toEqual('iconUrl');
       expect(item.href).toEqual('/browse/key-1');
@@ -169,6 +162,37 @@ describe('CrossProductSearchClient', () => {
       expect(item.objectKey).toEqual('key-1');
       expect(item.analyticsType).toEqual(AnalyticsType.ResultJira);
       expect(item.resultType).toEqual(ResultType.JiraObjectResult);
+    });
+
+    it('should not break with error scopes', async () => {
+      const jiraScopes = [Scope.JiraIssue, Scope.JiraBoardProjectFilter];
+
+      const issueErrorScope = {
+        id: Scope.JiraIssue,
+        error: 'something wrong',
+        results: [],
+      };
+
+      const containerCorrectScope = {
+        id: Scope.JiraBoardProjectFilter,
+        results: [
+          generateRandomJiraBoard(),
+          generateRandomJiraFilter(),
+          generateRandomJiraProject(),
+        ],
+      };
+
+      apiWillReturn({
+        scopes: [issueErrorScope, containerCorrectScope],
+      });
+
+      const result = await searchClient.search(
+        'query',
+        'test_uuid',
+        jiraScopes,
+      );
+      expect(result.results.get(Scope.JiraIssue)).toHaveLength(0);
+      expect(result.results.get(Scope.JiraBoardProjectFilter)).toHaveLength(3);
     });
   });
 

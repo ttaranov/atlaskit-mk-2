@@ -7,13 +7,17 @@ import { Context, UrlPreview } from '@atlaskit/media-core';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
 import {
-  Card,
   CardProps,
   UrlPreviewIdentifier,
   FileIdentifier,
   LinkIdentifier,
-  CardView,
+  CardDimensions,
 } from '../../../src';
+
+import { CardView } from '../../../src/root/cardView';
+
+import { Card } from '../../../src/root/card';
+
 import { LazyContent } from '../../../src/utils/lazyContent';
 import { getDataURIFromFileState } from '../../../src/utils/getDataURIFromFileState';
 
@@ -171,6 +175,100 @@ describe('Card', () => {
     );
 
     expect(component.find(CardView)).toHaveLength(1);
+  });
+
+  it('should refetch the image when width changes to a higher value', async () => {
+    const initialDimensions: CardDimensions = {
+      width: 100,
+      height: 200,
+    };
+    const newDimensions: CardDimensions = {
+      ...initialDimensions,
+      width: 1000,
+    };
+    const context = createContextWithGetFile();
+    const { component } = setup(context, {
+      identifier: fileIdentifier,
+      dimensions: initialDimensions,
+    });
+    component.setProps({ context, dimensions: newDimensions });
+
+    await nextTick();
+    expect(context.getImage).toHaveBeenCalledTimes(2);
+    expect(context.getImage).toHaveBeenLastCalledWith('some-random-id', {
+      allowAnimated: true,
+      collection: 'some-collection-name',
+      mode: 'crop',
+      width: 1000,
+      height: 200,
+    });
+  });
+
+  it('should refetch the image when height changes to a higher value', async () => {
+    const initialDimensions: CardDimensions = {
+      width: 100,
+      height: 200,
+    };
+    const newDimensions: CardDimensions = {
+      ...initialDimensions,
+      height: 2000,
+    };
+    const context = createContextWithGetFile();
+    const { component } = setup(context, {
+      identifier: fileIdentifier,
+      dimensions: initialDimensions,
+    });
+    component.setProps({ context, dimensions: newDimensions });
+
+    await nextTick();
+    expect(context.getImage).toHaveBeenCalledTimes(2);
+    expect(context.getImage).toHaveBeenLastCalledWith('some-random-id', {
+      allowAnimated: true,
+      collection: 'some-collection-name',
+      mode: 'crop',
+      width: 100,
+      height: 2000,
+    });
+  });
+
+  it('should not refetch the image when width changes to a smaller value', async () => {
+    const initialDimensions: CardDimensions = {
+      width: 100,
+      height: 200,
+    };
+    const newDimensions: CardDimensions = {
+      ...initialDimensions,
+      width: 10,
+    };
+    const context = createContextWithGetFile();
+    const { component } = setup(context, {
+      identifier: fileIdentifier,
+      dimensions: initialDimensions,
+    });
+    component.setProps({ context, dimensions: newDimensions });
+
+    await nextTick();
+    expect(context.getImage).toHaveBeenCalledTimes(1);
+  });
+
+  it('should not refetch the image when height changes to a smaller value', async () => {
+    const initialDimensions: CardDimensions = {
+      width: 100,
+      height: 200,
+    };
+    const newDimensions: CardDimensions = {
+      ...initialDimensions,
+      height: 20,
+    };
+    const context = createContextWithGetFile();
+    const { component } = setup(context, {
+      identifier: fileIdentifier,
+      dimensions: initialDimensions,
+    });
+    component.setProps({ context, dimensions: newDimensions });
+
+    await nextTick();
+    expect(context.getImage).toHaveBeenCalledTimes(1);
   });
 
   it('should fire onClick when passed in as a prop and CardView fires onClick', () => {

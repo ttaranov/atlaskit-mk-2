@@ -1,9 +1,9 @@
 // @flow
 
 import styled from 'styled-components';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { gridSize } from '@atlaskit/theme';
 
-const HORIZONTAL_SPACING = `${akGridSizeUnitless / 2}px`;
+const HORIZONTAL_SPACING = `${gridSize() / 2}px`;
 
 export default styled.span`
   display: inline-block;

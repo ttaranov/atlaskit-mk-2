@@ -4,15 +4,12 @@ exports[`FileCardView should render correct background based on mediaType" 1`] =
 .c0 {
   box-shadow: 0 1px 1px rgba(9,30,66,0.2),0 0 1px 0 rgba(9,30,66,0.24);
   cursor: pointer;
+  border-radius: 3px;
   background: #fff;
   line-height: normal;
   position: relative;
   width: 100%;
   height: 100%;
-}
-
-.c0 border-radius:function borderRadius() {
-  return: 3;
 }
 
 .c0::after {
@@ -23,22 +20,16 @@ exports[`FileCardView should render correct background based on mediaType" 1`] =
   top: 0;
   box-sizing: border-box;
   pointer-events: none;
+  border-radius: 3px;
   border: 2px solid transparent;
 }
 
-.c0::after border-radius:function borderRadius() {
-  return: 3;
-}
-
 .c0 .wrapper {
+  border-radius: 3px;
   background: transparent;
   display: block;
   height: inherit;
   position: relative;
-}
-
-.c0 .wrapper border-radius:function borderRadius() {
-  return: 3;
 }
 
 .c0 .wrapper .img-wrapper {
@@ -47,10 +38,7 @@ exports[`FileCardView should render correct background based on mediaType" 1`] =
   height: inherit;
   display: block;
   overflow: hidden;
-}
-
-.c0 .wrapper .img-wrapper border-radius:function borderRadius() {
-  return: 3;
+  border-radius: 3px;
 }
 
 .c0 .wrapper .img-wrapper img {
@@ -75,15 +63,12 @@ exports[`FileCardView should render correct background based on mediaType" 2`] =
 .c0 {
   box-shadow: 0 1px 1px rgba(9,30,66,0.2),0 0 1px 0 rgba(9,30,66,0.24);
   cursor: pointer;
+  border-radius: 3px;
   background: #fff;
   line-height: normal;
   position: relative;
   width: 100%;
   height: 100%;
-}
-
-.c0 border-radius:function borderRadius() {
-  return: 3;
 }
 
 .c0::after {
@@ -94,22 +79,16 @@ exports[`FileCardView should render correct background based on mediaType" 2`] =
   top: 0;
   box-sizing: border-box;
   pointer-events: none;
+  border-radius: 3px;
   border: 2px solid transparent;
 }
 
-.c0::after border-radius:function borderRadius() {
-  return: 3;
-}
-
 .c0 .wrapper {
+  border-radius: 3px;
   background: #F4F5F7;
   display: block;
   height: inherit;
   position: relative;
-}
-
-.c0 .wrapper border-radius:function borderRadius() {
-  return: 3;
 }
 
 .c0 .wrapper .img-wrapper {
@@ -118,10 +97,7 @@ exports[`FileCardView should render correct background based on mediaType" 2`] =
   height: inherit;
   display: block;
   overflow: hidden;
-}
-
-.c0 .wrapper .img-wrapper border-radius:function borderRadius() {
-  return: 3;
+  border-radius: 3px;
 }
 
 .c0 .wrapper .img-wrapper img {

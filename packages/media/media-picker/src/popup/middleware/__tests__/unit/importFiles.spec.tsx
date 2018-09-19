@@ -324,7 +324,7 @@ describe('importFiles middleware', () => {
         return importFiles(eventEmitter, store, mockWsProvider).then(() => {
           const localUploadsFinalizedNum = 2;
           const recentFinalizedNum = 1;
-          const isFinalizeUploadCall = (call: [Action]) =>
+          const isFinalizeUploadCall = (call: Action[]) =>
             call[0].type === 'FINALIZE_UPLOAD';
 
           expect(

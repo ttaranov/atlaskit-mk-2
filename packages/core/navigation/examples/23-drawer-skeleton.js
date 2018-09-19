@@ -6,12 +6,12 @@ import AddIcon from '@atlaskit/icon/glyph/add';
 import StarIcon from '@atlaskit/icon/glyph/star';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import Button from '@atlaskit/button';
-import ConfluenceIcon from '@atlaskit/icon/glyph/confluence';
+import { ConfluenceIcon } from '@atlaskit/logo';
 import Lorem from 'react-lorem-component';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import Tooltip from '@atlaskit/tooltip';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { gridSize } from '@atlaskit/theme';
 
 import SecondaryActions from './utils/confluence-example/SecondaryActions';
 import Navigation, {
@@ -27,7 +27,7 @@ import Navigation, {
 } from '../src';
 
 const SkeletonItemsWrapper = styled.div`
-  padding-right: ${akGridSizeUnitless * 3}px;
+  padding-right: ${gridSize() * 3}px;
 `;
 
 const BackIcon = (
