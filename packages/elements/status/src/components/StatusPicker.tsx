@@ -35,7 +35,7 @@ export class StatusPicker extends PureComponent<Props, any> {
             autoFocus={true}
             onKeyPress={this.onKeyPress}
           />
-        </FieldTextWrapper>,
+        </FieldTextWrapper>
         <ColorPalette
           key={Math.random().toString()}
           onClick={onColorClick}
