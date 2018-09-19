@@ -69,6 +69,9 @@ describe('table action handlers', () => {
       expect(newState).toEqual({
         ...pluginState,
         tableRef,
+        tableFloatingToolbarTarget: editorView.dom.querySelector(
+          '.table-wrapper',
+        ) as HTMLElement,
         tableNode: editorView.state.doc.firstChild,
       });
     });
