@@ -1,4 +1,5 @@
-import { MockReactionsAdapter, ReactionStore } from '@atlaskit/reactions';
+import { ReactionStore } from '@atlaskit/reactions';
+import { MockReactionsAdapter } from '@atlaskit/reactions/src/adapter/MockReactionsAdapter';
 import * as React from 'react';
 import { MOCK_USERS } from '../example-helpers/MockData';
 import {

@@ -1,11 +1,8 @@
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 import * as React from 'react';
 import { style } from 'typestyle';
-import {
-  MockReactionsAdapter,
-  ReactionAdapter,
-  ReactionStore,
-} from '../../src';
+import { ReactionAdapter, ReactionStore } from '../../src';
+import { MockReactionsAdapter } from '../../src/adapter/MockReactionsAdapter';
 import { AnalyticsViewer, EventsArray } from './AnalyticsViewer';
 
 const wrapperStyle = style({
