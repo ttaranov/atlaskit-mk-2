@@ -153,7 +153,10 @@ export class CardContent extends React.Component<CardContentProps> {
   }
 
   renderInlineResolvingState() {
-    const { url, props: {isSelected} } = this;
+    const {
+      url,
+      props: { isSelected },
+    } = this;
     return (
       <InlineCard.ResolvingView
         url={url}
@@ -176,7 +179,10 @@ export class CardContent extends React.Component<CardContentProps> {
   }
 
   renderInlineUnauthorisedState() {
-    const { url, props: {isSelected} } = this;
+    const {
+      url,
+      props: { isSelected },
+    } = this;
     return (
       <InlineCard.ForbiddenView
         url={url}
@@ -188,7 +194,10 @@ export class CardContent extends React.Component<CardContentProps> {
   }
 
   renderInlineForbiddenState() {
-    const { url, props: {isSelected} } = this;
+    const {
+      url,
+      props: { isSelected },
+    } = this;
     return (
       <InlineCard.ForbiddenView
         url={url}
@@ -200,7 +209,10 @@ export class CardContent extends React.Component<CardContentProps> {
   }
 
   renderInlineNotFoundState() {
-    const { url, props: {isSelected} } = this;
+    const {
+      url,
+      props: { isSelected },
+    } = this;
     return (
       <InlineCard.ErroredView
         url={url}
@@ -212,7 +224,10 @@ export class CardContent extends React.Component<CardContentProps> {
   }
 
   renderInlineErroredState() {
-    const { url, props: {isSelected} } = this;
+    const {
+      url,
+      props: { isSelected },
+    } = this;
     return (
       <InlineCard.ErroredView
         url={url}

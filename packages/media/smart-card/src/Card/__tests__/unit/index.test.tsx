@@ -6,15 +6,16 @@ jest.mock('react-lazily-render', () => {
 
 import * as React from 'react';
 import { Observable } from 'rxjs/Observable';
-import { takeWhile } from 'rxjs/operators';
 import { mount } from 'enzyme';
 import { Client, ObjectState, ObjectStatus } from '../../../Client';
 import { BlockCard, InlineCard } from '@atlaskit/media-ui';
 import { Card } from '../..';
-import { Observer } from 'rxjs/Observer';
+import { merge } from 'rxjs/observable/merge';
+import { of } from 'rxjs/observable/of';
+import { delay } from 'rxjs/operators/delay';
 
-function isNotResolved(state: ObjectState) {
-  return state.status !== 'resolved';
+function as<T>(x: any): T {
+  return x;
 }
 
 function createClient(
@@ -22,22 +23,16 @@ function createClient(
   data: {} = {},
 ): Client {
   const client = new Client();
-  jest.spyOn(client, 'get').mockReturnValue(
-    Observable.create((observer: Observer<any>) => {
-      observer.next({
-        status: 'resolving',
-      });
-      setTimeout(
-        () =>
-          observer.next({
-            status,
-            data,
-          }),
-        10,
-      );
-    }),
+  const mockedFetchData: Observable<ObjectState> = merge(
+    of(as<ObjectState>({ status: 'resolving', services: [] })),
+    of(as<ObjectState>({ status, data })).pipe(delay(10)),
   );
+  jest.spyOn(client, 'fetchData').mockReturnValue(mockedFetchData);
   return client;
+}
+
+function delayP(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 describe('Card', () => {
@@ -72,16 +67,10 @@ describe('Card', () => {
       />,
     );
 
-    try {
-      // wait for the data to be loaded
-      await client
-        .get('https://www.atlassian.com/')
-        .pipe(takeWhile(state => state.status !== 'errored'))
-        .toPromise();
-    } catch (error) {
-      wrapper.update();
-      expect(wrapper.find(BlockCard.ErroredView).exists()).toBeTruthy();
-    }
+    client.get('https://www.atlassian.com/');
+    await delayP(200);
+    wrapper.update();
+    expect(wrapper.find(BlockCard.ErroredView).exists()).toBeTruthy();
   });
 
   it('should render the errored view when not-found', async () => {
@@ -94,16 +83,10 @@ describe('Card', () => {
       />,
     );
 
-    try {
-      // wait for the data to be loaded
-      await client
-        .get('https://www.atlassian.com/')
-        .pipe(takeWhile(state => state.status !== 'not-found'))
-        .toPromise();
-    } catch (error) {
-      wrapper.update();
-      expect(wrapper.find(BlockCard.ErroredView).exists()).toBeTruthy();
-    }
+    client.get('https://www.atlassian.com/');
+    await delayP(200);
+    wrapper.update();
+    expect(wrapper.find(BlockCard.ErroredView).exists()).toBeTruthy();
   });
 
   it('should render the forbidden view when forbidden', async () => {
@@ -116,16 +99,10 @@ describe('Card', () => {
       />,
     );
 
-    try {
-      // wait for the data to be loaded
-      await client
-        .get('https://www.atlassian.com/')
-        .pipe(takeWhile(state => state.status !== 'forbidden'))
-        .toPromise();
-    } catch (error) {
-      wrapper.update();
-      expect(wrapper.find(BlockCard.ForbiddenView).exists()).toBeTruthy();
-    }
+    client.get('https://www.atlassian.com/');
+    await delayP(200);
+    wrapper.update();
+    expect(wrapper.find(BlockCard.ForbiddenView).exists()).toBeTruthy();
   });
 
   it('should render the unauthorized view when unauthorized', async () => {
@@ -138,16 +115,10 @@ describe('Card', () => {
       />,
     );
 
-    try {
-      // wait for the data to be loaded
-      await client
-        .get('https://www.atlassian.com/')
-        .pipe(takeWhile(state => state.status !== 'unauthorized'))
-        .toPromise();
-    } catch (error) {
-      wrapper.update();
-      expect(wrapper.find(BlockCard.UnauthorisedView).exists()).toBeTruthy();
-    }
+    client.get('https://www.atlassian.com/');
+    await delayP(200);
+    wrapper.update();
+    expect(wrapper.find(BlockCard.UnauthorisedView).exists()).toBeTruthy();
   });
 
   it('should render the resolved view when resolved', async () => {
@@ -160,12 +131,8 @@ describe('Card', () => {
       />,
     );
 
-    // wait for the data to be loaded
-    await client
-      .get('https://www.atlassian.com/')
-      .pipe(takeWhile(isNotResolved))
-      .toPromise();
-
+    client.get('https://www.atlassian.com/');
+    await delayP(200);
     wrapper.update();
     expect(wrapper.find(BlockCard.ResolvedView)).toHaveLength(1);
   });
@@ -181,11 +148,9 @@ describe('Card', () => {
       />,
     );
 
-    // wait for the data to be loaded
-    await client
-      .get('https://www.atlassian.com/')
-      .pipe(takeWhile(isNotResolved))
-      .toPromise();
+    client.get('https://www.atlassian.com/');
+
+    await delayP(200);
 
     wrapper.update();
     expect(wrapper.find(InlineCard.ResolvedView).props()).toEqual(
@@ -206,11 +171,9 @@ describe('Card', () => {
       />,
     );
 
-    // wait for the data to be loaded
-    await client
-      .get('https://www.atlassian.com/')
-      .pipe(takeWhile(isNotResolved))
-      .toPromise();
+    client.get('https://www.atlassian.com/');
+
+    await delayP(200);
 
     wrapper.update();
     expect(wrapper.find(BlockCard.ResolvedView).props()).toEqual(
@@ -230,12 +193,8 @@ describe('Card', () => {
       />,
     );
 
-    // wait for the data to be loaded
-    await client
-      .get('https://www.atlassian.com/')
-      .pipe(takeWhile(isNotResolved))
-      .toPromise();
-
+    client.get('https://www.atlassian.com/');
+    await delayP(200);
     wrapper.update();
     expect(wrapper.find(BlockCard.ResolvedView).exists()).toBeTruthy();
 
@@ -247,10 +206,9 @@ describe('Card', () => {
     expect(wrapper.find(BlockCard.ResolvingView).exists()).toBeTruthy();
 
     // wait for the data to be loaded
-    await client
-      .get('https://www.google.com/')
-      .pipe(takeWhile(isNotResolved))
-      .toPromise();
+    client.get('https://www.google.com/');
+
+    await delayP(200);
 
     // expect it to have finished loading again
     wrapper.update();
@@ -272,10 +230,9 @@ describe('Card', () => {
     );
 
     // wait for the data to be loaded
-    await client
-      .get('https://www.atlassian.com/')
-      .pipe(takeWhile(isNotResolved))
-      .toPromise();
+    client.get('https://www.atlassian.com/');
+
+    await delayP(200);
 
     wrapper.update();
     expect(wrapper.find(BlockCard.ResolvedView).props()).toEqual(

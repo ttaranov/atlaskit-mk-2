@@ -4,9 +4,7 @@ import { merge } from 'rxjs/observable/merge';
 import { ObjectState, AuthService, ObjectStatus } from './types';
 import fetch$ from './fetch';
 import { map } from 'rxjs/operators/map';
-import { onErrorResumeNext } from 'rxjs/operators/onErrorResumeNext';
-import { refCount } from 'rxjs/operators/refCount';
-import { publishReplay } from 'rxjs/operators/publishReplay';
+import { catchError } from 'rxjs/operators/catchError';
 
 export type RemoteResourceAuthConfig = {
   key: string;
@@ -77,23 +75,20 @@ export type Options = {
   definitionId?: string;
 };
 
-export function createObjectResolverServiceObservable(
-  options: Options,
-): Observable<ObjectState> {
-  const { serviceUrl, objectUrl, definitionId } = options;
+const fetchData = (serviceUrl: string, objectUrl: string) =>
+  fetch$<ResolveResponse>('post', `${serviceUrl}/resolve`, {
+    resourceUrl: encodeURI(objectUrl),
+  });
 
-  return merge(
+export const createObjectResolverServiceObservable = ({
+  serviceUrl,
+  objectUrl,
+  definitionId,
+}: Options): Observable<ObjectState> =>
+  merge(
     of({ status: 'resolving', services: [] } as ObjectState),
-    fetch$<ResolveResponse>('post', `${serviceUrl}/resolve`, {
-      resourceUrl: encodeURI(objectUrl),
-    }).pipe(
+    fetchData(serviceUrl, objectUrl).pipe(
       map(responseToStateMapper(definitionId)),
-      onErrorResumeNext(
-        of({
-          status: 'errored',
-          services: [],
-        } as ObjectState),
-      ),
+      catchError(() => of({ status: 'errored', services: [] } as ObjectState)),
     ),
-  ).pipe(publishReplay(1), refCount());
-}
+  );

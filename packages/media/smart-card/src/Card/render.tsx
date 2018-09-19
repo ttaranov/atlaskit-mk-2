@@ -7,7 +7,12 @@ import { CardContent } from './CardContent';
 export const isCardWithData = (props: CardProps): props is CardWithData =>
   !!(props as CardWithData).data;
 
-export const renderCardWithURL = ({ url, client, appearance, isSelected }: CardWithUrl) => {
+export const renderCardWithURL = ({
+  url,
+  client,
+  appearance,
+  isSelected,
+}: CardWithUrl) => {
   if (!url) {
     throw new Error(
       '@atlaskit/smart-card: Please, provide either data or url props',
@@ -49,7 +54,11 @@ export const renderCardWithURL = ({ url, client, appearance, isSelected }: CardW
   );
 };
 
-export const renderCardWithData = ({ appearance, data, isSelected }: CardWithData) => (
+export const renderCardWithData = ({
+  appearance,
+  data,
+  isSelected,
+}: CardWithData) => (
   <CardContent
     isSelected={isSelected}
     appearance={appearance}

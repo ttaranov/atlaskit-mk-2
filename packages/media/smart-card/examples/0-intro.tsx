@@ -6,7 +6,9 @@ import { FieldTextStateless } from '@atlaskit/field-text';
 import Button from '@atlaskit/button';
 import { Provider, Card } from '../src';
 import { CardAppearance } from '../src/Card/CardContent';
-// import '../mocks';
+// import { mockSingleCardWorkflow } from '../mocks';
+
+// mockSingleCardWorkflow();
 
 const params =
   typeof URLSearchParams !== 'undefined'
@@ -15,7 +17,7 @@ const params =
 const param = params ? params.get('url') : null;
 const defaultURL = param
   ? param
-  : 'https://drive.google.com/open?id=0B1I77F_P5VV2c3RhcnRlcl9maWxlX2Rhc2hlclYw';
+  : 'https://docs.google.com/document/d/1igbED2X5Qt8rQCeO-5rbDGG6u51wUNumlo2P_EtC9lo/edit';
 
 export interface ExampleProps {}
 
@@ -60,6 +62,13 @@ class Example extends React.Component<ExampleProps, ExampleState> {
     });
   };
 
+  renderCard(url: string, isSelected: boolean, appearance: any) {
+    if (url) {
+      return <Card isSelected={isSelected} appearance={appearance} url={url} />;
+    }
+    return null;
+  }
+
   render() {
     const { appearance, url, isSelected } = this.state;
     return (
@@ -68,36 +77,53 @@ class Example extends React.Component<ExampleProps, ExampleState> {
           <Grid>
             <GridColumn>
               <p>Switch to</p>
-              <Button
-                onClick={this.setPredefinedUrl(
-                  'https://docs.google.com/document/d/1igbED2X5Qt8rQCeO-5rbDGG6u51wUNumlo2P_EtC9lo/edit',
-                )}
-              >
-                Public Google Document
-              </Button>
-              <Button
-                onClick={this.setPredefinedUrl(
-                  'https://docs.google.com/spreadsheets/d/168cPaeXw_2zbo6md4pGUdEmXzRsXRQmNP0712ID2TKA/edit?usp=sharing',
-                )}
-              >
-                Public Google Sheet
-              </Button>
-              <Button
-                onClick={this.setPredefinedUrl(
-                  'https://docs.google.com/document/d/1nXGwmxJuvQ8CdVQsGnRLOJOo7kJPqesmiBgvcaXD4Aw/edit',
-                )}
-              >
-                Protected Google Document, anyone in org. can view
-              </Button>
-              <Button
-                onClick={this.setPredefinedUrl(
-                  'https://docs.google.com/spreadsheets/d/1pHwRAZWA7_aGtlAwOjAOrHGoT5gT0oKS635HTI6gI8I/edit?usp=drive_web&ouid=110769160460483925018',
-                )}
-              >
-                Protected Google Sheet, anyone in org can view
-              </Button>
-            </GridColumn>
-            <GridColumn>
+              <ul>
+                <li>
+                  <Button
+                    appearance="link"
+                    spacing="compact"
+                    onClick={this.setPredefinedUrl(
+                      'https://docs.google.com/document/d/1igbED2X5Qt8rQCeO-5rbDGG6u51wUNumlo2P_EtC9lo/edit',
+                    )}
+                  >
+                    Public Google Document
+                  </Button>
+                </li>
+                <li>
+                  <Button
+                    appearance="link"
+                    spacing="compact"
+                    onClick={this.setPredefinedUrl(
+                      'https://docs.google.com/spreadsheets/d/168cPaeXw_2zbo6md4pGUdEmXzRsXRQmNP0712ID2TKA/edit?usp=sharing',
+                    )}
+                  >
+                    Public Google Sheet
+                  </Button>
+                </li>
+                <li>
+                  <Button
+                    appearance="link"
+                    spacing="compact"
+                    onClick={this.setPredefinedUrl(
+                      'https://docs.google.com/document/d/1nXGwmxJuvQ8CdVQsGnRLOJOo7kJPqesmiBgvcaXD4Aw/edit',
+                    )}
+                  >
+                    Protected Google Document, anyone in org. can view
+                  </Button>
+                </li>
+                <li>
+                  <Button
+                    appearance="link"
+                    spacing="compact"
+                    onClick={this.setPredefinedUrl(
+                      'https://docs.google.com/spreadsheets/d/1pHwRAZWA7_aGtlAwOjAOrHGoT5gT0oKS635HTI6gI8I/edit?usp=drive_web&ouid=110769160460483925018',
+                    )}
+                  >
+                    Protected Google Sheet, anyone in org can view
+                  </Button>
+                </li>
+              </ul>
+              <br />
               <Field label="Appearance">
                 <Select
                   options={[
@@ -109,10 +135,11 @@ class Example extends React.Component<ExampleProps, ExampleState> {
                 />
               </Field>
               <br />
-              <Button
-                label="Is selected?"
-                onClick={this.handleIsSelected}
-              >{ this.state.isSelected ? "Deselect the card" : "Make the card selected" }</Button>
+              <Button label="Is selected?" onClick={this.handleIsSelected}>
+                {this.state.isSelected
+                  ? 'Deselect the card'
+                  : 'Make the card selected'}
+              </Button>
               <br />
               <FieldTextStateless
                 autoFocus={true}
@@ -126,11 +153,7 @@ class Example extends React.Component<ExampleProps, ExampleState> {
           <Grid>
             <GridColumn>
               <br />
-              <Card
-                isSelected={isSelected}
-                appearance={appearance.value}
-                url={url}
-              />
+              {this.renderCard(url, isSelected, appearance.value)}
             </GridColumn>
           </Grid>
         </Page>

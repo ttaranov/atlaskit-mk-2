@@ -19,13 +19,19 @@ export default function<T>(
       ...(data ? { body: JSON.stringify(data) } : {}),
     };
 
-    fetch(url, requestConfig)
-      .then(resp => resp.ok && resp.json())
-      .then(res => {
-        observer.next(res as T);
-        observer.complete();
-      })
-      .catch(e => observer.error(e));
+    try {
+      fetch(url, requestConfig)
+        .then(resp => resp.ok && resp.json())
+        .then(res => {
+          observer.next(res as T);
+          observer.complete();
+        })
+        .catch(e => {
+          observer.error(e);
+        });
+    } catch (e) {
+      observer.error(e);
+    }
 
     return () => AC.abort();
   });
