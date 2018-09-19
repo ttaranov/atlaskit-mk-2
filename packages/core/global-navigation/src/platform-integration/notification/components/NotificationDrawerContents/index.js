@@ -2,7 +2,6 @@
 
 import React, { Fragment, Component } from 'react';
 import styled from 'styled-components';
-import { Event } from 'chrome-trace-event';
 import Spinner from '@atlaskit/spinner';
 
 import addParamToUrl from '../../add-param-to-url';
@@ -47,7 +46,7 @@ class NotificationDrawer extends Component<Props, State> {
 
   iframe = null;
 
-  handleMessage = (event: Event) => {
+  handleMessage = (event: any) => {
     if (
       event.source &&
       this.iframe &&
