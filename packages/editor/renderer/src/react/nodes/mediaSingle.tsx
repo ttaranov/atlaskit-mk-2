@@ -6,6 +6,7 @@ import {
   MediaSingleLayout,
   WidthConsumer,
 } from '@atlaskit/editor-common';
+import { RendererAppearance } from '../../ui/Renderer';
 
 export interface Props {
   children: ReactElement<any>;
@@ -31,7 +32,11 @@ const ExtendedUIMediaSingle = styled(UIMediaSingle)`
 `;
 
 export default class MediaSingle extends Component<
-  { layout: MediaSingleLayout } & React.Props<any>,
+  {
+    layout: MediaSingleLayout;
+    width: number;
+    appearance: RendererAppearance;
+  } & React.Props<any>,
   State
 > {
   constructor(props) {
@@ -90,6 +95,9 @@ export default class MediaSingle extends Component<
             width={width}
             height={height}
             containerWidth={containerWidth}
+            appearance={props.appearance}
+            gridWidth={props.width}
+            gridSize={12}
           >
             {media}
           </ExtendedUIMediaSingle>

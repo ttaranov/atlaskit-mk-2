@@ -220,6 +220,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
       serializer: this,
       content: node.content ? node.content.toJSON() : undefined,
       useNewApplicationCard: this.useNewApplicationCard,
+      appearance: this.appearance,
       ...node.attrs,
     };
   }

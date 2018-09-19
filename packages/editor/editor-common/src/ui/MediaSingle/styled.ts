@@ -21,7 +21,7 @@ function float(layout: MediaSingleLayout): string {
   }
 }
 
-function calcWidth(
+export function calcWidth(
   layout: MediaSingleLayout,
   width: number,
   containerWidth?: number,
@@ -33,14 +33,14 @@ function calcWidth(
         ? 'calc(50% - 12px)'
         : `${width}px`;
     case 'wide':
-      return width > akEditorFullPageMaxWidth
-        ? '100%'
-        : `${Math.min(akEditorWideLayoutWidth, width)}px`;
+      return `${Math.min(akEditorWideLayoutWidth, width)}px`;
     case 'full-width':
       return `${Math.min(width, containerWidth || 0) -
         akEditorBreakoutPadding}px`;
     default:
-      return width > akEditorFullPageMaxWidth ? '100%' : `${width}px`;
+      return width > akEditorFullPageMaxWidth
+        ? `${akEditorFullPageMaxWidth}px`
+        : `${width}px`;
   }
 }
 
@@ -76,22 +76,28 @@ export interface WrapperProps {
   width: number;
   height: number;
   containerWidth?: number;
+  forceWidth: boolean;
+  innerRef?: (elem: HTMLElement) => void;
 }
 
 /**
  * Can't use `.attrs` to handle highly dynamic styles because we are still
  * supporting `styled-components` v1.
  */
-const MediaSingleDimensionHelper = ({
+export const MediaSingleDimensionHelper = ({
   width,
   height,
   layout,
   containerWidth = 0,
+  forceWidth,
 }: WrapperProps) => css`
+  width: ${forceWidth
+    ? `${width}px`
+    : calcWidth(layout, width, containerWidth)};
   max-width: ${calcMaxWidth(layout, width, containerWidth)};
-  width: ${calcWidth(layout, width, containerWidth)};
   float: ${float(layout)};
   margin: ${calcMargin(layout)};
+
   &::after {
     content: '';
     display: block;
