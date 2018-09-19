@@ -208,7 +208,8 @@ export const importFilesFromRemoteService = (
         const preview = getPreviewFromMetadata(
           (payload as WsNotifyMetadata).metadata,
         );
-
+        // TODO: check if we only should fire preview-update for images or everything
+        // if (preview.dimensions.width) {
         store.dispatch(
           sendUploadEvent({
             event: {
@@ -221,6 +222,7 @@ export const importFilesFromRemoteService = (
             uploadId,
           }),
         );
+        // }
       } else {
         // TODO figure out the difference between this uploadId and the last MSW-405
         const { uploadId: newUploadId } = payload;
