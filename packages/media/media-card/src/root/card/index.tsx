@@ -123,6 +123,22 @@ export class Card extends Component<CardProps, CardState> {
       return;
     }
 
+    if (identifier.mediaItemType === 'external') {
+      const { dataURI, name } = identifier;
+
+      this.setState({
+        status: 'complete',
+        dataURI,
+        metadata: {
+          id: '',
+          name,
+          mediaType: 'image',
+        },
+      });
+
+      return;
+    }
+
     if (identifier.mediaItemType !== 'file') {
       try {
         const metadata = await getLinkMetadata(identifier, context);

@@ -150,7 +150,7 @@ export class CardViewBase extends React.Component<
 
     if (mediaItemType === 'link') {
       card = this.renderLink();
-    } else if (mediaItemType === 'file') {
+    } else if (mediaItemType === 'file' || mediaItemType === 'external') {
       card = this.renderFile();
     }
 
@@ -210,6 +210,7 @@ export class CardViewBase extends React.Component<
       selectable,
       selected,
       disableOverlay,
+      mediaItemType,
     } = this.props;
 
     return (
@@ -226,6 +227,7 @@ export class CardViewBase extends React.Component<
         selectable={selectable}
         selected={selected}
         disableOverlay={disableOverlay}
+        mediaItemType={mediaItemType}
       />
     );
   };

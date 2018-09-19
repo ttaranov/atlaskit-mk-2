@@ -4,7 +4,11 @@ import {
   MediaType,
 } from '@atlaskit/media-core';
 
-export type Identifier = UrlPreviewIdentifier | LinkIdentifier | FileIdentifier;
+export type Identifier =
+  | UrlPreviewIdentifier
+  | LinkIdentifier
+  | FileIdentifier
+  | ExternalIdentifier;
 export type Provider = MediaItemProvider | UrlPreviewProvider;
 
 export interface FileIdentifier {
@@ -24,6 +28,12 @@ export interface LinkIdentifier {
 export interface UrlPreviewIdentifier {
   readonly mediaItemType: 'link';
   readonly url: string;
+}
+
+export interface ExternalIdentifier {
+  readonly mediaItemType: 'external';
+  readonly dataURI: string;
+  readonly name?: string;
 }
 
 export const isPreviewableType = (type: MediaType): boolean => {

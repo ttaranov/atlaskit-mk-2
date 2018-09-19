@@ -1,7 +1,7 @@
 import { MediaType } from '@atlaskit/media-store';
 import { SmartCardResponse } from './smartCardResponse';
 
-export type MediaItemType = 'file' | 'link';
+export type MediaItemType = 'file' | 'link' | 'external';
 
 export type MediaItem = FileItem | LinkItem;
 
