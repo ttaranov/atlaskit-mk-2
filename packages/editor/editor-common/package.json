@@ -60,7 +60,7 @@
     "@types/prosemirror-state": "^1.0.0",
     "axios": "^0.17.1",
     "chai": "^4.1.2",
-    "enzyme": "^3.6.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "json-schema-diff-validator": "^0.1.2",
     "prosemirror-state": "^1.2.2",
     "raf-stub": "^2.0.1",

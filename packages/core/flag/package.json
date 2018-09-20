@@ -38,7 +38,7 @@
     "@atlaskit/field-radio-group": "^4.0.7",
     "@atlaskit/spinner": "^9.0.8",
     "@atlaskit/theme": "^6.0.2",
-    "enzyme": "^3.6.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.2"
   },
   "keywords": [

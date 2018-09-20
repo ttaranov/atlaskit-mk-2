@@ -1,6 +1,6 @@
 /* eslint-disable */
 require('jest-styled-components');
-const { snakeCase } = require('snake-case');
+const snakeCase = require('snake-case');
 const { toMatchSnapshot } = require('jest-snapshot');
 const { configureToMatchImageSnapshot } = require('jest-image-snapshot');
 

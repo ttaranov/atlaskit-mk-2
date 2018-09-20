@@ -32,7 +32,7 @@
   "devDependencies": {
     "@atlaskit/build-utils": "^2.0.0",
     "@atlaskit/docs": "^5.0.2",
-    "enzyme": "^3.6.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.2",
     "react-redux": "^5.0.0",
     "redux": "^3.7.2"

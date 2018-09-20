@@ -44,6 +44,6 @@
     "@atlaskit/docs": "^5.0.7",
     "@atlaskit/single-select": "^6.0.3",
     "@atlaskit/util-data-test": "^10.0.9",
-    "enzyme": "^3.6.0"
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   }
 }

@@ -31,7 +31,7 @@
     "@atlaskit/icon": "^13.6.1",
     "@atlaskit/navigation": "^33.1.8",
     "@atlaskit/toggle": "^5.0.8",
-    "enzyme": "^3.6.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.2",
     "react-lorem-component": "^0.12.2",
     "react-syntax-highlighter": "^6.0.2"

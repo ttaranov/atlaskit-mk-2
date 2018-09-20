@@ -47,7 +47,7 @@
     "@atlaskit/field-text": "^7.0.10",
     "@atlaskit/modal-dialog": "^7.0.0",
     "@atlaskit/webdriver-runner": "^0.1.0",
-    "enzyme": "^3.6.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "moment": "^2.22.2",
     "react-dom": "^16.4.2",
     "react-lorem-component": "^0.12.2",

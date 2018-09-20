@@ -56,7 +56,7 @@
     "@atlaskit/navigation": "^33.1.7",
     "@atlaskit/page": "^8.0.3",
     "@atlaskit/quick-search": "^4.2.7",
-    "enzyme": "^3.6.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "fetch-mock": "^6.5.2",
     "react": "^16.4.0",
     "react-dom": "^16.4.2",

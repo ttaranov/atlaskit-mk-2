@@ -39,6 +39,6 @@
     "@atlaskit/button": "^9.0.8",
     "@atlaskit/docs": "^5.0.6",
     "@atlaskit/section-message": "^1.0.7",
-    "enzyme": "^3.6.0"
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
   }
 }

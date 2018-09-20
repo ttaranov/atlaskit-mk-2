@@ -11,7 +11,7 @@ const Component = () => null;
  * TODO: JEST-23 Fix these tests
  */
 /* eslint-disable jest/no-disabled-tests */
-describe.skip('getButtonProps', () => {
+describe('getButtonProps', () => {
   it('should pass through all props to a custom component', () => {
     const cmp = mount(<Button customProp={1} component={Component} />);
     expect(cmp.find('StyledComponent').prop('customProp')).toBe(1);

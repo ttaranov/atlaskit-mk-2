@@ -39,7 +39,7 @@
     "@atlaskit/field-range": "^5.0.2",
     "@atlaskit/media-core": "^23.2.1",
     "@atlaskit/media-test-helpers": "^17.1.0",
-    "enzyme": "^3.6.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react": "^16.4.0"
   }
 }

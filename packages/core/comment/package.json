@@ -34,7 +34,7 @@
     "@atlaskit/build-utils": "^2.0.0",
     "@atlaskit/docs": "^5.0.7",
     "@atlaskit/editor-core": "^80.0.0",
-    "enzyme": "^3.6.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.2"
   },
   "keywords": [

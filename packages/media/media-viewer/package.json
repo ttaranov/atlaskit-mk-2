@@ -48,7 +48,7 @@
     "@types/enzyme": "^3.1.6",
     "@types/query-string": "^4.3.1",
     "@types/sinon-chai": "^2.7.27",
-    "enzyme": "^3.6.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "jsverify": "^0.8.3",
     "sinon-chai": "^2.9.0"
   }

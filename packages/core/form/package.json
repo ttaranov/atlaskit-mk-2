@@ -47,7 +47,7 @@
     "@atlaskit/toggle": "^5.0.8",
     "@atlaskit/tooltip": "^12.0.14",
     "@atlaskit/webdriver-runner": "^0.1.0",
-    "enzyme": "^3.6.0",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.2",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
