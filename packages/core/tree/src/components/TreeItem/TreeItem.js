@@ -57,14 +57,18 @@ export default class TreeItem extends Component<Props> {
   ): TreeDraggableProps => {
     const { path, offsetPerLevel } = this.props;
 
-    let transition = '';
-    if (snapshot.isDragging) {
-      transition = 'padding-left 0.15s ease-out';
-    } else {
-      transition = draggableProps.style
-        ? draggableProps.style.transition
-        : null;
+    const transitions =
+      draggableProps.style && draggableProps.style.transition
+        ? [draggableProps.style.transition]
+        : [];
+    if (snapshot.dropping) {
+      transitions.push(
+        `padding-left ${snapshot.dropping.duration}s ${
+          snapshot.dropping.curve
+        }`,
+      );
     }
+    const transition = transitions.join(', ');
 
     //$FlowFixMe
     return {

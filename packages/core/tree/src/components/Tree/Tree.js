@@ -66,6 +66,7 @@ export default class Tree extends Component<Props, State> {
   };
 
   onDragUpdate = (update: DragUpdate) => {
+    console.log('>> onDragUpdate', update);
     const { onExpand } = this.props;
     const { flattenedTree } = this.state;
     if (!this.dragState) {
@@ -87,6 +88,7 @@ export default class Tree extends Component<Props, State> {
   };
 
   onDragEnd = (result: DropResult) => {
+    console.log('>> onDragEnd', result);
     const { onDragEnd, tree } = this.props;
     const { flattenedTree } = this.state;
     this.combineTimer.stop();
@@ -129,7 +131,7 @@ export default class Tree extends Component<Props, State> {
       this.dragState.destination
     ) {
       // We only change the if it's being dragged by keyboard or just dropped
-      if (this.dragAction === 'key' || snapshot.isDropAnimating) {
+      if (this.dragAction === 'key' || snapshot.dropping) {
         const { source, destination, horizontalLevel } = this.dragState;
         return getDestinationPath(
           flattenedTree,
