@@ -231,7 +231,7 @@ export default function generateProductConfig(
     ),
     notification: configFactory(
       ((fabricNotificationLogUrl || cloudId) && openDrawer('notification')) ||
-        function() {},
+        (() => {}),
       notificationTooltip,
     ),
     help: helpConfigFactory(helpItems, helpTooltip),
