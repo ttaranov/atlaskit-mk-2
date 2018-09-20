@@ -19,10 +19,6 @@ const EventViewerWrapper = styled.li`
     marginleft: 5;
   }
 `;
-/**
- *   
-  
- */
 
 export class EventViewer extends React.PureComponent<
   Event,
