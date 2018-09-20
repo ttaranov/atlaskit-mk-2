@@ -18,6 +18,9 @@ export interface Props {
   title?: string;
   titlePosition?: string;
   onFocus?: (event: Event) => void;
+
+  navigateLeft?: () => void;
+  navigateRight?: () => void;
 }
 
 export default class ToolbarButton extends PureComponent<Props, {}> {
@@ -26,6 +29,8 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
   };
 
   render() {
+    const { navigateRight } = this.props;
+
     const button = (
       <FocusableButtonWrapper
         className={this.props.className}
@@ -39,6 +44,16 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
         target={this.props.target}
         theme={this.props.theme}
         onFocus={this.props.onFocus}
+        // navigateRight={()=>console.log("navigated right!") } // this.props.navigateRight}
+        // navigateRight={this.props.navigateRight}
+        navigateRight={() => {
+          console.log('navigating right in toolbar button');
+          if (navigateRight) {
+            console.log('navright is defined in ToolbarButton');
+            navigateRight();
+          }
+        }}
+        navigateLeft={this.props.navigateLeft}
       />
     );
 

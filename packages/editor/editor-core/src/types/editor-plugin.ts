@@ -37,6 +37,8 @@ export type UiComponentFactoryParams = {
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
   disabled: boolean;
+
+  navigateRight?: () => void;
   onFocus: (e) => void;
 };
 
