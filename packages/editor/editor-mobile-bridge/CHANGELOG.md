@@ -1,5 +1,8 @@
 # @atlaskit/editor-mobile-bridge
 
+## 4.0.3
+- [patch] ED-5346: prosemirror upgrade [5bd4432](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5bd4432)
+
 ## 4.0.2
 - [patch] Updated dependencies [2a6410f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2a6410f)
   - @atlaskit/editor-common@16.2.0
