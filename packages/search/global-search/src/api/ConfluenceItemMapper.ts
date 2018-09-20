@@ -5,6 +5,7 @@ import {
   ContainerResult,
   ConfluenceObjectResult,
   ContentType,
+  Result,
 } from '../model/Result';
 import { Scope, ConfluenceItem } from './types';
 
@@ -61,7 +62,7 @@ export function mapConfluenceItemToResult(
   item: ConfluenceItem,
   searchSessionId: string,
   experimentId?: string,
-) {
+): Result {
   const mapper =
     scope === Scope.ConfluenceSpace
       ? mapConfluenceItemToResultSpace

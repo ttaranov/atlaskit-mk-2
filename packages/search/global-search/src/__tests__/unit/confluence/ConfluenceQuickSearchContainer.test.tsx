@@ -26,6 +26,9 @@ import { SearchScreenCounter } from '../../../util/ScreenCounter';
 import NoResultsState from '../../../components/confluence/NoResultsState';
 import AdvancedSearchGroup from '../../../components/confluence/AdvancedSearchGroup';
 import * as SearchResultUtils from '../../../components/SearchResultsUtil';
+import { Scope } from '../../../api/types';
+import { Result } from '../../../model/Result';
+import { EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE } from '../../../api/CrossProductSearchClient';
 
 const sessionId = 'sessionId';
 function render(partialProps?: Partial<Props>) {
@@ -34,6 +37,7 @@ function render(partialProps?: Partial<Props>) {
     crossProductSearchClient: noResultsCrossProductSearchClient,
     peopleSearchClient: noResultsPeopleSearchClient,
     useAggregatorForConfluenceObjects: false,
+    useCPUSForPeopleResults: false,
     ...partialProps,
   };
 
@@ -126,6 +130,47 @@ describe('ConfluenceQuickSearchContainer', () => {
         peopleElapsedMs: expect.any(Number),
       },
     });
+  });
+
+  it('should use CPUs for people results when enabled', async () => {
+    const wrapper = render({
+      useCPUSForPeopleResults: true,
+      crossProductSearchClient: {
+        search(query: string, searchSessionId: string, scopes: Scope[]) {
+          // only return items when People scope is set
+          if (scopes.find(s => s === Scope.People)) {
+            const results = new Map<Scope, Result[]>();
+            results.set(Scope.People, [makePersonResult()]);
+
+            return Promise.resolve({
+              results: results,
+            });
+          }
+
+          return Promise.resolve(EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE);
+        },
+      },
+    });
+
+    const quickSearchContainer = wrapper.find(QuickSearchContainer);
+    const searchResults = await (quickSearchContainer.props() as QuickSearchContainerProps).getSearchResults(
+      'query',
+      sessionId,
+      100,
+    );
+
+    expect(searchResults.results.people).toEqual([
+      {
+        mentionName: 'mentionName',
+        presenceMessage: 'presenceMessage',
+        analyticsType: 'result-person',
+        resultType: 'person-result',
+        name: 'name',
+        avatarUrl: 'avatarUrl',
+        href: 'href',
+        resultId: expect.any(String),
+      },
+    ]);
   });
 
   describe('Confluence Search Results component', () => {
