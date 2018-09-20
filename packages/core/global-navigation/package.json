@@ -25,7 +25,7 @@
     "@atlaskit/theme": "^6.0.2",
     "@atlaskit/spinner": "^9.0.8",
     "@atlaskit/notification-indicator": "^4.0.3",
-    "@atlaskit/notification-log-client": "^3.0.2",
+    "@atlaskit/notification-log-client": "^3.1.0",
     "emotion": "^9.1.1",
     "emotion-theming": "^9.0.0",
     "prop-types": "^15.5.10",
