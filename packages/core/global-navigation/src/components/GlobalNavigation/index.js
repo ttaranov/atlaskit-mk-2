@@ -129,11 +129,13 @@ export default class GlobalNavigation
       }
     });
 
+    const { fabricNotificationLogUrl, cloudId, locale, product } = this.props;
+
     this.notificationIntegrationInstance = notificationIntegration(
-      this.props.fabricNotificationLogUrl,
-      this.props.cloudId,
-      this.props.locale,
-      this.props.product,
+      fabricNotificationLogUrl,
+      cloudId,
+      locale,
+      product,
     );
   }
 
