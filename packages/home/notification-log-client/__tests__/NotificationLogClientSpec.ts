@@ -1,9 +1,6 @@
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock/src/client';
-import {
-  name as npmPackageName,
-  version as npmPackageVersion,
-} from '../package.json';
+import { version as npmPackageVersion } from '../package.json';
 import {
   NotificationLogClient,
   NotificationCountResponse,
