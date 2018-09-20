@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 80.5.2
+- [patch] Fix floating toolbar position in a table with scroll [8da7574](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8da7574)
+
 ## 80.5.1
 - [patch] Updated dependencies [1be4bb8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1be4bb8)
   - @atlaskit/editor-common@16.2.1
