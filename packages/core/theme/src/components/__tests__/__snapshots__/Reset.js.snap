@@ -99,7 +99,7 @@ exports[`themed reset 1`] = `
   backgroundColor="#000"
   linkColor="blue"
   textColor="#fff"
-  values={[Function]}
+  theme={[Function]}
 >
   <Reset>
     <styled.div
