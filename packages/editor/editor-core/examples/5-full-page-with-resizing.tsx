@@ -10,11 +10,9 @@ const mediaProvider = storyMediaProviderFactory({
 export default function Example() {
   return FullPageExample({
     defaultValue: exampleDocument,
-    UNSAFE_mediaSingle_grid: true,
     media: {
       provider: mediaProvider,
       allowMediaSingle: true,
-      UNSAFE_allowMediaSingleResizing: true,
     },
   });
 }

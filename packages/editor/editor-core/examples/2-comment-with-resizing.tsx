@@ -12,11 +12,9 @@ export default function Example() {
 
     editorProps: {
       defaultValue: exampleDocument,
-      UNSAFE_mediaSingle_grid: true,
       media: {
         provider: mediaProvider,
         allowMediaSingle: true,
-        UNSAFE_allowMediaSingleResizing: true,
       },
 
       allowLayouts: true,
