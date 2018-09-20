@@ -43,12 +43,12 @@ export class MediaImage extends Component<MediaImageProps, MediaImageState> {
       newProps.width && width ? newProps.width > width : false;
     const isHeightBigger =
       newProps.height && height ? newProps.height > height : false;
-    const areNewDimensionsBigger = isWidthBigger || isHeightBigger;
+    const isNewDimensionsBigger = isWidthBigger || isHeightBigger;
 
     if (
       newProps.id !== id ||
       newProps.collectionName !== collectionName ||
-      areNewDimensionsBigger
+      isNewDimensionsBigger
     ) {
       this.subscribe(newProps);
     }

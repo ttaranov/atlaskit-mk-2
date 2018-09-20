@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
-import MediaImage, { MediaImageProps } from '../../src';
 import { Observable } from 'rxjs';
+import { nextTick } from '@atlaskit/media-test-helpers';
+import MediaImage, { MediaImageProps } from '../../src';
 
 describe('<MediaImage />', () => {
   const setup = (props?: Partial<MediaImageProps>) => {
@@ -73,9 +74,9 @@ describe('<MediaImage />', () => {
   });
 
   it('should render an img tag with the right src', async () => {
-    const { mediaImage, getImage } = setup();
+    const { mediaImage } = setup();
 
-    await getImage;
+    await nextTick();
     mediaImage.update();
 
     expect(mediaImage.find('img').prop('src')).toEqual(
@@ -121,11 +122,11 @@ describe('<MediaImage />', () => {
   });
 
   it('should use className property', async () => {
-    const { mediaImage, getImage } = setup({
+    const { mediaImage } = setup({
       className: 'some-class',
     });
 
-    await getImage;
+    await nextTick();
     mediaImage.update();
 
     expect(mediaImage.find('img').prop('className')).toEqual('some-class');
