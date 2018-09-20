@@ -49,6 +49,7 @@ const CommentEditor: any = styled.div`
 CommentEditor.displayName = 'CommentEditor';
 
 const TableControlsPadding = 16;
+const CommentEditorMargin = 20;
 
 // tslint:disable-next-line:variable-name
 const MainToolbar = styled.div`
@@ -91,13 +92,13 @@ const ContentArea = styled(ContentStyles)`
   /** Hack for Bitbucket to ensure entire editorView gets drop event; see ED-3294 **/
   /** Hack for tables controlls. Otherwise marging collapse and controlls are misplaced. **/
   .ProseMirror {
-    margin: 12px 20px 20px;
+    margin: 12px ${CommentEditorMargin}px ${CommentEditorMargin}px;
   }
 
   .gridParent {
-    margin-left: ${20 - GRID_GUTTER}px;
-    margin-right: ${20 - GRID_GUTTER}px;
-    width: calc(100% + ${20 - GRID_GUTTER}px);
+    margin-left: ${CommentEditorMargin - GRID_GUTTER}px;
+    margin-right: ${CommentEditorMargin - GRID_GUTTER}px;
+    width: calc(100% + ${CommentEditorMargin - GRID_GUTTER}px);
   }
 
   padding: ${TableControlsPadding}px;

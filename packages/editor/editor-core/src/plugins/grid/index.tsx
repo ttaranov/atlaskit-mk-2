@@ -75,7 +75,7 @@ const gridPlugin: EditorPlugin = {
     return [{ name: 'grid', plugin: createPlugin }];
   },
 
-  contentComponent: ({ editorView, appearance, containerElement }) => {
+  contentComponent: ({ appearance, containerElement }) => {
     return (
       <WithPluginState
         plugins={{
@@ -101,14 +101,14 @@ const gridPlugin: EditorPlugin = {
 
           // wide grid lines
           if (appearance === 'full-page') {
-            const widePace =
+            const wideSpacing =
               (akEditorWideLayoutWidth - akEditorFullPageMaxWidth) / 2;
             ['left', 'right'].forEach(side =>
               gridLines.push(
                 <div
                   key={side}
                   className="gridLine"
-                  style={{ position: 'absolute', [side]: `-${widePace}px` }}
+                  style={{ position: 'absolute', [side]: `-${wideSpacing}px` }}
                 />,
               ),
             );
