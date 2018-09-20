@@ -18,7 +18,7 @@ export const exampleDocument = {
       type: 'mediaSingle',
       attrs: {
         layout: 'wrap-left',
-        width: 33,
+        width: 33.38,
       },
       content: [
         {
@@ -60,7 +60,7 @@ export const exampleDocument = {
       type: 'mediaSingle',
       attrs: {
         layout: 'wrap-right',
-        width: 66,
+        width: 66.62,
       },
       content: [
         {

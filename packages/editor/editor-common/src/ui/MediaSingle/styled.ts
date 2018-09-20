@@ -38,9 +38,7 @@ export function calcWidth(
       return `${Math.min(width, containerWidth || 0) -
         akEditorBreakoutPadding}px`;
     default:
-      return width > akEditorFullPageMaxWidth
-        ? `${akEditorFullPageMaxWidth}px`
-        : `${width}px`;
+      return width > akEditorFullPageMaxWidth ? `100%` : `${width}px`;
   }
 }
 
