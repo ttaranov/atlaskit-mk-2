@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { ReactionAction } from '../types/Actions';
-import { State } from './ReactionStore';
+import { State } from './ReactionContext';
 
 export type Actions = {
   getReactions: (containerId: string, aris: string) => void;

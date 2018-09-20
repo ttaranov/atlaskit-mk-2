@@ -1,2 +1,2 @@
 export { ReactionConsumer } from './ReactionConsumer';
-export { ReactionStore } from './ReactionStore';
+export { ReactionContext } from './ReactionContext';

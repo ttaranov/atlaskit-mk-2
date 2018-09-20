@@ -36,7 +36,7 @@ export type Props = {
   url?: string;
 };
 
-export class ReactionStore extends React.Component<Props, State> {
+export class ReactionContext extends React.Component<Props, State> {
   private adapter: ReactionAdapter;
   private actions: Actions;
 

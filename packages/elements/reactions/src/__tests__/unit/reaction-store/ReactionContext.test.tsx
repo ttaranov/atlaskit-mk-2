@@ -8,17 +8,17 @@ import {
 } from '../../../adapter/MockReactionsAdapter';
 import { ReactionAdapter } from '../../../adapter/ReactionAdapter';
 import {
-  ReactionStore,
   Props,
+  ReactionContext,
   State,
-} from '../../../reaction-store/ReactionStore';
+} from '../../../reaction-store/ReactionContext';
 import {
   Actions,
   ReactionsContext,
 } from '../../../reaction-store/ReactionsContext';
 import { ReactionStatus } from '../../../types/ReactionStatus';
 
-describe('ReactionProvider', () => {
+describe('ReactionContext', () => {
   beforeAll(() => jest.useFakeTimers());
   afterAll(() => jest.useRealTimers());
 
@@ -42,7 +42,7 @@ describe('ReactionProvider', () => {
 
   const renderProvider = () =>
     shallow(
-      <ReactionStore
+      <ReactionContext
         adapter={fakeAdaptor}
         url="http://reactions.atlassian.com"
       />,

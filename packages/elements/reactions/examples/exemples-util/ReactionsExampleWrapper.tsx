@@ -1,7 +1,7 @@
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 import * as React from 'react';
 import { style } from 'typestyle';
-import { ReactionAdapter, ReactionStore } from '../../src';
+import { ReactionAdapter, ReactionContext } from '../../src';
 import { MockReactionsAdapter } from '../../src/adapter/MockReactionsAdapter';
 import { AnalyticsViewer, EventsArray } from './AnalyticsViewer';
 
@@ -54,14 +54,14 @@ export class ReactionsExampleWrapper extends React.PureComponent<Props, State> {
     const { adapter, children } = this.props;
     return (
       <AnalyticsListener onEvent={this.handleOnEvent} channel="*">
-        <ReactionStore adapter={adapter}>
+        <ReactionContext adapter={adapter}>
           <div className={wrapperStyle}>
             <div className={childrenStyle}>{children}</div>
             <div className={analyticsStyle}>
               <AnalyticsViewer events={this.state.events} />
             </div>
           </div>
-        </ReactionStore>
+        </ReactionContext>
       </AnalyticsListener>
     );
   }

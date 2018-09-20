@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Actions, ReactionsContext } from './ReactionsContext';
-import { State } from './ReactionStore';
+import { State } from './ReactionContext';
 
 export type Props<PropsFromState extends {}, PropsFromActions extends {}> = {
   stateMapper?: (state: State) => PropsFromState;
