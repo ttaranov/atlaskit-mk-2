@@ -172,6 +172,31 @@ describe('@atlaskit/tree - Tree', () => {
         { parentId: '1-2', index: 1 },
       );
     });
+
+    it('calls props.onDragEnd when nesting successfully', () => {
+      const mockOnDragEnd = jest.fn();
+      const instance = mount(
+        <Tree
+          tree={treeWithTwoBranches}
+          renderItem={mockRender}
+          onDragEnd={mockOnDragEnd}
+        />,
+      ).instance();
+      const dropResultWithCombine = {
+        ...dropResult,
+        destination: undefined,
+        combine: {
+          draggableId: '1-2',
+          droppableId: 'list',
+        },
+      };
+      instance.onDragEnd(dropResultWithCombine);
+      expect(mockOnDragEnd).toHaveBeenCalledTimes(1);
+      expect(mockOnDragEnd).toBeCalledWith(
+        { parentId: '1-1', index: 0 },
+        { parentId: '1-2' },
+      );
+    });
   });
 
   describe('#onDragUpdate', () => {

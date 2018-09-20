@@ -152,3 +152,8 @@ export const getItemById = (
   flattenedTree: FlattenedTree,
   id: ItemId,
 ): ?FlattenedItem => flattenedTree.find(item => item.item.id === id);
+
+export const getIndexById = (
+  flattenedTree: FlattenedTree,
+  id: ItemId,
+): number => flattenedTree.findIndex(item => item.item.id === id);

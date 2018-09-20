@@ -107,15 +107,24 @@ export default class DragDropTree extends Component<void, State> {
     const treeWithoutSource = mutateTree(tree, source.parentId, {
       children: newSourceChildren,
     });
-
     const destinationParent: TreeItem =
       treeWithoutSource.items[destination.parentId];
     const newDestinationChildren = [...destinationParent.children];
-    newDestinationChildren.splice(destination.index, 0, itemIdToMove);
+    const isNesting = !Number.isInteger(destination.index);
+
+    if (isNesting) {
+      newDestinationChildren.push(itemIdToMove);
+    } else {
+      newDestinationChildren.splice(destination.index, 0, itemIdToMove);
+    }
+
     const treeWithTheItem = mutateTree(
       treeWithoutSource,
       destination.parentId,
-      { children: newDestinationChildren },
+      {
+        children: newDestinationChildren,
+        isExpanded: isNesting || destinationParent.isExpanded,
+      },
     );
     this.setState({
       tree: treeWithTheItem,
