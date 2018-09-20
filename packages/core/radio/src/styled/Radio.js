@@ -1,8 +1,5 @@
 // @flow
 import styled, { css } from 'styled-components';
-import { colors, themed } from '@atlaskit/theme';
-
-const disabledColor = themed({ light: colors.N80, dark: colors.N80 });
 
 type LabelProps = {
   isDisabled: boolean,
@@ -11,15 +8,13 @@ type LabelProps = {
 
 export const Label = styled.label`
   align-items: flex-start;
-  color: ${(props: LabelProps): string =>
-    // $FlowFixMe - theme is not found in props
-    props.isDisabled ? disabledColor(props) : colors.text(props)};
-  ${({ isDisabled }: LabelProps) =>
-    isDisabled
-      ? css`
-          cursor: not-allowed;
-        `
-      : ''};
+  color: ${p => p.textColor}
+    ${({ isDisabled }: LabelProps) =>
+      isDisabled
+        ? css`
+            cursor: not-allowed;
+          `
+        : ''};
   display: flex;
 `;
 

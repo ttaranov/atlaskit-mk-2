@@ -26,6 +26,8 @@ export type RadioIconProps = {
   isHovered?: boolean,
   /* Field invalid state */
   isInvalid?: boolean,
+  /* theme object */
+  theme: ThemeProps => ThemeProps,
 };
 
 export type RadioInputProps = RadioIconProps & {

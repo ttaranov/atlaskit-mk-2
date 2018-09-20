@@ -1,6 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-
+import { Theme } from '@atlaskit/theme';
 import {
   createAndFireEvent,
   withAnalyticsContext,
@@ -16,6 +16,7 @@ import RadioIcon from './RadioIcon';
 import { RadioInputWrapper, HiddenInput } from './styled/RadioInput';
 import { Label, LabelText } from './styled/Radio';
 import type { RadioProps } from './types';
+import defaultTheme from './theme';
 
 type State = {
   isHovered: boolean,
@@ -29,6 +30,7 @@ class Radio extends Component<RadioProps, State> {
     isDisabled: false,
     isInvalid: false,
     isChecked: false,
+    theme: defaultTheme,
   };
 
   state: State = {
@@ -93,44 +95,58 @@ class Radio extends Component<RadioProps, State> {
       name,
       onChange,
       onInvalid,
+      theme,
       value,
       ...props
     } = this.props;
     const { isFocused, isHovered, isActive } = this.state;
+    const themeState = {
+      isActive,
+      isChecked,
+      isDisabled,
+      isFocused,
+      isHovered,
+    };
     return (
-      <Label
-        {...props}
-        isDisabled={isDisabled}
-        onMouseDown={this.onMouseDown}
-        onMouseEnter={this.onMouseEnter}
-        onMouseLeave={this.onMouseLeave}
-        onMouseUp={this.onMouseUp}
-      >
-        <RadioInputWrapper>
-          <HiddenInput
-            aria-label={ariaLabel}
-            checked={isChecked}
-            disabled={isDisabled}
-            name={name}
-            onChange={onChange}
-            onBlur={this.onBlur}
-            onInvalid={onInvalid}
-            onFocus={this.onFocus}
-            required={isRequired}
-            type="radio"
-            value={value}
-          />
-          <RadioIcon
-            isActive={isActive}
-            isChecked={isChecked}
+      <Theme values={theme}>
+        {t => (
+          <Label
+            {...props}
+            {...t.radio(themeState)}
             isDisabled={isDisabled}
-            isFocused={isFocused}
-            isHovered={isHovered}
-            isInvalid={isInvalid}
-          />
-        </RadioInputWrapper>
-        {label ? <LabelText>{label}</LabelText> : null}
-      </Label>
+            onMouseDown={this.onMouseDown}
+            onMouseEnter={this.onMouseEnter}
+            onMouseLeave={this.onMouseLeave}
+            onMouseUp={this.onMouseUp}
+          >
+            <RadioInputWrapper>
+              <HiddenInput
+                aria-label={ariaLabel}
+                checked={isChecked}
+                disabled={isDisabled}
+                name={name}
+                onChange={onChange}
+                onBlur={this.onBlur}
+                onInvalid={onInvalid}
+                onFocus={this.onFocus}
+                required={isRequired}
+                type="radio"
+                value={value}
+              />
+              <RadioIcon
+                theme={theme}
+                isActive={isActive}
+                isChecked={isChecked}
+                isDisabled={isDisabled}
+                isFocused={isFocused}
+                isHovered={isHovered}
+                isInvalid={isInvalid}
+              />
+            </RadioInputWrapper>
+            {label ? <LabelText>{label}</LabelText> : null}
+          </Label>
+        )}
+      </Theme>
     );
   }
 }

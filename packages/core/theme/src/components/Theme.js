@@ -18,8 +18,6 @@ export default class Theme extends Component<Props> {
       <Consumer>
         {theme => {
           const merged = values(theme);
-          console.log('THEME', theme);
-          console.log('MERGED', merged);
           return typeof children === 'function' ? (
             children(merged)
           ) : (
