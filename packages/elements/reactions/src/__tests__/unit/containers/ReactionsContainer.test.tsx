@@ -1,10 +1,9 @@
 import { EmojiProvider } from '@atlaskit/emoji';
+import { emoji } from '@atlaskit/util-data-test';
+import { shallow } from 'enzyme';
 import * as React from 'react';
 import ReactionsContainer from '../../../containers/ReactionsContainer';
 import { ReactionConsumer } from '../../../reaction-store/ReactionConsumer';
-import { shallow } from 'enzyme';
-
-import { emoji } from '@atlaskit/util-data-test';
 import { ReactionStatus } from '../../../types/ReactionStatus';
 
 const { getEmojiResourcePromise } = emoji.testData;
@@ -47,7 +46,6 @@ describe('ReactionsContainer', () => {
       expect(stateMapper).toBeDefined();
       expect(stateMapper!({ reactions: {}, flash: {} })).toMatchObject({
         status: ReactionStatus.notLoaded,
-        reactions: [],
       });
     });
 
@@ -77,10 +75,7 @@ describe('ReactionsContainer', () => {
           },
           flash: {},
         }),
-      ).toEqual({
-        status: ReactionStatus.loading,
-        reactions: [],
-      });
+      ).toEqual({ status: ReactionStatus.loading });
     });
   });
 

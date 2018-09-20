@@ -31,7 +31,7 @@ export default class ReactionsContainer extends React.PureComponent<Props> {
     const { containerAri, ari } = this.props;
     const reactionsState = state.reactions[`${containerAri}|${ari}`];
     if (!reactionsState) {
-      return { status: ReactionStatus.notLoaded, reactions: [] };
+      return { status: ReactionStatus.notLoaded };
     }
     switch (reactionsState.status) {
       case ReactionStatus.ready:
@@ -41,7 +41,7 @@ export default class ReactionsContainer extends React.PureComponent<Props> {
           flash: state.flash[`${containerAri}|${ari}`],
         };
       default:
-        return { status: ReactionStatus.loading, reactions: [] };
+        return { status: ReactionStatus.loading };
     }
   };
 
