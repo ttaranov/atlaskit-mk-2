@@ -4,15 +4,17 @@ export interface CardProvider {
   resolve(url: string, appearance: CardAppearance): Promise<any>;
 }
 
+export type ORSCheckResponse = {
+  isSupported: boolean;
+};
+
 const ORS_CHECK_URL =
-  'https://api-private.stg.atlassian.com/object-resolver/resolve';
+  'https://api-private.stg.atlassian.com/object-resolver/check';
 
 export class EditorCardProvider implements CardProvider {
-  public config = {};
-
   async resolve(url: string, appearance: CardAppearance): Promise<any> {
     try {
-      const result = await (await fetch(ORS_CHECK_URL, {
+      const result: ORSCheckResponse = await (await fetch(ORS_CHECK_URL, {
         method: 'POST',
         credentials: 'include',
         headers: {

@@ -22,7 +22,10 @@ import { extensionHandlers } from '../example-helpers/extension-handlers';
 import quickInsertProviderFactory from '../example-helpers/quick-insert-provider';
 import { DevTools } from '../example-helpers/DevTools';
 import { EditorActions } from './../src';
-import { editorCardProvider } from '@atlaskit/smart-card';
+import {
+  editorCardProvider,
+  Provider as SmartCardProvider,
+} from '@atlaskit/smart-card';
 
 export const TitleInput: any = styled.input`
   border: none;
@@ -130,75 +133,77 @@ export class ExampleEditor extends React.Component<EditorProps, State> {
     return (
       <Wrapper>
         <Content>
-          <Editor
-            appearance="full-page"
-            analyticsHandler={analyticsHandler}
-            quickInsert={{ provider: Promise.resolve(quickInsertProvider) }}
-            delegateAnalyticsEvent={(...args) => console.log(args)}
-            allowTasksAndDecisions={true}
-            allowCodeBlocks={{ enableKeybindingsForIDE: true }}
-            allowLists={true}
-            allowTextColor={true}
-            allowTables={{
-              allowColumnResizing: true,
-              allowMergeCells: true,
-              allowNumberColumn: true,
-              allowBackgroundColor: true,
-              allowHeaderRow: true,
-              allowHeaderColumn: true,
-              permittedLayouts: 'all',
-              stickToolbarToBottom: true,
-            }}
-            allowJiraIssue={true}
-            allowUnsupportedContent={true}
-            allowPanel={true}
-            allowExtension={{
-              allowBreakout: true,
-            }}
-            allowRule={true}
-            allowDate={true}
-            allowLayouts={true}
-            allowGapCursor={true}
-            allowTemplatePlaceholders={{ allowInserting: true }}
-            UNSAFE_cards={{
-              provider: Promise.resolve(editorCardProvider),
-            }}
-            allowStatus={true}
-            {...providers}
-            media={{ provider: mediaProvider, allowMediaSingle: true }}
-            placeholder="Write something..."
-            shouldFocus={false}
-            disabled={this.state.disabled}
-            contentComponents={
-              <WithEditorActions
-                // tslint:disable-next-line:jsx-no-lambda
-                render={actions => (
-                  <TitleInput
-                    placeholder="Give this page a title..."
-                    // tslint:disable-next-line:jsx-no-lambda
-                    innerRef={this.handleTitleRef}
-                    onFocus={this.handleTitleOnFocus}
-                    onBlur={this.handleTitleOnBlur}
-                    onKeyDown={(e: KeyboardEvent) =>
-                      this.onKeyPressed(e, actions)
-                    }
-                  />
-                )}
-              />
-            }
-            primaryToolbarComponents={
-              <WithEditorActions
-                // tslint:disable-next-line:jsx-no-lambda
-                render={actions => (
-                  <SaveAndCancelButtons editorActions={actions} />
-                )}
-              />
-            }
-            onSave={SAVE_ACTION}
-            insertMenuItems={customInsertMenuItems}
-            extensionHandlers={extensionHandlers}
-            {...this.props}
-          />
+          <SmartCardProvider>
+            <Editor
+              appearance="full-page"
+              analyticsHandler={analyticsHandler}
+              quickInsert={{ provider: Promise.resolve(quickInsertProvider) }}
+              delegateAnalyticsEvent={(...args) => console.log(args)}
+              allowTasksAndDecisions={true}
+              allowCodeBlocks={{ enableKeybindingsForIDE: true }}
+              allowLists={true}
+              allowTextColor={true}
+              allowTables={{
+                allowColumnResizing: true,
+                allowMergeCells: true,
+                allowNumberColumn: true,
+                allowBackgroundColor: true,
+                allowHeaderRow: true,
+                allowHeaderColumn: true,
+                permittedLayouts: 'all',
+                stickToolbarToBottom: true,
+              }}
+              allowJiraIssue={true}
+              allowUnsupportedContent={true}
+              allowPanel={true}
+              allowExtension={{
+                allowBreakout: true,
+              }}
+              allowRule={true}
+              allowDate={true}
+              allowLayouts={true}
+              allowGapCursor={true}
+              allowTemplatePlaceholders={{ allowInserting: true }}
+              UNSAFE_cards={{
+                provider: Promise.resolve(editorCardProvider),
+              }}
+              allowStatus={true}
+              {...providers}
+              media={{ provider: mediaProvider, allowMediaSingle: true }}
+              placeholder="Write something..."
+              shouldFocus={false}
+              disabled={this.state.disabled}
+              contentComponents={
+                <WithEditorActions
+                  // tslint:disable-next-line:jsx-no-lambda
+                  render={actions => (
+                    <TitleInput
+                      placeholder="Give this page a title..."
+                      // tslint:disable-next-line:jsx-no-lambda
+                      innerRef={this.handleTitleRef}
+                      onFocus={this.handleTitleOnFocus}
+                      onBlur={this.handleTitleOnBlur}
+                      onKeyDown={(e: KeyboardEvent) =>
+                        this.onKeyPressed(e, actions)
+                      }
+                    />
+                  )}
+                />
+              }
+              primaryToolbarComponents={
+                <WithEditorActions
+                  // tslint:disable-next-line:jsx-no-lambda
+                  render={actions => (
+                    <SaveAndCancelButtons editorActions={actions} />
+                  )}
+                />
+              }
+              onSave={SAVE_ACTION}
+              insertMenuItems={customInsertMenuItems}
+              extensionHandlers={extensionHandlers}
+              {...this.props}
+            />
+          </SmartCardProvider>
         </Content>
       </Wrapper>
     );

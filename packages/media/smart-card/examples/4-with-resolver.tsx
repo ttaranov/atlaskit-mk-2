@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import { Provider, Card, Client } from '../src';
-import '../mocks';
+// import '../mocks';
 
 const clientWithResolver = new Client({
   TEMPORARY_resolver: (url: string) =>
