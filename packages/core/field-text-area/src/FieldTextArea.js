@@ -54,7 +54,6 @@ type State = {|
 |};
 
 export default class FieldTextArea extends Component<Props, State> {
-  props: Props; // eslint-disable-line react/sort-comp
   input: any; // eslint-disable-line react/sort-comp
 
   static defaultProps = {
@@ -62,11 +61,6 @@ export default class FieldTextArea extends Component<Props, State> {
     enableResize: false,
   };
 
-  /**
-   * This seems to fail in tests, is it lefal to set props here? Are props just not being passed
-   * in by enzyme?
-   * TODO: JEST-23 Fix these tests
-   */
   state = {
     value: this.props.value,
   };

@@ -9,12 +9,6 @@ const src2 =
   'https://pbs.twimg.com/profile_images/803832195970433027/aaoG6PJI_400x400.jpg';
 const imgSpan = '[role="img"]';
 
-/**
- * Currently skipping 3 tests here that seem
- * TODO: JEST-23 Fix these tests
- */
-/* eslint-disable jest/no-disabled-tests */
-
 describe('Avatar', () =>
   describe('Image', () => {
     it('should render an image span when the src is set"', () => {
@@ -81,12 +75,15 @@ describe('Avatar', () =>
           wrapper = mount(
             <AvatarImage src={src} appearance="circle" size="medium" />,
           );
+          // setting src to a string doesn't seem to trigger the successful loading in tests
+          // so we mock that and wait for our component to respond
+          wrapper.instance().handleLoadSuccess();
         });
         afterEach(() => {
           clearCache();
         });
 
-        it.skip('should set the background image on the internal span to src', () => {
+        it('should set the background image on the internal span to src', () => {
           expect(wrapper.prop('src')).toBe(src);
           const span = wrapper
             .find(imgSpan)
@@ -104,7 +101,7 @@ describe('Avatar', () =>
          * TODO: JEST-23 Fix these tests
          */
         /* eslint-disable jest/no-disabled-tests */
-        it.skip('should set isLoading=false when a same src is provided as the src already loaded', () => {
+        it('should set isLoading=false when a same src is provided as the src already loaded', () => {
           // isLoading is still true here, perhaps need a waitUntil?
           expect(wrapper.state('isLoading')).toBe(false);
           wrapper.setProps({ src });
@@ -118,7 +115,7 @@ describe('Avatar', () =>
           expect(stateSpy.mock.calls[0][0]).toEqual({ isLoading: true });
         });
 
-        it.skip('should set isLoading=false & hasError=false when src is loaded without errors', () => {
+        it('should set isLoading=false & hasError=false when src is loaded without errors', () => {
           expect(wrapper.state('isLoading')).toBe(false);
           expect(wrapper.state('hasError')).toBe(false);
         });
@@ -130,7 +127,7 @@ describe('Avatar', () =>
         });
       });
 
-      describe.skip('set after mount time', () => {
+      describe('set after mount time', () => {
         it('should load image successfully when src set', () => {
           const wrapper = mount(
             <AvatarImage appearance="circle" size="medium" />,
@@ -139,9 +136,8 @@ describe('Avatar', () =>
 
           const stateSpy = jest.spyOn(wrapper.instance(), 'setState');
           wrapper.setProps({ src });
+          wrapper.instance().handleLoadSuccess();
 
-          // At this point stateSpy.mock.calls =[ [ { isLoading: true } ] ]
-          // We might need a waitFor or something?
           expect(stateSpy.mock.calls[0][0]).toEqual({ isLoading: true });
           expect(stateSpy.mock.calls[1][0]).toEqual({
             hasError: false,

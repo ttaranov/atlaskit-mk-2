@@ -9,15 +9,7 @@ import FieldTextAreaStatelessWithAnalytics, {
 } from '../../FieldTextAreaStateless';
 import TextArea from '../../styled/TextArea';
 
-/**
- * Most of the tests here are failing. It looks like it props are not being passed in when we mount
- * This is either because we can't reference props in the class properties like we are in FieldTextArea.js
- * or that enzyme is doing something different now
- * TODO: JEST-23 Fix these tests
- */
-/* eslint-disable jest/no-disabled-tests */
-
-describe.skip('FieldTextAreaStateless', () => {
+describe('FieldTextAreaStateless', () => {
   // Stub window.cancelAnimationFrame, so Popper (used in Layer) doesn't error when accessing it.
   const animStub = window.cancelAnimationFrame;
   beforeEach(() => {
@@ -226,7 +218,7 @@ describe.skip('FieldTextAreaStateless', () => {
   });
 });
 
-describe.skip('FieldTextAreaStatelessWithAnalytics', () => {
+describe('FieldTextAreaStatelessWithAnalytics', () => {
   beforeEach(() => {
     jest.spyOn(global.console, 'warn');
     jest.spyOn(global.console, 'error');
