@@ -55,7 +55,11 @@ export const setupMediaMocksProviders = async browser => {
   await browser.click('.reloadEditorButton');
 };
 
-export const insertMedia = async (browser, filenames = ['one.svg']) => {
+export const insertMedia = async (
+  browser,
+  filenames = ['one.svg'],
+  fileSelector = 'div=%s',
+) => {
   const openMediaPopup = '[aria-label="Insert files and images"]';
   const insertMediaButton = '.e2e-insert-button';
 
@@ -65,7 +69,7 @@ export const insertMedia = async (browser, filenames = ['one.svg']) => {
   await browser.waitForSelector('.media-card');
   if (filenames) {
     for (const filename of filenames) {
-      const selector = `div=${filename}`;
+      const selector = fileSelector.replace('%s', filename);
       await browser.waitFor(selector, 3000);
       await browser.click(selector);
     }

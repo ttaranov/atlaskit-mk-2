@@ -35,6 +35,7 @@ export interface TablePluginState {
   // e.g. when pressing enter inside of a cell, it creates a new p and we need to update row controls
   tableNode?: PmNode;
   tableRef?: HTMLElement;
+  tableFloatingToolbarTarget?: HTMLElement;
   isContextualMenuOpen?: boolean;
   isTableHovered?: boolean;
   isTableInDanger?: boolean;

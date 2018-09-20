@@ -1,5 +1,8 @@
 # @atlaskit/smart-card
 
+## 8.2.0
+- [minor] Added `isSelected` to the `Card` component (inline resolved view) [6666d82](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6666d82)
+
 ## 8.1.2
 - [patch] Updated dependencies [4194aa4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4194aa4)
   - @atlaskit/form@4.0.9

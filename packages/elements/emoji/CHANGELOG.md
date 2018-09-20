@@ -1,5 +1,8 @@
 # @atlaskit/emoji
 
+## 41.0.1
+- [patch] FS-1583 size placeholders in picker to square [a836b20](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a836b20)
+
 ## 41.0.0
 - [major] Updated dependencies [6e1d642](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e1d642)
   - @atlaskit/util-data-test@10.0.9

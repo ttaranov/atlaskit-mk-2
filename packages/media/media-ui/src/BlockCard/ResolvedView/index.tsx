@@ -88,6 +88,7 @@ export interface ResolvedViewProps {
   details?: DetailViewModel[];
   users?: UserViewModel[];
   actions?: Action[];
+  isSelected?: boolean;
   onClick?: () => void;
 }
 
@@ -374,11 +375,13 @@ export class ResolvedView extends React.Component<
       preview,
       details,
       onClick,
+      isSelected,
     } = this.props;
     return (
       <ExpandedFrame
         minWidth={minWidth}
         maxWidth={maxWidth}
+        isSelected={isSelected}
         href={link}
         icon={
           <ImageIcon

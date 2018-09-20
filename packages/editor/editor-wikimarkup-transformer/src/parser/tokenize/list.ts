@@ -2,13 +2,17 @@ import { Node as PMNode, Schema } from 'prosemirror-model';
 import { getType as getListType, ListBuilder } from '../builder/list-builder';
 import { parseString } from '../text';
 import { isNextLineEmpty, normalizePMNodes } from '../utils/normalize';
-import { Token, TokenType } from './';
+import { Token, TokenType, TokenErrCallback } from './';
 import { parseNewlineOnly } from './whitespace';
 
 const LIST_ITEM_REGEXP = /^([*\-#]+)\s(.*)/;
 const NEWLINE = /\r?\n/;
 
-export function list(input: string, schema: Schema): Token {
+export function list(
+  input: string,
+  schema: Schema,
+  tokenErrCallback?: TokenErrCallback,
+): Token {
   let index = 0;
   const output: PMNode[] = [];
 
@@ -45,6 +49,7 @@ export function list(input: string, schema: Schema): Token {
           lineBuffer.join('\n'),
           schema,
           ignoreTokenTypes,
+          tokenErrCallback,
         );
         const normalizedContent = normalizePMNodes(content, schema);
         builder.add([
@@ -102,6 +107,7 @@ export function list(input: string, schema: Schema): Token {
       lineBuffer.join('\n'),
       schema,
       ignoreTokenTypes,
+      tokenErrCallback,
     );
     const normalizedContent = normalizePMNodes(content, schema);
     builder.add([
