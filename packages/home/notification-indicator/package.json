@@ -17,7 +17,7 @@
   ],
   "dependencies": {
     "@atlaskit/badge": "^9.1.1",
-    "@atlaskit/notification-log-client": "^3.0.2",
+    "@atlaskit/notification-log-client": "^3.1.0",
     "tslib": "^1.8.0"
   },
   "devDependencies": {
