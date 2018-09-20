@@ -74,7 +74,7 @@ function configFactory(
   onClick: ?() => void,
   tooltip,
   otherConfig: OtherConfig = {},
-): ?ItemShape {
+) {
   const { href } = otherConfig;
   const shouldNotRenderItem = !onClick && !href;
 
