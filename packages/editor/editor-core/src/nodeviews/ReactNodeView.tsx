@@ -178,6 +178,7 @@ export default class ReactNodeView implements NodeView {
         {
           ...props,
           getPos,
+          view,
         },
         component,
       ).init();

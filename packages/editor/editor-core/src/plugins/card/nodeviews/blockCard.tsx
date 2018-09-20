@@ -14,20 +14,20 @@ export interface Props {
   selected?: boolean;
 }
 
-class InlineCardNode extends React.PureComponent<Props, {}> {
+class BlockCardNode extends React.PureComponent<Props, {}> {
   render() {
     const { node, selected } = this.props;
     const { url, data } = node.attrs;
 
     return (
-      <Card url={url} data={data} appearance="inline" isSelected={selected} />
+      <Card url={url} data={data} appearance="block" isSelected={selected} />
     );
   }
 }
 
 export default class WrappedInline extends React.PureComponent<Props, {}> {
   render() {
-    const WrappedComponent = wrapComponentWithClickArea(InlineCardNode);
+    const WrappedComponent = wrapComponentWithClickArea(BlockCardNode);
     return (
       <WrappedComponent
         {...this.props}
