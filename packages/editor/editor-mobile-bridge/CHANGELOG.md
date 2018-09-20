@@ -1,5 +1,8 @@
 # @atlaskit/editor-mobile-bridge
 
+## 4.0.4
+- [patch] Remove mention calls from the bridge [3b04be7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3b04be7)
+
 ## 4.0.3
 - [patch] ED-5346: prosemirror upgrade [5bd4432](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5bd4432)
 
