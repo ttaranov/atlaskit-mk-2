@@ -199,7 +199,7 @@ function handleMouseDown(view, event, cellMinWidth) {
     dom = dom.parentNode;
   }
 
-  const containerWidth = widthPluginKey.getState(view.state);
+  const containerWidth = widthPluginKey.getState(view.state).width;
   const resizer = new Resizer(dom, {
     minWidth: cellMinWidth,
     maxSize: getLayoutSize(dom.getAttribute('data-layout'), containerWidth),

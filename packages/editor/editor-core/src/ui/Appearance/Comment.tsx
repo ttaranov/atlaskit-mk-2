@@ -187,26 +187,27 @@ export default class Editor extends React.Component<
               innerRef={ref => (this.containerElement = ref)}
               className="ak-editor-content-area editor-popup-ignore-scroll-parent"
             >
-              <ContainerProvider>
-                {customContentComponents}
-                <PluginSlot
-                  editorView={editorView}
-                  editorActions={editorActions}
-                  eventDispatcher={eventDispatcher}
-                  providerFactory={providerFactory}
-                  appearance={this.appearance}
-                  items={contentComponents}
-                  popupsMountPoint={popupsMountPoint}
-                  popupsBoundariesElement={popupsBoundariesElement}
-                  popupsScrollableElement={popupsScrollableElement}
-                  containerElement={this.containerElement}
-                  disabled={!!disabled}
-                />
-                {editorDOMElement}
-              </ContainerProvider>
+              {customContentComponents}
+              <PluginSlot
+                editorView={editorView}
+                editorActions={editorActions}
+                eventDispatcher={eventDispatcher}
+                providerFactory={providerFactory}
+                appearance={this.appearance}
+                items={contentComponents}
+                popupsMountPoint={popupsMountPoint}
+                popupsBoundariesElement={popupsBoundariesElement}
+                popupsScrollableElement={popupsScrollableElement}
+                containerElement={this.containerElement}
+                disabled={!!disabled}
+              />
+              {editorDOMElement}
             </ContentArea>
           </ClickAreaBlock>
-          <WidthEmitter editorView={editorView!} />
+          <WidthEmitter
+            editorView={editorView!}
+            contentArea={this.containerElement}
+          />
         </CommentEditor>
         <SecondaryToolbar>
           <ButtonGroup>

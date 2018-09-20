@@ -29,7 +29,7 @@ describe(name, () => {
                     state: {
                       init: () => null,
                       apply(tr) {
-                        width = tr.getMeta(widthPluginKey);
+                        width = tr.getMeta(widthPluginKey).width;
                       },
                     },
                   }),

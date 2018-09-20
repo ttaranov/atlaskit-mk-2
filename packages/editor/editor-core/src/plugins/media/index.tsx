@@ -101,13 +101,14 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
                         editorView={view}
                         eventDispatcher={eventDispatcher}
                         plugins={{
-                          width: widthPluginKey,
+                          widthState: widthPluginKey,
                         }}
-                        render={({ width }) => (
+                        render={({ widthState }) => (
                           <ReactMediaSingleNode
                             view={view}
                             node={node}
-                            containerWidth={width}
+                            containerWidth={widthState.width}
+                            lineLength={widthState.lineLength}
                             {...props}
                           />
                         )}

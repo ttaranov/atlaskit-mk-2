@@ -202,10 +202,7 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     }),
   );
 
-  if (props.UNSAFE_mediaSingle_grid) {
-    plugins.push(gridPlugin);
-  }
-
+  plugins.push(gridPlugin);
   plugins.push(submitEditorPlugin);
   plugins.push(fakeTextCursorPlugin);
   plugins.push(floatingToolbarPlugin);

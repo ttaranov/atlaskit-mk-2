@@ -1,25 +1,33 @@
 import * as React from 'react';
+import * as PropTypes from 'prop-types';
 
-const { Provider, Consumer } = React.createContext<null | HTMLDivElement>(null);
+export class ContainerProvider extends React.Component<
+  any,
+  { ref: HTMLDivElement | null }
+> {
+  state = {
+    ref: null,
+  };
 
-export class ContainerProvider extends React.Component<any> {
-  private ref: HTMLDivElement | null = null;
+  static childContextTypes = {
+    containerRef: PropTypes.object,
+  };
 
-  constructor(props) {
-    super(props);
+  getChildContext() {
+    return { containerRef: this.state.ref };
+  }
+
+  constructor(props, context) {
+    super(props, context);
   }
 
   getRef = ref => {
-    this.ref = ref;
+    if (this.state.ref !== ref) {
+      this.setState({ ref });
+    }
   };
 
   render() {
-    return (
-      <div ref={this.getRef}>
-        <Provider value={this.ref}>{this.props.children}</Provider>
-      </div>
-    );
+    return <div ref={this.getRef}>{this.props.children}</div>;
   }
 }
-
-export { Consumer as ContainerConsumer };

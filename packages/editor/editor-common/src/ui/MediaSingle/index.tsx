@@ -2,8 +2,7 @@ import * as React from 'react';
 import { MediaSingleLayout } from '../../schema';
 import Wrapper from './styled';
 import * as classnames from 'classnames';
-import { calcPxFromPct, snapToGrid } from './grid';
-import { ContainerConsumer } from '../ContainerProvider';
+import { calcPxFromPct } from './grid';
 
 export interface Props {
   children: React.ReactChild;
@@ -28,35 +27,27 @@ export default function MediaSingle({
   lineLength,
   className,
 }: Props) {
+  if (pctWidth) {
+    const pxWidth = Math.ceil(calcPxFromPct(pctWidth / 100, lineLength));
+
+    // scale, keeping aspect ratio
+    height = height / width * pxWidth;
+    width = pxWidth;
+  }
+
   return (
-    <ContainerConsumer>
-      {value => {
-        if (pctWidth) {
-          const ll = value ? value.clientWidth : lineLength;
-          const pxWidth = Math.ceil(calcPxFromPct(pctWidth / 100, ll));
-
-          // scale, keeping aspect ratio
-          height = height / width * pxWidth;
-          width = pxWidth;
-        }
-
-        return (
-          <Wrapper
-            layout={layout}
-            width={width}
-            height={height}
-            containerWidth={containerWidth}
-            pctWidth={pctWidth}
-            className={classnames('media-single', layout, className, {
-              'is-loading': isLoading,
-              'media-wrapped':
-                layout === 'wrap-left' || layout === 'wrap-right',
-            })}
-          >
-            {React.Children.only(children)}
-          </Wrapper>
-        );
-      }}
-    </ContainerConsumer>
+    <Wrapper
+      layout={layout}
+      width={width}
+      height={height}
+      containerWidth={containerWidth}
+      pctWidth={pctWidth}
+      className={classnames('media-single', layout, className, {
+        'is-loading': isLoading,
+        'media-wrapped': layout === 'wrap-left' || layout === 'wrap-right',
+      })}
+    >
+      {React.Children.only(children)}
+    </Wrapper>
   );
 }

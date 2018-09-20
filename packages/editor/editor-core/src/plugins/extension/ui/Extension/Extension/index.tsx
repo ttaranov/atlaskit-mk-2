@@ -35,15 +35,15 @@ export default class Extension extends Component<Props, any> {
       <WithPluginState
         editorView={view}
         plugins={{
-          width: widthPluginKey,
+          widthState: widthPluginKey,
         }}
-        render={({ width }) => {
+        render={({ widthState }) => {
           return (
             <Wrapper
               data-layout={node.attrs.layout}
               className={`extension-container ${hasBody ? '' : 'with-overlay'}`}
               style={{
-                width: calcExtensionWidth(node.attrs.layout, width),
+                width: calcExtensionWidth(node.attrs.layout, widthState.width),
               }}
             >
               <Overlay className="extension-overlay" />

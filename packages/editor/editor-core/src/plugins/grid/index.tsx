@@ -9,12 +9,12 @@ import {
 
 export const stateKey = new PluginKey('gridPlugin');
 import { GridPluginState } from './types';
-import { pluginKey as widthPlugin } from '../width/index';
+import { pluginKey as widthPlugin, WidthPluginState } from '../width/index';
 import WithPluginState from '../../ui/WithPluginState';
 
 export const DEFAULT_GRID_SIZE = 12;
 
-const calcGridSize = (width: number) => {
+const calcGridSize = (width: number | undefined) => {
   return DEFAULT_GRID_SIZE;
 };
 
@@ -30,9 +30,11 @@ export const createPlugin = ({ dispatch }) =>
     key: stateKey,
     state: {
       init: (_, state): GridPluginState => {
-        const editorWidth = widthPlugin.getState(state);
+        const editorWidth = widthPlugin.getState(state) as WidthPluginState;
         return {
-          gridSize: editorWidth ? calcGridSize(editorWidth) : DEFAULT_GRID_SIZE,
+          gridSize: editorWidth
+            ? calcGridSize(editorWidth.width)
+            : DEFAULT_GRID_SIZE,
           visible: true,
         };
       },

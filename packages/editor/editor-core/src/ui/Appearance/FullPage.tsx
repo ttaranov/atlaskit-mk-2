@@ -2,7 +2,7 @@ import * as React from 'react';
 import { MouseEvent } from 'react';
 import styled from 'styled-components';
 import { akColorN30 } from '@atlaskit/util-shared-styles';
-import { akEditorMenuZIndex, ContainerProvider } from '@atlaskit/editor-common';
+import { akEditorMenuZIndex } from '@atlaskit/editor-common';
 import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import Avatars from '../../plugins/collab-edit/ui/avatars';
 import PluginSlot from '../PluginSlot';
@@ -125,6 +125,7 @@ export default class Editor extends React.Component<
   static displayName = 'FullPageEditor';
   private appearance: EditorAppearance = 'full-page';
   private scrollContainer: HTMLElement | undefined;
+  private contentArea: HTMLElement | null;
   private scheduledKeylineUpdate: number | undefined;
 
   stopPropagation = (event: MouseEvent<HTMLDivElement>) =>
@@ -232,30 +233,30 @@ export default class Editor extends React.Component<
                 style={{ padding: `0 ${GUTTER_PADDING}px` }}
                 className="ak-editor-content-area"
               >
-                <ContainerProvider>
-                  {customContentComponents}
-                  {
-                    <PluginSlot
-                      editorView={editorView}
-                      editorActions={editorActions}
-                      eventDispatcher={eventDispatcher}
-                      providerFactory={providerFactory}
-                      appearance={this.appearance}
-                      items={contentComponents}
-                      popupsMountPoint={popupsMountPoint}
-                      popupsBoundariesElement={popupsBoundariesElement}
-                      popupsScrollableElement={popupsScrollableElement}
-                      disabled={!!disabled}
-                      containerElement={this.scrollContainer}
-                    />
-                  }
+                {customContentComponents}
+                {
+                  <PluginSlot
+                    editorView={editorView}
+                    editorActions={editorActions}
+                    eventDispatcher={eventDispatcher}
+                    providerFactory={providerFactory}
+                    appearance={this.appearance}
+                    items={contentComponents}
+                    popupsMountPoint={popupsMountPoint}
+                    popupsBoundariesElement={popupsBoundariesElement}
+                    popupsScrollableElement={popupsScrollableElement}
+                    disabled={!!disabled}
+                    containerElement={this.scrollContainer}
+                  />
+                }
+                <div ref={ref => (this.contentArea = ref)}>
                   {editorDOMElement}
-                </ContainerProvider>
+                </div>
               </div>
             </ContentArea>
           </ClickAreaBlock>
         </ScrollContainer>
-        <WidthEmitter editorView={editorView!} />
+        <WidthEmitter editorView={editorView!} contentArea={this.contentArea} />
       </FullPageEditorWrapper>
     );
   }
