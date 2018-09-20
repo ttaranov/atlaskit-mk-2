@@ -175,7 +175,10 @@ export default class ReactNodeView implements NodeView {
         view,
         getPos,
         portalProviderAPI,
-        props,
+        {
+          ...props,
+          getPos,
+        },
         component,
       ).init();
   }

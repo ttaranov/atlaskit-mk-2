@@ -42,6 +42,7 @@ export const resolveWithProvider = (
 export const createPlugin = ({
   portalProviderAPI,
   dispatch,
+  eventDispatcher,
   providerFactory,
 }) =>
   new Plugin({
@@ -135,6 +136,7 @@ export const createPlugin = ({
           portalProviderAPI,
           {
             providerFactory,
+            eventDispatcher,
           },
         ),
       },
