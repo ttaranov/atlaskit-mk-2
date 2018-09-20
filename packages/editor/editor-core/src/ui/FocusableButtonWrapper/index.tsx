@@ -7,6 +7,6 @@ export interface Props {
 
 export default class FocusableButtonWrapper extends PureComponent<Props, {}> {
   render() {
-    return <div>{this.props.children}</div>;
+    return <div tabIndex={0}>{this.props.children}</div>;
   }
 }

@@ -60,7 +60,7 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
         <FocusableButtonWrapper>{button}</FocusableButtonWrapper>
       </Tooltip>
     ) : (
-      button
+      <FocusableButtonWrapper>{button}</FocusableButtonWrapper>
     );
   }
 
