@@ -1,5 +1,6 @@
 // @flow
 import type { Node } from 'react';
+import type { ThemeProps } from './theme';
 
 // Used by RadioGroupStateless
 export type OptionPropType = {
@@ -75,6 +76,7 @@ export type RadioProps = {
   onMouseLeave?: (SyntheticInputEvent<*>) => void,
   /** onInvalid event handler, passed into the props of each Radio Component instantiated within RadioGroup */
   onInvalid?: (SyntheticEvent<*>) => void,
+  theme: ThemeProps => ThemeProps,
   /** Field value */
   value?: string | number,
 };

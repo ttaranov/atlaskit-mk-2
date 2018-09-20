@@ -97,7 +97,6 @@ class Radio extends Component<RadioProps, State> {
       ...props
     } = this.props;
     const { isFocused, isHovered, isActive } = this.state;
-
     return (
       <Label
         {...props}

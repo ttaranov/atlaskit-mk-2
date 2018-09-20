@@ -13,9 +13,11 @@ export default class RadioIcon extends Component<RadioIconProps> {
       isFocused,
       isHovered,
       isInvalid,
+      ...props
     } = this.props;
     return (
       <IconWrapper
+        {...props}
         isActive={isActive}
         isChecked={isChecked}
         isDisabled={isDisabled}
