@@ -5,10 +5,10 @@ import { emoji } from '@atlaskit/util-data-test';
 import { mount, shallow } from 'enzyme';
 import * as React from 'react';
 import { reaction } from '../../../adapter/MockReactionsAdapter';
-import { Trigger } from '../../../components';
 import { Reaction } from '../../../components/Reaction';
 import { ReactionPicker } from '../../../components/ReactionPicker';
 import { Props, Reactions } from '../../../components/Reactions';
+import { Trigger } from '../../../components/Trigger';
 import { ReactionStatus } from '../../../types/ReactionStatus';
 
 const { getEmojiResourcePromise } = emoji.testData;
