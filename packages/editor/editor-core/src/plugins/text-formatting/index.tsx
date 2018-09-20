@@ -95,6 +95,7 @@ const textFormatting = (options: TextFormattingOptions): EditorPlugin => ({
     popupsScrollableElement,
     isToolbarReducedSpacing,
     disabled,
+    navigateRight,
   }) {
     return (
       <WithPluginState
@@ -116,6 +117,13 @@ const textFormatting = (options: TextFormattingOptions): EditorPlugin => ({
                 editorView={editorView}
                 textFormattingState={textFormattingState}
                 isReducedSpacing={isToolbarReducedSpacing}
+                navigateRight={() => {
+                  console.log('navigating right in text-formatting');
+                  if (navigateRight) {
+                    console.log('navright is defined in textformatting');
+                    navigateRight();
+                  }
+                }}
               />
               <ToolbarAdvancedTextFormatting
                 editorView={editorView}

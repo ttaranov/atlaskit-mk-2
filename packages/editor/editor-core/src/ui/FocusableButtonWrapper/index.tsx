@@ -21,6 +21,9 @@ export interface Props {
   onFocus?: (event: Event) => void;
 
   isDisabled?: boolean;
+
+  navigateLeft?: () => void;
+  navigateRight?: () => void;
 }
 
 export default class FocusableButtonWrapper extends PureComponent<Props, {}> {
@@ -52,25 +55,29 @@ export default class FocusableButtonWrapper extends PureComponent<Props, {}> {
       </AkButton>
     );
 
+    const { onClick, navigateLeft, navigateRight } = this.props;
     return (
       <div
         tabIndex={0}
         onClick={e => console.log('AYYEEE', e)}
-        onKeyDown={this.handleKeydown(this.props.onClick)}
+        onKeyDown={this.handleKeydown({ onClick, navigateLeft, navigateRight })}
       >
         {button}
       </div>
     );
   }
-  private handleKeydown(onClick) {
-    return e => {
-      if (e.keyCode === 13) {
-        console.log('KEYDOWN', e);
+  private handleKeydown = callbacks => e => {
+    const { onClick, navigateLeft, navigateRight } = callbacks;
 
-        if (onClick) {
-          onClick(e);
-        }
-      }
-    };
-  }
+    if (e.keyCode === 13 && onClick) {
+      onClick(e);
+    } else if (e.keyCode === 37 && navigateLeft) {
+      // left arrow
+      navigateLeft(e);
+    } else if (e.keyCode === 39 && navigateRight) {
+      // right arrow
+      console.log('navigating right in button wrapper');
+      navigateRight(e);
+    }
+  };
 }

@@ -104,6 +104,7 @@ export class ToolbarInner extends React.Component<ToolbarInnerProps> {
             popupsBoundariesElement,
             popupsScrollableElement,
             disabled,
+            navigateRight: () => console.log('navigated right in TOOLBAR!'),
             toolbarSize,
             isToolbarReducedSpacing,
             onFocus: e => console.log('test', e),

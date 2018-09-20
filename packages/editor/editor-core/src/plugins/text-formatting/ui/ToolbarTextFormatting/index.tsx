@@ -15,11 +15,18 @@ export interface Props {
   textFormattingState: TextFormattingState;
   disabled?: boolean;
   isReducedSpacing?: boolean;
+
+  navigateRight?: () => void;
 }
 
 export default class ToolbarTextFormatting extends PureComponent<Props> {
   render() {
-    const { disabled, isReducedSpacing, textFormattingState } = this.props;
+    const {
+      disabled,
+      isReducedSpacing,
+      textFormattingState,
+      navigateRight,
+    } = this.props;
     const {
       strongHidden,
       strongActive,
@@ -29,6 +36,9 @@ export default class ToolbarTextFormatting extends PureComponent<Props> {
       emDisabled,
     } = textFormattingState;
 
+    if (this.props.navigateRight) {
+      console.log('navright is defined in ToolbarTextFormatting');
+    }
     return (
       <ButtonGroup width={isReducedSpacing ? 'small' : 'large'}>
         {strongHidden ? null : (
@@ -40,6 +50,13 @@ export default class ToolbarTextFormatting extends PureComponent<Props> {
             title={tooltip(toggleBold)}
             iconBefore={<BoldIcon label="Bold" />}
             onFocus={e => console.log('bold', e)}
+            navigateRight={() => {
+              console.log('navigating right in toolbarTextFormatting');
+              if (navigateRight) {
+                console.log('navright is defined in toolbarTextFormatting');
+                navigateRight();
+              }
+            }}
           />
         )}
 
