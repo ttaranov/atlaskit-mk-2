@@ -4,8 +4,8 @@ import {
   LinkDetails,
   FileDetails,
 } from '@atlaskit/media-core';
+import { ExternalImageIdentifier } from '@atlaskit/media-card';
 import { defaultCollectionName as collectionName } from './collectionNames';
-import { ExternalImageIdentifier } from 'src';
 
 const fileType: MediaItemType = 'file';
 const linkType: MediaItemType = 'link';
