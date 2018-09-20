@@ -1,5 +1,8 @@
 # @atlaskit/layer
 
+## 5.0.7
+- [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
+
 ## 5.0.5
 - [patch] Implement left offset position to fixed-position layer [8242529](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8242529)
 - [none] Updated dependencies [8242529](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8242529)

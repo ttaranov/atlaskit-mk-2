@@ -195,4 +195,34 @@ describe('Drawer Transitions', () => {
 
     expect(onClose).not.toHaveBeenCalled();
   });
+
+  it('should NOT retain Drawer contents by default', () => {
+    const wrapper = mount(
+      <Drawer isOpen width="wide">
+        <code>Drawer contents</code>
+      </Drawer>,
+    );
+
+    expect(
+      wrapper
+        .find('Slide')
+        .find('Transition')
+        .props().unmountOnExit,
+    ).toBeTruthy();
+  });
+
+  it('should retain Drawer contents when shouldUnmountOnExit is passed', () => {
+    const wrapper = mount(
+      <Drawer isOpen width="wide" shouldUnmountOnExit={false}>
+        <code>Drawer contents</code>
+      </Drawer>,
+    );
+
+    expect(
+      wrapper
+        .find('Slide')
+        .find('Transition')
+        .props().unmountOnExit,
+    ).toBeFalsy();
+  });
 });

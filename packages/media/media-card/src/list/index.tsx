@@ -3,7 +3,6 @@ import * as React from 'react';
 import { Component } from 'react';
 import { Subscription } from 'rxjs/Subscription';
 import {
-  MediaItem,
   MediaCollection,
   MediaCollectionItem,
   Context,
@@ -237,7 +236,7 @@ export class CardList extends Component<CardListProps, CardListState> {
       actions.map(action => {
         return {
           label: action.label,
-          handler: (item: MediaItem, event: Event) => {
+          handler: (_: any, event: Event) => {
             if (collection) {
               action.handler(collectionItem, collection, event);
             }
@@ -274,7 +273,7 @@ export class CardList extends Component<CardListProps, CardListState> {
                   dimensions={dimensions}
                   isLazy={isLazy}
                   onClick={handleCardClick.bind(this, mediaItem)}
-                  actions={cardActions(mediaItem)}
+                  actions={cardActions(mediaItem) as any}
                 />
               </CardListItemWrapper>
             </CSSTransition>
@@ -348,6 +347,8 @@ export class CardList extends Component<CardListProps, CardListState> {
     if (cardAppearance === 'small') {
       return defaultSmallCardDimensions.height;
     }
+
+    return undefined;
   }
 
   private get useInfiniteScroll(): boolean {

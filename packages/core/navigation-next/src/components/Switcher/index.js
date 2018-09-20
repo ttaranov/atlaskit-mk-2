@@ -1,16 +1,12 @@
 // @flow
 
-import React, {
-  cloneElement,
-  Component,
-  type ComponentType,
-  type Element,
-} from 'react';
+import React, { cloneElement, Component } from 'react';
 import { components, PopupSelect } from '@atlaskit/select';
 import { colors, gridSize as gridSizeFn } from '@atlaskit/theme';
 import AddIcon from '@atlaskit/icon/glyph/add';
 
 import Option from './Option';
+import type { SwitcherProps, SwitcherState } from './types';
 
 const gridSize = gridSizeFn();
 
@@ -79,23 +75,11 @@ const Footer = ({ text, onClick }: *) => (
 // Class
 // ==============================
 
-type Props = {
-  /* The action and text representing a create button as the footer */
-  create?: { onClick: (*) => void, text: string },
-  /* Replaceable components */
-  components: { [key: string]: ComponentType<*> },
-  /* The options presented in the select menu */
-  options: Array<Object>,
-  /* The target element, which invokes the select menu */
-  target: Element<*>,
-};
-type State = {
-  isOpen: boolean,
-};
-
-export default class Switcher extends Component<Props, State> {
+export default class Switcher extends Component<SwitcherProps, SwitcherState> {
   state = { isOpen: false };
+  selectRef = React.createRef();
   static defaultProps = {
+    closeMenuOnCreate: true,
     components: { Control, Option },
   };
   handleOpen = () => {
@@ -104,15 +88,33 @@ export default class Switcher extends Component<Props, State> {
   handleClose = () => {
     this.setState({ isOpen: false });
   };
+  getFooter = () => {
+    const { closeMenuOnCreate, create } = this.props;
+
+    if (!create) return null;
+
+    let onClick = create.onClick;
+    if (closeMenuOnCreate) {
+      onClick = e => {
+        if (this.selectRef.current) {
+          this.selectRef.current.close();
+        }
+        create.onClick(e);
+      };
+    }
+
+    return <Footer text={create.text} onClick={onClick} />;
+  };
   render() {
     const { create, options, target, ...props } = this.props;
     const { isOpen } = this.state;
 
     return (
       <PopupSelect
+        ref={this.selectRef}
         filterOption={filterOption}
         isOptionSelected={isOptionSelected}
-        footer={create ? <Footer {...create} /> : null}
+        footer={this.getFooter()}
         getOptionValue={getOptionValue}
         onOpen={this.handleOpen}
         onClose={this.handleClose}

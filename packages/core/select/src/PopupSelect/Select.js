@@ -91,7 +91,9 @@ export default class PopupSelect extends PureComponent<Props, State> {
   };
   componentDidMount() {
     this.mergePopperProps();
-    document.addEventListener('click', this.handleClick);
+
+    if (typeof window === 'undefined') return;
+    window.addEventListener('click', this.handleClick, true);
   }
   // TODO work around this before react@17
   // eslint-disable-next-line camelcase
@@ -101,7 +103,8 @@ export default class PopupSelect extends PureComponent<Props, State> {
     }
   }
   componentWillUnmount() {
-    document.removeEventListener('click', this.handleClick);
+    if (typeof window === 'undefined') return;
+    window.removeEventListener('click', this.handleClick);
   }
 
   // Event Handlers
@@ -117,7 +120,6 @@ export default class PopupSelect extends PureComponent<Props, State> {
   };
   handleClick = ({ target }: MouseEvent) => {
     const { isOpen } = this.state;
-
     // appease flow
     if (!(target instanceof Element)) return;
 
@@ -149,6 +151,8 @@ export default class PopupSelect extends PureComponent<Props, State> {
 
     this.setState({ isOpen: true }, this.initialiseFocusTrap);
     this.selectRef.select.focusOption('first'); // HACK
+
+    if (typeof window === 'undefined') return;
     window.addEventListener('keydown', this.handleKeyDown);
   };
   initialiseFocusTrap = () => {
@@ -169,6 +173,8 @@ export default class PopupSelect extends PureComponent<Props, State> {
 
     this.setState({ isOpen: false });
     this.focusTrap.deactivate();
+
+    if (typeof window === 'undefined') return;
     window.removeEventListener('keydown', this.handleKeyDown);
   };
 

@@ -7,8 +7,8 @@ import { WsMessageData } from './wsMessageData';
 // If no data was received within 3 minutes, the connection is reported as lost.
 export class WsConnection {
   private retriesRemaining: number = 10;
-  private retryTimeoutId: number;
-  private idleTimeoutId: number;
+  private retryTimeoutId?: number;
+  private idleTimeoutId?: number;
 
   private ws?: Ws;
 

@@ -1,7 +1,6 @@
 // @flow
 import React, { Component } from 'react';
-import SingleLineTextInput from '@atlaskit/input';
-import { InlineEditStateless } from '../src';
+import { InlineEditStateless, SingleLineTextInput } from '../src';
 
 type State = {|
   value: string | number,
@@ -45,7 +44,7 @@ export default class StatelessExample extends Component<void, State> {
 
   render() {
     return (
-      <div>
+      <div style={{ padding: '0 16px' }}>
         <InlineEditStateless
           label="Stateless Inline Edit"
           isEditing={this.state.isEditing}

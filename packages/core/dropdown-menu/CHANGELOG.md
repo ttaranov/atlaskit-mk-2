@@ -1,5 +1,21 @@
 # @atlaskit/dropdown-menu
 
+## 6.1.15
+- [patch] Updated dependencies [7d51a09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d51a09)
+  - @atlaskit/button@9.0.10
+  - @atlaskit/lozenge@6.2.1
+
+## 6.1.14
+- [patch] Updated dependencies [4b36fd6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b36fd6)
+  - @atlaskit/lozenge@6.2.0
+
+## 6.1.13
+- [patch] Updated dependencies [969233e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/969233e)
+  - @atlaskit/lozenge@6.1.8
+
+## 6.1.12
+- [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
+
 ## 6.1.11
 - [patch] Fix initial position glitch when opening dropdown menu [d79e361](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d79e361)
 

@@ -35,7 +35,7 @@ describe('CloudAuthService', () => {
       (callback: () => void) => callback(),
     );
     (Postis as FakePostis).channel.listen.mockImplementationOnce(
-      (method: string, callback: () => void) => callback(),
+      (_: string, callback: () => void) => callback(),
     );
 
     jest.spyOn(uuid, 'v4').mockReturnValue(scope);

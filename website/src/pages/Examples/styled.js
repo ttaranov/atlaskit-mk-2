@@ -2,7 +2,7 @@
 
 import React, { type Node } from 'react';
 import styled, { css } from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link } from '../../components/WrappedLink';
 import { Transition } from 'react-transition-group';
 import { colors } from '@atlaskit/theme';
 

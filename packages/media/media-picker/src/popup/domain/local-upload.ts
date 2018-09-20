@@ -6,6 +6,8 @@ export interface LocalUploadFileMetadata {
   readonly mimeType: string;
   readonly name: string;
   readonly size: number;
+  readonly upfrontId: Promise<string>;
+  readonly occurrenceKey?: string;
 }
 
 export interface LocalUploadFile {
@@ -19,6 +21,7 @@ export interface LocalUpload {
   readonly events: UploadEvent[];
   readonly tenant: Tenant;
   readonly index: number;
+  readonly timeStarted: number;
 
   progress: number | null;
   proxy?: string[];

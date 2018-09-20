@@ -13,24 +13,24 @@ export const startCloudAccountOAuthFlow = (
   action: StartAuthAction,
 ) => {
   if (action.type === START_AUTH) {
-    const { redirectUrl, userAuthProvider } = store.getState();
+    const { redirectUrl, userContext } = store.getState();
     const { serviceName } = action;
 
     cloudService
       .startAuth(redirectUrl, serviceName)
-      .then(() => userAuthProvider())
+      .then(() => userContext.config.authProvider())
       .then(auth => fetcher.getServiceList(auth))
       .then(accounts => {
         store.dispatch(updateServiceList(accounts));
 
-        const selectedAccount = (accounts as any).find(
+        const selectedAccount = accounts.find(
           account => account.type === serviceName,
         );
         if (selectedAccount) {
           store.dispatch(changeAccount(serviceName, selectedAccount.id));
         }
       })
-      .catch(error => {
+      .catch(() => {
         // https://jira.atlassian.com/browse/FIL-3247
         // add error handler
       });

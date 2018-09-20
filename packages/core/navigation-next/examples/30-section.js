@@ -5,13 +5,8 @@ import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
 import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
 import { colors } from '@atlaskit/theme';
 
-import {
-  GroupHeading,
-  Item,
-  Section,
-  ScrollableSectionInner,
-  Separator,
-} from '../src';
+import { Item, Section, SectionHeading, Separator } from '../src';
+import { CONTENT_NAV_WIDTH } from '../src/common/constants';
 
 const Container = props => (
   <div
@@ -33,7 +28,7 @@ const NestedSectionWrapper = props => (
       marginTop: '8px',
       overflow: 'hidden',
       position: 'relative',
-      width: '270px',
+      width: `${CONTENT_NAV_WIDTH}px`,
     }}
     {...props}
   />
@@ -46,7 +41,7 @@ const ScrollableSectionWrapper = props => (
       flexDirection: 'column',
       height: '300px',
       marginTop: '8px',
-      width: '270px',
+      width: `${CONTENT_NAV_WIDTH}px`,
     }}
     {...props}
   />
@@ -88,9 +83,9 @@ class NestedSection extends Component<{}, { activeLevel: number }> {
     return (
       <NestedSectionWrapper>
         <Section key="nested-section" {...sectionProps}>
-          {({ css }) => (
-            <div css={{ ...css, paddingBottom: '16px' }}>
-              <GroupHeading>{title}</GroupHeading>
+          {({ className }) => (
+            <div className={className}>
+              <SectionHeading>{title}</SectionHeading>
               {items.map(({ goTo, ...itemProps }) => (
                 <Item
                   key={itemProps.text}
@@ -132,26 +127,17 @@ export default () => (
       <NestedSection />
     </VariationWrapper>
     <VariationWrapper>
-      <h3>Scroll hint section</h3>
+      <h3>Scrollable section</h3>
       <ScrollableSectionWrapper>
-        <Section key="scroll-hint-section">
+        <Section key="scrollable-section" shouldGrow>
           {({ css }) => (
-            <ScrollableSectionInner
-              styles={styles => ({
-                ...styles,
-                inner: {
-                  ...styles.inner,
-                  ...css,
-                  paddingBottom: `16px`,
-                },
-              })}
-            >
-              <GroupHeading>Section title</GroupHeading>
+            <div css={css}>
+              <SectionHeading>Section heading</SectionHeading>
               {scrollingItems.map(itemProps => (
                 <Item key={itemProps.text} {...itemProps} />
               ))}
               <Separator />
-            </ScrollableSectionInner>
+            </div>
           )}
         </Section>
       </ScrollableSectionWrapper>

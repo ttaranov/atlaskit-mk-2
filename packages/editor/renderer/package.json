@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/renderer",
-  "version": "20.1.2",
+  "version": "23.0.1",
   "description": "Renderer component",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -19,33 +19,38 @@
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/code": "^8.0.1",
-    "@atlaskit/editor-common": "^14.0.13",
-    "@atlaskit/editor-json-transformer": "^4.0.7",
+    "@atlaskit/editor-common": "^16.2.1",
+    "@atlaskit/editor-json-transformer": "^4.0.11",
     "@atlaskit/icon": "^13.2.5",
-    "@atlaskit/media-card": "^32.0.6",
-    "@atlaskit/media-filmstrip": "^11.0.2",
-    "@atlaskit/mention": "^15.0.6",
+    "@atlaskit/media-card": "^35.0.0",
+    "@atlaskit/media-filmstrip": "^13.0.2",
+    "@atlaskit/mention": "^15.0.9",
     "@atlaskit/smart-card": "^8.0.1",
-    "@atlaskit/task-decision": "^8.1.6",
+    "@atlaskit/status": "^0.1.0",
+    "@atlaskit/task-decision": "^8.1.10",
     "@atlaskit/theme": "^6.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "prosemirror-model": "^1.6.1"
   },
   "peerDependencies": {
-    "@atlaskit/media-core": "^23.0.2",
+    "@atlaskit/media-core": "^23.2.1",
     "react": "^16.4.0",
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^5.0.6",
-    "@atlaskit/editor-test-helpers": "^6.0.5",
-    "@atlaskit/media-core": "^23.0.2",
-    "@atlaskit/media-test-helpers": "^17.0.0",
+    "@atlaskit/docs": "^5.0.7",
+    "@atlaskit/editor-test-helpers": "^6.1.0",
+    "@atlaskit/media-core": "^23.2.1",
+    "@atlaskit/media-test-helpers": "^17.1.0",
     "@atlaskit/profilecard": "^4.0.8",
     "@atlaskit/size-detector": "^5.0.3",
-    "@atlaskit/util-data-test": "^10.0.7",
+    "@atlaskit/util-data-test": "^10.0.9",
     "@atlaskit/visual-regression": "^0.0.1",
     "@types/prosemirror-model": "^1.0.0",
-    "react-live-clock": "^2.0.2"
+    "chai": "^4.1.2",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "react": "^16.4.0",
+    "react-live-clock": "^2.0.2",
+    "sinon": "^2.2.0"
   }
 }

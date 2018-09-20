@@ -386,6 +386,15 @@ export const getValidNode = (
         }
         break;
       }
+      case 'status': {
+        if (attrs && attrs.text && attrs.color) {
+          return {
+            type,
+            attrs,
+          };
+        }
+        break;
+      }
       case 'emoji': {
         if (attrs && attrs.shortName) {
           return {
@@ -601,7 +610,7 @@ export const getValidNode = (
         if (content) {
           return {
             type,
-            content,
+            content: wrapInlineNodes(content),
           };
         }
         break;
@@ -739,7 +748,7 @@ export const getValidNode = (
 
           return {
             type,
-            content,
+            content: wrapInlineNodes(content),
             attrs: attrs ? cellAttrs : undefined,
           };
         }

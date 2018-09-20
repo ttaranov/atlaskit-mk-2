@@ -25,25 +25,25 @@ export default class Logger {
     }
   }
 
-  logMessage(level, type, ...args: any[]) {
+  logMessage(level: number, type: keyof Console, ...args: any[]) {
     if (level >= this.logLevel) {
       console[type](...args);
     }
   }
 
-  debug(...args) {
+  debug(...args: any[]) {
     this.logMessage(LOG_LEVEL.DEBUG, 'log', ...args);
   }
 
-  info(...args) {
+  info(...args: any[]) {
     this.logMessage(LOG_LEVEL.INFO, 'info', ...args);
   }
 
-  warn(...args) {
+  warn(...args: any[]) {
     this.logMessage(LOG_LEVEL.WARN, 'warn', ...args);
   }
 
-  error(...args) {
+  error(...args: any[]) {
     this.logMessage(LOG_LEVEL.ERROR, 'error', ...args);
   }
 }

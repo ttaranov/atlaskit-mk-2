@@ -1,5 +1,16 @@
 # @atlaskit/navigation
 
+## 33.1.10
+- [patch] Pulling the shared styles from @atlaskit/theme and removed dependency on util-shraed-styles [7d51a09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d51a09)
+
+## 33.1.9
+- [patch] Updated dependencies [80e1925](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80e1925)
+  - @atlaskit/button@9.0.9
+  - @atlaskit/checkbox@5.0.0
+
+## 33.1.8
+- [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
+
 ## 33.1.7
 - [patch] Make navigation SSR-friendly [59f7cb4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59f7cb4)
 

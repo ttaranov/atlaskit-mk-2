@@ -7,7 +7,7 @@ import {
 import {
   Result,
   ContainerResult,
-  JiraObjectResult,
+  JiraResult,
   PersonResult,
   ResultType,
   ConfluenceObjectResult,
@@ -56,7 +56,7 @@ export default class ResultList extends React.Component<Props> {
           );
         }
         case ResultType.JiraObjectResult: {
-          const jiraResult = result as JiraObjectResult;
+          const jiraResult = result as JiraResult;
 
           return (
             <ObjectResultComponent
@@ -101,6 +101,7 @@ export default class ResultList extends React.Component<Props> {
               mentionName={personResult.mentionName}
               presenceMessage={personResult.presenceMessage}
               analyticsData={analyticsData}
+              target="_blank"
             />
           );
         }

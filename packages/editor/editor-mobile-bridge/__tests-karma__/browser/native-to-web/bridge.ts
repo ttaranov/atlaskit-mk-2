@@ -1,10 +1,9 @@
 import * as sinon from 'sinon';
-import { toNativeBridge } from '../../../src/web-to-native';
-import mobileEditor from '../../../src/mobile-editor-element';
+import { toNativeBridge } from '../../../src/editor/web-to-native';
+import mobileEditor from '../../../src/editor/mobile-editor-element';
 import { expect } from 'chai';
 import { mount } from 'enzyme';
 import { mountEditor } from './utils';
-import { TextSelection } from 'prosemirror-state';
 
 declare var bridge;
 
@@ -15,9 +14,8 @@ describe('NativeToWebBridge', () => {
     content: [{ type: 'paragraph', content: [{ type: 'text', text: 'test' }] }],
   };
   let editor;
-
   beforeEach(() => {
-    editor = mount(mobileEditor());
+    editor = mount(mobileEditor({}));
   });
 
   afterEach(() => {
@@ -60,19 +58,14 @@ describe('NativeToWebBridge', () => {
 
 describe('insert media', () => {
   let editor;
-  const getCollection = sinon.stub(toNativeBridge, 'getCollection');
-  const getServiceHost = sinon.stub(toNativeBridge, 'getServiceHost');
   beforeEach(async () => {
-    getCollection.reset();
-    getCollection.returns('FabricSampleCollection');
-    getServiceHost.reset();
-    getServiceHost.returns('http://www.atlassian.com/');
     editor = await mountEditor();
   });
 
   afterEach(() => {
     editor.unmount();
   });
+
   const contentWithMedia = {
     version: 1,
     type: 'doc',
@@ -84,7 +77,7 @@ describe('insert media', () => {
             type: 'media',
             attrs: {
               id: 'e94c3f67-5ac3-42b2-bf6a-ce35bb787894',
-              collection: 'FabricSampleCollection',
+              collection: 'MediaServicesSample',
               type: 'file',
             },
           },
@@ -101,6 +94,7 @@ describe('insert media', () => {
     const content = bridge.getContent();
     expect(JSON.parse(content)).to.be.deep.equal(contentWithMedia);
   });
+
   it('should update content on native side', async () => {
     const mock = sinon.mock(toNativeBridge);
     mock

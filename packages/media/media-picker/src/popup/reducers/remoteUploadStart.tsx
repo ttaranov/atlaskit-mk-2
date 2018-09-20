@@ -14,6 +14,7 @@ export default function remoteUploadStart(
 
     remoteUploads[uploadId] = {
       tenant,
+      timeStarted: Date.now(),
     };
 
     return { ...state, remoteUploads };

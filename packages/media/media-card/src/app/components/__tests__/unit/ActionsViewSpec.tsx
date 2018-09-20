@@ -118,7 +118,7 @@ describe('ActionsView', () => {
     );
     expect(element.find(Button)).toHaveLength(3);
     expect(element.find(DropdownMenu)).toHaveLength(1);
-    const groups: Array<any> = element.find(DropdownMenu).prop('items')!;
+    const groups: Array<any> = element.find(DropdownMenu).prop<any>('items')!;
     expect(groups).toHaveLength(1);
     expect(groups[0].items).toHaveLength(2);
     expect(groups[0].items[0]).toHaveProperty('content', 'Reply');
@@ -277,11 +277,9 @@ describe('ActionsView', () => {
     const event = {
       stopPropagation: jest.fn(),
     };
-    const onActionClickSpy = jest
-      .fn()
-      .mockImplementation((action, handlers) => {
-        handlers.progress();
-      });
+    const onActionClickSpy = jest.fn().mockImplementation((_, handlers) => {
+      handlers.progress();
+    });
     const createCallbackHandlersSpy = jest.spyOn(
       ActionsView.prototype,
       'createCallbackHandlers',
@@ -337,11 +335,9 @@ describe('ActionsView', () => {
     const event = {
       stopPropagation: jest.fn(),
     };
-    const onActionClickSpy = jest
-      .fn()
-      .mockImplementation((action, handlers) => {
-        handlers.success('some success');
-      });
+    const onActionClickSpy = jest.fn().mockImplementation((_, handlers) => {
+      handlers.success('some success');
+    });
     const createCallbackHandlersSpy = jest.spyOn(
       ActionsView.prototype,
       'createCallbackHandlers',
@@ -395,11 +391,9 @@ describe('ActionsView', () => {
   });
 
   it('should update state on failure handler execution', () => {
-    const onActionClickSpy = jest
-      .fn()
-      .mockImplementation((action, handlers) => {
-        handlers.failure('some failure', true, 'test try again');
-      });
+    const onActionClickSpy = jest.fn().mockImplementation((_, handlers) => {
+      handlers.failure('some failure', true, 'test try again');
+    });
     const createCallbackHandlersSpy = jest.spyOn(
       ActionsView.prototype,
       'createCallbackHandlers',
@@ -446,7 +440,7 @@ describe('ActionsView', () => {
 
     const onItemActivated: Function = element
       .find(DropdownMenu)
-      .prop('onItemActivated')!;
+      .prop<any>('onItemActivated')!;
     onItemActivated({
       item: { action: { appCardAction: actions[2], key: 3 } },
     });

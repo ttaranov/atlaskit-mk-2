@@ -1,19 +1,9 @@
-import { Schema } from 'prosemirror-model';
-import { parseString } from '../text';
+import { Node as PMNode, Schema } from 'prosemirror-model';
 import { Token, TokenType } from './';
-import { parseNewlineOnly } from './whitespace';
-
-const processState = {
-  START: 0,
-  BUFFER: 1,
-  END: 2,
-};
+import { hasAnyOfMarks } from '../utils/text';
+import { commonFormatter } from './common-formatter';
 
 export function emphasis(input: string, schema: Schema): Token {
-  let index = 0;
-  let state = processState.START;
-  let buffer = '';
-
   /**
    * The following token types will be ignored in parsing
    * the content of a  mark
@@ -23,72 +13,20 @@ export function emphasis(input: string, schema: Schema): Token {
     TokenType.TRIPLE_DASH_SYMBOL,
     TokenType.QUADRUPLE_DASH_SYMBOL,
   ];
-
-  while (index < input.length) {
-    const char = input.charAt(index);
-
-    switch (state) {
-      case processState.START: {
-        if (char !== '_') {
-          // this is not a valid -mark
-          return {
-            type: 'text',
-            text: char,
-            length: 1,
-          };
-        }
-        state = processState.BUFFER;
-        break;
-      }
-      case processState.BUFFER: {
-        // the linebreak would break the marks
-        const length = parseNewlineOnly(input.substring(index));
-        if (length) {
-          return fallback();
-        }
-        if (char === '_') {
-          state = processState.END;
-          continue;
-        } else {
-          buffer += char;
-        }
-        break;
-      }
-      case processState.END: {
-        // empty  mark is treated as normal text
-        if (buffer.length === 0) {
-          return {
-            type: 'text',
-            text: '__',
-            length: 2,
-          };
-        }
-
-        const rawContent = parseString(buffer, schema, ignoreTokenTypes);
-        const decoratedContent = rawContent.map(n => {
-          const mark = schema.marks.em.create();
-          if (n.type.name === 'text') {
-            return n.mark([...n.marks, mark]);
-          }
-          return n;
-        });
-        return {
-          type: 'pmnode',
-          nodes: decoratedContent,
-          length: buffer.length + 2,
-        };
-      }
-      default:
+  /** Add underline mark to each text */
+  const contentDecorator = (n: PMNode) => {
+    const mark = schema.marks.em.create();
+    // We don't want to mix `code` mark with others
+    if (n.type.name === 'text' && !hasAnyOfMarks(n, ['em', 'code'])) {
+      return n.mark([...n.marks, mark]);
     }
-    index++;
-  }
-  return fallback();
-}
-
-function fallback(): Token {
-  return {
-    type: 'text',
-    text: '_',
-    length: 1,
+    return n;
   };
+
+  return commonFormatter(input, schema, {
+    opening: '_',
+    closing: '_',
+    ignoreTokenTypes,
+    contentDecorator,
+  });
 }

@@ -1,5 +1,41 @@
 # @atlaskit/global-navigation
 
+## 4.5.1
+- [patch] Fix drawer screen events not firing on subsequent opens of a drawer after the initial one [7eb5248](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7eb5248)
+
+## 4.5.0
+- [minor] Fire keyboardShortcut pressed analytics event when closing a drawer with the ESC key [6bea7d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6bea7d0)
+
+## 4.4.4
+- [patch] Adds the new hideTooltipOnMouseDown was required since global-navigation and navigation-next are using onMouseDown and onMouseUp iteractions [8719daf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8719daf)
+
+## 4.4.3
+- [patch] fixing remount component on GlobalItem component [e71825a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e71825a)
+
+## 4.4.2
+- [patch] fixing HelpIcon active on children :hover [ae95dad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae95dad)
+
+## 4.4.1
+- [patch] Do not cache CustomComponent in GlobalItem [372795f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/372795f)
+
+## 4.4.0
+- [minor] Exposes a new prop shouldUnmountOnExit in @atlaskit/drawer which let's the consumer decide if the contents of the drawer should be retained on unmount. Exposes 4 new props, one for each drawer to let the product decide if the contents of the drawer should be retained on drawerClose [2988998](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2988998)
+
+## 4.3.4
+- [patch] bump dep on navigation-next [4af6c6a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4af6c6a)
+
+## 4.3.3
+- [patch] Bumping dependency on navigation-next. [d591e69](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d591e69)
+
+## 4.3.2
+- [patch] Updated dependencies [d5a043a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5a043a)
+  - @atlaskit/icon@13.8.1
+  - @atlaskit/onboarding@6.0.1
+  - @atlaskit/modal-dialog@7.0.0
+
+## 4.3.1
+- [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
+
 ## 4.3.0
 - [minor] Add UI analytics event for dismissing global navigation drawers [e7d5eac](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7d5eac)
 - [patch] Updated dependencies [501378a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/501378a)

@@ -1,3 +1,4 @@
+declare var window: any;
 import * as util from '../../src/newgen/utils';
 const constructAuthTokenUrlSpy = jest.spyOn(util, 'constructAuthTokenUrl');
 
@@ -7,6 +8,7 @@ import { createContext } from '../_stubs';
 import { Subject } from 'rxjs';
 import { MediaItem, MediaItemType, MediaType } from '@atlaskit/media-core';
 import Header from '../../src/newgen/header';
+import { FeedbackButton } from '../../src/newgen/feedback-button';
 import { MetadataFileName, MetadataSubText } from '../../src/newgen/styled';
 import DownloadIcon from '@atlaskit/icon/glyph/download';
 import { LeftHeader } from '../../src/newgen/styled';
@@ -257,6 +259,33 @@ describe('<Header />', () => {
     el.update();
     el.find(DownloadIcon).simulate('click');
     expect(constructAuthTokenUrlSpy.mock.calls[0][2]).toEqual(collectionName);
+  });
+
+  describe('Feedback button', () => {
+    let jquery: any;
+
+    beforeEach(() => {
+      jquery = window.jQuery;
+    });
+
+    afterEach(() => {
+      window.jQuery = jquery;
+    });
+
+    it('should not show the feedback button if jQuery is not found in window object', () => {
+      const subject = new Subject<MediaItem>();
+      const context = createContext({ subject });
+      const el = mount(<Header context={context} identifier={identifier} />);
+      expect(el.find(FeedbackButton).html()).toBeNull();
+    });
+
+    it('should show the feedback button if jQuery is found in window object', () => {
+      const subject = new Subject<MediaItem>();
+      const context = createContext({ subject });
+      window.jQuery = {};
+      const el = mount(<Header context={context} identifier={identifier} />);
+      expect(el.find(FeedbackButton).html()).not.toBeNull();
+    });
   });
 
   describe('Download button', () => {

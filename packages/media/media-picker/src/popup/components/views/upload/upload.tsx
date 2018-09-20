@@ -26,6 +26,8 @@ import { Dropzone } from './dropzone';
 import { fileClick } from '../../../actions/fileClick';
 import { editorShowImage } from '../../../actions/editorShowImage';
 import { editRemoteImage } from '../../../actions/editRemoteImage';
+import { setUpfrontIdDeferred } from '../../../actions/setUpfrontIdDeferred';
+
 import {
   FileReference,
   LocalUploadFileMetadata,
@@ -75,6 +77,11 @@ export interface UploadViewDispatchProps {
   readonly onEditRemoteImage: (
     file: FileReference,
     collectionName: string,
+  ) => void;
+  readonly setUpfrontIdDeferred: (
+    id: string,
+    resolver: (id: string) => void,
+    rejecter: Function,
   ) => void;
 }
 
@@ -213,9 +220,10 @@ export class StatelessUploadView extends Component<
           ),
         );
       }
-
+      // We remove not needed properties from the metadata
+      const { upfrontId, occurrenceKey, ...fileDetails } = file.metadata;
       const metadata: FileDetails = {
-        ...file.metadata,
+        ...fileDetails,
         mediaType,
       };
 
@@ -247,6 +255,7 @@ export class StatelessUploadView extends Component<
       selectedItems,
       onFileClick,
       onEditRemoteImage,
+      setUpfrontIdDeferred,
     } = this.props;
     const { items } = recents;
 
@@ -257,20 +266,26 @@ export class StatelessUploadView extends Component<
     const onClick = ({ mediaItemDetails }: CardEvent) => {
       const fileDetails = mediaItemDetails as FileDetails;
       if (fileDetails) {
+        const { id } = fileDetails;
+        const upfrontId = new Promise<string>((resolve, reject) => {
+          setUpfrontIdDeferred(id, resolve, reject);
+        });
+
         onFileClick(
           {
-            id: fileDetails.id,
+            id,
             name: fileDetails.name || '',
             mimeType: fileDetails.mimeType || '',
             size: fileDetails.size || 0,
+            upfrontId,
           },
           'recent_files',
         );
       }
     };
     const onLoadingChange = this.onCardLoadingChanged;
-    const editHandler = (mediaItem: MediaItem) => {
-      if (mediaItem.type === 'file') {
+    const editHandler: CardEventHandler = (mediaItem?: MediaItem) => {
+      if (mediaItem && mediaItem.type === 'file') {
         const { id, name } = mediaItem.details;
 
         if (isWebGLAvailable()) {
@@ -354,7 +369,10 @@ const mapStateToProps = (state: State): UploadViewStateProps => ({
 const mapDispatchToProps = (
   dispatch: Dispatch<any>,
 ): UploadViewDispatchProps => ({
-  onFileClick: ({ id, mimeType, name, size }, serviceName) =>
+  onFileClick: (
+    { id, mimeType, name, size, upfrontId, occurrenceKey },
+    serviceName,
+  ) =>
     dispatch(
       fileClick(
         {
@@ -363,6 +381,8 @@ const mapDispatchToProps = (
           mimeType,
           name,
           size,
+          upfrontId,
+          occurrenceKey,
         },
         serviceName,
       ),
@@ -371,6 +391,8 @@ const mapDispatchToProps = (
     dispatch(editorShowImage(dataUri, file)),
   onEditRemoteImage: (file, collectionName) =>
     dispatch(editRemoteImage(file, collectionName)),
+  setUpfrontIdDeferred: (id, resolver, rejecter) =>
+    dispatch(setUpfrontIdDeferred(id, resolver, rejecter)),
 });
 
 export default connect<

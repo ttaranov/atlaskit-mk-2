@@ -1,50 +1,40 @@
 // @flow
 import React from 'react';
-import { shallow, mount } from 'enzyme';
+import { mount } from 'enzyme';
 import Blanket from '@atlaskit/blanket';
 
-import ModalDialogWithAnalytics from '../../..';
-import { ModalDialogWithoutAnalytics as ModalDialog } from '../../Modal';
+import ModalDialog, { ModalTransition } from '../../..';
+import { Positioner } from '../../Modal';
 import Content from '../../Content';
-import { Body } from '../../../styled/Content';
-import {
-  dialogHeight,
-  dialogWidth,
-  Dialog,
-  PositionerAbsolute,
-  PositionerRelative,
-} from '../../../styled/Modal';
+import Header from '../../Header';
+import Footer from '../../Footer';
+import { dialogHeight, dialogWidth, Dialog } from '../../../styled/Modal';
+
+jest.mock('raf-schd', () => fn => fn);
 
 // dialogs require an onClose function
 const noop = () => {};
-const StubDialog = props => <ModalDialog onClose={noop} {...props} />;
 
-// wait for react-transition-group to mount the modal
-const wait = fn => setTimeout(fn, 1);
+const MyContent = () => <div>Hello</div>;
+
+test('should render a modal dialog with content', () => {
+  const wrapper = mount(
+    <ModalTransition>
+      <ModalDialog onClose={noop}>
+        <MyContent />
+      </ModalDialog>
+    </ModalTransition>,
+  );
+  expect(wrapper.find(Content)).toHaveLength(1);
+});
 
 describe('modal-dialog', () => {
-  it('should be possible to create a component', () => {
-    const wrapper = shallow(<ModalDialog onClose={noop} />);
-    expect(wrapper).not.toBe(undefined);
-  });
-
-  /* eslint-disable jest/no-disabled-tests */
-  xdescribe('scrolling window', () => {
-    xit('should be locked when initiated by the user', () => {});
-
-    xit('should be locked when initiated programatically', () => {});
-  });
-  /* eslint-enable jest/no-disabled-tests */
-
   describe('props', () => {
     describe('height', () => {
       it('should be passed to Dialog', () => {
-        const wrapper = mount(<StubDialog height="42%" />);
-
-        wait(() => {
-          const dialogHeightProp = wrapper.find(Dialog).prop('heightValue');
-          expect(dialogHeightProp).toBe('42%');
-        });
+        const wrapper = mount(<ModalDialog onClose={noop} height="42%" />);
+        const dialogHeightProp = wrapper.find(Dialog).prop('heightValue');
+        expect(dialogHeightProp).toBe('42%');
       });
 
       it('should return px if number', () => {
@@ -63,19 +53,6 @@ describe('modal-dialog', () => {
     });
     describe('width', () => {
       const TSHIRT_SIZES = ['small', 'medium', 'large', 'x-large'];
-      const assertEqual = (wrapper, expected) =>
-        wrapper.find(PositionerAbsolute).prop('dialogWidth') === expected;
-
-      it('should be passed to Dialog', () => {
-        const wrapper = mount(
-          <StubDialog width="42%" scrollBehavior={'inside'} />,
-        );
-
-        wait(() => {
-          const dialogWidthProp = wrapper.find(Dialog).prop('widthValue');
-          expect(dialogWidthProp).toBe('42%');
-        });
-      });
 
       it('should return px if number', () => {
         expect(dialogWidth({ widthValue: 42 })).toBe('42px');
@@ -93,10 +70,9 @@ describe('modal-dialog', () => {
 
       TSHIRT_SIZES.forEach(width => {
         it(`width = "${width}" is applied uniquely`, () => {
-          const wrapper = shallow(<StubDialog width={width} />);
-          wait(() => {
-            expect(assertEqual(wrapper, width)).toBe(true);
-          });
+          const wrapper = mount(<ModalDialog width={width} onClose={noop} />);
+          const widthProp = wrapper.find(Positioner).prop('widthName');
+          expect(widthProp).toEqual(width);
         });
       });
     });
@@ -104,22 +80,21 @@ describe('modal-dialog', () => {
     describe('header', () => {
       it('should render when set', () => {
         const node = <span>My header</span>;
-        const wrapper = mount(<StubDialog header={() => node} />);
-
-        wait(() => {
-          expect(wrapper.contains(node)).toBe(true);
-        });
+        const wrapper = mount(
+          <ModalDialog header={() => node} onClose={noop} />,
+        );
+        expect(wrapper.contains(node)).toBe(true);
       });
     });
 
     describe('footer', () => {
       it('should render when set', () => {
         const node = <span>My footer</span>;
-        const wrapper = mount(<StubDialog footer={() => node} />);
+        const wrapper = mount(
+          <ModalDialog footer={() => node} onClose={noop} />,
+        );
 
-        wait(() => {
-          expect(wrapper.contains(node)).toBe(true);
-        });
+        expect(wrapper.contains(node)).toBe(true);
       });
     });
 
@@ -130,108 +105,182 @@ describe('modal-dialog', () => {
             This is <strong>my</strong> form
           </form>
         );
-        const wrapper = shallow(<StubDialog>{node}</StubDialog>);
+        const wrapper = mount(<ModalDialog onClose={noop}>{node}</ModalDialog>);
 
-        wait(() => {
-          expect(wrapper.contains(node)).toBe(true);
-        });
+        expect(wrapper.contains(node)).toBe(true);
       });
     });
 
     describe('onClose', () => {
       it('should trigger when blanket clicked', () => {
         const spy = jest.fn();
-        const wrapper = mount(<StubDialog onClose={spy} />);
+        const wrapper = mount(<ModalDialog onClose={spy} />);
 
-        wait(() => {
-          const blanket = wrapper.find(Blanket);
+        const blanket = wrapper.find(Blanket);
 
-          blanket.simulate('click');
-          expect(spy).toHaveBeenCalledTimes(1);
-        });
+        blanket.simulate('click');
+        expect(spy).toHaveBeenCalledTimes(1);
       });
 
       it('should trigger when blanket clicked below dialog (modalPositioner)', () => {
         const spy = jest.fn();
-        const wrapper = mount(<StubDialog onClose={spy} />);
+        const wrapper = mount(<ModalDialog onClose={spy} />);
 
-        wait(() => {
-          wrapper.find(PositionerRelative).simulate('click');
-          expect(spy).toHaveBeenCalledTimes(1);
-        });
+        wrapper.find(Positioner).simulate('click');
+        expect(spy).toHaveBeenCalledTimes(1);
       });
 
       it('should not trigger when blanket content clicked', () => {
         const spy = jest.fn();
-        const node = <span>my content</span>;
-        const wrapper = mount(<StubDialog onClose={spy}>{node}</StubDialog>);
+        const wrapper = mount(
+          <ModalDialog onClose={spy}>
+            <MyContent />
+          </ModalDialog>,
+        );
 
-        wait(() => {
-          wrapper.find(node).simulate('click');
-          expect(spy).not.toHaveBeenCalled();
-        });
+        wrapper.find(MyContent).simulate('click');
+        expect(spy).not.toHaveBeenCalled();
       });
     });
   });
 
-  /*
-    <Content /> won't render until it has a `dialogNode` reference;
-    the timeout gives it time to propagate.
-  */
   describe('scrolling header/footer keylines', () => {
     it('should enable header keyline only when header provided', () => {
-      const wrapper = mount(<StubDialog />);
+      const CustomBody = ({ innerRef }: { innerRef: Function }) => {
+        innerRef({
+          addEventListener: jest.fn(),
+          clientHeight: 200,
+          scrollHeight: 100,
+          scrollTop: 10,
+        });
+        return <div />;
+      };
+      const wrapper = mount(<ModalDialog onClose={noop} body={CustomBody} />);
 
-      wait(() => {
-        const content = wrapper.find(Content);
-        const body = content.find(Body);
-
-        expect(content.state('showHeaderKeyline')).toBe(false);
-
-        wrapper.setProps({ header: () => 'Header' });
-        body.simulate('scroll');
-        expect(content.state('showHeaderKeyline')).toBe(true);
-      });
+      const header = wrapper.find(Header);
+      expect(header.prop('showKeyline')).toEqual(true);
     });
 
     it('should enable footer keyline only when footer provided', () => {
-      const wrapper = mount(<StubDialog />);
+      const CustomBody = ({ innerRef }: { innerRef: Function }) => {
+        innerRef({
+          addEventListener: jest.fn(),
+          clientHeight: 100,
+          scrollHeight: 200,
+          scrollTop: 0,
+        });
+        return <div />;
+      };
+      const wrapper = mount(<ModalDialog onClose={noop} body={CustomBody} />);
 
-      wait(() => {
-        const content = wrapper.find(Content);
-        const body = content.find(Body);
-
-        expect(content.state('showFooterKeyline')).toBe(false);
-
-        wrapper.setProps({ footer: () => 'Footer' });
-        body.simulate('scroll');
-        expect(content.state('showFooterKeyline')).toBe(true);
-      });
+      const header = wrapper.find(Footer);
+      expect(header.prop('showKeyline')).toEqual(true);
     });
   });
 
   describe('chromeless', () => {
     it('header should not render if dialog is chromeless', () => {
-      const node = <span>My header</span>;
-      const wrapper = mount(<StubDialog isChromeless header={() => node} />);
+      const MyHeader = () => <span>My header</span>;
+      const wrapper = mount(
+        <ModalDialog isChromeless header={MyHeader} onClose={noop} />,
+      );
 
-      wait(() => {
-        expect(wrapper.contains(node)).toBe(false);
-      });
+      expect(wrapper.contains(MyHeader)).toBe(false);
     });
 
     it('footer should not render if dialog is chromeless', () => {
-      const node = <span>My footer</span>;
-      const wrapper = mount(<StubDialog isChromeless footer={() => node} />);
+      const MyFooter = () => <span>My footer</span>;
+      const wrapper = mount(
+        <ModalDialog isChromeless footer={MyFooter} onClose={noop} />,
+      );
 
-      wait(() => {
-        expect(wrapper.contains(node)).toBe(false);
-      });
+      expect(wrapper.contains(MyFooter)).toBe(false);
     });
   });
 });
 
-describe('ModalDialogWithAnalytics', () => {
+test('multiple modals should stack on one another', () => {
+  const wrapper = mount(
+    <div>
+      <ModalDialog>back</ModalDialog>
+      <ModalDialog>middle</ModalDialog>
+      <ModalDialog>front</ModalDialog>
+    </div>,
+  );
+  const indexes = wrapper
+    .find(Content)
+    .map(content => content.prop('stackIndex'));
+  expect(indexes).toEqual([2, 1, 0]);
+});
+
+test('nested modals should stack on one another', () => {
+  const wrapper = mount(
+    <div>
+      <ModalDialog>back</ModalDialog>
+      <ModalDialog>
+        middle
+        <ModalDialog>front</ModalDialog>
+      </ModalDialog>
+    </div>,
+  );
+  const indexes = wrapper
+    .find(Content)
+    .map(content => content.prop('stackIndex'));
+  expect(indexes).toEqual([2, 1, 0]);
+});
+
+test('multiple modals update stack on unmount', () => {
+  class Wrapper extends React.Component<{}, { open: boolean }> {
+    state = { open: true };
+    render() {
+      return (
+        <div>
+          <ModalDialog />
+          <ModalDialog />
+          {this.state.open && (
+            <ModalDialog>
+              <button onClick={() => this.setState({ open: false })}>
+                close
+              </button>
+            </ModalDialog>
+          )}
+        </div>
+      );
+    }
+  }
+  const wrapper = mount(<Wrapper />);
+  wrapper.find('button').simulate('click');
+  const indexes = wrapper
+    .find(Content)
+    .map(content => content.prop('stackIndex'));
+  expect(indexes).toEqual([1, 0]);
+});
+
+test('can manually override modals stack', () => {
+  const wrapper = mount(
+    <div>
+      <ModalDialog>back</ModalDialog>
+      <ModalDialog stackIndex={1}>front</ModalDialog>
+    </div>,
+  );
+  const indexes = wrapper
+    .find(Content)
+    .map(content => content.prop('stackIndex'));
+  expect(indexes).toEqual([1, 1]);
+});
+
+// beautiful-dnd will miscalculate positions if the container has a transform applied to it.
+test('no transform is applied to content', () => {
+  jest.useFakeTimers();
+  const wrapper = mount(<ModalDialog />);
+  jest.runAllTimers();
+  // update enzyme's view of component tree after animations have finished
+  wrapper.update();
+  const style = wrapper.find(Positioner).prop('style');
+  expect(style.transform).toEqual(null);
+});
+
+describe('ModalDialog', () => {
   beforeEach(() => {
     jest.spyOn(global.console, 'warn');
     jest.spyOn(global.console, 'error');
@@ -242,7 +291,7 @@ describe('ModalDialogWithAnalytics', () => {
   });
 
   it('should mount without errors', () => {
-    mount(<ModalDialogWithAnalytics onClose={noop} />);
+    mount(<ModalDialog onClose={noop} />);
     /* eslint-disable no-console */
     expect(console.warn).not.toHaveBeenCalled();
     expect(console.error).not.toHaveBeenCalled();

@@ -1,5 +1,26 @@
 # @atlaskit/emoji
 
+## 41.0.1
+- [patch] FS-1583 size placeholders in picker to square [a836b20](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a836b20)
+
+## 41.0.0
+- [major] Updated dependencies [6e1d642](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e1d642)
+  - @atlaskit/util-data-test@10.0.9
+  - @atlaskit/media-core@23.2.0
+
+## 40.0.2
+- [patch] Update TS to 3.0 [f68d367](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f68d367)
+- [none] Updated dependencies [f68d367](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f68d367)
+  - @atlaskit/media-core@23.1.1
+
+## 40.0.1
+- [patch] FS-2941 Stop using Request object and upgrade fetch-mock [dff332a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dff332a)
+
+## 40.0.0
+- [major] Updated dependencies [7545979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7545979)
+  - @atlaskit/util-data-test@10.0.8
+  - @atlaskit/media-core@23.1.0
+
 ## 39.1.1
 - [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
   - @atlaskit/util-data-test@10.0.7

@@ -21,7 +21,7 @@ export class HTMLEmbedCard extends React.Component<
   // mounted by this component
   private id: number = uuid();
 
-  private iframe: HTMLIFrameElement;
+  private iframe?: HTMLIFrameElement;
 
   state: HTMLEmbedCardState = {
     isLoading: true,
@@ -34,7 +34,7 @@ export class HTMLEmbedCard extends React.Component<
   handleIframeLoad = () => {
     const { id, iframe } = this;
     const { html } = this.props;
-    if (iframe) {
+    if (iframe && iframe.contentWindow) {
       iframe.contentWindow.postMessage(
         {
           type: 'embed',

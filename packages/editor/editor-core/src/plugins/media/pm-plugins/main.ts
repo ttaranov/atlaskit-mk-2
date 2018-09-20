@@ -97,7 +97,7 @@ export class MediaPluginState {
   ) {
     this.reactContext = reactContext;
     this.options = options;
-    this.editorAppearance = editorAppearance;
+    this.editorAppearance = editorAppearance!;
     this.waitForMediaUpload =
       options.waitForMediaUpload === undefined
         ? true
@@ -614,10 +614,11 @@ export class MediaPluginState {
       } else {
         if (context.config.userAuthProvider) {
           pickers.push(
-            (this.popupPicker = new Picker('popup', pickerFacadeConfig, {
-              userAuthProvider: context.config.userAuthProvider,
-              ...defaultPickerConfig,
-            })),
+            (this.popupPicker = new Picker(
+              'popup',
+              pickerFacadeConfig,
+              defaultPickerConfig,
+            )),
           );
         } else {
           pickers.push(
@@ -838,7 +839,7 @@ export class MediaPluginState {
    * Since we replace nodes with public id when node is finalized
    * stateManager contains no information for public ids
    */
-  private getMediaNodeStateStatus = (id: string) => {
+  getMediaNodeStateStatus = (id: string) => {
     const state = this.getMediaNodeState(id);
     return (state && state.status) || 'ready';
   };

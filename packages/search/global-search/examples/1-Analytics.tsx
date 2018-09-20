@@ -1,16 +1,20 @@
 import * as React from 'react';
 import { setupMocks, teardownMocks } from '../example-helpers/mockApis';
-import { AnalyticsListener as AnalyticsNextListener } from '@atlaskit/analytics-next';
+import { AnalyticsListener as AnalyticsNextListener } from '../../../core/analytics-next/src/';
 import styled from 'styled-components';
 import { AnalyticsListener } from '@atlaskit/analytics';
 import { GlobalQuickSearch } from '../src';
 import withNavigation from '../example-helpers/withNavigation';
 
-const GlobalQuickSearchInNavigation = withNavigation(GlobalQuickSearch);
+const GlobalQuickSearchInNavigation = withNavigation(GlobalQuickSearch, {
+  hideLocale: true,
+});
 
 const ComponentPanel = styled.div`
   flex: 1;
   display: flex;
+  overflow: scroll;
+  max-width: 600px;
 `;
 
 const EventsPanel = styled.div`
@@ -18,9 +22,9 @@ const EventsPanel = styled.div`
   overflow: scroll;
   display: flex;
   flex-direction: column;
-  z-index: 501;
-  width: 300px;
-  background: white;
+  z-index: 1000;
+  min-width: 400px;
+  background: lightgray;
   word-wrap: break-word;
   padding-right: 4px;
   min-height: 800px;
@@ -84,7 +88,6 @@ export default class extends React.Component<any, any> {
     return (
       <Outer id="outer">
         <ComponentPanel>
-          <h2>Quick search - ignore styling/keyboard issues for now</h2>
           <AnalyticsListener onEvent={this.onEvent}>
             <AnalyticsListener onEvent={this.onEvent} matchPrivate={true}>
               <AnalyticsNextListener
@@ -96,7 +99,6 @@ export default class extends React.Component<any, any> {
             </AnalyticsListener>
           </AnalyticsListener>
         </ComponentPanel>
-
         <EventsPanel>
           <h2>Analytics Events</h2>
           <a

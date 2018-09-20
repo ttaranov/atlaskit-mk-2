@@ -1,9 +1,6 @@
 import { Node as PmNode } from 'prosemirror-model';
 import { EditorState, Plugin, PluginKey, Transaction } from 'prosemirror-state';
-import {
-  TableMap,
-  columnResizingPluginKey as resizingPluginKey,
-} from 'prosemirror-tables';
+import { TableMap } from 'prosemirror-tables';
 import {
   findTable,
   findParentDomRefOfType,
@@ -41,6 +38,8 @@ import {
   handleSelectionChanged,
   handleToggleContextualMenu,
 } from '../action-handlers';
+
+import { getColResizePluginKey } from '../index';
 
 export const pluginKey = new PluginKey('tablePlugin');
 
@@ -98,46 +97,61 @@ export const createPlugin = (
           isContextualMenuOpen,
         } = data;
 
+        let remappedState = pluginState;
+
+        if (tr.docChanged && pluginState.targetCellPosition) {
+          const { pos, deleted } = tr.mapping.mapResult(
+            pluginState.targetCellPosition,
+          );
+          remappedState = {
+            ...pluginState,
+            targetCellPosition: deleted ? undefined : pos,
+          };
+        }
+
         switch (meta.action) {
           case ACTIONS.SET_EDITOR_FOCUS:
-            return handleSetFocus(editorHasFocus)(pluginState, dispatch);
+            return handleSetFocus(editorHasFocus)(remappedState, dispatch);
 
           case ACTIONS.SET_TABLE_REF:
-            return handleSetTableRef(state, tableRef)(pluginState, dispatch);
+            return handleSetTableRef(state, tableRef)(remappedState, dispatch);
 
           case ACTIONS.SET_TARGET_CELL_REF:
-            return handleSetTargetCellRef(targetCellRef)(pluginState, dispatch);
+            return handleSetTargetCellRef(targetCellRef)(
+              remappedState,
+              dispatch,
+            );
 
           case ACTIONS.SET_TARGET_CELL_POSITION:
             return handleSetTargetCellPosition(targetCellPosition)(
-              pluginState,
+              remappedState,
               dispatch,
             );
 
           case ACTIONS.CLEAR_HOVER_SELECTION:
-            return handleClearSelection(pluginState, dispatch);
+            return handleClearSelection(remappedState, dispatch);
 
           case ACTIONS.HOVER_COLUMNS:
             return handleHoverColumns(state, hoverDecoration, dangerColumns)(
-              pluginState,
+              remappedState,
               dispatch,
             );
 
           case ACTIONS.HOVER_ROWS:
             return handleHoverRows(state, hoverDecoration, dangerRows)(
-              pluginState,
+              remappedState,
               dispatch,
             );
 
           case ACTIONS.HOVER_TABLE:
             return handleHoverTable(hoverDecoration, isTableInDanger)(
-              pluginState,
+              remappedState,
               dispatch,
             );
 
           case ACTIONS.TOGGLE_CONTEXTUAL_MENU:
             return handleToggleContextualMenu(isContextualMenuOpen)(
-              pluginState,
+              remappedState,
               dispatch,
             );
 
@@ -146,12 +160,12 @@ export const createPlugin = (
         }
 
         if (tr.docChanged) {
-          return handleDocChanged(state)(pluginState, dispatch, tr);
+          return handleDocChanged(state)(remappedState, dispatch);
         } else if (tr.selectionSet) {
-          return handleSelectionChanged(state)(pluginState, dispatch);
+          return handleSelectionChanged(state)(remappedState, dispatch);
         }
 
-        return pluginState;
+        return remappedState;
       },
     },
     key: pluginKey,
@@ -178,7 +192,9 @@ export const createPlugin = (
             setTableRef(tableRef)(state, dispatch);
           }
 
-          const dragging = (resizingPluginKey.getState(state) || {}).dragging;
+          const dragging = (
+            getColResizePluginKey(pluginConfig).getState(state) || {}
+          ).dragging;
           const targetCellRef =
             editorHasFocus && tableRef && !dragging && targetCellPosition
               ? (findDomRefAtPos(targetCellPosition, domAtPos) as HTMLElement)
@@ -203,12 +219,16 @@ export const createPlugin = (
       nodeViews: {
         table: (node: PmNode, view: EditorView, getPos: () => number) => {
           const {
-            pluginConfig: { allowColumnResizing },
+            pluginConfig: {
+              allowColumnResizing,
+              UNSAFE_allowFlexiColumnResizing,
+            },
           } = getPluginState(view.state);
           return new TableNodeView({
             node,
             view,
             allowColumnResizing,
+            UNSAFE_allowFlexiColumnResizing,
             eventDispatcher,
             portalProviderAPI,
             getPos,

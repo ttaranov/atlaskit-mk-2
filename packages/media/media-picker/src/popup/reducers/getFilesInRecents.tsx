@@ -17,12 +17,7 @@ export const getRecentFilesStarted = (state: State, action: Action): State => {
           accountId: '',
         },
         path: [],
-        isLoading: true,
         hasError: false,
-      },
-      recents: {
-        items: [],
-        nextKey: '',
       },
     };
   } else {
@@ -35,7 +30,7 @@ export const getRecentFilesFullfilled = (
   action: Action,
 ): State => {
   if (isGetFilesInRecentsFullfilledAction(action)) {
-    const { items, nextKey } = action;
+    const { items } = action;
 
     return {
       ...state,
@@ -45,7 +40,6 @@ export const getRecentFilesFullfilled = (
       },
       recents: {
         items,
-        nextKey,
       },
     };
   }

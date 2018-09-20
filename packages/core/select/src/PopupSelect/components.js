@@ -38,7 +38,7 @@ const DropdownIndicator = () => (
     <SearchIcon />
   </div>
 );
-const Control = ({ innerProps: { innerRef, ...innerProps }, ...props }: *) => (
+const Control = ({ innerRef, innerProps, ...props }: *) => (
   <div ref={innerRef} css={{ padding: '8px 8px 4px' }}>
     <components.Control {...props} innerProps={innerProps} />
   </div>

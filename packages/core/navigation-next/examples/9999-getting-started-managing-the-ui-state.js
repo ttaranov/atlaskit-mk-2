@@ -1,9 +1,12 @@
 // @flow
 
-import React from 'react';
+import React, { Fragment } from 'react';
 import GlobalNavigation from '@atlaskit/global-navigation';
 import ShortcutIcon from '@atlaskit/icon/glyph/shortcut';
 import { AtlassianIcon, AtlassianWordmark } from '@atlaskit/logo';
+import Button from '@atlaskit/button';
+import ChevronLeft from '@atlaskit/icon/glyph/chevron-left';
+import ChevronRight from '@atlaskit/icon/glyph/chevron-right';
 import {
   ContainerHeader,
   GroupHeading,
@@ -24,11 +27,18 @@ const MyGlobalNavigation = () => (
 );
 
 const MyProductNavigation = () => (
-  <div css={{ padding: '16px 0' }}>
+  <Fragment>
     <Section>
       {({ className }) => (
         <div className={className}>
-          <div css={{ padding: '8px 0' }}>
+          <div
+            css={{
+              lineHeight: 0,
+              paddingBottom: 28,
+              paddingLeft: 12,
+              paddingTop: 28,
+            }}
+          >
             <AtlassianWordmark />
           </div>
         </div>
@@ -46,17 +56,21 @@ const MyProductNavigation = () => (
         </div>
       )}
     </Section>
-  </div>
+  </Fragment>
 );
 
 const MyContainerNavigation = () => (
-  <div css={{ padding: '16px 0' }}>
+  <Fragment>
     <Section>
-      {({ className }) => (
-        <div className={className}>
+      {({ css }) => (
+        <div css={{ ...css, paddingTop: 20, paddingBottom: 20 }}>
           <ContainerHeader
             before={itemState => (
-              <ItemAvatar itemState={itemState} appearance="square" />
+              <ItemAvatar
+                itemState={itemState}
+                appearance="square"
+                size="large"
+              />
             )}
             text="Container name"
             subText="Container description"
@@ -69,23 +83,32 @@ const MyContainerNavigation = () => (
         <div className={className}>
           <Item text="Things in this container" />
           <Item text="Reports" />
-          <Item text="Some other thing" />
+          <Item text="Some other thing selected" isSelected />
           <Separator />
           <GroupHeading>Shortcuts</GroupHeading>
           <Item before={ShortcutIcon} text="Team space" />
         </div>
       )}
     </Section>
-  </div>
+  </Fragment>
 );
 
 const ExpandToggleButton = () => (
   <UIControllerSubscriber>
     {navigationUIController => (
-      <button onClick={navigationUIController.toggleCollapse}>
+      <Button
+        iconBefore={
+          navigationUIController.state.isCollapsed ? (
+            <ChevronRight />
+          ) : (
+            <ChevronLeft />
+          )
+        }
+        onClick={navigationUIController.toggleCollapse}
+      >
         {navigationUIController.state.isCollapsed ? 'Expand' : 'Collapse'}{' '}
-        product navigation
-      </button>
+        navigation
+      </Button>
     )}
   </UIControllerSubscriber>
 );
@@ -97,7 +120,7 @@ export default () => (
       productNavigation={MyProductNavigation}
       containerNavigation={MyContainerNavigation}
     >
-      <div>
+      <div css={{ padding: '32px 40px' }}>
         <ExpandToggleButton />
       </div>
     </LayoutManager>

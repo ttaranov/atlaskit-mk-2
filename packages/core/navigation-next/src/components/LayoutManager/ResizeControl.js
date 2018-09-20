@@ -1,105 +1,115 @@
 // @flow
 
-import React, { PureComponent, Fragment } from 'react';
-import { css } from 'emotion';
+import React, { PureComponent, Fragment, type Node, type Ref } from 'react';
 import raf from 'raf-schd';
 import {
   withAnalyticsEvents,
   type WithAnalyticsEventsProps,
 } from '@atlaskit/analytics-next';
 import { colors } from '@atlaskit/theme';
-import ChevronLeft from '@atlaskit/icon/glyph/chevron-left-circle';
-import ChevronRight from '@atlaskit/icon/glyph/chevron-right-circle';
+import ChevronLeft from '@atlaskit/icon/glyph/chevron-left';
+import MenuIcon from '@atlaskit/icon/glyph/menu';
+import Tooltip from '@atlaskit/tooltip';
 
 import { navigationExpandedCollapsed } from '../../common/analytics';
-import { GLOBAL_NAV_WIDTH, CONTENT_NAV_WIDTH } from '../../common/constants';
+import {
+  GLOBAL_NAV_WIDTH,
+  CONTENT_NAV_WIDTH,
+  CONTENT_NAV_WIDTH_COLLAPSED,
+} from '../../common/constants';
 import { Shadow } from '../../common/primitives';
 import PropertyToggle from './PropertyToggle';
 
-const OUTER_WIDTH = 32;
+import type { CollapseToggleTooltipContent } from './types';
 
-const Outer = props => (
+const HANDLE_OFFSET = 4;
+const INNER_WIDTH = 20;
+const OUTER_WIDTH = INNER_WIDTH + HANDLE_OFFSET;
+const HANDLE_WIDTH = 2;
+
+const Outer = (props: *) => (
   <div css={{ position: 'relative', width: OUTER_WIDTH }} {...props} />
 );
-const innerStyles = css({
-  height: '100%',
-  opacity: 0,
-  position: 'relative',
-  transition: 'opacity 300ms cubic-bezier(0.2, 0, 0, 1) 80ms',
-  width: OUTER_WIDTH,
-  ':hover': {
-    opacity: 1,
-  },
-});
-
-const Inner = ({ ...props }) => <div className={innerStyles} {...props} />;
-const Handle = props => {
-  const handleWidth = 12;
-  const lineWidth = 2;
-
-  // prepare color stops
-  const csOne = `${handleWidth / 2 - lineWidth / 2}px`;
-  const csTwo = `${handleWidth / 2 + lineWidth / 2}px`;
-
-  return (
+const GrabArea = ({ showHandle, isBold, ...props }: *) => (
+  <div
+    css={{
+      cursor: 'ew-resize',
+      height: '100%',
+      left: -HANDLE_OFFSET,
+      position: 'relative',
+      width: OUTER_WIDTH,
+    }}
+    {...props}
+  >
     <div
       css={{
-        background: `linear-gradient(to right, transparent, transparent ${csOne},
-          ${colors.B200} ${csOne}, ${colors.B200} ${csTwo},
-          transparent ${csTwo}, transparent)`,
-        cursor: 'ew-resize',
+        backgroundColor: isBold ? colors.B200 : colors.B100,
+        opacity: showHandle ? 1 : 0,
         height: '100%',
-        left: -(handleWidth / 2 - lineWidth / 2),
-        pointerEvents: 'all',
+        left: HANDLE_OFFSET - HANDLE_WIDTH / 2, // the handle should "straddle" the dividing line
         position: 'absolute',
-        width: handleWidth,
-        zIndex: 1,
+        transition: 'opacity 200ms',
+        width: HANDLE_WIDTH,
       }}
-      {...props}
     />
-  );
+  </div>
+);
+type ButtonProps = {
+  children: Node,
+  hasHighlight: boolean,
+  innerRef: Ref<'button'>,
+  isVisible: boolean,
 };
-const Button = ({ ...props }) => (
+const Button = ({
+  children,
+  hasHighlight,
+  innerRef,
+  isVisible,
+  ...props
+}: ButtonProps) => (
   <button
     type="button"
+    ref={innerRef}
     css={{
       background: 0,
+      backgroundColor: 'white',
       border: 0,
-      boxSizing: 'content-box',
+      borderRadius: '50%',
+      boxShadow: `0 0 0 1px ${colors.N30A}, 0 2px 4px 1px ${colors.N30A}`,
+      color: hasHighlight ? colors.B100 : colors.N200,
       cursor: 'pointer',
       height: 24,
-      margin: 4,
+      opacity: isVisible ? 1 : 0,
       outline: 0,
-      padding: 6,
-      paddingRight: 0,
+      padding: 0,
       position: 'absolute',
+      top: 32,
+      transition: `
+        background-color 100ms linear,
+        color 100ms linear,
+        opacity 300ms cubic-bezier(0.2, 0, 0, 1),
+        transform 300ms cubic-bezier(0.2, 0, 0, 1)
+      `,
+      transform: `translate(-50%)`,
       width: 24,
-      transform: 'translateX(-20%)',
-      transition: 'transform 300ms cubic-bezier(0.2, 0, 0, 1)',
-      transitionDelay: 0,
 
-      ':focus': {
-        boxShadow: 'none',
+      ':hover': {
+        backgroundColor: colors.B100,
+        color: 'white',
       },
-
-      [`.${innerStyles}:hover &`]: {
-        transform: 'translateX(0)',
-        transitionDelay: '120ms',
-      },
-
-      '& svg': {
-        color: 'transparent',
-        fill: colors.B200,
-        transition: 'color 100ms linear, fill 100ms linear',
-      },
-
-      ':hover svg, :focus svg': {
-        color: colors.B200,
-        fill: colors.N0,
+      ':active': {
+        backgroundColor: colors.B200,
+        color: 'white',
       },
     }}
     {...props}
-  />
+  >
+    <div
+      // increase hit-area
+      css={{ position: 'absolute', left: -4, right: -4, bottom: -4, top: -4 }}
+    />
+    {children}
+  </button>
 );
 
 // tinker with the DOM directly by setting style properties, makes the
@@ -119,8 +129,40 @@ function applyMutations(
   });
 }
 
+// helper for tooltip content keyboard shortcut highlight
+function makeTooltipNode({ text, char }: { text: string, char: string }) {
+  return (
+    <div
+      css={{
+        alignItems: 'baseline',
+        display: 'flex',
+        lineHeight: 1.3,
+        paddingBottom: 1,
+        paddingTop: 1,
+      }}
+    >
+      <span>{text}</span>
+      <div
+        css={{
+          backgroundColor: colors.N400,
+          borderRadius: 2,
+          lineHeight: 1.2,
+          marginLeft: 4,
+          padding: '1px 8px',
+        }}
+      >
+        {char}
+      </div>
+    </div>
+  );
+}
+
 type Props = WithAnalyticsEventsProps & {
   children: State => any,
+  collapseToggleTooltipContent: CollapseToggleTooltipContent,
+  expandCollapseAffordanceRef: Ref<'button'>,
+  isDisabled: boolean,
+  mouseIsOverNavigation: boolean,
   mutationRefs: Array<{ ref: HTMLElement, property: string }>,
   navigation: Object,
 };
@@ -131,6 +173,7 @@ type State = {
   initialX: number,
   isDragging: boolean,
   mouseIsDown: boolean,
+  mouseIsOverGrabArea: boolean,
   width: number,
 };
 
@@ -145,11 +188,19 @@ class ResizeControl extends PureComponent<Props, State> {
     initialWidth: 0,
     initialX: 0,
     mouseIsDown: false,
+    mouseIsOverGrabArea: false,
     width: this.props.navigation.state.productNavWidth,
   };
 
   onResizerChevronClick = () => {
     this.toggleCollapse('chevron');
+  };
+
+  mouseEnterGrabArea = () => {
+    this.setState({ mouseIsOverGrabArea: true });
+  };
+  mouseLeaveGrabArea = () => {
+    this.setState({ mouseIsOverGrabArea: false });
   };
 
   toggleCollapse = trigger => {
@@ -190,10 +241,10 @@ class ResizeControl extends PureComponent<Props, State> {
     // if the product nav is collapsed and the consumer starts dragging it open
     // we must expand it and drag should start from 0.
     if (isCollapsed) {
-      initialWidth = 0;
+      initialWidth = CONTENT_NAV_WIDTH_COLLAPSED;
       didDragOpen = true;
       navigation.manualResizeStart({
-        productNavWidth: 0,
+        productNavWidth: CONTENT_NAV_WIDTH_COLLAPSED,
         isCollapsed: false,
       });
     } else {
@@ -218,10 +269,15 @@ class ResizeControl extends PureComponent<Props, State> {
     }
 
     // allow the product nav to be 75% of the available page width
-    const maxWidth = window.innerWidth / 4 * 3;
-    const adjustedMax = Math.round(maxWidth) - initialWidth - GLOBAL_NAV_WIDTH;
+    const maxWidth = Math.round(window.innerWidth / 4 * 3);
+    const minWidth = CONTENT_NAV_WIDTH_COLLAPSED;
+    const adjustedMax = maxWidth - initialWidth - GLOBAL_NAV_WIDTH;
+    const adjustedMin = minWidth - initialWidth;
 
-    const delta = Math.min(event.pageX - initialX, adjustedMax);
+    const delta = Math.max(
+      Math.min(event.pageX - initialX, adjustedMax),
+      adjustedMin,
+    );
     const width = initialWidth + delta;
 
     // apply updated styles to the applicable DOM nodes
@@ -229,7 +285,7 @@ class ResizeControl extends PureComponent<Props, State> {
 
     // NOTE: hijack the maual resize and force collapse, cancels mouse events
     if (event.screenX < window.screenX) {
-      this.setState({ width: 0 });
+      this.setState({ width: CONTENT_NAV_WIDTH_COLLAPSED });
       this.handleResizeEnd();
     } else {
       // maintain internal width, applied to navigation state on resize end
@@ -296,36 +352,76 @@ class ResizeControl extends PureComponent<Props, State> {
   };
 
   render() {
-    const { didDragOpen, isDragging, mouseIsDown } = this.state;
-    const { children, navigation } = this.props;
+    const {
+      didDragOpen,
+      isDragging,
+      mouseIsDown,
+      mouseIsOverGrabArea,
+    } = this.state;
+    const {
+      children,
+      collapseToggleTooltipContent,
+      expandCollapseAffordanceRef,
+      isDisabled,
+      mouseIsOverNavigation,
+      navigation,
+    } = this.props;
     const { isCollapsed } = navigation.state;
 
-    const isDisabled = navigation.state.isPeeking;
+    const isResizeDisabled = isDisabled || navigation.state.isPeeking;
 
     // the button shouldn't "flip" until the drag is complete
     const ButtonIcon =
-      isCollapsed || (didDragOpen && isDragging) ? ChevronRight : ChevronLeft;
+      isCollapsed || (didDragOpen && isDragging) ? MenuIcon : ChevronLeft;
+
+    const button = (
+      <Button
+        onClick={this.onResizerChevronClick}
+        // maintain styles when user is dragging
+        isVisible={isCollapsed || mouseIsDown || mouseIsOverNavigation}
+        hasHighlight={mouseIsDown || mouseIsOverGrabArea}
+        innerRef={expandCollapseAffordanceRef}
+      >
+        <ButtonIcon />
+      </Button>
+    );
 
     return (
       <Fragment>
         {children(this.state)}
-        {isDisabled ? null : (
-          <Fragment>
-            <Outer>
-              <Shadow isBold={mouseIsDown} />
-              <Inner>
-                <Handle onMouseDown={this.handleResizeStart} />
-                <Button onClick={this.onResizerChevronClick}>
-                  <ButtonIcon />
-                </Button>
-              </Inner>
-            </Outer>
-            <PropertyToggle
-              isActive={isDragging}
-              styles={{ cursor: 'ew-resize' }}
-            />
-          </Fragment>
-        )}
+        <Outer>
+          <Shadow isBold={mouseIsDown} />
+          {!isResizeDisabled && (
+            <Fragment>
+              <GrabArea
+                isBold={mouseIsDown}
+                showHandle={mouseIsDown || mouseIsOverGrabArea}
+                onMouseEnter={this.mouseEnterGrabArea}
+                onMouseLeave={this.mouseLeaveGrabArea}
+                onMouseDown={this.handleResizeStart}
+              />
+              {collapseToggleTooltipContent ? (
+                <Tooltip
+                  content={makeTooltipNode(
+                    // $FlowFixMe
+                    collapseToggleTooltipContent(isCollapsed),
+                  )}
+                  delay={600}
+                  hideTooltipOnClick
+                  position="right"
+                >
+                  {button}
+                </Tooltip>
+              ) : (
+                button
+              )}
+            </Fragment>
+          )}
+        </Outer>
+        <PropertyToggle
+          isActive={isDragging}
+          styles={{ cursor: 'ew-resize' }}
+        />
       </Fragment>
     );
   }

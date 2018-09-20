@@ -10,4 +10,3 @@ export {
   reactionsProvider,
   reactionsProviderPromise,
 } from './mock-reactions-provider';
-export { analyticsService, AnalyticsHandler } from './analytics';

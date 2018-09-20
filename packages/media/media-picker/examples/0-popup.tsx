@@ -5,7 +5,7 @@ import * as PropTypes from 'prop-types';
 import { ContextFactory } from '@atlaskit/media-core';
 import Button from '@atlaskit/button';
 import DropdownMenu, { DropdownItem } from '@atlaskit/dropdown-menu';
-import { AnalyticsListener } from '@atlaskit/analytics-next';
+import AKListeners from '@atlaskit/analytics-listeners';
 import {
   userAuthProvider,
   mediaPickerAuthProvider,
@@ -237,19 +237,22 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     }
   };
 
-  onCollectionChange = e => {
-    const { innerText: collectionName } = e.target;
+  onCollectionChange = (e: React.SyntheticEvent<HTMLElement>) => {
+    const { innerText: collectionName } = e.currentTarget;
 
     this.setState({ collectionName });
   };
 
-  onAuthTypeChange = e => {
-    const { innerText: authEnvironment } = e.target;
+  onAuthTypeChange = (e: React.SyntheticEvent<HTMLElement>) => {
+    const { innerText: authEnvironment } = e.currentTarget;
 
-    this.setState({ authEnvironment }, this.createPopup);
+    this.setState(
+      { authEnvironment: authEnvironment as AuthEnvironment },
+      this.createPopup,
+    );
   };
 
-  renderSerializedEvent(eventName, data, key) {
+  renderSerializedEvent(eventName: string, data: any, key: number) {
     const serializedEvent = JSON.stringify(data, undefined, 2);
 
     return (
@@ -282,7 +285,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
 
         const imageUrl = data.preview.src.toString();
         // We don't want to print the original image src because it freezes the browser
-        const newData = {
+        const newData: UploadPreviewUpdateEventPayload = {
           ...data,
           preview: { ...data.preview, src: `src length: ${imageUrl.length}` },
         };
@@ -325,7 +328,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     this.setState({ inflightUploads: {} });
   };
 
-  onEvent = event => {
+  onEvent = (event: any) => {
     console.log(event);
   };
 
@@ -475,14 +478,15 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
   }
 }
 
-const onEvent = event => {
-  console.log('Example', event);
-};
-
 export default () => (
-  <AnalyticsListener onEvent={onEvent} channel="media">
-    <AnalyticsListener onEvent={onEvent} channel="atlaskit">
-      <PopupWrapper />
-    </AnalyticsListener>
-  </AnalyticsListener>
+  <AKListeners
+    client={{
+      sendUIEvent: () => {},
+      sendOperationalEvent: () => {},
+      sendTrackEvent: () => {},
+      sendScreenEvent: () => {},
+    }}
+  >
+    <PopupWrapper />
+  </AKListeners>
 );

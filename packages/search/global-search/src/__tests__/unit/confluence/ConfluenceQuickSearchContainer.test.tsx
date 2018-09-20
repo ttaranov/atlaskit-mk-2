@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { FormattedHTMLMessage } from 'react-intl';
 import {
   ConfluenceQuickSearchContainer,
   Props,
@@ -18,8 +19,13 @@ import {
   makePersonResult,
   makeConfluenceContainerResult,
 } from '../_test-util';
-import ConfluenceSearchResults from '../../../components/confluence/ConfluenceSearchResults';
+import SearchResultsComponent, {
+  Props as SearchResultsComponentProps,
+} from '../../../components/common/SearchResults';
 import { SearchScreenCounter } from '../../../util/ScreenCounter';
+import NoResultsState from '../../../components/confluence/NoResultsState';
+import AdvancedSearchGroup from '../../../components/confluence/AdvancedSearchGroup';
+import * as SearchResultUtils from '../../../components/SearchResultsUtil';
 
 const sessionId = 'sessionId';
 function render(partialProps?: Partial<Props>) {
@@ -122,7 +128,11 @@ describe('ConfluenceQuickSearchContainer', () => {
     });
   });
 
-  it('should return confluence search result component', () => {
+  describe('Confluence Search Results component', () => {
+    let searchResultsComponent;
+    let getAdvancedSearchUrlSpy;
+    let recentlyInteractedPeople;
+    let spaceResults;
     const wrapper = render({
       peopleSearchClient: {
         search() {
@@ -134,48 +144,141 @@ describe('ConfluenceQuickSearchContainer', () => {
       },
     });
 
-    const quickSearchContainer = wrapper.find(QuickSearchContainer);
-    const spaceResults = [makeConfluenceContainerResult()];
-    const recentlyInteractedPeople = [makePersonResult()];
-    const searchResultsComponent = (quickSearchContainer.props() as QuickSearchContainerProps).getSearchResultsComponent(
-      {
-        retrySearch: jest.fn(),
-        latestSearchQuery: 'query',
+    const getProps = (): SearchResultsComponentProps => {
+      const { props = {} as SearchResultsComponentProps } =
+        (searchResultsComponent as React.ReactElement<Props>) || {};
+      return props as SearchResultsComponentProps;
+    };
+
+    beforeEach(() => {
+      getAdvancedSearchUrlSpy = jest.spyOn(
+        SearchResultUtils,
+        'getConfluenceAdvancedSearchLink',
+      );
+      getAdvancedSearchUrlSpy.mockReturnValue('confUrl');
+      const quickSearchContainer = wrapper.find(QuickSearchContainer);
+      spaceResults = [makeConfluenceContainerResult()];
+      recentlyInteractedPeople = [makePersonResult()];
+      searchResultsComponent = (quickSearchContainer.props() as QuickSearchContainerProps).getSearchResultsComponent(
+        {
+          retrySearch: jest.fn(),
+          latestSearchQuery: 'query',
+          isError: false,
+          searchResults: {
+            objects: [],
+            spaces: spaceResults,
+          },
+          isLoading: false,
+          recentItems: {
+            objects: [],
+            spaces: [],
+            people: recentlyInteractedPeople,
+          },
+          keepPreQueryState: false,
+          searchSessionId: sessionId,
+        },
+      );
+    });
+
+    afterEach(() => {
+      getAdvancedSearchUrlSpy.mockRestore();
+    });
+
+    it('should has expected props and type', () => {
+      const { type = '', props = {} } =
+        (searchResultsComponent as React.ReactElement<Props>) || {};
+      expect(type).toBe(SearchResultsComponent);
+      expect(props).toMatchObject({
+        query: 'query',
         isError: false,
-        searchResults: {
-          objects: [],
-          spaces: spaceResults,
-        },
         isLoading: false,
-        recentItems: {
-          objects: [],
-          spaces: [],
-          people: recentlyInteractedPeople,
-        },
         keepPreQueryState: false,
-        searchSessionId: sessionId,
-      },
-    );
-    const { type = '', props = {} } =
-      (searchResultsComponent as React.ReactElement<Props>) || {};
-    expect(type).toBe(ConfluenceSearchResults);
-    expect(props).toMatchObject({
-      query: 'query',
-      isError: false,
-      searchResults: {
-        objects: [],
-        spaces: spaceResults,
-      },
-      isLoading: false,
-      recentItems: {
-        objects: [],
-        spaces: [],
-        people: recentlyInteractedPeople,
-      },
-      keepPreQueryState: false,
-      searchSessionId: 'sessionId',
-      preQueryScreenCounter: expect.any(SearchScreenCounter),
-      postQueryScreenCounter: expect.any(SearchScreenCounter),
+        searchSessionId: 'sessionId',
+        preQueryScreenCounter: expect.any(SearchScreenCounter),
+        postQueryScreenCounter: expect.any(SearchScreenCounter),
+      });
+    });
+
+    it('should renderNoResult component', () => {
+      const { renderNoResult } = getProps();
+      const noResultState = renderNoResult();
+      const { type = '', props = {} } =
+        (noResultState as React.ReactElement<Props>) || {};
+
+      expect(type).toBe(NoResultsState);
+      expect(props).toMatchObject({
+        query: 'query',
+      });
+    });
+
+    it('should renderNoRecentActivity', () => {
+      const { renderNoRecentActivity } = getProps();
+      const noRecentActivity = renderNoRecentActivity();
+      const { type = '', props = {} } =
+        (noRecentActivity as React.ReactElement<Props>) || {};
+      expect(type).toBe(FormattedHTMLMessage);
+      expect(props).toMatchObject({
+        id: 'global-search.no-recent-activity-body',
+        values: { url: 'confUrl' },
+      });
+    });
+
+    it('should renderAdvancedSearchGroup', () => {
+      const { renderAdvancedSearchGroup } = getProps();
+      const analyticsData = { resultsCount: 10 };
+      const advancedSearchGroup = renderAdvancedSearchGroup(analyticsData);
+      const { type = '', props = {} } =
+        (advancedSearchGroup as React.ReactElement<Props>) || {};
+      expect(type).toBe(AdvancedSearchGroup);
+      expect(props).toMatchObject({
+        analyticsData,
+        query: 'query',
+      });
+    });
+
+    it('should return preQueryGroups', () => {
+      const { getPreQueryGroups } = getProps();
+      const preQueryGroups = getPreQueryGroups();
+
+      expect(preQueryGroups).toMatchObject([
+        {
+          items: [],
+          key: 'objects',
+          titleI18nId: 'global-search.confluence.recent-pages-heading',
+        },
+        {
+          items: [],
+          key: 'spaces',
+          titleI18nId: 'global-search.confluence.recent-spaces-heading',
+        },
+        {
+          items: recentlyInteractedPeople,
+          titleI18nId: 'global-search.people.recent-people-heading',
+          key: 'people',
+        },
+      ]);
+    });
+
+    it('should return postQueryGroups', () => {
+      const { getPostQueryGroups } = getProps();
+      const postQueryGroups = getPostQueryGroups();
+      expect(postQueryGroups).toMatchObject([
+        {
+          items: [],
+          key: 'objects',
+          titleI18nId: 'global-search.confluence.confluence-objects-heading',
+        },
+        {
+          items: spaceResults,
+          key: 'spaces',
+          titleI18nId: 'global-search.confluence.spaces-heading',
+        },
+        {
+          items: [],
+          titleI18nId: 'global-search.people.people-heading',
+          key: 'people',
+        },
+      ]);
     });
   });
 });

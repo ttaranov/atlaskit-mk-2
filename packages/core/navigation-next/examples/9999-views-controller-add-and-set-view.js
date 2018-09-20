@@ -26,21 +26,18 @@ const productHomeView = {
   type: 'product',
   getItems: () => [
     {
-      type: 'Section',
+      type: 'HeaderSection',
       id: 'product/home:header',
       items: [
         {
-          type: () => (
-            <div css={{ padding: '16px 0' }}>
-              <JiraWordmark />
-            </div>
-          ),
+          type: 'Wordmark',
+          wordmark: JiraWordmark,
           id: 'jira-wordmark',
         },
       ],
     },
     {
-      type: 'Section',
+      type: 'MenuSection',
       id: 'product/home:menu',
       items: [
         {

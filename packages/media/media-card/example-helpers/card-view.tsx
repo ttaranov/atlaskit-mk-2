@@ -213,7 +213,7 @@ export const createMenuActionCards = (
 export const createFileCardsWithDifferentDataURIs = (
   appearance: CardAppearance,
 ) => {
-  const dataURIs = [
+  const dataURIs: any = [
     { name: 'tall image', dataURI: tallImage },
     { name: 'wide image', dataURI: wideImage },
     { name: 'wide transparent image', dataURI: wideTransparentImage },

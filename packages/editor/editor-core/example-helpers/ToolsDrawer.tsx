@@ -14,7 +14,7 @@ import {
   storyMediaProviderFactory,
 } from '@atlaskit/editor-test-helpers';
 
-import { mediaMock } from '@atlaskit/media-test-helpers';
+import mediaMock from './media-mock';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 
 const rejectedPromise = Promise.reject(
@@ -152,7 +152,7 @@ export default class ToolsDrawer extends React.Component<Props & any, State> {
   }
 
   private switchProvider = (providerType, providerName) => {
-    this.setState({ [providerType]: providerName });
+    this.setState({ [providerType]: providerName } as any);
   };
 
   private reloadEditor = () => {
@@ -287,8 +287,10 @@ export default class ToolsDrawer extends React.Component<Props & any, State> {
                 </ButtonGroup>
               </div>
             </div>
-            <legend>JSON output:</legend>
-            <pre>{jsonDocument}</pre>
+            <div className="json-output">
+              <legend>JSON output:</legend>
+              <pre>{jsonDocument}</pre>
+            </div>
           </Content>
         </AnalyticsListener>
       </AnalyticsListener>

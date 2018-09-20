@@ -1,5 +1,35 @@
 # @atlaskit/conversation
 
+## 9.3.6
+- [patch] Updated dependencies [2a6410f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2a6410f)
+  - @atlaskit/editor-common@16.2.0
+  - @atlaskit/editor-core@80.5.0
+  - @atlaskit/renderer@23.0.0
+
+## 9.3.5
+- [patch] use new tsconfig for typechecking [09df171](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/09df171)
+
+## 9.3.4
+- [patch] Updated dependencies [6e1d642](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e1d642)
+  - @atlaskit/editor-common@16.0.0
+  - @atlaskit/editor-core@80.0.0
+  - @atlaskit/renderer@22.0.0
+  - @atlaskit/comment@6.0.14
+  - @atlaskit/reactions@13.1.1
+  - @atlaskit/util-data-test@10.0.9
+
+## 9.3.3
+- [patch] Add module mainField to packagejson to get codesplitting to work in BBCloud [f8c92b0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f8c92b0)
+
+## 9.3.2
+- [patch] Updated dependencies [7545979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7545979)
+  - @atlaskit/editor-common@15.0.0
+  - @atlaskit/editor-core@79.0.0
+  - @atlaskit/renderer@21.0.0
+  - @atlaskit/comment@6.0.12
+  - @atlaskit/reactions@13.0.9
+  - @atlaskit/util-data-test@10.0.8
+
 ## 9.3.1
 - [patch] Updated dependencies [90ba6bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/90ba6bd)
   - @atlaskit/analytics-listeners@4.0.0

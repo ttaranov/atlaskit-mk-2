@@ -5,10 +5,13 @@ network:
 scaling:
   min: 1
   max: 1
+loadBalancer:
+  type: ALB
+  single: true
 links:
   binary:
     name: docker.atl-paas.net/atlaskit/atlaskid
-    tag: v22
+    tag: v25
     type: docker
   healthcheck:
     uri: /

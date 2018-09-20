@@ -1,8 +1,7 @@
 // @flow
 
 import React from 'react';
-import { ThemeProvider } from 'emotion-theming';
-import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
+import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left-circle';
 import BacklogIcon from '@atlaskit/icon/glyph/backlog';
 import BoardIcon from '@atlaskit/icon/glyph/board';
 import ComponentIcon from '@atlaskit/icon/glyph/component';
@@ -23,8 +22,11 @@ import {
   ItemAvatar,
   light,
   Section,
+  SectionHeading,
   Separator,
+  ThemeProvider,
 } from '../src';
+import { CONTENT_NAV_WIDTH } from '../src/common/constants';
 
 const FakeContentNav = ({ isContainer = false, ...props }: any) => (
   <ThemeProvider
@@ -37,9 +39,11 @@ const FakeContentNav = ({ isContainer = false, ...props }: any) => (
       css={{
         backgroundColor: isContainer ? colors.N20 : colors.B500,
         color: isContainer ? colors.N500 : colors.B50,
+        display: 'flex',
+        flexDirection: 'column',
         flexGrow: 1,
-        padding: '8px 0',
-        width: 270,
+        height: 450,
+        width: CONTENT_NAV_WIDTH,
       }}
       {...props}
     />
@@ -63,17 +67,24 @@ export default () => (
       <h3>Product home view</h3>
       <FakeContentNav>
         <Section key="header">
-          {({ className }) => (
-            <div className={className}>
-              <div css={{ padding: '16px 0' }}>
+          {({ css }) => (
+            <div css={{ ...css, paddingTop: 20 }}>
+              <div
+                css={{
+                  lineHeight: 0,
+                  paddingBottom: 28,
+                  paddingLeft: 12,
+                  paddingTop: 8,
+                }}
+              >
                 <JiraWordmark />
               </div>
             </div>
           )}
         </Section>
-        <Section key="menu">
-          {({ className }) => (
-            <div className={className}>
+        <Section key="menu" shouldGrow>
+          {({ css }) => (
+            <div css={{ ...css, paddingBottom: 12 }}>
               <Item before={DashboardIcon} text="Dashboards" isSelected />
               <Item before={FolderIcon} text="Projects" />
               <Item before={IssueIcon} text="Issues and filters" />
@@ -87,20 +98,36 @@ export default () => (
       <h3>Product issues view</h3>
       <FakeContentNav>
         <Section key="header">
-          {({ className }) => (
-            <div className={className}>
-              <div css={{ padding: '16px 0 8px' }}>
+          {({ css }) => (
+            <div css={{ ...css, paddingTop: 20 }}>
+              <div
+                css={{
+                  lineHeight: 0,
+                  paddingBottom: 28,
+                  paddingLeft: 12,
+                  paddingTop: 8,
+                }}
+              >
                 <JiraWordmark />
               </div>
-              <div css={{ marginBottom: 16 }}>
-                <Item before={ArrowLeftIcon} text="Back" />
+              <div css={{ paddingBottom: 20 }}>
+                <Item
+                  before={() => (
+                    <ArrowLeftIcon
+                      primaryColor="currentColor"
+                      secondaryColor="inherit"
+                    />
+                  )}
+                  text="Back to Jira"
+                />
               </div>
             </div>
           )}
         </Section>
-        <Section key="menu">
-          {({ className }) => (
-            <div className={className}>
+        <Section key="menu" shouldGrow alwaysShowScrollHint>
+          {({ css }) => (
+            <div css={{ ...css, paddingBottom: 12 }}>
+              <SectionHeading>Issues and filters</SectionHeading>
               <Item text="Search issues" />
               <GroupHeading>Other</GroupHeading>
               <Item text="My open issues" />
@@ -123,23 +150,25 @@ export default () => (
       <h3>Project backlog view</h3>
       <FakeContentNav isContainer>
         <Section key="header">
-          {({ className }) => (
-            <div className={className}>
-              <div css={{ padding: '8px 0' }}>
-                <ContainerHeader
-                  before={itemState => (
-                    <ItemAvatar itemState={itemState} appearance="square" />
-                  )}
-                  subText="Project description"
-                  text="Project name"
-                />
-              </div>
+          {({ css }) => (
+            <div css={{ ...css, paddingTop: 20, paddingBottom: 20 }}>
+              <ContainerHeader
+                before={itemState => (
+                  <ItemAvatar
+                    itemState={itemState}
+                    appearance="square"
+                    size="large"
+                  />
+                )}
+                subText="Project description"
+                text="Project name"
+              />
             </div>
           )}
         </Section>
-        <Section key="menu">
-          {({ className }) => (
-            <div className={className}>
+        <Section key="menu" shouldGrow>
+          {({ css }) => (
+            <div css={{ ...css, paddingBottom: 12 }}>
               <Item before={BacklogIcon} text="Backlog" />
               <Item before={BoardIcon} text="Active sprints" />
               <Item before={GraphLineIcon} text="Reports" />

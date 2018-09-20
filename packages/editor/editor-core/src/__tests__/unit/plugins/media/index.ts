@@ -324,6 +324,65 @@ describe('Media plugin', () => {
       });
 
       describe('when inserting inside table cell', () => {
+        it('does not add add a dummy mediaSingle node', () => {
+          const { editorView } = editor(
+            doc(table()(tr(tdCursor, tdEmpty, tdEmpty))),
+          );
+
+          insertMediaAsMediaSingle(
+            editorView,
+            media({
+              id: temporaryFileId,
+              __key: temporaryFileId,
+              type: 'file',
+              collection: testCollectionName,
+              __fileMimeType: 'image/png',
+            })()(editorView.state.schema),
+          );
+
+          insertMediaAsMediaSingle(
+            editorView,
+            media({
+              id: temporaryFileId,
+              __key: temporaryFileId,
+              type: 'file',
+              collection: testCollectionName,
+              __fileMimeType: 'image/png',
+            })()(editorView.state.schema),
+          );
+
+          expect(editorView.state.doc).toEqualDocument(
+            doc(
+              table()(
+                tr(
+                  td({})(
+                    mediaSingle({ layout: 'center' })(
+                      media({
+                        id: temporaryFileId,
+                        __key: temporaryFileId,
+                        type: 'file',
+                        collection: testCollectionName,
+                        __fileMimeType: 'image/png',
+                      })(),
+                    ),
+                    mediaSingle({ layout: 'center' })(
+                      media({
+                        id: temporaryFileId,
+                        __key: temporaryFileId,
+                        type: 'file',
+                        collection: testCollectionName,
+                        __fileMimeType: 'image/png',
+                      })(),
+                    ),
+                  ),
+                  tdEmpty,
+                  tdEmpty,
+                ),
+              ),
+            ),
+          );
+        });
+
         it('inserts media single', async () => {
           const { editorView } = editor(
             doc(table()(tr(tdCursor, tdEmpty, tdEmpty))),
@@ -355,7 +414,6 @@ describe('Media plugin', () => {
                         __fileMimeType: 'image/png',
                       })(),
                     ),
-                    p(''),
                   ),
                   tdEmpty,
                   tdEmpty,
@@ -1532,13 +1590,13 @@ describe('Media plugin', () => {
       const event = document.createEvent('Event') as any;
       event.initEvent(eventName, true, true);
       event.preventDefault = () => {};
-      if (eventName === 'dragover') {
-        event.dataTransfer = {
-          types: [type || 'Files'],
-          files: [],
-          effectAllowed: 'move',
-        };
-      }
+
+      event.dataTransfer = {
+        types: [type || 'Files'],
+        files: [],
+        effectAllowed: 'move',
+      };
+
       return event;
     };
 

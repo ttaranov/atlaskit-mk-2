@@ -30,6 +30,10 @@ export const defaultTimes = [
 export const defaultTimeFormat = 'h:mma';
 export const defaultDateFormat = 'YYYY/MM/DD';
 
+export function padToTwo(number: number) {
+  return number <= 99 ? `0${number}`.slice(-2) : `${number}`;
+}
+
 export const DropdownIndicator = ({
   selectProps: { dropdownIndicatorIcon: Icon },
 }: { selectProps: { dropdownIndicatorIcon?: any } } = {}) =>

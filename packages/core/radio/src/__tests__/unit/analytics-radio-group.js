@@ -8,7 +8,7 @@ import {
   name as packageName,
   version as packageVersion,
 } from '../../../package.json';
-import '../../RadioGroupStateless';
+import '../../Radio';
 
 // This is a global mock for this file that will mock all components wrapped with analytics
 // and replace them with an empty SFC that returns null. This includes components imported
@@ -19,10 +19,10 @@ jest.mock('@atlaskit/analytics-next', () => ({
   createAndFireEvent: jest.fn(() => jest.fn(args => args)),
 }));
 
-describe('AkFieldRadioGroup', () => {
+describe('Radio', () => {
   it('should be wrapped with analytics context', () => {
     expect(withAnalyticsContext).toHaveBeenCalledWith({
-      componentName: 'fieldRadioGroup',
+      componentName: 'radio',
       packageName,
       packageVersion,
     });
@@ -31,11 +31,11 @@ describe('AkFieldRadioGroup', () => {
   it('should be wrapped with analytics events', () => {
     expect(createAndFireEvent).toHaveBeenCalledWith('atlaskit');
     expect(withAnalyticsEvents).toHaveBeenLastCalledWith({
-      onRadioChange: {
-        action: 'selected',
-        actionSubject: 'radioItem',
+      onChange: {
+        action: 'isChecked',
+        actionSubject: 'radio',
         attributes: {
-          componentName: 'fieldRadioGroup',
+          componentName: 'radio',
           packageName,
           packageVersion,
         },

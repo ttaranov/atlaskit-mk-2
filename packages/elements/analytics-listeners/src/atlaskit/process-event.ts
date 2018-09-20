@@ -2,10 +2,6 @@
  * Inspired by analytics-web-react
  */
 
-declare namespace merge {
-
-}
-
 import * as last from 'lodash.last';
 import * as merge from 'lodash.merge';
 
@@ -24,9 +20,9 @@ import {
   getPackageInfo,
   getComponents,
 } from './extract-data-from-event';
-import { EventNextType } from '../types';
 import Logger from '../helpers/logger';
 import { version as listenerVersion } from '../../package.json';
+import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
 
 const ATLASKIT_TAG = 'atlaskit';
 
@@ -57,7 +53,10 @@ const ATLASKIT_TAG = 'atlaskit';
  *  }
  */
 
-export default (event: EventNextType, logger: Logger): GasPayload | null => {
+export default (
+  event: UIAnalyticsEventInterface,
+  logger: Logger,
+): GasPayload | null => {
   const sources = getSources(event);
   const source = last(sources) || 'unknown';
   const extraAttributes = getExtraAttributes(event);

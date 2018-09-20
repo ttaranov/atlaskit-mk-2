@@ -7,7 +7,6 @@ import { Conversation as ConversationType, User } from '../src/model';
 import { State } from '../src/internal/store';
 import { MOCK_USERS } from './MockData';
 import { ProviderFactory } from '@atlaskit/editor-common';
-import { selectAll } from 'prosemirror-commands';
 
 const DUMMY_CODE = `
 class Main() {

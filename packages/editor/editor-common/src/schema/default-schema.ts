@@ -38,6 +38,7 @@ export const defaultSchema: Schema = createSchema({
     'taskItem',
     'unknownBlock',
     'date',
+    'status',
     'placeholder',
     'layoutSection',
     'layoutColumn',

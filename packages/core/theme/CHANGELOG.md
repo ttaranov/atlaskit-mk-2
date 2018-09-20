@@ -1,5 +1,11 @@
 # @atlaskit/theme
 
+## 6.0.3
+- [patch] fixed font-size and font-weight of h100 in theme to 11px and 700 respectively [9742864](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9742864)
+
+## 6.0.2
+- [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
+
 ## 6.0.0
 - [major] Update badge to the new theming API. Rework experimental theming API. [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
 - [none] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)

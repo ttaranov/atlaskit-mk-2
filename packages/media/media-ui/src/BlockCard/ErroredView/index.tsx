@@ -11,6 +11,7 @@ export interface ErroredViewProps {
   message: string;
   onClick?: () => void;
   onRetry?: () => void;
+  isSelected?: boolean;
 }
 
 export class ErroredView extends React.Component<ErroredViewProps> {
@@ -24,9 +25,14 @@ export class ErroredView extends React.Component<ErroredViewProps> {
   };
 
   render() {
-    const { url, message, onClick, onRetry } = this.props;
+    const { url, message, onClick, onRetry, isSelected } = this.props;
     return (
-      <CollapsedFrame minWidth={minWidth} maxWidth={maxWidth} onClick={onClick}>
+      <CollapsedFrame
+        isSelected={isSelected}
+        minWidth={minWidth}
+        maxWidth={maxWidth}
+        onClick={onClick}
+      >
         <CollapsedIconTitleDescriptionLayout
           icon={
             <WarningIcon

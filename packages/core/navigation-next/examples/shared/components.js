@@ -2,14 +2,11 @@
 /* eslint-disable react/no-multi-comp */
 
 import React, { PureComponent } from 'react';
-import { gridSize as gridSizeFn } from '@atlaskit/theme';
 import { withRouter } from 'react-router-dom';
 import ChevronDown from '@atlaskit/icon/glyph/chevron-down';
 
 import { GlobalNav, ItemAvatar } from '../../src';
 import { globalNavPrimaryItems, globalNavSecondaryItems } from './mock-data';
-
-const gridSize = gridSizeFn();
 
 // ==============================
 // Simple global navigation
@@ -25,7 +22,7 @@ export const DefaultGlobalNavigation = () => (
 // Project Switcher
 // ==============================
 const SwitcherBefore = itemState => (
-  <ItemAvatar itemState={itemState} appearance="square" />
+  <ItemAvatar itemState={itemState} appearance="square" size="large" />
 );
 class Switcher extends PureComponent<*, *> {
   state = {
@@ -55,27 +52,25 @@ class Switcher extends PureComponent<*, *> {
     const { components: C, options } = this.props;
     const { selected } = this.state;
     return (
-      <div css={{ paddingBottom: `${gridSize}px` }}>
-        <C.Switcher
-          onChange={this.onSwitch}
-          create={{
-            onClick: () => {
-              // eslint-disable-next-line
-              const boardName = window.prompt(
-                'What would you like to call your new board?',
-              );
-              if (boardName && boardName.length)
-                console.log(`You created the board "${boardName}"`);
-            },
-            text: 'Create board',
-          }}
-          options={options}
-          isMulti={false}
-          hideSelectedOptions
-          target={this.getTarget()}
-          value={selected}
-        />
-      </div>
+      <C.Switcher
+        onChange={this.onSwitch}
+        create={{
+          onClick: () => {
+            // eslint-disable-next-line
+            const boardName = window.prompt(
+              'What would you like to call your new board?',
+            );
+            if (boardName && boardName.length)
+              console.log(`You created the board "${boardName}"`);
+          },
+          text: 'Create board',
+        }}
+        options={options}
+        isMulti={false}
+        hideSelectedOptions
+        target={this.getTarget()}
+        value={selected}
+      />
     );
   }
 }

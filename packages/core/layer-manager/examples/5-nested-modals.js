@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import Modal from '@atlaskit/modal-dialog';
+import Modal, { ModalTransition } from '@atlaskit/modal-dialog';
 import LayerManager from '../src';
 
 type State = {
@@ -66,24 +66,30 @@ export default class App extends React.Component<{}, State> {
             still handle them correctly.
           </p>
           <button onClick={this.openOuterModal}>Open outer modal</button>
-          {isOuterModalOpen && (
-            <Modal onClose={this.onOuterClose}>
-              <button onClick={this.openInnerModal}>Open inner modal</button>
-              {isInnerModalOpen && (
-                <Modal onClose={this.onInnerClose}>
-                  Inner Modal{' '}
-                  <button onClick={this.openInnerInnerModal}>
-                    Open inner inner modal
-                  </button>
-                  {isInnerInnerModalOpen && (
-                    <Modal onClose={this.onInnerInnerClose}>
-                      Inner Inner Modal
+          <ModalTransition>
+            {isOuterModalOpen && (
+              <Modal onClose={this.onOuterClose}>
+                <button onClick={this.openInnerModal}>Open inner modal</button>
+                <ModalTransition>
+                  {isInnerModalOpen && (
+                    <Modal onClose={this.onInnerClose}>
+                      Inner Modal{' '}
+                      <button onClick={this.openInnerInnerModal}>
+                        Open inner inner modal
+                      </button>
+                      <ModalTransition>
+                        {isInnerInnerModalOpen && (
+                          <Modal onClose={this.onInnerInnerClose}>
+                            Inner Inner Modal
+                          </Modal>
+                        )}
+                      </ModalTransition>
                     </Modal>
                   )}
-                </Modal>
-              )}
-            </Modal>
-          )}
+                </ModalTransition>
+              </Modal>
+            )}
+          </ModalTransition>
         </div>
       </LayerManager>
     );

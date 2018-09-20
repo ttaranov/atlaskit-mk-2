@@ -5,9 +5,7 @@ import { updatePopupUrls } from '../actions/updatePopupUrls';
 
 import { State } from '../domain';
 
-import { PopupUploadEventEmitter } from '../../components/popup';
-
-export default function(eventEmitter: PopupUploadEventEmitter) {
+export default function() {
   return (store: MiddlewareAPI<State>) => (next: Dispatch<State>) => (
     action: Action,
   ) => {

@@ -14,6 +14,5 @@ export type ItemSource =
   | { kind: 'ARRAY'; items: Identifier[] };
 
 export type MediaViewerFeatureFlags = {
-  nextGen?: boolean;
   customVideoPlayer?: boolean;
 };

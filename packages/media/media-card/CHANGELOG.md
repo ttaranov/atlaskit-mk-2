@@ -1,5 +1,42 @@
 # @atlaskit/media-image
 
+## 35.0.0
+- [major] Fix CardView code split + remove private components from public api [1be4bb8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1be4bb8)
+
+## 34.1.0
+- [minor] Async load media-card modules by default [01416b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/01416b4)
+
+## 34.0.4
+- [patch] Refetch image when the dimensions change [a0475c2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a0475c2)
+
+## 34.0.3
+- [patch] Revert fix for MS-667 [43e601f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/43e601f)
+
+## 34.0.2
+- [patch] use new tsconfig for typechecking [09df171](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/09df171)
+
+## 34.0.1
+- [patch] Media-card now re-fetches the underlaying image when the dimensions prop changes [59fb6a4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/59fb6a4)
+
+## 34.0.0
+- [major] Updated dependencies [6e1d642](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e1d642)
+  - @atlaskit/media-core@23.2.0
+  - @atlaskit/media-test-helpers@17.1.0
+
+## 33.0.2
+- [patch] Update TS to 3.0 [f68d367](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f68d367)
+- [none] Updated dependencies [f68d367](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f68d367)
+  - @atlaskit/media-test-helpers@17.0.2
+  - @atlaskit/media-core@23.1.1
+
+## 33.0.1
+- [patch] use media tsconfig in media-card [3417d76](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3417d76)
+
+## 33.0.0
+- [minor] Expose upfrontId in MediaPicker [7545979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7545979)
+- [major] Updated dependencies [7545979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7545979)
+  - @atlaskit/media-core@23.1.0
+
 ## 32.0.6
 - [patch] Updated dependencies [911a570](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/911a570)
   - @atlaskit/media-test-helpers@17.0.0

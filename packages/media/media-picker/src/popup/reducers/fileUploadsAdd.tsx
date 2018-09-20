@@ -1,7 +1,7 @@
 import { Action } from 'redux';
 
 import { isFileUploadsStartAction } from '../actions/fileUploadsStart';
-import { LocalUpload, State } from '../domain';
+import { LocalUpload, State, SelectedItem } from '../domain';
 
 export default function fileUploadsAdd(state: State, action: Action): State {
   if (isFileUploadsStartAction(action)) {
@@ -20,9 +20,12 @@ export default function fileUploadsAdd(state: State, action: Action): State {
               name: file.name,
               mimeType: file.type,
               size: file.size,
+              upfrontId: file.upfrontId,
+              occurrenceKey: file.occurrenceKey,
             },
             dataURI: '',
           },
+          timeStarted: Date.now(),
           progress: 0,
           events: [], // uploads-start is not part of events. It will be emitted manually in importFiles.tsx
           index: newLastUploadIndex++, // this index helps to sort upload items, so that latest come first
@@ -30,9 +33,11 @@ export default function fileUploadsAdd(state: State, action: Action): State {
         }),
     );
 
-    const newSelectedItems = files.map(file => ({
+    const newSelectedItems: SelectedItem[] = files.map(file => ({
       date: 0,
       id: file.id,
+      upfrontId: file.upfrontId,
+      occurrenceKey: file.occurrenceKey,
       mimeType: file.type,
       name: file.name,
       parentId: '',

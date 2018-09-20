@@ -10,6 +10,7 @@ import { CollectionItem, createCollectionItem } from './collection-item';
 import { createUpload, Upload } from './upload';
 import { Chunk } from './chunk';
 import { defaultBaseUrl } from '../../contextProvider';
+import { MockUserCollection } from '../media-mock';
 
 export * from './collection';
 export * from './collection-item';
@@ -47,20 +48,38 @@ export function createDatabase(): Database<DatabaseSchema> {
   return database;
 }
 
-export function generateUserData(): void {
+export function generateUserData(
+  collectionData: MockUserCollection | undefined,
+): void {
   const mediaStore = new MediaStore({
     authProvider: userAuthProvider,
   });
 
-  const image = mapDataUriToBlob(fakeImage);
-  mediaStore.createCollection('recents');
+  const collection = 'recents';
+  mediaStore.createCollection(collection);
 
-  for (let i = 0; i < 10; i++) {
-    mediaStore.createFileFromBinary(image, {
-      name: getFakeFileName(),
-      collection: 'recents',
-      occurrenceKey: uuid.v4(),
+  if (collectionData) {
+    Object.keys(collectionData).forEach(filename => {
+      const dataUri = collectionData[filename];
+      const image = mapDataUriToBlob(dataUri);
+
+      mediaStore.createFileFromBinary(image, {
+        name: filename,
+        collection,
+        occurrenceKey: uuid.v4(),
+      });
     });
+  } else {
+    // just insert 10 random files with the same image
+    const image = mapDataUriToBlob(fakeImage);
+
+    for (let i = 0; i < 10; i++) {
+      mediaStore.createFileFromBinary(image, {
+        name: getFakeFileName(),
+        collection,
+        occurrenceKey: uuid.v4(),
+      });
+    }
   }
 }
 

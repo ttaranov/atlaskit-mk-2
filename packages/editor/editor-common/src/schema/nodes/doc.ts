@@ -24,6 +24,7 @@ import { HardBreakDefinition as HardBreak } from './hard-break';
 import { MentionDefinition as Mention } from './mention';
 import { EmojiDefinition as Emoji } from './emoji';
 import { DateDefinition as Date } from './date';
+import { StatusDefinition as Status } from './status';
 import { PlaceholderDefinition as Placeholder } from './placeholder';
 import { InlineCardDefinition as InlineCard } from './inline-card';
 import { BlockCardDefinition as BlockCard } from './block-card';
@@ -154,7 +155,8 @@ export type InlineAtomic =
   | InlineExtension
   | Date
   | Placeholder
-  | InlineCard;
+  | InlineCard
+  | Status;
 
 /**
  * @name inline_node

@@ -19,10 +19,11 @@ export {
 } from '@atlaskit/media-store';
 
 export * from './context/context';
-export * from './collection';
 export * from './providers';
 export * from './services';
 export * from './utils';
 export * from './error';
 export * from './fileState';
 export * from './utils/getMediaTypeFromMimeType';
+export * from './context/fileStreamCache';
+export * from './providers/types';
