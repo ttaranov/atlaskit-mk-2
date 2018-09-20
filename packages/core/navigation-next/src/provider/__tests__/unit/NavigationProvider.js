@@ -40,4 +40,22 @@ describe('NavigationProvider', () => {
 
     expect(wrapper.instance().viewController.isDebugEnabled).toBe(true);
   });
+
+  it('should inject ONLY view and UI controllers on provider component', () => {
+    const wrapper = mountWithContext(<PageComponent {...defaultProps} />);
+
+    expect(wrapper.find('Provider').get(0).props.inject.length).toBe(2);
+  });
+
+  it('should inject the same instance of view and UI controllers on provider component', () => {
+    const wrapper = mountWithContext(<PageComponent {...defaultProps} />);
+
+    const { uiState, viewController } = wrapper.instance();
+    const [uiControllerProvider, viewControllerProvider] = wrapper
+      .find('Provider')
+      .get(0).props.inject;
+
+    expect(viewController === viewControllerProvider).toBe(true);
+    expect(uiState === uiControllerProvider).toBe(true);
+  });
 });
