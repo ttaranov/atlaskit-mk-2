@@ -6,6 +6,7 @@ export interface CollapsedFrameProps {
   maxWidth?: number;
   children?: React.ReactNode;
   onClick?: () => void;
+  isSelected?: boolean;
 }
 
 export class CollapsedFrame extends React.Component<CollapsedFrameProps> {
@@ -32,13 +33,14 @@ export class CollapsedFrame extends React.Component<CollapsedFrameProps> {
   };
 
   render() {
-    const { minWidth, maxWidth, children, onClick } = this.props;
+    const { isSelected, minWidth, maxWidth, children, onClick } = this.props;
     const isInteractive = Boolean(onClick);
     return (
       <Wrappper
         minWidth={minWidth}
         maxWidth={maxWidth}
         isInteractive={isInteractive}
+        isSelected={isSelected}
         tabIndex={isInteractive ? 0 : undefined}
         role={isInteractive ? 'button' : undefined}
         onClick={this.handleClick}

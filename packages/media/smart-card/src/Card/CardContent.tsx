@@ -12,6 +12,7 @@ export interface CardContentProps {
   state: ObjectState;
   reload: () => void;
   onClick?: () => void;
+  isSelected?: boolean;
 }
 
 export class CardContent extends React.Component<CardContentProps> {
@@ -53,16 +54,22 @@ export class CardContent extends React.Component<CardContentProps> {
   };
 
   renderBlockResolvingState() {
+    const { isSelected } = this.props;
     return (
-      <BlockCard.ResolvingView onClick={this.url && this.handleFrameClick} />
+      <BlockCard.ResolvingView
+        isSelected={isSelected}
+        onClick={this.url && this.handleFrameClick}
+      />
     );
   }
 
   renderBlockUnauthorisedState() {
     const { url } = this;
+    const { isSelected } = this.props;
     return (
       <BlockCard.UnauthorisedView
         icon={this.collapsedIcon}
+        isSelected={isSelected}
         url={url}
         onClick={this.url && this.handleFrameClick}
         onAuthorise={this.handleAuthorise}
@@ -72,9 +79,11 @@ export class CardContent extends React.Component<CardContentProps> {
 
   renderBlockForbiddenState() {
     const { url } = this;
+    const { isSelected } = this.props;
     return (
       <BlockCard.ForbiddenView
         url={url}
+        isSelected={isSelected}
         onClick={this.url && this.handleFrameClick}
         onAuthorise={this.handleAuthorise}
       />
@@ -83,9 +92,11 @@ export class CardContent extends React.Component<CardContentProps> {
 
   renderBlockNotFoundState() {
     const { url } = this;
+    const { isSelected } = this.props;
     return (
       <BlockCard.ErroredView
         url={url}
+        isSelected={isSelected}
         message="We couldn't find this link"
         onClick={this.handleFrameClick}
       />
@@ -94,9 +105,11 @@ export class CardContent extends React.Component<CardContentProps> {
 
   renderBlockErroredState() {
     const { url } = this;
+    const { isSelected } = this.props;
     return (
       <BlockCard.ErroredView
         url={url}
+        isSelected={isSelected}
         message="We couldn't load this link"
         onClick={this.url && this.handleFrameClick}
         onRetry={this.handleErrorRetry}
@@ -105,11 +118,12 @@ export class CardContent extends React.Component<CardContentProps> {
   }
 
   renderBlockResolvedState() {
-    const { state } = this.props;
+    const { state, isSelected } = this.props;
     const props = extractBlockPropsFromJSONLD(state.data || {});
     return (
       <BlockCard.ResolvedView
         {...props}
+        isSelected={isSelected}
         onClick={this.url && this.handleFrameClick}
       />
     );
@@ -149,11 +163,12 @@ export class CardContent extends React.Component<CardContentProps> {
   }
 
   renderInlineResolvedState() {
-    const { state } = this.props;
+    const { state, isSelected } = this.props;
     const props = extractInlinePropsFromJSONLD(state.data || {});
     return (
       <InlineCard.ResolvedView
         {...props}
+        isSelected={isSelected}
         onClick={this.url && this.handleFrameClick}
       />
     );
