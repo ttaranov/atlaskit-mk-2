@@ -1,6 +1,6 @@
 //@flow
 import React from 'react';
-import { shallow, render } from 'enzyme';
+import { shallow } from 'enzyme';
 import FieldTextArea from '@atlaskit/field-text-area';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import Feedback, {

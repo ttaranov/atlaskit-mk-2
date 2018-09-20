@@ -732,6 +732,7 @@ describe('LoadingContainerAdvanced', () => {
     });
 
     it('should update spinner position on resize', () => {
+      // eslint-disable-next-line no-unused-vars
       const wrapper = mount(
         <LoadingContainerAdvanced>
           <Contents />
