@@ -23,7 +23,6 @@ const context = createUploadContext();
 
 class Example extends Component<{}, ExampleState> {
   onCardClick = (result: CardEvent) => {
-    console.log(result);
     const { items } = this.state;
 
     if (!result.mediaItemDetails) {
