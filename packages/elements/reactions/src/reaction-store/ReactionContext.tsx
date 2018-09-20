@@ -1,6 +1,5 @@
 import * as React from 'react';
-import { ReactionAdapter } from '../adapter/ReactionAdapter';
-import { ReactionServiceAdapter } from '../adapter/ReactionServiceAdapter';
+import { ReactionClient, ReactionServiceClient } from '../client';
 import { Reactions } from '../types/Reactions';
 import { ReactionsReadyState, ReactionsState } from '../types/ReactionsState';
 import { ReactionStatus } from '../types/ReactionStatus';
@@ -10,14 +9,14 @@ import { batchByKey } from './batched';
 import { Actions, ReactionsContext } from './ReactionsContext';
 import * as utils from './utils';
 
-const getAdapter = ({ adapter, url }: Props): ReactionAdapter => {
-  if (adapter) {
-    return adapter;
+const getClient = ({ client, url }: Props): ReactionClient => {
+  if (client) {
+    return client;
   }
   if (url) {
-    return new ReactionServiceAdapter(url);
+    return new ReactionServiceClient(url);
   }
-  throw new Error('Missing adapter');
+  throw new Error('Missing client');
 };
 
 export type State = {
@@ -32,12 +31,12 @@ export type State = {
 };
 
 export type Props = {
-  adapter?: ReactionAdapter;
+  client?: ReactionClient;
   url?: string;
 };
 
 export class ReactionContext extends React.Component<Props, State> {
-  private adapter: ReactionAdapter;
+  private client: ReactionClient;
   private actions: Actions;
 
   constructor(props: Props) {
@@ -46,7 +45,7 @@ export class ReactionContext extends React.Component<Props, State> {
       reactions: {},
       flash: {},
     };
-    this.adapter = getAdapter(props);
+    this.client = getClient(props);
     this.actions = {
       getReactions: this.getReactions,
       toggleReaction: this.toggleReaction,
@@ -56,9 +55,9 @@ export class ReactionContext extends React.Component<Props, State> {
   }
 
   componentDidUpdate(prevProps: Props) {
-    const { adapter, url } = this.props;
-    if (prevProps.adapter !== adapter || prevProps.url !== url) {
-      this.adapter = getAdapter(this.props);
+    const { client, url } = this.props;
+    if (prevProps.client !== client || prevProps.url !== url) {
+      this.client = getClient(this.props);
     }
   }
 
@@ -232,17 +231,17 @@ export class ReactionContext extends React.Component<Props, State> {
     const { containerAri, ari, emojiId } = reaction;
     this.optmisticUpdate(containerAri, ari, emojiId)(utils.addOne);
     this.flash(reaction);
-    this.adapter.addReaction(containerAri, ari, emojiId);
+    this.client.addReaction(containerAri, ari, emojiId);
   };
 
   private doRemoveReaction = (reaction: ReactionSummary) => {
     const { containerAri, ari, emojiId } = reaction;
     this.optmisticUpdate(containerAri, ari, emojiId)(utils.removeOne);
-    this.adapter.deleteReaction(containerAri, ari, emojiId);
+    this.client.deleteReaction(containerAri, ari, emojiId);
   };
 
   getReactions = batchByKey((containerAri: string, aris: string[][]): void => {
-    this.adapter
+    this.client
       .getReactions(containerAri, aris.reduce(utils.flattenAris))
       .then((value: Reactions) => {
         Object.keys(value).map(ari => {
@@ -270,7 +269,7 @@ export class ReactionContext extends React.Component<Props, State> {
     ari: string,
     emojiId: string,
   ): void => {
-    this.adapter
+    this.client
       .getDetailedReaction(containerAri, ari, emojiId)
       .then(this.handleDetailedReactionResponse);
   };

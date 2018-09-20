@@ -1,5 +1,5 @@
-import { ReactionStore } from '@atlaskit/reactions';
-import { MockReactionsAdapter } from '@atlaskit/reactions/src/adapter/MockReactionsAdapter';
+import { ReactionContext } from '@atlaskit/reactions';
+import { MockReactionsClient } from '@atlaskit/reactions/src/client/MockReactionsClient';
 import * as React from 'react';
 import { MOCK_USERS } from '../example-helpers/MockData';
 import {
@@ -13,7 +13,7 @@ const provider = new ConversationResource({
   user: MOCK_USERS[3],
 });
 
-const reactionAdapter = new MockReactionsAdapter();
+const reactionClient = new MockReactionsClient();
 
 export default class ExistingConversation extends React.Component<
   {},
@@ -38,7 +38,7 @@ export default class ExistingConversation extends React.Component<
     }
 
     return (
-      <ReactionStore adapter={reactionAdapter}>
+      <ReactionContext client={reactionClient}>
         <Conversation
           id={conversationId}
           containerId="ari:cloud:platform::conversation/demo"
@@ -48,7 +48,7 @@ export default class ExistingConversation extends React.Component<
             <Editor {...props} appearance="message" saveOnEnter={true} />
           )}
         />
-      </ReactionStore>
+      </ReactionContext>
     );
   }
 }

@@ -1,7 +1,7 @@
 import AkAvatar from '@atlaskit/avatar';
 import AkComment, { CommentAction, CommentAuthor } from '@atlaskit/comment';
 import { ConnectedReactionsView, ReactionContext } from '@atlaskit/reactions';
-import { MockReactionsAdapter } from '@atlaskit/reactions/src/adapter/MockReactionsAdapter';
+import { MockReactionsClient } from '@atlaskit/reactions/src/client/MockReactionsClient';
 import { mount, shallow } from 'enzyme';
 import * as React from 'react';
 import {
@@ -386,7 +386,7 @@ describe('Comment', () => {
 
     it('should render reactions-component if dataProvider contains emojiProvider', () => {
       const comment = mount(
-        <ReactionContext adapter={new MockReactionsAdapter()}>
+        <ReactionContext client={new MockReactionsClient()}>
           <Comment
             {...defaultProps}
             conversationId={mockComment.conversationId}

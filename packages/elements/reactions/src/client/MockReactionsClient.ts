@@ -2,7 +2,7 @@ import { EmojiId } from '@atlaskit/emoji';
 import { defaultReactionsByShortName } from '../components/Selector';
 import { Reactions } from '../types/Reactions';
 import { ReactionSummary } from '../types/ReactionSummary';
-import { ReactionAdapter } from './ReactionAdapter';
+import { ReactionClient } from './ReactionClient';
 
 export const containerAri: string = 'ari:cloud:owner:demo-cloud-id:container/1';
 export const ari: string = 'ari:cloud:owner:demo-cloud-id:item/1';
@@ -38,7 +38,7 @@ const defaultUsers = [
   user('alunnon', 'Alex Lunnon'),
 ];
 
-export class MockReactionsAdapter implements ReactionAdapter {
+export class MockReactionsClient implements ReactionClient {
   private delay: number;
 
   public mockData: {

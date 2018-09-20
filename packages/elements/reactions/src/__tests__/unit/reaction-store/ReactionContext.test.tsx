@@ -1,12 +1,12 @@
 import { shallow, ShallowWrapper } from 'enzyme';
 import * as React from 'react';
+import { ReactionClient } from '../../../client';
 import {
   ari,
   containerAri,
   reaction,
   user,
-} from '../../../adapter/MockReactionsAdapter';
-import { ReactionAdapter } from '../../../adapter/ReactionAdapter';
+} from '../../../client/MockReactionsClient';
 import {
   Props,
   ReactionContext,
@@ -22,7 +22,7 @@ describe('ReactionContext', () => {
   beforeAll(() => jest.useFakeTimers());
   afterAll(() => jest.useRealTimers());
 
-  const fakeAdaptor: ReactionAdapter = {
+  const fakeClient: ReactionClient = {
     getReactions: jest.fn(),
     getDetailedReaction: jest.fn(),
     addReaction: jest.fn(),
@@ -43,7 +43,7 @@ describe('ReactionContext', () => {
   const renderProvider = () =>
     shallow(
       <ReactionContext
-        adapter={fakeAdaptor}
+        client={fakeClient}
         url="http://reactions.atlassian.com"
       />,
     );
@@ -57,10 +57,10 @@ describe('ReactionContext', () => {
   });
 
   afterEach(() => {
-    (fakeAdaptor.getReactions as jest.Mock<any>).mockClear();
-    (fakeAdaptor.getDetailedReaction as jest.Mock<any>).mockClear();
-    (fakeAdaptor.addReaction as jest.Mock<any>).mockClear();
-    (fakeAdaptor.deleteReaction as jest.Mock<any>).mockClear();
+    (fakeClient.getReactions as jest.Mock<any>).mockClear();
+    (fakeClient.getDetailedReaction as jest.Mock<any>).mockClear();
+    (fakeClient.addReaction as jest.Mock<any>).mockClear();
+    (fakeClient.deleteReaction as jest.Mock<any>).mockClear();
   });
 
   it('should provide actions and state', () => {
@@ -79,26 +79,26 @@ describe('ReactionContext', () => {
     });
   });
 
-  it('should update adapter', () => {
-    const newAdapter: ReactionAdapter = {
+  it('should update client', () => {
+    const newClient: ReactionClient = {
       getReactions: jest.fn(),
       getDetailedReaction: jest.fn(),
       addReaction: jest.fn(),
       deleteReaction: jest.fn(),
     };
-    (newAdapter.getReactions as jest.Mock<any>).mockReturnValueOnce(
+    (newClient.getReactions as jest.Mock<any>).mockReturnValueOnce(
       getReactionsResponse,
     );
-    provider.setProps({ adapter: newAdapter });
+    provider.setProps({ client: newClient });
     actions.getReactions(containerAri, ari);
 
     jest.runAllTimers();
-    expect(newAdapter.getReactions).toHaveBeenCalled();
-    expect(fakeAdaptor.getReactions).not.toHaveBeenCalled();
+    expect(newClient.getReactions).toHaveBeenCalled();
+    expect(fakeClient.getReactions).not.toHaveBeenCalled();
   });
 
   it('should call adaptor to get reactions', () => {
-    (fakeAdaptor.getReactions as jest.Mock<any>).mockReturnValueOnce(
+    (fakeClient.getReactions as jest.Mock<any>).mockReturnValueOnce(
       getReactionsResponse,
     );
 
@@ -106,7 +106,7 @@ describe('ReactionContext', () => {
 
     jest.runAllTimers();
 
-    expect(fakeAdaptor.getReactions).toHaveBeenCalledTimes(1);
+    expect(fakeClient.getReactions).toHaveBeenCalledTimes(1);
 
     return getReactionsResponse.then(() => {
       expect(provider.state()).toMatchObject({
@@ -146,13 +146,13 @@ describe('ReactionContext', () => {
         users: [user('id', 'Some real user')],
       });
 
-      (fakeAdaptor.getDetailedReaction as jest.Mock<any>).mockReturnValueOnce(
+      (fakeClient.getDetailedReaction as jest.Mock<any>).mockReturnValueOnce(
         response,
       );
 
       actions.getDetailedReaction(containerAri, ari, '1f44d');
 
-      expect(fakeAdaptor.getDetailedReaction).toHaveBeenCalledTimes(1);
+      expect(fakeClient.getDetailedReaction).toHaveBeenCalledTimes(1);
 
       return response.then(() => {
         expect(provider.state()).toMatchObject({
@@ -175,7 +175,7 @@ describe('ReactionContext', () => {
     it('should call adaptor to add reaction', () => {
       const response = Promise.resolve(reaction(':thumbsup:', 4, true));
 
-      (fakeAdaptor.addReaction as jest.Mock<any>).mockReturnValueOnce(response);
+      (fakeClient.addReaction as jest.Mock<any>).mockReturnValueOnce(response);
 
       actions.addReaction(containerAri, ari, '1f44d');
 
@@ -198,7 +198,7 @@ describe('ReactionContext', () => {
     it('should call adaptor to add reaction using toggle action', () => {
       const response = Promise.resolve(reaction(':thumbsup:', 4, true));
 
-      (fakeAdaptor.addReaction as jest.Mock<any>).mockReturnValueOnce(response);
+      (fakeClient.addReaction as jest.Mock<any>).mockReturnValueOnce(response);
 
       actions.toggleReaction(containerAri, ari, '1f44d');
 
@@ -236,7 +236,7 @@ describe('ReactionContext', () => {
         },
       });
 
-      expect(fakeAdaptor.addReaction).not.toHaveBeenCalled();
+      expect(fakeClient.addReaction).not.toHaveBeenCalled();
     });
 
     it('should call adaptor to remove reaction', () => {
@@ -244,7 +244,7 @@ describe('ReactionContext', () => {
         ...reaction(':thumbsdown:', 2, false),
       });
 
-      (fakeAdaptor.addReaction as jest.Mock<any>).mockReturnValueOnce(response);
+      (fakeClient.addReaction as jest.Mock<any>).mockReturnValueOnce(response);
 
       actions.toggleReaction(containerAri, ari, '1f44e');
 

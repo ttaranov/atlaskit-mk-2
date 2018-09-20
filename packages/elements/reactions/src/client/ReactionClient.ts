@@ -7,7 +7,7 @@ export type ReactionRequest<T> = (
   emojiId: string,
 ) => Promise<T>;
 
-export interface ReactionAdapter {
+export interface ReactionClient {
   getReactions(containerAri: string, aris: string[]): Promise<Reactions>;
   getDetailedReaction: ReactionRequest<ReactionSummary>;
   addReaction: ReactionRequest<ReactionSummary[]>;

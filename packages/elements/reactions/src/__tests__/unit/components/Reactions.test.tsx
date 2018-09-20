@@ -4,7 +4,7 @@ import Tooltip from '@atlaskit/tooltip';
 import { emoji } from '@atlaskit/util-data-test';
 import { mount, shallow } from 'enzyme';
 import * as React from 'react';
-import { reaction } from '../../../adapter/MockReactionsAdapter';
+import { reaction } from '../../../client/MockReactionsClient';
 import { Reaction } from '../../../components/Reaction';
 import { ReactionPicker } from '../../../components/ReactionPicker';
 import { Props, Reactions } from '../../../components/Reactions';

@@ -1,7 +1,7 @@
 import { EmojiProvider } from '@atlaskit/emoji';
 import { emoji } from '@atlaskit/util-data-test';
 import * as React from 'react';
-import { ConnectedReactionsView, ReactionServiceAdapter } from '../src';
+import { ConnectedReactionsView, ReactionServiceClient } from '../src';
 import { ReactionsExampleWrapper } from './exemples-util';
 
 const { getEmojiResource } = emoji.storyData;
@@ -10,12 +10,12 @@ const demoAri = (id: string) => `ari:cloud:owner:demo-cloud-id:item/${id}`;
 const containerAri = (id: string) =>
   `ari:cloud:owner:demo-cloud-id:container/${id}`;
 
-const adapter = new ReactionServiceAdapter(
+const client = new ReactionServiceClient(
   'https://api-private.stg.atlassian.com/reactions',
 );
 
 export default () => (
-  <ReactionsExampleWrapper adapter={adapter}>
+  <ReactionsExampleWrapper client={client}>
     <p>First Comment</p>
     <ConnectedReactionsView
       containerAri={containerAri('1')}

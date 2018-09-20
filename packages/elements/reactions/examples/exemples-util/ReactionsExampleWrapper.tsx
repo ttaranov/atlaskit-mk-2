@@ -1,8 +1,8 @@
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 import * as React from 'react';
 import { style } from 'typestyle';
-import { ReactionAdapter, ReactionContext } from '../../src';
-import { MockReactionsAdapter } from '../../src/adapter/MockReactionsAdapter';
+import { ReactionClient, ReactionContext } from '../../src';
+import { MockReactionsClient } from '../../src/client/MockReactionsClient';
 import { AnalyticsViewer, EventsArray } from './AnalyticsViewer';
 
 const wrapperStyle = style({
@@ -23,7 +23,7 @@ const analyticsStyle = style({
 });
 
 export type Props = {
-  adapter?: ReactionAdapter;
+  client?: ReactionClient;
   children: React.ReactChild | React.ReactChild[];
 };
 
@@ -33,7 +33,7 @@ export type State = {
 
 export class ReactionsExampleWrapper extends React.PureComponent<Props, State> {
   static defaultProps = {
-    adapter: new MockReactionsAdapter(500),
+    client: new MockReactionsClient(500),
   };
 
   constructor(props) {
@@ -51,10 +51,10 @@ export class ReactionsExampleWrapper extends React.PureComponent<Props, State> {
   };
 
   render() {
-    const { adapter, children } = this.props;
+    const { client, children } = this.props;
     return (
       <AnalyticsListener onEvent={this.handleOnEvent} channel="*">
-        <ReactionContext adapter={adapter}>
+        <ReactionContext client={client}>
           <div className={wrapperStyle}>
             <div className={childrenStyle}>{children}</div>
             <div className={analyticsStyle}>

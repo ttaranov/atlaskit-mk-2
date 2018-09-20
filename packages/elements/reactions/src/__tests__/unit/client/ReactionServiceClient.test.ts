@@ -1,12 +1,12 @@
 import * as fetchMock from 'fetch-mock/src/client';
 import 'whatwg-fetch';
-import { ReactionServiceAdapter } from '../../../adapter/ReactionServiceAdapter';
+import { ReactionServiceClient } from '../../../client';
 
-describe('ReactionServiceAdapter', () => {
+describe('ReactionServiceClient', () => {
   const baseUrl = 'http://reactions.atlassian.com';
   const containerAri = 'container-123';
   const aris = ['ari-1', 'ari-2'];
-  let reactionServiceAdapter: ReactionServiceAdapter;
+  let reactionServiceClient: ReactionServiceClient;
 
   const getDetailedReactionResponse = {
     ari: aris[0],
@@ -40,7 +40,7 @@ describe('ReactionServiceAdapter', () => {
     fetchMock.config.Request = Request;
     fetchMock.config.Response = Response;
     fetchMock.config.Headers = Headers;
-    reactionServiceAdapter = new ReactionServiceAdapter(baseUrl);
+    reactionServiceClient = new ReactionServiceClient(baseUrl);
     fetchMock.mock({
       method: 'POST',
       matcher: 'end:/reactions/view',
@@ -87,7 +87,7 @@ describe('ReactionServiceAdapter', () => {
   });
 
   it('should get reactions', () =>
-    reactionServiceAdapter.getReactions(containerAri, aris).then(response => {
+    reactionServiceClient.getReactions(containerAri, aris).then(response => {
       expect(response).toMatchObject({
         'ari-1': [],
         'ari-2': [],
@@ -103,7 +103,7 @@ describe('ReactionServiceAdapter', () => {
     }));
 
   it('should get detailed reaction', () =>
-    reactionServiceAdapter
+    reactionServiceClient
       .getDetailedReaction(containerAri, aris[0], 'smile')
       .then(response => {
         expect(response).toMatchObject(getDetailedReactionResponse);
@@ -117,7 +117,7 @@ describe('ReactionServiceAdapter', () => {
       }));
 
   it('should add reaction', () =>
-    reactionServiceAdapter
+    reactionServiceClient
       .addReaction(containerAri, aris[0], 'smile')
       .then(response => {
         expect(response).toMatchObject(addReactionResponse.reactions);
@@ -135,7 +135,7 @@ describe('ReactionServiceAdapter', () => {
       }));
 
   it('should delete reaction', () =>
-    reactionServiceAdapter
+    reactionServiceClient
       .deleteReaction(containerAri, aris[0], 'smile')
       .then(response => {
         expect(response).toMatchObject(deleteReactionResponse.reactions);

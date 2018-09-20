@@ -5,11 +5,11 @@ import {
 } from '@atlaskit/util-service-support';
 import { Reactions } from '../types/Reactions';
 import { ReactionSummary } from '../types/ReactionSummary';
-import { ReactionAdapter } from './ReactionAdapter';
+import { ReactionClient } from './ReactionClient';
 
 type ReactionsResponse = { ari: string; reactions: ReactionSummary[] };
 
-export class ReactionServiceAdapter implements ReactionAdapter {
+export class ReactionServiceClient implements ReactionClient {
   private sessionToken?: string;
   private serviceConfig: ServiceConfig;
   constructor(baseUrl: string, sessionToken?: string) {
