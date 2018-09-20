@@ -857,7 +857,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "color": "#97A0AF",
+                    "color": "#97a0af",
                   },
                   "type": "textColor",
                 },
@@ -890,7 +890,7 @@ Object {
                 },
                 Object {
                   "attrs": Object {
-                    "color": "#97A0AF",
+                    "color": "#97a0af",
                   },
                   "type": "textColor",
                 },
@@ -920,7 +920,7 @@ Object {
               "marks": Array [
                 Object {
                   "attrs": Object {
-                    "color": "#97A0AF",
+                    "color": "#97a0af",
                   },
                   "type": "textColor",
                 },
