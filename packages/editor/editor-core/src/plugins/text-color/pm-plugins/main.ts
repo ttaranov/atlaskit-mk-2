@@ -1,7 +1,7 @@
 import { Plugin, PluginKey, Transaction, EditorState } from 'prosemirror-state';
 
 import { colorPalette, borderColorPalette } from '@atlaskit/editor-common';
-import { akColorN800 } from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 
 import { Dispatch } from '../../../event-dispatcher';
 import { getActiveColor } from '../utils/color';
@@ -35,7 +35,7 @@ export interface TextColorPluginConfig {
 }
 
 export const DEFAULT_COLOR = {
-  color: akColorN800.toLowerCase(),
+  color: colors.N800.toLowerCase(),
   label: 'Dark grey',
 };
 

@@ -8,6 +8,7 @@ import {
   resetViewport,
   snapshot,
 } from './_utils';
+import { messages as insertBlockMessages } from '../../plugins/insert-block/ui/ToolbarInsertBlock';
 
 type CellSelectorOpts = {
   row: number;
@@ -23,7 +24,9 @@ type ResizeColumnOpts = {
 };
 
 const insertTable = async page => {
-  await page.click('span[aria-label="Insert table"]');
+  await page.click(
+    `span[aria-label="${insertBlockMessages.table.defaultMessage}"]`,
+  );
   await page.waitForSelector('table td p');
 };
 

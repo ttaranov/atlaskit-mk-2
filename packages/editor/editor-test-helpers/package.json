@@ -26,7 +26,8 @@
     "prosemirror-keymap": "^1.0.1",
     "prosemirror-model": "^1.6.1",
     "prosemirror-state": "^1.2.2",
-    "prosemirror-view": "^1.5.2"
+    "prosemirror-view": "^1.5.2",
+    "react-intl": "^2.6.0"
   },
   "peerDependencies": {
     "react": "^16.4.0"

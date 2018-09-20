@@ -1,11 +1,12 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
+import { messages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
 
 const fullPageEditor = getExampleUrl('editor', 'editor-core', 'full-page');
 const editorSelector = '.ProseMirror';
-const insertMenu = '[aria-label="Open or close insert block dropdown"]';
-const dateMenu = 'span=Date';
+const insertMenu = `[aria-label="${messages.insertMenu.defaultMessage}"]`;
+const dateMenu = `span=${messages.date.defaultMessage}`;
 const calendar = '[aria-label="calendar"]';
 const dateView = `span.dateView-content-wrap`;
 

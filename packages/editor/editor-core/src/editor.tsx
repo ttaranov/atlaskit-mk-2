@@ -2,6 +2,8 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { withAnalytics } from '@atlaskit/analytics';
 import { EditorView } from 'prosemirror-view';
+import { intlShape, IntlShape, IntlProvider } from 'react-intl';
+
 import {
   ProviderFactory,
   Transformer,
@@ -27,10 +29,12 @@ export default class Editor extends React.Component<EditorProps, {}> {
 
   static contextTypes = {
     editorActions: PropTypes.object,
+    intl: intlShape,
   };
 
   context: {
     editorActions?: EditorActions;
+    intl: IntlShape;
   };
 
   private providerFactory: ProviderFactory;
@@ -195,7 +199,7 @@ export default class Editor extends React.Component<EditorProps, {}> {
       onSave: this.props.onSave ? this.handleSave : undefined,
     };
 
-    return (
+    const editor = (
       <WidthProvider>
         <EditorContext editorActions={this.editorActions}>
           <PortalProvider
@@ -254,6 +258,12 @@ export default class Editor extends React.Component<EditorProps, {}> {
           />
         </EditorContext>
       </WidthProvider>
+    );
+
+    return this.context.intl ? (
+      editor
+    ) : (
+      <IntlProvider locale="en">{editor}</IntlProvider>
     );
   }
 }

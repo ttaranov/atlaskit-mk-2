@@ -1,7 +1,11 @@
-import { mount } from 'enzyme';
 import * as React from 'react';
 import AkButton from '@atlaskit/button';
-import { doc, p, createEditor } from '@atlaskit/editor-test-helpers';
+import {
+  doc,
+  p,
+  createEditor,
+  mountWithIntl,
+} from '@atlaskit/editor-test-helpers';
 import { analyticsService } from '../../../../../analytics';
 import ToolbarButton from '../../../../../ui/ToolbarButton';
 import {
@@ -19,7 +23,7 @@ describe('ToolbarTextFormatting', () => {
 
   it('should render disabled ToolbarButtons if disabled property is true', () => {
     const { editorView, pluginState } = editor(doc(p('text')));
-    const toolbarTextColor = mount(
+    const toolbarTextColor = mountWithIntl(
       <ToolbarTextFormatting
         disabled={true}
         textFormattingState={pluginState}
@@ -38,7 +42,7 @@ describe('ToolbarTextFormatting', () => {
     let toolbarOption;
     beforeEach(() => {
       const { editorView, pluginState } = editor(doc(p('text')));
-      toolbarOption = mount(
+      toolbarOption = mountWithIntl(
         <ToolbarTextFormatting
           textFormattingState={pluginState}
           editorView={editorView}

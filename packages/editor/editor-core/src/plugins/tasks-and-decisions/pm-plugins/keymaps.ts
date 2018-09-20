@@ -54,7 +54,7 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
         (nodeType === decisionItem || nodeType === taskItem) &&
         $from.index($from.depth - 1) === 0;
 
-      // Don't do anything if the cursor isn't at the begining of the node.
+      // Don't do anything if the cursor isn't at the beginning of the node.
       if ($from.parentOffset !== 0) {
         return false;
       }
