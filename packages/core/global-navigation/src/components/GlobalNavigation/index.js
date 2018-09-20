@@ -17,6 +17,7 @@ import { NAVIGATION_CHANNEL } from '../../constants';
 
 import type { GlobalNavItemData, NavItem } from '../../config/types';
 import type { GlobalNavigationProps, DrawerName } from './types';
+import type { NotificationIntegration } from '../../platform-integration/notification/types';
 
 // TODO: Figure out a way to appease flow without this function.
 const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
@@ -69,6 +70,7 @@ export default class GlobalNavigation
   extends Component<GlobalNavigationProps, GlobalNavigationState>
   implements Global {
   drawers: DrawerName[] = ['search', 'notification', 'starred', 'create'];
+  notificationIntegrationInstance: NotificationIntegration;
 
   constructor(props: GlobalNavigationProps) {
     super(props);
@@ -133,6 +135,13 @@ export default class GlobalNavigation
         });
       }
     });
+
+    this.notificationIntegrationInstance = notificationIntegration(
+      this.props.fabricNotificationLogUrl,
+      this.props.cloudId,
+      this.props.locale,
+      this.props.product,
+    );
   }
 
   getCapitalisedDrawerName = (drawerName: DrawerName) => {
@@ -148,13 +157,8 @@ export default class GlobalNavigation
     }
 
     if (drawerName === 'notification') {
-      // TODO: Avoid multiple invocations of this function
-      onOpenCallback = notificationIntegration(
-        this.props.fabricNotificationLogUrl,
-        this.props.cloudId,
-        this.props.locale,
-        this.props.product,
-      ).onNotificationDrawerOpen;
+      onOpenCallback = this.notificationIntegrationInstance
+        .onNotificationDrawerOpen;
     }
 
     // Update the state only if it's a controlled drawer.
@@ -184,13 +188,8 @@ export default class GlobalNavigation
     }
 
     if (drawerName === 'notification') {
-      // TODO: Avoid multiple invocations of this function
-      onCloseCallback = notificationIntegration(
-        this.props.fabricNotificationLogUrl,
-        this.props.cloudId,
-        this.props.locale,
-        this.props.product,
-      ).onNotificationDrawerClose;
+      onCloseCallback = this.notificationIntegrationInstance
+        .onNotificationDrawerClose;
     }
 
     analyticsEvent
@@ -218,13 +217,7 @@ export default class GlobalNavigation
     const productConfig = generateProductConfig(this.props, this.openDrawer);
     const defaultConfig = generateDefaultConfig();
 
-    // TODO: Avoid multiple invocations of this function
-    const { badge } = notificationIntegration(
-      this.props.fabricNotificationLogUrl,
-      this.props.cloudId,
-      this.props.locale,
-      this.props.product,
-    );
+    const { badge } = this.notificationIntegrationInstance;
 
     const navItems: NavItem[] = Object.keys(productConfig).map(item => ({
       ...(productConfig[item]
@@ -251,13 +244,7 @@ export default class GlobalNavigation
   render() {
     // TODO: Look into memoizing this to avoid memory bloat
     const { primaryItems, secondaryItems } = this.constructNavItems();
-    // TODO: Avoid multiple invocations of this function
-    const { notificationDrawerContents } = notificationIntegration(
-      this.props.fabricNotificationLogUrl,
-      this.props.cloudId,
-      this.props.locale,
-      this.props.product,
-    );
+    const { notificationDrawerContents } = this.notificationIntegrationInstance;
 
     return (
       <NavigationAnalyticsContext

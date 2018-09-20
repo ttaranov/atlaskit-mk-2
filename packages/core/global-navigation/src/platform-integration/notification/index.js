@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
 
-import NotificationBadge from './components/NotificationBadge';
 import NotificationDrawerContents from './components/NotificationDrawerContents';
 
 import { NotificationIndicator } from '@atlaskit/notification-indicator';
