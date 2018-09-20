@@ -70,7 +70,11 @@ type OtherConfig = {
   href?: string,
   badge?: ?StatelessFunctionalComponent<*>,
 };
-function configFactory(onClick, tooltip, otherConfig: OtherConfig = {}) {
+function configFactory(
+  onClick: ?() => void,
+  tooltip,
+  otherConfig: OtherConfig = {},
+): ?ItemShape {
   const { href } = otherConfig;
   const shouldNotRenderItem = !onClick && !href;
 
@@ -93,7 +97,7 @@ function configFactory(onClick, tooltip, otherConfig: OtherConfig = {}) {
   }
 
   return {
-    ...(href ? { href } : { onClick }),
+    ...(href ? { href } : { onClick: onClick || (() => {}) }),
     ...(tooltip ? { tooltip, label: tooltip } : null),
     ...otherConfig,
   };
@@ -226,7 +230,8 @@ export default function generateProductConfig(
       starredTooltip,
     ),
     notification: configFactory(
-      (fabricNotificationLogUrl || cloudId) && openDrawer('notification'),
+      ((fabricNotificationLogUrl || cloudId) && openDrawer('notification')) ||
+        function() {},
       notificationTooltip,
     ),
     help: helpConfigFactory(helpItems, helpTooltip),

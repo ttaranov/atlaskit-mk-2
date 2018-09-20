@@ -1,10 +1,10 @@
 // @flow
 import React from 'react';
 
-import NotificationDrawerContents from './components/NotificationDrawerContents';
-
 import { NotificationIndicator } from '@atlaskit/notification-indicator';
 import { NotificationLogClient } from '@atlaskit/notification-log-client';
+
+import NotificationDrawerContents from './components/NotificationDrawerContents';
 
 export const CONTENT_URL = '/home/notificationsDrawer/iframe.html';
 
