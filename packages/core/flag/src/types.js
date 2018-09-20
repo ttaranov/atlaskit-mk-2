@@ -9,6 +9,12 @@ export type ElementType = any;
 export type FunctionType = (...args: Array<any>) => mixed;
 export type MouseEventFunctionType = (event: MouseEvent) => any;
 export type GenericEventFunctionType = (event: Event) => any;
+export type ActionType = {
+  content: Node,
+  onClick?: FunctionType,
+  href?: string,
+  target?: string,
+};
 
 export type AppearanceTypes =
   | 'error'
@@ -16,10 +22,7 @@ export type AppearanceTypes =
   | 'normal'
   | 'success'
   | 'warning';
-export type ActionsType = Array<{
-  content: Node,
-  onClick: FunctionType,
-}>;
+export type ActionsType = Array<ActionType>;
 
 // exported for testing - keep in sync from `type AppearanceTypes`
 export const AppearanceArray = [

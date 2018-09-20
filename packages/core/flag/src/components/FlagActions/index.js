@@ -1,8 +1,8 @@
 // @flow
 import React, { Component } from 'react';
 import uuid from 'uuid/v1';
-import Container, { Action, StyledButton } from './styledFlagActions';
-import type { ActionsType, AppearanceTypes } from '../../types';
+import Container, { Action, Button } from './styledFlagActions';
+import type { ActionsType, AppearanceTypes, ActionType } from '../../types';
 import { DEFAULT_APPEARANCE } from '../Flag';
 
 type Props = {
@@ -25,6 +25,20 @@ export default class FlagActions extends Component<Props, {}> {
   getButtonSpacing = (b: mixed) => (b ? 'compact' : 'none');
   getUniqueId = (prefix: string): string => `${prefix}-${uuid()}`;
 
+  getButtonProps = ({ onClick, href, target }: ActionType) => {
+    let buttonProps = {};
+    if (onClick) {
+      buttonProps.onClick = onClick;
+    }
+    if (href) {
+      buttonProps.href = href;
+    }
+    if (target) {
+      buttonProps.target = target;
+    }
+    return buttonProps;
+  };
+
   render() {
     const { actions, appearance } = this.props;
     const isBold = appearance !== DEFAULT_APPEARANCE;
@@ -37,9 +51,9 @@ export default class FlagActions extends Component<Props, {}> {
         hasDivider={!!index}
         useMidDot={!isBold}
       >
-        <StyledButton onClick={action.onClick} appearance={appearance}>
+        <Button {...this.getButtonProps(action)} appearance={appearance}>
           {action.content}
-        </StyledButton>
+        </Button>
       </Action>
     ));
 
