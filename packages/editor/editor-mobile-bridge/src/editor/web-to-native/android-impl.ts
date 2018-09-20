@@ -27,7 +27,7 @@ export default class AndroidBridge implements NativeBridge {
   }
 
   dismissMentions() {
-    /**TODO: implement when mentions are ready */
+    /*TODO: implement when mentions are ready */
   }
 
   updateTextFormat(markStates: string) {
