@@ -2,7 +2,7 @@ import * as React from 'react';
 import { MouseEvent } from 'react';
 import styled from 'styled-components';
 import { akColorN30 } from '@atlaskit/util-shared-styles';
-import { akEditorMenuZIndex } from '@atlaskit/editor-common';
+import { akEditorMenuZIndex, ContainerProvider } from '@atlaskit/editor-common';
 import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import Avatars from '../../plugins/collab-edit/ui/avatars';
 import PluginSlot from '../PluginSlot';
@@ -232,23 +232,25 @@ export default class Editor extends React.Component<
                 style={{ padding: `0 ${GUTTER_PADDING}px` }}
                 className="ak-editor-content-area"
               >
-                {customContentComponents}
-                {
-                  <PluginSlot
-                    editorView={editorView}
-                    editorActions={editorActions}
-                    eventDispatcher={eventDispatcher}
-                    providerFactory={providerFactory}
-                    appearance={this.appearance}
-                    items={contentComponents}
-                    popupsMountPoint={popupsMountPoint}
-                    popupsBoundariesElement={popupsBoundariesElement}
-                    popupsScrollableElement={popupsScrollableElement}
-                    disabled={!!disabled}
-                    containerElement={this.scrollContainer}
-                  />
-                }
-                {editorDOMElement}
+                <ContainerProvider>
+                  {customContentComponents}
+                  {
+                    <PluginSlot
+                      editorView={editorView}
+                      editorActions={editorActions}
+                      eventDispatcher={eventDispatcher}
+                      providerFactory={providerFactory}
+                      appearance={this.appearance}
+                      items={contentComponents}
+                      popupsMountPoint={popupsMountPoint}
+                      popupsBoundariesElement={popupsBoundariesElement}
+                      popupsScrollableElement={popupsScrollableElement}
+                      disabled={!!disabled}
+                      containerElement={this.scrollContainer}
+                    />
+                  }
+                  {editorDOMElement}
+                </ContainerProvider>
               </div>
             </ContentArea>
           </ClickAreaBlock>

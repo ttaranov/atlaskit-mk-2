@@ -10,6 +10,7 @@ import {
   ExtensionHandlers,
   BaseTheme,
   WidthProvider,
+  ContainerProvider,
 } from '@atlaskit/editor-common';
 import { ReactSerializer, renderDocument, RendererContext } from '../../';
 import { RenderOutputStat } from '../../';
@@ -150,7 +151,9 @@ export function RendererWrapper({ appearance, children, dynamicTextSizing }) {
   return (
     <WidthProvider>
       <BaseTheme dynamicTextSizing={dynamicTextSizing}>
-        <Wrapper appearance={appearance}>{children}</Wrapper>
+        <Wrapper appearance={appearance}>
+          <ContainerProvider>{children}</ContainerProvider>
+        </Wrapper>
       </BaseTheme>
     </WidthProvider>
   );

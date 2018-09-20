@@ -16,7 +16,7 @@ import { stateKey as mediaPluginKey } from '../../plugins/media/pm-plugins/main'
 import { ClickAreaBlock } from '../Addon';
 import { tableCommentEditorStyles } from '../../plugins/table/ui/styles';
 import WithFlash from '../WithFlash';
-import { akEditorMenuZIndex } from '@atlaskit/editor-common';
+import { akEditorMenuZIndex, ContainerProvider } from '@atlaskit/editor-common';
 import WidthEmitter from '../WidthEmitter';
 import { GRID_GUTTER } from '../../plugins/grid';
 
@@ -187,21 +187,23 @@ export default class Editor extends React.Component<
               innerRef={ref => (this.containerElement = ref)}
               className="ak-editor-content-area editor-popup-ignore-scroll-parent"
             >
-              {customContentComponents}
-              <PluginSlot
-                editorView={editorView}
-                editorActions={editorActions}
-                eventDispatcher={eventDispatcher}
-                providerFactory={providerFactory}
-                appearance={this.appearance}
-                items={contentComponents}
-                popupsMountPoint={popupsMountPoint}
-                popupsBoundariesElement={popupsBoundariesElement}
-                popupsScrollableElement={popupsScrollableElement}
-                containerElement={this.containerElement}
-                disabled={!!disabled}
-              />
-              {editorDOMElement}
+              <ContainerProvider>
+                {customContentComponents}
+                <PluginSlot
+                  editorView={editorView}
+                  editorActions={editorActions}
+                  eventDispatcher={eventDispatcher}
+                  providerFactory={providerFactory}
+                  appearance={this.appearance}
+                  items={contentComponents}
+                  popupsMountPoint={popupsMountPoint}
+                  popupsBoundariesElement={popupsBoundariesElement}
+                  popupsScrollableElement={popupsScrollableElement}
+                  containerElement={this.containerElement}
+                  disabled={!!disabled}
+                />
+                {editorDOMElement}
+              </ContainerProvider>
             </ContentArea>
           </ClickAreaBlock>
           <WidthEmitter editorView={editorView!} />
