@@ -4,7 +4,11 @@ import {
   name as npmPackageName,
   version as npmPackageVersion,
 } from '../package.json';
-import { NotificationLogClient, NotificationCountResponse } from '../src';
+import {
+  NotificationLogClient,
+  NotificationCountResponse,
+  DEFAULT_SOURCE,
+} from '../src';
 
 const notificationLogUrl = 'http://notification-log';
 
@@ -34,7 +38,7 @@ describe('NotificationLogClient', () => {
     const provider = new NotificationLogClient(notificationLogUrl, '123');
     return provider.countUnseenNotifications().then(() => {
       expect(fetchMock.lastOptions().headers.get('x-app-version')).toEqual(
-        `${npmPackageName}#${npmPackageVersion}`,
+        `${npmPackageVersion}-${DEFAULT_SOURCE}`,
       );
     });
   });

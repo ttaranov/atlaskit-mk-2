@@ -3,11 +3,10 @@ import {
   ServiceConfig,
   utils,
 } from '@atlaskit/util-service-support';
-import {
-  name as npmPackageName,
-  version as npmPackageVersion,
-} from '../package.json';
+import { version as npmPackageVersion } from '../package.json';
 import { NotificationLogProvider, NotificationCountResponse } from './types';
+
+export const DEFAULT_SOURCE = 'atlaskitNotificationLogClient';
 
 export default class NotificationLogClient implements NotificationLogProvider {
   private serviceConfig: ServiceConfig;
@@ -17,7 +16,7 @@ export default class NotificationLogClient implements NotificationLogProvider {
   constructor(
     baseUrl: string,
     cloudId: string,
-    source: string = npmPackageName,
+    source: string = DEFAULT_SOURCE,
   ) {
     this.serviceConfig = { url: baseUrl };
     this.cloudId = cloudId;
@@ -38,7 +37,7 @@ export default class NotificationLogClient implements NotificationLogProvider {
       requestInit: {
         mode: 'cors' as 'cors',
         headers: {
-          'x-app-version': `${npmPackageName}#${npmPackageVersion}`,
+          'x-app-version': `${npmPackageVersion}-${DEFAULT_SOURCE}`,
         },
         ...(options.requestInit || {}),
       },
