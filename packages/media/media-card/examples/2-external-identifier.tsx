@@ -1,43 +1,45 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { Card, CardView, ExternalIdentifier } from '../src';
 import {
   createStorybookContext,
-  wideImage,
+  atlassianLogoUrl,
   imageFileId,
 } from '@atlaskit/media-test-helpers';
+import { Card, CardView, ExternalImageIdentifier } from '../src';
+import { ExternalIdentifierWrapper } from '../example-helpers/styled';
 
 const context = createStorybookContext();
-const externalIdentifier: ExternalIdentifier = {
-  mediaItemType: 'external',
-  dataURI: wideImage,
+const externalIdentifierWithName: ExternalImageIdentifier = {
+  mediaItemType: 'external-image',
+  dataURI: atlassianLogoUrl,
   name: 'me',
+};
+const externalIdentifier: ExternalImageIdentifier = {
+  mediaItemType: 'external-image',
+  dataURI: atlassianLogoUrl,
 };
 
 class Example extends Component {
   render() {
     return (
-      <div>
+      <ExternalIdentifierWrapper>
         <div>
-          <h1>External identifier</h1>
-          <Card
-            context={context}
-            identifier={externalIdentifier}
-            // dimensions={{
-            //   width: 300,
-            //   height: 100
-            // }}
-          />
+          <h2>External image identifier</h2>
+          <Card context={context} identifier={externalIdentifier} />
         </div>
         <div>
-          <h1>File identifier</h1>
+          <h2>External image identifier with name</h2>
+          <Card context={context} identifier={externalIdentifierWithName} />
+        </div>
+        <div>
+          <h2>File identifier</h2>
           <Card context={context} identifier={imageFileId} />
         </div>
         <div>
-          <h1>CardView</h1>
-          <CardView status="complete" dataURI={wideImage} />
+          <h2>CardView</h2>
+          <CardView status="complete" dataURI={atlassianLogoUrl} />
         </div>
-      </div>
+      </ExternalIdentifierWrapper>
     );
   }
 }

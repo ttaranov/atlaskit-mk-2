@@ -8,7 +8,7 @@ export type Identifier =
   | UrlPreviewIdentifier
   | LinkIdentifier
   | FileIdentifier
-  | ExternalIdentifier;
+  | ExternalImageIdentifier;
 export type Provider = MediaItemProvider | UrlPreviewProvider;
 
 export interface FileIdentifier {
@@ -30,8 +30,8 @@ export interface UrlPreviewIdentifier {
   readonly url: string;
 }
 
-export interface ExternalIdentifier {
-  readonly mediaItemType: 'external';
+export interface ExternalImageIdentifier {
+  readonly mediaItemType: 'external-image';
   readonly dataURI: string;
   readonly name?: string;
 }

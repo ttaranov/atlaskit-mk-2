@@ -73,7 +73,9 @@ export class FileCard extends Component<FileCardProps, {}> {
       );
     } else {
       const fileSize =
-        mediaItemType === 'external' ? '' : toHumanReadableMediaSize(size || 0);
+        mediaItemType === 'external-image'
+          ? ''
+          : toHumanReadableMediaSize(size || 0);
 
       return (
         <FileCardImageView

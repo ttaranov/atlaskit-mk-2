@@ -141,16 +141,18 @@ export class CardViewBase extends React.Component<
   render() {
     const { onClick, onMouseEnter } = this;
     const { dimensions, appearance, mediaItemType } = this.props;
+    const isFileLikeIdentifier =
+      mediaItemType === 'file' || mediaItemType === 'external-image';
     const wrapperDimensions = dimensions
       ? dimensions
-      : mediaItemType === 'file'
+      : isFileLikeIdentifier
         ? getDefaultCardDimensions(appearance)
         : undefined;
     let card;
 
     if (mediaItemType === 'link') {
       card = this.renderLink();
-    } else if (mediaItemType === 'file' || mediaItemType === 'external') {
+    } else if (isFileLikeIdentifier) {
       card = this.renderFile();
     }
 

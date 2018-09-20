@@ -6,6 +6,7 @@ import {
   audioFileId,
   errorFileId,
   gifFileId,
+  externalImageIdentifier,
   defaultCollectionName,
 } from '@atlaskit/media-test-helpers';
 import { CardEvent, FileIdentifier, CardAction } from '@atlaskit/media-card';
@@ -22,6 +23,7 @@ const context = createUploadContext();
 
 class Example extends Component<{}, ExampleState> {
   onCardClick = (result: CardEvent) => {
+    console.log(result);
     const { items } = this.state;
 
     if (!result.mediaItemDetails) {
@@ -88,6 +90,10 @@ class Example extends Component<{}, ExampleState> {
     items: [
       {
         identifier: genericFileId,
+        ...this.cardProps,
+      },
+      {
+        identifier: externalImageIdentifier,
         ...this.cardProps,
       },
       {

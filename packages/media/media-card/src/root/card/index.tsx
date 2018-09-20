@@ -23,7 +23,10 @@ import { getBaseAnalyticsContext } from '../../utils/analyticsUtils';
 import { getDataURIDimension } from '../../utils/getDataURIDimension';
 import { getDataURIFromFileState } from '../../utils/getDataURIFromFileState';
 import { getLinkMetadata, extendMetadata } from '../../utils/metadata';
-import { isUrlPreviewIdentifier } from '../../utils/identifier';
+import {
+  isUrlPreviewIdentifier,
+  isExternalImageIdentifier,
+} from '../../utils/identifier';
 import { isBigger } from '../../utils/dimensionComparer';
 
 export interface CardProps extends SharedCardProps, CardEventProps {
@@ -123,15 +126,15 @@ export class Card extends Component<CardProps, CardState> {
       return;
     }
 
-    if (identifier.mediaItemType === 'external') {
+    if (identifier.mediaItemType === 'external-image') {
       const { dataURI, name } = identifier;
 
       this.setState({
         status: 'complete',
         dataURI,
         metadata: {
-          id: '',
-          name,
+          id: dataURI,
+          name: name || dataURI,
           mediaType: 'image',
         },
       });
@@ -253,7 +256,10 @@ export class Card extends Component<CardProps, CardState> {
     const { identifier } = this.props;
     const id = isUrlPreviewIdentifier(identifier)
       ? identifier.url
-      : identifier.id;
+      : isExternalImageIdentifier(identifier)
+        ? 'external-image'
+        : identifier.id;
+
     return getBaseAnalyticsContext('Card', id);
   }
 
