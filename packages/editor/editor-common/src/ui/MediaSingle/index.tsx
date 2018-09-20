@@ -28,7 +28,9 @@ export default function MediaSingle({
   className,
 }: Props) {
   if (pctWidth) {
-    const pxWidth = Math.ceil(calcPxFromPct(pctWidth / 100, lineLength));
+    const pxWidth = Math.ceil(
+      calcPxFromPct(pctWidth / 100, lineLength || containerWidth),
+    );
 
     // scale, keeping aspect ratio
     height = height / width * pxWidth;
