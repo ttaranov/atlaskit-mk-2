@@ -1,0 +1,46 @@
+import { CardAppearance } from '../Card';
+
+export interface CardProvider {
+  resolve(url: string, appearance: CardAppearance): Promise<any>;
+}
+
+const ORS_CHECK_URL =
+  'https://api-private.stg.atlassian.com/object-resolver/resolve';
+
+export class EditorCardProvider implements CardProvider {
+  public config = {};
+
+  async resolve(url: string, appearance: CardAppearance): Promise<any> {
+    try {
+      const result = await (await fetch(ORS_CHECK_URL, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({ resourceUrl: url }),
+      })).json();
+
+      if (result && result.isSupported) {
+        return {
+          type: appearance === 'inline' ? 'inlineCard' : 'blockCard',
+          attrs: {
+            url,
+          },
+        };
+      }
+    } catch (e) {
+      console.warn(
+        `Error when trying to check Smart Card url "${url} - ${
+          e.prototype.name
+        } ${e.message}`,
+        e,
+      );
+    }
+
+    return Promise.reject(undefined);
+  }
+}
+
+export const editorCardProvider = new EditorCardProvider();

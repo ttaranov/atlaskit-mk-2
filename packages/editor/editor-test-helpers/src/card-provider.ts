@@ -34,4 +34,4 @@ export class CardMockProvider implements CardProvider {
   }
 }
 
-export const cardProvider = new DelayedCardMockProvider();
+export const mockCardProvider = new DelayedCardMockProvider();

@@ -104,7 +104,8 @@ export {
 } from './mock-extension-data';
 export * from './schema-element-builder';
 export {
-  cardProvider,
+  confluenceCardProvider,
+  mockCardProvider,
   CardMockProvider,
   DelayedCardMockProvider,
 } from './card-provider';

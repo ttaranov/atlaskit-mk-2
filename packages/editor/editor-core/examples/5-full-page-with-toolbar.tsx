@@ -7,7 +7,7 @@ import { akColorN90 } from '@atlaskit/util-shared-styles';
 import Editor from './../src/editor';
 import EditorContext from './../src/ui/EditorContext';
 import WithEditorActions from './../src/ui/WithEditorActions';
-import { macroProvider, cardProvider } from '@atlaskit/editor-test-helpers';
+import { macroProvider, mockCardProvider } from '@atlaskit/editor-test-helpers';
 import ToolsDrawer from '../example-helpers/ToolsDrawer';
 
 import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
@@ -111,7 +111,7 @@ export class ExampleEditor extends React.Component<Props> {
                 allowGapCursor={true}
                 allowTemplatePlaceholders={{ allowInserting: true }}
                 UNSAFE_cards={{
-                  provider: Promise.resolve(cardProvider),
+                  provider: Promise.resolve(mockCardProvider),
                 }}
                 activityProvider={activityProvider}
                 mentionProvider={mentionProvider}

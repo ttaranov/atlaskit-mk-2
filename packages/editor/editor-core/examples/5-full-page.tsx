@@ -11,7 +11,7 @@ import {
   storyMediaProviderFactory,
   storyContextIdentifierProviderFactory,
   macroProvider,
-  cardProvider,
+  mockCardProvider,
 } from '@atlaskit/editor-test-helpers';
 import { mention, emoji, taskDecision } from '@atlaskit/util-data-test';
 import { MockActivityResource } from '@atlaskit/activity/dist/es5/support';
@@ -22,6 +22,7 @@ import { extensionHandlers } from '../example-helpers/extension-handlers';
 import quickInsertProviderFactory from '../example-helpers/quick-insert-provider';
 import { DevTools } from '../example-helpers/DevTools';
 import { EditorActions } from './../src';
+import { editorCardProvider } from '@atlaskit/smart-card';
 
 export const TitleInput: any = styled.input`
   border: none;
@@ -160,7 +161,7 @@ export class ExampleEditor extends React.Component<EditorProps, State> {
             allowGapCursor={true}
             allowTemplatePlaceholders={{ allowInserting: true }}
             UNSAFE_cards={{
-              provider: Promise.resolve(cardProvider),
+              provider: Promise.resolve(editorCardProvider),
             }}
             allowStatus={true}
             {...providers}
