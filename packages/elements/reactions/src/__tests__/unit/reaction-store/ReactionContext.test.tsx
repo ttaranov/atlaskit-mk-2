@@ -12,10 +12,7 @@ import {
   ReactionContext,
   State,
 } from '../../../reaction-store/ReactionContext';
-import {
-  Actions,
-  ReactionsContext,
-} from '../../../reaction-store/ReactionsContext';
+import { Actions, Context } from '../../../reaction-store/Context';
 import { ReactionStatus } from '../../../types/ReactionStatus';
 
 describe('ReactionContext', () => {
@@ -38,7 +35,7 @@ describe('ReactionContext', () => {
   });
 
   const extractActions = (provider: ShallowWrapper<Props, State>): Actions =>
-    provider.find(ReactionsContext.Provider).prop('value').actions;
+    provider.find(Context.Provider).prop('value').actions;
 
   const renderProvider = () =>
     shallow(
@@ -64,7 +61,7 @@ describe('ReactionContext', () => {
   });
 
   it('should provide actions and state', () => {
-    const contextProvider = provider.find(ReactionsContext.Provider);
+    const contextProvider = provider.find(Context.Provider);
     expect(contextProvider.prop('value')).toMatchObject({
       value: {
         reactions: {},

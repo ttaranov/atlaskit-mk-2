@@ -1,7 +1,7 @@
 import { mount, shallow } from 'enzyme';
 import * as React from 'react';
 import { ReactionConsumer } from '../../../reaction-store/ReactionConsumer';
-import { ReactionsContext } from '../../../reaction-store/ReactionsContext';
+import { Context } from '../../../reaction-store/Context';
 import { ReactionStatus } from '../../../types/ReactionStatus';
 
 describe('ReactionConsumer', () => {
@@ -40,7 +40,7 @@ describe('ReactionConsumer', () => {
       </ReactionConsumer>,
     );
 
-    consumer.find(ReactionsContext.Consumer).prop('children')({
+    consumer.find(Context.Consumer).prop('children')({
       value,
       actions,
     });
@@ -85,7 +85,7 @@ describe('ReactionConsumer', () => {
 
     stateMapper.mockReturnValueOnce(newMapped);
 
-    consumer.find(ReactionsContext.Consumer).prop('children')({
+    consumer.find(Context.Consumer).prop('children')({
       value: newValue,
       actions,
     });

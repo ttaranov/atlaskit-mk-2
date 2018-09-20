@@ -16,4 +16,4 @@ type ContextType =
     }
   | undefined;
 
-export const ReactionsContext = React.createContext<ContextType>(undefined);
+export const Context = React.createContext<ContextType>(undefined);

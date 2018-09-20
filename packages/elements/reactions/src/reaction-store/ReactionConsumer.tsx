@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Actions, ReactionsContext } from './ReactionsContext';
+import { Actions, Context } from './Context';
 import { State } from './ReactionContext';
 
 export type Props<PropsFromState extends {}, PropsFromActions extends {}> = {
@@ -54,10 +54,6 @@ export class ReactionConsumer<
   };
 
   render() {
-    return (
-      <ReactionsContext.Consumer>
-        {this.renderChildren}
-      </ReactionsContext.Consumer>
-    );
+    return <Context.Consumer>{this.renderChildren}</Context.Consumer>;
   }
 }

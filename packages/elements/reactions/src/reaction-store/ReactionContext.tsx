@@ -6,7 +6,7 @@ import { ReactionStatus } from '../types/ReactionStatus';
 import { ReactionSummary } from '../types/ReactionSummary';
 import { Updater } from '../types/Updater';
 import { batchByKey } from './batched';
-import { Actions, ReactionsContext } from './ReactionsContext';
+import { Actions, Context } from './Context';
 import * as utils from './utils';
 
 const getClient = ({ client, url }: Props): ReactionClient => {
@@ -276,14 +276,14 @@ export class ReactionContext extends React.Component<Props, State> {
 
   render() {
     return (
-      <ReactionsContext.Provider
+      <Context.Provider
         value={{
           value: this.state,
           actions: this.actions,
         }}
       >
         {this.props.children}
-      </ReactionsContext.Provider>
+      </Context.Provider>
     );
   }
 }
