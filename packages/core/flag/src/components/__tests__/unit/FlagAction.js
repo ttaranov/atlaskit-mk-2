@@ -21,6 +21,7 @@ describe('actions prop', () => {
         actions: [
           { content: 'Hello!', onClick: actionSpy },
           { content: 'Goodbye!', onClick: actionSpy },
+          { content: 'with href', href: 'hrefString' },
         ],
       }),
     );
@@ -28,9 +29,10 @@ describe('actions prop', () => {
 
   it('actions should be rendered', () => {
     const actionItems = flag.find(Action);
-    expect(actionItems.length).toBe(2);
+    expect(actionItems.length).toBe(3);
     expect(actionItems.at(0).text()).toBe('Hello!');
     expect(actionItems.at(1).text()).toBe('Goodbye!');
+    expect(actionItems.at(2).text()).toBe('with href');
   });
 
   it('action onClick should be triggered on click', () => {
@@ -52,6 +54,7 @@ describe('actions prop', () => {
     expect(flag.find(Actions).prop('appearance')).toBe('info');
   });
 
+<<<<<<< HEAD
   it('should render atlaskit button as action', () => {
     flag = mount(generateFlag({ appearance: 'info', isDismissAllowed: true }));
     flag.setState({ isExpanded: true });
@@ -60,5 +63,13 @@ describe('actions prop', () => {
       description: 'Hi there',
     });
     expect(flag.find(Button).length).toBe(1);
+=======
+  it('should pass href to the action with href', () => {
+    const buttonLink = flag
+      .find(Action)
+      .at(2)
+      .find('button');
+    expect(buttonLink.prop('href')).toBe('hrefString');
+>>>>>>> added tests and docs for href in flag
   });
 });

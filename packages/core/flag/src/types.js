@@ -37,6 +37,7 @@ export type AutoDismissFlagProps = {
   /** Array of clickable actions to be shown at the bottom of the flag. For flags where appearance
    * is 'normal', actions will be shown as links. For all other appearance values, actions will
    * shown as buttons.
+   * If href is passed the action will be shown as a link with the passed href prop.
    */
   actions?: ActionsType,
   /** Makes the flag appearance bold. Setting this to anything other than 'normal' hides the
