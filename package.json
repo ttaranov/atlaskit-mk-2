@@ -462,7 +462,7 @@
     "urijs": "^1.19.1",
     "url": "^0.11.0",
     "url-search-params": "^0.10.0",
-    "utf8-buffer": "^0.2.0",
+    "utf8-string-bytes": "^1.0.3",
     "uuid": "^3.1.0",
     "video-snapshot": "^1.0.1",
     "webpack-cli": "^3.1.0",

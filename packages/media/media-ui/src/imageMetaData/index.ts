@@ -1,11 +1,10 @@
-import { fileToDataURICached } from '../util';
-import { loadImage } from './util';
 import {
   ImageInfo,
   ImageMetaData,
   ImageMetaDataTags,
   ImageType,
   SupportedImageMetaTag,
+  FileInfo,
 } from './types';
 import {
   parseXMPMetaData,
@@ -13,6 +12,7 @@ import {
   readJPEGExifMetaData,
   readPNGXMPMetaData,
 } from './metatags';
+import { getFileInfo, loadImage } from '../util';
 
 const { Orientation, XResolution } = SupportedImageMetaTag;
 
@@ -27,14 +27,16 @@ export {
   FileInfo,
 } from './types';
 
-export async function getImageInfo(file: File): Promise<ImageInfo | null> {
-  const metadata = await readImageMetaData(file);
+export async function getImageInfo(
+  fileInfo: FileInfo,
+): Promise<ImageInfo | null> {
+  const metadata = await readImageMetaData(fileInfo);
   if (!metadata) {
     return null;
   }
   const { width, height, tags } = metadata;
   let scaleFactor = 1;
-  let scaleFactorFromFilename = getScaleFactorFromFile(file);
+  let scaleFactorFromFilename = getScaleFactorFromFile(fileInfo.file);
   if (scaleFactorFromFilename !== null) {
     scaleFactor = scaleFactorFromFilename;
   } else if (tags) {
@@ -49,13 +51,10 @@ export async function getImageInfo(file: File): Promise<ImageInfo | null> {
   };
 }
 
-export function getOrientation(file: File): Promise<number | null> {
-  return readImageMetaTags(file).then((tags: ImageMetaDataTags | null) => {
-    if (tags) {
-      return getMetaTagNumericValue(tags, Orientation, 1);
-    }
-    return null;
-  });
+export async function getOrientation(file: File): Promise<number | null> {
+  const fileInfo = await getFileInfo(file);
+  const tags = await readImageMetaTags(fileInfo);
+  return tags ? getMetaTagNumericValue(tags, Orientation, 1) : null;
 }
 
 export function getMetaTagNumericValue(
@@ -82,15 +81,15 @@ export function getScaleFactorFromFile(file: File): number | null {
       return parseFloat(match[1]);
     }
   } catch (e) {
-    // parse problem? unit tests should check this
+    // parse problem, return null
   }
   return null;
 }
 
 export async function readImageMetaData(
-  file: File,
+  fileInfo: FileInfo,
 ): Promise<ImageMetaData | null> {
-  const src = await fileToDataURICached(file);
+  const { file, src } = fileInfo;
   const type = file.type;
   let img;
   try {

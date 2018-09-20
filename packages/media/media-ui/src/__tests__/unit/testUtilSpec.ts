@@ -1,4 +1,10 @@
-import { dataURItoFile, fileToDataURI } from '../../util';
+import {
+  dataURItoFile,
+  // fileToArrayBuffer,
+  fileToDataURI,
+  // getFileInfo,
+  // loadImage,
+} from '../../util';
 
 const tinyPngDataURI = 'data:image/png;base64,';
 const tinyBadDataURI = 'very-bad-data';
@@ -20,15 +26,15 @@ describe('Image Meta Data Util', () => {
       expect(dataURI).toEqual(tinyPngDataURI);
     });
 
-    it('should do', () => {
+    it('should still convert bad dataURI to File', () => {
       const file = dataURItoFile(tinyBadDataURI);
       expect(file).toBeInstanceOf(File);
     });
 
-    it('should still convert to string invalid File', async () => {
+    it('should still convert invalid File to dataURI', async () => {
       const badFile = new File([], 'filename', { type: 'bad/type' });
       const dataURI = await fileToDataURI(badFile);
-      expect(dataURI).toEqual(tinyBadDataURI);
+      expect(typeof dataURI).toBe('string');
     });
 
     it('should throw message on empty dataURI', () => {

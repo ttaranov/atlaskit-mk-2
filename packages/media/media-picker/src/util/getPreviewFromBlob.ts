@@ -1,29 +1,51 @@
 import { MediaType } from '@atlaskit/media-core';
-import { getImageInfo, getFileInfo } from '@atlaskit/media-ui';
 import { Preview } from '../domain/preview';
+import { fileToBase64 } from '../popup/tools/fileToBase64';
+import { getImageInfo, getFileInfo, loadImage } from '@atlaskit/media-ui';
 import { ImagePreview } from '../index';
 
 export const getPreviewFromBlob = (
-  blob: Blob,
+  file: Blob,
   mediaType: MediaType,
-  devicePixelRatio?: number,
+): Promise<Preview> =>
+  new Promise((resolve, reject) => {
+    fileToBase64(file)
+      .then(async src => {
+        if (mediaType === 'image') {
+          const img = await loadImage(src);
+          const dimensions = {
+            width: img.naturalWidth,
+            height: img.naturalHeight,
+          };
+          resolve({ src, dimensions } as ImagePreview);
+        } else {
+          resolve({ src });
+        }
+      })
+      .catch(reject);
+  });
+
+export const getPreviewWithMetaDataFromBlob = (
+  file: File,
+  mediaType: MediaType,
 ): Promise<Preview> =>
   new Promise(async (resolve, reject) => {
     try {
-      const info = await getFileInfo(blob);
+      const fileInfo = await getFileInfo(file);
+      const src = fileInfo.src;
       if (mediaType === 'image') {
-        const info = await getImageInfo(blob as File);
-        if (info === null) {
+        const imageInfo = await getImageInfo(fileInfo);
+        if (imageInfo === null) {
           resolve({ src });
         } else {
-          const { width, height, scaleFactor } = info;
+          const { width, height, scaleFactor } = imageInfo;
           resolve({
             src,
             dimensions: {
               width,
               height,
             },
-            scaleFactor: devicePixelRatio || scaleFactor,
+            scaleFactor,
           } as ImagePreview);
         }
       } else {

@@ -23,7 +23,7 @@ import { MediaFile, PublicMediaFile } from '../domain/file';
 
 import { RECENTS_COLLECTION } from '../popup/config';
 import { mapAuthToSourceFileOwner } from '../popup/domain/source-file';
-import { getPreviewFromBlob } from '../util/getPreviewFromBlob';
+import { getPreviewWithMetaDataFromBlob } from '../util/getPreviewFromBlob';
 import { getPreviewFromVideo } from '../util/getPreviewFromVideo';
 import { UploadParams } from '..';
 import { SmartMediaProgress } from '../domain/progress';
@@ -242,14 +242,12 @@ export class NewUploadServiceImpl implements UploadService {
       const { size } = file;
       const mediaType = this.getMediaTypeFromFile(file);
       if (size < MAX_FILE_SIZE_FOR_PREVIEW && mediaType === 'image') {
-        getPreviewFromBlob(file, mediaType, window.devicePixelRatio).then(
-          preview => {
-            this.emit('file-preview-update', {
-              file: mediaFile,
-              preview,
-            });
-          },
-        );
+        getPreviewWithMetaDataFromBlob(file, mediaType).then(preview => {
+          this.emit('file-preview-update', {
+            file: mediaFile,
+            preview,
+          });
+        });
       } else if (mediaType === 'video') {
         getPreviewFromVideo(file).then(preview => {
           this.emit('file-preview-update', {

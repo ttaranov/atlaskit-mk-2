@@ -4,7 +4,11 @@ import { LocalUploadComponent } from '../src/components/localUpload';
 import { UploadsStartEventPayload } from '../src';
 import { PreviewsTitle, PreviewsWrapper } from './styled';
 import { PreviewData } from './types';
-import { dataURItoFile, readImageMetaData } from '@atlaskit/media-ui';
+import {
+  dataURItoFile,
+  readImageMetaData,
+  getFileInfo,
+} from '@atlaskit/media-ui';
 
 export interface PreviewsDataState {
   previewsData: PreviewData[];
@@ -64,7 +68,8 @@ export class UploadPreviews extends React.Component<
     //import { readImageMetaData, dataURItoFile } from '@atlaskit/media-ui';
     picker.on('upload-preview-update', async data => {
       const file = dataURItoFile(data.preview.src);
-      const info = await readImageMetaData(file);
+      const fileInfo = await getFileInfo(file);
+      const info = await readImageMetaData(fileInfo);
       if (info) {
         const currentItem = previewsData[previewsData.length - 1];
         currentItem.info = info;

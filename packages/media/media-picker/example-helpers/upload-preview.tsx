@@ -14,7 +14,7 @@ export class UploadPreview extends React.Component<PreviewData> {
       if (info.tags) {
         const metaTags = info.tags;
         tags = Object.keys(info.tags)
-          .map(key => `${key}: ${metaTags[key]}`)
+          .map(key => `${key}: ${JSON.stringify(metaTags[key])}`)
           .join('\n');
       }
       return `[ general ]\ntype: ${info.type}\nwidth: ${info.width}\nheight: ${
