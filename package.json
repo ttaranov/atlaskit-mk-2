@@ -418,7 +418,7 @@
     "redux-thunk": "^2.2.0",
     "resolve-from": "^4.0.0",
     "rusha": "^0.8.13",
-    "rxjs": "^5.1.0",
+    "rxjs": "^5.5.0",
     "s3-cli": "^0.13.0",
     "scroll-into-view-if-needed": "^1.2.1",
     "scrollparent": "^2.0.1",
