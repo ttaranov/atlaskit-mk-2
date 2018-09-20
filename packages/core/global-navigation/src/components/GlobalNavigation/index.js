@@ -11,9 +11,9 @@ import {
 } from '../../../package.json';
 import generateDefaultConfig from '../../config/default-config';
 import generateProductConfig from '../../config/product-config';
-import { notificationIntegration } from '../../platform-integration';
-import ViewTracker from '../ViewTracker';
+import ScreenTracker from '../ScreenTracker';
 import { analyticsIdMap, fireDrawerDismissedEvents } from './analytics';
+import { notificationIntegration } from '../../platform-integration';
 
 import type { GlobalNavItemData, NavItem } from '../../config/types';
 import type { GlobalNavigationProps, DrawerName } from './types';
@@ -272,7 +272,10 @@ export default class GlobalNavigation
                 shouldUnmountOnExit={shouldUnmountOnExit}
                 width="wide"
               >
-                <ViewTracker name={analyticsIdMap[drawer]} />
+                <ScreenTracker
+                  name={analyticsIdMap[drawer]}
+                  isVisible={this.state[`is${capitalisedDrawerName}Open`]}
+                />
                 <DrawerContents />
               </Drawer>
             );
