@@ -1,68 +1,22 @@
-import { AnalyticsListener } from '@atlaskit/analytics-next';
+import { AnalyticsViewerContainer } from '@atlaskit/analytics-viewer';
 import * as React from 'react';
-import { style } from 'typestyle';
 import { ReactionClient, ReactionContext } from '../../src';
 import { MockReactionsClient } from '../../src/client/MockReactionsClient';
-import { AnalyticsViewer, EventsArray } from './AnalyticsViewer';
-
-const wrapperStyle = style({
-  display: 'flex',
-  flexDirection: 'column',
-  height: '100%',
-});
-
-const childrenStyle = style({
-  flexGrow: 1,
-});
-
-const analyticsStyle = style({
-  flexGrow: 0,
-  flexShrink: 1,
-  height: 100,
-  overflowY: 'scroll',
-});
 
 export type Props = {
   client?: ReactionClient;
   children: React.ReactChild | React.ReactChild[];
 };
 
-export type State = {
-  events: EventsArray;
+export const ReactionsExampleWrapper: React.StatelessComponent<Props> = ({
+  children,
+  client,
+}: Props) => (
+  <AnalyticsViewerContainer>
+    <ReactionContext client={client}>{children}</ReactionContext>
+  </AnalyticsViewerContainer>
+);
+
+ReactionsExampleWrapper.defaultProps = {
+  client: new MockReactionsClient(500),
 };
-
-export class ReactionsExampleWrapper extends React.PureComponent<Props, State> {
-  static defaultProps = {
-    client: new MockReactionsClient(500),
-  };
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      events: [],
-    };
-  }
-
-  handleOnEvent = (event, channel) => {
-    console.log(event);
-    this.setState(state => ({
-      events: [{ event, channel }, ...state.events],
-    }));
-  };
-
-  render() {
-    const { client, children } = this.props;
-    return (
-      <AnalyticsListener onEvent={this.handleOnEvent} channel="*">
-        <ReactionContext client={client}>
-          <div className={wrapperStyle}>
-            <div className={childrenStyle}>{children}</div>
-            <div className={analyticsStyle}>
-              <AnalyticsViewer events={this.state.events} />
-            </div>
-          </div>
-        </ReactionContext>
-      </AnalyticsListener>
-    );
-  }
-}
