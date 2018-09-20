@@ -4,6 +4,9 @@ import React from 'react';
 import NotificationBadge from './components/NotificationBadge';
 import NotificationDrawerContents from './components/NotificationDrawerContents';
 
+import { NotificationIndicator } from '@atlaskit/notification-indicator';
+import { NotificationLogClient } from '@atlaskit/notification-log-client';
+
 export const CONTENT_URL = '/home/notificationsDrawer/iframe.html';
 
 const notificationIntegration = (
@@ -13,9 +16,13 @@ const notificationIntegration = (
   product?: string,
 ) => ({
   badge: () => (
-    <NotificationBadge
-      fabricNotificationLogUrl={fabricNotificationLogUrl}
-      cloudId={cloudId}
+    <NotificationIndicator
+      notificationLogProvider={
+        new NotificationLogClient(fabricNotificationLogUrl, cloudId)
+      }
+      refreshRate={30000}
+      onCountUpdated={() => {}}
+      appearance="removed"
     />
   ),
   notificationDrawerContents: () => (
