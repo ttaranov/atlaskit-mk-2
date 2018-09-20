@@ -306,7 +306,7 @@ export const tableStyles = css`
       border-right: 1px solid ${akEditorTableBorder};
       box-sizing: border-box;
       margin-top: -1px;
-      padding: 10px;
+      padding: 10px 2px;
       text-align: center;
       background-color: ${tableToolbarColor};
       color: ${akColorN200};
