@@ -3,6 +3,7 @@ import Page, { Grid, GridColumn } from '@atlaskit/page';
 import { Field } from '@atlaskit/form';
 import Select from '@atlaskit/select';
 import TextField from '@atlaskit/field-text';
+import Checkbox from '@atlaskit/checkbox';
 import { Provider, Card } from '../src';
 import { CardAppearance } from '../src/Card/CardContent';
 import '../mocks';
@@ -26,16 +27,24 @@ export type AppearanceOption = {
 export interface ExampleState {
   appearance: AppearanceOption;
   url: string;
+  isSelected: boolean;
 }
 
 class Example extends React.Component<ExampleProps, ExampleState> {
   state: ExampleState = {
     appearance: { label: 'Block', value: 'block' },
     url: defaultURL,
+    isSelected: false,
   };
 
   handleUrlChange = (event: React.FormEvent<HTMLInputElement>) => {
     this.setState({ url: (event.target as HTMLInputElement).value });
+  };
+
+  handleIsSelected = () => {
+    this.setState({
+      isSelected: !this.state.isSelected,
+    });
   };
 
   handleAppearanceChange = (option: AppearanceOption) => {
@@ -45,7 +54,7 @@ class Example extends React.Component<ExampleProps, ExampleState> {
   };
 
   render() {
-    const { appearance, url } = this.state;
+    const { appearance, url, isSelected } = this.state;
     return (
       <Provider>
         <Page>
@@ -61,6 +70,7 @@ class Example extends React.Component<ExampleProps, ExampleState> {
                   onChange={this.handleAppearanceChange}
                 />
               </Field>
+              <Checkbox label="Is Selected?" onChange={this.handleIsSelected} />
               <TextField
                 autoFocus={true}
                 label="URL"
@@ -73,7 +83,11 @@ class Example extends React.Component<ExampleProps, ExampleState> {
           <Grid>
             <GridColumn>
               <br />
-              <Card appearance={appearance.value} url={url} />
+              <Card
+                isSelected={isSelected}
+                appearance={appearance.value}
+                url={url}
+              />
             </GridColumn>
           </Grid>
         </Page>
