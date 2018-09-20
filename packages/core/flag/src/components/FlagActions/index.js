@@ -26,7 +26,7 @@ export default class FlagActions extends Component<Props, {}> {
   getUniqueId = (prefix: string): string => `${prefix}-${uuid()}`;
 
   getButtonProps = ({ onClick, href, target }: ActionType) => {
-    let buttonProps = {};
+    const buttonProps = {};
     if (onClick) {
       buttonProps.onClick = onClick;
     }
