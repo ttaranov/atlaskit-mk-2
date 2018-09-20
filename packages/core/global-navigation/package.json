@@ -37,6 +37,8 @@
     "@atlaskit/analytics-listeners": "^4.0.0",
     "@atlaskit/modal-dialog": "^7.0.0",
     "@atlaskit/section-message": "^1.0.7",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "jest-in-case": "^1.0.2",
     "react-lorem-component": "^0.12.2"
   }
 }
