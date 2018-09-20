@@ -1,5 +1,8 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 2.1.1
+- [patch] Use proper marks for texts under blockquote [7d31a25](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d31a25)
+
 ## 2.1.0
 - [minor] Support an errorCallback for collection fail information [86e0d88](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/86e0d88)
 
