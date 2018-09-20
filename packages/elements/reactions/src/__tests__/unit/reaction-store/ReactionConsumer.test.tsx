@@ -1,7 +1,7 @@
+import { mount, shallow } from 'enzyme';
 import * as React from 'react';
 import { ReactionConsumer } from '../../../reaction-store/ReactionConsumer';
 import { ReactionsContext } from '../../../reaction-store/ReactionsContext';
-import { shallow } from 'enzyme';
 import { ReactionStatus } from '../../../types/ReactionStatus';
 
 describe('ReactionConsumer', () => {
@@ -95,5 +95,13 @@ describe('ReactionConsumer', () => {
     expect(actionsMapper).toHaveBeenCalledTimes(1);
 
     expect(children).toHaveBeenCalledWith({ ...newMapped, ...mappedActions });
+  });
+
+  it('should fail when ', () => {
+    expect(() =>
+      mount(<ReactionConsumer>{() => <div />}</ReactionConsumer>),
+    ).toThrow(
+      'ReactionContext is required. See https://atlaskit.atlassian.com/packages/elements/reactions.',
+    );
   });
 });

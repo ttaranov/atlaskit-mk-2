@@ -1,6 +1,6 @@
 import * as React from 'react';
-import { State } from './ReactionStore';
 import { Actions, ReactionsContext } from './ReactionsContext';
+import { State } from './ReactionStore';
 
 export type Props<PropsFromState extends {}, PropsFromActions extends {}> = {
   stateMapper?: (state: State) => PropsFromState;
@@ -38,13 +38,19 @@ export class ReactionConsumer<
     return undefined;
   };
 
-  private renderChildren = ({ actions, value }) => {
-    const props = Object.assign(
-      {},
-      this.getPropsFromState(value),
-      this.getPropsFromActions(actions),
+  private renderChildren = context => {
+    if (context) {
+      const { actions, value } = context;
+      const props = Object.assign(
+        {},
+        this.getPropsFromState(value),
+        this.getPropsFromActions(actions),
+      );
+      return this.props.children(props);
+    }
+    throw new Error(
+      'ReactionContext is required. See https://atlaskit.atlassian.com/packages/elements/reactions.',
     );
-    return this.props.children(props);
   };
 
   render() {

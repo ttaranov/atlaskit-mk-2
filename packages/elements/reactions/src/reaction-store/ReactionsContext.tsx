@@ -9,22 +9,11 @@ export type Actions = {
   getDetailedReaction: ReactionAction;
 };
 
-type ContextType = {
-  value: State;
-  actions: Actions;
-};
+type ContextType =
+  | {
+      value: State;
+      actions: Actions;
+    }
+  | undefined;
 
-const noop = () => {};
-
-export const ReactionsContext = React.createContext<ContextType>({
-  value: {
-    reactions: {},
-    flash: {},
-  },
-  actions: {
-    getReactions: noop,
-    toggleReaction: noop,
-    addReaction: noop,
-    getDetailedReaction: noop,
-  },
-});
+export const ReactionsContext = React.createContext<ContextType>(undefined);
