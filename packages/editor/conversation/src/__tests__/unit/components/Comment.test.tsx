@@ -1,8 +1,9 @@
-import * as React from 'react';
-import { shallow, mount } from 'enzyme';
 import AkAvatar from '@atlaskit/avatar';
-import AkComment, { CommentAuthor, CommentAction } from '@atlaskit/comment';
-import { ConnectedReactionsView } from '@atlaskit/reactions';
+import AkComment, { CommentAction, CommentAuthor } from '@atlaskit/comment';
+import { ConnectedReactionsView, ReactionContext } from '@atlaskit/reactions';
+import { MockReactionsAdapter } from '@atlaskit/reactions/src/adapter/MockReactionsAdapter';
+import { mount, shallow } from 'enzyme';
+import * as React from 'react';
 import {
   mockComment,
   mockInlineComment,
@@ -385,14 +386,16 @@ describe('Comment', () => {
 
     it('should render reactions-component if dataProvider contains emojiProvider', () => {
       const comment = mount(
-        <Comment
-          {...defaultProps}
-          conversationId={mockComment.conversationId}
-          containerId="ari:cloud:platform::conversation/demo"
-          comment={mockComment}
-          dataProviders={getDataProviderFactory()}
-          user={user}
-        />,
+        <ReactionContext adapter={new MockReactionsAdapter()}>
+          <Comment
+            {...defaultProps}
+            conversationId={mockComment.conversationId}
+            containerId="ari:cloud:platform::conversation/demo"
+            comment={mockComment}
+            dataProviders={getDataProviderFactory()}
+            user={user}
+          />
+        </ReactionContext>,
       );
 
       expect(comment.first().find(ConnectedReactionsView).length).toEqual(1);
