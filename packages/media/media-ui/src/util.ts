@@ -36,7 +36,16 @@ export function dataURItoFile(
   try {
     return new File([blob], filename, { type: mimeString });
   } catch (e) {
-    return blob as File;
+    // IE11 does not allow the File constructor (yay!)
+    // we get around this by decorating the blob instance with File properties
+    // effectively casting up from Blob to File.
+    const ie11File: any = blob;
+    const date = new Date();
+    ie11File.lastModified = date.getTime();
+    ie11File.lastModifiedDate = date;
+    ie11File.name = filename;
+    ie11File.webkitRelativePath = '';
+    return ie11File;
   }
 }
 

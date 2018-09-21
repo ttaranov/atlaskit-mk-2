@@ -6,12 +6,11 @@ import {
   SupportedImageMetaTag,
   FileInfo,
 } from './types';
-import {
-  parseXMPMetaData,
-  readImageMetaTags,
-  readJPEGExifMetaData,
-  readPNGXMPMetaData,
-} from './metatags';
+import { readImageMetaTags } from './metatags';
+import { readJPEGExifMetaData } from './parseJPEG';
+import { readPNGXMPMetaData } from './parsePNG';
+import { parseXMPMetaData } from './parsePNGXMP';
+
 import { getFileInfo, loadImage } from '../util';
 
 const { Orientation, XResolution } = SupportedImageMetaTag;
