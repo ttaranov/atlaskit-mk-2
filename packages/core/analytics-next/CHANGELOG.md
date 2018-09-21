@@ -1,5 +1,8 @@
 # @atlaskit/analytics-next
 
+## 3.0.8
+- [patch] Fixing analytics events for checkbox/radio/select [3e428e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3e428e3)
+
 ## 3.0.7
 - [patch] Loosen AnalyticsEventPayload type to cater for Screen events [2d4b52e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d4b52e)
 
