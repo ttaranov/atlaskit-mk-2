@@ -1,5 +1,25 @@
 # @atlaskit/editor-core
 
+## 82.0.0
+- [major] ED-5150 Editor i18n: Main toolbar [ef76f1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef76f1f)
+
+## 81.0.0
+- [major] Updated dependencies [927ae63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/927ae63)
+  - @atlaskit/editor-common@17.0.0
+  - @atlaskit/util-data-test@10.0.10
+  - @atlaskit/editor-test-helpers@6.1.2
+  - @atlaskit/renderer@24.0.0
+  - @atlaskit/emoji@42.0.0
+  - @atlaskit/media-card@36.0.0
+  - @atlaskit/media-filmstrip@14.0.0
+  - @atlaskit/media-picker@17.0.0
+  - @atlaskit/editor-bitbucket-transformer@4.0.11
+  - @atlaskit/editor-json-transformer@4.0.12
+  - @atlaskit/editor-markdown-transformer@2.0.10
+  - @atlaskit/media-core@24.0.0
+  - @atlaskit/media-test-helpers@18.0.0
+  - @atlaskit/task-decision@9.0.0
+
 ## 80.5.3
 - [patch] ED-5346: prosemirror upgrade [5bd4432](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5bd4432)
 

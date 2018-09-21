@@ -23,7 +23,10 @@ import { getBaseAnalyticsContext } from '../../utils/analyticsUtils';
 import { getDataURIDimension } from '../../utils/getDataURIDimension';
 import { getDataURIFromFileState } from '../../utils/getDataURIFromFileState';
 import { getLinkMetadata, extendMetadata } from '../../utils/metadata';
-import { isUrlPreviewIdentifier } from '../../utils/identifier';
+import {
+  isUrlPreviewIdentifier,
+  isExternalImageIdentifier,
+} from '../../utils/identifier';
 import { isBigger } from '../../utils/dimensionComparer';
 
 export interface CardProps extends SharedCardProps, CardEventProps {
@@ -120,6 +123,22 @@ export class Card extends Component<CardProps, CardState> {
   async subscribe(identifier: Identifier, context: Context) {
     const { isCardVisible } = this.state;
     if (!isCardVisible) {
+      return;
+    }
+
+    if (identifier.mediaItemType === 'external-image') {
+      const { dataURI, name } = identifier;
+
+      this.setState({
+        status: 'complete',
+        dataURI,
+        metadata: {
+          id: dataURI,
+          name: name || dataURI,
+          mediaType: 'image',
+        },
+      });
+
       return;
     }
 
@@ -237,7 +256,10 @@ export class Card extends Component<CardProps, CardState> {
     const { identifier } = this.props;
     const id = isUrlPreviewIdentifier(identifier)
       ? identifier.url
-      : identifier.id;
+      : isExternalImageIdentifier(identifier)
+        ? 'external-image'
+        : identifier.id;
+
     return getBaseAnalyticsContext('Card', id);
   }
 

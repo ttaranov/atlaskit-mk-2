@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { defineMessages, injectIntl, InjectedIntlProps } from 'react-intl';
 import MoreIcon from '@atlaskit/icon/glyph/editor/more';
 import { EditorView } from 'prosemirror-view';
 import { analyticsService } from '../../../../analytics';
@@ -14,7 +15,12 @@ import {
 } from '../../../../keymaps';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import DropdownMenu from '../../../../ui/DropdownMenu';
-import { TriggerWrapper, Wrapper, Separator } from '../../../../ui/styles';
+import {
+  TriggerWrapper,
+  Wrapper,
+  Separator,
+  Shortcut,
+} from '../../../../ui/styles';
 import * as commands from '../../commands/text-formatting';
 import { clearFormatting } from '../../commands/clear-formatting';
 
@@ -29,12 +35,53 @@ export interface Props {
   isReducedSpacing?: boolean;
 }
 
+export const messages = defineMessages({
+  underline: {
+    id: 'fabric.editor.underline',
+    defaultMessage: 'Underline',
+    description: 'Whether the text selection has underlined text',
+  },
+  strike: {
+    id: 'fabric.editor.strike',
+    defaultMessage: 'Strikethrough',
+    description: 'Whether the text selection has crossed out text',
+  },
+  code: {
+    id: 'fabric.editor.code',
+    defaultMessage: 'Code',
+    description: 'Whether the text selection has monospaced/code font',
+  },
+  subscript: {
+    id: 'fabric.editor.subscript',
+    defaultMessage: 'Subscript',
+    description:
+      'Whether the text selection is written below the line in a slightly smaller size',
+  },
+  superscript: {
+    id: 'fabric.editor.superscript',
+    defaultMessage: 'Superscript',
+    description:
+      'Whether the text selection is written above the line in a slightly smaller size',
+  },
+  clearFormatting: {
+    id: 'fabric.editor.clearFormatting',
+    defaultMessage: 'Clear Formatting',
+    description: 'Remove all rich text formatting from the selected text',
+  },
+  moreFormatting: {
+    id: 'fabric.editor.moreFormatting',
+    defaultMessage: 'More formatting',
+    description:
+      'Clicking this will show a menu with additional formatting options',
+  },
+});
+
 export interface State {
   isOpen?: boolean;
 }
 
-export default class ToolbarAdvancedTextFormatting extends PureComponent<
-  Props,
+class ToolbarAdvancedTextFormatting extends PureComponent<
+  Props & InjectedIntlProps,
   State
 > {
   state: State = {
@@ -60,6 +107,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
       isReducedSpacing,
       textFormattingState = {},
       clearFormattingState = {},
+      intl: { formatMessage },
     } = this.props;
     const {
       codeActive,
@@ -75,6 +123,8 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
     } = textFormattingState;
     const { formattingIsPresent } = clearFormattingState;
     const items = this.createItems();
+    const labelMoreFormatting = formatMessage(messages.moreFormatting);
+
     const toolbarButtonFactory = (disabled: boolean) => (
       <ToolbarButton
         spacing={isReducedSpacing ? 'none' : 'default'}
@@ -88,9 +138,10 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
         }
         disabled={disabled}
         onClick={this.handleTriggerClick}
+        title={labelMoreFormatting}
         iconBefore={
           <TriggerWrapper>
-            <MoreIcon label="Open or close advance text formatting dropdown" />
+            <MoreIcon label={labelMoreFormatting} />
           </TriggerWrapper>
         }
       />
@@ -141,6 +192,7 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
       textFormattingState,
       clearFormattingState,
       editorView,
+      intl: { formatMessage },
     } = this.props;
     const { code, underline, subsup, strike } = editorView.state.schema.marks;
     let items: any[] = [];
@@ -156,52 +208,61 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
       if (!underlineHidden && underline) {
         this.addRecordToItems(
           items,
-          'Underline',
+          formatMessage(messages.underline),
           'underline',
-          tooltip(toggleUnderline, true),
+          tooltip(toggleUnderline),
         );
       }
       if (!strikeHidden && strike) {
         this.addRecordToItems(
           items,
-          'Strikethrough',
+          formatMessage(messages.strike),
           'strike',
-          tooltip(toggleStrikethrough, true),
+          tooltip(toggleStrikethrough),
         );
       }
       if (!codeHidden && code) {
-        this.addRecordToItems(items, 'Code', 'code', tooltip(toggleCode, true));
+        this.addRecordToItems(
+          items,
+          formatMessage(messages.code),
+          'code',
+          tooltip(toggleCode),
+        );
       }
       if (!subscriptHidden && subsup) {
-        this.addRecordToItems(items, 'Subscript', 'subscript');
+        this.addRecordToItems(
+          items,
+          formatMessage(messages.subscript),
+          'subscript',
+        );
       }
       if (!superscriptHidden && subsup) {
-        this.addRecordToItems(items, 'Superscript', 'superscript');
+        this.addRecordToItems(
+          items,
+          formatMessage(messages.superscript),
+          'superscript',
+        );
       }
     }
     if (clearFormattingState) {
       this.addRecordToItems(
         items,
-        'Clear Formatting',
+        formatMessage(messages.clearFormatting),
         'clearFormatting',
-        tooltip(clearFormattingKeymap, true),
+        tooltip(clearFormattingKeymap),
       );
     }
-    return [
-      {
-        items,
-      },
-    ];
+    return [{ items }];
   };
 
-  private addRecordToItems = (items, content, value, tooltipDescription?) => {
+  private addRecordToItems = (items, content, value, tooltip?) => {
     items.push({
+      key: value,
       content,
+      elemAfter: <Shortcut>{tooltip}</Shortcut>,
       value,
       isActive: this.state[`${value}Active`],
       isDisabled: this.state[`${value}Disabled`],
-      tooltipDescription,
-      tooltipPosition: 'right',
     });
   };
 
@@ -231,3 +292,5 @@ export default class ToolbarAdvancedTextFormatting extends PureComponent<
     this.setState({ isOpen: false });
   };
 }
+
+export default injectIntl(ToolbarAdvancedTextFormatting);

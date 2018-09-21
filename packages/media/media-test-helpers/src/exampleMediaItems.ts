@@ -4,6 +4,7 @@ import {
   LinkDetails,
   FileDetails,
 } from '@atlaskit/media-core';
+import { ExternalImageIdentifier } from '@atlaskit/media-card';
 import { defaultCollectionName as collectionName } from './collectionNames';
 
 const fileType: MediaItemType = 'file';
@@ -230,8 +231,16 @@ export const noMetadataFileId = {
   mediaItemType: fileType,
   collectionName,
 };
-// === DETAILS ===
+// === EXTERNAL IMAGE ===
 
+export const atlassianLogoUrl =
+  'https://wac-cdn.atlassian.com/assets/img/favicons/atlassian/apple-touch-icon-152x152.png';
+export const externalImageIdentifier: ExternalImageIdentifier = {
+  mediaItemType: 'external-image',
+  dataURI: atlassianLogoUrl,
+};
+
+// === DETAILS ===
 export const genericUrlPreview: UrlPreview = {
   url: 'https://www.atlassian.com/',
   type: 'link',
@@ -244,8 +253,7 @@ export const genericUrlPreview: UrlPreview = {
   },
   resources: {
     icon: {
-      url:
-        'https://wac-cdn.atlassian.com/assets/img/favicons/atlassian/apple-touch-icon-152x152.png',
+      url: atlassianLogoUrl,
       type: 'image/png',
       width: 152,
       height: 152,

@@ -14,6 +14,11 @@ export type CrossProductSearchResults = {
   abTest?: ABTest;
 };
 
+export type SearchSession = {
+  sessionId: string;
+  referrerId?: string;
+};
+
 export const EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE: CrossProductSearchResults = {
   experimentId: '',
   results: new Map(),
@@ -43,7 +48,7 @@ export interface ScopeResult {
 export interface CrossProductSearchClient {
   search(
     query: string,
-    searchSessionId: string,
+    searchSession: SearchSession,
     scopes: Scope[],
   ): Promise<CrossProductSearchResults>;
 }
@@ -63,23 +68,24 @@ export default class CrossProductSearchClientImpl
 
   public async search(
     query: string,
-    searchSessionId: string,
+    searchSession: SearchSession,
     scopes: Scope[],
   ): Promise<CrossProductSearchResults> {
-    const response = await this.makeRequest(query, scopes);
-
-    return this.parseResponse(response, searchSessionId);
+    const response = await this.makeRequest(query, scopes, searchSession);
+    return this.parseResponse(response, searchSession.sessionId);
   }
 
   private async makeRequest(
     query: string,
     scopes: Scope[],
+    searchSession: SearchSession,
   ): Promise<CrossProductSearchResponse> {
     const body = {
       query: query,
       cloudId: this.cloudId,
       limit: this.RESULT_LIMIT,
       scopes: scopes,
+      searchSession,
     };
 
     const options: RequestServiceOptions = {

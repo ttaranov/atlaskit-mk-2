@@ -1,5 +1,10 @@
 # @atlaskit/reactions
 
+## 13.1.3
+- [patch] Updated dependencies [927ae63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/927ae63)
+  - @atlaskit/util-data-test@10.0.10
+  - @atlaskit/emoji@42.0.0
+
 ## 13.1.2
 - [patch] use new tsconfig for typechecking [09df171](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/09df171)
 

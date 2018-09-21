@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-card",
-  "version": "35.0.0",
+  "version": "36.1.0",
   "description": "Includes all media card related components, CardView, CardViewSmall, Card...",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -52,25 +52,25 @@
     "video-snapshot": "^1.0.1"
   },
   "peerDependencies": {
-    "@atlaskit/media-core": "^23.2.1",
+    "@atlaskit/media-core": "^24.0.1",
     "react": "^16.4.0",
     "react-dom": "^16.4.2",
-    "rxjs": "^5.1.0",
+    "rxjs": "^5.5.0",
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
     "@atlaskit/docs": "^5.0.7",
     "@atlaskit/field-radio-group": "^4.0.4",
     "@atlaskit/field-range": "^5.0.3",
-    "@atlaskit/media-core": "^23.2.1",
-    "@atlaskit/media-test-helpers": "^17.1.0",
+    "@atlaskit/media-core": "^24.0.1",
+    "@atlaskit/media-test-helpers": "^18.1.0",
     "@atlaskit/toggle": "^5.0.5",
     "@types/classnames": "^2.2.6",
     "deepcopy": "0.6.3",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react": "^16.4.0",
     "react-dom": "^16.4.2",
-    "rxjs": "^5.1.0",
+    "rxjs": "^5.5.0",
     "scrollparent": "^2.0.1"
   }
 }

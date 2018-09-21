@@ -1,5 +1,21 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 2.1.3
+- [patch] Updated dependencies [ef76f1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef76f1f)
+  - @atlaskit/editor-json-transformer@4.0.13
+  - @atlaskit/editor-common@17.0.1
+  - @atlaskit/editor-core@82.0.0
+  - @atlaskit/editor-test-helpers@6.1.3
+
+## 2.1.2
+- [patch] Updated dependencies [927ae63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/927ae63)
+  - @atlaskit/editor-common@17.0.0
+  - @atlaskit/editor-core@81.0.0
+  - @atlaskit/util-data-test@10.0.10
+  - @atlaskit/editor-test-helpers@6.1.2
+  - @atlaskit/renderer@24.0.0
+  - @atlaskit/editor-json-transformer@4.0.12
+
 ## 2.1.1
 - [patch] Use proper marks for texts under blockquote [7d31a25](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d31a25)
 

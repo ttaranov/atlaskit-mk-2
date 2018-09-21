@@ -5,6 +5,8 @@
  */
 import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
 import { sleep } from '@atlaskit/editor-test-helpers';
+import { messages as insertBlockMessages } from '../../plugins/insert-block/ui/ToolbarInsertBlock';
+
 export const getDocFromElement = el => el.pmViewDesc.node.toJSON();
 export const editable = '.ProseMirror';
 
@@ -60,7 +62,9 @@ export const insertMedia = async (
   filenames = ['one.svg'],
   fileSelector = 'div=%s',
 ) => {
-  const openMediaPopup = '[aria-label="Insert files and images"]';
+  const openMediaPopup = `[aria-label="${
+    insertBlockMessages.filesAndImages.defaultMessage
+  }"]`;
   const insertMediaButton = '.e2e-insert-button';
 
   await browser.click(openMediaPopup);

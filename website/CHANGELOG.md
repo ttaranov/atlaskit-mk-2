@@ -1,5 +1,12 @@
 # @atlaskit/website
 
+## 4.1.8
+- [patch] Updated dependencies [927ae63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/927ae63)
+  - @atlaskit/media-card@36.0.0
+  - @atlaskit/media-filmstrip@14.0.0
+  - @atlaskit/media-core@24.0.0
+  - @atlaskit/media-test-helpers@18.0.0
+
 ## 4.1.7
 - [patch] Updated dependencies [1be4bb8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1be4bb8)
   - @atlaskit/media-core@23.2.1

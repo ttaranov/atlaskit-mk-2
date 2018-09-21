@@ -1,5 +1,8 @@
 # @atlaskit/global-navigation
 
+## 4.5.1
+- [patch] Fix drawer screen events not firing on subsequent opens of a drawer after the initial one [7eb5248](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7eb5248)
+
 ## 4.5.0
 - [minor] Fire keyboardShortcut pressed analytics event when closing a drawer with the ESC key [6bea7d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6bea7d0)
 

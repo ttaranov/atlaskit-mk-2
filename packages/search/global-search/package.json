@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/global-search",
-  "version": "5.7.4",
+  "version": "5.7.6",
   "description": "A cross-product search component (batteries included)",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -40,7 +40,7 @@
     "date-fns": "^1.29.0",
     "lodash.debounce": "^4.0.8",
     "memoize-one": "^3.0.1",
-    "react-intl": "^2.4.0",
+    "react-intl": "^2.6.0",
     "rusha": "^0.8.13",
     "tslib": "^1.8.0",
     "unescape": "^1.0.1",

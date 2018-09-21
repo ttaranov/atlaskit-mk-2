@@ -1,5 +1,11 @@
 # @atlaskit/global-search
 
+## 5.7.6
+- [patch] ED-5150 Editor i18n: Main toolbar [ef76f1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef76f1f)
+
+## 5.7.5
+- [patch] pass search session id and referrer id to backend [e7d5a30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7d5a30)
+
 ## 5.7.4
 - [patch] dynamic import Modal dialog based on the product [4367651](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4367651)
 

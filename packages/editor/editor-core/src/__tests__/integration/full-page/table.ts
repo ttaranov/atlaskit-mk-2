@@ -1,6 +1,7 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
+import { messages as insertBlockMessages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
 
 const fullPageEditor = getExampleUrl('editor', 'editor-core', 'full-page');
 const editorSelector = '.ProseMirror';
@@ -15,7 +16,9 @@ BrowserTestCase(
   'Table floating toolbar should be visible even after table scrolls',
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
-    const insertTableMenu = '[aria-label="Insert table"]';
+    const insertTableMenu = `[aria-label="${
+      insertBlockMessages.table.defaultMessage
+    }"]`;
     const tableControls = '[aria-label="Table floating controls"]';
 
     const browser = await new Page(client);

@@ -53,8 +53,8 @@ export default class ToolbarMention extends PureComponent<Props, State> {
         spacing={isReducedSpacing ? 'none' : 'default'}
         onClick={this.handleInsertMention}
         disabled={disabled || isDisabled}
-        title="Mention a person @"
-        iconBefore={<MentionIcon label="Add mention" />}
+        title="Mention @"
+        iconBefore={<MentionIcon label="Mention" />}
       />
     );
   }

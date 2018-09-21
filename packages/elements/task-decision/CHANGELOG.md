@@ -1,5 +1,8 @@
 # @atlaskit/task-decision
 
+## 9.0.0
+- [major] Update RXJS dependency to ^5.5.0 [927ae63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/927ae63)
+
 ## 8.1.10
 - [patch] Updated dependencies [2a6410f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2a6410f)
   - @atlaskit/editor-common@16.2.0

@@ -7115,7 +7115,7 @@ hoist-non-react-statics@^2.2.1, hoist-non-react-statics@^2.3.0, hoist-non-react-
   version "2.5.0"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.0.tgz#d2ca2dfc19c5a91c5a6615ce8e564ef0347e2a40"
 
-hoist-non-react-statics@^2.5.0:
+hoist-non-react-statics@^2.5.0, hoist-non-react-statics@^2.5.5:
   version "2.5.5"
   resolved "https://registry.yarnpkg.com/hoist-non-react-statics/-/hoist-non-react-statics-2.5.5.tgz#c5903cf409c0dfd908f388e619d86b9c1174cb47"
 
@@ -7575,7 +7575,7 @@ intl-messageformat@^2.0.0, intl-messageformat@^2.1.0:
   dependencies:
     intl-messageformat-parser "1.4.0"
 
-intl-relativeformat@^2.0.0:
+intl-relativeformat@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/intl-relativeformat/-/intl-relativeformat-2.1.0.tgz#010f1105802251f40ac47d0e3e1a201348a255df"
   dependencies:
@@ -12407,13 +12407,14 @@ react-input-autosize@^2.2.1:
   dependencies:
     prop-types "^15.5.8"
 
-react-intl@^2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/react-intl/-/react-intl-2.4.0.tgz#66c14dc9df9a73b2fbbfbd6021726e80a613eb15"
+react-intl@^2.6.0:
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/react-intl/-/react-intl-2.6.0.tgz#b822fa91f1b55209b36c63d849f66e8c1bd08ea0"
   dependencies:
+    hoist-non-react-statics "^2.5.5"
     intl-format-cache "^2.0.5"
     intl-messageformat "^2.1.0"
-    intl-relativeformat "^2.0.0"
+    intl-relativeformat "^2.1.0"
     invariant "^2.1.1"
 
 react-is@^16.3.1, react-is@^16.3.2:
@@ -13431,9 +13432,15 @@ rxjs-async-map@^0.1.2:
   dependencies:
     rxjs "^5.5.6"
 
-rxjs@^5.0.0-beta.11, rxjs@^5.1.0, rxjs@^5.4.2, rxjs@^5.5.2, rxjs@^5.5.6:
+rxjs@^5.0.0-beta.11, rxjs@^5.4.2, rxjs@^5.5.2, rxjs@^5.5.6:
   version "5.5.10"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.5.10.tgz#fde02d7a614f6c8683d0d1957827f492e09db045"
+  dependencies:
+    symbol-observable "1.0.1"
+
+rxjs@^5.5.0:
+  version "5.5.12"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.5.12.tgz#6fa61b8a77c3d793dbaf270bee2f43f652d741cc"
   dependencies:
     symbol-observable "1.0.1"
 
