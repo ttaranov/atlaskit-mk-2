@@ -12,7 +12,7 @@ import {
   createReactionSelectionEvent,
   createReactionsRenderedEvent,
 } from '../analytics';
-import { OnEmoji, OnReaction } from '../types/Actions';
+import { OnEmoji, OnReaction } from '../types';
 import { ReactionStatus } from '../types/ReactionStatus';
 import { ReactionSummary } from '../types/ReactionSummary';
 import { Reaction } from './Reaction';
@@ -36,7 +36,7 @@ const reactionsStyle = style({
   $nest: { '& > :first-child': { marginLeft: 0 } },
 });
 
-export type Props = {
+export interface Props {
   reactions: ReactionSummary[];
   status: ReactionStatus;
   loadReaction: () => void;
@@ -45,18 +45,19 @@ export type Props = {
   onReactionClick: OnEmoji;
   onReactionHover?: OnReaction;
   allowAllEmojis?: boolean;
-  flash?: {
+  flash: {
     [emojiId: string]: boolean;
   };
   boundariesElement?: string;
   errorMessage?: string;
   emojiProvider: Promise<EmojiProvider>;
-};
+}
 
 export const Reactions = withAnalyticsEvents()(
   class extends React.PureComponent<Props & WithAnalyticsEventProps> {
     static defaultProps = {
       flash: {},
+      reactions: [],
     };
 
     static displayName = 'Reactions';
