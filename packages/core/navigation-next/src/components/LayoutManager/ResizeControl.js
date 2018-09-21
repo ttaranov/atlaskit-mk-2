@@ -8,6 +8,7 @@ import {
 } from '@atlaskit/analytics-next';
 import { colors } from '@atlaskit/theme';
 import ChevronLeft from '@atlaskit/icon/glyph/chevron-left';
+import ChevronRight from '@atlaskit/icon/glyph/chevron-right';
 import MenuIcon from '@atlaskit/icon/glyph/menu';
 import Tooltip from '@atlaskit/tooltip';
 
@@ -161,6 +162,7 @@ type Props = WithAnalyticsEventsProps & {
   children: State => any,
   collapseToggleTooltipContent: CollapseToggleTooltipContent,
   expandCollapseAffordanceRef: Ref<'button'>,
+  flyoutIsOpen: boolean,
   isDisabled: boolean,
   mouseIsOverNavigation: boolean,
   mutationRefs: Array<{ ref: HTMLElement, property: string }>,
@@ -362,6 +364,7 @@ class ResizeControl extends PureComponent<Props, State> {
       children,
       collapseToggleTooltipContent,
       expandCollapseAffordanceRef,
+      flyoutIsOpen,
       isDisabled,
       mouseIsOverNavigation,
       navigation,
@@ -371,8 +374,9 @@ class ResizeControl extends PureComponent<Props, State> {
     const isResizeDisabled = isDisabled || navigation.state.isPeeking;
 
     // the button shouldn't "flip" until the drag is complete
-    const ButtonIcon =
-      isCollapsed || (didDragOpen && isDragging) ? MenuIcon : ChevronLeft;
+    let ButtonIcon = ChevronLeft;
+    if (isCollapsed || (didDragOpen && isDragging)) ButtonIcon = MenuIcon;
+    if (isCollapsed && flyoutIsOpen) ButtonIcon = ChevronRight;
 
     const button = (
       <Button
@@ -385,12 +389,13 @@ class ResizeControl extends PureComponent<Props, State> {
         <ButtonIcon />
       </Button>
     );
+    const shadowDirection = flyoutIsOpen ? 'to right' : 'to left';
 
     return (
       <Fragment>
         {children(this.state)}
         <Outer>
-          <Shadow isBold={mouseIsDown} />
+          <Shadow direction={shadowDirection} isBold={mouseIsDown} />
           {!isResizeDisabled && (
             <Fragment>
               <GrabArea
