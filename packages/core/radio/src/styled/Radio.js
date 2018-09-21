@@ -28,11 +28,10 @@ export const IconWrapper = styled.span`
   color: ${p => p.circleColor};
   fill: ${p => p.dotColor};
   transition: all 0.2s ease-in-out;
-
   /* This is adding a property to the inner svg, to add a border to the radio */
   & circle:first-of-type {
     transition: stroke 0.2s ease-in-out;
-    stroke: ${p => p.borderColor}
-    stroke-width: 2,
+    stroke: ${p => p.borderColor};
+    stroke-width: 2;
   }
 `;
