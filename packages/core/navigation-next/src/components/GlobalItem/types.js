@@ -18,7 +18,7 @@ export type GlobalItemPresentationProps = {
   size: Size,
 };
 
-export type GlobalItemRenderComponentProps = {
+export type GlobalItemRenderComponentProps = GlobalItemProps & {
   children: Node,
   className: string,
 };
@@ -34,7 +34,7 @@ export type GlobalItemProps = {
   badge?: ComponentType<GlobalItemPresentationProps>,
   /** A custom component to render instead of the default wrapper component.
    * Could used to render a router Link, for example. The component will be
-   * provided with a className and children, which should be passed on to the
+   * provided with the standard globalItem props. It will also be provided className, children and onClick props which should be passed on to the
    * element you render. */
   component?: ComponentType<GlobalItemRenderComponentProps>,
   /** An href which this Item links to. If this prop is provided the Item will
