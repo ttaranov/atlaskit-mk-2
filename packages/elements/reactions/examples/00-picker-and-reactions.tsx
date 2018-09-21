@@ -2,7 +2,7 @@ import { EmojiProvider } from '@atlaskit/emoji';
 import { emoji } from '@atlaskit/util-data-test';
 import * as React from 'react';
 import { ConnectedReactionPicker, ConnectedReactionsView } from '../src';
-import { ReactionsExampleWrapper } from './exemples-util';
+import { ReactionsExampleWrapper } from './examples-util';
 
 const { getEmojiResource } = emoji.storyData;
 const demoAri = 'ari:cloud:owner:demo-cloud-id:item/1';
