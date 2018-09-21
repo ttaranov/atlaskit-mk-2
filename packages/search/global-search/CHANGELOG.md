@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 5.8.0
+- [minor] Use CPUS for people search [7cb2b57](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7cb2b57)
+
 ## 5.7.6
 - [patch] ED-5150 Editor i18n: Main toolbar [ef76f1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef76f1f)
 
