@@ -329,7 +329,6 @@ export function makeCrossProductSearchData(
       displayName: getMockName(),
       nickName: getMockLastName(),
       primaryPhoto: getMockAvatarUrl(),
-      department: getMockJobType(),
       title: getMockJobTitle(),
     });
   }
