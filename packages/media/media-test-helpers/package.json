@@ -22,7 +22,7 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/media-card": "^34.1.0",
+    "@atlaskit/media-card": "^35.0.0",
     "@atlaskit/media-core": "^23.2.0",
     "@atlaskit/media-store": "^6.2.0",
     "axios": "^0.17.1",
