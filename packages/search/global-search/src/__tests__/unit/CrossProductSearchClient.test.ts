@@ -214,7 +214,6 @@ describe('CrossProductSearchClient', () => {
                 userId: 'userId',
                 displayName: 'displayName',
                 nickName: 'nickName',
-                department: 'department',
                 title: 'title',
                 primaryPhoto: 'primaryPhoto',
               } as PersonItem,
@@ -223,9 +222,11 @@ describe('CrossProductSearchClient', () => {
         ],
       });
 
-      const result = await searchClient.search('query', 'test_uuid', [
-        Scope.People,
-      ]);
+      const result = await searchClient.search(
+        'query',
+        { sessionId: 'sessionId' },
+        [Scope.People],
+      );
       expect(result.results.get(Scope.People)).toHaveLength(1);
 
       const item = result.results.get(Scope.People)![0] as PersonResult;
@@ -237,6 +238,33 @@ describe('CrossProductSearchClient', () => {
       expect(item.avatarUrl).toEqual('primaryPhoto');
       expect(item.mentionName).toEqual('nickName');
       expect(item.presenceMessage).toEqual('title');
+    });
+
+    it('should have fall back for optional properties like title and nickName', async () => {
+      apiWillReturn({
+        scopes: [
+          {
+            id: 'cpus.user' as Scope,
+            results: [
+              {
+                userId: 'userId',
+                displayName: 'displayName',
+                primaryPhoto: 'primaryPhoto',
+              } as PersonItem,
+            ],
+          },
+        ],
+      });
+
+      const result = await searchClient.search(
+        'query',
+        { sessionId: 'sessionId' },
+        [Scope.People],
+      );
+
+      const item = result.results.get(Scope.People)![0] as PersonResult;
+      expect(item.mentionName).toEqual('displayName');
+      expect(item.presenceMessage).toEqual('');
     });
   });
 

@@ -77,7 +77,6 @@ export interface PersonItem {
   userId: string;
   displayName: string;
   nickName?: string;
-  department?: string;
   title?: string;
   primaryPhoto: string;
 }

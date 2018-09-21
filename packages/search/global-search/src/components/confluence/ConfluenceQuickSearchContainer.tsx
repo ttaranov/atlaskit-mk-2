@@ -45,8 +45,8 @@ export interface Props {
   createAnalyticsEvent?: CreateAnalyticsEventFn;
   referralContextIdentifiers?: ReferralContextIdentifiers;
   isSendSearchTermsEnabled?: boolean;
-  useAggregatorForConfluenceObjects: boolean;
-  useCPUSForPeopleResults: boolean;
+  useAggregatorForConfluenceObjects?: boolean;
+  useCPUSForPeopleResults?: boolean;
 }
 
 /**
