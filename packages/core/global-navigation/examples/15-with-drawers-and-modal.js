@@ -118,6 +118,34 @@ class GlobalNavWithDrawers extends Component<Props, State> {
 
   secondaryAction = ({ target }: Object) => console.log(target.innerText);
 
+  searchDrawer = () => (
+    <DrawerContent
+      drawerTitle="Controlled Search Drawer"
+      drawerBody="Can be controlled by passing the onSearchClick prop"
+    />
+  );
+
+  createDrawer = () => (
+    <DrawerContent
+      drawerTitle="Create Modal"
+      drawerBody="You can toggle between a search drawer and the search modal"
+    />
+  );
+
+  starredDrawer = () => (
+    <DrawerContent
+      drawerTitle="Starred Drawer"
+      drawerBody="Sets notification count to 5 in `onStarredDrawerOpen` callback"
+    />
+  );
+
+  notificationDrawer = () => (
+    <DrawerContent
+      drawerTitle="Notification Drawer"
+      drawerBody="Resets notification count in `onNotificationDrawerOpen` callback"
+    />
+  );
+
   render() {
     const actions = [
       { text: 'Close', onClick: this.closeCreateModal },
@@ -132,39 +160,19 @@ class GlobalNavWithDrawers extends Component<Props, State> {
           helpItems={HelpDropdown}
           productIcon={EmojiAtlassianIcon}
           onCreateClick={isCreateDrawerEnabled ? this.openCreateModal : null}
-          createDrawerContents={() => (
-            <DrawerContent
-              drawerTitle="Create Modal"
-              drawerBody="You can toggle between a search drawer and the search modal"
-            />
-          )}
+          createDrawerContents={this.createDrawer}
           shouldCreateDrawerUnmountOnExit={unmountOnExit}
           onProductClick={() => console.log('product clicked')}
           onSearchClick={this.openSearchDrawer}
           searchTooltip="Search (\)"
           isSearchDrawerOpen={this.state.isSearchDrawerOpen}
-          searchDrawerContents={() => (
-            <DrawerContent
-              drawerTitle="Controlled Search Drawer"
-              drawerBody="Can be controlled by passing the onSearchClick prop"
-            />
-          )}
+          searchDrawerContents={this.searchDrawer}
           onSearchDrawerClose={this.closeSearchDrawer}
           shouldSearchDrawerUnmountOnExit={unmountOnExit}
-          starredDrawerContents={() => (
-            <DrawerContent
-              drawerTitle="Starred Drawer"
-              drawerBody="Sets notification count to 5 in `onStarredDrawerOpen` callback"
-            />
-          )}
+          starredDrawerContents={this.starredDrawer}
           onStarredDrawerOpen={this.updateNotifications}
           shouldStarredDrawerUnmountOnExit={unmountOnExit}
-          notificationDrawerContents={() => (
-            <DrawerContent
-              drawerTitle="Notification Drawer"
-              drawerBody="Resets notification count in `onNotificationDrawerOpen` callback"
-            />
-          )}
+          notificationDrawerContents={this.notificationDrawer}
           onNotificationDrawerOpen={this.resetNotificationCount}
           notificationCount={this.state.notificationCount}
           shouldNotificationDrawerUnmountOnExit={unmountOnExit}
