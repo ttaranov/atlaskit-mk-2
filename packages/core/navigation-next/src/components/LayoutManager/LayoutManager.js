@@ -116,7 +116,7 @@ export default class LayoutManager extends Component<
   static defaultProps = {
     collapseToggleTooltipContent: defaultTooltipContent,
   };
-  static getDerivedStateFromProps(props, state) {
+  static getDerivedStateFromProps(props: LayoutManagerProps, state: State) {
     // kill the flyout when the user commits to expanding navigation
     if (!props.navigationUIController.state.isCollapsed && state.flyoutIsOpen) {
       return { flyoutIsOpen: false };

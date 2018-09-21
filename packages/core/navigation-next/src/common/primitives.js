@@ -9,7 +9,7 @@ type ShadowProps = {
   isOverDarkBg?: boolean,
 };
 export const Shadow = ({
-  direction = 'to left',
+  direction,
   isBold,
   isOverDarkBg,
   ...props
@@ -42,4 +42,7 @@ export const Shadow = ({
       {...props}
     />
   );
+};
+Shadow.defaultProps = {
+  direction: 'to left',
 };
