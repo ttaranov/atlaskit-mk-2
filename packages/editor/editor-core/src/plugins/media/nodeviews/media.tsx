@@ -67,29 +67,15 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
       hideProgress = false,
     } = this.props;
     const { id, type, collection, url, width } = node.attrs;
+    const { fileId } = this.pluginState.getMediaNodeState(id);
 
     const deleteEventHandler = isMediaSingle ? undefined : this.handleRemove;
-    if (
-      !width &&
-      this.pluginState.editorAppearance !== 'message' &&
-      isMediaSingle &&
-      type !== 'external' &&
-      !hideProgress
-    ) {
-      return (
-        <ProgressLoader
-          progress={progress}
-          maxWidth={akEditorFullPageMaxWidth}
-          onCancel={this.cancelProgress}
-          cancelLabel="Cancel upload"
-        />
-      );
-    }
+    debugger;
 
     return (
       <UIMedia
         key={`media-node-${id}`}
-        id={id!}
+        id={fileId}
         type={type!}
         collection={collection!}
         providers={providerFactory}

@@ -64,7 +64,7 @@ export default class PickerFacade {
       );
     }
 
-    picker.on('uploads-start', this.handleUploadsStart);
+    // picker.on('uploads-start', this.handleUploadsStart);
     picker.on('upload-preview-update', this.handleUploadPreviewUpdate);
     picker.on('upload-end', this.handleUploadEnd);
 
@@ -206,51 +206,49 @@ export default class PickerFacade {
     this.onDragListeners.push(cb);
   }
 
-  private handleUploadsStart = async (event: UploadsStartEventPayload) => {
-    const { files } = event;
+  // private handleUploadsStart = async (event: UploadsStartEventPayload) => {
+  //   const { files } = event;
 
-    const states = await Promise.all(
-      files.map(async file => {
-        const dimensionsPromise = new Promise<Dimensions>(resolve => {
-          this.deferredDimensions.set(file.upfrontId, resolve);
-        });
-        const [id, dimensions] = await Promise.all([
-          file.upfrontId,
-          dimensionsPromise,
-        ]);
-        return this.stateManager.newState(id, {
-          fileName: file.name,
-          fileSize: file.size,
-          fileMimeType: file.type,
-          dimensions,
-          status: 'ready',
-        });
-      }),
-    );
-
-    this.onStartListeners.forEach(cb => cb.call(cb, states));
-  };
+  //   const states = await Promise.all(
+  //     files.map(async file => {
+  //       // const dimensionsPromise = new Promise<Dimensions>(resolve => {
+  //       //   this.deferredDimensions.set(file.upfrontId, resolve);
+  //       // });
+  //       // const [id, dimensions] = await Promise.all([
+  //       //   file.upfrontId,
+  //       //   dimensionsPromise,
+  //       // ]);
+  //       return this.stateManager.newState(id, {
+  //         fileName: file.name,
+  //         fileSize: file.size,
+  //         fileMimeType: file.type,
+  //         status: 'ready',
+  //       });
+  //     }),
+  //   );
+  // };
 
   private handleUploadEnd = async (event: UploadEndEventPayload) => {
-    const id = await event.file.upfrontId;
-    this.stateManager.updateState(id, {
-      status: 'ready',
-    });
+    // this.stateManager.updateState(event.file.id, {
+    //   status: 'ready',
+    // });
   };
 
   private handleUploadPreviewUpdate = (
     event: UploadPreviewUpdateEventPayload,
   ) => {
     const { file, preview } = event;
-    const resolve = this.deferredDimensions.get(file.upfrontId);
-    if (resolve) {
-      if (isImagePreview(preview)) {
-        resolve(preview.dimensions);
-      } else {
-        resolve({ height: undefined, width: undefined });
-      }
-    }
-    this.deferredDimensions.delete(file.upfrontId);
+
+    const states = this.stateManager.newState(file.id, {
+      fileName: file.name,
+      fileSize: file.size,
+      fileMimeType: file.type,
+      fileId: file.upfrontId,
+      dimensions: preview.dimensions,
+      status: 'ready',
+    });
+
+    this.onStartListeners.forEach(cb => cb.call(cb, [states]));
   };
 
   private handleDragEnter = () => {
