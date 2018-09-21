@@ -69,9 +69,9 @@ class ToolbarTextFormatting extends PureComponent<Props & InjectedIntlProps> {
             iconBefore={<BoldIcon label={labelBold} />}
             onFocus={e => console.log('bold', e)}
             navigateRight={() => {
-              console.log('navigating right in toolbarTextFormatting');
+              // console.log('navigating right in toolbarTextFormatting');
               if (navigateRight) {
-                console.log('navright is defined in toolbarTextFormatting');
+                // console.log('navright is defined in toolbarTextFormatting');
                 navigateRight();
               }
             }}
@@ -86,6 +86,13 @@ class ToolbarTextFormatting extends PureComponent<Props & InjectedIntlProps> {
             disabled={disabled || emDisabled}
             title={tooltip(toggleItalic, labelItalic)}
             iconBefore={<ItalicIcon label={labelItalic} />}
+            navigateRight={() => {
+              // console.log('navigating right in toolbarTextFormatting');
+              if (navigateRight) {
+                // console.log('navright is defined in toolbarTextFormatting');
+                navigateRight();
+              }
+            }}
           />
         )}
       </ButtonGroup>

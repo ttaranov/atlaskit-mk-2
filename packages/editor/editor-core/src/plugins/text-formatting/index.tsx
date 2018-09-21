@@ -118,11 +118,8 @@ const textFormatting = (options: TextFormattingOptions): EditorPlugin => ({
                 textFormattingState={textFormattingState}
                 isReducedSpacing={isToolbarReducedSpacing}
                 navigateRight={() => {
-                  console.log('navigating right in text-formatting');
-                  if (navigateRight) {
-                    console.log('navright is defined in textformatting');
-                    navigateRight();
-                  }
+                  console.log('navright called in textformatting');
+                  navigateRight();
                 }}
               />
               <ToolbarAdvancedTextFormatting
