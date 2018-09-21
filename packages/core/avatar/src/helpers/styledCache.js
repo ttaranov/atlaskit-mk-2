@@ -1,6 +1,8 @@
 // @flow
+
+import { Theme } from '@atlaskit/theme';
+import React, { type ComponentType } from 'react';
 import styled from 'styled-components';
-import { type ComponentType } from 'react';
 import CustomComponentProxy from '../components/CustomComponentProxy';
 
 // This is necessary because we don't know what DOM element the custom component will render.
@@ -24,18 +26,27 @@ export default (styles: Function) => {
     component,
     href,
     onClick,
+    theme,
   }: {
     component?: ComponentType<*>,
     href?: string,
     onClick?: Function,
+    theme?: Function,
   }) {
+    let Ret = StyledSpan;
+
     if (component) {
-      return StyledCustomComponent;
+      Ret = StyledCustomComponent;
     } else if (href) {
-      return StyledLink;
+      Ret = StyledLink;
     } else if (onClick) {
-      return StyledButton;
+      Ret = StyledButton;
     }
-    return StyledSpan;
+
+    return theme
+      ? props => (
+          <Theme theme={theme}>{t => <Ret {...props} theme={t} />}</Theme>
+        )
+      : Ret;
   };
 };
