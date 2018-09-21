@@ -598,6 +598,24 @@ export const document = {
       ],
     },
     {
+      type: 'mediaSingle',
+      attrs: {
+        layout: 'full-width',
+      },
+      content: [
+        {
+          type: 'media',
+          attrs: {
+            id: '2aa22582-ca0e-4bd4-b1bc-9369d10a0719',
+            type: 'file',
+            collection: 'MediaServicesSample',
+            width: 5845,
+            height: 1243,
+          },
+        },
+      ],
+    },
+    {
       type: 'paragraph',
       content: [
         {
@@ -1612,6 +1630,32 @@ System.out.println("There are " + count + " values >= 5");`,
               ],
             },
           ],
+        },
+      ],
+    },
+    {
+      type: 'heading',
+      attrs: { level: 1 },
+      content: [
+        {
+          type: 'text',
+          text: 'Media single without width defined',
+        },
+      ],
+    },
+    {
+      type: 'mediaSingle',
+      attrs: {
+        layout: 'full-width',
+      },
+      content: [
+        {
+          type: 'media',
+          attrs: {
+            type: 'file',
+            id: '5556346b-b081-482b-bc4a-4faca8ecd2de',
+            collection: 'MediaServicesSample',
+          },
         },
       ],
     },

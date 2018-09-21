@@ -1,5 +1,6 @@
 import { Auth, Context } from '@atlaskit/media-core';
-
+import { MediaCollectionItem } from '@atlaskit/media-store';
+import { Subscription } from 'rxjs/Subscription';
 import { UploadParams } from '../../domain/config';
 import { LocalUploads } from './local-upload';
 
@@ -38,7 +39,7 @@ export interface State {
   readonly userContext: Context;
   readonly lastUploadIndex: number;
   readonly giphy: GiphyState;
-
+  readonly collectionItemsSubscription?: Subscription;
   readonly onCancelUpload: CancelUploadHandler;
   readonly config: Partial<PopupConfig>;
   readonly deferredIdUpfronts: {
@@ -54,8 +55,7 @@ export interface GiphyState {
 }
 
 export interface Recents {
-  readonly nextKey: string;
-  readonly items: CollectionItem[];
+  readonly items: MediaCollectionItem[];
 }
 
 export type RemoteUpload = {
@@ -176,17 +176,4 @@ export type Path = Array<FolderReference>;
 export interface FileReference {
   readonly id: string;
   readonly name: string;
-}
-
-export interface CollectionItem {
-  readonly type: string;
-  readonly id: string;
-  readonly insertedAt: number;
-  readonly occurrenceKey: string;
-  readonly details: CollectionItemDetails;
-}
-
-export interface CollectionItemDetails {
-  readonly name?: string;
-  readonly size?: number;
 }

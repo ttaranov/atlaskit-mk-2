@@ -4,7 +4,7 @@ import React, { type ComponentType } from 'react';
 import Avatar from '@atlaskit/avatar';
 import Badge from '@atlaskit/badge';
 import AddIcon from '@atlaskit/icon/glyph/add';
-import JiraIcon from '@atlaskit/icon/glyph/jira';
+import { JiraIcon } from '@atlaskit/logo';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
 
@@ -16,6 +16,7 @@ import {
   settings,
   ThemeProvider,
 } from '../src';
+import { CONTENT_NAV_WIDTH } from '../src/common/constants';
 
 const themeModes = { light, dark, settings };
 
@@ -196,7 +197,7 @@ const ItemWrapper = props => (
       display: 'flex',
       flexDirection: 'row',
       margin: '4px 0',
-      width: '270px',
+      width: `${CONTENT_NAV_WIDTH}px`,
     }}
     {...props}
   />

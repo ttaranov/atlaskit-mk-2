@@ -1,5 +1,40 @@
 # @atlaskit/navigation-next
 
+## 3.14.0
+- [minor] Add enableResize(), disableResize(), and state.isResizeDisabled to UIController. The NavigationProvider's initialUIController prop can now containe a isResizeDisabled property. [a932511](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a932511)
+
+## 3.13.3
+- [patch] Adds the new hideTooltipOnMouseDown was required since global-navigation and navigation-next are using onMouseDown and onMouseUp iteractions [8719daf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8719daf)
+
+## 3.13.2
+- [patch] Updated dependencies [4194aa4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4194aa4)
+  - @atlaskit/logo@9.2.2
+  - @atlaskit/select@6.0.0
+
+## 3.13.1
+- [patch] fixing remount component on GlobalItem component [e71825a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e71825a)
+
+## 3.13.0
+- [minor] introduces never-fully-collapsed content navigation [99add85](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/99add85)
+
+## 3.12.2
+- [patch] fixing HelpIcon active on children :hover [ae95dad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae95dad)
+
+## 3.12.1
+- [patch] limit page renders [36da70a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/36da70a)
+
+## 3.12.0
+- [minor] Export SkeletonContainerView component [b1acba3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b1acba3)
+
+## 3.11.4
+- [patch] Adds support for closing switcher on create click [057f006](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/057f006)
+
+## 3.11.3
+- [patch] Enforcing CONTENT_NAV_WIDTH on the components [d9ae0a9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d9ae0a9)
+
+## 3.11.2
+- [patch] Do not cache CustomComponent in GlobalItem [372795f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/372795f)
+
 ## 3.11.1
 - [patch] hotfix: return nav item on click element to button [23fa988](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/23fa988)
 

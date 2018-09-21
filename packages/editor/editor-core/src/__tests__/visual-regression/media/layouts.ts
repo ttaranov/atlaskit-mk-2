@@ -1,11 +1,13 @@
 import { removeOldProdSnapshots } from '@atlaskit/visual-regression/helper';
 
-import { imageSnapshotFolder, initEditor } from '../_utils';
 import {
+  imageSnapshotFolder,
+  initEditor,
+  snapshot,
+  insertMedia,
   editable,
   setupMediaMocksProviders,
-  insertMedia,
-} from '../../integration/_helpers';
+} from '../_utils';
 
 const mediaSingleLayouts = {
   center: 'Align center',
@@ -13,12 +15,6 @@ const mediaSingleLayouts = {
   'wrap-right': 'Align right',
   wide: 'Wide',
   'full-width': 'Full width',
-};
-
-const snapshot = async page => {
-  const image = await page.screenshot();
-  // @ts-ignore
-  expect(image).toMatchProdImageSnapshot();
 };
 
 describe('Snapshot Test: Media', () => {
@@ -30,7 +26,6 @@ describe('Snapshot Test: Media', () => {
   beforeAll(async () => {
     // @ts-ignore
     page = global.page;
-    await page.setViewport({ width: 1920, height: 1080 });
     await initEditor(page, 'full-page-with-toolbar');
     await setupMediaMocksProviders(page);
   });
@@ -63,12 +58,15 @@ describe('Snapshot Test: Media', () => {
     });
 
     it('can switch layouts on individual media', async () => {
+      // We need a bigger height to capture multiple large images in a row.
+      await page.setViewport({ width: 1280, height: 1024 * 2 });
+
       // type some text
       await page.click(editable);
       await page.type(editable, 'some text');
 
       // now we can insert media as necessary
-      await insertMedia(page, [0, 1]);
+      await insertMedia(page, ['one.svg', 'two.svg']);
       await page.waitForSelector('.media-card');
 
       // click the *second one* so the toolbar appears

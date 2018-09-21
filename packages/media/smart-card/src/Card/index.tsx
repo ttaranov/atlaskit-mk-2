@@ -10,12 +10,14 @@ export { CardAppearance };
 export type CardWithData = {
   appearance: CardAppearance;
   data?: any;
+  isSelected?: boolean;
 };
 
 export type CardWithUrl = {
   appearance: CardAppearance;
   url?: string;
   client?: Client;
+  isSelected?: boolean;
 };
 
 export type CardProps = CardWithData | CardWithUrl;
@@ -26,7 +28,12 @@ export const Card = (props: CardProps) =>
 const isCardWithData = (props: CardProps): props is CardWithData =>
   !!(props as CardWithData).data;
 
-const renderCardWithURL = ({ url, client, appearance }: CardWithUrl) => {
+const renderCardWithURL = ({
+  url,
+  client,
+  appearance,
+  isSelected,
+}: CardWithUrl) => {
   if (!url) {
     throw new Error(
       '@atlaskit/smart-card: Please, provide either data or url props',
@@ -39,6 +46,7 @@ const renderCardWithURL = ({ url, client, appearance }: CardWithUrl) => {
       placeholder={
         <CardContent
           appearance={appearance}
+          isSelected={isSelected}
           state={{
             status: 'resolving',
             services: [],
@@ -54,6 +62,7 @@ const renderCardWithURL = ({ url, client, appearance }: CardWithUrl) => {
           {({ state, reload }) => (
             <CardContent
               appearance={appearance}
+              isSelected={isSelected}
               state={{
                 ...state,
                 data: { url, ...state.data },
@@ -67,9 +76,10 @@ const renderCardWithURL = ({ url, client, appearance }: CardWithUrl) => {
   );
 };
 
-const renderCardWithData = ({ appearance, data }: CardWithData) => (
+const renderCardWithData = ({ appearance, data, isSelected }: CardWithData) => (
   <CardContent
     appearance={appearance}
+    isSelected={isSelected}
     state={{
       status: 'resolved',
       services: [],

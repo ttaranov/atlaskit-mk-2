@@ -1,5 +1,8 @@
 # @atlaskit/radio
 
+## 0.2.1
+- [patch] Fixed radio indent styling [88520b2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/88520b2)
+
 ## 0.2.0
 - [minor] Removed radioInput component, replaced Radio children prop with optional label prop to enable the use case facilitated by RadioInput. Added aria-label prop to Radio for accessibility. Wrapped Radio component in Analytics. [866a29b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/866a29b)
 

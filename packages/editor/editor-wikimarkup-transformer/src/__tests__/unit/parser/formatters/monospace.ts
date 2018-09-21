@@ -1,0 +1,60 @@
+import WikiMarkupTransformer from '../../../..';
+
+describe('WikiMarkup => ADF Formatters - monospace', () => {
+  test('should detect monospace mark at beginning of the line', () => {
+    const wiki = '{{monospace}} text';
+
+    const transformer = new WikiMarkupTransformer();
+    expect(transformer.parse(wiki)).toMatchSnapshot();
+  });
+
+  test('should detect monospace mark at end of the line', () => {
+    const wiki = `This is a {{monospace}}
+another line`;
+
+    const transformer = new WikiMarkupTransformer();
+    expect(transformer.parse(wiki)).toMatchSnapshot();
+  });
+
+  test('should detect monospace mark at end of the input', () => {
+    const wiki = 'This is a {{monospace}}';
+
+    const transformer = new WikiMarkupTransformer();
+    expect(transformer.parse(wiki)).toMatchSnapshot();
+  });
+
+  test('should detect monospace mark at in between of the line', () => {
+    const wiki = 'This is a {{monospace}} text';
+
+    const transformer = new WikiMarkupTransformer();
+    expect(transformer.parse(wiki)).toMatchSnapshot();
+  });
+
+  test('should not be a monospace mark if there is no space before {{', () => {
+    const wiki = 'This is not a{{monospace}} text';
+
+    const transformer = new WikiMarkupTransformer();
+    expect(transformer.parse(wiki)).toMatchSnapshot();
+  });
+
+  test('should not be a monospace mark if there is a space after opening {{', () => {
+    const wiki = 'This is not a {{ monospace}} text';
+
+    const transformer = new WikiMarkupTransformer();
+    expect(transformer.parse(wiki)).toMatchSnapshot();
+  });
+
+  test('should not be a monospace mark if there is a space before closing }}', () => {
+    const wiki = 'This is not a {{monospace }} text';
+
+    const transformer = new WikiMarkupTransformer();
+    expect(transformer.parse(wiki)).toMatchSnapshot();
+  });
+
+  test('should not be a monospace mark if there is not a space after closing }}', () => {
+    const wiki = 'This is not a {{monospace}}text';
+
+    const transformer = new WikiMarkupTransformer();
+    expect(transformer.parse(wiki)).toMatchSnapshot();
+  });
+});

@@ -1,7 +1,7 @@
 {
   "private": true,
   "name": "@atlaskit/website",
-  "version": "4.1.6",
+  "version": "4.1.7",
   "description": "",
   "license": "Apache-2.0",
   "author": "Atlassian Pty Ltd",
@@ -47,9 +47,9 @@
     "@atlaskit/layer-manager": "^5.0.12",
     "@atlaskit/logo": "^9.0.4",
     "@atlaskit/lozenge": "^6.1.5",
-    "@atlaskit/media-card": "^34.0.0",
-    "@atlaskit/media-core": "^23.2.0",
-    "@atlaskit/media-filmstrip": "^13.0.0",
+    "@atlaskit/media-card": "^35.0.0",
+    "@atlaskit/media-core": "^23.2.1",
+    "@atlaskit/media-filmstrip": "^13.0.2",
     "@atlaskit/media-test-helpers": "^17.1.0",
     "@atlaskit/modal-dialog": "^7.0.0",
     "@atlaskit/navigation": "^33.1.5",
@@ -63,7 +63,7 @@
     "@atlaskit/tooltip": "^12.0.14",
     "@atlaskit/webpack-config": "^2.0.1",
     "@lbatchelor/netlify": "^1.2.0-patched.7",
-    "@lbatchelor/netlify-cli": "^1.2.2-patched.7",
+    "@lbatchelor/netlify-cli": "^1.2.2-patched.9",
     "babel-runtime": "^6.26.0",
     "codesandboxer": "^0.2.2",
     "commonmark": "^0.27.0",
@@ -92,6 +92,7 @@
     "sentence-case": "^2.1.1",
     "snake-case": "^2.1.0",
     "styled-components": "^3.2.6",
+    "tti-polyfill": "^0.2.2",
     "uglify-js": "^3.1.7",
     "uuid": "^3.1.0"
   }

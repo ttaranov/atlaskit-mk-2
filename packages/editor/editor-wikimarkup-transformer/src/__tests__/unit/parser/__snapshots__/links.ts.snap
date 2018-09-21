@@ -1,5 +1,35 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`JIRA wiki markup - Links [CS-240] should know where to end the link 1`] = `
+Object {
+  "content": Array [
+    Object {
+      "content": Array [
+        Object {
+          "marks": Array [
+            Object {
+              "attrs": Object {
+                "__confluenceMetadata": null,
+                "href": "http://www.google.com",
+              },
+              "type": "link",
+            },
+          ],
+          "text": "Link Title",
+          "type": "text",
+        },
+        Object {
+          "text": " boy I hope this doesn't go all the way to here] that would be bad.",
+          "type": "text",
+        },
+      ],
+      "type": "paragraph",
+    },
+  ],
+  "type": "doc",
+}
+`;
+
 exports[`JIRA wiki markup - Links should convert IRC address text 1`] = `
 Object {
   "content": Array [

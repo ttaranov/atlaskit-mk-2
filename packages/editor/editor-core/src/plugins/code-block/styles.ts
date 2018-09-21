@@ -7,7 +7,10 @@ import {
   akColorN300,
   akColorN800,
 } from '@atlaskit/util-shared-styles';
-import { blockNodesVerticalMargin } from '@atlaskit/editor-common';
+import {
+  blockNodesVerticalMargin,
+  akEditorElementMinWidth,
+} from '@atlaskit/editor-common';
 import { akEditorCodeFontFamily, akEditorCodeBlockPadding } from '../../styles';
 
 export const codeBlockStyles = css`
@@ -20,6 +23,7 @@ export const codeBlockStyles = css`
     margin: ${blockNodesVerticalMargin} 0 0 0;
     counter-reset: line;
     display: flex;
+    min-width: ${akEditorElementMinWidth}px;
 
     .line-number-gutter {
       color: ${akColorN300};

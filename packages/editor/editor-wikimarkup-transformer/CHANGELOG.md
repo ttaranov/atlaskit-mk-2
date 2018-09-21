@@ -1,5 +1,29 @@
 # @atlaskit/editor-wikimarkup-transformer
 
+## 2.1.1
+- [patch] Use proper marks for texts under blockquote [7d31a25](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d31a25)
+
+## 2.1.0
+- [minor] Support an errorCallback for collection fail information [86e0d88](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/86e0d88)
+
+## 2.0.28
+- [patch] Updated dependencies [2a6410f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2a6410f)
+  - @atlaskit/editor-common@16.2.0
+  - @atlaskit/editor-core@80.5.0
+  - @atlaskit/renderer@23.0.0
+
+## 2.0.27
+- [patch] link format takes higher priority over common formatters [b05205f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b05205f)
+
+## 2.0.26
+- [patch] fix link regex to know where to stop [ee04ad4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ee04ad4)
+
+## 2.0.25
+- [patch] Fix encoder for missing closing \! [c585e27](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c585e27)
+
+## 2.0.24
+- [patch] New rules for formatter [50edbb0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/50edbb0)
+
 ## 2.0.23
 - [patch] should convert content inside monospace as plain text [f5e9f01](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f5e9f01)
 

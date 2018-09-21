@@ -1,13 +1,13 @@
 // @flow
 import styled from 'styled-components';
-import { akBorderRadius } from '@atlaskit/util-shared-styles';
+import { borderRadius } from '@atlaskit/theme';
 
 export default styled.span`
   ${props => `
     background-color: ${props.backgroundColor};
     color: ${props.textColor};
   `};
-  border-radius: ${akBorderRadius};
+  border-radius: ${borderRadius()}px;
   box-sizing: border-box;
   display: inline-block;
   font-size: 11px;

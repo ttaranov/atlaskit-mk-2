@@ -839,7 +839,7 @@ export class MediaPluginState {
    * Since we replace nodes with public id when node is finalized
    * stateManager contains no information for public ids
    */
-  private getMediaNodeStateStatus = (id: string) => {
+  getMediaNodeStateStatus = (id: string) => {
     const state = this.getMediaNodeState(id);
     return (state && state.status) || 'ready';
   };

@@ -8,6 +8,7 @@ const FakeExtension = ({ colour, children }) => {
         backgroundColor: colour,
         color: 'white',
         padding: 10,
+        minWidth: 85,
       }}
     >
       {children}

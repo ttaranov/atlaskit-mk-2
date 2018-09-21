@@ -1,17 +1,13 @@
 import { removeOldProdSnapshots } from '@atlaskit/visual-regression/helper';
 
-import { imageSnapshotFolder, initEditor } from '../_utils';
 import {
-  setupMediaMocksProviders,
+  imageSnapshotFolder,
+  initEditor,
+  snapshot,
   insertMedia,
+  setupMediaMocksProviders,
   editable,
-} from '../../integration/_helpers';
-
-const snapshot = async page => {
-  const image = await page.screenshot();
-  // @ts-ignore
-  expect(image).toMatchProdImageSnapshot();
-};
+} from '../_utils';
 
 describe('Snapshot Test: Media', () => {
   beforeAll(async () => {
@@ -24,8 +20,8 @@ describe('Snapshot Test: Media', () => {
       // @ts-ignore
       page = global.page;
 
-      await page.setViewport({ width: 1920, height: 1080 });
       await initEditor(page, 'full-page-with-toolbar');
+      await page.setViewport({ width: 1920, height: 1080 });
       await setupMediaMocksProviders(page);
 
       // click into the editor
@@ -58,8 +54,6 @@ describe('Snapshot Test: Media', () => {
       // @ts-ignore
       page = global.page;
 
-      // half height to cut off JSON output which changes depending on media ID
-      await page.setViewport({ width: 1920, height: 540 });
       await initEditor(page, 'comment');
       await setupMediaMocksProviders(page);
 
@@ -68,7 +62,7 @@ describe('Snapshot Test: Media', () => {
       await page.click(editable);
 
       // insert 3 media items
-      await insertMedia(page, [0, 1, 2]);
+      await insertMedia(page, ['one.svg', 'two.svg', 'three.svg']);
     });
 
     it('renders selection ring around last media group item (via up)', async () => {

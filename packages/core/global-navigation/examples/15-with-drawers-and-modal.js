@@ -6,6 +6,7 @@ import EmojiAtlassianIcon from '@atlaskit/icon/glyph/emoji/atlassian';
 import Modal, { ModalTransition } from '@atlaskit/modal-dialog';
 import Lorem from 'react-lorem-component';
 import { LayoutManager, NavigationProvider } from '@atlaskit/navigation-next';
+import { DropdownItemGroup, DropdownItem } from '@atlaskit/dropdown-menu';
 
 import GlobalNavigation from '../src';
 
@@ -42,6 +43,18 @@ type Props = {
   isCreateDrawerEnabled: boolean,
   unmountOnExit: boolean,
 };
+
+const HelpDropdown = () => (
+  <DropdownItemGroup title="Heading">
+    <DropdownItem>Hello it with some really quite long text here.</DropdownItem>
+    <DropdownItem>Some text 2</DropdownItem>
+    <DropdownItem isDisabled>Some disabled text</DropdownItem>
+    <DropdownItem>Some more text</DropdownItem>
+    <DropdownItem href="//atlassian.com" target="_new">
+      A link item
+    </DropdownItem>
+  </DropdownItemGroup>
+);
 
 class GlobalNavWithDrawers extends Component<Props, State> {
   state = {
@@ -116,6 +129,7 @@ class GlobalNavWithDrawers extends Component<Props, State> {
     return (
       <Fragment>
         <GlobalNavigation
+          helpItems={HelpDropdown}
           productIcon={EmojiAtlassianIcon}
           onCreateClick={isCreateDrawerEnabled ? this.openCreateModal : null}
           createDrawerContents={() => (
@@ -210,7 +224,7 @@ export default class extends Component<{||}, NavState> {
           productNavigation={() => null}
           containerNavigation={() => null}
         >
-          <Fragment>
+          <div css={{ padding: '32px 40px' }}>
             <div>Page content</div>
             <button onClick={this.toggleCreateDrawer}>{`Enable ${
               this.state.isCreateDrawerEnabled
@@ -236,7 +250,7 @@ export default class extends Component<{||}, NavState> {
                 on closing the drawer
               </div>
             </div>
-          </Fragment>
+          </div>
         </LayoutManager>
       </NavigationProvider>
     );

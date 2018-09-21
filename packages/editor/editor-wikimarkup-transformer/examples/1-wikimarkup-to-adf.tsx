@@ -94,7 +94,9 @@ const wikiTransformer = new WikiMarkupTransformer(defaultSchema);
 const adfTransformer = new JSONTransformer();
 
 function getADF(wiki: string) {
-  const pmNode = wikiTransformer.parse(wiki);
+  const pmNode = wikiTransformer.parse(wiki, (err, type) =>
+    console.log(err, type),
+  );
   return adfTransformer.encode(pmNode);
 }
 

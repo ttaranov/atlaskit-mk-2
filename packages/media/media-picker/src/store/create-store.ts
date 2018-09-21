@@ -57,7 +57,7 @@ export default (
       applyMiddleware(
         analyticsProcessing as Middleware,
         startAppMiddleware() as Middleware,
-        getFilesInRecents(fetcher) as Middleware,
+        getFilesInRecents() as Middleware,
         changeService as Middleware,
         changeAccount as Middleware,
         changeCloudAccountFolderMiddleware(fetcher) as Middleware,

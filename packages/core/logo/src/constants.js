@@ -1,4 +1,5 @@
 // @flow
+
 export type Props = {
   /** The size of the icon, uses the same sizing scheme as in @atlaskit/icon */
   size?: 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge',
@@ -12,7 +13,7 @@ export type Props = {
    * rendering issues in some browsers such as Safari. */
   iconGradientStop?: string,
   /** Accessible text to be used for screen readers */
-  label?: string,
+  label: string,
 };
 
 export const DefaultProps = {
@@ -21,6 +22,12 @@ export const DefaultProps = {
   iconGradientStart: 'inherit',
   iconGradientStop: 'inherit',
   size: 'medium',
+  label: '',
+};
+
+export type WrapperProps = {
+  ...Props,
+  svg: string | ((string, string) => string),
 };
 
 export const sizes = {

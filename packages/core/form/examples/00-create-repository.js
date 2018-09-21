@@ -3,7 +3,7 @@ import React, { PureComponent } from 'react';
 import Select from '@atlaskit/select';
 import FieldText from '@atlaskit/field-text';
 import Button from '@atlaskit/button';
-import Checkbox, { CheckboxGroup } from '@atlaskit/checkbox';
+import { Checkbox } from '@atlaskit/checkbox';
 
 import Form, { Field, FormHeader, FormSection, FormFooter } from '../src';
 
@@ -106,13 +106,11 @@ export default class LayoutExample extends PureComponent<void, State> {
             </Field>
 
             <Field label="Access level">
-              <CheckboxGroup>
-                <Checkbox
-                  label="This is a private repository"
-                  name="access-level"
-                  value="private"
-                />
-              </CheckboxGroup>
+              <Checkbox
+                label="This is a private repository"
+                name="access-level"
+                value="private"
+              />
             </Field>
 
             <Field label="Include a README?">

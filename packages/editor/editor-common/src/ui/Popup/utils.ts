@@ -239,10 +239,13 @@ export function findOverflowScrollParent(
     // IE11 on Window 8 doesn't show styles from CSS when accessing through element.style property.
     const style = window.getComputedStyle(parent);
     if (
-      style.overflow === 'scroll' ||
-      style.overflowX === 'scroll' ||
-      style.overflowY === 'scroll' ||
-      style['scrollBehavior'] === 'smooth'
+      (style.overflow === 'scroll' ||
+        style.overflowX === 'scroll' ||
+        style.overflowY === 'scroll' ||
+        style.overflow === 'auto' ||
+        style.overflowX === 'auto' ||
+        style.overflowY === 'auto') &&
+      !parent.classList.contains('editor-popup-ignore-scroll-parent')
     ) {
       return parent;
     }

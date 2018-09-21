@@ -8,7 +8,7 @@ jest.mock('@atlaskit/editor-core', () => {
   };
 });
 
-import WebBridgeImpl from '../../native-to-web';
+import WebBridgeImpl from '../../editor/native-to-web';
 import {
   indentList,
   outdentList,

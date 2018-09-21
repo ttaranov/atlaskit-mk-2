@@ -118,7 +118,7 @@ describe('ActionsView', () => {
     );
     expect(element.find(Button)).toHaveLength(3);
     expect(element.find(DropdownMenu)).toHaveLength(1);
-    const groups: Array<any> = element.find(DropdownMenu).prop('items')!;
+    const groups: Array<any> = element.find(DropdownMenu).prop<any>('items')!;
     expect(groups).toHaveLength(1);
     expect(groups[0].items).toHaveLength(2);
     expect(groups[0].items[0]).toHaveProperty('content', 'Reply');
@@ -440,7 +440,7 @@ describe('ActionsView', () => {
 
     const onItemActivated: Function = element
       .find(DropdownMenu)
-      .prop('onItemActivated')!;
+      .prop<any>('onItemActivated')!;
     onItemActivated({
       item: { action: { appCardAction: actions[2], key: 3 } },
     });

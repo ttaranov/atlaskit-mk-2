@@ -1,5 +1,18 @@
 # @atlaskit/renderer
 
+## 23.0.1
+- [patch] Updated dependencies [1be4bb8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1be4bb8)
+  - @atlaskit/editor-common@16.2.1
+  - @atlaskit/media-core@23.2.1
+  - @atlaskit/media-filmstrip@13.0.2
+  - @atlaskit/media-card@35.0.0
+
+## 23.0.0
+- [major] Add dynamic text sizing support to renderer and editor [2a6410f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2a6410f)
+
+## 22.2.0
+- [minor] Add support for tables with numbered columns. ED-4709 [cc19e25](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cc19e25)
+
 ## 22.1.0
 - [minor] FS-2961 Introduce status component and status node in editor [7fe2b0a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7fe2b0a)
 

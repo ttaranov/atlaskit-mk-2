@@ -8,7 +8,7 @@ import {
 import Objects24Object24PageIcon from '@atlaskit/icon/glyph/objects/24/object-24-page';
 import ResultList, { Props } from '../../components/ResultList';
 import {
-  JiraObjectResult,
+  JiraResult,
   PersonResult,
   AnalyticsType,
   ConfluenceObjectResult,
@@ -37,7 +37,7 @@ function render(partialProps: Partial<Props>) {
 }
 
 it('should pass the correct properties to ObjectResult for Jira results', () => {
-  const jiraResults: JiraObjectResult[] = [
+  const jiraResults: JiraResult[] = [
     makeJiraObjectResult({
       resultId: 'resultId',
     }),

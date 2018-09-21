@@ -1,5 +1,37 @@
 # @atlaskit/editor-common
 
+## 16.2.3
+- [patch] ED-5346: prosemirror upgrade [5bd4432](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5bd4432)
+
+## 16.2.2
+- [patch] Fix floating toolbar position in a table with scroll [8da7574](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8da7574)
+
+## 16.2.1
+- [patch] Updated dependencies [1be4bb8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1be4bb8)
+  - @atlaskit/media-core@23.2.1
+  - @atlaskit/media-card@35.0.0
+
+## 16.2.0
+- [minor] Add dynamic text sizing support to renderer and editor [2a6410f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2a6410f)
+
+## 16.1.6
+- [patch] fix styles for nested tables [11267a8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/11267a8)
+
+## 16.1.5
+- [patch] reverting table style change [b829ab9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b829ab9)
+
+## 16.1.4
+- [patch] ED-5335: fix table when it has nested extension that renders another table [21f315b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/21f315b)
+
+## 16.1.3
+- [patch] use new tsconfig for typechecking [09df171](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/09df171)
+
+## 16.1.2
+- [patch] Fix generator to work with TS3 [4040b00](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4040b00)
+
+## 16.1.1
+- [patch] Fix popup positioning when inside overflow:auto containers [affe5df](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/affe5df)
+
 ## 16.1.0
 - [minor] FS-2961 Introduce status component and status node in editor [7fe2b0a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7fe2b0a)
 

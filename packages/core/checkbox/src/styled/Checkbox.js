@@ -3,15 +3,13 @@ import styled, { css } from 'styled-components';
 import { colors, themed } from '@atlaskit/theme';
 
 export const HiddenCheckbox = styled.input`
-  border: 0;
-  clip: rect(1px, 1px, 1px, 1px);
-  height: 1;
-  overflow: hidden;
+  left: 50%;
+  margin: 0;
+  opacity: 0;
   padding: 0;
   position: absolute;
-  white-space: nowrap;
-  width: 1;
-  opacity: 0;
+  transform: translate(-50%, -50%);
+  top: 50%;
 `;
 
 const disabledColor = themed({ light: colors.N80, dark: colors.N80 });
@@ -22,7 +20,8 @@ type LabelProps = {
 };
 
 export const Label = styled.label`
-  display: ${({ isFullWidth }) => (isFullWidth ? 'block' : 'inline-block')};
+  align-items: flex-start;
+  display: flex;
   color: ${(props: LabelProps): string =>
     // $FlowFixMe - theme is not found in props
     props.isDisabled ? disabledColor(props) : colors.text(props)};
@@ -93,7 +92,6 @@ const getTickColor = props => {
 
 const getBoxColor = props => {
   const { isChecked, isDisabled, isActive, isHovered, ...rest } = props;
-
   // set the default
   let color = themed({ light: colors.N10, dark: colors.DN10 });
 
@@ -111,10 +109,19 @@ const getBoxColor = props => {
   return color(rest);
 };
 
+export const LabelText = styled.span`
+  padding: 2px 4px;
+`;
+
+export const CheckboxWrapper = styled.span`
+  display: flex;
+  flex-shrink: 0;
+  position: relative;
+`;
+
 export const IconWrapper = styled.span`
   line-height: 0;
   flex-shrink: 0;
-  margin: 0 4px;
   color: ${getBoxColor};
   fill: ${getTickColor};
   transition: all 0.2s ease-in-out;
@@ -124,9 +131,4 @@ export const IconWrapper = styled.span`
     transition: stroke 0.2s ease-in-out;
     ${getBorderColor};
   }
-`;
-
-export const Wrapper = styled.div`
-  display: flex;
-  align-items: center;
 `;

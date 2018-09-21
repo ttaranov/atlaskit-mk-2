@@ -132,6 +132,9 @@ async function startDevServer() {
     // disable hot reload for tests - they don't need it for running
     hot: false,
     inline: false,
+    watchOptions: {
+      ignored: ['**/__snapshots__/**', '**/__image_snapshots__/**'],
+    },
   });
 
   return new Promise((resolve, reject) => {

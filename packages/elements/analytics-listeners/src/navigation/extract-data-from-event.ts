@@ -3,14 +3,15 @@
  */
 import * as merge from 'lodash.merge';
 import { NAVIGATION_CONTEXT } from '@atlaskit/analytics-namespaced-context';
+import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
 
 const extractFromEventContext = (
   propertyNames: string[],
-  event,
+  event: UIAnalyticsEventInterface,
   namespacedContextOnly = true,
-) =>
+): any[] =>
   event.context
-    .reduce((acc: any[], contextItem: any) => {
+    .reduce((acc, contextItem) => {
       propertyNames.forEach(propertyName => {
         const navContext = contextItem[NAVIGATION_CONTEXT];
         const navContextProp = navContext ? navContext[propertyName] : null;
@@ -24,19 +25,19 @@ const extractFromEventContext = (
     }, [])
     .filter(Boolean);
 
-export const getSources = event =>
+export const getSources = (event: UIAnalyticsEventInterface) =>
   extractFromEventContext(['source'], event, false);
 
-export const getComponents = event =>
+export const getComponents = (event: UIAnalyticsEventInterface) =>
   extractFromEventContext(['component', 'componentName'], event, false);
 
-export const getExtraAttributes = event =>
+export const getExtraAttributes = (event: UIAnalyticsEventInterface) =>
   extractFromEventContext(['attributes'], event).reduce(
     (result, extraAttributes) => merge(result, extraAttributes),
     {},
   );
 
-export const getPackageInfo = event =>
+export const getPackageInfo = (event: UIAnalyticsEventInterface) =>
   event.context
     .map(contextItem => {
       const navContext = contextItem[NAVIGATION_CONTEXT];
@@ -48,5 +49,5 @@ export const getPackageInfo = event =>
     })
     .filter(p => p.packageName);
 
-export const getPackageVersion = event =>
+export const getPackageVersion = (event: UIAnalyticsEventInterface) =>
   extractFromEventContext(['packageVersion'], event);

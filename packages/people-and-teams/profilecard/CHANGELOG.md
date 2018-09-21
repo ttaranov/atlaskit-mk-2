@@ -1,5 +1,8 @@
 # @atlaskit/profilecard
 
+## 4.0.9
+- [patch] Remove promise polyfill to fix Jira SSR [e793f6e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e793f6e)
+
 ## 4.0.8
 - [patch] Updated dependencies [b12f7e6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b12f7e6)
   - @atlaskit/util-data-test@10.0.7

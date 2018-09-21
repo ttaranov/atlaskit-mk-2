@@ -9,6 +9,7 @@ import {
   getSelectorForTableCell,
   insertMenuSelector,
   selectByTextAndClick,
+  snapshot,
 } from '../_utils';
 
 describe('Snapshot Test: Floating toolbar', () => {
@@ -35,9 +36,7 @@ describe('Snapshot Test: Floating toolbar', () => {
   });
 
   afterEach(async () => {
-    const image = await page.screenshot();
-    // @ts-ignore
-    expect(image).toMatchProdImageSnapshot();
+    await snapshot(page);
   });
 
   describe('Buttons', () => {
@@ -96,9 +95,7 @@ describe('Floating toolbar: Toolbar resolution', () => {
   });
 
   afterEach(async () => {
-    const image = await page.screenshot();
-    // @ts-ignore
-    expect(image).toMatchProdImageSnapshot();
+    await snapshot(page);
   });
 
   describe('Atom Nodes', () => {

@@ -1,5 +1,29 @@
 # @atlaskit/global-search
 
+## 5.7.5
+- [patch] pass search session id and referrer id to backend [e7d5a30](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7d5a30)
+
+## 5.7.4
+- [patch] dynamic import Modal dialog based on the product [4367651](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4367651)
+
+## 5.7.3
+- [patch] remove ak modal dialog dependency [e66a9d9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e66a9d9)
+
+## 5.7.2
+- [patch] fix jira response parser [1502daa](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1502daa)
+
+## 5.7.1
+- [patch] remove forward slash that breaks jira requests [08d26e0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/08d26e0)
+
+## 5.7.0
+- [minor] alpha jira quick search [090b5f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/090b5f7)
+
+## 5.6.0
+- [minor] Update product icons to come from logo [7b446f0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7b446f0)
+
+## 5.5.12
+- [patch] add more analytics attribute (abTest related attributes, query attributes to search result analytics) [317bc68](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/317bc68)
+
 ## 5.5.11
 - [patch] Update TS to 3.0 [f68d367](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f68d367)
 

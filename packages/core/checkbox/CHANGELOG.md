@@ -1,5 +1,11 @@
 # @atlaskit/checkbox
 
+## 5.0.1
+- [patch] Checkbox now only fires onChange once [c78e59e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c78e59e)
+
+## 5.0.0
+- [major] Checkbox refactored to remove the need for CheckboxStateless  [80e1925](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80e1925)
+
 ## 4.0.6
 - [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
 

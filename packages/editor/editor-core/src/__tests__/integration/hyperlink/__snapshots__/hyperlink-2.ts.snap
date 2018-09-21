@@ -19,7 +19,7 @@ Object {
           "type": "text",
         },
         Object {
-          "text": "  .",
+          "text": ".",
           "type": "text",
         },
       ],
@@ -42,10 +42,6 @@ Object {
                     },
                   ],
                   "text": "https://www.google.com",
-                  "type": "text",
-                },
-                Object {
-                  "text": "  ",
                   "type": "text",
                 },
               ],
@@ -84,7 +80,7 @@ Object {
           "type": "text",
         },
         Object {
-          "text": "  .",
+          "text": ".",
           "type": "text",
         },
       ],
@@ -107,10 +103,6 @@ Object {
                     },
                   ],
                   "text": "https://www.google.com",
-                  "type": "text",
-                },
-                Object {
-                  "text": "  ",
                   "type": "text",
                 },
               ],

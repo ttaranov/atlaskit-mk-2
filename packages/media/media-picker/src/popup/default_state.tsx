@@ -29,7 +29,6 @@ const defaultState: DefaultState = {
   uploads: {},
   remoteUploads: {},
   recents: {
-    nextKey: '',
     items: [],
   },
   tenant: {

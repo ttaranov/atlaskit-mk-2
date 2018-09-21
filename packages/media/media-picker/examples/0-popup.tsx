@@ -5,7 +5,7 @@ import * as PropTypes from 'prop-types';
 import { ContextFactory } from '@atlaskit/media-core';
 import Button from '@atlaskit/button';
 import DropdownMenu, { DropdownItem } from '@atlaskit/dropdown-menu';
-import { AnalyticsListener } from '@atlaskit/analytics-next';
+import AKListeners from '@atlaskit/analytics-listeners';
 import {
   userAuthProvider,
   mediaPickerAuthProvider,
@@ -478,14 +478,15 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
   }
 }
 
-const onEvent = (event: any) => {
-  console.log('Example', event);
-};
-
 export default () => (
-  <AnalyticsListener onEvent={onEvent} channel="media">
-    <AnalyticsListener onEvent={onEvent} channel="atlaskit">
-      <PopupWrapper />
-    </AnalyticsListener>
-  </AnalyticsListener>
+  <AKListeners
+    client={{
+      sendUIEvent: () => {},
+      sendOperationalEvent: () => {},
+      sendTrackEvent: () => {},
+      sendScreenEvent: () => {},
+    }}
+  >
+    <PopupWrapper />
+  </AKListeners>
 );

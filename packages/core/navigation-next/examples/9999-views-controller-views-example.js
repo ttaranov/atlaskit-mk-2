@@ -26,6 +26,7 @@ import {
   Separator,
   ThemeProvider,
 } from '../src';
+import { CONTENT_NAV_WIDTH } from '../src/common/constants';
 
 const FakeContentNav = ({ isContainer = false, ...props }: any) => (
   <ThemeProvider
@@ -42,7 +43,7 @@ const FakeContentNav = ({ isContainer = false, ...props }: any) => (
         flexDirection: 'column',
         flexGrow: 1,
         height: 450,
-        width: 270,
+        width: CONTENT_NAV_WIDTH,
       }}
       {...props}
     />

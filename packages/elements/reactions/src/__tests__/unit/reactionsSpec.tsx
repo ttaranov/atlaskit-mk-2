@@ -15,6 +15,7 @@ import { emoji } from '@atlaskit/util-data-test';
 import { EmojiProvider } from '@atlaskit/emoji';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 import Trigger from '../../internal/trigger';
+import { ReactionSummary } from '../../reactions-resource';
 
 const { getEmojiResourcePromise } = emoji.testData;
 
@@ -123,7 +124,7 @@ describe('@atlaskit/reactions/reactions', () => {
           reactions
             .find(Reaction)
             .last()
-            .prop('reaction').emojiId,
+            .prop<ReactionSummary>('reaction').emojiId,
         ).toEqual(flagBlackId.id);
       });
   });
@@ -139,14 +140,18 @@ describe('@atlaskit/reactions/reactions', () => {
         const thumbsupReaction = reactions.find(Reaction).at(1);
 
         const thumbsDownReaction = reactions.find(Reaction).at(2);
-        expect(thumbsupReaction.prop('reaction').emojiId).toEqual(
-          thumbsupId.id!,
-        );
-        expect(thumbsupReaction.prop('reaction').count).toEqual(9);
-        expect(thumbsDownReaction.prop('reaction').emojiId).toEqual(
-          thumbsdownId.id!,
-        );
-        expect(thumbsDownReaction.prop('reaction').count).toEqual(6);
+        expect(
+          thumbsupReaction.prop<ReactionSummary>('reaction').emojiId,
+        ).toEqual(thumbsupId.id!);
+        expect(
+          thumbsupReaction.prop<ReactionSummary>('reaction').count,
+        ).toEqual(9);
+        expect(
+          thumbsDownReaction.prop<ReactionSummary>('reaction').emojiId,
+        ).toEqual(thumbsdownId.id!);
+        expect(
+          thumbsDownReaction.prop<ReactionSummary>('reaction').count,
+        ).toEqual(6);
       });
   });
 
