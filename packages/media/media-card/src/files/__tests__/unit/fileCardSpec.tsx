@@ -133,4 +133,16 @@ describe('FileCard', () => {
 
     expect(card.find(FileCardImageView).props().disableOverlay).toEqual(true);
   });
+
+  it('should not show size for external images', () => {
+    const card = shallow(
+      <FileCard
+        appearance="image"
+        status="complete"
+        mediaItemType="external-image"
+      />,
+    );
+
+    expect(card.find(FileCardImageView).prop('fileSize')).toEqual('');
+  });
 });
