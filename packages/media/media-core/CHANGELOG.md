@@ -1,5 +1,8 @@
 # @atlaskit/media-core
 
+## 24.0.1
+- [patch] Support external image identifiers in media-card [82c8bb9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/82c8bb9)
+
 ## 24.0.0
 - [major] Update RXJS dependency to ^5.5.0 [927ae63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/927ae63)
 
