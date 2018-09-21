@@ -111,7 +111,7 @@ function getBorderRadius(props: {
   return borderRadius;
 }
 
-function getDimensions(props: ThemePropsType): Dimensions {
+function getDimensions(props: ThemeAvatarProps): Dimensions {
   const borderWidth: number = props.includeBorderWidth
     ? BORDER_WIDTH[props.size] * 2
     : 0;
@@ -121,7 +121,7 @@ function getDimensions(props: ThemePropsType): Dimensions {
   return { height, width };
 }
 
-const getPresenceLayout = ({ appearance, size }: ThemePropsType): Layout => {
+const getPresenceLayout = ({ appearance, size }: ThemeAvatarProps): Layout => {
   const presencePosition =
     appearance === 'square' ? -(BORDER_WIDTH[size] * 2) : ICON_OFFSET[size];
   const presenceSize = ICON_SIZES[size];
@@ -134,7 +134,7 @@ const getPresenceLayout = ({ appearance, size }: ThemePropsType): Layout => {
   };
 };
 
-const getStatusLayout = ({ appearance, size }: ThemePropsType): Layout => {
+const getStatusLayout = ({ appearance, size }: ThemeAvatarProps): Layout => {
   const statusPosition =
     appearance === 'square' ? SQUARE_ICON_OFFSET[size] : ICON_OFFSET[size];
   const statusSize = ICON_SIZES[size];
@@ -147,8 +147,16 @@ const getStatusLayout = ({ appearance, size }: ThemePropsType): Layout => {
   };
 };
 
-export type ThemeType = {
-  avatar?: ThemePropsType => {
+type ThemeAvatarProps = {
+  appearance: AppearanceType,
+  includeBorderWidth: boolean,
+  isLoading: boolean,
+  presence: PresenceType,
+  size: SizeType,
+};
+
+export type ThemeProps = {
+  avatar?: ThemeAvatarProps => {
     backgroundColor: string,
     borderRadius: string,
     dimensions: Dimensions,
@@ -158,15 +166,7 @@ export type ThemeType = {
   mode?: 'dark' | 'light',
 };
 
-export type ThemePropsType = {
-  appearance: AppearanceType,
-  includeBorderWidth: boolean,
-  isLoading: boolean,
-  presence: PresenceType,
-  size: SizeType,
-};
-
-export function theme(parent: ThemeType): ThemeType {
+export function theme(parent: ThemeProps): ThemeProps {
   const mode = parent.mode || 'light';
   return {
     avatar(props) {
