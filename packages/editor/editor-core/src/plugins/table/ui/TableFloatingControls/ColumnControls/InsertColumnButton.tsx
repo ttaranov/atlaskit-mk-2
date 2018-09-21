@@ -1,12 +1,6 @@
 import * as React from 'react';
 import AddIcon from '@atlaskit/icon/glyph/editor/add';
 import AkButton from '@atlaskit/button';
-import {
-  InsertColumnButtonWrap,
-  InsertColumnMarker,
-  InsertColumnButtonInner,
-  ColumnLineMarker,
-} from './styles';
 
 export interface ButtonProps {
   onClick: () => void;
@@ -14,18 +8,21 @@ export interface ButtonProps {
 }
 
 const InsertColumnButton = ({ onClick, lineMarkerHeight }: ButtonProps) => (
-  <InsertColumnButtonWrap>
-    <InsertColumnButtonInner>
+  <div className="pm-table-controls__insert-button-wrap">
+    <div className="pm-table-controls__insert-button">
       <AkButton
         onClick={onClick}
         iconBefore={<AddIcon label="Add column" />}
         appearance="primary"
         spacing="none"
       />
-    </InsertColumnButtonInner>
-    <ColumnLineMarker style={{ height: lineMarkerHeight }} />
-    <InsertColumnMarker />
-  </InsertColumnButtonWrap>
+    </div>
+    <div
+      className="pm-table-controls__insert-line"
+      style={{ height: lineMarkerHeight }}
+    />
+    <div className="pm-table-controls__insert-marker" />
+  </div>
 );
 
 export default InsertColumnButton;

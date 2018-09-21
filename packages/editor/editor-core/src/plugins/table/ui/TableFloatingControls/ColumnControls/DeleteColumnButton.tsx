@@ -1,9 +1,6 @@
 import * as React from 'react';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import AkButton from '@atlaskit/button';
-import AkTooltip from '@atlaskit/tooltip';
-import { DeleteColumnButtonWrap } from './styles';
-import { InsertButtonDefault as InsertButton } from '../styles';
 
 export interface ButtonProps {
   style?: object;
@@ -32,22 +29,19 @@ class DeleteColumnButton extends React.Component<ButtonProps> {
   render() {
     const { style, onClick } = this.props;
     return (
-      <DeleteColumnButtonWrap
+      <div
+        className="pm-table-controls__delete-button-wrap"
         style={style}
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}
       >
-        <InsertButton>
-          <AkTooltip content="Remove column" position="top">
-            <AkButton
-              onClick={onClick}
-              iconBefore={<CrossIcon size="small" label="Remove column" />}
-              appearance={this.state.hover ? 'danger' : 'default'}
-              spacing="none"
-            />
-          </AkTooltip>
-        </InsertButton>
-      </DeleteColumnButtonWrap>
+        <AkButton
+          onClick={onClick}
+          iconBefore={<CrossIcon size="small" label="Remove column" />}
+          appearance={this.state.hover ? 'danger' : 'default'}
+          spacing="none"
+        />
+      </div>
     );
   }
 }

@@ -1,12 +1,6 @@
 import * as React from 'react';
 import AddIcon from '@atlaskit/icon/glyph/editor/add';
 import AkButton from '@atlaskit/button';
-import {
-  InsertRowButtonWrap,
-  InsertRowMarker,
-  InsertRowButtonInner,
-  RowLineMarker,
-} from './styles';
 
 export interface ButtonProps {
   style?: object;
@@ -21,21 +15,25 @@ const InsertRowButton = ({
   lineMarkerWidth,
   style,
 }: ButtonProps) => (
-  <InsertRowButtonWrap style={style} onMouseOver={onMouseOver}>
-    <InsertRowButtonInner>
+  <div
+    className="pm-table-controls__insert-button-wrap"
+    style={style}
+    onMouseOver={onMouseOver}
+  >
+    <div className="pm-table-controls__insert-button">
       <AkButton
         onClick={onClick}
         iconBefore={<AddIcon label="Add row" />}
         appearance="primary"
         spacing="none"
       />
-    </InsertRowButtonInner>
-    <RowLineMarker
+    </div>
+    <div
+      className="pm-table-controls__insert-line"
       style={{ width: lineMarkerWidth }}
-      className="ProseMirror-table-insert-row-marker"
     />
-    <InsertRowMarker />
-  </InsertRowButtonWrap>
+    <div className="pm-table-controls__insert-marker" />
+  </div>
 );
 
 export default InsertRowButton;
