@@ -1,5 +1,8 @@
 # @atlaskit/editor-test-helpers
 
+## 6.1.3
+- [patch] ED-5150 Editor i18n: Main toolbar [ef76f1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef76f1f)
+
 ## 6.1.2
 - [patch] Updated dependencies [927ae63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/927ae63)
   - @atlaskit/editor-common@17.0.0

@@ -1,5 +1,11 @@
 # @atlaskit/editor-cq-transformer
 
+## 5.0.11
+- [patch] Updated dependencies [ef76f1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef76f1f)
+  - @atlaskit/editor-common@17.0.1
+  - @atlaskit/editor-core@82.0.0
+  - @atlaskit/editor-test-helpers@6.1.3
+
 ## 5.0.10
 - [patch] Updated dependencies [927ae63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/927ae63)
   - @atlaskit/editor-common@17.0.0

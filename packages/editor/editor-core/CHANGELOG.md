@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 82.0.0
+- [major] ED-5150 Editor i18n: Main toolbar [ef76f1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef76f1f)
+
 ## 81.0.0
 - [major] Updated dependencies [927ae63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/927ae63)
   - @atlaskit/editor-common@17.0.0
