@@ -313,6 +313,9 @@ export function makeCrossProductSearchData(
     let jiraContainer;
     if (i % 3) {
       jiraContainer = generateRandomJiraBoard();
+      if (i % 6) {
+        jiraContainer.attributes = { type: jiraContainer.attributes.type };
+      }
     } else if (i % 2) {
       jiraContainer = generateRandomJiraFilter();
     } else {

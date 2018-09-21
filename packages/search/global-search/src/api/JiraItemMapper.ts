@@ -17,22 +17,22 @@ const extractSpecificAttributes = (attributes: JiraItemAttributes) => {
   switch (type) {
     case 'issue':
       return {
-        objectKey: attributes.key,
-        containerName: attributes.issueTypeName,
+        objectKey: attributes && attributes.key,
+        containerName: attributes && attributes.issueTypeName,
       };
     case 'board':
       return {
         objectKey: 'Board',
-        containerName: attributes.containerName,
+        containerName: attributes && attributes.containerName,
       };
     case 'filter':
       return {
         objectKey: 'Filter',
-        containerName: attributes.ownerName,
+        containerName: attributes && attributes.ownerName,
       };
     case 'project':
       return {
-        containerName: attributes.projectType,
+        containerName: attributes && attributes.projectType,
       };
   }
   return null;
