@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-test-helpers",
-  "version": "17.1.0",
+  "version": "18.0.0",
   "description": "Collection of test helpers used in media component stories and specs",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -22,8 +22,8 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/media-core": "^23.2.0",
-    "@atlaskit/media-store": "^6.2.0",
+    "@atlaskit/media-core": "^24.0.0",
+    "@atlaskit/media-store": "^6.2.1",
     "axios": "^0.17.1",
     "kakapo": "^3.3.3",
     "lodash.matches": "^4.6.0",
