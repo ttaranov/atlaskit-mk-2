@@ -4,15 +4,34 @@ import { MediaItemType } from '@atlaskit/media-core';
 import FileIcon from '@atlaskit/icon/glyph/file';
 import LinkIcon from '@atlaskit/icon/glyph/link';
 import { Wrapper } from './styled';
+import { CardDimensions } from '../..';
 
 export interface LoadingCardProps {
   mediaItemType?: MediaItemType;
   iconSize?: 'small' | 'medium' | 'large';
+  dimensions?: CardDimensions;
 }
+
+export const getDimensionsWithDefault = (
+  dimensions: CardDimensions = { width: '100%', height: '100%' },
+): CardDimensions => {
+  return {
+    height:
+      typeof dimensions.height === 'number'
+        ? `${dimensions.height}px`
+        : dimensions.height,
+    width:
+      typeof dimensions.width === 'number'
+        ? `${dimensions.width}px`
+        : dimensions.width,
+  };
+};
 
 export class CardLoading extends Component<LoadingCardProps, {}> {
   render() {
-    return <Wrapper>{this.icon}</Wrapper>;
+    const dimensions = getDimensionsWithDefault(this.props.dimensions);
+
+    return <Wrapper dimensions={dimensions}>{this.icon}</Wrapper>;
   }
 
   get iconSize() {

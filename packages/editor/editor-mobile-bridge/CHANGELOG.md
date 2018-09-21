@@ -1,5 +1,17 @@
 # @atlaskit/editor-mobile-bridge
 
+## 4.0.4
+- [patch] Remove mention calls from the bridge [3b04be7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3b04be7)
+
+## 4.0.3
+- [patch] ED-5346: prosemirror upgrade [5bd4432](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5bd4432)
+
+## 4.0.2
+- [patch] Updated dependencies [2a6410f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2a6410f)
+  - @atlaskit/editor-common@16.2.0
+  - @atlaskit/editor-core@80.5.0
+  - @atlaskit/renderer@23.0.0
+
 ## 4.0.1
 - [patch] Fix the flash bug on scroll in iOS webviews [6c047b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6c047b4)
 

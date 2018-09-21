@@ -67,7 +67,8 @@ export const akEditorBreakoutPadding = 96;
 export const akEditorElementMinWidth = 150;
 
 export const editorFontSize = ({ theme }) =>
-  theme && theme.baseFont ? theme.baseFont : defaultFontSize();
+  theme && theme.baseFontSize ? theme.baseFontSize : defaultFontSize();
+
 export const relativeSize = (multiplier: number) => ({ theme }) =>
   editorFontSize({ theme }) * multiplier;
 

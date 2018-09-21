@@ -1,5 +1,8 @@
 # @atlaskit/media-image
 
+## 35.0.0
+- [major] Fix CardView code split + remove private components from public api [1be4bb8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1be4bb8)
+
 ## 34.1.0
 - [minor] Async load media-card modules by default [01416b4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/01416b4)
 

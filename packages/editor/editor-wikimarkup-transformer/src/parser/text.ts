@@ -1,6 +1,6 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
 import { createTextNode } from './nodes/text';
-import { parseToken, TokenType } from './tokenize';
+import { parseToken, TokenType, TokenErrCallback } from './tokenize';
 import {
   parseOtherKeyword,
   parseLeadingKeyword,
@@ -20,6 +20,7 @@ export function parseString(
   input: string,
   schema: Schema,
   ignoreTokens: TokenType[] = [],
+  tokenErrCallback?: TokenErrCallback,
 ): PMNode[] {
   let index = 0;
   let state = processState.NEWLINE;
@@ -100,7 +101,12 @@ export function parseString(
       }
 
       case processState.TOKEN: {
-        const token = parseToken(input.substring(index), tokenType, schema);
+        const token = parseToken(
+          input.substring(index),
+          tokenType,
+          schema,
+          tokenErrCallback,
+        );
         if (token.type === 'text') {
           buffer += token.text;
         } else if (token.type === 'pmnode') {

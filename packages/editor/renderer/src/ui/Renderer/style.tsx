@@ -33,13 +33,30 @@ import { RendererAppearance } from './';
 
 export interface Props {
   appearance?: RendererAppearance;
+  theme?: any;
 }
 
 const getLineHeight = ({ appearance }: Props) => {
   return `line-height: ${appearance === 'message' ? 20 : 24}px`;
 };
 
+const fullPageStyles = ({ theme, appearance }) => {
+  if (appearance !== 'full-page') {
+    return '';
+  }
+
+  return `
+    max-width: ${
+      theme && theme.layoutMaxWidth ? `${theme.layoutMaxWidth}px` : 'none'
+    };
+    margin: 0 auto;
+    padding: 0 32px;
+  `;
+};
+
 export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
+  ${fullPageStyles}
+
   font-size: ${editorFontSize}px;
   ${getLineHeight};
   color: ${akColorN800};

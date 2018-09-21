@@ -1,5 +1,6 @@
 import CrossProductSearchClient, {
   CrossProductSearchResponse,
+  SearchSession,
 } from '../../api/CrossProductSearchClient';
 import { Scope, ConfluenceItem } from '../../api/types';
 import 'whatwg-fetch';
@@ -26,6 +27,11 @@ function apiWillReturn(state: CrossProductSearchResponse) {
 
   fetchMock.mock('localhost/quicksearch/v1', state, opts);
 }
+
+const searchSession: SearchSession = {
+  referrerId: 'referal-id',
+  sessionId: 'test_uuid',
+};
 
 describe('CrossProductSearchClient', () => {
   let searchClient: CrossProductSearchClient;
@@ -60,7 +66,7 @@ describe('CrossProductSearchClient', () => {
         ],
       });
 
-      const result = await searchClient.search('query', 'test_uuid', [
+      const result = await searchClient.search('query', searchSession, [
         Scope.ConfluencePageBlog,
       ]);
       expect(result.results.get(Scope.ConfluencePageBlog)).toHaveLength(1);
@@ -105,7 +111,7 @@ describe('CrossProductSearchClient', () => {
         ],
       });
 
-      const result = await searchClient.search('query', 'test_uuid', [
+      const result = await searchClient.search('query', searchSession, [
         Scope.ConfluenceSpace,
       ]);
       expect(result.results.get(Scope.ConfluenceSpace)).toHaveLength(1);
@@ -148,7 +154,7 @@ describe('CrossProductSearchClient', () => {
         ],
       });
 
-      const result = await searchClient.search('query', 'test_uuid', [
+      const result = await searchClient.search('query', searchSession, [
         Scope.JiraIssue,
       ]);
       expect(result.results.get(Scope.JiraIssue)).toHaveLength(1);
@@ -188,7 +194,7 @@ describe('CrossProductSearchClient', () => {
 
       const result = await searchClient.search(
         'query',
-        'test_uuid',
+        searchSession,
         jiraScopes,
       );
       expect(result.results.get(Scope.JiraIssue)).toHaveLength(0);
@@ -225,7 +231,7 @@ describe('CrossProductSearchClient', () => {
       ],
     });
 
-    const result = await searchClient.search('query', 'test_uuid', [
+    const result = await searchClient.search('query', searchSession, [
       Scope.ConfluencePageBlog,
       Scope.ConfluenceSpace,
     ]);
@@ -239,7 +245,7 @@ describe('CrossProductSearchClient', () => {
       scopes: [],
     });
     // @ts-ignore
-    const result = await searchClient.search('query', 'test_uuid', [
+    const result = await searchClient.search('query', searchSession, [
       Scope.ConfluencePageBlog,
       Scope.JiraIssue,
     ]);

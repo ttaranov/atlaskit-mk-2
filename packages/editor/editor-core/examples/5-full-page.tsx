@@ -4,7 +4,7 @@ import * as React from 'react';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import { akColorN90 } from '@atlaskit/util-shared-styles';
 
-import Editor from './../src/editor';
+import Editor, { EditorProps } from './../src/editor';
 import EditorContext from './../src/ui/EditorContext';
 import WithEditorActions from './../src/ui/WithEditorActions';
 import {
@@ -89,10 +89,6 @@ const SaveAndCancelButtons = props => (
   </ButtonGroup>
 );
 
-export type Props = {
-  defaultValue?: Object;
-  overrideProps?: Object;
-};
 export type State = { disabled: boolean };
 
 const providers = {
@@ -117,7 +113,7 @@ const mediaProvider = storyMediaProviderFactory({
 
 const quickInsertProvider = quickInsertProviderFactory();
 
-export class ExampleEditor extends React.Component<Props, State> {
+export class ExampleEditor extends React.Component<EditorProps, State> {
   state: State = { disabled: true };
 
   componentDidMount() {
@@ -130,7 +126,6 @@ export class ExampleEditor extends React.Component<Props, State> {
   }
 
   render() {
-    const { overrideProps = {} } = this.props;
     return (
       <Wrapper>
         <Content>
@@ -201,7 +196,7 @@ export class ExampleEditor extends React.Component<Props, State> {
             onSave={SAVE_ACTION}
             insertMenuItems={customInsertMenuItems}
             extensionHandlers={extensionHandlers}
-            {...overrideProps}
+            {...this.props}
           />
         </Content>
       </Wrapper>
@@ -227,12 +222,12 @@ export class ExampleEditor extends React.Component<Props, State> {
   };
 }
 
-export default function Example(overrideProps = {}) {
+export default function Example(props: EditorProps) {
   return (
     <EditorContext>
       <div style={{ height: '100%' }}>
         <DevTools />
-        <ExampleEditor overrideProps={overrideProps} />
+        <ExampleEditor {...props} />
       </div>
     </EditorContext>
   );

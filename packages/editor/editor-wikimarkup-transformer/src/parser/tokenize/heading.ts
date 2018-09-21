@@ -1,11 +1,15 @@
 import { Schema } from 'prosemirror-model';
 import { parseString } from '../text';
-import { Token, TokenType } from './';
+import { Token, TokenType, TokenErrCallback } from './';
 
 // h1. HEADING
 const HEADING_REGEXP = /^h([1|2|3|4|5|6])\.\s(.*)/;
 
-export function heading(input: string, schema: Schema): Token {
+export function heading(
+  input: string,
+  schema: Schema,
+  tokenErrCallback?: TokenErrCallback,
+): Token {
   /**
    * The following token types will be ignored in parsing
    * the content of a strong mark
@@ -23,7 +27,12 @@ export function heading(input: string, schema: Schema): Token {
   }
 
   const level = parseInt(match[1], 10);
-  const content = parseString(match[2], schema, ignoreTokenTypes);
+  const content = parseString(
+    match[2],
+    schema,
+    ignoreTokenTypes,
+    tokenErrCallback,
+  );
 
   const headingNode = schema.nodes.heading.createChecked(
     {

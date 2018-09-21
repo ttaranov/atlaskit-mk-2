@@ -1,5 +1,10 @@
 # @atlaskit/media-picker
 
+## 16.0.6
+- [patch] Updated dependencies [1be4bb8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1be4bb8)
+  - @atlaskit/media-core@23.2.1
+  - @atlaskit/media-card@35.0.0
+
 ## 16.0.5
 - [patch] Introduce media analytics listener [e7d7ab1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7d7ab1)
 
