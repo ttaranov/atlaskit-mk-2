@@ -24,7 +24,7 @@ export default class Group extends Component<GroupProps> {
         }}
       >
         <Fragment>
-          {heading && <GroupHeading>{heading}</GroupHeading>}
+          {!!heading && <GroupHeading>{heading}</GroupHeading>}
           {children}
           {hasSeparator && <Separator />}
         </Fragment>
