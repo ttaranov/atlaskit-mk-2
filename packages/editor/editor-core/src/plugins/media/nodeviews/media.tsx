@@ -70,7 +70,6 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
     const { fileId } = this.pluginState.getMediaNodeState(id);
 
     const deleteEventHandler = isMediaSingle ? undefined : this.handleRemove;
-    debugger;
 
     return (
       <UIMedia

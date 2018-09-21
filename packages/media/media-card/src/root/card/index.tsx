@@ -162,7 +162,6 @@ export class Card extends Component<CardProps, CardState> {
 
     const { id, collectionName } = identifier;
     const resolvedId = await id;
-
     this.unsubscribe();
     this.subscription = context.file
       .getFileState(resolvedId, { collectionName })
@@ -278,13 +277,21 @@ export class Card extends Component<CardProps, CardState> {
     const { status, metadata, dataURI } = this.state;
     const { identifier } = this.props;
 
-    if (
-      status === 'complete' &&
-      identifier.mediaItemType === 'file' &&
-      metadata
-    ) {
+    if (identifier.mediaItemType !== 'file') {
+      return status;
+    }
+
+    if (metadata) {
       const { size, mediaType } = metadata as FileDetails;
-      if (!size || isLoadingImage(mediaType, dataURI)) {
+
+      if (mediaType === 'image' && dataURI) {
+        return 'complete';
+      }
+
+      if (
+        (status === 'complete' && !size) ||
+        isLoadingImage(mediaType, dataURI)
+      ) {
         return 'processing';
       }
     }
