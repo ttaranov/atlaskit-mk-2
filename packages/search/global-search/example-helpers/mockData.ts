@@ -8,6 +8,7 @@ import {
   JiraItem,
   JiraItemV1,
   JiraItemV2,
+  PersonItem,
 } from '../src/api/types';
 import {
   generateRandomJiraIssue,
@@ -213,6 +214,7 @@ export function makeCrossProductSearchData(
   const confDataWithAttachments: ConfluenceItem[] = [];
   const jiraObjects: JiraItem[] = [];
   const jiraContainers: JiraItem[] = [];
+  const peopleData: PersonItem[] = [];
 
   for (let i = 0; i < n; i++) {
     const url = getMockUrl();
@@ -321,6 +323,16 @@ export function makeCrossProductSearchData(
     jiraContainers.push(jiraContainer);
   }
 
+  for (let i = 0; i < n; i++) {
+    peopleData.push({
+      userId: uuid(),
+      displayName: getMockName(),
+      nickName: getMockLastName(),
+      primaryPhoto: getMockAvatarUrl(),
+      title: getMockJobTitle(),
+    });
+  }
+
   return (term: string) => {
     term = term.toLowerCase();
 
@@ -347,6 +359,10 @@ export function makeCrossProductSearchData(
 
     const filteredConfResultsWithAttachments = confDataWithAttachments.filter(
       result => result.title.toLowerCase().indexOf(term) > -1,
+    );
+
+    const filteredPeopleResults = peopleData.filter(
+      item => item.displayName.toLowerCase().indexOf(term) > -1,
     );
 
     const abTest = {
@@ -385,6 +401,12 @@ export function makeCrossProductSearchData(
           experimentId: 'experiment-1',
           abTest,
           results: filteredSpaceResults,
+        },
+        {
+          id: Scope.People,
+          experimentId: 'experiment-1',
+          abTest,
+          results: filteredPeopleResults,
         },
       ],
     };

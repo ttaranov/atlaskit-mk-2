@@ -2,7 +2,7 @@ import CrossProductSearchClient, {
   CrossProductSearchResponse,
   SearchSession,
 } from '../../api/CrossProductSearchClient';
-import { Scope, ConfluenceItem } from '../../api/types';
+import { Scope, ConfluenceItem, PersonItem } from '../../api/types';
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
 import {
@@ -12,6 +12,7 @@ import {
   ContentType,
   ContainerResult,
   JiraResult,
+  PersonResult,
 } from '../../model/Result';
 import {
   generateRandomJiraBoard,
@@ -199,6 +200,71 @@ describe('CrossProductSearchClient', () => {
       );
       expect(result.results.get(Scope.JiraIssue)).toHaveLength(0);
       expect(result.results.get(Scope.JiraBoardProjectFilter)).toHaveLength(3);
+    });
+  });
+
+  describe('People', () => {
+    it('should return people results', async () => {
+      apiWillReturn({
+        scopes: [
+          {
+            id: 'cpus.user' as Scope,
+            results: [
+              {
+                userId: 'userId',
+                displayName: 'displayName',
+                nickName: 'nickName',
+                title: 'title',
+                primaryPhoto: 'primaryPhoto',
+              } as PersonItem,
+            ],
+          },
+        ],
+      });
+
+      const result = await searchClient.search(
+        'query',
+        { sessionId: 'sessionId' },
+        [Scope.People],
+      );
+      expect(result.results.get(Scope.People)).toHaveLength(1);
+
+      const item = result.results.get(Scope.People)![0] as PersonResult;
+      expect(item.resultId).toEqual('people-userId');
+      expect(item.name).toEqual('displayName');
+      expect(item.href).toEqual('/people/userId');
+      expect(item.analyticsType).toEqual(AnalyticsType.ResultPerson);
+      expect(item.resultType).toEqual(ResultType.PersonResult);
+      expect(item.avatarUrl).toEqual('primaryPhoto');
+      expect(item.mentionName).toEqual('nickName');
+      expect(item.presenceMessage).toEqual('title');
+    });
+
+    it('should have fall back for optional properties like title and nickName', async () => {
+      apiWillReturn({
+        scopes: [
+          {
+            id: 'cpus.user' as Scope,
+            results: [
+              {
+                userId: 'userId',
+                displayName: 'displayName',
+                primaryPhoto: 'primaryPhoto',
+              } as PersonItem,
+            ],
+          },
+        ],
+      });
+
+      const result = await searchClient.search(
+        'query',
+        { sessionId: 'sessionId' },
+        [Scope.People],
+      );
+
+      const item = result.results.get(Scope.People)![0] as PersonResult;
+      expect(item.mentionName).toEqual('displayName');
+      expect(item.presenceMessage).toEqual('');
     });
   });
 

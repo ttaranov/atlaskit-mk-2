@@ -12,7 +12,7 @@ import {
   EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE,
 } from '../../api/CrossProductSearchClient';
 import { Scope } from '../../api/types';
-import { Result } from '../../model/Result';
+import { Result, ResultsWithTiming } from '../../model/Result';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
 import { SearchScreenCounter, ScreenCounter } from '../../util/ScreenCounter';
 import {
@@ -45,7 +45,8 @@ export interface Props {
   createAnalyticsEvent?: CreateAnalyticsEventFn;
   referralContextIdentifiers?: ReferralContextIdentifiers;
   isSendSearchTermsEnabled?: boolean;
-  useAggregatorForConfluenceObjects: boolean;
+  useAggregatorForConfluenceObjects?: boolean;
+  useCPUSForPeopleResults?: boolean;
 }
 
 /**
@@ -79,14 +80,25 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     query: string,
     sessionId: string,
   ): Promise<CrossProductSearchResults> {
-    const scopes = this.props.useAggregatorForConfluenceObjects
+    const {
+      crossProductSearchClient,
+      useAggregatorForConfluenceObjects,
+      useCPUSForPeopleResults,
+      referralContextIdentifiers,
+    } = this.props;
+
+    let scopes = useAggregatorForConfluenceObjects
       ? [Scope.ConfluencePageBlogAttachment, Scope.ConfluenceSpace]
       : [Scope.ConfluenceSpace];
 
+    if (useCPUSForPeopleResults) {
+      scopes.push(Scope.People);
+    }
+
     const referrerId =
-      this.props.referralContextIdentifiers &&
-      this.props.referralContextIdentifiers.searchReferrerId;
-    const results = await this.props.crossProductSearchClient.search(
+      referralContextIdentifiers && referralContextIdentifiers.searchReferrerId;
+
+    const results = await crossProductSearchClient.search(
       query,
       { sessionId, referrerId },
       scopes,
@@ -123,27 +135,37 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   ): ((reason: any) => void) => error =>
     this.handleSearchErrorAnalytics(error, source);
 
-  getSearchResults = (query, sessionId, startTime) => {
-    const useAggregator = this.props.useAggregatorForConfluenceObjects;
+  getSearchResults = (
+    query,
+    sessionId,
+    startTime,
+  ): Promise<ResultsWithTiming> => {
+    const {
+      useAggregatorForConfluenceObjects,
+      useCPUSForPeopleResults,
+    } = this.props;
 
-    const quickNavPromise = useAggregator
+    const quickNavPromise = useAggregatorForConfluenceObjects
       ? Promise.resolve([])
       : this.searchQuickNav(query, sessionId).catch(error => {
           this.handleSearchErrorAnalytics(error, 'confluence.quicknav');
           // rethrow to fail the promise
           throw error;
         });
+
     const confXpSearchPromise = handlePromiseError(
       this.searchCrossProductConfluence(query, sessionId),
       EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE,
       this.handleSearchErrorAnalyticsThunk('xpsearch-confluence'),
     );
 
-    const searchPeoplePromise = handlePromiseError(
-      this.searchPeople(query),
-      [],
-      this.handleSearchErrorAnalyticsThunk('search-people'),
-    );
+    const searchPeoplePromise = useCPUSForPeopleResults
+      ? Promise.resolve([])
+      : handlePromiseError(
+          this.searchPeople(query),
+          [],
+          this.handleSearchErrorAnalyticsThunk('search-people'),
+        );
 
     const mapPromiseToPerformanceTime = p =>
       p.then(() => performanceNow() - startTime);
@@ -169,12 +191,14 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         peopleElapsedMs,
       ]) => ({
         results: {
-          objects: useAggregator
+          objects: useAggregatorForConfluenceObjects
             ? xpsearchResults.results.get(Scope.ConfluencePageBlogAttachment) ||
               []
             : objectResults,
           spaces: xpsearchResults.results.get(Scope.ConfluenceSpace) || [],
-          people: peopleResults,
+          people: useCPUSForPeopleResults
+            ? xpsearchResults.results.get(Scope.People) || []
+            : peopleResults,
         },
         timings: {
           quickNavElapsedMs,
