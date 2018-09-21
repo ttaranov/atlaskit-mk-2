@@ -9,7 +9,7 @@ import { gridSize } from '@atlaskit/theme';
 import { withAnalytics } from '@atlaskit/analytics';
 import StickyFooter from '../common/StickyFooter';
 import { CreateAnalyticsEventFn } from '../analytics/types';
-import { SearchScreenCounter, ScreenCounter } from '../../util/ScreenCounter';
+import { SearchScreenCounter } from '../../util/ScreenCounter';
 import { JiraClient } from '../../api/JiraClient';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
 import { Scope } from '../../api/types';
@@ -41,7 +41,7 @@ import {
 } from '../../model/Result';
 import {
   CrossProductSearchClient,
-  EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE,
+  CrossProductSearchResults,
 } from '../../api/CrossProductSearchClient';
 import performanceNow from '../../util/performance-now';
 
@@ -83,8 +83,8 @@ export class JiraQuickSearchContainer extends React.Component<
   };
 
   screenCounters = {
-    preQueryScreenCounter: new SearchScreenCounter() as ScreenCounter,
-    postQueryScreenCounter: new SearchScreenCounter() as ScreenCounter,
+    preQueryScreenCounter: new SearchScreenCounter(),
+    postQueryScreenCounter: new SearchScreenCounter(),
   };
 
   handleSearchSubmit = ({ target }) => {
@@ -209,21 +209,18 @@ export class JiraQuickSearchContainer extends React.Component<
 
     const searchPeoplePromise = this.props.peopleSearchClient.search(query);
 
-    const mapPromiseToPerformanceTime = p =>
+    const mapPromiseToPerformanceTime = (p: Promise<any>) =>
       p.then(() => performanceNow() - startTime);
 
-    const timingPromise = [crossProductSearchPromise, searchPeoplePromise].map(
-      mapPromiseToPerformanceTime,
-    );
-
-    return Promise.all([
+    return Promise.all<CrossProductSearchResults, Result[], number, number>([
       crossProductSearchPromise,
       searchPeoplePromise,
-      ...timingPromise,
+      mapPromiseToPerformanceTime(crossProductSearchPromise),
+      mapPromiseToPerformanceTime(searchPeoplePromise),
     ]).then(
       ([
-        xpsearchResults = EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE,
-        peopleResults = [],
+        xpsearchResults,
+        peopleResults,
         crossProductSearchElapsedMs,
         peopleElapsedMs,
       ]) => ({
