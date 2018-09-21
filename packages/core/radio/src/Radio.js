@@ -146,7 +146,7 @@ export default withAnalyticsContext({
 })(
   withAnalyticsEvents({
     onChange: createAndFireEventOnAtlaskit({
-      action: 'isChecked',
+      action: 'changed',
       actionSubject: 'radio',
       attributes: {
         componentName: 'radio',

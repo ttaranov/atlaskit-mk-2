@@ -32,7 +32,7 @@ describe('Radio', () => {
     expect(createAndFireEvent).toHaveBeenCalledWith('atlaskit');
     expect(withAnalyticsEvents).toHaveBeenLastCalledWith({
       onChange: {
-        action: 'isChecked',
+        action: 'changed',
         actionSubject: 'radio',
         attributes: {
           componentName: 'radio',
