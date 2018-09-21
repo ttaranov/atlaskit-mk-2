@@ -51,6 +51,7 @@ export interface MediaNodeWithPosHandler {
 export class MediaPluginState {
   public allowsMedia: boolean = false;
   public allowsUploads: boolean = false;
+  public context: Context;
   public stateManager: MediaStateManager;
   public ignoreLinks: boolean = false;
   public waitForMediaUpload: boolean = true;
@@ -556,6 +557,7 @@ export class MediaPluginState {
     if (this.destroyed) {
       return;
     }
+    this.context = context;
     const { errorReporter, pickers, stateManager } = this;
     // create pickers if they don't exist, re-use otherwise
     if (!pickers.length) {

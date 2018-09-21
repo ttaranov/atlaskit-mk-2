@@ -5,8 +5,8 @@ export default class DefaultMediaStateManager extends EventDispatcher
   implements MediaStateManager {
   private state = new Map<string, MediaState>();
 
-  getState(id: string): MediaState | undefined {
-    return this.state.get(id);
+  getState(id: string): MediaState | Map<string, MediaState> | undefined {
+    return id ? this.state.get(id) : this.state;
   }
 
   newState(id: string, newState: Partial<MediaState>) {

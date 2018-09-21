@@ -5,7 +5,11 @@ import styled from 'styled-components';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 
-import { FilmstripView } from '@atlaskit/media-filmstrip';
+import {
+  FilmstripView,
+  Filmstrip,
+  FilmstripItem,
+} from '@atlaskit/media-filmstrip';
 import { MediaNodeProps } from './media';
 import {
   MediaPluginState,
@@ -49,10 +53,6 @@ export default class MediaGroupNode extends Component<
     assert(this.mediaPluginState, 'Media is not enabled');
   }
 
-  private handleSize = ({ offset }) => this.setState({ offset });
-  private handleScroll = ({ animate, offset }) =>
-    this.setState({ animate, offset });
-
   /**
    * Save all childNodes ids into "mediaNodesIds"
    */
@@ -64,39 +64,38 @@ export default class MediaGroupNode extends Component<
    * Update "mediaNodesIds" and notify media plugin about removed nodes
    */
   componentWillReceiveProps(nextProps) {
-    const newMediaNodesIds = this.getMediaNodesIds(nextProps.children);
-    const removedNodesIds = this.mediaNodesIds.filter(
-      id => newMediaNodesIds.indexOf(id) === -1,
-    );
-
-    removedNodesIds.forEach(mediaNodeId => {
-      this.mediaPluginState.cancelInFlightUpload(mediaNodeId);
-    });
-
-    this.mediaNodesIds = newMediaNodesIds;
+    // const newMediaNodesIds = this.getMediaNodesIds(nextProps.children);
+    // const removedNodesIds = this.mediaNodesIds.filter(
+    //   id => newMediaNodesIds.indexOf(id) === -1,
+    // );
+    // removedNodesIds.forEach(mediaNodeId => {
+    //   this.mediaPluginState.cancelInFlightUpload(mediaNodeId);
+    // });
+    // this.mediaNodesIds = newMediaNodesIds;
   }
 
   render() {
     const { animate, offset } = this.state;
+    const mediaIDs = this.getMediaNodesIds(this.props.children);
+
     return (
       <Wrapper>
-        <FilmstripView
-          animate={animate}
-          offset={offset}
-          onSize={this.handleSize}
-          onScroll={this.handleScroll}
-        >
-          {this.props.children}
-        </FilmstripView>
+        <Filmstrip items={mediaIDs} context={this.mediaPluginState.context} />
       </Wrapper>
     );
   }
 
-  private getMediaNodesIds = (children: React.ReactNode): string[] => {
-    return (
+  private getMediaNodesIds = (children: React.ReactNode): FilmstripItem[] => {
+    const tempIds =
       React.Children.map(children, (child: React.ReactElement<any>) => {
         return (child.props as MediaNodeProps).node.attrs.id;
-      }) || []
-    );
+      }) || [];
+
+    return tempIds.map(id => {
+      return {
+        identifier: this.mediaPluginState.stateManager.getState(id).fileId,
+        mediaItemType: 'file',
+      };
+    });
   };
 }
