@@ -54,6 +54,34 @@ function pullCommand(options) {
           { concurrent: true },
         ),
     },
+    {
+      title: 'Creating index and languages exports',
+      task: async ({ languages }) => {
+        const options = await prettier.resolveConfig(absPathToPackage);
+        const exports = languages.map(
+          ({ code }) => `export { default as ${code} } from './${code}';`,
+        );
+
+        // Generate index.js|ts with exports
+        fs.writeFileSync(
+          path.join(outputDir, 'index' + getExtensionForType(outputType)),
+          prettier.format(exports.join('\n'), options),
+        );
+
+        fs.writeFileSync(
+          path.join(outputDir, 'languages' + getExtensionForType(outputType)),
+          prettier.format(
+            `export default ${JSON.stringify(
+              languages.reduce((acc, { name, code }) => {
+                acc[code] = name;
+                return acc;
+              }, {}),
+            )}`,
+            options,
+          ),
+        );
+      },
+    },
   ]).run();
 }
 
@@ -95,7 +123,7 @@ function downloadLanguage(options) {
         const options = await prettier.resolveConfig(absPathToPackage);
 
         const formattedContent = prettier.format(
-          `export default ${JSON.stringify(context[code].json)}`,
+          `// ${name}\nexport default ${JSON.stringify(context[code].json)}`,
           options,
         );
 

@@ -51,7 +51,7 @@ export const outdentList = makeKeyMapWithCommon('Outdent List', 'Shift-Tab');
 export const redo = makeKeymap('Redo', 'Ctrl-y', 'Cmd-Shift-z');
 export const redoBarred = makeKeymap('Redo Barred', 'Ctrl-Shift-z', 'Cmd-y');
 export const openHelp = makeKeyMapWithCommon('Open Help', 'Mod-/');
-export const addLink = makeKeyMapWithCommon('Insert link', 'Mod-k');
+export const addLink = makeKeyMapWithCommon('Link', 'Mod-k');
 export const submit = makeKeyMapWithCommon('Submit Content', 'Mod-Enter');
 export const enter = makeKeyMapWithCommon('Enter', 'Enter');
 export const tab = makeKeyMapWithCommon('Tab', 'Tab');
@@ -69,7 +69,7 @@ export const altPaste = makeKeyMapWithCommon('Paste', 'Mod-Shift-v');
 
 export function tooltip(
   keymap: Keymap | undefined,
-  compact?: boolean,
+  description?: string,
 ): string | undefined {
   if (keymap) {
     let shortcut: string;
@@ -85,7 +85,7 @@ export function tooltip(
     const keys = shortcut.split('-');
     keys[keys.length - 1] = keys[keys.length - 1].toUpperCase();
     shortcut = keys.join(browser.mac ? '' : '+');
-    return compact ? shortcut : `${keymap.description} ${shortcut}`;
+    return description ? `${description} ${shortcut}` : shortcut;
   }
 }
 

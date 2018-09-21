@@ -63,7 +63,7 @@ BrowserTestCase(
   },
 );
 
-// Safari highlights entire text on clic
+// Safari highlights entire text on click
 // IE is generally flaky
 BrowserTestCase(
   'task-decision: can edit a decision',

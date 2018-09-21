@@ -18,6 +18,10 @@
     "Rifat N"
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
+  "scripts": {
+    "i18n:push": "i18n-tools push --resource=editor-core .",
+    "i18n:pull": "rm -rf ./src/i18n && i18n-tools pull --resource editor-core . --outputType ts"
+  },
   "dependencies": {
     "@atlaskit/activity": "^1.0.1",
     "@atlaskit/analytics": "^4.0.4",
@@ -98,13 +102,16 @@
     "@atlaskit/media-core": "^24.0.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.2",
+    "react-intl": "^2.6.0",
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
     "@atlaskit/button": "^9.0.6",
     "@atlaskit/docs": "^5.0.7",
+    "@atlaskit/dropdown-menu": "^6.1.15",
     "@atlaskit/editor-bitbucket-transformer": "^4.0.11",
     "@atlaskit/editor-test-helpers": "^6.1.2",
+    "@atlaskit/i18n-tools": "^0.2.0",
     "@atlaskit/layer-manager": "^5.0.12",
     "@atlaskit/lozenge": "^6.1.5",
     "@atlaskit/media-core": "^24.0.0",
@@ -125,6 +132,7 @@
     "pretty-data": "^0.40.0",
     "prosemirror-dev-tools": "^2.1.0",
     "react": "^16.4.0",
+    "react-intl": "^2.6.0",
     "sinon": "^2.2.0",
     "string.prototype.repeat": "^0.2.0",
     "thenable": "^1.0.0"

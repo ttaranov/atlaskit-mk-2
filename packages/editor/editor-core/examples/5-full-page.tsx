@@ -64,7 +64,7 @@ const analyticsHandler = (actionName, props) => console.log(actionName, props);
 // tslint:disable-next-line:no-console
 const SAVE_ACTION = () => console.log('Save');
 
-const SaveAndCancelButtons = props => (
+export const SaveAndCancelButtons = props => (
   <ButtonGroup>
     <Button
       tabIndex="-1"

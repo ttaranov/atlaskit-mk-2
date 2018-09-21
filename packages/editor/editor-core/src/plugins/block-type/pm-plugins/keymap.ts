@@ -80,7 +80,9 @@ export default function keymapPlugin(schema: Schema): Plugin {
     blockTypes.BLOCK_QUOTE,
   ].forEach(blockType => {
     if (schema.nodes[blockType.nodeName]) {
-      const shortcut = keymaps.findShortcutByDescription(blockType.title);
+      const shortcut = keymaps.findShortcutByDescription(
+        blockType.title.defaultMessage,
+      );
       if (shortcut) {
         const eventName = analyticsEventName(blockType.name, 'keyboard');
         keymaps.bindKeymapWithCommand(

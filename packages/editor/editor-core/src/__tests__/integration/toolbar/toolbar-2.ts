@@ -1,8 +1,12 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import { comment, fullpage, editable } from '../_helpers';
+import { messages as blockTypeMessages } from '../../../plugins/block-type/ui/ToolbarBlockType';
+import { messages } from '../../../plugins/block-type/types';
 
-const changeFormatting = '[aria-label="Change formatting"]';
+const changeFormatting = `[aria-label="${
+  blockTypeMessages.textStyles.defaultMessage
+}"]`;
 const input = 'helloworld';
 
 // https://product-fabric.atlassian.net/browse/ED-4531
@@ -25,8 +29,9 @@ const input = 'helloworld';
 });
 
 const validateFormat = async (browser, heading) => {
+  const selector = 'span=' + messages['heading' + heading].defaultMessage;
   await browser.click(changeFormatting);
-  await browser.waitForSelector(`span=Heading ${heading}`);
-  await browser.click(`span=Heading ${heading}`);
+  await browser.waitForSelector(selector);
+  await browser.click(selector);
   await browser.waitForSelector(`h${heading}`);
 };

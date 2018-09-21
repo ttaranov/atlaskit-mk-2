@@ -1,6 +1,10 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import { getDocFromElement, comment, fullpage, editable } from '../_helpers';
+import { messages as textFormattingMessages } from '../../../plugins/text-formatting/ui/ToolbarTextFormatting';
+import { messages as advancedTextFormattingMessages } from '../../../plugins/text-formatting/ui/ToolbarAdvancedTextFormatting';
+import { messages as blockTypeToolbarMessages } from '../../../plugins/block-type/ui/ToolbarBlockType';
+import { messages as blockTypeMessages } from '../../../plugins/block-type/types';
 
 const input = 'helloworld ';
 // https://product-fabric.atlassian.net/browse/ED-4531
@@ -12,13 +16,22 @@ const input = 'helloworld ';
     { skip: ['ie', 'safari', 'edge'] },
     async client => {
       const browser = await new Page(client);
-      const bold = '[aria-label="Bold"]';
-      const italic = '[aria-label="Italic"]';
-      const changeFormatting = '[aria-label="Change formatting"]';
-      const normalText = 'span=Normal text';
-      const more =
-        '[aria-label="Open or close advance text formatting dropdown"]';
-      const underline = 'span=Underline';
+      const bold = `[aria-label="${
+        textFormattingMessages.bold.defaultMessage
+      }"]`;
+      const italic = `[aria-label="${
+        textFormattingMessages.italic.defaultMessage
+      }"]`;
+      const changeFormatting = `[aria-label="${
+        blockTypeToolbarMessages.textStyles.defaultMessage
+      }"]`;
+      const normalText = `span=${blockTypeMessages.normal.defaultMessage}`;
+      const more = `[aria-label="${
+        advancedTextFormattingMessages.moreFormatting.defaultMessage
+      }"]`;
+      const underline = `span=${
+        advancedTextFormattingMessages.underline.defaultMessage
+      }`;
 
       await browser.goto(editor.path);
       await browser.waitForSelector(editor.placeholder);

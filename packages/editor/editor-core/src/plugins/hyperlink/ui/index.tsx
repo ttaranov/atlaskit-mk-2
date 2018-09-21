@@ -176,6 +176,7 @@ export interface Props {
   popupsBoundariesElement?: HTMLElement;
   activityProvider?: Promise<ActivityProvider>;
 }
+
 export default function HyperlinkToolbar(props: Props) {
   const {
     hyperlinkState,

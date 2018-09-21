@@ -2,6 +2,12 @@ import { getExampleUrl } from '@atlaskit/visual-regression/helper';
 import { colorPalette } from '@atlaskit/editor-common';
 
 import { insertMedia as integrationInsertMedia } from '../integration/_helpers';
+import { messages as insertBlockMessages } from '../../plugins/insert-block/ui/ToolbarInsertBlock';
+import { messages as blockTypeMessages } from '../../plugins/block-type/types';
+import { messages as textFormattingMessages } from '../../plugins/text-formatting/ui/ToolbarTextFormatting';
+import { messages as advancedTextFormattingMessages } from '../../plugins/text-formatting/ui/ToolbarAdvancedTextFormatting';
+import { messages as listsMessages } from '../../plugins/lists/ui/ToolbarLists';
+import { messages as textColorMessages } from '../../plugins/text-color/ui/ToolbarTextColor';
 
 export { setupMediaMocksProviders, editable } from '../integration/_helpers';
 
@@ -63,7 +69,9 @@ export const clearEditor = async page => {
 };
 
 export const insertTable = async page => {
-  await page.click('span[aria-label="Insert table"]');
+  await page.click(
+    `span[aria-label="${insertBlockMessages.table.defaultMessage}"]`,
+  );
   await page.waitForSelector('table td p');
 };
 
@@ -86,10 +94,13 @@ export const getSelectorForTableCell = ({
   return `${rowSelector} > ${cellType}:nth-child(${cell})`;
 };
 
-export const insertMenuSelector =
-  'span[aria-label="Open or close insert block dropdown"]';
-export const advanceFormattingMenuSelector =
-  'span[aria-label="Open or close advance text formatting dropdown"]';
+export const insertMenuSelector = `span[aria-label="${
+  insertBlockMessages.insertMenu.defaultMessage
+}"]`;
+
+export const advanceFormattingMenuSelector = `span[aria-label="${
+  advancedTextFormattingMessages.moreFormatting.defaultMessage
+}"]`;
 
 export const baseTests = [
   // -----------------
@@ -100,7 +111,7 @@ export const baseTests = [
     // click selector (dropdown menu or toolbar icon)
     clickSelector: insertMenuSelector,
     // menu item selector - when given, it should match item inner text
-    menuItemText: 'Block quote',
+    menuItemText: blockTypeMessages.blockquote.defaultMessage,
     // inserted node selector - wait for the node to be inserted
     nodeSelector: 'blockquote p',
     // is used for testing marks and typing inside content nodes
@@ -110,7 +121,7 @@ export const baseTests = [
   },
   {
     name: 'Code block',
-    menuItemText: 'Code block',
+    menuItemText: blockTypeMessages.codeblock.defaultMessage,
     clickSelector: insertMenuSelector,
     nodeSelector: 'div.code-block code',
     content: 'text',
@@ -118,7 +129,7 @@ export const baseTests = [
   },
   {
     name: 'Panel',
-    menuItemText: 'Panel',
+    menuItemText: blockTypeMessages.panel.defaultMessage,
     clickSelector: insertMenuSelector,
     nodeSelector: 'div[paneltype] p',
     content: 'text',
@@ -126,21 +137,21 @@ export const baseTests = [
   },
   {
     name: 'Divider',
-    menuItemText: 'Divider',
+    menuItemText: insertBlockMessages.horizontalRule.defaultMessage,
     clickSelector: insertMenuSelector,
     nodeSelector: 'hr',
     appearance: ['full-page', 'comment'],
   },
   {
     name: 'Date',
-    menuItemText: 'Date',
+    menuItemText: insertBlockMessages.date.defaultMessage,
     clickSelector: insertMenuSelector,
     nodeSelector: 'span[timestamp]',
     appearance: ['full-page'],
   },
   {
     name: 'Columns',
-    menuItemText: 'Columns',
+    menuItemText: insertBlockMessages.columns.defaultMessage,
     clickSelector: insertMenuSelector,
     nodeSelector: 'div[data-layout-type] p',
     content: 'text',
@@ -152,35 +163,43 @@ export const baseTests = [
   // -----------------
   {
     name: 'Table',
-    clickSelector: 'span[aria-label="Insert table"]',
+    clickSelector: `span[aria-label="${
+      insertBlockMessages.table.defaultMessage
+    }"]`,
     nodeSelector: 'table th p',
     content: 'text',
     appearance: ['full-page', 'comment'],
   },
   {
     name: 'Action',
-    clickSelector: 'span[aria-label="Create action"]',
+    clickSelector: `span[aria-label="${listsMessages.action.defaultMessage}"]`,
     nodeSelector: 'ol[data-task-list-local-id] div',
     content: 'text',
     appearance: ['full-page', 'message'],
   },
   {
     name: 'Decision',
-    clickSelector: 'span[aria-label="Create decision"]',
+    clickSelector: `span[aria-label="${
+      insertBlockMessages.decision.defaultMessage
+    }"]`,
     nodeSelector: 'ol[data-decision-list-local-id] div',
     content: 'text',
     appearance: ['message'],
   },
   {
     name: 'Ordered list',
-    clickSelector: 'span[aria-label="Ordered list"]',
+    clickSelector: `span[aria-label="${
+      listsMessages.orderedList.defaultMessage
+    }"]`,
     nodeSelector: 'ol li p',
     content: 'text',
     appearance: ['full-page', 'comment'],
   },
   {
     name: 'Unordered list',
-    clickSelector: 'span[aria-label="Unordered list"]',
+    clickSelector: `span[aria-label="${
+      listsMessages.unorderedList.defaultMessage
+    }"]`,
     nodeSelector: 'ul li p',
     content: 'text',
     appearance: ['full-page', 'comment'],
@@ -190,7 +209,7 @@ export const baseTests = [
     return {
       name: `Heading ${level}`,
       clickSelector: 'button[aria-haspopup="true"]',
-      menuItemText: `Heading ${level}`,
+      menuItemText: blockTypeMessages[`heading${level}`].defaultMessage,
       nodeSelector: `h${level}`,
       tagName: `h${level}`,
       content: 'text',
@@ -201,27 +220,31 @@ export const baseTests = [
   // -----------------
   // Marks
   // -----------------
-  ['Italic', 'Bold'].map(key => ({
-    name: key,
-    clickSelector: `span[aria-label="${key}"]`,
-    nodeSelector: '.ProseMirror p',
-    content: 'text',
-    appearance: ['full-page', 'comment'],
-  })),
-  ['Underline', 'Strikethrough', 'Code', 'Subscript', 'Superscript'].map(
-    key => ({
+  ['bold', 'italic']
+    .map(k => textFormattingMessages[k].defaultMessage)
+    .map(key => ({
+      name: key,
+      clickSelector: `span[aria-label="${key}"]`,
+      nodeSelector: '.ProseMirror p',
+      content: 'text',
+      appearance: ['full-page', 'comment'],
+    })),
+  ['underline', 'strike', 'code', 'subscript', 'superscript']
+    .map(k => advancedTextFormattingMessages[k].defaultMessage)
+    .map(key => ({
       name: key,
       menuItemText: key,
       clickSelector: advanceFormattingMenuSelector,
       nodeSelector: '.ProseMirror p',
       content: 'text',
       appearance: ['full-page', 'comment'],
-    }),
-  ),
+    })),
   Array.from(colorPalette.values()).map(key => {
     return {
       name: `Text color: ${key}`,
-      clickSelector: 'span[aria-label="Text color"]',
+      clickSelector: `span[aria-label="${
+        textColorMessages.textColor.defaultMessage
+      }"]`,
       menuItemSelector: `button[title="${key}"]`,
       nodeSelector: '.ProseMirror p',
       content: 'text',
@@ -249,18 +272,24 @@ export const baseTests = [
   },
   {
     name: 'Text color picker',
-    clickSelector: 'span[aria-label="Text color"]',
+    clickSelector: `span[aria-label="${
+      textColorMessages.textColor.defaultMessage
+    }"]`,
     appearance: ['full-page', 'comment'],
   },
   {
     name: 'Mention picker',
-    clickSelector: 'span[aria-label="Add mention"]',
+    clickSelector: `span[aria-label="${
+      insertBlockMessages.mention.defaultMessage
+    }"]`,
     nodeSelector: 'span[data-mention-query]',
     appearance: ['full-page', 'comment', 'message'],
   },
   {
     name: 'Hyperlink Recent Search',
-    clickSelector: 'span[aria-label="Add link"]',
+    clickSelector: `span[aria-label="${
+      insertBlockMessages.link.defaultMessage
+    }"]`,
     appearance: ['full-page', 'comment'],
   },
 ];
