@@ -6,6 +6,7 @@ import {
   ContainerResult as ContainerResultComponent,
 } from '@atlaskit/quick-search';
 import Objects24Object24PageIcon from '@atlaskit/icon/glyph/objects/24/object-24-page';
+import BoardIcon from '@atlaskit/icon/glyph/board';
 import ResultList, { Props } from '../../components/ResultList';
 import {
   JiraResult,
@@ -135,4 +136,22 @@ it('should pass the correct properties to ContainerResult for Confluence spaces'
     name: 'name',
     analyticsData: expect.objectContaining(DUMMY_ANALYTICS_DATA),
   });
+});
+
+it('should support default icons for jira if avatar is missing', () => {
+  let jiraItem = makeJiraObjectResult({
+    resultId: 'resultId',
+  });
+  jiraItem.contentType = ContentType.JiraBoard;
+  jiraItem.avatarUrl = undefined;
+  const jiraResults: JiraResult[] = [jiraItem];
+  const wrapper = render({
+    results: jiraResults,
+    analyticsData: DUMMY_ANALYTICS_DATA,
+  });
+
+  const avatar: { type: string } = wrapper
+    .find(ObjectResultComponent)
+    .prop('avatar');
+  expect(avatar.type).toEqual(BoardIcon);
 });
