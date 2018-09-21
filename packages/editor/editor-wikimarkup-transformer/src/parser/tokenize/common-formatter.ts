@@ -1,6 +1,6 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
 import { parseString } from '../text';
-import { Token, TokenType } from './';
+import { Token, TokenType, TokenErrCallback } from './';
 import { macro } from './macro';
 import { linkFormat } from './link-format';
 import { parseNewlineOnly, parseWhitespaceAndNewLine } from './whitespace';
@@ -14,6 +14,8 @@ export interface FormatterOption {
   ignoreTokenTypes?: TokenType[];
   /** This function will be called for each content under the formatter */
   contentDecorator: (pmNode: PMNode) => PMNode;
+  /** Callback when token parse failed */
+  tokenErrCallback?: TokenErrCallback;
 }
 
 const processState = {
@@ -103,7 +105,12 @@ export function commonFormatter(
           return fallback(input);
         }
 
-        const rawContent = parseString(buffer, schema, ignoreTokenTypes);
+        const rawContent = parseString(
+          buffer,
+          schema,
+          ignoreTokenTypes,
+          opt.tokenErrCallback,
+        );
         const decoratedContent = rawContent.map(opt.contentDecorator);
 
         return {

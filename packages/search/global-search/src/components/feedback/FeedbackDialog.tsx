@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Modal from './ModalWrapper';
+import ModalPromise from './ModalWrapper';
 import FieldTextArea from '@atlaskit/field-text-area';
 import sendFeedback from './feedback-client';
 
@@ -13,6 +13,7 @@ export default class FeedbackDialog extends React.Component<Props> {
   state = {
     isInvalid: false,
     feedbackText: '',
+    Modal: null,
   };
 
   submit = () => {
@@ -38,7 +39,11 @@ export default class FeedbackDialog extends React.Component<Props> {
     });
   };
 
-  render() {
+  componentDidMount() {
+    ModalPromise.then(Modal => this.setState({ Modal }));
+  }
+
+  renderDialog(Modal: new () => React.Component<any, any>) {
     const actions = [
       { text: 'Submit feedback', onClick: this.submit },
       { text: 'Cancel', onClick: this.props.onClose },
@@ -68,5 +73,10 @@ export default class FeedbackDialog extends React.Component<Props> {
         />
       </Modal>
     );
+  }
+
+  render() {
+    const { Modal } = this.state;
+    return Modal ? this.renderDialog(Modal) : null;
   }
 }

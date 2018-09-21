@@ -78,12 +78,13 @@ export class ConfluenceQuickSearchContainer extends React.Component<
 
   async searchCrossProductConfluence(
     query: string,
-    searchSessionId: string,
+    sessionId: string,
   ): Promise<CrossProductSearchResults> {
     const {
       crossProductSearchClient,
       useAggregatorForConfluenceObjects,
       useCPUSForPeopleResults,
+      referralContextIdentifiers,
     } = this.props;
 
     let scopes = useAggregatorForConfluenceObjects
@@ -94,9 +95,12 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       scopes.push(Scope.People);
     }
 
+    const referrerId =
+      referralContextIdentifiers && referralContextIdentifiers.searchReferrerId;
+
     const results = await crossProductSearchClient.search(
       query,
-      searchSessionId,
+      { sessionId, referrerId },
       scopes,
     );
     return results;

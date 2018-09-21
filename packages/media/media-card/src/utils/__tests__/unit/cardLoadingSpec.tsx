@@ -4,6 +4,7 @@ import FileIcon from '@atlaskit/icon/glyph/file';
 import LinkIcon from '@atlaskit/icon/glyph/link';
 
 import { CardLoading } from '../..';
+import { getDimensionsWithDefault } from '../../cardLoading';
 
 describe('CardLoading', () => {
   it('should render the right icon based on the itemType', () => {
@@ -26,5 +27,20 @@ describe('CardLoading', () => {
     expect(smallLoadingCard.find(LinkIcon).props().size).toBe('small');
     expect(largeLoadingCard.find(FileIcon).props().size).toBe('large');
     expect(defaultLoadingSize.find(LinkIcon).props().size).toBe('medium');
+  });
+
+  describe('getDimensionsWithDefault()', () => {
+    it('should use default ones when no dimensions provided', () => {
+      expect(getDimensionsWithDefault()).toEqual({
+        width: '100%',
+        height: '100%',
+      });
+    });
+    it('should use pixel units for provided dimensions', () => {
+      expect(getDimensionsWithDefault({ width: 50, height: 50 })).toEqual({
+        width: '50px',
+        height: '50px',
+      });
+    });
   });
 });

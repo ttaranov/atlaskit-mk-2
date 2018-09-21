@@ -1,5 +1,12 @@
 # @atlaskit/renderer
 
+## 23.0.1
+- [patch] Updated dependencies [1be4bb8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1be4bb8)
+  - @atlaskit/editor-common@16.2.1
+  - @atlaskit/media-core@23.2.1
+  - @atlaskit/media-filmstrip@13.0.2
+  - @atlaskit/media-card@35.0.0
+
 ## 23.0.0
 - [major] Add dynamic text sizing support to renderer and editor [2a6410f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2a6410f)
 

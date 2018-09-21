@@ -7,6 +7,7 @@ export interface FrameProps {
   minWidth?: number;
   maxWidth?: number;
   isInteractive?: boolean;
+  isSelected?: boolean;
 }
 
 function minWidth({ minWidth }: FrameProps) {
@@ -38,6 +39,21 @@ function interactive({ isInteractive }: FrameProps) {
   }
 }
 
+function selected({ isSelected }: FrameProps) {
+  return isSelected
+    ? `&::after {
+        cursor: pointer;
+        box-shadow: 0 0 0 2px ${colors.B100};
+        content: '';
+        outline: none;
+        position: absolute;
+        height: 100%;
+        width: 100%;
+        left: 0;
+      }`
+    : '';
+}
+
 export const Wrappper: React.ComponentClass<
   FrameProps & HTMLAttributes<{}>
 > = styled.div`
@@ -51,7 +67,9 @@ export const Wrappper: React.ComponentClass<
   font-weight: 500;
   border-radius: 3px;
   background-color: ${colors.N20A};
+  position: relative;
   ${borderRadius} ${minWidth} ${maxWidth} ${interactive};
+  ${selected}
 `;
 
 export const Icon: React.ComponentClass<HTMLAttributes<{}>> = styled.span`

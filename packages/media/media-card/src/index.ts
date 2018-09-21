@@ -13,12 +13,11 @@ import { CardAction } from './actions';
 export { default as Card } from './root/card/cardLoader';
 export { CardProps, CardState } from './root/card';
 
-export * from './root/cardViewLoader';
+export { CardView } from './root/cardViewLoader';
 
 export {
-  CardViewOwnProps,
   CardViewState,
-  CardViewBaseProps,
+  CardViewOwnProps as CardViewProps,
 } from './root/cardView';
 
 export * from './root/domain';

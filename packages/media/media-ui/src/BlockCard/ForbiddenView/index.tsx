@@ -11,6 +11,7 @@ export interface ForbiddenViewProps {
   url: string;
   onClick?: () => void;
   onAuthorise?: () => void;
+  isSelected?: boolean;
 }
 
 export class ForbiddenView extends React.Component<ForbiddenViewProps> {
@@ -24,9 +25,14 @@ export class ForbiddenView extends React.Component<ForbiddenViewProps> {
   };
 
   render() {
-    const { url, onClick, onAuthorise } = this.props;
+    const { url, onClick, onAuthorise, isSelected } = this.props;
     return (
-      <CollapsedFrame minWidth={minWidth} maxWidth={maxWidth} onClick={onClick}>
+      <CollapsedFrame
+        isSelected={isSelected}
+        minWidth={minWidth}
+        maxWidth={maxWidth}
+        onClick={onClick}
+      >
         <CollapsedIconTitleDescriptionLayout
           icon={
             <IconBackground>
