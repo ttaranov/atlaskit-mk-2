@@ -233,7 +233,7 @@ describe('EmojiRepository', () => {
       });
     });
 
-    it.skip('returns frequently used before others except for an exact shortname match', done => {
+    it('returns frequently used before others except for an exact shortname match', done => {
       const greenHeart = emojiRepository.findByShortName(':green_heart:');
       const heart = emojiRepository.findByShortName(':heart:');
 
@@ -544,7 +544,7 @@ describe('EmojiRepository', () => {
   });
 
   describe('#getDynamicCategories', () => {
-    it.skip('returns an empty list if only standard emojis', () => {
+    it('returns an empty list if only standard emojis', () => {
       const repository = new EmojiRepository(standardEmojis);
       expect(repository.getDynamicCategoryList()).to.deep.equal([]);
     });
@@ -559,7 +559,7 @@ describe('EmojiRepository', () => {
       ]);
     });
 
-    it.skip('should return FREQUENT as a category if there is emoji use tracked', done => {
+    it('should return FREQUENT as a category if there is emoji use tracked', done => {
       const repository = new EmojiRepository(standardEmojis);
       const heart = repository.findByShortName(':heart:');
 
@@ -593,7 +593,7 @@ describe('EmojiRepository', () => {
   });
 
   describe('getFrequentlyUsed', () => {
-    it.skip('should return frequently used with the correct skin tone', done => {
+    it('should return frequently used with the correct skin tone', done => {
       const emojiRepository = newEmojiRepository();
       emojiRepository.used(thumbsupEmoji);
 
@@ -624,7 +624,7 @@ describe('EmojiRepository', () => {
       expect(emoji).to.have.lengthOf(2);
     });
 
-    it.skip('should return frequent emoji on find operations with original category', done => {
+    it('should return frequent emoji on find operations with original category', done => {
       const emojiRepository = newEmojiRepository();
       emojiRepository.used(thumbsupEmoji);
 
