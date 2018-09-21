@@ -1,6 +1,5 @@
 // @flow
 import type { Node } from 'react';
-import type { ThemeProps } from './theme';
 
 // Used by RadioGroupStateless
 export type OptionPropType = {
@@ -12,6 +11,18 @@ export type OptionPropType = {
 };
 
 export type OptionsPropType = Array<OptionPropType>;
+
+export type ThemeProps = {
+  radio?: (
+    state: RadioIconProps,
+  ) => {
+    dotColor: string,
+    circleColor: string,
+    borderColor: string,
+    textColor: string,
+  },
+  mode?: 'light' | 'dark',
+};
 
 export type RadioIconProps = {
   /* Boolean for field active state */

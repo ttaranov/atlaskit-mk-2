@@ -1,6 +1,6 @@
 // @flow
 import { colors } from '@atlaskit/theme';
-import type { RadioIconProps } from './types';
+import type { RadioIconProps, ThemeProps } from './types';
 
 const getBorderColor = (props: RadioIconProps) => {
   if (props.isDisabled) return { light: '', dark: '' };
@@ -53,18 +53,6 @@ const getTextColor = ({ isDisabled }) => {
   return isDisabled
     ? { light: colors.N80, dark: colors.N80 }
     : { light: colors.N900, dark: colors.DN600 };
-};
-
-export type ThemeProps = {
-  radio?: (
-    state: RadioIconProps,
-  ) => {
-    dotColor: string,
-    circleColor: string,
-    borderColor: string,
-    textColor: string,
-  },
-  mode?: 'light' | 'dark',
 };
 
 export default function(props: ThemeProps) {
