@@ -7,9 +7,15 @@ import { EditorAppearance, ToolbarUIComponentFactory } from '../../types';
 import { EventDispatcher } from '../../event-dispatcher';
 import EditorActions from '../../actions';
 
+import ToolbarContext from './ToolbarContext';
+
 const ToolbarComponentsWrapper = styled.div`
   display: flex;
 `;
+
+// const { Consumer, Provider } = createContext({
+//   test: "hello",
+// });
 
 export enum ToolbarSize {
   XXL = 6,
@@ -94,33 +100,35 @@ export class ToolbarInner extends React.Component<ToolbarInnerProps> {
 
     return (
       <ToolbarComponentsWrapper>
-        {items.map((component, key) => {
-          const navigateRight = () => {
-            const itemToFocus = key + 1;
-            console.log(`navigated right in TOOLBAR!, key ${key}`);
-            if (itemToFocus > 0 && itemToFocus < items.length) {
-              // items[itemToFocus].focus();
-            }
-          };
+        <ToolbarContext.Provider value="green">
+          {items.map((component, key) => {
+            const navigateRight = () => {
+              const itemToFocus = key + 1;
+              console.log(`navigated right in TOOLBAR!, key ${key}`);
+              if (itemToFocus > 0 && itemToFocus < items.length) {
+                // items[itemToFocus].focus();
+              }
+            };
 
-          const props: any = { key };
-          const element = component({
-            editorView,
-            editorActions: editorActions as EditorActions,
-            eventDispatcher,
-            providerFactory,
-            appearance,
-            popupsMountPoint,
-            popupsBoundariesElement,
-            popupsScrollableElement,
-            disabled,
-            navigateRight,
-            toolbarSize,
-            isToolbarReducedSpacing,
-            onFocus: e => console.log('test', e),
-          });
-          return element && React.cloneElement(element, props);
-        })}
+            const props: any = { key };
+            const element = component({
+              editorView,
+              editorActions: editorActions as EditorActions,
+              eventDispatcher,
+              providerFactory,
+              appearance,
+              popupsMountPoint,
+              popupsBoundariesElement,
+              popupsScrollableElement,
+              disabled,
+              navigateRight,
+              toolbarSize,
+              isToolbarReducedSpacing,
+              onFocus: e => console.log('test', e),
+            });
+            return element && React.cloneElement(element, props);
+          })}
+        </ToolbarContext.Provider>
       </ToolbarComponentsWrapper>
     );
   }

@@ -2,6 +2,8 @@ import * as React from 'react';
 import { PureComponent, ReactElement } from 'react';
 import { AkButton } from './styles';
 
+import ToolbarContext from '../Toolbar/ToolbarContext.tsx';
+
 export interface Props {
   focus?: () => null;
 
@@ -62,6 +64,9 @@ export default class FocusableButtonWrapper extends PureComponent<Props, {}> {
         onClick={e => console.log('AYYEEE', e)}
         onKeyDown={this.handleKeydown({ onClick, navigateLeft, navigateRight })}
       >
+        <ToolbarContext.Consumer>
+          {value => console.log('CONSUMER', value)}
+        </ToolbarContext.Consumer>
         {button}
       </div>
     );
