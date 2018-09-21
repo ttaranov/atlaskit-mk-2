@@ -5,28 +5,31 @@ import React, { type ComponentType } from 'react';
 import styled from 'styled-components';
 import CustomComponentProxy from '../components/CustomComponentProxy';
 
+const withTheme = El => props => (
+  <Theme>{t => <El {...props} theme={t} />}</Theme>
+);
+
 // This is necessary because we don't know what DOM element the custom component will render.
 export default (styles: Function) => {
-  const StyledCustomComponent = styled(
-    CustomComponentProxy,
-  )`&,&:hover,&:active,&:focus{${styles}}`;
-  const StyledButton = styled.button`
+  const StyledCustomComponent = withTheme(
+    styled(CustomComponentProxy)`&,&:hover,&:active,&:focus{${styles}}`,
+  );
+  const StyledButton = withTheme(styled.button`
     ${styles};
-  `;
-  const StyledLink = styled.a`
+  `);
+  const StyledLink = withTheme(styled.a`
     a& {
       ${styles};
     }
-  `;
-  const StyledSpan = styled.span`
+  `);
+  const StyledSpan = withTheme(styled.span`
     ${styles};
-  `;
+  `);
 
   return function getStyled({
     component,
     href,
     onClick,
-    theme,
   }: {
     component?: ComponentType<*>,
     href?: string,
@@ -43,10 +46,6 @@ export default (styles: Function) => {
       Ret = StyledButton;
     }
 
-    return theme
-      ? props => (
-          <Theme theme={theme}>{t => <Ret {...props} theme={t} />}</Theme>
-        )
-      : Ret;
+    return Ret;
   };
 };
