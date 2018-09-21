@@ -273,6 +273,7 @@ export class Card extends Component<CardProps, CardState> {
 
   // we don't want to show complete status for empty files, ideally there should no such file on the media api,
   // but there are some edge cases when using id upfront that can result on that.
+  // TODO: move into utility
   get status(): CardStatus {
     const { status, metadata, dataURI } = this.state;
     const { identifier } = this.props;
