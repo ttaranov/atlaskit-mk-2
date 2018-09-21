@@ -13427,9 +13427,15 @@ rxjs-async-map@^0.1.2:
   dependencies:
     rxjs "^5.5.6"
 
-rxjs@^5.0.0-beta.11, rxjs@^5.1.0, rxjs@^5.4.2, rxjs@^5.5.2, rxjs@^5.5.6:
+rxjs@^5.0.0-beta.11, rxjs@^5.4.2, rxjs@^5.5.2, rxjs@^5.5.6:
   version "5.5.10"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.5.10.tgz#fde02d7a614f6c8683d0d1957827f492e09db045"
+  dependencies:
+    symbol-observable "1.0.1"
+
+rxjs@^5.5.0:
+  version "5.5.12"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-5.5.12.tgz#6fa61b8a77c3d793dbaf270bee2f43f652d741cc"
   dependencies:
     symbol-observable "1.0.1"
 

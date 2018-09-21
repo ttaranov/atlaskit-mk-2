@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-picker",
-  "version": "16.0.6",
+  "version": "17.0.0",
   "description": "Library for handling file uploads",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -28,9 +28,9 @@
     "@atlaskit/field-text": "^7.0.4",
     "@atlaskit/flag": "^9.0.10",
     "@atlaskit/icon": "^13.8.1",
-    "@atlaskit/media-card": "^35.0.0",
-    "@atlaskit/media-editor": "^13.0.1",
-    "@atlaskit/media-store": "^6.2.0",
+    "@atlaskit/media-card": "^36.0.0",
+    "@atlaskit/media-editor": "^14.0.0",
+    "@atlaskit/media-store": "^6.2.1",
     "@atlaskit/modal-dialog": "^7.0.0",
     "@atlaskit/spinner": "^9.0.5",
     "@atlaskit/util-shared-styles": "^2.10.3",
@@ -52,18 +52,18 @@
     "video-snapshot": "^1.0.1"
   },
   "peerDependencies": {
-    "@atlaskit/media-core": "^23.2.1",
+    "@atlaskit/media-core": "^24.0.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.2",
-    "rxjs": "^5.1.0",
+    "rxjs": "^5.5.0",
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
     "@atlaskit/analytics-listeners": "^4.0.3",
     "@atlaskit/docs": "^5.0.7",
     "@atlaskit/layer-manager": "^5.0.6",
-    "@atlaskit/media-core": "^23.2.1",
-    "@atlaskit/media-test-helpers": "^17.1.0",
+    "@atlaskit/media-core": "^24.0.0",
+    "@atlaskit/media-test-helpers": "^18.0.0",
     "@atlaskit/toggle": "^5.0.5",
     "@atlaskit/webdriver-runner": "^0.1.0",
     "@types/dateformat": "^1.0.1",
@@ -81,7 +81,7 @@
     "react": "^16.4.0",
     "react-circle": "^1.0.1",
     "react-dom": "^16.4.2",
-    "rxjs": "^5.1.0",
+    "rxjs": "^5.5.0",
     "sinon": "^2.2.0"
   }
 }
