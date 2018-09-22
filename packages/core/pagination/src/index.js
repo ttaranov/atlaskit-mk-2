@@ -1,2 +1,4 @@
 // @flow
-export { default } from './components/Pagination';
+
+export { default } from './components/pagination';
+export { default as collapseRange } from './util/collapse-range';

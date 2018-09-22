@@ -11,14 +11,15 @@ const range = (start, length) => [...Array(length)].map((_, i) => start + i);
  * This method will throw an exception if visible is less than 7. With less
  * than 7 visible pages it can become impossible to navigate the range.
  */
-const pageRange = (
+const collapseRange = (
   visible: number,
   current: number,
-  total: number,
-): Array<number | '...'> => {
+  pageLinks: any,
+): any => {
   if (visible < 7) {
     throw new Error('cannot create range with visible pages less than 7');
   }
+  const total = pageLinks.length;
   // only need ellipsis if we have more pages than we can display
   const needEllipsis = total > visible;
   // show start ellipsis if the current page is further away than max - 3 from the first page
@@ -26,23 +27,26 @@ const pageRange = (
   // show end ellipsis if the current page is further than total - max + 3 from the last page
   const hasEndEllipsis = needEllipsis && current < total - visible + 4;
   if (!needEllipsis) {
-    return range(1, total);
+    return pageLinks;
   } else if (hasStartEllipsis && !hasEndEllipsis) {
     const pageCount = visible - 2;
-    return [1, '...', ...range(total - pageCount + 1, pageCount)];
+    return [pageLinks[0], '...', ...pageLinks.slice(total - pageCount)];
   } else if (!hasStartEllipsis && hasEndEllipsis) {
     const pageCount = visible - 2;
-    return [...range(1, pageCount), '...', total];
+    return [...pageLinks.slice(0, pageCount), '...', ...pageLinks.slice(-1)];
   }
   // we have both start and end ellipsis
   const pageCount = visible - 4;
   return [
-    1,
+    pageLinks[0],
     '...',
-    ...range(current - Math.floor(pageCount / 2), pageCount),
+    ...pageLinks.slice(
+      current - Math.floor(pageCount / 2),
+      current + pageCount,
+    ),
     '...',
-    total,
+    ...pageLinks.slice(-1),
   ];
 };
 
-export default pageRange;
+export default collapseRange;
