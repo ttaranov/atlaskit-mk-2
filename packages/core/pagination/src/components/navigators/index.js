@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, type Node } from 'react';
+import React from 'react';
 import ChevronLeftLargeIcon from '@atlaskit/icon/glyph/chevron-left-large';
 import ChevronRightLargeIcon from '@atlaskit/icon/glyph/chevron-right-large';
 import type { NavigatorPropsType } from '../../types';
@@ -9,8 +9,8 @@ export function LeftNavigator(props: NavigatorPropsType) {
   const defaultLeftNavigatorProps = {
     children: <ChevronLeftLargeIcon />,
     isDisabled: false,
-    onClick: () => {},
     label: 'previous',
+    onClick: () => {},
   };
   return <Navigator {...defaultLeftNavigatorProps} {...props} />;
 }
@@ -19,8 +19,8 @@ export function RightNavigator(props: NavigatorPropsType) {
   const defaultRightNavigatorProps = {
     children: <ChevronRightLargeIcon />,
     isDisabled: false,
+    label: 'next',
     onClick: () => {},
-    previousLabel: 'next',
   };
   return <Navigator {...defaultRightNavigatorProps} {...props} />;
 }
