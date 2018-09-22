@@ -4,7 +4,7 @@ import { mount, shallow } from 'enzyme';
 import Button from '@atlaskit/button';
 import PaginationWithAnalytics from '../../..';
 import { PaginationWithoutAnalytics as Pagination } from '../../Pagination';
-import { Ellipsis, ButtonActive } from '../../../styled';
+import { Ellipsis } from '../../../styled';
 
 import { name } from '../../../../package.json';
 
