@@ -48,7 +48,7 @@ export default class ColumnControls extends Component<Props, any> {
     if (nextProps.tableRef) {
       const controls = nextProps.tableRef.parentNode!.firstChild as HTMLElement;
       // checks if controls width is different from table width
-      // 1px difference is acceptible and occurs in some situations due to the browser rendering specifics
+      // 1px difference is acceptable and occurs in some situations due to the browser rendering specifics
       const shouldUpdate =
         Math.abs(controls.offsetWidth - nextProps.tableRef.offsetWidth) > 1;
       if (shouldUpdate) {

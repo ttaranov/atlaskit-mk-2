@@ -77,13 +77,17 @@ const getRelevantConfig = (
 const floatingToolbarPlugin: EditorPlugin = {
   name: 'floatingToolbar',
 
-  pmPlugins(floatingToolbar: Array<FloatingToolbarHandler> = []) {
+  pmPlugins(floatingToolbarHandlers: Array<FloatingToolbarHandler> = []) {
     return [
       {
         // Should be after all toolbar plugins
         name: 'floatingToolbar',
-        plugin: ({ dispatch }) =>
-          floatingToolbarPluginFactory(dispatch, floatingToolbar),
+        plugin: ({ dispatch, reactContext }) =>
+          floatingToolbarPluginFactory({
+            dispatch,
+            floatingToolbarHandlers,
+            reactContext,
+          }),
       },
     ];
   },
@@ -151,18 +155,20 @@ export default floatingToolbarPlugin;
 
 export const pluginKey = new PluginKey('floatingToolbarPluginKey');
 
-function floatingToolbarPluginFactory(
-  dispatch: Dispatch<Array<FloatingToolbarConfig> | undefined>,
-  floatingToolbarHandlers: Array<FloatingToolbarHandler>,
-) {
+function floatingToolbarPluginFactory(options: {
+  floatingToolbarHandlers: Array<FloatingToolbarHandler>;
+  dispatch: Dispatch<Array<FloatingToolbarConfig> | undefined>;
+  reactContext: () => { [key: string]: any };
+}) {
+  const { floatingToolbarHandlers, dispatch, reactContext } = options;
   return new Plugin({
     key: pluginKey,
     state: {
       init: () => undefined,
-
       apply(tr, pluginState, oldState, newState) {
+        const { intl } = reactContext();
         const newPluginState = floatingToolbarHandlers
-          .map(handler => handler(newState))
+          .map(handler => handler(newState, intl))
           .filter(Boolean) as Array<FloatingToolbarConfig>;
 
         dispatch(pluginKey, newPluginState);

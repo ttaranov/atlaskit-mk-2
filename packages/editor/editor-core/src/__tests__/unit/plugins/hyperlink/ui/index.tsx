@@ -2,10 +2,10 @@ import * as React from 'react';
 import { shallow } from 'enzyme';
 import { createEditor, doc, p, a } from '@atlaskit/editor-test-helpers';
 import HyperlinkToolbar, {
-  EditLinkHrefToolbar,
-  AddDisplayTextToolbar,
-  InsertLinkToolbar,
-  ActivityPoweredInsertLinkToolbar,
+  EditLinkHrefToolbarWithIntl,
+  AddDisplayTextToolbarWithIntl,
+  InsertLinkToolbarWithIntl,
+  ActivityPoweredInsertLinkToolbarWithIntl,
 } from '../../../../../plugins/hyperlink/ui';
 import { stateKey as hyperlinkStateKey } from '../../../../../plugins/hyperlink/pm-plugins/main';
 import { showLinkToolbar } from '../../../../../plugins/hyperlink/commands';
@@ -19,7 +19,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkToolbar', () => {
     const wrapper = shallow(
       <HyperlinkToolbar view={view} hyperlinkState={pluginState} />,
     );
-    const toolbar = wrapper.find(EditLinkHrefToolbar);
+    const toolbar = wrapper.find(EditLinkHrefToolbarWithIntl);
     expect(toolbar).toHaveLength(1);
     expect(toolbar.prop('pos')).toEqual(1);
     expect(toolbar.prop('node')).toEqual(view.state.doc.nodeAt(1));
@@ -33,7 +33,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkToolbar', () => {
     const wrapper = shallow(
       <HyperlinkToolbar view={view} hyperlinkState={pluginState} />,
     );
-    const toolbar = wrapper.find(AddDisplayTextToolbar);
+    const toolbar = wrapper.find(AddDisplayTextToolbarWithIntl);
     expect(toolbar).toHaveLength(1);
     expect(toolbar.prop('pos')).toEqual(1);
     expect(toolbar.prop('node')).toEqual(view.state.doc.nodeAt(1));
@@ -46,7 +46,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkToolbar', () => {
     const wrapper = shallow(
       <HyperlinkToolbar view={view} hyperlinkState={pluginState} />,
     );
-    const toolbar = wrapper.find(InsertLinkToolbar);
+    const toolbar = wrapper.find(InsertLinkToolbarWithIntl);
 
     expect(toolbar).toHaveLength(1);
     expect(toolbar.prop('from')).toEqual(1);
@@ -64,7 +64,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkToolbar', () => {
         activityProvider={new Promise(() => {})}
       />,
     );
-    const toolbar = wrapper.find(ActivityPoweredInsertLinkToolbar);
+    const toolbar = wrapper.find(ActivityPoweredInsertLinkToolbarWithIntl);
 
     expect(toolbar).toHaveLength(1);
     expect(toolbar.prop('from')).toEqual(1);

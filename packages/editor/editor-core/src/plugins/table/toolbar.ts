@@ -1,12 +1,15 @@
 import { EditorState, Transaction } from 'prosemirror-state';
 import { hasParentNodeOfType } from 'prosemirror-utils';
 import { TableLayout } from '@atlaskit/editor-common';
+import { defineMessages } from 'react-intl';
+
 import CenterIcon from '@atlaskit/icon/glyph/editor/media-center';
 import WideIcon from '@atlaskit/icon/glyph/editor/media-wide';
 import FullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import TableDisplayOptionsIcon from '@atlaskit/icon/glyph/editor/table-display-options';
 
+import commonMessages from '../../messages';
 import { Command } from '../../types';
 import {
   analyticsService as analytics,
@@ -29,6 +32,29 @@ import {
   checkIfHeaderColumnEnabled,
   checkIfNumberColumnEnabled,
 } from './utils';
+
+export const messages = defineMessages({
+  tableOptions: {
+    id: 'fabric.editor.tableOptions',
+    defaultMessage: 'Table options',
+    description: 'Opens a menu with additional table options',
+  },
+  headerRow: {
+    id: 'fabric.editor.headerRow',
+    defaultMessage: 'Header row',
+    description: 'Marks the first table row as a header row',
+  },
+  headerColumn: {
+    id: 'fabric.editor.headerColumn',
+    defaultMessage: 'Header column',
+    description: 'Marks the first table column as a header row',
+  },
+  numberedColumn: {
+    id: 'fabric.editor.numberedColumn',
+    defaultMessage: 'Numbered column',
+    description: 'Adds an auto-numbering column to your table',
+  },
+});
 
 const getTableLayout = (tableState: TablePluginState) =>
   tableState.tableNode!.attrs.layout;
@@ -56,7 +82,10 @@ export const supportsTableLayout = (state: EditorState) => (
   );
 };
 
-export const getToolbarConfig: FloatingToolbarHandler = state => {
+export const getToolbarConfig: FloatingToolbarHandler = (
+  state,
+  { formatMessage },
+) => {
   const tableState: TablePluginState | undefined = pluginKey.getState(state);
   if (
     tableState &&
@@ -74,14 +103,14 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
       items: [
         {
           type: 'dropdown',
-          title: 'Table display options',
+          title: formatMessage(messages.tableOptions),
           icon: TableDisplayOptionsIcon,
           hidden: !(
             pluginConfig.allowHeaderRow && pluginConfig.allowHeaderColumn
           ),
           options: [
             {
-              title: 'Header row',
+              title: formatMessage(messages.headerRow),
               onClick: withAnalytics(
                 toggleHeaderRow,
                 'atlassian.editor.format.table.toggleHeaderRow.button',
@@ -90,7 +119,7 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
               hidden: !pluginConfig.allowHeaderRow,
             },
             {
-              title: 'Header column',
+              title: formatMessage(messages.headerColumn),
               onClick: withAnalytics(
                 toggleHeaderColumn,
                 'atlassian.editor.format.table.toggleHeaderColumn.button',
@@ -99,7 +128,7 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
               hidden: !pluginConfig.allowHeaderColumn,
             },
             {
-              title: 'Number column',
+              title: formatMessage(messages.numberedColumn),
               selected: checkIfNumberColumnEnabled(state),
               onClick: withAnalytics(
                 toggleNumberColumn,
@@ -123,7 +152,7 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
           icon: CenterIcon,
           onClick: setTableLayout('default'),
           selected: currentLayout === 'default',
-          title: 'Center',
+          title: formatMessage(commonMessages.layoutFixedWidth),
           hidden: !isLayoutSupported('default'),
         },
         {
@@ -131,7 +160,7 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
           icon: WideIcon,
           onClick: setTableLayout('wide'),
           selected: currentLayout === 'wide',
-          title: 'Wide',
+          title: formatMessage(commonMessages.layoutWide),
           hidden: !isLayoutSupported('wide'),
         },
         {
@@ -139,12 +168,16 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
           icon: FullWidthIcon,
           onClick: setTableLayout('full-width'),
           selected: currentLayout === 'full-width',
-          title: 'Full width',
+          title: formatMessage(commonMessages.layoutFullWidth),
           hidden: !isLayoutSupported('full-width'),
         },
         {
           type: 'separator',
-          hidden: !pluginConfig.permittedLayouts,
+          hidden:
+            !pluginConfig.permittedLayouts ||
+            (!isLayoutSupported('default') &&
+              !isLayoutSupported('wide') &&
+              !isLayoutSupported('full-width')),
         },
         {
           type: 'button',
@@ -153,7 +186,7 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
           onClick: deleteTable,
           onMouseEnter: hoverTable(true),
           onMouseLeave: clearHoverSelection,
-          title: 'Remove table',
+          title: formatMessage(commonMessages.remove),
         },
       ],
     };
