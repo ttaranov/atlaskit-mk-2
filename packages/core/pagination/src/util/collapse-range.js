@@ -1,24 +1,16 @@
 // @flow
 
-const range = (start, length) => [...Array(length)].map((_, i) => start + i);
-
 /**
  * Returns an array that represents how the pagination should appear. This
  * array will contain page numbers and ellipsis. For example:
  *
  * pageRange(7, 5, 100) = [1, '...', 4, 5, 6, '...', 100]
- *
- * This method will throw an exception if visible is less than 7. With less
- * than 7 visible pages it can become impossible to navigate the range.
  */
 const collapseRange = (
   visible: number,
   current: number,
-  pageLinks: any,
-): any => {
-  if (visible < 7) {
-    throw new Error('cannot create range with visible pages less than 7');
-  }
+  pageLinks: Array<any> = [],
+): Array<any> => {
   const total = pageLinks.length;
   // only need ellipsis if we have more pages than we can display
   const needEllipsis = total > visible;
