@@ -6,21 +6,19 @@ import type { NavigatorPropsType } from '../../types';
 import Navigator from './navigator';
 
 export function LeftNavigator(props: NavigatorPropsType) {
-  const defaultLeftNavigatorProps = {
+  const defaultProps = {
     children: <ChevronLeftLargeIcon />,
     isDisabled: false,
     label: 'previous',
-    onClick: () => {},
   };
-  return <Navigator {...defaultLeftNavigatorProps} {...props} />;
+  return <Navigator {...defaultProps} {...props} />;
 }
 
 export function RightNavigator(props: NavigatorPropsType) {
-  const defaultRightNavigatorProps = {
+  const defaultProps = {
     children: <ChevronRightLargeIcon />,
     isDisabled: false,
     label: 'next',
-    onClick: () => {},
   };
-  return <Navigator {...defaultRightNavigatorProps} {...props} />;
+  return <Navigator {...defaultProps} {...props} />;
 }
