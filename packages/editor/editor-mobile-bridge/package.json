@@ -30,7 +30,6 @@
     "@atlaskit/mention": "^15.0.6",
     "@atlaskit/renderer": "^23.0.0",
     "@types/prosemirror-view": "^1.0.0",
-    "babel-polyfill": "^7.0.0",
     "prosemirror-view": "^1.5.2"
   },
   "peerDependencies": {

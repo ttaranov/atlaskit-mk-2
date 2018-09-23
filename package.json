@@ -116,6 +116,7 @@
     "babel-preset-flow": "^6.23.0",
     "babel-preset-react": "^6.24.1",
     "bolt-query": "^1.1.4",
+    "canvas": "^1.6.12",
     "chai": "^4.1.2",
     "chai-as-promised": "^6.0.0",
     "cheerio": "^0.22.0",
