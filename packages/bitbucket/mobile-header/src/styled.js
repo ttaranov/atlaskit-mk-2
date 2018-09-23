@@ -19,6 +19,8 @@ const layers = {
   slider: navLayer + 5,
 };
 
+const mobileHeaderHeight = 54;
+
 const xPositioning = ({ side, isOpen }) =>
   side === 'right'
     ? css`
@@ -39,13 +41,22 @@ export const MobileNavSlider = styled.div`
   ${xPositioning};
 `;
 
+// make space so content below doesn't slip beneath the header
+// since the content is `position: fixed`
 export const MobilePageHeader = styled.header`
+  height: ${mobileHeaderHeight}px;
+`;
+
+export const MobilePageHeaderContent = styled.div`
   align-items: center;
   background-color: ${themed({ light: colors.N20, dark: colors.N300 })};
+  box-sizing: border-box;
   display: flex;
-  padding: ${gridSize * 1.5}px;
-  position: sticky;
+  height: ${mobileHeaderHeight}px;
+  padding: ${gridSize}px;
+  position: fixed;
   top: 0;
+  width: 100%;
   z-index: ${layers.header};
 `;
 

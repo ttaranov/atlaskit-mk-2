@@ -69,13 +69,15 @@ class MobileHeader extends PureComponent<MobileHeaderProps, MobileHeaderState> {
     return (
       <Fragment>
         <styles.MobilePageHeader>
-          <Button
-            appearance="subtle"
-            iconBefore={<MenuIcon label={menuIconLabel} size="large" />}
-            onClick={this.props.onNavigationOpen}
-          />
-          <styles.PageHeading>{this.props.pageHeading}</styles.PageHeading>
-          {this.props.secondaryContent}
+          <styles.MobilePageHeaderContent>
+            <Button
+              appearance="subtle"
+              iconBefore={<MenuIcon label={menuIconLabel} size="large" />}
+              onClick={this.props.onNavigationOpen}
+            />
+            <styles.PageHeading>{this.props.pageHeading}</styles.PageHeading>
+            {this.props.secondaryContent}
+          </styles.MobilePageHeaderContent>
         </styles.MobilePageHeader>
 
         {this.renderSlider(
