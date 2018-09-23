@@ -6,7 +6,6 @@ import * as queryString from 'query-string';
 
 import { MentionDescription } from '../../../types';
 import MentionResource, {
-  HttpError,
   MentionResourceConfig,
   MentionStats,
 } from '../../../api/MentionResource';
@@ -230,7 +229,7 @@ describe('MentionResource', () => {
       resource.filter('');
     });
 
-    it.skip('should add weight based on response order', done => {
+    it('should add weight based on response order', done => {
       const resource = new MentionResource(apiConfig);
       resource.subscribe(
         'test1',
@@ -388,7 +387,7 @@ describe('MentionResource', () => {
   });
 
   describe('#filter auth issues', () => {
-    it.skip('401 error once retry', done => {
+    it('401 error once retry', done => {
       const authUrl = 'https://authbogus/';
       const matcher = `begin:${authUrl}`;
 
@@ -430,7 +429,7 @@ describe('MentionResource', () => {
               defaultSecurityCode,
             );
             const secondCall = fetchMock.calls('authonce2');
-            expect(getSecurityHeader(secondCall[1])).toEqual('666');
+            expect(getSecurityHeader(secondCall[0])).toEqual('666');
             done();
           } catch (ex) {
             done(ex);
@@ -486,12 +485,15 @@ describe('MentionResource', () => {
       resource.filter('test');
     });
 
-    /**
-     * Third response expected to be an error, but its not
-     * TODO: JEST-23 Fix these tests
-     */
-    it.skip('401 for search when documents from previous search are already indexed', done => {
-      fetchMock.mock(/\/mentions\/search\?.*query=cz(&|$)/, 401);
+    it('401 for search when documents from previous search are already indexed', done => {
+      fetchMock.restore();
+      fetchMock
+        .mock(/\/mentions\/search\?.*query=c(&|$)/, {
+          body: {
+            mentions: resultC,
+          },
+        })
+        .mock(/.*\/mentions\/search\?.*query=cz(&|$)/, 401);
 
       const resource = new MentionResource(apiConfig);
       let count = 0;
@@ -514,8 +516,7 @@ describe('MentionResource', () => {
           }
         },
         err => {
-          expect(err).toBeInstanceOf(HttpError);
-          expect((<HttpError>err).statusCode).toEqual(401);
+          expect((err as any).code).toEqual(401);
           done();
         },
       );
