@@ -139,7 +139,7 @@ describe('WsConnectionHolder', () => {
       holder = new WsConnectionHolder(auth);
       (WsConnection as any).mockImplementation(
         (
-          auth: Auth,
+          _: Auth,
           onDataReceived: WebsocketDataReceivedHandler,
           onConnectionLost: ConnectionLostHandler,
         ): FakeWsConnection => {

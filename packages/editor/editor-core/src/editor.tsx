@@ -2,16 +2,21 @@ import * as React from 'react';
 import * as PropTypes from 'prop-types';
 import { withAnalytics } from '@atlaskit/analytics';
 import { EditorView } from 'prosemirror-view';
-import { ProviderFactory, Transformer } from '@atlaskit/editor-common';
+import { intlShape, IntlShape, IntlProvider } from 'react-intl';
+
+import {
+  ProviderFactory,
+  Transformer,
+  BaseTheme,
+  WidthProvider,
+} from '@atlaskit/editor-common';
 import { getUiComponent } from './create-editor';
 import EditorActions from './actions';
-import { EditorProps } from './types';
+import { EditorProps } from './types/editor-props';
 import { ReactEditorView } from './create-editor';
 import { EventDispatcher } from './event-dispatcher';
 import EditorContext from './ui/EditorContext';
 import { PortalProvider, PortalRenderer } from './ui/PortalProvider';
-import IntlMessageProvider from './ui/IntlMessageProvider';
-import messages from './i18n/messages';
 
 export * from './types';
 
@@ -24,10 +29,12 @@ export default class Editor extends React.Component<EditorProps, {}> {
 
   static contextTypes = {
     editorActions: PropTypes.object,
+    intl: intlShape,
   };
 
   context: {
     editorActions?: EditorActions;
+    intl: IntlShape;
   };
 
   private providerFactory: ProviderFactory;
@@ -185,16 +192,16 @@ export default class Editor extends React.Component<EditorProps, {}> {
   };
 
   render() {
-    const Component = getUiComponent(this.props.appearance);
+    const Component = getUiComponent(this.props.appearance!);
 
     const overriddenEditorProps = {
       ...this.props,
       onSave: this.props.onSave ? this.handleSave : undefined,
     };
 
-    return (
-      <EditorContext editorActions={this.editorActions}>
-        <IntlMessageProvider messages={messages}>
+    const editor = (
+      <WidthProvider>
+        <EditorContext editorActions={this.editorActions}>
           <PortalProvider
             render={portalProviderAPI => (
               <>
@@ -205,44 +212,58 @@ export default class Editor extends React.Component<EditorProps, {}> {
                   onEditorCreated={this.onEditorCreated}
                   onEditorDestroyed={this.onEditorDestroyed}
                   render={({ editor, view, eventDispatcher, config }) => (
-                    <Component
-                      disabled={this.props.disabled}
-                      editorActions={this.editorActions}
-                      editorDOMElement={editor}
-                      editorView={view}
-                      providerFactory={this.providerFactory}
-                      eventDispatcher={eventDispatcher}
-                      maxHeight={this.props.maxHeight}
-                      onSave={this.props.onSave ? this.handleSave : undefined}
-                      onCancel={this.props.onCancel}
-                      popupsMountPoint={this.props.popupsMountPoint}
-                      popupsBoundariesElement={
-                        this.props.popupsBoundariesElement
-                      }
-                      contentComponents={config.contentComponents}
-                      primaryToolbarComponents={config.primaryToolbarComponents}
-                      secondaryToolbarComponents={
-                        config.secondaryToolbarComponents
-                      }
-                      insertMenuItems={this.props.insertMenuItems}
-                      customContentComponents={this.props.contentComponents}
-                      customPrimaryToolbarComponents={
-                        this.props.primaryToolbarComponents
-                      }
-                      customSecondaryToolbarComponents={
-                        this.props.secondaryToolbarComponents
-                      }
-                      addonToolbarComponents={this.props.addonToolbarComponents}
-                      collabEdit={this.props.collabEdit}
-                    />
+                    <BaseTheme
+                      dynamicTextSizing={this.props.allowDynamicTextSizing}
+                    >
+                      <Component
+                        disabled={this.props.disabled}
+                        editorActions={this.editorActions}
+                        editorDOMElement={editor}
+                        editorView={view}
+                        providerFactory={this.providerFactory}
+                        eventDispatcher={eventDispatcher}
+                        maxHeight={this.props.maxHeight}
+                        onSave={this.props.onSave ? this.handleSave : undefined}
+                        onCancel={this.props.onCancel}
+                        popupsMountPoint={this.props.popupsMountPoint}
+                        popupsBoundariesElement={
+                          this.props.popupsBoundariesElement
+                        }
+                        contentComponents={config.contentComponents}
+                        primaryToolbarComponents={
+                          config.primaryToolbarComponents
+                        }
+                        secondaryToolbarComponents={
+                          config.secondaryToolbarComponents
+                        }
+                        insertMenuItems={this.props.insertMenuItems}
+                        customContentComponents={this.props.contentComponents}
+                        customPrimaryToolbarComponents={
+                          this.props.primaryToolbarComponents
+                        }
+                        customSecondaryToolbarComponents={
+                          this.props.secondaryToolbarComponents
+                        }
+                        addonToolbarComponents={
+                          this.props.addonToolbarComponents
+                        }
+                        collabEdit={this.props.collabEdit}
+                      />
+                    </BaseTheme>
                   )}
                 />
                 <PortalRenderer portalProviderAPI={portalProviderAPI} />
               </>
             )}
           />
-        </IntlMessageProvider>
-      </EditorContext>
+        </EditorContext>
+      </WidthProvider>
+    );
+
+    return this.context.intl ? (
+      editor
+    ) : (
+      <IntlProvider locale="en">{editor}</IntlProvider>
     );
   }
 }

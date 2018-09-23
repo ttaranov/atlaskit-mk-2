@@ -7,15 +7,14 @@ export class ContextHolder {
   readonly contextRestored: Signal<OutputSize> = new Signal<OutputSize>();
 
   private readonly canvas: HTMLCanvasElement;
-  private readonly contextLostListener = (event: Event) =>
-    this.contextLost.emit({});
+  private readonly contextLostListener = () => this.contextLost.emit({});
   private readonly contextRestoredListener: EventListener;
 
   constructor(drawingArea: DrawingArea) {
     this.canvas = drawingArea.canvas;
     this.gl = ContextHolder.getContext(this.canvas);
 
-    this.contextRestoredListener = (event: Event) => {
+    this.contextRestoredListener = () => {
       this.contextRestored.emit(drawingArea.outputSize);
     };
 

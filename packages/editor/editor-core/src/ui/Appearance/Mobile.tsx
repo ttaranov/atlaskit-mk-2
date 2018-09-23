@@ -36,7 +36,8 @@ const ContentArea = styled(ContentStyles)`
   height: 100%;
 
   .ProseMirror {
-    min-height: 100vh;
+    /** Make it full page minus the padding */
+    min-height: calc(100vh - 40px);
   }
 `;
 ContentArea.displayName = 'ContentArea';

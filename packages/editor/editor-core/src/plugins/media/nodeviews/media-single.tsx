@@ -97,10 +97,14 @@ export default class MediaSingleNode extends Component<
       },
     );
   };
+  mediaReady(mediaState) {
+    return mediaState && mediaState.status === 'ready' && mediaState!.preview;
+  }
 
   render() {
     const { layout } = this.props.node.attrs;
     const { progress } = this.state;
+    let hideProgress = false;
 
     let { width, height, type } = this.child.props.node.attrs;
 
@@ -114,6 +118,16 @@ export default class MediaSingleNode extends Component<
       if (height === null) {
         height = stateHeight || DEFAULT_HEIGHT;
       }
+    }
+
+    const mediaState = this.mediaPluginState.getMediaNodeState(
+      this.child.props.node.attrs.__key,
+    );
+
+    if (width === null && this.mediaReady(mediaState)) {
+      width = DEFAULT_WIDTH;
+      height = DEFAULT_HEIGHT;
+      hideProgress = true;
     }
 
     return (
@@ -131,6 +145,7 @@ export default class MediaSingleNode extends Component<
               width: '100%',
               height: '100%',
             },
+            hideProgress,
             isMediaSingle: true,
             progress,
             onExternalImageLoaded: this.onExternalImageLoaded,

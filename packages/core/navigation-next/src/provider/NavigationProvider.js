@@ -2,9 +2,9 @@
 
 import React, { Component } from 'react';
 import { Provider } from 'unstated';
-import { UIController, ViewController } from '..';
+import { UIController, ViewController } from '../index';
 import { CONTENT_NAV_WIDTH } from '../common/constants';
-import type { UIControllerShape } from '../ui-controller/types';
+import type { UIControllerCacheShape } from '../ui-controller/types';
 import type { NavigationProviderProps } from './types';
 
 const LS_KEY = 'ATLASKIT_NAVIGATION_UI_STATE';
@@ -15,9 +15,10 @@ const DEFAULT_UI_STATE = {
   isCollapsed: false,
   productNavWidth: CONTENT_NAV_WIDTH,
   isResizing: false,
+  isResizeDisabled: false,
 };
 
-function defaultGetCache(): UIControllerShape {
+function defaultGetCache(): UIControllerCacheShape {
   if (typeof localStorage !== 'undefined') {
     const stored = localStorage.getItem(LS_KEY);
     return stored ? JSON.parse(stored) : DEFAULT_UI_STATE;
@@ -25,7 +26,7 @@ function defaultGetCache(): UIControllerShape {
   return DEFAULT_UI_STATE;
 }
 
-function defaultSetCache(state: UIControllerShape) {
+function defaultSetCache(state: UIControllerCacheShape) {
   if (typeof localStorage !== 'undefined') {
     localStorage.setItem(LS_KEY, JSON.stringify(state));
   }

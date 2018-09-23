@@ -32,6 +32,7 @@ import {
   buildTypeAheadInsertedPayload,
 } from '../analytics';
 import { promiseAllWithNonFailFast } from '../../../../utils/promise-util';
+import { FabricElementsAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
 export interface Props {
   editorView?: EditorView;
@@ -283,7 +284,7 @@ export class MentionPicker extends Component<
     } = this.props;
 
     const { anchorElement, query, mentionProvider } = this.state;
-
+    const sessionId = this.getSessionId();
     return (
       <Popup
         target={anchorElement}
@@ -295,15 +296,17 @@ export class MentionPicker extends Component<
         scrollableElement={popupsScrollableElement}
         offset={[0, 3]}
       >
-        <AkMentionPicker
-          resourceProvider={mentionProvider}
-          presenceProvider={presenceProvider}
-          onSelection={this.handleSelectedMention}
-          onOpen={this.handleOnOpen}
-          onClose={this.handleOnClose}
-          query={query}
-          ref={this.handleMentionPickerRef}
-        />
+        <FabricElementsAnalyticsContext data={{ sessionId }}>
+          <AkMentionPicker
+            resourceProvider={mentionProvider}
+            presenceProvider={presenceProvider}
+            onSelection={this.handleSelectedMention}
+            onOpen={this.handleOnOpen}
+            onClose={this.handleOnClose}
+            query={query}
+            ref={this.handleMentionPickerRef}
+          />
+        </FabricElementsAnalyticsContext>
       </Popup>
     );
   }

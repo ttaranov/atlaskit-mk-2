@@ -3,7 +3,7 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import Button from '@atlaskit/button';
 import DropdownMenu, { DropdownItem } from '@atlaskit/dropdown-menu';
-import Checkbox from '@atlaskit/checkbox';
+import { Checkbox } from '@atlaskit/checkbox';
 import Followup, { RoleDropdown } from '../../Followup';
 import { Header, Description } from '../../common';
 import { RoleQuestion } from '../../styled/followup';

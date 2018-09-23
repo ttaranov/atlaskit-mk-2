@@ -58,7 +58,7 @@ cases(
   ({ iso, name, type }) => {
     const mockOnChange = jest.fn();
     const wrapper = shallow(
-      <Calendar onChange={mockOnChange} month={1} year={2000} />,
+      <Calendar onChange={mockOnChange} defaultDay={1} month={1} year={2000} />,
     );
     const container = wrapper.first();
 
@@ -68,10 +68,10 @@ cases(
     expect(mockOnChange).toHaveBeenCalledWith(createEventData(iso, { type }));
   },
   [
-    { iso: '2000-01-07', name: 'ArrowDown', type: 'down' },
+    { iso: '2000-01-08', name: 'ArrowDown', type: 'down' },
     { iso: '1999-12-31', name: 'ArrowLeft', type: 'left' },
-    { iso: '2000-01-01', name: 'ArrowRight', type: 'right' },
-    { iso: '1999-12-24', name: 'ArrowUp', type: 'up' },
+    { iso: '2000-01-02', name: 'ArrowRight', type: 'right' },
+    { iso: '1999-12-25', name: 'ArrowUp', type: 'up' },
   ],
 );
 

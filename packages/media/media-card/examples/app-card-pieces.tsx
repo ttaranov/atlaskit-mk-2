@@ -315,7 +315,10 @@ const modelWithMostOfTheThingsAndWithBackground: AppCardModel = {
 const handleClick = () => console.log('clicked on the card');
 const handleActionClick = (a: AppCardAction) =>
   console.log('clicked on the action', a.title, a);
-const handleActionWithLoadingStatesClick = (a: AppCardAction, handlers) => {
+const handleActionWithLoadingStatesClick = (
+  a: AppCardAction,
+  handlers: any,
+) => {
   console.log('clicked on the action', a.title, a);
   handlers.progress();
   switch (a.target.key) {

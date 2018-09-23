@@ -60,6 +60,7 @@ import {
   blockCard,
   unsupportedBlock,
   unsupportedInline,
+  status,
 } from './nodes';
 
 function addItems(
@@ -158,6 +159,7 @@ const nodesInOrder: SchemaBuiltInItem[] = [
   { name: 'taskList', spec: taskList },
   { name: 'taskItem', spec: taskItem },
   { name: 'date', spec: date },
+  { name: 'status', spec: status },
   { name: 'extension', spec: extension },
   { name: 'inlineExtension', spec: inlineExtension },
   { name: 'bodiedExtension', spec: bodiedExtension },

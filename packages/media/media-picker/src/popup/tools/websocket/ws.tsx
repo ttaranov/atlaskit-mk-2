@@ -27,7 +27,7 @@ export const getWsUrl = (baseUrl: string): string => {
 // In this case you don't have to call teardown(), however calling teardown() twice doesn't cause an error.
 export class Ws {
   private readonly ws: WebSocket;
-  private pingTimeoutId: number;
+  private pingTimeoutId?: number;
 
   constructor(
     auth: Auth,

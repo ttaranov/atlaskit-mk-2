@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from '../../components/WrappedLink';
 import { toClass } from 'recompose';
 import {
   AkSearchDrawer,
@@ -66,13 +66,20 @@ const SearchDrawer = ({
           return acc.concat(
             <AkNavigationItemGroup title={dir.id} key={dir.id}>
               {initialItems.map(({ id }) => (
-                <NavItem dirId={dir.id} id={id} closeDrawer={closeDrawer} />
+                <NavItem
+                  dirId={dir.id}
+                  id={id}
+                  key={id}
+                  closeDrawer={closeDrawer}
+                />
               ))}
             </AkNavigationItemGroup>,
           );
         }
         const Items = initialItems.reduce((innerAccumulator, { id }) => {
-          if (id.includes(sanitizedValue)) {
+          // Remove the `-` from name because that is how they are displayed in search
+          const pageName = id.replace(/-/g, ' ');
+          if (pageName.includes(sanitizedValue)) {
             return innerAccumulator.concat(
               <NavItem
                 dirId={dir.id}

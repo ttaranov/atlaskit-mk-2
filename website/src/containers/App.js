@@ -5,6 +5,7 @@ import { BrowserRouter, Switch, Route, Redirect } from 'react-router-dom';
 import { withRouter } from 'react-router';
 import styled, { injectGlobal } from 'styled-components';
 import LayerManager from '@atlaskit/layer-manager';
+import { ModalTransition } from '@atlaskit/modal-dialog';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 
 import Home from '../pages/Home';
@@ -155,11 +156,19 @@ export default function App() {
 
                         <Route
                           path="/packages/:groupId/:pkgId/changelog/:semver?"
-                          component={ChangelogModal}
+                          children={props => (
+                            <ModalTransition>
+                              {props.match && <ChangelogModal {...props} />}
+                            </ModalTransition>
+                          )}
                         />
                         <Route
                           path="/packages/:groupId/:pkgId/example/:exampleId"
-                          component={ExamplesModal}
+                          children={props => (
+                            <ModalTransition>
+                              {props.match && <ExamplesModal {...props} />}
+                            </ModalTransition>
+                          )}
                         />
                       </AppContent>
                     </GridColumn>

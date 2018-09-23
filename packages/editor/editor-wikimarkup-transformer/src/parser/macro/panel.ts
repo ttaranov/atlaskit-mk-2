@@ -1,8 +1,10 @@
 import { Node as PMNode, Schema } from 'prosemirror-model';
 import { parseString } from '../text';
 import { normalizePMNodes } from '../utils/normalize';
+import { title } from '../utils/title';
 
 import { getPanelType } from './panel-type';
+import { TokenErrCallback } from '../tokenize';
 
 const allowedNodeType = ['paragraph', 'heading', 'orderedList', 'bulletList'];
 
@@ -10,6 +12,7 @@ export function panelMacro(
   attrs: { [key: string]: string },
   rawContent: string,
   schema: Schema,
+  tokenErrCallback?: TokenErrCallback,
 ): PMNode[] {
   const output: PMNode[] = [];
 
@@ -19,15 +22,10 @@ export function panelMacro(
   };
 
   if (attrs.title) {
-    const headingNode = schema.nodes.heading.createChecked(
-      { level: 1 },
-      parseString(attrs.title, schema),
-    );
-
-    output.push(headingNode);
+    output.push(title(attrs.title, schema));
   }
 
-  const content = parseString(rawContent, schema);
+  const content = parseString(rawContent, schema, [], tokenErrCallback);
   const normalizedContent = normalizePMNodes(content, schema);
   let contentBuffer: PMNode[] = [];
 

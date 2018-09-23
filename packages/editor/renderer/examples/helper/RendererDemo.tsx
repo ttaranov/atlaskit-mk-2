@@ -259,7 +259,7 @@ export default class RendererDemo extends PureComponent<
       const doc = JSON.parse(this.state.input);
       const html = renderDocument<string>(doc, this.emailSerializer).result;
 
-      if (this.emailRef && html) {
+      if (this.emailRef && this.emailRef.contentDocument && html) {
         this.emailRef.contentDocument.body.innerHTML = html;
       }
     } catch (ex) {

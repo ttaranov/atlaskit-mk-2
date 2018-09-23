@@ -1,18 +1,20 @@
-import { colors } from '@atlaskit/theme';
 import { Node as PMNode, Schema } from 'prosemirror-model';
 import { parseString } from '../text';
 import { normalizePMNodes } from '../utils/normalize';
+import { TokenErrCallback } from '../tokenize';
+import { hasAnyOfMarks } from '../utils/text';
 
 export function blockquoteMacro(
   attrs: { [key: string]: string },
   rawContent: string,
   schema: Schema,
+  tokenErrCallback?: TokenErrCallback,
 ): PMNode[] {
   if (!rawContent.length) {
     const empty = emptyBlockquote(schema);
     return [empty];
   }
-  const content = parseString(rawContent, schema);
+  const content = parseString(rawContent, schema, [], tokenErrCallback);
   const normalizedContent = normalizePMNodes(content, schema);
   return sanitize(normalizedContent, schema);
 }
@@ -75,19 +77,22 @@ function transformHeading(heading: PMNode, schema: Schema): PMNode {
   heading.content.forEach(n => {
     const strong = schema.marks.strong.create();
     const italic = schema.marks.em.create();
-    const grey = schema.marks.textColor.create({ color: colors.N80 });
+    const grey = schema.marks.textColor.create({ color: '#97a0af' });
 
     if (n.type.name === 'text') {
       if (n.text && heading.attrs.level === 1) {
         n.text = n.text.toUpperCase();
       }
-      if (heading.attrs.level <= 4) {
+      if (heading.attrs.level <= 4 && !hasAnyOfMarks(n, ['strong', 'code'])) {
         n = n.mark([...n.marks, strong]);
       }
-      if (heading.attrs.level === 5 || heading.attrs.level === 2) {
+      if (
+        (heading.attrs.level === 5 || heading.attrs.level === 2) &&
+        !hasAnyOfMarks(n, ['em', 'code'])
+      ) {
         n = n.mark([...n.marks, italic]);
       }
-      if (heading.attrs.level > 3) {
+      if (heading.attrs.level > 3 && !hasAnyOfMarks(n, ['textColor', 'code'])) {
         n = n.mark([...n.marks, grey]);
       }
     }

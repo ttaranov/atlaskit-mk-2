@@ -13,9 +13,10 @@ export default (fetcher: Fetcher) => (store: Store<State>) => (
   next: Dispatch<State>,
 ) => (action: RequestUnlinkCloudAccountAction) => {
   if (action.type === REQUEST_UNLINK_CLOUD_ACCOUNT) {
-    const { userAuthProvider } = store.getState();
+    const { userContext } = store.getState();
 
-    userAuthProvider()
+    userContext.config
+      .authProvider()
       .then(auth => fetcher.unlinkCloudAccount(auth, action.account.id))
       .then(() => {
         store.dispatch(unlinkCloudAccount(action.account));

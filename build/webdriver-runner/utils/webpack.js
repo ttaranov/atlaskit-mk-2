@@ -86,8 +86,8 @@ async function getPackagesWithTests() /*: Promise<Array<string>> */ {
 //
 async function startDevServer() {
   const workspacesGlob = await getPackagesWithTests();
-  const mode = 'production';
-  const websiteEnv = 'production';
+  const mode = 'development';
+  const websiteEnv = 'local';
   const projectRoot = (await bolt.getProject({ cwd: process.cwd() })).dir;
   const workspaces = await bolt.getWorkspaces();
   const filteredWorkspaces = workspacesGlob
@@ -107,8 +107,8 @@ async function startDevServer() {
 
   config = createConfig({
     globs,
-    websiteEnv,
     mode,
+    websiteEnv,
     websiteDir: path.join(__dirname, '../../..', 'website'),
   });
 
@@ -124,18 +124,17 @@ async function startDevServer() {
     historyApiFallback: true,
 
     //silence webpack logs
-    quiet: false,
+    quiet: true,
     noInfo: false,
     overlay: false,
     hot: false,
 
-    //change stats to verbose to get detailed information
-    stats: 'minimal',
-    clientLogLevel: 'none',
-
     // disable hot reload for tests - they don't need it for running
     hot: false,
     inline: false,
+    watchOptions: {
+      ignored: ['**/__snapshots__/**', '**/__image_snapshots__/**'],
+    },
   });
 
   return new Promise((resolve, reject) => {

@@ -1,5 +1,42 @@
 # @atlaskit/editor-json-transformer
 
+## 4.0.13
+- [patch] Updated dependencies [ef76f1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef76f1f)
+  - @atlaskit/editor-common@17.0.1
+  - @atlaskit/editor-core@82.0.0
+  - @atlaskit/editor-test-helpers@6.1.3
+
+## 4.0.12
+- [patch] Updated dependencies [927ae63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/927ae63)
+  - @atlaskit/editor-common@17.0.0
+  - @atlaskit/editor-core@81.0.0
+  - @atlaskit/util-data-test@10.0.10
+  - @atlaskit/editor-test-helpers@6.1.2
+
+## 4.0.11
+- [patch] Updated dependencies [6e1d642](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6e1d642)
+  - @atlaskit/editor-common@16.0.0
+  - @atlaskit/editor-core@80.0.0
+  - @atlaskit/editor-test-helpers@6.0.9
+  - @atlaskit/util-data-test@10.0.9
+
+## 4.0.10
+- [patch] Update TS to 3.0 [f68d367](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f68d367)
+- [none] Updated dependencies [f68d367](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f68d367)
+  - @atlaskit/editor-common@15.0.7
+  - @atlaskit/editor-test-helpers@6.0.8
+  - @atlaskit/editor-core@79.0.12
+
+## 4.0.9
+- [patch] ED-5270 Headings now always have a content attribute, even if empty [87a7506](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87a7506)
+
+## 4.0.8
+- [patch] Updated dependencies [7545979](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7545979)
+  - @atlaskit/editor-common@15.0.0
+  - @atlaskit/editor-core@79.0.0
+  - @atlaskit/editor-test-helpers@6.0.6
+  - @atlaskit/util-data-test@10.0.8
+
 ## 4.0.7
 - [patch] Updated dependencies [911a570](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/911a570)
   - @atlaskit/editor-test-helpers@6.0.5

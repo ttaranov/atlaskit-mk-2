@@ -4,7 +4,7 @@ import * as React from 'react';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import { akColorN90 } from '@atlaskit/util-shared-styles';
 
-import Editor from './../src/editor';
+import Editor, { EditorProps } from './../src/editor';
 import EditorContext from './../src/ui/EditorContext';
 import WithEditorActions from './../src/ui/WithEditorActions';
 import {
@@ -21,6 +21,7 @@ import { customInsertMenuItems } from '@atlaskit/editor-test-helpers';
 import { extensionHandlers } from '../example-helpers/extension-handlers';
 import quickInsertProviderFactory from '../example-helpers/quick-insert-provider';
 import { DevTools } from '../example-helpers/DevTools';
+import { EditorActions } from './../src';
 
 export const TitleInput: any = styled.input`
   border: none;
@@ -63,9 +64,10 @@ const analyticsHandler = (actionName, props) => console.log(actionName, props);
 // tslint:disable-next-line:no-console
 const SAVE_ACTION = () => console.log('Save');
 
-const SaveAndCancelButtons = props => (
+export const SaveAndCancelButtons = props => (
   <ButtonGroup>
     <Button
+      tabIndex="-1"
       appearance="primary"
       onClick={() =>
         props.editorActions
@@ -77,6 +79,7 @@ const SaveAndCancelButtons = props => (
       Publish
     </Button>
     <Button
+      tabIndex="-1"
       appearance="subtle"
       // tslint:disable-next-line:jsx-no-lambda
       onClick={() => props.editorActions.clear()}
@@ -86,9 +89,6 @@ const SaveAndCancelButtons = props => (
   </ButtonGroup>
 );
 
-export type Props = {
-  defaultValue?: Object;
-};
 export type State = { disabled: boolean };
 
 const providers = {
@@ -113,7 +113,7 @@ const mediaProvider = storyMediaProviderFactory({
 
 const quickInsertProvider = quickInsertProviderFactory();
 
-export class ExampleEditor extends React.Component<Props, State> {
+export class ExampleEditor extends React.Component<EditorProps, State> {
   state: State = { disabled: true };
 
   componentDidMount() {
@@ -130,7 +130,6 @@ export class ExampleEditor extends React.Component<Props, State> {
       <Wrapper>
         <Content>
           <Editor
-            defaultValue={this.props.defaultValue}
             appearance="full-page"
             analyticsHandler={analyticsHandler}
             quickInsert={{ provider: Promise.resolve(quickInsertProvider) }}
@@ -163,18 +162,27 @@ export class ExampleEditor extends React.Component<Props, State> {
             UNSAFE_cards={{
               provider: Promise.resolve(cardProvider),
             }}
+            allowStatus={true}
             {...providers}
             media={{ provider: mediaProvider, allowMediaSingle: true }}
             placeholder="Write something..."
             shouldFocus={false}
             disabled={this.state.disabled}
             contentComponents={
-              <TitleInput
-                placeholder="Give this page a title..."
+              <WithEditorActions
                 // tslint:disable-next-line:jsx-no-lambda
-                innerRef={this.handleTitleRef}
-                onFocus={this.handleTitleOnFocus}
-                onBlur={this.handleTitleOnBlur}
+                render={actions => (
+                  <TitleInput
+                    placeholder="Give this page a title..."
+                    // tslint:disable-next-line:jsx-no-lambda
+                    innerRef={this.handleTitleRef}
+                    onFocus={this.handleTitleOnFocus}
+                    onBlur={this.handleTitleOnBlur}
+                    onKeyDown={(e: KeyboardEvent) =>
+                      this.onKeyPressed(e, actions)
+                    }
+                  />
+                )}
               />
             }
             primaryToolbarComponents={
@@ -188,11 +196,22 @@ export class ExampleEditor extends React.Component<Props, State> {
             onSave={SAVE_ACTION}
             insertMenuItems={customInsertMenuItems}
             extensionHandlers={extensionHandlers}
+            {...this.props}
           />
         </Content>
       </Wrapper>
     );
   }
+  private onKeyPressed = (e: KeyboardEvent, actions: EditorActions) => {
+    if (e.key === 'Tab' && !e.shiftKey) {
+      // Move to the editor view
+      this.setState({
+        disabled: false,
+      });
+      actions.focus();
+      return false;
+    }
+  };
 
   private handleTitleOnFocus = () => this.setState({ disabled: true });
   private handleTitleOnBlur = () => this.setState({ disabled: false });
@@ -203,12 +222,12 @@ export class ExampleEditor extends React.Component<Props, State> {
   };
 }
 
-export default function Example({ defaultValue }) {
+export default function Example(props: EditorProps) {
   return (
     <EditorContext>
       <div style={{ height: '100%' }}>
         <DevTools />
-        <ExampleEditor defaultValue={defaultValue} />
+        <ExampleEditor {...props} />
       </div>
     </EditorContext>
   );

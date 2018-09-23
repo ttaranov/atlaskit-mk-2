@@ -29,35 +29,35 @@ import searchGiphy from '../popup/middleware/searchGiphy';
 import hidePopupMiddleware from '../popup/middleware/hidePopup';
 import sendUploadEventMiddleware from '../popup/middleware/sendUploadEvent';
 import { PopupConfig, PopupUploadEventEmitter } from '../components/popup';
+import analyticsProcessing from '../popup/middleware/analyticsProcessing';
 
 export default (
   eventEmitter: PopupUploadEventEmitter,
-  context: Context,
+  tenantContext: Context,
+  userContext: Context,
   config: Partial<PopupConfig>,
 ): Store<State> => {
-  const { userAuthProvider, authProvider } = context.config;
-  if (!userAuthProvider) {
-    throw new Error('userAuthProvider must be provided in the context');
-  }
+  const userAuthProvider = userContext.config.authProvider;
 
   const redirectUrl = appConfig.html.redirectUrl;
   const fetcher = new MediaApiFetcher();
   const wsProvider = new WsProvider();
   const cloudService = new CloudService(userAuthProvider);
+  const partialState: State = {
+    ...defaultState,
+    redirectUrl,
+    tenantContext: tenantContext,
+    userContext: userContext,
+    config,
+  };
   return createStore(
     reducers,
-    {
-      ...defaultState,
-      redirectUrl,
-      tenantAuthProvider: authProvider,
-      userAuthProvider,
-      context,
-      config,
-    } as Partial<State>,
+    partialState,
     composeWithDevTools(
       applyMiddleware(
-        startAppMiddleware(eventEmitter) as Middleware,
-        getFilesInRecents(fetcher) as Middleware,
+        analyticsProcessing as Middleware,
+        startAppMiddleware() as Middleware,
+        getFilesInRecents() as Middleware,
         changeService as Middleware,
         changeAccount as Middleware,
         changeCloudAccountFolderMiddleware(fetcher) as Middleware,

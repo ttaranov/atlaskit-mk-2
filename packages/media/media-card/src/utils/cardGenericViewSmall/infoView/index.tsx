@@ -29,6 +29,8 @@ export class InfoView extends React.Component<InfoViewProps, {}> {
     } else if (this.hasBody) {
       return 'bottom';
     }
+
+    return undefined;
   }
 
   render() {

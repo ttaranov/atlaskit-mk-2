@@ -3,12 +3,7 @@
 import React, { Component } from 'react';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import RadioGroup from '@atlaskit/field-radio-group';
-import {
-  akColorB200,
-  akColorN300,
-  akColorN700,
-  akColorB400,
-} from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
 import styled from 'styled-components';
 import * as logos from '../src';
 
@@ -35,10 +30,10 @@ const sizeRange = (Logo, colorPresetProps, size, useProps) => {
 
 const colorPresets = [
   {
-    textColor: akColorN700,
-    iconColor: akColorB200,
-    iconGradientStart: akColorB400,
-    iconGradientStop: akColorB200,
+    textColor: colors.N700,
+    iconColor: colors.B200,
+    iconGradientStart: colors.B400,
+    iconGradientStop: colors.B200,
   },
   {
     textColor: 'currentColor',
@@ -47,10 +42,10 @@ const colorPresets = [
     iconGradientStop: 'currentColor',
   },
   {
-    textColor: akColorB400,
-    iconColor: akColorB200,
-    iconGradientStart: akColorB400,
-    iconGradientStop: akColorB200,
+    textColor: colors.B400,
+    iconColor: colors.B200,
+    iconGradientStart: colors.B400,
+    iconGradientStop: colors.B200,
   },
   {
     textColor: 'orange',
@@ -117,7 +112,7 @@ export default class InteractiveLogo extends Component<Props, State> {
     return (
       <div
         style={{
-          color: this.state.useProps ? akColorN300 : colorPreset.iconColor,
+          color: this.state.useProps ? colors.N300 : colorPreset.iconColor,
         }}
       >
         <ButtonGroup>

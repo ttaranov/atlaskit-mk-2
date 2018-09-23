@@ -16,7 +16,7 @@ export default class ExistingConversation extends React.Component<
   { conversationId?: string }
 > {
   state = {
-    conversationId: null,
+    conversationId: undefined,
   };
 
   async componentDidMount() {

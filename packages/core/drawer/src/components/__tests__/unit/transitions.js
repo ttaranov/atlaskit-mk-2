@@ -34,6 +34,18 @@ describe('Drawer Transitions', () => {
         exited: { transform: 'translate3d(-100%,0,0)' },
       });
     });
+
+    it('should set "unmountOnExit" to true as default', () => {
+      const { unmountOnExit } = wrapper.find('Transition').props();
+
+      expect(unmountOnExit).toBeTruthy();
+    });
+
+    it('should update "unmountOnExit"', () => {
+      const { unmountOnExit } = mount(<Slide in shouldUnmountOnExit={false} />);
+
+      expect(unmountOnExit).toBeFalsy();
+    });
   });
 
   describe('Fade', () => {
@@ -65,6 +77,12 @@ describe('Drawer Transitions', () => {
         entering: { opacity: 0 },
         entered: { opacity: 1 },
       });
+    });
+
+    it('should set "unmountOnExit" to true as default', () => {
+      const { unmountOnExit } = wrapper.find('Transition').props();
+
+      expect(unmountOnExit).toBeTruthy();
     });
   });
 });

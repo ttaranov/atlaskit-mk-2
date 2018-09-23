@@ -113,8 +113,8 @@ export function createApiRouter(): Router<DatabaseSchema> {
   router.get('/file/:fileId/image', ({ query }) => {
     const { width, height, 'max-age': maxAge = 3600 } = query;
     const dataUri = mockDataUri(
-      Number.parseInt(width),
-      Number.parseInt(height),
+      Number.parseInt(width, 10),
+      Number.parseInt(height, 10),
     );
 
     const blob = mapDataUriToBlob(dataUri);
@@ -183,7 +183,7 @@ export function createApiRouter(): Router<DatabaseSchema> {
   router.post('/upload', ({ query }, database) => {
     const { createUpTo = '1' } = query;
 
-    const records = database.create('upload', Number.parseInt(createUpTo));
+    const records = database.create('upload', Number.parseInt(createUpTo, 10));
     const data = records.map(record => record.data);
 
     return {

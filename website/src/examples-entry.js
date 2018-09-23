@@ -2,6 +2,7 @@
 import React from 'react';
 import { render, unmountComponentAtNode } from 'react-dom';
 import '@atlaskit/css-reset';
+import 'regenerator-runtime/runtime';
 import ExamplesLoader from './pages/Examples/loader';
 
 const componentNode = document.getElementById('examples');

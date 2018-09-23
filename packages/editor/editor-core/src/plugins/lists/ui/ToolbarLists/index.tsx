@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { defineMessages, injectIntl, InjectedIntlProps } from 'react-intl';
 import { EditorView } from 'prosemirror-view';
 import BulletListIcon from '@atlaskit/icon/glyph/editor/bullet-list';
 import NumberListIcon from '@atlaskit/icon/glyph/editor/number-list';
@@ -18,9 +19,33 @@ import {
   Separator,
   Wrapper,
   ExpandIconWrapper,
+  Shortcut,
 } from '../../../../ui/styles';
 import { changeToTaskDecision } from '../../../tasks-and-decisions/commands';
 import { toggleBulletList, toggleOrderedList } from '../../commands';
+
+export const messages = defineMessages({
+  unorderedList: {
+    id: 'fabric.editor.unorderedList',
+    defaultMessage: 'Bullet list',
+    description: 'A list with bullets. Also known as an “unordered” list',
+  },
+  orderedList: {
+    id: 'fabric.editor.orderedList',
+    defaultMessage: 'Numbered list',
+    description: 'A list with ordered items 1… 2… 3…',
+  },
+  action: {
+    id: 'fabric.editor.action',
+    defaultMessage: 'Action item',
+    description: 'Also known as a “task”, “to do item”, or a checklist',
+  },
+  lists: {
+    id: 'fabric.editor.lists',
+    defaultMessage: 'Lists',
+    description: 'Menu shows ordered/bullet list and unordered/numbered lists',
+  },
+});
 
 export interface Props {
   editorView: EditorView;
@@ -42,15 +67,19 @@ export interface State {
   isDropdownOpen: boolean;
 }
 
-export default class ToolbarLists extends PureComponent<Props, State> {
+class ToolbarLists extends PureComponent<Props & InjectedIntlProps, State> {
   state: State = {
     isDropdownOpen: false,
   };
 
-  handleTriggerClick = () => {
+  private onOpenChange = (attrs: any) => {
     this.setState({
-      isDropdownOpen: !this.state.isDropdownOpen,
+      isDropdownOpen: attrs.isDropdownOpen,
     });
+  };
+
+  private handleTriggerClick = () => {
+    this.onOpenChange({ isDropdownOpen: !this.state.isDropdownOpen });
   };
 
   createItems = () => {
@@ -59,43 +88,39 @@ export default class ToolbarLists extends PureComponent<Props, State> {
       orderedListDisabled,
       bulletListActive,
       orderedListActive,
+      intl: { formatMessage },
     } = this.props;
+    const labelUnorderedList = formatMessage(messages.unorderedList);
+    const labelOrderedList = formatMessage(messages.orderedList);
+    const labelAction = formatMessage(messages.action);
+
     let items = [
       {
-        content: 'Bullet List',
+        content: labelUnorderedList,
         value: { name: 'bullet_list' },
         isDisabled: bulletListDisabled,
         isActive: Boolean(bulletListActive),
-        tooltipDescription: 'Numbered list',
-        tooltipPosition: 'right',
-        elemBefore: <BulletListIcon label="Numbered list" />,
+        elemAfter: <Shortcut>{tooltip(toggleBulletListKeymap)}</Shortcut>,
       },
       {
-        content: 'Ordered List',
+        content: labelOrderedList,
         value: { name: 'ordered_list' },
         isDisabled: orderedListDisabled,
         isActive: Boolean(orderedListActive),
-        tooltipDescription: 'Ordered list',
-        tooltipPosition: 'right',
-        elemBefore: <NumberListIcon label="Ordered list" />,
+        elemAfter: <Shortcut>{tooltip(toggleOrderedListKeymap)}</Shortcut>,
       },
     ];
     if (this.props.allowTasks) {
       items.push({
-        content: 'Create action',
+        content: labelAction,
         value: { name: 'action' },
         isDisabled: false,
         isActive: false,
-        tooltipDescription: 'Create action',
-        tooltipPosition: 'right',
-        elemBefore: <TaskIcon label="Create action" />,
+        // Action shortcut is not a keymap, it's a input rule.
+        elemAfter: <Shortcut>[]</Shortcut>,
       });
     }
-    return [
-      {
-        items,
-      },
-    ];
+    return [{ items }];
   };
 
   render() {
@@ -109,9 +134,13 @@ export default class ToolbarLists extends PureComponent<Props, State> {
       bulletListDisabled,
       orderedListActive,
       orderedListDisabled,
+      intl: { formatMessage },
     } = this.props;
     const { isDropdownOpen } = this.state;
     if (!isSmall) {
+      const labelUnorderedList = formatMessage(messages.unorderedList);
+      const labelOrderedList = formatMessage(messages.orderedList);
+      const labelAction = formatMessage(messages.action);
       return (
         <ButtonGroup width={isReducedSpacing ? 'small' : 'large'}>
           <ToolbarButton
@@ -119,24 +148,24 @@ export default class ToolbarLists extends PureComponent<Props, State> {
             onClick={this.handleBulletListClick}
             selected={bulletListActive}
             disabled={bulletListDisabled || disabled}
-            title={tooltip(toggleBulletListKeymap)}
-            iconBefore={<BulletListIcon label="Unordered list" />}
+            title={tooltip(toggleBulletListKeymap, labelUnorderedList)}
+            iconBefore={<BulletListIcon label={labelUnorderedList} />}
           />
           <ToolbarButton
             spacing={isReducedSpacing ? 'none' : 'default'}
             onClick={this.handleOrderedListClick}
             selected={orderedListActive}
             disabled={orderedListDisabled || disabled}
-            title={tooltip(toggleOrderedListKeymap)}
-            iconBefore={<NumberListIcon label="Ordered list" />}
+            title={tooltip(toggleOrderedListKeymap, labelOrderedList)}
+            iconBefore={<NumberListIcon label={labelOrderedList} />}
           />
           {allowTasks && (
             <ToolbarButton
               spacing={isReducedSpacing ? 'none' : 'default'}
               onClick={this.handleCreateAction}
               disabled={disabled}
-              title="Create action []"
-              iconBefore={<TaskIcon label="Create action" />}
+              title={`${labelAction} []`}
+              iconBefore={<TaskIcon label={labelAction} />}
             />
           )}
           {isSeparator && <Separator />}
@@ -149,6 +178,8 @@ export default class ToolbarLists extends PureComponent<Props, State> {
         popupsBoundariesElement,
         popupsScrollableElement,
       } = this.props;
+
+      const labelLists = formatMessage(messages.lists);
       return (
         <Wrapper>
           <DropdownMenu
@@ -158,6 +189,7 @@ export default class ToolbarLists extends PureComponent<Props, State> {
             boundariesElement={popupsBoundariesElement}
             scrollableElement={popupsScrollableElement}
             isOpen={isDropdownOpen}
+            onOpenChange={this.onOpenChange}
             fitHeight={188}
             fitWidth={175}
           >
@@ -166,11 +198,12 @@ export default class ToolbarLists extends PureComponent<Props, State> {
               selected={bulletListActive || orderedListActive}
               disabled={disabled}
               onClick={this.handleTriggerClick}
+              title={labelLists}
               iconBefore={
                 <Wrapper>
-                  <BulletListIcon label="Add list" />
+                  <BulletListIcon label={labelLists} />
                   <ExpandIconWrapper>
-                    <ExpandIcon label="Open or close insert block dropdown" />
+                    <ExpandIcon label={labelLists} />
                   </ExpandIconWrapper>
                 </Wrapper>
               }
@@ -223,3 +256,5 @@ export default class ToolbarLists extends PureComponent<Props, State> {
     }
   };
 }
+
+export default injectIntl(ToolbarLists);

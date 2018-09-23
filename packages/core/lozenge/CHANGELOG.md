@@ -1,5 +1,17 @@
 # @atlaskit/lozenge
 
+## 6.2.1
+- [patch] Pulling the shared styles from @atlaskit/theme and removed dependency on util-shraed-styles [7d51a09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d51a09)
+
+## 6.2.0
+- [minor] Use new theme API. Adds "theme" prop and exports new theme types. [4b36fd6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4b36fd6)
+
+## 6.1.8
+- [patch] AK-5321 Lozenge with maxWidth should be constrained by container width [969233e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/969233e)
+
+## 6.1.7
+- [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
+
 ## 6.1.5
 - [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
   - @atlaskit/theme@6.0.0

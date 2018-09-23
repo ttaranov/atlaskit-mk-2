@@ -1,5 +1,49 @@
 # @atlaskit/form
 
+## 4.0.9
+- [patch] Updated dependencies [4194aa4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4194aa4)
+  - @atlaskit/datetime-picker@6.3.10
+  - @atlaskit/select@6.0.0
+
+## 4.0.8
+- [patch] Pulling the shared styles from @atlaskit/theme and removed dependency on util-shraed-styles [7d51a09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d51a09)
+
+## 4.0.7
+- [patch] Deprecates field-radio-group from form components. Adds @atlaskit/radio to field components [dcdb61b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dcdb61b)
+
+## 4.0.6
+- [patch] Fix isRequired applied to all fields [cb73e27](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cb73e27)
+
+## 4.0.5
+- [patch] Updated dependencies [80e1925](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/80e1925)
+  - @atlaskit/button@9.0.9
+  - @atlaskit/modal-dialog@7.0.1
+  - @atlaskit/select@5.0.18
+  - @atlaskit/checkbox@5.0.0
+
+## 4.0.4
+- [patch] Form validate now correctly returns fieldState & checks isRequired [87cea82](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/87cea82)
+
+## 4.0.3
+- [patch] Updated dependencies [d5a043a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5a043a)
+  - @atlaskit/datetime-picker@6.3.7
+  - @atlaskit/icon@13.8.1
+  - @atlaskit/select@5.0.17
+  - @atlaskit/tooltip@12.0.14
+  - @atlaskit/modal-dialog@7.0.0
+
+## 4.0.2
+- [patch] Updated dependencies [9c66d4d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9c66d4d)
+  - @atlaskit/datetime-picker@6.3.6
+  - @atlaskit/select@5.0.16
+  - @atlaskit/webdriver-runner@0.1.0
+
+## 4.0.1
+- [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
+
+## 4.0.0
+- [major] Removed required prop, consolidated the logic into the isRequired prop.  [d8d8107](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d8d8107)
+
 ## 3.1.8
 - [patch] Fix Form submit handlers being called when no onSubmit prop is passed [1086a6b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1086a6b)
 

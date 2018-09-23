@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { ReactElement } from 'react';
 import * as ReactDOM from 'react-dom';
+import { defineMessages, injectIntl, InjectedIntlProps } from 'react-intl';
 import { EditorView } from 'prosemirror-view';
 import { Node as PMNode } from 'prosemirror-model';
 import AddIcon from '@atlaskit/icon/glyph/editor/add';
@@ -39,7 +40,12 @@ import {
 import { InsertMenuCustomItem } from '../../../../types';
 import DropdownMenu from '../../../../ui/DropdownMenu';
 import ToolbarButton from '../../../../ui/ToolbarButton';
-import { Wrapper, ButtonGroup, ExpandIconWrapper } from '../../../../ui/styles';
+import {
+  Wrapper,
+  ButtonGroup,
+  ExpandIconWrapper,
+  Shortcut,
+} from '../../../../ui/styles';
 import { BlockType } from '../../../block-type/types';
 import { MacroProvider } from '../../../macro/types';
 import { createTable } from '../../../table/actions';
@@ -51,6 +57,75 @@ import { insertLayoutColumns } from '../../../layout/actions';
 import { changeToTaskDecision } from '../../../tasks-and-decisions/commands';
 import { Command } from '../../../../commands';
 import { showLinkToolbar } from '../../../hyperlink/commands';
+
+export const messages = defineMessages({
+  link: {
+    id: 'fabric.editor.link',
+    defaultMessage: 'Link',
+    description: 'Insert a hyperlink',
+  },
+  filesAndImages: {
+    id: 'fabric.editor.filesAndImages',
+    defaultMessage: 'Files & images',
+    description: 'Insert one or more files or images',
+  },
+  image: {
+    id: 'fabric.editor.image',
+    defaultMessage: 'Image',
+    description: 'Insert an image.',
+  },
+  mention: {
+    id: 'fabric.editor.mention',
+    defaultMessage: 'Mention',
+    description: 'Reference another person in your document',
+  },
+  emoji: {
+    id: 'fabric.editor.emoji',
+    defaultMessage: 'Emoji',
+    description: 'Insert an emoticon or smiley :-)',
+  },
+  table: {
+    id: 'fabric.editor.table',
+    defaultMessage: 'Table',
+    description: 'Inserts a table in the document',
+  },
+  decision: {
+    id: 'fabric.editor.decision',
+    defaultMessage: 'Decision',
+    description: 'Capture a decision you’ve made',
+  },
+  horizontalRule: {
+    id: 'fabric.editor.horizontalRule',
+    defaultMessage: 'Divider',
+    description: 'A horizontal rule or divider',
+  },
+  date: {
+    id: 'fabric.editor.date',
+    defaultMessage: 'Date',
+    description: 'Opens a date picker that lets you select a date',
+  },
+  placeholderText: {
+    id: 'fabric.editor.placeholderText',
+    defaultMessage: 'Placeholder text',
+    description: '',
+  },
+  columns: {
+    id: 'fabric.editor.columns',
+    defaultMessage: 'Columns',
+    description: 'Create a multi column section or layout',
+  },
+  viewMore: {
+    id: 'fabric.editor.viewMore',
+    defaultMessage: 'View more',
+    description: '',
+  },
+  insertMenu: {
+    id: 'fabric.editor.insertMenu',
+    defaultMessage: 'Insert',
+    description:
+      'Opens a menu of additional items that can be inserted into your document.',
+  },
+});
 
 export interface Props {
   buttons: number;
@@ -109,8 +184,8 @@ const blockTypeIcons = {
 const isDetachedElement = el => !document.body.contains(el);
 const noop = () => {};
 
-export default class ToolbarInsertBlock extends React.PureComponent<
-  Props,
+class ToolbarInsertBlock extends React.PureComponent<
+  Props & InjectedIntlProps,
   State
 > {
   private pickerRef: ReactElement<any>;
@@ -223,6 +298,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       isDisabled,
       buttons: numberOfButtons,
       isReducedSpacing,
+      intl: { formatMessage },
     } = this.props;
 
     const items = this.createItems();
@@ -233,6 +309,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       return null;
     }
 
+    const labelInsertMenu = formatMessage(messages.insertMenu);
     const toolbarButtonFactory = (disabled: boolean, items) => (
       <ToolbarButton
         ref={el => this.handleDropDownButtonRef(el, items)}
@@ -240,11 +317,12 @@ export default class ToolbarInsertBlock extends React.PureComponent<
         disabled={disabled}
         onClick={this.handleTriggerClick}
         spacing={isReducedSpacing ? 'none' : 'default'}
+        title={`${labelInsertMenu} /`}
         iconBefore={
           <TriggerWrapper>
-            <AddIcon label="Open or close insert block dropdown" />
+            <AddIcon label={labelInsertMenu} />
             <ExpandIconWrapper>
-              <ExpandIcon label="Open or close insert block dropdown" />
+              <ExpandIcon label={labelInsertMenu} />
             </ExpandIconWrapper>
           </TriggerWrapper>
         }
@@ -261,7 +339,7 @@ export default class ToolbarInsertBlock extends React.PureComponent<
             disabled={isDisabled || btn.isDisabled}
             iconBefore={btn.elemBefore}
             selected={btn.isActive}
-            title={btn.content}
+            title={btn.content + (btn.shortcut ? ' ' + btn.shortcut : '')}
             onClick={() => this.onItemActivated({ item: btn })}
           />
         ))}
@@ -311,129 +389,137 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       placeholderTextEnabled,
       horizontalRuleEnabled,
       layoutSectionEnabled,
+      intl: { formatMessage },
     } = this.props;
     let items: any[] = [];
 
     if (linkSupported) {
+      const labelLink = formatMessage(messages.link);
+      const shortcutLink = tooltip(addLink);
       items.push({
-        content: 'Add link',
+        content: labelLink,
         value: { name: 'link' },
         isDisabled: linkDisabled,
-        tooltipDescription: tooltip(addLink),
-        tooltipPosition: 'right',
-        elemBefore: <LinkIcon label="Add link" />,
+        elemBefore: <LinkIcon label={labelLink} />,
+        elemAfter: <Shortcut>{shortcutLink}</Shortcut>,
+        shortcut: shortcutLink,
       });
     }
     if (mediaSupported && mediaUploadsEnabled) {
+      const labelFilesAndImages = formatMessage(messages.filesAndImages);
       items.push({
-        content: 'Files and images',
+        content: labelFilesAndImages,
         value: { name: 'media' },
-        tooltipDescription: 'Files and Images',
-        tooltipPosition: 'right',
-        elemBefore: <EditorImageIcon label="Insert files and images" />,
+        elemBefore: <EditorImageIcon label={labelFilesAndImages} />,
       });
     }
     if (imageUploadSupported) {
+      const labelImage = formatMessage(messages.image);
       items.push({
-        content: 'Insert image',
+        content: labelImage,
         value: { name: 'image upload' },
         isDisabled: !imageUploadEnabled,
-        tooltipDescription: 'Insert image',
-        tooltipPosition: 'right',
-        elemBefore: <EditorImageIcon label="Insert image" />,
+        elemBefore: <EditorImageIcon label={labelImage} />,
       });
     }
     if (mentionsSupported) {
+      const labelMention = formatMessage(messages.mention);
       items.push({
-        content: 'Mention',
+        content: labelMention,
         value: { name: 'mention' },
         isDisabled: !mentionsEnabled,
-        tooltipDescription: 'Mention a person (@)',
-        tooltipPosition: 'right',
-        elemBefore: <MentionIcon label="Add mention" />,
+        elemBefore: <MentionIcon label={labelMention} />,
+        elemAfter: <Shortcut>@</Shortcut>,
+        shortcut: '@',
       });
     }
     if (emojiProvider) {
+      const labelEmoji = formatMessage(messages.emoji);
       items.push({
-        content: 'Emoji',
+        content: labelEmoji,
         value: { name: 'emoji' },
         isDisabled: emojiDisabled,
-        tooltipDescription: 'Insert emoji (:)',
-        tooltipPosition: 'right',
-        elemBefore: <EmojiIcon label="Insert emoji" />,
+        elemBefore: <EmojiIcon label={labelEmoji} />,
         handleRef: this.handleButtonRef,
+        elemAfter: <Shortcut>:</Shortcut>,
+        shortcut: ':',
       });
     }
     if (tableSupported) {
+      const labelTable = formatMessage(messages.table);
+      const shortcutTable = tooltip(toggleTable);
       items.push({
-        content: 'Table',
+        content: labelTable,
         value: { name: 'table' },
-        tooltipDescription: tooltip(toggleTable),
-        tooltipPosition: 'right',
-        elemBefore: <TableIcon label="Insert table" />,
+        elemBefore: <TableIcon label={labelTable} />,
+        elemAfter: <Shortcut>{shortcutTable}</Shortcut>,
+        shortcut: shortcutTable,
       });
     }
     if (availableWrapperBlockTypes) {
       availableWrapperBlockTypes.forEach(blockType => {
         const BlockTypeIcon = blockTypeIcons[blockType.name];
+        const labelBlock = formatMessage(blockType.title);
+        const shortcutBlock = tooltip(
+          findKeymapByDescription(blockType.title.defaultMessage),
+        );
         items.push({
-          content: blockType.title,
+          content: labelBlock,
           value: blockType,
-          tooltipDescription: tooltip(findKeymapByDescription(blockType.title)),
-          tooltipPosition: 'right',
-          elemBefore: <BlockTypeIcon label={`Insert ${blockType} block`} />,
+          elemBefore: <BlockTypeIcon label={labelBlock} />,
+          elemAfter: <Shortcut>{shortcutBlock}</Shortcut>,
+          shortcut: shortcutBlock,
         });
       });
     }
     if (decisionSupported) {
+      const labelDecision = formatMessage(messages.decision);
       items.push({
-        content: 'Decision',
+        content: labelDecision,
         value: { name: 'decision' },
-        tooltipDescription: 'Insert decision',
-        tooltipPosition: 'right',
-        elemBefore: <DecisionIcon label="Insert decision" />,
+        elemBefore: <DecisionIcon label={labelDecision} />,
+        elemAfter: <Shortcut>{'<>'}</Shortcut>,
+        shortcut: '<>',
       });
     }
     if (
       horizontalRuleEnabled &&
       this.props.editorView.state.schema.nodes.rule
     ) {
+      const labelHorizontalRule = formatMessage(messages.horizontalRule);
       items.push({
-        content: 'Horizontal Rule',
+        content: labelHorizontalRule,
         value: { name: 'horizontalrule' },
-        tooltipDescription: 'Insert horizontal rule',
-        tooltipPosition: 'right',
-        elemBefore: <HorizontalRuleIcon label="Insert horizontal rule" />,
+        elemBefore: <HorizontalRuleIcon label={labelHorizontalRule} />,
+        elemAfter: <Shortcut>---</Shortcut>,
+        shortcut: '---',
       });
     }
 
     if (dateEnabled) {
+      const labelDate = formatMessage(messages.date);
       items.push({
-        content: 'Date',
+        content: labelDate,
         value: { name: 'date' },
-        tooltipDescription: 'Insert date',
-        tooltipPosition: 'right',
-        elemBefore: <DateIcon label="Insert date" />,
+        elemBefore: <DateIcon label={labelDate} />,
       });
     }
 
     if (placeholderTextEnabled) {
+      const labelPlaceholderText = formatMessage(messages.placeholderText);
       items.push({
-        content: 'Placeholder Text',
+        content: labelPlaceholderText,
         value: { name: 'placeholder text' },
-        tooltipDescription: 'Add placeholder text',
-        tooltipPosition: 'right',
-        elemBefore: <PlaceholderTextIcon label="Add placeholder text" />,
+        elemBefore: <PlaceholderTextIcon label={labelPlaceholderText} />,
       });
     }
 
     if (layoutSectionEnabled) {
+      const labelColumns = formatMessage(messages.columns);
       items.push({
-        content: 'Columns',
+        content: labelColumns,
         value: { name: 'layout' },
-        tooltipDescription: 'Insert columns',
-        tooltipPosition: 'right',
-        elemBefore: <LayoutTwoEqualIcon label="Insert columns" />,
+        elemBefore: <LayoutTwoEqualIcon label={labelColumns} />,
       });
     }
 
@@ -443,12 +529,11 @@ export default class ToolbarInsertBlock extends React.PureComponent<
       // has time to implement this button before it disappears.
       // Should be safe to delete soon. If in doubt ask Leandro Lemos (llemos)
     } else if (typeof macroProvider !== 'undefined' && macroProvider) {
+      const labelViewMore = formatMessage(messages.viewMore);
       items.push({
-        content: 'View more',
+        content: labelViewMore,
         value: { name: 'macro' },
-        tooltipDescription: 'View more',
-        tooltipPosition: 'right',
-        elemBefore: <EditorMoreIcon label="View more" />,
+        elemBefore: <EditorMoreIcon label={labelViewMore} />,
       });
     }
     return items;
@@ -613,3 +698,5 @@ export default class ToolbarInsertBlock extends React.PureComponent<
     }
   };
 }
+
+export default injectIntl(ToolbarInsertBlock);

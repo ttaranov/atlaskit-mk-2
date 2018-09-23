@@ -16,7 +16,7 @@ git.tag.mockImplementation(() => Promise.resolve(true));
 // each time, but there is only one test that uses the output of this function ('should add git tags')
 // and we know this will be heavily refactored once its moved into the bolt org anyway. So we are happy
 // to keep this debt in for now. LB takes full responsibility for this if it becomes flakey.
-bolt.publish = jest.fn(() =>
+bolt.publishPackages = jest.fn(() =>
   Promise.resolve([
     { name: 'pkg-a', newVersion: '1.1.0', published: true },
     { name: 'pkg-b', newVersion: '1.0.1', published: true },
@@ -56,20 +56,20 @@ describe('running release', () => {
     // we make sure we still do this so that a later build can clean up after a previously
     // failed one (where the change was pushed back but not released and the next build has no
     // changeset commits)
-    it('should still run bolt.publish', async () => {
+    it('should still run bolt.publishPackages', async () => {
       await runRelease({ cwd });
 
-      expect(bolt.publish).toHaveBeenCalled();
+      expect(bolt.publishPackages).toHaveBeenCalled();
     });
   });
 
   describe('When there is a changeset commit', () => {
-    it('should run bolt.publish', async () => {
+    it('should run bolt.publishPackages', async () => {
       mockUnpublishedChangesetCommits([simpleChangeset2]);
 
       await runRelease({ cwd });
 
-      expect(bolt.publish).toHaveBeenCalled();
+      expect(bolt.publishPackages).toHaveBeenCalled();
     });
 
     it('should add git tags', async () => {

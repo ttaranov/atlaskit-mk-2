@@ -1,4 +1,5 @@
 import createSandbox from 'jest-sandbox';
+import { Node as PMNode } from 'prosemirror-model';
 import { mention as mentionNode } from '@atlaskit/editor-common';
 import {
   MentionsState,
@@ -332,7 +333,9 @@ describe('mentions', () => {
         id: '1234',
       });
 
-      expect(editorView.state.doc.nodeAt(1)!.type.spec).toEqual(mentionNode);
+      expect((editorView.state.doc.nodeAt(1) as PMNode).type.spec).toEqual(
+        mentionNode,
+      );
       editorView.destroy();
     });
 
@@ -536,7 +539,9 @@ describe('mentions', () => {
         ),
       );
 
-      expect(editorView.state.doc.nodeAt(8)!.type.spec).toEqual(mentionNode);
+      expect((editorView.state.doc.nodeAt(8) as PMNode).type.spec).toEqual(
+        mentionNode,
+      );
       expect(editorView.state.doc.nodeAt(10)).toBe(null);
       editorView.destroy();
     });
@@ -584,7 +589,9 @@ describe('mentions', () => {
         id: '1234',
       });
 
-      expect(editorView.state.doc.nodeAt(9)!.type.spec).toEqual(mentionNode);
+      expect((editorView.state.doc.nodeAt(9) as PMNode).type.spec).toEqual(
+        mentionNode,
+      );
       editorView.destroy();
     });
 
@@ -599,7 +606,9 @@ describe('mentions', () => {
         id: '1234',
       });
 
-      expect(editorView.state.doc.nodeAt(1)!.type.spec).toEqual(mentionNode);
+      expect((editorView.state.doc.nodeAt(1) as PMNode).type.spec).toEqual(
+        mentionNode,
+      );
       editorView.destroy();
     });
   });
@@ -886,7 +895,9 @@ describe('mentions', () => {
 
         sendKeyToPm(editorView, 'Space');
 
-        expect(editorView.state.doc.nodeAt(1)!.type.spec).toEqual(mentionNode);
+        expect((editorView.state.doc.nodeAt(1) as PMNode).type.spec).toEqual(
+          mentionNode,
+        );
         expect(trackEvent).toHaveBeenCalledWith(
           'atlassian.fabric.mention.insert.auto',
           { match: true },

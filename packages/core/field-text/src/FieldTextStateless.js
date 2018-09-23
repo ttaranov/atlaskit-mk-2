@@ -19,11 +19,9 @@ const Wrapper = styled.div`
   flex: 1 1 100%;
 `;
 
-type Props = {|
-  // $FlowFixMe - inexact `FieldTextProps` is incompatible with exact `Props`
-  ...FieldTextProps,
+type Props = FieldTextProps & {
   innerRef?: (node: ?HTMLInputElement) => void,
-|};
+};
 
 class FieldTextStateless extends Component<Props, void> {
   static defaultProps = {

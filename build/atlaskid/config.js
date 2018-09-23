@@ -17,16 +17,13 @@ const atlaskitTeam = [
   'bconolly',
   'raja07',
   'thejameskyle',
-  'mblaszczyk-atlassian',
   'jmackison',
   'scurtis',
-  'jaredcroweatlassian',
-  'jedw',
   'alexreardon',
   'pete_gleeson',
   'mgardiner_atlas',
   'padmaia',
-  'isriharsha', // Navteam
+  'vbelgiornozegna',
 ];
 const editorTeam = [
   'imsysoev',
@@ -86,8 +83,24 @@ const kitkatTeam = [
   'vpetrychuk',
   'bgryta',
 ];
-const growthTeam = ['llemos'];
-const navigationTeam = ['wmendesneto'];
+const growthTeam = [
+  'hchehab',
+  'jcanoatlas',
+  'kanishkpurohit',
+  'anthonyrussell',
+  'wiwong',
+  'leandro_lemos',
+  'rob_sangster',
+  'mpuckeridge',
+  'ilavskym',
+];
+const navigationTeam = [
+  'jaredcroweatlassian',
+  'jedw',
+  'mblaszczyk-atlassian',
+  'wmendesneto',
+  'isriharsha',
+];
 const usersAllowedToApprove = [].concat(
   atlaskitTeam,
   editorTeam,

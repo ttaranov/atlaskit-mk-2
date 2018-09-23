@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/analytics-gas-types",
-  "version": "3.2.0",
+  "version": "3.2.1",
   "description": "Shared analytics functions/components for Fabric Elements",
   "config": {
     "access": "public"

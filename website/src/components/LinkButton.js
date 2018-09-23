@@ -1,7 +1,7 @@
 // @flow
 
 import React, { type Node } from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from './WrappedLink';
 import Button from '@atlaskit/button';
 
 export type LinkButtonProps = {

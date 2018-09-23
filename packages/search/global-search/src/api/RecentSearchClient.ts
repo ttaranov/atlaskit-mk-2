@@ -2,7 +2,7 @@ import {
   Result,
   ResultType,
   AnalyticsType,
-  JiraObjectResult,
+  JiraResult,
   ConfluenceObjectResult,
 } from '../model/Result';
 import {
@@ -132,7 +132,7 @@ function recentItemToResult(recentItem: RecentItem): Result {
   };
 
   if (recentItem.provider === 'jira') {
-    const jiraResult: JiraObjectResult = {
+    const jiraResult: JiraResult = {
       objectKey: objectKey!,
       resultType: ResultType.JiraObjectResult,
       analyticsType: AnalyticsType.RecentJira,

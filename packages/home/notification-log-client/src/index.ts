@@ -1,5 +1,5 @@
-import NotificationLogClient from './NotificationLogClient';
+import NotificationLogClient, { DEFAULT_SOURCE } from './NotificationLogClient';
 
 export * from './types';
 
-export { NotificationLogClient };
+export { NotificationLogClient, DEFAULT_SOURCE };

@@ -1,4 +1,3 @@
-import { analyticsService } from '../analytics';
 import {
   ReactionsProvider,
   ReactionSummary,
@@ -22,7 +21,7 @@ const requestService = <T>(baseUrl: string, path: string, opts?: {}) => {
   const options = opts;
 
   return new Promise<T>((resolve, reject) => {
-    fetch(new Request(url, options))
+    fetch(url, options)
       .then(response => {
         if (response.ok) {
           resolve(response.json());
@@ -68,11 +67,6 @@ export default class ReactionsResource extends AbstractReactionsResource
 
   getDetailedReaction(reaction: ReactionSummary): Promise<ReactionSummary> {
     const { containerAri, ari, emojiId } = reaction;
-    analyticsService.trackEvent('reactions.detailed.reaction', {
-      containerAri,
-      ari,
-      emojiId,
-    });
     const reactionId = `${containerAri}|${ari}|${emojiId}`;
     const headers = this.getHeaders();
     headers.delete('Content-Type');
@@ -89,11 +83,6 @@ export default class ReactionsResource extends AbstractReactionsResource
 
   fetchReactionDetails(reaction: ReactionSummary): Promise<ReactionSummary> {
     const { containerAri, ari, emojiId } = reaction;
-    analyticsService.trackEvent('reactions.detailed.reaction', {
-      containerAri,
-      ari,
-      emojiId,
-    });
     const reactionId = `${containerAri}|${ari}|${emojiId}`;
 
     if (!this.inFlightDetailsRequests[reactionId]) {
@@ -148,11 +137,6 @@ export default class ReactionsResource extends AbstractReactionsResource
     emojiId: string,
     objectCreationTimestamp?: number,
   ): Promise<ReactionsState> {
-    analyticsService.trackEvent('reactions.add.reaction', {
-      containerAri,
-      ari,
-      emojiId,
-    });
     this.optimisticAddReaction(containerAri, ari, emojiId);
 
     const localActionId = this.generateLocalActionId(ari);
@@ -179,11 +163,6 @@ export default class ReactionsResource extends AbstractReactionsResource
     ari: string,
     emojiId: string,
   ): Promise<ReactionsState> {
-    analyticsService.trackEvent('reactions.delete.reaction', {
-      containerAri,
-      ari,
-      emojiId,
-    });
     this.optimisticDeleteReaction(containerAri, ari, emojiId);
 
     const localActionId = this.generateLocalActionId(ari);

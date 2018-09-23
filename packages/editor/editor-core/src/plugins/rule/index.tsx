@@ -26,9 +26,10 @@ const rulePlugin: EditorPlugin = {
   pluginsOptions: {
     quickInsert: [
       {
-        title: 'Horizontal rule',
+        title: 'Divider',
+        keywords: ['horizontal rule', 'rule', 'line'],
         priority: 1200,
-        icon: () => <HorizontalRuleIcon label="Horizontal rule" />,
+        icon: () => <HorizontalRuleIcon label="Divider" />,
         action(insert, state) {
           return insert(state.schema.nodes.rule.createChecked());
         },

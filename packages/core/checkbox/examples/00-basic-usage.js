@@ -1,6 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import Checkbox from '../src';
+import Checkbox from '../src/Checkbox';
 
 type State = {
   onChangeResult: string,
@@ -13,9 +13,9 @@ const BasicUsageExample = class extends PureComponent<void, State> {
 
   onChange = (event: any) => {
     this.setState({
-      onChangeResult: `onChange called with value: ${event.value} isChecked: ${
-        event.isChecked
-      }`,
+      onChangeResult: `onChange called with value: ${
+        event.target.value
+      } isChecked: ${event.target.checked}`,
     });
   };
 
@@ -29,7 +29,7 @@ const BasicUsageExample = class extends PureComponent<void, State> {
           name="checkbox-basic"
         />
         <Checkbox
-          initiallyChecked
+          defaultChecked
           label="Checked by default"
           value="Checked by default"
           onChange={this.onChange}

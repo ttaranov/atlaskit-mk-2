@@ -1,5 +1,29 @@
 # @atlaskit/layer-manager
 
+## 5.0.12
+- [patch] Updated dependencies [d5a043a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5a043a)
+  - @atlaskit/icon@13.8.1
+  - @atlaskit/onboarding@6.0.1
+  - @atlaskit/tooltip@12.0.14
+  - @atlaskit/modal-dialog@7.0.0
+
+## 5.0.11
+- [patch] Updated dependencies [d9d2f0d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d9d2f0d)
+- [none] Updated dependencies [89be4f1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/89be4f1)
+  - @atlaskit/tooltip@12.0.13
+  - @atlaskit/onboarding@6.0.0
+
+## 5.0.10
+- [patch] Updated dependencies [9c66d4d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9c66d4d)
+  - @atlaskit/onboarding@5.1.9
+  - @atlaskit/webdriver-runner@0.1.0
+
+## 5.0.9
+- [patch] Bump react-focus-lock to fix issues with selecting text in Safari. [62dc9fc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/62dc9fc)
+
+## 5.0.8
+- [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
+
 ## 5.0.6
 - [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
   - @atlaskit/theme@6.0.0

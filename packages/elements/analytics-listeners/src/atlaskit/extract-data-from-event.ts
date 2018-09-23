@@ -1,14 +1,19 @@
 /**
  * Largely taken from analytics-web-react
  */
-import * as merge from 'lodash.merge';
 
-const extractFromEventContext = (propertyName: string, event) =>
+import * as merge from 'lodash.merge';
+import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
+
+const extractFromEventContext = (
+  propertyName: string,
+  event: UIAnalyticsEventInterface,
+) =>
   event.context
     .map((contextItem: any) => contextItem[propertyName])
     .filter(Boolean);
 
-export const getActionSubject = event => {
+export const getActionSubject = (event: UIAnalyticsEventInterface) => {
   const overrides = extractFromEventContext('actionSubjectOverride', event);
 
   const closestContext =
@@ -19,18 +24,19 @@ export const getActionSubject = event => {
   return overrides.length > 0 ? overrides[0] : actionSubject;
 };
 
-export const getSources = event => extractFromEventContext('source', event);
+export const getSources = (event: UIAnalyticsEventInterface) =>
+  extractFromEventContext('source', event);
 
-export const getComponents = event =>
+export const getComponents = (event: UIAnalyticsEventInterface) =>
   extractFromEventContext('component', event);
 
-export const getExtraAttributes = event =>
+export const getExtraAttributes = (event: UIAnalyticsEventInterface) =>
   extractFromEventContext('attributes', event).reduce(
     (result, extraAttributes) => merge(result, extraAttributes),
     {},
   );
 
-export const getPackageInfo = event =>
+export const getPackageInfo = (event: UIAnalyticsEventInterface) =>
   event.context
     .map(contextItem => ({
       packageName: contextItem.packageName,
@@ -38,5 +44,5 @@ export const getPackageInfo = event =>
     }))
     .filter(p => p.packageName);
 
-export const getPackageVersion = event =>
+export const getPackageVersion = (event: UIAnalyticsEventInterface) =>
   extractFromEventContext('packageVersion', event);

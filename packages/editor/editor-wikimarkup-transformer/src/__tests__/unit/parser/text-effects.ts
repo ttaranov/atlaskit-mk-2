@@ -10,6 +10,10 @@ describe('JIRA wiki markup - Text effects', () => {
       'should divide marks intervals into combination of marks',
       'This is a *string with a {color:red}bold red* text{color}.',
     ],
+    [
+      'should default unknown color to black #000000',
+      'This is a unknown {color:nimabi}color{color}',
+    ],
     ['should find monospace text', 'This is a string with {{monospaced text}}'],
     [
       'should not search for monospace text inside code macro',
@@ -23,7 +27,7 @@ describe('JIRA wiki markup - Text effects', () => {
     ['should process inserted', 'This is a +inserted+'],
     [
       'should process string with a wrong order of effects',
-      'This is a *strong ^string* with a ~^bla*~~',
+      'This is a *strong ^string* with a ~^ bla*~~',
     ],
     [
       'should convert double baskslash to a hardBreak node',
@@ -39,7 +43,7 @@ describe('JIRA wiki markup - Text effects', () => {
 another one is here and it should* not be applied`,
     ],
     [
-      "should use code mark first if it's the outer mark",
+      'should render content inside code mark as plain text',
       'This is a {{monospace *bold* thingy}}',
     ],
     [

@@ -19,4 +19,5 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var EditorHorizontalRuleIcon = function EditorHorizontalRuleIcon(props) {
   return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><rect fill="currentColor" x="5" y="11" width="14" height="2" rx="1" fill-rule="evenodd"/></svg>' }, props));
 };
+EditorHorizontalRuleIcon.displayName = 'EditorHorizontalRuleIcon';
 exports.default = EditorHorizontalRuleIcon;

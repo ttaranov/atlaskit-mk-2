@@ -8,7 +8,7 @@ export const convertBase64ToBlob = (base64: string) => {
   for (let offset = 0; offset < byteCharacters.length; offset += sliceSize) {
     const slice = byteCharacters.slice(offset, offset + sliceSize);
 
-    const byteNumbers = slice.split('').map((val, i) => slice.charCodeAt(i));
+    const byteNumbers = slice.split('').map((_, i) => slice.charCodeAt(i));
     const byteArray = new Uint8Array(byteNumbers);
 
     byteArrays.push(byteArray);

@@ -9,10 +9,9 @@ import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import FolderIcon from '@atlaskit/icon/glyph/folder';
 import GraphLineIcon from '@atlaskit/icon/glyph/graph-line';
 import IssuesIcon from '@atlaskit/icon/glyph/issues';
-import JiraIcon from '@atlaskit/icon/glyph/jira';
 import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import SearchIcon from '@atlaskit/icon/glyph/search';
-import { JiraWordmark } from '@atlaskit/logo';
+import { JiraIcon, JiraWordmark } from '@atlaskit/logo';
 
 import {
   ContainerHeader,
@@ -56,7 +55,9 @@ const globalNavPrimaryItems = [
         }}
       </UIControllerSubscriber>
     ),
-    icon: JiraIcon,
+    icon: ({ label }: { label: string }) => (
+      <JiraIcon size="medium" label={label} />
+    ),
     label: 'Jira',
   },
   { key: 'search', icon: SearchIcon },

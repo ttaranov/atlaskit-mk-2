@@ -1,37 +1,67 @@
 import * as React from 'react';
-import FrontendFeatureFlagClient from '../src/feature-flag-client';
+import FeatureFlagClient from '../src/index';
 
-const client = new FrontendFeatureFlagClient({
-  triggerAnalytics: event => console.log('fake exposure event', event),
+const myAnalyticsHandler = event => {
+  console.log('Sending exposure event', event);
+};
+
+const client = new FeatureFlagClient({
+  analyticsHandler: myAnalyticsHandler,
   flags: {
-    'experiment.boolean.false': false,
-    'experiment.boolean.true': true,
-    'experiment.string.control': 'control',
-    'experiment.pojo.valid': {
-      targetingRuleKey: 'eval.experiment',
-      variantValue: 'variation-1',
-      hasExtraContent: true,
+    'my.experiment': {
+      value: 'experiment',
+      explanation: {
+        reason: 'RULE_MATCH',
+        ruleId: '111-bbbbb-ccc',
+      },
+    },
+    'my.boolean.flag': false,
+    'my.json.flag': {
+      value: {
+        nav: 'blue',
+        footer: 'black',
+      },
+      explanation: {
+        reason: 'RULE_MATCH',
+        ruleId: '111-bbbbb-ccc',
+      },
+    },
+    'my.detailed.boolean.flag': {
+      value: false,
+      explanation: {
+        reason: 'RULE_MATCH',
+        ruleId: '111-bbbbb-ccc',
+      },
     },
   },
-  uninitialisedFlagsEventName: 'something.went.wrong',
 });
 
-client.getVariantValue('experiment.string.control') === 'control';
-
-const getVariantValueWithReactOutput = flag => (
-  <p>
-    {flag}: {`${client.getVariantValue(flag)}`}
-  </p>
-);
+const JSONFlag: any = client.getJSONValue('my.json.flag');
 
 export default () => (
   <div>
     <h2>Feature flag client</h2>
 
-    <h3>Flags : values</h3>
-    {getVariantValueWithReactOutput('experiment.boolean.false')}
-    {getVariantValueWithReactOutput('experiment.boolean.true')}
-    {getVariantValueWithReactOutput('experiment.string.control')}
-    {getVariantValueWithReactOutput('experiment.pojo.valid')}
+    <h4>getVariantValue</h4>
+    <p>
+      Value for flag "my.experiment" is "{client.getVariantValue(
+        'my.experiment',
+        {
+          default: 'control',
+          oneOf: ['control', 'experiment'],
+        },
+      )}"
+    </p>
+
+    <h4>getBooleanValue</h4>
+    <p>
+      Value for flag "my.boolean.flag" is "{JSON.stringify(
+        client.getBooleanValue('my.boolean.flag', { default: true }),
+      )}"
+    </p>
+
+    <h4>getJSONFlag</h4>
+    <p>Nav color is {JSONFlag.nav}</p>
+    <p>Footer color is {JSONFlag.footer}</p>
   </div>
 );

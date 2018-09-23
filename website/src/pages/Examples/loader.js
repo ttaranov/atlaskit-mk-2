@@ -4,13 +4,19 @@ import { isValidElementType } from 'react-is';
 import styled from 'styled-components';
 import FabricAnalyticsListeners from '@atlaskit/analytics-listeners';
 import { colors, gridSize } from '@atlaskit/theme';
-import Loadable from 'react-loadable';
+import Loadable from '../../components/WrappedLoader';
 import qs from 'query-string';
 
 import packageResolver from '../../utils/packageResolver';
 import * as fs from '../../utils/fs';
 import type { File } from '../../types';
 import Loading from '../../components/Loading';
+import {
+  sendApdex,
+  sendInitialApdex,
+  initializeGA,
+  observePerformanceMetrics,
+} from '../../components/Analytics/GoogleAnalyticsListener';
 
 const ErrorMessage = styled.div`
   background-color: ${colors.R400};
@@ -46,6 +52,21 @@ export default class ExamplesIFrame extends Component<{}, State> {
         exampleId,
       });
     }
+  }
+
+  componentDidMount() {
+    if (window.self === window.top) {
+      const location = window.location.pathname + window.location.search;
+      window.addEventListener(
+        'load',
+        () => {
+          sendInitialApdex(location);
+        },
+        { once: true },
+      );
+      observePerformanceMetrics(location);
+    }
+    initializeGA();
   }
 
   render() {
