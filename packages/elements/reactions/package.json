@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/reactions",
-  "version": "13.1.3",
+  "version": "14.0.0",
   "config": {
     "access": "public"
   },

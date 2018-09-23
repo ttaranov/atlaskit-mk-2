@@ -1,5 +1,8 @@
 # @atlaskit/reactions
 
+## 14.0.0
+- [major] Reactions state management revisited [7e8d079](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e8d079)
+
 ## 13.1.3
 - [patch] Updated dependencies [927ae63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/927ae63)
   - @atlaskit/util-data-test@10.0.10
