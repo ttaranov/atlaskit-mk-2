@@ -16,9 +16,12 @@ export default class Link extends Component<Props> {
     return (
       <Button
         appearance="subtle"
+        ariaLabel={label}
         href={href}
         isSelected={selected}
-        onClick={onClick}
+        onClick={() => {
+          onClick && onClick(label);
+        }}
       >
         {children}
       </Button>
