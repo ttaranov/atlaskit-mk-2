@@ -49,7 +49,7 @@ export const MobilePageHeader = styled.header`
 
 export const MobilePageHeaderContent = styled.div`
   align-items: center;
-  background-color: ${themed({ light: colors.N20, dark: colors.N300 })};
+  background-color: ${themed({ light: colors.N20, dark: colors.DN10 })};
   box-sizing: border-box;
   display: flex;
   height: ${mobileHeaderHeight}px;
