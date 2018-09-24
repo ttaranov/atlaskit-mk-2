@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 5.8.1
+- [patch] Add support for Jira default icons for boards, filters and issues [deb791d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/deb791d)
+
 ## 5.8.0
 - [minor] Use CPUS for people search [7cb2b57](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7cb2b57)
 
