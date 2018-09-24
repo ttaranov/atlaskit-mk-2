@@ -269,6 +269,7 @@ import JiraTrivialIcon from '../glyph/jira/trivial';
 import LabelIcon from '../glyph/label';
 import LightbulbFilledIcon from '../glyph/lightbulb-filled';
 import LightbulbIcon from '../glyph/lightbulb';
+import LikeIcon from '../glyph/like';
 import LinkFilledIcon from '../glyph/link-filled';
 import LinkIcon from '../glyph/link';
 import ListIcon from '../glyph/list';
@@ -2001,6 +2002,12 @@ export default {
     component: LightbulbIcon,
     componentName: 'LightbulbIcon',
     package: '@atlaskit/icon/glyph/lightbulb',
+  },
+  like: {
+    keywords: ['like'],
+    component: LikeIcon,
+    componentName: 'LikeIcon',
+    package: '@atlaskit/icon/glyph/like',
   },
   'link-filled': {
     keywords: ['link-filled', 'linkfilled'],
