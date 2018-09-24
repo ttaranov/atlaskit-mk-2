@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import BoardIcon from '@atlaskit/icon/glyph/board';
 import IssueIcon from '@atlaskit/icon/glyph/issue';
 import FilterIcon from '@atlaskit/icon/glyph/filter';
-import { colors, gridSize } from '@atlaskit/theme';
+import { gridSize } from '@atlaskit/theme';
 import { ContentType } from '../model/Result';
 
 const IconWrapper = styled.div`
@@ -33,11 +33,7 @@ export const getDefaultAvatar = (contentType?: ContentType) => {
   const IconComponent = getIconComponent(contentType);
   return IconComponent ? (
     <IconWrapper>
-      <IconComponent
-        label={contentType || ''}
-        size="medium"
-        primaryColor={colors.B200}
-      />
+      <IconComponent label={contentType || ''} size="medium" />
     </IconWrapper>
   ) : null;
 };
