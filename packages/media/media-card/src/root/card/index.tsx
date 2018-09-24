@@ -283,8 +283,9 @@ export class Card extends Component<CardProps, CardState> {
     }
 
     if (metadata) {
-      const { size, mediaType } = metadata as FileDetails;
+      const { size, mediaType, name } = metadata as FileDetails;
 
+      // If is an image with preview we show it
       if (mediaType === 'image' && dataURI) {
         return 'complete';
       }
@@ -294,6 +295,11 @@ export class Card extends Component<CardProps, CardState> {
         isLoadingImage(mediaType, dataURI)
       ) {
         return 'processing';
+      }
+
+      // If we have enough metadata for non images, we show them
+      if (mediaType !== 'image' && name && size) {
+        return 'complete';
       }
     }
 

@@ -15,6 +15,7 @@ import {
   MediaPluginState,
   stateKey as mediaStateKey,
 } from '../pm-plugins/main';
+import { FileIdentifier } from '@atlaskit/media-card';
 
 export interface MediaGroupNodeProps {
   view: EditorView;
@@ -75,26 +76,30 @@ export default class MediaGroupNode extends Component<
   }
 
   render() {
-    const { animate, offset } = this.state;
-    const mediaIDs = this.getMediaNodesIds(this.props.children);
-
+    // const { animate, offset } = this.state;
+    const items = this.getMediaNodesIds(this.props.children);
+    // console.log(items)
     return (
       <Wrapper>
-        <Filmstrip items={mediaIDs} context={this.mediaPluginState.context} />
+        <Filmstrip items={items} context={this.mediaPluginState.context} />
       </Wrapper>
     );
   }
 
   private getMediaNodesIds = (children: React.ReactNode): FilmstripItem[] => {
-    const tempIds =
+    const tempIds: string[] =
       React.Children.map(children, (child: React.ReactElement<any>) => {
         return (child.props as MediaNodeProps).node.attrs.id;
       }) || [];
 
     return tempIds.map(id => {
-      return {
-        identifier: this.mediaPluginState.stateManager.getState(id).fileId,
+      const identifier: FileIdentifier = {
+        id: this.mediaPluginState.stateManager.getState(id).fileId,
         mediaItemType: 'file',
+      };
+
+      return {
+        identifier,
       };
     });
   };
