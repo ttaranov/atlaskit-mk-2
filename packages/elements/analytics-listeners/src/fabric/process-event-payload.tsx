@@ -22,7 +22,7 @@ const extractFieldsFromContext = (fieldsToPick: string[]) => (
     )
     .reduce((result, item) => merge(result, item), {});
 
-const elementsFieldExtractor = extractFieldsFromContext([
+const fieldExtractor = extractFieldsFromContext([
   'source',
   'objectType',
   'objectId',
@@ -40,7 +40,7 @@ const updatePayloadWithContext = (
   const {
     [ELEMENTS_CONTEXT]: attributes,
     ...fields
-  }: ObjectType = elementsFieldExtractor(event.context);
+  }: ObjectType = fieldExtractor(event.context);
 
   if (attributes) {
     event.payload.attributes = merge(
