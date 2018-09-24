@@ -1,5 +1,8 @@
 # @atlaskit/editor-test-helpers
 
+## 6.2.1
+- [patch] ED-5151 Editor i18n: Floating toolbars [403b547](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/403b547)
+
 ## 6.2.0
 - [minor] FS-2893 - Creation use cases for full page actions and decisions [c8aa5f5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8aa5f5)
 
