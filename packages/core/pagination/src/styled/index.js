@@ -4,7 +4,6 @@ import Button from '@atlaskit/button';
 
 export const Container = styled.div`
   display: flex;
-  margin-top: 24px;
 `;
 
 export const Ellipsis = styled.span`
