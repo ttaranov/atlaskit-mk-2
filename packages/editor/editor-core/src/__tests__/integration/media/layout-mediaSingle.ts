@@ -1,5 +1,6 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
+import { sleep } from '@atlaskit/editor-test-helpers';
 import {
   editable,
   getDocFromElement,
@@ -7,7 +8,7 @@ import {
   insertMedia,
   fullpage,
 } from '../_helpers';
-import { sleep } from '@atlaskit/editor-test-helpers';
+import commonMessages from '../../../messages';
 
 BrowserTestCase(
   'Can change media single to full-width layout on fullpage',
@@ -36,7 +37,9 @@ BrowserTestCase(
     await browser.click('.media-single div div div');
 
     // change layouts
-    const layoutButton = `[aria-label="Change layout to Full width"]`;
+    const layoutButton = `[aria-label="${
+      commonMessages.layoutFullWidth.defaultMessage
+    }"]`;
     await browser.waitForSelector(layoutButton);
     await browser.click(layoutButton);
 

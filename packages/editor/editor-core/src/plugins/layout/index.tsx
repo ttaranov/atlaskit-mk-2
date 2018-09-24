@@ -30,10 +30,10 @@ export default {
     ];
   },
   pluginsOptions: {
-    floatingToolbar(state): FloatingToolbarConfig | undefined {
+    floatingToolbar(state, intl): FloatingToolbarConfig | undefined {
       const { pos } = pluginKey.getState(state) as LayoutState;
       if (pos !== null) {
-        return buildToolbar(state, pos);
+        return buildToolbar(state, intl, pos);
       }
       return undefined;
     },

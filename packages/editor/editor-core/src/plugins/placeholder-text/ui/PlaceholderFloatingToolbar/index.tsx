@@ -1,4 +1,6 @@
 import * as React from 'react';
+import { defineMessages, injectIntl, InjectedIntlProps } from 'react-intl';
+
 import PanelTextInput from '../../../../ui/PanelTextInput';
 import FloatingToolbar, {
   handlePositionCalculatedWith,
@@ -6,6 +8,14 @@ import FloatingToolbar, {
   getNearestNonTextNode,
   Coordinates,
 } from '../../../../ui/FloatingToolbar';
+
+export const messages = defineMessages({
+  placeholderTextPlaceholder: {
+    id: 'fabric.editor.placeholderTextPlaceholder',
+    defaultMessage: 'Add placeholder text',
+    description: '',
+  },
+});
 
 export interface Props {
   getNodeFromPos: (pos: number) => Node;
@@ -20,7 +30,9 @@ export interface Props {
   popupsBoundariesElement?: HTMLElement;
 }
 
-export default class PlaceholderFloatingToolbar extends React.Component<Props> {
+class PlaceholderFloatingToolbar extends React.Component<
+  Props & InjectedIntlProps
+> {
   handleSubmit = (value?: string) => {
     if (value) {
       this.props.insertPlaceholder(value);
@@ -42,6 +54,7 @@ export default class PlaceholderFloatingToolbar extends React.Component<Props> {
       popupsMountPoint,
       getFixedCoordinatesFromPos,
       popupsBoundariesElement,
+      intl: { formatMessage },
     } = this.props;
     const target = getNodeFromPos(showInsertPanelAt);
     const offsetParent = getOffsetParent(editorViewDOM, popupsMountPoint);
@@ -62,7 +75,7 @@ export default class PlaceholderFloatingToolbar extends React.Component<Props> {
         offset={[0, 12]}
       >
         <PanelTextInput
-          placeholder="Add placeholder text"
+          placeholder={formatMessage(messages.placeholderTextPlaceholder)}
           onSubmit={this.handleSubmit}
           onBlur={this.handleBlur}
           autoFocus
@@ -72,3 +85,5 @@ export default class PlaceholderFloatingToolbar extends React.Component<Props> {
     );
   }
 }
+
+export default injectIntl(PlaceholderFloatingToolbar);

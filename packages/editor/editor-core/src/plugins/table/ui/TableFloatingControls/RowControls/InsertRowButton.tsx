@@ -1,6 +1,8 @@
 import * as React from 'react';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import AddIcon from '@atlaskit/icon/glyph/editor/add';
-import AkButton from '@atlaskit/button';
+import Button from '@atlaskit/button';
+import tableMessages from '../../messages';
 
 export interface ButtonProps {
   style?: object;
@@ -14,16 +16,17 @@ const InsertRowButton = ({
   onClick,
   lineMarkerWidth,
   style,
-}: ButtonProps) => (
+  intl: { formatMessage },
+}: ButtonProps & InjectedIntlProps) => (
   <div
     className="pm-table-controls__insert-button-wrap"
     style={style}
     onMouseOver={onMouseOver}
   >
     <div className="pm-table-controls__insert-button">
-      <AkButton
+      <Button
         onClick={onClick}
-        iconBefore={<AddIcon label="Add row" />}
+        iconBefore={<AddIcon label={formatMessage(tableMessages.insertRow)} />}
         appearance="primary"
         spacing="none"
       />
@@ -36,4 +39,4 @@ const InsertRowButton = ({
   </div>
 );
 
-export default InsertRowButton;
+export default injectIntl(InsertRowButton);

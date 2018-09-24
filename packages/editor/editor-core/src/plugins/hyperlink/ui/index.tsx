@@ -1,6 +1,10 @@
 import * as React from 'react';
+import { defineMessages, injectIntl, InjectedIntlProps } from 'react-intl';
 import { Node, Mark } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
+import { findDomRefAtPos } from 'prosemirror-utils';
+import { ActivityProvider } from '@atlaskit/activity';
+
 import {
   setLinkText,
   removeLink,
@@ -9,19 +13,41 @@ import {
   insertLink,
 } from '../commands';
 import HyperlinkEdit from './HyperlinkEdit';
-import { findDomRefAtPos } from 'prosemirror-utils';
-import { ActivityProvider } from '@atlaskit/activity';
 import RecentSearch from './RecentSearch';
 import { normalizeUrl } from '../utils';
 import { InsertStatus, HyperlinkState } from '../pm-plugins/main';
 
-export class AddDisplayTextToolbar extends React.PureComponent<{
+export const messages = defineMessages({
+  linkPlaceholder: {
+    id: 'fabric.editor.linkPlaceholder',
+    defaultMessage: 'Paste link',
+    description: 'Create a new link by pasting a URL.',
+  },
+  linkTextPlaceholder: {
+    id: 'fabric.editor.linkTextPlaceholder',
+    defaultMessage: 'Text to display',
+    description:
+      'Enter the text you’d like to display for the link (instead of the URL).',
+  },
+  linkPlaceholderWithSearch: {
+    id: 'fabric.editor.linkPlaceholderWithSearch',
+    defaultMessage: 'Paste link or search recently viewed',
+    description:
+      'Create a new link by pasting a URL or searching pages you’ve recently visited.',
+  },
+});
+
+export interface CommonProps {
   pos: number;
   node: Node;
   view: EditorView;
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
-}> {
+}
+
+export class AddDisplayTextToolbar extends React.PureComponent<
+  CommonProps & InjectedIntlProps
+> {
   render() {
     const {
       pos,
@@ -29,6 +55,7 @@ export class AddDisplayTextToolbar extends React.PureComponent<{
       view,
       popupsMountPoint,
       popupsBoundariesElement,
+      intl: { formatMessage },
     } = this.props;
     const existingLink = (node.type.schema.marks.link.isInSet(
       node.marks,
@@ -47,7 +74,7 @@ export class AddDisplayTextToolbar extends React.PureComponent<{
         popupsMountPoint={popupsMountPoint}
         popupsBoundariesElement={popupsBoundariesElement}
         alwaysOpenLinkAt={existingLink}
-        placeholder="Text to display"
+        placeholder={formatMessage(messages.linkTextPlaceholder)}
         onSubmit={updateLinkText}
         onBlur={updateLinkTextOrHideToolbar}
         onUnlink={unlink}
@@ -56,14 +83,11 @@ export class AddDisplayTextToolbar extends React.PureComponent<{
     );
   }
 }
+export const AddDisplayTextToolbarWithIntl = injectIntl(AddDisplayTextToolbar);
 
-export class EditLinkHrefToolbar extends React.PureComponent<{
-  pos: number;
-  node: Node;
-  view: EditorView;
-  popupsMountPoint?: HTMLElement;
-  popupsBoundariesElement?: HTMLElement;
-}> {
+export class EditLinkHrefToolbar extends React.PureComponent<
+  CommonProps & InjectedIntlProps
+> {
   render() {
     const {
       pos,
@@ -71,6 +95,7 @@ export class EditLinkHrefToolbar extends React.PureComponent<{
       view,
       popupsMountPoint,
       popupsBoundariesElement,
+      intl: { formatMessage },
     } = this.props;
     const existingLink = (node.type.schema.marks.link.isInSet(
       node.marks,
@@ -89,7 +114,7 @@ export class EditLinkHrefToolbar extends React.PureComponent<{
         popupsMountPoint={popupsMountPoint}
         popupsBoundariesElement={popupsBoundariesElement}
         defaultValue={existingLink}
-        placeholder="Paste link"
+        placeholder={formatMessage(messages.linkPlaceholder)}
         onSubmit={updateLinkHref}
         onBlur={updateLinkHrefOrHideToolbar}
         onUnlink={unlink}
@@ -98,14 +123,17 @@ export class EditLinkHrefToolbar extends React.PureComponent<{
     );
   }
 }
+export const EditLinkHrefToolbarWithIntl = injectIntl(EditLinkHrefToolbar);
 
-export class InsertLinkToolbar extends React.PureComponent<{
-  from: number;
-  to: number;
-  view: EditorView;
-  popupsMountPoint?: HTMLElement;
-  popupsBoundariesElement?: HTMLElement;
-}> {
+export class InsertLinkToolbar extends React.PureComponent<
+  {
+    from: number;
+    to: number;
+    view: EditorView;
+    popupsMountPoint?: HTMLElement;
+    popupsBoundariesElement?: HTMLElement;
+  } & InjectedIntlProps
+> {
   render() {
     const {
       from,
@@ -113,6 +141,7 @@ export class InsertLinkToolbar extends React.PureComponent<{
       view,
       popupsMountPoint,
       popupsBoundariesElement,
+      intl: { formatMessage },
     } = this.props;
     const hideToolbar = () =>
       hideLinkToolbar()(view.state, view.dispatch) && view.focus();
@@ -124,22 +153,25 @@ export class InsertLinkToolbar extends React.PureComponent<{
         popupsMountPoint={popupsMountPoint}
         popupsBoundariesElement={popupsBoundariesElement}
         autoFocus={true}
-        placeholder="Paste link"
+        placeholder={formatMessage(messages.linkPlaceholder)}
         onSubmit={addLink}
         onBlur={hideToolbar}
       />
     );
   }
 }
+export const InsertLinkToolbarWithIntl = injectIntl(InsertLinkToolbar);
 
-export class ActivityPoweredInsertLinkToolbar extends React.PureComponent<{
-  from: number;
-  to: number;
-  view: EditorView;
-  popupsMountPoint?: HTMLElement;
-  popupsBoundariesElement?: HTMLElement;
-  activityProvider: Promise<ActivityProvider>;
-}> {
+export class ActivityPoweredInsertLinkToolbar extends React.PureComponent<
+  {
+    from: number;
+    to: number;
+    view: EditorView;
+    popupsMountPoint?: HTMLElement;
+    popupsBoundariesElement?: HTMLElement;
+    activityProvider: Promise<ActivityProvider>;
+  } & InjectedIntlProps
+> {
   render() {
     const {
       from,
@@ -148,6 +180,7 @@ export class ActivityPoweredInsertLinkToolbar extends React.PureComponent<{
       popupsMountPoint,
       popupsBoundariesElement,
       activityProvider,
+      intl: { formatMessage },
     } = this.props;
     const hideToolbar = () =>
       hideLinkToolbar()(view.state, view.dispatch) && view.focus();
@@ -161,13 +194,16 @@ export class ActivityPoweredInsertLinkToolbar extends React.PureComponent<{
         popupsBoundariesElement={popupsBoundariesElement}
         autoFocus={true}
         activityProvider={activityProvider}
-        placeholder="Paste link or search recently viewed"
+        placeholder={formatMessage(messages.linkPlaceholderWithSearch)}
         onSubmit={addLink}
         onBlur={hideToolbar}
       />
     );
   }
 }
+export const ActivityPoweredInsertLinkToolbarWithIntl = injectIntl(
+  ActivityPoweredInsertLinkToolbar,
+);
 
 export interface Props {
   hyperlinkState?: HyperlinkState;
@@ -192,8 +228,8 @@ export default function HyperlinkToolbar(props: Props) {
       const isLinkTextTheSameAsTheLinkUrl =
         mark.attrs.href === normalizeUrl(node.text!);
       const Toolbar = isLinkTextTheSameAsTheLinkUrl
-        ? AddDisplayTextToolbar
-        : EditLinkHrefToolbar;
+        ? AddDisplayTextToolbarWithIntl
+        : EditLinkHrefToolbarWithIntl;
       return (
         <Toolbar
           pos={pos}
@@ -209,7 +245,7 @@ export default function HyperlinkToolbar(props: Props) {
       const { from, to } = hyperlinkState.activeLinkMark;
       if (activityProvider) {
         return (
-          <ActivityPoweredInsertLinkToolbar
+          <ActivityPoweredInsertLinkToolbarWithIntl
             from={from}
             to={to}
             view={view}
@@ -220,7 +256,7 @@ export default function HyperlinkToolbar(props: Props) {
         );
       } else {
         return (
-          <InsertLinkToolbar
+          <InsertLinkToolbarWithIntl
             from={from}
             to={to}
             view={view}

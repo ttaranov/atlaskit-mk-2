@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { Component } from 'react';
+import { defineMessages, injectIntl, InjectedIntlProps } from 'react-intl';
+
 import Select from '@atlaskit/select';
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import {
@@ -7,9 +10,19 @@ import {
   getLanguageIdentifier,
 } from '@atlaskit/editor-common';
 
+import commonMessages from '../../../../messages';
 import { analyticsService } from '../../../../analytics';
 import Separator from '../../../../ui/Separator';
 import { TrashToolbarButton, FloatingToolbar } from './styles';
+
+export const messages = defineMessages({
+  selectLanguage: {
+    id: 'fabric.editor.selectLanguage',
+    defaultMessage: 'Select language',
+    description:
+      'Lets you choose what programming language the code snippet is in.',
+  },
+});
 
 const LANGUAGE_LIST_ITEMS = createLanguageList(DEFAULT_LANGUAGES).map(lang => ({
   label: lang.name,
@@ -27,9 +40,9 @@ export interface Props {
   popupsBoundariesElement?: HTMLElement;
 }
 
-export class LanguagePicker extends React.Component<Props> {
+export class LanguagePicker extends Component<Props & InjectedIntlProps> {
   private prevActiveCodeBlockWidth: { height: number; width: number };
-  constructor(props: Props) {
+  constructor(props) {
     super(props);
     const {
       clientHeight: height,
@@ -85,10 +98,13 @@ export class LanguagePicker extends React.Component<Props> {
       popupsBoundariesElement,
       activeCodeBlockDOM,
       activeLanguage,
+      intl: { formatMessage },
     } = this.props;
 
     const defaultLanguage =
       LANGUAGE_LIST_ITEMS.find(lang => lang.value === activeLanguage) || null;
+
+    const labelRemove = formatMessage(commonMessages.remove);
 
     return (
       <FloatingToolbar
@@ -103,19 +119,23 @@ export class LanguagePicker extends React.Component<Props> {
             options={LANGUAGE_LIST_ITEMS}
             value={defaultLanguage}
             onChange={this.handleLanguageSelected}
-            placeholder="Select language"
+            placeholder={formatMessage(messages.selectLanguage)}
           />
         </div>
         <Separator />
         <TrashToolbarButton
           onClick={this.handleCodeBlockDelete}
-          title="Remove code block"
-          iconBefore={<RemoveIcon label="Remove code block" />}
+          title={labelRemove}
+          iconBefore={<RemoveIcon label={labelRemove} />}
         />
       </FloatingToolbar>
     );
   }
 }
+
+export const LanguagePickerWithIntl = injectIntl(LanguagePicker, {
+  withRef: true,
+});
 
 export default class LanguagePickerWithOutsideListeners extends React.PureComponent<
   Props & { isEditorFocused: boolean },
@@ -146,7 +166,7 @@ export default class LanguagePickerWithOutsideListeners extends React.PureCompon
   render() {
     const { isEditorFocused, ...rest } = this.props;
     if (isEditorFocused || this.state.isToolbarFocused) {
-      return <LanguagePicker {...rest} innerRef={this.setToolbarRef} />;
+      return <LanguagePickerWithIntl {...rest} innerRef={this.setToolbarRef} />;
     }
     return null;
   }
