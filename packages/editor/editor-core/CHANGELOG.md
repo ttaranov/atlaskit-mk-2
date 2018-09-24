@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 82.1.0
+- [minor] FS-2893 - Creation use cases for full page actions and decisions [c8aa5f5](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c8aa5f5)
+
 ## 82.0.3
 - [patch] ED-5243 add grid plugin [4e5ef5c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e5ef5c)
 
