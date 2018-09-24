@@ -2,7 +2,7 @@ import * as React from 'react';
 import { PureComponent, ReactElement } from 'react';
 import { AkButton } from './styles';
 
-import ToolbarContext from '../Toolbar/ToolbarContext.tsx';
+import ToolbarContext from '../Toolbar/ToolbarContext';
 
 export interface Props {
   focus?: () => null;
@@ -28,7 +28,10 @@ export interface Props {
   navigateRight?: () => void;
 }
 
-export default class FocusableButtonWrapper extends PureComponent<Props, {}> {
+export default class FocusableButtonWrapper extends PureComponent<
+  Props,
+  { textInput }
+> {
   constructor(props) {
     super(props);
     // this.onToggleLoop = this.onToggleLoop.bind(this);
@@ -59,30 +62,36 @@ export default class FocusableButtonWrapper extends PureComponent<Props, {}> {
 
     const { onClick, navigateLeft, navigateRight } = this.props;
     return (
-      <div
-        tabIndex={0}
-        onClick={e => console.log('AYYEEE', e)}
-        onKeyDown={this.handleKeydown({ onClick, navigateLeft, navigateRight })}
-      >
-        <ToolbarContext.Consumer>
-          {value => console.log('CONSUMER', value)}
-        </ToolbarContext.Consumer>
-        {button}
-      </div>
+      <ToolbarContext.Consumer>
+        {value => (
+          <div
+            tabIndex={0}
+            // onClick={e => console.log('AYYEEE', e)}
+            onKeyDown={this.handleKeydown({
+              onClick,
+              toolbarCallback: value.buttonClickCallback,
+            })}
+          >
+            {button}
+          </div>
+        )}
+      </ToolbarContext.Consumer>
     );
   }
   private handleKeydown = callbacks => e => {
-    const { onClick, navigateLeft, navigateRight } = callbacks;
+    const { onClick, toolbarCallback } = callbacks;
 
     if (e.keyCode === 13 && onClick) {
       onClick(e);
-    } else if (e.keyCode === 37 && navigateLeft) {
+    } else if (e.keyCode === 37) {
       // left arrow
-      navigateLeft(e);
-    } else if (e.keyCode === 39 && navigateRight) {
+      // navigateLeft(e);
+    } else if (e.keyCode === 39) {
       // right arrow
       console.log('navigating right in button wrapper');
-      navigateRight(e);
+      toolbarCallback(this);
+
+      // navigateRight(e);
     }
   };
 }

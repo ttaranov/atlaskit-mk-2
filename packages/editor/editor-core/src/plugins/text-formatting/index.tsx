@@ -8,7 +8,7 @@ import {
   code,
 } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
-import { ButtonGroup } from '../../ui/styles';
+import ButtonGroup from '../../ui/ButtonGroup';
 import {
   plugin as textFormattingPlugin,
   pluginKey as textFormattingPluginKey,
@@ -119,7 +119,7 @@ const textFormatting = (options: TextFormattingOptions): EditorPlugin => ({
                 isReducedSpacing={isToolbarReducedSpacing}
                 navigateRight={() => {
                   console.log('navright called in textformatting');
-                  navigateRight();
+                  // navigateRight();
                 }}
               />
               <ToolbarAdvancedTextFormatting

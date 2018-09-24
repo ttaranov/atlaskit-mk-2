@@ -6,7 +6,7 @@ import { ProviderFactory } from '@atlaskit/editor-common';
 import { EditorAppearance, ToolbarUIComponentFactory } from '../../types';
 import { EventDispatcher } from '../../event-dispatcher';
 import EditorActions from '../../actions';
-
+import ArrowKeyNavigation from 'boundless-arrow-key-navigation';
 import ToolbarContext from './ToolbarContext';
 
 const ToolbarComponentsWrapper = styled.div`
@@ -98,9 +98,20 @@ export class ToolbarInner extends React.Component<ToolbarInnerProps> {
 
     let lastItem = undefined;
 
+    const buttonClicked = button => {
+      console.log('Provider button clicked, it is ', button);
+      console.log('button index in items is ', items.indexOf(button));
+      console.log('items is ', items);
+      console.log('item 0 is', items[0]);
+    };
     return (
       <ToolbarComponentsWrapper>
-        <ToolbarContext.Provider value="green">
+        <ToolbarContext.Provider
+          value={{
+            buttonClickCallback: buttonClicked,
+            currentlySelected: null,
+          }}
+        >
           {items.map((component, key) => {
             const navigateRight = () => {
               const itemToFocus = key + 1;
