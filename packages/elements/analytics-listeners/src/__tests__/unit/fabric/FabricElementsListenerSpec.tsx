@@ -214,6 +214,34 @@ describe('<FabricElementsListener />', () => {
         );
       });
 
+      it('should use nearest context', () => {
+        const component = mount(
+          <AnalyticsContext data={{ source: 'jira' }}>
+            <AnalyticsContext data={{ source: 'issue' }}>
+              <FabricElementsListener
+                client={analyticsWebClientMock}
+                logger={loggerMock}
+              >
+                <DummyComponentWithAnalytics />
+              </FabricElementsListener>
+            </AnalyticsContext>
+          </AnalyticsContext>,
+        );
+
+        component
+          .find(DummyComponent)
+          .find('div')
+          .simulate('click');
+
+        expect(analyticsWebClientMock.sendUIEvent).toBeCalledWith(
+          expect.objectContaining({
+            action: 'some-action',
+            actionSubject: 'some-component',
+            source: 'issue',
+          }),
+        );
+      });
+
       it('should set unknown when no source is provided', () => {
         const component = mount(
           <FabricElementsListener
