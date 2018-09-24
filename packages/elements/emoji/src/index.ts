@@ -19,6 +19,7 @@ import {
   emojiPickerWidth,
   emojiPickerHeight,
 } from './constants';
+import { UsageFrequencyTracker } from './api/internal/UsageFrequencyTracker';
 
 export {
   // Classes
@@ -44,6 +45,7 @@ export {
   defaultEmojiHeight,
   customCategory,
   EmojiResourceConfig,
+  UsageFrequencyTracker,
 };
 
 export * from './types';
