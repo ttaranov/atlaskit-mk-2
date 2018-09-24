@@ -119,7 +119,7 @@ export default class JiraClientImpl implements JiraClient {
   ): JiraResult {
     return {
       resultType: ResultType.JiraObjectResult,
-      resultId: item.id,
+      resultId: '' + item.id,
       name: item.title,
       href: item.url,
       analyticsType: AnalyticsType.RecentJira,

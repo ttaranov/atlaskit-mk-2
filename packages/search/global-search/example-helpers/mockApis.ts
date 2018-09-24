@@ -19,11 +19,19 @@ type Options = {
 export type MocksConfig = {
   crossProductSearchDelay: number;
   quickNavDelay: number;
+  jiraRecentDelay: number;
+};
+
+export const ZERO_DELAY_CONFIG: MocksConfig = {
+  crossProductSearchDelay: 0,
+  quickNavDelay: 0,
+  jiraRecentDelay: 0,
 };
 
 const DEFAULT_MOCKS_CONFIG: MocksConfig = {
   crossProductSearchDelay: 650,
   quickNavDelay: 500,
+  jiraRecentDelay: 500,
 };
 
 const recentResponse = recentData();
@@ -87,10 +95,10 @@ function mockPeopleApi() {
   );
 }
 
-function mockJiraApi() {
+function mockJiraApi(delayMs: number) {
   fetchMock.get(
     new RegExp('rest/internal/2/productsearch/recent?'),
-    async request => delay(500, JiraRecentResponse),
+    async request => delay(delayMs, JiraRecentResponse),
   );
 }
 
@@ -100,7 +108,7 @@ export function setupMocks(config: MocksConfig = DEFAULT_MOCKS_CONFIG) {
   mockPeopleApi();
   mockConfluenceRecentApi();
   mockQuickNavApi(config.quickNavDelay);
-  mockJiraApi();
+  mockJiraApi(config.jiraRecentDelay);
 }
 
 export function teardownMocks() {

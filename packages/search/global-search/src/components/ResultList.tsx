@@ -68,7 +68,10 @@ export default class ResultList extends React.Component<Props> {
               objectKey={jiraResult.objectKey}
               containerName={jiraResult.containerName}
               avatarUrl={jiraResult.avatarUrl}
-              analyticsData={analyticsData}
+              analyticsData={{
+                ...analyticsData,
+                contentType: jiraResult.contentType,
+              }}
             />
           );
         }
