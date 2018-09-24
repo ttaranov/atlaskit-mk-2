@@ -16,7 +16,7 @@ const styles = () => ({
 });
 
 describe('GlobalNavigationItemPrimitive', () => {
-  it('should render an anchor', () => {
+  it('should render an anchor when an href prop is passed', () => {
     const wrapper = mount(
       <GlobalNavigationItemPrimitive
         styles={styles}
@@ -24,10 +24,16 @@ describe('GlobalNavigationItemPrimitive', () => {
         href="www.example.com"
       />,
     );
-    expect(wrapper.find('a[href="www.example.com"]').length).toBe(1);
+    const anchor = wrapper.find('a[href="www.example.com"]');
+    expect(anchor).toHaveLength(1);
+    expect(anchor.props()).toEqual({
+      children: null,
+      className: expect.any(String),
+      href: 'www.example.com',
+    });
   });
 
-  it('should render a button', () => {
+  it('should render a button when an onClick prop is passed', () => {
     const wrapper = mount(
       <GlobalNavigationItemPrimitive
         styles={styles}
@@ -35,28 +41,60 @@ describe('GlobalNavigationItemPrimitive', () => {
         onClick={Function.prototype}
       />,
     );
-    expect(wrapper.find('button').length).toBe(1);
+    const button = wrapper.find('button');
+    expect(button).toHaveLength(1);
+    expect(button.props()).toEqual({
+      children: null,
+      className: expect.any(String),
+      onClick: expect.any(Function),
+    });
   });
 
-  it('should render a span', () => {
-    const wrapper = mount(
-      <GlobalNavigationItemPrimitive styles={styles} theme={theme} />,
+  it('should render a CustomComponent when a component prop is passed', () => {
+    const MyComponent = ({ className, children, onClick }: any) => (
+      <button className={className} onClick={onClick} id="customComponent">
+        {children}
+      </button>
     );
-    expect(wrapper.find('span').length).toBe(1);
-  });
-
-  it('should render a CustomComponent', () => {
+    const onClick = () => {};
     const wrapper = mount(
-      <GlobalNavigationItemPrimitive
-        component={() => <button id="customComponent" />}
+      <BaseGlobalNavigationItemPrimitive
+        component={MyComponent}
+        label="my-label"
+        id="my-id"
+        onClick={onClick}
         styles={styles}
         theme={theme}
       />,
     );
-    expect(wrapper.find('#customComponent').length).toBe(1);
+
+    const componentEl = wrapper.find(MyComponent);
+    expect(componentEl).toHaveLength(1);
+    expect(componentEl.props()).toEqual({
+      children: null,
+      className: expect.any(String),
+      component: MyComponent,
+      id: 'my-id',
+      label: 'my-label',
+      onClick,
+      size: 'large',
+      styles,
+    });
   });
 
-  it('should render badge and icon', () => {
+  it('should render a span if neither an href, onClick or component prop is passed', () => {
+    const wrapper = mount(
+      <GlobalNavigationItemPrimitive styles={styles} theme={theme} />,
+    );
+    const span = wrapper.find('span');
+    expect(span).toHaveLength(1);
+    expect(span.props()).toEqual({
+      children: null,
+      className: expect.any(String),
+    });
+  });
+
+  it('should render badge and icon when badge and icon props are passed', () => {
     const wrapper = mount(
       <GlobalNavigationItemPrimitive
         styles={styles}
@@ -66,14 +104,18 @@ describe('GlobalNavigationItemPrimitive', () => {
         onClick={Function.prototype}
       />,
     );
-    expect(wrapper.find('#badge').length).toBe(1);
-    expect(wrapper.find('#icon').length).toBe(1);
+    expect(wrapper.find('#badge')).toHaveLength(1);
+    expect(wrapper.find('#icon')).toHaveLength(1);
   });
 
-  it('should render a tooltip', () => {
+  it('should render a tooltip when a tooltip prop is passed', () => {
     const wrapper = mount(
       <GlobalNavigationItemPrimitive
-        component={() => <button id="customComponent" />}
+        component={({ className, children, onClick }) => (
+          <button className={className} onClick={onClick} id="customComponent">
+            {children}
+          </button>
+        )}
         styles={styles}
         theme={theme}
         tooltip="Test tooltip"
