@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 82.0.3
+- [patch] ED-5243 add grid plugin [4e5ef5c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e5ef5c)
+
 ## 82.0.2
 - [patch] ED-5356: getting rid of styled-components in tables [5bc39da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5bc39da)
 
