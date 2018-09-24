@@ -29,11 +29,6 @@ import { shouldDisplayImageThumbnail } from '../../../src/utils/shouldDisplayIma
 
 import { CardViewAnalyticsContext, CardAction } from '../../../src/index';
 
-/**
- * Skipped 1 test which is failing because of dropdown menu
- * TODO: JEST-23 Fix these tests
- */
-/* eslint-disable jest/no-disabled-tests */
 describe('CardView', () => {
   const file: FileDetails = {
     id: 'abcd',
@@ -430,7 +425,7 @@ describe('CardView', () => {
     }
   });
 
-  it.skip('should fire "clicked" analytics event when loading file card clicked', () => {
+  it('should fire "clicked" analytics event when loading file card clicked', () => {
     const clickHandler = jest.fn();
     const analyticsEventHandler = jest.fn();
     const cardAction: CardAction = {

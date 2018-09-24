@@ -601,7 +601,6 @@ describe('LoadingContainerAdvanced', () => {
     });
 
     afterEach(() => {
-      // TODO: JEST-23 these should probably be mockClear's, but it still leaves two failing tests
       attachSpy.mockClear();
       detachSpy.mockClear();
       updateSpinnerPositionSpy.mockClear();
@@ -729,6 +728,7 @@ describe('LoadingContainerAdvanced', () => {
      * Not sure why these next two tests fail. Each resize event seems to be calling the callback 16 times!
      * So, we're seeing 33 calls in total. It doesn't seem to be breaking the functionality, but the event
      * *should* probably be debounced.
+     * TODO: JEST-23
      */
     /* eslint-disable jest/no-disabled-tests */
     it.skip('should update spinner position on resize', () => {
