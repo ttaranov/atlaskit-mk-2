@@ -865,6 +865,7 @@ Object {
             Object {
               "attrs": Object {
                 "layout": "center",
+                "width": null,
               },
               "content": Array [
                 Object {
