@@ -52,7 +52,11 @@ export default class extends Component<{}, State> {
             />
             {pageLinksCollapsed.map((pageLink, index) => {
               if (pageLink === '...') {
-                return <span key={index}>...</span>;
+                return (
+                  <span key={index} style={{ padding: '0 8px' }}>
+                    ...
+                  </span>
+                );
               }
               let { value, link } = pageLink;
               return (
