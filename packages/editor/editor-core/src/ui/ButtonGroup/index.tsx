@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { HTMLAttributes, ComponentClass, PureComponent } from 'react';
 import styled from 'styled-components';
-import ToolbarContext from '../Toolbar/ToolbarContext';
+import { ToolbarContext, ToolbarContextValue } from '../Toolbar/ToolbarContext';
 import ToolbarButton from '../ToolbarButton';
 
 const ButtonGroupSpan: ComponentClass<
@@ -39,7 +39,7 @@ export default class ButtonGroup extends PureComponent<
     );
 
     const buttonProps = button.props;
-
+    // @ts-ignore
     const allButtonProps = children.map(item => item.props);
     const buttonKeypressOriginIndex = allButtonProps.indexOf(buttonProps);
     console.log('Keypress by button', buttonKeypressOriginIndex);
@@ -50,6 +50,7 @@ export default class ButtonGroup extends PureComponent<
         selectedButton: children[selectedIndex],
       });
     }
+    return null;
   };
 
   render() {

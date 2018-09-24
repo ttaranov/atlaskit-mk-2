@@ -6,8 +6,7 @@ import { ProviderFactory } from '@atlaskit/editor-common';
 import { EditorAppearance, ToolbarUIComponentFactory } from '../../types';
 import { EventDispatcher } from '../../event-dispatcher';
 import EditorActions from '../../actions';
-import ArrowKeyNavigation from 'boundless-arrow-key-navigation';
-import ToolbarContext from './ToolbarContext';
+// import ToolbarContext from './ToolbarContext';
 
 const ToolbarComponentsWrapper = styled.div`
   display: flex;
@@ -98,55 +97,55 @@ export class ToolbarInner extends React.Component<ToolbarInnerProps> {
 
     let lastItem = undefined;
 
-    const buttonClicked = button => {
-      const buttonProps = button.props;
-      const allButtonProps = items.map(item => item.props);
+    // const buttonClicked = button => {
+    //   const buttonProps = button.props;
+    //   const allButtonProps = items.map(item => item.props);
 
-      console.log('Provider button clicked, it is ', button);
-      console.log('button index in items is ', items.indexOf(button));
-      console.log(
-        'button props index in items (props) is ',
-        allButtonProps.indexOf(buttonProps),
-      );
-      console.log('items is ', items);
-      console.log('item 0 is', items[0]);
-    };
+    //   console.log('Provider button clicked, it is ', button);
+    //   console.log('button index in items is ', items.indexOf(button));
+    //   console.log(
+    //     'button props index in items (props) is ',
+    //     allButtonProps.indexOf(buttonProps),
+    //   );
+    //   console.log('items is ', items);
+    //   console.log('item 0 is', items[0]);
+    // };
     return (
       <ToolbarComponentsWrapper>
-        <ToolbarContext.Provider
+        {/* <ToolbarContext.Provider
           value={{
             buttonClickCallback: buttonClicked,
             currentlySelected: null,
           }}
-        >
-          {items.map((component, key) => {
-            const navigateRight = () => {
-              const itemToFocus = key + 1;
-              console.log(`navigated right in TOOLBAR!, key ${key}`);
-              if (itemToFocus > 0 && itemToFocus < items.length) {
-                // items[itemToFocus].focus();
-              }
-            };
+        > */}
+        {items.map((component, key) => {
+          const navigateRight = () => {
+            const itemToFocus = key + 1;
+            console.log(`navigated right in TOOLBAR!, key ${key}`);
+            if (itemToFocus > 0 && itemToFocus < items.length) {
+              // items[itemToFocus].focus();
+            }
+          };
 
-            const props: any = { key };
-            const element = component({
-              editorView,
-              editorActions: editorActions as EditorActions,
-              eventDispatcher,
-              providerFactory,
-              appearance,
-              popupsMountPoint,
-              popupsBoundariesElement,
-              popupsScrollableElement,
-              disabled,
-              navigateRight,
-              toolbarSize,
-              isToolbarReducedSpacing,
-              onFocus: e => console.log('test', e),
-            });
-            return element && React.cloneElement(element, props);
-          })}
-        </ToolbarContext.Provider>
+          const props: any = { key };
+          const element = component({
+            editorView,
+            editorActions: editorActions as EditorActions,
+            eventDispatcher,
+            providerFactory,
+            appearance,
+            popupsMountPoint,
+            popupsBoundariesElement,
+            popupsScrollableElement,
+            disabled,
+            navigateRight,
+            toolbarSize,
+            isToolbarReducedSpacing,
+            onFocus: e => console.log('test', e),
+          });
+          return element && React.cloneElement(element, props);
+        })}
+        {/* </ToolbarContext.Provider> */}
       </ToolbarComponentsWrapper>
     );
   }

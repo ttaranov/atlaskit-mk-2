@@ -3,7 +3,7 @@ import * as React from 'react';
 import { PureComponent, ReactElement } from 'react';
 import { AkButton } from './styles';
 // import FocusableButtonWrapper from '../FocusableButtonWrapper';
-import ToolbarContext from '../Toolbar/ToolbarContext';
+import { ToolbarContext, ToolbarContextValue } from '../Toolbar/ToolbarContext';
 
 export interface Props {
   className?: string;
@@ -62,7 +62,6 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
           <div
             tabIndex={0}
             // onClick={e => console.log('AYYEEE', e)}
-
             onKeyDown={this.handleKeydown({
               onClick: onClickDebug,
               toolbarCallback: value.buttonClickCallback,
@@ -73,31 +72,7 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
         )}
       </ToolbarContext.Consumer>
     );
-    // (
-    //   <FocusableButtonWrapper
-    //     className={this.props.className}
-    //     href={this.props.href}
-    //     iconAfter={this.props.iconAfter}
-    //     iconBefore={this.props.iconBefore}
-    //     disabled={this.props.disabled}
-    //     selected={this.props.selected}
-    //     onClick={this.handleClick}
-    //     spacing={this.props.spacing || 'default'}
-    //     target={this.props.target}
-    //     theme={this.props.theme}
-    //     onFocus={this.props.onFocus}
-    //     // navigateRight={()=>console.log("navigated right!") } // this.props.navigateRight}
-    //     // navigateRight={this.props.navigateRight}
-    //     navigateRight={() => {
-    //       console.log('navigating right in toolbar button');
-    //       if (navigateRight) {
-    //         console.log('navright is defined in ToolbarButton');
-    //         navigateRight();
-    //       }
-    //     }}
-    //     navigateLeft={this.props.navigateLeft}
-    //   />
-    // );
+
     const position = this.props.titlePosition || 'top';
     const tooltipContent = !this.props.hideTooltip ? this.props.title : null;
 

@@ -1,3 +1,11 @@
-import React from 'react';
-const ToolbarContext = React.createContext(null);
-export default ToolbarContext;
+import * as React from 'react';
+import ToolbarButton from '../ToolbarButton';
+export const ToolbarContext = React.createContext({
+  buttonClickCallback: (button: ToolbarButton, delta: number) => null,
+  selectedButton: undefined,
+});
+
+export interface ToolbarContextValue {
+  selectedButton?: React.ReactChild;
+  buttonClickCallback: (button: ToolbarButton, delta: number) => null;
+}
