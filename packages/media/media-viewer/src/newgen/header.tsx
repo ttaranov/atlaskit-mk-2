@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Context, FileItem, MediaType } from '@atlaskit/media-core';
 import Button from '@atlaskit/button';
 import DownloadIcon from '@atlaskit/icon/glyph/download';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 import * as deepEqual from 'deep-equal';
 import { toHumanReadableMediaSize } from '@atlaskit/media-ui';
 import { Outcome, Identifier } from './domain';
