@@ -20,7 +20,8 @@ interface FakeUploadService extends EventEmitter2 {
   removeDropzone?: () => void;
 }
 /**
- * Skipped 1 tests, looks like an actual failure
+ * Skipped 1 tests, looks like an actual failure, it's emiting an event thats never supposed to be
+ * emitted
  * TODO: JEST-23 Fix these tests
  */
 describe('Dropzone', () => {
@@ -201,7 +202,7 @@ describe('Dropzone', () => {
       container.dispatchEvent(createDragOverEvent());
     });
 
-    it.skip('should not emit drag-enter for drag over with type "Not Files"', async done => {
+    it('should not emit drag-enter for drag over with type "Not Files"', async done => {
       const dropzone = MediaPicker('dropzone', context, {
         ...config,
         headless: true,

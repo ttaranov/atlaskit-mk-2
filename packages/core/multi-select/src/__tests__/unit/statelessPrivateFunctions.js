@@ -7,9 +7,10 @@ import { name } from '../../../package.json';
 import type { ItemType, GroupType } from '../../types';
 
 /**
- * Skipped two tests in here that are failing due an async setProps issue. The fix *should* be to use
- * `wrapper.update()` but doesn't seem to be completley working, a deeper understanding of the test
- * is likely required.
+ * Skipped two tests in here that are failing, not entirely sure why. We are passing a synthetic event
+ * into the component where the "target" is an object, not an element, and that's what's failing, but
+ * I have no idea why it was working originally, unless it supposed to be transformed at some point in
+ * normal operation.
  * TODO: JEST-23 Fix these tests
  */
 /* eslint-disable jest/no-disabled-tests */

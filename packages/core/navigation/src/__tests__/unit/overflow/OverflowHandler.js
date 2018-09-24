@@ -14,12 +14,6 @@ import {
 
 configure({ adapter: new Adapter() });
 
-/**
- * Skipped 1 test that looks like its only failng because of something in dropdown menu
- * TODO: JEST-23 Fix these tests
- */
-/* eslint-disable jest/no-disabled-tests */
-
 describe('<AkCollapseOverflow />', () => {
   describe('calculateBreakItem', () => {
     let instance;
@@ -108,7 +102,7 @@ describe('<AkCollapseOverflow />', () => {
       requestAnimationFrame.step(); // needed for SizeDetector
     });
 
-    it.skip('should render dropdown only if break is needed', () => {
+    it('should render dropdown only if break is needed', () => {
       instance.handleAvailableHeightChange(
         dropdownHeight + reservedGapHeight + 32 + 10,
       );

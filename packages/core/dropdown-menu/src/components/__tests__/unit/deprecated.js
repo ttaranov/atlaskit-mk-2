@@ -28,13 +28,7 @@ const itemsList = [
   },
 ];
 
-/**
- * Skipped all tests as it something in mounting broken. It looks like it's how we are setting state
- * based on props
- * TODO: JEST-23 Fix these tests
- */
-/* eslint-disable jest/no-disabled-tests */
-describe.skip('dropdown menu', () => {
+describe('dropdown menu', () => {
   const animStub = window.cancelAnimationFrame;
   beforeEach(() => {
     window.cancelAnimationFrame = () => {};
@@ -167,8 +161,7 @@ describe.skip('dropdown menu', () => {
       expect(menu.find(MoreIcon).length).toBe(1);
     });
 
-    // eslint-disable-next-line
-    it.skip('should render tooltips if provided, skipping to use same version to avoid object comparison issues', () => {
+    it('should render tooltips if provided, skipping to use same version to avoid object comparison issues', () => {
       const menu = mount(
         <Menu items={itemsList} triggerType="button" defaultOpen />,
       );

@@ -390,11 +390,7 @@ describe('ActionsView', () => {
     );
   });
 
-  /**
-   * Skipped test, failing because of dropdown menu
-   * TODO: JEST-23 Fix these tests
-   */
-  it.skip('should update state on failure handler execution', () => {
+  it('should update state on failure handler execution', () => {
     const onActionClickSpy = jest.fn().mockImplementation((_, handlers) => {
       handlers.failure('some failure', true, 'test try again');
     });

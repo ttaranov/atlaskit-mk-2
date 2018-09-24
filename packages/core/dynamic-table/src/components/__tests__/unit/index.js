@@ -358,8 +358,8 @@ describe(name, () => {
       });
 
       // TODO: @thejameskyle - Fails unexpectedly, fix test after sinon is removed from codebase.
+      // eslint-disable-next-line jest/no-disabled-tests
       it.skip('onSetPage', () => {
-        // eslint-disable-line jest/no-disabled-tests
         wrapper
           .find(Pagination)
           .find('button')

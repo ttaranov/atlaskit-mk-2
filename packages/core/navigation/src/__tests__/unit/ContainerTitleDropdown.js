@@ -8,12 +8,7 @@ import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
 import ContainerTitleDropdown from '../../components/js/ContainerTitleDropdown';
 import { mountWithRootTheme } from './_theme-util';
 
-/**
- * Skipped all tests that looks like they are only failng because of something in dropdown menu
- * TODO: JEST-23 Fix these tests
- */
-/* eslint-disable jest/no-disabled-tests */
-describe.skip('<ContainerTitleDropdown />', () => {
+describe('<ContainerTitleDropdown />', () => {
   let wrapper;
   beforeEach(() => {
     const items = [

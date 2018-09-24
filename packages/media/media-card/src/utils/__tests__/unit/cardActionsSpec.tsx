@@ -125,7 +125,7 @@ describe('CardActions', () => {
   });
   */
 
-  it.skip('should call onToggle callback when dropdown menu trigger is clicked', () => {
+  it('should call onToggle callback when dropdown menu trigger is clicked', () => {
     const onToggle = jest.fn();
     const card = mount(
       <CardActionsView actions={menuActions} onToggle={onToggle} />,
@@ -158,11 +158,7 @@ describe('CardActions', () => {
   });
   */
 
-  /**
-   * Skipped two tests in here that are failing due to an issue in dropdown menu
-   * TODO: JEST-23 Fix these tests
-   */
-  it.skip('should pass supplied trigger color to dropdown menu trigger when there are multiple actions', () => {
+  it('should pass supplied trigger color to dropdown menu trigger when there are multiple actions', () => {
     const triggerColor = 'some-color-string';
     const { dropdownMenu } = setup(menuActions, triggerColor);
     const trigger = dropdownMenu.find(CardActionButton);

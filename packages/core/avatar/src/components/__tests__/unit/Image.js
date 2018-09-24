@@ -95,12 +95,6 @@ describe('Avatar', () =>
         it('should render an image span when src is set', () =>
           expect(wrapper.find(imgSpan).exists()).toBe(true));
 
-        /**
-         * Currently skipping these tests as `find('StyledComponent')` doesn't seem to work.
-         * Finds with strings should be avoided in any case
-         * TODO: JEST-23 Fix these tests
-         */
-        /* eslint-disable jest/no-disabled-tests */
         it('should set isLoading=false when a same src is provided as the src already loaded', () => {
           // isLoading is still true here, perhaps need a waitUntil?
           expect(wrapper.state('isLoading')).toBe(false);
