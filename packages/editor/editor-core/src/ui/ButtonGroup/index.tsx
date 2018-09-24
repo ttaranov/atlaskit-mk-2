@@ -2,6 +2,7 @@ import * as React from 'react';
 import { HTMLAttributes, ComponentClass, PureComponent } from 'react';
 import styled from 'styled-components';
 import ToolbarContext from '../Toolbar/ToolbarContext';
+import ToolbarButton from '../ToolbarButton';
 
 const ButtonGroupSpan: ComponentClass<
   HTMLAttributes<{}> & { width?: 'small' | 'large' }
@@ -27,10 +28,13 @@ export default class ButtonGroup extends PureComponent<Props, {}> {
     const { width } = this.props;
     const children = React.Children.toArray(this.props.children);
 
-    const buttonClicked = button => {
-      console.log('ButtonGroup button clicked, it is ', button);
-      console.log('button index in children:', children.indexOf(button));
-      console.log('children:', children);
+    const buttonClicked = (button: ToolbarButton, delta: number) => {
+      const buttonProps = button.props;
+      // @ts-ignore
+      const allButtonProps = children.map(item => item.props);
+      const buttonKeypressOriginIndex = allButtonProps.indexOf(buttonProps);
+      console.log('Keypress by button', buttonKeypressOriginIndex);
+      console.log('Delta is ', delta);
     };
 
     return (

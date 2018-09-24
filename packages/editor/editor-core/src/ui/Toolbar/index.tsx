@@ -99,8 +99,15 @@ export class ToolbarInner extends React.Component<ToolbarInnerProps> {
     let lastItem = undefined;
 
     const buttonClicked = button => {
+      const buttonProps = button.props;
+      const allButtonProps = items.map(item => item.props);
+
       console.log('Provider button clicked, it is ', button);
       console.log('button index in items is ', items.indexOf(button));
+      console.log(
+        'button props index in items (props) is ',
+        allButtonProps.indexOf(buttonProps),
+      );
       console.log('items is ', items);
       console.log('item 0 is', items[0]);
     };
