@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 17.0.2
+- [patch] ED-5299: added mediaSingle to jira transformer [d73f846](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d73f846)
+
 ## 17.0.1
 - [patch] ED-5150 Editor i18n: Main toolbar [ef76f1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef76f1f)
 
