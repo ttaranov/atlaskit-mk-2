@@ -47,12 +47,8 @@ class MobileHeaderDemo extends Component<*, State> {
           <ButtonGroup>
             <Button>One</Button>
             <Button
-              iconBefore={
-                <DetailViewIcon
-                  label="Show sidebar"
-                  onClick={this.sidebarOpened}
-                />
-              }
+              iconBefore={<DetailViewIcon label="Show sidebar" />}
+              onClick={this.sidebarOpened}
             />
           </ButtonGroup>
         }
