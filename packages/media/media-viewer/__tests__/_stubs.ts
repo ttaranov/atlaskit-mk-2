@@ -1,5 +1,6 @@
 import * as events from 'events';
 import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs';
 import {
   ContextConfig,
   MediaCollection,
@@ -78,6 +79,7 @@ export class Stubs {
   ) {
     return {
       config,
+      getFile: jest.fn(() => Observable.empty()),
       getMediaCollectionProvider: jest.fn(
         () => collectionProvider || Stubs.mediaCollectionProvider(),
       ),

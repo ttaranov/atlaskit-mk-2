@@ -1,16 +1,15 @@
 import * as React from 'react';
+import { Observable } from 'rxjs';
 import { mount } from 'enzyme';
 import Spinner from '@atlaskit/spinner';
 import Button from '@atlaskit/button';
-import { MediaItem, MediaItemType } from '@atlaskit/media-core';
+import { MediaItemType } from '@atlaskit/media-core';
 import { ItemViewer } from '../../src/newgen/item-viewer';
 import { ErrorMessage } from '../../src/newgen/error';
 import { ImageViewer } from '../../src/newgen/viewers/image';
 import { VideoViewer } from '../../src/newgen/viewers/video';
 import { AudioViewer } from '../../src/newgen/viewers/audio';
 import { DocViewer } from '../../src/newgen/viewers/doc';
-import { createContext } from '../_stubs';
-import { Subject } from 'rxjs';
 
 const identifier = {
   id: 'some-id',
@@ -19,93 +18,24 @@ const identifier = {
   collectionName: 'some-collection',
 };
 
-const imageItem: MediaItem = {
-  type: 'file',
-  details: {
-    id: 'some-id',
-    processingStatus: 'succeeded',
-    mediaType: 'image',
-  },
-};
-
-const videoItem: MediaItem = {
-  type: 'file',
-  details: {
-    id: 'some-id',
-    processingStatus: 'succeeded',
-    mediaType: 'video',
-  },
-};
-
-const audioItem: MediaItem = {
-  type: 'file',
-  details: {
-    id: 'some-id',
-    processingStatus: 'succeeded',
-    mediaType: 'audio',
-  },
-};
-
-const videoItemFailedProcessing: MediaItem = {
-  type: 'file',
-  details: {
-    id: 'some-id',
-    processingStatus: 'failed',
-    mediaType: 'video',
-  },
-};
-
-const docItem: MediaItem = {
-  type: 'file',
-  details: {
-    id: 'some-id',
-    processingStatus: 'succeeded',
-    mediaType: 'doc',
-  },
-};
-
-const unsupportedItem: MediaItem = {
-  type: 'file',
-  details: {
-    id: 'some-id',
-    processingStatus: 'succeeded',
-    mediaType: 'unknown',
-  },
-};
-
-const linkItem: MediaItem = {
-  type: 'link',
-  details: {
-    id: 'some-id',
-    type: '',
-    url: '',
-    title: '',
-  },
-};
-
 describe('<ItemViewer />', () => {
   it('shows an indicator while loading', () => {
-    const subject = new Subject<MediaItem>();
+    const context = {
+      getFile: () => Observable.empty(),
+    } as any;
     const el = mount(
-      <ItemViewer
-        previewCount={0}
-        context={createContext({ subject })}
-        identifier={identifier}
-      />,
+      <ItemViewer previewCount={0} context={context} identifier={identifier} />,
     );
     expect(el.find(Spinner)).toHaveLength(1);
   });
 
-  it('shows a generic error on unknown failure', () => {
-    const subject = new Subject<MediaItem>();
+  it('shows a generic error on unkown error', () => {
+    const context = {
+      getFile: () => Observable.throw('something bad happened!'),
+    } as any;
     const el = mount(
-      <ItemViewer
-        previewCount={0}
-        context={createContext({ subject })}
-        identifier={identifier}
-      />,
+      <ItemViewer previewCount={0} context={context} identifier={identifier} />,
     );
-    subject.error(new Error('error'));
     el.update();
     const errorMessage = el.find(ErrorMessage);
     expect(errorMessage).toHaveLength(1);
@@ -114,15 +44,17 @@ describe('<ItemViewer />', () => {
   });
 
   it('should show the image viewer if media type is image', () => {
-    const subject = new Subject<MediaItem>();
+    const context = {
+      getFile: () =>
+        Observable.of({
+          id: '123',
+          mediaType: 'image',
+          status: 'processed',
+        }),
+    } as any;
     const el = mount(
-      <ItemViewer
-        previewCount={0}
-        context={createContext({ subject })}
-        identifier={identifier}
-      />,
+      <ItemViewer previewCount={0} context={context} identifier={identifier} />,
     );
-    subject.next(imageItem);
     el.update();
     expect(el.find(ImageViewer)).toHaveLength(1);
     // MSW:720 - passes the collectionName along
@@ -132,15 +64,12 @@ describe('<ItemViewer />', () => {
   });
 
   it('should should error and download button if processing Status failed', () => {
-    const subject = new Subject<MediaItem>();
+    const context = {
+      getFile: () => Observable.of({ status: 'error' }),
+    } as any;
     const el = mount(
-      <ItemViewer
-        previewCount={0}
-        context={createContext({ subject })}
-        identifier={identifier}
-      />,
+      <ItemViewer previewCount={0} context={context} identifier={identifier} />,
     );
-    subject.next(videoItemFailedProcessing);
     el.update();
     const errorMessage = el.find(ErrorMessage);
     expect(errorMessage).toHaveLength(1);
@@ -151,15 +80,17 @@ describe('<ItemViewer />', () => {
   });
 
   it('should show the video viewer if media type is video', () => {
-    const subject = new Subject<MediaItem>();
+    const context = {
+      getFile: () =>
+        Observable.of({
+          id: '123',
+          mediaType: 'video',
+          status: 'processed',
+        }),
+    } as any;
     const el = mount(
-      <ItemViewer
-        previewCount={0}
-        context={createContext({ subject })}
-        identifier={identifier}
-      />,
+      <ItemViewer previewCount={0} context={context} identifier={identifier} />,
     );
-    subject.next(videoItem);
     el.update();
     expect(el.find(VideoViewer)).toHaveLength(1);
     // MSW:720 - passes the collectionName along
@@ -168,16 +99,18 @@ describe('<ItemViewer />', () => {
     );
   });
 
-  it('should show the audio viewer if media type is video', () => {
-    const subject = new Subject<MediaItem>();
+  it('should show the audio viewer if media type is audio', () => {
+    const context = {
+      getFile: () =>
+        Observable.of({
+          id: '123',
+          mediaType: 'audio',
+          status: 'processed',
+        }),
+    } as any;
     const el = mount(
-      <ItemViewer
-        previewCount={0}
-        context={createContext({ subject })}
-        identifier={identifier}
-      />,
+      <ItemViewer previewCount={0} context={context} identifier={identifier} />,
     );
-    subject.next(audioItem);
     el.update();
     expect(el.find(AudioViewer)).toHaveLength(1);
     // MSW:720 - passes the collectionName along
@@ -187,15 +120,17 @@ describe('<ItemViewer />', () => {
   });
 
   it('should show the document viewer if media type is document', () => {
-    const subject = new Subject<MediaItem>();
+    const context = {
+      getFile: () =>
+        Observable.of({
+          id: '123',
+          mediaType: 'doc',
+          status: 'processed',
+        }),
+    } as any;
     const el = mount(
-      <ItemViewer
-        previewCount={0}
-        context={createContext({ subject })}
-        identifier={identifier}
-      />,
+      <ItemViewer previewCount={0} context={context} identifier={identifier} />,
     );
-    subject.next(docItem);
     el.update();
     expect(el.find(DocViewer)).toHaveLength(1);
     // MSW:720 - passes the collectionName along
@@ -205,15 +140,17 @@ describe('<ItemViewer />', () => {
   });
 
   it('should should error and download button if file is unsupported', () => {
-    const subject = new Subject<MediaItem>();
+    const context = {
+      getFile: () =>
+        Observable.of({
+          id: '123',
+          mediaType: 'unknown',
+          status: 'processed',
+        }),
+    } as any;
     const el = mount(
-      <ItemViewer
-        previewCount={0}
-        context={createContext({ subject })}
-        identifier={identifier}
-      />,
+      <ItemViewer previewCount={0} context={context} identifier={identifier} />,
     );
-    subject.next(unsupportedItem);
     el.update();
     const errorMessage = el.find(ErrorMessage);
     expect(errorMessage).toHaveLength(1);
@@ -223,60 +160,43 @@ describe('<ItemViewer />', () => {
     expect(errorMessage.find(Button)).toHaveLength(1);
   });
 
-  it('should show an error for a link (not supported)', () => {
-    const subject = new Subject<MediaItem>();
-    const el = mount(
-      <ItemViewer
-        previewCount={0}
-        context={createContext({ subject })}
-        identifier={identifier}
-      />,
-    );
-    subject.next(linkItem);
-    el.update();
-    const errorMessage = el.find(ErrorMessage);
-    expect(errorMessage).toHaveLength(1);
-    expect(errorMessage.text()).toContain('Links are not supported.');
-
-    // no download button
-    expect(errorMessage.find(Button)).toHaveLength(0);
-  });
-
-  it('MSW-720: passes the collectionName to the provider', () => {
-    const subject = new Subject<MediaItem>();
-    const context = createContext({ subject });
-    const el = mount(
-      <ItemViewer previewCount={0} context={context} identifier={identifier} />,
-    );
-    subject.next(linkItem);
-    el.update();
-
-    expect(context.getMediaItemProvider).toHaveBeenCalledWith(
-      identifier.id,
-      identifier.type,
-      identifier.collectionName,
-    );
-  });
-
   describe('Subscription', () => {
     it('unsubscribes from the provider when unmounted', () => {
-      const subject = new Subject<MediaItem>();
+      const release = jest.fn();
+      const context = {
+        getFile: () =>
+          Observable.of({
+            id: '123',
+            mediaType: 'unknown',
+            status: 'processed',
+          }),
+      } as any;
+
       const el = mount(
         <ItemViewer
           previewCount={0}
-          context={createContext({ subject })}
+          context={context}
           identifier={identifier}
         />,
       );
-      expect(subject.observers).toHaveLength(1);
+      const instance = el.instance() as ItemViewer;
+      instance.release = release;
+      expect(instance.release).toHaveBeenCalledTimes(0);
       el.unmount();
-      expect(subject.observers).toHaveLength(0);
+      expect(instance.release).toHaveBeenCalledTimes(1);
     });
 
     it('resubscribes to the provider when the data property value is changed', () => {
       const identifierCopy = { ...identifier };
-      const subject = new Subject<MediaItem>();
-      const context = createContext({ subject });
+      const context = {
+        getFile: jest.fn(() =>
+          Observable.of({
+            id: '123',
+            mediaType: 'unknown',
+            status: 'processed',
+          }),
+        ),
+      } as any;
       const el = mount(
         <ItemViewer
           previewCount={0}
@@ -285,11 +205,11 @@ describe('<ItemViewer />', () => {
         />,
       );
 
-      expect(context.getMediaItemProvider).toHaveBeenCalledTimes(1);
+      expect(context.getFile).toHaveBeenCalledTimes(1);
 
       // if the values stay the same, we will not resubscribe
       el.setProps({ context, identifier: identifierCopy });
-      expect(context.getMediaItemProvider).toHaveBeenCalledTimes(1);
+      expect(context.getFile).toHaveBeenCalledTimes(1);
 
       // ... but if the identifier change we will resubscribe
       const identifier2 = {
@@ -297,18 +217,33 @@ describe('<ItemViewer />', () => {
         id: 'some-other-id',
       };
       el.setProps({ context, identifier: identifier2 });
-      expect(context.getMediaItemProvider).toHaveBeenCalledTimes(2);
+      expect(context.getFile).toHaveBeenCalledTimes(2);
 
       // if the context changes, we will also resubscribe
-      const newContext = createContext({ subject });
+      const newContext = {
+        getFile: jest.fn(() =>
+          Observable.of({
+            id: '123',
+            mediaType: 'unknown',
+            status: 'processed',
+          }),
+        ),
+      } as any;
+
       el.setProps({ context: newContext, identifier: identifier2 });
-      expect(context.getMediaItemProvider).toHaveBeenCalledTimes(2);
-      expect(newContext.getMediaItemProvider).toHaveBeenCalledTimes(1);
+      expect(context.getFile).toHaveBeenCalledTimes(2);
+      expect(newContext.getFile).toHaveBeenCalledTimes(1);
     });
 
     it('should return to PENDING state when resets', () => {
-      const subject = new Subject<MediaItem>();
-      const context = createContext({ subject });
+      const context = {
+        getFile: () =>
+          Observable.of({
+            id: '123',
+            mediaType: 'unknown',
+            status: 'processed',
+          }),
+      } as any;
       const el = mount(
         <ItemViewer
           previewCount={0}
@@ -317,8 +252,6 @@ describe('<ItemViewer />', () => {
         />,
       );
 
-      expect(el.state().item.status).toEqual('PENDING');
-      subject.next(docItem);
       expect(el.state().item.status).toEqual('SUCCESSFUL');
 
       const identifier2 = {
@@ -326,7 +259,14 @@ describe('<ItemViewer />', () => {
         id: 'some-other-id',
       };
 
+      // since the test is executed synchronusly
+      // let's prevent the second call to getFile form immediately resolving and
+      // udpateing the state to SUCCESSFUL before we run the assertion.
+      context.getFile = () => Observable.never();
+
       el.setProps({ context, identifier: identifier2 });
+      el.update();
+
       expect(el.state().item.status).toEqual('PENDING');
     });
   });
