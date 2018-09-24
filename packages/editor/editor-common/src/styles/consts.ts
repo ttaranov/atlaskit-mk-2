@@ -62,7 +62,7 @@ export const akEditorTableCellBackgroundOpacity = 0.5;
 export const akEditorFullPageMaxWidth = 680;
 export const akEditorDefaultLayoutWidth = 680;
 export const akEditorWideLayoutWidth = 960;
-export const akEditorTableNumberColumnWidth = 40;
+export const akEditorTableNumberColumnWidth = 42;
 export const akEditorBreakoutPadding = 96;
 export const akEditorElementMinWidth = 150;
 

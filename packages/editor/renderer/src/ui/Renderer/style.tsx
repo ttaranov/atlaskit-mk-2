@@ -253,7 +253,7 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
         border-right: 1px solid ${akEditorTableBorder};
         width: ${akEditorTableNumberColumnWidth}px;
         height: 100%;
-        padding: 10px;
+        padding: 10px 2px;
         position: absolute;
         top: 0;
         left: 0;
