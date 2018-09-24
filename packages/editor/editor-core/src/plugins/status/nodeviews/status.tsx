@@ -21,7 +21,7 @@ export default class StatusNodeView extends React.Component<Props> {
     } = this.props.node;
 
     return (
-      <StatusContainer id={Math.random().toString()} onClick={this.handleClick}>
+      <StatusContainer onClick={this.handleClick}>
         <Status text={text} color={color} localId={localId} />
       </StatusContainer>
     );

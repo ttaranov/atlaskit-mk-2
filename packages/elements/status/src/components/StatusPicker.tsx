@@ -11,7 +11,7 @@ const FieldTextWrapper = styled.div`
 `;
 
 export interface Props {
-  selectedColor: string;
+  selectedColor: ColorType;
   text: string;
   onEnter: () => void;
   onColorClick: (value: ColorType) => void;

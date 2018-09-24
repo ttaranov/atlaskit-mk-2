@@ -5,7 +5,6 @@ import {
   Selection,
 } from 'prosemirror-state';
 import { pluginKey } from './plugin';
-// import { StatusType } from './index';
 import { Color as ColorType } from '@atlaskit/status';
 
 export type StatusType = {

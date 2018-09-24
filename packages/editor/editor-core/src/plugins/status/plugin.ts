@@ -17,13 +17,7 @@ const createPlugin: PMPluginFactory = ({ dispatch, portalProviderAPI }) =>
         const meta = tr.getMeta(pluginKey);
 
         if (meta) {
-          let newState;
-          if (meta.showStatusPickerAt === state.showStatusPickerAt) {
-            // newState = { ...state, showStatusPickerAt: null };
-            newState = { ...state, ...meta };
-          } else {
-            newState = { ...state, ...meta };
-          }
+          let newState = { ...state, ...meta };
           dispatch(pluginKey, newState);
           return newState;
         }

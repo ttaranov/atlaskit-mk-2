@@ -38,7 +38,7 @@ const ColorPaletteWrapper: ComponentClass<HTMLAttributes<{}>> = styled.div`
 `;
 
 interface ColorPaletteProps {
-  selectedColor?: string;
+  selectedColor?: ColorType;
   onClick: (value: ColorType) => void;
   cols?: number;
   className?: string;

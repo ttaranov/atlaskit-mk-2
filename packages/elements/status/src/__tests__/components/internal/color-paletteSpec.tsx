@@ -28,4 +28,12 @@ describe('ColorPalette', () => {
       component.findWhere(n => n.is(Color) && n.prop('isSelected')).length,
     ).toBe(1);
   });
+
+  it('should not select if no selected color', () => {
+    const component = shallow(<ColorPalette onClick={jest.fn()} />);
+
+    expect(
+      component.findWhere(n => n.is(Color) && n.prop('isSelected')).length,
+    ).toBe(0);
+  });
 });
