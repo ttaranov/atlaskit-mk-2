@@ -2,6 +2,7 @@ import { uuid } from '@atlaskit/editor-common';
 import { keymap } from 'prosemirror-keymap';
 import { ResolvedPos, Schema } from 'prosemirror-model';
 import { EditorState, Selection, Transaction, Plugin } from 'prosemirror-state';
+import { isSupportedSourceNode, splitListAtSelection } from '../commands';
 
 // tries to find a valid cursor position
 const setTextSelection = (pos: number) => (tr: Transaction) => {
@@ -15,14 +16,6 @@ const setTextSelection = (pos: number) => (tr: Transaction) => {
 export function keymapPlugin(schema: Schema): Plugin | undefined {
   const deleteCurrentItem = ($from: ResolvedPos, tr: Transaction) => {
     return tr.delete($from.before($from.depth) - 1, $from.end($from.depth) + 1);
-  };
-
-  const deleteList = ($from: ResolvedPos, tr: Transaction, content: any) => {
-    return tr.replaceWith(
-      $from.start($from.depth - 1) - 1,
-      $from.end($from.depth - 1) + 1,
-      content,
-    );
   };
 
   /*
@@ -49,27 +42,14 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
         return false;
       }
 
-      const nodeType = $from.node($from.depth).type;
-      const isFirstItemInList =
-        (nodeType === decisionItem || nodeType === taskItem) &&
-        $from.index($from.depth - 1) === 0;
-
       // Don't do anything if the cursor isn't at the beginning of the node.
       if ($from.parentOffset !== 0) {
-        return false;
-      }
-
-      if ($from.depth !== 1 && !isFirstItemInList) {
         return false;
       }
 
       const previousPos = tr.doc.resolve(
         Math.max(0, $from.before($from.depth) - 1),
       );
-
-      if (previousPos.pos === 0 && !isFirstItemInList) {
-        return false;
-      }
 
       const previousNodeType =
         previousPos.pos > 0 && previousPos.node(1) && previousPos.node(1).type;
@@ -85,25 +65,87 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
         deleteCurrentItem($from, tr).insert(insertPos, content);
         dispatch(setTextSelection(insertPos)(tr).scrollIntoView());
         return true;
-      } else if (isFirstItemInList) {
-        const content = schema.nodes.paragraph.create(
-          {},
-          $from.node($from.depth).content,
-        );
-        const isOnlyChild = $from.node($from.depth - 1).childCount === 1;
-        const insertPos = previousPos.pos > 0 ? previousPos.pos + 1 : 0;
+      }
 
-        if (!isOnlyChild) {
-          deleteCurrentItem($from, tr).insert(insertPos, content);
-        } else {
-          deleteList($from, tr, content);
-        }
-        dispatch(setTextSelection(insertPos)(tr).scrollIntoView());
+      const nodeType = $from.node().type;
+      if (nodeType !== decisionItem && nodeType !== taskItem) {
+        return false;
+      }
+
+      dispatch(splitListAtSelection(tr, schema));
+
+      return true;
+    },
+    Delete: (state: EditorState, dispatch) => {
+      const {
+        selection,
+        schema: { nodes },
+        tr,
+      } = state;
+      const { decisionList, decisionItem, taskList, taskItem } = nodes;
+
+      if ((!decisionItem || !decisionList) && (!taskList || !taskItem)) {
+        return false;
+      }
+
+      const { $from, $to } = selection;
+
+      // Don't do anything if selection is a range
+      if ($from.pos !== $to.pos) {
+        return false;
+      }
+
+      // Don't do anything if the cursor isn't at the end of the node.
+      const endOfItem = $from.end();
+      const isAtEndOfItem = $from.pos === endOfItem;
+
+      if (!isAtEndOfItem) {
+        return false;
+      }
+
+      const list = $from.node($from.depth - 1);
+      const isAtEndOfList = list.lastChild === $from.node();
+
+      // split list, converted next item to a paragraph when not at end
+      if (!isAtEndOfList) {
+        setTextSelection(endOfItem + 2)(tr);
+        splitListAtSelection(tr, schema);
+        setTextSelection($from.pos)(tr);
+        tr.scrollIntoView();
+        dispatch(tr);
         return true;
       }
 
-      return false;
+      const listPos = tr.doc.resolve($from.after($from.depth - 1));
+      const nodeAfterList = listPos.nodeAfter;
+
+      if (!nodeAfterList) {
+        // nothing after - default to prosemirror
+        return false;
+      }
+
+      if (!isSupportedSourceNode(schema, selection)) {
+        // Unsupported content in following node, do nothing.
+        return true;
+      }
+
+      const nodeAfterPos = tr.doc.resolve(listPos.pos + 1);
+      const nodeAfterType = nodeAfterList.type;
+      if (nodeAfterType === decisionList || nodeAfterType === taskList) {
+        // Do nothing until FS-2896 is implemented
+        return true;
+      }
+
+      const newContent = nodeAfterList.content;
+      tr.delete(nodeAfterPos.before(), nodeAfterPos.after());
+      tr.insert($from.pos, newContent);
+      setTextSelection($from.pos)(tr);
+      tr.scrollIntoView();
+      dispatch(tr);
+
+      return true;
     },
+
     Enter: (state: EditorState, dispatch) => {
       const {
         selection,
@@ -118,9 +160,6 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
       const isEmpty = node && node.textContent.length === 0;
 
       if (nodeIsTaskOrDecisionItem) {
-        const list = $from.node($from.depth - 1);
-        const end = $from.end($from.depth - 1) + 1;
-
         if (!isEmpty) {
           tr.split($from.pos, 1, [
             { type: nodeType, attrs: { localId: uuid.generate() } },
@@ -129,20 +168,10 @@ export function keymapPlugin(schema: Schema): Plugin | undefined {
           return true;
         }
 
-        // If list is empty, replace with paragraph
-        if (isEmpty && list.childCount === 1) {
-          deleteList($from, tr, schema.nodes.paragraph.create({}));
-          dispatch(tr);
-          return true;
-        }
-
-        // If last child, remove it and insert a paragraph
-        if (isEmpty && list.child(list.childCount - 1) === node) {
-          tr.insert(end, schema.nodes.paragraph.create({}));
-          deleteCurrentItem($from, tr);
-          dispatch(tr);
-          return true;
-        }
+        // Otherwise, split list
+        splitListAtSelection(tr, schema);
+        dispatch(tr);
+        return true;
       }
       return false;
     },
