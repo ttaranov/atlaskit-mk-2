@@ -276,7 +276,7 @@ export class Card extends Component<CardProps, CardState> {
   // TODO: move into utility
   get status(): CardStatus {
     const { status, metadata, dataURI } = this.state;
-    const { identifier } = this.props;
+    const { identifier, disableOverlay } = this.props;
 
     if (identifier.mediaItemType !== 'file') {
       return status;
@@ -298,7 +298,7 @@ export class Card extends Component<CardProps, CardState> {
       }
 
       // If we have enough metadata for non images, we show them
-      if (mediaType !== 'image' && name && size) {
+      if (mediaType !== 'image' && name && size && !disableOverlay) {
         return 'complete';
       }
     }
