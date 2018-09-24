@@ -8,7 +8,7 @@ export const Container = styled.div`
 
 export const Ellipsis = styled.span`
   display: flex;
-  padding: 0 10px;
+  padding: 0 8px;
   text-align: center;
   align-items: center;
 `;
