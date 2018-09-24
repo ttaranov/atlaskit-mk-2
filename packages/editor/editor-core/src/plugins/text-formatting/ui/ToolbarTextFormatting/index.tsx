@@ -30,8 +30,6 @@ export interface Props {
   textFormattingState: TextFormattingState;
   disabled?: boolean;
   isReducedSpacing?: boolean;
-
-  navigateRight?: () => void;
 }
 
 class ToolbarTextFormatting extends PureComponent<Props & InjectedIntlProps> {
@@ -41,7 +39,6 @@ class ToolbarTextFormatting extends PureComponent<Props & InjectedIntlProps> {
       isReducedSpacing,
       textFormattingState,
       intl: { formatMessage },
-      navigateRight,
     } = this.props;
     const {
       strongHidden,
@@ -54,9 +51,6 @@ class ToolbarTextFormatting extends PureComponent<Props & InjectedIntlProps> {
 
     const labelBold = formatMessage(messages.bold);
     const labelItalic = formatMessage(messages.italic);
-    // if (this.props.navigateRight) {
-    //   console.log('navright is defined in ToolbarTextFormatting');
-    // }
     return (
       <ButtonGroup width={isReducedSpacing ? 'small' : 'large'}>
         {strongHidden ? null : (
@@ -68,13 +62,6 @@ class ToolbarTextFormatting extends PureComponent<Props & InjectedIntlProps> {
             title={tooltip(toggleBold, labelBold)}
             iconBefore={<BoldIcon label={labelBold} />}
             onFocus={e => console.log('bold', e)}
-            // navigateRight={() => {
-            //   // console.log('navigating right in toolbarTextFormatting');
-            //   if (navigateRight) {
-            //     // console.log('navright is defined in toolbarTextFormatting');
-            //     navigateRight();
-            //   }
-            // }}
           />
         )}
 
@@ -86,13 +73,6 @@ class ToolbarTextFormatting extends PureComponent<Props & InjectedIntlProps> {
             disabled={disabled || emDisabled}
             title={tooltip(toggleItalic, labelItalic)}
             iconBefore={<ItalicIcon label={labelItalic} />}
-            // navigateRight={() => {
-            //   // console.log('navigating right in toolbarTextFormatting');
-            //   if (navigateRight) {
-            //     // console.log('navright is defined in toolbarTextFormatting');
-            //     navigateRight();
-            //   }
-            // }}
           />
         )}
       </ButtonGroup>

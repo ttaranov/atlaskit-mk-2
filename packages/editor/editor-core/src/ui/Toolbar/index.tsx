@@ -119,14 +119,6 @@ export class ToolbarInner extends React.Component<ToolbarInnerProps> {
           }}
         > */}
         {items.map((component, key) => {
-          const navigateRight = () => {
-            const itemToFocus = key + 1;
-            console.log(`navigated right in TOOLBAR!, key ${key}`);
-            if (itemToFocus > 0 && itemToFocus < items.length) {
-              // items[itemToFocus].focus();
-            }
-          };
-
           const props: any = { key };
           const element = component({
             editorView,
@@ -138,7 +130,6 @@ export class ToolbarInner extends React.Component<ToolbarInnerProps> {
             popupsBoundariesElement,
             popupsScrollableElement,
             disabled,
-            navigateRight,
             toolbarSize,
             isToolbarReducedSpacing,
             onFocus: e => console.log('test', e),

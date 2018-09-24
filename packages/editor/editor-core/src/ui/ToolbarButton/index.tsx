@@ -1,6 +1,6 @@
 import Tooltip from '@atlaskit/tooltip';
 import * as React from 'react';
-import { Component, ReactElement } from 'react';
+import { PureComponent, ReactElement } from 'react';
 import { AkButton } from './styles';
 // import FocusableButtonWrapper from '../FocusableButtonWrapper';
 import { ToolbarContext, ToolbarContextValue } from '../Toolbar/ToolbarContext';
@@ -20,23 +20,14 @@ export interface Props {
   title?: string;
   titlePosition?: string;
   onFocus?: (event: Event) => void;
-
-  navigateLeft?: () => void;
-  navigateRight?: () => void;
 }
 
-export default class ToolbarButton extends Component<Props, {}> {
-  private button;
+export default class ToolbarButton extends PureComponent<Props, {}> {
   static defaultProps = {
     className: '',
   };
 
-  // componentDidUpdate(){
-  //   // this.button.focus();
-  // }
-
   render() {
-    const { navigateRight } = this.props;
     const button = (
       <AkButton
         tabIndex="-1"
@@ -59,8 +50,6 @@ export default class ToolbarButton extends Component<Props, {}> {
       </AkButton>
     );
 
-    const onClickDebug = e =>
-      console.log('onClick inside onKeyDown in ToolbarButton', e);
     const WrappedButton = (
       <ToolbarContext.Consumer>
         {value => (
@@ -68,13 +57,13 @@ export default class ToolbarButton extends Component<Props, {}> {
             tabIndex={0}
             // onClick={e => console.log('AYYEEE', e)}
             onKeyDown={this.handleKeydown({
-              onClick: onClickDebug,
               toolbarCallback: value.buttonClickCallback,
             })}
             ref={input => {
               if (
                 input !== null &&
                 value.selectedButton &&
+                // @ts-ignore
                 value.selectedButton!.props == this.props
               ) {
                 console.log('FOCUS THE BUTTON :)');
