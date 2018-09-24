@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 82.0.1
+- [patch] updated 'actionSubject' of mention typeahead's analytics events to be 'mentionTypeahead' [3147456](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3147456)
+
 ## 82.0.0
 - [major] ED-5150 Editor i18n: Main toolbar [ef76f1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef76f1f)
 
