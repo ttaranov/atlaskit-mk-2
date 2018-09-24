@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 82.0.2
+- [patch] ED-5356: getting rid of styled-components in tables [5bc39da](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/5bc39da)
+
 ## 82.0.1
 - [patch] updated 'actionSubject' of mention typeahead's analytics events to be 'mentionTypeahead' [3147456](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3147456)
 
