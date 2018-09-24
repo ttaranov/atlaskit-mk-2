@@ -33,7 +33,10 @@ export default class ButtonGroup extends PureComponent<
   constructor(props) {
     super(props);
   }
-  private buttonClicked = (button: ToolbarButton, delta: number) => {
+  private buttonClicked = consumerValue => (
+    button: ToolbarButton,
+    delta: number,
+  ) => {
     const children: React.ReactChild[] = React.Children.toArray(
       this.props.children,
     );
@@ -42,6 +45,10 @@ export default class ButtonGroup extends PureComponent<
     // @ts-ignore
     const allButtonProps = children.map(item => item.props);
     const buttonKeypressOriginIndex = allButtonProps.indexOf(buttonProps);
+    if (buttonKeypressOriginIndex === -1) {
+      console.log("Our button wasn't clicked, bailing from buttonClicked");
+      return null;
+    }
     console.log('Keypress by button', buttonKeypressOriginIndex);
     console.log('Delta is ', delta);
     const selectedIndex = buttonKeypressOriginIndex + delta;
@@ -52,6 +59,13 @@ export default class ButtonGroup extends PureComponent<
         selectedButton: children[selectedIndex],
       });
     }
+
+    if (selectedIndex < 0) {
+      consumerValue.buttonClickCallback(this, -1);
+    }
+    if (selectedIndex >= children.length) {
+      consumerValue.buttonClickCallback(this, -1);
+    }
     return null;
   };
 
@@ -60,11 +74,22 @@ export default class ButtonGroup extends PureComponent<
     const { selectedButton } = this.state;
 
     return (
-      <ToolbarContext.Provider
-        value={{ buttonClickCallback: this.buttonClicked, selectedButton }}
-      >
-        <ButtonGroupSpan width={width}>{this.props.children}</ButtonGroupSpan>
-      </ToolbarContext.Provider>
+      <ToolbarContext.Consumer>
+        {value => (
+          <ToolbarContext.Provider
+            value={{
+              buttonClickCallback: this.buttonClicked(value),
+              selectedButton,
+            }}
+          >
+            <ButtonGroupSpan width={width}>
+              {this.props.children}
+            </ButtonGroupSpan>
+          </ToolbarContext.Provider>
+        )}
+      </ToolbarContext.Consumer>
     );
   }
 }
+
+// value.buttonClickCallback

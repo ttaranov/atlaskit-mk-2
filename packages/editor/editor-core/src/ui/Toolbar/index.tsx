@@ -6,7 +6,7 @@ import { ProviderFactory } from '@atlaskit/editor-common';
 import { EditorAppearance, ToolbarUIComponentFactory } from '../../types';
 import { EventDispatcher } from '../../event-dispatcher';
 import EditorActions from '../../actions';
-// import ToolbarContext from './ToolbarContext';
+import ToolbarContext from './ToolbarContext';
 
 const ToolbarComponentsWrapper = styled.div`
   display: flex;
@@ -75,6 +75,28 @@ export class ToolbarInner extends React.Component<ToolbarInnerProps> {
     );
   }
 
+  private buttonClicked = (button: any, delta: number) => {
+    const children: React.ReactChild[] = React.Children.toArray(
+      this.props.children,
+    );
+
+    const buttonProps = button.props;
+    // @ts-ignore
+    const allButtonProps = children.map(item => item.props);
+    const buttonKeypressOriginIndex = allButtonProps.indexOf(buttonProps);
+    console.log('TOOLBAR Keypress by button', buttonKeypressOriginIndex);
+    console.log('TOOLBAR Delta is ', delta);
+    const selectedIndex = buttonKeypressOriginIndex + delta;
+    console.log('TOOLBAR selectedIndex', selectedIndex);
+    // if (selectedIndex >= 0 && selectedIndex < children.length) {
+    //   console.log('setting state');
+    //   this.setState({
+    //     selectedButton: children[selectedIndex],
+    //   });
+    // }
+    return null;
+  };
+
   render() {
     const {
       appearance,
@@ -95,8 +117,6 @@ export class ToolbarInner extends React.Component<ToolbarInnerProps> {
       return null;
     }
 
-    let lastItem = undefined;
-
     // const buttonClicked = button => {
     //   const buttonProps = button.props;
     //   const allButtonProps = items.map(item => item.props);
@@ -114,7 +134,7 @@ export class ToolbarInner extends React.Component<ToolbarInnerProps> {
       <ToolbarComponentsWrapper>
         {/* <ToolbarContext.Provider
           value={{
-            buttonClickCallback: buttonClicked,
+            buttonClickCallback: this.buttonClicked,
             currentlySelected: null,
           }}
         > */}
