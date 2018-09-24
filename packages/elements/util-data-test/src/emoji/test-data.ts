@@ -2,14 +2,13 @@ import {
   EmojiRepository,
   denormaliseEmojiServiceResponse,
   EmojiDescription,
+  UsageFrequencyTracker,
 } from '@atlaskit/emoji';
 import { customCategory, customType } from './utils';
 import {
   mockNonUploadingEmojiResourceFactory,
   mockEmojiResourceFactory,
 } from './MockEmojiResource';
-import { UsageFrequencyTracker } from '@atlaskit/emoji/src/api/internal/UsageFrequencyTracker';
-import DuplicateLimitedQueue from '@atlaskit/emoji/src/DuplicateLimitedQueue';
 
 export const spriteEmoji = {
   id: 'grimacing',
@@ -188,22 +187,11 @@ export const siteEmojis = [mediaEmoji];
 export const emojis = [...standardEmojis, ...atlassianEmojis, ...siteEmojis];
 export const searchableEmojis = filterToSearchable(emojis);
 
-// UsageFrequencyTracker that doesn't use local storage
-class TestUsageFrequencyTracker extends UsageFrequencyTracker {
-  constructor() {
-    super();
-    this.queue = new DuplicateLimitedQueue<string>({
-      maxDuplicates: 25,
-      minUniqueItems: 5,
-    });
-  }
-}
-
 // EmojiReposity using TestUsageFrequencyTracker
 class TestEmojiRepository extends EmojiRepository {
   constructor(emojis: EmojiDescription[]) {
     super(emojis);
-    this.usageTracker = new TestUsageFrequencyTracker();
+    this.usageTracker = new UsageFrequencyTracker(false);
   }
 }
 
