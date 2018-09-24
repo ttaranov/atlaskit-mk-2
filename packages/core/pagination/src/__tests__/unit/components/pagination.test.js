@@ -14,7 +14,7 @@ describe(`${name} - pagination`, () => {
   });
   it('should call the child function with the proper parameters', () => {
     const childPropSpy = jest.fn().mockReturnValue(null);
-    const wrapper = mount(<Pagination>{childPropSpy}</Pagination>);
+    mount(<Pagination>{childPropSpy}</Pagination>);
     expect(childPropSpy).toHaveBeenCalledWith(
       LeftNavigator,
       Link,

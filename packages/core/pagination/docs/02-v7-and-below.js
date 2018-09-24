@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import { md, Example, Props, code } from '@atlaskit/docs';
+import { md, Props, code } from '@atlaskit/docs';
 
 export default md`
 This package provides component used for pagination. It truncates the total

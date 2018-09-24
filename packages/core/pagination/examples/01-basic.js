@@ -34,7 +34,7 @@ export default class extends Component<{}, State> {
   };
 
   render() {
-    let pageLinksCollapsed = collapseRange(
+    const pageLinksCollapsed = collapseRange(
       MAX_NUMBER_OF_PAGES,
       this.state.selected,
       this.state.items,
@@ -50,18 +50,18 @@ export default class extends Component<{}, State> {
               isDisabled={firstPage.value === selected}
               onClick={this.onArrowClicked}
             />
-            {pageLinksCollapsed.map((pageLink, index) => {
+            {pageLinksCollapsed.map(pageLink => {
               if (pageLink === '...') {
                 return (
-                  <span key={index} style={{ padding: '0 8px' }}>
+                  <span key={`${pageLink}`} style={{ padding: '0 8px' }}>
                     ...
                   </span>
                 );
               }
-              let { value, link } = pageLink;
+              const { value } = pageLink;
               return (
                 <Link
-                  key={index}
+                  key={`${value}`}
                   onClick={() => {
                     this.updateTheSelected(value);
                   }}

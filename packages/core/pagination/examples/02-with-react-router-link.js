@@ -1,8 +1,6 @@
 //@flow
 import React, { Component, Fragment } from 'react';
 import { HashRouter, Link, Route, Switch } from 'react-router-dom';
-import ChevronLeftLargeIcon from '@atlaskit/icon/glyph/chevron-left-large';
-import Button from '@atlaskit/button';
 import Pagination from '../src';
 
 const pages = [
@@ -55,7 +53,7 @@ const PaginationWithSelectPage = ({
           <LeftNavigator isDisabled />
         )}
         {pages.map((page, index) => (
-          <Link to={page.link} key={index}>
+          <Link to={page.link} key={`${page.link}`}>
             <AKLink selected={pageSelected === index}>{page.label}</AKLink>
           </Link>
         ))}

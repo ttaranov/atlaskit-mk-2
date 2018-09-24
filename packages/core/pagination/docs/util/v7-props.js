@@ -21,12 +21,29 @@ type Props = {|
   value?: number,
 |};
 
+const defaultI18n = {
+  prev: 'Prev',
+  next: 'Next',
+};
+
 /**
  * This component is just a helper to get the props for v7 of Pagination
  * This components is used in docs and is not supposed to anymore of a purpose
  */
 export default class v7PropsHelper extends Component<Props> {
+  static defaultProps = {
+    defaultValue: 1,
+    i18n: defaultI18n,
+    onChange: () => {},
+    total: 0,
+  };
   render() {
-    return null;
+    //$FlowFixMe
+    return <Noop {...this.props} />;
   }
+}
+
+//eslint-disable-next-line
+function Noop(props: Props) {
+  return null;
 }
