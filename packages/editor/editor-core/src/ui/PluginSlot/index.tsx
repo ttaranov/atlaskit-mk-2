@@ -20,6 +20,7 @@ export interface Props {
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
+  containerElement: HTMLElement | undefined;
   disabled: boolean;
 }
 
@@ -34,6 +35,7 @@ export default class PluginSlot extends React.Component<Props, any> {
       popupsMountPoint,
       popupsBoundariesElement,
       popupsScrollableElement,
+      containerElement,
       disabled,
     } = this.props;
     return !(
@@ -45,6 +47,7 @@ export default class PluginSlot extends React.Component<Props, any> {
       nextProps.popupsMountPoint === popupsMountPoint &&
       nextProps.popupsBoundariesElement === popupsBoundariesElement &&
       nextProps.popupsScrollableElement === popupsScrollableElement &&
+      nextProps.containerElement === containerElement &&
       nextProps.disabled === disabled
     );
   }
@@ -60,6 +63,7 @@ export default class PluginSlot extends React.Component<Props, any> {
       popupsMountPoint,
       popupsBoundariesElement,
       popupsScrollableElement,
+      containerElement,
       disabled,
     } = this.props;
 
@@ -80,6 +84,7 @@ export default class PluginSlot extends React.Component<Props, any> {
             popupsMountPoint,
             popupsBoundariesElement,
             popupsScrollableElement,
+            containerElement,
             disabled,
           });
           return element && React.cloneElement(element, props);

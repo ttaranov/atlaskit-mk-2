@@ -153,6 +153,8 @@ export interface EditorProps {
 
   UNSAFE_cards?: CardOptions;
 
+  UNSAFE_mediaSingle_grid?: boolean;
+
   // Submits on the enter key. Probably useful for an inline comment editor use case.
   saveOnEnter?: boolean;
 
