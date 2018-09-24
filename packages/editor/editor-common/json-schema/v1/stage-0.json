@@ -142,6 +142,12 @@
         "attrs": {
           "type": "object",
           "properties": {
+            "width": {
+              "type": "number",
+              "stage": 0,
+              "minimum": 0,
+              "maximum": 100
+            },
             "layout": {
               "enum": [
                 "wrap-right",
@@ -152,10 +158,10 @@
               ]
             }
           },
+          "additionalProperties": false,
           "required": [
             "layout"
-          ],
-          "additionalProperties": false
+          ]
         }
       },
       "required": [
