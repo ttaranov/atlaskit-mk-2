@@ -4,7 +4,7 @@
  * Returns an array that represents how the pagination should appear. This
  * array will contain page numbers and ellipsis. For example:
  *
- * pageRange(7, 5, 100) = [1, '...', 4, 5, 6, '...', 100]
+ * pageRange(7, 5, [1, 2, 4, .... ,100]) = [1, '...', 4, 5, 6, '...', 100]
  */
 const collapseRange = (
   visible: number,

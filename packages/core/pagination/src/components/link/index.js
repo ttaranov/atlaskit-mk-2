@@ -1,27 +1,19 @@
 //@flow
 import React, { Component, type Node } from 'react';
 import Button from '@atlaskit/button';
+import type { LinkPropsType } from '../../types';
 
-type Props = {
-  label?: string,
-  href?: string,
-  selected?: boolean,
-  onClick?: Function,
-  children?: Node,
-};
-
-export default class Link extends Component<Props> {
+export default class Link extends Component<LinkPropsType> {
   render() {
-    const { label, href, onClick, selected, children } = this.props;
-    console.log({ children });
+    const { ariaLabel, href, onClick, isSelected, children } = this.props;
     return (
       <Button
         appearance="subtle"
-        ariaLabel={label}
+        ariaLabel={ariaLabel}
         href={href}
-        isSelected={selected}
+        isSelected={isSelected}
         onClick={() => {
-          onClick && onClick(label);
+          onClick && onClick(ariaLabel);
         }}
       >
         <span>{children}</span>
