@@ -138,16 +138,16 @@ describe('<FabricElementsListener />', () => {
         render() {
           return (
             <div
-              onClick={() => {
+              onClick={() =>
                 this.props.createAnalyticsEvent &&
-                  this.props
-                    .createAnalyticsEvent({
-                      action: 'some-action',
-                      actionSubject: 'some-component',
-                      eventType: 'ui',
-                    })
-                    .fire(FabricChannel.elements);
-              }}
+                this.props
+                  .createAnalyticsEvent({
+                    action: 'some-action',
+                    actionSubject: 'some-component',
+                    eventType: 'ui',
+                  })
+                  .fire(FabricChannel.elements)
+              }
             />
           );
         }
