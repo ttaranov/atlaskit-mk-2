@@ -13,6 +13,7 @@ type Props = {
 export default class Link extends Component<Props> {
   render() {
     const { label, href, onClick, selected, children } = this.props;
+    console.log({ children });
     return (
       <Button
         appearance="subtle"
@@ -23,7 +24,7 @@ export default class Link extends Component<Props> {
           onClick && onClick(label);
         }}
       >
-        {children}
+        <span>{children}</span>
       </Button>
     );
   }

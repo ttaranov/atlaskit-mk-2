@@ -34,7 +34,7 @@ const collapseRange = (
     '...',
     ...pageLinks.slice(
       current - Math.floor(pageCount / 2),
-      current + pageCount,
+      current + pageCount - 1,
     ),
     '...',
     ...pageLinks.slice(-1),
