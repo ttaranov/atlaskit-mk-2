@@ -288,6 +288,7 @@
     "bunyan": "^1.8.12",
     "bytes": "^2.4.0",
     "calendar-base": "^0.3.0",
+    "canvas-prebuilt": "^2.0.0-alpha.14",
     "chalk": "^2.1.0",
     "chromatism": "^2.6.0",
     "chunkinator": "^2.0.4",
