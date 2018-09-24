@@ -6,7 +6,6 @@ import { browser } from '@atlaskit/editor-common';
 import CornerControls from './CornerControls';
 import RowControls from './RowControls';
 import NumberColumn from './NumberColumn';
-import { Container } from './styles';
 import { isSelectionUpdated } from './utils';
 import {
   clearHoverSelection,
@@ -88,7 +87,7 @@ export default class TableFloatingControls extends Component<Props, State> {
     }
 
     return (
-      <Container onMouseDown={this.handleMouseDown}>
+      <div onMouseDown={this.handleMouseDown}>
         {isNumberColumnEnabled ? (
           <NumberColumn
             state={editorView.state}
@@ -127,7 +126,7 @@ export default class TableFloatingControls extends Component<Props, State> {
           selectRow={this.selectRow}
           insertRow={this.insertRow}
         />
-      </Container>
+      </div>
     );
   }
 
