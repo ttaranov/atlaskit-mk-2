@@ -238,6 +238,7 @@
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-flow": "^7.0.0",
     "@babel/preset-react": "^7.0.0",
+    "@babel/runtime": "^7.0.0",
     "@lbatchelor/netlify": "^1.2.0-patched.7",
     "@lbatchelor/netlify-cli": "^1.2.2-patched.9",
     "@types/bricks.js": "^1.8.0",

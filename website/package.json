@@ -61,6 +61,7 @@
     "@atlaskit/theme": "^6.0.0",
     "@atlaskit/tooltip": "^12.0.14",
     "@atlaskit/webpack-config": "^2.0.1",
+    "@babel/runtime": "^7.0.0",
     "@lbatchelor/netlify": "^1.2.0-patched.7",
     "@lbatchelor/netlify-cli": "^1.2.2-patched.9",
     "babel-runtime": "^6.26.0",
