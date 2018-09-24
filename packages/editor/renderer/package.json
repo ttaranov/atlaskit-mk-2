@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/renderer",
-  "version": "24.0.0",
+  "version": "24.0.1",
   "description": "Renderer component",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -19,7 +19,7 @@
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/code": "^8.0.1",
-    "@atlaskit/editor-common": "^17.0.0",
+    "@atlaskit/editor-common": "^17.0.3",
     "@atlaskit/editor-json-transformer": "^4.0.12",
     "@atlaskit/icon": "^13.2.5",
     "@atlaskit/media-card": "^36.0.0",

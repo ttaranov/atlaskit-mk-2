@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 82.1.2
+- [patch] Numbered column in table should be able to fit number > 100 [7a43676](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7a43676)
+
 ## 82.1.1
 - [patch] ED-5151 Editor i18n: Floating toolbars [403b547](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/403b547)
 
