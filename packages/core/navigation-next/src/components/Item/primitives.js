@@ -27,6 +27,7 @@ class ItemPrimitive extends PureComponent<ItemProps> {
     styles: styleReducerNoOp,
     text: '',
   };
+  CachedCustomComponent = 'div';
   render() {
     const {
       after: After,
@@ -57,7 +58,10 @@ class ItemPrimitive extends PureComponent<ItemProps> {
     let itemProps = { innerRef };
 
     if (CustomComponent) {
-      itemComponent = CustomComponent;
+      if (typeof CustomComponent !== typeof this.CachedCustomComponent) {
+        this.CachedCustomComponent = CustomComponent;
+      }
+      itemComponent = this.CachedCustomComponent;
       itemProps = this.props;
     } else if (href) {
       itemComponent = 'a';
