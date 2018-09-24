@@ -2,27 +2,19 @@
 
 import React, { type Node } from 'react';
 import styled from 'styled-components';
-import { colors, Theme } from '@atlaskit/theme';
+import { colors, Theme, themed, withTheme } from '@atlaskit/theme';
 import { theme } from '../theme';
 import type { AppearanceType, SizeType } from '../types';
 
-const themeBackgroundColors = {
-  light: colors.N0,
-  dark: colors.DN30,
-};
-const shapeGroupBackgroundColors = {
-  light: colors.N50,
-  dark: colors.DN100,
-};
-export const ShapeGroup = styled.g`
+export const ShapeGroup = withTheme(styled.g`
   & circle,
   & rect {
-    fill: ${props => shapeGroupBackgroundColors[props.mode]};
+    fill: ${themed({ light: colors.N50, dark: colors.DN100 })};
   }
   & g {
-    fill: ${props => themeBackgroundColors[props.mode]};
+    fill: ${colors.background};
   }
-`;
+`);
 
 type SlotProps = {|
   appearance: AppearanceType,

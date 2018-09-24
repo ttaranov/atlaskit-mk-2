@@ -1,7 +1,7 @@
 // @flow
 
 import { css } from 'styled-components';
-import { colors } from '@atlaskit/theme';
+import { colors, themed } from '@atlaskit/theme';
 import {
   AVATAR_RADIUS,
   AVATAR_SIZES,
@@ -14,10 +14,10 @@ const backgroundColorFocus = colors.B200;
 const overlayColorDefault = 'transparent';
 const overlayColorHover = colors.N70A;
 const overlayColorSelected = colors.N200A;
-const overlayColorDisabled = {
+const overlayColorDisabled = themed({
   light: 'rgba(255, 255, 255, 0.7)',
   dark: colors.DN80A,
-};
+});
 
 // "square" avatars are explicit
 export function getBorderRadius(
@@ -101,7 +101,7 @@ export function getInnerStyles(
   // Disabled
   if (props.isDisabled) {
     cursor = 'not-allowed';
-    overlayShade = overlayColorDisabled[props.theme.mode];
+    overlayShade = overlayColorDisabled;
     overlayOpacity = 1;
     pointerEvents = 'none';
   }

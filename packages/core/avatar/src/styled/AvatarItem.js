@@ -1,25 +1,19 @@
 // @flow
 
 import styled, { css } from 'styled-components';
-import { borderRadius, colors, gridSize, math } from '@atlaskit/theme';
+import {
+  borderRadius,
+  colors,
+  gridSize,
+  math,
+  themed,
+  withTheme,
+} from '@atlaskit/theme';
 import type { AvatarClickType } from '../types';
 
-const themeBackgroundColors = {
-  light: colors.N0,
-  dark: colors.DN30,
-};
-const activeBackgroundColor = {
-  light: colors.B50,
-  dark: colors.DN40,
-};
-const hoverBackgroundColor = {
-  light: colors.N30,
-  dark: colors.DN50,
-};
-const focusBorderColor = {
-  light: colors.B200,
-  dark: colors.B75,
-};
+const focusBorderColor = themed({ light: colors.B200, dark: colors.B75 });
+const textColors = themed({ light: colors.N900, dark: colors.DN600 });
+const subtleTextColors = themed({ light: colors.N200, dark: colors.DN300 });
 
 type getBackgroundColorType = {
   backgroundColor?: string,
@@ -37,21 +31,20 @@ export function getBackgroundColor({
   isActive,
   isHover,
   isSelected,
-  mode,
   onClick,
 }: getBackgroundColorType) {
   const isInteractive = href || onClick;
 
-  let themedBackgroundColor = backgroundColor || themeBackgroundColors[mode];
+  let themedBackgroundColor = backgroundColor || colors.background;
 
   // Interaction: Hover
   if (isInteractive && (isHover || isSelected)) {
-    themedBackgroundColor = hoverBackgroundColor[mode];
+    themedBackgroundColor = colors.backgroundHover;
   }
 
   // Interaction: Active
   if (isInteractive && isActive) {
-    themedBackgroundColor = activeBackgroundColor[mode];
+    themedBackgroundColor = colors.backgroundActive;
   }
 
   return themedBackgroundColor;
@@ -71,7 +64,6 @@ export function getStyles({
   isActive,
   isDisabled,
   isFocus,
-  mode,
   onClick,
 }: getStylesType) {
   const isInteractive = href || onClick;
@@ -85,7 +77,7 @@ export function getStyles({
   // Interaction: Focus
   if (isInteractive && isFocus && !isActive) {
     outline = 'none';
-    borderColor = focusBorderColor[mode];
+    borderColor = focusBorderColor;
   }
 
   // Disabled
@@ -142,10 +134,10 @@ export const Content = styled.div`
   line-height: 1.4;
   padding-left: ${gridSize}px;
 `;
-export const PrimaryText = styled.div`
-  ${truncateText} color: ${colors.text};
-`;
-export const SecondaryText = styled.div`
-  ${truncateText} color: ${colors.subtleText};
+export const PrimaryText = withTheme(styled.div`
+  ${truncateText} color: ${textColors};
+`);
+export const SecondaryText = withTheme(styled.div`
+  ${truncateText} color: ${subtleTextColors};
   font-size: 0.85em;
-`;
+`);

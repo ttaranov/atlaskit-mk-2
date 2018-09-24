@@ -1,13 +1,8 @@
 // @flow
 
-import { Theme } from '@atlaskit/theme';
-import React, { type ComponentType } from 'react';
+import { withTheme } from '@atlaskit/theme';
 import styled from 'styled-components';
 import CustomComponentProxy from '../components/CustomComponentProxy';
-
-const withTheme = El => props => (
-  <Theme>{t => <El {...props} theme={t} />}</Theme>
-);
 
 // This is necessary because we don't know what DOM element the custom component will render.
 export default (styles: Function) => {

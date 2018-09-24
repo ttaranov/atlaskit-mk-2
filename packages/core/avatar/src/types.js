@@ -77,7 +77,7 @@ export type AvatarPropTypesBase = {
   createAnalyticsEvent?: any,
 
   /** The theme that should be applied to the avatar. */
-  theme: ThemeProps => ThemeProps,
+  theme?: ThemeProps => ThemeProps,
 };
 
 export type AvatarPropTypes = AvatarPropTypesBase & {

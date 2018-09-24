@@ -49,7 +49,7 @@ type Props = {
   /** Pass target down to the anchor, if href is provided. */
   target?: '_blank' | '_self' | '_top' | '_parent',
   /** The item's theme. */
-  theme: ThemeItemType => ThemeItemType,
+  theme?: ThemeItemType => ThemeItemType,
   /** Whether or not overflowing primary and secondary text is truncated */
   enableTextTruncate?: boolean,
 };
@@ -115,7 +115,6 @@ class AvatarItem extends Component<Props> {
             <StyledComponent
               innerRef={this.setNode}
               {...enhancedProps}
-              mode={mode}
               onClick={this.guardedClick}
             >
               {cloneElement(avatar, { borderColor })}

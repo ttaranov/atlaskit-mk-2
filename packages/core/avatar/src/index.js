@@ -12,6 +12,5 @@ export * from './theme/item';
 export { AVATAR_SIZES, BORDER_WIDTH } from './styled/constants';
 export type { AvatarClickType, AvatarPropTypes, SizeType } from './types';
 export { withPseudoState } from './hoc';
-
 export { getProps } from './helpers';
 export { getBorderRadius, getInnerStyles } from './styled/utils';

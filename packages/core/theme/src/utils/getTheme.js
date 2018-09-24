@@ -7,7 +7,10 @@ import { type Theme, type ThemeProps } from '../types';
 const defaultTheme = { mode: DEFAULT_THEME_MODE };
 
 export default function getTheme(props: ?ThemeProps): Theme {
-  return props && props.theme && props.theme[CHANNEL]
-    ? props.theme[CHANNEL]
-    : defaultTheme;
+  const theme = props && props.theme;
+  return theme && theme[CHANNEL]
+    ? theme[CHANNEL]
+    : theme && theme.mode
+      ? theme
+      : defaultTheme;
 }

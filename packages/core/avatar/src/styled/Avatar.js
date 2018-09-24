@@ -3,7 +3,7 @@
 import React from 'react';
 import type { Node } from 'react';
 import styled from 'styled-components';
-import { Theme } from '@atlaskit/theme';
+import { Theme, withTheme } from '@atlaskit/theme';
 import { theme } from '../theme';
 import { getInnerStyles } from './utils';
 
@@ -28,9 +28,10 @@ export default (props: { children: Node, stackIndex: ?number }) => (
   </Theme>
 );
 
-export const Inner = styled.div`
+// TODO this doesn't appear to be used anywhere so we should look at removing.
+export const Inner = withTheme(styled.div`
   ${getInnerStyles};
-`;
+`);
 
 export const PresenceWrapper = (props: { children: Node }) => (
   <Theme theme={theme}>
