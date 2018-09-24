@@ -9,7 +9,7 @@ export type LinkPropsType = {
   /** This will be passed in as ariaLabel to button. This is what screen reader will read */
   ariaLabel?: string,
   /** This function is called with the label as argument when user clicks on particular button */
-  onClick?: Function,
+  onClick: Function,
   /** Pass this prop as true to signify that this is the current page */
   isSelected?: boolean,
 };

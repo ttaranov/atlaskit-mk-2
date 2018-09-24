@@ -1,5 +1,5 @@
 //@flow
-import React, { Component, Fragment } from 'react';
+import { Component } from 'react';
 import {
   withAnalyticsEvents,
   withAnalyticsContext,
