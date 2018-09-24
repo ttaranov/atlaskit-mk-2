@@ -18,10 +18,6 @@ import AkButton from '@atlaskit/button';
 import { pluginKey } from '../../../../../plugins/table/pm-plugins/main';
 import { TablePluginState } from '../../../../../plugins/table/types';
 import RowControls from '../../../../../plugins/table/ui/TableFloatingControls/RowControls';
-import {
-  RowControlsButtonWrap,
-  HeaderButton as RowControlsButton,
-} from '../../../../../plugins/table/ui/TableFloatingControls/RowControls/styles';
 import TableFloatingControls from '../../../../../plugins/table/ui/TableFloatingControls';
 import {
   hoverRows,
@@ -31,8 +27,10 @@ import {
 } from '../../../../../plugins/table/actions';
 import { tablesPlugin } from '../../../../../plugins';
 import { setTextSelection } from '../../../../../index';
-import DeleteRowButton from '../../../../../plugins/table/ui/TableFloatingControls/RowControls/DeleteRowButton';
-import InsertRowButton from '../../../../../plugins/table/ui/TableFloatingControls/RowControls/InsertRowButton';
+
+const RowControlsButtonWrap = '.pm-table-row-controls__button-wrap';
+const DeleteRowButton = '.pm-table-controls__delete-button-wrap';
+const InsertRowButton = '.pm-table-controls__insert-button-wrap';
 
 const selectRows = rowIdxs => tr => {
   const cells: { pos: number; start: number; node: Node }[] = rowIdxs.reduce(
@@ -105,7 +103,7 @@ describe('RowControls', () => {
 
         // now hover the row
         floatingControls
-          .find(RowControlsButton)
+          .find(RowControlsButtonWrap)
           .at(row)
           .find('button')
           .first()
@@ -117,7 +115,7 @@ describe('RowControls', () => {
 
         // release the hover
         floatingControls
-          .find(RowControlsButton)
+          .find(RowControlsButtonWrap)
           .at(row)
           .find('button')
           .first()
@@ -168,9 +166,11 @@ describe('RowControls', () => {
 
         // now click the row
         floatingControls
-          .find(RowControlsButton)
+          .find(RowControlsButtonWrap)
           .at(row)
-          .simulate('click');
+          .find('button')
+          .first()
+          .simulate('mousedown');
 
         // selecting the row mutates the editor state (which is inside editorView)
         // we set tableHeight prop to trick shouldComponentUpdate and force re-render

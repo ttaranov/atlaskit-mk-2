@@ -16,6 +16,9 @@ import {
   akColorN60A,
   akColorN30,
   akColorN90,
+  akColorN200,
+  akColorN0,
+  akColorR500,
 } from '@atlaskit/util-shared-styles';
 import {
   browser,
@@ -24,6 +27,8 @@ import {
   akEditorTableToolbarSize,
   akEditorUnitZIndex,
   akEditorSmallZIndex,
+  akEditorTableNumberColumnWidth,
+  akEditorTableBorder,
 } from '@atlaskit/editor-common';
 import { scrollbarStyles } from '../../../ui/styles';
 
@@ -40,15 +45,315 @@ export const tableToolbarDeleteColor = akColorR75;
 export const tableToolbarSize = akEditorTableToolbarSize;
 export const tableBorderRadiusSize = 3;
 export const tableInsertColumnButtonSize = 20;
-export const tableDeleteColumnButtonSize = 16;
+export const tableDeleteButtonSize = 16;
 export const contextualMenuTriggerSize = 16;
 export const contextualMenuDropdownWidth = 180;
 
 const isIE11 = browser.ie_version === 11;
 
+const HeaderButton = (css?: string) => `
+  .pm-table-controls__button {
+    background: ${tableToolbarColor};
+    border-top: 1px solid ${tableBorderColor};
+    border-left: 1px solid ${tableBorderColor};
+    display: block;
+    box-sizing: border-box;
+    padding: 0;
+    cursor: pointer;
+
+    :focus {
+      outline: none;
+    }
+    ${css}
+  }
+  .active .pm-table-controls__button,
+  .tableHovered .pm-table-controls__button,
+  .pm-table-controls__button:hover {
+    background-color: ${tableToolbarSelectedColor};
+    border-color: ${tableBorderSelectedColor};
+  }
+  .danger .pm-table-controls__button {
+    background-color: ${tableToolbarDeleteColor};
+    border-color: ${tableBorderDeleteColor};
+    position: relative;
+    z-index: ${akEditorUnitZIndex};
+  }
+`;
+
+const InsertButton = (css?: string) => `
+  .pm-table-controls__insert-button {
+    position: absolute;
+    z-index: ${akEditorUnitZIndex};
+    display: none;
+    width: 100%;
+    ${css}
+
+    button {
+      width: 100%;
+    }
+    button * {
+      width: 100%;
+      height: 100%;
+    }
+  }
+`;
+
+const InsertLine = (css?: string) => `
+  .pm-table-controls__insert-line {
+    background: ${tableBorderSelectedColor};
+    display: none;
+    position: absolute;
+    z-index: ${akEditorUnitZIndex};
+    ${css}
+  }
+`;
+
+const InsertMarker = (css?: string) => `
+  .pm-table-controls__insert-marker {
+    background-color: ${tableBorderColor};
+    position: absolute;
+    height: 4px;
+    width: 4px;
+    border-radius: 50%;
+    ${css}
+  }
+`;
+
 export const tableStyles = css`
   .ProseMirror {
-    ${tableSharedStyle} .table-wrapper > table {
+    ${tableSharedStyle}
+
+    /* Column controls */
+    .pm-table-column-controls {
+      height: ${tableToolbarSize}px;
+      box-sizing: border-box;
+      display: none;
+
+      .pm-table-column-controls__inner {
+        display: flex;
+        & > div.last > button {
+          border-top-right-radius: ${tableBorderRadiusSize}px;
+        }
+      }
+      .pm-table-column-controls__button-wrap {
+        position: relative;
+        margin-right: -1px;
+        &.active {
+          z-index: ${akEditorUnitZIndex};
+        }
+      }
+      ${HeaderButton(`
+        border-right: 1px solid ${tableBorderColor};
+        border-bottom: none;
+        height: ${tableToolbarSize}px;
+        width: 100%;
+        &:hover {
+          z-index: ${akEditorUnitZIndex};
+          position: relative;
+        }
+      `)}
+    }
+    .pm-table-column-controls,
+    .pm-table-corner-controls {
+      .pm-table-controls__insert-button-wrap {
+        position: absolute;
+        top: -${tableInsertColumnButtonSize}px;
+        right: -${tableInsertColumnButtonSize / 2}px;
+        height: ${tableInsertColumnButtonSize}px;
+        width: ${tableInsertColumnButtonSize}px;
+        z-index: ${akEditorSmallZIndex};
+        cursor: pointer;
+        &:hover > div {
+          display: flex;
+        }
+      }
+      .pm-table-controls__delete-button-wrap {
+        position: absolute;
+        top: -${tableDeleteButtonSize + 4}px;
+        height: ${tableDeleteButtonSize}px;
+        width: ${tableDeleteButtonSize}px;
+        cursor: pointer;
+      }
+      ${InsertButton('top: 5px;')}
+      ${InsertLine(`
+        width: 2px;
+        left: 8px;
+        top: ${tableInsertColumnButtonSize}px;
+      `)}
+      ${InsertMarker(`
+        bottom: 3px;
+        left: 7px;
+      `)}
+    }
+
+    /* Corner controls */
+    .pm-table-corner-controls {
+      width: ${tableToolbarSize + 1}px;
+      height: ${tableToolbarSize + 1}px;
+      display: none;
+    }
+    .pm-table-corner-button {
+      position: absolute;
+      top: 0;
+      width: ${tableToolbarSize + 1}px;
+      height: ${tableToolbarSize + 1}px;
+      border: 1px solid ${tableBorderColor};
+      border-radius: 0;
+      border-top-left-radius: ${tableBorderRadiusSize}px;
+      background: ${tableToolbarColor};
+      cursor: pointer;
+      box-sizing: border-box;
+      padding: 0;
+      :focus {
+        outline: none;
+      }
+    }
+    .tableHovered .pm-table-corner-button,
+    .active .pm-table-corner-button,
+    .pm-table-corner-button:hover {
+      border-color: ${tableBorderSelectedColor};
+      background: ${tableToolbarSelectedColor};
+    }
+    .pm-table-corner-button.danger {
+      border-color: ${tableBorderDeleteColor};
+      background: ${tableToolbarDeleteColor};
+    }
+    .table-container[data-number-column='true'] {
+      .pm-table-corner-controls,
+      .pm-table-corner-button {
+        width: ${akEditorTableToolbarSize + akEditorTableNumberColumnWidth}px;
+      }
+      .pm-table-row-controls .pm-table-controls__button {
+        border-right-width: 0;
+      }
+    }
+
+    /* Row controls */
+    .pm-table-row-controls {
+      width: ${tableToolbarSize}px;
+      box-sizing: border-box;
+      display: none;
+
+      .pm-table-row-controls__inner {
+        display: flex;
+        flex-direction: column;
+        & > div.table-row.last > button {
+          border-bottom-left-radius: ${tableBorderRadiusSize}px;
+        }
+      }
+      .pm-table-row-controls__button-wrap {
+        position: relative;
+        margin-top: -1px;
+        &.active {
+          z-index: ${akEditorUnitZIndex};
+        }
+      }
+      .pm-table-controls__insert-button-wrap {
+        position: absolute;
+        bottom: -${tableInsertColumnButtonSize / 2}px;
+        left: -${tableInsertColumnButtonSize}px;
+        height: ${tableInsertColumnButtonSize}px;
+        width: ${tableInsertColumnButtonSize}px;
+        z-index: ${akEditorSmallZIndex};
+        cursor: pointer;
+        &:hover > div {
+          display: flex;
+        }
+      }
+      .pm-table-controls__delete-button-wrap {
+        position: absolute;
+        bottom: -${tableInsertColumnButtonSize / 2}px;
+        left: -${tableDeleteButtonSize + 6}px;
+        height: ${tableDeleteButtonSize}px;
+        width: ${tableDeleteButtonSize}px;
+        cursor: pointer;
+
+        button, button * {
+          width: ${tableDeleteButtonSize}px;
+          height: ${tableDeleteButtonSize}px;
+        }
+      }
+      ${HeaderButton(`
+        border-bottom: 1px solid ${tableBorderColor};
+        border-right: 1px solid ${tableBorderColor};
+        border-radius: 0;
+        height: 100%;
+        width: ${tableToolbarSize + 1}px;
+      `)}
+      ${InsertButton('left: 5px;')}
+      ${InsertLine(`
+        height: 2px;
+        top: 8px;
+        left: ${tableInsertColumnButtonSize}px;
+      `)}
+      ${InsertMarker(`
+        top: 7px;
+        right: 3px;
+      `)}
+    }
+    /* numbered column */
+    .pm-table-numbered-column {
+      position: relative;
+      float: right;
+      margin-left: ${akEditorTableToolbarSize - 1}px;
+      top: ${akEditorTableToolbarSize}px;
+      width: ${akEditorTableNumberColumnWidth + 1}px;
+      box-sizing: border-box;
+      border-left: 1px solid ${akEditorTableBorder};
+    }
+    .pm-table-numbered-column__button {
+      border-top: 1px solid ${akEditorTableBorder};
+      border-right: 1px solid ${akEditorTableBorder};
+      box-sizing: border-box;
+      margin-top: -1px;
+      padding: 10px;
+      text-align: center;
+      background-color: ${tableToolbarColor};
+      color: ${akColorN200};
+      border-color: ${akEditorTableBorder};
+
+      :first-child {
+        margin-top: 0;
+      }
+      :last-child {
+        border-bottom: 1px solid ${akEditorTableBorder};
+      }
+    }
+    .with-controls {
+      .pm-table-column-controls,
+      .pm-table-corner-controls,
+      .pm-table-row-controls {
+        display: block;
+      }
+      .pm-table-numbered-column {
+        border-left: 0 none;
+        padding-left: 1px;
+
+        .pm-table-numbered-column__button {
+          cursor: pointer;
+        }
+        .pm-table-numbered-column__button:hover,
+        .pm-table-numbered-column__button.active,
+        .pm-table-numbered-column__button.tableHovered {
+          border-bottom: 1px solid ${tableBorderSelectedColor};
+          border-color: ${tableBorderSelectedColor};
+          background-color: ${tableToolbarSelectedColor};
+          position: relative;
+          z-index: ${akEditorUnitZIndex};
+          color: ${akColorN0};
+        }
+        .pm-table-numbered-column__button.danger {
+          background-color: ${tableToolbarDeleteColor};
+          border: 1px solid ${tableBorderDeleteColor};
+          color: ${akColorR500};
+          position: relative;
+          z-index: ${akEditorUnitZIndex};
+        }
+      }
+    }
+
+    /* Table */
+    .table-wrapper > table {
       table-layout: fixed;
 
       td,

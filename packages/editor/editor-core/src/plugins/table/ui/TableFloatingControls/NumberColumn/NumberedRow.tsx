@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { StyledNumberedRow } from './styles';
 
 export interface NumberedRowProps {
   row: number;
@@ -30,7 +29,7 @@ export class NumberedRow extends React.Component<NumberedRowProps> {
     const { row, rowElements, isRowActive, isRowDanger } = this.props;
 
     return (
-      <StyledNumberedRow
+      <div
         style={{
           height: (rowElements[row] as HTMLElement).offsetHeight + 1,
         }}
@@ -38,13 +37,14 @@ export class NumberedRow extends React.Component<NumberedRowProps> {
         onMouseOver={this.onMouseOver}
         onMouseOut={this.onMouseOut}
         className={[
+          'pm-table-numbered-column__button',
           'numbered-row',
           isRowActive ? 'active' : '',
           isRowDanger ? 'danger' : '',
         ].join(' ')}
       >
         {this.props.children}
-      </StyledNumberedRow>
+      </div>
     );
   }
 }
