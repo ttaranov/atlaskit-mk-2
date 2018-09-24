@@ -13,12 +13,20 @@ import {
   ConfluenceObjectResult,
 } from '../model/Result';
 import { getAvatarForConfluenceObjectResult } from '../util/confluence-avatar-util';
+import { getDefaultAvatar } from '../util/jira-avatar-util';
 
 export interface Props {
   results: Result[];
   sectionIndex: number;
   analyticsData?: {};
 }
+
+const extractAvatarData = (jiraResult: JiraResult) =>
+  jiraResult.avatarUrl
+    ? { avatarUrl: jiraResult.avatarUrl }
+    : {
+        avatar: getDefaultAvatar(jiraResult.contentType),
+      };
 
 export default class ResultList extends React.Component<Props> {
   render() {
@@ -57,7 +65,7 @@ export default class ResultList extends React.Component<Props> {
         }
         case ResultType.JiraObjectResult: {
           const jiraResult = result as JiraResult;
-
+          const avatarData = extractAvatarData(jiraResult);
           return (
             <ObjectResultComponent
               key={jiraResult.resultId}
@@ -67,7 +75,7 @@ export default class ResultList extends React.Component<Props> {
               type={jiraResult.analyticsType}
               objectKey={jiraResult.objectKey}
               containerName={jiraResult.containerName}
-              avatarUrl={jiraResult.avatarUrl}
+              {...avatarData}
               analyticsData={{
                 ...analyticsData,
                 contentType: jiraResult.contentType,

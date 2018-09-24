@@ -60,6 +60,23 @@ type JiraRecentItemGroup = {
   items: JiraRecentItem[];
 };
 
+type JiraRecentIssueAttributes = {
+  containerId: string;
+  containerName: string;
+  issueTypeId: string;
+  issueTypeName: string;
+};
+
+type JiraRecentBoardAttributes = {
+  containerId: string;
+  containerName: string;
+  parentType: 'user' | 'project';
+};
+
+type JiraRecentFilterAttributes = {
+  ownerId: string;
+};
+
 type JiraRecentItem = {
   id: string;
   title: string;
@@ -67,6 +84,10 @@ type JiraRecentItem = {
   metadata: string;
   avatarUrl: string;
   url: string;
+  attributes?:
+    | JiraRecentBoardAttributes
+    | JiraRecentIssueAttributes
+    | JiraRecentFilterAttributes;
 };
 
 export default class JiraClientImpl implements JiraClient {
@@ -124,9 +145,20 @@ export default class JiraClientImpl implements JiraClient {
       href: item.url,
       analyticsType: AnalyticsType.RecentJira,
       avatarUrl: `${item.avatarUrl}`,
+      containerId: this.getContainerId(item, jiraGroup),
       contentType: JiraResponseGroupToContentType[jiraGroup],
       ...this.getTypeSpecificAttributes(item, jiraGroup),
     };
+  }
+
+  private getContainerId(item: JiraRecentItem, jiraGroup: JiraResponseGroup) {
+    return jiraGroup === JiraResponseGroup.Filters
+      ? item.attributes &&
+          (item.attributes as JiraRecentFilterAttributes).ownerId
+      : item.attributes &&
+          (item.attributes as
+            | JiraRecentBoardAttributes
+            | JiraRecentIssueAttributes).containerId;
   }
 
   private getTypeSpecificAttributes(
@@ -136,11 +168,30 @@ export default class JiraClientImpl implements JiraClient {
     objectKey?: string;
     containerName?: string;
   } {
-    return {
-      ...(jiraGroup === JiraResponseGroup.Filters
-        ? { objectKey: 'Filters' }
-        : null),
-      containerName: item.metadata,
-    };
+    switch (jiraGroup) {
+      case JiraResponseGroup.Filters:
+        return {
+          containerName: item.metadata,
+          objectKey: 'Filters',
+        };
+      case JiraResponseGroup.Projects:
+        return {
+          containerName: item.metadata,
+        };
+      case JiraResponseGroup.Issues:
+        const issueType =
+          item.attributes &&
+          (item.attributes as JiraRecentIssueAttributes).issueTypeName;
+        return {
+          containerName: issueType ? issueType : item.metadata,
+          objectKey: issueType ? item.metadata : undefined,
+        };
+      case JiraResponseGroup.Boards:
+        return {
+          containerName: item.attributes
+            ? (item.attributes as JiraRecentBoardAttributes).containerName
+            : item.metadata,
+        };
+    }
   }
 }
