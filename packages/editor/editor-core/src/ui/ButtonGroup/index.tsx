@@ -19,27 +19,46 @@ export interface Props {
   width?: 'small' | 'large';
 }
 
-export default class ButtonGroup extends PureComponent<Props, {}> {
+export interface State {
+  selectedButton?: React.ReactChild;
+}
+
+export default class ButtonGroup extends PureComponent<
+  Props,
+  { selectedButton }
+> {
+  state = {
+    selectedButton: undefined,
+  };
   constructor(props) {
     super(props);
   }
+  private buttonClicked = (button: ToolbarButton, delta: number) => {
+    const children: React.ReactChild[] = React.Children.toArray(
+      this.props.children,
+    );
+
+    const buttonProps = button.props;
+
+    const allButtonProps = children.map(item => item.props);
+    const buttonKeypressOriginIndex = allButtonProps.indexOf(buttonProps);
+    console.log('Keypress by button', buttonKeypressOriginIndex);
+    console.log('Delta is ', delta);
+    const selectedIndex = buttonKeypressOriginIndex + delta;
+    if (selectedIndex > 0 && selectedIndex < children.length) {
+      this.setState({
+        selectedButton: children[selectedIndex],
+      });
+    }
+  };
 
   render() {
     const { width } = this.props;
-    const children = React.Children.toArray(this.props.children);
-
-    const buttonClicked = (button: ToolbarButton, delta: number) => {
-      const buttonProps = button.props;
-      // @ts-ignore
-      const allButtonProps = children.map(item => item.props);
-      const buttonKeypressOriginIndex = allButtonProps.indexOf(buttonProps);
-      console.log('Keypress by button', buttonKeypressOriginIndex);
-      console.log('Delta is ', delta);
-    };
+    const { selectedButton } = this.state;
 
     return (
       <ToolbarContext.Provider
-        value={{ buttonClickCallback: buttonClicked, currentlySelected: null }}
+        value={{ buttonClickCallback: this.buttonClicked, selectedButton }}
       >
         <ButtonGroupSpan width={width}>{this.props.children}</ButtonGroupSpan>
       </ToolbarContext.Provider>
