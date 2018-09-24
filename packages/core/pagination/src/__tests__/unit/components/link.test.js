@@ -10,8 +10,8 @@ describe(`${name} - Link component`, () => {
     const wrapper = shallow(<Link>1</Link>);
     expect(wrapper.text()).toBe('1');
   });
-  it('passes in selected props to button', () => {
-    const wrapper = mount(<Link selected>1</Link>);
+  it('passes in isSelected props to button', () => {
+    const wrapper = mount(<Link isSelected>1</Link>);
     const button = wrapper.find(Button);
     expect(button.prop('isSelected')).toBe(true);
   });

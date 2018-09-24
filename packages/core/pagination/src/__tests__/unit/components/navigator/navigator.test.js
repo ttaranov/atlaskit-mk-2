@@ -14,17 +14,17 @@ describe(`${name} - navigator`, () => {
     );
     expect(wrapper.text()).toBe('$');
   });
-  it('should pass in label as ariaLabel to button', () => {
-    const wrapper = mount(<Navigator label="pehla" />);
+  it('should pass in ariaLabel as ariaLabel to button', () => {
+    const wrapper = mount(<Navigator ariaLabel="pehla" />);
     expect(wrapper.find(Button).prop('ariaLabel')).toBe('pehla');
   });
   it('should pass in isDisabled as ariaLabel to button', () => {
     const wrapper = mount(<Navigator isDisabled />);
     expect(wrapper.find(Button).prop('isDisabled')).toBe(true);
   });
-  it('should call the provided onClick function with the label value', () => {
+  it('should call the provided onClick function with the ariaLabel value', () => {
     const onClickSpy = jest.fn();
-    const wrapper = mount(<Navigator onClick={onClickSpy} label="label" />);
+    const wrapper = mount(<Navigator onClick={onClickSpy} ariaLabel="label" />);
     wrapper.simulate('click');
     expect(onClickSpy).toHaveBeenCalledWith('label');
   });

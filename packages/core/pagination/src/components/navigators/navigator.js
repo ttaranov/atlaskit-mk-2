@@ -5,13 +5,13 @@ import type { NavigatorPropsType } from '../../types';
 
 export default class Navigator extends Component<NavigatorPropsType> {
   render() {
-    const { children, isDisabled, label, onClick } = this.props;
+    const { children, isDisabled, ariaLabel, onClick } = this.props;
     return (
       <PaddedButton
         appearance="subtle"
-        ariaLabel={label}
+        ariaLabel={ariaLabel}
         isDisabled={isDisabled}
-        onClick={() => onClick && onClick(label)}
+        onClick={() => onClick && onClick(ariaLabel)}
       >
         {children}
       </PaddedButton>
