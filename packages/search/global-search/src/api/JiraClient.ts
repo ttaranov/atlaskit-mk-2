@@ -172,7 +172,7 @@ export default class JiraClientImpl implements JiraClient {
       case JiraResponseGroup.Filters:
         return {
           containerName: item.metadata,
-          objectKey: 'Filters', // should be translated
+          objectKey: 'Filters',
         };
       case JiraResponseGroup.Projects:
         return {
