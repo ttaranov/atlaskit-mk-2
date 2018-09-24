@@ -74,10 +74,10 @@ describe(`${name}/schema mediaSingle node`, () => {
     });
   });
 
-  it('converts attributes to related data attribute in html', () => {
+  it('converts attributes to related data attribute in html with', () => {
     const mediaSingleNode = schema.nodes.mediaSingle.create({
       layout: 'center',
-      width: 64.3,
+      width: 64.333333,
     });
 
     const mediaSingleDom = toDOM(mediaSingleNode, schema)
@@ -86,7 +86,22 @@ describe(`${name}/schema mediaSingle node`, () => {
     const width = mediaSingleDom.getAttribute('data-width');
 
     expect(layout).toEqual('center');
-    expect(width).toEqual('64.3');
+    expect(width).toEqual('64.33');
+  });
+
+  it('converts attributes with integer width', () => {
+    const mediaSingleNode = schema.nodes.mediaSingle.create({
+      layout: 'center',
+      width: 64,
+    });
+
+    const mediaSingleDom = toDOM(mediaSingleNode, schema)
+      .firstChild as HTMLElement;
+    const layout = mediaSingleDom.getAttribute('data-layout');
+    const width = mediaSingleDom.getAttribute('data-width');
+
+    expect(layout).toEqual('center');
+    expect(width).toEqual('64');
   });
 
   it('encodes and decodes wide mediaSingle to the same node', () => {

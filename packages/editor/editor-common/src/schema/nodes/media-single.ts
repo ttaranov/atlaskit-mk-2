@@ -54,8 +54,15 @@ export const mediaSingle: NodeSpec = {
     const attrs = {
       'data-node-type': 'mediaSingle',
       'data-layout': layout,
-      'data-width': width,
     };
+
+    if (width) {
+      attrs['data-width'] =
+        isFinite(width) && Math.floor(width) === width
+          ? width
+          : width.toFixed(2);
+    }
+
     return ['div', attrs, 0];
   },
 };
