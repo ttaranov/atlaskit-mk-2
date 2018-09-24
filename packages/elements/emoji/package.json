@@ -71,6 +71,7 @@
     "enzyme-adapter-react-16": "https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.7.tgz",
     "es6-promise": "^4.0.5",
     "fetch-mock": "^6.5.2",
+    "p-wait-for": "^1.0.0",
     "react": "^16.4.0",
     "react-addons-perf": "^15.3.2",
     "rxjs": "^5.1.0",
