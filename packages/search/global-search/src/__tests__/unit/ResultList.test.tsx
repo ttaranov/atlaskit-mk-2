@@ -22,6 +22,7 @@ import {
   makePersonResult,
   makeJiraObjectResult,
 } from './_test-util';
+import * as JiraAvatarUtil from '../../../src/util/jira-avatar-util';
 
 const DUMMY_ANALYTICS_DATA = {
   resultCount: 123,
@@ -138,20 +139,32 @@ it('should pass the correct properties to ContainerResult for Confluence spaces'
   });
 });
 
-it('should support default icons for jira if avatar is missing', () => {
-  let jiraItem = makeJiraObjectResult({
-    resultId: 'resultId',
-  });
-  jiraItem.contentType = ContentType.JiraBoard;
-  jiraItem.avatarUrl = undefined;
-  const jiraResults: JiraResult[] = [jiraItem];
-  const wrapper = render({
-    results: jiraResults,
-    analyticsData: DUMMY_ANALYTICS_DATA,
+describe('Jira Avatar default Icons', () => {
+  let spy;
+  beforeEach(() => {
+    spy = jest.spyOn(JiraAvatarUtil, 'getDefaultAvatar');
+    spy.mockReturnValue(BoardIcon);
   });
 
-  const avatar: { type: string } = wrapper
-    .find(ObjectResultComponent)
-    .prop('avatar');
-  expect(avatar.type).toEqual(BoardIcon);
+  afterEach(() => {
+    spy.mockRestore();
+  });
+  it('should support default icons for jira if avatar is missing', () => {
+    let jiraItem = makeJiraObjectResult({
+      resultId: 'resultId',
+    });
+    jiraItem.contentType = ContentType.JiraBoard;
+    jiraItem.avatarUrl = undefined;
+    const jiraResults: JiraResult[] = [jiraItem];
+    const wrapper = render({
+      results: jiraResults,
+      analyticsData: DUMMY_ANALYTICS_DATA,
+    });
+
+    const avatar: { type: string } = wrapper
+      .find(ObjectResultComponent)
+      .prop('avatar');
+    expect(spy).toHaveBeenCalledTimes(1);
+    expect(avatar).toEqual(BoardIcon);
+  });
 });
