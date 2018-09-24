@@ -1,6 +1,6 @@
 import Tooltip from '@atlaskit/tooltip';
 import * as React from 'react';
-import { PureComponent, ReactElement } from 'react';
+import { Component, ReactElement } from 'react';
 import { AkButton } from './styles';
 // import FocusableButtonWrapper from '../FocusableButtonWrapper';
 import { ToolbarContext, ToolbarContextValue } from '../Toolbar/ToolbarContext';
@@ -25,10 +25,15 @@ export interface Props {
   navigateRight?: () => void;
 }
 
-export default class ToolbarButton extends PureComponent<Props, {}> {
+export default class ToolbarButton extends Component<Props, {}> {
+  private button;
   static defaultProps = {
     className: '',
   };
+
+  // componentDidUpdate(){
+  //   // this.button.focus();
+  // }
 
   render() {
     const { navigateRight } = this.props;
@@ -66,6 +71,16 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
               onClick: onClickDebug,
               toolbarCallback: value.buttonClickCallback,
             })}
+            ref={input => {
+              if (
+                input !== null &&
+                value.selectedButton &&
+                value.selectedButton!.props == this.props
+              ) {
+                console.log('FOCUS THE BUTTON :)');
+                input!.focus();
+              }
+            }}
           >
             {button}
           </div>

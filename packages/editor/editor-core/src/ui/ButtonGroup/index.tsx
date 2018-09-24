@@ -45,7 +45,9 @@ export default class ButtonGroup extends PureComponent<
     console.log('Keypress by button', buttonKeypressOriginIndex);
     console.log('Delta is ', delta);
     const selectedIndex = buttonKeypressOriginIndex + delta;
-    if (selectedIndex > 0 && selectedIndex < children.length) {
+    console.log('selectedIndex', selectedIndex);
+    if (selectedIndex >= 0 && selectedIndex < children.length) {
+      console.log('setting state');
       this.setState({
         selectedButton: children[selectedIndex],
       });
