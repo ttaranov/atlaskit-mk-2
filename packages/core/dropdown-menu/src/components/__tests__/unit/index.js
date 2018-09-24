@@ -20,14 +20,8 @@ const itemsList = (
     <DropdownItem>Some text</DropdownItem>
   </DropdownItemGroup>
 );
-/**
- * Most of the tests here are failing. It looks like it props are not being passed in when we mount
- * This is either because we can't reference props in the class properties (state) or that enzyme is
- * doing something different now
- * TODO: JEST-23 Fix these tests
- */
-/* eslint-disable jest/no-disabled-tests */
-describe.skip('dropdown menu', () => {
+
+describe('dropdown menu', () => {
   const animStub = window.cancelAnimationFrame;
   beforeEach(() => {
     window.cancelAnimationFrame = () => {};

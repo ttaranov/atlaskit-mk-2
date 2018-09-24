@@ -17,8 +17,6 @@ export default class DropdownMenu extends Component<
   DropdownMenuStatefulProps,
   State,
 > {
-  props: DropdownMenuStatefulProps; // eslint-disable-line react/sort-comp
-
   static defaultProps = {
     appearance: 'default',
     boundariesElement: 'viewport',
