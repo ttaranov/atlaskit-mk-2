@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Context, FileItem } from '@atlaskit/media-core';
+import { Context, ProcessedFileState, MediaItem } from '@atlaskit/media-core';
 import * as deepEqual from 'deep-equal';
 import { Outcome } from '../../domain';
 import { Spinner } from '../../loading';
@@ -12,7 +12,7 @@ export const REQUEST_CANCELLED = 'request_cancelled';
 
 export type ImageViewerProps = {
   context: Context;
-  item: FileItem;
+  item: ProcessedFileState;
   collectionName?: string;
   onClose?: () => void;
 };
@@ -76,19 +76,23 @@ export class ImageViewer extends React.Component<
     // anything.
   }
 
-  private async init(fileItem: FileItem, context: Context) {
+  private async init(fileItem: ProcessedFileState, context: Context) {
     this.setState(initialState, async () => {
       try {
         const service = context.getBlobService(this.props.collectionName);
-        const { response, cancel } = service.fetchImageBlobCancelable(
-          fileItem,
-          {
-            width: 1920,
-            height: 1080,
-            mode: 'fit',
-            allowAnimated: true,
+        const item: MediaItem = {
+          type: 'file',
+          details: {
+            id: fileItem.id,
           },
-        );
+        };
+        // MSW-922: once we make getImage cancelable we can use it instead of fetchImageBlobCancelable
+        const { response, cancel } = service.fetchImageBlobCancelable(item, {
+          width: 1920,
+          height: 1080,
+          mode: 'fit',
+          allowAnimated: true,
+        });
         this.cancelImageFetch = () => cancel(REQUEST_CANCELLED);
         const objectUrl = URL.createObjectURL(await response);
         this.setState({
@@ -100,7 +104,8 @@ export class ImageViewer extends React.Component<
         } else {
           this.setState({
             objectUrl: Outcome.failed(
-              createError('previewFailed', fileItem, err),
+              // TODO provide file item context for error
+              createError('previewFailed'),
             ),
           });
         }

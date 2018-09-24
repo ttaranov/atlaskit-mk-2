@@ -1,17 +1,18 @@
 import * as React from 'react';
 import { constructAuthTokenUrl } from '../utils';
-import { Context, FileItem } from '@atlaskit/media-core';
+import { Context, FileState } from '@atlaskit/media-core';
 import { DownloadButtonWrapper } from '../styled';
 import Button from '@atlaskit/button';
 
 export const downloadItem = (
-  item: FileItem,
+  file: FileState,
   context: Context,
   collectionName?: string,
 ) => async () => {
   const link = document.createElement('a');
-  const name = item.details.name || 'download';
-  const href = await createDownloadUrl(item, context, collectionName);
+  const name =
+    file.status === 'processed' && file.name ? file.name : 'download';
+  const href = await createDownloadUrl(file, context, collectionName);
 
   link.href = href;
   link.download = name;
@@ -21,11 +22,11 @@ export const downloadItem = (
 };
 
 export const createDownloadUrl = async (
-  item: FileItem,
+  file: FileState,
   context: Context,
   collectionName?: string,
 ): Promise<string> => {
-  const url = `/file/${item.details.id}/binary`;
+  const url = `/file/${file.id}/binary`;
   const tokenizedUrl = await constructAuthTokenUrl(
     url,
     context,
@@ -36,7 +37,7 @@ export const createDownloadUrl = async (
 };
 
 export const renderDownloadButton = (
-  fileItem: FileItem,
+  file: FileState,
   context: Context,
   collectionName?: string,
 ) => {
@@ -45,7 +46,7 @@ export const renderDownloadButton = (
       <Button
         appearance="primary"
         label="Download"
-        onClick={downloadItem(fileItem, context, collectionName)}
+        onClick={downloadItem(file, context, collectionName)}
       >
         Download
       </Button>

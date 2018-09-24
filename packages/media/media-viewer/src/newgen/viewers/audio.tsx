@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FileItem, Context } from '@atlaskit/media-core';
+import { ProcessedFileState, Context } from '@atlaskit/media-core';
 import AudioIcon from '@atlaskit/icon/glyph/media-services/audio';
 import { constructAuthTokenUrl } from '../utils';
 import { Outcome } from '../domain';
@@ -13,9 +13,10 @@ import {
 } from '../styled';
 import { ErrorMessage, createError, MediaViewerError } from '../error';
 import { renderDownloadButton } from '../domain/download';
+import { getArtifactUrl } from '@atlaskit/media-store';
 
 export type Props = Readonly<{
-  item: FileItem;
+  item: ProcessedFileState;
   context: Context;
   collectionName?: string;
   previewCount: number;
@@ -33,15 +34,11 @@ const defaultCover = (
 );
 
 const getCoverUrl = (
-  item: FileItem,
+  item: ProcessedFileState,
   context: Context,
   collectionName?: string,
 ): Promise<string> =>
-  constructAuthTokenUrl(
-    `/file/${item.details.id}/image`,
-    context,
-    collectionName,
-  );
+  constructAuthTokenUrl(`/file/${item.id}/image`, context, collectionName);
 
 export class AudioViewer extends React.Component<Props, State> {
   state: State = { src: Outcome.pending() };
@@ -68,7 +65,7 @@ export class AudioViewer extends React.Component<Props, State> {
     const { coverUrl } = this.state;
 
     if (coverUrl) {
-      return <AudioCover src={coverUrl} alt={item.details.name} />;
+      return <AudioCover src={coverUrl} alt={item.name} />;
     } else {
       return defaultCover;
     }
@@ -120,7 +117,7 @@ export class AudioViewer extends React.Component<Props, State> {
 
   private async init() {
     const { context, item, collectionName } = this.props;
-    const audioUrl = getAudioArtifactUrl(item);
+    const audioUrl = getArtifactUrl(item.artifacts, 'audio.mp3');
     try {
       if (!audioUrl) {
         throw new Error('No audio artifacts found');
@@ -133,7 +130,8 @@ export class AudioViewer extends React.Component<Props, State> {
       });
     } catch (err) {
       this.setState({
-        src: Outcome.failed(createError('previewFailed', item, err)),
+        // TODO: error
+        src: Outcome.failed(createError('previewFailed')),
       });
     }
   }
@@ -142,14 +140,4 @@ export class AudioViewer extends React.Component<Props, State> {
     const { item, context, collectionName } = this.props;
     return renderDownloadButton(item, context, collectionName);
   }
-}
-
-function getAudioArtifactUrl(fileItem: FileItem) {
-  const artifact = 'audio.mp3';
-  return (
-    fileItem.details &&
-    fileItem.details.artifacts &&
-    fileItem.details.artifacts[artifact] &&
-    fileItem.details.artifacts[artifact].url
-  );
 }
