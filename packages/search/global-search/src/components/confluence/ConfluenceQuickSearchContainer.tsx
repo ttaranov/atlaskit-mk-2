@@ -132,9 +132,9 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     this.handleSearchErrorAnalytics(error, source);
 
   getSearchResults = (
-    query,
-    sessionId,
-    startTime,
+    query: string,
+    sessionId: string,
+    startTime: number,
   ): Promise<ResultsWithTiming> => {
     const {
       useAggregatorForConfluenceObjects,
@@ -210,7 +210,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     );
   };
 
-  getRecentItems = (sessionId): Promise<ResultsWithTiming> => {
+  getRecentItems = (sessionId: string): Promise<ResultsWithTiming> => {
     const { confluenceClient, peopleSearchClient } = this.props;
 
     const recentActivityPromisesMap = {
