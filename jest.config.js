@@ -58,6 +58,10 @@ const config = {
   setupFiles: ['./build/jest-config/index.js'],
   setupTestFrameworkScriptFile: `${__dirname}/jestFrameworkSetup.js`,
   testResultsProcessor: 'jest-junit',
+  testEnvironmentOptions: {
+    // Need this to have jsdom loading images.
+    resources: 'usable',
+  },
 };
 
 // If the CHANGED_PACKAGES variable is set, we parse it to get an array of changed packages and only

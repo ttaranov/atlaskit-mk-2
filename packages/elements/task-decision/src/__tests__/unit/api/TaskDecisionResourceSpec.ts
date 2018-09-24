@@ -466,11 +466,7 @@ describe('TaskDecisionResource', () => {
         });
     });
 
-    /**
-     * Skipping because it's throwing for some reason
-     * TODO: JEST-23 Fix these tests
-     */
-    it.skip('optimistic update - with error', () => {
+    it('optimistic update - with error', () => {
       fetchMock
         .mock({
           matcher: 'end:tasks',
@@ -488,18 +484,17 @@ describe('TaskDecisionResource', () => {
         latestState = state;
       };
       resource.subscribe(key1, handler);
+      let toggleStatePromise;
       return waitUntil(() => latestState === 'TODO')
         .then(() => {
-          resource.toggleTask(key1, 'DONE');
+          toggleStatePromise = resource.toggleTask(key1, 'DONE');
           return waitUntil(() => latestState === 'DONE');
         })
         .then(() => {
           expect(latestState).toBe('DONE');
-          // failure will reset state
-          return waitUntil(() => fetchMock.called('set-task'));
-        })
-        .then(() => {
-          expect(latestState).toBe('TODO');
+          return toggleStatePromise.catch(() => {
+            expect(latestState).toBe('TODO');
+          });
         });
     });
 

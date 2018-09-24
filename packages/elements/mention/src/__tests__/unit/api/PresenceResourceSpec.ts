@@ -1,3 +1,5 @@
+import 'es6-promise/auto'; // 'whatwg-fetch' needs a Promise polyfill
+import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock/src/client';
 
 import PresenceResource, {
@@ -187,11 +189,7 @@ describe('PresenceResource', () => {
   });
 
   describe('#refreshPresence', () => {
-    /**
-     * Skipping, no idea why its failing
-     * TODO: JEST-23 Fix these tests
-     */
-    it.skip('should result in fewer listener callbacks and service requests with cache', done => {
+    it('should result in fewer listener callbacks and service requests with cache', done => {
       const resource = new PresenceResource(apiConfig);
       try {
         // notifyListeners called twice as no cache hits so must call again after service query

@@ -242,16 +242,13 @@ describe('UploadingEmojiResource', () => {
   });
 
   describe('#deleteSiteEmoji', () => {
-    /**
-     * Currently throwing, no idea why
-     * TODO: JEST-23 Fix these tests
-     */
-    it.skip('calls delete in SiteEmojiResource', () => {
+    it('calls delete in SiteEmojiResource', () => {
       const siteEmojiResource = sinon.createStubInstance(
         SiteEmojiResource,
       ) as any;
       const emojiResource = new TestUploadingEmojiResource(siteEmojiResource);
       const deleteStub = siteEmojiResource.deleteEmoji;
+      deleteStub.returns(new Promise(resolve => {}));
       emojiResource.deleteSiteEmoji(mediaEmoji);
       return waitUntil(() => deleteStub.called).then(() => {
         expect(
@@ -325,40 +322,30 @@ describe('UploadingEmojiResource', () => {
 });
 
 describe('#toneSelectionStorage', () => {
-  let originalLocalStorage;
-
-  let mockStorage: Storage;
-  let mockGetItem: sinon.SinonStub;
-  let mockSetItem: sinon.SinonStub;
+  let getItemSpy: jest.SpyInstance<any>;
+  let setItemSpy: jest.SpyInstance<any>;
 
   beforeEach(() => {
-    originalLocalStorage = global.window.localStorage;
-
-    mockGetItem = sinon.stub();
-    mockSetItem = sinon.stub();
-    mockStorage = <Storage>{};
-    mockStorage.getItem = mockGetItem;
-    mockStorage.setItem = mockSetItem;
-
-    global.window.localStorage = mockStorage;
+    // https://github.com/facebook/jest/issues/6798#issuecomment-412871616
+    getItemSpy = jest.spyOn(Storage.prototype, 'getItem');
+    setItemSpy = jest.spyOn(Storage.prototype, 'setItem');
   });
 
-  afterEach(() => {
-    global.window.localStorage = originalLocalStorage;
-  });
-
-  it.skip('retrieves previously stored tone selection upon construction', () => {
+  it('retrieves previously stored tone selection upon construction', () => {
     // tslint:disable-next-line:no-unused-expression
     new EmojiResource(defaultApiConfig);
 
-    expect(mockGetItem.calledWith(selectedToneStorageKey)).to.equal(true);
+    global.expect(getItemSpy).toHaveBeenCalledWith(selectedToneStorageKey);
   });
 
   it('calling setSelectedTone calls setItem in localStorage', () => {
     const resource = new EmojiResource(defaultApiConfig);
     const tone = 3;
     resource.setSelectedTone(tone);
-    expect(mockSetItem.calledWith(selectedToneStorageKey, tone));
+
+    global
+      .expect(setItemSpy)
+      .toHaveBeenCalledWith(selectedToneStorageKey, '' + tone);
   });
 });
 

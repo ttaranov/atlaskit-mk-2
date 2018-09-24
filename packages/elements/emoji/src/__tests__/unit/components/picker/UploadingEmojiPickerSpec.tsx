@@ -175,7 +175,7 @@ describe('<UploadingEmojiPicker />', () => {
       expect(addEmoji.length).toEqual(1);
     });
 
-    it.skip('Upload main flow interaction', async () => {
+    it('Upload main flow interaction', async () => {
       const emojiProvider = getEmojiResourcePromise({
         uploadSupported: true,
       });
@@ -220,8 +220,8 @@ describe('<UploadingEmojiPicker />', () => {
         name: 'Cheese burger',
         shortName: ':cheese_burger:',
         ...pngFileUploadData,
-        width: 0, // jsdom fallbacks to width attribute
-        height: 0, // jsdom fallbacks to height attribute
+        width: 30,
+        height: 30,
       });
       await waitUntil(() =>
         helper.emojiWithIdVisible(component, upload.emoji.id),
@@ -335,11 +335,7 @@ describe('<UploadingEmojiPicker />', () => {
       );
     });
 
-    /**
-     * Skipping three tests, they arent finishing
-     * TODO: JEST-23 Fix these tests
-     */
-    it.skip('Upload after searching', async () => {
+    it('Upload after searching', async () => {
       const emojiProvider = getEmojiResourcePromise({
         uploadSupported: true,
       });
@@ -399,8 +395,8 @@ describe('<UploadingEmojiPicker />', () => {
         name: 'Cheese burger',
         shortName: ':cheese_burger:',
         ...pngFileUploadData,
-        width: 0, // jsdom fallbacks to width attribute
-        height: 0, // jsdom fallbacks to height attribute
+        width: 30,
+        height: 30,
       });
       await waitUntil(() =>
         helper.emojiWithIdVisible(component, upload.emoji.id),
@@ -492,7 +488,7 @@ describe('<UploadingEmojiPicker />', () => {
       );
     });
 
-    it.skip('Upload error interaction', async () => {
+    it('Upload error interaction', async () => {
       const spy = jest
         .spyOn(MockEmojiResource.prototype, 'uploadCustomEmoji')
         .mockImplementation(() => Promise.reject(new Error('upload error')));
@@ -593,7 +589,7 @@ describe('<UploadingEmojiPicker />', () => {
       spy.mockReset();
     });
 
-    it.skip('Retry on upload error', async () => {
+    it('Retry on upload error', async () => {
       const spy = jest
         .spyOn(MockEmojiResource.prototype, 'uploadCustomEmoji')
         .mockImplementation(() => Promise.reject(new Error('upload error')));

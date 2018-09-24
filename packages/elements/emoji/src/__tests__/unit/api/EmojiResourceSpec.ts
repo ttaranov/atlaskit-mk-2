@@ -804,11 +804,7 @@ describe('EmojiResource', () => {
       return done;
     });
 
-    /**
-     * Skipping three tests, they arent finishing
-     * TODO: JEST-23 Fix these tests
-     */
-    it.skip('not found by id - found on server', () => {
+    it('not found by id - found on server', () => {
       const serviceResponse: EmojiServiceResponse = {
         emojis: [missingMediaServiceEmoji],
         meta: {
@@ -855,7 +851,7 @@ describe('EmojiResource', () => {
       );
     });
 
-    it.skip('can resolve non-custom emojis from server', () => {
+    it('can resolve non-custom emojis from server', () => {
       const standardEmoji = standardServiceEmojis.emojis[0];
       const standardDescription = standardEmojis[0];
       expect(
@@ -909,7 +905,7 @@ describe('EmojiResource', () => {
       });
     });
 
-    it.skip('not found by id - not found on server - try by shortName', () => {
+    it('not found by id - not found on server - try by shortName', () => {
       const serviceResponse: EmojiServiceResponse = {
         emojis: [],
         meta: {
