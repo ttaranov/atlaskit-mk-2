@@ -16,7 +16,12 @@ is specified, the current page value is uncontrolled.
 
 ## Props
 
-
+${(
+  <Props
+    props={require('!!extract-react-types-loader!./util/v7-props')}
+    heading="Panigation v7 props"
+  />
+)}
 
 ## Migrating to version 4
 
