@@ -1,5 +1,7 @@
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
+import * as seedrandom from 'seedrandom';
+
 import {
   makePeopleSearchData,
   recentData,
@@ -33,6 +35,8 @@ const DEFAULT_MOCKS_CONFIG: MocksConfig = {
   quickNavDelay: 500,
   jiraRecentDelay: 500,
 };
+
+seedrandom('random seed', { global: true });
 
 const recentResponse = recentData();
 const confluenceRecentPagesResponse = makeConfluenceRecentPagesData();
