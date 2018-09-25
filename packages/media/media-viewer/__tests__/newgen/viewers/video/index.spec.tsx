@@ -20,10 +20,10 @@ const baseUrl = 'some-base-url';
 const videoItem: ProcessedFileState = {
   id: 'some-id',
   status: 'processed',
-  name: 'my audio',
+  name: 'my video',
   size: 11222,
   mediaType: 'video',
-  mimeType: 'mp3',
+  mimeType: 'mp4',
   binaryUrl: '',
   artifacts: {
     'video_640.mp4': {
@@ -38,13 +38,7 @@ const videoItem: ProcessedFileState = {
 };
 
 const videoItemWithNoArtifacts: ProcessedFileState = {
-  id: 'some-id',
-  status: 'processed',
-  name: 'my audio',
-  size: 11222,
-  mediaType: 'video',
-  mimeType: 'mp3',
-  binaryUrl: '',
+  ...videoItem,
   artifacts: {},
 };
 

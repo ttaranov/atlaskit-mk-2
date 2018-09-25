@@ -33,13 +33,7 @@ const audioItem: ProcessedFileState = {
 };
 
 const audioItemWithNoArtifacts: ProcessedFileState = {
-  id: 'some-id',
-  status: 'processed',
-  name: 'my audio',
-  size: 11222,
-  mediaType: 'audio',
-  mimeType: 'mp3',
-  binaryUrl: '',
+  ...audioItem,
   artifacts: {},
 };
 
