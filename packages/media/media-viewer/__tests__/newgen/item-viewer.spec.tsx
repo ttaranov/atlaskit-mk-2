@@ -160,6 +160,25 @@ describe('<ItemViewer />', () => {
     expect(errorMessage.find(Button)).toHaveLength(1);
   });
 
+  it('MSW-720: passes the collectionName to getFile', () => {
+    const context = {
+      getFile: jest.fn(() =>
+        Observable.of({
+          id: '123',
+          mediaType: 'image',
+          status: 'processed',
+        }),
+      ),
+    } as any;
+    const el = mount(
+      <ItemViewer previewCount={0} context={context} identifier={identifier} />,
+    );
+    el.update();
+    expect(context.getFile).toHaveBeenCalledWith('some-id', {
+      collectionName: 'some-collection',
+    });
+  });
+
   describe('Subscription', () => {
     it('unsubscribes from the provider when unmounted', () => {
       const release = jest.fn();

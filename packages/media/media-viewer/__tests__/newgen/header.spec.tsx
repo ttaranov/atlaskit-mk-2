@@ -178,6 +178,27 @@ describe('<Header />', () => {
       const metadata = el.find(LeftHeader);
       expect(metadata.text()).toEqual('');
     });
+
+    it('MSW-720: passes the collectionName to getFile', () => {
+      const collectionName = 'some-collection';
+      const context = {
+        getFile: jest.fn(() =>
+          Observable.of({
+            id: '123',
+            mediaType: 'image',
+            status: 'processed',
+          }),
+        ),
+      } as any;
+      const identifierWithCollection = { ...identifier, collectionName };
+      const el = mount(
+        <Header context={context} identifier={identifierWithCollection} />,
+      );
+      el.update();
+      expect(context.getFile).toHaveBeenCalledWith('some-id', {
+        collectionName: 'some-collection',
+      });
+    });
   });
 
   describe('Feedback button', () => {
