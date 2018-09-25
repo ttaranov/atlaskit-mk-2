@@ -35,23 +35,26 @@ class ToolbarButton extends PureComponent<Props, {}> {
 
   render() {
     const button = (
-      <AkButton
-        appearance="subtle"
-        ariaHaspopup={true}
-        className={this.props.className}
-        href={this.props.href}
-        iconAfter={this.props.iconAfter}
-        iconBefore={this.props.iconBefore}
-        isDisabled={this.props.disabled}
-        isSelected={this.props.selected}
-        onClick={this.handleClick}
-        spacing={this.props.spacing || 'default'}
-        target={this.props.target}
-        theme={this.props.theme}
-        shouldFitContainer={true}
-      >
-        {this.props.children}
-      </AkButton>
+      <div tabIndex={0}>
+        <AkButton
+          tabIndex="-1"
+          appearance="subtle"
+          ariaHaspopup={true}
+          className={this.props.className}
+          href={this.props.href}
+          iconAfter={this.props.iconAfter}
+          iconBefore={this.props.iconBefore}
+          isDisabled={this.props.disabled}
+          isSelected={this.props.selected}
+          onClick={this.handleClick}
+          spacing={this.props.spacing || 'default'}
+          target={this.props.target}
+          theme={this.props.theme}
+          shouldFitContainer={true}
+        >
+          {this.props.children}
+        </AkButton>
+      </div>
     );
 
     const position = this.props.titlePosition || 'top';
