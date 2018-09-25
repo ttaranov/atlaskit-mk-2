@@ -3,12 +3,12 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import Select from '@atlaskit/select';
-
-import FeedbackCollector from '../../components/FeedbackCollector';
-import FeedbackForm, { fieldLabel } from '../../components/FeedbackForm';
 import { Checkbox } from '@atlaskit/checkbox';
 import { Field } from '@atlaskit/form';
 import { FieldTextAreaStateless } from '@atlaskit/field-text-area';
+
+import FeedbackCollector from '../../components/FeedbackCollector';
+import FeedbackForm, { fieldLabel } from '../../components/FeedbackForm';
 
 describe('Feedback Collector unit tests', () => {
   describe('Feedback JSD integration', () => {
