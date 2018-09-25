@@ -12,13 +12,17 @@ export default md`
     - The children, which are the elements the modal will be positioned relative to, using the position prop.
     - The content, which is the content to display inside the modal.
 
+  ### Install
+
   ${code`
   import InlineDialog from '@atlaskit/inline-dialog';
   `}
 
+  ### Example
+
   ${(
     <Example
-      title="Basic"
+      title="Basic Inline Dialog"
       Component={require('../examples/01-basic').default}
       source={require('!!raw-loader!../examples/01-basic')}
     />
