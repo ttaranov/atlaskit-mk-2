@@ -369,9 +369,9 @@ class ResizeControl extends PureComponent<Props, State> {
       mouseIsOverNavigation,
       navigation,
     } = this.props;
-    const { isCollapsed } = navigation.state;
+    const { isCollapsed, isPeeking } = navigation.state;
 
-    const isResizeDisabled = isDisabled || navigation.state.isPeeking;
+    const isResizeDisabled = isDisabled || isPeeking;
 
     // the button shouldn't "flip" until the drag is complete
     let ButtonIcon = ChevronLeft;
@@ -398,13 +398,15 @@ class ResizeControl extends PureComponent<Props, State> {
           <Shadow direction={shadowDirection} isBold={mouseIsDown} />
           {!isResizeDisabled && (
             <Fragment>
-              <GrabArea
-                isBold={mouseIsDown}
-                showHandle={mouseIsDown || mouseIsOverGrabArea}
-                onMouseEnter={this.mouseEnterGrabArea}
-                onMouseLeave={this.mouseLeaveGrabArea}
-                onMouseDown={this.handleResizeStart}
-              />
+              {!flyoutIsOpen && (
+                <GrabArea
+                  isBold={mouseIsDown}
+                  showHandle={mouseIsDown || mouseIsOverGrabArea}
+                  onMouseEnter={this.mouseEnterGrabArea}
+                  onMouseLeave={this.mouseLeaveGrabArea}
+                  onMouseDown={this.handleResizeStart}
+                />
+              )}
               {collapseToggleTooltipContent ? (
                 <Tooltip
                   content={makeTooltipNode(
