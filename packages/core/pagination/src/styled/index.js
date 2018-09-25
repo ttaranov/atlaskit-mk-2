@@ -1,6 +1,7 @@
 // @flow
 import styled from 'styled-components';
 import Button from '@atlaskit/button';
+import { gridSize } from '@atlaskit/theme';
 
 export const Container = styled.div`
   display: flex;
@@ -8,7 +9,7 @@ export const Container = styled.div`
 
 export const Ellipsis = styled.span`
   display: flex;
-  padding: 0 8px;
+  padding: 0 ${gridSize() * 2}px;
   text-align: center;
   align-items: center;
 `;
@@ -18,5 +19,5 @@ export const Ellipsis = styled.span`
  * with rest of the buttons
  */
 export const StyledButton = styled(Button)`
-  padding: 4px 0;
+  padding: ${gridSize() / 2}px 0;
 `;
