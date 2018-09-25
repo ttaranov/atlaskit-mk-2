@@ -61,20 +61,20 @@ type JiraRecentItemGroup = {
 };
 
 type JiraRecentIssueAttributes = {
-  containerId: string;
-  containerName: string;
-  issueTypeId: string;
-  issueTypeName: string;
+  containerId?: string;
+  containerName?: string;
+  issueTypeId?: string;
+  issueTypeName?: string;
 };
 
 type JiraRecentBoardAttributes = {
-  containerId: string;
-  containerName: string;
-  parentType: 'user' | 'project';
+  containerId?: string;
+  containerName?: string;
+  parentType?: 'user' | 'project';
 };
 
 type JiraRecentFilterAttributes = {
-  ownerId: string;
+  ownerId?: string;
 };
 
 type JiraRecentItem = {
