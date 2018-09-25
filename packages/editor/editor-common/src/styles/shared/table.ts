@@ -16,7 +16,7 @@ export const tableMarginSides = 8;
 const tableSharedStyle = css`
   .table-container {
     position: relative;
-    margin: 0 auto;
+    margin: 0 auto ${tableMarginBottom}px;
     box-sizing: border-box;
   }
   .table-container[data-number-column='true'] {
@@ -27,9 +27,11 @@ const tableSharedStyle = css`
     margin-left: 50%;
     transform: translateX(-50%);
   }
-  .table-container table {
+  /* avoid applying styles to nested tables (possible via extensions) */
+  .table-container > table,
+  .table-wrapper > table {
     border-collapse: collapse;
-    margin: ${tableMarginTop}px ${tableMarginSides}px ${tableMarginBottom}px;
+    margin: ${tableMarginTop}px ${tableMarginSides}px 0;
     border: 1px solid ${akEditorTableBorder};
     font-size: ${fontSize}px;
     width: 100%;

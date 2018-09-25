@@ -1,6 +1,17 @@
 import { removeOldProdSnapshots } from '@atlaskit/visual-regression/helper';
 
-import { imageSnapshotFolder, initEditor, clearEditor } from './_utils';
+import {
+  imageSnapshotFolder,
+  initEditor,
+  clearEditor,
+  selectByTextAndClick,
+  resetViewport,
+  snapshot,
+} from './_utils';
+import { messages as insertBlockMessages } from '../../plugins/insert-block/ui/ToolbarInsertBlock';
+import commonMessages from '../../messages';
+import tableMessages from '../../plugins/table/ui/messages';
+import { messages as contextualMenuMessages } from '../../plugins/table/ui/FloatingContextualMenu/ContextualMenu';
 
 type CellSelectorOpts = {
   row: number;
@@ -16,14 +27,10 @@ type ResizeColumnOpts = {
 };
 
 const insertTable = async page => {
-  await page.click('span[aria-label="Insert table"]');
+  await page.click(
+    `span[aria-label="${insertBlockMessages.table.defaultMessage}"]`,
+  );
   await page.waitForSelector('table td p');
-};
-
-const snapshot = async page => {
-  const image = await page.screenshot();
-  // @ts-ignore
-  expect(image).toMatchProdImageSnapshot();
 };
 
 const selectTableDisplayOption = async (page, optionSelector) => {
@@ -36,12 +43,7 @@ const clickInContextMenu = async (page, title) => {
     '.ProseMirror-table-contextual-menu-trigger';
   await page.waitForSelector(contextMenuTriggerSelector);
   await page.click(contextMenuTriggerSelector);
-  const menuItems = await page.$x(`//span[contains(text(), '${title}')]`);
-  if (menuItems.length > 0) {
-    await menuItems[0].click();
-  } else {
-    throw new Error(`Menu title "${title}" not found`);
-  }
+  await selectByTextAndClick({ page, tagName: 'span', text: title });
 };
 
 const getCellBoundingRect = async (page, selector) => {
@@ -101,7 +103,7 @@ describe('Snapshot Test: table', () => {
       });
 
       beforeEach(async () => {
-        await page.setViewport({ width: 1920, height: 1080 });
+        await resetViewport(page);
         await clearEditor(page);
         await insertTable(page);
       });
@@ -109,11 +111,12 @@ describe('Snapshot Test: table', () => {
       if (appearance === 'full-page') {
         ['wide', 'full-width'].forEach(layout => {
           it(`${layout} layout`, async () => {
+            await page.setViewport({ width: 1280, height: 1024 });
             const layoutName = layout
               .replace('-', ' ')
               .replace(/^\w/, c => c.toUpperCase());
             const buttonSelector = `div[aria-label="Table floating controls"] span[aria-label="${layoutName}"]`;
-            // Make the images large enough so there is noticable difference between the table layouts.
+            // Make the images large enough so there is noticeable difference between the table layouts.
             await page.click(buttonSelector);
             await page.waitForSelector(
               `.ProseMirror table[data-layout="${layout}"]`,
@@ -122,7 +125,10 @@ describe('Snapshot Test: table', () => {
           });
         });
         it(`remove row buttons in full width layout mode`, async () => {
-          const buttonSelector = `div[aria-label="Table floating controls"] span[aria-label="Full width"]`;
+          await page.setViewport({ width: 1280, height: 1024 });
+          const buttonSelector = `div[aria-label="Table floating controls"] span[aria-label="${
+            commonMessages.layoutFullWidth.defaultMessage
+          }"]`;
           await page.click(buttonSelector);
           await page.waitForSelector(
             `.ProseMirror table[data-layout="full-width"]`,
@@ -134,7 +140,9 @@ describe('Snapshot Test: table', () => {
         });
 
         it('table with scroll', async () => {
-          const buttonSelector = `.table-column:nth-child(1) span[aria-label="Add column"]`;
+          const buttonSelector = `.table-column:nth-child(1) span[aria-label="${
+            tableMessages.insertColumn.defaultMessage
+          }"]`;
           for (let k = 0; k < 3; k++) {
             await page.hover(`.table-column:nth-child(1)>div`);
             await page.waitForSelector(buttonSelector);
@@ -217,27 +225,44 @@ describe('Snapshot Test: table', () => {
             await page.keyboard.up('Shift');
             await page.waitForSelector('.ProseMirror table .selectedCell');
             await snapshot(page);
-            await clickInContextMenu(page, 'Merge cells');
+            await clickInContextMenu(
+              page,
+              contextualMenuMessages.mergeCells.defaultMessage,
+            );
             await snapshot(page);
-            await clickInContextMenu(page, 'Split cell');
+
+            await page.click(firstCellSelector);
+            await clickInContextMenu(
+              page,
+              contextualMenuMessages.splitCell.defaultMessage,
+            );
             await snapshot(page);
           });
         });
 
         describe('Cell background', () => {
-          beforeEach(async () => {
-            await page.setViewport({ width: 790, height: 620 });
-          });
-
           it('shows the submenu on the right', async () => {
-            await page.click('tr:nth-child(1) > th:nth-child(1)');
-            await clickInContextMenu(page, 'Cell background');
+            await page.click(
+              getSelectorForCell({ row: 1, cell: 2, cellType: 'th' }),
+            );
+            await page.click(
+              getSelectorForCell({ row: 1, cell: 1, cellType: 'th' }),
+            );
+            await clickInContextMenu(
+              page,
+              contextualMenuMessages.cellBackground.defaultMessage,
+            );
             await snapshot(page);
           });
 
           it('Submenu shows on the left if there is no available space', async () => {
-            await page.click('tr:nth-child(1) > th:nth-child(3)');
-            await clickInContextMenu(page, 'Cell background');
+            await page.click(
+              getSelectorForCell({ row: 1, cell: 3, cellType: 'th' }),
+            );
+            await clickInContextMenu(
+              page,
+              contextualMenuMessages.cellBackground.defaultMessage,
+            );
             await snapshot(page);
           });
         });
@@ -248,7 +273,9 @@ describe('Snapshot Test: table', () => {
       });
 
       it('trash icon', async () => {
-        const buttonSelector = 'span[aria-label="Remove table"]';
+        const buttonSelector = `span[aria-label="${
+          commonMessages.remove.defaultMessage
+        }"]`;
         await page.hover(buttonSelector);
         await page.waitForSelector('.ProseMirror table td.danger');
         await snapshot(page);
@@ -258,7 +285,7 @@ describe('Snapshot Test: table', () => {
 
       ['row', 'column'].forEach(type => {
         it(`5 ${type}s added`, async () => {
-          const buttonSelector = `.table-${type}:nth-child(1) span[aria-label="Add ${type}"]`;
+          const buttonSelector = `.table-${type}:nth-child(1) span[aria-label="Insert ${type}"]`;
           for (let k = 0; k < 5; k++) {
             await page.hover(`.table-${type}:nth-child(1)>div`);
             await page.waitForSelector(buttonSelector);
@@ -281,7 +308,7 @@ describe('Snapshot Test: table', () => {
             await snapshot(page);
           });
           it(`add ${type} button at ${i} index`, async () => {
-            const buttonSelector = `.table-${type}:nth-child(${i}) span[aria-label="Add ${type}"]`;
+            const buttonSelector = `.table-${type}:nth-child(${i}) span[aria-label="Insert ${type}"]`;
             await page.hover(`.table-${type}:nth-child(${i})>div`);
             await page.waitForSelector(buttonSelector);
             await snapshot(page);
@@ -312,8 +339,8 @@ describe('Snapshot Test: table', () => {
     beforeEach(async () => {
       // @ts-ignore
       page = global.page;
-      await page.setViewport({ width: 1920, height: 1080 });
       await initEditor(page, 'table-flexi-resizing');
+      await page.setViewport({ width: 1280, height: 1024 });
       // Focus the table
       await page.click('table tr td');
     });
@@ -365,7 +392,9 @@ describe('Snapshot Test: table', () => {
     // TODO This test can be merged with column adding above once this is the main table re-sizing.
     it('Add a column', async () => {
       await snapshot(page);
-      const buttonSelector = `.table-column:nth-child(1) span[aria-label="Add column"]`;
+      const buttonSelector = `.table-column:nth-child(1) span[aria-label="${
+        tableMessages.insertColumn.defaultMessage
+      }"]`;
       await page.hover(`.table-column:nth-child(1)>div`);
       await page.waitForSelector(buttonSelector);
       await page.click(buttonSelector);

@@ -315,10 +315,6 @@ Object {
           "text": "www.google.com",
           "type": "text",
         },
-        Object {
-          "text": "  ",
-          "type": "text",
-        },
       ],
       "type": "paragraph",
     },

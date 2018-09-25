@@ -31,6 +31,14 @@ export const LinkItem = ({ components: C, to, ...props }: *) => {
   );
 };
 
+export const GlobalLink = ({ className, to, onClick, children }: any) => {
+  return (
+    <Link className={className} to={to} onClick={onClick}>
+      {children}
+    </Link>
+  );
+};
+
 export const globalNavPrimaryItems = [
   {
     id: 'jira',
@@ -39,7 +47,7 @@ export const globalNavPrimaryItems = [
     ),
     label: 'Jira',
     to: '/',
-    component: Link,
+    component: GlobalLink,
   },
   { id: 'search', icon: SearchIcon },
   { id: 'create', icon: AddIcon },

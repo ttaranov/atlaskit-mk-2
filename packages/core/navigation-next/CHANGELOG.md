@@ -1,5 +1,14 @@
 # @atlaskit/navigation-next
 
+## 3.14.1
+- [patch] Fix GlobalItem not passing all GlobalItem props to custom component. [9f95736](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f95736)
+
+## 3.14.0
+- [minor] Add enableResize(), disableResize(), and state.isResizeDisabled to UIController. The NavigationProvider's initialUIController prop can now containe a isResizeDisabled property. [a932511](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a932511)
+
+## 3.13.3
+- [patch] Adds the new hideTooltipOnMouseDown was required since global-navigation and navigation-next are using onMouseDown and onMouseUp iteractions [8719daf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8719daf)
+
 ## 3.13.2
 - [patch] Updated dependencies [4194aa4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4194aa4)
   - @atlaskit/logo@9.2.2

@@ -128,7 +128,10 @@ export class QuickSearchContainer extends React.Component<Props, State> {
           },
         );
       }
-    } catch {
+    } catch (e) {
+      /* tslint:disable-next-line:no-console */
+      console.error(e);
+
       this.setState({
         isError: true,
         isLoading: false,

@@ -8,6 +8,7 @@ import {
   emojiItem,
   insertEmojiBySelect,
 } from './_emoji-helpers';
+import { messages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
 
 BrowserTestCase(
   'Emoji: should be able to use emoji inside blockquote',
@@ -93,8 +94,10 @@ BrowserTestCase(
   'Emoji: should be able to change text with emoji into decisions',
   { skip: ['ie'] },
   async client => {
-    const decisions = 'span[aria-label="Decision"]';
-    const createDecisions = '[aria-label="Create decision"]';
+    const decisions = 'li span[aria-label="Decision"]';
+    const createDecisions = `span[aria-label="${
+      messages.decision.defaultMessage
+    }"]`;
     const browser = await new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);

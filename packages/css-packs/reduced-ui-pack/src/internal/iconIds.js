@@ -264,6 +264,7 @@ const iconIds: Array<string> = [
   'label',
   'lightbulb-filled',
   'lightbulb',
+  'like',
   'link-filled',
   'link',
   'list',

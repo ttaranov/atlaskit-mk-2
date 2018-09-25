@@ -139,7 +139,12 @@ class TableComponent extends React.Component<ComponentProps> {
       : [];
 
     // doesn't work well with WithPluginState
-    const { isTableHovered, isTableInDanger } = getPluginState(view.state);
+    const {
+      isTableHovered,
+      isTableInDanger,
+      dangerColumns,
+      dangerRows,
+    } = getPluginState(view.state);
 
     const tableRef = this.table || undefined;
     const tableActive = this.table === pluginState.tableRef;
@@ -158,6 +163,7 @@ class TableComponent extends React.Component<ComponentProps> {
           tableActive={tableActive}
           isTableHovered={isTableHovered}
           isTableInDanger={isTableInDanger}
+          dangerRows={dangerRows}
           isNumberColumnEnabled={node.attrs.isNumberColumnEnabled}
           isHeaderColumnEnabled={checkIfHeaderColumnEnabled(view.state)}
           isHeaderRowEnabled={checkIfHeaderRowEnabled(view.state)}
@@ -177,6 +183,7 @@ class TableComponent extends React.Component<ComponentProps> {
           ref={elem => (this.columnControls = elem)}
           isTableHovered={isTableHovered}
           isTableInDanger={isTableInDanger}
+          dangerColumns={dangerColumns}
           // pass `selection` and `numberOfColumns` to control re-render
           selection={view.state.selection}
           numberOfColumns={node.firstChild!.childCount}

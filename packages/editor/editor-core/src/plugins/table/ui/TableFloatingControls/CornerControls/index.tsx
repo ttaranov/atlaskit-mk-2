@@ -4,7 +4,6 @@ import { EditorView } from 'prosemirror-view';
 import { isTableSelected, selectTable } from 'prosemirror-utils';
 import { Selection } from 'prosemirror-state';
 import { toolbarSize } from '../styles';
-import { CornerContainer, CornerButton } from './styles';
 import InsertColumnButton from '../ColumnControls/InsertColumnButton';
 import InsertRowButton from '../RowControls/InsertRowButton';
 import { hoverTable, insertColumn, insertRow } from '../../../actions';
@@ -37,14 +36,19 @@ export default class CornerControls extends Component<Props, any> {
     } = this.props;
     const tableHeight = tableRef.offsetHeight;
     return (
-      <CornerContainer
-        className={isTableSelected(state.selection) ? 'active' : ''}
+      <div
+        className={`pm-table-corner-controls ${
+          isTableSelected(state.selection) ? 'active' : ''
+        }`}
       >
-        <CornerButton
+        <button
+          type="button"
+          className={`pm-table-corner-button ${
+            isTableInDanger ? 'danger' : ''
+          }`}
           onClick={this.selectTable}
           onMouseOver={this.hoverTable}
           onMouseOut={this.props.clearHoverSelection}
-          className={isTableInDanger ? 'danger' : ''}
         />
         {!isHeaderColumnEnabled &&
           !isNumberColumnEnabled && (
@@ -63,7 +67,7 @@ export default class CornerControls extends Component<Props, any> {
             )}
           />
         )}
-      </CornerContainer>
+      </div>
     );
   }
 

@@ -38,7 +38,10 @@ export interface FilmstripState {
 const getIdentifierKey = (identifier: Identifier, index: number): string => {
   if (isUrlPreviewIdentifier(identifier)) {
     return identifier.url;
-  } else if (typeof identifier.id === 'string') {
+  } else if (
+    identifier.mediaItemType === 'file' &&
+    typeof identifier.id === 'string'
+  ) {
     return identifier.id;
   } else {
     return `${index}`;

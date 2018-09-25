@@ -83,6 +83,11 @@ export interface Props {
    * Indicates whether or not the aggregator should be used for object searches.
    */
   useAggregatorForConfluenceObjects?: boolean;
+
+  /**
+   * Indicates whether or not CPUS should be used for people searches.
+   */
+  useCPUSForPeopleResults?: boolean;
 }
 
 /**
@@ -154,6 +159,7 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
       isSendSearchTermsEnabled,
       useAggregatorForConfluenceObjects,
       referralContextIdentifiers,
+      useCPUSForPeopleResults,
     } = this.props;
 
     return (
@@ -164,6 +170,7 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
           isSendSearchTermsEnabled={isSendSearchTermsEnabled}
           useAggregatorForConfluenceObjects={useAggregatorForConfluenceObjects}
           referralContextIdentifiers={referralContextIdentifiers}
+          useCPUSForPeopleResults={useCPUSForPeopleResults}
         />
       </MessagesIntlProvider>
     );

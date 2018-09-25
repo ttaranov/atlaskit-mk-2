@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { mount } from 'enzyme';
+import { mountWithIntl } from '@atlaskit/editor-test-helpers';
 import HyperlinkEdit from '../../../../../plugins/hyperlink/ui/HyperlinkEdit';
 
 describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
   it('should render a PanelTextInput', () => {
-    const wrapper = mount(
+    const wrapper = mountWithIntl(
       <HyperlinkEdit target={document.body} placeholder="Test" />,
     );
     const input = wrapper.find('PanelTextInput');
@@ -13,7 +13,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
   });
 
   it('should pass through the default value to the PanelTextInput', () => {
-    const wrapper = mount(
+    const wrapper = mountWithIntl(
       <HyperlinkEdit
         target={document.body}
         placeholder="Test"
@@ -26,7 +26,7 @@ describe('@atlaskit/editor-core/ui/HyperlinkEdit', () => {
   });
 
   it('should override open-link href when alwaysOpenLink at is given', () => {
-    const wrapper = mount(
+    const wrapper = mountWithIntl(
       <HyperlinkEdit
         target={document.body}
         placeholder="Test"

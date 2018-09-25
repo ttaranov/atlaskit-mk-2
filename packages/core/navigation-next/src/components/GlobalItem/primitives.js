@@ -40,6 +40,19 @@ class GlobalNavigationItemPrimitive extends Component<*> {
     );
   };
 
+  getGlobalItemExternalProps = () => {
+    const {
+      createAnalyticsEvent,
+      isActive,
+      isHover,
+      isSelected,
+      theme,
+      ...externalProps
+    } = this.props;
+
+    return externalProps;
+  };
+
   renderChildren = () => {
     const {
       isActive,
@@ -48,12 +61,10 @@ class GlobalNavigationItemPrimitive extends Component<*> {
       size,
       styles: styleReducer,
       theme,
-      tooltip,
       href,
       onClick,
       target,
       component: CustomComponent,
-      ...rest
     } = this.props;
 
     const { mode } = theme;
@@ -70,7 +81,7 @@ class GlobalNavigationItemPrimitive extends Component<*> {
 
       itemBase = (
         <CachedCustomComponent
-          {...rest}
+          {...this.getGlobalItemExternalProps()}
           className={css({ '&&': styles.itemBase })}
         >
           {this.renderIconAndBadge(styles.badgeWrapper, presentationProps)}
@@ -95,7 +106,7 @@ class GlobalNavigationItemPrimitive extends Component<*> {
       );
     } else {
       itemBase = (
-        <span className={css({ '&&': styles.itemBase })} {...rest}>
+        <span className={css({ '&&': styles.itemBase })}>
           {this.renderIconAndBadge(styles.badgeWrapper, presentationProps)}
         </span>
       );
@@ -109,9 +120,9 @@ class GlobalNavigationItemPrimitive extends Component<*> {
     return (
       <Tooltip
         delay={0}
-        content={isSelected || isActive ? null : tooltip}
+        content={isSelected || isActive ? undefined : tooltip}
         position="right"
-        hideTooltipOnClick
+        hideTooltipOnMouseDown
       >
         {this.renderChildren()}
       </Tooltip>

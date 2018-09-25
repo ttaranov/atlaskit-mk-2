@@ -1,4 +1,3 @@
-import { mount } from 'enzyme';
 import * as React from 'react';
 import { selectTable, getCellsInColumn } from 'prosemirror-utils';
 import { Node } from 'prosemirror-model';
@@ -13,19 +12,18 @@ import {
   tdCursor,
   td,
   thEmpty,
+  mountWithIntl,
 } from '@atlaskit/editor-test-helpers';
 
 import { pluginKey } from '../../../../../plugins/table/pm-plugins/main';
 import { TablePluginState } from '../../../../../plugins/table/types';
 import ColumnControls from '../../../../../plugins/table/ui/TableFloatingControls/ColumnControls';
-import {
-  ColumnControlsButtonWrap,
-  HeaderButton as ColumnControlsButton,
-} from '../../../../../plugins/table/ui/TableFloatingControls/ColumnControls/styles';
 import { tablesPlugin } from '../../../../../plugins';
 import { setTextSelection } from '../../../../../index';
-import DeleteColumnButton from '../../../../../plugins/table/ui/TableFloatingControls/ColumnControls/DeleteColumnButton';
-import InsertColumnButton from '../../../../../plugins/table/ui/TableFloatingControls/ColumnControls/InsertColumnButton';
+
+const ColumnControlsButtonWrap = '.pm-table-column-controls__button-wrap';
+const DeleteColumnButton = '.pm-table-controls__delete-button-wrap';
+const InsertColumnButton = '.pm-table-controls__insert-button-wrap';
 
 const selectColumns = columnIdxs => tr => {
   const cells: { pos: number; start: number; node: Node }[] = columnIdxs.reduce(
@@ -59,7 +57,7 @@ describe('ColumnControls', () => {
           nodes.push(tdEmpty);
         }
         const { editorView } = editor(doc(p('text'), table()(tr(...nodes))));
-        const floatingControls = mount(
+        const floatingControls = mountWithIntl(
           <ColumnControls
             tableRef={document.querySelector('table')!}
             isTableHovered={false}
@@ -89,7 +87,7 @@ describe('ColumnControls', () => {
           ),
         );
 
-        const floatingControls = mount(
+        const floatingControls = mountWithIntl(
           <ColumnControls
             tableRef={document.querySelector('table')!}
             isTableHovered={false}
@@ -103,7 +101,7 @@ describe('ColumnControls', () => {
 
         // now hover the column
         floatingControls
-          .find(ColumnControlsButton)
+          .find(ColumnControlsButtonWrap)
           .at(column)
           .find('button')
           .first()
@@ -115,7 +113,7 @@ describe('ColumnControls', () => {
 
         // release the hover
         floatingControls
-          .find(ColumnControlsButton)
+          .find(ColumnControlsButtonWrap)
           .at(column)
           .find('button')
           .first()
@@ -141,7 +139,7 @@ describe('ColumnControls', () => {
           ),
         );
 
-        const floatingControls = mount(
+        const floatingControls = mountWithIntl(
           <ColumnControls
             tableRef={document.querySelector('table')!}
             isTableHovered={false}
@@ -151,8 +149,10 @@ describe('ColumnControls', () => {
 
         // now click the column
         floatingControls
-          .find(ColumnControlsButton)
+          .find(ColumnControlsButtonWrap)
           .at(column)
+          .find('button')
+          .first()
           .simulate('mousedown');
 
         // set numberOfColumns prop to trick shouldComponentUpdate and force re-render
@@ -177,7 +177,7 @@ describe('ColumnControls', () => {
         ),
       );
 
-      const floatingControls = mount(
+      const floatingControls = mountWithIntl(
         <ColumnControls
           tableRef={document.querySelector('table')!}
           isTableHovered={false}
@@ -201,7 +201,7 @@ describe('ColumnControls', () => {
       ),
     );
 
-    const floatingControls = mount(
+    const floatingControls = mountWithIntl(
       <ColumnControls
         tableRef={document.querySelector('table')!}
         isTableHovered={false}
@@ -231,7 +231,7 @@ describe('ColumnControls', () => {
       ),
     );
 
-    const floatingControls = mount(
+    const floatingControls = mountWithIntl(
       <ColumnControls
         tableRef={document.querySelector('table')!}
         isTableHovered={false}
@@ -261,7 +261,7 @@ describe('ColumnControls', () => {
         ),
       );
 
-      const floatingControls = mount(
+      const floatingControls = mountWithIntl(
         <ColumnControls
           tableRef={document.querySelector('table')!}
           isTableHovered={false}
@@ -292,7 +292,7 @@ describe('ColumnControls', () => {
         ),
       );
 
-      const floatingControls = mount(
+      const floatingControls = mountWithIntl(
         <ColumnControls
           tableRef={document.querySelector('table')!}
           isTableHovered={false}
@@ -323,7 +323,7 @@ describe('ColumnControls', () => {
         ),
       );
 
-      const floatingControls = mount(
+      const floatingControls = mountWithIntl(
         <ColumnControls
           tableRef={document.querySelector('table')!}
           isTableHovered={false}

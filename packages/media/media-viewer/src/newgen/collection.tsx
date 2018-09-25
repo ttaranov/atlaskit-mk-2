@@ -8,7 +8,7 @@ import {
 import { Outcome, Identifier, MediaViewerFeatureFlags } from './domain';
 import { ErrorMessage, createError, MediaViewerError } from './error';
 import { List } from './list';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 import { toIdentifier } from './utils';
 import { Spinner } from './loading';
 

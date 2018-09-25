@@ -1,9 +1,8 @@
 import * as React from 'react';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
-import AkButton from '@atlaskit/button';
-import AkTooltip from '@atlaskit/tooltip';
-import { DeleteRowButtonWrap } from './styles';
-import { InsertButtonDefault as InsertButton } from '../styles';
+import Button from '@atlaskit/button';
+import tableMessages from '../../messages';
 
 export interface ButtonProps {
   style?: object;
@@ -12,7 +11,7 @@ export interface ButtonProps {
   onMouseLeave?: (SyntheticEvent) => void;
 }
 
-class DeleteRowButton extends React.Component<ButtonProps> {
+class DeleteRowButton extends React.Component<ButtonProps & InjectedIntlProps> {
   state = { hover: false };
   static defaultProps = {
     onMouseEnter: () => {},
@@ -30,26 +29,30 @@ class DeleteRowButton extends React.Component<ButtonProps> {
   };
 
   render() {
-    const { style, onClick } = this.props;
+    const {
+      style,
+      onClick,
+      intl: { formatMessage },
+    } = this.props;
+    const labelRemoveRow = formatMessage(tableMessages.removeRows, {
+      0: 1,
+    });
     return (
-      <DeleteRowButtonWrap
+      <div
+        className="pm-table-controls__delete-button-wrap"
         style={style}
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}
       >
-        <InsertButton>
-          <AkTooltip position="right" content="Remove row">
-            <AkButton
-              onClick={onClick}
-              iconBefore={<CrossIcon label="Remove row" />}
-              appearance={this.state.hover ? 'danger' : 'default'}
-              spacing="none"
-            />
-          </AkTooltip>
-        </InsertButton>
-      </DeleteRowButtonWrap>
+        <Button
+          onClick={onClick}
+          iconBefore={<CrossIcon label={labelRemoveRow} />}
+          appearance={this.state.hover ? 'danger' : 'default'}
+          spacing="none"
+        />
+      </div>
     );
   }
 }
 
-export default DeleteRowButton;
+export default injectIntl(DeleteRowButton);

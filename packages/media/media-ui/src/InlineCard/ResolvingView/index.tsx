@@ -7,13 +7,14 @@ import { SpinnerWrapper } from './styled';
 export interface ResolvingViewProps {
   url: string;
   onClick?: () => void;
+  isSelected?: boolean;
 }
 
 export class ResolvingView extends React.Component<ResolvingViewProps> {
   render() {
-    const { url, onClick } = this.props;
+    const { url, onClick, isSelected } = this.props;
     return (
-      <Frame onClick={onClick}>
+      <Frame onClick={onClick} isSelected={isSelected}>
         <IconAndTitleLayout
           icon={
             <SpinnerWrapper>
