@@ -54,8 +54,9 @@ export interface ToolbarProps {
 }
 
 interface ToolbarInnerState {
-  registeredButtons: any[]; //ToolbarButton[]
+  registeredButtons: any[]; // TODO: ToolbarButton[]
   selectedButtonIndex: number;
+  selectedButton: any;
 }
 
 export interface ToolbarInnerProps extends ToolbarProps {
@@ -73,6 +74,7 @@ export class ToolbarInner extends React.Component<
     this.state = {
       selectedButtonIndex: 1,
       registeredButtons: [],
+      selectedButton: null,
     };
   }
 
@@ -108,6 +110,24 @@ export class ToolbarInner extends React.Component<
     return null;
   }
 
+  private changeSelectedButton(delta: number) {
+    this.setState(prevState => {
+      const newIndex = prevState.selectedButtonIndex + delta;
+      const buttons = prevState.registeredButtons;
+      // debugger
+
+      const selectedButton =
+        newIndex >= 0 && newIndex < buttons.length
+          ? buttons[newIndex]
+          : prevState.selectedButton;
+      console.log({ newIndex, buttons, selectedButton });
+      return {
+        selectedButtonIndex: newIndex,
+        selectedButton,
+      };
+    });
+  }
+
   private handleKeydown = e => {
     if (e.keyCode === 13) {
       console.log('pressed enter in Toolbar handler');
@@ -115,14 +135,10 @@ export class ToolbarInner extends React.Component<
     }
     if (e.keyCode === 37) {
       console.log('pressed left');
-      this.setState(prevState => ({
-        selectedButtonIndex: prevState.selectedButtonIndex - 1,
-      }));
+      this.changeSelectedButton(-1);
     } else if (e.keyCode === 39) {
       console.log('pressed right');
-      this.setState(prevState => ({
-        selectedButtonIndex: prevState.selectedButtonIndex + 1,
-      }));
+      this.changeSelectedButton(1);
     }
   };
 
@@ -150,7 +166,7 @@ export class ToolbarInner extends React.Component<
       <ToolbarContext.Provider
         value={{
           registerButton: this.registerButton,
-          selectedButton: null,
+          selectedButton: this.state.selectedButton,
         }}
       >
         <div onKeyDown={this.handleKeydown}>
