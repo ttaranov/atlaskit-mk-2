@@ -1,5 +1,8 @@
 # @atlaskit/feature-flag-client
 
+## 1.0.3
+- [patch] MEP-103 : Support short form of a feature flag for variants [0ac7332](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0ac7332)
+
 ## 1.0.2
 - [patch] MEP-103: Including flagKey in the attributes [afd42f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/afd42f7)
 
