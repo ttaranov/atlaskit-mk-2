@@ -9,7 +9,6 @@ import {
   docItem,
   imageItem,
   largeImageItem,
-  linkItem,
   smallImageItem,
   unsupportedItem,
   videoHorizontalFileItem,
@@ -104,9 +103,6 @@ export default class Example extends React.Component<{}, State> {
               <Button onClick={this.setItem(unsupportedItem)}>
                 Unsupported item
               </Button>
-            </li>
-            <li>
-              <Button onClick={this.setItem(linkItem)}>Link</Button>
             </li>
             <li>
               <Button onClick={this.setItem(archiveItem)}>Archive</Button>
