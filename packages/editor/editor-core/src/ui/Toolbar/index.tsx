@@ -6,6 +6,8 @@ import { ProviderFactory } from '@atlaskit/editor-common';
 import { EditorAppearance, ToolbarUIComponentFactory } from '../../types';
 import { EventDispatcher } from '../../event-dispatcher';
 import EditorActions from '../../actions';
+import ToolbarContext from './ToolbarContext';
+// import ToolbarButton from '../ToolbarButton';
 
 const ToolbarComponentsWrapper = styled.div`
   display: flex;
@@ -51,12 +53,27 @@ export interface ToolbarProps {
   width?: number;
 }
 
+interface ToolbarInnerState {
+  registeredButtons: any[]; //ToolbarButton[]
+}
+
 export interface ToolbarInnerProps extends ToolbarProps {
   toolbarSize: ToolbarSize;
   isToolbarReducedSpacing: boolean;
 }
 
-export class ToolbarInner extends React.Component<ToolbarInnerProps> {
+export class ToolbarInner extends React.Component<
+  ToolbarInnerProps,
+  ToolbarInnerState
+> {
+  constructor(props: ToolbarInnerProps) {
+    super(props);
+    this.registerButton = this.registerButton.bind(this);
+    this.state = {
+      registeredButtons: [],
+    };
+  }
+
   shouldComponentUpdate(nextProps, nextState) {
     return (
       nextProps.toolbarSize !== this.props.toolbarSize ||
@@ -68,6 +85,16 @@ export class ToolbarInner extends React.Component<ToolbarInnerProps> {
         this.props.popupsScrollableElement ||
       nextProps.isReducedSpacing !== this.props.isToolbarReducedSpacing
     );
+  }
+
+  registerButton(button) {
+    //}: ToolbarButton) {
+    console.log('registered button in toolbar');
+
+    this.setState(prevState => ({
+      registeredButtons: [...prevState.registeredButtons, button],
+    }));
+    return null;
   }
 
   render() {
@@ -91,26 +118,32 @@ export class ToolbarInner extends React.Component<ToolbarInnerProps> {
     }
 
     return (
-      <ToolbarComponentsWrapper>
-        {items.map((component, key) => {
-          const props: any = { key };
-          const element = component({
-            editorView,
-            editorActions: editorActions as EditorActions,
-            eventDispatcher,
-            providerFactory,
-            appearance,
-            popupsMountPoint,
-            popupsBoundariesElement,
-            popupsScrollableElement,
-            disabled,
-            toolbarSize,
-            isToolbarReducedSpacing,
-            containerElement: undefined,
-          });
-          return element && React.cloneElement(element, props);
-        })}
-      </ToolbarComponentsWrapper>
+      <ToolbarContext.Provider
+        value={{
+          registerButton: this.registerButton,
+        }}
+      >
+        <ToolbarComponentsWrapper>
+          {items.map((component, key) => {
+            const props: any = { key };
+            const element = component({
+              editorView,
+              editorActions: editorActions as EditorActions,
+              eventDispatcher,
+              providerFactory,
+              appearance,
+              popupsMountPoint,
+              popupsBoundariesElement,
+              popupsScrollableElement,
+              disabled,
+              toolbarSize,
+              isToolbarReducedSpacing,
+              containerElement: undefined,
+            });
+            return element && React.cloneElement(element, props);
+          })}
+        </ToolbarComponentsWrapper>
+      </ToolbarContext.Provider>
     );
   }
 }
