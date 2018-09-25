@@ -158,6 +158,7 @@ describe('Renderer - ReactSerializer', () => {
       Table.preload(),
       TableHeader.preload(),
       TableCell.preload(),
+      TableRow.preload(),
     ]);
   });
   describe('serializeFragment', () => {
