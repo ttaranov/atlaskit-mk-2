@@ -2,14 +2,10 @@ import {
   ImageInfo,
   ImageMetaData,
   ImageMetaDataTags,
-  ImageType,
   SupportedImageMetaTag,
   FileInfo,
 } from './types';
 import { readImageMetaTags } from './metatags';
-import { readJPEGExifMetaData } from './parseJPEG';
-import { readPNGXMPMetaData } from './parsePNG';
-import { parseXMPMetaData } from './parsePNGXMP';
 
 import { getFileInfo, loadImage } from '../util';
 
@@ -97,18 +93,12 @@ export async function readImageMetaData(
     return null;
   }
   const { naturalWidth: width, naturalHeight: height } = img;
+  const tags = await readImageMetaTags(fileInfo);
   const data: ImageMetaData = {
     type,
     width,
     height,
-    tags: null,
+    tags,
   };
-  if (type === ImageType.PNG) {
-    const xmpMetaData = await readPNGXMPMetaData(file);
-    data.tags = parseXMPMetaData(xmpMetaData);
-  } else if (file.type === ImageType.JPEG) {
-    const tags = await readJPEGExifMetaData(img);
-    data.tags = tags;
-  }
   return data;
 }

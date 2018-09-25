@@ -15777,10 +15777,6 @@ useragent@^2.1.12:
     lru-cache "2.2.x"
     tmp "0.0.x"
 
-utf8-buffer@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/utf8-buffer/-/utf8-buffer-0.2.0.tgz#a4530a606d9d2b0348456a393eaf836b62fed2f3"
-
 utf8-string-bytes@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/utf8-string-bytes/-/utf8-string-bytes-1.0.3.tgz#8923be75a543b1a1bb00e5a12c52c1b0553b65c6"
