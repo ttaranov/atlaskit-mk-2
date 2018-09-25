@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Props } from '../src';
 import BasicNavigation from './BasicNavigation';
 import LocaleIntlProvider from './LocaleIntlProvider';
+import { DEVELOPMENT_LOGGER } from './logger';
 
 const RadioGroup = styled.div`
   position: relative;
@@ -17,18 +18,6 @@ const Radio = styled.input`
   margin-left: 16px;
   margin-right: 8px;
 `;
-
-const DEVELOPMENT_LOGGER = {
-  safeError() {
-    console.error(...arguments);
-  },
-  safeInfo() {
-    console.info(...arguments);
-  },
-  safeWarn() {
-    console.warn(...arguments);
-  },
-};
 
 export interface Config {
   hideLocale: boolean;

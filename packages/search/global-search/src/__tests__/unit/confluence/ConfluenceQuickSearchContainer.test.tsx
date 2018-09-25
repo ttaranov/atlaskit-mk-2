@@ -32,6 +32,7 @@ import {
   EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE,
   SearchSession,
 } from '../../../api/CrossProductSearchClient';
+import { DEVELOPMENT_LOGGER } from '../../../../example-helpers/logger';
 
 const sessionId = 'sessionId';
 function render(partialProps?: Partial<Props>) {
@@ -41,6 +42,7 @@ function render(partialProps?: Partial<Props>) {
     peopleSearchClient: noResultsPeopleSearchClient,
     useAggregatorForConfluenceObjects: false,
     useCPUSForPeopleResults: false,
+    logger: DEVELOPMENT_LOGGER,
     ...partialProps,
   };
 
