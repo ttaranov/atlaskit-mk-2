@@ -27,6 +27,7 @@
   "devDependencies": {
     "@atlaskit/field-text": "^7.0.3",
     "@atlaskit/media-core": "^24.0.0",
+    "@atlaskit/docs": "^5.0.7",
     "@atlaskit/media-test-helpers": "^18.0.0"
   }
 }
