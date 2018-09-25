@@ -14,7 +14,7 @@ import {
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 
 import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
-import { IntlProvider } from 'react-intl';
+
 import { Card } from '../src';
 import { createApiCards } from '../example-helpers';
 
@@ -216,28 +216,26 @@ const handleEvent = (analyticsEvent: UIAnalyticsEventInterface) => {
 };
 
 export default () => (
-  <IntlProvider>
-    <AnalyticsListener channel="media" onEvent={handleEvent}>
-      <div>
-        <h1 style={{ margin: '10px 20px' }}>Link cards</h1>
-        <div style={{ margin: '20px 40px' }}>
-          <h3>Standard</h3>
-          <StoryList>{standardCards}</StoryList>
+  <AnalyticsListener channel="media" onEvent={handleEvent}>
+    <div>
+      <h1 style={{ margin: '10px 20px' }}>Link cards</h1>
+      <div style={{ margin: '20px 40px' }}>
+        <h3>Standard</h3>
+        <StoryList>{standardCards}</StoryList>
 
-          <h3>API Cards</h3>
-          <StoryList>{apiCards}</StoryList>
+        <h3>API Cards</h3>
+        <StoryList>{apiCards}</StoryList>
 
-          <h3>Error</h3>
-          <StoryList>{errorCards}</StoryList>
+        <h3>Error</h3>
+        <StoryList>{errorCards}</StoryList>
 
-          <h3>Smart cards</h3>
-          <StoryList>{smartCards}</StoryList>
-          <StoryList>{smartCardsAppearances}</StoryList>
+        <h3>Smart cards</h3>
+        <StoryList>{smartCards}</StoryList>
+        <StoryList>{smartCardsAppearances}</StoryList>
 
-          <h3>Embed cards</h3>
-          <StoryList>{embedCards}</StoryList>
-        </div>
+        <h3>Embed cards</h3>
+        <StoryList>{embedCards}</StoryList>
       </div>
-    </AnalyticsListener>
-  </IntlProvider>
+    </div>
+  </AnalyticsListener>
 );

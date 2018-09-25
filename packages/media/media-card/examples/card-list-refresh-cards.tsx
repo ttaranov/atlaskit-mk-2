@@ -3,7 +3,6 @@ import {
   createStorybookContext,
   defaultCollectionName,
 } from '@atlaskit/media-test-helpers';
-import { IntlProvider } from 'react-intl';
 import { CardList } from '../src';
 
 const context = createStorybookContext();
@@ -33,29 +32,27 @@ const handleRefresh = () => {
 const RefreshDemo = (): JSX.Element => {
   // tslint:disable-line:variable-name
   return (
-    <IntlProvider>
-      <div style={{ display: 'flex' }}>
-        <div style={{ width: '25%' }}>
-          <CardList
-            context={context}
-            pageSize={10}
-            collectionName={defaultCollectionName}
-          />
-        </div>
-        <div style={{ width: '25%' }}>
-          <CardList
-            context={context}
-            pageSize={10}
-            collectionName={defaultCollectionName}
-            cardAppearance="small"
-          />
-        </div>
-        <div>
-          <button onClick={handleAddItem}>Add an item to the collection</button>
-          <button onClick={handleRefresh}>Refresh the collection</button>
-        </div>
+    <div style={{ display: 'flex' }}>
+      <div style={{ width: '25%' }}>
+        <CardList
+          context={context}
+          pageSize={10}
+          collectionName={defaultCollectionName}
+        />
       </div>
-    </IntlProvider>
+      <div style={{ width: '25%' }}>
+        <CardList
+          context={context}
+          pageSize={10}
+          collectionName={defaultCollectionName}
+          cardAppearance="small"
+        />
+      </div>
+      <div>
+        <button onClick={handleAddItem}>Add an item to the collection</button>
+        <button onClick={handleRefresh}>Refresh the collection</button>
+      </div>
+    </div>
   );
 };
 

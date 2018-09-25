@@ -4,7 +4,6 @@ import {
   createStorybookContext,
   defaultCollectionName as collectionName,
 } from '@atlaskit/media-test-helpers';
-import { IntlProvider } from 'react-intl';
 
 import { Card, UrlPreviewIdentifier, FileIdentifier } from '../src';
 
@@ -58,50 +57,48 @@ const squareLinkCard = (
 );
 
 export default () => (
-  <IntlProvider>
-    <div style={{ margin: '40px' }}>
-      <h1>Appearance matrix</h1>
-      <Matrix>
-        <thead>
-          <tr>
-            <td />
-            <td>small</td>
-            <td>image</td>
-            <td>horizontal</td>
-            <td>square</td>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>File Cards</td>
-            <td>
-              <div>{smallFileCard}</div>
-            </td>
-            <td>
-              <div>{imageFileCard}</div>
-            </td>
-            <td>No design implemented</td>
-            <td>No design implemented</td>
-          </tr>
-          <tr>
-            <td>
-              <div>Link Cards</div>
-            </td>
-            <td>
-              <div>{smallLinkCard}</div>
-            </td>
-            <td>
-              <div>{linkCardImage}</div>
-            </td>
-            <td>
-              <div>{horizontalLinkCard}</div>
-            </td>
-            <td>
-              <div>{squareLinkCard}</div>
-            </td>
-          </tr>
-        </tbody>
-      </Matrix>
-    </div>
-  </IntlProvider>
+  <div style={{ margin: '40px' }}>
+    <h1>Appearance matrix</h1>
+    <Matrix>
+      <thead>
+        <tr>
+          <td />
+          <td>small</td>
+          <td>image</td>
+          <td>horizontal</td>
+          <td>square</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>File Cards</td>
+          <td>
+            <div>{smallFileCard}</div>
+          </td>
+          <td>
+            <div>{imageFileCard}</div>
+          </td>
+          <td>No design implemented</td>
+          <td>No design implemented</td>
+        </tr>
+        <tr>
+          <td>
+            <div>Link Cards</div>
+          </td>
+          <td>
+            <div>{smallLinkCard}</div>
+          </td>
+          <td>
+            <div>{linkCardImage}</div>
+          </td>
+          <td>
+            <div>{horizontalLinkCard}</div>
+          </td>
+          <td>
+            <div>{squareLinkCard}</div>
+          </td>
+        </tr>
+      </tbody>
+    </Matrix>
+  </div>
 );

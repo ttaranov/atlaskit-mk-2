@@ -6,7 +6,7 @@ import {
   wideImageFileId,
   largeImageFileId,
 } from '@atlaskit/media-test-helpers';
-import { IntlProvider } from 'react-intl';
+
 import { Card } from '../src';
 
 const context = createStorybookContext();
@@ -98,16 +98,14 @@ const fullFitCards = [
 ];
 
 export default () => (
-  <IntlProvider>
-    <div>
-      <h3>Default</h3>
-      <StoryList>{defaultCards}</StoryList>
-      <h3>Crop</h3>
-      <StoryList>{croppedCards}</StoryList>
-      <h3>Fit</h3>
-      <StoryList>{fitCards}</StoryList>
-      <h3>Full Fit</h3>
-      <StoryList>{fullFitCards}</StoryList>
-    </div>
-  </IntlProvider>
+  <div>
+    <h3>Default</h3>
+    <StoryList>{defaultCards}</StoryList>
+    <h3>Crop</h3>
+    <StoryList>{croppedCards}</StoryList>
+    <h3>Fit</h3>
+    <StoryList>{fitCards}</StoryList>
+    <h3>Full Fit</h3>
+    <StoryList>{fullFitCards}</StoryList>
+  </div>
 );
