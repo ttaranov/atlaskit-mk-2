@@ -3,6 +3,7 @@ import * as React from 'react';
 
 const ToolbarContext = React.createContext({
   registerButton: (button: any) => null,
+  selectedButton: null,
 });
 
 export default ToolbarContext;
