@@ -26,11 +26,20 @@
       "url": "/index.html?user={pullrequest.source.repository.owner.username}&repo={pullrequest.source.repository.name}&pullrequestid={pullrequest.id}",
       "location": "org.bitbucket.pullrequest.overview.informationPanel",
       "conditions": [{
-        "condition": "equals",
-        "target": "repository.uuid",
-        "params": {
-          "value": "{6380b4e9-6ac5-4dd4-a8e0-65f09cabe4c8}"
-        }
+        "conditions": [{
+            "condition": "equals",
+            "target": "repository.uuid",
+            "params": {
+              "value": "{6380b4e9-6ac5-4dd4-a8e0-65f09cabe4c8}"
+            }
+          }, {
+            "condition": "equals",
+            "target": "repository.uuid",
+            "params": {
+              "value": "{5e4d9c6e-5761-4c81-91b8-1e111f014b64}"
+            }
+          }],
+        "type": "OR"
       }]
     }]
   }

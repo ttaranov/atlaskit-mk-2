@@ -113,6 +113,10 @@ async function createChangeset(
   );
 
   changeset.summary = await cli.askQuestion('Summary');
+  while (changeset.summary.length === 0) {
+    logger.error('A summary is required for the changelog! 😪');
+    changeset.summary = await cli.askQuestion('Summary');
+  }
 
   const toSearch = [...changeset.releases];
 

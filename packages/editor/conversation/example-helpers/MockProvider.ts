@@ -7,7 +7,6 @@ import { Comment, Conversation, User } from '../src/model';
 import { uuid } from '../src/internal/uuid';
 import { generateMockConversation, mockInlineConversation } from './MockData';
 import { mention, emoji } from '@atlaskit/util-data-test';
-import { reactionsProvider } from '@atlaskit/reactions';
 import { HttpError } from '../src/api/HttpError';
 
 import {
@@ -34,7 +33,6 @@ const MockDataProviders = {
   emojiProvider: Promise.resolve(
     emoji.storyData.getEmojiResource({ uploadSupported: true }),
   ),
-  reactionsProvider: Promise.resolve(reactionsProvider),
 };
 
 const RESPONSE_MESSAGES = {
@@ -162,10 +160,9 @@ export class MockProvider extends AbstractConversationResource {
     doc: any,
     localId: string = <string>uuid.generate(),
   ): Comment {
-    //@ts-ignore
     return {
       commentAri: `abc:cloud:platform::comment/${localId}`,
-      createdBy: this.config.user,
+      createdBy: this.config.user!,
       createdAt: Date.now(),
       commentId: <string>uuid.generate(),
       document: {

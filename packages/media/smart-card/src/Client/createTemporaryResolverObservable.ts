@@ -1,8 +1,11 @@
 import { Observable } from 'rxjs/Observable';
-import { ObjectState, TemporaryResolver } from './types';
 import { fromPromise } from 'rxjs/observable/fromPromise';
-import { catchError, map, mergeMap, concat } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators/catchError';
+import { map } from 'rxjs/operators/map';
+import { mergeMap } from 'rxjs/operators/mergeMap';
+import { concat } from 'rxjs/operators/concat';
 import { of } from 'rxjs/observable/of';
+import { ObjectState, TemporaryResolver } from './types';
 
 export function createTemporaryResolverObservable(
   url: string,

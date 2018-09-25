@@ -90,129 +90,121 @@ export const EMOJIS: EmojiMapItem[] = [
   {
     markup: ['(i)'],
     adf: {
-      id: '2139',
-      shortName: ':information_source:',
-      text: 'ℹ️',
+      id: 'atlassian-info',
+      shortName: ':info:',
+      text: ':info',
     },
   },
   {
     markup: ['(/)'],
     adf: {
-      id: '2705',
-      shortName: ':white_check_mark:',
-      text: '✅',
+      id: 'atlassian-check_mark',
+      shortName: ':check_mark:',
+      text: ':check_mark:',
     },
   },
   {
     markup: ['(x)'],
     adf: {
-      id: '274e',
-      shortName: ':negative_squared_cross_mark:',
-      text: '❎',
+      id: 'atlassian-cross_mark',
+      shortName: ':cross_mark:',
+      text: ':cross_mark:',
     },
   },
   {
     markup: ['(!)'],
     adf: {
-      id: '26a0',
+      id: 'atlassian-warning',
       shortName: ':warning:',
-      text: '⚠️',
+      text: ':warning:',
     },
   },
   {
     markup: ['(+)'],
     adf: {
-      id: '2795',
-      shortName: ':heavy_plus_sign:',
-      text: '➕',
+      id: 'atlassian-plus',
+      shortName: ':plus:',
+      text: ':plus:',
     },
   },
   {
     markup: ['(-)'],
     adf: {
-      id: '2796',
-      shortName: ':heavy_minus_sign:',
-      text: '➖',
+      id: 'atlassian-minus',
+      shortName: ':minus:',
+      text: ':minus:',
     },
   },
   {
     markup: ['(?)'],
     adf: {
-      id: '2753',
+      id: 'atlassian-question_mark',
       shortName: ':question:',
-      text: '❓',
+      text: ':question:',
     },
   },
   {
     markup: ['(on)'],
     adf: {
-      id: '1f4a1',
-      shortName: ':bulb:',
-      text: '💡',
+      id: 'atlassian-light_bulb_on',
+      shortName: ':light_bulb_on:',
+      text: ':light_bulb_on:',
     },
   },
   {
     markup: ['(off)'],
     adf: {
-      id: '26d4',
-      shortName: ':no_entry:',
-      text: '⛔',
+      id: 'atlassian-light_bulb_off',
+      shortName: ':light_bulb_off:',
+      text: ':light_bulb_off:',
     },
   },
   {
-    markup: ['(*)'],
+    markup: ['(*)', '(*y)'],
     adf: {
-      id: '1f49b',
-      shortName: ':yellow_heart:',
-      text: '💛',
+      id: 'atlassian-yellow_star',
+      shortName: ':yellow_star:',
+      text: ':yellow_star:',
     },
   },
   {
     markup: ['(*r)'],
     adf: {
-      id: '2764',
-      shortName: ':heart:',
-      text: '❤️',
+      id: 'atlassian-red_star',
+      shortName: ':red_star:',
+      text: ':red_star:',
     },
   },
   {
     markup: ['(*g)'],
     adf: {
-      id: '1f49a',
-      shortName: ':green_heart:',
-      text: '💚',
+      id: 'atlassian-green_star',
+      shortName: ':green_star:',
+      text: ':green_star:',
     },
   },
   {
     markup: ['(*b)'],
     adf: {
-      id: '1f499',
-      shortName: ':blue_heart:',
-      text: '💙',
-    },
-  },
-  {
-    markup: ['(*y)'],
-    adf: {
-      id: '1f49b',
-      shortName: ':yellow_heart:',
-      text: '💛',
+      id: 'atlassian-blue_star',
+      shortName: ':blue_star:',
+      text: ':blue_star:',
     },
   },
   {
     markup: ['(flag)'],
     adf: {
-      id: '1f6a9',
-      shortName: ':triangular_flag_on_post:',
-      text: '🚩',
+      id: 'atlassian-flag_on',
+      shortName: ':flag_on:',
+      text: ':flag_on:',
     },
   },
   {
     markup: ['(flagoff)'],
     adf: {
-      id: '1f3f3',
-      shortName: ':flag_white:',
-      text: '🏳️',
+      id: 'atlassian-flag_off',
+      shortName: ':flag_off:',
+      text: ':flag_off:',
     },
   },
 ];

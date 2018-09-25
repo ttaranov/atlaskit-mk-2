@@ -147,6 +147,8 @@ export const fieldComponents: FieldComponentsType = [
     support: NONE,
     changeFunc: 'onChange',
     changeValue: '',
+    supportInfo:
+      'This component has been deprecated. Use components from @atlaskit/radio instead',
   },
   {
     version: '',
@@ -155,6 +157,8 @@ export const fieldComponents: FieldComponentsType = [
     support: NONE,
     changeFunc: 'onChange',
     changeValue: '',
+    supportInfo:
+      'This component has been deprecated. Use components from @atlaskit/radio instead',
   },
   {
     version: '',
@@ -163,6 +167,8 @@ export const fieldComponents: FieldComponentsType = [
     support: NONE,
     changeFunc: 'onChange',
     changeValue: '',
+    supportInfo:
+      'This component has been deprecated. Use components from @atlaskit/radio instead',
   },
   {
     version: '',
@@ -232,6 +238,14 @@ export const fieldComponents: FieldComponentsType = [
     version: '',
     package: '@atlaskit/multi-select',
     component: 'MultiSelectStateless',
+    support: PARTIAL,
+    changeFunc: 'onChange',
+    changeValue: '',
+  },
+  {
+    version: '',
+    package: '@atlaskit/radio',
+    component: 'Radio',
     support: PARTIAL,
     changeFunc: 'onChange',
     changeValue: '',

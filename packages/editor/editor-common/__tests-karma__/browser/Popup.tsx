@@ -45,6 +45,27 @@ describe('Popup', () => {
         expect(findOverflowScrollParent(target)).to.eq(boundary);
       });
 
+      it('should consider parent with overflow: auto as scroll parent', () => {
+        boundary = document.createElement('div');
+        boundary.style.overflow = 'auto';
+        target = document.createElement('div');
+        boundary.appendChild(target);
+        document.body.appendChild(boundary);
+
+        expect(findOverflowScrollParent(target)).to.eq(boundary);
+      });
+
+      it('should ignore scroll parents with "editor-popup-ignore-scroll-parent" class', () => {
+        boundary = document.createElement('div');
+        boundary.style.overflow = 'auto';
+        boundary.className = 'editor-popup-ignore-scroll-parent';
+        target = document.createElement('div');
+        boundary.appendChild(target);
+        document.body.appendChild(boundary);
+
+        expect(findOverflowScrollParent(target)).to.eq(false);
+      });
+
       it("should return false if there aren't any scroll parents of target", () => {
         boundary = document.createElement('div');
         target = document.createElement('div');

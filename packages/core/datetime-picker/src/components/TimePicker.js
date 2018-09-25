@@ -235,12 +235,12 @@ class TimePicker extends Component<Props, State> {
       innerProps,
       isDisabled,
       name,
-      selectProps,
-      timeFormat,
       placeholder,
+      selectProps,
       spacing,
+      timeFormat,
     } = this.props;
-    const { value, isOpen } = this.getState();
+    const { value = '', isOpen } = this.getState();
     const validationState = this.props.isInvalid ? 'error' : 'default';
     const icon =
       this.props.appearance === 'subtle' || this.props.hideIcon
@@ -255,6 +255,12 @@ class TimePicker extends Component<Props, State> {
     const SelectComponent = this.props.timeIsEditable
       ? CreatableSelect
       : Select;
+
+    const labelAndValue = value && {
+      /* $FlowFixMe - complaining about required args that aren't required. */
+      label: formatDisplayLabel(value, timeFormat),
+      value,
+    };
 
     return (
       <div {...innerProps} ref={this.getContainerRef}>
@@ -297,13 +303,7 @@ class TimePicker extends Component<Props, State> {
               },
             }),
           })}
-          value={
-            value && {
-              /* $FlowFixMe - complaining about required args that aren't required. */
-              label: formatDisplayLabel(value, timeFormat),
-              value,
-            }
-          }
+          value={labelAndValue}
           spacing={spacing}
           dropdownIndicatorIcon={icon}
           fixedLayerRef={this.containerRef}

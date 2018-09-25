@@ -1,6 +1,6 @@
 // @flow
 import React from 'react';
-import Loadable from 'react-loadable';
+import Loadable from '../components/WrappedLoader';
 import { Helmet } from 'react-helmet';
 import type { RouterMatch } from '../types';
 import { packages } from '../site';

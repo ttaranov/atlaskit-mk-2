@@ -8,10 +8,10 @@ import HomeSearchResults from '../../../components/home/HomeSearchResults';
 import { Result } from '../../../model/Result';
 import GlobalQuickSearch from '../../../components/GlobalQuickSearch';
 import {
-  Scope,
   CrossProductSearchResults,
   EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE,
 } from '../../../api/CrossProductSearchClient';
+import { Scope } from '../../../api/types';
 import { delay, makeJiraObjectResult } from '../_test-util';
 import {
   noResultsPeopleSearchClient,

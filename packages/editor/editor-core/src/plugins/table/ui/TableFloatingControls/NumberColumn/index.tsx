@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { NumberColumnContainer } from './styles';
 import { isRowSelected } from 'prosemirror-utils';
 import { NumberedRow } from './NumberedRow';
 import { EditorState } from 'prosemirror-state';
@@ -63,6 +62,6 @@ export default class NumberColumn extends Component<Props, any> {
         </NumberedRow>,
       );
     }
-    return <NumberColumnContainer>{numberRows}</NumberColumnContainer>;
+    return <div className="pm-table-numbered-column">{numberRows}</div>;
   }
 }

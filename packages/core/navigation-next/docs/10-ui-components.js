@@ -1,8 +1,7 @@
 // @flow
 
 import React from 'react';
-import { Prop } from 'pretty-proptypes'; // TODO export this from @atlaskit/docs
-import { Example, md, Props } from '@atlaskit/docs';
+import { Example, md, Props, Prop } from '@atlaskit/docs';
 
 import { Contents, ContentsProvider, H, Hr } from './shared';
 
@@ -170,14 +169,44 @@ ${(
 
 ${<Hr />}
 
+${<H>SectionHeading</H>}
+
+The SectionHeading is meant to be used at the top of a nested menu section. There should only be one of these used per view, as opposed to GroupHeadings.
+
+${(
+    <Props
+      heading="SectionHeading props"
+      props={require('!!extract-react-types-loader!../src/components/SectionHeading')}
+    />
+  )}
+
+${<Hr />}
+
 ${<H>Separator</H>}
 
 Separates a group of items. This component takes no props.
 
 ${<Hr />}
 
-<a name="Switcher"></a>
-# Switcher
+${<H>SkeletonContainerView</H>}
+
+Renders a skeleton view. The \`LayoutManagerWithViewController\` will automatically render a skeleton when there is no active view data to display, so you should only need to use this component directly if you're using custom view rendering logic.
+
+This component takes no props.
+
+${(
+    <Example
+      Component={
+        require('./examples/ui-components/SkeletonContainerView').default
+      }
+      title="SkeletonContainerView"
+      source={require('!!raw-loader!./examples/ui-components/SkeletonContainerView')}
+    />
+  )}
+
+${<Hr />}
+
+${<H>Switcher</H>}
 
 The Switcher component should be used within container navigation for switching projects or boards.
 

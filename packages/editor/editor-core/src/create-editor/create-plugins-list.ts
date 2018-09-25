@@ -41,6 +41,8 @@ import {
   inlineActionPlugin,
   cardPlugin,
   floatingToolbarPlugin,
+  statusPlugin,
+  gridPlugin,
 } from '../plugins';
 
 /**
@@ -188,6 +190,10 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     plugins.push(cardPlugin);
   }
 
+  if (props.allowStatus) {
+    plugins.push(statusPlugin);
+  }
+
   // UI only plugins
   plugins.push(
     insertBlockPlugin({
@@ -196,6 +202,7 @@ export default function createPluginsList(props: EditorProps): EditorPlugin[] {
     }),
   );
 
+  plugins.push(gridPlugin);
   plugins.push(submitEditorPlugin);
   plugins.push(fakeTextCursorPlugin);
   plugins.push(floatingToolbarPlugin);

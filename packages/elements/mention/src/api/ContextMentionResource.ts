@@ -9,11 +9,14 @@ import {
   ResultCallback,
 } from './MentionResource';
 import { padArray } from '../util';
+import { MentionDescription } from '../types';
+export { MentionDescription };
 
-import {
-  // @ts-ignore
-  MentionDescription,
-} from '../types';
+export type MentionProviderFunctions = {
+  [Key in keyof MentionProvider]: MentionProvider[Key] extends Function
+    ? MentionProvider[Key]
+    : never
+};
 
 /**
  * This component is stateful and should be instantianted per contextIdentifiers.
@@ -34,7 +37,7 @@ export default class ContextMentionResource implements MentionProvider {
     return this.contextIdentifier;
   }
 
-  callWithContextIds = <K extends keyof MentionProvider>(
+  callWithContextIds = <K extends keyof MentionProviderFunctions>(
     f: K,
     declaredArgs: number,
   ): MentionProvider[K] => (...args: any[]) => {
@@ -45,12 +48,16 @@ export default class ContextMentionResource implements MentionProvider {
       argsLength !== declaredArgs
         ? padArray(args, declaredArgs - argsLength, undefined)
         : args;
-    return this.mentionProvider[f](...mentionArgs, this.contextIdentifier);
+    return (this.mentionProvider[f] as Function)(
+      ...mentionArgs,
+      this.contextIdentifier,
+    );
   };
 
-  callDefault = <K extends keyof MentionProvider>(f: K): MentionProvider[K] => (
-    ...args: any[]
-  ) => this.mentionProvider[f](...args);
+  callDefault = <K extends keyof MentionProviderFunctions>(
+    f: K,
+  ): MentionProvider[K] => (...args: any[]) =>
+    (this.mentionProvider[f] as Function)(...args);
 
   subscribe = this.callDefault('subscribe');
 

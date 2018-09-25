@@ -18,9 +18,9 @@ import {
 } from '../actions/sendUploadEvent';
 
 export default function(fetcher: Fetcher): Middleware {
-  return <State>(store) => (next: Dispatch<State>) => action => {
+  return store => (next: Dispatch<State>) => action => {
     if (isFinalizeUploadAction(action)) {
-      finalizeUpload(fetcher, store, action);
+      finalizeUpload(fetcher, store as any, action);
     }
     return next(action);
   };
@@ -38,8 +38,9 @@ export function finalizeUpload(
     occurrenceKey,
   }: FinalizeUploadAction,
 ): Promise<SendUploadEventAction> {
-  const { userAuthProvider } = store.getState();
-  return userAuthProvider()
+  const { userContext } = store.getState();
+  return userContext.config
+    .authProvider()
     .then(mapAuthToSourceFileOwner)
     .then(owner => {
       const sourceFile = {

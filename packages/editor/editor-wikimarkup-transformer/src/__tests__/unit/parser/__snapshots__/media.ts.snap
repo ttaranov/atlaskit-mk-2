@@ -5,7 +5,8 @@ Object {
   "content": Array [
     Object {
       "attrs": Object {
-        "layout": "wide",
+        "layout": "center",
+        "width": null,
       },
       "content": Array [
         Object {
@@ -16,12 +17,12 @@ Object {
             "__fileSize": null,
             "__key": null,
             "collection": "",
-            "height": null,
+            "height": 183,
             "id": "Screen Shot (9db1eca8-8257-4763-92fb-e6417f9e34c9).jpeg",
             "occurrenceKey": null,
             "type": "file",
             "url": null,
-            "width": null,
+            "width": 200,
           },
           "type": "media",
         },
@@ -81,7 +82,8 @@ Object {
     },
     Object {
       "attrs": Object {
-        "layout": "wide",
+        "layout": "center",
+        "width": null,
       },
       "content": Array [
         Object {
@@ -92,12 +94,12 @@ Object {
             "__fileSize": null,
             "__key": null,
             "collection": "",
-            "height": null,
+            "height": 183,
             "id": "image.gif",
             "occurrenceKey": null,
             "type": "file",
             "url": null,
-            "width": null,
+            "width": 200,
           },
           "type": "media",
         },
@@ -118,45 +120,13 @@ Object {
 }
 `;
 
-exports[`JIRA wiki markup - Images and attachments should find attachments in the text 1`] = `
-Object {
-  "content": Array [
-    Object {
-      "attrs": Object {
-        "layout": "wide",
-      },
-      "content": Array [
-        Object {
-          "attrs": Object {
-            "__displayType": null,
-            "__fileMimeType": null,
-            "__fileName": null,
-            "__fileSize": null,
-            "__key": null,
-            "collection": "",
-            "height": null,
-            "id": "file.txt",
-            "occurrenceKey": null,
-            "type": "file",
-            "url": null,
-            "width": null,
-          },
-          "type": "media",
-        },
-      ],
-      "type": "mediaSingle",
-    },
-  ],
-  "type": "doc",
-}
-`;
-
 exports[`JIRA wiki markup - Images and attachments should find attachments with attributes 1`] = `
 Object {
   "content": Array [
     Object {
       "attrs": Object {
-        "layout": "wide",
+        "layout": "center",
+        "width": null,
       },
       "content": Array [
         Object {
@@ -167,12 +137,12 @@ Object {
             "__fileSize": null,
             "__key": null,
             "collection": "",
-            "height": null,
+            "height": 400,
             "id": "quicktime.mov",
             "occurrenceKey": null,
             "type": "file",
             "url": null,
-            "width": null,
+            "width": 300,
           },
           "type": "media",
         },
@@ -189,7 +159,8 @@ Object {
   "content": Array [
     Object {
       "attrs": Object {
-        "layout": "wide",
+        "layout": "center",
+        "width": null,
       },
       "content": Array [
         Object {
@@ -200,12 +171,12 @@ Object {
             "__fileSize": null,
             "__key": null,
             "collection": "",
-            "height": null,
+            "height": 183,
             "id": "Kapture 2018-04-04 at 16.36.13.gif",
             "occurrenceKey": null,
             "type": "file",
             "url": null,
-            "width": null,
+            "width": 200,
           },
           "type": "media",
         },
@@ -231,7 +202,8 @@ Object {
   "content": Array [
     Object {
       "attrs": Object {
-        "layout": "wide",
+        "layout": "center",
+        "width": null,
       },
       "content": Array [
         Object {
@@ -242,12 +214,12 @@ Object {
             "__fileSize": null,
             "__key": null,
             "collection": "",
-            "height": null,
+            "height": 183,
             "id": "image.png",
             "occurrenceKey": null,
             "type": "file",
             "url": null,
-            "width": null,
+            "width": 200,
           },
           "type": "media",
         },

@@ -47,8 +47,10 @@ describe('finalizeUploadMiddleware', () => {
     state: Partial<State> = {},
   ) => {
     const store = mockStore(state);
-    const { userAuthProvider } = store.getState();
-    userAuthProvider.mockImplementation(() => Promise.resolve(auth));
+    const { userContext } = store.getState();
+    (userContext.config.authProvider as jest.Mock<any>).mockReturnValue(
+      Promise.resolve(auth),
+    );
 
     const fetcher = mockFetcher();
     (MediaStore as any).mockImplementation(() => ({
@@ -110,7 +112,7 @@ describe('finalizeUploadMiddleware', () => {
   it('should send upload processing event with metadata', () => {
     const { fetcher, store, action } = setup();
 
-    return finalizeUpload(fetcher, store, action).then(action => {
+    return finalizeUpload(fetcher, store, action).then(() => {
       expect(store.dispatch).toBeCalledWith(
         sendUploadEvent({
           event: {
@@ -138,7 +140,7 @@ describe('finalizeUploadMiddleware', () => {
       copyFileWithToken: () => Promise.reject(error),
     }));
 
-    return finalizeUpload(fetcher, store, action).then(action => {
+    return finalizeUpload(fetcher, store, action).then(() => {
       expect(store.dispatch).toBeCalledWith(
         sendUploadEvent({
           event: {
@@ -169,7 +171,7 @@ describe('finalizeUploadMiddleware', () => {
       },
     });
 
-    return finalizeUpload(fetcher, store, action).then(action => {
+    return finalizeUpload(fetcher, store, action).then(() => {
       expect(resolver).toHaveBeenCalledTimes(1);
       expect(resolver).toBeCalledWith('some-copied-file-id');
     });

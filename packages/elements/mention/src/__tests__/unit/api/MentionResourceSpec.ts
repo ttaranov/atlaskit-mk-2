@@ -31,7 +31,7 @@ const options = (
   omitCredentials,
 });
 
-const getSecurityHeader = call => call[0].headers.get(defaultSecurityHeader);
+const getSecurityHeader = call => call[1].headers.get(defaultSecurityHeader);
 
 const defaultSecurityCode = '10804';
 
@@ -65,6 +65,7 @@ const FULL_CONTEXT = {
   containerId: 'someContainerId',
   objectId: 'someObjectId',
   childObjectId: 'someChildObjectId',
+  sessionId: 'someSessionId',
 };
 
 describe('MentionResource', () => {
@@ -140,16 +141,15 @@ describe('MentionResource', () => {
       resource.subscribe('test1', mentions => {
         expect(mentions).toHaveLength(resultCraig.length);
 
-        // note: should use fetchMock.lastOptions() but it does not work
-        const requestData = fetchMock.lastUrl();
         const queryParams = queryString.parse(
-          queryString.extract(requestData.url),
+          queryString.extract(fetchMock.lastUrl()),
         );
 
         expect(queryParams.containerId).toBe('someContainerId');
         expect(queryParams.objectId).toBe('someObjectId');
         expect(queryParams.childObjectId).toBe('someChildObjectId');
-        expect(requestData.credentials).toEqual('include');
+        expect(queryParams.sessionId).toBe('someSessionId');
+        expect(fetchMock.lastOptions().credentials).toEqual('include');
         done();
       });
       resource.filter('craig', FULL_CONTEXT);
@@ -165,7 +165,7 @@ describe('MentionResource', () => {
         expect(mentions).toHaveLength(resultCraig.length);
 
         const queryParams = queryString.parse(
-          queryString.extract(fetchMock.lastUrl().url),
+          queryString.extract(fetchMock.lastUrl()),
         );
         // default containerId from config should be used
         expect(queryParams.containerId).toBe('defaultContainerId');
@@ -189,8 +189,7 @@ describe('MentionResource', () => {
       const resource = new MentionResource(apiConfigWithoutCredentials);
       resource.subscribe('test3', mentions => {
         expect(mentions).toHaveLength(0);
-
-        const requestData = fetchMock.lastUrl();
+        const requestData = fetchMock.lastOptions();
         expect(requestData.credentials).toEqual('omit');
         done();
       });
@@ -303,7 +302,7 @@ describe('MentionResource', () => {
           checkOrder(expected, results);
 
           const queryParams = queryString.parse(
-            queryString.extract(fetchMock.lastUrl().url),
+            queryString.extract(fetchMock.lastUrl()),
           );
           expect(queryParams.containerId).toBe('someContainerId');
           expect(queryParams.objectId).toBe('someObjectId');
@@ -391,19 +390,23 @@ describe('MentionResource', () => {
   describe('#filter auth issues', () => {
     it('401 error once retry', done => {
       const authUrl = 'https://authbogus/';
-      const matcher = {
-        name: 'authonce',
-        matcher: `begin:${authUrl}`,
-      };
+      const matcher = `begin:${authUrl}`;
 
-      fetchMock.mock({ ...matcher, response: 401, times: 1 }).mock({
-        ...matcher,
+      fetchMock.get({
+        name: 'authonce',
+        matcher,
+        response: 401,
+        repeat: 1,
+      });
+      fetchMock.get({
+        name: 'authonce2',
+        matcher,
         response: {
           body: {
             mentions: resultCraig,
           },
         },
-        times: 1,
+        repeat: 1,
       });
 
       const refreshedSecurityProvider = jest.fn();
@@ -422,10 +425,12 @@ describe('MentionResource', () => {
         () => {
           try {
             expect(refreshedSecurityProvider).toHaveBeenCalledTimes(1);
-            const calls = fetchMock.calls(matcher.name);
-            expect(calls).toHaveLength(2);
-            expect(getSecurityHeader(calls[0])).toEqual(defaultSecurityCode);
-            expect(getSecurityHeader(calls[1])).toEqual('666');
+            const firstCall = fetchMock.calls('authonce');
+            expect(getSecurityHeader(firstCall[0])).toEqual(
+              defaultSecurityCode,
+            );
+            const secondCall = fetchMock.calls('authonce2');
+            expect(getSecurityHeader(secondCall[1])).toEqual('666');
             done();
           } catch (ex) {
             done(ex);
@@ -467,15 +472,14 @@ describe('MentionResource', () => {
         (err: Error) => {
           try {
             expect(refreshedSecurityProvider).toHaveBeenCalledTimes(1);
-            expect(err).toBeInstanceOf(HttpError);
-            expect((<HttpError>err).statusCode).toEqual(401);
+            expect((err as any).code).toEqual(401);
             const calls = fetchMock.calls(matcher.name);
             expect(calls).toHaveLength(2);
             expect(getSecurityHeader(calls[0])).toEqual(defaultSecurityCode);
             expect(getSecurityHeader(calls[1])).toEqual('666');
             done();
           } catch (ex) {
-            done(ex);
+            done.fail(ex);
           }
         },
       );
@@ -531,11 +535,12 @@ describe('MentionResource', () => {
         )
         .then(() => {
           const queryParams = queryString.parse(
-            queryString.extract(fetchMock.lastUrl().url),
+            queryString.extract(fetchMock.lastUrl()),
           );
           expect(queryParams.containerId).toBe('someContainerId');
           expect(queryParams.objectId).toBe('someObjectId');
           expect(queryParams.childObjectId).toBe('someChildObjectId');
+          expect(queryParams.sessionId).toBe('someSessionId');
           expect(fetchMock.called('record')).toBe(true);
           done();
         });

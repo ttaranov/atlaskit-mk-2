@@ -73,6 +73,7 @@ export default class Editor extends React.Component<
   static displayName = 'MessageEditor';
 
   private appearance: EditorAppearance = 'message';
+  private containerElement: HTMLElement | undefined;
 
   private focusEditor = (e: MouseEvent) => {
     // Only focus for unhandled click events (e.g. so we don't focus on click events in pop ups)
@@ -110,8 +111,13 @@ export default class Editor extends React.Component<
         <MessageEditor
           onClick={this.focusEditor}
           isMaxContentSizeReached={maxContentSizeReached}
+          className="akEditor"
         >
-          <ContentArea maxHeight={maxHeight} isMultiline={isMultilineContent}>
+          <ContentArea
+            maxHeight={maxHeight}
+            isMultiline={isMultilineContent}
+            innerRef={ref => (this.containerElement = ref)}
+          >
             {customContentComponents}
             <PluginSlot
               disabled={!!disabled}
@@ -124,6 +130,7 @@ export default class Editor extends React.Component<
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
               popupsScrollableElement={popupsScrollableElement}
+              containerElement={this.containerElement}
             />
             {editorDOMElement}
           </ContentArea>
@@ -141,6 +148,7 @@ export default class Editor extends React.Component<
                 popupsMountPoint={popupsMountPoint}
                 popupsBoundariesElement={popupsBoundariesElement}
                 popupsScrollableElement={popupsScrollableElement}
+                containerElement={this.containerElement}
               />
               {customSecondaryToolbarComponents}
               <AddonToolbar

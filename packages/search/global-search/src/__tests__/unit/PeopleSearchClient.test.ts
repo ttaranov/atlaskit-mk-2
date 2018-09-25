@@ -46,7 +46,7 @@ describe('PeopleSearchClient', () => {
 
       const call = fetchMock.calls('people')[0];
       // @ts-ignore
-      const body = JSON.parse(call[0]._bodyText);
+      const body = JSON.parse(call[1].body);
 
       expect(body.variables.cloudId).toEqual('123');
       expect(body.variables.displayName).toEqual('query');
@@ -118,7 +118,7 @@ describe('PeopleSearchClient', () => {
 
       const call = fetchMock.calls('people')[0];
       // @ts-ignore
-      const body = JSON.parse(call[0]._bodyText);
+      const body = JSON.parse(call[1].body);
 
       expect(body.variables.cloudId).toEqual('123');
     });
@@ -147,7 +147,7 @@ describe('PeopleSearchClient', () => {
       expect(item.avatarUrl).toEqual('avatarUrl');
       expect(item.name).toEqual('fullName');
       expect(item.href).toEqual('/people/123');
-      expect(item.analyticsType).toEqual(AnalyticsType.ResultPerson);
+      expect(item.analyticsType).toEqual(AnalyticsType.RecentPerson);
     });
 
     it('should return empty array when data.Collaborators is not defined', async () => {

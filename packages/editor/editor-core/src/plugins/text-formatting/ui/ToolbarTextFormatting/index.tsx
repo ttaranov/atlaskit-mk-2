@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
+import { defineMessages, injectIntl, InjectedIntlProps } from 'react-intl';
 import { EditorView } from 'prosemirror-view';
 import BoldIcon from '@atlaskit/icon/glyph/editor/bold';
 import ItalicIcon from '@atlaskit/icon/glyph/editor/italic';
@@ -10,6 +11,20 @@ import ToolbarButton from '../../../../ui/ToolbarButton';
 import { ButtonGroup } from '../../../../ui/styles';
 import { toggleStrong, toggleEm } from '../../commands/text-formatting';
 
+export const messages = defineMessages({
+  bold: {
+    id: 'fabric.editor.bold',
+    defaultMessage: 'Bold',
+    description:
+      'This refers to bold or “strong” formatting, indicates that its contents have strong importance, seriousness, or urgency.',
+  },
+  italic: {
+    id: 'fabric.editor.italic',
+    defaultMessage: 'Italic',
+    description: 'This refers to italics or emphasized formatting.',
+  },
+});
+
 export interface Props {
   editorView: EditorView;
   textFormattingState: TextFormattingState;
@@ -17,9 +32,14 @@ export interface Props {
   isReducedSpacing?: boolean;
 }
 
-export default class ToolbarTextFormatting extends PureComponent<Props> {
+class ToolbarTextFormatting extends PureComponent<Props & InjectedIntlProps> {
   render() {
-    const { disabled, isReducedSpacing, textFormattingState } = this.props;
+    const {
+      disabled,
+      isReducedSpacing,
+      textFormattingState,
+      intl: { formatMessage },
+    } = this.props;
     const {
       strongHidden,
       strongActive,
@@ -29,6 +49,8 @@ export default class ToolbarTextFormatting extends PureComponent<Props> {
       emDisabled,
     } = textFormattingState;
 
+    const labelBold = formatMessage(messages.bold);
+    const labelItalic = formatMessage(messages.italic);
     return (
       <ButtonGroup width={isReducedSpacing ? 'small' : 'large'}>
         {strongHidden ? null : (
@@ -37,8 +59,8 @@ export default class ToolbarTextFormatting extends PureComponent<Props> {
             onClick={this.handleBoldClick}
             selected={strongActive}
             disabled={disabled || strongDisabled}
-            title={tooltip(toggleBold)}
-            iconBefore={<BoldIcon label="Bold" />}
+            title={tooltip(toggleBold, labelBold)}
+            iconBefore={<BoldIcon label={labelBold} />}
           />
         )}
 
@@ -48,8 +70,8 @@ export default class ToolbarTextFormatting extends PureComponent<Props> {
             onClick={this.handleItalicClick}
             selected={emActive}
             disabled={disabled || emDisabled}
-            title={tooltip(toggleItalic)}
-            iconBefore={<ItalicIcon label="Italic" />}
+            title={tooltip(toggleItalic, labelItalic)}
+            iconBefore={<ItalicIcon label={labelItalic} />}
           />
         )}
       </ButtonGroup>
@@ -76,3 +98,5 @@ export default class ToolbarTextFormatting extends PureComponent<Props> {
     return false;
   };
 }
+
+export default injectIntl(ToolbarTextFormatting);

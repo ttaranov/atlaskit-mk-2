@@ -3,13 +3,14 @@
 import React from 'react';
 import Avatar from '@atlaskit/avatar';
 import AddIcon from '@atlaskit/icon/glyph/add';
-import JiraIcon from '@atlaskit/icon/glyph/jira';
 import QuestionCircleIcon from '@atlaskit/icon/glyph/question-circle';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import LinkIcon from '@atlaskit/icon/glyph/link';
-import { JiraWordmark as JiraWordmarkLogo } from '@atlaskit/logo';
-import { gridSize as gridSizeFn } from '@atlaskit/theme';
+import { JiraIcon, JiraWordmark as JiraWordmarkLogo } from '@atlaskit/logo';
 import { Link, Route } from 'react-router-dom';
+
+import { viewReducerUtils } from '../../src';
+import type { ViewData } from '../../src/view-controller/types';
 
 export const LinkItem = ({ components: C, to, ...props }: *) => {
   return (
@@ -30,16 +31,24 @@ export const LinkItem = ({ components: C, to, ...props }: *) => {
   );
 };
 
-const gridSize = gridSizeFn();
-
-const JiraWordmark = () => (
-  <div css={{ padding: `${gridSize * 2}px 0` }}>
-    <JiraWordmarkLogo />
-  </div>
-);
+export const GlobalLink = ({ className, to, onClick, children }: any) => {
+  return (
+    <Link className={className} to={to} onClick={onClick}>
+      {children}
+    </Link>
+  );
+};
 
 export const globalNavPrimaryItems = [
-  { id: 'jira', icon: JiraIcon, label: 'Jira', to: '/', component: Link },
+  {
+    id: 'jira',
+    icon: ({ label }: { label: string }) => (
+      <JiraIcon size="medium" label={label} />
+    ),
+    label: 'Jira',
+    to: '/',
+    component: GlobalLink,
+  },
   { id: 'search', icon: SearchIcon },
   { id: 'create', icon: AddIcon },
 ];
@@ -61,12 +70,25 @@ export const globalNavSecondaryItems = [
   },
 ];
 
+const getViewAnalyticsAttributes = (items: ViewData) => {
+  const flattenedItems = viewReducerUtils.flattenItems(items);
+
+  return {
+    standardItemCount: flattenedItems.filter(i => i.type === 'Item').length,
+    groupCount: flattenedItems.filter(i => i.type === 'Group').length,
+    sectionCount: flattenedItems.filter(i => i.type === 'Section').length,
+    linkCount: flattenedItems.filter(i => i.type === LinkItem).length,
+  };
+};
+
 /** Product root views */
 const rootIndex = [
   {
     id: 'root/index:header',
-    items: [{ type: JiraWordmark, id: 'jira-wordmark' }],
-    type: 'Section',
+    items: [
+      { type: 'Wordmark', wordmark: JiraWordmarkLogo, id: 'jira-wordmark' },
+    ],
+    type: 'HeaderSection',
   },
   {
     id: 'root/index:menu',
@@ -95,7 +117,7 @@ const rootIndex = [
     ],
     nestedGroupKey: 'menu',
     parentId: null,
-    type: 'Section',
+    type: 'MenuSection',
   },
 ];
 
@@ -103,26 +125,41 @@ const rootIssues = [
   {
     id: 'root/issues:header',
     items: [
-      { type: JiraWordmark, id: 'jira-wordmark' },
-      { type: 'BackItem', goTo: 'root/index', id: 'back' },
+      { type: 'Wordmark', wordmark: JiraWordmarkLogo, id: 'jira-wordmark' },
+      {
+        type: 'BackItem',
+        goTo: 'root/index',
+        id: 'back',
+        text: 'Back to Jira',
+      },
     ],
-    type: 'Section',
+    type: 'HeaderSection',
   },
   {
     id: 'root/issues:menu',
     items: [
       {
-        type: 'Group',
-        hasSeparator: true,
-        id: 'search-issues-group',
-        items: [
-          {
-            type: LinkItem,
-            id: 'search-issues',
-            text: 'Search issues',
-            to: '/issues/search',
-          },
-        ],
+        type: 'SectionHeading',
+        id: 'section-heading',
+        text: 'Issues and filters',
+      },
+      {
+        type: LinkItem,
+        id: 'search-issues',
+        text: 'Search issues',
+        to: '/issues/search',
+      },
+      {
+        type: 'GroupHeading',
+        id: 'heading-starred-filters',
+        text: 'Starred filters',
+      },
+      { type: 'Item', id: 'older-than-90-days', text: 'Older than 90 days' },
+      { type: 'Item', id: 'critical-bugs', text: 'Critical bugs' },
+      {
+        type: 'GroupHeading',
+        id: 'heading-other-filters',
+        text: 'Other filters',
       },
       { type: 'Item', id: 'my-open-issues', text: 'My open issues' },
       { type: 'Item', id: 'reported-by-me', text: 'Reported by me' },
@@ -136,13 +173,24 @@ const rootIssues = [
     ],
     nestedGroupKey: 'menu',
     parentId: 'root/index:menu',
-    type: 'Section',
+    type: 'MenuSection',
+    alwaysShowScrollHint: true,
   },
 ];
 
 export const rootViews = [
-  { id: 'root/index', getItems: () => rootIndex, type: 'product' },
-  { id: 'root/issues', getItems: () => rootIssues, type: 'product' },
+  {
+    id: 'root/index',
+    getItems: () => rootIndex,
+    type: 'product',
+    getAnalyticsAttributes: getViewAnalyticsAttributes,
+  },
+  {
+    id: 'root/issues',
+    getItems: () => rootIssues,
+    type: 'product',
+    getAnalyticsAttributes: getViewAnalyticsAttributes,
+  },
 ];
 
 const ProjectSwitcherItem = {
@@ -216,7 +264,7 @@ const containerProject = [
   {
     id: 'container/project/index:header',
     items: [ProjectSwitcherItem],
-    type: 'Section',
+    type: 'HeaderSection',
   },
   {
     id: 'container/project/index:menu',
@@ -255,7 +303,7 @@ const containerProject = [
         type: 'GoToItem',
       },
     ],
-    type: 'Section',
+    type: 'MenuSection',
   },
 ];
 
@@ -267,20 +315,30 @@ const containerProjectIssues = [
       {
         id: 'back-button',
         items: [
-          { type: 'BackItem', goTo: 'container/project/index', id: 'back' },
+          {
+            type: 'BackItem',
+            goTo: 'container/project/index',
+            id: 'back',
+            text: 'Back to project',
+          },
         ],
         type: 'Group',
       },
     ],
-    type: 'Section',
+    type: 'HeaderSection',
   },
   {
     id: 'container/project/issues:menu',
     nestedGroupKey: 'menu',
     parentId: 'container/project/index:menu',
     items: [
+      {
+        type: 'SectionHeading',
+        id: 'section-heading',
+        text: 'Issues and filters',
+      },
       { type: 'Item', id: 'search-issues', text: 'Search issues' },
-      { type: 'Separator', id: 'separator-1' },
+      { type: 'GroupHeading', id: 'heading', text: 'Filters' },
       { type: 'Item', id: 'my-open-issues', text: 'My open issues' },
       { type: 'Item', id: 'reported-by-me', text: 'Reported by me' },
       { type: 'Item', id: 'all-issues', text: 'All issues' },
@@ -291,7 +349,8 @@ const containerProjectIssues = [
       { type: 'Item', id: 'resolved-recently', text: 'Resolved recently' },
       { type: 'Item', id: 'updated-recently', text: 'Updated recently' },
     ],
-    type: 'Section',
+    alwaysShowScrollHint: true,
+    type: 'MenuSection',
   },
 ];
 
@@ -300,10 +359,12 @@ export const containerViews = [
     id: 'container/project/index',
     getItems: () => containerProject,
     type: 'container',
+    getAnalyticsAttributes: getViewAnalyticsAttributes,
   },
   {
     id: 'container/project/issues',
     getItems: () => containerProjectIssues,
     type: 'container',
+    getAnalyticsAttributes: getViewAnalyticsAttributes,
   },
 ];

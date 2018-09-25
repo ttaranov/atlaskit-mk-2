@@ -7,7 +7,7 @@ declare module '@atlaskit/webdriver-runner/utils/example' {
 }
 
 declare module '@atlaskit/webdriver-runner/runner' {
-  type Browser = 'chrome' | 'edge' | 'ie' | 'safari' | 'firefox';
+  type Browser = 'Chrome' | 'chrome' | 'edge' | 'ie' | 'safari' | 'firefox';
 
   type BrowserTestCaseOptions = {
     readonly skip: Browser[];

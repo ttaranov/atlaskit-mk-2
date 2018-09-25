@@ -198,6 +198,40 @@ ${code`
 
   We’d love to hear your feedback.
 
+  ## Tab indexing / focus
+  If you are displaying a title you may need to listen for a tab event to 
+  explicitly enable and focus the editor.
+  
+  Shift + Tab will move from the title bar to the toolbar preserving tab order.
+
+  See the Full Page Example code for a complete implementation.
+  
+  For example:
+
+${code`
+  <WithEditorActions
+    // tslint:disable-next-line:jsx-no-lambda
+    render={actions => (
+      <TitleInput
+        placeholder="Give this page a title..."
+        onKeyDown={(e: KeyboardEvent) =>
+          this.onKeyPressed(e, actions)
+        }
+      />
+    )}
+  />
+`}
+
+${code`
+  private onKeyPressed = (e: KeyboardEvent, actions: EditorActions) => {
+    if (e.key === 'Tab' && !e.shiftKey) {
+      actions.focus();
+      return false;
+    }
+  };
+`}
+
+
   ${(
     <Props
       shouldCollapseProps

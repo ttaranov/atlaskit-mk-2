@@ -1,12 +1,15 @@
 import * as React from 'react';
 import { Component } from 'react';
+import { defineMessages, injectIntl, InjectedIntlProps } from 'react-intl';
 import { EditorView } from 'prosemirror-view';
 import { splitCell, mergeCells } from 'prosemirror-tables';
+
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import {
   tableBackgroundColorPalette,
   tableBackgroundBorderColors,
 } from '@atlaskit/editor-common';
+
 import {
   hoverColumns,
   hoverRows,
@@ -21,7 +24,7 @@ import {
 } from '../../actions';
 import { CellRect } from '../../types';
 import { contextualMenuDropdownWidth } from '../styles';
-
+import { Shortcut } from '../../../../ui/styles';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import DropdownMenu from '../../../../ui/DropdownMenu';
 import {
@@ -29,6 +32,36 @@ import {
   analyticsService as analytics,
 } from '../../../../analytics';
 import ColorPalette from '../../../../ui/ColorPalette';
+import tableMessages from '../messages';
+
+export const messages = defineMessages({
+  cellOptions: {
+    id: 'fabric.editor.cellOptions',
+    defaultMessage: 'Cell options',
+    description: 'Opens a menu with options for the current table cell.',
+  },
+  cellBackground: {
+    id: 'fabric.editor.cellBackground',
+    defaultMessage: 'Cell background',
+    description: 'Change the background color of a table cell.',
+  },
+  mergeCells: {
+    id: 'fabric.editor.mergeCells',
+    defaultMessage: 'Merge cells',
+    description: 'Merge tables cells together.',
+  },
+  splitCell: {
+    id: 'fabric.editor.splitCell',
+    defaultMessage: 'Split cell',
+    description: 'Split a merged table cell.',
+  },
+  clearCells: {
+    id: 'fabric.editor.clearCells',
+    defaultMessage: 'Clear {0, plural, one {cell} other {cells}}',
+    description:
+      'Clears the contents of the selected cells (this does not delete the cells themselves).',
+  },
+});
 
 export interface Props {
   editorView: EditorView;
@@ -38,6 +71,7 @@ export interface Props {
   mountPoint?: HTMLElement;
   allowMergeCells?: boolean;
   allowBackgroundColor?: boolean;
+  boundariesElement?: HTMLElement;
   offset?: Array<number>;
 }
 
@@ -45,18 +79,29 @@ export interface State {
   isSubmenuOpen: boolean;
 }
 
-export default class ContextualMenu extends Component<Props, State> {
+class ContextualMenu extends Component<Props & InjectedIntlProps, State> {
   state: State = {
     isSubmenuOpen: false,
   };
 
+  static defaultProps = {
+    boundariesElement: document.body,
+  };
+
   render() {
-    const { isOpen, mountPoint, offset } = this.props;
+    const {
+      isOpen,
+      mountPoint,
+      offset,
+      boundariesElement,
+      intl: { formatMessage },
+    } = this.props;
     const items = this.createItems();
     if (!items) {
       return null;
     }
 
+    const labelCellOptions = formatMessage(messages.cellOptions);
     return (
       <div onMouseLeave={this.closeSubmenu}>
         <DropdownMenu
@@ -69,20 +114,36 @@ export default class ContextualMenu extends Component<Props, State> {
           onMouseLeave={this.handleItemMouseLeave}
           fitHeight={188}
           fitWidth={contextualMenuDropdownWidth}
+          boundariesElement={boundariesElement}
           offset={offset}
         >
           <div className="ProseMirror-table-contextual-menu-trigger">
             <ToolbarButton
               selected={isOpen}
-              title="Toggle contextual menu"
+              title={labelCellOptions}
               onClick={this.toggleOpen}
-              iconBefore={<ExpandIcon label="expand-dropdown-menu" />}
+              iconBefore={<ExpandIcon label={labelCellOptions} />}
             />
           </div>
         </DropdownMenu>
       </div>
     );
   }
+
+  private handleSubMenuRef = ref => {
+    const { boundariesElement } = this.props;
+
+    if (!(boundariesElement && ref)) {
+      return;
+    }
+
+    const boundariesRect = boundariesElement.getBoundingClientRect();
+    const rect = ref.getBoundingClientRect();
+
+    if (rect.left + rect.width - boundariesRect.left > boundariesRect.width) {
+      ref.style.left = `-${rect.width}px`;
+    }
+  };
 
   private createItems = () => {
     const {
@@ -92,6 +153,7 @@ export default class ContextualMenu extends Component<Props, State> {
       targetCellPosition,
       isOpen,
       selectionRect,
+      intl: { formatMessage },
     } = this.props;
     const items: any[] = [];
     const { isSubmenuOpen } = this.state;
@@ -101,7 +163,7 @@ export default class ContextualMenu extends Component<Props, State> {
           ? state.doc.nodeAt(targetCellPosition)
           : null;
       items.push({
-        content: <div className="hello">{'Cell background'}</div>,
+        content: formatMessage(messages.cellBackground),
         value: { name: 'background' },
         elemAfter: (
           <div>
@@ -112,7 +174,10 @@ export default class ContextualMenu extends Component<Props, State> {
               }}
             />
             {isSubmenuOpen && (
-              <div className="ProseMirror-table-contextual-submenu">
+              <div
+                className="ProseMirror-table-contextual-submenu"
+                ref={this.handleSubMenuRef}
+              >
                 <ColorPalette
                   palette={tableBackgroundColorPalette}
                   borderColors={tableBackgroundBorderColors}
@@ -126,43 +191,52 @@ export default class ContextualMenu extends Component<Props, State> {
     }
 
     items.push({
-      content: 'Insert column',
+      content: formatMessage(tableMessages.insertColumn),
       value: { name: 'insert_column' },
     });
 
     items.push({
-      content: 'Insert row',
+      content: formatMessage(tableMessages.insertRow),
       value: { name: 'insert_row' },
     });
 
     const { right, left, top, bottom } = selectionRect;
+    const noOfColumns = right - left;
+    const noOfRows = bottom - top;
+
     items.push({
-      content: `Delete column${right - left > 1 ? 's' : ''}`,
+      content: formatMessage(tableMessages.removeColumns, {
+        0: noOfColumns,
+      }),
       value: { name: 'delete_column' },
     });
 
     items.push({
-      content: `Delete row${bottom - top > 1 ? 's' : ''}`,
+      content: formatMessage(tableMessages.removeRows, {
+        0: noOfRows,
+      }),
       value: { name: 'delete_row' },
     });
 
     if (allowMergeCells) {
       items.push({
-        content: 'Merge cells',
+        content: formatMessage(messages.mergeCells),
         value: { name: 'merge' },
         isDisabled: !mergeCells(state),
       });
       items.push({
-        content: 'Split cell',
+        content: formatMessage(messages.splitCell),
         value: { name: 'split' },
         isDisabled: !splitCell(state),
       });
     }
 
     items.push({
-      content: 'Clear cell',
+      content: formatMessage(messages.clearCells, {
+        0: Math.max(noOfColumns, noOfRows),
+      }),
       value: { name: 'clear' },
-      elemAfter: '⌫',
+      elemAfter: <Shortcut>⌫</Shortcut>,
     });
 
     return items.length ? [{ items }] : null;
@@ -302,3 +376,5 @@ export const getSelectedRowIndexes = (selectionRect: CellRect): number[] => {
   }
   return rowIndexes;
 };
+
+export default injectIntl(ContextualMenu);

@@ -22,8 +22,8 @@ export default withAnalyticsContext({
 })(
   withAnalyticsEvents({
     onChange: createAndFireEventOnAtlaskit({
-      action: 'selected',
-      actionSubject: 'item',
+      action: 'changed',
+      actionSubject: 'option',
 
       attributes: {
         componentName: 'select',

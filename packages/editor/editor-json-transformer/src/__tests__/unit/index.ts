@@ -74,6 +74,24 @@ describe('JSONTransformer:', () => {
         providerFactory: ProviderFactory.create({ emojiProvider }),
       });
 
+    it('should have an empty content attribute for a header with no content', () => {
+      const { editorView } = editor(doc(h1()));
+
+      expect(toJSON(editorView.state.doc)).toEqual({
+        version: 1,
+        type: 'doc',
+        content: [
+          {
+            type: 'heading',
+            content: [],
+            attrs: {
+              level: 1,
+            },
+          },
+        ],
+      });
+    });
+
     it('should serialize common nodes/marks as ProseMirror does', () => {
       const { editorView } = editor(
         doc(

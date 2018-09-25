@@ -35,7 +35,7 @@ const nonUserContext = ContextFactory.create({
 });
 
 class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
-  dropzoneContainer: HTMLDivElement;
+  dropzoneContainer?: HTMLDivElement;
 
   state: DropzoneWrapperState = {
     isConnectedToUsersCollection: true,

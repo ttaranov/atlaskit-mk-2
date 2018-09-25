@@ -2,7 +2,12 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import { Spotlight, SpotlightManager, SpotlightTarget } from '../src';
+import {
+  Spotlight,
+  SpotlightManager,
+  SpotlightTarget,
+  SpotlightTransition,
+} from '../src';
 import { Code, Highlight } from './styled';
 
 const options = [
@@ -62,19 +67,21 @@ export default class SpotlightDialogPlacementExample extends Component<
           <button onClick={this.start}>Show</button>
         </p>
 
-        {placement ? (
-          <Spotlight
-            actions={[{ onClick: this.finish, text: 'Done' }]}
-            dialogPlacement={placement}
-            dialogWidth={300}
-            heading={`"${placement}"`}
-            key="placement-example"
-            target="placement-example"
-            targetOnClick={this.next}
-          >
-            A single line of innocuous text.
-          </Spotlight>
-        ) : null}
+        <SpotlightTransition>
+          {placement ? (
+            <Spotlight
+              actions={[{ onClick: this.finish, text: 'Done' }]}
+              dialogPlacement={placement}
+              dialogWidth={300}
+              heading={`"${placement}"`}
+              key="placement-example"
+              target="placement-example"
+              targetOnClick={this.next}
+            >
+              A single line of innocuous text.
+            </Spotlight>
+          ) : null}
+        </SpotlightTransition>
       </SpotlightManager>
     );
   }

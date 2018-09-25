@@ -18,6 +18,8 @@ export interface PluginConfig {
   stickToolbarToBottom?: boolean;
   permittedLayouts?: PermittedLayoutsDescriptor;
   allowControls?: boolean;
+  // This flag can specifiy re-size mode.
+  UNSAFE_allowFlexiColumnResizing?: boolean;
 }
 
 export interface TablePluginState {
@@ -33,6 +35,7 @@ export interface TablePluginState {
   // e.g. when pressing enter inside of a cell, it creates a new p and we need to update row controls
   tableNode?: PmNode;
   tableRef?: HTMLElement;
+  tableFloatingToolbarTarget?: HTMLElement;
   isContextualMenuOpen?: boolean;
   isTableHovered?: boolean;
   isTableInDanger?: boolean;
@@ -43,4 +46,10 @@ export interface CellRect {
   right: number;
   top: number;
   bottom: number;
+}
+
+export interface ColumnResizingPlugin {
+  handleWidth?: number;
+  cellMinWidth?: number;
+  lastColumnResizable?: boolean;
 }

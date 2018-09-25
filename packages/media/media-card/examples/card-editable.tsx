@@ -39,14 +39,14 @@ class EditableCard extends Component<{}, EditableCardState> {
     usePixelUnits: false,
   };
 
-  onWidthChange = e => {
+  onWidthChange = (e: any) => {
     const dimensions = this.state.dimensions;
 
     dimensions.width = e;
     this.setState({ dimensions });
   };
 
-  onHeightChange = e => {
+  onHeightChange = (e: any) => {
     const dimensions = this.state.dimensions;
 
     dimensions.height = e;
@@ -61,14 +61,14 @@ class EditableCard extends Component<{}, EditableCardState> {
     this.setState({ isHeightPercentage: !this.state.isHeightPercentage });
   };
 
-  onParentWidthChange = width => {
+  onParentWidthChange = (width: any) => {
     const parentDimensions = this.state.parentDimensions;
 
     parentDimensions.width = width;
     this.setState({ parentDimensions });
   };
 
-  onParentHeightChange = height => {
+  onParentHeightChange = (height: any) => {
     const parentDimensions = this.state.parentDimensions;
 
     parentDimensions.height = height;

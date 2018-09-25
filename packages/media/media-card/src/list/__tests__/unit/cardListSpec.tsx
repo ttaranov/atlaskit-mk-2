@@ -16,7 +16,7 @@ import { CardList, CardListProps, CardListState } from '../..';
 import { InfiniteScroll } from '../../infiniteScroll';
 import { LazyContent } from '../../../utils/lazyContent';
 import { TransitionGroup } from 'react-transition-group';
-import { Card } from '../../../root/card';
+import { default as Card } from '../../../root/card/cardLoader';
 
 describe('CardList', () => {
   const setup = () => {
@@ -89,7 +89,7 @@ describe('CardList', () => {
   const contextWithDefaultCollection = fakeContext({
     getMediaCollectionProvider: {
       observable() {
-        return Observable.create(observer => {
+        return Observable.create((observer: any) => {
           observer.next(collection);
         });
       },
@@ -197,7 +197,7 @@ describe('CardList', () => {
     const context = fakeContext({
       getMediaCollectionProvider: {
         observable() {
-          return Observable.create(observer => {
+          return Observable.create((observer: any) => {
             observer.next(collection);
           });
         },
@@ -239,14 +239,14 @@ describe('CardList', () => {
     const context = fakeContext({
       getMediaCollectionProvider: {
         observable() {
-          return Observable.create(observer => {
+          return Observable.create((observer: any) => {
             observer.next(collection);
           });
         },
       },
       getMediaItemProvider: {
         observable() {
-          return Observable.create(observer => {
+          return Observable.create((observer: any) => {
             observer.next(newItemDetails);
           });
         },
@@ -264,6 +264,7 @@ describe('CardList', () => {
       { disableLifecycleMethods: true },
     ) as any;
     wrapper.setState({ loading: false, error: undefined, collection });
+
     wrapper
       .find(Card)
       .first()

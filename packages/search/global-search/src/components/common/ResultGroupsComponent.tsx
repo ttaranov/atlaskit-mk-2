@@ -31,7 +31,7 @@ const mapGroupsToSections = (
     .filter(({ items }) => items && items.length)
     .map((group, index) => (
       <ResultGroup
-        key={group.key}
+        key={`${group.key}-${index}`}
         title={<FormattedMessage id={group.titleI18nId} />}
         results={group.items}
         sectionIndex={index}
@@ -78,10 +78,12 @@ export default class ResultGroupsComponent extends React.Component<Props> {
   render() {
     const { renderAdvancedSearch, resultsGroups } = this.props;
     const analyticsData = this.getAnalyticsData();
-    return [
-      ...mapGroupsToSections(resultsGroups, analyticsData),
-      renderAdvancedSearch(analyticsData),
-      this.getAnalyticsComponent(),
-    ];
+    return (
+      <>
+        {mapGroupsToSections(resultsGroups, analyticsData)}
+        {renderAdvancedSearch(analyticsData)}
+        {this.getAnalyticsComponent()}
+      </>
+    );
   }
 }

@@ -1,8 +1,8 @@
 {
   "name": "@atlaskit/build-releases",
-  "version": "2.1.0",
+  "version": "2.1.3",
   "description": "This will definitely get split up at some point, just using for testing",
-  "main": "index.js",
+  "main": "bin/build-releases.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -13,7 +13,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@atlaskit/build-utils": "^2.0.1",
-    "bolt": "^0.20.6",
+    "bolt": "^0.22.1",
     "boxen": "^1.3.0",
     "chalk": "^2.1.0",
     "outdent": "^0.5.0",

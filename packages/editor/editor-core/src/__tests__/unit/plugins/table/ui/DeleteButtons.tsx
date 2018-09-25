@@ -1,15 +1,16 @@
-import { mount } from 'enzyme';
 import * as React from 'react';
+import Button from '@atlaskit/button';
+import { mountWithIntl } from '@atlaskit/editor-test-helpers';
+
 import DeleteColumnButton from '../../../../../plugins/table/ui/TableFloatingControls/ColumnControls/DeleteColumnButton';
 import DeleteRowButton from '../../../../../plugins/table/ui/TableFloatingControls/RowControls/DeleteRowButton';
-import AkButton from '@atlaskit/button';
 
 [DeleteColumnButton, DeleteRowButton].forEach(DeleteButton => {
   describe(DeleteButton.name, () => {
     describe('callbacks', () => {
       it('fires the onMouseEnter callback', () => {
         const onMouseEnter = jest.fn();
-        const r = mount(<DeleteButton onMouseEnter={onMouseEnter} />);
+        const r = mountWithIntl(<DeleteButton onMouseEnter={onMouseEnter} />);
         r.simulate('mouseenter');
 
         expect(onMouseEnter).toBeCalled();
@@ -17,7 +18,7 @@ import AkButton from '@atlaskit/button';
 
       it('fires the onMouseLeave callback', () => {
         const onMouseLeave = jest.fn();
-        const r = mount(<DeleteButton onMouseLeave={onMouseLeave} />);
+        const r = mountWithIntl(<DeleteButton onMouseLeave={onMouseLeave} />);
         r.simulate('mouseleave');
 
         expect(onMouseLeave).toBeCalled();
@@ -26,10 +27,10 @@ import AkButton from '@atlaskit/button';
 
     describe('appearance', () => {
       it('changes the button appearance to danger on hover', () => {
-        const r = mount(<DeleteButton />);
+        const r = mountWithIntl(<DeleteButton />);
         expect(
           r
-            .find(AkButton)
+            .find(Button)
             .first()
             .props(),
         ).not.toHaveProperty('appearance', 'danger');
@@ -37,7 +38,7 @@ import AkButton from '@atlaskit/button';
         r.simulate('mouseenter');
         expect(
           r
-            .find(AkButton)
+            .find(Button)
             .first()
             .props(),
         ).toHaveProperty('appearance', 'danger');
@@ -45,7 +46,7 @@ import AkButton from '@atlaskit/button';
         r.simulate('mouseleave');
         expect(
           r
-            .find(AkButton)
+            .find(Button)
             .first()
             .props(),
         ).not.toHaveProperty('appearance', 'danger');

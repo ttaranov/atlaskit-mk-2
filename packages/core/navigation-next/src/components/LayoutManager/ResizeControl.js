@@ -1,18 +1,22 @@
 // @flow
 
-import React, { PureComponent, Fragment } from 'react';
+import React, { PureComponent, Fragment, type Node, type Ref } from 'react';
 import raf from 'raf-schd';
 import {
   withAnalyticsEvents,
   type WithAnalyticsEventsProps,
 } from '@atlaskit/analytics-next';
 import { colors } from '@atlaskit/theme';
-import ChevronLeft from '@atlaskit/icon/glyph/chevron-left-large';
+import ChevronLeft from '@atlaskit/icon/glyph/chevron-left';
 import MenuIcon from '@atlaskit/icon/glyph/menu';
 import Tooltip from '@atlaskit/tooltip';
 
 import { navigationExpandedCollapsed } from '../../common/analytics';
-import { GLOBAL_NAV_WIDTH, CONTENT_NAV_WIDTH } from '../../common/constants';
+import {
+  GLOBAL_NAV_WIDTH,
+  CONTENT_NAV_WIDTH,
+  CONTENT_NAV_WIDTH_COLLAPSED,
+} from '../../common/constants';
 import { Shadow } from '../../common/primitives';
 import PropertyToggle from './PropertyToggle';
 
@@ -50,15 +54,22 @@ const GrabArea = ({ showHandle, isBold, ...props }: *) => (
     />
   </div>
 );
+type ButtonProps = {
+  children: Node,
+  hasHighlight: boolean,
+  innerRef: Ref<'button'>,
+  isVisible: boolean,
+};
 const Button = ({
   children,
   hasHighlight,
-  isOffset,
+  innerRef,
   isVisible,
   ...props
-}: *) => (
+}: ButtonProps) => (
   <button
     type="button"
+    ref={innerRef}
     css={{
       background: 0,
       backgroundColor: 'white',
@@ -72,14 +83,14 @@ const Button = ({
       outline: 0,
       padding: 0,
       position: 'absolute',
-      top: 28,
+      top: 32,
       transition: `
         background-color 100ms linear,
         color 100ms linear,
         opacity 300ms cubic-bezier(0.2, 0, 0, 1),
         transform 300ms cubic-bezier(0.2, 0, 0, 1)
       `,
-      transform: `translate(${isOffset ? '8px' : '-50%'})`,
+      transform: `translate(-50%)`,
       width: 24,
 
       ':hover': {
@@ -148,9 +159,11 @@ function makeTooltipNode({ text, char }: { text: string, char: string }) {
 
 type Props = WithAnalyticsEventsProps & {
   children: State => any,
-  mutationRefs: Array<{ ref: HTMLElement, property: string }>,
   collapseToggleTooltipContent: CollapseToggleTooltipContent,
+  expandCollapseAffordanceRef: Ref<'button'>,
+  isDisabled: boolean,
   mouseIsOverNavigation: boolean,
+  mutationRefs: Array<{ ref: HTMLElement, property: string }>,
   navigation: Object,
 };
 type State = {
@@ -228,10 +241,10 @@ class ResizeControl extends PureComponent<Props, State> {
     // if the product nav is collapsed and the consumer starts dragging it open
     // we must expand it and drag should start from 0.
     if (isCollapsed) {
-      initialWidth = 0;
+      initialWidth = CONTENT_NAV_WIDTH_COLLAPSED;
       didDragOpen = true;
       navigation.manualResizeStart({
-        productNavWidth: 0,
+        productNavWidth: CONTENT_NAV_WIDTH_COLLAPSED,
         isCollapsed: false,
       });
     } else {
@@ -256,10 +269,15 @@ class ResizeControl extends PureComponent<Props, State> {
     }
 
     // allow the product nav to be 75% of the available page width
-    const maxWidth = window.innerWidth / 4 * 3;
-    const adjustedMax = Math.round(maxWidth) - initialWidth - GLOBAL_NAV_WIDTH;
+    const maxWidth = Math.round(window.innerWidth / 4 * 3);
+    const minWidth = CONTENT_NAV_WIDTH_COLLAPSED;
+    const adjustedMax = maxWidth - initialWidth - GLOBAL_NAV_WIDTH;
+    const adjustedMin = minWidth - initialWidth;
 
-    const delta = Math.min(event.pageX - initialX, adjustedMax);
+    const delta = Math.max(
+      Math.min(event.pageX - initialX, adjustedMax),
+      adjustedMin,
+    );
     const width = initialWidth + delta;
 
     // apply updated styles to the applicable DOM nodes
@@ -267,7 +285,7 @@ class ResizeControl extends PureComponent<Props, State> {
 
     // NOTE: hijack the maual resize and force collapse, cancels mouse events
     if (event.screenX < window.screenX) {
-      this.setState({ width: 0 });
+      this.setState({ width: CONTENT_NAV_WIDTH_COLLAPSED });
       this.handleResizeEnd();
     } else {
       // maintain internal width, applied to navigation state on resize end
@@ -342,13 +360,15 @@ class ResizeControl extends PureComponent<Props, State> {
     } = this.state;
     const {
       children,
+      collapseToggleTooltipContent,
+      expandCollapseAffordanceRef,
+      isDisabled,
       mouseIsOverNavigation,
       navigation,
-      collapseToggleTooltipContent,
     } = this.props;
     const { isCollapsed } = navigation.state;
 
-    const isDisabled = navigation.state.isPeeking;
+    const isResizeDisabled = isDisabled || navigation.state.isPeeking;
 
     // the button shouldn't "flip" until the drag is complete
     const ButtonIcon =
@@ -357,10 +377,10 @@ class ResizeControl extends PureComponent<Props, State> {
     const button = (
       <Button
         onClick={this.onResizerChevronClick}
-        isOffset={isCollapsed}
         // maintain styles when user is dragging
         isVisible={isCollapsed || mouseIsDown || mouseIsOverNavigation}
         hasHighlight={mouseIsDown || mouseIsOverGrabArea}
+        innerRef={expandCollapseAffordanceRef}
       >
         <ButtonIcon />
       </Button>
@@ -369,10 +389,10 @@ class ResizeControl extends PureComponent<Props, State> {
     return (
       <Fragment>
         {children(this.state)}
-        {isDisabled ? null : (
-          <Fragment>
-            <Outer>
-              <Shadow isBold={mouseIsDown} />
+        <Outer>
+          <Shadow isBold={mouseIsDown} />
+          {!isResizeDisabled && (
+            <Fragment>
               <GrabArea
                 isBold={mouseIsDown}
                 showHandle={mouseIsDown || mouseIsOverGrabArea}
@@ -395,13 +415,13 @@ class ResizeControl extends PureComponent<Props, State> {
               ) : (
                 button
               )}
-            </Outer>
-            <PropertyToggle
-              isActive={isDragging}
-              styles={{ cursor: 'ew-resize' }}
-            />
-          </Fragment>
-        )}
+            </Fragment>
+          )}
+        </Outer>
+        <PropertyToggle
+          isActive={isDragging}
+          styles={{ cursor: 'ew-resize' }}
+        />
       </Fragment>
     );
   }

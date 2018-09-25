@@ -1,8 +1,8 @@
 import { HTMLAttributes, ComponentClass } from 'react';
-// @ts-ignore: unused variable
-// prettier-ignore
-import styled, { css, Styles, StyledComponentClass } from 'styled-components';
-import { akColorN30, akGridSize } from '@atlaskit/util-shared-styles';
+import styled, { css } from 'styled-components';
+import { colors, gridSize } from '@atlaskit/theme';
+
+const akGridSize = gridSize() + 'px';
 
 export const ButtonGroup: ComponentClass<
   HTMLAttributes<{}> & { width?: 'small' | 'large' }
@@ -16,7 +16,7 @@ export const ButtonGroup: ComponentClass<
 `;
 
 export const Separator: ComponentClass<HTMLAttributes<{}>> = styled.span`
-  background: ${akColorN30};
+  background: ${colors.N30};
   width: 1px;
   height: 24px;
   display: inline-block;
@@ -92,4 +92,9 @@ export const scrollbarStyles = `
   &::-webkit-scrollbar-thumb:hover {
     background-color: rgba(0, 0, 0, 0.4);
   }
+`;
+
+export const Shortcut = styled.small`
+  color: ${colors.N50};
+  margin-top: 0;
 `;

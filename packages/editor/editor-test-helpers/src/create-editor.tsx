@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { IntlProvider } from 'react-intl';
 import {
   EditorProps,
   EditorInstance,
@@ -6,6 +7,9 @@ import {
   setTextSelection,
   getDefaultPluginsList,
   EditorPlugin,
+  PortalProvider,
+  PortalProviderAPI,
+  PortalRenderer,
 } from '@atlaskit/editor-core';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { mount } from 'enzyme';
@@ -13,11 +17,6 @@ import { RefsNode, Refs } from './schema-builder';
 import { Schema } from 'prosemirror-model';
 import { PluginKey } from 'prosemirror-state';
 import patchEditorViewForJSDOM from './jsdom-fixtures';
-import {
-  PortalProvider,
-  PortalProviderAPI,
-  PortalRenderer,
-} from '../../editor-core/src/ui/PortalProvider';
 
 class TestReactEditorView extends ReactEditorView<{
   plugins?: EditorPlugin[];
@@ -56,22 +55,24 @@ export default function createEditorForTests<T = any>({
   let portalProviderAPI;
   const wrapper = mount(
     <PortalProvider
-      render={portalProvider => {
+      render={(portalProvider: any) => {
         portalProviderAPI = portalProvider;
         return (
-          <>
-            <TestReactEditorView
-              editorProps={editorProps}
-              portalProviderAPI={portalProvider}
-              providerFactory={
-                providerFactory ? providerFactory : new ProviderFactory()
-              }
-              onEditorCreated={() => {}}
-              onEditorDestroyed={() => {}}
-              plugins={plugins}
-            />
-            <PortalRenderer portalProviderAPI={portalProviderAPI} />
-          </>
+          <IntlProvider locale="en">
+            <>
+              <TestReactEditorView
+                editorProps={editorProps}
+                portalProviderAPI={portalProvider}
+                providerFactory={
+                  providerFactory ? providerFactory : new ProviderFactory()
+                }
+                onEditorCreated={() => {}}
+                onEditorDestroyed={() => {}}
+                plugins={plugins}
+              />
+              <PortalRenderer portalProviderAPI={portalProviderAPI} />
+            </>
+          </IntlProvider>
         );
       }}
     />,

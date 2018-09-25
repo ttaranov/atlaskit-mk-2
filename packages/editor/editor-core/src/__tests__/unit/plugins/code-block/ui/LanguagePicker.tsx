@@ -1,10 +1,13 @@
-import { mount, ReactWrapper } from 'enzyme';
+import { ReactWrapper } from 'enzyme';
 import * as React from 'react';
 import Select from '@atlaskit/select';
 import Button from '@atlaskit/button';
+import { mountWithIntl } from '@atlaskit/editor-test-helpers';
+
 import { TrashToolbarButton } from '../../../../../plugins/code-block/ui/LanguagePicker/styles';
 import LanguagePickerWithOutsideListeners, {
   LanguagePicker,
+  LanguagePickerWithIntl,
 } from '../../../../../plugins/code-block/ui/LanguagePicker';
 import { analyticsService } from '../../../../../analytics';
 
@@ -18,8 +21,8 @@ describe('@atlaskit/editor-core/ui/LanguagePicker', () => {
     setLanguageStub = jest.fn();
     deleteCodeBlockStub = jest.fn();
     dom = document.createElement('div');
-    languagePicker = mount(
-      <LanguagePicker
+    languagePicker = mountWithIntl(
+      <LanguagePickerWithIntl
         activeCodeBlockDOM={dom}
         deleteCodeBlock={deleteCodeBlockStub}
         setLanguage={setLanguageStub}
@@ -134,7 +137,7 @@ describe('@atlaskit/editor-core/ui/LanguagePickerWithOutsideListeners', () => {
       .find(Select)
       .getDOMNode() as HTMLElement;
   beforeEach(() => {
-    wrapper = mount(
+    wrapper = mountWithIntl(
       <LanguagePickerWithOutsideListeners
         activeCodeBlockDOM={document.body}
         deleteCodeBlock={jest.fn()}
@@ -149,7 +152,7 @@ describe('@atlaskit/editor-core/ui/LanguagePickerWithOutsideListeners', () => {
     wrapper.unmount();
   });
 
-  it('should show the toolber when the editor is focused', () => {
+  it('should show the toolbar when the editor is focused', () => {
     wrapper.setProps({ isEditorFocused: true });
     expect(wrapper.find(LanguagePicker).exists()).toBe(true);
   });

@@ -23,4 +23,6 @@ export const getDataURIFromFileState = async (
 
     return src;
   }
+
+  return undefined;
 };

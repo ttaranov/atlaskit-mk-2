@@ -4,6 +4,20 @@ import { State } from '../../../domain/index';
 import { fileUploadsStart } from '../../../actions/fileUploadsStart';
 
 describe('fileUploadsAdd() reducer', () => {
+  const MOCK_TIMESTAMP = Date.now();
+  let dateNowSpy: jest.SpyInstance<any>;
+
+  beforeAll(() => {
+    // Lock Time
+    dateNowSpy = jest.spyOn(Date, 'now');
+    dateNowSpy.mockImplementation(() => MOCK_TIMESTAMP);
+  });
+
+  afterAll(() => {
+    dateNowSpy.mockReset();
+    dateNowSpy.mockRestore();
+  });
+
   const nowDate = Date.now();
   const upfrontId = Promise.resolve('1');
   const occurrenceKey = 'key';
@@ -54,6 +68,7 @@ describe('fileUploadsAdd() reducer', () => {
         dataURI: '',
       },
       progress: 0,
+      timeStarted: MOCK_TIMESTAMP,
       events: [],
       index: 0,
       tenant: {

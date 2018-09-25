@@ -24,8 +24,10 @@ describe('getPreviewMiddleware', () => {
   };
   const setup = () => {
     const store = mockStore();
-    const { userAuthProvider } = store.getState();
-    userAuthProvider.mockImplementation(() => Promise.resolve(auth));
+    const { userContext } = store.getState();
+    (userContext.config.authProvider as jest.Mock<any>).mockReturnValue(
+      Promise.resolve(auth),
+    );
 
     const fetcher = mockFetcher();
     fetcher.getPreview.mockImplementation(() => Promise.resolve(preview));
@@ -57,7 +59,7 @@ describe('getPreviewMiddleware', () => {
 
   it('should dispatch send upload event action with upload-preview-update event', () => {
     const { fetcher, store, action } = setup();
-    return getPreview(fetcher, store, action).then(action => {
+    return getPreview(fetcher, store, action).then(() => {
       expect(store.dispatch).toBeCalledWith(
         sendUploadEvent({
           event: {

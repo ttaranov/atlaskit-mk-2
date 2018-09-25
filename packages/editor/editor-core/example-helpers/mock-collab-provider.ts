@@ -84,9 +84,9 @@ export class MockCollabEditProvider implements CollabEditProvider {
   protected getState = () => {};
   protected createStep = (json: object) => {};
   protected sid;
-  protected eventBus: EventEmitter;
+  protected eventBus: any;
 
-  constructor(eventBus: EventEmitter, sid?: string) {
+  constructor(eventBus: any, sid?: string) {
     // If there's no sid then it's single user, being used for test
     if (sid) {
       this.sid = sid;
@@ -155,7 +155,7 @@ export class MockCollabEditProvider implements CollabEditProvider {
   }
 }
 
-const getCollabEditProviderFor = <T>(participants: T) => (sid?: keyof T) =>
+const getCollabEditProviderFor = <T>(participants: T) => (sid?: string) =>
   Promise.resolve(new MockCollabEditProvider(mediator, sid));
 
 export const collabEditProvider = getCollabEditProviderFor(participants);

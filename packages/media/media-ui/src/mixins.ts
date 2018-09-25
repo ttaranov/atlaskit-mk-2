@@ -34,12 +34,12 @@ export const absolute = (top = 0, left = 0) => `
 `;
 
 export const borderRadius = `
-  border-radius: ${akBorderRadius};
+  border-radius: ${akBorderRadius()}px;
 `;
 
 export const borderRadiusBottom = `
-  border-bottom-left-radius: ${akBorderRadius};
-  border-bottom-right-radius: ${akBorderRadius};
+  border-bottom-left-radius: ${akBorderRadius()}px;
+  border-bottom-right-radius: ${akBorderRadius()}px;
 `;
 
 export const easeInOutCubic = 'cubic-bezier(0.645, 0.045, 0.355, 1)';

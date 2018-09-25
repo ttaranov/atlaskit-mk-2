@@ -1,7 +1,6 @@
 // @flow
 import React from 'react';
-import { md, Example, Props } from '@atlaskit/docs';
-import { Prop } from 'pretty-proptypes';
+import { md, Example, Props, Prop } from '@atlaskit/docs';
 
 export default md`
   \`AvatarGroup\` is a wrapper around avatars designed to render a collection

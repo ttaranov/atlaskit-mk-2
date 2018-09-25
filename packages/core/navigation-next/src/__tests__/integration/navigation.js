@@ -7,7 +7,11 @@ import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import * as assert from 'assert';
 
 /* Url to test the example */
-const exampleURL = getExampleUrl('core', 'navigation-next', 'navigation');
+const exampleURL = getExampleUrl(
+  'core',
+  'navigation-next',
+  'composed-navigation',
+);
 
 /* Css selectors used for the tests */
 const getByKey = key => `[data-webdriver-test-key="${key}"]`;

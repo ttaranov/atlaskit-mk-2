@@ -77,7 +77,8 @@ describe('requestService', () => {
       expect(response).to.deep.equal(defaultResponse);
       const calls = fetchMock.calls('request');
       expect(calls.length, 'Fetch calls').to.equal(1);
-      const { url, headers, method } = calls[0][0];
+      const url = calls[0][0];
+      const { headers, method } = calls[0][1];
       const xCheeseHeader = headers.map['x-cheese'];
       expect(xCheeseHeader, 'Header defined').to.not.equal(undefined);
       expect(xCheeseHeader, 'Header value').to.equal('american');
@@ -114,7 +115,7 @@ describe('requestService', () => {
         matcher: `begin:${url}`,
         response: 401,
         name: '401',
-        times: 1,
+        repeat: 1,
       })
       .mock({
         matcher: `begin:${url}`,
@@ -129,7 +130,8 @@ describe('requestService', () => {
     return requestService(serviceConfig).then(response => {
       const refreshCalls = fetchMock.calls('request');
       expect(refreshCalls.length, 'Second request').to.equal(1);
-      const { url, headers } = refreshCalls[0][0];
+      const url = refreshCalls[0][0];
+      const { headers } = refreshCalls[0][1];
 
       const xCheeseHeader = headers.map['x-cheese'];
       expect(xCheeseHeader, 'Header defined').to.not.equal(undefined);

@@ -19,7 +19,7 @@ import { Card } from '../src';
 import { createApiCards } from '../example-helpers';
 
 const context = createStorybookContext();
-const onClick = ({ event, mediaItemDetails }, analyticsEvent) => {
+const onClick = (_: any, analyticsEvent: any) => {
   console.log('public analytics onClick event', analyticsEvent);
 };
 

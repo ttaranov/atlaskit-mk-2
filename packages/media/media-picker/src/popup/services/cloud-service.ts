@@ -16,7 +16,7 @@ export class CloudService {
 
     return this.userAuthProvider()
       .then(auth => {
-        return new Promise<void>((resolve, reject) => {
+        return new Promise<void>(resolve => {
           const channelId = uuid.v4();
 
           const authParams = mapAuthToQueryParameters(auth);

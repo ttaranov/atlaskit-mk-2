@@ -1,9 +1,9 @@
 // @flow
 
-import { colors, gridSize } from '@atlaskit/theme';
+import { colors, gridSize as gridSizeFn } from '@atlaskit/theme';
+import type { ModeColors } from '../../theme/types';
 
-import type { ThemedContentNavigationComponentStyles } from '../../theme/types';
-
+const gridSize = gridSizeFn();
 const fontSize = 11;
 
 const baseStyles = {
@@ -13,9 +13,9 @@ const baseStyles = {
     flexShrink: 0,
     fontSize: `${fontSize}px`,
     fontWeight: 600,
-    lineHeight: gridSize() * 2 / fontSize,
-    margin: `${gridSize() * 2.5}px 0 ${gridSize()}px`,
-    padding: `0 ${gridSize() / 2}px`,
+    lineHeight: gridSize * 2 / fontSize,
+    margin: `${gridSize * 4}px 0 ${gridSize}px`,
+    padding: `0 ${gridSize * 1.5}px`,
     textTransform: 'uppercase',
   },
   textWrapper: {
@@ -27,46 +27,22 @@ const baseStyles = {
   },
   afterWrapper: {
     lineHeight: 1,
-    marginLeft: `${gridSize() / 2}px`,
+    marginLeft: `${gridSize / 2}px`,
   },
 };
 
-const light = () => ({
+type GroupHeadingModeColors = {
+  product: any,
+  container: any,
+};
+
+export default ({ product }: ModeColors) => (): GroupHeadingModeColors => ({
   container: {
     ...baseStyles,
     headingBase: { ...baseStyles.headingBase, color: colors.N200 },
   },
   product: {
     ...baseStyles,
-    headingBase: { ...baseStyles.headingBase, color: colors.B75 },
+    headingBase: { ...baseStyles.headingBase, color: product.text.subtle },
   },
 });
-
-const dark = () => ({
-  container: {
-    ...baseStyles,
-    headingBase: { ...baseStyles.headingBase, color: colors.DN100 },
-  },
-  product: {
-    ...baseStyles,
-    headingBase: { ...baseStyles.headingBase, color: colors.DN100 },
-  },
-});
-
-const settings = () => ({
-  container: {
-    ...baseStyles,
-    headingBase: { ...baseStyles.headingBase, color: colors.N70 },
-  },
-  product: {
-    ...baseStyles,
-    headingBase: { ...baseStyles.headingBase, color: colors.N70 },
-  },
-});
-
-const themes: ThemedContentNavigationComponentStyles<void> = {
-  dark,
-  light,
-  settings,
-};
-export default themes;

@@ -1,9 +1,8 @@
 import * as React from 'react';
+import { injectIntl, InjectedIntlProps } from 'react-intl';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
-import AkButton from '@atlaskit/button';
-import AkTooltip from '@atlaskit/tooltip';
-import { DeleteColumnButtonWrap } from './styles';
-import { InsertButtonDefault as InsertButton } from '../styles';
+import Button from '@atlaskit/button';
+import tableMessages from '../../messages';
 
 export interface ButtonProps {
   style?: object;
@@ -12,7 +11,9 @@ export interface ButtonProps {
   onMouseLeave?: (SyntheticEvent) => void;
 }
 
-class DeleteColumnButton extends React.Component<ButtonProps> {
+class DeleteColumnButton extends React.Component<
+  ButtonProps & InjectedIntlProps
+> {
   state = { hover: false };
   static defaultProps = {
     onMouseEnter: () => {},
@@ -30,26 +31,30 @@ class DeleteColumnButton extends React.Component<ButtonProps> {
   };
 
   render() {
-    const { style, onClick } = this.props;
+    const {
+      style,
+      onClick,
+      intl: { formatMessage },
+    } = this.props;
+    const labelRemoveColumn = formatMessage(tableMessages.removeColumns, {
+      0: 1,
+    });
     return (
-      <DeleteColumnButtonWrap
+      <div
+        className="pm-table-controls__delete-button-wrap"
         style={style}
         onMouseEnter={this.onMouseEnter}
         onMouseLeave={this.onMouseLeave}
       >
-        <InsertButton>
-          <AkTooltip content="Remove column" position="top">
-            <AkButton
-              onClick={onClick}
-              iconBefore={<CrossIcon size="small" label="Remove column" />}
-              appearance={this.state.hover ? 'danger' : 'default'}
-              spacing="none"
-            />
-          </AkTooltip>
-        </InsertButton>
-      </DeleteColumnButtonWrap>
+        <Button
+          onClick={onClick}
+          iconBefore={<CrossIcon size="small" label={labelRemoveColumn} />}
+          appearance={this.state.hover ? 'danger' : 'default'}
+          spacing="none"
+        />
+      </div>
     );
   }
 }
 
-export default DeleteColumnButton;
+export default injectIntl(DeleteColumnButton);

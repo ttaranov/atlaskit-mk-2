@@ -29,6 +29,10 @@ pipelines:
             # We push the bumped packages to master now as it's much better to fail whilst BB is
             # ahead of npm, than the other way round.
             - git push
+            # We run the build:pkg script again, because the versions in our package.jsons may have changed
+            # after the bump. We've kept it running in both places, just to limit the scope of this change
+            # so that we don't break anything that was working previously
+            - yarn build:pkg
             # Release all unreleased packages
             - node ./build/releases/bin/build-releases.js publish --public
             - git push --tags # push only the tags
@@ -58,7 +62,7 @@ pipelines:
               - node build/ci-scripts/run.tool.if.changed.js flow -- yarn typecheck:flow
               # The script below counts flowfixme and fails if above the threshold.
               # The goal is to reduce the threshold over time.
-              - source build/ci-scripts/count-flowfixme.sh 126
+              - source build/ci-scripts/count-flowfixme.sh 127
               - node build/ci-scripts/run.tool.if.changed.js typescript -- yarn typecheck:typescript
               # Get the commit that we diverged from master at
               - export DIVERGED_AT=$(git merge-base master HEAD)
@@ -79,12 +83,19 @@ pipelines:
             caches:
               - node
         - step:
-            name: Browser Testing
+            name: Browser Unit Testing
             script:
               - source ./build-setup.sh
               - bolt install --pure-lockfile
               - echo "Run browser unit tests using Karma + Browserstack"
               - node build/ci-scripts/run.tool.if.changed.js browserstack  -- yarn test:browser:browserstack
+            caches:
+              - node
+        - step:
+            name: Browser Testing
+            script:
+              - source ./build-setup.sh
+              - bolt install --pure-lockfile
               - echo "Run browser integration tests using Webdriver + Browserstack"
               # If we have changed any packages with webdriver tests, we wait until browserstack has free resources, then run our tests
               - LOCAL_IDENTIFIER=$(date +%s) BS_RETRY=5 BS_BUILD_ALLOWED=3 node build/ci-scripts/run.tool.if.changed.js webdriver -- node build/ci-scripts/wait.for.browserstack.resources.js && yarn test:webdriver:browserstack:changed
@@ -99,9 +110,9 @@ pipelines:
               - WEBSITE_ENV=staging yarn build:no-minimize
               - yarn build:copy
               - yarn build:zip
-              - yarn deploy:staging | tee netlify-build.txt
+              - WRITE_PERMALINK_TO_FILE='netlify-link.txt'  yarn deploy:staging # this will write a `link.txt` file to disk
               - echo "Uploading netlify build link to s3 so that we can fetch at the end..."
-              - node ../build/ci-scripts/upload.build.artefact.for.commit.js netlify-build.txt
+              - node ../build/ci-scripts/upload.build.artefact.for.commit.js netlify-link.txt
             caches:
               - node
     - step:
@@ -110,7 +121,7 @@ pipelines:
           - (cd build/utils && yarn install) # needed for npm-run when updating status
           - cd build/ci-scripts
           - yarn install
-          - node download.build.artefact.for.commit.js netlify-build.txt
+          - node download.build.artefact.for.commit.js netlify-link.txt
           - node update.build.status.with.netlify.link.js
 
   custom: # Pipelines that can be scheduled or triggered manually
@@ -128,6 +139,21 @@ pipelines:
             - cd ..
             # This is a sanity check to make sure the website renders on all browsers without error
             - yarn test:webdriver:browserstack website
+          caches:
+            - node
+
+    # This should only be called by a scheduled or manual build for master
+    send-website-build-analytics:
+      - step:
+          script:
+            - source ./build-setup.sh
+            - bolt install --pure-lockfile
+            - cd website
+            - yarn build:report
+            # We could optionally upload these to s3 if we wanted, leaving this here as an example
+            # - node ../build/ci-scripts/upload.build.artefact.for.commit.js dist/report.html
+            # - node ../build/ci-scripts/upload.build.artefact.for.commit.js dist/stats.json
+            - node ./scripts/uploadBundleAnalyticsEvent.js
           caches:
             - node
 

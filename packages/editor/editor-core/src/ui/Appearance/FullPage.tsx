@@ -2,21 +2,18 @@ import * as React from 'react';
 import { MouseEvent } from 'react';
 import styled from 'styled-components';
 import { akColorN30 } from '@atlaskit/util-shared-styles';
-import {
-  akEditorFullPageMaxWidth,
-  akEditorMenuZIndex,
-} from '@atlaskit/editor-common';
+import { akEditorMenuZIndex } from '@atlaskit/editor-common';
 import { EditorAppearanceComponentProps, EditorAppearance } from '../../types';
 import Avatars from '../../plugins/collab-edit/ui/avatars';
 import PluginSlot from '../PluginSlot';
 import Toolbar from '../Toolbar';
 import ContentStyles from '../ContentStyles';
 import { ClickAreaBlock } from '../Addon';
-import WidthDetector from '../WidthDetector';
 import { tableFullPageEditorStyles } from '../../plugins/table/ui/styles';
 import { akEditorToolbarKeylineHeight } from '../../styles';
 import rafSchedule from 'raf-schd';
 import { scrollbarStyles } from '../styles';
+import WidthEmitter from '../WidthEmitter';
 
 const GUTTER_PADDING = 32;
 
@@ -44,7 +41,7 @@ const ContentArea = styled.div`
   line-height: 24px;
   height: 100%;
   width: 100%;
-  max-width: ${akEditorFullPageMaxWidth + GUTTER_PADDING * 2}px;
+  max-width: ${({ theme }: any) => theme.layoutMaxWidth + GUTTER_PADDING * 2}px;
   padding-top: 50px;
   margin: 0 auto;
   display: flex;
@@ -95,6 +92,7 @@ const MainToolbar: React.ComponentClass<
   display: flex;
   height: 80px;
   flex-shrink: 0;
+
   & object {
     height: 0 !important;
   }
@@ -201,7 +199,7 @@ export default class Editor extends React.Component<
     const { showKeyline } = this.state;
 
     return (
-      <FullPageEditorWrapper>
+      <FullPageEditorWrapper className="akEditor">
         <MainToolbar showKeyline={showKeyline}>
           <Toolbar
             editorView={editorView!}
@@ -247,6 +245,7 @@ export default class Editor extends React.Component<
                     popupsBoundariesElement={popupsBoundariesElement}
                     popupsScrollableElement={popupsScrollableElement}
                     disabled={!!disabled}
+                    containerElement={this.scrollContainer}
                   />
                 }
                 {editorDOMElement}
@@ -254,7 +253,7 @@ export default class Editor extends React.Component<
             </ContentArea>
           </ClickAreaBlock>
         </ScrollContainer>
-        <WidthDetector editorView={editorView!} />
+        <WidthEmitter editorView={editorView!} />
       </FullPageEditorWrapper>
     );
   }

@@ -8,12 +8,13 @@ import {
   FileDetails,
 } from '@atlaskit/media-core';
 import { AnalyticsContext } from '@atlaskit/analytics-next';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 import {
   SharedCardProps,
   CardEventProps,
   CardAnalyticsContext,
   CardStatus,
+  CardDimensions,
 } from '../..';
 import { Identifier, isPreviewableType } from '../domain';
 import { CardView } from '../cardView';
@@ -22,7 +23,11 @@ import { getBaseAnalyticsContext } from '../../utils/analyticsUtils';
 import { getDataURIDimension } from '../../utils/getDataURIDimension';
 import { getDataURIFromFileState } from '../../utils/getDataURIFromFileState';
 import { getLinkMetadata, extendMetadata } from '../../utils/metadata';
-import { isUrlPreviewIdentifier } from '../../utils/identifier';
+import {
+  isUrlPreviewIdentifier,
+  isExternalImageIdentifier,
+} from '../../utils/identifier';
+import { isBigger } from '../../utils/dimensionComparer';
 
 export interface CardProps extends SharedCardProps, CardEventProps {
   readonly context: Context;
@@ -67,16 +72,29 @@ export class Card extends Component<CardProps, CardState> {
     const {
       context: currentContext,
       identifier: currentIdentifier,
+      dimensions: currentDimensions,
     } = this.props;
-    const { context: nextContext, identifier: nextIdenfifier } = nextProps;
+    const {
+      context: nextContext,
+      identifier: nextIdenfifier,
+      dimensions: nextDimensions,
+    } = nextProps;
 
     if (
       currentContext !== nextContext ||
-      !deepEqual(currentIdentifier, nextIdenfifier)
+      !deepEqual(currentIdentifier, nextIdenfifier) ||
+      this.shouldRefetchImage(currentDimensions, nextDimensions)
     ) {
       this.subscribe(nextIdenfifier, nextContext);
     }
   }
+
+  shouldRefetchImage = (current?: CardDimensions, next?: CardDimensions) => {
+    if (!current || !next) {
+      return false;
+    }
+    return isBigger(current, next);
+  };
 
   componentWillUnmount() {
     this.unsubscribe();
@@ -105,6 +123,22 @@ export class Card extends Component<CardProps, CardState> {
   async subscribe(identifier: Identifier, context: Context) {
     const { isCardVisible } = this.state;
     if (!isCardVisible) {
+      return;
+    }
+
+    if (identifier.mediaItemType === 'external-image') {
+      const { dataURI, name } = identifier;
+
+      this.setState({
+        status: 'complete',
+        dataURI,
+        metadata: {
+          id: dataURI,
+          name: name || dataURI,
+          mediaType: 'image',
+        },
+      });
+
       return;
     }
 
@@ -222,7 +256,10 @@ export class Card extends Component<CardProps, CardState> {
     const { identifier } = this.props;
     const id = isUrlPreviewIdentifier(identifier)
       ? identifier.url
-      : identifier.id;
+      : isExternalImageIdentifier(identifier)
+        ? 'external-image'
+        : identifier.id;
+
     return getBaseAnalyticsContext('Card', id);
   }
 

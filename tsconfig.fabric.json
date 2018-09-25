@@ -39,7 +39,7 @@
     "./typings/lodash.last.d.ts",
     "./typings/lodash.debounce.d.ts",
     "./typings/lodash.matches.d.ts",
-    "./typings/jest-in-case.d.ts",
-    "./typings/AbortController.d.ts"
+    "./typings/lodash.merge.d.ts",
+    "./typings/jest-in-case.d.ts"
   ]
 }

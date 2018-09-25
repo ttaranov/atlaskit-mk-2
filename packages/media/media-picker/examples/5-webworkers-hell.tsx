@@ -22,15 +22,13 @@ export interface BrowserWrapperState {
 
 class BrowserWrapper extends Component<{}, BrowserWrapperState> {
   browserComponents: Browser[];
-  dropzoneContainer: HTMLDivElement;
+  dropzoneContainer?: HTMLDivElement;
 
-  constructor(props) {
-    super(props);
-
+  constructor() {
+    super({});
     this.state = {
       previewsData: [],
     };
-
     this.browserComponents = (Array(5) as any).fill().map(this.createBrowse);
   }
 
@@ -55,7 +53,7 @@ class BrowserWrapper extends Component<{}, BrowserWrapperState> {
     return fileBrowser;
   };
 
-  onOpen = fileBrowser => () => {
+  onOpen = (fileBrowser: Browser) => () => {
     fileBrowser.browse();
   };
 

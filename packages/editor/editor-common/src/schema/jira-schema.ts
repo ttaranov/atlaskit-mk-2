@@ -53,7 +53,7 @@ export default function makeSchema(config: JIRASchemaConfig) {
   }
 
   if (config.allowMedia) {
-    nodes.push('mediaGroup', 'media');
+    nodes.push('mediaGroup', 'mediaSingle', 'media');
   }
 
   if (config.allowTextColor) {

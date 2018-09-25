@@ -141,12 +141,19 @@ export interface EditorProps {
   // Temporary flag to enable layouts while it's under development
   allowLayouts?: boolean;
 
+  // Enable status.
+  allowStatus?: boolean;
+
+  allowDynamicTextSizing?: boolean;
+
   // Set to enable the quick insert menu i.e. '/' key trigger.
   // You can also provide your own insert menu options that will be shown in addition to the enabled
   // editor features e.g. Confluence uses this to provide its macros.
   quickInsert?: QuickInsertOptions;
 
   UNSAFE_cards?: CardOptions;
+
+  UNSAFE_mediaSingle_grid?: boolean;
 
   // Submits on the enter key. Probably useful for an inline comment editor use case.
   saveOnEnter?: boolean;

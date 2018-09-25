@@ -1,6 +1,6 @@
 // @flow
 import React, { Component, Fragment } from 'react';
-import Checkbox from '@atlaskit/checkbox';
+import { Checkbox } from '@atlaskit/checkbox';
 import Button from '../src';
 
 const appearances = [
@@ -11,6 +11,7 @@ const appearances = [
   'subtle-link',
   'warning',
   'danger',
+  'help',
 ];
 
 const Table = props => <div style={{ display: 'table' }} {...props} />;
@@ -39,8 +40,8 @@ export default class ButtonAppearance extends Component<*, *> {
         <Checkbox
           value="showLoading"
           label="Show Loading State"
-          onChange={({ isChecked }) =>
-            this.setState({ showLoadingState: isChecked })
+          onChange={({ target }) =>
+            this.setState({ showLoadingState: target.checked })
           }
           name="show-loading"
         />

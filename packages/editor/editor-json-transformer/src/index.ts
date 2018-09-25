@@ -3,6 +3,7 @@ import {
   defaultSchema,
   linkToJSON,
   mediaToJSON,
+  mediaSingleToJSON,
   mentionToJSON,
   tableToJSON,
   toJSONTableCell,
@@ -27,8 +28,10 @@ export type JSONDocNode = {
 
 const isCodeBlock = (node: PMNode) => node.type.name === 'codeBlock';
 const isMediaNode = (node: PMNode) => node.type.name === 'media';
+const isMediaSingleNode = (node: PMNode) => node.type.name === 'mediaSingle';
 const isMentionNode = (node: PMNode) => node.type.name === 'mention';
 const isParagraph = (node: PMNode) => node.type.name === 'paragraph';
+const isHeading = (node: PMNode) => node.type.name === 'heading';
 const isTable = (node: PMNode) => node.type.name === 'table';
 const isTableCell = (node: PMNode) => node.type.name === 'tableCell';
 const isTableHeader = (node: PMNode) => node.type.name === 'tableHeader';
@@ -54,6 +57,8 @@ const toJSON = (node: PMNode): JSONNode => {
   const obj: JSONNode = { type: node.type.name };
   if (isMediaNode(node)) {
     obj.attrs = mediaToJSON(node).attrs;
+  } else if (isMediaSingleNode(node)) {
+    obj.attrs = mediaSingleToJSON(node).attrs;
   } else if (isMentionNode(node)) {
     obj.attrs = mentionToJSON(node).attrs;
   } else if (isCodeBlock(node)) {
@@ -81,8 +86,7 @@ const toJSON = (node: PMNode): JSONNode => {
     });
   }
 
-  if (isParagraph(node)) {
-    // Paragraph shall always has a content
+  if (isParagraph(node) || isHeading(node)) {
     obj.content = obj.content || [];
   }
 

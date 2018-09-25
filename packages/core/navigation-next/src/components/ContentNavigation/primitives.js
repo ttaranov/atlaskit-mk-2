@@ -1,8 +1,7 @@
 // @flow
 
-import React, { type Node } from 'react';
+import React, { Fragment, type Node } from 'react';
 import { keyframes } from 'emotion';
-import { ThemeProvider } from 'emotion-theming';
 import { Transition } from 'react-transition-group';
 import { colors } from '@atlaskit/theme';
 
@@ -12,7 +11,12 @@ import {
   transitionTimingFunction,
 } from '../../common/constants';
 import { Shadow } from '../../common/primitives';
-import { light, withContentTheme, type ProductTheme } from '../../theme';
+import {
+  light,
+  withContentTheme,
+  ThemeProvider,
+  type ProductTheme,
+} from '../../theme';
 
 const animationFade = state => {
   const defaultStyle = {
@@ -40,6 +44,8 @@ const ScrollProvider = (props: any) => (
   <div
     css={{
       boxSizing: 'border-box',
+      display: 'flex',
+      flexDirection: 'column',
       height: '100%',
       overflowX: 'hidden',
       overflowY: 'auto',
@@ -72,12 +78,22 @@ const ProductNavigationPrimitive = withContentTheme(
 
 type ProductNavigationProps = { children: Node };
 
-export const ProductNavigation = (props: ProductNavigationProps) => (
+type BaseNavigationTheme = {
+  children: Node,
+};
+
+export const ProductNavigationTheme = ({ children }: BaseNavigationTheme) => (
   <ThemeProvider
     theme={oldTheme => ({ mode: light, ...oldTheme, context: 'product' })}
   >
-    <ProductNavigationPrimitive {...props} />
+    <Fragment>{children}</Fragment>
   </ThemeProvider>
+);
+
+export const ProductNavigation = (props: ProductNavigationProps) => (
+  <ProductNavigationTheme>
+    <ProductNavigationPrimitive {...props} />
+  </ProductNavigationTheme>
 );
 
 const slideIn = keyframes`
@@ -140,10 +156,16 @@ type ContainerNavigationProps = {
   isPeeking: boolean,
 };
 
-export const ContainerNavigation = (props: ContainerNavigationProps) => (
+export const ContainerNavigationTheme = ({ children }: BaseNavigationTheme) => (
   <ThemeProvider theme={{ mode: light, context: 'container' }}>
-    <ContainerNavigationPrimitive {...props} />
+    <Fragment>{children}</Fragment>
   </ThemeProvider>
+);
+
+export const ContainerNavigation = (props: ContainerNavigationProps) => (
+  <ContainerNavigationTheme>
+    <ContainerNavigationPrimitive {...props} />
+  </ContainerNavigationTheme>
 );
 
 /**

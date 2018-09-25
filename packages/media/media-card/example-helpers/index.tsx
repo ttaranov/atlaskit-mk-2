@@ -109,22 +109,14 @@ export const actions = [
 
 export const anotherAction = {
   label: 'Some other action',
-  handler: (
-    item: MediaCollectionItem,
-    collection: MediaCollection,
-    e?: Event,
-  ) => {
+  handler: (item: MediaCollectionItem, collection: MediaCollection) => {
     console.log('Some other action', item, collection);
   },
 };
 
 export const annotateAction = {
   label: 'Annotate',
-  handler: (
-    item: MediaCollectionItem,
-    collection: MediaCollection,
-    e?: Event,
-  ) => {
+  handler: (item: MediaCollectionItem, collection: MediaCollection) => {
     console.log('annotate', item, collection);
   },
 };

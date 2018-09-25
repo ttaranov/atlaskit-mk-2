@@ -1,8 +1,5 @@
 import { Context } from '@atlaskit/media-core';
-import {
-  UploadService,
-  UploadServiceFactory,
-} from '../service/uploadServiceFactory';
+import { UploadService } from '../service/types';
 import {
   UploadEndEventPayload,
   UploadErrorEventPayload,
@@ -14,11 +11,11 @@ import {
 } from '../domain/uploadEvent';
 import { UploadComponent } from './component';
 import { UploadParams } from '../domain/config';
-import { defaultUploadParams } from '../domain/uploadParams';
+import { NewUploadServiceImpl } from '../service/newUploadServiceImpl';
 
 export interface LocalUploadConfig {
-  uploadParams: UploadParams;
-  tenantUploadParams?: UploadParams;
+  uploadParams: UploadParams; // This is tenant upload params
+  shouldCopyFileToRecents?: boolean;
 }
 
 export class LocalUploadComponent<
@@ -30,17 +27,16 @@ export class LocalUploadComponent<
 
   constructor(context: Context, config: LocalUploadConfig) {
     super();
-    const uploadParams = { ...defaultUploadParams, ...config.uploadParams };
-    const tenantUploadParams = {
-      ...defaultUploadParams,
-      ...config.tenantUploadParams,
-    };
+    const tenantUploadParams = config.uploadParams;
 
     this.context = context;
-    this.uploadService = UploadServiceFactory.create(
+
+    const { shouldCopyFileToRecents = true } = config;
+
+    this.uploadService = new NewUploadServiceImpl(
       this.context,
       tenantUploadParams,
-      uploadParams,
+      shouldCopyFileToRecents,
     );
     this.config = config;
     this.uploadService.on('files-added', this.onFilesAdded);

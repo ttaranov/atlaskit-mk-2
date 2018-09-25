@@ -18,4 +18,5 @@ export enum FabricChannel {
   elements = 'fabric-elements',
   navigation = 'navigation',
   editor = 'editor',
+  media = 'media',
 }

@@ -49,7 +49,7 @@ export class LinkCard extends Component<LinkCardProps, {}> {
     }
   }
 
-  private renderInLink(link, child): JSX.Element {
+  private renderInLink(link: any, child: any): JSX.Element {
     const { isLoading, isError } = this;
     if (link && !isLoading && !isError) {
       return (

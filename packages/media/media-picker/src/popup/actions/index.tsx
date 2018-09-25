@@ -67,3 +67,4 @@ export {
   UpdateServiceListAction,
 } from './updateServiceList';
 export * from './searchGiphy';
+export * from './saveCollectionItemsSubscription';

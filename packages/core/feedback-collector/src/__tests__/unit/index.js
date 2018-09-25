@@ -20,17 +20,3 @@ test('Feedback collector should render a component', () => {
   );
   expect(wrapper).toBeDefined();
 });
-
-test('Feedback collector should match the DOM snapshot', () => {
-  const wrapper = mount(
-    <FeedbackCollector
-      onClose={() => {}}
-      onSubmit={() => {}}
-      email={'email'}
-      name={'name'}
-      requestTypeId={'request_type_id'}
-      embeddableKey={'embeddable_key'}
-    />,
-  );
-  expect(wrapper).toMatchSnapshot();
-});

@@ -1,27 +1,28 @@
 // @flow
 
-import React, { Component } from 'react';
-import { ThemeProvider } from 'emotion-theming';
+import React, { Component, Fragment } from 'react';
 import DashboardIcon from '@atlaskit/icon/glyph/dashboard';
 import BacklogIcon from '@atlaskit/icon/glyph/backlog';
 import IssuesIcon from '@atlaskit/icon/glyph/issue';
 import ReportsIcon from '@atlaskit/icon/glyph/graph-line';
+import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import {
   GlobalNav,
   LayoutManager,
   NavigationProvider,
   Section,
-  SkeletonContainerHeader,
-  SkeletonItem,
+  SkeletonContainerView,
   light,
   dark,
   settings,
   ContainerHeader,
   ItemAvatar,
   Item,
+  ThemeProvider,
 } from '../src';
 
+const gridSize = gridSizeFn();
 const themeModes = { light, dark, settings };
 
 const GlobalNavigation = () => (
@@ -31,27 +32,34 @@ const GlobalNavigation = () => (
 type State = {
   themeMode: 'light' | 'dark' | 'settings',
   shouldShowContainer: boolean,
-  shouldRenderIcons: boolean,
   shouldRenderSkeleton: boolean,
 };
 export default class Example extends Component<{}, State> {
   state = {
     themeMode: 'light',
     shouldShowContainer: true,
-    shouldRenderIcons: false,
     shouldRenderSkeleton: true,
   };
 
   renderNavigation = () => {
-    const { shouldRenderIcons } = this.state;
     return (
-      <div css={{ padding: '16px 0' }}>
+      <Fragment>
         <Section>
           {({ css }) => (
-            <div css={css}>
+            <div
+              css={{
+                ...css,
+                paddingTop: gridSize * 2.5,
+                paddingBottom: gridSize * 2.5,
+              }}
+            >
               <ContainerHeader
                 before={itemState => (
-                  <ItemAvatar itemState={itemState} appearance="square" />
+                  <ItemAvatar
+                    itemState={itemState}
+                    appearance="square"
+                    size="large"
+                  />
                 )}
                 text="Container title"
                 subText="Container description"
@@ -62,51 +70,19 @@ export default class Example extends Component<{}, State> {
         <Section>
           {({ css }) => (
             <div css={css}>
-              <Item
-                before={shouldRenderIcons ? DashboardIcon : undefined}
-                text="Dashboards"
-              />
-              <Item
-                before={shouldRenderIcons ? BacklogIcon : undefined}
-                text="Backlog"
-              />
-              <Item
-                before={shouldRenderIcons ? IssuesIcon : undefined}
-                text="Issues and filters"
-              />
-              <Item
-                before={shouldRenderIcons ? ReportsIcon : undefined}
-                text="Reports"
-              />
+              <Item before={DashboardIcon} text="Dashboards" />
+              <Item before={BacklogIcon} text="Backlog" />
+              <Item before={IssuesIcon} text="Issues and filters" />
+              <Item before={ReportsIcon} text="Reports" />
             </div>
           )}
         </Section>
-      </div>
+      </Fragment>
     );
   };
 
   renderSkeleton = () => {
-    const { shouldRenderIcons } = this.state;
-    return (
-      <div css={{ padding: '16px 0' }}>
-        <Section>
-          {({ css }) => (
-            <div css={css}>
-              <SkeletonContainerHeader hasBefore />
-            </div>
-          )}
-        </Section>
-        <Section>
-          {({ css }) => (
-            <div css={css}>
-              <SkeletonItem hasBefore={shouldRenderIcons} />
-              <SkeletonItem hasBefore={shouldRenderIcons} />
-              <SkeletonItem hasBefore={shouldRenderIcons} />
-            </div>
-          )}
-        </Section>
-      </div>
-    );
+    return <SkeletonContainerView />;
   };
 
   handleThemeModeChange = ({ target: { value: themeMode } }: any) => {
@@ -121,17 +97,8 @@ export default class Example extends Component<{}, State> {
     this.setState({ shouldRenderSkeleton: !this.state.shouldRenderSkeleton });
   };
 
-  handleRenderIconsChange = () => {
-    this.setState({ shouldRenderIcons: !this.state.shouldRenderIcons });
-  };
-
   render() {
-    const {
-      shouldRenderIcons,
-      shouldRenderSkeleton,
-      shouldShowContainer,
-      themeMode,
-    } = this.state;
+    const { shouldRenderSkeleton, shouldShowContainer, themeMode } = this.state;
     const renderer = shouldRenderSkeleton
       ? this.renderSkeleton
       : this.renderNavigation;
@@ -148,7 +115,7 @@ export default class Example extends Component<{}, State> {
             productNavigation={renderer}
             containerNavigation={shouldShowContainer ? renderer : null}
           >
-            <div css={{ padding: 30 }}>
+            <div css={{ padding: '32px 40px' }}>
               <p>
                 <label htmlFor="should-render-skeleton-toggle">
                   <input
@@ -169,17 +136,6 @@ export default class Example extends Component<{}, State> {
                     type="checkbox"
                   />{' '}
                   Show container navigation
-                </label>
-              </p>
-              <p>
-                <label htmlFor="should-render-icons-toggle">
-                  <input
-                    checked={shouldRenderIcons}
-                    id="should-render-icons-toggle"
-                    onChange={this.handleRenderIconsChange}
-                    type="checkbox"
-                  />{' '}
-                  Render icons
                 </label>
               </p>
               <p>

@@ -1,5 +1,8 @@
 # @atlaskit/analytics-next-types
 
+## 3.1.1
+- [patch] Loosen AnalyticsEventPayload type to cater for Screen events [2d4b52e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d4b52e)
+
 ## 3.1.0
 - [minor] Expose UIAnalyticsEvent class [2fe5c09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2fe5c09)
 

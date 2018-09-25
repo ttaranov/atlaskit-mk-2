@@ -1,4 +1,4 @@
-import { toNativeBridge } from './web-to-native';
+import { toNativeBridge } from './editor/web-to-native';
 
 const pendingPromises: Map<string, Holder<any>> = new Map<
   string,
@@ -18,7 +18,7 @@ export interface SubmitPromiseToNative<T> {
 
 export function createPromise<T>(
   name: string,
-  args: string,
+  args?: string,
 ): SubmitPromiseToNative<T> {
   const holder: Holder<T> = createHolder();
   const uuid = counter++ + '';

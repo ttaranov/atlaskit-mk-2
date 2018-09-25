@@ -1,15 +1,22 @@
 // @flow
 
-import React, { Component, Fragment, type ElementRef } from 'react';
-import { ThemeProvider } from 'emotion-theming';
+import React, {
+  Component,
+  Fragment,
+  PureComponent,
+  type ElementRef,
+  type Ref,
+  type Node,
+} from 'react';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
+import { colors } from '@atlaskit/theme';
 
 import {
   name as packageName,
   version as packageVersion,
 } from '../../../package.json';
 import { Shadow } from '../../common/primitives';
-import { light } from '../../theme';
+import { light, ThemeProvider } from '../../theme';
 import ContentNavigation from '../ContentNavigation';
 import ResizeTransition, {
   isTransitioning,
@@ -25,7 +32,10 @@ import {
 } from './primitives';
 import type { LayoutManagerProps } from './types';
 
-import { GLOBAL_NAV_WIDTH } from '../../common/constants';
+import {
+  CONTENT_NAV_WIDTH_COLLAPSED,
+  GLOBAL_NAV_WIDTH,
+} from '../../common/constants';
 
 type RenderContentNavigationArgs = {
   isDragging: boolean,
@@ -43,6 +53,50 @@ function defaultTooltipContent(isCollapsed: boolean) {
     : { text: 'Collapse', char: '[' };
 }
 
+type PageProps = {
+  children: Node,
+  innerRef: Ref<'div'>,
+  isResizing: boolean,
+  isCollapsed: boolean,
+  productNavWidth: number,
+};
+
+// eslint-disable-next-line
+class PageInner extends PureComponent<{ children: Node }> {
+  render() {
+    return this.props.children;
+  }
+}
+
+// eslint-disable-next-line
+class Page extends PureComponent<PageProps> {
+  render() {
+    const { innerRef, isCollapsed, isResizing, productNavWidth } = this.props;
+    return (
+      <ResizeTransition
+        from={[CONTENT_NAV_WIDTH_COLLAPSED]}
+        in={!isCollapsed}
+        productNavWidth={productNavWidth}
+        properties={['paddingLeft']}
+        to={[productNavWidth]}
+        userIsDragging={isResizing}
+      >
+        {({ transitionStyle, transitionState }) => (
+          <PageWrapper
+            disableInteraction={isResizing || isTransitioning(transitionState)}
+            innerRef={innerRef}
+            offset={GLOBAL_NAV_WIDTH}
+            style={transitionStyle}
+          >
+            <PageInner>{this.props.children}</PageInner>
+          </PageWrapper>
+        )}
+      </ResizeTransition>
+    );
+  }
+}
+
+// eslint-disable-next-line
 export default class LayoutManager extends Component<
   LayoutManagerProps,
   State,
@@ -54,6 +108,25 @@ export default class LayoutManager extends Component<
   static defaultProps = {
     collapseToggleTooltipContent: defaultTooltipContent,
   };
+
+  nodeRefs = {
+    expandCollapseAffordance: React.createRef(),
+  };
+
+  componentDidMount() {
+    this.publishRefs();
+  }
+
+  componentDidUpdate() {
+    this.publishRefs();
+  }
+
+  publishRefs() {
+    const { getRefs } = this.props;
+    if (typeof getRefs === 'function') {
+      getRefs(this.nodeRefs);
+    }
+  }
 
   getNavRef = (ref: ElementRef<*>) => {
     this.productNavRef = ref;
@@ -94,13 +167,14 @@ export default class LayoutManager extends Component<
   };
 
   renderContentNavigation = (args: RenderContentNavigationArgs) => {
-    const { isDragging, transitionState, transitionStyle, width } = args;
+    const { transitionState, transitionStyle } = args;
     const {
       containerNavigation,
       navigationUIController,
       productNavigation,
     } = this.props;
     const {
+      isCollapsed,
       isPeekHinting,
       isPeeking,
       isResizing,
@@ -117,17 +191,37 @@ export default class LayoutManager extends Component<
         disableInteraction={shouldDisableInteraction}
         style={transitionStyle}
       >
-        {isVisible ? (
-          <ContentNavigation
-            container={containerNavigation}
-            isDragging={isDragging}
-            isPeekHinting={isPeekHinting}
-            isPeeking={isPeeking}
-            key="product-nav"
-            onOverlayClick={navigationUIController.unPeek}
-            product={productNavigation}
-            transitionState={transitionState}
-            width={width}
+        <ContentNavigation
+          container={containerNavigation}
+          isPeekHinting={isPeekHinting}
+          isPeeking={isPeeking}
+          isVisible={isVisible}
+          key="product-nav"
+          product={productNavigation}
+        />
+        {isCollapsed ? (
+          <div
+            aria-label="Click to expand the navigation"
+            role="button"
+            onClick={navigationUIController.expand}
+            css={{
+              cursor: 'pointer',
+              height: '100%',
+              outline: 0,
+              position: 'absolute',
+              transition: 'background-color 100ms',
+              width: CONTENT_NAV_WIDTH_COLLAPSED,
+
+              ':hover': {
+                backgroundColor: containerNavigation
+                  ? colors.N30
+                  : 'rgba(255, 255, 255, 0.08)',
+              },
+              ':active': {
+                backgroundColor: colors.N40A,
+              },
+            }}
+            tabIndex="0"
           />
         ) : null}
       </ContentNavigationWrapper>
@@ -144,6 +238,7 @@ export default class LayoutManager extends Component<
     } = this.props;
     const {
       isCollapsed,
+      isResizeDisabled,
       isResizing,
       productNavWidth,
     } = navigationUIController.state;
@@ -158,7 +253,7 @@ export default class LayoutManager extends Component<
         }}
       >
         <ResizeTransition
-          from={[0]}
+          from={[CONTENT_NAV_WIDTH_COLLAPSED]}
           in={!isCollapsed}
           properties={['width']}
           to={[productNavWidth]}
@@ -177,16 +272,20 @@ export default class LayoutManager extends Component<
                 onMouseLeave={this.mouseLeave}
               >
                 <ResizeControl
-                  navigation={navigationUIController}
-                  mouseIsOverNavigation={this.state.mouseIsOverNavigation}
                   collapseToggleTooltipContent={
                     // $FlowFixMe
                     this.props.collapseToggleTooltipContent
                   }
+                  expandCollapseAffordanceRef={
+                    this.nodeRefs.expandCollapseAffordance
+                  }
+                  isDisabled={isResizeDisabled}
+                  mouseIsOverNavigation={this.state.mouseIsOverNavigation}
                   mutationRefs={[
                     { ref: this.pageRef, property: 'padding-left' },
                     { ref: this.productNavRef, property: 'width' },
                   ]}
+                  navigation={navigationUIController}
                 >
                   {({ isDragging, width }) => (
                     <ContainerNavigationMask>
@@ -208,40 +307,25 @@ export default class LayoutManager extends Component<
     );
   };
 
-  renderPage = () => {
+  render() {
+    const { navigationUIController } = this.props;
     const {
       isResizing,
       isCollapsed,
       productNavWidth,
-    } = this.props.navigationUIController.state;
-    return (
-      <ResizeTransition
-        from={[0]}
-        in={!isCollapsed}
-        productNavWidth={productNavWidth}
-        properties={['paddingLeft']}
-        to={[productNavWidth]}
-        userIsDragging={isResizing}
-      >
-        {({ transitionStyle, transitionState }) => (
-          <PageWrapper
-            disableInteraction={isResizing || isTransitioning(transitionState)}
-            innerRef={this.getPageRef}
-            offset={GLOBAL_NAV_WIDTH}
-            style={transitionStyle}
-          >
-            {this.props.children}
-          </PageWrapper>
-        )}
-      </ResizeTransition>
-    );
-  };
+    } = navigationUIController.state;
 
-  render() {
     return (
       <LayoutContainer>
         {this.renderNavigation()}
-        {this.renderPage()}
+        <Page
+          innerRef={this.getPageRef}
+          isResizing={isResizing}
+          isCollapsed={isCollapsed}
+          productNavWidth={productNavWidth}
+        >
+          {this.props.children}
+        </Page>
       </LayoutContainer>
     );
   }

@@ -35,3 +35,8 @@ const bucketPath = `s3://${BUCKET_NAME}/${commitHash}/${fileName}`;
 npmRun.sync(
   `s3-cli --region="${BUCKET_REGION}" put ${pathToFile} ${bucketPath}`,
 );
+
+const publicUrl = `s3-${BUCKET_REGION}.amazonaws.com/${BUCKET_NAME}/${commitHash}/${fileName}`;
+console.log('Successfully published to', publicUrl);
+console.log('You can also fetch this file again by running:');
+console.log(`node ./build/download.build.artefact.for.commit.js ${fileName}`);

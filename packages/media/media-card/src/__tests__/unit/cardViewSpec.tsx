@@ -45,7 +45,7 @@ describe('CardView', () => {
     title: 'foobar',
   };
 
-  let createAnalyticsEventMock;
+  let createAnalyticsEventMock: any;
   beforeEach(() => {
     createAnalyticsEventMock = jest.fn();
     (shouldDisplayImageThumbnail as any).mockReturnValue(true);

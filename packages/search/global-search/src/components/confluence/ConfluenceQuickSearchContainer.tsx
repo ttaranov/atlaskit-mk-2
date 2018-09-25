@@ -1,16 +1,19 @@
 import * as React from 'react';
-import { injectIntl, InjectedIntlProps } from 'react-intl';
+import {
+  injectIntl,
+  InjectedIntlProps,
+  FormattedHTMLMessage,
+} from 'react-intl';
 import { withAnalytics, FireAnalyticsEvent } from '@atlaskit/analytics';
 import { ConfluenceClient } from '../../api/ConfluenceClient';
 import {
   CrossProductSearchClient,
   CrossProductSearchResults,
   EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE,
-  Scope,
 } from '../../api/CrossProductSearchClient';
-import { Result, ConfluenceResultsMap } from '../../model/Result';
+import { Scope } from '../../api/types';
+import { Result, ResultsWithTiming } from '../../model/Result';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
-import ConfluenceSearchResults from './ConfluenceSearchResults';
 import { SearchScreenCounter, ScreenCounter } from '../../util/ScreenCounter';
 import {
   LinkComponent,
@@ -24,6 +27,14 @@ import { CreateAnalyticsEventFn } from '../analytics/types';
 import performanceNow from '../../util/performance-now';
 import QuickSearchContainer from '../common/QuickSearchContainer';
 import { sliceResults } from './ConfluenceSearchResultsMapper';
+import NoResultsState from './NoResultsState';
+import SearchResultsComponent from '../common/SearchResults';
+import { getConfluenceAdvancedSearchLink } from '../SearchResultsUtil';
+import AdvancedSearchGroup from './AdvancedSearchGroup';
+import {
+  mapRecentResultsToUIGroups,
+  mapSearchResultsToUIGroups,
+} from './ConfluenceSearchResultsMapper';
 
 export interface Props {
   crossProductSearchClient: CrossProductSearchClient;
@@ -34,7 +45,8 @@ export interface Props {
   createAnalyticsEvent?: CreateAnalyticsEventFn;
   referralContextIdentifiers?: ReferralContextIdentifiers;
   isSendSearchTermsEnabled?: boolean;
-  useAggregatorForConfluenceObjects: boolean;
+  useAggregatorForConfluenceObjects?: boolean;
+  useCPUSForPeopleResults?: boolean;
 }
 
 /**
@@ -43,20 +55,10 @@ export interface Props {
 export class ConfluenceQuickSearchContainer extends React.Component<
   Props & InjectedIntlProps
 > {
-  screenCounters: {
-    preQueryScreenCounter: ScreenCounter;
-    postQueryScreenCounter: ScreenCounter;
+  screenCounters = {
+    preQueryScreenCounter: new SearchScreenCounter() as ScreenCounter,
+    postQueryScreenCounter: new SearchScreenCounter() as ScreenCounter,
   };
-
-  constructor(props) {
-    super(props);
-    const preQueryScreenCounter = new SearchScreenCounter();
-    const postQueryScreenCounter = new SearchScreenCounter();
-    this.screenCounters = {
-      preQueryScreenCounter,
-      postQueryScreenCounter,
-    };
-  }
 
   handleSearchSubmit = ({ target }) => {
     const query = target.value;
@@ -76,15 +78,29 @@ export class ConfluenceQuickSearchContainer extends React.Component<
 
   async searchCrossProductConfluence(
     query: string,
-    searchSessionId: string,
+    sessionId: string,
   ): Promise<CrossProductSearchResults> {
-    const scopes = this.props.useAggregatorForConfluenceObjects
+    const {
+      crossProductSearchClient,
+      useAggregatorForConfluenceObjects,
+      useCPUSForPeopleResults,
+      referralContextIdentifiers,
+    } = this.props;
+
+    let scopes = useAggregatorForConfluenceObjects
       ? [Scope.ConfluencePageBlogAttachment, Scope.ConfluenceSpace]
       : [Scope.ConfluenceSpace];
 
-    const results = await this.props.crossProductSearchClient.search(
+    if (useCPUSForPeopleResults) {
+      scopes.push(Scope.People);
+    }
+
+    const referrerId =
+      referralContextIdentifiers && referralContextIdentifiers.searchReferrerId;
+
+    const results = await crossProductSearchClient.search(
       query,
-      searchSessionId,
+      { sessionId, referrerId },
       scopes,
     );
     return results;
@@ -119,27 +135,37 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   ): ((reason: any) => void) => error =>
     this.handleSearchErrorAnalytics(error, source);
 
-  getSearchResults = (query, sessionId, startTime) => {
-    const useAggregator = this.props.useAggregatorForConfluenceObjects;
+  getSearchResults = (
+    query,
+    sessionId,
+    startTime,
+  ): Promise<ResultsWithTiming> => {
+    const {
+      useAggregatorForConfluenceObjects,
+      useCPUSForPeopleResults,
+    } = this.props;
 
-    const quickNavPromise = useAggregator
+    const quickNavPromise = useAggregatorForConfluenceObjects
       ? Promise.resolve([])
       : this.searchQuickNav(query, sessionId).catch(error => {
           this.handleSearchErrorAnalytics(error, 'confluence.quicknav');
           // rethrow to fail the promise
           throw error;
         });
+
     const confXpSearchPromise = handlePromiseError(
       this.searchCrossProductConfluence(query, sessionId),
       EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE,
       this.handleSearchErrorAnalyticsThunk('xpsearch-confluence'),
     );
 
-    const searchPeoplePromise = handlePromiseError(
-      this.searchPeople(query),
-      [],
-      this.handleSearchErrorAnalyticsThunk('search-people'),
-    );
+    const searchPeoplePromise = useCPUSForPeopleResults
+      ? Promise.resolve([])
+      : handlePromiseError(
+          this.searchPeople(query),
+          [],
+          this.handleSearchErrorAnalyticsThunk('search-people'),
+        );
 
     const mapPromiseToPerformanceTime = p =>
       p.then(() => performanceNow() - startTime);
@@ -165,12 +191,14 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         peopleElapsedMs,
       ]) => ({
         results: {
-          objects: useAggregator
+          objects: useAggregatorForConfluenceObjects
             ? xpsearchResults.results.get(Scope.ConfluencePageBlogAttachment) ||
               []
             : objectResults,
           spaces: xpsearchResults.results.get(Scope.ConfluenceSpace) || [],
-          people: peopleResults,
+          people: useCPUSForPeopleResults
+            ? xpsearchResults.results.get(Scope.People) || []
+            : peopleResults,
         },
         timings: {
           quickNavElapsedMs,
@@ -178,6 +206,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
           peopleElapsedMs,
         },
         experimentId: xpsearchResults.experimentId,
+        abTest: xpsearchResults.abTest,
       }),
     );
   };
@@ -226,17 +255,31 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     searchSessionId,
   }) => {
     return (
-      <ConfluenceSearchResults
-        retrySearch={retrySearch}
+      <SearchResultsComponent
         query={latestSearchQuery}
         isError={isError}
-        searchResults={searchResults}
-        recentItems={recentItems}
         isLoading={isLoading}
+        retrySearch={retrySearch}
         keepPreQueryState={keepPreQueryState}
         searchSessionId={searchSessionId}
-        referralContextIdentifiers={this.props.referralContextIdentifiers}
         {...this.screenCounters}
+        referralContextIdentifiers={this.props.referralContextIdentifiers}
+        renderNoRecentActivity={() => (
+          <FormattedHTMLMessage
+            id="global-search.no-recent-activity-body"
+            values={{ url: getConfluenceAdvancedSearchLink() }}
+          />
+        )}
+        renderAdvancedSearchGroup={(analyticsData?) => (
+          <AdvancedSearchGroup
+            key="advanced"
+            query={latestSearchQuery}
+            analyticsData={analyticsData}
+          />
+        )}
+        getPreQueryGroups={() => mapRecentResultsToUIGroups(recentItems)}
+        getPostQueryGroups={() => mapSearchResultsToUIGroups(searchResults)}
+        renderNoResult={() => <NoResultsState query={latestSearchQuery} />}
       />
     );
   };
@@ -254,12 +297,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         getSearchResults={this.getSearchResults}
         handleSearchSubmit={this.handleSearchSubmit}
         isSendSearchTermsEnabled={isSendSearchTermsEnabled}
-        getDisplayedResults={result => {
-          const slicedResults = sliceResults(result as ConfluenceResultsMap);
-          return Object.keys(slicedResults)
-            .map(key => slicedResults[key])
-            .reduce((acc: Result[][], value) => [...acc, value], []);
-        }}
+        getDisplayedResults={sliceResults}
       />
     );
   }

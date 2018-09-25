@@ -36,7 +36,8 @@ const ContentArea = styled(ContentStyles)`
   height: 100%;
 
   .ProseMirror {
-    min-height: 100vh;
+    /** Make it full page minus the padding */
+    min-height: calc(100vh - 40px);
   }
 `;
 ContentArea.displayName = 'ContentArea';
@@ -48,8 +49,10 @@ export default class Editor extends React.Component<
   static displayName = 'MobileEditor';
 
   private appearance: EditorAppearance = 'mobile';
+  private containerElement: HTMLElement | undefined;
 
   private handleRef = ref => {
+    this.containerElement = ref;
     if (this.props.onUiReady) {
       this.props.onUiReady(ref);
     }
@@ -80,6 +83,7 @@ export default class Editor extends React.Component<
               eventDispatcher={eventDispatcher}
               providerFactory={providerFactory}
               appearance={this.appearance}
+              containerElement={this.containerElement}
               disabled={!!disabled}
             />
             {editorDOMElement}

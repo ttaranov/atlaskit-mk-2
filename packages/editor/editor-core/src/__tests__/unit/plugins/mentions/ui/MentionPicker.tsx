@@ -10,6 +10,7 @@ import * as React from 'react';
 import { analyticsService } from '../../../../../analytics';
 import { enter } from '../../../../../keymaps';
 import { MentionPicker } from '../../../../../plugins/mentions/ui/MentionPicker';
+import { FabricElementsAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 
 const sessionIdRegex = /^[0-9a-f]{8}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{4}-?[0-9a-f]{12}$/i;
 
@@ -297,8 +298,7 @@ describe('MentionPicker', () => {
         expect(createAnalyticsEvent).toHaveBeenCalledWith(
           expect.objectContaining({
             action: 'cancelled',
-            actionSubject: 'typeahead',
-            actionSubjectId: 'mentionTypeahead',
+            actionSubject: 'mentionTypeahead',
             eventType: 'ui',
             source: 'unknown',
             attributes: expect.objectContaining({
@@ -330,8 +330,7 @@ describe('MentionPicker', () => {
         expect(createAnalyticsEvent).toHaveBeenCalledWith(
           expect.objectContaining({
             action: 'pressed',
-            actionSubject: 'typeahead',
-            actionSubjectId: 'mentionTypeahead',
+            actionSubject: 'mentionTypeahead',
             eventType: 'ui',
             source: 'unknown',
             attributes: expect.objectContaining({
@@ -367,8 +366,7 @@ describe('MentionPicker', () => {
         expect(createAnalyticsEvent).toHaveBeenCalledWith(
           expect.objectContaining({
             action: 'clicked',
-            actionSubject: 'typeahead',
-            actionSubjectId: 'mentionTypeahead',
+            actionSubject: 'mentionTypeahead',
             eventType: 'ui',
             source: 'unknown',
             attributes: expect.objectContaining({
@@ -392,6 +390,28 @@ describe('MentionPicker', () => {
       });
 
       describe('sessionId', () => {
+        it('should render FabricElementsAnalyticsContext with sessionId', () => {
+          state.subscribe.mock.calls[0][0]({
+            ...state,
+            queryActive: true,
+            focused: true,
+            anchorElement: {},
+            query: '',
+          });
+          component.update();
+
+          const elementsAnalyticsCtx = component.find(
+            FabricElementsAnalyticsContext,
+          );
+
+          expect(elementsAnalyticsCtx).toHaveLength(1);
+
+          const sessionId = elementsAnalyticsCtx.props().data.sessionId;
+
+          expect(sessionId).toBeDefined();
+          expect(sessionId).toEqual(expect.stringMatching(sessionIdRegex));
+        });
+
         it('should recreate sessionId when first session is dismissed', () => {
           state.subscribe.mock.calls[0][0]({
             ...state,

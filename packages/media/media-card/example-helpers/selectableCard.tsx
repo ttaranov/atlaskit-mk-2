@@ -13,7 +13,7 @@ export class SelectableCard extends Component<
   SelectableCardProps,
   { selected: boolean }
 > {
-  constructor(props) {
+  constructor(props: SelectableCardProps) {
     super(props);
     this.state = { selected: false };
   }
