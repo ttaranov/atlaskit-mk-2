@@ -1,0 +1,60 @@
+{
+  "name": "@atlassian/bitkit-commit-list",
+  "publishConfig": {
+    "registry": "https://packages.atlassian.com/api/npm/atlassian-npm"
+  },
+  "version": "7.3.0",
+  "description": "A React component for rendering a list of repository commits",
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit-mk-2"
+  },
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "atlaskit:src": "src/index.js",
+  "atlaskit": {
+    "name": "Commit List",
+    "team": "bitbucket"
+  },
+  "files": [
+    "lib",
+    "es",
+    "umd"
+  ],
+  "scripts": {
+    "build": "node ../../tools/build-package.js",
+    "prepublishOnly": "npm run build"
+  },
+  "author": "Bitbucket Cloud <bitbucket-dev@atlassian.com>",
+  "maintainers": [
+    "Ben G",
+    "Stacy L"
+  ],
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@atlaskit/avatar": "^14.0.3",
+    "@atlaskit/button": "^9.0.2",
+    "@atlaskit/icon": "^13.2.0",
+    "@atlaskit/spinner": "^9.0.2",
+    "@atlaskit/theme": "^6.0.3",
+    "@atlassian/bitkit-avatars": "^5.0.0",
+    "@atlassian/bitkit-date": "^4.0.0",
+    "@atlassian/bitkit-flow-types": "^0.10.0",
+    "react-intl": "^2.6.0"
+  },
+  "peerDependencies": {
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "enzyme-adapter-react-16": "https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.7.tgz",
+    "enzyme-react-intl": "^2.0.1",
+    "enzyme-to-json": "^3.3.0",
+    "react": "^16.4.0",
+    "styled-components": "^3.2.6"
+  },
+  "devDependencies": {
+    "@atlaskit/docs": "^5.0.1",
+    "@atlaskit/navigation": "^33.0.2",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "react-dom": "^16.4.2",
+    "react-test-renderer": "^16.3.0"
+  }
+}

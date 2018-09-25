@@ -1,0 +1,80 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Commit component with user data, matches the snapshot 1`] = `
+<styled.tr
+  onClick={null}
+  onKeyPress={[Function]}
+  tabIndex={null}
+>
+  <styled.td>
+    <InjectIntl(UserAvatarBase)
+      avatarSrc="https://bitbucket.org/account/mafrauen/avatar/32/"
+      displayName="Michael Frauenholtz"
+      href="https://bitbucket.org/mafrauen/"
+      size="small"
+    />
+  </styled.td>
+  <styled.td>
+    Michael Frauenholtz
+  </styled.td>
+  <styled.td>
+    <a
+      href="https://bitbucket.org/bitbucket/bitkit/commits/f22f269df5c111d79b13e8d9a7606ecd262240e0"
+    >
+      <styled.span>
+        f22f269
+      </styled.span>
+    </a>
+  </styled.td>
+  <styled.td>
+    Merged in fix-build (pull request #102)
+    
+    Fix lint errors
+    
+    Approved-by: Peter Williams &lt;pwilliams@atlassian.com&gt;
+    Approved-by: Stacy London &lt;slondon@atlassian.com&gt;
+    
+  </styled.td>
+  <styled.td>
+    <InjectIntl(RelativeDate)
+      date="2017-08-22T18:58:39+00:00"
+    />
+  </styled.td>
+</styled.tr>
+`;
+
+exports[`Commit component without user data, matches the snapshot 1`] = `
+<styled.tr
+  onClick={null}
+  onKeyPress={[Function]}
+  tabIndex={null}
+>
+  <styled.td>
+    <ForwardRef
+      size="small"
+      src=""
+    />
+  </styled.td>
+  <styled.td>
+    bitbucket &lt;bitbucket@pipelines&gt;
+  </styled.td>
+  <styled.td>
+    <a
+      href="https://bitbucket.org/bitbucket/bitkit/commits/cf53ce01402dd301185909d7949ebcef86ba2068"
+    >
+      <styled.span>
+        cf53ce0
+      </styled.span>
+    </a>
+  </styled.td>
+  <styled.td>
+    0.35.58 [skip ci]
+    
+  </styled.td>
+  <styled.td>
+    <InjectIntl(RelativeDate)
+      date="2017-08-22T19:04:08+00:00"
+    />
+  </styled.td>
+</styled.tr>
+`;
