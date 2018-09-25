@@ -63,7 +63,12 @@ class ToolbarButton extends PureComponent<Props, {}> {
         {value => (
           <div
             tabIndex={0}
-            // onClick={e => console.log('AYYEEE', e)}
+            onKeyDown={e => {
+              if (e.keyCode === 13) {
+                this.handleClick(e);
+                console.log('pressed enter in Toolbar button');
+              }
+            }}
             ref={input => {
               if (input !== null && value.selectedButton) {
                 if (
