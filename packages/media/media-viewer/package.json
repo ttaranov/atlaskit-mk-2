@@ -30,6 +30,7 @@
     "deep-equal": "^1.0.1",
     "pdfjs-dist": "^2.0.489",
     "query-string": "^4.3.2",
+    "react-async-component": "^2.0.0",
     "react-video-renderer": "^2.0.1",
     "tslib": "^1.8.0"
   },
