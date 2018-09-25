@@ -31,6 +31,8 @@
     "elements"
   ],
   "dependencies": {
+    "@atlaskit/field-text": "^7.0.10",
+    "@atlaskit/icon": "^13.8.1",
     "@atlaskit/lozenge": "^6.1.7",
     "@atlaskit/theme": "^6.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
