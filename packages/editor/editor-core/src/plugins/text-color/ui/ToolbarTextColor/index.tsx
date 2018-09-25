@@ -17,7 +17,7 @@ import {
 export const messages = defineMessages({
   textColor: {
     id: 'fabric.editor.textColor',
-    defaultMessage: 'Text Color',
+    defaultMessage: 'Text color',
     description: '',
   },
 });
