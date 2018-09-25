@@ -2,6 +2,7 @@ import Tooltip from '@atlaskit/tooltip';
 import * as React from 'react';
 import { PureComponent, ReactElement } from 'react';
 import { AkButton } from './styles';
+import ToolbarContext from '../Toolbar/ToolbarContext';
 
 export interface Props {
   className?: string;
@@ -17,12 +18,20 @@ export interface Props {
   theme?: 'dark';
   title?: string;
   titlePosition?: string;
+  registerButton?: (ToolbarButton) => null;
 }
 
-export default class ToolbarButton extends PureComponent<Props, {}> {
+class ToolbarButton extends PureComponent<Props, {}> {
   static defaultProps = {
     className: '',
   };
+
+  componentDidMount() {
+    const { registerButton } = this.props;
+    if (registerButton) {
+      registerButton(this);
+    }
+  }
 
   render() {
     const button = (
@@ -61,6 +70,14 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
     );
   }
 
+  // const MapElement = () => (
+  //   <Context.Consumer>
+  //     {context =>
+  //       <BaseMapElement context={context} />
+  //     }
+  //   </Context.Consumer>
+  // )
+
   private handleClick = (event: Event) => {
     const { disabled, onClick } = this.props;
 
@@ -69,3 +86,11 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
     }
   };
 }
+
+export default props => (
+  <ToolbarContext.Consumer>
+    {value => (
+      <ToolbarButton {...props} registerButton={value.registerButton} />
+    )}
+  </ToolbarContext.Consumer>
+);
