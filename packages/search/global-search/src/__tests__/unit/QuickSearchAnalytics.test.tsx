@@ -73,11 +73,8 @@ const JIRA_RECENT_ITEMS = [
 
 const getRecentItems = product =>
   product === 'jira' ? JIRA_RECENT_ITEMS : CONFLUECE_RECENT_ITEMS;
-[
-  // 'confluence',
-  'jira',
-].forEach(product => {
-  describe('Quick Search Analytics', () => {
+['confluence', 'jira'].forEach(product => {
+  describe(`${product} Quick Search Analytics`, () => {
     const updateSpy = spyOnComponentDidUpdate();
     const onEventSpy = jest.fn();
     let wrapper: ReactWrapper;
@@ -189,12 +186,22 @@ const getRecentItems = product =>
             event,
             getHighlightEvent({
               key: 'ArrowDown',
-              indexWithinSection: index % (count - 1),
               globalIndex: index,
-              resultCount: 16, // 14 + 2 advanced
-              sectionIndex: Math.floor(index / (count - 1)),
-              sectionId: 'recent-confluence',
-              type: index === 8 ? undefined : 'confluence-page',
+              ...(product === 'confluence'
+                ? {
+                    indexWithinSection: index % (count - 1),
+                    sectionIndex: Math.floor(index / (count - 1)),
+                    resultCount: 16, // 14 + 2 advanced
+                    sectionId: 'recent-confluence',
+                    type: index === 8 ? undefined : 'confluence-page',
+                  }
+                : {
+                    indexWithinSection: index % (count - 2),
+                    sectionIndex: Math.floor(index / (count - 2)),
+                    resultCount: 17, // 14 + 2 advanced
+                    sectionId: 'recent-jira',
+                    type: index >= 7 ? 'jira-board' : 'jira-issue',
+                  }),
             }),
           );
         });
@@ -209,38 +216,58 @@ const getRecentItems = product =>
           getHighlightEvent({
             key: 'ArrowUp',
             indexWithinSection: undefined,
-            globalIndex: 15,
-            resultCount: 16, // 14 + 2 advanced
-            sectionIndex: undefined, // advanced results is not a section
-            sectionId: 'advanced-search-confluence',
-            type: undefined,
+            ...(product === 'confluence'
+              ? {
+                  globalIndex: 15,
+                  resultCount: 16, // 14 + 2 advanced
+                  sectionIndex: undefined, // advanced results is not a section
+                  sectionId: 'advanced-search-confluence',
+                  type: undefined,
+                }
+              : {
+                  globalIndex: 16,
+                  resultCount: 17,
+                  sectionIndex: undefined, // advanced results is not a section
+                  sectionId: 'advanced-search-jira',
+                  type: undefined,
+                }),
           }),
         );
       });
 
       it('should trigger advanced result selected', () => {
         const results = wrapper.find(ResultBase);
-        expect(results.length).toBe(16);
+        const expectedResultsCount = product === 'confluence' ? 16 : 17;
+        expect(results.length).toBe(expectedResultsCount);
         const advancedSearchResult = results.last();
         advancedSearchResult.simulate('click', {
           metaKey: true,
         });
         expect(onEventSpy).toHaveBeenCalledTimes(1);
         const event = onEventSpy.mock.calls[0][0];
-        validateEvent(
-          event,
-          getAdvancedSearchLinkSelectedEvent({
-            resultContentId: 'search_confluence',
-            sectionId: 'advanced-search-confluence',
-            globalIndex: 15,
-            resultCount: 14, // does not include advanced search links
-          }),
-        );
+        const payload =
+          product === 'confluence'
+            ? {
+                actionSubjectId: 'advanced_search_confluence',
+                resultContentId: 'search_confluence',
+                sectionId: 'advanced-search-confluence',
+                globalIndex: 15,
+                resultCount: 14, // does not include advanced search links
+              }
+            : {
+                actionSubjectId: 'advanced_search_jira',
+                resultContentId: 'search_jira',
+                sectionId: 'advanced-search-jira',
+                globalIndex: 16,
+                resultCount: 16, // does not include advanced search links
+              };
+        validateEvent(event, getAdvancedSearchLinkSelectedEvent(payload));
       });
 
       it('should trigger result selected', () => {
         const results = wrapper.find(ResultBase);
-        expect(results.length).toBe(16);
+        const expectedResultsCount = product === 'confluence' ? 16 : 17;
+        expect(results.length).toBe(expectedResultsCount);
         const result = results.at(10);
         result.simulate('click', {
           metaKey: true,
@@ -248,19 +275,29 @@ const getRecentItems = product =>
 
         expect(onEventSpy).toHaveBeenCalledTimes(1);
         const event = onEventSpy.mock.calls[0][0];
-        validateEvent(
-          event,
-          getResultSelectedEvent({
-            sectionId: 'recent-confluence',
-            globalIndex: 10,
-            resultCount: 14, // does not include advanced search links
-            sectionIndex: 1,
-            indexWithinSection: 2,
-            trigger: 'click',
-            newTab: true,
-            type: undefined,
-          }),
-        );
+        const payload =
+          product === 'confluence'
+            ? {
+                sectionId: 'recent-confluence',
+                globalIndex: 10,
+                resultCount: 14, // does not include advanced search links
+                sectionIndex: 1,
+                indexWithinSection: 2,
+                trigger: 'click',
+                newTab: true,
+                type: undefined,
+              }
+            : {
+                sectionId: 'recent-jira',
+                globalIndex: 10,
+                resultCount: 16, // does not include advanced search links
+                sectionIndex: 1,
+                indexWithinSection: 3,
+                trigger: 'click',
+                newTab: true,
+                type: 'jira-filter',
+              };
+        validateEvent(event, getResultSelectedEvent(payload));
       });
 
       it('should trigger result selected via keyboard navigation', () => {
@@ -270,19 +307,29 @@ const getRecentItems = product =>
         expect(onEventSpy).toHaveBeenCalled();
         const event =
           onEventSpy.mock.calls[onEventSpy.mock.calls.length - 1][0];
-        validateEvent(
-          event,
-          getResultSelectedEvent({
-            sectionId: 'recent-confluence',
-            globalIndex: 1,
-            resultCount: 16, // include advanced search links
-            sectionIndex: 0,
-            indexWithinSection: 1,
-            trigger: 'returnKey',
-            newTab: false,
-            type: 'confluence-page',
-          }),
-        );
+        const payload =
+          product === 'confluence'
+            ? {
+                sectionId: 'recent-confluence',
+                globalIndex: 1,
+                resultCount: 16, // include advanced search links
+                sectionIndex: 0,
+                indexWithinSection: 1,
+                trigger: 'returnKey',
+                newTab: false,
+                type: 'confluence-page',
+              }
+            : {
+                sectionId: 'recent-jira',
+                globalIndex: 1,
+                resultCount: 17, // include advanced search links
+                sectionIndex: 0,
+                indexWithinSection: 1,
+                trigger: 'returnKey',
+                newTab: false,
+                type: 'jira-issue',
+              };
+        validateEvent(event, getResultSelectedEvent(payload));
       });
     });
 
@@ -295,13 +342,39 @@ const getRecentItems = product =>
             queryVersion: 0,
             wordCount: 1,
           },
-          postQueryResults: [
-            {
-              id: 'confluence-object-result',
-              hasContainerId: true,
-              resultsCount: 8,
-            },
-          ],
+          postQueryResults:
+            product === 'confluence'
+              ? [
+                  {
+                    id: 'confluence-object-result',
+                    hasContainerId: true,
+                    resultsCount: 8,
+                  },
+                ]
+              : [
+                  {
+                    id: 'jira-object-result',
+                    hasContainerId: true,
+                    resultsCount: 8,
+                  },
+                  {
+                    id: 'jira-object-result',
+                    hasContainerId: true,
+                    resultsCount: 6,
+                  },
+                ],
+          postQueryResultsTimings:
+            product === 'confluence'
+              ? {
+                  quickNavElapsedMs: expect.any(Number),
+                  confSearchElapsedMs: expect.any(Number),
+                  postQueryRequestDurationMs: expect.any(Number),
+                  peopleElapsedMs: expect.any(Number),
+                }
+              : {
+                  postQueryRequestDurationMs: expect.any(Number),
+                  peopleElapsedMs: expect.any(Number),
+                },
         },
       },
       {
@@ -355,7 +428,10 @@ const getRecentItems = product =>
           const event = onEventSpy.mock.calls[2][0];
           validateEvent(
             event,
-            getPostQuerySearchResultsEvent(expectedResults.postQueryResults),
+            getPostQuerySearchResultsEvent(
+              expectedResults.postQueryResults,
+              expectedResults.postQueryResultsTimings,
+            ),
           );
         });
 
@@ -415,7 +491,7 @@ const getRecentItems = product =>
             const event = onEventSpy.mock.calls[2][0];
             validateEvent(
               event,
-              getPreQuerySearchResultsEvent(CONFLUECE_RECENT_ITEMS),
+              getPreQuerySearchResultsEvent(getRecentItems(product)),
             );
           });
         });
