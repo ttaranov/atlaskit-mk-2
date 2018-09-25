@@ -15,7 +15,9 @@ export const isFeatureFlag = (flag: AnyFlag): boolean => {
   );
 };
 
-export const isDarkFeature = (flag: AnyFlag): boolean => isBoolean(flag);
+export const isDarkFeature = (flag: AnyFlag): boolean => {
+  return typeof flag !== 'undefined' && !isFeatureFlag(flag);
+};
 
 export const isOneOf = (value: string, list: string[]): boolean =>
   list.indexOf(value) > -1;
