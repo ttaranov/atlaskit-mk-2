@@ -122,6 +122,8 @@ const removeItemFromTree = (
   const itemRemoved: TreeItem = newSourceChildren.splice(position.index, 1)[0];
   const newTree = mutateTree(tree, position.parentId, {
     children: newSourceChildren,
+    hasChildren: newSourceChildren.length > 0,
+    isExpanded: newSourceChildren.length > 0 && sourceParent.isExpanded,
   });
   return {
     tree: newTree,
