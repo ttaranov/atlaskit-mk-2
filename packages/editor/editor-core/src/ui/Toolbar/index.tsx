@@ -88,12 +88,21 @@ export class ToolbarInner extends React.Component<
   }
 
   registerButton(button) {
-    //}: ToolbarButton) {
-    console.log('registered button in toolbar');
+    console.log('registered button in toolbar:', button);
 
-    this.setState(prevState => ({
-      registeredButtons: [...prevState.registeredButtons, button],
-    }));
+    this.setState(prevState => {
+      const allButtons = prevState.registeredButtons;
+      let newRegisteredButtons = allButtons;
+      if (allButtons.map(b => b.props).indexOf(button.props) === -1) {
+        newRegisteredButtons = [...allButtons, button];
+      } else {
+        console.log('A button already existed!');
+        debugger;
+      }
+      return {
+        registeredButtons: newRegisteredButtons,
+      };
+    });
     return null;
   }
 
@@ -123,26 +132,28 @@ export class ToolbarInner extends React.Component<
           registerButton: this.registerButton,
         }}
       >
-        <ToolbarComponentsWrapper>
-          {items.map((component, key) => {
-            const props: any = { key };
-            const element = component({
-              editorView,
-              editorActions: editorActions as EditorActions,
-              eventDispatcher,
-              providerFactory,
-              appearance,
-              popupsMountPoint,
-              popupsBoundariesElement,
-              popupsScrollableElement,
-              disabled,
-              toolbarSize,
-              isToolbarReducedSpacing,
-              containerElement: undefined,
-            });
-            return element && React.cloneElement(element, props);
-          })}
-        </ToolbarComponentsWrapper>
+        <div onKeyDown={e => console.log('Onkeydown in Toolbar')}>
+          <ToolbarComponentsWrapper>
+            {items.map((component, key) => {
+              const props: any = { key };
+              const element = component({
+                editorView,
+                editorActions: editorActions as EditorActions,
+                eventDispatcher,
+                providerFactory,
+                appearance,
+                popupsMountPoint,
+                popupsBoundariesElement,
+                popupsScrollableElement,
+                disabled,
+                toolbarSize,
+                isToolbarReducedSpacing,
+                containerElement: undefined,
+              });
+              return element && React.cloneElement(element, props);
+            })}
+          </ToolbarComponentsWrapper>
+        </div>
       </ToolbarContext.Provider>
     );
   }
