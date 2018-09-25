@@ -26,6 +26,8 @@ class ToolbarButton extends PureComponent<Props, {}> {
     className: '',
   };
 
+  private button;
+
   componentDidMount() {
     const { registerButton } = this.props;
     if (registerButton) {
@@ -35,70 +37,71 @@ class ToolbarButton extends PureComponent<Props, {}> {
 
   render() {
     const button = (
-      <AkButton
-        tabIndex="-1"
-        appearance="subtle"
-        ariaHaspopup={true}
-        className={this.props.className}
-        href={this.props.href}
-        iconAfter={this.props.iconAfter}
-        iconBefore={this.props.iconBefore}
-        isDisabled={this.props.disabled}
-        isSelected={this.props.selected}
-        onClick={this.handleClick}
-        spacing={this.props.spacing || 'default'}
-        target={this.props.target}
-        theme={this.props.theme}
-        shouldFitContainer={true}
-      >
-        {this.props.children}
-      </AkButton>
-    );
-
-    const buttonsMatch = (button1, button2) =>
-      button1.props.title === button2.props.title;
-
-    const WrappedButton = (
       <ToolbarContext.Consumer>
         {value => (
-          <div
-            tabIndex={0}
-            // onClick={e => console.log('AYYEEE', e)}
-            ref={input => {
-              if (input !== null && value.selectedButton) {
-                if (
-                  this.props.title === 'More formatting' &&
-                  value.selectedButtonIndex === 3
-                ) {
-                  console.log('IN THE MORE FORMATTING');
-                  console.log(
-                    'selectedButtonIndex:',
-                    value.selectedButtonIndex,
-                  );
-                  console.log('SelectedButton:', value.selectedButton);
-                  console.log('this:', this);
-                  console.log(
-                    'buttonsMatch:',
-                    buttonsMatch(value.selectedButton, this),
-                  );
-                }
-              }
+          <AkButton
+            tabIndex="0"
+            appearance="subtle"
+            ariaHaspopup={true}
+            className={this.props.className}
+            href={this.props.href}
+            iconAfter={this.props.iconAfter}
+            iconBefore={this.props.iconBefore}
+            isDisabled={this.props.disabled}
+            isSelected={this.props.selected}
+            onClick={this.handleClick}
+            spacing={this.props.spacing || 'default'}
+            target={this.props.target}
+            theme={this.props.theme}
+            shouldFitContainer={true}
+            innerRef={input => {
+              // if (input !== null && value.selectedButton) {
+              //   if (
+              //     this.props.title === 'More formatting' &&
+              //     value.selectedButtonIndex === 3
+              //   ) {
+              //     console.log('IN THE MORE FORMATTING');
+              //     console.log(
+              //       'selectedButtonIndex:',
+              //       value.selectedButtonIndex,
+              //     );
+              //     console.log(
+              //       'buttonsMatch:',
+              //       buttonsMatch(value.selectedButton, this),
+              //     );
+              //   }
+              // }
               if (
                 input !== null &&
                 value.selectedButton &&
                 buttonsMatch(value.selectedButton, this)
-                // @ts-ignore
-                // value.selectedButton!.props == this.props
               ) {
+                console.log('SelectedButton:', value.selectedButton);
+                console.log('this:', this);
+                console.log('input:', input);
                 console.log('FOCUS THE BUTTON :)');
-                input!.focus();
+                // input!.focus();
               }
             }}
           >
-            {button}
-          </div>
+            {this.props.children}
+          </AkButton>
         )}
       </ToolbarContext.Consumer>
+    );
+
+    const buttonsMatch = (button1, button2) =>
+      button1.props.title &&
+      button2.props.title &&
+      button1.props.title === button2.props.title;
+
+    const WrappedButton = (
+      <div
+        tabIndex={0}
+        // onClick={e => console.log('AYYEEE', e)}
+      >
+        {button}
+      </div>
     );
 
     // const button = (
@@ -133,8 +136,8 @@ class ToolbarButton extends PureComponent<Props, {}> {
         hideTooltipOnClick={true}
         position={position}
       >
-        {/* {button} */}
-        {WrappedButton}
+        {button}
+        {/* {WrappedButton} */}
       </Tooltip>
     ) : (
       button
