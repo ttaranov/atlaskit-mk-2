@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Component } from 'react';
-import { formattedMessage } from '@atlaskit/media-ui';
+import { messages } from '@atlaskit/media-ui';
+import { FormattedMessage } from 'react-intl';
 import {
   FileDetails,
   ImageResizeMode,
@@ -53,9 +54,11 @@ export class FileCard extends Component<FileCardProps, {}> {
       size: undefined,
     };
     const { name, mediaType, size } = details || defaultDetails;
-    const errorMessage = this.isError
-      ? formattedMessage('failed_to_load')
-      : undefined;
+    const errorMessage = this.isError ? (
+      <FormattedMessage {...messages.failed_to_load} />
+    ) : (
+      undefined
+    );
 
     if (this._isSmall()) {
       const subtitle = toHumanReadableMediaSize(size || 0);
