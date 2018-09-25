@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 5.8.2
+- [patch] Parse Jira recent response with optional attributes [f6f81ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f6f81ca)
+
 ## 5.8.1
 - [patch] Add support for Jira default icons for boards, filters and issues [deb791d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/deb791d)
 

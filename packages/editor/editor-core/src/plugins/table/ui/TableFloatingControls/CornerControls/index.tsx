@@ -3,9 +3,8 @@ import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
 import { isTableSelected, selectTable } from 'prosemirror-utils';
 import { Selection } from 'prosemirror-state';
-import { toolbarSize } from '../styles';
-import InsertColumnButton from '../ColumnControls/InsertColumnButton';
-import InsertRowButton from '../RowControls/InsertRowButton';
+import { tableToolbarSize } from '../../styles';
+import InsertButton from '../InsertButton';
 import { hoverTable, insertColumn, insertRow } from '../../../actions';
 import { getLineMarkerWidth } from '../utils';
 
@@ -52,19 +51,24 @@ export default class CornerControls extends Component<Props, any> {
         />
         {!isHeaderColumnEnabled &&
           !isNumberColumnEnabled && (
-            <InsertColumnButton
+            <InsertButton
+              type="column"
               onClick={this.insertColumn}
-              lineMarkerHeight={tableHeight + toolbarSize}
+              insertLineStyle={{
+                height: tableHeight + tableToolbarSize,
+              }}
             />
           )}
         {!isHeaderRowEnabled && (
-          <InsertRowButton
-            style={{ top: 2 }}
+          <InsertButton
+            type="row"
             onClick={this.insertRow}
-            lineMarkerWidth={getLineMarkerWidth(
-              tableRef,
-              (tableRef.parentNode as HTMLElement).scrollLeft,
-            )}
+            insertLineStyle={{
+              width: getLineMarkerWidth(
+                tableRef,
+                (tableRef.parentNode as HTMLElement).scrollLeft,
+              ),
+            }}
           />
         )}
       </div>
