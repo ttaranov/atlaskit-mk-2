@@ -6,6 +6,7 @@ import { ProviderFactory } from '@atlaskit/editor-common';
 import { EditorAppearance, ToolbarUIComponentFactory } from '../../types';
 import { EventDispatcher } from '../../event-dispatcher';
 import EditorActions from '../../actions';
+import { ToolbarContext } from './ToolbarContext';
 
 const ToolbarComponentsWrapper = styled.div`
   display: flex;
@@ -51,13 +52,39 @@ export interface ToolbarProps {
   width?: number;
 }
 
+interface ToolbarInnerState {
+  registeredButtons: any[];
+  selectedButtonIndex: number;
+  selectedButton?: any;
+  arrowKeyPushed: boolean;
+}
+
 export interface ToolbarInnerProps extends ToolbarProps {
   toolbarSize: ToolbarSize;
   isToolbarReducedSpacing: boolean;
 }
 
-export class ToolbarInner extends React.Component<ToolbarInnerProps> {
+export class ToolbarInner extends React.Component<
+  ToolbarInnerProps,
+  ToolbarInnerState
+> {
+  constructor(props: ToolbarInnerProps) {
+    super(props);
+    this.registerButton = this.registerButton.bind(this);
+    this.shouldFocus = this.shouldFocus.bind(this);
+    this.state = {
+      selectedButtonIndex: 1,
+      registeredButtons: [],
+      selectedButton: undefined,
+      arrowKeyPushed: false,
+    };
+  }
+
   shouldComponentUpdate(nextProps, nextState) {
+    if (this.props.disabled === true && nextProps.disabled === false) {
+      this.updateSelectedButton();
+    }
+
     return (
       nextProps.toolbarSize !== this.props.toolbarSize ||
       nextProps.disabled !== this.props.disabled ||
@@ -69,6 +96,71 @@ export class ToolbarInner extends React.Component<ToolbarInnerProps> {
       nextProps.isReducedSpacing !== this.props.isToolbarReducedSpacing
     );
   }
+  shouldFocus() {
+    const pushed: boolean = this.state.arrowKeyPushed;
+    if (pushed) {
+      this.setState({
+        arrowKeyPushed: false,
+      });
+    }
+    return pushed;
+  }
+
+  registerButton(button) {
+    this.setState(prevState => {
+      const prevRegisteredButtons = prevState.registeredButtons;
+      const allTitles = prevRegisteredButtons.map(b => b.props.title);
+
+      if (allTitles.indexOf(button.props.title) !== -1) {
+        // Our button already exists
+        return { ...prevState };
+      }
+
+      const newRegisteredButtons = [...prevRegisteredButtons, button];
+      // Ensure selectedButton if defined if there are any buttons registered
+      let selectedButton =
+        newRegisteredButtons.length > 0
+          ? newRegisteredButtons[prevState.selectedButtonIndex]
+          : prevState.selectedButton;
+      return {
+        registeredButtons: newRegisteredButtons,
+        selectedButton: selectedButton,
+      };
+    });
+    return null;
+  }
+
+  private updateSelectedButton() {
+    this.setState(prevState => ({
+      selectedButton:
+        prevState.registeredButtons[prevState.selectedButtonIndex],
+    }));
+  }
+
+  private changeSelectedButton(delta: number) {
+    this.setState(prevState => {
+      const newIndex = prevState.selectedButtonIndex + delta;
+      const buttons = prevState.registeredButtons;
+
+      // Stay in the toolbar boundaries
+      if (newIndex < 0 || newIndex >= buttons.length) {
+        return { ...prevState };
+      }
+      return {
+        selectedButtonIndex: newIndex,
+        selectedButton: buttons[newIndex],
+        arrowKeyPushed: true,
+      };
+    });
+  }
+
+  private handleKeydown = e => {
+    if (e.key === 'ArrowLeft') {
+      this.changeSelectedButton(-1);
+    } else if (e.key === 'ArrowRight') {
+      this.changeSelectedButton(1);
+    }
+  };
 
   render() {
     const {
@@ -91,26 +183,38 @@ export class ToolbarInner extends React.Component<ToolbarInnerProps> {
     }
 
     return (
-      <ToolbarComponentsWrapper>
-        {items.map((component, key) => {
-          const props: any = { key };
-          const element = component({
-            editorView,
-            editorActions: editorActions as EditorActions,
-            eventDispatcher,
-            providerFactory,
-            appearance,
-            popupsMountPoint,
-            popupsBoundariesElement,
-            popupsScrollableElement,
-            disabled,
-            toolbarSize,
-            isToolbarReducedSpacing,
-            containerElement: undefined,
-          });
-          return element && React.cloneElement(element, props);
-        })}
-      </ToolbarComponentsWrapper>
+      <ToolbarContext.Provider
+        value={{
+          registerButton: this.registerButton,
+          selectedButton: this.state.selectedButton,
+          selectedButtonIndex: this.state.selectedButtonIndex,
+          enabled: !this.props.disabled,
+          shouldFocus: this.shouldFocus,
+        }}
+      >
+        <div onKeyDown={this.handleKeydown}>
+          <ToolbarComponentsWrapper>
+            {items.map((component, key) => {
+              const props: any = { key };
+              const element = component({
+                editorView,
+                editorActions: editorActions as EditorActions,
+                eventDispatcher,
+                providerFactory,
+                appearance,
+                popupsMountPoint,
+                popupsBoundariesElement,
+                popupsScrollableElement,
+                disabled,
+                toolbarSize,
+                isToolbarReducedSpacing,
+                containerElement: undefined,
+              });
+              return element && React.cloneElement(element, props);
+            })}
+          </ToolbarComponentsWrapper>
+        </div>
+      </ToolbarContext.Provider>
     );
   }
 }

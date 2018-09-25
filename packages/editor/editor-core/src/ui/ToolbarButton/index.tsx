@@ -2,6 +2,10 @@ import Tooltip from '@atlaskit/tooltip';
 import * as React from 'react';
 import { PureComponent, ReactElement } from 'react';
 import { AkButton } from './styles';
+import {
+  ToolbarContext,
+  ToolbarContextInterface,
+} from '../Toolbar/ToolbarContext';
 
 export interface Props {
   className?: string;
@@ -17,16 +21,26 @@ export interface Props {
   theme?: 'dark';
   title?: string;
   titlePosition?: string;
+  toolbarContext?: ToolbarContextInterface;
 }
 
-export default class ToolbarButton extends PureComponent<Props, {}> {
+class ToolbarButton extends PureComponent<Props, {}> {
   static defaultProps = {
     className: '',
   };
 
+  componentDidMount() {
+    const { toolbarContext } = this.props;
+
+    if (toolbarContext && toolbarContext.registerButton) {
+      toolbarContext.registerButton(this);
+    }
+  }
+
   render() {
     const button = (
       <AkButton
+        tabIndex="-1"
         appearance="subtle"
         ariaHaspopup={true}
         className={this.props.className}
@@ -45,6 +59,45 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
       </AkButton>
     );
 
+    const buttonsMatch = (button1, button2) =>
+      button1.props.title === button2.props.title;
+
+    const WrappedButton = (
+      <ToolbarContext.Consumer>
+        {value => (
+          <div
+            onKeyDown={e => {
+              if (e.key === 'Enter') {
+                this.handleClick(e);
+              }
+            }}
+            ref={input => {
+              if (input !== null && !this.props.disabled) {
+                if (
+                  value.selectedButton &&
+                  buttonsMatch(value.selectedButton, this)
+                ) {
+                  if (input!.tabIndex !== 0) {
+                    input!.tabIndex = 0;
+                  }
+
+                  if (value.shouldFocus && value.shouldFocus()) {
+                    input!.focus();
+                  }
+                } else {
+                  if (input!.tabIndex !== -1) {
+                    input!.tabIndex = -1;
+                  }
+                }
+              }
+            }}
+          >
+            {button}
+          </div>
+        )}
+      </ToolbarContext.Consumer>
+    );
+
     const position = this.props.titlePosition || 'top';
     const tooltipContent = !this.props.hideTooltip ? this.props.title : null;
 
@@ -54,14 +107,14 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
         hideTooltipOnClick={true}
         position={position}
       >
-        {button}
+        {WrappedButton}
       </Tooltip>
     ) : (
       button
     );
   }
 
-  private handleClick = (event: Event) => {
+  private handleClick = event => {
     const { disabled, onClick } = this.props;
 
     if (!disabled && onClick) {
@@ -69,3 +122,11 @@ export default class ToolbarButton extends PureComponent<Props, {}> {
     }
   };
 }
+
+export default React.forwardRef<ToolbarButton, Props>((props, ref) => (
+  <ToolbarContext.Consumer>
+    {toolbarContext => (
+      <ToolbarButton {...props} toolbarContext={toolbarContext} ref={ref} />
+    )}
+  </ToolbarContext.Consumer>
+));
