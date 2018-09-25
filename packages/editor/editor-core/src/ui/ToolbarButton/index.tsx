@@ -36,7 +36,7 @@ class ToolbarButton extends PureComponent<Props, {}> {
   render() {
     const button = (
       <AkButton
-        // tabIndex="-1"
+        tabIndex="-1"
         appearance="subtle"
         ariaHaspopup={true}
         className={this.props.className}
@@ -59,7 +59,7 @@ class ToolbarButton extends PureComponent<Props, {}> {
       <ToolbarContext.Consumer>
         {value => (
           <div
-            // tabIndex={0}
+            tabIndex={0}
             // onClick={e => console.log('AYYEEE', e)}
             ref={input => {
               // if(input !== null){
