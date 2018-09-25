@@ -55,6 +55,9 @@ class ToolbarButton extends PureComponent<Props, {}> {
       </AkButton>
     );
 
+    const buttonsMatch = (button1, button2) =>
+      button1.props.title === button2.props.title;
+
     const WrappedButton = (
       <ToolbarContext.Consumer>
         {value => (
@@ -62,14 +65,30 @@ class ToolbarButton extends PureComponent<Props, {}> {
             tabIndex={0}
             // onClick={e => console.log('AYYEEE', e)}
             ref={input => {
-              // if(input !== null){
-              //   console.log("Input is not null, value is ", value)
-              // }
+              if (input !== null && value.selectedButton) {
+                if (
+                  this.props.title === 'More formatting' &&
+                  value.selectedButtonIndex === 3
+                ) {
+                  console.log('IN THE MORE FORMATTING');
+                  console.log(
+                    'selectedButtonIndex:',
+                    value.selectedButtonIndex,
+                  );
+                  console.log('SelectedButton:', value.selectedButton);
+                  console.log('this:', this);
+                  console.log(
+                    'buttonsMatch:',
+                    buttonsMatch(value.selectedButton, this),
+                  );
+                }
+              }
               if (
                 input !== null &&
                 value.selectedButton &&
+                buttonsMatch(value.selectedButton, this)
                 // @ts-ignore
-                value.selectedButton!.props == this.props
+                // value.selectedButton!.props == this.props
               ) {
                 console.log('FOCUS THE BUTTON :)');
                 input!.focus();

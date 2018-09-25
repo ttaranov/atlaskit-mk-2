@@ -116,14 +116,15 @@ export class ToolbarInner extends React.Component<
       const buttons = prevState.registeredButtons;
       // debugger
 
-      const selectedButton =
-        newIndex >= 0 && newIndex < buttons.length
-          ? buttons[newIndex]
-          : prevState.selectedButton;
-      console.log({ newIndex, buttons, selectedButton });
+      if (newIndex < 0 || newIndex >= buttons.length) {
+        console.log('Button selection out of bounds! prevState:', prevState);
+        return { ...prevState };
+      }
+      console.log({ newIndex, buttons });
+
       return {
         selectedButtonIndex: newIndex,
-        selectedButton,
+        selectedButton: buttons[newIndex],
       };
     });
   }
@@ -167,6 +168,7 @@ export class ToolbarInner extends React.Component<
         value={{
           registerButton: this.registerButton,
           selectedButton: this.state.selectedButton,
+          selectedButtonIndex: this.state.selectedButtonIndex,
         }}
       >
         <div onKeyDown={this.handleKeydown}>

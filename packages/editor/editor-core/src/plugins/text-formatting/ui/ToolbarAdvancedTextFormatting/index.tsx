@@ -136,7 +136,7 @@ class ToolbarAdvancedTextFormatting extends PureComponent<
           subscriptActive ||
           superscriptActive
         }
-        disabled={disabled}
+        disabled={false} //disabled}
         onClick={this.handleTriggerClick}
         title={labelMoreFormatting}
         iconBefore={
