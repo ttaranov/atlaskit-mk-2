@@ -2,7 +2,10 @@ import Tooltip from '@atlaskit/tooltip';
 import * as React from 'react';
 import { PureComponent, ReactElement } from 'react';
 import { AkButton } from './styles';
-import ToolbarContext from '../Toolbar/ToolbarContext';
+import {
+  ToolbarContext,
+  ToolbarContextInterface,
+} from '../Toolbar/ToolbarContext';
 
 export interface Props {
   className?: string;
@@ -18,7 +21,7 @@ export interface Props {
   theme?: 'dark';
   title?: string;
   titlePosition?: string;
-  registerButton?: (ToolbarButton) => null;
+  toolbarContext?: ToolbarContextInterface;
 }
 
 class ToolbarButton extends PureComponent<Props, {}> {
@@ -27,9 +30,10 @@ class ToolbarButton extends PureComponent<Props, {}> {
   };
 
   componentDidMount() {
-    const { registerButton } = this.props;
-    if (registerButton) {
-      registerButton(this);
+    const { toolbarContext } = this.props;
+
+    if (toolbarContext && toolbarContext.registerButton) {
+      toolbarContext.registerButton(this);
     }
   }
 
@@ -62,41 +66,27 @@ class ToolbarButton extends PureComponent<Props, {}> {
       <ToolbarContext.Consumer>
         {value => (
           <div
-            tabIndex={0}
+            tabIndex={-1}
             onKeyDown={e => {
               if (e.keyCode === 13) {
+                // @ts-ignore
                 this.handleClick(e);
                 console.log('pressed enter in Toolbar button');
               }
             }}
             ref={input => {
-              if (input !== null && value.selectedButton) {
+              if (input !== null) {
                 if (
-                  this.props.title === 'More formatting' &&
-                  value.selectedButtonIndex === 3
+                  value.selectedButton &&
+                  buttonsMatch(value.selectedButton, this) &&
+                  input!.tabIndex !== 0
                 ) {
-                  console.log('IN THE MORE FORMATTING');
-                  console.log(
-                    'selectedButtonIndex:',
-                    value.selectedButtonIndex,
-                  );
-                  console.log('SelectedButton:', value.selectedButton);
-                  console.log('this:', this);
-                  console.log(
-                    'buttonsMatch:',
-                    buttonsMatch(value.selectedButton, this),
-                  );
+                  console.log('FOCUS THE BUTTON :)');
+                  input!.focus();
+                  input!.tabIndex = 0;
+                } else {
+                  input!.tabIndex = -1;
                 }
-              }
-              if (
-                input !== null &&
-                value.selectedButton &&
-                buttonsMatch(value.selectedButton, this)
-                // @ts-ignore
-                // value.selectedButton!.props == this.props
-              ) {
-                console.log('FOCUS THE BUTTON :)');
-                input!.focus();
               }
             }}
           >
@@ -105,29 +95,6 @@ class ToolbarButton extends PureComponent<Props, {}> {
         )}
       </ToolbarContext.Consumer>
     );
-
-    // const button = (
-    //   // <div tabIndex={0}>
-    //   <AkButton
-    //     // tabIndex="-1"
-    //     appearance="subtle"
-    //     ariaHaspopup={true}
-    //     className={this.props.className}
-    //     href={this.props.href}
-    //     iconAfter={this.props.iconAfter}
-    //     iconBefore={this.props.iconBefore}
-    //     isDisabled={this.props.disabled}
-    //     isSelected={this.props.selected}
-    //     onClick={this.handleClick}
-    //     spacing={this.props.spacing || 'default'}
-    //     target={this.props.target}
-    //     theme={this.props.theme}
-    //     shouldFitContainer={true}
-    //   >
-    //     {this.props.children}
-    //   </AkButton>
-    //   // </div>
-    // );
 
     const position = this.props.titlePosition || 'top';
     const tooltipContent = !this.props.hideTooltip ? this.props.title : null;
@@ -146,14 +113,6 @@ class ToolbarButton extends PureComponent<Props, {}> {
     );
   }
 
-  // const MapElement = () => (
-  //   <Context.Consumer>
-  //     {context =>
-  //       <BaseMapElement context={context} />
-  //     }
-  //   </Context.Consumer>
-  // )
-
   private handleClick = (event: Event) => {
     const { disabled, onClick } = this.props;
 
@@ -165,8 +124,8 @@ class ToolbarButton extends PureComponent<Props, {}> {
 
 export default props => (
   <ToolbarContext.Consumer>
-    {value => (
-      <ToolbarButton {...props} registerButton={value.registerButton} />
+    {toolbarContext => (
+      <ToolbarButton {...props} toolbarContext={toolbarContext} />
     )}
   </ToolbarContext.Consumer>
 );

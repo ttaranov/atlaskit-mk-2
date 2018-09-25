@@ -6,8 +6,7 @@ import { ProviderFactory } from '@atlaskit/editor-common';
 import { EditorAppearance, ToolbarUIComponentFactory } from '../../types';
 import { EventDispatcher } from '../../event-dispatcher';
 import EditorActions from '../../actions';
-import ToolbarContext from './ToolbarContext';
-// import ToolbarButton from '../ToolbarButton';
+import { ToolbarContext } from './ToolbarContext';
 
 const ToolbarComponentsWrapper = styled.div`
   display: flex;
@@ -91,17 +90,19 @@ export class ToolbarInner extends React.Component<
     );
   }
 
+  componentDidMount() {
+    this.changeSelectedButton(0);
+  }
+
   registerButton(button) {
     console.log('registered button in toolbar:', button);
 
     this.setState(prevState => {
       const allButtons = prevState.registeredButtons;
       let newRegisteredButtons = allButtons;
-      if (allButtons.map(b => b.props).indexOf(button.props) === -1) {
+      const allTitles = allButtons.map(b => b.props.title);
+      if (allTitles.indexOf(button.props.title) === -1) {
         newRegisteredButtons = [...allButtons, button];
-      } else {
-        console.log('A button already existed!');
-        debugger;
       }
       return {
         registeredButtons: newRegisteredButtons,
@@ -114,7 +115,6 @@ export class ToolbarInner extends React.Component<
     this.setState(prevState => {
       const newIndex = prevState.selectedButtonIndex + delta;
       const buttons = prevState.registeredButtons;
-      // debugger
 
       if (newIndex < 0 || newIndex >= buttons.length) {
         console.log('Button selection out of bounds! prevState:', prevState);
@@ -132,7 +132,6 @@ export class ToolbarInner extends React.Component<
   private handleKeydown = e => {
     if (e.keyCode === 13) {
       console.log('pressed enter in Toolbar handler');
-      // onClick(e);
     }
     if (e.keyCode === 37) {
       console.log('pressed left');
