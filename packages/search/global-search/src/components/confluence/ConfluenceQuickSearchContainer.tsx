@@ -18,6 +18,7 @@ import { SearchScreenCounter, ScreenCounter } from '../../util/ScreenCounter';
 import {
   LinkComponent,
   ReferralContextIdentifiers,
+  Logger,
 } from '../GlobalQuickSearchWrapper';
 import {
   redirectToConfluenceAdvancedSearch,
@@ -47,8 +48,10 @@ export interface Props {
   isSendSearchTermsEnabled?: boolean;
   useAggregatorForConfluenceObjects?: boolean;
   useCPUSForPeopleResults?: boolean;
+  logger: Logger;
 }
 
+const LOGGER_NAME = 'ConfluenceQuickSearchContainer';
 /**
  * Container Component that handles the data fetching when the user interacts with Search.
  */
@@ -59,6 +62,18 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     preQueryScreenCounter: new SearchScreenCounter() as ScreenCounter,
     postQueryScreenCounter: new SearchScreenCounter() as ScreenCounter,
   };
+
+  componentDidCatch(error, info) {
+    this.props.logger.safeError(
+      LOGGER_NAME,
+      'component did catch an error',
+      error,
+      info,
+    );
+    this.setState({
+      error: true,
+    });
+  }
 
   handleSearchSubmit = ({ target }) => {
     const query = target.value;
@@ -124,16 +139,26 @@ export class ConfluenceQuickSearchContainer extends React.Component<
             source: source,
           },
         );
-      } catch (error) {
-        // TODO logging on error
+      } catch (e) {
+        this.props.logger.safeError(
+          LOGGER_NAME,
+          'Can not fire analytics event atlassian.fabric.global-search.search-error',
+          e,
+        );
       }
     }
   }
 
   handleSearchErrorAnalyticsThunk = (
     source: string,
-  ): ((reason: any) => void) => error =>
+  ): ((reason: any) => void) => error => {
     this.handleSearchErrorAnalytics(error, source);
+    this.props.logger.safeError(
+      LOGGER_NAME,
+      `error in promise ${source}`,
+      error,
+    );
+  };
 
   getSearchResults = (
     query,

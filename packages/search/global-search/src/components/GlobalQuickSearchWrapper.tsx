@@ -13,6 +13,11 @@ import configureSearchClients, { Config } from '../api/configureSearchClients';
 import MessagesIntlProvider from './MessagesIntlProvider';
 
 const memoizeOneTyped: <T extends Function>(func: T) => T = memoizeOne;
+const DEFAULT_NOOP_LOGGER: Logger = {
+  safeInfo() {},
+  safeWarn() {},
+  safeError() {},
+};
 
 export type LinkComponent = React.ComponentType<{
   className: string;
@@ -20,6 +25,12 @@ export type LinkComponent = React.ComponentType<{
   href?: string;
   target?: string;
 }>;
+
+export type Logger = {
+  safeInfo: Function;
+  safeWarn: Function;
+  safeError: Function;
+};
 
 export type ReferralContextIdentifiers = {
   searchReferrerId: string;
@@ -87,7 +98,12 @@ export interface Props {
   /**
    * Indicates whether or not CPUS should be used for people searches.
    */
+
   useCPUSForPeopleResults?: boolean;
+  /**
+   * logger with 3 levels error, warn and info
+   */
+  logger?: Logger;
 }
 
 /**
@@ -160,6 +176,7 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
       useAggregatorForConfluenceObjects,
       referralContextIdentifiers,
       useCPUSForPeopleResults,
+      logger,
     } = this.props;
 
     return (
@@ -171,6 +188,7 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
           useAggregatorForConfluenceObjects={useAggregatorForConfluenceObjects}
           referralContextIdentifiers={referralContextIdentifiers}
           useCPUSForPeopleResults={useCPUSForPeopleResults}
+          logger={logger || DEFAULT_NOOP_LOGGER}
         />
       </MessagesIntlProvider>
     );

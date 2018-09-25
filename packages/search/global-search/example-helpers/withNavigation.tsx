@@ -18,6 +18,18 @@ const Radio = styled.input`
   margin-right: 8px;
 `;
 
+const DEVELOPMENT_LOGGER = {
+  safeError() {
+    console.error(...arguments);
+  },
+  safeInfo() {
+    console.info(...arguments);
+  },
+  safeWarn() {
+    console.warn(...arguments);
+  },
+};
+
 export interface Config {
   hideLocale: boolean;
 }
@@ -142,6 +154,7 @@ export default function withNavigation(
                     currentContentId: '123',
                     searchReferrerId: '123',
                   }}
+                  logger={DEVELOPMENT_LOGGER}
                   {...this.props}
                 />
               </LocaleIntlProvider>

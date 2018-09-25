@@ -16,6 +16,7 @@ import { Scope } from '../../api/types';
 import {
   LinkComponent,
   ReferralContextIdentifiers,
+  Logger,
 } from '../GlobalQuickSearchWrapper';
 import QuickSearchContainer from '../common/QuickSearchContainer';
 import { sliceResults } from './JiraSearchResultsMapper';
@@ -56,6 +57,7 @@ export interface Props {
   jiraClient: JiraClient;
   peopleSearchClient: PeopleSearchClient;
   crossProductSearchClient: CrossProductSearchClient;
+  logger: Logger;
 }
 
 const contentTypeToSection = {
