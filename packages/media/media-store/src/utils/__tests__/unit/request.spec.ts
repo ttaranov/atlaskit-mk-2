@@ -21,7 +21,7 @@ describe('request', () => {
   it('should call fetch with GET method given url only', () => {
     return request(url).then(() => {
       expect(fetchMock.lastUrl()).toEqual(url);
-      expect(fetchMock.lastOptions()).toEqual({ method: 'GET' });
+      expect(fetchMock.lastOptions()).toEqual({ method: 'GET', headers: {} });
     });
   });
 
@@ -33,7 +33,7 @@ describe('request', () => {
       expect(fetchMock.lastUrl()).toEqual(
         `${url}?client=${clientId}&token=${token}`,
       );
-      expect(fetchMock.lastOptions()).toEqual({ method: 'GET' });
+      expect(fetchMock.lastOptions()).toEqual({ method: 'GET', headers: {} });
     });
   });
 
@@ -45,7 +45,7 @@ describe('request', () => {
       expect(fetchMock.lastUrl()).toEqual(
         `${url}?issuer=${asapIssuer}&token=${token}`,
       );
-      expect(fetchMock.lastOptions()).toEqual({ method: 'GET' });
+      expect(fetchMock.lastOptions()).toEqual({ method: 'GET', headers: {} });
     });
   });
 

@@ -35,7 +35,7 @@ export function request(
     return fetch(createUrl(url, { params, auth }), {
       method,
       body,
-      headers,
+      headers: headers || {},
     }).then(processFetchResponse);
   } else {
     return fetch(createUrl(url, { params }), {
