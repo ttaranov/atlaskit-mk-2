@@ -1,28 +1,21 @@
 // @flow
-import React, { Fragment } from 'react';
-import styled from 'styled-components';
-import Button from '@atlaskit/button';
-import Select from '@atlaskit/select';
-import Form, { Field } from '@atlaskit/form';
+
+import React, { Fragment, Component } from 'react';
 import { Checkbox } from '@atlaskit/checkbox';
-import Modal, { ModalFooter } from '@atlaskit/modal-dialog';
 import { FieldTextAreaStateless } from '@atlaskit/field-text-area';
+import Form, { Field } from '@atlaskit/form';
+import Modal from '@atlaskit/modal-dialog';
+import Select from '@atlaskit/select';
 import type { FormFields } from '../types';
 
-type Props = {
-  /** The function to close the form */
+type Props = {|
+  /** Function that will be called to initiate the exit transition. */
   onClose: () => void,
-  /** The function to submit the form */
+  /** Function that will be called immediately after the feedback submit operation  */
   onSubmit: (formValues: FormFields) => void,
-};
+|};
 
-const Footer = styled.span`
-  display: flex;
-  flex: auto;
-  justify-content: flex-end;
-`;
-
-const options = {
+export const fieldLabel = {
   bug: 'Describe the bug or issue',
   comment: "Let us know what's on your mind",
   suggestion: "Let us know what you'd like to improve",
@@ -30,7 +23,18 @@ const options = {
   empty: 'Select an option',
 };
 
-export default class FeedbackForm extends React.Component<Props, FormFields> {
+const selectOptions = [
+  { label: 'Ask a question', value: 'question' },
+  { label: 'Leave a comment', value: 'comment' },
+  { label: 'Report a bug', value: 'bug' },
+  { label: 'Suggest an improvement', value: 'suggestion' },
+];
+
+const defaultSelectValue = {
+  label: 'I want to...',
+};
+
+export default class FeedbackForm extends Component<Props, FormFields> {
   state = {
     type: 'empty',
     description: '',
@@ -40,76 +44,87 @@ export default class FeedbackForm extends React.Component<Props, FormFields> {
 
   isTypeSelected = () => this.state.type !== 'empty';
 
-  renderActions = () => (
-    <ModalFooter>
-      <Footer>
-        <Button
-          appearance="primary"
-          type="submit"
-          isDisabled={!this.isTypeSelected() || !this.state.description}
-          onClick={() => this.props.onSubmit(this.state)}
-        >
-          Submit
-        </Button>
-        <Button
-          appearance="subtle"
-          type="button"
-          onClick={() => this.props.onClose()}
-        >
-          Cancel
-        </Button>
-      </Footer>
-    </ModalFooter>
-  );
+  onSubmit = () => {
+    const {
+      type,
+      description,
+      canBeContacted,
+      enrollInResearchGroup,
+    } = this.state;
+
+    this.props.onSubmit({
+      type,
+      description,
+      canBeContacted,
+      enrollInResearchGroup,
+    });
+  };
+
+  getActions() {
+    const isDisabled = !this.isTypeSelected() || !this.state.description;
+
+    return [
+      {
+        text: 'Send feedback',
+        appearance: 'primary',
+        type: 'submit',
+        isDisabled,
+        onClick: this.onSubmit,
+      },
+      {
+        text: 'Cancel',
+        onClick: this.props.onClose,
+        appearance: 'subtle',
+      },
+    ];
+  }
+
+  onSelectChange = option => {
+    this.setState({ type: option.value });
+  };
 
   render() {
     return (
       <Modal
+        actions={this.getActions()}
         heading="Share your thoughts"
-        footer={this.renderActions}
         onClose={this.props.onClose}
       >
         <Form name="feedback-collector">
           <Select
-            onChange={option => this.setState({ type: option.value })}
+            onChange={this.onSelectChange}
             menuPortalTarget={document.body}
             styles={{ menuPortal: base => ({ ...base, zIndex: 9999 }) }}
-            defaultValue={{
-              label: 'I want to...',
-            }}
-            options={[
-              { label: 'Ask a question', value: 'question' },
-              { label: 'Leave a comment', value: 'comment' },
-              { label: 'Report a bug', value: 'bug' },
-              { label: 'Suggest an improvement', value: 'suggestion' },
-            ]}
+            defaultValue={defaultSelectValue}
+            options={selectOptions}
           />
 
           {this.isTypeSelected() ? (
             <Fragment>
-              <Field label={options[this.state.type]} isRequired>
+              <Field label={fieldLabel[this.state.type]} isRequired>
                 <FieldTextAreaStateless
                   name="description"
-                  isRequired
-                  autoFocus
                   shouldFitContainer
                   minimumRows={6}
                   onChange={e => this.setState({ description: e.target.value })}
+                  value={this.state.description}
                 />
               </Field>
 
               <Field>
                 <Checkbox
-                  value="true"
+                  value={this.state.canBeContacted}
                   name="can-be-contacted"
                   label="Atlassian can contact me about this feedback"
                   onChange={event =>
                     this.setState({ canBeContacted: event.target.checked })
                   }
                 />
+              </Field>
 
+              <Field>
                 <Checkbox
-                  value="true"
+                  value={this.state.enrollInResearchGroup}
                   name="enroll-in-research-group"
                   label="I'd like to participate in product research"
                   onChange={event =>
