@@ -1,4 +1,3 @@
-// TODO: remove this file once we have a package with i18n utils
 import { IntlProvider, intlShape } from 'react-intl';
 import { mount, ReactWrapper } from 'enzyme';
 import { ReactElement } from 'react';
