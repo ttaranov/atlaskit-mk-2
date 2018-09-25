@@ -41,13 +41,7 @@ const item: ProcessedFileState = {
 };
 
 const itemWithNoArtifacts: ProcessedFileState = {
-  id: 'some-id',
-  status: 'processed',
-  name: 'my pdf',
-  size: 11222,
-  mediaType: 'video',
-  mimeType: 'mp4',
-  binaryUrl: '',
+  ...item,
   artifacts: {},
 };
 

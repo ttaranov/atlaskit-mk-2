@@ -71,9 +71,9 @@ describe('<Header />', () => {
     const el = mount(<Header context={context} identifier={identifier} />);
     expect(el.state().item.status).toEqual('SUCCESSFUL');
 
-    // since the test is executed synchronusly
+    // since the test is executed synchronously
     // let's prevent the second call to getFile form immediately resolving and
-    // udpateing the state to SUCCESSFUL before we run the assertion.
+    // updating the state to SUCCESSFUL before we run the assertion.
     context.getFile = () => Observable.never();
 
     el.setProps({ identifier: identifier2 });

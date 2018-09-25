@@ -259,9 +259,9 @@ describe('<ItemViewer />', () => {
         id: 'some-other-id',
       };
 
-      // since the test is executed synchronusly
+      // since the test is executed synchronously
       // let's prevent the second call to getFile form immediately resolving and
-      // udpateing the state to SUCCESSFUL before we run the assertion.
+      // updating the state to SUCCESSFUL before we run the assertion.
       context.getFile = () => Observable.never();
 
       el.setProps({ context, identifier: identifier2 });
