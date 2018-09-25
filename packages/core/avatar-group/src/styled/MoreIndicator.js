@@ -1,7 +1,7 @@
 // @flow
 
 import styled from 'styled-components';
-import { colors, themed, withTheme } from '@atlaskit/theme';
+import { colors, withTheme } from '@atlaskit/theme';
 import {
   getBorderRadius,
   getInnerStyles,
