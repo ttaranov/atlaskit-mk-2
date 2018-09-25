@@ -30,8 +30,20 @@ export async function getImageInfo(
     return null;
   }
   const { width, height, tags } = metadata;
+  const scaleFactor = getScaleFactor(fileInfo.file, tags);
+  return {
+    scaleFactor,
+    width,
+    height,
+  };
+}
+
+export function getScaleFactor(
+  file: File,
+  tags: ImageMetaDataTags | null,
+): number {
   let scaleFactor = 1;
-  let scaleFactorFromFilename = getScaleFactorFromFile(fileInfo.file);
+  let scaleFactorFromFilename = getScaleFactorFromFile(file);
   if (scaleFactorFromFilename !== null) {
     scaleFactor = scaleFactorFromFilename;
   } else if (tags) {
@@ -39,11 +51,7 @@ export async function getImageInfo(
       getMetaTagNumericValue(tags, XResolution, DPI_WEB_BASELINE) /
       DPI_WEB_BASELINE;
   }
-  return {
-    scaleFactor,
-    width,
-    height,
-  };
+  return scaleFactor;
 }
 
 export async function getOrientation(file: File): Promise<number | null> {

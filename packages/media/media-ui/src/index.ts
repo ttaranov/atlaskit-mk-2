@@ -18,6 +18,7 @@ export * from './imageMetaData';
 export {
   getImageInfo,
   getOrientation,
+  getScaleFactor,
   readImageMetaData,
   ImageInfo,
   ImageMetaData,
