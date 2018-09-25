@@ -5,7 +5,7 @@ export default () => (
   <div>
     <h2>Preformatted text using {`<pre>`}</h2>
     <pre>{`  Item    | Qty
---------------------
+-------------------
 Apples  |   5
 Oranges |  10
 Grapes  |  99`}</pre>
@@ -20,7 +20,7 @@ Grapes  |  99`}</pre>
     </pre>
     <h2>Inline {`<code>`}</h2>
     <p>
-      Simply paste <code>{`body { fontweight: bold; }`}</code> into your file.
+      Simply paste <code>{`body { font-weight: bold; }`}</code> into your file.
     </p>
   </div>
 );
