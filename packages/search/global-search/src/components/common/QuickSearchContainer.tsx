@@ -1,6 +1,6 @@
 import * as React from 'react';
 import * as uuid from 'uuid/v4';
-import { LinkComponent } from '../GlobalQuickSearchWrapper';
+import { LinkComponent, Logger } from '../GlobalQuickSearchWrapper';
 import GlobalQuickSearch from '../GlobalQuickSearch';
 import performanceNow from '../../util/performance-now';
 import {
@@ -30,6 +30,7 @@ export interface SearchResultProps extends State {
 }
 
 export interface Props {
+  logger: Logger;
   linkComponent?: LinkComponent;
   getSearchResultsComponent(state: SearchResultProps): React.ReactNode;
   getRecentItems(sessionId: string): Promise<ResultsWithTiming>;
@@ -62,6 +63,7 @@ export interface State {
   recentItems: GenericResultMap | null;
 }
 
+const LOGGER_NAME = 'AK.GlobalSearch.QuickSearchContainer';
 /**
  * Container/Stateful Component that handles the data fetching and state handling when the user interacts with Search.
  */
@@ -82,6 +84,19 @@ export class QuickSearchContainer extends React.Component<Props, State> {
       keepPreQueryState: true,
     };
   }
+
+  componentDidCatch(error, info) {
+    this.props.logger.safeError(
+      LOGGER_NAME,
+      'component did catch an error',
+      error,
+      info,
+    );
+    this.setState({
+      isError: true,
+    });
+  }
+
   doSearch = async (query: string) => {
     const startTime: number = performanceNow();
 
@@ -129,9 +144,11 @@ export class QuickSearchContainer extends React.Component<Props, State> {
         );
       }
     } catch (e) {
-      /* tslint:disable-next-line:no-console */
-      console.error(e);
-
+      this.props.logger.safeError(
+        LOGGER_NAME,
+        'problem while getting search results',
+        e,
+      );
       this.setState({
         isError: true,
         isLoading: false,

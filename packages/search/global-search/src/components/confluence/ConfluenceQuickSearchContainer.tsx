@@ -51,7 +51,7 @@ export interface Props {
   logger: Logger;
 }
 
-const LOGGER_NAME = 'ConfluenceQuickSearchContainer';
+const LOGGER_NAME = 'AK.GlobalSearch.ConfluenceQuickSearchContainer';
 /**
  * Container Component that handles the data fetching when the user interacts with Search.
  */
@@ -62,18 +62,6 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     preQueryScreenCounter: new SearchScreenCounter() as ScreenCounter,
     postQueryScreenCounter: new SearchScreenCounter() as ScreenCounter,
   };
-
-  componentDidCatch(error, info) {
-    this.props.logger.safeError(
-      LOGGER_NAME,
-      'component did catch an error',
-      error,
-      info,
-    );
-    this.setState({
-      error: true,
-    });
-  }
 
   handleSearchSubmit = ({ target }) => {
     const query = target.value;
@@ -309,7 +297,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     );
   };
   render() {
-    const { linkComponent, isSendSearchTermsEnabled } = this.props;
+    const { linkComponent, isSendSearchTermsEnabled, logger } = this.props;
 
     return (
       <QuickSearchContainer
@@ -323,6 +311,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         handleSearchSubmit={this.handleSearchSubmit}
         isSendSearchTermsEnabled={isSendSearchTermsEnabled}
         getDisplayedResults={sliceResults}
+        logger={logger}
       />
     );
   }

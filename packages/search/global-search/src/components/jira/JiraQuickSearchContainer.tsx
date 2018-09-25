@@ -73,6 +73,8 @@ export interface State {
   selectedAdvancedSearchType: JiraEntityTypes;
 }
 
+const LOGGER_NAME = 'AK.GlobalSearch.JiraQuickSearchContainer';
+
 /**
  * Container/Stateful Component that handles the data fetching and state handling when the user interacts with Search.
  */
@@ -153,9 +155,12 @@ export class JiraQuickSearchContainer extends React.Component<
     const peoplePromise: Promise<
       Result[]
     > = this.props.peopleSearchClient.getRecentPeople();
-    return handlePromiseError<Result[]>(
-      peoplePromise,
-      [] as Result[],
+    return handlePromiseError<Result[]>(peoplePromise, [] as Result[], error =>
+      this.props.logger.safeError(
+        LOGGER_NAME,
+        'error in recently interacted people promise',
+        error,
+      ),
     ) as Promise<Result[]>;
   };
 
@@ -181,10 +186,19 @@ export class JiraQuickSearchContainer extends React.Component<
         objects: issues,
         containers: [...boards, ...filters, ...projects],
       }));
-    return handlePromiseError(jiraRecentItemsPromise, {
-      objects: [],
-      containers: [],
-    });
+    return handlePromiseError(
+      jiraRecentItemsPromise,
+      {
+        objects: [],
+        containers: [],
+      },
+      error =>
+        this.props.logger.safeError(
+          LOGGER_NAME,
+          'error in recently jira items promise',
+          error,
+        ),
+    );
   };
 
   getRecentItems = (sessionId: string): Promise<ResultsWithTiming> => {
@@ -212,7 +226,16 @@ export class JiraQuickSearchContainer extends React.Component<
       scopes,
     );
 
-    const searchPeoplePromise = this.props.peopleSearchClient.search(query);
+    const searchPeoplePromise = handlePromiseError(
+      this.props.peopleSearchClient.search(query),
+      [] as Result[],
+      error =>
+        this.props.logger.safeError(
+          LOGGER_NAME,
+          'error in search  people promise',
+          error,
+        ),
+    );
 
     const mapPromiseToPerformanceTime = p =>
       p.then(() => performanceNow() - startTime);
@@ -248,7 +271,7 @@ export class JiraQuickSearchContainer extends React.Component<
   };
 
   render() {
-    const { linkComponent, createAnalyticsEvent } = this.props;
+    const { linkComponent, createAnalyticsEvent, logger } = this.props;
 
     return (
       <QuickSearchContainer
@@ -262,6 +285,7 @@ export class JiraQuickSearchContainer extends React.Component<
         getSearchResults={this.getSearchResults}
         handleSearchSubmit={this.handleSearchSubmit}
         createAnalyticsEvent={createAnalyticsEvent}
+        logger={logger}
       />
     );
   }
