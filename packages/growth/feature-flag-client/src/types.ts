@@ -7,7 +7,7 @@ export type Reason =
 
 export type RuleId = string;
 
-export type DarkFeature = boolean;
+export type DarkFeature = boolean | string;
 
 export type JSONFlag = object;
 
