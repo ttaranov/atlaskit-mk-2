@@ -1,5 +1,5 @@
 // @flow
-
+import { type ComponentType } from 'react';
 import { withTheme } from '@atlaskit/theme';
 import styled from 'styled-components';
 import CustomComponentProxy from '../components/CustomComponentProxy';

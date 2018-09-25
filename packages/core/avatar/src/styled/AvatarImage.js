@@ -64,6 +64,7 @@ export const Slot = ({
 
 type SvgProps = {
   appearance: AppearanceType,
+  isLoading: boolean,
   size: SizeType,
   children: Node,
 };
@@ -72,13 +73,14 @@ export const Svg = ({
   appearance,
   size,
   children,
+  isLoading,
   ...otherProps
 }: SvgProps) => (
   <Theme theme={theme}>
     {({ avatar }) => {
       const { backgroundColor, borderRadius } = avatar({
         appearance,
-        isLoading: false,
+        isLoading,
         size,
       });
       return (

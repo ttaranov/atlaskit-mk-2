@@ -10,10 +10,12 @@ export function DefaultImage({
   appearance,
   size,
   title,
+  isLoading,
 }: {
   appearance: AppearanceType,
   size: SizeType,
   title?: string,
+  isLoading: boolean,
 }) {
   const rectBounds = 128;
 
@@ -23,6 +25,7 @@ export function DefaultImage({
         return (
           <Svg
             appearance={appearance}
+            isLoading={isLoading}
             size={size}
             viewBox={`0 0 ${rectBounds} ${rectBounds}`}
             version="1.1"
@@ -129,7 +132,12 @@ export default class AvatarImage extends PureComponent<Props, State> {
     const showDefault = !isLoading && (!src || hasError);
     const imageUrl: ?string = src && (!isLoading || cache[src]) ? src : null;
     return showDefault ? (
-      <DefaultImage appearance={appearance} size={size} title={alt} />
+      <DefaultImage
+        appearance={appearance}
+        size={size}
+        title={alt}
+        isLoading={isLoading}
+      />
     ) : (
       <Slot
         appearance={appearance}

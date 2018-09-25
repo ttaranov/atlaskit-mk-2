@@ -1,7 +1,7 @@
 // @flow
 
 import styled from 'styled-components';
-import { colors, withTheme } from '@atlaskit/theme';
+import { colors, themed, withTheme } from '@atlaskit/theme';
 import {
   getBorderRadius,
   getInnerStyles,
@@ -20,9 +20,6 @@ const EXCESS_INDICATOR_FONT_SIZE: {
   xlarge: 16,
 };
 
-const backgroundColors = { light: colors.N40, dark: colors.DN70 };
-const textColors = { light: colors.N500, dark: colors.DN400 };
-
 const getBorderWidth = p =>
   p.isFocus && !p.isActive ? `${BORDER_WIDTH[p.size]}px` : 0;
 
@@ -31,11 +28,11 @@ export const Outer = withTheme(styled.button`
 `);
 
 export const Inner = withTheme(styled.span`
-  background-color: ${props => backgroundColors[props.theme.mode]};
+  background-color: ${themed({ light: colors.N40, dark: colors.DN70 })};
   border-radius: ${getBorderRadius};
   align-items: center;
   box-shadow: 0 0 0 ${getBorderWidth} ${colors.B200};
-  color: ${props => textColors[props.theme.mode]};
+  color: ${themed({ light: colors.N500, dark: colors.DN400 })};
   cursor: pointer;
   display: flex;
   flex-basis: 100%;

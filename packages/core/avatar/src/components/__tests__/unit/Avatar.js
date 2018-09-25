@@ -6,6 +6,7 @@ import Avatar from '../../Avatar';
 import AvatarImage from '../../AvatarImage';
 import Presence from '../../Presence';
 import { getSize } from '../../../styled/utils';
+import { Slot } from '../../../styled/AvatarImage';
 import { AVATAR_SIZES } from '../../../styled/constants';
 
 const busy = 'busy';
@@ -154,4 +155,26 @@ describe('Avatar', () => {
       expect(presence.find('.my-icon')).toHaveLength(1);
     });
   });
+});
+
+test('theming - can change background color based on appearance prop', () => {
+  const wrapper = mount(
+    <Avatar
+      isLoading
+      appearance="square"
+      src={src}
+      theme={() => ({
+        avatar(props) {
+          return {
+            backgroundColor: props.appearance === 'square' ? 'red' : 'green',
+          };
+        },
+      })}
+    />,
+  );
+  const style = wrapper
+    .find(Slot)
+    .find('span')
+    .prop('style');
+  expect(style.backgroundColor).toBe('red');
 });
