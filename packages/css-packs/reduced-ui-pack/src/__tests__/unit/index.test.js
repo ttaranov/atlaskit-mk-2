@@ -1,11 +1,11 @@
 //@flow
-import { styleSheet } from '../..';
+import reducedUiPackStyles from '../..';
 
 describe('styleSheet', () => {
   it('should not have [object Object]', () => {
-    expect(styleSheet).not.toContain('[object Object]');
+    expect(reducedUiPackStyles).not.toContain('[object Object]');
   });
   it('should not have [Function', () => {
-    expect(styleSheet).not.toContain('[Function');
+    expect(reducedUiPackStyles).not.toContain('[Function');
   });
 });
