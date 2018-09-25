@@ -16,8 +16,6 @@ class GlobalNavigationItemPrimitive extends Component<*> {
     styles: styleReducerNoOp,
   };
 
-  CachedCustomComponent = 'div';
-
   renderIconAndBadge = (
     badgeWrapper: {},
     presentationProps: GlobalItemPresentationProps,
@@ -74,18 +72,13 @@ class GlobalNavigationItemPrimitive extends Component<*> {
     let itemBase;
 
     if (CustomComponent) {
-      if (typeof CustomComponent !== typeof this.CachedCustomComponent) {
-        this.CachedCustomComponent = CustomComponent;
-      }
-      const CachedCustomComponent = this.CachedCustomComponent;
-
       itemBase = (
-        <CachedCustomComponent
+        <CustomComponent
           {...this.getGlobalItemExternalProps()}
           className={css({ '&&': styles.itemBase })}
         >
           {this.renderIconAndBadge(styles.badgeWrapper, presentationProps)}
-        </CachedCustomComponent>
+        </CustomComponent>
       );
     } else if (href) {
       itemBase = (
@@ -124,7 +117,9 @@ class GlobalNavigationItemPrimitive extends Component<*> {
         position="right"
         hideTooltipOnMouseDown
       >
-        {this.renderChildren()}
+        <div className={css({ display: 'inline-block' })}>
+          {this.renderChildren()}
+        </div>
       </Tooltip>
     );
   }
