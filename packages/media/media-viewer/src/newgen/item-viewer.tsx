@@ -90,7 +90,7 @@ export class ItemViewer extends React.Component<Props, State> {
   renderError = (errorName: ErrorName, file?: FileState) => {
     if (file) {
       return (
-        <ErrorMessage error={createError(errorName)}>
+        <ErrorMessage error={createError(errorName, undefined, file)}>
           <p>Try downloading the file to view it.</p>
           {this.renderDownloadButton(file)}
         </ErrorMessage>
@@ -133,7 +133,7 @@ export class ItemViewer extends React.Component<Props, State> {
       },
       error: err => {
         this.setState({
-          item: Outcome.failed(createError('metadataFailed', undefined, err)),
+          item: Outcome.failed(createError('metadataFailed', err)),
         });
       },
     });

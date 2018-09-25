@@ -72,7 +72,7 @@ export default class Header extends React.Component<Props, State> {
         },
         error: err => {
           this.setState({
-            item: Outcome.failed(createError('metadataFailed', undefined, err)),
+            item: Outcome.failed(createError('metadataFailed', err)),
           });
         },
       });

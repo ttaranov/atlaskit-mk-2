@@ -76,14 +76,14 @@ export class ImageViewer extends React.Component<
     // anything.
   }
 
-  private async init(fileItem: ProcessedFileState, context: Context) {
+  private async init(file: ProcessedFileState, context: Context) {
     this.setState(initialState, async () => {
       try {
         const service = context.getBlobService(this.props.collectionName);
         const item: MediaItem = {
           type: 'file',
           details: {
-            id: fileItem.id,
+            id: file.id,
           },
         };
         // MSW-922: once we make getImage cancelable we can use it instead of fetchImageBlobCancelable
@@ -103,10 +103,7 @@ export class ImageViewer extends React.Component<
           this.preventRaceCondition();
         } else {
           this.setState({
-            objectUrl: Outcome.failed(
-              // TODO provide file item context for error
-              createError('previewFailed'),
-            ),
+            objectUrl: Outcome.failed(createError('previewFailed', err, file)),
           });
         }
       }

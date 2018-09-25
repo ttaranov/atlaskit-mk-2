@@ -85,8 +85,7 @@ export class VideoViewer extends React.Component<Props, State> {
       });
     } catch (err) {
       this.setState({
-        /// TODO: error properties
-        src: Outcome.failed(createError('previewFailed')),
+        src: Outcome.failed(createError('previewFailed', err, item)),
       });
     }
   }

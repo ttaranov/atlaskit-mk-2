@@ -48,7 +48,9 @@ export class DocViewer extends React.Component<Props, State> {
     const pdfArtifactUrl = getArtifactUrl(item.artifacts, 'document.pdf');
     if (!pdfArtifactUrl) {
       this.setState({
-        src: Outcome.failed(createError('noPDFArtifactsFound')),
+        src: Outcome.failed(
+          createError('noPDFArtifactsFound', undefined, item),
+        ),
       });
       return;
     }
@@ -63,7 +65,7 @@ export class DocViewer extends React.Component<Props, State> {
       });
     } catch (err) {
       this.setState({
-        src: Outcome.failed(createError('previewFailed', undefined, err)),
+        src: Outcome.failed(createError('previewFailed', err, item)),
       });
     }
   }

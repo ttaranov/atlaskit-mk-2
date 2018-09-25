@@ -74,7 +74,9 @@ describe('DocViewer', () => {
 
     const { src } = el.state();
     expect(src.status).toEqual('FAILED');
-    expect(src.err).toEqual(createError('noPDFArtifactsFound'));
+    expect(src.err).toEqual(
+      createError('noPDFArtifactsFound', undefined, itemWithNoArtifacts),
+    );
 
     const errorMessage = el.find(ErrorMessage);
     expect(errorMessage).toHaveLength(1);
