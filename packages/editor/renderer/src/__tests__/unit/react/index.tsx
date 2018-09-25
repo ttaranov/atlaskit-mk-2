@@ -6,6 +6,13 @@ import { defaultSchema as schema } from '@atlaskit/editor-common';
 import { Action } from '../../../react/marks';
 import { Heading } from '../../../react/nodes';
 import { bigEmojiHeight } from '../../../utils';
+import {
+  Emoji,
+  Table,
+  TableHeader,
+  TableCell,
+  TableRow,
+} from '../../../react/nodes';
 import { RendererAppearance } from '../../../ui/Renderer';
 
 const emojiDoc = {
@@ -141,6 +148,18 @@ const emojiDocFromSchema = schema.nodeFromJSON(emojiDoc);
 const headingDocFromSchema = schema.nodeFromJSON(headingDoc);
 
 describe('Renderer - ReactSerializer', () => {
+  beforeAll(async () => {
+    /* 
+      Async nodes used need to be preloaded before testing, otherwise the first mount
+      will have the loading component and not the actual node.
+    */
+    await Promise.all([
+      Emoji.preload(),
+      Table.preload(),
+      TableHeader.preload(),
+      TableCell.preload(),
+    ]);
+  });
   describe('serializeFragment', () => {
     it('should render document', () => {
       const reactSerializer = ReactSerializer.fromSchema(schema, {});
