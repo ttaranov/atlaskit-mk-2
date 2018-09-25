@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Component, ReactNode } from 'react';
 import { IntlProvider } from 'react-intl';
-import { getMessagesForLocale } from '@atlaskit/media-ui';
 import Select from '@atlaskit/select';
 import { LocaleSelectorWrapper } from './styled';
 
@@ -33,10 +32,9 @@ export class I18NWrapper extends Component<I18NWrapperProps, I18NWrapperState> {
   render() {
     const { children } = this.props;
     const { locale } = this.state;
-    const messages = getMessagesForLocale(locale);
 
     return (
-      <IntlProvider locale={'en'} messages={messages}>
+      <IntlProvider locale={'en'} messages={{}}>
         <div>
           <LocaleSelectorWrapper>
             <h2>Selected locale: {locale}</h2>
