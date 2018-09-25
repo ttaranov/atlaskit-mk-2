@@ -4,10 +4,10 @@ import { EditorView } from 'prosemirror-view';
 import { Selection } from 'prosemirror-state';
 import { isTableSelected } from 'prosemirror-utils';
 import { browser } from '@atlaskit/editor-common';
-import { toolbarSize } from '../styles';
+import { tableToolbarSize } from '../../styles';
 import { tableDeleteButtonSize } from '../../styles';
-import InsertColumnButton from './InsertColumnButton';
-import DeleteColumnButton from './DeleteColumnButton';
+import InsertButton from '../InsertButton';
+import DeleteButton from '../DeleteButton';
 import {
   findColumnSelection,
   TableSelection,
@@ -77,7 +77,7 @@ export default class ColumnControls extends Component<Props, any> {
     }
 
     return (
-      <DeleteColumnButton
+      <DeleteButton
         key="delete"
         style={{
           left: offsetWidth + selectionWidth / 2 - tableDeleteButtonSize / 2,
@@ -180,9 +180,12 @@ export default class ColumnControls extends Component<Props, any> {
           {!(
             selection.hasMultipleSelection && selection.frontOfSelection(i)
           ) ? (
-            <InsertColumnButton
+            <InsertButton
+              type="column"
               onClick={() => this.insertColumn(i + 1)}
-              lineMarkerHeight={tableHeight + toolbarSize}
+              insertLineStyle={{
+                height: tableHeight + tableToolbarSize,
+              }}
             />
           ) : null}
         </div>,
