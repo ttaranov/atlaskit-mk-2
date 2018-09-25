@@ -6,7 +6,7 @@ import { FieldTextAreaStateless } from '@atlaskit/field-text-area';
 import Form, { Field } from '@atlaskit/form';
 import Modal from '@atlaskit/modal-dialog';
 import Select from '@atlaskit/select';
-import type { FormFields } from '../types';
+import type { FormFields, SelectValue } from '../types';
 
 type Props = {|
   /** Function that will be called to initiate the exit transition. */
@@ -79,7 +79,7 @@ export default class FeedbackForm extends Component<Props, FormFields> {
     ];
   }
 
-  onSelectChange = option => {
+  onSelectChange = (option: { label: string, value: SelectValue }) => {
     this.setState({ type: option.value });
   };
 

@@ -30,14 +30,7 @@ describe('Feedback Collector unit tests', () => {
   describe('Feedback Form integration', () => {
     test('FeedbackForm should select only by default', () => {
       const wrapper = mount(
-        <FeedbackCollector
-          onClose={() => {}}
-          onSubmit={() => {}}
-          email={'email'}
-          name={'name'}
-          requestTypeId={'request_type_id'}
-          embeddableKey={'embeddable_key'}
-        />,
+        <FeedbackForm onClose={() => {}} onSubmit={() => {}} />,
       );
 
       expect(wrapper.find(Select).length).toBe(1);
@@ -47,14 +40,7 @@ describe('Feedback Collector unit tests', () => {
 
     test('FeedbackForm should render checkboxes and fieldtext when something is selected', () => {
       const wrapper = mount(
-        <FeedbackForm
-          onClose={() => {}}
-          onSubmit={() => {}}
-          email={'email'}
-          name={'name'}
-          requestTypeId={'request_type_id'}
-          embeddableKey={'embeddable_key'}
-        />,
+        <FeedbackForm onClose={() => {}} onSubmit={() => {}} />,
       );
 
       wrapper.setState({ type: 'comment' });
@@ -66,14 +52,7 @@ describe('Feedback Collector unit tests', () => {
 
     test('should render a field label based on type', () => {
       const wrapper = mount(
-        <FeedbackForm
-          onClose={() => {}}
-          onSubmit={() => {}}
-          email={'email'}
-          name={'name'}
-          requestTypeId={'request_type_id'}
-          embeddableKey={'embeddable_key'}
-        />,
+        <FeedbackForm onClose={() => {}} onSubmit={() => {}} />,
       );
 
       Object.keys(fieldLabel).forEach(key => {
