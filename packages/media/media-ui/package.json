@@ -22,6 +22,10 @@
     }
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
+  "scripts": {
+    "i18n:push": "i18n-tools push --resource=media-ui .",
+    "i18n:pull": "rm -rf ./src/i18n && i18n-tools pull --resource media-ui . --outputType ts"
+  },
   "dependencies": {
     "@atlaskit/avatar": "^14.0.8",
     "@atlaskit/avatar-group": "^2.1.1",
