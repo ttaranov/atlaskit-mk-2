@@ -141,6 +141,10 @@ function notfound() {
   });
 }
 
+function delayP(ms: number) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 describe('Client', () => {
   afterEach(() => fetchMock.restore());
 
@@ -451,5 +455,34 @@ describe('Client', () => {
       { status: 'resolving' },
       { status: 'resolved', data: { name: 'My Page' } },
     ]);
+  });
+
+  it('should not call a deregistered callback', async () => {
+    const fn1 = jest.fn();
+    const fn2 = jest.fn();
+    const fn3 = jest.fn();
+
+    const client = createClient();
+
+    client.register(OBJECT_URL, fn1);
+    client.register(OBJECT_URL, fn2);
+    client.register(OBJECT_URL, fn3);
+    client.get(OBJECT_URL);
+
+    await delayP(200);
+
+    expect(fn1).toHaveBeenCalledTimes(1);
+    expect(fn2).toHaveBeenCalledTimes(1);
+    expect(fn3).toHaveBeenCalledTimes(1);
+
+    client.deregister(OBJECT_URL, fn2);
+
+    client.get(OBJECT_URL);
+
+    await delayP(200);
+
+    expect(fn1).toHaveBeenCalledTimes(2);
+    expect(fn2).toHaveBeenCalledTimes(1);
+    expect(fn3).toHaveBeenCalledTimes(2);
   });
 });

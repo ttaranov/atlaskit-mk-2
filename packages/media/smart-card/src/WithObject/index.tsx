@@ -67,20 +67,26 @@ class InnerWithObject extends React.Component<
       .get(url, definitionId);
   }
 
+  updateState = (state: ObjectState) => {
+    this.setState({ state });
+  };
+
   componentDidUpdate(prevProps: InnerWithObjectProps) {
     const { client, url } = this.props;
     if (
       this.props.client !== prevProps.client ||
       this.props.url !== prevProps.url
     ) {
-      client.register(url, state => this.setState({ state }));
+      client.register(url, this.updateState);
       this.reload();
     }
   }
 
-  // componentWillUnmount() {
-  //   this.unsubscribe();
-  // }
+  componentWillUnmount() {
+    const { client, url } = this.props;
+
+    client.deregister(url, this.updateState);
+  }
 
   render() {
     const { children } = this.props;

@@ -19,16 +19,6 @@ export interface ClientOptions {
   TEMPORARY_resolver?: TemporaryResolver;
 }
 
-export enum ClientCommandType {
-  Reload = 'Reload',
-  Init = 'Init',
-}
-
-export type ClientCommand = {
-  type: ClientCommandType;
-  definitionId?: string;
-};
-
 export type MapDefinitionIdToUrl = {
   [k: string]: Array<string>;
 };
@@ -48,7 +38,7 @@ export type MapUrlToUpdateFn = {
  * with the same URL (and definitionId, see 1)
  */
 
-export const getCardsWithoutDefinitionId = (
+export const getUrlsNotTiedToDefinitionId = (
   defIdToUrls: MapDefinitionIdToUrl,
   urlToUpdFn: MapUrlToUpdateFn,
 ): Array<string> => {
@@ -106,10 +96,18 @@ export class Client {
    */
   register(url: string, fn: (state: ObjectState) => void): Client {
     if (!this.mapUrlToUpdateFn[url]) {
-      this.mapUrlToUpdateFn[url] = [fn];
-      return this;
+      this.mapUrlToUpdateFn[url] = [];
     }
     this.mapUrlToUpdateFn[url].push(fn);
+    return this;
+  }
+
+  deregister(url: string, fn: Function): Client {
+    if (this.mapUrlToUpdateFn[url]) {
+      this.mapUrlToUpdateFn[url] = this.mapUrlToUpdateFn[url].filter(
+        f => f !== fn,
+      );
+    }
     return this;
   }
 
@@ -122,7 +120,7 @@ export class Client {
    *
    * @param url the url of a remote resoulrce a card wants to be resolved
    * @param definitionIdFromCard optional definition id that card already has
-   * @param cb optional becuase if it is there, we run the action, not every single time.
+   * @param cb optional because if it is there, we run the action, not every single time.
    */
   get(url: string, definitionIdFromCard?: string, cb?: () => void) {
     if (!this.mapUrlToUpdateFn[url]) {
@@ -181,7 +179,7 @@ export class Client {
         // say we have a bunch of errored cards without definitionId on them.
         // we clicked "Try again" on one of them and succeeded.
         // now we need to reload the cards that do not have a definitionId.
-        const urlsWithOutDefId = getCardsWithoutDefinitionId(
+        const urlsWithOutDefId = getUrlsNotTiedToDefinitionId(
           this.mapDefinitionIdToUrl,
           this.mapUrlToUpdateFn,
         );

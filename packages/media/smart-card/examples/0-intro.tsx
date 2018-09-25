@@ -6,9 +6,6 @@ import { FieldTextStateless } from '@atlaskit/field-text';
 import Button from '@atlaskit/button';
 import { Provider, Card } from '../src';
 import { CardAppearance } from '../src/Card/CardContent';
-// import { mockSingleCardWorkflow } from '../mocks';
-
-// mockSingleCardWorkflow();
 
 const params =
   typeof URLSearchParams !== 'undefined'
