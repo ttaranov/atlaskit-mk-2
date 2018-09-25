@@ -55,6 +55,7 @@ export interface ToolbarProps {
 
 interface ToolbarInnerState {
   registeredButtons: any[]; //ToolbarButton[]
+  selectedButtonIndex: number;
 }
 
 export interface ToolbarInnerProps extends ToolbarProps {
@@ -70,6 +71,7 @@ export class ToolbarInner extends React.Component<
     super(props);
     this.registerButton = this.registerButton.bind(this);
     this.state = {
+      selectedButtonIndex: 1,
       registeredButtons: [],
     };
   }
@@ -106,6 +108,24 @@ export class ToolbarInner extends React.Component<
     return null;
   }
 
+  private handleKeydown = e => {
+    if (e.keyCode === 13) {
+      console.log('pressed enter in Toolbar handler');
+      // onClick(e);
+    }
+    if (e.keyCode === 37) {
+      console.log('pressed left');
+      this.setState(prevState => ({
+        selectedButtonIndex: prevState.selectedButtonIndex - 1,
+      }));
+    } else if (e.keyCode === 39) {
+      console.log('pressed right');
+      this.setState(prevState => ({
+        selectedButtonIndex: prevState.selectedButtonIndex + 1,
+      }));
+    }
+  };
+
   render() {
     const {
       appearance,
@@ -130,9 +150,10 @@ export class ToolbarInner extends React.Component<
       <ToolbarContext.Provider
         value={{
           registerButton: this.registerButton,
+          selectedButton: null,
         }}
       >
-        <div onKeyDown={e => console.log('Onkeydown in Toolbar')}>
+        <div onKeyDown={this.handleKeydown}>
           <ToolbarComponentsWrapper>
             {items.map((component, key) => {
               const props: any = { key };
