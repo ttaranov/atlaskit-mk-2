@@ -130,8 +130,7 @@ export class AudioViewer extends React.Component<Props, State> {
       });
     } catch (err) {
       this.setState({
-        // TODO: error
-        src: Outcome.failed(createError('previewFailed')),
+        src: Outcome.failed(createError('previewFailed', err, item)),
       });
     }
   }

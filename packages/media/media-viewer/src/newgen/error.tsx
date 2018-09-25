@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
 import { ErrorMessageWrapper, ErrorImage } from './styled';
-import { FileItem } from '@atlaskit/media-core';
+import { FileState } from '@atlaskit/media-core';
 import { cannotViewFile, errorLoadingFile } from './error-images';
 
 type MessagesType<Key extends string> = { [k in Key]: ReactNode };
@@ -73,17 +73,17 @@ const messages: MessagesType<ErrorName> = {
 
 export class MediaViewerError {
   private _name: ErrorName;
-  private _fileItem?: FileItem;
+  private _file?: FileState;
   private _error?: Error;
 
-  constructor(name: ErrorName, fileItem?: FileItem, error?: Error) {
-    this._fileItem = fileItem;
+  constructor(name: ErrorName, file?: FileState, error?: Error) {
+    this._file = file;
     this._name = name;
     this._error = error;
   }
 
-  get fileItem(): FileItem | undefined {
-    return this._fileItem;
+  get file(): FileState | undefined {
+    return this._file;
   }
 
   get errorName(): ErrorName {
@@ -97,10 +97,10 @@ export class MediaViewerError {
 
 export const createError = (
   name: ErrorName,
-  fileItem?: FileItem,
   innerError?: Error,
+  file?: FileState,
 ): MediaViewerError => {
-  return new MediaViewerError(name, fileItem, innerError);
+  return new MediaViewerError(name, file, innerError);
 };
 
 export class ErrorMessage extends React.Component<Props, {}> {
