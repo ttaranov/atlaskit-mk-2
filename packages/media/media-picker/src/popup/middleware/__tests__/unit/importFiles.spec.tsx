@@ -113,6 +113,7 @@ describe('importFiles middleware', () => {
               height: 10,
             },
             src: 'blob',
+            scaleFactor: 1,
           },
         },
       };
@@ -391,7 +392,7 @@ describe('importFiles middleware', () => {
         });
       });
 
-      it('should not bobble up other events', done => {
+      it('should not bubble up other events', done => {
         const { eventEmitter, mockWsProvider, store, nextDispatch } = setup();
         importFilesMiddleware(eventEmitter, mockWsProvider)(store)(
           nextDispatch,
