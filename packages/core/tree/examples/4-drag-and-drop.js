@@ -7,6 +7,7 @@ import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
 import Tree, {
   mutateTree,
+  moveItemOnTree,
   type RenderItemParams,
   type TreeItem,
   type TreeData,
@@ -99,26 +100,9 @@ export default class DragDropTree extends Component<void, State> {
     if (!destination) {
       return;
     }
-
-    const sourceParent: TreeItem = tree.items[source.parentId];
-    const itemIdToMove = sourceParent.children[source.index];
-    const newSourceChildren = [...sourceParent.children];
-    newSourceChildren.splice(source.index, 1);
-    const treeWithoutSource = mutateTree(tree, source.parentId, {
-      children: newSourceChildren,
-    });
-
-    const destinationParent: TreeItem =
-      treeWithoutSource.items[destination.parentId];
-    const newDestinationChildren = [...destinationParent.children];
-    newDestinationChildren.splice(destination.index, 0, itemIdToMove);
-    const treeWithTheItem = mutateTree(
-      treeWithoutSource,
-      destination.parentId,
-      { children: newDestinationChildren },
-    );
+    const newTree = moveItemOnTree(tree, source, destination);
     this.setState({
-      tree: treeWithTheItem,
+      tree: newTree,
     });
   };
 
