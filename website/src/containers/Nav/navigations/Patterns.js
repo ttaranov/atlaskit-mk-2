@@ -18,7 +18,7 @@ export default function PatternsNav({ pathname, patterns }: PatternsNavProps) {
       {
         to: '/patterns',
         title: 'Overview',
-        // icon: <IssuesIcon label="About patterns" />,
+        /* icon: <IssuesIcon label="About patterns" />,*/
       },
     ],
   });

@@ -137,8 +137,6 @@ pipelines:
             - yarn build:zip
             - yarn deploy:production
             - cd ..
-            # This is a sanity check to make sure the website renders on all browsers without error
-            - yarn test:webdriver:browserstack website
           caches:
             - node
 

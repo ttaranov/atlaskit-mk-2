@@ -96,9 +96,16 @@ async function startDevServer() {
       )
     : workspaces;
 
-  const globs = workspacesGlob
+  let globs = workspacesGlob
     ? utils.createWorkspacesGlob(flattenDeep(filteredWorkspaces), projectRoot)
     : utils.createDefaultGlob();
+
+  /* At the moment, the website does not build a package and it is not possible to test it.
+  ** The current workaround, we build another package that builds the homepage and indirectly test the website.
+  */
+  if (globs.indexOf('website') === -1) {
+    globs = globs.map(glob => glob.replace('website', 'packages/core/button'));
+  }
 
   if (!globs.length) {
     console.info('Nothing to run or pattern does not match!');
