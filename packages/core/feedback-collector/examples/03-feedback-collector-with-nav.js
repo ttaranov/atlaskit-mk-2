@@ -14,7 +14,7 @@ import {
   Separator,
 } from '@atlaskit/navigation-next';
 
-import FeedbackCollector from '../src';
+import JsdFeedbackCollector from '../src';
 
 class FeedbackCollectorNavItem extends Component<*, *> {
   state = {
@@ -40,13 +40,27 @@ class FeedbackCollectorNavItem extends Component<*, *> {
           onClick={this.openModal}
         />
         {isFeedbackModalOpen && (
-          <FeedbackCollector
+          <JsdFeedbackCollector
             onClose={this.closeModal}
             onSubmit={this.handleSubmit}
             email={email}
             name={name}
             requestTypeId={REQUEST_TYPE_ID}
             embeddableKey={EMBEDDABLE_KEY}
+            additionalFields={[
+              {
+                id: 'customfield_123456',
+                value: 'Some additional value',
+              },
+              {
+                id: 'customfield_65432',
+                value: { id: 'another_value' },
+              },
+              {
+                id: 'customfield_123654',
+                value: [{ id: 'value' }],
+              },
+            ]}
           />
         )}
       </Fragment>

@@ -349,6 +349,7 @@
     "lodash.pick": "^4.4.0",
     "lodash.sample": "^4.2.1",
     "lodash.set": "^4.3.2",
+    "lodash.truncate": "^4.4.2",
     "lru-fast": "^0.2.2",
     "markdown-it": "^6.0.4",
     "markdown-it-table": "^2.0.4",

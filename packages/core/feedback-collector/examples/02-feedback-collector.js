@@ -1,7 +1,8 @@
 // @flow
 import React, { Component } from 'react';
 import Button from '@atlaskit/button';
-import FeedbackCollector, { FeedbackFlag } from '../src';
+import { FlagGroup } from '@atlaskit/flag';
+import JsdFeedbackCollector, { FeedbackFlag } from '../src';
 
 type State = { isOpen: boolean, displayFlag: boolean };
 
@@ -27,7 +28,7 @@ export default class DisplayFeedback extends Component<void, State> {
         </Button>
 
         {isOpen && (
-          <FeedbackCollector
+          <JsdFeedbackCollector
             onClose={this.close}
             onSubmit={this.displayFlag}
             email={email}
@@ -37,7 +38,11 @@ export default class DisplayFeedback extends Component<void, State> {
           />
         )}
 
-        {displayFlag && <FeedbackFlag onDismissed={this.hideFlag} />}
+        {displayFlag && (
+          <FlagGroup onDismissed={this.hideFlag}>
+            <FeedbackFlag />
+          </FlagGroup>
+        )}
       </div>
     );
   }
