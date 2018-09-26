@@ -1,19 +1,19 @@
 import * as React from 'react';
 import Page, { Grid, GridColumn } from '@atlaskit/page';
 import {
-  getImageInfo,
   readImageMetaData,
   getFileInfo,
   ImageMetaData,
   getScaleFactor,
 } from '../src';
-import { InputWrapper, PreviewList, PreviewInfo } from './styled';
+import { InputWrapper, PreviewList, PreviewInfo, PreviewItem } from './styled';
 
 interface ExamplePreview {
   filename: string;
   src: string;
   scaleFactor: number;
   metadata: ImageMetaData | null;
+  duration: number;
 }
 
 export interface ExampleState {
@@ -30,17 +30,20 @@ class Example extends React.Component<{}, ExampleState> {
     const files = e.target.files;
     for (let i = 0; i < files.length; i++) {
       const file = files[i];
+      const startTime = Date.now();
       const fileInfo = await getFileInfo(file);
       const metadata = await readImageMetaData(fileInfo);
       const scaleFactor = getScaleFactor(
         fileInfo.file,
         metadata ? metadata.tags : null,
       );
+      const duration = Date.now() - startTime;
       previews.push({
         filename: file.name,
         scaleFactor,
         src: fileInfo.src,
         metadata,
+        duration,
       });
       this.setState({ previews: [...previews] });
     }
@@ -78,14 +81,13 @@ class Example extends React.Component<{}, ExampleState> {
   renderPreviews() {
     return this.state.previews.map((preview, i) => {
       return (
-        <li key={`preview-${i}`}>
-          <div>{`${preview.filename} (x${
-            preview.scaleFactor
-          } scaleFactor)`}</div>
+        <PreviewItem key={`preview-${i}`}>
+          <div>{`${preview.filename} ~ x${preview.scaleFactor} scaleFactor ~ ${
+            preview.duration
+          }ms`}</div>
           <img src={preview.src} />
           <PreviewInfo>{JSON.stringify(preview.metadata, null, 4)}</PreviewInfo>
-          <hr />
-        </li>
+        </PreviewItem>
       );
     });
   }

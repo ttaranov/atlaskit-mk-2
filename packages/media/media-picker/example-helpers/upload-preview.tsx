@@ -3,29 +3,24 @@ import { PreviewImageWrapper, InfoWrapper } from './styled';
 import { PreviewData } from './types';
 import { Card, FileIdentifier } from '@atlaskit/media-card';
 import { createUploadContext } from '@atlaskit/media-test-helpers';
-import { ImageMetaData } from '@atlaskit/media-ui';
+import { Preview, ImagePreview } from '../src/domain/preview';
 
 const context = createUploadContext();
 
 export class UploadPreview extends React.Component<PreviewData> {
-  getInfoSummary(info?: ImageMetaData): string {
-    if (info) {
-      let tags = 'none';
-      if (info.tags) {
-        const metaTags = info.tags;
-        tags = Object.keys(info.tags)
-          .map(key => `${key}: ${JSON.stringify(metaTags[key])}`)
-          .join('\n');
-      }
-      return `[ general ]\ntype: ${info.type}\nwidth: ${info.width}\nheight: ${
-        info.height
-      }\n\n[ metatags ]\n${tags}`;
+  getPreviewInfo(preview: Preview | ImagePreview): string | null {
+    if ('scaleFactor' in preview) {
+      const imgPreview = preview as ImagePreview;
+      return `${imgPreview.dimensions.width} x ${
+        imgPreview.dimensions.height
+      } @${imgPreview.scaleFactor}x`;
+    } else {
+      return null;
     }
-    return 'no info available.';
   }
 
   render() {
-    const { upfrontId, info } = this.props;
+    const { upfrontId, preview } = this.props;
 
     if (!upfrontId) {
       return <div />;
@@ -36,12 +31,12 @@ export class UploadPreview extends React.Component<PreviewData> {
       mediaItemType: 'file',
     };
 
-    const infoSummary = this.getInfoSummary(info);
-
     return (
       <PreviewImageWrapper>
         <Card identifier={identifier} context={context} />
-        {info ? <InfoWrapper>{infoSummary}</InfoWrapper> : null}
+        {preview ? (
+          <InfoWrapper>{this.getPreviewInfo(preview)}</InfoWrapper>
+        ) : null}
       </PreviewImageWrapper>
     );
   }

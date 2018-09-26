@@ -4,11 +4,6 @@ import { LocalUploadComponent } from '../src/components/localUpload';
 import { UploadsStartEventPayload } from '../src';
 import { PreviewsTitle, PreviewsWrapper } from './styled';
 import { PreviewData } from './types';
-import {
-  dataURItoFile,
-  readImageMetaData,
-  getFileInfo,
-} from '@atlaskit/media-ui';
 
 export interface PreviewsDataState {
   previewsData: PreviewData[];
@@ -49,6 +44,7 @@ export class UploadPreviews extends React.Component<
       return {
         fileId: id,
         upfrontId,
+        preview: null,
       };
     });
 
@@ -65,15 +61,9 @@ export class UploadPreviews extends React.Component<
     picker.on('upload-error', data => {
       console.log('upload error:', data);
     });
-    //import { readImageMetaData, dataURItoFile } from '@atlaskit/media-ui';
     picker.on('upload-preview-update', async data => {
-      const file = dataURItoFile(data.preview.src);
-      const fileInfo = await getFileInfo(file);
-      const info = await readImageMetaData(fileInfo);
-      if (info) {
-        const currentItem = previewsData[previewsData.length - 1];
-        currentItem.info = info;
-      }
+      const currentItem = previewsData[previewsData.length - 1];
+      currentItem.preview = data.preview;
       this.setState({
         previewsData: [...previewsData],
       });
@@ -87,7 +77,7 @@ export class UploadPreviews extends React.Component<
         key={`${index}`}
         fileId={previewsData.fileId}
         upfrontId={previewsData.upfrontId}
-        info={previewsData.info}
+        preview={previewsData.preview}
       />
     ));
   };

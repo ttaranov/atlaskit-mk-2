@@ -59,9 +59,8 @@ export const InfoWrapper: ComponentClass<HTMLAttributes<{}>> = styled.pre`
   color: black;
   font-size: 8pt;
   top: 120px;
-  left: 15px;
-  overflow-x: hidden;
-  text-overflow: ellipsis;
+  left: 0;
+  text-align: center;
 `;
 
 export const DropzoneContainer: ComponentClass<
