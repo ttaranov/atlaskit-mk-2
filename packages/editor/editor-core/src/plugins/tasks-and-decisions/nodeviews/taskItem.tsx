@@ -39,7 +39,7 @@ class Task extends ReactNodeView {
    * cannot render the position and listSize into the
    * AnalyticsContext at initial render time.
    */
-  private getListData = () => {
+  private getAnalyticsData = () => {
     try {
       const resolvedPos = this.view.state.doc.resolve(this.getPos());
       const position = resolvedPos.index();
@@ -71,7 +71,7 @@ class Task extends ReactNodeView {
     const { localId, state } = this.node.attrs;
 
     return (
-      <FabricElementsAnalyticsContext data={this.getListData}>
+      <FabricElementsAnalyticsContext data={this.getAnalyticsData}>
         <TaskItem
           taskId={localId}
           contentRef={forwardRef}

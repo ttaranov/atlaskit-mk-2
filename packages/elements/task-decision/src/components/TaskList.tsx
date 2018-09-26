@@ -12,7 +12,7 @@ export default class TaskList extends PureComponent<Props, {}> {
   render() {
     const { listId, children } = this.props;
 
-    const listSize = Array.isArray(children) ? children.length : 1;
+    const listSize = React.Children.count(children);
 
     if (!children) {
       return null;
