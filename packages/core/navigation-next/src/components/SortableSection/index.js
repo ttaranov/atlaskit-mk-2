@@ -10,6 +10,7 @@ import { DraggableItem } from './DraggableItem';
 import { DroppableGroup } from './DroppableGroup';
 
 const noop = () => {};
+const pluck = (arr, key, val) => arr.find(x => x[key] === val);
 
 export default class SortableSection extends Component<SortableSectionProps> {
   static defaultProps = {
@@ -57,8 +58,8 @@ export default class SortableSection extends Component<SortableSectionProps> {
       return; // dropped in its original position
     }
 
-    const start = groups[startId];
-    const finish = groups[finishId];
+    const start = pluck(groups, 'id', startId);
+    const finish = pluck(groups, 'id', finishId);
 
     // same group
     if (start === finish) {
@@ -66,7 +67,10 @@ export default class SortableSection extends Component<SortableSectionProps> {
       newItemIds.splice(source.index, 1);
       newItemIds.splice(destination.index, 0, draggableId);
       const newGroup = { ...start, itemIds: newItemIds };
-      const newGroups = { ...groups, [startId]: newGroup };
+      const newGroups = groups.map(g => {
+        if (g.id === startId) return newGroup;
+        return g;
+      });
 
       this.props.onChange(newGroups, result);
       return;
@@ -81,17 +85,17 @@ export default class SortableSection extends Component<SortableSectionProps> {
     finishItemIds.splice(destination.index, 0, draggableId);
     const newFinish = { ...finish, itemIds: finishItemIds };
 
-    const newGroups = {
-      ...groups,
-      [startId]: newStart,
-      [finishId]: newFinish,
-    };
+    const newGroups = groups.map(g => {
+      if (g.id === startId) return newStart;
+      if (g.id === finishId) return newFinish;
+      return g;
+    });
 
     this.props.onChange(newGroups, result);
   };
 
   render() {
-    const { groups, groupIds, id: sectionId, items, parentId } = this.props;
+    const { groups, id: sectionId, items, parentId } = this.props;
 
     return (
       <DragDropContext
@@ -103,15 +107,13 @@ export default class SortableSection extends Component<SortableSectionProps> {
         <Section parentId={parentId} id={sectionId}>
           {({ css }) => (
             <Fragment>
-              {groupIds.map(groupId => {
-                const group = groups[groupId];
-
+              {groups.map(group => {
                 return (
                   <DroppableGroup
+                    droppableId={group.id}
                     groupProps={group}
-                    id={groupId}
                     innerStyle={{ ...css, minHeight: 64 }}
-                    key={groupId}
+                    key={group.id}
                   >
                     {group.itemIds.map((itemId, index) => {
                       const item = items[itemId];

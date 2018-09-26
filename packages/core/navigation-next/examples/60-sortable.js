@@ -64,16 +64,14 @@ export default class Example extends Component<Props, State> {
     items: getDefaultItems(),
   };
   state = {
-    groups: {
-      first: { heading: 'First', itemIds: getDefaultItems(0, 4) },
-      second: { heading: 'Second', itemIds: getDefaultItems(4, 8) },
-    },
-    groupIds: ['first', 'second'],
+    groups: [
+      { id: 'first', heading: 'First', itemIds: getDefaultItems(0, 4) },
+      { id: 'second', heading: 'Second', itemIds: getDefaultItems(4, 8) },
+    ],
     showContainer: true,
   };
 
-  onChange = (groups, result) => {
-    console.log('Example onChange:', groups);
+  onChange = groups => {
     this.setState({ groups });
   };
   onDragEnd = result => {
@@ -103,7 +101,6 @@ export default class Example extends Component<Props, State> {
         <SortableSection
           items={this.props.items}
           groups={this.state.groups}
-          groupIds={this.state.groupIds}
           onChange={this.onChange}
           // onDragEnd={this.onDragEnd}
         />
