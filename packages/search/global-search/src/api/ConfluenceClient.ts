@@ -175,6 +175,7 @@ function recentSpaceToResult(
     avatarUrl: recentSpace.icon,
     analyticsType: AnalyticsType.RecentConfluence,
     resultType: ResultType.GenericContainerResult,
+    contentType: ContentType.ConfluenceSpace,
   } as ContainerResult;
 }
 
