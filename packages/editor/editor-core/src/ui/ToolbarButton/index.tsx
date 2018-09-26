@@ -68,6 +68,7 @@ class ToolbarButton extends PureComponent<Props, {}> {
           <div
             onKeyDown={e => {
               if (e.keyCode === 13) {
+                debugger;
                 // @ts-ignore
                 this.handleClick(e);
               }
@@ -91,8 +92,8 @@ class ToolbarButton extends PureComponent<Props, {}> {
                   // const shouldFocusElement = value.enabled && isInTitle !== true;
                   // console.log({valueEnabled, isInTitle, shouldFocusElement});
                   // console.log("--------------------------------------------")
-                  if (value.arrowKeyPushed) {
-                    value.handleArrowKeyPushed();
+                  if (value.shouldFocus && value.shouldFocus()) {
+                    // value.handleArrowKeyPushed();
                     input!.focus();
                   }
                 } else {

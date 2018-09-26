@@ -71,12 +71,12 @@ export class ToolbarInner extends React.Component<
   constructor(props: ToolbarInnerProps) {
     super(props);
     this.registerButton = this.registerButton.bind(this);
-    this.handleArrowKeyPushed = this.handleArrowKeyPushed.bind(this);
+    this.shouldFocus = this.shouldFocus.bind(this);
     this.state = {
       selectedButtonIndex: 1,
       registeredButtons: [],
       selectedButton: undefined,
-      arrowKeyPushed: true,
+      arrowKeyPushed: false,
     };
   }
 
@@ -96,11 +96,14 @@ export class ToolbarInner extends React.Component<
       nextProps.isReducedSpacing !== this.props.isToolbarReducedSpacing
     );
   }
-  handleArrowKeyPushed() {
-    this.setState({
-      arrowKeyPushed: false,
-    });
-    return null;
+  shouldFocus() {
+    const pushed: boolean = this.state.arrowKeyPushed;
+    if (pushed) {
+      this.setState({
+        arrowKeyPushed: false,
+      });
+    }
+    return pushed;
   }
 
   registerButton(button) {
@@ -186,8 +189,8 @@ export class ToolbarInner extends React.Component<
           selectedButton: this.state.selectedButton,
           selectedButtonIndex: this.state.selectedButtonIndex,
           enabled: !this.props.disabled,
-          arrowKeyPushed: this.state.arrowKeyPushed,
-          handleArrowKeyPushed: this.handleArrowKeyPushed,
+          // arrowKeyPushed: this.state.arrowKeyPushed,
+          shouldFocus: this.shouldFocus,
         }}
       >
         <div onKeyDown={this.handleKeydown}>
