@@ -130,7 +130,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       } catch (e) {
         this.props.logger.safeError(
           LOGGER_NAME,
-          'Can not fire analytics event atlassian.fabric.global-search.search-error',
+          'Can not fire event atlassian.fabric.global-search.search-error',
           e,
         );
       }

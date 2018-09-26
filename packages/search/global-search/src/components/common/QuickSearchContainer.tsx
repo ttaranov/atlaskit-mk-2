@@ -154,7 +154,7 @@ export class QuickSearchContainer extends React.Component<Props, State> {
     } catch (e) {
       this.props.logger.safeError(
         LOGGER_NAME,
-        'problem while getting search results',
+        'error while getting search results',
         e,
       );
       this.setState({
@@ -296,7 +296,7 @@ export class QuickSearchContainer extends React.Component<Props, State> {
     } catch (e) {
       this.props.logger.safeError(
         LOGGER_NAME,
-        'error while getting confluence recent items',
+        'error while getting recent items',
         e,
       );
       if (this.state.isLoading) {

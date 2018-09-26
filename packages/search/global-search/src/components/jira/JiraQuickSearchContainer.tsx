@@ -195,7 +195,7 @@ export class JiraQuickSearchContainer extends React.Component<
       error =>
         this.props.logger.safeError(
           LOGGER_NAME,
-          'error in recently jira items promise',
+          'error in recentl Jira items promise',
           error,
         ),
     );
