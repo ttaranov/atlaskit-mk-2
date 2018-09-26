@@ -72,13 +72,13 @@
     "build:editor-mobile-bridge": "          cd packages/editor/editor-mobile-bridge && yarn build:minimize",
     "build:media-editor:copy-binaries": "    cd packages/media/media-editor && cp -r src/engine/core/binaries dist/es5/engine/core && cp -r src/engine/core/binaries dist/es2015/engine/core",
     "build:icon": "                          cd packages/core/icon && yarn build",
-    "build:reduced-ui-pack": "               cd packages/css-packs/reduced-ui-pack && yarn build",
-    "build:css-reset": "                     cd packages/css-packs/css-reset && yarn build",
     "build:layer": "                         cd packages/core/layer && yarn build",
     "build:navigation-next": "               rm -rf packages/core/navigation-next/dist/{cjs,esm} && run-p build:navigation-next:cjs build:navigation-next:esm",
     "build:navigation-next:cjs": "           NODE_ENV=production BABEL_ENV=production:cjs bolt workspaces exec --only \"@atlaskit/navigation-next\" -- babel src -d dist/cjs",
     "build:navigation-next:esm": "           NODE_ENV=production BABEL_ENV=production:esm bolt workspaces exec --only \"@atlaskit/navigation-next\" -- babel src -d dist/esm",
-    "build:bundle-analysis": "               node ./build/ci-scripts/run.bundle.analysis"
+    "build:bundle-analysis": "               node ./build/ci-scripts/run.bundle.analysis",
+    "build:css-reset": "                     BABEL_ENV=production:cjs bolt w @atlaskit/css-reset run build",
+    "build:reduced-ui-pack": "               BABEL_ENV=production:cjs bolt w @atlaskit/reduced-ui-pack run build"
   },
   "bolt": {
     "version": "^0.20.6 || ^0.21.1 || ^0.22.1",
@@ -93,6 +93,7 @@
     }
   },
   "devDependencies": {
+    "@babel/node": "^7.0.0",
     "@types/chai": "^4.0.4",
     "@types/classnames": "^2.2.6",
     "@types/enzyme": "^3.1.6",
@@ -312,6 +313,7 @@
     "es6-object-assign": "^1.1.0",
     "eventemitter2": "^4.1.0",
     "execa": "^0.10.0",
+    "fbjs": "^1.0.0",
     "filesize": "^3.2.1",
     "flow": "^0.2.3",
     "flushable": "^1.0.0",
