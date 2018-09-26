@@ -110,7 +110,7 @@ describe('FileCard', () => {
     );
   });
 
-  it.only('should pass "Failed to load" copy to "small" card view', () => {
+  it('should pass "Failed to load" copy to "small" card view', () => {
     const card = shallow(<FileCard appearance="small" status="error" />);
 
     expect(
