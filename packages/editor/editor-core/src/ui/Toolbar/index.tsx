@@ -79,7 +79,6 @@ export class ToolbarInner extends React.Component<
 
   shouldComponentUpdate(nextProps, nextState) {
     if (this.props.disabled === true && nextProps.disabled === false) {
-      console.log('Enabling toolbar');
       this.updateSelectedButton();
     }
 
@@ -95,13 +94,7 @@ export class ToolbarInner extends React.Component<
     );
   }
 
-  componentDidMount() {
-    console.log('Toolbar Mounted');
-  }
-
   registerButton(button) {
-    console.log('registered button in toolbar:', button);
-
     this.setState(prevState => {
       const allButtons = prevState.registeredButtons;
       let newRegisteredButtons = allButtons;
@@ -111,7 +104,6 @@ export class ToolbarInner extends React.Component<
       }
       let selectedButton = prevState.selectedButton;
       if (allButtons.length == 0) {
-        console.log('Set selected button to first button');
         selectedButton = newRegisteredButtons[prevState.selectedButton];
       }
       return {
@@ -134,12 +126,10 @@ export class ToolbarInner extends React.Component<
       const newIndex = prevState.selectedButtonIndex + delta;
       const buttons = prevState.registeredButtons;
 
+      // Stay in the toolbar boundaries
       if (newIndex < 0 || newIndex >= buttons.length) {
-        console.log('Button selection out of bounds! prevState:', prevState);
         return { ...prevState };
       }
-      console.log({ newIndex, buttons });
-
       return {
         selectedButtonIndex: newIndex,
         selectedButton: buttons[newIndex],
@@ -148,14 +138,9 @@ export class ToolbarInner extends React.Component<
   }
 
   private handleKeydown = e => {
-    if (e.keyCode === 13) {
-      console.log('pressed enter in Toolbar handler');
-    }
     if (e.keyCode === 37) {
-      console.log('pressed left');
       this.changeSelectedButton(-1);
     } else if (e.keyCode === 39) {
-      console.log('pressed right');
       this.changeSelectedButton(1);
     }
   };

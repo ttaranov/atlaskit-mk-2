@@ -77,8 +77,8 @@ class ToolbarButton extends PureComponent<Props, {}> {
                 if (
                   value.selectedButton &&
                   buttonsMatch(value.selectedButton, this)
-                  // input!.tabIndex === -1
                 ) {
+                  // This code is only run for the currently selected button
                   if (input!.tabIndex !== 0) {
                     input!.tabIndex = 0;
                   }
@@ -86,27 +86,13 @@ class ToolbarButton extends PureComponent<Props, {}> {
                   const isInTitle = document.activeElement.tagName === 'INPUT';
                   const isBodyFocused =
                     document.activeElement.tagName === 'BODY';
-                  console.log('/////////////////////////////////');
-                  console.log({ isInTitle, isBodyFocused });
                   if (
                     value.enabled &&
                     isInTitle !== true &&
                     !(isInTitle === false && isBodyFocused === true)
                   ) {
-                    console.log(
-                      'document.activeElement before?',
-                      document.activeElement,
-                    );
-                    console.log(
-                      `Focusing button ${value.selectedButton!.props.title}!!`,
-                    );
                     input!.focus();
-                    console.log(
-                      'document.activeElement after?',
-                      document.activeElement,
-                    );
                   }
-                  console.log('------------------------');
                 } else {
                   if (input!.tabIndex !== -1) {
                     input!.tabIndex = -1;
@@ -130,7 +116,6 @@ class ToolbarButton extends PureComponent<Props, {}> {
         hideTooltipOnClick={true}
         position={position}
       >
-        {/* {button} */}
         {WrappedButton}
       </Tooltip>
     ) : (
