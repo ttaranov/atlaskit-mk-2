@@ -11,7 +11,6 @@ import {
   Auth,
   FileState,
 } from '@atlaskit/media-core';
-import { Context } from 'react';
 
 export class Stubs {
   static mediaViewer(overrides: any) {
