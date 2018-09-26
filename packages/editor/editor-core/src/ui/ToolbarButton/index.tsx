@@ -76,23 +76,25 @@ class ToolbarButton extends PureComponent<Props, {}> {
               if (input !== null) {
                 if (
                   value.selectedButton &&
-                  buttonsMatch(value.selectedButton, this) &&
-                  input!.tabIndex === -1
+                  buttonsMatch(value.selectedButton, this)
+                  // input!.tabIndex === -1
                 ) {
-                  input!.tabIndex = 0;
-                  console.log(
-                    'Updating button tabindex, enabled is ',
-                    value.enabled,
-                  );
+                  if (input!.tabIndex !== 0) {
+                    input!.tabIndex = 0;
+                  }
 
                   const isInTitle =
                     (document.activeElement as any).placeholder ===
                     'Give this page a title...';
                   const isBodyFocused =
-                    document.activeElement.tagName === 'body';
+                    document.activeElement.tagName === 'BODY';
                   console.log('/////////////////////////////////');
                   console.log({ isInTitle, isBodyFocused });
-                  if (value.enabled && !isInTitle && !isBodyFocused) {
+                  if (
+                    value.enabled &&
+                    isInTitle !== true &&
+                    !(isInTitle === false && isBodyFocused === true)
+                  ) {
                     console.log(
                       'document.activeElement before?',
                       document.activeElement,
@@ -106,10 +108,12 @@ class ToolbarButton extends PureComponent<Props, {}> {
                       document.activeElement,
                     );
                   }
+                  console.log('------------------------');
                 } else {
-                  input!.tabIndex = -1;
+                  if (input!.tabIndex !== -1) {
+                    input!.tabIndex = -1;
+                  }
                 }
-                console.log('------------------------');
               }
             }}
           >
