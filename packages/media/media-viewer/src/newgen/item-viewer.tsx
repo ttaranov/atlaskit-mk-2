@@ -6,7 +6,7 @@ import { VideoViewer } from './viewers/video';
 import { AudioViewer } from './viewers/audio';
 import { DocViewer } from './viewers/doc';
 import { Spinner } from './loading';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 import * as deepEqual from 'deep-equal';
 import { ErrorMessage, createError, MediaViewerError } from './error';
 import { renderDownloadButton } from './domain/download';

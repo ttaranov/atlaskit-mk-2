@@ -1,5 +1,11 @@
 # @atlaskit/tree
 
+## 3.0.3
+- [patch] Collapsing parent automatically when last child moved out [f4992db](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f4992db)
+
+## 3.0.2
+- [patch] Fixing issue of not calling onDragStart when drag&drop starts [d7be874](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d7be874)
+
 ## 3.0.1
 - [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
 

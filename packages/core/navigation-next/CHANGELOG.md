@@ -1,5 +1,8 @@
 # @atlaskit/navigation-next
 
+## 3.14.2
+- [patch] Remove memoization of custom components in globaItem and wrapping tooltip children in div to maintain reference to it [08dd5f4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/08dd5f4)
+
 ## 3.14.1
 - [patch] Fix GlobalItem not passing all GlobalItem props to custom component. [9f95736](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f95736)
 

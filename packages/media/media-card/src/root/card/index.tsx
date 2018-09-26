@@ -8,7 +8,7 @@ import {
   FileDetails,
 } from '@atlaskit/media-core';
 import { AnalyticsContext } from '@atlaskit/analytics-next';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 import {
   SharedCardProps,
   CardEventProps,

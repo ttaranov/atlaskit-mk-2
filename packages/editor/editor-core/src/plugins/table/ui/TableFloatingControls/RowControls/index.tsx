@@ -2,9 +2,9 @@ import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
 import { isRowSelected, isTableSelected } from 'prosemirror-utils';
-import InsertRowButton from './InsertRowButton';
+import InsertButton from '../InsertButton';
 import { findRowSelection, TableSelection, getLineMarkerWidth } from '../utils';
-import DeleteRowButton from './DeleteRowButton';
+import DeleteButton from '../DeleteButton';
 
 export interface Props {
   editorView: EditorView;
@@ -33,7 +33,7 @@ export default class RowControls extends Component<Props, any> {
     }
 
     return (
-      <DeleteRowButton
+      <DeleteButton
         key="delete"
         onClick={this.props.deleteSelectedRows}
         onMouseEnter={() => {
@@ -143,12 +143,15 @@ export default class RowControls extends Component<Props, any> {
           {!(
             selection.hasMultipleSelection && selection.frontOfSelection(i)
           ) ? (
-            <InsertRowButton
+            <InsertButton
+              type="row"
               onClick={() => this.props.insertRow(i + 1)}
-              lineMarkerWidth={getLineMarkerWidth(
-                tableRef,
-                (tableRef.parentNode as HTMLElement).scrollLeft,
-              )}
+              insertLineStyle={{
+                width: getLineMarkerWidth(
+                  tableRef,
+                  (tableRef.parentNode as HTMLElement).scrollLeft,
+                ),
+              }}
             />
           ) : null}
         </div>,

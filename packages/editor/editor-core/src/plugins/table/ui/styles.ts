@@ -5,6 +5,8 @@ import {
   akColorN40A,
   akColorB100,
   akColorB300,
+  akColorB400,
+  akColorN300,
   akColorB75,
   akColorN20,
   akColorN50,
@@ -51,6 +53,32 @@ export const contextualMenuDropdownWidth = 180;
 
 const isIE11 = browser.ie_version === 11;
 
+const Button = (css?: string) => `
+  background: ${akColorB400};
+  border-radius: ${akBorderRadius};
+  border-width: 0px;
+  display: inline-flex;
+  max-width: 100%;
+  height: auto;
+  text-align: center;
+  margin: 0px;
+  padding: 0px;
+  text-decoration: none;
+  transition: background 0.1s ease-out 0s, box-shadow 0.15s cubic-bezier(0.47, 0.03, 0.49, 1.38) 0s;
+  outline: none !important;
+  cursor: pointer;
+  color: white;
+  :hover {
+    background: ${akColorB300};
+  }
+  > .pm-button-icon {
+    display: inline-flex;
+    max-height: 100%;
+    max-width: 100%;
+  }
+  ${css}
+`;
+
 const HeaderButton = (css?: string) => `
   .pm-table-controls__button {
     background: ${tableToolbarColor};
@@ -81,7 +109,7 @@ const HeaderButton = (css?: string) => `
 `;
 
 const InsertButton = (css?: string) => `
-  .pm-table-controls__insert-button {
+  .pm-table-controls__insert-button-inner {
     position: absolute;
     z-index: ${akEditorUnitZIndex};
     display: none;
@@ -94,6 +122,35 @@ const InsertButton = (css?: string) => `
     button * {
       width: 100%;
       height: 100%;
+    }
+    .pm-table-controls__insert-button {
+      ${Button()}
+    }
+  }
+`;
+
+const DeleteButton = (css?: string) => `
+  .pm-table-controls__delete-button-wrap {
+    position: absolute;
+    height: ${tableDeleteButtonSize}px;
+    width: ${tableDeleteButtonSize}px;
+    cursor: pointer;
+    ${css}
+
+    .pm-table-controls__delete-button {
+      ${Button(`
+        background: ${akColorN20A};
+        color: ${akColorN300};
+        :hover {
+          background: ${akColorR300};
+          color: white;
+        }
+      `)}
+      .pm-button-icon,
+      .pm-button-icon svg {
+        width: 16px;
+        height: 16px;
+      }
     }
   }
 `;
@@ -155,10 +212,11 @@ export const tableStyles = css`
     }
     .pm-table-column-controls,
     .pm-table-corner-controls {
+      ${DeleteButton(`
+        top: -${tableDeleteButtonSize + 4}px;
+      `)}
       .pm-table-controls__insert-button-wrap {
         position: absolute;
-        top: -${tableInsertColumnButtonSize}px;
-        right: -${tableInsertColumnButtonSize / 2}px;
         height: ${tableInsertColumnButtonSize}px;
         width: ${tableInsertColumnButtonSize}px;
         z-index: ${akEditorSmallZIndex};
@@ -167,13 +225,17 @@ export const tableStyles = css`
           display: flex;
         }
       }
-      .pm-table-controls__delete-button-wrap {
-        position: absolute;
-        top: -${tableDeleteButtonSize + 4}px;
-        height: ${tableDeleteButtonSize}px;
-        width: ${tableDeleteButtonSize}px;
-        cursor: pointer;
+      .pm-table-controls__insert-column {
+        top: -${tableInsertColumnButtonSize}px;
+        right: -${tableInsertColumnButtonSize / 2}px;
       }
+      .pm-table-controls__insert-row {
+        top: 2px;
+        left: -${tableDeleteButtonSize + 4}px;
+      }
+    }
+    .pm-table-column-controls,
+    .pm-table-controls__insert-column {
       ${InsertButton('top: 5px;')}
       ${InsertLine(`
         width: 2px;
@@ -183,6 +245,19 @@ export const tableStyles = css`
       ${InsertMarker(`
         bottom: 3px;
         left: 7px;
+      `)}
+    }
+    .pm-table-row-controls,
+    .pm-table-controls__insert-row {
+      ${InsertButton('left: 5px;')}
+      ${InsertLine(`
+        height: 2px;
+        top: 8px;
+        left: ${tableInsertColumnButtonSize}px;
+      `)}
+      ${InsertMarker(`
+        top: 7px;
+        right: 3px;
       `)}
     }
 
@@ -260,19 +335,10 @@ export const tableStyles = css`
           display: flex;
         }
       }
-      .pm-table-controls__delete-button-wrap {
-        position: absolute;
+      ${DeleteButton(`
         bottom: -${tableInsertColumnButtonSize / 2}px;
         left: -${tableDeleteButtonSize + 6}px;
-        height: ${tableDeleteButtonSize}px;
-        width: ${tableDeleteButtonSize}px;
-        cursor: pointer;
-
-        button, button * {
-          width: ${tableDeleteButtonSize}px;
-          height: ${tableDeleteButtonSize}px;
-        }
-      }
+      `)}
       ${HeaderButton(`
         border-bottom: 1px solid ${tableBorderColor};
         border-right: 1px solid ${tableBorderColor};
@@ -280,17 +346,8 @@ export const tableStyles = css`
         height: 100%;
         width: ${tableToolbarSize + 1}px;
       `)}
-      ${InsertButton('left: 5px;')}
-      ${InsertLine(`
-        height: 2px;
-        top: 8px;
-        left: ${tableInsertColumnButtonSize}px;
-      `)}
-      ${InsertMarker(`
-        top: 7px;
-        right: 3px;
-      `)}
     }
+
     /* numbered column */
     .pm-table-numbered-column {
       position: relative;

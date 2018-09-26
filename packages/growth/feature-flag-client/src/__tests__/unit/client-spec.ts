@@ -83,6 +83,8 @@ describe('Feature Flag Client', () => {
       client = new FeatureFlagClient({
         analyticsHandler,
         flags: {
+          'my.boolean.flag': false,
+          'my.string.flag': 'string.value',
           'my.variation.flag': {
             value: 'experiment',
             explanation: {
@@ -104,7 +106,6 @@ describe('Feature Flag Client', () => {
               ruleId: '111-bbbbb-ccc',
             },
           },
-          'my.boolean.flag': false,
           'my.detailed.boolean.flag': {
             value: false,
             explanation: {
@@ -158,6 +159,10 @@ describe('Feature Flag Client', () => {
       test('should return default if flag is not boolean', () => {
         expect(
           client.getBooleanValue('my.variation.flag', { default: true }),
+        ).toBe(true);
+
+        expect(
+          client.getBooleanValue('my.string.flag', { default: true }),
         ).toBe(true);
       });
 
@@ -269,6 +274,16 @@ describe('Feature Flag Client', () => {
         });
       });
 
+      test('should return the right value if flag is listed as oneOf and is a dark feature', () => {
+        expect(
+          client.getVariantValue('my.string.flag', {
+            default: 'string.default',
+            oneOf: ['string.default', 'string.value'],
+          }),
+        ).toBe('string.value');
+        expect(analyticsHandler).toHaveBeenCalledTimes(0);
+      });
+
       test('should not fire exposure event if shouldTrackExposureEvent is false', () => {
         expect(
           client.getVariantValue('my.experiment', {
@@ -285,6 +300,11 @@ describe('Feature Flag Client', () => {
       test('should return empty object if flag is not set, and not fire exposure event', () => {
         expect(client.getJSONValue('my.empty.json.flag')).toEqual({});
         expect(analyticsHandler).toHaveBeenCalledTimes(0);
+      });
+
+      test('should return empty object if the flag is not a json flag', () => {
+        expect(client.getJSONValue('my.experiment')).toEqual({});
+        expect(client.getJSONValue('my.string.flag')).toEqual({});
       });
 
       test('should return the object if flag is set', () => {

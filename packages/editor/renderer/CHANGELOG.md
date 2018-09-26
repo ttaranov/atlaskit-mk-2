@@ -1,5 +1,10 @@
 # @atlaskit/renderer
 
+## 24.1.0
+- [minor] FS-2963 When inserting a status, I can pick a colour from a predefined colour picker [a633d77](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a633d77)
+- [patch] Updated dependencies [547b3d9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/547b3d9)
+  - @atlaskit/status@0.2.0
+
 ## 24.0.1
 - [patch] Numbered column in table should be able to fit number > 100 [7a43676](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7a43676)
 
