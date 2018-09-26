@@ -48,7 +48,7 @@ const CONFLUECE_RECENT_ITEMS = [
     resultsCount: 3,
   },
 ];
-describe('Quick Search Analytics', () => {
+describe('Quick Search Analytics', function(this: any) {
   const updateSpy = spyOnComponentDidUpdate();
   const onEventSpy = jest.fn();
   let wrapper: ReactWrapper;

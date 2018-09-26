@@ -4,6 +4,8 @@ import LayoutTwoEqualIcon from '@atlaskit/icon/glyph/editor/layout-two-equal';
 import { layoutSection, layoutColumn } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { FloatingToolbarConfig } from '../floating-toolbar/types';
+import { messages } from '../insert-block/ui/ToolbarInsertBlock';
+
 import {
   default as layoutPlugin,
   pluginKey,
@@ -37,12 +39,14 @@ export default {
       }
       return undefined;
     },
-    quickInsert: [
+    quickInsert: ({ formatMessage }) => [
       {
-        title: 'Columns',
+        title: formatMessage(messages.columns),
         keywords: ['layout', 'section'],
         priority: 1100,
-        icon: () => <LayoutTwoEqualIcon label="Insert columns" />,
+        icon: () => (
+          <LayoutTwoEqualIcon label={formatMessage(messages.columns)} />
+        ),
         action(insert, state) {
           const { layoutSection } = state.schema.nodes;
           return insert(layoutSection.createAndFill() as PMNode);

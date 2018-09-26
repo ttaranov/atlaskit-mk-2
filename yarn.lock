@@ -1934,9 +1934,9 @@ babel-plugin-macros@^2.0.0:
   dependencies:
     cosmiconfig "^4.0.0"
 
-babel-plugin-react-intl-pot@^0.5.6:
-  version "0.5.6"
-  resolved "https://registry.yarnpkg.com/babel-plugin-react-intl-pot/-/babel-plugin-react-intl-pot-0.5.6.tgz#43dd8545ded90cf4c799464f65af1a69f9d897b4"
+babel-plugin-react-intl-pot@^0.5.7:
+  version "0.5.7"
+  resolved "https://registry.yarnpkg.com/babel-plugin-react-intl-pot/-/babel-plugin-react-intl-pot-0.5.7.tgz#7cb07f92e3637c9639608e9754c79b8f7eb3cb08"
   dependencies:
     cldr "^4.11.0"
     data.either "^1.5.2"

@@ -80,7 +80,7 @@ export const createPlugin = (
       },
     },
     props: {
-      decorations(state) {
+      decorations(this: Plugin, state) {
         return this.getState(state).decorations;
       },
     },

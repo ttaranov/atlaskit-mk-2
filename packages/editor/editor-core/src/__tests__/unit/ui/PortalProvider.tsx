@@ -17,7 +17,7 @@ describe.skip('PortalProvider', () => {
     place2.parentNode.removeChild(place2);
   });
 
-  it('should render a component succsefully', () => {
+  it('should render a component successfully', () => {
     let portalProviderAPI;
     const wrapper = mount(
       <PortalProvider
@@ -51,7 +51,7 @@ describe.skip('PortalProvider', () => {
     expect(wrapper.find(Component).length).toBe(2);
   });
 
-  it('should destroy a component succsefully', () => {
+  it('should destroy a component successfully', () => {
     let portalProviderAPI;
     const wrapper = mount(
       <PortalProvider

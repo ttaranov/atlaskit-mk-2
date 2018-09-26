@@ -1,10 +1,10 @@
 import { expect } from 'chai';
-import { mount } from 'enzyme';
 import * as React from 'react';
+import { IntlProvider } from 'react-intl';
 import LayerManager from '@atlaskit/layer-manager';
 import { EditorView } from 'prosemirror-view';
 import { browser, createSchema, doc } from '@atlaskit/editor-common';
-import { createEditor } from '@atlaskit/editor-test-helpers';
+import { createEditor, mountWithIntl } from '@atlaskit/editor-test-helpers';
 import HelpDialog, {
   formatting,
   getComponentFromKeymap,
@@ -14,6 +14,9 @@ import helpDialog from '../../../../../src/plugins/help-dialog';
 import * as keymaps from '../../../../../src/keymaps';
 import EditorActions from '../../../../../src/actions';
 import { EventDispatcher } from '../../../../../src/event-dispatcher';
+
+const intlProvider = new IntlProvider({ locale: 'en' });
+const { intl } = intlProvider.getChildContext();
 
 describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
   let editorActions: EditorActions;
@@ -29,7 +32,7 @@ describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
   });
 
   it('should not be null if isVisible is true', () => {
-    const helpDialog = mount(
+    const helpDialog = mountWithIntl(
       <LayerManager>
         <HelpDialog editorView={editorView} isVisible={true} />
       </LayerManager>,
@@ -41,7 +44,7 @@ describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
 
   it('should return correct description of codemap when getComponentFromKeymap is called', () => {
     const key = getComponentFromKeymap(keymaps.toggleBold);
-    const shortcut = mount(<div>{key}</div>);
+    const shortcut = mountWithIntl(<div>{key}</div>);
     if (browser.mac) {
       expect(shortcut.text()).to.equal('⌘ + B');
     } else {
@@ -51,36 +54,39 @@ describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
   });
 
   describe('formatting', () => {
-    it('should be an array for verious formattings supported', () => {
-      expect(formatting instanceof Array).to.equal(true);
-    });
-
     it('should have value defined for quote', () => {
-      expect(formatting.filter(f => f.name === 'Bold').length).to.equal(1);
-      expect(formatting.filter(f => f.name === 'Quote').length).to.equal(1);
-      expect(formatting.filter(f => f.name === 'Link').length).to.equal(1);
+      expect(formatting(intl).filter(f => f.type === 'strong').length).to.equal(
+        1,
+      );
+      expect(
+        formatting(intl).filter(f => f.type === 'blockquote').length,
+      ).to.equal(1);
+      expect(formatting(intl).filter(f => f.type === 'link').length).to.equal(
+        1,
+      );
     });
 
     it('should have a value of type keymap in keymap property', () => {
       expect(
-        formatting.filter(f => f.name === 'Quote')[0].keymap!() ===
+        formatting(intl).filter(f => f.type === 'blockquote')[0].keymap!() ===
           keymaps.toggleBlockQuote,
       ).to.equal(true);
     });
 
     it('should return undefined keymap for links in message editor', () => {
       expect(
-        formatting.filter(f => f.name === 'Link')[0].keymap!({
+        formatting(intl).filter(f => f.type === 'link')[0].keymap!({
           appearance: 'message',
         }),
       ).to.equal(undefined);
     });
 
     it('should have correct value for auto-formatting', () => {
-      const autoformat = formatting.filter(f => f.name === 'Quote')[0]
-        .autoFormatting;
-      const label = mount(<div>{autoformat!()}</div>);
-      expect(label.text()).to.equal('> space');
+      const autoFormat = formatting(intl).filter(
+        f => f.type === 'blockquote',
+      )[0].autoFormatting;
+      const label = mountWithIntl(<div>{autoFormat!()}</div>);
+      expect(label.text()).to.equal('> Space');
       label.unmount();
     });
   });
@@ -115,7 +121,7 @@ describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
       customNodeSpecs: { doc },
     });
     it('should return only the list of formatting supported by schema', () => {
-      const formatting = getSupportedFormatting(completeSchema);
+      const formatting = getSupportedFormatting(completeSchema, intl);
       expect(formatting.filter(f => f.type === 'mention').length).to.equal(1);
       expect(formatting.filter(f => f.type === 'hardBreak').length).to.equal(0);
       expect(formatting.filter(f => f.type === 'em').length).to.equal(1);

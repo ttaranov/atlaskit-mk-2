@@ -23,6 +23,7 @@ export default class ExampleEditor extends React.Component<Props, State> {
         messages={locales[locale]}
       >
         {FullPageExample({
+          allowHelpDialog: true,
           primaryToolbarComponents: (
             <WithEditorActions
               render={actions => (

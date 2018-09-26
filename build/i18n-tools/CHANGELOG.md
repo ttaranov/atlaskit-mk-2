@@ -1,5 +1,8 @@
 # @atlaskit/i18n-tools
 
+## 0.3.1
+- [patch] Add translations for help-dialog and colors [42a2916](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42a2916)
+
 ## 0.3.0
 - [minor] ED-5150 Editor i18n: Main toolbar [ef76f1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef76f1f)
 

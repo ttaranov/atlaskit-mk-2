@@ -14,7 +14,6 @@ import {
   thEmpty,
   mountWithIntl,
 } from '@atlaskit/editor-test-helpers';
-import Button from '@atlaskit/button';
 import { pluginKey } from '../../../../../plugins/table/pm-plugins/main';
 import { TablePluginState } from '../../../../../plugins/table/types';
 import RowControls from '../../../../../plugins/table/ui/TableFloatingControls/RowControls';
@@ -296,7 +295,7 @@ describe('RowControls', () => {
 
     floatingControls
       .find(DeleteRowButton)
-      .find(Button)
+      .find('button')
       .simulate('click');
 
     // ensure we called remove

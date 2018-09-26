@@ -1,5 +1,21 @@
 # @atlaskit/editor-core
 
+## 82.2.4
+- [patch] Add translations for help-dialog and colors [42a2916](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42a2916)
+
+## 82.2.3
+- [patch] Add translation for quick insert [d6c438c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d6c438c)
+
+## 82.2.2
+- [patch] ED-5421: avoid adding PM history record for simple table interactions [c6cb409](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c6cb409)
+
+## 82.2.1
+- [patch] ED-5357: getting rid of ak components in table controls [83ca3e9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/83ca3e9)
+
+## 82.2.0
+- [minor] FS-2963 When inserting a status, I can pick a colour from a predefined colour picker [a633d77](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a633d77)
+- [minor] FS-2963 Change status color [547b3d9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/547b3d9)
+
 ## 82.1.2
 - [patch] Numbered column in table should be able to fit number > 100 [7a43676](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7a43676)
 
