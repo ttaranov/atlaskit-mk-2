@@ -123,7 +123,7 @@ describe('FileCard', () => {
     const card = shallow(<FileCard appearance="image" status="error" />);
 
     expect(
-      (card.find(CardGenericViewSmall).prop('error')! as FormattedMessage).props
+      (card.find(FileCardImageView).prop('error')! as FormattedMessage).props
         .defaultMessage,
     ).toEqual('Failed to load');
   });
