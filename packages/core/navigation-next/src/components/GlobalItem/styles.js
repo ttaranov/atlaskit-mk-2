@@ -64,9 +64,9 @@ export default ({ product }: ModeColors) => ({
     ...baseStyles.itemBase,
     ...sizeStyles[size].itemBase,
     backgroundColor: (() => {
+      if (isSelected) return product.background.static;
       if (isActive) return product.background.interact;
       if (isHover) return product.background.hint;
-      if (isSelected) return product.background.static;
       return product.background.default;
     })(),
     color: product.text.default,
