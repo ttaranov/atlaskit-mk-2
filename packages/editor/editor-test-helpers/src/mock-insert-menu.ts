@@ -16,7 +16,6 @@ export const customInsertMenuItems = [
           parameters: {
             macroParams: {},
             macroMetadata: {
-              macroId: { value: new Date().valueOf() },
               placeholder: [
                 {
                   data: { url: '' },
@@ -45,7 +44,6 @@ export const customInsertMenuItems = [
           parameters: {
             macroParams: {},
             macroMetadata: {
-              macroId: { value: new Date().valueOf() },
               placeholder: [
                 {
                   data: { url: '' },
@@ -74,7 +72,6 @@ export const customInsertMenuItems = [
           parameters: {
             macroParams: {},
             macroMetadata: {
-              macroId: { value: new Date().valueOf() },
               placeholder: [
                 {
                   data: { url: '' },
