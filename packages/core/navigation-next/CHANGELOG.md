@@ -1,5 +1,8 @@
 # @atlaskit/navigation-next
 
+## 3.14.3
+- [patch] fix item after onclick [ab3a683](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ab3a683)
+
 ## 3.14.2
 - [patch] Remove memoization of custom components in globaItem and wrapping tooltip children in div to maintain reference to it [08dd5f4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/08dd5f4)
 
