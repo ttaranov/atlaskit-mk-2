@@ -1,12 +1,12 @@
-import { Flag, DarkFeature } from './types';
+import { Flag, SimpleFlag } from './types';
 
-import { isBoolean, isObject } from './lib';
+import { isBoolean, isObject, isOneOf } from './lib';
 
 export default class UntrackedFlag implements Flag {
   flagKey: string;
   value: string | boolean | object;
 
-  constructor(flagKey: string, flag: DarkFeature) {
+  constructor(flagKey: string, flag: SimpleFlag) {
     this.flagKey = flagKey;
     this.value = flag;
   }
@@ -27,7 +27,7 @@ export default class UntrackedFlag implements Flag {
     oneOf: string[];
     shouldTrackExposureEvent?: boolean;
   }): string {
-    if (isBoolean(this.value)) {
+    if (!isOneOf(this.value as string, options.oneOf)) {
       return options.default;
     }
 
