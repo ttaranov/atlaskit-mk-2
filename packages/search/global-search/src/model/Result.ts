@@ -78,6 +78,7 @@ export interface JiraResult extends Result {
 
 export interface ContainerResult extends Result {
   resultType: ResultType.GenericContainerResult;
+  contentType: ContentType.ConfluenceSpace;
 }
 
 export interface PersonResult extends Result {
@@ -95,6 +96,7 @@ export enum ContentType {
   ConfluencePage = 'confluence-page',
   ConfluenceBlogpost = 'confluence-blogpost',
   ConfluenceAttachment = 'confluence-attachment',
+  ConfluenceSpace = 'confluence-space',
   JiraIssue = 'jira-issue',
   JiraBoard = 'jira-board',
   JiraFilter = 'jira-filter',

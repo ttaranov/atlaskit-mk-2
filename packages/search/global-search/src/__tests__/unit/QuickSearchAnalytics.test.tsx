@@ -73,6 +73,7 @@ const JIRA_RECENT_ITEMS = [
 
 const getRecentItems = product =>
   product === 'jira' ? JIRA_RECENT_ITEMS : CONFLUECE_RECENT_ITEMS;
+
 ['confluence', 'jira'].forEach(product => {
   describe(`${product} Quick Search Analytics`, () => {
     const updateSpy = spyOnComponentDidUpdate();
@@ -192,7 +193,7 @@ const getRecentItems = product =>
                     sectionIndex: Math.floor(index / (count - 1)),
                     resultCount: 16, // 14 + 2 advanced
                     sectionId: 'recent-confluence',
-                    type: index === 8 ? undefined : 'confluence-page',
+                    type: index >= 8 ? 'confluence-space' : 'confluence-page',
                   }
                 : {
                     indexWithinSection: index % (count - 2),
@@ -284,7 +285,7 @@ const getRecentItems = product =>
                 indexWithinSection: 2,
                 trigger: 'click',
                 newTab: true,
-                type: undefined,
+                type: 'confluence-space',
               }
             : {
                 sectionId: 'recent-jira',
