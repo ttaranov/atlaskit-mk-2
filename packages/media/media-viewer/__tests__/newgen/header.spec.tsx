@@ -3,9 +3,10 @@ import * as util from '../../src/newgen/utils';
 const constructAuthTokenUrlSpy = jest.spyOn(util, 'constructAuthTokenUrl');
 
 import * as React from 'react';
+import { createContext } from '../_stubs';
 import { Observable } from 'rxjs';
 import { mount, ReactWrapper } from 'enzyme';
-import { MediaItemType, MediaType } from '@atlaskit/media-core';
+import { MediaItemType, MediaType, FileState } from '@atlaskit/media-core';
 import Header from '../../src/newgen/header';
 import { FeedbackButton } from '../../src/newgen/feedback-button';
 import { MetadataFileName, MetadataSubText } from '../../src/newgen/styled';
@@ -24,6 +25,17 @@ const identifier2 = {
   type: 'file' as MediaItemType,
 };
 
+const processedImageState: FileState = {
+  id: '123',
+  mediaType: 'image',
+  mimeType: 'jpeg',
+  status: 'processed',
+  name: 'my image',
+  size: 0,
+  artifacts: {},
+  binaryUrl: '',
+};
+
 describe('<Header />', () => {
   afterEach(() => {
     constructAuthTokenUrlSpy.mockClear();
@@ -39,16 +51,9 @@ describe('<Header />', () => {
   });
 
   it('resubscribes to the provider when the data property value is changed', () => {
-    const context = {
-      getFile: jest.fn(() =>
-        Observable.of({
-          id: '123',
-          mediaType: 'image',
-          status: 'processed',
-          name: 'my image',
-        }),
-      ),
-    } as any;
+    const context = createContext({
+      getFile: () => Observable.of(processedImageState),
+    });
     const el = mount(<Header context={context} identifier={identifier} />);
     el.update();
     expect(el.find(MetadataFileName).text()).toEqual('my image');
@@ -59,15 +64,9 @@ describe('<Header />', () => {
   });
 
   it('component resets initial state when new props are passed', () => {
-    const context = {
-      getFile: () =>
-        Observable.of({
-          id: '123',
-          mediaType: 'image',
-          status: 'processed',
-          name: 'my image',
-        }),
-    } as any;
+    const context = createContext({
+      getFile: () => Observable.of(processedImageState),
+    });
     const el = mount(<Header context={context} identifier={identifier} />);
     expect(el.state().item.status).toEqual('SUCCESSFUL');
 
@@ -83,29 +82,22 @@ describe('<Header />', () => {
   describe('Metadata', () => {
     describe('File collectionName', () => {
       it('shows the title when loaded', () => {
-        const context = {
-          getFile: () =>
-            Observable.of({
-              id: '123',
-              mediaType: 'image',
-              status: 'processed',
-              name: 'my image',
-            }),
-        } as any;
+        const context = createContext({
+          getFile: () => Observable.of(processedImageState),
+        });
         const el = mount(<Header context={context} identifier={identifier} />);
         el.update();
         expect(el.find(MetadataFileName).text()).toEqual('my image');
       });
 
       it('shows unknown if file collectionName not provided on metadata', () => {
-        const context = {
-          getFile: () =>
-            Observable.of({
-              id: '123',
-              mediaType: 'image',
-              status: 'processed',
-            }),
-        } as any;
+        const unNamedImage = {
+          ...processedImageState,
+          name: '',
+        };
+        const context = createContext({
+          getFile: () => Observable.of(unNamedImage),
+        });
         const el = mount(<Header context={context} identifier={identifier} />);
         el.update();
         expect(el.find(MetadataFileName).text()).toEqual('unknown');
@@ -117,15 +109,19 @@ describe('<Header />', () => {
         mediaType: MediaType,
         expectedText: string,
       ) => {
-        const context = {
-          getFile: () =>
-            Observable.of({
-              id: '123',
-              mediaType,
-              status: 'processed',
-              size: 12222222,
-            }),
-        } as any;
+        const testItem: FileState = {
+          id: '123',
+          mediaType,
+          mimeType: 'jpeg',
+          status: 'processed',
+          name: 'my item',
+          size: 12222222,
+          artifacts: {},
+          binaryUrl: '',
+        };
+        const context = createContext({
+          getFile: () => Observable.of(testItem),
+        });
         const el = mount(<Header context={context} identifier={identifier} />);
         el.update();
         expect(el.find(MetadataSubText).text()).toEqual(
@@ -142,28 +138,27 @@ describe('<Header />', () => {
       });
 
       it('should no render file size if not available', () => {
-        const context = {
-          getFile: () =>
-            Observable.of({
-              id: '123',
-              mediaType: 'image',
-              status: 'processed',
-            }),
-        } as any;
+        const noSizeImage = {
+          ...processedImageState,
+          size: 0,
+        };
+        const context = createContext({
+          getFile: () => Observable.of(noSizeImage),
+        });
         const el = mount(<Header context={context} identifier={identifier} />);
         el.update();
         expect(el.find(MetadataSubText).text()).toEqual('image');
       });
 
       it('should no render media type if not available', () => {
-        const context = {
-          getFile: () =>
-            Observable.of({
-              id: '123',
-              status: 'processed',
-              size: 23232323,
-            }),
-        } as any;
+        const noMediaTypeElement = {
+          ...processedImageState,
+          mediaType: '' as MediaType,
+          size: 23232323,
+        };
+        const context = createContext({
+          getFile: () => Observable.of(noMediaTypeElement),
+        });
         const el = mount(<Header context={context} identifier={identifier} />);
         el.update();
         expect(el.find(MetadataSubText).text()).toEqual('unknown · 22.2 MB');
@@ -171,9 +166,9 @@ describe('<Header />', () => {
     });
 
     it('shows nothing when metadata failed to be retrieved', () => {
-      const context = {
+      const context = createContext({
         getFile: () => Observable.throw('something bad happened!'),
-      } as any;
+      });
       const el = mount(<Header context={context} identifier={identifier} />);
       const metadata = el.find(LeftHeader);
       expect(metadata.text()).toEqual('');
@@ -181,15 +176,9 @@ describe('<Header />', () => {
 
     it('MSW-720: passes the collectionName to getFile', () => {
       const collectionName = 'some-collection';
-      const context = {
-        getFile: jest.fn(() =>
-          Observable.of({
-            id: '123',
-            mediaType: 'image',
-            status: 'processed',
-          }),
-        ),
-      } as any;
+      const context = createContext({
+        getFile: () => Observable.of(processedImageState),
+      });
       const identifierWithCollection = { ...identifier, collectionName };
       const el = mount(
         <Header context={context} identifier={identifierWithCollection} />,
@@ -213,27 +202,17 @@ describe('<Header />', () => {
     });
 
     it('should not show the feedback button if jQuery is not found in window object', () => {
-      const context = {
-        getFile: () =>
-          Observable.of({
-            id: '123',
-            status: 'processed',
-            size: 23232323,
-          }),
-      } as any;
+      const context = createContext({
+        getFile: () => Observable.of(processedImageState),
+      });
       const el = mount(<Header context={context} identifier={identifier} />);
       expect(el.find(FeedbackButton).html()).toBeNull();
     });
 
     it('should show the feedback button if jQuery is found in window object', () => {
-      const context = {
-        getFile: () =>
-          Observable.of({
-            id: '123',
-            status: 'processed',
-            size: 23232323,
-          }),
-      } as any;
+      const context = createContext({
+        getFile: () => Observable.of(processedImageState),
+      });
       window.jQuery = {};
       const el = mount(<Header context={context} identifier={identifier} />);
       expect(el.find(FeedbackButton).html()).not.toBeNull();
@@ -252,49 +231,39 @@ describe('<Header />', () => {
     };
 
     it('should show the download button disabled while the item metadata is loading', () => {
-      const context = {
+      const context = createContext({
         getFile: () => Observable.empty(),
-      } as any;
+      });
       const el = mount(<Header context={context} identifier={identifier} />);
       el.update();
       assertDownloadButton(el, false);
     });
 
     it('should show the download button enabled when the item is loaded', () => {
-      const context = {
-        getFile: () =>
-          Observable.of({
-            id: '123',
-            status: 'processed',
-            size: 23232323,
-          }),
-      } as any;
+      const context = createContext({
+        getFile: () => Observable.of(processedImageState),
+      });
       const el = mount(<Header context={context} identifier={identifier} />);
       el.update();
       assertDownloadButton(el, true);
     });
 
     it('should show the download button disabled when there is an error', () => {
-      const context = {
-        getFile: () => Observable.throw('some error'),
-      } as any;
+      const context = createContext({
+        getFile: () => Observable.throw('something bad happened!'),
+      });
       const el = mount(<Header context={context} identifier={identifier} />);
       el.update();
       assertDownloadButton(el, false);
     });
 
     it('should use a fresh token for the download link', () => {
-      const context = {
-        getFile: () =>
-          Observable.of({
-            id: '123',
-            status: 'processed',
-            size: 23232323,
-          }),
+      const context = createContext({
+        getFile: () => Observable.of(processedImageState),
         config: {
           authProvider: jest.fn(),
         },
-      } as any;
+      });
       const el = mount(<Header context={context} identifier={identifier} />);
       el.update();
       el.find(DownloadIcon).simulate('click');
