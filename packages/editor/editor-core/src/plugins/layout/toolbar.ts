@@ -1,5 +1,4 @@
 import { defineMessages, InjectedIntl } from 'react-intl';
-import { Node } from 'prosemirror-model';
 import { EditorState } from 'prosemirror-state';
 import { findDomRefAtPos } from 'prosemirror-utils';
 import LayoutTwoEqualIcon from '@atlaskit/icon/glyph/editor/layout-two-equal';
@@ -14,7 +13,12 @@ import {
   FloatingToolbarItem,
   Icon,
 } from '../../../src/plugins/floating-toolbar/types';
-import { setActiveLayoutType, deleteActiveLayoutNode } from './actions';
+import {
+  setPredefinedLayout,
+  deleteActiveLayoutNode,
+  getPredefinedLayout,
+  PredefinedLayout,
+} from './actions';
 
 export const messages = defineMessages({
   twoColumns: {
@@ -29,7 +33,13 @@ export const messages = defineMessages({
   },
 });
 
-const LAYOUT_TYPES = [
+type PredefinedLayoutButtonItem = {
+  type: PredefinedLayout;
+  title: MessageDescriptor;
+  icon: Icon;
+};
+
+const LAYOUT_TYPES: PredefinedLayoutButtonItem[] = [
   { type: 'two_equal', title: messages.twoColumns, icon: LayoutTwoEqualIcon },
   {
     type: 'three_equal',
@@ -43,14 +53,14 @@ const LAYOUT_TYPES = [
 
 const buildLayoutButton = (
   intl: InjectedIntl,
-  item: { type: string; title: MessageDescriptor; icon: Icon },
-  active: Node,
+  item: PredefinedLayoutButtonItem,
+  currentLayout: string | undefined,
 ): FloatingToolbarItem<Command> => ({
   type: 'button',
   icon: item.icon,
   title: intl.formatMessage(item.title),
-  onClick: setActiveLayoutType(item.type),
-  selected: active.attrs.layoutType === item.type,
+  onClick: setPredefinedLayout(item.type),
+  selected: !!currentLayout && currentLayout === item.type,
 });
 
 export const buildToolbar = (
@@ -60,13 +70,14 @@ export const buildToolbar = (
 ): FloatingToolbarConfig | undefined => {
   const node = state.doc.nodeAt(pos);
   if (node) {
+    const currentLayout = getPredefinedLayout(node);
     return {
       title: 'Columns floating controls',
       getDomRef: view =>
         findDomRefAtPos(pos, view.domAtPos.bind(view)) as HTMLElement,
       nodeType: state.schema.nodes.layoutSection,
       items: [
-        ...LAYOUT_TYPES.map(i => buildLayoutButton(intl, i, node)),
+        ...LAYOUT_TYPES.map(i => buildLayoutButton(intl, i, currentLayout)),
         { type: 'separator' },
         {
           type: 'button',
