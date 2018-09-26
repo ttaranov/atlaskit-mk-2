@@ -16,6 +16,7 @@
     "sourceMap": true,
     "strictNullChecks": true,
     "skipLibCheck": true,
+    "strictFunctionTypes": true,
     "target": "es5",
     "module": "esnext",
     "lib": [

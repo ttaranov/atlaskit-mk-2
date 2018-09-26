@@ -187,8 +187,8 @@ export class Demo extends React.Component<
     }
   }
 
-  handleDispatch = (state: State): void => {
-    const { conversations } = state;
+  handleDispatch = (state: State | undefined): void => {
+    const { conversations } = state || { conversations: [] };
     this.setState({ conversations });
   };
 
