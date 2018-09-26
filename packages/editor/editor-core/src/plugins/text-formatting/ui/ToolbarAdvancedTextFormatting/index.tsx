@@ -65,7 +65,7 @@ export const messages = defineMessages({
   },
   clearFormatting: {
     id: 'fabric.editor.clearFormatting',
-    defaultMessage: 'Clear Formatting',
+    defaultMessage: 'Clear formatting',
     description: 'Remove all rich text formatting from the selected text',
   },
   moreFormatting: {

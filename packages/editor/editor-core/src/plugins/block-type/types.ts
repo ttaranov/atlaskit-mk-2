@@ -11,7 +11,7 @@ export const messages = defineMessages<
 >({
   normal: {
     id: 'fabric.editor.normal',
-    defaultMessage: 'Normal Text',
+    defaultMessage: 'Normal text',
     description: 'This is the default text style',
   },
   heading1: {
