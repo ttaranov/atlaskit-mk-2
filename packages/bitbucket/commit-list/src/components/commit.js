@@ -1,6 +1,7 @@
 // @flow
 import Avatar from '@atlaskit/avatar';
 import { UserAvatar } from '@atlassian/bitkit-avatars';
+import { BuildStatus } from '@atlassian/bitkit-builds';
 import type { Commit as CommitType } from '@atlassian/bitkit-flow-types';
 import { RelativeDate } from '@atlassian/bitkit-date';
 import React, { PureComponent } from 'react';
@@ -43,6 +44,23 @@ export default class Commit extends PureComponent<CommitProps> {
     }
 
     return <Avatar src="" size="small" />;
+  }
+
+  renderBuilds() {
+    const { commit } = this.props;
+    const { extra } = commit;
+
+    if (extra && extra.builds) {
+      return (
+        <styles.TableColumn>
+          <styles.BuildStatusWrapper>
+            <BuildStatus builds={extra.builds} />
+          </styles.BuildStatusWrapper>
+        </styles.TableColumn>
+      );
+    }
+
+    return null;
   }
 
   isSelected = (commitRangeStart: string, commitRangeEnd: string) => {
@@ -106,6 +124,7 @@ export default class Commit extends PureComponent<CommitProps> {
         <styles.TableColumn>
           <RelativeDate date={commit.date} />
         </styles.TableColumn>
+        {this.renderBuilds()}
       </styles.CommitSelectorOption>
     );
   }

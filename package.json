@@ -230,6 +230,7 @@
     "@atlaskit/util-common-test": "^2.4.2",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "@atlassian/bitkit-avatars": "^5.0.0",
+    "@atlassian/bitkit-builds": "^5.0.0",
     "@atlassian/bitkit-date": "^4.0.0",
     "@atlassian/bitkit-flow-types": "^0.10.0",
     "@atlassian/outbound-auth-flow-client": "^1.0.4",

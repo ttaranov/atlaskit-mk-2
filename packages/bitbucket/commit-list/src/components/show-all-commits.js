@@ -1,9 +1,6 @@
 // @flow
 import React, { PureComponent } from 'react';
-import { FormattedMessage } from 'react-intl';
-
 import * as styles from '../styles';
-import messages from '../i18n';
 
 type showAllCommitsProps = {
   handleCommitChange: (
@@ -15,11 +12,13 @@ type showAllCommitsProps = {
   mostRecentCommitHash: string,
   selectedCommitRangeStart: string,
   selectedCommitRangeEnd: string,
+  showFullDiff: string,
 };
 
 export default class ShowAllCommits extends PureComponent<showAllCommitsProps> {
   static defaultProps = {
     hasBuilds: false,
+    showFullDiff: 'See all commits',
   };
 
   isSelected = () => {
@@ -42,6 +41,7 @@ export default class ShowAllCommits extends PureComponent<showAllCommitsProps> {
       hasBuilds,
       mostRecentCommitHash,
       mergeBaseHash,
+      showFullDiff,
     } = this.props;
 
     return (
@@ -66,7 +66,7 @@ export default class ShowAllCommits extends PureComponent<showAllCommitsProps> {
         </styles.TableColumn>
         <td colSpan={hasBuilds ? 6 : 5}>
           <styles.SeeAllCommitsOption>
-            <FormattedMessage {...messages.showFullDiff} />
+            {showFullDiff}
           </styles.SeeAllCommitsOption>
         </td>
       </styles.CommitSelectorOption>

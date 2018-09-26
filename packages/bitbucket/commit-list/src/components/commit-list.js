@@ -2,44 +2,54 @@
 import type { Commit as CommitType } from '@atlassian/bitkit-flow-types';
 import Button from '@atlaskit/button';
 import React, { PureComponent } from 'react';
-import { FormattedMessage } from 'react-intl';
 import Spinner from '@atlaskit/spinner';
 
-import messages from '../i18n';
 import * as styles from '../styles';
 
 import ShowAllCommits from './show-all-commits';
 import Commit from './commit';
 
 export type CommitListProps = {
+  authorHeader: string,
+  buildsHeader: string,
   commits: Array<CommitType>,
+  dateHeader: string,
   handleCommitChange: (
     selectedCommitRangeStart: string,
     selectedCommitRangeEnd: string,
   ) => void,
+  hashHeader: string,
   hasMore: boolean,
   isLoading: boolean,
   linkTarget?: string,
   mergeBaseHash: string,
+  messageHeader: string,
   onShowMoreClick: Function,
   selectedCommitRangeEnd: string,
   selectedCommitRangeStart: string,
   showCommitSelector: boolean,
   showHeaders: boolean,
+  showMoreCommits: string,
 };
 
 export default class CommitList extends PureComponent<CommitListProps> {
   static defaultProps = {
+    authorHeader: 'Author',
+    buildsHeader: 'Builds',
     commits: [],
+    dateHeader: 'Date',
     handleCommitChange: () => {},
+    hashHeader: 'Commit',
     hasMore: false,
     isLoading: false,
     mergeBaseHash: '',
+    messageHeader: 'Message',
     onShowMoreClick: () => {},
     selectedCommitRangeEnd: '',
     selectedCommitRangeStart: '',
     showCommitSelector: false,
     showHeaders: false,
+    showMoreCommits: 'Show More',
   };
 
   hasBuilds() {
@@ -67,29 +77,26 @@ export default class CommitList extends PureComponent<CommitListProps> {
   }
 
   renderColumnHeaders() {
-    const { showCommitSelector } = this.props;
+    const {
+      showCommitSelector,
+      authorHeader,
+      hashHeader,
+      messageHeader,
+      dateHeader,
+      buildsHeader,
+    } = this.props;
     const hasBuilds = this.hasBuilds();
 
     return (
       <thead>
         <tr>
           {showCommitSelector ? <styles.TableHeader /> : null}
-          <styles.TableHeader colSpan="2">
-            <FormattedMessage {...messages.authorHeader} />
-          </styles.TableHeader>
-          <styles.TableHeader>
-            <FormattedMessage {...messages.hashHeader} />
-          </styles.TableHeader>
-          <styles.TableHeader>
-            <FormattedMessage {...messages.messageHeader} />
-          </styles.TableHeader>
-          <styles.TableHeader>
-            <FormattedMessage {...messages.dateHeader} />
-          </styles.TableHeader>
+          <styles.TableHeader colSpan="2">{authorHeader}</styles.TableHeader>
+          <styles.TableHeader>{hashHeader}</styles.TableHeader>
+          <styles.TableHeader>{messageHeader}</styles.TableHeader>
+          <styles.TableHeader>{dateHeader}</styles.TableHeader>
           {hasBuilds ? (
-            <styles.BuildsTableHeader>
-              <FormattedMessage {...messages.buildsHeader} />
-            </styles.BuildsTableHeader>
+            <styles.BuildsTableHeader>{buildsHeader}</styles.BuildsTableHeader>
           ) : null}
         </tr>
       </thead>
@@ -107,6 +114,7 @@ export default class CommitList extends PureComponent<CommitListProps> {
       handleCommitChange,
       mergeBaseHash,
       showHeaders,
+      showMoreCommits,
     } = this.props;
 
     const hasBuilds = this.hasBuilds();
@@ -168,7 +176,7 @@ export default class CommitList extends PureComponent<CommitListProps> {
                 onClick={onShowMoreClick}
                 shouldFitContainer
               >
-                <FormattedMessage {...messages.showMoreCommits} />
+                {showMoreCommits}
               </Button>
             </styles.ShowMoreBtnContainer>
           )}

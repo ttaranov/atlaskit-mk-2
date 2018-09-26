@@ -38,9 +38,9 @@
     "@atlaskit/spinner": "^9.0.2",
     "@atlaskit/theme": "^6.0.3",
     "@atlassian/bitkit-avatars": "^5.0.0",
+    "@atlassian/bitkit-builds": "^5.0.0",
     "@atlassian/bitkit-date": "^4.0.0",
-    "@atlassian/bitkit-flow-types": "^0.10.0",
-    "react-intl": "^2.6.0"
+    "@atlassian/bitkit-flow-types": "^0.10.0"
   },
   "peerDependencies": {
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
@@ -48,6 +48,7 @@
     "enzyme-react-intl": "^2.0.1",
     "enzyme-to-json": "^3.3.0",
     "react": "^16.4.0",
+    "react-intl": "^2.6.0",
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
@@ -55,6 +56,7 @@
     "@atlaskit/navigation": "^33.0.2",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.2",
+    "react-intl": "^2.6.0",
     "react-test-renderer": "^16.3.0"
   }
 }
