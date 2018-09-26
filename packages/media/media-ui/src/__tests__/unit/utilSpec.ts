@@ -13,10 +13,14 @@ const tinyBadDataURI = 'very-bad-data';
 
 describe('Image Meta Data Util', () => {
   describe('dataURItoFile()', () => {
-    const tinyPngFile = dataURItoFile(tinyPngDataURI);
+    const tinyPngFile = dataURItoFile(tinyPngDataURI, 'filename.png');
 
     it('should preserve mimeType', () => {
       expect(tinyPngFile.type).toEqual('image/png');
+    });
+
+    it('should preserve filename', () => {
+      expect(tinyPngFile.name).toEqual('filename.png');
     });
 
     it('should still convert bad dataURI to File', () => {
@@ -36,6 +40,7 @@ describe('Image Meta Data Util', () => {
       const dataURI = await fileToDataURI(tinyPngFile);
       expect(dataURI).toEqual(tinyPngDataURI);
     });
+
     it('should still convert invalid File to dataURI', async () => {
       const badFile = new File([], 'filename', { type: 'bad/type' });
       const dataURI = await fileToDataURI(badFile);
@@ -48,7 +53,6 @@ describe('Image Meta Data Util', () => {
 
     it('should return a Uint8Array with data from a file with data', async () => {
       const array = await fileToArrayBuffer(file);
-      expect(array).toBeInstanceOf(Uint8Array);
       expect(array.length).toBeGreaterThan(0);
     });
 
@@ -60,7 +64,7 @@ describe('Image Meta Data Util', () => {
   });
 
   describe('getFileInfo()', () => {
-    const tinyPngFile = dataURItoFile(tinyPngDataURI);
+    const tinyPngFile = new File([], 'filename.png', { type: 'image/png' });
 
     it('should return a FileInfo structure with src when passed a File', async () => {
       const fileInfo = await getFileInfo(tinyPngFile);
@@ -95,7 +99,6 @@ describe('Image Meta Data Util', () => {
 
     it('should return an image async', async () => {
       const img = await loadImage(tinyPngDataURI);
-      expect(img).toBeInstanceOf(HTMLImageElement);
       expect(img.src).toEqual(tinyPngDataURI);
     });
   });

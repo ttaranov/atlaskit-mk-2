@@ -4,8 +4,6 @@ const parseXMPMetaData = jest.fn().mockReturnValue('pngXMPMetaData');
 const mockImage = {};
 const loadImage = jest.fn().mockReturnValue(Promise.resolve(mockImage));
 
-import { dataURItoFile } from '../../util';
-
 jest.mock('../../imageMetaData/parseJPEG', () => ({ readJPEGExifMetaData }));
 jest.mock('../../imageMetaData/parsePNG', () => ({ readPNGXMPMetaData }));
 jest.mock('../../imageMetaData/parsePNGXMP', () => ({ parseXMPMetaData }));
@@ -15,8 +13,8 @@ import { readImageMetaTags } from '../../imageMetaData/metatags';
 import { smallPngDataURI, smallJPEGDataURI } from './imageHelpers';
 
 describe('Image Meta Tags', () => {
-  const pngFile = dataURItoFile(smallPngDataURI);
-  const jpegFile = dataURItoFile(smallJPEGDataURI);
+  const pngFile = new File([], 'filename.png', { type: 'image/png' });
+  const jpegFile = new File([], 'filename.jpeg', { type: 'image/jpeg' });
 
   describe('readImageMetaTags()', () => {
     it('should use PNG parser on PNG file', async () => {
