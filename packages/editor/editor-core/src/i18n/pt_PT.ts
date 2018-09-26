@@ -26,7 +26,7 @@ export default {
   'fabric.editor.undo': 'Undo',
   'fabric.editor.redo': 'Redo',
   'fabric.editor.pastePlainText': 'Paste plain text',
-  'fabric.editor.altText': 'Alternative text for image.',
+  'fabric.editor.altText': 'Alt text',
   'fabric.editor.closeHelpDialog': 'Close help dialog',
   'fabric.editor.quickInsert': 'Quick insert',
   'fabric.editor.openLink': 'Abrir ligação',

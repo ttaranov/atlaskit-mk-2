@@ -26,7 +26,7 @@ export default {
   'fabric.editor.undo': 'Rückgängig',
   'fabric.editor.redo': 'Wiederholen',
   'fabric.editor.pastePlainText': 'Einfachen Text einfügen',
-  'fabric.editor.altText': 'Alternativtext für Bild',
+  'fabric.editor.altText': 'Alt text',
   'fabric.editor.closeHelpDialog': 'Hilfedialog schließen',
   'fabric.editor.quickInsert': 'Schnelleinfügung',
   'fabric.editor.openLink': 'Link öffnen',
