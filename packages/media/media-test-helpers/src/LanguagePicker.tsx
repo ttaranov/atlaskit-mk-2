@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
 import styled from 'styled-components';
-import { gridSize } from '@atlaskit/theme';
 import DropdownMenu, {
   DropdownItemGroup,
   DropdownItem,
@@ -10,8 +9,8 @@ import WorldIcon from '@atlaskit/icon/glyph/world';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 
 const DropdownContainer = styled.div`
-  margin-right: ${gridSize()}px;
-  min-width: 200px;
+  margin: 8px;
+  width: 200px;
 `;
 
 export interface Props {
