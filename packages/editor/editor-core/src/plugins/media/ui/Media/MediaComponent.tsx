@@ -37,6 +37,7 @@ export interface Props extends Partial<MediaBaseAttributes> {
   selected?: boolean;
   url?: string;
   imageStatus?: ImageStatus;
+  context: Context;
   disableOverlay?: boolean;
 }
 
@@ -54,18 +55,6 @@ export class MediaComponentInternal extends Component<Props, State> {
   };
 
   state: State = {};
-
-  static getDerivedStateFromProps(nextProps: Props, prevState: State) {
-    const { mediaProvider } = nextProps;
-    if (mediaProvider && prevState.mediaProvider !== mediaProvider) {
-      return {
-        mediaProvider,
-        context: null,
-      };
-    }
-
-    return null;
-  }
 
   componentDidMount() {
     this.updateContext();
@@ -89,8 +78,9 @@ export class MediaComponentInternal extends Component<Props, State> {
       url,
       type,
       resizeMode,
+      context,
     } = this.props;
-    const { context } = this.state;
+    // const { context } = this.state;
 
     if (id && context) {
       const otherProps: Partial<Writeable<CardProps>> = {};
@@ -130,7 +120,7 @@ export class MediaComponentInternal extends Component<Props, State> {
           selectable={true}
           selected={selected}
           resizeMode={resizeMode}
-          disableOverlay={disableOverlay}
+          disableOverlay={true}
           {...otherProps}
         />
       );

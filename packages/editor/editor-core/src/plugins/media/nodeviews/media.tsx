@@ -10,14 +10,12 @@ import {
   MediaPluginState,
   stateKey as mediaStateKey,
 } from '../pm-plugins/main';
-import { akEditorFullPageMaxWidth } from '@atlaskit/editor-common';
-import ProgressLoader from '../../../ui/ProgressLoader';
 
 export interface MediaNodeProps extends ReactNodeProps {
   getPos: ProsemirrorGetPosHandler;
   view: EditorView;
   node: PMNode;
-  providerFactory: ProviderFactory;
+  providerFactory?: ProviderFactory;
   cardDimensions: CardDimensions;
   isMediaSingle?: boolean;
   progress?: number;
@@ -62,13 +60,12 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
       selected,
       cardDimensions,
       isMediaSingle,
-      progress = 0,
       onExternalImageLoaded,
-      hideProgress = false,
+      context,
+      onClick,
     } = this.props;
-    const { id, type, collection, url, width } = node.attrs;
-    const { fileId } = this.pluginState.getMediaNodeState(id);
-
+    const { id, type, collection, url, __key } = node.attrs;
+    const { fileId } = this.pluginState.getMediaNodeState(__key);
     const deleteEventHandler = isMediaSingle ? undefined : this.handleRemove;
 
     return (
@@ -82,6 +79,7 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
         onDelete={deleteEventHandler}
         selected={selected}
         url={url}
+        context={context}
         onExternalImageLoaded={onExternalImageLoaded}
         disableOverlay={isMediaSingle}
       />
@@ -91,14 +89,13 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
   private handleRemove: CardEventHandler = (item, event) => {
     const { getPos, node } = this.props;
     this.pluginState.handleMediaNodeRemoval(node, getPos);
-
     if (event) {
       event.stopPropagation();
     }
   };
 
   private handleNewNode = (props: MediaNodeProps) => {
-    const { getPos, node } = props;
-    this.pluginState.handleMediaNodeMount(node, getPos);
+    const { node } = props;
+    this.pluginState.handleMediaNodeMount(node, () => this.props.getPos() + 1);
   };
 }

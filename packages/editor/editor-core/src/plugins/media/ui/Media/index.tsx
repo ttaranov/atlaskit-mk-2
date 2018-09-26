@@ -61,6 +61,7 @@ export default class Media extends PureComponent<Props, {}> {
       url,
       onExternalImageLoaded,
       disableOverlay,
+      context = { context },
     } = this.props;
 
     return (
@@ -78,6 +79,7 @@ export default class Media extends PureComponent<Props, {}> {
         url={url}
         onExternalImageLoaded={onExternalImageLoaded}
         disableOverlay={disableOverlay}
+        context={context}
       />
     );
   };

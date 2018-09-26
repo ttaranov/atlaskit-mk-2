@@ -9,7 +9,6 @@ import {
   NodeSelection,
   Plugin,
   PluginKey,
-  Transaction,
 } from 'prosemirror-state';
 import { Context } from '@atlaskit/media-core';
 import { UploadParams } from '@atlaskit/media-picker';
@@ -266,6 +265,7 @@ export class MediaPluginState {
   insertFiles = (mediaStates: MediaState[]): void => {
     const { stateManager } = this;
     const { mediaSingle } = this.view.state.schema.nodes;
+    let files;
     const collection = this.collectionFromProvider();
     if (!collection) {
       return;
@@ -291,12 +291,17 @@ export class MediaPluginState {
     );
 
     if (this.editorAppearance !== 'message' && mediaSingle) {
-      insertMediaGroupNode(this.view, nonImageAttachments, collection);
+      files = insertMediaGroupNode(this.view, nonImageAttachments, collection);
+      if (files) {
+        files.mediaNodes.forEach((node, idx) => {
+          this.handleMediaNodeMount(node, () => files.mediaInsertPos - idx);
+        });
+      }
       imageAttachments.forEach(mediaState => {
         insertMediaSingleNode(this.view, mediaState, collection);
       });
     } else {
-      insertMediaGroupNode(this.view, mediaStates, collection);
+      files = insertMediaGroupNode(this.view, mediaStates, collection);
     }
 
     const isEndState = (state: MediaState) =>
@@ -310,7 +315,7 @@ export class MediaPluginState {
           const onStateChange = newState => {
             // When media item reaches its final state, remove listener and resolve
             if (isEndState(newState)) {
-              stateManager.off(state.id, onStateChange);
+              // stateManager.off(state.id, onStateChange);
               resolve(newState);
             }
           };
@@ -525,7 +530,7 @@ export class MediaPluginState {
         }
 
         const { node } = nodeWithPos;
-        if (node.attrs.id === id) {
+        if (node.attrs.__key === id) {
           return nodeWithPos;
         }
 
@@ -646,6 +651,25 @@ export class MediaPluginState {
     };
   }
 
+  private replaceTemporaryNode = (state: MediaState) => {
+    const { view } = this;
+    if (!view) {
+      return;
+    }
+    const { id, publicId } = state;
+    const mediaNodeWithPos = this.findMediaNode(id);
+    if (!mediaNodeWithPos) {
+      return;
+    }
+    const { tr } = view.state;
+    tr.setNodeMarkup(mediaNodeWithPos.getPos(), undefined, {
+      ...mediaNodeWithPos.node.attrs,
+      id: state.publicId,
+    });
+
+    view.dispatch(tr);
+  };
+
   private collectionFromProvider(): string | undefined {
     return (
       this.mediaProvider &&
@@ -657,6 +681,7 @@ export class MediaPluginState {
   private handleMediaState = async (state: MediaState) => {
     switch (state.status) {
       case 'ready':
+        this.replaceTemporaryNode(state);
         this.stateManager.off(state.id, this.handleMediaState);
         break;
     }

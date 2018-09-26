@@ -66,6 +66,7 @@ export default class PickerFacade {
 
     // picker.on('uploads-start', this.handleUploadsStart);
     picker.on('upload-preview-update', this.handleUploadPreviewUpdate);
+    // picker.on('upload-status-update', this.handleUploadPreviewUpdate);
     picker.on('upload-end', this.handleUploadEnd);
 
     if (picker instanceof Dropzone) {
@@ -113,7 +114,7 @@ export default class PickerFacade {
       this.errorReporter.captureException(ex);
     }
 
-    this.deferredDimensions.clear();
+    // this.deferredDimensions.clear();
   }
 
   setUploadParams(params: UploadParams): void {
@@ -238,7 +239,6 @@ export default class PickerFacade {
     event: UploadPreviewUpdateEventPayload,
   ) => {
     const { file, preview } = event;
-
     const states = this.stateManager.newState(file.id, {
       fileName: file.name,
       fileSize: file.size,
@@ -246,6 +246,13 @@ export default class PickerFacade {
       fileId: file.upfrontId,
       dimensions: preview.dimensions,
       status: 'ready',
+    });
+
+    file.upfrontId.then(data => {
+      this.stateManager.updateState(file.id, {
+        status: 'ready',
+        publicId: data,
+      });
     });
 
     this.onStartListeners.forEach(cb => cb.call(cb, [states]));

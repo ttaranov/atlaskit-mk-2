@@ -61,20 +61,6 @@ export default class MediaGroupNode extends Component<
     this.mediaNodesIds = this.getMediaNodesIds(this.props.children);
   }
 
-  /**
-   * Update "mediaNodesIds" and notify media plugin about removed nodes
-   */
-  componentWillReceiveProps(nextProps) {
-    // const newMediaNodesIds = this.getMediaNodesIds(nextProps.children);
-    // const removedNodesIds = this.mediaNodesIds.filter(
-    //   id => newMediaNodesIds.indexOf(id) === -1,
-    // );
-    // removedNodesIds.forEach(mediaNodeId => {
-    //   this.mediaPluginState.cancelInFlightUpload(mediaNodeId);
-    // });
-    // this.mediaNodesIds = newMediaNodesIds;
-  }
-
   render() {
     // const { animate, offset } = this.state;
     const items = this.getMediaNodesIds(this.props.children);
@@ -96,6 +82,9 @@ export default class MediaGroupNode extends Component<
       const identifier: FileIdentifier = {
         id: this.mediaPluginState.stateManager.getState(id).fileId,
         mediaItemType: 'file',
+        onClick: (e, x) => {
+          console.log(e, x);
+        },
       };
 
       return {

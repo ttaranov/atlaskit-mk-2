@@ -19,9 +19,9 @@ import keymapMediaSinglePlugin from './pm-plugins/keymap-media-single';
 import keymapPlugin from './pm-plugins/keymap';
 import ToolbarMedia from './ui/ToolbarMedia';
 import MediaSingleEdit from './ui/MediaSingleEdit';
-import ReactMediaGroupNode from './nodeviews/media-group';
+import { ReactMediaGroupNode } from './nodeviews/mediaGroup';
 import ReactMediaNode from './nodeviews/media';
-import ReactMediaSingleNode from './nodeviews/media-single';
+import { ReactMediaSingleNode } from './nodeviews/mediaSingle';
 import { CustomMediaPicker, MediaProvider } from './types';
 
 export {
@@ -86,41 +86,8 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
             {
               providerFactory,
               nodeViews: {
-                mediaGroup: legacyNodeViewFactory(
-                  portalProviderAPI,
-                  providerFactory,
-                  {
-                    mediaGroup: ReactMediaGroupNode,
-                    media: ReactMediaNode,
-                  },
-                ),
-                mediaSingle: legacyNodeViewFactory(
-                  portalProviderAPI,
-                  providerFactory,
-                  {
-                    mediaSingle: ({ view, node, ...mediaSingleProps }) => (
-                      <WithPluginState
-                        editorView={view}
-                        eventDispatcher={eventDispatcher}
-                        plugins={{
-                          widthState: widthPluginKey,
-                        }}
-                        render={({ widthState }) => (
-                          <ReactMediaSingleNode
-                            view={view}
-                            node={node}
-                            containerWidth={widthState.width}
-                            lineLength={widthState.lineLength}
-                            isResizable={options && options.allowResizing}
-                            appearance={props.appearance}
-                            {...mediaSingleProps}
-                          />
-                        )}
-                      />
-                    ),
-                    media: ReactMediaNode,
-                  },
-                ),
+                mediaGroup: ReactMediaGroupNode(portalProviderAPI),
+                mediaSingle: ReactMediaSingleNode(portalProviderAPI),
               },
               errorReporter,
               uploadErrorHandler: props.uploadErrorHandler,

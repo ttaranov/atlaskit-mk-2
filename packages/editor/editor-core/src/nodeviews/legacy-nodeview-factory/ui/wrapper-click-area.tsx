@@ -4,7 +4,10 @@ import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import styled from 'styled-components';
 import { ProviderFactory } from '@atlaskit/editor-common';
-import { ReactNodeViewState } from '../../../plugins/base/pm-plugins/react-nodeview';
+import {
+  ReactNodeViewState,
+  stateKey,
+} from '../../../plugins/base/pm-plugins/react-nodeview';
 import { setNodeSelection } from '../../../utils';
 import {
   ProsemirrorGetPosHandler,
@@ -29,7 +32,7 @@ const Wrapper = styled.div`
 Wrapper.displayName = 'WrapperClickArea';
 
 interface State {
-  selected: boolean;
+  selected: number | null;
 }
 
 // tslint:disable-next-line:variable-name
@@ -37,21 +40,27 @@ export default function wrapComponentWithClickArea(
   ReactComponent: ReactComponentConstructor,
 ): ReactComponentConstructor {
   return class WrapperClickArea extends PureComponent<Props, State> {
-    state: State = { selected: false };
+    state: State = { selected: null };
+    private pluginState: ReactNodeViewState;
+
+    constructor(props) {
+      super(props);
+      this.pluginState = stateKey.getState(this.props.view.state);
+    }
 
     componentDidMount() {
-      const { pluginState } = this.props;
+      const { pluginState } = this;
       pluginState.subscribe(this.handleDocumentSelectionChange);
     }
 
     componentWillUnmount() {
-      const { pluginState } = this.props;
+      const { pluginState } = this;
       pluginState.unsubscribe(this.handleDocumentSelectionChange);
     }
 
     render() {
       return (
-        <Wrapper onClick={this.onClick}>
+        <Wrapper>
           <ReactComponent {...this.props} selected={this.state.selected} />
         </Wrapper>
       );
@@ -61,20 +70,20 @@ export default function wrapComponentWithClickArea(
       anchorPos: number,
       headPos: number,
     ) => {
-      const { getPos, onSelection } = this.props;
+      const { getPos, view } = this.props;
+      // console.log()
       const nodePos = getPos();
+      // console.log(getPos());
+      const isSelected =
+        nodePos < anchorPos && headPos < nodePos + this.props.node.nodeSize;
+      console.log(isSelected);
 
-      const selected = nodePos >= anchorPos && nodePos < headPos;
-
-      const oldSelected = this.state.selected;
-      this.setState({ selected }, () => {
-        if (onSelection && selected !== oldSelected) {
-          onSelection(selected);
-        }
+      this.setState({
+        selected: isSelected ? anchorPos : null,
       });
     };
 
-    private onClick = () => {
+    private onClick = e => {
       const { getPos, view } = this.props;
       setNodeSelection(view, getPos());
     };

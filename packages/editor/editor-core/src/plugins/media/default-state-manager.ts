@@ -9,6 +9,10 @@ export default class DefaultMediaStateManager extends EventDispatcher
     return id ? this.state.get(id) : this.state;
   }
 
+  getAllState() {
+    return this.state;
+  }
+
   newState(id: string, newState: Partial<MediaState>) {
     const state = {
       ...(this.state.get(id) || {}),
@@ -22,9 +26,6 @@ export default class DefaultMediaStateManager extends EventDispatcher
   updateState(id: string, newState: Partial<MediaState>) {
     const state = this.newState(id, newState);
     this.emit(id, state);
-    if (state.status === 'ready' || state.status === 'cancelled') {
-      this.state.delete(id);
-    }
     return state;
   }
 
