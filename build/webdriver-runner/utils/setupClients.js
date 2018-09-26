@@ -70,6 +70,7 @@ function setBrowserStackClients() /*: Array<?Object>*/ {
       port: 80,
       user: process.env.BROWSERSTACK_USERNAME,
       key: process.env.BROWSERSTACK_KEY,
+      waitforTimeout: 3000,
     };
     const driver = webdriverio.remote(option);
     return { driver: driver, isReady: false };

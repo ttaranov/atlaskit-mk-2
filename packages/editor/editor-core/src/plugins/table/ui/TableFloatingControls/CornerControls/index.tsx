@@ -77,7 +77,7 @@ export default class CornerControls extends Component<Props, any> {
 
   private selectTable = () => {
     const { state, dispatch } = this.props.editorView;
-    dispatch(selectTable(state.tr));
+    dispatch(selectTable(state.tr).setMeta('addToHistory', false));
   };
 
   private hoverTable = () => {

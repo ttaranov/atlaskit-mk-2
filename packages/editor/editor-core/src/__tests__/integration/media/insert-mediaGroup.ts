@@ -8,7 +8,6 @@ import {
   comment,
   insertMedia,
 } from '../_helpers';
-import { sleep } from '@atlaskit/editor-test-helpers';
 
 [comment, message].forEach(editor => {
   BrowserTestCase(
@@ -29,9 +28,6 @@ import { sleep } from '@atlaskit/editor-test-helpers';
       // now we can insert media as necessary
       await insertMedia(browser);
 
-      // wait for "upload" and finish doc sync
-      await sleep(200);
-      await browser.waitForSelector('.image');
       expect(await browser.isVisible('.image')).toBe(true);
 
       const doc = await browser.$eval(editable, getDocFromElement);

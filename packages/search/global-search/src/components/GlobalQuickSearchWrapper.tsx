@@ -14,12 +14,24 @@ import MessagesIntlProvider from './MessagesIntlProvider';
 
 const memoizeOneTyped: <T extends Function>(func: T) => T = memoizeOne;
 
+const DEFAULT_NOOP_LOGGER: Logger = {
+  safeInfo() {},
+  safeWarn() {},
+  safeError() {},
+};
+
 export type LinkComponent = React.ComponentType<{
   className: string;
   children: React.ReactNode;
   href?: string;
   target?: string;
 }>;
+
+export type Logger = {
+  safeInfo(message?: any, ...optionalParams: any[]): void;
+  safeWarn(message?: any, ...optionalParams: any[]): void;
+  safeError(message?: any, ...optionalParams: any[]): void;
+};
 
 export type ReferralContextIdentifiers = {
   searchReferrerId: string;
@@ -87,13 +99,21 @@ export interface Props {
   /**
    * Indicates whether or not CPUS should be used for people searches.
    */
+
   useCPUSForPeopleResults?: boolean;
+  /**
+   * logger with 3 levels error, warn and info
+   */
+  logger?: Logger;
 }
 
 /**
  * Component that exposes the public API for global quick search. Its only purpose is to offer a simple, user-friendly API to the outside and hide the implementation detail of search clients etc.
  */
 export default class GlobalQuickSearchWrapper extends React.Component<Props> {
+  static defaultProps = {
+    logger: DEFAULT_NOOP_LOGGER,
+  };
   // configureSearchClients is a potentially expensive function that we don't want to invoke on re-renders
   memoizedConfigureSearchClients = memoizeOneTyped(configureSearchClients);
 
@@ -160,6 +180,7 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
       useAggregatorForConfluenceObjects,
       referralContextIdentifiers,
       useCPUSForPeopleResults,
+      logger,
     } = this.props;
 
     return (
@@ -171,6 +192,7 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
           useAggregatorForConfluenceObjects={useAggregatorForConfluenceObjects}
           referralContextIdentifiers={referralContextIdentifiers}
           useCPUSForPeopleResults={useCPUSForPeopleResults}
+          logger={logger}
         />
       </MessagesIntlProvider>
     );

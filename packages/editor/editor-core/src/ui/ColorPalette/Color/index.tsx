@@ -1,8 +1,54 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { Button, ButtonWrapper } from './styles';
+import { defineMessages, injectIntl, InjectedIntlProps } from 'react-intl';
 import EditorDoneIcon from '@atlaskit/icon/glyph/editor/done';
-import { akColorN0 } from '@atlaskit/util-shared-styles';
+import { colors } from '@atlaskit/theme';
+import { Button, ButtonWrapper } from './styles';
+
+// IMO these should live inside @atlaskit/theme
+const messages = defineMessages({
+  '#172b4d': {
+    id: 'fabric.theme.#172b4d',
+    defaultMessage: 'Dark gray',
+    description: 'Name of a color.',
+  },
+  '#97a0af': {
+    id: 'fabric.theme.#97a0af',
+    defaultMessage: 'Light gray',
+    description: 'Name of a color.',
+  },
+  '#6554c0': {
+    id: 'fabric.theme.#6554c0',
+    defaultMessage: 'Purple',
+    description: 'Name of a color.',
+  },
+  '#00b8d9': {
+    id: 'fabric.theme.#00b8d9',
+    defaultMessage: 'Teal',
+    description: 'Name of a color.',
+  },
+  '#36b37e': {
+    id: 'fabric.theme.#36b37e',
+    defaultMessage: 'Green',
+    description: 'Name of a color.',
+  },
+  '#ff5630': {
+    id: 'fabric.theme.#ff5630',
+    defaultMessage: 'Red',
+    description: 'Name of a color.',
+  },
+  '#ff991f': {
+    id: 'fabric.theme.#ff991f',
+    defaultMessage: 'Orange',
+    description: 'Name of a color.',
+  },
+  selected: {
+    id: 'fabric.editor.selected',
+    defaultMessage: 'Selected',
+    description: 'If the item is selected or not.',
+  },
+});
+
 export interface Props {
   value: string;
   label: string;
@@ -12,9 +58,16 @@ export interface Props {
   borderColor: string;
 }
 
-export default class Color extends PureComponent<Props, any> {
+class Color extends PureComponent<Props & InjectedIntlProps> {
   render() {
-    const { tabIndex, value, label, isSelected, borderColor } = this.props;
+    const {
+      tabIndex,
+      value,
+      label,
+      isSelected,
+      borderColor,
+      intl: { formatMessage },
+    } = this.props;
     const borderStyle = `1px solid ${borderColor}`;
     return (
       <ButtonWrapper>
@@ -23,14 +76,19 @@ export default class Color extends PureComponent<Props, any> {
           onMouseDown={this.onMouseDown}
           tabIndex={tabIndex}
           className={`${isSelected ? 'selected' : ''}`}
-          title={label}
+          title={
+            value && messages[value] ? formatMessage(messages[value]) : label
+          }
           style={{
             backgroundColor: value || 'transparent',
             border: borderStyle,
           }}
         >
           {isSelected && (
-            <EditorDoneIcon primaryColor={akColorN0} label="Selected" />
+            <EditorDoneIcon
+              primaryColor={colors.N0}
+              label={formatMessage(messages.selected)}
+            />
           )}
         </Button>
       </ButtonWrapper>
@@ -47,3 +105,5 @@ export default class Color extends PureComponent<Props, any> {
     onClick(value);
   };
 }
+
+export default injectIntl(Color);

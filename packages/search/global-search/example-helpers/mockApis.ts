@@ -8,7 +8,7 @@ import {
   makeConfluenceRecentSpacesData,
   makeQuickNavSearchData,
 } from './mockData';
-import { JiraRecentResponse } from './jiraRecentResponseData';
+import { jiraRecentResponseWithAttributes } from './jiraRecentResponseDataWithAttributes';
 
 type Request = string;
 
@@ -90,7 +90,7 @@ function mockPeopleApi() {
 function mockJiraApi() {
   fetchMock.get(
     new RegExp('rest/internal/2/productsearch/recent?'),
-    async request => delay(500, JiraRecentResponse),
+    async request => delay(500, jiraRecentResponseWithAttributes),
   );
 }
 

@@ -6,6 +6,7 @@ import { EditorPlugin } from '../../types';
 import { legacyNodeViewFactory } from '../../nodeviews';
 import WithPluginState from '../../ui/WithPluginState';
 import { pluginKey as widthPluginKey } from '../width';
+import { messages } from '../insert-block/ui/ToolbarInsertBlock';
 
 import {
   stateKey as pluginKey,
@@ -175,12 +176,14 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
   },
 
   pluginsOptions: {
-    quickInsert: [
+    quickInsert: ({ formatMessage }) => [
       {
-        title: 'Files and images',
+        title: formatMessage(messages.filesAndImages),
         priority: 200,
         keywords: ['media'],
-        icon: () => <EditorImageIcon label="Files and images" />,
+        icon: () => (
+          <EditorImageIcon label={formatMessage(messages.filesAndImages)} />
+        ),
         action(insert, state) {
           const pluginState = pluginKey.getState(state);
           pluginState.showMediaPicker();

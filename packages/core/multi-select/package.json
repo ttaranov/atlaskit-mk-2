@@ -18,7 +18,8 @@
     "Mike G"
   ],
   "atlaskit": {
-    "name": "Lozenge",
+    "internal": true,
+    "name": "Multi Select",
     "team": "core"
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",

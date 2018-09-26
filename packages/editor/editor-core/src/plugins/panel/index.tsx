@@ -1,7 +1,9 @@
 import * as React from 'react';
 import InfoIcon from '@atlaskit/icon/glyph/editor/info';
 import { panel } from '@atlaskit/editor-common';
+
 import { EditorPlugin } from '../../types';
+import { messages } from '../block-type/types';
 import { createPlugin } from './pm-plugins/main';
 import { getToolbarConfig } from './toolbar';
 
@@ -15,11 +17,11 @@ const panelPlugin: EditorPlugin = {
   },
 
   pluginsOptions: {
-    quickInsert: [
+    quickInsert: ({ formatMessage }) => [
       {
-        title: 'Panel',
+        title: formatMessage(messages.panel),
         priority: 1000,
-        icon: () => <InfoIcon label="Panel" />,
+        icon: () => <InfoIcon label={formatMessage(messages.panel)} />,
         action(insert, state) {
           return insert(
             state.schema.nodes.panel.createChecked(

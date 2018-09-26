@@ -1,5 +1,8 @@
 # @atlaskit/feedback-collector
 
+## 0.1.6
+- [patch] Fixed a bug that crashes dialog when something is selected; fixed a bug that caused textarea to show error state even if not empty [3a6ac76](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3a6ac76)
+
 ## 0.1.5
 - [patch] Updated dependencies [4194aa4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4194aa4)
   - @atlaskit/form@4.0.9
