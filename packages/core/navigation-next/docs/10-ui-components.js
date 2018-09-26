@@ -52,7 +52,7 @@ ${<Hr />}
 
 ${<H>GlobalNav</H>}
 
-If you're building an Atlassian product you probably don't want to use this component directly. Please take a look at the @atlaskit/global-navigation component instead.
+If you're building an Atlassian product you probably don't want to use this component directly. Please take a look at the [@atlaskit/global-navigation component](/packages/core/global-navigation) instead.
 
 The GlobalNav component is a primitive layout component which renders GlobalItems into one of two slots.
 
