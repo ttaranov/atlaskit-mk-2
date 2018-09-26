@@ -51,15 +51,22 @@ class Pagination extends Component<Props, State> {
     current: this.props.defaultValue,
   };
 
+  componentWillReceiveProps(nextProps: Props) {
+    if (this.props.defaultValue !== nextProps.defaultValue) {
+      this.setState({ current: nextProps.defaultValue });
+    }
+  }
+
   getCurrentPage() {
     return this.props.value ? this.props.value : this.state.current;
   }
 
   onPageChange = (page: number) => {
-    if (!this.props.value) {
+    if (this.props.value) {
+      this.props.onChange(page);
+    } else {
       this.setState({ current: page });
     }
-    this.props.onChange(page);
   };
 
   render() {
