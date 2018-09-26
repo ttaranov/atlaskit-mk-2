@@ -136,7 +136,6 @@ pipelines:
             - yarn build:copy
             - yarn build:zip
             - yarn deploy:production
-            - cd ..
           caches:
             - node
 
