@@ -125,6 +125,8 @@ export class Client {
    * definitionId (from response) -> Url (from card) -> updateFn (from card)
    * Note: we use card's url as an identifier.
    *
+   * Note: this one really needs to be refactored. It simply does to much...
+   *
    * @param url the url of a remote resoulrce a card wants to be resolved
    * @param definitionIdFromCard optional definition id that card already has
    * @param cb optional because if it is there, we run the action, not every single time.
@@ -186,11 +188,10 @@ export class Client {
         // say we have a bunch of errored cards without definitionId on them.
         // we clicked "Try again" on one of them and succeeded.
         // now we need to reload the cards that do not have a definitionId.
-        const urlsWithOutDefId = getUrlsNotTiedToDefinitionId(
+        getUrlsNotTiedToDefinitionId(
           this.mapDefinitionIdToUrl,
           this.mapUrlToUpdateFn,
-        );
-        urlsWithOutDefId.forEach(url => this.get(url));
+        ).forEach(url => this.get(url));
       });
     }
   }

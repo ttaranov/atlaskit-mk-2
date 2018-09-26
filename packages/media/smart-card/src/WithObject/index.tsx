@@ -52,6 +52,7 @@ class InnerWithObject extends React.Component<
       return {
         state: {
           status: 'resolving',
+          definitionId: prevState.state.definitionId,
         },
         prevClient: nextProps.client,
         prevUrl: nextProps.url,
@@ -66,9 +67,7 @@ class InnerWithObject extends React.Component<
     const {
       state: { definitionId },
     } = this.state;
-    client
-      .register(url, uuid, state => this.setState({ state }))
-      .get(url, definitionId);
+    client.register(url, uuid, this.updateState).get(url, definitionId);
   }
 
   updateState = (state: ObjectState) => {
@@ -78,13 +77,17 @@ class InnerWithObject extends React.Component<
   componentDidUpdate(prevProps: InnerWithObjectProps) {
     const { client, url } = this.props;
     const { uuid } = this.state;
-    if (
-      this.props.client !== prevProps.client ||
-      this.props.url !== prevProps.url
-    ) {
-      client.register(url, uuid, this.updateState);
-      this.reload();
+    if (this.props.client !== prevProps.client) {
+      prevProps.client.deregister(prevProps.url, uuid);
+      client.register(url, uuid, this.updateState).get(url);
     }
+    if (this.props.url !== prevProps.url) {
+      client
+        .deregister(prevProps.url, uuid)
+        .register(url, uuid, this.updateState)
+        .get(url);
+    }
+    return;
   }
 
   componentWillUnmount() {

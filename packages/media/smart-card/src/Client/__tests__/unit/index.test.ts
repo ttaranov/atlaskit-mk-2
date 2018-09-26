@@ -25,7 +25,7 @@ function createClient(options?: ClientOptions) {
   return new Client(options);
 }
 
-function resolved() {
+function mockResolvedFetchCall() {
   fetchMock.mock({
     name: 'resolved',
     matcher: `begin:${RESOLVE_URL}`,
@@ -48,7 +48,7 @@ function resolved() {
   });
 }
 
-function forbidden() {
+function mockForbiddenFetchCall() {
   fetchMock.mock({
     name: 'forbidden',
     matcher: `begin:${RESOLVE_URL}`,
@@ -71,7 +71,7 @@ function forbidden() {
   });
 }
 
-function unauthorized() {
+function mockUnauthorizedFetchCall() {
   fetchMock.mock({
     matcher: `begin:${RESOLVE_URL}`,
     response: {
@@ -92,7 +92,7 @@ function unauthorized() {
   });
 }
 
-function restricted() {
+function mockRestrictedFetchCall() {
   fetchMock.mock({
     matcher: `begin:${RESOLVE_URL}`,
     response: {
@@ -113,7 +113,7 @@ function restricted() {
   });
 }
 
-function errored() {
+function mockErroredFetchCall() {
   fetchMock.mock({
     name: 'errored',
     matcher: `begin:${RESOLVE_URL}`,
@@ -124,7 +124,7 @@ function errored() {
   });
 }
 
-function notfound() {
+function mockNotFoundFetchCall() {
   fetchMock.mock({
     name: 'notfound',
     matcher: `begin:${RESOLVE_URL}`,
@@ -142,28 +142,26 @@ function notfound() {
   });
 }
 
-function delayP(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+function onNthState(cb: (x: any) => any, n: number): (s: ObjectState) => void {
+  let stack: ObjectState[] = [];
+  return (s: ObjectState) => {
+    stack.push(s);
+    if (stack.length === n) {
+      cb(stack);
+    }
+  };
 }
 
 describe('Client', () => {
   afterEach(() => fetchMock.restore());
 
   it('should call update function two times', async () => {
-    forbidden();
+    mockForbiddenFetchCall();
 
     const result = await new Promise(resolve => {
-      const stack: ObjectState[] = [];
-
-      function cb(s: ObjectState) {
-        stack.push(s);
-        if (stack.length === 2) {
-          resolve(stack);
-        }
-      }
-
+      const mockCardUpdateFunction = onNthState(resolve, 2);
       createClient()
-        .register(OBJECT_URL, v4(), cb)
+        .register(OBJECT_URL, v4(), mockCardUpdateFunction)
         .get(OBJECT_URL);
     });
 
@@ -174,12 +172,12 @@ describe('Client', () => {
   });
 
   it('should invoke different callbacks for the same URL', async () => {
-    forbidden();
+    mockForbiddenFetchCall();
 
     const result = await new Promise(resolve => {
       let stack: ObjectState[] = [];
-      const cardUpdateFn1 = (s: ObjectState) => {
-        stack.push(s);
+      const cardUpdateFn1 = (cardState: ObjectState) => {
+        stack.push(cardState);
       };
       const cardUpdateFn2 = (s: ObjectState) => {
         stack.push(s);
@@ -203,18 +201,12 @@ describe('Client', () => {
   });
 
   it('should be not-found when the object cannot be found', async () => {
-    notfound();
+    mockNotFoundFetchCall();
 
     const result = await new Promise(resolve => {
-      let stack: ObjectState[] = [];
-      const cardUpdateFn = (s: ObjectState) => {
-        stack.push(s);
-        if (stack.length === 2) {
-          resolve(stack);
-        }
-      };
+      const mockCardUpdateFunction = onNthState(resolve, 2);
       createClient()
-        .register(OBJECT_URL, v4(), cardUpdateFn)
+        .register(OBJECT_URL, v4(), mockCardUpdateFunction)
         .get(OBJECT_URL);
     });
 
@@ -225,18 +217,12 @@ describe('Client', () => {
   });
 
   it('should be unauthorized when the object cannot be accessed by the current user', async () => {
-    unauthorized();
+    mockUnauthorizedFetchCall();
 
     const result = await new Promise<ObjectState[]>(resolve => {
-      let stack: ObjectState[] = [];
-      const cardUpdateFn = (s: ObjectState) => {
-        stack.push(s);
-        if (stack.length === 2) {
-          resolve(stack);
-        }
-      };
+      const mockCardUpdateFunction = onNthState(resolve, 2);
       createClient()
-        .register(OBJECT_URL, v4(), cardUpdateFn)
+        .register(OBJECT_URL, v4(), mockCardUpdateFunction)
         .get(OBJECT_URL);
     });
 
@@ -249,18 +235,12 @@ describe('Client', () => {
   });
 
   it('should be forbidden when the object cannot be accessed by the current user', async () => {
-    restricted();
+    mockRestrictedFetchCall();
 
     const result = await new Promise<ObjectState[]>(resolve => {
-      let stack: ObjectState[] = [];
-      const cardUpdateFn = (s: ObjectState) => {
-        stack.push(s);
-        if (stack.length === 2) {
-          resolve(stack);
-        }
-      };
+      const mockCardUpdateFunction = onNthState(resolve, 2);
       createClient()
-        .register(OBJECT_URL, v4(), cardUpdateFn)
+        .register(OBJECT_URL, v4(), mockCardUpdateFunction)
         .get(OBJECT_URL);
     });
 
@@ -273,18 +253,12 @@ describe('Client', () => {
   });
 
   it('should be errored when the object cannot be retrieved', async () => {
-    errored();
+    mockErroredFetchCall();
 
     const result = await new Promise<ObjectState[]>(resolve => {
-      let stack: ObjectState[] = [];
-      const cardUpdateFn = (s: ObjectState) => {
-        stack.push(s);
-        if (stack.length === 2) {
-          resolve(stack);
-        }
-      };
+      const mockCardUpdateFunction = onNthState(resolve, 2);
       createClient()
-        .register(OBJECT_URL, v4(), cardUpdateFn)
+        .register(OBJECT_URL, v4(), mockCardUpdateFunction)
         .get(OBJECT_URL);
     });
 
@@ -294,7 +268,7 @@ describe('Client', () => {
   });
 
   it('should send proper sequense of states when reload with the same definitionId', async () => {
-    resolved();
+    mockResolvedFetchCall();
 
     const result = await new Promise<ObjectState[]>(resolve => {
       const client = createClient();
@@ -320,23 +294,16 @@ describe('Client', () => {
   });
 
   it('should be resolved from the provider when a resolver is provided and the resolver resolves first', async () => {
-    resolved();
+    mockResolvedFetchCall();
     const tempResData = { name: 'From resolver' };
 
     const result = await new Promise<ObjectState[]>(resolve => {
-      const stack: ObjectState[] = [];
-
       const TEMPORARY_resolver = () => Promise.resolve(tempResData);
 
-      const cardUpdateFn = (s: ObjectState) => {
-        stack.push(s);
-        if (stack.length === 2) {
-          resolve(stack);
-        }
-      };
+      const mockCardUpdateFunction = onNthState(resolve, 2);
 
       createClient({ TEMPORARY_resolver })
-        .register(OBJECT_URL, v4(), cardUpdateFn)
+        .register(OBJECT_URL, v4(), mockCardUpdateFunction)
         .get(OBJECT_URL);
     });
 
@@ -347,23 +314,16 @@ describe('Client', () => {
   });
 
   it('should switch to default resolver if the temp one failed', async () => {
-    resolved();
+    mockResolvedFetchCall();
 
     const result = await new Promise<ObjectState[]>(resolve => {
-      const stack: ObjectState[] = [];
-
       const TEMPORARY_resolver = () =>
         Promise.reject({ error: new Error('failed for some reason') });
 
-      const cardUpdateFn = (s: ObjectState) => {
-        stack.push(s);
-        if (stack.length === 2) {
-          resolve(stack);
-        }
-      };
+      const mockCardUpdateFunction = onNthState(resolve, 2);
 
       createClient({ TEMPORARY_resolver })
-        .register(OBJECT_URL, v4(), cardUpdateFn)
+        .register(OBJECT_URL, v4(), mockCardUpdateFunction)
         .get(OBJECT_URL);
     });
 
@@ -374,24 +334,15 @@ describe('Client', () => {
   });
 
   it('should be resolved from the temp provider when the default resolver errored', async () => {
-    errored();
+    mockErroredFetchCall();
 
     const tempResData = { name: 'From resolver' };
 
     const result = await new Promise<ObjectState[]>(resolve => {
-      const stack: ObjectState[] = [];
-
       const TEMPORARY_resolver = () => Promise.resolve(tempResData);
-
-      const cardUpdateFn = (s: ObjectState) => {
-        stack.push(s);
-        if (stack.length === 2) {
-          resolve(stack);
-        }
-      };
-
+      const mockCardUpdateFunction = onNthState(resolve, 2);
       createClient({ TEMPORARY_resolver })
-        .register(OBJECT_URL, v4(), cardUpdateFn)
+        .register(OBJECT_URL, v4(), mockCardUpdateFunction)
         .get(OBJECT_URL);
     });
 
@@ -402,24 +353,16 @@ describe('Client', () => {
   });
 
   it('should be resolved from the temp provider when the default provider resulted in "not found"', async () => {
-    notfound();
+    mockNotFoundFetchCall();
 
     const tempResData = { name: 'From resolver' };
 
     const result = await new Promise<ObjectState[]>(resolve => {
-      const stack: ObjectState[] = [];
-
       const TEMPORARY_resolver = () => Promise.resolve(tempResData);
-
-      const cardUpdateFn = (s: ObjectState) => {
-        stack.push(s);
-        if (stack.length === 2) {
-          resolve(stack);
-        }
-      };
+      const mockCardUpdateFunction = onNthState(resolve, 2);
 
       createClient({ TEMPORARY_resolver })
-        .register(OBJECT_URL, v4(), cardUpdateFn)
+        .register(OBJECT_URL, v4(), mockCardUpdateFunction)
         .get(OBJECT_URL);
     });
 
@@ -430,25 +373,18 @@ describe('Client', () => {
   });
 
   it('should be resolved from the temp provider when the default provider resulted in "not found"', async () => {
-    resolved();
+    mockResolvedFetchCall();
 
     const tempResData = { name: 'From resolver' };
 
     const result = await new Promise<ObjectState[]>(resolve => {
-      const stack: ObjectState[] = [];
-
       const TEMPORARY_resolver = () =>
         new Promise(resolve => setTimeout(resolve, 1000, tempResData));
 
-      const cardUpdateFn = (s: ObjectState) => {
-        stack.push(s);
-        if (stack.length === 2) {
-          resolve(stack);
-        }
-      };
+      const mockCardUpdateFunction = onNthState(resolve, 2);
 
       createClient({ TEMPORARY_resolver })
-        .register(OBJECT_URL, v4(), cardUpdateFn)
+        .register(OBJECT_URL, v4(), mockCardUpdateFunction)
         .get(OBJECT_URL);
     });
 
@@ -456,34 +392,5 @@ describe('Client', () => {
       { status: 'resolving' },
       { status: 'resolved', data: { name: 'My Page' } },
     ]);
-  });
-
-  it('should not call a deregistered callback', async () => {
-    const rec1 = { uuid: v4(), fn: jest.fn() };
-    const rec2 = { uuid: v4(), fn: jest.fn() };
-    const rec3 = { uuid: v4(), fn: jest.fn() };
-
-    const client = createClient();
-
-    client.register(OBJECT_URL, rec1.uuid, rec1.fn);
-    client.register(OBJECT_URL, rec2.uuid, rec2.fn);
-    client.register(OBJECT_URL, rec3.uuid, rec3.fn);
-    client.get(OBJECT_URL);
-
-    await delayP(200);
-
-    expect(rec1.fn).toHaveBeenCalledTimes(1);
-    expect(rec2.fn).toHaveBeenCalledTimes(1);
-    expect(rec3.fn).toHaveBeenCalledTimes(1);
-
-    client.deregister(OBJECT_URL, rec2.uuid);
-
-    client.get(OBJECT_URL);
-
-    await delayP(200);
-
-    expect(rec1.fn).toHaveBeenCalledTimes(2);
-    expect(rec2.fn).toHaveBeenCalledTimes(1);
-    expect(rec3.fn).toHaveBeenCalledTimes(2);
   });
 });
