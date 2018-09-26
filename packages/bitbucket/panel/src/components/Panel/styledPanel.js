@@ -1,31 +1,44 @@
 // @flow
-// import Button from '@atlaskit/button';
-import { gridSize, typography } from '@atlaskit/theme';
-import styled from 'styled-components';
+import { borderRadius, gridSize, colors } from '@atlaskit/theme';
+import styled, { css } from 'styled-components';
 
-export const PanelWrapper = styled.div`
-  margin: 0 auto ${gridSize() * 2}px;
-  width: 100%;
+const transition = css`
+  transition: all 200ms ease-in-out;
+`;
+
+export const ButtonWrapper = styled.div`
+  line-height: 0;
+  position: absolute;
+  left: 0;
+  opacity: ${({ isHidden }) => (isHidden ? 0 : 1)};
+  ${transition};
+
+  button {
+    pointer-events: none;
+  }
 `;
 
 export const PanelHeader = styled.div`
-  ${typography.h400()};
-  align-items: center;
-  cursor: pointer;
+  background-color: ${({ hasFocus }) => hasFocus && colors.N20};
+  border-radius: ${borderRadius}px;
   display: flex;
-  margin-bottom: ${gridSize()}px;
-  margin-top: ${gridSize() * 2}px;
-  position: relative;
-  text-align: left;
-`;
-
-export const ChevronIcon = styled.div`
-  opacity: ${({ isHidden }) => (isHidden ? 0 : 1)};
+  align-items: center;
   left: -${gridSize() * 3}px;
-  position: absolute;
-  transition: opacity 0.3s;
+  padding: 2px 0 2px ${gridSize() * 3}px;
+  position: relative;
+  width: 100%;
+  ${transition};
 
-  ${PanelHeader}:hover & {
-    opacity: 1;
+  ${ButtonWrapper} {
+    opacity: ${({ hasFocus }) => hasFocus && 1};
+  }
+
+  &:hover {
+    background-color: ${colors.N20};
+    cursor: pointer;
+
+    ${ButtonWrapper} {
+      opacity: 1;
+    }
   }
 `;

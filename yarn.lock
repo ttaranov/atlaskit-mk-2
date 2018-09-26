@@ -12304,9 +12304,9 @@ react-addons-text-content@^0.0.4:
   version "0.0.4"
   resolved "https://registry.yarnpkg.com/react-addons-text-content/-/react-addons-text-content-0.0.4.tgz#d2e259fdc951d1d8906c08902002108dce8792e5"
 
-react-animate-height@^2.0.4:
-  version "2.0.4"
-  resolved "https://registry.yarnpkg.com/react-animate-height/-/react-animate-height-2.0.4.tgz#34d60949e915ce445bf43e3046dc4b8435e21ed6"
+react-animate-height@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/react-animate-height/-/react-animate-height-2.0.5.tgz#ab6303fdf400e2885de636eaa3f6380a79723914"
   dependencies:
     classnames "^2.2.5"
     prop-types "^15.6.1"

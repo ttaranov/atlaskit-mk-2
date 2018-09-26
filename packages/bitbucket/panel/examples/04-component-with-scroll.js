@@ -6,14 +6,7 @@ import Panel from '../src';
 const Header = <span>Description</span>;
 
 export default () => (
-  <div
-    style={{
-      border: '1px solid lightgray',
-      borderRadius: '3px',
-      margin: '0 24px',
-      padding: '0 24px',
-    }}
-  >
+  <div style={{ margin: '8px 24px' }}>
     <Panel header={Header} isDefaultExpanded>
       <p>
         Sit nulla est ex deserunt exercitation anim occaecat. Nostrud ullamco

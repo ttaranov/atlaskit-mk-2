@@ -1,7 +1,8 @@
 // @flow
+import Button from '@atlaskit/button';
 import ChevronDownIcon from '@atlaskit/icon/glyph/chevron-down';
 import ChevronRightIcon from '@atlaskit/icon/glyph/chevron-right';
-import React, { PureComponent } from 'react';
+import React, { Fragment, PureComponent } from 'react';
 import type { Element, Node } from 'react';
 import AnimateHeight from 'react-animate-height';
 
@@ -19,6 +20,7 @@ type Props = {
 
 type State = {
   hasFinishedAnimating: boolean,
+  isFocused: boolean,
 };
 
 export default class Panel extends PureComponent<Props, State> {
@@ -28,6 +30,7 @@ export default class Panel extends PureComponent<Props, State> {
 
   state = {
     hasFinishedAnimating: true,
+    isFocused: false,
   };
 
   onRest = () => {
@@ -44,20 +47,30 @@ export default class Panel extends PureComponent<Props, State> {
     return (
       <Expandable defaultIsExpanded={isDefaultExpanded}>
         {({ isExpanded, toggleExpanded }) => (
-          <styles.PanelWrapper>
+          <Fragment>
             <styles.PanelHeader
+              hasFocus={this.state.isFocused}
               onClick={() => {
                 this.togglePanel();
                 toggleExpanded();
               }}
+              onFocus={() => this.setState({ isFocused: true })}
+              onBlur={() => this.setState({ isFocused: false })}
             >
-              <styles.ChevronIcon isHidden={isExpanded}>
-                {!isExpanded ? (
-                  <ChevronRightIcon label="Expand" size="medium" />
-                ) : (
-                  <ChevronDownIcon label="Collapse" size="medium" />
-                )}
-              </styles.ChevronIcon>
+              <styles.ButtonWrapper isHidden={isExpanded}>
+                <Button
+                  appearance="subtle"
+                  ariaExpanded={isExpanded}
+                  spacing="none"
+                  iconBefore={
+                    isExpanded ? (
+                      <ChevronDownIcon label="collapse" />
+                    ) : (
+                      <ChevronRightIcon label="expand" />
+                    )
+                  }
+                />
+              </styles.ButtonWrapper>
               <span>{header}</span>
             </styles.PanelHeader>
 
@@ -69,7 +82,7 @@ export default class Panel extends PureComponent<Props, State> {
             >
               {children}
             </AnimateHeight>
-          </styles.PanelWrapper>
+          </Fragment>
         )}
       </Expandable>
     );

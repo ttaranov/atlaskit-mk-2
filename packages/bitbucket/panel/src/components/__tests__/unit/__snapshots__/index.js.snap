@@ -2,14 +2,23 @@
 
 exports[`Panel component header matches the snapshot 1`] = `
 <styled.div
+  hasFocus={false}
+  onBlur={[Function]}
   onClick={[Function]}
+  onFocus={[Function]}
 >
   <styled.div
     isHidden={false}
   >
-    <ChevronRightIcon
-      label="Expand"
-      size="medium"
+    <ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(WithDeprecationWarnings(Button))))
+      appearance="subtle"
+      ariaExpanded={false}
+      iconBefore={
+        <ChevronRightIcon
+          label="expand"
+        />
+      }
+      spacing="none"
     />
   </styled.div>
   <span>
