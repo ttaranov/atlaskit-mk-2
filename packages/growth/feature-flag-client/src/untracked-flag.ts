@@ -1,6 +1,6 @@
 import { Flag, SimpleFlag } from './types';
 
-import { isBoolean, isObject, isOneOf } from './lib';
+import { isBoolean, isObject, isOneOf, isString } from './lib';
 
 export default class UntrackedFlag implements Flag {
   flagKey: string;
@@ -27,7 +27,10 @@ export default class UntrackedFlag implements Flag {
     oneOf: string[];
     shouldTrackExposureEvent?: boolean;
   }): string {
-    if (!isOneOf(this.value as string, options.oneOf)) {
+    if (
+      !isString(this.value) ||
+      !isOneOf(this.value as string, options.oneOf)
+    ) {
       return options.default;
     }
 
