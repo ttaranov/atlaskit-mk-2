@@ -13,7 +13,10 @@ import {
   tableHeader,
   tableRow,
 } from '@atlaskit/editor-common';
+
 import { EditorPlugin } from '../../types';
+import WithPluginState from '../../ui/WithPluginState';
+import { messages } from '../insert-block/ui/ToolbarInsertBlock';
 import { PluginConfig } from './types';
 import { createPlugin, pluginKey } from './pm-plugins/main';
 import { keymapPlugin } from './pm-plugins/keymap';
@@ -24,7 +27,6 @@ import {
 } from './pm-plugins/table-resizing';
 import { getToolbarConfig } from './toolbar';
 import FloatingContextualMenu from './ui/FloatingContextualMenu';
-import WithPluginState from '../../ui/WithPluginState';
 
 export const CELL_MIN_WIDTH = 128;
 export const getCellMinWidth = newResizing =>
@@ -111,11 +113,11 @@ const tablesPlugin = (options?: PluginConfig | boolean): EditorPlugin => ({
   },
 
   pluginsOptions: {
-    quickInsert: [
+    quickInsert: ({ formatMessage }) => [
       {
-        title: 'Table',
+        title: formatMessage(messages.table),
         priority: 600,
-        icon: () => <TableIcon label="Table" />,
+        icon: () => <TableIcon label={formatMessage(messages.table)} />,
         action(insert, state) {
           return insert(createTable(state.schema));
         },

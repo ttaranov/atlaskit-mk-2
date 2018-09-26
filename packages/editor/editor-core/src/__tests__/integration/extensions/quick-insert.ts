@@ -1,5 +1,7 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
+import { messages } from '../../../plugins/lists/ui/ToolbarLists';
+
 import {
   getDocFromElement,
   fullpage,
@@ -17,7 +19,7 @@ BrowserTestCase(
     await page.click(fullpage.placeholder);
 
     await quickInsert(page, 'Bodied extension');
-    await quickInsert(page, 'Action');
+    await quickInsert(page, messages.action.defaultMessage);
 
     const doc = await page.$eval(editable, getDocFromElement);
     expect(doc).toMatchDocSnapshot();
