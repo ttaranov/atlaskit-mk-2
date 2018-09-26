@@ -50,6 +50,7 @@ export function makeConfluenceContainerResult(
   return {
     analyticsType: AnalyticsType.ResultConfluence,
     resultType: ResultType.GenericContainerResult,
+    contentType: ContentType.ConfluenceSpace,
     ...buildMockSearchResultProperties(),
     ...partial,
   };
