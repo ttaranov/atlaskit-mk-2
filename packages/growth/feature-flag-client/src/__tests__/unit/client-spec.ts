@@ -357,6 +357,33 @@ describe('Feature Flag Client', () => {
         ).toBe('experiment');
         expect(analyticsHandler).toHaveBeenCalledTimes(0);
       });
+
+      const STRING_DEFAULT_VALUE = 'defaultValue';
+      const STRING_TEST_VALUE = 'string';
+
+      Object.entries({
+        boolean: true,
+        object: {},
+        zero: 0,
+        number: 100,
+        'string-not-in-possibleValues': 'abc',
+      }).forEach(([testcase, wrongValue]) => {
+        test(`should fall back to defaultValue when given ${testcase}`, () => {
+          const client = new FeatureFlagClient({
+            analyticsHandler,
+            flags: { 'some-flag': wrongValue },
+          });
+
+          expect(
+            client.getVariantValue('some-flag', {
+              default: STRING_DEFAULT_VALUE,
+              oneOf: [STRING_TEST_VALUE],
+            }),
+          ).toBe(STRING_DEFAULT_VALUE);
+
+          expect(client.flags['some-flag']).toBe(wrongValue);
+        });
+      });
     });
 
     describe('getJSONValue', () => {
