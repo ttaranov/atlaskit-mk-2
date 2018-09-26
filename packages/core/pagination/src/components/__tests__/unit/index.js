@@ -141,7 +141,7 @@ describe(name, () => {
       expect(buttons.at(3).prop('isSelected')).toBe(false);
     });
   });
-  it.only('should change current page when defaultCurrent is changed', () => {
+  it('should change current page when defaultCurrent is changed', () => {
     class Consumer extends React.Component<{}, { page: number }> {
       state = { page: 5 };
       render() {
