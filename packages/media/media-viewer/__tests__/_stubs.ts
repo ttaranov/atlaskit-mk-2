@@ -9,7 +9,9 @@ import {
   MediaItem,
   BlobService,
   Auth,
+  FileState,
 } from '@atlaskit/media-core';
+import { Context } from 'react';
 
 export class Stubs {
   static mediaViewer(overrides: any) {
@@ -76,10 +78,11 @@ export class Stubs {
     collectionProvider?: MediaCollectionProvider,
     mediaItemProvider?: MediaItemProvider,
     blobService?: BlobService,
+    getFile?: () => Observable<FileState>,
   ) {
     return {
       config,
-      getFile: jest.fn(() => Observable.empty()),
+      getFile: jest.fn(getFile || (() => Observable.empty())),
       getMediaCollectionProvider: jest.fn(
         () => collectionProvider || Stubs.mediaCollectionProvider(),
       ),
@@ -96,6 +99,8 @@ export interface CreateContextOptions {
   provider?: MediaCollectionProvider;
   authPromise?: Promise<Auth>;
   blobService?: BlobService;
+  getFile?: () => Observable<FileState>;
+  config?: ContextConfig;
 }
 
 export const createContext = (options?: CreateContextOptions) => {
@@ -108,17 +113,20 @@ export const createContext = (options?: CreateContextOptions) => {
       baseUrl: 'some-service-host',
     }),
     blobService: undefined,
+    getFile: undefined,
+    config: undefined,
   };
-  const { subject, provider, authPromise, blobService } =
+  const { subject, provider, authPromise, blobService, getFile, config } =
     options || defaultOptions;
   const authProvider = jest.fn(() => authPromise);
   const contextConfig: ContextConfig = {
     authProvider,
   };
   return Stubs.context(
-    contextConfig,
+    config || contextConfig,
     provider || Stubs.mediaCollectionProvider(subject),
     Stubs.mediaItemProvider(subject),
     blobService,
+    getFile,
   ) as any;
 };
