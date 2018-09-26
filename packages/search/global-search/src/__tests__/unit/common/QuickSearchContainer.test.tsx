@@ -8,8 +8,10 @@ import {
 import { GlobalQuickSearch } from '../../../components/GlobalQuickSearch';
 import { delay } from '../_test-util';
 import * as AnalyticsHelper from '../../../util/analytics-event-helper';
+import { DEVELOPMENT_LOGGER } from '../../../../example-helpers/logger';
 
 const defaultProps = {
+  logger: DEVELOPMENT_LOGGER,
   getSearchResultsComponent: jest.fn((props: SearchResultProps) => null),
   getRecentItems: jest.fn((sessionId: string) =>
     Promise.resolve({ results: {} }),
