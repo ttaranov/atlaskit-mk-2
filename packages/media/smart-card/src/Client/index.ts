@@ -25,7 +25,10 @@ export type MapDefinitionIdToUrl = {
 
 // map definition id to trigger update function
 export type MapUrlToUpdateFn = {
-  [k: string]: Array<(state: ObjectState) => void>;
+  [k: string]: Array<{
+    uuid: string;
+    fn: (state: ObjectState) => void;
+  }>;
 };
 
 /**
@@ -94,18 +97,22 @@ export class Client {
    * @param url the url that card holds
    * @param fn the callback that can be called after the data has been resolved for that card.
    */
-  register(url: string, fn: (state: ObjectState) => void): Client {
+  register(
+    url: string,
+    uuid: string,
+    fn: (state: ObjectState) => void,
+  ): Client {
     if (!this.mapUrlToUpdateFn[url]) {
       this.mapUrlToUpdateFn[url] = [];
     }
-    this.mapUrlToUpdateFn[url].push(fn);
+    this.mapUrlToUpdateFn[url].push({ uuid, fn });
     return this;
   }
 
-  deregister(url: string, fn: Function): Client {
+  deregister(url: string, uuid: string): Client {
     if (this.mapUrlToUpdateFn[url]) {
       this.mapUrlToUpdateFn[url] = this.mapUrlToUpdateFn[url].filter(
-        f => f !== fn,
+        rec => rec.uuid !== uuid,
       );
     }
     return this;
@@ -156,7 +163,7 @@ export class Client {
         urls
           .filter(u => u === url)
           .map(u => this.mapUrlToUpdateFn[u])
-          .forEach(x => x.forEach(f => f(orsResponse)));
+          .forEach(x => x.forEach(rec => rec.fn(orsResponse)));
 
         // this cb is here mostly because we want to run an action
         // in a very particular case. For example, only when we reload a card.
@@ -164,7 +171,7 @@ export class Client {
           return cb();
         }
       } else {
-        this.mapUrlToUpdateFn[url].forEach(f => f(orsResponse));
+        this.mapUrlToUpdateFn[url].forEach(rec => rec.fn(orsResponse));
       }
     });
   }

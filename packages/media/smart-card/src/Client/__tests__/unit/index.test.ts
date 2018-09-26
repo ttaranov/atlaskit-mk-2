@@ -4,6 +4,7 @@ import * as fetchMock from 'fetch-mock';
 import { Client, ClientOptions } from '../..';
 import { RemoteResourceAuthConfig } from '../../createObjectResolverServiceObservable';
 import { ObjectState } from '../../types';
+import { v4 } from 'uuid';
 
 const RESOLVE_URL =
   'https://api-private.stg.atlassian.com/object-resolver/resolve';
@@ -162,7 +163,7 @@ describe('Client', () => {
       }
 
       createClient()
-        .register(OBJECT_URL, cb)
+        .register(OBJECT_URL, v4(), cb)
         .get(OBJECT_URL);
     });
 
@@ -188,8 +189,8 @@ describe('Client', () => {
       };
 
       createClient()
-        .register(OBJECT_URL, cardUpdateFn1)
-        .register(OBJECT_URL, cardUpdateFn2)
+        .register(OBJECT_URL, v4(), cardUpdateFn1)
+        .register(OBJECT_URL, v4(), cardUpdateFn2)
         .get(OBJECT_URL);
     });
 
@@ -213,7 +214,7 @@ describe('Client', () => {
         }
       };
       createClient()
-        .register(OBJECT_URL, cardUpdateFn)
+        .register(OBJECT_URL, v4(), cardUpdateFn)
         .get(OBJECT_URL);
     });
 
@@ -235,7 +236,7 @@ describe('Client', () => {
         }
       };
       createClient()
-        .register(OBJECT_URL, cardUpdateFn)
+        .register(OBJECT_URL, v4(), cardUpdateFn)
         .get(OBJECT_URL);
     });
 
@@ -259,7 +260,7 @@ describe('Client', () => {
         }
       };
       createClient()
-        .register(OBJECT_URL, cardUpdateFn)
+        .register(OBJECT_URL, v4(), cardUpdateFn)
         .get(OBJECT_URL);
     });
 
@@ -283,7 +284,7 @@ describe('Client', () => {
         }
       };
       createClient()
-        .register(OBJECT_URL, cardUpdateFn)
+        .register(OBJECT_URL, v4(), cardUpdateFn)
         .get(OBJECT_URL);
     });
 
@@ -307,7 +308,7 @@ describe('Client', () => {
           resolve(stack);
         }
       };
-      client.register(OBJECT_URL, cardUpdateFn).get(OBJECT_URL);
+      client.register(OBJECT_URL, v4(), cardUpdateFn).get(OBJECT_URL);
     });
 
     expect(result).toMatchObject([
@@ -335,7 +336,7 @@ describe('Client', () => {
       };
 
       createClient({ TEMPORARY_resolver })
-        .register(OBJECT_URL, cardUpdateFn)
+        .register(OBJECT_URL, v4(), cardUpdateFn)
         .get(OBJECT_URL);
     });
 
@@ -362,7 +363,7 @@ describe('Client', () => {
       };
 
       createClient({ TEMPORARY_resolver })
-        .register(OBJECT_URL, cardUpdateFn)
+        .register(OBJECT_URL, v4(), cardUpdateFn)
         .get(OBJECT_URL);
     });
 
@@ -390,7 +391,7 @@ describe('Client', () => {
       };
 
       createClient({ TEMPORARY_resolver })
-        .register(OBJECT_URL, cardUpdateFn)
+        .register(OBJECT_URL, v4(), cardUpdateFn)
         .get(OBJECT_URL);
     });
 
@@ -418,7 +419,7 @@ describe('Client', () => {
       };
 
       createClient({ TEMPORARY_resolver })
-        .register(OBJECT_URL, cardUpdateFn)
+        .register(OBJECT_URL, v4(), cardUpdateFn)
         .get(OBJECT_URL);
     });
 
@@ -447,7 +448,7 @@ describe('Client', () => {
       };
 
       createClient({ TEMPORARY_resolver })
-        .register(OBJECT_URL, cardUpdateFn)
+        .register(OBJECT_URL, v4(), cardUpdateFn)
         .get(OBJECT_URL);
     });
 
@@ -458,31 +459,31 @@ describe('Client', () => {
   });
 
   it('should not call a deregistered callback', async () => {
-    const fn1 = jest.fn();
-    const fn2 = jest.fn();
-    const fn3 = jest.fn();
+    const rec1 = { uuid: v4(), fn: jest.fn() };
+    const rec2 = { uuid: v4(), fn: jest.fn() };
+    const rec3 = { uuid: v4(), fn: jest.fn() };
 
     const client = createClient();
 
-    client.register(OBJECT_URL, fn1);
-    client.register(OBJECT_URL, fn2);
-    client.register(OBJECT_URL, fn3);
+    client.register(OBJECT_URL, rec1.uuid, rec1.fn);
+    client.register(OBJECT_URL, rec2.uuid, rec2.fn);
+    client.register(OBJECT_URL, rec3.uuid, rec3.fn);
     client.get(OBJECT_URL);
 
     await delayP(200);
 
-    expect(fn1).toHaveBeenCalledTimes(1);
-    expect(fn2).toHaveBeenCalledTimes(1);
-    expect(fn3).toHaveBeenCalledTimes(1);
+    expect(rec1.fn).toHaveBeenCalledTimes(1);
+    expect(rec2.fn).toHaveBeenCalledTimes(1);
+    expect(rec3.fn).toHaveBeenCalledTimes(1);
 
-    client.deregister(OBJECT_URL, fn2);
+    client.deregister(OBJECT_URL, rec2.uuid);
 
     client.get(OBJECT_URL);
 
     await delayP(200);
 
-    expect(fn1).toHaveBeenCalledTimes(2);
-    expect(fn2).toHaveBeenCalledTimes(1);
-    expect(fn3).toHaveBeenCalledTimes(2);
+    expect(rec1.fn).toHaveBeenCalledTimes(2);
+    expect(rec2.fn).toHaveBeenCalledTimes(1);
+    expect(rec3.fn).toHaveBeenCalledTimes(2);
   });
 });

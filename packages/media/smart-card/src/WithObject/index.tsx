@@ -1,6 +1,7 @@
 import * as React from 'react';
 import Context from '../Context';
 import { Client, ObjectState } from '../Client';
+import { v4 } from 'uuid';
 
 export interface WithObjectRenderProps {
   state: ObjectState;
@@ -17,6 +18,7 @@ interface InnerWithObjectState {
   prevClient?: Client;
   prevUrl?: string;
   state: ObjectState;
+  uuid: string;
 }
 
 class InnerWithObject extends React.Component<
@@ -24,6 +26,7 @@ class InnerWithObject extends React.Component<
   InnerWithObjectState
 > {
   state: InnerWithObjectState = {
+    uuid: v4(),
     state: {
       status: 'resolving',
       services: [],
@@ -59,11 +62,12 @@ class InnerWithObject extends React.Component<
 
   componentDidMount() {
     const { client, url } = this.props;
+    const { uuid } = this.state;
     const {
       state: { definitionId },
     } = this.state;
     client
-      .register(url, state => this.setState({ state }))
+      .register(url, uuid, state => this.setState({ state }))
       .get(url, definitionId);
   }
 
@@ -73,19 +77,21 @@ class InnerWithObject extends React.Component<
 
   componentDidUpdate(prevProps: InnerWithObjectProps) {
     const { client, url } = this.props;
+    const { uuid } = this.state;
     if (
       this.props.client !== prevProps.client ||
       this.props.url !== prevProps.url
     ) {
-      client.register(url, this.updateState);
+      client.register(url, uuid, this.updateState);
       this.reload();
     }
   }
 
   componentWillUnmount() {
     const { client, url } = this.props;
+    const { uuid } = this.state;
 
-    client.deregister(url, this.updateState);
+    client.deregister(url, uuid);
   }
 
   render() {
