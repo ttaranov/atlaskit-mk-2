@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 82.2.5
+- [patch] Fix image markdown tip in help dialog [79465ec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/79465ec)
+
 ## 82.2.4
 - [patch] Add translations for help-dialog and colors [42a2916](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42a2916)
 
