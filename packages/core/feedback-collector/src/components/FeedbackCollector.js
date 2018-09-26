@@ -11,9 +11,9 @@ type feedbackType = {
 };
 
 type Props = {
-  /** The function to close the feedback collector */
+  /** Function that will be called to initiate the exit transition. */
   onClose: () => void,
-  /** The function to submit the feedback collector */
+  /** Function that will be called optimistically after a delay when the feedback is submitted. */
   onSubmit: () => void,
   /** The customer email */
   email: string,
