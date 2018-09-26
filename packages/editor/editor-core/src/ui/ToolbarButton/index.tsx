@@ -114,7 +114,7 @@ class ToolbarButton extends PureComponent<Props, {}> {
     );
   }
 
-  private handleClick = (event: Event) => {
+  private handleClick = event => {
     const { disabled, onClick } = this.props;
 
     if (!disabled && onClick) {

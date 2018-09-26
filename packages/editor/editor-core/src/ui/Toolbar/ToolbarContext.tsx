@@ -5,17 +5,13 @@ export const ToolbarContext = React.createContext({
   selectedButton: undefined,
   selectedButtonIndex: 0,
   enabled: false,
-  // arrowKeyPushed: false,
-  // handleArrowKeyPushed: () => null,
   shouldFocus: () => false,
-});
+} as ToolbarContextInterface);
 
-export interface ToolbarContextInterface {
+export type ToolbarContextInterface = {
   registerButton: (button: any) => null;
   selectedButton: any;
   selectedButtonIndex: number;
   enabled: boolean;
-  // arrowKeyPushed: boolean;
-  // handleArrowKeyPushed: () => null;
-  shouldFocus: () => boolean;
-}
+  shouldFocus?: () => boolean;
+};
