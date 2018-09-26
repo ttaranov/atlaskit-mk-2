@@ -1,25 +1,40 @@
 import * as React from 'react';
 import { Fragment, Node } from 'prosemirror-model';
-import * as Loadable from 'react-loadable';
+
 import { AppCardViewProps } from './applicationCard';
-import { Props as BodiedExtensionProps } from './bodiedExtension';
-import { Props as DecisionItemProps } from './decisionItem';
-import Doc from './doc';
-import { Props as ExtensionProps } from './extension';
-import { Props as InlineExtensionProps } from './inlineExtension';
 import Blockquote from './blockquote';
+import BodiedExtension, {
+  Props as BodiedExtensionProps,
+} from './bodiedExtension';
 import BulletList from './bulletList';
+import CodeBlock from './codeBlock';
+import { Props as DecisionItemProps } from './decisionItem';
+import DecisionList from './decisionList';
+import Doc from './doc';
+import Extension, { Props as ExtensionProps } from './extension';
 import HardBreak from './hardBreak';
-import UnknownBlock from './unknownBlock';
 import Heading from './heading';
 import Image from './image';
+import InlineExtension, {
+  Props as InlineExtensionProps,
+} from './inlineExtension';
 import LayoutSection from './layoutSection';
 import LayoutColumn from './layoutColumn';
 import ListItem from './listItem';
+import MediaSingle from './mediaSingle';
 import OrderedList from './orderedList';
+import Panel from './panel';
 import Paragraph from './paragraph';
-import Rule from './rule';
 import Placeholder from './placeholder';
+import Rule from './rule';
+import TaskItem from './taskItem';
+import TaskList from './taskList';
+import Table from './table';
+import TableCell from './tableCell';
+import TableHeader from './tableHeader';
+import TableRow from './tableRow';
+import UnknownBlock from './unknownBlock';
+import * as Loadable from 'react-loadable';
 
 const ApplicationCard = Loadable({
   loader: () =>
@@ -28,31 +43,10 @@ const ApplicationCard = Loadable({
   loading: () => null,
 });
 
-const BodiedExtension = Loadable({
-  loader: () =>
-    import(/* webpackChunkName:"@atlaskit-internal-renderer-node_BodiedExtension" */
-    './bodiedExtension').then(module => module.default),
-  loading: () => null,
-});
-
-const CodeBlock = Loadable({
-  loader: () =>
-    import(/* webpackChunkName:"@atlaskit-internal-renderer-node_CodeBlock" */
-    './codeBlock').then(module => module.default),
-  loading: () => null,
-});
-
 const DecisionItem = Loadable({
   loader: () =>
     import(/* webpackChunkName:"@atlaskit-internal-renderer-node_DecisionItem" */
     './decisionItem').then(module => module.default),
-  loading: () => null,
-});
-
-const DecisionList = Loadable({
-  loader: () =>
-    import(/* webpackChunkName:"@atlaskit-internal-renderer-node_DecisionList" */
-    './decisionList').then(module => module.default),
   loading: () => null,
 });
 
@@ -77,13 +71,6 @@ const Emoji = Loadable({
   loading: () => null,
 });
 
-const Extension = Loadable({
-  loader: () =>
-    import(/* webpackChunkName:"@atlaskit-internal-renderer-node_Extension" */
-    './extension').then(module => module.default),
-  loading: () => null,
-});
-
 const InlineCard = Loadable({
   loader: () =>
     import(/* webpackChunkName:"@atlaskit-internal-renderer-node_InlineCard" */
@@ -95,13 +82,6 @@ const BlockCard = Loadable({
   loader: () =>
     import(/* webpackChunkName:"@atlaskit-internal-renderer-node_BlockCard" */
     './blockCard').then(module => module.default),
-  loading: () => null,
-});
-
-const InlineExtension = Loadable({
-  loader: () =>
-    import(/* webpackChunkName:"@atlaskit-internal-renderer-node_InlineExtension" */
-    './inlineExtension').then(module => module.default),
   loading: () => null,
 });
 
@@ -119,66 +99,10 @@ const MediaGroup = Loadable({
   loading: () => null,
 });
 
-const MediaSingle = Loadable({
-  loader: () =>
-    import(/* webpackChunkName:"@atlaskit-internal-renderer-node_MediaSingle" */
-    './mediaSingle').then(module => module.default),
-  loading: () => null,
-});
-
 const Mention = Loadable({
   loader: () =>
     import(/* webpackChunkName:"@atlaskit-internal-renderer-node_Mention" */
     './mention').then(module => module.default),
-  loading: () => null,
-});
-
-const Panel = Loadable({
-  loader: () =>
-    import(/* webpackChunkName:"@atlaskit-internal-renderer-node_Panel" */
-    './panel').then(module => module.default),
-  loading: () => null,
-});
-
-const TaskItem = Loadable({
-  loader: () =>
-    import(/* webpackChunkName:"@atlaskit-internal-renderer-node_TaskItem" */
-    './taskItem').then(module => module.default),
-  loading: () => null,
-});
-
-const TaskList = Loadable({
-  loader: () =>
-    import(/* webpackChunkName:"@atlaskit-TaskList" */
-    './taskList').then(module => module.default),
-  loading: () => null,
-});
-
-const Table = Loadable({
-  loader: () =>
-    import(/* webpackChunkName:"@atlaskit-Table" */
-    './table').then(module => module.default),
-  loading: () => null,
-});
-
-const TableCell = Loadable({
-  loader: () =>
-    import(/* webpackChunkName:"@atlaskit-TableCell" */
-    './tableCell').then(module => module.default),
-  loading: () => null,
-});
-
-const TableHeader = Loadable({
-  loader: () =>
-    import(/* webpackChunkName:"@atlaskit-TableHeader" */
-    './tableHeader').then(module => module.default),
-  loading: () => null,
-});
-
-const TableRow = Loadable({
-  loader: () =>
-    import(/* webpackChunkName:"@atlaskit-TableRow" */
-    './tableRow').then(module => module.default),
   loading: () => null,
 });
 
