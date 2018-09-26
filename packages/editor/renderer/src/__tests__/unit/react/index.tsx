@@ -153,13 +153,7 @@ describe('Renderer - ReactSerializer', () => {
       Async nodes used need to be preloaded before testing, otherwise the first mount
       will have the loading component and not the actual node.
     */
-    await Promise.all([
-      Emoji.preload(),
-      Table.preload(),
-      TableHeader.preload(),
-      TableCell.preload(),
-      TableRow.preload(),
-    ]);
+    await Promise.all([Emoji.preload()]);
   });
   describe('serializeFragment', () => {
     it('should render document', () => {
