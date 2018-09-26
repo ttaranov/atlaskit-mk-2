@@ -32,6 +32,7 @@ const selectOptions = [
 
 const defaultSelectValue = {
   label: 'I want to...',
+  value: 'empty',
 };
 
 export default class FeedbackForm extends Component<Props, FormFields> {
