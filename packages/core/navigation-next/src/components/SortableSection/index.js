@@ -1,24 +1,48 @@
 // @flow
 
 import React, { Component, Fragment } from 'react';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { DragDropContext } from 'react-beautiful-dnd';
 
 import type { SortableSectionProps } from './types';
-import { Group, SortableItem, Section } from '../../';
+import { Section } from '../../';
+
+import { DraggableItem } from './DraggableItem';
+import { DroppableGroup } from './DroppableGroup';
 
 const noop = () => {};
 
 export default class SortableSection extends Component<SortableSectionProps> {
   static defaultProps = {
-    onDragEnd: noop,
+    onChange: noop,
   };
 
-  onDragStart = () => {
+  onDragStart = start => {
+    // avoid unintentional interaction with other elements
     document.body.style.pointerEvents = 'none';
+
+    if (this.props.onDragStart) {
+      this.props.onDragStart(start);
+    }
   };
 
   onDragEnd = result => {
     document.body.style.pointerEvents = null;
+
+    // warn about handlers
+    if (this.props.onChange && this.props.onDragEnd) {
+      console.warn(
+        'SortableSection: The `onChange` handler is ignored when `onDragEnd` is provided.\n\nPlease provide one or the other.',
+      );
+    }
+
+    // short-circuit the potentially expensive operations below if the consumer
+    // wants to handle onDragEnd themselves
+    if (this.props.onDragEnd) {
+      this.props.onDragEnd(result);
+      return;
+    }
+
+    // begin sorting logic
     const { destination, source, draggableId } = result;
     const { groups } = this.props;
 
@@ -44,7 +68,7 @@ export default class SortableSection extends Component<SortableSectionProps> {
       const newGroup = { ...start, itemIds: newItemIds };
       const newGroups = { ...groups, [startId]: newGroup };
 
-      this.props.onDragEnd(newGroups, result);
+      this.props.onChange(newGroups, result);
       return;
     }
 
@@ -63,7 +87,7 @@ export default class SortableSection extends Component<SortableSectionProps> {
       [finishId]: newFinish,
     };
 
-    this.props.onDragEnd(newGroups, result);
+    this.props.onChange(newGroups, result);
   };
 
   render() {
@@ -71,6 +95,8 @@ export default class SortableSection extends Component<SortableSectionProps> {
 
     return (
       <DragDropContext
+        onDragBeforeStart={this.props.onDragBeforeStart}
+        onDragUpdate={this.props.onDragUpdate}
         onDragStart={this.onDragStart}
         onDragEnd={this.onDragEnd}
       >
@@ -79,56 +105,27 @@ export default class SortableSection extends Component<SortableSectionProps> {
             <Fragment>
               {groupIds.map(groupId => {
                 const group = groups[groupId];
+
                 return (
-                  <Droppable droppableId={groupId} key={groupId}>
-                    {droppableProvided => (
-                      <div
-                        ref={droppableProvided.innerRef}
-                        style={{ ...css, minHeight: 48 }}
-                        {...droppableProvided.droppableProps}
-                      >
-                        <Group
-                          hasSeparator={group.hasSeparator}
-                          heading={group.heading}
-                          id={groupId}
-                        >
-                          {group.itemIds.map((itemId, index) => {
-                            const item = items[itemId];
-                            return (
-                              <Draggable
-                                key={itemId}
-                                draggableId={itemId}
-                                index={index}
-                                disableInteractiveElementBlocking
-                              >
-                                {(draggableProvided, draggableSnapshot) => {
-                                  const draggableProps = {
-                                    ...draggableProvided.draggableProps,
-                                    ...draggableProvided.dragHandleProps,
-                                  };
+                  <DroppableGroup
+                    groupProps={group}
+                    id={groupId}
+                    innerStyle={{ ...css, minHeight: 64 }}
+                    key={groupId}
+                  >
+                    {group.itemIds.map((itemId, index) => {
+                      const item = items[itemId];
 
-                                  // disable onClick if the intention was drag
-                                  item.onClick = draggableSnapshot.isDragging
-                                    ? null
-                                    : item.onClick;
-
-                                  return (
-                                    <SortableItem
-                                      draggableProps={draggableProps}
-                                      innerRef={draggableProvided.innerRef}
-                                      isDragging={draggableSnapshot.isDragging}
-                                      {...item}
-                                    />
-                                  );
-                                }}
-                              </Draggable>
-                            );
-                          })}
-                          {droppableProvided.placeholder}
-                        </Group>
-                      </div>
-                    )}
-                  </Droppable>
+                      return (
+                        <DraggableItem
+                          item={item}
+                          key={itemId}
+                          draggableId={itemId}
+                          index={index}
+                        />
+                      );
+                    })}
+                  </DroppableGroup>
                 );
               })}
             </Fragment>

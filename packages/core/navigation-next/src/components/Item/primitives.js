@@ -10,6 +10,7 @@ const isString = x => typeof x === 'string';
 
 type SwitchProps = {
   as: ElementType,
+  draggableProps: {},
   innerRef: Ref<*>,
 };
 const ComponentSwitch = ({
@@ -18,9 +19,14 @@ const ComponentSwitch = ({
   innerRef,
   ...rest
 }: SwitchProps) => {
-  const props = isString(as) ? rest : { innerRef, draggableProps, ...rest };
+  const isElement = isString(as);
+  const props = isElement ? rest : { innerRef, draggableProps, ...rest };
+  // only pass the actual `ref` to an element, it's the responsibility of the
+  // component author to use `innerRef` where applicable
+  const ref = isElement ? innerRef : null;
   const ElementOrComponent = as;
-  return <ElementOrComponent ref={innerRef} {...draggableProps} {...props} />;
+
+  return <ElementOrComponent ref={ref} {...draggableProps} {...props} />;
 };
 
 class ItemPrimitive extends PureComponent<ItemProps> {

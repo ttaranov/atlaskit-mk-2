@@ -12,70 +12,33 @@ import {
   SortableSection,
 } from '../src';
 
-// const Div = ({ draggableProps, innerRef, ...props }) => {
-//   console.log('Div ref', innerRef);
-//   return <div ref={innerRef} {...draggableProps} {...props} />;
-// };
-
 const GlobalNavigation = () => (
   <GlobalNav primaryItems={[]} secondaryItems={[]} />
 );
 const getDefaultItems = (from = 0, to = 0) => {
   const items = {
     dashboards: {
-      // component: Div,
-      onClick: e => {
-        console.log('was clicked', e);
-      },
       text: 'Dashboards',
     },
     projects: {
-      // component: Div,
-      onClick: e => {
-        console.log('was clicked', e);
-      },
       text: 'Projects',
     },
     settings: {
-      // component: Div,
-      onClick: e => {
-        console.log('was clicked', e);
-      },
       text: 'Settings',
     },
     backlog: {
-      // component: Div,
-      onClick: e => {
-        console.log('was clicked', e);
-      },
       text: 'Backlog',
     },
     'active-sprint': {
-      // component: Div,
-      onClick: e => {
-        console.log('was clicked', e);
-      },
       text: 'Active Sprint',
     },
     'issues-and-filters': {
-      // component: Div,
-      onClick: e => {
-        console.log('was clicked', e);
-      },
       text: 'Issues and filters',
     },
     reports: {
-      // component: Div,
-      onClick: e => {
-        console.log('was clicked', e);
-      },
       text: 'Reports',
     },
     'viewed-recently': {
-      // component: Div,
-      onClick: e => {
-        console.log('was clicked', e);
-      },
       text: 'Viewed Recently',
     },
   };
@@ -109,9 +72,12 @@ export default class Example extends Component<Props, State> {
     showContainer: true,
   };
 
-  onDragEnd = (groups, result) => {
-    console.log('Example onDragEnd:', result);
+  onChange = (groups, result) => {
+    console.log('Example onChange:', groups);
     this.setState({ groups });
+  };
+  onDragEnd = result => {
+    console.log('Example onDragEnd:', result);
   };
 
   toggleContainerNav = () => {
@@ -138,7 +104,8 @@ export default class Example extends Component<Props, State> {
           items={this.props.items}
           groups={this.state.groups}
           groupIds={this.state.groupIds}
-          onDragEnd={this.onDragEnd}
+          onChange={this.onChange}
+          // onDragEnd={this.onDragEnd}
         />
       </div>
     );
