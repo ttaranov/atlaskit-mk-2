@@ -10,7 +10,6 @@ export type ErrorName =
   | 'previewFailed'
   | 'metadataFailed'
   | 'unsupported'
-  | 'linksNotSupported'
   | 'idNotFound'
   | 'noPDFArtifactsFound';
 
@@ -60,13 +59,6 @@ const messages: MessagesType<ErrorName> = {
     <div>
       {cannotViewFileImage}
       <p>No PDF artifacts found for this file.</p>
-    </div>
-  ),
-
-  linksNotSupported: (
-    <div>
-      {errorLoadingFileImage}
-      <p>Links are not supported.</p>
     </div>
   ),
 };
