@@ -71,7 +71,7 @@ describe('<Header />', () => {
     expect(el.state().item.status).toEqual('SUCCESSFUL');
 
     // since the test is executed synchronously
-    // let's prevent the second call to getFile form immediately resolving and
+    // let's prevent the second call to getFile from immediately resolving and
     // updating the state to SUCCESSFUL before we run the assertion.
     context.getFile = () => Observable.never();
 
@@ -137,7 +137,7 @@ describe('<Header />', () => {
         testMediaTypeText('doc', 'document');
       });
 
-      it('should no render file size if not available', () => {
+      it('should not render file size if unavailable', () => {
         const noSizeImage = {
           ...processedImageState,
           size: 0,
@@ -150,7 +150,7 @@ describe('<Header />', () => {
         expect(el.find(MetadataSubText).text()).toEqual('image');
       });
 
-      it('should no render media type if not available', () => {
+      it('should not render media type if unavailable', () => {
         const noMediaTypeElement = {
           ...processedImageState,
           mediaType: '' as MediaType,
