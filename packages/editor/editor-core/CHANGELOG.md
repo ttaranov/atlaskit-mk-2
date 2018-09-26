@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 82.2.3
+- [patch] Add translation for quick insert [d6c438c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d6c438c)
+
 ## 82.2.2
 - [patch] ED-5421: avoid adding PM history record for simple table interactions [c6cb409](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c6cb409)
 
