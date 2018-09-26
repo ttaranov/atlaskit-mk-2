@@ -86,12 +86,20 @@ export class QuickSearchContainer extends React.Component<Props, State> {
   }
 
   componentDidCatch(error, info) {
-    this.props.logger.safeError(
-      LOGGER_NAME,
-      'component did catch an error',
+    this.props.logger.safeError(LOGGER_NAME, 'component did catch an error', {
       error,
       info,
-    );
+      safeState: {
+        searchSessionId: this.state.searchSessionId,
+        latestSearchQuery: !!this.state.latestSearchQuery,
+        isLoading: this.state.isLoading,
+        isError: this.state.isError,
+        keepPreQueryState: this.state.keepPreQueryState,
+        recentItems: !!this.state.recentItems,
+        searchResults: !!this.state.searchResults,
+      },
+    });
+
     this.setState({
       isError: true,
     });
@@ -285,7 +293,12 @@ export class QuickSearchContainer extends React.Component<Props, State> {
             startTime,
           ),
       );
-    } catch {
+    } catch (e) {
+      this.props.logger.safeError(
+        LOGGER_NAME,
+        'error while getting confluence recent items',
+        e,
+      );
       if (this.state.isLoading) {
         this.setState({
           isLoading: false,
