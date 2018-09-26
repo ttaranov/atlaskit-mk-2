@@ -63,7 +63,7 @@ describe('<Header />', () => {
     expect(context.getFile).toHaveBeenCalledTimes(2);
   });
 
-  it('component resets initial state when new props are passed', () => {
+  it('component resets initial state when new identifier is passed', () => {
     const context = createContext({
       getFile: () => Observable.of(processedImageState),
     });
@@ -76,6 +76,23 @@ describe('<Header />', () => {
     context.getFile = () => Observable.never();
 
     el.setProps({ identifier: identifier2 });
+    expect(el.state().item.status).toEqual('PENDING');
+  });
+
+  it('component resets initial state when new context is passed', () => {
+    const context = createContext({
+      getFile: () => Observable.of(processedImageState),
+    });
+    const el = mount(<Header context={context} identifier={identifier} />);
+    expect(el.state().item.status).toEqual('SUCCESSFUL');
+
+    // since the test is executed synchronously
+    // let's prevent the second call to getFile from immediately resolving and
+    // updating the state to SUCCESSFUL before we run the assertion.
+    const newContext = createContext({
+      getFile: () => Observable.never(),
+    });
+    el.setProps({ context: newContext });
     expect(el.state().item.status).toEqual('PENDING');
   });
 
