@@ -32,17 +32,18 @@ import {
   EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE,
   SearchSession,
 } from '../../../api/CrossProductSearchClient';
-import { DEVELOPMENT_LOGGER } from '../../../../example-helpers/logger';
+import { mockLogger } from '../mocks/_mockLogger';
 
 const sessionId = 'sessionId';
 function render(partialProps?: Partial<Props>) {
+  const logger = mockLogger();
   const props: Props = {
     confluenceClient: noResultsConfluenceClient,
     crossProductSearchClient: noResultsCrossProductSearchClient,
     peopleSearchClient: noResultsPeopleSearchClient,
     useAggregatorForConfluenceObjects: false,
     useCPUSForPeopleResults: false,
-    logger: DEVELOPMENT_LOGGER,
+    logger,
     ...partialProps,
   };
 
