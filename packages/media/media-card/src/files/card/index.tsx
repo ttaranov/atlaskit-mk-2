@@ -54,10 +54,8 @@ export class FileCard extends Component<FileCardProps, {}> {
       size: undefined,
     };
     const { name, mediaType, size } = details || defaultDetails;
-    const errorMessage = this.isError ? (
+    const errorMessage = this.isError && (
       <FormattedMessage {...messages.failed_to_load} />
-    ) : (
-      undefined
     );
 
     if (this._isSmall()) {
