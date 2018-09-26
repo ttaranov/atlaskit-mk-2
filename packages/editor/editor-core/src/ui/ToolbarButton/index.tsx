@@ -83,9 +83,7 @@ class ToolbarButton extends PureComponent<Props, {}> {
                     input!.tabIndex = 0;
                   }
 
-                  const isInTitle =
-                    (document.activeElement as any).placeholder ===
-                    'Give this page a title...';
+                  const isInTitle = document.activeElement.tagName === 'INPUT';
                   const isBodyFocused =
                     document.activeElement.tagName === 'BODY';
                   console.log('/////////////////////////////////');
