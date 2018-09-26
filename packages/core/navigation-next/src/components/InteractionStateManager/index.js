@@ -24,7 +24,7 @@ export default class InteractionStateManager extends Component<
     this.setState(state => ({
       isActive: false,
       isSelected: state.isActive,
-      isHover: false,
+      isHover: true,
     }));
   };
 
