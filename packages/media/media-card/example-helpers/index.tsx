@@ -9,7 +9,6 @@ import {
 import { createStorybookContext } from '@atlaskit/media-test-helpers';
 import CrossIcon from '@atlaskit/icon/glyph/cross';
 import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
-
 import { SelectableCard } from './selectableCard';
 import {
   Card,
