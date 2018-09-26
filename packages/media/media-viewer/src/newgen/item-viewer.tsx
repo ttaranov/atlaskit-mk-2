@@ -50,7 +50,7 @@ export class ItemViewer extends React.Component<Props, State> {
     this.init(this.props);
   }
 
-  renderProcessedFile = (item: ProcessedFileState) => {
+  private renderProcessedFile(item: ProcessedFileState) {
     const {
       context,
       identifier,
@@ -85,9 +85,9 @@ export class ItemViewer extends React.Component<Props, State> {
       default:
         return this.renderError('unsupported', item);
     }
-  };
+  }
 
-  renderError = (errorName: ErrorName, file?: FileState) => {
+  private renderError(errorName: ErrorName, file?: FileState) {
     if (file) {
       return (
         <ErrorMessage error={createError(errorName, undefined, file)}>
@@ -98,7 +98,7 @@ export class ItemViewer extends React.Component<Props, State> {
     } else {
       return <ErrorMessage error={createError(errorName)} />;
     }
-  };
+  }
 
   render() {
     return this.state.item.match({
