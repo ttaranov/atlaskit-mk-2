@@ -28,9 +28,9 @@ export type LinkComponent = React.ComponentType<{
 }>;
 
 export type Logger = {
-  safeInfo: Function;
-  safeWarn: Function;
-  safeError: Function;
+  safeInfo(message?: any, ...optionalParams: any[]): void;
+  safeWarn(message?: any, ...optionalParams: any[]): void;
+  safeError(message?: any, ...optionalParams: any[]): void;
 };
 
 export type ReferralContextIdentifiers = {
