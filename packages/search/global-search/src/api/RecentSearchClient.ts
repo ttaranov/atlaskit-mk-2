@@ -4,6 +4,7 @@ import {
   AnalyticsType,
   JiraResult,
   ConfluenceObjectResult,
+  ContentType,
 } from '../model/Result';
 import {
   RequestServiceOptions,
@@ -136,6 +137,7 @@ function recentItemToResult(recentItem: RecentItem): Result {
       objectKey: objectKey!,
       resultType: ResultType.JiraObjectResult,
       analyticsType: AnalyticsType.RecentJira,
+      contentType: ContentType.JiraIssue,
       ...baseResult,
     };
 
@@ -145,6 +147,11 @@ function recentItemToResult(recentItem: RecentItem): Result {
       resultType: ResultType.ConfluenceObjectResult,
       analyticsType: AnalyticsType.RecentConfluence,
       containerId: 'UNAVAILABLE',
+      contentType:
+        recentItem.objectId &&
+        recentItem.objectId.includes('confluence-blogpost')
+          ? ContentType.ConfluenceBlogpost
+          : ContentType.ConfluencePage,
       ...baseResult,
     };
 

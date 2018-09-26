@@ -25,6 +25,7 @@ export function makeJiraObjectResult(
     resultType: ResultType.JiraObjectResult,
     objectKey: 'objectKey',
     containerName: 'containerName',
+    contentType: ContentType.JiraIssue,
     ...buildMockSearchResultProperties(),
     ...partial,
   };
