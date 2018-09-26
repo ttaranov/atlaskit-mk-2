@@ -361,14 +361,17 @@ describe('Feature Flag Client', () => {
       const STRING_DEFAULT_VALUE = 'defaultValue';
       const STRING_TEST_VALUE = 'string';
 
-      Object.entries({
+      const INVALID_ITEMS = {
         boolean: true,
         object: {},
         zero: 0,
         number: 100,
         'string-not-in-possibleValues': 'abc',
-      }).forEach(([testcase, wrongValue]) => {
-        test(`should fall back to defaultValue when given ${testcase}`, () => {
+      };
+
+      Object.keys(INVALID_ITEMS).forEach(key => {
+        const wrongValue = INVALID_ITEMS[key];
+        test(`should fall back to defaultValue when given ${key}`, () => {
           const client = new FeatureFlagClient({
             analyticsHandler,
             flags: { 'some-flag': wrongValue },

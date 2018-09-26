@@ -1,5 +1,5 @@
 import {
-  FlagWithEvaluationReason,
+  FlagWithEvaluationDetails,
   SimpleFlag,
   Flags,
   ExposureEvent,
@@ -52,7 +52,7 @@ export default class FeatureFlagClient {
     if (isFlagWithEvaluationDetails(flag)) {
       return new TrackedFlag(
         flagKey,
-        flag as FlagWithEvaluationReason,
+        flag as FlagWithEvaluationDetails,
         this.trackExposure,
       );
     }
@@ -126,7 +126,7 @@ export default class FeatureFlagClient {
     return flag.getJSONValue();
   }
 
-  trackExposure = (flagKey: string, flag: FlagWithEvaluationReason) => {
+  trackExposure = (flagKey: string, flag: FlagWithEvaluationDetails) => {
     if (this.trackedFlags[flagKey] || !flag || !this.analyticsHandler) {
       return;
     }
