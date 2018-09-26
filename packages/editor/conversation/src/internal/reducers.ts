@@ -148,25 +148,28 @@ const removeCommentFromConversation = (
   conversations: Conversation[],
   commentToRemove: Comment,
 ): Conversation[] => {
-  return conversations.reduce((current, conversation) => {
-    if (conversation.conversationId === commentToRemove.conversationId) {
-      const comments = removeComment(conversation.comments, commentToRemove);
+  return conversations.reduce(
+    (current, conversation) => {
+      if (conversation.conversationId === commentToRemove.conversationId) {
+        const comments = removeComment(conversation.comments, commentToRemove);
 
-      // If there's no comments, don't add the conversation
-      if (comments.length === 0) {
-        return current;
+        // If there's no comments, don't add the conversation
+        if (comments.length === 0) {
+          return current;
+        }
+
+        return [
+          ...current,
+          {
+            ...conversation,
+            comments,
+          },
+        ];
       }
-
-      return [
-        ...current,
-        {
-          ...conversation,
-          comments,
-        },
-      ];
-    }
-    return [...current, conversation];
-  }, []);
+      return [...current, conversation];
+    },
+    [] as Conversation[],
+  );
 };
 
 const getCommentFromConversation = (
@@ -178,22 +181,25 @@ const getCommentFromConversation = (
     return null;
   }
 
-  const [comment = null] = conversations.reduce((acc, conversation) => {
-    if (
-      conversation.conversationId !== conversationId ||
-      !conversation.comments
-    ) {
-      return acc;
-    }
-
-    return conversation.comments.reduce((commentsAcc, comment) => {
-      if (comment.commentId !== commentId) {
-        return commentsAcc;
+  const [comment = null] = conversations.reduce(
+    (acc, conversation) => {
+      if (
+        conversation.conversationId !== conversationId ||
+        !conversation.comments
+      ) {
+        return acc;
       }
 
-      return [...commentsAcc, comment];
-    }, acc);
-  }, []);
+      return conversation.comments.reduce((commentsAcc, comment) => {
+        if (comment.commentId !== commentId) {
+          return commentsAcc;
+        }
+
+        return [...commentsAcc, comment];
+      }, acc);
+    },
+    [] as Comment[],
+  );
 
   return comment;
 };
