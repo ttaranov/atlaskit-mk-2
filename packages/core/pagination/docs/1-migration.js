@@ -1,16 +1,33 @@
 //@flow
-import { md } from '@atlaskit/docs';
+import { code, md } from '@atlaskit/docs';
 
 export default md`
 ## v7 to v8
 
-This major release is due to the design updates in the pagination component.
+### 🎉 ADG styling
 
-**API for Pagination component is the same as in v7**
+Pagination has ADG styling v8 onward.
 
-### Spacing on top is required
+### 🎉 No change in API
 
-As per spec Pagination component should have a spacing of 24px on top. So, you might need to add \`margin-bottom: 24px\` to the preceding element.
+There are no changes in the Pagination API. Therefore, no code change will required to usage of the new ADG styled Pagination component.
 
-We did not include this spacing this spacing in component as consumers may already have added this spacing in previous version. Also, it will break if the preceeding element as margin-bottom styles.
+### 🚨 Styles changes
+
+As per ADG spec Pagination component should have a spacing of 24px on top. v7 of the pagination component also did not have margin-top styling so you may already have it in you code. However, if you do not have this spacing then please add bottom spacing of 24px to the previous element.
+
+Example:
+
+${code`
+<div>
+    <div style={{marginBottom: '24px'}}>
+        <!-- Your awesome page -->
+    </div>
+    <Pagination
+        defaultValue={5}
+        total={10}
+        onChange={e => console.log('page changed', e)}
+    />
+</div>
+`}
 `;
