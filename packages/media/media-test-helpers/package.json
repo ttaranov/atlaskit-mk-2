@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-test-helpers",
-  "version": "18.1.0",
+  "version": "18.2.0",
   "description": "Collection of test helpers used in media component stories and specs",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -24,10 +24,10 @@
   "dependencies": {
     "@atlaskit/dropdown-menu": "^6.1.16",
     "@atlaskit/icon": "^13.9.0",
-    "@atlaskit/media-card": "^36.1.0",
-    "@atlaskit/media-core": "^24.0.1",
+    "@atlaskit/media-card": "^37.0.0",
+    "@atlaskit/media-core": "^24.0.2",
     "@atlaskit/media-store": "^6.2.1",
-    "@atlaskit/media-ui": "^5.1.2",
+    "@atlaskit/media-ui": "^6.0.0",
     "@atlaskit/select": "^6.0.1",
     "axios": "^0.17.1",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
