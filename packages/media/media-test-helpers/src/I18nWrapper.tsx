@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { Component, ReactNode } from 'react';
-import { IntlProvider } from 'react-intl';
-import Select from '@atlaskit/select';
-import { LocaleSelectorWrapper } from './styled';
+import { IntlProvider, addLocaleData } from 'react-intl';
+import { locales, languages } from '@atlaskit/media-ui';
+import LanguagePicker from './LanguagePicker';
 
 export interface I18NWrapperState {
   locale: string;
@@ -12,11 +12,6 @@ export interface I18NWrapperState {
 export interface I18NWrapperProps {
   initialLocale?: string;
 }
-
-const selectOptions = [
-  { label: 'English', value: 'en' },
-  { label: 'Spanish', value: 'es' },
-];
 
 export class I18NWrapper extends Component<I18NWrapperProps, I18NWrapperState> {
   state: I18NWrapperState = {
@@ -34,20 +29,29 @@ export class I18NWrapper extends Component<I18NWrapperProps, I18NWrapperState> {
     const { locale } = this.state;
 
     return (
-      <IntlProvider locale={'en'} messages={{}}>
+      <IntlProvider
+        locale={this.getLocalTag(locale)}
+        messages={locales[locale]}
+      >
         <div>
-          <LocaleSelectorWrapper>
-            <h2>Selected locale: {locale}</h2>
-            <Select
-              options={selectOptions}
-              placeholder="Choose language"
-              onChange={this.onLocaleChange}
-              defaultValue={selectOptions[0]}
-            />
-          </LocaleSelectorWrapper>
+          <LanguagePicker
+            languages={languages}
+            locale={locale}
+            onChange={this.loadLocale}
+          />
           {children}
         </div>
       </IntlProvider>
     );
   }
+
+  private loadLocale = async (locale: string) => {
+    const data = await import(`react-intl/locale-data/${this.getLocalTag(
+      locale,
+    )}`);
+    addLocaleData(data.default);
+    this.setState({ locale });
+  };
+
+  private getLocalTag = (locale: string) => locale.substring(0, 2);
 }

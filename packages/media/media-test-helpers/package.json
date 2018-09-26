@@ -41,5 +41,10 @@
     "react": "^16.4.0",
     "rxjs": "^5.5.0",
     "styled-components": "^3.2.6"
+  },
+  "devDependencies": {
+    "@atlaskit/dropdown-menu": "^6.1.16",
+    "@atlaskit/icon": "^13.9.0",
+    "@atlaskit/theme": "^6.0.3"
   }
 }
