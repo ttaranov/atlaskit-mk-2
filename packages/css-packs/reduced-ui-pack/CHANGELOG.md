@@ -1,5 +1,8 @@
 # @atlaskit/reduced-ui-pack
 
+## 9.6.1
+- [patch] Moved to @atlaskit/theme for all the values from util-shared-styles [6d35164](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6d35164)
+
 ## 9.6.0
 - [minor] Add like icon [cd71c5f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cd71c5f)
 

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/reduced-ui-pack",
-  "version": "9.6.0",
+  "version": "9.6.1",
   "description": "CSS classes which provide styling for a reduced number of Atlaskit components.",
   "license": "Apache-2.0",
   "main": "dist/bundle.css",
@@ -23,7 +23,7 @@
     "fbjs": "^1.0.0"
   },
   "peerDependencies": {
-    "@atlaskit/css-reset": "^3.0.1"
+    "@atlaskit/css-reset": "^3.0.2"
   },
   "devDependencies": {
     "@atlaskit/docs": "^5.0.2",
