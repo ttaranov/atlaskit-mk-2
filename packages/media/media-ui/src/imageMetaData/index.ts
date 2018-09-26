@@ -14,13 +14,7 @@ const { Orientation, XResolution } = SupportedImageMetaTag;
 // http://bonfx.com/why-is-the-web-72-dpi-and-print-300-dpi/
 const DPI_WEB_BASELINE = 72;
 
-export {
-  OrientationTransforms,
-  ImageInfo,
-  ImageMetaData,
-  ImageMetaDataTags,
-  FileInfo,
-} from './types';
+export { ImageInfo, ImageMetaData, ImageMetaDataTags, FileInfo } from './types';
 
 export async function getImageInfo(
   fileInfo: FileInfo,

@@ -8,7 +8,7 @@ import { Preview, ImagePreview } from '../src/domain/preview';
 const context = createUploadContext();
 
 export class UploadPreview extends React.Component<PreviewData> {
-  getPreviewInfo(preview: Preview | ImagePreview): string | null {
+  getPreviewInfo(preview: Preview): string | null {
     if ('scaleFactor' in preview) {
       const imgPreview = preview as ImagePreview;
       return `${imgPreview.dimensions.width} x ${

@@ -44,7 +44,6 @@ export class UploadPreviews extends React.Component<
       return {
         fileId: id,
         upfrontId,
-        preview: null,
       };
     });
 
