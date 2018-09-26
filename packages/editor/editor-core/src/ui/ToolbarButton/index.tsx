@@ -73,7 +73,7 @@ class ToolbarButton extends PureComponent<Props, {}> {
               }
             }}
             ref={input => {
-              if (input !== null) {
+              if (input !== null && !this.props.disabled) {
                 if (
                   value.selectedButton &&
                   buttonsMatch(value.selectedButton, this)
@@ -83,14 +83,16 @@ class ToolbarButton extends PureComponent<Props, {}> {
                     input!.tabIndex = 0;
                   }
 
-                  const isInTitle = document.activeElement.tagName === 'INPUT';
-                  const isBodyFocused =
-                    document.activeElement.tagName === 'BODY';
-                  if (
-                    value.enabled &&
-                    isInTitle !== true &&
-                    !(isInTitle === false && isBodyFocused === true)
-                  ) {
+                  // const isInTitle = document.activeElement.tagName === 'INPUT';
+                  // // const isBodyFocused = document.activeElement.tagName === 'BODY';
+                  // console.log("--------------------------------------------")
+                  // console.log("Document activeElement: ", document.activeElement.tagName);
+                  // const valueEnabled = value.enabled;
+                  // const shouldFocusElement = value.enabled && isInTitle !== true;
+                  // console.log({valueEnabled, isInTitle, shouldFocusElement});
+                  // console.log("--------------------------------------------")
+                  if (value.arrowKeyPushed) {
+                    value.handleArrowKeyPushed();
                     input!.focus();
                   }
                 } else {

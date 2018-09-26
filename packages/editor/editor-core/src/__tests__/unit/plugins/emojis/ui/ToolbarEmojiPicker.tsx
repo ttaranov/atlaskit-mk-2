@@ -61,7 +61,7 @@ describe('@atlaskit/editor-core/ui/ToolbarEmojiPicker', () => {
     providerFactory.destroy();
   });
 
-  it('should have Popup component defined in it', () => {
+  it.only('should have Popup component defined in it', () => {
     const { editorView } = editor(doc(p('')));
     const toolbarEmojiPicker = mount(
       <ToolbarEmojiPicker

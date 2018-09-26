@@ -56,6 +56,7 @@ interface ToolbarInnerState {
   registeredButtons: any[];
   selectedButtonIndex: number;
   selectedButton?: any;
+  arrowKeyPushed: boolean;
 }
 
 export interface ToolbarInnerProps extends ToolbarProps {
@@ -70,10 +71,12 @@ export class ToolbarInner extends React.Component<
   constructor(props: ToolbarInnerProps) {
     super(props);
     this.registerButton = this.registerButton.bind(this);
+    this.handleArrowKeyPushed = this.handleArrowKeyPushed.bind(this);
     this.state = {
       selectedButtonIndex: 1,
       registeredButtons: [],
       selectedButton: undefined,
+      arrowKeyPushed: true,
     };
   }
 
@@ -92,6 +95,14 @@ export class ToolbarInner extends React.Component<
         this.props.popupsScrollableElement ||
       nextProps.isReducedSpacing !== this.props.isToolbarReducedSpacing
     );
+  }
+  handleArrowKeyPushed() {
+    this.setState(prevState => {
+      return {
+        arrowKeyPushed: false,
+      };
+    });
+    return null;
   }
 
   registerButton(button) {
@@ -137,6 +148,7 @@ export class ToolbarInner extends React.Component<
       return {
         selectedButtonIndex: newIndex,
         selectedButton: buttons[newIndex],
+        arrowKeyPushed: true,
       };
     });
   }
@@ -176,6 +188,8 @@ export class ToolbarInner extends React.Component<
           selectedButton: this.state.selectedButton,
           selectedButtonIndex: this.state.selectedButtonIndex,
           enabled: !this.props.disabled,
+          arrowKeyPushed: this.state.arrowKeyPushed,
+          handleArrowKeyPushed: this.handleArrowKeyPushed,
         }}
       >
         <div onKeyDown={this.handleKeydown}>
