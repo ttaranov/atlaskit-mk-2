@@ -148,8 +148,7 @@ function recentItemToResult(recentItem: RecentItem): Result {
       analyticsType: AnalyticsType.RecentConfluence,
       containerId: 'UNAVAILABLE',
       contentType:
-        recentItem.objectId &&
-        recentItem.objectId.includes('confluence-blogpost')
+        recentItem.objectId && recentItem.objectId.includes(':blogpost/')
           ? ContentType.ConfluenceBlogpost
           : ContentType.ConfluencePage,
       ...baseResult,
