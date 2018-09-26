@@ -53,9 +53,9 @@ export interface ToolbarProps {
 }
 
 interface ToolbarInnerState {
-  registeredButtons: any[]; // TODO: ToolbarButton[]
+  registeredButtons: any[];
   selectedButtonIndex: number;
-  selectedButton: any;
+  selectedButton?: any;
 }
 
 export interface ToolbarInnerProps extends ToolbarProps {
@@ -73,7 +73,7 @@ export class ToolbarInner extends React.Component<
     this.state = {
       selectedButtonIndex: 1,
       registeredButtons: [],
-      selectedButton: null,
+      selectedButton: undefined,
     };
   }
 
@@ -96,16 +96,20 @@ export class ToolbarInner extends React.Component<
 
   registerButton(button) {
     this.setState(prevState => {
-      const allButtons = prevState.registeredButtons;
-      let newRegisteredButtons = allButtons;
-      const allTitles = allButtons.map(b => b.props.title);
-      if (allTitles.indexOf(button.props.title) === -1) {
-        newRegisteredButtons = [...allButtons, button];
+      const prevRegisteredButtons = prevState.registeredButtons;
+      const allTitles = prevRegisteredButtons.map(b => b.props.title);
+
+      if (allTitles.indexOf(button.props.title) !== -1) {
+        // Our button already exists
+        return { ...prevState };
       }
-      let selectedButton = prevState.selectedButton;
-      if (allButtons.length == 0) {
-        selectedButton = newRegisteredButtons[prevState.selectedButton];
-      }
+
+      const newRegisteredButtons = [...prevRegisteredButtons, button];
+      // Ensure selectedButton if defined if there are any buttons registered
+      let selectedButton =
+        newRegisteredButtons.length > 0
+          ? newRegisteredButtons[prevState.selectedButtonIndex]
+          : prevState.selectedButton;
       return {
         registeredButtons: newRegisteredButtons,
         selectedButton: selectedButton,

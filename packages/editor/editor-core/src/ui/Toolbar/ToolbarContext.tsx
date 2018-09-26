@@ -1,9 +1,8 @@
 import * as React from 'react';
-// import ToolbarButton from '../ToolbarButton';
 
 export const ToolbarContext = React.createContext({
   registerButton: (button: any) => null,
-  selectedButton: null,
+  selectedButton: undefined,
   selectedButtonIndex: 0,
   enabled: false,
 });
