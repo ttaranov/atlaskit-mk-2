@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 5.8.3
+- [patch] Add logger to global quick search [aeb0219](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aeb0219)
+
 ## 5.8.2
 - [patch] Parse Jira recent response with optional attributes [f6f81ca](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f6f81ca)
 
