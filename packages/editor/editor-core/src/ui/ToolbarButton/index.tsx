@@ -66,12 +66,10 @@ class ToolbarButton extends PureComponent<Props, {}> {
       <ToolbarContext.Consumer>
         {value => (
           <div
-            tabIndex={-1}
             onKeyDown={e => {
               if (e.keyCode === 13) {
                 // @ts-ignore
                 this.handleClick(e);
-                console.log('pressed enter in Toolbar button');
               }
             }}
             ref={input => {
@@ -79,11 +77,19 @@ class ToolbarButton extends PureComponent<Props, {}> {
                 if (
                   value.selectedButton &&
                   buttonsMatch(value.selectedButton, this) &&
-                  input!.tabIndex !== 0
+                  input!.tabIndex === -1
                 ) {
-                  console.log('FOCUS THE BUTTON :)');
-                  input!.focus();
                   input!.tabIndex = 0;
+                  console.log(
+                    'Updating button tabindex, enabled is ',
+                    value.enabled,
+                  );
+                  if (value.enabled) {
+                    console.log(
+                      `Focusing button ${value.selectedButton!.props.title}!!`,
+                    );
+                    input!.focus();
+                  }
                 } else {
                   input!.tabIndex = -1;
                 }

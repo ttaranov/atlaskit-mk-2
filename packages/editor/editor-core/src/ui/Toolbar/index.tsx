@@ -78,6 +78,11 @@ export class ToolbarInner extends React.Component<
   }
 
   shouldComponentUpdate(nextProps, nextState) {
+    if (this.props.disabled === true && nextProps.disabled === false) {
+      console.log('Enabling toolbar');
+      this.updateSelectedButton();
+    }
+
     return (
       nextProps.toolbarSize !== this.props.toolbarSize ||
       nextProps.disabled !== this.props.disabled ||
@@ -91,7 +96,7 @@ export class ToolbarInner extends React.Component<
   }
 
   componentDidMount() {
-    this.changeSelectedButton(0);
+    console.log('Toolbar Mounted');
   }
 
   registerButton(button) {
@@ -104,11 +109,24 @@ export class ToolbarInner extends React.Component<
       if (allTitles.indexOf(button.props.title) === -1) {
         newRegisteredButtons = [...allButtons, button];
       }
+      let selectedButton = prevState.selectedButton;
+      if (allButtons.length == 0) {
+        console.log('Set selected button to first button');
+        selectedButton = newRegisteredButtons[prevState.selectedButton];
+      }
       return {
         registeredButtons: newRegisteredButtons,
+        selectedButton: selectedButton,
       };
     });
     return null;
+  }
+
+  private updateSelectedButton() {
+    this.setState(prevState => ({
+      selectedButton:
+        prevState.registeredButtons[prevState.selectedButtonIndex],
+    }));
   }
 
   private changeSelectedButton(delta: number) {
@@ -168,6 +186,7 @@ export class ToolbarInner extends React.Component<
           registerButton: this.registerButton,
           selectedButton: this.state.selectedButton,
           selectedButtonIndex: this.state.selectedButtonIndex,
+          enabled: !this.props.disabled,
         }}
       >
         <div onKeyDown={this.handleKeydown}>
