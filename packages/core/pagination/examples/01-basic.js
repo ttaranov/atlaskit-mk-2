@@ -50,10 +50,13 @@ export default class extends Component<{}, State> {
               isDisabled={firstPage.value === selected}
               onClick={this.onArrowClicked}
             />
-            {pageLinksCollapsed.map(pageLink => {
+            {pageLinksCollapsed.map((pageLink, index) => {
               if (pageLink === '...') {
                 return (
-                  <span key={`${pageLink}`} style={{ padding: '0 8px' }}>
+                  <span
+                    key={`${pageLink}-${index}`}
+                    style={{ padding: '0 8px' }}
+                  >
                     ...
                   </span>
                 );
@@ -61,11 +64,11 @@ export default class extends Component<{}, State> {
               const { value } = pageLink;
               return (
                 <Link
-                  key={`${value}`}
+                  key={`${value}-${index}`}
                   onClick={() => {
                     this.updateTheSelected(value);
                   }}
-                  selected={value === this.state.selected}
+                  isSelected={value === this.state.selected}
                 >
                   {value}
                 </Link>

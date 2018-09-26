@@ -1,20 +1,12 @@
 //@flow
 import React, { Component } from 'react';
 import { PaddedButton } from './styled';
-import type { NavigatorPropsType } from '../../types';
+import type { PagePropsType } from '../../types';
 
-export default class Navigator extends Component<NavigatorPropsType> {
+export default class Navigator extends Component<PagePropsType> {
   render() {
-    const { children, isDisabled, ariaLabel, onClick } = this.props;
-    return (
-      <PaddedButton
-        appearance="subtle"
-        ariaLabel={ariaLabel}
-        isDisabled={isDisabled}
-        onClick={() => onClick && onClick(ariaLabel)}
-      >
-        {children}
-      </PaddedButton>
-    );
+    //$FlowFixMe
+    const { appearance, ...rest } = this.props;
+    return <PaddedButton {...rest} appearance="subtle" />;
   }
 }
