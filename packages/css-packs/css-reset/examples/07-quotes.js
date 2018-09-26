@@ -1,6 +1,12 @@
 // @flow
 import React from 'react';
 
+/**
+ * By default the Atlaskit website includes css-reset in examples
+ * when implementing css-reset in your application,
+ * please include the stylesheet in head as `<link href="<path to css-reset>" rel="stylesheet" />`
+ * or import '@atlaskit/css-reset' in your application code
+ */
 export default () => (
   <div>
     <h2>
