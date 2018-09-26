@@ -7,7 +7,7 @@ import { ImagePreview } from '../index';
 export const getPreviewFromBlob = (
   blob: Blob,
   mediaType: MediaType,
-): Promise<ImagePreview | Preview> =>
+): Promise<Preview> =>
   new Promise((resolve, reject) => {
     fileToBase64(blob)
       .then(async src => {
