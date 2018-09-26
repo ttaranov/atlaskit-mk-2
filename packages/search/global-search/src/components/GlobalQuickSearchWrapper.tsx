@@ -13,6 +13,7 @@ import configureSearchClients, { Config } from '../api/configureSearchClients';
 import MessagesIntlProvider from './MessagesIntlProvider';
 
 const memoizeOneTyped: <T extends Function>(func: T) => T = memoizeOne;
+
 const DEFAULT_NOOP_LOGGER: Logger = {
   safeInfo() {},
   safeWarn() {},
@@ -110,6 +111,9 @@ export interface Props {
  * Component that exposes the public API for global quick search. Its only purpose is to offer a simple, user-friendly API to the outside and hide the implementation detail of search clients etc.
  */
 export default class GlobalQuickSearchWrapper extends React.Component<Props> {
+  static defaultProps = {
+    logger: DEFAULT_NOOP_LOGGER,
+  };
   // configureSearchClients is a potentially expensive function that we don't want to invoke on re-renders
   memoizedConfigureSearchClients = memoizeOneTyped(configureSearchClients);
 
@@ -188,7 +192,7 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
           useAggregatorForConfluenceObjects={useAggregatorForConfluenceObjects}
           referralContextIdentifiers={referralContextIdentifiers}
           useCPUSForPeopleResults={useCPUSForPeopleResults}
-          logger={logger || DEFAULT_NOOP_LOGGER}
+          logger={logger}
         />
       </MessagesIntlProvider>
     );

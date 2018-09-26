@@ -46,7 +46,7 @@ export interface Props {
    * for example in jira we pass (issues, boards, filters and projects but we display only 2 groups issues and others combined)
    * @param results
    */
-  getDisplayedResults?(results: GenericResultMap): GenericResultMap;
+  getDisplayedResults?(results: GenericResultMap | null): GenericResultMap;
   createAnalyticsEvent?: CreateAnalyticsEventFn;
   handleSearchSubmit?({ target: string }): void;
   isSendSearchTermsEnabled?: boolean;
@@ -69,7 +69,7 @@ const LOGGER_NAME = 'AK.GlobalSearch.QuickSearchContainer';
  */
 export class QuickSearchContainer extends React.Component<Props, State> {
   static defaultProps = {
-    getDisplayedResults: results => results,
+    getDisplayedResults: results => results || ({} as GenericResultMap),
   };
 
   constructor(props) {

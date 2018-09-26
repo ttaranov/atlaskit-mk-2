@@ -12,7 +12,7 @@ const EMPTY_CONFLUENCE_RESULT = {
 };
 
 export const sliceResults = (
-  resultsMap: ConfluenceResultsMap,
+  resultsMap: ConfluenceResultsMap | null,
 ): ConfluenceResultsMap => {
   if (!resultsMap) {
     return EMPTY_CONFLUENCE_RESULT;
@@ -26,7 +26,7 @@ export const sliceResults = (
 };
 
 export const mapRecentResultsToUIGroups = (
-  recentlyViewedObjects: ConfluenceResultsMap,
+  recentlyViewedObjects: ConfluenceResultsMap | null,
 ): ResultsGroup[] => {
   const { people, objects, spaces } = sliceResults(recentlyViewedObjects);
 
@@ -50,7 +50,7 @@ export const mapRecentResultsToUIGroups = (
 };
 
 export const mapSearchResultsToUIGroups = (
-  searchResultsObjects: ConfluenceResultsMap,
+  searchResultsObjects: ConfluenceResultsMap | null,
 ): ResultsGroup[] => {
   const { people, objects, spaces } = sliceResults(searchResultsObjects);
   return [
