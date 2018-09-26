@@ -25,6 +25,15 @@ const initialState: ImageViewerState = {
   objectUrl: Outcome.pending(),
 };
 
+function processedFileStateToMediaItem(file: ProcessedFileState): MediaItem {
+  return {
+    type: 'file',
+    details: {
+      id: file.id,
+    },
+  };
+}
+
 export class ImageViewer extends React.Component<
   ImageViewerProps,
   ImageViewerState
@@ -80,13 +89,8 @@ export class ImageViewer extends React.Component<
     this.setState(initialState, async () => {
       try {
         const service = context.getBlobService(this.props.collectionName);
-        const item: MediaItem = {
-          type: 'file',
-          details: {
-            id: file.id,
-          },
-        };
         // MSW-922: once we make getImage cancelable we can use it instead of fetchImageBlobCancelable
+        const item = processedFileStateToMediaItem(file);
         const { response, cancel } = service.fetchImageBlobCancelable(item, {
           width: 1920,
           height: 1080,
