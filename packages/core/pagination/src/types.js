@@ -1,5 +1,6 @@
 //@flow
 import type { Node } from 'react';
+import type { ButtonProps } from '@atlaskit/button';
 
 export type LinkPropsType = {
   /** React node to render in the button, pass the text you want use to view on pagination button */
@@ -24,3 +25,12 @@ export type NavigatorPropsType = {
   /** This will be passed in as ariaLabel to button. This is what screen reader will read */
   ariaLabel?: string,
 };
+
+export type PagePropsType = $Diff<
+  ButtonProps,
+  {
+    appearance: any,
+    spacing: any,
+    shouldFitContainer: any,
+  },
+>;

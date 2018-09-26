@@ -1,25 +1,15 @@
 //@flow
 import React, { Component } from 'react';
 import Button from '@atlaskit/button';
-import type { LinkPropsType } from '../../types';
+import type { PagePropsType } from '../../types';
 
-export default class Link extends Component<LinkPropsType> {
-  static defaultProps = {
-    onClick: () => {},
-  };
-
+export default class Link extends Component<PagePropsType> {
   render() {
-    const { ariaLabel, href, onClick, isSelected, children } = this.props;
-    return (
-      <Button
-        appearance="subtle"
-        ariaLabel={ariaLabel}
-        href={href}
-        isSelected={isSelected}
-        onClick={e => onClick(ariaLabel, e)}
-      >
-        <span>{children}</span>
-      </Button>
-    );
+    /**
+     * Removing all the porps that are part of button but are not accepted by page
+     */
+    //$FlowFixMe
+    const { appearance, spacing, shouldFitContainer, ...rest } = this.props;
+    return <Button {...rest} appearance="subtle" />;
   }
 }
