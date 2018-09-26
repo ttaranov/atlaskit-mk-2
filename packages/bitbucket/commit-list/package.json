@@ -3,7 +3,7 @@
   "publishConfig": {
     "registry": "https://packages.atlassian.com/api/npm/atlassian-npm"
   },
-  "version": "7.3.0",
+  "version": "1.0.0",
   "description": "A React component for rendering a list of repository commits",
   "repository": {
     "type": "git",
