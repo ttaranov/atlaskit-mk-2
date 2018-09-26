@@ -5,7 +5,7 @@ import {
   teardownMocks,
   ZERO_DELAY_CONFIG,
 } from '../../../example-helpers/mockApis';
-import { GlobalQuickSearch } from '../..';
+import { GlobalQuickSearch, Props } from '../..';
 import { QuickSearchContainer } from '../../components/common/QuickSearchContainer';
 import BasicNavigation from '../../../example-helpers/BasicNavigation';
 import LocaleIntlProvider from '../../../example-helpers/LocaleIntlProvider';
@@ -109,12 +109,11 @@ const getRecentItems = product =>
               <LocaleIntlProvider locale="en">
                 <GlobalQuickSearch
                   cloudId="cloudId"
-                  context={product}
+                  context={product as Props['context']}
                   referralContextIdentifiers={{
                     currentContentId: '123',
                     searchReferrerId: '123',
                   }}
-                  {...this.props}
                 />
               </LocaleIntlProvider>
             }
