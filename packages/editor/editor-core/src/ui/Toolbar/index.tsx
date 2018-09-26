@@ -97,10 +97,8 @@ export class ToolbarInner extends React.Component<
     );
   }
   handleArrowKeyPushed() {
-    this.setState(prevState => {
-      return {
-        arrowKeyPushed: false,
-      };
+    this.setState({
+      arrowKeyPushed: false,
     });
     return null;
   }
