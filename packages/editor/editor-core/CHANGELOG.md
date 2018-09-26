@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 82.2.4
+- [patch] Add translations for help-dialog and colors [42a2916](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/42a2916)
+
 ## 82.2.3
 - [patch] Add translation for quick insert [d6c438c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d6c438c)
 
