@@ -84,15 +84,32 @@ class ToolbarButton extends PureComponent<Props, {}> {
                     'Updating button tabindex, enabled is ',
                     value.enabled,
                   );
-                  if (value.enabled) {
+
+                  const isInTitle =
+                    (document.activeElement as any).placeholder ===
+                    'Give this page a title...';
+                  const isBodyFocused =
+                    document.activeElement.tagName === 'body';
+                  console.log('/////////////////////////////////');
+                  console.log({ isInTitle, isBodyFocused });
+                  if (value.enabled && !isInTitle && !isBodyFocused) {
+                    console.log(
+                      'document.activeElement before?',
+                      document.activeElement,
+                    );
                     console.log(
                       `Focusing button ${value.selectedButton!.props.title}!!`,
                     );
                     input!.focus();
+                    console.log(
+                      'document.activeElement after?',
+                      document.activeElement,
+                    );
                   }
                 } else {
                   input!.tabIndex = -1;
                 }
+                console.log('------------------------');
               }
             }}
           >
