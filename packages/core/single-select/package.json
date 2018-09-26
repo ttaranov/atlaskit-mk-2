@@ -18,6 +18,7 @@
     "Mike G"
   ],
   "atlaskit": {
+    "internal": true,
     "name": "Single Select",
     "team": "core"
   },
