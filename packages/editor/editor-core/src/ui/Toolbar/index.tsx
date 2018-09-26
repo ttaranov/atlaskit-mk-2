@@ -189,7 +189,6 @@ export class ToolbarInner extends React.Component<
           selectedButton: this.state.selectedButton,
           selectedButtonIndex: this.state.selectedButtonIndex,
           enabled: !this.props.disabled,
-          // arrowKeyPushed: this.state.arrowKeyPushed,
           shouldFocus: this.shouldFocus,
         }}
       >

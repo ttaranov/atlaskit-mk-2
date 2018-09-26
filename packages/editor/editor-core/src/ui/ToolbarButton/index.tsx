@@ -67,9 +67,7 @@ class ToolbarButton extends PureComponent<Props, {}> {
         {value => (
           <div
             onKeyDown={e => {
-              if (e.keyCode === 13) {
-                debugger;
-                // @ts-ignore
+              if (e.key === 'Enter') {
                 this.handleClick(e);
               }
             }}
@@ -79,21 +77,11 @@ class ToolbarButton extends PureComponent<Props, {}> {
                   value.selectedButton &&
                   buttonsMatch(value.selectedButton, this)
                 ) {
-                  // This code is only run for the currently selected button
                   if (input!.tabIndex !== 0) {
                     input!.tabIndex = 0;
                   }
 
-                  // const isInTitle = document.activeElement.tagName === 'INPUT';
-                  // // const isBodyFocused = document.activeElement.tagName === 'BODY';
-                  // console.log("--------------------------------------------")
-                  // console.log("Document activeElement: ", document.activeElement.tagName);
-                  // const valueEnabled = value.enabled;
-                  // const shouldFocusElement = value.enabled && isInTitle !== true;
-                  // console.log({valueEnabled, isInTitle, shouldFocusElement});
-                  // console.log("--------------------------------------------")
                   if (value.shouldFocus && value.shouldFocus()) {
-                    // value.handleArrowKeyPushed();
                     input!.focus();
                   }
                 } else {
