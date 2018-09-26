@@ -225,7 +225,7 @@ export default class Editor extends React.Component<
             {customPrimaryToolbarComponents}
           </MainToolbarCustomComponentsSlot>
         </MainToolbar>
-        <ScrollContainer innerRef={this.scrollContainerRef}>
+        <ScrollContainer innerRef={this.scrollContainerRef} tabIndex={-1}>
           <ClickAreaBlock editorView={editorView}>
             <ContentArea>
               <div
