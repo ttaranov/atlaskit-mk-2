@@ -142,9 +142,9 @@ export class ToolbarInner extends React.Component<
   }
 
   private handleKeydown = e => {
-    if (e.keyCode === 37) {
+    if (e.key === 'ArrowLeft') {
       this.changeSelectedButton(-1);
-    } else if (e.keyCode === 39) {
+    } else if (e.key === 'ArrowRight') {
       this.changeSelectedButton(1);
     }
   };
