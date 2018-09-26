@@ -3,6 +3,11 @@ import { NodeSpec } from 'prosemirror-model';
 export const layoutColumn: NodeSpec = {
   content: 'block+',
   isolating: true,
+  attrs: {
+    width: {
+      default: undefined,
+    },
+  },
   parseDOM: [
     {
       context: 'layoutSection//|layoutColumn//',
