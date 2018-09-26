@@ -6,13 +6,7 @@ import { defaultSchema as schema } from '@atlaskit/editor-common';
 import { Action } from '../../../react/marks';
 import { Heading } from '../../../react/nodes';
 import { bigEmojiHeight } from '../../../utils';
-import {
-  Emoji,
-  Table,
-  TableHeader,
-  TableCell,
-  TableRow,
-} from '../../../react/nodes';
+import { Emoji } from '../../../react/nodes';
 import { RendererAppearance } from '../../../ui/Renderer';
 
 const emojiDoc = {
