@@ -10,13 +10,13 @@ export const layoutColumn: NodeSpec = {
   },
   parseDOM: [
     {
-      context: 'layoutSection//|layoutColumn//',
+      context: 'layoutColumn//',
       tag: 'div[data-layout-column]',
       skip: true,
     },
     {
       tag: 'div[data-layout-column]',
-      getAttrs(dom: HTMLElement) {
+      getAttrs: (dom: HTMLElement) => {
         return {
           width: Number(dom.getAttribute('data-column-width')) || undefined,
         };

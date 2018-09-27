@@ -1,10 +1,10 @@
 import { safeInsert } from 'prosemirror-utils';
-import { Node, Fragment, Slice } from 'prosemirror-model';
+import { Node, Fragment, Slice, Schema } from 'prosemirror-model';
 import { Command } from '../../types';
 import { pluginKey, LayoutState } from './pm-plugins/main';
 import { EditorState, Transaction } from 'prosemirror-state';
 import { mapChildren, flatmap } from '../../utils/slice';
-import { isEmptyDocument } from '../../utils';
+import { isEmptyDocument, getStepRange } from '../../utils';
 
 export type PredefinedLayout = 'two_equal' | 'three_equal';
 
@@ -41,10 +41,10 @@ export const insertLayoutColumns: Command = (state, dispatch) => {
 };
 
 function forceColumnStructure(
-  state,
-  node,
-  pos,
-  predefinedLayout,
+  state: EditorState,
+  node: Node,
+  pos: number,
+  predefinedLayout: PredefinedLayout,
 ): Transaction | undefined {
   const tr = state.tr;
   if (predefinedLayout === 'two_equal' && node.childCount === 3) {
@@ -68,7 +68,10 @@ function forceColumnStructure(
         Slice.empty,
       );
     }
-  } else if (predefinedLayout === 'three_equal' && node.childCount === 2) {
+  } else if (
+    (predefinedLayout === 'three_equal' && node.childCount === 2) ||
+    node.childCount < 2
+  ) {
     const insideRightEdgeOfLayoutSection = pos + node.nodeSize - 1;
     tr.replaceWith(
       tr.mapping.map(insideRightEdgeOfLayoutSection),
@@ -80,13 +83,28 @@ function forceColumnStructure(
   return tr.docChanged ? tr : undefined;
 }
 
+function equalColumnWidth(node: Node, schema: Schema, width: number): Fragment {
+  const { layoutColumn } = schema.nodes;
+  const truncatedWidth = Number(width.toFixed(2));
+
+  return flatmap(node.content, column =>
+    layoutColumn.create(
+      {
+        ...column.attrs,
+        width: truncatedWidth,
+      },
+      column.content,
+      column.marks,
+    ),
+  );
+}
+
 function forceColumnWidths(
   state: EditorState,
   tr: Transaction,
   pos: number,
   predefinedLayout: PredefinedLayout,
 ) {
-  const { layoutColumn } = state.schema.nodes;
   const width = predefinedLayout === 'two_equal' ? 50 : 33.33;
   const node = tr.doc.nodeAt(pos);
   if (!node) {
@@ -96,16 +114,7 @@ function forceColumnWidths(
   return tr.replaceWith(
     pos + 1,
     pos + node.nodeSize - 1,
-    flatmap(node.content, column =>
-      layoutColumn.create(
-        {
-          ...column.attrs,
-          width,
-        },
-        column.content,
-        column.marks,
-      ),
-    ),
+    equalColumnWidth(node, state.schema, width),
   );
 }
 
@@ -148,6 +157,43 @@ export const setPredefinedLayout = (layout: PredefinedLayout): Command => (
   }
 
   return false;
+};
+
+export type Change = { from: number; to: number; slice: Slice };
+export const fixColumnSizes = (changedTr: Transaction, state: EditorState) => {
+  const { layoutSection } = state.schema.nodes;
+  let change;
+  const range = getStepRange(changedTr);
+  if (!range) {
+    return undefined;
+  }
+
+  changedTr.doc.nodesBetween(range.from, range.to, (node, pos) => {
+    if (node.type === layoutSection) {
+      const widths = mapChildren(node, column => column.attrs.width);
+      const totalWidth = Math.round(
+        widths.reduce((acc, width) => acc + width, 0),
+      );
+      if (totalWidth !== 100) {
+        const fixedColumns = equalColumnWidth(
+          node,
+          state.schema,
+          100 / node.childCount,
+        );
+        change = {
+          from: pos + 1,
+          to: pos + node.nodeSize - 1,
+          slice: new Slice(fixedColumns, 0, 0),
+        };
+
+        return false;
+      }
+    } else {
+      return true;
+    }
+  });
+
+  return change;
 };
 
 export const deleteActiveLayoutNode: Command = (state, dispatch) => {

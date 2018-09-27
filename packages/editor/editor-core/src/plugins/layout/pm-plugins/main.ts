@@ -10,6 +10,7 @@ import { keydownHandler } from 'prosemirror-keymap';
 import { findParentNodeOfType } from 'prosemirror-utils';
 import { filter } from '../../../utils/commands';
 import { Command } from '../../../commands';
+import { fixColumnSizes, Change } from '../actions';
 
 export type LayoutState = {
   pos: number | null;
@@ -91,5 +92,42 @@ export default new Plugin({
     handleKeyDown: keydownHandler({
       Tab: filter(isWholeSelectionInsideLayoutColumn, moveCursorToNextColumn),
     }),
+  },
+  appendTransaction: (transactions, oldState, newState) => {
+    let changes: Change[] = [];
+    transactions.forEach(prevTr => {
+      // remap change segments across the transaction set
+      changes.map(change => {
+        return {
+          from: prevTr.mapping.map(change.from),
+          to: prevTr.mapping.map(change.to),
+          slice: change.slice,
+        };
+      });
+
+      // don't consider transactions that don't mutate
+      if (!prevTr.docChanged) {
+        return;
+      }
+
+      const change = fixColumnSizes(prevTr, newState);
+      if (change) {
+        changes.push(change);
+      }
+    });
+
+    if (changes.length) {
+      const tr = newState.tr;
+
+      changes.forEach(change => {
+        tr.replaceRange(change.from, change.to, change.slice);
+      });
+
+      if (tr.docChanged) {
+        tr.setMeta('isLocal', true);
+        tr.setMeta('addToHistory', false);
+        return tr;
+      }
+    }
   },
 });
