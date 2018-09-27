@@ -1,37 +1,11 @@
 declare var global: any;
 
-class MockFileReader {
-  loadEvent: () => void = () => {};
-  errorEvent: ({}) => void = () => {};
-  result: string | null = 'mockResult';
-
-  addEventListener = jest
-    .fn()
-    .mockImplementation((eventName: string, fn: () => void): void => {
-      if (eventName === 'load') {
-        this.loadEvent = fn;
-      } else if (eventName === 'error') {
-        this.errorEvent = fn;
-      }
-    });
-
-  readAsDataURL = jest.fn().mockImplementation((): void => {
-    this.loadEvent();
-  });
-}
-
-const mockError = { message: 'error' };
-
-class MockFileReaderWithError extends MockFileReader {
-  readAsDataURL = jest.fn().mockImplementation((): void => {
-    this.errorEvent(mockError);
-  });
-}
-
-const GloblFileReader = global.FileReader;
-const FileReader = jest
-  .spyOn(global, 'FileReader')
-  .mockImplementation(() => new GloblFileReader());
+import {
+  mockFileReader,
+  mockFileReaderWithError,
+  unmockFileReader,
+  mockFileReaderError,
+} from './mockFileReader';
 
 import {
   dataURItoFile,
@@ -40,13 +14,10 @@ import {
   getFileInfo,
   loadImage,
 } from '../../util';
-import { tinyPngDataURI, smallPngDataURI } from './imageHelpers';
-
-const tinyBadDataURI = 'very-bad-data';
 
 describe('Image Meta Data Util', () => {
   describe('dataURItoFile()', () => {
-    const tinyPngFile = dataURItoFile(tinyPngDataURI, 'filename.png');
+    const tinyPngFile = dataURItoFile('data:image/png;base64,', 'filename.png');
 
     it('should preserve mimeType', () => {
       expect(tinyPngFile.type).toEqual('image/png');
@@ -57,7 +28,7 @@ describe('Image Meta Data Util', () => {
     });
 
     it('should still convert bad dataURI to File', () => {
-      const file = dataURItoFile(tinyBadDataURI);
+      const file = dataURItoFile('very-bad-data');
       expect(file).toBeInstanceOf(File);
     });
 
@@ -67,34 +38,29 @@ describe('Image Meta Data Util', () => {
   });
 
   describe('fileToDataURI()', () => {
-    const mockReader = new MockFileReader();
-    const mockReaderWithError = new MockFileReaderWithError();
-
-    const setMockFileReader = () => mockReader;
-    const setMockFileReaderWithError = () => mockReaderWithError;
-    const unsetMockFileReader = () => new GloblFileReader();
+    let fileReader: any;
 
     beforeEach(() => {
-      FileReader.mockImplementation(setMockFileReader);
+      fileReader = mockFileReader('some-result');
     });
 
     afterEach(() => {
-      FileReader.mockImplementation(unsetMockFileReader);
+      unmockFileReader();
     });
 
     it('should convert File to dataURI', async () => {
       const mockFile = new File([], '');
       const dataURI = await fileToDataURI(mockFile);
-      expect(mockReader.addEventListener).toHaveBeenCalledTimes(2);
-      expect(mockReader.readAsDataURL).toHaveBeenCalledWith(mockFile);
-      expect(dataURI).toEqual(mockReader.result);
+      expect(fileReader.addEventListener).toHaveBeenCalledTimes(2);
+      expect(fileReader.readAsDataURL).toHaveBeenCalledWith(mockFile);
+      expect(dataURI).toEqual('some-result');
     });
 
     it('should reject if error', async () => {
-      FileReader.mockImplementation(setMockFileReaderWithError);
+      mockFileReaderWithError();
 
       const mockFile = new File([], '');
-      await expect(fileToDataURI(mockFile)).rejects.toBe(mockError);
+      await expect(fileToDataURI(mockFile)).rejects.toBe(mockFileReaderError);
     });
 
     it('should still convert invalid File to dataURI', async () => {
@@ -105,7 +71,7 @@ describe('Image Meta Data Util', () => {
   });
 
   describe('fileToArrayBuffer()', () => {
-    const file = dataURItoFile(smallPngDataURI);
+    const file = dataURItoFile('some-data');
 
     it('should return a Uint8Array with data from a file with data', async () => {
       const array = await fileToArrayBuffer(file);
@@ -154,8 +120,8 @@ describe('Image Meta Data Util', () => {
     });
 
     it('should return an image async', async () => {
-      const img = await loadImage(tinyPngDataURI);
-      expect(img.src).toEqual(tinyPngDataURI);
+      const img = await loadImage('some-src');
+      expect(img.src).toEqual('some-src');
     });
   });
 });
