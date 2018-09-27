@@ -1180,7 +1180,7 @@ System.out.println("There are " + count + " values >= 5");`,
       content: [
         {
           type: 'text',
-          text: 'Media single without width defined',
+          text: 'Sections',
         },
       ],
     },
