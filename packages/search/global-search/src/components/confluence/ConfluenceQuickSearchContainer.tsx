@@ -113,7 +113,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
 
     // people results will be returned by xpsearch
     if (useCPUSForPeopleResults) {
-      Promise.resolve([]);
+      return Promise.resolve([]);
     }
 
     // fall back to directory search
