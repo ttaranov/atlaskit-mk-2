@@ -9,6 +9,7 @@ import { noResultsPeopleSearchClient } from '../mocks/_mockPeopleSearchClient';
 import {
   noResultsConfluenceClient,
   makeConfluenceClient,
+  singleResultQuickNav,
 } from '../mocks/_mockConfluenceClient';
 import { shallowWithIntl } from '../helpers/_intl-enzyme-test-helper';
 import QuickSearchContainer, {
@@ -40,7 +41,7 @@ function render(partialProps?: Partial<Props>) {
     confluenceClient: noResultsConfluenceClient,
     crossProductSearchClient: noResultsCrossProductSearchClient,
     peopleSearchClient: noResultsPeopleSearchClient,
-    useAggregatorForConfluenceObjects: false,
+    useQuickNavForPeopleResults: false,
     useCPUSForPeopleResults: false,
     logger: DEVELOPMENT_LOGGER,
     ...partialProps,
@@ -130,7 +131,6 @@ describe('ConfluenceQuickSearchContainer', () => {
       },
       // assert search performance timings
       timings: {
-        quickNavElapsedMs: expect.any(Number),
         confSearchElapsedMs: expect.any(Number),
         peopleElapsedMs: expect.any(Number),
       },
@@ -155,6 +155,34 @@ describe('ConfluenceQuickSearchContainer', () => {
           return Promise.resolve(EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE);
         },
       },
+    });
+
+    const quickSearchContainer = wrapper.find(QuickSearchContainer);
+    const searchResults = await (quickSearchContainer.props() as QuickSearchContainerProps).getSearchResults(
+      'query',
+      sessionId,
+      100,
+    );
+
+    expect(searchResults.results.people).toEqual([
+      {
+        mentionName: 'mentionName',
+        presenceMessage: 'presenceMessage',
+        analyticsType: 'result-person',
+        resultType: 'person-result',
+        name: 'name',
+        avatarUrl: 'avatarUrl',
+        href: 'href',
+        resultId: expect.any(String),
+      },
+    ]);
+  });
+
+  it('should use quick nav for people results when enabled', async () => {
+    const wrapper = render({
+      useQuickNavForPeopleResults: true,
+      crossProductSearchClient: noResultsCrossProductSearchClient,
+      confluenceClient: singleResultQuickNav(),
     });
 
     const quickSearchContainer = wrapper.find(QuickSearchContainer);

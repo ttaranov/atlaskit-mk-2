@@ -27,7 +27,7 @@ export default class extends React.Component {
   render() {
     return (
       <AnalyticsListener onEvent={logEvent} channel="fabric-elements">
-        <GlobalQuickSearchInNavigation useCPUSForPeopleResults={true} />
+        <GlobalQuickSearchInNavigation />
       </AnalyticsListener>
     );
   }
