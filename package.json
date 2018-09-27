@@ -93,6 +93,7 @@
     }
   },
   "devDependencies": {
+    "@atlaskit/app-switcher": "^8.0.1",
     "@babel/node": "^7.0.0",
     "@types/chai": "^4.0.4",
     "@types/classnames": "^2.2.6",
@@ -201,6 +202,7 @@
     "react-value": "^0.2.0",
     "recompose": "^0.26.0",
     "redux": "^3.7.2",
+    "seedrandom": "^2.4.4",
     "sinon": "^2.2.0",
     "spawndamnit": "^1.0.0",
     "string.prototype.repeat": "^0.2.0",
@@ -223,8 +225,7 @@
     "webpack-bundle-analyzer": "^2.13.0",
     "webpack-dev-server": "^3.1.4",
     "whatwg-fetch": "^2.0.3",
-    "xhr-mock": "^2.4.0",
-    "seedrandom": "^2.4.4"
+    "xhr-mock": "^2.4.0"
   },
   "dependencies": {
     "@atlaskit/activity": "^1.0.1",

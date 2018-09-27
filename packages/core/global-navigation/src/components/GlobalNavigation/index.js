@@ -21,8 +21,9 @@ import type { GlobalNavigationProps, DrawerName } from './types';
 // TODO: Figure out a way to appease flow without this function.
 const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
   dropdownItems,
-  id,
   icon,
+  id,
+  itemComponent,
   label,
   onClick,
   tooltip,
@@ -32,8 +33,9 @@ const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
   size,
 }) => ({
   dropdownItems,
-  id,
   icon,
+  id,
+  itemComponent,
   label,
   onClick,
   tooltip,

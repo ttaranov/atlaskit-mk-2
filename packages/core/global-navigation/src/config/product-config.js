@@ -207,7 +207,7 @@ export default function generateProductConfig(
     ),
     appSwitcher: appSwitcherComponent
       ? {
-          component: appSwitcherComponent,
+          itemComponent: appSwitcherComponent,
           label: appSwitcherTooltip,
           tooltip: appSwitcherTooltip,
         }
