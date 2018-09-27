@@ -31,6 +31,7 @@ import { Result } from '../../../model/Result';
 import {
   EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE,
   SearchSession,
+  ABTest,
 } from '../../../api/CrossProductSearchClient';
 import { DEVELOPMENT_LOGGER } from '../../../../example-helpers/logger';
 
@@ -93,6 +94,34 @@ describe('ConfluenceQuickSearchContainer', () => {
     });
   });
 
+  it('should return ab test data when getting recent items', async () => {
+    const abTest: ABTest = {
+      abTestId: 'abTestId',
+      experimentId: 'experimentId',
+      controlId: 'controlId',
+    };
+
+    const wrapper = render({
+      confluenceClient: noResultsConfluenceClient,
+      crossProductSearchClient: {
+        search(query: string) {
+          return Promise.resolve(EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE);
+        },
+        getAbTestData() {
+          return Promise.resolve(abTest);
+        },
+      },
+    });
+    const quickSearchContainer = wrapper.find(QuickSearchContainer);
+    const recentItems = await (quickSearchContainer.props() as QuickSearchContainerProps).getRecentItems(
+      sessionId,
+    );
+
+    expect(recentItems).toMatchObject(
+      expect.objectContaining({ abTest: abTest }),
+    );
+  });
+
   it('should return search result', async () => {
     const wrapper = render({
       peopleSearchClient: {
@@ -153,6 +182,9 @@ describe('ConfluenceQuickSearchContainer', () => {
           }
 
           return Promise.resolve(EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE);
+        },
+        getAbTestData(searchSession: SearchSession) {
+          return Promise.resolve(undefined);
         },
       },
     });

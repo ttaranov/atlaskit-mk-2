@@ -21,6 +21,7 @@ import {
 import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { CreateAnalyticsEventFn } from '../analytics/types';
 import { objectValues } from '../SearchResultsUtil';
+import { ABTest } from '../../api/CrossProductSearchClient';
 
 const resultMapToArray = (results: GenericResultMap): Result[][] =>
   objectValues(results).reduce((acc: Result[][], value) => [...acc, value], []);
@@ -113,12 +114,7 @@ export class QuickSearchContainer extends React.Component<Props, State> {
     });
 
     try {
-      const {
-        results,
-        timings,
-        experimentId,
-        abTest,
-      } = await this.props.getSearchResults(
+      const { results, timings } = await this.props.getSearchResults(
         query,
         this.state.searchSessionId,
         startTime,
@@ -142,12 +138,6 @@ export class QuickSearchContainer extends React.Component<Props, State> {
               this.state.searchSessionId,
               this.state.latestSearchQuery,
             );
-            if (experimentId || abTest) {
-              this.fireExperimentExposureEvent(
-                abTest ? abTest : experimentId,
-                this.state.searchSessionId,
-              );
-            }
           },
         );
       }
@@ -165,12 +155,15 @@ export class QuickSearchContainer extends React.Component<Props, State> {
     }
   };
 
-  fireExperimentExposureEvent = (experimentData, searchSessionId) => {
+  fireExperimentExposureEvent = (
+    abTestData: ABTest,
+    searchSessionId: string,
+  ) => {
     const { createAnalyticsEvent } = this.props;
 
     if (createAnalyticsEvent) {
       fireExperimentExposureEvent(
-        experimentData,
+        abTestData,
         searchSessionId,
         createAnalyticsEvent,
       );
@@ -277,10 +270,10 @@ export class QuickSearchContainer extends React.Component<Props, State> {
       });
     }
 
-    const sessionId = this.state.searchSessionId;
-
     try {
-      const { results } = await this.props.getRecentItems(sessionId);
+      const { results, abTest } = await this.props.getRecentItems(
+        this.state.searchSessionId,
+      );
       this.setState(
         {
           recentItems: results,
@@ -293,6 +286,10 @@ export class QuickSearchContainer extends React.Component<Props, State> {
             startTime,
           ),
       );
+
+      if (abTest) {
+        this.fireExperimentExposureEvent(abTest, this.state.searchSessionId);
+      }
     } catch (e) {
       this.props.logger.safeError(
         LOGGER_NAME,

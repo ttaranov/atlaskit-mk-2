@@ -51,11 +51,11 @@ export interface ResultSelectedAnalyticsDetails {
   indexWithinSection: number;
 }
 
-export const sanitizeSearchQuery = query => {
+export const sanitizeSearchQuery = (query: string): string => {
   return (query || '').replace(/\s+/g, ' ').trim();
 };
 
-export const sanitizeContainerId = containerId => {
+export const sanitizeContainerId = (containerId?: string): string => {
   const trimmedContainerId = (containerId || '').trim();
   return trimmedContainerId.startsWith('~')
     ? 'UNAVAILABLE'

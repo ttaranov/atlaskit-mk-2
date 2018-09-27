@@ -12,7 +12,11 @@ import {
   EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE,
 } from '../../api/CrossProductSearchClient';
 import { Scope } from '../../api/types';
-import { Result, ResultsWithTiming } from '../../model/Result';
+import {
+  Result,
+  ResultsWithTiming,
+  GenericResultMap,
+} from '../../model/Result';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
 import { SearchScreenCounter } from '../../util/ScreenCounter';
 import {
@@ -221,14 +225,16 @@ export class ConfluenceQuickSearchContainer extends React.Component<
           confSearchElapsedMs,
           peopleElapsedMs,
         },
-        experimentId: xpsearchResults.experimentId,
-        abTest: xpsearchResults.abTest,
       }),
     );
   };
 
-  getRecentItems = (sessionId: string): Promise<ResultsWithTiming> => {
-    const { confluenceClient, peopleSearchClient } = this.props;
+  getRecentItems = async (sessionId: string): Promise<ResultsWithTiming> => {
+    const {
+      confluenceClient,
+      peopleSearchClient,
+      crossProductSearchClient,
+    } = this.props;
 
     const recentActivityPromisesMap = {
       'recent-confluence-items': confluenceClient.getRecentItems(sessionId),
@@ -246,7 +252,9 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       ),
     );
 
-    return Promise.all(recentActivityPromises).then(
+    const resultsPromise: Promise<{ results: GenericResultMap }> = Promise.all(
+      recentActivityPromises,
+    ).then(
       ([
         recentlyViewedPages,
         recentlyViewedSpaces,
@@ -259,6 +267,20 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         },
       }),
     );
+
+    const abTestPromise = crossProductSearchClient.getAbTestData({
+      sessionId,
+    });
+
+    const [abTest, results] = await Promise.all([
+      abTestPromise,
+      resultsPromise,
+    ]);
+
+    return {
+      abTest,
+      results: results.results,
+    };
   };
 
   getSearchResultsComponent = ({
@@ -300,6 +322,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       />
     );
   };
+
   render() {
     const { linkComponent, isSendSearchTermsEnabled, logger } = this.props;
 

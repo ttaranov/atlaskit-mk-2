@@ -31,7 +31,7 @@ const spyOnComponentDidUpdate = () => {
   return spy;
 };
 
-const CONFLUECE_RECENT_ITEMS = [
+const CONFLUENCE_RECENT_ITEMS = [
   {
     id: 'confluence-object-result',
     hasContainerId: true,
@@ -131,7 +131,22 @@ describe('Quick Search Analytics', function(this: any) {
       const event = onEventSpy.mock.calls[1][0];
       validateEvent(
         event,
-        getPreQuerySearchResultsEvent(CONFLUECE_RECENT_ITEMS),
+        getPreQuerySearchResultsEvent(CONFLUENCE_RECENT_ITEMS),
+      );
+    });
+
+    it('should trigger experiment exposure event', () => {
+      const event = onEventSpy.mock.calls[2][0];
+      validateEvent(
+        event,
+        getExperimentExposureEvent({
+          searchSessionId: expect.any(String),
+          abTest: {
+            experimentId: 'experiment-1',
+            controlId: 'control-id',
+            abTestId: 'abtest-id',
+          },
+        }),
       );
     });
   });
@@ -332,21 +347,6 @@ describe('Quick Search Analytics', function(this: any) {
         );
       });
 
-      it('should trigger experiment exposure event', () => {
-        const event = onEventSpy.mock.calls[3][0];
-        validateEvent(
-          event,
-          getExperimentExposureEvent({
-            searchSessionId: expect.any(String),
-            abTest: {
-              experimentId: 'experiment-1',
-              controlId: 'control-id',
-              abTestId: 'abtest-id',
-            },
-          }),
-        );
-      });
-
       describe('Clear Query', () => {
         beforeAll(async () => {
           updateSpy.mockReset();
@@ -388,7 +388,7 @@ describe('Quick Search Analytics', function(this: any) {
           const event = onEventSpy.mock.calls[2][0];
           validateEvent(
             event,
-            getPreQuerySearchResultsEvent(CONFLUECE_RECENT_ITEMS),
+            getPreQuerySearchResultsEvent(CONFLUENCE_RECENT_ITEMS),
           );
         });
       });

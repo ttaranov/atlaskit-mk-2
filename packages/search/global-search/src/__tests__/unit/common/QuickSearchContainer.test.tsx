@@ -9,6 +9,8 @@ import { GlobalQuickSearch } from '../../../components/GlobalQuickSearch';
 import { delay } from '../_test-util';
 import * as AnalyticsHelper from '../../../util/analytics-event-helper';
 import { DEVELOPMENT_LOGGER } from '../../../../example-helpers/logger';
+import { ResultsWithTiming } from '../../../model/Result';
+import { ABTest } from '../../../api/CrossProductSearchClient';
 
 const defaultProps = {
   logger: DEVELOPMENT_LOGGER,
@@ -46,6 +48,7 @@ const assertLastCall = (spy, obj) => {
 describe('QuickSearchContainer', () => {
   let firePreQueryShownEventSpy;
   let firePostQueryShownEventSpy;
+  let fireExperimentExposureEventSpy;
 
   const assertPreQueryAnalytics = recentItems => {
     expect(firePreQueryShownEventSpy).toBeCalled();
@@ -89,6 +92,14 @@ describe('QuickSearchContainer', () => {
     ]);
   };
 
+  const assertExposureEventAnalytics = (abTest: ABTest) => {
+    expect(fireExperimentExposureEventSpy).toBeCalledWith(
+      abTest,
+      expect.any(String),
+      defaultProps.createAnalyticsEvent,
+    );
+  };
+
   beforeEach(() => {
     firePreQueryShownEventSpy = jest.spyOn(
       AnalyticsHelper,
@@ -97,6 +108,10 @@ describe('QuickSearchContainer', () => {
     firePostQueryShownEventSpy = jest.spyOn(
       AnalyticsHelper,
       'firePostQueryShownEvent',
+    );
+    fireExperimentExposureEventSpy = jest.spyOn(
+      AnalyticsHelper,
+      'fireExperimentExposureEvent',
     );
   });
 
@@ -124,8 +139,15 @@ describe('QuickSearchContainer', () => {
         },
       ],
     };
-    const getRecentItems = jest.fn(() =>
-      Promise.resolve({ results: recentItems }),
+
+    const abTest: ABTest = {
+      abTestId: 'abTestId',
+      experimentId: 'experimentId',
+      controlId: 'controlId',
+    };
+
+    const getRecentItems = jest.fn<Promise<ResultsWithTiming>>(() =>
+      Promise.resolve({ results: recentItems, abTest: abTest }),
     );
     const wrapper = mountQuickSearchContainer({
       getRecentItems,
@@ -146,6 +168,7 @@ describe('QuickSearchContainer', () => {
     });
 
     assertPreQueryAnalytics(recentItems);
+    assertExposureEventAnalytics(abTest);
   });
 
   describe('Search', () => {
@@ -197,7 +220,7 @@ describe('QuickSearchContainer', () => {
       assertPostQueryAnalytics(query, searchResults);
     });
 
-    it('should hanldle error', async () => {
+    it('should handle error', async () => {
       const query = 'queryWithError';
       const wrapper = await renderAndWait();
       await search(
