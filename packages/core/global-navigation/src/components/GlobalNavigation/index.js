@@ -77,21 +77,9 @@ export default class GlobalNavigation
     };
 
     this.drawers.forEach((drawer: DrawerName) => {
-      const capitalisedDrawerName = this.getCapitalisedDrawerName(drawer);
+      this.updateDrawerControlledStatus(drawer, props);
 
-      if (
-        props[
-          `on${capitalisedDrawerName.substr(
-            0,
-            capitalisedDrawerName.length - 6, // Trim the `Drawer` bit from ${drawerType}Drawer
-          )}Click`
-        ]
-      ) {
-        this[`is${capitalisedDrawerName}Controlled`] = false;
-        return;
-      }
-      // If a drawer doesn't have an onClick handler, mark it as a controlled drawer.
-      this[`is${capitalisedDrawerName}Controlled`] = true;
+      const capitalisedDrawerName = this.getCapitalisedDrawerName(drawer);
 
       if (
         props[`${drawer}DrawerContents`] &&
@@ -111,6 +99,8 @@ export default class GlobalNavigation
 
   componentDidUpdate(prevProps: GlobalNavigationProps) {
     this.drawers.forEach(drawer => {
+      this.updateDrawerControlledStatus(drawer, this.props);
+
       const capitalisedDrawerName = this.getCapitalisedDrawerName(drawer);
       // Do nothing if it's a controlled drawer
       if (this[`is${capitalisedDrawerName}Controlled`]) {
@@ -130,6 +120,27 @@ export default class GlobalNavigation
       }
     });
   }
+
+  updateDrawerControlledStatus = (
+    drawer: DrawerName,
+    props: GlobalNavigationProps,
+  ) => {
+    const capitalisedDrawerName = this.getCapitalisedDrawerName(drawer);
+
+    if (
+      props[
+        `on${capitalisedDrawerName.substr(
+          0,
+          capitalisedDrawerName.length - 6, // Trim the `Drawer` bit from ${drawerType}Drawer
+        )}Click`
+      ]
+    ) {
+      this[`is${capitalisedDrawerName}Controlled`] = false;
+    } else {
+      // If a drawer doesn't have an onClick handler, mark it as a controlled drawer.
+      this[`is${capitalisedDrawerName}Controlled`] = true;
+    }
+  };
 
   getCapitalisedDrawerName = (drawerName: DrawerName) => {
     return `${drawerName[0].toUpperCase()}${drawerName.slice(1)}Drawer`;

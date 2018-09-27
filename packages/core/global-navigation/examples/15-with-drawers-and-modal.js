@@ -99,13 +99,7 @@ const DrawerContent = ({
   drawerBody: string,
 }) => (
   <div>
-    <h1
-      css={{
-        textTransform: 'capitalize',
-      }}
-    >
-      {drawerTitle}
-    </h1>
+    <h1>{drawerTitle}</h1>
     <div>{drawerBody}</div>
     <label htmlFor="textbox" css={{ display: 'block' }}>
       Type something in the textarea below and see if it is retained
@@ -215,28 +209,35 @@ class GlobalNavWithDrawers extends Component<Props, State> {
     return (
       <Fragment>
         <GlobalNavigation
-          helpItems={HelpDropdown}
+          // Product
           productIcon={() => <AtlassianIcon label="Atlassian" size="medium" />}
+          onProductClick={() => console.log('product clicked')}
+          // Starred
+          starredDrawerContents={this.renderStarredDrawerContents}
+          shouldStarredDrawerUnmountOnExit={unmountOnExit}
+          // Create
           onCreateClick={
             createItemOpens === 'modal' ? this.openCreateModal : null
           }
           createDrawerContents={this.renderCreateDrawerContents}
           shouldCreateDrawerUnmountOnExit={unmountOnExit}
-          onProductClick={() => console.log('product clicked')}
+          // Search
           onSearchClick={this.openSearchDrawer}
           searchTooltip="Search (\)"
           isSearchDrawerOpen={this.state.isSearchDrawerOpen}
           searchDrawerContents={this.renderSearchDrawerContents}
           onSearchDrawerClose={this.closeSearchDrawer}
           shouldSearchDrawerUnmountOnExit={unmountOnExit}
-          starredDrawerContents={this.renderStarredDrawerContents}
-          shouldStarredDrawerUnmountOnExit={unmountOnExit}
+          // Notifications
           notificationDrawerContents={this.renderNotificationDrawerContents}
           onNotificationDrawerOpen={onNotificationDrawerOpen}
           notificationCount={notificationCount}
           shouldNotificationDrawerUnmountOnExit={unmountOnExit}
+          // App switcher
           appSwitcherComponent={AppSwitcherComponent}
           appSwitcherTooltip="Switch apps..."
+          // Help
+          helpItems={HelpDropdown}
         />
         <ModalTransition>
           {this.state.isCreateModalOpen && (
