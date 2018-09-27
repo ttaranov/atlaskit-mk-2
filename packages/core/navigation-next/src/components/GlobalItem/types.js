@@ -39,6 +39,8 @@ type BaseItemProps = {
   /** The zero-based index for the position of the item within the global
    *  sidebar section. Used for analytics purposes. */
   index?: number,
+  /** Whether this GlobalItem should display as being selected. */
+  isSelected?: boolean,
   /** A label to pass to the `icon` component. */
   label?: string,
   /** A handler which will be called when the GlobalItem is clicked. */
