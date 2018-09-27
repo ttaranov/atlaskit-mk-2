@@ -17,7 +17,7 @@ var _index2 = _interopRequireDefault(_index);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Problem16Icon = function Problem16Icon(props) {
-  return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path fill="#FF5630" fill-rule="evenodd" d="M9.968 15.446l5.478-5.478a4 4 0 0 1-5.478 5.478zm-.796-.618zm-.618-.796a4 4 0 0 1 5.478-5.478l-5.478 5.478zm6.274-4.86zM6 4h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm6 14a6 6 0 1 0 0-12 6 6 0 0 0 0 12z"/></svg>' }, props, { size: 'small' }));
+  return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="16" height="16" viewBox="0 0 16 16" focusable="false" role="presentation"><path fill="#FF5630" fill-rule="evenodd" d="M5.968 11.446l5.478-5.478a4 4 0 0 1-5.478 5.478zm-.796-.618zm-.618-.796a4 4 0 0 1 5.478-5.478l-5.478 5.478zm6.274-4.86zM2 0h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm6 14A6 6 0 1 0 8 2a6 6 0 0 0 0 12z"/></svg>' }, props, { size: 'small' }));
 };
 Problem16Icon.displayName = 'Problem16Icon';
 exports.default = Problem16Icon;

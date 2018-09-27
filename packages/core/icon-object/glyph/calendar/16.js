@@ -17,7 +17,7 @@ var _index2 = _interopRequireDefault(_index);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Calendar16Icon = function Calendar16Icon(props) {
-  return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path fill="#FF5630" fill-rule="evenodd" d="M10 9H8a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-6a1 1 0 0 0-1-1h-6zM6 4h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm8 4v1h2V8a1 1 0 0 0-2 0zM8 8v1h2V8a1 1 0 0 0-2 0zm1 4h6v3H9v-3z"/></svg>' }, props, { size: 'small' }));
+  return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="16" height="16" viewBox="0 0 16 16" focusable="false" role="presentation"><path fill="#FF5630" fill-rule="evenodd" d="M6 5H4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1H6zM2 0h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm8 4v1h2V4a1 1 0 0 0-2 0zM4 4v1h2V4a1 1 0 0 0-2 0zm1 4h6v3H5V8z"/></svg>' }, props, { size: 'small' }));
 };
 Calendar16Icon.displayName = 'Calendar16Icon';
 exports.default = Calendar16Icon;

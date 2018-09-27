@@ -17,7 +17,7 @@ var _index2 = _interopRequireDefault(_index);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Folder48Icon = function Folder48Icon(props) {
-  return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="50" height="64" viewBox="0 0 50 64" focusable="false" role="presentation"><g fill="#B3D4FF" fill-rule="evenodd"><path d="M21 16h24a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H5a4 4 0 0 1-4-4V16a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4z"/><path d="M1 20h48v28a4 4 0 0 1-4 4H5a4 4 0 0 1-4-4V20z" style="mix-blend-mode:multiply"/></g></svg>' }, props, { size: 'xlarge' }));
+  return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="48" height="64" viewBox="0 0 48 64" focusable="false" role="presentation"><g fill="#B3D4FF" fill-rule="evenodd"><path d="M20 16h24a4 4 0 0 1 4 4v28a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4V16a4 4 0 0 1 4-4h12a4 4 0 0 1 4 4z"/><path d="M0 20h48v28a4 4 0 0 1-4 4H4a4 4 0 0 1-4-4V20z" style="mix-blend-mode:multiply"/></g></svg>' }, props, { size: 'xlarge' }));
 };
 Folder48Icon.displayName = 'Folder48Icon';
 exports.default = Folder48Icon;

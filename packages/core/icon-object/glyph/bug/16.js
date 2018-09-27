@@ -17,7 +17,7 @@ var _index2 = _interopRequireDefault(_index);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var Bug16Icon = function Bug16Icon(props) {
-  return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><path fill="#FF5630" fill-rule="evenodd" d="M6 4h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2zm6 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg>' }, props, { size: 'small' }));
+  return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="16" height="16" viewBox="0 0 16 16" focusable="false" role="presentation"><path fill="#FF5630" fill-rule="evenodd" d="M2 0h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2zm6 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8z"/></svg>' }, props, { size: 'small' }));
 };
 Bug16Icon.displayName = 'Bug16Icon';
 exports.default = Bug16Icon;

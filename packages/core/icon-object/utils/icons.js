@@ -23,8 +23,8 @@ import Issue16Icon from '../glyph/issue/16';
 import NewFeature16Icon from '../glyph/new-feature/16';
 import Page16Icon from '../glyph/page/16';
 import Problem16Icon from '../glyph/problem/16';
+import PullRequest16Icon from '../glyph/pull-request/16';
 import Question16Icon from '../glyph/question/16';
-import Request16Icon from '../glyph/request/16';
 import Story16Icon from '../glyph/story/16';
 import Subtask16Icon from '../glyph/subtask/16';
 import Task16Icon from '../glyph/task/16';
@@ -42,8 +42,8 @@ import Issue24Icon from '../glyph/issue/24';
 import NewFeature24Icon from '../glyph/new-feature/24';
 import Page24Icon from '../glyph/page/24';
 import Problem24Icon from '../glyph/problem/24';
+import PullRequest24Icon from '../glyph/pull-request/24';
 import Question24Icon from '../glyph/question/24';
-import Request24Icon from '../glyph/request/24';
 import Story24Icon from '../glyph/story/24';
 import Subtask24Icon from '../glyph/subtask/24';
 import Task24Icon from '../glyph/task/24';
@@ -133,17 +133,17 @@ export default {
     componentName: 'Problem16Icon',
     package: '@atlaskit/icon-object/glyph/problem/16',
   },
+  'pull-request/16': {
+    keywords: ['pull-request/16', 'pullrequest16', 'object', 'icon-object'],
+    component: PullRequest16Icon,
+    componentName: 'PullRequest16Icon',
+    package: '@atlaskit/icon-object/glyph/pull-request/16',
+  },
   'question/16': {
     keywords: ['question/16', 'question16', 'object', 'icon-object'],
     component: Question16Icon,
     componentName: 'Question16Icon',
     package: '@atlaskit/icon-object/glyph/question/16',
-  },
-  'request/16': {
-    keywords: ['request/16', 'request16', 'object', 'icon-object'],
-    component: Request16Icon,
-    componentName: 'Request16Icon',
-    package: '@atlaskit/icon-object/glyph/request/16',
   },
   'story/16': {
     keywords: ['story/16', 'story16', 'object', 'icon-object'],
@@ -247,17 +247,17 @@ export default {
     componentName: 'Problem24Icon',
     package: '@atlaskit/icon-object/glyph/problem/24',
   },
+  'pull-request/24': {
+    keywords: ['pull-request/24', 'pullrequest24', 'object', 'icon-object'],
+    component: PullRequest24Icon,
+    componentName: 'PullRequest24Icon',
+    package: '@atlaskit/icon-object/glyph/pull-request/24',
+  },
   'question/24': {
     keywords: ['question/24', 'question24', 'object', 'icon-object'],
     component: Question24Icon,
     componentName: 'Question24Icon',
     package: '@atlaskit/icon-object/glyph/question/24',
-  },
-  'request/24': {
-    keywords: ['request/24', 'request24', 'object', 'icon-object'],
-    component: Request24Icon,
-    componentName: 'Request24Icon',
-    package: '@atlaskit/icon-object/glyph/request/24',
   },
   'story/24': {
     keywords: ['story/24', 'story24', 'object', 'icon-object'],
