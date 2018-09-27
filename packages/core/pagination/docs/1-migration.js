@@ -6,11 +6,11 @@ export default md`
 
 ### 🎉 ADG styling
 
-Pagination has ADG styling v8 onward.
+As of version 8, pagination’s styling has been updated to match the ADG style guide.
 
 ### 🎉 No change in API
 
-There are no changes in the Pagination API. Therefore, no code change will required to usage of the new ADG styled Pagination component.
+There are no changes in the Pagination API. Therefore, no code change will be required to consume this major version. However, You should make sure designers check that this change does not break the look within your app, but otherwise this upgrade is completely safe.
 
 ### 🚨 Styles changes
 
