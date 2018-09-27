@@ -1,32 +1,23 @@
-import { keymap } from 'prosemirror-keymap';
-import { Schema, Slice, Node, Fragment } from 'prosemirror-model';
-import {
-  EditorState,
-  Plugin,
-  PluginKey,
-  TextSelection,
-  Selection,
-} from 'prosemirror-state';
-import { EditorView } from 'prosemirror-view';
 import * as MarkdownIt from 'markdown-it';
+// @ts-ignore
+import { handlePaste as handlePasteTable } from 'prosemirror-tables';
+import { Schema, Slice, Node, Fragment } from 'prosemirror-model';
+import { Plugin, PluginKey, TextSelection, Selection } from 'prosemirror-state';
+import { EditorView } from 'prosemirror-view';
+import { closeHistory } from 'prosemirror-history';
+import { hasParentNodeOfType } from 'prosemirror-utils';
 import { MarkdownTransformer } from '@atlaskit/editor-markdown-transformer';
 import { analyticsService } from '../../../analytics';
-import * as keymaps from '../../../keymaps';
 import * as clipboard from '../../../utils/clipboard';
 import { EditorAppearance } from '../../../types';
 import { insertMediaAsMediaSingle } from '../../media/utils/media-single';
 import linkify from '../linkify-md-plugin';
-import { escapeLinks, isPastedFromWord } from '../util';
+import { escapeLinks, isPastedFromWord, getPasteSource } from '../util';
 import { transformSliceToRemoveOpenBodiedExtension } from '../../extension/actions';
 import { transformSliceToRemoveOpenLayoutNodes } from '../../layout/utils';
 import { linkifyContent } from '../../hyperlink/utils';
-import { closeHistory } from 'prosemirror-history';
-import { hasParentNodeOfType } from 'prosemirror-utils';
 import { pluginKey as tableStateKey } from '../../table/pm-plugins/main';
 import { transformSliceToRemoveOpenTable } from '../../table/utils';
-
-// @ts-ignore
-import { handlePaste as handlePasteTable } from 'prosemirror-tables';
 import { transformSliceToAddTableHeaders } from '../../table/actions';
 import {
   handlePasteIntoTaskAndDecision,
@@ -37,6 +28,7 @@ import {
   transformSliceToJoinAdjacentCodeBlocks,
   transformSingleLineCodeBlockToCodeMark,
 } from '../../code-block/utils';
+import { queueCardsFromChangedTr } from '../../card/pm-plugins/doc';
 
 export const stateKey = new PluginKey('pastePlugin');
 
@@ -71,9 +63,12 @@ export function createPlugin(
           return false;
         }
 
+        const text = event.clipboardData.getData('text/plain');
+        const html = event.clipboardData.getData('text/html');
+
         // Bail if copied content has files
         if (clipboard.isPastedFile(event)) {
-          if (!isPastedFromWord(event)) {
+          if (!isPastedFromWord(html)) {
             return true;
           }
           // Microsoft Office always copies an image to clipboard so we don't let the event reach media
@@ -87,12 +82,13 @@ export function createPlugin(
           return true;
         }
 
-        if (handlePasteAsPlainText(slice)(state, dispatch, view)) {
+        if (handlePasteAsPlainText(slice, event)(state, dispatch, view)) {
           return true;
         }
 
-        const text = event.clipboardData.getData('text/plain');
-        const html = event.clipboardData.getData('text/html');
+        analyticsService.trackEvent('atlassian.editor.paste', {
+          source: getPasteSource(event),
+        });
 
         // runs macro autoconvert prior to other conversions
         if (text && !html && handleMacroAutoConvert(text)(state, dispatch)) {
@@ -118,11 +114,14 @@ export function createPlugin(
         if (text && !html && atlassianMarkDownParser) {
           analyticsService.trackEvent('atlassian.editor.paste.markdown');
           const doc = atlassianMarkDownParser.parse(escapeLinks(text));
+
           if (doc && doc.content) {
             const tr = closeHistory(state.tr);
             tr.replaceSelection(
               new Slice(doc.content, slice.openStart, slice.openEnd),
             );
+
+            queueCardsFromChangedTr(state, tr);
             dispatch(tr.scrollIntoView());
             return true;
           }
@@ -169,22 +168,25 @@ export function createPlugin(
 
           // get prosemirror-tables to handle pasting tables if it can
           // otherwise, just the replace the selection with the content
-          if (!handlePasteTable(view, null, slice)) {
-            closeHistory(tr);
-            tr.replaceSelection(slice);
-            tr.setStoredMarks([]);
-            if (
-              tr.selection.empty &&
-              tr.selection.$from.parent.type === codeBlock
-            ) {
-              tr.setSelection(TextSelection.near(
-                tr.selection.$from,
-                1,
-              ) as Selection);
-            }
-            dispatch(tr);
+          if (handlePasteTable(view, null, slice)) {
+            return true;
           }
 
+          closeHistory(tr);
+          tr.replaceSelection(slice);
+          tr.setStoredMarks([]);
+          if (
+            tr.selection.empty &&
+            tr.selection.$from.parent.type === codeBlock
+          ) {
+            tr.setSelection(TextSelection.near(
+              tr.selection.$from,
+              1,
+            ) as Selection);
+          }
+
+          // queue link cards, ignoring any errors
+          dispatch(queueCardsFromChangedTr(state, tr));
           return true;
         }
 
@@ -232,34 +234,3 @@ export function createPlugin(
     },
   });
 }
-
-export function createKeymapPlugin(schema: Schema): Plugin {
-  const list = {};
-
-  keymaps.bindKeymapWithCommand(
-    keymaps.paste.common!,
-    (state: EditorState, dispatch) => {
-      analyticsService.trackEvent('atlassian.editor.paste');
-
-      return false;
-    },
-    list,
-  );
-
-  keymaps.bindKeymapWithCommand(
-    keymaps.altPaste.common!,
-    (state: EditorState, dispatch) => {
-      analyticsService.trackEvent('atlassian.editor.paste');
-
-      return false;
-    },
-    list,
-  );
-
-  return keymap(list);
-}
-
-export default (schema: Schema, editorAppearance?: EditorAppearance) => [
-  createPlugin(schema, editorAppearance),
-  createKeymapPlugin(schema),
-];

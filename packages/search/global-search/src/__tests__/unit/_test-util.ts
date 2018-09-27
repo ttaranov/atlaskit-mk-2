@@ -1,7 +1,7 @@
 import {
   AnalyticsType,
   ResultType,
-  JiraObjectResult,
+  JiraResult,
   ConfluenceObjectResult,
   ContentType,
   ContainerResult,
@@ -18,13 +18,14 @@ function buildMockSearchResultProperties() {
 }
 
 export function makeJiraObjectResult(
-  partial?: Partial<JiraObjectResult>,
-): JiraObjectResult {
+  partial?: Partial<JiraResult>,
+): JiraResult {
   return {
     analyticsType: AnalyticsType.ResultJira,
     resultType: ResultType.JiraObjectResult,
     objectKey: 'objectKey',
     containerName: 'containerName',
+    contentType: ContentType.JiraIssue,
     ...buildMockSearchResultProperties(),
     ...partial,
   };
@@ -50,6 +51,7 @@ export function makeConfluenceContainerResult(
   return {
     analyticsType: AnalyticsType.ResultConfluence,
     resultType: ResultType.GenericContainerResult,
+    contentType: ContentType.ConfluenceSpace,
     ...buildMockSearchResultProperties(),
     ...partial,
   };
@@ -70,4 +72,25 @@ export function makePersonResult(
 
 export function delay<T>(millis: number = 1, value?: T): Promise<T> {
   return new Promise(resolve => setTimeout(() => resolve(value), millis));
+}
+
+export function waitUntil(
+  condition: () => boolean,
+  totalTime: number,
+  timeBetweenRetries?: number,
+): Promise<void> {
+  let waitingTime = 0;
+  const timeToWait = timeBetweenRetries || 100;
+  return new Promise((resolve, reject) => {
+    const id = setInterval(() => {
+      if (condition()) {
+        clearInterval(id);
+        resolve();
+      }
+      waitingTime += timeToWait;
+      if (waitingTime > totalTime) {
+        reject();
+      }
+    }, timeToWait);
+  });
 }

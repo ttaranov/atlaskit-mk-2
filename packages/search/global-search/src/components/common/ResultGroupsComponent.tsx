@@ -17,24 +17,21 @@ export enum ResultGroupType {
 export interface Props {
   resultsGroups: ResultsGroup[];
   type: ResultGroupType;
-  renderAdvancedSearch: () => JSX.Element;
+  renderAdvancedSearch: (analyticsData?) => JSX.Element;
   searchSessionId: string;
   screenCounter?: ScreenCounter;
   referralContextIdentifiers?: ReferralContextIdentifiers;
 }
 
-const mapGroupsToSections = (resultsToShow: ResultsGroup[]): JSX.Element[] => {
-  const analyticsData = {
-    resultCount: resultsToShow
-      .map(({ items }) => items.length)
-      .reduce((total, count) => total + count, 0),
-  };
-
+const mapGroupsToSections = (
+  resultsToShow: ResultsGroup[],
+  analyticsData,
+): JSX.Element[] => {
   return resultsToShow
     .filter(({ items }) => items && items.length)
     .map((group, index) => (
       <ResultGroup
-        key={group.key}
+        key={`${group.key}-${index}`}
         title={<FormattedMessage id={group.titleI18nId} />}
         results={group.items}
         sectionIndex={index}
@@ -72,13 +69,21 @@ export default class ResultGroupsComponent extends React.Component<Props> {
     }
   }
 
+  getAnalyticsData = () => ({
+    resultCount: this.props.resultsGroups
+      .map(({ items }) => items.length)
+      .reduce((total, count) => total + count, 0),
+  });
+
   render() {
     const { renderAdvancedSearch, resultsGroups } = this.props;
-
-    return [
-      ...mapGroupsToSections(resultsGroups),
-      renderAdvancedSearch(),
-      this.getAnalyticsComponent(),
-    ];
+    const analyticsData = this.getAnalyticsData();
+    return (
+      <>
+        {mapGroupsToSections(resultsGroups, analyticsData)}
+        {renderAdvancedSearch(analyticsData)}
+        {this.getAnalyticsComponent()}
+      </>
+    );
   }
 }

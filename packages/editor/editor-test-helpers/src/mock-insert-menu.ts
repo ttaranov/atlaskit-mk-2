@@ -16,7 +16,6 @@ export const customInsertMenuItems = [
           parameters: {
             macroParams: {},
             macroMetadata: {
-              macroId: { value: new Date().valueOf() },
               placeholder: [
                 {
                   data: { url: '' },
@@ -35,6 +34,7 @@ export const customInsertMenuItems = [
     tooltipDescription: 'Block macro (Using extension handlers)',
     tooltipPosition: 'right',
     elemBefore: '-',
+    className: 'block-macro',
     onClick: function(editorActions) {
       editorActions.replaceSelection({
         type: 'extension',
@@ -44,7 +44,6 @@ export const customInsertMenuItems = [
           parameters: {
             macroParams: {},
             macroMetadata: {
-              macroId: { value: new Date().valueOf() },
               placeholder: [
                 {
                   data: { url: '' },
@@ -73,7 +72,6 @@ export const customInsertMenuItems = [
           parameters: {
             macroParams: {},
             macroMetadata: {
-              macroId: { value: new Date().valueOf() },
               placeholder: [
                 {
                   data: { url: '' },

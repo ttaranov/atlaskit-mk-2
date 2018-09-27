@@ -279,7 +279,7 @@ export default function createSelect(WrappedComponent: ComponentType<*>) {
     onSelectRef = (ref: ElementRef<*>) => {
       this.select = ref;
     };
-    /** Menu click events aren't handled or exposed in react-select so we set preventDefault to work with dialog & layer components */
+    /** Menu click events are not handled or exposed in react-select so we set preventDefault to work with dialog & layer components */
     onClick = (e: MouseEvent) => {
       if (this.props.onClickPreventDefault) {
         e.preventDefault();

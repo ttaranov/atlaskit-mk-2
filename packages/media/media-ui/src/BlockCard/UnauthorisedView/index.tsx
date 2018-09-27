@@ -10,6 +10,7 @@ export interface UnauthorisedViewProps {
   url: string;
   onClick?: () => void;
   onAuthorise?: () => void;
+  isSelected?: boolean;
 }
 
 export class UnauthorisedView extends React.Component<UnauthorisedViewProps> {
@@ -23,9 +24,14 @@ export class UnauthorisedView extends React.Component<UnauthorisedViewProps> {
   };
 
   render() {
-    const { icon, url, onClick, onAuthorise } = this.props;
+    const { icon, url, onClick, onAuthorise, isSelected } = this.props;
     return (
-      <CollapsedFrame minWidth={minWidth} maxWidth={maxWidth} onClick={onClick}>
+      <CollapsedFrame
+        isSelected={isSelected}
+        minWidth={minWidth}
+        maxWidth={maxWidth}
+        onClick={onClick}
+      >
         <CollapsedIconTitleDescriptionLayout
           icon={<ImageIcon src={icon} size={24} />}
           title={url}

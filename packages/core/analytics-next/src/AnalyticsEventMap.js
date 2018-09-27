@@ -189,18 +189,17 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     rerun: true,
   },
   {
-    path: 'checkbox/src/CheckboxStateless.js',
-    testPath: 'checkbox/src/__tests__/analytics.js',
+    path: 'checkbox/src/Checkbox.js',
+    testPath: 'checkbox/src/__tests__/unit/analytics.js',
     actionSubject: 'checkbox',
-    component: 'CheckboxStateless',
-    derivatives: ['Checkbox'],
+    component: 'Checkbox',
     props: {
       onChange: 'changed',
     },
     attributes: {
       componentName: 'checkbox',
     },
-    componentTestPath: 'checkbox/src/__tests__/index.js',
+    componentTestPath: 'checkbox/src/__tests__/unit/index.js',
   },
   {
     path: 'datetime-picker/src/components/DatePicker.js',
@@ -244,6 +243,19 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     },
     componentTestPath:
       'datetime-picker/src/components/__tests__/DateTimePicker.js',
+  },
+  {
+    path: 'drawer/src/components/index.js',
+    testPath: 'drawer/src/components/__tests__/unit/analytics-drawer.js',
+    actionSubject: 'drawer',
+    component: 'Drawer',
+    props: {
+      onClose: 'dismissed',
+    },
+    attributes: {
+      componentName: 'drawer',
+      trigger: 'backButton | blanket | escKey',
+    },
   },
   {
     path: 'dropdown-menu/src/components/DropdownMenuStateless.js',
@@ -472,17 +484,30 @@ const analyticsEventMap: AnalyticsEventConfig[] = [
     componentTestPath: 'progress-indicator/__tests__/index.js',
   },
   {
+    path: 'radio/src/Radio.js',
+    testPath: 'radio/src/__tests__/unit/analytics.js',
+    actionSubject: 'radio',
+    component: 'Radio',
+    props: {
+      onChange: 'changed',
+    },
+    attributes: {
+      componentName: 'radio',
+    },
+    componentTestPath: 'radio/src/__tests__/Radio.js',
+  },
+  {
     path: 'select/src/Select.js',
-    testPath: 'select/__tests__/analytics.js',
-    actionSubject: 'listItem',
+    testPath: 'select/src/components/__tests__/unit/analytics.js',
+    actionSubject: 'option',
     component: 'Select',
     props: {
-      onChange: 'selected',
+      onChange: 'changed',
     },
     attributes: {
       componentName: 'select',
     },
-    componentTestPath: 'select/src/__tests__/Select.js',
+    componentTestPath: 'select/src/components/__tests__/unit/Select.js',
     needsMountTest: true,
     refIssue: true,
   },

@@ -7,7 +7,10 @@ import {
   RemoteData,
   TelepointerData,
   PresenceData,
+  Participant,
 } from '../types';
+
+export { TelepointerData, Participant };
 
 export type CollabEvent =
   | 'init'
@@ -15,7 +18,8 @@ export type CollabEvent =
   | 'data'
   | 'telepointer'
   | 'presence'
-  | 'error';
+  | 'error'
+  | 'local-steps';
 
 export interface CollabEventData {
   init: InitData;
@@ -44,6 +48,8 @@ export interface StepResponse {
   version: number;
   steps: any[];
 }
+
+export type MixedResponse = DocumentResponse & StepResponse;
 
 export interface Config extends ServiceConfig {
   docId: string;

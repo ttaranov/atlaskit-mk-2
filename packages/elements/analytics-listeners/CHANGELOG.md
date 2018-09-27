@@ -1,5 +1,35 @@
 # @atlaskit/analytics-listeners
 
+## 4.0.4
+- [patch] FS-3057 pick fields from context [187d175](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/187d175)
+
+## 4.0.3
+- [patch] Introduce media analytics listener [e7d7ab1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e7d7ab1)
+
+## 4.0.2
+- [patch] Update TS to 3.0 [f68d367](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f68d367)
+
+## 4.0.1
+- [patch] fixed imports, docs and made GasPayload package attributes optional [6be5eed](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6be5eed)
+- [patch] use createAndFire function from analytics-next [095f356](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/095f356)
+- [patch] Fixed TS errors and code improvements [b290312](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b290312)
+- [patch] enable analytics-next TDs on analytics-listeners and analytics-namespaced-context [e65f377](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e65f377)
+
+## 4.0.0
+- [patch] fixed async tests and removed redundant componenthelpers [3599b88](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3599b88)
+- [patch] Fixed async test expectations [b8c167d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b8c167d)
+- [major] removed promise from FabricAnalyticsListener.client property [90ba6bd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/90ba6bd)
+
+## 3.4.1
+- [patch] Fix elements listener listening on wrong channel [2b817e1](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2b817e1)
+
+## 3.4.0
+- [minor] Support the screen event type for navigation events [20b8844](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/20b8844)
+
+- [none] Updated dependencies [20b8844](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/20b8844)
+- [patch] Updated dependencies [85ddb9e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/85ddb9e)
+  - @atlaskit/analytics-gas-types@3.2.0
+
 ## 3.3.1
 - [patch] Add next gen analytics to conversation component [dfa100e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dfa100e)
 - [patch] Updated dependencies [dfa100e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dfa100e)

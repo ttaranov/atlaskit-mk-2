@@ -1,6 +1,6 @@
 // @flow
 import React, { Component, Fragment, type Node } from 'react';
-import Modal from '@atlaskit/modal-dialog';
+import Modal, { ModalTransition } from '@atlaskit/modal-dialog';
 import Button from '@atlaskit/button';
 
 const Cell = ({ children }: { children: Node }) => (
@@ -53,15 +53,17 @@ export default class PropStatus extends Component<*, State> {
     const { modalIsOpen } = this.state;
     return (
       <Fragment>
-        {modalIsOpen ? (
-          <Modal
-            heading={prop}
-            actions={[{ text: 'Close', onClick: this.onClose }]}
-            onClose={this.onClose}
-          >
-            {content}
-          </Modal>
-        ) : null}
+        <ModalTransition>
+          {modalIsOpen ? (
+            <Modal
+              heading={prop}
+              actions={[{ text: 'Close', onClick: this.onClose }]}
+              onClose={this.onClose}
+            >
+              {content}
+            </Modal>
+          ) : null}
+        </ModalTransition>
       </Fragment>
     );
   }

@@ -52,7 +52,7 @@ export function ensureBlocks(
     (fragment.firstChild.type === schema.nodes.bulletList ||
       fragment.firstChild.type === schema.nodes.orderedList)
   ) {
-    blockNodes.push(schema.nodes.paragraph.createAndFill()!);
+    blockNodes.push(schema.nodes.paragraph.createAndFill() as PMNode);
   }
 
   fragment.forEach(child => {
@@ -204,11 +204,21 @@ export function convert(
             );
             const fileName = dataNode.getAttribute('data-file-name');
             const displayType = dataNode.getAttribute('data-display-type');
+            const width = parseInt(
+              dataNode.getAttribute('data-width') || '',
+              10,
+            );
+            const height = parseInt(
+              dataNode.getAttribute('data-height') || '',
+              10,
+            );
 
             return schema.nodes.media.createChecked({
               id,
               type,
               collection,
+              width: width || null,
+              height: height || null,
               __fileName: attachmentName || fileName,
               __displayType: attachmentType || displayType || 'thumbnail',
             });
@@ -265,10 +275,10 @@ export function convert(
           }
 
           if (isSchemaWithMedia(schema)) {
-            return schema.nodes.mediaGroup.createChecked(
-              {},
-              Fragment.fromArray(mediaContent),
-            );
+            const nodeType = isMediaSingle(node.firstChild)
+              ? schema.nodes.mediaSingle
+              : schema.nodes.mediaGroup;
+            return nodeType.createChecked({}, Fragment.fromArray(mediaContent));
           }
 
           return null;
@@ -417,5 +427,26 @@ function isMedia(node: Node): boolean {
       }
     }
   }
+  return false;
+}
+
+function isMediaSingle(node: Node): boolean {
+  if (isMedia(node)) {
+    const dataNode = (node as HTMLElement).querySelector(
+      '[data-media-services-id]',
+    );
+    if (dataNode instanceof HTMLElement) {
+      const width = parseInt(dataNode.getAttribute('data-width') || '', 10);
+      const height = parseInt(dataNode.getAttribute('data-height') || '', 10);
+      if (
+        (node.parentNode as HTMLElement).classList.contains('mediaSingle') &&
+        width &&
+        height
+      ) {
+        return true;
+      }
+    }
+  }
+
   return false;
 }

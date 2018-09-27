@@ -27,11 +27,10 @@ describe('Dropzone', () => {
       collection: '',
     },
     container,
-    useNewUploadService: true,
   };
   // Helper functions
   const createDragOverOrDropEvent = (
-    eventName: 'dragover' | 'drop',
+    eventName: 'dragover' | 'drop' | 'dragleave',
     type?: string,
   ) => {
     const event = document.createEvent('Event') as any;
@@ -58,11 +57,7 @@ describe('Dropzone', () => {
   };
 
   const createDragLeaveEvent = () => {
-    const event = document.createEvent('Event') as any;
-    event.initEvent('dragleave', true, true);
-    event.preventDefault = () => {};
-
-    return event;
+    return createDragOverOrDropEvent('dragleave');
   };
 
   describe('activate', () => {

@@ -3,7 +3,12 @@
 import React, { Component, Fragment } from 'react';
 import Lorem from 'react-lorem-component';
 
-import { Spotlight, SpotlightManager, SpotlightTarget } from '../src';
+import {
+  Spotlight,
+  SpotlightManager,
+  SpotlightTarget,
+  SpotlightTransition,
+} from '../src';
 import { HighlightGroup, Highlight } from './styled';
 
 type State = {
@@ -73,28 +78,30 @@ export default class SpotlightAutoscrollExample extends Component<*, State> {
           <button onClick={this.highlightTwo}>Show</button>
         </p>
 
-        {spotlight !== 'off' && (
-          <Spotlight
-            actions={[
-              spotlight === 'target-one'
-                ? {
-                    onClick: this.highlightTwo,
-                    text: 'Next',
-                  }
-                : {
-                    onClick: this.highlightOne,
-                    text: 'Prev',
-                  },
-              { onClick: this.close, text: 'Got it' },
-            ]}
-            dialogPlacement="bottom left"
-            heading="Aww, yiss!"
-            key={spotlight}
-            target={spotlight}
-          >
-            <Lorem count={1} />
-          </Spotlight>
-        )}
+        <SpotlightTransition>
+          {spotlight !== 'off' && (
+            <Spotlight
+              actions={[
+                spotlight === 'target-one'
+                  ? {
+                      onClick: this.highlightTwo,
+                      text: 'Next',
+                    }
+                  : {
+                      onClick: this.highlightOne,
+                      text: 'Prev',
+                    },
+                { onClick: this.close, text: 'Got it' },
+              ]}
+              dialogPlacement="bottom left"
+              heading="Aww, yiss!"
+              key={spotlight}
+              target={spotlight}
+            >
+              <Lorem count={1} />
+            </Spotlight>
+          )}
+        </SpotlightTransition>
       </SpotlightManager>
     );
   }

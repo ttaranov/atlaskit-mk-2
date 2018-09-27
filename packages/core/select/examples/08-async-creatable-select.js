@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component, Fragment } from 'react';
-import Checkbox from '@atlaskit/checkbox';
+import { Checkbox } from '@atlaskit/checkbox';
 import { AsyncCreatableSelect as AsyncCreatable } from '../src';
 
 import { cities } from './common/data';

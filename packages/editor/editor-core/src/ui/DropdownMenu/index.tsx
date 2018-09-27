@@ -4,11 +4,12 @@ import styled from 'styled-components';
 import DropList from '@atlaskit/droplist';
 import Item, { ItemGroup } from '@atlaskit/item';
 import Tooltip from '@atlaskit/tooltip';
-import {
-  Popup,
-  akEditorToolbarDropdownMenuZIndex,
-} from '@atlaskit/editor-common';
+import { Popup, akEditorFloatingPanelZIndex } from '@atlaskit/editor-common';
 import withOuterListeners from '../with-outer-listeners';
+
+const Wrapper = styled.div`
+  line-height: 0;
+`;
 
 export interface Props {
   mountTo?: HTMLElement;
@@ -22,6 +23,7 @@ export interface Props {
   fitWidth?: number;
   fitHeight?: number;
   offset?: Array<number>;
+  zIndex?: number;
   items: Array<{
     items: Array<{
       content: string | ReactElement<any>;
@@ -63,13 +65,9 @@ const ItemContentWrapper: any = styled.span`
  * Also it controls popper's placement.
  */
 export default class DropdownMenuWrapper extends PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      popupPlacement: ['bottom', 'left'],
-    };
-  }
+  state: State = {
+    popupPlacement: ['bottom', 'left'],
+  };
 
   private handleRef = target => {
     this.setState({ target });
@@ -138,6 +136,7 @@ export default class DropdownMenuWrapper extends PureComponent<Props, State> {
       fitHeight,
       fitWidth,
       isOpen,
+      zIndex,
     } = this.props;
 
     return (
@@ -149,7 +148,7 @@ export default class DropdownMenuWrapper extends PureComponent<Props, State> {
         onPlacementChanged={this.updatePopupPlacement}
         fitHeight={fitHeight}
         fitWidth={fitWidth}
-        zIndex={akEditorToolbarDropdownMenuZIndex}
+        zIndex={zIndex || akEditorFloatingPanelZIndex}
         offset={offset}
       >
         <DropListWithOutsideListeners
@@ -177,10 +176,10 @@ export default class DropdownMenuWrapper extends PureComponent<Props, State> {
     const { children, isOpen } = this.props;
 
     return (
-      <div>
+      <Wrapper>
         <div ref={this.handleRef}>{children}</div>
         {isOpen ? this.renderDropdownMenu() : null}
-      </div>
+      </Wrapper>
     );
   }
 }

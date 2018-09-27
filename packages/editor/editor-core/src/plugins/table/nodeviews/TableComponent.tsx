@@ -2,13 +2,16 @@ import * as React from 'react';
 import rafSchedule from 'raf-schd';
 import { updateColumnsOnResize } from 'prosemirror-tables';
 import { browser, akEditorTableToolbarSize } from '@atlaskit/editor-common';
+import { calcTableWidth } from '@atlaskit/editor-common';
+
 import TableFloatingControls from '../ui/TableFloatingControls';
 import ColumnControls from '../ui/TableFloatingControls/ColumnControls';
 
 import { getPluginState } from '../pm-plugins/main';
+import { scaleTable, setColumnWidths } from '../pm-plugins/table-resizing';
+
 import { TablePluginState } from '../types';
-import { calcTableWidth } from '@atlaskit/editor-common';
-import { CELL_MIN_WIDTH } from '../';
+import { getCellMinWidth } from '../';
 
 const isIE11 = browser.ie_version === 11;
 const SHADOW_MAX_WIDTH = 8;
@@ -29,13 +32,21 @@ export interface ComponentProps extends Props {
 }
 
 class TableComponent extends React.Component<ComponentProps> {
-  state: { scroll: number } = { scroll: 0 };
+  state: {
+    scroll: number;
+    tableContainerWidth: string;
+  } = {
+    scroll: 0,
+    tableContainerWidth: 'inherit',
+  };
 
   private wrapper: HTMLDivElement | null;
   private table: HTMLTableElement | null;
 
   private leftShadow: HTMLDivElement | null;
   private rightShadow: HTMLDivElement | null;
+
+  private columnControls: React.Component | null;
 
   constructor(props) {
     super(props);
@@ -57,6 +68,19 @@ class TableComponent extends React.Component<ComponentProps> {
     if (this.props.allowColumnResizing && this.wrapper && !isIE11) {
       this.wrapper.addEventListener('scroll', this.handleScrollDebounced);
     }
+
+    if (
+      this.props.allowColumnResizing &&
+      this.props.UNSAFE_allowFlexiColumnResizing
+    ) {
+      const { node, containerWidth } = this.props;
+
+      setColumnWidths(this.table, node, containerWidth, node.attrs.layout);
+
+      this.setState(() => ({
+        tableContainerWidth: calcTableWidth(node.attrs.layout, containerWidth),
+      }));
+    }
   }
 
   componentWillUnmount() {
@@ -65,6 +89,23 @@ class TableComponent extends React.Component<ComponentProps> {
     }
 
     this.handleScrollDebounced.cancel();
+  }
+
+  componentDidUpdate(prevProps) {
+    this.updateShadows();
+
+    if (this.props.allowColumnResizing && this.table) {
+      if (this.props.UNSAFE_allowFlexiColumnResizing) {
+        this.handleTableResizing(prevProps);
+      } else {
+        updateColumnsOnResize(
+          this.props.node,
+          this.table.querySelector('colgroup')!,
+          this.table,
+          getCellMinWidth(false),
+        );
+      }
+    }
   }
 
   render() {
@@ -98,7 +139,12 @@ class TableComponent extends React.Component<ComponentProps> {
       : [];
 
     // doesn't work well with WithPluginState
-    const { isTableHovered, isTableInDanger } = getPluginState(view.state);
+    const {
+      isTableHovered,
+      isTableInDanger,
+      dangerColumns,
+      dangerRows,
+    } = getPluginState(view.state);
 
     const tableRef = this.table || undefined;
     const tableActive = this.table === pluginState.tableRef;
@@ -117,6 +163,7 @@ class TableComponent extends React.Component<ComponentProps> {
           tableActive={tableActive}
           isTableHovered={isTableHovered}
           isTableInDanger={isTableInDanger}
+          dangerRows={dangerRows}
           isNumberColumnEnabled={node.attrs.isNumberColumnEnabled}
           isHeaderColumnEnabled={checkIfHeaderColumnEnabled(view.state)}
           isHeaderRowEnabled={checkIfHeaderRowEnabled(view.state)}
@@ -133,8 +180,10 @@ class TableComponent extends React.Component<ComponentProps> {
         <ColumnControls
           editorView={view}
           tableRef={tableRef}
+          ref={elem => (this.columnControls = elem)}
           isTableHovered={isTableHovered}
           isTableInDanger={isTableInDanger}
+          dangerColumns={dangerColumns}
           // pass `selection` and `numberOfColumns` to control re-render
           selection={view.state.selection}
           numberOfColumns={node.firstChild!.childCount}
@@ -145,7 +194,7 @@ class TableComponent extends React.Component<ComponentProps> {
     return (
       <div
         style={{
-          width: calcTableWidth(node.attrs.layout, containerWidth),
+          width: this.getTableContainerWidth(node.attrs.layout, containerWidth),
         }}
         className={`table-container ${tableActive ? 'with-controls' : ''}`}
         data-number-column={node.attrs.isNumberColumnEnabled}
@@ -153,7 +202,7 @@ class TableComponent extends React.Component<ComponentProps> {
       >
         {allowControls && rowControls}
         <div
-          className="table-wrapper"
+          className="table-wrapper editor-popup-ignore-scroll-parent"
           ref={elem => {
             this.wrapper = elem;
             this.props.contentDOM(elem ? elem : undefined);
@@ -167,19 +216,6 @@ class TableComponent extends React.Component<ComponentProps> {
         {columnShadows}
       </div>
     );
-  }
-
-  componentDidUpdate() {
-    this.updateShadows();
-
-    if (this.props.allowColumnResizing && this.table) {
-      updateColumnsOnResize(
-        this.props.node,
-        this.table.querySelector('colgroup')!,
-        this.table,
-        CELL_MIN_WIDTH,
-      );
-    }
   }
 
   private handleScroll = (event: Event) => {
@@ -205,6 +241,51 @@ class TableComponent extends React.Component<ComponentProps> {
   }
 
   private handleScrollDebounced = rafSchedule(this.handleScroll);
+
+  private getTableContainerWidth(layout, containerWidth) {
+    if (this.props.UNSAFE_allowFlexiColumnResizing) {
+      return this.state.tableContainerWidth;
+    } else {
+      return calcTableWidth(layout, containerWidth);
+    }
+  }
+
+  private handleTableResizing(prevProps) {
+    const { view, node, getPos, containerWidth } = this.props;
+
+    const prevAttrs = prevProps.node.attrs;
+    const currentAttrs = node.attrs;
+
+    const prevColCount = prevProps.node.firstChild!.childCount;
+    const currentColCount = node.firstChild!.childCount;
+
+    if (
+      prevColCount !== currentColCount ||
+      prevAttrs.layout !== currentAttrs.layout ||
+      prevAttrs.isNumberColumnEnabled !== currentAttrs.isNumberColumnEnabled ||
+      prevProps.containerWidth !== containerWidth
+    ) {
+      scaleTable(
+        view,
+        this.table,
+        node,
+        getPos(),
+        containerWidth,
+        currentAttrs.layout,
+      );
+
+      if (this.columnControls) {
+        this.columnControls.forceUpdate();
+      }
+
+      this.setState(() => ({
+        tableContainerWidth: calcTableWidth(
+          currentAttrs.layout,
+          containerWidth,
+        ),
+      }));
+    }
+  }
 }
 
 export const updateShadows = (

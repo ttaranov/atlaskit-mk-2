@@ -9,8 +9,6 @@ import Tooltip from '../../Tooltip';
 import { Tooltip as StyledTooltip } from '../../../styled';
 import { hoveredPayload } from '../../utils/analytics-payloads';
 
-jest.useFakeTimers();
-
 // Tooltip makes fairly heavy use of timers so we have to runAllTimers after
 // simulating events. Unfortuantely, these timers cause enzyme's understanding of
 // the component tree to become stale so we call update to refresh that.
@@ -21,6 +19,10 @@ const simulate = (wrapper, query, event) => {
 };
 
 let wrapper;
+
+beforeEach(() => {
+  jest.useFakeTimers();
+});
 
 afterEach(() => wrapper && wrapper.unmount());
 
@@ -81,6 +83,17 @@ test('tooltip should be hidden after target click with hideTooltipOnClick set', 
   );
   simulate(wrapper, Target, 'mouseover');
   simulate(wrapper, Target, 'click');
+  expect(wrapper.find(StyledTooltip)).toHaveLength(0);
+});
+
+test('tooltip should be hidden after target click with hideTooltipOnMouseDown set', () => {
+  wrapper = mount(
+    <Tooltip content="Tooltip content" hideTooltipOnMouseDown>
+      <Target>foo</Target>
+    </Tooltip>,
+  );
+  simulate(wrapper, Target, 'mouseover');
+  simulate(wrapper, Target, 'mousedown');
   expect(wrapper.find(StyledTooltip)).toHaveLength(0);
 });
 
@@ -249,4 +262,37 @@ describe('TooltipWithAnalytics', () => {
     const [[{ payload }]] = spy.mock.calls;
     expect(payload).toEqual(hoveredPayload);
   });
+});
+
+test('tooltip should not show when content is null', () => {
+  wrapper = mount(
+    <Tooltip content={null}>
+      <Target>foo</Target>
+    </Tooltip>,
+  );
+  simulate(wrapper, Target, 'mouseover');
+  expect(wrapper.find('Animation')).toHaveLength(0);
+  expect(wrapper.find(StyledTooltip)).toHaveLength(0);
+});
+
+test('tooltip should not show when content is undefined', () => {
+  wrapper = mount(
+    <Tooltip content={undefined}>
+      <Target>foo</Target>
+    </Tooltip>,
+  );
+  simulate(wrapper, Target, 'mouseover');
+  expect(wrapper.find('Animation')).toHaveLength(0);
+  expect(wrapper.find(StyledTooltip)).toHaveLength(0);
+});
+
+test('tooltip should not show when content is an empty string', () => {
+  wrapper = mount(
+    <Tooltip content="">
+      <Target>foo</Target>
+    </Tooltip>,
+  );
+  simulate(wrapper, Target, 'mouseover');
+  expect(wrapper.find('Animation')).toHaveLength(0);
+  expect(wrapper.find(StyledTooltip)).toHaveLength(0);
 });

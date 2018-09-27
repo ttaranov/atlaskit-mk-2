@@ -7,10 +7,6 @@ import { Conversation as ConversationType, User } from '../src/model';
 import { State } from '../src/internal/store';
 import { MOCK_USERS } from './MockData';
 import { ProviderFactory } from '@atlaskit/editor-common';
-import { selectAll } from 'prosemirror-commands';
-import AtlaskitAnalyticsListener, {
-  AnalyticsWebClient,
-} from '@atlaskit/analytics-listeners';
 
 const DUMMY_CODE = `
 class Main() {
@@ -156,21 +152,6 @@ class File extends React.Component<FileProps, { addAt?: number }> {
     );
   }
 }
-
-const analyticsHandler = (action, channel) => {
-  console.log(
-    `analytics actionSubjectId: ${action.payload.actionSubjectId}`,
-    action,
-  );
-};
-
-const fakeAnalyticsClient: Promise<AnalyticsWebClient> = Promise.resolve({
-  sendUIEvent: event => console.log('Received UI event', event),
-  sendOperationalEvent: event =>
-    console.log('Received operational event', event),
-  sendTrackEvent: event => console.log('Received track event', event),
-  sendScreenEvent: event => console.log('Received screen event', event),
-});
 
 export class Demo extends React.Component<
   { provider: ResourceProvider; dataProviders: ProviderFactory },
@@ -336,35 +317,31 @@ export class Demo extends React.Component<
     );
 
     return (
-      <AtlaskitAnalyticsListener client={fakeAnalyticsClient}>
-        <div style={{ margin: '20px' }}>
-          {this.renderOptions()}
-          {this.renderConversations(prConversations)}
-          {prConversations.length === 0 ? (
-            <Conversation
-              provider={provider}
-              dataProviders={dataProviders}
-              containerId={containerId}
-            />
-          ) : null}
-          <File
-            name="main.js"
-            code={DUMMY_CODE}
+      <div style={{ margin: '20px' }}>
+        {this.renderOptions()}
+        {this.renderConversations(prConversations)}
+        {prConversations.length === 0 ? (
+          <Conversation
             provider={provider}
-            conversations={conversations.filter(c => c.meta.name === 'main.js')}
             dataProviders={dataProviders}
+            containerId={containerId}
           />
-          <File
-            name="stuff.js"
-            code={DUMMY_CODE}
-            provider={provider}
-            conversations={conversations.filter(
-              c => c.meta.name === 'stuff.js',
-            )}
-            dataProviders={dataProviders}
-          />
-        </div>
-      </AtlaskitAnalyticsListener>
+        ) : null}
+        <File
+          name="main.js"
+          code={DUMMY_CODE}
+          provider={provider}
+          conversations={conversations.filter(c => c.meta.name === 'main.js')}
+          dataProviders={dataProviders}
+        />
+        <File
+          name="stuff.js"
+          code={DUMMY_CODE}
+          provider={provider}
+          conversations={conversations.filter(c => c.meta.name === 'stuff.js')}
+          dataProviders={dataProviders}
+        />
+      </div>
     );
   }
 }

@@ -1,5 +1,19 @@
 # @atlaskit/logo
 
+## 9.2.2
+- [patch] Updated dependencies [4194aa4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4194aa4)
+  - @atlaskit/select@6.0.0
+
+## 9.2.1
+- [patch] Pulling the shared styles from @atlaskit/theme and removed dependency on util-shraed-styles [7d51a09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d51a09)
+
+## 9.2.0
+- [patch] Moved all the shared logic into the wrapper, so refactoring is easier in future [7e83442](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e83442)
+- [minor] Make label required, but provide sane defaults [12839d4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/12839d4)
+
+## 9.1.0
+- [minor] Update product logos alignment issues [6bbf9a9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6bbf9a9)
+
 ## 9.0.4
 - [patch] Updated dependencies [f9c0cdb](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f9c0cdb)
   - @atlaskit/code@8.0.0

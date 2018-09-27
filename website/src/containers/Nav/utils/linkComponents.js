@@ -2,11 +2,11 @@
 
 import React, { type Node } from 'react';
 import { toClass } from 'recompose';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { gridSize } from '@atlaskit/theme';
 import { AkNavigationItem } from '@atlaskit/navigation';
 import renderNav from './renderNav';
+import { Link } from '../../../components/WrappedLink';
 
 type RouterLinkProps = {
   children: Node,

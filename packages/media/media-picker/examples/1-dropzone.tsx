@@ -3,11 +3,14 @@ import * as React from 'react';
 import { Component } from 'react';
 import {
   userAuthProvider,
-  defaultMediaPickerAuthProvider,
+  createUploadContext,
+  mediaPickerAuthProvider,
+  defaultMediaPickerCollectionName,
 } from '@atlaskit/media-test-helpers';
 import Button from '@atlaskit/button';
 import Toggle from '@atlaskit/toggle';
 import Spinner from '@atlaskit/spinner';
+import { ContextFactory } from '@atlaskit/media-core';
 import { MediaPicker, Dropzone } from '../src';
 import {
   DropzoneContainer,
@@ -17,7 +20,6 @@ import {
   DropzoneItemsInfo,
 } from '../example-helpers/styled';
 import { UploadPreviews } from '../example-helpers/upload-previews';
-import { ContextFactory } from '@atlaskit/media-core';
 
 export interface DropzoneWrapperState {
   isConnectedToUsersCollection: boolean;
@@ -27,9 +29,13 @@ export interface DropzoneWrapperState {
   inflightUploads: string[];
   dropzone?: Dropzone;
 }
+const context = createUploadContext();
+const nonUserContext = ContextFactory.create({
+  authProvider: mediaPickerAuthProvider('asap'),
+});
 
 class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
-  dropzoneContainer: HTMLDivElement;
+  dropzoneContainer?: HTMLDivElement;
 
   state: DropzoneWrapperState = {
     isConnectedToUsersCollection: true,
@@ -60,21 +66,18 @@ class DropzoneWrapper extends Component<{}, DropzoneWrapperState> {
 
   createDropzone() {
     const { isConnectedToUsersCollection } = this.state;
-    const context = ContextFactory.create({
-      authProvider: defaultMediaPickerAuthProvider,
-      userAuthProvider: isConnectedToUsersCollection
-        ? userAuthProvider
-        : undefined,
-    });
+    const dropzoneContext = isConnectedToUsersCollection
+      ? context
+      : nonUserContext;
+
     if (this.state.dropzone) {
       this.state.dropzone.deactivate();
     }
-    const dropzone = MediaPicker('dropzone', context, {
+    const dropzone = MediaPicker('dropzone', dropzoneContext, {
       container: this.dropzoneContainer,
       uploadParams: {
-        collection: '',
+        collection: defaultMediaPickerCollectionName,
       },
-      useNewUploadService: true,
     });
 
     dropzone.activate();

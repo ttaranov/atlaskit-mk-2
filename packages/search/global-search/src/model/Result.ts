@@ -21,6 +21,8 @@ export interface Result {
   containerId?: string;
   // optional id for the experiment that generated this result
   experimentId?: string;
+  // optional string to represent content type
+  contentType?: string;
 }
 /**
  * Map of String keys and Array of results value, but can be empty as well
@@ -33,6 +35,12 @@ export type ResultsWithTiming = {
   results: GenericResultMap;
   timings?: {
     [key: string]: number | string;
+  };
+  experimentId?: string;
+  abTest?: {
+    abTestId?: string;
+    controlId?: string;
+    experimentId?: string;
   };
 };
 
@@ -52,7 +60,7 @@ export interface JiraResultsMap extends GenericResultMap {
 export interface ConfluenceObjectResult extends Result {
   containerName: string;
   containerId: string;
-  contentType?: ContentType;
+  contentType: ContentType;
   resultType: ResultType.ConfluenceObjectResult;
   iconClass?: string;
 }
@@ -63,15 +71,16 @@ export type ResultsGroup = {
   titleI18nId: string;
 };
 
-export interface JiraObjectResult extends Result {
+export interface JiraResult extends Result {
   objectKey?: string;
   containerName?: string;
   resultType: ResultType.JiraObjectResult;
-  contentType?: ContentType;
+  contentType: ContentType;
 }
 
 export interface ContainerResult extends Result {
   resultType: ResultType.GenericContainerResult;
+  contentType: ContentType.ConfluenceSpace;
 }
 
 export interface PersonResult extends Result {
@@ -89,6 +98,7 @@ export enum ContentType {
   ConfluencePage = 'confluence-page',
   ConfluenceBlogpost = 'confluence-blogpost',
   ConfluenceAttachment = 'confluence-attachment',
+  ConfluenceSpace = 'confluence-space',
   JiraIssue = 'jira-issue',
   JiraBoard = 'jira-board',
   JiraFilter = 'jira-filter',
@@ -98,11 +108,12 @@ export enum ContentType {
 
 export enum AnalyticsType {
   RecentJira = 'recent-jira',
-  RecentConfluence = 'recent-confluence',
   ResultJira = 'result-jira',
+  RecentConfluence = 'recent-confluence',
   ResultConfluence = 'result-confluence',
+  RecentPerson = 'recent-person',
   ResultPerson = 'result-person',
-  AdvancedSearchJira = 'advanced-search-jira',
   AdvancedSearchConfluence = 'advanced-search-confluence',
+  AdvancedSearchJira = 'advanced-search-jira',
   AdvancedSearchPeople = 'advanced-search-people',
 }

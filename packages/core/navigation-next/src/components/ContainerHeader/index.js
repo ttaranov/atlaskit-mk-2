@@ -13,17 +13,23 @@ const modifyStyles = defaultStyles => ({
   ...defaultStyles,
   itemBase: {
     ...defaultStyles.itemBase,
-    height: `${gridSize * 7}px`,
-    paddingLeft: gridSize / 2,
+    height: gridSize * 6,
+    paddingBottom: 0,
+    paddingLeft: gridSize / 2 - 2, // Offset by 2px to account for border of avatar
     paddingRight: gridSize / 2,
+    paddingTop: 0,
   },
   beforeWrapper: {
     ...defaultStyles.beforeWrapper,
-    marginRight: gridSize * 1.5,
+    marginRight: gridSize - 2, // Offset by 2px to account for border of avatar
   },
   afterWrapper: {
     ...defaultStyles.afterWrapper,
     marginLeft: gridSize,
+  },
+  textWrapper: {
+    ...defaultStyles.textWrapper,
+    fontWeight: 600,
   },
 });
 

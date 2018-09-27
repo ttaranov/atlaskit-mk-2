@@ -1,11 +1,12 @@
 {
   "name": "@atlaskit/spinner",
-  "version": "9.0.6",
+  "version": "9.0.9",
   "description": "A React component that displays a spinning icon to show a loading state",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
+  "sideEffects": false,
   "atlaskit:designLink": "https://atlassian.design/guidelines/product/components/spinners",
   "src": "src/index.js",
   "files": [
@@ -23,7 +24,7 @@
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/theme": "^6.0.0",
+    "@atlaskit/theme": "^6.0.3",
     "babel-runtime": "^6.26.0",
     "react-transition-group": "^2.2.1"
   },
@@ -32,10 +33,9 @@
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/build-utils": "^1.11.0",
-    "@atlaskit/button": "^9.0.6",
+    "@atlaskit/build-utils": "^2.0.0",
+    "@atlaskit/button": "^9.0.10",
     "@atlaskit/docs": "^5.0.6",
-    "@atlaskit/util-shared-styles": "^2.10.3",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.2",
     "sinon": "^2.2.0"

@@ -5,10 +5,11 @@ import RecentSearchClient, {
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
 import {
-  JiraObjectResult,
+  JiraResult,
   AnalyticsType,
   ResultType,
   ConfluenceObjectResult,
+  ContentType,
 } from '../../model/Result';
 
 function apiWillReturn(state: RecentItem[]) {
@@ -50,7 +51,7 @@ describe('RecentSearchClient', () => {
       const items = await searchClient.getRecentItems();
       expect(items).toHaveLength(1);
 
-      const item = items[0] as JiraObjectResult;
+      const item = items[0] as JiraResult;
       expect(item.resultId).toEqual('recent-objectId');
       expect(item.avatarUrl).toEqual('iconUrl');
       expect(item.name).toEqual('name');
@@ -86,7 +87,7 @@ describe('RecentSearchClient', () => {
       expect(item.containerName).toEqual('container');
       expect(item.analyticsType).toEqual(AnalyticsType.RecentConfluence);
       expect(item.resultType).toEqual(ResultType.ConfluenceObjectResult);
-      expect(item.contentType).toBeUndefined();
+      expect(item.contentType).toBe(ContentType.ConfluencePage);
     });
 
     it('should call the api only once when client is invoked repeatedly', async () => {
@@ -168,7 +169,8 @@ describe('RecentSearchClient', () => {
     it('should not split the name of confluence titles', async () => {
       apiWillReturn([
         {
-          objectId: 'objectId',
+          objectId:
+            'ari:cloud:confluence:a436116f-02ce-4520-8fbb-7301462a1674:blogpost/297541448',
           name: 'HOT-83341 PIR - Lets get to the bottom of this!',
           iconUrl: 'iconUrl',
           container: 'container',
@@ -186,7 +188,7 @@ describe('RecentSearchClient', () => {
       );
       expect(item).not.toHaveProperty('objectKey');
       expect(item.resultType).toEqual(ResultType.ConfluenceObjectResult);
-      expect(item.contentType).toBeUndefined();
+      expect(item.contentType).toBe(ContentType.ConfluenceBlogpost);
     });
   });
 });

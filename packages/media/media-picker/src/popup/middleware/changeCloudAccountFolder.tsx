@@ -12,12 +12,13 @@ export const changeCloudAccountFolderMiddleware = (fetcher: Fetcher) => (
   store: Store<State>,
 ) => (next: Dispatch<State>) => (action: Action) => {
   if (isChangeCloudAccountFolderAction(action)) {
-    const { userAuthProvider } = store.getState();
+    const { userContext } = store.getState();
     const { serviceName, accountId, path } = action;
     const lastPath =
       path.length === 0 ? { id: '', name: '' } : path[path.length - 1];
 
-    userAuthProvider()
+    userContext.config
+      .authProvider()
       .then(auth =>
         fetcher.fetchCloudAccountFolder(
           auth,
@@ -32,6 +33,7 @@ export const changeCloudAccountFolderMiddleware = (fetcher: Fetcher) => (
             accountId,
             path,
             folder.items,
+            serviceName,
             undefined,
             folder.cursor,
           ),

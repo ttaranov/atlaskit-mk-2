@@ -1,9 +1,8 @@
 // @flow
 import React, { Component } from 'react';
-import SingleLineTextInput from '@atlaskit/input';
 import FieldText from '@atlaskit/field-text';
 import FieldRadioGroup from '@atlaskit/field-radio-group';
-import InlineEdit from '../src';
+import InlineEdit, { SingleLineTextInput } from '../src';
 
 const radioItems = [
   {
@@ -80,7 +79,7 @@ export default class extends Component<*, State> {
 
   render() {
     return (
-      <div>
+      <div style={{ padding: '0 16px' }}>
         <p>
           The <code>isFitContainerWidthReadView</code> prop controls whether the
           read view width should stretch to fit the parent container. You can

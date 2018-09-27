@@ -47,7 +47,7 @@ export default class MetaData extends Component<MetaDataProps> {
         />
         <MetaItem href={packageSrc} label="Source" summary="Bitbucket" />
         <MetaItem
-          href={`https://unpkg.com/${packageName}/dist`}
+          href={`https://unpkg.com/${packageName}/dist/`}
           label="Bundle"
           summary="unpkg.com"
         />

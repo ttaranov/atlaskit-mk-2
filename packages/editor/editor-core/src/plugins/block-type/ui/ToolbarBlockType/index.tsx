@@ -1,7 +1,14 @@
 import * as React from 'react';
 import { ReactElement, createElement } from 'react';
+import {
+  defineMessages,
+  injectIntl,
+  FormattedMessage,
+  InjectedIntlProps,
+} from 'react-intl';
 import ExpandIcon from '@atlaskit/icon/glyph/chevron-down';
 import TextStyleIcon from '@atlaskit/icon/glyph/editor/text-style';
+
 import { analyticsService as analytics } from '../../../../analytics';
 import ToolbarButton from '../../../../ui/ToolbarButton';
 import DropdownMenu from '../../../../ui/DropdownMenu';
@@ -13,7 +20,16 @@ import {
   ExpandIconWrapper,
 } from '../../../../ui/styles';
 import { BlockTypeState } from '../../pm-plugins/main';
-import { BlockType } from '../../types';
+import { BlockType, NORMAL_TEXT } from '../../types';
+
+export const messages = defineMessages({
+  textStyles: {
+    id: 'fabric.editor.textStyles',
+    defaultMessage: 'Text styles',
+    description:
+      'Menu provides access to various heading styles or normal text',
+  },
+});
 
 export interface Props {
   isDisabled?: boolean;
@@ -30,22 +46,16 @@ export interface State {
   active: boolean;
 }
 
-export default class ToolbarBlockType extends React.PureComponent<
-  Props,
+class ToolbarBlockType extends React.PureComponent<
+  Props & InjectedIntlProps,
   State
 > {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      active: false,
-    };
-  }
+  state = {
+    active: false,
+  };
 
   private onOpenChange = (attrs: any) => {
-    this.setState({
-      active: attrs.isOpen,
-    });
+    this.setState({ active: attrs.isOpen });
   };
 
   render() {
@@ -61,6 +71,7 @@ export default class ToolbarBlockType extends React.PureComponent<
         blockTypesDisabled,
         availableBlockTypes,
       },
+      intl: { formatMessage },
     } = this.props;
 
     const isHeadingDisabled = !availableBlockTypes.some(
@@ -75,26 +86,32 @@ export default class ToolbarBlockType extends React.PureComponent<
       .filter(blockType => blockType.name === currentBlockType.name)
       .map(blockType => blockType.title);
 
-    const toolbarButtonFactory = (disabled: boolean) => (
-      <ToolbarButton
-        spacing={isReducedSpacing ? 'none' : 'default'}
-        selected={active}
-        disabled={disabled}
-        onClick={this.handleTriggerClick}
-        iconAfter={
-          <Wrapper isSmall={isSmall}>
-            {isSmall && <TextStyleIcon label="Change formatting" />}
-            <ExpandIconWrapper>
-              <ExpandIcon label="Change formatting" />
-            </ExpandIconWrapper>
-          </Wrapper>
-        }
-      >
-        {!isSmall && (
-          <ButtonContent>{blockTypeTitles[0] || 'Normal text'}</ButtonContent>
-        )}
-      </ToolbarButton>
-    );
+    const toolbarButtonFactory = (disabled: boolean) => {
+      const labelTextStyles = formatMessage(messages.textStyles);
+      return (
+        <ToolbarButton
+          spacing={isReducedSpacing ? 'none' : 'default'}
+          selected={active}
+          disabled={disabled}
+          onClick={this.handleTriggerClick}
+          title={labelTextStyles}
+          iconAfter={
+            <Wrapper isSmall={isSmall}>
+              {isSmall && <TextStyleIcon label={labelTextStyles} />}
+              <ExpandIconWrapper>
+                <ExpandIcon label={labelTextStyles} />
+              </ExpandIconWrapper>
+            </Wrapper>
+          }
+        >
+          {!isSmall && (
+            <ButtonContent>
+              <FormattedMessage {...blockTypeTitles[0] || NORMAL_TEXT.title} />
+            </ButtonContent>
+          )}
+        </ToolbarButton>
+      );
+    };
 
     if (!this.props.isDisabled && !blockTypesDisabled) {
       const items = this.createItems();
@@ -131,11 +148,18 @@ export default class ToolbarBlockType extends React.PureComponent<
   };
 
   private createItems = () => {
+    const {
+      intl: { formatMessage },
+    } = this.props;
     const { currentBlockType, availableBlockTypes } = this.props.pluginState;
     const items = availableBlockTypes.reduce(
       (acc, blockType, blockTypeNo) => {
         acc.push({
-          content: createElement(blockType.tagName || 'p', {}, blockType.title),
+          content: createElement(
+            blockType.tagName || 'p',
+            {},
+            formatMessage(blockType.title),
+          ),
           value: blockType,
           key: `${blockType}-${blockTypeNo}`,
           // ED-2853, hiding tooltips as shortcuts are not working atm.
@@ -152,20 +176,16 @@ export default class ToolbarBlockType extends React.PureComponent<
         isActive: boolean;
       }>,
     );
-    return [
-      {
-        items,
-      },
-    ];
+    return [{ items }];
   };
 
   private handleSelectBlockType = ({ item }) => {
     const blockType = item.value;
     this.props.setBlockType(blockType.name);
-    this.setState({
-      active: false,
-    });
+    this.setState({ active: false });
 
     analytics.trackEvent(`atlassian.editor.format.${blockType.name}.button`);
   };
 }
+
+export default injectIntl(ToolbarBlockType);

@@ -4,14 +4,14 @@ import React, { Component } from 'react';
 import uuid from 'uuid';
 
 import { type Props, DefaultProps } from '../constants';
-import Wrapper from '../styledWrapper';
+import Wrapper from '../Wrapper';
 
 const svg = (iconGradientStart: string, iconGradientStop: string) => {
   const id = uuid();
   return `<canvas height="32" width="32" aria-hidden="true"></canvas>
   <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true">
     <defs>
-      <linearGradient x1="38.0412357%" y1="6.63683429%" x2="59.8560262%" y2="63.7778713%" id="${id}">
+      <linearGradient x1="40.063%" x2="69.955%" y1="0%" y2="50%" id="${id}">
         <stop stop-color="${iconGradientStart}" ${
     iconGradientStart === 'inherit' ? 'stop-opacity="0.4"' : ''
   } offset="0%"></stop>
@@ -19,8 +19,8 @@ const svg = (iconGradientStart: string, iconGradientStop: string) => {
       </linearGradient>
     </defs>
     <g stroke="none" stroke-width="1" fill-rule="nonzero">
-      <path d="M17.691,13.4484211 L24.2175,13.4736842 C24.6019517,13.475472 24.9524969,13.6934048 25.123358,14.0368529 C25.294219,14.3803011 25.2561568,14.7904914 25.025,15.0968421 L15.392,27.9242105 C13.9375804,26.8410282 12.9743192,25.2259563 12.714195,23.4344131 C12.4540709,21.6428699 12.9183998,19.821665 14.005,18.3715789 L17.691,13.4484211 Z" fill="url(#${id})"></path>
-      <path d="M14.0018333,18.3715789 L7.51333333,18.3305263 C7.12888159,18.3287385 6.77833639,18.1108058 6.60747538,17.7673576 C6.43661437,17.4239094 6.47467653,17.0137191 6.70583333,16.7073684 L16.2438333,4 C17.6982529,5.08318232 18.6615141,6.69825426 18.9216383,8.48979744 C19.1817625,10.2813406 18.7174335,12.1025456 17.6308333,13.5526316 L14.0018333,18.3715789 Z" fill="currentColor"></path>
+      <path d="M18.4838727,13.07 L26.3504842,13.1005351 C26.8138769,13.102696 27.2364009,13.3661074 27.4423455,13.781227 C27.64829,14.1963467 27.6024124,14.6921363 27.3237913,15.0624169 L15.7128101,30.5666265 C13.9597489,29.2574035 12.7986975,27.3052951 12.485161,25.1398891 C12.1716246,22.974483 12.731296,20.7732253 14.041012,19.0205325 L18.4838727,13.07 Z" fill="url(#${id})"></path>
+      <path d="M14.0396053,19.0156579 L6.22105263,18.9660526 C5.75779361,18.9638923 5.33539149,18.700557 5.12950634,18.2855571 C4.92362119,17.8705572 4.96948557,17.3749106 5.24802632,17.0047368 L16.7411842,1.65 C18.4937397,2.9588453 19.6544561,4.91039056 19.9679021,7.0751719 C20.2813481,9.23995324 19.7218382,11.4405759 18.4125,13.1927632 L14.0396053,19.0156579 Z" fill="currentColor"></path>
     </g>
   </svg>`;
 };
@@ -29,15 +29,6 @@ export default class JiraServiceDeskIcon extends Component<Props> {
   static defaultProps = DefaultProps;
 
   render() {
-    const { label, iconGradientStart, iconGradientStop } = this.props;
-    return (
-      <Wrapper
-        aria-label={label}
-        dangerouslySetInnerHTML={{
-          __html: svg(String(iconGradientStart), String(iconGradientStop)),
-        }}
-        {...this.props}
-      />
-    );
+    return <Wrapper {...this.props} svg={svg} />;
   }
 }

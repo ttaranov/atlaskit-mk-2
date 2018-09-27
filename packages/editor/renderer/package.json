@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/renderer",
-  "version": "20.0.11",
+  "version": "24.1.2",
   "description": "Renderer component",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -19,33 +19,40 @@
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/code": "^8.0.1",
-    "@atlaskit/editor-common": "^14.0.11",
-    "@atlaskit/editor-json-transformer": "^4.0.6",
+    "@atlaskit/editor-common": "^17.0.5",
+    "@atlaskit/editor-json-transformer": "^4.0.12",
     "@atlaskit/icon": "^13.2.5",
-    "@atlaskit/media-card": "^32.0.5",
-    "@atlaskit/media-filmstrip": "^11.0.1",
-    "@atlaskit/mention": "^15.0.6",
-    "@atlaskit/smart-card": "^8.0.1",
-    "@atlaskit/task-decision": "^8.1.6",
+    "@atlaskit/media-card": "^37.0.0",
+    "@atlaskit/media-filmstrip": "^14.0.2",
+    "@atlaskit/mention": "^15.0.9",
+    "@atlaskit/smart-card": "^8.2.2",
+    "@atlaskit/status": "^0.2.0",
+    "@atlaskit/task-decision": "^9.0.0",
     "@atlaskit/theme": "^6.0.0",
     "@atlaskit/util-shared-styles": "^2.10.3",
-    "prosemirror-model": "^1.6.1"
+    "prosemirror-model": "^1.6.1",
+    "react-loadable": "^5.1.0"
   },
   "peerDependencies": {
-    "@atlaskit/media-core": "^23.0.0",
+    "@atlaskit/media-core": "^24.0.2",
     "react": "^16.4.0",
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^5.0.6",
-    "@atlaskit/editor-test-helpers": "^6.0.3",
-    "@atlaskit/media-core": "^23.0.0",
-    "@atlaskit/media-test-helpers": "^16.0.0",
+    "@atlaskit/docs": "^5.0.7",
+    "@atlaskit/editor-test-helpers": "^6.1.2",
+    "@atlaskit/media-core": "^24.0.2",
+    "@atlaskit/media-test-helpers": "^18.2.0",
     "@atlaskit/profilecard": "^4.0.8",
     "@atlaskit/size-detector": "^5.0.3",
-    "@atlaskit/util-data-test": "^10.0.7",
+    "@atlaskit/util-data-test": "^10.0.10",
     "@atlaskit/visual-regression": "^0.0.1",
     "@types/prosemirror-model": "^1.0.0",
-    "react-live-clock": "^2.0.2"
+    "@types/react-loadable": "^5.4.1",
+    "chai": "^4.1.2",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
+    "react": "^16.4.0",
+    "react-live-clock": "^2.0.2",
+    "sinon": "^2.2.0"
   }
 }

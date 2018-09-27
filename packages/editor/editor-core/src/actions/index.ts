@@ -4,7 +4,7 @@ import { EditorView } from 'prosemirror-view';
 import { Transformer } from '@atlaskit/editor-common';
 import {
   getEditorValueWithMedia,
-  insertFileFromDataUrl,
+  insertFileFromDataUrl as insertFileFromUrl,
   preprocessDoc,
   toJSON,
   processRawValue,
@@ -17,7 +17,18 @@ export type ContextUpdateHandler = (
   eventDispatcher: EventDispatcher,
 ) => void;
 
-export default class EditorActions {
+export interface EditorActionsOptions {
+  focus(): boolean;
+  blur(): boolean;
+  clear(): boolean;
+  getValue(): Promise<any | undefined>;
+  replaceDocument(rawValue: any): boolean;
+  replaceSelection(rawValue: Node | Object | string): boolean;
+  appendText(text: string): boolean;
+  insertFileFromDataUrl(url: string, filename: string): boolean;
+}
+
+export default class EditorActions implements EditorActionsOptions {
   private editorView?: EditorView;
   private contentTransformer?: Transformer<any>;
   private eventDispatcher?: EventDispatcher;
@@ -127,7 +138,7 @@ export default class EditorActions {
     });
   }
 
-  replaceDocument(rawValue: any): boolean {
+  replaceDocument(rawValue: any, shouldScrollToBottom = true): boolean {
     if (!this.editorView || rawValue === undefined || rawValue === null) {
       return false;
     }
@@ -145,10 +156,12 @@ export default class EditorActions {
       return false;
     }
 
-    const tr = state.tr
-      // In case of replacing a whole document, we only need a content of a top level node e.g. document.
-      .replaceWith(0, state.doc.nodeSize - 2, content.content)
-      .scrollIntoView();
+    // In case of replacing a whole document, we only need a content of a top level node e.g. document.
+    let tr = state.tr.replaceWith(0, state.doc.nodeSize - 2, content.content);
+
+    if (shouldScrollToBottom) {
+      tr = tr.scrollIntoView();
+    }
 
     this.editorView.dispatch(tr);
 
@@ -203,7 +216,7 @@ export default class EditorActions {
     if (!this.editorView) {
       return false;
     }
-    insertFileFromDataUrl(this.editorView.state, url, filename);
+    insertFileFromUrl(this.editorView.state, url, filename);
     return true;
   }
 }

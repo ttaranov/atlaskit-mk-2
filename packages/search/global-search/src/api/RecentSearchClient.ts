@@ -2,8 +2,9 @@ import {
   Result,
   ResultType,
   AnalyticsType,
-  JiraObjectResult,
+  JiraResult,
   ConfluenceObjectResult,
+  ContentType,
 } from '../model/Result';
 import {
   RequestServiceOptions,
@@ -132,10 +133,11 @@ function recentItemToResult(recentItem: RecentItem): Result {
   };
 
   if (recentItem.provider === 'jira') {
-    const jiraResult: JiraObjectResult = {
+    const jiraResult: JiraResult = {
       objectKey: objectKey!,
       resultType: ResultType.JiraObjectResult,
       analyticsType: AnalyticsType.RecentJira,
+      contentType: ContentType.JiraIssue,
       ...baseResult,
     };
 
@@ -145,6 +147,10 @@ function recentItemToResult(recentItem: RecentItem): Result {
       resultType: ResultType.ConfluenceObjectResult,
       analyticsType: AnalyticsType.RecentConfluence,
       containerId: 'UNAVAILABLE',
+      contentType:
+        recentItem.objectId && recentItem.objectId.includes(':blogpost/')
+          ? ContentType.ConfluenceBlogpost
+          : ContentType.ConfluencePage,
       ...baseResult,
     };
 

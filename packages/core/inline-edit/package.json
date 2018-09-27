@@ -1,12 +1,13 @@
 {
   "name": "@atlaskit/inline-edit",
-  "version": "7.0.6",
+  "version": "7.1.0",
   "description": "A base component used to build inline-editable components that match the Atlassian Design Guidelines",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
   "module": "dist/esm/index.js",
   "atlaskit:src": "src/index.js",
   "atlaskit:designLink": "https://atlassian.design/guidelines/product/components/inline-edit",
+  "sideEffects": false,
   "files": [
     "dist"
   ],
@@ -18,11 +19,11 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/analytics-next": "^3.0.4",
-    "@atlaskit/button": "^9.0.6",
-    "@atlaskit/field-base": "^11.0.5",
-    "@atlaskit/icon": "^13.2.5",
-    "@atlaskit/theme": "^6.0.0",
+    "@atlaskit/analytics-next": "^3.0.6",
+    "@atlaskit/button": "^9.0.8",
+    "@atlaskit/field-base": "^11.0.7",
+    "@atlaskit/icon": "^13.6.1",
+    "@atlaskit/theme": "^6.0.2",
     "classnames": "^2.2.5"
   },
   "peerDependencies": {
@@ -30,14 +31,14 @@
     "styled-components": "^3.2.6"
   },
   "devDependencies": {
-    "@atlaskit/build-utils": "^1.11.0",
+    "@atlaskit/build-utils": "^2.0.0",
     "@atlaskit/docs": "^5.0.6",
-    "@atlaskit/field-radio-group": "^4.0.5",
-    "@atlaskit/field-text": "^7.0.6",
-    "@atlaskit/input": "^4.0.4",
-    "@atlaskit/multi-select": "^11.0.5",
-    "@atlaskit/tag": "^6.0.5",
-    "@atlaskit/tag-group": "^6.0.4",
+    "@atlaskit/field-radio-group": "^4.0.7",
+    "@atlaskit/field-text": "^7.0.10",
+    "@atlaskit/input": "^4.0.6",
+    "@atlaskit/multi-select": "^11.0.6",
+    "@atlaskit/tag": "^6.0.7",
+    "@atlaskit/tag-group": "^6.0.6",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.2"
   },

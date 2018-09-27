@@ -3,10 +3,10 @@ import { blockquoteMacro } from '../macro/blockQuote';
 import { Token } from './';
 
 // bq. sadfsdf
-const HEADING_REGEXP = /^bq\.\s(.*)/;
+const BLOCKQUOTE_REGEXP = /^bq\.\s(.*)/;
 
 export function blockquote(input: string, schema: Schema): Token {
-  const match = input.match(HEADING_REGEXP);
+  const match = input.match(BLOCKQUOTE_REGEXP);
 
   if (!match) {
     return fallback(input);

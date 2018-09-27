@@ -7,7 +7,6 @@ import { Comment, Conversation, User } from '../src/model';
 import { uuid } from '../src/internal/uuid';
 import { generateMockConversation, mockInlineConversation } from './MockData';
 import { mention, emoji } from '@atlaskit/util-data-test';
-import { reactionsProvider } from '@atlaskit/reactions';
 import { HttpError } from '../src/api/HttpError';
 
 import {
@@ -34,7 +33,6 @@ const MockDataProviders = {
   emojiProvider: Promise.resolve(
     emoji.storyData.getEmojiResource({ uploadSupported: true }),
   ),
-  reactionsProvider: Promise.resolve(reactionsProvider),
 };
 
 const RESPONSE_MESSAGES = {
@@ -139,16 +137,19 @@ export class MockProvider extends AbstractConversationResource {
 
     dispatch({ type: ADD_COMMENT_REQUEST, payload: result });
 
-    setTimeout(() => {
-      const errResult = {
-        ...result,
-        error: new HttpError(responseCode, RESPONSE_MESSAGES[responseCode]),
-      };
-      const type =
-        responseCode >= 400 ? ADD_COMMENT_ERROR : ADD_COMMENT_SUCCESS;
-      const payload = responseCode >= 400 ? errResult : result;
-      dispatch({ type, payload });
-    }, 1000);
+    await new Promise(resolve => {
+      setTimeout(() => {
+        const errResult = {
+          ...result,
+          error: new HttpError(responseCode, RESPONSE_MESSAGES[responseCode]),
+        };
+        const type =
+          responseCode >= 400 ? ADD_COMMENT_ERROR : ADD_COMMENT_SUCCESS;
+        const payload = responseCode >= 400 ? errResult : result;
+        dispatch({ type, payload });
+        resolve();
+      }, 1000);
+    });
 
     return result as Comment;
   }
@@ -159,10 +160,9 @@ export class MockProvider extends AbstractConversationResource {
     doc: any,
     localId: string = <string>uuid.generate(),
   ): Comment {
-    //@ts-ignore
     return {
       commentAri: `abc:cloud:platform::comment/${localId}`,
-      createdBy: this.config.user,
+      createdBy: this.config.user!,
       createdAt: Date.now(),
       commentId: <string>uuid.generate(),
       document: {

@@ -8,9 +8,11 @@ import { AnalyticsType } from '../model/Result';
 
 export interface Props {
   query: string;
-  icon: JSX.Element;
   text: JSX.Element | string;
+  icon?: JSX.Element;
   showKeyboardLozenge?: boolean;
+  analyticsData?: object;
+  isCompact?: boolean;
 }
 
 export default class SearchConfluenceItem extends React.Component<Props> {
@@ -19,7 +21,14 @@ export default class SearchConfluenceItem extends React.Component<Props> {
   };
 
   render() {
-    const { query, icon, text, showKeyboardLozenge } = this.props;
+    const {
+      query,
+      icon,
+      text,
+      showKeyboardLozenge,
+      analyticsData,
+      isCompact,
+    } = this.props;
 
     return (
       <AdvancedSearchResult
@@ -30,6 +39,8 @@ export default class SearchConfluenceItem extends React.Component<Props> {
         icon={icon}
         type={AnalyticsType.AdvancedSearchConfluence}
         showKeyboardLozenge={showKeyboardLozenge}
+        analyticsData={analyticsData}
+        isCompact={isCompact}
       />
     );
   }

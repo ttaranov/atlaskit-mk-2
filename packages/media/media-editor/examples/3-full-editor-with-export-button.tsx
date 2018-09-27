@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { tallImage as imageDataUri } from '@atlaskit/media-test-helpers';
 import { FullEditor } from '../example-helpers/fullEditor';
-import { MediaEditor, LoadParameters } from '../src';
+import { LoadParameters } from '../src';
 
 const lightGrey = { red: 230, green: 230, blue: 230 };
 

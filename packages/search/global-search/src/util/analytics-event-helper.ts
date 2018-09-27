@@ -60,6 +60,28 @@ export function firePreQueryShownEvent(
   );
 }
 
+export function fireExperimentExposureEvent(
+  experimentData: string | object,
+  searchSessionId: string,
+  createAnalyticsEvent: CreateAnalyticsEventFn,
+) {
+  const experimentDetails =
+    typeof experimentData === 'object'
+      ? { abTest: experimentData }
+      : { experimentId: experimentData };
+  fireGasEvent(
+    createAnalyticsEvent,
+    'exposed',
+    'quickSearchExperiment',
+    '',
+    'operational',
+    {
+      searchSessionId,
+      ...experimentDetails,
+    },
+  );
+}
+
 const getQueryAttributes = query => {
   const sanitizedQuery = sanitizeSearchQuery(query);
   return {
@@ -176,12 +198,12 @@ export interface KeyboardControlEvent extends SearchResultEvent {
 export interface SelectedSearchResultEvent extends SearchResultEvent {
   method: string;
   newTab: boolean;
-}
-
-export interface AdvancedSearchSelectedEvent extends SelectedSearchResultEvent {
   query: string;
   queryVersion: number;
   queryId: null | string;
+}
+
+export interface AdvancedSearchSelectedEvent extends SelectedSearchResultEvent {
   wasOnNoResultsScreen: boolean;
   trigger?: string;
   isLoading: boolean;
@@ -199,7 +221,7 @@ export function fireSelectedSearchResult(
   searchSessionId: string,
   createAnalyticsEvent?: CreateAnalyticsEventFn,
 ) {
-  const { method, newTab } = eventData;
+  const { method, newTab, query, queryVersion } = eventData;
   fireGasEvent(
     createAnalyticsEvent,
     'selected',
@@ -207,6 +229,9 @@ export function fireSelectedSearchResult(
     'searchResult',
     'track',
     {
+      queryVersion,
+      queryId: null,
+      ...getQueryAttributes(query),
       trigger: method,
       searchSessionId: searchSessionId,
       newTab,
@@ -214,19 +239,6 @@ export function fireSelectedSearchResult(
     },
   );
 }
-
-/**
- * checks if advanced link is clicked on no result screen
- * @param eventData
- */
-const checkOnNoResultScreen = eventData => {
-  const index = eventData.index || 0;
-  const sectionIndex = eventData.sectionIndex || 0;
-  const resultCount = eventData.resultCount || 0;
-  // no result screen if results count is 2 (2 advanced confluence search and advanced people search)
-  // or when index = 0 and section index is 1 => empty first section
-  return +!index === 0 && (+sectionIndex === 1 || +resultCount === 2);
-};
 
 export function fireSelectedAdvancedSearch(
   eventData: AdvancedSearchSelectedEvent,
@@ -248,7 +260,7 @@ export function fireSelectedAdvancedSearch(
       queryId: null,
       isLoading: eventData.isLoading,
       ...getQueryAttributes(query),
-      wasOnNoResultsScreen: checkOnNoResultScreen(eventData),
+      wasOnNoResultsScreen: eventData.wasOnNoResultsScreen || false,
       ...transformSearchResultEventData(eventData),
     },
   );

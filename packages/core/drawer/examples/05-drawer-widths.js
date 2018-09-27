@@ -1,6 +1,6 @@
 // @flow
 
-import React, { Fragment, Component } from 'react';
+import React, { Component } from 'react';
 import Button from '@atlaskit/button';
 import Drawer from '../src';
 
@@ -29,7 +29,7 @@ export default class DrawersExample extends Component<{}, State> {
 
   render() {
     return (
-      <Fragment>
+      <div css={{ padding: '2rem' }}>
         <Drawer
           onClose={this.closeDrawer}
           isOpen={this.state.isDrawerOpen}
@@ -51,7 +51,7 @@ export default class DrawersExample extends Component<{}, State> {
             }}
           >{`Open ${width} Drawer`}</Button>
         ))}
-      </Fragment>
+      </div>
     );
   }
 }

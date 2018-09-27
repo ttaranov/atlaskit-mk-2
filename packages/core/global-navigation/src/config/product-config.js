@@ -15,6 +15,7 @@ import type {
 } from '../components/GlobalNavigation/types';
 import type { ProductConfigShape } from './types';
 
+const MAX_NOTIFICATIONS_COUNT = 9;
 const isNotEmpty = obj => {
   const values = Object.values(obj);
   return !!(
@@ -117,11 +118,15 @@ function helpConfigFactory(items, tooltip, otherConfig = {}) {
   }: {
     className: string,
     onClick: () => void,
-  }) => (
-    <button className={className} onClick={onClick}>
-      <QuestionIcon secondaryColor={'inherit'} />
-    </button>
-  );
+  }) => {
+    return (
+      <div style={{ width: '100%' }}>
+        <button onClick={onClick} className={className}>
+          <QuestionIcon secondaryColor={'inherit'} />
+        </button>
+      </div>
+    );
+  };
 
   return {
     component: generateDropDown(HelpIcon, items),
@@ -195,6 +200,7 @@ export default function generateProductConfig(
     notificationDrawerContents,
 
     appSwitcherComponent,
+    appSwitcherTooltip,
 
     helpItems,
     helpTooltip,
@@ -207,7 +213,13 @@ export default function generateProductConfig(
 
   const notificationBadge = {
     badge: notificationCount
-      ? () => <Badge appearance="important" value={notificationCount} />
+      ? () => (
+          <Badge
+            max={MAX_NOTIFICATIONS_COUNT}
+            appearance="important"
+            value={notificationCount}
+          />
+        )
       : null,
   };
 
@@ -242,7 +254,11 @@ export default function generateProductConfig(
       profileIconUrl,
     ),
     appSwitcher: appSwitcherComponent
-      ? { component: appSwitcherComponent }
+      ? {
+          component: appSwitcherComponent,
+          label: appSwitcherTooltip,
+          tooltip: appSwitcherTooltip,
+        }
       : null,
   };
 }

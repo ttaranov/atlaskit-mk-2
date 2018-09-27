@@ -1,9 +1,25 @@
 import * as React from 'react';
+import { defineMessages, injectIntl, InjectedIntlProps } from 'react-intl';
+
 import OpenIcon from '@atlaskit/icon/glyph/editor/open';
 import UnlinkIcon from '@atlaskit/icon/glyph/editor/unlink';
+import { akEditorFloatingDialogZIndex } from '@atlaskit/editor-common';
 import PanelTextInput from '../../../../ui/PanelTextInput';
 import { getNearestNonTextNode } from '../../../../ui/FloatingToolbar';
 import { FloatingToolbar, Separator, ToolbarButton } from '../styles';
+
+export const messages = defineMessages({
+  openLink: {
+    id: 'fabric.editor.openLink',
+    defaultMessage: 'Open link',
+    description: 'Follows the hyperlink.',
+  },
+  unlink: {
+    id: 'fabric.editor.unlink',
+    defaultMessage: 'Unlink',
+    description: 'Removes the hyperlink but keeps your text.',
+  },
+});
 
 export interface Props {
   onBlur?: (text: string) => void;
@@ -27,7 +43,7 @@ export interface State {
   text: string;
 }
 
-export default class HyperlinkEdit extends React.Component<Props, State> {
+class HyperlinkEdit extends React.Component<Props & InjectedIntlProps, State> {
   constructor(props) {
     super(props);
     this.state = { text: props.defaultValue || '' };
@@ -60,7 +76,11 @@ export default class HyperlinkEdit extends React.Component<Props, State> {
       onOpenLink,
       defaultValue,
       alwaysOpenLinkAt,
+      intl: { formatMessage },
     } = this.props;
+
+    const labelOpenLink = formatMessage(messages.openLink);
+    const labelUnlink = formatMessage(messages.unlink);
     return (
       <FloatingToolbar
         alignX="left"
@@ -70,6 +90,7 @@ export default class HyperlinkEdit extends React.Component<Props, State> {
         fitHeight={32}
         offset={[0, 12]}
         className="normal"
+        zIndex={akEditorFloatingDialogZIndex}
       >
         <PanelTextInput
           autoFocus={autoFocus}
@@ -87,19 +108,21 @@ export default class HyperlinkEdit extends React.Component<Props, State> {
             href={alwaysOpenLinkAt || this.state.text}
             onClick={onOpenLink}
             target="_blank"
-            title="Open link"
-            iconBefore={<OpenIcon label="Open link" />}
+            title={labelOpenLink}
+            iconBefore={<OpenIcon label={labelOpenLink} />}
           />
         )}
         {onUnlink && (
           <ToolbarButton
             spacing="compact"
             onClick={onUnlink}
-            title="Unlink"
-            iconBefore={<UnlinkIcon label="Unlink" />}
+            title={labelUnlink}
+            iconBefore={<UnlinkIcon label={labelUnlink} />}
           />
         )}
       </FloatingToolbar>
     );
   }
 }
+
+export default injectIntl(HyperlinkEdit);

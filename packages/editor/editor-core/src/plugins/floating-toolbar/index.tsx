@@ -1,7 +1,11 @@
 import * as React from 'react';
 import { EditorView } from 'prosemirror-view';
 import { Plugin, PluginKey } from 'prosemirror-state';
-import { findParentDomRefOfType } from 'prosemirror-utils';
+import {
+  findParentDomRefOfType,
+  findSelectedNodeOfType,
+  findDomRefAtPos,
+} from 'prosemirror-utils';
 import { Popup } from '@atlaskit/editor-common';
 
 import WithPluginState from '../../ui/WithPluginState';
@@ -9,6 +13,24 @@ import { EditorPlugin } from '../../types';
 import { Dispatch } from '../../event-dispatcher';
 import Toolbar from './ui/Toolbar';
 import { FloatingToolbarHandler, FloatingToolbarConfig } from './types';
+import { NodeType } from 'prosemirror-model';
+
+const getConfigNodeTypes = (
+  configs: Array<FloatingToolbarConfig>,
+): NodeType[] => {
+  return configs.reduce(
+    (acc, config) => {
+      if (Array.isArray(config.nodeType)) {
+        acc.push(...config.nodeType);
+      } else {
+        acc.push(config.nodeType);
+      }
+
+      return acc;
+    },
+    [] as NodeType[],
+  );
+};
 
 const getRelevantConfig = (
   view: EditorView,
@@ -16,13 +38,35 @@ const getRelevantConfig = (
 ): FloatingToolbarConfig => {
   if (configs.length > 1) {
     const domAtPos = view.domAtPos.bind(view);
-    const nodeTypes = configs.map(config => config.nodeType);
-    const domRef = findParentDomRefOfType(nodeTypes, domAtPos)(
+
+    const configNodeTypes = getConfigNodeTypes(configs);
+
+    const atomNodeTypes = configNodeTypes.filter(
+      nodeType => nodeType.isAtom || nodeType.isLeaf,
+    );
+    const bodiedNodeTypes = configNodeTypes.filter(
+      nodeType => !nodeType.isAtom && !nodeType.isLeaf,
+    );
+
+    const bodiedDomRef = findParentDomRefOfType(bodiedNodeTypes, domAtPos)(
       view.state.selection,
     );
-    const relevantConfig = configs.filter(
-      config => config.getDomRef(view) === domRef,
-    );
+
+    // If we have any nodeTypes that are atoms (cursor cannot be placed inside of node)
+    // Selecting the parentNode won't yield any results, instead we look at whats
+    // currently selected and add that as a comparison.
+    let atomDomRef;
+    if (atomNodeTypes.length) {
+      const selectedAtom = findSelectedNodeOfType(atomNodeTypes)(
+        view.state.selection,
+      );
+      atomDomRef = selectedAtom && findDomRefAtPos(selectedAtom.pos, domAtPos);
+    }
+
+    const relevantConfig = configs.filter(config => {
+      const configDomRef = config.getDomRef(view);
+      return configDomRef === atomDomRef || configDomRef === bodiedDomRef;
+    });
     if (relevantConfig.length) {
       return relevantConfig[0];
     }
@@ -33,13 +77,17 @@ const getRelevantConfig = (
 const floatingToolbarPlugin: EditorPlugin = {
   name: 'floatingToolbar',
 
-  pmPlugins(floatingToolbar: Array<FloatingToolbarHandler> = []) {
+  pmPlugins(floatingToolbarHandlers: Array<FloatingToolbarHandler> = []) {
     return [
       {
         // Should be after all toolbar plugins
         name: 'floatingToolbar',
-        plugin: ({ dispatch }) =>
-          floatingToolbarPluginFactory(dispatch, floatingToolbar),
+        plugin: ({ dispatch, reactContext }) =>
+          floatingToolbarPluginFactory({
+            dispatch,
+            floatingToolbarHandlers,
+            reactContext,
+          }),
       },
     ];
   },
@@ -107,18 +155,20 @@ export default floatingToolbarPlugin;
 
 export const pluginKey = new PluginKey('floatingToolbarPluginKey');
 
-function floatingToolbarPluginFactory(
-  dispatch: Dispatch<Array<FloatingToolbarConfig> | undefined>,
-  floatingToolbarHandlers: Array<FloatingToolbarHandler>,
-) {
+function floatingToolbarPluginFactory(options: {
+  floatingToolbarHandlers: Array<FloatingToolbarHandler>;
+  dispatch: Dispatch<Array<FloatingToolbarConfig> | undefined>;
+  reactContext: () => { [key: string]: any };
+}) {
+  const { floatingToolbarHandlers, dispatch, reactContext } = options;
   return new Plugin({
     key: pluginKey,
     state: {
       init: () => undefined,
-
       apply(tr, pluginState, oldState, newState) {
+        const { intl } = reactContext();
         const newPluginState = floatingToolbarHandlers
-          .map(handler => handler(newState))
+          .map(handler => handler(newState, intl))
           .filter(Boolean) as Array<FloatingToolbarConfig>;
 
         dispatch(pluginKey, newPluginState);

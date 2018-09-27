@@ -2,15 +2,9 @@ import * as React from 'react';
 import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
 import { isRowSelected, isTableSelected } from 'prosemirror-utils';
-import {
-  RowInner,
-  RowContainer,
-  RowControlsButtonWrap,
-  HeaderButton,
-} from './styles';
-import InsertRowButton from './InsertRowButton';
+import InsertButton from '../InsertButton';
 import { findRowSelection, TableSelection, getLineMarkerWidth } from '../utils';
-import DeleteRowButton from './DeleteRowButton';
+import DeleteButton from '../DeleteButton';
 
 export interface Props {
   editorView: EditorView;
@@ -39,7 +33,7 @@ export default class RowControls extends Component<Props, any> {
     }
 
     return (
-      <DeleteRowButton
+      <DeleteButton
         key="delete"
         onClick={this.props.deleteSelectedRows}
         onMouseEnter={() => {
@@ -116,7 +110,7 @@ export default class RowControls extends Component<Props, any> {
       return null;
     }
 
-    const rows = tbody.getElementsByTagName('tr');
+    const rows = tbody.childNodes as NodeListOf<HTMLTableRowElement>;
     const nodes: any = [];
     let prevRowHeights = 0;
 
@@ -129,32 +123,38 @@ export default class RowControls extends Component<Props, any> {
         !selection.hasMultipleSelection;
 
       nodes.push(
-        <RowControlsButtonWrap
+        <div
           key={i}
-          className={this.classNamesForRow(i, len).join(' ')}
+          className={`pm-table-row-controls__button-wrap ${this.classNamesForRow(
+            i,
+            len,
+          ).join(' ')}`}
           style={{
             height: (rows[i] as HTMLElement).offsetHeight + 1,
           }}
         >
-          {/* tslint:disable:jsx-no-lambda */}
-          <HeaderButton
-            onClick={() => this.props.selectRow(i)}
+          <button
+            type="button"
+            className="pm-table-controls__button"
+            onMouseDown={() => this.props.selectRow(i)}
             onMouseOver={() => this.props.hoverRows([i])}
             onMouseOut={() => this.props.clearHoverSelection()}
           />
-          {/* tslint:enable:jsx-no-lambda */}
           {!(
             selection.hasMultipleSelection && selection.frontOfSelection(i)
           ) ? (
-            <InsertRowButton
+            <InsertButton
+              type="row"
               onClick={() => this.props.insertRow(i + 1)}
-              lineMarkerWidth={getLineMarkerWidth(
-                tableRef,
-                (tableRef.parentNode as HTMLElement).scrollLeft,
-              )}
+              insertLineStyle={{
+                width: getLineMarkerWidth(
+                  tableRef,
+                  (tableRef.parentNode as HTMLElement).scrollLeft,
+                ),
+              }}
             />
           ) : null}
-        </RowControlsButtonWrap>,
+        </div>,
         onlyThisRowSelected
           ? this.createDeleteRowButton(
               selection,
@@ -173,9 +173,9 @@ export default class RowControls extends Component<Props, any> {
     }
 
     return (
-      <RowContainer>
-        <RowInner>{nodes}</RowInner>
-      </RowContainer>
+      <div className="pm-table-row-controls">
+        <div className="pm-table-row-controls__inner">{nodes}</div>
+      </div>
     );
   }
 }

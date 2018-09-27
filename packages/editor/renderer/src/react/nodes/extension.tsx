@@ -1,10 +1,11 @@
 import * as React from 'react';
-import { RendererContext, BreakoutConsumer } from '..';
+import { RendererContext } from '..';
 import { renderNodes, Serializer } from '../..';
 import {
   ADNode,
   ExtensionHandlers,
   ExtensionLayout,
+  WidthConsumer,
 } from '@atlaskit/editor-common';
 import { calcExtensionWidth } from '@atlaskit/editor-common';
 
@@ -20,18 +21,18 @@ export interface Props {
 }
 
 export const renderExtension = (content: any, layout: string) => (
-  <BreakoutConsumer>
-    {containerWidth => (
+  <WidthConsumer>
+    {({ width }) => (
       <div
         className={`Extension-${layout}`}
         style={{
-          width: calcExtensionWidth(layout, containerWidth),
+          width: calcExtensionWidth(layout, width),
         }}
       >
         {content}
       </div>
     )}
-  </BreakoutConsumer>
+  </WidthConsumer>
 );
 
 const Extension: React.StatelessComponent<Props> = ({

@@ -28,14 +28,16 @@ export interface ErrorViewProps {
 }
 
 export class ErrorView extends Component<ErrorViewProps> {
-  private escHelper: EscHelper;
+  private escHelper?: EscHelper;
 
   componentDidMount() {
     this.escHelper = new EscHelper(this.props.onCancel);
   }
 
   componentWillUnmount() {
-    this.escHelper.teardown();
+    if (this.escHelper) {
+      this.escHelper.teardown();
+    }
   }
 
   render(): JSX.Element {

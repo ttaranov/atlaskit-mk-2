@@ -4,13 +4,14 @@ import {
   UploadEndEvent,
   UploadEndEventPayload,
 } from '../../domain/uploadEvent';
-import { MediaFile } from '../../domain/file';
+import { PublicMediaFile } from '../../domain/file';
+import { FileDetails } from '@atlaskit/media-core';
 export const FILE_UPLOAD_END = 'FILE_UPLOAD_END';
 
 export interface FileUploadEndAction extends Action {
   readonly type: 'FILE_UPLOAD_END';
-  readonly file: MediaFile;
-  readonly publicFile: object;
+  readonly file: PublicMediaFile;
+  readonly publicFile: FileDetails;
   readonly originalEvent: UploadEndEvent;
 }
 

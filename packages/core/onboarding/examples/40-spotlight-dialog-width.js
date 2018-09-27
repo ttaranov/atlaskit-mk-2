@@ -5,7 +5,12 @@ import styled from 'styled-components';
 import ArrowUpIcon from '@atlaskit/icon/glyph/arrow-up';
 import ArrowDownIcon from '@atlaskit/icon/glyph/arrow-down';
 
-import { Spotlight, SpotlightManager, SpotlightTarget } from '../src';
+import {
+  Spotlight,
+  SpotlightManager,
+  SpotlightTarget,
+  SpotlightTransition,
+} from '../src';
 import { Code, Highlight } from './styled';
 
 const Wrapper = styled.div`
@@ -89,19 +94,21 @@ export default class SpotlightDialogWidthExample extends Component<{}, State> {
           <button onClick={this.start}>Show</button>
         </p>
 
-        {value && (
-          <Spotlight
-            actions={[{ onClick: this.finish, text: 'Done' }]}
-            actionsBeforeElement={deltaButtons}
-            dialogPlacement="top center"
-            dialogWidth={value}
-            heading={`${value}px`}
-            key="width-example"
-            target="width-example"
-          >
-            <Lorem count={1} />
-          </Spotlight>
-        )}
+        <SpotlightTransition>
+          {value && (
+            <Spotlight
+              actions={[{ onClick: this.finish, text: 'Done' }]}
+              actionsBeforeElement={deltaButtons}
+              dialogPlacement="top center"
+              dialogWidth={value}
+              heading={`${value}px`}
+              key="width-example"
+              target="width-example"
+            >
+              <Lorem count={1} />
+            </Spotlight>
+          )}
+        </SpotlightTransition>
       </SpotlightManager>
     );
   }

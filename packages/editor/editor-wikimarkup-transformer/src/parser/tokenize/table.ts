@@ -3,13 +3,17 @@ import { AddCellArgs } from '../../interfaces';
 import { TableBuilder } from '../builder/table-builder';
 import { parseString } from '../text';
 import { isNextLineEmpty, normalizePMNodes } from '../utils/normalize';
-import { Token, TokenType } from './';
+import { Token, TokenType, TokenErrCallback } from './';
 import { parseNewlineOnly } from './whitespace';
 
-const TABLE_REGEXP = /^\s*[|]+(.*)/;
+const TABLE_REGEXP = /^\s*[|]+([^|\n]*)/;
 const NEWLINE = /\r?\n/;
 
-export function table(input: string, schema: Schema): Token {
+export function table(
+  input: string,
+  schema: Schema,
+  tokenErrCallback: TokenErrCallback,
+): Token {
   let index = 0;
   const output: PMNode[] = [];
 
@@ -34,7 +38,9 @@ export function table(input: string, schema: Schema): Token {
     }
 
     if (lineBuffer.length > 0) {
-      builder.add(parseToTableCell(lineBuffer.join('\n'), schema));
+      builder.add(
+        parseToTableCell(lineBuffer.join('\n'), schema, tokenErrCallback),
+      );
       lineBuffer = [];
     }
 
@@ -52,7 +58,9 @@ export function table(input: string, schema: Schema): Token {
   }
 
   if (lineBuffer.length > 0 && builder) {
-    builder.add(parseToTableCell(lineBuffer.join('\n'), schema));
+    builder.add(
+      parseToTableCell(lineBuffer.join('\n'), schema, tokenErrCallback),
+    );
   }
 
   if (builder) {
@@ -66,10 +74,14 @@ export function table(input: string, schema: Schema): Token {
   };
 }
 
-function parseToTableCell(input: string, schema: Schema): AddCellArgs[] {
+function parseToTableCell(
+  input: string,
+  schema: Schema,
+  tokenErrCallback?: TokenErrCallback,
+): AddCellArgs[] {
   /**
    * The following token types will be ignored in parsing
-   * the content of a strong mark
+   * the content of a table cell
    */
   const ignoreTokenTypes = [
     TokenType.DOUBLE_DASH_SYMBOL,
@@ -80,15 +92,39 @@ function parseToTableCell(input: string, schema: Schema): AddCellArgs[] {
   ];
 
   const cells: AddCellArgs[] = [];
-  let match;
 
-  // E.g. || foo || bar -> [ "|| foo", "||", "foo" ] (invoke multiple times with .exec)
-  const tableCellRegexp = /([|]+)([^|]+)/g;
+  /**
+   * If separator is a regular expression that contains capturing parentheses,
+   * then each time separator is matched, the results (including any undefined results)
+   * of the capturing parentheses are spliced into the output array.
+   */
+  const slices = input.split(/([|]+)/);
+  /**
+   * After the split, the first item would always be a "" which we don't need
+   * For example,
+   * ||header||header||header
+   * returns:
+   * ["", "||", "header", "||", "header", "||", "header"]
+   */
+  slices.shift();
 
-  // tslint:disable-next-line:no-conditional-assignment
-  while ((match = tableCellRegexp.exec(input)) !== null) {
-    const [, /* discard */ style, rawContent] = match;
-    const contentNode = parseString(rawContent, schema, ignoreTokenTypes);
+  for (let i = 0; i < slices.length; i += 2) {
+    const style = slices[i];
+    const rawContent = i + 1 < slices.length ? slices[i + 1] : null;
+    /**
+     * We don't want to display the trailing space as a new cell
+     * https://jdog.jira-dev.com/browse/BENTO-2319
+     */
+    if (rawContent === null || /^\s*$/.test(rawContent)) {
+      continue;
+    }
+
+    const contentNode = parseString(
+      rawContent,
+      schema,
+      ignoreTokenTypes,
+      tokenErrCallback,
+    );
 
     cells.push({ style, content: normalizePMNodes(contentNode, schema) });
   }

@@ -1,6 +1,8 @@
+jest.mock('react-dom');
+import { ContextFactory } from '@atlaskit/media-core';
+import { render } from 'react-dom';
 import { Popup, PopupConfig } from '../../popup';
 import { UploadParams } from '../../..';
-import { ContextFactory } from '@atlaskit/media-core';
 
 describe('MediaPickerPopup', () => {
   const context = ContextFactory.create({
@@ -23,6 +25,10 @@ describe('MediaPickerPopup', () => {
     },
   };
 
+  beforeEach(() => {
+    render.mockReset();
+  });
+
   describe('constructor', () => {
     it('sets uploadParams to the default when none are supplied', () => {
       const mediaPicker = new Popup(context, popupConfig);
@@ -30,9 +36,9 @@ describe('MediaPickerPopup', () => {
       const expectedUploadParams: UploadParams = {
         collection: '',
       };
-      expect((mediaPicker as any)['uploadParams'] as UploadParams).toEqual(
-        expectedUploadParams,
-      );
+      expect((mediaPicker as any)[
+        'tenantUploadParams'
+      ] as UploadParams).toEqual(expectedUploadParams);
     });
 
     it('merges uploadParams with the defaults when they are supplied', () => {
@@ -44,7 +50,9 @@ describe('MediaPickerPopup', () => {
         uploadParams: newUploadParams,
       });
 
-      expect((mediaPicker as any)['uploadParams'] as UploadParams).toEqual({
+      expect((mediaPicker as any)[
+        'tenantUploadParams'
+      ] as UploadParams).toEqual({
         collection: 'hello-world',
       });
     });
@@ -59,7 +67,7 @@ describe('MediaPickerPopup', () => {
       mediaPicker.setUploadParams(newUploadParams);
 
       expect(
-        ((mediaPicker as any)['uploadParams'] as UploadParams).collection,
+        ((mediaPicker as any)['tenantUploadParams'] as UploadParams).collection,
       ).toEqual(collection);
     });
   });
@@ -81,6 +89,20 @@ describe('MediaPickerPopup', () => {
     it('should blow up with empty argument', () => {
       const mediaPicker = new Popup(context, popupConfig);
       expect(() => mediaPicker.cancel()).toThrow();
+    });
+  });
+
+  describe('render', () => {
+    it('should render <App /> with the right properties', () => {
+      const mediaPicker = new Popup(context, popupConfig) as any;
+
+      expect(render.mock.calls[0][0].props).toEqual({
+        proxyReactContext: undefined,
+        store: mediaPicker.store,
+        tenantUploadParams: {
+          collection: '',
+        },
+      });
     });
   });
 });

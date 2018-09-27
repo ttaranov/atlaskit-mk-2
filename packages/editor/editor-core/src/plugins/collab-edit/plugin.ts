@@ -52,8 +52,9 @@ export const createPlugin = (
 
         if (collabEditProvider) {
           const selectionChanged = !oldState.selection.eq(newState.selection);
-          const participantsChanged =
-            prevActiveParticipants !== activeParticipants;
+          const participantsChanged = !prevActiveParticipants.eq(
+            activeParticipants,
+          );
 
           if (
             (sessionId && selectionChanged && !tr.docChanged) ||
@@ -79,7 +80,7 @@ export const createPlugin = (
       },
     },
     props: {
-      decorations(state) {
+      decorations(this: Plugin, state) {
         return this.getState(state).decorations;
       },
     },
@@ -109,6 +110,16 @@ export const createPlugin = (
               .on('data', data => applyRemoteData(data, view, options))
               .on('presence', data => handlePresence(data, view))
               .on('telepointer', data => handleTelePointer(data, view))
+              .on('local-steps', data => {
+                const { steps } = data;
+                const { state } = view;
+
+                const { tr } = state;
+                steps.forEach(step => tr.step(step));
+
+                const newState = state.apply(tr);
+                view.updateState(newState);
+              })
               .on('error', err => {
                 // TODO: Handle errors property (ED-2580)
               })

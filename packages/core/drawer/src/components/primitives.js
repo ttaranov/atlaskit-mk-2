@@ -1,11 +1,11 @@
 // @flow
 
-import React, { Component } from 'react';
+import React, { Component, type Node } from 'react';
 import { colors, layers, gridSize } from '@atlaskit/theme';
 import ArrowLeft from '@atlaskit/icon/glyph/arrow-left';
 
 import { Slide } from './transitions';
-import type { DrawerProps, DrawerWrapperProps } from './types';
+import type { DrawerPrimitiveProps } from './types';
 
 // Misc.
 // ------------------------------
@@ -19,7 +19,15 @@ const widths = {
 // Wrapper
 // ------------------------------
 
-const Wrapper = ({ width = 'narrow', ...props }: DrawerWrapperProps) => {
+const Wrapper = ({
+  width = 'narrow',
+  shouldUnmountOnExit,
+  ...props
+}: {
+  children?: Node,
+  shouldUnmountOnExit?: boolean,
+  width: $PropertyType<DrawerPrimitiveProps, 'width'>,
+}) => {
   return (
     <div
       css={{
@@ -71,7 +79,7 @@ const Sidebar = props => {
   );
 };
 
-type IconWrapperProps = { onClick?: Event => void };
+type IconWrapperProps = { onClick?: (SyntheticMouseEvent<*>) => void };
 const IconWrapper = (props: IconWrapperProps) => (
   <button
     type="button"
@@ -103,7 +111,7 @@ const IconWrapper = (props: IconWrapperProps) => (
   />
 );
 
-export default class DrawerPrimitive extends Component<DrawerProps> {
+export default class DrawerPrimitive extends Component<DrawerPrimitiveProps> {
   render() {
     const { children, icon: Icon, onClose, ...props } = this.props;
 

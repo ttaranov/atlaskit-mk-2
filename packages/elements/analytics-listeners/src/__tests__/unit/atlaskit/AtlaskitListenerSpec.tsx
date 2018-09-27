@@ -3,28 +3,10 @@ import * as React from 'react';
 import { mount } from 'enzyme';
 import { UI_EVENT_TYPE } from '@atlaskit/analytics-gas-types';
 import * as cases from 'jest-in-case';
-
 import AtlaskitListener from '../../../atlaskit/AtlaskitListener';
-import {
-  AnalyticsListener,
-  withAnalyticsEvents,
-  AnalyticsContext,
-} from '@atlaskit/analytics-next';
-import { AnalyticsWebClient } from '../../../types';
-
-const Button: React.StatelessComponent<any> = props => (
-  <button id="dummy" onClick={props.onClick}>
-    Test [click on me]
-  </button>
-);
-Button.displayName = 'Button';
-
-const createButtonWithAnalytics = payload =>
-  withAnalyticsEvents({
-    onClick: (createEvent, props) => {
-      createEvent(payload).fire('atlaskit');
-    },
-  })(Button);
+import { AnalyticsListener, AnalyticsContext } from '@atlaskit/analytics-next';
+import { AnalyticsWebClient, FabricChannel } from '../../../types';
+import { createButtonWithAnalytics } from '../../../../examples/helpers';
 
 const createAnalyticsContexts = contexts => ({ children }) =>
   contexts
@@ -37,7 +19,6 @@ const createAnalyticsContexts = contexts => ({ children }) =>
 
 describe('AtlaskitListener', () => {
   let analyticsWebClientMock: AnalyticsWebClient;
-  let clientPromise: Promise<AnalyticsWebClient>;
   let loggerMock;
 
   beforeEach(() => {
@@ -47,7 +28,6 @@ describe('AtlaskitListener', () => {
       sendTrackEvent: jest.fn(),
       sendScreenEvent: jest.fn(),
     };
-    clientPromise = Promise.resolve(analyticsWebClientMock);
     loggerMock = {
       debug: jest.fn(),
       info: jest.fn(),
@@ -58,24 +38,30 @@ describe('AtlaskitListener', () => {
 
   it('should register an Analytics listener on the atlaskit channel', () => {
     const component = mount(
-      <AtlaskitListener client={clientPromise} logger={loggerMock}>
+      <AtlaskitListener client={analyticsWebClientMock} logger={loggerMock}>
         <div />
       </AtlaskitListener>,
     );
 
     const analyticsListener = component.find(AnalyticsListener);
-    expect(analyticsListener.props()).toHaveProperty('channel', 'atlaskit');
+    expect(analyticsListener.props()).toHaveProperty(
+      'channel',
+      FabricChannel.atlaskit,
+    );
   });
 
   cases(
     'should transform events from analyticsListener and fire UI events to the analyticsWebClient',
-    ({ eventPayload, clientPayload, context = [] }) => {
+    ({ eventPayload, clientPayload, context = [] }, done) => {
       const spy = jest.fn();
-      const ButtonWithAnalytics = createButtonWithAnalytics(eventPayload);
+      const ButtonWithAnalytics = createButtonWithAnalytics(
+        eventPayload,
+        FabricChannel.atlaskit,
+      );
       const AnalyticsContexts = createAnalyticsContexts(context);
 
       const component = mount(
-        <AtlaskitListener client={clientPromise} logger={loggerMock}>
+        <AtlaskitListener client={analyticsWebClientMock} logger={loggerMock}>
           <AnalyticsContexts>
             <ButtonWithAnalytics onClick={spy} />
           </AnalyticsContexts>
@@ -84,10 +70,11 @@ describe('AtlaskitListener', () => {
 
       component.find(ButtonWithAnalytics).simulate('click');
 
-      return clientPromise.then(client => {
+      setTimeout(() => {
         expect(
           (analyticsWebClientMock.sendUIEvent as any).mock.calls[0][0],
         ).toMatchObject(clientPayload);
+        done();
       });
     },
     [

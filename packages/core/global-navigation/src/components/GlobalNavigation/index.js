@@ -1,6 +1,7 @@
 // @flow
 
 import React, { Component, Fragment } from 'react';
+import type { UIAnalyticsEvent } from '@atlaskit/analytics-next';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
 import { GlobalNav } from '@atlaskit/navigation-next';
 import Drawer from '@atlaskit/drawer';
@@ -10,6 +11,8 @@ import {
 } from '../../../package.json';
 import generateDefaultConfig from '../../config/default-config';
 import generateProductConfig from '../../config/product-config';
+import ScreenTracker from '../ScreenTracker';
+import { analyticsIdMap, fireDrawerDismissedEvents } from './analytics';
 
 import type { GlobalNavItemData, NavItem } from '../../config/types';
 import type { GlobalNavigationProps, DrawerName } from './types';
@@ -149,12 +152,17 @@ export default class GlobalNavigation
     }
   };
 
-  closeDrawer = (drawerName: DrawerName) => () => {
+  closeDrawer = (drawerName: DrawerName) => (
+    event: SyntheticMouseEvent<*> | SyntheticKeyboardEvent<*>,
+    analyticsEvent: UIAnalyticsEvent,
+  ) => {
     const capitalisedDrawerName = this.getCapitalisedDrawerName(drawerName);
     const onCloseCallback =
       typeof this.props[`on${capitalisedDrawerName}Close`] === 'function'
         ? this.props[`on${capitalisedDrawerName}Close`]
         : noop;
+
+    fireDrawerDismissedEvents(drawerName, analyticsEvent);
 
     // Update the state only if it's a controlled drawer.
     // componentDidMount takes care of the uncontrolled drawers
@@ -216,6 +224,9 @@ export default class GlobalNavigation
           {this.drawers.map(drawer => {
             const capitalisedDrawerName = this.getCapitalisedDrawerName(drawer);
             const DrawerContents = this.props[`${drawer}DrawerContents`];
+            const shouldUnmountOnExit = this.props[
+              `should${capitalisedDrawerName}UnmountOnExit`
+            ];
 
             if (!DrawerContents) {
               return null;
@@ -226,8 +237,13 @@ export default class GlobalNavigation
                 key={drawer}
                 isOpen={this.state[`is${capitalisedDrawerName}Open`]}
                 onClose={this.closeDrawer(drawer)}
+                shouldUnmountOnExit={shouldUnmountOnExit}
                 width="wide"
               >
+                <ScreenTracker
+                  name={analyticsIdMap[drawer]}
+                  isVisible={this.state[`is${capitalisedDrawerName}Open`]}
+                />
                 <DrawerContents />
               </Drawer>
             );

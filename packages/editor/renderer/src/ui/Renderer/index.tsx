@@ -8,6 +8,8 @@ import {
   defaultSchema,
   EventHandlers,
   ExtensionHandlers,
+  BaseTheme,
+  WidthProvider,
 } from '@atlaskit/editor-common';
 import { ReactSerializer, renderDocument, RendererContext } from '../../';
 import { RenderOutputStat } from '../../';
@@ -39,6 +41,8 @@ export interface Props {
   useNewApplicationCard?: boolean;
   appearance?: RendererAppearance;
   adfStage?: ADFStage;
+  disableHeadingIDs?: boolean;
+  allowDynamicTextSizing?: boolean;
 }
 
 export default class Renderer extends PureComponent<Props, {}> {
@@ -68,6 +72,7 @@ export default class Renderer extends PureComponent<Props, {}> {
       schema,
       useNewApplicationCard,
       appearance,
+      disableHeadingIDs,
     } = props;
 
     this.serializer = new ReactSerializer({
@@ -82,11 +87,19 @@ export default class Renderer extends PureComponent<Props, {}> {
       } as RendererContext,
       useNewApplicationCard,
       appearance,
+      disableHeadingIDs,
     });
   }
 
   render() {
-    const { document, onComplete, schema, appearance, adfStage } = this.props;
+    const {
+      document,
+      onComplete,
+      schema,
+      appearance,
+      adfStage,
+      allowDynamicTextSizing,
+    } = this.props;
 
     try {
       const { result, stat } = renderDocument(
@@ -100,12 +113,22 @@ export default class Renderer extends PureComponent<Props, {}> {
         onComplete(stat);
       }
 
-      return <Wrapper appearance={appearance}>{result}</Wrapper>;
+      return (
+        <RendererWrapper
+          appearance={appearance}
+          dynamicTextSizing={allowDynamicTextSizing}
+        >
+          {result}
+        </RendererWrapper>
+      );
     } catch (ex) {
       return (
-        <Wrapper appearance={appearance}>
+        <RendererWrapper
+          appearance={appearance}
+          dynamicTextSizing={allowDynamicTextSizing}
+        >
           <UnsupportedBlock />
-        </Wrapper>
+        </RendererWrapper>
       );
     }
   }
@@ -119,4 +142,14 @@ export default class Renderer extends PureComponent<Props, {}> {
       this.providerFactory.destroy();
     }
   }
+}
+
+export function RendererWrapper({ appearance, children, dynamicTextSizing }) {
+  return (
+    <WidthProvider>
+      <BaseTheme dynamicTextSizing={dynamicTextSizing}>
+        <Wrapper appearance={appearance}>{children}</Wrapper>
+      </BaseTheme>
+    </WidthProvider>
+  );
 }

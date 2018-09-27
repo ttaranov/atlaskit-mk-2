@@ -5,7 +5,7 @@ import * as PropTypes from 'prop-types';
 import { ContextFactory } from '@atlaskit/media-core';
 import Button from '@atlaskit/button';
 import DropdownMenu, { DropdownItem } from '@atlaskit/dropdown-menu';
-import { AnalyticsListener } from '@atlaskit/analytics-next';
+import AKListeners from '@atlaskit/analytics-listeners';
 import {
   userAuthProvider,
   mediaPickerAuthProvider,
@@ -57,7 +57,6 @@ export interface PopupWrapperState {
   inflightUploads: { [key: string]: MediaProgress };
   publicFiles: { [key: string]: PublicFile };
   isUploadingFilesVisible: boolean;
-  useNewUploadService: boolean;
   singleSelect: boolean;
   useProxyContext: boolean;
   popup?: Popup;
@@ -72,7 +71,6 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     inflightUploads: {},
     publicFiles: {},
     isUploadingFilesVisible: true,
-    useNewUploadService: true,
     useProxyContext: true,
     singleSelect: false,
   };
@@ -92,10 +90,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     }
   }
 
-  private createPopup(
-    useNewUploadService: boolean = this.state.useNewUploadService,
-    singleSelect: boolean = this.state.singleSelect,
-  ) {
+  private createPopup(singleSelect: boolean = this.state.singleSelect) {
     const { popup } = this.state;
     if (popup) {
       popup.removeAllListeners();
@@ -112,7 +107,6 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
       uploadParams: {
         collection: defaultMediaPickerCollectionName,
       },
-      useNewUploadService,
       singleSelect,
       proxyReactContext: this.state.useProxyContext ? this.context : undefined,
     });
@@ -127,7 +121,6 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
 
     this.setState({
       popup: newPopup,
-      useNewUploadService,
       singleSelect,
     });
   }
@@ -244,19 +237,22 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     }
   };
 
-  onCollectionChange = e => {
-    const { innerText: collectionName } = e.target;
+  onCollectionChange = (e: React.SyntheticEvent<HTMLElement>) => {
+    const { innerText: collectionName } = e.currentTarget;
 
     this.setState({ collectionName });
   };
 
-  onAuthTypeChange = e => {
-    const { innerText: authEnvironment } = e.target;
+  onAuthTypeChange = (e: React.SyntheticEvent<HTMLElement>) => {
+    const { innerText: authEnvironment } = e.currentTarget;
 
-    this.setState({ authEnvironment }, this.createPopup);
+    this.setState(
+      { authEnvironment: authEnvironment as AuthEnvironment },
+      this.createPopup,
+    );
   };
 
-  renderSerializedEvent(eventName, data, key) {
+  renderSerializedEvent(eventName: string, data: any, key: number) {
     const serializedEvent = JSON.stringify(data, undefined, 2);
 
     return (
@@ -289,7 +285,7 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
 
         const imageUrl = data.preview.src.toString();
         // We don't want to print the original image src because it freezes the browser
-        const newData = {
+        const newData: UploadPreviewUpdateEventPayload = {
           ...data,
           preview: { ...data.preview, src: `src length: ${imageUrl.length}` },
         };
@@ -332,16 +328,12 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
     this.setState({ inflightUploads: {} });
   };
 
-  onEvent = event => {
+  onEvent = (event: any) => {
     console.log(event);
   };
 
-  onuseNewUploadServiceChange = () => {
-    this.createPopup(!this.state.useNewUploadService, this.state.singleSelect);
-  };
-
   onSingleSelectChange = () => {
-    this.createPopup(this.state.useNewUploadService, !this.state.singleSelect);
+    this.createPopup(!this.state.singleSelect);
   };
 
   renderUploadingFiles = () => {
@@ -415,7 +407,6 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
       collectionName,
       inflightUploads,
       isUploadingFilesVisible,
-      useNewUploadService,
       singleSelect,
       popup,
     } = this.state;
@@ -464,11 +455,6 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
             <DropdownItem onClick={this.onAuthTypeChange}>client</DropdownItem>
             <DropdownItem onClick={this.onAuthTypeChange}>asap</DropdownItem>
           </DropdownMenu>
-          Use new upload service:
-          <Toggle
-            isDefaultChecked={useNewUploadService}
-            onChange={this.onuseNewUploadServiceChange}
-          />
           Only select single item:
           <Toggle
             isDefaultChecked={singleSelect}
@@ -492,14 +478,15 @@ class PopupWrapper extends Component<{}, PopupWrapperState> {
   }
 }
 
-const onEvent = event => {
-  console.log('Example', event);
-};
-
 export default () => (
-  <AnalyticsListener onEvent={onEvent} channel="media">
-    <AnalyticsListener onEvent={onEvent} channel="atlaskit">
-      <PopupWrapper />
-    </AnalyticsListener>
-  </AnalyticsListener>
+  <AKListeners
+    client={{
+      sendUIEvent: () => {},
+      sendOperationalEvent: () => {},
+      sendTrackEvent: () => {},
+      sendScreenEvent: () => {},
+    }}
+  >
+    <PopupWrapper />
+  </AKListeners>
 );

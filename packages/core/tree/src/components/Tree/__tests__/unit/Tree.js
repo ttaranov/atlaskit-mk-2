@@ -153,6 +153,19 @@ describe('@atlaskit/tree - Tree', () => {
         destination: dragStart.source,
       });
     });
+    it('calls onDragStart if it is defined', () => {
+      const mockOnStartCb = jest.fn();
+      const instance = mount(
+        <Tree
+          tree={treeWithTwoBranches}
+          renderItem={mockRender}
+          onDragStart={mockOnStartCb}
+        />,
+      ).instance();
+      instance.onDragStart(dragStart);
+      expect(mockOnStartCb).toHaveBeenCalledTimes(1);
+      expect(mockOnStartCb).toHaveBeenCalledWith('1-1');
+    });
   });
 
   describe('#onDragEnd', () => {

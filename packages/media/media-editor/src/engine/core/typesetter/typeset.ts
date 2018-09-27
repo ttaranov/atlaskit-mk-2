@@ -13,6 +13,11 @@ export interface TypesetConfig {
   module: Core.NativeModule;
 }
 
+const defaultFontMetrics: FontMetrics = {
+  lineHeight: 0,
+  descent: 0,
+};
+
 // Each fragment has position assuming that the paragraph it belongs to starts from (0, 0).
 // To display fragments correctly we need to store the y coordinate where the paragraph starts.
 interface StoredFragment {
@@ -36,7 +41,7 @@ interface StoredFragment {
 // exactly in line height.
 export class Typeset implements Core.TypesetInterop {
   private isContextLost: boolean = false;
-  private fontMetrics: FontMetrics;
+  private fontMetrics: FontMetrics = defaultFontMetrics;
 
   // We store paragraphs of text and update them when necessary.
   // Fragments are owned by paragraphs, paragraphs are responsible for their lifetime,

@@ -58,21 +58,24 @@ export function insertRule(): Command {
 }
 
 export function shouldAppendParagraphAfterBlockNode(state) {
-  return (
-    (atTheEndOfDoc(state) && atTheBeginningOfBlock(state)) || isTableCell(state)
-  );
+  return atTheEndOfDoc(state) && atTheBeginningOfBlock(state);
 }
 
 export function insertNodesEndWithNewParagraph(nodes: PMNode[]): Command {
   return function(state, dispatch) {
     const { tr, schema } = state;
     const { paragraph } = schema.nodes;
+    const { head } = state.selection;
 
     if (shouldAppendParagraphAfterBlockNode(state)) {
       nodes.push(paragraph.create());
     }
 
+    /** If table cell, the default is to move to the next cell, override to select paragraph */
     tr.replaceSelection(new Slice(Fragment.from(nodes), 0, 0));
+    if (isTableCell(state)) {
+      tr.setSelection(TextSelection.create(state.doc, head, head));
+    }
 
     dispatch(tr);
     return true;

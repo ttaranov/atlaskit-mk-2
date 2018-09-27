@@ -1,5 +1,11 @@
 # @atlaskit/inline-message
 
+## 7.0.4
+- [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
+
+## 7.0.3
+- [patch] Inline-message now closes on outside click correctly. [988b80a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/988b80a)
+
 ## 7.0.1
 - [patch] Updated dependencies [df22ad8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/df22ad8)
   - @atlaskit/theme@6.0.0

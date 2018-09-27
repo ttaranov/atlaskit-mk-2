@@ -1,35 +1,38 @@
-import React, { Component } from 'react';
+// @flow
+import React, { Component, type Node } from 'react';
 import ReactGA from 'react-ga';
 import { withRouter } from 'react-router-dom';
-import PropTypes from 'prop-types';
-const getAtlassianAnalyticsClient = require('./AtlassianAnalytics');
-const pkgJson = require('../../../package.json');
+import ttiPolyfill from 'tti-polyfill';
+import getAtlassianAnalyticsClient from './AtlassianAnalytics';
+import pkgJson from '../../../package.json';
+import { GOOGLE_ANALYTICS_ID } from '../../constants';
 
 let mounted = 0;
 
-const getApdex = location => {
-  if (
-    !window ||
-    !window.performance ||
-    !window.performance.timing ||
-    !window.performance.timing.domContentLoadedEventEnd ||
-    !window.performance.timing.navigationStart
-  ) {
+const getPageLoadNumber = () => {
+  if (!window || !window.performance || !window.performance.getEntriesByType) {
     return null;
   }
 
-  let timing =
-    window.performance.timing.domContentLoadedEventEnd -
-    window.performance.timing.navigationStart;
+  let navigationEntries = window.performance.getEntriesByType('navigation');
+  if (navigationEntries.length !== 1) return null;
 
-  let apdex = 0;
-  if (timing < 1000) apdex = 100;
-  else if (timing < 4000) apdex = 50;
+  return Math.round(navigationEntries[0].domComplete);
+};
 
+export const initializeGA = () => ReactGA.initialize(GOOGLE_ANALYTICS_ID);
+
+export const sendPerformanceMetrics = ({
+  location,
+  metricName,
+  timing,
+  value,
+  isInitial,
+}) => {
   ReactGA.event({
     category: 'Performance',
-    action: 'apdex',
-    value: apdex,
+    action: metricName,
+    value,
     nonInteraction: true,
     label: `seconds:${(timing / 1000).toFixed(1)}`,
   });
@@ -38,33 +41,94 @@ const getApdex = location => {
     version: '-',
   });
   const attributes = {
-    apdex: apdex,
+    [metricName]: value,
     loadTimeInMs: timing,
-    path: location.pathname,
+    path: location,
+    isInitial: isInitial || false,
   };
   request.addEvent(`atlaskit.website.performance`, attributes);
   request.send();
 };
 
-class GoogleAnalyticsListener extends Component {
-  static propTypes = {
-    children: PropTypes.node,
-    gaId: PropTypes.string,
-    location: PropTypes.object,
-  };
+export const sendApdex = (location, timing, isInitial = false) => {
+  let apdex = 0;
+  if (timing < 1000) apdex = 100;
+  else if (timing < 4000) apdex = 50;
+  sendPerformanceMetrics({
+    location,
+    timing,
+    metricName: 'apdex',
+    value: apdex,
+    isInitial,
+  });
+};
+
+export const sendInitialApdex = location => {
+  const timing = getPageLoadNumber();
+  if (!timing) return null;
+  sendApdex(location, timing, true);
+};
+
+export const observePerformanceMetrics = location => {
+  if (typeof PerformanceObserver === 'undefined') {
+    return;
+  }
+
+  // 'first-paint' and 'first-contentful-paint'
+  const observer = new PerformanceObserver(list => {
+    for (const entry of list.getEntries()) {
+      const metricName = entry.name;
+      const timing = Math.round(entry.startTime + entry.duration);
+      sendPerformanceMetrics({
+        location,
+        timing,
+        metricName,
+        value: timing,
+        isInitial: true,
+      });
+    }
+  });
+  // TODO: remove this once fixed in Firefox (most likely FF63)
+  // https://ecosystem.atlassian.net/browse/AK-5381
+  try {
+    observer.observe({ entryTypes: ['paint'] });
+  } catch (error) {}
+
+  // time to interactive, more details: https://goo.gl/OSmrPk
+  ttiPolyfill
+    .getFirstConsistentlyInteractive({ useMutationObserver: false })
+    .then(tti => {
+      const timing = Math.round(tti);
+      sendPerformanceMetrics({
+        location,
+        timing,
+        metricName: 'tti',
+        value: timing,
+        isInitial: true,
+      });
+    });
+};
+
+type Props = {
+  children: Node,
+  location: Object,
+};
+
+class GoogleAnalyticsListener extends Component<Props> {
   constructor(props) {
     super(props);
-    ReactGA.initialize(props.gaId);
+    ReactGA.initialize(GOOGLE_ANALYTICS_ID);
   }
 
   componentDidMount() {
     window.addEventListener(
       'load',
       () => {
-        getApdex(this.props.location);
+        sendInitialApdex(this.props.location.pathname);
       },
       { once: true },
     );
+    observePerformanceMetrics(this.props.location.pathname);
 
     mounted++;
     if (mounted > 1) {
@@ -72,7 +136,7 @@ class GoogleAnalyticsListener extends Component {
         'There is more than one GoogleAnalyticsListener on the page, this could cause errors',
       );
     }
-    ReactGA.pageview(this.props.location.pathname);
+    initializeGA();
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.gaId !== this.props.gaId) {
@@ -86,8 +150,7 @@ class GoogleAnalyticsListener extends Component {
     mounted--;
   }
   render() {
-    const { children } = this.props;
-    return children;
+    return this.props.children;
   }
 }
 

@@ -1,13 +1,20 @@
 import * as React from 'react';
-import { mount } from 'enzyme';
 import Button from '@atlaskit/button';
 import FabricAnalyticsListeners from '../src/FabricAnalyticsListeners';
 import {
-  DummyComponentWithAnalytics,
-  DummyAtlaskitComponentWithAnalytics,
+  createComponentWithAnalytics,
   IncorrectEventType,
 } from '../examples/helpers';
 import { LOG_LEVEL } from '../src';
+import { FabricChannel } from '../src/types';
+
+const DummyElementsComponentWithAnalytics = createComponentWithAnalytics(
+  FabricChannel.elements,
+);
+const DummyAtlaskitComponentWithAnalytics = createComponentWithAnalytics(
+  FabricChannel.atlaskit,
+);
+const AtlaskitIncorrectEventType = IncorrectEventType(FabricChannel.atlaskit);
 
 const myOnClickHandler = () => {
   console.log('Button clicked');
@@ -28,7 +35,7 @@ const analyticsWebClientMock = {
   sendScreenEvent: (event: any) => {},
 };
 
-export default class Example extends React.Component {
+class Example extends React.Component {
   state = {
     loggingLevelIdx: 0,
   };
@@ -43,7 +50,7 @@ export default class Example extends React.Component {
     const logLevel = logLevels[this.state.loggingLevelIdx];
     return (
       <FabricAnalyticsListeners
-        client={Promise.resolve(analyticsWebClientMock)}
+        client={analyticsWebClientMock}
         logLevel={logLevel.level}
       >
         <div>
@@ -54,19 +61,24 @@ export default class Example extends React.Component {
             <div style={{ padding: '16px 8px' }}>Level: {logLevel.name}</div>
           </div>
           <div style={{ display: 'block' }}>
-            <DummyComponentWithAnalytics onClick={myOnClickHandler} />
+            <DummyElementsComponentWithAnalytics onClick={myOnClickHandler} />
           </div>
           <div style={{ display: 'block' }}>
             <DummyAtlaskitComponentWithAnalytics onClick={myOnClickHandler} />
           </div>
           <div style={{ display: 'block' }}>
-            <IncorrectEventType
-              onClick={myOnClickHandler}
-              text="Invalid atlaskit event"
-            />
+            <AtlaskitIncorrectEventType onClick={myOnClickHandler} />
           </div>
         </div>
       </FabricAnalyticsListeners>
     );
   }
 }
+
+Object.assign(Example, {
+  meta: {
+    noListener: true,
+  },
+});
+
+export default Example;

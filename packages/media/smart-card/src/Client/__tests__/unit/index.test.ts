@@ -23,6 +23,7 @@ function createClient(options?: ClientOptions) {
 
 function resolved() {
   fetchMock.mock({
+    name: 'resolved',
     matcher: `begin:${RESOLVE_URL}`,
     response: {
       status: 200,
@@ -45,6 +46,7 @@ function resolved() {
 
 function errored() {
   fetchMock.mock({
+    name: 'errored',
     matcher: `begin:${RESOLVE_URL}`,
     response: {
       status: 500,
@@ -55,6 +57,7 @@ function errored() {
 
 function notfound() {
   fetchMock.mock({
+    name: 'notfound',
     matcher: `begin:${RESOLVE_URL}`,
     response: {
       status: 200,
@@ -117,7 +120,7 @@ describe('Client', () => {
     });
   });
 
-  it('should be unauthorised when the object cannot be accessed by the current user', async () => {
+  it('should be unauthorized when the object cannot be accessed by the current user', async () => {
     fetchMock.mock({
       matcher: `begin:${RESOLVE_URL}`,
       response: {
@@ -125,7 +128,7 @@ describe('Client', () => {
         body: JSON.stringify({
           meta: {
             visibility: 'restricted',
-            access: 'unauthorised',
+            access: 'unauthorized',
             auth: remoteResourceMetaAuth,
             definitionId,
           },
@@ -142,7 +145,7 @@ describe('Client', () => {
       .take(2)
       .takeLast(1)
       .toPromise();
-    expect(state.status).toEqual('unauthorised');
+    expect(state.status).toEqual('unauthorized');
     expect(state.services).toEqual([]);
     expect(state.data).toEqual({
       '@context': {},
@@ -200,7 +203,6 @@ describe('Client', () => {
   it('should reload when reload is called for the same provider', done => {
     expect.assertions(4);
     resolved();
-    resolved();
     let count = 0;
     const client = createClient();
     const subscription = client.get(OBJECT_URL).subscribe(({ status }) => {
@@ -239,7 +241,6 @@ describe('Client', () => {
 
   it('should not reload when reload is called for a different provider', done => {
     expect.assertions(2);
-    resolved();
     resolved();
     let count = 0;
     const client = createClient();

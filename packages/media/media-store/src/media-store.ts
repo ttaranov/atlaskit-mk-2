@@ -28,6 +28,11 @@ const defaultImageOptions: MediaStoreGetFileImageParams = {
   mode: 'crop',
 };
 
+const defaultGetCollectionItems: MediaStoreGetCollectionItemsParams = {
+  limit: 30,
+  sortDirection: 'desc',
+};
+
 const extendImageParams = (
   params?: MediaStoreGetFileImageParams,
 ): MediaStoreGetFileImageParams => {
@@ -64,11 +69,14 @@ export class MediaStore {
 
   getCollectionItems(
     collectionName: string,
-    params: MediaStoreGetCollectionItemsPrams,
+    params?: MediaStoreGetCollectionItemsParams,
   ): Promise<MediaStoreResponse<MediaCollectionItems>> {
     return this.request(`/collection/${collectionName}/items`, {
       authContext: { collectionName },
-      params,
+      params: {
+        ...defaultGetCollectionItems,
+        ...params,
+      },
       headers: {
         Accept: 'application/json',
       },
@@ -203,7 +211,7 @@ export class MediaStore {
   copyFileWithToken(
     body: MediaStoreCopyFileWithTokenBody,
     params: MediaStoreCopyFileWithTokenParams,
-  ): Promise<void> {
+  ): Promise<MediaStoreResponse<MediaFile>> {
     return this.request('/file/copy/withToken', {
       method: 'POST',
       authContext: { collectionName: params.collection }, // Contains collection name to write to
@@ -213,7 +221,7 @@ export class MediaStore {
         'Content-Type': 'application/json',
       },
       params, // Contains collection name to write to
-    }).then(mapResponseToVoid);
+    }).then(mapResponseToJson);
   }
 
   async request(
@@ -300,25 +308,28 @@ export type MediaStoreGetFileImageParams = {
   readonly 'max-age'?: number;
 };
 
-export type MediaStoreGetCollectionItemsPrams = {
-  readonly limit: number;
-
+export type MediaStoreGetCollectionItemsParams = {
+  readonly limit?: number;
   readonly inclusiveStartKey?: string;
   readonly sortDirection?: 'asc' | 'desc';
   readonly details?: 'minimal' | 'full';
 };
 
+export interface SourceFile {
+  id: string;
+  owner: ClientAltBasedAuth | AsapBasedAuth;
+  collection?: string;
+  version?: number;
+}
+
 export type MediaStoreCopyFileWithTokenBody = {
-  sourceFile: {
-    id: string;
-    owner: ClientAltBasedAuth | AsapBasedAuth;
-    collection?: string;
-    version?: number;
-  };
+  sourceFile: SourceFile;
 };
 
 export type MediaStoreCopyFileWithTokenParams = {
   readonly collection?: string;
+  readonly replaceFileId?: string;
+  readonly occurrenceKey?: string;
 };
 
 export type AppendChunksToUploadRequestBody = {

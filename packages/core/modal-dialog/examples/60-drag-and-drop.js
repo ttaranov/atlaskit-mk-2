@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import { colors } from '@atlaskit/theme';
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd';
-import Modal from '../src';
+import Modal, { ModalTransition } from '../src';
 
 const noop = () => {};
 
@@ -269,9 +269,18 @@ class Wrapper extends Component<*, WrapperState> {
         {(isHovering, isActive, isFocused, item) => (
           <div>
             <span>{item.message}</span>
-            <span>isHovering={isHovering.toString()}</span>
-            <span>, isActive={isActive.toString()}</span>
-            <span>, isFocused={isFocused.toString()}</span>
+            <span>
+              isHovering=
+              {isHovering.toString()}
+            </span>
+            <span>
+              , isActive=
+              {isActive.toString()}
+            </span>
+            <span>
+              , isFocused=
+              {isFocused.toString()}
+            </span>
           </div>
         )}
       </ItemLineCardGroup>
@@ -300,11 +309,13 @@ export default class extends PureComponent<{}, State> {
           react-beautiful-dnd where ancestor elements with a transform property
           cause dragging position issues. See AK-4328.
         </p>
-        {isOpen && (
-          <Modal onClose={this.close}>
-            <Wrapper />
-          </Modal>
-        )}
+        <ModalTransition>
+          {isOpen && (
+            <Modal onClose={this.close}>
+              <Wrapper />
+            </Modal>
+          )}
+        </ModalTransition>
       </div>
     );
   }

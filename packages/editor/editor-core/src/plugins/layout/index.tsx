@@ -1,9 +1,11 @@
 import * as React from 'react';
 import { Node as PMNode } from 'prosemirror-model';
-import PlaceholderTextIcon from '@atlaskit/icon/glyph/media-services/text';
+import LayoutTwoEqualIcon from '@atlaskit/icon/glyph/editor/layout-two-equal';
 import { layoutSection, layoutColumn } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { FloatingToolbarConfig } from '../floating-toolbar/types';
+import { messages } from '../insert-block/ui/ToolbarInsertBlock';
+
 import {
   default as layoutPlugin,
   pluginKey,
@@ -30,19 +32,21 @@ export default {
     ];
   },
   pluginsOptions: {
-    floatingToolbar(state): FloatingToolbarConfig | undefined {
+    floatingToolbar(state, intl): FloatingToolbarConfig | undefined {
       const { pos } = pluginKey.getState(state) as LayoutState;
       if (pos !== null) {
-        return buildToolbar(state, pos);
+        return buildToolbar(state, intl, pos);
       }
       return undefined;
     },
-    quickInsert: [
+    quickInsert: ({ formatMessage }) => [
       {
-        title: 'Columns',
+        title: formatMessage(messages.columns),
         keywords: ['layout', 'section'],
         priority: 1100,
-        icon: () => <PlaceholderTextIcon label="Insert columns" />,
+        icon: () => (
+          <LayoutTwoEqualIcon label={formatMessage(messages.columns)} />
+        ),
         action(insert, state) {
           const { layoutSection } = state.schema.nodes;
           return insert(layoutSection.createAndFill() as PMNode);

@@ -1,7 +1,6 @@
 import { ComponentClass } from 'react';
 import styled from 'styled-components';
 import {
-  akZIndexBlanket,
   akBorderRadius,
   akColorN400,
   akColorN0,
@@ -9,21 +8,10 @@ import {
   akColorN30,
   akColorN300,
 } from '@atlaskit/util-shared-styles';
-
-export const Container: ComponentClass = styled.div`
-  bottom: 0;
-  left: 0;
-  right: 0;
-  top: 0;
-  z-index: ${akZIndexBlanket};
-  position: fixed;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
+import { akEditorUnitZIndex } from '@atlaskit/editor-common';
 
 export const Header: any = styled.div`
-  z-index: 1;
+  z-index: ${akEditorUnitZIndex};
   min-height: 24px;
   padding: 20px 40px;
   font-size: 24px;
@@ -38,7 +26,7 @@ export const Header: any = styled.div`
 `;
 
 export const Footer: any = styled.div`
-  z-index: 1;
+  z-index: ${akEditorUnitZIndex};
   font-size: 14px;
   line-height: 20px;
   color: ${akColorN300};

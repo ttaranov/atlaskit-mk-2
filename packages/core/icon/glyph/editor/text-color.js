@@ -19,4 +19,5 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var EditorTextColorIcon = function EditorTextColorIcon(props) {
   return _react2.default.createElement(_index2.default, _extends({ dangerouslySetGlyph: '<svg width="24" height="24" viewBox="0 0 24 24" focusable="false" role="presentation"><rect x="5" y="5" width="14" height="14" rx="2" fill="currentColor" fill-rule="evenodd"/></svg>' }, props));
 };
+EditorTextColorIcon.displayName = 'EditorTextColorIcon';
 exports.default = EditorTextColorIcon;

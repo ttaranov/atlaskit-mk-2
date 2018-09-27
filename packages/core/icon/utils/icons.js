@@ -54,6 +54,7 @@ import CameraRotateIcon from '../glyph/camera-rotate';
 import CameraTakePictureIcon from '../glyph/camera-take-picture';
 import CameraIcon from '../glyph/camera';
 import CanvasIcon from '../glyph/canvas';
+import CheckCircleOutlineIcon from '../glyph/check-circle-outline';
 import CheckCircleIcon from '../glyph/check-circle';
 import CheckIcon from '../glyph/check';
 import CheckboxIndeterminateIcon from '../glyph/checkbox-indeterminate';
@@ -68,6 +69,7 @@ import ChevronRightLargeIcon from '../glyph/chevron-right-large';
 import ChevronRightIcon from '../glyph/chevron-right';
 import ChevronUpCircleIcon from '../glyph/chevron-up-circle';
 import ChevronUpIcon from '../glyph/chevron-up';
+import ChildIssuesIcon from '../glyph/child-issues';
 import CodeIcon from '../glyph/code';
 import CommentIcon from '../glyph/comment';
 import ComponentIcon from '../glyph/component';
@@ -267,6 +269,7 @@ import JiraTrivialIcon from '../glyph/jira/trivial';
 import LabelIcon from '../glyph/label';
 import LightbulbFilledIcon from '../glyph/lightbulb-filled';
 import LightbulbIcon from '../glyph/lightbulb';
+import LikeIcon from '../glyph/like';
 import LinkFilledIcon from '../glyph/link-filled';
 import LinkIcon from '../glyph/link';
 import ListIcon from '../glyph/list';
@@ -371,12 +374,14 @@ import PresenceBusyIcon from '../glyph/presence-busy';
 import PresenceUnavailableIcon from '../glyph/presence-unavailable';
 import QuestionCircleIcon from '../glyph/question-circle';
 import QuestionIcon from '../glyph/question';
+import QuestionsIcon from '../glyph/questions';
 import QueuesIcon from '../glyph/queues';
 import QuoteIcon from '../glyph/quote';
 import RadioIcon from '../glyph/radio';
 import RecentIcon from '../glyph/recent';
 import RedoIcon from '../glyph/redo';
 import RefreshIcon from '../glyph/refresh';
+import RoadmapIcon from '../glyph/roadmap';
 import RoomMenuIcon from '../glyph/room-menu';
 import ScheduleFilledIcon from '../glyph/schedule-filled';
 import ScheduleIcon from '../glyph/schedule';
@@ -392,6 +397,7 @@ import SignInIcon from '../glyph/sign-in';
 import SignOutIcon from '../glyph/sign-out';
 import StarFilledIcon from '../glyph/star-filled';
 import StarLargeIcon from '../glyph/star-large';
+import StarOutlineIcon from '../glyph/star-outline';
 import StarIcon from '../glyph/star';
 import StatuspageIcon from '../glyph/statuspage';
 import StrideIcon from '../glyph/stride';
@@ -707,6 +713,12 @@ export default {
     componentName: 'CanvasIcon',
     package: '@atlaskit/icon/glyph/canvas',
   },
+  'check-circle-outline': {
+    keywords: ['check-circle-outline', 'checkcircleoutline'],
+    component: CheckCircleOutlineIcon,
+    componentName: 'CheckCircleOutlineIcon',
+    package: '@atlaskit/icon/glyph/check-circle-outline',
+  },
   'check-circle': {
     keywords: ['check-circle', 'checkcircle', 'tick'],
     component: CheckCircleIcon,
@@ -790,6 +802,12 @@ export default {
     component: ChevronUpIcon,
     componentName: 'ChevronUpIcon',
     package: '@atlaskit/icon/glyph/chevron-up',
+  },
+  'child-issues': {
+    keywords: ['child-issues', 'childissues'],
+    component: ChildIssuesIcon,
+    componentName: 'ChildIssuesIcon',
+    package: '@atlaskit/icon/glyph/child-issues',
   },
   code: {
     keywords: ['code', 'source'],
@@ -1985,6 +2003,12 @@ export default {
     componentName: 'LightbulbIcon',
     package: '@atlaskit/icon/glyph/lightbulb',
   },
+  like: {
+    keywords: ['like'],
+    component: LikeIcon,
+    componentName: 'LikeIcon',
+    package: '@atlaskit/icon/glyph/like',
+  },
   'link-filled': {
     keywords: ['link-filled', 'linkfilled'],
     component: LinkFilledIcon,
@@ -2609,6 +2633,12 @@ export default {
     componentName: 'QuestionIcon',
     package: '@atlaskit/icon/glyph/question',
   },
+  questions: {
+    keywords: ['questions'],
+    component: QuestionsIcon,
+    componentName: 'QuestionsIcon',
+    package: '@atlaskit/icon/glyph/questions',
+  },
   queues: {
     keywords: ['queues'],
     component: QueuesIcon,
@@ -2644,6 +2674,12 @@ export default {
     component: RefreshIcon,
     componentName: 'RefreshIcon',
     package: '@atlaskit/icon/glyph/refresh',
+  },
+  roadmap: {
+    keywords: ['roadmap'],
+    component: RoadmapIcon,
+    componentName: 'RoadmapIcon',
+    package: '@atlaskit/icon/glyph/roadmap',
   },
   'room-menu': {
     keywords: ['room-menu', 'roommenu'],
@@ -2734,6 +2770,12 @@ export default {
     component: StarLargeIcon,
     componentName: 'StarLargeIcon',
     package: '@atlaskit/icon/glyph/star-large',
+  },
+  'star-outline': {
+    keywords: ['star-outline', 'staroutline'],
+    component: StarOutlineIcon,
+    componentName: 'StarOutlineIcon',
+    package: '@atlaskit/icon/glyph/star-outline',
   },
   star: {
     keywords: ['star'],

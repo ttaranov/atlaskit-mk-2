@@ -47,6 +47,7 @@ export default class Editor extends React.Component<
   static displayName = 'ChromelessEditorAppearance';
 
   private appearance: EditorAppearance = 'chromeless';
+  private containerElement: HTMLElement | undefined;
 
   private renderChrome = ({ maxContentSize }) => {
     const {
@@ -68,7 +69,10 @@ export default class Editor extends React.Component<
 
     return (
       <WithFlash animate={maxContentSizeReached}>
-        <ChromelessEditor maxHeight={maxHeight}>
+        <ChromelessEditor
+          maxHeight={maxHeight}
+          innerRef={ref => (this.containerElement = ref)}
+        >
           <ContentArea>
             {customContentComponents}
             <PluginSlot
@@ -81,6 +85,7 @@ export default class Editor extends React.Component<
               popupsMountPoint={popupsMountPoint}
               popupsBoundariesElement={popupsBoundariesElement}
               popupsScrollableElement={popupsScrollableElement}
+              containerElement={this.containerElement}
               disabled={!!disabled}
             />
             {editorDOMElement}

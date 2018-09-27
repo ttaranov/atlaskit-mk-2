@@ -1,13 +1,18 @@
 // @flow
 import React from 'react';
-import '../src/index.less';
 
+/**
+ * By default the Atlaskit website includes css-reset in examples
+ * when implementing css-reset in your application,
+ * please include the stylesheet in head as `<link href="<path to css-reset>" rel="stylesheet" />`
+ * or import '@atlaskit/css-reset' in your application code
+ */
 export default () => (
   <div>
     <h2>{`<time>`}</h2>
     <p>
-      Can you move that meeting on{' '}
-      <time dateTime="2022-01-01 10:00">May 15</time> to the pub?
+      Can you move that meeting on <time dateTime="20220101 10:00">May 15</time>{' '}
+      to the pub?
     </p>
     <h2>
       {`<dfn>`} and {`<abbr>`}

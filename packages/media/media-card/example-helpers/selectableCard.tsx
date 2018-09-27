@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { Component } from 'react';
 import { Context } from '@atlaskit/media-core';
-
 import { Card, Identifier, OnSelectChangeFunc } from '../src';
 
 export interface SelectableCardProps {
@@ -14,7 +13,7 @@ export class SelectableCard extends Component<
   SelectableCardProps,
   { selected: boolean }
 > {
-  constructor(props) {
+  constructor(props: SelectableCardProps) {
     super(props);
     this.state = { selected: false };
   }

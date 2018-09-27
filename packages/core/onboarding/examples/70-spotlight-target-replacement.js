@@ -8,6 +8,7 @@ import {
   SpotlightManager,
   SpotlightPulse,
   SpotlightTarget,
+  SpotlightTransition,
 } from '../src';
 import { Code } from './styled';
 
@@ -75,18 +76,20 @@ export default class SpotlightTargetReplacementExample extends Component<
           <button onClick={this.show}>Show</button>
         </p>
 
-        {active && (
-          <Spotlight
-            actions={[{ onClick: this.hide, text: 'Done' }]}
-            dialogPlacement="bottom left"
-            key="target-replacement-example"
-            heading="Hey, neat!"
-            target="target-replacement-example"
-            targetReplacement={Replacement}
-          >
-            <Lorem count={1} />
-          </Spotlight>
-        )}
+        <SpotlightTransition>
+          {active && (
+            <Spotlight
+              actions={[{ onClick: this.hide, text: 'Done' }]}
+              dialogPlacement="bottom left"
+              key="target-replacement-example"
+              heading="Hey, neat!"
+              target="target-replacement-example"
+              targetReplacement={Replacement}
+            >
+              <Lorem count={1} />
+            </Spotlight>
+          )}
+        </SpotlightTransition>
       </SpotlightManager>
     );
   }

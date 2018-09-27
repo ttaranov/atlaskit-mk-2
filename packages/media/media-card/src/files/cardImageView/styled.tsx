@@ -20,7 +20,7 @@ const getShadowAttribute = (props: WrapperProps) => {
   return disableOverlay ? '' : cardShadow;
 };
 
-const getCursorAttribute = (props: WrapperProps) => {
+const getCursorAttribute = () => {
   // TODO MSW-661: Figure out pointer logic for image card component
   return 'cursor: pointer;';
 };

@@ -31,7 +31,7 @@ describe('paste', () => {
 
   if (!browser.ie && !isMobileBrowser()) {
     describe('url link is at beginning of plain text', () => {
-      it('should add link mark', function() {
+      it('should add link mark', function(this: any) {
         const { editorView } = editor(doc(paragraph('{<>}')));
         if (
           !dispatchPasteEvent(editorView, {
@@ -56,7 +56,7 @@ describe('paste', () => {
     });
 
     describe('a string which is valid email is present in url', () => {
-      it('should not create separate mail link for email', function() {
+      it('should not create separate mail link for email', function(this: any) {
         const { editorView } = editor(doc(paragraph('{<>}')));
         if (
           !dispatchPasteEvent(editorView, {
@@ -80,7 +80,7 @@ describe('paste', () => {
     });
 
     describe('a string which is valid url is present in another url', () => {
-      it('should not create separate mail link for email', function() {
+      it('should not create separate mail link for email', function(this: any) {
         const { editorView } = editor(doc(paragraph('{<>}')));
         if (
           !dispatchPasteEvent(editorView, {
@@ -104,7 +104,7 @@ describe('paste', () => {
     });
 
     describe('url link is at end of html text', () => {
-      it('should add link mark', function() {
+      it('should add link mark', function(this: any) {
         const { editorView } = editor(doc(paragraph('{<>}')));
         if (
           !dispatchPasteEvent(editorView, {
@@ -127,7 +127,7 @@ describe('paste', () => {
     });
 
     describe('url link without anchor tags in html', () => {
-      it('should add link mark', function() {
+      it('should add link mark', function(this: any) {
         const { editorView } = editor(doc(paragraph('{<>}')));
         if (
           !dispatchPasteEvent(editorView, {
@@ -152,7 +152,7 @@ describe('paste', () => {
     });
 
     describe('url link without anchor tags in html in middle of other text', () => {
-      it('should add link mark', function() {
+      it('should add link mark', function(this: any) {
         const { editorView } = editor(doc(paragraph('{<>}')));
         if (
           !dispatchPasteEvent(editorView, {
@@ -178,7 +178,7 @@ describe('paste', () => {
     });
 
     describe('url link without anchor tags in html without other text', () => {
-      it('should add link mark', function() {
+      it('should add link mark', function(this: any) {
         const { editorView } = editor(doc(paragraph('{<>}')));
         if (
           !dispatchPasteEvent(editorView, {
@@ -202,7 +202,7 @@ describe('paste', () => {
     });
 
     describe('email link is at middle of plain text', () => {
-      it('should add link mark', function() {
+      it('should add link mark', function(this: any) {
         const { editorView } = editor(doc(paragraph('{<>}')));
         if (
           !dispatchPasteEvent(editorView, {
@@ -225,7 +225,7 @@ describe('paste', () => {
     });
 
     describe('email link without anchor tags in html', () => {
-      it('should add link mark', function() {
+      it('should add link mark', function(this: any) {
         const { editorView } = editor(doc(paragraph('{<>}')));
         if (
           !dispatchPasteEvent(editorView, { html: 'test@atlassian.com test' })
@@ -245,7 +245,7 @@ describe('paste', () => {
     });
 
     describe('email link without anchor tags in html in middle of other text', () => {
-      it('should add link mark', function() {
+      it('should add link mark', function(this: any) {
         const { editorView } = editor(doc(paragraph('{<>}')));
         if (
           !dispatchPasteEvent(editorView, {
@@ -268,7 +268,7 @@ describe('paste', () => {
     });
 
     describe('email link is at end of html', () => {
-      it('should add link mark', function() {
+      it('should add link mark', function(this: any) {
         const { editorView } = editor(doc(paragraph('{<>}')));
         if (
           !dispatchPasteEvent(editorView, {
@@ -291,7 +291,7 @@ describe('paste', () => {
     });
 
     describe('email link with inline style is pasted and then text is inserted', () => {
-      it('should not apply inline style to inserted text', function() {
+      it('should not apply inline style to inserted text', function(this: any) {
         const { editorView } = editor(doc(paragraph('{<>}')));
         if (
           !dispatchPasteEvent(editorView, {
@@ -314,7 +314,7 @@ describe('paste', () => {
       });
     });
     describe('image content', () => {
-      it('should not allow pasting of images with data URI src', () => {
+      it('should not allow pasting of images with data URI src', function(this: any) {
         const { editorView } = editor(doc(paragraph('{<>}')));
         if (
           !dispatchPasteEvent(editorView, {
@@ -329,7 +329,7 @@ describe('paste', () => {
         editorView.destroy();
       });
 
-      it('should allow pasting of images with url src', () => {
+      it('should allow pasting of images with url src', function(this: any) {
         const { editorView } = editor(doc(paragraph('{<>}')));
         if (
           !dispatchPasteEvent(editorView, {
@@ -357,7 +357,7 @@ describe('paste', () => {
     });
 
     describe('link pasting followed by typing a period', () => {
-      it('should not add period to link mark', function() {
+      it('should not add period to link mark', function(this: any) {
         const { editorView } = editor(doc(paragraph('{<>}')));
         const linkText = 'http://www.atlassian.com';
         if (
@@ -384,7 +384,7 @@ describe('paste', () => {
     });
 
     describe('pasting link inside list', () => {
-      it('should create link correctly', function() {
+      it('should create link correctly', function(this: any) {
         const { editorView } = editor(
           doc(ol(li(paragraph('item1')), li(paragraph('{<>}')))),
         );
@@ -416,7 +416,7 @@ describe('paste', () => {
     });
 
     describe('pasting link with a bracket in it', () => {
-      it('should create link correctly', function() {
+      it('should create link correctly', function(this: any) {
         const { editorView } = editor(doc(paragraph('{<>}')));
         const linkText = 'http://www.a(tl)as[si]an.com';
         if (

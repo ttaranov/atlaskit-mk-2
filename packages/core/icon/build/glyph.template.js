@@ -10,5 +10,6 @@ module.exports = (
 import Icon from '${wayHome}';
 
 const ${displayName} = props => (<Icon dangerouslySetGlyph={\`${svg.toString()}\`} {...props} />);
+${displayName}.displayName = '${displayName}';
 export default ${displayName};
 `;

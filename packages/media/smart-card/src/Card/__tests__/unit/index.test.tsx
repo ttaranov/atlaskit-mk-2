@@ -41,6 +41,7 @@ function createClient(
 }
 
 describe('Card', () => {
+  // tslint:disable-next-line:no-console
   console.error = jest.fn();
 
   it('should render an error when there is no client provided', async () => {
@@ -127,8 +128,8 @@ describe('Card', () => {
     }
   });
 
-  it('should render the unauthorised view when unauthorised', async () => {
-    const client = createClient('unauthorised');
+  it('should render the unauthorized view when unauthorized', async () => {
+    const client = createClient('unauthorized');
     const wrapper = mount(
       <Card
         appearance="block"
@@ -141,7 +142,7 @@ describe('Card', () => {
       // wait for the data to be loaded
       await client
         .get('https://www.atlassian.com/')
-        .pipe(takeWhile(state => state.status !== 'unauthorised'))
+        .pipe(takeWhile(state => state.status !== 'unauthorized'))
         .toPromise();
     } catch (error) {
       wrapper.update();
@@ -167,6 +168,56 @@ describe('Card', () => {
 
     wrapper.update();
     expect(wrapper.find(BlockCard.ResolvedView)).toHaveLength(1);
+  });
+
+  it('should be able to be selected when inline and resolved', async () => {
+    const client = createClient();
+    const wrapper = mount(
+      <Card
+        appearance="inline"
+        isSelected={true}
+        client={client}
+        url="https://www.atlassian.com/"
+      />,
+    );
+
+    // wait for the data to be loaded
+    await client
+      .get('https://www.atlassian.com/')
+      .pipe(takeWhile(isNotResolved))
+      .toPromise();
+
+    wrapper.update();
+    expect(wrapper.find(InlineCard.ResolvedView).props()).toEqual(
+      expect.objectContaining({
+        isSelected: true,
+      }),
+    );
+  });
+
+  it('should be able to be selected when block and resolved', async () => {
+    const client = createClient();
+    const wrapper = mount(
+      <Card
+        appearance="block"
+        isSelected={true}
+        client={client}
+        url="https://www.atlassian.com/"
+      />,
+    );
+
+    // wait for the data to be loaded
+    await client
+      .get('https://www.atlassian.com/')
+      .pipe(takeWhile(isNotResolved))
+      .toPromise();
+
+    wrapper.update();
+    expect(wrapper.find(BlockCard.ResolvedView).props()).toEqual(
+      expect.objectContaining({
+        isSelected: true,
+      }),
+    );
   });
 
   it('should reload the object state when the url changes', async () => {

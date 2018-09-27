@@ -3,14 +3,25 @@
 export class MockFile implements File {
   readonly size: number;
   readonly type: string;
-  readonly lastModified: number;
+  readonly lastModified: number = 1234;
   readonly lastModifiedDate: any;
   readonly name: string;
   readonly webkitRelativePath: string;
   msClose(): void {}
   msDetachStream(): any {}
-  slice(start?: number, end?: number, contentType?: string): Blob {
+  slice(): Blob {
     throw new Error('not implemented');
+  }
+  constructor(
+    options: { type: string; name: string } = {
+      type: '',
+      name: 'some-file.png',
+    },
+  ) {
+    this.type = options.type;
+    this.name = options.name;
+    this.size = 0;
+    this.webkitRelativePath = '';
   }
 }
 
@@ -39,18 +50,22 @@ export class MockDataTransfer implements DataTransfer {
 
   constructor(files?: FileList) {
     this.files = files as any;
+    this.dropEffect = '';
+    this.effectAllowed = '';
+    this.items = [] as any;
+    this.types = [];
   }
 
-  clearData(format?: string): boolean {
+  clearData(): boolean {
     return false;
   }
-  getData(format: string): string {
+  getData(): string {
     return '';
   }
-  setData(format: string, data: string): boolean {
+  setData(): boolean {
     return false;
   }
-  setDragImage(image: Element, x: number, y: number): void {}
+  setDragImage(): void {}
 }
 
 // this isn't implemented by JSDOM, and JSDOM .dispatchEvent() requires that event is an instanceof event,
@@ -70,27 +85,10 @@ export class MockDragEvent extends MouseEvent implements DragEvent {
     super(event);
     this.dataTransfer = new MockDataTransfer(MockFileList.fromArray(files));
   }
-  initDragEvent(
-    typeArg: string,
-    canBubbleArg: boolean,
-    cancelableArg: boolean,
-    viewArg: Window,
-    detailArg: number,
-    screenXArg: number,
-    screenYArg: number,
-    clientXArg: number,
-    clientYArg: number,
-    ctrlKeyArg: boolean,
-    altKeyArg: boolean,
-    shiftKeyArg: boolean,
-    metaKeyArg: boolean,
-    buttonArg: number,
-    relatedTargetArg: EventTarget,
-    dataTransferArg: DataTransfer,
-  ): void {
+  initDragEvent(): void {
     // noop
   }
-  msConvertURL(file: File, targetType: string, targetURL?: string): void {
+  msConvertURL(): void {
     // noop
   }
 }

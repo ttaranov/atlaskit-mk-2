@@ -1,7 +1,8 @@
 // @flow
 
-import React from 'react';
-import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
+import React, { PureComponent } from 'react';
+import ArrowLeftCircleIcon from '@atlaskit/icon/glyph/arrow-left-circle';
+import ArrowRightCircleIcon from '@atlaskit/icon/glyph/arrow-right-circle';
 import ArrowRightIcon from '@atlaskit/icon/glyph/arrow-right';
 import BacklogIcon from '@atlaskit/icon/glyph/backlog';
 import BoardIcon from '@atlaskit/icon/glyph/board';
@@ -14,10 +15,10 @@ import Spinner from '@atlaskit/spinner';
 import { gridSize as gridSizeFn } from '@atlaskit/theme';
 
 import { navigationItemClicked } from '../common/analytics';
-import ContainerHeader from '../components/ContainerHeader';
+import ContainerHeaderComponent from '../components/ContainerHeader';
 import BaseItem from '../components/Item';
-import ItemPrimitive from '../components/Item/primitives';
 import SectionComponent from '../components/Section';
+import SectionHeadingComponent from '../components/SectionHeading';
 import Separator from '../components/Separator';
 import GroupComponent from '../components/Group';
 import GroupHeadingComponent from '../components/GroupHeading';
@@ -28,10 +29,12 @@ import { withNavigationViewController } from '../view-controller';
 import type {
   GoToItemProps,
   GroupProps,
+  GroupHeadingProps,
   ItemProps,
   ItemsRendererProps,
+  SectionHeadingProps,
   SectionProps,
-  GroupHeadingProps,
+  WordmarkProps,
 } from './types';
 
 const iconMap = {
@@ -68,7 +71,12 @@ const GoToItemBase = ({
         return <Spinner delay={spinnerDelay} invertColor size="small" />;
       }
       if (isActive || isHover) {
-        return <ArrowRightIcon size="small" />;
+        return (
+          <ArrowRightCircleIcon
+            primaryColor="currentColor"
+            secondaryColor="inherit"
+          />
+        );
       }
       return null;
     };
@@ -111,37 +119,57 @@ const Item = ({ before: beforeProp, icon, ...rest }: ItemProps) => {
 };
 
 // BackItem
-const backItemPrimitiveStyles = styles => ({
-  ...styles,
-  itemBase: { ...styles.itemBase, cursor: 'default' },
-});
+const BackItem = ({ before: beforeProp, text, ...props }: ItemProps) => {
+  let before = beforeProp;
+  if (!before) {
+    before = () => (
+      <ArrowLeftCircleIcon
+        primaryColor="currentColor"
+        secondaryColor="inherit"
+      />
+    );
+  }
 
-const BackItem = ({ goTo, href, subText, id, index, text = 'Back' }: *) => (
-  <div css={{ display: 'flex', marginBottom: '8px' }}>
-    <div css={{ flexShrink: 0 }}>
-      <GoToItem
-        after={null}
-        goTo={goTo}
-        href={href}
-        text={<ArrowLeftIcon size="small" />}
-        id={id}
-        index={index}
-      />
+  return (
+    <div css={{ paddingBottom: gridSize * 2 }}>
+      <Item {...props} after={null} before={before} text={text || 'Back'} />
     </div>
-    <div css={{ flexGrow: 1 }}>
-      <ItemPrimitive
-        spacing="compact"
-        styles={backItemPrimitiveStyles}
-        subText={subText}
-        text={text}
-      />
-    </div>
-  </div>
-);
+  );
+};
 
 // Title
 const GroupHeading = ({ text, ...props }: GroupHeadingProps) => (
   <GroupHeadingComponent {...props}>{text}</GroupHeadingComponent>
+);
+
+// SectionHeading
+const SectionHeading = ({ text, ...props }: SectionHeadingProps) => (
+  <SectionHeadingComponent {...props}>{text}</SectionHeadingComponent>
+);
+
+// ContainerHeader
+const ContainerHeader = (props: *) => (
+  // -2px here to account for the extra space at the top of a MenuSection for
+  // the scroll hint.
+  <div css={{ paddingBottom: gridSize * 2.5 - 2 }}>
+    <ContainerHeaderComponent {...props} />
+  </div>
+);
+
+// Wordmark
+const Wordmark = ({ wordmark: WordmarkLogo }: WordmarkProps) => (
+  <div
+    css={{
+      lineHeight: 0,
+      // -2px here to account for the extra space at the top of a MenuSection
+      // for the scroll hint.
+      paddingBottom: gridSize * 3.5 - 2,
+      paddingLeft: gridSize * 2,
+      paddingTop: gridSize,
+    }}
+  >
+    <WordmarkLogo />
+  </div>
 );
 
 const Debug = (props: *) => (
@@ -177,14 +205,22 @@ const Group = ({
 
 // Section
 const Section = ({
+  alwaysShowScrollHint = false,
   customComponents,
   id,
   items,
   nestedGroupKey,
   parentId,
+  shouldGrow,
 }: SectionProps) =>
   items.length ? (
-    <SectionComponent id={id} key={nestedGroupKey} parentId={parentId}>
+    <SectionComponent
+      alwaysShowScrollHint={alwaysShowScrollHint}
+      id={id}
+      key={nestedGroupKey}
+      parentId={parentId}
+      shouldGrow={shouldGrow}
+    >
       {({ className }) => (
         <div className={className}>
           <ItemsRenderer items={items} customComponents={customComponents} />
@@ -193,19 +229,73 @@ const Section = ({
     </SectionComponent>
   ) : null;
 
+const HeaderSection = ({
+  customComponents,
+  id,
+  items,
+  nestedGroupKey,
+  parentId,
+}: SectionProps) =>
+  items.length ? (
+    <SectionComponent id={id} key={nestedGroupKey} parentId={parentId}>
+      {({ css }) => (
+        <div
+          css={{
+            ...css,
+            paddingTop: gridSize * 2.5,
+          }}
+        >
+          <ItemsRenderer items={items} customComponents={customComponents} />
+        </div>
+      )}
+    </SectionComponent>
+  ) : null;
+
+const MenuSection = ({
+  alwaysShowScrollHint = false,
+  customComponents,
+  id,
+  items,
+  nestedGroupKey,
+  parentId,
+}: SectionProps) => (
+  <SectionComponent
+    alwaysShowScrollHint={alwaysShowScrollHint}
+    id={id}
+    key={nestedGroupKey}
+    parentId={parentId}
+    shouldGrow
+  >
+    {({ css }) => (
+      <div
+        css={{
+          ...css,
+          paddingBottom: gridSize * 1.5,
+        }}
+      >
+        <ItemsRenderer items={items} customComponents={customComponents} />
+      </div>
+    )}
+  </SectionComponent>
+);
+
 const itemComponents = {
+  BackItem,
   ContainerHeader,
   Debug,
   GoToItem,
-  Item,
-  BackItem,
-  Separator,
   GroupHeading,
+  Item,
+  SectionHeading,
+  Separator,
   Switcher,
+  Wordmark,
 };
 
 const groupComponents = {
   Group,
+  HeaderSection,
+  MenuSection,
   Section,
 };
 
@@ -215,53 +305,21 @@ export const components = { ...itemComponents, ...groupComponents };
 /**
  * RENDERER
  */
-const ItemsRenderer = ({ customComponents = {}, items }: ItemsRendererProps) =>
-  items.map(({ type, ...props }, index) => {
-    const key =
-      typeof props.nestedGroupKey === 'string'
-        ? props.nestedGroupKey
-        : props.id;
+class ItemsRenderer extends PureComponent<ItemsRendererProps> {
+  render() {
+    const { customComponents = {}, items } = this.props;
 
-    // If they've provided a component as the type
-    if (typeof type === 'function') {
-      const CustomComponent = navigationItemClicked(
-        type,
-        type.displayName || 'inlineCustomComponent',
-      );
-      return (
-        <CustomComponent
-          key={key}
-          {...props}
-          index={index}
-          // We pass our in-built components through to custom components so
-          // they can wrap/render them if they want to.
-          components={components}
-          customComponents={customComponents}
-        />
-      );
-    }
+    return items.map(({ type, ...props }, index) => {
+      const key =
+        typeof props.nestedGroupKey === 'string'
+          ? props.nestedGroupKey
+          : props.id;
 
-    if (typeof type === 'string') {
-      // If they've provided a type which matches one of our in-built group
-      // components
-      if (groupComponents[type]) {
-        const G = groupComponents[type];
-        return <G key={key} {...props} customComponents={customComponents} />;
-      }
-
-      // If they've provided a type which matches one of our in-built item
-      // components.
-      if (itemComponents[type]) {
-        const I = itemComponents[type];
-        return <I key={key} {...props} index={index} />;
-      }
-
-      // If they've provided a type which matches one of their defined custom
-      // components.
-      if (customComponents[type]) {
+      // If they've provided a component as the type
+      if (typeof type === 'function') {
         const CustomComponent = navigationItemClicked(
-          customComponents[type],
           type,
+          type.displayName || 'inlineCustomComponent',
         );
         return (
           <CustomComponent
@@ -275,9 +333,46 @@ const ItemsRenderer = ({ customComponents = {}, items }: ItemsRendererProps) =>
           />
         );
       }
-    }
 
-    return <Debug key={key} type={type} {...props} />;
-  });
+      if (typeof type === 'string') {
+        // If they've provided a type which matches one of our in-built group
+        // components
+        if (groupComponents[type]) {
+          const G = groupComponents[type];
+          return <G key={key} {...props} customComponents={customComponents} />;
+        }
+
+        // If they've provided a type which matches one of our in-built item
+        // components.
+        if (itemComponents[type]) {
+          const I = itemComponents[type];
+          return <I key={key} {...props} index={index} />;
+        }
+
+        // If they've provided a type which matches one of their defined custom
+        // components.
+        if (customComponents[type]) {
+          const CustomComponent = navigationItemClicked(
+            customComponents[type],
+            type,
+          );
+          return (
+            <CustomComponent
+              key={key}
+              {...props}
+              index={index}
+              // We pass our in-built components through to custom components so
+              // they can wrap/render them if they want to.
+              components={components}
+              customComponents={customComponents}
+            />
+          );
+        }
+      }
+
+      return <Debug key={key} type={type} {...props} />;
+    });
+  }
+}
 
 export default ItemsRenderer;

@@ -1,14 +1,16 @@
 import * as React from 'react';
 import EditorCodeIcon from '@atlaskit/icon/glyph/editor/code';
 import { codeBlock } from '@atlaskit/editor-common';
+
 import { EditorPlugin } from '../../types';
+import WithPluginState from '../../ui/WithPluginState';
+import { focusStateKey } from '../base/pm-plugins/focus-handler';
+import { messages } from '../block-type/types';
 import { plugin, stateKey, ActiveCodeBlock } from './pm-plugins/main';
+import LanguagePicker from './ui/LanguagePicker';
 import keymap from './pm-plugins/keymaps';
 import ideUX from './pm-plugins/ide-ux';
-import LanguagePicker from './ui/LanguagePicker';
-import WithPluginState from '../../ui/WithPluginState';
 import { setNodeAttributes, deleteNodeAtPos } from './commands';
-import { focusStateKey } from '../base/pm-plugins/focus-handler';
 
 export interface CodeBlockOptions {
   enableKeybindingsForIDE?: boolean;
@@ -96,12 +98,14 @@ const codeBlockPlugin = (options: CodeBlockOptions = {}) =>
     },
 
     pluginsOptions: {
-      quickInsert: [
+      quickInsert: ({ formatMessage }) => [
         {
-          title: 'Code block',
+          title: formatMessage(messages.codeblock),
           priority: 700,
           keywords: ['javascript', 'typescript'],
-          icon: () => <EditorCodeIcon label="Code block" />,
+          icon: () => (
+            <EditorCodeIcon label={formatMessage(messages.codeblock)} />
+          ),
           action(insert, state) {
             const schema = state.schema;
             return insert(schema.nodes.codeBlock.createChecked());

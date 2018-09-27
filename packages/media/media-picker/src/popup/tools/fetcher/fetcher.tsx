@@ -6,13 +6,11 @@ import { getPreviewFromBlob } from '../../../util/getPreviewFromBlob';
 
 import {
   AuthHeaders,
-  CollectionItem,
   Service,
   ServiceAccountWithType,
   ServiceFolder,
   ServiceFolderItem,
   ServiceName,
-  SourceFile,
 } from '../../domain';
 
 import { mapAuthToAuthHeaders } from '../../domain/auth';
@@ -22,17 +20,7 @@ const NON_IMAGE_PREVIEW_WIDTH = 640;
 const NON_IMAGE_PREVIEW_HEIGHT = 480;
 const MAX_IMAGE_PREVIEW_SIZE = 4096; // This is needed to retrieve the max image dimensions even if the image is smaller/bigger to let Api know that we want the original size.
 
-export interface GetRecentFilesData {
-  readonly contents: CollectionItem[];
-  readonly nextInclusiveStartKey: string;
-}
-
 type Method = 'GET' | 'POST' | 'DELETE';
-
-export interface CopyFileDestination {
-  readonly auth: Auth;
-  readonly collection?: string;
-}
 
 export interface GiphyImage {
   url: string;
@@ -87,18 +75,7 @@ export interface Fetcher {
   getPreview(auth: Auth, fileId: string, collection?: string): Promise<Preview>;
   getImage(auth: Auth, fileId: string, collection?: string): Promise<Blob>;
   getServiceList(auth: Auth): Promise<ServiceAccountWithType[]>;
-  getRecentFiles(
-    auth: Auth,
-    limit: number,
-    sortDirection: string,
-    inclusiveStartKey?: string,
-  ): Promise<GetRecentFilesData>;
   unlinkCloudAccount(auth: Auth, accountId: string): Promise<void>;
-  copyFile(
-    sourceFile: SourceFile,
-    destination: CopyFileDestination,
-    collection?: string,
-  ): Promise<FileDetails>;
   fetchTrendingGifs(offset?: number): Promise<GiphyData>;
   fetchGifsRelevantToSearch(query: string, offset?: number): Promise<GiphyData>;
 }
@@ -160,7 +137,7 @@ export class MediaApiFetcher implements Fetcher {
             }, METADATA_POLL_INTERVAL_MS);
           }
         })
-        .catch(error => {
+        .catch(() => {
           // this._handleUploadError('metadata_fetch_fail', JSON.stringify(err));
           reject('metadata_fetch_fail');
         });
@@ -220,30 +197,6 @@ export class MediaApiFetcher implements Fetcher {
     ).then(({ data: services }) => flattenAccounts(services));
   }
 
-  getRecentFiles(
-    auth: Auth,
-    limit: number,
-    sortDirection: string,
-    inclusiveStartKey?: string,
-  ): Promise<GetRecentFilesData> {
-    return this.query<{ data: GetRecentFilesData }>(
-      `${fileStoreUrl(auth.baseUrl)}/collection/recents/items`,
-      'GET',
-      {
-        sortDirection,
-        limit,
-        inclusiveStartKey,
-      },
-      mapAuthToAuthHeaders(auth),
-    ).then(({ data }) => ({
-      ...data,
-      // This prevents showing "ghost" files in recents
-      contents: data.contents.filter(
-        item => item.details.size && item.details.size > 0,
-      ),
-    }));
-  }
-
   unlinkCloudAccount(auth: Auth, accountId: string): Promise<void> {
     return this.query(
       `${pickerUrl(auth.baseUrl)}/account/${accountId}`,
@@ -251,19 +204,6 @@ export class MediaApiFetcher implements Fetcher {
       {},
       mapAuthToAuthHeaders(auth),
     );
-  }
-
-  copyFile(
-    sourceFile: SourceFile,
-    { auth, collection }: CopyFileDestination,
-  ): Promise<FileDetails> {
-    const params = collection ? `?collection=${collection}` : '';
-    return this.query<{ data: FileDetails }>(
-      `${fileStoreUrl(auth.baseUrl)}/file/copy/withToken${params}`,
-      'POST',
-      JSON.stringify({ sourceFile }),
-      mapAuthToAuthHeaders(auth),
-    ).then(({ data: file }) => file);
   }
 
   fetchTrendingGifs = (offset?: number): Promise<GiphyData> => {

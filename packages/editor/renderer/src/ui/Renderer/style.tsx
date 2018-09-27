@@ -1,17 +1,15 @@
 import { HTMLAttributes, ComponentClass } from 'react';
 import styled from 'styled-components';
 
+import { fontSize } from '@atlaskit/theme';
 import {
   akColorB300,
   akColorB400,
   akColorN800,
-  akColorN40,
-  akColorN300,
   akColorN30A,
   akColorR50,
   akColorR500,
   akGridSizeUnitless,
-  akTypographyMixins,
   akFontFamily,
   akFontSizeDefault,
   akBorderRadius,
@@ -19,19 +17,47 @@ import {
 import {
   tableSharedStyle,
   columnLayoutSharedStyle,
+  editorFontSize,
+  blockquoteSharedStyles,
+  headingsSharedStyles,
+  panelSharedStyles,
+  ruleSharedStyles,
+  paragraphSharedStyles,
   mediaSingleSharedStyle,
+  blockNodesVerticalMargin,
+  akEditorTableToolbar,
+  akEditorTableBorder,
+  akEditorTableNumberColumnWidth,
 } from '@atlaskit/editor-common';
 import { RendererAppearance } from './';
 
 export interface Props {
   appearance?: RendererAppearance;
+  theme?: any;
 }
 
 const getLineHeight = ({ appearance }: Props) => {
   return `line-height: ${appearance === 'message' ? 20 : 24}px`;
 };
 
+const fullPageStyles = ({ theme, appearance }) => {
+  if (appearance !== 'full-page') {
+    return '';
+  }
+
+  return `
+    max-width: ${
+      theme && theme.layoutMaxWidth ? `${theme.layoutMaxWidth}px` : 'none'
+    };
+    margin: 0 auto;
+    padding: 0 32px;
+  `;
+};
+
 export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
+  ${fullPageStyles}
+
+  font-size: ${editorFontSize}px;
   ${getLineHeight};
   color: ${akColorN800};
   word-wrap: break-word;
@@ -50,30 +76,12 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     cursor: pointer;
   }
 
-  & blockquote {
-    margin: ${akGridSizeUnitless * 1.5}px 0 0 0;
-    color: ${akColorN300};
-    border-left: 2px solid ${akColorN40};
-    padding-left: ${akGridSizeUnitless * 2}px;
+  ${blockquoteSharedStyles};
+  ${headingsSharedStyles};
+  ${panelSharedStyles};
+  ${ruleSharedStyles};
+  ${paragraphSharedStyles};
 
-    & :first-child {
-      margin-top: 0;
-    }
-
-    & > :last-child {
-      display: inline-block;
-    }
-
-    &::before {
-      content: '';
-    }
-
-    &::after {
-      content: '';
-    }
-  }
-
-  & p,
   & .UnknownBlock {
     font-family: ${akFontFamily};
     font-size: ${akFontSizeDefault};
@@ -160,55 +168,7 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
   & .akTaskList > ol,
   & .akDecisionList > ol {
     list-style-type: none;
-  }
-
-  & h1 {
-    ${akTypographyMixins.h800 as any};
-    &:first-child {
-      margin-top: 0;
-    }
-  }
-
-  & h2 {
-    ${akTypographyMixins.h700 as any};
-    &:first-child {
-      margin-top: 0;
-    }
-  }
-
-  & h3 {
-    ${akTypographyMixins.h600 as any};
-    &:first-child {
-      margin-top: 0;
-    }
-  }
-
-  & h4 {
-    ${akTypographyMixins.h500 as any};
-    &:first-child {
-      margin-top: 0;
-    }
-  }
-
-  & h5 {
-    ${akTypographyMixins.h400 as any};
-    &:first-child {
-      margin-top: 0;
-    }
-  }
-
-  & h6 {
-    ${akTypographyMixins.h300 as any};
-    &:first-child {
-      margin-top: 0;
-    }
-  }
-
-  & hr {
-    border: none;
-    background-color: ${akColorN30A};
-    height: 2px;
-    border-radius: 1px;
+    font-size: ${fontSize}px;
   }
 
   & .renderer-image {
@@ -256,6 +216,49 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
       margin-left: 0;
       margin-right: 0;
     }
+
+    table[data-number-column='true'] {
+      counter-reset: row-number;
+
+      /*
+       * Only increment the row number if its a standard cell.
+       * When we have a header row that should count as the 0th row.
+       */
+      tr > td:first-of-type {
+        counter-increment: row-number;
+      }
+
+      /**
+       * Don't show the row increment on header rows.
+       */
+      tr:first-of-type {
+        th:first-of-type::before {
+          content: '';
+        }
+      }
+
+      tr td:first-of-type,
+      tr th:first-of-type {
+        position: relative;
+        padding-left: ${akEditorTableNumberColumnWidth + 10}px;
+      }
+
+      tr td:first-of-type::before,
+      tr th:first-of-type::before {
+        content: counter(row-number);
+        display: table-cell;
+        box-sizing: border-box;
+        text-align: center;
+        background-color: ${akEditorTableToolbar};
+        border-right: 1px solid ${akEditorTableBorder};
+        width: ${akEditorTableNumberColumnWidth}px;
+        height: 100%;
+        padding: 10px 2px;
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    }
   }
 
   /*
@@ -285,7 +288,8 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
   & .ApplicationCard,
   & .MediaGroup,
   & .CodeBlock {
-    margin-top: 12px;
+    margin-top: ${blockNodesVerticalMargin};
+
     &:first-child {
       margin-top: 0;
     }
@@ -299,9 +303,9 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
 
   ${columnLayoutSharedStyle};
   & [data-layout-type] {
-    margin: ${akGridSizeUnitless * 3}px 0;
+    margin-top: ${akGridSizeUnitless * 2.5}px;
     & > div + div {
-      padding-left: ${akGridSizeUnitless * 3}px;
+      margin-left: ${akGridSizeUnitless * 4}px;
     }
   }
 `;

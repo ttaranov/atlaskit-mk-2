@@ -7,16 +7,20 @@ import { Context, UrlPreview } from '@atlaskit/media-core';
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
 import {
-  Card,
   CardProps,
   UrlPreviewIdentifier,
   FileIdentifier,
   LinkIdentifier,
-  CardEvent,
-  CardView,
+  CardDimensions,
 } from '../../../src';
+
+import { CardView } from '../../../src/root/cardView';
+
+import { Card } from '../../../src/root/card';
+
 import { LazyContent } from '../../../src/utils/lazyContent';
 import { getDataURIFromFileState } from '../../../src/utils/getDataURIFromFileState';
+import { ExternalImageIdentifier } from '../../root';
 
 describe('Card', () => {
   const urlIdentifier: UrlPreviewIdentifier = {
@@ -138,19 +142,20 @@ describe('Card', () => {
     });
   });
 
-  it('should use the new context to create the subscription when context prop changes', () => {
+  it('should use the new context to create the subscription when context prop changes', async () => {
     const firstContext = fakeContext({});
     const secondContext = fakeContext({}) as any;
     const { component } = setup(firstContext);
     component.setProps({ context: secondContext, fileIdentifier });
 
     const { id, collectionName } = fileIdentifier;
+    await nextTick();
     expect(secondContext.getFile).toHaveBeenCalledTimes(1);
     expect(secondContext.getFile).toBeCalledWith(id, { collectionName });
     expect(component.find(CardView)).toHaveLength(1);
   });
 
-  it('should create a new subscription when the identifier changes', () => {
+  it('should create a new subscription when the identifier changes', async () => {
     const firstIdentifier: FileIdentifier = fileIdentifier;
     const secondIdentifier: LinkIdentifier = linkIdentifier;
     const dummyProvider = { observable: 'dummy provider ftw!' };
@@ -161,7 +166,7 @@ describe('Card', () => {
     component.setProps({ context, identifier: secondIdentifier });
 
     const { id, mediaItemType, collectionName } = secondIdentifier;
-
+    await nextTick();
     expect(context.getFile).toHaveBeenCalledTimes(1);
     expect(context.getMediaItemProvider).toHaveBeenCalledTimes(1);
     expect(context.getMediaItemProvider).toBeCalledWith(
@@ -171,6 +176,100 @@ describe('Card', () => {
     );
 
     expect(component.find(CardView)).toHaveLength(1);
+  });
+
+  it('should refetch the image when width changes to a higher value', async () => {
+    const initialDimensions: CardDimensions = {
+      width: 100,
+      height: 200,
+    };
+    const newDimensions: CardDimensions = {
+      ...initialDimensions,
+      width: 1000,
+    };
+    const context = createContextWithGetFile();
+    const { component } = setup(context, {
+      identifier: fileIdentifier,
+      dimensions: initialDimensions,
+    });
+    component.setProps({ context, dimensions: newDimensions });
+
+    await nextTick();
+    expect(context.getImage).toHaveBeenCalledTimes(2);
+    expect(context.getImage).toHaveBeenLastCalledWith('some-random-id', {
+      allowAnimated: true,
+      collection: 'some-collection-name',
+      mode: 'crop',
+      width: 1000,
+      height: 200,
+    });
+  });
+
+  it('should refetch the image when height changes to a higher value', async () => {
+    const initialDimensions: CardDimensions = {
+      width: 100,
+      height: 200,
+    };
+    const newDimensions: CardDimensions = {
+      ...initialDimensions,
+      height: 2000,
+    };
+    const context = createContextWithGetFile();
+    const { component } = setup(context, {
+      identifier: fileIdentifier,
+      dimensions: initialDimensions,
+    });
+    component.setProps({ context, dimensions: newDimensions });
+
+    await nextTick();
+    expect(context.getImage).toHaveBeenCalledTimes(2);
+    expect(context.getImage).toHaveBeenLastCalledWith('some-random-id', {
+      allowAnimated: true,
+      collection: 'some-collection-name',
+      mode: 'crop',
+      width: 100,
+      height: 2000,
+    });
+  });
+
+  it('should not refetch the image when width changes to a smaller value', async () => {
+    const initialDimensions: CardDimensions = {
+      width: 100,
+      height: 200,
+    };
+    const newDimensions: CardDimensions = {
+      ...initialDimensions,
+      width: 10,
+    };
+    const context = createContextWithGetFile();
+    const { component } = setup(context, {
+      identifier: fileIdentifier,
+      dimensions: initialDimensions,
+    });
+    component.setProps({ context, dimensions: newDimensions });
+
+    await nextTick();
+    expect(context.getImage).toHaveBeenCalledTimes(1);
+  });
+
+  it('should not refetch the image when height changes to a smaller value', async () => {
+    const initialDimensions: CardDimensions = {
+      width: 100,
+      height: 200,
+    };
+    const newDimensions: CardDimensions = {
+      ...initialDimensions,
+      height: 20,
+    };
+    const context = createContextWithGetFile();
+    const { component } = setup(context, {
+      identifier: fileIdentifier,
+      dimensions: initialDimensions,
+    });
+    component.setProps({ context, dimensions: newDimensions });
+
+    await nextTick();
+    expect(context.getImage).toHaveBeenCalledTimes(1);
   });
 
   it('should fire onClick when passed in as a prop and CardView fires onClick', () => {
@@ -196,7 +295,7 @@ describe('Card', () => {
 
   it('should pass onMouseEnter to CardView', () => {
     const context = fakeContext() as any;
-    const hoverHandler = (result: CardEvent) => {};
+    const hoverHandler = () => {};
     const card = shallow(
       <Card
         context={context}
@@ -210,7 +309,7 @@ describe('Card', () => {
 
   it('should use lazy load by default', () => {
     const context = fakeContext() as any;
-    const hoverHandler = (result: CardEvent) => {};
+    const hoverHandler = () => {};
     const card = shallow(
       <Card
         context={context}
@@ -223,7 +322,7 @@ describe('Card', () => {
 
   it('should not use lazy load when "isLazy" is false', () => {
     const context = fakeContext() as any;
-    const hoverHandler = (result: CardEvent) => {};
+    const hoverHandler = () => {};
     const card = shallow(
       <Card
         isLazy={false}
@@ -356,19 +455,33 @@ describe('Card', () => {
     expect(card.find(CardView).prop('disableOverlay')).toBe(true);
   });
 
-  it('should use context.getFile to fetch file data', () => {
+  it('should use context.getFile to fetch file data', async () => {
     const { context } = setup();
-
+    await nextTick();
     expect(context.getFile).toHaveBeenCalledTimes(1);
     expect(context.getFile).toBeCalledWith('some-random-id', {
       collectionName: 'some-collection-name',
     });
   });
 
+  it('should work with async identifier', async () => {
+    const identifier: FileIdentifier = {
+      id: Promise.resolve('file-id'),
+      mediaItemType: 'file',
+      collectionName: 'collection',
+    };
+    const { context } = setup(undefined, { identifier });
+    await nextTick();
+    expect(context.getFile).toHaveBeenCalledTimes(1);
+    expect(context.getFile).toBeCalledWith('file-id', {
+      collectionName: 'collection',
+    });
+  });
+
   it('should set dataURI only if its not present', async () => {
     const { component } = setup();
-    expect(getDataURIFromFileState).toHaveBeenCalledTimes(1);
     await nextTick();
+    expect(getDataURIFromFileState).toHaveBeenCalledTimes(1);
     expect(component.state('dataURI')).toEqual('some-data-uri');
   });
 
@@ -495,7 +608,7 @@ describe('Card', () => {
     await nextTick();
 
     expect(context.getImage).toHaveBeenCalledTimes(1);
-    expect(context.getImage).toBeCalledWith('123', {
+    expect(context.getImage).toBeCalledWith('some-random-id', {
       collection: 'some-collection-name',
       height: 125,
       width: 156,
@@ -514,7 +627,7 @@ describe('Card', () => {
     await nextTick();
     await nextTick();
 
-    expect(context.getImage).toBeCalledWith('123', {
+    expect(context.getImage).toBeCalledWith('some-random-id', {
       collection: 'some-collection-name',
       height: 32,
       width: 32,
@@ -534,7 +647,7 @@ describe('Card', () => {
     await nextTick();
 
     expect(context.getImage).toBeCalledWith(
-      '123',
+      'some-random-id',
       expect.objectContaining({
         mode: 'full-fit',
       }),
@@ -607,14 +720,71 @@ describe('Card', () => {
     expect(releaseDataURI).toHaveBeenCalledTimes(1);
   });
 
+  it('should pass status=processing if file size is 0', async () => {
+    const getImage = jest.fn();
+    const context = {
+      getFile: () =>
+        Observable.of({
+          id: '123',
+          status: 'processed',
+          mediaType: 'image',
+          mimeType: 'image/png',
+          name: 'file-name',
+          size: 0,
+        }),
+      getImage,
+    } as any;
+    const { component } = setup(context);
+
+    await nextTick();
+    component.update();
+
+    expect(component.find(CardView).prop('status')).toEqual('processing');
+  });
+
   describe('Retry', () => {
-    it('should pass down "onRetry" prop when an error occurs', () => {
+    it('should pass down "onRetry" prop when an error occurs', async () => {
       const { component, context } = setup();
       const cardViewOnError = component.find(CardView).prop('onRetry')!;
-
+      await nextTick();
       expect(context.getFile).toHaveBeenCalledTimes(1);
       cardViewOnError();
+      await nextTick();
       expect(context.getFile).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  describe('External image identifier', () => {
+    it('should work with external image identifier', () => {
+      const identifier: ExternalImageIdentifier = {
+        mediaItemType: 'external-image',
+        dataURI: 'bla',
+        name: 'some external image',
+      };
+
+      const { component } = setup(undefined, { identifier });
+
+      expect(component.find('CardView').prop('dataURI')).toEqual('bla');
+      expect(component.find('CardView').prop('metadata')).toEqual({
+        id: 'bla',
+        mediaType: 'image',
+        name: 'some external image',
+      });
+    });
+
+    it('should use dataURI as default name', () => {
+      const identifier: ExternalImageIdentifier = {
+        mediaItemType: 'external-image',
+        dataURI: 'bla',
+      };
+
+      const { component } = setup(undefined, { identifier });
+
+      expect(component.find('CardView').prop('metadata')).toEqual({
+        id: 'bla',
+        mediaType: 'image',
+        name: 'bla',
+      });
     });
   });
 });

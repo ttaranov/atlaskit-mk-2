@@ -4,22 +4,31 @@ import FabricAnalyticsListeners from '../../FabricAnalyticsListeners';
 import FabricElementsListener from '../../fabric/FabricElementsListener';
 import AtlaskitListener from '../../atlaskit/AtlaskitListener';
 import {
-  DummyComponentWithAnalytics,
-  DummyComponent,
+  createComponentWithAnalytics,
   IncorrectEventType,
-  DummyAtlaskitComponentWithAnalytics,
-  DummyNavigationComponentWithAnalytics,
+  DummyAtlaskitComponent,
+  DummyNavigationComponent,
+  DummyElementsComponent,
 } from '../../../examples/helpers';
-import { AnalyticsWebClient } from '../../types';
+import { AnalyticsWebClient, FabricChannel } from '../../types';
 import { LOG_LEVEL } from '../../helpers/logger';
-import { FabricChannel } from '../../index';
 import NavigationListener from '../../navigation/NavigationListener';
 
 declare const global: any;
 
+const DummyElementsCompWithAnalytics = createComponentWithAnalytics(
+  FabricChannel.elements,
+);
+const DummyAtlaskitCompWithAnalytics = createComponentWithAnalytics(
+  FabricChannel.atlaskit,
+);
+const DummyNavigationCompWithAnalytics = createComponentWithAnalytics(
+  FabricChannel.navigation,
+);
+const AtlaskitIncorrectEventType = IncorrectEventType(FabricChannel.atlaskit);
+
 describe('<FabricAnalyticsListeners />', () => {
   let analyticsWebClientMock: AnalyticsWebClient;
-  let clientPromise: Promise<AnalyticsWebClient>;
 
   beforeEach(() => {
     analyticsWebClientMock = {
@@ -28,7 +37,6 @@ describe('<FabricAnalyticsListeners />', () => {
       sendTrackEvent: jest.fn(),
       sendScreenEvent: jest.fn(),
     };
-    clientPromise = Promise.resolve(analyticsWebClientMock);
   });
 
   describe('FabricAnalyticsListener', () => {
@@ -38,7 +46,7 @@ describe('<FabricAnalyticsListeners />', () => {
         mount(
           // @ts-ignore
           <FabricAnalyticsListeners>
-            <DummyComponentWithAnalytics onClick={compOnClick} />
+            <DummyElementsCompWithAnalytics onClick={compOnClick} />
           </FabricAnalyticsListeners>,
         ),
       ).toThrow();
@@ -50,15 +58,15 @@ describe('<FabricAnalyticsListeners />', () => {
       const compOnClick = jest.fn();
       const component = mount(
         <FabricAnalyticsListeners
-          client={clientPromise}
+          client={analyticsWebClientMock}
           logLevel={LOG_LEVEL.ERROR}
         >
-          <IncorrectEventType onClick={compOnClick} />
+          <AtlaskitIncorrectEventType onClick={compOnClick} />
         </FabricAnalyticsListeners>,
       );
 
       const analyticsListener = component.find(FabricElementsListener);
-      const dummyComponent = analyticsListener.find(DummyComponent);
+      const dummyComponent = analyticsListener.find(DummyAtlaskitComponent);
       expect(dummyComponent).toHaveLength(1);
 
       dummyComponent.simulate('click');
@@ -69,7 +77,7 @@ describe('<FabricAnalyticsListeners />', () => {
 
     it('should render all listeners', () => {
       const component = shallow(
-        <FabricAnalyticsListeners client={clientPromise}>
+        <FabricAnalyticsListeners client={analyticsWebClientMock}>
           <div>Child</div>
         </FabricAnalyticsListeners>,
       );
@@ -79,7 +87,7 @@ describe('<FabricAnalyticsListeners />', () => {
 
     it('should render a FabricElementsListener', () => {
       const component = shallow(
-        <FabricAnalyticsListeners client={clientPromise}>
+        <FabricAnalyticsListeners client={analyticsWebClientMock}>
           <div>Child</div>
         </FabricAnalyticsListeners>,
       );
@@ -89,14 +97,14 @@ describe('<FabricAnalyticsListeners />', () => {
       expect(elementsListener).toHaveLength(1);
       expect(elementsListener.props()).toEqual(
         expect.objectContaining({
-          client: clientPromise,
+          client: analyticsWebClientMock,
         }),
       );
     });
 
     it('should render an AtlaskitListener', () => {
       const component = shallow(
-        <FabricAnalyticsListeners client={clientPromise}>
+        <FabricAnalyticsListeners client={analyticsWebClientMock}>
           <div>Child</div>
         </FabricAnalyticsListeners>,
       );
@@ -106,14 +114,14 @@ describe('<FabricAnalyticsListeners />', () => {
       expect(atlaskitListener).toHaveLength(1);
       expect(atlaskitListener.props()).toEqual(
         expect.objectContaining({
-          client: clientPromise,
+          client: analyticsWebClientMock,
         }),
       );
     });
 
     it('should render a NavigationListener', () => {
       const component = shallow(
-        <FabricAnalyticsListeners client={clientPromise}>
+        <FabricAnalyticsListeners client={analyticsWebClientMock}>
           <div>Child</div>
         </FabricAnalyticsListeners>,
       );
@@ -123,7 +131,7 @@ describe('<FabricAnalyticsListeners />', () => {
       expect(navigationListener).toHaveLength(1);
       expect(navigationListener.props()).toEqual(
         expect.objectContaining({
-          client: clientPromise,
+          client: analyticsWebClientMock,
         }),
       );
     });
@@ -131,7 +139,7 @@ describe('<FabricAnalyticsListeners />', () => {
     it('should exclude the AtlaskitListener if excludedChannels includes atlaskit', () => {
       const component = shallow(
         <FabricAnalyticsListeners
-          client={clientPromise}
+          client={analyticsWebClientMock}
           excludedChannels={[FabricChannel.atlaskit]}
         >
           <div>Child</div>
@@ -149,7 +157,7 @@ describe('<FabricAnalyticsListeners />', () => {
     it('should exclude the ElementsListener if excludedChannels includes elements', () => {
       const component = shallow(
         <FabricAnalyticsListeners
-          client={clientPromise}
+          client={analyticsWebClientMock}
           excludedChannels={[FabricChannel.elements]}
         >
           <div>Child</div>
@@ -167,7 +175,7 @@ describe('<FabricAnalyticsListeners />', () => {
     it('should exclude the NavigationListener if excludedChannels includes navigation', () => {
       const component = shallow(
         <FabricAnalyticsListeners
-          client={clientPromise}
+          client={analyticsWebClientMock}
           excludedChannels={[FabricChannel.navigation]}
         >
           <div>Child</div>
@@ -188,7 +196,7 @@ describe('<FabricAnalyticsListeners />', () => {
     it('should exclude both atlaskit and elements listeners if excludedChannels includes both their channels', () => {
       const component = shallow(
         <FabricAnalyticsListeners
-          client={clientPromise}
+          client={analyticsWebClientMock}
           excludedChannels={[FabricChannel.elements, FabricChannel.atlaskit]}
         >
           <div>Child</div>
@@ -207,7 +215,10 @@ describe('<FabricAnalyticsListeners />', () => {
 
     it('should not exclude any listeners if excludeChannels is empty', () => {
       const component = shallow(
-        <FabricAnalyticsListeners client={clientPromise} excludedChannels={[]}>
+        <FabricAnalyticsListeners
+          client={analyticsWebClientMock}
+          excludedChannels={[]}
+        >
           <div>Child</div>
         </FabricAnalyticsListeners>,
       );
@@ -225,22 +236,23 @@ describe('<FabricAnalyticsListeners />', () => {
     it('should listen and fire a UI event with analyticsWebClient', () => {
       const compOnClick = jest.fn();
       const component = mount(
-        <FabricAnalyticsListeners client={clientPromise}>
-          <DummyComponentWithAnalytics onClick={compOnClick} />
+        <FabricAnalyticsListeners client={analyticsWebClientMock}>
+          <DummyElementsCompWithAnalytics onClick={compOnClick} />
         </FabricAnalyticsListeners>,
       );
 
       const analyticsListener = component.find(FabricElementsListener);
-      expect(analyticsListener.props()).toHaveProperty('client', clientPromise);
+      expect(analyticsListener.props()).toHaveProperty(
+        'client',
+        analyticsWebClientMock,
+      );
 
-      const dummyComponent = analyticsListener.find(DummyComponent);
+      const dummyComponent = analyticsListener.find(DummyElementsComponent);
       expect(dummyComponent).toHaveLength(1);
 
       dummyComponent.simulate('click');
 
-      return clientPromise.then(client =>
-        expect(client.sendUIEvent).toBeCalled(),
-      );
+      expect(analyticsWebClientMock.sendUIEvent).toBeCalled();
     });
   });
 
@@ -248,22 +260,23 @@ describe('<FabricAnalyticsListeners />', () => {
     it('should listen and fire a UI event with analyticsWebClient', () => {
       const compOnClick = jest.fn();
       const component = mount(
-        <FabricAnalyticsListeners client={clientPromise}>
-          <DummyAtlaskitComponentWithAnalytics onClick={compOnClick} />
+        <FabricAnalyticsListeners client={analyticsWebClientMock}>
+          <DummyAtlaskitCompWithAnalytics onClick={compOnClick} />
         </FabricAnalyticsListeners>,
       );
 
       const analyticsListener = component.find(AtlaskitListener);
-      expect(analyticsListener.props()).toHaveProperty('client', clientPromise);
+      expect(analyticsListener.props()).toHaveProperty(
+        'client',
+        analyticsWebClientMock,
+      );
 
-      const dummyComponent = analyticsListener.find(DummyComponent);
+      const dummyComponent = analyticsListener.find(DummyAtlaskitComponent);
       expect(dummyComponent).toHaveLength(1);
 
       dummyComponent.simulate('click');
 
-      return clientPromise.then(client =>
-        expect(client.sendUIEvent).toBeCalled(),
-      );
+      expect(analyticsWebClientMock.sendUIEvent).toBeCalled();
     });
   });
 
@@ -271,22 +284,23 @@ describe('<FabricAnalyticsListeners />', () => {
     it('should listen and fire a UI event with analyticsWebClient', () => {
       const compOnClick = jest.fn();
       const component = mount(
-        <FabricAnalyticsListeners client={clientPromise}>
-          <DummyNavigationComponentWithAnalytics onClick={compOnClick} />
+        <FabricAnalyticsListeners client={analyticsWebClientMock}>
+          <DummyNavigationCompWithAnalytics onClick={compOnClick} />
         </FabricAnalyticsListeners>,
       );
 
       const analyticsListener = component.find(NavigationListener);
-      expect(analyticsListener.props()).toHaveProperty('client', clientPromise);
+      expect(analyticsListener.props()).toHaveProperty(
+        'client',
+        analyticsWebClientMock,
+      );
 
-      const dummyComponent = analyticsListener.find(DummyComponent);
+      const dummyComponent = analyticsListener.find(DummyNavigationComponent);
       expect(dummyComponent).toHaveLength(1);
 
       dummyComponent.simulate('click');
 
-      return clientPromise.then(client =>
-        expect(client.sendUIEvent).toBeCalled(),
-      );
+      expect(analyticsWebClientMock.sendUIEvent).toBeCalled();
     });
   });
 });

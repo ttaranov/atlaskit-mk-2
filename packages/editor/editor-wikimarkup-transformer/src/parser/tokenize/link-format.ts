@@ -1,12 +1,17 @@
 import { isSafeUrl } from '@atlaskit/editor-common';
 import { Node as PMNode, Schema } from 'prosemirror-model';
 import { parseString } from '../text';
-import { Token, TokenType } from './';
+import { Token, TokenType, TokenErrCallback } from './';
+import { hasAnyOfMarks } from '../utils/text';
 
 // [http://www.example.com] and [Example|http://www.example.com]
-const LINK_FORMAT_REGEXP = /^\[(?:(.*)\|)?(.+)\]/;
+const LINK_FORMAT_REGEXP = /^\[(?:([^\]\n\|]*)\|)?([^\]\n\|]+)\]/;
 
-export function linkFormat(input: string, schema: Schema): Token {
+export function linkFormat(
+  input: string,
+  schema: Schema,
+  tokenErrCallback?: TokenErrCallback,
+): Token {
   const output: PMNode[] = [];
   /**
    * The following token types will be ignored in parsing
@@ -35,12 +40,14 @@ export function linkFormat(input: string, schema: Schema): Token {
     textRepresentation.replace(/^mailto:/, ''),
     schema,
     ignoreTokenTypes,
+    tokenErrCallback,
   );
   const decoratedContent = rawContent.map(n => {
     const mark = schema.marks.link.create({
       href: url,
     });
-    if (n.type.name === 'text' && !hasLinkMark(n)) {
+    // We don't want to mix `code` mark with others
+    if (n.type.name === 'text' && !hasAnyOfMarks(n, ['link', 'code'])) {
       return n.mark([...n.marks, mark]);
     }
     return n;
@@ -68,12 +75,6 @@ function fallback(): Token {
     text: '[',
     length: 1,
   };
-}
-
-function hasLinkMark(node: PMNode) {
-  return node.marks.find(m => {
-    return m.type.name === 'link';
-  });
 }
 
 function hasTextNode(nodes: PMNode[]) {

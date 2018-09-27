@@ -1,43 +1,87 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`<FabricAnalyticsListeners /> FabricAnalyticsListener should render all listeners 1`] = `
-<NavigationListener
-  client={Promise {}}
+<MediaAnalyticsListener
+  client={
+    Object {
+      "sendOperationalEvent": [Function],
+      "sendScreenEvent": [Function],
+      "sendTrackEvent": [Function],
+      "sendUIEvent": [Function],
+    }
+  }
   logger={
     Logger {
       "logLevel": 4,
     }
   }
 >
-  <AtlaskitListener
-    client={Promise {}}
+  <NavigationListener
+    client={
+      Object {
+        "sendOperationalEvent": [Function],
+        "sendScreenEvent": [Function],
+        "sendTrackEvent": [Function],
+        "sendUIEvent": [Function],
+      }
+    }
     logger={
       Logger {
         "logLevel": 4,
       }
     }
   >
-    <FabricEditorListener
-      client={Promise {}}
+    <AtlaskitListener
+      client={
+        Object {
+          "sendOperationalEvent": [Function],
+          "sendScreenEvent": [Function],
+          "sendTrackEvent": [Function],
+          "sendUIEvent": [Function],
+        }
+      }
       logger={
         Logger {
           "logLevel": 4,
         }
       }
     >
-      <FabricElementsListener
-        client={Promise {}}
+      <FabricEditorListener
+        client={
+          Object {
+            "sendOperationalEvent": [Function],
+            "sendScreenEvent": [Function],
+            "sendTrackEvent": [Function],
+            "sendUIEvent": [Function],
+          }
+        }
         logger={
           Logger {
             "logLevel": 4,
           }
         }
       >
-        <div>
-          Child
-        </div>
-      </FabricElementsListener>
-    </FabricEditorListener>
-  </AtlaskitListener>
-</NavigationListener>
+        <FabricElementsListener
+          client={
+            Object {
+              "sendOperationalEvent": [Function],
+              "sendScreenEvent": [Function],
+              "sendTrackEvent": [Function],
+              "sendUIEvent": [Function],
+            }
+          }
+          logger={
+            Logger {
+              "logLevel": 4,
+            }
+          }
+        >
+          <div>
+            Child
+          </div>
+        </FabricElementsListener>
+      </FabricEditorListener>
+    </AtlaskitListener>
+  </NavigationListener>
+</MediaAnalyticsListener>
 `;

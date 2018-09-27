@@ -1,8 +1,7 @@
 {
-  "extends": "../../../tsconfig.editor.json",
+  "extends": "../../../tsconfig.base.json",
   "include": [
     "./src/**/*.ts",
-    "./__tests__/**/*.ts",
     "./docs/**/*.ts",
     "./examples/**/*.ts"
   ]

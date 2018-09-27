@@ -7,6 +7,7 @@ import {
   PubSubClient,
   DocumentResponse,
   StepResponse,
+  MixedResponse,
 } from './types';
 import { logger } from './';
 
@@ -69,13 +70,21 @@ export class Channel {
     });
 
     this.pubSubClient.join([`ari:cloud::fabric:collab-service/${docId}`]);
-    this.pubSubClient.on(
-      'avi:pf-collab-service:steps:created',
-      (event: string, payload: any) => {
-        logger('Received FPS-payload', { payload });
-        this.emit('data', payload);
-      },
-    );
+    this.pubSubClient
+      .on(
+        'avi:pf-collab-service:steps:created',
+        (event: string, payload: any) => {
+          logger('Received FPS-payload', { payload });
+          this.emit('data', payload);
+        },
+      )
+      .on(
+        'avi:pf-collab-service:telepointer:updated',
+        (event: string, payload: any) => {
+          logger('Received telepointer-payload', { payload });
+          this.emit('telepointer', payload);
+        },
+      );
 
     this.eventEmitter.emit('connected', {
       doc,
@@ -99,7 +108,7 @@ export class Channel {
   /**
    * Send steps to service
    */
-  async sendSteps(state: any, getState: () => any) {
+  async sendSteps(state: any, getState: () => any, localSteps?: any[]) {
     if (this.isSending) {
       this.debounce(getState);
       return;
@@ -112,7 +121,7 @@ export class Channel {
       return;
     }
 
-    const steps = (sendableSteps(state).steps || []).map(step => step.toJSON());
+    const { steps = [] } = localSteps || sendableSteps(state) || {}; // sendableSteps can return null..
 
     if (steps.length === 0) {
       logger(`No steps to send. Aborting.`);
@@ -147,21 +156,28 @@ export class Channel {
    * Get steps from version x to latest
    */
   async getSteps(version: number) {
-    try {
-      const response = await utils.requestService<DocumentResponse>(
-        this.config,
-        {
-          path: `document/${this.config.docId}/steps`,
-          queryParams: {
-            version,
-          },
-        },
-      );
+    return await utils.requestService<MixedResponse>(this.config, {
+      path: `document/${this.config.docId}/steps`,
+      queryParams: {
+        version,
+      },
+    });
+  }
 
-      this.emit('data', response);
-    } catch (err) {
-      logger(`Unable to get latest steps: ${err}`);
-    }
+  /**
+   * Send telepointer
+   */
+  async sendTelepointer(data: any) {
+    logger(`Sending telepointer`, data);
+
+    await utils.requestService<StepResponse>(this.config, {
+      path: `document/${this.config.docId}/telepointer`,
+      requestInit: {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      },
+    });
   }
 
   /**

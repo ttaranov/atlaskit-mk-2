@@ -3,10 +3,8 @@ import { Component } from 'react';
 import { EditorView } from 'prosemirror-view';
 import { isTableSelected, selectTable } from 'prosemirror-utils';
 import { Selection } from 'prosemirror-state';
-import { toolbarSize } from '../styles';
-import { CornerContainer, CornerButton } from './styles';
-import InsertColumnButton from '../ColumnControls/InsertColumnButton';
-import InsertRowButton from '../RowControls/InsertRowButton';
+import { tableToolbarSize } from '../../styles';
+import InsertButton from '../InsertButton';
 import { hoverTable, insertColumn, insertRow } from '../../../actions';
 import { getLineMarkerWidth } from '../utils';
 
@@ -37,39 +35,49 @@ export default class CornerControls extends Component<Props, any> {
     } = this.props;
     const tableHeight = tableRef.offsetHeight;
     return (
-      <CornerContainer
-        className={isTableSelected(state.selection) ? 'active' : ''}
+      <div
+        className={`pm-table-corner-controls ${
+          isTableSelected(state.selection) ? 'active' : ''
+        }`}
       >
-        <CornerButton
+        <button
+          type="button"
+          className={`pm-table-corner-button ${
+            isTableInDanger ? 'danger' : ''
+          }`}
           onClick={this.selectTable}
           onMouseOver={this.hoverTable}
           onMouseOut={this.props.clearHoverSelection}
-          className={isTableInDanger ? 'danger' : ''}
         />
         {!isHeaderColumnEnabled &&
           !isNumberColumnEnabled && (
-            <InsertColumnButton
+            <InsertButton
+              type="column"
               onClick={this.insertColumn}
-              lineMarkerHeight={tableHeight + toolbarSize}
+              insertLineStyle={{
+                height: tableHeight + tableToolbarSize,
+              }}
             />
           )}
         {!isHeaderRowEnabled && (
-          <InsertRowButton
-            style={{ top: 2 }}
+          <InsertButton
+            type="row"
             onClick={this.insertRow}
-            lineMarkerWidth={getLineMarkerWidth(
-              tableRef,
-              (tableRef.parentNode as HTMLElement).scrollLeft,
-            )}
+            insertLineStyle={{
+              width: getLineMarkerWidth(
+                tableRef,
+                (tableRef.parentNode as HTMLElement).scrollLeft,
+              ),
+            }}
           />
         )}
-      </CornerContainer>
+      </div>
     );
   }
 
   private selectTable = () => {
     const { state, dispatch } = this.props.editorView;
-    dispatch(selectTable(state.tr));
+    dispatch(selectTable(state.tr).setMeta('addToHistory', false));
   };
 
   private hoverTable = () => {

@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { md, Example, Props } from '@atlaskit/docs';
+import { md, code } from '@atlaskit/docs';
 
 export default md`
   # @atlaskit/media-avatar-picker
@@ -99,20 +98,28 @@ export default md`
 
   ### Usage Example
 
-  ~~~
-  import {AvatarPickerDialog, Avatar} from '@atlaskit/media-avatar-picker';
+  Below is an example of rendering an \`AvatarPickerDialog\`. The dialog should be wrapped in a \`ModalTransition\` component so it fades out when closed.
 
-  const avatars: Array<Avatar> = [{ dataURI:'some-data-uri' }];
+${code`
+import { AvatarPickerDialog, Avatar } from '@atlaskit/media-avatar-picker';
+import { ModalTransition } from '@atlaskit/modal-dialog';
 
-  <AvatarPickerDialog
-    avatars={avatars}
-    onImagePicked={(selectedImage, crop) => {
-      console.log(selectedImage.size, crop.x, crop.y, crop.size);
-    }}
-    onAvatarPicked={selectedAvatar =>
-      console.log(selectedAvatar.dataURI)
-    }
-    onCancel={() => /* we need to close the dialog... */}
-  />
-  ~~~
-`;
+const avatars: Array<Avatar> = [{ dataURI: 'some-data-uri' }];
+
+const App = ({ isOpen }) => (
+  <ModalTransition>
+    {isOpen && (
+      <AvatarPickerDialog
+        avatars={avatars}
+        onImagePicked={(selectedImage, crop) => {
+          console.log(selectedImage.size, crop.x, crop.y, crop.size);
+        }}
+        onAvatarPicked={selectedAvatar =>
+          console.log(selectedAvatar.dataURI)
+        }
+        onCancel={() => /* we need to close the dialog... */}
+      />
+    )}
+  </ModalTransition>
+);
+`}`;

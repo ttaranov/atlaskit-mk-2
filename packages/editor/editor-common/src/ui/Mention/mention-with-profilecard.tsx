@@ -75,7 +75,7 @@ export default class MentionWithProfileCard extends PureComponent<
     if (!component) {
       this.domNode = null;
     } else {
-      this.domNode = findDOMNode<HTMLElement>(component);
+      this.domNode = findDOMNode(component) as HTMLElement;
     }
   };
 

@@ -45,12 +45,13 @@ describe('importFiles middleware', () => {
   const defaultOptions: SetupOptions = {
     withSelectedItems: true,
   };
-
+  const upfrontId = Promise.resolve('1');
   const makeFileData = (index: number) => ({
     id: `some-selected-item-id-${index}`,
     name: `picture${index}.jpg`,
     mimeType: 'image/jpg',
     size: 42 + index,
+    upfrontId,
   });
 
   const getSendUploadEventPayloads = (
@@ -82,12 +83,13 @@ describe('importFiles middleware', () => {
       // Each LocalUpload will have a list of events with one of them being uploads-start,
       // and each of those events will contain all UploadFiles.
       for (let i = 1; i <= total; i++) {
-        const { id, name, mimeType: type, size } = makeFileData(i);
+        const { id, name, mimeType: type, size, upfrontId } = makeFileData(i);
         files.push({
           id,
           name,
           type,
           size,
+          upfrontId,
           creationDate: todayDate,
         });
       }
@@ -144,6 +146,7 @@ describe('importFiles middleware', () => {
         tenant,
         index,
         progress: null,
+        timeStarted: 0,
       };
     };
 
@@ -252,6 +255,7 @@ describe('importFiles middleware', () => {
             type: 'image/jpg',
             size: 43,
             creationDate: todayDate,
+            upfrontId,
           },
           {
             id: 'uuid2',
@@ -259,6 +263,7 @@ describe('importFiles middleware', () => {
             type: 'image/jpg',
             size: 45,
             creationDate: todayDate,
+            upfrontId,
           },
           {
             id: 'uuid3',
@@ -266,6 +271,7 @@ describe('importFiles middleware', () => {
             type: 'image/jpg',
             size: 46,
             creationDate: todayDate,
+            upfrontId,
           },
           {
             id: 'uuid4',
@@ -273,6 +279,7 @@ describe('importFiles middleware', () => {
             type: 'image/jpg',
             size: 47,
             creationDate: expect.any(Number),
+            upfrontId,
           },
         ]);
       });
@@ -301,6 +308,7 @@ describe('importFiles middleware', () => {
                 type: 'image/jpg',
                 size: 46,
                 creationDate: todayDate,
+                upfrontId,
               },
               RECENTS_COLLECTION,
             ),
@@ -316,7 +324,7 @@ describe('importFiles middleware', () => {
         return importFiles(eventEmitter, store, mockWsProvider).then(() => {
           const localUploadsFinalizedNum = 2;
           const recentFinalizedNum = 1;
-          const isFinalizeUploadCall = (call: [Action]) =>
+          const isFinalizeUploadCall = (call: Action[]) =>
             call[0].type === 'FINALIZE_UPLOAD';
 
           expect(
@@ -347,6 +355,7 @@ describe('importFiles middleware', () => {
                 type: 'image/jpg',
                 size: 46,
                 creationDate: todayDate,
+                upfrontId,
               },
               'uuid3',
               {

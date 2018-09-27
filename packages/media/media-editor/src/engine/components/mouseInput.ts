@@ -35,7 +35,7 @@ export class DefaultMouseInput implements MouseInput {
   private readonly getPosition: PositionCalculator;
   private isDragging: boolean;
   private isCapturingInput: boolean;
-  private initialPosition: ScreenPoint;
+  private initialPosition: ScreenPoint = { x: 0, y: 0 };
 
   constructor(
     private readonly inputArea: HTMLElement,

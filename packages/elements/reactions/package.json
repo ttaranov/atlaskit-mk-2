@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/reactions",
-  "version": "13.0.8",
+  "version": "14.0.0",
   "config": {
     "access": "public"
   },
@@ -14,12 +14,17 @@
     "src"
   ],
   "dependencies": {
+    "@atlaskit/analytics-namespaced-context": "^2.1.3",
+    "@atlaskit/analytics-next": "^3.0.5",
+    "@atlaskit/analytics-next-types": "^3.1.0",
+    "@atlaskit/analytics-viewer": "^0.1.0",
     "@atlaskit/button": "^9.0.6",
-    "@atlaskit/emoji": "^39.1.1",
+    "@atlaskit/emoji": "^42.0.0",
     "@atlaskit/icon": "^13.2.5",
     "@atlaskit/layer": "^5.0.4",
     "@atlaskit/theme": "^6.0.0",
     "@atlaskit/tooltip": "^12.0.9",
+    "@atlaskit/util-service-support": "^3.0.3",
     "classnames": "^2.2.5",
     "react-transition-group": "^2.2.1",
     "tslib": "^1.8.0",
@@ -49,14 +54,14 @@
   ],
   "license": "Apache-2.0",
   "devDependencies": {
-    "@atlaskit/docs": "^5.0.6",
+    "@atlaskit/docs": "^5.0.7",
     "@atlaskit/tooltip": "^12.0.9",
     "@atlaskit/util-common-test": "^2.4.2",
-    "@atlaskit/util-data-test": "^10.0.7",
+    "@atlaskit/util-data-test": "^10.0.10",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "enzyme-adapter-react-16": "https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.7.tgz",
     "es6-promise": "^4.0.5",
-    "fetch-mock": "^5.12.1",
+    "fetch-mock": "^6.5.2",
     "react": "^16.4.0",
     "whatwg-fetch": "^2.0.3"
   },

@@ -1,44 +1,89 @@
-import { ResultsGroup, JiraResultsMap } from '../../model/Result';
+import {
+  ResultsGroup,
+  JiraResultsMap,
+  GenericResultMap,
+  Result,
+} from '../../model/Result';
 import { take } from '../SearchResultsUtil';
 
-const MAX_ISSUES = 8;
-const MAX_PROJECTS = 2;
-const MAX_BOARDS = 2;
-const MAX_FILTERS = 2;
+const MAX_OBJECTS = 8;
+const MAX_CONTAINERS = 6;
+const MAX_PEOPLE = 3;
+
+const DEFAULT_JIRA_RESULTS_MAP: GenericResultMap = {
+  objects: [] as Result[],
+  containers: [],
+};
+
+export const sliceResults = (resultsMap: GenericResultMap | null) => {
+  const { objects, containers, people } = resultsMap
+    ? resultsMap
+    : DEFAULT_JIRA_RESULTS_MAP;
+
+  const [objectsToDisplay, peopleToDisplay, containersToDisplay] = [
+    { items: objects, count: MAX_OBJECTS },
+    { items: people, count: MAX_PEOPLE },
+    { items: containers, count: MAX_CONTAINERS },
+  ].map(({ items, count }) => take(items, count));
+
+  return {
+    objectsToDisplay,
+    containersToDisplay,
+    peopleToDisplay,
+  };
+};
 
 export const mapRecentResultsToUIGroups = (
-  recentlyViewedObjects: JiraResultsMap,
+  recentlyViewedObjects: JiraResultsMap | null,
 ): ResultsGroup[] => {
   const {
-    issues = [],
-    boards = [],
-    filters = [],
-    projects = [],
-  } = recentlyViewedObjects;
-
-  const [issuesToDisplay, ...others] = [
-    { items: issues, count: MAX_ISSUES },
-    { items: boards, count: MAX_BOARDS },
-    { items: filters, count: MAX_FILTERS },
-    { items: projects, count: MAX_PROJECTS },
-  ].map(({ items, count }) => take(items, count));
+    objectsToDisplay,
+    peopleToDisplay,
+    containersToDisplay,
+  } = sliceResults(recentlyViewedObjects);
 
   return [
     {
-      items: issuesToDisplay,
+      items: objectsToDisplay,
       key: 'issues',
       titleI18nId: 'global-search.jira.recent-issues-heading',
     },
     {
-      items: others.reduce((acc, arr) => [...acc, ...arr]),
+      items: containersToDisplay,
       key: 'containers',
       titleI18nId: 'global-search.jira.recent-containers',
+    },
+    {
+      items: peopleToDisplay,
+      key: 'people',
+      titleI18nId: 'global-search.jira.recent-people-heading',
     },
   ];
 };
 
 export const mapSearchResultsToUIGroups = (
-  searchResultsObjects: JiraResultsMap,
+  searchResultsObjects: JiraResultsMap | null,
 ): ResultsGroup[] => {
-  return [];
+  const {
+    objectsToDisplay,
+    peopleToDisplay,
+    containersToDisplay,
+  } = sliceResults(searchResultsObjects);
+  return [
+    {
+      items: objectsToDisplay,
+      key: 'issues',
+      titleI18nId: 'global-search.jira.seach-result-issues-heading',
+    },
+    {
+      items: containersToDisplay,
+      key: 'containers',
+      titleI18nId: 'global-search.jira.seach-result-containers-heading',
+    },
+    {
+      items: peopleToDisplay,
+      key: 'people',
+      titleI18nId: 'global-search.jira.seach-result-people-heading',
+    },
+  ];
 };

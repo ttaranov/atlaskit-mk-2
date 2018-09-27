@@ -7,6 +7,7 @@ import { EditorState } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
 import { runMacroAutoConvert } from '../macro';
 import { closeHistory } from 'prosemirror-history';
+import { getPasteSource } from './util';
 
 export const handlePasteIntoTaskAndDecision = (slice: Slice) => (
   state: EditorState,
@@ -38,7 +39,7 @@ export const handlePasteIntoTaskAndDecision = (slice: Slice) => (
   return false;
 };
 
-export const handlePasteAsPlainText = (slice: Slice) => (
+export const handlePasteAsPlainText = (slice: Slice, event: ClipboardEvent) => (
   state: EditorState,
   dispatch,
   view: EditorView,
@@ -52,7 +53,10 @@ export const handlePasteAsPlainText = (slice: Slice) => (
   const tr = closeHistory(state.tr);
   if ((view as any).shiftKey) {
     // <- using the same internal flag that prosemirror-view is using
-    analyticsService.trackEvent('atlassian.editor.paste.alt');
+    analyticsService.trackEvent('atlassian.editor.paste.alt', {
+      source: getPasteSource(event),
+    });
+
     tr.replaceSelection(slice);
     (state.storedMarks || []).forEach(mark => {
       tr.addMark(tr.selection.from, tr.selection.from + slice.size, mark);

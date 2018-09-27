@@ -18,25 +18,15 @@ export type GlobalItemPresentationProps = {
   size: Size,
 };
 
-export type GlobalItemRenderComponentProps = {
-  children: Node,
-  className: string,
-};
-
 type GlobalItemIconProps = {
   label: string,
   secondaryColor: 'inherit',
   size: 'large' | null,
 };
 
-export type GlobalItemProps = {
+type BaseItemProps = {
   /** A component to render over the GlobalItem in the the badge position. */
   badge?: ComponentType<GlobalItemPresentationProps>,
-  /** A custom component to render instead of the default wrapper component.
-   * Could used to render a router Link, for example. The component will be
-   * provided with a className and children, which should be passed on to the
-   * element you render. */
-  component?: ComponentType<GlobalItemRenderComponentProps>,
   /** An href which this Item links to. If this prop is provided the Item will
    * render as an <a>. */
   href?: string,
@@ -65,6 +55,19 @@ export type GlobalItemProps = {
   /** A string/Node to render in a tooltip which will appear when the GlobalItem
    * is hovered. */
   tooltip?: Node,
+};
+
+export type GlobalItemRenderComponentProps = BaseItemProps & {
+  children: Node,
+  className: string,
+};
+
+export type GlobalItemProps = BaseItemProps & {
+  /** A custom component to render instead of the default wrapper component.
+   * Could used to render a router Link, for example. The component will be
+   * provided with the standard globalItem props. It will also be provided className, children and onClick props which should be passed on to the
+   * element you render. */
+  component?: ComponentType<GlobalItemRenderComponentProps>,
 };
 
 export type GlobalItemPrimitiveProps = GlobalItemProps &

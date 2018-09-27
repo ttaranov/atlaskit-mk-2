@@ -1,5 +1,8 @@
 import { MediaApiConfig } from '@atlaskit/media-store';
-import { MediaCollectionItem } from '../collection';
+import {
+  MediaCollectionItem,
+  MediaCollectionFileItem,
+} from '../providers/types';
 import { Resources } from '../item';
 import createRequest from './util/createRequest';
 
@@ -108,8 +111,14 @@ export class MediaCollectionService implements CollectionService {
         details,
       },
     }).response.then(response => {
+      // This prevents showing "ghost" files
+      const contents = response.data.contents.filter(
+        (item: MediaCollectionFileItem) =>
+          item.details && item.details.size && item.details.size > 0,
+      );
+
       return {
-        items: response.data.contents.map(this.mapToMediaCollectionItem),
+        items: contents.map(this.mapToMediaCollectionItem),
         nextInclusiveStartKey: response.data.nextInclusiveStartKey,
       };
     });

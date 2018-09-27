@@ -8,12 +8,16 @@ describe('getFeatureFlag', () => {
   });
 
   it('should return the value if its present in the passed features flags', () => {
-    expect(getFeatureFlag('nextGen', { nextGen: true })).toBeTruthy();
-    expect(getFeatureFlag('nextGen', { nextGen: false })).toBeFalsy();
+    expect(
+      getFeatureFlag('customVideoPlayer', { customVideoPlayer: true }),
+    ).toBeTruthy();
+    expect(
+      getFeatureFlag('customVideoPlayer', { customVideoPlayer: false }),
+    ).toBeFalsy();
   });
 
   it('should use localStorage if flag is not passed', () => {
-    expect(getFeatureFlag('customVideoPlayer', { nextGen: true })).toBeFalsy();
+    expect(getFeatureFlag('customVideoPlayer', {})).toBeFalsy();
 
     (window as any).localStorage = {
       getItem(item: string) {
@@ -25,22 +29,21 @@ describe('getFeatureFlag', () => {
     };
 
     expect(getFeatureFlag('customVideoPlayer')).toBeTruthy();
-    expect(getFeatureFlag('customVideoPlayer', { nextGen: true })).toBeTruthy();
-    expect(getFeatureFlag('nextGen')).toBeFalsy();
+    expect(getFeatureFlag('customVideoPlayer', {})).toBeTruthy();
   });
 
   it('should return true if flag is false and dev override is true', () => {
     (window as any).localStorage = {
       getItem(item: string) {
-        if (item === 'MediaViewerNextGenEnabled') {
+        if (item === 'MediaViewerNextGenCustomVideoPlayer') {
           return 'true';
         }
         return null;
       },
     };
     expect(
-      getFeatureFlag('nextGen', {
-        nextGen: false,
+      getFeatureFlag('customVideoPlayer', {
+        customVideoPlayer: false,
       }),
     ).toBeTruthy();
   });
@@ -48,15 +51,15 @@ describe('getFeatureFlag', () => {
   it('should return false if flag is true and dev override is false', () => {
     (window as any).localStorage = {
       getItem(item: string) {
-        if (item === 'MediaViewerNextGenEnabled') {
+        if (item === 'MediaViewerNextGenCustomVideoPlayer') {
           return 'false';
         }
         return null;
       },
     };
     expect(
-      getFeatureFlag('nextGen', {
-        nextGen: true,
+      getFeatureFlag('customVideoPlayer', {
+        customVideoPlayer: true,
       }),
     ).toBeFalsy();
   });

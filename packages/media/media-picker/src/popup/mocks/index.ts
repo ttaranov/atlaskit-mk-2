@@ -22,7 +22,6 @@ export const mockState: State = {
   },
   accounts: [],
   recents: {
-    nextKey: 'some-recents-next-key',
     items: [],
   },
   selectedItems: [],
@@ -39,16 +38,19 @@ export const mockState: State = {
   remoteUploads: {},
   isCancelling: false,
   isUploading: false,
-  userAuthProvider: jest.fn().mockReturnValue(Promise.resolve({})),
   giphy: {
     imageCardModels: [],
     totalResultCount: 100,
   },
   onCancelUpload: jest.fn(),
-  context: ContextFactory.create({
+  tenantContext: ContextFactory.create({
+    authProvider: jest.fn(),
+  }),
+  userContext: ContextFactory.create({
     authProvider: jest.fn(),
   }),
   config: {},
+  deferredIdUpfronts: {},
 };
 
 export const mockStore = (state?: Partial<State>) => ({
@@ -56,7 +58,7 @@ export const mockStore = (state?: Partial<State>) => ({
   getState: jest.fn().mockReturnValue({
     ...mockState,
     ...state,
-  }),
+  }) as () => State,
   subscribe: jest.fn(),
   replaceReducer: jest.fn(),
 });

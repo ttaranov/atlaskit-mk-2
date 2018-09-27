@@ -22,7 +22,7 @@ export type RemoteResourceAuthConfig = {
 interface ResolveResponse {
   meta: {
     visibility: 'public' | 'restricted' | 'other' | 'not_found';
-    access: 'granted' | 'unauthorised' | 'forbidden';
+    access: 'granted' | 'unauthorized' | 'forbidden';
     auth: RemoteResourceAuthConfig[];
     definitionId: string;
   };
@@ -85,9 +85,9 @@ export function createObjectResolverServiceObservable(options: Options) {
                 data: json.data,
               };
 
-            case 'unauthorised':
+            case 'unauthorized':
               return {
-                status: 'unauthorised',
+                status: 'unauthorized',
                 provider,
                 services: json.meta.auth.map(convertAuthToService),
                 data: json.data,

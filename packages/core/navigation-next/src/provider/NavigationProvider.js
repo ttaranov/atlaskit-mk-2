@@ -2,28 +2,34 @@
 
 import React, { Component } from 'react';
 import { Provider } from 'unstated';
-import { UIController, ViewController } from '..';
+import { UIController, ViewController } from '../index';
 import { CONTENT_NAV_WIDTH } from '../common/constants';
-import type { UIControllerShape } from '../ui-controller/types';
+import type { UIControllerCacheShape } from '../ui-controller/types';
 import type { NavigationProviderProps } from './types';
 
 const LS_KEY = 'ATLASKIT_NAVIGATION_UI_STATE';
 
-function defaultGetCache(): UIControllerShape {
-  const stored = localStorage.getItem(LS_KEY);
-  return stored
-    ? JSON.parse(stored)
-    : {
-        isPeekHinting: false,
-        isPeeking: false,
-        isCollapsed: false,
-        productNavWidth: CONTENT_NAV_WIDTH,
-        isResizing: false,
-      };
+const DEFAULT_UI_STATE = {
+  isPeekHinting: false,
+  isPeeking: false,
+  isCollapsed: false,
+  productNavWidth: CONTENT_NAV_WIDTH,
+  isResizing: false,
+  isResizeDisabled: false,
+};
+
+function defaultGetCache(): UIControllerCacheShape {
+  if (typeof localStorage !== 'undefined') {
+    const stored = localStorage.getItem(LS_KEY);
+    return stored ? JSON.parse(stored) : DEFAULT_UI_STATE;
+  }
+  return DEFAULT_UI_STATE;
 }
 
-function defaultSetCache(state: UIControllerShape) {
-  localStorage.setItem(LS_KEY, JSON.stringify(state));
+function defaultSetCache(state: UIControllerCacheShape) {
+  if (typeof localStorage !== 'undefined') {
+    localStorage.setItem(LS_KEY, JSON.stringify(state));
+  }
 }
 
 export default class NavigationProvider extends Component<

@@ -8,7 +8,12 @@ import {
 } from '../../shared-variables';
 
 const doubleIfNotWebkit = width =>
-  width * (window.navigator.userAgent.indexOf('AppleWebKit') >= 0 ? 1 : 2);
+  width *
+  (typeof window !== 'undefined' &&
+  window.navigator &&
+  window.navigator.userAgent.indexOf('AppleWebKit') >= 0
+    ? 1
+    : 2);
 
 const ContainerNavigationChildrenWrapper = styled.div`
   display: flex;
