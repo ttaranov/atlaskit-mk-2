@@ -28,7 +28,7 @@
     "@atlaskit/build-utils": "^2.0.0",
     "@atlaskit/button": "^9.0.8",
     "@atlaskit/docs": "^5.0.2",
-    "@atlaskit/logo": "9.2.2",
+    "@atlaskit/logo": "^9.2.2",
     "@atlaskit/navigation": "^33.1.8",
     "@atlaskit/toggle": "^5.0.8",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
