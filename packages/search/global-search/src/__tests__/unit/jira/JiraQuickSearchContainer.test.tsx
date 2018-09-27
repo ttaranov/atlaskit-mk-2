@@ -25,7 +25,7 @@ import {
   mockNoResultJiraClient,
 } from '../mocks/_mockJiraClient';
 import { makeJiraObjectResult, makePersonResult } from '../_test-util';
-import { ContentType } from '../../../model/Result';
+import { ContentType, Result } from '../../../model/Result';
 import { Scope } from '../../../api/types';
 
 const issues = [
@@ -212,11 +212,10 @@ describe('Jira Quick Search Container', () => {
         searchResultData: people,
       });
 
-      const results = new Map();
+      const results = new Map<Scope, Result[]>();
       results.set(Scope.JiraIssue, issues);
       results.set(Scope.JiraBoardProjectFilter, boards);
       const crossProductSearchClient = mockCrossProductSearchClient({
-        experimentId: 'experiment-1',
         results,
       });
       const getSearchResults = renderAndGetProperty(
