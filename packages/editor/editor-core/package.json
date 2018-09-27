@@ -71,6 +71,7 @@
     "@types/prosemirror-tables": "^0.1.2",
     "@types/prosemirror-transform": "^1.0.0",
     "@types/prosemirror-view": "^1.0.0",
+    "@types/react-loadable": "^5.4.1",
     "ajv": "^4.11.3",
     "collapse-whitespace": "^1.1.6",
     "css-color-names": "0.0.4",
@@ -95,6 +96,7 @@
     "prosemirror-view": "^1.5.2",
     "raf-schd": "^2.1.0",
     "raf-stub": "^2.0.1",
+    "react-loadable": "^5.1.0",
     "tslib": "^1.8.0",
     "uuid": "^3.1.0"
   },
