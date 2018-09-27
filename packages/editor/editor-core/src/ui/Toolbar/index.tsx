@@ -70,8 +70,6 @@ export class ToolbarInner extends React.Component<
 > {
   constructor(props: ToolbarInnerProps) {
     super(props);
-    this.registerButton = this.registerButton.bind(this);
-    this.shouldFocus = this.shouldFocus.bind(this);
     this.state = {
       selectedButtonIndex: 1,
       registeredButtons: [],
@@ -96,7 +94,7 @@ export class ToolbarInner extends React.Component<
       nextProps.isReducedSpacing !== this.props.isToolbarReducedSpacing
     );
   }
-  shouldFocus() {
+  shouldFocus = () => {
     const pushed: boolean = this.state.arrowKeyPushed;
     if (pushed) {
       this.setState({
@@ -104,9 +102,9 @@ export class ToolbarInner extends React.Component<
       });
     }
     return pushed;
-  }
+  };
 
-  registerButton(button) {
+  registerButton = button => {
     this.setState(prevState => {
       const prevRegisteredButtons = prevState.registeredButtons;
       const allTitles = prevRegisteredButtons.map(b => b.props.title);
@@ -128,7 +126,7 @@ export class ToolbarInner extends React.Component<
       };
     });
     return null;
-  }
+  };
 
   private updateSelectedButton() {
     this.setState(prevState => ({
