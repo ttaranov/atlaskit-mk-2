@@ -4,7 +4,7 @@ import React, { PureComponent } from 'react';
 
 import { navigationItemClicked } from '../../common/analytics';
 import InteractionStateManager from '../InteractionStateManager';
-import { styleReducerNoOp } from '../../theme';
+import { styleReducerNoOp, withGlobalTheme } from '../../theme';
 import GlobalItemPrimitive from './primitives';
 import type { GlobalItemProps } from './types';
 
@@ -17,10 +17,21 @@ class GlobalItem extends PureComponent<GlobalItemProps> {
   renderItem = (state: *) => <GlobalItemPrimitive {...state} {...this.props} />;
 
   render() {
-    return <InteractionStateManager>{this.renderItem}</InteractionStateManager>;
+    const {
+      size,
+      theme: { mode },
+    } = this.props;
+    const { itemWrapper: itemWrapperStyles } = styleReducerNoOp(
+      mode.globalItem({ size }),
+    );
+    return (
+      <span css={itemWrapperStyles}>
+        <InteractionStateManager>{this.renderItem}</InteractionStateManager>
+      </span>
+    );
   }
 }
 
-export default navigationItemClicked(GlobalItem, 'globalItem');
+export default navigationItemClicked(withGlobalTheme(GlobalItem), 'globalItem');
 
 export type { GlobalItemProps };

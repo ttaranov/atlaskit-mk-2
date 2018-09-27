@@ -2,9 +2,7 @@
 
 import { mount } from 'enzyme';
 import React from 'react';
-import GlobalNavigationItemPrimitive, {
-  BaseGlobalNavigationItemPrimitive,
-} from '../../primitives';
+import GlobalNavigationItemPrimitive from '../../primitives';
 
 const theme = {
   mode: {
@@ -58,7 +56,7 @@ describe('GlobalNavigationItemPrimitive', () => {
     );
     const onClick = () => {};
     const wrapper = mount(
-      <BaseGlobalNavigationItemPrimitive
+      <GlobalNavigationItemPrimitive
         component={MyComponent}
         label="my-label"
         id="my-id"
