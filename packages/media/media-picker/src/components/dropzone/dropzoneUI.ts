@@ -3,6 +3,7 @@ import { wrapperStyles } from './styled';
 import { getAssetUrl } from '../../util/getAssetUrl';
 // TODO [MSW-385]: Remove template string and use React
 
+// TODO [i18n]: can we translate non React locales?
 export default parseHTML(
   `<div class="mediaPickerDropzone">
     <style>${wrapperStyles}</style>

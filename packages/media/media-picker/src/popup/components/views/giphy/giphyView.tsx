@@ -2,13 +2,12 @@ import * as React from 'react';
 import { Component, FormEvent } from 'react';
 import { connect } from 'react-redux';
 import * as debounce from 'lodash.debounce';
-
+import { FormattedMessage } from 'react-intl';
+import { messages } from '@atlaskit/media-ui';
 import FieldText from '@atlaskit/field-text';
 import Button from '@atlaskit/button';
 import Spinner from '@atlaskit/spinner';
 import { CardView } from '@atlaskit/media-card';
-import { InjectedIntlProps } from 'react-intl';
-import { messages } from '@atlaskit/media-ui';
 import { BricksLayout } from './bricksGrid';
 import { fileClick } from '../../../actions/fileClick';
 import { setUpfrontIdDeferred } from '../../../actions/setUpfrontIdDeferred';
@@ -54,9 +53,7 @@ export interface GiphyViewDispatchProps {
   ) => void;
 }
 
-export type GiphyViewProps = GiphyViewStateProps &
-  GiphyViewDispatchProps &
-  InjectedIntlProps;
+export type GiphyViewProps = GiphyViewStateProps & GiphyViewDispatchProps;
 
 export interface GiphyViewState {
   query: string;
@@ -87,16 +84,13 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
 
   render(): JSX.Element {
     const { query } = this.state;
-    const {
-      intl: { formatMessage },
-    } = this.props;
 
     return (
       <Container id="mediapicker-giphy-container">
         <Title>GIPHY</Title>
         <FieldText
           label=""
-          placeholder={formatMessage(messages.search_all_gifs)}
+          placeholder="Search all the GIFs!" // TODO [i18n]
           onChange={this.searchChangeHandler}
           shouldFitContainer={true}
           value={query}
@@ -124,13 +118,20 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
     return (
       <WarningContainer>
         <WarningIconWrapper>{errorIcon}</WarningIconWrapper>
-        <WarningHeading>Ouch! We could not retrieve any GIFs</WarningHeading>
-        <WarningSuggestion>Check your network connection</WarningSuggestion>
-        <Button onClick={this.handleRetryButtonClick}>Try again</Button>
+        <WarningHeading>
+          <FormattedMessage {...messages.cant_retrieve_gifs} />
+        </WarningHeading>
+        <WarningSuggestion>
+          <FormattedMessage {...messages.check_your_network} />
+        </WarningSuggestion>
+        <Button onClick={this.handleRetryButtonClick}>
+          <FormattedMessage {...messages.try_again} />
+        </Button>
       </WarningContainer>
     );
   };
 
+  // TODO [i18n]: WarningSuggestion text
   private renderEmptyState = () => {
     const { query } = this.state;
 
@@ -138,7 +139,9 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
     return (
       <WarningContainer>
         <WarningImage src="https://media1.giphy.com/media/10YK5Hh53nC3dK/200w.gif" />
-        <WarningHeading>Hello? Was it me you're looking for?</WarningHeading>
+        <WarningHeading>
+          <FormattedMessage {...messages.no_gifs_found} />
+        </WarningHeading>
         <WarningSuggestion>
           We couldn't find anything for "{query}"
         </WarningSuggestion>
@@ -220,7 +223,7 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
           isDisabled={isLoading}
           iconAfter={iconAfter}
         >
-          Load more GIFs
+          <FormattedMessage {...messages.load_more_gifs} />
         </Button>
       </ButtonContainer>
     );
