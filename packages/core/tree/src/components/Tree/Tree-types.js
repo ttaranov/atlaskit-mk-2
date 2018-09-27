@@ -23,6 +23,7 @@ export type Props = {|
   renderItem: RenderItemParams => React.Node,
   offsetPerLevel: number,
   isDragEnabled: boolean,
+  isNestingEnabled: boolean,
 |};
 
 export type State = {|

@@ -36,6 +36,7 @@ export default class Tree extends Component<Props, State> {
     renderItem: noop,
     offsetPerLevel: 35,
     isDragEnabled: false,
+    isNestingEnabled: false,
   };
 
   state = {
@@ -235,6 +236,7 @@ export default class Tree extends Component<Props, State> {
   };
 
   render() {
+    const { isNestingEnabled } = this.props;
     const renderedItems = this.renderItems();
 
     return (
@@ -243,7 +245,7 @@ export default class Tree extends Component<Props, State> {
         onDragEnd={this.onDragEnd}
         onDragUpdate={this.onDragUpdate}
       >
-        <Droppable droppableId="list" isCombineEnabled>
+        <Droppable droppableId="list" isCombineEnabled={isNestingEnabled}>
           {(provided: DroppableProvided) => {
             const finalProvided: DroppableProvided = this.patchDroppableProvided(
               provided,
