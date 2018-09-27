@@ -19,7 +19,7 @@ export default () => (
     </SectionMessage>
     <div>
       <span aria-hidden="true">TL;DR</span>
-      <AssitiveText>too long did not read</AssitiveText>
+      <AssitiveText>Too long; didn't read</AssitiveText>
     </div>
   </div>
 );
