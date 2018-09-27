@@ -28,7 +28,7 @@ import {
   EmptyViewWithFixedHeight,
 } from '../styled/EmptyBody';
 
-import { Table, Caption } from '../styled/DynamicTable';
+import { Table, Caption, PaginationWrapper } from '../styled/DynamicTable';
 
 import type {
   StatelessProps as Props,
@@ -226,12 +226,14 @@ class DynamicTable extends Component<Props, State> {
           </Table>
         </LoadingContainerAdvanced>
         {!totalPages ? null : (
-          <Pagination
-            value={page}
-            onChange={this.onSetPage}
-            total={totalPages}
-            i18n={paginationi18n}
-          />
+          <PaginationWrapper>
+            <Pagination
+              value={page}
+              onChange={this.onSetPage}
+              total={totalPages}
+              i18n={paginationi18n}
+            />
+          </PaginationWrapper>
         )}
         {!rowsExist &&
           emptyBody && (
