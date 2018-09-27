@@ -115,6 +115,7 @@ class GlobalNavigationItemPrimitive extends Component<*> {
         delay={0}
         content={isSelected ? undefined : tooltip}
         position="right"
+        hideTooltipOnClick
         hideTooltipOnMouseDown
       >
         <div className={css({ display: 'inline-block' })}>
