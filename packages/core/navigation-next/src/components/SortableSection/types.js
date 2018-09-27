@@ -1,29 +1,49 @@
 // @flow
 
-import type { DropResult } from 'react-beautiful-dnd';
+import type {
+  DropResult,
+  OnDragStartHook,
+  OnDragUpdateHook,
+  OnDragEndHook,
+} from 'react-beautiful-dnd';
 
-import type { SectionProps } from '../Section/types';
+import type { SectionProps, SectionChildren } from '../Section/types';
 import type { GroupProps } from '../Group/types';
 import type { ItemProps } from '../Item/types';
 
-type Items = {
+type Group = GroupProps & {
+  itemIds: Array<string>,
+};
+export type ItemsType = {
   [id: string]: ItemProps,
 };
-type Groups = {
-  [id: string]: GroupProps & {
-    itemIds: Array<string>,
-  },
-};
+export type GroupsType = Array<Group>;
 
-export type SortableSectionProps = SectionProps & {
-  /** The group ID, used to drag between groups */
-  id: string,
-  /** Objects that represent items to be rendered */
-  items: Items,
-  /** Objects that represent groups to be rendered */
-  groups: Groups,
-  /** The order to render the groups */
-  groupOrder: Array<string>,
-  /** Function called on `dragEnd` event. */
-  onDragEnd: (Groups, DropResult) => mixed,
+type SectionPropsNoChildren = $Diff<
+  SectionProps,
+  { children: SectionChildren },
+>;
+
+export type SortableSectionProps = SectionPropsNoChildren & {
+  /**
+    Object of objects representing item props, will be rendered by the group
+    with their matching `itemId`.
+  */
+  items: ItemsType,
+  /**
+    Array of objects representing group props with an additional `itemIds` array.
+  */
+  groups: GroupsType,
+  /**
+    A helper function. The applicable groups' `itemIds` arrays are re-sorted and
+    the new `Groups` provided as the first argument. Access to the original
+    `DropResult` object is available as the second argument.
+
+    If you need to handle sorting within your app instead use the `onDragEnd`
+    property.
+  */
+  onChange?: (GroupsType, DropResult) => mixed,
+  onDragStart?: OnDragStartHook,
+  onDragUpdate?: OnDragUpdateHook,
+  onDragEnd?: OnDragEndHook,
 };

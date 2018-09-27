@@ -169,6 +169,27 @@ ${(
 
 ${<Hr />}
 
+${<H>SortableSection</H>}
+
+Adds the ability to drag-and-drop items within a section.
+
+${(
+    <Example
+      Component={require('../examples/60-sortable-section').default}
+      title="SortableSection"
+      source={require('!!raw-loader!../examples/60-sortable-section')}
+    />
+  )}
+
+${(
+    <Props
+      heading="SortableSection props"
+      props={require('!!extract-react-types-loader!../src/components/SortableSection')}
+    />
+  )}
+
+${<Hr />}
+
 ${<H>SectionHeading</H>}
 
 The SectionHeading is meant to be used at the top of a nested menu section. There should only be one of these used per view, as opposed to GroupHeadings.

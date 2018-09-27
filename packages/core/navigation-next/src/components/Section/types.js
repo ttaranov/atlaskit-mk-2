@@ -9,6 +9,8 @@ export type RenderProvided = {
   css: {},
 };
 
+export type SectionChildren = RenderProvided => Node;
+
 export type SectionPresentationProps = {
   /** Whether to always render the shadow at the top of the section to indicate
    * that the container can be scrolled up. This can be used to create a
@@ -27,7 +29,7 @@ export type ConnectedSectionProps = SectionPresentationProps & {
   /** A component to render the children of this section. It will be provided
    * with a styles object which should be applied to the outermost element to
    * enable transition animations. */
-  children: RenderProvided => Node,
+  children: SectionChildren,
   /** Whether the section should grow the fill the available space within the
    * navigation area. Sections that grow will also scroll internally. */
   shouldGrow: boolean,
