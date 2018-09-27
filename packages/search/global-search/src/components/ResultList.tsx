@@ -40,6 +40,7 @@ export default class ResultList extends React.Component<Props> {
         containerId: result.containerId,
         experimentId: result.experimentId,
         ...this.props.analyticsData,
+        contentType: result.contentType,
       };
 
       switch (resultType) {
@@ -56,10 +57,7 @@ export default class ResultList extends React.Component<Props> {
               contentType={confluenceResult.contentType}
               containerName={confluenceResult.containerName}
               avatar={getAvatarForConfluenceObjectResult(confluenceResult)}
-              analyticsData={{
-                ...analyticsData,
-                contentType: confluenceResult.contentType,
-              }}
+              analyticsData={analyticsData}
             />
           );
         }
@@ -76,6 +74,7 @@ export default class ResultList extends React.Component<Props> {
               objectKey={jiraResult.objectKey}
               containerName={jiraResult.containerName}
               {...avatarData}
+              contentType={jiraResult.contentType}
               analyticsData={analyticsData}
             />
           );
@@ -91,6 +90,7 @@ export default class ResultList extends React.Component<Props> {
               href={containerResult.href}
               type={containerResult.analyticsType}
               avatarUrl={containerResult.avatarUrl}
+              contentType={containerResult.contentType}
               analyticsData={analyticsData}
             />
           );

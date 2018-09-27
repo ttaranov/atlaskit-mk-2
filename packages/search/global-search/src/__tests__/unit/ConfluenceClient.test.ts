@@ -151,6 +151,7 @@ describe('ConfluenceClient', () => {
           avatarUrl: MOCK_SPACE.icon,
           analyticsType: AnalyticsType.RecentConfluence,
           resultType: ResultType.GenericContainerResult,
+          contentType: ContentType.ConfluenceSpace,
         },
         {
           resultId: MOCK_SPACE.id,
@@ -161,6 +162,7 @@ describe('ConfluenceClient', () => {
           avatarUrl: MOCK_SPACE.icon,
           analyticsType: AnalyticsType.RecentConfluence,
           resultType: ResultType.GenericContainerResult,
+          contentType: ContentType.ConfluenceSpace,
         },
       ];
 

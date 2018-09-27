@@ -1,5 +1,8 @@
 # @atlaskit/media-ui
 
+## 6.0.0
+- [major] Add I18n support to media-card [dae7792](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dae7792)
+
 ## 5.2.0
 - [minor] Added `isSelected` to the `Card` component (inline resolved view) [6666d82](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6666d82)
 

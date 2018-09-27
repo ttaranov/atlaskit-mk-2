@@ -1,5 +1,10 @@
 # @atlaskit/editor-common
 
+## 17.0.5
+- [patch] Updated dependencies [dae7792](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dae7792)
+  - @atlaskit/media-core@24.0.2
+  - @atlaskit/media-card@37.0.0
+
 ## 17.0.4
 - [patch] ED-5313 add width to mediaSingle [3f8c0ee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3f8c0ee)
 

@@ -11,37 +11,26 @@ export default class InteractionStateManager extends Component<
   state = {
     isActive: false,
     isHover: false,
-    isSelected: false,
   };
 
   onMouseDown = (e: Event) => {
     e.preventDefault();
-    this.setState(() => ({ isActive: true }));
+    this.setState({ isActive: true });
   };
 
   onMouseUp = (e: Event) => {
     e.preventDefault();
-    this.setState(state => ({
-      isActive: false,
-      isSelected: state.isActive,
-      isHover: false,
-    }));
+    this.setState({ isActive: false, isHover: true });
   };
 
   onMouseOver = () => {
-    if (!this.state.isHover && !this.state.isSelected) {
-      this.setState(() => ({ isHover: true }));
-    } else if (this.state.isSelected && !this.state.isActive) {
-      this.setState(() => ({ isActive: false }));
+    if (!this.state.isHover) {
+      this.setState({ isHover: true });
     }
   };
 
   onMouseLeave = () => {
-    this.setState(() => ({
-      isActive: false,
-      isHover: false,
-      isSelected: false,
-    }));
+    this.setState({ isActive: false, isHover: false });
   };
 
   render() {

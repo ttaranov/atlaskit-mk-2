@@ -1,5 +1,11 @@
 # @atlaskit/media-viewer
 
+## 21.0.2
+- [patch] Updated dependencies [dae7792](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dae7792)
+  - @atlaskit/media-core@24.0.2
+  - @atlaskit/media-test-helpers@18.2.0
+  - @atlaskit/media-ui@6.0.0
+
 ## 21.0.1
 - [patch] Fix rxjs imports to only import what's needed [2e0ce2b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e0ce2b)
 

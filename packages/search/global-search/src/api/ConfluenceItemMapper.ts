@@ -53,6 +53,7 @@ function mapConfluenceItemToResultSpace(
     href: `${href.pathname()}?${href.query()}`,
     analyticsType: AnalyticsType.ResultConfluence,
     resultType: ResultType.GenericContainerResult,
+    contentType: ContentType.ConfluenceSpace,
     experimentId: experimentId,
   };
 }

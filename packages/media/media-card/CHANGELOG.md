@@ -1,5 +1,8 @@
 # @atlaskit/media-image
 
+## 37.0.0
+- [major] Add I18n support to media-card [dae7792](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dae7792)
+
 ## 36.1.1
 - [patch] Fix rxjs imports to only import what's needed [2e0ce2b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e0ce2b)
 

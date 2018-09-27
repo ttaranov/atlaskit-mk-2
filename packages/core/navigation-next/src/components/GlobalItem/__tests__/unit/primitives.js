@@ -136,17 +136,4 @@ describe('GlobalNavigationItemPrimitive', () => {
     );
     expect(wrapper.find('Tooltip').props().content).toBe(undefined);
   });
-
-  it('should render a tooltip without text if element is active', () => {
-    const wrapper = mount(
-      <GlobalNavigationItemPrimitive
-        component={() => <button id="customComponent" />}
-        styles={styles}
-        theme={theme}
-        tooltip="Test tooltip"
-        isActive
-      />,
-    );
-    expect(wrapper.find('Tooltip').props().content).toBe(undefined);
-  });
 });

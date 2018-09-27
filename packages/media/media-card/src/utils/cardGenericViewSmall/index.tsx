@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Component } from 'react';
+import { Component, ReactNode } from 'react';
 import * as cx from 'classnames';
 import { MediaType, MediaItemType } from '@atlaskit/media-core';
 import { ErrorIcon } from '../../utils';
@@ -29,7 +29,7 @@ export interface CardGenericViewSmallProps {
   thumbnailUrl?: string;
   loading?: boolean;
   actions?: Array<CardAction>;
-  error?: string;
+  error?: ReactNode;
   onRetry?: () => void;
 }
 

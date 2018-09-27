@@ -14,7 +14,7 @@ import {
 import { Scope } from '../../api/types';
 import { Result, ResultsWithTiming } from '../../model/Result';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
-import { SearchScreenCounter, ScreenCounter } from '../../util/ScreenCounter';
+import { SearchScreenCounter } from '../../util/ScreenCounter';
 import {
   LinkComponent,
   ReferralContextIdentifiers,
@@ -59,8 +59,8 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   Props & InjectedIntlProps
 > {
   screenCounters = {
-    preQueryScreenCounter: new SearchScreenCounter() as ScreenCounter,
-    postQueryScreenCounter: new SearchScreenCounter() as ScreenCounter,
+    preQueryScreenCounter: new SearchScreenCounter(),
+    postQueryScreenCounter: new SearchScreenCounter(),
   };
 
   handleSearchSubmit = ({ target }) => {
@@ -149,9 +149,9 @@ export class ConfluenceQuickSearchContainer extends React.Component<
   };
 
   getSearchResults = (
-    query,
-    sessionId,
-    startTime,
+    query: string,
+    sessionId: string,
+    startTime: number,
   ): Promise<ResultsWithTiming> => {
     const {
       useAggregatorForConfluenceObjects,
@@ -180,25 +180,28 @@ export class ConfluenceQuickSearchContainer extends React.Component<
           this.handleSearchErrorAnalyticsThunk('search-people'),
         );
 
-    const mapPromiseToPerformanceTime = p =>
+    const mapPromiseToPerformanceTime = (p: Promise<any>) =>
       p.then(() => performanceNow() - startTime);
 
-    const timingPromise = [
+    return Promise.all<
+      Result[],
+      CrossProductSearchResults,
+      Result[],
+      number,
+      number,
+      number
+    >([
       quickNavPromise,
       confXpSearchPromise,
       searchPeoplePromise,
-    ].map(mapPromiseToPerformanceTime);
-
-    return Promise.all([
-      quickNavPromise,
-      confXpSearchPromise,
-      searchPeoplePromise,
-      ...timingPromise,
+      mapPromiseToPerformanceTime(quickNavPromise),
+      mapPromiseToPerformanceTime(confXpSearchPromise),
+      mapPromiseToPerformanceTime(searchPeoplePromise),
     ]).then(
       ([
-        objectResults = [],
-        xpsearchResults = EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE,
-        peopleResults = [],
+        objectResults,
+        xpsearchResults,
+        peopleResults,
         quickNavElapsedMs,
         confSearchElapsedMs,
         peopleElapsedMs,
@@ -224,7 +227,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     );
   };
 
-  getRecentItems = sessionId => {
+  getRecentItems = (sessionId: string): Promise<ResultsWithTiming> => {
     const { confluenceClient, peopleSearchClient } = this.props;
 
     const recentActivityPromisesMap = {
@@ -233,20 +236,21 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       'recent-people': peopleSearchClient.getRecentPeople(),
     };
 
-    const recentActivityPromises = Object.keys(recentActivityPromisesMap).map(
-      key =>
-        handlePromiseError(
-          recentActivityPromisesMap[key],
-          [],
-          this.handleSearchErrorAnalyticsThunk(key),
-        ),
+    const recentActivityPromises: Promise<Result[]>[] = Object.keys(
+      recentActivityPromisesMap,
+    ).map(key =>
+      handlePromiseError(
+        recentActivityPromisesMap[key],
+        [],
+        this.handleSearchErrorAnalyticsThunk(key),
+      ),
     );
 
     return Promise.all(recentActivityPromises).then(
       ([
-        recentlyViewedPages = [],
-        recentlyViewedSpaces = [],
-        recentlyInteractedPeople = [],
+        recentlyViewedPages,
+        recentlyViewedSpaces,
+        recentlyInteractedPeople,
       ]) => ({
         results: {
           objects: recentlyViewedPages,
