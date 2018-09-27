@@ -17,6 +17,7 @@ import { gridSize as gridSizeFn } from '@atlaskit/theme';
 import { navigationItemClicked } from '../common/analytics';
 import ContainerHeaderComponent from '../components/ContainerHeader';
 import BaseItem from '../components/Item';
+import SortableSectionComponent from '../components/SortableSection';
 import SectionComponent from '../components/Section';
 import SectionHeadingComponent from '../components/SectionHeading';
 import Separator from '../components/Separator';
@@ -279,6 +280,27 @@ const MenuSection = ({
   </SectionComponent>
 );
 
+const toObject = arr => arr.reduce((o, c) => ({ ...o, [c.id]: c }), {});
+const SortableSection = ({
+  alwaysShowScrollHint = false,
+  id,
+  items,
+  groups,
+  nestedGroupKey,
+  parentId,
+  shouldGrow,
+}: SectionProps) => (
+  <SortableSectionComponent
+    alwaysShowScrollHint={alwaysShowScrollHint}
+    id={id}
+    items={Array.isArray(items) ? toObject(items) : items}
+    groups={groups}
+    key={nestedGroupKey}
+    parentId={parentId}
+    shouldGrow={shouldGrow}
+  />
+);
+
 const itemComponents = {
   BackItem,
   ContainerHeader,
@@ -297,6 +319,7 @@ const groupComponents = {
   HeaderSection,
   MenuSection,
   Section,
+  SortableSection,
 };
 
 // Exported for testing purposes only.
