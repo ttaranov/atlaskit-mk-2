@@ -1,7 +1,7 @@
 import * as React from 'react';
 
 export const ToolbarContext = React.createContext({
-  registerButton: (button: any) => null,
+  registerButton: (button: React.ReactNode) => null,
   selectedButton: undefined,
   selectedButtonIndex: 0,
   enabled: false,
@@ -9,8 +9,8 @@ export const ToolbarContext = React.createContext({
 } as ToolbarContextInterface);
 
 export type ToolbarContextInterface = {
-  registerButton: (button: any) => null;
-  selectedButton: any;
+  registerButton: (button: React.ReactNode) => null;
+  selectedButton: React.ReactNode;
   selectedButtonIndex: number;
   enabled: boolean;
   shouldFocus?: () => boolean;
