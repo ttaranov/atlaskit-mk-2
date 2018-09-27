@@ -67,7 +67,11 @@ export type NavItem = {
   href?: string,
   size?: Size,
   id?: string,
+  dropdownItems?: ComponentType<{}>,
 };
 
 // The shape of the item data required by GlobalNav
-export type GlobalNavItemData = GlobalItemProps & { key?: string };
+export type GlobalNavItemData = GlobalItemProps & {
+  key?: string,
+  dropdownItems?: ComponentType<{}>,
+};

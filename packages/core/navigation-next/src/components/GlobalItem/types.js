@@ -36,10 +36,11 @@ type BaseItemProps = {
   icon: ?ComponentType<GlobalItemIconProps>,
   /* The id of the item to be used in analytics and react keying */
   id?: string,
-  /** The zero-based index for the position of the item within the global sidebar section.
-   *  Used for analytics purposes.
-   */
+  /** The zero-based index for the position of the item within the global
+   *  sidebar section. Used for analytics purposes. */
   index?: number,
+  /** Whether this GlobalItem should display as being selected. */
+  isSelected?: boolean,
   /** A label to pass to the `icon` component. */
   label?: string,
   /** A handler which will be called when the GlobalItem is clicked. */
@@ -64,8 +65,9 @@ export type GlobalItemRenderComponentProps = BaseItemProps & {
 
 export type GlobalItemProps = BaseItemProps & {
   /** A custom component to render instead of the default wrapper component.
-   * Could used to render a router Link, for example. The component will be
-   * provided with the standard globalItem props. It will also be provided className, children and onClick props which should be passed on to the
+   * Could be used to render a router Link, for example. The component will be
+   * provided with the standard globalItem props. It will also be provided
+   * className, children and onClick props which should be passed on to the
    * element you render. */
   component?: ComponentType<GlobalItemRenderComponentProps>,
 };

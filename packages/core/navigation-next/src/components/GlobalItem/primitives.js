@@ -109,11 +109,11 @@ class GlobalNavigationItemPrimitive extends Component<*> {
   };
 
   render() {
-    const { isActive, isSelected, tooltip } = this.props;
+    const { isSelected, tooltip } = this.props;
     return (
       <Tooltip
         delay={0}
-        content={isSelected || isActive ? undefined : tooltip}
+        content={isSelected ? undefined : tooltip}
         position="right"
         hideTooltipOnMouseDown
       >
