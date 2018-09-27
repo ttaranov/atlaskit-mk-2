@@ -7,7 +7,8 @@ import FieldText from '@atlaskit/field-text';
 import Button from '@atlaskit/button';
 import Spinner from '@atlaskit/spinner';
 import { CardView } from '@atlaskit/media-card';
-
+import { InjectedIntlProps } from 'react-intl';
+import { messages } from '@atlaskit/media-ui';
 import { BricksLayout } from './bricksGrid';
 import { fileClick } from '../../../actions/fileClick';
 import { setUpfrontIdDeferred } from '../../../actions/setUpfrontIdDeferred';
@@ -53,7 +54,9 @@ export interface GiphyViewDispatchProps {
   ) => void;
 }
 
-export type GiphyViewProps = GiphyViewStateProps & GiphyViewDispatchProps;
+export type GiphyViewProps = GiphyViewStateProps &
+  GiphyViewDispatchProps &
+  InjectedIntlProps;
 
 export interface GiphyViewState {
   query: string;
@@ -84,13 +87,16 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
 
   render(): JSX.Element {
     const { query } = this.state;
+    const {
+      intl: { formatMessage },
+    } = this.props;
 
     return (
       <Container id="mediapicker-giphy-container">
         <Title>GIPHY</Title>
         <FieldText
           label=""
-          placeholder="Search all the GIFs!"
+          placeholder={formatMessage(messages.search_all_gifs)}
           onChange={this.searchChangeHandler}
           shouldFitContainer={true}
           value={query}
@@ -219,24 +225,6 @@ export class GiphyView extends Component<GiphyViewProps, GiphyViewState> {
       </ButtonContainer>
     );
   };
-
-  // private scaleThumbnailGif = ({
-  //   width,
-  //   height,
-  // }: {
-  //   width: number;
-  //   height: number;
-  // }) => {
-  //   const desiredWith = Math.floor(
-  //     (CONTAINER_WIDTH - GAP_SIZE * (NUMBER_OF_COLUMNS - 1)) /
-  //       NUMBER_OF_COLUMNS,
-  //   );
-  //
-  //   return {
-  //     width: desiredWith,
-  //     height: Math.round(desiredWith / width * height),
-  //   };
-  // };
 
   private createSearchChangeHandler = () => {
     const { onSearchQueryChange } = this.props;

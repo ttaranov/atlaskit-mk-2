@@ -2,6 +2,8 @@ import * as React from 'react';
 import { Component } from 'react';
 import { Dispatch } from 'redux';
 import { connect } from 'react-redux';
+import { FormattedMessage } from 'react-intl';
+import { messages } from '@atlaskit/media-ui';
 import { Wrapper, InsertButton, CancelButton } from './styled';
 import { startImport, hidePopup } from '../../actions';
 import { SelectedItem, State } from '../../domain';
@@ -28,7 +30,7 @@ export class Footer extends Component<FooterProps> {
         onClick={onCancel}
         isDisabled={!canCancel}
       >
-        Cancel
+        <FormattedMessage {...messages.cancel} />
       </CancelButton>
     );
   }

@@ -20,6 +20,8 @@ import Spinner from '@atlaskit/spinner';
 import Flag, { FlagGroup } from '@atlaskit/flag';
 import AnnotateIcon from '@atlaskit/icon/glyph/media-services/annotate';
 import EditorInfoIcon from '@atlaskit/icon/glyph/error';
+import { FormattedMessage } from 'react-intl';
+import { messages } from '@atlaskit/media-ui';
 import { Browser } from '../../../../components/browser';
 import { isWebGLAvailable } from '../../../tools/webgl';
 import { Dropzone } from './dropzone';
@@ -139,7 +141,9 @@ export class StatelessUploadView extends Component<
   private recentView(cards: JSX.Element[]) {
     return (
       <div>
-        <RecentUploadsTitle>Recent Uploads</RecentUploadsTitle>
+        <RecentUploadsTitle>
+          <FormattedMessage {...messages.recent_uploads} />
+        </RecentUploadsTitle>
         <CardsWrapper>{cards}</CardsWrapper>
         {this.state.isWebGLWarningFlagVisible
           ? this.renderWebGLWarningFlag()
