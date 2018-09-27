@@ -103,6 +103,35 @@ sizing will affect these icons:
 
 ${<SizeTable />}
 
+Logos are set up to handle gradients as first class citizens, with \`gradientStart\` and \`gradientStop\` props. For
+the most part you can rely on inheritance and will not need to provide these props.
+
+The \`primaryColor\` should be transferred to \`iconColor\` and \`gradientEnd\` props. The \`secondaryColor\` should
+be transformed into the \`iconGradientStop\` property.
+
+As an example, an icon that looked like this:
+
+${code`
+<AtlassianIcon
+  label="Atlassian Design Guidelines"
+  primaryColor={colors.N0}
+  secondaryColor={colors.B400}
+  size="small"         
+/>
+`}
+
+to
+
+${code`
+<AtlassianIcon
+  label="Atlassian Design Guidelines"
+  iconColor={colors.N0}
+  iconGradientStart={colors.B400}
+  iconGradientStop={colors.N0}
+  size="xsmall"      
+/>
+`}
+
 #### Object Icons
 
 Similarly, object icons use different svgs for different sizes, and so are incompatible

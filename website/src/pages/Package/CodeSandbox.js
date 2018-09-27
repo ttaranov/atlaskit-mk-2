@@ -94,7 +94,7 @@ export default class CodeSandbox extends Component<{}, {}> {
         }}
         importReplacements={[
           [`packages/${groupId}/${packageId}/src`, pkgJSON.name],
-          ['packages/core/icon/glyph/*', '@atlaskit/icon/glyph/'],
+          ['packages/core/*/glyph/*', `${pkgJSON.name}/glyph/`],
           ...cssLoaderExceptions(pkgJSON.name, groupId, packageId),
         ]}
         dependencies={{

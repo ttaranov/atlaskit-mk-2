@@ -44,7 +44,7 @@ export default class BasicNavigation extends React.Component<Props, State> {
         globalTheme={presetThemes.global}
         containerTheme={presetThemes.container}
         isResizeable={true}
-        globalPrimaryIcon={<AtlassianIcon label="atl" size="large" />}
+        globalPrimaryIcon={<AtlassianIcon label="atl" size="medium" />}
         globalPrimaryItemHref="#"
         width={300}
         isOpen={true}
@@ -54,7 +54,7 @@ export default class BasicNavigation extends React.Component<Props, State> {
             isOpen={this.state.openDrawer === 'search'}
             key="search"
             onBackButton={this.closeDrawer}
-            primaryIcon={<AtlassianIcon label="atl" size="large" />}
+            primaryIcon={<AtlassianIcon label="atl" size="medium" />}
             backIcon={<ArrowleftIcon label="back" size="medium" />}
           >
             {this.props.searchDrawerContent}
