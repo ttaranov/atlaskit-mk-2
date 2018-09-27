@@ -1,5 +1,8 @@
 # @atlaskit/navigation-next
 
+## 3.15.0
+- [minor] Add itemComponent prop to GlobalNav to allow consumers to pass a custom component for rendering items. Add isSelected prop to GlobalItem. [e8163a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8163a6)
+
 ## 3.14.3
 - [patch] fix item after onclick [ab3a683](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ab3a683)
 
