@@ -1,5 +1,9 @@
 # @atlaskit/smart-card
 
+## 8.2.2
+- [patch] Updated dependencies [dae7792](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dae7792)
+  - @atlaskit/media-ui@6.0.0
+
 ## 8.2.1
 - [patch] Fix rxjs imports to only import what's needed [2e0ce2b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e0ce2b)
 

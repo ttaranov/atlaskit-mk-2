@@ -11,6 +11,7 @@ import {
 } from '../../../package.json';
 import generateDefaultConfig from '../../config/default-config';
 import generateProductConfig from '../../config/product-config';
+import ItemComponent from '../ItemComponent';
 import ScreenTracker from '../ScreenTracker';
 import { analyticsIdMap, fireDrawerDismissedEvents } from './analytics';
 
@@ -19,6 +20,7 @@ import type { GlobalNavigationProps, DrawerName } from './types';
 
 // TODO: Figure out a way to appease flow without this function.
 const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
+  dropdownItems,
   id,
   icon,
   label,
@@ -29,6 +31,7 @@ const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
   href,
   size,
 }) => ({
+  dropdownItems,
   id,
   icon,
   label,
@@ -218,6 +221,7 @@ export default class GlobalNavigation
       >
         <Fragment>
           <GlobalNav
+            itemComponent={ItemComponent}
             primaryItems={primaryItems}
             secondaryItems={secondaryItems}
           />

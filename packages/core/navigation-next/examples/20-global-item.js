@@ -96,6 +96,30 @@ const variations: Array<VariationCategory> = [
         isHover: true,
         size: 'small',
       },
+      {
+        badge: ConfiguredBadge,
+        description: 'Selected',
+        icon: TrayIcon,
+        isSelected: true,
+        size: 'small',
+      },
+      {
+        badge: ConfiguredBadge,
+        description: 'Selected + hover',
+        icon: TrayIcon,
+        isHover: true,
+        isSelected: true,
+        size: 'small',
+      },
+      {
+        badge: ConfiguredBadge,
+        description: 'Selected + hover + active',
+        icon: TrayIcon,
+        isActive: true,
+        isHover: true,
+        isSelected: true,
+        size: 'small',
+      },
     ],
   },
   {
@@ -202,6 +226,7 @@ const ItemWrapper = props => (
     {...props}
   />
 );
+const ItemComponentWrapper = props => <div css={{ width: 32 }} {...props} />;
 const Description = ({ size, children }: ItemType) => (
   <div
     css={{
@@ -221,7 +246,9 @@ export default () => (
           <h3>{title}</h3>
           {items.map(({ description, ...item }) => (
             <ItemWrapper key={description}>
-              <ItemComponent {...item} />
+              <ItemComponentWrapper>
+                <ItemComponent {...item} />
+              </ItemComponentWrapper>
               <Description {...item}>{description}</Description>
             </ItemWrapper>
           ))}

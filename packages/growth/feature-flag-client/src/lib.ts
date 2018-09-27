@@ -1,4 +1,4 @@
-import { FeatureFlag, AnyFlag } from './types';
+import { FlagWithEvaluationDetails, AnyFlag } from './types';
 
 export const isType = (value: any, type: string): boolean => {
   return value !== null && typeof value === type;
@@ -6,18 +6,18 @@ export const isType = (value: any, type: string): boolean => {
 
 export const isObject = value => isType(value, 'object');
 export const isBoolean = value => isType(value, 'boolean');
+export const isString = value => isType(value, 'string');
 
-export const isFeatureFlag = (flag: AnyFlag): boolean => {
+export const isFlagWithEvaluationDetails = (flag: AnyFlag): boolean => {
   return (
     isObject(flag) &&
-    'value' in (flag as FeatureFlag) &&
-    'explanation' in (flag as FeatureFlag)
+    'value' in (flag as FlagWithEvaluationDetails) &&
+    'explanation' in (flag as FlagWithEvaluationDetails)
   );
 };
 
-export const isDarkFeature = (flag: AnyFlag): boolean => {
-  return typeof flag !== 'undefined' && !isFeatureFlag(flag);
-};
+export const isSimpleFlag = (flag: AnyFlag): boolean =>
+  isBoolean(flag) || isString(flag);
 
 export const isOneOf = (value: string, list: string[]): boolean =>
   list.indexOf(value) > -1;

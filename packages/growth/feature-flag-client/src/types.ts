@@ -7,11 +7,11 @@ export type Reason =
 
 export type RuleId = string;
 
-export type DarkFeature = boolean | string;
+export type SimpleFlag = boolean | string;
 
 export type JSONFlag = object;
 
-export type FeatureFlag = {
+export type FlagWithEvaluationDetails = {
   value: boolean | string | object;
   explanation: {
     reason: Reason;
@@ -20,7 +20,7 @@ export type FeatureFlag = {
   [key: string]: any;
 };
 
-export type AnyFlag = DarkFeature | FeatureFlag | JSONFlag;
+export type AnyFlag = SimpleFlag | FlagWithEvaluationDetails | JSONFlag;
 
 export type Flags = {
   [flagName: string]: AnyFlag;
@@ -42,7 +42,7 @@ export interface FlagConstructor {
   new (
     flagKey: string,
     flag: AnyFlag,
-    trackExposure: (flagKey: string, flag: FeatureFlag) => void,
+    trackExposure: (flagKey: string, flag: FlagWithEvaluationDetails) => void,
   ): Flag;
 }
 export interface Flag {

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { shallow } from 'enzyme';
 import { FileDetails } from '@atlaskit/media-core';
-
+import { FormattedMessage } from 'react-intl';
 import { FileCard, FileCardImageView } from '../..';
 import { CardGenericViewSmall } from '../../../utils/cardGenericViewSmall';
 import { toHumanReadableMediaSize } from '../../../utils';
@@ -113,17 +113,19 @@ describe('FileCard', () => {
   it('should pass "Failed to load" copy to "small" card view', () => {
     const card = shallow(<FileCard appearance="small" status="error" />);
 
-    expect(card.find(CardGenericViewSmall).props().error).toEqual(
-      'Failed to load',
-    );
+    expect(
+      (card.find(CardGenericViewSmall).prop('error')! as FormattedMessage).props
+        .defaultMessage,
+    ).toEqual('Failed to load');
   });
 
   it('should pass "Failed to load" copy to "image" card view', () => {
     const card = shallow(<FileCard appearance="image" status="error" />);
 
-    expect(card.find(FileCardImageView).props().error).toEqual(
-      'Failed to load',
-    );
+    expect(
+      (card.find(FileCardImageView).prop('error')! as FormattedMessage).props
+        .defaultMessage,
+    ).toEqual('Failed to load');
   });
 
   it('should pass "disableOverlay" prop to <FileCardImageView /> when appearance is "image"', () => {

@@ -72,8 +72,8 @@ const messages = defineMessages({
   },
   altText: {
     id: 'fabric.editor.altText',
-    defaultMessage: 'Alternative text for image.',
-    description: '',
+    defaultMessage: 'Alt text',
+    description: 'Alternative text for image.',
   },
   closeHelpDialog: {
     id: 'fabric.editor.closeHelpDialog',

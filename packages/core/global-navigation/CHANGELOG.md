@@ -1,5 +1,8 @@
 # @atlaskit/global-navigation
 
+## 4.5.2
+- [patch] Fix issues with tooltips and hover states in items that render as dropdown menus. [ad36064](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ad36064)
+
 ## 4.5.1
 - [patch] Fix drawer screen events not firing on subsequent opens of a drawer after the initial one [7eb5248](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7eb5248)
 

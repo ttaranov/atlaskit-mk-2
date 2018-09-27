@@ -1,5 +1,8 @@
 # @atlaskit/media-test-helpers
 
+## 18.2.0
+- [minor] Add I18n support to media-card [dae7792](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dae7792)
+
 ## 18.1.0
 - [minor] Support external image identifiers in media-card [82c8bb9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/82c8bb9)
 
