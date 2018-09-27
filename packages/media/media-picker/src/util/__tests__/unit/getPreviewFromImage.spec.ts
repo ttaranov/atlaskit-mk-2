@@ -25,7 +25,7 @@ describe('getPreviewFromImage()', () => {
     expect(preview.scaleFactor).toBe(3);
   });
 
-  it('should get preview only from invalid file', async () => {
+  it('should not get imagepreview from invalid file', async () => {
     getImageInfo.mockReturnValue(null);
     const preview = (await getPreviewFromImage(file)) as Preview;
     expect(preview.src).toBe('data:;base64,');

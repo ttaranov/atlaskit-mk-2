@@ -83,7 +83,7 @@ export async function getFileInfo(file: File, src?: string): Promise<FileInfo> {
 export function fileToArrayBuffer(file: File): Promise<Uint8Array> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-    reader.addEventListener('loadend', () => {
+    reader.addEventListener('load', () => {
       const array = new Uint8Array(reader.result as ArrayBuffer);
       resolve(array);
     });

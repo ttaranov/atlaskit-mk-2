@@ -32,7 +32,7 @@
     "@atlaskit/media-editor": "^14.0.0",
     "@atlaskit/media-store": "^6.2.1",
     "@atlaskit/media-ui": "^6.0.0",
-	  "@atlaskit/modal-dialog": "^7.0.0",
+    "@atlaskit/modal-dialog": "^7.0.0",
     "@atlaskit/spinner": "^9.0.5",
     "@atlaskit/util-shared-styles": "^2.10.3",
     "@types/bricks.js": "^1.8.0",

@@ -57,7 +57,7 @@ export const InfoWrapper: ComponentClass<HTMLAttributes<{}>> = styled.pre`
   position: absolute;
   width: 160px;
   color: black;
-  font-size: 8pt;
+  font-size: 12px;
   top: 120px;
   left: 0;
   text-align: center;
