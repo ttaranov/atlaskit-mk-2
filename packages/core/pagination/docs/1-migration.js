@@ -6,15 +6,22 @@ export default md`
 
 ### 🎉 ADG styling
 
-As of version 8, pagination’s styling has been updated to match the ADG style guide.
+In v8 pagination styling has been updated.
 
 ### 🎉 No changes in the API
 
-There are no changes in the Pagination API. Therefore, no code change will be required to consume this major version. However, You should make sure designers check that this change does not break the look within your app, but otherwise this upgrade is completely safe.
+There are no changes in the Pagination API. 
+Therefore, no code change will be required to consume this major version. 
+However, you might need to update your styling.
 
 ### 🚨 Styles changes
 
-As per ADG spec Pagination component should have a spacing of 24px ( \`3 * gridSize\` ) on top. v7 of the pagination component also did not have margin-top styling so you may already have it in you code. However, if you do not have this spacing then please add bottom spacing of 24px to the previous element.
+There must be spacing a 24px ( \`3 * gridSize\` ) between pagination and anything above it.
+Add this spacing to the element above the pagination component.
+
+In v7 this spacing was not there either, but because in v8 the buttons have a dark background color the experience will appear broken if this spacing is not there.
+
+Have your designers check that this change does not break the look within your app. Functionaly there no changes in the component.
 
 Example:
 
