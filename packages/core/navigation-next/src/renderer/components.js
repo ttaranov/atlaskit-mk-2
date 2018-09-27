@@ -283,10 +283,14 @@ const MenuSection = ({
 const toObject = arr => arr.reduce((o, c) => ({ ...o, [c.id]: c }), {});
 const SortableSection = ({
   alwaysShowScrollHint = false,
+  groups,
   id,
   items,
-  groups,
   nestedGroupKey,
+  onChange,
+  onDragStart,
+  onDragUpdate,
+  onDragEnd,
   parentId,
   shouldGrow,
 }: SectionProps) => (
@@ -295,7 +299,11 @@ const SortableSection = ({
     id={id}
     items={Array.isArray(items) ? toObject(items) : items}
     groups={groups}
+    onChange={onChange}
     key={nestedGroupKey}
+    onDragStart={onDragStart}
+    onDragUpdate={onDragUpdate}
+    onDragEnd={onDragEnd}
     parentId={parentId}
     shouldGrow={shouldGrow}
   />
