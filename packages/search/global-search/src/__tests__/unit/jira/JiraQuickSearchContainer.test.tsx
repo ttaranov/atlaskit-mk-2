@@ -212,11 +212,11 @@ describe('Jira Quick Search Container', () => {
         searchResultData: people,
       });
 
-      const results = new Map<Scope, Result[]>();
-      results.set(Scope.JiraIssue, issues);
-      results.set(Scope.JiraBoardProjectFilter, boards);
+      const resultsMap = new Map<Scope, Result[]>();
+      resultsMap.set(Scope.JiraIssue, issues);
+      resultsMap.set(Scope.JiraBoardProjectFilter, boards);
       const crossProductSearchClient = mockCrossProductSearchClient({
-        results,
+        results: resultsMap,
       });
       const getSearchResults = renderAndGetProperty(
         { peopleSearchClient, crossProductSearchClient },
