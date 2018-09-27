@@ -6,7 +6,15 @@ import {
   ImageMetaData,
   getScaleFactor,
 } from '../src';
-import { InputWrapper, PreviewList, PreviewInfo, PreviewItem } from './styled';
+import {
+  InputWrapper,
+  PreviewList,
+  PreviewInfo,
+  PreviewItem,
+  PreviewImageContainer,
+  Code,
+} from './styled';
+import Lozenge from '@atlaskit/lozenge';
 
 interface ExamplePreview {
   filename: string;
@@ -51,9 +59,16 @@ class Example extends React.Component<{}, ExampleState> {
       <Page>
         <Grid>
           <GridColumn>
-            <h1>Image Meta Data Preview</h1>
+            <h1>Image MetaData Preview</h1>
             <p>
-              Select a local image to see it's metadata.<br />
+              <Lozenge>@atlaskit/media-ui</Lozenge> exports:{' '}
+              <Code>readImageMetaData(fileInfo:FileInfo)</Code>
+            </p>
+            <p>async Example:</p>
+            <Code
+            >{`const { type, width, height, tags } = await readImageMetaData(fileInfo);`}</Code>
+            <p>
+              Select a local image to see it's metadata (if available).<br />
               Currently only supports Exif / XMP tags in <b>JPEG</b> and{' '}
               <b>PNG</b> formats.
             </p>
@@ -79,11 +94,27 @@ class Example extends React.Component<{}, ExampleState> {
     return this.state.previews.map((preview, i) => {
       return (
         <PreviewItem key={`preview-${i}`}>
-          <div>{`${preview.filename} ~ scaleFactor: x${preview.scaleFactor} ~ ${
-            preview.duration
-          }ms`}</div>
-          <img src={preview.src} />
-          <PreviewInfo>{JSON.stringify(preview.metadata, null, 4)}</PreviewInfo>
+          <div>
+            <p>
+              filename:{' '}
+              <Lozenge appearance="inprogress">{preview.filename}</Lozenge>
+            </p>
+            <p>
+              scaleFactor:{' '}
+              <Lozenge appearance="success" isBold>
+                {preview.scaleFactor}
+              </Lozenge>
+            </p>
+            <p>
+              duration: <Lozenge>{preview.duration}ms</Lozenge>
+            </p>
+          </div>
+          <PreviewImageContainer>
+            <img src={preview.src} />
+            <PreviewInfo>
+              {JSON.stringify(preview.metadata, null, 4)}
+            </PreviewInfo>
+          </PreviewImageContainer>
         </PreviewItem>
       );
     });
