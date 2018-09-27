@@ -1,11 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Panel component header matches the snapshot 1`] = `
-<styled.div
-  hasFocus={false}
-  onBlur={[Function]}
+<WithFocusWithin(styled.div)
   onClick={[Function]}
-  onFocus={[Function]}
 >
   <styled.div
     isHidden={false}
@@ -26,5 +23,5 @@ exports[`Panel component header matches the snapshot 1`] = `
       Header
     </span>
   </span>
-</styled.div>
+</WithFocusWithin(styled.div)>
 `;

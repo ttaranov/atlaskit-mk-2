@@ -20,7 +20,6 @@ type Props = {
 
 type State = {
   hasFinishedAnimating: boolean,
-  isFocused: boolean,
 };
 
 export default class Panel extends PureComponent<Props, State> {
@@ -30,7 +29,6 @@ export default class Panel extends PureComponent<Props, State> {
 
   state = {
     hasFinishedAnimating: true,
-    isFocused: false,
   };
 
   onRest = () => {
@@ -49,13 +47,10 @@ export default class Panel extends PureComponent<Props, State> {
         {({ isExpanded, toggleExpanded }) => (
           <Fragment>
             <styles.PanelHeader
-              hasFocus={this.state.isFocused}
               onClick={() => {
                 this.togglePanel();
                 toggleExpanded();
               }}
-              onFocus={() => this.setState({ isFocused: true })}
-              onBlur={() => this.setState({ isFocused: false })}
             >
               <styles.ButtonWrapper isHidden={isExpanded}>
                 <Button

@@ -683,6 +683,13 @@
     "@types/prop-types" "*"
     csstype "^2.2.0"
 
+"@types/react@^15.0.0 || ^16.0.0":
+  version "16.4.14"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-16.4.14.tgz#47c604c8e46ed674bbdf4aabf82b34b9041c6a04"
+  dependencies:
+    "@types/prop-types" "*"
+    csstype "^2.2.0"
+
 "@types/redux@^3.6.0":
   version "3.6.0"
   resolved "https://registry.yarnpkg.com/@types/redux/-/redux-3.6.0.tgz#f1ebe1e5411518072e4fdfca5c76e16e74c1399a"
@@ -12403,6 +12410,13 @@ react-focus-lock@^1.11.3:
     focus-lock "^0.3.0"
     prop-types "^15.0.0"
     react-clientside-effect "^1.0.0"
+
+react-focus-within@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/react-focus-within/-/react-focus-within-2.0.1.tgz#6bd727a96e81a9a602052396d681b5138818ba67"
+  dependencies:
+    "@types/react" "^15.0.0 || ^16.0.0"
+    prop-types "^15.6.1"
 
 react-ga@^2.3.5:
   version "2.3.5"

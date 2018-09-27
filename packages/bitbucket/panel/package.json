@@ -24,7 +24,8 @@
     "@atlaskit/size-detector": "^5.0.5",
     "@atlaskit/theme": "^6.0.1",
     "enzyme-to-json": "^3.3.0",
-    "react-animate-height": "^2.0.5"
+    "react-animate-height": "^2.0.5",
+    "react-focus-within": "^2.0.1"
   },
   "peerDependencies": {
     "react": "^16.4.0",

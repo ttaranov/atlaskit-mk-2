@@ -1,5 +1,6 @@
 // @flow
 import { borderRadius, gridSize, colors } from '@atlaskit/theme';
+import { withFocusWithin } from 'react-focus-within';
 import styled, { css } from 'styled-components';
 
 const transition = css`
@@ -18,8 +19,8 @@ export const ButtonWrapper = styled.div`
   }
 `;
 
-export const PanelHeader = styled.div`
-  background-color: ${({ hasFocus }) => hasFocus && colors.N20};
+export const PanelHeader = withFocusWithin(styled.div`
+  background-color: ${props => props.isFocused && colors.N20};
   border-radius: ${borderRadius}px;
   display: flex;
   align-items: center;
@@ -30,7 +31,7 @@ export const PanelHeader = styled.div`
   ${transition};
 
   ${ButtonWrapper} {
-    opacity: ${({ hasFocus }) => hasFocus && 1};
+    opacity: ${props => props.isFocused && 1};
   }
 
   &:hover {
@@ -41,4 +42,4 @@ export const PanelHeader = styled.div`
       opacity: 1;
     }
   }
-`;
+`);
