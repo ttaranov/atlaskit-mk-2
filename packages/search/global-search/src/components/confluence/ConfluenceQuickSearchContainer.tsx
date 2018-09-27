@@ -268,9 +268,12 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       }),
     );
 
-    const abTestPromise = crossProductSearchClient.getAbTestData({
-      sessionId,
-    });
+    const abTestPromise = crossProductSearchClient.getAbTestData(
+      Scope.ConfluencePageBlog,
+      {
+        sessionId,
+      },
+    );
 
     const [abTest, results] = await Promise.all([
       abTestPromise,

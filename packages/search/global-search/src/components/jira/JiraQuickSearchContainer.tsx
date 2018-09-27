@@ -43,6 +43,7 @@ import {
 import {
   CrossProductSearchClient,
   CrossProductSearchResults,
+  ABTest,
 } from '../../api/CrossProductSearchClient';
 import performanceNow from '../../util/performance-now';
 
@@ -164,7 +165,7 @@ export class JiraQuickSearchContainer extends React.Component<
     ) as Promise<Result[]>;
   };
 
-  getJiraRecentItems = (sessionId: string) => {
+  getJiraRecentItems = (sessionId: string): Promise<GenericResultMap> => {
     const jiraRecentItemsPromise = this.props.jiraClient
       .getRecentItems(sessionId)
       .then(items =>
@@ -186,6 +187,7 @@ export class JiraQuickSearchContainer extends React.Component<
         objects: issues,
         containers: [...boards, ...filters, ...projects],
       }));
+
     return handlePromiseError(
       jiraRecentItemsPromise,
       {
@@ -201,15 +203,29 @@ export class JiraQuickSearchContainer extends React.Component<
     );
   };
 
-  getRecentItems = (sessionId: string): Promise<ResultsWithTiming> => {
-    return Promise.all([
+  getAbTestData(sessionId: string): Promise<ABTest | undefined> {
+    return this.props.crossProductSearchClient.getAbTestData(Scope.JiraIssue, {
+      sessionId,
+    });
+  }
+
+  getRecentItems = async (sessionId: string): Promise<ResultsWithTiming> => {
+    const resultsPromise: Promise<GenericResultMap> = Promise.all([
       this.getJiraRecentItems(sessionId),
       this.getRecentlyInteractedPeople(),
-    ])
-      .then(([jiraItems, people]) => {
-        return { ...jiraItems, people };
-      })
-      .then(results => ({ results } as ResultsWithTiming));
+    ]).then(([jiraItems, people]) => {
+      return { ...jiraItems, people };
+    });
+
+    const [abTest, results] = await Promise.all([
+      this.getAbTestData(sessionId),
+      resultsPromise,
+    ]);
+
+    return {
+      abTest,
+      results: results,
+    };
   };
 
   getSearchResults = (

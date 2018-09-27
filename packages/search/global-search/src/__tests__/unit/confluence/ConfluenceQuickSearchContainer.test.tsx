@@ -183,7 +183,7 @@ describe('ConfluenceQuickSearchContainer', () => {
 
           return Promise.resolve(EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE);
         },
-        getAbTestData(searchSession: SearchSession) {
+        getAbTestData(scope: Scope, searchSession: SearchSession) {
           return Promise.resolve(undefined);
         },
       },

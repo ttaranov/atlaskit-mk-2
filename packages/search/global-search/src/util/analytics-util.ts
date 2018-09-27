@@ -1,4 +1,9 @@
-import { Result, ConfluenceObjectResult, ResultType } from '../model/Result';
+import {
+  Result,
+  ConfluenceObjectResult,
+  JiraResult,
+  ResultType,
+} from '../model/Result';
 import { GasPayload } from '@atlaskit/analytics-gas-types';
 import { ReferralContextIdentifiers } from '../components/GlobalQuickSearchWrapper';
 
@@ -78,6 +83,13 @@ function mapResultToShownResult(result: Result): ShownResultContextItem {
       resultContentId: result.resultId,
       resultType: confluenceResult.contentType,
       containerId: sanitizeContainerId(confluenceResult.containerId),
+    };
+  } else if (result.resultType === ResultType.JiraObjectResult) {
+    const jiraResult = result as JiraResult;
+    return {
+      resultContentId: result.resultId,
+      resultType: jiraResult.contentType,
+      containerId: sanitizeContainerId(jiraResult.containerId),
     };
   }
 

@@ -53,7 +53,10 @@ export interface CrossProductSearchClient {
     scopes: Scope[],
   ): Promise<CrossProductSearchResults>;
 
-  getAbTestData(searchSession: SearchSession): Promise<ABTest | undefined>;
+  getAbTestData(
+    scope: Scope,
+    searchSession: SearchSession,
+  ): Promise<ABTest | undefined>;
 }
 
 export default class CrossProductSearchClientImpl
@@ -79,13 +82,10 @@ export default class CrossProductSearchClientImpl
   }
 
   public async getAbTestData(
+    scope: Scope,
     searchSession: SearchSession,
   ): Promise<ABTest | undefined> {
-    const response = await this.makeRequest(
-      '',
-      [Scope.ConfluencePageBlog],
-      searchSession,
-    );
+    const response = await this.makeRequest('', [scope], searchSession);
     const parsedResponse = this.parseResponse(
       response,
       searchSession.sessionId,

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/global-search",
-  "version": "5.8.3",
+  "version": "5.8.4",
   "description": "A cross-product search component (batteries included)",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -61,6 +61,7 @@
     "react": "^16.4.0",
     "react-dom": "^16.4.2",
     "react-test-renderer": "^16.3.0",
-    "whatwg-fetch": "^2.0.3"
+    "whatwg-fetch": "^2.0.3",
+    "seedrandom": "^2.4.4"
   }
 }

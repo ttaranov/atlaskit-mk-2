@@ -293,21 +293,7 @@ export function makeCrossProductSearchData(
   }
 
   for (let i = 0; i < n; i++) {
-    const issue =
-      i % 2
-        ? {
-            key: randomIssueKey(),
-            fields: {
-              summary: getMockCatchPhrase(),
-              project: {
-                name: getMockCompanyName(),
-              },
-              issuetype: {
-                iconUrl: randomJiraIconUrl(),
-              },
-            },
-          }
-        : generateRandomJiraIssue();
+    const issue = generateRandomJiraIssue();
     jiraObjects.push(issue);
   }
 

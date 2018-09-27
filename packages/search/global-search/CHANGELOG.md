@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 5.8.4
+- [patch] fix jira quick search analytics [1e8a048](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/1e8a048)
+
 ## 5.8.3
 - [patch] Add logger to global quick search [aeb0219](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/aeb0219)
 

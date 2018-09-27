@@ -66,7 +66,7 @@ describe('InteractionStateManager', () => {
     });
   });
 
-  it('should NOT change hover state if element was clicked', () => {
+  it('should change hover and selected states if element was clicked', () => {
     const wrapper = mount(
       <InteractionStateManager>
         {({ isActive, isHover, isSelected }) => (
@@ -83,10 +83,9 @@ describe('InteractionStateManager', () => {
     wrapper.simulate('mouseover');
     wrapper.simulate('mousedown', { preventDefault });
     wrapper.simulate('mouseup', { preventDefault });
-    wrapper.simulate('mouseover');
 
     expect(wrapper.state()).toEqual({
-      isHover: false,
+      isHover: true,
       isActive: false,
       isSelected: true,
     });

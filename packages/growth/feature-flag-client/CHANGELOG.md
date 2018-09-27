@@ -1,5 +1,8 @@
 # @atlaskit/feature-flag-client
 
+## 1.0.4
+- [patch] MEP-103: Allowing simple flags to have strings or booleans as values [4e6f8ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e6f8ab)
+
 ## 1.0.3
 - [patch] MEP-103 : Support short form of a feature flag for variants [0ac7332](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0ac7332)
 

@@ -352,7 +352,10 @@ describe('CrossProductSearchClient', () => {
         ],
       });
 
-      const result = await searchClient.getAbTestData(searchSession);
+      const result = await searchClient.getAbTestData(
+        Scope.ConfluencePageBlog,
+        searchSession,
+      );
       expect(result).toEqual(abTest);
     });
 
@@ -366,7 +369,10 @@ describe('CrossProductSearchClient', () => {
         ],
       });
 
-      const result = await searchClient.getAbTestData(searchSession);
+      const result = await searchClient.getAbTestData(
+        Scope.ConfluencePageBlog,
+        searchSession,
+      );
       expect(result).toBeUndefined();
     });
   });

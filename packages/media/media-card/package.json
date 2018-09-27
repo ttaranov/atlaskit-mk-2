@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/media-card",
-  "version": "36.1.1",
+  "version": "37.0.0",
   "description": "Includes all media card related components, CardView, CardViewSmall, Card...",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -34,8 +34,8 @@
     "@atlaskit/field-text": "^7.0.4",
     "@atlaskit/icon": "^13.2.4",
     "@atlaskit/lozenge": "^6.1.4",
-    "@atlaskit/media-ui": "^5.1.2",
-    "@atlaskit/smart-card": "^8.2.1",
+    "@atlaskit/media-ui": "^6.0.0",
+    "@atlaskit/smart-card": "^8.2.2",
     "@atlaskit/spinner": "^9.0.5",
     "@atlaskit/tooltip": "^12.0.5",
     "@atlaskit/util-shared-styles": "^2.10.3",
@@ -52,9 +52,10 @@
     "video-snapshot": "^1.0.1"
   },
   "peerDependencies": {
-    "@atlaskit/media-core": "^24.0.1",
+    "@atlaskit/media-core": "^24.0.2",
     "react": "^16.4.0",
     "react-dom": "^16.4.2",
+    "react-intl": "^2.6.0",
     "rxjs": "^5.5.0",
     "styled-components": "^3.2.6"
   },
@@ -62,14 +63,15 @@
     "@atlaskit/docs": "^5.0.7",
     "@atlaskit/field-radio-group": "^4.0.4",
     "@atlaskit/field-range": "^5.0.3",
-    "@atlaskit/media-core": "^24.0.1",
-    "@atlaskit/media-test-helpers": "^18.1.0",
+    "@atlaskit/media-core": "^24.0.2",
+    "@atlaskit/media-test-helpers": "^18.2.0",
     "@atlaskit/toggle": "^5.0.5",
     "@types/classnames": "^2.2.6",
     "deepcopy": "0.6.3",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react": "^16.4.0",
     "react-dom": "^16.4.2",
+    "react-intl": "^2.6.0",
     "rxjs": "^5.5.0",
     "scrollparent": "^2.0.1"
   }

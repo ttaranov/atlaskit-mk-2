@@ -21,7 +21,7 @@ export const noResultsCrossProductSearchClient: CrossProductSearchClient = {
   search(query: string) {
     return Promise.resolve(EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE);
   },
-  getAbTestData(searchSession: SearchSession) {
+  getAbTestData(scope: Scope, searchSession: SearchSession) {
     return Promise.resolve(undefined);
   },
 };
@@ -30,7 +30,7 @@ export const errorCrossProductSearchClient: CrossProductSearchClient = {
   search(query: string) {
     return Promise.reject('error');
   },
-  getAbTestData(searchSession: SearchSession) {
+  getAbTestData(scope: Scope, searchSession: SearchSession) {
     return Promise.reject('error');
   },
 };
@@ -42,7 +42,7 @@ export function singleResultCrossProductSearchClient(
     search(query: string) {
       return Promise.resolve(makeSingleResultCrossProductSearchResponse(scope));
     },
-    getAbTestData(searchSession: SearchSession) {
+    getAbTestData(scope: Scope, searchSession: SearchSession) {
       return Promise.resolve(undefined);
     },
   };

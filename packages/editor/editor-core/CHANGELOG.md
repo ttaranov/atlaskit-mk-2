@@ -1,5 +1,16 @@
 # @atlaskit/editor-core
 
+## 82.2.6
+- [patch] Updated dependencies [dae7792](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dae7792)
+  - @atlaskit/editor-common@17.0.5
+  - @atlaskit/renderer@24.1.1
+  - @atlaskit/media-core@24.0.2
+  - @atlaskit/media-filmstrip@14.0.2
+  - @atlaskit/media-picker@17.0.1
+  - @atlaskit/smart-card@8.2.2
+  - @atlaskit/media-card@37.0.0
+  - @atlaskit/media-test-helpers@18.2.0
+
 ## 82.2.5
 - [patch] Fix image markdown tip in help dialog [79465ec](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/79465ec)
 
