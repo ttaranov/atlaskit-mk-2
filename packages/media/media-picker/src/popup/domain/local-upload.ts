@@ -13,7 +13,7 @@ export interface LocalUploadFileMetadata {
 export interface LocalUploadFile {
   readonly metadata: LocalUploadFileMetadata;
 
-  dataURI: string;
+  dataURI: string; // TODO: Remove
 }
 
 export interface LocalUpload {
@@ -23,7 +23,7 @@ export interface LocalUpload {
   readonly index: number;
   readonly timeStarted: number;
 
-  progress: number | null;
+  progress: number | null; // TODO: Remove
   proxy?: string[];
 }
 
