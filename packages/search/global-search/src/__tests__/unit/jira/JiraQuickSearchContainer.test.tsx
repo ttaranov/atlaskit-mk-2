@@ -216,6 +216,7 @@ describe('Jira Quick Search Container', () => {
       resultsMap.set(Scope.JiraIssue, issues);
       resultsMap.set(Scope.JiraBoardProjectFilter, boards);
       const crossProductSearchClient = mockCrossProductSearchClient({
+        // @ts-ignore
         results: resultsMap,
       });
       const getSearchResults = renderAndGetProperty(

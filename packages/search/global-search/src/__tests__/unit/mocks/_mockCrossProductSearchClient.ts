@@ -38,7 +38,9 @@ export function singleResultCrossProductSearchClient(
   };
 }
 
-export const mockCrossProductSearchClient = (data: Result[]) => ({
+export const mockCrossProductSearchClient = (
+  data: CrossProductSearchResults,
+): CrossProductSearchClient => ({
   search(query: string) {
     return Promise.resolve(data);
   },
