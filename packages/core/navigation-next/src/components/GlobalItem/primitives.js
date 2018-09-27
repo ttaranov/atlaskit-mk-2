@@ -4,10 +4,10 @@ import React, { Fragment, Component } from 'react';
 import { css } from 'emotion';
 import Tooltip from '@atlaskit/tooltip';
 
-import { styleReducerNoOp } from '../../theme';
+import { styleReducerNoOp, withGlobalTheme } from '../../theme';
 import type { GlobalItemPresentationProps, GlobalItemStyles } from './types';
 
-export default class GlobalNavigationItemPrimitive extends Component<*> {
+class GlobalNavigationItemPrimitive extends Component<*> {
   static defaultProps = {
     isActive: false,
     isHover: false,
@@ -130,3 +130,7 @@ export default class GlobalNavigationItemPrimitive extends Component<*> {
     );
   }
 }
+
+export { GlobalNavigationItemPrimitive as BaseGlobalNavigationItemPrimitive };
+
+export default withGlobalTheme(GlobalNavigationItemPrimitive);

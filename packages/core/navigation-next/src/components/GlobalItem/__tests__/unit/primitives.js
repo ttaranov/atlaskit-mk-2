@@ -14,9 +14,31 @@ const styles = () => ({
   itemBase: {},
 });
 
+// Required to dive inside the withGlobalTheme HOC
+const shallowDive = node => shallow(node).dive();
+
+/* eslint-disable global-require */
 describe('GlobalNavigationItemPrimitive', () => {
+  beforeEach(() => {
+    jest.resetModules();
+  });
+
+  it('should be wrapped using withGlobalTheme HOC', () => {
+    const WrappedWithGlobalTheme = () => null;
+    const MockWithGlobalTheme = jest.fn(() => WrappedWithGlobalTheme);
+    jest.doMock('../../../../theme', () => ({
+      withGlobalTheme: MockWithGlobalTheme,
+      styleReducerNoOp: jest.fn(s => s),
+    }));
+
+    const { BaseGlobalNavigationItemPrimitive } = require('../../primitives');
+    expect(MockWithGlobalTheme).toHaveBeenCalledWith(
+      BaseGlobalNavigationItemPrimitive,
+    );
+  });
+
   it('should render an anchor when an href prop is passed', () => {
-    const wrapper = shallow(
+    const wrapper = shallowDive(
       <GlobalNavigationItemPrimitive
         styles={styles}
         theme={theme}
@@ -35,7 +57,7 @@ describe('GlobalNavigationItemPrimitive', () => {
   });
 
   it('should render a button when an onClick prop is passed', () => {
-    const wrapper = shallow(
+    const wrapper = shallowDive(
       <GlobalNavigationItemPrimitive
         styles={styles}
         theme={theme}
@@ -60,7 +82,7 @@ describe('GlobalNavigationItemPrimitive', () => {
       </button>
     );
     const onClick = () => {};
-    const wrapper = shallow(
+    const wrapper = shallowDive(
       <GlobalNavigationItemPrimitive
         component={MyComponent}
         label="my-label"
@@ -88,7 +110,7 @@ describe('GlobalNavigationItemPrimitive', () => {
   });
 
   it('should render a span if neither an href, onClick or component prop is passed', () => {
-    const wrapper = shallow(
+    const wrapper = shallowDive(
       <GlobalNavigationItemPrimitive styles={styles} theme={theme} />,
     );
     const span = wrapper.find('span');
@@ -102,7 +124,7 @@ describe('GlobalNavigationItemPrimitive', () => {
   it('should render badge and icon when badge and icon props are passed', () => {
     const MyBadge = () => <div id="badge" />;
     const MyIcon = () => <div id="icon" />;
-    const wrapper = shallow(
+    const wrapper = shallowDive(
       <GlobalNavigationItemPrimitive
         styles={styles}
         theme={theme}
@@ -117,7 +139,7 @@ describe('GlobalNavigationItemPrimitive', () => {
   });
 
   it('should render a tooltip when a tooltip prop is passed', () => {
-    const wrapper = shallow(
+    const wrapper = shallowDive(
       <GlobalNavigationItemPrimitive
         component={({ className, children, onClick }) => (
           <button className={className} onClick={onClick} id="customComponent">
@@ -133,7 +155,7 @@ describe('GlobalNavigationItemPrimitive', () => {
   });
 
   it('should render a tooltip without text if element is selected', () => {
-    const wrapper = shallow(
+    const wrapper = shallowDive(
       <GlobalNavigationItemPrimitive
         component={() => <button id="customComponent" />}
         styles={styles}

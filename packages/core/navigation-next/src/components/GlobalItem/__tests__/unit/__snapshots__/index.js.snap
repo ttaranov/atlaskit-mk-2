@@ -15,11 +15,10 @@ exports[`GlobalItem GlobalItemBase should render an InteractionStateManager 1`] 
 `;
 
 exports[`GlobalItem GlobalItemBase should render the GlobalItem primitive 1`] = `
-<GlobalNavigationItemPrimitive
+<WithTheme(GlobalNavigationItemPrimitive)
   icon={[Function]}
   isActive={false}
   isHover={false}
-  isSelected={false}
   label=""
   size="large"
   styles={[Function]}
