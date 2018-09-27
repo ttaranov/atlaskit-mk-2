@@ -8,14 +8,7 @@ import { JiraIcon } from '@atlaskit/logo';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
 
-import {
-  GlobalItem,
-  GlobalItemPrimitive,
-  light,
-  dark,
-  settings,
-  ThemeProvider,
-} from '../src';
+import { GlobalItem, light, dark, settings, ThemeProvider } from '../src';
 import { CONTENT_NAV_WIDTH } from '../src/common/constants';
 
 const themeModes = { light, dark, settings };

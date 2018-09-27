@@ -48,21 +48,26 @@ describe('GlobalItem', () => {
   it('should wrap GlobalItemBase using navigationItemClicked HOC', () => {
     const WrappedWithGlobalTheme = () => null;
     const MockWithGlobalTheme = jest.fn(() => WrappedWithGlobalTheme);
-    const MockNavigationItemClicked = jest.fn(() => () => null);
     jest.doMock('../../../../theme', () => ({
       withGlobalTheme: MockWithGlobalTheme,
       styleReducerNoOp: jest.fn(styles => styles),
     }));
+
+    const WrappedWithNavigationItemClicked = () => null;
+    const MockNavigationItemClicked = jest.fn(
+      () => WrappedWithNavigationItemClicked,
+    );
     jest.doMock('../../../../common/analytics', () => ({
       navigationItemClicked: MockNavigationItemClicked,
     }));
 
-    require('../../index');
+    const { default: DefaultGlobalItem } = require('../../index');
 
     expect(MockNavigationItemClicked).toHaveBeenCalledWith(
       WrappedWithGlobalTheme,
       'globalItem',
     );
+    expect(DefaultGlobalItem).toBe(WrappedWithNavigationItemClicked);
   });
 
   describe('GlobalItemBase', () => {
