@@ -6,20 +6,18 @@ import { EditorState, Transaction } from 'prosemirror-state';
 import { mapChildren, flatmap } from '../../utils/slice';
 import { isEmptyDocument, getStepRange } from '../../utils';
 
-export type PredefinedLayout = 'two_equal' | 'three_equal';
+export type PresetLayout = 'two_equal' | 'three_equal';
 
-const PredefinedLayoutFilters = (
-  widths,
-): { [key in PredefinedLayout]: boolean } => {
+const PresetLayoutFilters = (widths): { [key in PresetLayout]: boolean } => {
   return {
     two_equal: widths.length === 2 && widths.every(width => width === 50),
     three_equal: widths.length === 3 && widths.every(width => width === 33.33),
   };
 };
 
-export const getPredefinedLayout = (section: Node) => {
+export const getPresetLayout = (section: Node) => {
   const widths = mapChildren(section, column => column.attrs.width);
-  const matchingFilters = PredefinedLayoutFilters(widths);
+  const matchingFilters = PresetLayoutFilters(widths);
   return Object.keys(matchingFilters).find(name => matchingFilters[name]);
 };
 
@@ -44,10 +42,10 @@ function forceColumnStructure(
   state: EditorState,
   node: Node,
   pos: number,
-  predefinedLayout: PredefinedLayout,
+  presetLayout: PresetLayout,
 ): Transaction | undefined {
   const tr = state.tr;
-  if (predefinedLayout === 'two_equal' && node.childCount === 3) {
+  if (presetLayout === 'two_equal' && node.childCount === 3) {
     const thirdColumn = node.content.child(2);
     const insideRightEdgeOfLayoutSection = pos + node.nodeSize - 1;
     const thirdColumnPos =
@@ -69,7 +67,7 @@ function forceColumnStructure(
       );
     }
   } else if (
-    (predefinedLayout === 'three_equal' && node.childCount === 2) ||
+    (presetLayout === 'three_equal' && node.childCount === 2) ||
     node.childCount < 2
   ) {
     const insideRightEdgeOfLayoutSection = pos + node.nodeSize - 1;
@@ -103,9 +101,9 @@ function forceColumnWidths(
   state: EditorState,
   tr: Transaction,
   pos: number,
-  predefinedLayout: PredefinedLayout,
+  presetLayout: PresetLayout,
 ) {
-  const width = predefinedLayout === 'two_equal' ? 50 : 33.33;
+  const width = presetLayout === 'two_equal' ? 50 : 33.33;
   const node = tr.doc.nodeAt(pos);
   if (!node) {
     return tr;
@@ -118,26 +116,25 @@ function forceColumnWidths(
   );
 }
 
-function forceSectionToPredefinedLayout(
+function forceSectionToPresetLayout(
   state: EditorState,
   node: Node,
   pos: number,
-  predefinedLayout: PredefinedLayout,
+  presetLayout: PresetLayout,
 ): Transaction | undefined {
-  const tr =
-    forceColumnStructure(state, node, pos, predefinedLayout) || state.tr;
+  const tr = forceColumnStructure(state, node, pos, presetLayout) || state.tr;
 
   // save the selection here, since forcing column widths causes a change over the
   // entire layoutSection, which remaps selection to the end. not remapping here
   // is safe because the structure is no longer changing.
   const selection = tr.selection;
 
-  return forceColumnWidths(state, tr, pos, predefinedLayout).setSelection(
+  return forceColumnWidths(state, tr, pos, presetLayout).setSelection(
     selection,
   );
 }
 
-export const setPredefinedLayout = (layout: PredefinedLayout): Command => (
+export const setPresetLayout = (layout: PresetLayout): Command => (
   state,
   dispatch,
 ) => {
@@ -150,7 +147,7 @@ export const setPredefinedLayout = (layout: PredefinedLayout): Command => (
   if (!node) {
     return false;
   }
-  const tr = forceSectionToPredefinedLayout(state, node, pos, layout);
+  const tr = forceSectionToPresetLayout(state, node, pos, layout);
   if (tr) {
     dispatch(tr.scrollIntoView());
     return true;

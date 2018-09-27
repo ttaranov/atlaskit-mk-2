@@ -14,10 +14,10 @@ import {
   Icon,
 } from '../../../src/plugins/floating-toolbar/types';
 import {
-  setPredefinedLayout,
+  setPresetLayout,
   deleteActiveLayoutNode,
-  getPredefinedLayout,
-  PredefinedLayout,
+  getPresetLayout,
+  PresetLayout,
 } from './actions';
 
 export const messages = defineMessages({
@@ -33,13 +33,13 @@ export const messages = defineMessages({
   },
 });
 
-type PredefinedLayoutButtonItem = {
-  type: PredefinedLayout;
+type PresetLayoutButtonItem = {
+  type: PresetLayout;
   title: MessageDescriptor;
   icon: Icon;
 };
 
-const LAYOUT_TYPES: PredefinedLayoutButtonItem[] = [
+const LAYOUT_TYPES: PresetLayoutButtonItem[] = [
   { type: 'two_equal', title: messages.twoColumns, icon: LayoutTwoEqualIcon },
   {
     type: 'three_equal',
@@ -53,13 +53,13 @@ const LAYOUT_TYPES: PredefinedLayoutButtonItem[] = [
 
 const buildLayoutButton = (
   intl: InjectedIntl,
-  item: PredefinedLayoutButtonItem,
+  item: PresetLayoutButtonItem,
   currentLayout: string | undefined,
 ): FloatingToolbarItem<Command> => ({
   type: 'button',
   icon: item.icon,
   title: intl.formatMessage(item.title),
-  onClick: setPredefinedLayout(item.type),
+  onClick: setPresetLayout(item.type),
   selected: !!currentLayout && currentLayout === item.type,
 });
 
@@ -70,7 +70,7 @@ export const buildToolbar = (
 ): FloatingToolbarConfig | undefined => {
   const node = state.doc.nodeAt(pos);
   if (node) {
-    const currentLayout = getPredefinedLayout(node);
+    const currentLayout = getPresetLayout(node);
     return {
       title: 'Columns floating controls',
       getDomRef: view =>
