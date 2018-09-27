@@ -72,7 +72,7 @@ const variations: Array<VariationCategory> = [
     ],
   },
   {
-    itemComponent: GlobalItemPrimitive,
+    itemComponent: GlobalItem,
     title: 'State variations',
     items: [
       {

@@ -5,13 +5,13 @@ exports[`GlobalItem GlobalItemBase should render an InteractionStateManager 1`] 
   margin-top: 10px;
 }
 
-<span
+<div
   className="emotion-0"
 >
   <InteractionStateManager>
     <unknown />
   </InteractionStateManager>
-</span>
+</div>
 `;
 
 exports[`GlobalItem GlobalItemBase should render the GlobalItem primitive 1`] = `
@@ -52,13 +52,13 @@ exports[`largeItem 1`] = `
   margin-top: 10px;
 }
 
-<span
+<div
   className="emotion-0"
 >
   <InteractionStateManager>
     <unknown />
   </InteractionStateManager>
-</span>
+</div>
 `;
 
 exports[`smallItem 1`] = `
@@ -66,11 +66,11 @@ exports[`smallItem 1`] = `
   margin-top: 0;
 }
 
-<span
+<div
   className="emotion-0"
 >
   <InteractionStateManager>
     <unknown />
   </InteractionStateManager>
-</span>
+</div>
 `;

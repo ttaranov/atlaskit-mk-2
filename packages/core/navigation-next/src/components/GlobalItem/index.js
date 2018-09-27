@@ -25,9 +25,9 @@ export class GlobalItemBase extends PureComponent<GlobalItemProps> {
       mode.globalItem({ size }),
     );
     return (
-      <span css={itemWrapperStyles}>
+      <div css={itemWrapperStyles}>
         <InteractionStateManager>{this.renderItem}</InteractionStateManager>
-      </span>
+      </div>
     );
   }
 }

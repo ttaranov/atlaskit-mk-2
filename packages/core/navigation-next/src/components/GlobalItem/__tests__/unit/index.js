@@ -55,16 +55,16 @@ describe('GlobalItem', () => {
       expect(primitive).toMatchSnapshot();
     });
 
-    it('should render an item wrapper with the globalItem.itemWrapper theme styles', () => {
+    it('should render an item wrapper with the globalItem.itemWrapper theme styles when size is large', () => {
       const largeItem = shallow(
         <GlobalItemBase theme={theme} icon={AtlassianIcon} size="large" />,
       );
 
       expect(theme.mode.globalItem).toHaveBeenCalledWith({ size: 'large' });
       expect(largeItem).toMatchSnapshot('largeItem');
+    });
 
-      jest.clearAllMocks();
-
+    it('should render an item wrapper with the globalItem.itemWrapper theme styles when size is small', () => {
       const smallItem = shallow(
         <GlobalItemBase theme={theme} icon={AtlassianIcon} size="small" />,
       );
