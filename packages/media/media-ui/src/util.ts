@@ -59,7 +59,6 @@ export function fileToDataURI(blob: Blob): Promise<string> {
       } else if (result === null) {
         reject();
       }
-      resolve(reader.result as string);
     });
     reader.addEventListener('error', reject);
     reader.readAsDataURL(blob);

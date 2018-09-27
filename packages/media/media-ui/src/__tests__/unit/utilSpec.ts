@@ -1,5 +1,38 @@
 declare var global: any;
 
+class MockFileReader {
+  loadEvent: () => void = () => {};
+  errorEvent: ({}) => void = () => {};
+  result: string | null = 'mockResult';
+
+  addEventListener = jest
+    .fn()
+    .mockImplementation((eventName: string, fn: () => void): void => {
+      if (eventName === 'load') {
+        this.loadEvent = fn;
+      } else if (eventName === 'error') {
+        this.errorEvent = fn;
+      }
+    });
+
+  readAsDataURL = jest.fn().mockImplementation((): void => {
+    this.loadEvent();
+  });
+}
+
+const mockError = { message: 'error' };
+
+class MockFileReaderWithError extends MockFileReader {
+  readAsDataURL = jest.fn().mockImplementation((): void => {
+    this.errorEvent(mockError);
+  });
+}
+
+const GloblFileReader = global.FileReader;
+const FileReader = jest
+  .spyOn(global, 'FileReader')
+  .mockImplementation(() => new GloblFileReader());
+
 import {
   dataURItoFile,
   fileToArrayBuffer,
@@ -34,11 +67,34 @@ describe('Image Meta Data Util', () => {
   });
 
   describe('fileToDataURI()', () => {
-    const tinyPngFile = dataURItoFile(tinyPngDataURI);
+    const mockReader = new MockFileReader();
+    const mockReaderWithError = new MockFileReaderWithError();
+
+    const setMockFileReader = () => mockReader;
+    const setMockFileReaderWithError = () => mockReaderWithError;
+    const unsetMockFileReader = () => new GloblFileReader();
+
+    beforeEach(() => {
+      FileReader.mockImplementation(setMockFileReader);
+    });
+
+    afterEach(() => {
+      FileReader.mockImplementation(unsetMockFileReader);
+    });
 
     it('should convert File to dataURI', async () => {
-      const dataURI = await fileToDataURI(tinyPngFile);
-      expect(dataURI).toEqual(tinyPngDataURI);
+      const mockFile = new File([], '');
+      const dataURI = await fileToDataURI(mockFile);
+      expect(mockReader.addEventListener).toHaveBeenCalledTimes(2);
+      expect(mockReader.readAsDataURL).toHaveBeenCalledWith(mockFile);
+      expect(dataURI).toEqual(mockReader.result);
+    });
+
+    it('should reject if error', async () => {
+      FileReader.mockImplementation(setMockFileReaderWithError);
+
+      const mockFile = new File([], '');
+      await expect(fileToDataURI(mockFile)).rejects.toBe(mockError);
     });
 
     it('should still convert invalid File to dataURI', async () => {
