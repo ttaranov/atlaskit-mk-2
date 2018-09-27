@@ -19,6 +19,18 @@ export const PreviewItem: ComponentClass = styled.li`
   border-radius: 10px;
   border: 1px solid #ccc;
   padding: 10px;
-  overflow: scroll;
+  overflow: auto;
   max-height: 600px;
+`;
+
+export const PreviewImageContainer: ComponentClass = styled.div`
+  margin: 10px 0;
+`;
+
+export const Code: ComponentClass = styled.code`
+  padding: 5px;
+  border-radius: 5px;
+  background-color: #ccc;
+  color: white;
+  font-size: 80%;
 `;

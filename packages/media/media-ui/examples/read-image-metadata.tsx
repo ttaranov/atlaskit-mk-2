@@ -33,10 +33,7 @@ class Example extends React.Component<{}, ExampleState> {
       const startTime = Date.now();
       const fileInfo = await getFileInfo(file);
       const metadata = await readImageMetaData(fileInfo);
-      const scaleFactor = getScaleFactor(
-        fileInfo.file,
-        metadata ? metadata.tags : null,
-      );
+      const scaleFactor = getScaleFactor(file, metadata ? metadata.tags : null);
       const duration = Date.now() - startTime;
       previews.push({
         filename: file.name,
@@ -82,7 +79,7 @@ class Example extends React.Component<{}, ExampleState> {
     return this.state.previews.map((preview, i) => {
       return (
         <PreviewItem key={`preview-${i}`}>
-          <div>{`${preview.filename} ~ x${preview.scaleFactor} scaleFactor ~ ${
+          <div>{`${preview.filename} ~ scaleFactor: x${preview.scaleFactor} ~ ${
             preview.duration
           }ms`}</div>
           <img src={preview.src} />
