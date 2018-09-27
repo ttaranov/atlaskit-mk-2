@@ -104,12 +104,25 @@ export class ToolbarInner extends React.Component<
     return pushed;
   };
 
+  equalsButton = (b1: React.ReactNode) => (b2: React.ReactNode) => {
+    const title1 = b1.props.title;
+    const title2 = b2.props.title;
+
+    if (title1 === title2) {
+      console.log('Matched button via string');
+      console.log('b1 is ', b1);
+      console.log('b2 is ', b2);
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   registerButton = button => {
     this.setState(prevState => {
       const prevRegisteredButtons = prevState.registeredButtons;
-      const allTitles = prevRegisteredButtons.map(b => b.props.title);
 
-      if (allTitles.indexOf(button.props.title) !== -1) {
+      if (prevRegisteredButtons.find(this.equalsButton(button))) {
         // Our button already exists
         return { ...prevState };
       }
