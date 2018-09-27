@@ -8,10 +8,14 @@ import { isEmptyDocument, getStepRange } from '../../utils';
 
 export type PresetLayout = 'two_equal' | 'three_equal';
 
-const PresetLayoutFilters = (widths): { [key in PresetLayout]: boolean } => {
+const PresetLayoutFilters = (
+  widths: number[],
+): { [key in PresetLayout]: boolean } => {
   return {
     two_equal: widths.length === 2 && widths.every(width => width === 50),
-    three_equal: widths.length === 3 && widths.every(width => width === 33.33),
+    three_equal:
+      widths.length === 3 &&
+      widths.every(width => Number(width.toFixed(2)) === 33.33),
   };
 };
 
