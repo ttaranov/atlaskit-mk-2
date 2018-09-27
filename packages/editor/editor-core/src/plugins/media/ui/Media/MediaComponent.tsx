@@ -74,15 +74,13 @@ export class MediaComponentInternal extends Component<Props, State> {
       onDelete,
       onClick,
       selected,
-      disableOverlay,
       url,
       type,
       resizeMode,
       context,
     } = this.props;
-    // const { context } = this.state;
 
-    if (id && context) {
+    if (context && (id || type === 'external')) {
       const otherProps: Partial<Writeable<CardProps>> = {};
 
       if (onDelete) {
@@ -116,6 +114,7 @@ export class MediaComponentInternal extends Component<Props, State> {
         <Card
           context={context}
           dimensions={cardDimensions}
+          status="complete"
           identifier={identifier}
           selectable={true}
           selected={selected}

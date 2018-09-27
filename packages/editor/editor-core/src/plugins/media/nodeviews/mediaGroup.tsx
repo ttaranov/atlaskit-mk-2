@@ -43,8 +43,8 @@ class MediaGroup extends React.Component<MediaGroupProps> {
   };
 
   renderChildNodes = node => {
-    const tempIds = [];
-    const getTempIds = node.forEach((item, childOffset) => {
+    const tempIds = [] as any;
+    node.forEach((item, childOffset) => {
       tempIds.push(item.attrs.__key);
     });
 
@@ -67,7 +67,7 @@ class MediaGroup extends React.Component<MediaGroupProps> {
   };
 
   render() {
-    return <div>{this.renderChildNodes(this.props.node)}</div>;
+    return <>{this.renderChildNodes(this.props.node)}</>;
   }
 }
 

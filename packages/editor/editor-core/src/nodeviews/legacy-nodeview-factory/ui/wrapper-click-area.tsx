@@ -8,7 +8,6 @@ import {
   ReactNodeViewState,
   stateKey,
 } from '../../../plugins/base/pm-plugins/react-nodeview';
-import { setNodeSelection } from '../../../utils';
 import {
   ProsemirrorGetPosHandler,
   ReactComponentConstructor,
@@ -70,22 +69,14 @@ export default function wrapComponentWithClickArea(
       anchorPos: number,
       headPos: number,
     ) => {
-      const { getPos, view } = this.props;
-      // console.log()
+      const { getPos } = this.props;
       const nodePos = getPos();
-      // console.log(getPos());
       const isSelected =
         nodePos < anchorPos && headPos < nodePos + this.props.node.nodeSize;
-      console.log(isSelected);
 
       this.setState({
         selected: isSelected ? anchorPos : null,
       });
-    };
-
-    private onClick = e => {
-      const { getPos, view } = this.props;
-      setNodeSelection(view, getPos());
     };
   };
 }
