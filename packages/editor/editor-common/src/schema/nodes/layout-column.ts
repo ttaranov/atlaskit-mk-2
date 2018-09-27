@@ -16,10 +16,21 @@ export const layoutColumn: NodeSpec = {
     },
     {
       tag: 'div[data-layout-column]',
+      getAttrs(dom: HTMLElement) {
+        return {
+          width: Number(dom.getAttribute('data-column-width')) || undefined,
+        };
+      },
     },
   ],
-  toDOM() {
+  toDOM(node) {
     const attrs = { 'data-layout-column': 'true' };
+    const { width } = node.attrs;
+    if (width) {
+      attrs['style'] = `flex-basis: ${width}%`;
+      attrs['data-column-width'] = width;
+    }
+
     return ['div', attrs, 0];
   },
 };
