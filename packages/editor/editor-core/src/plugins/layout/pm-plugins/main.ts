@@ -118,12 +118,14 @@ export default new Plugin({
 
     if (changes.length) {
       const tr = newState.tr;
+      const selection = newState.selection;
 
       changes.forEach(change => {
         tr.replaceRange(change.from, change.to, change.slice);
       });
 
       if (tr.docChanged) {
+        tr.setSelection(selection);
         tr.setMeta('isLocal', true);
         tr.setMeta('addToHistory', false);
         return tr;
