@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GlobalItem GlobalItemBase should render an InteractionStateManager 1`] = `
+.emotion-0 {
+  margin-top: 10px;
+}
+
+<span
+  className="emotion-0"
+>
+  <InteractionStateManager>
+    <unknown />
+  </InteractionStateManager>
+</span>
+`;
+
+exports[`GlobalItem GlobalItemBase should render the GlobalItem primitive 1`] = `
+<GlobalNavigationItemPrimitive
+  icon={[Function]}
+  isActive={false}
+  isHover={false}
+  isSelected={false}
+  label=""
+  size="large"
+  styles={[Function]}
+  theme={
+    Object {
+      "mode": Object {
+        "globalItem": [Function],
+      },
+    }
+  }
+/>
+`;
+
+exports[`GlobalItem should render correctly 1`] = `
+<AnalyticsContext
+  data={
+    Object {
+      "componentName": "globalItem",
+    }
+  }
+>
+  <ForwardRef(WithAnalyticsEvents(WithTheme(GlobalItemBase)))
+    icon={[Function]}
+  />
+</AnalyticsContext>
+`;
+
+exports[`largeItem 1`] = `
+.emotion-0 {
+  margin-top: 10px;
+}
+
+<span
+  className="emotion-0"
+>
+  <InteractionStateManager>
+    <unknown />
+  </InteractionStateManager>
+</span>
+`;
+
+exports[`smallItem 1`] = `
+.emotion-0 {
+  margin-top: 0;
+}
+
+<span
+  className="emotion-0"
+>
+  <InteractionStateManager>
+    <unknown />
+  </InteractionStateManager>
+</span>
+`;

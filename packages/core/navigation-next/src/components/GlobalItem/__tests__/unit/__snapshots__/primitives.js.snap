@@ -1,0 +1,57 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`GlobalNavigationItemPrimitive should render a CustomComponent when a component prop is passed 1`] = `
+<ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(Tooltip)))
+  delay={0}
+  hideTooltipOnMouseDown={true}
+  position="right"
+>
+  <div
+    className="css-1baulvz"
+  >
+    <MyComponent
+      className="css-8qkufk"
+      component={[Function]}
+      id="my-id"
+      label="my-label"
+      onClick={[Function]}
+      size="large"
+      styles={[Function]}
+    />
+  </div>
+</ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(Tooltip)))>
+`;
+
+exports[`GlobalNavigationItemPrimitive should render a button when an onClick prop is passed 1`] = `
+<ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(Tooltip)))
+  delay={0}
+  hideTooltipOnMouseDown={true}
+  position="right"
+>
+  <div
+    className="css-1baulvz"
+  >
+    <button
+      className="css-8qkufk"
+      onClick={[Function]}
+    />
+  </div>
+</ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(Tooltip)))>
+`;
+
+exports[`GlobalNavigationItemPrimitive should render an anchor when an href prop is passed 1`] = `
+<ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(Tooltip)))
+  delay={0}
+  hideTooltipOnMouseDown={true}
+  position="right"
+>
+  <div
+    className="css-1baulvz"
+  >
+    <a
+      className="css-8qkufk"
+      href="www.example.com"
+    />
+  </div>
+</ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(Tooltip)))>
+`;

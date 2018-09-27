@@ -8,7 +8,7 @@ import { styleReducerNoOp, withGlobalTheme } from '../../theme';
 import GlobalItemPrimitive from './primitives';
 import type { GlobalItemProps } from './types';
 
-class GlobalItem extends PureComponent<GlobalItemProps> {
+export class GlobalItemBase extends PureComponent<GlobalItemProps> {
   static defaultProps = {
     label: '',
     size: 'large',
@@ -32,6 +32,9 @@ class GlobalItem extends PureComponent<GlobalItemProps> {
   }
 }
 
-export default navigationItemClicked(withGlobalTheme(GlobalItem), 'globalItem');
+export default navigationItemClicked(
+  withGlobalTheme(GlobalItemBase),
+  'globalItem',
+);
 
 export type { GlobalItemProps };
