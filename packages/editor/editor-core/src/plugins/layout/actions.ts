@@ -3,7 +3,7 @@ import { Node, Fragment, Slice } from 'prosemirror-model';
 import { Command } from '../../types';
 import { pluginKey, LayoutState } from './pm-plugins/main';
 import { EditorState, Transaction } from 'prosemirror-state';
-import { mapChildren } from '../../utils/slice';
+import { mapChildren, flatmap } from '../../utils/slice';
 import { isEmptyDocument } from '../../utils';
 
 export type PredefinedLayout = 'two_equal' | 'three_equal';
@@ -40,12 +40,11 @@ export const insertLayoutColumns: Command = (state, dispatch) => {
   return true;
 };
 
-// FIXME: update column widths
-export function forceSectionToPredefinedLayout(
-  state: EditorState,
-  node: Node,
-  pos: number,
-  predefinedLayout: PredefinedLayout,
+function forceColumnStructure(
+  state,
+  node,
+  pos,
+  predefinedLayout,
 ): Transaction | undefined {
   const tr = state.tr;
   if (predefinedLayout === 'two_equal' && node.childCount === 3) {
@@ -77,7 +76,56 @@ export function forceSectionToPredefinedLayout(
       state.schema.nodes.layoutColumn.createAndFill() as Node,
     );
   }
+
   return tr.docChanged ? tr : undefined;
+}
+
+function forceColumnWidths(
+  state: EditorState,
+  tr: Transaction,
+  pos: number,
+  predefinedLayout: PredefinedLayout,
+) {
+  const { layoutColumn } = state.schema.nodes;
+  const width = predefinedLayout === 'two_equal' ? 50 : 33.33;
+  const node = tr.doc.nodeAt(pos);
+  if (!node) {
+    return tr;
+  }
+
+  return tr.replaceWith(
+    pos + 1,
+    pos + node.nodeSize - 1,
+    flatmap(node.content, column =>
+      layoutColumn.create(
+        {
+          ...column.attrs,
+          width,
+        },
+        column.content,
+        column.marks,
+      ),
+    ),
+  );
+}
+
+function forceSectionToPredefinedLayout(
+  state: EditorState,
+  node: Node,
+  pos: number,
+  predefinedLayout: PredefinedLayout,
+): Transaction | undefined {
+  const tr =
+    forceColumnStructure(state, node, pos, predefinedLayout) || state.tr;
+
+  // save the selection here, since forcing column widths causes a change over the
+  // entire layoutSection, which remaps selection to the end. not remapping here
+  // is safe because the structure is no longer changing.
+  const selection = tr.selection;
+
+  return forceColumnWidths(state, tr, pos, predefinedLayout).setSelection(
+    selection,
+  );
 }
 
 export const setPredefinedLayout = (layout: PredefinedLayout): Command => (
@@ -95,7 +143,7 @@ export const setPredefinedLayout = (layout: PredefinedLayout): Command => (
   }
   const tr = forceSectionToPredefinedLayout(state, node, pos, layout);
   if (tr) {
-    dispatch(tr);
+    dispatch(tr.scrollIntoView());
     return true;
   }
 

@@ -1174,5 +1174,54 @@ System.out.println("There are " + count + " values >= 5");`,
         },
       ],
     },
+    {
+      type: 'heading',
+      attrs: { level: 1 },
+      content: [
+        {
+          type: 'text',
+          text: 'Media single without width defined',
+        },
+      ],
+    },
+    {
+      type: 'layoutSection',
+      content: [
+        {
+          type: 'layoutColumn',
+          attrs: {
+            width: 33.33,
+          },
+          content: [
+            {
+              type: 'paragraph',
+              content: [
+                {
+                  type: 'text',
+                  text: 'This column is a 1/3rd.',
+                },
+              ],
+            },
+          ],
+        },
+        {
+          type: 'layoutColumn',
+          attrs: {
+            width: 66.66,
+          },
+          content: [
+            {
+              type: 'paragraph',
+              content: [
+                {
+                  type: 'text',
+                  text: 'This column is 2/3rds.',
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
   ],
 };
