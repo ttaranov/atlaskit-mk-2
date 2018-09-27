@@ -1,5 +1,8 @@
 # @atlaskit/navigation-next
 
+## 3.15.1
+- [patch] hide GlobalItem tooltip on click as well as on mousedown [6c35a0d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6c35a0d)
+
 ## 3.15.0
 - [minor] Add itemComponent prop to GlobalNav to allow consumers to pass a custom component for rendering items. Add isSelected prop to GlobalItem. [e8163a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8163a6)
 
