@@ -146,7 +146,7 @@ export default {
         hover: themed({ light: colors.P200, dark: colors.P200 }),
         active: themed({ light: colors.P500, dark: colors.P500 }),
         disabled: themed({ light: colors.N20A, dark: colors.DN70 }),
-        selected: themed({ light: colors.R500, dark: colors.R500 }),
+        selected: themed({ light: colors.N700, dark: colors.DN0 }),
         focusSelected: themed({ light: colors.R500, dark: colors.R500 }),
       },
       boxShadowColor: {
@@ -156,7 +156,7 @@ export default {
       color: {
         default: themed({ light: colors.N0, dark: colors.N0 }),
         disabled: themed({ light: colors.N70, dark: colors.DN30 }),
-        selected: themed({ light: colors.N0, dark: colors.N0 }),
+        selected: themed({ light: colors.N20, dark: colors.DN400 }),
         focusSelected: themed({ light: colors.N0, dark: colors.N0 }),
       },
     },
