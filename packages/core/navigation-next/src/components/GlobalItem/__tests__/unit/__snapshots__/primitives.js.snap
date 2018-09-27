@@ -7,6 +7,7 @@ exports[`GlobalNavigationItemPrimitive should render a CustomComponent when a co
 
 <ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(Tooltip)))
   delay={0}
+  hideTooltipOnClick={true}
   hideTooltipOnMouseDown={true}
   position="right"
 >
@@ -33,6 +34,7 @@ exports[`GlobalNavigationItemPrimitive should render a button when an onClick pr
 
 <ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(Tooltip)))
   delay={0}
+  hideTooltipOnClick={true}
   hideTooltipOnMouseDown={true}
   position="right"
 >
@@ -54,6 +56,7 @@ exports[`GlobalNavigationItemPrimitive should render an anchor when an href prop
 
 <ForwardRef(WithAnalyticsContext(WithAnalyticsEvents(Tooltip)))
   delay={0}
+  hideTooltipOnClick={true}
   hideTooltipOnMouseDown={true}
   position="right"
 >

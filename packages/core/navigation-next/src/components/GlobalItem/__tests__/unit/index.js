@@ -20,15 +20,50 @@ const theme: any = {
   },
 };
 
+/* eslint-disable global-require */
+
 describe('GlobalItem', () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.resetModules();
   });
 
   it('should render correctly', () => {
     const wrapper = shallow(<GlobalItem icon={AtlassianIcon} />);
 
     expect(wrapper).toMatchSnapshot();
+  });
+
+  it('should wrap GlobalItemBase using withGlobalTheme HOC', () => {
+    const WrappedWithGlobalTheme = () => null;
+    const MockWithGlobalTheme = jest.fn(() => WrappedWithGlobalTheme);
+    jest.doMock('../../../../theme', () => ({
+      withGlobalTheme: MockWithGlobalTheme,
+      styleReducerNoOp: jest.fn(styles => styles),
+    }));
+
+    const { GlobalItemBase: RecentGlobalItemBase } = require('../../index');
+    expect(MockWithGlobalTheme).toHaveBeenCalledWith(RecentGlobalItemBase);
+  });
+
+  it('should wrap GlobalItemBase using navigationItemClicked HOC', () => {
+    const WrappedWithGlobalTheme = () => null;
+    const MockWithGlobalTheme = jest.fn(() => WrappedWithGlobalTheme);
+    const MockNavigationItemClicked = jest.fn(() => () => null);
+    jest.doMock('../../../../theme', () => ({
+      withGlobalTheme: MockWithGlobalTheme,
+      styleReducerNoOp: jest.fn(styles => styles),
+    }));
+    jest.doMock('../../../../common/analytics', () => ({
+      navigationItemClicked: MockNavigationItemClicked,
+    }));
+
+    require('../../index');
+
+    expect(MockNavigationItemClicked).toHaveBeenCalledWith(
+      WrappedWithGlobalTheme,
+      'globalItem',
+    );
   });
 
   describe('GlobalItemBase', () => {
