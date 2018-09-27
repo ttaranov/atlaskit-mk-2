@@ -294,7 +294,7 @@ export class MediaPluginState {
       files = insertMediaGroupNode(this.view, nonImageAttachments, collection);
       if (files) {
         files.mediaNodes.forEach((node, idx) => {
-          this.handleMediaNodeMount(node, () => files.mediaInsertPos - idx);
+          this.handleMediaNodeMount(node, () => files.mediaInsertPos + idx + 1);
         });
       }
       imageAttachments.forEach(mediaState => {

@@ -9,7 +9,7 @@ import {
   stateKey as mediaStateKey,
 } from '../pm-plugins/main';
 import { FileIdentifier } from '@atlaskit/media-card';
-import WrapperClickArea from '../../../nodeviews/legacy-nodeview-factory/ui/wrapper-click-area';
+import WrapperClickArea from './wrapper-click-area';
 import { setNodeSelection } from '../../../utils/index';
 
 export interface Props {

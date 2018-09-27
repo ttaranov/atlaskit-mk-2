@@ -11,11 +11,9 @@ import {
 import {
   ProsemirrorGetPosHandler,
   ReactComponentConstructor,
-} from '../../types';
-import { ReactNodeViewComponents } from '../';
+} from '../../../nodeviews';
 
 interface Props {
-  components: ReactNodeViewComponents;
   getPos: ProsemirrorGetPosHandler;
   node: PMNode;
   pluginState: ReactNodeViewState;
