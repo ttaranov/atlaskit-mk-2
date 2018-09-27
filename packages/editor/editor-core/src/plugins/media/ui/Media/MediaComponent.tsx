@@ -96,7 +96,7 @@ export class MediaComponentInternal extends Component<Props, State> {
           ? {
               dataURI: url!,
               name: url,
-              mediaItemType: 'external',
+              mediaItemType: 'external-image',
             }
           : type === 'file'
             ? {
