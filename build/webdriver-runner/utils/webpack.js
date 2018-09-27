@@ -102,9 +102,15 @@ async function startDevServer() {
 
   /* At the moment, the website does not build a package and it is not possible to test it.
   ** The current workaround, we build another package that builds the homepage and indirectly test the website.
+  ** We picked the package polyfills:
+   - the package is internal.
+   - no integration tests will be added.
+   - changes to the package will not impact the build system.
   */
   if (globs.indexOf('website') === -1) {
-    globs = globs.map(glob => glob.replace('website', 'packages/core/button'));
+    globs = globs.map(glob =>
+      glob.replace('website', 'packages/core/polyfills'),
+    );
   }
 
   if (!globs.length) {
