@@ -31,13 +31,18 @@ export class VideoViewer extends React.Component<Props, State> {
   state: State = { src: Outcome.pending(), isHDActive: false };
 
   componentDidMount() {
-    this.init();
+    this.init(this.props);
+  }
+
+  componentWillUpdate(nextProps: Props) {
+    if (this.needsReset(this.props, nextProps)) {
+      this.init(nextProps);
+    }
   }
 
   private onHDChange = () => {
     const isHDActive = !this.state.isHDActive;
-    this.setState({ isHDActive });
-    this.init(isHDActive);
+    this.setState({ isHDActive }, () => this.init(this.props));
   };
 
   render() {
@@ -70,8 +75,9 @@ export class VideoViewer extends React.Component<Props, State> {
     });
   }
 
-  private async init(isHDActive?: boolean) {
-    const { context, item, collectionName } = this.props;
+  private async init(props: Props) {
+    const { context, item, collectionName } = props;
+    const { isHDActive } = this.state;
     const preferHd = isHDActive && isHDAvailable(item);
     const videoUrl = getVideoArtifactUrl(item, preferHd);
     try {
@@ -88,6 +94,12 @@ export class VideoViewer extends React.Component<Props, State> {
         src: Outcome.failed(createError('previewFailed', err, item)),
       });
     }
+  }
+
+  private needsReset(propsA: Props, propsB: Props) {
+    return (
+      propsA.item.id !== propsB.item.id || propsA.context !== propsB.context
+    );
   }
 
   private renderDownloadButton() {

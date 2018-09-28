@@ -44,19 +44,18 @@ const videoItemWithNoArtifacts: ProcessedFileState = {
 
 function createFixture(
   authPromise: Promise<Auth>,
-  props?: Partial<Props>,
+  additionalProps?: Partial<Props>,
   item?: ProcessedFileState,
 ) {
   const context = createContext({ authPromise });
-  const el = mount(
-    <VideoViewer
-      context={context}
-      item={item || videoItem}
-      {...props}
-      previewCount={0}
-    />,
-  );
-  return { context, el };
+  const props = {
+    context: context,
+    item: item || videoItem,
+    ...additionalProps,
+    previewCount: 0,
+  };
+  const el = mount(<VideoViewer {...props} />);
+  return { context, el, props };
 }
 
 describe('Video viewer', () => {
@@ -66,8 +65,8 @@ describe('Video viewer', () => {
 
   it('assigns a src for videos when successful', async () => {
     const authPromise = Promise.resolve({ token, clientId, baseUrl });
-    const { el } = createFixture(authPromise);
-    await (el as any).instance()['init']();
+    const { el, props } = createFixture(authPromise);
+    await (el as any).instance()['init'](props);
     el.update();
     expect(el.find(Video).prop('src')).toEqual(
       'some-base-url/video?client=some-client-id&token=some-token',
@@ -103,7 +102,7 @@ describe('Video viewer', () => {
 
   it('shows error message when there are not video artifacts in the media item', async () => {
     const authPromise = Promise.resolve({ token, clientId, baseUrl });
-    const { el } = createFixture(
+    const { el, props } = createFixture(
       authPromise,
       {
         featureFlags: { customVideoPlayer: true },
@@ -111,7 +110,7 @@ describe('Video viewer', () => {
       videoItemWithNoArtifacts,
     );
 
-    await (el as any).instance()['init']();
+    await (el as any).instance()['init'](props);
     el.update();
 
     const errorMessage = el.find(ErrorMessage);
@@ -124,19 +123,19 @@ describe('Video viewer', () => {
   it('MSW-720: passes collectionName to constructAuthTokenUrl', async () => {
     const collectionName = 'some-collection';
     const authPromise = Promise.resolve({ token, clientId, baseUrl });
-    const { el } = createFixture(authPromise, { collectionName });
-    await (el as any).instance()['init']();
+    const { el, props } = createFixture(authPromise, { collectionName });
+    await (el as any).instance()['init'](props);
     el.update();
     expect(constructAuthTokenUrlSpy.mock.calls[0][2]).toEqual(collectionName);
   });
 
   it('should render a custom video player if the feature flag is active', async () => {
     const authPromise = Promise.resolve({ token, clientId, baseUrl });
-    const { el } = createFixture(authPromise, {
+    const { el, props } = createFixture(authPromise, {
       featureFlags: { customVideoPlayer: true },
     });
 
-    await (el as any).instance()['init']();
+    await (el as any).instance()['init'](props);
     el.update();
 
     expect(el.find(CustomVideo)).toHaveLength(1);
@@ -147,11 +146,11 @@ describe('Video viewer', () => {
 
   it('should toggle hd when button is clicked', async () => {
     const authPromise = Promise.resolve({ token, clientId, baseUrl });
-    const { el } = createFixture(authPromise, {
+    const { el, props } = createFixture(authPromise, {
       featureFlags: { customVideoPlayer: true },
     });
 
-    await (el as any).instance()['init']();
+    await (el as any).instance()['init'](props);
     el.update();
     expect(el.state('isHDActive')).toBeFalsy();
     el
@@ -168,15 +167,14 @@ describe('Video viewer', () => {
     ) {
       const authPromise = Promise.resolve({ token, clientId, baseUrl });
       const context = createContext({ authPromise });
-      const el = mount(
-        <VideoViewer
-          context={context}
-          previewCount={previewCount}
-          item={videoItem}
-          featureFlags={{ customVideoPlayer: isCustomVideoPlayer }}
-        />,
-      );
-      await (el as any).instance()['init']();
+      const props = {
+        context: context,
+        previewCount: previewCount,
+        item: videoItem,
+        featureFlags: { customVideoPlayer: isCustomVideoPlayer },
+      };
+      const el = mount(<VideoViewer {...props} />);
+      await (el as any).instance()['init'](props);
       el.update();
       return el;
     }
