@@ -107,6 +107,7 @@ export default class ReactNodeView implements NodeView {
     return this.reactComponent ? (
       <this.reactComponent
         view={this.view}
+        getPos={this.getPos}
         node={this.node}
         forwardRef={forwardRef}
         {...props}
@@ -175,11 +176,7 @@ export default class ReactNodeView implements NodeView {
         view,
         getPos,
         portalProviderAPI,
-        {
-          ...props,
-          getPos,
-          view,
-        },
+        props,
         component,
       ).init();
   }
