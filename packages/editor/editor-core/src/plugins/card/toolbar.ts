@@ -24,26 +24,33 @@ const visit: Command = state => {
 
     window.open(url);
     analyticsService.trackEvent('atlassian.editor.format.card.visit.button');
+    return true;
   }
 
-  return true;
+  return false;
 };
 
-export const buildToolbar = (
+export const floatingToolbar = (
   state: EditorState,
   intl: InjectedIntl,
-  pos: number,
 ): FloatingToolbarConfig | undefined => {
-  const node = state.doc.nodeAt(pos);
-  if (!node) {
-    return undefined;
-  }
+  const { inlineCard } = state.schema.nodes;
+  const cardNodes = [inlineCard];
 
   return {
     title: 'Card floating controls',
-    getDomRef: view =>
-      findDomRefAtPos(pos, view.domAtPos.bind(view)) as HTMLElement,
-    nodeType: node.type,
+    getDomRef: view => {
+      const domAtPos = view.domAtPos.bind(view);
+      const { selection } = view.state;
+
+      if (
+        selection instanceof NodeSelection &&
+        cardNodes.indexOf(selection.node.type) > -1
+      ) {
+        return findDomRefAtPos(selection.from, domAtPos) as HTMLElement;
+      }
+    },
+    nodeType: inlineCard,
     items: [
       {
         type: 'button',

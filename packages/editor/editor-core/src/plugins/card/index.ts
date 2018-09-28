@@ -1,9 +1,8 @@
-import { PluginKey, NodeSelection } from 'prosemirror-state';
+import { PluginKey } from 'prosemirror-state';
 import { inlineCard, blockCard } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { createPlugin } from './pm-plugins/main';
-import { FloatingToolbarConfig } from '../floating-toolbar/types';
-import { buildToolbar } from './toolbar';
+import { floatingToolbar } from './toolbar';
 
 export { CardProvider, CardOptions } from './types';
 
@@ -22,11 +21,7 @@ const cardPlugin: EditorPlugin = {
   },
 
   pluginsOptions: {
-    floatingToolbar(state, intl): FloatingToolbarConfig | undefined {
-      if (state.selection instanceof NodeSelection) {
-        return buildToolbar(state, intl, state.selection.from);
-      }
-    },
+    floatingToolbar,
   },
 };
 
