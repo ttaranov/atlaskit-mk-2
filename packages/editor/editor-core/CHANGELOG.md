@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 82.2.8
+- [patch] New translations [e4730b0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e4730b0)
+
 ## 82.2.7
 - [patch] Updated copy in Butbucket feedback prompt [533e624](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/533e624)
 
