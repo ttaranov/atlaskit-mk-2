@@ -21,8 +21,8 @@ const getRequiredRepresentation = (
   useAlt ? emoji.altRepresentation : emoji.representation;
 
 const isUnsupportedBrowser = () => {
-  const isIE = /*@cc_on!@*/ false || !!(document as any).documentMode, // Internet Explorer 6-11
-    isEdge = !isIE && !!(window as any).StyleMedia; // Edge 20+
+  const isIE = /*@cc_on!@*/ false || !!(document as any).documentMode; // Internet Explorer 6-11
+  const isEdge = !isIE && !!(window as any).StyleMedia; // Edge 20+
 
   return isIE || isEdge;
 };
