@@ -254,18 +254,18 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
               <ConfirmationText>
                 <div>
                   We are rolling out a new editing experience across Atlassian
-                  products, help us improve by providing feedback.
+                  products. Help us improve by providing feedback.
                 </div>
                 <div>
-                  You can opt-out for now in Bitbucket labs by turning off the
-                  "Atlassian editor" feature in settings.
+                  You can opt-out for now by turning off the "Atlassian Editor"
+                  feature on the Labs page in Bitbucket settings.
                 </div>
                 <ButtonGroup>
                   <Button appearance="primary" onClick={this.openFeedbackPopup}>
-                    Give Feedback
+                    Give feedback
                   </Button>
                   <Button appearance="default" onClick={this.openLearnMorePage}>
-                    Learn More
+                    Learn more
                   </Button>
                 </ButtonGroup>
               </ConfirmationText>
