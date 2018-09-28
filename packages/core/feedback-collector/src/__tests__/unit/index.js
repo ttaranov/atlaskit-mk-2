@@ -11,7 +11,7 @@ import FeedbackCollector from '../../components/FeedbackCollector';
 import FeedbackForm, { fieldLabel } from '../../components/FeedbackForm';
 
 describe('Feedback Collector unit tests', () => {
-  describe('Feedback JSD integration', () => {
+  describe('Feedback integration', () => {
     test('Feedback collector should render a component', () => {
       const wrapper = mount(
         <FeedbackCollector
@@ -26,7 +26,7 @@ describe('Feedback Collector unit tests', () => {
       expect(wrapper).toBeDefined();
     });
 
-    describe('Transforming form values into JSD format', () => {
+    describe('Transforming form values into format', () => {
       let wrapper;
 
       beforeEach(() => {

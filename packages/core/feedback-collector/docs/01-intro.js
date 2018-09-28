@@ -20,9 +20,9 @@ ${(
   </SectionMessage>
 )}
 
-## JSD Feedback collector
+## Feedback collector
 
-JSD Feedback collector is a wrapper around feedback form component that collects customer feedback across Atlassian products.
+Feedback collector is a wrapper around feedback form component that collects customer feedback across Atlassian products.
 
 ${(
   <Example

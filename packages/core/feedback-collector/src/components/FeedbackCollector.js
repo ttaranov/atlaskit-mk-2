@@ -23,52 +23,52 @@ type Props = {|
   email: string,
   /** The customer name */
   name: string,
-  /** The request id to access the JSD widget service */
+  /** The request id to access the widget service */
   requestTypeId: string,
-  /** The embeddable key to access the JSD widget service */
+  /** The embeddable key to access the widget service */
   embeddableKey: string,
 
-  /**  Additional fields to send to the JSD widget service **/
+  /**  Additional fields to send to the widget service **/
   additionalFields: FieldType[],
-  /**  Override the default id for the "can be contacted" custom field in your JSD widget service **/
+  /**  Override the default id for the "can be contacted" custom field in your widget service **/
   canBeContactedFieldId: string,
-  /**  Override the default value for the "can be contacted" custom field in your JSD widget service **/
+  /**  Override the default value for the "can be contacted" custom field in your widget service **/
   canBeContactedDefaultValue: FieldValueType,
-  /**  Override the default id for the "customer name" custom field in your JSD widget service **/
+  /**  Override the default id for the "customer name" custom field in your widget service **/
   customerNameFieldId: string,
-  /**  Override the default value for the "customer name" custom field in your JSD widget service **/
+  /**  Override the default value for the "customer name" custom field in your widget service **/
   customerNameDefaultValue: FieldValueType,
-  /**  Override the default id for the "description" custom field in your JSD widget service **/
+  /**  Override the default id for the "description" custom field in your widget service **/
   descriptionFieldId: string,
-  /**  Override the default value for the "description" custom field in your JSD widget service **/
+  /**  Override the default value for the "description" custom field in your widget service **/
   descriptionDefaultValue: FieldValueType,
-  /**  Override the default id for the "enroll in research" custom field in your JSD widget service **/
+  /**  Override the default id for the "enroll in research" custom field in your widget service **/
   enrollInResearchFieldId: string,
-  /**  Override the default value for the "enroll in research" custom field in your JSD widget service **/
+  /**  Override the default value for the "enroll in research" custom field in your widget service **/
   enrollInResearchDefaultValue: FieldValueType,
-  /**  Override the default id for the "email" custom field in your JSD widget service **/
+  /**  Override the default id for the "email" custom field in your widget service **/
   emailFieldId: string,
-  /**  Override the default value for the "email" custom field in your JSD widget service **/
+  /**  Override the default value for the "email" custom field in your widget service **/
   emailDefaultValue: FieldValueType,
-  /**  Override the default id for the "summary" custom field in your JSD widget service **/
+  /**  Override the default id for the "summary" custom field in your widget service **/
   summaryFieldId: string,
-  /**  Override the default value for the "summary" custom field in your JSD widget service **/
+  /**  Override the default value for the "summary" custom field in your widget service **/
   summaryDefaultValue: FieldValueType,
   /**  Number of characters that the "summary" field accepts, the rest will be truncated **/
   summaryTruncateLength: number,
   /** After this delay the onSubmit callback will be triggered optimistically **/
   timeoutOnSubmit: number,
-  /**  Override the default id for the "type" custom field in your JSD widget service **/
+  /**  Override the default id for the "type" custom field in your widget service **/
   typeFiedlId: string,
-  /**  Override the default value for the "Bug" type of response in your JSD widget service **/
+  /**  Override the default value for the "Bug" type of response in your widget service **/
   typeBugDefaultValue: FieldValueType,
-  /**  Override the default value for the "Comment" type of response in your JSD widget service **/
+  /**  Override the default value for the "Comment" type of response in your widget service **/
   typeCommentDefaultValue: FieldValueType,
-  /**  Override the default value for the "Suggestion" type of response in your JSD widget service **/
+  /**  Override the default value for the "Suggestion" type of response in your widget service **/
   typeSuggestionDefaultValue: FieldValueType,
-  /**  Override the default value for the "Question" type of response in your JSD widget service **/
+  /**  Override the default value for the "Question" type of response in your widget service **/
   typeQuestionDefaultValue: FieldValueType,
-  /**  Override the default value for the "Empty" type of response in your JSD widget service **/
+  /**  Override the default value for the "Empty" type of response in your widget service **/
   typeEmptyDefaultValue: FieldValueType,
   /** Function that will be called to initiate the exit transition. */
   onClose: () => void,

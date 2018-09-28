@@ -2,7 +2,7 @@
 import React, { Component } from 'react';
 import Button from '@atlaskit/button';
 import { FlagGroup } from '@atlaskit/flag';
-import JsdFeedbackCollector, { FeedbackFlag } from '../src';
+import FeedbackCollector, { FeedbackFlag } from '../src';
 
 type State = { isOpen: boolean, displayFlag: boolean };
 
@@ -28,7 +28,7 @@ export default class DisplayFeedback extends Component<void, State> {
         </Button>
 
         {isOpen && (
-          <JsdFeedbackCollector
+          <FeedbackCollector
             onClose={this.close}
             onSubmit={this.displayFlag}
             email={email}

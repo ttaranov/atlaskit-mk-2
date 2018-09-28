@@ -14,7 +14,7 @@ import {
   Separator,
 } from '@atlaskit/navigation-next';
 
-import JsdFeedbackCollector from '../src';
+import FeedbackCollector from '../src';
 
 class FeedbackCollectorNavItem extends Component<*, *> {
   state = {
@@ -40,7 +40,7 @@ class FeedbackCollectorNavItem extends Component<*, *> {
           onClick={this.openModal}
         />
         {isFeedbackModalOpen && (
-          <JsdFeedbackCollector
+          <FeedbackCollector
             onClose={this.closeModal}
             onSubmit={this.handleSubmit}
             email={email}
