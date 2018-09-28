@@ -41,14 +41,12 @@ ${(
     />
   )}
 
-${
-    /* TODO: Add this back when extract-react-types PR is in to fix nested intersections(
-    { <Props
+${(
+    <Props
       heading="GlobalItem props"
       props={require('!!extract-react-types-loader!../src/components/GlobalItem')}
-    />}
-  )*/ null
-  }
+    />
+  )}
 
 ${<Hr />}
 
