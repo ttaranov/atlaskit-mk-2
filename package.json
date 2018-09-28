@@ -144,7 +144,7 @@
     "eslint-plugin-prettier": "^2.3.1",
     "eslint-plugin-react": "^7.1.0",
     "events": "1.1.1",
-    "extract-react-types": "^0.14.3",
+    "extract-react-types": "^0.14.4",
     "fetch-mock": "^6.5.2",
     "file-loader": "^1.1.11",
     "flow-bin": "^0.74.0",
@@ -154,6 +154,7 @@
     "highlight.js": "^9.6.0",
     "husky": "^0.14.3",
     "jest": "^20.0.4",
+    "jest-emotion": "^9.2.7",
     "jest-image-snapshot": "^2.4.2",
     "jest-in-case": "^1.0.2",
     "jest-resolve": "^20.0.4",
@@ -201,6 +202,7 @@
     "react-value": "^0.2.0",
     "recompose": "^0.26.0",
     "redux": "^3.7.2",
+    "seedrandom": "^2.4.4",
     "sinon": "^2.2.0",
     "spawndamnit": "^1.0.0",
     "string.prototype.repeat": "^0.2.0",
@@ -223,8 +225,7 @@
     "webpack-bundle-analyzer": "^2.13.0",
     "webpack-dev-server": "^3.1.4",
     "whatwg-fetch": "^2.0.3",
-    "xhr-mock": "^2.4.0",
-    "seedrandom": "^2.4.4"
+    "xhr-mock": "^2.4.0"
   },
   "dependencies": {
     "@atlaskit/activity": "^1.0.1",

@@ -1,8 +1,7 @@
 // @flow
 
 import { colors, gridSize } from '@atlaskit/theme';
-import type { GlobalItemPresentationProps } from './types';
-import type { ModeColors } from '../../theme/types';
+import type { Mode, ModeColors } from '../../theme/types';
 
 const baseStyles = {
   itemBase: {
@@ -28,6 +27,9 @@ const baseStyles = {
     position: 'absolute',
     userSelect: 'none',
   },
+  itemWrapper: {
+    display: 'flex',
+  },
 };
 
 const sizeStyles = {
@@ -40,26 +42,31 @@ const sizeStyles = {
       left: `${gridSize() * 2}px`,
       top: 0,
     },
+    itemWrapper: {},
   },
   small: {
     itemBase: {
       height: `${gridSize() * 4}px`,
-      marginTop: `${gridSize()}px`,
       width: `${gridSize() * 4}px`,
     },
     badgeWrapper: {
       left: `${gridSize() * 2.5}px`,
       top: `-${gridSize() / 2}px`,
     },
+    itemWrapper: {
+      marginTop: `${gridSize()}px`,
+    },
   },
 };
 
-export default ({ product }: ModeColors) => ({
+export default ({
+  product,
+}: ModeColors): $PropertyType<Mode, 'globalItem'> => ({
   isActive,
   isHover,
   isSelected,
   size = 'large',
-}: GlobalItemPresentationProps) => ({
+}) => ({
   itemBase: {
     ...baseStyles.itemBase,
     ...sizeStyles[size].itemBase,
@@ -74,5 +81,8 @@ export default ({ product }: ModeColors) => ({
   badgeWrapper: {
     ...baseStyles.badgeWrapper,
     ...sizeStyles[size].badgeWrapper,
+  },
+  itemWrapper: {
+    ...sizeStyles[size].itemWrapper,
   },
 });

@@ -1,6 +1,9 @@
 // @flow
 
-import type { GlobalItemPresentationProps } from '../components/GlobalItem/types';
+import type {
+  GlobalItemPresentationProps,
+  GlobalItemStyles,
+} from '../components/GlobalItem/types';
 import type { ItemPresentationProps } from '../components/Item/types';
 import type { SectionPresentationProps } from '../components/Section/types';
 
@@ -14,7 +17,10 @@ type ContentNavigationComponentThemeObject = {
   product: ObjectType,
 };
 
-type GlobalNavigationComponentTheme<Props: {} | void> = Props => ObjectType;
+type GlobalNavigationComponentTheme<
+  Props: {} | void,
+  Styles: {},
+> = Props => Styles;
 
 type ContentNavigationComponentTheme<
   Props: {} | void,
@@ -22,8 +28,15 @@ type ContentNavigationComponentTheme<
 
 // This is the shape of a theme 'mode', e.g. light, dark, settings or custom
 export type Mode = {
-  globalItem: GlobalNavigationComponentTheme<GlobalItemPresentationProps>,
-  globalNav: GlobalNavigationComponentTheme<void>,
+  // Allow GlobalItemPresentationProps to be optional, need to spread it into an
+  // object type since $Shape allows void/undefined instead of always enforcing an object
+  globalItem: GlobalNavigationComponentTheme<
+    {
+      ...$Shape<GlobalItemPresentationProps>,
+    },
+    GlobalItemStyles,
+  >,
+  globalNav: GlobalNavigationComponentTheme<void, {}>,
   heading: ContentNavigationComponentTheme<void>,
   item: ContentNavigationComponentTheme<ItemPresentationProps>,
   contentNav: ContentNavigationComponentTheme<void>,
@@ -41,6 +54,8 @@ export type ProductTheme = {
 export type GlobalTheme = {
   mode: Mode,
 };
+
+export type Theme = GlobalTheme | ProductTheme | void;
 
 export type StyleReducer = (
   Styles: ObjectType,
@@ -79,4 +94,8 @@ export type ContextColors = {
 
 export type ModeColors = {
   product: ContextColors,
+};
+
+export type ThemeProps = {
+  theme: Theme,
 };
