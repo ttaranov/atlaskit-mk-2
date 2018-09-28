@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 82.2.9
+- [patch] Better positioning of hyperlink edit popups [f247b16](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f247b16)
+
 ## 82.2.8
 - [patch] New translations [e4730b0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e4730b0)
 
