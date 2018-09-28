@@ -92,9 +92,9 @@ export interface Props {
   isSendSearchTermsEnabled?: boolean;
 
   /**
-   * Indicates whether or not the aggregator should be used for object searches.
+   * Indicates whether or not quick nav should be used for people searches.
    */
-  useAggregatorForConfluenceObjects?: boolean;
+  useQuickNavForPeopleResults?: boolean;
 
   /**
    * Indicates whether or not CPUS should be used for people searches.
@@ -177,7 +177,7 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
     const {
       linkComponent,
       isSendSearchTermsEnabled,
-      useAggregatorForConfluenceObjects,
+      useQuickNavForPeopleResults,
       referralContextIdentifiers,
       useCPUSForPeopleResults,
       logger,
@@ -189,7 +189,7 @@ export default class GlobalQuickSearchWrapper extends React.Component<Props> {
           {...searchClients}
           linkComponent={linkComponent}
           isSendSearchTermsEnabled={isSendSearchTermsEnabled}
-          useAggregatorForConfluenceObjects={useAggregatorForConfluenceObjects}
+          useQuickNavForPeopleResults={useQuickNavForPeopleResults}
           referralContextIdentifiers={referralContextIdentifiers}
           useCPUSForPeopleResults={useCPUSForPeopleResults}
           logger={logger}
