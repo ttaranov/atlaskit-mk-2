@@ -14,6 +14,8 @@ import {
   videoIdentifier,
   wideImageIdentifier,
   defaultCollectionName,
+  audioItem,
+  audioItemNoCover,
 } from '../example-helpers';
 import { MediaViewer } from '../src';
 import { videoFileId } from '@atlaskit/media-test-helpers';
@@ -75,6 +77,8 @@ export default class Example extends React.Component<{}, State> {
             videoIdentifier,
             videoHorizontalFileItem,
             wideImageIdentifier,
+            audioItem,
+            audioItemNoCover,
             docIdentifier,
             imageIdentifier2,
             unsupportedIdentifier,

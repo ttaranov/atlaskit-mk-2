@@ -44,7 +44,13 @@ export class AudioViewer extends React.Component<Props, State> {
   state: State = { src: Outcome.pending() };
 
   componentDidMount() {
-    this.init();
+    this.init(this.props);
+  }
+
+  componentWillUpdate(nextProps: Props) {
+    if (this.needsReset(this.props, nextProps)) {
+      this.init(nextProps);
+    }
   }
 
   render() {
@@ -108,6 +114,7 @@ export class AudioViewer extends React.Component<Props, State> {
   private setCoverUrl = async () => {
     const { context, item, collectionName } = this.props;
     const coverUrl = await getCoverUrl(item, context, collectionName);
+    this.setState({ coverUrl: undefined });
 
     try {
       await this.loadCover(coverUrl);
@@ -115,8 +122,8 @@ export class AudioViewer extends React.Component<Props, State> {
     } catch (e) {}
   };
 
-  private async init() {
-    const { context, item, collectionName } = this.props;
+  private async init(props: Props) {
+    const { context, item, collectionName } = props;
     const audioUrl = getArtifactUrl(item.artifacts, 'audio.mp3');
     try {
       if (!audioUrl) {
@@ -133,6 +140,12 @@ export class AudioViewer extends React.Component<Props, State> {
         src: Outcome.failed(createError('previewFailed', err, item)),
       });
     }
+  }
+
+  private needsReset(propsA: Props, propsB: Props) {
+    return (
+      propsA.item.id !== propsB.item.id || propsA.context !== propsB.context
+    );
   }
 
   private renderDownloadButton() {

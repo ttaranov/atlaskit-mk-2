@@ -32,6 +32,22 @@ const audioItem: ProcessedFileState = {
   },
 };
 
+const otherAudioItem: ProcessedFileState = {
+  id: 'some-other-id',
+  status: 'processed',
+  name: 'my other audio',
+  size: 11222,
+  mediaType: 'audio',
+  mimeType: 'mp3',
+  binaryUrl: '',
+  artifacts: {
+    'audio.mp3': {
+      url: '/audio',
+      processingStatus: 'succeeded',
+    },
+  },
+};
+
 const audioItemWithNoArtifacts: ProcessedFileState = {
   ...audioItem,
   artifacts: {},
@@ -43,15 +59,14 @@ function createFixture(
   item?: ProcessedFileState,
 ) {
   const context = createContext({ authPromise });
-  const el = mount(
-    <AudioViewer
-      context={context}
-      item={item || audioItem}
-      collectionName={collectionName}
-      previewCount={0}
-    />,
-  );
-  return { context, el };
+  const props = {
+    context: context,
+    item: item || audioItem,
+    collectionName: collectionName,
+    previewCount: 0,
+  };
+  const el = mount(<AudioViewer {...props} />);
+  return { context, el, props };
 }
 
 describe('Audio viewer', () => {
@@ -61,8 +76,8 @@ describe('Audio viewer', () => {
 
   it('assigns a src for audio files when successful', async () => {
     const authPromise = Promise.resolve({ token, clientId, baseUrl });
-    const { el } = createFixture(authPromise);
-    await (el as any).instance()['init']();
+    const { el, props } = createFixture(authPromise);
+    await (el as any).instance()['init'](props);
     el.update();
     expect(el.find('audio').prop('src')).toEqual(
       'some-base-url/audio?client=some-client-id&token=some-token',
@@ -112,31 +127,31 @@ describe('Audio viewer', () => {
   describe('cover', () => {
     it('it should show the default cover while the audio cover is loading', async () => {
       const authPromise = Promise.resolve({ token, clientId, baseUrl });
-      const { el } = createFixture(authPromise);
-      await (el as any).instance()['init']();
+      const { el, props } = createFixture(authPromise);
+      await (el as any).instance()['init'](props);
       el.update();
       expect(el.find(DefaultCoverWrapper)).toHaveLength(1);
     });
 
     it('it should show the default cover when the audio cover is errored', async () => {
       const authPromise = Promise.resolve({ token, clientId, baseUrl });
-      const { el } = createFixture(authPromise);
+      const { el, props } = createFixture(authPromise);
       const instance: any = el.instance();
 
       instance['loadCover'] = () => Promise.reject('no cover found');
-      await instance['init']();
+      await instance['init'](props);
       el.update();
       expect(el.find(DefaultCoverWrapper)).toHaveLength(1);
     });
 
     it('it should show the audio cover if exists', async () => {
       const authPromise = Promise.resolve({ token, clientId, baseUrl });
-      const { el } = createFixture(authPromise);
+      const { el, props } = createFixture(authPromise);
       const instance: any = el.instance();
       const promiseSrc = Promise.resolve('cover-src');
 
       instance['loadCover'] = () => promiseSrc;
-      await instance['init']();
+      await instance['init'](props);
       await promiseSrc;
       el.update();
 
@@ -149,12 +164,12 @@ describe('Audio viewer', () => {
     it('MSW-720: pass the collectionName to calls to constructAuthTokenUrl', async () => {
       const collectionName = 'collectionName';
       const authPromise = Promise.resolve({ token, clientId, baseUrl });
-      const { el } = createFixture(authPromise, collectionName);
+      const { el, props } = createFixture(authPromise, collectionName);
       const instance: any = el.instance();
       const promiseSrc = Promise.resolve('cover-src');
 
       instance['loadCover'] = () => promiseSrc;
-      await instance['init']();
+      await instance['init'](props);
       await promiseSrc;
       el.update();
 
@@ -166,16 +181,15 @@ describe('Audio viewer', () => {
       async function createAutoPlayFixture(previewCount: number) {
         const authPromise = Promise.resolve({ token, clientId, baseUrl });
         const context = createContext({ authPromise });
-        const el = mount(
-          <AudioViewer
-            context={context}
-            item={audioItem}
-            collectionName="collectionName"
-            previewCount={previewCount}
-          />,
-        );
+        const props = {
+          context,
+          item: audioItem,
+          collectionName: 'collectionName',
+          previewCount: previewCount,
+        };
+        const el = mount(<AudioViewer {...props} />);
         const instance: any = el.instance();
-        await instance['init']();
+        await instance['init'](props);
         el.update();
         return el;
       }
