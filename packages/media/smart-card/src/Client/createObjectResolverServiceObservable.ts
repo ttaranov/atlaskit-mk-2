@@ -1,14 +1,12 @@
 import { Observable } from 'rxjs/Rx';
 import { of } from 'rxjs/observable/of';
 import { Subject } from 'rxjs/Subject';
-import {
-  mergeMap,
-  map,
-  catchError,
-  startWith,
-  refCount,
-  publishReplay,
-} from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators/mergeMap';
+import { map } from 'rxjs/operators/map';
+import { catchError } from 'rxjs/operators/catchError';
+import { startWith } from 'rxjs/operators/startWith';
+import { refCount } from 'rxjs/operators/refCount';
+import { publishReplay } from 'rxjs/operators/publishReplay';
 import { Command, ObjectState, AuthService } from './types';
 import fetch$ from './fetch';
 
