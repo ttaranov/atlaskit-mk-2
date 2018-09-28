@@ -1,5 +1,8 @@
 # @atlaskit/smart-card
 
+## 8.2.3
+- [patch] Fix rxjs and date-fns import in TS components [ab15cee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ab15cee)
+
 ## 8.2.2
 - [patch] Updated dependencies [dae7792](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dae7792)
   - @atlaskit/media-ui@6.0.0
