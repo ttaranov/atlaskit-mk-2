@@ -57,15 +57,9 @@ function configFactory(onClick, tooltip, otherConfig: OtherConfig = {}) {
 
   if (shouldNotRenderItem) return null;
 
-  if (onClick && href) {
-    // eslint-disable-next-line no-console
-    console.warn(
-      'You have provided both href and an onClick handler for one of the items. onClick will be ignored.',
-    );
-  }
-
   return {
-    ...(href ? { href } : { onClick }),
+    href,
+    onClick,
     ...(tooltip ? { tooltip, label: tooltip } : null),
     ...otherConfig,
   };

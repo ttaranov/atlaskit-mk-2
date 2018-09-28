@@ -12,6 +12,7 @@ const Global = () => (
   <GlobalNavigation
     productIcon={EmojiAtlassianIcon}
     productHref="#"
+    onProductClick={() => console.log('product clicked')}
     onCreateClick={() => console.log('create clicked')}
     onSearchClick={() => console.log('search clicked')}
     onStarredClick={() => console.log('your work clicked')}
