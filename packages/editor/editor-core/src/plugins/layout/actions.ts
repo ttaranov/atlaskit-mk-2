@@ -120,22 +120,24 @@ function forceColumnWidths(
   );
 }
 
-function forceSectionToPresetLayout(
+export function forceSectionToPresetLayout(
   state: EditorState,
   node: Node,
   pos: number,
   presetLayout: PresetLayout,
 ): Transaction | undefined {
-  const tr = forceColumnStructure(state, node, pos, presetLayout) || state.tr;
+  const tr = forceColumnStructure(state, node, pos, presetLayout);
 
-  // save the selection here, since forcing column widths causes a change over the
-  // entire layoutSection, which remaps selection to the end. not remapping here
-  // is safe because the structure is no longer changing.
-  const selection = tr.selection;
+  if (tr) {
+    // save the selection here, since forcing column widths causes a change over the
+    // entire layoutSection, which remaps selection to the end. not remapping here
+    // is safe because the structure is no longer changing.
+    const selection = tr.selection;
 
-  return forceColumnWidths(state, tr, pos, presetLayout).setSelection(
-    selection,
-  );
+    return forceColumnWidths(state, tr, pos, presetLayout).setSelection(
+      selection,
+    );
+  }
 }
 
 export const setPresetLayout = (layout: PresetLayout): Command => (
