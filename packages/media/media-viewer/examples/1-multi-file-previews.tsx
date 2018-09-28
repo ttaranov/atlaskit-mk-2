@@ -7,6 +7,7 @@ import { createStorybookContext } from '@atlaskit/media-test-helpers';
 import { ButtonList, Container, Group } from '../example-helpers/styled';
 import {
   docIdentifier,
+  largePdfIdentifier,
   imageIdentifier,
   imageIdentifier2,
   unsupportedIdentifier,
@@ -80,6 +81,7 @@ export default class Example extends React.Component<{}, State> {
             audioItem,
             audioItemNoCover,
             docIdentifier,
+            largePdfIdentifier,
             imageIdentifier2,
             unsupportedIdentifier,
           ],

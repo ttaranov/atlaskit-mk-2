@@ -36,14 +36,20 @@ export class DocViewer extends React.Component<Props, State> {
   state: State = initialState;
 
   componentDidMount() {
-    this.init();
+    this.init(this.props);
   }
 
-  private async init() {
+  componentWillUpdate(nextProps: Props) {
+    if (this.needsReset(this.props, nextProps)) {
+      this.init(nextProps);
+    }
+  }
+
+  private async init(props: Props) {
     if (!DocViewer.PDFComponent) {
       await this.loadDocViewer();
     }
-    const { item, context, collectionName } = this.props;
+    const { item, context, collectionName } = props;
 
     const pdfArtifactUrl = getArtifactUrl(item.artifacts, 'document.pdf');
     if (!pdfArtifactUrl) {
@@ -80,6 +86,12 @@ export class DocViewer extends React.Component<Props, State> {
     return renderDownloadButton(item, context, collectionName);
   }
 
+  private needsReset(propsA: Props, propsB: Props) {
+    return (
+      propsA.item.id !== propsB.item.id || propsA.context !== propsB.context
+    );
+  }
+
   render() {
     const { onClose } = this.props;
     const { PDFComponent } = DocViewer;
@@ -90,7 +102,9 @@ export class DocViewer extends React.Component<Props, State> {
 
     return this.state.src.match({
       pending: () => <Spinner />,
-      successful: src => <PDFComponent src={src} onClose={onClose} />,
+      successful: src => {
+        return <PDFComponent src={src} onClose={onClose} />;
+      },
       failed: err => (
         <ErrorMessage error={err}>
           <p>Try downloading the file to view it.</p>

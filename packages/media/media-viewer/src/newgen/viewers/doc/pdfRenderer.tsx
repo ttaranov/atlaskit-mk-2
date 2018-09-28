@@ -80,8 +80,13 @@ injectGlobal`
 
 pdfjsLib.GlobalWorkerOptions.workerSrc = '/'; // TODO: use web workers instead of fake worker.
 
-const fetch = (url: string): Promise<Blob> => {
-  return pdfjsLib.getDocument(url).promise;
+export type Task = {
+  promise: Promise<Blob>;
+  destroy: () => void;
+};
+
+const fetch = (url: string): Task => {
+  return pdfjsLib.getDocument(url);
 };
 
 export type Props = {
@@ -92,6 +97,7 @@ export type Props = {
 export type State = {
   doc: Outcome<any, MediaViewerError>;
   zoomLevel: ZoomLevel;
+  task?: Task;
 };
 
 const initialState: State = {
@@ -106,12 +112,29 @@ export class PDFRenderer extends React.Component<Props, State> {
   state: State = initialState;
 
   componentDidMount() {
-    this.init();
+    this.init(this.props);
   }
 
-  private async init() {
+  componentWillUpdate(nextProps: Props) {
+    if (this.needsReset(this.props, nextProps)) {
+      this.init(nextProps);
+    }
+  }
+
+  componentWillUnmount() {
+    this.cancelOnGoingRequests();
+  }
+
+  private async init(props: Props) {
+    this.cancelOnGoingRequests();
     try {
-      const doc = await fetch(this.props.src);
+      const task = fetch(props.src);
+      const state = {
+        ...initialState,
+        task,
+      };
+      this.setState(state);
+      const doc = await task.promise;
       this.setState({ doc: Outcome.successful(doc) }, () => {
         this.pdfViewer = new PDFJSViewer.PDFViewer({ container: this.el });
         this.pdfViewer.setDocument(doc);
@@ -133,6 +156,13 @@ export class PDFRenderer extends React.Component<Props, State> {
     this.setState({ zoomLevel });
   };
 
+  private cancelOnGoingRequests() {
+    const { task } = this.state;
+    if (task) {
+      task.destroy();
+    }
+  }
+
   private scaleToFit = () => {
     const { pdfViewer } = this;
     if (pdfViewer) {
@@ -142,6 +172,10 @@ export class PDFRenderer extends React.Component<Props, State> {
       });
     }
   };
+
+  private needsReset(propsA: Props, propsB: Props) {
+    return propsA.src !== propsB.src;
+  }
 
   render() {
     return this.state.doc.match({
