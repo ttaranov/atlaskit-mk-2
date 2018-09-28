@@ -58,8 +58,8 @@ function configFactory(onClick, tooltip, otherConfig: OtherConfig = {}) {
   if (shouldNotRenderItem) return null;
 
   return {
-    href,
-    onClick,
+    ...(href ? { href } : null),
+    ...(onClick ? { onClick } : null),
     ...(tooltip ? { tooltip, label: tooltip } : null),
     ...otherConfig,
   };
