@@ -63,7 +63,7 @@ fs
             // Transpile the component code
             .then(componentCode =>
               babel.transform(componentCode, {
-                presets: ['env', 'react'],
+                presets: ['react'],
               }),
             )
             // Write the component file
