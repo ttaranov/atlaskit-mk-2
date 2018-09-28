@@ -104,6 +104,7 @@ export class FileFetcher {
               mimeType,
               id: fileId,
               status: 'uploading',
+              preview
             });
           }
         },
