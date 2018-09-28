@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 82.2.7
+- [patch] Updated copy in Butbucket feedback prompt [533e624](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/533e624)
+
 ## 82.2.6
 - [patch] Updated dependencies [dae7792](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dae7792)
   - @atlaskit/editor-common@17.0.5
