@@ -37,6 +37,7 @@ export default class Example extends React.Component<{}, State> {
     const identifier: FileIdentifier = {
       id: item.id,
       mediaItemType: 'file',
+      collectionName: defaultCollectionName,
     };
     const onClick = this.setItem(item);
 
