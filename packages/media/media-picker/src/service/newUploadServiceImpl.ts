@@ -183,7 +183,13 @@ export class NewUploadServiceImpl implements UploadService {
       upfrontId.then(id => {
         if (context && observable) {
           const key = FileStreamCache.createKey(id);
+          const keyWithCollection = FileStreamCache.createKey(id, {
+            collectionName: this.tenantUploadParams.collection,
+          });
+
+          // TODO: fileStreamsCache.set "id+recents"?
           fileStreamsCache.set(key, observable);
+          fileStreamsCache.set(keyWithCollection, observable);
         }
       });
 
