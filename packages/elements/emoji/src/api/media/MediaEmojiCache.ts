@@ -13,16 +13,18 @@ import debug from '../../util/logger';
 import TokenManager from './TokenManager';
 
 import { LRUCache } from 'lru-fast';
-import { UAParser } from 'ua-parser-js';
 
 const getRequiredRepresentation = (
   emoji: EmojiDescription,
   useAlt?: boolean,
 ): EmojiRepresentation =>
   useAlt ? emoji.altRepresentation : emoji.representation;
-const isUnsupportedBrowser = (browser: string) => {
-  const lowerCaseBrowser = browser.toLowerCase();
-  return lowerCaseBrowser === 'ie' || lowerCaseBrowser === 'edge';
+
+const isUnsupportedBrowser = () => {
+  const isIE = /*@cc_on!@*/ false || !!(document as any).documentMode, // Internet Explorer 6-11
+    isEdge = !isIE && !!(window as any).StyleMedia; // Edge 20+
+
+  return isIE || isEdge;
 };
 
 export interface EmojiCacheStrategy {
@@ -40,9 +42,6 @@ export interface EmojiCacheStrategy {
 export class BrowserCacheStrategy implements EmojiCacheStrategy {
   private cachedImageUrls: Set<string> = new Set<string>();
   private mediaImageLoader: MediaImageLoader;
-  private static browser: string = new UAParser()
-    .getBrowser()
-    .name.toLowerCase();
 
   constructor(mediaImageLoader: MediaImageLoader) {
     debug('BrowserCacheStrategy');
@@ -89,7 +88,7 @@ export class BrowserCacheStrategy implements EmojiCacheStrategy {
     // IE/Edge uses memory cache strategy else images can fail to load
     // from a clean cache/if they are downloaded from the service
     // TODO: fix as a part of FS-1592
-    if (isUnsupportedBrowser(this.browser)) {
+    if (isUnsupportedBrowser()) {
       return Promise.resolve(false);
     }
 
