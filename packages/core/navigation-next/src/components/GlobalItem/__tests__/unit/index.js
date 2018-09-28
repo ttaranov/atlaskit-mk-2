@@ -20,7 +20,6 @@ const theme: any = {
   },
 };
 
-/* eslint-disable global-require */
 describe('GlobalItem', () => {
   beforeEach(() => {
     jest.clearAllMocks();

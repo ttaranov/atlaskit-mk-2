@@ -42,7 +42,6 @@ describe('GlobalNavigation', () => {
       analyticsIdMap: {},
     }));
 
-    // eslint-disable-next-line global-require
     const GlobalNavigationWithMock = require('../../index').default;
     const wrapper = mount(
       <GlobalNavigationWithMock searchDrawerContents={DrawerContents} />,
