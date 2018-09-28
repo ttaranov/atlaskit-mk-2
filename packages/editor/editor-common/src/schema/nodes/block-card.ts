@@ -32,9 +32,11 @@ export const blockCard: NodeSpec = {
   parseDOM: [
     {
       tag: 'div[data-block-card-url]',
-      getAttrs: (dom: HTMLElement) => ({
-        url: dom.getAttribute('data-block-card-url'),
-        data: JSON.parse(dom.getAttribute('data-block-card-data') || '{}'),
+      getAttrs: dom => ({
+        url: (dom as HTMLElement).getAttribute('data-block-card-url'),
+        data: JSON.parse(
+          (dom as HTMLElement).getAttribute('data-block-card-data') || '{}',
+        ),
       }),
     },
   ],

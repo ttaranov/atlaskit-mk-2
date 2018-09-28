@@ -45,7 +45,8 @@ export const link: MarkSpec = {
   parseDOM: [
     {
       tag: 'a[href]',
-      getAttrs: (dom: Element) => {
+      getAttrs: domNode => {
+        const dom = domNode as HTMLLinkElement;
         let href = dom.getAttribute('href') || '';
         const attrs: { __confluenceMetadata: string; href?: string } = {
           __confluenceMetadata: dom.hasAttribute('__confluenceMetadata')

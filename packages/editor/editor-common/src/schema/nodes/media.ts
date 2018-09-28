@@ -80,12 +80,12 @@ export const media: NodeSpec = {
   parseDOM: [
     {
       tag: 'div[data-node-type="media"]',
-      getAttrs: (dom: HTMLElement) => {
+      getAttrs: dom => {
         const attrs = {} as MediaAttributes;
 
         Object.keys(defaultAttrs).forEach(k => {
           const key = camelCaseToKebabCase(k).replace(/^__/, '');
-          const value = dom.getAttribute(`data-${key}`);
+          const value = (dom as HTMLElement).getAttribute(`data-${key}`);
           if (value) {
             attrs[k] = value;
           }
@@ -106,10 +106,10 @@ export const media: NodeSpec = {
     },
     {
       tag: 'img',
-      getAttrs: (dom: HTMLElement) => {
+      getAttrs: dom => {
         return {
           type: 'external',
-          url: dom.getAttribute('src') || '',
+          url: (dom as HTMLElement).getAttribute('src') || '',
         } as ExternalMediaAttributes;
       },
     },

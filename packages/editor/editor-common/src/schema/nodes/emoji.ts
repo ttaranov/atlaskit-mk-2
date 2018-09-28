@@ -27,36 +27,46 @@ export const emoji: NodeSpec = {
   parseDOM: [
     {
       tag: 'span[data-emoji-short-name]',
-      getAttrs: (dom: Element) => ({
-        shortName:
-          dom.getAttribute('data-emoji-short-name') ||
-          emoji.attrs!.shortName.default,
-        id: dom.getAttribute('data-emoji-id') || emoji.attrs!.id.default,
-        text: dom.getAttribute('data-emoji-text') || emoji.attrs!.text.default,
-      }),
+      getAttrs: domNode => {
+        const dom = domNode as HTMLElement;
+        return {
+          shortName:
+            dom.getAttribute('data-emoji-short-name') ||
+            emoji.attrs!.shortName.default,
+          id: dom.getAttribute('data-emoji-id') || emoji.attrs!.id.default,
+          text:
+            dom.getAttribute('data-emoji-text') || emoji.attrs!.text.default,
+        };
+      },
     },
     // Handle copy/paste from old <ac:emoticon />
     {
       tag: 'img[data-emoticon-name]',
-      getAttrs: (dom: Element) =>
-        acNameToEmoji(dom.getAttribute('data-emoticon-name')!),
+      getAttrs: dom =>
+        acNameToEmoji((dom as Element).getAttribute('data-emoticon-name')!),
     },
     // Handle copy/paste from old <ac:hipchat-emoticons />
     {
       tag: 'img[data-hipchat-emoticon]',
-      getAttrs: (dom: Element) =>
-        acShortcutToEmoji(dom.getAttribute('data-hipchat-emoticon')!),
+      getAttrs: dom =>
+        acShortcutToEmoji(
+          (dom as Element).getAttribute('data-hipchat-emoticon')!,
+        ),
     },
     // Handle copy/paste from bitbucket's <img class="emoji" />
     {
       tag: 'img.emoji[data-emoji-short-name]',
-      getAttrs: (dom: Element) => ({
-        shortName:
-          dom.getAttribute('data-emoji-short-name') ||
-          emoji.attrs!.shortName.default,
-        id: dom.getAttribute('data-emoji-id') || emoji.attrs!.id.default,
-        text: dom.getAttribute('data-emoji-text') || emoji.attrs!.text.default,
-      }),
+      getAttrs: domNode => {
+        const dom = domNode as HTMLElement;
+        return {
+          shortName:
+            dom.getAttribute('data-emoji-short-name') ||
+            emoji.attrs!.shortName.default,
+          id: dom.getAttribute('data-emoji-id') || emoji.attrs!.id.default,
+          text:
+            dom.getAttribute('data-emoji-text') || emoji.attrs!.text.default,
+        };
+      },
     },
   ],
   toDOM(node: Node) {

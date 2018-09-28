@@ -29,9 +29,9 @@ export const layoutSection: NodeSpec = {
     },
     {
       tag: 'div[data-layout-type]',
-      getAttrs(dom: HTMLElement): { layoutType: LayoutSectionLayoutType } {
+      getAttrs(dom): { layoutType: LayoutSectionLayoutType } {
         const domLayoutType = (
-          dom.getAttribute('data-layout-type') || ''
+          (dom as HTMLElement).getAttribute('data-layout-type') || ''
         ).toLowerCase();
         const layoutType =
           LAYOUT_TYPES.find(type => domLayoutType === type) || 'two_equal';

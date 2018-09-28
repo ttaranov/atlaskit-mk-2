@@ -32,9 +32,11 @@ export const inlineCard: NodeSpec = {
   parseDOM: [
     {
       tag: 'span[data-card-url]',
-      getAttrs: (dom: HTMLElement) => ({
-        url: dom.getAttribute('data-card-url'),
-        data: JSON.parse(dom.getAttribute('data-card-data') || '{}'),
+      getAttrs: dom => ({
+        url: (dom as HTMLElement).getAttribute('data-card-url'),
+        data: JSON.parse(
+          (dom as HTMLElement).getAttribute('data-card-data') || '{}',
+        ),
       }),
     },
   ],

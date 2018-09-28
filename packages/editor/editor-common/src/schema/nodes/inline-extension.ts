@@ -32,12 +32,15 @@ export const inlineExtension: NodeSpec = {
   parseDOM: [
     {
       tag: 'span[data-extension-type]',
-      getAttrs: (dom: HTMLElement) => ({
-        extensionType: dom.getAttribute('data-extension-type'),
-        extensionKey: dom.getAttribute('data-extension-key'),
-        text: dom.getAttribute('data-text'),
-        parameters: JSON.parse(dom.getAttribute('data-parameters') || '{}'),
-      }),
+      getAttrs: domNode => {
+        const dom = domNode as HTMLElement;
+        return {
+          extensionType: dom.getAttribute('data-extension-type'),
+          extensionKey: dom.getAttribute('data-extension-key'),
+          text: dom.getAttribute('data-text'),
+          parameters: JSON.parse(dom.getAttribute('data-parameters') || '{}'),
+        };
+      },
     },
   ],
   toDOM(node: PMNode) {

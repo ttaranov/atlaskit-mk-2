@@ -59,34 +59,36 @@ export function transformHtml(
 
   // Convert mention containers, i.e.:
   //   <a href="/abodera/" rel="nofollow" title="@abodera" class="mention mention-me">Artur Bodera</a>
-  Array.from(el.querySelectorAll('a.mention')).forEach((a: HTMLLinkElement) => {
-    const span = document.createElement('span');
-    span.setAttribute('class', 'editor-entity-mention');
-    span.setAttribute('contenteditable', 'false');
+  Array.from(el.querySelectorAll<HTMLLinkElement>('a.mention')).forEach(
+    (a: HTMLLinkElement) => {
+      const span = document.createElement('span');
+      span.setAttribute('class', 'editor-entity-mention');
+      span.setAttribute('contenteditable', 'false');
 
-    const title = a.getAttribute('title') || '';
-    if (title) {
-      const usernameMatch = title.match(/^@(.*?)$/);
-      if (usernameMatch) {
-        const username = usernameMatch[1];
-        span.setAttribute('data-mention-id', username);
+      const title = a.getAttribute('title') || '';
+      if (title) {
+        const usernameMatch = title.match(/^@(.*?)$/);
+        if (usernameMatch) {
+          const username = usernameMatch[1];
+          span.setAttribute('data-mention-id', username);
+        }
       }
-    }
 
-    const text = a.textContent || '';
-    if (text.indexOf('@') === 0) {
-      span.textContent = a.textContent;
-    } else {
-      span.textContent = `@${a.textContent}`;
-    }
+      const text = a.textContent || '';
+      if (text.indexOf('@') === 0) {
+        span.textContent = a.textContent;
+      } else {
+        span.textContent = `@${a.textContent}`;
+      }
 
-    a.parentNode!.insertBefore(span, a);
-    a.parentNode!.removeChild(a);
-  });
+      a.parentNode!.insertBefore(span, a);
+      a.parentNode!.removeChild(a);
+    },
+  );
 
   // Parse emojis i.e.
   //     <img src="https://d301sr5gafysq2.cloudfront.net/207268dc597d/emoji/img/diamond_shape_with_a_dot_inside.svg" alt="diamond shape with a dot inside" title="diamond shape with a dot inside" class="emoji">
-  Array.from(el.querySelectorAll('img.emoji')).forEach(
+  Array.from(el.querySelectorAll<HTMLImageElement>('img.emoji')).forEach(
     (img: HTMLImageElement) => {
       const span = document.createElement('span');
       let shortName = img.getAttribute('data-emoji-short-name') || '';

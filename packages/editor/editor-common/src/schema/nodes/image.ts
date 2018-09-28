@@ -16,7 +16,8 @@ export const image: NodeSpec = {
     },
     {
       tag: 'img[src]',
-      getAttrs(dom: HTMLElement) {
+      getAttrs(domNode) {
+        const dom = domNode as HTMLElement;
         return {
           src: dom.getAttribute('src'),
           alt: dom.getAttribute('alt'),

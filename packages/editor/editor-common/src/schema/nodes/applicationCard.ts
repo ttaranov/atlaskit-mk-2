@@ -124,14 +124,14 @@ export const applicationCard: NodeSpec = {
   parseDOM: [
     {
       tag: 'div[data-node-type="media"]',
-      getAttrs: (dom: HTMLElement) => {
+      getAttrs: dom => {
         const attrs: ApplicationCardAttributes = {
           text: '',
           title: { text: '' },
         };
 
         Object.keys(defaultAttrs).forEach(key => {
-          attrs[key] = dom.dataset[key];
+          attrs[key] = (dom as HTMLElement).dataset[key];
         });
 
         return attrs;

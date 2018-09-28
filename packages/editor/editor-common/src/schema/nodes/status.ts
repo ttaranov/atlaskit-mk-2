@@ -28,11 +28,14 @@ export const status: NodeSpec = {
   parseDOM: [
     {
       tag: 'span[data-node-type="status"]',
-      getAttrs: (dom: HTMLElement) => ({
-        text: dom.textContent!.replace(/\n/, '').trim(),
-        color: dom.getAttribute('data-color'),
-        localId: dom.getAttribute('data-local-id'),
-      }),
+      getAttrs: domNode => {
+        const dom = domNode as HTMLElement;
+        return {
+          text: dom.textContent!.replace(/\n/, '').trim(),
+          color: dom.getAttribute('data-color'),
+          localId: dom.getAttribute('data-local-id'),
+        };
+      },
     },
   ],
   toDOM(node: PMNode) {

@@ -18,9 +18,9 @@ export const confluenceUnsupportedInline = {
   parseDOM: [
     {
       tag: `div[data-node-type="${name}"]`,
-      getAttrs(dom: HTMLElement) {
+      getAttrs(dom) {
         return {
-          cxhtml: dom.getAttribute(
+          cxhtml: (dom as HTMLElement).getAttribute(
             'data-confluence-unsupported-inline-cxhtml',
           )!,
         };

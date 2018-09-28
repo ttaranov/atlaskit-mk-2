@@ -124,15 +124,16 @@ export const codeBlock: NodeSpec = {
     {
       tag: 'pre > code',
       preserveWhitespace: 'full',
-      getAttrs: (dom: HTMLElement) => {
-        const language = dom.getAttribute('data-language')!;
+      getAttrs: dom => {
+        const language = (dom as HTMLElement).getAttribute('data-language')!;
         return { language };
       },
     },
     {
       tag: 'pre',
       preserveWhitespace: 'full',
-      getAttrs: (dom: HTMLElement) => {
+      getAttrs: domNode => {
+        let dom = domNode as HTMLElement;
         const language =
           getLanguageFromBitbucketStyle(dom.parentElement!) ||
           getLanguageFromEditorStyle(dom.parentElement!) ||
@@ -146,7 +147,8 @@ export const codeBlock: NodeSpec = {
     {
       tag: 'div[style]',
       preserveWhitespace: 'full',
-      getAttrs: (dom: HTMLElement) => {
+      getAttrs: domNode => {
+        const dom = domNode as HTMLElement;
         if (
           dom.style.whiteSpace === 'pre' ||
           (dom.style.fontFamily &&
@@ -161,8 +163,8 @@ export const codeBlock: NodeSpec = {
     {
       tag: 'table[style]',
       preserveWhitespace: 'full',
-      getAttrs: (dom: HTMLElement) => {
-        if (dom.querySelector('td[class*="blob-code"]')) {
+      getAttrs: dom => {
+        if ((dom as HTMLElement).querySelector('td[class*="blob-code"]')) {
           return {};
         }
         return false;

@@ -18,7 +18,8 @@ export const code: MarkSpec = {
     {
       tag: 'span',
       preserveWhitespace: true,
-      getAttrs: (dom: HTMLSpanElement) => {
+      getAttrs: domNode => {
+        let dom = domNode as HTMLSpanElement;
         if (dom.style.whiteSpace === 'pre') {
           return {};
         }

@@ -66,7 +66,8 @@ export const textColor: MarkSpec = {
   parseDOM: [
     {
       style: 'color',
-      getAttrs: (value: string) => {
+      getAttrs: maybeValue => {
+        const value = maybeValue as string;
         let hexColor;
         if (value.match(/^rgb/i)) {
           hexColor = rgbToHex(value);
@@ -78,7 +79,7 @@ export const textColor: MarkSpec = {
       },
     },
   ],
-  toDOM(mark: TextColorMark): [string, { style: string }] {
+  toDOM(mark): [string, { style: string }] {
     return [
       'span',
       {

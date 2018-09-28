@@ -11,9 +11,9 @@ export const unsupportedBlock: NodeSpec = {
   parseDOM: [
     {
       tag: '[data-node-type="unsupportedBlock"]',
-      getAttrs: (dom: HTMLElement) => ({
+      getAttrs: dom => ({
         originalValue: JSON.parse(
-          dom.getAttribute('data-original-value') || '{}',
+          (dom as HTMLElement).getAttribute('data-original-value') || '{}',
         ),
       }),
     },

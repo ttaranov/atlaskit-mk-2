@@ -36,13 +36,16 @@ export const extension: NodeSpec = {
   parseDOM: [
     {
       tag: '[data-node-type="extension"]',
-      getAttrs: (dom: HTMLElement) => ({
-        extensionType: dom.getAttribute('data-extension-type'),
-        extensionKey: dom.getAttribute('data-extension-key'),
-        text: dom.getAttribute('data-text'),
-        parameters: JSON.parse(dom.getAttribute('data-parameters') || '{}'),
-        layout: dom.getAttribute('data-layout') || 'default',
-      }),
+      getAttrs: domNode => {
+        const dom = domNode as HTMLElement;
+        return {
+          extensionType: dom.getAttribute('data-extension-type'),
+          extensionKey: dom.getAttribute('data-extension-key'),
+          text: dom.getAttribute('data-text'),
+          parameters: JSON.parse(dom.getAttribute('data-parameters') || '{}'),
+          layout: dom.getAttribute('data-layout') || 'default',
+        };
+      },
     },
   ],
   toDOM(node: PMNode) {

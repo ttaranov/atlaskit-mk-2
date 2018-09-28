@@ -17,7 +17,7 @@ describe('analytics service', () => {
     let eventName;
     const handler: AnalyticsHandler = (
       name: string,
-      props: AnalyticsProperties,
+      props?: AnalyticsProperties,
     ) => {
       eventName = name;
     };
@@ -30,7 +30,7 @@ describe('analytics service', () => {
     let called = false;
     const handler: AnalyticsHandler = (
       name: string,
-      props: AnalyticsProperties,
+      props?: AnalyticsProperties,
     ) => {
       called = true;
     };

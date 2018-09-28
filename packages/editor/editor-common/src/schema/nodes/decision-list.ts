@@ -31,7 +31,7 @@ export const decisionList: NodeSpec = {
       // also used by ordered-list we need to make sure that we run this parser first.
       priority: 100,
 
-      getAttrs: (dom: Element) => ({
+      getAttrs: () => ({
         localId: uuid.generate(),
       }),
     },

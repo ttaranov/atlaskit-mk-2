@@ -130,6 +130,8 @@ declare module 'prosemirror-markdown' {
    * node and mark serialization methods (see `toMarkdown`).
    */
   export class MarkdownSerializerState {
+    context: any;
+
     /**
      * The options passed to the serializer.
      */

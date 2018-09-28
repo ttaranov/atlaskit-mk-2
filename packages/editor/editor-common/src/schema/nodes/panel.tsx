@@ -69,8 +69,8 @@ export const panel: NodeSpec = {
   parseDOM: [
     {
       tag: 'div[data-panel-type]',
-      getAttrs: (dom: HTMLElement) => ({
-        panelType: dom.getAttribute('data-panel-type')!,
+      getAttrs: dom => ({
+        panelType: (dom as HTMLElement).getAttribute('data-panel-type')!,
       }),
     },
   ],

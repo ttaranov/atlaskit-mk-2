@@ -4,6 +4,7 @@ import { EventDispatcher } from '../event-dispatcher';
 import EditorActions from '../actions';
 import {
   UIComponentFactory,
+  ToolbarUIComponentFactory,
   ReactComponents,
   InsertMenuCustomItem,
 } from '../types';
@@ -24,7 +25,7 @@ export interface EditorAppearanceComponentProps {
   maxHeight?: number;
 
   contentComponents?: UIComponentFactory[];
-  primaryToolbarComponents?: UIComponentFactory[];
+  primaryToolbarComponents?: ToolbarUIComponentFactory[];
   secondaryToolbarComponents?: UIComponentFactory[];
 
   customContentComponents?: ReactComponents;
