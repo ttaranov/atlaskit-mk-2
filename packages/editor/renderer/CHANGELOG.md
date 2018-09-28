@@ -1,5 +1,8 @@
 # @atlaskit/renderer
 
+## 24.2.0
+- [minor] ED-5203 Added support for truncating the renderer with a fade out [bf07ac4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bf07ac4)
+
 ## 24.1.2
 - [patch] Added code splits to the node types of the Renderer [8dd6e52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8dd6e52)
 
