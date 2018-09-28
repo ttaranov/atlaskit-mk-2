@@ -35,21 +35,21 @@ describe('GlobalItem', () => {
 
   it('should wrap GlobalItemBase using withGlobalTheme HOC', () => {
     const WrappedWithGlobalTheme = () => null;
-    const MockWithGlobalTheme = jest.fn(() => WrappedWithGlobalTheme);
+    const mockWithGlobalTheme = jest.fn(() => WrappedWithGlobalTheme);
     jest.doMock('../../../../theme', () => ({
-      withGlobalTheme: MockWithGlobalTheme,
+      withGlobalTheme: mockWithGlobalTheme,
       styleReducerNoOp: jest.fn(styles => styles),
     }));
 
     const { GlobalItemBase: RecentGlobalItemBase } = require('../../index');
-    expect(MockWithGlobalTheme).toHaveBeenCalledWith(RecentGlobalItemBase);
+    expect(mockWithGlobalTheme).toHaveBeenCalledWith(RecentGlobalItemBase);
   });
 
   it('should wrap GlobalItemBase using navigationItemClicked HOC', () => {
     const WrappedWithGlobalTheme = () => null;
-    const MockWithGlobalTheme = jest.fn(() => WrappedWithGlobalTheme);
+    const mockWithGlobalTheme = jest.fn(() => WrappedWithGlobalTheme);
     jest.doMock('../../../../theme', () => ({
-      withGlobalTheme: MockWithGlobalTheme,
+      withGlobalTheme: mockWithGlobalTheme,
       styleReducerNoOp: jest.fn(styles => styles),
     }));
 
@@ -66,6 +66,7 @@ describe('GlobalItem', () => {
     expect(MockNavigationItemClicked).toHaveBeenCalledWith(
       WrappedWithGlobalTheme,
       'globalItem',
+      true,
     );
     expect(DefaultGlobalItem).toBe(WrappedWithNavigationItemClicked);
   });
@@ -86,7 +87,7 @@ describe('GlobalItem', () => {
         <GlobalItemBase theme={theme} icon={AtlassianIcon} />,
       );
 
-      const renderChildren = wrapper.find('InteractionStateManager').dive();
+      const renderChildren = wrapper.find(InteractionStateManager).dive();
 
       const primitive = renderChildren.find(GlobalItemPrimitive);
 
