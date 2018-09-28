@@ -9,6 +9,7 @@ import React, {
   type Node,
 } from 'react';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
+import { colors } from '@atlaskit/theme';
 
 import {
   name as packageName,
@@ -104,6 +105,9 @@ class Page extends PureComponent<PageProps> {
   }
 }
 
+/* NOTE: experimental props use an underscore */
+/* eslint-disable camelcase */
+
 // eslint-disable-next-line react/no-multi-comp
 export default class LayoutManager extends Component<
   LayoutManagerProps,
@@ -115,6 +119,7 @@ export default class LayoutManager extends Component<
 
   static defaultProps = {
     collapseToggleTooltipContent: defaultTooltipContent,
+    experimental_flyoutOnHover: false,
   };
   static getDerivedStateFromProps(props: LayoutManagerProps, state: State) {
     // kill the flyout when the user commits to expanding navigation
@@ -194,10 +199,12 @@ export default class LayoutManager extends Component<
     const { transitionState, transitionStyle } = args;
     const {
       containerNavigation,
+      experimental_flyoutOnHover,
       navigationUIController,
       productNavigation,
     } = this.props;
     const {
+      isCollapsed,
       isPeekHinting,
       isPeeking,
       isResizing,
@@ -222,6 +229,31 @@ export default class LayoutManager extends Component<
           key="product-nav"
           product={productNavigation}
         />
+        {isCollapsed && !experimental_flyoutOnHover ? (
+          <div
+            aria-label="Click to expand the navigation"
+            role="button"
+            onClick={navigationUIController.expand}
+            css={{
+              cursor: 'pointer',
+              height: '100%',
+              outline: 0,
+              position: 'absolute',
+              transition: 'background-color 100ms',
+              width: CONTENT_NAV_WIDTH_COLLAPSED,
+
+              ':hover': {
+                backgroundColor: containerNavigation
+                  ? colors.N30
+                  : 'rgba(255, 255, 255, 0.08)',
+              },
+              ':active': {
+                backgroundColor: colors.N40A,
+              },
+            }}
+            tabIndex="0"
+          />
+        ) : null}
       </ContentNavigationWrapper>
     );
   };
@@ -233,6 +265,7 @@ export default class LayoutManager extends Component<
       onExpandEnd,
       onCollapseStart,
       onCollapseEnd,
+      experimental_flyoutOnHover,
     } = this.props;
     const { flyoutIsOpen, mouseIsOverNavigation } = this.state;
     const {
@@ -287,17 +320,22 @@ export default class LayoutManager extends Component<
                   ]}
                   navigation={navigationUIController}
                 >
-                  {({ isDragging, width }) => (
-                    <ContainerNavigationMask onMouseEnter={this.openFlyout}>
-                      {this.renderGlobalNavigation()}
-                      {this.renderContentNavigation({
-                        isDragging,
-                        transitionState,
-                        transitionStyle,
-                        width,
-                      })}
-                    </ContainerNavigationMask>
-                  )}
+                  {({ isDragging, width }) => {
+                    const onMouseEnter = experimental_flyoutOnHover
+                      ? this.openFlyout
+                      : null;
+                    return (
+                      <ContainerNavigationMask onMouseEnter={onMouseEnter}>
+                        {this.renderGlobalNavigation()}
+                        {this.renderContentNavigation({
+                          isDragging,
+                          transitionState,
+                          transitionStyle,
+                          width,
+                        })}
+                      </ContainerNavigationMask>
+                    );
+                  }}
                 </ResizeControl>
               </NavigationContainer>
             );

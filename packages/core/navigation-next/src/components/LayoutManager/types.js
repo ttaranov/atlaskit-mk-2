@@ -25,6 +25,16 @@ type NonStringRef<T> = {
   current: ElementRef<T>,
 } | null;
 
+type ExperimentalFeatureFlags = {
+  /**
+    NOTE: This property is experimental and may be removed in a minor release.
+
+    Allow the user to invoke a partial display of the navigation when they
+    mouse over the nav area whilst in a collapsed state.
+  */
+  experimental_flyoutOnHover: boolean,
+};
+
 export type GetRefs = ({
   expandCollapseAffordance: NonStringRef<'button'>,
 }) => void;
@@ -43,6 +53,7 @@ export type ConnectedLayoutManagerProps = CollapseListeners & {
   productNavigation: ComponentType<{}>,
   /** Displayed when the user's mouse is over the collapse/expand toggle. */
   collapseToggleTooltipContent?: CollapseToggleTooltipContent,
+  ...ExperimentalFeatureFlags,
 };
 
 export type LayoutManagerProps = ConnectedLayoutManagerProps & {
