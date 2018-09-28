@@ -47,6 +47,7 @@ import PdfDocument24Icon from '../glyph/pdf-document/24';
 import PowerpointPresentation24Icon from '../glyph/powerpoint-presentation/24';
 import Presentation24Icon from '../glyph/presentation/24';
 import Sketch24Icon from '../glyph/sketch/24';
+import SourceCode24Icon from '../glyph/source-code/24';
 import Spreadsheet24Icon from '../glyph/spreadsheet/24';
 import Video24Icon from '../glyph/video/24';
 import WordDocument24Icon from '../glyph/word-document/24';
@@ -300,6 +301,12 @@ export default {
     component: Sketch24Icon,
     componentName: 'Sketch24Icon',
     package: '@atlaskit/icon-file-type/glyph/sketch/24',
+  },
+  'source-code/24': {
+    keywords: ['source-code/24', 'sourcecode24', 'file-type', 'icon-file-type'],
+    component: SourceCode24Icon,
+    componentName: 'SourceCode24Icon',
+    package: '@atlaskit/icon-file-type/glyph/source-code/24',
   },
   'spreadsheet/24': {
     keywords: ['spreadsheet/24', 'spreadsheet24', 'file-type', 'icon-file-type'],
