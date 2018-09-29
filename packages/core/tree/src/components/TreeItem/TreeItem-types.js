@@ -49,7 +49,6 @@ export type Props = {|
   path: Path,
   onExpand: (itemId: ItemId, path: Path) => void,
   onCollapse: (itemId: ItemId, path: Path) => void,
-  onDragAction: (actionType: DragActionType) => void,
   renderItem: RenderItemParams => React.Node,
   provided: DraggableProvided,
   snapshot: DraggableStateSnapshot,

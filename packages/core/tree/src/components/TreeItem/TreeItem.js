@@ -1,7 +1,6 @@
 // @flow
 import { Component } from 'react';
 import type {
-  DragHandleProps,
   DraggableProps,
   DraggableStateSnapshot,
 } from 'react-beautiful-dnd';
@@ -21,36 +20,6 @@ export default class TreeItem extends Component<Props> {
     );
   }
 
-  patchDragHandleProps = (
-    dragHandleProps: ?DragHandleProps,
-  ): ?DragHandleProps => {
-    const { onDragAction } = this.props;
-    if (dragHandleProps) {
-      return {
-        ...dragHandleProps,
-        onMouseDown: (event: MouseEvent) => {
-          onDragAction('mouse');
-          if (dragHandleProps) {
-            dragHandleProps.onMouseDown(event);
-          }
-        },
-        onKeyDown: (event: KeyboardEvent) => {
-          onDragAction('key');
-          if (dragHandleProps) {
-            dragHandleProps.onKeyDown(event);
-          }
-        },
-        onTouchStart: (event: TouchEvent) => {
-          onDragAction('touch');
-          if (dragHandleProps) {
-            dragHandleProps.onTouchStart(event);
-          }
-        },
-      };
-    }
-    return null;
-  };
-
   patchDraggableProps = (
     draggableProps: DraggableProps,
     snapshot: DraggableStateSnapshot,
@@ -61,10 +30,10 @@ export default class TreeItem extends Component<Props> {
       draggableProps.style && draggableProps.style.transition
         ? [draggableProps.style.transition]
         : [];
-    if (snapshot.dropping) {
+    if (snapshot.dropAnimation) {
       transitions.push(
-        `padding-left ${snapshot.dropping.duration}s ${
-          snapshot.dropping.curve
+        `padding-left ${snapshot.dropAnimation.duration}s ${
+          snapshot.dropAnimation.curve
         }`,
       );
     }
@@ -103,7 +72,7 @@ export default class TreeItem extends Component<Props> {
         provided.draggableProps,
         snapshot,
       ),
-      dragHandleProps: this.patchDragHandleProps(provided.dragHandleProps),
+      dragHandleProps: provided.dragHandleProps,
       innerRef,
     };
 

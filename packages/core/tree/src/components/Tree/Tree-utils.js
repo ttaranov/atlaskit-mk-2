@@ -45,9 +45,8 @@ export const calculateFinalDropPositions = (
     destination.index,
     horizontalLevel,
   );
-  const destinationPosition: ?TreeDestinationPosition = getTreePosition(
-    tree,
-    destinationPath,
-  );
+  const destinationPosition: ?TreeDestinationPosition = {
+    ...getTreePosition(tree, destinationPath),
+  };
   return { sourcePosition, destinationPosition };
 };

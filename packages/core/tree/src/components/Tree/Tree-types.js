@@ -1,6 +1,10 @@
 // @flow
 import * as React from 'react';
-import type { DraggableLocation, Combine } from 'react-beautiful-dnd';
+import type {
+  DraggableLocation,
+  Combine,
+  MovementMode,
+} from 'react-beautiful-dnd';
 import type {
   TreeData,
   Path,
@@ -44,6 +48,8 @@ export type DragState = {|
   draggedItemId: ItemId,
   // Source location
   source: DraggableLocation,
+  // Dragging mode
+  mode: MovementMode,
   // Pending destination location
   destination?: ?DraggableLocation,
   // Last level, while the user moved an item horizontally

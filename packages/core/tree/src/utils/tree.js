@@ -105,7 +105,10 @@ export const getParent = (tree: TreeData, path: Path): TreeItem => {
   return getItem(tree, parentPath);
 };
 
-export const getTreePosition = (tree: TreeData, path: Path): TreePosition => {
+export const getTreePosition = (
+  tree: TreeData,
+  path: Path,
+): TreeSourcePosition => {
   const parent: TreeItem = getParent(tree, path);
   const index: number = getIndexAmongSiblings(path);
   return {

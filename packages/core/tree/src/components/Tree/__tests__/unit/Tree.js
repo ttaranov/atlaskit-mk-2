@@ -17,6 +17,7 @@ const dragStart: DragStart = {
     droppableId: 'list',
     index: 1,
   },
+  mode: 'FLUID',
 };
 
 const dragUpdate: DragUpdate = {
@@ -151,6 +152,7 @@ describe('@atlaskit/tree - Tree', () => {
         draggedItemId: dragStart.draggableId,
         source: dragStart.source,
         destination: dragStart.source,
+        mode: dragStart.mode,
       });
     });
     it('calls onDragStart if it is defined', () => {
@@ -223,6 +225,7 @@ describe('@atlaskit/tree - Tree', () => {
         draggedItemId: dragUpdate.draggableId,
         source: dragUpdate.source,
         destination: dragUpdate.destination,
+        mode: dragUpdate.mode,
       });
     });
   });
@@ -247,6 +250,7 @@ describe('@atlaskit/tree - Tree', () => {
         draggedItemId: dragStart.draggableId,
         source: dragStart.source,
         destination: dragStart.source,
+        mode: dragStart.mode,
         horizontalLevel: 1,
       });
     });

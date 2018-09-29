@@ -18,7 +18,6 @@ import { noop } from '../../utils/handy';
 import { flattenTree } from '../../utils/tree';
 import type { FlattenedItem, ItemId, Path } from '../../types';
 import TreeItem from '../TreeItem';
-import { type DragActionType } from '../TreeItem/TreeItem-types';
 import {
   getDestinationPath,
   getItemById,
@@ -43,8 +42,6 @@ export default class Tree extends Component<Props, State> {
     flattenedTree: [],
   };
 
-  // Action caused dragging
-  dragAction: DragActionType = null;
   // State of dragging. Null when resting
   dragState: ?DragState = null;
   // HTMLElement for each rendered item
@@ -68,6 +65,7 @@ export default class Tree extends Component<Props, State> {
       draggedItemId: result.draggableId,
       source: result.source,
       destination: result.source,
+      mode: result.mode,
     };
     if (onDragStart) {
       onDragStart(result.draggableId);
@@ -117,11 +115,8 @@ export default class Tree extends Component<Props, State> {
     this.dragState = null;
   };
 
-  onDragAction = (actionType: DragActionType) => {
-    this.dragAction = actionType;
-  };
-
   onPointerMove = () => {
+    console.log(2);
     if (this.dragState) {
       this.dragState = {
         ...this.dragState,
@@ -141,14 +136,15 @@ export default class Tree extends Component<Props, State> {
       this.dragState.draggedItemId === flatItem.item.id &&
       (this.dragState.destination || this.dragState.combine)
     ) {
-      // We only change the if it's being dragged by keyboard or just dropped
-      if (this.dragAction === 'key' || snapshot.dropping) {
-        const {
-          source,
-          destination,
-          combine,
-          horizontalLevel,
-        } = this.dragState;
+      const {
+        source,
+        destination,
+        combine,
+        horizontalLevel,
+        mode,
+      } = this.dragState;
+      // We only change the if it's dragged by keyboard or just dropped
+      if (mode === 'SNAP' || snapshot.isDropAnimating) {
         const droppingIndex = destination
           ? destination.index
           : getIndexById(flattenedTree, combine.draggableId);
@@ -226,7 +222,6 @@ export default class Tree extends Component<Props, State> {
               path={currentPath}
               onExpand={onExpand}
               onCollapse={onCollapse}
-              onDragAction={this.onDragAction}
               renderItem={renderItem}
               provided={provided}
               snapshot={snapshot}
