@@ -116,7 +116,6 @@ export default class Tree extends Component<Props, State> {
   };
 
   onPointerMove = () => {
-    console.log(2);
     if (this.dragState) {
       this.dragState = {
         ...this.dragState,
@@ -252,6 +251,7 @@ export default class Tree extends Component<Props, State> {
             return (
               <div
                 ref={finalProvided.innerRef}
+                style={{ pointerEvents: 'auto' }}
                 onTouchMove={this.onPointerMove}
                 onMouseMove={this.onPointerMove}
                 {...finalProvided.droppableProps}
