@@ -20,14 +20,18 @@ import {
 export default class App extends Component<{}, { isDebugEnabled: boolean }> {
   state = {
     isDebugEnabled: true,
+    isFlyoutAvailable: false,
   };
 
   onDebugToggle = () => {
-    this.setState({ isDebugEnabled: !this.state.isDebugEnabled });
+    this.setState(state => ({ isDebugEnabled: !state.isDebugEnabled }));
+  };
+  onFlyoutToggle = () => {
+    this.setState(state => ({ isFlyoutAvailable: !state.isFlyoutAvailable }));
   };
 
   render() {
-    const { isDebugEnabled } = this.state;
+    const { isDebugEnabled, isFlyoutAvailable } = this.state;
 
     return (
       <HashRouter>
@@ -37,6 +41,7 @@ export default class App extends Component<{}, { isDebugEnabled: boolean }> {
         >
           <LayoutManagerWithViewController
             customComponents={{ ProjectSwitcher }}
+            experimental_flyoutOnHover={isFlyoutAvailable}
             globalNavigation={DefaultGlobalNavigation}
           >
             <div style={{ padding: 40 }}>
@@ -50,6 +55,11 @@ export default class App extends Component<{}, { isDebugEnabled: boolean }> {
               <ToggleStateless
                 isChecked={isDebugEnabled}
                 onChange={this.onDebugToggle}
+              />
+              <Label label="Toggle flyout on hover (experimental)" />
+              <ToggleStateless
+                isChecked={isFlyoutAvailable}
+                onChange={this.onFlyoutToggle}
               />
             </div>
           </LayoutManagerWithViewController>
