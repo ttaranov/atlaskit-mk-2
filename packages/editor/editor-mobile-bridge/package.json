@@ -31,7 +31,7 @@
     "@atlaskit/renderer": "^24.0.0",
     "@types/prosemirror-view": "^1.0.0",
     "babel-polyfill": "^6.26.0",
-    "prosemirror-view": "^1.5.2"
+    "prosemirror-view": "^1.6.0"
   },
   "peerDependencies": {
     "react": "^16.4.0",

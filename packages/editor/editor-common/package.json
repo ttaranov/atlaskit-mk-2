@@ -41,7 +41,7 @@
     "date-fns": "^1.29.0",
     "linkify-it": "^2.0.3",
     "prosemirror-model": "^1.6.1",
-    "prosemirror-view": "^1.5.2",
+    "prosemirror-view": "^1.6.0",
     "raf-schd": "^2.1.0"
   },
   "peerDependencies": {
