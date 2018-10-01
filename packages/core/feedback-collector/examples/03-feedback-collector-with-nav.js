@@ -47,6 +47,20 @@ class FeedbackCollectorNavItem extends Component<*, *> {
             name={name}
             requestTypeId={REQUEST_TYPE_ID}
             embeddableKey={EMBEDDABLE_KEY}
+            additionalFields={[
+              {
+                id: 'customfield_123456',
+                value: 'Some additional value',
+              },
+              {
+                id: 'customfield_65432',
+                value: { id: 'another_value' },
+              },
+              {
+                id: 'customfield_123654',
+                value: [{ id: 'value' }],
+              },
+            ]}
           />
         )}
       </Fragment>

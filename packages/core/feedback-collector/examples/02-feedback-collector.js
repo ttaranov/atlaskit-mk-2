@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import Button from '@atlaskit/button';
+import { FlagGroup } from '@atlaskit/flag';
 import FeedbackCollector, { FeedbackFlag } from '../src';
 
 type State = { isOpen: boolean, displayFlag: boolean };
@@ -37,7 +38,11 @@ export default class DisplayFeedback extends Component<void, State> {
           />
         )}
 
-        {displayFlag && <FeedbackFlag onDismissed={this.hideFlag} />}
+        {displayFlag && (
+          <FlagGroup onDismissed={this.hideFlag}>
+            <FeedbackFlag />
+          </FlagGroup>
+        )}
       </div>
     );
   }
