@@ -32,7 +32,6 @@ describe('GlobalNavigation', () => {
         onProductClick={mockProductClick}
       />,
     );
-    expect(wrapper.find(DrawerContents)).toHaveLength(0);
 
     const productIcon = wrapper.find(EmojiAtlassianIcon);
     expect(productIcon).toHaveLength(1);
