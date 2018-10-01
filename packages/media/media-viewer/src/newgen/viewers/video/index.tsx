@@ -10,15 +10,17 @@ import { isIE } from '../../utils/isIE';
 import { ErrorMessage, createError, MediaViewerError } from '../../error';
 import { renderDownloadButton } from '../../domain/download';
 import { getArtifactUrl } from '@atlaskit/media-store';
+import { AnalyticViewerProps } from '../../analytics';
 
-export type Props = Readonly<{
-  item: ProcessedFileState;
-  context: Context;
-  collectionName?: string;
-  featureFlags?: MediaViewerFeatureFlags;
-  showControls?: () => void;
-  previewCount: number;
-}>;
+export type Props = AnalyticViewerProps &
+  Readonly<{
+    item: ProcessedFileState;
+    context: Context;
+    collectionName?: string;
+    featureFlags?: MediaViewerFeatureFlags;
+    showControls?: () => void;
+    previewCount: number;
+  }>;
 
 export type State = {
   src: Outcome<string, MediaViewerError>;
@@ -71,11 +73,13 @@ export class VideoViewer extends React.Component<Props, State> {
   }
 
   private async init(isHDActive?: boolean) {
-    const { context, item, collectionName } = this.props;
+    const startTime = Date.now();
+    const { context, item, collectionName, onLoaded } = this.props;
     const preferHd = isHDActive && isHDAvailable(item);
     const videoUrl = getVideoArtifactUrl(item, preferHd);
     try {
       if (!videoUrl) {
+        onLoaded({ status: 'error', duration: Date.now() - startTime });
         throw new Error('No video artifacts found');
       }
       this.setState({
@@ -83,10 +87,12 @@ export class VideoViewer extends React.Component<Props, State> {
           await constructAuthTokenUrl(videoUrl, context, collectionName),
         ),
       });
+      onLoaded({ status: 'success', duration: Date.now() - startTime });
     } catch (err) {
       this.setState({
         src: Outcome.failed(createError('previewFailed', err, item)),
       });
+      onLoaded({ status: 'error', duration: Date.now() - startTime });
     }
   }
 

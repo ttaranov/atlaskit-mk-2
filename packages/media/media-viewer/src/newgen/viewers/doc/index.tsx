@@ -8,6 +8,7 @@ import { Props as RendererProps } from './pdfRenderer';
 import { ComponentClass } from 'react';
 import { renderDownloadButton } from '../../domain/download';
 import { getArtifactUrl } from '@atlaskit/media-store';
+import { AnalyticViewerProps } from '../../analytics';
 
 const moduleLoader = () =>
   import(/* webpackChunkName:"@atlaskit-internal_media-viewer-pdf-viewer" */ './pdfRenderer');
@@ -15,7 +16,7 @@ const moduleLoader = () =>
 const componentLoader: () => Promise<ComponentClass<RendererProps>> = () =>
   moduleLoader().then(module => module.PDFRenderer);
 
-export type Props = {
+export type Props = AnalyticViewerProps & {
   context: Context;
   item: ProcessedFileState;
   collectionName?: string;
@@ -40,6 +41,8 @@ export class DocViewer extends React.Component<Props, State> {
   }
 
   private async init() {
+    const { onLoaded } = this.props;
+    const startTime = Date.now();
     if (!DocViewer.PDFComponent) {
       await this.loadDocViewer();
     }
@@ -52,6 +55,7 @@ export class DocViewer extends React.Component<Props, State> {
           createError('noPDFArtifactsFound', undefined, item),
         ),
       });
+      onLoaded({ status: 'error', duration: Date.now() - startTime });
       return;
     }
     try {
@@ -63,10 +67,12 @@ export class DocViewer extends React.Component<Props, State> {
       this.setState({
         src: Outcome.successful(src),
       });
+      onLoaded({ status: 'success', duration: Date.now() - startTime });
     } catch (err) {
       this.setState({
         src: Outcome.failed(createError('previewFailed', err, item)),
       });
+      onLoaded({ status: 'error', duration: Date.now() - startTime });
     }
   }
 
