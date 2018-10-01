@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-test-helpers",
-  "version": "6.2.1",
+  "version": "6.2.2",
   "description": "Test Helpers for Atlassian Editor components",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -17,8 +17,8 @@
   ],
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/editor-common": "^17.0.1",
-    "@atlaskit/editor-core": "^82.1.1",
+    "@atlaskit/editor-common": "^17.0.6",
+    "@atlaskit/editor-core": "^82.2.10",
     "@atlaskit/media-core": "^24.0.0",
     "@atlaskit/media-test-helpers": "^18.0.0",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",

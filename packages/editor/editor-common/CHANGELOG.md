@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 17.0.6
+- [patch] ED-5424: fix telepointers in collab editing [643a860](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/643a860)
+
 ## 17.0.5
 - [patch] Updated dependencies [dae7792](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dae7792)
   - @atlaskit/media-core@24.0.2

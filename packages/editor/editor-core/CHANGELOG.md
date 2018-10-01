@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 82.2.10
+- [patch] ED-5424: fix telepointers in collab editing [643a860](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/643a860)
+
 ## 82.2.9
 - [patch] Better positioning of hyperlink edit popups [f247b16](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f247b16)
 

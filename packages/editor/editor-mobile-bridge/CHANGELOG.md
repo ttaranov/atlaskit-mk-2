@@ -1,5 +1,8 @@
 # @atlaskit/editor-mobile-bridge
 
+## 4.0.7
+- [patch] ED-5424: fix telepointers in collab editing [643a860](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/643a860)
+
 ## 4.0.6
 - [patch] Updated dependencies [ef76f1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef76f1f)
   - @atlaskit/editor-json-transformer@4.0.13
