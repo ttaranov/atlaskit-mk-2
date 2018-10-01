@@ -123,22 +123,28 @@ export class ItemViewer extends React.Component<Props, State> {
   }
 
   private init(props: Props) {
-    this.setState(initialState);
-    const { context, identifier } = props;
-    this.subscription = context
-      .getFile(identifier.id, { collectionName: identifier.collectionName })
-      .subscribe({
-        next: file => {
-          this.setState({
-            item: Outcome.successful(file),
-          });
-        },
-        error: err => {
-          this.setState({
-            item: Outcome.failed(createError('metadataFailed', err)),
-          });
-        },
-      });
+    this.setState(initialState, () => {
+      // Loading the file after rendering the inital state prevent the following bugs:
+      // MS-803
+      // MS-823
+      // MS-822
+      // Once these issues have been fixed, we can make this sequence synchronous
+      const { context, identifier } = props;
+      this.subscription = context
+        .getFile(identifier.id, { collectionName: identifier.collectionName })
+        .subscribe({
+          next: file => {
+            this.setState({
+              item: Outcome.successful(file),
+            });
+          },
+          error: err => {
+            this.setState({
+              item: Outcome.failed(createError('metadataFailed', err)),
+            });
+          },
+        });
+    });
   }
 
   // It's possible that a different identifier or context was passed.
