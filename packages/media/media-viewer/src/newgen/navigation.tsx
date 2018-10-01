@@ -13,6 +13,8 @@ import {
 } from './styled';
 import { getSelectedIndex } from './utils';
 import { Shortcut } from './shortcut';
+import { withAnalyticsEvents } from '@atlaskit/analytics-next';
+import { createAndFireEventOnMedia } from './analytics';
 
 export type NavigationDirection = 'prev' | 'next';
 
@@ -22,7 +24,7 @@ export interface NavigationProps {
   onChange: (item: Identifier) => void;
 }
 
-export default class Navigation extends Component<NavigationProps, any> {
+class NavigationBase extends Component<NavigationProps, any> {
   private navigate(direction: NavigationDirection) {
     return () => {
       const { onChange, items } = this.props;
@@ -90,3 +92,7 @@ export default class Navigation extends Component<NavigationProps, any> {
     );
   }
 }
+
+export default withAnalyticsEvents({
+  onChange: createAndFireEventOnMedia({ action: 'navigationEvent' }),
+})(NavigationBase);
