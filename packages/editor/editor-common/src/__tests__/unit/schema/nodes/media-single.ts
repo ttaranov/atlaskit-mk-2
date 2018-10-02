@@ -9,6 +9,7 @@ describe(`${name}/schema mediaSingle node`, () => {
         <div
           data-node-type="mediaSingle"
           data-layout="wrap-right"
+          data-width="32.3"
         />
         `,
         schema,
@@ -18,6 +19,7 @@ describe(`${name}/schema mediaSingle node`, () => {
 
       expect(mediaSingleNode.type).toEqual(schema.nodes.mediaSingle);
       expect(mediaSingleNode.attrs.layout).toEqual('wrap-right');
+      expect(mediaSingleNode.attrs.width).toEqual(32.3);
     });
 
     it('defaults to align center', () => {
@@ -34,6 +36,7 @@ describe(`${name}/schema mediaSingle node`, () => {
 
       expect(mediaSingleNode.type).toEqual(schema.nodes.mediaSingle);
       expect(mediaSingleNode.attrs.layout).toEqual('center');
+      expect(mediaSingleNode.attrs.width).toBeNull();
     });
 
     it('auto creates a media node inside mediaSingle node', () => {
@@ -56,7 +59,7 @@ describe(`${name}/schema mediaSingle node`, () => {
   });
 
   describe('encode node', () => {
-    it('converts attributes to related data attribute in html', () => {
+    it('converts layout and nodetype to html data attribute', () => {
       const mediaSingleNode = schema.nodes.mediaSingle.create({
         layout: 'center',
       });
@@ -71,11 +74,60 @@ describe(`${name}/schema mediaSingle node`, () => {
     });
   });
 
-  it('encodes and decodes to the same node', () => {
+  it('converts attributes to related data attribute in html with', () => {
+    const mediaSingleNode = schema.nodes.mediaSingle.create({
+      layout: 'center',
+      width: 64.333333,
+    });
+
+    const mediaSingleDom = toDOM(mediaSingleNode, schema)
+      .firstChild as HTMLElement;
+    const layout = mediaSingleDom.getAttribute('data-layout');
+    const width = mediaSingleDom.getAttribute('data-width');
+
+    expect(layout).toEqual('center');
+    expect(width).toEqual('64.33');
+  });
+
+  it('converts attributes with integer width', () => {
+    const mediaSingleNode = schema.nodes.mediaSingle.create({
+      layout: 'center',
+      width: 64,
+    });
+
+    const mediaSingleDom = toDOM(mediaSingleNode, schema)
+      .firstChild as HTMLElement;
+    const layout = mediaSingleDom.getAttribute('data-layout');
+    const width = mediaSingleDom.getAttribute('data-width');
+
+    expect(layout).toEqual('center');
+    expect(width).toEqual('64');
+  });
+
+  it('encodes and decodes wide mediaSingle to the same node', () => {
     const { mediaSingle, media } = schema.nodes;
     const mediaSingleNode = mediaSingle.create(
       {
         layout: 'wide',
+      },
+      media.create(),
+    );
+
+    const mediaSingleDom = toDOM(mediaSingleNode, schema)
+      .firstChild as HTMLElement;
+
+    const parsedMediaSingle = fromHTML(mediaSingleDom.outerHTML, schema)
+      .firstChild;
+
+    expect(parsedMediaSingle).toEqual(mediaSingleNode);
+  });
+
+  it('encodes and decodes mediaSingle with width to the same node', () => {
+    const { mediaSingle, media } = schema.nodes;
+    const mediaSingleNode = mediaSingle.create(
+      {
+        layout: 'center',
+        width: 32.5,
       },
       media.create(),
     );

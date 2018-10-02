@@ -73,9 +73,9 @@ export function objectValues(object) {
  */
 export function handlePromiseError<T>(
   promise: Promise<T>,
-  defaultValue?: T,
+  defaultValue: T,
   errorHandler?: ((reason: any) => T | void),
-): Promise<T | undefined> {
+): Promise<T> {
   return promise.catch(error => {
     try {
       if (errorHandler) {

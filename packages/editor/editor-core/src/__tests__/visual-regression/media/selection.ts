@@ -1,11 +1,13 @@
 import { removeOldProdSnapshots } from '@atlaskit/visual-regression/helper';
 
-import { imageSnapshotFolder, initEditor, snapshot } from '../_utils';
 import {
-  setupMediaMocksProviders,
+  imageSnapshotFolder,
+  initEditor,
+  snapshot,
   insertMedia,
+  setupMediaMocksProviders,
   editable,
-} from '../../integration/_helpers';
+} from '../_utils';
 
 describe('Snapshot Test: Media', () => {
   beforeAll(async () => {

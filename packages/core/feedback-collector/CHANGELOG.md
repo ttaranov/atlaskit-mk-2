@@ -1,5 +1,12 @@
 # @atlaskit/feedback-collector
 
+## 0.2.0
+- [patch] Fix bug with flag being not auto-dismissable [51fbd9b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51fbd9b)
+- [minor] New set of properties to the Feedback Collector that provide improved mapping between JSD and the form. Export feedback form primitive. Removed export of the flag group, export only flag instead. [fca309f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fca309f)
+
+## 0.1.6
+- [patch] Fixed a bug that crashes dialog when something is selected; fixed a bug that caused textarea to show error state even if not empty [3a6ac76](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3a6ac76)
+
 ## 0.1.5
 - [patch] Updated dependencies [4194aa4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4194aa4)
   - @atlaskit/form@4.0.9

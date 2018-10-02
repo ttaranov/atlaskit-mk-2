@@ -5,7 +5,7 @@ import { css } from 'emotion';
 import Tooltip from '@atlaskit/tooltip';
 
 import { styleReducerNoOp, withGlobalTheme } from '../../theme';
-import type { GlobalItemPresentationProps } from './types';
+import type { GlobalItemPresentationProps, GlobalItemStyles } from './types';
 
 class GlobalNavigationItemPrimitive extends Component<*> {
   static defaultProps = {
@@ -16,13 +16,9 @@ class GlobalNavigationItemPrimitive extends Component<*> {
     styles: styleReducerNoOp,
   };
 
-  CachedCustomComponent = 'div';
-
-  renderIconAndBadge = (
-    badgeWrapper: {},
-    presentationProps: GlobalItemPresentationProps,
-  ) => {
+  renderIconAndBadge = (badgeWrapper: {}) => {
     const { icon: Icon, badge: Badge, label, tooltip } = this.props;
+    const presentationProps = this.getPresentationProps();
     if (!Icon && !Badge) return null;
     return (
       <Fragment>
@@ -40,7 +36,26 @@ class GlobalNavigationItemPrimitive extends Component<*> {
     );
   };
 
-  renderChildren = () => {
+  getGlobalItemExternalProps = () => {
+    const {
+      createAnalyticsEvent,
+      isActive,
+      isHover,
+      isSelected,
+      theme,
+      ...externalProps
+    } = this.props;
+
+    return externalProps;
+  };
+
+  getPresentationProps = (): GlobalItemPresentationProps => {
+    const { isActive, isHover, isSelected, size } = this.props;
+
+    return { isActive, isHover, isSelected, size };
+  };
+
+  generateStyles = (): GlobalItemStyles => {
     const {
       isActive,
       isHover,
@@ -48,33 +63,26 @@ class GlobalNavigationItemPrimitive extends Component<*> {
       size,
       styles: styleReducer,
       theme,
-      tooltip,
-      href,
-      onClick,
-      target,
-      component: CustomComponent,
-      ...rest
     } = this.props;
-
     const { mode } = theme;
     const presentationProps = { isActive, isHover, isSelected, size };
     const defaultStyles = mode.globalItem(presentationProps);
-    const styles = styleReducer(defaultStyles, presentationProps);
+    return styleReducer(defaultStyles, presentationProps);
+  };
+
+  renderChildren = (styles: GlobalItemStyles) => {
+    const { href, onClick, target, component: CustomComponent } = this.props;
+
     let itemBase;
 
     if (CustomComponent) {
-      if (typeof CustomComponent !== typeof this.CachedCustomComponent) {
-        this.CachedCustomComponent = CustomComponent;
-      }
-      const CachedCustomComponent = this.CachedCustomComponent;
-
       itemBase = (
-        <CachedCustomComponent
-          {...rest}
+        <CustomComponent
+          {...this.getGlobalItemExternalProps()}
           className={css({ '&&': styles.itemBase })}
         >
-          {this.renderIconAndBadge(styles.badgeWrapper, presentationProps)}
-        </CachedCustomComponent>
+          {this.renderIconAndBadge(styles.badgeWrapper)}
+        </CustomComponent>
       );
     } else if (href) {
       itemBase = (
@@ -84,19 +92,19 @@ class GlobalNavigationItemPrimitive extends Component<*> {
           target={target}
           className={css({ '&&': styles.itemBase })}
         >
-          {this.renderIconAndBadge(styles.badgeWrapper, presentationProps)}
+          {this.renderIconAndBadge(styles.badgeWrapper)}
         </a>
       );
     } else if (onClick) {
       itemBase = (
         <button onClick={onClick} className={css({ '&&': styles.itemBase })}>
-          {this.renderIconAndBadge(styles.badgeWrapper, presentationProps)}
+          {this.renderIconAndBadge(styles.badgeWrapper)}
         </button>
       );
     } else {
       itemBase = (
-        <span className={css({ '&&': styles.itemBase })} {...rest}>
-          {this.renderIconAndBadge(styles.badgeWrapper, presentationProps)}
+        <span className={css({ '&&': styles.itemBase })}>
+          {this.renderIconAndBadge(styles.badgeWrapper)}
         </span>
       );
     }
@@ -105,15 +113,19 @@ class GlobalNavigationItemPrimitive extends Component<*> {
   };
 
   render() {
-    const { isActive, isSelected, tooltip } = this.props;
+    const { isSelected, tooltip } = this.props;
+    const styles = this.generateStyles();
     return (
       <Tooltip
         delay={0}
-        content={isSelected || isActive ? undefined : tooltip}
+        content={isSelected ? undefined : tooltip}
         position="right"
+        hideTooltipOnClick
         hideTooltipOnMouseDown
       >
-        {this.renderChildren()}
+        <div className={css({ display: 'inline-block' })}>
+          {this.renderChildren(styles)}
+        </div>
       </Tooltip>
     );
   }

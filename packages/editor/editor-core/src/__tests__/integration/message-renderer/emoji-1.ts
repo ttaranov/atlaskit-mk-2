@@ -8,6 +8,7 @@ import {
   emojiItem,
   typeahead,
 } from './_emoji-helpers';
+import { messages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
 
 BrowserTestCase(
   'Emoji: should be able to see emoji if typed the name in full',
@@ -93,7 +94,7 @@ BrowserTestCase(
   'Emoji: should be able to click on the emoji button and select emoji',
   { skip: ['ie'] },
   async client => {
-    const emojiButton = '[aria-label="Insert emoji :"]';
+    const emojiButton = `[aria-label="${messages.emoji.defaultMessage}"]`;
     const sweatSmile = '[aria-label=":sweat_smile:"]';
     const browser = await new Page(client);
     await browser.goto(messageEditor);

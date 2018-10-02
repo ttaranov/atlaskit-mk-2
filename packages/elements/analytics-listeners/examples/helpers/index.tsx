@@ -1,12 +1,12 @@
-import * as React from 'react';
-import {
-  withAnalyticsEvents,
-  createAndFireEvent,
-} from '@atlaskit/analytics-next';
 import { EventType } from '@atlaskit/analytics-gas-types';
-import Button from '@atlaskit/button';
-import { FabricChannel } from '../../src/types';
+import {
+  createAndFireEvent,
+  withAnalyticsEvents,
+} from '@atlaskit/analytics-next';
 import { WithAnalyticsEventProps } from '@atlaskit/analytics-next-types';
+import Button from '@atlaskit/button';
+import * as React from 'react';
+import { FabricChannel } from '../../src/types';
 
 export type OwnProps = {
   onClick: (e) => void;

@@ -51,7 +51,7 @@ const generateResults = section => {
   return arr;
 };
 
-const getSearchResultsEvent = (type: 'pre' | 'post', sections) => ({
+const getSearchResultsEvent = (type: 'pre' | 'post', sections, timings) => ({
   payload: {
     action: 'shown',
     actionSubject: 'searchResults',
@@ -60,13 +60,7 @@ const getSearchResultsEvent = (type: 'pre' | 'post', sections) => ({
     source: 'globalSearchDrawer',
     attributes: {
       [`${type}QueryRequestDurationMs`]: expect.any(Number),
-      ...(type === 'post'
-        ? {
-            quickNavElapsedMs: expect.any(Number),
-            confSearchElapsedMs: expect.any(Number),
-            peopleElapsedMs: expect.any(Number),
-          }
-        : undefined),
+      ...timings,
       searchSessionId: expect.any(String),
       resultCount: sections
         .map(section => section.resultsCount)
@@ -84,9 +78,9 @@ const getSearchResultsEvent = (type: 'pre' | 'post', sections) => ({
   ...COMMON_EVENT_DATA,
 });
 export const getPreQuerySearchResultsEvent = sections =>
-  getSearchResultsEvent('pre', sections);
-export const getPostQuerySearchResultsEvent = sections =>
-  getSearchResultsEvent('post', sections);
+  getSearchResultsEvent('pre', sections, undefined);
+export const getPostQuerySearchResultsEvent = (sections, timings) =>
+  getSearchResultsEvent('post', sections, timings);
 
 export const getTextEnteredEvent = ({
   queryLength,
@@ -165,6 +159,7 @@ export const getHighlightEvent = ({
 });
 
 export const getAdvancedSearchLinkSelectedEvent = ({
+  actionSubjectId,
   resultContentId,
   sectionId,
   globalIndex,
@@ -174,7 +169,7 @@ export const getAdvancedSearchLinkSelectedEvent = ({
   payload: {
     action: 'selected',
     actionSubject: 'navigationItem',
-    actionSubjectId: 'advanced_search_confluence',
+    actionSubjectId,
     eventType: 'track',
     source: 'globalSearchDrawer',
     attributes: {

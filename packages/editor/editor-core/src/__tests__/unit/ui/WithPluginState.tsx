@@ -137,6 +137,8 @@ describe(name, () => {
 
   it('should support old plugins with subscribe/unsubscribe methods', () => {
     const pluginState = {
+      cb(param?: any) {},
+
       update() {
         this.cb({ a: 1 });
       },

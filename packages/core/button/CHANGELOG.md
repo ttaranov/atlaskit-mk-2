@@ -1,5 +1,11 @@
 # @atlaskit/button
 
+## 9.0.12
+- [patch] Add help appearance [3548c3f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3548c3f)
+
+## 9.0.11
+- [patch] Update the appearance of selected for Help [196603f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/196603f)
+
 ## 9.0.10
 - [patch] Updated dependencies [7d51a09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d51a09)
   - @atlaskit/spinner@9.0.9

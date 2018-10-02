@@ -8,6 +8,7 @@ import {
   JiraItem,
   JiraItemV1,
   JiraItemV2,
+  PersonItem,
 } from '../src/api/types';
 import {
   generateRandomJiraIssue,
@@ -213,6 +214,7 @@ export function makeCrossProductSearchData(
   const confDataWithAttachments: ConfluenceItem[] = [];
   const jiraObjects: JiraItem[] = [];
   const jiraContainers: JiraItem[] = [];
+  const peopleData: PersonItem[] = [];
 
   for (let i = 0; i < n; i++) {
     const url = getMockUrl();
@@ -291,21 +293,7 @@ export function makeCrossProductSearchData(
   }
 
   for (let i = 0; i < n; i++) {
-    const issue =
-      i % 2
-        ? {
-            key: randomIssueKey(),
-            fields: {
-              summary: getMockCatchPhrase(),
-              project: {
-                name: getMockCompanyName(),
-              },
-              issuetype: {
-                iconUrl: randomJiraIconUrl(),
-              },
-            },
-          }
-        : generateRandomJiraIssue();
+    const issue = generateRandomJiraIssue();
     jiraObjects.push(issue);
   }
 
@@ -319,6 +307,16 @@ export function makeCrossProductSearchData(
       jiraContainer = generateRandomJiraProject();
     }
     jiraContainers.push(jiraContainer);
+  }
+
+  for (let i = 0; i < n; i++) {
+    peopleData.push({
+      userId: uuid(),
+      displayName: getMockName(),
+      nickName: getMockLastName(),
+      primaryPhoto: getMockAvatarUrl(),
+      title: getMockJobTitle(),
+    });
   }
 
   return (term: string) => {
@@ -347,6 +345,10 @@ export function makeCrossProductSearchData(
 
     const filteredConfResultsWithAttachments = confDataWithAttachments.filter(
       result => result.title.toLowerCase().indexOf(term) > -1,
+    );
+
+    const filteredPeopleResults = peopleData.filter(
+      item => item.displayName.toLowerCase().indexOf(term) > -1,
     );
 
     const abTest = {
@@ -386,6 +388,12 @@ export function makeCrossProductSearchData(
           abTest,
           results: filteredSpaceResults,
         },
+        {
+          id: Scope.People,
+          experimentId: 'experiment-1',
+          abTest,
+          results: filteredPeopleResults,
+        },
       ],
     };
   };
@@ -423,13 +431,13 @@ export function makePeopleSearchData(
   };
 }
 
-function generateRandomQuickNavItem(className: string) {
+function generateRandomQuickNavItem(className: string): QuickNavResult {
   return {
     className: className,
-    name: getMockCatchPhrase(),
+    name: getMockName(),
     href: getMockUrl(),
-    spaceName: getMockCompanyName(),
     id: uuid(),
+    icon: getMockAvatarUrl(),
   };
 }
 
@@ -451,7 +459,7 @@ export function makeQuickNavSearchData(n: number = 50) {
     generateRandomQuickNavItem('content-type-blogpost'),
   );
 
-  // create some people, which never get shown
+  // create some people
   const people: QuickNavResult[] = generateRandomElements(() =>
     generateRandomQuickNavItem('content-type-userinfo'),
   );

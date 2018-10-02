@@ -1,10 +1,10 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
-import { Status as AkStatus } from '@atlaskit/status';
+import { Status as AkStatus, Color } from '@atlaskit/status';
 
 export interface Props {
   text: string;
-  color: string;
+  color: Color;
   localId?: string;
 }
 

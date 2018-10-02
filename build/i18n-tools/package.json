@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/i18n-tools",
-  "version": "0.2.0",
+  "version": "0.3.1",
   "description": "A tool for extracting, pushing and pulling translation strings from react components",
   "main": "index.js",
   "bin": {
@@ -12,7 +12,7 @@
     "@babel/core": "^7.0.0",
     "@babel/plugin-syntax-dynamic-import": "^7.0.0",
     "babel-plugin-react-intl": "^2.4.0",
-    "babel-plugin-react-intl-pot": "^0.5.6",
+    "babel-plugin-react-intl-pot": "^0.5.7",
     "chalk": "^2.1.0",
     "globby": "^6.1.0",
     "listr": "^0.14.2",

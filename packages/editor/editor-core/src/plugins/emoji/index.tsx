@@ -1,7 +1,9 @@
 import * as React from 'react';
 import EmojiIcon from '@atlaskit/icon/glyph/editor/emoji';
 import { emoji, emojiQuery, WithProviders } from '@atlaskit/editor-common';
+
 import { EditorPlugin } from '../../types';
+import { messages } from '../insert-block/ui/ToolbarInsertBlock';
 import { createPlugin, emojiPluginKey } from './pm-plugins/main';
 import inputRulePlugin from './pm-plugins/input-rules';
 import keymap from './pm-plugins/keymap';
@@ -103,11 +105,11 @@ const emojiPlugin: EditorPlugin = {
   },
 
   pluginsOptions: {
-    quickInsert: [
+    quickInsert: ({ formatMessage }) => [
       {
-        title: 'Emoji',
+        title: formatMessage(messages.emoji),
         priority: 500,
-        icon: () => <EmojiIcon label="Emoji" />,
+        icon: () => <EmojiIcon label={formatMessage(messages.emoji)} />,
         action(insert, state) {
           const mark = state.schema.mark('emojiQuery');
           const emojiText = state.schema.text(':', [mark]);

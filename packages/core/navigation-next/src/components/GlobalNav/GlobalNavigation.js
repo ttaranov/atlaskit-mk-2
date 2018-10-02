@@ -7,7 +7,6 @@
 
 import React, { Component, Fragment } from 'react';
 import { NavigationAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
-import GlobalItem from '../GlobalItem';
 
 import {
   FirstPrimaryItemWrapper,
@@ -18,7 +17,12 @@ import type { GlobalNavigationProps } from './types';
 
 export default class GlobalNavigation extends Component<GlobalNavigationProps> {
   render() {
-    const { primaryItems, secondaryItems, theme } = this.props;
+    const {
+      itemComponent: ItemComponent,
+      primaryItems,
+      secondaryItems,
+      theme,
+    } = this.props;
     const wrapperStyles = theme.mode.globalNav();
 
     return (
@@ -42,7 +46,7 @@ export default class GlobalNavigation extends Component<GlobalNavigationProps> {
                       <FirstPrimaryItemWrapper
                         key={props.id || props.key || props.label}
                       >
-                        <GlobalItem
+                        <ItemComponent
                           {...rest}
                           icon={provided => <Icon {...provided} size="large" />}
                           size="large"
@@ -52,7 +56,7 @@ export default class GlobalNavigation extends Component<GlobalNavigationProps> {
                     );
                   }
                   return (
-                    <GlobalItem
+                    <ItemComponent
                       {...props}
                       key={props.id || props.key || props.label}
                       size="large"
@@ -70,7 +74,7 @@ export default class GlobalNavigation extends Component<GlobalNavigationProps> {
             >
               <Fragment>
                 {secondaryItems.map((props, index) => (
-                  <GlobalItem
+                  <ItemComponent
                     {...props}
                     key={props.id || props.label}
                     size="small"

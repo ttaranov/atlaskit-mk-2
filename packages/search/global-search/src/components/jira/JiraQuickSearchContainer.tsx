@@ -9,13 +9,14 @@ import { gridSize } from '@atlaskit/theme';
 import { withAnalytics } from '@atlaskit/analytics';
 import StickyFooter from '../common/StickyFooter';
 import { CreateAnalyticsEventFn } from '../analytics/types';
-import { SearchScreenCounter, ScreenCounter } from '../../util/ScreenCounter';
+import { SearchScreenCounter } from '../../util/ScreenCounter';
 import { JiraClient } from '../../api/JiraClient';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
 import { Scope } from '../../api/types';
 import {
   LinkComponent,
   ReferralContextIdentifiers,
+  Logger,
 } from '../GlobalQuickSearchWrapper';
 import QuickSearchContainer from '../common/QuickSearchContainer';
 import { sliceResults } from './JiraSearchResultsMapper';
@@ -41,7 +42,7 @@ import {
 } from '../../model/Result';
 import {
   CrossProductSearchClient,
-  EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE,
+  CrossProductSearchResults,
 } from '../../api/CrossProductSearchClient';
 import performanceNow from '../../util/performance-now';
 
@@ -56,6 +57,7 @@ export interface Props {
   jiraClient: JiraClient;
   peopleSearchClient: PeopleSearchClient;
   crossProductSearchClient: CrossProductSearchClient;
+  logger: Logger;
 }
 
 const contentTypeToSection = {
@@ -71,6 +73,8 @@ export interface State {
   selectedAdvancedSearchType: JiraEntityTypes;
 }
 
+const LOGGER_NAME = 'AK.GlobalSearch.JiraQuickSearchContainer';
+
 /**
  * Container/Stateful Component that handles the data fetching and state handling when the user interacts with Search.
  */
@@ -83,8 +87,8 @@ export class JiraQuickSearchContainer extends React.Component<
   };
 
   screenCounters = {
-    preQueryScreenCounter: new SearchScreenCounter() as ScreenCounter,
-    postQueryScreenCounter: new SearchScreenCounter() as ScreenCounter,
+    preQueryScreenCounter: new SearchScreenCounter(),
+    postQueryScreenCounter: new SearchScreenCounter(),
   };
 
   handleSearchSubmit = ({ target }) => {
@@ -151,9 +155,12 @@ export class JiraQuickSearchContainer extends React.Component<
     const peoplePromise: Promise<
       Result[]
     > = this.props.peopleSearchClient.getRecentPeople();
-    return handlePromiseError<Result[]>(
-      peoplePromise,
-      [] as Result[],
+    return handlePromiseError<Result[]>(peoplePromise, [] as Result[], error =>
+      this.props.logger.safeError(
+        LOGGER_NAME,
+        'error in recently interacted people promise',
+        error,
+      ),
     ) as Promise<Result[]>;
   };
 
@@ -179,10 +186,19 @@ export class JiraQuickSearchContainer extends React.Component<
         objects: issues,
         containers: [...boards, ...filters, ...projects],
       }));
-    return handlePromiseError(jiraRecentItemsPromise, {
-      objects: [],
-      containers: [],
-    });
+    return handlePromiseError(
+      jiraRecentItemsPromise,
+      {
+        objects: [],
+        containers: [],
+      },
+      error =>
+        this.props.logger.safeError(
+          LOGGER_NAME,
+          'error in recent Jira items promise',
+          error,
+        ),
+    );
   };
 
   getRecentItems = (sessionId: string): Promise<ResultsWithTiming> => {
@@ -201,29 +217,38 @@ export class JiraQuickSearchContainer extends React.Component<
     sessionId: string,
     startTime: number,
   ): Promise<ResultsWithTiming> => {
+    const referrerId =
+      this.props.referralContextIdentifiers &&
+      this.props.referralContextIdentifiers.searchReferrerId;
     const crossProductSearchPromise = this.props.crossProductSearchClient.search(
       query,
-      sessionId,
+      { sessionId, referrerId },
       scopes,
     );
 
-    const searchPeoplePromise = this.props.peopleSearchClient.search(query);
-
-    const mapPromiseToPerformanceTime = p =>
-      p.then(() => performanceNow() - startTime);
-
-    const timingPromise = [crossProductSearchPromise, searchPeoplePromise].map(
-      mapPromiseToPerformanceTime,
+    const searchPeoplePromise = handlePromiseError(
+      this.props.peopleSearchClient.search(query),
+      [] as Result[],
+      error =>
+        this.props.logger.safeError(
+          LOGGER_NAME,
+          'error in search people promise',
+          error,
+        ),
     );
 
-    return Promise.all([
+    const mapPromiseToPerformanceTime = (p: Promise<any>) =>
+      p.then(() => performanceNow() - startTime);
+
+    return Promise.all<CrossProductSearchResults, Result[], number, number>([
       crossProductSearchPromise,
       searchPeoplePromise,
-      ...timingPromise,
+      mapPromiseToPerformanceTime(crossProductSearchPromise),
+      mapPromiseToPerformanceTime(searchPeoplePromise),
     ]).then(
       ([
-        xpsearchResults = EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE,
-        peopleResults = [],
+        xpsearchResults,
+        peopleResults,
         crossProductSearchElapsedMs,
         peopleElapsedMs,
       ]) => ({
@@ -243,7 +268,7 @@ export class JiraQuickSearchContainer extends React.Component<
   };
 
   render() {
-    const { linkComponent, createAnalyticsEvent } = this.props;
+    const { linkComponent, createAnalyticsEvent, logger } = this.props;
 
     return (
       <QuickSearchContainer
@@ -257,6 +282,7 @@ export class JiraQuickSearchContainer extends React.Component<
         getSearchResults={this.getSearchResults}
         handleSearchSubmit={this.handleSearchSubmit}
         createAnalyticsEvent={createAnalyticsEvent}
+        logger={logger}
       />
     );
   }

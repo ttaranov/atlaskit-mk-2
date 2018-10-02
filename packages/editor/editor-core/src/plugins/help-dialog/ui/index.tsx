@@ -1,4 +1,11 @@
 import * as React from 'react';
+import {
+  injectIntl,
+  defineMessages,
+  FormattedMessage,
+  InjectedIntl,
+  InjectedIntlProps,
+} from 'react-intl';
 import { Schema } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { browser } from '@atlaskit/editor-common';
@@ -20,9 +27,67 @@ import {
 } from './styles';
 import * as keymaps from '../../../keymaps';
 import ToolbarButton from '../../../ui/ToolbarButton';
+import { messages as textFormattingMessages } from '../../text-formatting/ui/ToolbarTextFormatting';
+import { messages as advancedTextFormattingMessages } from '../../text-formatting/ui/ToolbarAdvancedTextFormatting';
+import { messages as blockTypeMessages } from '../../block-type/types';
+import { messages as listMessages } from '../../lists/ui/ToolbarLists';
+import { messages as insertBlockMessages } from '../../insert-block/ui/ToolbarInsertBlock';
 import { closeHelpCommand } from '../';
 
-// tslint:disable-next-line:variable-name
+const messages = defineMessages({
+  editorHelp: {
+    id: 'fabric.editor.editorHelp',
+    defaultMessage: 'Editor help',
+    description: 'Title of editor help dialog.',
+  },
+  helpDialogTips: {
+    id: 'fabric.editor.helpDialogTips',
+    defaultMessage: 'Press {keyMap} to quickly open this dialog at any time',
+    description: 'Hint about how to open a dialog quickly using a shortcut.',
+  },
+  keyboardShortcuts: {
+    id: 'fabric.editor.keyboardShortcuts',
+    defaultMessage: 'Keyboard shortcuts',
+    description: '',
+  },
+  markdown: {
+    id: 'fabric.editor.markdown',
+    defaultMessage: 'Markdown',
+    description: 'It is a name of popular markup language.',
+  },
+  undo: {
+    id: 'fabric.editor.undo',
+    defaultMessage: 'Undo',
+    description: '',
+  },
+  redo: {
+    id: 'fabric.editor.redo',
+    defaultMessage: 'Redo',
+    description: '',
+  },
+  pastePlainText: {
+    id: 'fabric.editor.pastePlainText',
+    defaultMessage: 'Paste plain text',
+    description: '',
+  },
+  altText: {
+    id: 'fabric.editor.altText',
+    defaultMessage: 'Alt text',
+    description: 'Alternative text for image.',
+  },
+  closeHelpDialog: {
+    id: 'fabric.editor.closeHelpDialog',
+    defaultMessage: 'Close help dialog',
+    description: '',
+  },
+  // TODO: Move it inside quick insert plugin
+  quickInsert: {
+    id: 'fabric.editor.quickInsert',
+    defaultMessage: 'Quick insert',
+    description: 'Name of a feature, which let you insert items quickly.',
+  },
+});
+
 const AkModalDialog: React.ComponentClass<any> = Modal;
 
 export interface Format {
@@ -33,92 +98,100 @@ export interface Format {
   imageEnabled?: boolean;
 }
 
-export const formatting: Format[] = [
+export const formatting: ((intl: InjectedIntl) => Format[]) = ({
+  formatMessage,
+}) => [
   {
-    name: 'Bold',
+    name: formatMessage(textFormattingMessages.bold),
     type: 'strong',
     keymap: () => keymaps.toggleBold,
     autoFormatting: () => (
       <span>
-        <CodeLg>**Bold**</CodeLg>
+        <CodeLg>
+          **<FormattedMessage {...textFormattingMessages.bold} />**
+        </CodeLg>
       </span>
     ),
   },
   {
-    name: 'Italic',
+    name: formatMessage(textFormattingMessages.italic),
     type: 'em',
     keymap: () => keymaps.toggleItalic,
     autoFormatting: () => (
       <span>
-        <CodeLg>*Italic*</CodeLg>
+        <CodeLg>
+          *<FormattedMessage {...textFormattingMessages.italic} />*
+        </CodeLg>
       </span>
     ),
   },
   {
-    name: 'Underline',
+    name: formatMessage(advancedTextFormattingMessages.underline),
     type: 'underline',
     keymap: () => keymaps.toggleUnderline,
   },
   {
-    name: 'Strikethrough',
+    name: formatMessage(advancedTextFormattingMessages.strike),
     type: 'strike',
     keymap: () => keymaps.toggleStrikethrough,
     autoFormatting: () => (
       <span>
-        <CodeLg>~~strikethrough~~</CodeLg>
+        <CodeLg>
+          ~~<FormattedMessage {...advancedTextFormattingMessages.strike} />~~
+        </CodeLg>
       </span>
     ),
   },
   {
-    name: 'Heading 1',
+    name: formatMessage(blockTypeMessages.heading1),
     type: 'heading',
     autoFormatting: () => (
       <span>
-        <CodeSm>#</CodeSm> <CodeLg>space</CodeLg>
+        <CodeSm>#</CodeSm> <CodeLg>Space</CodeLg>
       </span>
     ),
   },
   {
-    name: 'Heading 2',
+    name: formatMessage(blockTypeMessages.heading2),
     type: 'heading',
     autoFormatting: () => (
       <span>
-        <CodeLg>##</CodeLg> <CodeLg>space</CodeLg>
+        <CodeLg>##</CodeLg> <CodeLg>Space</CodeLg>
       </span>
     ),
   },
   {
-    name: 'Numbered list',
+    name: formatMessage(listMessages.orderedList),
     type: 'orderedList',
     keymap: () => keymaps.toggleOrderedList,
     autoFormatting: () => (
       <span>
-        <CodeSm>1.</CodeSm> <CodeLg>space</CodeLg>
+        <CodeSm>1.</CodeSm> <CodeLg>Space</CodeLg>
       </span>
     ),
   },
   {
-    name: 'Bulleted list',
+    name: formatMessage(listMessages.unorderedList),
     type: 'bulletList',
     keymap: () => keymaps.toggleBulletList,
     autoFormatting: () => (
       <span>
-        <CodeSm>*</CodeSm> <CodeLg>space</CodeLg>
+        <CodeSm>*</CodeSm> <CodeLg>Space</CodeLg>
       </span>
     ),
   },
   {
-    name: 'Quote',
+    name: formatMessage(blockTypeMessages.blockquote),
     type: 'blockquote',
     keymap: () => keymaps.toggleBlockQuote,
     autoFormatting: () => (
       <span>
-        <CodeLg>></CodeLg> <CodeLg>space</CodeLg>
+        <CodeLg>></CodeLg> <CodeLg>Space</CodeLg>
       </span>
     ),
   },
   {
-    name: 'Code block',
+    name: formatMessage(blockTypeMessages.codeblock),
     type: 'codeBlock',
     autoFormatting: () => (
       <span>
@@ -127,7 +200,7 @@ export const formatting: Format[] = [
     ),
   },
   {
-    name: 'Divider',
+    name: formatMessage(insertBlockMessages.horizontalRule),
     type: 'rule',
     keymap: () => keymaps.insertRule,
     autoFormatting: () => (
@@ -137,46 +210,50 @@ export const formatting: Format[] = [
     ),
   },
   {
-    name: 'Link',
+    name: formatMessage(insertBlockMessages.link),
     type: 'link',
     keymap: ({ appearance }) =>
       appearance && appearance !== 'message' ? keymaps.addLink : undefined,
     autoFormatting: () => (
       <span>
-        <CodeLg>[Link](http://a.com)</CodeLg>
+        <CodeLg>
+          [<FormattedMessage {...insertBlockMessages.link} />](http://a.com)
+        </CodeLg>
       </span>
     ),
   },
   {
-    name: 'Code',
+    name: formatMessage(advancedTextFormattingMessages.code),
     type: 'code',
     keymap: () => keymaps.toggleCode,
     autoFormatting: () => (
       <span>
-        <CodeLg>`code`</CodeLg>
+        <CodeLg>
+          `<FormattedMessage {...advancedTextFormattingMessages.code} />`
+        </CodeLg>
       </span>
     ),
   },
   {
-    name: 'Actions',
+    name: formatMessage(listMessages.action),
     type: 'taskItem',
     autoFormatting: () => (
       <span>
-        <CodeSm>[]</CodeSm> <CodeLg>space</CodeLg>
+        <CodeSm>[]</CodeSm> <CodeLg>Space</CodeLg>
       </span>
     ),
   },
   {
-    name: 'Decisions',
+    name: formatMessage(insertBlockMessages.decision),
     type: 'decisionItem',
     autoFormatting: () => (
       <span>
-        <CodeSm>&lt;&gt;</CodeSm> <CodeLg>space</CodeLg>
+        <CodeSm>&lt;&gt;</CodeSm> <CodeLg>Space</CodeLg>
       </span>
     ),
   },
   {
-    name: 'Emoji',
+    name: formatMessage(insertBlockMessages.emoji),
     type: 'emoji',
     autoFormatting: () => (
       <span>
@@ -186,7 +263,7 @@ export const formatting: Format[] = [
   },
 
   {
-    name: 'Mention',
+    name: formatMessage(insertBlockMessages.mention),
     type: 'mention',
     autoFormatting: () => (
       <span>
@@ -196,29 +273,31 @@ export const formatting: Format[] = [
   },
 ];
 const shortcutNamesWithoutKeymap: string[] = [
-  'Emoji',
-  'Mention',
-  'Quick insert',
+  'emoji',
+  'mention',
+  'quickInsert',
 ];
 
-const otherFormatting: Format[] = [
+const otherFormatting: ((intl: InjectedIntl) => Format[]) = ({
+  formatMessage,
+}) => [
   {
-    name: 'Clear formatting',
+    name: formatMessage(advancedTextFormattingMessages.clearFormatting),
     type: 'clearFormatting',
     keymap: () => keymaps.clearFormatting,
   },
   {
-    name: 'Undo',
+    name: formatMessage(messages.undo),
     type: 'undo',
     keymap: () => keymaps.undo,
   },
   {
-    name: 'Redo',
+    name: formatMessage(messages.redo),
     type: 'redo',
     keymap: () => keymaps.redo,
   },
   {
-    name: 'Paste plain text',
+    name: formatMessage(messages.pastePlainText),
     type: 'paste',
     keymap: () => keymaps.pastePlainText,
   },
@@ -229,34 +308,39 @@ const imageAutoFormat: Format = {
   type: 'image',
   autoFormatting: () => (
     <span>
-      <CodeLg>![Alt Text](http://www.image.com)</CodeLg>
+      <CodeLg>
+        ![<FormattedMessage {...messages.altText} />](http://www.image.com)
+      </CodeLg>
     </span>
   ),
 };
 
-const quickInsertAutoFormat: Format = {
-  name: 'Quick insert',
+const quickInsertAutoFormat: ((intl: InjectedIntl) => Format) = ({
+  formatMessage,
+}) => ({
+  name: formatMessage(messages.quickInsert),
   type: 'quickInsert',
   autoFormatting: () => (
     <span>
       <CodeLg>/</CodeLg>
     </span>
   ),
-};
+});
 
 export const getSupportedFormatting = (
   schema: Schema,
+  intl: InjectedIntl,
   imageEnabled?: boolean,
   quickInsertEnabled?: boolean,
 ): Format[] => {
-  const supportedBySchema = formatting.filter(
+  const supportedBySchema = formatting(intl).filter(
     format => schema.nodes[format.type] || schema.marks[format.type],
   );
   return [
     ...supportedBySchema,
     ...(imageEnabled ? [imageAutoFormat] : []),
-    ...(quickInsertEnabled ? [quickInsertAutoFormat] : []),
-    ...otherFormatting,
+    ...(quickInsertEnabled ? [quickInsertAutoFormat(intl)] : []),
+    ...otherFormatting(intl),
   ];
 };
 
@@ -291,41 +375,42 @@ export interface Props {
   quickInsertEnabled?: boolean;
 }
 
-// tslint:disable-next-line:variable-name
-const ModalHeader = ({ onClose, showKeyline }) => (
-  <Header showKeyline={showKeyline}>
-    Editor Help
-    <div>
-      <ToolbarButton
-        onClick={onClose}
-        title="Close help dialog"
-        spacing="compact"
-        iconBefore={<CrossIcon label="Close help dialog" size="medium" />}
-      />
-    </div>
-  </Header>
+const ModalHeader = injectIntl(
+  ({
+    onClose,
+    showKeyline,
+    intl: { formatMessage },
+  }: { onClose: () => void; showKeyline: boolean } & InjectedIntlProps) => (
+    <Header showKeyline={showKeyline}>
+      <FormattedMessage {...messages.editorHelp} />
+      <div>
+        <ToolbarButton
+          onClick={onClose}
+          title={formatMessage(messages.closeHelpDialog)}
+          spacing="compact"
+          iconBefore={
+            <CrossIcon
+              label={formatMessage(messages.closeHelpDialog)}
+              size="medium"
+            />
+          }
+        />
+      </div>
+    </Header>
+  ),
 );
 
-// tslint:disable-next-line:variable-name
-const ModalFooter = ({ onClose, showKeyline }) => (
+const ModalFooter = ({ showKeyline }) => (
   <Footer showKeyline={showKeyline}>
-    Press {getComponentFromKeymap(keymaps.openHelp)} to quickly open this dialog
-    at any time
+    <FormattedMessage
+      {...messages.helpDialogTips}
+      values={{ keyMap: getComponentFromKeymap(keymaps.openHelp) }}
+    />
   </Footer>
 );
 
-export default class HelpDialog extends React.Component<Props, any> {
+class HelpDialog extends React.Component<Props & InjectedIntlProps> {
   private formatting: Format[];
-
-  constructor(props) {
-    super(props);
-    const { schema } = this.props.editorView.state;
-    this.formatting = getSupportedFormatting(
-      schema,
-      this.props.imageEnabled,
-      this.props.quickInsertEnabled,
-    );
-  }
 
   closeDialog = () => {
     const {
@@ -350,6 +435,14 @@ export default class HelpDialog extends React.Component<Props, any> {
   }
 
   render() {
+    const { editorView, intl, imageEnabled, quickInsertEnabled } = this.props;
+    this.formatting = getSupportedFormatting(
+      editorView.state.schema,
+      intl,
+      imageEnabled,
+      quickInsertEnabled,
+    );
+
     return (
       <ModalTransition>
         {this.props.isVisible ? (
@@ -363,7 +456,9 @@ export default class HelpDialog extends React.Component<Props, any> {
               <Line />
               <Content>
                 <ColumnLeft>
-                  <Title>Keyboard Shortcuts</Title>
+                  <Title>
+                    <FormattedMessage {...messages.keyboardShortcuts} />
+                  </Title>
                   <div>
                     {this.formatting
                       .filter(form => {
@@ -384,7 +479,7 @@ export default class HelpDialog extends React.Component<Props, any> {
                     {this.formatting
                       .filter(
                         form =>
-                          shortcutNamesWithoutKeymap.indexOf(form.name) !== -1,
+                          shortcutNamesWithoutKeymap.indexOf(form.type) !== -1,
                       )
                       .filter(form => form.autoFormatting)
                       .map(form => (
@@ -397,12 +492,14 @@ export default class HelpDialog extends React.Component<Props, any> {
                 </ColumnLeft>
                 <Line />
                 <ColumnRight>
-                  <Title>Markdown</Title>
+                  <Title>
+                    <FormattedMessage {...messages.markdown} />
+                  </Title>
                   <div>
                     {this.formatting
                       .filter(
                         form =>
-                          shortcutNamesWithoutKeymap.indexOf(form.name) === -1,
+                          shortcutNamesWithoutKeymap.indexOf(form.type) === -1,
                       )
                       .map(
                         form =>
@@ -423,3 +520,5 @@ export default class HelpDialog extends React.Component<Props, any> {
     );
   }
 }
+
+export default injectIntl(HelpDialog);

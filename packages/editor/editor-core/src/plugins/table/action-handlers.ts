@@ -5,6 +5,7 @@ import { TableMap } from 'prosemirror-tables';
 import { Dispatch } from '../../event-dispatcher';
 import { pluginKey, defaultTableSelection } from './pm-plugins/main';
 import { TablePluginState } from './types';
+import { closestElement } from '../../utils';
 
 export const handleSetFocus = (editorHasFocus: boolean) => (
   pluginState: TablePluginState,
@@ -25,6 +26,8 @@ export const handleSetTableRef = (
   const nextPluginState = {
     ...pluginState,
     tableRef,
+    tableFloatingToolbarTarget:
+      closestElement(tableRef, '.table-wrapper') || undefined,
     tableNode: tableRef ? findTable(state.selection)!.node : undefined,
   };
   dispatch(pluginKey, nextPluginState);

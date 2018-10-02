@@ -27,3 +27,8 @@ export const Caption = styled.caption`
   margin-top: ${math.multiply(gridSize, 3.5)}px;
   text-align: left;
 `;
+
+export const PaginationWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;

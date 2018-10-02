@@ -1,5 +1,31 @@
 # @atlaskit/conversation
 
+## 10.0.0
+- [major] Reactions state management revisited [7e8d079](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e8d079)
+- [major] Updated dependencies [7e8d079](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e8d079)
+  - @atlaskit/reactions@14.0.0
+
+## 9.3.8
+- [patch] Updated dependencies [ef76f1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef76f1f)
+  - @atlaskit/comment@6.0.16
+  - @atlaskit/editor-common@17.0.1
+  - @atlaskit/editor-core@82.0.0
+
+## 9.3.7
+- [patch] Updated dependencies [927ae63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/927ae63)
+  - @atlaskit/editor-common@17.0.0
+  - @atlaskit/editor-core@81.0.0
+  - @atlaskit/reactions@13.1.3
+  - @atlaskit/util-data-test@10.0.10
+  - @atlaskit/renderer@24.0.0
+  - @atlaskit/comment@6.0.15
+
+## 9.3.6
+- [patch] Updated dependencies [2a6410f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2a6410f)
+  - @atlaskit/editor-common@16.2.0
+  - @atlaskit/editor-core@80.5.0
+  - @atlaskit/renderer@23.0.0
+
 ## 9.3.5
 - [patch] use new tsconfig for typechecking [09df171](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/09df171)
 

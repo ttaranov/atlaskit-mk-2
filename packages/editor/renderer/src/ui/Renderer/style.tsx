@@ -33,13 +33,30 @@ import { RendererAppearance } from './';
 
 export interface Props {
   appearance?: RendererAppearance;
+  theme?: any;
 }
 
 const getLineHeight = ({ appearance }: Props) => {
   return `line-height: ${appearance === 'message' ? 20 : 24}px`;
 };
 
+const fullPageStyles = ({ theme, appearance }) => {
+  if (appearance !== 'full-page') {
+    return '';
+  }
+
+  return `
+    max-width: ${
+      theme && theme.layoutMaxWidth ? `${theme.layoutMaxWidth}px` : 'none'
+    };
+    margin: 0 auto;
+    padding: 0 32px;
+  `;
+};
+
 export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
+  ${fullPageStyles}
+
   font-size: ${editorFontSize}px;
   ${getLineHeight};
   color: ${akColorN800};
@@ -236,7 +253,7 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
         border-right: 1px solid ${akEditorTableBorder};
         width: ${akEditorTableNumberColumnWidth}px;
         height: 100%;
-        padding: 10px;
+        padding: 10px 2px;
         position: absolute;
         top: 0;
         left: 0;

@@ -9,3 +9,4 @@ export { calcExtensionWidth } from './Extension';
 
 export { default as withOuterListeners } from './with-outer-listeners';
 export * from './EventHandlers';
+export { WidthConsumer, WidthProvider } from './WidthProvider';

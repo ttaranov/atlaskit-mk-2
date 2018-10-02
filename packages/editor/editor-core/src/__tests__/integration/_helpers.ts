@@ -4,9 +4,11 @@
  * And, don't get too fancy with it ;)
  */
 import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
-import { sleep } from '@atlaskit/editor-test-helpers';
+import { messages as insertBlockMessages } from '../../plugins/insert-block/ui/ToolbarInsertBlock';
+
 export const getDocFromElement = el => el.pmViewDesc.node.toJSON();
 export const editable = '.ProseMirror';
+export const LONG_WAIT_FOR = 5000;
 
 export const comment = {
   name: 'comment',
@@ -55,29 +57,133 @@ export const setupMediaMocksProviders = async browser => {
   await browser.click('.reloadEditorButton');
 };
 
-export const insertMedia = async (browser, filenames = ['one.svg']) => {
-  const openMediaPopup = '[aria-label="Insert files and images"]';
+export const insertMedia = async (
+  browser,
+  filenames = ['one.svg'],
+  fileSelector = 'div=%s',
+) => {
+  const openMediaPopup = `[aria-label="${
+    insertBlockMessages.filesAndImages.defaultMessage
+  }"]`;
   const insertMediaButton = '.e2e-insert-button';
+  const mediaCardSelector = `${editable} .media-card`;
+
+  const existingMediaCards = await browser.$$(mediaCardSelector);
 
   await browser.click(openMediaPopup);
 
   // wait for media item, and select it
-  await browser.waitForSelector('.media-card');
+  await browser.waitForSelector('.e2e-recent-upload-card .media-card');
   if (filenames) {
     for (const filename of filenames) {
-      const selector = `div=${filename}`;
-      await browser.waitFor(selector, 3000);
+      const selector = fileSelector.replace('%s', filename);
+      await browser.waitFor(selector);
       await browser.click(selector);
     }
   }
   // wait for insert button to show up and
   // insert it from the picker dialog
-  await browser.waitForSelector(insertMediaButton, 2000);
+  await browser.waitForSelector(insertMediaButton);
   await browser.click(insertMediaButton);
 
-  // after clicking Insert media, the media plugin needs to upload the file,
-  // and generate some intermediate processing and preview states while that's happening
-  //
-  // we currently don't map the media state as a CSS selector
-  await sleep(mediaInsertDelay);
+  // Wait until we have found media-cards for all inserted items.
+  const mediaCardCount = get$$Length(existingMediaCards) + filenames.length;
+
+  // Workaround - we need to use different wait methods depending on where we are running.
+  if (browser.browser.desiredCapabilities) {
+    await browser.browser.waitUntil(async () => {
+      const mediaCards = await browser.$$(mediaCardSelector);
+      return get$$Length(mediaCards) === mediaCardCount;
+    });
+  } else {
+    await browser.waitFor(
+      (mediaCardSelector, mediaCardCount) => {
+        const mediaCards = document.querySelectorAll(mediaCardSelector);
+        return mediaCards.length === mediaCardCount;
+      },
+      {},
+      mediaCardSelector,
+      mediaCardCount,
+    );
+  }
+};
+
+/**
+ * We use $$ in the context of selenium and puppeteer, which return different results.
+ */
+const get$$Length = result => {
+  if (Array.isArray(result)) {
+    // Puppeteer result
+    return result.length;
+  } else {
+    // Webdriver result
+    return result.value.length;
+  }
+};
+
+export const insertBlockMenuItem = async (
+  browser,
+  menuTitle,
+  tagName = 'span',
+) => {
+  const openInsertBlockMenuSelector = `[aria-label="${
+    insertBlockMessages.insertMenu.defaultMessage
+  }"]`;
+
+  await browser.click(openInsertBlockMenuSelector);
+
+  const menuSelector = `${tagName}=${menuTitle}`;
+  await browser.waitForSelector(menuSelector);
+  await browser.click(menuSelector);
+};
+
+/**
+ * When using quick insert, `insertTitle` should match exactly to the typeahead wording.
+ * We need to filter down the typeahead, as we select the first result.
+ */
+export const quickInsert = async (browser, insertTitle) => {
+  // Quick insert doesnt work in FF, as `keys` isn't supported.
+  if (browser.browser.desiredCapabilities.browserName === 'firefox') {
+    await quickInsertActiveElement(browser, insertTitle);
+  } else {
+    await browser.keys('/');
+    await browser.waitFor('div[aria-label="Popup"]');
+    await browser.keys(insertTitle);
+
+    await browser.browser.waitUntil(async () => {
+      const firstInsertText = await browser.browser.getText(
+        '[aria-label="Popup"] [role="button"]',
+      );
+      return firstInsertText === insertTitle;
+    }, LONG_WAIT_FOR);
+
+    await browser.click('[aria-label="Popup"] [role="button"]');
+  }
+};
+
+/**
+ * Firefox has deprecated `keys`, this is a workaround to type in Firefox.
+ * @see https://stackoverflow.com/a/44712416
+ */
+const quickInsertActiveElement = async (browser, insertTitle) => {
+  const result = await browser.browser.elementActive();
+  // Newer versions of the webdriver like Gecko/IEDriver return the element as "element-6066-11e4-a52e-4f735466cecf"
+  // (which is documented in the W3C specs) instead of "ELEMENT".
+  const activeElement =
+    result.value &&
+    (result.value.ELEMENT ||
+      result.value['element-6066-11e4-a52e-4f735466cecf']);
+  if (activeElement) {
+    await browser.browser.elementIdValue(activeElement, '/');
+    await browser.waitFor('div[aria-label="Popup"]');
+    await browser.browser.elementIdValue(activeElement, insertTitle);
+
+    await browser.browser.waitUntil(async () => {
+      const firstInsertText = await browser.browser.getText(
+        '[aria-label="Popup"] [role="button"]',
+      );
+      return firstInsertText === insertTitle;
+    }, LONG_WAIT_FOR);
+    await browser.click('[aria-label="Popup"] [role="button"]');
+  }
 };

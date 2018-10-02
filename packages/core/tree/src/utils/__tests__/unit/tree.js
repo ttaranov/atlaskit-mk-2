@@ -1,6 +1,12 @@
 //@flow
 
-import { flattenTree, getItem, mutateTree, getTreePosition } from '../../tree';
+import {
+  flattenTree,
+  getItem,
+  mutateTree,
+  getTreePosition,
+  moveItemOnTree,
+} from '../../tree';
 import { treeWithThreeLeaves } from '../../../../mockdata/treeWithThreeLeaves';
 import { treeWithTwoBranches } from '../../../../mockdata/treeWithTwoBranches';
 
@@ -184,6 +190,38 @@ describe('@atlaskit/tree - utils/tree', () => {
         parentId: '1-1',
         index: 1,
       });
+    });
+  });
+
+  describe('#moveItemOnTree', () => {
+    it('should move item on the tree', () => {
+      const newPages = moveItemOnTree(
+        treeWithTwoBranches,
+        { parentId: '1', index: 0 },
+        { parentId: '1', index: 1 },
+      );
+      expect(newPages.rootId).toBe(treeWithTwoBranches.rootId);
+      expect(newPages.items['1'].children).toEqual(['1-2', '1-1']);
+    });
+
+    it('should set hasChildren and isExpanded to false if no parent child left', () => {
+      const newPages = moveItemOnTree(
+        treeWithTwoBranches,
+        { parentId: '1-1', index: 0 },
+        { parentId: '1-2', index: 0 },
+      );
+      expect(newPages.items['1-1'].isExpanded).toBe(true);
+      expect(newPages.items['1-1'].hasChildren).toBe(true);
+      const finalPages = moveItemOnTree(
+        newPages,
+        { parentId: '1-1', index: 0 },
+        { parentId: '1-2', index: 0 },
+      );
+      expect(finalPages.rootId).toBe(treeWithTwoBranches.rootId);
+      expect(finalPages.items['1-1'].children).toEqual([]);
+      expect(finalPages.items['1-1'].isExpanded).toBe(false);
+      expect(finalPages.items['1-1'].hasChildren).toBe(false);
+      expect(finalPages.items['1-2'].children.length).toEqual(4);
     });
   });
 });

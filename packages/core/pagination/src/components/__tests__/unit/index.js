@@ -4,7 +4,7 @@ import { mount, shallow } from 'enzyme';
 import Button from '@atlaskit/button';
 import PaginationWithAnalytics from '../../..';
 import { PaginationWithoutAnalytics as Pagination } from '../../Pagination';
-import { Ellipsis, ButtonActive } from '../../../styled';
+import { Ellipsis } from '../../../styled';
 
 import { name } from '../../../../package.json';
 
@@ -18,10 +18,10 @@ describe(name, () => {
     const wrapper = mount(<Pagination total={2} />);
     const buttons = wrapper.find(Button);
     expect(buttons.length).toBe(4);
-    expect(buttons.at(0).text()).toBe('Prev');
+    expect(buttons.at(0).prop('ariaLabel')).toBe('Previous');
     expect(buttons.at(1).text()).toBe('1');
     expect(buttons.at(2).text()).toBe('2');
-    expect(buttons.at(3).text()).toBe('Next');
+    expect(buttons.at(3).prop('ariaLabel')).toBe('Next');
   });
 
   it('should render Prev button disabled when current in 1', () => {
@@ -119,8 +119,8 @@ describe(name, () => {
       buttons.at(2).simulate('click');
       expect(wrapper.state('current')).toBe(2);
       buttons = wrapper.find(Button);
-      expect(buttons.at(2).prop('isDisabled')).toBe(true);
-      expect(buttons.at(3).prop('isDisabled')).toBe(false);
+      expect(buttons.at(2).prop('isSelected')).toBe(true);
+      expect(buttons.at(3).prop('isSelected')).toBe(false);
     });
 
     it('upon clicking on Prev button', () => {
@@ -128,8 +128,8 @@ describe(name, () => {
       buttons.at(0).simulate('click');
       expect(wrapper.state('current')).toBe(2);
       buttons = wrapper.find(Button);
-      expect(buttons.at(2).prop('isDisabled')).toBe(true);
-      expect(buttons.at(3).prop('isDisabled')).toBe(false);
+      expect(buttons.at(2).prop('isSelected')).toBe(true);
+      expect(buttons.at(3).prop('isSelected')).toBe(false);
     });
 
     it('upon clicking on Next button', () => {
@@ -137,8 +137,8 @@ describe(name, () => {
       buttons.at(7).simulate('click');
       expect(wrapper.state('current')).toBe(4);
       buttons = wrapper.find(Button);
-      expect(buttons.at(4).prop('isDisabled')).toBe(true);
-      expect(buttons.at(3).prop('isDisabled')).toBe(false);
+      expect(buttons.at(4).prop('isSelected')).toBe(true);
+      expect(buttons.at(3).prop('isSelected')).toBe(false);
     });
   });
   it('should change current page when defaultCurrent is changed', () => {
@@ -150,7 +150,11 @@ describe(name, () => {
     }
     const wrapper = mount(<Consumer />);
     wrapper.setState({ page: 6 });
-    expect(wrapper.find(ButtonActive).text()).toBe('6');
+    const Buttons = wrapper.find(Button);
+    const selectedButton = Buttons.filterWhere(button =>
+      button.prop('isSelected'),
+    );
+    expect(selectedButton.text()).toBe('6');
   });
 });
 

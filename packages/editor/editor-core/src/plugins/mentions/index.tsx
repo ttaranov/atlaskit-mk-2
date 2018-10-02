@@ -1,7 +1,9 @@
 import * as React from 'react';
 import MentionIcon from '@atlaskit/icon/glyph/editor/mention';
 import { mention, mentionQuery, WithProviders } from '@atlaskit/editor-common';
+
 import { EditorPlugin } from '../../types';
+import { messages } from '../insert-block/ui/ToolbarInsertBlock';
 import { createPlugin, mentionPluginKey } from './pm-plugins/main';
 import inputRulePlugin from './pm-plugins/input-rules';
 import keymap from './pm-plugins/keymap';
@@ -79,11 +81,11 @@ const mentionsPlugin: EditorPlugin = {
   },
 
   pluginsOptions: {
-    quickInsert: [
+    quickInsert: ({ formatMessage }) => [
       {
-        title: 'Mention',
+        title: formatMessage(messages.mention),
         priority: 400,
-        icon: () => <MentionIcon label="Mention" />,
+        icon: () => <MentionIcon label={formatMessage(messages.mention)} />,
         action(insert, state) {
           const mark = state.schema.mark('mentionQuery');
           const mentionText = state.schema.text('@', [mark]);

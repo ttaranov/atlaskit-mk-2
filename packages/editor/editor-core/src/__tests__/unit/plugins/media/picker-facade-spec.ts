@@ -172,7 +172,7 @@ describe('Media PickerFacade', () => {
       beforeEach(() => {
         Object.keys(spies).forEach(k => spies[k].mockClear());
 
-        function MockPopup() {
+        function MockPopup(this: any) {
           Object.keys(spies).forEach(k => (this[k] = spies[k]));
         }
 

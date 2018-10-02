@@ -17,6 +17,8 @@ import { ClickAreaBlock } from '../Addon';
 import { tableCommentEditorStyles } from '../../plugins/table/ui/styles';
 import WithFlash from '../WithFlash';
 import { akEditorMenuZIndex } from '@atlaskit/editor-common';
+import WidthEmitter from '../WidthEmitter';
+import { GRID_GUTTER } from '../../plugins/grid';
 
 export interface CommentEditorProps {
   isMaxContentSizeReached?: boolean;
@@ -47,6 +49,7 @@ const CommentEditor: any = styled.div`
 CommentEditor.displayName = 'CommentEditor';
 
 const TableControlsPadding = 16;
+const CommentEditorMargin = 20;
 
 // tslint:disable-next-line:variable-name
 const MainToolbar = styled.div`
@@ -89,7 +92,13 @@ const ContentArea = styled(ContentStyles)`
   /** Hack for Bitbucket to ensure entire editorView gets drop event; see ED-3294 **/
   /** Hack for tables controlls. Otherwise marging collapse and controlls are misplaced. **/
   .ProseMirror {
-    margin: 12px 20px 20px;
+    margin: 12px ${CommentEditorMargin}px ${CommentEditorMargin}px;
+  }
+
+  .gridParent {
+    margin-left: ${CommentEditorMargin - GRID_GUTTER}px;
+    margin-right: ${CommentEditorMargin - GRID_GUTTER}px;
+    width: calc(100% + ${CommentEditorMargin - GRID_GUTTER}px);
   }
 
   padding: ${TableControlsPadding}px;
@@ -117,6 +126,7 @@ export default class Editor extends React.Component<
   static displayName = 'CommentEditorAppearance';
 
   private appearance: EditorAppearance = 'comment';
+  private containerElement: HTMLElement | undefined;
 
   private handleSave = () => {
     if (this.props.editorView && this.props.onSave) {
@@ -174,7 +184,10 @@ export default class Editor extends React.Component<
             </MainToolbarCustomComponentsSlot>
           </MainToolbar>
           <ClickAreaBlock editorView={editorView}>
-            <ContentArea className="ak-editor-content-area editor-popup-ignore-scroll-parent">
+            <ContentArea
+              innerRef={ref => (this.containerElement = ref)}
+              className="ak-editor-content-area editor-popup-ignore-scroll-parent"
+            >
               {customContentComponents}
               <PluginSlot
                 editorView={editorView}
@@ -186,11 +199,13 @@ export default class Editor extends React.Component<
                 popupsMountPoint={popupsMountPoint}
                 popupsBoundariesElement={popupsBoundariesElement}
                 popupsScrollableElement={popupsScrollableElement}
+                containerElement={this.containerElement}
                 disabled={!!disabled}
               />
               {editorDOMElement}
             </ContentArea>
           </ClickAreaBlock>
+          <WidthEmitter editorView={editorView!} />
         </CommentEditor>
         <SecondaryToolbar>
           <ButtonGroup>

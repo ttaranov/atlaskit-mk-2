@@ -4,16 +4,10 @@ import { EditorView } from 'prosemirror-view';
 import { Selection } from 'prosemirror-state';
 import { isTableSelected } from 'prosemirror-utils';
 import { browser } from '@atlaskit/editor-common';
-import {
-  ColumnContainer,
-  ColumnInner,
-  ColumnControlsButtonWrap,
-  HeaderButton,
-} from './styles';
-import { toolbarSize } from '../styles';
-import { tableDeleteColumnButtonSize } from '../../styles';
-import InsertColumnButton from './InsertColumnButton';
-import DeleteColumnButton from './DeleteColumnButton';
+import { tableToolbarSize } from '../../styles';
+import { tableDeleteButtonSize } from '../../styles';
+import InsertButton from '../InsertButton';
+import DeleteButton from '../DeleteButton';
 import {
   findColumnSelection,
   TableSelection,
@@ -54,7 +48,7 @@ export default class ColumnControls extends Component<Props, any> {
     if (nextProps.tableRef) {
       const controls = nextProps.tableRef.parentNode!.firstChild as HTMLElement;
       // checks if controls width is different from table width
-      // 1px difference is acceptible and occurs in some situations due to the browser rendering specifics
+      // 1px difference is acceptable and occurs in some situations due to the browser rendering specifics
       const shouldUpdate =
         Math.abs(controls.offsetWidth - nextProps.tableRef.offsetWidth) > 1;
       if (shouldUpdate) {
@@ -83,11 +77,10 @@ export default class ColumnControls extends Component<Props, any> {
     }
 
     return (
-      <DeleteColumnButton
+      <DeleteButton
         key="delete"
         style={{
-          left:
-            offsetWidth + selectionWidth / 2 - tableDeleteColumnButtonSize / 2,
+          left: offsetWidth + selectionWidth / 2 - tableDeleteButtonSize / 2,
         }}
         onClick={this.deleteColumns}
         onMouseEnter={() => this.hoverColumns(selectedColIdxs, true)}
@@ -167,14 +160,19 @@ export default class ColumnControls extends Component<Props, any> {
         !selection.hasMultipleSelection;
 
       nodes.push(
-        <ColumnControlsButtonWrap
+        <div
+          className={`pm-table-column-controls__button-wrap ${this.classNamesForRow(
+            i,
+            len,
+            selection,
+          ).join(' ')}`}
           key={i}
-          className={this.classNamesForRow(i, len, selection).join(' ')}
           style={{ width: (cols[i] as HTMLElement).offsetWidth + 1 }}
           onMouseDown={this.handleMouseDown}
         >
-          {/* tslint:disable:jsx-no-lambda */}
-          <HeaderButton
+          <button
+            type="button"
+            className="pm-table-controls__button"
             onMouseDown={() => this.selectColumn(i)}
             onMouseOver={() => this.hoverColumns([i])}
             onMouseOut={this.clearHoverSelection}
@@ -182,12 +180,15 @@ export default class ColumnControls extends Component<Props, any> {
           {!(
             selection.hasMultipleSelection && selection.frontOfSelection(i)
           ) ? (
-            <InsertColumnButton
+            <InsertButton
+              type="column"
               onClick={() => this.insertColumn(i + 1)}
-              lineMarkerHeight={tableHeight + toolbarSize}
+              insertLineStyle={{
+                height: tableHeight + tableToolbarSize,
+              }}
             />
           ) : null}
-        </ColumnControlsButtonWrap>,
+        </div>,
         onlyThisColumnSelected &&
           this.createDeleteColumnButton(
             selection,
@@ -204,9 +205,9 @@ export default class ColumnControls extends Component<Props, any> {
     }
 
     return (
-      <ColumnContainer>
-        <ColumnInner>{nodes}</ColumnInner>
-      </ColumnContainer>
+      <div className="pm-table-column-controls">
+        <div className="pm-table-column-controls__inner">{nodes}</div>
+      </div>
     );
   }
 

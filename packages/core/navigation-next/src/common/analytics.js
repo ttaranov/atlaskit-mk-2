@@ -17,10 +17,10 @@ const getDisplayName = component =>
 const kebabToCamelCase = (str: string) =>
   `${str}`.replace(/-([a-z])/gi, g => g[1].toUpperCase());
 
-export const navigationItemClicked = (
-  Component: ComponentType<any>,
+export const navigationItemClicked = <P: {}>(
+  Component: ComponentType<P>,
   componentName: string,
-): ComponentType<any> => {
+) => {
   return withAnalyticsContext({
     componentName,
   })(

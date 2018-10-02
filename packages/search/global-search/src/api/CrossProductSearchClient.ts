@@ -1,4 +1,9 @@
-import { Result } from '../model/Result';
+import {
+  Result,
+  PersonResult,
+  ResultType,
+  AnalyticsType,
+} from '../model/Result';
 import { mapJiraItemToResult } from './JiraItemMapper';
 import { mapConfluenceItemToResult } from './ConfluenceItemMapper';
 import {
@@ -6,12 +11,17 @@ import {
   ServiceConfig,
   utils,
 } from '@atlaskit/util-service-support';
-import { Scope, ConfluenceItem, JiraItem } from './types';
+import { Scope, ConfluenceItem, JiraItem, PersonItem } from './types';
 
 export type CrossProductSearchResults = {
   results: Map<Scope, Result[]>;
   experimentId?: string;
   abTest?: ABTest;
+};
+
+export type SearchSession = {
+  sessionId: string;
+  referrerId?: string;
 };
 
 export const EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE: CrossProductSearchResults = {
@@ -23,7 +33,7 @@ export interface CrossProductSearchResponse {
   scopes: ScopeResult[];
 }
 
-export type SearchItem = ConfluenceItem | JiraItem;
+export type SearchItem = ConfluenceItem | JiraItem | PersonItem;
 
 export interface ABTest {
   abTestId: string;
@@ -43,7 +53,7 @@ export interface ScopeResult {
 export interface CrossProductSearchClient {
   search(
     query: string,
-    searchSessionId: string,
+    searchSession: SearchSession,
     scopes: Scope[],
   ): Promise<CrossProductSearchResults>;
 }
@@ -63,23 +73,24 @@ export default class CrossProductSearchClientImpl
 
   public async search(
     query: string,
-    searchSessionId: string,
+    searchSession: SearchSession,
     scopes: Scope[],
   ): Promise<CrossProductSearchResults> {
-    const response = await this.makeRequest(query, scopes);
-
-    return this.parseResponse(response, searchSessionId);
+    const response = await this.makeRequest(query, scopes, searchSession);
+    return this.parseResponse(response, searchSession.sessionId);
   }
 
   private async makeRequest(
     query: string,
     scopes: Scope[],
+    searchSession: SearchSession,
   ): Promise<CrossProductSearchResponse> {
     const body = {
       query: query,
       cloudId: this.cloudId,
       limit: this.RESULT_LIMIT,
       scopes: scopes,
+      searchSession,
     };
 
     const options: RequestServiceOptions = {
@@ -136,6 +147,21 @@ export default class CrossProductSearchClientImpl
   }
 }
 
+function mapPersonItemToResult(item: PersonItem): PersonResult {
+  const mention = item.nickName || item.displayName;
+
+  return {
+    resultType: ResultType.PersonResult,
+    resultId: 'people-' + item.userId,
+    name: item.displayName,
+    href: '/people/' + item.userId,
+    avatarUrl: item.primaryPhoto,
+    analyticsType: AnalyticsType.ResultPerson,
+    mentionName: mention,
+    presenceMessage: item.title || '',
+  };
+}
+
 function mapItemToResult(
   scope: Scope,
   item: SearchItem,
@@ -152,6 +178,10 @@ function mapItemToResult(
   }
   if (scope.startsWith('jira')) {
     return mapJiraItemToResult(item as JiraItem);
+  }
+
+  if (scope === Scope.People) {
+    return mapPersonItemToResult(item as PersonItem);
   }
 
   throw new Error(`Non-exhaustive match for scope: ${scope}`);

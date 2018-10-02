@@ -6,7 +6,7 @@ type i18nShape = {
 };
 
 const defaultI18n = {
-  prev: 'Prev',
+  prev: 'Previous',
   next: 'Next',
 };
 export type { i18nShape };

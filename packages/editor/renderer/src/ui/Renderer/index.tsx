@@ -8,10 +8,13 @@ import {
   defaultSchema,
   EventHandlers,
   ExtensionHandlers,
+  BaseTheme,
+  WidthProvider,
 } from '@atlaskit/editor-common';
 import { ReactSerializer, renderDocument, RendererContext } from '../../';
 import { RenderOutputStat } from '../../';
 import { Wrapper } from './style';
+import { TruncatedWrapper } from './truncated-wrapper';
 
 export type RendererAppearance =
   | 'message'
@@ -40,6 +43,9 @@ export interface Props {
   appearance?: RendererAppearance;
   adfStage?: ADFStage;
   disableHeadingIDs?: boolean;
+  allowDynamicTextSizing?: boolean;
+  maxHeight?: number;
+  truncated?: boolean;
 }
 
 export default class Renderer extends PureComponent<Props, {}> {
@@ -49,7 +55,6 @@ export default class Renderer extends PureComponent<Props, {}> {
   constructor(props: Props) {
     super(props);
     this.providerFactory = props.dataProviders || new ProviderFactory();
-
     this.updateSerializer(props);
   }
 
@@ -89,7 +94,16 @@ export default class Renderer extends PureComponent<Props, {}> {
   }
 
   render() {
-    const { document, onComplete, schema, appearance, adfStage } = this.props;
+    const {
+      document,
+      onComplete,
+      schema,
+      appearance,
+      adfStage,
+      allowDynamicTextSizing,
+      maxHeight,
+      truncated,
+    } = this.props;
 
     try {
       const { result, stat } = renderDocument(
@@ -102,13 +116,29 @@ export default class Renderer extends PureComponent<Props, {}> {
       if (onComplete) {
         onComplete(stat);
       }
+      const rendererOutput = (
+        // <Wrapper appearance={appearance}>{result}</Wrapper>
+        <RendererWrapper
+          appearance={appearance}
+          dynamicTextSizing={allowDynamicTextSizing}
+        >
+          {result}
+        </RendererWrapper>
+      );
 
-      return <Wrapper appearance={appearance}>{result}</Wrapper>;
+      return truncated ? (
+        <TruncatedWrapper height={maxHeight}>{rendererOutput}</TruncatedWrapper>
+      ) : (
+        rendererOutput
+      );
     } catch (ex) {
       return (
-        <Wrapper appearance={appearance}>
+        <RendererWrapper
+          appearance={appearance}
+          dynamicTextSizing={allowDynamicTextSizing}
+        >
           <UnsupportedBlock />
-        </Wrapper>
+        </RendererWrapper>
       );
     }
   }
@@ -122,4 +152,14 @@ export default class Renderer extends PureComponent<Props, {}> {
       this.providerFactory.destroy();
     }
   }
+}
+
+export function RendererWrapper({ appearance, children, dynamicTextSizing }) {
+  return (
+    <WidthProvider>
+      <BaseTheme dynamicTextSizing={dynamicTextSizing}>
+        <Wrapper appearance={appearance}>{children}</Wrapper>
+      </BaseTheme>
+    </WidthProvider>
+  );
 }

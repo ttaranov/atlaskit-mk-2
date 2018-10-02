@@ -1,11 +1,14 @@
 import { removeOldProdSnapshots } from '@atlaskit/visual-regression/helper';
 
-import { imageSnapshotFolder, initEditor, snapshot } from '../_utils';
 import {
-  setupMediaMocksProviders,
+  imageSnapshotFolder,
+  initEditor,
+  snapshot,
   insertMedia,
+  setupMediaMocksProviders,
   editable,
-} from '../../integration/_helpers';
+} from '../_utils';
+import { messages as insertBlockMessages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
 
 describe('Snapshot Test: Media', () => {
   beforeAll(async () => {
@@ -34,7 +37,9 @@ describe('Snapshot Test: Media', () => {
 
       describe('Tables', async () => {
         it('can insert into second row', async () => {
-          await page.click('[aria-label="Insert table"]');
+          await page.click(
+            `[aria-label="${insertBlockMessages.table.defaultMessage}"]`,
+          );
 
           // second cell
           // await page.click(editable);

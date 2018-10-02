@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs';
+import { of } from 'rxjs/observable/of';
 import { Context, ContextConfig } from '@atlaskit/media-core';
 
 const defaultContextConfig: ContextConfig = {
@@ -15,23 +15,23 @@ export const fakeContext = (
 ): Context => {
   const returns = (value: any) => jest.fn().mockReturnValue(value);
   const getMediaItemProvider = returns({
-    observable: returns(Observable.of('nothing')),
+    observable: returns(of('nothing')),
   });
 
   const getMediaCollectionProvider = returns({
-    observable: returns(Observable.of('nothing')),
+    observable: returns(of('nothing')),
   });
   const getDataUriService = returns({
     fetchOriginalDataUri: returns(Promise.resolve('fake-original-data-uri')),
     fetchImageDataUri: returns(Promise.resolve('fake-image-data-uri')),
   });
   const addLinkItem = returns({
-    observable: returns(Observable.of('nothing')),
+    observable: returns(of('nothing')),
   });
   const getUrlPreviewProvider = returns({
-    observable: returns(Observable.of('nothing')),
+    observable: returns(of('nothing')),
   });
-  const getFile = jest.fn().mockReturnValue(Observable.of({}));
+  const getFile = jest.fn().mockReturnValue(of({}));
   const getLocalPreview = jest.fn();
   const setLocalPreview = jest.fn();
   const removeLocalPreview = jest.fn();
