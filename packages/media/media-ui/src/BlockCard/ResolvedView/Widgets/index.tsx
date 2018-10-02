@@ -17,11 +17,11 @@ export default class Widgets extends React.Component<WidgetsProps> {
   }
 
   renderIcon(icon: string | JSX.Element) {
-    return typeof icon === 'string' ? (
-      <ImageIcon key="icon" src={icon} size={16} />
-    ) : (
-      icon
-    );
+    if (typeof icon === 'string') {
+      return <ImageIcon key="icon" src={icon} size={16} />;
+    } else {
+      return icon;
+    }
   }
 
   renderBadge(badge: BadgeViewModel) {
@@ -49,6 +49,18 @@ export default class Widgets extends React.Component<WidgetsProps> {
 
   renderText(text: string) {
     return <Text key="text">{text}</Text>;
+  }
+
+  renderWidgetDetails(attrs: JSX.Element[], tooltip?: string) {
+    if (tooltip) {
+      return (
+        <Tooltip content={tooltip}>
+          <WidgetDetails>{attrs}</WidgetDetails>
+        </Tooltip>
+      );
+    } else {
+      return <WidgetDetails>{attrs}</WidgetDetails>;
+    }
   }
 
   renderWidget(key: any, detail: DetailViewModel) {
@@ -90,13 +102,7 @@ export default class Widgets extends React.Component<WidgetsProps> {
 
     return (
       <WidgetWrapper key={key}>
-        {tooltip ? (
-          <Tooltip content={tooltip}>
-            <WidgetDetails>{attrs}</WidgetDetails>
-          </Tooltip>
-        ) : (
-          <WidgetDetails>{attrs}</WidgetDetails>
-        )}
+        {this.renderWidgetDetails(attrs, tooltip)}
       </WidgetWrapper>
     );
   }

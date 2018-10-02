@@ -3,7 +3,8 @@ import { fromPromise } from 'rxjs/observable/fromPromise';
 import { of } from 'rxjs/observable/of';
 import { ObjectState, TemporaryResolver } from './types';
 import { ObjectStatus } from './index';
-import { catchError, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators/map';
+import { catchError } from 'rxjs/operators/catchError';
 import { merge } from 'rxjs/observable/merge';
 
 const stateWithStatus = (status: ObjectStatus, data?: any): ObjectState => ({
@@ -25,7 +26,7 @@ export function createTemporaryResolverObservable(
             ? stateWithStatus('resolved', data)
             : stateWithStatus('not-found', data),
       ),
-      catchError(_ => of(stateWithStatus('errored'))),
+      catchError(() => of(stateWithStatus('errored'))),
     ),
   );
 }

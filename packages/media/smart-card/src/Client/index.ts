@@ -8,9 +8,9 @@ import {
 } from './types';
 import { createObjectResolverServiceObservable } from './createObjectResolverServiceObservable';
 import { createTemporaryResolverObservable } from './createTemporaryResolverObservable';
-import { filter } from 'rxjs/operators';
-import { inFstButNotInSnd } from './utils';
+import { filter } from 'rxjs/operators/filter';
 import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
+import { inFstButNotInSnd } from './utils';
 
 // TODO: add some form of caching so that urls not currently loaded will still be fast
 

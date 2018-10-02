@@ -26,6 +26,7 @@ import {
 } from './styled';
 import Transition from './Transition';
 import { LozengeViewModel } from '../../types';
+import { ComponentClass } from 'enzyme';
 
 export interface ContextViewModel {
   icon?: string;
@@ -363,6 +364,21 @@ export class ResolvedView extends React.Component<
     );
   }
 
+  renderWithToolTip(
+    Elem: ComponentClass<any>,
+    model: { text: string; tooltip?: string },
+  ) {
+    if (model.tooltip) {
+      return (
+        <Tooltip content={model.tooltip}>
+          <Elem>{model.text}</Elem>
+        </Tooltip>
+      );
+    } else {
+      return <Elem>{model.text}</Elem>;
+    }
+  }
+
   render() {
     const {
       link,
@@ -392,44 +408,22 @@ export class ResolvedView extends React.Component<
         text={context && context.text}
         onClick={onClick}
       >
-        {preview ? <PreviewView url={preview} /> : null}
+        {preview && <PreviewView url={preview} />}
         <ContentWrapper>
           {this.renderAlert()}
-          {icon || user ? (
+          {(icon || user) && (
             <LeftWrapper>
               {this.renderIcon()}
               {!icon && this.renderUser()}
             </LeftWrapper>
-          ) : null}
+          )}
           <RightWrapper>
             {this.renderThumbnail()}
-            {title && title.text ? (
-              title.tooltip ? (
-                <Tooltip content={title.tooltip}>
-                  <Title>{title.text}</Title>
-                </Tooltip>
-              ) : (
-                <Title>{title.text}</Title>
-              )
-            ) : null}
-            {byline &&
-              byline.text &&
-              (byline.tooltip ? (
-                <Tooltip content={byline.tooltip}>
-                  <Byline>{byline.text}</Byline>
-                </Tooltip>
-              ) : (
-                <Byline>{byline.text}</Byline>
-              ))}
+            {title && title.text && this.renderWithToolTip(Title, title)}
+            {byline && byline.text && this.renderWithToolTip(Byline, byline)}
             {description &&
               description.text &&
-              (description.tooltip ? (
-                <Tooltip content={description.tooltip}>
-                  <Description>{description.text}</Description>
-                </Tooltip>
-              ) : (
-                <Description>{description.text}</Description>
-              ))}
+              this.renderWithToolTip(Description, description)}
             <Widgets details={details} />
             {this.renderUsers()}
             {this.renderActions()}

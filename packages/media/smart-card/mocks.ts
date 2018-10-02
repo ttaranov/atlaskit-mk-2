@@ -20,7 +20,7 @@ const generator = {
   },
 };
 
-const resolvedBody = (definitionId: string, name: string) => ({
+const genResolvedBody = (definitionId: string, name: string) => ({
   meta: {
     visibility: 'restricted',
     access: 'granted',
@@ -40,7 +40,7 @@ const resolvedBody = (definitionId: string, name: string) => ({
   },
 });
 
-const unauthorisedBody = (definitionId: string) => ({
+const genUnauthorisedBody = (definitionId: string) => ({
   meta: {
     visibility: 'restricted',
     access: 'unauthorized',
@@ -53,7 +53,7 @@ const unauthorisedBody = (definitionId: string) => ({
   },
 });
 
-const forbiddenBody = (definitionId: string) => ({
+const gebForbiddenBody = (definitionId: string) => ({
   meta: {
     visibility: 'restricted',
     access: 'forbidden',
@@ -85,7 +85,7 @@ export const mockMultipleCards = () => {
       }
       if (c1 >= 7 && c1 <= 11) {
         console.log('MOCK:\tgoogle:\tunauthorisedBody', c1);
-        return unauthorisedBody(googleDefinitionId);
+        return genUnauthorisedBody(googleDefinitionId);
       }
       if (c1 >= 12 && c1 <= 16) {
         console.log('MOCK:\tgoogle:\terror', c1);
@@ -93,25 +93,25 @@ export const mockMultipleCards = () => {
       }
       if (c1 >= 17 && c1 <= 21) {
         console.log('MOCK:\tgoogle:\tforbiddenBody', c1);
-        return forbiddenBody(googleDefinitionId);
+        return gebForbiddenBody(googleDefinitionId);
       }
       console.log('MOCK:\tgoogle:\tresolvedBody', c1);
-      return resolvedBody(googleDefinitionId, resourceUrl);
+      return genResolvedBody(googleDefinitionId, resourceUrl);
     }
 
     if (resourceUrl.startsWith('trello')) {
       switch (++c2) {
         case 1: {
           console.log('MOCK:\ttrello:\tunauthorisedBody');
-          return unauthorisedBody(trelloDefinitionId);
+          return genUnauthorisedBody(trelloDefinitionId);
         }
         case 2: {
           console.log('MOCK:\ttrello:\tforbiddenBody');
-          return forbiddenBody(trelloDefinitionId);
+          return gebForbiddenBody(trelloDefinitionId);
         }
         default: {
           console.log('MOCK:\ttrello:\tresolvedBody');
-          return resolvedBody(trelloDefinitionId, resourceUrl);
+          return genResolvedBody(trelloDefinitionId, resourceUrl);
         }
       }
     }
@@ -124,7 +124,7 @@ export const mockMultipleCards = () => {
         }
         case 2: {
           console.log('MOCK:\tdropbox:\tunauthorisedBody');
-          return unauthorisedBody(dropboxDefinitionId);
+          return genUnauthorisedBody(dropboxDefinitionId);
         }
         case 3: {
           console.log('MOCK:\tdropbox:\terror');
@@ -132,38 +132,19 @@ export const mockMultipleCards = () => {
         }
         case 4: {
           console.log('MOCK:\tdropbox:\tforbiddenBody');
-          return forbiddenBody(dropboxDefinitionId);
+          return gebForbiddenBody(dropboxDefinitionId);
         }
         case 5: {
           console.log('MOCK:\tdropbox:\tforbiddenBody');
-          return forbiddenBody(dropboxDefinitionId);
+          return gebForbiddenBody(dropboxDefinitionId);
         }
         default: {
           console.log('MOCK:\tdropbox:\tresolvedBody');
-          return resolvedBody(dropboxDefinitionId, resourceUrl);
+          return genResolvedBody(dropboxDefinitionId, resourceUrl);
         }
       }
     }
 
     throw new Error('Unkonws request type');
   });
-};
-
-export const mockSingleCardWorkflow = () => {
-  let c = 0;
-  fm.mock(
-    'https://api-private.stg.atlassian.com/object-resolver/resolve',
-    () => {
-      return delayP(10000).then(() => {
-        switch (++c) {
-          case 1:
-            return unauthorisedBody;
-          case 2:
-            return forbiddenBody;
-          default:
-            return resolvedBody;
-        }
-      });
-    },
-  );
 };

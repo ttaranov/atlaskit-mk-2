@@ -36,7 +36,7 @@ class Example extends React.Component<ExampleProps, ExampleState> {
     isSelected: false,
   };
 
-  setPredefinedUrl(url: string) {
+  preventDefaultAndSetUrl(url: string) {
     return (e: React.MouseEvent<HTMLButtonElement>) => {
       e.preventDefault();
       this.setState({ url });
@@ -79,7 +79,7 @@ class Example extends React.Component<ExampleProps, ExampleState> {
                   <Button
                     appearance="link"
                     spacing="compact"
-                    onClick={this.setPredefinedUrl(
+                    onClick={this.preventDefaultAndSetUrl(
                       'https://docs.google.com/document/d/1igbED2X5Qt8rQCeO-5rbDGG6u51wUNumlo2P_EtC9lo/edit',
                     )}
                   >
@@ -90,7 +90,7 @@ class Example extends React.Component<ExampleProps, ExampleState> {
                   <Button
                     appearance="link"
                     spacing="compact"
-                    onClick={this.setPredefinedUrl(
+                    onClick={this.preventDefaultAndSetUrl(
                       'https://docs.google.com/spreadsheets/d/168cPaeXw_2zbo6md4pGUdEmXzRsXRQmNP0712ID2TKA/edit?usp=sharing',
                     )}
                   >
@@ -101,7 +101,7 @@ class Example extends React.Component<ExampleProps, ExampleState> {
                   <Button
                     appearance="link"
                     spacing="compact"
-                    onClick={this.setPredefinedUrl(
+                    onClick={this.preventDefaultAndSetUrl(
                       'https://docs.google.com/document/d/1nXGwmxJuvQ8CdVQsGnRLOJOo7kJPqesmiBgvcaXD4Aw/edit',
                     )}
                   >
@@ -112,7 +112,7 @@ class Example extends React.Component<ExampleProps, ExampleState> {
                   <Button
                     appearance="link"
                     spacing="compact"
-                    onClick={this.setPredefinedUrl(
+                    onClick={this.preventDefaultAndSetUrl(
                       'https://docs.google.com/spreadsheets/d/1pHwRAZWA7_aGtlAwOjAOrHGoT5gT0oKS635HTI6gI8I/edit?usp=drive_web&ouid=110769160460483925018',
                     )}
                   >
