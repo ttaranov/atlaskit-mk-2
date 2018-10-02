@@ -8,6 +8,7 @@ import {
   snapshot,
 } from './_utils';
 
+// add some comments to run test
 describe('Snapshot Test: ProseMirror nodes and marks', () => {
   beforeAll(async () => {
     removeOldProdSnapshots(imageSnapshotFolder);

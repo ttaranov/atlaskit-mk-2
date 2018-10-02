@@ -102,6 +102,15 @@ pipelines:
             caches:
               - node
         - step:
+            name: Visual Regression
+            script:
+              - source ./build-setup.sh
+              - bolt install --pure-lockfile
+              - echo "Running visual regression against Website"
+              - node build/ci-scripts/run.tool.if.changed.js yarn run test:vr  
+            caches:
+              - node       
+        - step:
             name: Building website
             script:
               - source ./build-setup.sh
