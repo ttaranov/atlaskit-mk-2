@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import * as React from 'react';
 import Button, { ButtonGroup } from '@atlaskit/button';
 import { colors } from '@atlaskit/theme';
+import { AnalyticsListener } from '@atlaskit/analytics-next';
 
 import Editor, { EditorProps } from './../src/editor';
 import EditorContext from './../src/ui/EditorContext';
@@ -130,6 +131,10 @@ export class ExampleEditor extends React.Component<EditorProps, State> {
 
   render() {
     return (
+    <AnalyticsListener
+        channel="fabric-editor"
+        onEvent={({ payload }) => console.log(payload)}
+      >
       <Wrapper>
         <Content>
           <SmartCardProvider>
@@ -196,6 +201,7 @@ export class ExampleEditor extends React.Component<EditorProps, State> {
           </SmartCardProvider>
         </Content>
       </Wrapper>
+      </AnalyticsListener>
     );
   }
   private onKeyPressed = (e: KeyboardEvent, actions: EditorActions) => {

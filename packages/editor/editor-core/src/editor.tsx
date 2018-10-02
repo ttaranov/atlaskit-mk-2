@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as PropTypes from 'prop-types';
+import { withAnalyticsEvents } from '@atlaskit/analytics-next';
 import { EditorView } from 'prosemirror-view';
 import { intlShape, IntlShape, IntlProvider } from 'react-intl';
 
@@ -31,7 +32,7 @@ type Context = {
 const ContextAdapter = createContextAdapter({
   card: CardContext,
 });
-export default class Editor extends React.Component<EditorProps, {}> {
+export class Editor extends React.Component<EditorProps, {}> {
   static defaultProps: EditorProps = {
     appearance: 'message',
     disabled: false,
@@ -353,3 +354,5 @@ export default class Editor extends React.Component<EditorProps, {}> {
     );
   }
 }
+
+export default withAnalyticsEvents()(Editor);

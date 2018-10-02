@@ -1,6 +1,7 @@
 import { ReactElement } from 'react';
 import { Node, Schema } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
+import { CreateUIAnalyticsEventSignature } from '@atlaskit/analytics-next-types';
 import { EditorActionsOptions } from '../actions/index';
 
 import {
@@ -227,4 +228,6 @@ export interface EditorProps {
 
   // Set to provide your extensions handlers.
   extensionHandlers?: ExtensionHandlers;
+
+  createAnalyticsEvent?: CreateUIAnalyticsEventSignature;
 }

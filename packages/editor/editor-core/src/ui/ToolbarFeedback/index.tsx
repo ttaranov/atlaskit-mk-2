@@ -1,5 +1,6 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
+import * as PropTypes from 'prop-types';
 import { PureComponent } from 'react';
 import Spinner from '@atlaskit/spinner';
 import { Popup } from '@atlaskit/editor-common';
@@ -18,6 +19,7 @@ import {
   ConfirmationHeader,
   ConfirmationImg,
 } from './styles';
+import { analyticsEventKey } from '../../analytics';
 
 const PopupWithOutsideListeners: any = withOuterListeners(Popup);
 const POPUP_HEIGHT = 388;
@@ -200,6 +202,10 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
     showOptOutOption: false,
   };
 
+  static contextTypes = {
+    editorActions: PropTypes.object.isRequired,
+  };
+
   private handleRef = ref => {
     if (ref) {
       this.setState({
@@ -290,6 +296,15 @@ export default class ToolbarFeedback extends PureComponent<Props, State> {
 
   @analytics('atlassian.editor.feedback.button')
   private openFeedbackPopup = (): boolean => {
+    const eventDispatcher = this.context.editorActions._privateGetEventDispatcher();
+    if (eventDispatcher) {
+      eventDispatcher.emit(analyticsEventKey, {
+        action: 'clicked',
+        actionSubject: 'button',
+        actionSubjectId: 'feedbackButton',
+      });
+    }
+
     if (typeof this.showJiraCollectorDialogCallback === 'function') {
       this.showJiraCollectorDialogCallback();
       return false;

@@ -5,8 +5,11 @@ import { analyticsService } from '../../analytics';
 import { EditorPlugin } from '../../types';
 import * as keymaps from '../../keymaps';
 import { stateKey as mediaPluginKey } from '../../plugins/media/pm-plugins/main';
+import { analyticsEventKey } from '../../analytics';
+import { Dispatch } from '../../event-dispatcher';
 
 export function createPlugin(
+  eventDispatch: Dispatch,
   onSave?: (editorView: EditorView) => void,
 ): Plugin | undefined {
   if (!onSave) {
@@ -29,6 +32,7 @@ export function createPlugin(
         return true;
       }
 
+      eventDispatch(analyticsEventKey, analyticsPayload(state));
       analyticsService.trackEvent('atlassian.editor.stop.submit');
       onSave(editorView);
       return true;
@@ -36,12 +40,22 @@ export function createPlugin(
   });
 }
 
+const analyticsPayload = (state: EditorState) => ({
+  action: 'stopped',
+  actionSubjectId: 'save',
+  attributes: {
+    inputMethod: 'shortcut',
+    documentSize: state.doc.nodeSize,
+    // TODO add individual node counts - tables, headings, lists, mediaSingles, mediaGroups, mediaCards, panels, extensions, decisions, action, codeBlocks
+  },
+});
+
 const submitEditorPlugin: EditorPlugin = {
   pmPlugins() {
     return [
       {
         name: 'submitEditor',
-        plugin: ({ props }) => createPlugin(props.onSave),
+        plugin: ({ props, dispatch }) => createPlugin(dispatch, props.onSave),
       },
     ];
   },

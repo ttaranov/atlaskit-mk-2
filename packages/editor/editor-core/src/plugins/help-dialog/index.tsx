@@ -8,6 +8,8 @@ import { analyticsService } from '../../analytics';
 import WithPluginState from '../../ui/WithPluginState';
 import { HelpDialogLoader } from './ui/HelpDialogLoader';
 import { pluginKey as quickInsertPluginKey } from '../quick-insert';
+import { Dispatch } from '../../event-dispatcher';
+import { analyticsEventKey } from '../../analytics';
 
 export const pluginKey = new PluginKey('helpDialogPlugin');
 
@@ -23,7 +25,7 @@ export const closeHelpCommand = (tr: Transaction, dispatch: Function): void => {
 
 export const stopPropagationCommand = (e: Event): void => e.stopPropagation();
 
-export function createPlugin(dispatch: Function, imageEnabled: boolean) {
+export function createPlugin(dispatch: Dispatch, imageEnabled: boolean) {
   return new Plugin({
     key: pluginKey,
     state: {
@@ -54,7 +56,7 @@ const helpDialog: EditorPlugin = {
       },
       {
         name: 'helpDialogKeymap',
-        plugin: ({ schema }) => keymapPlugin(schema),
+        plugin: ({ schema, dispatch }) => keymapPlugin(schema, dispatch),
       },
     ];
   },
@@ -80,7 +82,7 @@ const helpDialog: EditorPlugin = {
   },
 };
 
-const keymapPlugin = (schema: Schema): Plugin => {
+const keymapPlugin = (schema: Schema, eventDispatch: Dispatch): Plugin => {
   const list = {};
   keymaps.bindKeymapWithCommand(
     keymaps.openHelp.common!,
@@ -88,6 +90,12 @@ const keymapPlugin = (schema: Schema): Plugin => {
       let { tr } = state;
       const isVisible = tr.getMeta(pluginKey);
       if (!isVisible) {
+        eventDispatch(analyticsEventKey, {
+          action: 'opened',
+          actionSubject: 'button',
+          actionSubjectId: 'helpButton',
+          attributes: { inputMethod: 'shortcut' },
+        });
         analyticsService.trackEvent('atlassian.editor.help.keyboard');
         openHelpCommand(tr, dispatch);
       }

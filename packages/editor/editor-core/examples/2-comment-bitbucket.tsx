@@ -3,6 +3,7 @@
 import * as React from 'react';
 
 import Button, { ButtonGroup } from '@atlaskit/button';
+import { AnalyticsListener } from '@atlaskit/analytics-next';
 import Editor from './../src/editor';
 import EditorContext from './../src/ui/EditorContext';
 import WithEditorActions from './../src/ui/WithEditorActions';
@@ -70,76 +71,81 @@ export default class EditorWithFeedback extends React.Component<Props, State> {
     }
 
     return (
-      <EditorContext>
-        <div>
-          <WithEditorActions
-            render={actions => (
-              <ButtonGroup>
-                <Button
-                  onClick={() => actions.replaceDocument(exampleDocument)}
-                >
-                  Load Document
-                </Button>
-                <Button onClick={() => actions.clear()}>Clear</Button>
-              </ButtonGroup>
-            )}
-          />
-          <ToolsDrawer
-            imageUploadProvider="resolved"
-            renderEditor={({
-              mentionProvider,
-              emojiProvider,
-              activityProvider,
-              taskDecisionProvider,
-              contextIdentifierProvider,
-              imageUploadProvider,
-              onChange,
-              disabled,
-            }) => (
-              <div style={{ padding: '20px' }}>
-                <CollapsedEditor
-                  placeholder="What do you want to say?"
-                  isExpanded={this.state.isExpanded}
-                  onFocus={this.onFocus}
-                  onExpand={EXPAND_ACTION}
-                >
-                  <Editor
-                    appearance="comment"
-                    analyticsHandler={analyticsHandler}
-                    allowCodeBlocks={true}
-                    allowLists={true}
-                    allowTables={{
-                      isHeaderRowRequired: true,
-                    }}
-                    textFormatting={{
-                      disableSuperscriptAndSubscript: true,
-                      disableUnderline: true,
-                    }}
-                    allowHelpDialog={true}
-                    disabled={disabled}
-                    mentionProvider={mentionProvider}
-                    emojiProvider={emojiProvider}
-                    legacyImageUploadProvider={imageUploadProvider}
-                    shouldFocus={true}
-                    onChange={onChange}
-                    onSave={SAVE_ACTION}
-                    onCancel={CANCEL_ACTION}
-                    quickInsert={true}
-                    primaryToolbarComponents={[
-                      <ToolbarFeedback
-                        packageVersion={version}
-                        packageName={name}
-                        key="toolbar-feedback"
-                      />,
-                      <ToolbarHelp key="toolbar-help" />,
-                    ]}
-                  />
-                </CollapsedEditor>
-              </div>
-            )}
-          />
-        </div>
-      </EditorContext>
+      <AnalyticsListener
+        channel="fabric-editor"
+        onEvent={({ payload }) => console.log(payload)}
+      >
+        <EditorContext>
+          <div>
+            <WithEditorActions
+              render={actions => (
+                <ButtonGroup>
+                  <Button
+                    onClick={() => actions.replaceDocument(exampleDocument)}
+                  >
+                    Load Document
+                  </Button>
+                  <Button onClick={() => actions.clear()}>Clear</Button>
+                </ButtonGroup>
+              )}
+            />
+            <ToolsDrawer
+              imageUploadProvider="resolved"
+              renderEditor={({
+                mentionProvider,
+                emojiProvider,
+                activityProvider,
+                taskDecisionProvider,
+                contextIdentifierProvider,
+                imageUploadProvider,
+                onChange,
+                disabled,
+              }) => (
+                <div style={{ padding: '20px' }}>
+                  <CollapsedEditor
+                    placeholder="What do you want to say?"
+                    isExpanded={this.state.isExpanded}
+                    onFocus={this.onFocus}
+                    onExpand={EXPAND_ACTION}
+                  >
+                    <Editor
+                      appearance="comment"
+                      analyticsHandler={analyticsHandler}
+                      allowCodeBlocks={true}
+                      allowLists={true}
+                      allowTables={{
+                        isHeaderRowRequired: true,
+                      }}
+                      textFormatting={{
+                        disableSuperscriptAndSubscript: true,
+                        disableUnderline: true,
+                      }}
+                      allowHelpDialog={true}
+                      disabled={disabled}
+                      mentionProvider={mentionProvider}
+                      emojiProvider={emojiProvider}
+                      legacyImageUploadProvider={imageUploadProvider}
+                      shouldFocus={true}
+                      onChange={onChange}
+                      onSave={SAVE_ACTION}
+                      onCancel={CANCEL_ACTION}
+                      quickInsert={true}
+                      primaryToolbarComponents={[
+                        <ToolbarFeedback
+                          packageVersion={version}
+                          packageName={name}
+                          key="toolbar-feedback"
+                        />,
+                        <ToolbarHelp key="toolbar-help" />,
+                      ]}
+                    />
+                  </CollapsedEditor>
+                </div>
+              )}
+            />
+          </div>
+        </EditorContext>
+      </AnalyticsListener>
     );
   }
 

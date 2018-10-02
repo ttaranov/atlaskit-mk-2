@@ -10,6 +10,7 @@ import { EditorState, Transaction, Selection } from 'prosemirror-state';
 import { ProviderFactory, Transformer } from '@atlaskit/editor-common';
 import { EditorProps, EditorConfig, EditorPlugin } from '../types';
 import { PortalProviderAPI } from '../ui/PortalProvider';
+import { analyticsEventKey, fireAnalyticsEvent } from '../analytics';
 import {
   processPluginsList,
   createSchema,
@@ -68,7 +69,16 @@ export default class ReactEditorView<T = {}> extends React.Component<
 
     initAnalytics(props.editorProps.analyticsHandler);
 
+    this.eventDispatcher = new EventDispatcher();
     this.editorState = this.createEditorState({ props, replaceDoc: true });
+
+    const createAnalyticsEvent = props.editorProps.createAnalyticsEvent;
+    if (createAnalyticsEvent) {
+      this.eventDispatcher.on(
+        analyticsEventKey,
+        fireAnalyticsEvent(createAnalyticsEvent),
+      );
+    }
   }
 
   componentWillReceiveProps(nextProps: EditorViewProps) {
@@ -80,6 +90,20 @@ export default class ReactEditorView<T = {}> extends React.Component<
       this.view.setProps({
         editable: state => !nextProps.editorProps.disabled,
       } as DirectEditorProps);
+    }
+
+    if (
+      nextProps.editorProps.createAnalyticsEvent !==
+      this.props.editorProps.createAnalyticsEvent
+    ) {
+      this.eventDispatcher.off(
+        analyticsEventKey,
+        fireAnalyticsEvent(this.props.editorProps.createAnalyticsEvent),
+      );
+      this.eventDispatcher.on(
+        analyticsEventKey,
+        fireAnalyticsEvent(nextProps.editorProps.createAnalyticsEvent),
+      );
     }
   }
 
@@ -138,7 +162,6 @@ export default class ReactEditorView<T = {}> extends React.Component<
       errorReporterHandler,
     } = options.props.editorProps;
 
-    this.eventDispatcher = new EventDispatcher();
     const dispatch = createDispatch(this.eventDispatcher);
     const errorReporter = createErrorReporter(errorReporterHandler);
 
@@ -210,6 +233,13 @@ export default class ReactEditorView<T = {}> extends React.Component<
         attributes: { 'data-gramm': 'false' },
       },
     );
+
+    if (this.eventDispatcher) {
+      this.eventDispatcher.emit(analyticsEventKey, {
+        action: 'started',
+        actionSubject: 'editor',
+      });
+    }
   };
 
   handleEditorViewRef = (node: HTMLDivElement) => {
