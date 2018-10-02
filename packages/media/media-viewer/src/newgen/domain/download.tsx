@@ -1,20 +1,20 @@
 import * as React from 'react';
-import { Context, FileItem } from '@atlaskit/media-core';
+import { Context, FileState, isErrorFileState } from '@atlaskit/media-core';
 import { DownloadButtonWrapper } from '../styled';
 import Button from '@atlaskit/button';
 
 export const downloadItem = (
-  item: FileItem,
+  file: FileState,
   context: Context,
   collectionName?: string,
 ) => () => {
-  const id = item.details.id;
-  const name = item.details.name;
+  const id = file.id;
+  const name = !isErrorFileState(file) ? file.name : undefined;
   return context.file.downloadBinary(id, name, collectionName);
 };
 
 export const renderDownloadButton = (
-  fileItem: FileItem,
+  file: FileState,
   context: Context,
   collectionName?: string,
 ) => {
@@ -23,7 +23,7 @@ export const renderDownloadButton = (
       <Button
         appearance="primary"
         label="Download"
-        onClick={downloadItem(fileItem, context, collectionName)}
+        onClick={downloadItem(file, context, collectionName)}
       >
         Download
       </Button>

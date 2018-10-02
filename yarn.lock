@@ -9,6 +9,144 @@
     "@atlaskit/util-service-support" "^2.0.1"
     tslib "^1.7.1"
 
+"@atlaskit/analytics-next@^2.1.8":
+  version "2.1.9"
+  resolved "https://registry.yarnpkg.com/@atlaskit/analytics-next/-/analytics-next-2.1.9.tgz#5820e74b0d00aa7822f92554ad62bdaa30804fed"
+  dependencies:
+    prop-types "^15.5.10"
+
+"@atlaskit/app-switcher@^8.0.1":
+  version "8.0.1"
+  resolved "https://registry.yarnpkg.com/@atlaskit/app-switcher/-/app-switcher-8.0.1.tgz#146d910a6fed3c2fad25939ceea96b6c4b4d5462"
+  dependencies:
+    "@atlaskit/avatar" "^11.2.1"
+    "@atlaskit/button" "^8.2.2"
+    "@atlaskit/dropdown-menu" "^5.2.0"
+    "@atlaskit/icon" "^12.3.1"
+    "@atlaskit/logo" "^8.1.2"
+    "@atlaskit/lozenge" "^5.0.4"
+    "@atlaskit/theme" "^4.0.4"
+    "@atlaskit/util-shared-styles" "^2.10.4"
+    babel-runtime "^6.11.6"
+    classnames "^2.2.5"
+    prop-types "^15.5.10"
+
+"@atlaskit/avatar@^11.2.1":
+  version "11.2.2"
+  resolved "https://registry.yarnpkg.com/@atlaskit/avatar/-/avatar-11.2.2.tgz#14038bbc0c64476c7b3d482bd52acfb32790ec2f"
+  dependencies:
+    "@atlaskit/dropdown-menu" "^5.2.1"
+    "@atlaskit/item" "^7.0.4"
+    "@atlaskit/theme" "^4.0.3"
+    "@atlaskit/tooltip" "^10.3.1"
+
+"@atlaskit/button@^8.2.2", "@atlaskit/button@^8.2.5":
+  version "8.2.7"
+  resolved "https://registry.yarnpkg.com/@atlaskit/button/-/button-8.2.7.tgz#28d1797bf20a57ae01065df72f7810fd59105c15"
+  dependencies:
+    "@atlaskit/analytics-next" "^2.1.8"
+    "@atlaskit/spinner" "8.0.0"
+    "@atlaskit/theme" "^4.0.4"
+    babel-runtime "^6.26.0"
+
+"@atlaskit/dropdown-menu@^5.2.0", "@atlaskit/dropdown-menu@^5.2.1":
+  version "5.2.3"
+  resolved "https://registry.yarnpkg.com/@atlaskit/dropdown-menu/-/dropdown-menu-5.2.3.tgz#ac7ed0473f2db32ea721176deff842078dde5f5e"
+  dependencies:
+    "@atlaskit/button" "^8.2.5"
+    "@atlaskit/droplist" "^6.2.2"
+    "@atlaskit/icon" "^12.6.1"
+    "@atlaskit/item" "^7.0.8"
+    "@atlaskit/theme" "^4.0.4"
+    array-find "^1.0.0"
+    prop-types "^15.5.10"
+    uuid "^3.1.0"
+
+"@atlaskit/droplist@^6.2.2":
+  version "6.2.2"
+  resolved "https://registry.yarnpkg.com/@atlaskit/droplist/-/droplist-6.2.2.tgz#ed05ec073e7fe185679712b39b1b9a7a926c16ec"
+  dependencies:
+    "@atlaskit/icon" "^12.6.1"
+    "@atlaskit/item" "^7.0.5"
+    "@atlaskit/layer" "^4.2.0"
+    "@atlaskit/spinner" "^8.0.0"
+    "@atlaskit/theme" "^4.0.4"
+    "@atlaskit/tooltip" "^10.2.1"
+    babel-runtime "^6.26.0"
+    classnames "^2.2.5"
+    keycode "^2.1.7"
+    prop-types "^15.5.10"
+
+"@atlaskit/icon@^12.3.1", "@atlaskit/icon@^12.6.1":
+  version "12.8.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/icon/-/icon-12.8.0.tgz#44095171300c664834937593b32b3b8515745eaa"
+  dependencies:
+    "@atlaskit/theme" "^4.0.4"
+    babel-runtime "^6.26.0"
+    uuid "^3.1.0"
+
+"@atlaskit/item@^7.0.4", "@atlaskit/item@^7.0.5", "@atlaskit/item@^7.0.8":
+  version "7.0.8"
+  resolved "https://registry.yarnpkg.com/@atlaskit/item/-/item-7.0.8.tgz#324dfb81ce5f7e17955b5044e5c461c6e5ced030"
+  dependencies:
+    "@atlaskit/theme" "^4.0.4"
+    prop-types "^15.5.10"
+    react-addons-text-content "^0.0.4"
+    uuid "^3.1.0"
+
+"@atlaskit/layer-manager@^4.2.1":
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/@atlaskit/layer-manager/-/layer-manager-4.3.1.tgz#08fe6af287731ce12dd96991882b6d6eef06da27"
+  dependencies:
+    prop-types "^15.5.10"
+    react-focus-lock "^1.11.1"
+    react-scrolllock "^3.0.1"
+    react-transition-group "^2.2.1"
+
+"@atlaskit/layer@^4.2.0":
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/layer/-/layer-4.2.0.tgz#66dcffb7b826159a7affaa763e566cd91c32b91c"
+  dependencies:
+    react-scrolllock "^3.0.1"
+
+"@atlaskit/logo@^8.1.2":
+  version "8.1.3"
+  resolved "https://registry.yarnpkg.com/@atlaskit/logo/-/logo-8.1.3.tgz#093cdf1c0a8f6c10ef440544a2c46b6b97376aef"
+  dependencies:
+    prop-types "^15.5.10"
+    uuid "^3.1.0"
+
+"@atlaskit/lozenge@^5.0.4":
+  version "5.0.4"
+  resolved "https://registry.yarnpkg.com/@atlaskit/lozenge/-/lozenge-5.0.4.tgz#9c1a2803c088b10a3f7901fdc2f012101288a8e2"
+  dependencies:
+    "@atlaskit/theme" "^4.0.4"
+    "@atlaskit/util-shared-styles" "^2.10.3"
+    babel-runtime "^6.26.0"
+
+"@atlaskit/spinner@8.0.0", "@atlaskit/spinner@^8.0.0":
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/spinner/-/spinner-8.0.0.tgz#bd075c7e001bc5f153a8897b82f2d77f1ddad715"
+  dependencies:
+    "@atlaskit/theme" "^4.0.4"
+    babel-runtime "^6.26.0"
+    react-transition-group "^2.2.1"
+
+"@atlaskit/theme@^4.0.3", "@atlaskit/theme@^4.0.4":
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/@atlaskit/theme/-/theme-4.1.0.tgz#b3fec7722861af4b6dd9ee524bd57bf878e3bf09"
+  dependencies:
+    prop-types "^15.5.10"
+
+"@atlaskit/tooltip@^10.2.1", "@atlaskit/tooltip@^10.3.1":
+  version "10.3.1"
+  resolved "https://registry.yarnpkg.com/@atlaskit/tooltip/-/tooltip-10.3.1.tgz#9d305b850929fca49e42f345df03b1e958692287"
+  dependencies:
+    "@atlaskit/layer-manager" "^4.2.1"
+    "@atlaskit/theme" "^4.0.4"
+    react-deprecate "^0.1.0"
+    react-transition-group "^2.2.1"
+
 "@atlaskit/util-common-test@^2.4.2":
   version "2.4.2"
   resolved "https://registry.yarnpkg.com/@atlaskit/util-common-test/-/util-common-test-2.4.2.tgz#d564fdb9969fff819402d94dc58fee5e9570731c"
@@ -33,7 +171,7 @@
     tslib "^1.2.0"
     url "^0.11.0"
 
-"@atlaskit/util-shared-styles@^2.10.3":
+"@atlaskit/util-shared-styles@^2.10.3", "@atlaskit/util-shared-styles@^2.10.4":
   version "2.10.8"
   resolved "https://registry.yarnpkg.com/@atlaskit/util-shared-styles/-/util-shared-styles-2.10.8.tgz#07fb6903cb749575c36a1d7e25f4638bbcf866f7"
   dependencies:
@@ -6208,6 +6346,10 @@ focus-lock@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/focus-lock/-/focus-lock-0.3.0.tgz#cd9f9ecb279cb0f09b306b5ae713e6dd58fd15ed"
 
+focus-lock@^0.4.2:
+  version "0.4.2"
+  resolved "https://registry.yarnpkg.com/focus-lock/-/focus-lock-0.4.2.tgz#3e91141ac911352d4831215fba300d02b9faa6b4"
+
 focus-trap@^2.4.5:
   version "2.4.5"
   resolved "https://registry.yarnpkg.com/focus-trap/-/focus-trap-2.4.5.tgz#91c9c9ffb907f8f4446d80202dda9c12c2853ddb"
@@ -11964,7 +12106,7 @@ prop-types@^15.0.0, prop-types@^15.5.0, prop-types@^15.5.1, prop-types@^15.5.10,
     loose-envify "^1.3.1"
     object-assign "^4.1.1"
 
-prop-types@^15.6.1:
+prop-types@^15.6.1, prop-types@^15.6.2:
   version "15.6.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.6.2.tgz#05d5ca77b4453e985d60fc7ff8c859094a497102"
   dependencies:
@@ -12071,9 +12213,9 @@ prosemirror-transform@^1.0.0, prosemirror-transform@^1.1.0, prosemirror-transfor
   dependencies:
     prosemirror-model "^1.0.0"
 
-prosemirror-utils@^0.6.5:
-  version "0.6.5"
-  resolved "https://registry.yarnpkg.com/prosemirror-utils/-/prosemirror-utils-0.6.5.tgz#df18e39178d510917838a7337a8b64561324a70b"
+prosemirror-utils@^0.6.6:
+  version "0.6.6"
+  resolved "https://registry.yarnpkg.com/prosemirror-utils/-/prosemirror-utils-0.6.6.tgz#5da781b082a82f2dd2a99fbf808b68acc14f77fb"
 
 prosemirror-view@^1.0.0, prosemirror-view@^1.6.0:
   version "1.6.0"
@@ -12488,6 +12630,14 @@ react-emotion@^9.0.2:
 react-fast-compare@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/react-fast-compare/-/react-fast-compare-2.0.1.tgz#92c91ac4814aa8cfcfb04780ad1bfff2bbe3a3c6"
+
+react-focus-lock@^1.11.1:
+  version "1.13.2"
+  resolved "https://registry.yarnpkg.com/react-focus-lock/-/react-focus-lock-1.13.2.tgz#7265220aab672830c93f0b9010bb6e12fb8bead4"
+  dependencies:
+    focus-lock "^0.4.2"
+    prop-types "^15.6.2"
+    react-clientside-effect "^1.0.0"
 
 react-focus-lock@^1.11.3:
   version "1.11.3"

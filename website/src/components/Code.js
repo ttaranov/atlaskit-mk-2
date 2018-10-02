@@ -7,6 +7,7 @@ import { colors, gridSize, themed } from '@atlaskit/theme';
 import '!style-loader!css-loader!prismjs/themes/prism-tomorrow.css';
 import 'prismjs/components/prism-jsx';
 import { replaceSrc } from '@atlaskit/docs';
+import { replaceImports } from 'codesandboxer';
 
 const Code = styled.pre`
   border-radius: 3px;
@@ -31,7 +32,10 @@ type Props = {
 
 export default function CodeBlock(props: Props) {
   const syntax = Prism.languages[props.grammar];
-  const importFixed = replaceSrc(props.content, props.name);
+  const srcFixed = replaceSrc(props.content, props.name);
+  const importFixed = replaceImports(srcFixed, [
+    ['../glyph/*', `${props.name}/glyph/`],
+  ]);
   const highlighted = Prism.highlight(importFixed, syntax);
 
   return (

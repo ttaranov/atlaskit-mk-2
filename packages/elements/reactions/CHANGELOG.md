@@ -1,5 +1,13 @@
 # @atlaskit/reactions
 
+## 14.0.1
+- [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
+  - @atlaskit/docs@5.0.8
+  - @atlaskit/button@9.0.13
+  - @atlaskit/tooltip@12.1.1
+  - @atlaskit/emoji@42.0.1
+  - @atlaskit/icon@14.0.0
+
 ## 14.0.0
 - [major] Reactions state management revisited [7e8d079](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e8d079)
 

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { shallow } from 'enzyme';
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import { AtlassianIcon } from '@atlaskit/logo';
 
 import InteractionStateManager from '../../../InteractionStateManager';
 import GlobalItem, { GlobalItemBase } from '../../index';
@@ -27,7 +27,7 @@ describe('GlobalItem', () => {
   });
 
   it('should render correctly', () => {
-    const wrapper = shallow(<GlobalItem icon={AtlassianIcon} />);
+    const wrapper = shallow(<GlobalItem icon={() => <AtlassianIcon />} />);
 
     expect(wrapper).toMatchSnapshot();
   });
@@ -73,7 +73,7 @@ describe('GlobalItem', () => {
   describe('GlobalItemBase', () => {
     it('should render an InteractionStateManager', () => {
       const wrapper = shallow(
-        <GlobalItemBase theme={theme} icon={AtlassianIcon} />,
+        <GlobalItemBase theme={theme} icon={() => <AtlassianIcon />} />,
       );
 
       expect(wrapper.find(InteractionStateManager)).toHaveLength(1);
@@ -83,7 +83,7 @@ describe('GlobalItem', () => {
 
     it('should render the GlobalItem primitive', () => {
       const wrapper = shallow(
-        <GlobalItemBase theme={theme} icon={AtlassianIcon} />,
+        <GlobalItemBase theme={theme} icon={() => <AtlassianIcon />} />,
       );
 
       const renderChildren = wrapper.find(InteractionStateManager).dive();
@@ -96,7 +96,11 @@ describe('GlobalItem', () => {
 
     it('should render an item wrapper with the globalItem.itemWrapper theme styles when size is large', () => {
       const largeItem = shallow(
-        <GlobalItemBase theme={theme} icon={AtlassianIcon} size="large" />,
+        <GlobalItemBase
+          theme={theme}
+          icon={() => <AtlassianIcon />}
+          size="large"
+        />,
       );
 
       expect(theme.mode.globalItem).toHaveBeenCalledWith({ size: 'large' });
@@ -105,7 +109,11 @@ describe('GlobalItem', () => {
 
     it('should render an item wrapper with the globalItem.itemWrapper theme styles when size is small', () => {
       const smallItem = shallow(
-        <GlobalItemBase theme={theme} icon={AtlassianIcon} size="small" />,
+        <GlobalItemBase
+          theme={theme}
+          icon={() => <AtlassianIcon />}
+          size="small"
+        />,
       );
 
       expect(theme.mode.globalItem).toHaveBeenCalledWith({ size: 'small' });

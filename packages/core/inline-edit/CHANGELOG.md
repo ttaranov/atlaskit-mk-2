@@ -1,5 +1,15 @@
 # @atlaskit/inline-edit
 
+## 7.1.1
+- [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
+  - @atlaskit/docs@5.0.8
+  - @atlaskit/button@9.0.13
+  - @atlaskit/field-base@11.0.8
+  - @atlaskit/field-radio-group@4.0.8
+  - @atlaskit/multi-select@11.0.7
+  - @atlaskit/tag@6.0.8
+  - @atlaskit/icon@14.0.0
+
 ## 7.1.0
 - [minor] Moved the internal @atlaskit/input component to a named export of inline-edit [c96c668](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/c96c668)
 

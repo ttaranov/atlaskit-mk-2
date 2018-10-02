@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/calendar",
-  "version": "7.0.8",
+  "version": "7.0.9",
   "description": "A React component for displaying a calendar.",
   "license": "Apache-2.0",
   "main": "dist/cjs",
@@ -23,8 +23,8 @@
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
     "@atlaskit/analytics-next": "^3.0.6",
-    "@atlaskit/button": "^9.0.8",
-    "@atlaskit/icon": "^13.6.1",
+    "@atlaskit/button": "^9.0.13",
+    "@atlaskit/icon": "^14.0.0",
     "@atlaskit/theme": "^6.0.2",
     "calendar-base": "^0.3.0",
     "lodash.pick": "^4.4.0",
@@ -36,7 +36,7 @@
   },
   "devDependencies": {
     "@atlaskit/build-utils": "^2.0.0",
-    "@atlaskit/docs": "^5.0.6",
+    "@atlaskit/docs": "^5.0.8",
     "date-fns": "^1.29.0",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "enzyme-to-json": "^3.3.0",

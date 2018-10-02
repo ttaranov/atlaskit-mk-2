@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import { AtlassianIcon } from '@atlaskit/logo';
 import { BreadcrumbsStateless, BreadcrumbsItem } from '../src';
 
 export default class BreadcrumbsExpand extends Component<
@@ -27,12 +27,12 @@ export default class BreadcrumbsExpand extends Component<
         <BreadcrumbsItem href="/pages/home" text="Home" />
         <BreadcrumbsItem
           href="/item"
-          iconBefore={<AtlassianIcon label="Test icon" />}
+          iconBefore={<AtlassianIcon label="Test icon" size="small" />}
           text="Icon Before"
         />
         <BreadcrumbsItem
           href="/item"
-          iconAfter={<AtlassianIcon label="Test icon" />}
+          iconAfter={<AtlassianIcon label="Test icon" size="small" />}
           text="Icon After"
         />
       </BreadcrumbsStateless>

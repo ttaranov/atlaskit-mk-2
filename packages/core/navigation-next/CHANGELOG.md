@@ -1,5 +1,26 @@
 # @atlaskit/navigation-next
 
+## 3.15.5
+- [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
+  - @atlaskit/docs@5.0.8
+  - @atlaskit/avatar@14.0.11
+  - @atlaskit/button@9.0.13
+  - @atlaskit/drawer@2.1.1
+  - @atlaskit/dropdown-menu@6.1.17
+  - @atlaskit/field-base@11.0.8
+  - @atlaskit/global-navigation@5.0.1
+  - @atlaskit/modal-dialog@7.0.2
+  - @atlaskit/onboarding@6.0.2
+  - @atlaskit/section-message@1.0.8
+  - @atlaskit/select@6.0.2
+  - @atlaskit/toggle@5.0.9
+  - @atlaskit/tooltip@12.1.1
+  - @atlaskit/icon@14.0.0
+
+## 3.15.4
+- [patch] Updated dependencies [ac88888](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ac88888)
+  - @atlaskit/global-navigation@5.0.0
+
 ## 3.15.3
 - [patch] Update global nav item click analytics to use actionSubjectId rather than the itemId attribute [56a3ada](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/56a3ada)
 

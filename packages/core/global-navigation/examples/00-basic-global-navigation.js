@@ -2,25 +2,34 @@
 
 import React from 'react';
 import EmojiAtlassianIcon from '@atlaskit/icon/glyph/emoji/atlassian';
-import { LayoutManager, NavigationProvider } from '@atlaskit/navigation-next';
+import {
+  GlobalItem,
+  LayoutManager,
+  NavigationProvider,
+} from '@atlaskit/navigation-next';
 import AppSwitcherIcon from '@atlaskit/icon/glyph/app-switcher';
 
 import GlobalNavigation from '../src';
+
+const AppSwitcherComponent = props => (
+  <GlobalItem
+    {...props}
+    icon={AppSwitcherIcon}
+    onClick={() => console.log('AppSwitcher clicked')}
+  />
+);
 
 // TODO: make onClicks targets show up on page instead of console.logs
 const Global = () => (
   <GlobalNavigation
     productIcon={EmojiAtlassianIcon}
     productHref="#"
+    onProductClick={() => console.log('product clicked')}
     onCreateClick={() => console.log('create clicked')}
     onSearchClick={() => console.log('search clicked')}
     onStarredClick={() => console.log('your work clicked')}
     onNotificationClick={() => console.log('notification clicked')}
-    appSwitcherComponent={({ className }) => (
-      <button className={className}>
-        <AppSwitcherIcon onClick={() => console.log('AppSwitcher clicked')} />
-      </button>
-    )}
+    appSwitcherComponent={AppSwitcherComponent}
     appSwitcherTooltip="Switch to ..."
     loginHref="#login"
   />
