@@ -2,7 +2,11 @@
 import { mount, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
-import type { DropResult, DragUpdate, DragStart } from 'react-beautiful-dnd';
+import type {
+  DropResult,
+  DragUpdate,
+  DragStart,
+} from 'react-beautiful-dnd-next';
 import { getBox } from 'css-box-model';
 import Tree from '../../Tree';
 import { treeWithThreeLeaves } from '../../../../../mockdata/treeWithThreeLeaves';
@@ -26,6 +30,7 @@ const dragUpdate: DragUpdate = {
     droppableId: 'list',
     index: 4,
   },
+  combine: undefined,
 };
 
 const dropResult: DropResult = {

@@ -10,7 +10,7 @@ import {
   type DraggableProvided,
   type DraggableStateSnapshot,
   type DroppableProvided,
-} from 'react-beautiful-dnd';
+} from 'react-beautiful-dnd-next';
 import { getBox } from 'css-box-model';
 import { calculateFinalDropPositions } from './Tree-utils';
 import type { Props, State, DragState } from './Tree-types';
@@ -59,7 +59,6 @@ export default class Tree extends Component<Props, State> {
   }
 
   onDragStart = (result: DragStart) => {
-    console.log('>> onDragStart', result);
     const { onDragStart } = this.props;
     this.dragState = {
       draggedItemId: result.draggableId,
@@ -73,7 +72,6 @@ export default class Tree extends Component<Props, State> {
   };
 
   onDragUpdate = (update: DragUpdate) => {
-    console.log('>> onDragUpdate', update);
     const { onExpand } = this.props;
     const { flattenedTree } = this.state;
     if (!this.dragState) {
@@ -96,7 +94,6 @@ export default class Tree extends Component<Props, State> {
   };
 
   onDragEnd = (result: DropResult) => {
-    console.log('>> onDragEnd', result);
     const { onDragEnd, tree } = this.props;
     const { flattenedTree } = this.state;
     this.combineTimer.stop();
@@ -144,15 +141,24 @@ export default class Tree extends Component<Props, State> {
       } = this.dragState;
       // We only change the if it's dragged by keyboard or just dropped
       if (mode === 'SNAP' || snapshot.isDropAnimating) {
-        const droppingIndex = destination
-          ? destination.index
-          : getIndexById(flattenedTree, combine.draggableId);
-        return getDestinationPath(
-          flattenedTree,
-          source.index,
-          droppingIndex,
-          horizontalLevel,
-        );
+        if (destination) {
+          // Between two items
+          return getDestinationPath(
+            flattenedTree,
+            source.index,
+            destination.index,
+            horizontalLevel,
+          );
+        }
+        if (combine) {
+          // Hover on other item while dragging
+          return getDestinationPath(
+            flattenedTree,
+            source.index,
+            getIndexById(flattenedTree, combine.draggableId),
+            horizontalLevel,
+          );
+        }
       }
     }
     return flatItem.path;

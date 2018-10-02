@@ -2,9 +2,9 @@
 import * as React from 'react';
 import type {
   DraggableLocation,
-  Combine,
-  MovementMode,
-} from 'react-beautiful-dnd';
+  DraggableId,
+  DroppableId,
+} from 'react-beautiful-dnd-next';
 import type {
   TreeData,
   Path,
@@ -43,17 +43,22 @@ export type State = {|
   flattenedTree: FlattenedTree,
 |};
 
+export type Combine = {|
+  draggableId: DraggableId,
+  droppableId: DroppableId,
+|};
+
 export type DragState = {|
   // Id of the currently dragged item
   draggedItemId: ItemId,
   // Source location
   source: DraggableLocation,
   // Dragging mode
-  mode: MovementMode,
+  mode: string,
   // Pending destination location
   destination?: ?DraggableLocation,
   // Last level, while the user moved an item horizontally
   horizontalLevel?: ?number,
   // Combine for nesting operation
-  combine?: Combine,
+  combine?: ?Combine,
 |};
