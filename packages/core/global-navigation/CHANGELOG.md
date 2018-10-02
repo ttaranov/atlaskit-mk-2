@@ -1,5 +1,8 @@
 # @atlaskit/global-navigation
 
+## 4.6.0
+- [minor] Allow both href and onClick for product logo at the same time [34b1c13](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/34b1c13)
+
 ## 4.5.2
 - [patch] Fix issues with tooltips and hover states in items that render as dropdown menus. [ad36064](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ad36064)
 
