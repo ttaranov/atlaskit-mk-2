@@ -64,27 +64,11 @@ const messages: MessagesType<ErrorName> = {
 };
 
 export class MediaViewerError {
-  private _name: ErrorName;
-  private _file?: FileState;
-  private _error?: Error;
-
-  constructor(name: ErrorName, file?: FileState, error?: Error) {
-    this._file = file;
-    this._name = name;
-    this._error = error;
-  }
-
-  get file(): FileState | undefined {
-    return this._file;
-  }
-
-  get errorName(): ErrorName {
-    return this._name;
-  }
-
-  get innerError(): Error | undefined {
-    return this._error;
-  }
+  constructor(
+    readonly errorName: ErrorName,
+    readonly file?: FileState,
+    readonly innerError?: Error,
+  ) {}
 }
 
 export const createError = (
