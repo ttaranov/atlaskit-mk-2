@@ -18,6 +18,9 @@ import {
   ContainerNavigationTheme,
 } from '../ContentNavigation/primitives';
 
+/* NOTE: experimental props use an underscore */
+/* eslint-disable camelcase */
+
 class LayoutManagerWithViewControllerBase extends Component<
   LayoutManagerWithViewControllerProps,
   LayoutManagerWithViewControllerState,

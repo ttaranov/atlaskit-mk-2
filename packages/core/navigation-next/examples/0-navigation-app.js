@@ -17,7 +17,13 @@ import {
   SearchIssuesView,
 } from './shared/routes';
 
-export default class App extends Component<{}, { isDebugEnabled: boolean }> {
+export default class App extends Component<
+  {},
+  {
+    isDebugEnabled: boolean,
+    isFlyoutAvailable: boolean,
+  },
+> {
   state = {
     isDebugEnabled: true,
     isFlyoutAvailable: false,

@@ -25,7 +25,7 @@ type NonStringRef<T> = {
   current: ElementRef<T>,
 } | null;
 
-type ExperimentalFeatureFlags = {
+export type ExperimentalFeatureFlags = {
   /**
     NOTE: This property is experimental and may be removed in a minor release.
 
@@ -53,9 +53,9 @@ export type ConnectedLayoutManagerProps = CollapseListeners & {
   productNavigation: ComponentType<{}>,
   /** Displayed when the user's mouse is over the collapse/expand toggle. */
   collapseToggleTooltipContent?: CollapseToggleTooltipContent,
-  ...ExperimentalFeatureFlags,
 };
 
-export type LayoutManagerProps = ConnectedLayoutManagerProps & {
-  navigationUIController: UIController,
-};
+export type LayoutManagerProps = ConnectedLayoutManagerProps &
+  ExperimentalFeatureFlags & {
+    navigationUIController: UIController,
+  };
