@@ -203,27 +203,20 @@ describe('Uploader', () => {
     expect.assertions(3);
     const {
       mediaStore,
-      createUpload,
       ChunkinatorMock,
-      createFile,
       appendChunksToUpload,
       createFileFromUpload,
     } = setup();
 
     (chunkinator as any) = ChunkinatorMock;
-
-    (MediaStore as any) = jest.fn().mockImplementation(() => ({
-      createUpload,
-      createFile,
-      createFileFromUpload() {
-        expect(appendChunksToUpload).toHaveBeenCalledTimes(2);
-        return createFileFromUpload();
-      },
-      appendChunksToUpload() {
-        expect(createFileFromUpload).toHaveBeenCalledTimes(0);
-        return appendChunksToUpload();
-      },
-    }));
+    mediaStore.createFileFromUpload = () => {
+      expect(appendChunksToUpload).toHaveBeenCalledTimes(2);
+      return createFileFromUpload();
+    };
+    mediaStore.appendChunksToUpload = () => {
+      expect(createFileFromUpload).toHaveBeenCalledTimes(0);
+      return appendChunksToUpload();
+    };
 
     await uploadFile({ content: '' }, mediaStore as MediaStore).deferredFileId;
   });
