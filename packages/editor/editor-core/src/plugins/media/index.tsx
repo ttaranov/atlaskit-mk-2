@@ -38,7 +38,7 @@ export interface MediaOptions {
   allowMediaGroup?: boolean;
   customDropzoneContainer?: HTMLElement;
   customMediaPicker?: CustomMediaPicker;
-  UNSAFE_allowMediaSingleResizing?: boolean;
+  allowResizing?: boolean;
 }
 
 export interface MediaSingleOptions {
@@ -111,9 +111,7 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
                             node={node}
                             containerWidth={widthState.width}
                             lineLength={widthState.lineLength}
-                            isResizable={
-                              options && options.UNSAFE_allowMediaSingleResizing
-                            }
+                            isResizable={options && options.allowResizing}
                             appearance={props.appearance}
                             {...mediaSingleProps}
                           />

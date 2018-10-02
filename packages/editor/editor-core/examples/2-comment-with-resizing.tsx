@@ -15,7 +15,7 @@ export default function Example() {
       media: {
         provider: mediaProvider,
         allowMediaSingle: true,
-        UNSAFE_allowMediaSingleResizing: true,
+        allowResizing: true,
       },
 
       allowLayouts: true,
