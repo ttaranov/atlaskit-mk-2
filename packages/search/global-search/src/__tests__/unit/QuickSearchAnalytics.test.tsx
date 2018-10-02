@@ -139,7 +139,7 @@ const getRecentItems = product =>
 
       it('should trigger globalSearchDrawer', async () => {
         expect(onEventSpy).toBeCalled();
-        const event = onEventSpy.mock.calls[0][0];
+        const event = onEventSpy.mock.calls[1][0];
         validateEvent(
           event,
           getGlobalSearchDrawerEvent({
@@ -151,7 +151,7 @@ const getRecentItems = product =>
 
       it('should trigger show prequery results event ', () => {
         expect(onEventSpy).toBeCalled();
-        const event = onEventSpy.mock.calls[1][0];
+        const event = onEventSpy.mock.calls[2][0];
         validateEvent(
           event,
           getPreQuerySearchResultsEvent(getRecentItems(product)),
@@ -160,7 +160,7 @@ const getRecentItems = product =>
 
       it('should trigger experiment exposure event', () => {
         expect(onEventSpy).toBeCalled();
-        const event = onEventSpy.mock.calls[2][0];
+        const event = onEventSpy.mock.calls[0][0];
         validateEvent(
           event,
           getExperimentExposureEvent({

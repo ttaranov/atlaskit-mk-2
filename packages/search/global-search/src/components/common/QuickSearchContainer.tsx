@@ -40,6 +40,7 @@ export interface Props {
     sessionId: string,
     startTime: number,
   ): Promise<ResultsWithTiming>;
+  getAbTestData(sessionId: string): Promise<ABTest | undefined>;
 
   /**
    * return displayed groups from result groups
@@ -155,18 +156,21 @@ export class QuickSearchContainer extends React.Component<Props, State> {
     }
   };
 
-  fireExperimentExposureEvent = (
-    abTestData: ABTest,
-    searchSessionId: string,
-  ) => {
-    const { createAnalyticsEvent } = this.props;
-
+  fireExperimentExposureEvent = async (searchSessionId: string) => {
+    const { createAnalyticsEvent, getAbTestData, logger } = this.props;
     if (createAnalyticsEvent) {
-      fireExperimentExposureEvent(
-        abTestData,
-        searchSessionId,
-        createAnalyticsEvent,
-      );
+      try {
+        const abTest = await getAbTestData(searchSessionId);
+        if (abTest) {
+          fireExperimentExposureEvent(
+            abTest,
+            searchSessionId,
+            createAnalyticsEvent,
+          );
+        }
+      } catch (e) {
+        logger.safeWarn(LOGGER_NAME, 'error while getting abtest data', e);
+      }
     }
   };
 
@@ -270,8 +274,10 @@ export class QuickSearchContainer extends React.Component<Props, State> {
       });
     }
 
+    this.fireExperimentExposureEvent(this.state.searchSessionId);
+
     try {
-      const { results, abTest } = await this.props.getRecentItems(
+      const { results } = await this.props.getRecentItems(
         this.state.searchSessionId,
       );
       this.setState(
@@ -286,10 +292,6 @@ export class QuickSearchContainer extends React.Component<Props, State> {
             startTime,
           ),
       );
-
-      if (abTest) {
-        this.fireExperimentExposureEvent(abTest, this.state.searchSessionId);
-      }
     } catch (e) {
       this.props.logger.safeError(
         LOGGER_NAME,

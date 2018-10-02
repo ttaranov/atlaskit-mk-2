@@ -147,10 +147,14 @@ describe('QuickSearchContainer', () => {
     };
 
     const getRecentItems = jest.fn<Promise<ResultsWithTiming>>(() =>
-      Promise.resolve({ results: recentItems, abTest: abTest }),
+      Promise.resolve({ results: recentItems }),
+    );
+    const getAbTestData = jest.fn<Promise<ABTest>>(() =>
+      Promise.resolve(abTest),
     );
     const wrapper = mountQuickSearchContainer({
       getRecentItems,
+      getAbTestData,
     });
 
     let globalQuickSearch = wrapper.find(GlobalQuickSearch);

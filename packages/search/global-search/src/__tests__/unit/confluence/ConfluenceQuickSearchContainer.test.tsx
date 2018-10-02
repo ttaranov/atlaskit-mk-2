@@ -94,7 +94,7 @@ describe('ConfluenceQuickSearchContainer', () => {
     });
   });
 
-  it('should return ab test data when getting recent items', async () => {
+  it('should return ab test data', async () => {
     const abTest: ABTest = {
       abTestId: 'abTestId',
       experimentId: 'experimentId',
@@ -113,13 +113,11 @@ describe('ConfluenceQuickSearchContainer', () => {
       },
     });
     const quickSearchContainer = wrapper.find(QuickSearchContainer);
-    const recentItems = await (quickSearchContainer.props() as QuickSearchContainerProps).getRecentItems(
+    const recentItems = await (quickSearchContainer.props() as QuickSearchContainerProps).getAbTestData(
       sessionId,
     );
 
-    expect(recentItems).toMatchObject(
-      expect.objectContaining({ abTest: abTest }),
-    );
+    expect(recentItems).toMatchObject(abTest);
   });
 
   it('should return search result', async () => {

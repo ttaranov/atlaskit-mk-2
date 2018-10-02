@@ -203,29 +203,21 @@ export class JiraQuickSearchContainer extends React.Component<
     );
   };
 
-  getAbTestData(sessionId: string): Promise<ABTest | undefined> {
+  getAbTestData = (sessionId: string): Promise<ABTest | undefined> => {
     return this.props.crossProductSearchClient.getAbTestData(Scope.JiraIssue, {
       sessionId,
     });
-  }
+  };
 
-  getRecentItems = async (sessionId: string): Promise<ResultsWithTiming> => {
-    const resultsPromise: Promise<GenericResultMap> = Promise.all([
+  getRecentItems = (sessionId: string): Promise<ResultsWithTiming> => {
+    return Promise.all([
       this.getJiraRecentItems(sessionId),
       this.getRecentlyInteractedPeople(),
-    ]).then(([jiraItems, people]) => {
-      return { ...jiraItems, people };
-    });
-
-    const [abTest, results] = await Promise.all([
-      this.getAbTestData(sessionId),
-      resultsPromise,
-    ]);
-
-    return {
-      abTest,
-      results: results,
-    };
+    ])
+      .then(([jiraItems, people]) => {
+        return { ...jiraItems, people };
+      })
+      .then(results => ({ results } as ResultsWithTiming));
   };
 
   getSearchResults = (
@@ -296,6 +288,7 @@ export class JiraQuickSearchContainer extends React.Component<
         getSearchResultsComponent={this.getSearchResultsComponent}
         getRecentItems={this.getRecentItems}
         getSearchResults={this.getSearchResults}
+        getAbTestData={this.getAbTestData}
         handleSearchSubmit={this.handleSearchSubmit}
         createAnalyticsEvent={createAnalyticsEvent}
         logger={logger}

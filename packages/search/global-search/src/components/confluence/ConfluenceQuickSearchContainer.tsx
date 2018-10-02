@@ -10,13 +10,10 @@ import {
   CrossProductSearchClient,
   CrossProductSearchResults,
   EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE,
+  ABTest,
 } from '../../api/CrossProductSearchClient';
 import { Scope } from '../../api/types';
-import {
-  Result,
-  ResultsWithTiming,
-  GenericResultMap,
-} from '../../model/Result';
+import { Result, ResultsWithTiming } from '../../model/Result';
 import { PeopleSearchClient } from '../../api/PeopleSearchClient';
 import { SearchScreenCounter } from '../../util/ScreenCounter';
 import {
@@ -229,12 +226,17 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     );
   };
 
-  getRecentItems = async (sessionId: string): Promise<ResultsWithTiming> => {
-    const {
-      confluenceClient,
-      peopleSearchClient,
-      crossProductSearchClient,
-    } = this.props;
+  getAbTestData = (sessionId: string): Promise<ABTest | undefined> => {
+    return this.props.crossProductSearchClient.getAbTestData(
+      Scope.ConfluencePageBlog,
+      {
+        sessionId,
+      },
+    );
+  };
+
+  getRecentItems = (sessionId: string): Promise<ResultsWithTiming> => {
+    const { confluenceClient, peopleSearchClient } = this.props;
 
     const recentActivityPromisesMap = {
       'recent-confluence-items': confluenceClient.getRecentItems(sessionId),
@@ -252,9 +254,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       ),
     );
 
-    const resultsPromise: Promise<{ results: GenericResultMap }> = Promise.all(
-      recentActivityPromises,
-    ).then(
+    return Promise.all(recentActivityPromises).then(
       ([
         recentlyViewedPages,
         recentlyViewedSpaces,
@@ -267,23 +267,6 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         },
       }),
     );
-
-    const abTestPromise = crossProductSearchClient.getAbTestData(
-      Scope.ConfluencePageBlog,
-      {
-        sessionId,
-      },
-    );
-
-    const [abTest, results] = await Promise.all([
-      abTestPromise,
-      resultsPromise,
-    ]);
-
-    return {
-      abTest,
-      results: results.results,
-    };
   };
 
   getSearchResultsComponent = ({
@@ -338,6 +321,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         getSearchResultsComponent={this.getSearchResultsComponent}
         getRecentItems={this.getRecentItems}
         getSearchResults={this.getSearchResults}
+        getAbTestData={this.getAbTestData}
         handleSearchSubmit={this.handleSearchSubmit}
         isSendSearchTermsEnabled={isSendSearchTermsEnabled}
         getDisplayedResults={sliceResults}
