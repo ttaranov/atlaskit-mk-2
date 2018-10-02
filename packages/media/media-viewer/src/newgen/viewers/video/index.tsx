@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { FileItem, Context } from '@atlaskit/media-core';
+import { Context, ProcessedFileState } from '@atlaskit/media-core';
 import { constructAuthTokenUrl } from '../../utils';
 import { Outcome, MediaViewerFeatureFlags } from '../../domain';
 import { Spinner } from '../../loading';
@@ -9,9 +9,10 @@ import { getFeatureFlag } from '../../utils/getFeatureFlag';
 import { isIE } from '../../utils/isIE';
 import { ErrorMessage, createError, MediaViewerError } from '../../error';
 import { renderDownloadButton } from '../../domain/download';
+import { getArtifactUrl } from '@atlaskit/media-store';
 
 export type Props = Readonly<{
-  item: FileItem;
+  item: ProcessedFileState;
   context: Context;
   collectionName?: string;
   featureFlags?: MediaViewerFeatureFlags;
@@ -84,7 +85,7 @@ export class VideoViewer extends React.Component<Props, State> {
       });
     } catch (err) {
       this.setState({
-        src: Outcome.failed(createError('previewFailed', item, err)),
+        src: Outcome.failed(createError('previewFailed', err, item)),
       });
     }
   }
@@ -95,22 +96,14 @@ export class VideoViewer extends React.Component<Props, State> {
   }
 }
 
-function isHDAvailable(fileItem: FileItem): boolean {
-  return !!(
-    fileItem.details &&
-    fileItem.details.artifacts &&
-    fileItem.details.artifacts[hdArtifact] &&
-    fileItem.details.artifacts[hdArtifact].url
-  );
+function isHDAvailable(file: ProcessedFileState): boolean {
+  return !!getArtifactUrl(file.artifacts, hdArtifact);
 }
 
-function getVideoArtifactUrl(fileItem: FileItem, preferHd?: boolean) {
-  const artifact = preferHd ? hdArtifact : sdArtifact;
-
-  return (
-    fileItem.details &&
-    fileItem.details.artifacts &&
-    fileItem.details.artifacts[artifact] &&
-    fileItem.details.artifacts[artifact].url
-  );
+function getVideoArtifactUrl(
+  file: ProcessedFileState,
+  preferHd?: boolean,
+): string | undefined {
+  const artifactName = preferHd ? hdArtifact : sdArtifact;
+  return getArtifactUrl(file.artifacts, artifactName);
 }
