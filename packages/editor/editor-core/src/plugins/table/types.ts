@@ -25,7 +25,7 @@ export interface PluginConfig {
 export interface TablePluginState {
   dangerColumns: number[];
   dangerRows: number[];
-  hoverDecoration: DecorationSet;
+  decorationSet: DecorationSet;
   pluginConfig: PluginConfig;
   editorHasFocus?: boolean;
   // context menu button is positioned relatively to this DOM node.
@@ -52,4 +52,8 @@ export interface ColumnResizingPlugin {
   handleWidth?: number;
   cellMinWidth?: number;
   lastColumnResizable?: boolean;
+}
+
+export const enum TableDecorations {
+  CONTROLS_HOVER,
 }
