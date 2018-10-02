@@ -1,5 +1,8 @@
 # @atlaskit/media-viewer
 
+## 21.0.4
+- [patch] Use context.getFile in MediaViewer NG [0056ef8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0056ef8)
+
 ## 21.0.3
 - [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
   - @atlaskit/docs@5.0.8
