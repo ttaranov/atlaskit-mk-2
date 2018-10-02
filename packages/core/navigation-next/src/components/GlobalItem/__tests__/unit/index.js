@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { shallow } from 'enzyme';
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import { AtlassianIcon } from '@atlaskit/logo';
 
 import InteractionStateManager from '../../../InteractionStateManager';
 import GlobalItem, { GlobalItemBase } from '../../index';
