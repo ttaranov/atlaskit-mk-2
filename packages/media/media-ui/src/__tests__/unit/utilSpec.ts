@@ -1,0 +1,131 @@
+declare var global: any;
+
+import {
+  mockFileReader,
+  mockFileReaderWithError,
+  unmockFileReader,
+  mockFileReaderError,
+} from '../../testHelpers/mockFileReader';
+
+import {
+  dataURItoFile,
+  fileToArrayBuffer,
+  fileToDataURI,
+  getFileInfo,
+  loadImage,
+} from '../../util';
+
+describe('Image Meta Data Util', () => {
+  describe('dataURItoFile()', () => {
+    let tinyPngFile: File;
+
+    beforeEach(() => {
+      tinyPngFile = dataURItoFile('data:image/png;base64,', 'filename.png');
+    });
+
+    it('should preserve mimeType', () => {
+      expect(tinyPngFile.type).toEqual('image/png');
+    });
+
+    it('should preserve filename', () => {
+      expect(tinyPngFile.name).toEqual('filename.png');
+    });
+
+    it('should still convert bad dataURI to File', () => {
+      const file = dataURItoFile('very-bad-data');
+      expect(file).toBeInstanceOf(File);
+    });
+
+    it('should throw message on empty dataURI', () => {
+      expect(() => dataURItoFile('')).toThrowError('dataURI not found');
+    });
+  });
+
+  describe('fileToDataURI()', () => {
+    let fileReader: any;
+
+    beforeEach(() => {
+      fileReader = mockFileReader('some-result');
+    });
+
+    afterEach(() => {
+      unmockFileReader();
+    });
+
+    it('should convert File to dataURI', async () => {
+      const mockFile = new File([], '');
+      const dataURI = await fileToDataURI(mockFile);
+      expect(fileReader.addEventListener).toHaveBeenCalledTimes(2);
+      expect(fileReader.readAsDataURL).toHaveBeenCalledWith(mockFile);
+      expect(dataURI).toEqual('some-result');
+    });
+
+    it('should reject if error', async () => {
+      mockFileReaderWithError();
+
+      const mockFile = new File([], '');
+      await expect(fileToDataURI(mockFile)).rejects.toBe(mockFileReaderError);
+    });
+
+    it('should still convert invalid File to dataURI', async () => {
+      const badFile = new File([], 'filename', { type: 'bad/type' });
+      const dataURI = await fileToDataURI(badFile);
+      expect(typeof dataURI).toBe('string');
+    });
+  });
+
+  describe('fileToArrayBuffer()', () => {
+    const file = dataURItoFile('some-data');
+
+    it('should return a Uint8Array with data from a file with data', async () => {
+      const array = await fileToArrayBuffer(file);
+      expect(array.length).toBeGreaterThan(0);
+    });
+
+    it('should return an empty array from an empty file', async () => {
+      const emptyFile = new File([], 'some-filename', { type: 'some-type' });
+      const array = await fileToArrayBuffer(emptyFile);
+      expect(array).toHaveLength(0);
+    });
+  });
+
+  describe('getFileInfo()', () => {
+    const tinyPngFile = new File([], 'filename.png', { type: 'image/png' });
+
+    it('should return a FileInfo structure with src when passed a File', async () => {
+      const fileInfo = await getFileInfo(tinyPngFile);
+      const dataURI = await fileToDataURI(tinyPngFile);
+      expect(fileInfo.file).toEqual(tinyPngFile);
+      expect(fileInfo.src).toEqual(dataURI);
+    });
+
+    it('should use passed src instead of generating', async () => {
+      const fileInfo = await getFileInfo(tinyPngFile, 'some-dataURI');
+      expect(fileInfo.file).toEqual(tinyPngFile);
+      expect(fileInfo.src).toEqual('some-dataURI');
+    });
+  });
+
+  describe('loadImage', () => {
+    let globalImage: any;
+
+    beforeEach(() => {
+      class MockImage extends global.Image {
+        constructor() {
+          super();
+          setImmediate(() => this.onload());
+        }
+      }
+      global.Image = MockImage;
+    });
+
+    afterEach(() => {
+      global.Image = globalImage;
+    });
+
+    it('should return an image async', async () => {
+      const img = await loadImage('some-src');
+      expect(img.src).toEqual('some-src');
+    });
+  });
+});
