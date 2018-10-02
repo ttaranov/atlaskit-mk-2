@@ -99,7 +99,7 @@ export class RemoteUploadActivity implements WsActivity {
       data.data.uploadId === this.uploadId
     );
 
-    return shouldProcess || shouldProcessAlt || isNotifyMetadata(data);
+    return shouldProcess || shouldProcessAlt;
   }
 
   private notifyActivityStarted(): void {

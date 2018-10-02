@@ -186,8 +186,6 @@ export const importFilesFromRecentFiles = (
   store.dispatch(getPreview(uploadId, file, RECENTS_COLLECTION));
 };
 
-const idsPreviewNotified: string[] = [];
-
 export const importFilesFromRemoteService = (
   selectedUploadFile: SelectedUploadFile,
   tenant: Tenant,
@@ -207,12 +205,6 @@ export const importFilesFromRemoteService = (
     uploadId,
     (event, payload) => {
       if (event === 'NotifyMetadata') {
-        // We don't want to notify "upload-preview-update" multiple times for the same file
-        if (idsPreviewNotified.indexOf(file.id) > -1) {
-          return;
-        }
-        idsPreviewNotified.push(file.id);
-
         const preview = getPreviewFromMetadata(
           (payload as WsNotifyMetadata).metadata,
         );
