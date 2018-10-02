@@ -38,34 +38,31 @@ describe(name, () => {
 
       // This list should be sorted alphabetically.
       const expected = [
-        'archive',
-        'audio',
-        'document',
-        'excel-spreadsheet',
-        'executable',
-        'folder',
-        'generic',
-        'gif',
-        'google-doc',
-        'google-form',
-        'google-sheet',
-        'google-slide',
-        'image',
-        'pdf-document',
-        'powerpoint-presentation',
-        'presentation',
-        'sketch',
-        'source-code',
-        'spreadsheet',
-        'video',
-        'word-document',
+        'blog',
+        'branch',
+        'bug',
+        'calendar',
+        'changes',
+        'code',
+        'commit',
+        'epic',
+        'improvement',
+        'incident',
+        'issue',
+        'new-feature',
+        'page',
+        'problem',
+        'pull-request',
+        'question',
+        'story',
+        'subtask',
+        'task',
       ];
 
       const expectedPaths = expected
         .map(a => [
           path.join(__dirname, '../../../../glyph', `${a}/16.js`),
           path.join(__dirname, '../../../../glyph', `${a}/24.js`),
-          path.join(__dirname, '../../../../glyph', `${a}/48.js`),
         ])
         .reduce((accumulater, current) => [...accumulater, ...current], []);
 
