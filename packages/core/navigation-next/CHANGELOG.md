@@ -1,5 +1,8 @@
 # @atlaskit/navigation-next
 
+## 3.15.3
+- [patch] Update global nav item click analytics to use actionSubjectId rather than the itemId attribute [56a3ada](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/56a3ada)
+
 ## 3.15.2
 - [patch] Fix misalignment of tooltips for small global items [2c48609](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2c48609)
 
