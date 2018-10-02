@@ -18,11 +18,16 @@ const identifier = {
   collectionName: 'some-collection',
 };
 
+const makewFakeContext = (observable: Observable<any>) =>
+  ({
+    file: {
+      getFileState: jest.fn(() => observable),
+    },
+  } as any);
+
 describe('<ItemViewer />', () => {
   it('shows an indicator while loading', () => {
-    const context = {
-      getFile: () => Observable.empty(),
-    } as any;
+    const context = makewFakeContext(Observable.empty());
     const el = mount(
       <ItemViewer previewCount={0} context={context} identifier={identifier} />,
     );
@@ -30,9 +35,9 @@ describe('<ItemViewer />', () => {
   });
 
   it('shows a generic error on unkown error', () => {
-    const context = {
-      getFile: () => Observable.throw('something bad happened!'),
-    } as any;
+    const context = makewFakeContext(
+      Observable.throw('something bad happened!'),
+    );
     const el = mount(
       <ItemViewer previewCount={0} context={context} identifier={identifier} />,
     );
@@ -44,14 +49,13 @@ describe('<ItemViewer />', () => {
   });
 
   it('should show the image viewer if media type is image', () => {
-    const context = {
-      getFile: () =>
-        Observable.of({
-          id: '123',
-          mediaType: 'image',
-          status: 'processed',
-        }),
-    } as any;
+    const context = makewFakeContext(
+      Observable.of({
+        id: '123',
+        mediaType: 'image',
+        status: 'processed',
+      }),
+    );
     const el = mount(
       <ItemViewer previewCount={0} context={context} identifier={identifier} />,
     );
@@ -64,9 +68,7 @@ describe('<ItemViewer />', () => {
   });
 
   it('should should error and download button if processing Status failed', () => {
-    const context = {
-      getFile: () => Observable.of({ status: 'error' }),
-    } as any;
+    const context = makewFakeContext(Observable.of({ status: 'error' }));
     const el = mount(
       <ItemViewer previewCount={0} context={context} identifier={identifier} />,
     );
@@ -80,14 +82,13 @@ describe('<ItemViewer />', () => {
   });
 
   it('should show the video viewer if media type is video', () => {
-    const context = {
-      getFile: () =>
-        Observable.of({
-          id: '123',
-          mediaType: 'video',
-          status: 'processed',
-        }),
-    } as any;
+    const context = makewFakeContext(
+      Observable.of({
+        id: '123',
+        mediaType: 'video',
+        status: 'processed',
+      }),
+    );
     const el = mount(
       <ItemViewer previewCount={0} context={context} identifier={identifier} />,
     );
@@ -100,14 +101,13 @@ describe('<ItemViewer />', () => {
   });
 
   it('should show the audio viewer if media type is audio', () => {
-    const context = {
-      getFile: () =>
-        Observable.of({
-          id: '123',
-          mediaType: 'audio',
-          status: 'processed',
-        }),
-    } as any;
+    const context = makewFakeContext(
+      Observable.of({
+        id: '123',
+        mediaType: 'audio',
+        status: 'processed',
+      }),
+    );
     const el = mount(
       <ItemViewer previewCount={0} context={context} identifier={identifier} />,
     );
@@ -120,14 +120,13 @@ describe('<ItemViewer />', () => {
   });
 
   it('should show the document viewer if media type is document', () => {
-    const context = {
-      getFile: () =>
-        Observable.of({
-          id: '123',
-          mediaType: 'doc',
-          status: 'processed',
-        }),
-    } as any;
+    const context = makewFakeContext(
+      Observable.of({
+        id: '123',
+        mediaType: 'doc',
+        status: 'processed',
+      }),
+    );
     const el = mount(
       <ItemViewer previewCount={0} context={context} identifier={identifier} />,
     );
@@ -140,14 +139,13 @@ describe('<ItemViewer />', () => {
   });
 
   it('should should error and download button if file is unsupported', () => {
-    const context = {
-      getFile: () =>
-        Observable.of({
-          id: '123',
-          mediaType: 'unknown',
-          status: 'processed',
-        }),
-    } as any;
+    const context = makewFakeContext(
+      Observable.of({
+        id: '123',
+        mediaType: 'unknown',
+        status: 'processed',
+      }),
+    );
     const el = mount(
       <ItemViewer previewCount={0} context={context} identifier={identifier} />,
     );
@@ -160,21 +158,19 @@ describe('<ItemViewer />', () => {
     expect(errorMessage.find(Button)).toHaveLength(1);
   });
 
-  it('MSW-720: passes the collectionName to getFile', () => {
-    const context = {
-      getFile: jest.fn(() =>
-        Observable.of({
-          id: '123',
-          mediaType: 'image',
-          status: 'processed',
-        }),
-      ),
-    } as any;
+  it('MSW-720: passes the collectionName to getFileState', () => {
+    const context = makewFakeContext(
+      Observable.of({
+        id: '123',
+        mediaType: 'image',
+        status: 'processed',
+      }),
+    );
     const el = mount(
       <ItemViewer previewCount={0} context={context} identifier={identifier} />,
     );
     el.update();
-    expect(context.getFile).toHaveBeenCalledWith('some-id', {
+    expect(context.file.getFileState).toHaveBeenCalledWith('some-id', {
       collectionName: 'some-collection',
     });
   });
@@ -182,14 +178,13 @@ describe('<ItemViewer />', () => {
   describe('Subscription', () => {
     it('unsubscribes from the provider when unmounted', () => {
       const release = jest.fn();
-      const context = {
-        getFile: () =>
-          Observable.of({
-            id: '123',
-            mediaType: 'unknown',
-            status: 'processed',
-          }),
-      } as any;
+      const context = makewFakeContext(
+        Observable.of({
+          id: '123',
+          mediaType: 'unknown',
+          status: 'processed',
+        }),
+      );
 
       const el = mount(
         <ItemViewer
@@ -207,15 +202,13 @@ describe('<ItemViewer />', () => {
 
     it('resubscribes to the provider when the data property value is changed', () => {
       const identifierCopy = { ...identifier };
-      const context = {
-        getFile: jest.fn(() =>
-          Observable.of({
-            id: '123',
-            mediaType: 'unknown',
-            status: 'processed',
-          }),
-        ),
-      } as any;
+      const context = makewFakeContext(
+        Observable.of({
+          id: '123',
+          mediaType: 'unknown',
+          status: 'processed',
+        }),
+      );
       const el = mount(
         <ItemViewer
           previewCount={0}
@@ -224,11 +217,11 @@ describe('<ItemViewer />', () => {
         />,
       );
 
-      expect(context.getFile).toHaveBeenCalledTimes(1);
+      expect(context.file.getFileState).toHaveBeenCalledTimes(1);
 
       // if the values stay the same, we will not resubscribe
       el.setProps({ context, identifier: identifierCopy });
-      expect(context.getFile).toHaveBeenCalledTimes(1);
+      expect(context.file.getFileState).toHaveBeenCalledTimes(1);
 
       // ... but if the identifier change we will resubscribe
       const identifier2 = {
@@ -236,33 +229,30 @@ describe('<ItemViewer />', () => {
         id: 'some-other-id',
       };
       el.setProps({ context, identifier: identifier2 });
-      expect(context.getFile).toHaveBeenCalledTimes(2);
+      expect(context.file.getFileState).toHaveBeenCalledTimes(2);
 
       // if the context changes, we will also resubscribe
-      const newContext = {
-        getFile: jest.fn(() =>
-          Observable.of({
-            id: '123',
-            mediaType: 'unknown',
-            status: 'processed',
-          }),
-        ),
-      } as any;
+      const newContext = makewFakeContext(
+        Observable.of({
+          id: '123',
+          mediaType: 'unknown',
+          status: 'processed',
+        }),
+      );
 
       el.setProps({ context: newContext, identifier: identifier2 });
-      expect(context.getFile).toHaveBeenCalledTimes(2);
-      expect(newContext.getFile).toHaveBeenCalledTimes(1);
+      expect(context.file.getFileState).toHaveBeenCalledTimes(2);
+      expect(newContext.file.getFileState).toHaveBeenCalledTimes(1);
     });
 
     it('should return to PENDING state when resets', () => {
-      const context = {
-        getFile: () =>
-          Observable.of({
-            id: '123',
-            mediaType: 'unknown',
-            status: 'processed',
-          }),
-      } as any;
+      const context = makewFakeContext(
+        Observable.of({
+          id: '123',
+          mediaType: 'unknown',
+          status: 'processed',
+        }),
+      );
       const el = mount(
         <ItemViewer
           previewCount={0}
@@ -281,7 +271,7 @@ describe('<ItemViewer />', () => {
       // since the test is executed synchronously
       // let's prevent the second call to getFile from immediately resolving and
       // updating the state to SUCCESSFUL before we run the assertion.
-      context.getFile = () => Observable.never();
+      context.file.getFileState = () => Observable.never();
 
       el.setProps({ context, identifier: identifier2 });
       el.update();

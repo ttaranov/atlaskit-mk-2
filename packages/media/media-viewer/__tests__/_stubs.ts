@@ -91,7 +91,7 @@ export class Stubs {
       getBlobService: jest.fn(() => blobService || Stubs.blobService()),
       file: {
         downloadBinary: jest.fn(),
-        getFileState,
+        getFileState: jest.fn(getFileState || (() => Observable.empty())),
         upload: jest.fn(),
       } as any,
     };
@@ -108,7 +108,7 @@ export interface CreateContextOptions {
 }
 
 export const createContext = (options?: CreateContextOptions) => {
-  const defaultOptions = {
+  const defaultOptions: CreateContextOptions = {
     subject: undefined,
     provider: undefined,
     authPromise: Promise.resolve<Auth>({

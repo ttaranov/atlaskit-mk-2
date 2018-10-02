@@ -130,8 +130,10 @@ export class ItemViewer extends React.Component<Props, State> {
       // MS-822
       // Once these issues have been fixed, we can make this sequence synchronous
       const { context, identifier } = props;
-      this.subscription = context
-        .getFile(identifier.id, { collectionName: identifier.collectionName })
+      this.subscription = context.file
+        .getFileState(identifier.id, {
+          collectionName: identifier.collectionName,
+        })
         .subscribe({
           next: file => {
             this.setState({
