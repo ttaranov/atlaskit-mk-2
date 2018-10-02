@@ -2,7 +2,7 @@ import { Store, Dispatch, Middleware } from 'redux';
 import { GetPreviewAction, isGetPreviewAction } from '../actions/getPreview';
 import { State } from '../domain';
 import { sendUploadEvent } from '../actions/sendUploadEvent';
-import { getPreviewFromMetadata } from '../../domain/preview';
+import { getPreviewFromMetadata, NonImagePreview } from '../../domain/preview';
 
 export default function(): Middleware {
   return store => (next: Dispatch<State>) => action => {
@@ -27,12 +27,28 @@ export async function getPreview(
           // We need to wait for the next tick since rxjs might call "next" before returning from "subscribe"
           setImmediate(() => subscription.unsubscribe());
 
-          // TODO: check if we should still fire 'upload-preview-update' with empty preview
           if (mediaType === 'image') {
             const metadata = await userContext.getImageMetadata(file.id, {
               collection,
             });
             const preview = getPreviewFromMetadata(metadata);
+
+            store.dispatch(
+              sendUploadEvent({
+                event: {
+                  name: 'upload-preview-update',
+                  data: {
+                    file,
+                    preview,
+                  },
+                },
+                uploadId,
+              }),
+            );
+          } else {
+            const preview: NonImagePreview = {
+              file: state.preview ? state.preview.blob : undefined,
+            };
 
             store.dispatch(
               sendUploadEvent({

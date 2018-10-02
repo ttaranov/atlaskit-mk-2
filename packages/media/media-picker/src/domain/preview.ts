@@ -1,7 +1,7 @@
 import { ImageMetadata } from '@atlaskit/media-store';
 
 export type NonImagePreview = {
-  readonly file: Blob;
+  readonly file?: Blob;
 };
 export type ImagePreview = NonImagePreview & {
   readonly dimensions: {
@@ -15,17 +15,20 @@ export const isImagePreview = (preview: Preview): preview is ImagePreview =>
 
 export const getPreviewFromMetadata = (metadata: ImageMetadata): Preview => {
   // It could happen when the file type is not image. This is the way we communicate it to integrators
-  if (!metadata.original) {
-    return {
-      src: '',
-    };
+  if (
+    !metadata.original ||
+    !metadata.original.width ||
+    !metadata.original.height
+  ) {
+    return {};
   }
 
-  return {
+  const preview: ImagePreview = {
     dimensions: {
       width: metadata.original.width,
       height: metadata.original.height,
     },
-    src: metadata.original.url || '',
   };
+
+  return preview;
 };
