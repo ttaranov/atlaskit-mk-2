@@ -19,16 +19,18 @@ export interface ClientOptions {
   TEMPORARY_resolver?: TemporaryResolver;
 }
 
-export type MapDefinitionIdToUrl = {
+export type MapDefinitionIdToUrls = {
   [k: string]: Array<string>;
 };
 
+export type CardRecord = {
+  uuid: string;
+  fn: (state: ObjectState) => void;
+};
+
 // map definition id to trigger update function
-export type MapUrlToUpdateFn = {
-  [k: string]: Array<{
-    uuid: string;
-    fn: (state: ObjectState) => void;
-  }>;
+export type MapUrlToCardRecords = {
+  [k: string]: Array<CardRecord>;
 };
 
 /**
@@ -42,16 +44,16 @@ export type MapUrlToUpdateFn = {
  */
 
 export const getUrlsNotTiedToDefinitionId = (
-  defIdToUrls: MapDefinitionIdToUrl,
-  urlToUpdFn: MapUrlToUpdateFn,
+  defIdToUrls: MapDefinitionIdToUrls,
+  urlToCardRecords: MapUrlToCardRecords,
 ): Array<string> => {
   const urlsBoundToDefId = Object.keys(defIdToUrls)
     .map(defId => defIdToUrls[defId])
     .reduce((res: string[], urls: string[]) => res.concat(urls), []);
-  return inFstButNotInSnd(Object.keys(urlToUpdFn), urlsBoundToDefId);
+  return inFstButNotInSnd(Object.keys(urlToCardRecords), urlsBoundToDefId);
 };
 
-const onlyWithin = (e: any): boolean =>
+const onlyPositiveResponses = (e: string): boolean =>
   ['resolving', 'resolved', 'unauthorized', 'forbidden'].indexOf(e) > -1;
 
 export class Client {
@@ -59,15 +61,15 @@ export class Client {
 
   private readonly serviceUrl: string;
   private readonly temporaryResolver?: TemporaryResolver;
-  private readonly mapDefinitionIdToUrl: MapDefinitionIdToUrl;
-  private readonly mapUrlToUpdateFn: MapUrlToUpdateFn;
+  private readonly mapDefinitionIdToUrls: MapDefinitionIdToUrls;
+  private readonly mapUrlToCardRecords: MapUrlToCardRecords;
 
   constructor(options: ClientOptions = {}) {
     const { serviceUrl = Client.SERVICE_URL } = options;
     this.serviceUrl = serviceUrl;
     this.temporaryResolver = options.TEMPORARY_resolver;
-    this.mapDefinitionIdToUrl = {};
-    this.mapUrlToUpdateFn = {};
+    this.mapDefinitionIdToUrls = {};
+    this.mapUrlToCardRecords = {};
   }
 
   fetchData(url: string): Observable<ObjectState> {
@@ -75,15 +77,17 @@ export class Client {
       serviceUrl: this.serviceUrl,
       objectUrl: url,
     };
-    return !!this.temporaryResolver
-      ? merge(
-          createTemporaryResolverObservable(url, this.temporaryResolver),
-          createObjectResolverServiceObservable(payload),
-        ).pipe(
-          filter(state => onlyWithin(state.status)),
-          distinctUntilChanged((p, n) => p.status === n.status),
-        )
-      : createObjectResolverServiceObservable(payload);
+    if (this.temporaryResolver) {
+      return merge(
+        createTemporaryResolverObservable(url, this.temporaryResolver),
+        createObjectResolverServiceObservable(payload),
+      ).pipe(
+        filter(state => onlyPositiveResponses(state.status)),
+        distinctUntilChanged((p, n) => p.status === n.status),
+      );
+    } else {
+      return createObjectResolverServiceObservable(payload);
+    }
   }
 
   /**
@@ -102,16 +106,15 @@ export class Client {
     uuid: string,
     fn: (state: ObjectState) => void,
   ): Client {
-    if (!this.mapUrlToUpdateFn[url]) {
-      this.mapUrlToUpdateFn[url] = [];
-    }
-    this.mapUrlToUpdateFn[url].push({ uuid, fn });
+    this.mapUrlToCardRecords[url] = (
+      this.mapUrlToCardRecords[url] || []
+    ).concat([{ uuid, fn }]);
     return this;
   }
 
   deregister(url: string, uuid: string): Client {
-    if (this.mapUrlToUpdateFn[url]) {
-      this.mapUrlToUpdateFn[url] = this.mapUrlToUpdateFn[url].filter(
+    if (this.mapUrlToCardRecords[url]) {
+      this.mapUrlToCardRecords[url] = this.mapUrlToCardRecords[url].filter(
         rec => rec.uuid !== uuid,
       );
     }
@@ -132,16 +135,16 @@ export class Client {
    * @param cb optional because if it is there, we run the action, not every single time.
    */
   get(url: string, definitionIdFromCard?: string, cb?: () => void) {
-    if (!this.mapUrlToUpdateFn[url]) {
+    if (!this.mapUrlToCardRecords[url]) {
       throw new Error('Please, register a smart card before calling get()');
     }
     this.fetchData(url).subscribe(orsResponse => {
       // If a card was good (has definitionId) but then fetch errored for it,
       // we need to remove it from the map, so that later on, on retry, we could find cards that need to be updated
       if (definitionIdFromCard && orsResponse.status === 'errored') {
-        this.mapDefinitionIdToUrl[
+        this.mapDefinitionIdToUrls[
           definitionIdFromCard
-        ] = this.mapDefinitionIdToUrl[definitionIdFromCard].filter(
+        ] = this.mapDefinitionIdToUrls[definitionIdFromCard].filter(
           u => u !== url,
         );
       }
@@ -153,18 +156,17 @@ export class Client {
         // we can assign the card's url to the definitionId
         // Later we can map this url to find an update function using `mapUrlToUpdateFn`
         if (!definitionIdFromCard) {
-          if (!this.mapDefinitionIdToUrl[orsResponse.definitionId]) {
-            this.mapDefinitionIdToUrl[orsResponse.definitionId] = [];
-          }
-          this.mapDefinitionIdToUrl[orsResponse.definitionId].push(url);
+          this.mapDefinitionIdToUrls[orsResponse.definitionId] = (
+            this.mapDefinitionIdToUrls[orsResponse.definitionId] || []
+          ).concat([url]);
         }
 
-        const urls = this.mapDefinitionIdToUrl[orsResponse.definitionId];
+        const urls = this.mapDefinitionIdToUrls[orsResponse.definitionId];
 
         // among all the urls find the one, for that particular card.
         urls
           .filter(u => u === url)
-          .map(u => this.mapUrlToUpdateFn[u])
+          .map(u => this.mapUrlToCardRecords[u])
           .forEach(x => x.forEach(rec => rec.fn(orsResponse)));
 
         // this cb is here mostly because we want to run an action
@@ -173,14 +175,14 @@ export class Client {
           return cb();
         }
       } else {
-        this.mapUrlToUpdateFn[url].forEach(rec => rec.fn(orsResponse));
+        this.mapUrlToCardRecords[url].forEach(rec => rec.fn(orsResponse));
       }
     });
   }
 
   reload(url: string, definitionIdFromCard?: string): void {
     if (definitionIdFromCard) {
-      this.mapDefinitionIdToUrl[definitionIdFromCard].forEach(u =>
+      this.mapDefinitionIdToUrls[definitionIdFromCard].forEach(u =>
         this.get(u, definitionIdFromCard),
       );
     } else {
@@ -189,8 +191,8 @@ export class Client {
         // we clicked "Try again" on one of them and succeeded.
         // now we need to reload the cards that do not have a definitionId.
         getUrlsNotTiedToDefinitionId(
-          this.mapDefinitionIdToUrl,
-          this.mapUrlToUpdateFn,
+          this.mapDefinitionIdToUrls,
+          this.mapUrlToCardRecords,
         ).forEach(url => this.get(url));
       });
     }
