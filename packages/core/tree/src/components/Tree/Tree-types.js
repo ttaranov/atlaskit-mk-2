@@ -35,6 +35,7 @@ export type Props = {|
   offsetPerLevel: number,
   /** Boolean to turn on drag&drop re-ordering on the tree */
   isDragEnabled: boolean,
+  /** Boolean to turn on hovering while dragging */
   isNestingEnabled: boolean,
 |};
 

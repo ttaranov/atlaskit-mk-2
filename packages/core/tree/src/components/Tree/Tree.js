@@ -139,7 +139,7 @@ export default class Tree extends Component<Props, State> {
         horizontalLevel,
         mode,
       } = this.dragState;
-      // We only change the if it's dragged by keyboard or just dropped
+      // We only update the path when it's dragged by keyboard or drop is animated
       if (mode === 'SNAP' || snapshot.isDropAnimating) {
         if (destination) {
           // Between two items

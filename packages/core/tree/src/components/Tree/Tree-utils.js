@@ -11,8 +11,7 @@ import type {
 } from '../../types';
 
 /*
-    Translates a drag&drop movement from a purely index based flat list style to tree-friendly `TreePosition` data structure 
-    to make it available in the onDragEnd callback.  
+    Translates a drag&drop movement from an index based position to a relative (parent, index) position
 */
 export const calculateFinalDropPositions = (
   tree: TreeData,
