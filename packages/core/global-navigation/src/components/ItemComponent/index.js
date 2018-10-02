@@ -33,10 +33,15 @@ class DropdownItem extends Component<DropdownItemProps, DropdownItemState> {
   }
 }
 
-export default ({
-  dropdownItems: DropdownItems,
-  ...itemProps
-}: GlobalNavItemData) => {
+export default (props: GlobalNavItemData) => {
+  const {
+    dropdownItems: DropdownItems,
+    itemComponent: CustomItemComponent,
+    ...itemProps
+  } = props;
+  if (CustomItemComponent) {
+    return <CustomItemComponent {...itemProps} />;
+  }
   if (DropdownItems) {
     return (
       <DropdownItem
