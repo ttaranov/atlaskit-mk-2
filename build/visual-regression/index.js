@@ -68,4 +68,6 @@ if (
     console.error(err.toString());
     process.exit(1);
   });
+} else {
+  console.log('skipping vr test since the branch includes skip-vr');
 }
