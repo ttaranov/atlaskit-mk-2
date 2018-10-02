@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 82.2.12
+- [patch] ED-5331 Fixed code-block gap cursor bug and editor crashing after several quick blurs [203eb2c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/203eb2c)
+
 ## 82.2.11
 - [patch] Update i18n example to not load all locales [0c66f75](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c66f75)
 
