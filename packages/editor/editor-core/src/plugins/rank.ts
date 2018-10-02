@@ -121,6 +121,7 @@ export default {
     'blockCard',
   ],
   marks: [
+    'indent',
     'link',
     'confluenceInlineComment',
     'em',
@@ -129,7 +130,6 @@ export default {
     'action',
     'subsup',
     'underline',
-    'indent',
     'code',
     'mentionQuery',
     'typeAheadQuery',

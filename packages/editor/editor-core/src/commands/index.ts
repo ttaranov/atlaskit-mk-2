@@ -6,6 +6,7 @@ import {
   Transaction,
 } from 'prosemirror-state';
 import { EditorView } from 'prosemirror-view';
+import { findParentNode, replaceParentNodeOfType } from 'prosemirror-utils';
 import {
   canMoveDown,
   canMoveUp,
@@ -13,6 +14,7 @@ import {
   atTheBeginningOfBlock,
   isTableCell,
 } from '../utils';
+import { markActive } from '../plugins/text-formatting/utils';
 
 export function preventDefault(): Command {
   return function(state, dispatch) {
@@ -22,7 +24,34 @@ export function preventDefault(): Command {
 
 export function toggleIndent(): Command {
   return function(state, dispatch) {
-    console.log('toggleIndent');
+    const node = findParentNode(node => node.type.name === 'paragraph')(
+      state.selection,
+    );
+    console.log(1);
+
+    if (!node) {
+      return true;
+    }
+
+    if (markActive(state, state.schema.marks.indent.create())) {
+      console.log('on');
+      state.tr.removeMark(
+        node.pos,
+        node.pos + node.node.nodeSize,
+        state.schema.marks.indent.create(),
+      );
+    }
+
+    dispatch(
+      state.tr.replaceWith(
+        node.pos,
+        node.pos + node.node.nodeSize,
+        state.schema.nodes.paragraph.create({}, state.schema.text('Node'), [
+          state.schema.marks.indent.create(),
+        ]),
+      ),
+    );
+
     return true;
   };
 }
