@@ -36,7 +36,7 @@
   "devDependencies": {
     "@atlaskit/build-utils": "^2.0.0",
     "@atlaskit/button": "^9.0.8",
-    "@atlaskit/dynamic-table": "10.0.12",
+    "@atlaskit/dynamic-table": "^10.0.12",
     "@atlaskit/docs": "^5.0.6",
     "@atlaskit/field-text": "^7.0.10",
     "@atlaskit/icon-build-process": "^0.0.0",
