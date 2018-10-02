@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
 import { ProviderFactory } from '@atlaskit/editor-common';
-import { FabricElementsAnalyticsContext } from '@atlaskit/analytics-namespaced-context';
+import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { ReactNodeView } from '../../../nodeviews';
 import TaskItem from '../ui/Task';
 import { PortalProviderAPI } from '../../../ui/PortalProvider';
@@ -39,16 +39,29 @@ class Task extends ReactNodeView {
    * cannot render the position and listSize into the
    * AnalyticsContext at initial render time.
    */
-  private getAnalyticsData = () => {
+  private addListAnalyticsData = event => {
     try {
       const resolvedPos = this.view.state.doc.resolve(this.getPos());
       const position = resolvedPos.index();
       const listSize = resolvedPos.parent.childCount;
+      const listLocalId = resolvedPos.parent.attrs.localId;
 
-      return {
-        position,
-        listSize,
-      };
+      event.update(payload => {
+        const { attributes = {}, actionSubject } = payload;
+        if (actionSubject !== 'action') {
+          // Not action related, ignore
+          return payload;
+        }
+        return {
+          ...payload,
+          attributes: {
+            ...attributes,
+            position,
+            listSize,
+            listLocalId,
+          },
+        };
+      });
     } catch (e) {
       // This can occur if pos is NaN (seen it in some test cases)
       // Act defensively here, and lose some analytics data rather than
@@ -71,7 +84,10 @@ class Task extends ReactNodeView {
     const { localId, state } = this.node.attrs;
 
     return (
-      <FabricElementsAnalyticsContext data={this.getAnalyticsData}>
+      <AnalyticsListener
+        channel="fabric-elements"
+        onEvent={this.addListAnalyticsData}
+      >
         <TaskItem
           taskId={localId}
           contentRef={forwardRef}
@@ -80,7 +96,7 @@ class Task extends ReactNodeView {
           showPlaceholder={this.isContentEmpty()}
           providers={props.providerFactory}
         />
-      </FabricElementsAnalyticsContext>
+      </AnalyticsListener>
     );
   }
 
