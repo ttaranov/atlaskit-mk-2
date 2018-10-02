@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/feedback-collector",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "config": {
     "access": "public"
   },
@@ -14,30 +14,30 @@
     "src"
   ],
   "dependencies": {
-    "@atlaskit/button": "^9.0.9",
-    "@atlaskit/checkbox": "^5.0.0",
+    "@atlaskit/button": "^9.0.13",
+    "@atlaskit/checkbox": "^5.0.2",
     "@atlaskit/field-text-area": "^4.0.9",
-    "@atlaskit/flag": "^9.0.10",
-    "@atlaskit/form": "^4.0.9",
-    "@atlaskit/icon": "^13.8.1",
-    "@atlaskit/modal-dialog": "^7.0.1",
-    "@atlaskit/select": "^6.0.0",
+    "@atlaskit/flag": "^9.0.11",
+    "@atlaskit/form": "^4.0.10",
+    "@atlaskit/icon": "^14.0.0",
+    "@atlaskit/modal-dialog": "^7.0.2",
+    "@atlaskit/select": "^6.0.2",
     "@atlaskit/theme": "^6.0.2",
     "lodash.truncate": "^4.4.2"
   },
   "devDependencies": {
     "@atlaskit/build-utils": "^2.0.1",
-    "@atlaskit/docs": "^5.0.6",
-    "@atlaskit/global-navigation": "^5.0.0",
+    "@atlaskit/docs": "^5.0.8",
+    "@atlaskit/global-navigation": "^5.0.1",
     "@atlaskit/logo": "^9.2.2",
-    "@atlaskit/navigation-next": "^3.15.4",
-    "@atlaskit/section-message": "^1.0.7",
+    "@atlaskit/navigation-next": "^3.15.5",
+    "@atlaskit/section-message": "^1.0.8",
     "axios": "^0.17.1",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "react-dom": "^16.4.2"
   },
   "peerDependencies": {
-    "@atlaskit/button": "^9.0.9",
+    "@atlaskit/button": "^9.0.13",
     "react": "^16.4.0",
     "styled-components": "^3.2.6"
   },
