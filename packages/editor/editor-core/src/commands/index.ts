@@ -20,6 +20,13 @@ export function preventDefault(): Command {
   };
 }
 
+export function toggleIndent(): Command {
+  return function(state, dispatch) {
+    console.log('toggleIndent');
+    return true;
+  };
+}
+
 export function insertNewLine(): Command {
   return function(state, dispatch) {
     const { $from } = state.selection;

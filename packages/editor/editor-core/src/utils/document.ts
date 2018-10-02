@@ -155,7 +155,7 @@ export function processRawValue(
   try {
     const parsedDoc = Node.fromJSON(schema, node);
     // throws an error if the document is invalid
-    parsedDoc.check();
+    // parsedDoc.check();
     return parsedDoc;
   } catch (e) {
     // tslint:disable-next-line:no-console

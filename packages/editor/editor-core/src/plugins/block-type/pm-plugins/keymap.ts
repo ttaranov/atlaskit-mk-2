@@ -69,6 +69,12 @@ export default function keymapPlugin(schema: Schema): Plugin {
     list,
   );
 
+  keymaps.bindKeymapWithCommand(
+    keymaps.tab.common!,
+    commands.toggleIndent,
+    list,
+  );
+
   [
     blockTypes.NORMAL_TEXT,
     blockTypes.HEADING_1,

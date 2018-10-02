@@ -129,6 +129,7 @@ export default {
     'action',
     'subsup',
     'underline',
+    'indent',
     'code',
     'mentionQuery',
     'typeAheadQuery',

@@ -1,6 +1,11 @@
 import * as React from 'react';
 import EditorQuoteIcon from '@atlaskit/icon/glyph/editor/quote';
-import { heading, blockquote, hardBreak } from '@atlaskit/editor-common';
+import {
+  heading,
+  blockquote,
+  hardBreak,
+  indent,
+} from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
 import { ToolbarSize } from '../../ui/Toolbar';
 import { createPlugin, pluginKey } from './pm-plugins/main';
@@ -25,6 +30,10 @@ const blockType: EditorPlugin = {
     }
 
     return nodes;
+  },
+
+  marks() {
+    return [{ name: 'indent', mark: indent }];
   },
 
   pmPlugins() {

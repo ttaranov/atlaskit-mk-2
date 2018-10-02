@@ -1,8 +1,10 @@
 import styled from 'styled-components';
-// @ts-ignore: unused variable
-// prettier-ignore
-import { HTMLAttributes, ClassAttributes, TableHTMLAttributes, ComponentClass } from 'react';
-import { editorFontSize, paragraphSharedStyles } from '@atlaskit/editor-common';
+import { HTMLAttributes, ComponentClass } from 'react';
+import {
+  editorFontSize,
+  paragraphSharedStyles,
+  blockNodesVerticalMargin,
+} from '@atlaskit/editor-common';
 import { telepointerStyle } from '../../plugins/collab-edit/styles';
 import { gapCursorStyles } from '../../plugins/gap-cursor/styles';
 import { tableStyles } from '../../plugins/table/ui/styles';
@@ -37,6 +39,12 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     font-size: ${editorFontSize}px;
 
     ${paragraphSharedStyles};
+
+    .editor--mark__indent {
+      ${paragraphSharedStyles};
+      margin-top: ${blockNodesVerticalMargin};
+      padding-left: ${blockNodesVerticalMargin};
+    }
   }
 
   .ProseMirror-hideselection *::selection {

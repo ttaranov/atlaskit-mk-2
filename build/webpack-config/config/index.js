@@ -55,6 +55,9 @@ module.exports = function createWebpackConfig(
       path: path.resolve(websiteDir, 'dist'),
       publicPath: '/',
     },
+    devServer: {
+      noInfo: false,
+    },
     devtool: isProduction ? false : 'cheap-module-source-map',
     module: {
       rules: [
