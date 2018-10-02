@@ -183,6 +183,7 @@ describe('<QuickSearch />', () => {
         expect(kbCtrlsUsedEventsFired).toHaveLength(3);
       });
     });
+
     describe('query-entered event', () => {
       it('should fire when search term is entered', () => {
         wrapper.setProps({ value: 'hello' });
@@ -416,5 +417,17 @@ describe('<QuickSearch />', () => {
         .first()
         .prop('linkComponent'),
     ).toBe(MyLinkComponent);
+  });
+
+  it('should force focus if `focusInputSearch` prop is changed to true', () => {
+    wrapper.setProps({ focusInputSearch: false });
+
+    const spy = jest.spyOn(wrapper.find(AkSearch).instance().inputRef, 'focus');
+
+    expect(spy).not.toBeCalled();
+
+    wrapper.setProps({ focusInputSearch: true });
+    wrapper.update();
+    expect(spy).toBeCalled();
   });
 });
