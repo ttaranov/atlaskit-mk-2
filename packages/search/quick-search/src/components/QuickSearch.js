@@ -99,7 +99,7 @@ type Props = {
   /** React component to be used for rendering links */
   linkComponent?: ComponentType<*>,
   /** Prop to control focus on quick search input */
-  focusInputSearch?: boolean,
+  changeFocusToInput?: boolean,
 };
 
 type State = {
@@ -117,7 +117,7 @@ export class QuickSearch extends Component<Props, State> {
     onSearchSubmit: noOp,
     placeholder: 'Search',
     value: '',
-    focusInputSearch: true,
+    changeFocusToInput: true,
   };
 
   flatResults: Array<ResultBaseType> = [];
@@ -367,7 +367,7 @@ export class QuickSearch extends Component<Props, State> {
         onKeyDown={this.handleSearchKeyDown}
         placeholder={this.props.placeholder}
         value={this.props.value}
-        focusInputSearch={this.props.focusInputSearch}
+        changeFocusToInput={this.props.changeFocusToInput}
       >
         <ResultContext.Provider value={this.state.context}>
           <SelectedResultIdContext.Provider value={this.state.selectedResultId}>

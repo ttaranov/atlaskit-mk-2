@@ -26,7 +26,7 @@ type Props = {
   /** Current value of search field. */
   value?: string,
   /** Prop to control focus on search input */
-  focusInputSearch: boolean,
+  changeFocusToInput: boolean,
 };
 
 type State = {
@@ -39,16 +39,17 @@ export default class Search extends PureComponent<Props, State> {
     isLoading: false,
     onBlur: () => {},
     placeholder: 'Search',
-    focusInputSearch: true,
+    changeFocusToInput: true,
   };
 
   state = {
     value: this.props.value,
   };
 
-  componentWillReceiveProps(nextProps: Props) {
+  componentWillReceiveProps({ changeFocusToInput }: Props) {
     if (
-      nextProps.focusInputSearch &&
+      this.props.changeFocusToInput !== changeFocusToInput &&
+      !!changeFocusToInput &&
       this.inputRef &&
       typeof this.inputRef.focus === 'function'
     ) {
