@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { ComponentClass } from 'react';
+import { ComponentClass, ButtonHTMLAttributes } from 'react';
 
 export const InputWrapper: ComponentClass = styled.div`
   margin: 20px 0;
@@ -21,6 +21,8 @@ export const PreviewItem: ComponentClass = styled.li`
   padding: 10px;
   overflow: auto;
   max-height: 600px;
+  position: relative;
+  margin-bottom: 10px;
 `;
 
 export const PreviewImageContainer: ComponentClass = styled.div`
@@ -33,4 +35,13 @@ export const Code: ComponentClass = styled.code`
   background-color: #ccc;
   color: white;
   font-size: 80%;
+`;
+
+export const CloseButton: ComponentClass<
+  ButtonHTMLAttributes<{}>
+> = styled.button`
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  cursor: pointer;
 `;

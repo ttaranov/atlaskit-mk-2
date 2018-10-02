@@ -13,6 +13,7 @@ import {
   PreviewItem,
   PreviewImageContainer,
   Code,
+  CloseButton,
 } from './styled';
 import Lozenge from '@atlaskit/lozenge';
 
@@ -90,6 +91,12 @@ class Example extends React.Component<{}, ExampleState> {
     );
   }
 
+  onRemovePreview = (index: number) => () => {
+    const previews = this.state.previews;
+    previews.splice(index, 1);
+    this.setState({ previews: [...previews] });
+  };
+
   renderPreviews() {
     return this.state.previews.map((preview, i) => {
       return (
@@ -115,6 +122,7 @@ class Example extends React.Component<{}, ExampleState> {
               {JSON.stringify(preview.metadata, null, 4)}
             </PreviewInfo>
           </PreviewImageContainer>
+          <CloseButton onClick={this.onRemovePreview(i)}>X</CloseButton>
         </PreviewItem>
       );
     });

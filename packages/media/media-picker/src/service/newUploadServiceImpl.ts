@@ -35,6 +35,7 @@ import {
   UploadServiceEventPayloadTypes,
 } from './types';
 import { Observable } from 'rxjs/Observable';
+import { LocalFileSource } from '../service/types';
 
 export interface CancellableFileUpload {
   mediaFile: MediaFile;
@@ -116,7 +117,10 @@ export class NewUploadServiceImpl implements UploadService {
     });
   };
 
-  addFiles(files: File[]): void {
+  addFiles(
+    files: File[],
+    fileSource: LocalFileSource = LocalFileSource.LocalUpload,
+  ): void {
     if (files.length === 0) {
       return;
     }
@@ -196,7 +200,7 @@ export class NewUploadServiceImpl implements UploadService {
     );
 
     this.emit('files-added', { files: mediaFiles });
-    this.emitPreviews(cancellableFileUploads);
+    this.emitPreviews(cancellableFileUploads, fileSource);
   }
 
   cancel(id?: string): void {
@@ -236,13 +240,21 @@ export class NewUploadServiceImpl implements UploadService {
     this.emitter.emit(event, payload);
   };
 
-  private emitPreviews(cancellableFileUploads: CancellableFileUpload[]) {
+  private emitPreviews(
+    cancellableFileUploads: CancellableFileUpload[],
+    fileSource: LocalFileSource = LocalFileSource.LocalUpload,
+  ) {
     cancellableFileUploads.forEach(cancellableFileUpload => {
       const { file, mediaFile } = cancellableFileUpload;
       const { size } = file;
       const mediaType = this.getMediaTypeFromFile(file);
       if (size < MAX_FILE_SIZE_FOR_PREVIEW && mediaType === 'image') {
-        getPreviewFromImage(file).then(preview => {
+        getPreviewFromImage(
+          file,
+          fileSource === LocalFileSource.PastedScreenshot
+            ? window.devicePixelRatio
+            : undefined,
+        ).then(preview => {
           this.emit('file-preview-update', {
             file: mediaFile,
             preview,

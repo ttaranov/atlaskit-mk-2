@@ -49,8 +49,7 @@ export function getScaleFactor(
 }
 
 export async function getOrientation(file: File): Promise<number | null> {
-  const fileInfo = await getFileInfo(file);
-  const tags = await readImageMetaTags(fileInfo);
+  const tags = await readImageMetaTags(file);
   return tags ? getMetaTagNumericValue(tags, Orientation, 1) : null;
 }
 
@@ -88,14 +87,28 @@ export async function readImageMetaData(
 ): Promise<ImageMetaData | null> {
   const { file, src } = fileInfo;
   const type = file.type;
-  let img;
-  try {
-    img = await loadImage(src);
-  } catch (e) {
-    return null;
+  let width = 0;
+  let height = 0;
+  const tags = await readImageMetaTags(file);
+  // since we're reading metadata anyway, try to get dimensions from there...
+  if (tags && tags.PixelXDimension) {
+    width = getMetaTagNumericValue(tags, 'PixelXDimension', 0);
   }
-  const { naturalWidth: width, naturalHeight: height } = img;
-  const tags = await readImageMetaTags(fileInfo);
+  if (tags && tags.PixelXDimension) {
+    height = getMetaTagNumericValue(tags, 'PixelYDimension', 0);
+  }
+  // otherwise, load the image async (ideally avoid if found above due to being slightly expensive)
+  if (width === 0 && height === 0) {
+    let img;
+    try {
+      img = await loadImage(src);
+    } catch (e) {
+      return null;
+    }
+    const { naturalWidth, naturalHeight } = img;
+    width = naturalWidth;
+    height = naturalHeight;
+  }
   const data: ImageMetaData = {
     type,
     width,

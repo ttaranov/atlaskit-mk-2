@@ -1,36 +1,32 @@
-import * as EXIF from 'exif-js';
+import * as loadImage from 'blueimp-load-image';
 import { SupportedImageMetaTag, ImageMetaDataTags } from './types';
 
 const { XResolution, YResolution } = SupportedImageMetaTag;
 
-export function readJPEGExifMetaData(
-  img: HTMLImageElement,
-): Promise<ImageMetaDataTags> {
+export async function readJPEGExifMetaData(file: File): Promise<any> {
   return new Promise((resolve, reject) => {
-    EXIF.getData(
-      img as any /*https://github.com/exif-js/exif-js/issues/134*/,
-      () => {
-        try {
-          const tags = EXIF.getAllTags(img);
-          for (let key in tags) {
-            const value = tags[key];
-            if (
-              (key === XResolution || key === YResolution) &&
-              value.numerator
-            ) {
-              // just take the numerator value to simplify returned value
-              tags[key] = value.numerator;
-            }
-            if (typeof tags[key] === 'number') {
-              // exif-js converts to numbers where possible - to keep everything the same between jpeg & png we keep as strings
-              tags[key] = `${tags[key]}`;
-            }
+    loadImage.parseMetaData(file, (data: any) => {
+      try {
+        const tags: ImageMetaDataTags = data.exif.getAll();
+        for (let key in tags) {
+          const value = tags[key];
+          if (
+            typeof value === 'object' &&
+            (key === XResolution || key === YResolution) &&
+            'numerator' in value
+          ) {
+            // some test images had this structure, so just take the numerator value to simplify returned value
+            tags[key] = (value as any).numerator;
           }
-          resolve(tags);
-        } catch (e) {
-          reject(e);
+          if (typeof tags[key] === 'number') {
+            // in case numbers types were auto-converted, keep everything the same between jpeg & png we keep as strings
+            tags[key] = `${tags[key]}`;
+          }
         }
-      },
-    );
+        resolve(tags);
+      } catch (e) {
+        reject(e);
+      }
+    });
   });
 }

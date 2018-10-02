@@ -5,6 +5,7 @@ import { utf8ByteArrayToString } from 'utf8-string-bytes';
 export async function readPNGXMPMetaData(file: File): Promise<string> {
   const buffer = await fileToArrayBuffer(file);
   const chunks = pngChunksExtract(buffer);
-  const xmpMetaData = utf8ByteArrayToString(chunks[3].data);
-  return xmpMetaData;
+  return chunks[3] && chunks[3].data
+    ? utf8ByteArrayToString(chunks[3].data)
+    : '';
 }
