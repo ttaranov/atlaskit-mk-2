@@ -31,7 +31,6 @@ export default class Resizer extends React.Component<
       stop: boolean,
     ) => { layout: MediaSingleLayout; width: number | null };
     snapPoints: number[];
-    mediaSingleWidth: string | number | undefined;
     scaleFactor?: number;
   },
   {
@@ -44,8 +43,9 @@ export default class Resizer extends React.Component<
   };
 
   handleResizeStart = () => {
-    this.setState({ isResizing: true });
-    this.props.displayGrid(true, gridTypeForLayout(this.props.layout));
+    this.setState({ isResizing: true }, () => {
+      this.props.displayGrid(true, gridTypeForLayout(this.props.layout));
+    });
   };
 
   handleResize = (
@@ -79,8 +79,9 @@ export default class Resizer extends React.Component<
     refToElement,
     delta: { width: number; height: number },
   ) => {
-    this.props.displayGrid(false, gridTypeForLayout(this.props.layout));
-    this.setState({ isResizing: false });
+    this.setState({ isResizing: false }, () => {
+      this.props.displayGrid(false, gridTypeForLayout(this.props.layout));
+    });
 
     if (!this.resizable) {
       return;
@@ -94,6 +95,7 @@ export default class Resizer extends React.Component<
       this.resizable.state.original.width + delta.width,
       this.props.snapPoints[0],
     );
+
     const snapWidth = snapTo(newWidth, this.props.snapPoints);
     const newSize = this.props.calcNewSize(snapWidth, true);
     this.props.updateSize(newSize.width, newSize.layout);
@@ -123,7 +125,7 @@ export default class Resizer extends React.Component<
         ref={this.setResizableRef}
         onResize={this.handleResize}
         size={{
-          width: this.props.mediaSingleWidth,
+          width: this.props.width || 0,
         }}
         className={classnames(
           'media-single',

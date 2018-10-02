@@ -3,17 +3,14 @@ import { MediaSingleLayout } from '../../schema';
 const handleMargin = 12;
 const gutterSize = handleMargin * 2;
 
-export const validResizeModes: MediaSingleLayout[] = [
-  'center',
-  'wide',
-  'full-width',
-];
-
-export const validWidthModes: MediaSingleLayout[] = [
+const validWidthModes: MediaSingleLayout[] = [
   'center',
   'wrap-left',
   'wrap-right',
 ];
+
+export const layoutSupportsWidth = (layout: MediaSingleLayout) =>
+  validWidthModes.indexOf(layout) > -1;
 
 export function calcPxFromColumns(
   columns: number,

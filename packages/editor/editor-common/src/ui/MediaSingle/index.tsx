@@ -2,10 +2,7 @@ import * as React from 'react';
 import { MediaSingleLayout } from '../../schema';
 import Wrapper from './styled';
 import * as classnames from 'classnames';
-import { calcPxFromPct, validWidthModes } from './grid';
-
-const DEFAULT_WIDTH = 250;
-const DEFAULT_HEIGHT = 200;
+import { calcPxFromPct, layoutSupportsWidth } from './grid';
 
 export interface Props {
   children: React.ReactChild;
@@ -22,15 +19,15 @@ export interface Props {
 export default function MediaSingle({
   children,
   layout,
-  width = DEFAULT_WIDTH,
-  height = DEFAULT_HEIGHT,
-  containerWidth = width || DEFAULT_WIDTH,
+  width,
+  height,
+  containerWidth = width,
   isLoading = false,
   pctWidth,
   lineLength,
   className,
 }: Props) {
-  const usePctWidth = pctWidth && validWidthModes.indexOf(layout) > -1;
+  const usePctWidth = pctWidth && layoutSupportsWidth(layout);
   if (pctWidth && usePctWidth) {
     const pxWidth = Math.ceil(
       calcPxFromPct(pctWidth / 100, lineLength || containerWidth),
@@ -47,7 +44,7 @@ export default function MediaSingle({
       width={width}
       height={height}
       containerWidth={containerWidth}
-      pctWidth={usePctWidth ? pctWidth : undefined}
+      pctWidth={pctWidth}
       className={classnames('media-single', layout, className, {
         'is-loading': isLoading,
         'media-wrapped': layout === 'wrap-left' || layout === 'wrap-right',

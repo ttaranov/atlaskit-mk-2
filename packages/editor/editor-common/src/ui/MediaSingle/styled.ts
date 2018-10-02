@@ -21,7 +21,7 @@ function float(layout: MediaSingleLayout): string {
   }
 }
 
-export function calcWidth(
+function calcWidth(
   layout: MediaSingleLayout,
   width: number,
   containerWidth?: number,
@@ -38,7 +38,7 @@ export function calcWidth(
       return `${Math.min(width, containerWidth || 0) -
         akEditorBreakoutPadding}px`;
     default:
-      return width > akEditorFullPageMaxWidth ? `100%` : `${width}px`;
+      return width > akEditorFullPageMaxWidth ? '100%' : `${width}px`;
   }
 }
 

@@ -15,12 +15,9 @@ export function createPlugin(
   return new Plugin({
     key: pluginKey,
     state: {
-      init: () => {
-        return {
-          width: document.body.offsetWidth,
-          lineLength: undefined,
-        };
-      },
+      init: () => ({
+        width: document.body.offsetWidth,
+      }),
       apply(tr, oldPluginState) {
         const newPluginState = tr.getMeta(pluginKey);
 

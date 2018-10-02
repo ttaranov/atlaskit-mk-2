@@ -2,14 +2,18 @@ import * as React from 'react';
 import { Component, ReactElement } from 'react';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import { MediaSingle } from '@atlaskit/editor-common';
+import { findParentNodeOfTypeClosestToPos } from 'prosemirror-utils';
+
+import { MediaSingle, MediaSingleLayout } from '@atlaskit/editor-common';
 import { MediaNodeProps } from './media';
+
 import { stateKey, MediaPluginState } from '../pm-plugins/main';
 import ResizableMediaSingle from '../ui/ResizableMediaSingle';
 import { displayGrid } from '../../../plugins/grid';
-import { MediaSingleLayout } from '@atlaskit/editor-common';
 import { EditorAppearance } from '../../../types';
-import { findParentNodeOfTypeClosestToPos } from 'prosemirror-utils';
+
+const DEFAULT_WIDTH = 250;
+const DEFAULT_HEIGHT = 200;
 
 export interface MediaSingleNodeProps {
   node: PMNode;
@@ -68,20 +72,21 @@ export default class MediaSingleNode extends Component<
   shouldComponentUpdate(nextProps: MediaSingleNodeProps, nextState) {
     const nextChild: ReactElement<MediaNodeProps> = this.getChild(nextProps);
 
-    const { width } = this.child.props.node.attrs;
-    const { width: nextWidth } = nextChild.props.node.attrs;
+    const { width: mediaWidth } = this.child.props.node.attrs;
+    const { width: nextMediaWidth } = nextChild.props.node.attrs;
 
-    const { node } = this.props;
-    const { layout } = node.attrs;
+    const { node, containerWidth } = this.props;
+    const { layout, width } = node.attrs;
+    const { width: nextWidth } = nextProps.node.attrs;
+
     return (
       layout === 'wide' ||
       layout === 'full-width' ||
       this.state.progress !== nextState.progress ||
       node !== nextProps.node ||
+      mediaWidth !== nextMediaWidth ||
       width !== nextWidth ||
-      this.props.node.attrs.width !== nextProps.node.attrs.width ||
-      this.props.node.attrs.layout !== nextProps.node.attrs.layout ||
-      this.props.containerWidth !== nextProps.containerWidth
+      containerWidth !== nextProps.containerWidth
     );
   }
 
@@ -126,12 +131,11 @@ export default class MediaSingleNode extends Component<
     );
   };
 
-  displayGrid = show => {
-    const { layout } = this.props.node.attrs;
-    displayGrid(
-      show,
-      layout === 'wrap-left' || layout === 'wrap-right' ? 'wrapped' : 'full',
-    )(this.props.view.state, this.props.view.dispatch);
+  boundDisplayGrid = (show, gridType) => {
+    displayGrid(show, gridType)(
+      this.props.view.state,
+      this.props.view.dispatch,
+    );
   };
 
   render() {
@@ -145,11 +149,11 @@ export default class MediaSingleNode extends Component<
       const { width: stateWidth, height: stateHeight } = this.state;
 
       if (width === null) {
-        width = stateWidth;
+        width = stateWidth || DEFAULT_WIDTH;
       }
 
       if (height === null) {
-        height = stateHeight;
+        height = stateHeight || DEFAULT_HEIGHT;
       }
     }
 
@@ -158,6 +162,8 @@ export default class MediaSingleNode extends Component<
     );
 
     if (width === null && this.mediaReady(mediaState)) {
+      width = DEFAULT_WIDTH;
+      height = DEFAULT_HEIGHT;
       hideProgress = true;
     }
 
@@ -187,27 +193,34 @@ export default class MediaSingleNode extends Component<
       pctWidth: mediaSingleWidth,
     };
 
+    const {
+      view: { state },
+      getPos,
+      isResizable,
+      appearance,
+    } = this.props;
+
     let canResize = true;
-    const pos = this.props.getPos();
+    const pos = getPos();
     if (pos) {
-      const $pos = this.props.view.state.doc.resolve(pos);
-      const { table, layoutSection } = this.props.view.state.schema.nodes;
+      const $pos = state.doc.resolve(pos);
+      const { table, layoutSection } = state.schema.nodes;
       const disabledNode = !!findParentNodeOfTypeClosestToPos($pos, [
         table,
         layoutSection,
       ]);
-      canResize = !!this.props.isResizable && !disabledNode;
+      canResize = !!isResizable && !disabledNode;
     }
 
     return canResize ? (
       <ResizableMediaSingle
         {...props}
-        getPos={this.props.getPos}
-        state={this.props.view.state}
+        getPos={getPos}
+        state={state}
         updateSize={this.updateSize}
-        displayGrid={this.displayGrid}
+        displayGrid={this.boundDisplayGrid}
         gridSize={12}
-        appearance={this.props.appearance}
+        appearance={appearance}
       >
         {children}
       </ResizableMediaSingle>

@@ -7,12 +7,10 @@ export {
 export {
   MediaSingleDimensionHelper,
   WrapperProps as MediaSingleDimensionHelperProps,
-  calcWidth as calcMediaSingleWidth,
 } from './MediaSingle/styled';
 
 export {
-  validResizeModes as MediaSingleResizeModes,
-  validWidthModes as MediaSingleWidthModes,
+  layoutSupportsWidth,
   calcPxFromColumns,
   calcPctFromPx,
   calcPxFromPct,

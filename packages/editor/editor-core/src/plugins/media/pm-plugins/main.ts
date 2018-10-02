@@ -514,28 +514,29 @@ export class MediaPluginState {
       const cols = Math.round(width / 100 * gridSize);
       let targetCols = cols;
 
-      if (oldLayout === 'wrap-left' || oldLayout === 'wrap-right') {
-        if (
-          layout === 'center' ||
-          layout === 'wide' ||
-          layout === 'full-width'
-        ) {
-          // wrap -> center needs to align to even grid
-          targetCols = Math.floor(targetCols / 2) * 2;
-        }
-      } else if (
-        oldLayout === 'center' ||
-        oldLayout === 'wide' ||
-        oldLayout === 'full-width'
-      ) {
-        if (layout === 'wrap-left' || layout === 'wrap-right') {
-          // cannot resize to full column width, and cannot resize to 1 column
+      const nonWrappedLayouts: MediaSingleLayout[] = [
+        'center',
+        'wide',
+        'full-width',
+      ];
+      const wrappedLayouts: MediaSingleLayout[] = ['wrap-left', 'wrap-right'];
 
-          if (cols <= 1) {
-            targetCols = 2;
-          } else if (cols >= gridSize) {
-            targetCols = 10;
-          }
+      if (
+        wrappedLayouts.indexOf(oldLayout) > -1 &&
+        nonWrappedLayouts.indexOf(layout) > -1
+      ) {
+        // wrap -> center needs to align to even grid
+        targetCols = Math.floor(targetCols / 2) * 2;
+      } else if (
+        nonWrappedLayouts.indexOf(oldLayout) > -1 &&
+        wrappedLayouts.indexOf(layout) > -1
+      ) {
+        // cannot resize to full column width, and cannot resize to 1 column
+
+        if (cols <= 1) {
+          targetCols = 2;
+        } else if (cols >= gridSize) {
+          targetCols = 10;
         }
       }
 

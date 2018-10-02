@@ -98,23 +98,26 @@ const gridPlugin: EditorPlugin = {
     appearance,
     containerElement,
   }) => {
-    const widthState = widthPlugin.getState(editorState) as WidthPluginState;
-    const editorWidth = widthState
-      ? widthState.width
-      : akEditorFullPageMaxWidth;
-    const editorMaxWidth = mapBreakpointToLayoutMaxWidth(
-      getBreakpoint(editorWidth),
-    );
-
     return (
       <WithPluginState
         plugins={{
           grid: stateKey,
+          widthState: widthPlugin,
         }}
-        render={({ grid }: { grid: GridPluginState }) => {
+        render={({
+          grid,
+          widthState = { width: akEditorFullPageMaxWidth },
+        }: {
+          grid: GridPluginState;
+          widthState?: WidthPluginState;
+        }) => {
           if (!grid.visible || !grid.gridSize) {
             return null;
           }
+
+          const editorMaxWidth = mapBreakpointToLayoutMaxWidth(
+            getBreakpoint(widthState.width),
+          );
 
           const gridLines: JSX.Element[] = [];
           const gridSpacing = 100 / grid.gridSize;
