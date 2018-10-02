@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 82.3.0
+- [minor] ED-5060 Code blocks now use new floating toolbar [756184e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/756184e)
+
 ## 82.2.12
 - [patch] ED-5331 Fixed code-block gap cursor bug and editor crashing after several quick blurs [203eb2c](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/203eb2c)
 
