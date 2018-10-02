@@ -17,7 +17,6 @@ const styles = () => ({
 // Required to dive inside the withGlobalTheme HOC
 const shallowDive = node => shallow(node).dive();
 
-/* eslint-disable global-require */
 describe('GlobalNavigationItemPrimitive', () => {
   beforeEach(() => {
     jest.resetModules();

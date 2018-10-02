@@ -9,6 +9,28 @@ import {
 } from '@atlaskit/analytics-next';
 import type { ViewLayer } from '../view-controller/types';
 
+type BaseItemClicked = {
+  action: 'clicked',
+  actionSubject: 'navigationItem',
+  attributes: {
+    componentName: string,
+    iconSource: ?string,
+    navigationItemIndex: number,
+  },
+};
+
+type GlobalItemClicked = BaseItemClicked & {
+  actionSubjectId: string,
+};
+
+type ContainerItemClicked = {
+  ...BaseItemClicked,
+  attributes: {
+    ...$PropertyType<BaseItemClicked, 'attributes'>,
+    itemId: string,
+  },
+};
+
 export const navigationChannel = 'navigation';
 
 const getDisplayName = component =>
@@ -20,23 +42,39 @@ const kebabToCamelCase = (str: string) =>
 export const navigationItemClicked = <P: {}>(
   Component: ComponentType<P>,
   componentName: string,
+  useActionSubjectId: boolean = false,
 ) => {
   return withAnalyticsContext({
     componentName,
   })(
     withAnalyticsEvents({
       onClick: (createAnalyticsEvent, props) => {
-        const event = createAnalyticsEvent({
+        const id = kebabToCamelCase(props.id);
+        const basePayload = {
           action: 'clicked',
           actionSubject: 'navigationItem',
           attributes: {
             componentName,
             iconSource:
               getDisplayName(props.icon) || getDisplayName(props.before),
-            itemId: kebabToCamelCase(props.id),
             navigationItemIndex: props.index,
           },
-        });
+        };
+
+        let payload: ContainerItemClicked | GlobalItemClicked;
+        if (useActionSubjectId) {
+          payload = ({
+            ...basePayload,
+            actionSubjectId: id,
+          }: GlobalItemClicked);
+        } else {
+          const { attributes, ...basePayloadSansAttributes } = basePayload;
+          payload = {
+            ...basePayloadSansAttributes,
+            attributes: { ...attributes, itemId: id },
+          };
+        }
+        const event = createAnalyticsEvent(payload);
 
         event.fire(navigationChannel);
 

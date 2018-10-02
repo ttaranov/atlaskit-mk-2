@@ -9,7 +9,7 @@ import { styleReducerNoOp } from '../../theme';
 import ItemPrimitive from './primitives';
 import type { ConnectedItemProps } from './types';
 
-class ConnectedItem extends PureComponent<ConnectedItemProps> {
+export class ConnectedItem extends PureComponent<ConnectedItemProps> {
   static defaultProps = {
     styles: styleReducerNoOp,
     isSelected: false,
@@ -30,4 +30,4 @@ class ConnectedItem extends PureComponent<ConnectedItemProps> {
   }
 }
 
-export default navigationItemClicked(ConnectedItem, 'Item');
+export default navigationItemClicked(ConnectedItem, 'item');
