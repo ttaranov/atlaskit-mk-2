@@ -22,6 +22,7 @@ const defaultProps = {
     (query: string, sessionId: string, startTime: number) =>
       Promise.resolve({ results: {} }),
   ),
+  getAbTestData: jest.fn((sesionId: string) => Promise.resolve(undefined)),
   createAnalyticsEvent: jest.fn(),
 };
 
