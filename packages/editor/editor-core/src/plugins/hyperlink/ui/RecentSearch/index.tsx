@@ -94,11 +94,12 @@ export default class RecentSearch extends PureComponent<Props, State> {
 
     return (
       <FloatingToolbar
-        alignX="left"
         target={getNearestNonTextNode(target)!}
         popupsMountPoint={popupsMountPoint}
         popupsBoundariesElement={popupsBoundariesElement}
+        fitWidth={420}
         fitHeight={350}
+        zIndex={500}
         offset={[0, 12]}
         className="recent-search"
       >

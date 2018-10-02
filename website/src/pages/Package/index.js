@@ -8,7 +8,7 @@ import { Helmet } from 'react-helmet';
 import { gridSize, colors, math } from '@atlaskit/theme';
 import Button from '@atlaskit/button';
 import ExamplesIcon from '@atlaskit/icon/glyph/screen';
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import { AtlassianIcon } from '@atlaskit/logo';
 
 import Loading from '../../components/Loading';
 import Page from '../../components/Page';
@@ -172,7 +172,7 @@ class Package extends Component<*, *> {
               </Button>
               {pkg['atlaskit:designLink'] && (
                 <Button
-                  iconBefore={<AtlassianIcon />}
+                  iconBefore={<AtlassianIcon size="small" />}
                   href={pkg['atlaskit:designLink']}
                 >
                   Design docs

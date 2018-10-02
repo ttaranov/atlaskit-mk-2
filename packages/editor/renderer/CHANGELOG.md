@@ -1,5 +1,21 @@
 # @atlaskit/renderer
 
+## 24.2.1
+- [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
+  - @atlaskit/docs@5.0.8
+  - @atlaskit/editor-common@17.0.7
+  - @atlaskit/mention@15.0.10
+  - @atlaskit/status@0.2.1
+  - @atlaskit/task-decision@9.0.1
+  - @atlaskit/media-card@37.0.1
+  - @atlaskit/media-filmstrip@14.0.3
+  - @atlaskit/media-test-helpers@18.2.1
+  - @atlaskit/profilecard@4.0.10
+  - @atlaskit/icon@14.0.0
+
+## 24.2.0
+- [minor] ED-5203 Added support for truncating the renderer with a fade out [bf07ac4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/bf07ac4)
+
 ## 24.1.2
 - [patch] Added code splits to the node types of the Renderer [8dd6e52](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8dd6e52)
 

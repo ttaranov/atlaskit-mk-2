@@ -1,0 +1,38 @@
+{
+  "name": "@atlaskit/panel",
+  "version": "0.0.2",
+  "description": "A React component rendering a collapsible panel",
+  "license": "Apache-2.0",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "atlaskit:src": "src/index.js",
+  "files": [
+    "dist"
+  ],
+  "author": "Atlassian Pty Ltd",
+  "maintainers": [
+    "Tyler T"
+  ],
+  "atlaskit": {
+    "name": "Panel",
+    "team": "bitbucket"
+  },
+  "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
+  "dependencies": {
+    "@atlaskit/button": "^9.0.13",
+    "@atlaskit/icon": "^14.0.0",
+    "@atlaskit/size-detector": "^5.0.5",
+    "@atlaskit/theme": "^6.0.1",
+    "enzyme-to-json": "^3.3.0",
+    "react-animate-height": "^2.0.5",
+    "react-focus-within": "^2.0.1"
+  },
+  "peerDependencies": {
+    "react": "^16.4.0",
+    "styled-components": "^3.2.6"
+  },
+  "devDependencies": {
+    "@atlaskit/docs": "^5.0.8",
+    "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz"
+  }
+}

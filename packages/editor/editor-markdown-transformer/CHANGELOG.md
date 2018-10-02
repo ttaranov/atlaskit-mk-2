@@ -1,5 +1,8 @@
 # @atlaskit/editor-markdown-transformer
 
+## 2.0.12
+- [patch] support hardbreak [39ca6cf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/39ca6cf)
+
 ## 2.0.11
 - [patch] Updated dependencies [ef76f1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef76f1f)
   - @atlaskit/editor-common@17.0.1

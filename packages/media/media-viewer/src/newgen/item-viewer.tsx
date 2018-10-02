@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Context, FileItem } from '@atlaskit/media-core';
+import { Context, FileState, ProcessedFileState } from '@atlaskit/media-core';
 import { Outcome, Identifier, MediaViewerFeatureFlags } from './domain';
 import { ImageViewer } from './viewers/image';
 import { VideoViewer } from './viewers/video';
@@ -8,7 +8,12 @@ import { DocViewer } from './viewers/doc';
 import { Spinner } from './loading';
 import { Subscription } from 'rxjs/Subscription';
 import * as deepEqual from 'deep-equal';
-import { ErrorMessage, createError, MediaViewerError } from './error';
+import {
+  ErrorMessage,
+  createError,
+  MediaViewerError,
+  ErrorName,
+} from './error';
 import { renderDownloadButton } from './domain/download';
 
 export type Props = Readonly<{
@@ -21,7 +26,7 @@ export type Props = Readonly<{
 }>;
 
 export type State = {
-  item: Outcome<FileItem, MediaViewerError>;
+  item: Outcome<FileState, MediaViewerError>;
 };
 
 const initialState: State = { item: Outcome.pending() };
@@ -45,7 +50,7 @@ export class ItemViewer extends React.Component<Props, State> {
     this.init(this.props);
   }
 
-  render() {
+  private renderProcessedFile(item: ProcessedFileState) {
     const {
       context,
       identifier,
@@ -55,96 +60,90 @@ export class ItemViewer extends React.Component<Props, State> {
       previewCount,
     } = this.props;
 
+    const viewerProps = {
+      context,
+      item,
+      collectionName: identifier.collectionName,
+      onClose,
+      previewCount,
+    };
+    switch (item.mediaType) {
+      case 'image':
+        return <ImageViewer {...viewerProps} />;
+      case 'audio':
+        return <AudioViewer {...viewerProps} />;
+      case 'video':
+        return (
+          <VideoViewer
+            showControls={showControls}
+            featureFlags={featureFlags}
+            {...viewerProps}
+          />
+        );
+      case 'doc':
+        return <DocViewer {...viewerProps} />;
+      default:
+        return this.renderError('unsupported', item);
+    }
+  }
+
+  private renderError(errorName: ErrorName, file?: FileState) {
+    if (file) {
+      return (
+        <ErrorMessage error={createError(errorName, undefined, file)}>
+          <p>Try downloading the file to view it.</p>
+          {this.renderDownloadButton(file)}
+        </ErrorMessage>
+      );
+    } else {
+      return <ErrorMessage error={createError(errorName)} />;
+    }
+  }
+
+  render() {
     return this.state.item.match({
       successful: item => {
-        const itemUnwrapped = item;
-        const viewerProps = {
-          context,
-          item: itemUnwrapped,
-          collectionName: identifier.collectionName,
-          onClose,
-          previewCount,
-        };
-        switch (itemUnwrapped.details.mediaType) {
-          case 'image':
-            return <ImageViewer {...viewerProps} />;
-          case 'audio':
-            return <AudioViewer {...viewerProps} />;
-          case 'video':
-            return (
-              <VideoViewer
-                showControls={showControls}
-                featureFlags={featureFlags}
-                {...viewerProps}
-              />
-            );
-          case 'doc':
-            return <DocViewer {...viewerProps} />;
+        switch (item.status) {
+          case 'processed':
+            return this.renderProcessedFile(item);
+          case 'error':
+            return this.renderError('previewFailed', item);
           default:
-            return (
-              <ErrorMessage error={createError('unsupported')}>
-                <p>Try downloading the file to view it.</p>
-                {this.renderDownloadButton(itemUnwrapped)}
-              </ErrorMessage>
-            );
+            return <Spinner />;
         }
       },
       pending: () => <Spinner />,
-      failed: err => {
-        const error = err;
-        const fileItem = err.fileItem;
-        if (fileItem) {
-          return (
-            <ErrorMessage error={error}>
-              <p>Try downloading the file to view it.</p>
-              {this.renderDownloadButton(fileItem)}
-            </ErrorMessage>
-          );
-        } else {
-          return <ErrorMessage error={error} />;
-        }
-      },
+      failed: err => this.renderError(err.errorName, this.state.item.data),
     });
   }
 
-  private renderDownloadButton(fileItem: FileItem) {
+  private renderDownloadButton(file: FileState) {
     const { context, identifier } = this.props;
-    return renderDownloadButton(fileItem, context, identifier.collectionName);
+    return renderDownloadButton(file, context, identifier.collectionName);
   }
 
   private init(props: Props) {
-    this.setState(initialState);
-    const { context, identifier } = props;
-    const provider = context.getMediaItemProvider(
-      identifier.id,
-      identifier.type,
-      identifier.collectionName,
-    );
-
-    this.subscription = provider.observable().subscribe({
-      next: mediaItem => {
-        if (mediaItem.type === 'link') {
-          this.setState({
-            item: Outcome.failed(createError('linksNotSupported')),
-          });
-        } else {
-          const { processingStatus } = mediaItem.details;
-          if (processingStatus === 'failed') {
+    this.setState(initialState, () => {
+      // Loading the file after rendering the inital state prevent the following bugs:
+      // MS-803
+      // MS-823
+      // MS-822
+      // Once these issues have been fixed, we can make this sequence synchronous
+      const { context, identifier } = props;
+      this.subscription = context
+        .getFile(identifier.id, { collectionName: identifier.collectionName })
+        .subscribe({
+          next: file => {
             this.setState({
-              item: Outcome.failed(createError('previewFailed', mediaItem)),
+              item: Outcome.successful(file),
             });
-          } else if (processingStatus === 'succeeded') {
+          },
+          error: err => {
             this.setState({
-              item: Outcome.successful(mediaItem),
+              item: Outcome.failed(createError('metadataFailed', err)),
             });
-          }
-        }
-      },
-      error: err => {
-        this.setState({
-          item: Outcome.failed(createError('metadataFailed', undefined, err)),
+          },
         });
-      },
     });
   }
 
@@ -157,7 +156,7 @@ export class ItemViewer extends React.Component<Props, State> {
     );
   }
 
-  private release() {
+  release() {
     if (this.subscription) {
       this.subscription.unsubscribe();
     }

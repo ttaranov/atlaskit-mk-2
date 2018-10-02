@@ -366,7 +366,6 @@ const getRecentItems = product =>
           postQueryResultsTimings:
             product === 'confluence'
               ? {
-                  quickNavElapsedMs: expect.any(Number),
                   confSearchElapsedMs: expect.any(Number),
                   postQueryRequestDurationMs: expect.any(Number),
                   peopleElapsedMs: expect.any(Number),

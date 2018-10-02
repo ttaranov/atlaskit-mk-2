@@ -5,7 +5,7 @@ import { css } from 'emotion';
 import Tooltip from '@atlaskit/tooltip';
 
 import { styleReducerNoOp, withGlobalTheme } from '../../theme';
-import type { GlobalItemPresentationProps } from './types';
+import type { GlobalItemPresentationProps, GlobalItemStyles } from './types';
 
 class GlobalNavigationItemPrimitive extends Component<*> {
   static defaultProps = {
@@ -16,11 +16,9 @@ class GlobalNavigationItemPrimitive extends Component<*> {
     styles: styleReducerNoOp,
   };
 
-  renderIconAndBadge = (
-    badgeWrapper: {},
-    presentationProps: GlobalItemPresentationProps,
-  ) => {
+  renderIconAndBadge = (badgeWrapper: {}) => {
     const { icon: Icon, badge: Badge, label, tooltip } = this.props;
+    const presentationProps = this.getPresentationProps();
     if (!Icon && !Badge) return null;
     return (
       <Fragment>
@@ -51,7 +49,13 @@ class GlobalNavigationItemPrimitive extends Component<*> {
     return externalProps;
   };
 
-  renderChildren = () => {
+  getPresentationProps = (): GlobalItemPresentationProps => {
+    const { isActive, isHover, isSelected, size } = this.props;
+
+    return { isActive, isHover, isSelected, size };
+  };
+
+  generateStyles = (): GlobalItemStyles => {
     const {
       isActive,
       isHover,
@@ -59,16 +63,16 @@ class GlobalNavigationItemPrimitive extends Component<*> {
       size,
       styles: styleReducer,
       theme,
-      href,
-      onClick,
-      target,
-      component: CustomComponent,
     } = this.props;
-
     const { mode } = theme;
     const presentationProps = { isActive, isHover, isSelected, size };
     const defaultStyles = mode.globalItem(presentationProps);
-    const styles = styleReducer(defaultStyles, presentationProps);
+    return styleReducer(defaultStyles, presentationProps);
+  };
+
+  renderChildren = (styles: GlobalItemStyles) => {
+    const { href, onClick, target, component: CustomComponent } = this.props;
+
     let itemBase;
 
     if (CustomComponent) {
@@ -77,7 +81,7 @@ class GlobalNavigationItemPrimitive extends Component<*> {
           {...this.getGlobalItemExternalProps()}
           className={css({ '&&': styles.itemBase })}
         >
-          {this.renderIconAndBadge(styles.badgeWrapper, presentationProps)}
+          {this.renderIconAndBadge(styles.badgeWrapper)}
         </CustomComponent>
       );
     } else if (href) {
@@ -88,19 +92,19 @@ class GlobalNavigationItemPrimitive extends Component<*> {
           target={target}
           className={css({ '&&': styles.itemBase })}
         >
-          {this.renderIconAndBadge(styles.badgeWrapper, presentationProps)}
+          {this.renderIconAndBadge(styles.badgeWrapper)}
         </a>
       );
     } else if (onClick) {
       itemBase = (
         <button onClick={onClick} className={css({ '&&': styles.itemBase })}>
-          {this.renderIconAndBadge(styles.badgeWrapper, presentationProps)}
+          {this.renderIconAndBadge(styles.badgeWrapper)}
         </button>
       );
     } else {
       itemBase = (
         <span className={css({ '&&': styles.itemBase })}>
-          {this.renderIconAndBadge(styles.badgeWrapper, presentationProps)}
+          {this.renderIconAndBadge(styles.badgeWrapper)}
         </span>
       );
     }
@@ -109,16 +113,18 @@ class GlobalNavigationItemPrimitive extends Component<*> {
   };
 
   render() {
-    const { isActive, isSelected, tooltip } = this.props;
+    const { isSelected, tooltip } = this.props;
+    const styles = this.generateStyles();
     return (
       <Tooltip
         delay={0}
-        content={isSelected || isActive ? undefined : tooltip}
+        content={isSelected ? undefined : tooltip}
         position="right"
+        hideTooltipOnClick
         hideTooltipOnMouseDown
       >
         <div className={css({ display: 'inline-block' })}>
-          {this.renderChildren()}
+          {this.renderChildren(styles)}
         </div>
       </Tooltip>
     );
