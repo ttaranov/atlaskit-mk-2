@@ -42,9 +42,9 @@ describe('<Header />', () => {
   });
 
   it('shows an empty header while loading', () => {
-    const context = {
+    const context = createContext({
       getFile: () => Observable.empty(),
-    } as any;
+    });
     const el = mount(<Header context={context} identifier={identifier} />);
     const metadata = el.find(LeftHeader);
     expect(metadata.text()).toEqual('');
