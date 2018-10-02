@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 82.2.11
+- [patch] Update i18n example to not load all locales [0c66f75](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0c66f75)
+
 ## 82.2.10
 - [patch] ED-5424: fix telepointers in collab editing [643a860](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/643a860)
 
