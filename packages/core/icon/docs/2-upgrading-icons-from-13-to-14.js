@@ -4,48 +4,42 @@ import { md, code } from '@atlaskit/docs';
 
 import { DynamicTableStateless } from '@atlaskit/dynamic-table';
 
-const Table = ({
-  name,
-  changedValues,
-}: {
-  name: string,
-  changedValues: { [string]: string },
-}) => (
+const Table = ({ changedValues }: { changedValues: { [string]: string } }) => (
   <DynamicTableStateless
-    caption={name}
+    isFixedSize
     head={{
       cells: [
-        { key: 'old location', content: 'old location' },
-        { key: 'new location', content: 'new location' },
+        { key: 'old location', content: 'Old location' },
+        { key: 'new location', content: 'New location' },
       ],
     }}
     rows={Object.entries(changedValues).map(([oldLocation, newLocation]) => ({
       // $FlowFixMe
       key: oldLocation + newLocation,
       cells: [
-        { key: oldLocation, content: code`${oldLocation}` },
-        { key: newLocation, content: code`${newLocation}` },
+        { key: oldLocation, content: <code>{oldLocation}</code> },
+        // $FlowFixMe
+        { key: newLocation, content: <code>{newLocation}</code> },
       ],
     }))}
   />
 );
 
 const logoSizeMap = [
-  { oldSize: 'default', newSize: 'small', pixelValue: '24px' },
   { oldSize: 'small', newSize: 'xsmall', pixelValue: '16px' },
-  { oldSize: 'medium', newSize: 'small', pixelValue: '24px' },
-  { oldSize: 'large', newSize: 'medium', pixelValue: '32px' },
+  { oldSize: 'medium (default)', newSize: 'small', pixelValue: '24px' },
+  { oldSize: 'large', newSize: 'medium (default)', pixelValue: '32px' },
   { oldSize: '-', newSize: 'large', pixelValue: '40px' },
   { oldSize: 'xlarge', newSize: 'xlarge', pixelValue: '48px' },
 ];
 
 const SizeTable = () => (
   <DynamicTableStateless
-    caption="Changes to the size prop"
+    isFixedSize
     head={{
       cells: [
-        { key: 'old size', content: 'old size' },
-        { key: 'new size', content: 'new size' },
+        { key: 'old size', content: 'Your prop in v13' },
+        { key: 'new size', content: 'You should use in v14' },
         { key: 'pixel value', content: 'pixel value' },
       ],
     }}
@@ -80,26 +74,34 @@ const logoLocation = {
 };
 
 export default md`
-### Upgrading Icons to version 14
-
 Version 14 of icons resorts our icons into better locations.
 There is a full explanation below, but to start, here are the icons
 that are affected.
 
-### Swap the icon \`JiraMajorIcon\` and \`JiraMinorIcon\`
+Quickly, what happened:
+- [Swap the icon \`JiraMajorIcon\` and \`JiraMinorIcon\`](#jiraMajorMinor)
+- [Product Logo Icons](#logo)
+- [Object Icons](#object)
+- [File-type Icons](#file-type)
+- [Why these changes?](#explanation)
+
+${(
+  <h2 id="jiraMajorMinor">
+    Swap the icon <code>JiraMajorIcon</code> and <code>JiraMinorIcon</code>
+  </h2>
+)}
 
 These icons are named incorrectly in atlaskit, so we're taking the opportunity of a breaking change to switch these around.
 
-#### Product Logo Icons
+${<h2 id="logo">Product Logo Icons</h2>}
 
-The following icons have been removed from \`@atlaskit/icons\` and we
-are recommending that they are imported from \`@atlaskit/logo\` going
+The following icons have been removed from \`@atlaskit/icons\`. They can be imported from \`@atlaskit/logo\` going
 forward. The icons are:
 
-${<Table name="Moved to logo" changedValues={logoLocation} />}
+${<Table changedValues={logoLocation} />}
 
-In additiona to being moved, the move to logo comes with a change to how
-sizing will affect these icons:
+In addition to being moved, the move to logo comes with a change to how
+the sizing prop will affect these icons:
 
 ${<SizeTable />}
 
@@ -132,7 +134,7 @@ ${code`
 />
 `}
 
-#### Object Icons
+${<h2 id="object">Object Icons</h2>}
 
 Similarly, object icons use different svgs for different sizes, and so are incompatible
 with the architecture of the \`@altaskit/icon\` package. As such, they are
@@ -141,11 +143,10 @@ identified with the following pattern:
 
 ${(
   <Table
-    name="Moved to icon-object"
     changedValues={{
-      '@atlaskit/icon/glyph/object/16/file-16-ICON_NAME':
+      '@atlaskit/icon/glyph/object/16/objects-16-ICON_NAME':
         '@atlaskit/icon-object/glyph/ICON_NAME/16',
-      '@atlaskit/icon/glyph/object/24/file-24-ICON_NAME':
+      '@atlaskit/icon/glyph/object/24/objects-24-ICON_NAME':
         '@atlaskit/icon-object/glyph/ICON_NAME/24',
     }}
   />
@@ -158,7 +159,7 @@ Other notable differences for object icons are:
 - They can be required at only two sizes (16px and 24px)
 - Their colors are fixed
 
-#### File-type Icons
+${<h2 id="file-type">File-type Icons</h2>}
 
 Similarly, file-type icons use different svgs for different sizes, and so are incompatible
 with the architecture of the \`@altaskit/icon\` package. As such, they are
@@ -166,28 +167,27 @@ being given their own package: \`@atlaskit/icon-file-type\`. These icons are:
 
 ${(
   <Table
-    name="Moved to icon-file-type"
     changedValues={{
-      '@atlaskit/icon/glyph/file-types/16/file-16-ICON_NAME':
-        '@atlaskit/icon-file-type/glyph/ICON_NAME/16',
-      '@atlaskit/icon/glyph/file-types/24/file-24-ICON_NAME':
-        '@atlaskit/icon-file-type/glyph/ICON_NAME/24',
+      '@atlaskit/icon/glyph/file-types/16/file-types-16-{ICON_NAME}':
+        '@atlaskit/icon-file-type/glyph/{ICON_NAME}/16',
+      '@atlaskit/icon/glyph/file-types/24/file-types-24-{ICON_NAME}':
+        '@atlaskit/icon-file-type/glyph/{ICON_NAME}/24',
     }}
   />
 )}
 
-Other notable differences for object icons are:
+Other notable differences for file-type icons are:
 - They do not accept a sizing prop - their size is fixed to the imported svg
-- They can be required at only three sizes (16*16px, 24*24px, and 48*64px)
+- They can be required at only three sizes (16 by 16px, 24 by 24px, and 48 by 64px)
 - The largest size of these icons is not square, unlike all other icons
 - Their colors are fixed
 
-### Why these changes?
+${<h2 id="explanation">Why these changes?</h2>}
 
 The icons package was architected with several implicit decisions that defined
 what icons are:
 
-- icons are svgs with a 24*24px canvas
+- icons are svgs with a 24\*24px canvas
 - they can be scaled to 16px, 24px (default), 32px, and 48px
 - they feature one or two colors that are editable by props
 

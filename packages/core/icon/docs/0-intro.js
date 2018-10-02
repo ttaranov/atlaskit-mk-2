@@ -15,7 +15,9 @@ export default md`
       </p>
       <p>
         Please see our{' '}
-        <a href="/packages/core/icon/upgrading-icons-13-to-14">upgrade guide</a>{' '}
+        <a href="/packages/core/icon/docs/upgrading-icons-from-13-to-14">
+          upgrade guide
+        </a>{' '}
         for this version bump for more information.
       </p>
     </SectionMessage>

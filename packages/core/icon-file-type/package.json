@@ -34,9 +34,11 @@
         "@atlaskit/docs": "^5.0.6",
         "@atlaskit/icon-build-process": "^0.0.0",
         "@atlaskit/button": "^9.0.8",
+        "@atlaskit/build-utils": "^2.0.0",
         "@atlaskit/field-text": "^7.0.10",
         "@atlaskit/modal-dialog": "^7.0.0",
         "@atlaskit/tooltip": "^12.0.14",
+        "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
         "fs-extra": "^4.0.2"
     },
     "keywords": [
