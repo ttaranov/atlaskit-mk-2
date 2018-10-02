@@ -311,6 +311,7 @@ export default class LayoutManager extends Component<
                   expandCollapseAffordanceRef={
                     this.nodeRefs.expandCollapseAffordance
                   }
+                  experimental_flyoutOnHover={experimental_flyoutOnHover}
                   isDisabled={isResizeDisabled}
                   flyoutIsOpen={flyoutIsOpen}
                   mouseIsOverNavigation={mouseIsOverNavigation}

@@ -162,6 +162,7 @@ type Props = WithAnalyticsEventsProps & {
   children: State => any,
   collapseToggleTooltipContent: CollapseToggleTooltipContent,
   expandCollapseAffordanceRef: Ref<'button'>,
+  experimental_flyoutOnHover: boolean,
   flyoutIsOpen: boolean,
   isDisabled: boolean,
   mouseIsOverNavigation: boolean,
@@ -178,6 +179,9 @@ type State = {
   mouseIsOverGrabArea: boolean,
   width: number,
 };
+
+/* NOTE: experimental props use an underscore */
+/* eslint-disable camelcase */
 
 class ResizeControl extends PureComponent<Props, State> {
   invalidDragAttempted = false;
@@ -364,6 +368,7 @@ class ResizeControl extends PureComponent<Props, State> {
       children,
       collapseToggleTooltipContent,
       expandCollapseAffordanceRef,
+      experimental_flyoutOnHover,
       flyoutIsOpen,
       isDisabled,
       mouseIsOverNavigation,
@@ -390,6 +395,9 @@ class ResizeControl extends PureComponent<Props, State> {
       </Button>
     );
     const shadowDirection = flyoutIsOpen ? 'to right' : 'to left';
+    const showGrabArea = experimental_flyoutOnHover
+      ? !isCollapsed && !flyoutIsOpen
+      : true;
 
     return (
       <Fragment>
@@ -398,7 +406,7 @@ class ResizeControl extends PureComponent<Props, State> {
           <Shadow direction={shadowDirection} isBold={mouseIsDown} />
           {!isResizeDisabled && (
             <Fragment>
-              {!flyoutIsOpen && (
+              {showGrabArea && (
                 <GrabArea
                   isBold={mouseIsDown}
                   showHandle={mouseIsDown || mouseIsOverGrabArea}
