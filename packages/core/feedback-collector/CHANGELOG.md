@@ -1,5 +1,10 @@
 # @atlaskit/feedback-collector
 
+## 0.2.1
+- [patch] Updated dependencies [ac88888](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ac88888)
+  - @atlaskit/navigation-next@3.15.4
+  - @atlaskit/global-navigation@5.0.0
+
 ## 0.2.0
 - [patch] Fix bug with flag being not auto-dismissable [51fbd9b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/51fbd9b)
 - [minor] New set of properties to the Feedback Collector that provide improved mapping between JSD and the form. Export feedback form primitive. Removed export of the flag group, export only flag instead. [fca309f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/fca309f)

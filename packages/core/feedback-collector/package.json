@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/feedback-collector",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "config": {
     "access": "public"
   },
@@ -28,9 +28,9 @@
   "devDependencies": {
     "@atlaskit/build-utils": "^2.0.1",
     "@atlaskit/docs": "^5.0.6",
-    "@atlaskit/global-navigation": "^4.3.2",
+    "@atlaskit/global-navigation": "^5.0.0",
     "@atlaskit/logo": "^9.2.2",
-    "@atlaskit/navigation-next": "^3.13.2",
+    "@atlaskit/navigation-next": "^3.15.4",
     "@atlaskit/section-message": "^1.0.7",
     "axios": "^0.17.1",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
