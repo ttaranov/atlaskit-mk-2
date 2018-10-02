@@ -11,7 +11,7 @@ export default {
   'fabric.editor.heading4': 'Nagłówek 4',
   'fabric.editor.heading5': 'Nagłówek 5',
   'fabric.editor.heading6': 'Nagłówek 6',
-  'fabric.editor.blockquote': 'Blok cytowania',
+  'fabric.editor.blockquote': 'Cytat blokowy',
   'fabric.editor.codeblock': 'Blok kodu',
   'fabric.editor.panel': 'Panel',
   'fabric.editor.other': 'Inne...',
