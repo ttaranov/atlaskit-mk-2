@@ -26,6 +26,8 @@
     "@atlaskit/analytics-next": "^3.0.4",
     "@atlaskit/avatar": "^14.0.8",
     "@atlaskit/button": "^9.0.6",
+    "@atlaskit/icon-object": "0.0.0",
+    "@atlaskit/icon-file-type": "0.0.0",
     "@atlaskit/dropdown-menu": "^6.1.8",
     "@atlaskit/field-text-area": "^4.0.6",
     "@atlaskit/flag": "^9.0.10",

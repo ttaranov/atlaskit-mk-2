@@ -3,7 +3,7 @@ import React, { Component, Fragment } from 'react';
 import Navigation, { AkNavigationItem } from '@atlaskit/navigation';
 import Banner from '@atlaskit/banner';
 import Button from '@atlaskit/button';
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import { AtlassianIcon } from '@atlaskit/logo';
 import Page, { Grid } from '../src';
 
 type State = {
@@ -92,7 +92,7 @@ export default class NavigationExample extends Component<void, State> {
           navigation={
             <Navigation
               topOffset={this.getOffset()}
-              globalPrimaryIcon={<AtlassianIcon />}
+              globalPrimaryIcon={<AtlassianIcon size="small" />}
             >
               <AkNavigationItem text="Welcome to banners!" />
             </Navigation>
