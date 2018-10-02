@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Component } from 'react';
+import { Component, ReactNode } from 'react';
 import { MediaType, ImageResizeMode } from '@atlaskit/media-core';
 
 import { CardDimensions, CardStatus } from '../../index';
@@ -26,7 +26,7 @@ export interface FileCardImageViewProps {
   readonly selectable?: boolean;
   readonly selected?: boolean;
 
-  readonly error?: string;
+  readonly error?: ReactNode;
 
   readonly actions?: Array<CardAction>;
   readonly onRetry?: () => void;

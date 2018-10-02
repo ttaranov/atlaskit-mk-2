@@ -7,7 +7,6 @@ import {
   insertMedia,
   fullpage,
 } from '../_helpers';
-import { sleep } from '@atlaskit/editor-test-helpers';
 
 BrowserTestCase(
   'Inserts a media single on fullpage',
@@ -28,9 +27,6 @@ BrowserTestCase(
     // now we can insert media as necessary
     await insertMedia(browser);
 
-    // wait for "upload" and finish doc sync
-    await sleep(200);
-    await browser.waitForSelector('.media-single');
     expect(await browser.isVisible('.media-single')).toBe(true);
 
     const doc = await browser.$eval(editable, getDocFromElement);

@@ -298,8 +298,7 @@ describe('MentionPicker', () => {
         expect(createAnalyticsEvent).toHaveBeenCalledWith(
           expect.objectContaining({
             action: 'cancelled',
-            actionSubject: 'typeahead',
-            actionSubjectId: 'mentionTypeahead',
+            actionSubject: 'mentionTypeahead',
             eventType: 'ui',
             source: 'unknown',
             attributes: expect.objectContaining({
@@ -331,8 +330,7 @@ describe('MentionPicker', () => {
         expect(createAnalyticsEvent).toHaveBeenCalledWith(
           expect.objectContaining({
             action: 'pressed',
-            actionSubject: 'typeahead',
-            actionSubjectId: 'mentionTypeahead',
+            actionSubject: 'mentionTypeahead',
             eventType: 'ui',
             source: 'unknown',
             attributes: expect.objectContaining({
@@ -368,8 +366,7 @@ describe('MentionPicker', () => {
         expect(createAnalyticsEvent).toHaveBeenCalledWith(
           expect.objectContaining({
             action: 'clicked',
-            actionSubject: 'typeahead',
-            actionSubjectId: 'mentionTypeahead',
+            actionSubject: 'mentionTypeahead',
             eventType: 'ui',
             source: 'unknown',
             attributes: expect.objectContaining({

@@ -9,7 +9,7 @@ import {
 } from '@atlaskit/media-core';
 import { AnalyticsContext } from '@atlaskit/analytics-next';
 import DownloadIcon from '@atlaskit/icon/glyph/download';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 import {
   SharedCardProps,
   CardEventProps,
@@ -28,6 +28,7 @@ import { getLinkMetadata, extendMetadata } from '../../utils/metadata';
 import {
   isFileIdentifier,
   isUrlPreviewIdentifier,
+  isExternalImageIdentifier,
 } from '../../utils/identifier';
 import { isBigger } from '../../utils/dimensionComparer';
 
@@ -125,6 +126,22 @@ export class Card extends Component<CardProps, CardState> {
   async subscribe(identifier: Identifier, context: Context) {
     const { isCardVisible } = this.state;
     if (!isCardVisible) {
+      return;
+    }
+
+    if (identifier.mediaItemType === 'external-image') {
+      const { dataURI, name } = identifier;
+
+      this.setState({
+        status: 'complete',
+        dataURI,
+        metadata: {
+          id: dataURI,
+          name: name || dataURI,
+          mediaType: 'image',
+        },
+      });
+
       return;
     }
 
@@ -245,7 +262,10 @@ export class Card extends Component<CardProps, CardState> {
     const { identifier } = this.props;
     const id = isUrlPreviewIdentifier(identifier)
       ? identifier.url
-      : identifier.id;
+      : isExternalImageIdentifier(identifier)
+        ? 'external-image'
+        : identifier.id;
+
     return getBaseAnalyticsContext('Card', id);
   }
 

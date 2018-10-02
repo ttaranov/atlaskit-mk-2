@@ -55,12 +55,15 @@ function isMarkTypeAllowedInNode(
   return toggleMark(markType)(state);
 }
 
-function closest(node: HTMLElement | null, s: string): HTMLElement | null {
+function closest(
+  node: HTMLElement | null | undefined,
+  s: string,
+): HTMLElement | null {
   let el = node as HTMLElement;
   if (!el) {
     return null;
   }
-  if (!document.documentElement.contains(el)) {
+  if (!document.documentElement || !document.documentElement.contains(el)) {
     return null;
   }
   const matches = el.matches ? 'matches' : 'msMatchesSelector';
@@ -584,7 +587,7 @@ export function arrayFrom(obj: any): any[] {
  * Returns the ancestor element of a particular type if exists or null
  */
 export function closestElement(
-  node: HTMLElement | null,
+  node: HTMLElement | null | undefined,
   s: string,
 ): HTMLElement | null {
   return closest(node, s);

@@ -196,7 +196,7 @@ describe('Drawer Transitions', () => {
     expect(onClose).not.toHaveBeenCalled();
   });
 
-  it('should not retain Drawer contents by default', () => {
+  it('should NOT retain Drawer contents by default', () => {
     const wrapper = mount(
       <Drawer isOpen width="wide">
         <code>Drawer contents</code>
@@ -211,7 +211,7 @@ describe('Drawer Transitions', () => {
     ).toBeTruthy();
   });
 
-  it('should Drawer contents when shouldUnmountOnExit is passed', () => {
+  it('should retain Drawer contents when shouldUnmountOnExit is passed', () => {
     const wrapper = mount(
       <Drawer isOpen width="wide" shouldUnmountOnExit={false}>
         <code>Drawer contents</code>

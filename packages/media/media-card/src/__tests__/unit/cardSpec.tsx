@@ -12,16 +12,20 @@ import {
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
 import {
-  Card,
   CardProps,
   UrlPreviewIdentifier,
   FileIdentifier,
   LinkIdentifier,
-  CardView,
   CardDimensions,
 } from '../../../src';
+
+import { CardView } from '../../../src/root/cardView';
+
+import { Card } from '../../../src/root/card';
+
 import { LazyContent } from '../../../src/utils/lazyContent';
 import { getDataURIFromFileState } from '../../../src/utils/getDataURIFromFileState';
+import { ExternalImageIdentifier } from '../../root';
 
 describe('Card', () => {
   const urlIdentifier: UrlPreviewIdentifier = {
@@ -780,6 +784,40 @@ describe('Card', () => {
       cardViewOnError();
       await nextTick();
       expect(context.getFile).toHaveBeenCalledTimes(2);
+    });
+  });
+
+  describe('External image identifier', () => {
+    it('should work with external image identifier', () => {
+      const identifier: ExternalImageIdentifier = {
+        mediaItemType: 'external-image',
+        dataURI: 'bla',
+        name: 'some external image',
+      };
+
+      const { component } = setup(undefined, { identifier });
+
+      expect(component.find('CardView').prop('dataURI')).toEqual('bla');
+      expect(component.find('CardView').prop('metadata')).toEqual({
+        id: 'bla',
+        mediaType: 'image',
+        name: 'some external image',
+      });
+    });
+
+    it('should use dataURI as default name', () => {
+      const identifier: ExternalImageIdentifier = {
+        mediaItemType: 'external-image',
+        dataURI: 'bla',
+      };
+
+      const { component } = setup(undefined, { identifier });
+
+      expect(component.find('CardView').prop('metadata')).toEqual({
+        id: 'bla',
+        mediaType: 'image',
+        name: 'bla',
+      });
     });
   });
 });

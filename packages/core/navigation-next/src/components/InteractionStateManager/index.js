@@ -11,7 +11,6 @@ export default class InteractionStateManager extends Component<
   state = {
     isActive: false,
     isHover: false,
-    isClicked: false,
   };
 
   onMouseDown = (e: Event) => {
@@ -19,38 +18,38 @@ export default class InteractionStateManager extends Component<
     this.setState({ isActive: true });
   };
 
-  onMouseUp = () => {
-    this.setState({ isActive: false });
+  onMouseUp = (e: Event) => {
+    e.preventDefault();
+    this.setState({ isActive: false, isHover: true });
   };
 
   onMouseOver = () => {
-    if (!this.state.isHover && !this.state.isClicked) {
+    if (!this.state.isHover) {
       this.setState({ isHover: true });
-    }
-    if (this.state.isClicked) {
-      this.setState({ isHover: false });
     }
   };
 
-  onClick = () => this.setState({ isClicked: true });
-
   onMouseLeave = () => {
-    const newStates =
-      !this.state.isActive && !this.state.isHover
-        ? { isActive: false, isHover: false }
-        : { isActive: false, isHover: false, isClicked: false };
-    this.setState(newStates);
+    this.setState({ isActive: false, isHover: false });
   };
 
   render() {
+    const { styles } = this.props;
     return (
       <div
         onMouseDown={this.onMouseDown}
         onMouseOver={this.onMouseOver}
         onMouseLeave={this.onMouseLeave}
         onMouseUp={this.onMouseUp}
-        onClick={this.onClick}
         role="presentation"
+        css={{
+          width: '100%',
+          alignItems: 'center',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'space-between',
+          ...styles,
+        }}
       >
         {this.props.children(this.state)}
       </div>

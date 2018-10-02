@@ -1,8 +1,15 @@
+import { defineMessages } from 'react-intl';
+import { hasParentNodeOfType } from 'prosemirror-utils';
+
 import RemoveIcon from '@atlaskit/icon/glyph/editor/remove';
 import EditIcon from '@atlaskit/icon/glyph/editor/edit';
 import FullWidthIcon from '@atlaskit/icon/glyph/editor/media-full-width';
 import WideIcon from '@atlaskit/icon/glyph/editor/media-wide';
 import CenterIcon from '@atlaskit/icon/glyph/editor/media-center';
+
+import { Command } from '../../types';
+import commonMessages from '../../messages';
+import { MacroState, pluginKey as macroPluginKey } from '../macro';
 import {
   FloatingToolbarHandler,
   FloatingToolbarItem,
@@ -12,10 +19,15 @@ import {
   editExtension,
   removeExtension,
 } from './actions';
-import { MacroState, pluginKey as macroPluginKey } from '../macro';
 import { pluginKey, ExtensionState } from './plugin';
-import { hasParentNodeOfType } from 'prosemirror-utils';
-import { Command } from '../../types';
+
+export const messages = defineMessages({
+  edit: {
+    id: 'fabric.editor.edit',
+    defaultMessage: 'Edit',
+    description: 'Edit the properties for this extension.',
+  },
+});
 
 const isLayoutSupported = (state, selectedExtNode) => {
   const {
@@ -39,6 +51,7 @@ const isLayoutSupported = (state, selectedExtNode) => {
 
 const breakoutOptions = (
   state,
+  formatMessage,
   extensionState,
 ): Array<FloatingToolbarItem<Command>> => {
   const { layout, allowBreakout, node } = extensionState;
@@ -49,27 +62,30 @@ const breakoutOptions = (
           icon: CenterIcon,
           onClick: updateExtensionLayout('default'),
           selected: layout === 'default',
-          title: 'Default',
+          title: formatMessage(commonMessages.layoutFixedWidth),
         },
         {
           type: 'button',
           icon: WideIcon,
           onClick: updateExtensionLayout('wide'),
           selected: layout === 'wide',
-          title: 'Wide',
+          title: formatMessage(commonMessages.layoutWide),
         },
         {
           type: 'button',
           icon: FullWidthIcon,
           onClick: updateExtensionLayout('full-width'),
           selected: layout === 'full-width',
-          title: 'Full Width',
+          title: formatMessage(commonMessages.layoutFullWidth),
         },
       ]
     : [];
 };
 
-export const getToolbarConfig: FloatingToolbarHandler = state => {
+export const getToolbarConfig: FloatingToolbarHandler = (
+  state,
+  { formatMessage },
+) => {
   const extensionState: ExtensionState = pluginKey.getState(state);
   const macroState: MacroState = macroPluginKey.getState(state);
   if (extensionState && extensionState.element) {
@@ -85,9 +101,9 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
           type: 'button',
           icon: EditIcon,
           onClick: editExtension(macroState && macroState.macroProvider),
-          title: 'Edit',
+          title: formatMessage(messages.edit),
         },
-        ...breakoutOptions(state, extensionState),
+        ...breakoutOptions(state, formatMessage, extensionState),
         {
           type: 'separator',
         },
@@ -96,7 +112,7 @@ export const getToolbarConfig: FloatingToolbarHandler = state => {
           icon: RemoveIcon,
           appearance: 'danger',
           onClick: removeExtension(),
-          title: 'Error',
+          title: formatMessage(commonMessages.remove),
         },
       ],
     };

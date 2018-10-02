@@ -1,5 +1,8 @@
 # @atlaskit/icon
 
+## 13.9.0
+- [minor] Add like icon [cd71c5f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/cd71c5f)
+
 ## 13.8.1
 - [patch] Updated dependencies [d5a043a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d5a043a)
   - @atlaskit/tooltip@12.0.14

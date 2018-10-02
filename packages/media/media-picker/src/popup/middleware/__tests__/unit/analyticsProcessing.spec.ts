@@ -7,6 +7,7 @@ import {
 import { Action, Dispatch } from 'redux';
 import { State } from '../../../domain';
 import analyticsProcessing from '../../analyticsProcessing';
+import { source } from '../../analyticsHandlers';
 import { mockStore } from '../../../mocks';
 import { showPopup } from '../../../actions/showPopup';
 import { editorShowImage } from '../../../actions/editorShowImage';
@@ -75,7 +76,7 @@ const makePayloadForOperationalFileUpload = (
     },
     ...attributes,
   },
-  source: 'mediaPickerModal',
+  source,
   eventType: OPERATIONAL_EVENT_TYPE,
 });
 
@@ -99,7 +100,7 @@ const makePayloadForTrackFileConversion = (
     ...attributes,
     failReason,
   },
-  source: 'mediaPickerModal',
+  source,
   eventType: TRACK_EVENT_TYPE,
 });
 
@@ -408,7 +409,7 @@ describe('analyticsProcessing middleware', () => {
           },
           ...attributes,
         },
-        source: 'mediaPickerModal',
+        source,
         eventType: OPERATIONAL_EVENT_TYPE,
       },
     );

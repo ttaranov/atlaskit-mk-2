@@ -7,6 +7,7 @@ import {
   editable,
   picker,
 } from './_mention-helpers';
+import { messages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
 
 /*
  * Safari does not understand webdriver keyboard actions so a
@@ -19,7 +20,7 @@ BrowserTestCase(
   'Mention: user can click ToolbarMentionPicker and see mention',
   { skip: ['ie'] },
   async client => {
-    const mentionButton = '[aria-label="Add mention"]';
+    const mentionButton = `[aria-label="${messages.mention.defaultMessage}"]`;
     const mentionId = '[data-mention-id="0"]';
     const browser = await new Page(client);
     await browser.goto(messageEditor);

@@ -4,8 +4,8 @@ import styled from 'styled-components';
 import {
   MediaSingle as UIMediaSingle,
   MediaSingleLayout,
+  WidthConsumer,
 } from '@atlaskit/editor-common';
-import { BreakoutConsumer } from '../';
 
 export interface Props {
   children: ReactElement<any>;
@@ -83,8 +83,8 @@ export default class MediaSingle extends Component<
     });
 
     return (
-      <BreakoutConsumer>
-        {containerWidth => (
+      <WidthConsumer>
+        {({ width: containerWidth }) => (
           <ExtendedUIMediaSingle
             layout={props.layout}
             width={width}
@@ -94,7 +94,7 @@ export default class MediaSingle extends Component<
             {media}
           </ExtendedUIMediaSingle>
         )}
-      </BreakoutConsumer>
+      </WidthConsumer>
     );
   }
 }

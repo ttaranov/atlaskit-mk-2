@@ -22,7 +22,7 @@ export interface Props {
   onBlur?: (event: FormEvent<HTMLInputElement>) => void;
   onFocus?: (event: FormEvent<HTMLInputElement>) => void;
   onKeyDown?: (event: FormEvent<HTMLInputElement>) => void;
-  onKeyPess?: (event: FormEvent<HTMLInputElement>) => void;
+  onKeyPress?: (event: FormEvent<HTMLInputElement>) => void;
   onKeyUp?: (event: FormEvent<HTMLInputElement>) => void;
   placeholder?: string;
   required?: boolean;

@@ -26,7 +26,7 @@ export default (chai: any) => {
 
   // Node and Fragment
   Assertion.overwriteMethod('equal', (equalSuper: Function) => {
-    return function(right: any) {
+    return function(this: any, right: any) {
       const left: any = this._obj;
       const deep = util.flag(this, 'deep');
       if (
@@ -65,7 +65,7 @@ export default (chai: any) => {
 
   // Slice
   Assertion.overwriteMethod('equal', (equalSuper: Function) => {
-    return function(right: any) {
+    return function(this: any, right: any) {
       const left: any = this._obj;
       const deep = util.flag(this, 'deep');
       if (deep && isSlice(left) && isSlice(right)) {
@@ -96,7 +96,7 @@ export default (chai: any) => {
     };
   });
 
-  Assertion.addMethod('nodeType', function(nodeType: NodeType) {
+  Assertion.addMethod('nodeType', function(this: any, nodeType: NodeType) {
     const obj: Node = util.flag(this, 'object');
     const negate: boolean = util.flag(this, 'negate');
 
@@ -106,7 +106,11 @@ export default (chai: any) => {
     return new Assertion(obj.type).to.be.an.instanceof(nodeType);
   });
 
-  Assertion.addMethod('textWithMarks', function(text: string, marks: Mark[]) {
+  Assertion.addMethod('textWithMarks', function(
+    this: any,
+    text: string,
+    marks: Mark[],
+  ) {
     const obj: Node = util.flag(this, 'object');
     const negate: boolean = util.flag(this, 'negate');
 
@@ -125,7 +129,7 @@ export default (chai: any) => {
     return new Assertion(matched).to.be.true;
   });
 
-  Assertion.addMethod('nodeSpec', function(nodeSpec: NodeSpec) {
+  Assertion.addMethod('nodeSpec', function(this: any, nodeSpec: NodeSpec) {
     const obj: Node = util.flag(this, 'object');
     const negate: boolean = util.flag(this, 'negate');
 

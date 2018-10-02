@@ -71,10 +71,10 @@ class PageInner extends PureComponent<{ children: Node }> {
 // eslint-disable-next-line
 class Page extends PureComponent<PageProps> {
   render() {
-    const { innerRef, isResizing, isCollapsed, productNavWidth } = this.props;
+    const { innerRef, isCollapsed, isResizing, productNavWidth } = this.props;
     return (
       <ResizeTransition
-        from={[0]}
+        from={[CONTENT_NAV_WIDTH_COLLAPSED]}
         in={!isCollapsed}
         productNavWidth={productNavWidth}
         properties={['paddingLeft']}
@@ -238,6 +238,7 @@ export default class LayoutManager extends Component<
     } = this.props;
     const {
       isCollapsed,
+      isResizeDisabled,
       isResizing,
       productNavWidth,
     } = navigationUIController.state;
@@ -278,6 +279,7 @@ export default class LayoutManager extends Component<
                   expandCollapseAffordanceRef={
                     this.nodeRefs.expandCollapseAffordance
                   }
+                  isDisabled={isResizeDisabled}
                   mouseIsOverNavigation={this.state.mouseIsOverNavigation}
                   mutationRefs={[
                     { ref: this.pageRef, property: 'padding-left' },

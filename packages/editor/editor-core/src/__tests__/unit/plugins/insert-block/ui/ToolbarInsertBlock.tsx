@@ -1,4 +1,3 @@
-import { mount } from 'enzyme';
 import * as React from 'react';
 import Item from '@atlaskit/item';
 import { EmojiPicker as AkEmojiPicker } from '@atlaskit/emoji';
@@ -10,13 +9,17 @@ import {
   code_block,
   decisionList,
   decisionItem,
+  mountWithIntl,
 } from '@atlaskit/editor-test-helpers';
 import { ProviderFactory } from '@atlaskit/editor-common';
 import { uuid } from '@atlaskit/editor-common';
 
 import { pluginKey as blockTypePluginKey } from '../../../../../plugins/block-type/pm-plugins/main';
+import { messages as blockTypeMessages } from '../../../../../plugins/block-type/types';
 import DropdownMenu from '../../../../../ui/DropdownMenu';
-import ToolbarInsertBlock from '../../../../../plugins/insert-block/ui/ToolbarInsertBlock';
+import ToolbarInsertBlock, {
+  messages,
+} from '../../../../../plugins/insert-block/ui/ToolbarInsertBlock';
 import ToolbarButton from '../../../../../ui/ToolbarButton';
 import EditorActions from '../../../../../actions';
 import { MediaProvider } from '../../../../../plugins/media';
@@ -57,7 +60,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
   it('should render disabled DropdownMenu trigger if isDisabled property is true', () => {
     const { editorView, pluginState } = editor(doc(p('text')));
 
-    const toolbarOption = mount(
+    const toolbarOption = mountWithIntl(
       <ToolbarInsertBlock
         tableSupported={true}
         editorView={editorView}
@@ -73,7 +76,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
 
   it('should return null if none of the plugins are present', () => {
     const { editorView } = editor(doc(p('text')));
-    const toolbarOption = mount(
+    const toolbarOption = mountWithIntl(
       <ToolbarInsertBlock
         editorView={editorView}
         buttons={5}
@@ -90,7 +93,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     const { editorView } = editor(
       doc(code_block({ language: 'js' })('te{<>}xt')),
     );
-    const toolbarOption = mount(
+    const toolbarOption = mountWithIntl(
       <ToolbarInsertBlock
         mentionsSupported={true}
         mentionsEnabled={false}
@@ -99,17 +102,17 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         isReducedSpacing={false}
       />,
     );
-    toolbarOption.find(ToolbarButton).simulate('click');
+    toolbarOption.find('button').simulate('click');
     const mentionButton = toolbarOption
       .find(Item)
-      .filterWhere(n => n.html().indexOf('Mention') >= 0);
+      .filterWhere(n => n.text().indexOf(messages.mention.defaultMessage) > -1);
     expect(mentionButton.prop('isDisabled')).toEqual(true);
     toolbarOption.unmount();
   });
 
   it('should close emoji picker when dropdown is toggled', () => {
     const { editorView } = editor(doc(p()));
-    const toolbarOption = mount(
+    const toolbarOption = mountWithIntl(
       <ToolbarInsertBlock
         emojiDisabled={false}
         emojiProvider={emojiProvider}
@@ -119,14 +122,14 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       />,
     );
     toolbarOption.setState({ emojiPickerOpen: true });
-    toolbarOption.find(ToolbarButton).simulate('click');
+    toolbarOption.find('button').simulate('click');
     expect(toolbarOption.state('emojiPickerOpen')).toEqual(false);
     toolbarOption.unmount();
   });
 
   it('should open emoji picker when emoji option is clicked', () => {
     const { editorView } = editor(doc(p()));
-    const toolbarOption = mount(
+    const toolbarOption = mountWithIntl(
       <ToolbarInsertBlock
         emojiDisabled={false}
         emojiProvider={emojiProvider}
@@ -135,18 +138,18 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         isReducedSpacing={false}
       />,
     );
-    toolbarOption.find(ToolbarButton).simulate('click');
-    const mediaButton = toolbarOption
-      .find('Item')
-      .filterWhere(n => n.html().indexOf('Emoji') >= 0);
-    mediaButton.simulate('click');
+    toolbarOption.find('button').simulate('click');
+    const emojiButton = toolbarOption
+      .find(Item)
+      .filterWhere(n => n.text().indexOf(messages.emoji.defaultMessage) > -1);
+    emojiButton.simulate('click');
     expect(toolbarOption.state('emojiPickerOpen')).toEqual(true);
     toolbarOption.unmount();
   });
 
   it('should have emoji picker component when emojiPickerOpen is true', () => {
     const { editorView } = editor(doc(p()));
-    const toolbarOption = mount(
+    const toolbarOption = mountWithIntl(
       <ToolbarInsertBlock
         emojiDisabled={false}
         emojiProvider={emojiProvider}
@@ -162,7 +165,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
 
   it('should have 1 child elements if mediaSupported and mediaUploadsEnabled is defined and equals true', async () => {
     const { editorView } = editor(doc(p('text')));
-    const toolbarOption = mount(
+    const toolbarOption = mountWithIntl(
       <ToolbarInsertBlock
         mediaSupported={true}
         mediaUploadsEnabled={true}
@@ -178,7 +181,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
   it('should call onShowMediaPicker when media option is clicked', () => {
     const { editorView } = editor(doc(p('text')));
     const spy = jest.fn();
-    const toolbarOption = mount(
+    const toolbarOption = mountWithIntl(
       <ToolbarInsertBlock
         mediaSupported={true}
         mediaUploadsEnabled={true}
@@ -188,10 +191,12 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         isReducedSpacing={false}
       />,
     );
-    toolbarOption.find(ToolbarButton).simulate('click');
+    toolbarOption.find('button').simulate('click');
     const mediaButton = toolbarOption
-      .find('Item')
-      .filterWhere(n => n.html().indexOf('Files and images') >= 0);
+      .find(Item)
+      .filterWhere(
+        n => n.text().indexOf(messages.filesAndImages.defaultMessage) > -1,
+      );
     mediaButton.simulate('click');
     expect(spy).toHaveBeenCalledTimes(1);
     expect(trackEvent).toHaveBeenCalledWith(
@@ -210,7 +215,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       };
     });
 
-    const toolbarOption = mount(
+    const toolbarOption = mountWithIntl(
       <ToolbarInsertBlock
         availableWrapperBlockTypes={
           pluginStateBlockType.availableWrapperBlockTypes
@@ -221,10 +226,12 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         isReducedSpacing={false}
       />,
     );
-    toolbarOption.find(ToolbarButton).simulate('click');
+    toolbarOption.find('button').simulate('click');
     const panelButton = toolbarOption
       .find(Item)
-      .filterWhere(n => n.text().indexOf('Panel') >= 0);
+      .filterWhere(
+        n => n.text().indexOf(blockTypeMessages.panel.defaultMessage) > -1,
+      );
     panelButton.simulate('click');
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('panel');
@@ -244,7 +251,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       };
     });
 
-    const toolbarOption = mount(
+    const toolbarOption = mountWithIntl(
       <ToolbarInsertBlock
         availableWrapperBlockTypes={
           pluginStateBlockType.availableWrapperBlockTypes
@@ -255,10 +262,12 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         isReducedSpacing={false}
       />,
     );
-    toolbarOption.find(ToolbarButton).simulate('click');
+    toolbarOption.find('button').simulate('click');
     const codeblockButton = toolbarOption
       .find(Item)
-      .filterWhere(n => n.text().indexOf('Code block') >= 0);
+      .filterWhere(
+        n => n.text().indexOf(blockTypeMessages.codeblock.defaultMessage) > -1,
+      );
     codeblockButton.simulate('click');
     expect(spy).toHaveBeenCalledTimes(1);
     expect(spy).toHaveBeenCalledWith('codeblock');
@@ -278,7 +287,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       };
     });
 
-    const toolbarOption = mount(
+    const toolbarOption = mountWithIntl(
       <ToolbarInsertBlock
         availableWrapperBlockTypes={
           pluginStateBlockType.availableWrapperBlockTypes
@@ -289,10 +298,12 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         isReducedSpacing={false}
       />,
     );
-    toolbarOption.find(ToolbarButton).simulate('click');
+    toolbarOption.find('button').simulate('click');
     const blockquoteButton = toolbarOption
       .find(Item)
-      .filterWhere(n => n.text().indexOf('Block quote') >= 0);
+      .filterWhere(
+        n => n.text().indexOf(blockTypeMessages.blockquote.defaultMessage) > -1,
+      );
 
     blockquoteButton.simulate('click');
     expect(spy).toHaveBeenCalledTimes(1);
@@ -306,7 +317,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
   it('should insert decision when decision option is clicked', () => {
     uuid.setStatic('local-highlight');
     const { editorView } = editor(doc(p('text')));
-    const toolbarOption = mount(
+    const toolbarOption = mountWithIntl(
       <ToolbarInsertBlock
         decisionSupported={true}
         editorView={editorView}
@@ -314,10 +325,12 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         isReducedSpacing={false}
       />,
     );
-    toolbarOption.find(ToolbarButton).simulate('click');
+    toolbarOption.find('button').simulate('click');
     const decisionButton = toolbarOption
       .find(Item)
-      .filterWhere(n => n.text().indexOf('Decision') >= 0);
+      .filterWhere(
+        n => n.text().indexOf(messages.decision.defaultMessage) > -1,
+      );
     decisionButton.simulate('click');
     expect(editorView.state.doc).toEqualDocument(
       doc(
@@ -335,7 +348,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
 
   it('should track table creation event when table menu is clicked option is clicked', () => {
     const { editorView } = editor(doc(p('text')));
-    const toolbarOption = mount(
+    const toolbarOption = mountWithIntl(
       <ToolbarInsertBlock
         tableSupported={true}
         editorView={editorView}
@@ -343,10 +356,10 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         isReducedSpacing={false}
       />,
     );
-    toolbarOption.find(ToolbarButton).simulate('click');
+    toolbarOption.find('button').simulate('click');
     const tableButton = toolbarOption
       .find(Item)
-      .filterWhere(n => n.text().indexOf('Table') >= 0);
+      .filterWhere(n => n.text().indexOf(messages.table.defaultMessage) > -1);
     tableButton.simulate('click');
     expect(trackEvent).toHaveBeenCalledWith(
       'atlassian.editor.format.table.button',
@@ -354,12 +367,14 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     toolbarOption.unmount();
   });
 
-  it('should trigger insertMacroFromMacroBrowser when "[...] View More" option is clicked', () => {
+  it(`should trigger insertMacroFromMacroBrowser when "${
+    messages.viewMore.defaultMessage
+  }" option is clicked`, () => {
     const { editorView } = editor(doc(p('text')));
     const insertMacroFromMacroBrowser = jest.fn();
     const macroProvider = {} as any;
 
-    const toolbarOption = mount(
+    const toolbarOption = mountWithIntl(
       <ToolbarInsertBlock
         macroProvider={macroProvider}
         onInsertMacroFromMacroBrowser={() => insertMacroFromMacroBrowser}
@@ -369,10 +384,12 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       />,
     );
 
-    toolbarOption.find(ToolbarButton).simulate('click');
+    toolbarOption.find('button').simulate('click');
     const button = toolbarOption
       .find(Item)
-      .filterWhere(n => n.text().indexOf('View more') > -1);
+      .filterWhere(
+        n => n.text().indexOf(messages.viewMore.defaultMessage) > -1,
+      );
     button.simulate('click');
     expect(insertMacroFromMacroBrowser).toHaveBeenCalledTimes(1);
     expect(trackEvent).toHaveBeenCalledWith(
@@ -381,10 +398,12 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     toolbarOption.unmount();
   });
 
-  it('should track placeholder insert event when "Add Placeholder Text" option is clicked', () => {
+  it(`should track placeholder insert event when "${
+    messages.placeholderText.defaultMessage
+  }" option is clicked`, () => {
     const { editorView } = editor(doc(p('text')));
 
-    const toolbarOption = mount(
+    const toolbarOption = mountWithIntl(
       <ToolbarInsertBlock
         placeholderTextEnabled={true}
         editorView={editorView}
@@ -393,10 +412,12 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       />,
     );
 
-    toolbarOption.find(ToolbarButton).simulate('click');
+    toolbarOption.find('button').simulate('click');
     const button = toolbarOption
       .find(Item)
-      .filterWhere(n => n.text().indexOf('Placeholder Text') > -1);
+      .filterWhere(
+        n => n.text().indexOf(messages.placeholderText.defaultMessage) > -1,
+      );
     button.simulate('click');
 
     expect(trackEvent).toHaveBeenCalledWith(
@@ -405,10 +426,12 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
     toolbarOption.unmount();
   });
 
-  it('should track layout section insert event when "Insert columns" option is clicked', () => {
+  it(`should track layout section insert event when "${
+    messages.columns.defaultMessage
+  }" option is clicked`, () => {
     const { editorView } = editor(doc(p('text')));
 
-    const toolbarOption = mount(
+    const toolbarOption = mountWithIntl(
       <ToolbarInsertBlock
         layoutSectionEnabled={true}
         editorView={editorView}
@@ -417,10 +440,10 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       />,
     );
 
-    toolbarOption.find(ToolbarButton).simulate('click');
+    toolbarOption.find('button').simulate('click');
     const button = toolbarOption
       .find(Item)
-      .filterWhere(n => n.text().indexOf('Columns') > -1);
+      .filterWhere(n => n.text().indexOf(messages.columns.defaultMessage) > -1);
     button.simulate('click');
 
     expect(trackEvent).toHaveBeenCalledWith(
@@ -432,7 +455,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
   describe('Options in insert toolbar', () => {
     it('should have table option if tableSupported is true', () => {
       const { editorView } = editor(doc(p('text')));
-      const toolbarOption = mount(
+      const toolbarOption = mountWithIntl(
         <ToolbarInsertBlock
           tableSupported={true}
           editorView={editorView}
@@ -440,11 +463,13 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
           isReducedSpacing={false}
         />,
       );
-      toolbarOption.find(ToolbarButton).simulate('click');
+      toolbarOption.find('button').simulate('click');
       expect(
         toolbarOption
           .find('Item')
-          .filterWhere(n => n.html().indexOf('Insert table') > -1).length > 0,
+          .filterWhere(
+            n => n.text().indexOf(messages.table.defaultMessage) > -1,
+          ).length > 0,
       ).toEqual(true);
     });
 
@@ -452,7 +477,7 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
       const { editorView, pluginState: pluginStateBlockType } = editor(
         doc(p('text')),
       );
-      const toolbarOption = mount(
+      const toolbarOption = mountWithIntl(
         <ToolbarInsertBlock
           availableWrapperBlockTypes={
             pluginStateBlockType.availableWrapperBlockTypes
@@ -476,8 +501,6 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         {
           content: 'Custom A',
           value: { name: 'custom-a' },
-          tooltipDescription: 'Custom item a',
-          tooltipPosition: 'right',
           onClick: editorActions => {
             editorActions.appendText('adding custom-a');
           },
@@ -485,15 +508,13 @@ describe('@atlaskit/editor-core/ui/ToolbarInsertBlock', () => {
         {
           content: 'Custom B',
           value: { name: 'custom-b' },
-          tooltipDescription: 'Custom item b',
-          tooltipPosition: 'right',
           onClick: editorActions => {
             editorActions.appendText('adding custom-b');
           },
         },
       ];
 
-      const plusMenu = mount(
+      const plusMenu = mountWithIntl(
         <ToolbarInsertBlock
           editorView={editorView}
           editorActions={editorActions}

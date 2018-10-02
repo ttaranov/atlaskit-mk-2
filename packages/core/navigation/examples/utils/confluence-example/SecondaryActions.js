@@ -1,6 +1,6 @@
 // @flow
 import React, { Component, type Node } from 'react';
-import { akGridSizeUnitless } from '@atlaskit/util-shared-styles';
+import { gridSize } from '@atlaskit/theme';
 import {
   DropdownItemGroup,
   DropdownItem,
@@ -75,7 +75,7 @@ class SelectableDropdownMenu extends Component<
 }
 
 const DropdownWrapper = styled.div`
-  padding-bottom: ${akGridSizeUnitless / 2}px;
+  padding-bottom: ${gridSize() / 2}px;
 `;
 
 const HelpMenu = () => (

@@ -7,7 +7,7 @@ import ErrorReporter from '../utils/error-reporter';
 import { Dispatch, EventDispatcher } from '../event-dispatcher';
 import EditorActions from '../actions';
 import { ToolbarSize } from '../ui/Toolbar';
-import { QuickInsertItem } from '../plugins/quick-insert/types';
+import { QuickInsertHandler } from '../plugins/quick-insert/types';
 import { TypeAheadHandler } from '../plugins/type-ahead/types';
 import { FloatingToolbarHandler } from '../plugins/floating-toolbar/types';
 import { PortalProviderAPI } from '../ui/PortalProvider';
@@ -36,6 +36,7 @@ export type UiComponentFactoryParams = {
   popupsMountPoint?: HTMLElement;
   popupsBoundariesElement?: HTMLElement;
   popupsScrollableElement?: HTMLElement;
+  containerElement: HTMLElement | undefined;
   disabled: boolean;
 };
 
@@ -54,7 +55,7 @@ export type ToolbarUIComponentFactory = (
 
 export type PluginsOptions = {
   [pluginName: string]: any;
-  quickInsert?: Array<QuickInsertItem>;
+  quickInsert?: QuickInsertHandler;
   typeAhead?: TypeAheadHandler;
   floatingToolbar?: FloatingToolbarHandler;
 };

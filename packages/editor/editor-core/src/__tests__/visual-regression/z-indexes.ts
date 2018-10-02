@@ -1,27 +1,35 @@
 import { removeOldProdSnapshots } from '@atlaskit/visual-regression/helper';
 
-import { imageSnapshotFolder, initEditor, clearEditor } from './_utils';
+import {
+  imageSnapshotFolder,
+  initEditor,
+  clearEditor,
+  snapshot,
+} from './_utils';
+import { messages as insertBlockMessages } from '../../plugins/insert-block/ui/ToolbarInsertBlock';
+import { messages as blockTypeMessages } from '../../plugins/block-type/ui/ToolbarBlockType';
 
 const insertTable = async page => {
-  await page.click('span[aria-label="Insert table"]');
+  await page.click(
+    `span[aria-label="${insertBlockMessages.table.defaultMessage}"`,
+  );
   await page.waitForSelector('table td p');
 };
 
-const snapshot = async page => {
-  const image = await page.screenshot();
-  // @ts-ignore
-  expect(image).toMatchProdImageSnapshot();
-};
-
-const blockFormattingDropdown = 'span[aria-label="Change formatting"]';
+const blockFormattingDropdown = `span[aria-label="${blockTypeMessages}"]`;
 const removeTablePopup = 'span[aria-label="Remove table"]';
 const dropList = 'div[data-role="droplistContent"]';
-const insertBlockDropdown =
-  'span[aria-label="Open or close insert block dropdown"]';
+const insertBlockDropdown = `span[aria-label="${
+  insertBlockMessages.insertMenu.defaultMessage
+}"]`;
 const popupPresent = 'div[data-editor-popup="true"]';
-const emojiButton = 'span[aria-label="Insert emoji"]';
+const emojiButton = `span[aria-label="${
+  insertBlockMessages.emoji.defaultMessage
+}"]`;
 const emojiPicker = 'div[data-emoji-picker-container="true"]';
-const mentionButton = 'span[aria-label="Add mention"]';
+const mentionButton = `span[aria-label="${
+  insertBlockMessages.mention.defaultMessage
+}"]`;
 const mentionPicker = 'span[data-mention-query="true"]';
 
 describe('Snapshot Test: z-indexes', () => {

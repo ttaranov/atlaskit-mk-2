@@ -1,19 +1,20 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
+import { messages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
 
 const fullPageEditor = getExampleUrl('editor', 'editor-core', 'full-page');
 const editorSelector = '.ProseMirror';
+const insertMenu = `[aria-label="${messages.insertMenu.defaultMessage}"]`;
+const dateMenu = `span=${messages.date.defaultMessage}`;
+const calendar = '[aria-label="calendar"]';
+const dateView = `span.dateView-content-wrap`;
 
 // https://product-fabric.atlassian.net/browse/ED-4531
 BrowserTestCase(
   'user should be able to open calendar',
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
-    const insertMenu = '[aria-label="Open or close insert block dropdown"]';
-    const dateMenu = 'span=Date';
-    const calendar = '[aria-label="calendar"]';
-
     const browser = await new Page(client);
 
     await browser.goto(fullPageEditor);
@@ -33,11 +34,6 @@ BrowserTestCase(
   'clicking date when calendar is open should close it',
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
-    const insertMenu = '[aria-label="Open or close insert block dropdown"]';
-    const dateMenu = 'span=Date';
-    const calendar = '[aria-label="calendar"]';
-    const dateView = `span.dateView-content-wrap`;
-
     const browser = await new Page(client);
 
     await browser.goto(fullPageEditor);
@@ -49,6 +45,8 @@ BrowserTestCase(
     expect(await browser.isExisting(calendar)).toBe(true);
     await browser.waitForSelector(dateView);
     await browser.click(dateView);
+    // wait for element to disappear
+    await browser.waitFor(calendar, '5000', true);
     expect(await browser.isExisting(calendar)).toBe(false);
   },
 );
@@ -57,11 +55,6 @@ BrowserTestCase(
   'clicking on another date should open its date picker',
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
-    const insertMenu = '[aria-label="Open or close insert block dropdown"]';
-    const dateMenu = 'span=Date';
-    const calendar = '[aria-label="calendar"]';
-    const dateView = `span.dateView-content-wrap`;
-
     const browser = await new Page(client);
 
     await browser.goto(fullPageEditor);

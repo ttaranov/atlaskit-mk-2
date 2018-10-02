@@ -245,6 +245,8 @@ export const emojiItem = style({
     [`&>.${placeholder}`]: {
       padding: '0',
       margin: '7px',
+      minWidth: '24px',
+      maxWidth: '24px',
     },
   },
 });

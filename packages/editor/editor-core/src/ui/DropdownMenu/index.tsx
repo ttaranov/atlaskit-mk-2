@@ -7,6 +7,10 @@ import Tooltip from '@atlaskit/tooltip';
 import { Popup, akEditorFloatingPanelZIndex } from '@atlaskit/editor-common';
 import withOuterListeners from '../with-outer-listeners';
 
+const Wrapper = styled.div`
+  line-height: 0;
+`;
+
 export interface Props {
   mountTo?: HTMLElement;
   boundariesElement?: HTMLElement;
@@ -61,13 +65,9 @@ const ItemContentWrapper: any = styled.span`
  * Also it controls popper's placement.
  */
 export default class DropdownMenuWrapper extends PureComponent<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      popupPlacement: ['bottom', 'left'],
-    };
-  }
+  state: State = {
+    popupPlacement: ['bottom', 'left'],
+  };
 
   private handleRef = target => {
     this.setState({ target });
@@ -176,10 +176,10 @@ export default class DropdownMenuWrapper extends PureComponent<Props, State> {
     const { children, isOpen } = this.props;
 
     return (
-      <div>
+      <Wrapper>
         <div ref={this.handleRef}>{children}</div>
         {isOpen ? this.renderDropdownMenu() : null}
-      </div>
+      </Wrapper>
     );
   }
 }

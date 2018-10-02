@@ -112,3 +112,46 @@ export const getTreePosition = (tree: TreeData, path: Path): TreePosition => {
     index,
   };
 };
+
+const removeItemFromTree = (
+  tree: TreeData,
+  position: TreePosition,
+): { tree: TreeData, itemRemoved: TreeItem } => {
+  const sourceParent: TreeItem = tree.items[position.parentId];
+  const newSourceChildren = [...sourceParent.children];
+  const itemRemoved: TreeItem = newSourceChildren.splice(position.index, 1)[0];
+  const newTree = mutateTree(tree, position.parentId, {
+    children: newSourceChildren,
+    hasChildren: newSourceChildren.length > 0,
+    isExpanded: newSourceChildren.length > 0 && sourceParent.isExpanded,
+  });
+  return {
+    tree: newTree,
+    itemRemoved,
+  };
+};
+
+const addItemToTree = (
+  tree: TreeData,
+  position: TreePosition,
+  item: TreeItem,
+): TreeData => {
+  const destinationParent: TreeItem = tree.items[position.parentId];
+  const newDestinationChildren = [...destinationParent.children];
+  newDestinationChildren.splice(position.index, 0, item);
+  return mutateTree(tree, position.parentId, {
+    children: newDestinationChildren,
+  });
+};
+
+export const moveItemOnTree = (
+  tree: TreeData,
+  from: TreePosition,
+  to: TreePosition,
+): TreeData => {
+  const { tree: treeWithoutSource, itemRemoved } = removeItemFromTree(
+    tree,
+    from,
+  );
+  return addItemToTree(treeWithoutSource, to, itemRemoved);
+};

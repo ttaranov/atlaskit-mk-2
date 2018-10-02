@@ -15,9 +15,9 @@ export class NullSelectionReader {
   }
 
   // Store the current state of the DOM selection.
-  storeDOMState = function(selection) {
+  storeDOMState(selection) {
     this.warnOnce();
-  };
+  }
 
   clearDOMState() {
     this.warnOnce();
@@ -26,10 +26,10 @@ export class NullSelectionReader {
   // : (?string) → bool
   // When the DOM selection changes in a notable manner, modify the
   // current selection state to match.
-  readFromDOM = function(origin) {
+  readFromDOM(origin) {
     this.warnOnce();
     return true;
-  };
+  }
 }
 
 const clientRectFixture = {

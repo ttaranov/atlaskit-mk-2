@@ -6,6 +6,7 @@ import {
   audioFileId,
   errorFileId,
   gifFileId,
+  externalImageIdentifier,
   defaultCollectionName,
 } from '@atlaskit/media-test-helpers';
 import { CardEvent, FileIdentifier, CardAction } from '@atlaskit/media-card';
@@ -88,6 +89,10 @@ class Example extends Component<{}, ExampleState> {
     items: [
       {
         identifier: genericFileId,
+        ...this.cardProps,
+      },
+      {
+        identifier: externalImageIdentifier,
         ...this.cardProps,
       },
       {

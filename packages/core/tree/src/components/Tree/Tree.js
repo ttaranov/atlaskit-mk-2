@@ -54,11 +54,15 @@ export default class Tree extends Component<Props, State> {
   }
 
   onDragStart = (result: DragStart) => {
+    const { onDragStart } = this.props;
     this.dragState = {
       draggedItemId: result.draggableId,
       source: result.source,
       destination: result.source,
     };
+    if (onDragStart) {
+      onDragStart(result.draggableId);
+    }
   };
 
   onDragUpdate = (update: DragUpdate) => {

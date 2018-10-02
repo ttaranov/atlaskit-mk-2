@@ -11,7 +11,7 @@ test('navigation-next server side rendering', async () => {
     expect(
       () =>
         // $StringLitteral
-        ReactDOMServer.renderToString(require(examples.filePath).default), // eslint-disable-line global-require, import/no-dynamic-require
+        ReactDOMServer.renderToString(require(examples.filePath).default), // eslint-disable-line  import/no-dynamic-require
     ).not.toThrowError();
   });
 });

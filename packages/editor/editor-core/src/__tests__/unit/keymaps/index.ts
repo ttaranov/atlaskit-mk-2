@@ -53,7 +53,7 @@ describe('keymaps', () => {
     describe('when not on a mac', () => {
       describe('tooltip', () => {
         it('returns tooltip', () => {
-          expect(keymaps.tooltip(keymap)).toEqual('A keymap Ctrl+Shift+Alt+K');
+          expect(keymaps.tooltip(keymap)).toEqual('Ctrl+Shift+Alt+K');
         });
       });
 

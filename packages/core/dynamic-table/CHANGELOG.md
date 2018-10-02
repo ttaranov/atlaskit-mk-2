@@ -1,5 +1,13 @@
 # @atlaskit/dynamic-table
 
+## 10.0.13
+- [patch] Added space of 3x gridSize between table and pagination component [83a3471](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/83a3471)
+- [patch] Updated dependencies [8276156](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8276156)
+  - @atlaskit/pagination@8.0.0
+
+## 10.0.12
+- [patch] Pulling the shared styles from @atlaskit/theme and removed dependency on util-shraed-styles [7d51a09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d51a09)
+
 ## 10.0.11
 - [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
 

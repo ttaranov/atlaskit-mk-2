@@ -1,9 +1,11 @@
 import * as React from 'react';
-import { MouseEvent, Component } from 'react';
+import { MouseEvent, Component, ReactNode } from 'react';
+import { FormattedMessage } from 'react-intl';
 import * as cx from 'classnames';
 import { MediaType } from '@atlaskit/media-core';
 import TickIcon from '@atlaskit/icon/glyph/check';
 import { Ellipsify } from '@atlaskit/media-ui';
+import { messages } from '@atlaskit/media-ui';
 // We dont require things directly from "utils" to avoid circular dependencies
 import { FileIcon } from '../../../utils/fileIcon';
 import { ErrorIcon } from '../../../utils/errorIcon';
@@ -35,7 +37,7 @@ export interface CardOverlayProps {
   selected?: boolean;
   persistent: boolean;
 
-  error?: string;
+  error?: ReactNode;
   noHover?: boolean;
   onRetry?: () => void;
 
@@ -148,7 +150,9 @@ export class CardOverlay extends Component<CardOverlayProps, CardOverlayState> {
       return (
         <ErrorWrapper>
           <ErrorIcon />
-          <Retry onClick={onRetry}>Retry</Retry>
+          <Retry onClick={onRetry}>
+            <FormattedMessage {...messages.retry} />
+          </Retry>
         </ErrorWrapper>
       );
     } else {

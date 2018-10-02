@@ -1,11 +1,12 @@
 import * as React from 'react';
 
-import { AnalyticsWebClient, FabricChannel } from './types';
+import { AnalyticsWebClient, FabricChannel, ListenerProps } from './types';
 import FabricElementsListener from './fabric/FabricElementsListener';
 import AtlaskitListener from './atlaskit/AtlaskitListener';
 import Logger from './helpers/logger';
 import NavigationListener from './navigation/NavigationListener';
 import FabricEditorListener from './fabric/FabricEditorListener';
+import MediaAnalyticsListener from './media/MediaAnalyticsListener';
 
 export type Props = {
   /** Children! */
@@ -21,12 +22,13 @@ const listenerMap = {
   [FabricChannel.editor]: FabricEditorListener,
   [FabricChannel.atlaskit]: AtlaskitListener,
   [FabricChannel.navigation]: NavigationListener,
+  [FabricChannel.media]: MediaAnalyticsListener,
 };
 
 class FabricAnalyticsListeners extends React.Component<Props> {
   logger: Logger;
 
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
 
     this.logger = new Logger({ logLevel: props.logLevel });
@@ -42,14 +44,16 @@ class FabricAnalyticsListeners extends React.Component<Props> {
       this.logger.setLogLevel(logLevel);
     }
 
-    const listeners = Object.keys(listenerMap)
+    const listeners = (Object.keys(listenerMap) as FabricChannel[])
       .filter(
-        (channel: FabricChannel) =>
-          !excludedChannels || excludedChannels.indexOf(channel) < 0,
+        channel => !excludedChannels || excludedChannels.indexOf(channel) < 0,
       )
       .map(channel => listenerMap[channel])
       .reduce(
-        (prev, Listener) => (
+        (
+          prev: React.ReactNode,
+          Listener: React.ComponentClass<ListenerProps>,
+        ) => (
           <Listener client={client} logger={this.logger}>
             {prev}
           </Listener>

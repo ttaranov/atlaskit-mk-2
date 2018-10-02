@@ -1,5 +1,20 @@
 # @atlaskit/global-navigation
 
+## 4.5.2
+- [patch] Fix issues with tooltips and hover states in items that render as dropdown menus. [ad36064](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ad36064)
+
+## 4.5.1
+- [patch] Fix drawer screen events not firing on subsequent opens of a drawer after the initial one [7eb5248](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7eb5248)
+
+## 4.5.0
+- [minor] Fire keyboardShortcut pressed analytics event when closing a drawer with the ESC key [6bea7d0](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6bea7d0)
+
+## 4.4.4
+- [patch] Adds the new hideTooltipOnMouseDown was required since global-navigation and navigation-next are using onMouseDown and onMouseUp iteractions [8719daf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8719daf)
+
+## 4.4.3
+- [patch] fixing remount component on GlobalItem component [e71825a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e71825a)
+
 ## 4.4.2
 - [patch] fixing HelpIcon active on children :hover [ae95dad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ae95dad)
 

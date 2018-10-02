@@ -10,7 +10,7 @@ import {
   ResultType,
   ContentType,
   ContainerResult,
-  ConfluenceObjectResult,
+  PersonResult,
 } from '../../model/Result';
 
 import 'whatwg-fetch';
@@ -20,8 +20,8 @@ const DUMMY_CONFLUENCE_HOST = 'http://localhost';
 const DUMMY_CLOUD_ID = '123';
 const PAGE_CLASSNAME = 'content-type-page';
 const BLOG_CLASSNAME = 'content-type-blogpost';
-const ATTACHMENT_CLASSNAME = 'content-type-attachment-image';
 const SPACE_CLASSNAME = 'content-type-space';
+const PEOPLE_CLASSNAME = 'content-type-userinfo';
 
 function buildMockPage(type: ConfluenceContentType): RecentPage {
   return {
@@ -49,8 +49,7 @@ const MOCK_QUICKNAV_RESULT_BASE = {
   href: '/href',
   name: 'name',
   id: '123',
-  spaceName: 'spaceName',
-  spaceKey: 'spaceKey',
+  icon: 'icon',
 };
 
 const mockQuickNavResult = (className: string) => ({
@@ -151,6 +150,7 @@ describe('ConfluenceClient', () => {
           avatarUrl: MOCK_SPACE.icon,
           analyticsType: AnalyticsType.RecentConfluence,
           resultType: ResultType.GenericContainerResult,
+          contentType: ContentType.ConfluenceSpace,
         },
         {
           resultId: MOCK_SPACE.id,
@@ -161,6 +161,7 @@ describe('ConfluenceClient', () => {
           avatarUrl: MOCK_SPACE.icon,
           analyticsType: AnalyticsType.RecentConfluence,
           resultType: ResultType.GenericContainerResult,
+          contentType: ContentType.ConfluenceSpace,
         },
       ];
 
@@ -174,71 +175,61 @@ describe('ConfluenceClient', () => {
     });
   });
 
-  describe('searchQuickNav', () => {
-    it('should return correct confluence results', async () => {
+  describe('searchPeopleInQuickNav', () => {
+    it('should return correct results', async () => {
       const mockResults = [
         [
           mockQuickNavResult(BLOG_CLASSNAME),
           mockQuickNavResult(PAGE_CLASSNAME),
         ],
-        [mockQuickNavResult(ATTACHMENT_CLASSNAME)],
+        [mockQuickNavResult(PEOPLE_CLASSNAME)],
       ];
 
       mockQuickNavSearch(mockResults);
 
-      const results = await confluenceClient.searchQuickNav('abc', '123');
-      // @ts-ignore
-      const expectedResults: ConfluenceObjectResult[] = [
+      const results = await confluenceClient.searchPeopleInQuickNav(
+        'abc',
+        '123',
+      );
+
+      const expectedResults: PersonResult[] = [
         {
           resultId: '123',
           name: 'name',
           href: `/href?search_id=123`,
-          containerName: 'spaceName',
-          analyticsType: AnalyticsType.ResultConfluence,
-          resultType: ResultType.ConfluenceObjectResult,
-          contentType: ContentType.ConfluenceBlogpost,
-          containerId: 'spaceKey',
-          iconClass: BLOG_CLASSNAME,
-        },
-        {
-          resultId: '123',
-          name: 'name',
-          href: `/href?search_id=123`,
-          containerName: 'spaceName',
-          analyticsType: AnalyticsType.ResultConfluence,
-          resultType: ResultType.ConfluenceObjectResult,
-          contentType: ContentType.ConfluencePage,
-          containerId: 'spaceKey',
-          iconClass: PAGE_CLASSNAME,
-        },
-        {
-          resultId: '123',
-          name: 'name',
-          href: `/href?search_id=123`,
-          containerName: 'spaceName',
-          analyticsType: AnalyticsType.ResultConfluence,
-          resultType: ResultType.ConfluenceObjectResult,
-          contentType: ContentType.ConfluenceAttachment,
-          containerId: 'spaceKey',
-          iconClass: ATTACHMENT_CLASSNAME,
+          analyticsType: AnalyticsType.ResultPerson,
+          resultType: ResultType.PersonResult,
+          contentType: ContentType.Person,
+          avatarUrl: 'icon',
+          mentionName: 'name',
+          presenceMessage: '',
         },
       ];
 
       expect(results).toEqual(expectedResults);
     });
 
-    it('should filter out non page, attachment, etc. results', async () => {
-      const mockResults = [[mockQuickNavResult(SPACE_CLASSNAME)]];
+    it('should filter out people results', async () => {
+      const mockResults = [
+        [
+          mockQuickNavResult(SPACE_CLASSNAME),
+          mockQuickNavResult(PEOPLE_CLASSNAME),
+        ],
+      ];
 
       mockQuickNavSearch(mockResults);
 
-      const results = await confluenceClient.searchQuickNav('abc', '123');
+      const results = await confluenceClient.searchPeopleInQuickNav(
+        'abc',
+        '123',
+      );
 
-      expect(results).toEqual([]);
+      expect(results).toHaveLength(1);
+      expect(results[0].resultType).toEqual(ResultType.PersonResult);
     });
 
     it('should format hrefs correctly when they already have query params', async () => {
-      const mockResult = mockQuickNavResult(ATTACHMENT_CLASSNAME);
+      const mockResult = mockQuickNavResult(PEOPLE_CLASSNAME);
 
       // change the href to include a query param
       mockResult.href = `${mockResult.href}?test=abc`;
@@ -246,55 +237,32 @@ describe('ConfluenceClient', () => {
 
       mockQuickNavSearch(mockResults);
 
-      const results = await confluenceClient.searchQuickNav('abc', '123');
-      // @ts-ignore
-      const expectedResults: ConfluenceObjectResult[] = [
-        {
-          resultId: '123',
-          name: 'name',
-          href: `/href?test=abc&search_id=123`,
-          containerName: 'spaceName',
-          analyticsType: AnalyticsType.ResultConfluence,
-          resultType: ResultType.ConfluenceObjectResult,
-          contentType: ContentType.ConfluenceAttachment,
-          containerId: 'spaceKey',
-          iconClass: ATTACHMENT_CLASSNAME,
-        },
-      ];
+      const results = await confluenceClient.searchPeopleInQuickNav(
+        'abc',
+        '123',
+      );
 
-      expect(results).toEqual(expectedResults);
+      expect(results[0].href).toEqual('/href?test=abc&search_id=123');
     });
 
     // quick nav's API sends pre-escaped content, different to what we normally expect
     // so testing that we remember to unescape it before passing it into the component.
     it('should unescape html entities in the name and spaceNames of results', async () => {
-      const mockResult = mockQuickNavResult(PAGE_CLASSNAME);
+      const mockResult = mockQuickNavResult(PEOPLE_CLASSNAME);
 
       // Make the name include some entities, not intended to be comprehensive
       mockResult.name = 'name &amp; &gt; &lt;';
-      mockResult.spaceName = 'spaceName &amp; &gt; &lt;';
 
       const mockResults = [[mockResult]];
 
       mockQuickNavSearch(mockResults);
 
-      const results = await confluenceClient.searchQuickNav('abc', '123');
-      // @ts-ignore
-      const expectedResults: ConfluenceObjectResult[] = [
-        {
-          resultId: '123',
-          name: 'name & > <',
-          href: `/href?search_id=123`,
-          containerName: 'spaceName & > <',
-          containerId: 'spaceKey',
-          analyticsType: AnalyticsType.ResultConfluence,
-          resultType: ResultType.ConfluenceObjectResult,
-          contentType: ContentType.ConfluencePage,
-          iconClass: PAGE_CLASSNAME,
-        },
-      ];
+      const results = await confluenceClient.searchPeopleInQuickNav(
+        'abc',
+        '123',
+      );
 
-      expect(results).toEqual(expectedResults);
+      expect(results[0].name).toEqual('name & > <');
     });
   });
 });

@@ -69,7 +69,12 @@ export interface PMNodeToken {
 }
 
 export type Token = TextToken | PMNodeToken;
-export type TokenParser = (input: string, schema: Schema) => Token;
+export type TokenErrCallback = (err: Error, tokenType: string) => void;
+export type TokenParser = (
+  input: string,
+  schema: Schema,
+  tokenErrCallback?: TokenErrCallback,
+) => Token;
 
 const tokenToTokenParserMapping: {
   [key: string]: TokenParser;
@@ -104,12 +109,16 @@ export function parseToken(
   input: string,
   type: TokenType,
   schema: Schema,
+  errCallback?: TokenErrCallback,
 ): Token {
   const tokenParser = tokenToTokenParserMapping[type];
   if (tokenParser) {
     try {
-      return tokenParser(input, schema);
+      return tokenParser(input, schema, errCallback);
     } catch (err) {
+      if (errCallback) {
+        errCallback(err, type);
+      }
       return fallback(input);
     }
   }

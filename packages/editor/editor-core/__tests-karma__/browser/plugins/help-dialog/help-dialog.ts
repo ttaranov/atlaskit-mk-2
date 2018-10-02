@@ -29,12 +29,6 @@ describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
     editorView.destroy();
   });
 
-  describe('pluginKey', () => {
-    it('should not be undefined', () => {
-      expect(pluginKey).to.not.equal(undefined);
-    });
-  });
-
   describe('openHelpCommand', () => {
     it('should set helpDialog visible flag to true', () => {
       const {
@@ -54,15 +48,6 @@ describe('@atlaskit/editor-core/editor/ui/HelpDialog', () => {
       } = editorView;
       closeHelpCommand(tr, dispatch);
       expect(tr.getMeta(pluginKey)).to.equal(false);
-    });
-  });
-
-  describe('helpDialog.pmPlugins', () => {
-    it('should return array of size 2', () => {
-      expect(helpDialog.pmPlugins!().length).to.equal(2);
-    });
-    it('should have well defined contentComponent', () => {
-      expect(helpDialog.contentComponent).to.not.equal(undefined);
     });
   });
 

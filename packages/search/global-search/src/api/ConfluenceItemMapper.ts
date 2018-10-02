@@ -5,6 +5,7 @@ import {
   ContainerResult,
   ConfluenceObjectResult,
   ContentType,
+  Result,
 } from '../model/Result';
 import { Scope, ConfluenceItem } from './types';
 
@@ -52,6 +53,7 @@ function mapConfluenceItemToResultSpace(
     href: `${href.pathname()}?${href.query()}`,
     analyticsType: AnalyticsType.ResultConfluence,
     resultType: ResultType.GenericContainerResult,
+    contentType: ContentType.ConfluenceSpace,
     experimentId: experimentId,
   };
 }
@@ -61,7 +63,7 @@ export function mapConfluenceItemToResult(
   item: ConfluenceItem,
   searchSessionId: string,
   experimentId?: string,
-) {
+): Result {
   const mapper =
     scope === Scope.ConfluenceSpace
       ? mapConfluenceItemToResultSpace

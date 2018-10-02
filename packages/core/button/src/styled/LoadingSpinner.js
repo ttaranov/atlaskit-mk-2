@@ -23,7 +23,12 @@ export default class LoadingSpinner extends Component<Props, *> {
     const { appearance, isSelected, isDisabled } = this.props;
     if (isSelected) return true;
     else if (isDisabled) return false;
-    else if (appearance === 'primary' || appearance === 'danger') return true;
+    else if (
+      appearance === 'primary' ||
+      appearance === 'danger' ||
+      appearance === 'help'
+    )
+      return true;
     return false;
   };
 

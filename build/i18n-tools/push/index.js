@@ -1,86 +1,81 @@
 const path = require('path');
-const fs = require('fs');
-const babel = require('@babel/core');
+const Listr = require('listr');
 const globby = require('globby');
-const Transifex = require('transifex');
-const reactIntlPot = require('babel-plugin-react-intl-pot');
-const { errorAndExit } = require('../utils');
+const { msg2pot } = require('babel-plugin-react-intl-pot');
 
-async function pushCommand(absPathToPackage, searchDir, project, resource) {
-  const { TRANSIFEX_API_TOKEN } = process.env;
+const { extractMessagesFromFile } = require('../utils');
+const { pushTranslations } = require('../utils/transifex');
 
-  if (!TRANSIFEX_API_TOKEN) {
-    errorAndExit(
-      'TRANSIFEX_API_TOKEN is missing. This env var is required for accessing Transifex',
-    );
-  }
-
-  const transifex = new Transifex({
-    project_slug: project,
-    credential: `api:${TRANSIFEX_API_TOKEN}`,
-  });
-
+function pushCommand(options) {
+  const { absPathToPackage, searchDir, dry, project, resource } = options;
   const dirToSearch = path.join(absPathToPackage, searchDir);
-  const jsFiles = globby
-    .sync(['**/*.js'], { cwd: dirToSearch })
-    .map(file => path.join(dirToSearch, file));
-  console.log(`Found ${jsFiles.length} files in ${searchDir} directory...`);
-
-  const extractionPromises = jsFiles.map(extractMessagesFromFile);
-  const allMessagesFromFiles = await Promise.all(extractionPromises);
-  const messages = allMessagesFromFiles.reduce(
-    (allMessages, nextMessages) => [...allMessages, ...nextMessages],
-    [],
-  );
-
-  // Search for duplicate messageIds
-  const duplicateMessageIds = messages
-    .map(m => m.id)
-    .filter((id, idx, arr) => arr.indexOf(id) !== idx);
-  if (duplicateMessageIds.length !== 0) {
-    errorAndExit('Error: Duplicate messageIds found', duplicateMessageIds);
-  }
-
-  console.log(`Found ${messages.length} messages...`);
-
-  const content = reactIntlPot.msg2pot(messages);
-
-  if (content.length === 0) {
-    errorAndExit('Error: Invalid POT file!');
-  }
-
-  transifex.uploadSourceLanguageMethod(
-    project,
-    resource,
+  return new Listr([
     {
-      slug: resource,
-      name: resource + '.pot',
-      i18n_type: 'PO',
-      content,
+      title: 'Finding JavaScript files',
+      task: async (context, task) => {
+        const files = await globby(['**/*.js'], { cwd: dirToSearch });
+        if (files.length === 0) {
+          throw new Error(`No JavaScript files in ${searchDir} directory...`);
+        }
+        task.title = `Found ${files.length} files in ${searchDir} directory...`;
+        context.files = files.map(file => path.join(dirToSearch, file));
+      },
     },
-    (error, data) => {
-      if (error) {
-        console.log(error);
-        errorAndExit(`Error: Couldn't upload file to Transifex!`);
+    {
+      title: 'Extracting translations',
+      task: async (context, task) => {
+        const extractionPromises = context.files.map(extractMessagesFromFile);
+        const allMessagesFromFiles = await Promise.all(extractionPromises);
+        const messages = allMessagesFromFiles.reduce(
+          (allMessages, nextMessages) => [...allMessages, ...nextMessages],
+          [],
+        );
+
+        // Search for duplicate messageIds
+        const duplicateMessageIds = messages
+          .map(m => m.id)
+          .filter((id, idx, arr) => arr.indexOf(id) !== idx);
+
+        if (duplicateMessageIds.length !== 0) {
+          throw new Error(
+            'Error: Duplicate messageIds found',
+            duplicateMessageIds,
+          );
+        }
+        task.title = `Found ${messages.length} messages...`;
+        context.messages = messages;
+      },
+    },
+    {
+      title: 'Converting JSON to POT',
+      task: context => {
+        const pot = msg2pot(context.messages);
+        if (!pot || pot.length === 0) {
+          throw new Error(`JSON to POT conversion failed!`);
+        }
+        context.pot = pot;
+      },
+    },
+    {
+      title: 'Pushing to Transifex',
+      skip: () => dry,
+      task: async context => {
+        context.data = await pushTranslations(project, resource, context.pot);
+      },
+    },
+  ])
+    .run()
+    .then(({ pot, data }) => {
+      if (dry) {
+        console.log('\n' + pot);
+      } else {
+        console.log(
+          `\nSuccess:\nAdded: ${data.strings_added}\nUpdated: ${
+            data.strings_updated
+          }\nDeleted: ${data.strings_delete}`,
+        );
       }
-
-      console.log(
-        `\nSuccess:\nAdded: ${data.strings_added}\nUpdated: ${
-          data.strings_updated
-        }\nDeleted: ${data.strings_delete}`,
-      );
-    },
-  );
-}
-
-function extractMessagesFromFile(file) {
-  return new Promise((resolve, reject) => {
-    const babelConfig = { plugins: ['react-intl'] };
-    babel.transformFile(file, babelConfig, (err, res) => {
-      if (err) reject(err);
-      else resolve(res.metadata['react-intl'].messages);
     });
-  });
 }
 
 module.exports = pushCommand;

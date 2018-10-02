@@ -1,30 +1,25 @@
-import * as React from 'react';
-import { reactionsProvider } from '../src/mock-reactions-provider';
-import { Reactions } from '../src';
-import { emoji } from '@atlaskit/util-data-test';
 import { EmojiProvider } from '@atlaskit/emoji';
-import { ReactionsProvider } from '../src/reactions-resource';
-import debug, { enableLogger } from '../src/util/logger';
+import { emoji } from '@atlaskit/util-data-test';
+import * as React from 'react';
+import { ConnectedReactionsView } from '../src';
+import { ReactionsExampleWrapper } from './examples-util';
 
 const { getEmojiResource } = emoji.storyData;
 const demoAri2 = 'ari:cloud:owner:demo-cloud-id:item/2';
 const containerAri = 'ari:cloud:owner:demo-cloud-id:container/1';
 
 export default function Example() {
-  enableLogger(true);
   return (
-    <div>
-      <p>This is a message with some reactions</p>
-      <Reactions
-        containerAri={containerAri}
-        ari={demoAri2}
-        emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
-        reactionsProvider={reactionsProvider as ReactionsProvider}
-        onReactionClick={(emojiId: string): any => {
-          debug('onReactionClick: ', emojiId);
-        }}
-        allowAllEmojis={true}
-      />
-    </div>
+    <ReactionsExampleWrapper>
+      <div>
+        <p>This is a message with some reactions</p>
+        <ConnectedReactionsView
+          containerAri={containerAri}
+          ari={demoAri2}
+          emojiProvider={getEmojiResource() as Promise<EmojiProvider>}
+          allowAllEmojis={true}
+        />
+      </div>
+    </ReactionsExampleWrapper>
   );
 }

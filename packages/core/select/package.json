@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/select",
-  "version": "5.0.19",
+  "version": "6.0.1",
   "description": "React component which allows selection of item(s) from a dropdown list.",
   "license": "Apache-2.0",
   "main": "dist/cjs/index.js",
@@ -25,7 +25,7 @@
   },
   "repository": "https://bitbucket.org/atlassian/atlaskit-mk-2",
   "dependencies": {
-    "@atlaskit/analytics-next": "^3.0.6",
+    "@atlaskit/analytics-next": "^3.0.8",
     "@atlaskit/icon": "^13.8.1",
     "@atlaskit/spinner": "^9.0.8",
     "@atlaskit/theme": "^6.0.2",
@@ -34,7 +34,7 @@
     "react-fast-compare": "^2.0.1",
     "react-node-resolver": "^1.0.1",
     "react-popper": "^1.0.2",
-    "react-select": "^2.0.0-beta.7",
+    "react-select": "^2.0.0",
     "react-transition-group": "^2.2.1"
   },
   "peerDependencies": {
@@ -47,7 +47,7 @@
     "@atlaskit/button": "^9.0.9",
     "@atlaskit/checkbox": "^5.0.0",
     "@atlaskit/docs": "^5.0.6",
-    "@atlaskit/form": "^4.0.5",
+    "@atlaskit/form": "^4.0.9",
     "@atlaskit/modal-dialog": "^7.0.1",
     "@atlaskit/tooltip": "^12.0.14",
     "@atlaskit/webdriver-runner": "^0.1.0",

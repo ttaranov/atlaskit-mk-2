@@ -122,3 +122,13 @@ export const CardState = styled.div`
     font-size: 11px;
   }
 `;
+
+export const ExternalIdentifierWrapper = styled.div`
+  display: flex;
+  justify-content: space-around;
+  margin: 0 auto;
+
+  h2 {
+    margin-bottom: 10px;
+  }
+`;

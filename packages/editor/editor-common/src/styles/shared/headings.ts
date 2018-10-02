@@ -1,7 +1,6 @@
 // @ts-ignore: unused variable
 // prettier-ignore
 import { css, Styles, StyledComponentClass } from 'styled-components';
-import { blockNodesVerticalMargin } from '../consts';
 
 // @see typography spreadsheet: https://docs.google.com/spreadsheets/d/1iYusRGCT4PoPfvxbJ8NrgjtfFgXLm5lpDWXzjua1W2E/edit#gid=93913128
 // text sizing prototype: http://proto/fabricrender/
@@ -30,7 +29,7 @@ export const headingsSharedStyles = css`
 
   & h3 {
     line-height: 1.5;
-    font-size: ${blockNodesVerticalMargin};
+    font-size: 1.142em;
     margin-top: 2.585em;
     margin-bottom: 0;
 

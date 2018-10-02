@@ -261,6 +261,12 @@ describe('text-formatting', () => {
       expect(pluginState.codeDisabled).toBe(false);
     });
 
+    it('should disable underline when code is active', () => {
+      const { pluginState } = editor(doc(p(code('t{<}e{>}xt'))));
+      expect(pluginState.underlineDisabled).toBe(true);
+      expect(pluginState.codeActive).toBe(true);
+    });
+
     it('should convert smart characters to normal ascii', () => {
       const { editorView } = editor(doc(p('{<}… → ← – “ ” ‘ ’{>}')));
       expect(commands.toggleCode()(editorView.state, editorView.dispatch));

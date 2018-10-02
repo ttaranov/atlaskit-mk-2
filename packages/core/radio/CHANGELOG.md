@@ -1,5 +1,8 @@
 # @atlaskit/radio
 
+## 0.2.2
+- [patch] Fixing analytics events for checkbox/radio/select [3e428e3](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3e428e3)
+
 ## 0.2.1
 - [patch] Fixed radio indent styling [88520b2](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/88520b2)
 

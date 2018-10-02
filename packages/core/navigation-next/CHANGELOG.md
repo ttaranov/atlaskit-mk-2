@@ -1,5 +1,40 @@
 # @atlaskit/navigation-next
 
+## 3.15.3
+- [patch] Update global nav item click analytics to use actionSubjectId rather than the itemId attribute [56a3ada](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/56a3ada)
+
+## 3.15.2
+- [patch] Fix misalignment of tooltips for small global items [2c48609](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2c48609)
+
+## 3.15.1
+- [patch] hide GlobalItem tooltip on click as well as on mousedown [6c35a0d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6c35a0d)
+
+## 3.15.0
+- [minor] Add itemComponent prop to GlobalNav to allow consumers to pass a custom component for rendering items. Add isSelected prop to GlobalItem. [e8163a6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e8163a6)
+
+## 3.14.3
+- [patch] fix item after onclick [ab3a683](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ab3a683)
+
+## 3.14.2
+- [patch] Remove memoization of custom components in globaItem and wrapping tooltip children in div to maintain reference to it [08dd5f4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/08dd5f4)
+
+## 3.14.1
+- [patch] Fix GlobalItem not passing all GlobalItem props to custom component. [9f95736](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/9f95736)
+
+## 3.14.0
+- [minor] Add enableResize(), disableResize(), and state.isResizeDisabled to UIController. The NavigationProvider's initialUIController prop can now containe a isResizeDisabled property. [a932511](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a932511)
+
+## 3.13.3
+- [patch] Adds the new hideTooltipOnMouseDown was required since global-navigation and navigation-next are using onMouseDown and onMouseUp iteractions [8719daf](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8719daf)
+
+## 3.13.2
+- [patch] Updated dependencies [4194aa4](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4194aa4)
+  - @atlaskit/logo@9.2.2
+  - @atlaskit/select@6.0.0
+
+## 3.13.1
+- [patch] fixing remount component on GlobalItem component [e71825a](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/e71825a)
+
 ## 3.13.0
 - [minor] introduces never-fully-collapsed content navigation [99add85](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/99add85)
 

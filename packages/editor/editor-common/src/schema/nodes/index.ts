@@ -52,6 +52,7 @@ export {
   Layout as MediaSingleLayout,
   MediaSingleDefinition,
   MediaSingleAttributes,
+  toJSON as mediaSingleToJSON,
 } from './media-single';
 export {
   table,
