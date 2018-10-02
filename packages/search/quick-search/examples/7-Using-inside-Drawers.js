@@ -12,8 +12,6 @@ import {
   ObjectResult,
 } from '../src';
 
-const noop = () => {};
-
 type DataShape = {
   title: string,
   items: Array<any>,
