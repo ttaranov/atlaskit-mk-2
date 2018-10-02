@@ -1,11 +1,12 @@
 import { EditorState } from 'prosemirror-state';
 import { findTable, findParentNodeOfType } from 'prosemirror-utils';
-import { DecorationSet } from 'prosemirror-view';
+import { DecorationSet, Decoration } from 'prosemirror-view';
 import { TableMap } from 'prosemirror-tables';
 import { Dispatch } from '../../event-dispatcher';
 import { pluginKey, defaultTableSelection } from './pm-plugins/main';
 import { TablePluginState } from './types';
 import { closestElement } from '../../utils';
+import { findHoverDecoration } from './utils';
 
 export const handleSetFocus = (editorHasFocus: boolean) => (
   pluginState: TablePluginState,
@@ -70,9 +71,11 @@ export const handleClearSelection = (
   pluginState: TablePluginState,
   dispatch: Dispatch,
 ): TablePluginState => {
+  const { decorationSet } = pluginState;
   const nextPluginState = {
     ...pluginState,
     ...defaultTableSelection,
+    decorationSet: decorationSet.remove(findHoverDecoration(decorationSet)),
   };
   dispatch(pluginKey, nextPluginState);
   return nextPluginState;
@@ -80,15 +83,22 @@ export const handleClearSelection = (
 
 export const handleHoverColumns = (
   state: EditorState,
-  hoverDecoration: DecorationSet,
+  hoverDecoration: Decoration[],
   dangerColumns: number[],
 ) => (pluginState: TablePluginState, dispatch: Dispatch): TablePluginState => {
   const table = findTable(state.selection)!;
   const map = TableMap.get(table.node);
 
+  let { decorationSet } = pluginState;
+  if (hoverDecoration.length) {
+    decorationSet = decorationSet.add(state.doc, hoverDecoration);
+  } else {
+    decorationSet = decorationSet.remove(findHoverDecoration(decorationSet));
+  }
+
   const nextPluginState = {
     ...pluginState,
-    hoverDecoration,
+    decorationSet,
     dangerColumns,
     isTableInDanger: map.width === dangerColumns.length ? true : false,
   };
@@ -98,15 +108,22 @@ export const handleHoverColumns = (
 
 export const handleHoverRows = (
   state: EditorState,
-  hoverDecoration: DecorationSet,
+  hoverDecoration: Decoration[],
   dangerRows: number[],
 ) => (pluginState: TablePluginState, dispatch: Dispatch): TablePluginState => {
   const table = findTable(state.selection)!;
   const map = TableMap.get(table.node);
 
+  let { decorationSet } = pluginState;
+  if (hoverDecoration.length) {
+    decorationSet = decorationSet.add(state.doc, hoverDecoration);
+  } else {
+    decorationSet = decorationSet.remove(findHoverDecoration(decorationSet));
+  }
+
   const nextPluginState = {
     ...pluginState,
-    hoverDecoration,
+    decorationSet,
     dangerRows,
     isTableInDanger: map.height === dangerRows.length ? true : false,
   };
@@ -115,12 +132,19 @@ export const handleHoverRows = (
 };
 
 export const handleHoverTable = (
-  hoverDecoration: DecorationSet,
+  state: EditorState,
+  hoverDecoration: Decoration[],
   isTableInDanger: boolean,
 ) => (pluginState: TablePluginState, dispatch: Dispatch): TablePluginState => {
+  let { decorationSet } = pluginState;
+  if (hoverDecoration.length) {
+    decorationSet = decorationSet.add(state.doc, hoverDecoration);
+  } else {
+    decorationSet = decorationSet.remove(findHoverDecoration(decorationSet));
+  }
   const nextPluginState = {
     ...pluginState,
-    hoverDecoration,
+    decorationSet,
     isTableInDanger,
     isTableHovered: true,
   };
@@ -136,7 +160,7 @@ export const handleDocChanged = (state: EditorState) => (
   const tableNode = table ? table.node : undefined;
   if (
     pluginState.tableNode !== tableNode ||
-    pluginState.hoverDecoration !== DecorationSet.empty
+    pluginState.decorationSet !== DecorationSet.empty
   ) {
     const nextPluginState = {
       ...pluginState,

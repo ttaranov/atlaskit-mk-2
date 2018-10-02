@@ -1,12 +1,10 @@
-import { EditorState } from 'prosemirror-state';
 import { Node as PmNode } from 'prosemirror-model';
 import { Decoration, DecorationSet } from 'prosemirror-view';
 
-export const createHoverDecorationSet = (
+export const createHoverDecoration = (
   cells: { pos: number; node: PmNode }[],
-  state: EditorState,
   danger?: boolean,
-): DecorationSet => {
+): Decoration[] => {
   const deco = cells.map(cell => {
     const classes = ['hoveredCell'];
     if (danger) {
@@ -18,5 +16,18 @@ export const createHoverDecorationSet = (
     });
   });
 
-  return DecorationSet.create(state.doc, deco);
+  return deco;
 };
+
+export const findHoverDecoration = (
+  decorationSet: DecorationSet,
+): Decoration[] =>
+  decorationSet
+    .find()
+    .reduce(
+      (arr, deco: any) =>
+        (deco.type.attrs.class || '').indexOf('hoveredCell') > -1
+          ? arr.concat(deco)
+          : arr,
+      [],
+    );

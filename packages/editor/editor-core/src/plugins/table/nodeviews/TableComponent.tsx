@@ -175,21 +175,21 @@ class TableComponent extends React.Component<ComponentProps> {
       </div>,
     ];
 
-    const columnControls = [
-      <div key={0} className="table-column-controls-wrapper">
-        <ColumnControls
-          editorView={view}
-          tableRef={tableRef}
-          ref={elem => (this.columnControls = elem)}
-          isTableHovered={isTableHovered}
-          isTableInDanger={isTableInDanger}
-          dangerColumns={dangerColumns}
-          // pass `selection` and `numberOfColumns` to control re-render
-          selection={view.state.selection}
-          numberOfColumns={node.firstChild!.childCount}
-        />
-      </div>,
-    ];
+    // const columnControls = [
+    //   <div key={0} className="table-column-controls-wrapper">
+    //     <ColumnControls
+    //       editorView={view}
+    //       tableRef={tableRef}
+    //       ref={elem => (this.columnControls = elem)}
+    //       isTableHovered={isTableHovered}
+    //       isTableInDanger={isTableInDanger}
+    //       dangerColumns={dangerColumns}
+    //       // pass `selection` and `numberOfColumns` to control re-render
+    //       selection={view.state.selection}
+    //       numberOfColumns={node.firstChild!.childCount}
+    //     />
+    //   </div>,
+    // ];
 
     return (
       <div
@@ -211,7 +211,7 @@ class TableComponent extends React.Component<ComponentProps> {
             }
           }}
         >
-          {allowControls && columnControls}
+          {/* {allowControls && columnControls} */}
         </div>
         {columnShadows}
       </div>

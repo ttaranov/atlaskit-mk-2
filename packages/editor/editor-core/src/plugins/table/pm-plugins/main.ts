@@ -38,6 +38,7 @@ import {
   handleSelectionChanged,
   handleToggleContextualMenu,
 } from '../action-handlers';
+import { findHoverDecoration } from '../utils';
 
 import { getColResizePluginKey } from '../index';
 
@@ -46,7 +47,6 @@ export const pluginKey = new PluginKey('tablePlugin');
 export const defaultTableSelection = {
   dangerColumns: [],
   dangerRows: [],
-  hoverDecoration: DecorationSet.empty,
   isTableInDanger: false,
   isTableHovered: false,
 };
@@ -73,10 +73,14 @@ export const createPlugin = (
 ) =>
   new Plugin({
     state: {
-      init: (): TablePluginState => ({
-        pluginConfig,
-        ...defaultTableSelection,
-      }),
+      init: (): TablePluginState => {
+        // TODO: create controls decoration here?
+        return {
+          pluginConfig,
+          decorationSet: DecorationSet.empty,
+          ...defaultTableSelection,
+        };
+      },
       apply(
         tr: Transaction,
         pluginState: TablePluginState,
@@ -144,7 +148,7 @@ export const createPlugin = (
             );
 
           case ACTIONS.HOVER_TABLE:
-            return handleHoverTable(hoverDecoration, isTableInDanger)(
+            return handleHoverTable(state, hoverDecoration, isTableInDanger)(
               remappedState,
               dispatch,
             );
@@ -207,10 +211,11 @@ export const createPlugin = (
       };
     },
     props: {
-      decorations: state => getPluginState(state).hoverDecoration,
+      decorations: state => getPluginState(state).decorationSet,
 
       handleClick: ({ state, dispatch }) => {
-        if (getPluginState(state).hoverDecoration !== DecorationSet.empty) {
+        const { decorationSet } = getPluginState(state);
+        if (findHoverDecoration(decorationSet).length) {
           clearHoverSelection(state, dispatch);
         }
         return false;
