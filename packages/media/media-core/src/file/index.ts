@@ -21,7 +21,7 @@ import { getMediaTypeFromUploadableFile } from '../utils/getMediaTypeFromUploada
 const POLLING_INTERVAL = 1000;
 
 export class FileFetcher {
-  constructor(readonly mediaStore: MediaStore) {}
+  constructor(private readonly mediaStore: MediaStore) {}
 
   getFileState(id: string, options?: GetFileOptions): Observable<FileState> {
     const key = FileStreamCache.createKey(id, options);

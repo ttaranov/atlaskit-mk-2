@@ -1,6 +1,7 @@
 import * as events from 'events';
 import { Subject } from 'rxjs/Subject';
 import {
+  Context,
   ContextConfig,
   MediaCollection,
   MediaCollectionProvider,
@@ -75,7 +76,7 @@ export class Stubs {
     collectionProvider?: MediaCollectionProvider,
     mediaItemProvider?: MediaItemProvider,
     blobService?: BlobService,
-  ) {
+  ): Partial<Context> {
     return {
       config,
       getMediaCollectionProvider: jest.fn(
@@ -85,6 +86,11 @@ export class Stubs {
         () => mediaItemProvider || Stubs.mediaItemProvider(),
       ),
       getBlobService: jest.fn(() => blobService || Stubs.blobService()),
+      file: {
+        downloadBinary: jest.fn(),
+        getFileState: jest.fn(),
+        upload: jest.fn(),
+      } as any,
     };
   }
 }

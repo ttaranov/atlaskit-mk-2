@@ -247,7 +247,7 @@ describe('<Header />', () => {
     );
   });
 
-  it('MSW-720: passes the collectionName to constructAuthTokenUrl', () => {
+  it('MSW-720: passes the collectionName to context.file.downloadBinary', () => {
     const collectionName = 'some-collection';
     const subject = new Subject<MediaItem>();
     const context = createContext({ subject });
@@ -258,7 +258,9 @@ describe('<Header />', () => {
     subject.next(imageItem);
     el.update();
     el.find(DownloadIcon).simulate('click');
-    expect(constructAuthTokenUrlSpy.mock.calls[0][2]).toEqual(collectionName);
+    expect(context.file.downloadBinary.mock.calls[0][2]).toEqual(
+      collectionName,
+    );
   });
 
   describe('Feedback button', () => {
@@ -326,16 +328,6 @@ describe('<Header />', () => {
       subject.error(new Error('error'));
       el.update();
       assertDownloadButton(el, false);
-    });
-
-    it('should use a fresh token for the download link', () => {
-      const subject = new Subject<MediaItem>();
-      const context = createContext({ subject });
-      const el = mount(<Header context={context} identifier={identifier} />);
-      subject.next(imageItem);
-      el.update();
-      el.find(DownloadIcon).simulate('click');
-      expect(context.config.authProvider).toHaveBeenCalled();
     });
   });
 });
