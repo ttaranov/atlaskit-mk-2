@@ -10,6 +10,9 @@ import ReactMediaNodeView from './media';
 import WithPluginState from '../../../ui/WithPluginState';
 import { pluginKey as widthPluginKey } from '../../width';
 import { setNodeSelection } from '../../../utils';
+import {
+  stateKey as reactNodeViewStateKey,
+} from '../../../plugins/base/pm-plugins/react-nodeview';
 
 const DEFAULT_WIDTH = 250;
 const DEFAULT_HEIGHT = 200;
@@ -18,6 +21,7 @@ export interface MediaSingleNodeProps {
   node: PMNode;
   view: EditorView;
   width: number;
+  selected: boolean;
 }
 
 export interface MediaSingleNodeState {
@@ -89,6 +93,8 @@ export default class MediaSingleNode extends Component<
   render() {
     const { layout } = this.props.node.attrs;
 
+    const { selected } = this.props;
+
     let { width, height, type } = this.child.attrs;
 
     if (type === 'external') {
@@ -113,28 +119,28 @@ export default class MediaSingleNode extends Component<
     }
 
     return (
-      <div onClick={this.selectMediaSingle}>
-        <MediaSingle
-          layout={layout}
+      <MediaSingle
+        layout={layout}
+        width={width}
+        height={height}
+        containerWidth={this.props.width}
+        isLoading={!width}
+      >
+        <ReactMediaNodeView
+          node={this.child}
+          view={this.props.view}
           width={width}
-          height={height}
-          containerWidth={this.props.width}
-          isLoading={!width}
-        >
-          <ReactMediaNodeView
-            node={this.child}
-            view={this.props.view}
-            width={width}
-            getPos={this.props.getPos}
-            cardDimensions={{
-              width: '100%',
-              height: '100%',
-            }}
-            onExternalImageLoaded={this.onExternalImageLoaded}
-            context={this.mediaPluginState.context}
-          />
-        </MediaSingle>
-      </div>
+          getPos={this.props.getPos}
+          cardDimensions={{
+            width: '100%',
+            height: '100%',
+          }}
+          selected={selected}
+          onClick={this.selectMediaSingle}
+          onExternalImageLoaded={this.onExternalImageLoaded}
+          context={this.mediaPluginState.context}
+        />
+      </MediaSingle>
     );
   }
 }
@@ -146,17 +152,24 @@ class MediaSingleNodeView extends ReactNodeView {
         editorView={this.view}
         plugins={{
           width: widthPluginKey,
+          reactNodeViewState: reactNodeViewStateKey,
         }}
-        render={({width, lineLength}) => (
-          <MediaSingleNode
-            lineLength={lineLength}
-            width={width}
-            node={this.node}
-            getPos={this.getPos}
-            view={this.view}
-            forwardRef={forwardRef}
-          />
-        )}
+        render={({width, lineLength}) => {
+          console.log('nodeview sta,te is ', width.reactNodeViewState);
+          console.log('get pos is ', this.getPos() + 1);
+
+          return (
+            <MediaSingleNode
+              width={width.width}
+              lineLength={lineLength}
+              node={this.node}
+              getPos={this.getPos}
+              view={this.view}
+              selected={this.getPos() + 1 === width.reactNodeViewState}
+              forwardRef={forwardRef}
+            />
+          );
+        }}
       />
     );
   }

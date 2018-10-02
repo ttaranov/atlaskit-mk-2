@@ -19,6 +19,7 @@ export interface MediaNodeProps extends ReactNodeProps {
   cardDimensions: CardDimensions;
   isMediaSingle?: boolean;
   progress?: number;
+  onClick?: () => void;
   hideProgress?: boolean;
   onExternalImageLoaded?: (
     dimensions: { width: number; height: number },
@@ -79,6 +80,7 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
         onDelete={deleteEventHandler}
         selected={selected}
         url={url}
+        onClick={onClick}
         context={context}
         onExternalImageLoaded={onExternalImageLoaded}
         disableOverlay={isMediaSingle}
