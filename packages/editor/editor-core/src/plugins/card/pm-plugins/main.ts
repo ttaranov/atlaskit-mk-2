@@ -5,6 +5,7 @@ import { EditorView } from 'prosemirror-view';
 import { setProvider, resolveCard } from './actions';
 import { ReactNodeView } from '../../../nodeviews';
 import inlineCardNodeView from '../nodeviews/inlineCard';
+import blockCardNodeView from '../nodeviews/blockCard';
 import { replaceQueuedUrlWithCard } from './doc';
 
 export const pluginKey = new PluginKey('cardPlugin');
@@ -25,13 +26,22 @@ const handleRejected = (view: EditorView, request: Request) => rejected => {
 };
 
 export const resolveWithProvider = (
-  view,
+  view: EditorView,
   outstandingRequests,
   provider,
-  request,
+  request: Request,
 ) => {
+  const $pos = view.state.doc.resolve(request.pos);
+  const { parent } = $pos;
+  const isBlock =
+    parent.type.name === 'paragraph' &&
+    parent.childCount === 1 &&
+    parent.firstChild!.type.isText &&
+    parent.firstChild!.text === request.url &&
+    $pos.node($pos.depth - 1).type.name === 'doc';
+
   outstandingRequests[request.url] = provider
-    .resolve(request.url, 'inline')
+    .resolve(request.url, isBlock ? 'block' : 'inline')
     .then(resolvedCard => {
       delete outstandingRequests[request.url];
       return resolvedCard;
@@ -132,6 +142,13 @@ export const createPlugin = ({
       nodeViews: {
         inlineCard: ReactNodeView.fromComponent(
           inlineCardNodeView,
+          portalProviderAPI,
+          {
+            providerFactory,
+          },
+        ),
+        blockCard: ReactNodeView.fromComponent(
+          blockCardNodeView,
           portalProviderAPI,
           {
             providerFactory,
