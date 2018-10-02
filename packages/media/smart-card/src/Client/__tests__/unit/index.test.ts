@@ -3,6 +3,8 @@ import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
 import * as fetchMock from 'fetch-mock';
 import { Client, ClientOptions } from '../..';
 import { RemoteResourceAuthConfig } from '../../createObjectResolverServiceObservable';
+import { take } from 'rxjs/operators/take';
+import { takeLast } from 'rxjs/operators/takeLast';
 const RESOLVE_URL =
   'https://api-private.stg.atlassian.com/object-resolver/resolve';
 const OBJECT_URL = 'http://example.com/foobar';
@@ -81,8 +83,7 @@ describe('Client', () => {
 
     const state = await createClient()
       .get(OBJECT_URL)
-      .take(1)
-      .takeLast(1)
+      .pipe(take(1), takeLast(1))
       .toPromise();
     expect(state.status).toEqual('resolving');
     expect(state.services).toEqual([]);
@@ -94,8 +95,7 @@ describe('Client', () => {
 
     const state = await createClient()
       .get(OBJECT_URL)
-      .take(2)
-      .takeLast(1)
+      .pipe(take(2), takeLast(1))
       .toPromise();
 
     expect(state.status).toEqual('not-found');
@@ -108,8 +108,7 @@ describe('Client', () => {
 
     const state = await createClient()
       .get(OBJECT_URL)
-      .take(2)
-      .takeLast(1)
+      .pipe(take(2), takeLast(1))
       .toPromise();
     expect(state.status).toEqual('resolved');
     expect(state.services).toEqual([]);
@@ -142,8 +141,7 @@ describe('Client', () => {
 
     const state = await createClient()
       .get(OBJECT_URL)
-      .take(2)
-      .takeLast(1)
+      .pipe(take(2), takeLast(1))
       .toPromise();
     expect(state.status).toEqual('unauthorized');
     expect(state.services).toEqual([]);
@@ -175,8 +173,7 @@ describe('Client', () => {
 
     const state = await createClient()
       .get(OBJECT_URL)
-      .take(2)
-      .takeLast(1)
+      .pipe(take(2), takeLast(1))
       .toPromise();
 
     expect(state.status).toEqual('forbidden');
@@ -192,8 +189,7 @@ describe('Client', () => {
 
     const state = await createClient()
       .get(OBJECT_URL)
-      .take(2)
-      .takeLast(1)
+      .pipe(take(2), takeLast(1))
       .toPromise();
     expect(state.status).toEqual('errored');
     expect(state.services).toEqual([]);
@@ -279,8 +275,7 @@ describe('Client', () => {
         if (stateFromFirstObserver.status === 'resolved') {
           const stateFromSecondObserver = await client
             .get(OBJECT_URL)
-            .take(1)
-            .takeLast(1)
+            .pipe(take(1), takeLast(1))
             .toPromise();
           expect(stateFromSecondObserver).toEqual(stateFromFirstObserver);
           subscription.unsubscribe();
@@ -295,8 +290,7 @@ describe('Client', () => {
       TEMPORARY_resolver: async () => ({ name: 'From resolver' }),
     })
       .get(OBJECT_URL)
-      .take(3)
-      .takeLast(1)
+      .pipe(take(3), takeLast(1))
       .toPromise();
     expect(state.status).toEqual('resolved');
     expect(state.services).toEqual([]);
@@ -313,8 +307,7 @@ describe('Client', () => {
       TEMPORARY_resolver: async () => ({ name: 'From resolver' }),
     })
       .get(OBJECT_URL)
-      .take(3)
-      .takeLast(1)
+      .pipe(take(3), takeLast(1))
       .toPromise();
     expect(state.status).toEqual('resolved');
     expect(state.services).toEqual([]);
@@ -331,8 +324,7 @@ describe('Client', () => {
       TEMPORARY_resolver: async () => ({ name: 'From resolver' }),
     })
       .get(OBJECT_URL)
-      .take(3)
-      .takeLast(1)
+      .pipe(take(3), takeLast(1))
       .toPromise();
     expect(state.status).toEqual('resolved');
     expect(state.services).toEqual([]);
@@ -351,8 +343,7 @@ describe('Client', () => {
       );
     const state = await createClient({ TEMPORARY_resolver: resolver })
       .get(OBJECT_URL)
-      .take(3)
-      .takeLast(1)
+      .pipe(take(3), takeLast(1))
       .toPromise();
     expect(state.status).toEqual('resolved');
     expect(state.services).toEqual([]);
@@ -368,8 +359,7 @@ describe('Client', () => {
     const resolver = () => Promise.reject(new Error('😵'));
     const state = await createClient({ TEMPORARY_resolver: resolver })
       .get(OBJECT_URL)
-      .take(3)
-      .takeLast(1)
+      .pipe(take(3), takeLast(1))
       .toPromise();
     expect(state.status).toEqual('resolved');
     expect(state.services).toEqual([]);
