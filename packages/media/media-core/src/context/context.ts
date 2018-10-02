@@ -108,6 +108,7 @@ class ContextImpl implements Context {
   }
 
   getFile(id: string, options?: GetFileOptions): Observable<FileState> {
+    /* tslint:disable-next-line:no-console */
     console.warn(
       'context.getFile is deprecated. Please use context.file.getFileState instead',
     );
@@ -207,6 +208,7 @@ class ContextImpl implements Context {
     file: UploadableFile,
     controller?: UploadController,
   ): Observable<FileState> {
+    /* tslint:disable-next-line:no-console */
     console.warn(
       'context.uploadFile is deprecated. Please use context.file.upload instead',
     );
