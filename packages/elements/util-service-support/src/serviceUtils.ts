@@ -10,11 +10,11 @@ const defaultRequestServiceOptions: RequestServiceOptions = {};
 
 const appendToSearch = (searchParam: string, key, value) => {
   if (searchParam.length === 0) {
-    `${key}=${value}`;
+    return `${key}=${value}`;
   }
-  
+
   return `${searchParam}&${key}=${value}`;
-}
+};
 
 const buildUrl = (
   baseUrl: string,
