@@ -49,7 +49,7 @@ export default class Tree extends Component<Props, State> {
   // HTMLElement of the container element
   containerElement: ?HTMLElement;
 
-  combineTimer = new DelayedFunction(500);
+  expandTimer = new DelayedFunction(500);
 
   static getDerivedStateFromProps(props: Props, state: State) {
     return {
@@ -78,12 +78,12 @@ export default class Tree extends Component<Props, State> {
       return;
     }
 
-    this.combineTimer.stop();
+    this.expandTimer.stop();
     if (update.combine) {
       const { draggableId } = update.combine;
       const item: ?FlattenedItem = getItemById(flattenedTree, draggableId);
       if (item && this.isExpandable(item)) {
-        this.combineTimer.start(() => onExpand(draggableId, item.path));
+        this.expandTimer.start(() => onExpand(draggableId, item.path));
       }
     }
     this.dragState = {
@@ -96,7 +96,7 @@ export default class Tree extends Component<Props, State> {
   onDragEnd = (result: DropResult) => {
     const { onDragEnd, tree } = this.props;
     const { flattenedTree } = this.state;
-    this.combineTimer.stop();
+    this.expandTimer.stop();
     const finalDragState: DragState = {
       ...this.dragState,
       source: result.source,
