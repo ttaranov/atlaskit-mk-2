@@ -1,5 +1,12 @@
 /* tslint:disable:variable-name */
 
+/**
+ * Everything about this file change is just wrong.
+ * Mostly because we do bad things with classes.
+ * This is all wrong and hopefully will be removed from existence with card v3,
+ * so please don’t be too sad about all this!
+ */
+
 import styled from 'styled-components';
 
 import { HTMLAttributes, ComponentClass } from 'react';
