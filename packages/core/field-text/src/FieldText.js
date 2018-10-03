@@ -10,6 +10,7 @@ type State = {
 export default class FieldText extends Component<FieldTextProps, State> {
   static defaultProps = {
     onChange: () => {},
+    defaultValue: '',
   };
 
   input: ?HTMLInputElement;
@@ -21,7 +22,7 @@ export default class FieldText extends Component<FieldTextProps, State> {
   }
 
   state = {
-    value: this.props.value,
+    value: this.props.defaultValue,
   };
 
   handleOnChange = (e: any) => {
@@ -32,10 +33,13 @@ export default class FieldText extends Component<FieldTextProps, State> {
   };
 
   render() {
+    const { props, state } = this;
+    const value =
+      typeof props.value === 'undefined' ? state.value : props.value;
     return (
       <FieldTextStateless
         {...this.props}
-        value={this.state.value}
+        value={value}
         onChange={this.handleOnChange}
         innerRef={(fieldRef: ?HTMLInputElement) => {
           this.input = fieldRef;

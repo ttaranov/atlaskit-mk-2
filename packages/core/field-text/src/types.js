@@ -31,6 +31,8 @@ export type FieldTextProps = {
   max?: number,
   /** Text to display in the input if the input is empty. */
   placeholder?: string,
+  /** The default value of the input. */
+  defaultValue?: string | number,
   /** The value of the input. */
   value?: string | number,
   /** Handler to be called when the input loses focus. */
