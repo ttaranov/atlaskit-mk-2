@@ -10,11 +10,17 @@ import {
 } from './_emoji-helpers';
 import { messages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
 
+/* This is used to identify test case in Browserstack */
+process.env.TEST_FILE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 BrowserTestCase(
   'Emoji: should be able to see emoji if typed the name in full',
   { skip: ['ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await insertEmoji(browser, 'grinning');
@@ -39,7 +45,7 @@ BrowserTestCase(
   'Emoji: should convert :) to emoji',
   { skip: ['ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     // type slowly go get edge working
@@ -57,7 +63,7 @@ BrowserTestCase(
   'user should not be able to see emoji inside inline code',
   { skip: ['ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, 'type `');
@@ -72,7 +78,7 @@ BrowserTestCase(
   'Emoji: should close emoji picker on Escape',
   { skip: ['safari', 'ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, 'this ');
@@ -96,7 +102,7 @@ BrowserTestCase(
   async client => {
     const emojiButton = `[aria-label="${messages.emoji.defaultMessage}"]`;
     const sweatSmile = '[aria-label=":sweat_smile:"]';
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.waitForSelector(emojiButton);
@@ -116,7 +122,7 @@ BrowserTestCase(
   'Emoji: should be able to navigate between emojis',
   { skip: ['firefox', 'safari', 'ie', 'edge'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, 'this ');

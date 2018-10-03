@@ -9,6 +9,12 @@ import {
   clipboardInput,
 } from '../_helpers';
 
+/* This is used to identify test case in Browserstack */
+process.env.TEST_FILE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 // behaviour is OS specific:
 // windows moves to next paragraph up
 // osx moves to top of document
@@ -29,7 +35,7 @@ const moveUp = (page, selector) => {
       skip: ['Chrome', 'chrome', 'ie', 'safari'],
     },
     async client => {
-      let browser = await new Page(client);
+      let browser = new Page(client);
 
       // copy stuff to clipboard
       await browser.goto(clipboardHelper);

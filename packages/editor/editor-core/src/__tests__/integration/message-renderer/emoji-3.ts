@@ -9,12 +9,18 @@ import {
   typeahead,
 } from './_emoji-helpers';
 
+/* This is used to identify test case in Browserstack */
+process.env.TEST_FILE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 // safari failure on browserstack
 BrowserTestCase(
   'Emoji: user can navigate typeahead using keyboard',
   { skip: ['safari', 'ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, ':');
@@ -33,7 +39,7 @@ BrowserTestCase(
   'Emoji: should select emoji on return',
   { skip: ['safari', 'ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, ':');
@@ -50,7 +56,7 @@ BrowserTestCase(
   'Emoji: should render emoji inside codeblock',
   { skip: ['ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '```');
@@ -66,7 +72,7 @@ BrowserTestCase(
   'Emoji: should render emoji inside action',
   { skip: ['ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '[] ');
@@ -81,7 +87,7 @@ BrowserTestCase(
   'Emoji: should not show typeahead with text: ',
   { skip: ['ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, 'text: ');
@@ -93,7 +99,7 @@ BrowserTestCase(
   'Emoji: ":<space>" does not show the picker',
   { skip: ['ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, ': ');

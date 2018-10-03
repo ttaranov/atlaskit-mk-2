@@ -3,6 +3,12 @@ import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
 import { messages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
 
+/* This is used to identify test case in Browserstack */
+process.env.TEST_FILE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 const fullPageEditor = getExampleUrl('editor', 'editor-core', 'full-page');
 const editorSelector = '.ProseMirror';
 const insertMenu = `[aria-label="${messages.insertMenu.defaultMessage}"]`;
@@ -15,7 +21,7 @@ BrowserTestCase(
   'user should be able to open calendar',
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
 
     await browser.goto(fullPageEditor);
     await browser.waitForSelector(editorSelector);
@@ -34,7 +40,7 @@ BrowserTestCase(
   'clicking date when calendar is open should close it',
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
 
     await browser.goto(fullPageEditor);
     await browser.waitForSelector(editorSelector);
@@ -55,7 +61,7 @@ BrowserTestCase(
   'clicking on another date should open its date picker',
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
 
     await browser.goto(fullPageEditor);
     await browser.waitForSelector(editorSelector);

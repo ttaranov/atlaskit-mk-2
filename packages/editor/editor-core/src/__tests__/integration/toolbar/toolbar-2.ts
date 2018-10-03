@@ -4,6 +4,12 @@ import { comment, fullpage, editable } from '../_helpers';
 import { messages as blockTypeMessages } from '../../../plugins/block-type/ui/ToolbarBlockType';
 import { messages } from '../../../plugins/block-type/types';
 
+/* This is used to identify test case in Browserstack */
+process.env.TEST_FILE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 const changeFormatting = `[aria-label="${
   blockTypeMessages.textStyles.defaultMessage
 }"]`;
@@ -15,7 +21,7 @@ const input = 'helloworld';
     `Toolbar: should be able to select heading1 for ${editor.name} editor`,
     { skip: ['ie', 'safari'] },
     async client => {
-      const browser = await new Page(client);
+      const browser = new Page(client);
       await browser.goto(editor.path);
       await browser.waitForSelector(editor.placeholder);
       await browser.click(editor.placeholder);

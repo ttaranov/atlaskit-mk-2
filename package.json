@@ -245,6 +245,7 @@
     "@types/eventemitter2": "^4.1.0",
     "@types/filesize": "^3.2.15",
     "@types/jquery": "^2.0.41",
+    "@types/node": "^10.11.3",
     "@types/orderedmap": "^1.0.0",
     "@types/prosemirror-commands": "^1.0.0",
     "@types/prosemirror-history": "^1.0.0",

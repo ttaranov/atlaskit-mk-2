@@ -9,6 +9,12 @@ import {
 
 import commonMessages from '../../../messages';
 
+/* This is used to identify test case in Browserstack */
+process.env.TEST_FILE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 const changeSelectedNodeLayout = async (page, layoutName) => {
   const buttonSelector = `div[aria-label="Floating Toolbar"] span[aria-label="${layoutName}"]`;
   await page.waitForSelector(buttonSelector, 3000);
@@ -24,7 +30,7 @@ const changeSelectedNodeLayout = async (page, layoutName) => {
     `Extension: ${layoutName} Layout`,
     { skip: ['edge', 'ie'] },
     async client => {
-      const page = await new Page(client);
+      const page = new Page(client);
       await page.goto(fullpage.path);
       await page.waitForSelector(fullpage.placeholder);
       await page.click(fullpage.placeholder);

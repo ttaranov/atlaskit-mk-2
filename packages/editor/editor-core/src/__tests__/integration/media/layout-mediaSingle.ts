@@ -9,11 +9,17 @@ import {
 } from '../_helpers';
 import commonMessages from '../../../messages';
 
+/* This is used to identify test case in Browserstack */
+process.env.TEST_FILE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 BrowserTestCase(
   'Can change media single to full-width layout on fullpage',
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
 
     await browser.goto(fullpage.path);
     await browser.waitForSelector(editable);

@@ -8,6 +8,12 @@ import {
   clipboardHelper,
 } from '../_helpers';
 
+/* This is used to identify test case in Browserstack */
+process.env.TEST_FILE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 const clipboardInput = '#input';
 const copyAsHTMLButton = '#copy-as-html';
 
@@ -19,7 +25,7 @@ const copyAsHTMLButton = '#copy-as-html';
     } editor`,
     { skip: ['edge', 'ie', 'safari'] },
     async client => {
-      const sample = await new Page(client);
+      const sample = new Page(client);
       const linkText1 = 'https://www.google.com';
       await sample.goto(clipboardHelper);
       await sample.isVisible(clipboardInput);

@@ -8,11 +8,17 @@ import {
   fullpage,
 } from '../_helpers';
 
+/* This is used to identify test case in Browserstack */
+process.env.TEST_FILE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 BrowserTestCase(
   'Inserts a media single on fullpage',
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
 
     await browser.goto(fullpage.path);
     await browser.waitForSelector(editable);

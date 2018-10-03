@@ -8,12 +8,18 @@ import {
   insertMedia,
 } from '../_helpers';
 
+/* This is used to identify test case in Browserstack */
+process.env.TEST_FILE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 [comment, message].forEach(editor => {
   BrowserTestCase(
     `Inserts and deletes media group on ${editor.name}`,
     { skip: ['edge', 'ie', 'safari'] },
     async client => {
-      const browser = await new Page(client);
+      const browser = new Page(client);
 
       await browser.goto(editor.path);
       await browser.click(editor.placeholder);

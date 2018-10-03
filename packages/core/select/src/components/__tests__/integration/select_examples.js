@@ -4,6 +4,12 @@ import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import * as assert from 'assert';
 
+/* This is used to identify test case in Browserstack */
+process.env.TEST_FILE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 const urlSelect = getExampleUrl('core', 'select');
 const selectDefault = '.react-select__control';
 const selectMenu = '.react-select__menu';
@@ -17,9 +23,9 @@ const urlArray = [
 
 urlArray.forEach(url => {
   BrowserTestCase(
-    `${url.toUpperCase()} should display its menu once clicked on it and no errors`,
+    `${url.toLowerCase()} > it should display its menu once clicked on it and no errors`,
     async client => {
-      const selectTest = await new Page(client);
+      const selectTest = new Page(client);
       await selectTest.goto(urlSelect + url);
       await selectTest.waitForSelector(selectDefault);
       await selectTest.click(selectDefault);

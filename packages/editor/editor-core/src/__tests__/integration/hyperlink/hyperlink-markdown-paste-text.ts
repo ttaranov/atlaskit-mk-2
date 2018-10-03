@@ -10,6 +10,12 @@ import {
   clipboardInput,
 } from '../_helpers';
 
+/* This is used to identify test case in Browserstack */
+process.env.TEST_FILE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 [comment, fullpage].forEach(editor => {
   BrowserTestCase(
     `Link: link markdown with pasting link text ${editor.name} editor`,
@@ -17,7 +23,7 @@ import {
       skip: ['ie', 'edge', 'safari', 'firefox'],
     },
     async client => {
-      const sample = await new Page(client);
+      const sample = new Page(client);
       await sample.goto(clipboardHelper);
       await sample.isVisible(clipboardInput);
       await sample.type(clipboardInput, 'https://hello.com');

@@ -13,6 +13,12 @@ import {
   loadDecisionButton,
 } from './_task-decision-helpers';
 
+/* This is used to identify test case in Browserstack */
+process.env.TEST_FILE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 /*
  * Safari adds special characters that end up in the snapshot
 */
@@ -22,7 +28,7 @@ BrowserTestCase(
   'task-decision: can paste rich text into a decision',
   { skip: ['ie', 'safari', 'edge'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(clipboardHelper);
     await browser.isVisible(clipboardInput);
     await browser.type(
@@ -45,7 +51,7 @@ BrowserTestCase(
   'task-decision: can paste plain text into a decision',
   { skip: ['ie', 'safari'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(clipboardHelper);
     await browser.isVisible(clipboardInput);
     await browser.type(
@@ -69,7 +75,7 @@ BrowserTestCase(
   'task-decision: can edit a decision',
   { skip: ['ie', 'safari'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.click(loadDecisionButton);
     await browser.waitForSelector('ol');

@@ -4,6 +4,12 @@ import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import * as assert from 'assert';
 
+/* This is used to identify test case in Browserstack */
+process.env.TEST_FILE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 const urlDateTimePicker = getExampleUrl('core', 'datetime-picker', 'basic');
 /* Css used for the test */
 const datepickerDefault = 'label[for="react-select-datepicker-1--input"] + div';
@@ -20,7 +26,7 @@ BrowserTestCase(
   'When DatePicker is focused & backspace pressed, the input should be cleared',
   { skip: ['firefox', 'ie', 'edge'] },
   async client => {
-    const dateTimePickerTest = await new Page(client);
+    const dateTimePickerTest = new Page(client);
     await dateTimePickerTest.goto(urlDateTimePicker);
     await dateTimePickerTest.click(datepickerDefault);
     await dateTimePickerTest.waitForSelector(datepickerMenu);
@@ -44,7 +50,7 @@ BrowserTestCase(
   'When choosing another day in a Datetime picker focused, the date should be updated to the new value',
   { skip: ['firefox'] },
   async client => {
-    const dateTimePickerTest = await new Page(client);
+    const dateTimePickerTest = new Page(client);
     await dateTimePickerTest.goto(urlDateTimePicker);
     await dateTimePickerTest.click(datepickerDefault);
     await dateTimePickerTest.waitForSelector(datepickerMenu);
@@ -71,7 +77,7 @@ BrowserTestCase(
   'When entering a new time in Timepicker Editable, the time should be updated to the new value',
   { skip: ['firefox', 'ie', 'safari', 'edge'] }, // Enter key has an issue in those browser
   async client => {
-    const timePicker = await new Page(client);
+    const timePicker = new Page(client);
     await timePicker.goto(urlDateTimePicker);
     await timePicker.click(timepickerDefault);
     await timePicker.waitForSelector(timePickerMenu);

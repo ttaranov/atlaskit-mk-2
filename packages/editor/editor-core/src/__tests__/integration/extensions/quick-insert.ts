@@ -9,11 +9,17 @@ import {
   quickInsert,
 } from '../_helpers';
 
+/* This is used to identify test case in Browserstack */
+process.env.TEST_FILE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 BrowserTestCase(
   `Extension: Quick Insert`,
   { skip: ['edge', 'ie', 'safari'] },
   async client => {
-    const page = await new Page(client);
+    const page = new Page(client);
     await page.goto(fullpage.path);
     await page.waitForSelector(fullpage.placeholder);
     await page.click(fullpage.placeholder);

@@ -6,6 +6,12 @@ import { messages as advancedTextFormattingMessages } from '../../../plugins/tex
 import { messages as blockTypeToolbarMessages } from '../../../plugins/block-type/ui/ToolbarBlockType';
 import { messages as blockTypeMessages } from '../../../plugins/block-type/types';
 
+/* This is used to identify test case in Browserstack */
+process.env.TEST_FILE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 const input = 'helloworld ';
 // https://product-fabric.atlassian.net/browse/ED-4531
 [comment, fullpage].forEach(editor => {
@@ -15,7 +21,7 @@ const input = 'helloworld ';
     } editor`,
     { skip: ['ie', 'safari', 'edge'] },
     async client => {
-      const browser = await new Page(client);
+      const browser = new Page(client);
       const bold = `[aria-label="${
         textFormattingMessages.bold.defaultMessage
       }"]`;

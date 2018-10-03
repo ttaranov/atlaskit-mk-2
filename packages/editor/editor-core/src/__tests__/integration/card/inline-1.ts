@@ -9,6 +9,12 @@ import {
   clipboardInput,
 } from '../_helpers';
 
+/* This is used to identify test case in Browserstack */
+process.env.TEST_FILE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 [fullpage].forEach(editor => {
   BrowserTestCase(
     `pasting an link converts to inline card`,
@@ -16,7 +22,7 @@ import {
       skip: ['Chrome', 'chrome', 'ie', 'safari'],
     },
     async client => {
-      let browser = await new Page(client);
+      let browser = new Page(client);
 
       // copy stuff to clipboard
       await browser.goto(clipboardHelper);

@@ -3,6 +3,12 @@ import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
 import { getDocFromElement } from '../_helpers';
 
+/* This is used to identify test case in Browserstack */
+process.env.TEST_FILE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 const messageEditor = getExampleUrl('editor', 'editor-core', 'message');
 const editorSelector = '.ProseMirror';
 
@@ -10,7 +16,7 @@ BrowserTestCase(
   'user should be able to create link using markdown',
   { skip: ['edge', 'ie'] },
   async client => {
-    const sample = await new Page(client);
+    const sample = new Page(client);
     await sample.goto(messageEditor);
     await sample.waitForSelector(editorSelector);
     await sample.type(editorSelector, '[link](https://hello.com) ');
@@ -25,7 +31,7 @@ BrowserTestCase(
   'user should be able to format bold and italics with markdown',
   { skip: ['edge', 'ie'] },
   async client => {
-    const sample = await new Page(client);
+    const sample = new Page(client);
     await sample.goto(messageEditor);
     await sample.waitForSelector(editorSelector);
     await sample.type(editorSelector, '__bold__ ');
@@ -43,7 +49,7 @@ BrowserTestCase(
   'user should be able to write inline code',
   { skip: ['edge', 'ie'] },
   async client => {
-    const sample = await new Page(client);
+    const sample = new Page(client);
     await sample.goto(messageEditor);
     await sample.waitForSelector(editorSelector);
     await sample.type(editorSelector, '`');

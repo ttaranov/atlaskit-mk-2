@@ -4,6 +4,12 @@ import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import * as assert from 'assert';
 
+/* This is used to identify test case in Browserstack */
+process.env.TEST_FILE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 const urlOnBoarding = getExampleUrl(
   'core',
   'onboarding',
@@ -16,7 +22,7 @@ BrowserTestCase(
   'AK-4279 - Clicking on show should display the onboarding and no errors',
   { skip: ['safari', 'edge'] }, // Safari and Edge have issues at the moment
   async client => {
-    const onBoardingTest = await new Page(client);
+    const onBoardingTest = new Page(client);
     await onBoardingTest.goto(urlOnBoarding);
     await onBoardingTest.click(OnBoardingDefault);
     const menuIsVisible = await onBoardingTest.isVisible(OnBoardingMenuTitle);

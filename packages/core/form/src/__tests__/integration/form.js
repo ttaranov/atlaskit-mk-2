@@ -10,6 +10,12 @@ import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import * as assert from 'assert';
 
+/* This is used to identify test case in Browserstack */
+process.env.TEST_FILE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 /* Url to test the example */
 const urlFormCreateRepo = getExampleUrl('core', 'form', 'create-repository');
 
@@ -37,7 +43,7 @@ BrowserTestCase(
   'Create repository form should render without errors',
   { skip: ['safari'] }, // Safari has an issue with css / wd / puppeeter at the moment - to be investigated
   async client => {
-    const formTest = await new Page(client);
+    const formTest = new Page(client);
     await formTest.goto(urlFormCreateRepo);
     await formTest.waitForSelector(createForm);
 

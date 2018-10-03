@@ -7,6 +7,7 @@ declare namespace NodeJS {
     cwd(): string;
     exit(code?: number): never;
     nextTick(callback: Function, ...args: any[]): void;
+    env: any;
   }
 }
 

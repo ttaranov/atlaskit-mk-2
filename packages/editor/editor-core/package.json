@@ -124,6 +124,7 @@
     "@atlaskit/util-shared-styles": "^2.10.3",
     "@atlaskit/visual-regression": "^0.0.1",
     "@atlaskit/webdriver-runner": "^0.1.0",
+    "@types/node": "^10.11.3",
     "chai-as-promised": "^6.0.0",
     "clipboard-polyfill": "2.4.3",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",

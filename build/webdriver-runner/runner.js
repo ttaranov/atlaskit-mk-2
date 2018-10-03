@@ -35,8 +35,10 @@ function BrowserTestCase(...args /*:Array<any> */) {
   const testcase = args.shift();
   const tester = args.pop();
   const skipForBrowser = args.length > 0 ? args.shift() : null;
-  const testCase = process.env.TEST_CASE ? process.env.TEST_CASE : testcase;
-  describe(testcase, () => {
+  const testCase /*:string */ = process.env.TEST_FILE
+    ? `${process.env.TEST_FILE.toUpperCase()}`
+    : testcase;
+  describe(testCase, () => {
     const unskippedTests = [];
 
     for (const client of clients) {
@@ -82,7 +84,7 @@ function BrowserTestCase(...args /*:Array<any> */) {
         // add tests into only if the test is not skipped for the current browser
         if (!skipBrowser) {
           unskippedTests.push(async (fn, ...args) => {
-            client.driver.desiredCapabilities.name = testcase;
+            client.driver.desiredCapabilities.name = testCase;
             await clientLauncher.start;
             try {
               await fn(client.driver);
@@ -123,7 +125,8 @@ function testRun(
   } else {
     callback = () => tester();
   }
-  testFn('', callback);
+  // $FlowFixMe
+  testFn(`${testCase}`, callback);
 }
 
 module.exports = { BrowserTestCase };

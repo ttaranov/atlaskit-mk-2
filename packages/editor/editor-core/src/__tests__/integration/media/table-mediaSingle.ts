@@ -9,12 +9,18 @@ import {
 } from '../_helpers';
 import { messages as insertBlockMessages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
 
+/* This is used to identify test case in Browserstack */
+process.env.TEST_FILE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 // FIXME: not entirely sure why firefox is flakey on browserstack
 BrowserTestCase(
   'Can insert media single into table',
   { skip: ['edge', 'ie', 'safari', 'firefox'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
 
     await browser.goto(fullpage.path);
     await browser.waitForSelector(editable);

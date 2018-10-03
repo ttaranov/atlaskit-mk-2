@@ -3,6 +3,12 @@ import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import { getDocFromElement, comment, fullpage, editable } from '../_helpers';
 import { messages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
 
+/* This is used to identify test case in Browserstack */
+process.env.TEST_FILE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 const linkText1 = 'http://hello.com ';
 const linkText2 = 'FAB-983';
 const linkToolbar = '[placeholder="Paste link or search recently viewed"]';
@@ -16,7 +22,7 @@ const linkToolbar = '[placeholder="Paste link or search recently viewed"]';
       skip: ['ie', 'edge', 'safari', 'firefox'],
     },
     async client => {
-      let browser = await new Page(client);
+      let browser = new Page(client);
       await browser.goto(editor.path);
       await browser.waitForSelector(editor.placeholder);
       await browser.click(editor.placeholder);

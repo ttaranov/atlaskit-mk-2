@@ -7,6 +7,12 @@ const more = `[aria-label="${messages.moreFormatting.defaultMessage}"]`;
 const underline = `span=${messages.underline.defaultMessage}`;
 const clear = `span=${messages.clearFormatting.defaultMessage}`;
 
+/* This is used to identify test case in Browserstack */
+process.env.TEST_FILE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 // https://product-fabric.atlassian.net/browse/ED-4531
 [comment, fullpage].forEach(editor => {
   BrowserTestCase(
@@ -15,7 +21,7 @@ const clear = `span=${messages.clearFormatting.defaultMessage}`;
     } editor`,
     { skip: ['ie', 'safari'] },
     async client => {
-      const browser = await new Page(client);
+      const browser = new Page(client);
       await browser.goto(editor.path);
       await browser.waitForSelector(editor.placeholder);
       await browser.click(editor.placeholder);

@@ -3,6 +3,12 @@ import Page from '@atlaskit/webdriver-runner/wd-wrapper';
 import { getExampleUrl } from '@atlaskit/webdriver-runner/utils/example';
 import { messages as insertBlockMessages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
 
+/* This is used to identify test case in Browserstack */
+process.env.TEST_FILE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 const fullPageEditor = getExampleUrl('editor', 'editor-core', 'full-page');
 const editorSelector = '.ProseMirror';
 const enterArr: string[] = [];
@@ -21,7 +27,7 @@ BrowserTestCase(
     }"]`;
     const tableControls = '[aria-label="Table floating controls"]';
 
-    const browser = await new Page(client);
+    const browser = new Page(client);
 
     await browser.goto(fullPageEditor);
     await browser.waitForSelector(editorSelector);

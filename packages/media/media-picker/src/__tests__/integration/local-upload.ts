@@ -3,6 +3,12 @@ import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 
 import { gotoPopupSimplePage } from '../../../pages/popup-simple-page';
 
+/* This is used to identify test case in Browserstack */
+process.env.TEST_FILE = __filename
+  .split('/')
+  .reverse()[0]
+  .split('.')[0];
+
 BrowserTestCase(
   'MediaPicker: local upload',
   { skip: ['edge', 'ie', 'safari', 'firefox'] },
