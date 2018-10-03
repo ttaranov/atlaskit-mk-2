@@ -113,6 +113,24 @@ const mapDispatchToProps = (
       ),
     );
   },
+
+  onEditorChange(
+    isLocal: boolean,
+    value: any,
+    conversationId: string,
+    commentId: string | undefined,
+    containerId: string,
+    meta: any,
+  ) {
+    provider.saveDraft(
+      isLocal,
+      value,
+      conversationId,
+      commentId,
+      containerId,
+      meta,
+    );
+  },
 });
 
 const ResourcedConversation = withAnalyticsEvents()(
@@ -132,6 +150,7 @@ export interface ContainerProps {
   showBeforeUnloadWarning?: boolean;
   onEditorOpen?: () => void;
   onEditorClose?: () => void;
+  onEditorChange?: () => void;
   renderEditor?: (Editor: typeof AkEditor, props: EditorProps) => JSX.Element;
   placeholder?: string;
   disableScrollTo?: boolean;

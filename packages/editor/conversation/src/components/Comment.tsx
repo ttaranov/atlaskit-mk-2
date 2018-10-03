@@ -327,14 +327,21 @@ export default class Comment extends React.Component<Props, State> {
       allowFeedbackAndHelpButtons,
       onEditorClose,
       onEditorOpen,
+      onEditorChange,
     } = this.props;
+
     const { isEditing } = this.state;
 
     if (comment.deleted) {
       return <DeletedMessage />;
     }
 
+    // console.log('Comment/getContent', {feedback: allowFeedbackAndHelpButtons});
+    // console.log('Comment/getContent', {props: this.props});
+
     if (isEditing) {
+      console.log('Editor inside of comment content');
+
       return (
         <Editor
           defaultValue={comment.document.adf}
@@ -344,6 +351,7 @@ export default class Comment extends React.Component<Props, State> {
           onCancel={this.onCancelEdit}
           onClose={onEditorClose}
           onOpen={onEditorOpen}
+          onChange={onEditorChange}
           dataProviders={dataProviders}
           user={user}
           renderEditor={renderEditor}
@@ -420,6 +428,8 @@ export default class Comment extends React.Component<Props, State> {
       return null;
     }
 
+    // console.log('Editor inside a comment reply');
+
     const {
       dataProviders,
       user,
@@ -428,7 +438,12 @@ export default class Comment extends React.Component<Props, State> {
       allowFeedbackAndHelpButtons,
       onEditorClose,
       onEditorOpen,
+      onEditorChange,
     } = this.props;
+
+    // console.log(renderEditor);
+    // console.log('Comment/renderEditor', {feedback: allowFeedbackAndHelpButtons});
+    console.log('Comment/renderEditor', { props: this.props });
 
     return (
       <Editor
@@ -438,6 +453,7 @@ export default class Comment extends React.Component<Props, State> {
         dataProviders={dataProviders}
         onOpen={onEditorOpen}
         onClose={onEditorClose}
+        onChange={onEditorChange}
         user={user}
         renderEditor={renderEditor}
         disableScrollTo={disableScrollTo}
