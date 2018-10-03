@@ -45,6 +45,7 @@ export interface ConstructorParams {
   useNewApplicationCard?: boolean;
   appearance?: RendererAppearance;
   disableHeadingIDs?: boolean;
+  allowDynamicTextSizing?: boolean;
 }
 
 export default class ReactSerializer implements Serializer<JSX.Element> {
@@ -57,6 +58,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
   private appearance?: RendererAppearance;
   private disableHeadingIDs?: boolean;
   private headingIds: string[] = [];
+  private allowDynamicTextSizing?: boolean;
 
   constructor({
     providers,
@@ -67,6 +69,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     useNewApplicationCard,
     appearance,
     disableHeadingIDs,
+    allowDynamicTextSizing,
   }: ConstructorParams) {
     this.providers = providers;
     this.eventHandlers = eventHandlers;
@@ -76,6 +79,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
     this.useNewApplicationCard = useNewApplicationCard;
     this.appearance = appearance;
     this.disableHeadingIDs = disableHeadingIDs;
+    this.allowDynamicTextSizing = allowDynamicTextSizing;
   }
 
   private resetState() {
@@ -220,6 +224,8 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
       serializer: this,
       content: node.content ? node.content.toJSON() : undefined,
       useNewApplicationCard: this.useNewApplicationCard,
+      allowDynamicTextSizing: this.allowDynamicTextSizing,
+      appearance: this.appearance,
       ...node.attrs,
     };
   }
@@ -334,6 +340,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
       extensionHandlers,
       appearance,
       disableHeadingIDs,
+      allowDynamicTextSizing,
     }: ConstructorParams,
   ): ReactSerializer {
     // TODO: Do we actually need the schema here?
@@ -343,6 +350,7 @@ export default class ReactSerializer implements Serializer<JSX.Element> {
       extensionHandlers,
       appearance,
       disableHeadingIDs,
+      allowDynamicTextSizing,
     });
   }
 }

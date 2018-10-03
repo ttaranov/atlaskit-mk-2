@@ -1,5 +1,19 @@
 # @atlaskit/navigation
 
+## 33.1.11
+- [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
+  - @atlaskit/docs@5.0.8
+  - @atlaskit/avatar@14.0.11
+  - @atlaskit/button@9.0.13
+  - @atlaskit/checkbox@5.0.2
+  - @atlaskit/dropdown-menu@6.1.17
+  - @atlaskit/item@8.0.8
+  - @atlaskit/single-select@6.0.6
+  - @atlaskit/toggle@5.0.9
+  - @atlaskit/tooltip@12.1.1
+  - @atlaskit/quick-search@4.2.9
+  - @atlaskit/icon@14.0.0
+
 ## 33.1.10
 - [patch] Pulling the shared styles from @atlaskit/theme and removed dependency on util-shraed-styles [7d51a09](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7d51a09)
 

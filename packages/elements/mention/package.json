@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/mention",
-  "version": "15.0.9",
+  "version": "15.0.10",
   "config": {
     "access": "public"
   },
@@ -24,10 +24,10 @@
     "@atlaskit/analytics-gas-types": "^3.1.2",
     "@atlaskit/analytics-next": "^3.0.4",
     "@atlaskit/analytics-next-types": "^3.0.1",
-    "@atlaskit/avatar": "^14.0.6",
-    "@atlaskit/icon": "^13.2.4",
+    "@atlaskit/avatar": "^14.0.11",
+    "@atlaskit/icon": "^14.0.0",
     "@atlaskit/lozenge": "^6.1.4",
-    "@atlaskit/tooltip": "^12.0.5",
+    "@atlaskit/tooltip": "^12.1.1",
     "@atlaskit/util-common": "^1.5.2",
     "@atlaskit/util-service-support": "^3.0.3",
     "@atlaskit/util-shared-styles": "^2.10.3",
@@ -38,7 +38,7 @@
     "xregexp": "^3.2.0"
   },
   "devDependencies": {
-    "@atlaskit/docs": "^5.0.2",
+    "@atlaskit/docs": "^5.0.8",
     "@atlaskit/util-common-test": "^2.4.2",
     "@atlaskit/util-data-test": "^10.0.7",
     "@types/fetch-mock": "^6.0.3",

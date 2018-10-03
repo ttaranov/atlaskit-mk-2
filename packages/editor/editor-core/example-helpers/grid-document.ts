@@ -10,6 +10,35 @@ export const exampleDocument = {
       content: [
         {
           type: 'text',
+          text: 'External Image',
+        },
+      ],
+    },
+    {
+      type: 'mediaSingle',
+      attrs: {
+        layout: 'center',
+        width: 33.38,
+      },
+      content: [
+        {
+          type: 'media',
+          attrs: {
+            type: 'external',
+            url:
+              'https://atlassian.design/react_assets/images/cards/personality.png',
+          },
+        },
+      ],
+    },
+    {
+      type: 'heading',
+      attrs: {
+        level: 2,
+      },
+      content: [
+        {
+          type: 'text',
           text: 'Wrap Left - 4 columns',
         },
       ],
@@ -18,7 +47,7 @@ export const exampleDocument = {
       type: 'mediaSingle',
       attrs: {
         layout: 'wrap-left',
-        width: 33,
+        width: 33.38,
       },
       content: [
         {
@@ -60,7 +89,7 @@ export const exampleDocument = {
       type: 'mediaSingle',
       attrs: {
         layout: 'wrap-right',
-        width: 66,
+        width: 66.62,
       },
       content: [
         {

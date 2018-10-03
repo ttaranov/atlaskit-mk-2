@@ -1,5 +1,8 @@
 # @atlaskit/smart-card
 
+## 8.2.4
+- [patch] Removes usages of rxjs/Rx  [d098f25](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d098f25)
+
 ## 8.2.3
 - [patch] Fix rxjs and date-fns import in TS components [ab15cee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ab15cee)
 

@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Rx';
+import { empty } from 'rxjs/observable/empty';
 import { of } from 'rxjs/observable/of';
 import { Subject } from 'rxjs/Subject';
 import { mergeMap } from 'rxjs/operators/mergeMap';
@@ -59,7 +59,7 @@ export function createObjectResolverServiceObservable(options: Options) {
     mergeMap((cmd: Command) => {
       // ignore reloads for other providers
       if (cmd.type === 'reload' && cmd.provider !== provider) {
-        return Observable.empty();
+        return empty();
       }
 
       return fetch$<ResolveResponse>('post', `${serviceUrl}/resolve`, {

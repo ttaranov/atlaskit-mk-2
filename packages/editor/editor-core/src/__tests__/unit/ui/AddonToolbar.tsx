@@ -2,7 +2,7 @@ import { name } from '../../../../package.json';
 import { mount } from 'enzyme';
 import * as React from 'react';
 import DocumentIcon from '@atlaskit/icon/glyph/document';
-import AtlassianIcon from '@atlaskit/icon/glyph/atlassian';
+import { AtlassianIcon } from '@atlaskit/logo';
 import ToolbarButton from '../../../ui/ToolbarButton';
 import { AddonConfiguration, AddonToolbar, Addon } from '../../../ui/Addon';
 

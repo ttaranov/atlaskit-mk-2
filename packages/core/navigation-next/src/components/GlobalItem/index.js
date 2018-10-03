@@ -35,6 +35,7 @@ export class GlobalItemBase extends PureComponent<GlobalItemProps> {
 export default navigationItemClicked(
   withGlobalTheme(GlobalItemBase),
   'globalItem',
+  true,
 );
 
 export type { GlobalItemProps };

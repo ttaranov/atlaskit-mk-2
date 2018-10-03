@@ -35,7 +35,7 @@ const spyOnComponentDidUpdate = () => {
   return spy;
 };
 
-const CONFLUECE_RECENT_ITEMS = [
+const CONFLUENCE_RECENT_ITEMS = [
   {
     id: 'confluence-object-result',
     hasContainerId: true,
@@ -72,7 +72,7 @@ const JIRA_RECENT_ITEMS = [
 ];
 
 const getRecentItems = product =>
-  product === 'jira' ? JIRA_RECENT_ITEMS : CONFLUECE_RECENT_ITEMS;
+  product === 'jira' ? JIRA_RECENT_ITEMS : CONFLUENCE_RECENT_ITEMS;
 
 ['confluence', 'jira'].forEach(product => {
   describe(`${product} Quick Search Analytics`, () => {
@@ -139,7 +139,7 @@ const getRecentItems = product =>
 
       it('should trigger globalSearchDrawer', async () => {
         expect(onEventSpy).toBeCalled();
-        const event = onEventSpy.mock.calls[0][0];
+        const event = onEventSpy.mock.calls[1][0];
         validateEvent(
           event,
           getGlobalSearchDrawerEvent({
@@ -151,10 +151,26 @@ const getRecentItems = product =>
 
       it('should trigger show prequery results event ', () => {
         expect(onEventSpy).toBeCalled();
-        const event = onEventSpy.mock.calls[1][0];
+        const event = onEventSpy.mock.calls[2][0];
         validateEvent(
           event,
           getPreQuerySearchResultsEvent(getRecentItems(product)),
+        );
+      });
+
+      it('should trigger experiment exposure event', () => {
+        expect(onEventSpy).toBeCalled();
+        const event = onEventSpy.mock.calls[0][0];
+        validateEvent(
+          event,
+          getExperimentExposureEvent({
+            searchSessionId: expect.any(String),
+            abTest: {
+              experimentId: 'experiment-1',
+              controlId: 'control-id',
+              abTestId: 'abtest-id',
+            },
+          }),
         );
       });
     });
@@ -431,21 +447,6 @@ const getRecentItems = product =>
               expectedResults.postQueryResults,
               expectedResults.postQueryResultsTimings,
             ),
-          );
-        });
-
-        it('should trigger experiment exposure event', () => {
-          const event = onEventSpy.mock.calls[3][0];
-          validateEvent(
-            event,
-            getExperimentExposureEvent({
-              searchSessionId: expect.any(String),
-              abTest: {
-                experimentId: 'experiment-1',
-                controlId: 'control-id',
-                abTestId: 'abtest-id',
-              },
-            }),
           );
         });
 

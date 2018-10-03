@@ -6,6 +6,7 @@ import { WidthConsumer } from '@atlaskit/editor-common';
 
 export interface Props {
   editorView: EditorView;
+  contentArea?: HTMLElement | null;
 }
 
 export default class WidthEmitter extends Component<Props> {
@@ -29,7 +30,14 @@ export default class WidthEmitter extends Component<Props> {
 
       // NodeViews will trigger multiple state change error without this debounce
       this.debounce = setTimeout(() => {
-        const tr = editorView.state.tr.setMeta(widthPluginKey, width);
+        const pmDom = this.props.contentArea
+          ? this.props.contentArea.querySelector('.ProseMirror')
+          : undefined;
+        const tr = editorView.state.tr.setMeta(widthPluginKey, {
+          width,
+          lineLength: pmDom ? pmDom.clientWidth : undefined,
+        });
+
         tr.setMeta('isLocal', true);
         editorView.dispatch(tr);
         this.width = width;

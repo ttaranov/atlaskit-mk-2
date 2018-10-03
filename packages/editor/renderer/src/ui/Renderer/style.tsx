@@ -31,6 +31,8 @@ import {
 } from '@atlaskit/editor-common';
 import { RendererAppearance } from './';
 
+export const FullPagePadding = 32;
+
 export interface Props {
   appearance?: RendererAppearance;
   theme?: any;
@@ -50,7 +52,7 @@ const fullPageStyles = ({ theme, appearance }) => {
       theme && theme.layoutMaxWidth ? `${theme.layoutMaxWidth}px` : 'none'
     };
     margin: 0 auto;
-    padding: 0 32px;
+    padding: 0 ${FullPagePadding}px;
   `;
 };
 
