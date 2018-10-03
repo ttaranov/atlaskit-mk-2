@@ -12,7 +12,10 @@ import {
   pluginKey,
   defaultTableSelection,
 } from '../../../../plugins/table/pm-plugins/main';
-import { TablePluginState } from '../../../../plugins/table/types';
+import {
+  TablePluginState,
+  TableCssClassName as ClassName,
+} from '../../../../plugins/table/types';
 import tablesPlugin from '../../../../plugins/table';
 import {
   handleSetFocus,
@@ -78,7 +81,7 @@ describe('table action handlers', () => {
         ...pluginState,
         tableRef,
         tableFloatingToolbarTarget: editorView.dom.querySelector(
-          '.table-wrapper',
+          `.${ClassName.TABLE_NODE_WRAPPER}`,
         ) as HTMLElement,
         tableNode: editorView.state.doc.firstChild,
       });
