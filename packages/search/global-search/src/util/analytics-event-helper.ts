@@ -10,6 +10,7 @@ import {
 } from './analytics-util';
 import { GasPayload, EventType } from '@atlaskit/analytics-gas-types';
 import { CreateAnalyticsEventFn } from '../components/analytics/types';
+import { ABTest } from '../api/CrossProductSearchClient';
 
 const fireGasEvent = (
   createAnalyticsEvent: CreateAnalyticsEventFn | undefined,
@@ -61,14 +62,10 @@ export function firePreQueryShownEvent(
 }
 
 export function fireExperimentExposureEvent(
-  experimentData: string | object,
+  abTest: ABTest,
   searchSessionId: string,
   createAnalyticsEvent: CreateAnalyticsEventFn,
 ) {
-  const experimentDetails =
-    typeof experimentData === 'object'
-      ? { abTest: experimentData }
-      : { experimentId: experimentData };
   fireGasEvent(
     createAnalyticsEvent,
     'exposed',
@@ -77,12 +74,13 @@ export function fireExperimentExposureEvent(
     'operational',
     {
       searchSessionId,
-      ...experimentDetails,
+      abTest, // send nested structure for backwards compat
+      ...abTest, // send destructured object for easier querying of props
     },
   );
 }
 
-const getQueryAttributes = query => {
+const getQueryAttributes = (query: string): Object => {
   const sanitizedQuery = sanitizeSearchQuery(query);
   return {
     queryLength: sanitizedQuery.length,
@@ -92,7 +90,7 @@ const getQueryAttributes = query => {
   };
 };
 
-const getNonPrivacySafeAttributes = query => {
+const getNonPrivacySafeAttributes = (query: string): Object => {
   return {
     query: sanitizeSearchQuery(query),
   };

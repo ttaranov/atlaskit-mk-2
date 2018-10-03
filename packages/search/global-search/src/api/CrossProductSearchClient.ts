@@ -15,7 +15,6 @@ import { Scope, ConfluenceItem, JiraItem, PersonItem } from './types';
 
 export type CrossProductSearchResults = {
   results: Map<Scope, Result[]>;
-  experimentId?: string;
   abTest?: ABTest;
 };
 
@@ -25,7 +24,6 @@ export type SearchSession = {
 };
 
 export const EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE: CrossProductSearchResults = {
-  experimentId: '',
   results: new Map(),
 };
 
@@ -45,9 +43,7 @@ export interface ScopeResult {
   id: Scope;
   error?: string;
   results: SearchItem[];
-  // @deprecated
-  experimentId?: string;
-  abTest?: ABTest;
+  abTest?: ABTest; // in case of an error abTest will be undefined
 }
 
 export interface CrossProductSearchClient {
@@ -56,6 +52,11 @@ export interface CrossProductSearchClient {
     searchSession: SearchSession,
     scopes: Scope[],
   ): Promise<CrossProductSearchResults>;
+
+  getAbTestData(
+    scope: Scope,
+    searchSession: SearchSession,
+  ): Promise<ABTest | undefined>;
 }
 
 export default class CrossProductSearchClientImpl
@@ -82,6 +83,18 @@ export default class CrossProductSearchClientImpl
       searchSession,
     );
     return this.parseResponse(response, searchSession.sessionId);
+  }
+
+  public async getAbTestData(
+    scope: Scope,
+    searchSession: SearchSession,
+  ): Promise<ABTest | undefined> {
+    const response = await this.makeRequest('', [scope], searchSession);
+    const parsedResponse = this.parseResponse(
+      response,
+      searchSession.sessionId,
+    );
+    return Promise.resolve(parsedResponse.abTest);
   }
 
   private async makeRequest(
@@ -126,8 +139,7 @@ export default class CrossProductSearchClientImpl
     response: CrossProductSearchResponse,
     searchSessionId: string,
   ): CrossProductSearchResults {
-    let experimentId;
-    let abTest;
+    let abTest: ABTest | undefined;
     const results: Map<Scope, Result[]> = response.scopes
       .filter(scope => scope.results)
       .reduce((resultsMap, scopeResult) => {
@@ -138,16 +150,18 @@ export default class CrossProductSearchClientImpl
               scopeResult.id as Scope,
               result,
               searchSessionId,
-              scopeResult.experimentId,
+              scopeResult.abTest && scopeResult.abTest!.experimentId,
             ),
           ),
         );
-        experimentId = scopeResult.experimentId;
-        abTest = scopeResult.abTest;
+
+        if (!abTest) {
+          abTest = scopeResult.abTest;
+        }
         return resultsMap;
       }, new Map());
 
-    return { results, experimentId, abTest };
+    return { results, abTest };
   }
 }
 
