@@ -18,10 +18,10 @@ async function getPackagesInfo(cwd /*: string */) {
         path.join(pkg.dir, '__tests-karma__'),
       );
       let testWebdriverExists = await exists(
-        path.join(pkg.dir, '__tests__', 'integration'),
+        path.join(pkg.dir, 'src', '__tests__', 'integration'),
       );
       let testVRExists = await exists(
-        path.join(pkg.dir, '__tests__', 'visual-regression'),
+        path.join(pkg.dir, 'src', '__tests__', 'visual-regression'),
       );
 
       let isBrowserPackage = !relativeDir.startsWith('build');
