@@ -20,7 +20,7 @@ const buildUrl = (
   const parsedUrl = baseUrl.split('?');
 
   baseUrl = parsedUrl[0];
-  let searchParam = parsedUrl[1];
+  let searchParam = parsedUrl[1] || '';
 
   if (queryParams) {
     for (const key in queryParams) {
