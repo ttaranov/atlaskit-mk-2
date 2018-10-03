@@ -37,6 +37,8 @@ import ConfluenceAdvancedSearchGroup from '../../../components/confluence/Advanc
 import JiraAdvancedSearchGroup from '../../../components/jira/JiraAdvancedSearch';
 import StickyFooter from '../../../components/common/StickyFooter';
 
+type Product = 'jira' | 'confluence';
+
 const issues = [
   makeJiraObjectResult({
     contentType: ContentType.JiraIssue,
@@ -65,7 +67,7 @@ const renderConfluenceQuickSearchContainer = (props: ConfluenceProps) => {
   return shallowWithIntl(<ConfluenceQuickSearchContainer {...props} />);
 };
 
-const renderComponent = product => {
+const renderComponent = (product: Product) => {
   const props = {
     crossProductSearchClient: noResultsCrossProductSearchClient,
     peopleSearchClient: noResultsPeopleSearchClient,
@@ -81,10 +83,11 @@ const renderComponent = product => {
     : renderConfluenceQuickSearchContainer(props);
 };
 
-const getNoResultsState = product =>
+const getNoResultsState = (product: Product) =>
   product === 'jira' ? JiraNoResultsState : ConfluenceNoResultsState;
 
-const assertJiraNoRecentActivity = (type, props) => {
+const assertJiraNoRecentActivity = (element: JSX.Element) => {
+  const { type = '', props = {} } = element || {};
   expect(type).toEqual(React.Fragment);
   const formattedMessage = props.children[0];
   expect(formattedMessage).toMatchObject({
@@ -106,22 +109,27 @@ const assertJiraNoRecentActivity = (type, props) => {
   });
 };
 
-const assertConfluenceNoRecentActivity = (type, props) => {
+const assertConfluenceNoRecentActivity = (element: JSX.Element) => {
+  const { type = '', props = {} } = element || {};
   expect(type).toBe(FormattedHTMLMessage);
   expect(props).toMatchObject({
     id: 'global-search.no-recent-activity-body',
     values: { url: '/wiki/dosearchsite.action' },
   });
 };
-const assertNoRecentActivityComponent = (product, type, props) => {
+const assertNoRecentActivityComponent = (
+  product: Product,
+  element: JSX.Element,
+) => {
   if (product === 'jira') {
-    assertJiraNoRecentActivity(type, props);
+    assertJiraNoRecentActivity(element);
   } else {
-    assertConfluenceNoRecentActivity(type, props);
+    assertConfluenceNoRecentActivity(element);
   }
 };
 
-const assertJiraAdvancedSearchGroup = (type, props) => {
+const assertJiraAdvancedSearchGroup = (element: JSX.Element) => {
+  const { type = '', props = {} } = element || {};
   expect(type).toEqual(StickyFooter);
   expect(props.children).toMatchObject({
     type: JiraAdvancedSearchGroup,
@@ -135,7 +143,8 @@ const assertJiraAdvancedSearchGroup = (type, props) => {
   });
 };
 
-const assertConfluenceAdvancedSearchGroup = (type, props) => {
+const assertConfluenceAdvancedSearchGroup = (element: JSX.Element) => {
+  const { type = '', props = {} } = element || {};
   const analyticsData = { resultsCount: 10 };
   expect(type).toBe(ConfluenceAdvancedSearchGroup);
   expect(props).toMatchObject({
@@ -143,15 +152,18 @@ const assertConfluenceAdvancedSearchGroup = (type, props) => {
     query: 'query',
   });
 };
-const assertAdvancedSearchGroup = (product, type, props) => {
+const assertAdvancedSearchGroup = (product: Product, element: JSX.Element) => {
   if (product === 'jira') {
-    assertJiraAdvancedSearchGroup(type, props);
+    assertJiraAdvancedSearchGroup(element);
   } else {
-    assertConfluenceAdvancedSearchGroup(type, props);
+    assertConfluenceAdvancedSearchGroup(element);
   }
 };
 
-const getSearchAndRecentItems = (product, sessionId): SearchResultProps => {
+const getSearchAndRecentItems = (
+  product: Product,
+  sessionId,
+): SearchResultProps => {
   const commonProps = {
     retrySearch: jest.fn(),
     latestSearchQuery: 'query',
@@ -258,16 +270,17 @@ const getConfluencePostQueryResults = () => [
   },
 ];
 
-const getPostQueryResults = product =>
+const getPostQueryResults = (product: Product) =>
   product === 'jira'
     ? getJiraPostQueryResults()
     : getConfluencePostQueryResults();
-const getPreqQueryResults = product =>
+
+const getPreqQueryResults = (product: Product) =>
   product === 'jira'
     ? getJiraPreqQueryResults()
     : getConfluencePreQueryResults();
 
-['confluence', 'jira'].forEach(product => {
+['confluence', 'jira'].forEach((product: Product) => {
   describe(`${product} SearchResultsComponent`, () => {
     let searchResultsComponent;
     let getAdvancedSearchUrlSpy;
@@ -318,9 +331,7 @@ const getPreqQueryResults = product =>
     it('should renderNoResult component', () => {
       const { renderNoResult } = getProps();
       const noResultState = renderNoResult();
-      const { type = '', props = {} } =
-        (noResultState as React.ReactElement<SearchResultsComponentProps>) ||
-        {};
+      const { type = '', props = {} } = (noResultState as JSX.Element) || {};
 
       expect(type).toBe(getNoResultsState(product));
       expect(props).toMatchObject({
@@ -331,21 +342,14 @@ const getPreqQueryResults = product =>
     it('should renderNoRecentActivity', () => {
       const { renderNoRecentActivity } = getProps();
       const noRecentActivity = renderNoRecentActivity();
-      const { type = '', props = {} } =
-        (noRecentActivity as React.ReactElement<SearchResultsComponentProps>) ||
-        {};
-      assertNoRecentActivityComponent(product, type, props);
+      assertNoRecentActivityComponent(product, noRecentActivity);
     });
 
     it('should renderAdvancedSearchGroup', () => {
       const { renderAdvancedSearchGroup } = getProps();
       const analyticsData = { resultsCount: 10 };
       const advancedSearchGroup = renderAdvancedSearchGroup(analyticsData);
-      const { type = '', props = {} } =
-        (advancedSearchGroup as React.ReactElement<
-          SearchResultsComponentProps
-        >) || {};
-      assertAdvancedSearchGroup(product, type, props);
+      assertAdvancedSearchGroup(product, advancedSearchGroup);
     });
 
     it('should return preQueryGroups', () => {
