@@ -391,6 +391,7 @@
     "query-string": "^4.3.2",
     "raf-schd": "^2.1.0",
     "raf-stub": "^2.0.1",
+    "re-resizable": "^4.9.0",
     "react": "^16.4.0",
     "react-ace": "^6.1.0",
     "react-addons-css-transition-group": "^15.6.2",

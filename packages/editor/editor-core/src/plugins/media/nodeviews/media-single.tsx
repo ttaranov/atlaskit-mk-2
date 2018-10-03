@@ -2,9 +2,15 @@ import * as React from 'react';
 import { Component, ReactElement } from 'react';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
-import { MediaSingle } from '@atlaskit/editor-common';
+import { findParentNodeOfTypeClosestToPos } from 'prosemirror-utils';
+
+import { MediaSingle, MediaSingleLayout } from '@atlaskit/editor-common';
 import { MediaNodeProps } from './media';
+
 import { stateKey, MediaPluginState } from '../pm-plugins/main';
+import ResizableMediaSingle from '../ui/ResizableMediaSingle';
+import { displayGrid } from '../../../plugins/grid';
+import { EditorAppearance } from '../../../types';
 
 const DEFAULT_WIDTH = 250;
 const DEFAULT_HEIGHT = 200;
@@ -12,7 +18,11 @@ const DEFAULT_HEIGHT = 200;
 export interface MediaSingleNodeProps {
   node: PMNode;
   view: EditorView;
-  width: number;
+  containerWidth: number;
+  isResizable?: boolean;
+  getPos: () => number | undefined;
+  lineLength: number;
+  appearance: EditorAppearance;
 }
 
 export interface MediaSingleNodeState {
@@ -59,20 +69,24 @@ export default class MediaSingleNode extends Component<
     this.mediaPluginState.updateLayout(layout);
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps: MediaSingleNodeProps, nextState) {
     const nextChild: ReactElement<MediaNodeProps> = this.getChild(nextProps);
 
-    const { width } = this.child.props.node.attrs;
-    const { width: nextWidth } = nextChild.props.node.attrs;
+    const { width: mediaWidth } = this.child.props.node.attrs;
+    const { width: nextMediaWidth } = nextChild.props.node.attrs;
 
-    const { node } = this.props;
-    const { layout } = node.attrs;
+    const { node, containerWidth } = this.props;
+    const { layout, width } = node.attrs;
+    const { width: nextWidth } = nextProps.node.attrs;
+
     return (
       layout === 'wide' ||
       layout === 'full-width' ||
       this.state.progress !== nextState.progress ||
       node !== nextProps.node ||
-      width !== nextWidth
+      mediaWidth !== nextMediaWidth ||
+      width !== nextWidth ||
+      containerWidth !== nextProps.containerWidth
     );
   }
 
@@ -101,8 +115,31 @@ export default class MediaSingleNode extends Component<
     return mediaState && mediaState.status === 'ready' && mediaState!.preview;
   }
 
+  updateSize = (width: number | null, layout: MediaSingleLayout) => {
+    const { state, dispatch } = this.props.view;
+    const pos = this.props.getPos();
+    if (typeof pos === 'undefined') {
+      return;
+    }
+
+    return dispatch(
+      state.tr.setNodeMarkup(pos, undefined, {
+        ...this.props.node.attrs,
+        layout,
+        width,
+      }),
+    );
+  };
+
+  boundDisplayGrid = (show, gridType) => {
+    displayGrid(show, gridType)(
+      this.props.view.state,
+      this.props.view.dispatch,
+    );
+  };
+
   render() {
-    const { layout } = this.props.node.attrs;
+    const { layout, width: mediaSingleWidth } = this.props.node.attrs;
     const { progress } = this.state;
     let hideProgress = false;
 
@@ -130,28 +167,65 @@ export default class MediaSingleNode extends Component<
       hideProgress = true;
     }
 
-    return (
-      <MediaSingle
-        layout={layout}
-        width={width}
-        height={height}
-        containerWidth={this.props.width}
-        isLoading={!width}
+    const children = React.cloneElement(
+      this.child as ReactElement<any>,
+      {
+        cardDimensions: {
+          width: '100%',
+          height: '100%',
+        },
+        hideProgress,
+        isMediaSingle: true,
+        progress,
+        onExternalImageLoaded: this.onExternalImageLoaded,
+      } as MediaNodeProps,
+    );
+
+    const props = {
+      layout,
+      width,
+      height,
+
+      isLoading: !width,
+
+      containerWidth: this.props.containerWidth,
+      lineLength: this.props.lineLength,
+      pctWidth: mediaSingleWidth,
+    };
+
+    const {
+      view: { state },
+      getPos,
+      isResizable,
+      appearance,
+    } = this.props;
+
+    let canResize = true;
+    const pos = getPos();
+    if (pos) {
+      const $pos = state.doc.resolve(pos);
+      const { table, layoutSection } = state.schema.nodes;
+      const disabledNode = !!findParentNodeOfTypeClosestToPos($pos, [
+        table,
+        layoutSection,
+      ]);
+      canResize = !!isResizable && !disabledNode;
+    }
+
+    return canResize ? (
+      <ResizableMediaSingle
+        {...props}
+        getPos={getPos}
+        state={state}
+        updateSize={this.updateSize}
+        displayGrid={this.boundDisplayGrid}
+        gridSize={12}
+        appearance={appearance}
       >
-        {React.cloneElement(
-          this.child as ReactElement<any>,
-          {
-            cardDimensions: {
-              width: '100%',
-              height: '100%',
-            },
-            hideProgress,
-            isMediaSingle: true,
-            progress,
-            onExternalImageLoaded: this.onExternalImageLoaded,
-          } as MediaNodeProps,
-        )}
-      </MediaSingle>
+        {children}
+      </ResizableMediaSingle>
+    ) : (
+      <MediaSingle {...props}>{children}</MediaSingle>
     );
   }
 }

@@ -14,7 +14,7 @@ function mapBreakpointToFontSize(breakpoint: string) {
   }
 }
 
-function mapBreakpointToLayoutMaxWidth(breakpoint: string) {
+export function mapBreakpointToLayoutMaxWidth(breakpoint: string) {
   switch (breakpoint) {
     case Breakpoints.M:
       return 760;
