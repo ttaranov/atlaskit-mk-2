@@ -33,6 +33,7 @@ class ToolbarButton extends PureComponent<Props, {}> {
     const { toolbarContext } = this.props;
 
     if (toolbarContext && toolbarContext.registerButton) {
+      console.log('TOOLBARBUTTON: Mounting button ', this.props.title);
       toolbarContext.registerButton(this);
     }
   }

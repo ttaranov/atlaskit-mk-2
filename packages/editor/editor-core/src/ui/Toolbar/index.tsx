@@ -123,8 +123,11 @@ export class ToolbarInner extends React.Component<
       const prevRegisteredButtons = prevState.registeredButtons;
 
       if (prevRegisteredButtons.find(this.equalsButton(button))) {
+        console.log('Button ' + button.props.title + ' already exists.');
         // Our button already exists
         return { ...prevState };
+      } else {
+        console.log('Button ' + button.props.title + ' DOESNT exist.');
       }
 
       const newRegisteredButtons = [...prevRegisteredButtons, button];
@@ -157,6 +160,9 @@ export class ToolbarInner extends React.Component<
       if (newIndex < 0 || newIndex >= buttons.length) {
         return { ...prevState };
       }
+      // console.log("Selected button is now ", buttons[newIndex])
+      console.log('Selected button is now ', buttons[newIndex].props.title);
+
       return {
         selectedButtonIndex: newIndex,
         selectedButton: buttons[newIndex],
@@ -192,6 +198,8 @@ export class ToolbarInner extends React.Component<
     if (!items || !items.length) {
       return null;
     }
+
+    console.log('items:', items);
 
     return (
       <ToolbarContext.Provider
