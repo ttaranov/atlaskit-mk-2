@@ -89,6 +89,9 @@ export default class App extends Component<Props, State> {
     window.removeEventListener('keyup', this.handleKeyup);
   }
   handleKeyup = e => {
+    // We only currently allow toggling dark-mode in dev-mode. Once we have
+    // landed on a proper GUI implementation, we should remove the dev-mode
+    // check, shipping both the GUI and keyboard shortcut to production.
     if (process.env.NODE_ENV === 'development') {
       const canHandleKey = document.activeElement === document.body;
       if (canHandleKey && e.key === 'd') {
