@@ -421,7 +421,7 @@
     "react-router-dom": "^4.2.2",
     "react-scrolllock": "^3.0.1",
     "react-select": "^2.0.0",
-    "react-syntax-highlighter": "^6.0.2",
+    "react-syntax-highlighter": "marcodejongh/react-syntax-highlighter#AsyncPrism",
     "react-transition-group": "^2.2.1",
     "react-video-renderer": "^2.0.1",
     "react-virtualized": "^9.8.0",
