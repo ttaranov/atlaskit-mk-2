@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 5.9.3
+- [patch] Exposure event gets trigger on initial load instead when search results return [b89cda9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b89cda9)
+
 ## 5.9.2
 - [patch] Trim search input [488257d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/488257d)
 
