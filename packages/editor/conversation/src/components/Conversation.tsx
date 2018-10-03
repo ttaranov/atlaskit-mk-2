@@ -22,7 +22,7 @@ interface UnloadEvent extends Event {
 // This is a stop-gap for preventing the user from losing their work. Eventually
 // this will be replaced with drafts/auto-save functionality
 function beforeUnloadHandler(e: UnloadEvent) {
-  // The beforeUnload dialog is implemented inconsistenly.
+  // The beforeUnload dialog is implemented inconsistently.
   // The following is the most cross-browser approach.
   const confirmationMessage =
     'You have an unsaved comment. Are you sure you want to leave without saving?';
@@ -46,6 +46,15 @@ export interface Props extends SharedProps {
     value: any,
     meta: any,
     onSuccess?: SuccessHandler,
+  ) => void;
+
+  onEditorChange?: (
+    isLocal: boolean,
+    value: any,
+    conversationId: string,
+    commentId: string | undefined,
+    containerId: string,
+    meta: any,
   ) => void;
 
   isExpanded?: boolean;
@@ -77,7 +86,7 @@ export default class Conversation extends React.PureComponent<Props, State> {
     Only use this method when instrumenting something that isn't instrumented itself (like Editor)
     Once editor is instrumented use the analyticsEvent passed in by editor instead.
 
-    nestedDepth is always 0 when using the save handlers in this file. 
+    nestedDepth is always 0 when using the save handlers in this file.
     Because a new comment created on the conversation itself is always going to be the top comment.
 
     @deprecated
@@ -110,6 +119,7 @@ export default class Conversation extends React.PureComponent<Props, State> {
       containerId,
       placeholder,
       disableScrollTo,
+      allowFeedbackAndHelpButtons,
     } = this.props;
 
     if (!conversation) {
@@ -130,6 +140,7 @@ export default class Conversation extends React.PureComponent<Props, State> {
         onRevertComment={onRevertComment}
         onEditorOpen={this.onEditorOpen}
         onEditorClose={this.onEditorClose}
+        onEditorChange={this.handleEditorChange}
         onHighlightComment={onHighlightComment}
         onRetry={this.onRetry(comment.document)}
         onCancel={onCancel}
@@ -141,6 +152,7 @@ export default class Conversation extends React.PureComponent<Props, State> {
         placeholder={placeholder}
         disableScrollTo={disableScrollTo}
         sendAnalyticsEvent={this.sendEditorAnalyticsEvent}
+        allowFeedbackAndHelpButtons={allowFeedbackAndHelpButtons}
       />
     ));
   }
@@ -174,9 +186,16 @@ export default class Conversation extends React.PureComponent<Props, State> {
       disableScrollTo,
       allowFeedbackAndHelpButtons,
     } = this.props;
+
     const isInline = !!meta;
     const hasConversation = !!conversation;
     const canReply = !!user && (!isInline || (isExpanded && !hasConversation));
+
+    console.log('Conversation/renderConversationsEditor', {
+      props: this.props,
+    });
+
+    // console.log('Conversation/renderConversationsEditor', {feedback: allowFeedbackAndHelpButtons});
 
     if (canReply) {
       return (
@@ -186,6 +205,7 @@ export default class Conversation extends React.PureComponent<Props, State> {
           onCancel={this.onCancel}
           onOpen={this.onOpen}
           onClose={this.onEditorClose}
+          onChange={this.handleEditorChange}
           dataProviders={dataProviders}
           user={user}
           renderEditor={renderEditor}
@@ -209,6 +229,7 @@ export default class Conversation extends React.PureComponent<Props, State> {
     commentLocalId?: string,
     retry?: boolean,
   ) => {
+    // console.log('hello world 2');
     const {
       containerId,
       id,
@@ -271,6 +292,15 @@ export default class Conversation extends React.PureComponent<Props, State> {
     this.setState({
       openEditorCount: this.state.openEditorCount + 1,
     });
+  };
+
+  private handleEditorChange = (value: any) => {
+    const { id, localId, containerId, onEditorChange, meta } = this.props;
+
+    if (onEditorChange) {
+      const isLocal = !id;
+      onEditorChange(isLocal, value, localId!, undefined, containerId, meta);
+    }
   };
 
   componentDidUpdate() {
