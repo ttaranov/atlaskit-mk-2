@@ -4,6 +4,7 @@
 import styled, { css } from 'styled-components';
 
 import { gridSize, fontSize, borderRadius, math } from '@atlaskit/theme';
+import AKButton from '@atlaskit/button';
 
 import {
   buttonBackgroundColor,
@@ -35,47 +36,23 @@ export const Action = styled.div`
   }
 `;
 
-// $FlowFixMe - theme is not found in props
 const height = `${gridSize() * 3 / parseInt(fontSize(), 10)}em`;
-export const Button = styled.button`
-  align-items: baseline;
+export const Button = styled(AKButton)`
   background: ${buttonBackgroundColor};
-  border-radius: ${borderRadius}px;
-  border-width: 0;
-  box-sizing: border-box;
-  color: ${buttonTextColor};
+  color: ${buttonTextColor} !important;
   cursor: pointer;
-  display: inline-flex;
-  font-size: inherit;
-  font-style: normal;
   font-weight: 500;
-  height: ${height};
-  line-height: ${height};
-  margin: 0;
-  outline: 0;
-  padding: 0
-    ${p =>
-      // $FlowFixMe - theme is not found in props
-      p.appearance === 'normal' ? 0 : gridSize(p)}px;
-  text-align: center;
+  height: ${height} !important;
+  line-height: ${height} !important;
+  padding: 0 ${p => (p.appearance === 'normal' ? 0 : gridSize(p))}px;
   text-decoration: none;
   user-select: none;
   vertical-align: baseline;
-  white-space: nowrap;
-  width: auto;
-
-  &::-moz-focus-inner {
-    border: 0;
-    margin: 0;
-    padding: 0;
-  }
-
   &:hover {
     text-decoration: underline;
   }
 
   &:focus {
-    outline: none;
     box-shadow: 0 0 0 2px ${flagFocusRingColor};
   }
 `;
