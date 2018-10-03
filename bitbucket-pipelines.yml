@@ -104,10 +104,11 @@ pipelines:
         - step:
             name: Visual Regression
             script:
+              - source ./build/visual-regression/puppeteer.sh
               - source ./build-setup.sh
               - bolt install --pure-lockfile
-              - echo "Running visual regression against Website"
-              - node build/ci-scripts/run.tool.if.changed.js yarn run test:vr  
+              - yarn add puppeteer
+              - node build/ci-scripts/run.tool.if.changed.js vr -- yarn test:vr:changed 
             caches:
               - node       
         - step:

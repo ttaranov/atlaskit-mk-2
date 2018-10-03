@@ -20,6 +20,9 @@ async function getPackagesInfo(cwd /*: string */) {
       let testWebdriverExists = await exists(
         path.join(pkg.dir, '__tests__', 'integration'),
       );
+      let testVRExists = await exists(
+        path.join(pkg.dir, '__tests__', 'visual-regression'),
+      );
 
       let isBrowserPackage = !relativeDir.startsWith('build');
       let isWebsitePackage = relativeDir.startsWith('website');
@@ -44,6 +47,7 @@ async function getPackagesInfo(cwd /*: string */) {
       let isBrowserStack = isKarma;
       let isStylelint = srcExists && isBrowserPackage;
       let isWebdriver = testWebdriverExists && !isWebsitePackage; // The website has an integration tests that will only run on a schedule build
+      let isVR = testVRExists;
 
       return {
         dir: pkg.dir,
@@ -59,6 +63,7 @@ async function getPackagesInfo(cwd /*: string */) {
         isBrowserStack,
         isStylelint,
         isWebdriver,
+        isVR,
       };
     }),
   );
@@ -74,6 +79,7 @@ const TOOL_NAME_TO_FILTERS /*: { [key: string]: (pkg: Object) => boolean } */ = 
   browserstack: pkg => pkg.isBrowserStack,
   stylelint: pkg => pkg.isStylelint,
   webdriver: pkg => pkg.isWebdriver,
+  vr: pkg => pkg.isVR,
 };
 
 async function getPackageDirsForTools(cwd /*: string */) {
