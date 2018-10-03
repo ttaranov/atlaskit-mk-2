@@ -27,6 +27,7 @@ import {
 import { makeJiraObjectResult, makePersonResult } from '../_test-util';
 import { ContentType, Result } from '../../../model/Result';
 import { Scope } from '../../../api/types';
+import { ShallowWrapper } from 'enzyme';
 
 const issues = [
   makeJiraObjectResult({
@@ -47,7 +48,7 @@ describe('Jira Quick Search Container', () => {
   let createAnalyticsEventSpy;
   let sessionId;
   const logger = mockLogger();
-  const renderComponent = (partialProps?: Partial<Props>) => {
+  const renderComponent = (partialProps?: Partial<Props>): ShallowWrapper => {
     const props: Props = {
       crossProductSearchClient: noResultsCrossProductSearchClient,
       peopleSearchClient: noResultsPeopleSearchClient,
@@ -61,7 +62,7 @@ describe('Jira Quick Search Container', () => {
     return shallowWithIntl(<JiraQuickSearchContainer {...props} />);
   };
 
-  const getQuickSearchProperty = (wrapper, property) => {
+  const getQuickSearchProperty = (wrapper: ShallowWrapper, property) => {
     const quickSearch = wrapper.find(QuickSearchContainer);
     const quickSearchProps = quickSearch.props() as QuickSearchContainerProps;
     return quickSearchProps[property];
