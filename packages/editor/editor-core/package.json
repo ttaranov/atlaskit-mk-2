@@ -78,7 +78,7 @@
     "date-fns": "^1.29.0",
     "eventemitter2": "^4.1.0",
     "linkify-it": "^2.0.3",
-    "markdown-it": "^6.0.4",
+    "markdown-it": "^8.4.0",
     "orderedmap": "^1.0.0",
     "prop-types": "^15.5.10",
     "prosemirror-collab": "^1.0.0",
