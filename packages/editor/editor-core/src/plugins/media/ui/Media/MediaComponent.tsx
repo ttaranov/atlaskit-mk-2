@@ -114,7 +114,6 @@ export class MediaComponentInternal extends Component<Props, State> {
         <Card
           context={context}
           dimensions={cardDimensions}
-          status="complete"
           identifier={identifier}
           selectable={true}
           selected={selected}

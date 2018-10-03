@@ -10,9 +10,7 @@ import ReactMediaNodeView from './media';
 import WithPluginState from '../../../ui/WithPluginState';
 import { pluginKey as widthPluginKey } from '../../width';
 import { setNodeSelection } from '../../../utils';
-import {
-  stateKey as reactNodeViewStateKey,
-} from '../../../plugins/base/pm-plugins/react-nodeview';
+import { stateKey as reactNodeViewStateKey } from '../../../plugins/base/pm-plugins/react-nodeview';
 
 const DEFAULT_WIDTH = 250;
 const DEFAULT_HEIGHT = 200;
@@ -22,6 +20,7 @@ export interface MediaSingleNodeProps {
   view: EditorView;
   width: number;
   selected: boolean;
+  getPos: () => number;
 }
 
 export interface MediaSingleNodeState {
@@ -155,9 +154,6 @@ class MediaSingleNodeView extends ReactNodeView {
           reactNodeViewState: reactNodeViewStateKey,
         }}
         render={({width, lineLength}) => {
-          console.log('nodeview sta,te is ', width.reactNodeViewState);
-          console.log('get pos is ', this.getPos() + 1);
-
           return (
             <MediaSingleNode
               width={width.width}
@@ -166,7 +162,6 @@ class MediaSingleNodeView extends ReactNodeView {
               getPos={this.getPos}
               view={this.view}
               selected={this.getPos() + 1 === width.reactNodeViewState}
-              forwardRef={forwardRef}
             />
           );
         }}

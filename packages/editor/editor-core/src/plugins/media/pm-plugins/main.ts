@@ -50,7 +50,7 @@ export interface MediaNodeWithPosHandler {
 export class MediaPluginState {
   public allowsMedia: boolean = false;
   public allowsUploads: boolean = false;
-  public context: Context;
+  public mediaContext: Context;
   public stateManager: MediaStateManager;
   public ignoreLinks: boolean = false;
   public waitForMediaUpload: boolean = true;
@@ -65,7 +65,7 @@ export class MediaPluginState {
   private pluginStateChangeSubscribers: PluginStateChangeSubscriber[] = [];
   private useDefaultStateManager = true;
   private destroyed = false;
-  private mediaProvider: MediaProvider;
+  public mediaProvider: MediaProvider;
   private errorReporter: ErrorReporter;
 
   public pickers: PickerFacade[] = [];
@@ -135,14 +135,20 @@ export class MediaPluginState {
     }
 
     // TODO disable (not destroy!) pickers until mediaProvider is resolved
-    let resolvedMediaProvider: MediaProvider;
+    // let resolvedMediaProvider: MediaProvider;
     let Picker: typeof PickerFacade;
 
     try {
-      [resolvedMediaProvider, Picker] = await Promise.all([
-        mediaProvider,
-        pickerFacadeLoader(),
-      ]);
+      console.log('loading picker facade..');
+
+      // [resolvedMediaProvidercker] = await Promise.all([
+      //   mediaProvider,
+      // ]);
+
+      let resolvedMediaProvider: MediaProvider = (this.mediaProvider = await mediaProvider);
+      Picker = await pickerFacadeLoader();
+
+      console.log('loaded picker facade..');
 
       assert(
         resolvedMediaProvider && resolvedMediaProvider.viewContext,
@@ -165,6 +171,8 @@ export class MediaPluginState {
 
     this.mediaProvider = resolvedMediaProvider;
     this.allowsMedia = true;
+    console.log(this.mediaProvider);
+    this.mediaContext = await resolvedMediaProvider.viewContext;
 
     // release all listeners for default state manager
     const { stateManager } = resolvedMediaProvider;
@@ -190,6 +198,7 @@ export class MediaPluginState {
       const uploadContext = await resolvedMediaProvider.uploadContext;
 
       if (resolvedMediaProvider.uploadParams && uploadContext) {
+        console.log('init pickers...');
         this.initPickers(
           resolvedMediaProvider.uploadParams,
           uploadContext,
@@ -566,7 +575,6 @@ export class MediaPluginState {
     if (this.destroyed) {
       return;
     }
-    this.context = context;
     const { errorReporter, pickers, stateManager } = this;
     // create pickers if they don't exist, re-use otherwise
     if (!pickers.length) {
