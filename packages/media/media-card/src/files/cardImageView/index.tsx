@@ -64,7 +64,7 @@ export class FileCardImageView extends Component<FileCardImageViewProps, {}> {
       return this.getErrorContents();
     }
 
-    if (status === 'failed') {
+    if (status === 'failed-processing') {
       return this.getFailedContents();
     }
 

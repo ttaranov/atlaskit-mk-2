@@ -11,7 +11,7 @@ export type FileStatus =
   | 'processing'
   | 'processed'
   | 'error'
-  | 'failed';
+  | 'failed-processing';
 export interface FilePreview {
   blob: Blob;
   originalDimensions?: {
@@ -56,7 +56,7 @@ export interface ProcessedFileState {
   preview?: FilePreview;
 }
 export interface ProcessingFailedState {
-  status: 'failed';
+  status: 'failed-processing';
   id: string;
   name: string;
   size: number;
@@ -89,7 +89,7 @@ const apiProcessingStatusToFileStatus = (
     case 'succeeded':
       return 'processed';
     case 'failed':
-      return 'failed';
+      return 'failed-processing';
     case undefined:
       return 'processing';
   }

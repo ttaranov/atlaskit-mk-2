@@ -17,7 +17,7 @@ import {
 } from '../index';
 
 const mapStatusToAnalyticsLoadStatus = (status: CardStatus) => {
-  if (status === 'error' || status === 'failed') {
+  if (status === 'error' || status === 'failed-processing') {
     return 'fail';
   } else if (status === 'loading' || status === 'processing') {
     return 'loading_metadata';

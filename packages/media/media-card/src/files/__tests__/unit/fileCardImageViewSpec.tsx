@@ -40,7 +40,7 @@ describe('FileCardView', () => {
         mediaName="some-media-name"
         mediaType="image"
         actions={actions}
-        status="failed"
+        status="failed-processing"
         fileSize="some-size"
       />,
     );

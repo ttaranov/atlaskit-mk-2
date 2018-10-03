@@ -592,7 +592,7 @@ describe('Card', () => {
   it('should render failed card when getFile resolves with status=failed', async () => {
     const context = fakeContext({
       getFile: Observable.of({
-        status: 'failed',
+        status: 'failed-processing',
         name: 'some-name',
         id: 'some-id',
         mediaType: 'image',
@@ -607,7 +607,7 @@ describe('Card', () => {
     const { status: actualStatus, metadata: actualMetadata } = component
       .find(CardView)
       .props();
-    expect(actualStatus).toEqual('failed');
+    expect(actualStatus).toEqual('failed-processing');
     expect(actualMetadata).toEqual({
       id: 'some-id',
       size: 42,

@@ -228,8 +228,8 @@ export class Card extends Component<CardProps, CardState> {
               }
               this.notifyStateChange({ status: 'complete', metadata });
               break;
-            case 'failed':
-              this.notifyStateChange({ status: 'failed', metadata });
+            case 'failed-processing':
+              this.notifyStateChange({ status: 'failed-processing', metadata });
               break;
             case 'error':
               this.notifyStateChange({ status: 'error' });
@@ -287,7 +287,7 @@ export class Card extends Component<CardProps, CardState> {
   get actions(): CardAction[] {
     const { actions = [], identifier } = this.props;
     const { status } = this.state;
-    if (isFileIdentifier(identifier) && status === 'failed') {
+    if (isFileIdentifier(identifier) && status === 'failed-processing') {
       actions.unshift({
         label: 'Download',
         icon: <DownloadIcon label="Download" />,
