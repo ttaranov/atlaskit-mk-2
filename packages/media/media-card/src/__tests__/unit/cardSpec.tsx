@@ -604,11 +604,9 @@ describe('Card', () => {
 
     await nextTick();
     component.update();
-    const { status: actualStatus, metadata: actualMetadata } = component
-      .find(CardView)
-      .props();
-    expect(actualStatus).toEqual('failed-processing');
-    expect(actualMetadata).toEqual({
+    const { status, metadata } = component.find(CardView).props();
+    expect(status).toEqual('failed-processing');
+    expect(metadata).toEqual({
       id: 'some-id',
       size: 42,
       name: 'some-name',
