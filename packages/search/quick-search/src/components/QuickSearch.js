@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, type ComponentType } from 'react';
+import React, { Component, type ComponentType, type Ref } from 'react';
 import { withAnalytics } from '@atlaskit/analytics';
 
 import type { ResultData, Context } from './Results/types';
@@ -15,8 +15,6 @@ import {
   QS_ANALYTICS_EV_QUERY_ENTERED,
   QS_ANALYTICS_EV_SUBMIT,
 } from './constants';
-
-const noOp = () => {};
 
 /**
  * Get the result ID of a result by its index in the flatResults array
@@ -98,8 +96,6 @@ type Props = {
   firePrivateAnalyticsEvent: (eventName: string, eventData?: {}) => {},
   /** React component to be used for rendering links */
   linkComponent?: ComponentType<*>,
-  /** Prop to control focus on quick search input */
-  changeFocusToInput?: boolean,
 };
 
 type State = {
@@ -110,23 +106,23 @@ type State = {
 export class QuickSearch extends Component<Props, State> {
   static defaultProps = {
     children: [],
-    firePrivateAnalyticsEvent: noOp,
+    firePrivateAnalyticsEvent: Function.prototype,
     isLoading: false,
-    onSearchBlur: noOp,
-    onSearchKeyDown: noOp,
-    onSearchSubmit: noOp,
+    onSearchBlur: Function.prototype,
+    onSearchKeyDown: Function.prototype,
+    onSearchSubmit: Function.prototype,
     placeholder: 'Search',
     value: '',
-    changeFocusToInput: true,
   };
 
+  inputSearchRef: Ref<*>;
   flatResults: Array<ResultBaseType> = [];
   hasSearchQueryEventFired: boolean = false;
   hasKeyDownEventFired: boolean = false;
   lastKeyPressed: string = '';
-
   constructor(props: Props) {
     super(props);
+
     this.state = {
       /** Select first result by default if `selectedResultId` prop is not provided */
       selectedResultId: this.props.selectedResultId || null,
@@ -358,6 +354,21 @@ export class QuickSearch extends Component<Props, State> {
     }
   };
 
+  setInputSearchRef = (refs: any) => {
+    if (refs && refs.inputRef) {
+      this.inputSearchRef = refs.inputRef;
+    }
+  };
+
+  focusSearchInput() {
+    if (
+      this.inputSearchRef &&
+      typeof this.inputSearchRef.focus === 'function'
+    ) {
+      this.inputSearchRef.focus();
+    }
+  }
+
   render() {
     return (
       <AkSearch
@@ -367,7 +378,7 @@ export class QuickSearch extends Component<Props, State> {
         onKeyDown={this.handleSearchKeyDown}
         placeholder={this.props.placeholder}
         value={this.props.value}
-        changeFocusToInput={this.props.changeFocusToInput}
+        ref={this.setInputSearchRef}
       >
         <ResultContext.Provider value={this.state.context}>
           <SelectedResultIdContext.Provider value={this.state.selectedResultId}>

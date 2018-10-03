@@ -1,5 +1,5 @@
 // @flow
-import React, { Component } from 'react';
+import React, { Component, type Ref } from 'react';
 import PropTypes from 'prop-types';
 import Drawer from '@atlaskit/drawer';
 
@@ -82,12 +82,10 @@ type BasicQuickSearchState = {
 class BasicQuickSearch extends Component<*, BasicQuickSearchState> {
   static propTypes = {
     fakeNetworkLatency: PropTypes.number,
-    focusInputSearch: PropTypes.bool,
   };
 
   static defaultProps = {
     fakeNetworkLatency: 0,
-    focusInputSearch: true,
   };
 
   state = {
@@ -122,6 +120,12 @@ class BasicQuickSearch extends Component<*, BasicQuickSearchState> {
     }, this.props.fakeNetworkLatency);
   };
 
+  quickSearchInnerRef: mixed;
+
+  setQuickSearchRef = (ref: any) => {
+    this.quickSearchInnerRef = ref;
+  };
+
   render() {
     return (
       <QuickSearch
@@ -131,9 +135,11 @@ class BasicQuickSearch extends Component<*, BasicQuickSearchState> {
         }}
         onSearchSubmit={() => console.log('onSearchSubmit', this.state.query)}
         value={this.state.query}
-        focusInputSearch={this.props.focusInputSearch}
+        innerRef={this.setQuickSearchRef}
       >
-        {mapResultsDataToComponents(this.state.results)}
+        <div style={{ paddingLeft: '10px' }}>
+          {mapResultsDataToComponents(this.state.results)}
+        </div>
       </QuickSearch>
     );
   }
@@ -151,10 +157,19 @@ export default class DrawersExample extends Component<{}, State> {
     shouldUnmountOnExit: true,
   };
 
-  openDrawer = () =>
+  quickSearchRef: any;
+
+  openDrawer = () => {
     this.setState({
       isDrawerOpen: true,
     });
+    if (
+      this.quickSearchRef &&
+      typeof this.quickSearchRef.focusSearchInput === 'function'
+    ) {
+      this.quickSearchRef.focusSearchInput();
+    }
+  };
 
   closeDrawer = () =>
     this.setState({
@@ -167,6 +182,10 @@ export default class DrawersExample extends Component<{}, State> {
     }));
   };
 
+  setQuickSearchRef = (ref: any) => {
+    this.quickSearchRef = ref.quickSearchInnerRef;
+  };
+
   render() {
     return (
       <div css={{ padding: '2rem' }}>
@@ -176,7 +195,7 @@ export default class DrawersExample extends Component<{}, State> {
           width="wide"
           shouldUnmountOnExit={this.state.shouldUnmountOnExit}
         >
-          <BasicQuickSearch focusInputSearch={this.state.isDrawerOpen} />
+          <BasicQuickSearch ref={this.setQuickSearchRef} />
         </Drawer>
         <button type="button" onClick={this.openDrawer}>
           Open drawer

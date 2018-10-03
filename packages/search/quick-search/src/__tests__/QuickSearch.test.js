@@ -418,16 +418,4 @@ describe('<QuickSearch />', () => {
         .prop('linkComponent'),
     ).toBe(MyLinkComponent);
   });
-
-  it('should force focus if `changeFocusToInput` prop is changed to true', () => {
-    wrapper.setProps({ changeFocusToInput: false });
-
-    const spy = jest.spyOn(wrapper.find(AkSearch).instance().inputRef, 'focus');
-
-    expect(spy).not.toBeCalled();
-
-    wrapper.setProps({ changeFocusToInput: true });
-    wrapper.update();
-    expect(spy).toBeCalled();
-  });
 });
