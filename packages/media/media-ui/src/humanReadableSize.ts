@@ -8,7 +8,7 @@ const ONE_MEGABYTE_IN_BYTES = 1 << 20;
  */
 export function toHumanReadableMediaSize(size: number): string {
   // [MS-967]: Api issue might return string for size
-  const parsedSize = parseInt(`${size}`);
+  const parsedSize = parseInt(`${size}`, 10);
   const decimalPlaces = parsedSize < ONE_MEGABYTE_IN_BYTES ? 0 : 1;
 
   return bytes
