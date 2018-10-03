@@ -76,7 +76,11 @@ export default class CrossProductSearchClientImpl
     searchSession: SearchSession,
     scopes: Scope[],
   ): Promise<CrossProductSearchResults> {
-    const response = await this.makeRequest(query, scopes, searchSession);
+    const response = await this.makeRequest(
+      query.trim(),
+      scopes,
+      searchSession,
+    );
     return this.parseResponse(response, searchSession.sessionId);
   }
 
