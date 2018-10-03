@@ -327,6 +327,7 @@ export default class Comment extends React.Component<Props, State> {
       allowFeedbackAndHelpButtons,
       onEditorClose,
       onEditorOpen,
+      onEditorChange,
     } = this.props;
     const { isEditing } = this.state;
 
@@ -344,6 +345,7 @@ export default class Comment extends React.Component<Props, State> {
           onCancel={this.onCancelEdit}
           onClose={onEditorClose}
           onOpen={onEditorOpen}
+          onChange={onEditorChange}
           dataProviders={dataProviders}
           user={user}
           renderEditor={renderEditor}
@@ -428,6 +430,7 @@ export default class Comment extends React.Component<Props, State> {
       allowFeedbackAndHelpButtons,
       onEditorClose,
       onEditorOpen,
+      onEditorChange,
     } = this.props;
 
     return (
@@ -438,6 +441,7 @@ export default class Comment extends React.Component<Props, State> {
         dataProviders={dataProviders}
         onOpen={onEditorOpen}
         onClose={onEditorClose}
+        onChange={onEditorChange}
         user={user}
         renderEditor={renderEditor}
         disableScrollTo={disableScrollTo}
