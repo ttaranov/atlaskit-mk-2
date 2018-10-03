@@ -48,15 +48,6 @@ export interface Props extends SharedProps {
     onSuccess?: SuccessHandler,
   ) => void;
 
-  onEditorChange?: (
-    isLocal: boolean,
-    value: any,
-    conversationId: string,
-    commentId: string | undefined,
-    containerId: string,
-    meta: any,
-  ) => void;
-
   isExpanded?: boolean;
   meta?: {
     [key: string]: any;
@@ -140,7 +131,6 @@ export default class Conversation extends React.PureComponent<Props, State> {
         onRevertComment={onRevertComment}
         onEditorOpen={this.onEditorOpen}
         onEditorClose={this.onEditorClose}
-        onEditorChange={this.handleEditorChange}
         onHighlightComment={onHighlightComment}
         onRetry={this.onRetry(comment.document)}
         onCancel={onCancel}
@@ -186,16 +176,9 @@ export default class Conversation extends React.PureComponent<Props, State> {
       disableScrollTo,
       allowFeedbackAndHelpButtons,
     } = this.props;
-
     const isInline = !!meta;
     const hasConversation = !!conversation;
     const canReply = !!user && (!isInline || (isExpanded && !hasConversation));
-
-    console.log('Conversation/renderConversationsEditor', {
-      props: this.props,
-    });
-
-    // console.log('Conversation/renderConversationsEditor', {feedback: allowFeedbackAndHelpButtons});
 
     if (canReply) {
       return (
@@ -205,7 +188,6 @@ export default class Conversation extends React.PureComponent<Props, State> {
           onCancel={this.onCancel}
           onOpen={this.onOpen}
           onClose={this.onEditorClose}
-          onChange={this.handleEditorChange}
           dataProviders={dataProviders}
           user={user}
           renderEditor={renderEditor}
@@ -229,7 +211,6 @@ export default class Conversation extends React.PureComponent<Props, State> {
     commentLocalId?: string,
     retry?: boolean,
   ) => {
-    // console.log('hello world 2');
     const {
       containerId,
       id,
@@ -292,15 +273,6 @@ export default class Conversation extends React.PureComponent<Props, State> {
     this.setState({
       openEditorCount: this.state.openEditorCount + 1,
     });
-  };
-
-  private handleEditorChange = (value: any) => {
-    const { id, localId, containerId, onEditorChange, meta } = this.props;
-
-    if (onEditorChange) {
-      const isLocal = !id;
-      onEditorChange(isLocal, value, localId!, undefined, containerId, meta);
-    }
   };
 
   componentDidUpdate() {
