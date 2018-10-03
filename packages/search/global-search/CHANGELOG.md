@@ -1,5 +1,8 @@
 # @atlaskit/global-search
 
+## 5.9.2
+- [patch] Trim search input [488257d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/488257d)
+
 ## 5.9.1
 - [patch] Updated dependencies [709b239](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/709b239)
 - [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
