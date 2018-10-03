@@ -6,8 +6,6 @@ import { Actions, ActionItems, ActionItem } from '../styled/Dialog';
 import type { ActionsType } from '../types';
 
 type Props = {|
-  /** An optional element rendered beside the actions */
-  beforeElement?: Element<*>,
   /** Buttons to render */
   items: ActionsType,
 |};
@@ -16,7 +14,9 @@ type Props = {|
 // eslint-disable-next-line react/prop-types
 const renderButtonsMap = ({ text, ...rest }, idx) => (
   <ActionItem key={text || idx}>
-    <Button {...rest}>{text}</Button>
+    <Button {...rest} appearance={idx === 0 ? 'default' : 'subtle-link'}>
+      {text}
+    </Button>
   </ActionItem>
 );
 
@@ -24,11 +24,8 @@ const renderButtonsMap = ({ text, ...rest }, idx) => (
 // `beforeElement` is supplied, pushing the buttons to the correct side.
 // beforeElement: <span />,
 
-const SpotLightActions = ({ beforeElement = <span />, items }: Props) => (
-  <Actions>
-    {beforeElement}
-    <ActionItems>{items.map(renderButtonsMap)}</ActionItems>
-  </Actions>
+const SpotLightActions = ({ items }: Props) => (
+  <ActionItems>{items.map(renderButtonsMap)}</ActionItems>
 );
 
 export default SpotLightActions;

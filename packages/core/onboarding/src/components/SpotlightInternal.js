@@ -24,6 +24,7 @@ import {
   Heading,
   Image,
 } from '../styled/Dialog';
+import SpotlightCard from './SpotlightCard';
 
 import { TargetOverlay, TargetOuter, TargetInner } from '../styled/Target';
 import Actions from './SpotlightActions';
@@ -124,31 +125,23 @@ class Spotlight extends Component<Props> {
       console.warn('Please provide "footer" OR "actions", not both.'); // eslint-disable-line no-console
     }
 
-    // prepare header/footer elements
-    const headerElement =
-      header || (image ? <Image alt={heading} src={image} /> : null);
-    const footerElement =
-      footer ||
-      (actions ? (
-        <Actions beforeElement={actionsBeforeElement} items={actions} />
-      ) : null);
-
     // build the dialog before passing it to Layer
     const dialog = (
-      <ThemeProvider theme={getSpotlightTheme}>
-        <Dialog width={dialogWidth} tabIndex="-1">
-          <FocusLock enabled={isOpen} returnFocus={false}>
-            <React.Fragment>
-              {headerElement}
-              <DialogBody>
-                {heading && <Heading>{heading}</Heading>}
-                {children}
-              </DialogBody>
-              {footerElement}
-            </React.Fragment>
-          </FocusLock>
-        </Dialog>
-      </ThemeProvider>
+      <FocusLock enabled={isOpen} returnFocus={false}>
+        <SpotlightCard
+          actions={actions}
+          actionsBeforeElement={actionsBeforeElement}
+          image={image && <Image alt={heading} src={image} />}
+          components={{
+            Header: header,
+            Footer: footer,
+          }}
+          width={dialogWidth}
+          heading={heading}
+        >
+          {children}
+        </SpotlightCard>
+      </FocusLock>
     );
 
     return (
