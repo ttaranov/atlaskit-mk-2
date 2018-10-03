@@ -6,6 +6,7 @@ import { Spinner } from '../../loading';
 import { ErrorMessage, createError, MediaViewerError } from '../../error';
 import { renderDownloadButton } from '../../domain/download';
 import { InteractiveImg } from './interactive-img';
+import { BlurredWrapper, SpinnerWrapper } from './styled';
 
 export type ObjectUrl = string;
 export const REQUEST_CANCELLED = 'request_cancelled';
@@ -18,6 +19,7 @@ export type ImageViewerProps = {
 };
 
 export type ImageViewerState = {
+  imageType?: 'preview' | 'original';
   objectUrl: Outcome<ObjectUrl, MediaViewerError>;
 };
 
@@ -59,9 +61,24 @@ export class ImageViewer extends React.Component<
     const { onClose } = this.props;
     return this.state.objectUrl.match({
       pending: () => <Spinner />,
-      successful: objectUrl => (
-        <InteractiveImg src={objectUrl} onClose={onClose} />
-      ),
+      successful: objectUrl => {
+        const { imageType } = this.state;
+
+        if (imageType === 'original') {
+          return <InteractiveImg src={objectUrl} onClose={onClose} />;
+        } else if (imageType === 'preview') {
+          return (
+            <div>
+              <BlurredWrapper>
+                <InteractiveImg src={objectUrl} onClose={onClose} />
+              </BlurredWrapper>
+              <SpinnerWrapper>
+                <Spinner />
+              </SpinnerWrapper>
+            </div>
+          );
+        }
+      },
       failed: err => (
         <ErrorMessage error={err}>
           <p>Try downloading the file to view it.</p>
@@ -91,6 +108,7 @@ export class ImageViewer extends React.Component<
     if (file.preview && file.preview.blob) {
       const objectUrl = URL.createObjectURL(file.preview.blob);
       state = {
+        imageType: 'preview',
         objectUrl: Outcome.successful(objectUrl),
       };
     }
@@ -109,6 +127,7 @@ export class ImageViewer extends React.Component<
         this.cancelImageFetch = () => cancel(REQUEST_CANCELLED);
         const objectUrl = URL.createObjectURL(await response);
         this.setState({
+          imageType: 'original',
           objectUrl: Outcome.successful(objectUrl),
         });
       } catch (err) {
@@ -116,6 +135,7 @@ export class ImageViewer extends React.Component<
           this.preventRaceCondition();
         } else {
           this.setState({
+            imageType: undefined,
             objectUrl: Outcome.failed(createError('previewFailed', err, file)),
           });
         }
