@@ -60,19 +60,16 @@ export class FileCardImageView extends Component<FileCardImageViewProps, {}> {
   private getCardContents = (): Array<JSX.Element> | JSX.Element => {
     const { status } = this.props;
 
-    if (status === 'error') {
-      return this.getErrorContents();
+    switch (status) {
+      case 'error':
+        return this.getErrorContents();
+      case 'failed-processing':
+        return this.getFailedContents();
+      case 'uploading':
+        return this.getUploadingContents();
+      default:
+        return this.getSuccessCardContents();
     }
-
-    if (status === 'failed-processing') {
-      return this.getFailedContents();
-    }
-
-    if (status === 'uploading') {
-      return this.getUploadingContents();
-    }
-
-    return this.getSuccessCardContents();
   };
 
   private getErrorContents = (): JSX.Element => {
