@@ -44,11 +44,14 @@ const mapToGlobalNavItem: NavItem => GlobalNavItemData = ({
 
 const noop = () => {};
 
+const localStorage = typeof window === 'object' ? window.localStorage : {};
+
 type GlobalNavigationState = {
   [any]: boolean, // Need an indexer property to appease flow for is${capitalisedDrawerName}Open
   isSearchDrawerOpen: boolean,
   isNotificationDrawerOpen: boolean,
   isStarredDrawerOpen: boolean,
+  notificationBadgeCount: number,
 };
 
 interface Global {
@@ -106,9 +109,24 @@ export default class GlobalNavigation
       this.state[`is${capitalisedDrawerName}Open`] =
         props[`is${capitalisedDrawerName}Open`];
     });
+
+    const { fabricNotificationLogUrl, cloudId, locale, product } = this.props;
+
+    this.notificationIntegrationInstance = notificationIntegration(
+      fabricNotificationLogUrl,
+      cloudId,
+      locale,
+      product,
+      60000,
+      this.onNotificationBadgeCountUpdated,
+      this.onNotificationBadgeCountUpdating,
+    );
   }
 
-  componentDidUpdate(prevProps: GlobalNavigationProps) {
+  componentDidUpdate(
+    prevProps: GlobalNavigationProps,
+    prevState: GlobalNavigationState,
+  ) {
     this.drawers.forEach(drawer => {
       const capitalisedDrawerName = this.getCapitalisedDrawerName(drawer);
       // Do nothing if it's a controlled drawer
@@ -120,6 +138,7 @@ export default class GlobalNavigation
         prevProps[`is${capitalisedDrawerName}Open`] !==
         this.props[`is${capitalisedDrawerName}Open`]
       ) {
+        console.log();
         // Update the state based on the prop
         this.setState({
           [`is${capitalisedDrawerName}Open`]: this.props[
@@ -129,14 +148,72 @@ export default class GlobalNavigation
       }
     });
 
+    console.log('Checking props', this.props);
+
     const { fabricNotificationLogUrl, cloudId, locale, product } = this.props;
 
-    this.notificationIntegrationInstance = notificationIntegration(
-      fabricNotificationLogUrl,
-      cloudId,
-      locale,
-      product,
-    );
+    if (
+      prevProps.fabricNotificationLogUrl !== fabricNotificationLogUrl ||
+      prevProps.cloudId !== cloudId ||
+      prevProps.locale !== locale ||
+      prevProps.product !== product ||
+      !prevState.notificationBadgeCount !== !this.state.notificationBadgeCount
+    ) {
+      console.log('Updating the notification integration');
+      const refreshRate = !this.state.notificationBadgeCount ? 60000 : 180000;
+
+      this.notificationIntegrationInstance = notificationIntegration(
+        fabricNotificationLogUrl,
+        cloudId,
+        locale,
+        product,
+        refreshRate,
+        this.onNotificationBadgeCountUpdated,
+        this.onNotificationBadgeCountUpdating,
+      );
+    }
+  }
+
+  onNotificationBadgeCountUpdating = (param = {}) => {
+    if (!this.state.count || param.visibilityChangesSinceTimer <= 1) {
+      // fetch the count
+      return {};
+    }
+
+    // skip fetch, refresh from local storage if newer
+    const cachedCount = this.getLocalStorageCount();
+    const result = {};
+    if (cachedCount && cachedCount != this.state.notificationBadgeCount) {
+      result.countOverride = parseInt(cachedCount);
+    } else {
+      result.skip = true;
+    }
+    return result;
+  };
+
+  onNotificationBadgeCountUpdated = (param = {}) => {
+    console.log('Changed state count');
+    this.updateLocalStorageCount(param.newCount);
+    this.setState({
+      notificationBadgeCount: param.newCount,
+    });
+  };
+
+  getLocalStorageCount() {
+    try {
+      return localStorage.getItem('notificationBadgeCountCache');
+    } catch (e) {
+      console.error(e);
+    }
+    return null;
+  }
+
+  updateLocalStorageCount(newCount) {
+    try {
+      localStorage.setItem('notificationBadgeCountCache', newCount);
+    } catch (e) {
+      console.error(e);
+    }
   }
 
   getCapitalisedDrawerName = (drawerName: DrawerName) => {
@@ -209,6 +286,7 @@ export default class GlobalNavigation
     const defaultConfig = generateDefaultConfig();
 
     const { badge } = this.notificationIntegrationInstance;
+    console.log('Getting the badge from notification integration');
 
     const navItems: NavItem[] = Object.keys(productConfig).map(item => ({
       ...(productConfig[item]

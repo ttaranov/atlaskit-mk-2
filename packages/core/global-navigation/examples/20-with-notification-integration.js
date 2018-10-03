@@ -11,8 +11,8 @@ const Global = () => (
   <GlobalNavigation
     productIcon={EmojiAtlassianIcon}
     productHref="#"
-    fabricNotificationLogUrl="test"
-    cloudId="test"
+    fabricNotificationLogUrl="https://product-fabric.atlassian.net/gateway/api/notification-log/"
+    cloudId="DUMMY-158c8204-ff3b-47c2-adbb-a0906ccc722b"
   />
 );
 
