@@ -20,10 +20,10 @@ describe('isUrlPreviewIdentifier', () => {
 });
 
 describe('isFileIdentifier', () => {
-  it("should return false when it's not a file identifier", () => {
+  it('should return true when it is a file identifier', () => {
     expect(isFileIdentifier(fileIdentifier)).toBe(true);
   });
-  it('should return true when it is a file identifier', () => {
+  it("should return false when it's not a file identifier", () => {
     expect(isFileIdentifier(urlPreviewIdentifier)).toBe(false);
   });
 });
