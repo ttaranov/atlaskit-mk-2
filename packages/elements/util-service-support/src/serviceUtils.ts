@@ -1,5 +1,3 @@
-import * as URL from 'url';
-import * as USP from 'url-search-params'; // IE, Safari, Mobile Chrome, Mobile Safari
 import {
   KeyValues,
   RequestServiceOptions,
@@ -8,9 +6,10 @@ import {
   buildCredentials,
 } from './types';
 
-const URLSearchParams = USP.default || USP;
-
 const defaultRequestServiceOptions: RequestServiceOptions = {};
+
+const appendToSearch = (searchParam: string, key, value) =>
+  `${searchParam}&${key}=${value}`;
 
 const buildUrl = (
   baseUrl: string,
@@ -18,14 +17,15 @@ const buildUrl = (
   queryParams?: KeyValues,
   secOptions?: SecurityOptions,
 ): string => {
-  const searchParam = new URLSearchParams(
-    URL.parse(baseUrl).search || undefined,
-  );
-  baseUrl = baseUrl.split('?')[0];
+  const parsedUrl = baseUrl.split('?');
+
+  baseUrl = parsedUrl[0];
+  let searchParam = parsedUrl[1];
+
   if (queryParams) {
     for (const key in queryParams) {
       if ({}.hasOwnProperty.call(queryParams, key)) {
-        searchParam.append(key, queryParams[key]);
+        searchParam = appendToSearch(searchParam, key, queryParams[key]);
       }
     }
   }
@@ -35,10 +35,10 @@ const buildUrl = (
         const values = secOptions.params[key];
         if (Array.isArray(values)) {
           for (let i = 0; i < values.length; i++) {
-            searchParam.append(key, values[i]);
+            searchParam = appendToSearch(searchParam, key, values[i]);
           }
         } else {
-          searchParam.append(key, values);
+          searchParam = appendToSearch(searchParam, key, values);
         }
       }
     }
@@ -47,12 +47,12 @@ const buildUrl = (
   if (path && baseUrl.substr(-1) !== '/') {
     seperator = '/';
   }
-  let params = searchParam.toString();
-  if (params) {
-    params = '?' + params;
+
+  if (searchParam) {
+    searchParam = `?${searchParam}`;
   }
 
-  return `${baseUrl}${seperator}${path}${params}`;
+  return `${baseUrl}${seperator}${path}${searchParam}`;
 };
 
 const addToHeaders = (headers: Headers, keyValues?: KeyValues) => {

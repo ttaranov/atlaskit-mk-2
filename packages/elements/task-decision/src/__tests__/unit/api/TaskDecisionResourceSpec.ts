@@ -1,5 +1,4 @@
 import 'whatwg-fetch';
-import * as URLSearchParams from 'url-search-params';
 import * as fetchMock from 'fetch-mock/src/client';
 import { waitUntil } from '@atlaskit/util-common-test';
 
@@ -27,10 +26,6 @@ import {
 } from '../../../types';
 
 import { objectKeyToString, toObjectKey } from '../../../type-helpers';
-
-// patch URLSearchParams API for jsdom tests
-declare var global: any;
-global.URLSearchParams = URLSearchParams;
 
 const url = 'https://cheese/';
 
