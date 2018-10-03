@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 17.0.8
+- [patch] ED-5246 support image resizing [111d02f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/111d02f)
+
 ## 17.0.7
 - [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
   - @atlaskit/emoji@42.0.1
