@@ -61,8 +61,7 @@ describe('Jira Quick Search Container', () => {
     return shallowWithIntl(<JiraQuickSearchContainer {...props} />);
   };
 
-  const renderAndGetProperty = (props, property) => {
-    const wrapper = renderComponent(props);
+  const getQuickSearchProperty = (wrapper, property) => {
     const quickSearch = wrapper.find(QuickSearchContainer);
     const quickSearchProps = quickSearch.props() as QuickSearchContainerProps;
     return quickSearchProps[property];
@@ -96,8 +95,8 @@ describe('Jira Quick Search Container', () => {
     it('should not throw when recent promise throw', async () => {
       const error = new Error('something wrong');
       const jiraClient = mockErrorJiraClient(error);
-      const getRecentItems = renderAndGetProperty(
-        { jiraClient },
+      const getRecentItems = getQuickSearchProperty(
+        renderComponent({ jiraClient }),
         'getRecentItems',
       );
       const recentItems = await getRecentItems(sessionId);
@@ -119,8 +118,11 @@ describe('Jira Quick Search Container', () => {
 
     it('should not throw when people recent promise is rejected', async () => {
       const jiraClient = mockNoResultJiraClient();
-      const getRecentItems = renderAndGetProperty(
-        { jiraClient, peopleSearchClient: errorPeopleSearchClient },
+      const getRecentItems = getQuickSearchProperty(
+        renderComponent({
+          jiraClient,
+          peopleSearchClient: errorPeopleSearchClient,
+        }),
         'getRecentItems',
       );
       const recentItems = await getRecentItems(sessionId);
@@ -147,8 +149,8 @@ describe('Jira Quick Search Container', () => {
         searchResultData: [],
       });
 
-      const getRecentItems = renderAndGetProperty(
-        { jiraClient, peopleSearchClient },
+      const getRecentItems = getQuickSearchProperty(
+        renderComponent({ jiraClient, peopleSearchClient }),
         'getRecentItems',
       );
       const recentItems = await getRecentItems(sessionId);
@@ -166,8 +168,8 @@ describe('Jira Quick Search Container', () => {
 
   describe('getSearchResults', () => {
     it('should not throw when people search return error', async () => {
-      const getSearchResults = renderAndGetProperty(
-        { peopleSearchClient: errorPeopleSearchClient },
+      const getSearchResults = getQuickSearchProperty(
+        renderComponent({ peopleSearchClient: errorPeopleSearchClient }),
         'getSearchResults',
       );
       const searchResults = await getSearchResults('query', sessionId, 100);
@@ -191,10 +193,10 @@ describe('Jira Quick Search Container', () => {
     });
 
     it('should return an error when cross product search has error', async () => {
-      const getSearchResults = renderAndGetProperty(
-        {
+      const getSearchResults = getQuickSearchProperty(
+        renderComponent({
           crossProductSearchClient: errorCrossProductSearchClient,
-        },
+        }),
         'getSearchResults',
       );
 
@@ -216,11 +218,10 @@ describe('Jira Quick Search Container', () => {
       resultsMap.set(Scope.JiraIssue, issues);
       resultsMap.set(Scope.JiraBoardProjectFilter, boards);
       const crossProductSearchClient = mockCrossProductSearchClient({
-        // @ts-ignore
         results: resultsMap,
       });
-      const getSearchResults = renderAndGetProperty(
-        { peopleSearchClient, crossProductSearchClient },
+      const getSearchResults = getQuickSearchProperty(
+        renderComponent({ peopleSearchClient, crossProductSearchClient }),
         'getSearchResults',
       );
       const searchResults = await getSearchResults('query', sessionId, 100);
