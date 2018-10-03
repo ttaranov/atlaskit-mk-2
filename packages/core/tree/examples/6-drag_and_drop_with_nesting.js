@@ -34,7 +34,7 @@ type State = {|
   tree: TreeData,
 |};
 
-export default class DragDropTree extends Component<void, State> {
+export default class DragDropWithNestingTree extends Component<void, State> {
   state = {
     tree: complexTree,
   };
@@ -74,7 +74,7 @@ export default class DragDropTree extends Component<void, State> {
         <AkNavigationItem
           isDragging={snapshot.isDragging}
           text={item.data ? item.data.title : ''}
-          icon={DragDropTree.getIcon(item, onExpand, onCollapse)}
+          icon={DragDropWithNestingTree.getIcon(item, onExpand, onCollapse)}
           dnd={{ dragHandleProps: provided.dragHandleProps }}
         />
       </div>
@@ -124,6 +124,7 @@ export default class DragDropTree extends Component<void, State> {
             onCollapse={this.onCollapse}
             onDragEnd={this.onDragEnd}
             isDragEnabled
+            isNestingEnabled
           />
         </Navigation>
       </Container>

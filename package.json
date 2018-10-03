@@ -397,6 +397,7 @@
     "react-addons-text-content": "^0.0.4",
     "react-animate-height": "^2.0.5",
     "react-beautiful-dnd": "^9.0.0",
+    "react-beautiful-dnd-next": "10.0.0-alpha.1",
     "react-codesandboxer": "^2.1.0",
     "react-deprecate": "^0.1.0",
     "react-docgen": "^2.20.1",
