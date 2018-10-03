@@ -19,7 +19,7 @@
     "build:flowtypes": "                     run-p build:flowtypes:esm build:flowtypes:cjs",
     "build:flowtypes:esm": "                 bolt workspaces exec --only-fs \"$(node ./build/ci-scripts/get.glob.packages.for.tools.js babel flow)\" -- flow-copy-source -v -i '**/__tests__/**' src dist/esm",
     "build:flowtypes:cjs": "                 bolt workspaces exec --only-fs \"$(node ./build/ci-scripts/get.glob.packages.for.tools.js babel flow)\" -- flow-copy-source -v -i '**/__tests__/**' src dist/cjs",
-    "update:icons": "                        bolt w @atlaskit/icon update && bolt w @atlaskit/icon-object update && bolt w @atlaskit/icon-file-type update",
+    "update:icons": "                        bolt w @atlaskit/icon update && bolt w @atlaskit/icon-object update && bolt w @atlaskit/icon-file-type update && bolt w @atlaskit/reduced-ui-pack update",
     "delete": "                              yarn run delete:modules && yarn run delete:build",
     "delete:modules": "                      rm -rf node_modules **/node_modules",
     "delete:build": "                        rm -rf packages/*/*/dist website/dist",
