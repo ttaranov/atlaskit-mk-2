@@ -1,5 +1,5 @@
 // @flow
-import React, { Component, type Ref } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Drawer from '@atlaskit/drawer';
 
