@@ -19,18 +19,20 @@ import {
   defaultCollectionName,
 } from '../example-helpers';
 import { MediaViewer, MediaViewerItem } from '../src';
+import Button from '@atlaskit/button';
 
 const context = createStorybookContext();
 
 export type State = {
   selectedItem?: MediaViewerItem;
+  list: MediaViewerItem[];
 };
 
 export default class Example extends React.Component<{}, State> {
-  state: State = { selectedItem: undefined };
+  state: State = { selectedItem: undefined, list: [] };
 
   setItem = (selectedItem: MediaViewerItem) => () => {
-    this.setState({ selectedItem });
+    this.setState({ selectedItem, list: [selectedItem] });
   };
 
   createItem = (item: MediaViewerItem, title: string) => {
@@ -47,6 +49,22 @@ export default class Example extends React.Component<{}, State> {
         <Card identifier={identifier} context={context} onClick={onClick} />
       </div>
     );
+  };
+
+  navigateList = () => {
+    const list: MediaViewerItem[] = [
+      imageItem,
+      smallImageItem,
+      wideImageItem,
+      largeImageItem,
+      docItem,
+      videoHorizontalFileItem,
+      videoLargeFileItem,
+      videoItem,
+      audioItem,
+      audioItemNoCover,
+    ];
+    this.setState({ selectedItem: list[0], list });
   };
 
   render() {
@@ -92,12 +110,17 @@ export default class Example extends React.Component<{}, State> {
             </li>
           </ButtonList>
         </Group>
+
+        <div>
+          <Button onClick={this.navigateList}>Navigate all items</Button>
+        </div>
+
         {this.state.selectedItem && (
           <MediaViewer
             featureFlags={{ customVideoPlayer: true }}
             context={context}
             selectedItem={this.state.selectedItem}
-            dataSource={{ list: [this.state.selectedItem] }}
+            dataSource={{ list: this.state.list }}
             collectionName={defaultCollectionName}
             onClose={() => this.setState({ selectedItem: undefined })}
           />
