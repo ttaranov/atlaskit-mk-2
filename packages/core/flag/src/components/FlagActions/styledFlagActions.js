@@ -36,7 +36,7 @@ export const Action = styled.div`
 `;
 
 // $FlowFixMe - theme is not found in props
-const height = `${gridSize * 3 / parseInt(fontSize, 10)}em`;
+const height = `${gridSize() * 3 / parseInt(fontSize(), 10)}em`;
 export const Button = styled.button`
   align-items: baseline;
   background: ${buttonBackgroundColor};
