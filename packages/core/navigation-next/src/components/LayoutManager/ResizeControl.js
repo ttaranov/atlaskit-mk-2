@@ -177,6 +177,7 @@ type State = {
   isDragging: boolean,
   mouseIsDown: boolean,
   mouseIsOverGrabArea: boolean,
+  showGrabArea: boolean,
   width: number,
 };
 
@@ -195,8 +196,28 @@ class ResizeControl extends PureComponent<Props, State> {
     initialX: 0,
     mouseIsDown: false,
     mouseIsOverGrabArea: false,
+    showGrabArea: true,
     width: this.props.navigation.state.productNavWidth,
   };
+  static getDerivedStateFromProps(props: Props, state: State) {
+    const { experimental_flyoutOnHover, flyoutIsOpen, navigation } = props;
+    const { isCollapsed } = navigation.state;
+
+    // resolve "hover locking" issue with resize grab area
+    if (experimental_flyoutOnHover) {
+      const showGrabArea = !isCollapsed && !flyoutIsOpen;
+      const mouseIsOverGrabArea = showGrabArea
+        ? state.mouseIsOverGrabArea
+        : false;
+
+      return {
+        mouseIsOverGrabArea,
+        showGrabArea,
+      };
+    }
+
+    return null;
+  }
 
   onResizerChevronClick = () => {
     this.toggleCollapse('chevron');
@@ -363,12 +384,12 @@ class ResizeControl extends PureComponent<Props, State> {
       isDragging,
       mouseIsDown,
       mouseIsOverGrabArea,
+      showGrabArea,
     } = this.state;
     const {
       children,
       collapseToggleTooltipContent,
       expandCollapseAffordanceRef,
-      experimental_flyoutOnHover,
       flyoutIsOpen,
       isDisabled,
       mouseIsOverNavigation,
@@ -395,9 +416,6 @@ class ResizeControl extends PureComponent<Props, State> {
       </Button>
     );
     const shadowDirection = flyoutIsOpen ? 'to right' : 'to left';
-    const showGrabArea = experimental_flyoutOnHover
-      ? !isCollapsed && !flyoutIsOpen
-      : true;
 
     return (
       <Fragment>
