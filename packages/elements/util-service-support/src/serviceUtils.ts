@@ -8,8 +8,13 @@ import {
 
 const defaultRequestServiceOptions: RequestServiceOptions = {};
 
-const appendToSearch = (searchParam: string, key, value) =>
-  `${searchParam}&${key}=${value}`;
+const appendToSearch = (searchParam: string, key, value) => {
+  if (searchParam.length === 0) {
+    `${key}=${value}`;
+  }
+  
+  return `${searchParam}&${key}=${value}`;
+}
 
 const buildUrl = (
   baseUrl: string,
