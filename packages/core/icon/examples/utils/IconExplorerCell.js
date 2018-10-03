@@ -33,11 +33,17 @@ const IconModalHeader = styled.h3`
   padding: 20px;
 `;
 
+const Divider = styled.h4`
+  width: 100%;
+  text-align: center;
+`;
+
 type Props = {
   keywords: string[],
   component: Class<Component<*>>,
   componentName: string,
   package: string,
+  divider?: boolean,
 };
 
 class IconExplorerCell extends Component<Props, { isModalOpen: boolean }> {
@@ -88,7 +94,14 @@ class IconExplorerCell extends Component<Props, { isModalOpen: boolean }> {
   };
 
   render() {
-    const { component: Icon, ...props } = this.props;
+    const { component: Icon, divider, ...props } = this.props;
+
+    if (divider)
+      return (
+        <Divider>
+          <Icon />
+        </Divider>
+      );
 
     const modal = (
       <ModalTransition>

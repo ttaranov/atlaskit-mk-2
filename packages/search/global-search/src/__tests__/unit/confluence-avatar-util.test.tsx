@@ -1,16 +1,16 @@
 import * as React from 'react';
 import { makeConfluenceObjectResult } from './_test-util';
 import { ContentType } from '../../../src/model/Result';
-import FileTypes24File24ImageIcon from '@atlaskit/icon/glyph/file-types/24/file-24-image';
-import FileTypes24File24ExcelSpreadsheetIcon from '@atlaskit/icon/glyph/file-types/24/file-24-excel-spreadsheet';
-import FileTypes24File24VideoIcon from '@atlaskit/icon/glyph/file-types/24/file-24-video';
-import FileTypes24File24ArchiveIcon from '@atlaskit/icon/glyph/file-types/24/file-24-archive';
-import FileTypes24File24PowerpointPresentationIcon from '@atlaskit/icon/glyph/file-types/24/file-24-powerpoint-presentation';
-import FileTypes24File24SourceCodeIcon from '@atlaskit/icon/glyph/file-types/24/file-24-source-code';
-import FileTypes24File24AudioIcon from '@atlaskit/icon/glyph/file-types/24/file-24-audio';
-import FileTypes24File24WordDocumentIcon from '@atlaskit/icon/glyph/file-types/24/file-24-word-document';
-import FileTypes24File24PdfDocumentIcon from '@atlaskit/icon/glyph/file-types/24/file-24-pdf-document';
-import FileTypes24File24GenericIcon from '@atlaskit/icon/glyph/file-types/24/file-24-generic';
+import FileTypes24File24ImageIcon from '@atlaskit/icon-file-type/glyph/image/24';
+import FileTypes24File24ExcelSpreadsheetIcon from '@atlaskit/icon-file-type/glyph/excel-spreadsheet/24';
+import FileTypes24File24VideoIcon from '@atlaskit/icon-file-type/glyph/video/24';
+import FileTypes24File24ArchiveIcon from '@atlaskit/icon-file-type/glyph/archive/24';
+import FileTypes24File24PowerpointPresentationIcon from '@atlaskit/icon-file-type/glyph/powerpoint-presentation/24';
+import FileTypes24File24SourceCodeIcon from '@atlaskit/icon-file-type/glyph/source-code/24';
+import FileTypes24File24AudioIcon from '@atlaskit/icon-file-type/glyph/audio/24';
+import FileTypes24File24WordDocumentIcon from '@atlaskit/icon-file-type/glyph/word-document/24';
+import FileTypes24File24PdfDocumentIcon from '@atlaskit/icon-file-type/glyph/pdf-document/24';
+import FileTypes24File24GenericIcon from '@atlaskit/icon-file-type/glyph/generic/24';
 
 import { getAvatarForConfluenceObjectResult } from '../../../src/util/confluence-avatar-util';
 

@@ -1,6 +1,7 @@
 {
   "rulesDirectory": "./rules",
   "rules": {
-    "no-only-tests": true
+    "no-only-tests": true,
+    "no-restricted-imports": [true, ["^rxjs$", "^rxjs/operators$", "^rxjs/Rx$", "^date-fns$"], "__tests__"]
   }
 }

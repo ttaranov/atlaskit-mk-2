@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { ReactNode } from 'react';
 import { ErrorMessageWrapper, ErrorImage } from './styled';
-import { FileItem } from '@atlaskit/media-core';
+import { FileState } from '@atlaskit/media-core';
 import { cannotViewFile, errorLoadingFile } from './error-images';
 
 type MessagesType<Key extends string> = { [k in Key]: ReactNode };
@@ -10,7 +10,6 @@ export type ErrorName =
   | 'previewFailed'
   | 'metadataFailed'
   | 'unsupported'
-  | 'linksNotSupported'
   | 'idNotFound'
   | 'noPDFArtifactsFound';
 
@@ -62,45 +61,22 @@ const messages: MessagesType<ErrorName> = {
       <p>No PDF artifacts found for this file.</p>
     </div>
   ),
-
-  linksNotSupported: (
-    <div>
-      {errorLoadingFileImage}
-      <p>Links are not supported.</p>
-    </div>
-  ),
 };
 
 export class MediaViewerError {
-  private _name: ErrorName;
-  private _fileItem?: FileItem;
-  private _error?: Error;
-
-  constructor(name: ErrorName, fileItem?: FileItem, error?: Error) {
-    this._fileItem = fileItem;
-    this._name = name;
-    this._error = error;
-  }
-
-  get fileItem(): FileItem | undefined {
-    return this._fileItem;
-  }
-
-  get errorName(): ErrorName {
-    return this._name;
-  }
-
-  get innerError(): Error | undefined {
-    return this._error;
-  }
+  constructor(
+    readonly errorName: ErrorName,
+    readonly file?: FileState,
+    readonly innerError?: Error,
+  ) {}
 }
 
 export const createError = (
   name: ErrorName,
-  fileItem?: FileItem,
   innerError?: Error,
+  file?: FileState,
 ): MediaViewerError => {
-  return new MediaViewerError(name, fileItem, innerError);
+  return new MediaViewerError(name, file, innerError);
 };
 
 export class ErrorMessage extends React.Component<Props, {}> {

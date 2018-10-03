@@ -10,6 +10,7 @@ import {
   CrossProductSearchClient,
   CrossProductSearchResults,
   EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE,
+  ABTest,
 } from '../../api/CrossProductSearchClient';
 import { Scope } from '../../api/types';
 import { Result, ResultsWithTiming } from '../../model/Result';
@@ -46,7 +47,7 @@ export interface Props {
   createAnalyticsEvent?: CreateAnalyticsEventFn;
   referralContextIdentifiers?: ReferralContextIdentifiers;
   isSendSearchTermsEnabled?: boolean;
-  useAggregatorForConfluenceObjects?: boolean;
+  useQuickNavForPeopleResults?: boolean;
   useCPUSForPeopleResults?: boolean;
   logger: Logger;
 }
@@ -68,31 +69,17 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     redirectToConfluenceAdvancedSearch(query);
   };
 
-  async searchQuickNav(
-    query: string,
-    searchSessionId: string,
-  ): Promise<Result[]> {
-    const results = await this.props.confluenceClient.searchQuickNav(
-      query,
-      searchSessionId,
-    );
-    return results;
-  }
-
   async searchCrossProductConfluence(
     query: string,
     sessionId: string,
   ): Promise<CrossProductSearchResults> {
     const {
       crossProductSearchClient,
-      useAggregatorForConfluenceObjects,
       useCPUSForPeopleResults,
       referralContextIdentifiers,
     } = this.props;
 
-    let scopes = useAggregatorForConfluenceObjects
-      ? [Scope.ConfluencePageBlogAttachment, Scope.ConfluenceSpace]
-      : [Scope.ConfluenceSpace];
+    let scopes = [Scope.ConfluencePageBlogAttachment, Scope.ConfluenceSpace];
 
     if (useCPUSForPeopleResults) {
       scopes.push(Scope.People);
@@ -109,9 +96,33 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     return results;
   }
 
-  async searchPeople(query: string): Promise<Result[]> {
-    const results = await this.props.peopleSearchClient.search(query);
-    return results;
+  async searchPeople(query: string, sessionId: string): Promise<Result[]> {
+    const {
+      useCPUSForPeopleResults,
+      useQuickNavForPeopleResults,
+      confluenceClient,
+      peopleSearchClient,
+    } = this.props;
+
+    if (useQuickNavForPeopleResults) {
+      return handlePromiseError(
+        confluenceClient.searchPeopleInQuickNav(query, sessionId),
+        [],
+        this.handleSearchErrorAnalyticsThunk('search-people-quicknav'),
+      );
+    }
+
+    // people results will be returned by xpsearch
+    if (useCPUSForPeopleResults) {
+      return Promise.resolve([]);
+    }
+
+    // fall back to directory search
+    return handlePromiseError(
+      peopleSearchClient.search(query),
+      [],
+      this.handleSearchErrorAnalyticsThunk('search-people'),
+    );
   }
 
   // TODO extract
@@ -153,18 +164,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
     sessionId: string,
     startTime: number,
   ): Promise<ResultsWithTiming> => {
-    const {
-      useAggregatorForConfluenceObjects,
-      useCPUSForPeopleResults,
-    } = this.props;
-
-    const quickNavPromise = useAggregatorForConfluenceObjects
-      ? Promise.resolve([])
-      : this.searchQuickNav(query, sessionId).catch(error => {
-          this.handleSearchErrorAnalytics(error, 'confluence.quicknav');
-          // rethrow to fail the promise
-          throw error;
-        });
+    const { useCPUSForPeopleResults } = this.props;
 
     const confXpSearchPromise = handlePromiseError(
       this.searchCrossProductConfluence(query, sessionId),
@@ -172,58 +172,46 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       this.handleSearchErrorAnalyticsThunk('xpsearch-confluence'),
     );
 
-    const searchPeoplePromise = useCPUSForPeopleResults
-      ? Promise.resolve([])
-      : handlePromiseError(
-          this.searchPeople(query),
-          [],
-          this.handleSearchErrorAnalyticsThunk('search-people'),
-        );
+    const searchPeoplePromise = this.searchPeople(query, sessionId);
 
     const mapPromiseToPerformanceTime = (p: Promise<any>) =>
       p.then(() => performanceNow() - startTime);
 
-    return Promise.all<
-      Result[],
-      CrossProductSearchResults,
-      Result[],
-      number,
-      number,
-      number
-    >([
-      quickNavPromise,
+    return Promise.all<CrossProductSearchResults, Result[], number, number>([
       confXpSearchPromise,
       searchPeoplePromise,
-      mapPromiseToPerformanceTime(quickNavPromise),
       mapPromiseToPerformanceTime(confXpSearchPromise),
       mapPromiseToPerformanceTime(searchPeoplePromise),
     ]).then(
       ([
-        objectResults,
         xpsearchResults,
         peopleResults,
-        quickNavElapsedMs,
         confSearchElapsedMs,
         peopleElapsedMs,
       ]) => ({
         results: {
-          objects: useAggregatorForConfluenceObjects
-            ? xpsearchResults.results.get(Scope.ConfluencePageBlogAttachment) ||
-              []
-            : objectResults,
+          objects:
+            xpsearchResults.results.get(Scope.ConfluencePageBlogAttachment) ||
+            [],
           spaces: xpsearchResults.results.get(Scope.ConfluenceSpace) || [],
           people: useCPUSForPeopleResults
             ? xpsearchResults.results.get(Scope.People) || []
             : peopleResults,
         },
         timings: {
-          quickNavElapsedMs,
           confSearchElapsedMs,
           peopleElapsedMs,
         },
-        experimentId: xpsearchResults.experimentId,
-        abTest: xpsearchResults.abTest,
       }),
+    );
+  };
+
+  getAbTestData = (sessionId: string): Promise<ABTest | undefined> => {
+    return this.props.crossProductSearchClient.getAbTestData(
+      Scope.ConfluencePageBlog,
+      {
+        sessionId,
+      },
     );
   };
 
@@ -300,6 +288,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
       />
     );
   };
+
   render() {
     const { linkComponent, isSendSearchTermsEnabled, logger } = this.props;
 
@@ -312,6 +301,7 @@ export class ConfluenceQuickSearchContainer extends React.Component<
         getSearchResultsComponent={this.getSearchResultsComponent}
         getRecentItems={this.getRecentItems}
         getSearchResults={this.getSearchResults}
+        getAbTestData={this.getAbTestData}
         handleSearchSubmit={this.handleSearchSubmit}
         isSendSearchTermsEnabled={isSendSearchTermsEnabled}
         getDisplayedResults={sliceResults}

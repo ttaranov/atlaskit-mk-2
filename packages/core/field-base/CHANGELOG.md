@@ -1,5 +1,11 @@
 # @atlaskit/field-base
 
+## 11.0.8
+- [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
+  - @atlaskit/docs@5.0.8
+  - @atlaskit/inline-dialog@9.0.6
+  - @atlaskit/icon@14.0.0
+
 ## 11.0.7
 - [patch] Adds sideEffects: false to allow proper tree shaking [b5d6d04](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/b5d6d04)
 

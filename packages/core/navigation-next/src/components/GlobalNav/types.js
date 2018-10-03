@@ -1,10 +1,10 @@
 // @flow
 
 import type { ComponentType } from 'react';
-import type { GlobalItemProps } from '../GlobalItem/types';
+import type { ExternalGlobalItemProps } from '../GlobalItem/types';
 import type { GlobalTheme } from '../../theme/types';
 
-type ItemDataShape = GlobalItemProps & { key?: string };
+type ItemDataShape = ExternalGlobalItemProps & { key?: string };
 
 export type ConnectedGlobalNavigationProps = {
   /** The component used to render the `primaryItems` and `secondaryItems`. By

@@ -34,6 +34,7 @@ export default class InteractionStateManager extends Component<
   };
 
   render() {
+    const { styles } = this.props;
     return (
       <div
         onMouseDown={this.onMouseDown}
@@ -47,6 +48,7 @@ export default class InteractionStateManager extends Component<
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
+          ...styles,
         }}
       >
         {this.props.children(this.state)}

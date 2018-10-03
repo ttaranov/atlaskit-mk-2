@@ -1,8 +1,7 @@
 import * as React from 'react';
 import { mount } from 'enzyme';
-import { Subject } from 'rxjs/Subject';
-import { MediaItem, MediaItemType } from '@atlaskit/media-core';
-import { createContext } from '../_stubs';
+import { MediaItemType } from '@atlaskit/media-core';
+import { Observable } from 'rxjs';
 import { List, Props } from '../../src/newgen/list';
 import { ErrorMessage } from '../../src/newgen/error';
 import ArrowRightCircleIcon from '@atlaskit/icon/glyph/chevron-right-circle';
@@ -17,8 +16,14 @@ function createFixture(props: Partial<Props>) {
     occurrenceKey: '',
     type: 'file' as MediaItemType,
   };
-  const subject = new Subject<MediaItem>();
-  const context = createContext({ subject });
+  const context = {
+    getFile: () =>
+      Observable.of({
+        id: '123',
+        mediaType: 'image',
+        status: 'processed',
+      }),
+  } as any;
   const el = mount(
     <List
       items={items}

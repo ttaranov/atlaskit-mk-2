@@ -1,5 +1,14 @@
 # @atlaskit/quick-search
 
+## 4.2.9
+- [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
+  - @atlaskit/docs@5.0.8
+  - @atlaskit/avatar@14.0.11
+  - @atlaskit/field-base@11.0.8
+  - @atlaskit/item@8.0.8
+  - @atlaskit/navigation@33.1.11
+  - @atlaskit/icon@14.0.0
+
 ## 4.2.8
 - [patch] Add support for Jira default icons for boards, filters and issues [deb791d](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/deb791d)
 

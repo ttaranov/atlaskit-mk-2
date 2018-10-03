@@ -4,7 +4,7 @@ import { colors } from '@atlaskit/theme';
 import styled from 'styled-components';
 import Tooltip from '@atlaskit/tooltip';
 import Button from '@atlaskit/button';
-import AtlassianIcon from '../glyph/atlassian';
+import BookIcon from '../glyph/book';
 import ArrowUpIcon from '../glyph/arrow-up';
 import ArrowDownIcon from '../glyph/arrow-down';
 import ArrowLeftIcon from '../glyph/arrow-left';
@@ -33,7 +33,7 @@ export default class ChangingColorWithProps extends Component<
   state = {
     isColorFlipped: true,
     icons: [
-      [AtlassianIcon, 'AtlassianIcon'],
+      [BookIcon, 'BookIcon'],
       [ArrowUpIcon, 'ArrowUpIcon'],
       [ArrowDownIcon, 'ArrowDownIcon'],
       [ArrowLeftIcon, 'ArrowLeftIcon'],

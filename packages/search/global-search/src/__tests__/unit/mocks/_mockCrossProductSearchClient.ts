@@ -2,6 +2,7 @@ import {
   CrossProductSearchClient,
   CrossProductSearchResults,
   EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE,
+  SearchSession,
 } from '../../../api/CrossProductSearchClient';
 import { Scope } from '../../../api/types';
 import { Result } from '../../../model/Result';
@@ -13,17 +14,23 @@ export function makeSingleResultCrossProductSearchResponse(
 ): CrossProductSearchResults {
   const response = new Map();
   response.set(scope, [result || makeJiraObjectResult()]);
-  return { experimentId: 'experiment-1', results: response };
+  return { results: response };
 }
 
 export const noResultsCrossProductSearchClient: CrossProductSearchClient = {
   search(query: string) {
     return Promise.resolve(EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE);
   },
+  getAbTestData(scope: Scope, searchSession: SearchSession) {
+    return Promise.resolve(undefined);
+  },
 };
 
 export const errorCrossProductSearchClient: CrossProductSearchClient = {
   search(query: string) {
+    return Promise.reject('error');
+  },
+  getAbTestData(scope: Scope, searchSession: SearchSession) {
     return Promise.reject('error');
   },
 };
@@ -34,6 +41,9 @@ export function singleResultCrossProductSearchClient(
   return {
     search(query: string) {
       return Promise.resolve(makeSingleResultCrossProductSearchResponse(scope));
+    },
+    getAbTestData(scope: Scope, searchSession: SearchSession) {
+      return Promise.resolve(undefined);
     },
   };
 }

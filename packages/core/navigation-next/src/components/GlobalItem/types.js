@@ -18,13 +18,24 @@ export type GlobalItemPresentationProps = {
   size: Size,
 };
 
+export type GlobalItemStyles = {
+  itemBase: { [key: string]: any },
+  badgeWrapper: { [key: string]: any },
+  itemWrapper: { [key: string]: any },
+};
+
 type GlobalItemIconProps = {
   label: string,
   secondaryColor: 'inherit',
   size: 'large' | null,
 };
 
-type BaseItemProps = {
+export type HOCProvidedProps = {
+  /** An internal prop provided by our theme HOC. Should not be provided externally */
+  theme: GlobalTheme,
+};
+
+type BaseItemProps = HOCProvidedProps & {
   /** A component to render over the GlobalItem in the the badge position. */
   badge?: ComponentType<GlobalItemPresentationProps>,
   /** An href which this Item links to. If this prop is provided the Item will
@@ -72,5 +83,8 @@ export type GlobalItemProps = BaseItemProps & {
   component?: ComponentType<GlobalItemRenderComponentProps>,
 };
 
-export type GlobalItemPrimitiveProps = GlobalItemProps &
-  InteractionState & { theme: GlobalTheme };
+// TODO: Type withTheme HOC instead and have consumers of GlobalItemProps reference
+// the type of the GlobalItem component instead
+export type ExternalGlobalItemProps = $Diff<GlobalItemProps, HOCProvidedProps>;
+
+export type GlobalItemPrimitiveProps = GlobalItemProps & InteractionState;

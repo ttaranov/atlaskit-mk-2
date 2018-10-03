@@ -14,6 +14,7 @@ import {
 import { ReactSerializer, renderDocument, RendererContext } from '../../';
 import { RenderOutputStat } from '../../';
 import { Wrapper } from './style';
+import { TruncatedWrapper } from './truncated-wrapper';
 
 export type RendererAppearance =
   | 'message'
@@ -43,6 +44,8 @@ export interface Props {
   adfStage?: ADFStage;
   disableHeadingIDs?: boolean;
   allowDynamicTextSizing?: boolean;
+  maxHeight?: number;
+  truncated?: boolean;
 }
 
 export default class Renderer extends PureComponent<Props, {}> {
@@ -52,7 +55,6 @@ export default class Renderer extends PureComponent<Props, {}> {
   constructor(props: Props) {
     super(props);
     this.providerFactory = props.dataProviders || new ProviderFactory();
-
     this.updateSerializer(props);
   }
 
@@ -99,6 +101,8 @@ export default class Renderer extends PureComponent<Props, {}> {
       appearance,
       adfStage,
       allowDynamicTextSizing,
+      maxHeight,
+      truncated,
     } = this.props;
 
     try {
@@ -112,14 +116,20 @@ export default class Renderer extends PureComponent<Props, {}> {
       if (onComplete) {
         onComplete(stat);
       }
-
-      return (
+      const rendererOutput = (
+        // <Wrapper appearance={appearance}>{result}</Wrapper>
         <RendererWrapper
           appearance={appearance}
           dynamicTextSizing={allowDynamicTextSizing}
         >
           {result}
         </RendererWrapper>
+      );
+
+      return truncated ? (
+        <TruncatedWrapper height={maxHeight}>{rendererOutput}</TruncatedWrapper>
+      ) : (
+        rendererOutput
       );
     } catch (ex) {
       return (
