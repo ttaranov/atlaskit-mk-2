@@ -113,11 +113,11 @@ describe('ConfluenceQuickSearchContainer', () => {
       },
     });
     const quickSearchContainer = wrapper.find(QuickSearchContainer);
-    const recentItems = await (quickSearchContainer.props() as QuickSearchContainerProps).getAbTestData(
+    const receivedAbTest = await (quickSearchContainer.props() as QuickSearchContainerProps).getAbTestData(
       sessionId,
     );
 
-    expect(recentItems).toMatchObject(abTest);
+    expect(receivedAbTest).toMatchObject(abTest);
   });
 
   it('should return search result', async () => {
