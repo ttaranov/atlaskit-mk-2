@@ -354,7 +354,7 @@ export class QuickSearch extends Component<Props, State> {
     }
   };
 
-  setInputSearchRef = (refs: any) => {
+  setSearchInputRef = (refs: any) => {
     if (refs && refs.inputRef) {
       this.inputSearchRef = refs.inputRef;
     }
@@ -378,7 +378,7 @@ export class QuickSearch extends Component<Props, State> {
         onKeyDown={this.handleSearchKeyDown}
         placeholder={this.props.placeholder}
         value={this.props.value}
-        ref={this.setInputSearchRef}
+        ref={this.setSearchInputRef}
       >
         <ResultContext.Provider value={this.state.context}>
           <SelectedResultIdContext.Provider value={this.state.selectedResultId}>
