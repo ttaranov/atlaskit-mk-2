@@ -38,4 +38,5 @@ To update an icon, you need a new updated svg. Replace the svg in the `svgs_raw`
 
 ## If your icon is not a 24 * 24px svg with 1 or 2 colors
 
-It most likely should not be added to the icons package.
+It should not be added to the icons package, as these do not align to the ADG iconography guidelines.
+
