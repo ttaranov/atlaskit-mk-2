@@ -7,11 +7,14 @@ const ONE_MEGABYTE_IN_BYTES = 1 << 20;
  * Takes a media (file) size in bytes and returns a human readable string
  */
 export function toHumanReadableMediaSize(size: number): string {
-  const decimalPlaces = size < ONE_MEGABYTE_IN_BYTES ? 0 : 1;
-  const formattedBytes = bytes.format(size, {
-    unitSeparator: ' ',
-    decimalPlaces,
-  });
-  console.log(size, decimalPlaces, formattedBytes);
-  return formattedBytes.toUpperCase();
+  // [MS-967]: Api issue might return string for size
+  const parsedSize = parseInt(`${size}`);
+  const decimalPlaces = parsedSize < ONE_MEGABYTE_IN_BYTES ? 0 : 1;
+
+  return bytes
+    .format(parsedSize, {
+      unitSeparator: ' ',
+      decimalPlaces,
+    })
+    .toUpperCase();
 }
