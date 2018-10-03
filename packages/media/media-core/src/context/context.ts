@@ -334,8 +334,37 @@ class ContextImpl implements Context {
     this.getMediaCollectionProvider(collectionName, pageSize).refresh();
   }
 
-  getImage(id: string, params?: MediaStoreGetFileImageParams): Promise<Blob> {
-    return this.mediaStore.getImage(id, params);
+  async getImage(
+    id: string,
+    params?: MediaStoreGetFileImageParams,
+  ): Promise<Blob> {
+    const blob = await this.mediaStore.getImage(id, params);
+    const key = FileStreamCache.createKey(id, {
+      collectionName: params ? params.collection : undefined,
+    });
+    const observable = fileStreamsCache.get(key);
+
+    if (observable) {
+      observable.subscribe({
+        next(currentState) {
+          // TODO: only replace if the new preview has better quality
+          if (currentState.status !== 'error') {
+            const newState: FileState = {
+              ...currentState,
+              preview: {
+                blob,
+              },
+            };
+            const subject = new ReplaySubject<FileState>(1);
+
+            subject.next(newState);
+            fileStreamsCache.set(key, subject);
+          }
+        },
+      });
+    }
+
+    return blob;
   }
 
   private get apiConfig(): MediaApiConfig {

@@ -86,7 +86,16 @@ export class ImageViewer extends React.Component<
   }
 
   private async init(file: ProcessedFileState, context: Context) {
-    this.setState(initialState, async () => {
+    let state: ImageViewerState = initialState;
+
+    if (file.preview && file.preview.blob) {
+      const objectUrl = URL.createObjectURL(file.preview.blob);
+      state = {
+        objectUrl: Outcome.successful(objectUrl),
+      };
+    }
+
+    this.setState(state, async () => {
       try {
         const service = context.getBlobService(this.props.collectionName);
         // MSW-922: once we make getImage cancelable we can use it instead of fetchImageBlobCancelable
