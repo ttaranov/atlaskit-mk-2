@@ -13,6 +13,8 @@ export default function Example() {
     media: {
       provider: mediaProvider,
       allowMediaSingle: true,
+      allowResizing: true,
     },
+    allowDynamicTextSizing: true,
   });
 }

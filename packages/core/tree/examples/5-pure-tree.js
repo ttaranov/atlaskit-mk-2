@@ -9,7 +9,8 @@ import Tree, {
   type TreeItem,
   type TreeData,
   type ItemId,
-  type TreePosition,
+  type TreeSourcePosition,
+  type TreeDestinationPosition,
 } from '../src/';
 import { treeWithTwoBranches } from '../mockdata/treeWithTwoBranches';
 
@@ -73,7 +74,10 @@ export default class PureTree extends Component<void, State> {
     });
   };
 
-  onDragEnd = (source: TreePosition, destination: ?TreePosition) => {
+  onDragEnd = (
+    source: TreeSourcePosition,
+    destination: ?TreeDestinationPosition,
+  ) => {
     const { tree } = this.state;
 
     if (!destination) {

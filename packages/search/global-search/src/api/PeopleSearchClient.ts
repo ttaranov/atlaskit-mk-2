@@ -141,7 +141,9 @@ export default class PeopleSearchClientImpl implements PeopleSearchClient {
   }
 
   public async search(query: string): Promise<Result[]> {
-    const options = this.buildRequestOptions(this.buildSearchQuery(query));
+    const options = this.buildRequestOptions(
+      this.buildSearchQuery(query.trim()),
+    );
 
     const response = await utils.requestService<GraphqlResponse>(
       this.serviceConfig,

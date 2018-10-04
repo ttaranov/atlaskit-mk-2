@@ -20,7 +20,10 @@ import Resizer from './resizer/resizer';
 import { contentWidth } from './resizer/contentWidth';
 
 import { pluginKey as widthPluginKey } from '../../../width';
-import { ColumnResizingPlugin } from '../../types';
+import {
+  ColumnResizingPlugin,
+  TableCssClassName as ClassName,
+} from '../../types';
 
 export const key = new PluginKey('tableFlexiColumnResizing');
 
@@ -75,8 +78,8 @@ export function columnResizing({
       attributes(state) {
         let pluginState = key.getState(state);
         return pluginState.activeHandle > -1
-          ? { class: 'table-resizing resize-cursor' }
-          : { class: 'table-resizing' };
+          ? { class: `${ClassName.RESIZING} resize-cursor` }
+          : { class: ClassName.RESIZING };
       },
 
       handleDOMEvents: {
@@ -199,7 +202,7 @@ function handleMouseDown(view, event, cellMinWidth) {
     dom = dom.parentNode;
   }
 
-  const containerWidth = widthPluginKey.getState(view.state);
+  const containerWidth = widthPluginKey.getState(view.state).width;
   const resizer = new Resizer(dom, {
     minWidth: cellMinWidth,
     maxSize: getLayoutSize(dom.getAttribute('data-layout'), containerWidth),
@@ -269,7 +272,7 @@ function handleDecorations(state, cell) {
       let cellPos = map.map[index];
       let pos = start + cellPos + table.nodeAt(cellPos).nodeSize - 1;
       let dom = document.createElement('div');
-      dom.className = 'column-resize-handle';
+      dom.className = ClassName.COLUMN_RESIZE_HANDLE;
       decorations.push(Decoration.widget(pos, dom));
     }
   }

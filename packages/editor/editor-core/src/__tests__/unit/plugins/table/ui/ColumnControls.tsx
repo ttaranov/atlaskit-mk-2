@@ -16,14 +16,17 @@ import {
 } from '@atlaskit/editor-test-helpers';
 
 import { pluginKey } from '../../../../../plugins/table/pm-plugins/main';
-import { TablePluginState } from '../../../../../plugins/table/types';
+import {
+  TablePluginState,
+  TableCssClassName as ClassName,
+} from '../../../../../plugins/table/types';
 import ColumnControls from '../../../../../plugins/table/ui/TableFloatingControls/ColumnControls';
 import { tablesPlugin } from '../../../../../plugins';
 import { setTextSelection } from '../../../../../index';
 
-const ColumnControlsButtonWrap = '.pm-table-column-controls__button-wrap';
-const DeleteColumnButton = '.pm-table-controls__delete-button-wrap';
-const InsertColumnButton = '.pm-table-controls__insert-button-wrap';
+const ColumnControlsButtonWrap = `.${ClassName.COLUMN_CONTROLS_BUTTON_WRAP}`;
+const DeleteColumnButton = `.${ClassName.CONTROLS_DELETE_BUTTON_WRAP}`;
+const InsertColumnButton = `.${ClassName.CONTROLS_INSERT_BUTTON_WRAP}`;
 
 const selectColumns = columnIdxs => tr => {
   const cells: { pos: number; start: number; node: Node }[] = columnIdxs.reduce(

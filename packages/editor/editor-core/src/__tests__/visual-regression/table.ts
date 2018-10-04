@@ -1,5 +1,5 @@
 import { removeOldProdSnapshots } from '@atlaskit/visual-regression/helper';
-
+import { TableSharedCssClassName as SharedClassName } from '@atlaskit/editor-common';
 import {
   imageSnapshotFolder,
   initEditor,
@@ -12,6 +12,7 @@ import { messages as insertBlockMessages } from '../../plugins/insert-block/ui/T
 import commonMessages from '../../messages';
 import tableMessages from '../../plugins/table/ui/messages';
 import { messages as contextualMenuMessages } from '../../plugins/table/ui/FloatingContextualMenu/ContextualMenu';
+import { TableCssClassName as ClassName } from '../../plugins/table/types';
 
 type CellSelectorOpts = {
   row: number;
@@ -39,8 +40,7 @@ const selectTableDisplayOption = async (page, optionSelector) => {
 };
 
 const clickInContextMenu = async (page, title) => {
-  const contextMenuTriggerSelector =
-    '.ProseMirror-table-contextual-menu-trigger';
+  const contextMenuTriggerSelector = `.${ClassName.CONTEXTUAL_MENU_TRIGGER}`;
   await page.waitForSelector(contextMenuTriggerSelector);
   await page.click(contextMenuTriggerSelector);
   await selectByTextAndClick({ page, tagName: 'span', text: title });
@@ -151,19 +151,19 @@ describe('Snapshot Test: table', () => {
           await page.click('table tr td:nth-child(1) p');
           await page.evaluate(() => {
             document.querySelector(
-              '.ProseMirror .table-wrapper',
+              `.ProseMirror .${ClassName.TABLE_NODE_WRAPPER}`,
             )!.scrollLeft = 3;
           });
           await snapshot(page);
           await page.evaluate(() => {
             document.querySelector(
-              '.ProseMirror .table-wrapper',
+              `.ProseMirror .${ClassName.TABLE_NODE_WRAPPER}`,
             )!.scrollLeft = 150;
           });
           await snapshot(page);
           await page.evaluate(() => {
             document.querySelector(
-              '.ProseMirror .table-wrapper',
+              `.ProseMirror .${ClassName.TABLE_NODE_WRAPPER}`,
             )!.scrollLeft = 300;
           });
           await snapshot(page);
@@ -223,7 +223,9 @@ describe('Snapshot Test: table', () => {
             await page.keyboard.down('Shift');
             await page.click(lastCellSelector);
             await page.keyboard.up('Shift');
-            await page.waitForSelector('.ProseMirror table .selectedCell');
+            await page.waitForSelector(
+              `.ProseMirror table .${ClassName.SELECTED_CELL}`,
+            );
             await snapshot(page);
             await clickInContextMenu(
               page,
@@ -302,7 +304,9 @@ describe('Snapshot Test: table', () => {
         for (let i = 1; i <= 3; i++) {
           it('control button', async () => {
             await page.hover(`.table-${type}:nth-child(${i})`);
-            await page.waitForSelector('.ProseMirror table .hoveredCell');
+            await page.waitForSelector(
+              `.ProseMirror table .${ClassName.HOVERED_CELL}`,
+            );
             await snapshot(page);
             await page.click(`.table-${type}:nth-child(${i}) button`);
             await snapshot(page);
@@ -320,12 +324,17 @@ describe('Snapshot Test: table', () => {
             const removeButtonSelector = `span[aria-label="Remove ${type}"]`;
             await page.click(`.table-${type}:nth-child(${i}) button`);
             await page.hover(removeButtonSelector);
-            await page.waitForSelector('.table-container .danger');
+            await page.waitForSelector(
+              `.${SharedClassName.TABLE_CONTAINER} .danger`,
+            );
             await snapshot(page);
             await page.click(removeButtonSelector);
-            await page.waitForSelector('.table-container .danger', {
-              hidden: true,
-            });
+            await page.waitForSelector(
+              `.${SharedClassName.TABLE_CONTAINER} .danger`,
+              {
+                hidden: true,
+              },
+            );
             await page.click(`table td:nth-child(1)`);
             await snapshot(page);
           });
@@ -368,7 +377,9 @@ describe('Snapshot Test: table', () => {
       // Scroll to the end of col we are about to resize
       // Its in overflow.
       await page.evaluate(() => {
-        const element = document.querySelector('.table-wrapper') as HTMLElement;
+        const element = document.querySelector(
+          `.${ClassName.TABLE_NODE_WRAPPER}`,
+        ) as HTMLElement;
 
         if (element) {
           element.scrollTo(element.offsetWidth, 0);
@@ -379,7 +390,9 @@ describe('Snapshot Test: table', () => {
 
       // Scroll back so we can see the result of our resize.
       await page.evaluate(() => {
-        const element = document.querySelector('.table-wrapper') as HTMLElement;
+        const element = document.querySelector(
+          `.${ClassName.TABLE_NODE_WRAPPER}`,
+        ) as HTMLElement;
 
         if (element) {
           element.scrollTo(0, 0);

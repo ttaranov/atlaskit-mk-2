@@ -23,8 +23,10 @@ export interface UploadFileResult {
   cancel: () => void;
 }
 
-const hashingFunction = (blob: Blob): Promise<string> => {
-  return createHasher().hash(blob);
+const hashingFunction = async (blob: Blob): Promise<string> => {
+  const hasher = await createHasher();
+
+  return hasher.hash(blob);
 };
 
 const createProbingFunction = (store: MediaStore) => async (

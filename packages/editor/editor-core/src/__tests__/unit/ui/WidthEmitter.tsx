@@ -6,7 +6,10 @@ import SizeDetector from '@atlaskit/size-detector';
 import { createEditor, doc, p } from '@atlaskit/editor-test-helpers';
 import { WidthProvider } from '@atlaskit/editor-common';
 
-import { pluginKey as widthPluginKey } from '../../../plugins/width';
+import {
+  pluginKey as widthPluginKey,
+  WidthPluginState,
+} from '../../../plugins/width';
 import WidthEmitter from '../../../ui/WidthEmitter';
 
 describe(name, () => {
@@ -29,7 +32,10 @@ describe(name, () => {
                     state: {
                       init: () => null,
                       apply(tr) {
-                        width = tr.getMeta(widthPluginKey);
+                        const widthState = tr.getMeta(widthPluginKey) as
+                          | WidthPluginState
+                          | undefined;
+                        width = widthState ? widthState.width : undefined;
                       },
                     },
                   }),

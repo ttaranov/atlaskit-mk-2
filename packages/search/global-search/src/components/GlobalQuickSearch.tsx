@@ -83,7 +83,7 @@ export class GlobalQuickSearch extends React.Component<Props, State> {
       createAnalyticsEvent,
       isSendSearchTermsEnabled,
     } = this.props;
-    onSearch(query);
+    onSearch(query.trim());
     fireTextEnteredEvent(
       query,
       searchSessionId,

@@ -1,6 +1,6 @@
 {
   "name": "@atlaskit/editor-common",
-  "version": "17.0.7",
+  "version": "17.1.0",
   "description": "A package that contains common classes and components for editor and renderer",
   "license": "Apache-2.0",
   "main": "dist/es5/index.js",
@@ -61,8 +61,8 @@
     "axios": "^0.17.1",
     "chai": "^4.1.2",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
-    "json-schema-diff-validator": "^0.1.2",
     "prosemirror-state": "^1.2.2",
+    "json-schema-diff-validator": "^0.2.0",
     "raf-stub": "^2.0.1",
     "react": "^16.4.0",
     "sinon": "^2.2.0"
