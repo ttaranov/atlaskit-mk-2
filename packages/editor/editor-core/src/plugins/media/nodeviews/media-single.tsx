@@ -201,7 +201,7 @@ export default class MediaSingleNode extends Component<
       appearance,
     } = this.props;
 
-    let canResize = !isLoading;
+    let canResize = !!isResizable && !isLoading;
     const pos = getPos();
     if (pos) {
       const $pos = state.doc.resolve(pos);
@@ -210,7 +210,7 @@ export default class MediaSingleNode extends Component<
         table,
         layoutSection,
       ]);
-      canResize = canResize && !!isResizable && !disabledNode;
+      canResize = canResize && !disabledNode;
     }
 
     return canResize ? (
