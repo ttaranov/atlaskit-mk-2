@@ -43,21 +43,21 @@ describe('Renderer - React/Nodes/TaskList', () => {
       );
       component.find('input').simulate('change');
       expect(analyticsWebClientMock.sendUIEvent).toHaveBeenCalledTimes(1);
-      expect(analyticsWebClientMock.sendUIEvent).toHaveBeenCalledWith({
-        action: 'checked',
-        actionSubject: 'action',
-        attributes: {
-          listLocalId: 'list-1',
-          localId: 'task-1',
-          objectAri: '',
-          containerAri: '',
-          userContext: 'document',
-          listSize: 1,
-          position: 0,
-        },
-        source: 'unknown',
-        tags: ['fabricElements'],
-      });
+      expect(analyticsWebClientMock.sendUIEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          action: 'checked',
+          actionSubject: 'action',
+          attributes: {
+            listLocalId: 'list-1',
+            localId: 'task-1',
+            objectAri: '',
+            containerAri: '',
+            userContext: 'document',
+            listSize: 1,
+            position: 0,
+          },
+        }),
+      );
     });
 
     it('uncheck action fires an event', () => {
@@ -78,21 +78,21 @@ describe('Renderer - React/Nodes/TaskList', () => {
         .at(1)
         .simulate('change');
       expect(analyticsWebClientMock.sendUIEvent).toHaveBeenCalledTimes(1);
-      expect(analyticsWebClientMock.sendUIEvent).toHaveBeenCalledWith({
-        action: 'unchecked',
-        actionSubject: 'action',
-        attributes: {
-          listLocalId: 'list-1',
-          localId: 'task-2',
-          objectAri: '',
-          containerAri: '',
-          userContext: 'document',
-          listSize: 2,
-          position: 1,
-        },
-        source: 'unknown',
-        tags: ['fabricElements'],
-      });
+      expect(analyticsWebClientMock.sendUIEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          action: 'unchecked',
+          actionSubject: 'action',
+          attributes: {
+            listLocalId: 'list-1',
+            localId: 'task-2',
+            objectAri: '',
+            containerAri: '',
+            userContext: 'document',
+            listSize: 2,
+            position: 1,
+          },
+        }),
+      );
     });
   });
 });

@@ -66,7 +66,6 @@ class Task extends ReactNodeView {
       // This can occur if pos is NaN (seen it in some test cases)
       // Act defensively here, and lose some analytics data rather than
       // cause any user facing error.
-      return {};
     }
   };
 

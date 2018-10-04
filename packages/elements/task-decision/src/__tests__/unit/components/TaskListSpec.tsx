@@ -71,18 +71,18 @@ describe('<TaskList/>', () => {
       );
       component.find('input').simulate('change');
       expect(analyticsWebClientMock.sendUIEvent).toHaveBeenCalledTimes(1);
-      expect(analyticsWebClientMock.sendUIEvent).toHaveBeenCalledWith({
-        action: 'checked',
-        actionSubject: 'action',
-        attributes: {
-          listLocalId: 'list-1',
-          position: 0,
-          listSize: 1,
-          localId: 'task-1',
-        },
-        source: 'unknown',
-        tags: ['fabricElements'],
-      });
+      expect(analyticsWebClientMock.sendUIEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          action: 'checked',
+          actionSubject: 'action',
+          attributes: {
+            listLocalId: 'list-1',
+            position: 0,
+            listSize: 1,
+            localId: 'task-1',
+          },
+        }),
+      );
     });
 
     it('uncheck action fires an event', () => {
@@ -103,18 +103,18 @@ describe('<TaskList/>', () => {
         .at(1)
         .simulate('change');
       expect(analyticsWebClientMock.sendUIEvent).toHaveBeenCalledTimes(1);
-      expect(analyticsWebClientMock.sendUIEvent).toHaveBeenCalledWith({
-        action: 'unchecked',
-        actionSubject: 'action',
-        attributes: {
-          listLocalId: 'list-1',
-          position: 1,
-          listSize: 2,
-          localId: 'task-2',
-        },
-        source: 'unknown',
-        tags: ['fabricElements'],
-      });
+      expect(analyticsWebClientMock.sendUIEvent).toHaveBeenCalledWith(
+        expect.objectContaining({
+          action: 'unchecked',
+          actionSubject: 'action',
+          attributes: {
+            listLocalId: 'list-1',
+            position: 1,
+            listSize: 2,
+            localId: 'task-2',
+          },
+        }),
+      );
     });
   });
 });
