@@ -4,7 +4,7 @@
 import styled, { css } from 'styled-components';
 
 import { gridSize, fontSize, math } from '@atlaskit/theme';
-import AKButton from '@atlaskit/button';
+import Button from '@atlaskit/button';
 
 import {
   buttonBackgroundColor,
@@ -37,7 +37,7 @@ export const Action = styled.div`
 `;
 
 const height = `${gridSize() * 3 / parseInt(fontSize(), 10)}em`;
-export const Button = styled(AKButton)`
+export const StyledButton = styled(Button)`
   background: ${buttonBackgroundColor};
   color: ${buttonTextColor} !important;
   cursor: pointer;
