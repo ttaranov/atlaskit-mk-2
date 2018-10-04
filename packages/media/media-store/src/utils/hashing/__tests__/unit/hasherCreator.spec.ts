@@ -15,17 +15,17 @@ describe('createHasher', () => {
     WorkerHasherStub.mockReset();
   });
 
-  it('should create WorkerHasher by default', () => {
-    const hasher = createHasher();
+  it('should create WorkerHasher by default', async () => {
+    const hasher = await createHasher();
     expect(hasher).toEqual(WorkerHasherStub.mock.instances[0]);
   });
 
-  it('should create SimpleHasher if WorkerHasher throws an exception', () => {
+  it('should create SimpleHasher if WorkerHasher throws an exception', async () => {
     WorkerHasherStub.mockImplementation(() => {
       throw new Error('some-error');
     });
 
-    const hasher = createHasher();
+    const hasher = await createHasher();
     expect(hasher).toEqual(SimpleHasherStub.mock.instances[0]);
   });
 });

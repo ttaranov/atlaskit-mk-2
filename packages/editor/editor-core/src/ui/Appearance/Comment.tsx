@@ -205,7 +205,10 @@ export default class Editor extends React.Component<
               {editorDOMElement}
             </ContentArea>
           </ClickAreaBlock>
-          <WidthEmitter editorView={editorView!} />
+          <WidthEmitter
+            editorView={editorView!}
+            contentArea={this.containerElement}
+          />
         </CommentEditor>
         <SecondaryToolbar>
           <ButtonGroup>

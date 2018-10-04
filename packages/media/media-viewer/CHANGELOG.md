@@ -1,5 +1,20 @@
 # @atlaskit/media-viewer
 
+## 21.0.5
+- [patch] Bumping dependency on media-store [f28fb3e](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/f28fb3e)
+
+## 21.0.4
+- [patch] Use context.getFile in MediaViewer NG [0056ef8](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0056ef8)
+
+## 21.0.3
+- [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
+  - @atlaskit/docs@5.0.8
+  - @atlaskit/button@9.0.13
+  - @atlaskit/modal-dialog@7.0.2
+  - @atlaskit/media-test-helpers@18.2.1
+  - @atlaskit/media-ui@6.0.1
+  - @atlaskit/icon@14.0.0
+
 ## 21.0.2
 - [patch] Updated dependencies [dae7792](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dae7792)
   - @atlaskit/media-core@24.0.2

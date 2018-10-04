@@ -54,6 +54,30 @@ describe('analytics', () => {
       expect(fireEventSpy).toBeCalledWith('navigation');
     });
 
+    it('should pass an actionSubjectId instead of an itemId attribute when useActionSubjectId arg is true', () => {
+      navigationItemClicked(dummyComp, 'comp', true);
+      const mockArgs = mockWithAnalyticsEvents.mock.calls[0][0];
+
+      mockArgs.onClick(createAnalyticsEventSpy, {
+        icon: function myIcon() {},
+        id: 'abc',
+        index: 1,
+      });
+      // Expect event to be created with correct payload
+      expect(createAnalyticsEventSpy).toHaveBeenCalledWith(
+        expect.objectContaining({
+          action: 'clicked',
+          actionSubject: 'navigationItem',
+          actionSubjectId: 'abc',
+          attributes: {
+            componentName: 'comp',
+            iconSource: 'myIcon',
+            navigationItemIndex: 1,
+          },
+        }),
+      );
+    });
+
     it('should retrieve iconSource from before prop if icon prop not specified', () => {
       navigationItemClicked(dummyComp, 'comp');
       const mockArgs = mockWithAnalyticsEvents.mock.calls[0][0];

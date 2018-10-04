@@ -75,6 +75,7 @@ export default class Renderer extends PureComponent<Props, {}> {
       useNewApplicationCard,
       appearance,
       disableHeadingIDs,
+      allowDynamicTextSizing,
     } = props;
 
     this.serializer = new ReactSerializer({
@@ -90,6 +91,7 @@ export default class Renderer extends PureComponent<Props, {}> {
       useNewApplicationCard,
       appearance,
       disableHeadingIDs,
+      allowDynamicTextSizing,
     });
   }
 

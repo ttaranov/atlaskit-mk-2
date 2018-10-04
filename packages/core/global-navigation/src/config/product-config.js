@@ -57,15 +57,9 @@ function configFactory(onClick, tooltip, otherConfig: OtherConfig = {}) {
 
   if (shouldNotRenderItem) return null;
 
-  if (onClick && href) {
-    // eslint-disable-next-line no-console
-    console.warn(
-      'You have provided both href and an onClick handler for one of the items. onClick will be ignored.',
-    );
-  }
-
   return {
-    ...(href ? { href } : { onClick }),
+    ...(href ? { href } : null),
+    ...(onClick ? { onClick } : null),
     ...(tooltip ? { tooltip, label: tooltip } : null),
     ...otherConfig,
   };
@@ -207,7 +201,7 @@ export default function generateProductConfig(
     ),
     appSwitcher: appSwitcherComponent
       ? {
-          component: appSwitcherComponent,
+          itemComponent: appSwitcherComponent,
           label: appSwitcherTooltip,
           tooltip: appSwitcherTooltip,
         }

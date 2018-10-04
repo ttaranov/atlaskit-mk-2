@@ -1,5 +1,8 @@
 # @atlaskit/pagination
 
+## 8.0.1
+- [patch] Bump to add icon [8010540](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8010540)
+
 ## 8.0.0
 - [major] updated the pagination component as per ADG spec [8276156](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8276156)
 

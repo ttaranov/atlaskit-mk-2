@@ -1,5 +1,11 @@
 # @atlaskit/button
 
+## 9.0.13
+- [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
+  - @atlaskit/docs@5.0.8
+  - @atlaskit/checkbox@5.0.2
+  - @atlaskit/icon@14.0.0
+
 ## 9.0.12
 - [patch] Add help appearance [3548c3f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/3548c3f)
 

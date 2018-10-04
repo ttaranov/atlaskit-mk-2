@@ -2,7 +2,7 @@
 
 import sample from 'lodash.sample';
 import React, { Component } from 'react';
-import AtlassianIcon from '../glyph/atlassian';
+import BookIcon from '../glyph/book';
 import ArrowUpIcon from '../glyph/arrow-up';
 import ArrowDownIcon from '../glyph/arrow-down';
 import ArrowLeftIcon from '../glyph/arrow-left';
@@ -22,7 +22,7 @@ class AnimationDemo extends Component<{}, State> {
       ArrowLeftIcon,
       ArrowRightIcon,
       ArrowUpIcon,
-      AtlassianIcon,
+      BookIcon,
     ],
   };
 

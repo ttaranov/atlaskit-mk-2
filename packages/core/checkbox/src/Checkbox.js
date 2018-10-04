@@ -72,7 +72,7 @@ class Checkbox extends Component<CheckboxProps, State> {
   }
 
   getProp = (key: string) => {
-    return this.props[key] ? this.props[key] : this.state[key];
+    return key in this.props ? this.props[key] : this.state[key];
   };
 
   onChange = (event: SyntheticInputEvent<HTMLInputElement>) => {

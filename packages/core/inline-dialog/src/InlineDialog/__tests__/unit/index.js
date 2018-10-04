@@ -9,23 +9,6 @@ import { Container } from '../../styled';
 
 describe('inline-dialog', () => {
   describe('default', () => {
-    it('should have the expected default props', () => {
-      const wrapper = mount(<InlineDialog />);
-
-      expect(wrapper.prop('placement')).toBe('bottom-start');
-      expect(wrapper.prop('isOpen')).toBe(false);
-      expect(wrapper.prop('content')).toBe(null);
-    });
-
-    it('should pass the expected default props to Popper', () => {
-      const wrapper = mount(<InlineDialog isOpen />);
-      const popper = wrapper.find(Popper);
-
-      expect(popper.prop('content')).toBe(undefined);
-      expect(popper.prop('placement')).toBe('bottom-start');
-      expect(popper.prop('offset')).toBe('0 8px');
-    });
-
     it('should render any children passed to it', () => {
       const wrapper = mount(
         <InlineDialog>

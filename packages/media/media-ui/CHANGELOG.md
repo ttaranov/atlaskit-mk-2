@@ -1,5 +1,19 @@
 # @atlaskit/media-ui
 
+## 6.0.2
+- [patch] workaround to handle string size comming from /collection/items [8e99323](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8e99323)
+
+## 6.0.1
+- [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
+  - @atlaskit/docs@5.0.8
+  - @atlaskit/avatar@14.0.11
+  - @atlaskit/avatar-group@2.1.3
+  - @atlaskit/button@9.0.13
+  - @atlaskit/checkbox@5.0.2
+  - @atlaskit/dropdown-menu@6.1.17
+  - @atlaskit/tooltip@12.1.1
+  - @atlaskit/icon@14.0.0
+
 ## 6.0.0
 - [major] Add I18n support to media-card [dae7792](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dae7792)
 

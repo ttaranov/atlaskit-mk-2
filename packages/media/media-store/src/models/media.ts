@@ -1,9 +1,4 @@
-export type MediaFileArtifacts = {
-  readonly [artifactName: string]: {
-    readonly href: string;
-    readonly processingStatus: string;
-  };
-};
+import { MediaFileArtifacts } from './artifacts';
 
 export type MediaFileProcessingStatus = 'pending' | 'succeeded' | 'failed';
 export type MediaType = 'doc' | 'audio' | 'video' | 'image' | 'unknown';

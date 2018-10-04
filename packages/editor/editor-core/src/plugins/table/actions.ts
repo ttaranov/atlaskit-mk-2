@@ -38,7 +38,7 @@ import {
 import { TableLayout } from '@atlaskit/editor-common';
 import { getPluginState, pluginKey, ACTIONS } from './pm-plugins/main';
 import {
-  createHoverDecorationSet,
+  createHoverDecoration,
   getCellSelection,
   checkIfHeaderRowEnabled,
   checkIfHeaderColumnEnabled,
@@ -79,7 +79,7 @@ export const hoverColumns = (columns: number[], danger?: boolean): Command => (
         .setMeta(pluginKey, {
           action: ACTIONS.HOVER_COLUMNS,
           data: {
-            hoverDecoration: createHoverDecorationSet(cells, state, danger),
+            hoverDecoration: createHoverDecoration(cells, danger),
             dangerColumns: danger ? columns : [],
           },
         })
@@ -108,7 +108,7 @@ export const hoverRows = (rows: number[], danger?: boolean): Command => (
         .setMeta(pluginKey, {
           action: ACTIONS.HOVER_ROWS,
           data: {
-            hoverDecoration: createHoverDecorationSet(cells, state, danger),
+            hoverDecoration: createHoverDecoration(cells, danger),
             dangerRows: danger ? rows : [],
           },
         })
@@ -131,7 +131,7 @@ export const hoverTable = (danger?: boolean): Command => (
         .setMeta(pluginKey, {
           action: ACTIONS.HOVER_TABLE,
           data: {
-            hoverDecoration: createHoverDecorationSet(cells, state, danger),
+            hoverDecoration: createHoverDecoration(cells, danger),
             isTableInDanger: danger,
           },
         })
