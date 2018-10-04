@@ -12,6 +12,10 @@ import SpotlightActions from './SpotlightActions';
 import { getSpotlightTheme } from './theme';
 import type { ActionsType } from '../types';
 
+type CardTheme = {
+  container: () => any,
+};
+
 type Props = {
   actions?: ActionsType,
   actionsBeforeElement?: Node,
@@ -24,7 +28,10 @@ type Props = {
   heading?: Node,
   headingAfterElement?: Node,
   image?: Node,
+  theme?: CardTheme => CardTheme,
   width?: number,
+  styles: Object,
+  innerRef?: Function,
 };
 
 const Heading = styled.h4`
@@ -55,12 +62,15 @@ const SpotlightCard = ({
   heading,
   headingAfterElement,
   image,
+  innerRef,
+  styles,
   width = 400,
 }: Props) => {
   const { Header = DefaultHeader, Footer = DefaultFooter } = components;
   return (
     <ThemeProvider theme={getSpotlightTheme}>
       <Card
+        innerRef={innerRef}
         header={() =>
           heading || headingAfterElement ? (
             <Header>
@@ -78,13 +88,18 @@ const SpotlightCard = ({
           ) : null
         }
         image={() => image || null}
-        theme={() => ({
-          container: () => css`
-            background: ${colors.P300};
-            color: ${colors.N0};
-            width: ${Math.min(Math.max(width, 160), 600)}px;
-            ${elevation > 0 ? elevations[`e${elevation}00`] : undefined};
-          `,
+        theme={({ container }) => ({
+          container: () => ({
+            background: colors.P300,
+            color: colors.N0,
+            width: `${Math.min(Math.max(width, 160), 600)}px`,
+            boxShadow:
+              elevation > 0
+                ? `0 4px 8px -2px ${colors.N50A}, 0 0 1px ${colors.N60A}`
+                : undefined,
+            ...styles,
+            ...container(),
+          }),
         })}
       >
         {children}

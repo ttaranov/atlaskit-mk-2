@@ -1,13 +1,7 @@
 // @flow
 import React, { type Node, type ElementType } from 'react';
 import styled from 'styled-components';
-import {
-  borderRadius,
-  gridSize,
-  math,
-  typography,
-  Theme,
-} from '@atlaskit/theme';
+import { borderRadius, gridSize, math, Theme } from '@atlaskit/theme';
 
 type CardTheme = {
   container: () => any,
@@ -18,13 +12,11 @@ export type Props = {
   footer?: ElementType,
   header?: ElementType,
   image?: ElementType,
-  theme: CardTheme => CardTheme,
+  theme?: CardTheme => CardTheme,
+  innerRef?: Function,
 };
 
 const Container = styled.div`
-  overflow: auto;
-  border-radius: ${borderRadius}px;
-  height: fit-content;
   ${({ theme }) => theme};
 `;
 
@@ -34,24 +26,39 @@ const Body = styled.div`
   padding: ${math.multiply(gridSize, 2)}px ${math.multiply(gridSize, 2.5)}px;
 `;
 
+const defaultTheme = (theme: CardTheme): CardTheme => ({
+  container: () => ({
+    overflow: 'auto',
+    borderRadius: `${borderRadius()}px`,
+    height: 'fit-content',
+    ...(theme.container ? theme.container() : null),
+  }),
+});
+
 const Card = ({
   children,
   footer: Footer,
   header: Header,
   image: Image,
-  theme,
+  theme = x => x,
+  innerRef,
 }: Props) => (
-  <Theme values={theme}>
-    {({ container }) => (
-      <Container theme={container}>
-        {Image && <Image />}
-        <Body>
-          {Header && <Header />}
-          {children}
-          {Footer && <Footer />}
-        </Body>
-      </Container>
-    )}
+  <Theme values={defaultTheme}>
+    <Theme values={theme}>
+      {({ container }) => {
+        console.log(container());
+        return (
+          <Container theme={container} innerRef={innerRef}>
+            {Image && <Image />}
+            <Body>
+              {Header && <Header />}
+              {children}
+              {Footer && <Footer />}
+            </Body>
+          </Container>
+        );
+      }}
+    </Theme>
   </Theme>
 );
 

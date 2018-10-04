@@ -1,15 +1,17 @@
 // @flow
 import React from 'react';
 import styled from 'styled-components';
-import Button from '@atlaskit/button';
+import Button, { ButtonGroup } from '@atlaskit/button';
 import AddIcon from '@atlaskit/icon/glyph/add';
 import {
-  Spotlight,
+  //   Spotlight,
   SpotlightPulse,
-  SpotlightManager,
-  SpotlightTarget,
+  //   SpotlightManager,
+  //   SpotlightTarget,
   SpotlightTransition,
 } from '../src';
+import Spotlight from '../src/components/SpotlightNext';
+import SpotlightDialog from '../src/components/SpotlightDialog';
 
 const Wrapper = styled.div`
   align-items: center;
@@ -27,56 +29,36 @@ class NewFeature extends React.Component<{}, { spotlightVisible: boolean }> {
     const { spotlightVisible } = this.state;
     return (
       <Wrapper>
-        <Spotlight blanketIsTinted={false}>
-          {({ targetRef }) => (
-            <React.Fragment>
-              <SpotlightPulse ref={targetRef}>
+        <ButtonGroup>
+          <Spotlight>
+            {({ targetRef }) => (
+              <React.Fragment>
                 <Button
-                  iconBefore={<AddIcon />}
+                  innerRef={targetRef}
                   onClick={() =>
                     this.setState({ spotlightVisible: !spotlightVisible })
                   }
-                />
-              </SpotlightPulse>
-              <SpotlightTransition>
-                {spotlightVisible && (
-                  <SpotlightDialog
-                    image="https://www.w3schools.com/w3css/img_lights.jpg"
-                    targetBgColor="#fff"
-                    targetOnClick={() =>
-                      this.setState({ spotlightVisible: !spotlightVisible })
-                    }
-                    footer="1/3"
-                  >
-                    It is now easier to create an issue. Click on the plus
-                    button to create a new issue.
-                  </SpotlightDialog>
-                )}
-              </SpotlightTransition>
-            </React.Fragment>
-          )}
-        </Spotlight>
+                >
+                  I am a new feature
+                </Button>
+                <SpotlightTransition>
+                  {spotlightVisible && (
+                    <SpotlightDialog
+                      heading="Switch it up"
+                      actionsBeforeElement="1/3"
+                      actions={[{ onClick: () => {}, text: 'Got it' }]}
+                    >
+                      It is now easier to create an issue. Click on the plus
+                      button to create a new issue.
+                    </SpotlightDialog>
+                  )}
+                </SpotlightTransition>
+              </React.Fragment>
+            )}
+          </Spotlight>
 
-        <Spotlight>
-          {({ targetRef }) => (
-            <React.Fragment>
-              <Button innerRef={targetRef}>I am a new feature</Button>
-              <SpotlightTransition>
-                {spotlightVisible && (
-                  <SpotlightDialog
-                    image="https://www.w3schools.com/w3css/img_lights.jpg"
-                    footer="1/3"
-                  >
-                    It is now easier to create an issue. Click on the plus
-                    button to create a new issue.
-                  </SpotlightDialog>
-                )}
-              </SpotlightTransition>
-            </React.Fragment>
-          )}
-        </Spotlight>
-
-        <Button>Another element</Button>
+          <Button>Another element</Button>
+        </ButtonGroup>
       </Wrapper>
     );
   }

@@ -24,6 +24,7 @@
     "@atlaskit/layer": "^5.0.7",
     "@atlaskit/layer-manager": "^5.0.12",
     "@atlaskit/modal-dialog": "^7.0.0",
+    "@atlaskit/popper": "^0.2.3",
     "@atlaskit/portal": "^0.0.9",
     "@atlaskit/theme": "^6.0.2",
     "prop-types": "^15.5.10",

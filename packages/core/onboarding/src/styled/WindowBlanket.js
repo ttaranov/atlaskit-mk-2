@@ -54,23 +54,6 @@ type Props = {
 };
 
 export default class WindowedBlanket extends Component<Props> {
-  // targetRef = ref => {
-  //   if (ref) {
-  //     const {
-  //       left,
-  //       right,
-  //       top,
-  //       bottom,
-  //       height,
-  //       width,
-  //     } = ref.getBoundingClientRect();
-  //     const radius = parseInt(
-  //       window.getComputedStyle(ref).getPropertyValue('border-radius'),
-  //       10,
-  //     );
-  //     this.setState({ left, right, top, bottom, height, width, radius });
-  //   }
-  // };
   render() {
     const { left, right, top, bottom, height, width, radius } = this.props;
     return (
@@ -81,15 +64,9 @@ export default class WindowedBlanket extends Component<Props> {
           <path
             fill={colors.N100A}
             fillRule="evenodd"
-            d={`M 0,0 H ${width} V ${height} H ${-width} z
-                  M 0,${radius} V ${height - radius}
-                  A ${radius},${radius} 0 0 0 ${radius},${radius}
-                  H ${width - radius}
-                  A ${radius},${radius} 0 0 0 ${radius},${-radius}
-                  V ${radius}
-                  A ${radius},${radius} 0 0 0 ${-radius},${-radius}
-                  H ${radius}
-                  A ${radius},${radius} 0 0 0 ${-radius},${radius} z`}
+            d={`M 0,0 H ${width} V ${height} H ${-width} z M 0,${radius} V ${height -
+              radius} a${radius},${radius} 0 0 0 ${radius},${radius} H ${width -
+              radius} a${radius},${radius} 0 0 0 ${radius},${-radius} V ${radius} a${radius},${radius} 0 0 0 ${-radius},${-radius} H ${radius} a${radius},${radius} 0 0 0 ${-radius},${radius} z`}
           />
         </svg>
         {bottom > 0 && <Bottom width={width} bottom={bottom} />}
