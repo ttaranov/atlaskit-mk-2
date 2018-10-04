@@ -13,6 +13,8 @@ export interface MediaState {
     width: number;
     height: number;
   };
+  fileId: Promise<string>;
+  publicId: string;
   error?: {
     name: string;
     description: string;

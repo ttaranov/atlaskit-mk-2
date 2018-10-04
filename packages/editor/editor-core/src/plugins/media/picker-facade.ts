@@ -8,11 +8,9 @@ import {
   Dropzone,
   Clipboard,
   BinaryUploader,
-  UploadsStartEventPayload,
   UploadPreviewUpdateEventPayload,
   UploadEndEventPayload,
   UploadParams,
-  isImagePreview,
 } from '@atlaskit/media-picker';
 import { Context } from '@atlaskit/media-core';
 
@@ -30,11 +28,6 @@ export type PickerFacadeConfig = {
   errorReporter: ErrorReportingHandler;
 };
 
-interface Dimensions {
-  width: number;
-  height: number;
-}
-
 export default class PickerFacade {
   private picker: MediaPickerComponent | CustomMediaPicker;
   private onStartListeners: Array<(states: MediaState[]) => void> = [];
@@ -42,7 +35,6 @@ export default class PickerFacade {
   private errorReporter: ErrorReportingHandler;
   private pickerType: PickerType;
   private stateManager: MediaStateManager;
-  private deferredDimensions: Map<Promise<string>, Function> = new Map();
 
   constructor(
     pickerType: PickerType,
@@ -207,38 +199,15 @@ export default class PickerFacade {
     this.onDragListeners.push(cb);
   }
 
-  // private handleUploadsStart = async (event: UploadsStartEventPayload) => {
-  //   const { files } = event;
-
-  //   const states = await Promise.all(
-  //     files.map(async file => {
-  //       // const dimensionsPromise = new Promise<Dimensions>(resolve => {
-  //       //   this.deferredDimensions.set(file.upfrontId, resolve);
-  //       // });
-  //       // const [id, dimensions] = await Promise.all([
-  //       //   file.upfrontId,
-  //       //   dimensionsPromise,
-  //       // ]);
-  //       return this.stateManager.newState(id, {
-  //         fileName: file.name,
-  //         fileSize: file.size,
-  //         fileMimeType: file.type,
-  //         status: 'ready',
-  //       });
-  //     }),
-  //   );
-  // };
-
   private handleUploadEnd = async (event: UploadEndEventPayload) => {
-    // this.stateManager.updateState(event.file.id, {
-    //   status: 'ready',
-    // });
+    this.stateManager.updateState(event.file.id, {
+      status: 'ready',
+    });
   };
 
   private handleUploadPreviewUpdate = (
     event: UploadPreviewUpdateEventPayload,
   ) => {
-    console.log('preview update called..');
     const { file, preview } = event;
     const states = this.stateManager.newState(file.id, {
       fileName: file.name,

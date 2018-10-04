@@ -3,7 +3,6 @@ import { Component } from 'react';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { ProviderFactory } from '@atlaskit/editor-common';
-import { CardDimensions } from '@atlaskit/media-card';
 import { ProsemirrorGetPosHandler, ReactNodeProps } from '../../../nodeviews';
 import {
   MediaPluginState,
@@ -14,11 +13,9 @@ import { Context, ImageResizeMode } from '@atlaskit/media-core';
 import { MediaProvider } from '../pm-plugins/main';
 import {
   Card,
-  CardProps,
-  CardView,
   CardDimensions,
+  CardView,
   CardEventHandler,
-  CardAction,
   CardOnClickCallback,
   Identifier,
 } from '@atlaskit/media-card';
@@ -74,12 +71,9 @@ class MediaNode extends Component<MediaNodeProps, {}> {
 
   constructor(props) {
     super(props);
-
     const { view } = this.props;
     this.pluginState = mediaStateKey.getState(view.state);
-    this.mediaProvider = this.pluginState.options.providerFactory.providers.get(
-      'mediaProvider',
-    );
+    this.mediaProvider = props.mediaProvider;
   }
 
   componentDidMount() {
@@ -142,4 +136,4 @@ class MediaNode extends Component<MediaNodeProps, {}> {
   };
 }
 
-export default withImageLoader<MediaNodeProps>(MediaNode);
+export default withImageLoader(MediaNode);

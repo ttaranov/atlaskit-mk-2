@@ -2,7 +2,7 @@ import * as React from 'react';
 import { Component, ReactElement } from 'react';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
-import { MediaSingle } from '@atlaskit/editor-common';
+import { MediaSingle, WithProviders } from '@atlaskit/editor-common';
 import { MediaNodeProps } from './media';
 import { stateKey, MediaPluginState } from '../pm-plugins/main';
 import ReactNodeView from '../../../nodeviews/ReactNodeView';
@@ -42,7 +42,6 @@ export default class MediaSingleNode extends Component<
 
   constructor(props) {
     super(props);
-    // this.child = this.getChild(props);
     this.child = props.node.firstChild;
     this.mediaPluginState = stateKey.getState(
       this.props.view.state,
@@ -125,19 +124,28 @@ export default class MediaSingleNode extends Component<
         containerWidth={this.props.width}
         isLoading={!width}
       >
-        <ReactMediaNodeView
-          node={this.child}
-          view={this.props.view}
-          width={width}
-          getPos={this.props.getPos}
-          cardDimensions={{
-            width: '100%',
-            height: '100%',
+        <WithProviders
+          providers={['mediaProvider']}
+          providerFactory={this.mediaPluginState.options.providerFactory}
+          renderNode={({ mediaProvider }) => {
+            return (
+              <ReactMediaNodeView
+                node={this.child}
+                view={this.props.view}
+                width={width}
+                getPos={this.props.getPos}
+                cardDimensions={{
+                  width: '100%',
+                  height: '100%',
+                }}
+                mediaProvider={mediaProvider}
+                selected={selected}
+                onClick={this.selectMediaSingle}
+                onExternalImageLoaded={this.onExternalImageLoaded}
+                context={this.mediaPluginState.context}
+              />
+            );
           }}
-          selected={selected}
-          onClick={this.selectMediaSingle}
-          onExternalImageLoaded={this.onExternalImageLoaded}
-          context={this.mediaPluginState.context}
         />
       </MediaSingle>
     );

@@ -23,6 +23,7 @@ export type MediaGroupProps = {
   node: PMNode;
   view: EditorView;
   getPos: () => number;
+  selected: number;
 };
 
 class MediaGroup extends React.Component<MediaGroupProps> {
@@ -50,7 +51,7 @@ class MediaGroup extends React.Component<MediaGroupProps> {
 
     const items = tempIds.map((id, idx) => {
       const identifier: FileIdentifier = {
-        id: this.mediaPluginState.stateManager.getState(id).fileId,
+        id: this.mediaPluginState.stateManager.getState(id)!.fileId,
         mediaItemType: 'file',
       };
       return {

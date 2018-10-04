@@ -60,7 +60,7 @@ export class MediaPluginState {
   public layout: MediaSingleLayout = 'center';
   private mediaNodes: MediaNodeWithPosHandler[] = [];
   private pendingTask = Promise.resolve<MediaState | null>(null);
-  private options: MediaPluginOptions;
+  public options: MediaPluginOptions;
   private view: EditorView;
   private pluginStateChangeSubscribers: PluginStateChangeSubscriber[] = [];
   private useDefaultStateManager = true;
@@ -139,16 +139,8 @@ export class MediaPluginState {
     let Picker: typeof PickerFacade;
 
     try {
-      console.log('loading picker facade..');
-
-      // [resolvedMediaProvidercker] = await Promise.all([
-      //   mediaProvider,
-      // ]);
-
       let resolvedMediaProvider: MediaProvider = (this.mediaProvider = await mediaProvider);
       Picker = await pickerFacadeLoader();
-
-      console.log('loaded picker facade..');
 
       assert(
         resolvedMediaProvider && resolvedMediaProvider.viewContext,
@@ -169,13 +161,11 @@ export class MediaPluginState {
       return;
     }
 
-    this.mediaProvider = resolvedMediaProvider;
     this.allowsMedia = true;
-    console.log(this.mediaProvider);
-    this.mediaContext = await resolvedMediaProvider.viewContext;
+    this.mediaContext = await this.mediaProvider.viewContext;
 
     // release all listeners for default state manager
-    const { stateManager } = resolvedMediaProvider;
+    const { stateManager } = this.mediaProvider;
     if (stateManager && this.useDefaultStateManager) {
       (stateManager as DefaultMediaStateManager).destroy();
       this.useDefaultStateManager = false;
@@ -185,7 +175,7 @@ export class MediaPluginState {
       this.stateManager = stateManager;
     }
 
-    this.allowsUploads = !!resolvedMediaProvider.uploadContext;
+    this.allowsUploads = !!this.mediaProvider.uploadContext;
     const { view, allowsUploads } = this;
 
     // make sure editable DOM node is mounted
@@ -195,12 +185,11 @@ export class MediaPluginState {
     }
 
     if (this.allowsUploads) {
-      const uploadContext = await resolvedMediaProvider.uploadContext;
+      const uploadContext = await this.mediaProvider.uploadContext;
 
-      if (resolvedMediaProvider.uploadParams && uploadContext) {
-        console.log('init pickers...');
+      if (this.mediaProvider.uploadParams && uploadContext) {
         this.initPickers(
-          resolvedMediaProvider.uploadParams,
+          this.mediaProvider.uploadParams,
           uploadContext,
           Picker,
           this.reactContext,
@@ -304,8 +293,6 @@ export class MediaPluginState {
       if (files) {
         files.mediaNodes.forEach((node, idx) => {
           this.handleMediaNodeMount(node, () => {
-            let i = idx;
-            console.log('new position', files.mediaPos);
             return files.mediaPos - 2;
           });
         });
@@ -676,7 +663,7 @@ export class MediaPluginState {
     const { tr } = view.state;
     tr.setNodeMarkup(mediaNodeWithPos.getPos(), undefined, {
       ...mediaNodeWithPos.node.attrs,
-      id: state.publicId,
+      id: publicId,
     });
 
     view.dispatch(tr);
