@@ -6,9 +6,9 @@ import Navigator from './navigator';
 
 export default class LeftNavigator extends Component<NavigatorPropsType> {
   static defaultProps = {
+    ariaLabel: 'previous',
     children: <ChevronLeftLargeIcon />,
     isDisabled: false,
-    ariaLabel: 'previous',
   };
   render() {
     return <Navigator {...this.props} />;

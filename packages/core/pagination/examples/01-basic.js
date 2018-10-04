@@ -48,7 +48,7 @@ export default class extends Component<{}, State> {
           <Fragment>
             <LeftNavigator
               isDisabled={firstPage.value === selected}
-              onClick={this.onArrowClicked}
+              onClick={() => this.onArrowClicked('previous')}
             />
             {pageLinksCollapsed.map((pageLink, index) => {
               if (pageLink === '...') {
@@ -85,57 +85,9 @@ export default class extends Component<{}, State> {
   }
 }
 
-const pageLinks: Array<{ link: string, value: number }> = [
-  {
+const pageLinks: Array<{ link: string, value: number }> = [...Array(13)].map(
+  (_, index) => ({
     link: '#hello',
-    value: 1,
-  },
-  {
-    link: '#hello',
-    value: 2,
-  },
-  {
-    link: '#hello',
-    value: 3,
-  },
-  {
-    link: '#hello',
-    value: 4,
-  },
-  {
-    link: '#hello',
-    value: 5,
-  },
-  {
-    link: '#hello',
-    value: 6,
-  },
-  {
-    link: '#hello',
-    value: 7,
-  },
-  {
-    link: '#hello',
-    value: 8,
-  },
-  {
-    link: '#hello',
-    value: 9,
-  },
-  {
-    link: '#hello',
-    value: 10,
-  },
-  {
-    link: '#hello',
-    value: 11,
-  },
-  {
-    link: '#hello',
-    value: 12,
-  },
-  {
-    link: '#hello',
-    value: 13,
-  },
-];
+    value: index + 1,
+  }),
+);
