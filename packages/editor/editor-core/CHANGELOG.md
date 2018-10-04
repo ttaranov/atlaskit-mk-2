@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 82.4.1
+- [patch] ED-5452: Dynamically add/remove decorations in tables [04b0fde](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/04b0fde)
+
 ## 82.4.0
 - [minor] ED-5246 support image resizing [111d02f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/111d02f)
 
