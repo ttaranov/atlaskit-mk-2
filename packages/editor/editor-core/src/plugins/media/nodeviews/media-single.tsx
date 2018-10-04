@@ -161,7 +161,10 @@ export default class MediaSingleNode extends Component<
       this.child.props.node.attrs.__key,
     );
 
-    if (width === null && this.mediaReady(mediaState)) {
+    if (
+      (!width || !height) &&
+      (mediaState ? this.mediaReady(mediaState) : true)
+    ) {
       width = DEFAULT_WIDTH;
       height = DEFAULT_HEIGHT;
       hideProgress = true;
