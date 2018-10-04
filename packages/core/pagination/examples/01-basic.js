@@ -64,7 +64,7 @@ export default class extends Component<{}, State> {
               const { value } = pageLink;
               return (
                 <Link
-                  key={`${value}-${index}`}
+                  key={`${value}`}
                   onClick={() => {
                     this.updateTheSelected(value);
                   }}
