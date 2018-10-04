@@ -1,4 +1,5 @@
 import {
+  ABTest,
   CrossProductSearchClient,
   CrossProductSearchResults,
   EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE,
@@ -47,3 +48,22 @@ export function singleResultCrossProductSearchClient(
     },
   };
 }
+
+export const mockCrossProductSearchClient = (
+  data: CrossProductSearchResults,
+  abTest?: ABTest,
+): CrossProductSearchClient => ({
+  search(
+    query: string,
+    searchSession: SearchSession,
+    scopes: Scope[],
+  ): Promise<CrossProductSearchResults> {
+    return Promise.resolve(data);
+  },
+  getAbTestData(
+    scope: Scope,
+    searchSession: SearchSession,
+  ): Promise<ABTest | undefined> {
+    return Promise.resolve(abTest);
+  },
+});
