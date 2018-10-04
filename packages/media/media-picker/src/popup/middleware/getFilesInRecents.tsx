@@ -29,14 +29,7 @@ export const requestRecentFiles = (store: Store<State>): void => {
     .getItems(RECENTS_COLLECTION)
     .subscribe({
       next(items) {
-        // TODO: Move this logic into CollectionFetcher
-        // [TODO] MS-705: remove after backend adds filter
-        // This prevents showing "ghost" files in recents
-        const contents = items.filter(
-          item => item.details.size && item.details.size > 0,
-        );
-        console.log('getItems', items.length, contents.length);
-        store.dispatch(getFilesInRecentsFullfilled(contents));
+        store.dispatch(getFilesInRecentsFullfilled(items));
       },
       error() {
         store.dispatch(getFilesInRecentsFailed());
