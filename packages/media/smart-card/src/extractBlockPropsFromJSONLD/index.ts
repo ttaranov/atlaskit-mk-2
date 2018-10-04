@@ -3,6 +3,7 @@ import { genericExtractPropsFromJSONLD } from '../genericExtractPropsFromJSONLD'
 import { extractPropsFromObject } from './extractPropsFromObject';
 import { extractPropsFromDocument } from './extractPropsFromDocument';
 import { extractPropsFromSpreadsheet } from './extractPropsFromSpreadsheet';
+import { extractPropsFromTask } from './extractPropsFromTask';
 
 const extractorPrioritiesByType = {
   Object: 0,
@@ -10,6 +11,7 @@ const extractorPrioritiesByType = {
   'schema:TextDigitalDocument': 10,
   'schema:SpreadsheetDigitalDocument': 10,
   Spreadsheet: 10,
+  'atlassian:Task': 10,
 };
 
 const extractorFunctionsByType = {
@@ -18,6 +20,7 @@ const extractorFunctionsByType = {
   'schema:SpreadsheetDigitalDocument': extractPropsFromSpreadsheet,
   Document: extractPropsFromDocument,
   Spreadsheet: extractPropsFromSpreadsheet,
+  'atlassian:Task': extractPropsFromTask,
 };
 
 export function extractBlockPropsFromJSONLD(
@@ -30,22 +33,3 @@ export function extractBlockPropsFromJSONLD(
     json,
   });
 }
-
-/**
- *
- *
- *                AS:          Object
- *                AS:          Object -> Document
- *                Schema.org:  CreativeArt -> DigitalDocument -> SpreadsheetDigitalDocument
- *                Schema.org:  CreativeArt -> DigitalDocument -> TextDigitalDocument
- *                Schema.org:  CreativeArt -> DigitalDocument -> ....
- *
- *
- *   PDF FILE: @type: [ Document, DigitalDocument ]
- *   PDF FILE: @type: [ DigitalDocument, Document ]
- *
- *
- *
- *
- *
- */
