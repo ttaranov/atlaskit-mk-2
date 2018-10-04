@@ -29,7 +29,11 @@ ${code`
   {( LeftNavigator, Link, RightNavigator ) => (
     <Fragement>
       <LeftNavigator />
-      <Link />
+      {
+        [...Array(10)].map((_, index) => (
+          <Link key={index}>{index + 1}</Link>
+        ))
+      }
       <RightNavigator />
     </Fragement>
   )}

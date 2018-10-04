@@ -6,9 +6,9 @@ import type { NavigatorPropsType } from '../../types';
 
 export default class RightNavigator extends Component<NavigatorPropsType> {
   static defaultProps = {
+    ariaLabel: 'next',
     children: <ChevronRightLargeIcon />,
     isDisabled: false,
-    ariaLabel: 'next',
   };
   render() {
     return <Navigator {...this.props} />;

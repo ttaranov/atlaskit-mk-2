@@ -8,7 +8,7 @@ export default class Link extends Component<PagePropsType> {
     /**
      * Removing all the porps that are part of button but are not accepted by page
      */
-    //$FlowFixMe
+    //$FlowFixMe - the props not accepted by pagination but are still passed in
     const { appearance, spacing, shouldFitContainer, ...rest } = this.props;
     return <Button {...rest} appearance="subtle" />;
   }
