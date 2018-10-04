@@ -95,7 +95,7 @@ describe('Snapshot Test: table', () => {
   ['full-page', 'comment'].forEach(appearance => {
     let page;
 
-    describe(`${appearance}`, () => {
+    describe.skip(`${appearance}`, () => {
       beforeAll(async () => {
         // @ts-ignore
         page = global.page;
@@ -240,7 +240,7 @@ describe('Snapshot Test: table', () => {
           });
         });
 
-        describe('Cell background', () => {
+        describe.skip('Cell background', () => {
           it('shows the submenu on the right', async () => {
             await page.click(
               getSelectorForCell({ row: 1, cell: 2, cellType: 'th' }),
@@ -334,7 +334,7 @@ describe('Snapshot Test: table', () => {
     });
   });
 
-  describe('Re-sizing', () => {
+  describe.skip('Re-sizing', () => {
     let page;
     beforeEach(async () => {
       // @ts-ignore

@@ -102,7 +102,7 @@ export const advanceFormattingMenuSelector = `span[aria-label="${
   advancedTextFormattingMessages.moreFormatting.defaultMessage
 }"]`;
 
-export const baseTests = [
+export const insertMenuTests = [
   // -----------------
   // Insert menu items
   // -----------------
@@ -157,7 +157,9 @@ export const baseTests = [
     content: 'text',
     appearance: ['full-page'],
   },
+];
 
+export const toolBarItemsTests = [
   // -----------------
   // Toolbar items
   // -----------------
@@ -216,7 +218,9 @@ export const baseTests = [
       appearance: ['full-page', 'comment'],
     };
   }),
+];
 
+export const baseTests = [
   // -----------------
   // Marks
   // -----------------
@@ -295,23 +299,34 @@ export const baseTests = [
 ];
 
 // group tests by appearances
-export const baseTestsByAppearance = {};
+export const testsByAppearance = {};
 
 const addToAppearance = test => {
   test.appearance.forEach(appearance => {
-    if (!baseTestsByAppearance[appearance]) {
-      baseTestsByAppearance[appearance] = [];
+    if (!testsByAppearance[appearance]) {
+      testsByAppearance[appearance] = [];
     }
-    baseTestsByAppearance[appearance].push(test);
+    testsByAppearance[appearance].push(test);
   });
 };
-baseTests.forEach(test => {
-  if (Array.isArray(test)) {
-    test.forEach(addToAppearance);
+
+export const setTests = forInput => {
+  const testArr = baseTests;
+  if (forInput === 'insertMenu') {
+    testArr = insertMenuTests;
+  } else if (forInput === 'toolbar') {
+    testArr = toolBarItemsTests;
   } else {
-    addToAppearance(test);
+    testArr = baseTests;
   }
-});
+  testArr.forEach(test => {
+    if (Array.isArray(test)) {
+      test.forEach(addToAppearance);
+    } else {
+      addToAppearance(test);
+    }
+  });
+};
 
 export const imageSnapshotFolder = `./__image_snapshots__`;
 

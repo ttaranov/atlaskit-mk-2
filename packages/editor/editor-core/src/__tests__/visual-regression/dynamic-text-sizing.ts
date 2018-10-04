@@ -1,7 +1,8 @@
 import { removeOldProdSnapshots } from '@atlaskit/visual-regression/helper';
 import { imageSnapshotFolder, initEditor, snapshot } from './_utils';
 
-describe('Snapshot Test: Dynamic Text Sizing', () => {
+// skip as the test is not stable
+describe.skip('Snapshot Test: Dynamic Text Sizing', () => {
   let page;
   beforeAll(async () => {
     removeOldProdSnapshots(imageSnapshotFolder);
