@@ -55,7 +55,11 @@ export default class ToolbarComponentWrapper extends PureComponent<
   // };
 
   componentDidMount() {
-    console.log('Secondary toolbar mounted!');
+    const children = React.Children.toArray(this.props.children).map(
+      child => (child.props.title ? child.props.title : child),
+    );
+    console.log('Secondary toolbar mounted! Children:', children);
+
     // const { toolbarContext } = this.props;
     // if (toolbarContext && toolbarContext.registerButton) {
     //   // console.log('TOOLBARBUTTON: Mounting button ', this.props.title);

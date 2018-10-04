@@ -199,8 +199,6 @@ export class ToolbarInner extends React.Component<
       return null;
     }
 
-    console.log('items:', items);
-
     return (
       <ToolbarContext.Provider
         value={{
