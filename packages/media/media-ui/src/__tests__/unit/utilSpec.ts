@@ -5,7 +5,7 @@ import {
   mockFileReaderWithError,
   unmockFileReader,
   mockFileReaderError,
-} from '../../testHelpers/mockFileReader';
+} from '../../test-helpers/mockFileReader';
 
 import {
   dataURItoFile,
