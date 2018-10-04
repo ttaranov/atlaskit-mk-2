@@ -3,12 +3,15 @@ import { Component } from 'react';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView } from 'prosemirror-view';
 import { ProviderFactory } from '@atlaskit/editor-common';
-import { CardDimensions, CardEventHandler } from '@atlaskit/media-card';
+import { CardDimensions } from '@atlaskit/media-card';
 import { ProsemirrorGetPosHandler, ReactNodeProps } from '../../../nodeviews';
 import {
   MediaPluginState,
   stateKey as mediaStateKey,
 } from '../pm-plugins/main';
+import { Context, ImageResizeMode } from '@atlaskit/media-core';
+
+import { MediaProvider } from '../pm-plugins/main';
 import {
   Card,
   CardProps,
@@ -19,6 +22,19 @@ import {
   CardOnClickCallback,
   Identifier,
 } from '@atlaskit/media-card';
+
+import {
+  MediaType,
+  MediaBaseAttributes,
+  withImageLoader,
+  ImageStatus,
+} from '@atlaskit/editor-common';
+
+// This is being used by DropPlaceholder now
+export const MEDIA_HEIGHT = 125;
+export const FILE_WIDTH = 156;
+
+export type Appearance = 'small' | 'image' | 'horizontal' | 'square';
 
 export interface MediaNodeProps extends ReactNodeProps {
   getPos: ProsemirrorGetPosHandler;
@@ -33,8 +49,24 @@ export interface MediaNodeProps extends ReactNodeProps {
   ) => void;
 }
 
-export default class MediaNode extends Component<MediaNodeProps, {}> {
+export interface Props extends Partial<MediaBaseAttributes> {
+  type: MediaType;
+  mediaProvider?: Promise<MediaProvider>;
+  cardDimensions?: CardDimensions;
+  onClick?: CardOnClickCallback;
+  onDelete?: CardEventHandler;
+  resizeMode?: ImageResizeMode;
+  appearance?: Appearance;
+  selected?: boolean;
+  url?: string;
+  imageStatus?: ImageStatus;
+  context: Context;
+  disableOverlay?: boolean;
+}
+
+class MediaNode extends Component<MediaNodeProps, {}> {
   private pluginState: MediaPluginState;
+  private mediaProvider;
 
   state = {
     viewContext: undefined,
@@ -71,21 +103,10 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
   };
 
   render() {
-    const {
-      node,
-      providerFactory,
-      selected,
-      cardDimensions,
-      isMediaSingle,
-      onExternalImageLoaded,
-      context,
-      onClick,
-    } = this.props;
+    const { node, selected, cardDimensions, onClick } = this.props;
     const { id, type, collection, url, __key } = node.attrs;
 
     const { fileId = id } = this.pluginState.getMediaNodeState(__key);
-
-    const deleteEventHandler = isMediaSingle ? undefined : this.handleRemove;
 
     const identifier: Identifier =
       type === 'external'
@@ -115,16 +136,10 @@ export default class MediaNode extends Component<MediaNodeProps, {}> {
     );
   }
 
-  private handleRemove: CardEventHandler = (item, event) => {
-    const { getPos, node } = this.props;
-    this.pluginState.handleMediaNodeRemoval(node, getPos);
-    if (event) {
-      event.stopPropagation();
-    }
-  };
-
   private handleNewNode = (props: MediaNodeProps) => {
     const { node } = props;
     this.pluginState.handleMediaNodeMount(node, () => this.props.getPos() + 1);
   };
 }
+
+export default withImageLoader<MediaNodeProps>(MediaNode);

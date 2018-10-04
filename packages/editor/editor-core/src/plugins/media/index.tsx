@@ -1,13 +1,7 @@
 import * as React from 'react';
 import EditorImageIcon from '@atlaskit/icon/glyph/editor/image';
 import { media, mediaGroup, mediaSingle } from '@atlaskit/editor-common';
-
 import { EditorPlugin } from '../../types';
-import { legacyNodeViewFactory } from '../../nodeviews';
-import WithPluginState from '../../ui/WithPluginState';
-import { pluginKey as widthPluginKey } from '../width';
-import { messages } from '../insert-block/ui/ToolbarInsertBlock';
-
 import {
   stateKey as pluginKey,
   createPlugin,
@@ -20,7 +14,6 @@ import keymapPlugin from './pm-plugins/keymap';
 import ToolbarMedia from './ui/ToolbarMedia';
 import MediaSingleEdit from './ui/MediaSingleEdit';
 import { ReactMediaGroupNode } from './nodeviews/mediaGroup';
-import ReactMediaNode from './nodeviews/media';
 import { ReactMediaSingleNode } from './nodeviews/mediaSingle';
 import { CustomMediaPicker, MediaProvider } from './types';
 

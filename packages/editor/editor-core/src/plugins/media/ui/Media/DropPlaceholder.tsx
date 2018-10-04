@@ -9,7 +9,7 @@ import {
 import DocumentFilledIcon from '@atlaskit/icon/glyph/document-filled';
 import { hexToRgba } from '@atlaskit/editor-common';
 
-import { MEDIA_HEIGHT, FILE_WIDTH } from './MediaComponent';
+import { MEDIA_HEIGHT, FILE_WIDTH } from '../../nodeviews/media';
 
 const IconWrapper = styled.div`
   color: ${hexToRgba(akColorB400, 0.4) || akColorB400};
