@@ -104,8 +104,6 @@ type State = {
 };
 
 export class QuickSearch extends Component<Props, State> {
-  quickSearchRef = React.createRef();
-
   static defaultProps = {
     children: [],
     firePrivateAnalyticsEvent: Function.prototype,
@@ -129,11 +127,8 @@ export class QuickSearch extends Component<Props, State> {
       /** Select first result by default if `selectedResultId` prop is not provided */
       selectedResultId: this.props.selectedResultId || null,
       context: {
-        registerResult: (result: ResultBaseType) => {
-          if (!this.flatResults.includes(result)) {
-            this.flatResults.push(result);
-          }
-        },
+        registerResult: this.handleRegisterResult,
+        unregisterResult: this.handleUnregisterResult,
         onMouseEnter: this.handleResultMouseEnter,
         onMouseLeave: this.handleResultMouseLeave,
         sendAnalytics: this.props.firePrivateAnalyticsEvent,
@@ -143,16 +138,6 @@ export class QuickSearch extends Component<Props, State> {
         linkComponent: this.props.linkComponent,
       },
     };
-  }
-
-  /**
-    * Reconcile list of results for keyboard navigation after every update.
-    1. Empty list of results
-    2. componentDidMount / componentDidUpdate lifecycle methods in ResultBase will be invoked
-    3. All ResultBase components call registerResult() in order to register itself
-   */
-  resetResults() {
-    this.flatResults = [];
   }
 
   componentDidMount() {
@@ -165,7 +150,6 @@ export class QuickSearch extends Component<Props, State> {
 
   componentWillReceiveProps(nextProps: Props) {
     if (nextProps.children !== this.props.children) {
-      this.resetResults();
       this.setState({
         selectedResultId: nextProps.selectedResultId || null,
       });
@@ -259,6 +243,30 @@ export class QuickSearch extends Component<Props, State> {
   /** Select previous result */
   selectPrevious = () => {
     this.adjustSelectedResultIndex(-1);
+  };
+
+  /**
+   * Callback for register results in flatResults
+   */
+  handleRegisterResult = (result: ResultBaseType) => {
+    if (!this.flatResults.includes(result)) {
+      this.flatResults.push(result);
+    }
+  };
+
+  /**
+    * Callback for unregister results in flatResults
+    * It will reconcile a list of results for keyboard navigation after every update.
+    1. Component starts with an empty list of results
+    2. componentDidMount / componentDidUpdate lifecycle methods in ResultBase will be invoked
+    3. All ResultBase components call registerResult() in order to register itself in quick search
+    4. All ResultBase components call unregisterResult() in order to unregister itself in quick search
+   */
+  handleUnregisterResult = (result: ResultBaseType) => {
+    const resultIndex = this.flatResults.indexOf(result);
+    if (resultIndex) {
+      this.flatResults.splice(resultIndex, 1);
+    }
   };
 
   /**
