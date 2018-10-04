@@ -14,7 +14,6 @@ import {
   atTheBeginningOfBlock,
   isTableCell,
 } from '../utils';
-import { markActive } from '../plugins/text-formatting/utils';
 
 export function preventDefault(): Command {
   return function(state, dispatch) {
@@ -22,35 +21,52 @@ export function preventDefault(): Command {
   };
 }
 
-export function toggleIndent(): Command {
+export function indentBlock(): Command {
   return function(state, dispatch) {
     const node = findParentNode(node => node.type.name === 'paragraph')(
       state.selection,
     );
-    console.log(1);
 
     if (!node) {
       return true;
     }
 
-    if (markActive(state, state.schema.marks.indent.create())) {
-      console.log('on');
-      state.tr.removeMark(
-        node.pos,
-        node.pos + node.node.nodeSize,
-        state.schema.marks.indent.create(),
-      );
-    }
+    const indentMark = node.node.marks.find(m => m.type.name === 'indent');
+    const level = indentMark ? indentMark.attrs.level : 0;
 
     dispatch(
-      state.tr.replaceWith(
-        node.pos,
-        node.pos + node.node.nodeSize,
-        state.schema.nodes.paragraph.create({}, state.schema.text('Node'), [
-          state.schema.marks.indent.create(),
-        ]),
-      ),
+      state.tr.setNodeMarkup(node.pos, node.node.type, node.node.attrs, [
+        state.schema.marks.indent.create({ level: Math.min(6, level + 1) }),
+      ]),
     );
+
+    return true;
+  };
+}
+
+export function outdentBlock(): Command {
+  return function(state, dispatch) {
+    const node = findParentNode(node => node.type.name === 'paragraph')(
+      state.selection,
+    );
+
+    if (!node) {
+      return true;
+    }
+
+    const indentMark = node.node.marks.find(m => m.type.name === 'indent');
+    const level = indentMark ? indentMark.attrs.level : 0;
+    if (level <= 1) {
+      dispatch(
+        state.tr.setNodeMarkup(node.pos, node.node.type, node.node.attrs, []),
+      );
+    } else {
+      dispatch(
+        state.tr.setNodeMarkup(node.pos, node.node.type, node.node.attrs, [
+          state.schema.marks.indent.create({ level: Math.max(1, level - 1) }),
+        ]),
+      );
+    }
 
     return true;
   };

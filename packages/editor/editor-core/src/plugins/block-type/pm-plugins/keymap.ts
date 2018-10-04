@@ -71,7 +71,13 @@ export default function keymapPlugin(schema: Schema): Plugin {
 
   keymaps.bindKeymapWithCommand(
     keymaps.tab.common!,
-    commands.toggleIndent(),
+    commands.indentBlock(),
+    list,
+  );
+
+  keymaps.bindKeymapWithCommand(
+    keymaps.outdentList.common!,
+    commands.outdentBlock(),
     list,
   );
 

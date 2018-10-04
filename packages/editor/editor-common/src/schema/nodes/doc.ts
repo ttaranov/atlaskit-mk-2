@@ -173,5 +173,6 @@ export interface DocNode {
 }
 
 export const doc: NodeSpec = {
+  marks: '_',
   content: '(block|layoutSection)+',
 };

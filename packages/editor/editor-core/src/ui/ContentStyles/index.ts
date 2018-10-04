@@ -4,6 +4,7 @@ import {
   editorFontSize,
   paragraphSharedStyles,
   blockNodesVerticalMargin,
+  blockNodesVerticalMarginNumber,
 } from '@atlaskit/editor-common';
 import { telepointerStyle } from '../../plugins/collab-edit/styles';
 import { gapCursorStyles } from '../../plugins/gap-cursor/styles';
@@ -22,6 +23,8 @@ import { textFormattingStyles } from '../../plugins/text-formatting/styles';
 import { placeholderTextStyles } from '../../plugins/placeholder-text/styles';
 import { tasksAndDecisionsStyles } from '../../plugins/tasks-and-decisions/ui/styles';
 import { gridStyles } from '../../plugins/grid/styles';
+
+console.log(blockNodesVerticalMarginNumber);
 
 const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
   /* Hack for ie11 that is being used in code block.
@@ -43,7 +46,29 @@ const ContentStyles: ComponentClass<HTMLAttributes<{}>> = styled.div`
     .editor--mark__indent {
       ${paragraphSharedStyles};
       margin-top: ${blockNodesVerticalMargin};
-      padding-left: ${blockNodesVerticalMargin};
+
+      &[data-level="1"] {
+        padding-left: ${blockNodesVerticalMarginNumber}em;
+      }
+      &[data-level="2"] {
+        padding-left: ${blockNodesVerticalMarginNumber * 2}em;
+      }
+      &[data-level="3"] {
+        padding-left: ${blockNodesVerticalMarginNumber * 3}em;
+      }
+      &[data-level="4"] {
+        padding-left: ${blockNodesVerticalMarginNumber * 4}em;
+      }
+      &[data-level="5"] {
+        padding-left: ${blockNodesVerticalMarginNumber * 5}em;
+      }
+      &[data-level="6"] {
+        padding-left: ${blockNodesVerticalMarginNumber * 6}em;
+      }
+
+      &:first-child {
+        margin-top: 0;
+      }
     }
   }
 
