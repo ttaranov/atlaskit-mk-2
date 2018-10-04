@@ -54,6 +54,7 @@ export default class extends Component<{}, State> {
               if (pageLink === '...') {
                 return (
                   <span
+                    //eslint-disable-next-line
                     key={`${pageLink}-${index}`}
                     style={{ padding: '0 8px' }}
                   >
