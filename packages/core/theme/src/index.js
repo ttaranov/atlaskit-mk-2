@@ -62,3 +62,4 @@ export const assistive = () => css`
 export { Consumer, Provider } from './components/Context';
 export { default as Reset } from './components/Reset';
 export { default as Theme } from './components/Theme';
+export { withTheme } from './hoc';
