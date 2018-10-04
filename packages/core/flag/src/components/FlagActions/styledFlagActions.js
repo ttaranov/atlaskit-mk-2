@@ -44,7 +44,7 @@ export const Button = styled(AKButton)`
   font-weight: 500;
   height: ${height} !important;
   line-height: ${height} !important;
-  padding: 0 ${p => (p.appearance === 'normal' ? 0 : gridSize(p))}px;
+  padding: 0 ${p => (p.appearance === 'normal' ? 0 : gridSize())}px;
   text-decoration: none;
   user-select: none;
   vertical-align: baseline;
