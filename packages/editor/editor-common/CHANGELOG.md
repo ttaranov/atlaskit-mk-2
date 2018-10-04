@@ -1,5 +1,8 @@
 # @atlaskit/editor-common
 
+## 17.0.9
+- [patch] ED-5457: moving table css classnames to a const [2e1f627](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e1f627)
+
 ## 17.0.8
 - [patch] ED-5246 support image resizing [111d02f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/111d02f)
 
