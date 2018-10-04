@@ -1,6 +1,6 @@
 //@flow
 import type { Node } from 'react';
-import type { ButtonProps } from '@atlaskit/button';
+import type { ButtonProps, ButtonAppearances } from '@atlaskit/button';
 
 export type NavigatorPropsType = {
   /** React node to render in the button, pass the text you want use to view on pagination button */
@@ -17,9 +17,12 @@ export type NavigatorPropsType = {
 export type PagePropsType = $Diff<
   ButtonProps,
   {
-    appearance: any,
+    appearance?: ButtonAppearances,
     autoFocus: boolean,
-    spacing: any,
-    shouldFitContainer: any,
+    isDisabled: boolean,
+    isLoading: boolean,
+    spacing: 'compact' | 'default' | 'none',
+    shouldFitContainer: boolean,
+    type: 'button' | 'submit',
   },
 >;

@@ -42,15 +42,15 @@ export type ButtonProps = {
   /** Provide a unique id to the button. */
   id?: string,
   /** Set if the button is disabled. */
-  isDisabled?: boolean,
+  isDisabled: boolean,
   /**
     Set if the button is loading. When isLoading is true, text is hidden, and
     a spinner is shown in its place. The button maintains the width that it would
     have if the text were visible.
   */
-  isLoading?: boolean,
+  isLoading: boolean,
   /** Change the style to indicate the button is selected. */
-  isSelected?: boolean,
+  isSelected: boolean,
   /** Handler to be called on blur */
   onBlur?: (e: SyntheticEvent<>) => void,
   /** Handler to be called on click. The second argument can be used to track analytics data. See the tutorial in the analytics-next package for details. */
@@ -64,7 +64,7 @@ export type ButtonProps = {
   /** Pass target down to a link within the button component, if a href is provided. */
   target?: string,
   /** Set whether it is a button or a form submission. */
-  type?: 'button' | 'submit',
+  type: 'button' | 'submit',
   /** Option to fit button width to its parent width */
   shouldFitContainer: boolean,
   /** Set the button to autofocus on mount. */
