@@ -1,11 +1,24 @@
 import { EditorState } from 'prosemirror-state';
 import { findTable, findParentNodeOfType } from 'prosemirror-utils';
-import { DecorationSet } from 'prosemirror-view';
+import { DecorationSet, Decoration } from 'prosemirror-view';
 import { TableMap } from 'prosemirror-tables';
 import { Dispatch } from '../../event-dispatcher';
 import { pluginKey, defaultTableSelection } from './pm-plugins/main';
 import { TablePluginState } from './types';
 import { closestElement } from '../../utils';
+import { findHoverDecoration } from './utils';
+
+const processHoverDecoration = (
+  state: EditorState,
+  hoverDecoration: Decoration[],
+  decorationSet: DecorationSet,
+): DecorationSet => {
+  if (hoverDecoration.length) {
+    return decorationSet.add(state.doc, hoverDecoration);
+  } else {
+    return decorationSet.remove(findHoverDecoration(decorationSet));
+  }
+};
 
 export const handleSetFocus = (editorHasFocus: boolean) => (
   pluginState: TablePluginState,
@@ -70,9 +83,11 @@ export const handleClearSelection = (
   pluginState: TablePluginState,
   dispatch: Dispatch,
 ): TablePluginState => {
+  const { decorationSet } = pluginState;
   const nextPluginState = {
     ...pluginState,
     ...defaultTableSelection,
+    decorationSet: decorationSet.remove(findHoverDecoration(decorationSet)),
   };
   dispatch(pluginKey, nextPluginState);
   return nextPluginState;
@@ -80,7 +95,7 @@ export const handleClearSelection = (
 
 export const handleHoverColumns = (
   state: EditorState,
-  hoverDecoration: DecorationSet,
+  hoverDecoration: Decoration[],
   dangerColumns: number[],
 ) => (pluginState: TablePluginState, dispatch: Dispatch): TablePluginState => {
   const table = findTable(state.selection)!;
@@ -88,7 +103,11 @@ export const handleHoverColumns = (
 
   const nextPluginState = {
     ...pluginState,
-    hoverDecoration,
+    decorationSet: processHoverDecoration(
+      state,
+      hoverDecoration,
+      pluginState.decorationSet,
+    ),
     dangerColumns,
     isTableInDanger: map.width === dangerColumns.length ? true : false,
   };
@@ -98,7 +117,7 @@ export const handleHoverColumns = (
 
 export const handleHoverRows = (
   state: EditorState,
-  hoverDecoration: DecorationSet,
+  hoverDecoration: Decoration[],
   dangerRows: number[],
 ) => (pluginState: TablePluginState, dispatch: Dispatch): TablePluginState => {
   const table = findTable(state.selection)!;
@@ -106,7 +125,11 @@ export const handleHoverRows = (
 
   const nextPluginState = {
     ...pluginState,
-    hoverDecoration,
+    decorationSet: processHoverDecoration(
+      state,
+      hoverDecoration,
+      pluginState.decorationSet,
+    ),
     dangerRows,
     isTableInDanger: map.height === dangerRows.length ? true : false,
   };
@@ -115,12 +138,17 @@ export const handleHoverRows = (
 };
 
 export const handleHoverTable = (
-  hoverDecoration: DecorationSet,
+  state: EditorState,
+  hoverDecoration: Decoration[],
   isTableInDanger: boolean,
 ) => (pluginState: TablePluginState, dispatch: Dispatch): TablePluginState => {
   const nextPluginState = {
     ...pluginState,
-    hoverDecoration,
+    decorationSet: processHoverDecoration(
+      state,
+      hoverDecoration,
+      pluginState.decorationSet,
+    ),
     isTableInDanger,
     isTableHovered: true,
   };
@@ -134,13 +162,14 @@ export const handleDocChanged = (state: EditorState) => (
 ): TablePluginState => {
   const table = findTable(state.selection);
   const tableNode = table ? table.node : undefined;
-  if (
-    pluginState.tableNode !== tableNode ||
-    pluginState.hoverDecoration !== DecorationSet.empty
-  ) {
+  const { decorationSet } = pluginState;
+  const hoverDecoration = findHoverDecoration(decorationSet);
+  if (pluginState.tableNode !== tableNode || hoverDecoration.length) {
+    const { decorationSet } = pluginState;
     const nextPluginState = {
       ...pluginState,
       // @see: https://product-fabric.atlassian.net/browse/ED-3796
+      decorationSet: decorationSet.remove(hoverDecoration),
       ...defaultTableSelection,
       tableNode,
     };
