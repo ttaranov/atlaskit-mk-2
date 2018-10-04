@@ -6,6 +6,7 @@ import {
   messageEditor,
   editable,
   picker,
+  lozenge as mentionId,
 } from './_mention-helpers';
 import { messages } from '../../../plugins/insert-block/ui/ToolbarInsertBlock';
 
@@ -27,7 +28,6 @@ BrowserTestCase(
   { skip: ['ie'] },
   async client => {
     const mentionButton = `[aria-label="${messages.mention.defaultMessage}"]`;
-    const mentionId = '[data-mention-id="0"]';
     const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
@@ -69,7 +69,14 @@ BrowserTestCase(
     await browser.waitForSelector(editable);
     await browser.type(editable, '@');
     await browser.waitForSelector(picker);
-    await browser.type(editable, 'Caro');
+    await browser.type(editable, 'Carolyn');
+    // Wait until there is only one mention left in picker.
+    await browser.browser.waitUntil(async () => {
+      const mentionsInPicker = await browser.$$(
+        `${picker} [data-mention-name]`,
+      );
+      return mentionsInPicker.value.length === 1;
+    });
     await browser.type(editable, ' text ');
     const doc = await browser.$eval(editable, getDocFromElement);
     expect(doc).toMatchDocSnapshot();

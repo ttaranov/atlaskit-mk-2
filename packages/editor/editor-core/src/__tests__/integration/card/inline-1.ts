@@ -19,7 +19,7 @@ process.env.TEST_FILE = __filename
   BrowserTestCase(
     `pasting an link converts to inline card`,
     {
-      skip: ['Chrome', 'chrome', 'ie', 'safari'],
+      skip: ['chrome', 'ie', 'safari'],
     },
     async client => {
       let browser = new Page(client);

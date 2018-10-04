@@ -1,5 +1,8 @@
 # @atlaskit/media-picker
 
+## 17.0.4
+- [patch] use Card instead of CardView in MediaPicker recents [081f4c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/081f4c6)
+
 ## 17.0.3
 - [patch] Updated dependencies [2d848cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d848cd)
   - @atlaskit/media-core@24.0.3

@@ -1,6 +1,6 @@
 import { BrowserTestCase } from '@atlaskit/webdriver-runner/runner';
 import Page from '@atlaskit/webdriver-runner/wd-wrapper';
-import { getDocFromElement } from '../_helpers';
+import { getDocFromElement, LONG_WAIT_FOR } from '../_helpers';
 import {
   messageEditor,
   editable,
@@ -28,8 +28,12 @@ BrowserTestCase(
     const doc = await browser.$eval(editable, getDocFromElement);
     expect(doc).toMatchDocSnapshot();
 
-    // validate big emojis show up
-    await browser.waitForSelector('.emoji-common-emoji-sprite');
+    // validate both emojis show up
+    // One in the editor and one in the renderer
+    await browser.browser.waitUntil(async () => {
+      const emojiSprites = await browser.$$('.emoji-common-emoji-sprite');
+      return emojiSprites.value.length === 2;
+    });
     const emojiSprite = await browser.getElementSize(
       '.emoji-common-emoji-sprite',
     );
@@ -85,7 +89,7 @@ BrowserTestCase(
     await browser.type(editable, ':');
     await browser.type(editable, 'smile');
 
-    await browser.waitForSelector(typeahead);
+    await browser.waitForSelector(typeahead, { timeout: LONG_WAIT_FOR });
     expect(await browser.isExisting(typeahead)).toBe(true);
 
     await browser.type(editable, 'Escape');

@@ -22,7 +22,7 @@ import {
   emptyMultipleCells,
   setMultipleCellAttrs,
 } from '../../actions';
-import { CellRect } from '../../types';
+import { CellRect, TableCssClassName as ClassName } from '../../types';
 import { contextualMenuDropdownWidth } from '../styles';
 import { Shortcut } from '../../../../ui/styles';
 import ToolbarButton from '../../../../ui/ToolbarButton';
@@ -117,7 +117,7 @@ class ContextualMenu extends Component<Props & InjectedIntlProps, State> {
           boundariesElement={boundariesElement}
           offset={offset}
         >
-          <div className="ProseMirror-table-contextual-menu-trigger">
+          <div className={ClassName.CONTEXTUAL_MENU_TRIGGER}>
             <ToolbarButton
               selected={isOpen}
               title={labelCellOptions}
@@ -168,14 +168,14 @@ class ContextualMenu extends Component<Props & InjectedIntlProps, State> {
         elemAfter: (
           <div>
             <div
-              className={`ProseMirror-contextual-submenu-icon`}
+              className={ClassName.CONTEXTUAL_MENU_ICON}
               style={{
                 background: `${node ? node.attrs.background : 'white'}`,
               }}
             />
             {isSubmenuOpen && (
               <div
-                className="ProseMirror-table-contextual-submenu"
+                className={ClassName.CONTEXTUAL_SUBMENU}
                 ref={this.handleSubMenuRef}
               >
                 <ColorPalette

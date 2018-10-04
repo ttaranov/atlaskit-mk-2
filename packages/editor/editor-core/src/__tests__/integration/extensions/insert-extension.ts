@@ -18,7 +18,7 @@ process.env.TEST_FILE = __filename
 ['Inline', 'Block'].forEach(async extensionType => {
   BrowserTestCase(
     `Extension: Insert ${extensionType} extension`,
-    { skip: ['edge', 'ie'] },
+    { skip: ['ie'] },
     async client => {
       const page = new Page(client);
       await page.goto(fullpage.path);

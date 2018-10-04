@@ -4,7 +4,7 @@ import { DecorationSet, Decoration } from 'prosemirror-view';
 import { TableMap } from 'prosemirror-tables';
 import { Dispatch } from '../../event-dispatcher';
 import { pluginKey, defaultTableSelection } from './pm-plugins/main';
-import { TablePluginState } from './types';
+import { TablePluginState, TableCssClassName as ClassName } from './types';
 import { closestElement } from '../../utils';
 import { findHoverDecoration } from './utils';
 
@@ -40,7 +40,7 @@ export const handleSetTableRef = (
     ...pluginState,
     tableRef,
     tableFloatingToolbarTarget:
-      closestElement(tableRef, '.table-wrapper') || undefined,
+      closestElement(tableRef, `.${ClassName.TABLE_NODE_WRAPPER}`) || undefined,
     tableNode: tableRef ? findTable(state.selection)!.node : undefined,
   };
   dispatch(pluginKey, nextPluginState);
