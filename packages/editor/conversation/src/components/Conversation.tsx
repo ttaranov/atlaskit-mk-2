@@ -38,6 +38,14 @@ export interface Props extends SharedProps {
   showBeforeUnloadWarning?: boolean;
   onEditorOpen?: () => void;
   onEditorClose?: () => void;
+  onEditorChange?: (
+    isLocal: boolean,
+    value: any,
+    conversationId: string,
+    commentId: string | undefined,
+    containerId: string,
+    meta: any,
+  ) => void;
 
   // Dispatch
   onCreateConversation?: (

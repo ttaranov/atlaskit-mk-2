@@ -26,6 +26,7 @@ import { SharedProps } from './types';
 export interface Props extends SharedProps {
   conversationId: string;
   comment: CommentType;
+  onEditorChange?: (value: any) => void;
 }
 
 export interface State {
