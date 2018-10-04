@@ -54,7 +54,7 @@ export function extractPropsFromDocument(
     }
 
     props.description = {
-      text: `Modified by ${lastPerson.name} at ${relativeTime(json.updated)}`,
+      text: `Modified by ${lastPerson.name} on ${relativeTime(json.updated)}`,
     };
   } else if (json.attributedTo) {
     const person = Array.isArray(json.attributedTo)
@@ -62,7 +62,7 @@ export function extractPropsFromDocument(
       : json.attributedTo;
 
     props.description = {
-      text: `Created by ${person.name} at ${relativeTime(json.dateCreated)}`,
+      text: `Created by ${person.name} on ${relativeTime(json.dateCreated)}`,
     };
   }
 
