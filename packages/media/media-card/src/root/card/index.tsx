@@ -198,31 +198,31 @@ export class Card extends Component<CardProps, CardState> {
               });
               break;
             case 'processed':
-              if (metadata.mediaType && isPreviewableType(metadata.mediaType)) {
-                const { appearance, dimensions, resizeMode } = this.props;
-                const options = {
-                  appearance,
-                  dimensions,
-                  component: this,
-                };
-                const width = getDataURIDimension('width', options);
-                const height = getDataURIDimension('height', options);
-                try {
-                  const allowAnimated = appearance !== 'small';
-                  const blob = await context.getImage(resolvedId, {
-                    collection: collectionName,
-                    mode: resizeMode,
-                    height,
-                    width,
-                    allowAnimated,
-                  });
-                  const dataURI = URL.createObjectURL(blob);
-                  this.releaseDataURI();
-                  this.setState({ dataURI });
-                } catch (e) {
-                  // We don't want to set status=error if the preview fails, we still want to display the metadata
-                }
-              }
+              // if (metadata.mediaType && isPreviewableType(metadata.mediaType)) {
+              //   const { appearance, dimensions, resizeMode } = this.props;
+              //   const options = {
+              //     appearance,
+              //     dimensions,
+              //     component: this,
+              //   };
+              //   const width = getDataURIDimension('width', options);
+              //   const height = getDataURIDimension('height', options);
+              //   try {
+              //     const allowAnimated = appearance !== 'small';
+              //     const blob = await context.getImage(resolvedId, {
+              //       collection: collectionName,
+              //       mode: resizeMode,
+              //       height,
+              //       width,
+              //       allowAnimated,
+              //     });
+              //     const dataURI = URL.createObjectURL(blob);
+              //     this.releaseDataURI();
+              //     this.setState({ dataURI });
+              //   } catch (e) {
+              //     // We don't want to set status=error if the preview fails, we still want to display the metadata
+              //   }
+              // }
               this.notifyStateChange({ status: 'complete', metadata });
               break;
             case 'error':
