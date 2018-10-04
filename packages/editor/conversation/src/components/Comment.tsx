@@ -384,6 +384,7 @@ export default class Comment extends React.Component<Props, State> {
       disableScrollTo,
       onEditorClose,
       onEditorOpen,
+      onEditorChange,
       sendAnalyticsEvent,
     } = this.props;
 
@@ -402,6 +403,7 @@ export default class Comment extends React.Component<Props, State> {
         onDeleteComment={onDeleteComment}
         onEditorClose={onEditorClose}
         onEditorOpen={onEditorOpen}
+        onEditorChange={onEditorChange}
         onRevertComment={onRevertComment}
         onHighlightComment={onHighlightComment}
         onRetry={onRetry}
