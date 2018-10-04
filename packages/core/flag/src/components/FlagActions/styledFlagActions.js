@@ -3,7 +3,7 @@
 
 import styled, { css } from 'styled-components';
 
-import { gridSize, fontSize, borderRadius, math } from '@atlaskit/theme';
+import { gridSize, fontSize, math } from '@atlaskit/theme';
 import AKButton from '@atlaskit/button';
 
 import {
