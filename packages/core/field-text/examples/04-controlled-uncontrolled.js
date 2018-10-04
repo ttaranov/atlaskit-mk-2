@@ -1,15 +1,17 @@
 // @flow
 
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import TextField from '../src';
 
 type State = {
   isControlled: boolean,
+  value: string,
 };
 
 export default class BasicExample extends Component<void, State> {
   state = {
     isControlled: false,
+    value: 'Controlled value',
   };
 
   onChangeCheckbox = () => {
@@ -18,10 +20,14 @@ export default class BasicExample extends Component<void, State> {
     }));
   };
 
+  onChangeTextField = (e: any) => {
+    this.setState({ value: e.target.value });
+  };
+
   render() {
-    const { isControlled } = this.state;
+    const { isControlled, value } = this.state;
     return (
-      <Fragment>
+      <div>
         <p>
           <label htmlFor="checkbox">
             <input
@@ -34,11 +40,16 @@ export default class BasicExample extends Component<void, State> {
           </label>
         </p>
         <TextField
-          label="Controlled / uncontrolled"
-          defaultValue="Default value"
-          value={isControlled ? 'Controlled value' : undefined}
+          label="Controlled value for input below"
+          onChange={this.onChangeTextField}
+          value={value}
         />
-      </Fragment>
+        <TextField
+          label="Controlled / uncontrolled component"
+          defaultValue="Default value"
+          value={isControlled ? value : undefined}
+        />
+      </div>
     );
   }
 }
