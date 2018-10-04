@@ -7,7 +7,7 @@ import {
   snapshot,
 } from './_utils';
 import { messages as insertBlockMessages } from '../../plugins/insert-block/ui/ToolbarInsertBlock';
-import { messages as blockTypeMessages } from '../../plugins/block-type/ui/ToolbarBlockType';
+// import { messages as blockTypeMessages } from '../../plugins/block-type/ui/ToolbarBlockType';
 
 const insertTable = async page => {
   await page.click(
