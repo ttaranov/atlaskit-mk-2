@@ -1,5 +1,8 @@
 # @atlaskit/editor-core
 
+## 82.5.1
+- [patch] ED-5471 Fix show media single without height or width [a352169](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/a352169)
+
 ## 82.5.0
 - [minor] Allow empty content under doc [47d50ad](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/47d50ad)
 
