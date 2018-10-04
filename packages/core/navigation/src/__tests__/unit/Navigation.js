@@ -25,11 +25,6 @@ import {
   containerOpenWidth,
   resizeClosedBreakpoint as resizeClosedBreakpointFn,
 } from '../../shared-variables';
-import { navigationExpandedCollapsed } from '../../utils/analytics';
-
-jest.mock('../../utils/analytics', () => ({
-  navigationExpandedCollapsed: jest.fn(),
-}));
 
 configure({ adapter: new Adapter() });
 const containerClosedWidth = containerClosedWidthFn(false);
@@ -52,6 +47,7 @@ describe('<Navigation />', () => {
   const mockCreateAnalyticsEvent: any = jest.fn(() => mockAnalyticsEvent);
 
   beforeEach(() => {
+    jest.resetModules();
     jest.clearAllMocks();
   });
 
@@ -161,8 +157,8 @@ describe('<Navigation />', () => {
         .first()
         .props().width;
 
-    const resize = (wrapper, resizeTo) => {
-      const resizer = wrapper.find(Resizer);
+    const resize = (wrapper, resizeTo, ResizerComp = Resizer) => {
+      const resizer = wrapper.find(ResizerComp);
       resizer.props().onResizeStart();
       resizer.props().onResize(resizeTo);
       resizer.props().onResizeEnd(resizeTo);
@@ -382,24 +378,42 @@ describe('<Navigation />', () => {
     });
 
     describe('analytics', () => {
+      const mockNavigationExpandedCollapsed = jest.fn();
+      let RequiredNavigation;
+      let RequiredResizer;
+      beforeEach(() => {
+        jest.resetModules();
+        jest.clearAllMocks();
+        jest.doMock('../../utils/analytics', () => ({
+          navigationExpandedCollapsed: mockNavigationExpandedCollapsed,
+          withGlobalItemAnalytics: jest.fn(Comp => Comp),
+        }));
+
+        const navExports = require('../../components/js/Navigation');
+        RequiredNavigation = navExports.NavigationWithoutAnalytics;
+
+        const resizerExports = require('../../components/js/Resizer');
+        RequiredResizer = resizerExports.default;
+      });
+
       describe('expand event', () => {
         it('should fire with a trigger of chevron when nav is opened via resizer button click', () => {
           const wrapper = shallow(
-            <Navigation
+            <RequiredNavigation
               createAnalyticsEvent={mockCreateAnalyticsEvent}
               isOpen={false}
             />,
           );
 
-          expect(navigationExpandedCollapsed).not.toHaveBeenCalled();
+          expect(mockNavigationExpandedCollapsed).not.toHaveBeenCalled();
 
           wrapper
-            .find(Resizer)
+            .find(RequiredResizer)
             .props()
             .onResizeButton({ isOpen: true, width: 500 });
 
-          expect(navigationExpandedCollapsed).toHaveBeenCalledTimes(1);
-          expect(navigationExpandedCollapsed).toHaveBeenCalledWith(
+          expect(mockNavigationExpandedCollapsed).toHaveBeenCalledTimes(1);
+          expect(mockNavigationExpandedCollapsed).toHaveBeenCalledWith(
             mockCreateAnalyticsEvent,
             { isCollapsed: false, trigger: 'chevron' },
           );
@@ -407,21 +421,21 @@ describe('<Navigation />', () => {
 
         it('should fire with a trigger of resizerClick when nav is opened via resizer click', () => {
           const wrapper = shallow(
-            <Navigation
+            <RequiredNavigation
               createAnalyticsEvent={mockCreateAnalyticsEvent}
               isOpen={false}
             />,
           );
 
-          expect(navigationExpandedCollapsed).not.toHaveBeenCalled();
+          expect(mockNavigationExpandedCollapsed).not.toHaveBeenCalled();
 
           wrapper
-            .find(Resizer)
+            .find(RequiredResizer)
             .props()
             .onResizeButton({ isOpen: true, width: 500 }, true);
 
-          expect(navigationExpandedCollapsed).toHaveBeenCalledTimes(1);
-          expect(navigationExpandedCollapsed).toHaveBeenCalledWith(
+          expect(mockNavigationExpandedCollapsed).toHaveBeenCalledTimes(1);
+          expect(mockNavigationExpandedCollapsed).toHaveBeenCalledWith(
             mockCreateAnalyticsEvent,
             { isCollapsed: false, trigger: 'resizerClick' },
           );
@@ -429,18 +443,18 @@ describe('<Navigation />', () => {
 
         it('should fire with a trigger of resizerDrag when the nav is opened via resizer drag', () => {
           const wrapper = shallow(
-            <Navigation
+            <RequiredNavigation
               createAnalyticsEvent={mockCreateAnalyticsEvent}
               isOpen={false}
             />,
           );
 
-          expect(navigationExpandedCollapsed).not.toHaveBeenCalled();
+          expect(mockNavigationExpandedCollapsed).not.toHaveBeenCalled();
 
-          resize(wrapper, 350);
+          resize(wrapper, 350, RequiredResizer);
 
-          expect(navigationExpandedCollapsed).toHaveBeenCalledTimes(1);
-          expect(navigationExpandedCollapsed).toHaveBeenCalledWith(
+          expect(mockNavigationExpandedCollapsed).toHaveBeenCalledTimes(1);
+          expect(mockNavigationExpandedCollapsed).toHaveBeenCalledWith(
             mockCreateAnalyticsEvent,
             { isCollapsed: false, trigger: 'resizerDrag' },
           );
@@ -448,38 +462,38 @@ describe('<Navigation />', () => {
 
         it('should NOT fire when the nav is resized and the nav remains open', () => {
           const wrapper = shallow(
-            <Navigation
+            <RequiredNavigation
               createAnalyticsEvent={mockCreateAnalyticsEvent}
               isOpen
             />,
           );
 
-          expect(navigationExpandedCollapsed).not.toHaveBeenCalled();
+          expect(mockNavigationExpandedCollapsed).not.toHaveBeenCalled();
 
-          resize(wrapper, 25);
+          resize(wrapper, 25, RequiredResizer);
 
-          expect(navigationExpandedCollapsed).not.toHaveBeenCalled();
+          expect(mockNavigationExpandedCollapsed).not.toHaveBeenCalled();
         });
       });
 
       describe('collapse event', () => {
         it('should fire with a trigger of chevron when nav is closed via resizer button click', () => {
           const wrapper = shallow(
-            <Navigation
+            <RequiredNavigation
               createAnalyticsEvent={mockCreateAnalyticsEvent}
               isOpen
             />,
           );
 
-          expect(navigationExpandedCollapsed).not.toHaveBeenCalled();
+          expect(mockNavigationExpandedCollapsed).not.toHaveBeenCalled();
 
           wrapper
-            .find(Resizer)
+            .find(RequiredResizer)
             .props()
             .onResizeButton({ isOpen: false, width: 500 });
 
-          expect(navigationExpandedCollapsed).toHaveBeenCalledTimes(1);
-          expect(navigationExpandedCollapsed).toHaveBeenCalledWith(
+          expect(mockNavigationExpandedCollapsed).toHaveBeenCalledTimes(1);
+          expect(mockNavigationExpandedCollapsed).toHaveBeenCalledWith(
             mockCreateAnalyticsEvent,
             { isCollapsed: true, trigger: 'chevron' },
           );
@@ -487,21 +501,21 @@ describe('<Navigation />', () => {
 
         it('should fire with a trigger of resizerClick when nav is closed via resizer click', () => {
           const wrapper = shallow(
-            <Navigation
+            <RequiredNavigation
               createAnalyticsEvent={mockCreateAnalyticsEvent}
               isOpen
             />,
           );
 
-          expect(navigationExpandedCollapsed).not.toHaveBeenCalled();
+          expect(mockNavigationExpandedCollapsed).not.toHaveBeenCalled();
 
           wrapper
-            .find(Resizer)
+            .find(RequiredResizer)
             .props()
             .onResizeButton({ isOpen: false, width: 500 }, true);
 
-          expect(navigationExpandedCollapsed).toHaveBeenCalledTimes(1);
-          expect(navigationExpandedCollapsed).toHaveBeenCalledWith(
+          expect(mockNavigationExpandedCollapsed).toHaveBeenCalledTimes(1);
+          expect(mockNavigationExpandedCollapsed).toHaveBeenCalledWith(
             mockCreateAnalyticsEvent,
             { isCollapsed: true, trigger: 'resizerClick' },
           );
@@ -509,18 +523,18 @@ describe('<Navigation />', () => {
 
         it('should fire with a trigger of resizerDrag when the nav is opened via resizer drag', () => {
           const wrapper = shallow(
-            <Navigation
+            <RequiredNavigation
               createAnalyticsEvent={mockCreateAnalyticsEvent}
               isOpen
             />,
           );
 
-          expect(navigationExpandedCollapsed).not.toHaveBeenCalled();
+          expect(mockNavigationExpandedCollapsed).not.toHaveBeenCalled();
 
-          resize(wrapper, -250);
+          resize(wrapper, -250, RequiredResizer);
 
-          expect(navigationExpandedCollapsed).toHaveBeenCalledTimes(1);
-          expect(navigationExpandedCollapsed).toHaveBeenCalledWith(
+          expect(mockNavigationExpandedCollapsed).toHaveBeenCalledTimes(1);
+          expect(mockNavigationExpandedCollapsed).toHaveBeenCalledWith(
             mockCreateAnalyticsEvent,
             { isCollapsed: true, trigger: 'resizerDrag' },
           );
@@ -528,17 +542,17 @@ describe('<Navigation />', () => {
 
         it('should NOT fire when the nav is resized and the nav remains closed', () => {
           const wrapper = shallow(
-            <Navigation
+            <RequiredNavigation
               createAnalyticsEvent={mockCreateAnalyticsEvent}
               isOpen={false}
             />,
           );
 
-          expect(navigationExpandedCollapsed).not.toHaveBeenCalled();
+          expect(mockNavigationExpandedCollapsed).not.toHaveBeenCalled();
 
-          resize(wrapper, 25);
+          resize(wrapper, 25, RequiredResizer);
 
-          expect(navigationExpandedCollapsed).not.toHaveBeenCalled();
+          expect(mockNavigationExpandedCollapsed).not.toHaveBeenCalled();
         });
       });
     });
