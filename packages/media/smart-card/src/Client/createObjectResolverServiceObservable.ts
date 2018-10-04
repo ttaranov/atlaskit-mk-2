@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/observable';
+import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { merge } from 'rxjs/observable/merge';
 import { ObjectState, AuthService, ObjectStatus } from './types';
