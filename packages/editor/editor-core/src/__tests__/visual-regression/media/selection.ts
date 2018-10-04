@@ -14,7 +14,7 @@ describe('Snapshot Test: Media', () => {
     removeOldProdSnapshots(imageSnapshotFolder);
   });
 
-  describe('full page editor', () => {
+  describe.skip('full page editor', () => {
     let page;
     beforeAll(async () => {
       // @ts-ignore

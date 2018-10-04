@@ -12,6 +12,7 @@ const runLocalOnly = process.env.RUN_LOCAL_ONLY || false;
 * and run and wait for visual-regression tests complete
 */
 const JEST_WAIT_FOR_INPUT_TIMEOUT = 1000;
+const watch = process.env.WATCH ? '--watch' : '';
 
 // function to generate snapshot from production website
 function getProdSnapshots() {
@@ -24,7 +25,11 @@ function getProdSnapshots() {
 // function to run tests and compare snapshot against prod snapshot
 function runTests() {
   return new Promise((resolve, reject) => {
-    const cmd = `VISUAL_REGRESSION=true jest`;
+    let cmd = `VISUAL_REGRESSION=true jest`;
+    if (process.env.WATCH === 'true') {
+      cmd = `${cmd} --watch`;
+    }
+    console.log(cmd);
     runCommand(cmd, resolve, reject);
   });
 }

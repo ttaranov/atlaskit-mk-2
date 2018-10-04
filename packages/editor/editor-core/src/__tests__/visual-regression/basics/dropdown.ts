@@ -1,4 +1,6 @@
+import { removeOldProdSnapshots } from '@atlaskit/visual-regression/helper';
 import {
+  imageSnapshotFolder,
   setTests,
   testsByAppearance,
   initEditor,
@@ -8,8 +10,12 @@ import {
 } from '../_utils';
 
 // add some comments to run test
-describe('Snapshot Test: For all insertMenu items', () => {
-  setTests('insertMenu');
+describe('Snapshot Test: ProseMirror nodes and marks', () => {
+  beforeAll(async () => {
+    removeOldProdSnapshots(imageSnapshotFolder);
+  });
+
+  setTests('dropdown');
   Object.keys(testsByAppearance).forEach(appearance => {
     const tests = testsByAppearance[appearance];
     let page;

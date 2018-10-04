@@ -1,6 +1,4 @@
-import { removeOldProdSnapshots } from '@atlaskit/visual-regression/helper';
 import {
-  imageSnapshotFolder,
   setTests,
   testsByAppearance,
   initEditor,

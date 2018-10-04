@@ -35,7 +35,7 @@
     "test:webdriver:browserstack": "         TEST_ENV=browserstack node ./build/webdriver-runner/index.js",
     "test:webdriver:browserstack:changed": " CHANGED_PACKAGES=$(node build/ci-scripts/get.changed.packages.since.master.js) yarn test:webdriver:browserstack",
     "test:vr": "                             node ./build/visual-regression/index.js",
-    "test:vr:local": "                       RUN_LOCAL_ONLY=true node ./build/visual-regression/index.js",
+    "test:vr:local:watch": "                 WATCH=true RUN_LOCAL_ONLY=true node ./build/visual-regression/index.js",
     "test:vr:changed": "                     CHANGED_PACKAGES=$(node build/ci-scripts/get.changed.packages.since.master.js) yarn test:vr",
     "lint": "                                yarn run lint:eslint && yarn run lint:tslint && yarn run lint:stylelint",
     "lint:stylelint": "                      stylelint '**/*.{js,ts,tsx}'",

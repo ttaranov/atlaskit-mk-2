@@ -326,9 +326,13 @@ if (process.env.VISUAL_REGRESSION) {
   jasmine.DEFAULT_TIMEOUT_INTERVAL = 600000;
 
   beforeAll(async () => {
+    let mode = true;
+    if (process.env.WATCH === 'true') {
+      mode = false;
+    }
     global.browser = await puppeteer.launch({
       // run test in headless mode
-      headless: true,
+      headless: mode,
       slowMo: 100,
       args: ['--no-sandbox', '--disable-setuid-sandbox'],
     });

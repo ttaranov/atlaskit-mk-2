@@ -255,7 +255,9 @@ export const baseTests = [
       appearance: ['full-page', 'comment'],
     };
   }),
+];
 
+const dropdowns = [
   // -----------------
   // Dropdowns
   // -----------------
@@ -311,13 +313,13 @@ const addToAppearance = test => {
 };
 
 export const setTests = forInput => {
-  const testArr = baseTests;
+  let testArr = baseTests;
   if (forInput === 'insertMenu') {
     testArr = insertMenuTests;
   } else if (forInput === 'toolbar') {
     testArr = toolBarItemsTests;
-  } else {
-    testArr = baseTests;
+  } else if (forInput === 'dropdown') {
+    testArr = dropdowns;
   }
   testArr.forEach(test => {
     if (Array.isArray(test)) {

@@ -15,7 +15,7 @@ describe('Snapshot Test: ProseMirror nodes and marks', () => {
     removeOldProdSnapshots(imageSnapshotFolder);
   });
 
-  setTests('insertMenu');
+  setTests('base');
   Object.keys(testsByAppearance).forEach(appearance => {
     const tests = testsByAppearance[appearance];
     let page;
