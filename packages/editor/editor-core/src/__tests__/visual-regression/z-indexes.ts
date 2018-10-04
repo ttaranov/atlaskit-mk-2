@@ -16,7 +16,7 @@ const insertTable = async page => {
   await page.waitForSelector('table td p');
 };
 
-const blockFormattingDropdown = `span[aria-label="${blockTypeMessages}"]`;
+// const blockFormattingDropdown = `span[aria-label="${blockTypeMessages}"]`;
 const removeTablePopup = '.pm-table-column-controls__button-wrap';
 const dropList = 'div[data-role="droplistContent"]';
 const insertBlockDropdown = `span[aria-label="${

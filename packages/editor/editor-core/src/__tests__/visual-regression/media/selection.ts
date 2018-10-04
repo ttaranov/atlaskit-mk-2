@@ -14,6 +14,7 @@ describe('Snapshot Test: Media', () => {
     removeOldProdSnapshots(imageSnapshotFolder);
   });
 
+  // TO-DO fix this for fullpage editor mode
   describe.skip('full page editor', () => {
     let page;
     beforeAll(async () => {

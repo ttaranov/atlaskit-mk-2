@@ -313,7 +313,7 @@ const addToAppearance = test => {
 };
 
 export const setTests = forInput => {
-  let testArr = baseTests;
+  let testArr: any[] = baseTests;
   if (forInput === 'insertMenu') {
     testArr = insertMenuTests;
   } else if (forInput === 'toolbar') {

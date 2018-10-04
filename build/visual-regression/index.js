@@ -29,7 +29,6 @@ function runTests() {
     if (process.env.WATCH === 'true') {
       cmd = `${cmd} --watch`;
     }
-    console.log(cmd);
     runCommand(cmd, resolve, reject);
   });
 }
