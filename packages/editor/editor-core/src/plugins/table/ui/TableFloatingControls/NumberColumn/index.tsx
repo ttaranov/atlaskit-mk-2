@@ -3,6 +3,7 @@ import { Component } from 'react';
 import { isRowSelected } from 'prosemirror-utils';
 import { NumberedRow } from './NumberedRow';
 import { EditorState } from 'prosemirror-state';
+import { TableCssClassName as ClassName } from '../../../types';
 
 export interface Props {
   state: EditorState;
@@ -62,6 +63,6 @@ export default class NumberColumn extends Component<Props, any> {
         </NumberedRow>,
       );
     }
-    return <div className="pm-table-numbered-column">{numberRows}</div>;
+    return <div className={ClassName.NUMBERED_COLUMN}>{numberRows}</div>;
   }
 }

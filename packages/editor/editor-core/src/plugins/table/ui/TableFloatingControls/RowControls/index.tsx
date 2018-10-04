@@ -5,6 +5,7 @@ import { isRowSelected, isTableSelected } from 'prosemirror-utils';
 import InsertButton from '../InsertButton';
 import { findRowSelection, TableSelection, getLineMarkerWidth } from '../utils';
 import DeleteButton from '../DeleteButton';
+import { TableCssClassName as ClassName } from '../../../types';
 
 export interface Props {
   editorView: EditorView;
@@ -68,7 +69,7 @@ export default class RowControls extends Component<Props, any> {
   }
 
   private classNamesForRow(i, len) {
-    const classNames = ['table-row'];
+    const classNames: string[] = [];
     const {
       editorView: { state },
       isTableHovered,
@@ -125,17 +126,16 @@ export default class RowControls extends Component<Props, any> {
       nodes.push(
         <div
           key={i}
-          className={`pm-table-row-controls__button-wrap ${this.classNamesForRow(
-            i,
-            len,
-          ).join(' ')}`}
+          className={`${
+            ClassName.ROW_CONTROLS_BUTTON_WRAP
+          } ${this.classNamesForRow(i, len).join(' ')}`}
           style={{
             height: (rows[i] as HTMLElement).offsetHeight + 1,
           }}
         >
           <button
             type="button"
-            className="pm-table-controls__button"
+            className={ClassName.CONTROLS_BUTTON}
             onMouseDown={() => this.props.selectRow(i)}
             onMouseOver={() => this.props.hoverRows([i])}
             onMouseOut={() => this.props.clearHoverSelection()}
@@ -173,8 +173,8 @@ export default class RowControls extends Component<Props, any> {
     }
 
     return (
-      <div className="pm-table-row-controls">
-        <div className="pm-table-row-controls__inner">{nodes}</div>
+      <div className={ClassName.ROW_CONTROLS}>
+        <div className={ClassName.ROW_CONTROLS_INNER}>{nodes}</div>
       </div>
     );
   }

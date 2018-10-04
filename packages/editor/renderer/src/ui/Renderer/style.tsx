@@ -28,6 +28,7 @@ import {
   akEditorTableToolbar,
   akEditorTableBorder,
   akEditorTableNumberColumnWidth,
+  TableSharedCssClassName,
 } from '@atlaskit/editor-common';
 import { RendererAppearance } from './';
 
@@ -211,7 +212,7 @@ export const Wrapper: ComponentClass<Props & HTMLAttributes<{}>> = styled.div`
     margin-right: 0;
   }
 
-  ${tableSharedStyle} & .table-container {
+  ${tableSharedStyle} & .${TableSharedCssClassName.TABLE_CONTAINER} {
     transition: all 0.1s linear;
     overflow-x: auto;
     table {

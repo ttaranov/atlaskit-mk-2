@@ -9,6 +9,7 @@ import {
 } from '@atlaskit/editor-common';
 
 import { GapCursorSelection, Side } from './selection';
+import { TableCssClassName } from '../table/types';
 
 // we don't show gap cursor for those nodes
 const INGORED_NODES = [
@@ -173,7 +174,9 @@ export const isIgnoredClick = (elem: HTMLElement) => {
   while (node) {
     if (
       node.className &&
-      (node.getAttribute('class') || '').indexOf('table-container') > -1
+      (node.getAttribute('class') || '').indexOf(
+        TableCssClassName.TABLE_CONTAINER,
+      ) > -1
     ) {
       tableWrap = node;
       break;
@@ -182,9 +185,11 @@ export const isIgnoredClick = (elem: HTMLElement) => {
   }
 
   if (tableWrap) {
-    const rowControls = tableWrap.querySelector('.table-row-controls-wrapper');
+    const rowControls = tableWrap.querySelector(
+      `.${TableCssClassName.ROW_CONTROLS_WRAPPER}`,
+    );
     const columnControls = tableWrap.querySelector(
-      '.table-column-controls-wrapper',
+      `.${TableCssClassName.COLUMN_CONTROLS_WRAPPER}`,
     );
     return (
       (rowControls && rowControls.contains(elem)) ||
