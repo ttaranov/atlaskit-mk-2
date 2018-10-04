@@ -15,6 +15,7 @@ import {
   createConversation,
   HIGHLIGHT_COMMENT,
   SuccessHandler,
+  saveDraft,
 } from '../internal/actions';
 import { getComments, getConversation, getUser } from '../internal/selectors';
 import { uuid } from '../internal/uuid';
@@ -122,13 +123,16 @@ const mapDispatchToProps = (
     containerId: string,
     meta: any,
   ) {
-    provider.saveDraft(
-      isLocal,
-      value,
-      conversationId,
-      commentId,
-      containerId,
-      meta,
+    dispatch(
+      saveDraft(
+        isLocal,
+        value,
+        conversationId,
+        commentId,
+        containerId,
+        meta,
+        provider,
+      ),
     );
   },
 });
