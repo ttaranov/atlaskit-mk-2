@@ -12,6 +12,7 @@ import {
 import { AnalyticsListener } from '@atlaskit/analytics-next';
 import { UIAnalyticsEventInterface } from '@atlaskit/analytics-next-types';
 import {
+  CardAction,
   CardProps,
   UrlPreviewIdentifier,
   FileIdentifier,
@@ -817,5 +818,24 @@ describe('Card', () => {
         name: 'bla',
       });
     });
+  });
+
+  it('should add download Action when in failed-processing state', () => {
+    const initialActions: Array<CardAction> = [
+      {
+        handler: () => {},
+      },
+    ];
+    const { component } = setup(undefined, {
+      actions: initialActions,
+    });
+    component.setState({
+      status: 'failed-processing',
+      metadata: {},
+    });
+    component.update();
+    const actions = component.find(CardView).prop('actions')!;
+    expect(actions).toHaveLength(2);
+    expect(actions[0].label).toEqual('Download');
   });
 });
