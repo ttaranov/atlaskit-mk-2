@@ -148,13 +148,14 @@ export const quickInsert = async (browser, insertTitle) => {
   } else {
     await browser.keys('/');
     await browser.waitFor('div[aria-label="Popup"]');
-    await browser.keys(insertTitle);
+    const firstTitleWord = insertTitle.split(' ')[0];
+    await browser.keys(firstTitleWord);
 
     await browser.browser.waitUntil(async () => {
       const firstInsertText = await browser.browser.getText(
         '[aria-label="Popup"] [role="button"]',
       );
-      return firstInsertText === insertTitle;
+      return firstInsertText.startsWith(firstTitleWord);
     }, LONG_WAIT_FOR);
 
     await browser.click('[aria-label="Popup"] [role="button"]');
@@ -176,13 +177,14 @@ const quickInsertActiveElement = async (browser, insertTitle) => {
   if (activeElement) {
     await browser.browser.elementIdValue(activeElement, '/');
     await browser.waitFor('div[aria-label="Popup"]');
-    await browser.browser.elementIdValue(activeElement, insertTitle);
+    const firstTitleWord = insertTitle.split(' ')[0];
+    await browser.browser.elementIdValue(activeElement, firstTitleWord);
 
     await browser.browser.waitUntil(async () => {
       const firstInsertText = await browser.browser.getText(
         '[aria-label="Popup"] [role="button"]',
       );
-      return firstInsertText === insertTitle;
+      return firstInsertText.startsWith(firstTitleWord);
     }, LONG_WAIT_FOR);
     await browser.click('[aria-label="Popup"] [role="button"]');
   }
