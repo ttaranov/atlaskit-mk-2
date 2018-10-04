@@ -20,7 +20,7 @@ BrowserTestCase(
   'Mention: user can see mention inside blockquote',
   { skip: ['safari', 'ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '> ');
@@ -36,7 +36,7 @@ BrowserTestCase(
   'Mention: user can see mention inside bulletList',
   { skip: ['safari', 'ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '* ');
@@ -53,7 +53,7 @@ BrowserTestCase(
   'Mention: user can see mention inside orderedList',
   { skip: ['safari', 'ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '1. ');
@@ -70,7 +70,7 @@ BrowserTestCase(
   'Mention: user can see mention inside decision',
   { skip: ['ie', 'safari'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '<> ');
@@ -85,7 +85,7 @@ BrowserTestCase(
   'Mention: user can see mention inside action',
   { skip: ['ie', 'safari'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '[] ');
@@ -100,7 +100,7 @@ BrowserTestCase(
   'Mention: user can navigate picker using keyboard',
   { skip: ['ie', 'safari'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '@');
