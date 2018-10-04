@@ -120,6 +120,7 @@ class ToolbarButton extends PureComponent<Props, {}> {
 
     if (!disabled && onClick) {
       onClick(event);
+      // TODO: event.stopPropogation)
     }
   };
 }
