@@ -291,7 +291,7 @@ export class MediaPluginState {
     if (this.editorAppearance !== 'message' && mediaSingle) {
       files = insertMediaGroupNode(this.view, nonImageAttachments, collection);
       if (files) {
-        files.mediaNodes.forEach((node, idx) => {
+        files.mediaNodes.forEach(node => {
           this.handleMediaNodeMount(node, () => {
             return files.mediaPos - 2;
           });
@@ -680,9 +680,9 @@ export class MediaPluginState {
   private handleMediaState = async (state: MediaState) => {
     switch (state.status) {
       case 'ready':
-        this.replaceTemporaryNode(state);
-        this.stateManager.off(state.id, this.handleMediaState);
-        break;
+      // this.replaceTemporaryNode(state);
+      // this.stateManager.off(state.id, this.handleMediaState);
+      // break;
     }
   };
 

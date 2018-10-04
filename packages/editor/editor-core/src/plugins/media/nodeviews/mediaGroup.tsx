@@ -9,8 +9,9 @@ import {
   stateKey as mediaStateKey,
 } from '../pm-plugins/main';
 import { FileIdentifier } from '@atlaskit/media-card';
-import WrapperClickArea from './wrapper-click-area';
 import { setNodeSelection } from '../../../utils/index';
+import WithPluginState from '../../../ui/WithPluginState';
+import { stateKey as reactNodeViewStateKey } from '../../../plugins/base/pm-plugins/react-nodeview';
 
 export interface Props {
   children?: React.ReactNode;
@@ -23,7 +24,7 @@ export type MediaGroupProps = {
   node: PMNode;
   view: EditorView;
   getPos: () => number;
-  selected: number;
+  selected: number | null;
 };
 
 class MediaGroup extends React.Component<MediaGroupProps> {
@@ -35,18 +36,14 @@ class MediaGroup extends React.Component<MediaGroupProps> {
 
   constructor(props) {
     super(props);
-
     this.mediaPluginState = mediaStateKey.getState(props.view.state);
   }
-
-  selectChild = () => {
-    return true;
-  };
 
   renderChildNodes = node => {
     const tempIds = [] as any;
     node.forEach((item, childOffset) => {
       tempIds.push(item.attrs.__key);
+      console.log(tempIds, item.attrs.__fileName);
     });
 
     const items = tempIds.map((id, idx) => {
@@ -55,15 +52,17 @@ class MediaGroup extends React.Component<MediaGroupProps> {
         mediaItemType: 'file',
       };
       return {
+        filename: this.mediaPluginState.stateManager.getState(id)!.fileName,
         identifier,
         selectable: true,
         selected: this.props.selected === this.props.getPos() + idx + 1,
         onClick: (e, x) => {
+          console.log('clicked ', this.props.getPos() + idx + 1);
           setNodeSelection(this.props.view, this.props.getPos() + idx + 1);
         },
       };
     });
-
+    console.log('new items are ', items);
     return (
       <Filmstrip items={items} context={this.mediaPluginState.mediaContext} />
     );
@@ -76,13 +75,27 @@ class MediaGroup extends React.Component<MediaGroupProps> {
 
 class MediaGroupNodeView extends ReactNodeView {
   render(props, forwardRef) {
-    const WrapWithClick = WrapperClickArea(MediaGroup);
     return (
-      <WrapWithClick
-        node={this.node}
-        getPos={this.getPos}
-        view={this.view}
-        forwardRef={forwardRef}
+      <WithPluginState
+        editorView={this.view}
+        plugins={{
+          reactNodeViewState: reactNodeViewStateKey,
+        }}
+        render={({ reactNodeViewState }) => {
+          const nodePos = this.getPos();
+          const { $anchor, $head } = this.view.state.selection;
+          const isSelected =
+            nodePos < $anchor.pos && $head.pos < nodePos + this.node.nodeSize;
+          return (
+            <MediaGroup
+              node={this.node}
+              getPos={this.getPos}
+              view={this.view}
+              forwardRef={forwardRef}
+              selected={isSelected ? $anchor.pos : null}
+            />
+          );
+        }}
       />
     );
   }

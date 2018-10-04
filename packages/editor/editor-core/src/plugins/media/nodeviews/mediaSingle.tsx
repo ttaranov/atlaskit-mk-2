@@ -1,12 +1,11 @@
 import * as React from 'react';
-import { Component, ReactElement } from 'react';
+import { Component } from 'react';
 import { Node as PMNode } from 'prosemirror-model';
 import { EditorView, NodeView } from 'prosemirror-view';
 import { MediaSingle, WithProviders } from '@atlaskit/editor-common';
-import { MediaNodeProps } from './media';
 import { stateKey, MediaPluginState } from '../pm-plugins/main';
 import ReactNodeView from '../../../nodeviews/ReactNodeView';
-import ReactMediaNodeView from './media';
+import MediaItem from './media';
 import WithPluginState from '../../../ui/WithPluginState';
 import { pluginKey as widthPluginKey } from '../../width';
 import { setNodeSelection } from '../../../utils';
@@ -24,7 +23,6 @@ export interface MediaSingleNodeProps {
 }
 
 export interface MediaSingleNodeState {
-  progress: number;
   width?: number;
   height?: number;
 }
@@ -33,12 +31,8 @@ export default class MediaSingleNode extends Component<
   MediaSingleNodeProps,
   MediaSingleNodeState
 > {
-  private child: ReactElement<MediaNodeProps>;
+  private child: PMNode;
   private mediaPluginState: MediaPluginState;
-
-  state: MediaSingleNodeState = {
-    progress: 0,
-  };
 
   constructor(props) {
     super(props);
@@ -48,26 +42,10 @@ export default class MediaSingleNode extends Component<
     ) as MediaPluginState;
   }
 
-  componentDidMount() {
-    const { id } = this.child.attrs;
-    this.mediaPluginState.stateManager.on(id, this.handleMediaUpdate);
-  }
-
-  componentWillUnmount() {
-    const { id } = this.child.attrs;
-    this.mediaPluginState.stateManager.off(id, this.handleMediaUpdate);
-  }
-
   componentDidUpdate() {
     const { layout } = this.props.node.attrs;
     this.mediaPluginState.updateLayout(layout);
   }
-
-  handleMediaUpdate = state => {
-    this.setState({
-      progress: state.progress || 0,
-    });
-  };
 
   private onExternalImageLoaded = ({ width, height }) => {
     this.setState(
@@ -129,7 +107,7 @@ export default class MediaSingleNode extends Component<
           providerFactory={this.mediaPluginState.options.providerFactory}
           renderNode={({ mediaProvider }) => {
             return (
-              <ReactMediaNodeView
+              <MediaItem
                 node={this.child}
                 view={this.props.view}
                 width={width}
@@ -142,7 +120,6 @@ export default class MediaSingleNode extends Component<
                 selected={selected}
                 onClick={this.selectMediaSingle}
                 onExternalImageLoaded={this.onExternalImageLoaded}
-                context={this.mediaPluginState.context}
               />
             );
           }}

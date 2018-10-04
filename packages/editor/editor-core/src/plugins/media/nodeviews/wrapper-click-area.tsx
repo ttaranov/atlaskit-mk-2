@@ -1,13 +1,7 @@
 import * as React from 'react';
 import { PureComponent } from 'react';
 import { Node as PMNode } from 'prosemirror-model';
-import { EditorView } from 'prosemirror-view';
 import styled from 'styled-components';
-import { ProviderFactory } from '@atlaskit/editor-common';
-import {
-  ReactNodeViewState,
-  stateKey,
-} from '../../../plugins/base/pm-plugins/react-nodeview';
 import {
   ProsemirrorGetPosHandler,
   ReactComponentConstructor,
@@ -16,11 +10,7 @@ import {
 interface Props {
   getPos: ProsemirrorGetPosHandler;
   node: PMNode;
-  pluginState: ReactNodeViewState;
-  providerFactory: ProviderFactory;
-  view: EditorView;
-
-  onSelection?: (selected: boolean) => void;
+  selectedNode: number;
 }
 
 const Wrapper = styled.div`
@@ -38,21 +28,9 @@ export default function wrapComponentWithClickArea(
 ): ReactComponentConstructor {
   return class WrapperClickArea extends PureComponent<Props, State> {
     state: State = { selected: null };
-    private pluginState: ReactNodeViewState;
 
     constructor(props) {
       super(props);
-      this.pluginState = stateKey.getState(this.props.view.state);
-    }
-
-    componentDidMount() {
-      const { pluginState } = this;
-      pluginState.subscribe(this.handleDocumentSelectionChange);
-    }
-
-    componentWillUnmount() {
-      const { pluginState } = this;
-      pluginState.unsubscribe(this.handleDocumentSelectionChange);
     }
 
     render() {
