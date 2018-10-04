@@ -26,6 +26,6 @@ describe(`${name} - navigator`, () => {
     const onClickSpy = jest.fn();
     const wrapper = mount(<Navigator onClick={onClickSpy} ariaLabel="label" />);
     wrapper.simulate('click');
-    expect(onClickSpy).toHaveBeenCalledWith('label');
+    expect(onClickSpy).toHaveBeenCalled();
   });
 });
