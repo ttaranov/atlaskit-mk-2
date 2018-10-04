@@ -78,7 +78,8 @@ export type FileState =
 
 export const isErrorFileState = (
   fileState: FileState,
-): fileState is ErrorFileState => (fileState as any).status === 'status';
+): fileState is ErrorFileState =>
+  (fileState as ErrorFileState).status === 'error';
 
 const apiProcessingStatusToFileStatus = (
   fileStatus?: MediaFileProcessingStatus,

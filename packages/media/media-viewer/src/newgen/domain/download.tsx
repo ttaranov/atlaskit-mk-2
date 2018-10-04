@@ -3,7 +3,7 @@ import { Context, FileState, isErrorFileState } from '@atlaskit/media-core';
 import { DownloadButtonWrapper } from '../styled';
 import Button from '@atlaskit/button';
 
-export const downloadItem = (
+export const createItemDownloader = (
   file: FileState,
   context: Context,
   collectionName?: string,
@@ -23,7 +23,7 @@ export const renderDownloadButton = (
       <Button
         appearance="primary"
         label="Download"
-        onClick={downloadItem(file, context, collectionName)}
+        onClick={createItemDownloader(file, context, collectionName)}
       >
         Download
       </Button>
