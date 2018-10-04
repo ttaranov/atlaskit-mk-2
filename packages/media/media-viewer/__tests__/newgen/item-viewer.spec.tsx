@@ -18,7 +18,7 @@ const identifier = {
   collectionName: 'some-collection',
 };
 
-const makewFakeContext = (observable: Observable<any>) =>
+const makeFakeContext = (observable: Observable<any>) =>
   ({
     file: {
       getFileState: jest.fn(() => observable),
@@ -27,7 +27,7 @@ const makewFakeContext = (observable: Observable<any>) =>
 
 describe('<ItemViewer />', () => {
   it('shows an indicator while loading', () => {
-    const context = makewFakeContext(Observable.empty());
+    const context = makeFakeContext(Observable.empty());
     const el = mount(
       <ItemViewer previewCount={0} context={context} identifier={identifier} />,
     );
@@ -35,7 +35,7 @@ describe('<ItemViewer />', () => {
   });
 
   it('shows a generic error on unkown error', () => {
-    const context = makewFakeContext(
+    const context = makeFakeContext(
       Observable.throw('something bad happened!'),
     );
     const el = mount(
@@ -49,7 +49,7 @@ describe('<ItemViewer />', () => {
   });
 
   it('should show the image viewer if media type is image', () => {
-    const context = makewFakeContext(
+    const context = makeFakeContext(
       Observable.of({
         id: '123',
         mediaType: 'image',
@@ -68,7 +68,7 @@ describe('<ItemViewer />', () => {
   });
 
   it('should should error and download button if processing Status failed', () => {
-    const context = makewFakeContext(Observable.of({ status: 'error' }));
+    const context = makeFakeContext(Observable.of({ status: 'error' }));
     const el = mount(
       <ItemViewer previewCount={0} context={context} identifier={identifier} />,
     );
@@ -82,7 +82,7 @@ describe('<ItemViewer />', () => {
   });
 
   it('should show the video viewer if media type is video', () => {
-    const context = makewFakeContext(
+    const context = makeFakeContext(
       Observable.of({
         id: '123',
         mediaType: 'video',
@@ -101,7 +101,7 @@ describe('<ItemViewer />', () => {
   });
 
   it('should show the audio viewer if media type is audio', () => {
-    const context = makewFakeContext(
+    const context = makeFakeContext(
       Observable.of({
         id: '123',
         mediaType: 'audio',
@@ -120,7 +120,7 @@ describe('<ItemViewer />', () => {
   });
 
   it('should show the document viewer if media type is document', () => {
-    const context = makewFakeContext(
+    const context = makeFakeContext(
       Observable.of({
         id: '123',
         mediaType: 'doc',
@@ -139,7 +139,7 @@ describe('<ItemViewer />', () => {
   });
 
   it('should should error and download button if file is unsupported', () => {
-    const context = makewFakeContext(
+    const context = makeFakeContext(
       Observable.of({
         id: '123',
         mediaType: 'unknown',
@@ -159,7 +159,7 @@ describe('<ItemViewer />', () => {
   });
 
   it('MSW-720: passes the collectionName to getFileState', () => {
-    const context = makewFakeContext(
+    const context = makeFakeContext(
       Observable.of({
         id: '123',
         mediaType: 'image',
@@ -178,7 +178,7 @@ describe('<ItemViewer />', () => {
   describe('Subscription', () => {
     it('unsubscribes from the provider when unmounted', () => {
       const release = jest.fn();
-      const context = makewFakeContext(
+      const context = makeFakeContext(
         Observable.of({
           id: '123',
           mediaType: 'unknown',
@@ -202,7 +202,7 @@ describe('<ItemViewer />', () => {
 
     it('resubscribes to the provider when the data property value is changed', () => {
       const identifierCopy = { ...identifier };
-      const context = makewFakeContext(
+      const context = makeFakeContext(
         Observable.of({
           id: '123',
           mediaType: 'unknown',
@@ -232,7 +232,7 @@ describe('<ItemViewer />', () => {
       expect(context.file.getFileState).toHaveBeenCalledTimes(2);
 
       // if the context changes, we will also resubscribe
-      const newContext = makewFakeContext(
+      const newContext = makeFakeContext(
         Observable.of({
           id: '123',
           mediaType: 'unknown',
@@ -246,7 +246,7 @@ describe('<ItemViewer />', () => {
     });
 
     it('should return to PENDING state when resets', () => {
-      const context = makewFakeContext(
+      const context = makeFakeContext(
         Observable.of({
           id: '123',
           mediaType: 'unknown',
