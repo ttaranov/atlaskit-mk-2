@@ -8,6 +8,7 @@ import { analyticsDecorator as analytics } from '../../../../analytics';
 import { toggleBold, toggleItalic, tooltip } from '../../../../keymaps';
 import { TextFormattingState } from '../../pm-plugins/main';
 import ToolbarButton from '../../../../ui/ToolbarButton';
+// import ButtonGroup from '../../../../ui/ButtonGroup';
 import { ButtonGroup } from '../../../../ui/styles';
 import { toggleStrong, toggleEm } from '../../commands/text-formatting';
 
