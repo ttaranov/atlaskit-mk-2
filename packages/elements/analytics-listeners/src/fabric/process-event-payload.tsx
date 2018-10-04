@@ -1,20 +1,35 @@
-import * as merge from 'lodash.merge';
+import {
+  GasPayload,
+  GasScreenEventPayload,
+} from '@atlaskit/analytics-gas-types';
 import { ELEMENTS_CONTEXT } from '@atlaskit/analytics-namespaced-context';
 import {
   ObjectType,
   UIAnalyticsEventInterface,
 } from '@atlaskit/analytics-next-types';
-import {
-  GasPayload,
-  GasScreenEventPayload,
-} from '@atlaskit/analytics-gas-types';
+import * as merge from 'lodash.merge';
 
-// merge all context objects from left to right. In case of attribute conflict the right one takes precedence
-const processContext = (contexts: Array<ObjectType>) =>
+const extractFieldsFromContext = (fieldsToPick: string[]) => (
+  contexts: Array<ObjectType>,
+) =>
   contexts
-    .filter(ctx => !!ctx[ELEMENTS_CONTEXT])
-    .map(ctx => ctx[ELEMENTS_CONTEXT])
-    .reduce((result, item) => merge(result || {}, item), {});
+    .map(ctx =>
+      fieldsToPick.reduce(
+        (result, key) =>
+          ctx[key] ? merge(result, { [key]: ctx[key] }) : result,
+        {},
+      ),
+    )
+    .reduce((result, item) => merge(result, item), {});
+
+const fieldExtractor = extractFieldsFromContext([
+  'source',
+  'objectType',
+  'objectId',
+  'containerType',
+  'containerId',
+  ELEMENTS_CONTEXT,
+]);
 
 const updatePayloadWithContext = (
   event: UIAnalyticsEventInterface,
@@ -22,12 +37,20 @@ const updatePayloadWithContext = (
   if (event.context.length === 0) {
     return event.payload as GasPayload | GasScreenEventPayload;
   }
-  const mergedContext: any = processContext(event.context);
-  event.payload.attributes = merge(
-    mergedContext,
-    event.payload.attributes || {},
-  );
-  return event.payload as GasPayload | GasScreenEventPayload;
+  const {
+    [ELEMENTS_CONTEXT]: attributes,
+    ...fields
+  }: ObjectType = fieldExtractor(event.context);
+
+  if (attributes) {
+    event.payload.attributes = merge(
+      attributes,
+      event.payload.attributes || {},
+    );
+  }
+  return { source: 'unknown', ...fields, ...event.payload } as
+    | GasPayload
+    | GasScreenEventPayload;
 };
 
 const addTag = (tag: string, originalTags?: string[]): string[] => {

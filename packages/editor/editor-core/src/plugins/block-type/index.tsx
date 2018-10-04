@@ -9,6 +9,7 @@ import inputRulePlugin from './pm-plugins/input-rule';
 import ToolbarBlockType from './ui/ToolbarBlockType';
 import WithPluginState from '../../ui/WithPluginState';
 import { setBlockType } from './commands';
+import { messages } from './types';
 
 const blockType: EditorPlugin = {
   nodes({ allowBlockType }) {
@@ -86,11 +87,13 @@ const blockType: EditorPlugin = {
   },
 
   pluginsOptions: {
-    quickInsert: [
+    quickInsert: ({ formatMessage }) => [
       {
-        title: 'Block quote',
+        title: formatMessage(messages.blockquote),
         priority: 1300,
-        icon: () => <EditorQuoteIcon label="Block quote" />,
+        icon: () => (
+          <EditorQuoteIcon label={formatMessage(messages.blockquote)} />
+        ),
         action(insert, state) {
           return insert(
             state.schema.nodes.blockquote.createChecked(

@@ -38,7 +38,7 @@ import {
 import { TableLayout } from '@atlaskit/editor-common';
 import { getPluginState, pluginKey, ACTIONS } from './pm-plugins/main';
 import {
-  createHoverDecorationSet,
+  createHoverDecoration,
   getCellSelection,
   checkIfHeaderRowEnabled,
   checkIfHeaderColumnEnabled,
@@ -75,13 +75,15 @@ export const hoverColumns = (columns: number[], danger?: boolean): Command => (
       [],
     );
     dispatch(
-      state.tr.setMeta(pluginKey, {
-        action: ACTIONS.HOVER_COLUMNS,
-        data: {
-          hoverDecoration: createHoverDecorationSet(cells, state, danger),
-          dangerColumns: danger ? columns : [],
-        },
-      }),
+      state.tr
+        .setMeta(pluginKey, {
+          action: ACTIONS.HOVER_COLUMNS,
+          data: {
+            hoverDecoration: createHoverDecoration(cells, danger),
+            dangerColumns: danger ? columns : [],
+          },
+        })
+        .setMeta('addToHistory', false),
     );
     return true;
   }
@@ -102,13 +104,15 @@ export const hoverRows = (rows: number[], danger?: boolean): Command => (
       [],
     );
     dispatch(
-      state.tr.setMeta(pluginKey, {
-        action: ACTIONS.HOVER_ROWS,
-        data: {
-          hoverDecoration: createHoverDecorationSet(cells, state, danger),
-          dangerRows: danger ? rows : [],
-        },
-      }),
+      state.tr
+        .setMeta(pluginKey, {
+          action: ACTIONS.HOVER_ROWS,
+          data: {
+            hoverDecoration: createHoverDecoration(cells, danger),
+            dangerRows: danger ? rows : [],
+          },
+        })
+        .setMeta('addToHistory', false),
     );
     return true;
   }
@@ -123,13 +127,15 @@ export const hoverTable = (danger?: boolean): Command => (
   if (table) {
     const cells = getCellsInTable(state.selection)!;
     dispatch(
-      state.tr.setMeta(pluginKey, {
-        action: ACTIONS.HOVER_TABLE,
-        data: {
-          hoverDecoration: createHoverDecorationSet(cells, state, danger),
-          isTableInDanger: danger,
-        },
-      }),
+      state.tr
+        .setMeta(pluginKey, {
+          action: ACTIONS.HOVER_TABLE,
+          data: {
+            hoverDecoration: createHoverDecoration(cells, danger),
+            isTableInDanger: danger,
+          },
+        })
+        .setMeta('addToHistory', false),
     );
 
     return true;
@@ -141,7 +147,11 @@ export const clearSelection: Command = (
   state: EditorState,
   dispatch: (tr: Transaction) => void,
 ): boolean => {
-  dispatch(state.tr.setSelection(Selection.near(state.selection.$from)));
+  dispatch(
+    state.tr
+      .setSelection(Selection.near(state.selection.$from))
+      .setMeta('addToHistory', false),
+  );
   return true;
 };
 
@@ -648,10 +658,12 @@ export const toggleContextualMenu = (
   dispatch: (tr: Transaction) => void,
 ): boolean => {
   dispatch(
-    state.tr.setMeta(pluginKey, {
-      action: ACTIONS.TOGGLE_CONTEXTUAL_MENU,
-      data: { isContextualMenuOpen },
-    }),
+    state.tr
+      .setMeta(pluginKey, {
+        action: ACTIONS.TOGGLE_CONTEXTUAL_MENU,
+        data: { isContextualMenuOpen },
+      })
+      .setMeta('addToHistory', false),
   );
   return true;
 };
@@ -674,10 +686,12 @@ export const setTableRef = (tableRef?: HTMLElement): Command => (
   dispatch: (tr: Transaction) => void,
 ): boolean => {
   dispatch(
-    state.tr.setMeta(pluginKey, {
-      action: ACTIONS.SET_TABLE_REF,
-      data: { tableRef },
-    }),
+    state.tr
+      .setMeta(pluginKey, {
+        action: ACTIONS.SET_TABLE_REF,
+        data: { tableRef },
+      })
+      .setMeta('addToHistory', false),
   );
   return true;
 };
@@ -687,10 +701,12 @@ export const setTargetCell = (targetCellRef?: HTMLElement): Command => (
   dispatch: (tr: Transaction) => void,
 ): boolean => {
   dispatch(
-    state.tr.setMeta(pluginKey, {
-      action: ACTIONS.SET_TARGET_CELL_REF,
-      data: { targetCellRef },
-    }),
+    state.tr
+      .setMeta(pluginKey, {
+        action: ACTIONS.SET_TARGET_CELL_REF,
+        data: { targetCellRef },
+      })
+      .setMeta('addToHistory', false),
   );
   return true;
 };
@@ -703,10 +719,12 @@ export const selectColumn = (column: number): Command => (
   const firstCell = getCellsInColumn(column)(tr.selection)![0];
   // update contextual menu target cell position on column selection
   dispatch(
-    tr.setMeta(pluginKey, {
-      action: ACTIONS.SET_TARGET_CELL_POSITION,
-      data: { targetCellPosition: firstCell.pos },
-    }),
+    tr
+      .setMeta(pluginKey, {
+        action: ACTIONS.SET_TARGET_CELL_POSITION,
+        data: { targetCellPosition: firstCell.pos },
+      })
+      .setMeta('addToHistory', false),
   );
   return true;
 };
@@ -719,10 +737,12 @@ export const selectRow = (row: number): Command => (
   const firstCell = getCellsInRow(row)(tr.selection)![0];
   // update contextual menu target cell position on row selection
   dispatch(
-    tr.setMeta(pluginKey, {
-      action: ACTIONS.SET_TARGET_CELL_POSITION,
-      data: { targetCellPosition: firstCell.pos },
-    }),
+    tr
+      .setMeta(pluginKey, {
+        action: ACTIONS.SET_TARGET_CELL_POSITION,
+        data: { targetCellPosition: firstCell.pos },
+      })
+      .setMeta('addToHistory', false),
   );
   return true;
 };

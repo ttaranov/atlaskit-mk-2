@@ -168,7 +168,7 @@ export const JiraRecentResponse = [
 export const TransformedResponse = [
   {
     resultType: 'jira-object-result',
-    resultId: 67391,
+    resultId: '67391',
     name: 'Jira recent endpoint is missing some fields',
     href: 'https://product-fabric.atlassian.net/browse/QS-136',
     analyticsType: 'recent-jira',
@@ -179,7 +179,7 @@ export const TransformedResponse = [
   },
   {
     resultType: 'jira-object-result',
-    resultId: 64304,
+    resultId: '64304',
     name: 'Create the Jira boilerplate code',
     href: 'https://product-fabric.atlassian.net/browse/QS-40',
     analyticsType: 'recent-jira',
@@ -190,7 +190,7 @@ export const TransformedResponse = [
   },
   {
     resultType: 'jira-object-result',
-    resultId: 67462,
+    resultId: '67462',
     name:
       'Services are not executing searches in parallel (aggregator + conf searcher)',
     href: 'https://product-fabric.atlassian.net/browse/QS-137',
@@ -202,7 +202,7 @@ export const TransformedResponse = [
   },
   {
     resultType: 'jira-object-result',
-    resultId: 64350,
+    resultId: '64350',
     name: 'Decide on an approach for Jira boilerplate',
     href: 'https://product-fabric.atlassian.net/browse/QS-60',
     analyticsType: 'recent-jira',
@@ -213,7 +213,7 @@ export const TransformedResponse = [
   },
   {
     resultType: 'jira-object-result',
-    resultId: 64271,
+    resultId: '64271',
     name: 'Update Global Search UI to use XPSearch',
     href: 'https://product-fabric.atlassian.net/browse/QS-21',
     analyticsType: 'recent-jira',
@@ -224,7 +224,7 @@ export const TransformedResponse = [
   },
   {
     resultType: 'jira-object-result',
-    resultId: 65205,
+    resultId: '65205',
     name: 'Retro: Add unit testing for analytics',
     href: 'https://product-fabric.atlassian.net/browse/QS-95',
     analyticsType: 'recent-jira',
@@ -235,7 +235,7 @@ export const TransformedResponse = [
   },
   {
     resultType: 'jira-object-result',
-    resultId: 65643,
+    resultId: '65643',
     name: 'Analytics validation fixes',
     href: 'https://product-fabric.atlassian.net/browse/QS-107',
     analyticsType: 'recent-jira',
@@ -246,7 +246,7 @@ export const TransformedResponse = [
   },
   {
     resultType: 'jira-object-result',
-    resultId: 201,
+    resultId: '201',
     name: 'Quick Search',
     href:
       'https://product-fabric.atlassian.net/secure/RapidBoard.jspa?rapidView=201&useStoredSettings=true',
@@ -257,7 +257,7 @@ export const TransformedResponse = [
   },
   {
     resultType: 'jira-object-result',
-    resultId: 77,
+    resultId: '77',
     name: 'Analytics Pipeline',
     href:
       'https://product-fabric.atlassian.net/secure/RapidBoard.jspa?rapidView=77&useStoredSettings=true',
@@ -268,7 +268,7 @@ export const TransformedResponse = [
   },
   {
     resultType: 'jira-object-result',
-    resultId: 49,
+    resultId: '49',
     name: 'CONFSIM board',
     href:
       'https://product-fabric.atlassian.net/secure/RapidBoard.jspa?rapidView=49&useStoredSettings=true',
@@ -279,7 +279,7 @@ export const TransformedResponse = [
   },
   {
     resultType: 'jira-object-result',
-    resultId: 12793,
+    resultId: '12793',
     name: 'Quick Search (QS)',
     href: 'https://product-fabric.atlassian.net/browse/QS',
     analyticsType: 'recent-jira',
@@ -290,7 +290,7 @@ export const TransformedResponse = [
   },
   {
     resultType: 'jira-object-result',
-    resultId: 12703,
+    resultId: '12703',
     name: 'Data Services (DS)',
     href: 'https://product-fabric.atlassian.net/browse/DS',
     analyticsType: 'recent-jira',
@@ -301,7 +301,7 @@ export const TransformedResponse = [
   },
   {
     resultType: 'jira-object-result',
-    resultId: -3,
+    resultId: '-3',
     name: 'Viewed recently',
     href: 'https://product-fabric.atlassian.net/issues/?filter=-3',
     analyticsType: 'recent-jira',

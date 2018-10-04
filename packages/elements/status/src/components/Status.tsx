@@ -18,6 +18,7 @@ const MAX_WIDTH = 200;
 export interface Props {
   text: string;
   color: Color;
+  localId?: string;
 }
 
 export function Status(props: Props) {

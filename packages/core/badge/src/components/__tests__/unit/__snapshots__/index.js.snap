@@ -21,6 +21,7 @@ exports[`snapshot 1`] = `
   theme={[Function]}
 >
   <Theme
+    theme={[Function]}
     values={[Function]}
   >
     <Ak.Badge.Container

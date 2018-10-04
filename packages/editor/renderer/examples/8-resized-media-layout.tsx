@@ -14,6 +14,7 @@ export default function Example() {
       dataProviders={providerFactory}
       document={document}
       appearance="full-page"
+      allowDynamicTextSizing
     />
   );
 }

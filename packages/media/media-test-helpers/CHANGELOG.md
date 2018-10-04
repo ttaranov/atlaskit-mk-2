@@ -1,5 +1,21 @@
 # @atlaskit/media-test-helpers
 
+## 18.2.2
+- [patch] Updated dependencies [2d848cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d848cd)
+  - @atlaskit/media-core@24.0.3
+  - @atlaskit/media-store@7.0.0
+
+## 18.2.1
+- [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
+  - @atlaskit/dropdown-menu@6.1.17
+  - @atlaskit/select@6.0.2
+  - @atlaskit/media-card@37.0.1
+  - @atlaskit/media-ui@6.0.1
+  - @atlaskit/icon@14.0.0
+
+## 18.2.0
+- [minor] Add I18n support to media-card [dae7792](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dae7792)
+
 ## 18.1.0
 - [minor] Support external image identifiers in media-card [82c8bb9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/82c8bb9)
 

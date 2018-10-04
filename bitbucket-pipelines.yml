@@ -92,7 +92,7 @@ pipelines:
             caches:
               - node
         - step:
-            name: Browser Testing
+            name: Browser Integration Testing
             script:
               - source ./build-setup.sh
               - bolt install --pure-lockfile
@@ -136,9 +136,6 @@ pipelines:
             - yarn build:copy
             - yarn build:zip
             - yarn deploy:production
-            - cd ..
-            # This is a sanity check to make sure the website renders on all browsers without error
-            - yarn test:webdriver:browserstack website
           caches:
             - node
 

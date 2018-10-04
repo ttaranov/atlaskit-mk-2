@@ -1,6 +1,7 @@
 // @flow
 import React, { Component } from 'react';
 import CodeSandboxer from 'react-codesandboxer';
+import { replaceImports } from 'codesandboxer';
 import { replaceSrc } from '@atlaskit/docs';
 
 const getExampleUrl = (groupId, packageId, exampleId) =>
@@ -94,7 +95,9 @@ export default class CodeSandbox extends Component<{}, {}> {
         }}
         importReplacements={[
           [`packages/${groupId}/${packageId}/src`, pkgJSON.name],
-          ['packages/core/icon/glyph/*', '@atlaskit/icon/glyph/'],
+          ['packages/core/icon/glyph/*', `${pkgJSON.name}/glyph/`],
+          ['packages/core/icon-file-type/glyph/*', `${pkgJSON.name}/glyph/`],
+          ['packages/core/icon-object/glyph/*', `${pkgJSON.name}/glyph/`],
           ...cssLoaderExceptions(pkgJSON.name, groupId, packageId),
         ]}
         dependencies={{

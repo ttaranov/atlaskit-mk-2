@@ -1,5 +1,5 @@
 import { ConfluenceClient } from '../../../api/ConfluenceClient';
-import { makeConfluenceObjectResult } from '../_test-util';
+import { makeConfluenceObjectResult, makePersonResult } from '../_test-util';
 import { Result } from '../../../model/Result';
 
 const EMPTY_PROMISE = () => Promise.resolve([]);
@@ -7,7 +7,7 @@ const EMPTY_PROMISE = () => Promise.resolve([]);
 export const noResultsConfluenceClient: ConfluenceClient = {
   getRecentItems: EMPTY_PROMISE,
   getRecentSpaces: EMPTY_PROMISE,
-  searchQuickNav: EMPTY_PROMISE,
+  searchPeopleInQuickNav: EMPTY_PROMISE,
 };
 
 export const makeConfluenceClient = (
@@ -27,15 +27,15 @@ export function makeSingleResultQuickNavSearchResponse(
 
 export const singleResultQuickNav = (result?: Result): ConfluenceClient => {
   return makeConfluenceClient({
-    searchQuickNav(query: string) {
-      return Promise.resolve([result || makeConfluenceObjectResult()]);
+    searchPeopleInQuickNav(query: string) {
+      return Promise.resolve([result || makePersonResult()]);
     },
   });
 };
 
 export const errorConfluenceQuickNavSearch: ConfluenceClient = makeConfluenceClient(
   {
-    searchQuickNav(query: string) {
+    searchPeopleInQuickNav(query: string) {
       return Promise.reject('error');
     },
   },

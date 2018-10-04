@@ -4,7 +4,7 @@ import { EditorView } from 'prosemirror-view';
 import TaskIcon from '@atlaskit/icon/glyph/editor/task';
 import { analyticsDecorator as analytics } from '../../../../analytics';
 import ToolbarButton from '../../../../ui/ToolbarButton';
-import { changeToTaskDecision } from '../../commands';
+import { insertTaskDecision } from '../../commands';
 
 export interface Props {
   editorView?: EditorView;
@@ -40,7 +40,7 @@ export default class ToolbarTask extends PureComponent<Props, State> {
     if (!editorView) {
       return false;
     }
-    changeToTaskDecision(editorView, 'taskList');
+    insertTaskDecision(editorView, 'taskList');
     return true;
   };
 }

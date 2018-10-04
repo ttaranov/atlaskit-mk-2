@@ -1,7 +1,9 @@
 // @flow
 import styled from 'styled-components';
+import { gridSize } from '@atlaskit/theme';
 
 export const Container = styled.div`
+  margin-bottom: ${gridSize() * 3}px;
   position: relative;
 `;
 

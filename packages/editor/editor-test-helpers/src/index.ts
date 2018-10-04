@@ -109,3 +109,4 @@ export {
   DelayedCardMockProvider,
 } from './card-provider';
 export * from './enzyme';
+export { compareSelection } from './selection';

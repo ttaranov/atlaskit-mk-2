@@ -21,7 +21,7 @@ import {
   ExpandIconWrapper,
   Shortcut,
 } from '../../../../ui/styles';
-import { changeToTaskDecision } from '../../../tasks-and-decisions/commands';
+import { insertTaskDecision } from '../../../tasks-and-decisions/commands';
 import { toggleBulletList, toggleOrderedList } from '../../commands';
 
 export const messages = defineMessages({
@@ -237,7 +237,7 @@ class ToolbarLists extends PureComponent<Props & InjectedIntlProps, State> {
     if (!editorView) {
       return false;
     }
-    changeToTaskDecision(editorView, 'taskList');
+    insertTaskDecision(editorView, 'taskList');
     return true;
   };
 

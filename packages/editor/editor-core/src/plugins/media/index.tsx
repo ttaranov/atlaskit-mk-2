@@ -6,6 +6,7 @@ import { EditorPlugin } from '../../types';
 import { legacyNodeViewFactory } from '../../nodeviews';
 import WithPluginState from '../../ui/WithPluginState';
 import { pluginKey as widthPluginKey } from '../width';
+import { messages } from '../insert-block/ui/ToolbarInsertBlock';
 
 import {
   stateKey as pluginKey,
@@ -37,6 +38,7 @@ export interface MediaOptions {
   allowMediaGroup?: boolean;
   customDropzoneContainer?: HTMLElement;
   customMediaPicker?: CustomMediaPicker;
+  allowResizing?: boolean;
 }
 
 export interface MediaSingleOptions {
@@ -96,19 +98,22 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
                   portalProviderAPI,
                   providerFactory,
                   {
-                    mediaSingle: ({ view, node, ...props }) => (
+                    mediaSingle: ({ view, node, ...mediaSingleProps }) => (
                       <WithPluginState
                         editorView={view}
                         eventDispatcher={eventDispatcher}
                         plugins={{
-                          width: widthPluginKey,
+                          widthState: widthPluginKey,
                         }}
-                        render={({ width }) => (
+                        render={({ widthState }) => (
                           <ReactMediaSingleNode
                             view={view}
                             node={node}
-                            width={width}
-                            {...props}
+                            containerWidth={widthState.width}
+                            lineLength={widthState.lineLength}
+                            isResizable={options && options.allowResizing}
+                            appearance={props.appearance}
+                            {...mediaSingleProps}
                           />
                         )}
                       />
@@ -175,12 +180,14 @@ const mediaPlugin = (options?: MediaOptions): EditorPlugin => ({
   },
 
   pluginsOptions: {
-    quickInsert: [
+    quickInsert: ({ formatMessage }) => [
       {
-        title: 'Files and images',
+        title: formatMessage(messages.filesAndImages),
         priority: 200,
         keywords: ['media'],
-        icon: () => <EditorImageIcon label="Files and images" />,
+        icon: () => (
+          <EditorImageIcon label={formatMessage(messages.filesAndImages)} />
+        ),
         action(insert, state) {
           const pluginState = pluginKey.getState(state);
           pluginState.showMediaPicker();

@@ -4,11 +4,11 @@ import React, { PureComponent } from 'react';
 
 import { navigationItemClicked } from '../../common/analytics';
 import InteractionStateManager from '../InteractionStateManager';
-import { styleReducerNoOp } from '../../theme';
+import { styleReducerNoOp, withGlobalTheme } from '../../theme';
 import GlobalItemPrimitive from './primitives';
 import type { GlobalItemProps } from './types';
 
-class GlobalItem extends PureComponent<GlobalItemProps> {
+export class GlobalItemBase extends PureComponent<GlobalItemProps> {
   static defaultProps = {
     label: '',
     size: 'large',
@@ -17,10 +17,25 @@ class GlobalItem extends PureComponent<GlobalItemProps> {
   renderItem = (state: *) => <GlobalItemPrimitive {...state} {...this.props} />;
 
   render() {
-    return <InteractionStateManager>{this.renderItem}</InteractionStateManager>;
+    const {
+      size,
+      theme: { mode },
+    } = this.props;
+    const { itemWrapper: itemWrapperStyles } = styleReducerNoOp(
+      mode.globalItem({ size }),
+    );
+    return (
+      <div css={itemWrapperStyles}>
+        <InteractionStateManager>{this.renderItem}</InteractionStateManager>
+      </div>
+    );
   }
 }
 
-export default navigationItemClicked(GlobalItem, 'globalItem');
+export default navigationItemClicked(
+  withGlobalTheme(GlobalItemBase),
+  'globalItem',
+  true,
+);
 
 export type { GlobalItemProps };

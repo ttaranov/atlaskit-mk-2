@@ -1,0 +1,37 @@
+{
+  "name": "@atlaskit/analytics-viewer",
+  "version": "0.1.0",
+  "config": {
+    "access": "private"
+  },
+  "description": "Analytics viewer for the exemples",
+  "main": "dist/es5/index.js",
+  "modules": "dist/es2015/index.js",
+  "types": "dist/es5/types.d.ts",
+  "atlaskit:src": "src/index.ts",
+  "files": [
+    "dist/es5/**/*.js",
+    "dist/es5/**/*.d.ts",
+    "dist/es5/**/*.json",
+    "dist/es2015/**/*.js",
+    "dist/es2015/**/*.d.ts",
+    "dist/es2015/**/*.json",
+    "src"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/atlassian/atlaskit-mk-2"
+  },
+  "author": "Atlassian Pty Ltd",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@atlaskit/analytics-next": "^3.0.7",
+    "@atlaskit/analytics-next-types": "^3.1.1",
+    "styled-components": "^3.2.6",
+    "typescript": "~3.0.3"
+  },
+  "peerDependencies": {
+    "react": "^16.4.0"
+  },
+  "devDependencies": {}
+}

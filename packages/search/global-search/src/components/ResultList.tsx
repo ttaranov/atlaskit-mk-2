@@ -13,12 +13,20 @@ import {
   ConfluenceObjectResult,
 } from '../model/Result';
 import { getAvatarForConfluenceObjectResult } from '../util/confluence-avatar-util';
+import { getDefaultAvatar } from '../util/jira-avatar-util';
 
 export interface Props {
   results: Result[];
   sectionIndex: number;
   analyticsData?: {};
 }
+
+const extractAvatarData = (jiraResult: JiraResult) =>
+  jiraResult.avatarUrl
+    ? { avatarUrl: jiraResult.avatarUrl }
+    : {
+        avatar: getDefaultAvatar(jiraResult.contentType),
+      };
 
 export default class ResultList extends React.Component<Props> {
   render() {
@@ -32,6 +40,7 @@ export default class ResultList extends React.Component<Props> {
         containerId: result.containerId,
         experimentId: result.experimentId,
         ...this.props.analyticsData,
+        contentType: result.contentType,
       };
 
       switch (resultType) {
@@ -48,16 +57,13 @@ export default class ResultList extends React.Component<Props> {
               contentType={confluenceResult.contentType}
               containerName={confluenceResult.containerName}
               avatar={getAvatarForConfluenceObjectResult(confluenceResult)}
-              analyticsData={{
-                ...analyticsData,
-                contentType: confluenceResult.contentType,
-              }}
+              analyticsData={analyticsData}
             />
           );
         }
         case ResultType.JiraObjectResult: {
           const jiraResult = result as JiraResult;
-
+          const avatarData = extractAvatarData(jiraResult);
           return (
             <ObjectResultComponent
               key={jiraResult.resultId}
@@ -67,7 +73,8 @@ export default class ResultList extends React.Component<Props> {
               type={jiraResult.analyticsType}
               objectKey={jiraResult.objectKey}
               containerName={jiraResult.containerName}
-              avatarUrl={jiraResult.avatarUrl}
+              {...avatarData}
+              contentType={jiraResult.contentType}
               analyticsData={analyticsData}
             />
           );
@@ -83,6 +90,7 @@ export default class ResultList extends React.Component<Props> {
               href={containerResult.href}
               type={containerResult.analyticsType}
               avatarUrl={containerResult.avatarUrl}
+              contentType={containerResult.contentType}
               analyticsData={analyticsData}
             />
           );

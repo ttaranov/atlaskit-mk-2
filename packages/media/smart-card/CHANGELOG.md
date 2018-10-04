@@ -1,5 +1,18 @@
 # @atlaskit/smart-card
 
+## 8.2.4
+- [patch] Removes usages of rxjs/Rx  [d098f25](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d098f25)
+
+## 8.2.3
+- [patch] Fix rxjs and date-fns import in TS components [ab15cee](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ab15cee)
+
+## 8.2.2
+- [patch] Updated dependencies [dae7792](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dae7792)
+  - @atlaskit/media-ui@6.0.0
+
+## 8.2.1
+- [patch] Fix rxjs imports to only import what's needed [2e0ce2b](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2e0ce2b)
+
 ## 8.2.0
 - [minor] Added `isSelected` to the `Card` component (inline resolved view) [6666d82](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/6666d82)
 

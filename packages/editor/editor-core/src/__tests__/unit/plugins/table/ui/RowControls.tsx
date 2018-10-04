@@ -1,4 +1,3 @@
-import { mount } from 'enzyme';
 import * as React from 'react';
 import { selectTable, getCellsInRow, selectRow } from 'prosemirror-utils';
 import { Node } from 'prosemirror-model';
@@ -13,15 +12,14 @@ import {
   tdCursor,
   td,
   thEmpty,
+  mountWithIntl,
 } from '@atlaskit/editor-test-helpers';
-import AkButton from '@atlaskit/button';
 import { pluginKey } from '../../../../../plugins/table/pm-plugins/main';
-import { TablePluginState } from '../../../../../plugins/table/types';
-import RowControls from '../../../../../plugins/table/ui/TableFloatingControls/RowControls';
 import {
-  RowControlsButtonWrap,
-  HeaderButton as RowControlsButton,
-} from '../../../../../plugins/table/ui/TableFloatingControls/RowControls/styles';
+  TablePluginState,
+  TableCssClassName as ClassName,
+} from '../../../../../plugins/table/types';
+import RowControls from '../../../../../plugins/table/ui/TableFloatingControls/RowControls';
 import TableFloatingControls from '../../../../../plugins/table/ui/TableFloatingControls';
 import {
   hoverRows,
@@ -31,8 +29,10 @@ import {
 } from '../../../../../plugins/table/actions';
 import { tablesPlugin } from '../../../../../plugins';
 import { setTextSelection } from '../../../../../index';
-import DeleteRowButton from '../../../../../plugins/table/ui/TableFloatingControls/RowControls/DeleteRowButton';
-import InsertRowButton from '../../../../../plugins/table/ui/TableFloatingControls/RowControls/InsertRowButton';
+
+const RowControlsButtonWrap = `.${ClassName.ROW_CONTROLS_BUTTON_WRAP}`;
+const DeleteRowButton = `.${ClassName.CONTROLS_DELETE_BUTTON_WRAP}`;
+const InsertRowButton = `.${ClassName.CONTROLS_INSERT_BUTTON_WRAP}`;
 
 const selectRows = rowIdxs => tr => {
   const cells: { pos: number; start: number; node: Node }[] = rowIdxs.reduce(
@@ -66,7 +66,7 @@ describe('RowControls', () => {
           rows.push(tr(tdEmpty));
         }
         const { editorView } = editor(doc(p('text'), table()(...rows)));
-        const floatingControls = mount(
+        const floatingControls = mountWithIntl(
           <TableFloatingControls
             tableRef={document.querySelector('table')!}
             editorView={editorView}
@@ -92,7 +92,7 @@ describe('RowControls', () => {
           ),
         );
 
-        const floatingControls = mount(
+        const floatingControls = mountWithIntl(
           <TableFloatingControls
             tableRef={document.querySelector('table')!}
             editorView={editorView}
@@ -105,7 +105,7 @@ describe('RowControls', () => {
 
         // now hover the row
         floatingControls
-          .find(RowControlsButton)
+          .find(RowControlsButtonWrap)
           .at(row)
           .find('button')
           .first()
@@ -117,7 +117,7 @@ describe('RowControls', () => {
 
         // release the hover
         floatingControls
-          .find(RowControlsButton)
+          .find(RowControlsButtonWrap)
           .at(row)
           .find('button')
           .first()
@@ -143,7 +143,7 @@ describe('RowControls', () => {
           ),
         );
 
-        const floatingControls = mount(
+        const floatingControls = mountWithIntl(
           <RowControls
             tableRef={document.querySelector('table')!}
             editorView={editorView}
@@ -168,9 +168,11 @@ describe('RowControls', () => {
 
         // now click the row
         floatingControls
-          .find(RowControlsButton)
+          .find(RowControlsButtonWrap)
           .at(row)
-          .simulate('click');
+          .find('button')
+          .first()
+          .simulate('mousedown');
 
         // selecting the row mutates the editor state (which is inside editorView)
         // we set tableHeight prop to trick shouldComponentUpdate and force re-render
@@ -195,7 +197,7 @@ describe('RowControls', () => {
         ),
       );
 
-      const floatingControls = mount(
+      const floatingControls = mountWithIntl(
         <TableFloatingControls
           tableRef={document.querySelector('table')!}
           editorView={editorView}
@@ -218,7 +220,7 @@ describe('RowControls', () => {
       ),
     );
 
-    const floatingControls = mount(
+    const floatingControls = mountWithIntl(
       <RowControls
         tableRef={document.querySelector('table')!}
         editorView={editorView}
@@ -265,7 +267,7 @@ describe('RowControls', () => {
 
     const deleteSelectedRowsMock = jest.fn();
 
-    const floatingControls = mount(
+    const floatingControls = mountWithIntl(
       <RowControls
         tableRef={document.querySelector('table')!}
         editorView={editorView}
@@ -296,7 +298,7 @@ describe('RowControls', () => {
 
     floatingControls
       .find(DeleteRowButton)
-      .find(AkButton)
+      .find('button')
       .simulate('click');
 
     // ensure we called remove
@@ -316,7 +318,7 @@ describe('RowControls', () => {
       ),
     );
 
-    const floatingControls = mount(
+    const floatingControls = mountWithIntl(
       <RowControls
         tableRef={document.querySelector('table')!}
         editorView={editorView}
@@ -362,7 +364,7 @@ describe('RowControls', () => {
         ),
       );
 
-      const floatingControls = mount(
+      const floatingControls = mountWithIntl(
         <RowControls
           tableRef={document.querySelector('table')!}
           editorView={editorView}
@@ -409,7 +411,7 @@ describe('RowControls', () => {
         ),
       );
 
-      const floatingControls = mount(
+      const floatingControls = mountWithIntl(
         <RowControls
           tableRef={document.querySelector('table')!}
           editorView={editorView}
@@ -456,7 +458,7 @@ describe('RowControls', () => {
         ),
       );
 
-      const floatingControls = mount(
+      const floatingControls = mountWithIntl(
         <RowControls
           tableRef={document.querySelector('table')!}
           editorView={editorView}

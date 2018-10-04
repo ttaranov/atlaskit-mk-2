@@ -5,8 +5,49 @@ import styled from 'styled-components';
 import Button from '@atlaskit/button';
 import { FieldTextStateless } from '@atlaskit/field-text';
 
-import allIcons from '../utils/icons';
+import { iconInfo as objectIconInfo } from '@atlaskit/icon-object';
+import { iconInfo as fileTypeIconInfo } from '@atlaskit/icon-file-type';
+
+import iconIcons from '../utils/icons';
 import IconExplorerCell from './utils/IconExplorerCell';
+import logoIcons from '../utils/logoIcons';
+
+const getKeywords = logoMap =>
+  Object.values(logoMap).reduce(
+    // $FlowFixMe
+    (existingKeywords, { keywords }) => [...existingKeywords, ...keywords],
+  );
+
+const allIcons = {
+  first: {
+    componentName: 'divider-icons',
+    component: () => 'exported from @atlaskit/icon',
+    keywords: getKeywords(iconIcons),
+    divider: true,
+  },
+  ...iconIcons,
+  firstTwo: {
+    componentName: 'divider-product',
+    component: () => 'exported from @atlaskit/logo',
+    keywords: getKeywords(logoIcons),
+    divider: true,
+  },
+  ...logoIcons,
+  second: {
+    componentName: 'divider-object-icons',
+    component: () => 'exported from @atlaskit/icon-object',
+    keywords: getKeywords(objectIconInfo),
+    divider: true,
+  },
+  ...objectIconInfo,
+  third: {
+    componentName: 'divider-file-type-icons',
+    component: () => 'exported from @atlaskit/icon-file-type',
+    keywords: getKeywords(fileTypeIconInfo),
+    divider: true,
+  },
+  ...fileTypeIconInfo,
+};
 
 const IconGridWrapper = styled.div`
   padding: 10px 5px 0;
@@ -30,6 +71,7 @@ type iconType = {
   component: Class<Component<*>>,
   componentName: string,
   package: string,
+  divider?: boolean,
 };
 
 const filterIcons = (icons, query) => {
@@ -60,8 +102,7 @@ class IconAllExample extends Component<{}, State> {
 
   renderIcons = () => {
     const icons: iconType[] = filterIcons(allIcons, this.state.query);
-
-    return icons.length ? (
+    return icons.length > 3 ? (
       <IconExplorerGrid>
         {icons.map(icon => (
           <IconExplorerCell {...icon} key={icon.componentName} />

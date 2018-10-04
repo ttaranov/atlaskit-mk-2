@@ -1,5 +1,10 @@
 # @atlaskit/conversation
 
+## 10.0.0
+- [major] Reactions state management revisited [7e8d079](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e8d079)
+- [major] Updated dependencies [7e8d079](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/7e8d079)
+  - @atlaskit/reactions@14.0.0
+
 ## 9.3.8
 - [patch] Updated dependencies [ef76f1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef76f1f)
   - @atlaskit/comment@6.0.16

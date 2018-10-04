@@ -1,4 +1,4 @@
-import { toolbarSize } from './styles';
+import { tableToolbarSize } from '../styles';
 import { EditorState, Selection } from 'prosemirror-state';
 import {
   isRowSelected,
@@ -25,7 +25,7 @@ export const getLineMarkerWidth = (
       : 0;
 
   return Math.min(
-    offsetWidth + toolbarSize + wrapperPadding,
+    offsetWidth + tableToolbarSize + wrapperPadding,
     parentElement!.offsetWidth + TABLE_PADDING + wrapperPadding - scrollDiff,
   );
 };

@@ -35,7 +35,7 @@ const extensionIcons = [
   },
 ];
 
-export default (props: Props) => {
+export default function ExtensionEditPanel(this: any, props: Props) {
   const { element, stickToolbarToBottom, layout, showLayoutOptions } = props;
   if (!element) {
     return null;
@@ -73,4 +73,4 @@ export default (props: Props) => {
       </Toolbar>
     </Popup>
   );
-};
+}

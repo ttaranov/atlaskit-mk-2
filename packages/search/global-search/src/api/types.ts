@@ -7,6 +7,7 @@ export enum Scope {
   JiraProject = 'jira.project',
   JiraFilter = 'jira.filter',
   JiraBoardProjectFilter = 'jira.board,filter,project',
+  People = 'cpus.user',
 }
 
 type ConfluenceItemContentType = 'page' | 'blogpost';
@@ -71,3 +72,11 @@ export interface JiraItemV2 {
 }
 
 export type JiraItem = JiraItemV1 | JiraItemV2;
+
+export interface PersonItem {
+  userId: string;
+  displayName: string;
+  nickName?: string;
+  title?: string;
+  primaryPhoto: string;
+}

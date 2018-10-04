@@ -57,6 +57,7 @@ const mdToPmMapping = {
     attrs: (tok: any) => ({ level: +tok.tag.slice(1) }),
   },
   softbreak: { node: 'hardBreak' },
+  hardbreak: { node: 'hardBreak' },
   code_block: { block: 'codeBlock' },
   list_item: { block: 'listItem' },
   bullet_list: { block: 'bulletList' },

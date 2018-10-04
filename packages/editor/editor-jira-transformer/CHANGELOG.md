@@ -1,5 +1,8 @@
 # @atlaskit/editor-jira-transformer
 
+## 5.0.8
+- [patch] ED-5299: added mediaSingle to jira transformer [d73f846](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/d73f846)
+
 ## 5.0.7
 - [patch] Updated dependencies [ef76f1f](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/ef76f1f)
   - @atlaskit/editor-json-transformer@4.0.13

@@ -32,8 +32,8 @@ describe('Select', () => {
     expect(createAndFireEvent).toHaveBeenCalledWith('atlaskit');
     expect(withAnalyticsEvents).toHaveBeenLastCalledWith({
       onChange: {
-        action: 'selected',
-        actionSubject: 'item',
+        action: 'changed',
+        actionSubject: 'option',
         attributes: {
           componentName: 'select',
           packageName,

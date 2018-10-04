@@ -6,6 +6,7 @@ import { NodeSelection } from 'prosemirror-state';
 
 import { EditorPlugin } from '../../types';
 import WithPluginState from '../../ui/WithPluginState';
+import { messages } from '../insert-block/ui/ToolbarInsertBlock';
 import { insertDate, setDatePickerAt } from './actions';
 import createDatePlugin, { DateState, pluginKey } from './plugin';
 import keymap from './keymap';
@@ -64,12 +65,12 @@ const datePlugin: EditorPlugin = {
   },
 
   pluginsOptions: {
-    quickInsert: [
+    quickInsert: ({ formatMessage }) => [
       {
-        title: 'Date',
+        title: formatMessage(messages.date),
         priority: 800,
         keywords: ['time', '/'],
-        icon: () => <EditorDateIcon label="Date" />,
+        icon: () => <EditorDateIcon label={formatMessage(messages.date)} />,
         action(insert, state) {
           const dateNode = state.schema.nodes.date.createChecked({
             timestamp: Date.now(),

@@ -38,6 +38,7 @@ const utils = require('@atlaskit/webpack-config/config/utils');
 const HOST = 'localhost';
 const PORT = 9000;
 const WEBPACK_BUILD_TIMEOUT = 10000;
+const WEBPACK_MAX_SAFE_INTEGER = 4294967295;
 const CHANGED_PACKAGES = process.env.CHANGED_PACKAGES;
 
 let server;
@@ -86,6 +87,7 @@ async function getPackagesWithTests() /*: Promise<Array<string>> */ {
 //
 async function startDevServer() {
   const workspacesGlob = await getPackagesWithTests();
+  const isWatchEnabled = process.env.WATCH === 'true';
   const mode = 'development';
   const websiteEnv = 'local';
   const projectRoot = (await bolt.getProject({ cwd: process.cwd() })).dir;
@@ -96,9 +98,22 @@ async function startDevServer() {
       )
     : workspaces;
 
-  const globs = workspacesGlob
+  let globs = workspacesGlob
     ? utils.createWorkspacesGlob(flattenDeep(filteredWorkspaces), projectRoot)
     : utils.createDefaultGlob();
+
+  /* At the moment, the website does not build a package and it is not possible to test it.
+  ** The current workaround, we build another package that builds the homepage and indirectly test the website.
+  ** We picked the package polyfills:
+   - the package is internal.
+   - no integration tests will be added.
+   - changes to the package will not impact the build system.
+  */
+  if (globs.indexOf('website') === -1) {
+    globs = globs.map(glob =>
+      glob.replace('website', 'packages/core/polyfills'),
+    );
+  }
 
   if (!globs.length) {
     console.info('Nothing to run or pattern does not match!');
@@ -112,7 +127,17 @@ async function startDevServer() {
     websiteDir: path.join(__dirname, '../../..', 'website'),
   });
 
-  const compiler = webpack(config);
+  let extraOpts = {};
+  if (!isWatchEnabled) {
+    extraOpts = {
+      watch: false,
+      watchOptions: {
+        poll: WEBPACK_MAX_SAFE_INTEGER,
+      },
+    };
+  }
+
+  const compiler = webpack({ ...config, ...extraOpts });
 
   //
   // Starting Webpack Dev Server
@@ -133,17 +158,18 @@ async function startDevServer() {
     hot: false,
     inline: false,
     watchOptions: {
-      ignored: ['**/__snapshots__/**', '**/__image_snapshots__/**'],
+      poll: WEBPACK_MAX_SAFE_INTEGER,
     },
   });
 
   return new Promise((resolve, reject) => {
     let hasValidDepGraph = true;
 
-    compiler.plugin('invalid', () => {
+    compiler.plugin('invalid', fileName => {
       hasValidDepGraph = false;
       console.log(
         'Something has changed and Webpack needs to invalidate dependencies graph',
+        fileName,
       );
     });
 
@@ -152,7 +178,7 @@ async function startDevServer() {
       setTimeout(() => {
         if (hasValidDepGraph) {
           resolve();
-          console.log('Compiled Packages!!');
+          console.log('Compiled Packages!');
         }
       }, WEBPACK_BUILD_TIMEOUT);
     });

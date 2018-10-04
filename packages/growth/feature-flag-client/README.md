@@ -20,7 +20,9 @@ const client = new FrontendFeatureFlagClient({
         ruleId: '111-bbbbb-ccc',
       },
     },
-    'my.boolean.flag': false,
+    'my.boolean.flag': {
+      value: false
+    },
     'my.json.flag': {
       value: {
         nav: 'blue',

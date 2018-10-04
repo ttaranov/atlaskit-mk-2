@@ -1,7 +1,8 @@
 // @flow
+
+import { colors, themed, withTheme } from '@atlaskit/theme';
 import React from 'react';
 import styled from 'styled-components';
-import { colors, themed } from '@atlaskit/theme';
 import type { PresenceType } from '../types';
 
 const Svg = props => (
@@ -15,24 +16,24 @@ const Svg = props => (
   />
 );
 
-const BusyCircle = styled.circle`
+const BusyCircle = withTheme(styled.circle`
   fill: ${themed({ light: colors.R300, dark: colors.R200 })};
-`;
-const BusyPath = styled.path`
+`);
+const BusyPath = withTheme(styled.path`
   fill: ${colors.background};
-`;
-const FocusPath = styled.path`
+`);
+const FocusPath = withTheme(styled.path`
   fill: ${colors.purple};
-`;
-const OfflineOuter = styled.path`
+`);
+const OfflineOuter = withTheme(styled.path`
   fill: ${themed({ light: colors.N200, dark: colors.DN100 })};
-`;
-const OfflineInner = styled.path`
+`);
+const OfflineInner = withTheme(styled.path`
   fill: ${themed({ light: colors.N40, dark: colors.DN500 })};
-`;
-const OnlineCircle = styled.circle`
+`);
+const OnlineCircle = withTheme(styled.circle`
   fill: ${themed({ light: colors.G300, dark: colors.G200 })};
-`;
+`);
 
 export default function getPresenceSvg(presence: PresenceType) {
   switch (presence) {

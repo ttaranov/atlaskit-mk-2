@@ -1,5 +1,21 @@
 # @atlaskit/media-filmstrip
 
+## 14.0.3
+- [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
+  - @atlaskit/docs@5.0.8
+  - @atlaskit/button@9.0.13
+  - @atlaskit/checkbox@5.0.2
+  - @atlaskit/field-radio-group@4.0.8
+  - @atlaskit/media-card@37.0.1
+  - @atlaskit/media-test-helpers@18.2.1
+  - @atlaskit/icon@14.0.0
+
+## 14.0.2
+- [patch] Updated dependencies [dae7792](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dae7792)
+  - @atlaskit/media-core@24.0.2
+  - @atlaskit/media-card@37.0.0
+  - @atlaskit/media-test-helpers@18.2.0
+
 ## 14.0.1
 - [patch] Support external image identifiers in media-card [82c8bb9](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/82c8bb9)
 

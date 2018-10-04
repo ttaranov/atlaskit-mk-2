@@ -5,7 +5,11 @@ import {
   MediaSingle as UIMediaSingle,
   MediaSingleLayout,
   WidthConsumer,
+  akEditorFullPageMaxWidth,
+  mapBreakpointToLayoutMaxWidth,
 } from '@atlaskit/editor-common';
+import { FullPagePadding } from '../../ui/Renderer/style';
+import { RendererAppearance } from '../../ui/Renderer';
 
 export interface Props {
   children: ReactElement<any>;
@@ -31,7 +35,12 @@ const ExtendedUIMediaSingle = styled(UIMediaSingle)`
 `;
 
 export default class MediaSingle extends Component<
-  { layout: MediaSingleLayout } & React.Props<any>,
+  {
+    layout: MediaSingleLayout;
+    width: number;
+    allowDynamicTextSizing?: boolean;
+    appearance: RendererAppearance;
+  } & React.Props<any>,
   State
 > {
   constructor(props) {
@@ -82,14 +91,26 @@ export default class MediaSingle extends Component<
       hideProgress,
     });
 
+    // TODO: put appearance-based padding into theme instead
+    const padding =
+      this.props.appearance === 'full-page' ? FullPagePadding * 2 : 0;
+
     return (
       <WidthConsumer>
-        {({ width: containerWidth }) => (
+        {({ width: containerWidth, breakpoint }) => (
           <ExtendedUIMediaSingle
             layout={props.layout}
             width={width}
             height={height}
             containerWidth={containerWidth}
+            lineLength={
+              containerWidth - padding >= akEditorFullPageMaxWidth
+                ? this.props.allowDynamicTextSizing
+                  ? mapBreakpointToLayoutMaxWidth(breakpoint)
+                  : akEditorFullPageMaxWidth
+                : containerWidth - padding
+            }
+            pctWidth={props.width}
           >
             {media}
           </ExtendedUIMediaSingle>

@@ -45,11 +45,7 @@ function runTests() {
 
 async function main() {
   const serverAlreadyRunning = await isReachable('http://localhost:9000');
-  // For testing the website package, there is no need to start the webpack server
-  if (
-    !serverAlreadyRunning &&
-    process.argv.slice(2).indexOf('website') === -1
-  ) {
+  if (!serverAlreadyRunning) {
     await webpack.startDevServer();
   }
   process.env.TEST_ENV === 'browserstack'
@@ -59,11 +55,7 @@ async function main() {
   const { code, signal } = await runTests();
 
   console.log(`Exiting tests with exit code: ${code} and signal: ${signal}`);
-  // For testing the website package, there is no need to stop the webpack server
-  if (
-    !serverAlreadyRunning &&
-    process.argv.slice(2).indexOf('website') === -1
-  ) {
+  if (!serverAlreadyRunning) {
     webpack.stopDevServer();
   }
   process.env.TEST_ENV === 'browserstack'

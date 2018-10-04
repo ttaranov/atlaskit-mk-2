@@ -8,14 +8,7 @@ import { JiraIcon } from '@atlaskit/logo';
 import SearchIcon from '@atlaskit/icon/glyph/search';
 import TrayIcon from '@atlaskit/icon/glyph/tray';
 
-import {
-  GlobalItem,
-  GlobalItemPrimitive,
-  light,
-  dark,
-  settings,
-  ThemeProvider,
-} from '../src';
+import { GlobalItem, light, dark, settings, ThemeProvider } from '../src';
 import { CONTENT_NAV_WIDTH } from '../src/common/constants';
 
 const themeModes = { light, dark, settings };
@@ -72,7 +65,7 @@ const variations: Array<VariationCategory> = [
     ],
   },
   {
-    itemComponent: GlobalItemPrimitive,
+    itemComponent: GlobalItem,
     title: 'State variations',
     items: [
       {
@@ -94,6 +87,30 @@ const variations: Array<VariationCategory> = [
         icon: TrayIcon,
         isActive: true,
         isHover: true,
+        size: 'small',
+      },
+      {
+        badge: ConfiguredBadge,
+        description: 'Selected',
+        icon: TrayIcon,
+        isSelected: true,
+        size: 'small',
+      },
+      {
+        badge: ConfiguredBadge,
+        description: 'Selected + hover',
+        icon: TrayIcon,
+        isHover: true,
+        isSelected: true,
+        size: 'small',
+      },
+      {
+        badge: ConfiguredBadge,
+        description: 'Selected + hover + active',
+        icon: TrayIcon,
+        isActive: true,
+        isHover: true,
+        isSelected: true,
         size: 'small',
       },
     ],
@@ -202,6 +219,7 @@ const ItemWrapper = props => (
     {...props}
   />
 );
+const ItemComponentWrapper = props => <div css={{ width: 32 }} {...props} />;
 const Description = ({ size, children }: ItemType) => (
   <div
     css={{
@@ -221,7 +239,9 @@ export default () => (
           <h3>{title}</h3>
           {items.map(({ description, ...item }) => (
             <ItemWrapper key={description}>
-              <ItemComponent {...item} />
+              <ItemComponentWrapper>
+                <ItemComponent {...item} />
+              </ItemComponentWrapper>
               <Description {...item}>{description}</Description>
             </ItemWrapper>
           ))}

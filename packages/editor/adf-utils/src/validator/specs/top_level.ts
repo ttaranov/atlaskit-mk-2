@@ -20,5 +20,5 @@ export default {
       'bodiedExtension',
     ],
   ],
-  minItems: 1,
+  minItems: 0,
 };

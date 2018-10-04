@@ -2,7 +2,11 @@
 import { mount, configure } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
 import React from 'react';
-import type { DropResult, DragUpdate, DragStart } from 'react-beautiful-dnd';
+import type {
+  DropResult,
+  DragUpdate,
+  DragStart,
+} from 'react-beautiful-dnd-next';
 import { getBox } from 'css-box-model';
 import Tree from '../../Tree';
 import { treeWithThreeLeaves } from '../../../../../mockdata/treeWithThreeLeaves';
@@ -17,6 +21,7 @@ const dragStart: DragStart = {
     droppableId: 'list',
     index: 1,
   },
+  mode: 'FLUID',
 };
 
 const dragUpdate: DragUpdate = {
@@ -25,6 +30,7 @@ const dragUpdate: DragUpdate = {
     droppableId: 'list',
     index: 4,
   },
+  combine: undefined,
 };
 
 const dropResult: DropResult = {
@@ -151,7 +157,21 @@ describe('@atlaskit/tree - Tree', () => {
         draggedItemId: dragStart.draggableId,
         source: dragStart.source,
         destination: dragStart.source,
+        mode: dragStart.mode,
       });
+    });
+    it('calls onDragStart if it is defined', () => {
+      const mockOnStartCb = jest.fn();
+      const instance = mount(
+        <Tree
+          tree={treeWithTwoBranches}
+          renderItem={mockRender}
+          onDragStart={mockOnStartCb}
+        />,
+      ).instance();
+      instance.onDragStart(dragStart);
+      expect(mockOnStartCb).toHaveBeenCalledTimes(1);
+      expect(mockOnStartCb).toHaveBeenCalledWith('1-1');
     });
   });
 
@@ -172,6 +192,31 @@ describe('@atlaskit/tree - Tree', () => {
         { parentId: '1-2', index: 1 },
       );
     });
+
+    it('calls props.onDragEnd when nesting successfully', () => {
+      const mockOnDragEnd = jest.fn();
+      const instance = mount(
+        <Tree
+          tree={treeWithTwoBranches}
+          renderItem={mockRender}
+          onDragEnd={mockOnDragEnd}
+        />,
+      ).instance();
+      const dropResultWithCombine = {
+        ...dropResult,
+        destination: undefined,
+        combine: {
+          draggableId: '1-2',
+          droppableId: 'list',
+        },
+      };
+      instance.onDragEnd(dropResultWithCombine);
+      expect(mockOnDragEnd).toHaveBeenCalledTimes(1);
+      expect(mockOnDragEnd).toBeCalledWith(
+        { parentId: '1-1', index: 0 },
+        { parentId: '1-2' },
+      );
+    });
   });
 
   describe('#onDragUpdate', () => {
@@ -185,6 +230,7 @@ describe('@atlaskit/tree - Tree', () => {
         draggedItemId: dragUpdate.draggableId,
         source: dragUpdate.source,
         destination: dragUpdate.destination,
+        mode: dragUpdate.mode,
       });
     });
   });
@@ -209,6 +255,7 @@ describe('@atlaskit/tree - Tree', () => {
         draggedItemId: dragStart.draggableId,
         source: dragStart.source,
         destination: dragStart.source,
+        mode: dragStart.mode,
         horizontalLevel: 1,
       });
     });

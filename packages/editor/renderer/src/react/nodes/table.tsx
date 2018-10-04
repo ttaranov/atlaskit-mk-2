@@ -1,5 +1,9 @@
 import * as React from 'react';
-import { calcTableWidth, WidthConsumer } from '@atlaskit/editor-common';
+import {
+  calcTableWidth,
+  WidthConsumer,
+  TableSharedCssClassName,
+} from '@atlaskit/editor-common';
 
 const Table = props => {
   const colgroup = props.columnWidths ? (
@@ -15,7 +19,7 @@ const Table = props => {
     <WidthConsumer>
       {({ width }) => (
         <div
-          className="table-container"
+          className={TableSharedCssClassName.TABLE_CONTAINER}
           data-layout={props.layout}
           style={{ width: calcTableWidth(props.layout, width, false) }}
         >

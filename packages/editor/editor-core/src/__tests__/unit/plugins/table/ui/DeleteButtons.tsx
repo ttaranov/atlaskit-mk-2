@@ -1,55 +1,24 @@
-import { mount } from 'enzyme';
 import * as React from 'react';
-import DeleteColumnButton from '../../../../../plugins/table/ui/TableFloatingControls/ColumnControls/DeleteColumnButton';
-import DeleteRowButton from '../../../../../plugins/table/ui/TableFloatingControls/RowControls/DeleteRowButton';
-import AkButton from '@atlaskit/button';
+import { mountWithIntl } from '@atlaskit/editor-test-helpers';
 
-[DeleteColumnButton, DeleteRowButton].forEach(DeleteButton => {
-  describe(DeleteButton.name, () => {
-    describe('callbacks', () => {
-      it('fires the onMouseEnter callback', () => {
-        const onMouseEnter = jest.fn();
-        const r = mount(<DeleteButton onMouseEnter={onMouseEnter} />);
-        r.simulate('mouseenter');
+import DeleteButton from '../../../../../plugins/table/ui/TableFloatingControls/DeleteButton';
 
-        expect(onMouseEnter).toBeCalled();
-      });
+describe('Table controls - DeleteButton', () => {
+  describe('callbacks', () => {
+    it('fires the onMouseEnter callback', () => {
+      const onMouseEnter = jest.fn();
+      const r = mountWithIntl(<DeleteButton onMouseEnter={onMouseEnter} />);
+      r.simulate('mouseenter');
 
-      it('fires the onMouseLeave callback', () => {
-        const onMouseLeave = jest.fn();
-        const r = mount(<DeleteButton onMouseLeave={onMouseLeave} />);
-        r.simulate('mouseleave');
-
-        expect(onMouseLeave).toBeCalled();
-      });
+      expect(onMouseEnter).toBeCalled();
     });
 
-    describe('appearance', () => {
-      it('changes the button appearance to danger on hover', () => {
-        const r = mount(<DeleteButton />);
-        expect(
-          r
-            .find(AkButton)
-            .first()
-            .props(),
-        ).not.toHaveProperty('appearance', 'danger');
+    it('fires the onMouseLeave callback', () => {
+      const onMouseLeave = jest.fn();
+      const r = mountWithIntl(<DeleteButton onMouseLeave={onMouseLeave} />);
+      r.simulate('mouseleave');
 
-        r.simulate('mouseenter');
-        expect(
-          r
-            .find(AkButton)
-            .first()
-            .props(),
-        ).toHaveProperty('appearance', 'danger');
-
-        r.simulate('mouseleave');
-        expect(
-          r
-            .find(AkButton)
-            .first()
-            .props(),
-        ).not.toHaveProperty('appearance', 'danger');
-      });
+      expect(onMouseLeave).toBeCalled();
     });
   });
 });

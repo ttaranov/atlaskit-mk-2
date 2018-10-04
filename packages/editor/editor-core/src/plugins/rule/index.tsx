@@ -2,6 +2,7 @@ import * as React from 'react';
 import HorizontalRuleIcon from '@atlaskit/icon/glyph/editor/divider';
 import { rule } from '@atlaskit/editor-common';
 import { EditorPlugin } from '../../types';
+import { messages } from '../insert-block/ui/ToolbarInsertBlock';
 import keymapPlugin from './pm-plugins/keymap';
 import inputRulePlugin from './pm-plugins/input-rule';
 
@@ -24,12 +25,14 @@ const rulePlugin: EditorPlugin = {
   },
 
   pluginsOptions: {
-    quickInsert: [
+    quickInsert: ({ formatMessage }) => [
       {
-        title: 'Divider',
+        title: formatMessage(messages.horizontalRule),
         keywords: ['horizontal rule', 'rule', 'line'],
         priority: 1200,
-        icon: () => <HorizontalRuleIcon label="Divider" />,
+        icon: () => (
+          <HorizontalRuleIcon label={formatMessage(messages.horizontalRule)} />
+        ),
         action(insert, state) {
           return insert(state.schema.nodes.rule.createChecked());
         },

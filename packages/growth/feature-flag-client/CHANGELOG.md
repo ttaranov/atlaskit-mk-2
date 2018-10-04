@@ -1,5 +1,14 @@
 # @atlaskit/feature-flag-client
 
+## 1.0.5
+- [patch] MEP-211: Supporting "value" attribute [8c0ddfc](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/8c0ddfc)
+
+## 1.0.4
+- [patch] MEP-103: Allowing simple flags to have strings or booleans as values [4e6f8ab](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/4e6f8ab)
+
+## 1.0.3
+- [patch] MEP-103 : Support short form of a feature flag for variants [0ac7332](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/0ac7332)
+
 ## 1.0.2
 - [patch] MEP-103: Including flagKey in the attributes [afd42f7](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/afd42f7)
 

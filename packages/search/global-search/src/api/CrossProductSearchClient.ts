@@ -1,4 +1,9 @@
-import { Result } from '../model/Result';
+import {
+  Result,
+  PersonResult,
+  ResultType,
+  AnalyticsType,
+} from '../model/Result';
 import { mapJiraItemToResult } from './JiraItemMapper';
 import { mapConfluenceItemToResult } from './ConfluenceItemMapper';
 import {
@@ -6,11 +11,10 @@ import {
   ServiceConfig,
   utils,
 } from '@atlaskit/util-service-support';
-import { Scope, ConfluenceItem, JiraItem } from './types';
+import { Scope, ConfluenceItem, JiraItem, PersonItem } from './types';
 
 export type CrossProductSearchResults = {
   results: Map<Scope, Result[]>;
-  experimentId?: string;
   abTest?: ABTest;
 };
 
@@ -20,7 +24,6 @@ export type SearchSession = {
 };
 
 export const EMPTY_CROSS_PRODUCT_SEARCH_RESPONSE: CrossProductSearchResults = {
-  experimentId: '',
   results: new Map(),
 };
 
@@ -28,7 +31,7 @@ export interface CrossProductSearchResponse {
   scopes: ScopeResult[];
 }
 
-export type SearchItem = ConfluenceItem | JiraItem;
+export type SearchItem = ConfluenceItem | JiraItem | PersonItem;
 
 export interface ABTest {
   abTestId: string;
@@ -40,9 +43,7 @@ export interface ScopeResult {
   id: Scope;
   error?: string;
   results: SearchItem[];
-  // @deprecated
-  experimentId?: string;
-  abTest?: ABTest;
+  abTest?: ABTest; // in case of an error abTest will be undefined
 }
 
 export interface CrossProductSearchClient {
@@ -51,6 +52,11 @@ export interface CrossProductSearchClient {
     searchSession: SearchSession,
     scopes: Scope[],
   ): Promise<CrossProductSearchResults>;
+
+  getAbTestData(
+    scope: Scope,
+    searchSession: SearchSession,
+  ): Promise<ABTest | undefined>;
 }
 
 export default class CrossProductSearchClientImpl
@@ -71,8 +77,24 @@ export default class CrossProductSearchClientImpl
     searchSession: SearchSession,
     scopes: Scope[],
   ): Promise<CrossProductSearchResults> {
-    const response = await this.makeRequest(query, scopes, searchSession);
+    const response = await this.makeRequest(
+      query.trim(),
+      scopes,
+      searchSession,
+    );
     return this.parseResponse(response, searchSession.sessionId);
+  }
+
+  public async getAbTestData(
+    scope: Scope,
+    searchSession: SearchSession,
+  ): Promise<ABTest | undefined> {
+    const response = await this.makeRequest('', [scope], searchSession);
+    const parsedResponse = this.parseResponse(
+      response,
+      searchSession.sessionId,
+    );
+    return Promise.resolve(parsedResponse.abTest);
   }
 
   private async makeRequest(
@@ -117,8 +139,7 @@ export default class CrossProductSearchClientImpl
     response: CrossProductSearchResponse,
     searchSessionId: string,
   ): CrossProductSearchResults {
-    let experimentId;
-    let abTest;
+    let abTest: ABTest | undefined;
     const results: Map<Scope, Result[]> = response.scopes
       .filter(scope => scope.results)
       .reduce((resultsMap, scopeResult) => {
@@ -129,17 +150,34 @@ export default class CrossProductSearchClientImpl
               scopeResult.id as Scope,
               result,
               searchSessionId,
-              scopeResult.experimentId,
+              scopeResult.abTest && scopeResult.abTest!.experimentId,
             ),
           ),
         );
-        experimentId = scopeResult.experimentId;
-        abTest = scopeResult.abTest;
+
+        if (!abTest) {
+          abTest = scopeResult.abTest;
+        }
         return resultsMap;
       }, new Map());
 
-    return { results, experimentId, abTest };
+    return { results, abTest };
   }
+}
+
+function mapPersonItemToResult(item: PersonItem): PersonResult {
+  const mention = item.nickName || item.displayName;
+
+  return {
+    resultType: ResultType.PersonResult,
+    resultId: 'people-' + item.userId,
+    name: item.displayName,
+    href: '/people/' + item.userId,
+    avatarUrl: item.primaryPhoto,
+    analyticsType: AnalyticsType.ResultPerson,
+    mentionName: mention,
+    presenceMessage: item.title || '',
+  };
 }
 
 function mapItemToResult(
@@ -158,6 +196,10 @@ function mapItemToResult(
   }
   if (scope.startsWith('jira')) {
     return mapJiraItemToResult(item as JiraItem);
+  }
+
+  if (scope === Scope.People) {
+    return mapPersonItemToResult(item as PersonItem);
   }
 
   throw new Error(`Non-exhaustive match for scope: ${scope}`);

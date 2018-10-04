@@ -15,7 +15,7 @@ const DEFAULT_JIRA_RESULTS_MAP: GenericResultMap = {
   containers: [],
 };
 
-export const sliceResults = (resultsMap: GenericResultMap) => {
+export const sliceResults = (resultsMap: GenericResultMap | null) => {
   const { objects, containers, people } = resultsMap
     ? resultsMap
     : DEFAULT_JIRA_RESULTS_MAP;
@@ -34,7 +34,7 @@ export const sliceResults = (resultsMap: GenericResultMap) => {
 };
 
 export const mapRecentResultsToUIGroups = (
-  recentlyViewedObjects: JiraResultsMap,
+  recentlyViewedObjects: JiraResultsMap | null,
 ): ResultsGroup[] => {
   const {
     objectsToDisplay,
@@ -62,7 +62,7 @@ export const mapRecentResultsToUIGroups = (
 };
 
 export const mapSearchResultsToUIGroups = (
-  searchResultsObjects: JiraResultsMap,
+  searchResultsObjects: JiraResultsMap | null,
 ): ResultsGroup[] => {
   const {
     objectsToDisplay,

@@ -1,8 +1,10 @@
 import CrossProductSearchClient, {
   CrossProductSearchResponse,
   SearchSession,
+  ScopeResult,
+  ABTest,
 } from '../../api/CrossProductSearchClient';
-import { Scope, ConfluenceItem } from '../../api/types';
+import { Scope, ConfluenceItem, PersonItem } from '../../api/types';
 import 'whatwg-fetch';
 import * as fetchMock from 'fetch-mock';
 import {
@@ -12,6 +14,7 @@ import {
   ContentType,
   ContainerResult,
   JiraResult,
+  PersonResult,
 } from '../../model/Result';
 import {
   generateRandomJiraBoard,
@@ -27,6 +30,12 @@ function apiWillReturn(state: CrossProductSearchResponse) {
 
   fetchMock.mock('localhost/quicksearch/v1', state, opts);
 }
+
+const abTest: ABTest = {
+  abTestId: 'abTestId',
+  controlId: 'controlId',
+  experimentId: 'experimentId',
+};
 
 const searchSession: SearchSession = {
   referrerId: 'referal-id',
@@ -88,7 +97,7 @@ describe('CrossProductSearchClient', () => {
         scopes: [
           {
             id: 'confluence.space' as Scope,
-            experimentId: '123',
+            abTest,
             results: [
               {
                 title: 'abc',
@@ -115,7 +124,7 @@ describe('CrossProductSearchClient', () => {
         Scope.ConfluenceSpace,
       ]);
       expect(result.results.get(Scope.ConfluenceSpace)).toHaveLength(1);
-      expect(result.experimentId).toBe('123');
+      expect(result.abTest!.experimentId).toBe('experimentId');
 
       const item = result.results.get(
         Scope.ConfluenceSpace,
@@ -135,7 +144,7 @@ describe('CrossProductSearchClient', () => {
         scopes: [
           {
             id: 'jira.issue' as Scope,
-            experimentId: '123',
+            abTest,
             results: [
               {
                 key: 'key-1',
@@ -158,7 +167,7 @@ describe('CrossProductSearchClient', () => {
         Scope.JiraIssue,
       ]);
       expect(result.results.get(Scope.JiraIssue)).toHaveLength(1);
-      expect(result.experimentId).toBe('123');
+      expect(result.abTest!.experimentId).toBe('experimentId');
 
       const item = result.results.get(Scope.JiraIssue)![0] as JiraResult;
       expect(item.name).toEqual('summary');
@@ -173,7 +182,7 @@ describe('CrossProductSearchClient', () => {
     it('should not break with error scopes', async () => {
       const jiraScopes = [Scope.JiraIssue, Scope.JiraBoardProjectFilter];
 
-      const issueErrorScope = {
+      const issueErrorScope: ScopeResult = {
         id: Scope.JiraIssue,
         error: 'something wrong',
         results: [],
@@ -202,12 +211,76 @@ describe('CrossProductSearchClient', () => {
     });
   });
 
+  describe('People', () => {
+    it('should return people results', async () => {
+      apiWillReturn({
+        scopes: [
+          {
+            id: 'cpus.user' as Scope,
+            results: [
+              {
+                userId: 'userId',
+                displayName: 'displayName',
+                nickName: 'nickName',
+                title: 'title',
+                primaryPhoto: 'primaryPhoto',
+              } as PersonItem,
+            ],
+          },
+        ],
+      });
+
+      const result = await searchClient.search(
+        'query',
+        { sessionId: 'sessionId' },
+        [Scope.People],
+      );
+      expect(result.results.get(Scope.People)).toHaveLength(1);
+
+      const item = result.results.get(Scope.People)![0] as PersonResult;
+      expect(item.resultId).toEqual('people-userId');
+      expect(item.name).toEqual('displayName');
+      expect(item.href).toEqual('/people/userId');
+      expect(item.analyticsType).toEqual(AnalyticsType.ResultPerson);
+      expect(item.resultType).toEqual(ResultType.PersonResult);
+      expect(item.avatarUrl).toEqual('primaryPhoto');
+      expect(item.mentionName).toEqual('nickName');
+      expect(item.presenceMessage).toEqual('title');
+    });
+
+    it('should have fall back for optional properties like title and nickName', async () => {
+      apiWillReturn({
+        scopes: [
+          {
+            id: 'cpus.user' as Scope,
+            results: [
+              {
+                userId: 'userId',
+                displayName: 'displayName',
+                primaryPhoto: 'primaryPhoto',
+              } as PersonItem,
+            ],
+          },
+        ],
+      });
+
+      const result = await searchClient.search(
+        'query',
+        { sessionId: 'sessionId' },
+        [Scope.People],
+      );
+
+      const item = result.results.get(Scope.People)![0] as PersonResult;
+      expect(item.mentionName).toEqual('displayName');
+      expect(item.presenceMessage).toEqual('');
+    });
+  });
+
   it('should return partial results when one scope has an error', async () => {
     apiWillReturn({
       scopes: [
         {
           id: 'jira.issue' as Scope,
-          experimentId: '123',
           results: [
             {
               key: 'key-1',
@@ -259,5 +332,48 @@ describe('CrossProductSearchClient', () => {
     expect(body.scopes).toEqual(
       expect.arrayContaining(['jira.issue', 'confluence.page,blogpost']),
     );
+  });
+
+  describe('ABTest', () => {
+    it('should get the ab test data', async () => {
+      const abTest = {
+        abTestId: 'abTestId',
+        experimentId: 'experimentId',
+        controlId: 'controlId',
+      };
+
+      apiWillReturn({
+        scopes: [
+          {
+            id: 'confluence.page,blogpost' as Scope,
+            results: [],
+            abTest,
+          },
+        ],
+      });
+
+      const result = await searchClient.getAbTestData(
+        Scope.ConfluencePageBlog,
+        searchSession,
+      );
+      expect(result).toEqual(abTest);
+    });
+
+    it('should not fail when there is no ab test data', async () => {
+      apiWillReturn({
+        scopes: [
+          {
+            id: 'confluence.page,blogpost' as Scope,
+            results: [],
+          },
+        ],
+      });
+
+      const result = await searchClient.getAbTestData(
+        Scope.ConfluencePageBlog,
+        searchSession,
+      );
+      expect(result).toBeUndefined();
+    });
   });
 });

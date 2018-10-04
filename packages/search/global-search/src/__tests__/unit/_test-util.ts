@@ -25,6 +25,7 @@ export function makeJiraObjectResult(
     resultType: ResultType.JiraObjectResult,
     objectKey: 'objectKey',
     containerName: 'containerName',
+    contentType: ContentType.JiraIssue,
     ...buildMockSearchResultProperties(),
     ...partial,
   };
@@ -50,6 +51,7 @@ export function makeConfluenceContainerResult(
   return {
     analyticsType: AnalyticsType.ResultConfluence,
     resultType: ResultType.GenericContainerResult,
+    contentType: ContentType.ConfluenceSpace,
     ...buildMockSearchResultProperties(),
     ...partial,
   };

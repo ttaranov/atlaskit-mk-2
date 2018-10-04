@@ -83,6 +83,9 @@
       "files": ["**/__tests__/**/*.js", "**/*.test.js"],
       "env": {
         "jest": true
+      },
+      "rules": {
+        "global-require": "off"
       }
     }
   ]

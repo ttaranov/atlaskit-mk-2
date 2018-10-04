@@ -1,5 +1,34 @@
 # @atlaskit/media-picker
 
+## 17.0.4
+- [patch] use Card instead of CardView in MediaPicker recents [081f4c6](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/081f4c6)
+
+## 17.0.3
+- [patch] Updated dependencies [2d848cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d848cd)
+  - @atlaskit/media-core@24.0.3
+  - @atlaskit/media-test-helpers@18.2.2
+  - @atlaskit/media-store@7.0.0
+
+## 17.0.2
+- [patch] Updated dependencies [65c6514](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/65c6514)
+  - @atlaskit/docs@5.0.8
+  - @atlaskit/button@9.0.13
+  - @atlaskit/dropdown-menu@6.1.17
+  - @atlaskit/flag@9.0.11
+  - @atlaskit/layer-manager@5.0.13
+  - @atlaskit/modal-dialog@7.0.2
+  - @atlaskit/toggle@5.0.9
+  - @atlaskit/media-card@37.0.1
+  - @atlaskit/media-editor@14.0.1
+  - @atlaskit/media-test-helpers@18.2.1
+  - @atlaskit/icon@14.0.0
+
+## 17.0.1
+- [patch] Updated dependencies [dae7792](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/dae7792)
+  - @atlaskit/media-core@24.0.2
+  - @atlaskit/media-card@37.0.0
+  - @atlaskit/media-test-helpers@18.2.0
+
 ## 17.0.0
 - [major] Update RXJS dependency to ^5.5.0 [927ae63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/927ae63)
 - [major] Updated dependencies [927ae63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/927ae63)
