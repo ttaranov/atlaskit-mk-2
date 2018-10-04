@@ -1,6 +1,10 @@
 // @flow
 
-import { type WithAnalyticsEventsProps } from '@atlaskit/analytics-next';
+import { type ComponentType } from 'react';
+import {
+  withAnalyticsEvents,
+  type WithAnalyticsEventsProps,
+} from '@atlaskit/analytics-next';
 
 export const navigationChannel = 'navigation';
 
@@ -23,3 +27,25 @@ export const navigationExpandedCollapsed = (
       trigger,
     },
   }).fire(navigationChannel);
+
+/** Internal analytics fired on the fabric navigation channel. Not intended to
+ * pass event instances to consumers.
+ */
+export const withGlobalItemAnalytics = (Component: ComponentType<*>) => {
+  return withAnalyticsEvents({
+    onClick: (createAnalyticsEvent, props) => {
+      if (props.id) {
+        const event = createAnalyticsEvent({
+          action: 'clicked',
+          actionSubject: 'navigationItem',
+          actionSubjectId: props.id,
+          attributes: {
+            navigationLayer: 'global',
+          },
+        });
+        event.fire(navigationChannel);
+      }
+      return null;
+    },
+  })(Component);
+};

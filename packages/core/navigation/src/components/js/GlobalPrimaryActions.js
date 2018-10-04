@@ -38,6 +38,7 @@ export default class GlobalPrimaryActions extends PureComponent<Props> {
         {primaryIcon ? (
           <GlobalPrimaryActionsPrimaryItem>
             <GlobalItem
+              id="productLogo"
               href={primaryItemHref}
               linkComponent={linkComponent}
               size="medium"
