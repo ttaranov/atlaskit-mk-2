@@ -8,16 +8,7 @@ import 'brace/ext/language_tools';
 import AceEditor from 'react-ace';
 import { Provider, Card } from '../src';
 
-const defaultText = `{
-  "@type": "Document",
-  "generator": {
-    "@type": "Application",
-    "name": "Confluence"
-  },
-  "url": "https://extranet.atlassian.com/pages/viewpage.action?pageId=3088533424",
-  "name": "Founder Update 76: Hello, Trello!",
-  "summary": "Today is a big day for Atlassian – we have entered into an agreement to buy Trello. (boom)"
-}`;
+import { AsanaTask as jsonLD } from './_mocks/atlassian.task';
 
 export interface ExampleProps {}
 
@@ -29,8 +20,8 @@ export interface ExampleState {
 
 class Example extends React.Component<ExampleProps, ExampleState> {
   state: ExampleState = {
-    text: defaultText,
-    json: JSON.parse(defaultText),
+    text: JSON.stringify(jsonLD, null, 2),
+    json: jsonLD,
   };
 
   handleChange = (text: string) => {
@@ -83,7 +74,7 @@ class Example extends React.Component<ExampleProps, ExampleState> {
                 mode="json"
                 theme="tomorrow"
                 value={text}
-                defaultValue={defaultText}
+                defaultValue={this.state.text}
                 onChange={this.handleChange}
                 editorProps={{ $blockScrolling: true }}
                 setOptions={{
