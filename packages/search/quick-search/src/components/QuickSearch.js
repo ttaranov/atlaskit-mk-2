@@ -104,6 +104,8 @@ type State = {
 };
 
 export class QuickSearch extends Component<Props, State> {
+  quickSearchRef = React.createRef();
+
   static defaultProps = {
     children: [],
     firePrivateAnalyticsEvent: Function.prototype,
@@ -360,14 +362,14 @@ export class QuickSearch extends Component<Props, State> {
     }
   };
 
-  focusSearchInput() {
+  focusSearchInput = () => {
     if (
       this.inputSearchRef &&
       typeof this.inputSearchRef.focus === 'function'
     ) {
       this.inputSearchRef.focus();
     }
-  }
+  };
 
   render() {
     return (
