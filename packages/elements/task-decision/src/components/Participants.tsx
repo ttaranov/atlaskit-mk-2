@@ -3,7 +3,7 @@ import { PureComponent } from 'react';
 import AvatarGroupType from '@atlaskit/avatar-group';
 
 import { colors } from '@atlaskit/theme';
-import Loadable from 'react-loadable';
+import * as Loadable from 'react-loadable';
 
 const AvatarGroup = Loadable({
   loader: () =>
