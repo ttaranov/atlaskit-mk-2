@@ -60,7 +60,7 @@ describe('Image Meta Data Util', () => {
       global.File = jest.fn().mockImplementation(() => {
         throw new Error('No constructor for File on IE11!');
       });
-      let file: File | undefined = undefined;
+      let file: File | undefined;
       expect(() => (file = dataURItoFile('some-data'))).not.toThrow();
       expect(file && (file as File).name).toBe('untitled');
     });
