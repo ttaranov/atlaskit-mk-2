@@ -68,20 +68,20 @@ describe('Card', () => {
       context,
     };
   };
-  const createContextWithGetFile = () => {
-    const getImage = jest.fn();
-    const context = {
-      getFile: () =>
-        Observable.of({
+  const createContextWithGetFile = (fileState: Partial<FileState> = {}) =>
+    fakeContext({
+      file: {
+        getFileState: Observable.of({
           id: '123',
           mediaType: 'image',
           status: 'processed',
+          mimeType: 'image/png',
+          name: 'file-name',
+          size: 10,
+          ...fileState,
         }),
-      getImage,
-    } as any;
-
-    return context;
-  };
+      },
+    });
 
   it('should render card with UrlPreviewProvider when passed a UrlPreviewIdentifier', () => {
     const dummyUrl = 'http://some.url.com';
@@ -150,14 +150,16 @@ describe('Card', () => {
 
   it('should use the new context to create the subscription when context prop changes', async () => {
     const firstContext = fakeContext({});
-    const secondContext = fakeContext({}) as any;
+    const secondContext = fakeContext({}) as Context;
     const { component } = setup(firstContext);
     component.setProps({ context: secondContext, fileIdentifier });
 
     const { id, collectionName } = fileIdentifier;
     await nextTick();
-    expect(secondContext.getFile).toHaveBeenCalledTimes(1);
-    expect(secondContext.getFile).toBeCalledWith(id, { collectionName });
+    expect(secondContext.file.getFileState).toHaveBeenCalledTimes(1);
+    expect(secondContext.file.getFileState).toBeCalledWith(id, {
+      collectionName,
+    });
     expect(component.find(CardView)).toHaveLength(1);
   });
 
@@ -167,13 +169,13 @@ describe('Card', () => {
     const dummyProvider = { observable: 'dummy provider ftw!' };
     const context = fakeContext({
       getMediaItemProvider: dummyProvider,
-    }) as any;
+    }) as Context;
     const { component } = setup(context, { identifier: firstIdentifier });
     component.setProps({ context, identifier: secondIdentifier });
 
     const { id, mediaItemType, collectionName } = secondIdentifier;
     await nextTick();
-    expect(context.getFile).toHaveBeenCalledTimes(1);
+    expect(context.file.getFileState).toHaveBeenCalledTimes(1);
     expect(context.getMediaItemProvider).toHaveBeenCalledTimes(1);
     expect(context.getMediaItemProvider).toBeCalledWith(
       id,
@@ -461,11 +463,11 @@ describe('Card', () => {
     expect(card.find(CardView).prop('disableOverlay')).toBe(true);
   });
 
-  it('should use context.getFile to fetch file data', async () => {
+  it('should use context.file.getFile to fetch file data', async () => {
     const { context } = setup();
     await nextTick();
-    expect(context.getFile).toHaveBeenCalledTimes(1);
-    expect(context.getFile).toBeCalledWith('some-random-id', {
+    expect(context.file.getFileState).toHaveBeenCalledTimes(1);
+    expect(context.file.getFileState).toBeCalledWith('some-random-id', {
       collectionName: 'some-collection-name',
     });
   });
@@ -478,8 +480,8 @@ describe('Card', () => {
     };
     const { context } = setup(undefined, { identifier });
     await nextTick();
-    expect(context.getFile).toHaveBeenCalledTimes(1);
-    expect(context.getFile).toBeCalledWith('file-id', {
+    expect(context.file.getFileState).toHaveBeenCalledTimes(1);
+    expect(context.file.getFileState).toBeCalledWith('file-id', {
       collectionName: 'collection',
     });
   });
@@ -492,15 +494,9 @@ describe('Card', () => {
   });
 
   it('should set right state when file is uploading', async () => {
-    const context = fakeContext({
-      getFile: Observable.of({
-        id: '123',
-        status: 'uploading',
-        progress: 0.2,
-        mediaType: 'image',
-        size: 10,
-        name: 'me.png',
-      }),
+    const context = createContextWithGetFile({
+      status: 'uploading',
+      progress: 0.2,
     });
     const { component } = setup(context);
 
@@ -513,21 +509,16 @@ describe('Card', () => {
       metadata: {
         id: '123',
         mediaType: 'image',
-        name: 'me.png',
+        mimeType: 'image/png',
+        name: 'file-name',
         size: 10,
       },
     });
   });
 
   it('should set right state when file is processing', async () => {
-    const context = fakeContext({
-      getFile: Observable.of({
-        id: '123',
-        status: 'uploading',
-        mediaType: 'image',
-        size: 10,
-        name: 'me.png',
-      }),
+    const context = createContextWithGetFile({
+      status: 'uploading',
     });
     const { component } = setup(context);
 
@@ -540,25 +531,16 @@ describe('Card', () => {
       metadata: {
         id: '123',
         mediaType: 'image',
-        name: 'me.png',
+        mimeType: 'image/png',
+        name: 'file-name',
         size: 10,
       },
     });
   });
 
   it('should set right state when file is processed', async () => {
-    const getImage = jest.fn();
-    const context = {
-      getFile: () =>
-        Observable.of({
-          id: '123',
-          status: 'processed',
-          mediaType: 'image',
-          size: 10,
-          name: 'me.png',
-        }),
-      getImage,
-    } as any;
+    const context = createContextWithGetFile();
+
     const { component } = setup(context);
 
     // we need to wait for 2 promises: fetch metadata + fetch preview
@@ -573,16 +555,15 @@ describe('Card', () => {
       metadata: {
         id: '123',
         mediaType: 'image',
-        name: 'me.png',
+        name: 'file-name',
+        mimeType: 'image/png',
         size: 10,
       },
     });
   });
 
-  it('should render error card when getFile resolves with status=error', async () => {
-    const context = fakeContext({
-      getFile: Observable.of({ status: 'error' }),
-    });
+  it('should render error card when getFileState resolves with status=error', async () => {
+    const context = createContextWithGetFile({ status: 'error' });
     const { component } = setup(context);
 
     await nextTick();
@@ -590,16 +571,9 @@ describe('Card', () => {
     expect(component.find(CardView).prop('status')).toEqual('error');
   });
 
-  it('should render failed card when getFile resolves with status=failed', async () => {
-    const context = fakeContext({
-      getFile: Observable.of({
-        status: 'failed-processing',
-        name: 'some-name',
-        id: 'some-id',
-        mediaType: 'image',
-        mimeType: 'some-mime-type',
-        size: 42,
-      } as FileState),
+  it('should render failed card when getFileState resolves with status=failed', async () => {
+    const context = createContextWithGetFile({
+      status: 'failed-processing',
     });
     const { component } = setup(context);
 
@@ -608,20 +582,20 @@ describe('Card', () => {
     const { status, metadata } = component.find(CardView).props();
     expect(status).toEqual('failed-processing');
     expect(metadata).toEqual({
-      id: 'some-id',
-      size: 42,
-      name: 'some-name',
-      mimeType: 'some-mime-type',
+      id: '123',
+      size: 10,
+      name: 'file-name',
+      mimeType: 'image/png',
       mediaType: 'image',
     } as FileDetails);
   });
 
-  it('should render error card when getFile fails', async () => {
-    const getFile = new Observable(subscriber => {
+  it('should render error card when getFileState fails', async () => {
+    const getFileState = new Observable(subscriber => {
       subscriber.error('some-error');
     });
     const context = fakeContext({
-      getFile,
+      file: { getFileState },
     });
     const { component } = setup(context);
 
@@ -687,19 +661,7 @@ describe('Card', () => {
   });
 
   it('should render CardView with expected props', async () => {
-    const getImage = jest.fn();
-    const context = {
-      getFile: () =>
-        Observable.of({
-          id: '123',
-          status: 'processed',
-          mediaType: 'image',
-          mimeType: 'image/png',
-          name: 'file-name',
-          size: 10,
-        }),
-      getImage,
-    } as any;
+    const context = createContextWithGetFile();
 
     const { component } = setup(context, {
       dimensions: { width: 10, height: 20 },
@@ -753,19 +715,7 @@ describe('Card', () => {
   });
 
   it('should pass status=processing if file size is 0', async () => {
-    const getImage = jest.fn();
-    const context = {
-      getFile: () =>
-        Observable.of({
-          id: '123',
-          status: 'processed',
-          mediaType: 'image',
-          mimeType: 'image/png',
-          name: 'file-name',
-          size: 0,
-        }),
-      getImage,
-    } as any;
+    const context = createContextWithGetFile({ size: 0 });
     const { component } = setup(context);
 
     await nextTick();
@@ -779,10 +729,10 @@ describe('Card', () => {
       const { component, context } = setup();
       const cardViewOnError = component.find(CardView).prop('onRetry')!;
       await nextTick();
-      expect(context.getFile).toHaveBeenCalledTimes(1);
+      expect(context.file.getFileState).toHaveBeenCalledTimes(1);
       cardViewOnError();
       await nextTick();
-      expect(context.getFile).toHaveBeenCalledTimes(2);
+      expect(context.file.getFileState).toHaveBeenCalledTimes(2);
     });
   });
 

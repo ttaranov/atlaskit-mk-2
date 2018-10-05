@@ -219,7 +219,7 @@ describe('Context', () => {
     });
   });
 
-  describe('.getFile()', () => {
+  describe('.file.getFile()', () => {
     it('should fetch the file if it doesnt exist locally', done => {
       const context = createContext();
       const getFile = jest.fn().mockReturnValue({
@@ -236,7 +236,7 @@ describe('Context', () => {
       };
       (context as any).mediaStore = fakeStore;
       (context.file as any).mediaStore = fakeStore;
-      const observer = context.getFile('1');
+      const observer = context.file.getFileState('1');
 
       observer.subscribe({
         next(state) {
@@ -278,7 +278,7 @@ describe('Context', () => {
       (context as any).mediaStore = fakeStore;
       (context.file as any).mediaStore = fakeStore;
 
-      const observer = context.getFile('123');
+      const observer = context.file.getFileState('123');
       const next = jest.fn();
 
       observer.subscribe({
@@ -298,7 +298,7 @@ describe('Context', () => {
     it('should pass options down', () => {
       const context = createContext();
 
-      context.getFile('1', {
+      context.file.getFileState('1', {
         collectionName: 'my-collection',
         occurrenceKey: 'some-occurrenceKey',
       });
@@ -329,7 +329,7 @@ describe('Context', () => {
         context.uploadFile(file).subscribe({
           next(state) {
             const fileId = state.id;
-            context.getFile(fileId).subscribe({
+            context.file.getFileState(fileId).subscribe({
               next(state) {
                 expect(state).toEqual({
                   id: fileId,
