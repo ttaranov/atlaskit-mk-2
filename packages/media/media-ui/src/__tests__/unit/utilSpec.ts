@@ -23,8 +23,10 @@ import {
 
 describe('Image Meta Data Util', () => {
   describe('dataURItoFile()', () => {
-    const tinyPngFile = dataURItoFile('data:image/png;base64,', 'filename.png');
-    console.log(tinyPngFile);
+    const tinyPngFile = dataURItoFile(
+      'data:image/png;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7',
+      'filename.png',
+    );
 
     afterEach(() => {
       global.File = jest.fn().mockImplementation(GlobalFileCtor);
@@ -34,8 +36,16 @@ describe('Image Meta Data Util', () => {
       expect(tinyPngFile.type).toEqual('image/png');
     });
 
+    it('should return a blob with right size', () => {
+      expect(tinyPngFile.size).toEqual(42);
+    });
+
     it('should preserve filename', () => {
       expect(tinyPngFile.name).toEqual('filename.png');
+    });
+
+    it('should use "untitled" filename if none given', () => {
+      expect(dataURItoFile('some-data').name).toEqual('untitled');
     });
 
     it('should still convert malformed dataURI to File', () => {
@@ -90,7 +100,7 @@ describe('Image Meta Data Util', () => {
   });
 
   describe('fileToArrayBuffer()', () => {
-    const file = dataURItoFile('some-data');
+    const file = new File([], 'filename.png', { type: 'image/png' });
     let fileReader: any;
 
     beforeEach(() => {
