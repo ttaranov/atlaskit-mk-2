@@ -163,6 +163,8 @@ export class StatelessUploadView extends Component<
   private renderLoadingNextPageView = () => {
     const { isLoadingNextPage } = this.state;
 
+    // We want to always render LoadingNextPageWrapper regardless of the next page loading or not
+    // to keep the same wrapper height, this prevents jumping when interacting with the infinite scroll
     return (
       <LoadingNextPageWrapper>
         {isLoadingNextPage && <Spinner />}
