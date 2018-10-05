@@ -74,7 +74,7 @@ class Example extends React.Component<{}, ExampleState> {
             <h1>Image Orientation Preview</h1>
             <p>
               <Lozenge>@atlaskit/media-ui</Lozenge> exports:{' '}
-              <Code>getOrientation(file:File): number</Code>
+              <Code>async getOrientation(file:File): number</Code>
             </p>
             <p>
               async Example:

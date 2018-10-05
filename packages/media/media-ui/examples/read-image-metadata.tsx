@@ -62,7 +62,9 @@ class Example extends React.Component<{}, ExampleState> {
             <h1>Image MetaData Preview</h1>
             <p>
               <Lozenge>@atlaskit/media-ui</Lozenge> exports:{' '}
-              <Code>readImageMetaData(fileInfo:FileInfo):ImageMetaData</Code>
+              <Code>
+                async readImageMetaData(fileInfo:FileInfo):ImageMetaData
+              </Code>
             </p>
             <p>async Example:</p>
             <Code
