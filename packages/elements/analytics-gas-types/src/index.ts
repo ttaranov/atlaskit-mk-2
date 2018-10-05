@@ -30,7 +30,7 @@ export type GasCorePayload = {
     [key: string]: any;
   };
   tags?: Array<string>;
-  source: string;
+  source?: string;
 };
 
 export type GasPayload = AnalyticsEventPayload & GasCorePayload;
