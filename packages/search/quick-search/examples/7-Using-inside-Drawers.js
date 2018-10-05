@@ -7,8 +7,8 @@
 import React, { Component } from 'react';
 import { AkSearchDrawer } from '@atlaskit/navigation';
 import Drawer from '@atlaskit/drawer';
-import BasicQuickSearch from './utils/BasicQuickSearch';
 import ArrowLeftIcon from '@atlaskit/icon/glyph/arrow-left';
+import BasicQuickSearch from './utils/BasicQuickSearch';
 
 type IssueWithDrawerState = {
   isDrawerOpen: boolean,
