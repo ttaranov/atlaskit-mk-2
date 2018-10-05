@@ -10,7 +10,7 @@ BrowserTestCase(
   'user should be able to create link using markdown',
   { skip: ['edge', 'ie'] },
   async client => {
-    const sample = await new Page(client);
+    const sample = new Page(client);
     await sample.goto(messageEditor);
     await sample.waitForSelector(editorSelector);
     await sample.type(editorSelector, '[link](https://hello.com) ');
@@ -25,7 +25,7 @@ BrowserTestCase(
   'user should be able to format bold and italics with markdown',
   { skip: ['edge', 'ie'] },
   async client => {
-    const sample = await new Page(client);
+    const sample = new Page(client);
     await sample.goto(messageEditor);
     await sample.waitForSelector(editorSelector);
     await sample.type(editorSelector, '__bold__ ');
@@ -43,7 +43,7 @@ BrowserTestCase(
   'user should be able to write inline code',
   { skip: ['edge', 'ie'] },
   async client => {
-    const sample = await new Page(client);
+    const sample = new Page(client);
     await sample.goto(messageEditor);
     await sample.waitForSelector(editorSelector);
     await sample.type(editorSelector, '`');

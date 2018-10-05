@@ -3,13 +3,22 @@
 import React from 'react';
 import { transitionTimingFunction, transitionDuration } from './constants';
 
-type ShadowProps = { isBold?: boolean, isOverDarkBg?: boolean };
-export const Shadow = ({ isBold, isOverDarkBg, ...props }: ShadowProps) => {
+type ShadowProps = {
+  direction: 'to left' | 'to right',
+  isBold?: boolean,
+  isOverDarkBg?: boolean,
+};
+export const Shadow = ({
+  direction,
+  isBold,
+  isOverDarkBg,
+  ...props
+}: ShadowProps) => {
   let width = isOverDarkBg ? 6 : 3;
   if (isBold) width = isOverDarkBg ? 12 : 6;
 
   const colorStops = `
-    rgba(0, 0, 0, 0.2) 0%,
+    rgba(0, 0, 0, 0.2) 0px,
     rgba(0, 0, 0, 0.2) 1px,
     rgba(0, 0, 0, 0.1) 1px,
     rgba(0, 0, 0, 0) 100%
@@ -18,9 +27,9 @@ export const Shadow = ({ isBold, isOverDarkBg, ...props }: ShadowProps) => {
   return (
     <div
       css={{
-        background: `linear-gradient(to left, ${colorStops})`,
+        background: `linear-gradient(${direction}, ${colorStops})`,
         bottom: 0,
-        left: -width,
+        left: direction === 'to left' ? -width : -1,
         opacity: isBold ? 1 : 0.5,
         pointerEvents: 'none',
         position: 'absolute',
@@ -33,4 +42,7 @@ export const Shadow = ({ isBold, isOverDarkBg, ...props }: ShadowProps) => {
       {...props}
     />
   );
+};
+Shadow.defaultProps = {
+  direction: 'to left',
 };

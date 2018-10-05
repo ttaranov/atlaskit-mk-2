@@ -1,5 +1,8 @@
 # @atlaskit/media-store
 
+## 7.0.0
+- [major] Make hasherCreator load async and remove public export of createHasher [2d848cd](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/2d848cd)
+
 ## 6.2.1
 - [patch] Updated dependencies [927ae63](https://bitbucket.org/atlassian/atlaskit-mk-2/commits/927ae63)
   - @atlaskit/media-test-helpers@18.0.0

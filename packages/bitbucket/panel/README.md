@@ -1,6 +1,6 @@
-# Banner
+# Panel
 
-This is a React component that displays a heading that contains expandable content
+This is a React component that renders a collapsible panel
 
 ## Installation
 

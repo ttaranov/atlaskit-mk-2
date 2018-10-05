@@ -26,16 +26,19 @@ describe('<Resizer />', () => {
     let resizeStartSpy;
     let resizeSpy;
     let resizeEndSpy;
+    let resizeButtonSpy;
     beforeEach(() => {
       resizeStartSpy = jest.fn();
       resizeSpy = jest.fn();
       resizeEndSpy = jest.fn();
+      resizeButtonSpy = jest.fn();
 
       resizer = mountWithElectronTheme(
         <Resizer
           onResizeStart={resizeStartSpy}
           onResize={resizeSpy}
           onResizeEnd={resizeEndSpy}
+          onResizeButton={resizeButtonSpy}
         />,
       );
     });
@@ -74,6 +77,21 @@ describe('<Resizer />', () => {
       dispatchMouseEvent('mouseup', { screenX: 200 });
       expect(resizeEndSpy).toHaveBeenCalled();
     });
+
+    it('mouseup triggers onResizeButton if resizer was clicked instead of dragged', () => {
+      resizer
+        .find(ResizerInner)
+        .simulate('mousedown', { screenX: 100, preventDefault: () => {} });
+      dispatchMouseEvent('mouseup', { screenX: 100 });
+      expect(resizeButtonSpy).toHaveBeenCalledWith(
+        {
+          isOpen: false,
+          width: 64,
+        },
+        true,
+      );
+    });
+
     describe('onResizeEnd should be triggered when mousing over out of bounds elements', () => {
       it('should trigger an onResizeEnd when moving over an iframe', () => {
         resizer
@@ -214,15 +232,16 @@ describe('<Resizer />', () => {
         .find(ResizerButton)
         .simulate('click');
     });
-    it(`when navigationWidth=${standardOpenWidth}, clicking <ResizerButton /> triggers an expand to the open width`, done => {
+    it(`when navigationWidth=${standardOpenWidth}, clicking <ResizerButton /> triggers a collapse to the global open width`, done => {
       mountWithElectronTheme(
         <Resizer
           navigationWidth={standardOpenWidth}
-          onResizeButton={resizeState => {
+          onResizeButton={(resizeState, resizerClick) => {
             expect(resizeState).toEqual({
               isOpen: false,
               width: globalOpenWidth,
             });
+            expect(resizerClick).toBe(false);
             done();
           }}
         />,
@@ -235,11 +254,12 @@ describe('<Resizer />', () => {
       mountWithElectronTheme(
         <Resizer
           navigationWidth={standardOpenWidth + 100}
-          onResizeButton={resizeState => {
+          onResizeButton={(resizeState, resizerClick) => {
             expect(resizeState).toEqual({
               isOpen: true,
               width: standardOpenWidth,
             });
+            expect(resizerClick).toBe(false);
             done();
           }}
         />,

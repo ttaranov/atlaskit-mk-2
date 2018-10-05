@@ -20,6 +20,7 @@ import {
   deleteSelectedColumns,
   selectColumn,
 } from '../../../actions';
+import { TableCssClassName as ClassName } from '../../../types';
 
 export interface Props {
   editorView: EditorView;
@@ -113,7 +114,7 @@ export default class ColumnControls extends Component<Props, any> {
   private classNamesForRow(i, len, selection) {
     const { isTableHovered, isTableInDanger } = this.props;
 
-    const classNames = ['table-column'];
+    const classNames: string[] = [];
 
     if (selection.inSelection(i) || isTableHovered) {
       classNames.push('active');
@@ -161,18 +162,16 @@ export default class ColumnControls extends Component<Props, any> {
 
       nodes.push(
         <div
-          className={`pm-table-column-controls__button-wrap ${this.classNamesForRow(
-            i,
-            len,
-            selection,
-          ).join(' ')}`}
+          className={`${
+            ClassName.COLUMN_CONTROLS_BUTTON_WRAP
+          } ${this.classNamesForRow(i, len, selection).join(' ')}`}
           key={i}
           style={{ width: (cols[i] as HTMLElement).offsetWidth + 1 }}
           onMouseDown={this.handleMouseDown}
         >
           <button
             type="button"
-            className="pm-table-controls__button"
+            className={ClassName.CONTROLS_BUTTON}
             onMouseDown={() => this.selectColumn(i)}
             onMouseOver={() => this.hoverColumns([i])}
             onMouseOut={this.clearHoverSelection}
@@ -205,8 +204,8 @@ export default class ColumnControls extends Component<Props, any> {
     }
 
     return (
-      <div className="pm-table-column-controls">
-        <div className="pm-table-column-controls__inner">{nodes}</div>
+      <div className={ClassName.COLUMN_CONTROLS}>
+        <div className={ClassName.COLUMN_CONTROLS_INNER}>{nodes}</div>
       </div>
     );
   }

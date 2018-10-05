@@ -142,23 +142,25 @@ export const insertBlockMenuItem = async (
  * We need to filter down the typeahead, as we select the first result.
  */
 export const quickInsert = async (browser, insertTitle) => {
+  const firstTitleWord = insertTitle.split(' ')[0];
+
   // Quick insert doesnt work in FF, as `keys` isn't supported.
   if (browser.browser.desiredCapabilities.browserName === 'firefox') {
-    await quickInsertActiveElement(browser, insertTitle);
+    await quickInsertActiveElement(browser, firstTitleWord);
   } else {
     await browser.keys('/');
     await browser.waitFor('div[aria-label="Popup"]');
-    await browser.keys(insertTitle);
-
-    await browser.browser.waitUntil(async () => {
-      const firstInsertText = await browser.browser.getText(
-        '[aria-label="Popup"] [role="button"]',
-      );
-      return firstInsertText === insertTitle;
-    }, LONG_WAIT_FOR);
-
-    await browser.click('[aria-label="Popup"] [role="button"]');
+    await browser.keys(firstTitleWord);
   }
+
+  await browser.browser.waitUntil(async () => {
+    const firstInsertText = await browser.browser.getText(
+      '[aria-label="Popup"] [role="button"]',
+    );
+    return firstInsertText && firstInsertText.startsWith(firstTitleWord);
+  }, LONG_WAIT_FOR);
+
+  await browser.click('[aria-label="Popup"] [role="button"]');
 };
 
 /**
@@ -177,13 +179,5 @@ const quickInsertActiveElement = async (browser, insertTitle) => {
     await browser.browser.elementIdValue(activeElement, '/');
     await browser.waitFor('div[aria-label="Popup"]');
     await browser.browser.elementIdValue(activeElement, insertTitle);
-
-    await browser.browser.waitUntil(async () => {
-      const firstInsertText = await browser.browser.getText(
-        '[aria-label="Popup"] [role="button"]',
-      );
-      return firstInsertText === insertTitle;
-    }, LONG_WAIT_FOR);
-    await browser.click('[aria-label="Popup"] [role="button"]');
   }
 };

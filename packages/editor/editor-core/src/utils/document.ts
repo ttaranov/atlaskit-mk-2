@@ -131,7 +131,9 @@ export function processRawValue(
     return;
   }
 
-  let node: Object;
+  let node: {
+    [key: string]: any;
+  };
   if (typeof value === 'string') {
     try {
       node = JSON.parse(value);
@@ -153,6 +155,17 @@ export function processRawValue(
   }
 
   try {
+    // ProseMirror always require a child under doc
+    if (
+      node.type === 'doc' &&
+      Array.isArray(node.content) &&
+      node.content.length === 0
+    ) {
+      node.content.push({
+        type: 'paragraph',
+        content: [],
+      });
+    }
     const parsedDoc = Node.fromJSON(schema, node);
     // throws an error if the document is invalid
     parsedDoc.check();
