@@ -22,7 +22,7 @@ BrowserTestCase(
   { skip: ['ie'] },
   async client => {
     const mentionButton = `[aria-label="${messages.mention.defaultMessage}"]`;
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.waitForSelector(mentionButton);
@@ -39,7 +39,7 @@ BrowserTestCase(
   'Mention: should not insert on space if multiple exact nickname match',
   { skip: ['ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '@');
@@ -58,7 +58,7 @@ BrowserTestCase(
   'Mention: inserted if space on single match',
   { skip: ['ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '@');
@@ -82,7 +82,7 @@ BrowserTestCase(
   // TODO: Fix unknown character on BS
   { skip: ['safari', 'ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '`this is inline code ');
@@ -98,7 +98,7 @@ BrowserTestCase(
   // TODO: Fix unknown character on BS
   { skip: ['safari', 'ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '```');
@@ -114,7 +114,7 @@ BrowserTestCase(
   'Mention: users with same first name should not be selected if space',
   { skip: ['ie'] },
   async client => {
-    const browser = await new Page(client);
+    const browser = new Page(client);
     await browser.goto(messageEditor);
     await browser.waitForSelector(editable);
     await browser.type(editable, '@');

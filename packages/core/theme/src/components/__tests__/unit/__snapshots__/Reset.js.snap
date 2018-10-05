@@ -39,7 +39,7 @@ exports[`reset 1`] = `
 }
 
 <Reset>
-  <Reset__Div
+  <styled.div
     backgroundColor="#FFFFFF"
     headingColor="#172B4D"
     linkColor="#0052CC"
@@ -53,7 +53,7 @@ exports[`reset 1`] = `
     <div
       className="c0"
     />
-  </Reset__Div>
+  </styled.div>
 </Reset>
 `;
 
@@ -99,7 +99,7 @@ exports[`themed reset 1`] = `
   theme={[Function]}
 >
   <Reset>
-    <Reset__Div
+    <styled.div
       backgroundColor="#000"
       headingColor="#172B4D"
       linkColor="blue"
@@ -113,7 +113,7 @@ exports[`themed reset 1`] = `
       <div
         className="c0"
       />
-    </Reset__Div>
+    </styled.div>
   </Reset>
 </Theme>
 `;

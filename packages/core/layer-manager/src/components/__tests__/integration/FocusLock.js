@@ -12,7 +12,7 @@ BrowserTestCase(
   'AK-4416 - focus should loop to first element when inside a focus boundary',
   { skip: ['safari'] }, // browserstack has an issue with safari
   async client => {
-    const LayerManagerTest = await new Page(client);
+    const LayerManagerTest = new Page(client);
     await LayerManagerTest.goto(urlFocusLock);
     await LayerManagerTest.click(FocusLockButton);
     await LayerManagerTest.click(LastButton);

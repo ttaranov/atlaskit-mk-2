@@ -21,7 +21,7 @@ import { messages as ListMessages } from '../../../plugins/lists/ui/ToolbarLists
     `Bodied Extension: Insert ${node}`,
     { skip: ['edge', 'ie'] },
     async client => {
-      const page = await new Page(client);
+      const page = new Page(client);
       await page.goto(fullpage.path);
       await page.waitForSelector(fullpage.placeholder);
       await page.click(fullpage.placeholder);
