@@ -51,7 +51,7 @@ export const borderColorPalette = {
 export const colorPalette = new Map<string, string>();
 [
   // [N800, default],
-  [N80, 'Light gray'],
+  [N80, 'Light grey'],
   [P300, 'Purple'],
   [T300, 'Teal'],
   [G300, 'Green'],

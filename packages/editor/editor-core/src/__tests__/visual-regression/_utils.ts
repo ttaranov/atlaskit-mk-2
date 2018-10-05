@@ -1,7 +1,4 @@
-import {
-  getExampleUrl,
-  takeElementScreenshot,
-} from '@atlaskit/visual-regression/helper';
+import { getExampleUrl } from '@atlaskit/visual-regression/helper';
 import { colorPalette } from '@atlaskit/editor-common';
 
 import { insertMedia as integrationInsertMedia } from '../integration/_helpers';
