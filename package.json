@@ -103,7 +103,6 @@
     "@types/jest": "^20.0.8",
     "@types/lodash.chunk": "^4.2.3",
     "@types/mocha": "^2.2.39",
-    "@types/moment": "^2.13.0",
     "@types/prop-types": "^15.5.1",
     "@types/react-intl": "^2.3.8",
     "@types/react-syntax-highlighter": "^0.0.3",
