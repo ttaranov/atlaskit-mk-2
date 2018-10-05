@@ -36,7 +36,7 @@ describe('Traverse', () => {
       traverse(mentionsDoc, {
         mention: node => ({
           ...node,
-          attrs: { ...node.attrs, text: `${node.attrs.text} – updated` },
+          attrs: { ...node.attrs, text: `${node.attrs!.text} – updated` },
         }),
       }),
     ).toMatchSnapshot();
