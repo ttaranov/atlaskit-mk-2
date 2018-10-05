@@ -62,7 +62,7 @@ class MediaGroup extends React.Component<MediaGroupProps> {
         },
       };
     });
-    console.log('new items are ', items);
+    // console.log('new items are ', items);
     return (
       <Filmstrip items={items} context={this.mediaPluginState.mediaContext} />
     );

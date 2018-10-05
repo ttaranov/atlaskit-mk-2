@@ -35,24 +35,20 @@ export interface FilmstripState {
   offset: number;
 }
 
-const getIdentifierKey = (identifier: Identifier, index: number): string => {
-  if (isUrlPreviewIdentifier(identifier)) {
-    return identifier.url;
-  } else if (
-    identifier.mediaItemType === 'file' &&
-    typeof identifier.id === 'string'
-  ) {
-    return identifier.id;
-  } else {
-    return `${index}`;
-  }
-};
-
 export class Filmstrip extends Component<FilmstripProps, FilmstripState> {
-  state: FilmstripState = {
-    animate: false,
-    offset: 0,
-  };
+  identifiersMap: Map<Promise<string>, string>;
+  lastKey: number;
+
+  constructor(props: FilmstripProps) {
+    super(props);
+
+    this.identifiersMap = new Map();
+    this.lastKey = 1;
+    this.state = {
+      animate: false,
+      offset: 0,
+    };
+  }
 
   private handleSize = ({ offset }) => this.setState({ offset });
   private handleScroll = ({ animate, offset }) =>
@@ -61,17 +57,37 @@ export class Filmstrip extends Component<FilmstripProps, FilmstripState> {
   private renderCards() {
     const { items, context } = this.props;
     const cards = items.map((item, index) => {
-      return (
-        <Card
-          key={getIdentifierKey(item.identifier, index)}
-          context={context}
-          {...item}
-        />
-      );
+      const key = this.getIdentifierKey(item.identifier);
+      console.log({ key });
+      return <Card key={key} context={context} {...item} />;
     });
 
     return cards;
   }
+
+  getIdentifierKey = (identifier: Identifier): string => {
+    if (
+      isUrlPreviewIdentifier(identifier) ||
+      identifier.mediaItemType === 'link'
+    ) {
+      return identifier.url;
+    } else if (identifier.mediaItemType === 'file') {
+      if (typeof identifier.id === 'string') {
+        return identifier.id;
+      } else {
+        const currentKey = this.identifiersMap.get(identifier.id);
+        if (currentKey) {
+          return currentKey;
+        }
+
+        const newKey = `${this.lastKey++}`;
+        this.identifiersMap.set(identifier.id, newKey);
+        return newKey;
+      }
+    } else if (identifier.mediaItemType === 'external-image') {
+      return identifier.dataURI;
+    }
+  };
 
   render() {
     const { animate, offset } = this.state;
