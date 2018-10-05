@@ -10,7 +10,7 @@ import { createObjectResolverServiceObservable } from './createObjectResolverSer
 import { createTemporaryResolverObservable } from './createTemporaryResolverObservable';
 import { filter } from 'rxjs/operators/filter';
 import { distinctUntilChanged } from 'rxjs/operators/distinctUntilChanged';
-import { inFstButNotInSnd } from './utils';
+import { inFisrtArrayButNotInSecond } from './utils';
 
 // TODO: add some form of caching so that urls not currently loaded will still be fast
 
@@ -50,7 +50,10 @@ export const getUrlsNotTiedToDefinitionId = (
   const urlsBoundToDefId = Object.keys(defIdToUrls)
     .map(defId => defIdToUrls[defId])
     .reduce((res: string[], urls: string[]) => res.concat(urls), []);
-  return inFstButNotInSnd(Object.keys(urlToCardRecords), urlsBoundToDefId);
+  return inFisrtArrayButNotInSecond(
+    Object.keys(urlToCardRecords),
+    urlsBoundToDefId,
+  );
 };
 
 const onlyPositiveResponses = (e: string): boolean =>
@@ -112,6 +115,7 @@ export class Client {
     return this;
   }
 
+  // let's say when a card gets unmounted, we need to "clean-up"
   deregister(url: string, uuid: string): Client {
     if (this.mapUrlToCardRecords[url]) {
       this.mapUrlToCardRecords[url] = this.mapUrlToCardRecords[url].filter(
@@ -132,9 +136,9 @@ export class Client {
    *
    * @param url the url of a remote resoulrce a card wants to be resolved
    * @param definitionIdFromCard optional definition id that card already has
-   * @param cb optional because if it is there, we run the action, not every single time.
+   * @param cb optional this is a way to do something only when it is needed.
    */
-  get(url: string, definitionIdFromCard?: string, cb?: () => void) {
+  resolve(url: string, definitionIdFromCard?: string, cb?: () => void) {
     if (!this.mapUrlToCardRecords[url]) {
       throw new Error('Please, register a smart card before calling get()');
     }
@@ -145,7 +149,7 @@ export class Client {
         this.mapDefinitionIdToUrls[
           definitionIdFromCard
         ] = this.mapDefinitionIdToUrls[definitionIdFromCard].filter(
-          u => u !== url,
+          mappedUrl => mappedUrl !== url,
         );
       }
 
@@ -165,9 +169,8 @@ export class Client {
 
         // among all the urls find the one, for that particular card.
         urls
-          .filter(u => u === url)
-          .map(u => this.mapUrlToCardRecords[u])
-          .forEach(x => x.forEach(rec => rec.fn(orsResponse)));
+          .map(url => this.mapUrlToCardRecords[url])
+          .forEach(recods => recods.forEach(record => record.fn(orsResponse)));
 
         // this cb is here mostly because we want to run an action
         // in a very particular case. For example, only when we reload a card.
@@ -180,20 +183,21 @@ export class Client {
     });
   }
 
+  // This one will be called, for example, when "try again" is clicked.
   reload(url: string, definitionIdFromCard?: string): void {
     if (definitionIdFromCard) {
       this.mapDefinitionIdToUrls[definitionIdFromCard].forEach(u =>
-        this.get(u, definitionIdFromCard),
+        this.resolve(u, definitionIdFromCard),
       );
     } else {
-      this.get(url, undefined, () => {
+      this.resolve(url, undefined, () => {
         // say we have a bunch of errored cards without definitionId on them.
         // we clicked "Try again" on one of them and succeeded.
         // now we need to reload the cards that do not have a definitionId.
         getUrlsNotTiedToDefinitionId(
           this.mapDefinitionIdToUrls,
           this.mapUrlToCardRecords,
-        ).forEach(url => this.get(url));
+        ).forEach(url => this.resolve(url));
       });
     }
   }
