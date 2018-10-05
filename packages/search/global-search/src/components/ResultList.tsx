@@ -44,7 +44,7 @@ export default class ResultList extends React.Component<Props> {
       };
       const resultKey = `${result.contentType || 'result'}-${
         result.resultId
-      }-${index}`;
+      }-${index + 1}`;
       switch (resultType) {
         case ResultType.ConfluenceObjectResult: {
           const confluenceResult = result as ConfluenceObjectResult;
