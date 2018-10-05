@@ -11,7 +11,7 @@ describe('Traverse#filter', () => {
     expect(
       filter(
         emojisDoc,
-        node => node.type === 'emoji' && node.attrs.text.startsWith(':'),
+        node => node.type === 'emoji' && node.attrs!.text.startsWith(':'),
       ),
     ).toMatchSnapshot();
   });
