@@ -19,7 +19,7 @@ const panelPlugin: EditorPlugin = {
       { name: 'panel', plugin: createPlugin },
       {
         name: 'panelKeyMap',
-        plugin: ({ schema }) => keymap(schema),
+        plugin: () => keymap(),
       },
     ];
   },
