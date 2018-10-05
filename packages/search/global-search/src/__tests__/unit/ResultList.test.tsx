@@ -142,7 +142,7 @@ it('should pass the correct properties to ContainerResult for Confluence spaces'
 });
 
 it('should avoid duplicate result keys', () => {
-  const confluenceSpaceResults: Result[] = [
+  const results: Result[] = [
     makeConfluenceContainerResult({
       resultId: 'resultId',
       analyticsType: AnalyticsType.ResultConfluence,
@@ -158,7 +158,7 @@ it('should avoid duplicate result keys', () => {
   ];
 
   const wrapper = render({
-    results: confluenceSpaceResults,
+    results,
     analyticsData: DUMMY_ANALYTICS_DATA,
   });
 
