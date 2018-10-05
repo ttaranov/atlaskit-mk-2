@@ -58,7 +58,7 @@ export class Filmstrip extends Component<FilmstripProps, FilmstripState> {
     const { items, context } = this.props;
     const cards = items.map((item, index) => {
       const key = this.getIdentifierKey(item.identifier);
-      console.log({ key });
+
       return <Card key={key} context={context} {...item} />;
     });
 
@@ -66,26 +66,28 @@ export class Filmstrip extends Component<FilmstripProps, FilmstripState> {
   }
 
   getIdentifierKey = (identifier: Identifier): string => {
-    if (
-      isUrlPreviewIdentifier(identifier) ||
-      identifier.mediaItemType === 'link'
-    ) {
-      return identifier.url;
-    } else if (identifier.mediaItemType === 'file') {
-      if (typeof identifier.id === 'string') {
-        return identifier.id;
-      } else {
-        const currentKey = this.identifiersMap.get(identifier.id);
-        if (currentKey) {
-          return currentKey;
+    switch (identifier.mediaItemType) {
+      case 'external-image':
+        return identifier.dataURI;
+      case 'link':
+        if (isUrlPreviewIdentifier(identifier)) {
+          return identifier.url;
+        } else {
+          return identifier.id;
         }
+      case 'file':
+        if (typeof identifier.id === 'string') {
+          return identifier.id;
+        } else {
+          const currentKey = this.identifiersMap.get(identifier.id);
+          if (currentKey) {
+            return currentKey;
+          }
 
-        const newKey = `${this.lastKey++}`;
-        this.identifiersMap.set(identifier.id, newKey);
-        return newKey;
-      }
-    } else if (identifier.mediaItemType === 'external-image') {
-      return identifier.dataURI;
+          const newKey = `${this.lastKey++}`;
+          this.identifiersMap.set(identifier.id, newKey);
+          return newKey;
+        }
     }
   };
 
