@@ -46,8 +46,7 @@
     "lodash.debounce": "^4.0.8",
     "react-render-image": "^1.1.2",
     "react-transition-group": "^2.2.1",
-    "tslib": "^1.8.0",
-    "react-intl": "^2.6.0"
+    "tslib": "^1.8.0"
   },
   "peerDependencies": {
     "react": "^16.4.0",
@@ -61,6 +60,7 @@
     "@types/enzyme": "^3.1.6",
     "jsverify": "^0.8.3",
     "react": "^16.4.0",
+    "react-intl": "^2.6.0",
     "enzyme": "https://registry.npmjs.org/@pgleeson/enzyme/-/enzyme-3.3.7.tgz",
     "enzyme-adapter-react-16": "https://registry.npmjs.org/@pgleeson/enzyme-adapter-react-16/-/enzyme-adapter-react-16-1.1.7.tgz"
   }
