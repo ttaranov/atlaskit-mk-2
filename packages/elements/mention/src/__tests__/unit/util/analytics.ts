@@ -29,7 +29,6 @@ describe('Util Analytics', () => {
         userIds: ['abc-123', 'abc-123', 'def-456'],
       },
       eventType: 'operational',
-      source: 'unknown',
     });
     expect(eventMock.fire).toBeCalledWith(ELEMENTS_CHANNEL);
   });
