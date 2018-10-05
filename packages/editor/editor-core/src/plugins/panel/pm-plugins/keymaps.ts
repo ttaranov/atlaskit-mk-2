@@ -26,7 +26,6 @@ export function keymapPlugin(): Plugin | undefined {
       const { panel } = nodes;
 
       const { $from, $to } = selection;
-
       // Don't do anything if selection is a range
       if ($from.pos !== $to.pos) {
         return false;
@@ -44,11 +43,11 @@ export function keymapPlugin(): Plugin | undefined {
       const previousNodeType =
         previousPos.pos > 0 && previousPos.node(1) && previousPos.node(1).type;
       const parentNodeType = $from.node(1).type;
-      const previousNodeIsPanel = previousNodeType === panel;
-      const parentNodeIsPanel = parentNodeType === panel;
+      const isPreviousNodeAPanel = previousNodeType === panel;
+      const isParentNodeAPanel = parentNodeType === panel;
 
       // Stops merging panels when deleting empty paragraph in between
-      if (previousNodeIsPanel && !parentNodeIsPanel) {
+      if (isPreviousNodeAPanel && !isParentNodeAPanel) {
         const content = $from.node($from.depth).content;
         const insertPos = previousPos.pos - 1;
         deleteCurrentItem($from, tr).insert(insertPos, content);
