@@ -59,11 +59,11 @@ const setCellAttrs = (node: PmNode) => {
     const nodeType = node.type.name;
 
     // to ensure that we don't overwrite product's style:
-    // - it clears background color for <th> if its set to grey
+    // - it clears background color for <th> if its set to gray
     // - it clears background color for <td> if its set to white
     const ignored =
       (nodeType === 'tableHeader' &&
-        background === tableBackgroundColorNames.get('grey')) ||
+        background === tableBackgroundColorNames.get('gray')) ||
       (nodeType === 'tableCell' &&
         background === tableBackgroundColorNames.get('white'));
 
@@ -87,7 +87,7 @@ export const tableBackgroundBorderColors = {
   blue: akColorB75,
   teal: akColorT75,
   red: akColorR75,
-  grey: akColorN40,
+  gray: akColorN40,
   purple: akColorP75,
   green: akColorG75,
   yellow: akColorY75,
@@ -99,7 +99,7 @@ export const tableBackgroundColorNames = new Map<string, string>();
   [akColorB50, 'Blue'],
   [akColorT50, 'Teal'],
   [akColorR50, 'Red'],
-  [akColorN20, 'Grey'],
+  [akColorN20, 'Gray'],
   [akColorP50, 'Purple'],
   [akColorG50, 'Green'],
   [akColorY50, 'Yellow'],
